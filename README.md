@@ -36,6 +36,18 @@ descriptions; see [resource ownership](docs/D3D9_RESOURCES.md),
 The recovered non-indexed and indexed draw paths pass diagnostic triangle pixel readbacks;
 see [draw evidence and remaining stream work](docs/D3D9_DRAW.md).
 
+Pass the installed atlas DDS path to include shader-script and atlas validation:
+
+```powershell
+./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'
+```
+
+The shader fixture derives the game root from that path and evaluates the installed
+fundamentals, debug descriptor, include and dummy combiner using stock Lua5.1.1.
+Without the path it explicitly skips asset-dependent shader checks. First build
+downloads the checksum-pinned Lua source; see [dependency/license](third_party/README.md)
+and [adapter scope](docs/SHADER_LUA_ADAPTER.md). Full material loading remains incomplete.
+
 ## Export the existing analysis
 
 Open `C:/Users/sqz269/bsp.gpr` in Ghidra with the Ghidra MCP plugin enabled and open its

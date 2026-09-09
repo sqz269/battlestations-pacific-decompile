@@ -1,0 +1,37 @@
+{
+  "runtime": "Stock upstream Lua5.1.1, base library only",
+  "archive_sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0",
+  "assets": [
+    {
+      "path": "scripts/fundamentals.lua",
+      "size": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "shaderfx/dx9_lua.inc",
+      "size": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    },
+    {
+      "path": "shaderfx/common/debugshader.shfx",
+      "size": 806,
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+    },
+    {
+      "path": "shaderfx/lights/dummy.shfx",
+      "size": 114,
+      "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+    }
+  ],
+  "validation": {
+    "debug_inputs": 2,
+    "debug_interpolators": 1,
+    "debug_executed_chunks": 3,
+    "dummy_executed_chunks": 3,
+    "color0_usage": 15,
+    "draw_center": "ff407fbf",
+    "draw_outside": "ff000000",
+    "state_restored": true
+  },
+  "limitations": "Stock runtime/explicit four-path resolver; no native hash-order/ABI equivalence, overlay resolution, full flags/states/combiners/samplers/material lifecycle"
+}

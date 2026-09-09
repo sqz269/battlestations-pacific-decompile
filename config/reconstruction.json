@@ -922,6 +922,15 @@
       "status": "disassembly_adapter_filtered_selection_draw_checked",
       "abi_compatible": false,
       "remaining": "Full native compiler, device creation, file writes and exception lifecycle unported. Bounded transactional parser interface rejects malformed input."
+    },
+    {
+      "address": "00b43b00",
+      "name": "load_shader_lua_code",
+      "source": "src/shader_lua.cpp",
+      "native_range": "Script initialization, code/profile strings and VertexInput/Interpolators via00b419b0/00b573f0; discontiguous adapter",
+      "status": "installed_lua_chunks_field_tables_generated_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Stock Lua5.1.1 C API, explicit resolver and protected errors. Native full table reader, path overlays, typed flags/states/combiners/samplers, object/allocator lifecycle unported."
     }
   ]
 }

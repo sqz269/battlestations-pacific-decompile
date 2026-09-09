@@ -1,6 +1,10 @@
-// Diagnostic host shaders only: native shader loading/material execution is unported.
+// Diagnostic host shader pipeline; native descriptor/material lifecycle remains partial.
 #include "bsp/d3d9_states.hpp"
 #include "bsp/shader_source.hpp"
+#include "bsp/shader_lua.hpp"
+#include <filesystem>
+#include <fstream>
+#include <iterator>
 #include "bsp/material_constants.hpp"
 #include "bsp/camera_projection.hpp"
 #include "bsp/camera_inverse.hpp"
@@ -177,7 +181,34 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
 }
 }
 
-bool probe_shader_bindings(IDirect3DDevice9& device) {
+bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
+    const auto root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
+    const bsp::ShaderScriptResolver resolver = [&](const std::string& requested, std::string& bytes, std::string& error) {
+        std::string path = requested;
+        for (char& c : path) {
+            if (c == '\\') c = '/';
+            if (c >= 'A' && c <= 'Z') c = static_cast<char>(c + ('a' - 'A'));
+        }
+        if (path != "scripts/fundamentals.lua" && path != "shaderfx/dx9_lua.inc"
+            && path != "shaderfx/common/debugshader.shfx" && path != "shaderfx/lights/dummy.shfx") {
+            error = "Unmapped shader asset: " + requested; return false;
+        }
+        std::ifstream input(root / path, std::ios::binary);
+        if (!input) { error = "Cannot read shader asset: " + requested; return false; }
+        bytes.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+        if (input.bad()) { error = "Shader asset read failed: " + requested; return false; }
+        return true;
+    };
+    bsp::ShaderLuaCode debug_script, dummy_script;
+    std::string script_error;
+    const bool scripts_loaded = bsp::load_shader_lua_code(resolver, "shaderfx/common/debugshader.shfx",
+        false, {}, debug_script, script_error) && bsp::load_shader_lua_code(resolver,
+        "shaderfx/lights/dummy.shfx", false, {}, dummy_script, script_error);
+    if (!scripts_loaded) { std::fprintf(stderr, "%s\n", script_error.c_str()); return false; }
+    std::printf("Installed Lua shaders: inputs=%zu interpolators=%zu debug_chunks=%zu dummy_chunks=%zu\n",
+        debug_script.vertex_inputs.size(), debug_script.interpolators.size(),
+        debug_script.executed_paths.size(), dummy_script.executed_paths.size());
+
     // Use the installed compiler and the SDK declaration rather than inventing
     // shader bytecode or a private D3DX buffer/assembler ABI.
     HMODULE module = LoadLibraryExW(L"d3dcompiler_47.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
@@ -291,22 +322,23 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_generated && packing_matches && pixel_samplers_match
         ? assemble_host_shader(pixel_source.c_str(), "ps_2_0", &pixel_code) : E_FAIL;
-    // Installed debugshader.shfx VS projection; field/constant registry is
-    // explicit here, pending native descriptor loading and registry recovery.
+    // Installed Lua-evaluated debug descriptor; full material flags/state/combiner
+    // selection remain a host fixture boundary.
     bsp::ShaderVertexProgram debug_program;
-    bsp::append_vertex_inputs_00b35930({position, color}, {}, debug_program.inputs);
+    bsp::append_vertex_inputs_00b35930(debug_script.vertex_inputs, dummy_script.vertex_inputs, debug_program.inputs);
     bsp::append_vertex_system_fields_00b35be0(debug_program.system_values);
     const bool selected_debug_fields = bsp::append_selected_interpolators_00b36800(
-        {color}, {}, nullptr, nullptr, debug_program.outputs) == bsp::ShaderSourceStatus::complete;
+        debug_script.interpolators, dummy_script.interpolators, nullptr, nullptr, debug_program.outputs) == bsp::ShaderSourceStatus::complete;
     debug_program.packing_fields = debug_program.outputs;
     bsp::append_interpolator_mapping_00b34aa0(debug_program.outputs, debug_program.interpolators);
     debug_program.constants = bsp::make_system_constant_registry_00b5bf70();
     debug_program.register_limit = bsp::system_constant_annotation_limit;
-    debug_program.base.vertex_code = "SYS.ObjectSpacePos=IN.Position;\n"
-        "SYS.WorldSpacePos=IN.Position;\nSYS.ScreenSpacePos=mul(SYS.WorldSpacePos,cViewProjMat);\n"
-        "OUT.Color = IN.Color;";
+    debug_program.base.header = debug_script.constants;
+    debug_program.effect.header = dummy_script.constants;
+    debug_program.base.vertex_code = debug_script.vertex;
+    debug_program.effect.vertex_code = dummy_script.vertex;
     std::string debug_source;
-    const auto debug_profiles = bsp::select_shader_profiles_00b43b00(3);
+    const auto debug_profiles = bsp::select_shader_profiles_00b43b00(3, debug_script.vertex_profile, debug_script.pixel_profile);
     const bool full_vertex_generated = selected_debug_fields && bsp::generate_vertex_source_00b39110(debug_program,
         debug_source) == bsp::ShaderSourceStatus::complete;
     ID3DBlob* debug_code = nullptr;
@@ -323,8 +355,10 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     debug_pixel.interpolators = debug_program.interpolators;
     debug_pixel.constants = debug_program.constants;
     debug_pixel.register_limit = bsp::system_constant_annotation_limit;
-    debug_pixel.base.pixel_code = "SYS.DiffuseColor = IN.Color;";
-    debug_pixel.effect.pixel_code = "FinalColor[0] = SYS.DiffuseColor;";
+    debug_pixel.base.header = debug_script.constants;
+    debug_pixel.effect.header = dummy_script.constants;
+    debug_pixel.base.pixel_code = debug_script.pixel;
+    debug_pixel.effect.pixel_code = dummy_script.pixel;
     std::string debug_pixel_source;
     const bool full_pixel_generated = bsp::generate_pixel_source_00b39880(debug_pixel,
         debug_pixel_source) == bsp::ShaderSourceStatus::complete;
@@ -351,7 +385,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         const bool parsed = bsp::parse_pixel_usage_00b61280(text, texcoord_usage, color_usage)
             == bsp::ShaderSourceStatus::complete;
         const bool selected = parsed && bsp::append_selected_interpolators_00b36800(
-            {color}, {}, &texcoord_usage, &color_usage, filtered_fields) == bsp::ShaderSourceStatus::complete;
+            debug_script.interpolators, dummy_script.interpolators, &texcoord_usage, &color_usage, filtered_fields) == bsp::ShaderSourceStatus::complete;
         if (!selected || color_usage[0] != 15 || filtered_fields.size() != 2
             || filtered_fields[1].component_mask != 15) result = E_FAIL;
         if (SUCCEEDED(result)) {

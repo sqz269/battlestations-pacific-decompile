@@ -160,3 +160,9 @@ for the existing source generator. Full native material loading additionally
 requires registry/path resolution, content overlays, state/element conversion,
 combiner creation and ownership. No arbitrary Lua interpreter, unresolved
 native globals, or fabricated fallback stubs should be introduced to link it.
+
+Follow-up: the parent integrated stock Lua5.1.1 execution and the recovered field
+conversion rules for the installed debug/dummy fixture. Real evaluated strings
+and fields now feed source generation and pixel readback. See
+`SHADER_LUA_ADAPTER.md` for implemented scope, adapter differences and remaining
+full-loader work.

@@ -12,7 +12,7 @@
 #include "bsp/d3d9_texture.hpp"
 
 
-bool probe_shader_bindings(IDirect3DDevice9&);
+bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 
@@ -480,7 +480,8 @@ int main(int argc, char** argv) {
     }
     if (matched) matched = probe_draw(*device);
     if (matched) matched = probe_shader_constants(*device);
-    if (matched) matched = probe_shader_bindings(*device);
+    if (matched && argc > 1) matched = probe_shader_bindings(*device, argv[1]);
+    else if (matched) std::puts("Shader asset probe skipped: supply installed atlas DDS path to locate game scripts.");
     if (matched) matched = probe_material_states_and_constants(*device);
     if (matched && argc > 1) matched = probe_memory_texture(*device, argv[1]);
     if (device) device->Release();
