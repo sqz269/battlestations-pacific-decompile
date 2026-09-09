@@ -32,6 +32,16 @@ void append_zero_shader_fields_00b357d0(const std::string& instance,
 void append_vertex_input_decode_00b35820(const std::vector<ShaderField>&,
     bool enabled, std::uint32_t field_limit, std::string& output);
 
+struct ShaderSamplerDeclaration {
+    std::string name; // Native string at +4h/+8h.
+    bool vertex_enabled{}; // +Ch.
+    std::uint32_t dimension{}; // +10h: 1=1D, 2=2D, 3=CUBE, 4=3D.
+};
+// ECX builder, RET. Walks base then effect; disabled records consume no slot,
+// enabled unknown dimensions consume a slot but emit nothing. No deduplication.
+void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>& base,
+    const std::vector<ShaderSamplerDeclaration>& effect, std::string& output);
+
 // Projection of the native 20h system constant record. Native declaration
 // order is float<first>x<second>; register advance is second*array_count.
 struct ShaderSystemConstant {

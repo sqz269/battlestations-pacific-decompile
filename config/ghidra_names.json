@@ -998,5 +998,10 @@
     "address": "00b35820",
     "name": "BSP_ShaderBuilder_AppendVertexInputDecode",
     "evidence": "ECX builder RET. Base descriptor+1Fh gate, min(unsigned descriptor+20h,inputcount+8h). Emits IN.field = IN.field * cVtxElemScale[index].swizzle + cVtxElemOffset[index].swizzle; helper00b34e90 selects x/xy/xyz/xyzw by count1..4, other counts empty. Typed source emitter, exacttext and shadercompile/binding checked. See docs/SHADER_INITIALIZATION.md; full generator/ABI unported."
+  },
+  {
+    "address": "00b38080",
+    "name": "BSP_ShaderBuilder_AppendVertexSamplers",
+    "evidence": "ECX builder RET. Base then effect lists +C4h/count+C8h. Record name string+4h/+8h, vertex flag+Ch, dimension+10h. Types1=1D,2=2D,3=CUBE,4=3D. Disabled skip slot; enabled unknown consumes slot without text; slot shared across descriptors, no dedup. Typed emitter exacttext and compile checked; no real vertex texture sampling. See docs/SHADER_VERTEX_COMPOSITION.md."
   }
 ]

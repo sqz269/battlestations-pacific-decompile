@@ -38,13 +38,20 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     bsp::append_system_constant_header_00b38ff0(constants, true, 6, declarations);
     const bool constant_header_matches = declarations ==
         "float4x4 ProbeTransform : register(c0);\nfloat4 ProbeTint[2] : register(c4);\nfloat ProbeBias;\n";
+    std::string samplers;
+    bsp::append_vertex_samplers_00b38080(
+        {{"Skipped", false, 2}, {"Unknown", true, 0}, {"ProbeSampler", true, 2}},
+        {{"ProbeCube", true, 3}}, samplers);
+    const bool samplers_match = samplers ==
+        "sampler2D\tProbeSampler\t\t: register(s1);\nsamplerCUBE\tProbeCube\t\t: register(s2);\n";
+    declarations += samplers;
     bsp::ShaderField position;
     position.name = "Position"; position.component_count = 4;
     bsp::ShaderStructOptions options; options.include_semantics = true;
     const auto generated = bsp::append_shader_struct_00b38b50("ProbeInput", {position}, options, declarations);
     const std::string expected = "\nstruct ProbeInput\n{\n\tfloat4\t\tPosition\t\t : POSITION0;\n};\n\n";
     const bool declaration_matches = generated == bsp::ShaderSourceStatus::complete
-        && constant_header_matches && declarations.size() >= expected.size()
+        && constant_header_matches && samplers_match && declarations.size() >= expected.size()
         && declarations.compare(declarations.size() - expected.size(), expected.size(), expected) == 0;
     HRESULT result = declaration_matches ? S_OK : E_FAIL;
     // Exercise native component packing across a register boundary, followed

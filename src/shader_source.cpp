@@ -36,6 +36,29 @@ std::string signed_decimal(std::uint32_t value) {
 }
 }
 
+void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>& base,
+    const std::vector<ShaderSamplerDeclaration>& effect, std::string& output) {
+    std::uint32_t slot = 0;
+    for (const auto* descriptor : {&base, &effect}) {
+        for (const auto& sampler : *descriptor) {
+            if (!sampler.vertex_enabled) continue;
+            const char* type = nullptr;
+            switch (sampler.dimension) {
+            case 1: type = "sampler1D"; break;
+            case 2: type = "sampler2D"; break;
+            case 3: type = "samplerCUBE"; break;
+            case 4: type = "sampler3D"; break;
+            default: break;
+            }
+            if (type) {
+                output += type; output += '\t'; output += sampler.name.c_str();
+                output += "\t\t: register(s"; output += signed_decimal(slot); output += ");\n";
+            }
+            ++slot;
+        }
+    }
+}
+
 void append_system_constant_00b38c60(const ShaderSystemConstant& constant,
     std::int32_t register_index, std::string& output) {
     std::string result("float");
