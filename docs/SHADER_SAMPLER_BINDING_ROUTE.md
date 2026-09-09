@@ -122,3 +122,34 @@ are full function bodies; the last is only the audited draw-time fragment.
 
 No native calls, new tests, C++ changes, Ghidra annotation changes, builds or
 game execution were performed for this analysis.
+
+## Implemented source0 material binding
+
+`material_samplers.hpp/.cpp` supplies a typed pass with signed index/stage
+records and a sampler-state block. Complete semantic append/update/removal
+helpers00b5f100,00b5ed60,00b5eff0 are ported; vector growth, native padding
+and intrusive allocation are not ABI-compatible. The source0 construction
+projection carries shared counters across descriptor calls and uses parsed
+SamplerStates. It intentionally does not apply TextureStageStates, which the
+original helper never reads. Unused pixel-state pruning uses swap-last removal.
+
+The binding projection retains the original overall record ordinal mask test,
+separate stage counters and null for an out-of-range material index. A typed
+material vector replaces the native signed16 count/array owner. It rejects
+negative indices, owners above32767 textures and stage counts beyond D3D9
+limits before issuing calls. Source1/3/other records fail construction before
+mutation; those native routes are still pending. HRESULT failure stops later
+binds, which is explicit host error handling rather than recovered rollback.
+Finalize the pass before copying its state block into the identity-cached
+renderer; mutating an already-bound identity would skip required device calls.
+
+The existing shader probe evaluates installed alphablend.shfx, compiles a
+diagnostic shader referencing its generated MyTexture declaration, and uses
+the real reflected sampler mask1. A1x1 host texture supplied as material
+index0 reaches device slot0 with wrap U/V states; GetTexture/GetSamplerState
+verify identity/values. An empty material then binds null through the same
+record. Device state is captured/restored and borrowed COM texture lifetime
+outlives cache references. This is a binding check, not a full alphablend
+textured draw. Build, existing CTests and all prior D3D9 pixel checks pass.
+The update/removal edge cases and arbitrary mixed-stage layouts are grounded
+in assembly but not exercised by that one installed sampler fixture.

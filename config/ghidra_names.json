@@ -1243,5 +1243,25 @@
     "address": "00b3a750",
     "name": "BSP_ShaderMetadata_AppendMaterialConstant",
     "evidence": "ECX metadata, six stack args register/count/name/rows/columns/elements, RET18h. Constructs32-byte record via00b5bc60 with source semantic55 and appends to metadata+78 via00b3a660. Typed reflection mapper retains full unknown FLOAT descriptors; native ownership lifecycle unported."
+  },
+  {
+    "address": "00b5f100",
+    "name": "BSP_MaterialPass_AppendTextureReference",
+    "evidence": "ECX pass, stack signed index/stagebyte RET8. Appends8-byte record at pass+24, count+28; padding uninitialized in native. Typed semantic record in material_samplers.cpp."
+  },
+  {
+    "address": "00b5ed60",
+    "name": "BSP_MaterialPass_SetSamplerState",
+    "evidence": "ECX pass, stack slot/state/value RET0Ch. Finds first pair in sampler block pass+20 and replaces differing value; otherwise appends. Last supplied value wins, position retained. Typed port in material_samplers.cpp."
+  },
+  {
+    "address": "00b5eff0",
+    "name": "BSP_MaterialPass_RemoveSamplerSlot",
+    "evidence": "ECX pass, stack slot RET4. Repeated first-match search and swap-last removal of all sampler state records with slot; unstable order. Typed port in material_samplers.cpp."
+  },
+  {
+    "address": "00b3b280",
+    "name": "BSP_ShaderBuilder_AddDescriptorSamplers",
+    "evidence": "ECX builder, stack pass/descriptor RET8. Source0 index/stage append; distinct pixel/vertex sampler-state counters shared across base/effect. Source0 typed partial port now in material_samplers.cpp; other source lifecycle unported. See docs/SHADER_SAMPLER_BINDING_ROUTE.md."
   }
 ]

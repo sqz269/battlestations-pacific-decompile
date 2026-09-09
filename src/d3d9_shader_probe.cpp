@@ -3,6 +3,7 @@
 #include "bsp/shader_source.hpp"
 #include "bsp/shader_lua.hpp"
 #include "bsp/shader_reflection.hpp"
+#include "bsp/material_samplers.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -16,6 +17,48 @@
 #include <cstring>
 
 namespace {
+bool check_material_sampler_binding(IDirect3DDevice9& device, const bsp::ShaderLuaCode& script,
+    std::uint32_t usage_mask) {
+    bsp::MaterialSamplerPass pass;
+    bsp::MaterialSamplerCounters counters;
+    if (!bsp::append_material_samplers_00b3b280(script.samplers, pass, counters)) return false;
+    bsp::prune_material_sampler_states(pass, usage_mask);
+    IDirect3DStateBlock9* saved = nullptr;
+    IDirect3DTexture9* texture = nullptr;
+    HRESULT result = device.CreateStateBlock(D3DSBT_ALL, &saved);
+    if (FAILED(result)) return false;
+    result = device.CreateTexture(1, 1, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &texture, nullptr);
+    auto* lock = bsp::critical_section_create_00bd1860();
+    bool matched = false;
+    if (SUCCEEDED(result) && lock) {
+        bsp::RendererSynchronization sync{};
+        bsp::set_renderer_synchronization_00b33aa0(sync, true);
+        bsp::D3D9StateCache state(device, sync, lock);
+        auto logical = std::make_shared<bsp::LogicalTexture>(); logical->texture = texture;
+        state.bind_sampler_state_block_00b27b90(std::make_shared<bsp::SamplerStateBlock>(pass.sampler_states));
+        result = bsp::bind_material_textures_00b43470(state, pass, {logical}, usage_mask);
+        IDirect3DBaseTexture9* observed = nullptr;
+        DWORD address_u{}, address_v{};
+        if (SUCCEEDED(result)) result = device.GetTexture(0, &observed);
+        if (SUCCEEDED(result)) result = device.GetSamplerState(0, D3DSAMP_ADDRESSU, &address_u);
+        if (SUCCEEDED(result)) result = device.GetSamplerState(0, D3DSAMP_ADDRESSV, &address_v);
+        matched = SUCCEEDED(result) && observed == texture && address_u == D3DTADDRESS_WRAP
+            && address_v == D3DTADDRESS_WRAP && counters.references == 1 && counters.pixel == 1 && counters.vertex == 0;
+        if (observed) observed->Release();
+        // Same record, empty material: native out-of-range source0 binds null.
+        result = bsp::bind_material_textures_00b43470(state, pass, {}, usage_mask);
+        observed = nullptr;
+        if (SUCCEEDED(result)) result = device.GetTexture(0, &observed);
+        matched = matched && SUCCEEDED(result) && !observed;
+        if (observed) observed->Release();
+    }
+    if (lock) bsp::critical_section_destroy_owned_0041cc80(lock);
+    if (FAILED(saved->Apply())) matched = false;
+    saved->Release();
+    if (texture) texture->Release();
+    std::printf("Parsed material sampler binding: texture_state_readback_and_null=%d usage_mask=%u\n", matched, usage_mask);
+    return matched;
+}
 bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& state,
     const std::vector<bsp::ShaderLuaRenderState>& render_states,
     const std::vector<bsp::ReflectedShaderConstant>& vertex_reflection,
@@ -319,6 +362,22 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         }
         return result;
     };
+    // Diagnostic sampler-use shader supplies the real compiled usage mask.
+    // This checks parsed material binding, not a full alphablend material draw.
+    const std::string sampler_use_source = installed_sampler_source
+        + "float4 main(float2 uv:TEXCOORD0):COLOR0 { return tex2D(MyTexture,uv); }";
+    ID3DBlob* sampler_code = nullptr;
+    std::vector<bsp::ReflectedShaderConstant> sampler_reflection;
+    bsp::ShaderConstantBindings sampler_bindings;
+    std::string sampler_error;
+    bool sampler_bound = SUCCEEDED(assemble_host_shader(sampler_use_source.c_str(), "ps_3_0", &sampler_code));
+    if (sampler_bound) sampler_bound = bsp::reflect_shader_constants_00b3aea0(
+        static_cast<const std::uint32_t*>(sampler_code->GetBufferPointer()), sampler_reflection, sampler_error)
+        && bsp::map_shader_constants_00b3aea0(sampler_reflection, bsp::make_system_constant_registry_00b5bf70(), sampler_bindings)
+        && sampler_bindings.sampler_mask == 1
+        && check_material_sampler_binding(device, alpha_script, sampler_bindings.sampler_mask);
+    if (sampler_code) sampler_code->Release();
+    if (!sampler_bound) { FreeLibrary(module); return false; }
     ID3DBlob* vertex_code = nullptr;
     ID3DBlob* pixel_code = nullptr;
     IDirect3DVertexShader9* vertex = nullptr;
