@@ -8,6 +8,7 @@
 #include <cstring>
 #include <cstdio>
 #include "bsp/physical_file.hpp"
+#include "bsp/memory_stream.hpp"
 #include <vector>
 #include <limits>
 #include "bsp/d3d9_texture.hpp"
@@ -17,8 +18,8 @@ bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 
-// Recovered physical read route with diagnostic size/short-read checks and DLL
-// import adapter. This is not the native VFS/memory-wrapper implementation.
+// Recovered physical-to-memory route with explicit completeness checks and DLL
+// import adapter. VFS mount selection and full texture registration remain absent.
 // The optional input is the single-level DXT1 atlas identified in ASSET_ENTRY.md.
 static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     bsp::PhysicalFile file;
@@ -26,23 +27,34 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     if (!file.open_read_only_00bf52a0_fragment(path, error) || !file.valid_00bf5020()) return false;
     const auto end = file.size_00bf4f90();
     if (end < 128 || end > (std::numeric_limits<UINT>::max)()) return false;
-    std::vector<char> bytes(static_cast<std::size_t>(end));
-    std::uint32_t actual{};
-    if (!file.seek_00bf4f20(0, FILE_BEGIN, error)
-        || !file.read_00bf5030(bytes.data(), static_cast<std::uint32_t>(bytes.size()), actual, error)
-        || actual != bytes.size() || file.position() != end
+    auto stream = std::make_shared<bsp::MemoryStream>();
+    if (!bsp::memory_stream_from_physical_00bef750_fragment(file, *stream, error)
+        || !stream->fully_initialized() || file.position() != end
         || !file.close_00bf5090_fragment(error) || file.valid_00bf5020()) return false;
-    std::printf("Physical asset read: bytes=%u cached_position_matches_size=1 closed=1\n", actual);
+    std::printf("Physical asset read: bytes=%u cached_position_matches_size=1 closed=1\n",
+        stream->initialized_size());
+    const auto* bytes = stream->data_00bef610();
+    const auto byte_count = static_cast<std::size_t>(stream->size_00bef600());
+    DWORD magic{};
+    std::uint32_t actual{};
+    if (!stream->read_00bef590(&magic, sizeof(magic), &actual)
+        || actual != 4 || magic != 0x20534444 || stream->position_00bef580() != 4) return false;
+    auto clone = stream->clone_reset_00bef6d0();
+    std::uint16_t header_part{};
+    if (clone.position_00bef580() != 0 || clone.data_00bef610() != bytes
+        || !clone.seek_00bef540(0x100000004LL, 0)
+        || !clone.read_00bef590(&header_part, 2, &actual) || actual != 2 || header_part != 124
+        || stream->position_00bef580() != 4) return false;
     auto word = [&](std::size_t offset) {
         DWORD value{};
-        std::memcpy(&value, bytes.data() + offset, sizeof(value));
+        std::memcpy(&value, bytes + offset, sizeof(value));
         return value;
     };
     const UINT width = word(16), height = word(12);
     if (word(0) != 0x20534444 || word(4) != 124 || word(84) != D3DFMT_DXT1
         || !width || !height || width % 4 || height % 4) return false;
     const std::size_t row_bytes = static_cast<std::size_t>(width / 4) * 8;
-    if (static_cast<std::uint64_t>(bytes.size() - 128)
+    if (static_cast<std::uint64_t>(byte_count - 128)
         != static_cast<std::uint64_t>(row_bytes) * (height / 4)) return false;
     HMODULE module = LoadLibraryExW(L"d3dx9_40.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
     if (!module) return false;
@@ -50,14 +62,27 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     bsp::CreateTextureFromMemory create{};
     static_assert(sizeof(create) == sizeof(address));
     std::memcpy(&create, &address, sizeof(create));
-    IDirect3DTexture9* texture = nullptr;
     const bsp::MemoryTextureOptions options{width, height, 1, D3DFMT_DXT1};
-    HRESULT result = bsp::texture_create_from_retained_memory_00b3e190(device, create,
-        bytes.data(), static_cast<UINT>(bytes.size()), options, texture);
+    bsp::D3D9RetainedTexture2D owner(options);
+    owner.assign_source_00b23640_fragment(stream);
+    std::weak_ptr<bsp::MemoryStream> retained = stream;
+    HRESULT result = owner.recreate_00b3e190(device, create);
+    stream.reset();
+    clone = bsp::MemoryStream{};
+    // The texture is now the only wrapper/backing owner. Recreate using that
+    // retained source after dropping the initial COM texture and local streams.
+    if (SUCCEEDED(result)) {
+        owner.release_com();
+        result = owner.recreate_00b3e190(device, create);
+    }
+    auto* texture = owner.texture();
+    const bool retained_checked = !retained.expired() && owner.source()->position_00bef580() == 4;
+    std::printf("Memory texture source: shared_backing_independent_cursor_retained_recreation=%d\n",
+        retained_checked && SUCCEEDED(result));
     D3DSURFACE_DESC description{};
     if (SUCCEEDED(result) && !texture) result = E_FAIL;
     if (SUCCEEDED(result)) result = texture->GetLevelDesc(0, &description);
-    bool matched = SUCCEEDED(result) && description.Width == width
+    bool matched = retained_checked && SUCCEEDED(result) && description.Width == width
         && description.Height == height && description.Format == D3DFMT_DXT1
         && description.Pool == D3DPOOL_MANAGED && description.Usage == 0
         && texture->GetLevelCount() == 1;
@@ -70,7 +95,7 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
             for (UINT row = 0; matched && row < height / 4; ++row)
                 matched = std::memcmp(static_cast<const char*>(locked.pBits)
                     + static_cast<std::size_t>(row) * locked.Pitch,
-                    bytes.data() + 128 + row * row_bytes, row_bytes) == 0;
+                    bytes + 128 + row * row_bytes, row_bytes) == 0;
             const HRESULT unlock = texture->UnlockRect(0);
             matched = matched && SUCCEEDED(unlock);
         }
@@ -78,7 +103,9 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     std::printf("D3D9 installed DDS: hr=0x%08lx size=%ux%u managed_DXT1_bytes_match=%d\n",
         static_cast<unsigned long>(result), description.Width, description.Height, matched);
     if (matched) matched = probe_texture_atlas(device, *texture, path);
-    if (texture) texture->Release();
+    owner.release_com();
+    owner.assign_source_00b23640_fragment({});
+    matched = matched && retained.expired();
     FreeLibrary(module);
     return matched;
 }

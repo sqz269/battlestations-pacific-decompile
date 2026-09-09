@@ -1031,6 +1031,46 @@
       "source": "src/d3d9_buffers.cpp",
       "status": "real_device_reset_readiness_metadata_guard_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00bef540",
+      "name": "BSP_MemoryStream_Seek",
+      "source": "src/memory_stream.cpp",
+      "status": "installed_asset_memory_stream_retention_checked",
+      "abi_compatible": false,
+      "limitations": "Positive signed32 backing and inbounds initialized ranges; new error/bounds checks. No native ABI or arbitrary shortread/invalidseek validation."
+    },
+    {
+      "address": "00bef580",
+      "name": "BSP_MemoryStream_GetPosition",
+      "source": "src/memory_stream.cpp",
+      "status": "installed_asset_memory_stream_retention_checked",
+      "abi_compatible": false,
+      "limitations": "Positive signed32 backing and inbounds initialized ranges; new error/bounds checks. No native ABI or arbitrary shortread/invalidseek validation."
+    },
+    {
+      "address": "00bef590",
+      "name": "BSP_MemoryStream_Read",
+      "source": "src/memory_stream.cpp",
+      "status": "installed_asset_memory_stream_retention_checked",
+      "abi_compatible": false,
+      "limitations": "Positive signed32 backing and inbounds initialized ranges; new error/bounds checks. No native ABI or arbitrary shortread/invalidseek validation."
+    },
+    {
+      "address": "00bef600",
+      "name": "BSP_MemoryStream_GetSize",
+      "source": "src/memory_stream.cpp",
+      "status": "installed_asset_memory_stream_retention_checked",
+      "abi_compatible": false,
+      "limitations": "Positive signed32 backing and inbounds initialized ranges; new error/bounds checks. No native ABI or arbitrary shortread/invalidseek validation."
+    },
+    {
+      "address": "00bef610",
+      "name": "BSP_MemoryStream_GetData",
+      "source": "src/memory_stream.cpp",
+      "status": "installed_asset_memory_stream_retention_checked",
+      "abi_compatible": false,
+      "limitations": "Positive signed32 backing and inbounds initialized ranges; new error/bounds checks. No native ABI or arbitrary shortread/invalidseek validation."
     }
   ],
   "fragments": [
@@ -1269,6 +1309,42 @@
       "status": "real_device_default_and_registered_surface_reset_checked",
       "abi_compatible": false,
       "remaining": "Typed existing color0/depth owners only; release depth then color, restore color then depth without binding. Readiness/lost gates, other three fixed color slots, guard, other resources/listeners and scheduler remain unported. Empty-owner preflight and sequential HRESULT failure reporting are new interface boundaries."
+    },
+    {
+      "address": "00bef6d0",
+      "name": "clone_reset",
+      "source": "src/memory_stream.cpp",
+      "native_range": "shared backing with independent reset cursor",
+      "status": "installed_dds_retained_source_recreation_checked",
+      "abi_compatible": false,
+      "remaining": "Typedsharedownership/positivebacking; native allocator/refcounts/registry/cachedsurfaces and fullVFS/textureload lifecycle remain unported. Hostshortread initialized-prefix boundary explicit."
+    },
+    {
+      "address": "00bef750",
+      "name": "memory_stream_from_physical",
+      "source": "src/memory_stream.cpp",
+      "native_range": "positive-size physical conversion branch",
+      "status": "installed_dds_retained_source_recreation_checked",
+      "abi_compatible": false,
+      "remaining": "Typedsharedownership/positivebacking; native allocator/refcounts/registry/cachedsurfaces and fullVFS/textureload lifecycle remain unported. Hostshortread initialized-prefix boundary explicit."
+    },
+    {
+      "address": "00b23640",
+      "name": "assign_retained_texture_source",
+      "source": "src/d3d9_texture.cpp",
+      "native_range": "identity and shared ownership projection",
+      "status": "installed_dds_retained_source_recreation_checked",
+      "abi_compatible": false,
+      "remaining": "Typedsharedownership/positivebacking; native allocator/refcounts/registry/cachedsurfaces and fullVFS/textureload lifecycle remain unported. Hostshortread initialized-prefix boundary explicit."
+    },
+    {
+      "address": "00b3f2e0",
+      "name": "release_retained_texture_source",
+      "source": "src/d3d9_texture.cpp",
+      "native_range": "source-before-COM destruction projection",
+      "status": "installed_dds_retained_source_recreation_checked",
+      "abi_compatible": false,
+      "remaining": "Typedsharedownership/positivebacking; native allocator/refcounts/registry/cachedsurfaces and fullVFS/textureload lifecycle remain unported. Hostshortread initialized-prefix boundary explicit."
     }
   ]
 }
