@@ -418,6 +418,22 @@
       "source": "src/d3d9_states.cpp",
       "status": "semantic_tracked_lock_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b51b00",
+      "name": "render_entry_key_less",
+      "source": "src/render_sort.cpp",
+      "status": "semantic_assembly_reviewed_build_checked",
+      "abi_compatible": false,
+      "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation."
+    },
+    {
+      "address": "00b51ab0",
+      "name": "render_entry_material_value_less",
+      "source": "src/render_sort.cpp",
+      "status": "semantic_assembly_reviewed_build_checked",
+      "abi_compatible": false,
+      "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation."
     }
   ],
   "fragments": [

@@ -748,5 +748,45 @@
     "address": "00b1fe20",
     "name": "BSP_D3D9Renderer_IsFrameActive",
     "evidence": "Renderer primary vtable+2Ch; boolean AL=(DWORD+1998h !=0). Gates batch execution and causes EndFrame Present path to proceed only after activefield cleared. Recovered missing11-byte function."
+  },
+  {
+    "address": "00b318b0",
+    "name": "BSP_D3D9Renderer_LoadMaterialEffect",
+    "evidence": "Renderer+48h. Optional guard, copy/normalize resource name, invoke generic loader00b31090 onembeddedregistry+1A98h with0/1/1 flags. Concrete registry ctor vtable00d5f074."
+  },
+  {
+    "address": "00b18900",
+    "name": "BSP_Material_ConstructWithEffect",
+    "evidence": "Material wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported."
+  },
+  {
+    "address": "00b864c0",
+    "name": "BSP_DrawSection_SetMaterial",
+    "evidence": "Retain-new/release-old assignment into section+20h. Connects entry+4 section to material wrapper and material+7Ch effect dispatcher."
+  },
+  {
+    "address": "00b2ebb0",
+    "name": "BSP_MaterialEffectRegistry_Load",
+    "evidence": "Registry00d5f074+8h. Builds .mshd/.shfx filename alternatives, checks00bdf4c0; allocates178h effect00b407a0, loads00b46950 and00b18f70; failure logs and loads error.shfx throughrenderer+48h. Full parsing not reconstructed."
+  },
+  {
+    "address": "00b407a0",
+    "name": "BSP_MaterialEffect_Construct",
+    "evidence": "Calls base00b18d60; installsvtable00d61a00; initializes effect/pass storage. Registry allocates178h. This vtable+14h resolves00b45360."
+  },
+  {
+    "address": "00b45360",
+    "name": "BSP_MaterialEffect_DispatchEntry",
+    "evidence": "Effect vtable00d61a00+14h, recovered missing. Selects pass by entry+10h object+198h and entry+18h factor, optionalobject+Ch+170h collection, calls00b44750. Full pass/override semantics unresolved; no opaque/transparent naming assumed."
+  },
+  {
+    "address": "00b51ab0",
+    "name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+    "evidence": "SETL at00b51aee; FCOMIP at00b51ad9 and JBE at00b51add; only AL defined on material mismatch; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
+  },
+  {
+    "address": "00b51b00",
+    "name": "BSP_RenderEntry_LessUnsignedKey64",
+    "evidence": "JA/JC at00b51b06/08 compare unsigned high DWORD; JNC at00b51b10 compares unsigned low DWORD; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
   }
 ]

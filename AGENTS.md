@@ -1,5 +1,9 @@
 # Battlestations Pacific reconstruction
 
+- Use parallel subagents for independent, bounded reconstruction work when useful.
+  Assign disjoint files and Ghidra address ranges; coordinate shared metadata edits
+  and integration through the primary agent. Review evidence before accepting results.
+
 - Use the existing `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`.
   Verify project and program before every analysis/export batch. Do not re-import into `wows`.
 - `config/target.json` contains local defaults; use `--config` with a file under `local/` for overrides.

@@ -1,0 +1,69 @@
+{
+  "observed_utc": "2026-09-09",
+  "root": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+  "provenance": "Current installed tree includes mods and generated content; not a pristine distribution inventory. Read only inspection.",
+  "selected_assets": [
+    {
+      "path": "interface/textures/menu_dxt1_2.ats",
+      "bytes": 1034,
+      "sha256": "1baba95eeaba790077bb02c71d194f3d95b6fbb60b949587bc9817860161a4d8",
+      "first_line": "TextureAtlas menu_DXT1_2.dds"
+    },
+    {
+      "path": "interface/textures/menu_dxt1_2.dds",
+      "bytes": 524416,
+      "sha256": "e2f1137cc8cf285b5c1108ea50030e183ac602241ec4d3213c622f1ce4cd7179",
+      "dds": {
+        "header_size": 124,
+        "height": 1024,
+        "width": 1024,
+        "mip_count": 0,
+        "fourcc": "DXT1",
+        "payload_bytes": 524288
+      }
+    },
+    {
+      "path": "shaderfx/common/debugshader.shfx",
+      "bytes": 806,
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "first_line": "DoFile (\"shaderfx/dx9_lua.inc\")"
+    },
+    {
+      "path": "shaderfx/common/error.shfx",
+      "bytes": 613,
+      "sha256": "d8aac844296d6a74ec18aed0fdcb92404c216de0c8d49ebe5ebd0568235f7e3f",
+      "first_line": "DoFile (\"shaderfx/dx9_lua.inc\")"
+    }
+  ],
+  "directory_extension_counts": {
+    "interface": {
+      ".lua": 159,
+      ".ats": 12,
+      ".dds": 1123,
+      ".html": 1,
+      ".bak": 1,
+      ".tga": 16
+    },
+    "models": {
+      ".mmod": 1384,
+      ".dds": 20718,
+      ".tga": 30,
+      ".geometry": 2,
+      ".pdn": 1,
+      ".dat": 2,
+      ".tdt": 2
+    },
+    "shaderfx": {
+      ".lua": 2,
+      ".inc": 1,
+      ".bin": 1,
+      ".shfx": 260,
+      ".mshd": 2
+    }
+  },
+  "missing_literal_clues": [
+    "interface/textures/menu.ats",
+    "debugshader.mshd",
+    "pf43cc.mvfm"
+  ]
+}

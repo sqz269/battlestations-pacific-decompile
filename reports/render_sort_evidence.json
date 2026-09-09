@@ -1,0 +1,56 @@
+{
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b51ab0",
+      "length": 69,
+      "matches_disk": true,
+      "sha256": "de7b6fe4974c5fad7b7b22baeb6c6e8b8268ddcfc81ea32d09c4082b945db353"
+    },
+    {
+      "address": "00b51b00",
+      "length": 27,
+      "matches_disk": true,
+      "sha256": "084fb8170aabc99ecc8a6c435dc47dd3d942c76632cbd3781c5ac9902195c5c8"
+    },
+    {
+      "address": "00b51df0",
+      "length": 284,
+      "matches_disk": true,
+      "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2"
+    },
+    {
+      "address": "00b1d420",
+      "length": 150,
+      "matches_disk": true,
+      "sha256": "929943dae9485fc9fc14a4c1b641bfef1c9f52784ffef4df2e0c98c4ed3ccd88"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b51ab0",
+      "prior_function": null,
+      "prior_label": "LAB_00b51ab0",
+      "created_name": "FUN_00b51ab0",
+      "proposed_name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+      "evidence": "SETL at00b51aee; FCOMIP at00b51ad9 and JBE at00b51add; only AL defined on material mismatch"
+    },
+    {
+      "address": "00b51b00",
+      "prior_function": null,
+      "prior_label": "LAB_00b51b00",
+      "created_name": "FUN_00b51b00",
+      "proposed_name": "BSP_RenderEntry_LessUnsignedKey64",
+      "evidence": "JA/JC at00b51b06/08 compare unsigned high DWORD; JNC at00b51b10 compares unsigned low DWORD"
+    }
+  ],
+  "limitations": [
+    "Compared ranges only, not whole saved image.",
+    "New C++ interfaces, not original ABI.",
+    "Key generation and sorting algorithm are unported.",
+    "No native differential or game validation."
+  ],
+  "predicate_call_evidence": "00b1d420 dereferences pointer-array elements into ECX/EDX, calls comparator, then TEST AL,AL at00b1d44a/00b1d470/00b1d482."
+}
