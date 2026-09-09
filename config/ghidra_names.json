@@ -1232,6 +1232,16 @@
   {
     "address": "00b3aea0",
     "name": "BSP_Shader_ReflectConstantBindings",
-    "evidence": "Stack bytecode then metadata, RET8; ECX is not this. D3DXGetShaderConstantTable enumerates descriptors and maps TypeFLOAT names through system registry into byte register/count arrays+8/+3E. Decode semantics24/25 use+20/+21, counts+56/+57; nominal87/95 are not binding locations. See docs/SHADER_COMPILED_CONSTANT_BINDING.md. Analysis only; compiler/layout and error assumptions documented. Follow-up: official SDK/installed D3DX9_40 enumeration projection implemented in src/shader_reflection.cpp. Final compiled debug VS scale c77/count2, offset c79/count2; PS visibility c77/count1. Decoded-input and actual normal flags draw passes with explicit identity decode/full visibility. Native metadata mapping/end tracking/ownership unported."
+    "evidence": "Stack bytecode then metadata, RET8; ECX is not this. D3DXGetShaderConstantTable enumerates descriptors and maps TypeFLOAT names through system registry into byte register/count arrays+8/+3E. Decode semantics24/25 use+20/+21, counts+56/+57; nominal87/95 are not binding locations. See docs/SHADER_COMPILED_CONSTANT_BINDING.md. Analysis only; compiler/layout and error assumptions documented. Follow-up: official SDK/installed D3DX9_40 enumeration projection implemented in src/shader_reflection.cpp. Final compiled debug VS scale c77/count2, offset c79/count2; PS visibility c77/count1. Decoded-input and actual normal flags draw passes with explicit identity decode/full visibility. Native metadata mapping/end tracking/ownership unported. Follow-up: map_shader_constants_00b3aea0 implements length+case-insensitive registry lookup, first system binding, byte arrays/end, signed highest-start comparison, unknown FLOAT retention and x86 sampler mask. Existing generated draw consumes semantic24/25/43; ends81/78. Native allocation lifecycle remains unported."
+  },
+  {
+    "address": "00b5b960",
+    "name": "BSP_ShaderConstants_FindByName",
+    "evidence": "ECX registry; stack native string, RET4. Ordered20h records: compare string lengths at+14 then _stricmp; first matching record returned, zero if missing. Typed map_shader_constants_00b3aea0 uses this lookup rule; see docs/SHADER_COMPILED_CONSTANT_BINDING.md."
+  },
+  {
+    "address": "00b3a750",
+    "name": "BSP_ShaderMetadata_AppendMaterialConstant",
+    "evidence": "ECX metadata, six stack args register/count/name/rows/columns/elements, RET18h. Constructs32-byte record via00b5bc60 with source semantic55 and appends to metadata+78 via00b3a660. Typed reflection mapper retains full unknown FLOAT descriptors; native ownership lifecycle unported."
   }
 ]

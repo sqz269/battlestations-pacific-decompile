@@ -3,6 +3,44 @@
 #include <cstring>
 
 namespace bsp {
+bool map_shader_constants_00b3aea0(const std::vector<ReflectedShaderConstant>& constants,
+    const std::vector<ShaderSystemConstant>& registry, ShaderConstantBindings& output) {
+    auto mapped = output;
+    std::int32_t highest_start = -1;
+    std::uint32_t highest_count = 0, sampler_mask = 0;
+    for (const auto& constant : constants) {
+        if (constant.parameter_type == 3) { // D3DXPT_FLOAT, not RegisterSet.
+            const ShaderSystemConstant* definition = nullptr;
+            for (const auto& candidate : registry) {
+                if (candidate.name.size() == constant.name.size()
+                    && _stricmp(candidate.name.c_str(), constant.name.c_str()) == 0) {
+                    definition = &candidate; break;
+                }
+            }
+            bool accepted = true;
+            if (definition) {
+                const auto id = definition->semantic_id;
+                if (id >= mapped.registers.size()) return false;
+                accepted = mapped.registers[id] == 0xff;
+                if (accepted) {
+                    mapped.registers[id] = static_cast<std::uint8_t>(constant.register_index);
+                    mapped.counts[id] = static_cast<std::uint8_t>(constant.register_count);
+                }
+            } else mapped.material_constants.push_back(constant);
+            std::int32_t start{};
+            std::memcpy(&start, &constant.register_index, sizeof(start)); // Native signed JGE.
+            if (accepted && highest_start < start) {
+                highest_start = start; highest_count = constant.register_count;
+            }
+        }
+        if (constant.register_set == 3) sampler_mask |= 1u << (constant.register_index & 31u);
+    }
+    mapped.end_register = highest_start < 0 ? 0 : static_cast<std::uint8_t>(
+        static_cast<std::uint32_t>(highest_start) + highest_count);
+    mapped.sampler_mask = sampler_mask;
+    output = std::move(mapped);
+    return true;
+}
 bool reflect_shader_constants_00b3aea0(const std::uint32_t* bytecode,
     std::vector<ReflectedShaderConstant>& output, std::string& error) {
     if (!bytecode) { error = "Missing shader bytecode"; return false; }

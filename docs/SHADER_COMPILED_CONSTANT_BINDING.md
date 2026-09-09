@@ -158,3 +158,30 @@ pass. Expected center ff407fbf/outside ff000000 and state restoration remain
 unchanged. This is evidence for compiled-register reflection and an isolated
 uncompressed draw; general compressed mesh/material/game validation remains
 outstanding. No new test suite or test target was added.
+
+## Implemented metadata mapping
+
+`map_shader_constants_00b3aea0` now maps reflected FLOAT records to the
+54 native semantic slots, using registry00b5bf70. Lookup00b5b960 checks name
+length then CRT `_stricmp`, returning the first match; it is not case-sensitive.
+An occupied register byte skips the system write and end-range update.
+Unknown float records append in order without deduplication; their full
+reflected shape is retained as typed data instead of native32-byte allocated
+records. Native00b3a750 creates those records with source semantic55 through
+00b5bc60 and appends via00b3a660; allocator/string ownership remains unported.
+
+System register/count and final end truncate to bytes. Highest-start tracking
+uses a signed comparison, starts at-1 and keeps the first count on equal
+starts. End is based on the highest accepted start, not the maximum extent.
+RegisterSet3 independently contributes bit(index&31) to a newly computed
+sampler mask. Each call replaces mask/end while retaining existing system
+slots and appending material constants. Counts start zero only in the typed
+host constructor and are meaningful only with a non-FF register. An invalid
+registry semantic fails atomically rather than writing outside native arrays.
+
+The existing generated draw now consumes semantic24/25 for VS decode and43
+for PS visibility. Shape/range validation cross-checks the untruncated D3DX
+reflection before uploading. Observed metadata end values are VS81 and PS78;
+both sampler masks are0 for debug/dummy. Win32 build, existing CTests and
+full installed-asset D3D9 probe pass. Unusual duplicate/overflow/locale cases
+are assembly-backed behavior, not covered by this ordinary shader fixture.

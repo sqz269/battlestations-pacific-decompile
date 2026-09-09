@@ -20,6 +20,10 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
     const std::vector<bsp::ShaderLuaRenderState>& render_states,
     const std::vector<bsp::ReflectedShaderConstant>& vertex_reflection,
     const std::vector<bsp::ReflectedShaderConstant>& pixel_reflection) {
+    bsp::ShaderConstantBindings vertex_bindings, pixel_bindings;
+    const auto registry = bsp::make_system_constant_registry_00b5bf70();
+    if (!bsp::map_shader_constants_00b3aea0(vertex_reflection, registry, vertex_bindings)
+        || !bsp::map_shader_constants_00b3aea0(pixel_reflection, registry, pixel_bindings)) return false;
     IDirect3DStateBlock9* saved = nullptr;
     IDirect3DSurface9* old_target = nullptr;
     IDirect3DSurface9* old_depth = nullptr;
@@ -145,6 +149,9 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
             || binding->register_count > 8 || binding->register_index > 256 - binding->register_count) {
             result = E_FAIL; break;
         }
+        const std::size_t semantic = std::strcmp(name, "cVtxElemScale") == 0 ? 24 : 25;
+        if (vertex_bindings.registers[semantic] != binding->register_index
+            || vertex_bindings.counts[semantic] != binding->register_count) { result = E_FAIL; break; }
         for (const auto& other : vertex_reflection) {
             if (&other == binding || other.register_set != 2) continue;
             if (binding->register_index < other.register_index + other.register_count
@@ -152,7 +159,7 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         }
         std::vector<float> values(binding->register_count * 4, std::strcmp(name, "cVtxElemScale") == 0 ? 1.0f : 0.0f);
         if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(
-            binding->register_index, values.data(), binding->register_count);
+            vertex_bindings.registers[semantic], values.data(), vertex_bindings.counts[semantic]);
         std::printf("Reflected decode %s: c%u count=%u hr=0x%08lx\n", name,
             binding->register_index, binding->register_count, static_cast<unsigned long>(result));
     }
@@ -161,13 +168,16 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
     bool visibility_bound = false;
     for (const auto& binding : pixel_reflection) if (binding.name == "cVisibility") {
         if (binding.register_set != 2 || binding.parameter_type != 3 || binding.register_count != 1
-            || binding.register_index >= 224) { result = E_FAIL; break; }
+            || binding.register_index >= 224 || pixel_bindings.registers[43] != binding.register_index
+            || pixel_bindings.counts[43] != binding.register_count) { result = E_FAIL; break; }
         const float visibility[4]{1, 0, 0, 0};
-        if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(binding.register_index, visibility, 1);
+        if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(pixel_bindings.registers[43], visibility, 1);
         visibility_bound = SUCCEEDED(result);
         std::printf("Reflected visibility: c%u value=1 hr=0x%08lx\n", binding.register_index, static_cast<unsigned long>(result));
     }
     if (!visibility_bound) result = E_FAIL;
+    std::printf("Native constant metadata: VS_end=%u PS_end=%u sampler_masks=%u,%u\n",
+        vertex_bindings.end_register, pixel_bindings.end_register, vertex_bindings.sampler_mask, pixel_bindings.sampler_mask);
     struct Vertex { float position[4], color[4]; };
     const Vertex vertices[] = {{{-.75f, -.75f, 1, 1}, {.25f, .5f, .75f, 1}},
         {{0, .75f, 1, 1}, {.25f, .5f, .75f, 1}}, {{.75f, -.75f, 1, 1}, {.25f, .5f, .75f, 1}}};

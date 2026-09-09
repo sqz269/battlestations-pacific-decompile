@@ -936,10 +936,10 @@
       "address": "00b3aea0",
       "name": "reflect_shader_constants",
       "source": "src/shader_reflection.cpp",
-      "native_range": "D3DX top-level enumeration/first-descriptor projection",
+      "native_range": "D3DX enumeration plus system semantic arrays, sampler mask and highest-start end mapping; typed unknown-float records",
       "status": "final_shader_reflection_decode_visibility_draw_checked",
       "abi_compatible": false,
-      "remaining": "Official SDK/installed runtime adapter with error checks. Native system-id arrays, byte truncation/end tracking, material constant metadata and ownership remain unported."
+      "remaining": "Official SDK/installed runtime adapter with error checks. Native allocated material-constant record/owner lifecycle remains unported; metadata byte/signed rules are assembly-backed, ordinary generated shader fixture validated only."
     }
   ]
 }
