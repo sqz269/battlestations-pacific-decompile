@@ -1,5 +1,10 @@
 # Vertex source composition boundary
 
+Stage-selection correction: comparison with pixel emitter `00b37ef0` establishes
+that record byte +Ch is nonzero for vertex and zero for pixel. References below
+to disabled records mean excluded from the vertex stage only. See
+`SHADER_PIXEL_COMPOSITION.md`; the typed field is now named `vertex_stage`.
+
 `00b38080` was previously described as a system helper. It actually emits vertex
 sampler declarations. The reconstructed typed emitter walks base then effect
 descriptor lists (+C4h pointer, +C8h count), using each record's name string

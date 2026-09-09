@@ -1002,6 +1002,11 @@
   {
     "address": "00b38080",
     "name": "BSP_ShaderBuilder_AppendVertexSamplers",
-    "evidence": "ECX builder RET. Base then effect lists +C4h/count+C8h. Record name string+4h/+8h, vertex flag+Ch, dimension+10h. Types1=1D,2=2D,3=CUBE,4=3D. Disabled skip slot; enabled unknown consumes slot without text; slot shared across descriptors, no dedup. Typed emitter exacttext and compile checked; no real vertex texture sampling. See docs/SHADER_VERTEX_COMPOSITION.md."
+    "evidence": "ECX builder RET. Base then effect lists +C4h/count+C8h. Record name string+4h/+8h, vertex flag+Ch, dimension+10h. Types1=1D,2=2D,3=CUBE,4=3D. Disabled skip slot; enabled unknown consumes slot without text; slot shared across descriptors, no dedup. Typed emitter exacttext and compile checked; no real vertex texture sampling. See docs/SHADER_VERTEX_COMPOSITION.md. Stage correction from00b37ef0: +Ch zero selects pixel stage, nonzero vertex stage. Previously called disabled records are only excluded from this vertex emitter."
+  },
+  {
+    "address": "00b37ef0",
+    "name": "BSP_ShaderBuilder_AppendPixelSamplers",
+    "evidence": "ECX builder RET. Same declaration formatting/base-effect traversal as00b38080 but selects record+Ch ZERO. This byte is stage selection, not resource enablement. Slot starts0 independently for pixel stage; unknown selected dimensions consume slots without text. Typed shared stage emitter, exacttext and ps_2_0 compile/bind checked. See docs/SHADER_PIXEL_COMPOSITION.md."
   }
 ]

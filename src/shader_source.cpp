@@ -88,12 +88,13 @@ ShaderSourceStatus generate_vertex_source_00b39110(ShaderVertexProgram& program,
     return ShaderSourceStatus::complete;
 }
 
-void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>& base,
-    const std::vector<ShaderSamplerDeclaration>& effect, std::string& output) {
+namespace {
+void append_stage_samplers(const std::vector<ShaderSamplerDeclaration>& base,
+    const std::vector<ShaderSamplerDeclaration>& effect, bool vertex_stage, std::string& output) {
     std::uint32_t slot = 0;
     for (const auto* descriptor : {&base, &effect}) {
         for (const auto& sampler : *descriptor) {
-            if (!sampler.vertex_enabled) continue;
+            if (sampler.vertex_stage != vertex_stage) continue;
             const char* type = nullptr;
             switch (sampler.dimension) {
             case 1: type = "sampler1D"; break;
@@ -109,6 +110,17 @@ void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>
             ++slot;
         }
     }
+}
+}
+
+void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>& base,
+    const std::vector<ShaderSamplerDeclaration>& effect, std::string& output) {
+    append_stage_samplers(base, effect, true, output);
+}
+
+void append_pixel_samplers_00b37ef0(const std::vector<ShaderSamplerDeclaration>& base,
+    const std::vector<ShaderSamplerDeclaration>& effect, std::string& output) {
+    append_stage_samplers(base, effect, false, output);
 }
 
 void append_system_constant_00b38c60(const ShaderSystemConstant& constant,

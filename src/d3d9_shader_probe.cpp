@@ -67,6 +67,11 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     bsp::ShaderInterpolatorOptions interpolator_options;
     bsp::ShaderStructOptions pixel_options; pixel_options.first_field = 1;
     std::string pixel_source;
+    bsp::append_pixel_samplers_00b37ef0(
+        {{"PixelTexture", false, 2}, {"VertexOnly", true, 2}, {"UnknownPixel", false, 0}},
+        {{"PixelVolume", false, 4}}, pixel_source);
+    const bool pixel_samplers_match = pixel_source ==
+        "sampler2D\tPixelTexture\t\t: register(s0);\nsampler3D\tPixelVolume\t\t: register(s2);\n";
     const bool pixel_generated = bsp::append_shader_struct_00b38b50("sPixelIn", fields,
         pixel_options, pixel_source) == bsp::ShaderSourceStatus::complete
         && bsp::append_interpolator_struct_00b36e30(interpolators, interpolator_options,
@@ -108,7 +113,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         "OUT.Color=float4(0,0,0,1); return PackInterpolators(OUT); }";
     if (SUCCEEDED(result)) result = vertex_generated && pack_matches && initialization_matches
         ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
-    if (SUCCEEDED(result)) result = pixel_generated && packing_matches
+    if (SUCCEEDED(result)) result = pixel_generated && packing_matches && pixel_samplers_match
         ? assemble_host_shader(pixel_source.c_str(), "ps_2_0", &pixel_code) : E_FAIL;
     // Installed debugshader.shfx VS projection; field/constant registry is
     // explicit here, pending native descriptor loading and registry recovery.
