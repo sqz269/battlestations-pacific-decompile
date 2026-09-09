@@ -1,5 +1,6 @@
 """Report local export and reconstruction coverage without a live Ghidra connection."""
 import json
+from collections import Counter
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
@@ -23,17 +24,18 @@ if snapshot_path.exists():
         default_names = sum(row['name'].startswith('FUN_') for row in rows)
         reviewed_named = sum(row['address'] in reviewed and not row['name'].startswith('FUN_') for row in rows)
         other_named = len(rows) - funclets - default_names - reviewed_named
-        candidates = default_names + len(reviewed)
-        print(f"Compiler EH funclets (Unwind@/Catch_All@): {funclets} (not reconstruction targets)")
-        print(f"Library, thunk, FID and inventory-tagged names: {other_named} (see reports/library_inventory/SUMMARY.md)")
-        print(f"Untagged FUN_ candidates: {default_names}")
-        print(f"Reconstructed against candidates: {len(ledger['functions'])}/{candidates} "
-              f"({100 * len(ledger['functions']) / candidates:.3f}%)")
+        print(f"Compiler EH funclet names (Unwind@/Catch_All@): {funclets}")
+        print(f"Other named internal functions: {other_named} (includes libraries, generated and in-house code)")
+        print(f"FUN_ names: {default_names} (may still carry provisional bookmarks)")
+        print("Naming/tagging does not establish a reduced reconstruction denominator or completed behavior.")
     tags_path = root / 'config/ghidra_tags.json'
     if tags_path.exists():
         tags = json.loads(tags_path.read_text())
         renames = sum(tag['action'] == 'rename' for tag in tags)
         print(f"Inventory tag ledger: {renames} names + {len(tags) - renames} bookmark-only entries (tools/ghidra_tag.py)")
+        counts = Counter(tag['category'] for tag in tags)
+        print("Inventory categories: " + ', '.join(f'{key}={value}' for key, value in sorted(counts.items())))
+        print("Tag confidence concerns the recorded evidence; STL-shaped, trivial and RTTI tags are not skip approvals.")
 else:
     print('No local export snapshot. Run ghidra_export.py snapshot first.')
 print('Game rebuild: incomplete; no game executable target')

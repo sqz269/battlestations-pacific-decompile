@@ -23,7 +23,7 @@
 #include "bsp/font_shader.hpp"
 #include "bsp/resource_path.hpp"
 #include "bsp/stream_scalars.hpp"
-#include "loose_asset_probe.hpp"
+#include "asset_stream_probe.hpp"
 #include "bsp/file_store.hpp"
 #include <filesystem>
 #include <algorithm>
@@ -38,22 +38,13 @@ bool probe_font_material(IDirect3DDevice9&, const bsp::FontData&,
 
 static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_path) {
     const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
-    LooseAssetProbe assets(game_root.string() + "\\");
+    AssetStreamProbe assets(game_root.string() + "\\");
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
         std::string& bytes, std::string& message) {
-        std::string physical;
-        if (!assets.resolve(name, physical, message)) return false;
-        bsp::PhysicalFile script;
-        bsp::MemoryStream memory;
-        DWORD status{};
-        if (!script.open_read_only_00bf52a0_fragment(physical.c_str(), status)
-            || !bsp::memory_stream_from_physical_00bef750_fragment(script, memory, status)
-            || !memory.fully_initialized()) {
-            message = "Font script read failed: " + name;
-            return false;
-        }
-        bytes.assign(reinterpret_cast<const char*>(memory.data_00bef610()),
-            static_cast<std::size_t>(memory.size_00bef600()));
+        std::shared_ptr<bsp::MemoryStream> memory;
+        if (!assets.read(name, memory, message)) return false;
+        bytes.assign(reinterpret_cast<const char*>(memory->data_00bef610()),
+            static_cast<std::size_t>(memory->size_00bef600()));
         return true;
     };
     bsp::FontRegistry registry;
@@ -171,17 +162,29 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     std::memcpy(&read_info, &address, sizeof(read_info));
     std::vector<std::string> resource_names;
     std::vector<std::string> resolved_names;
-    const bsp::FontPhysicalResolver physical = [&](const std::string& requested,
-        std::string& path_out, std::string& message) {
+    // Explicit host preload selection; the subsequent font load must actually
+    // use priority300 cache streams instead of opening the physical providers.
+    for (const auto& requested : {"Fonts/" + descriptor->gfx_file,
+             "Fonts/" + descriptor->alpha_texture, "Fonts/" + descriptor->data_file}) {
+        if (!assets.cache_resolved(requested, decode_error)) {
+            std::printf("Font cache population: %s\n", decode_error.c_str());
+            FreeLibrary(module);
+            return false;
+        }
+    }
+    const auto cached_before = assets.cached_opens();
+    const auto physical_before = assets.physical_opens();
+    const bsp::FontStreamResolver streams = [&](const std::string& requested,
+        std::shared_ptr<bsp::MemoryStream>& source, std::string& message) {
         resource_names.push_back(requested);
         std::string logical;
-        if (!assets.resolve(requested, path_out, message, &logical)) return false;
+        if (!assets.read(requested, source, message, &logical)) return false;
         resolved_names.push_back(logical);
-        std::printf("Loose font lookup: %s -> %s\n", requested.c_str(), logical.c_str());
+        std::printf("Mounted font lookup: %s -> %s\n", requested.c_str(), logical.c_str());
         return true;
     };
     std::unique_ptr<bsp::FontResources> resources;
-    if (!bsp::load_font_resources_00ad4c30_fragment(device, read_info, create, physical,
+    if (!bsp::load_font_resources_from_streams_00ad4c30_fragment(device, read_info, create, streams,
         *descriptor, "Fonts/", "", 0, resources, decode_error)) {
         std::printf("Font resources: %s\n", decode_error.c_str());
         FreeLibrary(module);
@@ -192,9 +195,11 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
         && resolved_names == std::vector<std::string>{
             "fonts/arial18.tga", "effects/white.dds", "fonts/arial18.dat"}
         && resources->data.glyphs.size() == font.glyphs.size()
-        && resources->data.scaled_height == font.scaled_height && resources->alpha->texture();
-    std::printf("Font resource owner: GFX_alpha_DAT_order_and_decoded_data=%d native_search_lists_with_supplied_loose_mount=1\n",
-        resources_checked);
+        && resources->data.scaled_height == font.scaled_height && resources->alpha->texture()
+        && assets.cached_opens() - cached_before == 3 && assets.physical_opens() == physical_before;
+    std::printf("Font resource owner: GFX_alpha_DAT_order_and_decoded_data=%d cache_opens=%zu physical_opens=%zu cache_entries=%zu\n",
+        resources_checked, assets.cached_opens() - cached_before,
+        assets.physical_opens() - physical_before, assets.cache_entries());
     auto owner = resources->gfx;
     std::weak_ptr<bsp::MemoryStream> retained = owner->source();
     HRESULT result = S_OK;

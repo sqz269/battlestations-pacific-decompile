@@ -1,0 +1,53 @@
+{
+  "utc": "2026-09-09T20:08:50.531890+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00bdf310",
+      "length": 421,
+      "sha256": "e354c379eeae3b582f71333f00c627d34b1d19e8c2c835c861922bda2cd7e748",
+      "matches_disk": true
+    },
+    {
+      "address": "00bdca80",
+      "length": 176,
+      "sha256": "b17b2add65fc080e3025053f6a123dc95780d323019ee943409c061979d3caad",
+      "matches_disk": true
+    },
+    {
+      "address": "00bda690",
+      "length": 96,
+      "sha256": "f61f3853c5e54193f80f903c6bfde68962fb3e01bd3dd58ff805a6b3553a48df",
+      "matches_disk": true
+    },
+    {
+      "address": "00be7ab0",
+      "length": 106,
+      "sha256": "7b91fe3afa47a5a50baa1944ac0ce230a16cc5baba7ed3d322efdf6a31384e9b",
+      "matches_disk": true
+    },
+    {
+      "address": "00bf4ba0",
+      "length": 199,
+      "sha256": "416d4e8a211ca26833ffe57980ceb468aa3f3f10cfebc98977b34f3133ff45a9",
+      "matches_disk": true
+    },
+    {
+      "address": "00be5fa0",
+      "length": 145,
+      "sha256": "af1d92ebe37c905bda5adbc73e0f396f7355edacbee07d8b9d8a4c1866d99ac9",
+      "matches_disk": true
+    },
+    {
+      "address": "00be7760",
+      "length": 321,
+      "sha256": "fb66b79def9ea3bc9074aea57a4247c7de99d13de973dbd498a5f83cd727f143",
+      "matches_disk": true
+    }
+  ],
+  "note": "Selected complete raw spans only; not whole-image identity or native execution equivalence. 00bda690 had no function definition before this audit. Cache population 00be7ab0 takes name and flags and returns RET8, correcting earlier RET4 prose."
+}

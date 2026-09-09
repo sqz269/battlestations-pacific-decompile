@@ -1638,9 +1638,9 @@
       "name": "load_font_resources",
       "source": "src/font_resources.cpp",
       "native_range": "successful GFX/alpha/DAT initial loading projection",
-      "status": "installed_font_material_draw_checked",
+      "status": "installed_mounted_cache_font_material_draw_checked",
       "abi_compatible": false,
-      "remaining": "Explicit physical resolver and transactional errors; full native VFS, reload and partial failure ownership unported."
+      "remaining": "Stream callback projects successful initial GFX/alpha/DAT load; physical API retained as adapter. Host transactional errors/shared ownership; native preload policy, full stream ABI, reload and partial failure ownership unported."
     },
     {
       "address": "00ad53a0",
@@ -1703,7 +1703,7 @@
       "native_range": "normalize and ordered supplied mount logical resolution",
       "status": "installed_loose_font_lookup_checked",
       "abi_compatible": false,
-      "remaining": "Native mount construction/container/priority, unused device id and failed temporary allocation omitted."
+      "remaining": "Supplied mounts now use recovered ordering/factory fragments; native containers, unused device id, failed temporary allocation and full provider lifetime omitted."
     },
     {
       "address": "00bdf4c0",
@@ -1758,6 +1758,33 @@
       "status": "installed_DAT_cache_roundtrip_checked",
       "abi_compatible": false,
       "remaining": "Nonmemory native stream types, fullsingleton/mountedFileStore startup andproviderownership unported."
+    },
+    {
+      "address": "00bdf310",
+      "name": "open_resource_memory",
+      "source": "src/vfs_mounts.cpp",
+      "native_range": "normalized name, single alias and first-open traversal for flags2",
+      "status": "installed_mounted_cache_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Returns buffered host MemoryStream; native stream tracking, statistics, error callback, other flags and ownership ABI omitted. First provider-open stops traversal even on subsequent buffering failure."
+    },
+    {
+      "address": "00bdca80",
+      "name": "apply_resource_alias",
+      "source": "src/vfs_mounts.cpp",
+      "native_range": "first equal-length case-insensitive alias replacement",
+      "status": "assembly_reviewed_build_tested",
+      "abi_compatible": false,
+      "remaining": "Vector/string projection with input validation and host validity return; native allocator, string layout and alias registration omitted. Single replacement and no post-normalization recovered from assembly; alias behavior not executed by installed font fixture."
+    },
+    {
+      "address": "00be7ab0",
+      "name": "cache_resource",
+      "source": "src/mounted_streams.cpp",
+      "native_range": "exact-name VFS open, memory-view clone and cache insertion for flags2",
+      "status": "installed_mounted_cache_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Native name/flags RET8; host early buffering, complete-read guards and shared ownership differ native streams. Native preload selection and other flags omitted; diagnostic explicitly primes three font resources."
     }
   ]
 }

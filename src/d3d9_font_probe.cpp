@@ -6,7 +6,7 @@
 #include "bsp/material_constants.hpp"
 #include "bsp/shader_reflection.hpp"
 #include "bsp/resource_path.hpp"
-#include "loose_asset_probe.hpp"
+#include "asset_stream_probe.hpp"
 #include <d3dcompiler.h>
 #include <filesystem>
 #include <fstream>
@@ -82,15 +82,15 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
         || !bsp::font_has_glyph_00ad4500(font, 0x41)) return false;
     auto selected_name = descriptor_name;
     if (!bsp::normalize_resource_path_00bee690(selected_name) || selected_name != "guifontbilinear.shfx") return false;
-    LooseAssetProbe assets(std::string(game_root) + "\\");
+    AssetStreamProbe assets(std::string(game_root) + "\\");
     const bsp::ShaderScriptResolver resolver = [&](const std::string& requested, std::string& bytes, std::string& error) {
-        std::string path, logical;
-        if (!assets.resolve(requested, path, error, &logical)) return false;
-        std::printf("Loose font shader lookup: %s -> %s\n", requested.c_str(), logical.c_str());
-        std::ifstream input(path, std::ios::binary);
-        if (!input) { error = "Cannot read " + path; return false; }
-        bytes.assign(std::istreambuf_iterator<char>(input), {});
-        return !input.bad();
+        std::shared_ptr<bsp::MemoryStream> stream;
+        std::string logical;
+        if (!assets.read(requested, stream, error, &logical)) return false;
+        std::printf("Mounted font shader lookup: %s -> %s\n", requested.c_str(), logical.c_str());
+        bytes.assign(reinterpret_cast<const char*>(stream->data_00bef610()),
+            static_cast<std::size_t>(stream->size_00bef600()));
+        return true;
     };
     bsp::ShaderLuaCode base, effect;
     std::string error;

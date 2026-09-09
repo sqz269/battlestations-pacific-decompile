@@ -1,10 +1,10 @@
 # Ordered mount lookup and installed font integration
 
-Follow-up `PROVIDER_FACTORY_STARTUP.md` now constructs the first two physical
-startup mounts through recovered factory, prefix and priority policies. The
-single-mount integration described below is the earlier milestone. FileStore
-cache behavior is now implemented separately; full cache/package startup
-integration remains pending.
+`PROVIDER_FACTORY_STARTUP.md` constructs both physical startup mounts and the
+priority-300 FileStore mount through recovered prefix and priority policies.
+Mounted stream opening now connects FileStore to font loading. Earlier
+single-root results remain historical milestones; native preload selection
+and package startup are not established by diagnostic cache priming.
 
 The existing font probe now uses reconstructed name normalization, ordered
 candidate searches and physical directory checks. Startup-derived texture and
@@ -55,10 +55,11 @@ names and physical paths are distinct operations.
 ## C++ boundaries
 
 `VfsMountContext` supplies the ordered mount sequence and exposes the reset
-error field. `VfsMount` supplies real existence/resolution callbacks.
-`vfs_mounts.cpp` implements these two wrappers and their traversal behavior;
-native tree insertion, comparator/priority, allocation and callback ownership
-remain dependencies. Callbacks must not mutate the supplied mount sequence.
+error field. `VfsMount` supplies real existence, resolution and read-only open
+callbacks. `vfs_mounts.cpp` implements these operations and their traversal;
+`vfs_mount_registration` builds the typed order using the recovered signed
+priority and tie rules. Native allocation and callback ownership remain
+separate. Callbacks must not mutate the supplied mount sequence.
 Host validation rejects missing callbacks, embedded NULs and lengths above
 INT32_MAX. Oversized resolved names fail without copying to caller output.
 Allocation and provider exceptions propagate; no native SEH ABI is claimed.
@@ -71,14 +72,24 @@ name changed. Successful-search logging `00bdeb40` is excluded. See
 startup lists, and [PHYSICAL_DIRECTORY.md](PHYSICAL_DIRECTORY.md) for the
 provider's cached, non-indexed existence mode.
 
-`LooseAssetProbe` is diagnostic setup: one empty-prefix mount with the supplied
+The earlier `LooseAssetProbe` setup used one empty-prefix mount with the supplied
 installation root and the two recovered search groups. Font scripts/images,
-shader descriptors and combiners now pass through this route. The physical
+shader descriptors and combiners passed through that route. The physical
 path is constructed only after logical resolution succeeds. No recursive
 filesystem scan or per-basename substitution is used. Startup archives,
-patch packages, native virtual `.` handling, other groups, runtime search
-changes and mount priority remain unported. The old direct DAT inspection
+patch packages, other groups and runtime search changes remained outside that
+milestone. Virtual `.` normalization and mount priority are subsequently
+implemented in `VFS_MOUNT_REGISTRATION.md`. The direct DAT inspection
 still supplies an independent fixture check before the resource-owner load.
+
+Current `AssetStreamProbe` uses three mounts and reads actual provider streams.
+Open `00bdf310` normalizes a copy, applies one equal-length `_stricmp` alias
+replacement, then traverses mounts without normalizing the replacement again.
+Existence/direct-resolution wrappers still do not apply aliases. Traversal
+stops at the first underlying provider open even if host buffering then fails;
+it must not fall through to a lower-priority resource. See
+[MOUNTED_RESOURCE_STREAMS.md](MOUNTED_RESOURCE_STREAMS.md) for the complete
+typed opening and population boundary.
 
 ## Evidence and validation
 

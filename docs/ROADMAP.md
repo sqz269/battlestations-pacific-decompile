@@ -7,12 +7,50 @@ resumable per-function export, Win32 CMake build, address ledger, and five math 
 with bounded native differential tests are present. Full pseudocode export is available
 as an explicit command and has not been run.
 
+## Library discovery and reconstruction priorities
+
+The September 9 discovery import and refreshed exports completed successfully.
+[Inventory review](../reports/library_inventory/REVIEW.md) records the import
+counts, confidence boundaries and comparison with existing reconstruction names.
+All 8,780 rename tags matched the post-import snapshot; the 1,554 bookmark-only
+classifications are separate. Naming progress does not reduce the raw coverage
+denominator or demonstrate implemented behavior. The original inventory's
+candidate counts and calendar projections remain historical estimates.
+
+Reuse source where the evidence supports it:
+
+- **Lua 5.1.1:** already compiled for the script probes. Native runtime integration
+  still needs the game allocator at `00a6a1d0`, omission of `dofile`, omission of
+  `math.random`/`math.randomseed`, and custom bitmask library opening at `00b6a020`.
+  The native library tables differ from stock `luaL_openlibs`; the current host
+  fixtures do not establish native scripting-runtime equivalence.
+- **zlib 1.2.1:** checksum-pinned stock source now builds as `bsp_zlib121`.
+  Recover the game's retained-source, buffering, read/seek and raw-DEFLATE
+  adapter before connecting compressed archive entries. See
+  [zlib evidence and next boundary](ZLIB_DEPENDENCY.md).
+- **CRT, STL and compiler helpers:** use the target toolchain to generate ordinary
+  runtime machinery from reconstructed declarations. Recover object layout,
+  destruction order, pointer adjustments, comparators and container mutation
+  contracts at their callers. A throw string or checked-iterator shape alone
+  does not identify an entire routine as replaceable stock code.
+
+In-house Dyn physics, the game's modified MT19937 seeding, engine wrappers,
+telemetry and IPC remain behavioral dependencies when reached. Classification
+alone is insufficient evidence for removing them or introducing no-op adapters.
+RTTI and provisional names guide investigation; they are not recovered source
+symbols. Partition or call-graph suggestions can help assign disjoint agent
+ranges, but named functions and indirect-call dependencies must remain in scope.
+Track completion by working subsystem paths and explicit validation evidence,
+not by the number of functions renamed or a projected functions-per-day rate.
+
 ## 2. Resolve startup and the first subsystem boundary — in progress
 
 Confirmed the WinMain calling convention, application lifecycle boundaries, and the
 per-thread random subsystem. The integer PRNG and registration/lock lifecycle now compile;
 the stream matches original code over 1,500 outputs. See `STARTUP_RANDOM.md`.
-Ghidra has 100 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
+Useful names and evidence comments are tracked in `config/ghidra_names.json`;
+library classifications have their own ledger. The incorrect CRT free noreturn
+flag was corrected, though some saved bodies still require raw-tail inspection.
 Resolved the concrete Windows vtable at `00d68cc4`; its loop is `00bec1a0`, now ported with
 explicit external callback interfaces and a real-message-queue probe. Recovered eight missing
 vtable-target functions and named the application frame method. See `PLATFORM_LOOP.md`.
@@ -64,10 +102,13 @@ Shader suffix rewriting and font image ownership are recovered. Native texture/
 shader search lists, ordered fallback and physical directory resolution now
 drive the draw (`VFS_MOUNT_LOOKUP.md`). Recovered mount insertion, virtual `.`
 handling and physical factory policy now connect the first two startup mounts
-with a supplied root (`PROVIDER_FACTORY_STARTUP.md`). FileStore memory-cache
-operations and package-name priorities are also recovered. Next connect VFS
-stream loading and FileStore population/priority300 into font ownership, then
-package enumeration, transformed archive parsing and compressed/sliced streams.
+with a supplied root (`PROVIDER_FACTORY_STARTUP.md`). Mounted stream loading now
+connects physical providers and the priority-300 FileStore to font ownership and
+shader script loading. The existing draw probe explicitly primes three font
+resources, then loads GFX/alpha/DAT entirely from the cache with no physical-file
+opens during that load (`MOUNTED_RESOURCE_STREAMS.md`). This establishes the
+cache-to-render path with host ownership; native preload selection, complete
+stream/provider lifetime and archive loading still need integration.
 Full text layout/batching, GUI transforms and startup
 integration also remain necessary. The draw uses supplied camera constants.
 This advances the asset-to-render path but is not a
@@ -92,3 +133,18 @@ version, and layout requirements. Separate a source rebuild from a byte-identica
 Completion requires startup, rendering, asset loading, and playable scenario comparisons,
 including shutdown and save/load. A successful library build or pseudocode export is not
 completion of this milestone.
+
+## Next bounded work
+
+1. Recover inflater seek `00bbc060`, read `00bbc140` and output-drain helpers;
+   connect them to the identified raw-inflate wrapper without bypassing buffered
+   reset, short-read or error behavior. Stock zlib is build-tested only so far.
+2. Complete package enumeration, transformed MPKG directory parsing, entry lookup
+   and compressed/sliced source ownership (`ARCHIVE_PROVIDER_ENTRY.md`). Then
+   exercise a real installed archive through the same mounted stream interface.
+3. Recover native FileStore preload policy and stream tracking, replacing explicit
+   diagnostic priming only when the actual initialization path is established.
+4. Continue independent renderer/window lifetime and font layout/batching work,
+   integrating the resulting paths before expanding gameplay. Assign disjoint
+   files and address ranges to parallel agents; keep shared metadata and Ghidra
+   changes coordinated through the primary agent.

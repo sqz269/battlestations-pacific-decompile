@@ -13,7 +13,7 @@ FontResources::~FontResources() {
 }
 
 namespace {
-bool read_source(const FontPhysicalResolver& resolver, const std::string& name,
+bool read_physical_source(const FontPhysicalResolver& resolver, const std::string& name,
     std::shared_ptr<MemoryStream>& source, std::string& error) {
     std::string path;
     if (!resolver(name, path, error)) return false;
@@ -39,11 +39,44 @@ bool read_source(const FontPhysicalResolver& resolver, const std::string& name,
     source = std::move(loaded);
     return true;
 }
+bool read_source(const FontStreamResolver& resolver, const std::string& name,
+    std::shared_ptr<MemoryStream>& source, std::string& error) {
+    if (!resolver(name, source, error)) {
+        if (error.empty()) error = "Cannot resolve font resource stream: " + name;
+        return false;
+    }
+    if (!source || !source->has_backing()) {
+        error = "Font stream resolver returned no backing: " + name;
+        return false;
+    }
+    if (!source->fully_initialized()) {
+        error = "Font resource has an uninitialized short-read tail: " + name;
+        return false;
+    }
+    return true;
+}
 }
 
 bool load_font_resources_00ad4c30_fragment(IDirect3DDevice9& device,
     ReadImageInfoFromMemory read_info, CreateTextureFromMemory create,
     const FontPhysicalResolver& resolver, const FontDescriptor& descriptor,
+    const std::string& prefix, const std::string& extra, std::uint32_t mip_reduction,
+    std::unique_ptr<FontResources>& output, std::string& error) {
+    if (!resolver) {
+        error = "Font resource load requires live imports, resolver and empty output.";
+        return false;
+    }
+    const FontStreamResolver streams = [&](const std::string& name,
+        std::shared_ptr<MemoryStream>& source, std::string& failure) {
+        return read_physical_source(resolver, name, source, failure);
+    };
+    return load_font_resources_from_streams_00ad4c30_fragment(device, read_info,
+        create, streams, descriptor, prefix, extra, mip_reduction, output, error);
+}
+
+bool load_font_resources_from_streams_00ad4c30_fragment(IDirect3DDevice9& device,
+    ReadImageInfoFromMemory read_info, CreateTextureFromMemory create,
+    const FontStreamResolver& resolver, const FontDescriptor& descriptor,
     const std::string& prefix, const std::string& extra, std::uint32_t mip_reduction,
     std::unique_ptr<FontResources>& output, std::string& error) {
     error.clear();
@@ -71,6 +104,10 @@ bool load_font_resources_00ad4c30_fragment(IDirect3DDevice9& device,
         }
         std::shared_ptr<MemoryStream> source;
         if (!read_source(resolver, name, source, error)) return false;
+        // Native textures convert their opened stream through00bef750. For
+        // a memory-backed source this retains backing in a fresh reset wrapper,
+        // without consuming or retaining the resolver's mutable cursor object.
+        source = std::make_shared<MemoryStream>(source->clone_reset_00bef6d0());
         std::unique_ptr<D3D9RetainedTexture2D> texture;
         const HRESULT hr = load_retained_texture_2d_00b2c2d0_fragment(device,
             read_info, create, source,

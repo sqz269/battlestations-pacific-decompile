@@ -34,12 +34,10 @@ alive throughout the draw and no texture recreation occurs while bound.
 
 ## Vertex output versus packed interpolators
 
-The first attempt exposed a probe integration error: replacing the full
-vertex output list with the live pixel list removed UV1, yet the installed
-VS still writes `OUT.UV1`. Compilation correctly failed with invalid subscript.
-The core generator already models these lists separately; the fixture now
-filters only packed interpolators and keeps all vertex output fields. The same
-latent assignment error was corrected in the older alpha fixture.
+The generator keeps the full vertex output list, including `UV1`, because
+the installed VS writes `OUT.UV1` even when its pixel consumer is dead.
+Pixel liveness filters only packed interpolators. Vertex output declaration
+and zero initialization therefore remain distinct from packing and mapping.
 
 Fresh native caller assembly corroborates this separation. `00b3b882` takes
 builder `+28` for the filtered call at `00b3b910`; mapping is rebuilt at
@@ -59,20 +57,28 @@ are identity. These are controlled inputs, not a recovered GUI camera or full
 system-constant gatherer. Unknown reflected constants cause failure.
 
 The resolver now uses the recovered startup texture/shader lists and ordered
-VFS candidate logic with the first two physical startup mounts and a supplied
+VFS candidate logic with the three initial startup mounts and a supplied
 installation root (`PROVIDER_FACTORY_STARTUP.md`). This resolves
 `Fonts/white.tga` to `effects/white.dds` and the two shader basenames under
 `shaderfx/gui` and `shaderfx/lights` without per-filename mappings. Native
-provider teardown, mounted FileStore population and archive loading remain unported. The successful
+provider teardown, original preload selection and archive loading remain unported. The successful
 draw does not prove the original game's current resource selection.
-See `VFS_MOUNT_LOOKUP.md` and `reports/vfs_font_draw_probe.txt`.
+Font loading now accepts mounted streams directly. After explicit diagnostic
+priming, GFX, alpha and DAT all open the priority-300 FileStore:
+`cache_opens=3 physical_opens=0 cache_entries=3`. Physical reads during priming
+are outside those load counters. Shader Lua also reads through mounted
+streams; no physical-path stand-in is needed for a cache hit. See
+[MOUNTED_RESOURCE_STREAMS.md](MOUNTED_RESOURCE_STREAMS.md) and the current
+[mounted draw report](../reports/mounted_stream_font_probe.txt).
 
 Bounds checking proves nonempty bounded output, not pixel-for-pixel glyph
 shape/antialiasing equivalence with the original game. The nonbilinear branch,
 alpha texture multiplication, clipping, wrapping/alignment, optional child UI,
 native batching/cache lifetime and font reload are not validated here.
 
-MSVC Win32 build and both existing CTests pass. This adds one font draw to the
+The original font-draw milestone passed the MSVC Win32 build and both existing
+CTests. The current mounted-stream integration passes the Win32 build and full
+D3D9 probe with the same 74 lit pixels and restored state. This adds one font draw to the
 existing D3D9 probe, with no new test target or suite. Full output is in
 `reports/font_material_draw_probe.txt`; code/asset identity evidence is in
 `reports/font_material_resource_audit.json`.

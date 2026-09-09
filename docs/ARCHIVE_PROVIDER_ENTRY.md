@@ -8,8 +8,9 @@ FileStore path in `file_store.hpp/.cpp`; MPKG remains an evidence handoff.
 ## Startup factory distinction
 
 Startup registers physical factory00bed990 inside00beda60, then registers
-004fc150's result at0073d675 and00736a90's result at0073d688. Parent owns the
-first-nonnull factory selector and mount registration.
+004fc150's result at0073d675 and00736a90's result at0073d688. The
+first-nonnull factory selector and ordered mount registration are described
+in `PROVIDER_FACTORY_STARTUP.md`.
 
 004fc150 owns singleton0109db68, constructed by00be5320 with primary table
 00d688b4. Its factory+4 is00be8120: ECX factory, stack system-path/virtual-name,
@@ -71,10 +72,20 @@ neither physical root nor normalized insertion spelling.
 
 The second tree is untouched by these recovered add/lookup/open entry points.
 No recursive collection, batch registration, enumeration, removal or secondary
-tree behavior is claimed. Native00be7ab0 is a separate population adapter:
-it opens a name through VFS, obtains00bef750 memory view, calls00be7760 and
-releases temporary memory/source references. The new class receives that
-memory view explicitly instead of recursively invoking the incomplete VFS.
+tree behavior is claimed. Population `00be7ab0` is now connected through
+`cache_resource_00be7ab0_fragment` and mounted read-only opening. Its original
+ABI is **ECX store, name and flags on the stack, RET 8**, not a single path
+argument/RET 4. Assembly loads flags from entry ESP+8 at `00be7ab0`, passes
+flags and name to manager virtual+4 at `00be7acb`, and returns RET8 at
+`00be7b17`. The 106-byte body retains the hash listed below.
+
+Native population opens the name, obtains a `00bef750` memory view, calls
+`00be7760`, then releases temporary memory/source references. The typed
+fragment fixes flags to 2 and opens before checking duplicate insertion. It
+rejects failed or incomplete buffered sources, clones a reset memory wrapper
+sharing the backing, and inserts under the supplied name. Search fallback is
+the caller's separate responsibility. Explicit diagnostic priming connects
+this route to the font probe but does not establish native preload policy.
 
 Host guards reject embedded NUL, lengths aboveINT32_MAX and new insertions
 without positive MemoryStream backing. Native insertion would dereference a
@@ -114,7 +125,7 @@ directory parsing remain unresolved. These are the next concrete dependencies
 before an archive implementation is coherent. No fabricated ZIP/decompressor
 adapter was added.
 
-The startup enumeration agent reports no loose `.mpkg/.zip/.pak` files in the
+Read-only startup enumeration found no loose `.mpkg/.zip/.pak` files in the
 installed root. That does not prove absence inside other providers or another
 installation, and supplies no archive fixture for runtime validation here.
 
@@ -140,7 +151,13 @@ matched installed PE bytes. Ignored exports are under
 | 00bb8be0 | 370 | `eaf895523340f048952770a46a850d47573f4742b9f0896d9e84664e083aed7d` |
 | 00bb87a0, padding window | 176 | `1742ea587eb40de5d2e65047cd2236a99498a521f34f2e10cc832a3b294d3c8f` |
 
-00be5fa0 returns at00be602e;00bb87a0 returns at00bb8841. Source inspection and
-diff checking were performed; parent owns compilation/probe integration. No
-new tests, build invocation, Ghidra mutations, shared metadata or installed
-asset modifications were made in this bounded task.
+`00be5fa0` returns at `00be602e`; `00bb87a0` returns at `00bb8841`.
+The archive observations are static evidence; no archive runtime validation
+or complete MPKG implementation is established by the FileStore probe.
+
+Mounted FileStore/physical opening and population are subsequently integrated
+and build-checked. The full D3D9 result in
+[mounted_stream_font_probe.txt](../reports/mounted_stream_font_probe.txt)
+verifies three cached font opens and the installed glyph draw. See
+[MOUNTED_RESOURCE_STREAMS.md](MOUNTED_RESOURCE_STREAMS.md) for alias order,
+early buffering, ownership and failure boundaries; MPKG remains unimplemented.

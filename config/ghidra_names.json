@@ -1532,7 +1532,7 @@
   {
     "address": "00ad4c30",
     "name": "BSP_Font_LoadGlyphDataAndTextures",
-    "evidence": "ECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported. Specialscalarrecords nowported: zero-space/LF with signedscaledheight/4advance; missingknownfields bitcopied0091; CRzero. Native2resourcefields/padding omitted. ActualArial16 selection/fallbackchecked. FontResources now composes successful initial GFX/alpha/DAT loading with exact explicit prefix/extra paths and two shared image owners; per-glyph resources are aliases. Transactional host failures and physical resolver differ native VFS/unchecked partial state. Actual font draw checked with explicit white DDS mapping; native reload not ported."
+    "evidence": "ECX font, five stack arguments, RET14. Loads GFX, alpha and DAT in that order. DAT stores scalar count/height and 24 bytes per glyph; CVTSI2SS/MULSS/CVTTSS2SI scaling, signed16 height and unsigned16 metrics, first duplicate wins, required 0091 fallback. Special scalar records project space/LF advance, 0091 fallback fields and zero CR; native resource fields/padding omitted. FontResources now projects successful initial GFX/alpha/DAT loading from mounted MemoryStreams with exact prefix/extra concatenation. Image sources retain reset wrapper clones sharing backing; DAT consumes supplied cursor. Per-glyph resources alias the two image owners. Installed native search rules and priority300 FileStore supplied all three resources (3 cache opens, 0 physical opens); glyph draw and retained texture recreation passed. Physical-path compatibility API delegates to same loader. Host priming/transactional failures/shared ownership differ native preload policy, reload, unchecked partial state and full VFS/allocator ABI. docs/MOUNTED_RESOURCE_STREAMS.md and docs/FONT_RESOURCE_OWNERSHIP.md."
   },
   {
     "address": "00b3dd30",
@@ -1807,7 +1807,7 @@
   {
     "address": "00be7ab0",
     "name": "BSP_FileStore_CacheFromVFS",
-    "evidence": "ECX store; path stack RET4. Opensoriginal viaVFS, obtains00bef750 memoryview, registers00be7760, releasesmemory/source temporaries. Nativepopulationadapter is separate fromadd/lookup/open implementation andnotyetconnected tofontresolver."
+    "evidence": "ABI CORRECTION: ECX store; name and flags stack, RET8 (00be7ab0 reads flags at ESP+8; terminal 00be7b17 RET8). Earlier path-only RET4 annotation was incorrect. Opens exact supplied name via VFS virtual+4 with flags, obtains 00bef750 memory view, adds through 00be7760, releases memory/source temporaries. Host flags2 fragment now connects mounted streams to FileStore population; opening precedes duplicate rejection and first key wins. Host early buffering/shared ownership and guarded errors differ native ABI. Installed font load after explicit priming used 3 cache opens and 0 physical opens; native preload selection remains pending. docs/MOUNTED_RESOURCE_STREAMS.md."
   },
   {
     "address": "00be8120",
@@ -1843,5 +1843,20 @@
     "address": "00bb8be0",
     "name": "BSP_MPKG_OpenEntryStream",
     "evidence": "Entryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only."
+  },
+  {
+    "address": "00bdf310",
+    "name": "BSP_VFS_OpenResource",
+    "evidence": "ECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity."
+  },
+  {
+    "address": "00bdca80",
+    "name": "BSP_VFS_ApplyFirstAlias",
+    "evidence": "ECX manager, mutable string stack, RET4; no established return value. Ordered 16-byte alias pairs at manager+94, signed count+98. Match requires equal lengths and _stricmp equality (both empty match); copy first replacement and stop. No prefix matching, recursion or normalization after replacement. Host vector/string fragment rejects unsupported embedded NUL/oversize inputs; bool reports host input validity only."
+  },
+  {
+    "address": "00bda690",
+    "name": "BSP_VFS_OpenMountCallback",
+    "evidence": "ECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte."
   }
 ]

@@ -5,15 +5,18 @@
 
 namespace bsp {
 namespace {
+enum class Operation { exists, resolve, open };
 bool valid_string(const std::string& value) {
     return value.size() <= INT32_MAX && value.find('\0') == std::string::npos;
 }
 bool prepare(const VfsMountContext& context, const std::string& name,
-             bool resolving, std::string& normalized) {
+             Operation operation, std::string& normalized) {
     if (!valid_string(name)) return false;
     for (const auto& mount : context.mounts) {
-        if (!valid_string(mount.prefix) ||
-            (resolving ? !mount.resolve : !mount.exists)) return false;
+        if (!valid_string(mount.prefix)) return false;
+        if ((operation == Operation::exists && !mount.exists)
+            || (operation == Operation::resolve && !mount.resolve)
+            || (operation == Operation::open && !mount.open_read_only)) return false;
     }
     normalized = name;
     return normalize_resource_path_00bee690(normalized);
@@ -31,7 +34,7 @@ bool suffix_for_mount(const std::string& name, const std::string& prefix,
 bool exists_resource_00bdd440_fragment(VfsMountContext& context,
                                       const std::string& name) {
     std::string normalized;
-    if (!prepare(context, name, false, normalized)) return false;
+    if (!prepare(context, name, Operation::exists, normalized)) return false;
     context.error_code = -1;
     for (const auto& mount : context.mounts) {
         std::string suffix;
@@ -43,7 +46,7 @@ bool exists_resource_00bdd440_fragment(VfsMountContext& context,
 bool direct_resolve_resource_00bdd6e0_fragment(
     VfsMountContext& context, const std::string& name, std::string& output) {
     std::string normalized;
-    if (!prepare(context, name, true, normalized)) return false;
+    if (!prepare(context, name, Operation::resolve, normalized)) return false;
     context.error_code = -1;
     for (const auto& mount : context.mounts) {
         std::string suffix, resolved;
@@ -58,5 +61,35 @@ bool direct_resolve_resource_00bdd6e0_fragment(
         return true;
     }
     return false;
+}
+bool apply_resource_alias_00bdca80_fragment(const std::vector<VfsAlias>& aliases,
+                                         std::string& name) {
+    if (!valid_string(name)) return false;
+    for (const auto& entry : aliases)
+        if (!valid_string(entry.from) || !valid_string(entry.to)) return false;
+    for (const auto& entry : aliases) {
+        if (entry.from.size() == name.size() && _stricmp(entry.from.c_str(), name.c_str()) == 0) {
+            name = entry.to;
+            break;
+        }
+    }
+    return true;
+}
+VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext& context,
+                                                    const std::string& name) {
+    std::string normalized;
+    if (!prepare(context, name, Operation::open, normalized)
+        || !apply_resource_alias_00bdca80_fragment(context.aliases, normalized))
+        return {false, {}, "Unsupported VFS name, alias or missing read-only provider."};
+    context.error_code = -1;
+    std::string last_error;
+    for (const auto& mount : context.mounts) {
+        std::string suffix;
+        if (!suffix_for_mount(normalized, mount.prefix, suffix)) continue;
+        auto opened = mount.open_read_only(suffix);
+        if (opened.provider_opened) return opened;
+        if (!opened.error.empty()) last_error = std::move(opened.error);
+    }
+    return {false, {}, last_error.empty() ? "No provider opened resource: " + normalized : std::move(last_error)};
 }
 }

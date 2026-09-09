@@ -9,8 +9,8 @@ partial adapters and isolated probe results are tracked separately; no gameplay 
 ## Build and test
 
 Requires Windows, Visual Studio 2022/2026 with the MSVC x86/x64 C++ tools, Windows SDK,
-and Visual Studio's CMake component. First configuration downloads checksum-pinned Lua and
-D3DX SDK dependencies; see [dependency details](third_party/README.md). Shader reflection uses
+and Visual Studio's CMake component. First configuration downloads checksum-pinned Lua,
+zlib and D3DX SDK dependencies; see [dependency details](third_party/README.md). Shader reflection uses
 the installed x86 D3DX9_40 runtime. Python 3.10+ is used for the export tools; optional native
 reference verification also uses pefile and Capstone.
 
@@ -48,6 +48,10 @@ fundamentals, debug descriptor, include and dummy combiner using stock Lua5.1.1.
 Without the path it explicitly skips asset-dependent shader checks. First build
 downloads the checksum-pinned Lua source; see [dependency/license](third_party/README.md)
 and [adapter scope](docs/SHADER_LUA_ADAPTER.md). Full material loading remains incomplete.
+The installed-font check uses mounted streams and explicitly primes the priority-300
+FileStore, then verifies that all three font resources open from that cache. See
+[mounted stream evidence](docs/MOUNTED_RESOURCE_STREAMS.md) for native preload,
+archive and ownership boundaries.
 
 ## Export the existing analysis
 
@@ -72,7 +76,8 @@ python -m unittest discover -s tests -p test_exporter.py
 - `verify-seeds`: compares eight math/PRNG functions' complete byte ranges with the disk PE.
   On a match, creates ignored `local/seed_reference.hpp` for the optional native differential test.
 - `status`: reports exports and reconstruction coverage without connecting to Ghidra, including
-  how many entries are compiler EH funclets, library or inventory-tagged names, and untagged candidates.
+  names, compiler EH funclets and inventory categories separately. Names do not establish
+  replaceable library behavior or reduce the reconstruction denominator.
 
 Library and generated-code tagging: `python tools/build_tag_ledger.py` derives `config/ghidra_tags.json`
 from the inventories under `reports/library_inventory/` (stock Lua 5.1.1 and zlib 1.2.1 names,
@@ -83,6 +88,12 @@ logs prior state to `local/ghidra-tags-<stamp>.json` (`--revert <log>` restores 
 `STL_inst_*`, `CG_*`, `TRIV_body_*`, `DYN_physics_*` and `TELEMETRY_*` are inventory hypotheses;
 library names with a `__prov` suffix are medium-confidence source matches. Take a fresh `snapshot` and
 re-export with `--force` after applying tags.
+
+The completed import has been [reviewed](reports/library_inventory/REVIEW.md).
+The [roadmap](docs/ROADMAP.md) now separates stock-source reuse, compiler machinery
+and game-specific contracts. Provisional tags and in-house Dyn code remain in
+scope when needed. [zlib 1.2.1](docs/ZLIB_DEPENDENCY.md) now compiles; its game
+stream wrappers and archive integration remain pending.
 
 The native test executes five math routines and the PRNG seed/refill/integer routines in its
 own process: 455 math comparisons plus one stream case covering 1,500 random values and final state.
@@ -127,6 +138,8 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `docs/VFS_MOUNT_LOOKUP.md` | Ordered lookup, native search lists and installed font resolution |
 | `docs/PROVIDER_FACTORY_STARTUP.md` | Physical factory/mount reconstruction and FileStore integration boundary |
 | `docs/ARCHIVE_PROVIDER_ENTRY.md` | Memory-backed FileStore and the separate MPKG reader dependencies |
+| `docs/MOUNTED_RESOURCE_STREAMS.md` | Mounted read-only streams, aliasing and cache-backed font loading |
+| `docs/ZLIB_DEPENDENCY.md` | Pinned stock zlib and game raw-DEFLATE wrapper evidence |
 | `docs/FONT_RESOURCE_OWNERSHIP.md` | Font image ownership, loading order and reload boundaries |
 | `docs/FONT_MATERIAL_BINDINGS.md` | Font texture slots, shader selection and native ownership boundaries |
 | `docs/TEXTURE_IMAGE_LOADING.md` | Shared image-info/loading route and actual recreation metadata |

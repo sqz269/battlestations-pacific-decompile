@@ -1,0 +1,86 @@
+{
+  "snapshot": {
+    "utc": "2026-09-09T19:27:40.137461+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62725,
+    "internal_function_count": 62283,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "tag_count": 10334,
+  "tag_categories": {
+    "cg_scalar_deleting_dtor": 1417,
+    "trivial_body": 535,
+    "rtti_vslot": 289,
+    "cg_vector_deleting_dtor": 79,
+    "stl_instantiation": 4007,
+    "stl_probable": 1554,
+    "stl_throw_site": 564,
+    "cg_array_ctor_helper": 66,
+    "cg_adjustor_thunk": 94,
+    "cg_static_dtor_stub": 53,
+    "block_metrics_wrapper": 121,
+    "block_telemetry_tmpl": 32,
+    "block_telemetry": 321,
+    "block_pipe_ipc": 124,
+    "lua511": 324,
+    "zlib121": 52,
+    "crt_unmatched": 322,
+    "block_dyn": 213,
+    "static_init": 167
+  },
+  "tag_confidence": {
+    "high": 8487,
+    "medium": 1845,
+    "low": 2
+  },
+  "rename_count": 8780,
+  "bookmark_count": 1554,
+  "rename_mismatches": [],
+  "reconstruction_overlap": [],
+  "name_ledger_overlap": [],
+  "import_logs": [
+    {
+      "path": "local\\ghidra-tags-20260909T185311Z.json",
+      "entries": 377,
+      "statuses": {
+        "created": 89,
+        "renamed": 288
+      }
+    },
+    {
+      "path": "local\\ghidra-tags-20260909T185756Z.json",
+      "entries": 9958,
+      "statuses": {
+        "renamed": 8404,
+        "bookmarked": 1554
+      }
+    }
+  ],
+  "verification": "Local snapshot/log consistency only; not fresh live Ghidra or library equivalence verification",
+  "findings": [
+    "Named functions cannot be excluded from reconstruction solely by naming.",
+    "High confidence mechanical STL/trivial/RTTI tags do not establish third-party ownership or safely replaceable behavior.",
+    "Library SUMMARY.md denominator and completion dates are historical estimates, not verified scope or forecasts.",
+    "Import logs and post-export report exit0; all current rename tags match exported names."
+  ],
+  "status_fix": "Removed naming-based reduced candidate denominator; report category counts separately.",
+  "post_integration": {
+    "utc": "2026-09-09T20:12:23.648212+00:00",
+    "snapshot": {
+      "utc": "2026-09-09T20:11:25.035145+00:00",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "total_function_count": 62726,
+      "internal_function_count": 62284,
+      "external_symbol_count": 443,
+      "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+    },
+    "rename_mismatches": [],
+    "naming_ledger_overlap": [],
+    "reconstructed_entries": 170,
+    "fragment_entries": 63,
+    "note": "Parent verified live project/program and five applied annotations including preservation of previous comments. One table callback created at 00bda690 after raw bytes matched disk. Classification/source equivalence and all bookmarks were not independently revalidated."
+  }
+}

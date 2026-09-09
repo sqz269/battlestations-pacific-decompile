@@ -1,11 +1,11 @@
 # Provider factories and physical startup mounts
 
-The font probe now constructs its physical providers using the recovered
-factory policy and registers the first two startup mounts through the recovered
-priority/prefix code. It receives the installation root as a host input. This
-is not the full application filesystem: the FileStore cache is exercised
-separately, and its startup mount/population and MPKG providers remain to be
-connected to resource loading.
+The font probe constructs physical providers using the recovered factory
+policy and registers all three initial mounts through the recovered priority
+and prefix code: FileStore at 300, persistent data at 99, and the loose root
+at 0. It receives the installation root as a host input. FileStore population
+and mounted stream opening now feed font loading. Diagnostic cache priming
+does not reproduce native startup preload selection, and MPKG remains separate.
 
 ## Factory registration and selection
 
@@ -63,13 +63,13 @@ Startup supplies current directory plus backslash for both physical mounts:
 
 The probe substitutes the supplied installation root for current directory.
 `00be1740` canonicalizes `.` to empty; signed priority sorting places
-`persistent_data` first. Callbacks capture shared provider owners. Both roots
-are identical, so its bounded physical-path adapter removes the persistent
+`persistent_data` ahead of the loose root; the FileStore mount precedes both.
+Callbacks capture shared provider owners. Both physical roots
+are identical, so its mounted provider adapter removes the persistent
 virtual prefix before path construction only when a nonempty suffix follows.
 For a trailing-slash-only name the persistent provider rejects the empty
-suffix; a later root provider may instead match an actual directory. This
-edge was corrected during independent review. The adapter is not a generic
-archive/FileStore opener.
+suffix; a later root provider may instead match an actual directory. Separate physical and
+FileStore open adapters supply memory streams; neither implements MPKG.
 
 See `VFS_MOUNT_REGISTRATION.md` for signed descending priority, equal-priority
 insertion order and the native path canonicalizer. The payload byte is retained
@@ -81,9 +81,12 @@ as metadata; native teardown and deletion rules remain unknown.
 memory-stream opening. One existing-probe DAT round trip verifies normalized
 insertion, a retained original wrapper, cursor-zero open sharing the backing,
 flag-bit0 rejection and backing survival after the store is destroyed. The
-ordinary DAT decoder then consumes that opened data. This does not yet connect
-FileStore's native priority300 startup mount or population `00be7ab0` into the
-font resource resolver, which still expects physical paths.
+ordinary DAT decoder then consumes that opened data. The mounted-stream
+integration additionally connects FileStore's priority-300 startup mount and
+the flags-2 population fragment `00be7ab0` to the font stream resolver. The
+probe explicitly primes its three font resources, then verifies all three
+font loads open FileStore with no physical reopen. See
+[MOUNTED_RESOURCE_STREAMS.md](MOUNTED_RESOURCE_STREAMS.md).
 
 `PACKAGE_MOUNT_STARTUP.md` implements the package-name priority fragment and
 records two fresh startup scans, provider-order enumeration and duplicate
@@ -102,8 +105,14 @@ was added; one focused cache-lifetime case extends the existing probe.
 
 Signed priority ties, package overflow names, persistent missing-file behavior
 and canonicalizer edge cases are assembly-backed, not native runtime-compared
-by that probe. Full mount/provider ownership, VFS cache startup integration,
+by that historical probe. Full native mount/provider ownership and preload selection,
 original-game resource selection and gameplay equivalence are unestablished.
+
+The current Win32 build and full D3D9 probe also pass after mounted opening
+was integrated. [Mounted font output](../reports/mounted_stream_font_probe.txt)
+records `cache_opens=3 physical_opens=0 cache_entries=3`, retained atlas
+recreation and the same 74-pixel glyph. The open counters describe the font
+load after explicit priming, not the physical reads needed to prime it.
 
 Twenty-one Ghidra names/comments were applied and read back, preserving prior
 comments and old values in `local/ghidra-annotations-20260909T181015Z.json`.

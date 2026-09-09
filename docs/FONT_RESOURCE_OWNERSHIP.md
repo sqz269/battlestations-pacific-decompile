@@ -1,9 +1,10 @@
 # Font resource ownership
 
 `FontResources` projects the successful image/DAT load and the two font-level
-image references. It composes the existing physical stream, shared memory
-backing, retained 2D loader and scalar `FontData` decoder. It is not the native
-font layout, VFS/cache, reload operation or complete text renderer.
+image references. It composes mounted physical/FileStore streams, shared memory
+backing, the retained 2D loader and scalar `FontData` decoder. It does not
+reproduce native font layout, renderer cache identity, reload or complete text
+rendering. Mounted opening and explicit FileStore population are connected.
 
 ## Native ownership evidence
 
@@ -70,12 +71,20 @@ native reload reconstruction.
 
 ## Paths and typed interface
 
-`load_font_resources_00ad4c30_fragment` receives `FontDescriptor`, explicit
-prefix and extra component, stable mip setting, D3DX imports and a
-`FontPhysicalResolver`. The resolver maps the exact logical name to a physical
-ANSI filename. There is no implicit separator, normalization or installation
-root. Caller-supplied fixture roots do not establish the unresolved startup
-extra component's value.
+`load_font_resources_from_streams_00ad4c30_fragment` receives `FontDescriptor`,
+explicit prefix and extra component, stable mip setting, D3DX imports and a
+`FontStreamResolver`. That callback returns a retained `MemoryStream` for the
+exact logical name, with an error string on failure. A mounted physical or
+FileStore opener can supply that stream without inventing a physical filename
+for archive-backed data. This interface does not itself choose providers,
+rewrite names, or reproduce renderer cache identity.
+
+The existing `load_font_resources_00ad4c30_fragment` remains compatible: its
+`FontPhysicalResolver` maps the name to a physical ANSI filename, which the
+adapter opens read-only and converts to a memory stream before delegating to
+the same loader. There is no implicit separator, normalization or installation
+root in either interface. Caller-supplied fixture roots do not establish the
+unresolved startup extra component's value.
 
 Order is GFX, alpha, DAT. GFX and DAT both use `(prefix + extra) + name`:
 the DAT concatenations are `00ad4eaa/00ad4ec1`, followed by VFS virtual+4 open
@@ -92,35 +101,61 @@ then GFX, then alpha. Host map nodes are destroyed with their payloads, earlier
 than native tree nodes; native string buffers/layout, pool, reference counters
 and renderer cache identity are not reproduced.
 
-All three inputs are read through the established physical-to-memory helper.
-Images retain their exact memory wrapper through `D3D9RetainedTexture2D`.
-The native DAT path reads its VFS stream directly; the host decoder uses an
-ephemeral memory wrapper and releases it after decoding. That buffering is a
-host adapter, not evidence of a native DAT memory-wrapper conversion. Original
-files remain read-only and handles close through physical owner destruction.
+Both entrypoints share GFX-alpha-DAT ordering, image metadata policy and
+transactional ownership. Each successful stream callback must supply nonnull,
+fully initialized backing. Images use `clone_reset_00bef6d0` to retain that
+backing in a fresh wrapper with cursor zero: this is the already recovered
+memory-input case of native `00bef750`. The retained texture keeps this new
+wrapper for recreation. The resolver's original cursor is neither moved nor
+retained merely to create the image; no image byte copy is added by cloning.
+
+Native DAT reads its opened VFS stream directly. The typed DAT decoder consumes
+the callback's supplied cursor directly and does not reset or clone it. A
+resolver that models a fresh file open should provide a fresh cursor at zero;
+a nonzero cursor is not silently repaired. Successful decoding or a failed DAT
+parse may advance that supplied cursor, even when final FontResources output
+is not published. This is consistent with the decoder's existing contract.
+The callback's stream reference is released after decoding; an independent
+caller reference can keep the stream alive.
+
+The physical compatibility adapter still buffers all three resources through
+the physical-to-memory helper and closes read-only handles through ownership.
+Buffering a physical DAT is a host adapter, not evidence of native DAT
+conversion. The stream entrypoint does not claim to accept arbitrary native
+stream object ABIs or implement a FileStore decompressor by itself.
 
 ## Failure and validation boundaries
 
 The factory requires empty output and rejects embedded-NUL logical inputs,
-empty/embedded-NUL resolved paths, failed physical reads, uninitialized tails,
-invalid DAT and failed image HRESULTs. It also rejects successful HRESULT with
+empty/embedded-NUL resolved physical paths, failed callbacks or physical reads,
+null/missing stream backing, uninitialized tails, invalid DAT and failed image
+HRESULTs. It also rejects successful HRESULT with
 null texture. A failed HRESULT accompanying a nonnull texture is cleaned up,
 unlike native's wrapper-publication branch. On any reported failure output
 stays empty, and temporary glyph/image/source ownership is cleaned up. Native
 does not have this transactional failure behavior and can leave partial state.
 Resolver and allocation exceptions propagate under the same RAII cleanup.
 
-This task checked source against the recovered ordering and ran diff checks;
-parent integration owns build and focused existing-probe execution. No new
-tests, build invocation, shared metadata edits or Ghidra mutations were made.
-Shader/material resolution, draw batching and full font reload remain separate.
+Source ordering is backed by the native load/destruction evidence above.
+Draw batching and full font reload remain separate from this initial-load
+owner; installed shader drawing is covered by `FONT_MATERIAL_DRAW.md`.
 
-Parent integration now passes the Win32 build, both existing CTests and full
+The stream entrypoint is now integrated with mounted physical and FileStore
+opening. The Win32 build and full installed-font D3D9 probe pass; no additional
+test target was required.
+
+The earlier physical-adapter integration passed the Win32 build, both existing CTests and full
 D3D9 probe. Actual font metadata drives this factory; its three resolver calls
 match GFX/alpha/DAT order, decoded height/count match, atlas recreation works,
 and the installed bilinear shader draws a bounded glyph. Follow-up integration
 resolves the white resource through recovered startup search lists and ordered
 candidate passes, using recovered physical mount/factory policies and a supplied
-root. Full cache/archive integration remains unported. See
+root. The current mounted-stream report additionally records three FileStore
+opens for GFX/alpha/DAT, zero physical opens during that font load, three cache
+entries, retained atlas recreation, and 74 bounded lit glyph pixels. Cache
+entries are explicitly primed by the diagnostic; native preload selection,
+archive loading and full renderer cache lifecycle remain unported. See
+[MOUNTED_RESOURCE_STREAMS.md](MOUNTED_RESOURCE_STREAMS.md),
+[mounted_stream_font_probe.txt](../reports/mounted_stream_font_probe.txt),
 `PROVIDER_FACTORY_STARTUP.md`, `VFS_MOUNT_LOOKUP.md`, `FONT_MATERIAL_DRAW.md`
 and `reports/vfs_font_draw_probe.txt`.
