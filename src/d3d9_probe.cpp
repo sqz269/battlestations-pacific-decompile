@@ -248,7 +248,8 @@ int main() {
         auto* lock = bsp::critical_section_create_00bd1860();
         if (!lock) matched = false;
         else {
-            bsp::RendererSynchronization synchronization{true, false, 0};
+            bsp::RendererSynchronization synchronization{};
+            bsp::set_renderer_synchronization_00b33aa0(synchronization, true);
             bsp::D3D9StateCache cache(*device, synchronization, lock);
             cache.initialize_defaults_00b26170();
             cache.initialize_defaults_00b26170();

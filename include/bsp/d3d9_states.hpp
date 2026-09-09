@@ -15,6 +15,10 @@ struct RendererSynchronization {
     std::uint32_t nesting{};
 };
 
+// Native setter changes both mode bytes, preserving nesting. Call only at a
+// coordinated mode transition; this does not stop workers or release held locks.
+void set_renderer_synchronization_00b33aa0(RendererSynchronization&, bool enabled);
+
 struct D3D9DrawState {
     std::uint32_t inhibit{}; // Native renderer +1d90h, exact meaning unresolved.
     bool device_lost{};     // Native +1d8ah.

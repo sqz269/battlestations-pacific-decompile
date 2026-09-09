@@ -77,3 +77,25 @@ blocks on nonzero queue control; otherwise it invokes BeginFrame and sets phase 
 Command object types, their destructor dependencies, queue-control writers and
 singleton manager lifecycle remain unported. No C++ or runtime validation was added
 in this investigation.
+
+
+## Queue mode transitions
+
+00b1c460 establishes +20h as a mode: only transition 2 -> 0 calls renderer +11Ch
+before storing the new value. Other transitions store it directly. 00b1c4b0
+calls +11Ch when old mode is 2, sets zero, then invokes BeginFrame and default
+EndFrame. It does not directly empty the command array.
+
+Renderer +11Ch resolves to 00b28a90. It calls 00b33bf0 on worker +1970h when
+nonnull, sets optional synchronization off, clears pipeline bindings through
+00b26920, and sleeps 100 ms. Worker helper 00b33bf0 clears worker byte +4h and
+tail-calls virtual +8h on its interface at +10h. Whether that call signals, waits,
+or performs another operation remains unverified. Do not treat it as a proven
+thread join or port mode 2 -> 0 as a plain assignment.
+
+Synchronization setter 00b33aa0 now has a C++ semantic port. It updates enabled
+and observed-enabled together, preserving nesting and lock state. The existing
+D3D9 probe uses it to enable guarded state updates; build, existing CTest targets,
+and device/pixel probes pass. This does not validate concurrent mode switching or
+worker shutdown. No new test case or target was added. Evidence is retained in
+`reports/queue_mode_evidence.json` and `reports/queue_mode_probe.txt`.

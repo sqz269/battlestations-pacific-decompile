@@ -623,5 +623,30 @@
     "address": "004c6c30",
     "name": "BSP_Game_TryBeginRenderFrame",
     "evidence": "ECX game. Nonzero phase+34h returns1; phase0 and queue control00b1bf90 nonzero returns0; otherwise renderer vtable+Ch BeginFrame then phase1 and return1. Does not test queued command count."
+  },
+  {
+    "address": "00b1c460",
+    "name": "BSP_RenderCommandQueue_SetMode",
+    "evidence": "ECX queue and DWORD stack mode, RET4. Only old mode+20h==2 and new mode0 invokes renderer+11Ch before storing mode. Other changes only store. This is a mode, not a nesting counter; other semantic mode names unresolved."
+  },
+  {
+    "address": "00b1c4b0",
+    "name": "BSP_RenderCommandQueue_ResetModeAndCycleFrame",
+    "evidence": "If mode+20h==2 call renderer+11Ch, then mode0, renderer+Ch BeginFrame and tail jump renderer+14h default EndFrame. Does not directly clear queue list."
+  },
+  {
+    "address": "00b28a90",
+    "name": "BSP_D3D9Renderer_StopWorkerMode",
+    "evidence": "Renderer vtable+11Ch. If worker+1970h nonnull call00b33bf0; set optional synchronization false via00b33aa0; clear pipeline bindings00b26920; Sleep100. Worker thread completion semantics unresolved; not ported."
+  },
+  {
+    "address": "00b33bf0",
+    "name": "BSP_RenderWorker_RequestStop",
+    "evidence": "ECX worker: clear byte+4h, load interface+10h, tail jump interface virtual+8h. Exact wait/signal behavior of interface unresolved, so stop completion not established."
+  },
+  {
+    "address": "00b33aa0",
+    "name": "BSP_Renderer_SetOptionalSynchronization",
+    "evidence": "Stack byte argument RET4 sets globals0108d6dc and0108d6dd to same value. Does not touch nesting0108d6e0 or locks. Ported for boolean semantic synchronization state; callers must coordinate worker lifecycle."
   }
 ]

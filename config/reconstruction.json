@@ -383,6 +383,13 @@
       "status": "semantic_explicit_registry_real_device_reuse_checked",
       "abi_compatible": false,
       "limitations": "Typed logical streams and explicit lifetime API; full native constructors/destructors, allocator ABI and SEH remain unported."
+    },
+    {
+      "address": "00b33aa0",
+      "name": "set_renderer_synchronization",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_existing_device_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

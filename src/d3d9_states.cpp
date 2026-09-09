@@ -2,6 +2,11 @@
 #include <cstdlib>
 
 namespace bsp {
+void set_renderer_synchronization_00b33aa0(RendererSynchronization& state, bool enabled) {
+    state.enabled = enabled;
+    state.observed_enabled = enabled;
+}
+
 bool D3D9StateCache::enter_00b33ad0() {
     ++synchronization_.nesting;
     if (!synchronization_.enabled || !lock_) return false;

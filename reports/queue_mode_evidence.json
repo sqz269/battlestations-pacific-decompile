@@ -1,0 +1,40 @@
+{
+  "ranges": [
+    {
+      "address": "00b1c460",
+      "length": 53,
+      "sha256": "4dbd3f3926649f12a1579eade544eae5c62c5cb7a03a5045f984e2dc558bb09e",
+      "disk_matches_ghidra": true,
+      "assembly": "00b1c460: PUSH ESI \n00b1c461: MOV ESI,ECX \n00b1c463: CMP dword ptr [ESI + 0x20],0x2 \n00b1c467: JNZ 0x00b1c48a \n00b1c469: PUSH EDI \n00b1c46a: MOV EDI,dword ptr [ESP + 0xc] \n00b1c46e: TEST EDI,EDI \n00b1c470: JNZ 0x00b1c482 \n00b1c472: MOV ECX,dword ptr [0x00f8d394] \n00b1c478: MOV EAX,dword ptr [ECX] \n00b1c47a: MOV EDX,dword ptr [EAX + 0x11c] \n00b1c480: CALL EDX \n00b1c482: MOV dword ptr [ESI + 0x20],EDI \n00b1c485: POP EDI \n00b1c486: POP ESI \n00b1c487: RET 0x4 \n00b1c48a: MOV EAX,dword ptr [ESP + 0x8] \n00b1c48e: MOV dword ptr [ESI + 0x20],EAX \n00b1c491: POP ESI \n00b1c492: RET 0x4 \n"
+    },
+    {
+      "address": "00b1c4b0",
+      "length": 59,
+      "sha256": "dc292385a9acb18b1eedf6097a82e45e49ac64304aea6633b0d208a54061b17d",
+      "disk_matches_ghidra": true,
+      "assembly": "00b1c4b0: PUSH ESI \n00b1c4b1: MOV ESI,ECX \n00b1c4b3: CMP dword ptr [ESI + 0x20],0x2 \n00b1c4b7: JNZ 0x00b1c4c9 \n00b1c4b9: MOV ECX,dword ptr [0x00f8d394] \n00b1c4bf: MOV EAX,dword ptr [ECX] \n00b1c4c1: MOV EDX,dword ptr [EAX + 0x11c] \n00b1c4c7: CALL EDX \n00b1c4c9: MOV dword ptr [ESI + 0x20],0x0 \n00b1c4d0: MOV ECX,dword ptr [0x00f8d394] \n00b1c4d6: MOV EAX,dword ptr [ECX] \n00b1c4d8: MOV EDX,dword ptr [EAX + 0xc] \n00b1c4db: CALL EDX \n00b1c4dd: MOV ECX,dword ptr [0x00f8d394] \n00b1c4e3: MOV EAX,dword ptr [ECX] \n00b1c4e5: MOV EDX,dword ptr [EAX + 0x14] \n00b1c4e8: POP ESI \n00b1c4e9: JMP EDX \n"
+    },
+    {
+      "address": "00b28a90",
+      "length": 44,
+      "sha256": "295132c7f5e464cfa3673c050b0229712fab41ab2aac6072ba900b145de21eee",
+      "disk_matches_ghidra": true,
+      "assembly": "00b28a90: PUSH ESI \n00b28a91: MOV ESI,ECX \n00b28a93: MOV ECX,dword ptr [ESI + 0x1970] \n00b28a99: TEST ECX,ECX \n00b28a9b: JZ 0x00b28aa2 \n00b28a9d: CALL 0x00b33bf0 \n00b28aa2: PUSH 0x0 \n00b28aa4: MOV ECX,ESI \n00b28aa6: CALL 0x00b33aa0 \n00b28aab: MOV ECX,ESI \n00b28aad: CALL 0x00b26920 \n00b28ab2: PUSH 0x64 \n00b28ab4: CALL dword ptr [0x00ce2230] \n00b28aba: POP ESI \n00b28abb: RET \n"
+    },
+    {
+      "address": "00b33bf0",
+      "length": 14,
+      "sha256": "3383a671e842a4d9fe0fee023ab6e111c4a2f1e5ef84c8dc428e21eb7396f3d5",
+      "disk_matches_ghidra": true,
+      "assembly": "00b33bf0: MOV byte ptr [ECX + 0x4],0x0 \n00b33bf4: MOV ECX,dword ptr [ECX + 0x10] \n00b33bf7: MOV EAX,dword ptr [ECX] \n00b33bf9: MOV EDX,dword ptr [EAX + 0x8] \n00b33bfc: JMP EDX \n"
+    },
+    {
+      "address": "00b33aa0",
+      "length": 17,
+      "sha256": "2c324d785cfc8b5528228be3c3646b4bb1f85dcdd0d89846c502c0dddf03f4e1",
+      "disk_matches_ghidra": true,
+      "assembly": "00b33aa0: MOV AL,byte ptr [ESP + 0x4] \n00b33aa4: MOV [0x0108d6dc],AL \n00b33aa9: MOV [0x0108d6dd],AL \n00b33aae: RET 0x4 \n"
+    }
+  ],
+  "note": "Byte parity and static mode-transition evidence. Probe validates boolean setter with existing guarded state calls, not worker shutdown."
+}
