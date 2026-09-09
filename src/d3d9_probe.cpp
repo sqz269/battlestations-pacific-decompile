@@ -98,6 +98,36 @@ int main() {
         bsp::release_dynamic_buffers(buffers);
         bsp::surface_release(binding);
     }
+    if (swap_chain) { swap_chain->Release(); swap_chain = nullptr; }
+    if (matched) {
+        // Exercise the recovered surface methods with registered-style offscreen
+        // resources. The host orchestrates Reset, not the incomplete game reset loop.
+        bsp::D3D9SurfaceBinding color{}, depth{};
+        color.format = D3DFMT_A8R8G8B8;
+        color.width = depth.width = 128;
+        color.height = depth.height = 128;
+        depth.format = D3DFMT_D24S8;
+        depth.depth_stencil = true;
+        result = bsp::surface_recreate_00b3d550(color, *device);
+        if (SUCCEEDED(result)) result = bsp::surface_recreate_00b3d550(depth, *device);
+        bsp::surface_release_for_reset_00b3d510(color);
+        bsp::surface_release_for_reset_00b3d510(depth);
+        if (SUCCEEDED(result)) result = device->Reset(&stored);
+        if (SUCCEEDED(result)) result = bsp::surface_recreate_00b3d550(color, *device);
+        if (SUCCEEDED(result)) result = bsp::surface_recreate_00b3d550(depth, *device);
+        D3DSURFACE_DESC color_desc{}, depth_desc{};
+        if (SUCCEEDED(result)) result = color.surface->GetDesc(&color_desc);
+        if (SUCCEEDED(result)) result = depth.surface->GetDesc(&depth_desc);
+        matched = SUCCEEDED(result) && color_desc.Width == 128 && color_desc.Height == 128
+            && depth_desc.Width == 128 && depth_desc.Height == 128
+            && color_desc.Format == D3DFMT_A8R8G8B8 && depth_desc.Format == D3DFMT_D24S8
+            && color_desc.Usage == D3DUSAGE_RENDERTARGET
+            && depth_desc.Usage == D3DUSAGE_DEPTHSTENCIL;
+        std::printf("D3D9 surface reset: hr=0x%08lx color_usage=%lu depth_usage=%lu checked=%d\n",
+            static_cast<unsigned long>(result), color_desc.Usage, depth_desc.Usage, matched);
+        bsp::surface_release_for_reset_00b3d510(color);
+        bsp::surface_release_for_reset_00b3d510(depth);
+    }
     if (swap_chain) swap_chain->Release();
     if (device) device->Release();
     if (api) api->Release();

@@ -278,5 +278,35 @@
     "address": "00b21690",
     "name": "BSP_D3D9Renderer_BindDepthSurface",
     "evidence": "Optional renderer guard around device virtual 9ch SetDepthStencilSurface; null wrapper binds null, otherwise uses surface at wrapper+2ch and increments counter this+1bcch. Not yet ported."
+  },
+  {
+    "address": "00b3d510",
+    "name": "BSP_D3D9Surface_ReleaseForReset",
+    "evidence": "Surface vtable +3ch. Balanced AddRef/Release pair then releases and nulls +2ch, preserving dimensions/format/multisample and depth flag for recreation."
+  },
+  {
+    "address": "00b3d550",
+    "name": "BSP_D3D9Surface_RecreateAfterReset",
+    "evidence": "Recovered missing vtable +40h target; thiscall RET 4h. Flag +30h selects CreateDepthStencilSurface(discard=true) vs CreateRenderTarget(lockable=false). Uses saved width/height/format/multisample, quality0, null shared handle, output+2ch. Original ignores HRESULT."
+  },
+  {
+    "address": "00b237d0",
+    "name": "BSP_D3D9Renderer_ReleaseDynamicBuffersForReset",
+    "evidence": "Optional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive."
+  },
+  {
+    "address": "00b262c0",
+    "name": "BSP_D3D9Renderer_ReleaseResourcesForReset",
+    "evidence": "Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported."
+  },
+  {
+    "address": "00b23b10",
+    "name": "BSP_D3D9Renderer_RestoreResourcesAfterReset",
+    "evidence": "Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Not yet ported."
+  },
+  {
+    "address": "00b241c0",
+    "name": "BSP_D3D9Renderer_ClearBindingCache",
+    "evidence": "Receives cache subobject at renderer+34h, not renderer base. Releases intrusive references, clears 210 render-valid bytes, twenty sampler-valid banks and other binding caches. Full cache layout and port remain incomplete."
   }
 ]

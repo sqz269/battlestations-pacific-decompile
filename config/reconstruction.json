@@ -175,6 +175,20 @@
       "source": "src/d3d9_resources.cpp",
       "status": "real_surface_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b3d510",
+      "name": "BSP_D3D9Surface_ReleaseForReset",
+      "source": "src/d3d9_resources.cpp",
+      "status": "real_device_surface_release_reset_recreate_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b3d550",
+      "name": "BSP_D3D9Surface_RecreateAfterReset",
+      "source": "src/d3d9_resources.cpp",
+      "status": "real_device_surface_release_reset_recreate_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

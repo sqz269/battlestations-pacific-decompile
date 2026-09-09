@@ -53,7 +53,41 @@ DEFAULT pool and INDEX16. The build and existing CTest pass; no new test cases.
 Original code ranges match disk, with hashes in `reports/d3d9_resources_validation.json`.
 This does not prove refcount parity, reset compatibility, drawn geometry or gameplay.
 
-Next: resolve singleton `00b3e730` and its registration/teardown dependencies,
-buffer wrapper allocation/locking and surface teardown, then integrate the actual
-release/reset/recreate sequence. Its current pending/lost-device path remains
-documented in `D3D9_STATES.md`.
+## Surface reset lifecycle
+
+The surface vtable's `+3ch` method `00b3d510` releases and nulls the COM pointer,
+preserving metadata. It makes a balanced AddRef/Release pair first; the port
+preserves that sequence. Newly recovered `+40h` method `00b3d550` recreates from
+saved metadata. Byte `+30h` selects CreateDepthStencilSurface with discard TRUE
+or CreateRenderTarget with lockable FALSE. Both use multisample quality 0 and a
+null shared handle. The method consumes one device argument with RET 4h.
+The new interface returns the HRESULT and requires an empty binding. It does not
+infer surface kind from the format or replace default-surface capture.
+
+The diagnostic host now creates offscreen color and depth surfaces, releases them
+through `00b3d510`, calls a real windowed device Reset, recreates both through
+`00b3d550`, and checks 128x128, formats A8R8G8B8/D24S8 and usages RENDERTARGET/
+DEPTHSTENCIL. All temporary getter/swap-chain/default-pool references from earlier
+probe stages are released before Reset. This validates the two helpers across a
+real reset; it does not validate the native reset scheduler or full renderer.
+See `reports/d3d9_surface_reset_validation.json` for the separate evidence.
+
+The native scheduler `00b2abd0` first calls `00b237d0` to release dynamic COM buffers
+without deleting their wrappers, then `00b262c0` to unbind resources, invoke reset
+callbacks and clear bindings. `00b241c0` receives the cache subobject at renderer
+`+34h`, clears 210 render-valid bytes and twenty sampler banks, and releases
+intrusive binding references. After Reset, `00b23b10` reacquires default surfaces
+and invokes registered callbacks, including surface `+40h`. These orchestrating
+routines are named and traced, but remain unported.
+
+Registry investigation: `00b61d50` only installs vtable `00d62b64` in the eight-byte
+singleton. Its recovered deleting destructor `00b61d60` clears global `0108fedc`.
+This alone does not establish all registry behavior. Buffer base cleanup shrinks
+the pointer array at `+8h` to zero through `00b49700` and frees its backing storage.
+Ghidra still truncates those bodies after free despite the earlier no-return fix;
+their missing fallthroughs must be recovered before claiming complete teardown.
+Inline Ghidra scripts are disabled on the current server, so no scripted body repair
+was performed. Ordinary analysis, naming and export remain available.
+
+Next: reconstruct the remaining resource callbacks and buffer restoration, recover
+truncated base cleanup, and integrate the native release/reset/recreate sequence.

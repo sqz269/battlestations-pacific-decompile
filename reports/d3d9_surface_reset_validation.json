@@ -1,0 +1,24 @@
+{
+  "utc": "2026-09-09T04:28:35.922185+00:00",
+  "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b3d510",
+      "length": 52,
+      "matches_disk": true,
+      "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c"
+    },
+    {
+      "address": "00b3d550",
+      "length": 56,
+      "matches_disk": true,
+      "sha256": "3b4e38423d828c61398db47c581fb0409879cc4d635917ef65daf6f9b4f3eecc"
+    }
+  ],
+  "probe_output": "D3D9 device probe: hr=0x00000000 flags=0x44 size=640x480 windowed=1 format=21 depth=75 interval=0x0\nD3D9 defaults: render_calls=19 sampler_calls=140 zfunc=2 cull=3 min_filter=2 vertex_filter=2 balanced=1 checked=1\nD3D9 resources: hr=0x00000000 surface=640x480 vertex_bytes=16777216 index_bytes=1048576 checked=1\nD3D9 surface reset: hr=0x00000000 color_usage=1 depth_usage=2 checked=1",
+  "probe_exit_code": 0,
+  "existing_ctest": "2/2 passed",
+  "host_driven_surface_reset_validated": true,
+  "native_reset_orchestration_validated": false,
+  "game_validated": false
+}

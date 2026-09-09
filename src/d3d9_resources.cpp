@@ -38,6 +38,28 @@ void surface_release(D3D9SurfaceBinding& binding) {
     binding = {};
 }
 
+void surface_release_for_reset_00b3d510(D3D9SurfaceBinding& binding) {
+    if (binding.surface) {
+        // Preserve the original balanced pair before dropping the owned reference.
+        binding.surface->AddRef();
+        binding.surface->Release();
+    }
+    if (binding.surface) {
+        binding.surface->Release();
+        binding.surface = nullptr;
+    }
+}
+
+HRESULT surface_recreate_00b3d550(D3D9SurfaceBinding& binding, IDirect3DDevice9& device) {
+    if (binding.surface) return D3DERR_INVALIDCALL; // New empty-owner precondition.
+    if (binding.depth_stencil) {
+        return device.CreateDepthStencilSurface(binding.width, binding.height,
+            binding.format, binding.multisample, 0, TRUE, &binding.surface, nullptr);
+    }
+    return device.CreateRenderTarget(binding.width, binding.height, binding.format,
+        binding.multisample, 0, FALSE, &binding.surface, nullptr);
+}
+
 HRESULT create_dynamic_buffers_00b2aeb0(IDirect3DDevice9& device, D3D9DynamicBuffers& buffers) {
     if (buffers.vertices || buffers.indices) return D3DERR_INVALIDCALL;
     constexpr DWORD usage = D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY;
