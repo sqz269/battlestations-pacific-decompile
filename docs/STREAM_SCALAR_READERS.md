@@ -100,5 +100,17 @@ The last two ranges contain precisely the four adjacent vtable entries.
 | 00d642f8..00d64307 | 30ab01e66d50c5425cc38290ddb269085e91738251518143dd81174a02f09815 |
 | 00d691e8..00d691f7 | 30ab01e66d50c5425cc38290ddb269085e91738251518143dd81174a02f09815 |
 
-No build or runtime test was performed. These byte-level findings do not prove
-font rendering, malformed-file parity or full stream object ABI compatibility.
+The implemented adapters in `src/stream_scalars.cpp` cover the null-count-pointer
+MemoryStream path used by the font loader. They seed a word/dword with zero,
+perform one read and return the result; the float adapter uses x87 FLD/FSTP to
+include the font caller's float store. Non-null count-pointer seed behavior is
+not implemented by these narrow signatures. The underlying MemoryStream host
+guards remain in force for invalid/uninitialized ranges.
+
+Parent integration created the four missing functions after matching exact
+body bytes and dry-run sizes, named/commented them, saved the project and
+refreshed exports. The installed Arial DAT decoded through these adapters;
+a final one-byte word read and subsequent EOF DWORD read checked zero-tail
+semantics. Build, both CTests and full D3D9 probe passed. See
+`reports/font_scalar_audit.json` and `reports/font_texture_reset_probe.txt`.
+Font rendering, malformed-file parity and native ABI remain unverified.

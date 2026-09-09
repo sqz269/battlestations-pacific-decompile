@@ -1071,6 +1071,38 @@
       "status": "installed_asset_memory_stream_retention_checked",
       "abi_compatible": false,
       "limitations": "Positive signed32 backing and inbounds initialized ranges; new error/bounds checks. No native ABI or arbitrary shortread/invalidseek validation."
+    },
+    {
+      "address": "00ad4500",
+      "name": "BSP_Font_HasGlyph",
+      "source": "src/font_data.cpp",
+      "status": "installed_font_and_real_device_cached_mip_reset_checked",
+      "abi_compatible": false,
+      "limitations": "Typedmap/borrowedstablelevelinterfaces; nativeintrusive/iteratorABI and exceptional behavior unverified. Font rendering/fullrendererreset remain incomplete."
+    },
+    {
+      "address": "00ab6d00",
+      "name": "BSP_TextContext_AcceptsGlyphByte",
+      "source": "src/font_data.cpp",
+      "status": "installed_font_and_real_device_cached_mip_reset_checked",
+      "abi_compatible": false,
+      "limitations": "Typedmap/borrowedstablelevelinterfaces; nativeintrusive/iteratorABI and exceptional behavior unverified. Font rendering/fullrendererreset remain incomplete."
+    },
+    {
+      "address": "00b3dd30",
+      "name": "BSP_D3D9Texture_ReleaseCachedLevelsForReset",
+      "source": "src/d3d9_reset_texture.cpp",
+      "status": "installed_font_and_real_device_cached_mip_reset_checked",
+      "abi_compatible": false,
+      "limitations": "Typedmap/borrowedstablelevelinterfaces; nativeintrusive/iteratorABI and exceptional behavior unverified. Font rendering/fullrendererreset remain incomplete."
+    },
+    {
+      "address": "00b3dd90",
+      "name": "BSP_D3D9Texture_RestoreCachedLevels",
+      "source": "src/d3d9_reset_texture.cpp",
+      "status": "installed_font_and_real_device_cached_mip_reset_checked",
+      "abi_compatible": false,
+      "limitations": "Typedmap/borrowedstablelevelinterfaces; nativeintrusive/iteratorABI and exceptional behavior unverified. Font rendering/fullrendererreset remain incomplete."
     }
   ],
   "fragments": [
@@ -1345,6 +1377,51 @@
       "status": "installed_dds_retained_source_recreation_checked",
       "abi_compatible": false,
       "remaining": "Typedsharedownership/positivebacking; native allocator/refcounts/registry/cachedsurfaces and fullVFS/textureload lifecycle remain unported. Hostshortread initialized-prefix boundary explicit."
+    },
+    {
+      "address": "00be4300",
+      "name": "BSP_Stream_ReadDword",
+      "source": "src/stream_scalars.cpp",
+      "native_range": "null-actual scalar path",
+      "status": "installed_font_207_records_and_scalar_eof_checked",
+      "abi_compatible": false,
+      "remaining": "Non-nullactualpointer/scalarFPexceptionbehavior or completefonttexture/registry/specialrecords/lifetime unported; hostcompleteinput rejection and map ownership explicit."
+    },
+    {
+      "address": "00be4320",
+      "name": "BSP_Stream_ReadWord40",
+      "source": "src/stream_scalars.cpp",
+      "native_range": "null-actual scalar path",
+      "status": "installed_font_207_records_and_scalar_eof_checked",
+      "abi_compatible": false,
+      "remaining": "Non-nullactualpointer/scalarFPexceptionbehavior or completefonttexture/registry/specialrecords/lifetime unported; hostcompleteinput rejection and map ownership explicit."
+    },
+    {
+      "address": "00be4340",
+      "name": "BSP_Stream_ReadWord3C",
+      "source": "src/stream_scalars.cpp",
+      "native_range": "null-actual scalar path",
+      "status": "installed_font_207_records_and_scalar_eof_checked",
+      "abi_compatible": false,
+      "remaining": "Non-nullactualpointer/scalarFPexceptionbehavior or completefonttexture/registry/specialrecords/lifetime unported; hostcompleteinput rejection and map ownership explicit."
+    },
+    {
+      "address": "00be4360",
+      "name": "BSP_Stream_ReadFloat",
+      "source": "src/stream_scalars.cpp",
+      "native_range": "null-actual scalar path",
+      "status": "installed_font_207_records_and_scalar_eof_checked",
+      "abi_compatible": false,
+      "remaining": "Non-nullactualpointer/scalarFPexceptionbehavior or completefonttexture/registry/specialrecords/lifetime unported; hostcompleteinput rejection and map ownership explicit."
+    },
+    {
+      "address": "00ad4c30",
+      "name": "BSP_Font_LoadGlyphDataAndTextures",
+      "source": "src/font_data.cpp",
+      "native_range": "DAT complete-input population path",
+      "status": "installed_font_207_records_and_scalar_eof_checked",
+      "abi_compatible": false,
+      "remaining": "Non-nullactualpointer/scalarFPexceptionbehavior or completefonttexture/registry/specialrecords/lifetime unported; hostcompleteinput rejection and map ownership explicit."
     }
   ]
 }

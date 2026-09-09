@@ -1498,5 +1498,50 @@
     "address": "00b3f2e0",
     "name": "BSP_D3D9Texture_Destroy",
     "evidence": "ECX2Dtexture,RET. Release retainedstream+4C before renderer notifications, COMtexture+10 cleanup,cachedsurfaces andbase. Rawfullbody302bytes beyond truncatedfreeexport. Typedowner implements source-before-COM cleanup only; registry/cachedsurfaces/base/allocator remain unported."
+  },
+  {
+    "address": "00be4300",
+    "name": "BSP_Stream_ReadDword",
+    "evidence": "ECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF."
+  },
+  {
+    "address": "00be4320",
+    "name": "BSP_Stream_ReadWord40",
+    "evidence": "ECX stream, optionalactualpointer stack,RET4/AX. Onevirtual+24 read2 into argumentslot. Identicalbody00be4340; signedness determinedcaller. Typednull-actualfragment zero-tail preservesnormalfontpath."
+  },
+  {
+    "address": "00be4340",
+    "name": "BSP_Stream_ReadWord3C",
+    "evidence": "ECX stream, optionalactualpointer stack,RET4/AX. Samebody00be4320; no ownsignextension. One2byte read, fontnullargument seedszero."
+  },
+  {
+    "address": "00be4360",
+    "name": "BSP_Stream_ReadFloat",
+    "evidence": "ECX stream, optionalactualpointer stack,RET4/x87ST0. One4byte read intoargumentslot thenFLDfloat; callerfontstoresfloat. Typednull-actualfragment includesFLTstore boundary; specialFPstatus/control unverified."
+  },
+  {
+    "address": "00ad4500",
+    "name": "BSP_Font_HasGlyph",
+    "evidence": "ECXfonttree, u16key stack,RET4/boolAL. Exactunsigned16 tree lookup00ad4370 thencomparesentinel; nativeiterator checks. TypedFontData mapmembership with validowner replacesnativeiteratorABI. Installed207-keyArial data checked."
+  },
+  {
+    "address": "00ab6d00",
+    "name": "BSP_TextContext_AcceptsGlyphByte",
+    "evidence": "ECXtextcontext, event stackRET4/EAXbool. Space20acceptedwithoutlookup; otherwise context+108 font, MOVSXbyte->AX thenu16membership00ad4500. Highbytes80..FF mapFF80..FFFF. Typedfont argument replacescontext; installed0091present/FF91absent acceptanceverified."
+  },
+  {
+    "address": "00ad4c30",
+    "name": "BSP_Font_LoadGlyphDataAndTextures",
+    "evidence": "ECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported."
+  },
+  {
+    "address": "00b3dd30",
+    "name": "BSP_D3D9Texture_ReleaseCachedLevelsForReset",
+    "evidence": "ECX2Dwrapper RET. Signedindexcached8byterecords+40/+44, eachsurfacevirtual3C; thenbalancedtextureAddRef/Release and ownedCOMdrop/null+10. Typedstableborrowedlevels port; realResetverified existing64/32mipowners."
+  },
+  {
+    "address": "00b3dd90",
+    "name": "BSP_D3D9Texture_RestoreCachedLevels",
+    "evidence": "ECX2Dwrapper,device stackRET4. Decodeflags,CreateTexture,installretainednewbeforeoldrelease/dropgetter; thenGetSurfaceLevelkey,reinitializeexistingwrapper14/dropgetter. Nativeuninitializedoutputonfailure noHRESULTguard; typedsafe sequentialHRESULTboundary. Full362bytebody plus16bytepooltable verified; realReset64/32mipidentitychecked."
   }
 ]

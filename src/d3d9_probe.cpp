@@ -12,11 +12,54 @@
 #include <vector>
 #include <limits>
 #include "bsp/d3d9_texture.hpp"
+#include "bsp/d3d9_reset_texture.hpp"
+#include "bsp/font_data.hpp"
+#include "bsp/stream_scalars.hpp"
+#include <filesystem>
 
 
 bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
+
+static bool probe_installed_font(const char* atlas_path) {
+    const auto path = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path()
+        / "Fonts" / "arial18.dat";
+    bsp::PhysicalFile file;
+    DWORD error{};
+    bsp::MemoryStream stream;
+    if (!file.open_read_only_00bf52a0_fragment(path.string().c_str(), error)
+        || !bsp::memory_stream_from_physical_00bef750_fragment(file, stream, error)
+        || !file.close_00bf5090_fragment(error)) return false;
+    bsp::FontData font;
+    std::string decode_error;
+    if (!bsp::decode_font_data_00ad4c30_fragment(stream, 0.5f, font, decode_error)) {
+        std::printf("Font DAT: %s\n", decode_error.c_str());
+        return false;
+    }
+    const bool decoded = font.source_record_count == 207 && font.glyphs.size() == 207
+        && font.scaled_height == 13 && stream.position_00bef580() == stream.size_00bef600()
+        && bsp::font_has_glyph_00ad4500(font, 0x0091)
+        && !bsp::font_has_glyph_00ad4500(font, 0xff91)
+        && bsp::font_accepts_text_byte_00ab6d00(font, 'A')
+        && bsp::font_accepts_text_byte_00ab6d00(font, ' ')
+        && !bsp::font_accepts_text_byte_00ab6d00(font, 0x91);
+    const auto letter = font.glyphs.find('A');
+    const bool fields = letter != font.glyphs.end()
+        && letter->second.fields_00_0c == std::array<float, 4>{0.1015625f, 0.240234375f, 0.203125f, 0.263671875f}
+        && letter->second.field_10 == 0 && letter->second.scaled_field_12 == 6
+        && letter->second.scaled_field_14 == 6;
+    // Font scalar call path seeds zero: a one-byte final read zero-fills the
+    // upper byte and the following EOF read returns zero without moving.
+    const auto last = stream.data_00bef610()[stream.size_00bef600() - 1];
+    const bool short_scalar = stream.seek_00bef540(-1, 2)
+        && bsp::stream_read_word_00be4320(stream) == last
+        && bsp::stream_read_u32_00be4300(stream) == 0
+        && stream.position_00bef580() == stream.size_00bef600();
+    std::printf("Installed font DAT: glyphs=%zu scaled_height=%u signed_byte_acceptance=%d short_scalar=%d\n",
+        font.glyphs.size(), static_cast<unsigned>(font.scaled_height), decoded && fields, short_scalar);
+    return decoded && fields && short_scalar;
+}
 
 // Recovered physical-to-memory route with explicit completeness checks and DLL
 // import adapter. VFS mount selection and full texture registration remain absent.
@@ -486,6 +529,14 @@ int main(int argc, char** argv) {
         // Exercise the recovered surface methods with registered-style offscreen
         // resources. The host orchestrates Reset, not the incomplete game reset loop.
         bsp::D3D9SurfaceBinding color{}, depth{};
+        bsp::D3D9SurfaceBinding texture_level0{}, texture_level1{};
+        bsp::D3D9ResetTexture2D reset_texture;
+        reset_texture.width = reset_texture.height = 64;
+        reset_texture.mip_count = 2;
+        reset_texture.format = D3DFMT_A8R8G8B8;
+        reset_texture.flags = D3DPOOL_DEFAULT;
+        reset_texture.levels.push_back({0, &texture_level0});
+        reset_texture.levels.push_back({1, &texture_level1});
         bsp::D3D9DefaultSurfaces defaults;
         bsp::RendererSynchronization synchronization{};
         bsp::set_renderer_synchronization_00b33aa0(synchronization, true);
@@ -527,6 +578,7 @@ int main(int argc, char** argv) {
         registry.append_00b2a7c0_fragment(color);
         registry.append_00b2a7c0_fragment(depth);
         if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        if (SUCCEEDED(result)) result = bsp::restore_texture_levels_00b3dd90(reset_texture, *device);
         cache.release_dynamic_buffers_00b237d0(buffers_ready, reset_vertices, reset_indices);
         cache.release_dynamic_buffers_00b237d0(buffers_ready, reset_vertices, reset_indices);
         const bool released_buffers = !buffers_ready && !reset_vertices.buffer && !reset_indices.buffer
@@ -535,10 +587,26 @@ int main(int argc, char** argv) {
         defaults.release_for_reset_00b262c0_fragment();
         const bool released_defaults = !defaults.color.surface && !defaults.depth.surface
             && defaults.color.width == 640 && defaults.depth.width == 640;
+        if (SUCCEEDED(result)) result = bsp::release_texture_levels_00b3dd30(reset_texture);
+        const bool released_texture = !reset_texture.texture && !texture_level0.surface
+            && !texture_level1.surface && texture_level0.width == 64 && texture_level1.width == 32;
         registry.release_for_reset_00b262c0_fragment();
         if (SUCCEEDED(result)) result = device->Reset(&stored);
         if (SUCCEEDED(result)) result = defaults.restore_00b23b10_fragment(*device);
+        if (SUCCEEDED(result)) result = bsp::restore_texture_levels_00b3dd90(reset_texture, *device);
         if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        bool restored_texture = SUCCEEDED(result) && released_texture;
+        for (const auto& level : reset_texture.levels) {
+            IDirect3DSurface9* current_level{};
+            if (SUCCEEDED(result)) result = reset_texture.texture->GetSurfaceLevel(level.level, &current_level);
+            restored_texture = restored_texture && SUCCEEDED(result)
+                && current_level == level.binding->surface
+                && level.binding->width == (64u >> level.level)
+                && level.binding->height == (64u >> level.level)
+                && level.binding->format == D3DFMT_A8R8G8B8;
+            if (current_level) current_level->Release();
+        }
+        std::printf("2D texture reset: existing_cached_mip_wrappers_reinitialized=%d\n", restored_texture);
         if (SUCCEEDED(result)) result = bsp::restore_dynamic_buffers_00b1fd90(buffers_ready, false,
             reset_vertices, reset_indices, *device);
         D3DVERTEXBUFFER_DESC reset_vertex_desc{};
@@ -571,7 +639,7 @@ int main(int argc, char** argv) {
         D3DSURFACE_DESC color_desc{}, depth_desc{};
         if (SUCCEEDED(result)) result = color.surface->GetDesc(&color_desc);
         if (SUCCEEDED(result)) result = depth.surface->GetDesc(&depth_desc);
-        matched = restored_buffers && restored_defaults && SUCCEEDED(result)
+        matched = restored_texture && restored_buffers && restored_defaults && SUCCEEDED(result)
             && color_desc.Width == 128 && color_desc.Height == 128
             && depth_desc.Width == 128 && depth_desc.Height == 128
             && color_desc.Format == D3DFMT_A8R8G8B8 && depth_desc.Format == D3DFMT_D24S8
@@ -587,6 +655,7 @@ int main(int argc, char** argv) {
         std::printf("Surface reset registry: swap_last_remove_without_surface_release=%d\n", removal);
         bsp::surface_release_for_reset_00b3d510(color);
         bsp::surface_release_for_reset_00b3d510(depth);
+        matched = SUCCEEDED(bsp::release_texture_levels_00b3dd30(reset_texture)) && matched;
     }
     if (swap_chain) swap_chain->Release();
     if (matched) {
@@ -629,6 +698,7 @@ int main(int argc, char** argv) {
     else if (matched) std::puts("Shader asset probe skipped: supply installed atlas DDS path to locate game scripts.");
     if (matched) matched = probe_material_states_and_constants(*device);
     if (matched && argc > 1) matched = probe_memory_texture(*device, argv[1]);
+    if (matched && argc > 1) matched = probe_installed_font(argv[1]);
     if (device) device->Release();
     if (api) api->Release();
     DestroyWindow(window);
