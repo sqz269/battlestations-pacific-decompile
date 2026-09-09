@@ -1,5 +1,11 @@
 # Texture logical-name resolution boundary
 
+Follow-up: `VFS_MOUNT_LOOKUP.md` now records the native texture search lists
+and ordered fallback implementation. With a supplied loose installation mount,
+the probe resolves `Fonts/white.tga` to `effects/white.dds` without a per-file
+mapping. The earlier audit below explains why this required VFS evidence;
+native archive/mount priority remains unestablished.
+
 The renderer/texture-manager route does not unconditionally rewrite `.tga` to
 `.dds`. `Fonts/white.tga` cannot yet be claimed to select installed
 `effects/white.dds`: that would require the actual generic VFS search and

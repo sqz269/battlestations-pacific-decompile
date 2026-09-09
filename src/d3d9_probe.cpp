@@ -23,6 +23,7 @@
 #include "bsp/font_shader.hpp"
 #include "bsp/resource_path.hpp"
 #include "bsp/stream_scalars.hpp"
+#include "loose_asset_probe.hpp"
 #include <filesystem>
 #include <algorithm>
 
@@ -36,18 +37,15 @@ bool probe_font_material(IDirect3DDevice9&, const bsp::FontData&,
 
 static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_path) {
     const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
+    LooseAssetProbe assets(game_root.string() + "\\");
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
         std::string& bytes, std::string& message) {
-        std::string relative = name;
-        std::replace(relative.begin(), relative.end(), '\\', '/');
-        if (relative != "Scripts/fundamentals.lua" && relative != "Fonts/Fonts.lua") {
-            message = "Font probe resolver does not expose this script: " + name;
-            return false;
-        }
+        std::string physical;
+        if (!assets.resolve(name, physical, message)) return false;
         bsp::PhysicalFile script;
         bsp::MemoryStream memory;
         DWORD status{};
-        if (!script.open_read_only_00bf52a0_fragment((game_root / relative).string().c_str(), status)
+        if (!script.open_read_only_00bf52a0_fragment(physical.c_str(), status)
             || !bsp::memory_stream_from_physical_00bef750_fragment(script, memory, status)
             || !memory.fully_initialized()) {
             message = "Font script read failed: " + name;
@@ -148,18 +146,14 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     static_assert(sizeof(read_info) == sizeof(address));
     std::memcpy(&read_info, &address, sizeof(read_info));
     std::vector<std::string> resource_names;
+    std::vector<std::string> resolved_names;
     const bsp::FontPhysicalResolver physical = [&](const std::string& requested,
         std::string& path_out, std::string& message) {
         resource_names.push_back(requested);
-        std::string relative = requested;
-        // Explicit diagnostic provider mapping; native VFS search/extension
-        // registration for Fonts/white.tga is not yet reconstructed.
-        if (relative == "Fonts/white.tga") relative = "effects/white.dds";
-        else if (relative != "Fonts/arial18.tga" && relative != "Fonts/arial18.dat") {
-            message = "Unmapped font fixture resource: " + requested;
-            return false;
-        }
-        path_out = (game_root / relative).string();
+        std::string logical;
+        if (!assets.resolve(requested, path_out, message, &logical)) return false;
+        resolved_names.push_back(logical);
+        std::printf("Loose font lookup: %s -> %s\n", requested.c_str(), logical.c_str());
         return true;
     };
     std::unique_ptr<bsp::FontResources> resources;
@@ -171,9 +165,11 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     }
     bool resources_checked = resource_names == std::vector<std::string>{
         "Fonts/arial18.tga", "Fonts/white.tga", "Fonts/arial18.dat"}
+        && resolved_names == std::vector<std::string>{
+            "fonts/arial18.tga", "effects/white.dds", "fonts/arial18.dat"}
         && resources->data.glyphs.size() == font.glyphs.size()
         && resources->data.scaled_height == font.scaled_height && resources->alpha->texture();
-    std::printf("Font resource owner: GFX_alpha_DAT_order_and_decoded_data=%d explicit_white_DDS_mapping=1\n",
+    std::printf("Font resource owner: GFX_alpha_DAT_order_and_decoded_data=%d native_search_lists_with_supplied_loose_mount=1\n",
         resources_checked);
     auto owner = resources->gfx;
     std::weak_ptr<bsp::MemoryStream> retained = owner->source();

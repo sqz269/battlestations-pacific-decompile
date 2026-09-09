@@ -1191,6 +1191,30 @@
       "status": "semantic_font_material_draw_checked",
       "abi_compatible": false,
       "remaining": "Valid initialized nine-slot domain; shared ownership instead of intrusive ABI, borrowed COM lifetime explicit. Edge cases assembly/source-backed."
+    },
+    {
+      "address": "00bf3970",
+      "name": "physical_directory_build_path",
+      "source": "src/physical_directory.cpp",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "evidence": "docs/VFS_MOUNT_LOOKUP.md; supplied ordered search/provider state, typed supported-string domain"
+    },
+    {
+      "address": "00bf0fb0",
+      "name": "physical_directory_resolve_logical_name",
+      "source": "src/physical_directory.cpp",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "evidence": "docs/VFS_MOUNT_LOOKUP.md; supplied ordered search/provider state, typed supported-string domain"
+    },
+    {
+      "address": "00bddc80",
+      "name": "resolve_resource_candidates",
+      "source": "src/vfs_candidates.cpp",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "evidence": "docs/VFS_MOUNT_LOOKUP.md; supplied ordered search/provider state, typed supported-string domain"
     }
   ],
   "fragments": [
@@ -1636,6 +1660,51 @@
       "status": "installed_font_material_draw_checked",
       "abi_compatible": false,
       "remaining": "Caller supplies lowercased name; native VFS mutating resolution/cache/allocation and generic malformed string behavior excluded."
+    },
+    {
+      "address": "00738360",
+      "name": "make_asset_search_registrations",
+      "source": "src/vfs_search_defaults.cpp",
+      "native_range": "texture and shaderfx startup groups",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "remaining": "Other groups/direct roots, dynamic registration, mount and archive state omitted."
+    },
+    {
+      "address": "00bf3f70",
+      "name": "physical_directory_exists",
+      "source": "src/physical_directory.cpp",
+      "native_range": "flagfalse and emptyindex route with last-success cache",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "remaining": "Accept-all and indexed modes, enumeration and synchronization omitted."
+    },
+    {
+      "address": "00bdd440",
+      "name": "exists_resource",
+      "source": "src/vfs_mounts.cpp",
+      "native_range": "normalize and ordered supplied mount existence",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "remaining": "Native mount construction/container/priority and callback ownership omitted."
+    },
+    {
+      "address": "00bdd6e0",
+      "name": "direct_resolve_resource",
+      "source": "src/vfs_mounts.cpp",
+      "native_range": "normalize and ordered supplied mount logical resolution",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "remaining": "Native mount construction/container/priority, unused device id and failed temporary allocation omitted."
+    },
+    {
+      "address": "00bdf4c0",
+      "name": "resolve_existing_resource",
+      "source": "src/resource_lookup.cpp",
+      "native_range": "normalize then ordered direct/candidate resolution",
+      "status": "installed_loose_font_lookup_checked",
+      "abi_compatible": false,
+      "remaining": "Successful-search logging, native allocation/mount/archive state omitted."
     }
   ]
 }

@@ -1,5 +1,11 @@
 # Shader resource-name resolution boundary
 
+Follow-up: `VFS_SEARCH_REGISTRATION.md`, `VFS_CANDIDATE_RESOLUTION.md` and
+`VFS_MOUNT_LOOKUP.md` recover the registration/candidate dependencies identified
+below and integrate the installed font probe. This document preserves the
+earlier handoff audit; its unresolved search-list boundary is now narrowed to
+native mount construction, archive providers and priority.
+
 `00bdf4c0` is a resolving, mutating availability operation, not a pure file
 exists predicate. The native basename-to-directory route belongs to its
 resource manager dependencies; `00b46950` does not itself prepend

@@ -1,4 +1,4 @@
-// Installed-source diagnostic only: no native .mshd/VFS or text-layout claim.
+// Installed-source diagnostic: recovered search lists, supplied loose mount.
 #include "bsp/font_geometry.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/material_textures.hpp"
@@ -6,6 +6,7 @@
 #include "bsp/material_constants.hpp"
 #include "bsp/shader_reflection.hpp"
 #include "bsp/resource_path.hpp"
+#include "loose_asset_probe.hpp"
 #include <d3dcompiler.h>
 #include <filesystem>
 #include <fstream>
@@ -81,16 +82,12 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
         || !bsp::font_has_glyph_00ad4500(font, 0x41)) return false;
     auto selected_name = descriptor_name;
     if (!bsp::normalize_resource_path_00bee690(selected_name) || selected_name != "guifontbilinear.shfx") return false;
+    LooseAssetProbe assets(std::string(game_root) + "\\");
     const bsp::ShaderScriptResolver resolver = [&](const std::string& requested, std::string& bytes, std::string& error) {
-        auto path = requested;
-        if (!bsp::normalize_resource_path_00bee690(path)) return false;
-        if (path == "guifontbilinear.shfx") path = "shaderfx/gui/guifontbilinear.shfx";
-        if (path == "dummy.shfx") path = "shaderfx/lights/dummy.shfx";
-        if (path != "shaderfx/gui/guifontbilinear.shfx" && path != "shaderfx/lights/dummy.shfx"
-            && path != "scripts/fundamentals.lua" && path != "shaderfx/dx9_lua.inc") {
-            error = "Unmapped font diagnostic asset: " + requested; return false;
-        }
-        std::ifstream input(std::filesystem::path(game_root) / path, std::ios::binary);
+        std::string path, logical;
+        if (!assets.resolve(requested, path, error, &logical)) return false;
+        std::printf("Loose font shader lookup: %s -> %s\n", requested.c_str(), logical.c_str());
+        std::ifstream input(path, std::ios::binary);
         if (!input) { error = "Cannot read " + path; return false; }
         bytes.assign(std::istreambuf_iterator<char>(input), {});
         return !input.bad();

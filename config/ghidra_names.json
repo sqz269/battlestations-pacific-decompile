@@ -1662,11 +1662,91 @@
   {
     "address": "00bdf4c0",
     "name": "BSP_VFS_ResolveExistingName",
-    "evidence": "ECX manager, mutable name stack, RET4/AL. Calls normalizer00bee690, copies normalized name, resolves in place00bddc80; success logs old/new00bdeb40 only. Name may change even on failed lookup. Not pure file-exists. Extension/search registration and provider priority unported; docs/SHADER_VFS_LOOKUP.md."
+    "evidence": "ECX manager; mutable name stack RET4 AL bool. Normalizes caller00bee690, saves normalized temporary, resolves00bddc80 then successful-search logging00bdeb40. Name can mutate on failure. Typed fragment composes ordered candidates with supplied mounts and omits logging; installed font probe uses native texture/shader search lists but supplied loose root, no native archive-priority claim."
   },
   {
     "address": "00b46950",
     "name": "BSP_MaterialEffect_LoadShaderVariants",
     "evidence": "ECX effect, filename stack, RET4/AL. If global0108d6f0 clear,00b45ee0(filename,0,0) result; else calls(filename,0,3),00b41b10,00b187a0,(filename,1,3),returns1 irrespective load results. Filenames ultimately feed Lua descriptor reader, not inferred mshd bytecode. docs/SHADER_VFS_LOOKUP.md."
+  },
+  {
+    "address": "00738360",
+    "name": "BSP_Application_RegisterResourceSearchPaths",
+    "evidence": "Startup call0073d894. Hardcoded group/extension/directory registrations via00be25e0/00be2600 and extension roots00be1480. Textures dds then tga with23 ordered prefixes; shaderfx shfx with10. Typed fragment includes these two groups only. New groups prepend, values append/deduplicate; see docs/VFS_SEARCH_REGISTRATION.md. Native mount/archive priority remains unported."
+  },
+  {
+    "address": "00bdd0a0",
+    "name": "BSP_VFS_VisitMatchingMounts",
+    "evidence": "ECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md."
+  },
+  {
+    "address": "00bdd440",
+    "name": "BSP_VFS_ExistsInMounts",
+    "evidence": "ECX manager; name stack RET4 AL bool. Copies and normalizes name00bee690, traverses00bdd0a0 using00d68398. Callback00bd90d0 probes provider+10. No alias replacement or alternative-extension search in this routine."
+  },
+  {
+    "address": "00bdd6e0",
+    "name": "BSP_VFS_ResolveInMounts",
+    "evidence": "ECX manager; input/output strings stack RET8 AL bool. Normalizes copy, traverses00bdd0a0 with callback00d683f4. Copies resolved logical name only on success, output unchanged on failure, input/output may alias. Callback00bdbc70 uses provider+24 and reattaches nonempty virtual prefix."
+  },
+  {
+    "address": "00bdbc70",
+    "name": "BSP_VFS_ResolveMountCallback",
+    "evidence": "ECX callback; mount/suffix stack RET8. Calls mount+8 provider virtual+24(suffix,out). Stores bool+4; nonempty mount reconstructs prefix plus slash plus provider-relative logical name. On success copies provider+10 device id to callback+10. Output is virtual, not physical path. Body396bytes verified; docs/VFS_MOUNT_LOOKUP.md."
+  },
+  {
+    "address": "00bd90d0",
+    "name": "BSP_VFS_ExistsMountCallback",
+    "evidence": "ECX callback; mount/suffix stack RET8. Calls mount+8 provider virtual+10(suffix), stores AL at callback+4. Body29bytes verified. Traversal tests this byte via00bd90f0."
+  },
+  {
+    "address": "00bddc80",
+    "name": "BSP_VFS_ResolveOrderedCandidates",
+    "evidence": "ECX manager; mutable name stack RET4 AL bool. Lowercases/slash-normalizes then direct00bdd6e0. Parses FIRST dot after final slash. Searches extension tree+54 and first matching group+60 in ordered full-stem/basename/original/alternate passes; all alternate tree passes precede group passes. Exact pass table docs/VFS_CANDIDATE_RESOLUTION.md. Typed callbacks distinguish rewritten direct output and bool candidate existence."
+  },
+  {
+    "address": "00bddaa0",
+    "name": "BSP_VFS_TryExtensionPrefixes",
+    "evidence": "ECX manager; output/stem/extension stack RET0C AL bool. Lower/upper range00bda260/00bda2c0 over manager+54; each equal-key node prefix+14/+18 tried00bdc680 in native order. First success copied to output; preserve equal-key order."
+  },
+  {
+    "address": "00bdc680",
+    "name": "BSP_VFS_TryConstructedCandidate",
+    "evidence": "ECX manager; mutable prefix/output,stem,extension stack RET0C AL bool. Constructs prefix+stem+dot+extension, inserts no slash. Restores manager at00bdc7e5 then virtual+8 candidate existence at00bdc7f3. On success copies constructed candidate spelling, not provider-resolved name."
+  },
+  {
+    "address": "00be2310",
+    "name": "BSP_VFS_RegisterSearchGroupValue",
+    "evidence": "ECX manager; group/value/selector stack RET0C. Lowercases group/value, selector0 extension list node+10, selector1 directory list+1C with slash/trailing normalization. New group prepends to+60; values append, equal-length _stricmp duplicates skipped. docs/VFS_SEARCH_REGISTRATION.md."
+  },
+  {
+    "address": "00be25e0",
+    "name": "BSP_VFS_RegisterSearchExtension",
+    "evidence": "ECX manager; group/extension stack RET8. Pushes selector0 and forwards00be2310;20-byte full body verified."
+  },
+  {
+    "address": "00be2600",
+    "name": "BSP_VFS_RegisterSearchDirectory",
+    "evidence": "ECX manager; group/directory stack RET8. Copies lowercases directory, changes backslash to slash and adds trailing slash before00be2310 selector1. Native empty-directory last-byte access unsafe; typed startup literals are nonempty."
+  },
+  {
+    "address": "00be1480",
+    "name": "BSP_VFS_RegisterExtensionPrefix",
+    "evidence": "ECX manager; extension/directory stack RET8. Deduplicates pair00bdc3f0, lowercases and normalizes directory with trailing slash, inserts manager+54 tree via00be0b90. Equal-key tree ordering unported. Separate from group lists at+60."
+  },
+  {
+    "address": "00bf3970",
+    "name": "BSP_PhysicalDirectory_BuildPath",
+    "evidence": "ECX provider; output/suffix stack RET8 EAX output. Concatenates unchanged root+8 and suffix004261a0; converts slash to backslash only starting at original root length. No inserted separator or dot-segment canonicalization. docs/PHYSICAL_DIRECTORY.md."
+  },
+  {
+    "address": "00bf3f70",
+    "name": "BSP_PhysicalDirectory_Exists",
+    "evidence": "ECX provider; suffix stack RET4 AL bool. Empty false; equal-length _stricmp last-success+20 returns true without OS query. Flag+28 nonzero accepts nonempty, nonzero index count+34 uses separate tree. Supported flagfalse/indexempty path builds physical path and GetFileAttributesA!=FFFFFFFF (directories accepted); success caches suffix, failure clears. Typed fragment excludes indexed/accept-all modes."
+  },
+  {
+    "address": "00bf0fb0",
+    "name": "BSP_PhysicalDirectory_ResolveLogicalName",
+    "evidence": "ECX provider; suffix/output stack RET8 AL bool. Calls provider+10 existence; success copies original logical suffix, preserves alias identity, false leaves output unchanged. Distinct provider+18 method00bf39c0 returns physical path. Full75bytes verified."
   }
 ]

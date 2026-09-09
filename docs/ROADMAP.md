@@ -60,10 +60,13 @@ and `SHADER_CONSTANT_DISPATCH_ANALYSIS.md` for concrete next boundaries.
 The font path now loads real Lua descriptors, glyph DAT and image resources,
 generates a native-compared glyph quad and draws an installed bilinear font
 shader through material slots and indexed buffers (`FONT_MATERIAL_DRAW.md`).
-Shader suffix rewriting and font image ownership are recovered. Native VFS
-registration/provider selection, full text layout/batching, GUI transforms and
-startup integration remain necessary; the draw uses explicit diagnostic paths
-and camera constants. This advances the asset-to-render path but is not a
+Shader suffix rewriting and font image ownership are recovered. Native texture/
+shader search lists, ordered fallback and physical directory resolution now
+drive the draw with a supplied loose mount (`VFS_MOUNT_LOOKUP.md`). Next trace
+mount insertion `00be1740`, virtual `.` handling, package registration and
+archive precedence; full text layout/batching, GUI transforms and startup
+integration also remain necessary. The draw uses supplied camera constants.
+This advances the asset-to-render path but is not a
 runnable game target or an original-game visual comparison.
 
 Choose one real path from file loading through decoded data to a visible result. Recover

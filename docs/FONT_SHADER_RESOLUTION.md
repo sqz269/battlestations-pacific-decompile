@@ -2,8 +2,9 @@
 
 The typed font shader selector and descriptor-name fragment now connect the
 font's scale to the installed shader source name. They reconstruct selection
-and name rewriting; the native renderer cache, VFS search registrations and
-effect object lifecycle remain separate dependencies.
+and name rewriting; the native renderer cache and effect object lifecycle
+remain separate dependencies. Follow-up `VFS_MOUNT_LOOKUP.md` connects the
+recovered search registrations with a supplied loose-directory mount.
 
 `select_font_shader_name_00ab8ce0_fragment` receives the explicit override,
 the signed DWORD read natively from `global0109cf04->+28`, and font scale.
@@ -68,8 +69,9 @@ See `reports/font_material_resource_audit.json` for these and related ranges.
 
 The font probe selects Arial16 from real Fonts.lua, feeds its scale and an
 explicit reference value 720 through selection, then lowercases and rewrites
-the selected name to `guifontbilinear.shfx`. It supplies a diagnostic physical
-mapping to the installed GUI source; it does not claim native search priority.
+the selected name to `guifontbilinear.shfx`. Recovered candidate searches find
+the installed GUI source through a supplied loose mount; this does not claim
+native archive or mount priority.
 Full rendering verification is recorded separately in `FONT_MATERIAL_DRAW.md`.
 
 Reviewed selector/registry/helper and VFS handoff names/comments were applied
