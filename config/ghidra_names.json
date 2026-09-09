@@ -1268,5 +1268,25 @@
     "address": "00b3c3a0",
     "name": "BSP_ShaderBuilder_CreateMaterialProgram",
     "evidence": "Normal source-assembly projection now in assemble_shader_programs (src/shader_lua.cpp): shared base/effect lists, registry, stage samplers, native owner-specific flags; external mode/generation/projected selection explicit. Installed debug mode0 and alphablend mode7 selected dummy combiner compile and draw through reflected constants/material bindings. Full native cache/owner/compiler lifecycle and shadow-pass pairing unported; see docs/ALPHA_MATERIAL_DRAW.md."
+  },
+  {
+    "address": "004bcc00",
+    "name": "BSP_String_LowercaseAscii",
+    "evidence": "ECX native length/data string; RET. Length-based byte iteration converts only ASCII A..Z, including after embedded NUL. Typed port in resource_path.cpp; native string allocation/ABI not reproduced."
+  },
+  {
+    "address": "00bee690",
+    "name": "BSP_Path_NormalizeResourceName",
+    "evidence": "ECX native string; RET. Calls004bcc00, backslash->slash, trims only ASCII space via00469840 substring. Substring uses strncpy, retaining length and zero-padding after embedded NUL. Typed path length<=INT32_MAX; host asset resolver uses port. See docs/TEXTURE_FILE_LOADING.md."
+  },
+  {
+    "address": "00b319b0",
+    "name": "BSP_Renderer_LoadTextureByName",
+    "evidence": "Recovered missing primary vtable00d5f0a8+64 function. ECX renderer, stack name/flags RET8. Optional renderer guard, copied ASCII-lowered name, calls resource manager00b30b40 on renderer+1A74 with name/flags/0/1. Full cache/file loader unported; see docs/TEXTURE_FILE_LOADING.md."
+  },
+  {
+    "address": "00b31c20",
+    "name": "BSP_TextureManager_ResolveName",
+    "evidence": "ECX texture manager, stack output string/request/flags (flags unused), RET0Ch. Initializes fallback via00b31bd0, copies request, resolves through00bdf4c0; missing logs and substitutes manager+14 fallback name. Analysis only; full VFS path rules unported."
   }
 ]

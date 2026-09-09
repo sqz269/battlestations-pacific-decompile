@@ -4,6 +4,7 @@
 #include "bsp/shader_lua.hpp"
 #include "bsp/shader_reflection.hpp"
 #include "bsp/material_samplers.hpp"
+#include "bsp/resource_path.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -285,10 +286,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     const auto root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
     const bsp::ShaderScriptResolver resolver = [&](const std::string& requested, std::string& bytes, std::string& error) {
         std::string path = requested;
-        for (char& c : path) {
-            if (c == '\\') c = '/';
-            if (c >= 'A' && c <= 'Z') c = static_cast<char>(c + ('a' - 'A'));
-        }
+        if (!bsp::normalize_resource_path_00bee690(path)) { error = "Unsupported resource path length"; return false; }
         if (path == "dummy.shfx") path = "shaderfx/lights/dummy.shfx"; // Explicit asset resolver mapping.
         if (path != "scripts/fundamentals.lua" && path != "shaderfx/dx9_lua.inc"
             && path != "shaderfx/common/alphablend.shfx"

@@ -9,6 +9,7 @@ add_library(bsp_core STATIC src/math.cpp src/render_sort.cpp src/random.cpp src/
 target_include_directories(bsp_core PUBLIC include)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
 target_sources(bsp_core PRIVATE src/material_samplers.cpp)
+target_sources(bsp_core PRIVATE src/resource_path.cpp)
 target_compile_features(bsp_core PUBLIC cxx_std_17)
 target_compile_options(bsp_core PRIVATE /W4 /WX /fp:strict)
 target_link_libraries(bsp_core PUBLIC user32 d3d9 PRIVATE bsp_lua511 bsp_d3dx_headers)
