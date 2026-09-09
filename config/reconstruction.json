@@ -491,6 +491,20 @@
       "source": "src/texture_atlas.cpp",
       "status": "semantic_installed_atlas_fixture_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b27a80",
+      "name": "bind_render_state_block",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_ordered_state_blocks_real_device_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b27b90",
+      "name": "bind_sampler_state_block",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_ordered_state_blocks_real_device_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -542,6 +556,15 @@
       "status": "semantic_installed_seven_item_atlas_checked",
       "abi_compatible": false,
       "remaining": "Native manager/registry/allocator ownership and full path normalization unresolved; explicit callback, owning records and relative-path adapter; malformed undefined native cases rejected."
+    },
+    {
+      "address": "00b42350",
+      "name": "pack_material_parameter_constants",
+      "source": "src/material_constants.cpp",
+      "native_range": "00b423c5-00b42693",
+      "status": "semantic_transpose_partial_copy_device_register_readback_checked",
+      "abi_compatible": false,
+      "remaining": "Full selective material constant builder, dynamic texture callbacks, transforms and palettes unported. New bounded typed records; invalid-interface preflight and exceptional x87 differences documented."
     }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "build": "MSVC Win32 Release /W4 /WX",
+  "existing_ctest": "2/2 pass",
+  "probe": "bsp_d3d9_probe with installed menu_dxt1_2.dds",
+  "state_blocks": "Ordered duplicate render state, pointer skip, shared retention, null no reset and per-state guard balance checked.",
+  "packing": "One combined material fixture: VS last shape2 versus earlier4, PS4 transposed rows,3-word partial copy, negative PS skip, unchanged sentinel words; all32VS and32PS floats read back from actual device.",
+  "scope": "Not original pass metadata, game shader or gameplay validation; new interface bounds preflight differs from native errors."
+}

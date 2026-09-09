@@ -101,3 +101,30 @@ provisional.
 
 No Ghidra functions, signatures, names, comments, or project state were changed.
 No C++ or tests were added, and no ABI compatibility or game validation is claimed.
+
+## Parameter packing implementation follow-up
+
+`include/bsp/material_constants.hpp` and `src/material_constants.cpp` now expose
+`pack_material_parameter_constants_00b423c5(parameters, selector, vertex_shapes,
+vertex_words, pixel_words)`. This implements only the parameter-packing fragment.
+Parameters own raw uint32 source words and signed per-selector stage register
+arrays. The output vectors contain float words, so they can feed the existing
+float constant upload wrappers directly. Their existing sizes are capacities;
+packing does not resize or clear them.
+
+The port preserves last-match VS row selection, unsupported-row and negative
+index skips, PS four-row matrices, partial-register nonmatrix copies, ordered
+overwrites, and untouched register contents. It preflights the entire request
+before writes. Invalid selectors, short matrix sources, insufficient outputs,
+or the same output vector for both stages return explicit new-interface status
+values and leave both buffers unchanged. These statuses are not recovered
+native error handling. Selected matrices require 16 source words; native
+two-/three-row reads are a subset of that source.
+
+Raw words use memcpy, including matrix rearrangement. This preserves ordinary
+finite values; native x87 signaling-NaN conversion and floating-point exception
+flags remain outside this semantic interface. Integration passed the Win32 Release build, both existing CTest checks and a
+combined material fixture in the existing D3D9 probe. It checks last-match VS
+two-row versus PS four-row transpose, partial raw copy and untouched sentinels,
+then compares all uploaded words through real device register readback.
+The full parent routine, native ABI replacement and fade helper remain unported.

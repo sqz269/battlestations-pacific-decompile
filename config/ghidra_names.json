@@ -857,7 +857,7 @@
   {
     "address": "00b42350",
     "name": "BSP_MaterialPass_BuildShaderConstants",
-    "evidence": "ECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md."
+    "evidence": "ECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported."
   },
   {
     "address": "00b73770",
@@ -873,5 +873,35 @@
     "address": "00b21c20",
     "name": "BSP_D3D9Renderer_BindPixelShader",
     "evidence": "ThiscallRET4, optional guard before cache comparison. Logical cache+176Ch, COM atlogical+8h. Equal nonnull COM skips and retains old logical identity; null-null skips. Other transitions store borrowed logical then APIbind, counter+1BBCh. No refcounting. Typed port actual shader identity/equivalent/null and balanced guard checked."
+  },
+  {
+    "address": "00b27a80",
+    "name": "BSP_D3D9Renderer_BindRenderStateBlock",
+    "evidence": "ThiscallRET4. Logical identity skips; retain-new/release-old then ordered 8-byte state/value entries. No outer optional guard; individual cached setters guard. Null releases block without restoring API states; blockcounter increments on replacements includingnull. Typed shared ownership port checked realdevice order, skip, retention andnull behavior."
+  },
+  {
+    "address": "00b27b90",
+    "name": "BSP_D3D9Renderer_BindSamplerStateBlock",
+    "evidence": "ThiscallRET4. Logical identity skips; retain-new/release-old then ordered 12-byte sampler/state/value entries. No outer optional guard; individual cached setters guard. Null releases block without restoring API states; blockcounter increments on replacements includingnull. Typed shared ownership port checked realdevice order, skip, retention andnull behavior."
+  },
+  {
+    "address": "00aefb20",
+    "name": "BSP_TextureAtlas_FindItem",
+    "evidence": "ECX manager; stack char pointer; RET4; EAX item or null. Ordered atlas lookup with extension removal, slash/case normalization and basename suffix fallback; general string-helper normalization partly unresolved. Returns borrowed item. Full routine unported; docs/ATLAS_GEOMETRY.md."
+  },
+  {
+    "address": "00aa2660",
+    "name": "BSP_GUI_ResolveTextureAndAtlasUV",
+    "evidence": "stdcall filename string pointer, float[4] inout UV, float[2] inout size, float scale; RET10h; EAX referenced texture. Reads atlas floatUV+14h..20h, preserves negative U/V extent flips. Both size components zero -> unsigned texture dimensions and absUV extent scaled by960/720. Retains atlas texture; miss renderer+64h load leaves UV/size unchanged. Full routine unported; docs/ATLAS_GEOMETRY.md."
+  },
+  {
+    "address": "00ab44b0",
+    "name": "BSP_GUI_SetStateTexture",
+    "evidence": "ECX object; stack state index, name string pointer, float[4] pointer; RET0ch. Stateful GUI texture setter resolves via00aa2660, transfers via00ab2690 and releases temporary texture. State record stride40h, gate object+101h. Full routine unported; docs/ATLAS_GEOMETRY.md."
+  },
+  {
+    "address": "00ab2690",
+    "name": "BSP_GUI_SetStateTextureAndUV",
+    "evidence": "ECX object; stack state index, texture pointer, float[4] pointer; RET0ch. Retain replacement/release old texture in state record; floatUV copy and flip conditions. Active signed16 state atobject+ECh triggers objectvtable+80h. Concrete geometry method unresolved. Full routine unported; docs/ATLAS_GEOMETRY.md."
   }
 ]

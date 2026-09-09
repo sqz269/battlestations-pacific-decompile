@@ -5,6 +5,7 @@
 #include "bsp/vertex_declaration.hpp"
 #include <array>
 #include <memory>
+#include <vector>
 
 namespace bsp {
 // Semantic equivalents of globals 0108d6dc/dd/e0. The original counter is
@@ -59,6 +60,14 @@ struct LogicalPixelShader { IDirect3DPixelShader9* shader{}; };
 // is projected to this pointer; native intrusive lifetime is not the C++ ABI.
 struct LogicalTexture { IDirect3DBaseTexture9* texture{}; };
 
+// Semantic state-block arrays: native +8h data, +Ch signed count. Vector sizes
+// represent nonnegative counts and must fit INT32_MAX; malformed native
+// negative counts are outside this interface. Ordering and duplicates matter.
+struct RenderStateValue { D3DRENDERSTATETYPE state{}; DWORD value{}; };
+struct SamplerStateValue { UINT sampler{}; D3DSAMPLERSTATETYPE state{}; DWORD value{}; };
+struct RenderStateBlock { std::vector<RenderStateValue> states; };
+struct SamplerStateBlock { std::vector<SamplerStateValue> states; };
+
 // New interface, not the original renderer's memory layout. Device, shared sync
 // state and optional tracked lock must outlive this object. No COM ownership.
 class D3D9StateCache {
@@ -67,6 +76,11 @@ public:
         TrackedCriticalSection* lock) : device_(device), synchronization_(synchronization), lock_(lock) {}
     void set_render_state_00b24460(D3DRENDERSTATETYPE state, DWORD value);
     void set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYPE state, DWORD value);
+    // Native thiscall RET4. No outer guard: each individual setter enters its
+    // own guard. Identity skips even mutated blocks; null releases the block
+    // without resetting device states. shared_ptr replaces intrusive ownership.
+    void bind_render_state_block_00b27a80(std::shared_ptr<RenderStateBlock> value);
+    void bind_sampler_state_block_00b27b90(std::shared_ptr<SamplerStateBlock> value);
     // Native thiscall RET Ch: start register, float data, float4 count. These
     // new APIs expose HRESULT; S_FALSE means zero count skipped guard and call.
     // Native ignores HRESULT and counts attempted uploads, including failures.
@@ -120,6 +134,10 @@ public:
     std::uint32_t pixel_shader_calls() const { return pixel_shader_calls_; }
     const LogicalVertexShader* vertex_shader() const { return vertex_shader_; }
     const LogicalPixelShader* pixel_shader() const { return pixel_shader_; }
+    std::uint32_t render_block_calls() const { return render_block_calls_; }
+    std::uint32_t sampler_block_calls() const { return sampler_block_calls_; }
+    const RenderStateBlock* render_state_block() const { return render_block_.get(); }
+    const SamplerStateBlock* sampler_state_block() const { return sampler_block_.get(); }
 private:
     struct Entry { bool valid{}; DWORD value{}; };
     struct Guard;
@@ -146,6 +164,10 @@ private:
     std::uint32_t texture_binding_calls_{};
     std::uint32_t render_calls_{};
     std::uint32_t sampler_calls_{};
+    std::shared_ptr<RenderStateBlock> render_block_;   // Native renderer +34h.
+    std::shared_ptr<SamplerStateBlock> sampler_block_; // Native renderer +3Ch.
+    std::uint32_t render_block_calls_{};              // Native +1b94h.
+    std::uint32_t sampler_block_calls_{};             // Native +1b9ch.
     // Native +1bd8h/+1bdch calls and +1be0h/+1be4h bytes, modulo 2^32.
     std::uint32_t vertex_constant_calls_{};
     std::uint32_t pixel_constant_calls_{};

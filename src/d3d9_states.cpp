@@ -66,6 +66,28 @@ void D3D9StateCache::set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYP
     }
 }
 
+void D3D9StateCache::bind_render_state_block_00b27a80(std::shared_ptr<RenderStateBlock> value) {
+    if (render_block_ == value) return; // 00b27a88..8b precedes all work.
+    // Retain the new block before releasing the previous block. Keep the input
+    // alive while iterating, like native ESI; do not snapshot or deduplicate it.
+    render_block_ = value;
+    if (value) {
+        for (const auto& item : value->states)
+            set_render_state_00b24460(item.state, item.value);
+    }
+    ++render_block_calls_; // Includes null/empty replacements, modulo 2^32.
+}
+
+void D3D9StateCache::bind_sampler_state_block_00b27b90(std::shared_ptr<SamplerStateBlock> value) {
+    if (sampler_block_ == value) return; // No outer optional guard in native.
+    sampler_block_ = value;
+    if (value) {
+        for (const auto& item : value->states)
+            set_sampler_state_00b24610(item.sampler, item.state, item.value);
+    }
+    ++sampler_block_calls_;
+}
+
 HRESULT D3D9StateCache::set_vertex_shader_constants_f_00b21820(UINT start_register,
     const float* data, UINT vector_count) {
     if (vector_count == 0) return S_FALSE; // TEST/JZ at 00b2183e precedes guard.
@@ -128,6 +150,8 @@ void D3D9StateCache::invalidate() {
     Guard guard(*this);
     render_ = {};
     samplers_ = {};
+    render_block_.reset();
+    sampler_block_.reset();
     textures_ = {};
     stream_frequencies_ = {};
     streams_ = {};

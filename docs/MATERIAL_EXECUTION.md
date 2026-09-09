@@ -107,3 +107,11 @@ D3D9StateCache and checked by real-device register readback, zero-count skipping
 and balanced optional locking. The material executor itself remains unported.
 Confirmed pass helpers and upload wrappers were named/commented and saved in
 Ghidra; affected exports were refreshed.
+
+Further integration: render/sampler block setters now use ordered typed arrays
+and retained logical identity. An existing-probe material fixture verifies
+duplicate state order, identical-block skips, ownership retention, null removal
+without state reset and balanced per-state locking on a real device. Shader
+bind wrappers are also implemented and device-checked. Parameter packing is
+a separate implemented fragment (MATERIAL_CONSTANTS.md); full pass execution
+remains unported. See reports/material_integration_validation.json.

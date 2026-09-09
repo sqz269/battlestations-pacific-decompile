@@ -1,0 +1,64 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000"
+  },
+  "functions": [
+    {
+      "address": "00aefb20",
+      "proposed_name": "BSP_TextureAtlas_FindItem",
+      "abi": "ECX manager; stack char pointer; RET4; EAX item or null",
+      "status": "exported; lookup path normalization helpers partly unresolved"
+    },
+    {
+      "address": "00aa2660",
+      "proposed_name": "BSP_GUI_ResolveTextureAndAtlasUV",
+      "abi": "stdcall filename string pointer, float[4] inout UV, float[2] inout size, float scale; RET10h; EAX referenced texture",
+      "status": "exported and assembly inspected; suitable bounded next reconstruction"
+    },
+    {
+      "address": "00ab44b0",
+      "proposed_name": "BSP_GUI_SetStateTexture",
+      "abi": "ECX object; stack state index, name string pointer, float[4] pointer; RET0ch",
+      "status": "exported; stateful GUI caller"
+    },
+    {
+      "address": "00ab2690",
+      "proposed_name": "BSP_GUI_SetStateTextureAndUV",
+      "abi": "ECX object; stack state index, texture pointer, float[4] pointer; RET0ch",
+      "status": "exported and assembly inspected; dispatches vtable+80h"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00cec380",
+      "hex": "0000000000008e40",
+      "double": 960.0
+    },
+    {
+      "address": "00cef1b8",
+      "hex": "0000000000808640",
+      "double": 720.0
+    }
+  ],
+  "first_installed_item": {
+    "float_uv": [
+      0,
+      0,
+      0.25,
+      0.25
+    ],
+    "texture_size": [
+      1024,
+      1024
+    ],
+    "predicted_default_size_at_scale_one": [
+      0.26666666666666666,
+      0.35555555555555557
+    ]
+  },
+  "packed_uv_consumer": "Not established. Confirmed GUI resolver reads original float fields directly. No universal divide-by-65535 inferred.",
+  "next_boundary": "Resolve concrete GUI object vtable+80h at call00ab278d; state current index object+ECh and state array+F4h. Exact quad stream format not established.",
+  "mutations": "No Ghidra state, source, shared ledger, or build edits."
+}
