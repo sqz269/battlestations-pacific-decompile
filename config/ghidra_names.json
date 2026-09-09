@@ -988,5 +988,15 @@
     "address": "00b38ff0",
     "name": "BSP_ShaderBuilder_AppendSystemConstantHeader",
     "evidence": "Thiscall RET4 explicitregisters flag. Singleton list00b5b890 records20h; unsigned cursor starts0, optional register when cursor<global00e13078, increments second_dimension*array_count with DWORD wrap. Checks start only; formatter omits signednegative register. Typed explicit vector/limit replaces singleton lookup. Exacttext and shadercompile checked. See docs/SHADER_CONSTANT_HEADER.md. Native ABI/allocator/registry unported."
+  },
+  {
+    "address": "00b357d0",
+    "name": "BSP_ShaderBuilder_AppendZeroFieldAssignments",
+    "evidence": "Thiscall RET8 instance string/list. Walks every field and emits two tabs instance.field=0; LF, independent of type/count/mask. Assembly shows field name pushed before string getter00419ca0 then instance; pseudocode loses variadic argument. Typed source emitter, exacttext and shadercompile/binding checked. See docs/SHADER_INITIALIZATION.md; full generator/ABI unported."
+  },
+  {
+    "address": "00b35820",
+    "name": "BSP_ShaderBuilder_AppendVertexInputDecode",
+    "evidence": "ECX builder RET. Base descriptor+1Fh gate, min(unsigned descriptor+20h,inputcount+8h). Emits IN.field = IN.field * cVtxElemScale[index].swizzle + cVtxElemOffset[index].swizzle; helper00b34e90 selects x/xy/xyz/xyzw by count1..4, other counts empty. Typed source emitter, exacttext and shadercompile/binding checked. See docs/SHADER_INITIALIZATION.md; full generator/ABI unported."
   }
 ]

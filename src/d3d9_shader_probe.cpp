@@ -87,10 +87,19 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
             declarations) == bsp::ShaderSourceStatus::complete;
     const bool pack_matches = declarations.find("INT.TexCoord0.y = OUT.UV.z;") != std::string::npos
         && declarations.find("INT.TexCoord1.x = OUT.Extra.z;") != std::string::npos;
-    declarations += "sInterpolators main(ProbeInput IN) { sVertexOut OUT; "
-        "OUT.ScreenSpacePos=mul(IN.Position,ProbeTransform); OUT.UV=ProbeTint[1]+ProbeBias; "
-        "OUT.Extra=float4(0,0,0,0); OUT.Color=float4(0,0,0,1); return PackInterpolators(OUT); }";
-    if (SUCCEEDED(result)) result = vertex_generated && pack_matches
+    bsp::append_system_constant_header_00b38ff0(
+        {{"cVtxElemScale", 1, 4, 2}, {"cVtxElemOffset", 1, 4, 2}}, false, 0, declarations);
+    std::string initialization;
+    bsp::append_zero_shader_fields_00b357d0("OUT", vertex_fields, initialization);
+    bsp::append_vertex_input_decode_00b35820({position}, true, 3, initialization);
+    const bool initialization_matches = initialization ==
+        "\t\tOUT.ScreenSpacePos=0;\n\t\tOUT.UV=0;\n\t\tOUT.Extra=0;\n\t\tOUT.Color=0;\n"
+        "\tIN.Position=IN.Position * cVtxElemScale[0].xyzw + cVtxElemOffset[0].xyzw;\n";
+    declarations += "sInterpolators main(ProbeInput IN) { sVertexOut OUT;\n";
+    declarations += initialization;
+    declarations += "OUT.ScreenSpacePos=mul(IN.Position,ProbeTransform); OUT.UV=ProbeTint[1]+ProbeBias; "
+        "OUT.Color=float4(0,0,0,1); return PackInterpolators(OUT); }";
+    if (SUCCEEDED(result)) result = vertex_generated && pack_matches && initialization_matches
         ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_generated && packing_matches
         ? assemble_host_shader(pixel_source.c_str(), "ps_2_0", &pixel_code) : E_FAIL;

@@ -22,6 +22,16 @@ struct ShaderField {
 
 enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic, invalid_packing };
 
+// Thiscall RET8: instance name and field list. Emits zero assignments for all
+// fields, independent of their type/count/mask; native %s name termination.
+void append_zero_shader_fields_00b357d0(const std::string& instance,
+    const std::vector<ShaderField>&, std::string& output);
+// ECX builder, RET. Base descriptor +1Fh enables decoding; +20h bounds the
+// prefix of input fields. Swizzle helper00b34e90 uses count alone (1..4),
+// returning empty for other counts, even if that produces invalid HLSL.
+void append_vertex_input_decode_00b35820(const std::vector<ShaderField>&,
+    bool enabled, std::uint32_t field_limit, std::string& output);
+
 // Projection of the native 20h system constant record. Native declaration
 // order is float<first>x<second>; register advance is second*array_count.
 struct ShaderSystemConstant {

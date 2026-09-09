@@ -3,6 +3,30 @@
 #include <utility>
 
 namespace bsp {
+void append_zero_shader_fields_00b357d0(const std::string& instance,
+    const std::vector<ShaderField>& fields, std::string& output) {
+    for (const auto& field : fields) {
+        output += "\t\t"; output += instance.c_str(); output += '.';
+        output += field.name.c_str(); output += "=0;\n";
+    }
+}
+
+void append_vertex_input_decode_00b35820(const std::vector<ShaderField>& fields,
+    bool enabled, std::uint32_t field_limit, std::string& output) {
+    if (!enabled) return;
+    static constexpr const char* swizzles[] = {"", "x", "xy", "xyz", "xyzw"};
+    for (std::size_t i = 0; i < fields.size() && i < field_limit; ++i) {
+        const auto& field = fields[i];
+        const char* swizzle = field.component_count <= 4 ? swizzles[field.component_count] : "";
+        const auto index = std::to_string(i);
+        output += "\tIN."; output += field.name.c_str(); output += "=IN.";
+        output += field.name.c_str(); output += " * cVtxElemScale[";
+        output += index; output += "]."; output += swizzle;
+        output += " + cVtxElemOffset["; output += index; output += "].";
+        output += swizzle; output += ";\n";
+    }
+}
+
 namespace {
 std::string signed_decimal(std::uint32_t value) {
     // Native variadic %i interprets the full DWORD as signed, even though
