@@ -1,0 +1,83 @@
+{
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b4b520",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b520: RET \n"
+    },
+    {
+      "address": "00b4b480",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b480: RET \n"
+    },
+    {
+      "address": "00b4b9b0",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b9b0: MOV EAX,dword ptr [ECX + 0x18] \n00b4b9b3: RET \n"
+    },
+    {
+      "address": "00b4b800",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b800: MOV EAX,dword ptr [ECX + 0x18] \n00b4b803: RET \n"
+    },
+    {
+      "address": "00b4b2e0",
+      "length": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b2e0: MOV EDX,dword ptr [ECX] \n00b4b2e2: PUSH EBX \n00b4b2e3: MOV EBX,dword ptr [ECX + 0x4] \n00b4b2e6: PUSH ESI \n00b4b2e7: MOV EAX,EDX \n00b4b2e9: PUSH EDI \n00b4b2ea: LEA ESI,[EAX + EBX*0x4] \n00b4b2ed: OR EDI,0xffffffff \n00b4b2f0: CMP EAX,ESI \n00b4b2f2: JNC 0x00b4b339 \n00b4b2f4: PUSH EBP \n00b4b2f5: MOV EBP,dword ptr [ESP + 0x14] \n00b4b2f9: MOV EBP,dword ptr [EBP] \n00b4b2fc: LEA ESP,[ESP] \n00b4b300: CMP dword ptr [EAX],EBP \n00b4b302: JZ 0x00b4b31a \n00b4b304: ADD EAX,0x4 \n00b4b307: CMP EAX,ESI \n00b4b309: JC 0x00b4b300 \n00b4b30b: POP EBP \n00b4b30c: XOR EAX,EAX \n00b4b30e: CMP EDI,-0x1 \n00b4b311: POP EDI \n00b4b312: POP ESI \n00b4b313: SETNZ AL \n00b4b316: POP EBX \n00b4b317: RET 0x4 \n00b4b31a: SUB EAX,EDX \n00b4b31c: SAR EAX,0x2 \n00b4b31f: MOV EDI,EAX \n00b4b321: CMP EDI,-0x1 \n00b4b324: JZ 0x00b4b338 \n00b4b326: LEA EAX,[EBX + -0x1] \n00b4b329: CMP EDI,EAX \n00b4b32b: JZ 0x00b4b334 \n00b4b32d: MOV EAX,dword ptr [EDX + EBX*0x4 + -0x4] \n00b4b331: MOV dword ptr [EDX + EDI*0x4],EAX \n00b4b334: ADD dword ptr [ECX + 0x4],-0x1 \n00b4b338: POP EBP \n00b4b339: XOR EAX,EAX \n00b4b33b: CMP EDI,-0x1 \n00b4b33e: POP EDI \n00b4b33f: POP ESI \n00b4b340: SETNZ AL \n00b4b343: POP EBX \n00b4b344: RET 0x4 \n"
+    },
+    {
+      "address": "00b4b390",
+      "length": 81,
+      "sha256": "7dcb637469678206c46174b7eba398be611ff0ab50daab136cd93213b0acfcf8",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b390: SUB ESP,0x8 \n00b4b393: CMP byte ptr [0x0108d6dc],0x0 \n00b4b39a: PUSH ESI \n00b4b39b: PUSH EDI \n00b4b39c: MOV ESI,ECX \n00b4b39e: JZ 0x00b4b3b3 \n00b4b3a0: MOV EDI,dword ptr [0x00f8d394] \n00b4b3a6: MOV ECX,EDI \n00b4b3a8: CALL 0x00b33ad0 \n00b4b3ad: MOV byte ptr [ESP + 0x8],AL \n00b4b3b1: JMP 0x00b4b3b7 \n00b4b3b3: MOV EDI,dword ptr [ESP + 0xc] \n00b4b3b7: LEA EAX,[ESP + 0x14] \n00b4b3bb: PUSH EAX \n00b4b3bc: LEA ECX,[ESI + 0x8] \n00b4b3bf: CALL 0x00b4b2e0 \n00b4b3c4: CMP byte ptr [0x0108d6dc],0x0 \n00b4b3cb: JZ 0x00b4b3d9 \n00b4b3cd: MOV ECX,dword ptr [ESP + 0x8] \n00b4b3d1: PUSH ECX \n00b4b3d2: MOV ECX,EDI \n00b4b3d4: CALL 0x00b33b00 \n00b4b3d9: POP EDI \n00b4b3da: POP ESI \n00b4b3db: ADD ESP,0x8 \n00b4b3de: RET 0x4 \n"
+    },
+    {
+      "address": "00b4b3f0",
+      "length": 81,
+      "sha256": "32033daabd1dd9c420b5475303ff48b5c6e4f77766d82923c1f86251e9ac6908",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b3f0: SUB ESP,0x8 \n00b4b3f3: CMP byte ptr [0x0108d6dc],0x0 \n00b4b3fa: PUSH ESI \n00b4b3fb: PUSH EDI \n00b4b3fc: MOV ESI,ECX \n00b4b3fe: JZ 0x00b4b413 \n00b4b400: MOV EDI,dword ptr [0x00f8d394] \n00b4b406: MOV ECX,EDI \n00b4b408: CALL 0x00b33ad0 \n00b4b40d: MOV byte ptr [ESP + 0x8],AL \n00b4b411: JMP 0x00b4b417 \n00b4b413: MOV EDI,dword ptr [ESP + 0xc] \n00b4b417: LEA EAX,[ESP + 0x14] \n00b4b41b: PUSH EAX \n00b4b41c: LEA ECX,[ESI + 0x8] \n00b4b41f: CALL 0x00b4b2e0 \n00b4b424: CMP byte ptr [0x0108d6dc],0x0 \n00b4b42b: JZ 0x00b4b439 \n00b4b42d: MOV ECX,dword ptr [ESP + 0x8] \n00b4b431: PUSH ECX \n00b4b432: MOV ECX,EDI \n00b4b434: CALL 0x00b33b00 \n00b4b439: POP EDI \n00b4b43a: POP ESI \n00b4b43b: ADD ESP,0x8 \n00b4b43e: RET 0x4 \n"
+    },
+    {
+      "address": "00b4b5d0",
+      "length": 280,
+      "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b5d0: PUSH -0x1 \n00b4b5d2: PUSH 0xcbf930 \n00b4b5d7: MOV EAX,FS:[0x0] \n00b4b5dd: PUSH EAX \n00b4b5de: MOV dword ptr FS:[0x0],ESP \n00b4b5e5: SUB ESP,0xc \n00b4b5e8: PUSH ESI \n00b4b5e9: MOV ESI,ECX \n00b4b5eb: MOV dword ptr [ESP + 0x4],ESI \n00b4b5ef: MOV dword ptr [ESI],0xd61d6c \n00b4b5f5: CMP byte ptr [0x0108d6dc],0x0 \n00b4b5fc: MOV dword ptr [ESP + 0x18],0x0 \n00b4b604: JZ 0x00b4b619 \n00b4b606: MOV ECX,dword ptr [0x00f8d394] \n00b4b60c: MOV dword ptr [ESP + 0xc],ECX \n00b4b610: CALL 0x00b33ad0 \n00b4b615: MOV byte ptr [ESP + 0x8],AL \n00b4b619: PUSH EDI \n00b4b61a: MOV EAX,dword ptr [ESI + 0x60] \n00b4b61d: AND EAX,0xf000 \n00b4b622: CMP EAX,0x1000 \n00b4b627: MOV byte ptr [ESP + 0x1c],0x1 \n00b4b62c: JNZ 0x00b4b668 \n00b4b62e: MOV EDI,dword ptr [0x00f8d394] \n00b4b634: ADD EDI,0x19f4 \n00b4b63a: PUSH EDI \n00b4b63b: CALL dword ptr [0x00ce2218] \n00b4b641: ADD dword ptr [EDI + 0x18],0x1 \n00b4b645: MOV ECX,dword ptr [ESI + 0x58] \n00b4b648: PUSH ESI \n00b4b649: CALL 0x00b4b3f0 \n00b4b64e: MOV EAX,[0x00f8d394] \n00b4b653: ADD dword ptr [EAX + 0x1a0c],-0x1 \n00b4b65a: ADD EAX,0x19f4 \n00b4b65f: PUSH EAX \n00b4b660: CALL dword ptr [0x00ce2210] \n00b4b666: JMP 0x00b4b66e \n00b4b668: MOV ECX,dword ptr [ESI + 0x58] \n00b4b66b: MOV EDX,dword ptr [ECX + 0x4] \n00b4b66e: MOV ECX,dword ptr [0x00f8d394] \n00b4b674: PUSH EBP \n00b4b675: PUSH ESI \n00b4b676: CALL 0x00b268e0 \n00b4b67b: MOV EDI,dword ptr [ESI + 0x68] \n00b4b67e: MOV EBP,dword ptr [0x00ce2220] \n00b4b684: LEA EAX,[EDI + 0x4] \n00b4b687: PUSH EAX \n00b4b688: CALL EBP \n00b4b68a: TEST EAX,EAX \n00b4b68c: JNZ 0x00b4b696 \n00b4b68e: MOV EDX,dword ptr [EDI] \n00b4b690: MOV EAX,dword ptr [EDX] \n00b4b692: MOV ECX,EDI \n00b4b694: CALL EAX \n00b4b696: MOV EDI,dword ptr [ESI + 0x58] \n00b4b699: LEA ECX,[EDI + 0x4] \n00b4b69c: PUSH ECX \n00b4b69d: CALL EBP \n00b4b69f: TEST EAX,EAX \n00b4b6a1: POP EBP \n00b4b6a2: JNZ 0x00b4b6ac \n00b4b6a4: MOV EDX,dword ptr [EDI] \n00b4b6a6: MOV EAX,dword ptr [EDX] \n00b4b6a8: MOV ECX,EDI \n00b4b6aa: CALL EAX \n00b4b6ac: CMP byte ptr [0x0108d6dc],0x0 \n00b4b6b3: MOV byte ptr [ESP + 0x1c],0x0 \n00b4b6b8: POP EDI \n00b4b6b9: JZ 0x00b4b6c9 \n00b4b6bb: MOV ECX,dword ptr [ESP + 0x8] \n00b4b6bf: PUSH ECX \n00b4b6c0: MOV ECX,dword ptr [ESP + 0x10] \n00b4b6c4: CALL 0x00b33b00 \n00b4b6c9: MOV ECX,ESI \n00b4b6cb: MOV dword ptr [ESP + 0x18],0xffffffff \n00b4b6d3: CALL 0x00b62010 \n00b4b6d8: MOV ECX,dword ptr [ESP + 0x10] \n00b4b6dc: POP ESI \n00b4b6dd: MOV dword ptr FS:[0x0],ECX \n00b4b6e4: ADD ESP,0x18 \n00b4b6e7: RET \n"
+    },
+    {
+      "address": "00b4b6f0",
+      "length": 205,
+      "sha256": "f369cf9147abbc3d44f0ce5d1e7d73af2257137cde16e0104093a9275ebfe57f",
+      "disk_matches_ghidra": true,
+      "assembly": "00b4b6f0: PUSH -0x1 \n00b4b6f2: PUSH 0xcbf950 \n00b4b6f7: MOV EAX,FS:[0x0] \n00b4b6fd: PUSH EAX \n00b4b6fe: MOV dword ptr FS:[0x0],ESP \n00b4b705: SUB ESP,0xc \n00b4b708: PUSH ESI \n00b4b709: MOV ESI,ECX \n00b4b70b: MOV dword ptr [ESP + 0x4],ESI \n00b4b70f: MOV dword ptr [ESI],0xd61de0 \n00b4b715: CMP byte ptr [0x0108d6dc],0x0 \n00b4b71c: MOV dword ptr [ESP + 0x18],0x0 \n00b4b724: JZ 0x00b4b739 \n00b4b726: MOV ECX,dword ptr [0x00f8d394] \n00b4b72c: MOV dword ptr [ESP + 0xc],ECX \n00b4b730: CALL 0x00b33ad0 \n00b4b735: MOV byte ptr [ESP + 0x8],AL \n00b4b739: MOV EAX,dword ptr [ESI + 0x10] \n00b4b73c: MOV ECX,dword ptr [ESI + 0x8] \n00b4b73f: AND EAX,0xf000 \n00b4b744: CMP EAX,0x1000 \n00b4b749: MOV byte ptr [ESP + 0x18],0x1 \n00b4b74e: JNZ 0x00b4b758 \n00b4b750: PUSH ESI \n00b4b751: CALL 0x00b4b390 \n00b4b756: JMP 0x00b4b75b \n00b4b758: MOV EDX,dword ptr [ECX + 0x4] \n00b4b75b: MOV ECX,dword ptr [0x00f8d394] \n00b4b761: PUSH EDI \n00b4b762: PUSH ESI \n00b4b763: CALL 0x00b26900 \n00b4b768: MOV EDI,dword ptr [ESI + 0x8] \n00b4b76b: LEA EAX,[EDI + 0x4] \n00b4b76e: PUSH EAX \n00b4b76f: CALL dword ptr [0x00ce2220] \n00b4b775: TEST EAX,EAX \n00b4b777: JNZ 0x00b4b781 \n00b4b779: MOV EDX,dword ptr [EDI] \n00b4b77b: MOV EAX,dword ptr [EDX] \n00b4b77d: MOV ECX,EDI \n00b4b77f: CALL EAX \n00b4b781: CMP byte ptr [0x0108d6dc],0x0 \n00b4b788: MOV byte ptr [ESP + 0x1c],0x0 \n00b4b78d: POP EDI \n00b4b78e: JZ 0x00b4b79e \n00b4b790: MOV ECX,dword ptr [ESP + 0x8] \n00b4b794: PUSH ECX \n00b4b795: MOV ECX,dword ptr [ESP + 0x10] \n00b4b799: CALL 0x00b33b00 \n00b4b79e: MOV ECX,ESI \n00b4b7a0: MOV dword ptr [ESP + 0x18],0xffffffff \n00b4b7a8: CALL 0x00bd30f0 \n00b4b7ad: MOV ECX,dword ptr [ESP + 0x10] \n00b4b7b1: POP ESI \n00b4b7b2: MOV dword ptr FS:[0x0],ECX \n00b4b7b9: ADD ESP,0x18 \n00b4b7bc: RET \n"
+    },
+    {
+      "address": "00b2d8e0",
+      "length": 749,
+      "sha256": "a1d5427e2a7c23cfd1b66bbdf7f0620da2ec877b1934dad51ab57bc292dcaee1",
+      "disk_matches_ghidra": true,
+      "assembly": "00b2d8e0: MOV EAX,FS:[0x0] \n00b2d8e6: PUSH -0x1 \n00b2d8e8: PUSH 0xcbd588 \n00b2d8ed: PUSH EAX \n00b2d8ee: MOV dword ptr FS:[0x0],ESP \n00b2d8f5: SUB ESP,0x8 \n00b2d8f8: PUSH EBX \n00b2d8f9: PUSH ESI \n00b2d8fa: MOV ESI,ECX \n00b2d8fc: XOR EBX,EBX \n00b2d8fe: CMP dword ptr [ESI + 0x1998],EBX \n00b2d904: JZ 0x00b2dbba \n00b2d90a: CMP byte ptr [0x0108d4cc],BL \n00b2d910: JZ 0x00b2d918 \n00b2d912: CALL dword ptr [0x00ce2148] \n00b2d918: CMP byte ptr [0x0108d6dc],BL \n00b2d91e: MOV byte ptr [0x0108d4cc],0x1 \n00b2d925: JZ 0x00b2d936 \n00b2d927: MOV ECX,ESI \n00b2d929: MOV dword ptr [ESP + 0xc],ESI \n00b2d92d: CALL 0x00b33ad0 \n00b2d932: MOV byte ptr [ESP + 0x8],AL \n00b2d936: PUSH EDI \n00b2d937: MOV dword ptr [ESP + 0x1c],EBX \n00b2d93b: CALL 0x004c11f0 \n00b2d940: MOV ECX,EAX \n00b2d942: CALL 0x00b1ebe0 \n00b2d947: XOR EDI,EDI \n00b2d949: LEA ESP,[ESP] \n00b2d950: MOV EAX,dword ptr [ESI] \n00b2d952: MOV EDX,dword ptr [EAX + 0x130] \n00b2d958: PUSH EBX \n00b2d959: PUSH EDI \n00b2d95a: MOV ECX,ESI \n00b2d95c: CALL EDX \n00b2d95e: ADD EDI,0x1 \n00b2d961: CMP EDI,0x14 \n00b2d964: JL 0x00b2d950 \n00b2d966: XOR EDI,EDI \n00b2d968: JMP 0x00b2d970 \n00b2d970: MOV EAX,dword ptr [ESI] \n00b2d972: MOV EDX,dword ptr [EAX + 0x134] \n00b2d978: PUSH EBX \n00b2d979: PUSH EDI \n00b2d97a: MOV ECX,ESI \n00b2d97c: CALL EDX \n00b2d97e: ADD EDI,0x1 \n00b2d981: CMP EDI,0x4 \n00b2d984: JL 0x00b2d970 \n00b2d986: MOV EAX,dword ptr [ESI] \n00b2d988: MOV EDX,dword ptr [EAX + 0x138] \n00b2d98e: PUSH EBX \n00b2d98f: PUSH EBX \n00b2d990: MOV ECX,ESI \n00b2d992: CALL EDX \n00b2d994: LEA EDI,[ESI + 0x19f4] \n00b2d99a: PUSH EDI \n00b2d99b: CALL dword ptr [0x00ce2218] \n00b2d9a1: ADD dword ptr [EDI + 0x18],0x1 \n00b2d9a5: MOV ECX,dword ptr [ESI + 0x1974] \n00b2d9ab: CALL 0x00b232b0 \n00b2d9b0: ADD dword ptr [EDI + 0x18],-0x1 \n00b2d9b4: PUSH EDI \n00b2d9b5: CALL dword ptr [0x00ce2210] \n00b2d9bb: MOV ECX,dword ptr [ESI + 0x1978] \n00b2d9c1: CALL 0x00b231c0 \n00b2d9c6: MOV EAX,dword ptr [ESP + 0x24] \n00b2d9ca: CMP EAX,EBX \n00b2d9cc: JZ 0x00b2d9db \n00b2d9ce: MOV EDX,dword ptr [ESI] \n00b2d9d0: PUSH EAX \n00b2d9d1: MOV EAX,dword ptr [EDX + 0x110] \n00b2d9d7: MOV ECX,ESI \n00b2d9d9: CALL EAX \n00b2d9db: MOV ECX,ESI \n00b2d9dd: CALL 0x00b2bb90 \n00b2d9e2: MOV EDX,dword ptr [ESI] \n00b2d9e4: MOV EAX,dword ptr [EDX + 0xc4] \n00b2d9ea: MOV ECX,ESI \n00b2d9ec: CALL EAX \n00b2d9ee: MOV ECX,ESI \n00b2d9f0: CALL 0x00b2b580 \n00b2d9f5: PUSH EBX \n00b2d9f6: PUSH 0x1a \n00b2d9f8: MOV ECX,ESI \n00b2d9fa: CALL 0x00b24460 \n00b2d9ff: PUSH EBX \n00b2da00: PUSH 0x1a \n00b2da02: MOV ECX,ESI \n00b2da04: CALL 0x00b24460 \n00b2da09: PUSH EBX \n00b2da0a: PUSH 0x1c \n00b2da0c: MOV ECX,ESI \n00b2da0e: CALL 0x00b24460 \n00b2da13: PUSH EBX \n00b2da14: PUSH 0x7 \n00b2da16: MOV ECX,ESI \n00b2da18: CALL 0x00b24460 \n00b2da1d: PUSH EBX \n00b2da1e: PUSH 0xe \n00b2da20: MOV ECX,ESI \n00b2da22: CALL 0x00b24460 \n00b2da27: PUSH 0x2 \n00b2da29: PUSH 0x17 \n00b2da2b: MOV ECX,ESI \n00b2da2d: CALL 0x00b24460 \n00b2da32: PUSH EBX \n00b2da33: PUSH 0x34 \n00b2da35: MOV ECX,ESI \n00b2da37: CALL 0x00b24460 \n00b2da3c: PUSH EBX \n00b2da3d: PUSH 0xf \n00b2da3f: MOV ECX,ESI \n00b2da41: CALL 0x00b24460 \n00b2da46: PUSH EBX \n00b2da47: PUSH 0x1b \n00b2da49: MOV ECX,ESI \n00b2da4b: CALL 0x00b24460 \n00b2da50: PUSH 0x3 \n00b2da52: PUSH 0x16 \n00b2da54: MOV ECX,ESI \n00b2da56: CALL 0x00b24460 \n00b2da5b: PUSH EBX \n00b2da5c: PUSH 0x1d \n00b2da5e: MOV ECX,ESI \n00b2da60: CALL 0x00b24460 \n00b2da65: PUSH 0x3 \n00b2da67: PUSH 0x8 \n00b2da69: MOV ECX,ESI \n00b2da6b: CALL 0x00b24460 \n00b2da70: PUSH 0xf \n00b2da72: PUSH 0xa8 \n00b2da77: MOV ECX,ESI \n00b2da79: CALL 0x00b24460 \n00b2da7e: PUSH EBX \n00b2da7f: PUSH 0x34 \n00b2da81: MOV ECX,ESI \n00b2da83: CALL 0x00b24460 \n00b2da88: PUSH EBX \n00b2da89: PUSH 0xae \n00b2da8e: MOV ECX,ESI \n00b2da90: CALL 0x00b24460 \n00b2da95: PUSH EBX \n00b2da96: PUSH 0xc2 \n00b2da9b: MOV ECX,ESI \n00b2da9d: CALL 0x00b24460 \n00b2daa2: CALL 0x00c2f1cc \n00b2daa7: CMP dword ptr [ESI + 0x1d90],EBX \n00b2daad: JNZ 0x00b2dac8 \n00b2daaf: CMP byte ptr [ESI + 0x1d8a],BL \n00b2dab5: JNZ 0x00b2dac8 \n00b2dab7: MOV EAX,dword ptr [ESI + 0x1a10] \n00b2dabd: MOV ECX,dword ptr [EAX] \n00b2dabf: MOV EDX,dword ptr [ECX + 0xa8] \n00b2dac5: PUSH EAX \n00b2dac6: CALL EDX \n00b2dac8: LEA ECX,[ESI + 0x34] \n00b2dacb: CALL 0x00b241c0 \n00b2dad0: LEA ECX,[ESI + 0x1b78] \n00b2dad6: CALL 0x00b0ccb0 \n00b2dadb: XOR EDI,EDI \n00b2dadd: CMP dword ptr [ESI + 0x19a4],EBX \n00b2dae3: MOV dword ptr [ESI + 0x1998],EBX \n00b2dae9: JBE 0x00b2db15 \n00b2daeb: JMP 0x00b2daf0 \n00b2daf0: MOV EAX,dword ptr [ESI + 0x19a0] \n00b2daf6: MOV ECX,dword ptr [EAX + EDI*0x4] \n00b2daf9: CMP dword ptr [ECX + 0x8],EBX \n00b2dafc: LEA EAX,[EAX + EDI*0x4] \n00b2daff: JNZ 0x00b2db0a \n00b2db01: MOV EAX,ECX \n00b2db03: MOV EDX,dword ptr [EAX] \n00b2db05: MOV EAX,dword ptr [EDX + 0x10] \n00b2db08: CALL EAX \n00b2db0a: ADD EDI,0x1 \n00b2db0d: CMP EDI,dword ptr [ESI + 0x19a4] \n00b2db13: JC 0x00b2daf0 \n00b2db15: CMP byte ptr [0x00e1306c],BL \n00b2db1b: POP EDI \n00b2db1c: JZ 0x00b2db4d \n00b2db1e: FLD1 \n00b2db20: MOV EDX,dword ptr [ESI] \n00b2db22: MOV EDX,dword ptr [EDX + 0x8] \n00b2db25: PUSH EBX \n00b2db26: PUSH ECX \n00b2db27: FSTP float ptr [ESP] \n00b2db2a: LEA EAX,[ESP + 0x28] \n00b2db2e: PUSH EAX \n00b2db2f: PUSH 0x1 \n00b2db31: PUSH EBX \n00b2db32: PUSH EBX \n00b2db33: MOV ECX,ESI \n00b2db35: MOV byte ptr [ESP + 0x3a],BL \n00b2db39: MOV byte ptr [ESP + 0x39],BL \n00b2db3d: MOV byte ptr [ESP + 0x38],BL \n00b2db41: MOV byte ptr [ESP + 0x3b],BL \n00b2db45: CALL EDX \n00b2db47: MOV byte ptr [0x00e1306c],BL \n00b2db4d: CMP dword ptr [ESI + 0x1d90],EBX \n00b2db53: JNZ 0x00b2db8a \n00b2db55: CMP byte ptr [ESI + 0x1d8a],BL \n00b2db5b: JNZ 0x00b2db8a \n00b2db5d: MOV EAX,dword ptr [ESI] \n00b2db5f: MOV EDX,dword ptr [EAX + 0x2c] \n00b2db62: MOV ECX,ESI \n00b2db64: CALL EDX \n00b2db66: TEST AL,AL \n00b2db68: JNZ 0x00b2db8a \n00b2db6a: MOV EAX,dword ptr [ESI + 0x1a10] \n00b2db70: MOV ECX,dword ptr [EAX] \n00b2db72: MOV EDX,dword ptr [ECX + 0x44] \n00b2db75: PUSH EBX \n00b2db76: PUSH EBX \n00b2db77: PUSH EBX \n00b2db78: PUSH EBX \n00b2db79: PUSH EAX \n00b2db7a: CALL EDX \n00b2db7c: CMP EAX,0x88760868 \n00b2db81: JNZ 0x00b2db8a \n00b2db83: MOV byte ptr [0x0108d4b9],0x1 \n00b2db8a: MOV EAX,[0x0108fe88] \n00b2db8f: MOV dword ptr [EAX + 0x8],EBX \n00b2db92: ADD dword ptr [ESI + 0x14],0x1 \n00b2db96: CMP byte ptr [0x0108d6dc],BL \n00b2db9c: MOV byte ptr [0x0108d4cc],BL \n00b2dba2: MOV dword ptr [ESP + 0x18],0xffffffff \n00b2dbaa: JZ 0x00b2dbba \n00b2dbac: MOV ECX,dword ptr [ESP + 0x8] \n00b2dbb0: PUSH ECX \n00b2dbb1: MOV ECX,dword ptr [ESP + 0x10] \n00b2dbb5: CALL 0x00b33b00 \n00b2dbba: MOV ECX,dword ptr [ESP + 0x10] \n00b2dbbe: POP ESI \n00b2dbbf: POP EBX \n00b2dbc0: MOV dword ptr FS:[0x0],ECX \n00b2dbc7: ADD ESP,0x14 \n00b2dbca: RET 0x4 \n"
+    },
+    {
+      "address": "00b2f4b0",
+      "length": 5,
+      "sha256": "ca024f26c69033c58a58a8592b1c05202275ca6b3af844c9c688737f7f20dc39",
+      "disk_matches_ghidra": true,
+      "assembly": "00b2f4b0: JMP 0x00b2d8e0 \n"
+    }
+  ],
+  "note": "Analysis only. No C++ or gameplay validation claimed. Contiguous entry-through-final-return ranges checked against original disk bytes."
+}

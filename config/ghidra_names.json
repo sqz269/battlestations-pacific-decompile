@@ -498,5 +498,60 @@
     "address": "00b48dd0",
     "name": "BSP_LogicalIndexStream_InvalidateOffset",
     "evidence": "Recovered vtable+8h; writes ffffffff to stream+Ch. Does not rewind physical cursor."
+  },
+  {
+    "address": "00b4b520",
+    "name": "BSP_PhysicalVertexBuffer_NoOpSlot10",
+    "evidence": "Physical vertex vtable 00d61e7c+10h targets this single RET. No cursor reset or registry invalidation occurs."
+  },
+  {
+    "address": "00b4b480",
+    "name": "BSP_PhysicalIndexBuffer_NoOpSlot10",
+    "evidence": "Physical index vtable 00d61e58+10h targets this single RET. No cursor reset or registry invalidation occurs."
+  },
+  {
+    "address": "00b4b9b0",
+    "name": "BSP_PhysicalVertexBuffer_GetCapacity",
+    "evidence": "Physical vertex vtable+18h; MOV EAX,[ECX+18h]; RET. Returns byte capacity without mutation."
+  },
+  {
+    "address": "00b4b800",
+    "name": "BSP_PhysicalIndexBuffer_GetCapacity",
+    "evidence": "Physical index vtable+18h; MOV EAX,[ECX+18h]; RET. Returns byte capacity without mutation."
+  },
+  {
+    "address": "00b4b2e0",
+    "name": "BSP_PointerArray_RemoveSwapLast",
+    "evidence": "Thiscall array data/count at+0/+4, pointer-to-value argument. Linear search; replaces found entry with last unless already last, decrements count, returns bool in AL. Does not release pointee or clear stale last slot."
+  },
+  {
+    "address": "00b4b390",
+    "name": "BSP_PhysicalIndexBuffer_UnregisterLogicalStream",
+    "evidence": "Thiscall physical wrapper; RET4 stream pointer argument. Optional renderer guard, then RemoveSwapLast on array at physical+8h. Logical index destructor 00b4b6f0 supplies physical+8h in ECX and stream as argument for dynamic flags."
+  },
+  {
+    "address": "00b4b3f0",
+    "name": "BSP_PhysicalVertexBuffer_UnregisterLogicalStream",
+    "evidence": "Thiscall physical wrapper; RET4 stream pointer argument. Optional renderer guard, then RemoveSwapLast on array at physical+8h. Logical vertex destructor 00b4b5d0 supplies physical+58h in ECX under additional tracked renderer critical section for dynamic flags."
+  },
+  {
+    "address": "00b4b5d0",
+    "name": "BSP_LogicalVertexStream_Destruct",
+    "evidence": "Installs vtable00d61d6c; dynamic flags unregister raw logical pointer before releasing physical reference. Renderer callback00b268e0, intrusive declaration+68h and physical+58h release, then base00b62010. Full renderer callback/base behavior not reconstructed."
+  },
+  {
+    "address": "00b4b6f0",
+    "name": "BSP_LogicalIndexStream_Destruct",
+    "evidence": "Installs vtable00d61de0; dynamic flags unregister logical pointer before releasing physical+8h. Renderer callback00b26900 then base00bd30f0. Full renderer callback/base behavior not reconstructed."
+  },
+  {
+    "address": "00b2d8e0",
+    "name": "BSP_D3D9Renderer_EndFrameAndPresent",
+    "evidence": "Provisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied."
+  },
+  {
+    "address": "00b2f4b0",
+    "name": "BSP_D3D9Renderer_EndFrameAndPresentThunk",
+    "evidence": "Renderer primary vtable00d5f0a8+10h; single JMP00b2d8e0. Newly recovered missing function; target is provisionally named EndFrameAndPresent."
   }
 ]
