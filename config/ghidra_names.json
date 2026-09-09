@@ -723,5 +723,30 @@
     "address": "00b29e60",
     "name": "BSP_D3D9Renderer_ChangePresentationMode",
     "evidence": "Holds lock+199Ch, checks/stores presentation parameters; same Windowed value sets pending reset0108d4b8, changed Windowed invokes00b29670 device recreation. Reentrant tracked lock depth blocks worker frame calls. Full mode/parameter semantics unported."
+  },
+  {
+    "address": "00b1d950",
+    "name": "BSP_RenderCommand_ExecuteBatches",
+    "evidence": "Vtable00d5e5e0+0, recovered missing function. Gate00b20240 requires inhibit0/notlost; set context state; gate renderer+2Ch activeframe. Two batch pointers+C/+10h prepared serially unless optional syncdisabled and bothcounts>50, then jobservice dispatch. Executes both via virtual+8h with index/context. Full state/job/material dependencies unported."
+  },
+  {
+    "address": "00b55550",
+    "name": "BSP_RenderBatch_ExecuteEntries",
+    "evidence": "Vtable00d5e5ac+8h, recovered missing. ECX batch, RET8 consumes two unused stackargs. If renderer+2Ch active, zero0108fbf4 then iterate list+Ch/count+10h; ECX=entry+4->20h->7Ch render implementation and virtual+14h receives entry pointer. No direct D3D draw here."
+  },
+  {
+    "address": "00b51df0",
+    "name": "BSP_RenderBatch_PrepareSort",
+    "evidence": "Vtable00d5e5ac+Ch. Query queue sortconfig00b1cb30; only sort when enabled. Batchindex0 derives64-bit key atentry+20h from material-related values then comparator00b51b00; other index comparator00b51ab0. Exact key/ordering semantics andsorthelper00b1dce0 unported; no opaque/transparent naming assumed."
+  },
+  {
+    "address": "00b1edc0",
+    "name": "BSP_RenderCommand_InitializeContextAndBatches",
+    "evidence": "Allocates18h context vtable00d5e5c4 atcommand+28h, retains supplied references into context+8/+C/+14 andcommand+4, context+10 points back tocommand. Acquires two pooled batches into+C/+10h via00b1e870/00b1d5b0. Allocator and ownership teardown still unported."
+  },
+  {
+    "address": "00b1fe20",
+    "name": "BSP_D3D9Renderer_IsFrameActive",
+    "evidence": "Renderer primary vtable+2Ch; boolean AL=(DWORD+1998h !=0). Gates batch execution and causes EndFrame Present path to proceed only after activefield cleared. Recovered missing11-byte function."
   }
 ]
