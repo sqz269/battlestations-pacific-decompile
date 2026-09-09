@@ -1,0 +1,27 @@
+{
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b3e190",
+      "length": 93,
+      "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5",
+      "disk_matches_ghidra": true,
+      "assembly": "00b3e190: PUSH ESI \n00b3e191: MOV ESI,ECX \n00b3e193: MOV ECX,dword ptr [0x00f8d394] \n00b3e199: PUSH EDI \n00b3e19a: CALL 0x00b1fef0 \n00b3e19f: MOV EDI,EAX \n00b3e1a1: XOR EAX,EAX \n00b3e1a3: CMP dword ptr [ESI + 0x18],0x14 \n00b3e1a7: JNZ 0x00b3e1ae \n00b3e1a9: MOV EAX,0x15 \n00b3e1ae: MOV ECX,dword ptr [ESI + 0x4c] \n00b3e1b1: LEA EDX,[ESI + 0x10] \n00b3e1b4: PUSH EDX \n00b3e1b5: MOV EDX,dword ptr [ESI + 0x2c] \n00b3e1b8: PUSH 0x0 \n00b3e1ba: PUSH 0x0 \n00b3e1bc: PUSH 0x0 \n00b3e1be: PUSH -0x1 \n00b3e1c0: PUSH 0x70004 \n00b3e1c5: PUSH 0x1 \n00b3e1c7: PUSH EAX \n00b3e1c8: MOV EAX,dword ptr [ESI + 0x3c] \n00b3e1cb: PUSH 0x0 \n00b3e1cd: PUSH EAX \n00b3e1ce: MOV EAX,dword ptr [ESI + 0x28] \n00b3e1d1: PUSH EDX \n00b3e1d2: MOV EDX,dword ptr [ECX] \n00b3e1d4: PUSH EAX \n00b3e1d5: MOV EAX,dword ptr [EDX + 0x30] \n00b3e1d8: CALL EAX \n00b3e1da: MOV ECX,dword ptr [ESI + 0x4c] \n00b3e1dd: PUSH EAX \n00b3e1de: CALL 0x00bef610 \n00b3e1e3: PUSH EAX \n00b3e1e4: PUSH EDI \n00b3e1e5: CALL 0x00c2dfe6 \n00b3e1ea: POP EDI \n00b3e1eb: POP ESI \n00b3e1ec: RET \n"
+    },
+    {
+      "address": "00bef610",
+      "length": 7,
+      "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef",
+      "disk_matches_ghidra": true,
+      "assembly": "00bef610: MOV EAX,dword ptr [ECX + 0x8] \n00bef613: MOV EAX,dword ptr [EAX + 0x8] \n00bef616: RET \n"
+    },
+    {
+      "address": "00b1fef0",
+      "length": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+      "disk_matches_ghidra": true,
+      "assembly": "00b1fef0: MOV EAX,dword ptr [ECX + 0x1a10] \n00b1fef6: RET \n"
+    }
+  ],
+  "validation": "Win32 Release build, existing 2 CTest checks, real device managed DXT1 texture creation and all compressed payload rows compared with installed menu_dxt1_2.dds. Native allocator/file registry and rendering equivalence unverified."
+}

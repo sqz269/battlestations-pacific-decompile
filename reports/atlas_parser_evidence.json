@@ -1,0 +1,172 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000"
+  },
+  "scale_constant": {
+    "address": "00ce5f90",
+    "hex": "00000000e0ffef40",
+    "little_endian_double": 65535.0
+  },
+  "proposed_names": [
+    {
+      "address": "00aeeaf0",
+      "name": "BSP_TextureAtlas_ParseBuffer",
+      "abi": "ECX manager; stack buffer pointer; RET4; AL status"
+    },
+    {
+      "address": "00aee620",
+      "name": "BSP_TextureAtlasItem_ParseParams",
+      "abi": "ECX item; stack buffer pointer; RET4; AL status"
+    },
+    {
+      "address": "00aee4d0",
+      "name": "BSP_TextureAtlasItem_Ctor",
+      "abi": "ECX item; stack item name, texture pointer, descriptor filename; RET0c; EAX item"
+    },
+    {
+      "address": "00af5740",
+      "name": "BSP_TextBuffer_ReadNormalizedLine",
+      "abi": "ECX buffer; stack output string object; RET4; AL status"
+    },
+    {
+      "address": "00af55f0",
+      "name": "BSP_TextBuffer_Rewind",
+      "abi": "ECX buffer; clears+4 and+18; RET"
+    },
+    {
+      "address": "00aee3c0",
+      "name": "BSP_AtlasLine_GetToken",
+      "abi": "ECX line string object; stack output object,index; RET8; EAX output"
+    },
+    {
+      "address": "00aee340",
+      "name": "BSP_AtlasToken_AssignPrintablePrefix",
+      "abi": "ECX token object; stack char pointer; RET4; EAX copied byte count"
+    }
+  ],
+  "fixture": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\interface\\textures\\menu_dxt1_2.ats",
+  "items": [
+    {
+      "name": "interface/textures/fe/achievement/ca_of.tga",
+      "uv": {
+        "U1": 0.0,
+        "V1": 0.0,
+        "U2": 0.25,
+        "V2": 0.25
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        0,
+        0,
+        16383,
+        16383,
+        16383,
+        16383
+      ]
+    },
+    {
+      "name": "interface/textures/fe/achievement/ca_rs.tga",
+      "uv": {
+        "U1": 0.0,
+        "V1": 0.2578125,
+        "U2": 0.25,
+        "V2": 0.5078125
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        0,
+        16895,
+        16383,
+        33279,
+        16383,
+        16383
+      ]
+    },
+    {
+      "name": "interface/textures/fe/achievement/ca_saa.tga",
+      "uv": {
+        "U1": 0.0,
+        "V1": 0.515625,
+        "U2": 0.25,
+        "V2": 0.765625
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        0,
+        33791,
+        16383,
+        50175,
+        16383,
+        16383
+      ]
+    },
+    {
+      "name": "interface/textures/fe/achievement/ca_sas.tga",
+      "uv": {
+        "U1": 0.2578125,
+        "V1": 0.0,
+        "U2": 0.5078125,
+        "V2": 0.25
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        16895,
+        0,
+        33279,
+        16383,
+        16383,
+        16383
+      ]
+    },
+    {
+      "name": "interface/textures/fe/achievement/ca_use.tga",
+      "uv": {
+        "U1": 0.2578125,
+        "V1": 0.2578125,
+        "U2": 0.5078125,
+        "V2": 0.5078125
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        16895,
+        16895,
+        33279,
+        33279,
+        16383,
+        16383
+      ]
+    },
+    {
+      "name": "interface/textures/fe/achievement/ca_usv.tga",
+      "uv": {
+        "U1": 0.515625,
+        "V1": 0.0,
+        "U2": 0.765625,
+        "V2": 0.25
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        33791,
+        0,
+        50175,
+        16383,
+        16383,
+        16383
+      ]
+    },
+    {
+      "name": "interface/textures/fe/achievement/ca_vr.tga",
+      "uv": {
+        "U1": 0.2578125,
+        "V1": 0.515625,
+        "U2": 0.5078125,
+        "V2": 0.765625
+      },
+      "expected_packed_u1_v1_u2_v2_v_extent_u_extent": [
+        16895,
+        33791,
+        33279,
+        50175,
+        16383,
+        16383
+      ]
+    }
+  ],
+  "validation": "Values computed from observed descriptor and assembly semantics. Not native execution or a fixture test. No annotations applied."
+}

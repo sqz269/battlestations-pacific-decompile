@@ -56,6 +56,13 @@ public:
         TrackedCriticalSection* lock) : device_(device), synchronization_(synchronization), lock_(lock) {}
     void set_render_state_00b24460(D3DRENDERSTATETYPE state, DWORD value);
     void set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYPE state, DWORD value);
+    // Native thiscall RET Ch: start register, float data, float4 count. These
+    // new APIs expose HRESULT; S_FALSE means zero count skipped guard and call.
+    // Native ignores HRESULT and counts attempted uploads, including failures.
+    HRESULT set_vertex_shader_constants_f_00b21820(UINT start_register,
+        const float* data, UINT vector_count);
+    HRESULT set_pixel_shader_constants_f_00b218c0(UINT start_register,
+        const float* data, UINT vector_count);
     void initialize_defaults_00b26170();
     void set_stream_frequency_00b24a40(UINT stream, UINT frequency);
     // S_FALSE means the native draw gate skipped the call; native ignores HRESULT.
@@ -85,6 +92,10 @@ public:
     void invalidate();
     std::uint32_t render_calls() const { return render_calls_; }
     std::uint32_t sampler_calls() const { return sampler_calls_; }
+    std::uint32_t vertex_constant_calls() const { return vertex_constant_calls_; }
+    std::uint32_t pixel_constant_calls() const { return pixel_constant_calls_; }
+    std::uint32_t vertex_constant_bytes() const { return vertex_constant_bytes_; }
+    std::uint32_t pixel_constant_bytes() const { return pixel_constant_bytes_; }
 private:
     struct Entry { bool valid{}; DWORD value{}; };
     struct Guard;
@@ -109,5 +120,10 @@ private:
     std::uint32_t index_binding_calls_{};
     std::uint32_t render_calls_{};
     std::uint32_t sampler_calls_{};
+    // Native +1bd8h/+1bdch calls and +1be0h/+1be4h bytes, modulo 2^32.
+    std::uint32_t vertex_constant_calls_{};
+    std::uint32_t pixel_constant_calls_{};
+    std::uint32_t vertex_constant_bytes_{};
+    std::uint32_t pixel_constant_bytes_{};
 };
 }

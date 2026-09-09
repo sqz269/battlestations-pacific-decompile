@@ -788,5 +788,65 @@
     "address": "00b51b00",
     "name": "BSP_RenderEntry_LessUnsignedKey64",
     "evidence": "JA/JC at00b51b06/08 compare unsigned high DWORD; JNC at00b51b10 compares unsigned low DWORD; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
+  },
+  {
+    "address": "00b3e190",
+    "name": "BSP_D3D9Texture_CreateFromRetainedMemory",
+    "evidence": "ECX wrapper RET, device getter00b1fef0 and retained file+4Ch size virtual+30h/data00bef610. D3DXCreateTextureFromFileInMemoryEx receives width+28h,height+2Ch,mips+3Ch, usage0, R8G8B8 converted to A8R8G8B8 otherwise UNKNOWN, poolMANAGED, filters70004h/FFFFFFFFh, zero optional arguments, output+10h. Typed port checked installed DXT1 atlas byte parity; registry/ABI unported."
+  },
+  {
+    "address": "00aeeaf0",
+    "name": "BSP_TextureAtlas_ParseBuffer",
+    "evidence": "ECX manager; stack buffer pointer; RET4; AL status. TextureAtlas header; texture callback renderer+64h before body; append parsed items; EOF may succeed, no rollback. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00aee620",
+    "name": "BSP_TextureAtlasItem_ParseParams",
+    "evidence": "ECX item; stack buffer pointer; RET4; AL status. Param U1/V1/U2/V2 floats+14h..20h; truncate x87 UV*65535 into low16 words+24h..2Eh including V/U extents. Missing fields uninitialized; EOF accepted. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00aee4d0",
+    "name": "BSP_TextureAtlasItem_Ctor",
+    "evidence": "ECX item; stack item name, texture pointer, descriptor filename; RET0c; EAX item. Allocate caller-provided item fields: descriptor/name strings and borrowed texture; truncates name at dot search result, first/last dot unresolved. UV fields not initialized. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00af5740",
+    "name": "BSP_TextBuffer_ReadNormalizedLine",
+    "evidence": "ECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00af55f0",
+    "name": "BSP_TextBuffer_Rewind",
+    "evidence": "ECX buffer; clears+4 and+18; RET. Clear cursor+4 and field+18h; no other state mutation. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00aee3c0",
+    "name": "BSP_AtlasLine_GetToken",
+    "evidence": "ECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00aee340",
+    "name": "BSP_AtlasToken_AssignPrintablePrefix",
+    "evidence": "ECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; not reconstructed."
+  },
+  {
+    "address": "00b44750",
+    "name": "BSP_MaterialPass_BindGeometryAndDraw",
+    "evidence": "ECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported."
+  },
+  {
+    "address": "00b43410",
+    "name": "BSP_MaterialPass_ApplyStateAndDraw",
+    "evidence": "ECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported."
+  },
+  {
+    "address": "00b21820",
+    "name": "BSP_D3D9Renderer_SetVertexShaderConstantsF",
+    "evidence": "Thiscall RETCh start/data/float4count. Zero count skips guard/API. Optional guard; D3D float constant upload then attempted-call counter and count*16 modulo32-bit byte counter; HRESULT ignored natively. Typed port real-device register readback checked; new API exposes HRESULT and zero-count S_FALSE."
+  },
+  {
+    "address": "00b218c0",
+    "name": "BSP_D3D9Renderer_SetPixelShaderConstantsF",
+    "evidence": "Thiscall RETCh start/data/float4count. Zero count skips guard/API. Optional guard; D3D float constant upload then attempted-call counter and count*16 modulo32-bit byte counter; HRESULT ignored natively. Typed port real-device register readback checked; new API exposes HRESULT and zero-count S_FALSE."
   }
 ]

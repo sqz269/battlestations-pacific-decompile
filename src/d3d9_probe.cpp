@@ -6,6 +6,97 @@
 #include "bsp/d3d9_vertex_layout.hpp"
 #include <cstring>
 #include <cstdio>
+#include <fstream>
+#include <vector>
+#include <limits>
+#include "bsp/d3d9_texture.hpp"
+
+
+// Diagnostic file access and DLL import adapter, not the native asset manager.
+// The optional input is the single-level DXT1 atlas identified in ASSET_ENTRY.md.
+static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    if (!file) return false;
+    const auto end = file.tellg();
+    if (end < 128 || end > (std::numeric_limits<UINT>::max)()) return false;
+    std::vector<char> bytes(static_cast<std::size_t>(end));
+    file.seekg(0);
+    if (!file.read(bytes.data(), static_cast<std::streamsize>(bytes.size()))) return false;
+    auto word = [&](std::size_t offset) {
+        DWORD value{};
+        std::memcpy(&value, bytes.data() + offset, sizeof(value));
+        return value;
+    };
+    const UINT width = word(16), height = word(12);
+    if (word(0) != 0x20534444 || word(4) != 124 || word(84) != D3DFMT_DXT1
+        || !width || !height || width % 4 || height % 4) return false;
+    const std::size_t row_bytes = static_cast<std::size_t>(width / 4) * 8;
+    if (static_cast<std::uint64_t>(bytes.size() - 128)
+        != static_cast<std::uint64_t>(row_bytes) * (height / 4)) return false;
+    HMODULE module = LoadLibraryExW(L"d3dx9_40.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    if (!module) return false;
+    FARPROC address = GetProcAddress(module, "D3DXCreateTextureFromFileInMemoryEx");
+    bsp::CreateTextureFromMemory create{};
+    static_assert(sizeof(create) == sizeof(address));
+    std::memcpy(&create, &address, sizeof(create));
+    IDirect3DTexture9* texture = nullptr;
+    const bsp::MemoryTextureOptions options{width, height, 1, D3DFMT_DXT1};
+    HRESULT result = bsp::texture_create_from_retained_memory_00b3e190(device, create,
+        bytes.data(), static_cast<UINT>(bytes.size()), options, texture);
+    D3DSURFACE_DESC description{};
+    if (SUCCEEDED(result) && !texture) result = E_FAIL;
+    if (SUCCEEDED(result)) result = texture->GetLevelDesc(0, &description);
+    bool matched = SUCCEEDED(result) && description.Width == width
+        && description.Height == height && description.Format == D3DFMT_DXT1
+        && description.Pool == D3DPOOL_MANAGED && description.Usage == 0
+        && texture->GetLevelCount() == 1;
+    D3DLOCKED_RECT locked{};
+    if (matched) {
+        result = texture->LockRect(0, &locked, nullptr, D3DLOCK_READONLY);
+        matched = SUCCEEDED(result);
+        if (matched) {
+            matched = locked.Pitch >= 0 && static_cast<std::size_t>(locked.Pitch) >= row_bytes;
+            for (UINT row = 0; matched && row < height / 4; ++row)
+                matched = std::memcmp(static_cast<const char*>(locked.pBits)
+                    + static_cast<std::size_t>(row) * locked.Pitch,
+                    bytes.data() + 128 + row * row_bytes, row_bytes) == 0;
+            const HRESULT unlock = texture->UnlockRect(0);
+            matched = matched && SUCCEEDED(unlock);
+        }
+    }
+    std::printf("D3D9 installed DDS: hr=0x%08lx size=%ux%u managed_DXT1_bytes_match=%d\n",
+        static_cast<unsigned long>(result), description.Width, description.Height, matched);
+    if (texture) texture->Release();
+    FreeLibrary(module);
+    return matched;
+}
+
+static bool probe_shader_constants(IDirect3DDevice9& device) {
+    auto* lock = bsp::critical_section_create_00bd1860();
+    bsp::RendererSynchronization sync{};
+    bsp::set_renderer_synchronization_00b33aa0(sync, true);
+    bool matched = false;
+    {
+        bsp::D3D9StateCache state(device, sync, lock);
+        const float values[8]{1, -2, 0.25f, 4, 5, 6, -7, 8};
+        float vertex[8]{}, pixel[8]{};
+        HRESULT result = state.set_vertex_shader_constants_f_00b21820(3, values, 2);
+        if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(5, values, 2);
+        if (SUCCEEDED(result)) result = device.GetVertexShaderConstantF(3, vertex, 2);
+        if (SUCCEEDED(result)) result = device.GetPixelShaderConstantF(5, pixel, 2);
+        const bool skipped = state.set_vertex_shader_constants_f_00b21820(0, nullptr, 0) == S_FALSE
+            && state.set_pixel_shader_constants_f_00b218c0(0, nullptr, 0) == S_FALSE;
+        matched = SUCCEEDED(result) && skipped && std::memcmp(values, vertex, sizeof(values)) == 0
+            && std::memcmp(values, pixel, sizeof(values)) == 0
+            && state.vertex_constant_calls() == 1 && state.pixel_constant_calls() == 1
+            && state.vertex_constant_bytes() == 32 && state.pixel_constant_bytes() == 32
+            && sync.nesting == 0 && lock->depth == 0;
+        std::printf("D3D9 shader constants: hr=0x%08lx VS_PS_readback_and_zero_skip=%d\n",
+            static_cast<unsigned long>(result), matched);
+    }
+    bsp::critical_section_destroy_owned_0041cc80(lock);
+    return matched;
+}
 
 // Host setup for a bounded pixel check, not the game's material/stream pipeline.
 static bool probe_draw(IDirect3DDevice9& device) {
@@ -202,7 +293,7 @@ static bool probe_draw(IDirect3DDevice9& device) {
     return matched;
 }
 
-int main() {
+int main(int argc, char** argv) {
     const HINSTANCE instance = GetModuleHandleA(nullptr);
     const char* name = "BSP D3D9 reconstruction probe";
     WNDCLASSA window_class{};
@@ -371,6 +462,8 @@ int main() {
         bsp::buffer_release(vertices);
     }
     if (matched) matched = probe_draw(*device);
+    if (matched) matched = probe_shader_constants(*device);
+    if (matched && argc > 1) matched = probe_memory_texture(*device, argv[1]);
     if (device) device->Release();
     if (api) api->Release();
     DestroyWindow(window);

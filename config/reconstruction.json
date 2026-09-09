@@ -434,6 +434,28 @@
       "status": "semantic_assembly_reviewed_build_checked",
       "abi_compatible": false,
       "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation."
+    },
+    {
+      "address": "00b3e190",
+      "name": "texture_create_from_retained_memory",
+      "source": "src/d3d9_texture.cpp",
+      "status": "semantic_real_managed_texture_payload_checked",
+      "abi_compatible": false,
+      "limitations": "New device/blob interface; native singleton and file-service traversal projected into arguments, caller provides live D3DX import, requires empty output and exposes HRESULT. Full texture registry/lifecycle and image rendering unported."
+    },
+    {
+      "address": "00b21820",
+      "name": "set_vertex_shader_constants_f",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_real_shader_constant_readback_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b218c0",
+      "name": "set_pixel_shader_constants_f",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_real_shader_constant_readback_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

@@ -66,6 +66,26 @@ void D3D9StateCache::set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYP
     }
 }
 
+HRESULT D3D9StateCache::set_vertex_shader_constants_f_00b21820(UINT start_register,
+    const float* data, UINT vector_count) {
+    if (vector_count == 0) return S_FALSE; // TEST/JZ at 00b2183e precedes guard.
+    Guard guard(*this);
+    const HRESULT result = device_.SetVertexShaderConstantF(start_register, data, vector_count);
+    ++vertex_constant_calls_;
+    vertex_constant_bytes_ += static_cast<std::uint32_t>(vector_count) << 4;
+    return result;
+}
+
+HRESULT D3D9StateCache::set_pixel_shader_constants_f_00b218c0(UINT start_register,
+    const float* data, UINT vector_count) {
+    if (vector_count == 0) return S_FALSE; // TEST/JZ at 00b218de precedes guard.
+    Guard guard(*this);
+    const HRESULT result = device_.SetPixelShaderConstantF(start_register, data, vector_count);
+    ++pixel_constant_calls_;
+    pixel_constant_bytes_ += static_cast<std::uint32_t>(vector_count) << 4;
+    return result;
+}
+
 void D3D9StateCache::invalidate() {
     Guard guard(*this);
     render_ = {};
