@@ -922,7 +922,7 @@
   {
     "address": "00b36800",
     "name": "BSP_ShaderBuilder_SelectInterpolatorFields",
-    "evidence": "thiscall ECX builder; two optional usage pointers and output field-list pointer; RET0Ch. Prepends ScreenSpacePos then selects/copies base and effect interpolator records; not a text generator Filtered usage-buffer layout and full semantic contract incomplete Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+    "evidence": "Appends ScreenSpacePos float4 POSITION mask0 then base/effect interpolators. Null/null usage copies all and regenerates count-derived mask. Otherwise TEXCOORD/COLOR consume separate flattened component offsets shared across descriptors; each usage DWORD contains four low-bit flags. Descending component scan preserves original mask indices, shrinks count, omits empty fields; other semantics skipped. ECX builder, RET 0Ch. Typed port src/shader_source.cpp; unfiltered generated draw verified, filtered path assembly-inspected only. Full body disk/saved-byte match in reports/shader_interpolator_selection.json; native allocation/null behavior not reproduced."
   },
   {
     "address": "00b39880",

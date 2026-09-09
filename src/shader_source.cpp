@@ -3,6 +3,45 @@
 #include <utility>
 
 namespace bsp {
+ShaderSourceStatus append_selected_interpolators_00b36800(
+    const std::vector<ShaderField>& base, const std::vector<ShaderField>& effect,
+    const std::vector<std::uint32_t>* texcoord_usage,
+    const std::vector<std::uint32_t>* color_usage, std::vector<ShaderField>& output) {
+    std::vector<ShaderField> selected{{"ScreenSpacePos", ShaderScalarType::floating,
+        4, ShaderSemantic::position, 0, 0}};
+    std::uint64_t texcoord_offset = 0, color_offset = 0;
+    for (const auto* descriptor : {&base, &effect}) {
+        for (const auto& field : *descriptor) {
+            auto copy = field;
+            if (!texcoord_usage && !color_usage) {
+                copy.component_mask = field.component_count >= 32 ? 0xffffffffu
+                    : (1u << field.component_count) - 1;
+                selected.push_back(std::move(copy));
+                continue;
+            }
+            const auto* usage = field.semantic == ShaderSemantic::texcoord ? texcoord_usage
+                : field.semantic == ShaderSemantic::color ? color_usage : nullptr;
+            if (!usage) continue;
+            auto& offset = field.semantic == ShaderSemantic::texcoord ? texcoord_offset : color_offset;
+            const auto end = offset + field.component_count;
+            if (end > 0xffffffffu || end > static_cast<std::uint64_t>(usage->size()) * 4)
+                return ShaderSourceStatus::invalid_packing;
+            copy.component_count = 0; copy.component_mask = 0;
+            for (std::uint32_t component = field.component_count; component != 0; --component) {
+                const auto slot = offset + component - 1;
+                if ((*usage)[static_cast<std::size_t>(slot / 4)] & (1u << (slot % 4))) {
+                    ++copy.component_count;
+                    copy.component_mask |= 1u << ((component - 1) & 31);
+                }
+            }
+            offset = end;
+            if (copy.component_count) selected.push_back(std::move(copy));
+        }
+    }
+    output.insert(output.end(), selected.begin(), selected.end());
+    return ShaderSourceStatus::complete;
+}
+
 void append_vertex_system_fields_00b35be0(std::vector<ShaderField>& output) {
     const ShaderField fields[] = {
 #include "shader_vertex_system_fields.inc"

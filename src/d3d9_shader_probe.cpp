@@ -214,8 +214,8 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     bsp::ShaderVertexProgram debug_program;
     bsp::append_vertex_inputs_00b35930({position, color}, {}, debug_program.inputs);
     bsp::append_vertex_system_fields_00b35be0(debug_program.system_values);
-    auto system_position = position; system_position.name = "ScreenSpacePos";
-    debug_program.outputs = {system_position, color};
+    const bool selected_debug_fields = bsp::append_selected_interpolators_00b36800(
+        {color}, {}, nullptr, nullptr, debug_program.outputs) == bsp::ShaderSourceStatus::complete;
     debug_program.packing_fields = debug_program.outputs;
     bsp::append_interpolator_mapping_00b34aa0(debug_program.outputs, debug_program.interpolators);
     debug_program.constants = bsp::make_system_constant_registry_00b5bf70();
@@ -225,7 +225,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         "OUT.Color = IN.Color;";
     std::string debug_source;
     const auto debug_profiles = bsp::select_shader_profiles_00b43b00(3);
-    const bool full_vertex_generated = bsp::generate_vertex_source_00b39110(debug_program,
+    const bool full_vertex_generated = selected_debug_fields && bsp::generate_vertex_source_00b39110(debug_program,
         debug_source) == bsp::ShaderSourceStatus::complete;
     ID3DBlob* debug_code = nullptr;
     if (SUCCEEDED(result)) result = full_vertex_generated

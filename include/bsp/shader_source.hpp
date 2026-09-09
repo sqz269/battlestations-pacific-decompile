@@ -37,6 +37,15 @@ void append_vertex_inputs_00b35930(const std::vector<ShaderField>& base,
     const std::vector<ShaderField>& effect, std::vector<ShaderField>& output);
 
 enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic, invalid_packing };
+// Thiscall RET0Ch: optional TEXCOORD/COLOR usage pointers and output list.
+// Each usage DWORD contains low-four-bit register component flags. Null/null
+// copies all fields with regenerated masks. Any filtering drops other semantics.
+// Always appends ScreenSpacePos first; does not clear or deduplicate output.
+// New bounds/overflow checks leave output unchanged on failure.
+ShaderSourceStatus append_selected_interpolators_00b36800(
+    const std::vector<ShaderField>& base, const std::vector<ShaderField>& effect,
+    const std::vector<std::uint32_t>* texcoord_usage,
+    const std::vector<std::uint32_t>* color_usage, std::vector<ShaderField>& output);
 
 // Thiscall RET8: instance name and field list. Emits zero assignments for all
 // fields, independent of their type/count/mask; native %s name termination.

@@ -32,5 +32,6 @@ The existing debug/dummy fixture uses both full system lists and the recovered
 input-copy path. VS3/PS3 compile and render the same centerFF407FBF/outsideFF000000
 pixels. Build, two existing CTests and full D3D9 probe pass; no test targets were
 added. This does not validate all unused fields in a game material. Descriptor
-parsing, interpolator selection/filtering, runtime values and full material/game
-execution remain unfinished.
+parsing, runtime values and full material/game execution remain unfinished.
+The subsequent selection port and its remaining filtered-path validation boundary
+are documented in `SHADER_INTERPOLATOR_SELECTION.md`.
