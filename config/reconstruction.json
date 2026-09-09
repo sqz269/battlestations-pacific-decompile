@@ -1010,6 +1010,13 @@
       "source": "src/d3d9_states.cpp",
       "status": "device_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b25630",
+      "name": "remove_surface_pointer",
+      "source": "src/d3d9_resources.cpp",
+      "status": "device_reset_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -1203,6 +1210,33 @@
       "status": "device_reacquisition_and_depth_binding_checked",
       "abi_compatible": false,
       "remaining": "Original intrusive wrapper constructor/allocator/support-singleton lifetime and redundant accessor AddRef/Release pairs unported; typed sequentialowners expose HRESULT failures. Default capture does not append the renderer reset list; separate offscreen factories do. Full native reset lifecycle not established."
+    },
+    {
+      "address": "00b2a7c0",
+      "name": "append_borrowed_surface",
+      "source": "src/d3d9_resources.cpp",
+      "native_range": "00b2a896..00b2a8d5 append projection",
+      "status": "device_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Typed borrowed vector with stable membership/storage/lifetimes. Fullfactory/retry/stats, native capacity allocator, defaultowners, resetgates and other resource/listener processing remain outside projection."
+    },
+    {
+      "address": "00b262c0",
+      "name": "release_registered_surfaces",
+      "source": "src/d3d9_resources.cpp",
+      "native_range": "00b263ff..00b26432 surface-list loop",
+      "status": "device_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Typed borrowed vector with stable membership/storage/lifetimes. Fullfactory/retry/stats, native capacity allocator, defaultowners, resetgates and other resource/listener processing remain outside projection."
+    },
+    {
+      "address": "00b23b10",
+      "name": "recreate_registered_surfaces",
+      "source": "src/d3d9_resources.cpp",
+      "native_range": "00b23beb..00b23c25 surface-list loop",
+      "status": "device_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Typed borrowed vector with stable membership/storage/lifetimes. Fullfactory/retry/stats, native capacity allocator, defaultowners, resetgates and other resource/listener processing remain outside projection."
     }
   ]
 }

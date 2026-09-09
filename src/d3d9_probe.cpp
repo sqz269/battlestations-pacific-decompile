@@ -464,13 +464,13 @@ int main(int argc, char** argv) {
         color.height = depth.height = 128;
         depth.format = D3DFMT_D24S8;
         depth.depth_stencil = true;
-        result = bsp::surface_recreate_00b3d550(color, *device);
-        if (SUCCEEDED(result)) result = bsp::surface_recreate_00b3d550(depth, *device);
-        bsp::surface_release_for_reset_00b3d510(color);
-        bsp::surface_release_for_reset_00b3d510(depth);
+        bsp::D3D9SurfaceRegistry registry;
+        registry.append_00b2a7c0_fragment(color);
+        registry.append_00b2a7c0_fragment(depth);
+        result = registry.recreate_00b23b10_fragment(*device);
+        registry.release_for_reset_00b262c0_fragment();
         if (SUCCEEDED(result)) result = device->Reset(&stored);
-        if (SUCCEEDED(result)) result = bsp::surface_recreate_00b3d550(color, *device);
-        if (SUCCEEDED(result)) result = bsp::surface_recreate_00b3d550(depth, *device);
+        if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
         D3DSURFACE_DESC color_desc{}, depth_desc{};
         if (SUCCEEDED(result)) result = color.surface->GetDesc(&color_desc);
         if (SUCCEEDED(result)) result = depth.surface->GetDesc(&depth_desc);
@@ -481,6 +481,12 @@ int main(int argc, char** argv) {
             && depth_desc.Usage == D3DUSAGE_DEPTHSTENCIL;
         std::printf("D3D9 surface reset: hr=0x%08lx color_usage=%lu depth_usage=%lu checked=%d\n",
             static_cast<unsigned long>(result), color_desc.Usage, depth_desc.Usage, matched);
+        const bool removal = registry.remove_00b25630(&color) && registry.size() == 1
+            && registry.at(0) == &depth && !registry.remove_00b25630(&color)
+            && color.surface && depth.surface && registry.remove_00b25630(&depth)
+            && registry.size() == 0;
+        matched = matched && removal;
+        std::printf("Surface reset registry: swap_last_remove_without_surface_release=%d\n", removal);
         bsp::surface_release_for_reset_00b3d510(color);
         bsp::surface_release_for_reset_00b3d510(depth);
     }

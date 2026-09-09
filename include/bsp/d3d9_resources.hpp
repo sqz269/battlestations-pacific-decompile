@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/d3d9_startup.hpp"
+#include <vector>
 
 namespace bsp {
 // Projection of surface wrapper fields +18h..2ch. Caller owns the retained COM
@@ -28,6 +29,26 @@ struct D3D9DefaultSurfaces {
     ~D3D9DefaultSurfaces();
     D3D9DefaultSurfaces(const D3D9DefaultSurfaces&) = delete;
     D3D9DefaultSurfaces& operator=(const D3D9DefaultSurfaces&) = delete;
+};
+
+// Borrowed reset-list projection of renderer+1B0Ch/+1B10h/+1B14h.
+// Owners must unregister before destruction; registry does not AddRef/Release.
+// No list mutation/reallocation or owner destruction during reset traversal.
+class D3D9SurfaceRegistry {
+public:
+    // Explicit factory append fragment, not the full native surface factory.
+    void append_00b2a7c0_fragment(D3D9SurfaceBinding& surface);
+    // Native ECX=array, stack pointer-to-target-pointer, AL found, RET4.
+    // Removes first match, replacing it with the final entry; no stable ordering.
+    bool remove_00b25630(const D3D9SurfaceBinding* surface) noexcept;
+    std::size_t size() const noexcept { return surfaces_.size(); }
+    const D3D9SurfaceBinding* at(std::size_t index) const { return surfaces_.at(index); }
+    // Concrete wrapper callback projections only. Full reset gates, default
+    // owners, other resource lists and listener notifications are not included.
+    void release_for_reset_00b262c0_fragment();
+    HRESULT recreate_00b23b10_fragment(IDirect3DDevice9& device);
+private:
+    std::vector<D3D9SurfaceBinding*> surfaces_;
 };
 
 // Owned COM resources created within 00b2aeb0. Engine wrapper attachment,

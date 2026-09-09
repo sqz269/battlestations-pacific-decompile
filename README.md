@@ -112,6 +112,7 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `docs/PHYSICAL_FILE.md` | Physical asset reader and VFS/pooling boundaries |
 | `docs/WINDOW_CREATION.md` | Recovered Win32 setup and remaining native lifecycle |
 | `docs/DEFAULT_SURFACES.md` | Default color/depth capture and native reset boundaries |
+| `docs/SURFACE_RESET_LIST.md` | Borrowed surface registration, removal and reset traversal |
 | `docs/PLATFORM_LOOP.md` | Concrete Windows vtable, message loop, and exit behavior |
 | `docs/ROADMAP.md` | Next milestones toward a game rebuild |
 | `reports/` | Small, retained baseline evidence |

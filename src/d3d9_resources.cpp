@@ -6,6 +6,39 @@ D3D9DefaultSurfaces::~D3D9DefaultSurfaces() {
     surface_release(depth);
     surface_release(color);
 }
+
+void D3D9SurfaceRegistry::append_00b2a7c0_fragment(D3D9SurfaceBinding& surface) {
+    // Native pointer array grows separately and does not retain the wrapper.
+    // std::vector replaces its allocator/capacity bookkeeping in this projection.
+    surfaces_.push_back(&surface);
+}
+
+bool D3D9SurfaceRegistry::remove_00b25630(const D3D9SurfaceBinding* surface) noexcept {
+    for (std::size_t index = 0; index < surfaces_.size(); ++index) {
+        if (surfaces_[index] != surface) continue;
+        if (index != surfaces_.size() - 1) surfaces_[index] = surfaces_.back();
+        surfaces_.pop_back();
+        return true;
+    }
+    return false;
+}
+
+void D3D9SurfaceRegistry::release_for_reset_00b262c0_fragment() {
+    // Native +3Ch callbacks use a raw cursor; the typed supported domain requires
+    // a stable list. This is not a mutation-safe callback traversal replacement.
+    for (auto* surface : surfaces_) surface_release_for_reset_00b3d510(*surface);
+}
+
+HRESULT D3D9SurfaceRegistry::recreate_00b23b10_fragment(IDirect3DDevice9& device) {
+    HRESULT first_failure = S_OK;
+    for (auto* surface : surfaces_) {
+        const auto result = surface_recreate_00b3d550(*surface, device);
+        // Native ignores HRESULT and proceeds through the entire list. Report
+        // the first failure without changing successful-path iteration order.
+        if (FAILED(result) && SUCCEEDED(first_failure)) first_failure = result;
+    }
+    return first_failure;
+}
 static_assert(offsetof(D3DSURFACE_DESC, MultiSampleType) == 0x10);
 static_assert(offsetof(D3DSURFACE_DESC, Width) == 0x18);
 static_assert(offsetof(D3DSURFACE_DESC, Height) == 0x1c);

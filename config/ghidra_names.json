@@ -297,12 +297,12 @@
   {
     "address": "00b262c0",
     "name": "BSP_D3D9Renderer_ReleaseResourcesForReset",
-    "evidence": "Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported."
+    "evidence": "Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported. Surface loop00b263FF..00b26432 retains rawcursor and reloadsbase/count, mutation unsafe. Concrete wrapper release listfragment ported with stable-list precondition. Fullgates/defaultowners/otherlisteners excluded."
   },
   {
     "address": "00b23b10",
     "name": "BSP_D3D9Renderer_RestoreResourcesAfterReset",
-    "evidence": "Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Not yet ported."
+    "evidence": "Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Not yet ported. Surface loop00b23BEB..00b23C25 rawcursor/reloadedend is mutation unsafe; stable-list concretewrapper recreation fragment ported, continues all HRESULTresults and reports firstfailure. Fullrestore reinitializes existingdefaults, not initialcapture/replacement."
   },
   {
     "address": "00b241c0",
@@ -1438,5 +1438,20 @@
     "address": "00b3e730",
     "name": "BSP_ResourceSupport_GetSingleton",
     "evidence": "Provisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT."
+  },
+  {
+    "address": "00b25630",
+    "name": "BSP_SurfacePointerArray_RemoveFirst",
+    "evidence": "ECX array{data,count,capacity}, stack pointer-to-target-pointer, AL found,RET4. Search first equal pointer; replace with finalentry unlessalreadyfinal; decrementcount without releasing object. Missing entry leaves unchanged. Valid-state typed borrowedregistry port and realdevice owner-preservation probe."
+  },
+  {
+    "address": "00b27d60",
+    "name": "BSP_D3D9Renderer_UnregisterSurface",
+    "evidence": "ECX renderer, surfacepointer stack,RET4. Forward address of pointer argument to00b25630 withrenderer+1B0C. Borrowed list removal; surface destructor invokes before COM release. No AddRef/Release in removal."
+  },
+  {
+    "address": "00b2a7c0",
+    "name": "BSP_D3D9Renderer_CreateRegisteredRenderTarget",
+    "evidence": "ECX renderer,width/height/format/multisample stack. CreateRenderTarget, selected failure may recreate device and retry; constructsurface(flags10,kind0), append borrowed pointer to+1B0C/+1B10, release getter, update memory stats using x87. Only append bookkeeping projection ported; fullfactory/retry/stats/constructor unported."
   }
 ]
