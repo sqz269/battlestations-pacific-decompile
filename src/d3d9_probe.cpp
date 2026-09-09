@@ -2,6 +2,8 @@
 #include "bsp/d3d9_startup.hpp"
 #include "bsp/d3d9_states.hpp"
 #include "bsp/d3d9_resources.hpp"
+#include "bsp/d3d9_buffers.hpp"
+#include <cstring>
 #include <cstdio>
 
 int main() {
@@ -129,6 +131,40 @@ int main() {
         bsp::surface_release_for_reset_00b3d510(depth);
     }
     if (swap_chain) swap_chain->Release();
+    if (matched) {
+        bsp::VertexBufferBinding vertices{};
+        bsp::IndexBufferBinding indices{};
+        vertices.flags = indices.flags = 0x1000;
+        vertices.capacity = 0x1000000;
+        indices.capacity = 0x100000;
+        result = bsp::vertex_buffer_recreate_00b492b0(vertices, *device);
+        if (SUCCEEDED(result)) result = bsp::index_buffer_recreate_00b49180(indices, *device);
+        for (UINT pass = 0; pass < 2 && SUCCEEDED(result); ++pass) {
+            bsp::BufferLockResult vertex_lock{}, index_lock{};
+            result = bsp::vertex_buffer_lock_00b4ba00(vertices, 48, 0, false, vertex_lock);
+            if (SUCCEEDED(result)) {
+                std::memset(vertex_lock.data, 0, 48);
+                bsp::vertex_buffer_unlock_00b4b9d0(vertices);
+                if (vertex_lock.base_offset != pass * 48 || vertex_lock.flags
+                    != static_cast<DWORD>(pass == 0 ? D3DLOCK_DISCARD : D3DLOCK_NOOVERWRITE)) result = E_FAIL;
+            }
+            if (SUCCEEDED(result)) result = bsp::index_buffer_lock_00b4b850(indices, 6, 0, false, index_lock);
+            if (SUCCEEDED(result)) {
+                const unsigned short triangle[] = {0, 1, 2};
+                std::memcpy(index_lock.data, triangle, sizeof(triangle));
+                bsp::index_buffer_unlock_00b4b820(indices);
+                if (index_lock.base_offset != pass * 6 || index_lock.flags
+                    != static_cast<DWORD>(pass == 0 ? D3DLOCK_DISCARD : D3DLOCK_NOOVERWRITE)) result = E_FAIL;
+            }
+        }
+        matched = SUCCEEDED(result) && vertices.cursor == 96 && indices.cursor == 12
+            && vertices.lock_depth == 0 && indices.lock_depth == 0
+            && vertices.dynamic_locks == 2 && indices.dynamic_locks == 2;
+        std::printf("D3D9 buffer uploads: hr=0x%08lx vertex_cursor=%u index_cursor=%u checked=%d\n",
+            static_cast<unsigned long>(result), vertices.cursor, indices.cursor, matched);
+        bsp::buffer_release(indices);
+        bsp::buffer_release(vertices);
+    }
     if (device) device->Release();
     if (api) api->Release();
     DestroyWindow(window);

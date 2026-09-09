@@ -1,0 +1,48 @@
+{
+  "utc": "2026-09-09T04:33:03.839605+00:00",
+  "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b492b0",
+      "length": 276,
+      "matches_disk": true,
+      "sha256": "883121513ab4110c9d703ad23549a2eae4dc01a9e7cf1de39ef68285c29fb660"
+    },
+    {
+      "address": "00b49180",
+      "length": 276,
+      "matches_disk": true,
+      "sha256": "fa743f71e17ab319539f009a4e3fdc9bb785906ab40390ac43484f25cda8c83f"
+    },
+    {
+      "address": "00b4ba00",
+      "length": 172,
+      "matches_disk": true,
+      "sha256": "87189e6531e1e1825214ba9459615786a4eef618c5f5020aab1ce8f276115b61"
+    },
+    {
+      "address": "00b4b850",
+      "length": 172,
+      "matches_disk": true,
+      "sha256": "edaadda7b10dd54d8f91cb34bb6fdfb1905e028532642ba5e2fb24a15815542c"
+    },
+    {
+      "address": "00b4b9d0",
+      "length": 24,
+      "matches_disk": true,
+      "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5"
+    },
+    {
+      "address": "00b4b820",
+      "length": 24,
+      "matches_disk": true,
+      "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5"
+    }
+  ],
+  "probe_output": "D3D9 device probe: hr=0x00000000 flags=0x44 size=640x480 windowed=1 format=21 depth=75 interval=0x0\nD3D9 defaults: render_calls=19 sampler_calls=140 zfunc=2 cull=3 min_filter=2 vertex_filter=2 balanced=1 checked=1\nD3D9 resources: hr=0x00000000 surface=640x480 vertex_bytes=16777216 index_bytes=1048576 checked=1\nD3D9 surface reset: hr=0x00000000 color_usage=1 depth_usage=2 checked=1\nD3D9 buffer uploads: hr=0x00000000 vertex_cursor=96 index_cursor=12 checked=1",
+  "probe_exit_code": 0,
+  "existing_ctest": "2/2 passed",
+  "game_validated": false,
+  "rendered_geometry_validated": false,
+  "native_differential_validated": false
+}

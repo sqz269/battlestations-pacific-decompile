@@ -308,5 +308,40 @@
     "address": "00b241c0",
     "name": "BSP_D3D9Renderer_ClearBindingCache",
     "evidence": "Receives cache subobject at renderer+34h, not renderer base. Releases intrusive references, clears 210 render-valid bytes, twenty sampler-valid banks and other binding caches. Full cache layout and port remain incomplete."
+  },
+  {
+    "address": "00b492b0",
+    "name": "BSP_D3D9VertexBuffer_Recreate",
+    "evidence": "thiscall RET4. Decodes wrapper flags+14h into pool and usage; pool0 implies WRITEONLY, dynamic nibble1000h adds DYNAMIC. Creates capacity+18h FVF0 buffer, retains new before releasing old +28h, drops temporary reference. Invalid pool nibble>3 uses device pointer as pool in native assembly; new interface rejects it."
+  },
+  {
+    "address": "00b49180",
+    "name": "BSP_D3D9IndexBuffer_Recreate",
+    "evidence": "Same metadata decoding and COM replacement sequence as vertex 00b492b0, but CreateIndexBuffer with INDEX16. New interface returns HRESULT and preserves old binding on failure; original ignores failures."
+  },
+  {
+    "address": "00b4ba00",
+    "name": "BSP_D3D9VertexBuffer_Lock",
+    "evidence": "thiscall RET14h: bytes, extra offset, unused DWORD, output base offset pointer, read-only byte. Dynamic flag1000h selects DISCARD when cursor0 else NOOVERWRITE, advances cursor and counters even on API failure. Non-dynamic uses NOSYSLOCK plus optional READONLY. Null buffer returns sentinel00f8d4b8; diagnostic conditions call singleton004c14c0. Only nonnull non-diagnostic path ported."
+  },
+  {
+    "address": "00b4b850",
+    "name": "BSP_D3D9IndexBuffer_Lock",
+    "evidence": "Same lock metadata/flags and five stack args as vertex00b4ba00, targeting index COM buffer. Dynamic read-only flag is ignored, output offset excludes extra offset. Null-buffer sentinel and singleton diagnostic branches remain unported."
+  },
+  {
+    "address": "00b4b9d0",
+    "name": "BSP_D3D9VertexBuffer_Unlock",
+    "evidence": "If COM pointer+28h nonnull, calls virtual30h Unlock and decrements depth+20h even on failure. Null pointer leaves depth unchanged."
+  },
+  {
+    "address": "00b4b820",
+    "name": "BSP_D3D9IndexBuffer_Unlock",
+    "evidence": "If COM pointer+28h nonnull, calls virtual30h Unlock and decrements depth+20h even on failure. Null pointer leaves depth unchanged."
+  },
+  {
+    "address": "00b1fd90",
+    "name": "BSP_D3D9Renderer_RestoreDynamicBuffers",
+    "evidence": "If dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported."
   }
 ]

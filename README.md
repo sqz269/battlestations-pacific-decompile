@@ -3,9 +3,10 @@
 An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
 `battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
 rebuild of the game. The saved program now reports 62,526 functions; its internal-function iterator
-exports 62,084 functions after recovering twelve missing code targets. The ledger maps 27 native
+exports 62,084 functions after recovering twelve missing code targets. The ledger maps 31 native
 routines to C++: math, the integer random generator, thread registration, the platform loop,
-cached renderer defaults/guards and surface binding/reset, plus two separately tracked renderer fragments.
+cached renderer defaults/guards, surface binding/reset and buffer recreation/unlock,
+plus four separately tracked renderer fragments.
 
 ## Build and test
 
