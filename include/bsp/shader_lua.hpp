@@ -47,4 +47,10 @@ struct ShaderLuaCode {
 bool load_shader_lua_code(const ShaderScriptResolver&, const std::string& descriptor,
     bool x360comp, const std::optional<std::string>& region,
     ShaderLuaCode& output, std::string& error);
+// Normal base/combiner source-assembly projection of00b3c3a0/00b3b3c0.
+// Explicit external render mode/generation/projected selection; no cache,
+// shadow-pass pairing, material ownership or compiler lifecycle.
+ShaderSourceStatus assemble_shader_programs(const ShaderLuaCode& base, const ShaderLuaCode& effect,
+    std::int32_t mode, std::uint32_t generation, bool projected_shadow,
+    ShaderVertexProgram&, ShaderPixelProgram&);
 }

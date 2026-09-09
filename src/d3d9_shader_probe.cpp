@@ -16,6 +16,8 @@
 #include <cstdio>
 #include <cstring>
 
+bool draw_alpha_material_probe(IDirect3DDevice9&, const bsp::ShaderLuaCode&, const bsp::ShaderLuaCode&, ID3DBlob*, ID3DBlob*);
+
 namespace {
 bool check_material_sampler_binding(IDirect3DDevice9& device, const bsp::ShaderLuaCode& script,
     std::uint32_t usage_mask) {
@@ -362,22 +364,53 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         }
         return result;
     };
-    // Diagnostic sampler-use shader supplies the real compiled usage mask.
-    // This checks parsed material binding, not a full alphablend material draw.
-    const std::string sampler_use_source = installed_sampler_source
-        + "float4 main(float2 uv:TEXCOORD0):COLOR0 { return tex2D(MyTexture,uv); }";
-    ID3DBlob* sampler_code = nullptr;
-    std::vector<bsp::ReflectedShaderConstant> sampler_reflection;
-    bsp::ShaderConstantBindings sampler_bindings;
-    std::string sampler_error;
-    bool sampler_bound = SUCCEEDED(assemble_host_shader(sampler_use_source.c_str(), "ps_3_0", &sampler_code));
-    if (sampler_bound) sampler_bound = bsp::reflect_shader_constants_00b3aea0(
-        static_cast<const std::uint32_t*>(sampler_code->GetBufferPointer()), sampler_reflection, sampler_error)
-        && bsp::map_shader_constants_00b3aea0(sampler_reflection, bsp::make_system_constant_registry_00b5bf70(), sampler_bindings)
-        && sampler_bindings.sampler_mask == 1
-        && check_material_sampler_binding(device, alpha_script, sampler_bindings.sampler_mask);
-    if (sampler_code) sampler_code->Release();
-    if (!sampler_bound) { FreeLibrary(module); return false; }
+    bsp::ShaderLuaCode alpha_effect;
+    if (alpha_script.combiners[7].empty() || !bsp::load_shader_lua_code(resolver, alpha_script.combiners[7],
+        false, {}, alpha_effect, script_error)) { FreeLibrary(module); return false; }
+    bsp::ShaderVertexProgram alpha_vertex;
+    bsp::ShaderPixelProgram alpha_pixel;
+    bool alpha_ready = bsp::assemble_shader_programs(alpha_script, alpha_effect, 7, 3, false,
+        alpha_vertex, alpha_pixel) == bsp::ShaderSourceStatus::complete;
+    std::string alpha_vs_source, alpha_ps_source;
+    alpha_ready = alpha_ready && bsp::generate_pixel_source_00b39880(alpha_pixel, alpha_ps_source)
+        == bsp::ShaderSourceStatus::complete;
+    const auto alpha_profiles = bsp::select_shader_profiles_00b43b00(3, alpha_script.vertex_profile, alpha_script.pixel_profile);
+    ID3DBlob* alpha_vs = nullptr;
+    ID3DBlob* alpha_ps = nullptr;
+    if (alpha_ready) alpha_ready = SUCCEEDED(assemble_host_shader(alpha_ps_source.c_str(), alpha_profiles.pixel.c_str(), &alpha_ps));
+    decltype(&D3DDisassemble) alpha_disassemble{};
+    const FARPROC alpha_disassembly_address = GetProcAddress(module, "D3DDisassemble");
+    std::memcpy(&alpha_disassemble, &alpha_disassembly_address, sizeof(alpha_disassemble));
+    ID3DBlob* alpha_assembly = nullptr;
+    if (alpha_ready) alpha_ready = alpha_disassemble && SUCCEEDED(alpha_disassemble(alpha_ps->GetBufferPointer(),
+        alpha_ps->GetBufferSize(), 0, nullptr, &alpha_assembly));
+    if (alpha_ready) {
+        std::vector<std::uint32_t> used_texcoords(10), used_colors(2);
+        std::vector<bsp::ShaderField> selected;
+        alpha_ready = bsp::parse_pixel_usage_00b61280(static_cast<const char*>(alpha_assembly->GetBufferPointer()),
+            used_texcoords, used_colors) == bsp::ShaderSourceStatus::complete
+            && bsp::append_selected_interpolators_00b36800(alpha_script.interpolators, alpha_effect.interpolators,
+                &used_texcoords, &used_colors, selected) == bsp::ShaderSourceStatus::complete;
+        if (alpha_ready) {
+            alpha_vertex.outputs = selected; alpha_vertex.packing_fields = selected; alpha_vertex.interpolators = {};
+            bsp::append_interpolator_mapping_00b34aa0(selected, alpha_vertex.interpolators);
+            alpha_ready = bsp::generate_vertex_source_00b39110(alpha_vertex, alpha_vs_source) == bsp::ShaderSourceStatus::complete;
+        }
+    }
+    if (alpha_assembly) alpha_assembly->Release();
+    if (alpha_ready) alpha_ready = SUCCEEDED(assemble_host_shader(alpha_vs_source.c_str(), alpha_profiles.vertex.c_str(), &alpha_vs));
+    if (alpha_ready) {
+        std::vector<bsp::ReflectedShaderConstant> reflection;
+        bsp::ShaderConstantBindings bindings;
+        std::string error;
+        alpha_ready = bsp::reflect_shader_constants_00b3aea0(static_cast<const std::uint32_t*>(alpha_ps->GetBufferPointer()), reflection, error)
+            && bsp::map_shader_constants_00b3aea0(reflection, bsp::make_system_constant_registry_00b5bf70(), bindings)
+            && check_material_sampler_binding(device, alpha_script, bindings.sampler_mask)
+            && draw_alpha_material_probe(device, alpha_script, alpha_effect, alpha_vs, alpha_ps);
+    }
+    if (alpha_vs) alpha_vs->Release();
+    if (alpha_ps) alpha_ps->Release();
+    if (!alpha_ready) { FreeLibrary(module); return false; }
     ID3DBlob* vertex_code = nullptr;
     ID3DBlob* pixel_code = nullptr;
     IDirect3DVertexShader9* vertex = nullptr;
@@ -474,23 +507,9 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     // Installed Lua-evaluated debug descriptor; full material flags/state/combiner
     // selection remain a host fixture boundary.
     bsp::ShaderVertexProgram debug_program;
-    bsp::append_vertex_inputs_00b35930(debug_script.vertex_inputs, dummy_script.vertex_inputs, debug_program.inputs);
-    bsp::append_vertex_system_fields_00b35be0(debug_program.system_values);
-    const bool selected_debug_fields = bsp::append_selected_interpolators_00b36800(
-        debug_script.interpolators, dummy_script.interpolators, nullptr, nullptr, debug_program.outputs) == bsp::ShaderSourceStatus::complete;
-    debug_program.packing_fields = debug_program.outputs;
-    bsp::append_interpolator_mapping_00b34aa0(debug_program.outputs, debug_program.interpolators);
-    debug_program.constants = bsp::make_system_constant_registry_00b5bf70();
-    debug_program.register_limit = bsp::system_constant_annotation_limit;
-    debug_program.base.header = debug_script.constants;
-    debug_program.effect.header = dummy_script.constants;
-    debug_program.base.vertex_code = debug_script.vertex;
-    debug_program.effect.vertex_code = dummy_script.vertex;
-    debug_program.base.decode_inputs = debug_script.options.compressed_vertices;
-    debug_program.base.decode_field_limit = static_cast<std::uint32_t>(debug_script.options.compressed_element_count);
-    debug_program.effect.shadow_helper = dummy_script.options.receive_shadows;
-    for (const auto& sampler : debug_script.samplers) debug_program.base.samplers.push_back(sampler.declaration);
-    for (const auto& sampler : dummy_script.samplers) debug_program.effect.samplers.push_back(sampler.declaration);
+    bsp::ShaderPixelProgram debug_pixel;
+    const bool selected_debug_fields = bsp::assemble_shader_programs(debug_script, dummy_script,
+        0, 3, false, debug_program, debug_pixel) == bsp::ShaderSourceStatus::complete;
     std::string debug_source;
     const auto debug_profiles = bsp::select_shader_profiles_00b43b00(3, debug_script.vertex_profile, debug_script.pixel_profile);
     const bool full_vertex_generated = selected_debug_fields && bsp::generate_vertex_source_00b39110(debug_program,
@@ -502,32 +521,6 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         vertex_code->Release(); vertex_code = debug_code; debug_code = nullptr;
     }
     if (debug_code) { debug_code->Release(); debug_code = nullptr; }
-    bsp::ShaderPixelProgram debug_pixel;
-    debug_pixel.inputs = debug_program.outputs;
-    debug_pixel.unpack_fields = debug_program.outputs;
-    bsp::append_pixel_system_fields_00b372d0(debug_pixel.system_values);
-    debug_pixel.interpolators = debug_program.interpolators;
-    debug_pixel.constants = debug_program.constants;
-    debug_pixel.register_limit = bsp::system_constant_annotation_limit;
-    debug_pixel.base.header = debug_script.constants;
-    debug_pixel.effect.header = dummy_script.constants;
-    debug_pixel.base.pixel_code = debug_script.pixel;
-    debug_pixel.effect.pixel_code = dummy_script.pixel;
-    // Normal mode0 route from00b45ee0/00b3c3a0. External projected selection
-    // is explicitly false in this host fixture; generation is3.
-    debug_pixel.effect.shadow_helpers = dummy_script.options.receive_shadows;
-    debug_pixel.effect.alpha_override = dummy_script.options.output_alpha;
-    debug_pixel.base.vpos = debug_script.options.pixel_position_register;
-    debug_pixel.effect.vpos = dummy_script.options.pixel_position_register;
-    debug_pixel.base.suppress_time_transform = debug_script.options.no_banding_fix;
-    debug_pixel.base.premultiply_alpha = debug_script.options.lo_res_blend;
-    debug_pixel.color_outputs = static_cast<std::uint32_t>(dummy_script.options.render_target_count);
-    debug_pixel.depth_output = dummy_script.options.write_depth;
-    debug_pixel.visibility_alpha = debug_script.options.visibility_fade;
-    debug_pixel.zero_fog = false;
-    debug_pixel.projected_shadow = false;
-    debug_pixel.base.samplers = debug_program.base.samplers;
-    debug_pixel.effect.samplers = debug_program.effect.samplers;
     std::string debug_pixel_source;
     const bool full_pixel_generated = bsp::generate_pixel_source_00b39880(debug_pixel,
         debug_pixel_source) == bsp::ShaderSourceStatus::complete;

@@ -336,4 +336,46 @@ bool load_shader_lua_code(const ShaderScriptResolver& resolver, const std::strin
     if (!ok) { error = context.error; return false; }
     output = std::move(loaded); error.clear(); return true;
 }
+ShaderSourceStatus assemble_shader_programs(const ShaderLuaCode& base, const ShaderLuaCode& effect,
+    std::int32_t mode, std::uint32_t generation, bool projected_shadow,
+    ShaderVertexProgram& vertex_output, ShaderPixelProgram& pixel_output) {
+    ShaderVertexProgram vertex;
+    append_vertex_inputs_00b35930(base.vertex_inputs, effect.vertex_inputs, vertex.inputs);
+    append_vertex_system_fields_00b35be0(vertex.system_values);
+    const auto selected = append_selected_interpolators_00b36800(
+        base.interpolators, effect.interpolators, nullptr, nullptr, vertex.outputs);
+    if (selected != ShaderSourceStatus::complete) return selected;
+    vertex.packing_fields = vertex.outputs;
+    append_interpolator_mapping_00b34aa0(vertex.outputs, vertex.interpolators);
+    vertex.constants = make_system_constant_registry_00b5bf70();
+    vertex.register_limit = system_constant_annotation_limit;
+    vertex.base.header = base.constants; vertex.effect.header = effect.constants;
+    vertex.base.vertex_code = base.vertex; vertex.effect.vertex_code = effect.vertex;
+    vertex.effect.render_mode = mode;
+    vertex.effect.shadow_helper = effect.options.receive_shadows;
+    vertex.base.decode_inputs = base.options.compressed_vertices;
+    vertex.base.decode_field_limit = static_cast<std::uint32_t>(base.options.compressed_element_count);
+    for (const auto& sampler : base.samplers) vertex.base.samplers.push_back(sampler.declaration);
+    for (const auto& sampler : effect.samplers) vertex.effect.samplers.push_back(sampler.declaration);
+    ShaderPixelProgram pixel;
+    pixel.inputs = vertex.outputs; pixel.unpack_fields = vertex.outputs;
+    append_pixel_system_fields_00b372d0(pixel.system_values);
+    pixel.interpolators = vertex.interpolators;
+    pixel.constants = vertex.constants; pixel.register_limit = vertex.register_limit;
+    pixel.base.header = base.constants; pixel.effect.header = effect.constants;
+    pixel.base.pixel_code = base.pixel; pixel.effect.pixel_code = effect.pixel;
+    pixel.base.samplers = vertex.base.samplers; pixel.effect.samplers = vertex.effect.samplers;
+    pixel.effect.render_mode = mode;
+    pixel.effect.shadow_helpers = effect.options.receive_shadows;
+    pixel.effect.alpha_override = effect.options.output_alpha;
+    pixel.base.vpos = base.options.pixel_position_register; pixel.effect.vpos = effect.options.pixel_position_register;
+    pixel.base.suppress_time_transform = base.options.no_banding_fix;
+    pixel.base.premultiply_alpha = base.options.lo_res_blend;
+    pixel.color_outputs = static_cast<std::uint32_t>(effect.options.render_target_count);
+    pixel.depth_output = effect.options.write_depth;
+    pixel.visibility_alpha = base.options.visibility_fade;
+    pixel.zero_fog = generation < 3; pixel.projected_shadow = projected_shadow;
+    vertex_output = std::move(vertex); pixel_output = std::move(pixel);
+    return ShaderSourceStatus::complete;
+}
 }
