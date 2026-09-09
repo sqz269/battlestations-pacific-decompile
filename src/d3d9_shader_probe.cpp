@@ -72,6 +72,10 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         {{"PixelVolume", false, 4}}, pixel_source);
     const bool pixel_samplers_match = pixel_source ==
         "sampler2D\tPixelTexture\t\t: register(s0);\nsampler3D\tPixelVolume\t\t: register(s2);\n";
+    bsp::append_system_constant_header_00b38ff0({{"cShadowMapSizeData", 1, 4, 1}},
+        false, 0, pixel_source);
+    bsp::append_shadow_helper_00b38230(false, pixel_source);
+    bsp::append_map_shadow_helper_00b382b0(true, pixel_source);
     const bool pixel_generated = bsp::append_shader_struct_00b38b50("sPixelIn", fields,
         pixel_options, pixel_source) == bsp::ShaderSourceStatus::complete
         && bsp::append_interpolator_struct_00b36e30(interpolators, interpolator_options,

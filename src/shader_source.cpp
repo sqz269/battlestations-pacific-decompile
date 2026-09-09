@@ -29,12 +29,35 @@ void append_vertex_input_decode_00b35820(const std::vector<ShaderField>& fields,
 
 namespace {
 #include "shader_vertex_literals.inc"
+#include "shader_shadow_literals.inc"
 std::string signed_decimal(std::uint32_t value) {
     // Native variadic %i interprets the full DWORD as signed, even though
     // dimension selection above one uses unsigned comparisons.
     return std::to_string(value <= 0x7fffffffu ? static_cast<std::int64_t>(value)
         : static_cast<std::int64_t>(value) - 0x100000000ll);
 }
+}
+
+void append_shadow_helper_00b38230(bool projected_sampling, std::string& output) {
+    output += shadow_begin; output += '\n';
+    if (projected_sampling) {
+        output += shadow_projected_position; output += '\n';
+        output += shadow_projected_return; output += '\n';
+    } else {
+        output += shadow_filtered_body; output += '\n';
+    }
+    output += "}\n";
+}
+
+void append_map_shadow_helper_00b382b0(bool projected_sampling, std::string& output) {
+    output += map_shadow_begin; output += '\n';
+    if (projected_sampling) {
+        output += shadow_projected_position; output += '\n';
+        output += map_shadow_projected_return; output += '\n';
+    } else {
+        output += map_shadow_filtered_body; output += '\n';
+    }
+    output += "}\n";
 }
 
 ShaderSourceStatus generate_vertex_source_00b39110(ShaderVertexProgram& program,

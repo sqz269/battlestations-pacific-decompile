@@ -1008,5 +1008,15 @@
     "address": "00b37ef0",
     "name": "BSP_ShaderBuilder_AppendPixelSamplers",
     "evidence": "ECX builder RET. Same declaration formatting/base-effect traversal as00b38080 but selects record+Ch ZERO. This byte is stage selection, not resource enablement. Slot starts0 independently for pixel stage; unknown selected dimensions consume slots without text. Typed shared stage emitter, exacttext and ps_2_0 compile/bind checked. See docs/SHADER_PIXEL_COMPOSITION.md."
+  },
+  {
+    "address": "00b38230",
+    "name": "BSP_ShaderBuilder_AppendShadowHelper",
+    "evidence": "ECX builder RET. Emits original HLSL literals; +AAh selects projected tex2Dproj path versus four red-sample strict-depth comparisons and bilinear filtering. GetShadow uses cShadowMapSizeData and cascade fade; GetMapShadow filtered path hardcodes2048. Typed boolean/string emitter implemented with byte-verified literals. Mixed filtered GetShadow/projected GetMapShadow compile ps_2_0 in existing probe; no shadow rendering validation. See docs/SHADER_SHADOW_HELPERS.md."
+  },
+  {
+    "address": "00b382b0",
+    "name": "BSP_ShaderBuilder_AppendMapShadowHelper",
+    "evidence": "ECX builder RET. Emits original HLSL literals; +AAh selects projected tex2Dproj path versus four red-sample strict-depth comparisons and bilinear filtering. GetShadow uses cShadowMapSizeData and cascade fade; GetMapShadow filtered path hardcodes2048. Typed boolean/string emitter implemented with byte-verified literals. Mixed filtered GetShadow/projected GetMapShadow compile ps_2_0 in existing probe; no shadow rendering validation. See docs/SHADER_SHADOW_HELPERS.md."
   }
 ]

@@ -1,0 +1,68 @@
+{
+  "evidence": [
+    {
+      "address": "00d600b0",
+      "name": "shadow_begin",
+      "length": 423,
+      "sha256": "775d85ae069b9d37994288565cfdb430c540cf0f78433b718e728e0cce41235b",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60060",
+      "name": "shadow_projected_position",
+      "length": 73,
+      "sha256": "b597d771f5e9bc1226c1cb8e1a5b9f458ab5643707a716347683dd8facb1cbce",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60010",
+      "name": "shadow_projected_return",
+      "length": 77,
+      "sha256": "323456e8d57372450c038b8c92abedddeed77290fbc7030ea4c619d3b076b362",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d5fb08",
+      "name": "shadow_filtered_body",
+      "length": 1280,
+      "sha256": "fa019ebfc75cf6be10346e0d7fa8a2344f6b6fc13ae3c36ffbafe4e4bb1db1bf",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60c38",
+      "name": "map_shadow_begin",
+      "length": 122,
+      "sha256": "ff758df6ead6839888bf83c103d3f7cf7e676811c37ff0c57ac3b29fe1c29621",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60c04",
+      "name": "map_shadow_projected_return",
+      "length": 49,
+      "sha256": "dce020f7236d86f7bddeb871753b7993cf9fbd251d5101b267fb2799612159ce",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d606e8",
+      "name": "map_shadow_filtered_body",
+      "length": 1304,
+      "sha256": "9d8eed75542115982505278bf394513b7adfcb59ac34f89b34047dce907271a6",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00b38230",
+      "length": 92,
+      "sha256": "f4f4ac4aa449fe68d4fbd12225880106e1ed83090e17b4203a7a282ba1aff103",
+      "disk_matches_ghidra": true,
+      "assembly": "00b38230: PUSH ESI \n00b38231: PUSH EDI \n00b38232: MOV EDI,ECX \n00b38234: LEA ESI,[EDI + 0x4c] \n00b38237: PUSH 0xd600b0 \n00b3823c: MOV ECX,ESI \n00b3823e: CALL 0x00b34f20 \n00b38243: CMP byte ptr [EDI + 0xaa],0x0 \n00b3824a: MOV ECX,ESI \n00b3824c: JZ 0x00b38273 \n00b3824e: PUSH 0xd60060 \n00b38253: CALL 0x00b34f20 \n00b38258: PUSH 0xd60010 \n00b3825d: MOV ECX,ESI \n00b3825f: CALL 0x00b34f20 \n00b38264: PUSH 0xce4cd4 \n00b38269: MOV ECX,ESI \n00b3826b: CALL 0x00b34f20 \n00b38270: POP EDI \n00b38271: POP ESI \n00b38272: RET \n00b38273: PUSH 0xd5fb08 \n00b38278: CALL 0x00b34f20 \n00b3827d: PUSH 0xce4cd4 \n00b38282: MOV ECX,ESI \n00b38284: CALL 0x00b34f20 \n00b38289: POP EDI \n00b3828a: POP ESI \n00b3828b: RET \n"
+    },
+    {
+      "address": "00b382b0",
+      "length": 92,
+      "sha256": "9398fe1541c850e686e40231011b3ff913866d3fd4bcbd54fe17ea9a53659c67",
+      "disk_matches_ghidra": true,
+      "assembly": "00b382b0: PUSH ESI \n00b382b1: PUSH EDI \n00b382b2: MOV EDI,ECX \n00b382b4: LEA ESI,[EDI + 0x4c] \n00b382b7: PUSH 0xd60c38 \n00b382bc: MOV ECX,ESI \n00b382be: CALL 0x00b34f20 \n00b382c3: CMP byte ptr [EDI + 0xaa],0x0 \n00b382ca: MOV ECX,ESI \n00b382cc: JZ 0x00b382f3 \n00b382ce: PUSH 0xd60060 \n00b382d3: CALL 0x00b34f20 \n00b382d8: PUSH 0xd60c04 \n00b382dd: MOV ECX,ESI \n00b382df: CALL 0x00b34f20 \n00b382e4: PUSH 0xce4cd4 \n00b382e9: MOV ECX,ESI \n00b382eb: CALL 0x00b34f20 \n00b382f0: POP EDI \n00b382f1: POP ESI \n00b382f2: RET \n00b382f3: PUSH 0xd606e8 \n00b382f8: CALL 0x00b34f20 \n00b382fd: PUSH 0xce4cd4 \n00b38302: MOV ECX,ESI \n00b38304: CALL 0x00b34f20 \n00b38309: POP EDI \n00b3830a: POP ESI \n00b3830b: RET \n"
+    }
+  ],
+  "validation": "Filtered GetShadow and projected GetMapShadow compile unused in existing ps_2_0 fixture; real shader binding, full probe, Win32 build and two existing CTests pass. Other branch combination/render output unverified."
+}

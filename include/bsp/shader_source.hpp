@@ -44,6 +44,10 @@ void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>
 // Same algorithm for records whose +Ch is zero; its slot counter is independent.
 void append_pixel_samplers_00b37ef0(const std::vector<ShaderSamplerDeclaration>& base,
     const std::vector<ShaderSamplerDeclaration>& effect, std::string& output);
+// ECX builder, RET; +AAh selects projected sampling instead of the four-tap
+// comparison path. Emits original HLSL literals plus helper-added linefeeds.
+void append_shadow_helper_00b38230(bool projected_sampling, std::string& output);
+void append_map_shadow_helper_00b382b0(bool projected_sampling, std::string& output);
 
 // Projection of the native 20h system constant record. Native declaration
 // order is float<first>x<second>; register advance is second*array_count.
