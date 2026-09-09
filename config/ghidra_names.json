@@ -1532,7 +1532,7 @@
   {
     "address": "00ad4c30",
     "name": "BSP_Font_LoadGlyphDataAndTextures",
-    "evidence": "ECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported."
+    "evidence": "ECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported. Specialscalarrecords nowported: zero-space/LF with signedscaledheight/4advance; missingknownfields bitcopied0091; CRzero. Native2resourcefields/padding omitted. ActualArial16 selection/fallbackchecked."
   },
   {
     "address": "00b3dd30",
@@ -1588,5 +1588,30 @@
     "address": "00b27c20",
     "name": "BSP_D3D9Renderer_CreateRegisteredQuery",
     "evidence": "ECXrenderer RET,EAXnewquery. Optionalguard,alloc14h,ctor00b5fe90,appendborrowedpointer+19A0 withoutretain evenCreateQueryfailure. Typedfreshowner creation/appendfragment preservesguard and appends after COMfailure; allocator/intrusiveABI omitted. Full204bytes nowcreated from verifiedrawbody."
+  },
+  {
+    "address": "00b5fc30",
+    "name": "BSP_OcclusionQuery_Begin",
+    "evidence": "ECXwrapper RET/boolAL. Nonzero state+8 andnonnullquery+10 issueBEGIN2; returnexactHRESULTzero. Other paths true; stateunchanged. Realtriangle query samplecount matchesreadback1596."
+  },
+  {
+    "address": "00b5fc60",
+    "name": "BSP_OcclusionQuery_End",
+    "evidence": "ECXwrapper RET/boolAL. Nonzero state/nonnullquery issueEND1, storestate=(HRESULT!=0), returnexactzero. Null/zerostate skipstrue unchanged. Successfulend setsstate0pending."
+  },
+  {
+    "address": "00b5fca0",
+    "name": "BSP_OcclusionQuery_Poll",
+    "evidence": "ECXwrapper RET/boolAL. Nonnullquery alwaysoneGetData(&samples+C,4,FLUSH1), onlyexactS_OK setsstate2. False conflatespending/error; nullquerytrueunchanged. No native retry. Hostprobe boundedwaitneeded2calls, completed1596samples equalcoveredpixels."
+  },
+  {
+    "address": "00b5fce0",
+    "name": "BSP_OcclusionQuery_GetCachedSamples",
+    "evidence": "ECXwrapper RET/EAX rawDWORD+C, no readiness/querycheck. Cachedsamples getter, maybestale untilpollsuccess."
+  },
+  {
+    "address": "00ad4480",
+    "name": "BSP_Font_SelectGlyph",
+    "evidence": "ECXfont,u16key stackRET4/EAXpayload.20/LF0A=>embedded+4C,CR0D=>+8C; exactunsignedtreeglyph elsecopied0091fallback+6C. Nouppercasehere. TypedscalarFontData projection checked installedfont; resources/padding/nativeiterators omitted."
   }
 ]

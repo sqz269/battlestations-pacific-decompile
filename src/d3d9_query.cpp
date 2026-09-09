@@ -33,6 +33,32 @@ void release_occlusion_query_00b5fe20(D3D9OcclusionQuery& owner) {
     }
 }
 
+bool begin_occlusion_query_00b5fc30(D3D9OcclusionQuery& owner) {
+    if (owner.field_08 == 0 || !owner.query) return true;
+    static_assert(D3DISSUE_BEGIN == 2);
+    return owner.query->Issue(D3DISSUE_BEGIN) == S_OK;
+}
+
+bool end_occlusion_query_00b5fc60(D3D9OcclusionQuery& owner) {
+    if (!owner.query || owner.field_08 == 0) return true;
+    static_assert(D3DISSUE_END == 1);
+    const HRESULT result = owner.query->Issue(D3DISSUE_END);
+    owner.field_08 = result != S_OK ? 1u : 0u;
+    return result == S_OK;
+}
+
+bool poll_occlusion_query_00b5fca0(D3D9OcclusionQuery& owner) {
+    if (!owner.query) return true;
+    static_assert(D3DGETDATA_FLUSH == 1);
+    const HRESULT result = owner.query->GetData(&owner.field_0c, 4, D3DGETDATA_FLUSH);
+    if (result == S_OK) owner.field_08 = 2;
+    return result == S_OK;
+}
+
+std::uint32_t occlusion_query_samples_00b5fce0(const D3D9OcclusionQuery& owner) noexcept {
+    return owner.field_0c;
+}
+
 void D3D9QueryRegistry::append_00b27c20_fragment(D3D9OcclusionQuery& query) {
     queries_.push_back(&query); // No intrusive or COM retain at native append.
 }

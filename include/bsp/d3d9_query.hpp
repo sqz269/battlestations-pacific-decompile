@@ -5,7 +5,8 @@
 
 namespace bsp {
 // Concrete query wrapper projection. One owned COM reference; no native vtable
-// or intrusive count. Query-use meaning of +08h/+0Ch remains unaudited.
+// or intrusive count. +08h: constructor=1, end stores failure bool, poll-success=2.
+// +0Ch retains the latest GetData DWORD (samples); getter does not poll.
 struct D3D9OcclusionQuery {
     std::uint32_t field_08{1};
     std::uint32_t field_0c{};
@@ -25,6 +26,16 @@ void release_occlusion_query_00b5fe20(D3D9OcclusionQuery&);
 // explicit. Require empty owner rather than native unchecked pointer overwrite.
 // Reports HRESULT and cleans up failure outputs; no state-field reinitialization.
 HRESULT restore_occlusion_query_00b5fe60(D3D9OcclusionQuery&, IDirect3DDevice9&);
+
+// Native ECX wrapper, RET, bool in AL. Zero state or absent query skips Issue
+// and returns true. Only exact S_OK counts as API success; no retries/guard.
+bool begin_occlusion_query_00b5fc30(D3D9OcclusionQuery&);
+bool end_occlusion_query_00b5fc60(D3D9OcclusionQuery&);
+// One GetData(&field_0c,4,FLUSH), even when state is nonzero. S_OK sets state2;
+// S_FALSE and errors both return false without a state change. Null returns true.
+bool poll_occlusion_query_00b5fca0(D3D9OcclusionQuery&);
+// Native EAX returns cached DWORD; no readiness/visibility inference or polling.
+std::uint32_t occlusion_query_samples_00b5fce0(const D3D9OcclusionQuery&) noexcept;
 
 // Borrowed renderer+19A0h reset-list projection. Unregister before destruction.
 // Stable membership, storage, and owner lifetimes required during traversal.

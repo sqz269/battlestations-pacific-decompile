@@ -1143,6 +1143,46 @@
       "status": "real_query_reset_borrowed_removal_and_guard_checked",
       "abi_compatible": false,
       "limitations": "Typedexplicitstabledevice/registry, HRESULTandfoundreporting; nativeintrusive/vtableABI and queryIssue/GetData behavior unported."
+    },
+    {
+      "address": "00b5fc30",
+      "name": "BSP_OcclusionQuery_Begin",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_samples_and_installed_font_fallback_checked",
+      "abi_compatible": false,
+      "limitations": "Typedownership/scalarfontprojection; callerqueryscheduling/visibilitypolicy, fullglyphresource/quad/lifetime andABI remain unported."
+    },
+    {
+      "address": "00b5fc60",
+      "name": "BSP_OcclusionQuery_End",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_samples_and_installed_font_fallback_checked",
+      "abi_compatible": false,
+      "limitations": "Typedownership/scalarfontprojection; callerqueryscheduling/visibilitypolicy, fullglyphresource/quad/lifetime andABI remain unported."
+    },
+    {
+      "address": "00b5fca0",
+      "name": "BSP_OcclusionQuery_Poll",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_samples_and_installed_font_fallback_checked",
+      "abi_compatible": false,
+      "limitations": "Typedownership/scalarfontprojection; callerqueryscheduling/visibilitypolicy, fullglyphresource/quad/lifetime andABI remain unported."
+    },
+    {
+      "address": "00b5fce0",
+      "name": "BSP_OcclusionQuery_GetCachedSamples",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_samples_and_installed_font_fallback_checked",
+      "abi_compatible": false,
+      "limitations": "Typedownership/scalarfontprojection; callerqueryscheduling/visibilitypolicy, fullglyphresource/quad/lifetime andABI remain unported."
+    },
+    {
+      "address": "00ad4480",
+      "name": "BSP_Font_SelectGlyph",
+      "source": "src/font_data.cpp",
+      "status": "real_query_samples_and_installed_font_fallback_checked",
+      "abi_compatible": false,
+      "limitations": "Typedownership/scalarfontprojection; callerqueryscheduling/visibilitypolicy, fullglyphresource/quad/lifetime andABI remain unported."
     }
   ],
   "fragments": [
@@ -1525,6 +1565,15 @@
       "status": "real_query_reset_probe_checked",
       "abi_compatible": false,
       "remaining": "Concretequerycallbacks andstableborrowedregistry only; allocator/intrusiveownership, percallbackcurrentdevice reload, fullrendererreadiness/otherresources/outerresetguard andissue/resultbehavior remain outsideprojection."
+    },
+    {
+      "address": "00ad4c30",
+      "name": "initialize_special_font_records",
+      "source": "src/font_data.cpp",
+      "native_range": "00ad508f..00ad514d scalar specialrecords",
+      "status": "installed_font_special_glyph_checked",
+      "abi_compatible": false,
+      "remaining": "Nativepadding/tworesourcefields/allocatorownership excluded; projectedscalarcopy preservesknownfloatbits. Fullfontload/rendering unported."
     }
   ]
 }

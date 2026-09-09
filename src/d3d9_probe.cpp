@@ -90,6 +90,20 @@ static bool probe_installed_font(const char* atlas_path) {
         && letter->second.fields_00_0c == std::array<float, 4>{0.1015625f, 0.240234375f, 0.203125f, 0.263671875f}
         && letter->second.field_10 == 0 && letter->second.scaled_field_12 == 10
         && letter->second.scaled_field_14 == 10;
+    const auto& space = bsp::select_font_glyph_00ad4480(font, 0x20);
+    const auto& missing = bsp::select_font_glyph_00ad4480(font, 0xffff);
+    const auto& fallback_source = font.glyphs.at(0x91);
+    const bool special_glyphs = letter != font.glyphs.end() && &space == &font.space_lf_glyph
+        && &bsp::select_font_glyph_00ad4480(font, 0x0a) == &space
+        && space.scaled_field_12 == 5 && space.scaled_field_14 == 0
+        && &bsp::select_font_glyph_00ad4480(font, 0x0d) == &font.carriage_return_glyph
+        && font.carriage_return_glyph.scaled_field_12 == 0
+        && &bsp::select_font_glyph_00ad4480(font, 'A') == &letter->second
+        && &missing == &font.missing_glyph && &missing != &fallback_source
+        && missing.fields_00_0c == fallback_source.fields_00_0c
+        && missing.field_10 == fallback_source.field_10
+        && missing.scaled_field_12 == fallback_source.scaled_field_12
+        && missing.scaled_field_14 == fallback_source.scaled_field_14;
     // Font scalar call path seeds zero: a one-byte final read zero-fills the
     // upper byte and the following EOF read returns zero without moving.
     const auto last = stream.data_00bef610()[stream.size_00bef600() - 1];
@@ -97,9 +111,9 @@ static bool probe_installed_font(const char* atlas_path) {
         && bsp::stream_read_word_00be4320(stream) == last
         && bsp::stream_read_u32_00be4300(stream) == 0
         && stream.position_00bef580() == stream.size_00bef600();
-    std::printf("Installed font DAT: glyphs=%zu scaled_height=%u signed_byte_acceptance=%d short_scalar=%d\n",
-        font.glyphs.size(), static_cast<unsigned>(font.scaled_height), decoded && fields, short_scalar);
-    return decoded && fields && short_scalar;
+    std::printf("Installed font DAT: glyphs=%zu scaled_height=%u signed_byte_acceptance=%d short_scalar=%d special_glyphs=%d\n",
+        font.glyphs.size(), static_cast<unsigned>(font.scaled_height), decoded && fields, short_scalar, special_glyphs);
+    return decoded && fields && short_scalar && special_glyphs;
 }
 
 // Recovered physical-to-memory route with explicit completeness checks and DLL
@@ -241,6 +255,7 @@ static bool probe_shader_constants(IDirect3DDevice9& device) {
 
 // Host setup for a bounded pixel check, not the game's material/stream pipeline.
 static bool probe_draw(IDirect3DDevice9& device) {
+    bsp::D3D9OcclusionQuery visibility;
     IDirect3DSurface9* target = nullptr;
     IDirect3DSurface9* readback = nullptr;
     IDirect3DSurface9* original = nullptr;
@@ -248,7 +263,8 @@ static bool probe_draw(IDirect3DDevice9& device) {
     auto& vertices = *physical_vertices;
     vertices.flags = 0x1000;
     vertices.capacity = 80;
-    HRESULT result = device.GetRenderTarget(0, &original);
+    HRESULT result = bsp::create_occlusion_query_00b5fe90(visibility, device);
+    if (SUCCEEDED(result)) result = device.GetRenderTarget(0, &original);
     if (SUCCEEDED(result)) result = device.CreateRenderTarget(64, 64, D3DFMT_A8R8G8B8,
         D3DMULTISAMPLE_NONE, 0, FALSE, &target, nullptr);
     if (SUCCEEDED(result)) result = device.CreateOffscreenPlainSurface(64, 64, D3DFMT_A8R8G8B8,
@@ -314,22 +330,50 @@ static bool probe_draw(IDirect3DDevice9& device) {
     }
     if (SUCCEEDED(result)) result = device.BeginScene();
     if (SUCCEEDED(result)) {
-        result = states.draw_primitive_00b21b40({}, D3DPT_TRIANGLELIST, 1, 1);
+        if (!bsp::begin_occlusion_query_00b5fc30(visibility)) result = E_FAIL;
+        if (SUCCEEDED(result)) result = states.draw_primitive_00b21b40({}, D3DPT_TRIANGLELIST, 1, 1);
+        const bool query_ended = bsp::end_occlusion_query_00b5fc60(visibility);
+        if (SUCCEEDED(result) && (!query_ended || visibility.field_08 != 0)) result = E_FAIL;
         const HRESULT ended = device.EndScene();
         if (SUCCEEDED(result)) result = ended;
     }
     if (SUCCEEDED(result)) result = device.GetRenderTargetData(target, readback);
+    // Diagnostic wait only: readback completion did not make GetData immediately
+    // ready on this device. Native poll remains one call and returns false for
+    // both pending and failure. Bound host retries to avoid hanging the probe.
+    UINT query_polls{};
+    if (SUCCEEDED(result)) {
+        const auto deadline = GetTickCount64() + 2000;
+        bool ready{};
+        do {
+            ++query_polls;
+            ready = bsp::poll_occlusion_query_00b5fca0(visibility);
+            if (ready) break;
+            Sleep(1);
+        } while (GetTickCount64() < deadline);
+        if (!ready) result = E_FAIL;
+    }
     D3DLOCKED_RECT pixels{};
     if (SUCCEEDED(result)) result = readback->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
-    DWORD inside{}, outside{};
+    DWORD inside{}, outside{}, covered_pixels{};
     if (SUCCEEDED(result)) {
         const auto* bytes = static_cast<const unsigned char*>(pixels.pBits);
         std::memcpy(&inside, bytes + 16 * pixels.Pitch + 16 * 4, 4);
         std::memcpy(&outside, bytes + 60 * pixels.Pitch + 60 * 4, 4);
+        for (UINT y = 0; y < 64; ++y) {
+            for (UINT x = 0; x < 64; ++x) {
+                DWORD value{};
+                std::memcpy(&value, bytes + y * pixels.Pitch + x * 4, 4);
+                if ((value & 0xffffff) == 0x00ff00) ++covered_pixels;
+            }
+        }
         result = readback->UnlockRect();
     }
     bool matched = SUCCEEDED(result) && (inside & 0xffffff) == 0x00ff00
-        && (outside & 0xffffff) == 0;
+        && (outside & 0xffffff) == 0 && visibility.field_08 == 2
+        && covered_pixels != 0 && bsp::occlusion_query_samples_00b5fce0(visibility) == covered_pixels;
+    std::printf("Occlusion query draw: samples=%u readback_covered_pixels=%lu polls=%u state=%u completed=%d\n",
+        bsp::occlusion_query_samples_00b5fce0(visibility), covered_pixels, query_polls, visibility.field_08, matched);
     std::printf("D3D9 draw readback: hr=0x%08lx inside=0x%08lx outside=0x%08lx checked=%d\n",
         static_cast<unsigned long>(result), inside, outside, matched);
     auto index_stream = std::make_shared<bsp::LogicalIndexStream>();
