@@ -1,0 +1,324 @@
+{
+  "source_commit_before_refactor": "df1f23fdc711f3ec1e5cbe70edc1363ad81b0d51",
+  "cause": "Ghidra thunk aliases share an already assigned target name. The collision check treated those aliases as a new naming collision and duplicated the address suffix on seven existing tags.",
+  "fix": "An exact existing target name is retained; new names still check other snapshot owners and generated names.",
+  "changes": [
+    {
+      "address": "00923060",
+      "before": {
+        "address": "00923060",
+        "name": "TRIV_body_00923060_00923060",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00923060",
+        "name": "TRIV_body_00923060",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "live_function": "Function: TRIV_body_00923060 at 00923060\nSignature: undefined TRIV_body_00923060(void)\nEntry: 00923060\nBody: 00923060 - 00923060",
+      "existing_name_owners": [
+        {
+          "address": "00923060",
+          "name": "TRIV_body_00923060",
+          "isThunk": false,
+          "isExternal": false
+        },
+        {
+          "address": "009277f0",
+          "name": "TRIV_body_00923060",
+          "isThunk": true,
+          "isExternal": false
+        }
+      ]
+    },
+    {
+      "address": "00b19750",
+      "before": {
+        "address": "00b19750",
+        "name": "CG_adjustor_thunk_00b19750_00b19750",
+        "category": "cg_adjustor_thunk",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0032"
+      },
+      "after": {
+        "address": "00b19750",
+        "name": "CG_adjustor_thunk_00b19750",
+        "category": "cg_adjustor_thunk",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0032"
+      },
+      "live_function": "Function: CG_adjustor_thunk_00b19750 at 00b19750\nSignature: undefined CG_adjustor_thunk_00b19750(void)\nEntry: 00b19750\nBody: 00b19750 - 00b1975a",
+      "existing_name_owners": [
+        {
+          "address": "00b19750",
+          "name": "CG_adjustor_thunk_00b19750",
+          "isThunk": false,
+          "isExternal": false
+        },
+        {
+          "address": "00c30260",
+          "name": "CG_adjustor_thunk_00b19750",
+          "isThunk": true,
+          "isExternal": false
+        }
+      ]
+    },
+    {
+      "address": "00bd30f0",
+      "before": {
+        "address": "00bd30f0",
+        "name": "TRIV_body_00bd30f0_00bd30f0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00bd30f0",
+        "name": "TRIV_body_00bd30f0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "live_function": "Function: TRIV_body_00bd30f0 at 00bd30f0\nSignature: undefined TRIV_body_00bd30f0(void)\nEntry: 00bd30f0\nBody: 00bd30f0 - 00bd30f6",
+      "existing_name_owners": [
+        {
+          "address": "00a81880",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00b17970",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00b3d4f0",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00b48d70",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00b49420",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00b5e720",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00b5e7e0",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00ba96e0",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00bd30f0",
+          "name": "TRIV_body_00bd30f0",
+          "isThunk": false,
+          "isExternal": false
+        }
+      ]
+    },
+    {
+      "address": "00bf6324",
+      "before": {
+        "address": "00bf6324",
+        "name": "LIBCRT_unmatched_00bf6324_00bf6324",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "after": {
+        "address": "00bf6324",
+        "name": "LIBCRT_unmatched_00bf6324",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "live_function": "Function: LIBCRT_unmatched_00bf6324 at 00bf6324\nSignature: undefined LIBCRT_unmatched_00bf6324(void)\nEntry: 00bf6324\nBody: 00bf630c - 00bf632e",
+      "existing_name_owners": [
+        {
+          "address": "00bf630a",
+          "name": "LIBCRT_unmatched_00bf6324",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00bf6324",
+          "name": "LIBCRT_unmatched_00bf6324",
+          "isThunk": false,
+          "isExternal": false
+        }
+      ]
+    },
+    {
+      "address": "00bf681b",
+      "before": {
+        "address": "00bf681b",
+        "name": "LIBCRT_unmatched_00bf681b_00bf681b",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "after": {
+        "address": "00bf681b",
+        "name": "LIBCRT_unmatched_00bf681b",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "live_function": "Function: LIBCRT_unmatched_00bf681b at 00bf681b\nSignature: undefined LIBCRT_unmatched_00bf681b(void)\nEntry: 00bf681b\nBody: 00bf681b - 00bf6883",
+      "existing_name_owners": [
+        {
+          "address": "00bf55be",
+          "name": "LIBCRT_unmatched_00bf681b",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00bf681b",
+          "name": "LIBCRT_unmatched_00bf681b",
+          "isThunk": false,
+          "isExternal": false
+        }
+      ]
+    },
+    {
+      "address": "00bfd017",
+      "before": {
+        "address": "00bfd017",
+        "name": "LIBCRT_unmatched_00bfd017_00bfd017",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "after": {
+        "address": "00bfd017",
+        "name": "LIBCRT_unmatched_00bfd017",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "live_function": "Function: LIBCRT_unmatched_00bfd017 at 00bfd017\nSignature: undefined LIBCRT_unmatched_00bfd017(void)\nEntry: 00bfd017\nBody: 00bfd017 - 00bfd03b",
+      "existing_name_owners": [
+        {
+          "address": "00bfd012",
+          "name": "LIBCRT_unmatched_00bfd017",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00bfd017",
+          "name": "LIBCRT_unmatched_00bfd017",
+          "isThunk": false,
+          "isExternal": false
+        }
+      ]
+    },
+    {
+      "address": "00c11d61",
+      "before": {
+        "address": "00c11d61",
+        "name": "LIBCRT_unmatched_00c11d61_00c11d61",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "after": {
+        "address": "00c11d61",
+        "name": "LIBCRT_unmatched_00c11d61",
+        "category": "crt_unmatched",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0615"
+      },
+      "live_function": "Function: LIBCRT_unmatched_00c11d61 at 00c11d61\nSignature: undefined LIBCRT_unmatched_00c11d61(void)\nEntry: 00c11d61\nBody: 00c11d4f - 00c11d67",
+      "existing_name_owners": [
+        {
+          "address": "00c11d3d",
+          "name": "LIBCRT_unmatched_00c11d61",
+          "isThunk": true,
+          "isExternal": false
+        },
+        {
+          "address": "00c11d61",
+          "name": "LIBCRT_unmatched_00c11d61",
+          "isThunk": false,
+          "isExternal": false
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "command": "python tools/build_tag_ledger.py",
+    "regenerated_entries": 10334,
+    "full_tag_data_unchanged_after_regeneration": true,
+    "rename_tags_matching_saved_ghidra": 8780,
+    "ghidra_mutations": false,
+    "new_test_files": 0
+  },
+  "tool_sha256": "621d1122d3208cb9c8dd63442b6403712a26b1c737dc4d2f0b260788581b9383"
+}

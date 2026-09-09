@@ -2,8 +2,15 @@
 
 The startup system path `filestore` selects a named in-memory provider. It
 does not name a physical directory or archive file. MPKG uses a separate
-factory and reader. This audit implements only the bounded memory-backed
-FileStore path in `file_store.hpp/.cpp`; MPKG remains an evidence handoff.
+factory and reader. This initial audit implemented the bounded memory-backed
+FileStore path in `file_store.hpp/.cpp`. The subsequent
+[MPKG entry reconstruction](MPKG_ENTRY_LOADING.md) now implements a bounded
+transform, directory/index and entry materializer with a synthetic fixture.
+Provider registration/enumeration and real-archive validation remain pending.
+The older MPKG observations below are refined by that complete assembly audit:
+the final transform block uses global-index modulo, the directory uses its
+direct stored offset, small stored entries copy bytes, and large stored entries
+reopen the original encoded source through a native reader without an end clamp.
 
 ## Startup factory distinction
 
@@ -160,4 +167,6 @@ and build-checked. The full D3D9 result in
 [mounted_stream_font_probe.txt](../reports/mounted_stream_font_probe.txt)
 verifies three cached font opens and the installed glyph draw. See
 [MOUNTED_RESOURCE_STREAMS.md](MOUNTED_RESOURCE_STREAMS.md) for alias order,
-early buffering, ownership and failure boundaries; MPKG remains unimplemented.
+early buffering, ownership and failure boundaries. MPKG entry parsing and
+materialization are subsequently implemented as described above; mounted MPKG
+provider wiring remains incomplete.

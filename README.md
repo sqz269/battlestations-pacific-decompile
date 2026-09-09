@@ -52,6 +52,12 @@ The installed-font check uses mounted streams and explicitly primes the priority
 FileStore, then verifies that all three font resources open from that cache. See
 [mounted stream evidence](docs/MOUNTED_RESOURCE_STREAMS.md) for native preload,
 archive and ownership boundaries.
+It also follows the recovered five-script startup preload order with flags
+`0x32`, compares all cached bytes with installed files, and draws wrapped text
+across three lines. A single synthetic MPKG fixture covers directory parsing,
+stored/compressed entries and original-source reopening. See
+[current integration evidence](reports/parallel_entry_validation.json);
+native provider/context ownership and game startup remain incomplete.
 
 ## Export the existing analysis
 

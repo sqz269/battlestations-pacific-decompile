@@ -1,0 +1,98 @@
+{
+  "utc": "2026-09-09T21:26:22.908388+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "0073e1e2",
+      "length": 634,
+      "sha256": "8d77671e5e046bf45559a66f10f57113660922df9d4a020bb5b8a35a9ece90e7",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cfeb80",
+      "length": 30,
+      "sha256": "ab60df8ec3203cfee4712d5d6f8720ad04e316f05d1ff88602d92cd809a9f286",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cfeb58",
+      "length": 37,
+      "sha256": "8299c70598607d0342a5829f7e22ca26961dd0b175c87f9c8f22676715005b13",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cfeb2c",
+      "length": 44,
+      "sha256": "3e77467afabe53eeb4ea8aad27ab255b4bc79a24eb469529bb517c0dd250ebaf",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cfeb04",
+      "length": 38,
+      "sha256": "2432105aa63bd8dc142e9091c702b8efa0d020453ca3f96816e2615df5ed9a3a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cff188",
+      "length": 31,
+      "sha256": "dcdae55e0e484d36867133b0504ffef6f4e4fd149a77a0bd021f826ba6874b21",
+      "live_matches_disk": true
+    }
+  ],
+  "request_order_matches_native_literals": true,
+  "assets": [
+    {
+      "name": "scripts/datatables/inputs.lua",
+      "flags": 50,
+      "bytes": 71090,
+      "sha256": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+    },
+    {
+      "name": "scripts/datatables/keyboardsetup.lua",
+      "flags": 50,
+      "bytes": 26367,
+      "sha256": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb"
+    },
+    {
+      "name": "scripts/datatables/controllerinputnames.lua",
+      "flags": 50,
+      "bytes": 12362,
+      "sha256": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
+    },
+    {
+      "name": "scripts/datatables/controlpresets.lua",
+      "flags": 50,
+      "bytes": 12999,
+      "sha256": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f"
+    },
+    {
+      "name": "scripts/datatables/scoring.lua",
+      "flags": 50,
+      "bytes": 17807,
+      "sha256": "77cd4a909dadd05a956aba621fcdcf2f29c1bbbcb512267daba5f6812d372d43"
+    }
+  ],
+  "total_bytes": 140625,
+  "integration_utc": "2026-09-09T21:56:24.249401+00:00",
+  "build_passed": true,
+  "existing_ctests_passed": 2,
+  "new_test_targets": 0,
+  "observed_order_flags_and_disk_bytes_match": true,
+  "physical_opens": 5,
+  "cache_opens": 5,
+  "cache_entries_after_font_load": 8,
+  "probe_log": "reports/startup_script_preload_probe.txt",
+  "combined_validation": "reports/parallel_entry_validation.json",
+  "limits": [
+    "Host stop-on-failure and owned buffered streams, not native ABI",
+    "Native caller ignores return; complete initializer and Lua execution unimplemented",
+    "Menu audio and native font preload policy are separate work"
+  ],
+  "sha256": {
+    "src/resource_preload.cpp": "08f6e373d17860a5b50a91cb6d873e61b6abb3c93c948e46fe487927db909aba",
+    "include/bsp/resource_preload.hpp": "edfed5b657d6ad5c038cbd6fb181d7786471457f162e36a761a1126a775ea760",
+    "src/resource_preload_probe.cpp": "636003b0312e623165105c4c1ee1c9a886eb0144a52415b24970236262816b87",
+    "reports/startup_script_preload_probe.txt": "8f1abdc5f88065ebbb0056a6f0c89f13068026d5026f68596d846e038399253e"
+  }
+}

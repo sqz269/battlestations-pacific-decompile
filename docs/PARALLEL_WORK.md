@@ -14,6 +14,12 @@ used one worker to audit scheduling, then reassigned that slot to VFS preload
 policy while the other two continued archive-stream and font-layout work.
 No throughput multiplier or completion date has been measured.
 
+After the latest saved function definitions/names, the refreshed graph groups
+23,941 candidates into 92 segments, with 85 in its largest strong dependency
+cycle. These current segment IDs replace the earlier snapshot's IDs; the
+87-segment figures above describe the historical method-review baseline.
+Packet function addresses and file ownership remain the scheduling contract.
+
 The continuing-goal instructions in `AGENTS.md` now explicitly request this
 one-integrator/three-worker capacity and refilling useful independent packets.
 
@@ -25,9 +31,9 @@ segment IDs. Named but unfinished routines are explicitly eligible.
 
 | Work packet | Native anchors | Independent deliverable | Integration boundary |
 |---|---|---|---|
-| Raw inflater stream | `00bbc060`, `00bbc140`, `00bbbf00`, `00bbc1d0` | Buffered read/seek contract and typed adapter design | Existing source interface and pinned zlib; MPKG parsing stays separate |
-| Single-line font layout | `00ab9fd0`, `00aba270`, `00ab6bd0`, `00ad4480` | Scalar width/advance/alignment contract before wrapping/batching | Existing FontData and glyph writer; archive loading is not a prerequisite |
-| Native preload policy | `00be7ab0`, `00bde9c0`, `0073d410`, `00686380` | Identify actual startup/runtime cache selections and flags | Existing mounted-stream/FileStore interface; shared probe edits stay with primary |
+| Archive loading | `00bb9920`, `00bb8d60`, `00bbc140`, `00bb9d90` | Transform/directory/entry materializer integrated; provider enumeration and reopening next | Existing source interface and pinned zlib; shared mount wiring stays with primary |
+| Font layout/context | `00ab9fd0`, `00aba270`, `00aba8d0` | Single-line/wrapped layout and draw integrated; context/section lifetime next | Existing FontData, glyph writer and D3D9 resources; archive loading is not a prerequisite |
+| Preload/pending I/O | `0073d410`, `00be7cd0`, `00bf43b0`, `00bf46b0` | Five-script policy integrated; pending queue ownership and frame pump next | Existing mounted-stream/FileStore interface; shared API/probe edits stay with primary |
 
 The inflater and font packets now have bounded C++ implementations in disjoint
 source/header files. Each worker also reviewed the other's implementation.
@@ -39,14 +45,25 @@ layout/geometry, and the existing real font draw pass. See
 [integration evidence](../reports/parallel_implementation_validation.json).
 No native ABI or original-game equivalence is established by these checks.
 
-The third lane completed the synchronous physical/FileStore flags contract and
-pending-request front half in [VFS_PROVIDER_FLAGS.md](VFS_PROVIDER_FLAGS.md).
-Exact modes 2 and 0x32 agree on those inspected providers; the host preload
-interface still accepts only its previous mode. Pending dispatch uses a separate
-callback visitor and literal mode 2. Neither audit implements an async loader
-or identifies native font preload selection. Ready follow-ups are package entry
-integration, scalar font wrapping, and the bounded preload policy adapter;
-the primary owns their shared API and probe integration.
+The next integration now includes the bounded MPKG parser/materializer, wrapped
+font layout and the five-script startup preload policy. Workers implemented
+disjoint files and independently reviewed code/fixture evidence; the primary
+integrated shared APIs, the build and existing probe. One synthetic archive
+checks all three entry routes, and one installed wrapped-text scenario draws
+three lines. The preload scenario checks the exact native order/flags and all
+140,625 installed script bytes. No new test targets were added. See
+[integration evidence](../reports/parallel_entry_validation.json).
+
+The pending-I/O lane also recovered visitor dispatch, physical submission and
+the completion pump in [VFS_PENDING_DISPATCH.md](VFS_PENDING_DISPATCH.md).
+Only its independent memory-copy dependency is implemented so far; the async
+loader remains an explicit next boundary. The next three independent audits
+are complete: [MPKG mount/reopening](MPKG_MOUNT_INTEGRATION.md),
+[font context ownership](FONT_CONTEXT_OWNERSHIP.md), and
+[pending queue lifetime](VFS_PENDING_LIFETIME.md). They supply the next API
+contracts; their lifecycle and failure limits remain explicit. Their static
+evidence and Ghidra integration are recorded separately in
+[follow-up contracts](../reports/parallel_followup_contracts.json).
 
 ## Rules that keep parallel work useful
 

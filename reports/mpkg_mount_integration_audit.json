@@ -1,0 +1,1025 @@
+{
+  "schema_version": 1,
+  "utc": "2026-09-09T21:59:57.783983+00:00",
+  "packet": "mpkg_mount_integration",
+  "status": "static_contract_recovered_no_implementation_in_this_packet",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "config": "config/target.json",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verified_batch_snapshots": [
+    {
+      "file": "target_20260909T215034Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    },
+    {
+      "file": "target_20260909T215121Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    },
+    {
+      "file": "target_20260909T215148Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    },
+    {
+      "file": "target_20260909T215225Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    },
+    {
+      "file": "target_20260909T215339Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    },
+    {
+      "file": "target_20260909T215442Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    },
+    {
+      "file": "target_20260909T215526Z.json",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "image_base": "00400000"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bb9d90",
+      "length": 211,
+      "sha256": "f29b9e0da7b9117c1397ac017446b00b782a94cb9de0a799d32e2d4ad2c0121b",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb9d90_00bb9e63.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX factory (unused); stack system_path,virtual_path (unused); EAX provider/null; RET8",
+      "current_inventory_name": "BSP_MPKGFactory_Create",
+      "proposed_name": "BSP_MpkgFactory_CreateProvider",
+      "evidence_note": "Length >5 and final .mpkg through case-insensitive00425850; construct before registration."
+    },
+    {
+      "address": "00bb9cb0",
+      "length": 113,
+      "sha256": "58d187cfc7cf73f4a35f6c6d17b1723816017216ef53e1e7e322ca156cb0d7bf",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb9cb0_00bb9d21.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack system_path; EAX provider; RET4",
+      "current_inventory_name": "FUN_00bb9cb0",
+      "proposed_name": "BSP_MpkgProvider_Construct",
+      "evidence_note": "Base copies original name; owns archive state at+14."
+    },
+    {
+      "address": "00bb5590",
+      "length": 147,
+      "sha256": "440590ad78a3993c1fe7fadbc73e4894a747c62af87a557bc7c3cd72f1009a26",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb5590_00bb5623.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack system_path; EAX provider; RET4",
+      "current_inventory_name": "FUN_00bb5590",
+      "proposed_name": null,
+      "evidence_note": "Base refcount+4=1, copied name+8/+C, device+10=-1."
+    },
+    {
+      "address": "00bb8e70",
+      "length": 8,
+      "sha256": "51fb4d7355af26cee0702d54481872ff75c815306db763b5376dfc270e065ec8",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb8e70_00bb8e78.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack name,flags; EAX stream; inherited RET8",
+      "current_inventory_name": null,
+      "proposed_name": "BSP_MpkgProvider_OpenEntry",
+      "evidence_note": "Replace ECX with provider+14, JMP00bb8d60.00bb8e60 is preceding exists RET."
+    },
+    {
+      "address": "00bb8e80",
+      "length": 8,
+      "sha256": "494a7db8e96b75a34286e1ab15bd05c56398afd0c84239db33810f86d46a10c9",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb8e80_00bb8e88.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack name; AL bool; inherited RET4",
+      "current_inventory_name": null,
+      "proposed_name": "BSP_MpkgProvider_ContainsEntry",
+      "evidence_note": "Replace ECX with provider+14, JMP00bb8e00."
+    },
+    {
+      "address": "00bb98f0",
+      "length": 8,
+      "sha256": "ba0187b768c21f5b75aa5df70de8d5cf6a2b6fcbb96333043b46624d1721ebaa",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb98f0_00bb98f8.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack directory,extension,flag,output_vector; inherited RET10h",
+      "current_inventory_name": null,
+      "proposed_name": "BSP_MpkgProvider_EnumerateNames",
+      "evidence_note": "Replace ECX with provider+14, JMP00bb97b0."
+    },
+    {
+      "address": "00bb97b0",
+      "length": 319,
+      "sha256": "0164b11c0dbcc07f24e5d53d65d5502ae5ef9d909000476e824f2e646fca9b90",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb97b0_00bb98ef.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX archive; stack directory,extension,flag,output_vector; no semantic return; RET10h",
+      "current_inventory_name": "FUN_00bb97b0",
+      "proposed_name": "BSP_MpkgArchive_AppendFilteredNames",
+      "evidence_note": "Central order, full stored names, append not clear; appended-slash local is unused by filter."
+    },
+    {
+      "address": "00bee340",
+      "length": 80,
+      "sha256": "9344ea2e15d5bbdad619ff5284c46806f3c3a5f1f6e059f83e9bfec3fdc83a3b",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bee340_00bee390.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX directory; EDX extension; stack flag,candidate; AL bool; RET8",
+      "current_inventory_name": "FUN_00bee340",
+      "proposed_name": "BSP_ProviderName_MatchesEnumerationFilter",
+      "evidence_note": "Case-sensitive prefix/suffix; flag low byte0 requires unsigned lastslash<=directorylength; no slash UINT32MAX rejects."
+    },
+    {
+      "address": "0043e9a0",
+      "length": 88,
+      "sha256": "f5235f47d7eb4a353170b67564fe0e481f1d0dbeb1ca00c54ec8427723e8a200",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/0043e9a0_0043e9f8.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX candidate native string; stack pattern string,start DWORD; AL bool; RET8",
+      "current_inventory_name": "FUN_0043e9a0",
+      "proposed_name": null,
+      "evidence_note": "Byte-exact match until pattern NUL, unsigned offset bounds. Preserve existing string-helper identity."
+    },
+    {
+      "address": "004bcb80",
+      "length": 120,
+      "sha256": "67a509a06f321bdd3896ea560fb586f490904711b06c890f219bf30f80b098c4",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/004bcb80_004bcbf8.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX candidate native string; stack C-string byte set,start index; EAX index/FFFFFFFF; RET8",
+      "current_inventory_name": "FUN_004bcb80",
+      "proposed_name": null,
+      "evidence_note": "Reverse byte-set search; called with slash and INT32MAX. Preserve string-helper identity."
+    },
+    {
+      "address": "004cdc20",
+      "length": 187,
+      "sha256": "7963c3cf78bd2f0735a1fda00175b43ab3babc772d0c61842c77e28f524d3604",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/004cdc20_004cdcdb.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX vector; stack source native string; RET4; no semantic return",
+      "current_inventory_name": "FUN_004cdc20",
+      "proposed_name": null,
+      "evidence_note": "Appends independent copied8-byte string record, grows capacity; preserve existing helper identity."
+    },
+    {
+      "address": "00425850",
+      "length": 76,
+      "sha256": "499cea889390e1f820bb2b3c74103d73b69b67fd3702a93d448ab58dd03250e5",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00425850_0042589c.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX native string; stack C-string; AL bool; RET4",
+      "current_inventory_name": "FUN_00425850",
+      "proposed_name": null,
+      "evidence_note": "Factory equality delegates nonnull case to CRT_stricmp; preserve current string/library identities."
+    },
+    {
+      "address": "00bb9c10",
+      "length": 145,
+      "sha256": "27e72a6707206cee9bb5612a6d27462c8347867bd6ddf3e5994182d3c0e53901",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb9c10_00bb9ca1.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX archive state; no stack args; plain RET",
+      "current_inventory_name": "FUN_00bb9c10",
+      "proposed_name": "BSP_MpkgArchive_Destroy",
+      "evidence_note": "Release decoded stream, entry names/array, original path. Full post-free tail ends00bb9ca0."
+    },
+    {
+      "address": "00bb9e70",
+      "length": 99,
+      "sha256": "b26519a41333a39f609d7235f4171335c6a70ddef2a25d48850a9b640df4973d",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb9e70_00bb9ed3.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; no stack args; plain RET",
+      "current_inventory_name": "FUN_00bb9e70",
+      "proposed_name": "BSP_MpkgProvider_Destroy",
+      "evidence_note": "Destroy/free archive state+14 then base destructor."
+    },
+    {
+      "address": "00bb9ee0",
+      "length": 30,
+      "sha256": "090cbfd0acadb762bdb6d6fc14cde9c325b1969e68c40efce936b0419507ab07",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb9ee0_00bb9efe.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack deleting_flags; EAX provider; RET4",
+      "current_inventory_name": "CG_scalar_deleting_dtor_00bb9ee0",
+      "proposed_name": null,
+      "evidence_note": "Compiler scalar deleting destructor; preserve compiler identity, flag bit0 frees provider."
+    },
+    {
+      "address": "00bb5380",
+      "length": 103,
+      "sha256": "a27895a2b4301695f149885bc2db1eb1ab687e0239a13c3c85d1027d28c6a6ca",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb5380_00bb53e7.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX base provider; no stack args; plain RET",
+      "current_inventory_name": "FUN_00bb5380",
+      "proposed_name": null,
+      "evidence_note": "Destroy copied name+8/+C and base. Preserve existing helper identity."
+    },
+    {
+      "address": "00bd30e0",
+      "length": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bd30e0_00bd30ee.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX object; no stack args; plain RET",
+      "current_inventory_name": "FUN_00bd30e0",
+      "proposed_name": null,
+      "evidence_note": "If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper."
+    },
+    {
+      "address": "00bb5540",
+      "length": 80,
+      "sha256": "806aa02f6df8c156330ae48620eb8578ee48483430e1f13081d40d4dd132ee59",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb5540_00bb5590.bin",
+      "span_kind": "complete_body",
+      "abi": "Incoming ECX unused; stack output_string,input_string; EAX output; RET8",
+      "current_inventory_name": null,
+      "proposed_name": null,
+      "evidence_note": "Direct native string copy, no path transformation."
+    },
+    {
+      "address": "00bf0fb0",
+      "length": 75,
+      "sha256": "a7052b969ac9845090521079e1a3c025b01679e131f13ab309efa5f8c84fdb47",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bf0fb0_00bf0ffb.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX provider; stack name,output; AL bool; RET8",
+      "current_inventory_name": "BSP_FileProvider_ResolveLogicalName",
+      "proposed_name": null,
+      "evidence_note": "Shared logical resolve: exists then copy name; preserve broader existing provider helper name."
+    },
+    {
+      "address": "00be8120",
+      "length": 43,
+      "sha256": "7b04ce7d7b506df5d215d6751236701bcae5f35bd8a3087082052184a7c16baf",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be8120_00be814b.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX FileStore factory; stack system_path,virtual_path(unused); EAX provider/null; RET8",
+      "current_inventory_name": "BSP_FileStoreFactory_Create",
+      "proposed_name": null,
+      "evidence_note": "Matches filestore only, separate from MPKG; preserve existing FileStore name."
+    },
+    {
+      "address": "00be80b0",
+      "length": 105,
+      "sha256": "7ccbd70886a44c579ae9b92e65a164e4cf73985736d748bb81934c343678d2f4",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be80b0_00be8119.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX FileStore factory; no stack args; EAX provider; plain RET",
+      "current_inventory_name": "BSP_FileStoreFactory_GetOrCreate",
+      "proposed_name": null,
+      "evidence_note": "Lazy provider at factory+8; not void. Preserve existing FileStore name."
+    },
+    {
+      "address": "00be7fa0",
+      "length": 238,
+      "sha256": "ca1ebfa3644d33ca4377a8b23aa70f064f10019c33efaef5ae0c2d92e6499ad2",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be7fa0_00be808e.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX FileStore provider; no stack args; EAX provider; plain RET",
+      "current_inventory_name": "BSP_FileStore_Construct",
+      "proposed_name": null,
+      "evidence_note": "Empty base name and two trees; not archive registration. Preserve existing FileStore name."
+    },
+    {
+      "address": "00be7760",
+      "length": 321,
+      "sha256": "fb66b79def9ea3bc9074aea57a4247c7de99d13de973dbd498a5f83cd727f143",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be7760_00be78a1.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX FileStore provider; stack name,source; RET8; no semantic return",
+      "current_inventory_name": "BSP_FileStore_AddFile",
+      "proposed_name": null,
+      "evidence_note": "Normalize insertion key; first duplicate wins, retain stream only on new insert. Preserve existing FileStore name."
+    },
+    {
+      "address": "00bdd990",
+      "length": 113,
+      "sha256": "1085b6f58d29be12200ad20d4f2fe09b7ae0ce85113d8d6fe0167572e4361209",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdd990_00bdda01.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack directory,extension,flag,output_list; RET10h",
+      "current_inventory_name": "FUN_00bdd990",
+      "proposed_name": null,
+      "evidence_note": "Build query callback and traverse supplied directory without normalization/alias."
+    },
+    {
+      "address": "00bdbe20",
+      "length": 141,
+      "sha256": "0eda5efd9dd51e24a62d10ce90d7c86ebf0046f24446cdbcd5937c263542d226",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdbe20_00bdbead.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX callback; stack extension,flag,output_list,unused; EAX callback; RET10h",
+      "current_inventory_name": "FUN_00bdbe20",
+      "proposed_name": null,
+      "evidence_note": "Copies extension, low flag byte and output list pointer; table00d6846c."
+    },
+    {
+      "address": "00bdbeb0",
+      "length": 3,
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdbeb0_00bdbeb3.bin",
+      "span_kind": "complete_body",
+      "abi": "Callback continue test; AL=false; plain RET",
+      "current_inventory_name": null,
+      "proposed_name": null,
+      "evidence_note": "Never stops enumeration after a provider."
+    },
+    {
+      "address": "00be1130",
+      "length": 229,
+      "sha256": "8ff18707b0dc279b87eaab60a5a6505a20bf87664bc7a684d1d05fe04c451909",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be1130_00be1215.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX callback; stack mount_record,suffix; RET8",
+      "current_inventory_name": "FUN_00be1130",
+      "proposed_name": null,
+      "evidence_note": "Provider+14 dispatch four args, forwards whole names without prefix reattachment; complete tail through00be1214."
+    },
+    {
+      "address": "00be0fc0",
+      "length": 224,
+      "sha256": "13cf039ad8981332ca3ec05d2c082ff855ea0fb37901bcde3ccb195abec0d1a4",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be0fc0_00be10a0.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX output list; stack by-value native string (two DWORDs); RET8",
+      "current_inventory_name": "FUN_00be0fc0",
+      "proposed_name": null,
+      "evidence_note": "Deduplicate equal-length case-insensitive names; append first spelling at list tail."
+    },
+    {
+      "address": "00bdbfd0",
+      "length": 98,
+      "sha256": "e7140c75287479bb9ce434aee4c5d845facbb5a3a2f2a0d59fcfee3ceeeea717",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdbfd0_00bdc032.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX output iterator; EDX candidate string; stack begin.owner,begin.node,end.owner,end.node; EAX output iterator; RET10h",
+      "current_inventory_name": "FUN_00bdbfd0",
+      "proposed_name": null,
+      "evidence_note": "Linear list find using length then CRT_stricmp; no sorting."
+    },
+    {
+      "address": "00bdd0a0",
+      "length": 672,
+      "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdd0a0_00bdd340.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack path,callback; RET8",
+      "current_inventory_name": "BSP_VFS_VisitMatchingMounts",
+      "proposed_name": null,
+      "evidence_note": "Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases."
+    },
+    {
+      "address": "00be0660",
+      "length": 51,
+      "sha256": "64b1f5922acf4608540f732fafe2da7e36e710fc7347484c48b9b24785456eac",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be0660_00be0693.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack factory; RET4",
+      "current_inventory_name": "BSP_VFS_RegisterProviderFactory",
+      "proposed_name": null,
+      "evidence_note": "Append factory list; preserve existing manager name."
+    },
+    {
+      "address": "00bdb040",
+      "length": 85,
+      "sha256": "9dbd9f846719a65b27a7342b4228b82b38f9bfb652fc1b0227f4c2ac4176fbce",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdb040_00bdb095.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack system_path,virtual_path; EAX provider/null; RET8",
+      "current_inventory_name": "BSP_VFS_CreateProviderForPath",
+      "proposed_name": null,
+      "evidence_note": "Factory order; return first nonnull provider."
+    },
+    {
+      "address": "00bdb120",
+      "length": 190,
+      "sha256": "331e9a5034d15f406819c3d027db02d1b69d68fdcf909ebcd7ee04f0caaeed8f",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdb120_00bdb1de.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack system_name; EAX provider/null; RET4",
+      "current_inventory_name": "FUN_00bdb120",
+      "proposed_name": null,
+      "evidence_note": "Compare provider+8/+C by stored length and CRT_stricmp, not virtual prefix."
+    },
+    {
+      "address": "00be1890",
+      "length": 127,
+      "sha256": "fe10481ffde965f403efe7a2a5f6c2f006234c86d275b50b466d3e656e5c308b",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be1890_00be190f.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack system_path,virtual_path,priority,byte_payload,device_id; EAX provider/null; RET14h",
+      "current_inventory_name": "BSP_VFS_MountSystemPath",
+      "proposed_name": null,
+      "evidence_note": "Construct first; set device+10 then register. Global error callback on factory failure."
+    },
+    {
+      "address": "00be1740",
+      "length": 329,
+      "sha256": "9b1eef1ceb91e145b356b0a22e0f14091ef6ccf8c95cf1fbc6b7a78613d574e5",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00be1740_00be1889.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack provider,virtual_path,priority,byte_payload; RET10h",
+      "current_inventory_name": "BSP_VFS_RegisterPrioritizedMount",
+      "proposed_name": null,
+      "evidence_note": "Canonicalize prefix, copy raw provider pointer/byte and insert. Full teardown policy uninspected."
+    },
+    {
+      "address": "00bdce40",
+      "length": 92,
+      "sha256": "a5ef499d39c97ffb41adf8b97c96715a54f480569e907537c16dcf53088d5e24",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdce40_00bdce9c.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX destination priority/mount record; stack source record; EAX destination; RET4",
+      "current_inventory_name": "FUN_00bdce40",
+      "proposed_name": null,
+      "evidence_note": "Copies priority/string/raw provider pointer/byte; no AddRef in this copy."
+    },
+    {
+      "address": "00bdeec0",
+      "length": 132,
+      "sha256": "911b1ad5bc216b610aab60ba98df257ce9d971d4df10dbb55d7a7f3718e486c7",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdeec0_00bdef44.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX destination record; EDX priority; stack by-value16-byte mount record; EAX destination; RET10h",
+      "current_inventory_name": "FUN_00bdeec0",
+      "proposed_name": null,
+      "evidence_note": "Priority/mount record construction; teardown inference excluded."
+    },
+    {
+      "address": "00bdf310",
+      "length": 421,
+      "sha256": "e354c379eeae3b582f71333f00c627d34b1d19e8c2c835c861922bda2cd7e748",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdf310_00bdf4b5.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX manager; stack logical_path,flags; EAX stream/null; RET8",
+      "current_inventory_name": "BSP_VFS_OpenResource",
+      "proposed_name": null,
+      "evidence_note": "Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard."
+    },
+    {
+      "address": "00bda690",
+      "length": 96,
+      "sha256": "f61f3853c5e54193f80f903c6bfde68962fb3e01bd3dd58ff805a6b3553a48df",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bda690_00bda6f0.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX open callback; stack mount_record,suffix; RET8",
+      "current_inventory_name": "BSP_VFS_OpenMountCallback",
+      "proposed_name": null,
+      "evidence_note": "Dispatch provider+8 flags unchanged; save returned stream, no existence precheck."
+    },
+    {
+      "address": "00bb9920",
+      "length": 747,
+      "sha256": "ae56080e3ddaa652e2eb8a0453e85bb08fa03043bae163f9957d554915d2502b",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb9920_00bb9c0b.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX archive state; stack logical_path; EAX state; RET4",
+      "current_inventory_name": "BSP_MPKG_OpenDecodedArchive",
+      "proposed_name": null,
+      "evidence_note": "Copies logical path and calls current global manager+4 flags2 before mount insertion; prior entry audit reverified."
+    },
+    {
+      "address": "00bb8be0",
+      "length": 370,
+      "sha256": "eaf895523340f048952770a46a850d47573f4742b9f0896d9e84664e083aed7d",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bb8be0_00bb8d52.bin",
+      "span_kind": "complete_body",
+      "abi": "ECX archive state; stack entry,flags(unused); EAX stream; RET8",
+      "current_inventory_name": "BSP_MPKG_OpenEntryStream",
+      "proposed_name": null,
+      "evidence_note": "Large stored branch rereads global manager, opens stored logical path flags2, adopts returned source; prior entry audit reverified."
+    },
+    {
+      "address": "0073cb10",
+      "length": 774,
+      "sha256": "d6f12a9f69158bb91207a30f83b1c56f532ecd830274fc17c7684d3bad51f2fa",
+      "raw_file": "exports/bsp/parallel_mpkg_mount/0073cb10_0073ce16.bin",
+      "span_kind": "complete_body",
+      "abi": "Incoming ECX application unused; no stack args; plain RET",
+      "current_inventory_name": "BSP_Application_MountPackages",
+      "proposed_name": null,
+      "evidence_note": "Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1)."
+    }
+  ],
+  "all_compared_ranges_including_exploratory_windows": [
+    {
+      "address": "00bb8e60",
+      "length": 64,
+      "matches_disk": true,
+      "sha256": "e3e259d37e5feab123f4cfb677b50fc06f2f767b85e40f55aaebcaeb299068a5",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00d64390",
+      "length": 64,
+      "matches_disk": true,
+      "sha256": "e4a5998ab0558d1cb9bea5a014b6c5a1eb8e140150c83237b8e4c4de0706f379",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00bb9d90",
+      "length": 211,
+      "matches_disk": true,
+      "sha256": "f29b9e0da7b9117c1397ac017446b00b782a94cb9de0a799d32e2d4ad2c0121b",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00bb9cb0",
+      "length": 113,
+      "matches_disk": true,
+      "sha256": "58d187cfc7cf73f4a35f6c6d17b1723816017216ef53e1e7e322ca156cb0d7bf",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00be8120",
+      "length": 43,
+      "matches_disk": true,
+      "sha256": "7b04ce7d7b506df5d215d6751236701bcae5f35bd8a3087082052184a7c16baf",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00be80b0",
+      "length": 105,
+      "matches_disk": true,
+      "sha256": "7ccbd70886a44c579ae9b92e65a164e4cf73985736d748bb81934c343678d2f4",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00be7fa0",
+      "length": 238,
+      "matches_disk": true,
+      "sha256": "ca1ebfa3644d33ca4377a8b23aa70f064f10019c33efaef5ae0c2d92e6499ad2",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00be7760",
+      "length": 321,
+      "matches_disk": true,
+      "sha256": "fb66b79def9ea3bc9074aea57a4247c7de99d13de973dbd498a5f83cd727f143",
+      "batch": "comparisons_20260909T215034Z.json"
+    },
+    {
+      "address": "00bb97b0",
+      "length": 320,
+      "matches_disk": true,
+      "sha256": "c6f1fde5483b6177fbaf56277609f81eab64037ad8dda6c5437a30f597b2c6ac",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bb98f0",
+      "length": 8,
+      "matches_disk": true,
+      "sha256": "ba0187b768c21f5b75aa5df70de8d5cf6a2b6fcbb96333043b46624d1721ebaa",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bb9c10",
+      "length": 160,
+      "matches_disk": true,
+      "sha256": "bb1c593d13c88682227f03d8af02394c9eef8f275281400e5e5dcd6d9fcad064",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bb9ee0",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "7d5519275098c65246bc122c2e2cca604c12ce5581d0007563752e8ce09c8add",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bb9d30",
+      "length": 16,
+      "matches_disk": true,
+      "sha256": "d0529a5547a60e39d0d9caecf23fecbbbd947d21e4bc6b6679c27c0b6eb01ac2",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bb9d40",
+      "length": 16,
+      "matches_disk": true,
+      "sha256": "52be34275079abd59fd4edc2d56fe181e52144489f0da225170c9d438873824d",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bb9d50",
+      "length": 64,
+      "matches_disk": true,
+      "sha256": "df96f8c22fd38e421ffc6f749c12df33b53f9db50e409b278398dac3bdad8fa4",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00d1d818",
+      "length": 6,
+      "matches_disk": true,
+      "sha256": "7751782b78d90ee3c134fd5a4ea415451ab3447a8085bef1e354d6262401eac4",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00ce7898",
+      "length": 2,
+      "matches_disk": true,
+      "sha256": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+      "batch": "comparisons_20260909T215121Z.json"
+    },
+    {
+      "address": "00bee340",
+      "length": 80,
+      "matches_disk": true,
+      "sha256": "9344ea2e15d5bbdad619ff5284c46806f3c3a5f1f6e059f83e9bfec3fdc83a3b",
+      "batch": "comparisons_20260909T215148Z.json"
+    },
+    {
+      "address": "00bb5590",
+      "length": 147,
+      "matches_disk": true,
+      "sha256": "440590ad78a3993c1fe7fadbc73e4894a747c62af87a557bc7c3cd72f1009a26",
+      "batch": "comparisons_20260909T215148Z.json"
+    },
+    {
+      "address": "00bb9e70",
+      "length": 112,
+      "matches_disk": true,
+      "sha256": "d25ae57c51b87fdce34898180baffc39ea041138c4587f1dec50e391e3e43e58",
+      "batch": "comparisons_20260909T215148Z.json"
+    },
+    {
+      "address": "00bb8640",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "2e89d86949b70068c7f7a4315258ad53f151e741543362ebf49fe645aa6076e0",
+      "batch": "comparisons_20260909T215148Z.json"
+    },
+    {
+      "address": "00bb5540",
+      "length": 16,
+      "matches_disk": true,
+      "sha256": "b5dd30f9fe2d9ab401b1517acd3fb2429a1f5abeba433a69732d5ebca27bf71f",
+      "batch": "comparisons_20260909T215148Z.json"
+    },
+    {
+      "address": "0043e9a0",
+      "length": 88,
+      "matches_disk": true,
+      "sha256": "f5235f47d7eb4a353170b67564fe0e481f1d0dbeb1ca00c54ec8427723e8a200",
+      "batch": "comparisons_20260909T215225Z.json"
+    },
+    {
+      "address": "004bcb80",
+      "length": 120,
+      "matches_disk": true,
+      "sha256": "67a509a06f321bdd3896ea560fb586f490904711b06c890f219bf30f80b098c4",
+      "batch": "comparisons_20260909T215225Z.json"
+    },
+    {
+      "address": "004cdc20",
+      "length": 187,
+      "matches_disk": true,
+      "sha256": "7963c3cf78bd2f0735a1fda00175b43ab3babc772d0c61842c77e28f524d3604",
+      "batch": "comparisons_20260909T215225Z.json"
+    },
+    {
+      "address": "00bd30e0",
+      "length": 14,
+      "matches_disk": true,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "batch": "comparisons_20260909T215225Z.json"
+    },
+    {
+      "address": "00bb5540",
+      "length": 71,
+      "matches_disk": true,
+      "sha256": "240d9351e3ba77b96c879ee56f33455453f5b7644c76e0d40a7f41e5e513734b",
+      "batch": "comparisons_20260909T215225Z.json"
+    },
+    {
+      "address": "00bb5540",
+      "length": 80,
+      "matches_disk": true,
+      "sha256": "806aa02f6df8c156330ae48620eb8578ee48483430e1f13081d40d4dd132ee59",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bb5380",
+      "length": 103,
+      "matches_disk": true,
+      "sha256": "a27895a2b4301695f149885bc2db1eb1ab687e0239a13c3c85d1027d28c6a6ca",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bdd990",
+      "length": 113,
+      "matches_disk": true,
+      "sha256": "1085b6f58d29be12200ad20d4f2fe09b7ae0ce85113d8d6fe0167572e4361209",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bdd0a0",
+      "length": 672,
+      "matches_disk": true,
+      "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00be1130",
+      "length": 256,
+      "matches_disk": true,
+      "sha256": "22c97ff7f4145f2ced1ac7a98662cfe49241f145de76fcee0543d9eb0292de5a",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bdb120",
+      "length": 190,
+      "matches_disk": true,
+      "sha256": "331e9a5034d15f406819c3d027db02d1b69d68fdcf909ebcd7ee04f0caaeed8f",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bdf310",
+      "length": 421,
+      "matches_disk": true,
+      "sha256": "e354c379eeae3b582f71333f00c627d34b1d19e8c2c835c861922bda2cd7e748",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bda690",
+      "length": 96,
+      "matches_disk": true,
+      "sha256": "f61f3853c5e54193f80f903c6bfde68962fb3e01bd3dd58ff805a6b3553a48df",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00be1740",
+      "length": 329,
+      "matches_disk": true,
+      "sha256": "9b1eef1ceb91e145b356b0a22e0f14091ef6ccf8c95cf1fbc6b7a78613d574e5",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00be1890",
+      "length": 127,
+      "matches_disk": true,
+      "sha256": "fe10481ffde965f403efe7a2a5f6c2f006234c86d275b50b466d3e656e5c308b",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bb8be0",
+      "length": 370,
+      "matches_disk": true,
+      "sha256": "eaf895523340f048952770a46a850d47573f4742b9f0896d9e84664e083aed7d",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bb9920",
+      "length": 747,
+      "matches_disk": true,
+      "sha256": "ae56080e3ddaa652e2eb8a0453e85bb08fa03043bae163f9957d554915d2502b",
+      "batch": "comparisons_20260909T215339Z.json"
+    },
+    {
+      "address": "00bb8e70",
+      "length": 8,
+      "matches_disk": true,
+      "sha256": "51fb4d7355af26cee0702d54481872ff75c815306db763b5376dfc270e065ec8",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bb8e80",
+      "length": 8,
+      "matches_disk": true,
+      "sha256": "494a7db8e96b75a34286e1ab15bd05c56398afd0c84239db33810f86d46a10c9",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bb97b0",
+      "length": 319,
+      "matches_disk": true,
+      "sha256": "0164b11c0dbcc07f24e5d53d65d5502ae5ef9d909000476e824f2e646fca9b90",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bb9c10",
+      "length": 145,
+      "matches_disk": true,
+      "sha256": "27e72a6707206cee9bb5612a6d27462c8347867bd6ddf3e5994182d3c0e53901",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bb9e70",
+      "length": 99,
+      "matches_disk": true,
+      "sha256": "b26519a41333a39f609d7235f4171335c6a70ddef2a25d48850a9b640df4973d",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bb9ee0",
+      "length": 30,
+      "matches_disk": true,
+      "sha256": "090cbfd0acadb762bdb6d6fc14cde9c325b1969e68c40efce936b0419507ab07",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00be1130",
+      "length": 229,
+      "matches_disk": true,
+      "sha256": "8ff18707b0dc279b87eaab60a5a6505a20bf87664bc7a684d1d05fe04c451909",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00be0660",
+      "length": 51,
+      "matches_disk": true,
+      "sha256": "64b1f5922acf4608540f732fafe2da7e36e710fc7347484c48b9b24785456eac",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bdb040",
+      "length": 85,
+      "matches_disk": true,
+      "sha256": "9dbd9f846719a65b27a7342b4228b82b38f9bfb652fc1b0227f4c2ac4176fbce",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bdbe20",
+      "length": 141,
+      "matches_disk": true,
+      "sha256": "0eda5efd9dd51e24a62d10ce90d7c86ebf0046f24446cdbcd5937c263542d226",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bdbeb0",
+      "length": 3,
+      "matches_disk": true,
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00be0fc0",
+      "length": 224,
+      "matches_disk": true,
+      "sha256": "13cf039ad8981332ca3ec05d2c082ff855ea0fb37901bcde3ccb195abec0d1a4",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bdbfd0",
+      "length": 98,
+      "matches_disk": true,
+      "sha256": "e7140c75287479bb9ce434aee4c5d845facbb5a3a2f2a0d59fcfee3ceeeea717",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00425850",
+      "length": 76,
+      "matches_disk": true,
+      "sha256": "499cea889390e1f820bb2b3c74103d73b69b67fd3702a93d448ab58dd03250e5",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00d64390",
+      "length": 44,
+      "matches_disk": true,
+      "sha256": "888d4133abb4a1ee84947195840dc2fb26a73e710087d9f976ab49b48e69b64a",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00d6846c",
+      "length": 12,
+      "matches_disk": true,
+      "sha256": "d637c918aace31cee97e0af29f6b55a71ba181f98543da42feecb3118be320fb",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00e17bf0",
+      "length": 1,
+      "matches_disk": true,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "batch": "comparisons_20260909T215442Z.json"
+    },
+    {
+      "address": "00bf0fb0",
+      "length": 75,
+      "matches_disk": true,
+      "sha256": "a7052b969ac9845090521079e1a3c025b01679e131f13ab309efa5f8c84fdb47",
+      "batch": "comparisons_20260909T215526Z.json"
+    },
+    {
+      "address": "00bdce40",
+      "length": 92,
+      "matches_disk": true,
+      "sha256": "a5ef499d39c97ffb41adf8b97c96715a54f480569e907537c16dcf53088d5e24",
+      "batch": "comparisons_20260909T215526Z.json"
+    },
+    {
+      "address": "00bdeec0",
+      "length": 132,
+      "matches_disk": true,
+      "sha256": "911b1ad5bc216b610aab60ba98df257ce9d971d4df10dbb55d7a7f3718e486c7",
+      "batch": "comparisons_20260909T215526Z.json"
+    },
+    {
+      "address": "0073cb10",
+      "length": 774,
+      "matches_disk": true,
+      "sha256": "d6f12a9f69158bb91207a30f83b1c56f532ecd830274fc17c7684d3bad51f2fa",
+      "batch": "comparisons_20260909T215526Z.json"
+    },
+    {
+      "address": "0073d66d",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "ce71823b1e5863c95224cd76ff2b3ae3d41eeb78814b770e58754766e3794d31",
+      "batch": "comparisons_20260909T215526Z.json"
+    },
+    {
+      "address": "0073d87b",
+      "length": 30,
+      "matches_disk": true,
+      "sha256": "e197032a1690a98ffc715b7d213f7ad092bd852743693905089ebac851c20f1b",
+      "batch": "comparisons_20260909T215526Z.json"
+    }
+  ],
+  "provider_vtable": {
+    "address": "00d64390",
+    "length": 44,
+    "sha256": "888d4133abb4a1ee84947195840dc2fb26a73e710087d9f976ab49b48e69b64a",
+    "slots": {
+      "00": "00bd30e0",
+      "04": "00bb9ee0",
+      "08": "00bb8e70",
+      "0c": "00bb9d30",
+      "10": "00bb8e80",
+      "14": "00bb98f0",
+      "18": "00bb8640",
+      "1c": "00bb5540",
+      "20": "00bb9d50",
+      "24": "00bf0fb0",
+      "28": "00bb9d40"
+    }
+  },
+  "decisive_corrections": [
+    "00bb8e60 is a RET inside exists; actual provider open thunk starts00bb8e70.",
+    "00bb97b0 has four stack arguments and RET10h, not three.",
+    "Appended-slash directory temporary is unused; filter receives original directory argument.",
+    "Enumeration is case-sensitive prefix and suffix, no dot/separator boundary; flag low byte0 uses unsigned lastslash check, missing slash rejects.",
+    "Whole stored names append in central order, duplicates survive provider and are removed by manager equal-length/_stricmp in encounter order.",
+    "Query path is not normalized: startup dot reaches empty-prefix MPKG provider as dot.",
+    "Original-source reopens current global VFS by stored logical path flags2; it is not pinned to initial source/provider.",
+    "Provider owns archive; archive releases decoded backing and names. Mount teardown and byte-payload deletion semantics remain unresolved."
+  ],
+  "source_reentry": {
+    "initial_call": "00bb998d..00bb99a0",
+    "large_call": "00bb8ce7..00bb8cf8",
+    "manager_global": "0109ceec",
+    "manager_slot": "04",
+    "flags": 2,
+    "source_identity": "stored original logical path + current aliases/mount order",
+    "provider_exclusion": false,
+    "native_recursion_guard_observed": false,
+    "host_guard_proposal": "Explicit cycle failure and weak live-context capture; do not pin physical source, decoded backing or a frozen context."
+  },
+  "implementation_contract_document": "docs/MPKG_MOUNT_INTEGRATION.md",
+  "next_api": [
+    "MpkgArchive::enumerate_00bb97b0_fragment(directory,extension,flags,output,error)",
+    "bind_mpkg_archive_fragment(prefix,shared_archive)",
+    "create_mpkg_archive_00bb9d90_fragment(system_path,current_vfs_opener,output,error) with declined/loaded/failed status"
+  ],
+  "unresolved_edges": [
+    "Native manager unmount/shutdown and registration byte teardown semantics.",
+    "Physical and FileStore enumeration contracts needed for complete startup query.",
+    "Shared VfsMount lacks enumeration callback and original system-name metadata for mounted-name check.",
+    "Malformed native path/archive behavior, empty-directory pre-buffer access and allocation failure paths are not successful host domain.",
+    "Source reentry can be recursive; exact native recursion failure behavior is not claimed.",
+    "No installed archive or native differential runtime validation in this packet."
+  ],
+  "validation": {
+    "all_recorded_ranges_match_installed_pe": true,
+    "ghidra_mutations": false,
+    "cpp_changes": false,
+    "build_or_tests_run": false,
+    "native_execution": false,
+    "real_archive_execution": false,
+    "shared_metadata_edits": false
+  },
+  "notes": [
+    "Do not rename compiler/library helpers based on descriptive hypotheses.",
+    "Exploratory windows may contain padding or adjacent instructions; function claims use separately hashed complete spans.",
+    "Byte equality is not runtime or ABI equivalence."
+  ]
+}

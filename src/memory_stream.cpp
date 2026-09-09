@@ -106,4 +106,28 @@ bool memory_stream_from_physical_00bef750_fragment(PhysicalFile& source,
     output = std::move(converted);
     return success;
 }
+
+bool memory_stream_from_bytes_00befa40_fragment(const void* source,
+    std::uint32_t byte_count, MemoryStream& output, DWORD& error) noexcept {
+    if (!source || byte_count == 0) {
+        error = ERROR_INVALID_PARAMETER;
+        return false;
+    }
+    if (byte_count > static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)())) {
+        error = ERROR_FILE_TOO_LARGE;
+        return false;
+    }
+    MemoryStream converted;
+    try {
+        converted.backing_ = std::make_shared<MemoryStreamBacking>(byte_count);
+    } catch (const std::bad_alloc&) {
+        error = ERROR_NOT_ENOUGH_MEMORY;
+        return false;
+    }
+    std::memcpy(converted.backing_->bytes.get(), source, byte_count);
+    converted.backing_->initialized = byte_count;
+    output = std::move(converted);
+    error = ERROR_SUCCESS;
+    return true;
+}
 }

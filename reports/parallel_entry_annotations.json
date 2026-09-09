@@ -1,0 +1,753 @@
+{
+  "utc": "2026-09-09T21:52:46.697413+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "before": [
+    {
+      "address": "00bb87a0",
+      "plate": {
+        "address": "00bb87a0",
+        "function_name": "BSP_MPKG_FindEndOfCentralDirectory",
+        "comment": "[BSP reconstruction 00bb87a0]\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation."
+      },
+      "function": "Function: BSP_MPKG_FindEndOfCentralDirectory at 00bb87a0\nSignature: undefined BSP_MPKG_FindEndOfCentralDirectory(void)\nEntry: 00bb87a0\nBody: 00bb87a0 - 00bb883a"
+    },
+    {
+      "address": "00bb8850",
+      "plate": {
+        "address": "00bb8850",
+        "function_name": "FUN_00bb8850"
+      },
+      "function": "Function: FUN_00bb8850 at 00bb8850\nSignature: undefined FUN_00bb8850(void)\nEntry: 00bb8850\nBody: 00bb8850 - 00bb8a8d"
+    },
+    {
+      "address": "00bb8a90",
+      "plate": {
+        "address": "00bb8a90",
+        "function_name": "FUN_00bb8a90"
+      },
+      "function": "Function: FUN_00bb8a90 at 00bb8a90\nSignature: undefined FUN_00bb8a90(void)\nEntry: 00bb8a90\nBody: 00bb8a90 - 00bb8b1f"
+    },
+    {
+      "address": "00bb8be0",
+      "plate": {
+        "address": "00bb8be0",
+        "function_name": "BSP_MPKG_OpenEntryStream",
+        "comment": "[BSP reconstruction 00bb8be0]\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only."
+      },
+      "function": "Function: BSP_MPKG_OpenEntryStream at 00bb8be0\nSignature: undefined BSP_MPKG_OpenEntryStream(void)\nEntry: 00bb8be0\nBody: 00bb8be0 - 00bb8d51"
+    },
+    {
+      "address": "00bb8d60",
+      "plate": {
+        "address": "00bb8d60",
+        "function_name": "FUN_00bb8d60"
+      },
+      "function": "Function: FUN_00bb8d60 at 00bb8d60\nSignature: undefined FUN_00bb8d60(void)\nEntry: 00bb8d60\nBody: 00bb8d60 - 00bb8dfd"
+    },
+    {
+      "address": "00bb8e00",
+      "plate": {
+        "address": "00bb8e00",
+        "function_name": "FUN_00bb8e00"
+      },
+      "function": "Function: FUN_00bb8e00 at 00bb8e00\nSignature: undefined FUN_00bb8e00(void)\nEntry: 00bb8e00\nBody: 00bb8e00 - 00bb8e6b"
+    },
+    {
+      "address": "00bb9090",
+      "plate": {
+        "address": "00bb9090",
+        "function_name": "FUN_00bb9090"
+      },
+      "function": "Function: FUN_00bb9090 at 00bb9090\nSignature: undefined FUN_00bb9090(void)\nEntry: 00bb9090\nBody: 00bb9090 - 00bb90fe"
+    },
+    {
+      "address": "00bb9330",
+      "plate": {
+        "address": "00bb9330",
+        "function_name": "FUN_00bb9330"
+      },
+      "function": "Function: FUN_00bb9330 at 00bb9330\nSignature: undefined FUN_00bb9330(void)\nEntry: 00bb9330\nBody: 00bb9330 - 00bb939d"
+    },
+    {
+      "address": "00bb9520",
+      "plate": {
+        "address": "00bb9520",
+        "function_name": "FUN_00bb9520"
+      },
+      "function": "Function: FUN_00bb9520 at 00bb9520\nSignature: undefined FUN_00bb9520(void)\nEntry: 00bb9520\nBody: 00bb9520 - 00bb9593"
+    },
+    {
+      "address": "00bb95b0",
+      "plate": {
+        "address": "00bb95b0",
+        "function_name": "FUN_00bb95b0"
+      },
+      "function": "Function: FUN_00bb95b0 at 00bb95b0\nSignature: undefined FUN_00bb95b0(void)\nEntry: 00bb95b0\nBody: 00bb95b0 - 00bb96f5"
+    },
+    {
+      "address": "00bb9700",
+      "plate": {
+        "address": "00bb9700",
+        "function_name": "FUN_00bb9700"
+      },
+      "function": "Function: FUN_00bb9700 at 00bb9700\nSignature: undefined FUN_00bb9700(void)\nEntry: 00bb9700\nBody: 00bb9700 - 00bb978d"
+    },
+    {
+      "address": "00bb9920",
+      "plate": {
+        "address": "00bb9920",
+        "function_name": "BSP_MPKG_OpenDecodedArchive",
+        "comment": "[BSP reconstruction 00bb9920]\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md."
+      },
+      "function": "Function: BSP_MPKG_OpenDecodedArchive at 00bb9920\nSignature: undefined BSP_MPKG_OpenDecodedArchive(void)\nEntry: 00bb9920\nBody: 00bb9920 - 00bb9c0a"
+    },
+    {
+      "address": "00bef840",
+      "plate": {
+        "address": "00bef840",
+        "function_name": "FUN_00bef840"
+      },
+      "function": "Function: FUN_00bef840 at 00bef840\nSignature: undefined FUN_00bef840(void)\nEntry: 00bef840\nBody: 00bef840 - 00bef8e7"
+    },
+    {
+      "address": "00bf1000",
+      "plate": {
+        "function_name": null,
+        "comment": null,
+        "missing_function": true
+      },
+      "function": "No function found for 00bf1000"
+    },
+    {
+      "address": "00bf1130",
+      "plate": {
+        "address": "00bf1130",
+        "function_name": "FUN_00bf1130"
+      },
+      "function": "Function: FUN_00bf1130 at 00bf1130\nSignature: undefined FUN_00bf1130(void)\nEntry: 00bf1130\nBody: 00bf1130 - 00bf11bd"
+    },
+    {
+      "address": "00bf11c0",
+      "plate": {
+        "address": "00bf11c0",
+        "function_name": "FUN_00bf11c0"
+      },
+      "function": "Function: FUN_00bf11c0 at 00bf11c0\nSignature: undefined FUN_00bf11c0(void)\nEntry: 00bf11c0\nBody: 00bf11c0 - 00bf1235"
+    },
+    {
+      "address": "00bf1240",
+      "plate": {
+        "address": "00bf1240",
+        "function_name": "FUN_00bf1240"
+      },
+      "function": "Function: FUN_00bf1240 at 00bf1240\nSignature: undefined FUN_00bf1240(void)\nEntry: 00bf1240\nBody: 00bf1240 - 00bf125d"
+    },
+    {
+      "address": "00bdc1d0",
+      "plate": {
+        "address": "00bdc1d0",
+        "function_name": "FUN_00bdc1d0"
+      },
+      "function": "Function: FUN_00bdc1d0 at 00bdc1d0\nSignature: undefined FUN_00bdc1d0(void)\nEntry: 00bdc1d0\nBody: 00bdc1d0 - 00bdc1d3"
+    },
+    {
+      "address": "00bdc1e0",
+      "plate": {
+        "address": "00bdc1e0",
+        "function_name": "FUN_00bdc1e0"
+      },
+      "function": "Function: FUN_00bdc1e0 at 00bdc1e0\nSignature: undefined FUN_00bdc1e0(void)\nEntry: 00bdc1e0\nBody: 00bdc1e0 - 00bdc207"
+    },
+    {
+      "address": "00bdb740",
+      "plate": {
+        "address": "00bdb740",
+        "function_name": "FUN_00bdb740"
+      },
+      "function": "Function: FUN_00bdb740 at 00bdb740\nSignature: undefined FUN_00bdb740(void)\nEntry: 00bdb740\nBody: 00bdb740 - 00bdb7b9"
+    },
+    {
+      "address": "00bf43b0",
+      "plate": {
+        "address": "00bf43b0",
+        "function_name": "FUN_00bf43b0"
+      },
+      "function": "Function: FUN_00bf43b0 at 00bf43b0\nSignature: undefined FUN_00bf43b0(void)\nEntry: 00bf43b0\nBody: 00bf43b0 - 00bf46a6"
+    },
+    {
+      "address": "00bf41c0",
+      "plate": {
+        "address": "00bf41c0",
+        "function_name": "FUN_00bf41c0"
+      },
+      "function": "Function: FUN_00bf41c0 at 00bf41c0\nSignature: undefined FUN_00bf41c0(void)\nEntry: 00bf41c0\nBody: 00bf41c0 - 00bf4239"
+    },
+    {
+      "address": "00bf3880",
+      "plate": {
+        "address": "00bf3880",
+        "function_name": "FUN_00bf3880"
+      },
+      "function": "Function: FUN_00bf3880 at 00bf3880\nSignature: undefined FUN_00bf3880(void)\nEntry: 00bf3880\nBody: 00bf3880 - 00bf38f6"
+    },
+    {
+      "address": "00bf3c10",
+      "plate": {
+        "address": "00bf3c10",
+        "function_name": "FUN_00bf3c10"
+      },
+      "function": "Function: FUN_00bf3c10 at 00bf3c10\nSignature: undefined FUN_00bf3c10(void)\nEntry: 00bf3c10\nBody: 00bf3c10 - 00bf3cf0"
+    },
+    {
+      "address": "00bf46b0",
+      "plate": {
+        "address": "00bf46b0",
+        "function_name": "FUN_00bf46b0"
+      },
+      "function": "Function: FUN_00bf46b0 at 00bf46b0\nSignature: undefined FUN_00bf46b0(void)\nEntry: 00bf46b0\nBody: 00bf46b0 - 00bf47da"
+    },
+    {
+      "address": "00befa40",
+      "plate": {
+        "address": "00befa40",
+        "function_name": "FUN_00befa40"
+      },
+      "function": "Function: FUN_00befa40 at 00befa40\nSignature: undefined FUN_00befa40(void)\nEntry: 00befa40\nBody: 00befa40 - 00befae4"
+    },
+    {
+      "address": "00aba270",
+      "plate": {
+        "address": "00aba270",
+        "function_name": "BSP_TextContext_BuildGlyphGeometry",
+        "comment": "[BSP reconstruction 00aba270]\nProvisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00aba270] update\nProvisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md. Additional read-only layout evidence: ECX context plus UTF16 wrapper/draw section, RET8. LF terminates scan but is included in emission interval; CR is not a break. Scanning scales all unsigned advances, emission uses unscaled natural/justified space spacing and scaled nonspaces. Emitted-line metric+114 adds unscaled nonspaces. Justification divides by accepted_spaces-1, guarding only zero count. Line y=((spacing+double1)-double0.15000000596046448)*signed_font_height+old_y. Final quad count narrows low16. Preserve these quirks; no generic word-wrap equivalence. docs/FONT_LAYOUT_BOUNDARY.md;1623 bytes match PE."
+      },
+      "function": "Function: BSP_TextContext_BuildGlyphGeometry at 00aba270\nSignature: undefined BSP_TextContext_BuildGlyphGeometry(void)\nEntry: 00aba270\nBody: 00aba270 - 00aba8c6"
+    },
+    {
+      "address": "0073d410",
+      "plate": {
+        "address": "0073d410",
+        "function_name": "BSP_Application_Initialize",
+        "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown."
+      },
+      "function": "Function: BSP_Application_Initialize at 0073d410\nSignature: undefined BSP_Application_Initialize(void)\nEntry: 0073d410\nBody: 0073d410 - 0073e52c"
+    },
+    {
+      "address": "00bdf310",
+      "plate": {
+        "address": "00bdf310",
+        "function_name": "BSP_VFS_OpenResource",
+        "comment": "[BSP reconstruction 00bdf310]\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism."
+      },
+      "function": "Function: BSP_VFS_OpenResource at 00bdf310\nSignature: undefined BSP_VFS_OpenResource(void)\nEntry: 00bdf310\nBody: 00bdf310 - 00bdf4b4"
+    },
+    {
+      "address": "00be7ab0",
+      "plate": {
+        "address": "00be7ab0",
+        "function_name": "BSP_FileStore_CacheFromVFS",
+        "comment": "[BSP reconstruction 00be7ab0]\nECX store; path stack RET4. Opensoriginal viaVFS, obtains00bef750 memoryview, registers00be7760, releasesmemory/source temporaries. Nativepopulationadapter is separate fromadd/lookup/open implementation andnotyetconnected tofontresolver.\n\n[BSP reconstruction 00be7ab0] update\nABI CORRECTION: ECX store; name and flags stack, RET8 (00be7ab0 reads flags at ESP+8; terminal 00be7b17 RET8). Earlier path-only RET4 annotation was incorrect. Opens exact supplied name via VFS virtual+4 with flags, obtains 00bef750 memory view, adds through 00be7760, releases memory/source temporaries. Host flags2 fragment now connects mounted streams to FileStore population; opening precedes duplicate rejection and first key wins. Host early buffering/shared ownership and guarded errors differ native ABI. Installed font load after explicit priming used 3 cache opens and 0 physical opens; native preload selection remains pending. docs/MOUNTED_RESOURCE_STREAMS.md."
+      },
+      "function": "Function: BSP_FileStore_CacheFromVFS at 00be7ab0\nSignature: undefined BSP_FileStore_CacheFromVFS(void)\nEntry: 00be7ab0\nBody: 00be7ab0 - 00be7b19"
+    },
+    {
+      "address": "00be5fa0",
+      "plate": {
+        "address": "00be5fa0",
+        "function_name": "BSP_FileStore_Open",
+        "comment": "[BSP reconstruction 00be5fa0]\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture."
+      },
+      "function": "Function: BSP_FileStore_Open at 00be5fa0\nSignature: undefined BSP_FileStore_Open(void)\nEntry: 00be5fa0\nBody: 00be5fa0 - 00be6030"
+    }
+  ],
+  "after": [
+    {
+      "address": "0073d410",
+      "old_comment_preserved": true,
+      "name": "BSP_Application_Initialize",
+      "after": {
+        "address": "0073d410",
+        "function_name": "BSP_Application_Initialize",
+        "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md."
+      }
+    },
+    {
+      "address": "00aba270",
+      "old_comment_preserved": true,
+      "name": "BSP_TextContext_BuildGlyphGeometry",
+      "after": {
+        "address": "00aba270",
+        "function_name": "BSP_TextContext_BuildGlyphGeometry",
+        "comment": "[BSP reconstruction 00aba270]\nProvisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00aba270] update\nProvisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md. Additional read-only layout evidence: ECX context plus UTF16 wrapper/draw section, RET8. LF terminates scan but is included in emission interval; CR is not a break. Scanning scales all unsigned advances, emission uses unscaled natural/justified space spacing and scaled nonspaces. Emitted-line metric+114 adds unscaled nonspaces. Justification divides by accepted_spaces-1, guarding only zero count. Line y=((spacing+double1)-double0.15000000596046448)*signed_font_height+old_y. Final quad count narrows low16. Preserve these quirks; no generic word-wrap equivalence. docs/FONT_LAYOUT_BOUNDARY.md;1623 bytes match PE.\n\n[BSP reconstruction 00aba270] update\nProvisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md. Additional read-only layout evidence: ECX context plus UTF16 wrapper/draw section, RET8. LF terminates scan but is included in emission interval; CR is not a break. Scanning scales all unsigned advances, emission uses unscaled natural/justified space spacing and scaled nonspaces. Emitted-line metric+114 adds unscaled nonspaces. Justification divides by accepted_spaces-1, guarding only zero count. Line y=((spacing+double1)-double0.15000000596046448)*signed_font_height+old_y. Final quad count narrows low16. Preserve these quirks; no generic word-wrap equivalence. docs/FONT_LAYOUT_BOUNDARY.md;1623 bytes match PE. Bounded wrapped scalar layout now implemented in src/font_wrapped_layout.cpp: native scan/emission endpoints, unsigned-slack alignment, asymmetric spacing/width metrics, signed line height, x87 spills and normalized final y offset retained. 00aba860 is an interior vertex pass, not a separate function. Installed A-space-A-LF-A probe emits three lines/five glyphs and draws 900 pixels within expected bounds with restored D3D9 state. Caller floating environment is preserved; observed x87 CW007F explains decimal rounding. Guarded host domain; no native scalar differential or original-game render/lifetime equivalence. docs/FONT_WRAPPED_LAYOUT.md."
+      }
+    },
+    {
+      "address": "00bb87a0",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_FindEndOfCentralDirectory",
+      "after": {
+        "address": "00bb87a0",
+        "function_name": "BSP_MPKG_FindEndOfCentralDirectory",
+        "comment": "[BSP reconstruction 00bb87a0]\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation.\n\n[BSP reconstruction 00bb87a0] update\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation. ECX state; RET; no stable return. Last min(length,65535) tail, search from tail index T-4 down to1 for504b0506; excludes index0; unchecked one read; retainsffffffff on missing marker. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb8850",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_ReadFixedHeaderFields",
+      "after": {
+        "address": "00bb8850",
+        "function_name": "BSP_MPKG_ReadFixedHeaderFields",
+        "comment": "[BSP reconstruction 00bb8850]\nThree stack args: reader,header,kind; RET0Ch. ECX not an input. Read46 fixed bytes for kind0,30 for nonzero; little-endian fields, reader cursor+8; no signature or bounds validation. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb8a90",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_ResolveEntryDataOffset",
+      "after": {
+        "address": "00bb8a90",
+        "function_name": "BSP_MPKG_ResolveEntryDataOffset",
+        "comment": "[BSP reconstruction 00bb8a90]\nECX state; stack entry; RET4; EAX offset. If entry+C cached returnentry+10; otherwise seek transformed source toentry+8 and read30-byte local header; cache offset+30+local name/extra lengths. Raw return after_free restores offset toEAX. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb8be0",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_OpenEntryStream",
+      "after": {
+        "address": "00bb8be0",
+        "function_name": "BSP_MPKG_OpenEntryStream",
+        "comment": "[BSP reconstruction 00bb8be0]\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only.\n\n[BSP reconstruction 00bb8be0] update\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only. ECX state; stack entry/flags; RET8; EAX stream. Flags unused. Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb8d60",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_OpenNamedEntry",
+      "after": {
+        "address": "00bb8d60",
+        "function_name": "BSP_MPKG_OpenNamedEntry",
+        "comment": "[BSP reconstruction 00bb8d60]\nECX state; stack name/flags; RET8; EAX stream ornull. Rejectflagsbit0; ordered36-byte entries; equal stored lengths then_stricmp; first match wins; no normalization. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb8e00",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_EntryExists",
+      "after": {
+        "address": "00bb8e00",
+        "function_name": "BSP_MPKG_EntryExists",
+        "comment": "[BSP reconstruction 00bb8e00]\nECX state; stack name; RET4; AL bool. Same ordered equal-length case-insensitive lookup as named open. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb9090",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_ReadEntryName",
+      "after": {
+        "address": "00bb9090",
+        "function_name": "BSP_MPKG_ReadEntryName",
+        "comment": "[BSP reconstruction 00bb9090]\nECX byte reader; stack output string/count; RET8; EAX output string. Own and copy exact byte count from reader+8; advance cursor; no normalization or embeddedNUL validation. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb9330",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_CopyEntryRecord",
+      "after": {
+        "address": "00bb9330",
+        "function_name": "BSP_MPKG_CopyEntryRecord",
+        "comment": "[BSP reconstruction 00bb9330]\nECX destination; stack source entry; RET4; EAX destination. Copies owned name plus localoffset,cacheflag,dataoffset,method,compressed/decoded counts,retainedCRC-like value. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb9520",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_AppendEntryRecord",
+      "after": {
+        "address": "00bb9520",
+        "function_name": "BSP_MPKG_AppendEntryRecord",
+        "comment": "[BSP reconstruction 00bb9520]\nECX vector; stack entry; RET4. Append36-byte owned record, preserve insertion order; no duplicate checks. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb95b0",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_ParseDirectoryEntry",
+      "after": {
+        "address": "00bb95b0",
+        "function_name": "BSP_MPKG_ParseDirectoryEntry",
+        "comment": "[BSP reconstruction 00bb95b0]\nECX archive; stack byte reader; RET4. Parse kind0 header, exact name bytes, skip central extra/comment, prefix-adjust localheader offset; store provisional dataoffset butcacheflag0; preserve central method/counts. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb9700",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_LoadDirectoryEntries",
+      "after": {
+        "address": "00bb9700",
+        "function_name": "BSP_MPKG_LoadDirectoryEntries",
+        "comment": "[BSP reconstruction 00bb9700]\nECX archive; RET. Seek directly tostored directory offset WITHOUT prefixadjustment; allocate/read archive_length-directory_offset once; parse EOCDentrycount records without bounds/actual guards. Rawret00bb97a2 after_free. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bb9920",
+      "old_comment_preserved": true,
+      "name": "BSP_MPKG_OpenDecodedArchive",
+      "after": {
+        "address": "00bb9920",
+        "function_name": "BSP_MPKG_OpenDecodedArchive",
+        "comment": "[BSP reconstruction 00bb9920]\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md.\n\n[BSP reconstruction 00bb9920] update\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md. ECX state; stack original path string; RET4; EAX state. Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bdb740",
+      "old_comment_preserved": true,
+      "name": "BSP_VFS_OverlappedVisitor_Destroy",
+      "after": {
+        "address": "00bdb740",
+        "function_name": "BSP_VFS_OverlappedVisitor_Destroy",
+        "comment": "[BSP reconstruction 00bdb740]\nECX visitor; RET. Destroys copied second and first names at +0Ch/+10h and +4/+8, then installs base table00d68380. Does not cancel provider work or release stream/I/O resources. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bdc1d0",
+      "old_comment_preserved": true,
+      "name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+      "after": {
+        "address": "00bdc1d0",
+        "function_name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+        "comment": "[BSP reconstruction 00bdc1d0]\nECX visitor; AL acceptance; RET. Reads visitor acceptance byte +14h. Missing function definition at audit time; exact body is MOV AL,[ECX+14h]; RET. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bdc1e0",
+      "old_comment_preserved": true,
+      "name": "BSP_VFS_OverlappedVisitor_VisitMount",
+      "after": {
+        "address": "00bdc1e0",
+        "function_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+        "comment": "[BSP reconstruction 00bdc1e0]\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bdf310",
+      "old_comment_preserved": true,
+      "name": "BSP_VFS_OpenResource",
+      "after": {
+        "address": "00bdf310",
+        "function_name": "BSP_VFS_OpenResource",
+        "comment": "[BSP reconstruction 00bdf310]\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md."
+      }
+    },
+    {
+      "address": "00be5fa0",
+      "old_comment_preserved": true,
+      "name": "BSP_FileStore_Open",
+      "after": {
+        "address": "00be5fa0",
+        "function_name": "BSP_FileStore_Open",
+        "comment": "[BSP reconstruction 00be5fa0]\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture.\n\n[BSP reconstruction 00be5fa0] update\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md."
+      }
+    },
+    {
+      "address": "00be7ab0",
+      "old_comment_preserved": true,
+      "name": "BSP_FileStore_CacheFromVFS",
+      "after": {
+        "address": "00be7ab0",
+        "function_name": "BSP_FileStore_CacheFromVFS",
+        "comment": "[BSP reconstruction 00be7ab0]\nECX store; path stack RET4. Opensoriginal viaVFS, obtains00bef750 memoryview, registers00be7760, releasesmemory/source temporaries. Nativepopulationadapter is separate fromadd/lookup/open implementation andnotyetconnected tofontresolver.\n\n[BSP reconstruction 00be7ab0] update\nABI CORRECTION: ECX store; name and flags stack, RET8 (00be7ab0 reads flags at ESP+8; terminal 00be7b17 RET8). Earlier path-only RET4 annotation was incorrect. Opens exact supplied name via VFS virtual+4 with flags, obtains 00bef750 memory view, adds through 00be7760, releases memory/source temporaries. Host flags2 fragment now connects mounted streams to FileStore population; opening precedes duplicate rejection and first key wins. Host early buffering/shared ownership and guarded errors differ native ABI. Installed font load after explicit priming used 3 cache opens and 0 physical opens; native preload selection remains pending. docs/MOUNTED_RESOURCE_STREAMS.md.\n\n[BSP reconstruction 00be7ab0] update\nABI CORRECTION: ECX store; name and flags stack, RET8 (00be7ab0 reads flags at ESP+8; terminal 00be7b17 RET8). Earlier path-only RET4 annotation was incorrect. Opens exact supplied name via VFS virtual+4 with flags, obtains 00bef750 memory view, adds through 00be7760, releases memory/source temporaries. Host flags2 fragment now connects mounted streams to FileStore population; opening precedes duplicate rejection and first key wins. Host early buffering/shared ownership and guarded errors differ native ABI. Installed font load after explicit priming used 3 cache opens and 0 physical opens; native preload selection remains pending. docs/MOUNTED_RESOURCE_STREAMS.md. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md."
+      }
+    },
+    {
+      "address": "00bef840",
+      "old_comment_preserved": true,
+      "name": "BSP_Stream_CopyRangeToMemory",
+      "after": {
+        "address": "00bef840",
+        "function_name": "BSP_Stream_CopyRangeToMemory",
+        "comment": "[BSP reconstruction 00bef840]\nECX source; stack offsetlo/hi,lengthlo/hi; RET10h; EAX new memory wrapper. Uses full offset64 butlow length32; new backing, one read withnull actual; no shared slice. Fix misleading unaff_retaddr prototype fromassembly. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00befa40",
+      "old_comment_preserved": true,
+      "name": "BSP_MemoryStream_CreateFromCopy",
+      "after": {
+        "address": "00befa40",
+        "function_name": "BSP_MemoryStream_CreateFromCopy",
+        "comment": "[BSP reconstruction 00befa40]\nECX source bytes; size-low,size-high stack; EAX stream; RET 8. Null source returns null. Uses size LOW DWORD only, allocates independent backing through008d43c0, memcpy copies bytes, wraps through00bef6d0 and releases temporary backing reference. High size word is unused. Native allocation/null/large-size behavior is not a guarded host API. This copy separates callback stream lifetime from physical staging-buffer cleanup. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Bounded independent byte-copy helper implemented in src/memory_stream.cpp for 1..INT32_MAX valid source bytes; source inspection establishes copy behavior and fixture verifies output usability after archive and explicit original-source owners are destroyed. Native ABI and exceptional allocation behavior are not reproduced."
+      }
+    },
+    {
+      "address": "00bf1000",
+      "old_comment_preserved": true,
+      "name": "BSP_Substream_ReadUnchecked",
+      "after": {
+        "address": "00bf1000",
+        "function_name": "BSP_Substream_ReadUnchecked",
+        "comment": "[BSP reconstruction 00bf1000]\nECX object; stack destination/requested/optionalactual; RET0Ch; EAX actual. Forward requestedcount unchanged toadopted source+24; no transform/entry-end clamp; update absolute64 position ADD/ADC. Actual slot initiallycontains requested count. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bf1130",
+      "old_comment_preserved": true,
+      "name": "BSP_Substream_ConstructAdoptingSource",
+      "after": {
+        "address": "00bf1130",
+        "function_name": "BSP_Substream_ConstructAdoptingSource",
+        "comment": "[BSP reconstruction 00bf1130]\nECX object; stack source/offsetlo/hi/lengthlo/hi; RET14h; EAX this. Store sourcewithoutAddRef, start/end/current64; seeksource tostart. Destructor releases owned reference. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bf11c0",
+      "old_comment_preserved": true,
+      "name": "BSP_Substream_Destroy",
+      "after": {
+        "address": "00bf11c0",
+        "function_name": "BSP_Substream_Destroy",
+        "comment": "[BSP reconstruction 00bf11c0]\nECX object; RET. Decrement/release source+8 thenbase00bd30f0. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bf1240",
+      "old_comment_preserved": true,
+      "name": "BSP_Substream_ScalarDeletingDestructor",
+      "after": {
+        "address": "00bf1240",
+        "function_name": "BSP_Substream_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00bf1240]\nECX object; stack flags; RET4; EAX object. Compiler-generated scalar deleting destructor behavior; retain any existing compiler/library identity. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      }
+    },
+    {
+      "address": "00bf3880",
+      "old_comment_preserved": true,
+      "name": "BSP_PhysicalReadRequest_DestroyNames",
+      "after": {
+        "address": "00bf3880",
+        "function_name": "BSP_PhysicalReadRequest_DestroyNames",
+        "comment": "[BSP reconstruction 00bf3880]\nECX request; RET. Releases only the two owned request strings at+28h/+2Ch and+20h/+24h. It does not close the handle or free staging memory/OVERLAPPED. Normal submission uses this after copying the request into the queue. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bf3c10",
+      "old_comment_preserved": true,
+      "name": "BSP_PhysicalReadRequest_CopyConstruct",
+      "after": {
+        "address": "00bf3c10",
+        "function_name": "BSP_PhysicalReadRequest_CopyConstruct",
+        "comment": "[BSP reconstruction 00bf3c10]\nECX destination; source request stack; EAX destination; RET 4. Copies handle,OVERLAPPED,kind,staging pointers,size and callback values; allocates/copies both name strings. Fields+14h/+34h are not assigned by this body. Stable heap I/O allocations survive destruction of source request names; container growth/error semantics remain separate. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bf41c0",
+      "old_comment_preserved": true,
+      "name": "BSP_PhysicalReadQueue_Append",
+      "after": {
+        "address": "00bf41c0",
+        "function_name": "BSP_PhysicalReadQueue_Append",
+        "comment": "[BSP reconstruction 00bf41c0]\nECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bf43b0",
+      "old_comment_preserved": true,
+      "name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+      "after": {
+        "address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    },
+    {
+      "address": "00bf46b0",
+      "old_comment_preserved": true,
+      "name": "BSP_PhysicalDirectory_PollReadCompletions",
+      "after": {
+        "address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      }
+    }
+  ],
+  "definitions": [
+    {
+      "address": "00bdc1d0",
+      "expected_bytes": 4,
+      "current": "Function: BSP_VFS_OverlappedVisitor_IsAccepted at 00bdc1d0\nSignature: undefined BSP_VFS_OverlappedVisitor_IsAccepted(void)\nEntry: 00bdc1d0\nBody: 00bdc1d0 - 00bdc1d3"
+    },
+    {
+      "address": "00bdc1e0",
+      "expected_bytes": 40,
+      "current": "Function: BSP_VFS_OverlappedVisitor_VisitMount at 00bdc1e0\nSignature: undefined BSP_VFS_OverlappedVisitor_VisitMount(void)\nEntry: 00bdc1e0\nBody: 00bdc1e0 - 00bdc207"
+    },
+    {
+      "address": "00bf1000",
+      "expected_bytes": 53,
+      "current": "Function: BSP_Substream_ReadUnchecked at 00bf1000\nSignature: undefined BSP_Substream_ReadUnchecked(void)\nEntry: 00bf1000\nBody: 00bf1000 - 00bf1034"
+    }
+  ],
+  "prior_missing_visitor_definitions": [
+    {
+      "address": "00bdc1d0",
+      "length": 4,
+      "sha256": "bc29e77cf9f63e4f2ee3f89f7d24872b50e9c4a50820b39016f3194edda5e499",
+      "before": "No function found for 00bdc1d0"
+    },
+    {
+      "address": "00bdc1e0",
+      "length": 40,
+      "sha256": "f138e09efa930df24ef96b0128bfcc1175c9380af3e65e151dfe3f698a8ee1fc",
+      "before": "No function found for 00bdc1e0"
+    }
+  ],
+  "rename_tags_checked": 8780,
+  "rename_tag_mismatches": [],
+  "selected_annotation_count": 31,
+  "renamed_count": 23,
+  "export_addresses": [
+    "0073d410",
+    "00aba270",
+    "00bb87a0",
+    "00bb8850",
+    "00bb8a90",
+    "00bb8be0",
+    "00bb8d60",
+    "00bb8e00",
+    "00bb9090",
+    "00bb9330",
+    "00bb9520",
+    "00bb95b0",
+    "00bb9700",
+    "00bb9920",
+    "00bdb740",
+    "00bdc1d0",
+    "00bdc1e0",
+    "00bdda10",
+    "00bdf310",
+    "00be5fa0",
+    "00be7ab0",
+    "00bef840",
+    "00befa40",
+    "00bf1000",
+    "00bf1130",
+    "00bf11c0",
+    "00bf1240",
+    "00bf3880",
+    "00bf3c10",
+    "00bf41c0",
+    "00bf43b0",
+    "00bf46b0"
+  ],
+  "export_refresh_complete": true,
+  "export_sha256": {
+    "exports/bsp/functions/0073d410/decompiled.c": "eec5703ed7d539e59e4b3f8fbcd5c3b2225fc99e6e3929fe00a45d43a4dad6c1",
+    "exports/bsp/functions/0073d410/assembly.txt": "1b54aab552d096ada814fb99a042a789c12cdb39d42844707a1b8bd3898a1d6b",
+    "exports/bsp/functions/0073d410/metadata.json": "a1a060a25ff9d2f6f8793d4ad04adfac1487586aadf58fc13b9694bda36bfc64",
+    "exports/bsp/functions/00aba270/decompiled.c": "3c7f6bc96dda886554dede1cb95b4100e4da81e1c2e26c8b79db9629adbb605c",
+    "exports/bsp/functions/00aba270/assembly.txt": "e1f68d8a1e3d5d575d4109c68193672f780574153e98aba4a129920ddd71f06e",
+    "exports/bsp/functions/00aba270/metadata.json": "5975a61c73906ec9854bd44651979250450ea76b9799e971c513425064e67e44",
+    "exports/bsp/functions/00bb87a0/decompiled.c": "20880a0ef0878a31390986a692d099a63f7c90d4110bec74169396324ca9041f",
+    "exports/bsp/functions/00bb87a0/assembly.txt": "37da2b98fb29beb9bc80a92262cbd50c02c678df2ca1590ccb1c051dd675500c",
+    "exports/bsp/functions/00bb87a0/metadata.json": "79c44431d194319482d4e3aea0686b6325475ed823d4a3853c91d0591432eba3",
+    "exports/bsp/functions/00bb8850/decompiled.c": "ecca272699f0609b754defb1947aeda326fb91a92901b55f40c3130b7dd615d3",
+    "exports/bsp/functions/00bb8850/assembly.txt": "52ea1458ebb74a4043ed16ce3055e3793e10ce4893d6ccbff3fc6fe0eee5cccf",
+    "exports/bsp/functions/00bb8850/metadata.json": "04ad078b95b050e2f4cde0bab3a2bee77ddedf5d7df78b3d8881dabfb0a14482",
+    "exports/bsp/functions/00bb8a90/decompiled.c": "75f8b25864a6b9022c9247f31b84b96819d1b8a5e16e3bbe234d288b9775ba4e",
+    "exports/bsp/functions/00bb8a90/assembly.txt": "626e61f8adcbd3418b932da21b143384e56988203cedb791ae8ebec44b0313ad",
+    "exports/bsp/functions/00bb8a90/metadata.json": "3327fb0cbeb120941a8f89f784c8cff23ce9181aefbc5f367def94575533badf",
+    "exports/bsp/functions/00bb8be0/decompiled.c": "40c181a2e0f2de9f78769c83370d3abe4d8aff7716d44f42c05a4220f829be29",
+    "exports/bsp/functions/00bb8be0/assembly.txt": "a64b0c2fc14af3df611a8c14d67e22804bc4ad083cb6aad7d0b342ecab179f31",
+    "exports/bsp/functions/00bb8be0/metadata.json": "27e0be0d51137d5505d70a4693c2e9f3e5cb95dc22d260ad4ea236efbcbf780a",
+    "exports/bsp/functions/00bb8d60/decompiled.c": "4c1c210ec8b38d2d97f6e629be6339fb26c0f3514b3773727313110df0fa1e1a",
+    "exports/bsp/functions/00bb8d60/assembly.txt": "ca12f9963168dcd7b97033147c9528df01e887238d5724248db2af98e0069058",
+    "exports/bsp/functions/00bb8d60/metadata.json": "e09f45a0cd8c2b73c55469118b1c22f73e7dc0c1ef9590782503a5aa23aa397a",
+    "exports/bsp/functions/00bb8e00/decompiled.c": "91890802f7befc9ee8f42d4091b6fbdd18a728f655e0bb2c9bc69310ffcc790c",
+    "exports/bsp/functions/00bb8e00/assembly.txt": "28dcfdbd4c90f4ba6862fd9c54a8eeb82df202ef6cd74ed480e618967c1a169f",
+    "exports/bsp/functions/00bb8e00/metadata.json": "0fbeb2798da717cb6b015435eaf9191720b86c50f001c46782e381003b3ba31c",
+    "exports/bsp/functions/00bb9090/decompiled.c": "07e447b83bafcec802c1c3c9b173479553559f89e6fa65a1f695f969eed25768",
+    "exports/bsp/functions/00bb9090/assembly.txt": "7670f7d5d70f9b93ed016c89f1d4c8172d28020a7b4867fa6ce043f91e1651f9",
+    "exports/bsp/functions/00bb9090/metadata.json": "becc268c5118910bd5d46d566ad06c36f621f77260d0d119ca7e4d2b4bbc9c56",
+    "exports/bsp/functions/00bb9330/decompiled.c": "d7c1a649acbe2f1f1f100eb0fc3d50dcc83e3516c07c7d4e948ae79bae412bee",
+    "exports/bsp/functions/00bb9330/assembly.txt": "203403b9d0a3a20664238c3f7f2c174a73f320aa9fd29814fd9fa5b4ba11bd7b",
+    "exports/bsp/functions/00bb9330/metadata.json": "28fd21bbf798395b6d1c0403d09b5b5f65546d7456f558cdfc699bbd77cc0d5e",
+    "exports/bsp/functions/00bb9520/decompiled.c": "36df6f38442e5b1190062414626e1f67f57119a6b3047639fa124c4c86d2a019",
+    "exports/bsp/functions/00bb9520/assembly.txt": "99d164439b2a8633790a5c77ab84c25ba75023965ffa433412093587fc7b4c77",
+    "exports/bsp/functions/00bb9520/metadata.json": "0935d457124570ad5a18f1ac500542e05050a658fe1567d7ebb4a50c2751a77f",
+    "exports/bsp/functions/00bb95b0/decompiled.c": "4193341214c76976e235d5df03dafe0bf592d6d63312330f971516b97fcf7815",
+    "exports/bsp/functions/00bb95b0/assembly.txt": "b72a226c2de15d609a31d3019aa9f7e50b7205af12a5fc874ecc101a4117e581",
+    "exports/bsp/functions/00bb95b0/metadata.json": "e733cfe6f71b5f09bbd1ced8258b2d0de34ef0ae514f7541ae6a634009378bf9",
+    "exports/bsp/functions/00bb9700/decompiled.c": "f9742696b9495e64b7d646c448c3bc33e12632e8313e4f5d74bc76b7d9f54528",
+    "exports/bsp/functions/00bb9700/assembly.txt": "a81bb8438d9c7c53448ee080e8e8cd253acd2491fcbb270d652cc4395f245dd1",
+    "exports/bsp/functions/00bb9700/metadata.json": "becccd9c3da19f784aa5aaa3d5ee00b1010d0d33d2f5cd00f3e594e617d29ca2",
+    "exports/bsp/functions/00bb9920/decompiled.c": "bd227465582633a1ed97d12fb60e9802fe9ba18da9183ab3e051f94da9f9a4ef",
+    "exports/bsp/functions/00bb9920/assembly.txt": "d2dbcd427aced72ec86db6646088af2a90b607ff6dc09d9bc4523abeb7203de3",
+    "exports/bsp/functions/00bb9920/metadata.json": "83b446db9fdbbc7b6bd3e3de5d22a67ebe81427f708eaa5123bdbe4888244e9e",
+    "exports/bsp/functions/00bdb740/decompiled.c": "ed3d78bd0852483ec0f71f044e7d819f387424054ad82c5e7a265e22455fd9e5",
+    "exports/bsp/functions/00bdb740/assembly.txt": "cbe17dab3a41cc6af341a541aaf3f5ebc9d074103a36abbc3a9c5edb5597bdf7",
+    "exports/bsp/functions/00bdb740/metadata.json": "92b56731c3fb7c9e0734455a8dd091b4148a6685a87c4338ffcebce0cdae6d76",
+    "exports/bsp/functions/00bdc1d0/decompiled.c": "315dfd258a0374fc53a1f8abfb03560fd1721e641d218610711d04d5315c44c2",
+    "exports/bsp/functions/00bdc1d0/assembly.txt": "2a6fd421a17731e0f62cda58aab1c96d4b8f425efd43cd51c7cbb9087ab8e84a",
+    "exports/bsp/functions/00bdc1d0/metadata.json": "b31428d5427e2f66685c83077d2aad7195c6832c6a62f4ac49da47197ad849c7",
+    "exports/bsp/functions/00bdc1e0/decompiled.c": "79f25f1c0904e3471abc7c21184d8490f404a06195eec32cd279829fd35c0c7d",
+    "exports/bsp/functions/00bdc1e0/assembly.txt": "149cca7cb45b3c91c4c609b045f2853c88be93d04f4cff7f2e477c8287dfe1d7",
+    "exports/bsp/functions/00bdc1e0/metadata.json": "83e525d0931ea568c4fc0f4b20c0321e8e0f3ae088db042937a069c1203f1902",
+    "exports/bsp/functions/00bdda10/decompiled.c": "85017f05c03e31ca67e304b26833353a8fe227a8039bb82af7728fb0a8d51d63",
+    "exports/bsp/functions/00bdda10/assembly.txt": "03147700eeef4fedf93ac063f25869ead661c6b60034f3d95cb7306505108ca4",
+    "exports/bsp/functions/00bdda10/metadata.json": "44740d116cd604a79c14800b9617f90e2183d00c4fcbdab7baa2c40d186dd838",
+    "exports/bsp/functions/00bdf310/decompiled.c": "71ae292d3fa56e372f5f19ef932bc19ab9a4556d1e2c28d42810a0457c05dd41",
+    "exports/bsp/functions/00bdf310/assembly.txt": "5e0cad389730c7a45287e1285991d6634ef1d67ed985cd35717ac1ed6bc3f837",
+    "exports/bsp/functions/00bdf310/metadata.json": "a8e6fd2570571b9f1e085aa32a25a8e427ad9bc45f9df642b19f980cc6dd80d6",
+    "exports/bsp/functions/00be5fa0/decompiled.c": "da4f1e4024a46be069fea3d8e3af038806ae8bb5e6607b955811f75b459d697e",
+    "exports/bsp/functions/00be5fa0/assembly.txt": "3a1d0f1a928b3288fe0eb138b6f27a0a285498760d50061e74ea7cd3a786200e",
+    "exports/bsp/functions/00be5fa0/metadata.json": "71650f52e899f55a50e81c2f4b4dc26dccfd866716eb2c5b7dc127c668bf3495",
+    "exports/bsp/functions/00be7ab0/decompiled.c": "16a152bc725991a4dcef1f19039b36944cda6b3a53f2264281c762e398bd6317",
+    "exports/bsp/functions/00be7ab0/assembly.txt": "510f0e183285c9090fc4b0ccf7ca64cb16644c90a44e800f21335624aff71c08",
+    "exports/bsp/functions/00be7ab0/metadata.json": "8ee1b7c2548d671abf33f189cb2da8e84bcc09f5e93fcb5e923b339aceb3d118",
+    "exports/bsp/functions/00bef840/decompiled.c": "c12afe727262d14d401bebfe81994ab09634fc2949e7a8ca9338f7a250d21204",
+    "exports/bsp/functions/00bef840/assembly.txt": "65ca59d50ceb2e13e726eb2a6be1233af626d488aca5c0250d0cc29c05b81d65",
+    "exports/bsp/functions/00bef840/metadata.json": "5b8eedfc01e92710fd4bc406ee5dd6048902be7f106e048e276626106a8a57eb",
+    "exports/bsp/functions/00befa40/decompiled.c": "21f117d6772bdb600a1df286a09f9bf74741ef0753aa1910323aa0638a2639ff",
+    "exports/bsp/functions/00befa40/assembly.txt": "267f3b10728f316c3fe7debdab739d5bde3e413c0cef458451de8b4436e0179d",
+    "exports/bsp/functions/00befa40/metadata.json": "e7275ce3e74abccf9eff4917549c11873c2f2305aa00ec5dff81237a79e2c6f7",
+    "exports/bsp/functions/00bf1000/decompiled.c": "0bc76c1ad9aefd976ea77a731884e2087bbff382f3aa40c8fe4f01dc313f0ea0",
+    "exports/bsp/functions/00bf1000/assembly.txt": "cccdd0e68ec4df215a2118fe30c45dc5c680764a158e8222099fe69bfd4b8ddd",
+    "exports/bsp/functions/00bf1000/metadata.json": "cf65e28afbffb7412ce3a9a87bf8c949be553e1746c90c87ef59a787c4f17340",
+    "exports/bsp/functions/00bf1130/decompiled.c": "953263df1ae84ffa7399469732907eced8b9fe7a5f38f9deda57b4c09e78db11",
+    "exports/bsp/functions/00bf1130/assembly.txt": "deddb761c3cf273b10bbe39f08d37277457120499a36b7aa49810f821df8c893",
+    "exports/bsp/functions/00bf1130/metadata.json": "d5fac8fe1c649f67bbf9ca1acb03c0dac9c572eab2ee5c974f5a43b494761aec",
+    "exports/bsp/functions/00bf11c0/decompiled.c": "bd938755f17f51fa9ad5738f757d0af1cd8739501d6c3d1db1eeeb8fa19ac30c",
+    "exports/bsp/functions/00bf11c0/assembly.txt": "633f2edd136f7acd1f314c047ad1284ad69ac0666bf83034ad781b996def1d6f",
+    "exports/bsp/functions/00bf11c0/metadata.json": "10c7b0b37b3743e63c2a7759db8c27b45ddfcbef03b7b0f1a68d98215586eeb6",
+    "exports/bsp/functions/00bf1240/decompiled.c": "390c0b649b53da1d1b80696cebfcc645327bb479c5e43331ba567d447864805f",
+    "exports/bsp/functions/00bf1240/assembly.txt": "c9a113cbd65f99f6224d550692e7d1ad6fcbfc67d1b16d0a32bb78888ce3d194",
+    "exports/bsp/functions/00bf1240/metadata.json": "20707284e54cfcd97c9d73e1aca3f4cb08fc47662d21f76afdf5fe5ca58d3736",
+    "exports/bsp/functions/00bf3880/decompiled.c": "dfdb8d5905574647b6c592252c42d74cf1a186e7b9f26a9d1a6d15ae5aeddf5e",
+    "exports/bsp/functions/00bf3880/assembly.txt": "4d9d4c8ad868db8feba040c6d22f75e141a40c7e149e4fdc868f3b2977527306",
+    "exports/bsp/functions/00bf3880/metadata.json": "7c6c28dd278fa3a8342faf4102e721d087fd601f6f16479f2f36c8b71f062fb8",
+    "exports/bsp/functions/00bf3c10/decompiled.c": "226708ce1324e967c51c5da9b61a81f3ae251dd7e3aa7573ae85deac8ba5d368",
+    "exports/bsp/functions/00bf3c10/assembly.txt": "39d4c87269e837e2506a35eb4fcb02255cd9d5ab4f9d97dca1eea9f26287dbae",
+    "exports/bsp/functions/00bf3c10/metadata.json": "000bed432afcec38fdba8883262f65386cbd88317cd05be8f16f1fcd57199dff",
+    "exports/bsp/functions/00bf41c0/decompiled.c": "f303c7d66ae9f66dfa27c5704411186f940fc13bb9081ec37eff8b27008a0a22",
+    "exports/bsp/functions/00bf41c0/assembly.txt": "bbaaf7c9ce4e2335bd13a8f7cc794db63a755ac864453ff830eef6a616ce7030",
+    "exports/bsp/functions/00bf41c0/metadata.json": "f99b66c3474da1a1d93362897121869981d14952f1b90c7e3ee45637c545c37a",
+    "exports/bsp/functions/00bf43b0/decompiled.c": "d3e24aa4b8becca9ae6cc64dfe9b9102bac3a5cd2202ff683eaba83efeb4e55a",
+    "exports/bsp/functions/00bf43b0/assembly.txt": "974ddf4dd57cec522ddbae0154e03efa73d27d4fd4918607fdf9a603590d92fe",
+    "exports/bsp/functions/00bf43b0/metadata.json": "0729a98246c6f11ea29d6c49c2c40db8fe02e09e2da1fb4867025ae040f19957",
+    "exports/bsp/functions/00bf46b0/decompiled.c": "7a781b85b0712310d072979b29f0ce1d7d283f9b32e35abc283e810e0fb18bd0",
+    "exports/bsp/functions/00bf46b0/assembly.txt": "ec3bd62d4e6494a0d0ad42d74520d66759a9828292679e1304d837380b3a9aa9",
+    "exports/bsp/functions/00bf46b0/metadata.json": "536703901f1322aedbae2576607277cbd8321090c61fe48ba0da95662015a734"
+  },
+  "snapshot": {
+    "utc": "2026-09-09T21:51:04.855270+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62731,
+    "internal_function_count": 62289,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  }
+}

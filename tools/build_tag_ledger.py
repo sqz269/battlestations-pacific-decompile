@@ -120,9 +120,11 @@ def main():
             create = False
         if action == 'rename':
             name = sanitize(name)
-            # Collision only with a different address: a function already carrying this tag name keeps it.
+            # Preserve an applied name even when snapshot thunks/aliases share it.
+            # Only a new assignment must avoid names reserved by other addresses.
+            already_named = row is not None and row['name'] == name
             taken_elsewhere = name_addresses.get(name, set()) - {address}
-            if taken_elsewhere or any(e['name'] == name for e in entries[-2000:]):
+            if not already_named and (taken_elsewhere or any(e['name'] == name for e in entries[-2000:])):
                 name = f'{name}_{address}'
         claimed[address] = category
         entries.append({'address': address, 'name': name if action == 'rename' else '', 'category': category,

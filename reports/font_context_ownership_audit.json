@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "utc": "2026-09-09T21:57:12.894302+00:00",
+  "status": "read-only static ownership/update audit; next host API proposed, no implementation",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "target_batches": [
+    "base_continuation_target.json",
+    "context_construction_target.json",
+    "context_helpers_target.json",
+    "dependencies_target.json",
+    "final_dependency_target.json",
+    "initial_target.json"
+  ],
+  "owned_code": "00ab6000..00ad89ff",
+  "approved_extensions": [
+    "complete00b73bb0",
+    "complete00b73b70",
+    "complete00b865a0",
+    "complete00b73c60",
+    "complete00b19210",
+    "complete00b6dfa0",
+    "complete00aa9730 including raw continuation",
+    "complete00b86550"
+  ],
+  "bulk_code_identity": {
+    "address": "00ab6000",
+    "length": 21504,
+    "sha256": "e193afaf1a696909b70f2ea28d8359e4e534ad0f288d1e4982792b086ce77817",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "matches_disk": true
+  },
+  "functions": [
+    {
+      "address": "00aba8d0",
+      "end_inclusive": "00abaec6",
+      "length": 1527,
+      "sha256": "81b87216443b038af05450c9d23a2348da40c546753edbba95265cdb6cea8ea8",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00aba8d0",
+      "original_abi": "ECX context; one UTF16 wrapper stack argument; RET4; side effects.",
+      "proposed_name": "BSP_TextContext_UpdateUtf16Geometry",
+      "evidence_comment": "Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input."
+    },
+    {
+      "address": "00ab8530",
+      "end_inclusive": "00ab87cb",
+      "length": 668,
+      "sha256": "2b9e0a3a8d4ae569e45dbae8ae7cd9e14b34959712536edb97ec8b3ae6036dd2",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00ab8530",
+      "original_abi": "ECX context; no stack args; RET.",
+      "proposed_name": "BSP_TextContext_EnsureDrawSections",
+      "evidence_comment": "Lazily constructs +188 Shadow drawable, geometry0, section and guidefault material; retains assignments and releases temporaries. Adds missing section to existing main geometry. +15C controls shadow attachment. Does not create missing main drawable."
+    },
+    {
+      "address": "00ab8400",
+      "end_inclusive": "00ab852d",
+      "length": 302,
+      "sha256": "2a8aac6e63e7d1cb2ca66dee1d00e3edad7291d398e0d957b0e5bfb56e799c9c",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00ab8400",
+      "original_abi": "Two stack args: glyph capacity and geometry; RET8. ECX not consumed.",
+      "proposed_name": "BSP_TextContext_CreateGlyphBuffers",
+      "evidence_comment": "Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts."
+    },
+    {
+      "address": "00ab8250",
+      "end_inclusive": "00ab83cf",
+      "length": 384,
+      "sha256": "31f5d388cb4a4c17792463ee0c5b316009db74ba127599919d9915dcc2b850cc",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00ab8250",
+      "original_abi": "ECX context; no stack args; RET.",
+      "proposed_name": "BSP_TextContext_Destroy",
+      "evidence_comment": "Release cached shader +1EC; pass shadow +188 to drawable cleanup and clear; clear optional children, release owned strings/vector, call base00aa9730. Raw assembly continues after falsely noreturn _free at00ab8345 through RET00ab83cf."
+    },
+    {
+      "address": "00ab80c0",
+      "end_inclusive": "00ab81b6",
+      "length": 247,
+      "sha256": "968e0d151d4fc280db952341c333f8314060169076f973a10194b436591e6b7d",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00ab80c0",
+      "original_abi": "ECX context; no stack args; RET.",
+      "proposed_name": "BSP_TextContext_ClearGlyphChildren",
+      "evidence_comment": "For each +198..+19C child, detach through00aa83a0 then child virtual+4(1), zero pointer and reset vector end. Child object internals remain external."
+    },
+    {
+      "address": "00abb1d0",
+      "end_inclusive": "00abb2b4",
+      "length": 229,
+      "sha256": "d1b88ac8fc24acb0f3bd7d21e57a7a567ff0a05e2771ff022248f52d1051b352",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00abb1d0",
+      "original_abi": "ECX context; no stack args; RET.",
+      "proposed_name": "BSP_TextContext_RebuildCurrentText",
+      "evidence_comment": "Copy current UTF16, replace cached string with empty, call00aba8d0 with saved copy. Forces rebuild for old nonempty string, not empty-to-empty."
+    },
+    {
+      "address": "00ab6ab0",
+      "end_inclusive": "00ab6acd",
+      "length": 30,
+      "sha256": "b9a71fd80990cfb469ebd75a4c269ffe5b05fa1fad98a9fd9247d4443b71491f",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00ab6ab0",
+      "original_abi": "ECX context; UTF16 wrapper stack; RET4.",
+      "proposed_name": null,
+      "evidence_comment": "Update UTF16 through00aba8d0 then invoke context virtual+50 with context+50 regardless of inner equality/empty route."
+    },
+    {
+      "address": "00abaed0",
+      "end_inclusive": "00abaff8",
+      "length": 297,
+      "sha256": "29ff5f9dcd90c37af2a1ee684f3029ac3b1e97d50835bf612631aa8bc34695d8",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00abaed0",
+      "original_abi": "ECX context; narrow wrapper and byte flag stack; RET8.",
+      "proposed_name": null,
+      "evidence_comment": "Cache/compare narrow input+F4. Byte0 calls004c5e60; nonzero resolves through singleton00a9fad0. Result to00aba8d0 then virtual+50. No force argument to inner updater."
+    },
+    {
+      "address": "00abb000",
+      "end_inclusive": "00abb1c4",
+      "length": 453,
+      "sha256": "e5e7c28f2ba1f071d284a2e5705413254b668eb4404552ea1ab2df5ddb8fe329",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "FUN_00abb000",
+      "original_abi": "ECX context; narrow wrapper, float width, byte flag; RET0Ch.",
+      "proposed_name": null,
+      "evidence_comment": "Same narrow conversion flag, then00ab8f00 ellipsis and00aba8d0. Ordered zero width uses context+20. Equal narrow input skips width/flag reconsideration."
+    },
+    {
+      "address": "00ab8ce0",
+      "end_inclusive": "00ab8e6c",
+      "length": 397,
+      "sha256": "89a579d6ec15997b98eff7d0abae2938496da6c534f3f26c71648d91e60a032d",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "BSP_TextContext_EnsureFontShader",
+      "original_abi": "ECX context; no stack args; AL selection attempted; RET.",
+      "proposed_name": null,
+      "evidence_comment": "Retain established shader-selection name/comment. Cached nonnull+1EC returns0. New selection returns1 including null result; caller saves that AL rather than receiving an extra flag."
+    },
+    {
+      "address": "00ab8c30",
+      "end_inclusive": "00ab8cd4",
+      "length": 165,
+      "sha256": "d434b39aa4b1049e73f05217bd1fec64ed4e1e017db853441ea7b8e006f93e06",
+      "matches_disk": true,
+      "original_name": "FUN_00ab8c30",
+      "original_abi": "ECX context; font-name wrapper stack; RET4.",
+      "proposed_name": null,
+      "evidence_comment": "Stores borrowed font lookup result+108 and alpha scale+1D4, releases/clears cached shader+1EC on changed font name; does not call text geometry update."
+    },
+    {
+      "address": "00ab98f0",
+      "end_inclusive": "00ab9fc2",
+      "length": 1747,
+      "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+      "matches_disk": true,
+      "source": "verified00ab6000_00abb400.bin",
+      "original_name": "BSP_TextContext_WriteGlyphQuad",
+      "original_abi": "ECX context; ten stack slots; RET28h.",
+      "proposed_name": null,
+      "evidence_comment": "Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent."
+    },
+    {
+      "address": "00b73bb0",
+      "end_inclusive": "00b73c0e",
+      "length": 95,
+      "sha256": "6a187200728c3f4e5d5acfb2e3a206ec6d6c71c622c9867475ab3d634c95a108",
+      "matches_disk": true,
+      "original_name": "FUN_00b73bb0",
+      "original_abi": "ECX geometry; stream index and stream stack; RET8.",
+      "proposed_name": "BSP_Geometry_SetVertexStream",
+      "evidence_comment": "Raise stream high-water+7C, retain-new/release-old in +64+4*index on pointer change. Text path uses index0."
+    },
+    {
+      "address": "00b73b70",
+      "end_inclusive": "00b73baa",
+      "length": 59,
+      "sha256": "7a314c5a37c607c60601bf6ee25a0cd365b405581ec7357bf568f82e8fdde293",
+      "matches_disk": true,
+      "original_name": "FUN_00b73b70",
+      "original_abi": "ECX geometry; index object stack; RET4.",
+      "proposed_name": "BSP_Geometry_SetIndexStream",
+      "evidence_comment": "Retain-new/release-old at geometry+60 on pointer change."
+    },
+    {
+      "address": "00b73c60",
+      "end_inclusive": "00b73ca3",
+      "length": 68,
+      "sha256": "61b35cc16743e16dee5dbb08985aeb68d0a35e8aa5756b344085ad0ae84e45a9",
+      "matches_disk": true,
+      "original_name": "FUN_00b73c60",
+      "original_abi": "ECX geometry; section stack; RET4 through InterlockedIncrement tail jump.",
+      "proposed_name": "BSP_Geometry_AppendDrawSection",
+      "evidence_comment": "Append section in ordered pointer array+54, increment count+58 and intrusive section reference. Capacity growth helper remains external."
+    },
+    {
+      "address": "00b86550",
+      "end_inclusive": "00b8659e",
+      "length": 79,
+      "sha256": "b6ab5966ea8e3efed1f312889159258d0d75b2509e97aacb22719f0726efdfc1",
+      "matches_disk": true,
+      "original_name": "FUN_00b86550",
+      "original_abi": "ECX section; no stack args; RET.",
+      "proposed_name": "BSP_DrawSection_ClearVertexStreams",
+      "evidence_comment": "Release and null each retained stream at+3C, then reset stream count+4C. Does not release layout+50 itself."
+    },
+    {
+      "address": "00b865a0",
+      "end_inclusive": "00b8664e",
+      "length": 175,
+      "sha256": "2bea4cdbde496711878d8baa0b57860646c0fd5f31e70ff142b833070f446f60",
+      "matches_disk": true,
+      "original_name": "FUN_00b865a0",
+      "original_abi": "ECX section; geometry stack; RET4.",
+      "proposed_name": "BSP_DrawSection_RebuildVertexLayout",
+      "evidence_comment": "If layout+50 exists, clear retained streams via00b86550 then release layout. If count+4C zero, retain geometry stream0. Query retained stream virtual+24 descriptors and request renderer+40 layout into+50. Nonzero stream count with null layout is reused. Decompiler drops geometry stack arg."
+    },
+    {
+      "address": "00b19210",
+      "end_inclusive": "00b192c8",
+      "length": 185,
+      "sha256": "343e21259b1b1d3a236abf56c62acd46d3d2462f18dab37804c16e608aaa9d33",
+      "matches_disk": true,
+      "original_name": "FUN_00b19210",
+      "original_abi": "ECX material; shader stack; RET4.",
+      "proposed_name": "BSP_Material_SetShaderAndClearParameters",
+      "evidence_comment": "Retain-new/release-old shader+7C on pointer change, mark nonnull shader+B4=1, free parameter entries and reset+100 even for same shader pointer."
+    },
+    {
+      "address": "00b6dfa0",
+      "end_inclusive": "00b6e008",
+      "length": 105,
+      "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277",
+      "matches_disk": true,
+      "original_name": "FUN_00b6dfa0",
+      "original_abi": "ECX drawable; no stack args; tail jump virtual+18.",
+      "proposed_name": null,
+      "evidence_comment": "Unlink parent/list or registration then invoke drawable virtual+18. Complete virtual target destruction remains unresolved; no COM lifetime sequence inferred."
+    },
+    {
+      "address": "00aa9730",
+      "end_inclusive": "00aa9950",
+      "length": 545,
+      "sha256": "b0b002582e8395a9a9af4341a076d91a5050f0ee552b7fda4a929ae16cd45978",
+      "matches_disk": true,
+      "original_name": "FUN_00aa9730",
+      "original_abi": "ECX base context; no stack args; actual RET00aa99b8.",
+      "proposed_name": null,
+      "evidence_comment": "Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet.",
+      "saved_ghidra_body_end": "00aa9950",
+      "complete_native_body": {
+        "end_inclusive": "00aa99b8",
+        "length": 649,
+        "sha256": "1c898155d152bf421f0a0890a6db8ae9191a6c96387bded7a20c552f75caec49",
+        "matches_disk": true
+      },
+      "raw_continuation": {
+        "address": "00aa9951",
+        "end_inclusive": "00aa99b8",
+        "length": 104,
+        "sha256": "3fb2506a23f345a79e2f700516c40c82efc392fae5cd98bed495c2238e2a979a",
+        "matches_disk": true
+      }
+    }
+  ],
+  "caller_flags": {
+    "00aba8d0": "one UTF16 wrapper only; byte at consumed arg slot is saved00ab8ce0 AL",
+    "00abaed0": "second stack low byte chooses004c5e60 versus singleton00a9fad0",
+    "00abb000": "third stack low byte chooses same conversion before ellipsis",
+    "multiline": "context+FC zero single-line; nonzero wrapped",
+    "force_route": "00abb1d0 empties cached string then calls updater with saved old text; empty remains equal"
+  },
+  "empty_text": {
+    "ensure_before_compare": true,
+    "equal": "skip width/text/layout changes",
+    "changed": "reset width, clear optional children, assign empty text, clear main/shadow vertex and primitive counts; retain buffers/materials/layouts",
+    "not_reset": [
+      "context+110 line count",
+      "context+178 wrapped extent",
+      "context+18C first origin"
+    ]
+  },
+  "ownership": {
+    "geometry": "retains stream/index via setters; no same-pointer refcount churn",
+    "section": "retains vertex stream(s) and renderer layout; reset helper releases streams before replacing existing layout",
+    "material": "retains shader and texture slots; shader setter always clears registered parameters",
+    "shadow": "shares main vertex/index identities and copies draw ranges; copies only material texture slot0",
+    "font": "direct registry pointer store and no release in inspected context destructor; registry lifetime external",
+    "teardown": "cached shader release, shadow cleanup delegation, child/string/vector cleanup, base main-drawable cleanup delegation; virtual+18 concrete destructor unexpanded"
+  },
+  "api_proposal": {
+    "name": "FontGeometryOwner",
+    "operations": [
+      "update_font_geometry_00aba8d0_fragment",
+      "rebuild_font_geometry_00abb1d0_fragment"
+    ],
+    "result": [
+      "unchanged",
+      "cleared",
+      "rebuilt",
+      "unsupported"
+    ],
+    "reuse": [
+      "FontResources",
+      "LogicalVertexStream",
+      "LogicalIndexStream",
+      "D3D9VertexLayout",
+      "MaterialTextureSlots",
+      "existing single-line/wrapped scalar layouts and quad writer"
+    ],
+    "gates": [
+      "loaded font and retained images",
+      "already-transformed coherent UTF16 without embedded NUL",
+      "finite supported scalar/layout domains",
+      "at most16384 glyphs and adequate capacity",
+      "prepared shader/material bindings with live owners",
+      "optional per-glyph children disabled",
+      "successful coherent section-layout cache domain"
+    ],
+    "semantics": "retained owned geometry; separate shared-buffer main/shadow ranges; no draw submission or native scene-node object invention"
+  },
+  "cached_evidence": [
+    "docs/FONT_LAYOUT_BOUNDARY.md",
+    "docs/FONT_WRAPPED_LAYOUT.md",
+    "docs/FONT_MATERIAL_BINDINGS.md",
+    "exports/bsp/functions/00b864c0/decompiled.c",
+    "exports/bsp/functions/00b864c0/assembly.txt",
+    "existing scalar builder/quad assembly; bytes independently included in verified main envelope"
+  ],
+  "exploratory_exports_not_primary": [
+    "00ab7b60 serializer field labels",
+    "00ab6100 unrelated deleting wrapper",
+    "00ab64c0 adjacent UI routine",
+    "00ab78a0 text-pool allocator"
+  ],
+  "unresolved": [
+    "native main/shadow scene constructors and virtual+50/+18 target behavior",
+    "renderer factory/cache implementation beyond observed caller contract",
+    "native registered material-parameter ownership and inherited00aa9f10 behavior",
+    "uppercase/localization mapping",
+    "optional per-glyph child path",
+    "native error/null/allocation/concurrency/reset behavior"
+  ],
+  "validation": {
+    "raw_bytes_match_disk": true,
+    "function_assembly_checked": true,
+    "base_false_noreturn_continuation_checked": true,
+    "ghidra_mutations": false,
+    "cpp_edits": false,
+    "build_or_tests": false,
+    "native_runtime_or_game_validation": false
+  },
+  "annotation_policy": "Parent reviews proposed names/comments, preserves old comments and library identities, records ledger and saves/refreshes. Worker made no mutations."
+}

@@ -3,11 +3,12 @@
 #include "bsp/resource_lookup.hpp"
 #include "bsp/vfs_search_defaults.hpp"
 #include "bsp/vfs_mount_registration.hpp"
+#include "bsp/resource_preload.hpp"
 #include <utility>
 
 // Diagnostic startup setup: the three initial mounts, supplied physical root,
 // native texture/shader search groups and explicit cache priming. Package scans,
-// original startup preload selection and native manager lifetime are separate.
+// the full application initialization and native manager lifetime are separate.
 class AssetStreamProbe {
 public:
     explicit AssetStreamProbe(const std::string& root)
@@ -29,10 +30,10 @@ public:
     AssetStreamProbe(const AssetStreamProbe&) = delete;
     AssetStreamProbe& operator=(const AssetStreamProbe&) = delete;
     bool read(const std::string& requested, std::shared_ptr<bsp::MemoryStream>& stream,
-              std::string& error, std::string* logical = nullptr) {
+              std::string& error, std::string* logical = nullptr, std::uint32_t flags = 2) {
         auto name = requested;
         if (!resolve(name, error)) return false;
-        auto opened = bsp::open_resource_memory_00bdf310_fragment(mounts_, name);
+        auto opened = bsp::open_resource_memory_00bdf310_fragment(mounts_, name, flags);
         if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
             error = opened.error.empty() ? "Resource stream unavailable or incomplete: " + name : std::move(opened.error);
             return false;
@@ -44,8 +45,14 @@ public:
     }
     bool cache_resolved(const std::string& requested, std::string& error) {
         auto name = requested;
-        return resolve(name, error) && bsp::cache_resource_00be7ab0_fragment(*store_, mounts_, name, error);
+        return resolve(name, error) && bsp::cache_resource_00be7ab0_fragment(*store_, mounts_, name, 2, error);
     }
+    bool preload_startup_scripts(std::size_t& completed, std::string& error) {
+        if (!ready_) { completed = 0; error = "Startup mounts unavailable."; return false; }
+        return bsp::preload_startup_scripts_0073d410_fragment(*store_, mounts_, completed, error);
+    }
+    struct OpenObservation { std::string name; std::uint32_t flags; bool cache; };
+    const std::vector<OpenObservation>& opens() const noexcept { return opens_; }
     std::size_t cached_opens() const noexcept { return cached_opens_; }
     std::size_t physical_opens() const noexcept { return physical_opens_; }
     std::size_t cache_entries() const noexcept { return store_->size(); }
@@ -59,9 +66,13 @@ private:
     }
     bsp::VfsMount observe(bsp::VfsMount mount, bool cache) {
         auto open = std::move(mount.open_read_only);
-        mount.open_read_only = [this, cache, open = std::move(open)](const std::string& name) {
-            auto result = open(name);
-            if (result.provider_opened) ++(cache ? cached_opens_ : physical_opens_);
+        mount.open_read_only = [this, cache, open = std::move(open)](
+            const std::string& name, std::uint32_t flags) {
+            auto result = open(name, flags);
+            if (result.provider_opened) {
+                ++(cache ? cached_opens_ : physical_opens_);
+                opens_.push_back({name, flags, cache});
+            }
             return result;
         };
         return mount;
@@ -70,5 +81,6 @@ private:
     bsp::VfsCandidateRegistrations registrations_;
     bsp::VfsMountContext mounts_;
     std::size_t cached_opens_{}, physical_opens_{};
+    std::vector<OpenObservation> opens_;
     bool ready_{};
 };

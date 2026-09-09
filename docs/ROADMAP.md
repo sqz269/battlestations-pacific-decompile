@@ -26,7 +26,8 @@ Reuse source where the evidence supports it:
   fixtures do not establish native scripting-runtime equivalence.
 - **zlib 1.2.1:** checksum-pinned stock source now builds as `bsp_zlib121`.
   A bounded retained-source, buffering, read/seek and raw-DEFLATE adapter now
-  passes a multi-buffer fixture. Connect decoded MPKG entries next. See
+  passes stored-block and dynamic-Huffman multi-buffer fixtures. It now serves
+  compressed entries from the bounded MPKG parser/materializer. See
   [zlib evidence and next boundary](ZLIB_DEPENDENCY.md).
 - **CRT, STL and compiler helpers:** use the target toolchain to generate ordinary
   runtime machinery from reconstructed declarations. Recover object layout,
@@ -43,8 +44,10 @@ ranges, but named functions and indirect-call dependencies must remain in scope.
 Track completion by working subsystem paths and explicit validation evidence,
 not by the number of functions renamed or a projected functions-per-day rate.
 
-The partition review now supplies three concrete parallel lanes: buffered inflater
-read/seek, single-line font layout, and native cache preload policy. See
+The partition review supplies three concrete parallel lanes: archive loading,
+font layout/context ownership, and native cache/pending I/O. The inflater,
+bounded MPKG parser/materializer, single-line/wrapped scalar layout and five-script
+startup preload policy are integrated. See
 [parallel work](PARALLEL_WORK.md) and `config/parallel_work.json` for current
 ownership and implementation gates. The corrected review-baseline graph places
 84 of 87 segments in one dependency cycle, so whole-segment waves are not independent
@@ -115,13 +118,17 @@ connects physical providers and the priority-300 FileStore to font ownership and
 shader script loading. The existing draw probe explicitly primes three font
 resources, then loads GFX/alpha/DAT entirely from the cache with no physical-file
 opens during that load (`MOUNTED_RESOURCE_STREAMS.md`). This establishes the
-cache-to-render path with host ownership; native preload selection, complete
-stream/provider lifetime and archive loading still need integration.
+cache-to-render path with host ownership. The native five-script startup preload
+order now runs with flags `0x32` and checks all 140,625 cached bytes against disk.
+Native font preload selection, complete stream/provider lifetime and archive
+mounting still need integration (`STARTUP_SCRIPT_PRELOAD.md`).
 The single-line scalar layout now produces glyph placements with recovered
 x87 width, advance and alignment arithmetic. Its installed-font fixture covers
 fractional advances, LF/CR and embedded NUL; the existing A draw consumes its
-output (`FONT_SINGLE_LINE_IMPLEMENTATION.md`). Wrapping, native text-context
-lifetime/batching, GUI transforms and startup integration remain necessary.
+output (`FONT_SINGLE_LINE_IMPLEMENTATION.md`). Wrapped scalar layout now drives
+a three-line installed-font draw, retaining native scan/emission differences and
+x87 arithmetic (`FONT_WRAPPED_LAYOUT.md`). Native text-context lifetime/batching,
+GUI transforms and startup integration remain necessary.
 The draw uses supplied camera constants.
 This advances the asset-to-render path but is not a
 runnable game target or an original-game visual comparison.
@@ -148,21 +155,28 @@ completion of this milestone.
 
 ## Next bounded work
 
-1. Connect the bounded inflater adapter (`INFLATE_STREAM_IMPLEMENTATION.md`) to
-   a real MPKG entry source. Its fixed-buffer reads, forward/in-block seeks,
-   short EOF count and retained ownership now pass one deterministic fixture.
-   Cross-block rewind remains explicitly unsupported; native failure and
-   allocator behavior are not reproduced by the host guards.
-2. Complete package enumeration, transformed MPKG directory parsing, entry lookup
-   and compressed/sliced source ownership (`ARCHIVE_PROVIDER_ENTRY.md`). Then
-   exercise a real installed archive through the same mounted stream interface.
-3. Native preload callers are now identified (`VFS_PRELOAD_BOUNDARY.md`): five
-   startup scripts and four menu audio files, with flags 0x32/2. The physical
-   and memory-backed FileStore routes now have verified equivalent open behavior
-   for these two modes (`VFS_PROVIDER_FLAGS.md`). Implement that bounded policy
-   without replacing diagnostic font priming. Pending submission `00be7cd0`
-   hardcodes 2; its visitor dispatch `00bdc1e0` and ownership remain to recover.
-4. Continue independent renderer/window lifetime and font wrapping/batching work,
-   integrating the resulting paths before expanding gameplay. Assign disjoint
-   files and address ranges to parallel agents; keep shared metadata and Ghidra
-   changes coordinated through the primary agent.
+1. Connect the bounded MPKG parser/materializer to provider registration and
+   enumeration (`MPKG_ENTRY_LOADING.md`). The single synthetic archive covers
+   all three source routes and dynamic-Huffman output beyond 64 KiB
+   (`MPKG_FIXTURE.md`). Large stored entries reopen the original logical path
+   through the current VFS (`MPKG_MOUNT_INTEGRATION.md`);
+   the host materializes their declared extent, while the native reader is
+   unclamped. Native live-stream ownership and inflater cross-block rewind remain
+   incomplete. No installed MPKG/ZIP/PAK was found in the recorded local search;
+   real-archive validation remains unproven.
+2. Replace font probe lifetime/batching glue with the recovered text-context
+   update and draw-section ownership path. Wrapped arithmetic/drawing now pass;
+   empty text, retained material/buffers and native invalidation still need
+   implementation of the audited contracts in `FONT_CONTEXT_OWNERSHIP.md`.
+3. Integrate pending VFS submission and the explicit completion pump
+   (`VFS_PENDING_DISPATCH.md`). Accepted immediate and pending reads both queue
+   their callbacks. Resolve queue removal/growth, outer tick scheduling and
+   cancellation/reentrancy before connecting asynchronous loading. Queue
+   relocation, ordered erase and outer pump callers are now audited in
+   `VFS_PENDING_LIFETIME.md`; native cancellation remains unresolved. The five
+   startup script preloads are implemented; the four menu-audio selections and
+   native font preload policy remain separate work.
+4. Continue renderer/window reset, presentation and startup ownership in
+   dependency order, integrating these paths before expanding gameplay. Use
+   one primary integrator and up to three workers on ready, disjoint packets;
+   coordinate shared metadata and Ghidra changes through the primary agent.

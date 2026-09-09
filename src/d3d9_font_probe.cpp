@@ -1,6 +1,7 @@
 // Installed-source diagnostic: recovered search lists, supplied loose mount.
 #include "bsp/font_geometry.hpp"
 #include "bsp/font_layout.hpp"
+#include "bsp/font_wrapped_layout.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/material_textures.hpp"
 #include "bsp/material_samplers.hpp"
@@ -78,7 +79,7 @@ bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
 bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
     const std::shared_ptr<bsp::D3D9RetainedTexture2D>& gfx,
     const std::shared_ptr<bsp::D3D9RetainedTexture2D>& alpha,
-    const char* game_root, const std::string& descriptor_name) {
+    const char* game_root, const std::string& descriptor_name, bool wrapped) {
     if (!game_root || !gfx || !alpha || !gfx->texture() || !alpha->texture()
         || !bsp::font_has_glyph_00ad4500(font, 0x41)) return false;
     auto selected_name = descriptor_name;
@@ -161,27 +162,83 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
         || !bsp::set_material_texture_00b189f0(slots, 1, alpha_logical)) return false;
 
     struct Vertex { float x, y, z, u, v; std::uint32_t color; };
-    std::array<Vertex, 4> vertices{};
-    std::array<std::uint16_t, 6> indices{};
-    bsp::FontSingleLineLayout line;
+    std::vector<bsp::FontGlyphPlacement> placements;
+    float width_scale = 1, vertical_scale = 1, vertical_offset = 0;
     std::string layout_error;
-    if (!bsp::build_font_single_line_00ab9fd0_fragment(font, u"A",
-        {0.125f, 1, 0, 1}, line, layout_error) || line.placements.size() != 1) return false;
-    bsp::FontGeometryParameters parameters;
-    // Explicit host placement of the recovered single-line pen in the target.
-    parameters.x = 64 + line.placements[0].x;
-    parameters.y = 64 + line.placements[0].y;
-    parameters.height = line.height;
+    if (wrapped) {
+        bsp::FontWrappedLayout lines;
+        const bsp::FontWrappedParameters p{0.03125f, 0.25f, 2, 2, 0, 1, 1, 5, 3};
+        bool checked = bsp::build_font_wrapped_00aba270_fragment(font, u"A A\nA", p, lines, layout_error)
+            && lines.lines.size() == 3 && lines.placements.size() == 5
+            && lines.container_width == 30 && lines.measured_width == 15
+            && lines.height == 23 && std::fabs(lines.measured_height - 62.1f) < 0.00001f
+            && std::fabs(lines.normalized_height - 0.1725f) < 0.0000001f
+            && std::fabs(lines.normalized_vertical_offset - 0.16375f) < 0.0000001f;
+        constexpr std::array<float, 5> expected_x{5, 25, 5, 25, 5};
+        constexpr std::array<float, 5> expected_y{0, 0, 19.55f, 19.55f, 39.1f};
+        constexpr std::array<std::uint16_t, 5> expected_code{0x41, 0x20, 0x41, 0x0a, 0x41};
+        for (std::size_t i = 0; checked && i < 5; ++i)
+            checked = lines.placements[i].code_unit == expected_code[i]
+                && lines.placements[i].x == expected_x[i]
+                && std::fabs(lines.placements[i].y - expected_y[i]) < 0.00001f;
+        // D3D9 selected24-bit x87 precision here. The native-style line step
+        // retains that environment, so decimal y/height checks allow a few ULPs.
+        unsigned short control;
+        __asm fnstcw control
+        std::printf("Installed wrapped font layout: lines=%zu glyphs=%zu width=%g height=%.9g vertical_offset=%.9g x87=0x%x soft_wrap_LF_spacing_and_alignment=%d error=%s\n",
+            lines.lines.size(), lines.placements.size(), lines.measured_width,
+            lines.measured_height, lines.normalized_vertical_offset, control, checked, layout_error.c_str());
+        if (!checked) {
+            std::printf("Wrapped scalar detail: x87=0x%x height=%.9g normalized=%.9g offset=%.9g\n",
+                control, lines.measured_height, lines.normalized_height, lines.normalized_vertical_offset);
+            for (const auto& point : lines.placements)
+                std::printf("Wrapped placement: code=%04x x=%.9g y=%.9g\n", point.code_unit, point.x, point.y);
+        }
+        if (!checked) return false;
+        placements = std::move(lines.placements);
+        width_scale = p.width_scale; vertical_scale = p.vertical_scale;
+        vertical_offset = lines.normalized_vertical_offset;
+    } else {
+        bsp::FontSingleLineLayout line;
+        if (!bsp::build_font_single_line_00ab9fd0_fragment(font, u"A",
+            {0.125f, 1, 0, 1}, line, layout_error) || line.placements.size() != 1) return false;
+        placements = std::move(line.placements);
+    }
+    const auto glyph_count = static_cast<std::uint32_t>(placements.size());
+    const auto vertex_count = glyph_count * 4;
+    const auto index_count = glyph_count * 6;
+    std::vector<Vertex> vertices(vertex_count);
+    std::vector<std::uint16_t> indices(index_count);
+    const auto vertex_bytes = static_cast<std::uint32_t>(vertices.size() * sizeof(Vertex));
+    const auto index_bytes = static_cast<std::uint32_t>(indices.size() * sizeof(std::uint16_t));
+    struct InkBounds { int left, top, right, bottom; unsigned pixels{}; };
+    std::vector<InkBounds> ink_bounds;
     bsp::FontGeometryLayout geometry;
     geometry.stride = sizeof(Vertex); geometry.uv_offset = 12; geometry.packed_color_offset = 20;
-    const auto& glyph = bsp::select_font_glyph_00ad4480(font, line.placements[0].code_unit);
-    if (!bsp::write_font_quad_00ab98f0_fragment(glyph, parameters, geometry,
-        reinterpret_cast<std::uint8_t*>(vertices.data()), sizeof(vertices), 0, indices)) return false;
-    // Readback bounds derive from the generated quad and explicit host matrix.
-    const int left = static_cast<int>(std::floor(vertices[0].x * 960)) - 1;
-    const int top = static_cast<int>(std::floor(vertices[0].y * 720)) - 1;
-    const int right = static_cast<int>(std::ceil(vertices[2].x * 960)) + 1;
-    const int bottom = static_cast<int>(std::ceil(vertices[2].y * 720)) + 1;
+    int left = 256, top = 256, right = -1, bottom = -1;
+    for (std::uint32_t i = 0; i < glyph_count; ++i) {
+        const auto& placement = placements[i];
+        // Explicit host placement; the native normalized offset stays separate.
+        const bsp::FontGeometryParameters p{64 + placement.x,
+            (wrapped ? 0 : 64) + placement.y, width_scale, vertical_scale, font.scaled_height, i};
+        const auto& glyph = bsp::select_font_glyph_00ad4480(font, placement.code_unit);
+        std::array<std::uint16_t, 6> quad_indices;
+        if (!bsp::write_font_quad_00ab98f0_fragment(glyph, p, geometry,
+            reinterpret_cast<std::uint8_t*>(vertices.data()), vertex_bytes, i * 4, quad_indices)) return false;
+        std::copy(quad_indices.begin(), quad_indices.end(), indices.begin() + i * 6);
+        if (wrapped) for (std::uint32_t j = 0; j < 4; ++j)
+            if (!bsp::apply_font_wrapped_vertical_offset_00aba860_fragment(
+                vertices[i * 4 + j].y, vertical_offset, vertices[i * 4 + j].y)) return false;
+        if (placement.code_unit != 0x41) continue; // This fixture's spaces/LF have no ink.
+        const auto& a = vertices[i * 4]; const auto& b = vertices[i * 4 + 2];
+        const InkBounds bounds{static_cast<int>(std::floor(a.x * 960)) - 1,
+            static_cast<int>(std::floor(a.y * 720)) - 1,
+            static_cast<int>(std::ceil(b.x * 960)) + 1,
+            static_cast<int>(std::ceil(b.y * 720)) + 1};
+        ink_bounds.push_back(bounds);
+        left = (std::min)(left, bounds.left); top = (std::min)(top, bounds.top);
+        right = (std::max)(right, bounds.right); bottom = (std::max)(bottom, bounds.bottom);
+    }
     if (left < 2 || top < 2 || right >= 254 || bottom >= 254 || left >= right || top >= bottom) return false;
     OwnedCom<IDirect3DStateBlock9> saved;
     OwnedCom<IDirect3DSurface9> old_target, old_depth, target, readback;
@@ -231,7 +288,7 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
             hr = state.set_pixel_shader_constants_f_00b218c0(c.register_index, pwords.data() + c.register_index * 4, c.register_count);
         auto stream = std::make_shared<bsp::LogicalVertexStream>();
         stream->physical = std::make_shared<bsp::VertexBufferBinding>();
-        stream->physical->flags = 0x1000; stream->physical->capacity = sizeof(vertices);
+        stream->physical->flags = 0x1000; stream->physical->capacity = vertex_bytes;
         stream->flags = 0x1000; stream->tag = 0x40000001;
         stream->declaration = std::make_shared<bsp::VertexDeclaration>();
         stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION);
@@ -240,29 +297,29 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
         auto layout = std::make_shared<bsp::D3D9VertexLayout>(); layout->append_stream_00b48a00(stream->declaration);
         auto index_stream = std::make_shared<bsp::LogicalIndexStream>();
         index_stream->physical = std::make_shared<bsp::IndexBufferBinding>();
-        index_stream->physical->flags = 0x1000; index_stream->physical->capacity = sizeof(indices);
-        index_stream->index_count = 6;
+        index_stream->physical->flags = 0x1000; index_stream->physical->capacity = index_bytes;
+        index_stream->index_count = index_count;
         if (SUCCEEDED(hr)) hr = bsp::vertex_buffer_recreate_00b492b0(*stream->physical, device);
         if (SUCCEEDED(hr)) hr = bsp::index_buffer_recreate_00b49180(*index_stream->physical, device);
         if (SUCCEEDED(hr)) hr = layout->create_if_missing_00b60a10(device);
         void* mapped = nullptr;
-        if (SUCCEEDED(hr)) hr = state.lock_vertex_stream_00b49980(*stream, 4, 0, false, mapped);
+        if (SUCCEEDED(hr)) hr = state.lock_vertex_stream_00b49980(*stream, vertex_count, 0, false, mapped);
         if (SUCCEEDED(hr)) {
-            std::memcpy(mapped, vertices.data(), sizeof(vertices));
+            std::memcpy(mapped, vertices.data(), vertex_bytes);
             state.unlock_vertex_stream_00b49a80(*stream);
             state.bind_vertex_stream_00b24840(0, stream);
             hr = state.bind_vertex_layout_00b23f20(layout);
         }
         if (SUCCEEDED(hr)) hr = state.lock_index_stream_00b49b60(*index_stream, 0, 0, false, mapped);
         if (SUCCEEDED(hr)) {
-            std::memcpy(mapped, indices.data(), sizeof(indices));
+            std::memcpy(mapped, indices.data(), index_bytes);
             state.unlock_index_stream_00b49c70(*index_stream);
             state.bind_index_stream_00b24b00(index_stream, 0);
         }
         if (SUCCEEDED(hr)) hr = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
         if (SUCCEEDED(hr)) hr = device.BeginScene();
         if (SUCCEEDED(hr)) {
-            hr = state.draw_indexed_00b24010({}, D3DPT_TRIANGLELIST, 0, 4, 0, 2);
+            hr = state.draw_indexed_00b24010({}, D3DPT_TRIANGLELIST, 0, vertex_count, 0, glyph_count * 2);
             const HRESULT ended = device.EndScene();
             if (SUCCEEDED(hr)) hr = ended;
         }
@@ -277,7 +334,12 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
                     ++visible;
                     min_x = (std::min)(min_x, x); max_x = (std::max)(max_x, x);
                     min_y = (std::min)(min_y, y); max_y = (std::max)(max_y, y);
-                    if (x < left || x > right || y < top || y > bottom) ++outside;
+                    bool inside = false;
+                    for (auto& bounds : ink_bounds)
+                        if (x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom) {
+                            ++bounds.pixels; inside = true;
+                        }
+                    if (!inside) ++outside;
                 }
             }
             hr = readback.p->UnlockRect();
@@ -287,9 +349,12 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
     bool restored = SUCCEEDED(device.SetRenderTarget(0, old_target.p));
     restored = SUCCEEDED(device.SetDepthStencilSurface(old_depth.p)) && restored;
     restored = SUCCEEDED(saved.p->Apply()) && restored;
-    const bool matched = SUCCEEDED(hr) && visible > 0 && outside == 0 && restored;
-    std::printf("Installed bilinear font draw: descriptor=%s glyph=A hr=0x%08lx visible=%u outside=%u bounds=%d,%d..%d,%d expected=%d,%d..%d,%d sampler_mask=%u restored=%d checked=%d\n",
-        descriptor_name.c_str(), static_cast<unsigned long>(hr), visible, outside,
-        min_x, min_y, max_x, max_y, left, top, right, bottom, pb.sampler_mask, restored, matched);
+    const auto lit_lines = std::count_if(ink_bounds.begin(), ink_bounds.end(),
+        [](const InkBounds& bounds) { return bounds.pixels != 0; });
+    const bool matched = SUCCEEDED(hr) && visible > 0 && outside == 0 && restored
+        && lit_lines == (wrapped ? 3 : 1);
+    std::printf("Installed bilinear font draw: descriptor=%s glyph=%s hr=0x%08lx visible=%u outside=%u bounds=%d,%d..%d,%d expected=%d,%d..%d,%d sampler_mask=%u restored=%d lit_lines=%td checked=%d\n",
+        descriptor_name.c_str(), wrapped ? "wrapped_A_space_A_LF_A" : "A", static_cast<unsigned long>(hr), visible, outside,
+        min_x, min_y, max_x, max_y, left, top, right, bottom, pb.sampler_mask, restored, lit_lines, matched);
     return matched;
 }

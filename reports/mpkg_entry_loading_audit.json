@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "utc": "2026-09-09T21:31:52.829998+00:00",
+  "status": "byte-verified static audit; implementation follows separately",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owned_code": "00bb8700..00bb9bff",
+  "approved_extensions": [
+    "00bb9c00..00bb9c0a",
+    "complete00bef840",
+    "complete00bf1130",
+    "vtable00d68db0",
+    "complete00bf1000",
+    "complete00bf11c0",
+    "complete00bf1240"
+  ],
+  "byte_ranges": [
+    {
+      "address": "00bb8700",
+      "length": 5376,
+      "matches_disk": true,
+      "sha256": "47f9f4b3df812fb5dbabc77507eabfde62b7bfe5c481de69eabf233ec2bb2941"
+    },
+    {
+      "address": "00e144f0",
+      "length": 537,
+      "matches_disk": true,
+      "sha256": "26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183"
+    },
+    {
+      "address": "00bb9920",
+      "length": 747,
+      "matches_disk": true,
+      "sha256": "ae56080e3ddaa652e2eb8a0453e85bb08fa03043bae163f9957d554915d2502b"
+    },
+    {
+      "address": "00bef840",
+      "length": 168,
+      "matches_disk": true,
+      "sha256": "87cb643f48b4a214ae3c002c0cc2c854a41ca3ca9510cf4555de886564bf88f3"
+    },
+    {
+      "address": "00bf1130",
+      "length": 142,
+      "matches_disk": true,
+      "sha256": "7c87769b698e9a5c940abe24502923ad2d061cd04c03c90310a063ac81b4af66"
+    },
+    {
+      "address": "00d68db0",
+      "length": 64,
+      "matches_disk": true,
+      "sha256": "65a76a03dab5c5cb19fda323773cf42bcb2e902c2972d45da0be27127e8bc3ff"
+    },
+    {
+      "address": "00bf1000",
+      "length": 64,
+      "matches_disk": true,
+      "sha256": "5eee19ea2265bb9a2861b8a629439d884805db25d78feebf06fb4324fb112053"
+    },
+    {
+      "address": "00bf11c0",
+      "length": 128,
+      "matches_disk": true,
+      "sha256": "e0d59d794568bd4204c99640e2af4894877fe8c51d5a116aa7f3ef81d091f1dd"
+    },
+    {
+      "address": "00bf1240",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "d36d6504b37346f4f81913aa33fcda99edc505637a4e78b2174212e2cffdd16c"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bb87a0",
+      "length": 162,
+      "end_inclusive": "00bb8841",
+      "body_sha256": "311e0e0e28f92d9d7a84cddd7a9ff7703956127f3cd5e1f45b762b44d911e052",
+      "old_name_snapshot": "BSP_MPKG_FindEndOfCentralDirectory",
+      "proposed_name": null,
+      "original_abi": "ECX state; RET; no stable return.",
+      "evidence_comment": "Last min(length,65535) tail, search from tail index T-4 down to1 for504b0506; excludes index0; unchecked one read; retainsffffffff on missing marker."
+    },
+    {
+      "address": "00bb8850",
+      "length": 574,
+      "end_inclusive": "00bb8a8d",
+      "body_sha256": "ad1888bd97ca2e71c7d2df0400f8dd6fc8c4306ca14beb224053aa3e983b3b5f",
+      "old_name_snapshot": "FUN_00bb8850",
+      "proposed_name": "BSP_MPKG_ReadFixedHeaderFields",
+      "original_abi": "Three stack args: reader,header,kind; RET0Ch. ECX not an input.",
+      "evidence_comment": "Read46 fixed bytes for kind0,30 for nonzero; little-endian fields, reader cursor+8; no signature or bounds validation."
+    },
+    {
+      "address": "00bb8a90",
+      "length": 158,
+      "end_inclusive": "00bb8b2d",
+      "body_sha256": "3eb0f49cf8f883b19a287e2765e1cd23d559599751e0bf031b078117eb98d60d",
+      "old_name_snapshot": "FUN_00bb8a90",
+      "proposed_name": "BSP_MPKG_ResolveEntryDataOffset",
+      "original_abi": "ECX state; stack entry; RET4; EAX offset.",
+      "evidence_comment": "If entry+C cached returnentry+10; otherwise seek transformed source toentry+8 and read30-byte local header; cache offset+30+local name/extra lengths. Raw return after_free restores offset toEAX."
+    },
+    {
+      "address": "00bb8be0",
+      "length": 370,
+      "end_inclusive": "00bb8d51",
+      "body_sha256": "eaf895523340f048952770a46a850d47573f4742b9f0896d9e84664e083aed7d",
+      "old_name_snapshot": "BSP_MPKG_OpenEntryStream",
+      "proposed_name": null,
+      "original_abi": "ECX state; stack entry/flags; RET8; EAX stream. Flags unused.",
+      "evidence_comment": "Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130."
+    },
+    {
+      "address": "00bb8d60",
+      "length": 158,
+      "end_inclusive": "00bb8dfd",
+      "body_sha256": "cb10b1f446fb345f323e99c9755cd70ad35fd3eb97ecfc6596dff6d9e7797ea4",
+      "old_name_snapshot": "FUN_00bb8d60",
+      "proposed_name": "BSP_MPKG_OpenNamedEntry",
+      "original_abi": "ECX state; stack name/flags; RET8; EAX stream ornull.",
+      "evidence_comment": "Rejectflagsbit0; ordered36-byte entries; equal stored lengths then_stricmp; first match wins; no normalization."
+    },
+    {
+      "address": "00bb8e00",
+      "length": 108,
+      "end_inclusive": "00bb8e6b",
+      "body_sha256": "41fb4f0774cd9c41aeb1166423804bd2284cb48af36b08df321b804f525257a5",
+      "old_name_snapshot": "FUN_00bb8e00",
+      "proposed_name": "BSP_MPKG_EntryExists",
+      "original_abi": "ECX state; stack name; RET4; AL bool.",
+      "evidence_comment": "Same ordered equal-length case-insensitive lookup as named open."
+    },
+    {
+      "address": "00bb9090",
+      "length": 111,
+      "end_inclusive": "00bb90fe",
+      "body_sha256": "8ef187b709ce302f44fb325c260ed9f91c51d94ff99d5035c2523a4990451093",
+      "old_name_snapshot": "FUN_00bb9090",
+      "proposed_name": "BSP_MPKG_ReadEntryName",
+      "original_abi": "ECX byte reader; stack output string/count; RET8; EAX output string.",
+      "evidence_comment": "Own and copy exact byte count from reader+8; advance cursor; no normalization or embeddedNUL validation."
+    },
+    {
+      "address": "00bb9330",
+      "length": 110,
+      "end_inclusive": "00bb939d",
+      "body_sha256": "582a7e96b22451ca2935b7f0e1c921cfed2d5e01e4ddb30a3ddded8fe300c73c",
+      "old_name_snapshot": "FUN_00bb9330",
+      "proposed_name": "BSP_MPKG_CopyEntryRecord",
+      "original_abi": "ECX destination; stack source entry; RET4; EAX destination.",
+      "evidence_comment": "Copies owned name plus localoffset,cacheflag,dataoffset,method,compressed/decoded counts,retainedCRC-like value."
+    },
+    {
+      "address": "00bb9520",
+      "length": 116,
+      "end_inclusive": "00bb9593",
+      "body_sha256": "241d606f458b1ec561e0b7ac3eec25c5ebea588ec648ce62f6d7672e3bd01100",
+      "old_name_snapshot": "FUN_00bb9520",
+      "proposed_name": "BSP_MPKG_AppendEntryRecord",
+      "original_abi": "ECX vector; stack entry; RET4.",
+      "evidence_comment": "Append36-byte owned record, preserve insertion order; no duplicate checks."
+    },
+    {
+      "address": "00bb95b0",
+      "length": 326,
+      "end_inclusive": "00bb96f5",
+      "body_sha256": "3531d85cea3db288df36d21cc9c92ab982f3170d545a4349a967dcc32d8910b3",
+      "old_name_snapshot": "FUN_00bb95b0",
+      "proposed_name": "BSP_MPKG_ParseDirectoryEntry",
+      "original_abi": "ECX archive; stack byte reader; RET4.",
+      "evidence_comment": "Parse kind0 header, exact name bytes, skip central extra/comment, prefix-adjust localheader offset; store provisional dataoffset butcacheflag0; preserve central method/counts."
+    },
+    {
+      "address": "00bb9700",
+      "length": 163,
+      "end_inclusive": "00bb97a2",
+      "body_sha256": "077d2ab92e0f8cf7a5757b5be7a243a57f384edc8c3a09ae75949e77450b00c6",
+      "old_name_snapshot": "FUN_00bb9700",
+      "proposed_name": "BSP_MPKG_LoadDirectoryEntries",
+      "original_abi": "ECX archive; RET.",
+      "evidence_comment": "Seek directly tostored directory offset WITHOUT prefixadjustment; allocate/read archive_length-directory_offset once; parse EOCDentrycount records without bounds/actual guards. Rawret00bb97a2 after_free."
+    },
+    {
+      "address": "00bb9920",
+      "length": 747,
+      "end_inclusive": "00bb9c0a",
+      "body_sha256": "ae56080e3ddaa652e2eb8a0453e85bb08fa03043bae163f9957d554915d2502b",
+      "old_name_snapshot": "BSP_MPKG_OpenDecodedArchive",
+      "proposed_name": null,
+      "original_abi": "ECX state; stack original path string; RET4; EAX state.",
+      "evidence_comment": "Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size."
+    },
+    {
+      "address": "00bef840",
+      "length": 168,
+      "end_inclusive": "00bef8e7",
+      "body_sha256": "87cb643f48b4a214ae3c002c0cc2c854a41ca3ca9510cf4555de886564bf88f3",
+      "old_name_snapshot": "FUN_00bef840",
+      "proposed_name": "BSP_Stream_CopyRangeToMemory",
+      "original_abi": "ECX source; stack offsetlo/hi,lengthlo/hi; RET10h; EAX new memory wrapper.",
+      "evidence_comment": "Uses full offset64 butlow length32; new backing, one read withnull actual; no shared slice. Fix misleading unaff_retaddr prototype fromassembly."
+    },
+    {
+      "address": "00bf1000",
+      "length": 53,
+      "end_inclusive": "00bf1034",
+      "body_sha256": "30a018ab0508f2c9fef77681347656f4592caecb0c1c52a7370dce856fe87450",
+      "old_name_snapshot": null,
+      "proposed_name": "BSP_Substream_ReadUnchecked",
+      "original_abi": "ECX object; stack destination/requested/optionalactual; RET0Ch; EAX actual.",
+      "evidence_comment": "Forward requestedcount unchanged toadopted source+24; no transform/entry-end clamp; update absolute64 position ADD/ADC. Actual slot initiallycontains requested count."
+    },
+    {
+      "address": "00bf1130",
+      "length": 142,
+      "end_inclusive": "00bf11bd",
+      "body_sha256": "7c87769b698e9a5c940abe24502923ad2d061cd04c03c90310a063ac81b4af66",
+      "old_name_snapshot": "FUN_00bf1130",
+      "proposed_name": "BSP_Substream_ConstructAdoptingSource",
+      "original_abi": "ECX object; stack source/offsetlo/hi/lengthlo/hi; RET14h; EAX this.",
+      "evidence_comment": "Store sourcewithoutAddRef, start/end/current64; seeksource tostart. Destructor releases owned reference."
+    },
+    {
+      "address": "00bf11c0",
+      "length": 118,
+      "end_inclusive": "00bf1235",
+      "body_sha256": "5ad352e34ec5cfc2d4303a16e6d12b2e6010d41a4b9ac4d7149ce79988c725b4",
+      "old_name_snapshot": "FUN_00bf11c0",
+      "proposed_name": "BSP_Substream_Destroy",
+      "original_abi": "ECX object; RET.",
+      "evidence_comment": "Decrement/release source+8 thenbase00bd30f0."
+    },
+    {
+      "address": "00bf1240",
+      "length": 30,
+      "end_inclusive": "00bf125d",
+      "body_sha256": "e8d19a616d7b8947a844c1739c394a7eb6862e86ecac00029690f9abf0d9429d",
+      "old_name_snapshot": "FUN_00bf1240",
+      "proposed_name": null,
+      "original_abi": "ECX object; stack flags; RET4; EAX object.",
+      "evidence_comment": "Compiler-generated scalar deleting destructor behavior; retain any existing compiler/library identity."
+    }
+  ],
+  "transform": {
+    "block_bytes": 753,
+    "key_bytes": 537,
+    "key_address": "00e144f0",
+    "key_sha256": "26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183",
+    "key_hex": "6c8b6f18b5a723dd6adaa19e74e607bcac106da1467c64756014972f763dcc0119b4c627ab2667eb035e7b6b0f49168efd95d6187a6bd3650b655ce2d04c07d0c449325b4cb0461f1441d117f2cc1c09c4eaec7c75ef5a1a319e3b6f792e1712b52582cfbf5dc5308e7b07f9dc7445cfd9f4c7af60d335f0d5fcb0ea345e3d417f0fd5d562f7485e920c0f846d656a0123539c136d83bf23605565ce67fa62284fee2168d8276937d55bd5c5c76b2d6b36d77a70975a99fee8ea3ac740a907214f368c210be30bc227d18dfc1a957674c7c42aafbedceab9e06fcdb9b6c1bc44c9cabb53ab74e49fc451637785b8099fbef8f6096d9aeb12b38895dde06d7ddc2455c140c0767d776529ce21c5b025a43002e02b20173062f90cc8729aa729fdf2eecbb97438bb3e30e9f3574fab738d35d278583f5d6e2b22c3f65041c012fdb58e6448bb5f93fa5efdaa15db836d0a6a3ea0fd7f40744353aada47bf5b31d7e07b330cb5b2097d642f6c20cf4c0b6090a2ece3c601e0f8a0154367e4e363d7e5ca931360f4df99f038dac070632d2f1ab02f8dc9b632c0c454335dfe80e6d15f2bd798930d6c8907b5bbb7493744cd7d2699a90e5de35a4c1644948012bdbb10850bca0bd50163a6ee829f241c339e0d7180ac447843fdba1598e0cad016a91d2b90cb1550422fe809fad4f599c29135465ac12a6a5fa94f5ebc48a8ec98797993c875f366a20833975402fd7dea8df71b25053cdb114e51",
+    "supported_mathematical_domain": "1<=signed lowDWORD length<=INT32_MAX",
+    "formula": "q=i/753; L=(q==N/753)?N%753:753; j=q*753+L-1-(i%L); output[i]=input[j]^key[j%537]",
+    "counterexample": {
+      "N": 758,
+      "output_indices": [
+        753,
+        754,
+        755,
+        756,
+        757
+      ],
+      "source_indices": [
+        754,
+        753,
+        757,
+        756,
+        755
+      ]
+    },
+    "exact_multiple": "No visited i reaches block N/753, so L never becomeszero."
+  },
+  "eocd": {
+    "tail_max": 65535,
+    "tail_candidate_indices": "T-4 down through1, excludes0; none ifT<=4",
+    "signature_hex": "504b0506",
+    "nearest_match": "first searchingbackwards",
+    "missing_marker": "offset remainsffffffff; native stillseeks/reads unchecked",
+    "fields": {
+      "0a": "u16 totalentrycount",
+      "0c": "u32 directorysize",
+      "10": "u32 directoryoffset"
+    },
+    "prefix": "uint32(eocd_offset-directory_offset-directory_size)"
+  },
+  "directory": {
+    "seek": "stored directory_offset WITHOUT prefix adjustment",
+    "read_count": "uint32(archive_length-directory_offset), one read",
+    "iteration_count": "EOCDu16 totalentrycount",
+    "fixed_central_size": 46,
+    "fixed_local_size": 30,
+    "byte_reader_fields": {
+      "0": "base",
+      "4": "actualcount unused forbounds",
+      "8": "cursor"
+    },
+    "validation": "No signature,bounds,flags,disk ormethodvalidation in observed parser"
+  },
+  "entry": {
+    "native_size": 36,
+    "fields": {
+      "00/04": "name length/data",
+      "08": "prefix+central localheaderoffset",
+      "0c": "cachedlocaloffsetflag initially0",
+      "10": "provisionaldataoffset; recomputedfromlocal lengthsonfirstopen",
+      "14": "methodu16",
+      "18": "compressedsize",
+      "1c": "decodedsize",
+      "20": "retainedCRC-like DWORD unused byread"
+    },
+    "lazy_offset": "entry.localheaderoffset+30+local.name_length+local.extra_length",
+    "lookup": "equal stored lengths then_stricmp,first match in insertion order,flagsbit0 rejects"
+  },
+  "routes": [
+    {
+      "condition": "method!=0",
+      "source": "retained transformed memory",
+      "operation": "raw InflateStream descriptor(dataoffset,compressedsize,decodedsize), thenbuffer result"
+    },
+    {
+      "condition": "method==0 && decodedsize<=262144",
+      "source": "transformed memory",
+      "operation": "allocate new backing and copy one requestedextent; notsharedslice"
+    },
+    {
+      "condition": "method==0 && decodedsize>262144",
+      "source": "VFS reopen ORIGINAL logicalpath flags2",
+      "operation": "adopt reopened source into00bf1130; read00bf1000 no transform orentry-end clamp"
+    }
+  ],
+  "corrections": [
+    "Finalpartial transform usesglobal i%L, notrelativeblock reversal.",
+    "Smallstored routeis ownedcopy, notsharedslice.",
+    "Directoryoffset isnot prefix-adjusted even though localoffsetsare.",
+    "Largestored routeplain-delegates without transform orclamp."
+  ],
+  "proposed_api": "Owning MpkgArchive transformed index, ordered lookup and lazy localoffset; entry materialization uses existingInflateStream/MemoryStream. Explicit original-source reopen callbackrequired forlarge stored route.",
+  "host_guards": "Reject missingmarker, invalidsignedsize, failed/shortacquisition, out-of-bounds headers/name/extra/comment/entry extents; no guessedZIP signature/method restrictions orprefix correction.",
+  "unresolved": [
+    "Real archive fixture and originalVFSprovider identity onreopen",
+    "Native allocation/shortread/malformedinput andconcurrency behavior",
+    "VFSprovider integration andsafe public source/materialization API"
+  ],
+  "installed_search": {
+    "root": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+    "command": [
+      "rg",
+      "--files",
+      "--hidden",
+      "--no-ignore",
+      "--glob",
+      "!**/.git/**",
+      "--iglob",
+      "*.mpkg",
+      "--iglob",
+      "*.zip",
+      "--iglob",
+      "*.pak",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific"
+    ],
+    "exit_code": 1,
+    "matches": [],
+    "stderr": ""
+  },
+  "validation": {
+    "raw_bytes_equal_disk": true,
+    "full_function_spans_decode_and_return": true,
+    "ghidra_writes": false,
+    "cpp_during_audit": false,
+    "archive_fixture_tested": false,
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "annotation_policy": "Parent reviewsnames, preservescomments/oldvalues/libraryandcompiler identities, savesproject andrefreshesexports afterchanges."
+}

@@ -52,7 +52,7 @@
         "include/bsp/inflate_stream.hpp",
         "src/inflate_stream.cpp"
       ],
-      "next_work": "Connect existing inflater adapter to recovered MPKG compressed entry source; retain unsupported cross-block rewind and explicit host error boundaries."
+      "next_work": "MPKG compressed source is connected and dynamic-Huffman entry fixture passes. Native source ABI, cross-block rewind and provider wiring remain incomplete."
     },
     {
       "id": "font_single_line_layout",
@@ -90,11 +90,11 @@
         "include/bsp/font_layout.hpp",
         "src/font_layout.cpp"
       ],
-      "next_work": "Recover bounded wrapped scalar layout and connect native text-context/material/buffer ownership separately."
+      "next_work": "Wrapped scalar layout/draw is integrated in its own packet. Continue native text-context/draw-section ownership and update lifetime."
     },
     {
       "id": "vfs_preload_policy",
-      "state": "provider_flags_and_pending_front_half_reviewed_ready_for_policy_implementation",
+      "state": "five_script_policy_integrated_build_and_installed_cache_checked",
       "worker": "partition_audit",
       "function_addresses": [
         "00be7ab0",
@@ -124,22 +124,111 @@
         "docs/VFS_PRELOAD_BOUNDARY.md",
         "reports/vfs_preload_boundary_audit.json",
         "docs/VFS_PROVIDER_FLAGS.md",
-        "reports/vfs_provider_flags_audit.json"
-      ],
-      "next_code_ownership": [
+        "reports/vfs_provider_flags_audit.json",
         "include/bsp/resource_preload.hpp",
-        "src/resource_preload.cpp"
+        "src/resource_preload.cpp",
+        "docs/STARTUP_SCRIPT_PRELOAD.md",
+        "reports/startup_script_preload_validation.json"
       ],
       "contract": "Determine the native cache selection/caller policy and stream-tracking boundary using existing mounted-stream/FileStore APIs. Keep startup and runtime requests distinct.",
       "integration_owner": "primary",
-      "implementation_gate": "Physical/FileStore-only policy adapter may explicitly accept observed modes2/0x32 while preserving requested flags. Shared mounted-stream API changes remain parent-owned; other providers and async lifetime require further contracts.",
-      "validation": "Use the existing mounted cache/font probe where the supported policy applies; retain supplied-installation and native-startup distinctions.",
+      "implementation_gate": "Exact modes2/32h supported on inspected physical/FileStore providers. Five-script policy integrated; async loader and other providers remain separate.",
+      "validation": "Five native ordered script requests flags32h,140625 bytes equal installed files, five physical and five cache opens; existing font cache draw remains successful. reports/startup_script_preload_validation.json",
       "findings": "Prior nine preload calls retained. Complete synchronous physical/FileStore route treats exact modes2 and0x32 identically. Pending RequestFile takes name/callback with no flags input; forwards literal2 through a separate visitor. Native font preload selection is still unverified.",
-      "next_addresses": [
-        "00bdc1e0",
-        "00bdc1d0"
+      "annotation_status": "Relevant implementation evidence applied/saved and exports refreshed.",
+      "next_work": "Menu audio selections and native font preload policy remain; pending visitor and physical submission/pump are audited in a separate packet.",
+      "code_ownership": [
+        "include/bsp/resource_preload.hpp",
+        "src/resource_preload.cpp"
+      ]
+    },
+    {
+      "id": "mpkg_entry_loading",
+      "worker": "inflate_read_seek",
+      "state": "bounded_implementation_integrated_build_and_fixture_checked",
+      "function_addresses": [
+        "00bb87a0",
+        "00bb8850",
+        "00bb8a90",
+        "00bb8be0",
+        "00bb8d60",
+        "00bb8e00",
+        "00bb9090",
+        "00bb9330",
+        "00bb9520",
+        "00bb95b0",
+        "00bb9700",
+        "00bb9920",
+        "00bef840",
+        "00bf1000",
+        "00bf1130",
+        "00bf11c0",
+        "00bf1240"
       ],
-      "annotation_status": "Five reviewed VFS annotations applied/saved; four descriptive names added. Existing physical-stream, thunk-following and library names preserved; affected exports refreshed."
+      "output_files": [
+        "include/bsp/mpkg_archive.hpp",
+        "src/mpkg_archive.cpp",
+        "docs/MPKG_ENTRY_LOADING.md",
+        "reports/mpkg_entry_loading_audit.json",
+        "docs/MPKG_FIXTURE.md"
+      ],
+      "code_ownership": [
+        "include/bsp/mpkg_archive.hpp",
+        "src/mpkg_archive.cpp"
+      ],
+      "contract": "Whole encoded backing, ordered directory and named materialization with explicit original-source callback. Preserve native tail/prefix/source route quirks.",
+      "integration_owner": "primary",
+      "validation": "MSVC Win32, both existing CTests and full D3D9 probe pass; reports/parallel_entry_validation.json.",
+      "annotation_status": "Evidence applied and saved; previous comments and imported names preserved; standard exports refreshed.",
+      "next_work": "Provider registration/enumeration and original-path reopening contract audit is assigned to inflate_read_seek; native live stream and real archives remain unvalidated."
+    },
+    {
+      "id": "font_wrapped_layout",
+      "worker": "font_layout_boundary",
+      "state": "bounded_implementation_integrated_build_and_fixture_checked",
+      "function_addresses": [
+        "00aba270"
+      ],
+      "output_files": [
+        "include/bsp/font_wrapped_layout.hpp",
+        "src/font_wrapped_layout.cpp",
+        "docs/FONT_WRAPPED_LAYOUT.md",
+        "reports/font_wrapped_layout_audit.json"
+      ],
+      "code_ownership": [
+        "include/bsp/font_wrapped_layout.hpp",
+        "src/font_wrapped_layout.cpp"
+      ],
+      "contract": "Supplied FontData/UTF16/scalars to wrapped placements and normalized vertical offset;00aba860 is an interior block.",
+      "integration_owner": "primary",
+      "validation": "MSVC Win32, both existing CTests and full D3D9 probe pass; reports/parallel_entry_validation.json.",
+      "annotation_status": "Evidence applied and saved; previous comments and imported names preserved; standard exports refreshed.",
+      "next_work": "Native text-context/section ownership update audit assigned to font_layout_boundary; lifecycle integration next."
+    },
+    {
+      "id": "vfs_pending_dispatch",
+      "worker": "partition_audit",
+      "state": "native_contract_audited_memory_copy_helper_integrated",
+      "function_addresses": [
+        "00bdc1d0",
+        "00bdc1e0",
+        "00bdb740",
+        "00bf43b0",
+        "00bf41c0",
+        "00bf3880",
+        "00bf3c10",
+        "00bf46b0",
+        "00befa40"
+      ],
+      "output_files": [
+        "docs/VFS_PENDING_DISPATCH.md",
+        "reports/vfs_pending_dispatch_audit.json"
+      ],
+      "integration_owner": "primary",
+      "contract": "Physical overlapped submit with deferred callback even on immediate success; explicit pump copies logical size and cleans I/O resources.",
+      "validation": "Native byte/assembly review; only00befa40 memory copy reconstructed. No asynchronous I/O fixture or integration.",
+      "annotation_status": "Nine evidence annotations applied/saved; missing visitor entries defined from verified bytes; exports refreshed.",
+      "next_work": "Queue lifetime/outer scheduling audit assigned to partition_audit; actual pending submission/pump implementation remains next."
     }
   ],
   "snapshot_after_analysis": {
@@ -160,5 +249,71 @@
     "internal_function_count": 62286,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "current_integration_snapshot": {
+    "utc": "2026-09-09T22:03:11.097926+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62737,
+    "internal_function_count": 62295,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "active_followups": [
+    {
+      "worker": "inflate_read_seek",
+      "packet": "mpkg_mount_integration",
+      "state": "native_contract_reviewed_annotated_ready_for_bounded_implementation",
+      "owned_files": [
+        "docs/MPKG_MOUNT_INTEGRATION.md",
+        "reports/mpkg_mount_integration_audit.json"
+      ],
+      "annotation_validation": "reports/parallel_followup_contracts.json"
+    },
+    {
+      "worker": "font_layout_boundary",
+      "packet": "font_context_ownership",
+      "state": "native_contract_reviewed_annotated_ready_for_bounded_implementation",
+      "owned_files": [
+        "docs/FONT_CONTEXT_OWNERSHIP.md",
+        "reports/font_context_ownership_audit.json"
+      ],
+      "annotation_validation": "reports/parallel_followup_contracts.json"
+    },
+    {
+      "worker": "partition_audit",
+      "packet": "vfs_pending_lifetime",
+      "state": "native_contract_reviewed_annotated_ready_for_bounded_implementation",
+      "owned_files": [
+        "docs/VFS_PENDING_LIFETIME.md",
+        "reports/vfs_pending_lifetime_audit.json"
+      ],
+      "annotation_validation": "reports/parallel_followup_contracts.json"
+    }
+  ],
+  "next_dispatch": [
+    {
+      "worker": "inflate_read_seek",
+      "work": "Implement MPKG enumeration in archive source/header and integrate current-VFS factory/open callback with primary-owned mount metadata.",
+      "boundary": "Physical/FileStore enumeration and complete startup two-pass scan remain separate; source reentry and recursion guards must be explicit."
+    },
+    {
+      "worker": "font_layout_boundary",
+      "work": "Implement retained FontGeometryOwner update/rebuild from reviewed ownership contract.",
+      "boundary": "Explicit device access; stable wrapper/parameter storage; fixed supplied shader/font domain; preserve same-text/empty behavior and shared shadow buffers."
+    },
+    {
+      "worker": "partition_audit",
+      "work": "Implement bounded physical overlapped submission and explicit pump using reviewed stable request ownership.",
+      "boundary": "Serialize owner/pump; no inline callbacks; require drain before destruction; native cancellation and FileStore terminal-failure cleanup remain unresolved."
+    }
+  ],
+  "current_partition": {
+    "utc": "2026-09-09T22:08:56.560406+00:00",
+    "candidates": 23941,
+    "segments": 92,
+    "largest_strong_cycle_segments": 85,
+    "sha256": "a9fc544581e8f753f7d826ddf7404faccf09abb1432b2aad754f261279d6e8da",
+    "note": "Refreshed after current saved inventory and direct-call sweep; historical review baseline remains separate. Explicit packet addresses/files remain authoritative."
   }
 }

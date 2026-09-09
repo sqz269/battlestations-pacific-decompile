@@ -1,5 +1,10 @@
 # Physical provider flags and pending FileStore requests
 
+Implementation follow-up: the physical/FileStore adapter now accepts the two
+observed modes explicitly, and the native five-script startup policy passes an
+installed-source cache round trip. See [STARTUP_SCRIPT_PRELOAD.md](STARTUP_SCRIPT_PRELOAD.md).
+The audit below records the earlier analysis and its then-current interface.
+
 For the inspected **synchronous physical and memory-backed FileStore route**, native flags `0x32` and `2` have the same read-open behavior. The current host physical/cache adapter can therefore serve the five script preloads identified in [VFS_PRELOAD_BOUNDARY.md](VFS_PRELOAD_BOUNDARY.md), within its existing supported read-only domain. This does not establish equivalent flags for MPKG, pending/overlapped requests, native failures or arbitrary flag values.
 
 No universal meaning was recovered for bits `0x10` and `0x20`: neither affects this particular synchronous route. Explicitly recognize the two observed modes at the policy boundary and preserve the original requested flags; do not silently mask arbitrary modes or present the current flags-2 API as a complete native open interface. Native font preload selection remains separate from these five script requests.

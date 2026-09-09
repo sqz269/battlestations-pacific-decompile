@@ -1,0 +1,129 @@
+{
+  "utc": "2026-09-09T21:56:24.249401+00:00",
+  "base_commit": "df1f23fdc711f3ec1e5cbe70edc1363ad81b0d51",
+  "goal_complete": false,
+  "concurrency": {
+    "primary": 1,
+    "workers": 3,
+    "review": "Independent MPKG implementation and fixture review; font implementation review; preload/shared-copy review. Primary integrates shared files, native byte verification and Ghidra mutations."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "exit_code": 0,
+    "existing_ctests_passed": 2,
+    "new_test_targets": 0,
+    "log": "reports/parallel_entry_build.txt"
+  },
+  "probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "log": "reports/parallel_entry_probe.txt",
+    "mpkg": {
+      "encoded_bytes": 263567,
+      "directory_offset": 263073,
+      "eocd_offset": 263545,
+      "central_size": 443,
+      "prefix": 29,
+      "final_block": 17,
+      "phase": 16,
+      "entries": 4,
+      "routes_opened": 3,
+      "dynamic_compressed_bytes": 637,
+      "dynamic_decoded_bytes": 159744,
+      "original_source_reopens": 1,
+      "original_source_seek": 892,
+      "large_requested_bytes": 262181,
+      "large_actual_bytes": 262181,
+      "scope": "One independently framed synthetic archive; plans resolve offsets before open. Original-source weak references expire and outputs remain readable; source inspection establishes independent memory copying."
+    },
+    "startup_scripts": {
+      "count": 5,
+      "flags": "0x32",
+      "disk_equal_bytes": 140625,
+      "physical_opens": 5,
+      "cache_opens": 5,
+      "validation": "reports/startup_script_preload_validation.json"
+    },
+    "wrapped_font": {
+      "text": "A A\nA",
+      "lines": 3,
+      "glyphs": 5,
+      "container_width": 30,
+      "measured_width": 15,
+      "measured_height": 62.1000023,
+      "normalized_vertical_offset": 0.163749993,
+      "x87_control_word": "007f",
+      "visible_pixels": 900,
+      "outside_pixels": 0,
+      "lit_lines": 3,
+      "device_state_restored": true,
+      "scope": "One installed-font scalar/geometry/draw scenario; decimal expectation tolerance allows observed D3D9 x87 precision rounding."
+    },
+    "existing_single_glyph": {
+      "visible_pixels": 74,
+      "outside_pixels": 0,
+      "device_state_restored": true,
+      "font_cache_opens": 3,
+      "font_physical_opens": 0,
+      "total_cache_entries": 8
+    }
+  },
+  "native": {
+    "spans_verified": 46,
+    "report": "reports/parallel_entry_native_identity.json",
+    "annotation_entries": 31,
+    "renamed_functions": 23,
+    "defined_entries": 3,
+    "export_count": 32,
+    "rename_tags_preserved": 8780,
+    "annotation_report": "reports/parallel_entry_annotations.json"
+  },
+  "limits": [
+    "No runnable game, gameplay validation or native ABI compatibility",
+    "No real installed archive found or decoded; MPKG provider registration/enumeration not implemented",
+    "Native large entry is an unclamped live reader; host materializes declared extent with explicit bounds/count/failure guards",
+    "Zero/huge MPKG materializations, malformed-input/allocation equivalence and cross-block inflater rewind unsupported",
+    "Wrapped scalar native differential, original-game visual comparison and native context/material/buffer lifetime unvalidated",
+    "Pending I/O visitor/submission/pump remains audited, not implemented; only its copy dependency is reconstructed",
+    "Startup script preload order is integrated into the diagnostic path; full application initialization and script execution remain incomplete"
+  ],
+  "sha256": {
+    "CMakeLists.txt": "eda326a8f7060e4f2e8419a269f50953cf2a6f53834451f514e8ebbc4668ca5b",
+    "include/bsp/font_wrapped_layout.hpp": "9ebb1b9e2edd664315f29d1132908da354360243dbcc10cce09307b76267cc6f",
+    "include/bsp/memory_stream.hpp": "eda63317b78af5a9cfc9994234372f26394e824457bdcfadc5eabf6308aa40d6",
+    "include/bsp/mounted_streams.hpp": "216a7d857ef8ac441faa240e7f9b8072a4e5b7b1df1765ffc616cda57b65a034",
+    "include/bsp/mpkg_archive.hpp": "e716b8b4473153911c5a6ae95e324f0cb02c9b8d206448e74599dfa8ed779a06",
+    "include/bsp/resource_preload.hpp": "edfed5b657d6ad5c038cbd6fb181d7786471457f162e36a761a1126a775ea760",
+    "include/bsp/vfs_mounts.hpp": "ca48966a8e501fa96c58d9c1c6843ae2e8838386845c1492e9925422fc0eaac7",
+    "src/asset_stream_probe.hpp": "55383c8aba4305ad3c21903f1a3c502f087e4b40688c583bd51d16142ced969b",
+    "src/d3d9_font_probe.cpp": "3f8c34eb71a60648e4ea8442c06042013a0bfb1c286caee71cec0987308545d6",
+    "src/d3d9_probe.cpp": "c34ce39f6990d58a1f8568b59b1826288e15b2a95a40a50bde10d11b541f8a26",
+    "src/font_wrapped_layout.cpp": "09df921d531bd140978039de06bda01c6017a6351df0608bdf86573899ab5b4f",
+    "src/memory_stream.cpp": "e052da3f8b0bb1a3dcf636243cfdf9d023209502c9a747410a87d29ff938845d",
+    "src/mounted_streams.cpp": "4bb6a9d463442e29f1b463f69a1c6971aa2de381b36f3126fe60e428c7108549",
+    "src/mpkg_archive.cpp": "5431ca573b1c475ce12b393a5736a1d45ec5e3bd9a515682fb1f1dce6d9dac2b",
+    "src/mpkg_archive_probe.cpp": "a44521dd54548b82e451a3bf00e92b56923022a5107d8df9550be59b7711a0f3",
+    "src/resource_preload.cpp": "08f6e373d17860a5b50a91cb6d873e61b6abb3c93c948e46fe487927db909aba",
+    "src/resource_preload_probe.cpp": "636003b0312e623165105c4c1ee1c9a886eb0144a52415b24970236262816b87",
+    "src/vfs_mounts.cpp": "f9d0ff3f3a2fa16e9419f191ae3b4d13f36c496f92093d48204213fba917ead8",
+    "build/win32/Release/bsp_d3d9_probe.exe": "d1e77f255e8c9bbb940c4b60d8a565b9e92ae125c1f831c33bca57928cd107f9",
+    "reports/parallel_entry_build.txt": "addd0fbbdf98d14eb3c86192ebf0b30371cae7762c09c5ff52cdbb872be7aef2",
+    "reports/parallel_entry_probe.txt": "ee5a5a8fa81fffd0852c4bc687e83215dff9731aef1a72b873f32a0d5fc341e2",
+    "reports/parallel_entry_native_identity.json": "ffb6ba6653f09513691e8c9d129391e06bbda2ed4c23e1008a11f6fc46bcf830",
+    "reports/parallel_entry_annotations.json": "7da7980dbe1d23145b9fd871666bacff905937e8731c3b3c8b5f9a8390698d23",
+    "reports/mpkg_entry_loading_audit.json": "ec25a2d2be4f749d899c89ee437b114aa371f354691dac620ae49ba33d14655d",
+    "reports/font_wrapped_layout_audit.json": "c8f2261c93f244a150ce9b482cc4de1e452bc285bb34a666bdc91d3fd179a4ce",
+    "reports/vfs_pending_dispatch_audit.json": "4eff2aafb52a5a949cf010afba15f189e2de90595be507485329740f51544f7a"
+  },
+  "followup_contracts": "reports/parallel_followup_contracts.json",
+  "ledger_migration_compatibility": {
+    "reader": "tools/ledger.py (concurrent independent refactor)",
+    "reconstructed_functions": 170,
+    "fragments": 79,
+    "rename_tags_preserved": 8780,
+    "scope": "Build/source hashes unchanged; reconstruction and annotation records verified through combined legacy/shard loader."
+  },
+  "integration_parent": "723b592fd0ca1273d178aba80e32acc20f4a8305",
+  "tag_name_preservation": "reports/tag_name_preservation.json"
+}

@@ -1,0 +1,644 @@
+{
+  "utc": "2026-09-09T21:29:49.151865+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "disk_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "disk_file_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "scope": {
+    "read_only": true,
+    "initial_code_range": [
+      "00bdc100",
+      "00bdc3ff"
+    ],
+    "initial_exact_body": "00bdb740",
+    "parent_authorized_exact_extensions": [
+      "00bf43b0",
+      "00bf41c0",
+      "00bf3880",
+      "00bf46b0",
+      "00bf3c10",
+      "00befa40"
+    ],
+    "final_complete_code_bodies": [
+      "00bdc1d0",
+      "00bdc1e0",
+      "00bdb740",
+      "00bf43b0",
+      "00bf46b0",
+      "00bf41c0",
+      "00bf3880",
+      "00bf3c10",
+      "00befa40"
+    ],
+    "target_check_batches": 9,
+    "ghidra_mutations": false,
+    "cpp_changes": false,
+    "tests_run": false,
+    "initial_context_note": "Initial00bdb740 context read contained38 bytes beyond its final RET; no neighboring body was analyzed. Final claims/proposed boundary use the independently re-read122-byte complete body."
+  },
+  "conclusions": {
+    "actual_physical_overlapped_io": true,
+    "callback_inline_in_submission": false,
+    "immediate_ReadFile_success_also_queued": true,
+    "completion_requires_separate_provider_pump": true,
+    "stack_visitor_names_retained_by_reference": false,
+    "queued_names_independently_copied": true,
+    "callback_stream_independently_backed": true,
+    "all_provider_behaviors_established": false,
+    "host_async_implementation_completed": false
+  },
+  "missing_function_definitions": [
+    {
+      "address": "00bdc1d0",
+      "has_function_definition": false,
+      "error": "decompile_function: {'error': 'No function found for 00bdc1d0'}"
+    },
+    {
+      "address": "00bdc1e0",
+      "has_function_definition": false,
+      "error": "decompile_function: {'error': 'No function found for 00bdc1e0'}"
+    }
+  ],
+  "visitor": {
+    "dispatch": "00bdc1e0",
+    "acceptance_query": "00bdc1d0",
+    "destructor": "00bdb740",
+    "provider_from": "matched mount+8",
+    "provider_slot": "0x0c",
+    "provider_arguments": [
+      "visitor first name+4",
+      "visitor second name+0Ch",
+      "callback+1Ch",
+      "flags+18h"
+    ],
+    "uses_traversal_suffix": false,
+    "acceptance": "provider AL copied into visitor+14h; query returns AL",
+    "destructor_behavior": "Frees both owned strings and installs base table00d68380; no cancellation or I/O/stream release"
+  },
+  "physical_submission": {
+    "entry": "00bf43b0",
+    "abi": "ECX provider;first name,second name,callback,flags stack;AL acceptance;RET10h",
+    "physical_path_name": "first name",
+    "physical_path_dispatch": "provider virtual slot+1Ch at00bf4410/00bf441e; provider data field+1Ch is queue capacity",
+    "flags_gate": "bit0 clear and(flags&0xE)==2",
+    "windows_create": {
+      "access": 2147483648,
+      "share": 1,
+      "creation": 3,
+      "attributes": 1610612736,
+      "attribute_names": [
+        "FILE_FLAG_OVERLAPPED",
+        "FILE_FLAG_NO_BUFFERING"
+      ]
+    },
+    "alignment_bytes": 65536,
+    "allocation": "logical size LOW DWORD+0x20000; usable address aligned upward to0x10000",
+    "read_count": "logical size rounded upward to0x10000, LOW DWORD passed to ReadFile",
+    "overlapped": "separate zeroed20-byte allocation",
+    "accepted_ReadFile_results": [
+      "TRUE",
+      "FALSE with GetLastError()==997"
+    ],
+    "queue_descriptor": "provider+14h",
+    "accepted_sequence": [
+      "ReadFile",
+      "copy first and second names",
+      "append request via00bf41c0",
+      "destroy temporary record names via00bf3880",
+      "return AL1"
+    ],
+    "callback_invoked_in_body": false
+  },
+  "queue_ownership": {
+    "stride": 56,
+    "descriptor_layout": {
+      "data": "provider+14h",
+      "count": "provider+18h",
+      "capacity": "provider+1Ch"
+    },
+    "append": "00bf41c0",
+    "copy_constructor": "00bf3c10",
+    "temporary_name_cleanup": "00bf3880",
+    "layout": {
+      "0x0": "file handle",
+      "0x4": "OVERLAPPED pointer",
+      "0x8": "operation kind1",
+      "0xc": "original staging allocation",
+      "0x10": "aligned staging address",
+      "0x18/0x1c": "logical size low/high",
+      "0x20/0x24": "owned first-name string",
+      "0x28/0x2c": "owned second-name string",
+      "0x30": "callback pointer"
+    },
+    "unknown_fields": [
+      "0x14",
+      "0x34"
+    ],
+    "deep_copied": [
+      "first-name bytes",
+      "second-name bytes"
+    ],
+    "copied_pointer_values": [
+      "OVERLAPPED",
+      "original staging allocation",
+      "aligned staging address"
+    ],
+    "temporary_cleanup_does_not_release": [
+      "handle",
+      "OVERLAPPED",
+      "staging allocation"
+    ],
+    "not_expanded": [
+      "00bf3da0 capacity growth",
+      "00bf4240 removal internals",
+      "shutdown cancellation",
+      "allocation failure guarantees",
+      "callback reentrancy"
+    ]
+  },
+  "completion": {
+    "entry": "00bf46b0",
+    "abi": "ECX physical provider;RET",
+    "vtable_slot": "0x28",
+    "pending_status": 259,
+    "pending_status_hex": "0x103",
+    "query": "GetOverlappedResult(handle,overlapped,&bytesTransferred,FALSE)",
+    "success_callback_requires_kind": 1,
+    "callback_site": "00bf476d",
+    "callback_stack_order": [
+      "stream",
+      "pointer to request first name at+20h",
+      "pointer to request second name at+28h"
+    ],
+    "callback_abi": "three stack arguments, callee cleanup; no this or extra user-data argument established",
+    "filestore_name_meaning": [
+      "first resolved name",
+      "second original name"
+    ],
+    "name_lifetime": "borrowed during callback; independent copy required if retained",
+    "stream_reference": "pump releases temporary reference after callback; callback may retain independently",
+    "failed_completed_io_callback": false,
+    "failed_completed_io_cleanup": "physical staging/OVERLAPPED freed, handle closed, physical queue entry removed",
+    "filestore_pending_cleanup_after_failed_io": "unverified; callback is skipped",
+    "bytes_transferred_checked_against_logical_size": false,
+    "raw_tail": {
+      "range": [
+        "00bf4793",
+        "00bf47c2"
+      ],
+      "meaning": "free OVERLAPPED,close handle,remove queue entry and continue loop",
+      "ghidra_pseudocode_omits_tail_after_free": true,
+      "library_name_preserved": "_free"
+    }
+  },
+  "memory_copy": {
+    "entry": "00befa40",
+    "abi": "ECX source bytes;size-low,size-high stack;EAX stream;RET8",
+    "uses_size_high": false,
+    "independent_allocation": "008d43c0",
+    "copy": "memcpy of low-DWORD logical size",
+    "wrap": "00bef6d0",
+    "backing_reference_released_after_wrap": true,
+    "null_source": "returns null",
+    "large_size_and_allocation_failure": "not a guarded host domain"
+  },
+  "next_interface": {
+    "submission": "first name,second name,callback,flags -> accepted; deferred completion even for immediate ReadFile success",
+    "pump": "nonblocking provider completion pump, owns cleanup and callback invocation",
+    "ownership": "owned copied names and stable I/O resources; separate backing for callback stream",
+    "successful_callback": "stream plus two borrowed name references; release provider temporary stream after return",
+    "failure_boundary": "physical failure cleanup without native callback; FileStore pending failure policy still unresolved",
+    "guarded_domain_needed": [
+      "supported positive file sizes",
+      "complete stable source data",
+      "allocation success",
+      "explicit nonreentrant callback policy unless independently verified"
+    ],
+    "not_substitutable_by": "current synchronous startup-cache adapter"
+  },
+  "annotation_proposals": [
+    {
+      "address": "00bdc1d0",
+      "name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": true,
+      "body_start": "00bdc1d0",
+      "body_end_inclusive": "00bdc1d3",
+      "body_end_exclusive": "00bdc1d4",
+      "length": 4,
+      "sha256": "bc29e77cf9f63e4f2ee3f89f7d24872b50e9c4a50820b39016f3194edda5e499",
+      "saved_matches_disk": true,
+      "abi": "ECX visitor; AL acceptance; RET",
+      "comment": "ECX visitor; AL acceptance; RET. Reads visitor acceptance byte +14h. Missing function definition at audit time; exact body is MOV AL,[ECX+14h]; RET. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bdc1e0",
+      "name": "BSP_VFS_OverlappedVisitor_VisitMount",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": true,
+      "body_start": "00bdc1e0",
+      "body_end_inclusive": "00bdc207",
+      "body_end_exclusive": "00bdc208",
+      "length": 40,
+      "sha256": "f138e09efa930df24ef96b0128bfcc1175c9380af3e65e151dfe3f698a8ee1fc",
+      "saved_matches_disk": true,
+      "abi": "ECX visitor; mount record and traversal suffix stack; RET 8",
+      "comment": "ECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bdb740",
+      "name": "BSP_VFS_OverlappedVisitor_Destroy",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00bdb740",
+      "body_end_inclusive": "00bdb7b9",
+      "body_end_exclusive": "00bdb7ba",
+      "length": 122,
+      "sha256": "9c2e4ef6534e8ddb679a2d558bc03220c5ff47b5cc38831f50364dee95f0572c",
+      "saved_matches_disk": true,
+      "abi": "ECX visitor; RET",
+      "comment": "ECX visitor; RET. Destroys copied second and first names at +0Ch/+10h and +4/+8, then installs base table00d68380. Does not cancel provider work or release stream/I/O resources. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bf43b0",
+      "name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00bf43b0",
+      "body_end_inclusive": "00bf46a6",
+      "body_end_exclusive": "00bf46a7",
+      "length": 759,
+      "sha256": "e3d4fe8318b182106310ccbf6a02ca6fc3aa201188d41b43ee18af10591237b7",
+      "saved_matches_disk": true,
+      "abi": "ECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h",
+      "comment": "ECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bf41c0",
+      "name": "BSP_PhysicalReadQueue_Append",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00bf41c0",
+      "body_end_inclusive": "00bf4239",
+      "body_end_exclusive": "00bf423a",
+      "length": 122,
+      "sha256": "2307aff51f323c8137ea95ddc8d9df945cdc3ac802754e28cbf81552b45e6af3",
+      "saved_matches_disk": true,
+      "abi": "ECX queue descriptor; source request stack; RET 4",
+      "comment": "ECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bf3880",
+      "name": "BSP_PhysicalReadRequest_DestroyNames",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00bf3880",
+      "body_end_inclusive": "00bf38f6",
+      "body_end_exclusive": "00bf38f7",
+      "length": 119,
+      "sha256": "db3e5b9a91a10a06d0250f70c18789469812826ca38ea85dfb5ee2e26dfd6f64",
+      "saved_matches_disk": true,
+      "abi": "ECX request; RET",
+      "comment": "ECX request; RET. Releases only the two owned request strings at+28h/+2Ch and+20h/+24h. It does not close the handle or free staging memory/OVERLAPPED. Normal submission uses this after copying the request into the queue. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bf3c10",
+      "name": "BSP_PhysicalReadRequest_CopyConstruct",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00bf3c10",
+      "body_end_inclusive": "00bf3cf0",
+      "body_end_exclusive": "00bf3cf1",
+      "length": 225,
+      "sha256": "b3b637f7106f3bdd6d194ed9f43c21394e782d1afcc88de1633b08d6cd3e3261",
+      "saved_matches_disk": true,
+      "abi": "ECX destination; source request stack; EAX destination; RET 4",
+      "comment": "ECX destination; source request stack; EAX destination; RET 4. Copies handle,OVERLAPPED,kind,staging pointers,size and callback values; allocates/copies both name strings. Fields+14h/+34h are not assigned by this body. Stable heap I/O allocations survive destruction of source request names; container growth/error semantics remain separate. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bf46b0",
+      "name": "BSP_PhysicalDirectory_PollReadCompletions",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00bf46b0",
+      "body_end_inclusive": "00bf47da",
+      "body_end_exclusive": "00bf47db",
+      "length": 299,
+      "sha256": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d",
+      "saved_matches_disk": true,
+      "abi": "ECX provider; RET",
+      "comment": "ECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00befa40",
+      "name": "BSP_MemoryStream_CreateFromCopy",
+      "name_is_descriptive_reconstruction": true,
+      "create_required_at_audit_time": false,
+      "body_start": "00befa40",
+      "body_end_inclusive": "00befae4",
+      "body_end_exclusive": "00befae5",
+      "length": 165,
+      "sha256": "32e0b32e3b4c664bc8d1948e3fd913d3f193c5d72a6082d287a5ca3fc5624ddd",
+      "saved_matches_disk": true,
+      "abi": "ECX source bytes; size-low,size-high stack; EAX stream; RET 8",
+      "comment": "ECX source bytes; size-low,size-high stack; EAX stream; RET 8. Null source returns null. Uses size LOW DWORD only, allocates independent backing through008d43c0, memcpy copies bytes, wraps through00bef6d0 and releases temporary backing reference. High size word is unused. Native allocation/null/large-size behavior is not a guarded host API. This copy separates callback stream lifetime from physical staging-buffer cleanup. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    }
+  ],
+  "byte_validation": {
+    "code_spans": [
+      {
+        "address": "00bdc1d0",
+        "length": 4,
+        "sha256": "bc29e77cf9f63e4f2ee3f89f7d24872b50e9c4a50820b39016f3194edda5e499",
+        "matches_disk": true,
+        "hex": "8a4114c3",
+        "scope": "complete acceptance query; no function definition"
+      },
+      {
+        "address": "00bdc1e0",
+        "length": 40,
+        "sha256": "f138e09efa930df24ef96b0128bfcc1175c9380af3e65e151dfe3f698a8ee1fc",
+        "matches_disk": true,
+        "hex": "8b442404568bf18b48088b46188b118b520c508b461c508d460c508d460450ffd28846145ec20800",
+        "scope": "complete visitor dispatch; no function definition"
+      },
+      {
+        "address": "00bdb740",
+        "length": 122,
+        "sha256": "9c2e4ef6534e8ddb679a2d558bc03220c5ff47b5cc38831f50364dee95f0572c",
+        "matches_disk": true,
+        "hex": "6aff688360cc0064a100000000506489250000000051568bf1897424048b461085c0c74424100100000074168b4e0c6a0183c1015150e845e583ff8bc8e88e5dffff8b4e0885c9c64424100074168b46046a0183c0015051e823e583ff8bc8e86c5dffff8b4c2408c7068083d6005e64890d0000000083c410c3",
+        "scope": "complete visitor destruction"
+      },
+      {
+        "address": "00bf43b0",
+        "length": 759,
+        "actual_length": 759,
+        "scope": "complete physical overlapped submission",
+        "sha256": "e3d4fe8318b182106310ccbf6a02ca6fc3aa201188d41b43ee18af10591237b7",
+        "matches_disk": true,
+        "hex": "6aff68d87bcc0064a100000000506489250000000083ec4c568bf168c890d60089742408e8d71083ff8a44247083c404a801741432c05e8b4c244c64890d0000000083c458c21000240e3c0275e65355688c90d600e8a61083ff8b6c246c8b068b501c83c404558d4c2414518bceffd28b400433db3bc37505b8ecdb0901575368000000606a03536a01680000008050ff156022ce008bf88b4424183bc374178b4c24146a0183c1015150e8605882ff8bc8e8a9d0fdff685090d600e83f1083ff83c40483ffff7538ff155822ce008b4d043bcb7505b9ecdb09015150680890d600e8191083ff83c40c5f5d5b32c05e8b4c244c64890d0000000083c458c21000895c2428895c2430895c2434895c243c895c2440895c2444895c2448895c244c895c2450895c245468cc8fd600895c2468897c2428c744243001000000e8bd0f83ff83c4048d44243c5057ff157421ce0085c07534ff155822ce003bc3742a8b4d043bcb7505b9ecdb09018b542440528b54244052515068788fd600e87e0f83ff83c414e9e00000008b44243c050000020050e8751000000fb7c883c4043bcb8944243089442434740b2bc10500000100894424348b44243c8b5424400fb7c83bcb8bf0895424207411be000001002bf133c903f013ca894c24206a14e8882200008944242c33c989088b54242c894a048b44242c8948088b54242c894a0c8b44242c8948108b4c247868408fd600894c245ce8e70e83ff8b5424308b44243c83c4085253565057ff150822ce0085c00f95c03ac37561ff155822ce003de503000074548b4d043bcb7505b9ecdb0901515068f88ed600e8a30e83ff8b4c244051e8951f000083c41057ff155c22ce008d4c2424c7442464ffffffffe84ef2ffff5f5d5b32c05e8b4c244c64890d0000000083c458c21000558d4c2448e8ed1883ff8b542470528d4c2450e8df1883ff8b4c24108d4424245083c114e84efbffff68c48ed600e8340e83ff83c4048d4c2424c7442464ffffffffe8f0f1ffff8b4c245c5f5d5bb0015e64890d0000000083c458c21000"
+      },
+      {
+        "address": "00bf46b0",
+        "length": 299,
+        "actual_length": 299,
+        "scope": "complete physical completion pump including tail omitted by Ghidra",
+        "sha256": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d",
+        "matches_disk": true,
+        "hex": "83ec085533ed396918894c24040f8e130100005356578d591433ffeb038d49008b038b54380403c7813a030100000f84e00000008b006a008d4c2418515250ff150422ce0085c07529ff155822ce008b0b8d4c0f208b490485c97505b9ecdb0901515068f88ed600e8930d83ff83c40ceb638b138b44170883e8018d34177555682491d600e8760d83ff8b461c8b4e1883c40450518b4e10e8f3b2ffff68f890d6008bf0e8570d83ff8b138d041783c4048d4828518d50208b40305256ffd08d4e0451ff152022ce0085c075088b168b028bceffd08b338b4c3e0c03f751e8191e00008b460483c40485c0741050e8091e000083c404c74604000000008b1652ff155c22ce00558bcbe882faffff8b4c2410eb0683c50183c7383b69180f8cfdfeffff5f5e5b5d83c408c3"
+      },
+      {
+        "address": "00bf41c0",
+        "length": 122,
+        "actual_length": 122,
+        "scope": "complete request queue append",
+        "sha256": "2307aff51f323c8137ea95ddc8d9df945cdc3ac802754e28cbf81552b45e6af3",
+        "matches_disk": true,
+        "hex": "6aff689c7bcc0064a100000000506489250000000083ec08568bf18b460839460489742404751203c083f8017f05b80100000050e8a7fbffff8b46048b168d0cc5000000002bc88d0cca894c240885c9c744241400000000740a8b44241c50e8ecf9ffff834604018b4c240c5e64890d0000000083c414c20400"
+      },
+      {
+        "address": "00bf3880",
+        "length": 119,
+        "actual_length": 119,
+        "scope": "complete request record string cleanup",
+        "sha256": "db3e5b9a91a10a06d0250f70c18789469812826ca38ea85dfb5ee2e26dfd6f64",
+        "matches_disk": true,
+        "hex": "6aff68bb7acc0064a100000000506489250000000051568bf1897424048b462c85c0c74424100000000074168b4e286a0183c1015150e8056482ff8bc8e84edcfdff8b462485c0c7442410ffffffff74168b76206a0183c6015650e8e06382ff8bc8e829dcfdff8b4c24085e64890d0000000083c410c3"
+      },
+      {
+        "address": "00bf3c10",
+        "length": 225,
+        "actual_length": 225,
+        "scope": "complete request record copy constructor",
+        "sha256": "b3b637f7106f3bdd6d194ed9f43c21394e782d1afcc88de1633b08d6cd3e3261",
+        "matches_disk": true,
+        "hex": "6aff681b7bcc0064a100000000506489250000000051535556578bf1897424108b7c24248b0789068b4f04894e048b57088956088b470c89460c8b4f10894e108b57188956188b471c8d5e208d6f203bdd89461cc70300000000c743040000000074268b45006a01508bcbe8c0a082ff837d000074138b038b4d048b5304505152e8ea39000083c40c33c08d5e288d6f283bdd8944241c890389430474268b45006a01508bcbe885a082ff837d000074138b0b8b55048b4304515250e8af39000083c40c8b4f305f894e308b4c24108bc65e5d5b64890d0000000083c410c20400"
+      },
+      {
+        "address": "00befa40",
+        "length": 165,
+        "actual_length": 165,
+        "scope": "complete memory stream from copied byte span",
+        "sha256": "32e0b32e3b4c664bc8d1948e3fd913d3f193c5d72a6082d287a5ca3fc5624ddd",
+        "matches_disk": true,
+        "hex": "6aff68db76cc0064a10000000050648925000000005153568bd933f63bde75155e33c05b8b4c240464890d0000000083c410c20800576a10e89e6d000083c4048944240c3bc68b7c242089742418740a578bc8e82849ceff8bf08b4608575350c7442424ffffffffe8d37b000083c40c8bcee819fcffff8d4e04518bf8ff152022ce0085c075088b168b028bceffd08b4c24108bc75f5e5b64890d0000000083c410c20800"
+      }
+    ],
+    "vtable_spans": [
+      {
+        "address": "00d68478",
+        "length": 12,
+        "description": "visitor destructor/dispatch/query table",
+        "sha256": "d2ba93347064c4c197bf36f51d0098740d108f0a20bf09e641a6494cd6a1cf00",
+        "matches_disk": true,
+        "hex": "10c2bd00e0c1bd00d0c1bd00",
+        "pointers": [
+          "00bdc210",
+          "00bdc1e0",
+          "00bdc1d0"
+        ]
+      },
+      {
+        "address": "00d69168",
+        "length": 44,
+        "description": "physical provider table including completion slot+28h",
+        "sha256": "647f1cb3a32c73e34215133240a985a1726f2d034a1f7a1cad561d589e5617ab",
+        "matches_disk": true,
+        "hex": "e030bd00d04dbf00a04bbf00b043bf00703fbf00e047bf00c039bf007039bf00803abf00b00fbf00b046bf00",
+        "pointers": [
+          "00bd30e0",
+          "00bf4dd0",
+          "00bf4ba0",
+          "00bf43b0",
+          "00bf3f70",
+          "00bf47e0",
+          "00bf39c0",
+          "00bf3970",
+          "00bf3a80",
+          "00bf0fb0",
+          "00bf46b0"
+        ]
+      }
+    ],
+    "diagnostic_strings": [
+      {
+        "address": "00d690c8",
+        "length": 48,
+        "sha256": "b8c72185086a91a6b776a168f1db6f56a0df305ff60bb747b428441364712afd",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c617070656420656e74727900",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped entry"
+      },
+      {
+        "address": "00d6908c",
+        "length": 60,
+        "sha256": "5dad3cc11eb59b6991a66a4553918d8d34bbfa58f54358edbb80dfe794cbc51c",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c6170706564206265666f72652043726561746546696c6500",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped before CreateFile"
+      },
+      {
+        "address": "00d69050",
+        "length": 59,
+        "sha256": "1933d19bdf28b95c72b1d7b27caf5a115d5bd4ce22790e4ad5062611775f9bb1",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c61707065642061667465722043726561746546696c6500",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped after CreateFile"
+      },
+      {
+        "address": "00d69008",
+        "length": 71,
+        "sha256": "bb1436e93bb503fc3b6cbceb86806e4ae01615b4cddf898f10e85615423f9c85",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c61707065642043726561746546696c65204572726f7220636f64653d25642825732900",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped CreateFile Error code=%d(%s)"
+      },
+      {
+        "address": "00d68fcc",
+        "length": 56,
+        "sha256": "db95c9dbbe01279ccb8efc4322658288c4a1068688fbb923cbe7a75d635813fb",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c61707065642047657446696c6553697a65457800",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped GetFileSizeEx"
+      },
+      {
+        "address": "00d68f78",
+        "length": 82,
+        "sha256": "247f87c9096160d31935d058f5a7d5cba9a7069564387a8fe5a0b2a13e28b6b1",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c61707065642047657446696c6553697a654578204572726f7220636f64653d2564282573292073697a653d256400",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped GetFileSizeEx Error code=%d(%s) size=%d"
+      },
+      {
+        "address": "00d68f40",
+        "length": 51,
+        "sha256": "d9503e39bce574721fccd5c0b479409e94e56ba846ec16d5019681431e4e33c4",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c6170706564205265616446696c6500",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped ReadFile"
+      },
+      {
+        "address": "00d68ef8",
+        "length": 69,
+        "sha256": "1759d780088ebf393280fdb481cac9e4a0d899f236275500510d6b49d8f777a9",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c6170706564205265616446696c65204572726f7220636f64653d25642825732900",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped ReadFile Error code=%d(%s)"
+      },
+      {
+        "address": "00d68ec4",
+        "length": 47,
+        "sha256": "8f279d133d198e520fee5432087e86bb10286404f431719f25c85964a90c0fe4",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a4f70656e46696c654f7665726c6170706564206578697400",
+        "ascii": "cPhysicalDirectoryX86::OpenFileOverlapped exit"
+      },
+      {
+        "address": "00d69124",
+        "length": 47,
+        "sha256": "a13e0b7824fb5f85ed54869a4e7fd400a95c9d3aaaeea33a2d0bc26808731fdd",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a5469636b206265666f7265206d656d6f72792066696c6500",
+        "ascii": "cPhysicalDirectoryX86::Tick before memory file"
+      },
+      {
+        "address": "00d690f8",
+        "length": 44,
+        "sha256": "affca0d2b88dd2bbe5286453431093025e6d85482fc4fc96ebcd7a5a04c03d31",
+        "matches_disk": true,
+        "hex": "63506879736963616c4469726563746f72795838363a3a5469636b206265666f72652063616c6c6261636b00",
+        "ascii": "cPhysicalDirectoryX86::Tick before callback"
+      }
+    ],
+    "all_selected_bytes_match_disk": true,
+    "whole_ghidra_image_identity_verified": false
+  },
+  "artifacts": {
+    "document": "docs/VFS_PENDING_DISPATCH.md",
+    "exports": "exports/bsp/parallel_vfs_pending",
+    "export_sha256": {
+      "exports/bsp/parallel_vfs_pending/00bdb740.asm": "cbe17dab3a41cc6af341a541aaf3f5ebc9d074103a36abbc3a9c5edb5597bdf7",
+      "exports/bsp/parallel_vfs_pending/00bdb740.c": "ba8318f364999e8ea19d0dbb558d600335f349336d99cc20f1e253bc262f21d7",
+      "exports/bsp/parallel_vfs_pending/00bdb740.context.asm": "9a9e7dcfc54ca9e5612943d3ecdb5d7be30338212d12f45fa82e8c00562e85af",
+      "exports/bsp/parallel_vfs_pending/00bdb740.raw.asm": "b3e01a99a43efea8e673919d511006a0d0de3528c3b7259c6e14b5c8c3567afe",
+      "exports/bsp/parallel_vfs_pending/00bdc1d0.context.asm": "e92b8b5ecfa8d60114e92a89d5876bcb415f48ffa3040d2d579fa62e2a6b2a7a",
+      "exports/bsp/parallel_vfs_pending/00bdc1d0.raw.asm": "d65e1638decf248d9c700bf776f1cb40eb5d38c50ca0b326e0808b2b12d98478",
+      "exports/bsp/parallel_vfs_pending/00bdc1e0.context.asm": "15101986af43508c87b1c1dfc45b8185e04ff7646070a1aa49b3a46128481aa9",
+      "exports/bsp/parallel_vfs_pending/00bdc1e0.raw.asm": "65370916c15409f13d4de100c3a41ac05afc72bae105a46af264114f33cfc28b",
+      "exports/bsp/parallel_vfs_pending/00befa40.asm": "267f3b10728f316c3fe7debdab739d5bde3e413c0cef458451de8b4436e0179d",
+      "exports/bsp/parallel_vfs_pending/00befa40.c": "51a2ef6f68becbd90009de076b667d276edd8667e08638e4df58463d488dd3d9",
+      "exports/bsp/parallel_vfs_pending/00befa40.raw.asm": "bb5ccb68df5d4ddaf40b9c66499b69f9becd5d4fd011e32b2571145f34703706",
+      "exports/bsp/parallel_vfs_pending/00bf3880.asm": "4d9d4c8ad868db8feba040c6d22f75e141a40c7e149e4fdc868f3b2977527306",
+      "exports/bsp/parallel_vfs_pending/00bf3880.c": "dddbd5a0af849b45c62ccc4c89ca011d81dfe7bb9e1dc2cfdc10c0815f90c0bc",
+      "exports/bsp/parallel_vfs_pending/00bf3880.callers.json": "84f0e5fdea2d4702eca3f32ea6eba7963dd8f0d5668bbbe2517531c7e4225aeb",
+      "exports/bsp/parallel_vfs_pending/00bf3880.raw.asm": "6045ab53b13f251ac124796a7396ff39311613672ae40cb1c696c750fb3794a7",
+      "exports/bsp/parallel_vfs_pending/00bf3c10.asm": "39d4c87269e837e2506a35eb4fcb02255cd9d5ab4f9d97dca1eea9f26287dbae",
+      "exports/bsp/parallel_vfs_pending/00bf3c10.c": "d1b42a3d066132962424c50a2938af09e3f2a5765509f2977dfcc0604b7d7004",
+      "exports/bsp/parallel_vfs_pending/00bf3c10.raw.asm": "2c95cfc35dc18488760fe8ee03bab062d1f00ff757c4c7c744c7fc836e28cb49",
+      "exports/bsp/parallel_vfs_pending/00bf41c0.asm": "bbaaf7c9ce4e2335bd13a8f7cc794db63a755ac864453ff830eef6a616ce7030",
+      "exports/bsp/parallel_vfs_pending/00bf41c0.c": "1e4848170994cbfc4754d83e74ba96e7cd543c746403449f8b36fe998dc14bd6",
+      "exports/bsp/parallel_vfs_pending/00bf41c0.callers.json": "128cb719815c5ec5689b85d8c1dd4740dc570a2e424d1427e6b2b548274fd544",
+      "exports/bsp/parallel_vfs_pending/00bf41c0.raw.asm": "293d739fde90a0fce2192e37a7af71f927e7cece5247d47113bd71596a6a5a63",
+      "exports/bsp/parallel_vfs_pending/00bf43b0.asm": "974ddf4dd57cec522ddbae0154e03efa73d27d4fd4918607fdf9a603590d92fe",
+      "exports/bsp/parallel_vfs_pending/00bf43b0.c": "ae336fe3204dcfcd0f73e668e13513e238be5edf445bc1ad54033af4c417279f",
+      "exports/bsp/parallel_vfs_pending/00bf43b0.raw.asm": "efbb13111f82a65264805ac67d691f74033eda0775f4081f536ec29257977a5f",
+      "exports/bsp/parallel_vfs_pending/00bf43b0.xrefs.json": "e1421215b8fdc6aaa935f1ce1b88269b53ac60c3b3d58bd3a9a15571c8955737",
+      "exports/bsp/parallel_vfs_pending/00bf46b0.asm": "ec3bd62d4e6494a0d0ad42d74520d66759a9828292679e1304d837380b3a9aa9",
+      "exports/bsp/parallel_vfs_pending/00bf46b0.c": "6b6fc490ed18f5f0c30f21caf5db72988f0023d4be54c29ef4fc7175399c6bf2",
+      "exports/bsp/parallel_vfs_pending/00bf46b0.callers.json": "d5c19e73f0245d35c181cc5b39930460960e3ef0790b6d27b78ad0e041297619",
+      "exports/bsp/parallel_vfs_pending/00bf46b0.raw.asm": "a11e356af7f896ecf55d7871e9f1135fb3f9fd9515485ac52c4d793366dbf60e",
+      "exports/bsp/parallel_vfs_pending/code_bytes.json": "b705779476ed723287f09dd94727ad7673ad637794b8015b925ef4a175260f95",
+      "exports/bsp/parallel_vfs_pending/completion_constants.json": "4ae66d613b9912e46bb336bfcf03e4ebb87e5b88d4e036480cb638faac22b39d",
+      "exports/bsp/parallel_vfs_pending/initial_raw_context.json": "3e1659dd669dcc8b50f1feab49bc197395d3d22ceb8f1fa720a41895125093de",
+      "exports/bsp/parallel_vfs_pending/missing_function_checks.json": "e1398cb3c7426f10e34457cb5ad98736c65da6b985bc5d7341fabda6d71c51e2",
+      "exports/bsp/parallel_vfs_pending/physical_provider_dispatch_slot.json": "daef0721a62dab9421d0f9fbe1008d8a49c96bbdfca992dd0077d470f96dba34",
+      "exports/bsp/parallel_vfs_pending/submission_constants.json": "7c5e0ee00a122ebd6e2bc145e6deddc360ea8b00d14f104d63c4d0de92bc6eaa",
+      "exports/bsp/parallel_vfs_pending/target_batch1.json": "7e022f7a4d33e8c200ebe1a38f3921e7ccc3456907958af63021e1244f38bcf1",
+      "exports/bsp/parallel_vfs_pending/target_batch2.json": "94ecd7f24815d36a0a0acd95ba0a79cb2c42c4b471a9e715231a3fde08134f4c",
+      "exports/bsp/parallel_vfs_pending/target_batch3.json": "5ccc79ef7878e7dda2b2bdb6b4dafff3af5ae796317f3698391355dd7cff066c",
+      "exports/bsp/parallel_vfs_pending/target_batch4.json": "2508b67518376f1df5f619329c2d019b6f7b4ff30f0dbf9ef65097e529bf1f1b",
+      "exports/bsp/parallel_vfs_pending/target_batch5.json": "6d279723d3d05e8b6739a301c7f5f938faa8c1af6d937b0262193e6dbb476847",
+      "exports/bsp/parallel_vfs_pending/target_batch6.json": "dc33758f9008b8cd3845af4edb03961b777d7cd57f55feed9f456c4845a0ead8",
+      "exports/bsp/parallel_vfs_pending/target_batch7.json": "9a8272848cf98462a9970cffb9a74ab72d514cddacca528f541da71b402179f2",
+      "exports/bsp/parallel_vfs_pending/target_batch8.json": "94cc85058d3fbcb5dfa97936f2228f581987b9c44e6d5c42511255c4a4e3b32f",
+      "exports/bsp/parallel_vfs_pending/target_batch9.json": "ef36d5e5ad12b62f45afa361ef33165d61b6a13905202f9380574d8e5d0a5582",
+      "exports/bsp/parallel_vfs_pending/vtable_bytes.json": "b33323be3058764ee8286364a38fe72850ca6892ce93434cda026501c13f99bf"
+    },
+    "cached_reference_sha256": {
+      "docs/VFS_PROVIDER_FLAGS.md": "deb5022765d0e1090c01c1b9c56e417f220cd8857fce9dd41221d2191a6fe844",
+      "docs/VFS_PRELOAD_BOUNDARY.md": "66dfac232c77654fa082d2c528b4aeb05313cf15ea616ca614388e6b1919b321",
+      "exports/bsp/parallel_vfs_flags/00bdda10.raw.asm": "c9ad841afe6161760a695ab1fc07717c5b75371352e65554bb7ee689f9601a22",
+      "exports/bsp/parallel_vfs_flags/00bdc100.raw.asm": "86e6f71d7018bda9fe4ee375567f2a792398d58b7b1859fa9e003c47299582b6",
+      "exports/bsp/parallel_vfs_preload/00be7b20.raw.asm": "d8003edbb060203e90c5af3fe8ad9963130ee455db170fe0836787dd6f4cb9bd",
+      "exports/bsp/parallel_vfs_preload/00be78b0.raw.asm": "f3d5065e99a691d9344a59d84ba3f8af722ac777adc4db09dccd9f063adb20a5",
+      "exports/bsp/imports.json": "907ac0b202db659aacac99dcd0a6c0714d1ade440f54f50e48bf272aa79fbe9e"
+    }
+  },
+  "verification_limits": [
+    "Read-only target verification and native selected-byte agreement",
+    "Raw assembly recovered missing visitor bodies and no-return-truncated cleanup tail",
+    "No original-game execution, host async implementation, build or tests",
+    "No general provider, queue growth/removal, shutdown/cancellation or callback-reentrancy proof"
+  ]
+}

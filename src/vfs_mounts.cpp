@@ -76,7 +76,9 @@ bool apply_resource_alias_00bdca80_fragment(const std::vector<VfsAlias>& aliases
     return true;
 }
 VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext& context,
-                                                    const std::string& name) {
+    const std::string& name, std::uint32_t flags) {
+    if (flags != 2 && flags != 0x32)
+        return {false, {}, "Unsupported VFS open flags."};
     std::string normalized;
     if (!prepare(context, name, Operation::open, normalized)
         || !apply_resource_alias_00bdca80_fragment(context.aliases, normalized))
@@ -86,7 +88,7 @@ VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext& context,
     for (const auto& mount : context.mounts) {
         std::string suffix;
         if (!suffix_for_mount(normalized, mount.prefix, suffix)) continue;
-        auto opened = mount.open_read_only(suffix);
+        auto opened = mount.open_read_only(suffix, flags);
         if (opened.provider_opened) return opened;
         if (!opened.error.empty()) last_error = std::move(opened.error);
     }

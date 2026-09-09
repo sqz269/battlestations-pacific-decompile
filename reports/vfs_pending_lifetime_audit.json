@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "utc": "2026-09-09T21:54:45.642761+00:00",
+  "status": "read-only static ownership and scheduling audit; no host implementation or runtime test",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verified_batches": 8
+  },
+  "scope": {
+    "new_outputs": [
+      "docs/VFS_PENDING_LIFETIME.md",
+      "reports/vfs_pending_lifetime_audit.json",
+      "exports/bsp/parallel_vfs_pending_lifetime/"
+    ],
+    "parent_authorized_existing_correction": [
+      "docs/VFS_PENDING_DISPATCH.md",
+      "reports/vfs_pending_dispatch_audit.json"
+    ],
+    "existing_correction": "Physical path dispatch is provider virtual slot+1Ch at00bf4410/00bf441e; provider data field+1Ch is queue capacity.",
+    "ghidra_mutations": false,
+    "cpp_changes": false,
+    "tests_run": false,
+    "context_reads": "Initial00bf4240 read extended through00bf43af; only complete00bf4240..00bf429f used for removal claims. Initial destructor read included2 trailing INT3 bytes; final complete190-byte span independently re-read. Discovery exports00bf3930/00bf4b80/00bf4d30 are not complete-byte-verified behavior claims."
+  },
+  "functions": [
+    {
+      "address": "00bf3d00",
+      "length": 159,
+      "end_exclusive": "00bf3d9f",
+      "sha256": "55f3b7b479030636e6015ec3c1508dbbca54df6379ee91d307c3d94345e78da4",
+      "matches_disk": true,
+      "hex": "5355568bf1578b7c24148b0789068b4f04894e048b57088956088b470c89460c8b4f10894e108b57188956188b471c8d5f208d6e203beb89461c74258b0b6a01518bcde8f89f82ff833b0074148b55008b43048b4d04525051e82239000083c40c8d5f288d6e283beb74258b136a01528bcde8c99f82ff833b0074148b45008b4b048b5504505152e8f338000083c40c8b47305f8946308bc65e5d5bc20400",
+      "end_inclusive": "00bf3d9e",
+      "original_abi": "ECX destination; source record stack; EAX destination; RET4",
+      "old_name_snapshot": "FUN_00bf3d00",
+      "proposed_name": "BSP_PhysicalPendingRecord_Assign",
+      "evidence_comment": "Copies stable I/O pointer/scalar values and deep-copies both owned strings; does not copy offsets14h/34h. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf3da0",
+      "length": 237,
+      "end_exclusive": "00bf3e8d",
+      "sha256": "37128bc6e4d9a6f1eee9286b5fd2d16299cd76b3dc8f3b4526c19f7ca0655709",
+      "matches_disk": true,
+      "hex": "64a1000000006aff68477bcc00506489250000000083ec0c538b5c242083fb01568bf17d0cc7442424010000008b5c2424395e080f8da00000008d04dd000000002bc303c05503c003c05750e8cd17000033ff83c404397e048be8896c2414897c24107e408d04fd000000002bc703c003c003c08d0c28894c241885c9c744242400000000740a8b1603d052e8dffdffff83c7013b7e04c7442424ffffffff897c24107cc033ff397e047e1c33db8bff8b0e03cbe827faffff83c70183c3383b7e047cec8b5c242c8b0650e8192b000083c4045f892e895e085d8b4c24145e5b64890d0000000083c418c20400",
+      "end_inclusive": "00bf3e8c",
+      "original_abi": "ECX queue descriptor; requested signed capacity stack; RET4",
+      "old_name_snapshot": "FUN_00bf3da0",
+      "proposed_name": "BSP_PhysicalPendingQueue_Reserve",
+      "evidence_comment": "For requested capacity above current, allocate capacity*38h, copy-construct live records, destroy old names, free old record storage, replace data/capacity without changing count. Raw continuation after free at00bf3e70..00bf3e79 is decisive. No I/O cancellation/resource release during relocation. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf3ed0",
+      "length": 151,
+      "end_exclusive": "00bf3f67",
+      "sha256": "63c737b24098088852f7083ad626a09ae4d56462fde6bd458940468696679ddb",
+      "matches_disk": true,
+      "hex": "5356578b7c24108bf13b7e087e0657e8bcfeffff8b46043bc77d468d0cc5000000002bc803c903c98bdf03c92bd833d28b0603c17423891089500489500889500c89501089501889501c89502089502489502889502c89503083c13883eb0175cf3b7e047d2883cbff8da42400000000015e048b46048b168d0cc5000000002bc88d0ccae827f9ffff3b7e047ce2897e045f5e5bc20400",
+      "end_inclusive": "00bf3f66",
+      "original_abi": "ECX queue descriptor; requested signed count stack; RET4",
+      "old_name_snapshot": "FUN_00bf3ed0",
+      "proposed_name": "BSP_PhysicalPendingQueue_Resize",
+      "evidence_comment": "Normal nonnegative count: reserve when needed, initialize new scalar/name fields, or destroy trailing record names; write count. Resize0 does not close handles or free I/O allocations. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf4240",
+      "length": 96,
+      "end_exclusive": "00bf42a0",
+      "sha256": "bc0c95c4ad21d9695b899b5c41da11f7691f380f10fc88735386040e4136d604",
+      "matches_disk": true,
+      "hex": "538b5c2408568bf18b460483e8013bd87d2e578d3cdd000000002bfb03ff03ff03ff8b0e03cf8d513852e891faffff8b460483c30183e80183c7383bd87ce35f8b46048b168d0cc5000000002bc88d4ccac8e8e9f5ffff834604ff5e5bc20400",
+      "end_inclusive": "00bf429f",
+      "original_abi": "ECX queue descriptor; valid index stack; RET4",
+      "old_name_snapshot": null,
+      "proposed_name": "BSP_PhysicalPendingQueue_Erase",
+      "evidence_comment": "Assign each later38h record to its predecessor, destroy final names, decrement count. Complete96-byte body absent from Ghidra at audit; raw call at00bf47b9 lies after misleading no-return free. No capacity shrink or I/O resource release. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf46b0",
+      "length": 299,
+      "end_exclusive": "00bf47db",
+      "sha256": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d",
+      "matches_disk": true,
+      "hex": "83ec085533ed396918894c24040f8e130100005356578d591433ffeb038d49008b038b54380403c7813a030100000f84e00000008b006a008d4c2418515250ff150422ce0085c07529ff155822ce008b0b8d4c0f208b490485c97505b9ecdb0901515068f88ed600e8930d83ff83c40ceb638b138b44170883e8018d34177555682491d600e8760d83ff8b461c8b4e1883c40450518b4e10e8f3b2ffff68f890d6008bf0e8570d83ff8b138d041783c4048d4828518d50208b40305256ffd08d4e0451ff152022ce0085c075088b168b028bceffd08b338b4c3e0c03f751e8191e00008b460483c40485c0741050e8091e000083c404c74604000000008b1652ff155c22ce00558bcbe882faffff8b4c2410eb0683c50183c7383b69180f8cfdfeffff5f5e5b5d83c408c3",
+      "end_inclusive": "00bf47da",
+      "original_abi": "ECX physical provider; no stack arguments; RET",
+      "old_name_snapshot": "FUN_00bf46b0",
+      "proposed_name": null,
+      "evidence_comment": "Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf4c70",
+      "length": 190,
+      "end_exclusive": "00bf4d2e",
+      "sha256": "517e3e32cf7f2b1b7d34965001f4a30b712fb3d73fe3b9d26388d4105dee76df",
+      "matches_disk": true,
+      "hex": "6aff688e7ccc0064a100000000506489250000000083ec0c56578bf9897c2408c7076891d6008b47308b088d772c505651568d44241c508bcec744243002000000e87abffeff8b460450e8ed180000c7460400000000c74608000000008b472483c40485c0c644241c0174168b4f206a0183c1015150e8d54f82ff8bc8e81ec8fdff8d77146a008bcec644242000e8cdf1ffff8b3656e87e1c000083c4048bcfc744241cffffffffe86306fcff8b4c24145f5e64890d0000000083c418c3",
+      "end_inclusive": "00bf4d2d",
+      "original_abi": "ECX physical provider; no stack arguments; RET",
+      "old_name_snapshot": "FUN_00bf4c70",
+      "proposed_name": "BSP_PhysicalDirectory_Destroy",
+      "evidence_comment": "Complete190-byte destructor: explicit pending-queue teardown calls Resize(queue,0) at00bf4cfe then frees record storage at00bf4d06; this queue path only destroys names, without drain/cancel/handle or I/O-allocation release. External shutdown invariants remain unresolved. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bdb0b0",
+      "length": 108,
+      "end_exclusive": "00bdb11c",
+      "sha256": "244d6db8597f8891403e5d462c09bc3dfd0d90932678a0c7e835c77d61f8b8be",
+      "matches_disk": true,
+      "hex": "83ec088b414053558b2856578d793c8bf7896c2414897424108da4240000000085f68b5f0474043bf77405e833b601003beb743085f67505e826b601003b6e047505e81cb601008b4d188b118b4228ffd08d4c2410e8d6e6ffff8b6c24148b742410ebbc5f5e5d5b83c408c3",
+      "end_inclusive": "00bdb11b",
+      "original_abi": "ECX VFS manager; no stack arguments; RET",
+      "old_name_snapshot": "FUN_00bdb0b0",
+      "proposed_name": "BSP_VFS_TickProviders",
+      "evidence_comment": "Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf41c0",
+      "length": 122,
+      "end_exclusive": "00bf423a",
+      "sha256": "2307aff51f323c8137ea95ddc8d9df945cdc3ac802754e28cbf81552b45e6af3",
+      "matches_disk": true,
+      "hex": "6aff689c7bcc0064a100000000506489250000000083ec08568bf18b460839460489742404751203c083f8017f05b80100000050e8a7fbffff8b46048b168d0cc5000000002bc88d0cca894c240885c9c744241400000000740a8b44241c50e8ecf9ffff834604018b4c240c5e64890d0000000083c414c20400",
+      "end_inclusive": "00bf4239",
+      "original_abi": "ECX queue descriptor; source record stack; RET4",
+      "old_name_snapshot": "FUN_00bf41c0",
+      "proposed_name": null,
+      "evidence_comment": "Reverified append: count==capacity grows to max(1,2*capacity), copy-construct at count, increment count. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf3880",
+      "length": 119,
+      "end_exclusive": "00bf38f7",
+      "sha256": "db3e5b9a91a10a06d0250f70c18789469812826ca38ea85dfb5ee2e26dfd6f64",
+      "matches_disk": true,
+      "hex": "6aff68bb7acc0064a100000000506489250000000051568bf1897424048b462c85c0c74424100000000074168b4e286a0183c1015150e8056482ff8bc8e84edcfdff8b462485c0c7442410ffffffff74168b76206a0183c6015650e8e06382ff8bc8e829dcfdff8b4c24085e64890d0000000083c410c3",
+      "end_inclusive": "00bf38f6",
+      "original_abi": "ECX record; no stack arguments; RET",
+      "old_name_snapshot": null,
+      "proposed_name": null,
+      "evidence_comment": "Reverified record cleanup frees the two names only. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00bf3c10",
+      "length": 225,
+      "end_exclusive": "00bf3cf1",
+      "sha256": "b3b637f7106f3bdd6d194ed9f43c21394e782d1afcc88de1633b08d6cd3e3261",
+      "matches_disk": true,
+      "hex": "6aff681b7bcc0064a100000000506489250000000051535556578bf1897424108b7c24248b0789068b4f04894e048b57088956088b470c89460c8b4f10894e108b57188956188b471c8d5e208d6f203bdd89461cc70300000000c743040000000074268b45006a01508bcbe8c0a082ff837d000074138b038b4d048b5304505152e8ea39000083c40c33c08d5e288d6f283bdd8944241c890389430474268b45006a01508bcbe885a082ff837d000074138b0b8b55048b4304515250e8af39000083c40c8b4f305f894e308b4c24108bc65e5d5b64890d0000000083c410c20400",
+      "end_inclusive": "00bf3cf0",
+      "original_abi": "ECX destination record; source record stack; EAX destination; RET4",
+      "old_name_snapshot": null,
+      "proposed_name": null,
+      "evidence_comment": "Reverified copy construction: deep names, stable copied I/O pointers/scalars; no fields14h/34h. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "005092e0",
+      "length": 109,
+      "end_exclusive": "0050934d",
+      "sha256": "c0ead2dcfbefc720daf91a0a91f7b567c7362659520d8a6d705d0553ca5831da",
+      "matches_disk": true,
+      "hex": "566858b9ce008bf1e8c3c1f1ff83c404837e140074558b0d94d3f8008b018b5018ffd28b46108b08c6410401837e1400742b578b3d3022ce008da424000000006a64ffd78b0decce0901e8811d6d008bcee85afeffff837e140075e45f8b0d94d3f8008b118b421c5effe05ec3",
+      "end_inclusive": "0050934c",
+      "original_abi": "ECX caller object; no stack arguments; RET or tail dispatch to object virtual+1Ch",
+      "old_name_snapshot": "FUN_005092e0",
+      "proposed_name": null,
+      "evidence_comment": "Byte-checked GIAchievements::StopLoadingThread() string. While object+14h remains nonzero: Sleep100, pump VFS global0109ceec at0050932a, call00509190. Establishes pump during stop wait, not physical request cancellation. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    },
+    {
+      "address": "00737a50",
+      "length": 371,
+      "end_exclusive": "00737bc3",
+      "sha256": "9b0e757869a0173dff1c11813fa457b74edc848d71abe9d467929d6db752d994",
+      "matches_disk": true,
+      "hex": "64a1000000006aff682862c800506489250000000083ec08535633dbf60598aee10001578bf17520830d98aee10001881d96aee100881d95aee100881d94aee100c60597aee100ff8b3d14d00901e82da3d8ff8b40248b0d94aee10057890cb8897c2414e817a3d8ff8bc8e880bb4a00385e19895c241c7403885e198b0da888e1008b81d405000083f801741983f802741483f804740f6a0ee8d2c8d8ff84c07404c64619018b0db00a09018b118b4208ffd08b0db00a09018b118b421cffd0df28df6808518b4e14def9d95c2410d9442410d91c24e815cfdaff385e187403885e188b0da888e1008b81d405000083f801742183f802741c83f8047417381d75aee10074238b1504cf0901c6828101000001eb14381d75aee100740ca104cf0901c68081010000018b0decce0901e82c354a00e89762dcff8bc8e80016ddffc744241cffffffffe833a2d8ff578bc8e8bbba4a00e826a2d8ff8bc8e81fb94a008b4c24145f5e5b64890d0000000083c414c3",
+      "end_inclusive": "00737bc2",
+      "original_abi": "ECX application; no stack arguments; RET",
+      "old_name_snapshot": "BSP_Application_RunFrame",
+      "proposed_name": null,
+      "evidence_comment": "Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json."
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00d69168",
+      "length": 44,
+      "sha256": "647f1cb3a32c73e34215133240a985a1726f2d034a1f7a1cad561d589e5617ab",
+      "matches_disk": true,
+      "hex": "e030bd00d04dbf00a04bbf00b043bf00703fbf00e047bf00c039bf007039bf00803abf00b00fbf00b046bf00"
+    },
+    {
+      "address": "00ceb958",
+      "length": 36,
+      "sha256": "07548cb48fddac0bd958976af10c3659ccdc45cd3824f693e13415a07dd35c1a",
+      "matches_disk": true,
+      "hex": "4749416368696576656d656e74733a3a53746f704c6f6164696e67546872656164282900",
+      "ascii": "GIAchievements::StopLoadingThread()"
+    }
+  ],
+  "missing_function": {
+    "address": "00bf4240",
+    "length": 96,
+    "end_inclusive": "00bf429f",
+    "end_exclusive": "00bf42a0",
+    "final_check": {
+      "get_function_by_address": "No function found for 00bf4240",
+      "get_function_xrefs": "No references found to function: null",
+      "raw_xrefs": "No references found to address: 00bf4240"
+    },
+    "reference_limit": "No Ghidra xrefs recorded, but byte-verified00bf47b9 directly CALLs00bf4240 in omitted free continuation."
+  },
+  "queue_contract": {
+    "descriptor": {
+      "data": "provider+14h",
+      "count": "provider+18h",
+      "capacity": "provider+1Ch"
+    },
+    "record_stride": 56,
+    "growth": "max(1,2*capacity) on full append; Reserve clamps request to>=1 and only grows",
+    "record_move": "copy stable handle/OVERLAPPED/allocation/aligned buffer/scalars/callback; independently own names; destroy old names and record storage only",
+    "remove": "ordered assignment from next record; destroy final names; decrement count; retain capacity",
+    "resize_zero": "destroy names from end to start, then zero count; no I/O resource release",
+    "unknown_fields": [
+      "record+14h",
+      "record+34h"
+    ],
+    "normal_domain_only": true
+  },
+  "pump": {
+    "provider_entry": "00bf46b0",
+    "manager_entry": "00bdb0b0",
+    "manager_tree_descriptor": "manager+3Ch",
+    "manager_tree_sentinel": "manager+40h",
+    "provider_from_node": "node+18h",
+    "provider_slot": "28h",
+    "physical_table": "00d69168",
+    "callback_site": "00bf476d",
+    "callback_before_removal": true,
+    "post_callback_queue_base_reload": "00bf4785",
+    "erase_site": "00bf47b9",
+    "live_count_compare": "00bf47ca",
+    "post_erase_same_index": true,
+    "callbacks_on_pump_calling_thread": true,
+    "thread_affinity_verified": false,
+    "direct_callers": [
+      {
+        "function": "00737a50",
+        "call": "00737b7f",
+        "manager_global_load": "00737b79",
+        "behavior": "ordinary frame path"
+      },
+      {
+        "function": "005092e0",
+        "call": "0050932a",
+        "manager_global_load": "00509324",
+        "behavior": "while object+14h nonzero, Sleep100 then manager pump and00509190"
+      }
+    ],
+    "all_indirect_callers_excluded": false
+  },
+  "inferences": [
+    {
+      "finding": "Recursive pump can redispatch current completed record before first callback returns.",
+      "basis": "No active flag; record remains queued until after callback00bf476d; loop begins at index0.",
+      "runtime_verified": false
+    },
+    {
+      "finding": "Callback append may relocate/free the name-wrapper storage supplied to that same callback; heap I/O pointers survive.",
+      "basis": "Reserve copy/destruction and borrowed pointers at00bf4761/00bf4765. Pump reloads queue base after callback.",
+      "runtime_verified": false
+    },
+    {
+      "finding": "New callback submissions may be considered during the same pump invocation.",
+      "basis": "Current queue count reread at00bf47ca; no initial-count fence.",
+      "runtime_verified": false
+    },
+    {
+      "finding": "Destroying a provider with live requests and no external cleanup loses request bookkeeping without releasing its I/O resources.",
+      "basis": "Destructor explicit queue path Resize0 then free, with name-only record cleanup. External tree/base/shutdown helpers remain unexpanded.",
+      "runtime_verified": false
+    }
+  ],
+  "proposed_host_boundary": {
+    "operations": [
+      "submit_owned_request",
+      "pump_completed_requests",
+      "require_drained_before_destroy"
+    ],
+    "ownership": "One serialized owner per accepted handle/staging allocation/OVERLAPPED and copied names; queue movement must not duplicate resource destruction.",
+    "callbacks": "Deferred even on immediate ReadFile success; independently backed stream; cleanup after return. Borrowed names copied before callback-induced enqueue.",
+    "excluded": [
+      "recursive pump",
+      "concurrent queue access",
+      "provider destruction during callback",
+      "provider registry mutation during pump",
+      "unverified cancellation",
+      "unchecked size/capacity/allocator failure paths"
+    ],
+    "host_policy_not_recovered_native_guarantee": [
+      "Drain-before-destruction requirement",
+      "Stable callback name values if exposed by a typed host interface"
+    ]
+  },
+  "unresolved": [
+    "Whether higher-level shutdown/unmount invariants guarantee an empty physical queue before destruction",
+    "A native per-request cancellation mechanism and completion/wait ownership after cancellation",
+    "FileStore pending-record cleanup after physical completed-I/O failure with no callback",
+    "Thread affinity and synchronization outside inspected routines",
+    "Arbitrary callback reentrancy, nested frames/stop waits and provider registry mutations",
+    "Unwind/allocator failure guarantees and integer-overflow/negative-resize behavior",
+    "Provider tree/base teardown helper internals and other providers virtual28h behavior",
+    "Transferred-byte mismatch/uninitialized-tail behavior, already identified by prior dispatch audit"
+  ],
+  "validation": {
+    "complete_code_spans_matched": 12,
+    "all_complete_spans_match_disk": true,
+    "static_analysis_only": true,
+    "library_names_preserved": true,
+    "no_game_runtime_validation": true
+  },
+  "artifact_hashes": {
+    "exports/bsp/parallel_vfs_pending_lifetime/005092e0.asm": "12d0123e627365357d681b2a839c17a7a319aed1d319ab6bcbb451e3025c5c7d",
+    "exports/bsp/parallel_vfs_pending_lifetime/005092e0.bin": "c0ead2dcfbefc720daf91a0a91f7b567c7362659520d8a6d705d0553ca5831da",
+    "exports/bsp/parallel_vfs_pending_lifetime/005092e0.c": "a579df6db73636e3db6a63688d0b56cc458fce530629ccde9f1b69ce091c8c0a",
+    "exports/bsp/parallel_vfs_pending_lifetime/005092e0.info.json": "82b0b53b86927a938bea7ecf1cd90942ce28a6ce03da2cc4bf774531d2ff0a5d",
+    "exports/bsp/parallel_vfs_pending_lifetime/005092e0.raw.asm": "fe2abfa24112ecd87591a1b4b6a5596009ef8a3a4ea9fcd1096a545a0f80c159",
+    "exports/bsp/parallel_vfs_pending_lifetime/005092e0.refs.json": "18d710035daf29d210929a9b1de9e67803dcecb753bd6f9fc46673b395a21590",
+    "exports/bsp/parallel_vfs_pending_lifetime/00737a50.asm": "30520af0af108f77dd9f4429d50e0eacdb7d5673bc65eeacc325e1350f7dad90",
+    "exports/bsp/parallel_vfs_pending_lifetime/00737a50.bin": "9b0e757869a0173dff1c11813fa457b74edc848d71abe9d467929d6db752d994",
+    "exports/bsp/parallel_vfs_pending_lifetime/00737a50.c": "ed8a7ca3cfdbf440a8ec839bf79502441f668d1a745c5bfd8c3197b8833ef965",
+    "exports/bsp/parallel_vfs_pending_lifetime/00737a50.info.json": "b96dee4a3121e046766932249e1f39443980f169f216f8a773ccec01474b56cb",
+    "exports/bsp/parallel_vfs_pending_lifetime/00737a50.raw.asm": "242473f89a27e576ad28ade1feb2917a65745d7c078e70c632e8851957901844",
+    "exports/bsp/parallel_vfs_pending_lifetime/00737a50.refs.json": "e65944fba8e2edc32e32795f62a964760d00d173ea24820bc2b68281d333c161",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bdb0b0.asm": "52fba0cc4dbb288ebc88c0d540ab1127488f6bdbfd530e8ba235cd9c81e04e39",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bdb0b0.bin": "244d6db8597f8891403e5d462c09bc3dfd0d90932678a0c7e835c77d61f8b8be",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bdb0b0.c": "dbee56edc131cbc37040e7db36c37de073a53c86ba0042b459f253b0aeb9692e",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bdb0b0.info.json": "90825488235fd931c7eb2cfa6353cd2f1d76bbfd31e47b91f35094ff3ae40c61",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bdb0b0.raw.asm": "88187721c62f4f517f56ea3122c76d58f531f91c88af427123cba9adde8ccb9c",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bdb0b0.refs.json": "95c3544d92486e470e410c89cbbdbd47560fbaa8ddc386f815fc0399e7441c6b",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3880.bin": "db3e5b9a91a10a06d0250f70c18789469812826ca38ea85dfb5ee2e26dfd6f64",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3880.raw.asm": "77e24b9c2f47c9b801cd1a804a8d5484948a094b6b435c6842bc71f363cd755d",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3930.asm": "f1de9e0403ad71d6847d2aa23127f7e71e3b30c37132627303d682d2cdb0fb4a",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3930.c": "2d40ed0645212ccb988a21225adc08270ef8c5fceba86f0d84d9b671aec2f0b3",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3930.info.json": "5b91c29a3a37754fa5599780f0c878f5c97b5e364b081af74579f8d9fd291039",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3930.refs.json": "37a36a4a3c1fb4a6ec57e335a9a57ba226c1ae1b051bca467c2183d70374c62f",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3c10.bin": "b3b637f7106f3bdd6d194ed9f43c21394e782d1afcc88de1633b08d6cd3e3261",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3c10.raw.asm": "23ac864f1ddbf61dc5d1dd2843b6dd06e1fe7d2bef22cefdf94df1cc90d65658",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3d00.asm": "cbbeb0eb6b0760afdb0f5efc3a1a4761d543bdf0f426668f61aef869ae37f8ce",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3d00.bin": "55f3b7b479030636e6015ec3c1508dbbca54df6379ee91d307c3d94345e78da4",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3d00.c": "6cf6eb153cb6b2a79603a0b957435671e6182475f2004cf5900db6b1c99bd805",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3d00.info.json": "0b1dd4cba95a30579f45d852feb049244005f1560f0d43c54bd0ed5cc8e4989b",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3d00.raw.asm": "cc0aa39bdb926d21ac4cf0434abce3b4ca6d98284cab1ba780e88053b0e7d0a3",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3d00.refs.json": "970f04e8d65beb950c11496a0529a423f54901ecab7cbb50484b58db1b3f00d0",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3da0.asm": "8ccc940631b0f3afd1ac972dc19bc0a24092e3a7878c84dfea27973c4307870c",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3da0.bin": "37128bc6e4d9a6f1eee9286b5fd2d16299cd76b3dc8f3b4526c19f7ca0655709",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3da0.c": "48dbc88c4bc7a975d4320bbdb86422cb237e7e95f708b9d16eed89c484b810bf",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3da0.info.json": "1abc6269f396bcf129ae64b26540f154620d0d982a3d7d7639b3c582d369e0c1",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3da0.raw.asm": "449001508a29294c9c1cb1d505879aad7e4ce558d930515d0ea6403858ec5a83",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3da0.refs.json": "96d1b474e295d225745fb5f8a563737eefd2c52e12ff72a235f97eef26fd9bd0",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3ed0.asm": "1c6655e9409ee0633b03e86a9f11e1f17a872b3de8ca87dbe9a9f581afdc7a7b",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3ed0.bin": "63c737b24098088852f7083ad626a09ae4d56462fde6bd458940468696679ddb",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3ed0.c": "330cbf2ad58989540f137e9f2c0ee7bc3fb32cd106f74e00ca51fc6714ca6638",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3ed0.info.json": "c99aa1fd098700a0974ac79c781f80121db720eb5b02ae0dc0eaa801918c37c8",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3ed0.raw.asm": "24bdfeddfe45cc81d43dd9ab5e0a9073a517eec1216872dafa68ae66e268e6de",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf3ed0.refs.json": "728b6402c5db7bb1fe5d78191c56a438c0a32832707473210b7874c8cfcd1e79",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf41c0.asm": "bbaaf7c9ce4e2335bd13a8f7cc794db63a755ac864453ff830eef6a616ce7030",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf41c0.bin": "2307aff51f323c8137ea95ddc8d9df945cdc3ac802754e28cbf81552b45e6af3",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf41c0.c": "1e4848170994cbfc4754d83e74ba96e7cd543c746403449f8b36fe998dc14bd6",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf41c0.info.json": "8dc4da59ec70c14c8167f9f7f4aa47e706fe6ac93a728dbe8913408acb62386e",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf41c0.raw.asm": "8fd151d527f6e5eae4afe420b584a93d5e144313b20dda7935eeb0d913ee686c",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf41c0.refs.json": "e8e0114fed62b33a57f4e5127e88d3aafc46f281540a9b3b2834ec32b2babb47",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.asm.error": "7a3717341356ba3f7a6fe59e8500eba81f290eb92a45208efbaaf606613ceed6",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.bin": "bc0c95c4ad21d9695b899b5c41da11f7691f380f10fc88735386040e4136d604",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.c.error": "1ff762e6391f4be36204e0cda9da1ff1c261d2b85145feddcf6fd8e2dbf64e3d",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.context.asm": "84e3182834ce7d57f80c3a64ddc91dd3f97b7281db3a95d0d1647d05e0609d15",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.context.bin": "6b1429c79d4e1b49507278c3ad7eec8c1ad53bc938fdfb5150d1cb0161e339e1",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.final_definition_check.json": "92fb8e25a14d209f44b384e82569b0bbd31a31c1d5fce7021a907b1d455ddb67",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.info.json": "596d752649cfabe3703e398a69f2e2cba2a9df42e3089d3d42a0e551169192f7",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.raw.asm": "fbe0e1ea6fdd208a4e83621588c55026a14de2dee4d430bcef1ddfe2fa835ff9",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4240.refs.json": "970f04e8d65beb950c11496a0529a423f54901ecab7cbb50484b58db1b3f00d0",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf46b0.asm": "ec3bd62d4e6494a0d0ad42d74520d66759a9828292679e1304d837380b3a9aa9",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf46b0.bin": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf46b0.c": "6b6fc490ed18f5f0c30f21caf5db72988f0023d4be54c29ef4fc7175399c6bf2",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf46b0.info.json": "4efd8730f08409107d87fb4901f260821f8ece7b6e230f0037d2d6676d2563c5",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf46b0.raw.asm": "0250820c37f16a43488e13c1e55837726db73876eb6ec9424c101411d2bbb6d2",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf46b0.refs.json": "cd0931c4966abf910b6dc3475cb650c621a50e23ea3076654b256cb754838b0b",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4b80.asm": "3e96638dccc7b064c17e6113bef4563e03847ab96461cf5aa925230332b42e31",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4b80.c": "f95417904dcc9655198b74dc3a2024a8f8c6d289ab6ba8faf1fc738ca5a58c17",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4b80.info.json": "aa6dc26dcf2a57282a0def4361277f756d340c48fa4c799eb73c082db4ea56e9",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4b80.refs.json": "0e8cd9cc15dc2c9fed2b21911ac14036d1ba7325e2ac5f2f04bd1d4c840f1307",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4c70.asm": "97d764f919986ec6e838dcd337ea760c1d6a60e0350ea5a47b44834b0c10cec6",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4c70.bin": "517e3e32cf7f2b1b7d34965001f4a30b712fb3d73fe3b9d26388d4105dee76df",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4c70.c": "a694690996b1418c905091174188aba2f2e4f0a27769ae34325bf0dce67489be",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4c70.info.json": "ceb2d834112bbb87770804ee1d24e417cb50fd691bbb89fb15908de43b0f3b71",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4c70.raw.asm": "f2acaf754cf387f3f254a7ca80e8e4bd65a5cf74f7a154e1ab55cb398988a496",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4c70.refs.json": "885b52ce9c2bca0e100819a5225cc4723d26689a9dfb361fc6c2d83869232e3e",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4d30.asm": "cecefd575424b60afb0a0eb592a2f2f4b0e479c47d5cc6ebd39320225715fa3a",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4d30.c": "ec1cf05d31dc629bd134efb3d10fcb609ee18a2f689f8fec1b737a968c87b827",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4d30.info.json": "c4b580c79ae645a65a745ce85c5ab8895ae953b7c864b5baffa9ca72c91e4580",
+    "exports/bsp/parallel_vfs_pending_lifetime/00bf4d30.refs.json": "0a5e85fe1b2ad3a7d22ba9dd9c13ee80e0aae382f2a397f819e2ef3b47aa533a",
+    "exports/bsp/parallel_vfs_pending_lifetime/00d69168.context.bin": "70c511133633152682ae61b98266fb87d92e03ccc61143b5f476213d7b30e58e",
+    "exports/bsp/parallel_vfs_pending_lifetime/00d69168.refs.json": "64d05956bccfa8121d88c1bf28f57042d803469f2206f4235dcb58946db87f0f",
+    "exports/bsp/parallel_vfs_pending_lifetime/00d69190.refs.json": "005ba9509c0b47c5775c7e06101c02403feb3771604228448585c3d628fd1906",
+    "exports/bsp/parallel_vfs_pending_lifetime/complete_body_verification.json": "ad867bf409c4b75809f88110cf4001735e496f6fdf50f45900e0a6c706cda58f",
+    "exports/bsp/parallel_vfs_pending_lifetime/data_verification.json": "3330f5abf0b084f9d0b5217df9eda1ef390ea77a89627ca8ccacd05141f40b10",
+    "exports/bsp/parallel_vfs_pending_lifetime/initial_context_verification.json": "892cb6410a46c4ef3d15e2d669672b51ad406d6982a47c9db532f3f407e04fbf",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch1.json": "b3230a91a2d0d9c28135f31a96de26a9333ccb271503fdd064e01b93d0d68a6e",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch2.json": "b3230a91a2d0d9c28135f31a96de26a9333ccb271503fdd064e01b93d0d68a6e",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch3.json": "b3230a91a2d0d9c28135f31a96de26a9333ccb271503fdd064e01b93d0d68a6e",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch4.json": "b3230a91a2d0d9c28135f31a96de26a9333ccb271503fdd064e01b93d0d68a6e",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch5.json": "b3230a91a2d0d9c28135f31a96de26a9333ccb271503fdd064e01b93d0d68a6e",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch6.json": "2bd9de9b6eff53e6a6000bc62200b7cc7f9990c2af20f6422966b288d211c9f3",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch7.json": "04b820658cf281ac69f5168897c65084df3d83557721db98f99f81127036fb6f",
+    "exports/bsp/parallel_vfs_pending_lifetime/target_batch8.json": "04b820658cf281ac69f5168897c65084df3d83557721db98f99f81127036fb6f"
+  },
+  "input_document_hashes": {
+    "docs/VFS_PENDING_DISPATCH.md": "b047e971f4504867cbf67e7d8f1808a24c4ef4ed8e7e9844314924a9830d4193",
+    "reports/vfs_pending_dispatch_audit.json": "4eff2aafb52a5a949cf010afba15f189e2de90595be507485329740f51544f7a",
+    "docs/VFS_PROVIDER_FLAGS.md": "deb5022765d0e1090c01c1b9c56e417f220cd8857fce9dd41221d2191a6fe844"
+  }
+}

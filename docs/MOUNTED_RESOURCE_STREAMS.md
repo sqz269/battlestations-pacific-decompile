@@ -1,22 +1,25 @@
 # Mounted resource streams and font loading
 
 Mounted physical and FileStore providers now supply retained memory streams to
-font and shader loading. The current Win32 build and full D3D9 probe pass.
-After explicit cache priming, the font load records **three FileStore opens,
-zero physical opens and three cache entries**, followed by retained atlas
+font and shader loading. The Win32 build and full D3D9 probe pass.
+After native startup script population and explicit font priming, the font load
+records **three FileStore opens, zero physical opens and eight cache entries**
+(five scripts plus three font resources), followed by retained atlas
 recreation and a successful installed-source glyph A draw: 74 nonblack pixels,
 zero outside the expected bounds, target/depth/state restored.
 
-The output is in [mounted_stream_font_probe.txt](../reports/mounted_stream_font_probe.txt).
+The original integration output is in [mounted_stream_font_probe.txt](../reports/mounted_stream_font_probe.txt).
+The subsequent startup policy integration is recorded in
+[STARTUP_SCRIPT_PRELOAD.md](STARTUP_SCRIPT_PRELOAD.md) and its linked probe output.
 Native byte identities and ABI evidence are recorded in
 [mounted_stream_audit.json](../reports/mounted_stream_audit.json), with assembly
 exports under `exports/bsp/mounted_streams/`. This validates the typed
-mounted-stream integration, not the original game's preload policy, archive
+mounted-stream integration, not complete original startup execution, archive
 contents, renderer cache identity or gameplay behavior.
 
 ## Open ordering and aliases
 
-`open_resource_memory_00bdf310_fragment` projects read-only flags 2 from native
+`open_resource_memory_00bdf310_fragment` projects observed read-only flags 2/0x32 from native
 manager `00bdf310` and its `00bda690` provider callback. The native open ABI is
 ECX manager, name and flags on the stack, EAX stream, RET 8. The host accepts
 an explicit `VfsMountContext`, validates strings and operation callbacks, and
@@ -55,7 +58,7 @@ handle closes after conversion. It records a successful underlying open
 independently of subsequent conversion status.
 
 `bind_file_store_fragment` captures a shared `FileStore`, uses its existing
-membership/logical-resolution routines, and opens with flags 2 through
+membership/logical-resolution routines, and passes the original flags 2/0x32 through
 `open_00be5fa0`. Each hit returns a fresh zero-cursor memory wrapper sharing
 the stored backing. FileStore insertion retains a wrapper; open clones do not
 consume that stored cursor and can outlive the store.
@@ -78,7 +81,7 @@ push flags/name to manager virtual `+4`, followed by memory conversion
 at `00be7b17` is `c2 08 00`. The complete 106-byte body retains SHA-256
 `7b91fe3afa47a5a50baa1944ac0ce230a16cc5baba7ed3d322efdf6a31384e9b`.
 
-`cache_resource_00be7ab0_fragment` fixes flags to 2. It opens before duplicate
+`cache_resource_00be7ab0_fragment` forwards explicit flags 2/0x32. It opens before duplicate
 insertion is checked, requires a complete returned stream, creates a reset
 wrapper sharing that backing, and calls `add_file_00be7760` with the original
 supplied name. Thus it does not adopt an alias target as the cache key merely
@@ -108,8 +111,9 @@ loading. The subsequent observed names are:
 
 The three-open counters cover GFX/alpha/DAT loading **after priming**, not all
 physical I/O in the run. Explicitly choosing these priming requests tests the
-cache connection; it does not recover native startup preload selection or
-prove every shader came from FileStore.
+cache connection; it does not establish native font preload selection or
+prove every shader came from FileStore. The separately recovered five startup
+script requests now execute before this diagnostic font priming.
 
 `FontStreamResolver` now supplies those streams directly. Image loading keeps
 a fresh reset wrapper sharing backing for D3D9 recreation; DAT decoding uses
@@ -121,6 +125,6 @@ a host difference. The installed bilinear shader is generated and compiled
 from its real Lua source, then drawn through the existing geometry, material,
 buffer and constant paths.
 
-MPKG enumeration/compression/source slices, native preload choice, full manager
+MPKG enumeration/compression/entry sources, remaining preload triggers, full manager
 teardown, renderer cache lifecycle and original-game visual parity remain
 unresolved. No new test target or suite was added for this integration.

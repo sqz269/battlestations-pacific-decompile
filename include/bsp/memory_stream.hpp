@@ -39,6 +39,8 @@ public:
 private:
     friend bool memory_stream_from_physical_00bef750_fragment(
         PhysicalFile&, MemoryStream&, DWORD&) noexcept;
+    friend bool memory_stream_from_bytes_00befa40_fragment(
+        const void*, std::uint32_t, MemoryStream&, DWORD&) noexcept;
     std::shared_ptr<MemoryStreamBacking> backing_;
     std::uint32_t cursor_{};
 };
@@ -49,4 +51,12 @@ private:
 // pre-read failures leave output unchanged. Does not close the source file.
 bool memory_stream_from_physical_00bef750_fragment(PhysicalFile& source,
     MemoryStream& output, DWORD& error) noexcept;
+
+//00befa40: native ECX source pointer; size low/high stack, high ignored, RET8.
+// Copy into independent backing and return a fresh cursor0 wrapper. Host domain
+// requires readable nonnull source and1..INT32_MAX bytes; output is unchanged on
+// failure. This typed API accepts the low count explicitly and omits native SEH,
+// allocator/refcount ABI and zero/negative-size paths. Source may alias output.
+bool memory_stream_from_bytes_00befa40_fragment(const void* source,
+    std::uint32_t byte_count, MemoryStream& output, DWORD& error) noexcept;
 }

@@ -8,8 +8,12 @@ VfsMount bind_physical_directory_fragment(std::string prefix,
     return {std::move(prefix),
         [directory](const std::string& name) { return directory->exists_00bf3f70_fragment(name); },
         [directory](const std::string& name, std::string& output) { return directory->resolve_00bf0fb0(name, output); },
-        [directory](const std::string& name) {
+        [directory](const std::string& name, std::uint32_t flags) {
             VfsMemoryOpen result;
+            if (flags != 2 && flags != 0x32) {
+                result.error = "Unsupported physical read flags.";
+                return result;
+            }
             std::string path;
             if (!directory->build_path_00bf3970(name, path)) {
                 result.error = "Unsupported physical provider path.";
@@ -17,6 +21,8 @@ VfsMount bind_physical_directory_fragment(std::string prefix,
             }
             PhysicalFile file;
             DWORD failure{};
+            // Verified00bf4ba0/00bf5590/00bf52a0: these two exact modes
+            // produce identical CreateFileA arguments and success branches.
             const bool opened = file.open_read_only_00bf52a0_fragment(path.c_str(), failure);
             result.provider_opened = file.valid_00bf5020();
             if (!opened) {
@@ -37,14 +43,16 @@ VfsMount bind_file_store_fragment(std::string prefix, const std::shared_ptr<File
     return {std::move(prefix),
         [store](const std::string& name) { return store->exists_00be5c00(name); },
         [store](const std::string& name, std::string& output) { return store->resolve_00bf0fb0(name, output); },
-        [store](const std::string& name) {
-            auto stream = store->open_00be5fa0(name, 2);
+        [store](const std::string& name, std::uint32_t flags) {
+            if (flags != 2 && flags != 0x32)
+                return VfsMemoryOpen{false, {}, "Unsupported FileStore read flags."};
+            auto stream = store->open_00be5fa0(name, flags);
             return VfsMemoryOpen{stream != nullptr, std::move(stream), {}};
         }};
 }
 bool cache_resource_00be7ab0_fragment(FileStore& store, VfsMountContext& mounts,
-    const std::string& name, std::string& error) {
-    auto opened = open_resource_memory_00bdf310_fragment(mounts, name);
+    const std::string& name, std::uint32_t flags, std::string& error) {
+    auto opened = open_resource_memory_00bdf310_fragment(mounts, name, flags);
     if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
         error = opened.error.empty() ? "Cache source unavailable or incomplete: " + name : std::move(opened.error);
         return false;

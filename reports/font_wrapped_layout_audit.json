@@ -1,0 +1,275 @@
+{
+  "utc": "2026-09-09T21:30:55.671493+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "image_base": "00400000",
+  "language": "x86:LE:32:default",
+  "abi": "ECX native text context; stack UTF16 string wrapper and draw section; RET8; side effects, no established return value.",
+  "fresh_code_identity": {
+    "start": "00aba270",
+    "end_exclusive": "00aba8c7",
+    "bytes": 1623,
+    "sha256": "4c435d42b8c60f1eeab6987c2530b1bd54216c74c9d1b325f0f491f8d114d54b",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "matches_disk": true
+  },
+  "fresh_vertical_loop_identity": {
+    "start": "00aba860",
+    "end_exclusive": "00aba8a9",
+    "bytes": 73,
+    "sha256": "f74a27e4963074980ae1b0ac480bb1e2624c37e9750270a09ccd9e1980080e17",
+    "matches_disk": true,
+    "source": "Slice of freshly compared complete00aba270 body; covers post-normalization vertex-y adjustment loop."
+  },
+  "evidence_directory": "exports/bsp/parallel_font_wrapped",
+  "constants_prior_verified": [
+    {
+      "address": "00cec380",
+      "bytes": 8,
+      "type": "d",
+      "hex": "0000000000008e40",
+      "value": 960.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00cef1b8",
+      "bytes": 8,
+      "type": "d",
+      "hex": "0000000000808640",
+      "value": 720.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce3978",
+      "bytes": 4,
+      "type": "f",
+      "hex": "0000804f",
+      "value": 4294967296.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00d7a210",
+      "bytes": 8,
+      "type": "d",
+      "hex": "000000000000f03f",
+      "value": 1.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce6618",
+      "bytes": 8,
+      "type": "d",
+      "hex": "000000403333c33f",
+      "value": 0.15000000596046448,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00d7a280",
+      "bytes": 8,
+      "type": "d",
+      "hex": "000000000000e03f",
+      "value": 0.5,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00d7a2b0",
+      "bytes": 8,
+      "type": "d",
+      "hex": "0000000000000840",
+      "value": 3.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce4970",
+      "bytes": 4,
+      "type": "f",
+      "hex": "f9021550",
+      "value": 10000000000.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce4adc",
+      "bytes": 4,
+      "type": "f",
+      "hex": "f90215d0",
+      "value": -10000000000.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00f8be50",
+      "bytes": 2,
+      "type": "H",
+      "hex": "0000",
+      "value": 0,
+      "disk_backed": false,
+      "matches_pe_zero_fill": true
+    },
+    {
+      "address": "00e12fd4",
+      "bytes": 4,
+      "type": "f",
+      "hex": "0000403f",
+      "value": 0.75,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    }
+  ],
+  "constants_scope": "Earlier parent-approved live/disk comparisons retained in same task; no new out-of-partition data read. Mutable scale is supplied explicitly.",
+  "functions": [
+    {
+      "host_name": "build_font_wrapped_00aba270_fragment",
+      "native_address": "00aba270",
+      "kind": "scalar projection of portions of complete function",
+      "does_not_reproduce": [
+        "native string assignment",
+        "optional child cleanup",
+        "material retain/bind",
+        "native stream lock/unlock",
+        "native renderer lifetime"
+      ]
+    },
+    {
+      "host_name": "apply_font_wrapped_vertical_offset_00aba860_fragment",
+      "native_address": "00aba860",
+      "kind": "scalar y arithmetic inside existing function, not a separate native entrypoint",
+      "ghidra_function_creation_requested": false
+    }
+  ],
+  "instruction_groups": [
+    {
+      "start": "00aba284",
+      "end_inclusive": "00aba29c",
+      "behavior": "Signed16 font height to float via CVTSI2SS; retain unsigned low word for quad writer."
+    },
+    {
+      "start": "00aba32a",
+      "end_inclusive": "00aba39d",
+      "behavior": "Width FMUL double960; temporarily truncating FISTP qword; low DWORD; restore x87 control word."
+    },
+    {
+      "start": "00aba3e3",
+      "end_inclusive": "00aba427",
+      "behavior": "Skip literal leading spaces except left alignment at original start/afterLF."
+    },
+    {
+      "start": "00aba465",
+      "end_inclusive": "00aba4c6",
+      "behavior": "Unsigned glyph advance times scale plus prior scan width; extended comparison before accepted float spill."
+    },
+    {
+      "start": "00aba4cd",
+      "end_inclusive": "00aba534",
+      "behavior": "Scan rewind/count/raw-space subtraction; unchanged last-space pointer; emission endpoint and CVTTSS2SI saved width."
+    },
+    {
+      "start": "00aba53a",
+      "end_inclusive": "00aba62f",
+      "behavior": "Per-line alignment, modular DWORD slack, unsigned x87 conversion, unscaled natural/justified space gap."
+    },
+    {
+      "start": "00aba645",
+      "end_inclusive": "00aba6f3",
+      "behavior": "Line bottom float spill and min/max rawy extent update for emitted glyphs."
+    },
+    {
+      "start": "00aba73d",
+      "end_inclusive": "00aba79b",
+      "behavior": "Scaled nonspace pen advance but unscaled metric; chosen space gap for both; per-line metric max."
+    },
+    {
+      "start": "00aba7a3",
+      "end_inclusive": "00aba7ca",
+      "behavior": "Exact distance+1-double0.15000000596046448 times signed height plus y; float spill, processed-line count."
+    },
+    {
+      "start": "00aba7dc",
+      "end_inclusive": "00aba841",
+      "behavior": "Raw extent spill; extended divide720 then scale; normalized extent spill; centered/bottom offset."
+    },
+    {
+      "start": "00aba843",
+      "end_inclusive": "00aba859",
+      "behavior": "Native low16 quadcount narrowing; host avoids wrap with16384 cap."
+    },
+    {
+      "start": "00aba860",
+      "end_inclusive": "00aba8a8",
+      "behavior": "After quad normalization, add normalized vertical offset to each vertexy with float spill/reload/store."
+    }
+  ],
+  "reviewed_endpoint_rules": [
+    "scan begins at line start after conditional literal-space skip; first NUL treated as string end",
+    "while current not NUL/LF: compare extended scaled next width against unsigned-converted container before float spill",
+    "on overflowing space decrement scan before postscan; on other overflow leave scan at overflowing unit",
+    "if an accepted nonspace exists and current scan unit is space: decrement scan, decrement accepted-space count and subtract unscaled space advance from saved width until current not space",
+    "last-space pointer is not updated by that rewind",
+    "next=start of next emission pass: if stopNUL use scan; if stopLF or accepted-space count0 use scan+1; otherwise use last_accepted_space+1",
+    "saved width is overwritten by CVTTSS2SI full accepted scan width if saved value0 or stopNUL/LF",
+    "emission processes every code unit through next pointer, including LF and overflowed unbroken-word code unit"
+  ],
+  "important_asymmetries": [
+    "LF terminates scanner but reaches emission and uses scaled nonspace pen branch despite selecting space/LF payload.",
+    "CR does not terminate scanner.",
+    "Only literal0020 is a whitespace gap; tabs use ordinary glyph lookup.",
+    "Scanner scales spaces; emitted spaces use unscaled natural or justified gap.",
+    "Emitted-line width adds raw nonspace advances, not scaled pen advances.",
+    "Backward scanner adjustment does not change last-space pointer, so emission can retain those spaces.",
+    "Alignment saved width is signed32 CVTTSS2SI then modular DWORD subtraction; it is not direct float slack.",
+    "Line-height arithmetic uses signed font height; quad uses low unsigned16.",
+    "Vertical offset is applied after geometry normalization."
+  ],
+  "host_domain": [
+    "finite inputs and spilled floating results",
+    "signed64 container product range checked before FISTP",
+    "signed32 scan-width conversion range checked before CVTTSS2SI",
+    "horizontal modes0..3,vertical modes0..2",
+    "nonempty input and at least one emitted code unit",
+    "input/emission<=min(max_glyphs,16384),processed lines<=min(max_lines,16384)",
+    "no input-pointer underflow,space-counter underflow or non-progress emission endpoint",
+    "reject soft justified count1 division; preserve count0 zero gap",
+    "output transactional; input unchanged; allocation exceptions propagate"
+  ],
+  "output_contract": {
+    "placements": "Owned existing FontGlyphPlacement records, raw coordinates, original code units after caller preprocessing.",
+    "line_count": "lines.size(), including possible zero-placement terminal-space iteration.",
+    "line_metric": "Unscaled nonspace advances plus chosen space gaps.",
+    "measured_width": "Maximum line metric starting0 as native caller initializes+114.",
+    "measured_height": "max_y-min_y with native sentinels for contributing emitted lines.",
+    "normalized_height": "float((raw_extent/720)*vertical_scale) with native extended arithmetic.",
+    "vertical_offset": "float aligned normalized container difference; apply to normalized quad y values via helper."
+  },
+  "ghidra": {
+    "existing_name": "BSP_TextContext_BuildGlyphGeometry",
+    "proposed_name": "BSP_TextContext_BuildGlyphGeometry",
+    "old_comment_blocks_from_fresh_decompiler": [
+      "/* [BSP reconstruction 00aba270]\n   Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8;\n   decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20\n   material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid\n   layout/batching. Full native ownership and text renderer remain unported;\n   docs/FONT_MATERIAL_BINDINGS.md.\n   \n   [BSP reconstruction 00aba270] update\n   Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8;\n   decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20\n   material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid\n   layout/batching. Full native ownership and text renderer remain unported;\n   docs/FONT_MATERIAL_BINDINGS.md. Additional read-only layout evidence: ECX context plus UTF16\n   wrapper/draw section, RET8. LF terminates scan but is included in emission interval; CR is not a\n   break. Scanning scales all unsigned advances, emission uses unscaled natural/justified space\n   spacing and scaled nonspaces. Emitted-line metric+114 adds unscaled nonspaces. Justification\n   divides by accepted_spaces-1, guarding only zero count. Line\n   y=((spacing+double1)-double0.15000000596046448)*signed_font_height+old_y. Final quad count\n   narrows low16. Preserve these quirks; no generic word-wrap equivalence.\n   docs/FONT_LAYOUT_BOUNDARY.md;1623 bytes match PE. */"
+    ],
+    "suggested_append_comment": "Scalar wrapped layout implemented with explicit safe domain in font_wrapped_layout.cpp. LF stays in emission and uses scaled nonspace advance; literal space emission uses unscaled/justified gap while scanner scales it. Scan rewind leaves last-space pointer unchanged. Integer saved widths/modular slack, raw emitted metric and x87 vertical spills retained. Host rejects non-progress/out-of-bounds endpoints, no-emission input and justified count1 divide-by-zero. Final normalized-y addition is a helper projection of interior00aba860, not a new native function. Full1623-byte body matches PE; docs/FONT_WRAPPED_LAYOUT.md.",
+    "mutation_performed": false
+  },
+  "validation": {
+    "fresh_complete_byte_match": true,
+    "assembly_review": true,
+    "source_implemented": true,
+    "build": "Parent integration pending at worker handoff",
+    "tests_added": false,
+    "native_differential": "not performed",
+    "game_validation": "not performed"
+  },
+  "files_owned": [
+    "include/bsp/font_wrapped_layout.hpp",
+    "src/font_wrapped_layout.cpp",
+    "docs/FONT_WRAPPED_LAYOUT.md",
+    "reports/font_wrapped_layout_audit.json"
+  ]
+}

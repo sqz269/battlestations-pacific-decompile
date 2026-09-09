@@ -24,9 +24,11 @@ struct VfsMount {
     // logical name, not a physical filename. Callbacks must not mutate mounts.
     std::function<bool(const std::string&)> exists;
     std::function<bool(const std::string&, std::string&)> resolve;
-    // Provider +8 restricted to read-only flags=2, followed by a memory view.
+    // Provider +8 restricted to observed read-only flags2/0x32, followed by a
+    // memory view. Callbacks receive the original flags; each provider must
+    // establish support rather than assume all read-only modes are equivalent.
     // The provider adapter reports conversion failure separately from no open.
-    std::function<VfsMemoryOpen(const std::string&)> open_read_only;
+    std::function<VfsMemoryOpen(const std::string&, std::uint32_t)> open_read_only;
 };
 struct VfsMountContext {
     // Supplied native iteration order; vfs_mount_registration builds this view.
@@ -49,5 +51,7 @@ bool apply_resource_alias_00bdca80_fragment(const std::vector<VfsAlias>&, std::s
 // Read-only fragment of00bdf310/00bda690 plus provider-to-memory adapters.
 // Normalize copy, apply one alias, visit mounts, stop at first underlying open.
 // Source name untouched. Native tracking/logging/error callbacks are excluded.
-VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext&, const std::string&);
+// Other flag values are outside the recovered host domain and rejected.
+VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext&,
+    const std::string&, std::uint32_t flags = 2);
 }
