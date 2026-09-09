@@ -953,5 +953,20 @@
     "address": "00b60cb0",
     "name": "BSP_D3D9VertexLayout_ConstructFromStreams",
     "evidence": "Constructor calls base00b48c00, clears native declaration+40h, installs vtable00d62af4 and calls creation00b60790. Vtable+8 is direct getter00b5ff00. Descriptive name; full native constructor/registry lifetime not ported."
+  },
+  {
+    "address": "00b34aa0",
+    "name": "BSP_ShaderBuilder_AppendInterpolatorMapping",
+    "evidence": "Thiscall RET4. Starts field1, appends TEXCOORD/COLOR mapping bytes for mask bits0..3, ignores component count and semantic index. Low byte field index; last FOG replaces two-byte mapping at+6Ch. No clear. Typed vector port; sparse-mask/register-crossing shader compile checked. See docs/SHADER_INTERPOLATORS.md. Native ABI/allocator and full shader generator remain unported."
+  },
+  {
+    "address": "00b36e30",
+    "name": "BSP_ShaderBuilder_AppendInterpolatorStruct",
+    "evidence": "Thiscall RET0Ch position/fog/vPos flags. Emits sInterpolators with groups of four TEXCOORD/COLOR components; updates counts/final widths at+7Ch..88h. Empty last width4; Fog mapping sentinelFF; vPos eitherdescriptor+30h. Typed bounded count port; generated ps_2_0 compile and real binding checked. See docs/SHADER_INTERPOLATORS.md. Native ABI/allocator and full shader generator remain unported."
+  },
+  {
+    "address": "00b37000",
+    "name": "BSP_ShaderBuilder_AppendInterpolatorUnpack",
+    "evidence": "Thiscall RET4 field list. Emits UnpackInterpolators assignments TEXCOORD then COLOR, source register index/4 channel index%4, destination stored field/component. FOG copies or zeroes accordingto+98h, vPos eitherdescriptor+30h. Unmapped values uninitialized. Typed bounds checks are new interface behavior; generated ps_2_0 compile and binding checked. See docs/SHADER_INTERPOLATORS.md. Native ABI/allocator and full shader generator remain unported."
   }
 ]

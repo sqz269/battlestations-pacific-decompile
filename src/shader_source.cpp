@@ -3,6 +3,88 @@
 #include <utility>
 
 namespace bsp {
+void append_interpolator_mapping_00b34aa0(const std::vector<ShaderField>& fields,
+    ShaderInterpolatorLayout& layout) {
+    for (std::size_t i = 1; i < fields.size(); ++i) {
+        const auto& field = fields[i];
+        auto* target = field.semantic == ShaderSemantic::texcoord ? &layout.texcoords
+            : field.semantic == ShaderSemantic::color ? &layout.colors : nullptr;
+        if (target) {
+            for (std::uint8_t component = 0; component < 4; ++component) {
+                if (field.component_mask & (1u << component))
+                    target->push_back({static_cast<std::uint8_t>(i), component});
+            }
+        } else if (field.semantic == ShaderSemantic::fog) {
+            layout.fog = {static_cast<std::uint8_t>(i), 0};
+        }
+    }
+}
+
+ShaderSourceStatus append_interpolator_struct_00b36e30(ShaderInterpolatorLayout& layout,
+    const ShaderInterpolatorOptions& options, std::string& output) {
+    // Native signed (count+3)/4; restrict the new interface to non-overflow counts.
+    if (layout.texcoords.size() > 0x7ffffffcu || layout.colors.size() > 0x7ffffffcu)
+        return ShaderSourceStatus::invalid_packing;
+    std::string result("\nstruct sInterpolators\n{\n");
+    if (options.include_position) result += "\tfloat4 Position\t: POSITION0;\n";
+    auto emit = [&](std::size_t count, const char* name, const char* semantic) {
+        const auto registers = static_cast<std::uint32_t>((count + 3) / 4);
+        const auto last = static_cast<std::uint32_t>(count % 4 ? count % 4 : 4);
+        for (std::uint32_t i = 0; i < registers; ++i) {
+            result += "\tfloat" + std::to_string(i + 1 == registers ? last : 4);
+            result += ' '; result += name; result += std::to_string(i);
+            result += "\t: "; result += semantic; result += std::to_string(i);
+            result += ";\n";
+        }
+    };
+    emit(layout.texcoords.size(), "TexCoord", "TEXCOORD");
+    emit(layout.colors.size(), "Color", "COLOR");
+    if (layout.fog.field != 0xff && options.include_fog) result += "\tfloat  Fog\t: FOG;\n";
+    if (options.allow_vpos && (options.base_descriptor_vpos || options.effect_descriptor_vpos))
+        result += "\tfloat2  vPos\t: VPOS;\n";
+    result += "};\n\n";
+    output += result;
+    layout.texcoord_registers = static_cast<std::uint32_t>((layout.texcoords.size() + 3) / 4);
+    layout.texcoord_last_width = static_cast<std::uint32_t>(layout.texcoords.size() % 4 ? layout.texcoords.size() % 4 : 4);
+    layout.color_registers = static_cast<std::uint32_t>((layout.colors.size() + 3) / 4);
+    layout.color_last_width = static_cast<std::uint32_t>(layout.colors.size() % 4 ? layout.colors.size() % 4 : 4);
+    return ShaderSourceStatus::complete;
+}
+
+ShaderSourceStatus append_interpolator_unpack_00b37000(const std::vector<ShaderField>& fields,
+    const ShaderInterpolatorLayout& layout, const ShaderInterpolatorOptions& options,
+    std::string& output) {
+    for (const auto* components : {&layout.texcoords, &layout.colors}) {
+        for (const auto& entry : *components) {
+            if (entry.field >= fields.size() || entry.component >= 4)
+                return ShaderSourceStatus::invalid_packing;
+        }
+    }
+    if (layout.fog.field != 0xff && layout.fog.field >= fields.size())
+        return ShaderSourceStatus::invalid_packing;
+    std::string result("\nsPixelIn UnpackInterpolators(sInterpolators INT)\n{\n\t\tsPixelIn PixelIn;\n\n");
+    auto emit = [&](const std::vector<ShaderPackedComponent>& components, const char* source) {
+        static constexpr char channels[] = "xyzw";
+        for (std::size_t i = 0; i < components.size(); ++i) {
+            const auto& entry = components[i];
+            result += "\t\tPixelIn."; result += fields[entry.field].name.c_str();
+            result += '.'; result += channels[entry.component]; result += " = INT.";
+            result += source; result += std::to_string(i / 4); result += '.';
+            result += channels[i % 4]; result += ";\n";
+        }
+    };
+    emit(layout.texcoords, "TexCoord"); emit(layout.colors, "Color");
+    if (layout.fog.field != 0xff) {
+        result += "\t\tPixelIn."; result += fields[layout.fog.field].name.c_str();
+        result += options.zero_fog ? " = 0;\n" : " = INT.Fog;\n";
+    }
+    if (options.base_descriptor_vpos || options.effect_descriptor_vpos)
+        result += "\t\tPixelIn.vPos = INT.vPos;\n";
+    result += "\t\treturn PixelIn;\n}\n";
+    output += result;
+    return ShaderSourceStatus::complete;
+}
+
 ShaderSourceStatus format_shader_field_00b385b0(const ShaderField& field,
     bool include_semantic, std::string& output) {
     const char* type = nullptr;

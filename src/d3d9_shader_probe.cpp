@@ -42,8 +42,35 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     declarations += "float4 main(ProbeInput IN) : POSITION { return IN.Position; }";
     HRESULT result = declaration_matches
         ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
-    if (SUCCEEDED(result)) result = assemble_host_shader(
-        "float4 main() : COLOR { return float4(0,1,0,1); }", "ps_2_0", &pixel_code);
+    // Exercise native component packing across a register boundary, followed
+    // by generated declarations and unpack code in the existing compile probe.
+    bsp::ShaderField uv; uv.name = "UV"; uv.component_count = 4;
+    uv.semantic = bsp::ShaderSemantic::texcoord; uv.component_mask = 5;
+    bsp::ShaderField extra = uv; extra.name = "Extra"; extra.component_mask = 15;
+    bsp::ShaderField color; color.name = "Color"; color.component_count = 4;
+    color.semantic = bsp::ShaderSemantic::color;
+    const std::vector<bsp::ShaderField> fields{position, uv, extra, color};
+    bsp::ShaderInterpolatorLayout interpolators;
+    bsp::append_interpolator_mapping_00b34aa0(fields, interpolators);
+    bsp::ShaderInterpolatorOptions interpolator_options;
+    bsp::ShaderStructOptions pixel_options; pixel_options.first_field = 1;
+    std::string pixel_source;
+    const bool pixel_generated = bsp::append_shader_struct_00b38b50("sPixelIn", fields,
+        pixel_options, pixel_source) == bsp::ShaderSourceStatus::complete
+        && bsp::append_interpolator_struct_00b36e30(interpolators, interpolator_options,
+            pixel_source) == bsp::ShaderSourceStatus::complete
+        && bsp::append_interpolator_unpack_00b37000(fields, interpolators, interpolator_options,
+            pixel_source) == bsp::ShaderSourceStatus::complete;
+    const bool packing_matches = interpolators.texcoords.size() == 6
+        && interpolators.colors.size() == 4 && interpolators.texcoord_registers == 2
+        && interpolators.texcoord_last_width == 2 && interpolators.color_registers == 1
+        && interpolators.color_last_width == 4
+        && pixel_source.find("PixelIn.UV.z = INT.TexCoord0.y;") != std::string::npos
+        && pixel_source.find("PixelIn.Extra.z = INT.TexCoord1.x;") != std::string::npos;
+    pixel_source += "float4 main(sInterpolators INT) : COLOR { sPixelIn IN = UnpackInterpolators(INT); "
+        "return float4(IN.UV.x, IN.UV.z, IN.Extra.z, IN.Color.w); }";
+    if (SUCCEEDED(result)) result = pixel_generated && packing_matches
+        ? assemble_host_shader(pixel_source.c_str(), "ps_2_0", &pixel_code) : E_FAIL;
     if (SUCCEEDED(result)) result = vertex_code
         ? device.CreateVertexShader(static_cast<const DWORD*>(vertex_code->GetBufferPointer()), &vertex) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_code

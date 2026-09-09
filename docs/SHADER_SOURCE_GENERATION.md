@@ -162,3 +162,8 @@ atlas integration probe.
 The complete shader generator remains unported. Unsupported enum and optional
 vPos branches are implemented but not exhaustively validated; no broad test
 suite was added. See reports/gui_shader_integration_validation.json.
+
+Interpolator follow-up: `00b34aa0`, `00b36e30` and `00b37000` now have typed
+implementations and a generated pixel-shader compilation/binding check in the
+existing probe. See `SHADER_INTERPOLATORS.md` for the append semantics, component
+mapping, register widths, ABI boundaries and remaining generator dependencies.

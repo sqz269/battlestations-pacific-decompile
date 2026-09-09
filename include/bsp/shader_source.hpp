@@ -17,9 +17,35 @@ struct ShaderField {
     std::uint32_t component_count{1}; // +Ch; unsigned decimal suffix only if >1.
     ShaderSemantic semantic{ShaderSemantic::position}; // +14h.
     std::uint32_t semantic_index{}; // +18h; unsigned decimal, including zero.
+    std::uint32_t component_mask{0xf}; // +10h; packing consumes low four bits.
 };
 
-enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic };
+enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic, invalid_packing };
+
+struct ShaderPackedComponent {
+    std::uint8_t field{}, component{};
+};
+struct ShaderInterpolatorLayout {
+    std::vector<ShaderPackedComponent> texcoords, colors; // Builder +54h, +60h.
+    ShaderPackedComponent fog{0xff, 0}; // +6Ch; field FF means absent.
+    std::uint32_t texcoord_registers{}, texcoord_last_width{4}; // +7Ch, +80h.
+    std::uint32_t color_registers{}, color_last_width{4}; // +84h, +88h.
+};
+struct ShaderInterpolatorOptions {
+    bool include_position{}, include_fog{}, allow_vpos{};
+    bool base_descriptor_vpos{}, effect_descriptor_vpos{};
+    bool zero_fog{}; // Builder +98h, consumed by unpacking only.
+};
+// Native thiscall RET4: appends without clearing; skips field zero, ignores
+// component_count, truncates field indices to a byte; last FOG field wins.
+void append_interpolator_mapping_00b34aa0(const std::vector<ShaderField>&,
+    ShaderInterpolatorLayout&);
+// Native thiscall RET0Ch / RET4. New typed APIs append source. Invalid counts
+// or consumed mapping references leave source/metadata unchanged. No allocator ABI.
+ShaderSourceStatus append_interpolator_struct_00b36e30(ShaderInterpolatorLayout&,
+    const ShaderInterpolatorOptions&, std::string& output);
+ShaderSourceStatus append_interpolator_unpack_00b37000(const std::vector<ShaderField>&,
+    const ShaderInterpolatorLayout&, const ShaderInterpolatorOptions&, std::string& output);
 
 struct ShaderStructOptions {
     std::uint32_t first_field{};
