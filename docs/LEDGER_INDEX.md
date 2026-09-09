@@ -32,13 +32,22 @@ moves them into shards and removes them; run it before committing if a legacy fi
 
 ## Rules for agents
 
-- Never read a ledger, `config/tags/`, or the docs directory whole. Ask the index:
+- Start a turn with `python tools/bsp.py state`: snapshot, ledger counts, index freshness,
+  git summary and the current work packets on one screen. It replaces re-reading AGENTS.md,
+  ROADMAP and docs for orientation.
+- Never read a ledger, `config/tags/`, an export, or the docs directory whole. Ask the index:
   `python tools/bsp.py lookup <address>` prints one card (name, segment, tag, reviewed name
-  and evidence, reconstruction status and source, callers, callees, strings, docs).
+  and evidence, reconstruction records, callers, callees, strings, docs), and
+  `python tools/bsp.py show <address> [--asm] [--lines N] [--start K]` prints a capped excerpt
+  of the exported pseudocode or listing with its callees named (`--live` fetches an unsaved
+  view when nothing is exported).
+- Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|
+  callees|bytes|decompile|disasm|export ...` (capped, verified project) instead of inline Python.
 - `range`, `callers`, `callees`, `docs-for`, `segment` and `find` are capped by `--limit`;
   raise it deliberately rather than dumping everything.
-- Rebuild the index after a fresh snapshot, a sweep, a partition, or ledger edits:
-  `python tools/bsp.py index` (a few seconds; nothing is authored in it).
+- `python tools/bsp.py snapshot` takes a snapshot and rebuilds the index only when Ghidra's
+  function count changed; `python tools/bsp.py index --if-stale` rebuilds after ledger, sweep,
+  partition or doc changes (a digest of the inputs decides; nothing is authored in the index).
 - New docs get an `Addresses:` line under the title listing the function starts they
   cover, so `docs-for` finds them even when the prose does not repeat every address.
 - Ghidra plate comments remain the copy of the evidence a model sees while decompiling;

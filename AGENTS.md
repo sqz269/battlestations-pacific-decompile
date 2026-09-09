@@ -30,9 +30,26 @@
   (one 64 KB address band per file; see `docs/LEDGER_INDEX.md`). Never read a ledger, the tag
   shards or the docs directory whole: query `python tools/bsp.py lookup <address>` (also `range`,
   `callers`, `callees`, `docs-for`, `segment`, `find`, all capped by `--limit`) and rebuild the
-  index with `python tools/bsp.py index` after snapshots or ledger edits. Add records with
+  index with `python tools/bsp.py index --if-stale` after snapshots or ledger edits. Add records with
   `python tools/bsp.py ledger add-name|add-function|add-fragment`. If a legacy monolithic
   `config/*.json` ledger exists, run `python tools/bsp.py ledger migrate` before committing.
+- Context discipline (measured: whole-file reads were 77% of tool output and the average model call
+  carried 132k tokens; step latency follows context size):
+  - Start a turn with `python tools/bsp.py state` (one screen). Do not re-read AGENTS.md, ROADMAP or
+    docs for orientation; AGENTS.md is injected automatically and `state` lists packets and freshness.
+  - Read code through `python tools/bsp.py show <address>` (capped; `--asm` for the listing, `--start`
+    to page). Take one representation at a time; open the assembly only when the pseudocode shows
+    register inputs, x87, overlapping globals or a suspect no-return. Never `Get-Content`/`cat` a whole
+    export, ledger, functions.json or doc; use `--lines`, `-TotalCount`, or `rg -n -C` on a known term.
+  - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|
+    decompile|disasm|export` instead of inline Python; when a query repeats twice, add a subcommand.
+  - Cap every command's output (`--limit`, `head`, `Select-Object -First`); write anything larger to
+    `local/` and grep it. A truncated output is wasted work.
+  - Take snapshots with `python tools/bsp.py snapshot` (skips unless Ghidra's function count changed).
+  - `git status --short` once per turn; commit in batches and push once per batch, not per commit.
+  - Workers: size a packet to fill a whole turn, start it with `state` plus the packet, and wait for
+    completion notices rather than polling `wait_agent`. Prefer a fresh thread with a short handoff
+    over working near the context window limit.
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
 - Write as few new test cases as possible. Default to adding no tests for routine changes;
