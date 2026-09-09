@@ -1558,5 +1558,35 @@
     "address": "00b2c2d0",
     "name": "BSP_TextureManager_LoadFromFile",
     "evidence": "Initial2D policy00b2c405..00b2c530 nowported: requestedWHFFFFFFFF defaults, unsignedmips>1/nonzeroquality gate, whole_stricmp detail.dds vs casesensitive noseart/gui substrings, SHR(Q&31), fullDWORDmipssubtract,signed>1 clamps. TypedstableQ differs native secondread. InitialCOMcreation fragment usesrealD3DXimageinfo/policy and retainsmemorysource afternonnulloutput; retry/managercache/VFS/nativewrapper remainunported."
+  },
+  {
+    "address": "00b5fe90",
+    "name": "BSP_OcclusionQuery_Construct",
+    "evidence": "ECXwrapper RET, fields+8=1,+C=0,+10null, vtable00d62ad0/intrusivecount1, currentrendererdevice CreateQuery(type9). Typedinitializationfragment explicitstabledevice, nativeallocator/vtable/countomitted; realquerychecked."
+  },
+  {
+    "address": "00b5fe20",
+    "name": "BSP_OcclusionQuery_ReleaseForReset",
+    "evidence": "ECXwrapper RET. Ifquery+10nonnull Releaseonce thennull; no balancedpair, fields+8/+C preserved, noguard/unregister. Realquery resetrelease verified."
+  },
+  {
+    "address": "00b5fe60",
+    "name": "BSP_OcclusionQuery_RestoreAfterReset",
+    "evidence": "ECXwrapper RET,no stackdevice. Currentrenderer singleton devicegetter thenCreateQuery9 into+10; no oldcleanup/HRESULTgate. Typedexplicitstabledevice requiresnullowner/reportsfailure; fields+8/+C unchanged. Realqueryrecreation checked."
+  },
+  {
+    "address": "00b25290",
+    "name": "BSP_QueryPointerArray_RemoveFirst",
+    "evidence": "ECXarray,data/count/capacity; stackpointer-to-target RET4/ALfound. Firstmatch replacewithlast,popcount,no retain/release. Typedborrowedqueryvector port; missingno-op and COMownership checked."
+  },
+  {
+    "address": "00b27cf0",
+    "name": "BSP_D3D9Renderer_UnregisterQuery",
+    "evidence": "ECXrenderer,query stackRET4. Optionalguard thenremove00b25290 on+19A0. Typedguardedregistry projection exposesfoundbool; no native returncontract claimed. No queryrelease here; ownership remainscaller."
+  },
+  {
+    "address": "00b27c20",
+    "name": "BSP_D3D9Renderer_CreateRegisteredQuery",
+    "evidence": "ECXrenderer RET,EAXnewquery. Optionalguard,alloc14h,ctor00b5fe90,appendborrowedpointer+19A0 withoutretain evenCreateQueryfailure. Typedfreshowner creation/appendfragment preservesguard and appends after COMfailure; allocator/intrusiveABI omitted. Full204bytes nowcreated from verifiedrawbody."
   }
 ]

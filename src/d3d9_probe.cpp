@@ -13,6 +13,7 @@
 #include <limits>
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/d3d9_reset_texture.hpp"
+#include "bsp/d3d9_query.hpp"
 #include "bsp/texture_load_policy.hpp"
 #include <d3dx9.h>
 #include "bsp/font_data.hpp"
@@ -606,6 +607,8 @@ int main(int argc, char** argv) {
         bsp::D3D9StateCache cache(*device, synchronization, lock);
         bsp::VertexBufferBinding reset_vertices;
         bsp::IndexBufferBinding reset_indices;
+        bsp::D3D9OcclusionQuery query_a, query_b;
+        bsp::D3D9QueryRegistry queries;
         reset_vertices.flags = reset_indices.flags = 0x1000;
         reset_vertices.capacity = 0x1000000;
         reset_indices.capacity = 0x100000;
@@ -614,6 +617,13 @@ int main(int argc, char** argv) {
             reset_vertices, reset_indices, *device) == S_FALSE
             && !buffers_ready && !reset_vertices.buffer && !reset_indices.buffer;
         result = cache.capture_default_surfaces_00b238d0_fragment(defaults);
+        if (SUCCEEDED(result)) result = cache.create_registered_query_00b27c20_fragment(queries, query_a);
+        if (SUCCEEDED(result)) result = cache.create_registered_query_00b27c20_fragment(queries, query_b);
+        const bool created_queries = SUCCEEDED(result) && queries.size() == 2
+            && query_a.query && query_b.query && query_a.field_08 == 1 && query_a.field_0c == 0
+            && query_b.field_08 == 1 && query_b.field_0c == 0;
+        query_a.field_08 = 7;
+        query_a.field_0c = 123;
         if (SUCCEEDED(result)) result = bsp::restore_dynamic_buffers_00b1fd90(buffers_ready, false,
             reset_vertices, reset_indices, *device);
         auto* const first_vertices = reset_vertices.buffer;
@@ -645,6 +655,8 @@ int main(int argc, char** argv) {
         defaults.release_for_reset_00b262c0_fragment();
         const bool released_defaults = !defaults.color.surface && !defaults.depth.surface
             && defaults.color.width == 640 && defaults.depth.width == 640;
+        queries.release_00b262c0_fragment();
+        const bool released_queries = !query_a.query && !query_b.query && queries.size() == 2;
         if (SUCCEEDED(result)) result = bsp::release_texture_levels_00b3dd30(reset_texture);
         const bool released_texture = !reset_texture.texture && !texture_level0.surface
             && !texture_level1.surface && texture_level0.width == 64 && texture_level1.width == 32;
@@ -653,6 +665,22 @@ int main(int argc, char** argv) {
         if (SUCCEEDED(result)) result = defaults.restore_00b23b10_fragment(*device);
         if (SUCCEEDED(result)) result = bsp::restore_texture_levels_00b3dd90(reset_texture, *device);
         if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        if (SUCCEEDED(result)) result = queries.restore_00b23b10_fragment(*device);
+        const bool restored_queries = SUCCEEDED(result) && created_queries && released_queries
+            && query_a.query && query_b.query
+            && query_a.query->GetType() == D3DQUERYTYPE_OCCLUSION
+            && query_b.query->GetType() == D3DQUERYTYPE_OCCLUSION
+            && query_a.query->GetDataSize() == sizeof(DWORD)
+            && query_b.query->GetDataSize() == sizeof(DWORD)
+            && query_a.field_08 == 7 && query_a.field_0c == 123;
+        const bool removed_queries = cache.unregister_query_00b27cf0(queries, &query_a)
+            && queries.size() == 1 && queries.at(0) == &query_b
+            && !cache.unregister_query_00b27cf0(queries, &query_a)
+            && query_a.query && query_b.query
+            && cache.unregister_query_00b27cf0(queries, &query_b) && queries.size() == 0
+            && lock->depth == 0 && synchronization.nesting == 0;
+        std::printf("Occlusion query reset: real_queries_fields_borrowed_removal_and_guard=%d\n",
+            restored_queries && removed_queries);
         bool restored_texture = SUCCEEDED(result) && released_texture;
         for (const auto& level : reset_texture.levels) {
             IDirect3DSurface9* current_level{};
@@ -697,7 +725,8 @@ int main(int argc, char** argv) {
         D3DSURFACE_DESC color_desc{}, depth_desc{};
         if (SUCCEEDED(result)) result = color.surface->GetDesc(&color_desc);
         if (SUCCEEDED(result)) result = depth.surface->GetDesc(&depth_desc);
-        matched = restored_texture && restored_buffers && restored_defaults && SUCCEEDED(result)
+        matched = restored_queries && removed_queries && restored_texture
+            && restored_buffers && restored_defaults && SUCCEEDED(result)
             && color_desc.Width == 128 && color_desc.Height == 128
             && depth_desc.Width == 128 && depth_desc.Height == 128
             && color_desc.Format == D3DFMT_A8R8G8B8 && depth_desc.Format == D3DFMT_D24S8

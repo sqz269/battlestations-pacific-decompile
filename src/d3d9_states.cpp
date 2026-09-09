@@ -1,5 +1,6 @@
 #include "bsp/d3d9_states.hpp"
 #include "bsp/d3d9_resources.hpp"
+#include "bsp/d3d9_query.hpp"
 #include <cstdlib>
 
 namespace bsp {
@@ -54,6 +55,22 @@ void D3D9StateCache::release_dynamic_buffers_00b237d0(bool& ready,
     VertexBufferBinding& vertices, IndexBufferBinding& indices) {
     Guard guard(*this);
     release_dynamic_buffers_for_reset_00b237d0_fragment(ready, vertices, indices);
+}
+
+HRESULT D3D9StateCache::create_registered_query_00b27c20_fragment(
+    D3D9QueryRegistry& registry, D3D9OcclusionQuery& owner) {
+    Guard guard(*this);
+    if (owner.query) return D3DERR_INVALIDCALL;
+    const auto result = create_occlusion_query_00b5fe90(owner, device_);
+    // Native appends even when CreateQuery failed; HRESULT reporting is added.
+    registry.append_00b27c20_fragment(owner);
+    return result;
+}
+
+bool D3D9StateCache::unregister_query_00b27cf0(D3D9QueryRegistry& registry,
+    const D3D9OcclusionQuery* owner) {
+    Guard guard(*this);
+    return registry.remove_00b25290(owner);
 }
 
 HRESULT D3D9StateCache::capture_default_surfaces_00b238d0_fragment(D3D9DefaultSurfaces& surfaces) {

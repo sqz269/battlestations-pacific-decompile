@@ -1111,6 +1111,38 @@
       "status": "installed_lua_font_name_and_dat_scale_checked",
       "abi_compatible": false,
       "limitations": "Typeddescriptorvector in Lua iteration order; native linkedlist/font ownership and ABI omitted."
+    },
+    {
+      "address": "00b5fe20",
+      "name": "BSP_OcclusionQuery_ReleaseForReset",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_reset_borrowed_removal_and_guard_checked",
+      "abi_compatible": false,
+      "limitations": "Typedexplicitstabledevice/registry, HRESULTandfoundreporting; nativeintrusive/vtableABI and queryIssue/GetData behavior unported."
+    },
+    {
+      "address": "00b5fe60",
+      "name": "BSP_OcclusionQuery_RestoreAfterReset",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_reset_borrowed_removal_and_guard_checked",
+      "abi_compatible": false,
+      "limitations": "Typedexplicitstabledevice/registry, HRESULTandfoundreporting; nativeintrusive/vtableABI and queryIssue/GetData behavior unported."
+    },
+    {
+      "address": "00b25290",
+      "name": "BSP_QueryPointerArray_RemoveFirst",
+      "source": "src/d3d9_query.cpp",
+      "status": "real_query_reset_borrowed_removal_and_guard_checked",
+      "abi_compatible": false,
+      "limitations": "Typedexplicitstabledevice/registry, HRESULTandfoundreporting; nativeintrusive/vtableABI and queryIssue/GetData behavior unported."
+    },
+    {
+      "address": "00b27cf0",
+      "name": "BSP_D3D9Renderer_UnregisterQuery",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_query_reset_borrowed_removal_and_guard_checked",
+      "abi_compatible": false,
+      "limitations": "Typedexplicitstabledevice/registry, HRESULTandfoundreporting; nativeintrusive/vtableABI and queryIssue/GetData behavior unported."
     }
   ],
   "fragments": [
@@ -1457,6 +1489,42 @@
       "status": "installed_font_registry_and_texture_policy_probe_checked",
       "abi_compatible": false,
       "remaining": "Typedcaller suppliesimageinfo/policy/options; missingretry/managercache/optionalcallback/nativewrapperallocation. Shortreadguard andHRESULTreport explicit."
+    },
+    {
+      "address": "00b5fe90",
+      "name": "create_occlusion_query",
+      "source": "src/d3d9_query.cpp",
+      "native_range": "fieldinitialization andCreateQuery9",
+      "status": "real_query_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Concretequerycallbacks andstableborrowedregistry only; allocator/intrusiveownership, percallbackcurrentdevice reload, fullrendererreadiness/otherresources/outerresetguard andissue/resultbehavior remain outsideprojection."
+    },
+    {
+      "address": "00b27c20",
+      "name": "create_registered_query",
+      "source": "src/d3d9_states.cpp",
+      "native_range": "guarded creation andborrowedappend",
+      "status": "real_query_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Concretequerycallbacks andstableborrowedregistry only; allocator/intrusiveownership, percallbackcurrentdevice reload, fullrendererreadiness/otherresources/outerresetguard andissue/resultbehavior remain outsideprojection."
+    },
+    {
+      "address": "00b262c0",
+      "name": "release_query_list",
+      "source": "src/d3d9_query.cpp",
+      "native_range": "listenerloop00b263a5..00b263c9",
+      "status": "real_query_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Concretequerycallbacks andstableborrowedregistry only; allocator/intrusiveownership, percallbackcurrentdevice reload, fullrendererreadiness/otherresources/outerresetguard andissue/resultbehavior remain outsideprojection."
+    },
+    {
+      "address": "00b23b10",
+      "name": "restore_query_list",
+      "source": "src/d3d9_query.cpp",
+      "native_range": "listenerloop00b23c26..00b23c49",
+      "status": "real_query_reset_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Concretequerycallbacks andstableborrowedregistry only; allocator/intrusiveownership, percallbackcurrentdevice reload, fullrendererreadiness/otherresources/outerresetguard andissue/resultbehavior remain outsideprojection."
     }
   ]
 }

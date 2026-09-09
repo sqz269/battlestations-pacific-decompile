@@ -11,6 +11,8 @@
 namespace bsp {
 struct D3D9SurfaceBinding;
 struct D3D9DefaultSurfaces;
+struct D3D9OcclusionQuery;
+class D3D9QueryRegistry;
 // Semantic equivalents of globals 0108d6dc/dd/e0. The original counter is
 // non-atomic. Configure locking before workers start; live mode changes unverified.
 struct RendererSynchronization {
@@ -91,6 +93,11 @@ public:
     // COM ownership while retaining wrapper metadata; no lost-state gate.
     void release_dynamic_buffers_00b237d0(bool& ready,
         VertexBufferBinding& vertices, IndexBufferBinding& indices);
+    // Factory creation/append projection under the optional guard. Caller
+    // supplies a fresh unregistered wrapper; native allocation ABI is omitted.
+    HRESULT create_registered_query_00b27c20_fragment(D3D9QueryRegistry&, D3D9OcclusionQuery&);
+    // Added found result; native unregister has no established return contract.
+    bool unregister_query_00b27cf0(D3D9QueryRegistry&, const D3D9OcclusionQuery*);
     // Native thiscall RET4. No outer guard: each individual setter enters its
     // own guard. Identity skips even mutated blocks; null releases the block
     // without resetting device states. shared_ptr replaces intrusive ownership.
