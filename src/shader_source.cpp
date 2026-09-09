@@ -3,6 +3,38 @@
 #include <utility>
 
 namespace bsp {
+ShaderSourceStatus append_interpolator_pack_00b35540(const std::vector<ShaderField>& fields,
+    const ShaderInterpolatorLayout& layout, std::string& output) {
+    for (const auto* components : {&layout.texcoords, &layout.colors}) {
+        for (const auto& entry : *components) {
+            if (entry.field >= fields.size() || entry.component >= 4)
+                return ShaderSourceStatus::invalid_packing;
+        }
+    }
+    if (layout.fog.field != 0xff && layout.fog.field >= fields.size())
+        return ShaderSourceStatus::invalid_packing;
+    std::string result("\nsInterpolators PackInterpolators(sVertexOut OUT)\n{\n"
+        "\t\tsInterpolators INT;\n\n\t\tINT.Position = OUT.ScreenSpacePos;\n");
+    auto emit = [&](const std::vector<ShaderPackedComponent>& components, const char* target) {
+        static constexpr char channels[] = "xyzw";
+        for (std::size_t i = 0; i < components.size(); ++i) {
+            const auto& entry = components[i];
+            result += "\t\tINT."; result += target; result += std::to_string(i / 4);
+            result += '.'; result += channels[i % 4]; result += " = OUT.";
+            result += fields[entry.field].name.c_str(); result += '.';
+            result += channels[entry.component]; result += ";\n";
+        }
+    };
+    emit(layout.texcoords, "TexCoord"); emit(layout.colors, "Color");
+    if (layout.fog.field != 0xff) {
+        result += "\t\tINT.Fog = OUT."; result += fields[layout.fog.field].name.c_str();
+        result += ";\n";
+    }
+    result += "\t\treturn INT;\n}\n";
+    output += result;
+    return ShaderSourceStatus::complete;
+}
+
 void append_interpolator_mapping_00b34aa0(const std::vector<ShaderField>& fields,
     ShaderInterpolatorLayout& layout) {
     for (std::size_t i = 1; i < fields.size(); ++i) {

@@ -46,6 +46,10 @@ ShaderSourceStatus append_interpolator_struct_00b36e30(ShaderInterpolatorLayout&
     const ShaderInterpolatorOptions&, std::string& output);
 ShaderSourceStatus append_interpolator_unpack_00b37000(const std::vector<ShaderField>&,
     const ShaderInterpolatorLayout&, const ShaderInterpolatorOptions&, std::string& output);
+// Native ECX builder, RET; fields are builder+28h. Always writes Position from
+// OUT.ScreenSpacePos, then mapped TEXCOORD/COLOR and optional Fog. No vPos write.
+ShaderSourceStatus append_interpolator_pack_00b35540(const std::vector<ShaderField>&,
+    const ShaderInterpolatorLayout&, std::string& output);
 
 struct ShaderStructOptions {
     std::uint32_t first_field{};

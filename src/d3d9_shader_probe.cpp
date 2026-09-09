@@ -39,9 +39,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     const auto generated = bsp::append_shader_struct_00b38b50("ProbeInput", {position}, options, declarations);
     const std::string expected = "\nstruct ProbeInput\n{\n\tfloat4\t\tPosition\t\t : POSITION0;\n};\n\n";
     const bool declaration_matches = generated == bsp::ShaderSourceStatus::complete && declarations == expected;
-    declarations += "float4 main(ProbeInput IN) : POSITION { return IN.Position; }";
-    HRESULT result = declaration_matches
-        ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
+    HRESULT result = declaration_matches ? S_OK : E_FAIL;
     // Exercise native component packing across a register boundary, followed
     // by generated declarations and unpack code in the existing compile probe.
     bsp::ShaderField uv; uv.name = "UV"; uv.component_count = 4;
@@ -69,6 +67,24 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         && pixel_source.find("PixelIn.Extra.z = INT.TexCoord1.x;") != std::string::npos;
     pixel_source += "float4 main(sInterpolators INT) : COLOR { sPixelIn IN = UnpackInterpolators(INT); "
         "return float4(IN.UV.x, IN.UV.z, IN.Extra.z, IN.Color.w); }";
+    auto vertex_fields = fields;
+    vertex_fields[0].name = "ScreenSpacePos";
+    bsp::ShaderStructOptions vertex_output_options;
+    bsp::ShaderInterpolatorOptions vertex_interpolator_options;
+    vertex_interpolator_options.include_position = true;
+    const bool vertex_generated = bsp::append_shader_struct_00b38b50("sVertexOut", vertex_fields,
+        vertex_output_options, declarations) == bsp::ShaderSourceStatus::complete
+        && bsp::append_interpolator_struct_00b36e30(interpolators, vertex_interpolator_options,
+            declarations) == bsp::ShaderSourceStatus::complete
+        && bsp::append_interpolator_pack_00b35540(vertex_fields, interpolators,
+            declarations) == bsp::ShaderSourceStatus::complete;
+    const bool pack_matches = declarations.find("INT.TexCoord0.y = OUT.UV.z;") != std::string::npos
+        && declarations.find("INT.TexCoord1.x = OUT.Extra.z;") != std::string::npos;
+    declarations += "sInterpolators main(ProbeInput IN) { sVertexOut OUT; "
+        "OUT.ScreenSpacePos=IN.Position; OUT.UV=float4(0,0,1,0); "
+        "OUT.Extra=float4(0,0,0,0); OUT.Color=float4(0,0,0,1); return PackInterpolators(OUT); }";
+    if (SUCCEEDED(result)) result = vertex_generated && pack_matches
+        ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_generated && packing_matches
         ? assemble_host_shader(pixel_source.c_str(), "ps_2_0", &pixel_code) : E_FAIL;
     if (SUCCEEDED(result)) result = vertex_code

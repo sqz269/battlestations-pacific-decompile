@@ -968,5 +968,15 @@
     "address": "00b37000",
     "name": "BSP_ShaderBuilder_AppendInterpolatorUnpack",
     "evidence": "Thiscall RET4 field list. Emits UnpackInterpolators assignments TEXCOORD then COLOR, source register index/4 channel index%4, destination stored field/component. FOG copies or zeroes accordingto+98h, vPos eitherdescriptor+30h. Unmapped values uninitialized. Typed bounds checks are new interface behavior; generated ps_2_0 compile and binding checked. See docs/SHADER_INTERPOLATORS.md. Native ABI/allocator and full shader generator remain unported."
+  },
+  {
+    "address": "00b35540",
+    "name": "BSP_ShaderBuilder_AppendInterpolatorPack",
+    "evidence": "ECX builder, no stack arguments RET. Field names from builder+28h. Always INT.Position=OUT.ScreenSpacePos; TEXCOORD then COLOR mapping assignments, optional fog, return INT. No vPos or zero-fog branch. Typed bounds-checked source emitter compiled as vs_2_0 alongside reconstructed ps_2_0 unpack, real shader bindings passed. Native allocator/ABI and full generator remain unported. See docs/SHADER_INTERPOLATORS.md."
+  },
+  {
+    "address": "00b39110",
+    "name": "BSP_ShaderBuilder_GenerateVertexSource",
+    "evidence": "ECX builder, full vertex source generator. Clears source+4Ch, render mode define, constant header00b38ff0, structures, system helper00b38080, base/effect descriptor VS strings+F0h, pack00b35540 and main returning PackInterpolators(OUT). Full body remains unported; descriptive name. See docs/SHADER_INTERPOLATORS.md."
   }
 ]

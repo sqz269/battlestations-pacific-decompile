@@ -51,3 +51,32 @@ Descriptor filtering (`00b36800`), vertex-side packing, system/register
 declarations, system initialization, effect wrappers and complete main generation
 remain dependencies of the game's material pipeline. The atlas draw still uses
 its diagnostic fixed-function material; the full game is not rebuilt.
+
+## Vertex packing follow-up
+
+`00b35540` now emits the matching `PackInterpolators(sVertexOut OUT)` function.
+Its native ABI uses ECX for the builder and no stack arguments (RET). Unlike
+pixel unpacking's explicit list parameter, names come from the builder's field
+list at +28h. It always assigns INT.Position from OUT.ScreenSpacePos, then
+TEXCOORD and COLOR components in mapping order, followed by optional fog and
+the return. It does not emit vPos or consult the pixel zero-fog flag. Output
+field declarations and the interpolator structure must be prepared consistently
+by the caller. The typed API preserves uninitialized unmapped components and
+native formatted-name termination, with the same new bounds-error policy as
+unpacking. Original disk/Ghidra body and literal comparisons are retained in
+`reports/shader_vertex_pack.json`.
+
+The existing compilation fixture now generates both sides: a vs_2_0 vertex
+shader with this packer and a ps_2_0 pixel shader with the unpacker. Sparse x/z
+and register-crossing assignment checks pass, as do creation/binding on the
+real D3D9 device, the Win32 build and both existing CTests. Shader main bodies
+still supply diagnostic values; this fixture does not execute a pixel readback
+through the generated pair or establish native game shader equivalence.
+
+Tracing the caller identified `00b39110` as the full vertex-source generator.
+It clears builder source, selects the render-mode define, calls system constant
+header generation `00b38ff0`, emits structures, adds system helpers through
+`00b38080`, wraps base/effect descriptor VS strings at +F0h, emits this packer,
+and builds main ending in PackInterpolators(OUT). Its remaining body is unported.
+The inspected `00b372d0` builds pixel system-value field descriptors rather than
+vertex packing code; its allocation-heavy body is also unported.
