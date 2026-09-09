@@ -110,6 +110,33 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_generated && packing_matches
         ? assemble_host_shader(pixel_source.c_str(), "ps_2_0", &pixel_code) : E_FAIL;
+    // Installed debugshader.shfx VS projection; field/constant registry is
+    // explicit here, pending native descriptor loading and registry recovery.
+    bsp::ShaderVertexProgram debug_program;
+    debug_program.inputs = {position, color};
+    auto system_position = position; system_position.name = "ObjectSpacePos";
+    debug_program.system_values.push_back(system_position);
+    system_position.name = "WorldSpacePos"; debug_program.system_values.push_back(system_position);
+    system_position.name = "ScreenSpacePos"; debug_program.system_values.push_back(system_position);
+    debug_program.outputs = {system_position, color};
+    debug_program.packing_fields = debug_program.outputs;
+    bsp::append_interpolator_mapping_00b34aa0(debug_program.outputs, debug_program.interpolators);
+    debug_program.constants = {{"cViewProjMat", 4, 4, 1}, {"cAmbientCube", 1, 4, 6},
+        {"cFogDirColor4", 1, 4, 4}, {"cFogColor", 1, 4, 1}};
+    debug_program.register_limit = 256; // Diagnostic registry limit, not recovered global.
+    debug_program.base.vertex_code = "SYS.ObjectSpacePos=IN.Position;\n"
+        "SYS.WorldSpacePos=IN.Position;\nSYS.ScreenSpacePos=mul(SYS.WorldSpacePos,cViewProjMat);\n"
+        "OUT.Color = IN.Color;";
+    std::string debug_source;
+    const bool full_vertex_generated = bsp::generate_vertex_source_00b39110(debug_program,
+        debug_source) == bsp::ShaderSourceStatus::complete;
+    ID3DBlob* debug_code = nullptr;
+    if (SUCCEEDED(result)) result = full_vertex_generated
+        ? assemble_host_shader(debug_source.c_str(), "vs_2_0", &debug_code) : E_FAIL;
+    if (SUCCEEDED(result)) {
+        vertex_code->Release(); vertex_code = debug_code; debug_code = nullptr;
+    }
+    if (debug_code) debug_code->Release();
     if (SUCCEEDED(result)) result = vertex_code
         ? device.CreateVertexShader(static_cast<const DWORD*>(vertex_code->GetBufferPointer()), &vertex) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_code

@@ -47,3 +47,37 @@ output-field lists and helper literals, then compile a complete generated source
 using descriptor VS fragments. The host diagnostic main remains separate from
 that implementation. Pixel main/effect generation, material selection and game
 runtime still remain incomplete.
+
+## Full vertex composition implementation
+
+`generate_vertex_source_00b39110` now implements the sequence above. The new
+ShaderVertexProgram interface keeps all four field lists distinct and takes
+explicit base/effect descriptors, system constants, a register limit and the
+existing interpolator mapping. It replaces output and updates interpolator
+metadata after successful generation. Typed field/mapping errors leave both
+unchanged; native allocation exceptions and partial output on failure are not
+recreated. Header insertions use native formatted-name termination, whereas
+descriptor VS bodies preserve their full string lengths.
+
+The original HLSL helper literals are retained in `src/shader_vertex_literals.inc`.
+They were compared against both original disk and saved Ghidra bytes, including
+the shadow helper's early return. The complete generator body also matches.
+Hashes and descriptor identity are in `reports/shader_vertex_generator.json`.
+
+The existing shader probe now additionally compiles the complete generator's
+output with the installed debugshader.shfx VS statements, compared ignoring
+whitespace. Inputs are Position/Color; projected system fields are ObjectSpacePos,
+WorldSpacePos and ScreenSpacePos; outputs are ScreenSpacePos/Color. The fixture
+supplies cViewProjMat, cAmbientCube, cFogDirColor4 and cFogColor declarations so
+the unconditional native helpers can compile. These are explicit projections,
+not a claim that the native registry order, register limit256, field selection
+or complete game register assignment was recovered. The effect VS body is empty,
+consistent with the inspected dummy descriptor, but filename resolution and
+descriptor merge remain unverified.
+
+The generated vs_2_0 shader is created and bound on the real D3D9 device. The
+earlier diagnostic pack/unpack shaders still compile as part of the same probe;
+the bound pixel shader remains diagnostic and is not a matched debug material.
+Win32 build, both existing CTests and full D3D9 probe pass without new test targets.
+No draw/readback through this generated game vertex source, native bytecode
+comparison, descriptor loading or full pixel-source generation has been verified.

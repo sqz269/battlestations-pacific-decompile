@@ -1,0 +1,25 @@
+{
+  "address": "00b39110",
+  "length": 1891,
+  "sha256": "026fd78270147e421611705e501f52e53563dcc0ecb4d5437af33cc6dc2ba879",
+  "disk_matches_ghidra": true,
+  "helper_literals": [
+    {
+      "address": "00d5f770",
+      "name": "vertex_shadow_helper",
+      "length": 255,
+      "sha256": "132fad3c9c3c711c109289498fa443fcedd26e6472cdd8678198a411b01cdc84",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d5f870",
+      "name": "vertex_ambient_fog_helpers",
+      "length": 656,
+      "sha256": "f8411c07bfe1abd89af0877830f336d283d384acf67f634e50d0e764269cb894",
+      "disk_matches_ghidra": true
+    }
+  ],
+  "installed_descriptor_sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+  "vertex_statements_match_ignoring_whitespace": true,
+  "validation": "Generated full vertex source with installed debug VS statements compiles as vs_2_0, creates and binds on real D3D9 device. Win32 Release, two existing CTests and full probe pass. Explicit projected field/constant registry and diagnostic limit256; no native descriptor loader, constant register identity, matching pixel shader or generated game pixel readback."
+}

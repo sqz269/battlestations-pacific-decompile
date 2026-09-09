@@ -28,12 +28,64 @@ void append_vertex_input_decode_00b35820(const std::vector<ShaderField>& fields,
 }
 
 namespace {
+#include "shader_vertex_literals.inc"
 std::string signed_decimal(std::uint32_t value) {
     // Native variadic %i interprets the full DWORD as signed, even though
     // dimension selection above one uses unsigned comparisons.
     return std::to_string(value <= 0x7fffffffu ? static_cast<std::int64_t>(value)
         : static_cast<std::int64_t>(value) - 0x100000000ll);
 }
+}
+
+ShaderSourceStatus generate_vertex_source_00b39110(ShaderVertexProgram& program,
+    std::string& output) {
+    std::string source;
+    const char* mode = nullptr;
+    switch (program.effect.render_mode) {
+    case 0: mode = "NORMAL"; break;
+    case 1: mode = "REFLECTION"; break;
+    case 3: mode = "UNDERWATER"; break;
+    case 4: mode = "REFRACTION"; break;
+    case 6: mode = "DRAW_SHADOW"; break;
+    case 7: mode = "MAP"; break;
+    default: break;
+    }
+    if (mode) { source += "#define RM_"; source += mode; source += " 1\n"; }
+    append_system_constant_header_00b38ff0(program.constants, true, program.register_limit, source);
+    source += '\n'; source += program.base.header.c_str(); source += '\n';
+    source += program.effect.header.c_str(); source += '\n';
+    ShaderStructOptions options; options.include_semantics = true;
+    auto status = append_shader_struct_00b38b50("sVertexIn", program.inputs, options, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    options.include_semantics = false;
+    status = append_shader_struct_00b38b50("sSysValues", program.system_values, options, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    status = append_shader_struct_00b38b50("sVertexOut", program.outputs, options, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    auto layout = program.interpolators;
+    ShaderInterpolatorOptions interpolator_options;
+    interpolator_options.include_position = true; interpolator_options.include_fog = true;
+    status = append_interpolator_struct_00b36e30(layout, interpolator_options, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    append_vertex_samplers_00b38080(program.base.samplers, program.effect.samplers, source);
+    if (program.effect.shadow_helper) { source += vertex_shadow_helper; source += '\n'; }
+    source += vertex_ambient_fog_helpers; source += '\n';
+    source += "\nvoid ShaderCode(sVertexIn IN, inout sSysValues SYS, inout sVertexOut OUT)\n{\n";
+    source += program.base.vertex_code; source += "\n}\n";
+    source += "\nvoid EffectCode(inout sSysValues SYS, inout sVertexOut OUT)\n{\n";
+    source += program.effect.vertex_code; source += "\n}\n";
+    status = append_interpolator_pack_00b35540(program.packing_fields, layout, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    source += "\nsInterpolators main(sVertexIn IN)\n{\n\t\tsSysValues\t\tSYS;\n\t\tsVertexOut\t\tOUT;\n\n";
+    append_zero_shader_fields_00b357d0("SYS", program.system_values, source);
+    append_zero_shader_fields_00b357d0("OUT", program.outputs, source);
+    append_vertex_input_decode_00b35820(program.inputs, program.base.decode_inputs,
+        program.base.decode_field_limit, source);
+    source += "\n\t\tShaderCode(IN,SYS,OUT);\n\t\tEffectCode(SYS,OUT);\n\t\t\n\t\tOUT.ScreenSpacePos = SYS.ScreenSpacePos;\n\n";
+    source += "\t\treturn PackInterpolators(OUT);\n}\n";
+    output = std::move(source);
+    program.interpolators = std::move(layout);
+    return ShaderSourceStatus::complete;
 }
 
 void append_vertex_samplers_00b38080(const std::vector<ShaderSamplerDeclaration>& base,

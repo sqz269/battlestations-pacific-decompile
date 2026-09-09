@@ -977,7 +977,7 @@
   {
     "address": "00b39110",
     "name": "BSP_ShaderBuilder_GenerateVertexSource",
-    "evidence": "ECX builder, full vertex source generator. Clears source+4Ch, render mode define, constant header00b38ff0, structures, system helper00b38080, base/effect descriptor VS strings+F0h, pack00b35540 and main returning PackInterpolators(OUT). Full body remains unported; descriptive name. See docs/SHADER_INTERPOLATORS.md."
+    "evidence": "ECX builder, full vertex source generator. Clears source+4Ch, render mode define, constant header00b38ff0, structures, system helper00b38080, base/effect descriptor VS strings+F0h, pack00b35540 and main returning PackInterpolators(OUT). Full body remains unported; descriptive name. See docs/SHADER_INTERPOLATORS.md. Follow-up: full typed composition implemented including original ambient/fog/shadow literals, distinct declaration/packing lists, length-based VS wrappers, zero/decode and final SYS-to-OUT position copy. Installed debug VS statements compile vs_2_0 and bind; explicit field/constant registry and limit256 are diagnostic projections. Native loader/ABI and full game material still incomplete. See docs/SHADER_VERTEX_COMPOSITION.md."
   },
   {
     "address": "00b38c60",

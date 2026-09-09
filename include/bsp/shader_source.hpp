@@ -112,4 +112,25 @@ ShaderSourceStatus format_shader_field_00b385b0(const ShaderField&,
 ShaderSourceStatus append_shader_struct_00b38b50(const std::string& name,
     const std::vector<ShaderField>& fields, const ShaderStructOptions&,
     std::string& output);
+
+struct ShaderVertexDescriptor {
+    std::string header, vertex_code; // Native +E8h, +F0h strings.
+    std::vector<ShaderSamplerDeclaration> samplers;
+    std::int32_t render_mode{}; // Effect +10Ch.
+    bool shadow_helper{}; // Effect +15h.
+    bool decode_inputs{}; // Base +1Fh.
+    std::uint32_t decode_field_limit{}; // Base +20h.
+};
+struct ShaderVertexProgram {
+    ShaderVertexDescriptor base, effect;
+    std::vector<ShaderField> inputs, system_values, outputs, packing_fields;
+    // Four distinct native lists: +4h, +10h, +1Ch, +28h respectively.
+    std::vector<ShaderSystemConstant> constants;
+    std::uint32_t register_limit{};
+    ShaderInterpolatorLayout interpolators;
+};
+// Full source composition at00b39110, ECX builder, RET. Replaces output and
+// updates interpolator metadata on success; typed validation failure leaves
+// both unchanged. Descriptor selection/registry population/compilation separate.
+ShaderSourceStatus generate_vertex_source_00b39110(ShaderVertexProgram&, std::string& output);
 }
