@@ -30,6 +30,13 @@ struct TextureAtlasParseResult {
 };
 using TextureAtlasLookup = std::function<void*(std::string_view, std::uint32_t)>;
 
+// Native 00aefb20: ECX manager, stack char pointer, RET4, borrowed item/null.
+// Ordered lookup over owning records. ASCII case folding models the installed
+// names; locale-specific high-bit comparison and malformed native strings are
+// outside this new interface. Returned pointer lasts until items is modified.
+const TextureAtlasItem* find_texture_atlas_item_00aefb20(
+    const std::vector<TextureAtlasItem>& items, const char* name);
+
 // Semantic reconstruction of 00aeeaf0, originally ECX manager, stack text-buffer
 // pointer, RET4/AL status. New interface and ownership; not ABI-compatible.
 // Supplied lookup represents renderer vtable+64h; called once with flags 0.

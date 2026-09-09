@@ -505,6 +505,20 @@
       "source": "src/d3d9_states.cpp",
       "status": "semantic_ordered_state_blocks_real_device_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00aa2660",
+      "name": "resolve_gui_texture",
+      "source": "src/gui_texture.cpp",
+      "status": "semantic_installed_atlas_resolver_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00aefb20",
+      "name": "find_texture_atlas_item",
+      "source": "src/texture_atlas_lookup.cpp",
+      "status": "semantic_installed_atlas_resolver_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

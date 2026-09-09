@@ -1,0 +1,181 @@
+{
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "status": "Read-only assembly and source-string investigation; no reconstruction, compilation, naming or runtime validation",
+  "functions_byte_evidence": [
+    {
+      "address": "00b36800",
+      "length": 1580,
+      "disk_matches_ghidra": true,
+      "sha256": "79d5a24cf74ad9c1f1eb60483a51027217478e898ea8520953b5fcac42bb6ead"
+    },
+    {
+      "address": "00b39880",
+      "length": 3449,
+      "disk_matches_ghidra": true,
+      "sha256": "dd948b9077f891f58bda10255972a6e207581853cf872532bf0ac488f35884a5"
+    },
+    {
+      "address": "00b38b50",
+      "length": 261,
+      "disk_matches_ghidra": true,
+      "sha256": "6acc1ba6238208db603e071173da2c6d18130b7e5f2d05fd5fa1910b79cde438"
+    },
+    {
+      "address": "00b385b0",
+      "length": 1170,
+      "disk_matches_ghidra": true,
+      "sha256": "e3e0bd161b3d5b7b54ada86d715a8d5f789c6b29f6f83f9b36fb1e4e3e986294"
+    },
+    {
+      "address": "00b34aa0",
+      "length": 323,
+      "disk_matches_ghidra": true,
+      "sha256": "e446629cb09d4a39ef105178d4011bb93e9f8ce99295c509623624809bae8058"
+    },
+    {
+      "address": "00b34f20",
+      "length": 272,
+      "disk_matches_ghidra": true,
+      "sha256": "79fd6843400442bfc5dc45697048c338b874a87748fdd3640aee5a9003c69e5d"
+    }
+  ],
+  "literal_evidence": [
+    {
+      "address": "00d60d20",
+      "text": "\t\t",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60cc4",
+      "text": "FOG",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60cb4",
+      "text": "VPOS",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00ce5698",
+      "text": ";",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60d58",
+      "text": "\t%s",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60d5c",
+      "text": "\nstruct %s\n{",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d5f524",
+      "text": "};\n",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d60d48",
+      "text": "\tfloat2 vPos;",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00d04260",
+      "text": "])",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00ce4390",
+      "text": "\n",
+      "note": "saved image read; others also disk-verified"
+    }
+  ],
+  "installed_files": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx",
+      "size": 806,
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx",
+      "size": 114,
+      "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc",
+      "size": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b36800",
+      "proposed_name": "BSP_ShaderBuilder_SelectInterpolatorFields",
+      "abi": "thiscall ECX builder; two optional usage pointers and output field-list pointer; RET0Ch",
+      "behavior": "Prepends ScreenSpacePos then selects/copies base and effect interpolator records; not a text generator",
+      "uncertainty": "Filtered usage-buffer layout and full semantic contract incomplete"
+    },
+    {
+      "address": "00b39880",
+      "proposed_name": "BSP_ShaderBuilder_GeneratePixelSource",
+      "abi": "thiscall ECX builder; two field/interpolator-list stack arguments; RET8",
+      "output": "builder+4C length and+50 data string",
+      "behavior": "Headers, structures, ShaderCode wrapper, EffectCode wrapper, interpolator conversion, main, output policy",
+      "uncertainty": "Complete headers, register assignment, interpolator code and flags remain dependencies"
+    },
+    {
+      "address": "00b385b0",
+      "proposed_name": "BSP_ShaderField_FormatDeclaration",
+      "abi": "thiscall ECX field; hidden/output string pointer then semantics flag on stack; RET8; EAX output string pointer",
+      "record": {
+        "0": "name string length",
+        "4": "name string data",
+        "8": "base type",
+        "c": "component count",
+        "10": "mask not consumed",
+        "14": "semantic kind",
+        "18": "semantic index"
+      },
+      "format": "type + count suffix if unsigned count>1 + two tabs + name + optional(two tabs plus space-colon-space + semantic + decimal index) + semicolon",
+      "types": {
+        "0": "float",
+        "1": "int"
+      },
+      "semantics": [
+        "POSITION",
+        "COLOR",
+        "TEXCOORD",
+        "NORMAL",
+        "BINORMAL",
+        "TANGENT",
+        "BLENDINDICES",
+        "BLENDWEIGHT",
+        "FOG",
+        "INDEX",
+        "VPOS"
+      ],
+      "assembly_correction": "00b389d2 copies literal00ce5698 semicolon;00b389f0 appends it; decompiler removes these reachable string blocks",
+      "uncertainty": "Unknown enum values outside initial valid projection; allocation failure and original string ownership not reconstructed"
+    },
+    {
+      "address": "00b38b50",
+      "proposed_name": "BSP_ShaderBuilder_AppendStructDeclaration",
+      "abi": "thiscall ECX builder; unsigned start index, name string pointer, field-list pointer, semantics flag, allow_vpos flag; RET14h",
+      "output": "append builder+4C string",
+      "format": "newline struct NAME newline { newline; tab-prefixed newline-terminated field declarations; optional tab float2 vPos; newline; }; followed by two newlines",
+      "vpos_condition": "allow_vpos and (base descriptor+30 nonzero or effect descriptor+30 nonzero)",
+      "dependency": "00b385b0;00b35110 formatted append plus newline;00b34f20 plain append plus newline"
+    }
+  ],
+  "debugshader_relation": "Base debug PS writes SYS.DiffuseColor inside ShaderCode; installed lights/dummy PS writes FinalColor[0] inside EffectCode; native main calls both. Filename resolution to this dummy file not proven.",
+  "next_implementable_piece": "Typed field declaration formatter00b385b0, then struct emitter00b38b50. Not the complete shader generator.",
+  "raw_exports": "exports/shader_source_generation/",
+  "limitations": [
+    "Original game resources were read locally, not copied into tracked source",
+    "No complete generated debug shader or compiled bytecode was produced",
+    "Suggested names are hypotheses and were not applied to Ghidra",
+    "00b35110 was assembly-inspected for newline tail but not included in six function byte parity ranges"
+  ]
+}

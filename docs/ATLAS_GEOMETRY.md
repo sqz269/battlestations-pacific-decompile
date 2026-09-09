@@ -58,9 +58,11 @@ For the first selected installed item (1024-square texture and float UV
 Proposed name `BSP_TextureAtlas_FindItem`. ECX manager, one stack char pointer,
 RET4, EAX borrowed item/null. It rejects null/empty name, removes a dot suffix via
 reverse helper00467cf0, transforms slash separators, strips leading slashes and
-normalizes case through004bcc00. Exact general string-helper behavior remains
-partly unresolved. It scans manager item array at+4/count+8, comparing names
-through00aee0f0. If the first pass fails and a last slash is found, it retries the
+normalizes case through004bcc00. Follow-up resolves the installed ASCII domain:0043bbf0 resizes at the dot
+(the20h argument is a fill character),004cad40 replaces backslashes with
+slashes, and004bcc00 folds only A..Z. It scans manager item array at+4/count+8 through00aee0f0: whole-name
+equality is case-insensitive, while slash-delimited suffix comparison is
+case-sensitive. Both alternatives apply in this first scan. If the first pass fails and a last slash is found, it retries the
 basename against full stored name or a slash-delimited stored suffix. This means
 basename collisions can select an earlier matching item; a filename-only map is
 not an established replacement for the native ordered lookup.
@@ -101,3 +103,28 @@ visual/game validation was performed in this investigation.
 Integration follow-up: the four proposed resolver/lookup/state-transfer names
 and evidence comments were saved in Ghidra and exports refreshed. No GUI
 consumer implementation is claimed yet.
+
+## Resolver and lookup integration
+
+The typed resolver in src/gui_texture.cpp and ordered lookup in
+src/texture_atlas_lookup.cpp now feed the existing atlas draw. Resolver services
+are supplied callbacks; the probe connects lookup to parsed records and
+reference/dimension operations to its real D3D9 texture. The installed ASCII
+name domain is implemented; locale-dependent high-bit names and malformed
+native string storage remain outside this interface.
+
+Win32 uses inline x87 for unsigned-dimension conversion to float32 and for
+size arithmetic, preserving float32 UV-difference spills and mul/div/mul order.
+The implementation does not claim original FP exception-status or ABI identity.
+The portable fallback has explicitly limited precision equivalence.
+
+Validation passed the MSVC Win32 build, both existing CTest checks and the
+installed-atlas D3D9 probe. The fixture covers normalized uppercase/backslash
+name lookup, basename fallback, both-zero size (0.266666681,0.355555564),
+mirrored UVs, fixed size, miss preserving outputs and exactly one retain on
+hits. The GPU atlas image remains produced successfully from resolved UVs.
+No native differential execution or complete GUI object lifecycle is claimed.
+Evidence ranges and checks are in reports/gui_texture_evidence.json.
+
+The concrete geometry dispatch is now resolved separately in
+GUI_GEOMETRY_DISPATCH.md; its cropped quad writer is the next implementation.

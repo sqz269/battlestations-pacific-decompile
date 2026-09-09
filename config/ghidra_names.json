@@ -887,12 +887,12 @@
   {
     "address": "00aefb20",
     "name": "BSP_TextureAtlas_FindItem",
-    "evidence": "ECX manager; stack char pointer; RET4; EAX item or null. Ordered atlas lookup with extension removal, slash/case normalization and basename suffix fallback; general string-helper normalization partly unresolved. Returns borrowed item. Full routine unported; docs/ATLAS_GEOMETRY.md."
+    "evidence": "ECX manager stackcharpointer RET4, borroweditem. Querylastdot>0 resize0043bbf0, backslash->slash, leading slashstrip, ASCIIlower004bcc00. Ordered firstscan: whole-name case-insensitive00435c40 OR slash-delimited CASE-SENSITIVE suffix0043e9a0. Ifmiss andqueryslash, retries basename in sameorder. Typed ASCII port installedatlas lookupchecked; malformed/nativeownership/locale-specific bytes unported."
   },
   {
     "address": "00aa2660",
     "name": "BSP_GUI_ResolveTextureAndAtlasUV",
-    "evidence": "stdcall filename string pointer, float[4] inout UV, float[2] inout size, float scale; RET10h; EAX referenced texture. Reads atlas floatUV+14h..20h, preserves negative U/V extent flips. Both size components zero -> unsigned texture dimensions and absUV extent scaled by960/720. Retains atlas texture; miss renderer+64h load leaves UV/size unchanged. Full routine unported; docs/ATLAS_GEOMETRY.md."
+    "evidence": "stdcall filename string pointer, float[4] inout UV, float[2] inout size, float scale; RET10h; EAX referenced texture. Reads atlas floatUV+14h..20h, preserves negative U/V extent flips. Both size components zero -> unsigned texture dimensions and absUV extent scaled by960/720. Retains atlas texture; miss renderer+64h load leaves UV/size unchanged. Typed callback port implemented; installedatlas mirror, bothzeroautosize, reference/fallback anddraw checked; docs/ATLAS_GEOMETRY.md. Win32 x87 helper preserves dimension/difference float32 spills and mul/div/mul order; FPflags/nativeABI unverified."
   },
   {
     "address": "00ab44b0",
@@ -903,5 +903,40 @@
     "address": "00ab2690",
     "name": "BSP_GUI_SetStateTextureAndUV",
     "evidence": "ECX object; stack state index, texture pointer, float[4] pointer; RET0ch. Retain replacement/release old texture in state record; floatUV copy and flip conditions. Active signed16 state atobject+ECh triggers objectvtable+80h. Concrete geometry method unresolved. Full routine unported; docs/ATLAS_GEOMETRY.md."
+  },
+  {
+    "address": "00ab5c60",
+    "name": "BSP_GUIStatefulImage_Construct",
+    "evidence": "Constructor installs00d5c4c0, current signed16state+ECh=-1, statevector+F4h empty, HasTexture+100h=1, delayedload+101h=0, partialmode+110h0/ratio+114h1. Classname descriptive hypothesis. See docs/GUI_GEOMETRY_DISPATCH.md."
+  },
+  {
+    "address": "00ab3cb0",
+    "name": "BSP_GUIStatefulImage_RebuildStateGeometry",
+    "evidence": "ThiscallRET4 state. Creates/reuses fourvertex stream using SimpleColor.mvfm, GUI material, section type5/fourvertices/twoprimitives. Callsvtable+7Ch writer, setswhitecolors/unlocks andretainsgeometry. No immediate D3D draw. See docs/GUI_GEOMETRY_DISPATCH.md."
+  },
+  {
+    "address": "00ab1860",
+    "name": "BSP_GUIStatefulImage_WriteCroppedQuad",
+    "evidence": "Recovered missing confirmedvtable+7Ch, thiscall7stackargs RET1Ch. Writes float3position/float2UV via dynamicstreamstride/offsets, fourvertexstrip; mode0 TL/TR/BL/BR;5partialdisplaymodes, ratio orderedclamp NaNunchanged; yScaleglobal00e12fd0 observed0.75. FullGUI/FP/runtime semantics unported. See docs/GUI_GEOMETRY_DISPATCH.md."
+  },
+  {
+    "address": "00b36800",
+    "name": "BSP_ShaderBuilder_SelectInterpolatorFields",
+    "evidence": "thiscall ECX builder; two optional usage pointers and output field-list pointer; RET0Ch. Prepends ScreenSpacePos then selects/copies base and effect interpolator records; not a text generator Filtered usage-buffer layout and full semantic contract incomplete Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+  },
+  {
+    "address": "00b39880",
+    "name": "BSP_ShaderBuilder_GeneratePixelSource",
+    "evidence": "thiscall ECX builder; two field/interpolator-list stack arguments; RET8. Headers, structures, ShaderCode wrapper, EffectCode wrapper, interpolator conversion, main, output policy Complete headers, register assignment, interpolator code and flags remain dependencies Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+  },
+  {
+    "address": "00b385b0",
+    "name": "BSP_ShaderField_FormatDeclaration",
+    "evidence": "thiscall ECX field; hidden/output string pointer then semantics flag on stack; RET8; EAX output string pointer. type + count suffix if unsigned count>1 + two tabs + name + optional(two tabs plus space-colon-space + semantic + decimal index) + semicolon Unknown enum values outside initial valid projection; allocation failure and original string ownership not reconstructed Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+  },
+  {
+    "address": "00b38b50",
+    "name": "BSP_ShaderBuilder_AppendStructDeclaration",
+    "evidence": "thiscall ECX builder; unsigned start index, name string pointer, field-list pointer, semantics flag, allow_vpos flag; RET14h. newline struct NAME newline { newline; tab-prefixed newline-terminated field declarations; optional tab float2 vPos; newline; }; followed by two newlines  Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
   }
 ]

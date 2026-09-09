@@ -1,6 +1,8 @@
 // Diagnostic atlas host: parser, texture binding and image readback. This is
 // not the game's UI material or window implementation.
 #include "bsp/texture_atlas.hpp"
+#include "bsp/gui_texture.hpp"
+#include <cmath>
 #include "bsp/d3d9_states.hpp"
 #include <filesystem>
 #include <fstream>
@@ -43,6 +45,52 @@ bool probe_texture_atlas(IDirect3DDevice9& device, IDirect3DTexture9& texture,
     const std::array<std::uint16_t, 6> packed{0, 0, 16383, 16383, 16383, 16383};
     if (item.name != "interface/textures/fe/achievement/ca_of" || item.packed_uv != packed)
         return false;
+    unsigned retained = 0, dimensions = 0, fallbacks = 0;
+    bsp::GuiTextureCallbacks callbacks;
+    callbacks.find_atlas_item = [&](std::string_view name) {
+        const std::string terminated(name);
+        return bsp::find_texture_atlas_item_00aefb20(atlas.items, terminated.c_str());
+    };
+    callbacks.load_texture = [&](std::string_view, std::uint32_t flags) -> void* {
+        if (flags == 0) ++fallbacks;
+        return nullptr; // Diagnostic miss; native loader is an external dependency.
+    };
+    callbacks.width = [&](void* value) {
+        ++dimensions;
+        D3DSURFACE_DESC desc{};
+        static_cast<IDirect3DTexture9*>(value)->GetLevelDesc(0, &desc);
+        return desc.Width;
+    };
+    callbacks.height = [&](void* value) {
+        ++dimensions;
+        D3DSURFACE_DESC desc{};
+        static_cast<IDirect3DTexture9*>(value)->GetLevelDesc(0, &desc);
+        return desc.Height;
+    };
+    callbacks.retain = [&](void* value) {
+        ++retained;
+        static_cast<IDirect3DTexture9*>(value)->AddRef();
+    };
+    std::array<float, 4> resolved_uv{0,0,1,1};
+    std::array<float, 2> logical_size{};
+    auto* selected = bsp::resolve_gui_texture_00aa2660(
+        "///INTERFACE\\TEXTURES\\FE\\ACHIEVEMENT\\CA_OF.TGA", resolved_uv, logical_size, 1, callbacks);
+    if (selected) static_cast<IDirect3DTexture9*>(selected)->Release();
+    if (selected != &texture || resolved_uv != item.uv || retained != 1 || dimensions != 2
+        || logical_size[0] != static_cast<float>(256.0 / 960.0)
+        || logical_size[1] != static_cast<float>(256.0 / 720.0)) return false;
+    std::array<float, 4> mirrored{1,1,0,0};
+    std::array<float, 2> fixed_size{1,0};
+    selected = bsp::resolve_gui_texture_00aa2660("unrelated/path/ca_of.tga", mirrored, fixed_size, 1, callbacks);
+    if (selected) static_cast<IDirect3DTexture9*>(selected)->Release();
+    const std::array<float, 4> expected_mirror{item.uv[2],item.uv[3],item.uv[0],item.uv[1]};
+    if (selected != &texture || mirrored != expected_mirror || dimensions != 2 || retained != 2) return false;
+    const auto saved_uv = mirrored;
+    selected = bsp::resolve_gui_texture_00aa2660("missing_fixture.tga", mirrored, fixed_size, 1, callbacks);
+    if (selected || mirrored != saved_uv || fixed_size != std::array<float,2>{1,0}
+        || retained != 2 || fallbacks != 1) return false;
+    std::printf("GUI atlas resolver: size=%.9g,%.9g flip_fallback_reference_checked=1\n",
+        logical_size[0], logical_size[1]);
     IDirect3DSurface9 *target = nullptr, *readback = nullptr, *previous = nullptr;
     IDirect3DStateBlock9* previous_state = nullptr;
     HRESULT result = device.CreateStateBlock(D3DSBT_ALL, &previous_state);
@@ -77,7 +125,7 @@ bool probe_texture_atlas(IDirect3DDevice9& device, IDirect3DTexture9& texture,
     state.set_sampler_state_00b24610(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
     state.set_sampler_state_00b24610(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
     struct Vertex { float x, y, z, rhw, u, v; };
-    const auto& uv = item.uv;
+    const auto& uv = resolved_uv;
     const Vertex quad[]{{-0.5f,-0.5f,0,1,uv[0],uv[1]}, {255.5f,-0.5f,0,1,uv[2],uv[1]},
         {-0.5f,255.5f,0,1,uv[0],uv[3]}, {255.5f,255.5f,0,1,uv[2],uv[3]}};
     if (SUCCEEDED(result)) result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xffff00ff, 1, 0);
