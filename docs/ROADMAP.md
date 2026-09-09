@@ -57,6 +57,15 @@ invalidation/ownership, the complete system constant gatherer, shader descriptor
 loading, material execution and startup integration. See `CAMERA_TRANSFORM.md`
 and `SHADER_CONSTANT_DISPATCH_ANALYSIS.md` for concrete next boundaries.
 
+The font path now loads real Lua descriptors, glyph DAT and image resources,
+generates a native-compared glyph quad and draws an installed bilinear font
+shader through material slots and indexed buffers (`FONT_MATERIAL_DRAW.md`).
+Shader suffix rewriting and font image ownership are recovered. Native VFS
+registration/provider selection, full text layout/batching, GUI transforms and
+startup integration remain necessary; the draw uses explicit diagnostic paths
+and camera constants. This advances the asset-to-render path but is not a
+runnable game target or an original-game visual comparison.
+
 Choose one real path from file loading through decoded data to a visible result. Recover
 archive/resource formats and object interfaces, then window/input/device lifecycle and a
 minimal render path. Use the user's installed assets as local inputs. Add evidence fixtures

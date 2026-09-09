@@ -143,23 +143,25 @@ position, aspect ratio and clip constants. The final result is not wrapped in
 the nonbilinear shader's final saturate. Both sources request alpha test
 GREATER 0, SRCALPHA/INVSRCALPHA blending, and disable Z test/write and fog.
 
-These are installed source facts, not proof of the loaded `.mshd` bytecode.
-The nonbilinear source's separate constant names disagree with the native
-`cOverbrightAlphatex` registration. This audit did not locate/read compiled
-`.mshd` content or establish its mapping to these source versions. Preserve
-that boundary before claiming native shader parity.
+These are installed source facts, not proof of the source selected by native
+VFS registration. Follow-up [FONT_SHADER_RESOLUTION.md](FONT_SHADER_RESOLUTION.md)
+corrects the earlier compiled `.mshd` assumption: the registry unconditionally
+replaces `.mshd` substrings with `.shfx` before resolving and executing Lua.
+The nonbilinear source's separate constant names still disagree with native
+`cOverbrightAlphatex` registration. Source selection/version and that mismatch
+remain boundaries before claiming native shader parity.
 
 ## Next integration boundary
 
 A retained TGA texture loader can provide the real atlas resources with the
 observed flags zero. It must preserve the general 2D loader's actual COM
 description versus requested/source metadata distinction; this font audit
-found no font-specific replacement of that behavior. Next native integration
-needs font-level image ownership, the two material slots, and actual compiled
-material/shader resolution. White-image fallback, two-sample alpha behavior,
-and point/bilinear selection must remain distinct until those routes are
-resolved. Existing glyph geometry plus an arbitrary alpha shader is not a
-reconstructed text renderer. No code, tests, build, Ghidra annotation or
+found no font-specific replacement of that behavior. The repository now has
+typed font-level image ownership and material slots, with an installed
+bilinear draw documented in `FONT_MATERIAL_DRAW.md`. Native VFS resolution,
+full layout/batching and the nonbilinear constant mismatch remain dependencies.
+White-image fallback and two-sample alpha behavior must remain distinct until
+those routes are resolved. No code, tests, build, Ghidra annotation or
 installed asset mutation was performed by this audit.
 
 Parent integration subsequently applied the reviewed material-slot, shader

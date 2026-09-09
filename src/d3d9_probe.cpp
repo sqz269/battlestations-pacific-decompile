@@ -19,6 +19,9 @@
 #include "bsp/font_data.hpp"
 #include "bsp/font_registry.hpp"
 #include "bsp/font_geometry.hpp"
+#include "bsp/font_resources.hpp"
+#include "bsp/font_shader.hpp"
+#include "bsp/resource_path.hpp"
 #include "bsp/stream_scalars.hpp"
 #include <filesystem>
 #include <algorithm>
@@ -27,6 +30,9 @@
 bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
+bool probe_font_material(IDirect3DDevice9&, const bsp::FontData&,
+    const std::shared_ptr<bsp::D3D9RetainedTexture2D>&,
+    const std::shared_ptr<bsp::D3D9RetainedTexture2D>&, const char*, const std::string&);
 
 static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_path) {
     const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
@@ -131,11 +137,6 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
         }) && indices == std::array<std::uint16_t, 6>{0, 1, 2, 0, 2, 3};
     std::printf("Installed font quad: normalized_positions_UVs_colors_and_indices=%d\n", quad);
     if (!quad) return false;
-    const std::string gfx_name = "Fonts/" + descriptor->gfx_file;
-    auto texture_stream = std::make_shared<bsp::MemoryStream>();
-    if (!file.open_read_only_00bf52a0_fragment((game_root / gfx_name).string().c_str(), error)
-        || !bsp::memory_stream_from_physical_00bef750_fragment(file, *texture_stream, error)
-        || !file.close_00bf5090_fragment(error)) return false;
     HMODULE module = LoadLibraryExW(L"d3dx9_40.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
     if (!module) return false;
     FARPROC address = GetProcAddress(module, "D3DXCreateTextureFromFileInMemoryEx");
@@ -146,11 +147,37 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     bsp::ReadImageInfoFromMemory read_info{};
     static_assert(sizeof(read_info) == sizeof(address));
     std::memcpy(&read_info, &address, sizeof(read_info));
-    std::unique_ptr<bsp::D3D9RetainedTexture2D> owner;
-    HRESULT result = bsp::load_retained_texture_2d_00b2c2d0_fragment(device, read_info, create,
-        texture_stream, {static_cast<std::uint32_t>(gfx_name.size()), gfx_name.c_str()}, 0, owner);
-    std::weak_ptr<bsp::MemoryStream> retained = texture_stream;
-    texture_stream.reset();
+    std::vector<std::string> resource_names;
+    const bsp::FontPhysicalResolver physical = [&](const std::string& requested,
+        std::string& path_out, std::string& message) {
+        resource_names.push_back(requested);
+        std::string relative = requested;
+        // Explicit diagnostic provider mapping; native VFS search/extension
+        // registration for Fonts/white.tga is not yet reconstructed.
+        if (relative == "Fonts/white.tga") relative = "effects/white.dds";
+        else if (relative != "Fonts/arial18.tga" && relative != "Fonts/arial18.dat") {
+            message = "Unmapped font fixture resource: " + requested;
+            return false;
+        }
+        path_out = (game_root / relative).string();
+        return true;
+    };
+    std::unique_ptr<bsp::FontResources> resources;
+    if (!bsp::load_font_resources_00ad4c30_fragment(device, read_info, create, physical,
+        *descriptor, "Fonts/", "", 0, resources, decode_error)) {
+        std::printf("Font resources: %s\n", decode_error.c_str());
+        FreeLibrary(module);
+        return false;
+    }
+    bool resources_checked = resource_names == std::vector<std::string>{
+        "Fonts/arial18.tga", "Fonts/white.tga", "Fonts/arial18.dat"}
+        && resources->data.glyphs.size() == font.glyphs.size()
+        && resources->data.scaled_height == font.scaled_height && resources->alpha->texture();
+    std::printf("Font resource owner: GFX_alpha_DAT_order_and_decoded_data=%d explicit_white_DDS_mapping=1\n",
+        resources_checked);
+    auto owner = resources->gfx;
+    std::weak_ptr<bsp::MemoryStream> retained = owner->source();
+    HRESULT result = S_OK;
     // The installed font image is 512x256, 32-bit TGA. Metadata is independently
     // checked from its file header; this is not a native font material draw.
     D3DSURFACE_DESC initial{}, recreated{};
@@ -172,13 +199,23 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
             && recreated.Width == initial.Width && recreated.Height == initial.Height
             && recreated.Format == initial.Format && owner->source()->position_00bef580() == 0;
     }
+    auto shader_name = bsp::select_font_shader_name_00ab8ce0_fragment("", 720, descriptor->scale_ratio);
+    bsp::lowercase_resource_name_004bcc00(shader_name);
+    std::string script_name;
+    resources_checked = resources_checked
+        && bsp::shader_descriptor_name_00b2ebb0_fragment(shader_name, script_name)
+        && script_name == "guifontbilinear.shfx";
+    if (texture_checked && resources_checked)
+        resources_checked = probe_font_material(device, resources->data, resources->gfx,
+            resources->alpha, game_root.string().c_str(), script_name);
+    resources.reset();
     owner.reset();
     texture_checked = texture_checked && retained.expired();
     FreeLibrary(module);
     std::printf("Installed font texture: hr=0x%08lx size=%ux%u format=%u retained_recreation=%d\n",
         static_cast<unsigned long>(result), recreated.Width, recreated.Height,
         static_cast<unsigned>(recreated.Format), texture_checked);
-    return texture_checked;
+    return texture_checked && resources_checked;
 }
 
 // Recovered physical-to-memory route with explicit completeness checks and DLL

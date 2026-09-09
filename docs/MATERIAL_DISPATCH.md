@@ -12,16 +12,17 @@ the effect in material+7Ch and sets effect+B4h to one. Allocator, destructor and
 full ownership behavior are not reconstructed.
 
 Renderer virtual+48h is `00b318b0`. It takes the optional renderer guard,
-normalizes a resource name and invokes generic loader `00b31090` on the embedded
+lowercases a resource name and invokes generic loader `00b31090` on the embedded
 registry at renderer+1A98h (LEA at `00b3194c`), passing flags 0, 1, 1.
 Renderer constructor `00b32410` installs registry vtable `00d5f074` at
 `00b325a8`. Its creation slot +8h resolves to `00b2ebb0`.
 
-`00b2ebb0` constructs .mshd/.shfx name alternatives, checks availability through
-`00bdf4c0`, allocates 178h bytes, constructs an effect with `00b407a0`, and loads
+`00b2ebb0` replaces every .mshd substring with .shfx, resolves the changed name
+through `00bdf4c0`, allocates 178h bytes, constructs an effect with `00b407a0`, and loads
 it via `00b46950`. Failure handling logs and requests `error.shfx` through the
-renderer. Filename replacement direction and registry search-path rules need
-further assembly tracing. Installed shader descriptors are discussed in
+renderer. The rewrite is unconditional and case-sensitive, not an original-file
+fallback. Follow-up details are in `FONT_SHADER_RESOLUTION.md`; registry search
+paths still need reconstruction. Installed shader descriptors are discussed in
 [ASSET_ENTRY.md](ASSET_ENTRY.md).
 
 Effect constructor `00b407a0` installs vtable `00d61a00`, whose +14h slot is

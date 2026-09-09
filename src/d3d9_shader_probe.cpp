@@ -390,7 +390,9 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
             && bsp::append_selected_interpolators_00b36800(alpha_script.interpolators, alpha_effect.interpolators,
                 &used_texcoords, &used_colors, selected) == bsp::ShaderSourceStatus::complete;
         if (alpha_ready) {
-            alpha_vertex.outputs = selected; alpha_vertex.packing_fields = selected; alpha_vertex.interpolators = {};
+            // Keep all ShaderCode OUT fields; pixel liveness filters only
+            // the distinct packed-interpolator list (native builder+28h).
+            alpha_vertex.packing_fields = selected; alpha_vertex.interpolators = {};
             bsp::append_interpolator_mapping_00b34aa0(selected, alpha_vertex.interpolators);
             alpha_ready = bsp::generate_vertex_source_00b39110(alpha_vertex, alpha_vs_source) == bsp::ShaderSourceStatus::complete;
         }

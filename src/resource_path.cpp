@@ -20,4 +20,15 @@ bool normalize_resource_path_00bee690(std::string& path) {
         for (std::size_t i = nul; i < path.size(); ++i) path[i] = '\0';
     return true;
 }
+bool shader_descriptor_name_00b2ebb0_fragment(const std::string& name, std::string& output) {
+    if (name.size() > INT32_MAX || name.find('\0') != std::string::npos) return false;
+    std::string changed = name;
+    std::size_t position = 0;
+    while ((position = changed.find(".mshd", position)) != std::string::npos) {
+        changed.replace(position, 5, ".shfx");
+        position += 5;
+    }
+    output = std::move(changed);
+    return true;
+}
 }

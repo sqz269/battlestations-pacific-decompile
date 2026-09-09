@@ -757,7 +757,7 @@
   {
     "address": "00b18900",
     "name": "BSP_Material_ConstructWithEffect",
-    "evidence": "Material wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported."
+    "evidence": "Material wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits."
   },
   {
     "address": "00b864c0",
@@ -767,7 +767,7 @@
   {
     "address": "00b2ebb0",
     "name": "BSP_MaterialEffectRegistry_Load",
-    "evidence": "Registry00d5f074+8h. Builds .mshd/.shfx filename alternatives, checks00bdf4c0; allocates178h effect00b407a0, loads00b46950 and00b18f70; failure logs and loads error.shfx throughrenderer+48h. Full parsing not reconstructed."
+    "evidence": "Registry loader RET8. Caller ASCII-lowercases. At00b2ecce,004cad40 replaces every case-sensitive .mshd substring with .shfx, limit7FFFFFFF, before mutable VFS resolution00bdf4c0 and00b46950. Not a try-mshd-first fallback and not evidence of compiled mshd content. Typed fixed rewrite rejects embeddedNUL/oversize; native cache/effect allocation/VFS remain outside fragment. Full803 bytes verified; docs/FONT_SHADER_RESOLUTION.md."
   },
   {
     "address": "00b407a0",
@@ -977,7 +977,7 @@
   {
     "address": "00b39110",
     "name": "BSP_ShaderBuilder_GenerateVertexSource",
-    "evidence": "ECX builder, full vertex source generator. Clears source+4Ch, render mode define, constant header00b38ff0, structures, system helper00b38080, base/effect descriptor VS strings+F0h, pack00b35540 and main returning PackInterpolators(OUT). Full body remains unported; descriptive name. See docs/SHADER_INTERPOLATORS.md. Follow-up: full typed composition implemented including original ambient/fog/shadow literals, distinct declaration/packing lists, length-based VS wrappers, zero/decode and final SYS-to-OUT position copy. Installed debug VS statements compile vs_2_0 and bind; explicit field/constant registry and limit256 are diagnostic projections. Native loader/ABI and full game material still incomplete. See docs/SHADER_VERTEX_COMPOSITION.md. Draw follow-up: generated debug/dummy pair renders a triangle via reconstructed stream/layout/constant/draw paths;64x64 readback centerFF407FBF outsideFF000000, state restore calls pass. Explicit registry/identity transform fixture, not native game parity. See docs/GENERATED_SHADER_DRAW.md."
+    "evidence": "ECX builder, full vertex source generator. Clears source+4Ch, render mode define, constant header00b38ff0, structures, system helper00b38080, base/effect descriptor VS strings+F0h, pack00b35540 and main returning PackInterpolators(OUT). Full body remains unported; descriptive name. See docs/SHADER_INTERPOLATORS.md. Follow-up: full typed composition implemented including original ambient/fog/shadow literals, distinct declaration/packing lists, length-based VS wrappers, zero/decode and final SYS-to-OUT position copy. Installed debug VS statements compile vs_2_0 and bind; explicit field/constant registry and limit256 are diagnostic projections. Native loader/ABI and full game material still incomplete. See docs/SHADER_VERTEX_COMPOSITION.md. Draw follow-up: generated debug/dummy pair renders a triangle via reconstructed stream/layout/constant/draw paths;64x64 readback centerFF407FBF outsideFF000000, state restore calls pass. Explicit registry/identity transform fixture, not native game parity. See docs/GENERATED_SHADER_DRAW.md. Font integration confirms full sVertexOut(+1C) must survive PS liveness filtering; only packing list+28 is filtered. Caller00b3b910 filters+28, then00b3bab2 repopulates+1C with null filters beforegenerator. Installed bilinear source writes unused OUT.UV1; preserving it fixes probe compile and yields74 bounded glyph pixels. No native-source statement removed."
   },
   {
     "address": "00b38c60",
@@ -1282,12 +1282,12 @@
   {
     "address": "00b319b0",
     "name": "BSP_Renderer_LoadTextureByName",
-    "evidence": "Recovered missing primary vtable00d5f0a8+64 function. ECX renderer, stack name/flags RET8. Optional renderer guard, copied ASCII-lowered name, calls resource manager00b30b40 on renderer+1A74 with name/flags/0/1. Full cache/file loader unported; see docs/TEXTURE_FILE_LOADING.md."
+    "evidence": "Recovered missing primary vtable00d5f0a8+64 function. ECX renderer, stack name/flags RET8. Optional renderer guard, copied ASCII-lowered name, calls resource manager00b30b40 on renderer+1A74 with name/flags/0/1. Full cache/file loader unported; see docs/TEXTURE_FILE_LOADING.md. Additional name audit found no blanket .tga->.dds rewrite here; lowercase/cache/00b31c20 then generic VFS candidate registration controls resolution. Explicit diagnostic white DDS mapping is not a native rule; docs/TEXTURE_NAME_RESOLUTION.md."
   },
   {
     "address": "00b31c20",
     "name": "BSP_TextureManager_ResolveName",
-    "evidence": "ECX texture manager, stack output string/request/flags (flags unused), RET0Ch. Initializes fallback via00b31bd0, copies request, resolves through00bdf4c0; missing logs and substitutes manager+14 fallback name. Analysis only; full VFS path rules unported."
+    "evidence": "ECX texture manager, stack output string/request/flags (flags unused), RET0Ch. Initializes fallback via00b31bd0, copies request, resolves through00bdf4c0; missing logs and substitutes manager+14 fallback name. Analysis only; full VFS path rules unported. Resolution failure substitutes initialized error.tga, not effects/white.dds. No blanket TGA-to-DDS rewrite in this layer; actual VFS alternative extensions/provider registration remain dependencies."
   },
   {
     "address": "00530890",
@@ -1532,7 +1532,7 @@
   {
     "address": "00ad4c30",
     "name": "BSP_Font_LoadGlyphDataAndTextures",
-    "evidence": "ECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported. Specialscalarrecords nowported: zero-space/LF with signedscaledheight/4advance; missingknownfields bitcopied0091; CRzero. Native2resourcefields/padding omitted. ActualArial16 selection/fallbackchecked."
+    "evidence": "ECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported. Specialscalarrecords nowported: zero-space/LF with signedscaledheight/4advance; missingknownfields bitcopied0091; CRzero. Native2resourcefields/padding omitted. ActualArial16 selection/fallbackchecked. FontResources now composes successful initial GFX/alpha/DAT loading with exact explicit prefix/extra paths and two shared image owners; per-glyph resources are aliases. Transactional host failures and physical resolver differ native VFS/unchecked partial state. Actual font draw checked with explicit white DDS mapping; native reload not ported."
   },
   {
     "address": "00b3dd30",
@@ -1627,12 +1627,12 @@
   {
     "address": "00b189f0",
     "name": "BSP_Material_SetTextureSlot",
-    "evidence": "ECX material; unsigned slot and resource pointer stack, RET8. Slots at +10+4*index; signed16 +34 high-water count compared as unsigned and raised to low16(index+1) before identity skip. Changed pointer stores/retains new before releasing old. No native bounds guard. Text geometry binds glyph+18 to slot0, +1C to slot1 once on initial binding block; docs/FONT_MATERIAL_BINDINGS.md."
+    "evidence": "ECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md."
   },
   {
     "address": "00ab8ce0",
     "name": "BSP_TextContext_EnsureFontShader",
-    "evidence": "ECX context, no stack args. Existing +1EC skips selection. Nonempty +1C0 explicit shader wins; otherwise GuiFont only for float(global0109cf04->DWORD+28)==720 and font scale+18==1 ordered, else GuiFontBilinear. AL indicates selection attempted including null result, not success. Compiled mshd versus installed shfx constant mapping unresolved; docs/FONT_MATERIAL_BINDINGS.md."
+    "evidence": "Selection fragment now typed: explicit override else CVTSI2SS(reference DWORD) ordered==720 and font scale==1 selects GuiFont, otherwise GuiFontBilinear. Cache skip/load/store remains native only. Correction: downstream00b2ebb0 rewrites .mshd to .shfx; compiled-mshd assumption was unsupported. Actual Arial16 scale selects bilinear and installed source draws74 bounded pixels with explicit VFS/camera fixture; docs/FONT_SHADER_RESOLUTION.md."
   },
   {
     "address": "00aba270",
@@ -1648,5 +1648,25 @@
     "address": "00b8d150",
     "name": "BSP_Flare_UpdateFromCachedOcclusionSamples",
     "evidence": "Provisional descriptive name; ECX owner, pointer and delta-float stack, RET8. Nonnull queries+1D0/+1D4 read cached samples via virtual14 without readiness/poll. Nonzero denominator yields unsigned A/B ratio; modifies owner+AC and+184 through x87 attenuation calculations, then downstream geometry and later +AC restore1. Depth-tested roles and final rendered opacity unproven; docs/OCCLUSION_QUERY_CALLERS.md."
+  },
+  {
+    "address": "004cad40",
+    "name": "BSP_String_ReplaceSubstrings",
+    "evidence": "ECX mutable native string, search/replacement/count stack, RET0C. strstr case-sensitive; rebuild prefix+replacement+suffix, resume after inserted replacement, decrement count. Fixed .mshd->.shfx caller projection implemented for ordinary strings; generic allocation/malformed/embeddedNUL/count-edge behavior not ported. Full463 bytes verified."
+  },
+  {
+    "address": "00ad53a0",
+    "name": "BSP_Font_Destroy",
+    "evidence": "ECX font, plain RET at00ad5586. Raw continuation beyond misanalyzed free traverses/frees glyph payloads without image decrements, releases exactly font+64 GFX then+68 alpha, then strings/tree nodes/sentinel and clears tree fields. All other glyph image fields alias these owners. FontResources destructor projects payload-before-images with shared owners; native pool/string/tree/intrusive ABI absent. docs/FONT_RESOURCE_OWNERSHIP.md."
+  },
+  {
+    "address": "00bdf4c0",
+    "name": "BSP_VFS_ResolveExistingName",
+    "evidence": "ECX manager, mutable name stack, RET4/AL. Calls normalizer00bee690, copies normalized name, resolves in place00bddc80; success logs old/new00bdeb40 only. Name may change even on failed lookup. Not pure file-exists. Extension/search registration and provider priority unported; docs/SHADER_VFS_LOOKUP.md."
+  },
+  {
+    "address": "00b46950",
+    "name": "BSP_MaterialEffect_LoadShaderVariants",
+    "evidence": "ECX effect, filename stack, RET4/AL. If global0108d6f0 clear,00b45ee0(filename,0,0) result; else calls(filename,0,3),00b41b10,00b187a0,(filename,1,3),returns1 irrespective load results. Filenames ultimately feed Lua descriptor reader, not inferred mshd bytecode. docs/SHADER_VFS_LOOKUP.md."
   }
 ]

@@ -132,3 +132,8 @@ gameplay equivalence is claimed. The float-color branch remains assembly-backed;
 the single native case exercises packed color. No new test target was added.
 See `reports/font_geometry_texture_probe.txt` and
 `reports/font_geometry_texture_audit.json`.
+
+Later integration draws the installed bilinear font shader using this quad;
+see `FONT_MATERIAL_DRAW.md` for real-device output and the remaining native
+VFS/layout/camera boundaries. The prefix comparison above remains separate
+evidence from that draw and from original-game visual equivalence.

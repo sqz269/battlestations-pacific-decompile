@@ -1183,6 +1183,14 @@
       "status": "real_query_samples_and_installed_font_fallback_checked",
       "abi_compatible": false,
       "limitations": "Typedownership/scalarfontprojection; callerqueryscheduling/visibilitypolicy, fullglyphresource/quad/lifetime andABI remain unported."
+    },
+    {
+      "address": "00b189f0",
+      "name": "set_material_texture",
+      "source": "src/material_textures.cpp",
+      "status": "semantic_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Valid initialized nine-slot domain; shared ownership instead of intrusive ABI, borrowed COM lifetime explicit. Edge cases assembly/source-backed."
     }
   ],
   "fragments": [
@@ -1592,6 +1600,42 @@
       "status": "installed_DDS_and_font_TGA_recreation_checked",
       "abi_compatible": false,
       "remaining": "Native constructor allocation/base/registry and diagnostic reference pairs omitted; requested mip count retained separately. GetLevelDesc failure handled explicitly by host."
+    },
+    {
+      "address": "00ad4c30",
+      "name": "load_font_resources",
+      "source": "src/font_resources.cpp",
+      "native_range": "successful GFX/alpha/DAT initial loading projection",
+      "status": "installed_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Explicit physical resolver and transactional errors; full native VFS, reload and partial failure ownership unported."
+    },
+    {
+      "address": "00ad53a0",
+      "name": "destroy_font_resources",
+      "source": "src/font_resources.cpp",
+      "native_range": "glyph payload then font+64/+68 image references",
+      "status": "installed_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Host map destroys nodes earlier than native; strings, pool, intrusive ABI omitted."
+    },
+    {
+      "address": "00ab8ce0",
+      "name": "select_font_shader_name",
+      "source": "src/font_shader.cpp",
+      "native_range": "name selection before shader cache/load",
+      "status": "installed_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Explicit reference DWORD and font scale; shader cache ownership/loading and full text context omitted."
+    },
+    {
+      "address": "00b2ebb0",
+      "name": "shader_descriptor_name",
+      "source": "src/resource_path.cpp",
+      "native_range": "fixed .mshd-to-.shfx replacement at00b2ecce",
+      "status": "installed_font_material_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Caller supplies lowercased name; native VFS mutating resolution/cache/allocation and generic malformed string behavior excluded."
     }
   ]
 }
