@@ -12,6 +12,9 @@
 #include "bsp/d3d9_texture.hpp"
 
 
+bool probe_shader_bindings(IDirect3DDevice9&);
+bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
+
 // Diagnostic file access and DLL import adapter, not the native asset manager.
 // The optional input is the single-level DXT1 atlas identified in ASSET_ENTRY.md.
 static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
@@ -66,6 +69,7 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     }
     std::printf("D3D9 installed DDS: hr=0x%08lx size=%ux%u managed_DXT1_bytes_match=%d\n",
         static_cast<unsigned long>(result), description.Width, description.Height, matched);
+    if (matched) matched = probe_texture_atlas(device, *texture, path);
     if (texture) texture->Release();
     FreeLibrary(module);
     return matched;
@@ -463,6 +467,7 @@ int main(int argc, char** argv) {
     }
     if (matched) matched = probe_draw(*device);
     if (matched) matched = probe_shader_constants(*device);
+    if (matched) matched = probe_shader_bindings(*device);
     if (matched && argc > 1) matched = probe_memory_texture(*device, argv[1]);
     if (device) device->Release();
     if (api) api->Release();

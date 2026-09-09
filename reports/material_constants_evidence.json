@@ -1,0 +1,113 @@
+{
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "status": "Assembly-grounded read-only investigation; no reconstruction, build, fixture or runtime validation",
+  "byte_evidence": [
+    {
+      "address": "00b42350",
+      "length": 4288,
+      "disk_matches_ghidra": true,
+      "sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091"
+    },
+    {
+      "address": "00b17390",
+      "length": 7,
+      "disk_matches_ghidra": true,
+      "sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41"
+    },
+    {
+      "address": "00b5b870",
+      "length": 3,
+      "disk_matches_ghidra": true,
+      "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+    },
+    {
+      "address": "00b5b880",
+      "length": 4,
+      "disk_matches_ghidra": true,
+      "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+    },
+    {
+      "address": "00b73770",
+      "length": 139,
+      "disk_matches_ghidra": true,
+      "sha256": "fdc084707cea40aba2b2da3f0a61755e0b36afb3c2db9635cea0cb3955123954"
+    },
+    {
+      "address": "00d7a238",
+      "length": 4,
+      "disk_matches_ghidra": true,
+      "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee",
+      "hex": "0ad7233c",
+      "float32": 0.009999999776482582
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "disk_matches_ghidra": true,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "hex": "0000803f",
+      "float32": 1.0
+    },
+    {
+      "address": "00ce77dc",
+      "length": 4,
+      "disk_matches_ghidra": true,
+      "sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+      "hex": "52b87e3f",
+      "float32": 0.9950000047683716
+    }
+  ],
+  "abi": {
+    "address": "00b42350",
+    "receiver": "ECX selected pass",
+    "stack_arguments": [
+      "entry",
+      "caller override; no direct read identified"
+    ],
+    "cleanup": "RET 8",
+    "output": "Shared VS float registers at0108ebf4 and PS float registers at0108dbec, with texture/callback side effects"
+  },
+  "parameter_copy_slice": {
+    "range": "00b423c5..00b42693",
+    "material": "entry+4 -> section+20",
+    "table": "material+80; inline pointer list with count at table+80 (material+100)",
+    "selector": "entry+10 -> +198",
+    "parameter_fields": {
+      "8": "source data pointer",
+      "c": "source 32-bit word count",
+      "10": "nonzero matrix flag",
+      "14": "VS signed register-index array",
+      "4c": "PS signed register-index array"
+    },
+    "register_stride_bytes": 16,
+    "negative_index": "skip",
+    "matrix_mapping": "dst[4*r+c] = src[4*c+r]",
+    "vs_matrix_rows": "metadata pass+70, records at+78 count+7c stride20; register at record+0, rows at+4; last matching record wins; only2/3/4 write",
+    "ps_matrix_rows": 4,
+    "preserves": "unwritten registers/lanes are not cleared"
+  },
+  "smallest_arithmetic_slice": {
+    "address": "00b73770",
+    "abi": "thiscall, ECX threshold-source object, float input and fraction stack args, RET8, ST0 return",
+    "threshold": "default float32 at00ce77dc; nonzero index object+50 selects float at object+4+16*index",
+    "formula": "w=float32(threshold*fraction); result=float32(1 - (input - (threshold-w))*(1/w)); compare-clamp to[0,1]",
+    "caller": "00b42ea4..00b42ef8; input entry+0, ECX entry+8, fraction00d7a238; PS slot unsigned byte at pass+74 -> +34; FF skips",
+    "output": "PS float4(result,0,0,0)",
+    "uncertainty": [
+      "Meaning of input and threshold is not proven; fade is a mathematical description, not recovered symbol",
+      "x87 computes the expression with explicit float32 stores for width and final result; algebraic simplification may change rounding",
+      "NaN passes comparison clamps; division by zero is not guarded; invalid object index is not checked"
+    ]
+  },
+  "raw_exports": "exports/material_constants/",
+  "remaining_dependencies": [
+    "dynamic texture virtual callbacks",
+    "object transform refresh00b6db70",
+    "matrix palette/composition paths",
+    "stream-derived vectors",
+    "material owner color00b179f0",
+    "additional texture selection",
+    "up-to-four object record block; semantic identity unresolved"
+  ]
+}

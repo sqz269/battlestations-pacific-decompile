@@ -42,8 +42,8 @@ D3D9 probe, and a 1024x1024 managed DXT1 texture whose payload matches the
 installed file. The same probe now checks recovered vertex/pixel shader constant
 uploads at registers 3/5, two float4 values each, by device readback; zero-count
 calls skip uploads, counters remain one call/32 bytes each, and locking balances.
-No new test suite was added. These are resource/register checks; the atlas image
-has not yet been drawn or compared with the original game.
+No new test suite was added. These are resource/register checks; the atlas image is now drawn by a diagnostic host (see ATLAS_RENDERING.md),
+but has not been compared with the original game.
 
 `reports/texture_memory_evidence.json` records original/Ghidra byte parity.
 Next: implement the established atlas item parser and connect its rectangles to

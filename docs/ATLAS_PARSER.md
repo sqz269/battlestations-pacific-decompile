@@ -78,9 +78,10 @@ fields avoid token ambiguity.
 
 Constructor `00aee4d0` copies the two strings, searches item name for `.`
 (constant 00ce3a70), and truncates it at the returned position if present.
-Whether its search helper returns the first or last dot remains unverified;
-for every selected item there is one dot and the result is the extensionless
-path. The constructor sets the texture pointer but **does not initialize the UV
+Follow-up export and assembly of helper `00467cf0` confirm reverse search
+from min(length, limit) minus needle length, stopping before offset zero. Thus
+the final dot suffix is removed, except a dot at offset zero. For every selected
+item there is one dot and the result is the extensionless path. The constructor sets the texture pointer but **does not initialize the UV
 floats or packed fields**. Missing Params cannot be assigned invented defaults
 and called native-compatible behavior.
 
@@ -129,4 +130,39 @@ no broad test framework is justified by this handoff. Native differential
 execution, build validation, texture loading and visual comparison are pending.
 
 Integration follow-up: the seven proposed names and evidence comments were saved
-in Ghidra after review. Parser C++ implementation remains pending.
+in Ghidra after review. The bounded C++ implementation is now present as described below.
+
+
+## C++ integration
+
+`include/bsp/texture_atlas.hpp` and `src/texture_atlas.cpp` implement
+`parse_texture_atlas_00aeeaf0(text, descriptor_path, lookup)`. The supplied
+`TextureAtlasLookup` receives the joined texture path and native flags zero,
+and returns a borrowed `void*` handle. The result exposes a status, explanatory
+failure detail, texture path/handle and owning item records. Each item exposes
+extensionless name, descriptor path, borrowed texture, four float32 UVs and six
+packed words. These are new records, not original binary layouts or ownership.
+
+The implementation carries semantic portions of seven investigated functions:
+outer parsing, item parsing/construction, normalized line reading/rewind and
+token selection/copy. It does not reconstruct the engine allocator, string ABI,
+manager arrays, renderer texture service or file service. It retains native
+lookup-before-body ordering, null texture acceptance, earlier completed items on
+failure, unknown-line/field ignoring, repeated-field overwrites and success at
+EOF after complete fields. First-line mismatch has a distinct native rejection
+status. Missing names/numeric tokens/UV fields and unsupported numeric conversion
+ranges return `unsupported_malformed`; these are explicit adapter safety policy,
+not recovered native validation or guessed defaults. Dynamic scratch storage
+replaces the original global scratch. Numeric prefixes are accepted as by atof,
+but tokens with no numeric conversion are rejected by adapter policy.
+
+Relative texture path joining and slash normalization are an adapter; full
+native path helper semantics remain unverified. Numeric parsing uses the host
+CRT locale, as native atof does; arbitrary locale/x87 mode parity is not claimed.
+The double arithmetic retains the absence of float32 rounding for extent
+subtraction and is exact for this fixture's binary fractions. Texture ownership
+stays with the caller, including failure results.
+
+Parent integration owns CMake, installed-asset probe, Ghidra comments and the
+address ledger. This implementation handoff ran no tests or build; status must
+be updated from the integration checks before claiming build/fixture coverage.

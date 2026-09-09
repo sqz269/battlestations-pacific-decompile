@@ -1,0 +1,24 @@
+{
+  "items": 7,
+  "first_item": "interface/textures/fe/achievement/ca_of",
+  "packed_uv": [
+    0,
+    0,
+    16383,
+    16383,
+    16383,
+    16383
+  ],
+  "image_width": 256,
+  "image_height": 256,
+  "independent_dds_decode_max_rgb_error": [
+    1,
+    6,
+    1
+  ],
+  "bmp_sha256": "2c2307281b11148d9571c76094433dfb4ab8056489574f9000a251e2b6c1df3f",
+  "image_path": "local/atlas_item.bmp",
+  "scope": "Diagnostic point-filtered first-item draw and independent DDS decode comparison, not original game UI/render parity. Real shader binding identity/null/guard probe passed. MSVC build and2existing CTest checks passed.",
+  "all_seven_item_fields_match_evidence": true,
+  "decoder_comparison_limit": "Independent Pillow DDS decode differs from GPU readback by up to RGB(1,6,1). Cause unresolved; do not claim exact decoded pixel parity."
+}

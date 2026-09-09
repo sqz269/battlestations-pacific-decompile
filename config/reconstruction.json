@@ -456,6 +456,41 @@
       "source": "src/d3d9_states.cpp",
       "status": "semantic_real_shader_constant_readback_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b21d10",
+      "name": "bind_vertex_shader",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_real_shader_bind_identity_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b21c20",
+      "name": "bind_pixel_shader",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_real_shader_bind_identity_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b24710",
+      "name": "bind_texture",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_real_atlas_texture_binding_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00aee620",
+      "name": "atlas_item_parse_params",
+      "source": "src/texture_atlas.cpp",
+      "status": "semantic_complete_finite_fixture_fields_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00af5740",
+      "name": "text_buffer_read_normalized_line",
+      "source": "src/texture_atlas.cpp",
+      "status": "semantic_installed_atlas_fixture_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -499,6 +534,14 @@
       "status": "hardware_declaration_and_pixel_readback_checked",
       "abi_compatible": false,
       "remaining": "Diagnostic string/singleton calls omitted; constructor, full registry and lifecycle remain incomplete."
+    },
+    {
+      "address": "00aeeaf0",
+      "name": "parse_texture_atlas",
+      "source": "src/texture_atlas.cpp",
+      "status": "semantic_installed_seven_item_atlas_checked",
+      "abi_compatible": false,
+      "remaining": "Native manager/registry/allocator ownership and full path normalization unresolved; explicit callback, owning records and relative-path adapter; malformed undefined native cases rejected."
     }
   ]
 }

@@ -86,14 +86,57 @@ HRESULT D3D9StateCache::set_pixel_shader_constants_f_00b218c0(UINT start_registe
     return result;
 }
 
+HRESULT D3D9StateCache::bind_vertex_shader_00b21d10(const LogicalVertexShader* value) {
+    Guard guard(*this);
+    // 00b21d64..6a compares through the logical objects, not a saved COM value.
+    // Two non-null logical objects with null COM pointers also compare equal.
+    if (vertex_shader_ && value && vertex_shader_->shader == value->shader) return S_FALSE;
+    const auto* previous = vertex_shader_;
+    vertex_shader_ = value;
+    if (!previous && !value) return S_FALSE;
+    const HRESULT result = device_.SetVertexShader(value ? value->shader : nullptr);
+    ++vertex_shader_calls_;
+    return result;
+}
+
+HRESULT D3D9StateCache::bind_pixel_shader_00b21c20(const LogicalPixelShader* value) {
+    Guard guard(*this);
+    // 00b21c74..7a skips without adopting an equivalent new logical object.
+    if (pixel_shader_ && value && pixel_shader_->shader == value->shader) return S_FALSE;
+    const auto* previous = pixel_shader_;
+    pixel_shader_ = value;
+    if (!previous && !value) return S_FALSE;
+    const HRESULT result = device_.SetPixelShader(value ? value->shader : nullptr);
+    ++pixel_shader_calls_;
+    return result;
+}
+
+HRESULT D3D9StateCache::bind_texture_00b24710(UINT sampler,
+    std::shared_ptr<LogicalTexture> value) {
+    if (sampler >= textures_.size()) std::abort(); // New interface precondition.
+    Guard guard(*this);
+    auto& cached = textures_[sampler];
+    if (cached == value) return S_FALSE;
+    cached = std::move(value); // Retain new logical identity, release old.
+    const HRESULT result = device_.SetTexture(sampler < 16 ? sampler : sampler + 0xf1,
+        cached ? cached->texture : nullptr);
+    ++texture_binding_calls_;
+    return result;
+}
+
 void D3D9StateCache::invalidate() {
     Guard guard(*this);
     render_ = {};
     samplers_ = {};
+    textures_ = {};
     stream_frequencies_ = {};
     streams_ = {};
     indices_.reset();
     base_vertex_ = 0;
+    // New-interface reset discards borrowed projections; it does not issue
+    // device unbinds. Caller coordinates reset/device state as for streams.
+    vertex_shader_ = nullptr;
+    pixel_shader_ = nullptr;
 }
 
 void D3D9StateCache::bind_vertex_stream_00b24840(UINT stream, std::shared_ptr<LogicalVertexStream> value) {
