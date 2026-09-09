@@ -1103,6 +1103,14 @@
       "status": "installed_font_and_real_device_cached_mip_reset_checked",
       "abi_compatible": false,
       "limitations": "Typedmap/borrowedstablelevelinterfaces; nativeintrusive/iteratorABI and exceptional behavior unverified. Font rendering/fullrendererreset remain incomplete."
+    },
+    {
+      "address": "00ac3570",
+      "name": "find_font",
+      "source": "src/font_registry.cpp",
+      "status": "installed_lua_font_name_and_dat_scale_checked",
+      "abi_compatible": false,
+      "limitations": "Typeddescriptorvector in Lua iteration order; native linkedlist/font ownership and ABI omitted."
     }
   ],
   "fragments": [
@@ -1422,6 +1430,33 @@
       "status": "installed_font_207_records_and_scalar_eof_checked",
       "abi_compatible": false,
       "remaining": "Non-nullactualpointer/scalarFPexceptionbehavior or completefonttexture/registry/specialrecords/lifetime unported; hostcompleteinput rejection and map ownership explicit."
+    },
+    {
+      "address": "00ac3910",
+      "name": "load_font_registry_lua",
+      "source": "src/font_registry.cpp",
+      "native_range": "Lua descriptor metadata projection",
+      "status": "installed_font_registry_and_texture_policy_probe_checked",
+      "abi_compatible": false,
+      "remaining": "StockLua5.1.1 with explicitglobals/resolver, ordinarytables/transactionalerrors. Nativefontallocation/texturepaths/specialglyphs/GUIbinding/lifetime unported."
+    },
+    {
+      "address": "00b2c2d0",
+      "name": "select_initial_texture_load_policy",
+      "source": "src/texture_load_policy.cpp",
+      "native_range": "00b2c405..00b2c530",
+      "status": "installed_font_registry_and_texture_policy_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Stablequalitysetting input; native reload/concurrency, runtimequalitymutators and diskreloadpolicy notmapped. Exempt/reductionbranches assemblybacked, currentDDSprobechecksdefaultgate."
+    },
+    {
+      "address": "00b2c2d0",
+      "name": "initialize_retained_texture",
+      "source": "src/d3d9_texture.cpp",
+      "native_range": "successful2D COMcreate andsource retention projection",
+      "status": "installed_font_registry_and_texture_policy_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Typedcaller suppliesimageinfo/policy/options; missingretry/managercache/optionalcallback/nativewrapperallocation. Shortreadguard andHRESULTreport explicit."
     }
   ]
 }

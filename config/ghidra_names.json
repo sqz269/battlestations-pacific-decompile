@@ -1543,5 +1543,20 @@
     "address": "00b3dd90",
     "name": "BSP_D3D9Texture_RestoreCachedLevels",
     "evidence": "ECX2Dwrapper,device stackRET4. Decodeflags,CreateTexture,installretainednewbeforeoldrelease/dropgetter; thenGetSurfaceLevelkey,reinitializeexistingwrapper14/dropgetter. Nativeuninitializedoutputonfailure noHRESULTguard; typedsafe sequentialHRESULTboundary. Full362bytebody plus16bytepooltable verified; realReset64/32mipidentitychecked."
+  },
+  {
+    "address": "00ac3570",
+    "name": "BSP_FontRegistry_FindByName",
+    "evidence": "ECXfontmanager,name stackRET4/EAXborrowedfont. Traverse registry in order; equal storedlength then_stricmp;firstmatch returns. Typedvector descriptorlookup afteractualFonts.lua evaluation checked; nativefont/listownership unported."
+  },
+  {
+    "address": "00ac3910",
+    "name": "BSP_FontRegistry_LoadLuaDescriptors",
+    "evidence": "ECXmanager,3stringarguments stackRET0C. Lua initializer mask1 loadsfundamentals thenFonts script; lua_nextorder, fields typeddefaults, repeateddatafiles[1] Data/GFX/AlphaTexture lookup. TypedstockLua metadatafragment appends descriptors preservingorder and numericstringcoercion; ordinarytable guards/transactionalerrors explicit, actualDAT/texture/nativefontownership separate. Installedsixfont registry andArial16scaling checked."
+  },
+  {
+    "address": "00b2c2d0",
+    "name": "BSP_TextureManager_LoadFromFile",
+    "evidence": "Initial2D policy00b2c405..00b2c530 nowported: requestedWHFFFFFFFF defaults, unsignedmips>1/nonzeroquality gate, whole_stricmp detail.dds vs casesensitive noseart/gui substrings, SHR(Q&31), fullDWORDmipssubtract,signed>1 clamps. TypedstableQ differs native secondread. InitialCOMcreation fragment usesrealD3DXimageinfo/policy and retainsmemorysource afternonnulloutput; retry/managercache/VFS/nativewrapper remainunported."
   }
 ]

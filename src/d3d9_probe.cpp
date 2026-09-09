@@ -13,9 +13,13 @@
 #include <limits>
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/d3d9_reset_texture.hpp"
+#include "bsp/texture_load_policy.hpp"
+#include <d3dx9.h>
 #include "bsp/font_data.hpp"
+#include "bsp/font_registry.hpp"
 #include "bsp/stream_scalars.hpp"
 #include <filesystem>
+#include <algorithm>
 
 
 bool probe_shader_bindings(IDirect3DDevice9&, const char*);
@@ -23,8 +27,45 @@ bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 
 static bool probe_installed_font(const char* atlas_path) {
-    const auto path = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path()
-        / "Fonts" / "arial18.dat";
+    const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
+    const bsp::FontScriptResolver resolve = [&](const std::string& name,
+        std::string& bytes, std::string& message) {
+        std::string relative = name;
+        std::replace(relative.begin(), relative.end(), '\\', '/');
+        if (relative != "Scripts/fundamentals.lua" && relative != "Fonts/Fonts.lua") {
+            message = "Font probe resolver does not expose this script: " + name;
+            return false;
+        }
+        bsp::PhysicalFile script;
+        bsp::MemoryStream memory;
+        DWORD status{};
+        if (!script.open_read_only_00bf52a0_fragment((game_root / relative).string().c_str(), status)
+            || !bsp::memory_stream_from_physical_00bef750_fragment(script, memory, status)
+            || !memory.fully_initialized()) {
+            message = "Font script read failed: " + name;
+            return false;
+        }
+        bytes.assign(reinterpret_cast<const char*>(memory.data_00bef610()),
+            static_cast<std::size_t>(memory.size_00bef600()));
+        return true;
+    };
+    bsp::FontRegistry registry;
+    std::string decode_error;
+    if (!bsp::load_font_registry_lua(resolve, "Fonts/Fonts.lua", false, std::nullopt, registry, decode_error)) {
+        std::printf("Font registry: %s\n", decode_error.c_str());
+        return false;
+    }
+    const auto* descriptor = bsp::find_font_00ac3570(registry, "aRiAl16");
+    const auto* viper = bsp::find_font_00ac3570(registry, "Viper19");
+    const bool registry_checked = registry.fonts.size() == 6 && registry.executed_paths.size() == 2
+        && descriptor && descriptor->data_file == "arial18.dat" && descriptor->gfx_file == "arial18.tga"
+        && descriptor->alpha_texture == "white.tga" && descriptor->alpha_texture_scale == 1.0f
+        && !descriptor->uppercase_only && viper && viper->uppercase_only
+        && !bsp::find_font_00ac3570(registry, "MissingFont");
+    std::printf("Installed Lua font registry: entries=%zu name_lookup_defaults_and_flags=%d\n",
+        registry.fonts.size(), registry_checked);
+    if (!registry_checked) return false;
+    const auto path = game_root / "Fonts" / descriptor->data_file;
     bsp::PhysicalFile file;
     DWORD error{};
     bsp::MemoryStream stream;
@@ -32,13 +73,12 @@ static bool probe_installed_font(const char* atlas_path) {
         || !bsp::memory_stream_from_physical_00bef750_fragment(file, stream, error)
         || !file.close_00bf5090_fragment(error)) return false;
     bsp::FontData font;
-    std::string decode_error;
-    if (!bsp::decode_font_data_00ad4c30_fragment(stream, 0.5f, font, decode_error)) {
+    if (!bsp::decode_font_data_00ad4c30_fragment(stream, descriptor->scale_ratio, font, decode_error)) {
         std::printf("Font DAT: %s\n", decode_error.c_str());
         return false;
     }
     const bool decoded = font.source_record_count == 207 && font.glyphs.size() == 207
-        && font.scaled_height == 13 && stream.position_00bef580() == stream.size_00bef600()
+        && font.scaled_height == 23 && stream.position_00bef580() == stream.size_00bef600()
         && bsp::font_has_glyph_00ad4500(font, 0x0091)
         && !bsp::font_has_glyph_00ad4500(font, 0xff91)
         && bsp::font_accepts_text_byte_00ab6d00(font, 'A')
@@ -47,8 +87,8 @@ static bool probe_installed_font(const char* atlas_path) {
     const auto letter = font.glyphs.find('A');
     const bool fields = letter != font.glyphs.end()
         && letter->second.fields_00_0c == std::array<float, 4>{0.1015625f, 0.240234375f, 0.203125f, 0.263671875f}
-        && letter->second.field_10 == 0 && letter->second.scaled_field_12 == 6
-        && letter->second.scaled_field_14 == 6;
+        && letter->second.field_10 == 0 && letter->second.scaled_field_12 == 10
+        && letter->second.scaled_field_14 == 10;
     // Font scalar call path seeds zero: a one-byte final read zero-fills the
     // upper byte and the following EOF read returns zero without moving.
     const auto last = stream.data_00bef610()[stream.size_00bef600() - 1];
@@ -105,11 +145,29 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     bsp::CreateTextureFromMemory create{};
     static_assert(sizeof(create) == sizeof(address));
     std::memcpy(&create, &address, sizeof(create));
-    const bsp::MemoryTextureOptions options{width, height, 1, D3DFMT_DXT1};
+    using ReadImageInfo = HRESULT (WINAPI *)(const void*, UINT, D3DXIMAGE_INFO*);
+    ReadImageInfo read_info{};
+    address = GetProcAddress(module, "D3DXGetImageInfoFromFileInMemory");
+    static_assert(sizeof(read_info) == sizeof(address));
+    std::memcpy(&read_info, &address, sizeof(read_info));
+    D3DXIMAGE_INFO image_info{};
+    bsp::TextureLoadPolicy policy;
+    const bool policy_checked = read_info
+        && SUCCEEDED(read_info(bytes, static_cast<UINT>(byte_count), &image_info))
+        && image_info.ResourceType == D3DRTYPE_TEXTURE && image_info.Width == width
+        && image_info.Height == height && image_info.Format == D3DFMT_DXT1
+        && bsp::select_initial_texture_load_policy_00b2c405(
+            {static_cast<std::uint32_t>(std::strlen(path)), path},
+            {image_info.Width, image_info.Height, image_info.MipLevels}, 0, policy)
+        && policy.requested_width == 0xffffffffu && policy.requested_height == 0xffffffffu;
+    if (!policy_checked) { FreeLibrary(module); return false; }
+    const bsp::MemoryTextureOptions options{policy.saved_width, policy.saved_height,
+        policy.requested_mip_levels, image_info.Format};
     bsp::D3D9RetainedTexture2D owner(options);
-    owner.assign_source_00b23640_fragment(stream);
     std::weak_ptr<bsp::MemoryStream> retained = stream;
-    HRESULT result = owner.recreate_00b3e190(device, create);
+    HRESULT result = owner.initialize_00b2c2d0_fragment(device, create, stream, policy);
+    std::printf("Initial texture policy: D3DX_image_info_default_dimensions_and_source_retention=%d\n",
+        SUCCEEDED(result) && owner.source() == stream);
     stream.reset();
     clone = bsp::MemoryStream{};
     // The texture is now the only wrapper/backing owner. Recreate using that

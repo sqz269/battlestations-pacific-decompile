@@ -4,6 +4,7 @@
 
 namespace bsp {
 class MemoryStream;
+struct TextureLoadPolicy;
 // Opaque because this call always passes null for optional image information.
 struct D3DXImageInfo;
 using CreateTextureFromMemory = HRESULT (WINAPI *)(IDirect3DDevice9*, const void*, UINT,
@@ -37,6 +38,10 @@ public:
     // Identity skip; retain new stream before dropping old. This retains the
     // same stream wrapper, including its cursor, rather than cloning it.
     void assign_source_00b23640_fragment(const std::shared_ptr<MemoryStream>& source);
+    // Initial 2D creation/retention portion only; caller supplies verified image
+    // info/policy. Native retry, quality-setting ownership and registry absent.
+    HRESULT initialize_00b2c2d0_fragment(IDirect3DDevice9&, CreateTextureFromMemory,
+        const std::shared_ptr<MemoryStream>& source, const TextureLoadPolicy& policy);
     HRESULT recreate_00b3e190(IDirect3DDevice9&, CreateTextureFromMemory);
     IDirect3DTexture9* texture() const noexcept { return texture_; }
     const std::shared_ptr<MemoryStream>& source() const noexcept { return source_; }

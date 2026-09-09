@@ -1,5 +1,6 @@
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/memory_stream.hpp"
+#include "bsp/texture_load_policy.hpp"
 
 namespace bsp {
 D3D9RetainedTexture2D::~D3D9RetainedTexture2D() {
@@ -18,6 +19,20 @@ void D3D9RetainedTexture2D::assign_source_00b23640_fragment(
 void D3D9RetainedTexture2D::release_com() noexcept {
     if (texture_) texture_->Release();
     texture_ = nullptr;
+}
+
+HRESULT D3D9RetainedTexture2D::initialize_00b2c2d0_fragment(IDirect3DDevice9& device,
+    CreateTextureFromMemory create, const std::shared_ptr<MemoryStream>& source,
+    const TextureLoadPolicy& policy) {
+    if (!source || !source->fully_initialized() || source_) return D3DERR_INVALIDCALL;
+    const MemoryTextureOptions requested{policy.requested_width, policy.requested_height,
+        policy.requested_mip_levels, options_.source_format};
+    const HRESULT result = texture_create_from_retained_memory_00b3e190(device, create,
+        source->data_00bef610(), static_cast<UINT>(source->size_00bef600()), requested, texture_);
+    // Native creates a logical wrapper whenever the resulting COM pointer exists,
+    // then retains its source. Report HRESULT without assuming pointer/HR parity.
+    if (texture_) assign_source_00b23640_fragment(source);
+    return result;
 }
 
 HRESULT D3D9RetainedTexture2D::recreate_00b3e190(IDirect3DDevice9& device,
