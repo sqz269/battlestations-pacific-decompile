@@ -37,8 +37,14 @@ static bool probe_draw(IDirect3DDevice9& device) {
     if (SUCCEEDED(result)) result = device.SetDepthStencilSurface(nullptr);
     auto stream = std::make_shared<bsp::LogicalVertexStream>();
     stream->physical = physical_vertices;
-    stream->declaration = std::make_shared<bsp::VertexDeclarationView>();
-    stream->declaration->stride = 20;
+    stream->declaration = std::make_shared<bsp::VertexDeclaration>();
+    stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT4, D3DDECLUSAGE_POSITIONT);
+    stream->declaration->append_00b48330(D3DDECLTYPE_D3DCOLOR, D3DDECLUSAGE_COLOR);
+    if (stream->declaration->stride != 20
+        || !stream->declaration->contains_00b47c90(D3DDECLUSAGE_COLOR, 0)
+        || stream->declaration->find_00b47ce0(D3DDECLUSAGE_COLOR, 0) != 1
+        || stream->declaration->offset_00b47c40(D3DDECLUSAGE_COLOR, 0) != 16
+        || stream->declaration->size_00b47c60(D3DDECLUSAGE_COLOR, 0) != 4) result = E_FAIL;
     stream->vertex_count = 4;
     stream->tag = 0x40000001;
     if (SUCCEEDED(result)) {

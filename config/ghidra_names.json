@@ -403,5 +403,45 @@
     "address": "00b48dc0",
     "name": "BSP_D3D9LogicalIndexStream_GetBuffer",
     "evidence": "Recovered vtable+28h; loads physical wrapper stream+8h then tailcalls wrapper+1ch. Concrete physical getter00b4b840 bytes8b4128c3 returns COM buffer+28h."
+  },
+  {
+    "address": "00b48330",
+    "name": "BSP_VertexDeclaration_AppendElement",
+    "evidence": "thiscall RETCh, args type/usage/offset. Creates20-byte record {offset,type,0,usage,-1}, default offset uses packed cursor+8h; always adds type size to cursor even with explicit offset. Appends to flat array+ch and usage array+18h+12*usage, recomputes stride."
+  },
+  {
+    "address": "00b47d20",
+    "name": "BSP_VertexDeclaration_RecomputeStride",
+    "evidence": "Clears+ cch and sums table00d61cc0[type] for flat20-byte records. Stride is sum of element sizes, not maximum offset plus size."
+  },
+  {
+    "address": "00b47c90",
+    "name": "BSP_VertexDeclaration_HasSemantic",
+    "evidence": "Scans flat records by usage field+ch and occurrence. Only AL is boolean; upper EAX bits are incidental loop count. New C++ interface returns bool."
+  },
+  {
+    "address": "00b47ce0",
+    "name": "BSP_VertexDeclaration_FindSemantic",
+    "evidence": "Scans flat records by usage and occurrence, returns flat index or -1."
+  },
+  {
+    "address": "00b47c40",
+    "name": "BSP_VertexDeclaration_GetSemanticOffset",
+    "evidence": "Per-usage array at+18h+12*usage,20-byte element index, returns DWORD0 offset."
+  },
+  {
+    "address": "00b47c20",
+    "name": "BSP_VertexDeclaration_GetSemanticType",
+    "evidence": "Same per-usage array lookup, returns DWORD1 type."
+  },
+  {
+    "address": "00b47c60",
+    "name": "BSP_VertexDeclaration_GetSemanticSize",
+    "evidence": "Returns type-size table00d61cc0 entry for per-usage record type. Table17 DWORDs matches D3D declaration data-type byte sizes."
+  },
+  {
+    "address": "00b61e20",
+    "name": "BSP_LogicalVertexStreamBase_Construct",
+    "evidence": "Initializes intrusive refcount, monotonically increasing ID0108fee0, default tag40000000h, stride from declaration+cch and selected usage metadata via semantic lookup helpers. Full native constructor not yet ported."
   }
 ]

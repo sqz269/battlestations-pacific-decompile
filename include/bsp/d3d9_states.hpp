@@ -2,6 +2,7 @@
 #include "bsp/d3d9_startup.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/d3d9_buffers.hpp"
+#include "bsp/vertex_declaration.hpp"
 #include <array>
 #include <memory>
 
@@ -20,10 +21,9 @@ struct D3D9DrawState {
 };
 
 // Semantic projections of stream getters, not full native constructors/layouts.
-struct VertexDeclarationView { UINT stride{}; }; // Native declaration +cch.
 struct LogicalVertexStream {
     std::shared_ptr<VertexBufferBinding> physical; // Native stream +58h.
-    std::shared_ptr<VertexDeclarationView> declaration; // +68h.
+    std::shared_ptr<VertexDeclaration> declaration; // +68h.
     UINT offset{};       // +5ch.
     UINT vertex_count{}; // +64h.
     DWORD tag{};         // +54h.

@@ -43,7 +43,8 @@ Vertex binding holds intrusive references to logical stream objects. It compares
 their COM buffer, stride and offset before SetStreamSource, and can replace a
 logical reference without changing API state when those values match. A repeated
 identical logical object returns early. Stride comes from a declaration at `+cch`;
-the declaration itself remains a stride-only projection in the new interface.
+the declaration builder and semantic lookups are now reconstructed in
+`VERTEX_DECLARATION.md`; conversion to hardware elements remains pending.
 
 Index binding always updates stored base vertex `+17bch`, even when its logical
 index object is unchanged. It only calls SetIndices on object changes. Indexed

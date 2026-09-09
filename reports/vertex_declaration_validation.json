@@ -1,0 +1,60 @@
+{
+  "utc": "2026-09-09T04:51:29.369801+00:00",
+  "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b48330",
+      "length": 110,
+      "matches_disk": true,
+      "sha256": "e63eb7ae39d80cdb7068ad5cea1da3b814a0cd414b7cbeef96514f155bd71489"
+    },
+    {
+      "address": "00b47d20",
+      "length": 60,
+      "matches_disk": true,
+      "sha256": "7c3c65d1a42f3293db3cc20db18eba1f9dbfc4ab211660e7a122e62f548f1fbd"
+    },
+    {
+      "address": "00b47c90",
+      "length": 69,
+      "matches_disk": true,
+      "sha256": "af7a3cb79026751af31396c107a553ebd7b275767d8b689d0b8440e053f36795"
+    },
+    {
+      "address": "00b47ce0",
+      "length": 62,
+      "matches_disk": true,
+      "sha256": "71c08a94348c74e72556ee271465734a6e1c6187233eb752bc7ab9529f860a46"
+    },
+    {
+      "address": "00b47c40",
+      "length": 24,
+      "matches_disk": true,
+      "sha256": "3d35c8e437486f8a73b7f633856db7de288d504e94a0dce72d6c1bf85079f24b"
+    },
+    {
+      "address": "00b47c20",
+      "length": 25,
+      "matches_disk": true,
+      "sha256": "2dddf246ecd56ff7b40b3ba47ede9ffc221508ca2400df7c7a07d3fe674e8754"
+    },
+    {
+      "address": "00b47c60",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "f8665534bb337786934c0f2ab922132ad1bd24ad49575b765f30520a9a4f2945"
+    },
+    {
+      "address": "00d61cc0",
+      "length": 68,
+      "matches_disk": true,
+      "sha256": "ed43965ca3c0c0bada0350a5b4866d96b11447cf7e8297bbf9b13a283681fa38"
+    }
+  ],
+  "probe_output": "D3D9 device probe: hr=0x00000000 flags=0x44 size=640x480 windowed=1 format=21 depth=75 interval=0x0\nD3D9 defaults: render_calls=19 sampler_calls=140 zfunc=2 cull=3 min_filter=2 vertex_filter=2 balanced=1 checked=1\nD3D9 resources: hr=0x00000000 surface=640x480 vertex_bytes=16777216 index_bytes=1048576 checked=1\nD3D9 surface reset: hr=0x00000000 color_usage=1 depth_usage=2 checked=1\nD3D9 buffer uploads: hr=0x00000000 vertex_cursor=96 index_cursor=12 checked=1\nD3D9 draw readback: hr=0x00000000 inside=0xff00ff00 outside=0xff000000 checked=1\nD3D9 indexed readback: hr=0x00000000 inside=0xff00ff00 vertex_binds=1 index_binds=1 checked=1",
+  "probe_exit_code": 0,
+  "existing_ctest": "2/2 passed",
+  "declaration_driven_stride_validated": true,
+  "hardware_declaration_creation_validated": false,
+  "game_validated": false
+}
