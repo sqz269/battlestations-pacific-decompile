@@ -1,0 +1,159 @@
+{
+  "utc": "2026-09-09T21:12:06.579449+00:00",
+  "base_commit": "fc4251f8b858b9173498caa91bdd1a3326da1a9a",
+  "concurrency": {
+    "primary": 1,
+    "workers": 3,
+    "cross_review": "Font and inflater workers reviewed each other after implementation; primary reviewed code/evidence and integrated shared files."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "passed": true,
+    "existing_ctests_passed": 2,
+    "new_test_targets": 0
+  },
+  "probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "invocation_note": "An initial backslash-spelled argument failed the pre-existing atlas resolver string comparison; the documented forward-slash invocation passed without a code change.",
+    "inflater": {
+      "decoded_bytes": 150123,
+      "compressed_bytes": 150138,
+      "short_source_reads": 148,
+      "source_prefix_bytes": 13,
+      "max_source_read": 1021,
+      "stored_blocks": 3,
+      "checked": "Exact decoded prefixes across buffers, forward/in-block seeks, rejected old-block rewind preserving position, ignored high offset DWORD, short EOF actual count, beyond-EOF seek, retained source destruction."
+    },
+    "font_layout": {
+      "glyphs": 5,
+      "container_width": 120,
+      "measured_width": 37.5,
+      "initial_x": 41.25,
+      "final_x": 78.75,
+      "checked": "Fractional scale, centered placement, LF/CR no line break, embedded NUL, five generated quads."
+    },
+    "font_draw": {
+      "glyph": "A",
+      "visible_pixels": 74,
+      "outside_pixels": 0,
+      "state_restored": true,
+      "cache_opens": 3,
+      "physical_opens_during_font_load": 0
+    }
+  },
+  "vfs_audit": "reports/vfs_provider_flags_audit.json",
+  "limits": [
+    "Bounded fragments and host APIs; no native ABI/game equivalence",
+    "Inflater fixture covers stored-DEFLATE only; compressed-Huffman, malformed/error inputs and installed MPKG entries untested",
+    "Font scalar layout has no native differential execution; multi-glyph fixture checks geometry only",
+    "Existing font draw uses supplied host origin/camera; not original-game visual parity",
+    "VFS flags/pending lane is analysis only; no new async/preload implementation"
+  ],
+  "sha256": {
+    "CMakeLists.txt": "ddcf10f00bfcf05b994b608b0a21fbf49290840e514f0b961c1f4ac6c08c2f9f",
+    "include/bsp/inflate_stream.hpp": "d8726296cd3db0c547d8da19086d81d04cf3b8dd7a8a92f7387e615028d832aa",
+    "src/inflate_stream.cpp": "f50b76137327166bd3acee66ab00b15dd4797d2eaa7061a084c9f1ac6ad4b345",
+    "src/inflate_stream_probe.cpp": "960e0f8138774b93f64667a2a5b0737756ca62a91a30b7123155ddf28527f414",
+    "include/bsp/font_layout.hpp": "e6c21668f24e748efb7a38064ad7090c00790363ac4125ae2b68031b32bfeb13",
+    "src/font_layout.cpp": "06c32a1cc8b192644aac51df8f5e9310e6847fe6e305264577c01568c532dfc5",
+    "src/d3d9_probe.cpp": "4ac8cb51435def56bdc17dd18a744be31a18f4c1201777eb69a54d2de9e08eb5",
+    "src/d3d9_font_probe.cpp": "3dc9414417fb4e51301a21f763c2dbb748388e6463eaa8982e2c0faa1b29e4eb",
+    "build/win32/Release/bsp_d3d9_probe.exe": "9797bdec4125ea2ebf05197a3f26f8ab7183cbdfe6bd942b884914fe41b80ee1",
+    "reports/parallel_implementation_probe.txt": "560e880029f6c57fe290239cd4a72e2afdc01d4158ff72b2f9787b4e8c789aca",
+    "reports/parallel_implementation_build.txt": "4409fb21aec74930467a5ec2e7104cdd44539bf1a3bd25a4e37717088666f0f6"
+  },
+  "game_rebuilt": false,
+  "ghidra": {
+    "verified_utc": "2026-09-09T21:14:13.668661+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_saved": true,
+    "annotation_log": "local/ghidra-annotations-20260909T211216Z.json",
+    "annotations": [
+      {
+        "address": "00bbc1d0",
+        "name": "BSP_RawInflateStream_Construct",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bbbf00",
+        "name": "BSP_RawInflateStream_RefillOutput",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bbc060",
+        "name": "BSP_RawInflateStream_Seek",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bbc140",
+        "name": "BSP_RawInflateStream_Read",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00ab9fd0",
+        "name": "BSP_TextContext_BuildSingleLineGlyphGeometry",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bf4ba0",
+        "name": "BSP_PhysicalDirectory_Open",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00be7cd0",
+        "name": "BSP_FileStore_RequestFile",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bdda10",
+        "name": "BSP_VFS_OpenFileOverlapped",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bdc100",
+        "name": "BSP_VFS_OverlappedVisitor_Construct",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      },
+      {
+        "address": "00bf52a0",
+        "name": "BSP_PhysicalStream_Open",
+        "old_comment_preserved": true,
+        "evidence_present": true
+      }
+    ],
+    "imported_library_rename_tags_preserved": 8780,
+    "affected_exports_refreshed": [
+      "00bbc1d0",
+      "00bbbf00",
+      "00bbc060",
+      "00bbc140",
+      "00ab9fd0",
+      "00bf4ba0",
+      "00be7cd0",
+      "00bdda10",
+      "00bdc100",
+      "00bf52a0"
+    ],
+    "snapshot": {
+      "utc": "2026-09-09T21:12:36.781034+00:00",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "total_function_count": 62728,
+      "internal_function_count": 62286,
+      "external_symbol_count": 443,
+      "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+    }
+  }
+}

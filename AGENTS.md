@@ -6,6 +6,12 @@
   Use `config/parallel_work.json` and `docs/PARALLEL_WORK.md` for concrete packets.
   Partition waves are candidate-graph hints, not proof of independent work; include
   named-but-incomplete dependencies and use explicit function/file ownership.
+  For the continuing reconstruction goal, use the available four-agent capacity:
+  one primary integrator plus up to three workers on ready independent packets.
+  Refill completed worker slots when useful work is ready. Use the ledger's current
+  packet states to advance archive streams/entries, font layout and VFS loading
+  independently where their contracts permit. Recheck actual concurrency
+  limits when resuming; do not assume whole partition segments are independent.
 
 - Use the existing `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`.
   Verify project and program before every analysis/export batch. Do not re-import into `wows`.

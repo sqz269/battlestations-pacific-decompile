@@ -1,0 +1,605 @@
+{
+  "utc": "2026-09-09T21:08:03.618615+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "disk_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "disk_file_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "scope": {
+    "read_only": true,
+    "assigned_ranges": [
+      [
+        "00bf4b00",
+        "00bf5bff"
+      ],
+      [
+        "00be7cd0",
+        "00be801f"
+      ]
+    ],
+    "parent_authorized_extensions": [
+      "00bdda10",
+      "00bdc100"
+    ],
+    "primary_routines": [
+      "00bf4ba0",
+      "00bf5590",
+      "00bf52a0",
+      "00be7cd0",
+      "00bdda10",
+      "00bdc100"
+    ],
+    "target_verified_before_each_batch": true,
+    "target_batch_count": 6,
+    "ghidra_mutations": false,
+    "cpp_changes": false,
+    "tests_run": false
+  },
+  "decision": {
+    "can_reuse_current_host_physical_cache_read_implementation_for_five_script_preloads": true,
+    "domain": "Synchronous supported read-only physical and memory-backed FileStore providers; original startup requests retain flags0x32",
+    "accepted_observed_native_modes": [
+      2,
+      50
+    ],
+    "current_public_adapter_accepts_flags_argument": false,
+    "required_interface_contract": "Explicitly recognize exact native modes2 and0x32 and preserve original flags at policy boundary. Existing physical read primitive may serve either mode within supported provider domain. Do not silently strip arbitrary flags.",
+    "does_not_establish": [
+      "MPKG or other provider flag semantics",
+      "Complete pending/overlapped behavior",
+      "Native error/lifetime compatibility",
+      "Native font preload selection",
+      "Native gameplay/runtime validation"
+    ],
+    "bits_0x10_0x20_meaning": "No general semantic names recovered. They do not affect the inspected synchronous native2/0x32 pair."
+  },
+  "physical_route": {
+    "chain": [
+      "00bdf310",
+      "00bda690",
+      "00bf4ba0",
+      "00bf5590",
+      "00bf52a0"
+    ],
+    "fresh_primary_bodies": [
+      "00bf4ba0",
+      "00bf5590",
+      "00bf52a0"
+    ],
+    "cached_adjacent_bodies": [
+      "00bdf310",
+      "00bda690"
+    ],
+    "provider_table": "00d69168",
+    "provider_open_slot": {
+      "offset": "0x8",
+      "target": "00bf4ba0"
+    },
+    "provider_abi": "ECX provider; suffix,flags stack; EAX stream/null; RET8",
+    "provider_flags_forwarding": "00bf4bde loads original flags;00bf4be2 pushes them unchanged;00bf4bee calls00bf5590",
+    "thunk": {
+      "address": "00bf5590",
+      "bytes": "e90bfdffff",
+      "operation": "JMP00bf52a0",
+      "transforms_flags": false
+    },
+    "file_abi": "ECX stream;path,flags stack;RET8 at00bf54ea",
+    "file_flag_steps": [
+      {
+        "range": [
+          "00bf52b8",
+          "00bf52db"
+        ],
+        "operation": "desired access from bit0"
+      },
+      {
+        "range": [
+          "00bf52dd",
+          "00bf52e7"
+        ],
+        "operation": "jump table indexed byflags&0xE"
+      },
+      {
+        "range": [
+          "00bf530c",
+          "00bf5314"
+        ],
+        "operation": "mask2 case overwrites disposition with3"
+      },
+      {
+        "range": [
+          "00bf531e",
+          "00bf5327"
+        ],
+        "operation": "share mode=(~flags)&1"
+      },
+      {
+        "range": [
+          "00bf533b",
+          "00bf5346"
+        ],
+        "operation": "CreateFileA call with zero attributes/security/template"
+      }
+    ],
+    "pair_evaluation": [
+      {
+        "flags": 2,
+        "flags_hex": "0x2",
+        "mask_0xe": 2,
+        "jump_target": "00bf530c",
+        "desired_access": 2147483648,
+        "desired_access_name": "GENERIC_READ",
+        "share_mode": 1,
+        "share_name": "FILE_SHARE_READ",
+        "creation_disposition": 3,
+        "creation_name": "OPEN_EXISTING",
+        "attributes": 0,
+        "security": 0,
+        "template_handle": 0
+      },
+      {
+        "flags": 50,
+        "flags_hex": "0x32",
+        "mask_0xe": 2,
+        "jump_target": "00bf530c",
+        "desired_access": 2147483648,
+        "desired_access_name": "GENERIC_READ",
+        "share_mode": 1,
+        "share_name": "FILE_SHARE_READ",
+        "creation_disposition": 3,
+        "creation_name": "OPEN_EXISTING",
+        "attributes": 0,
+        "security": 0,
+        "template_handle": 0
+      }
+    ],
+    "evaluation_type": "Assembly and verified jump-table calculation, not native execution",
+    "high_bits_stored_in_stream": false,
+    "pair_native_failure_branches_identical": true,
+    "host_failure_parity_claimed": false,
+    "invalid_mode_caveat": "For unhandled flags&0xE cases the original word may remain the Windows disposition argument; no arbitrary-mode masking guarantee."
+  },
+  "cache_and_conversion": {
+    "store_open": "00be5fa0",
+    "store_evidence": "Previously byte-verified cached145-byte body checks bit0; extra0x30 bits do not affect lookup/reset clone",
+    "memory_conversion": "00bef750 receives stream only, no flags argument",
+    "population": "Existing00be7ab0 projection opens before duplicate rejection, retains supplied-name key, buffers then first-wins inserts",
+    "host_existing_differences": [
+      "Guarded ownership and explicit errors",
+      "Early physical buffering",
+      "Incomplete-read rejection",
+      "No native diagnostics or intrusive ABI parity"
+    ]
+  },
+  "pending_request": {
+    "address": "00be7cd0",
+    "diagnostic_identity": "cFileStore::RequestFile",
+    "abi": "ECX store;name,completion callback stack;AL boolean;RET8",
+    "public_flags_argument": false,
+    "resolver": "Copy/normalize local name via00bee780 then00bdf4c0",
+    "resident_lookup": "store+14h via00be5e90",
+    "pending_lookup": "store+20h via00be5f00",
+    "duplicate_result": "AL1, no new request or callback invocation in inspected body",
+    "pending_insertion_calls": [
+      "00be6120",
+      "00be62e0",
+      "00be7460"
+    ],
+    "submission": {
+      "site": "00be7eef",
+      "callee": "00bdda10",
+      "stack_arguments": [
+        "local resolved name",
+        "original name",
+        "00be7b20",
+        "2"
+      ],
+      "flags_literal_site": "00be7ee2",
+      "insertion_precedes_submission": true
+    },
+    "rejection_calls": [
+      {
+        "site": "00be7f1d",
+        "callee": "00be79c0",
+        "receiver": "secondary-tree receiver",
+        "argument": "local name",
+        "internals_inspected": false
+      },
+      {
+        "site": "00be7f2a",
+        "callee": "00bd9e30",
+        "argument": -1,
+        "internals_inspected": false
+      }
+    ],
+    "return_meaning": "False for name-resolution or submission failure; true for resident/pending duplicates and accepted submission, not proof of populated cache on new request",
+    "live_callers": [
+      {
+        "function": "00509190",
+        "call_sites": [
+          "00509297",
+          "005092cb"
+        ]
+      },
+      {
+        "function": "0062c2c0",
+        "call_sites": [
+          "0062d1e3"
+        ]
+      },
+      {
+        "function": "00ab5f00",
+        "call_sites": [
+          "00ab5fa8"
+        ]
+      },
+      {
+        "function": "0058c010",
+        "call_sites": [
+          "0058c9cd"
+        ]
+      }
+    ],
+    "caller_bodies_expanded": false
+  },
+  "overlapped_front_half": {
+    "dispatcher": {
+      "address": "00bdda10",
+      "diagnostic_identity": "cFileSystem::OpenFileOverlapped",
+      "abi": "ECX manager;first name,second name,callback,flags stack;AL acceptance;RET10h",
+      "forwards_four_arguments_unchanged": true,
+      "constructor": "00bdc100",
+      "mount_traversal": "00bdd0a0 uses second name argument (00bdda3f,00bdda5c)",
+      "result": "Visitor+14h acceptance byte copied before visitor destruction"
+    },
+    "constructor": {
+      "address": "00bdc100",
+      "abi": "ECX visitor;first name,second name,callback,flags stack;EAX visitor;RET10h",
+      "layout": {
+        "0x0": "vtable00d68478",
+        "0x4/0x8": "first name copied",
+        "0xc/0x10": "second name copied",
+        "0x14": "acceptance byte initialized0",
+        "0x18": "flags copied unchanged",
+        "0x1c": "callback pointer"
+      }
+    },
+    "vtable": {
+      "address": "00d68478",
+      "destructor": "00bdc210",
+      "visit": "00bdc1e0",
+      "acceptance_query": "00bdc1d0"
+    },
+    "established_flags": "RequestFile supplies2 and it reaches visitor+18h unchanged",
+    "next_boundary": [
+      "00bdc1e0 provider dispatch",
+      "00bdc1d0 acceptance query",
+      "Visitor destructor/ownership",
+      "Provider overlapped method and completion timing"
+    ],
+    "next_bodies_inspected": false
+  },
+  "annotation_proposals": [
+    {
+      "address": "00bf4ba0",
+      "name": "BSP_PhysicalDirectory_Open",
+      "name_is_descriptive_reconstruction": true,
+      "abi": "ECX provider; suffix and flags stack; EAX stream/null; RET 8",
+      "complete_span_length": 199,
+      "complete_span_sha256": "416d4e8a211ca26833ffe57980ceb468aa3f3f10cfebc98977b34f3133ff45a9",
+      "matches_disk": true,
+      "comment": "ECX provider; suffix and flags stack; EAX stream/null; RET 8. Physical provider table 00d69168 virtual +8. Allocates/reuses a physical stream, builds its full physical path through provider +1Ch, forwards incoming flags unchanged via 00bf5590, checks stream validity and releases a failed result. The 00bf5590 body is only JMP 00bf52a0. Flags 2 and 0x32 therefore reach the same physical open mode; native lifecycle/errors remain distinct from guarded host adapters. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00be7cd0",
+      "name": "BSP_FileStore_RequestFile",
+      "name_is_descriptive_reconstruction": true,
+      "abi": "ECX store; name and completion callback stack; AL boolean; RET 8",
+      "complete_span_length": 672,
+      "complete_span_sha256": "b3c3de9393c34484889ba7b9a69049ec9007839098ff1c877a09435fa32f3593",
+      "matches_disk": true,
+      "comment": "ECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bdda10",
+      "name": "BSP_VFS_OpenFileOverlapped",
+      "name_is_descriptive_reconstruction": true,
+      "abi": "ECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h",
+      "complete_span_length": 135,
+      "complete_span_sha256": "863787e64da8b336a152f22c9d18308bc82758c060a228f532d8d9b5d1e29465",
+      "matches_disk": true,
+      "comment": "ECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bdc100",
+      "name": "BSP_VFS_OverlappedVisitor_Construct",
+      "name_is_descriptive_reconstruction": true,
+      "abi": "ECX visitor; first name, second name, callback and flags stack; EAX visitor; RET 10h",
+      "complete_span_length": 195,
+      "complete_span_sha256": "19f017079835b48e6cffabe76353218ac0cbb009cef4887cd4a8a96b5fa9bf29",
+      "matches_disk": true,
+      "comment": "ECX visitor; first name, second name, callback and flags stack; EAX visitor; RET 10h. Constructs visitor table 00d68478, copies first and second names to +4/+8 and +0Ch/+10h, clears acceptance byte +14h, stores flags unchanged at +18h and callback at +1Ch. Table visit +4 is 00bdc1e0 and acceptance +8 is 00bdc1d0; their dispatch semantics were not expanded. This name is a descriptive reconstruction hypothesis. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    },
+    {
+      "address": "00bf52a0",
+      "name": "BSP_PhysicalStream_Open",
+      "name_is_descriptive_reconstruction": true,
+      "abi": "ECX stream; path and flags stack; RET 8",
+      "complete_span_length": 589,
+      "complete_span_sha256": "c861932ca72ee94f3f4895b4d540754537c94c9716e97ef0ec130d6f5093687c",
+      "matches_disk": true,
+      "comment": "ECX stream; path and flags stack; RET 8. Flags 2 and 0x32 both select desired access 80000000h, share mode 1, and creation disposition 3 with zero attributes/security/template. The flags & 0Eh index 2 jumps through verified table 00bf54f0 to 00bf530c, overwriting disposition with 3. Extra bits 10h/20h are neither consulted further nor stored in this inspected pair of native paths. This does not establish arbitrary flag semantics, other providers, native failure parity or an implemented public host flags API. Existing typed host read-only API remains restricted as documented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.",
+      "preserve_previous_comments": true,
+      "applied_by_this_lane": false
+    }
+  ],
+  "byte_validation": {
+    "code_spans": [
+      {
+        "address": "00bf4ba0",
+        "length": 199,
+        "actual_length": 199,
+        "scope": "complete physical provider open",
+        "sha256": "416d4e8a211ca26833ffe57980ceb468aa3f3f10cfebc98977b34f3133ff45a9",
+        "matches_disk": true,
+        "hex": "6aff68587ccc0064a100000000506489250000000083ec0856578bf1e8dff6ffff8d4804e8a7ebffff8b4c24208bf88b068b401c518d54240c528bceffd08b4c242451508bcfc744242000000000e89d0900008b44240c85c0c7442418ffffffff74178b4c24086a0183c1015150e8ad5082ff8bc8e8f6c8fdff8b178b42188bcfffd084c0752b8d4f0451ff152022ce0085c075088b178b028bcfffd05f33c05e8b4c240864890d0000000083c414c208008b4c24108bc75f5e64890d0000000083c414c20800"
+      },
+      {
+        "address": "00bf5590",
+        "length": 5,
+        "actual_length": 5,
+        "scope": "complete jump thunk",
+        "sha256": "291fdcdb023385c50627470233c93a15f98b39c54fd9ae96793635ac3693bb73",
+        "matches_disk": true,
+        "hex": "e90bfdffff"
+      },
+      {
+        "address": "00bf52a0",
+        "length": 589,
+        "actual_length": 589,
+        "scope": "complete physical file open",
+        "sha256": "c861932ca72ee94f3f4895b4d540754537c94c9716e97ef0ec130d6f5093687c",
+        "matches_disk": true,
+        "hex": "6aff68187dcc0064a100000000506489250000000083ec108b4424245355568bf18ac880e101f6d957897424101bc981e1000000c081c1000000808bd98bc883e10e83f9087737ff248df054bf00c744243402000000eb26c744243401000000eb1cc744243404000000eb12c744243403000000eb08c7442434050000008b7c2430f7d083e0018bc88b470433ed3bc5894c24147505b840dc09018b54243455555255515350ff156022ce0083f8ff8946080f8567010000ff155822ce008bf08b47043bc57505b840dc09015056682492d600e8380183ff83c40c83fe030f853701000081fb000000400f852b0100008b1d7c22ce008b47043bc58bce0f84c60000003bf57d0433c9eb083b370f87b600000003c1689478ce0050e88040000083c4083bc50f849e0000002b47048bf083feff0f849000000056558d442420508bcfe8594487ff8b44241c83c6013bc57505b840dc09015550ffd385c0750dff155822ce003db700000075308b4c241c3bcdc7442428ffffffff0f8476ffffff8b4424186a0183c0015051e8904882ff8bc8e8d9c0fdffe95affffff8b4c241c3bcd7505b940dc09015150682492d600e85b0083ff83c40c8d4c2418c7442428ffffffffe8b78882ff8b47043bc57505b840dc09018b4c24348b5424145555515552680000004050ff156022ce0083f8ff8b4c24108941087521ff155822ce008b4f043bcd7505b940dc09015150682492d600e8f8ff82ff83c40c8b7424108b460883f8ff740b8d56185250ff157421ce008b4c24205f896e14896e105e5d5b64890d0000000083c41cc20800"
+      },
+      {
+        "address": "00be7cd0",
+        "length": 672,
+        "actual_length": 672,
+        "scope": "complete pending request",
+        "sha256": "b3c3de9393c34484889ba7b9a69049ec9007839098ff1c877a09435fa32f3593",
+        "matches_disk": true,
+        "hex": "6aff68386ecc0064a100000000506489250000000083ec2c53565768408bd6008bf9e8b9d783ff8b74244c83c4048bd68d4c240ce8776a00008b0decce09018d44240c50c744244400000000e89f77ffff68108bd6008ad8e883d783ff83c40484db75578b460485c07505b86cdb09015068dc8ad600e865d783ff8b4c241883c40885c9c7442440ffffffff74178b44240c6a0183c0015051e8521f83ff8bc8e89b97feff5f5e32c05b8b4c242c64890d0000000083c438c20800558d4c2410518d54241c8d7714528bcee8f0e0ffff8b0885c98b68048b5e0474043bce7405e85ee900003beb5d74588b44241085c07505b86cdb09015068988ad600e8ded683ff83c4088b4c241085c9c7442440ffffffff74178b44240c6a0183c0015051e8cb1e83ff8bc8e81497feff5f5eb0015b8b4c242c64890d0000000083c438c208008d44240c508d4c24188d7720518bcee8dae0ffff8b44241485c08b7e0474043bc67405e8d9e80000397c241874188b44241085c07505b86cdb09015068548ad600e975ffffff8d54244c528d442410508d4c2428e8b5e2ffff508d4c2418c644244401e866e4ffff8d4c2414518d542430528bcec644244802e8d0f5ffff8b44241885c0c64424400174178b4c24146a0183c1015150e8131e83ff8bc8e85c96feff8b4c242485c9c64424400074178b4424206a0183c0015051e8ef1d83ff8bc8e83896feff8b7c24488b0decce09016a0268207bbe00578d44241850e81c5bffff84c00f85d9feffff8b470485c07505b86cdb09015068148ad600e89dd583ff83c4088d4c240c518bcee89efaffff8b0decce09016affe8011fffff8b44241085c0c7442440ffffffff0f8432feffff8b4c240c6a0183c1015150e86d1d83ff8bc8e8b695feff8b4c24385f5e32c05b64890d0000000083c438c20800"
+      },
+      {
+        "address": "00bdda10",
+        "length": 135,
+        "actual_length": 135,
+        "scope": "complete overlapped dispatcher",
+        "sha256": "863787e64da8b336a152f22c9d18308bc82758c060a228f532d8d9b5d1e29465",
+        "matches_disk": true,
+        "hex": "6aff68e863cc0064a100000000506489250000000083ec20535657689c84d6008bf1e8797a84ff8b44244c8b4c24488b7c24448b54244083c404505157528d4c241ce8a9e6ffff8d44240c50578bcec744243c00000000e834f6ffff8a5c24208d4c240cc7442434ffffffffe8bfdcffff8b4c242c5f5e8ac35b64890d0000000083c42cc21000"
+      },
+      {
+        "address": "00bdc100",
+        "length": 195,
+        "actual_length": 195,
+        "scope": "complete overlapped visitor constructor",
+        "sha256": "19f017079835b48e6cffabe76353218ac0cbb009cef4887cd4a8a96b5fa9bf29",
+        "matches_disk": true,
+        "hex": "6aff687361cc0064a100000000506489250000000051535556578bf9897c24108b6c242433db8d77043bf5c7077884d600895c241c891e895e0474258b45006a01508bcee8f71b84ff395d0074138b068b4e04508b45045051e822b5010083c40c8b6c24288d770c3bf5c644241c01891e895e0474258b55006a01528bcee8bd1b84ff395d0074138b068b4d048b5604505152e8e8b4010083c40c8b4424308b4c242c894718885f14894f1c8b4c24148bc75f5e5d5b64890d0000000083c410c21000"
+      }
+    ],
+    "disposition_table": {
+      "address": "00bf54f0",
+      "length": 36,
+      "sha256": "0add47ccd000078955a5523649106caae4bd2d7f2876b08d5d62789636e1b9ce",
+      "matches_disk": true,
+      "hex": "0253bf001e53bf000c53bf001e53bf00ee52bf001e53bf00f852bf001e53bf001653bf00",
+      "jump_table": [
+        "00bf5302",
+        "00bf531e",
+        "00bf530c",
+        "00bf531e",
+        "00bf52ee",
+        "00bf531e",
+        "00bf52f8",
+        "00bf531e",
+        "00bf5316"
+      ]
+    },
+    "vtables": [
+      {
+        "address": "00d68478",
+        "length": 12,
+        "description": "overlapped visitor vtable",
+        "sha256": "d2ba93347064c4c197bf36f51d0098740d108f0a20bf09e641a6494cd6a1cf00",
+        "matches_disk": true,
+        "hex": "10c2bd00e0c1bd00d0c1bd00",
+        "pointers": [
+          "00bdc210",
+          "00bdc1e0",
+          "00bdc1d0"
+        ]
+      },
+      {
+        "address": "00d69168",
+        "length": 44,
+        "description": "physical provider vtable",
+        "sha256": "647f1cb3a32c73e34215133240a985a1726f2d034a1f7a1cad561d589e5617ab",
+        "matches_disk": true,
+        "hex": "e030bd00d04dbf00a04bbf00b043bf00703fbf00e047bf00c039bf007039bf00803abf00b00fbf00b046bf00",
+        "pointers": [
+          "00bd30e0",
+          "00bf4dd0",
+          "00bf4ba0",
+          "00bf43b0",
+          "00bf3f70",
+          "00bf47e0",
+          "00bf39c0",
+          "00bf3970",
+          "00bf3a80",
+          "00bf0fb0",
+          "00bf46b0"
+        ]
+      },
+      {
+        "address": "00d691b0",
+        "length": 64,
+        "description": "physical stream vtable",
+        "sha256": "5ddae5f29b5b92d402da93cab2e4c092ef63300b4fa6efcb996810ec7df4f7ba",
+        "matches_disk": true,
+        "hex": "a055bf009050bf00e04ebf00f04fbf00209d6f00f04ebf002050bf00204fbf00404fbf003050bf00504fbf00a04fbf00904fbf00e042be000043be004043be00",
+        "pointers": [
+          "00bf55a0",
+          "00bf5090",
+          "00bf4ee0",
+          "00bf4ff0",
+          "006f9d20",
+          "00bf4ef0",
+          "00bf5020",
+          "00bf4f20",
+          "00bf4f40",
+          "00bf5030",
+          "00bf4f50",
+          "00bf4fa0",
+          "00bf4f90",
+          "00be42e0",
+          "00be4300",
+          "00be4340"
+        ]
+      }
+    ],
+    "diagnostic_strings": [
+      {
+        "address": "00d68b40",
+        "length": 30,
+        "sha256": "1789874111f8865cbc3e07399f9853e939137edd787b48e081017cb0714c29dd",
+        "matches_disk": true,
+        "hex": "6346696c6553746f72653a3a5265717565737446696c6520656e74727900",
+        "ascii": "cFileStore::RequestFile entry"
+      },
+      {
+        "address": "00d68b10",
+        "length": 46,
+        "sha256": "2b483419e4e2f35283b1997c048cf3ce1f535fc5bfde5e967f149754e7d4d27b",
+        "matches_disk": true,
+        "hex": "6346696c6553746f72653a3a5265717565737446696c652061667465722067657466696c656c6f636174696f6e00",
+        "ascii": "cFileStore::RequestFile after getfilelocation"
+      },
+      {
+        "address": "00d68adc",
+        "length": 50,
+        "sha256": "aeed50d5ddd5a67b25fa973fd4f4e53a2e75401e9629eeb3f13108cde4469207",
+        "matches_disk": true,
+        "hex": "4552524f523a206346696c6553746f72653a3a5265717565737446696c652066696c65202573206e6f7420666f756e642100",
+        "ascii": "ERROR: cFileStore::RequestFile file %s not found!"
+      },
+      {
+        "address": "00d68a98",
+        "length": 65,
+        "sha256": "cbc8ef62335aecd3312a4c5b829b9f4f26283a053aacc27bd235407561214865",
+        "matches_disk": true,
+        "hex": "5741524e494e473a206346696c6553746f72653a3a5265717565737446696c65203a2046696c6520257320616c726561647920696e206346696c6553746f726500",
+        "ascii": "WARNING: cFileStore::RequestFile : File %s already in cFileStore"
+      },
+      {
+        "address": "00d68a54",
+        "length": 62,
+        "sha256": "dc4f27b191b31a7f53627492808ad397c21249cfb8d941ac13b5276fef8d3dcd",
+        "matches_disk": true,
+        "hex": "5741524e494e473a206346696c6553746f72653a3a5265717565737446696c65203a2046696c6520257320616c7265616479207265717565737465642100",
+        "ascii": "WARNING: cFileStore::RequestFile : File %s already requested!"
+      },
+      {
+        "address": "00d68a14",
+        "length": 62,
+        "sha256": "1d656f88d193bac0825bb988e3404531d7ce83fa7b8e0ae0b162b3fb543d6c84",
+        "matches_disk": true,
+        "hex": "4552524f523a206346696c6553746f72653a3a5265717565737446696c65204f7665726c6170706564206c6f6164206661696c6564206f6e202573202100",
+        "ascii": "ERROR: cFileStore::RequestFile Overlapped load failed on %s !"
+      },
+      {
+        "address": "00d6849c",
+        "length": 38,
+        "sha256": "7437dfe8e8c353a2aef89021663fc520a32defb2e386549978db6b6aa0a000d4",
+        "matches_disk": true,
+        "hex": "6346696c6553797374656d3a3a4f70656e46696c654f7665726c617070656420656e74727900",
+        "ascii": "cFileSystem::OpenFileOverlapped entry"
+      }
+    ],
+    "all_selected_bytes_match_disk": true,
+    "whole_ghidra_image_identity_verified": false
+  },
+  "artifacts": {
+    "document": "docs/VFS_PROVIDER_FLAGS.md",
+    "raw_export_directory": "exports/bsp/parallel_vfs_flags",
+    "export_sha256": {
+      "exports/bsp/parallel_vfs_flags/00bdc100.asm": "eb718cb1b73e5c925096bed5b448f7234485ffe9ddf511028a44b09f81e9ad1e",
+      "exports/bsp/parallel_vfs_flags/00bdc100.c": "5f878bef4d38c215c37c053ebb6178a3ebdc6d762d0ac9caae87f0fda97aff07",
+      "exports/bsp/parallel_vfs_flags/00bdc100.raw.asm": "86e6f71d7018bda9fe4ee375567f2a792398d58b7b1859fa9e003c47299582b6",
+      "exports/bsp/parallel_vfs_flags/00bdda10.asm": "03147700eeef4fedf93ac063f25869ead661c6b60034f3d95cb7306505108ca4",
+      "exports/bsp/parallel_vfs_flags/00bdda10.c": "b1df30967cbfa5183d8890a44f39ee68f25924ccbf8e73be65a8963aa5729ffe",
+      "exports/bsp/parallel_vfs_flags/00bdda10.callers.json": "de2e790a855f4063f2b25624c044542949aa99c67eb64cc860554de9a8dbe9cf",
+      "exports/bsp/parallel_vfs_flags/00bdda10.raw.asm": "c9ad841afe6161760a695ab1fc07717c5b75371352e65554bb7ee689f9601a22",
+      "exports/bsp/parallel_vfs_flags/00be7cd0.asm": "3874dae80b139aee4f9f6cb63dce3ab291bcaf287e5f2abd9e748c0816931b54",
+      "exports/bsp/parallel_vfs_flags/00be7cd0.c": "e8a5372aeca8ee1e50dbf52d7b029fef53b67e389fd88571ba9060709ea77a10",
+      "exports/bsp/parallel_vfs_flags/00be7cd0.raw.asm": "c2f7ff39aff2ee33888f9ee0f9857716887a32a238706667eab7bef4fc3e03de",
+      "exports/bsp/parallel_vfs_flags/00be7cd0.xrefs.json": "c5a0f9e9e75dae2267690e7f8a624699055550ad3251f208d1c862f5255d750f",
+      "exports/bsp/parallel_vfs_flags/00bf4ba0.asm": "cd2d6835173cf171f952c4074cda0294f1c037682465242b675ee62099c4c5ad",
+      "exports/bsp/parallel_vfs_flags/00bf4ba0.c": "8c3b6493bbdb83fcef9f0d786b756d3d06956effd8ba0981c47b06a6cb156061",
+      "exports/bsp/parallel_vfs_flags/00bf4ba0.raw.asm": "a0b81f0db0a55fad8946b60c958ba34dbf810e336b282a29c587b3355d4128eb",
+      "exports/bsp/parallel_vfs_flags/00bf4ba0.xrefs.json": "10897ac7461ce1fcbc68203069f2353b517f0c951ffd2027887f87f2b02c227e",
+      "exports/bsp/parallel_vfs_flags/00bf52a0.asm": "002918728c0101b85c242ef3594c7c2e29879643ee997f2619745da2fc52a7c7",
+      "exports/bsp/parallel_vfs_flags/00bf52a0.c": "47a02278bc0eb6e79644edb180f8b049e0380ed5cb225bd8e15ec059138477f2",
+      "exports/bsp/parallel_vfs_flags/00bf52a0.raw.asm": "753d0704461e225e3cf7749ecc2592f6161c395e17dc2c56cf644f9bc66200c9",
+      "exports/bsp/parallel_vfs_flags/00bf52a0.xrefs.json": "5b2c32606afee694f2f3ce9c46d881a2cc88ba9a7916bdc7738f03ada3dfcc61",
+      "exports/bsp/parallel_vfs_flags/00bf5590.asm": "e59873593f6b314000d9063677db432fcd172caf2cb5bc61741421653bcacf99",
+      "exports/bsp/parallel_vfs_flags/00bf5590.c": "06e712f688850ee95075babc3e1720bea223bd21ac573ee77635c0771ef04715",
+      "exports/bsp/parallel_vfs_flags/00bf5590.raw.asm": "3379a094f475dec41670e1a51146d454182768fd4b450e4652def8b5d28daa1d",
+      "exports/bsp/parallel_vfs_flags/00bf5590.xrefs.json": "1e76c00defe5cfd5302b4404e88b5877d3742700cf1b7789c6af69210f3b1ad2",
+      "exports/bsp/parallel_vfs_flags/code_bytes.json": "d5777a7a9b96b0222eddeb7a6535d4c1c0584fcb3970444b0f6595f02e383b2a",
+      "exports/bsp/parallel_vfs_flags/open_disposition_table.json": "bea60beb76e50be40f4d1653d776d21c094e4239a84fcb18cd05192954f24086",
+      "exports/bsp/parallel_vfs_flags/request_constants.json": "fdafc5fd33892295ed0784be91ab51e71683e73418095dd6d5cd630ecd7be50a",
+      "exports/bsp/parallel_vfs_flags/target_batch1.json": "6619ff6e7dde4e589d1307a13fdbd7278b4c4fabf0c0135faecad46cd60ad6b1",
+      "exports/bsp/parallel_vfs_flags/target_batch2.json": "537248c32928c07d7ff1cdf4def0a76938a6540458b8ddd117c17af6013bd4fe",
+      "exports/bsp/parallel_vfs_flags/target_batch3.json": "f0e78ad0e5a83934b8a2df676453f3703be92f079801d5e8c63f91ff9cdeac36",
+      "exports/bsp/parallel_vfs_flags/target_batch4.json": "b4c69e82ae29cba2b7f7b67f7f387b465fc4e52dfc64389bc46570996e93ac02",
+      "exports/bsp/parallel_vfs_flags/target_batch5.json": "f98000e6e8b667b5ef472c62a50d75f74ffdf304254150ef294207f1bf5e22a8",
+      "exports/bsp/parallel_vfs_flags/target_batch6.json": "57f3f501c21fa8554a408e81746578f3f3bdce4403dba43140d0aec4e1bff77f",
+      "exports/bsp/parallel_vfs_flags/vtables.json": "0035dd6769175e86b328bd76fb6f0771a6f7f511ba87285776efd1d9046e574a"
+    },
+    "cached_source_sha256": {
+      "exports/bsp/functions/00bdf310/assembly.txt": "5e0cad389730c7a45287e1285991d6634ef1d67ed985cd35717ac1ed6bc3f837",
+      "exports/bsp/functions/00bda690/assembly.txt": "f8917664946e294f0fdca7df8db5d3bb47cea143e969b02cd10f6764710c059d",
+      "exports/bsp/functions/00bdd0a0/decompiled.c": "4763056f68f369564c7fb952667eea5822dfafc8dc157e3974a1dfe1ff25d1de",
+      "exports/bsp/mounted_streams/00be5fa0.raw.asm": "20f261b3109062144e7bd824b64813649ad38b7b24653295a767c69ba0ad61f0",
+      "exports/bsp/functions/00bef750/decompiled.c": "f0ebfc676d912b24493a8924ea1628fceb82d01f8573849e386291ed656865bc",
+      "exports/bsp/owner_textures/vfs/00bf3770/decompiled.c": "ab2993b9bc9b77aaebd404c366e9cfc3c28841bb3a41b40b55178bec2473bcd3",
+      "docs/VFS_PRELOAD_BOUNDARY.md": "66dfac232c77654fa082d2c528b4aeb05313cf15ea616ca614388e6b1919b321",
+      "src/physical_file.cpp": "148dcecd456f394162245c50b0f3b8351262528ab6da95ec797d70629d685933",
+      "src/mounted_streams.cpp": "e094c94955b539e161515af852ff97046b019623c86c192c6cf84657396accd9",
+      "src/file_store.cpp": "a177c766109aec3e28ee09cec584bed2cfc2e419c4d667a566edf7014b1b12b0",
+      "include/bsp/mounted_streams.hpp": "b7268ae849277dd525a3b0c8564bc546b2857a3cccabec2086dfa91b19fb9a7b"
+    }
+  },
+  "verification_limits": [
+    "Selected complete native byte comparison and assembly interpretation",
+    "Cached adjacent body evidence is identified rather than presented as a new native execution",
+    "No C++ changes, build, tests, Ghidra mutations or original-game execution"
+  ],
+  "annotation_policy": {
+    "preserve_existing_thunk_name": "00bf5590 already follows BSP_PhysicalStream_Open; no independent rename requested",
+    "preserve_library_names": true,
+    "parent_owns_application_and_old_value_ledger": true
+  }
+}

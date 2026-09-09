@@ -1387,7 +1387,7 @@
   {
     "address": "00bf52a0",
     "name": "BSP_PhysicalStream_Open",
-    "evidence": "ECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported."
+    "evidence": "ECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported. ECX stream; path and flags stack; RET 8. Flags 2 and 0x32 both select desired access 80000000h, share mode 1, and creation disposition 3 with zero attributes/security/template. The flags & 0Eh index 2 jumps through verified table 00bf54f0 to 00bf530c, overwriting disposition with 3. Extra bits 10h/20h are neither consulted further nor stored in this inspected pair of native paths. This does not establish arbitrary flag semantics, other providers, native failure parity or an implemented public host flags API. Existing typed host read-only API remains restricted as documented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
   },
   {
     "address": "00bf5090",
@@ -1867,27 +1867,27 @@
   {
     "address": "00bbbf00",
     "name": "BSP_RawInflateStream_RefillOutput",
-    "evidence": "ECX this; no stack args; RET; no stable result/status. Reset output destination to base/capacity. Read input on exhaustion, subtract actual source count. EDX flush=4 only when compressed remaining==0 and decoded remaining<=avail_out, else2. Subtract total_out delta and update input cursor. Break on any nonzero inflate status and publish produced output. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+    "evidence": "ECX this; no stack args; RET; no stable result/status. Reset output destination to base/capacity. Read input on exhaustion, subtract actual source count. EDX flush=4 only when compressed remaining==0 and decoded remaining<=avail_out, else2. Subtract total_out delta and update input cursor. Break on any nonzero inflate status and publish produced output. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md."
   },
   {
     "address": "00bbc060",
     "name": "BSP_RawInflateStream_Seek",
-    "evidence": "ECX this; stack low offset/high offset/origin; RET0Ch; no stable return. Low DWORD target wraps32; high ignored; origins0/1/other select0/current/length. Backward seek within output adjusts cursor+position; otherwise reset00bbbe10 leaves stale buffers. Forward skip refills until target or output empty with decoded remaining0. No no-progress guard. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+    "evidence": "ECX this; stack low offset/high offset/origin; RET0Ch; no stable return. Low DWORD target wraps32; high ignored; origins0/1/other select0/current/length. Backward seek within output adjusts cursor+position; otherwise reset00bbbe10 leaves stale buffers. Forward skip refills until target or output empty with decoded remaining0. No no-progress guard. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md."
   },
   {
     "address": "00bbc140",
     "name": "BSP_RawInflateStream_Read",
-    "evidence": "ECX this; stack destination/requested DWORD/optional actual DWORD pointer; RET0Ch; EAX actual pointer at epilogue. Refill only on empty output with decoded remaining!=0; unsigned min copy and cursor/position increments; repeat until request exhausted or declared EOF. Actual count is advanced destination minus original, written at return. No zero-progress guard or error propagation. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+    "evidence": "ECX this; stack destination/requested DWORD/optional actual DWORD pointer; RET0Ch; EAX actual pointer at epilogue. Refill only on empty output with decoded remaining!=0; unsigned min copy and cursor/position increments; repeat until request exhausted or declared EOF. Actual count is advanced destination minus original, written at return. No zero-progress guard or error propagation. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md."
   },
   {
     "address": "00bbc1d0",
     "name": "BSP_RawInflateStream_Construct",
-    "evidence": "ECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+    "evidence": "ECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md."
   },
   {
     "address": "00ab9fd0",
     "name": "BSP_TextContext_BuildSingleLineGlyphGeometry",
-    "evidence": "Provisional descriptive name. ECX context, two stack slots RET8; first UTF16-wrapper slot is unused, second is draw section. Reads context+EC/F0. Two code-unit loops measure and emit unsigned glyph+12 advances times context+1D8 with x87 float spills; no LF/CR break or pair kerning. Width is trunc_i64(context+20*double960) lowDWORD, then unsigned conversion. Modes1/2 center/right; others start0. Font height uses unsigned low16; first glyph binds material slots0/1 once. Geometry/resource lifetime and optional child UI are external. docs/FONT_LAYOUT_BOUNDARY.md;660 bytes match PE."
+    "evidence": "Provisional descriptive name. ECX context, two stack slots RET8; first UTF16-wrapper slot is unused, second is draw section. Reads context+EC/F0. Two code-unit loops measure and emit unsigned glyph+12 advances times context+1D8 with x87 float spills; no LF/CR break or pair kerning. Width is trunc_i64(context+20*double960) lowDWORD, then unsigned conversion. Modes1/2 center/right; others start0. Font height uses unsigned low16; first glyph binds material slots0/1 once. Geometry/resource lifetime and optional child UI are external. docs/FONT_LAYOUT_BOUNDARY.md;660 bytes match PE. Bounded scalar C++ implementation in src/font_layout.cpp now feeds existing glyph geometry and A draw. MSVC Win32 and installed-font fractional alignment/LF/CR/NUL fixture pass; existing draw retains74 lit pixels with restored state. New owned placements and finite/capacity guards; native text context, material/buffer lifetime, wrapping and ABI remain unported. No native scalar differential or original-game comparison. docs/FONT_SINGLE_LINE_IMPLEMENTATION.md."
   },
   {
     "address": "00ab6bd0",
@@ -1903,5 +1903,25 @@
     "address": "00bde9c0",
     "name": "BSP_VFS_LogOpenedResource",
     "evidence": "ECX manager, name/stream/ownership byte stack, RET0C. Stream argument unused in body. Applies filename exclusion, then gates <FILE><name> logging on global0109cee8, manager+79 and ownership byte. No stream-retain/list insertion or cache selection in this routine. Corrects earlier broad stream-tracking description of caller00bdf310. Complete377-byte body matches installed PE; static analysis only. docs/VFS_PRELOAD_BOUNDARY.md."
+  },
+  {
+    "address": "00bf4ba0",
+    "name": "BSP_PhysicalDirectory_Open",
+    "evidence": "ECX provider; suffix and flags stack; EAX stream/null; RET 8. Physical provider table 00d69168 virtual +8. Allocates/reuses a physical stream, builds its full physical path through provider +1Ch, forwards incoming flags unchanged via 00bf5590, checks stream validity and releases a failed result. The 00bf5590 body is only JMP 00bf52a0. Flags 2 and 0x32 therefore reach the same physical open mode; native lifecycle/errors remain distinct from guarded host adapters. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+  },
+  {
+    "address": "00be7cd0",
+    "name": "BSP_FileStore_RequestFile",
+    "evidence": "ECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+  },
+  {
+    "address": "00bdda10",
+    "name": "BSP_VFS_OpenFileOverlapped",
+    "evidence": "ECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+  },
+  {
+    "address": "00bdc100",
+    "name": "BSP_VFS_OverlappedVisitor_Construct",
+    "evidence": "ECX visitor; first name, second name, callback and flags stack; EAX visitor; RET 10h. Constructs visitor table 00d68478, copies first and second names to +4/+8 and +0Ch/+10h, clears acceptance byte +14h, stores flags unchanged at +18h and callback at +1Ch. Table visit +4 is 00bdc1e0 and acceptance +8 is 00bdc1d0; their dispatch semantics were not expanded. This name is a descriptive reconstruction hypothesis. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
   }
 ]

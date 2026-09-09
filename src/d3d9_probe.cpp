@@ -19,6 +19,7 @@
 #include "bsp/font_data.hpp"
 #include "bsp/font_registry.hpp"
 #include "bsp/font_geometry.hpp"
+#include "bsp/font_layout.hpp"
 #include "bsp/font_resources.hpp"
 #include "bsp/font_shader.hpp"
 #include "bsp/resource_path.hpp"
@@ -30,6 +31,7 @@
 
 
 bool probe_shader_bindings(IDirect3DDevice9&, const char*);
+bool probe_inflate_stream();
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 bool probe_font_material(IDirect3DDevice9&, const bsp::FontData&,
@@ -150,6 +152,32 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
         }) && indices == std::array<std::uint16_t, 6>{0, 1, 2, 0, 2, 3};
     std::printf("Installed font quad: normalized_positions_UVs_colors_and_indices=%d\n", quad);
     if (!quad) return false;
+    // One installed-font layout case: fractional advances, centered origin,
+    // LF/CR remain on the same line, and the embedded NUL terminates placement.
+    bsp::FontSingleLineLayout line;
+    const bsp::FontSingleLineParameters line_parameters{0.125f, 1.25f, 1, 5};
+    constexpr char16_t text[] = u"A \n\rA\0X";
+    bool line_checked = bsp::build_font_single_line_00ab9fd0_fragment(font,
+        std::u16string_view(text, 7), line_parameters, line, decode_error)
+        && line.placements.size() == 5 && line.container_width == 120
+        && line.measured_width == 37.5f && line.initial_x == 41.25f
+        && line.final_x == 78.75f && line.height == 23;
+    std::array<FontVertex, 20> line_vertices{};
+    constexpr std::array<float, 5> expected_x{41.25f, 53.75f, 60.0f, 66.25f, 66.25f};
+    for (std::uint32_t i = 0; line_checked && i < 5; ++i) {
+        const auto& placement = line.placements[i];
+        const auto& selected = bsp::select_font_glyph_00ad4480(font, placement.code_unit);
+        const bsp::FontGeometryParameters placed{placement.x, placement.y,
+            line_parameters.width_scale, 1, line.height, i};
+        line_checked = placement.code_unit == text[i] && placement.x == expected_x[i]
+            && placement.y == 0 && bsp::write_font_quad_00ab98f0_fragment(selected,
+                placed, layout, reinterpret_cast<std::uint8_t*>(line_vertices.data()),
+                sizeof(line_vertices), i * 4, indices)
+            && indices.front() == i * 4 && indices.back() == i * 4 + 3;
+    }
+    std::printf("Installed single-line font layout: glyphs=%zu width=%g origin=%g fractional_alignment_controls_NUL_and_quads=%d\n",
+        line.placements.size(), line.measured_width, line.initial_x, line_checked);
+    if (!line_checked) return false;
     HMODULE module = LoadLibraryExW(L"d3dx9_40.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
     if (!module) return false;
     FARPROC address = GetProcAddress(module, "D3DXCreateTextureFromFileInMemoryEx");
@@ -603,6 +631,7 @@ bool probe_font_geometry_reference();
 bool probe_camera_reference();
 #endif
 int main(int argc, char** argv) {
+    if (!probe_inflate_stream()) return 1;
 #ifdef BSP_HAS_CAMERA_REFERENCE
     if (!probe_camera_reference()) return 1;
 #endif

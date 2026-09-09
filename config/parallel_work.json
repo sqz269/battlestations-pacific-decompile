@@ -13,11 +13,11 @@
     "workers": 3
   },
   "partition_reference": "reports/library_inventory/candidate_partition.json",
-  "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Proposed next_code_ownership is reserved planning, not implemented code.",
+  "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
       "id": "archive_inflate_stream",
-      "state": "analysis_reviewed_ready_for_bounded_implementation",
+      "state": "bounded_implementation_integrated_build_and_fixture_checked",
       "worker": "inflate_read_seek",
       "function_addresses": [
         "00bbc1d0",
@@ -38,21 +38,25 @@
       ],
       "output_files": [
         "docs/INFLATE_STREAM_READ_SEEK.md",
-        "reports/inflate_stream_read_seek_audit.json"
-      ],
-      "next_code_ownership": [
+        "reports/inflate_stream_read_seek_audit.json",
         "include/bsp/inflate_stream.hpp",
-        "src/inflate_stream.cpp"
+        "src/inflate_stream.cpp",
+        "docs/INFLATE_STREAM_IMPLEMENTATION.md"
       ],
       "contract": "Retained seekable source, explicit entry descriptor, fixed input/output buffers, raw zlib1.2.1 calls, actual-count and seek results. Resolve reset/no-progress guards explicitly.",
       "integration_owner": "primary",
-      "implementation_gate": "Parent review of full raw read/seek/reset contract; do not require MPKG parser completion to implement this stream adapter.",
-      "validation": "Focused valid compressed fixture through the existing probe when implemented; no claimed archive runtime or native failure equivalence.",
-      "annotation_status": "Verified game routine names/comments applied and saved; no C++ implementation in this batch."
+      "implementation_gate": "Initial bounded implementation reviewed and integrated; further native object/lifetime/provider integration remains separate.",
+      "validation": "MSVC Win32 /W4 /WX and both existing CTests pass; full D3D9 probe passes. See reports/parallel_implementation_validation.json for fixture scope and limits.",
+      "annotation_status": "Verified implementation evidence applied and saved; existing names/comments preserved; affected standard exports refreshed.",
+      "code_ownership": [
+        "include/bsp/inflate_stream.hpp",
+        "src/inflate_stream.cpp"
+      ],
+      "next_work": "Connect existing inflater adapter to recovered MPKG compressed entry source; retain unsupported cross-block rewind and explicit host error boundaries."
     },
     {
       "id": "font_single_line_layout",
-      "state": "analysis_reviewed_ready_for_bounded_implementation",
+      "state": "bounded_implementation_integrated_build_and_fixture_checked",
       "worker": "font_layout_boundary",
       "function_addresses": [
         "00ab9fd0",
@@ -72,27 +76,37 @@
       ],
       "output_files": [
         "docs/FONT_LAYOUT_BOUNDARY.md",
-        "reports/font_layout_boundary_audit.json"
-      ],
-      "next_code_ownership": [
+        "reports/font_layout_boundary_audit.json",
         "include/bsp/font_layout.hpp",
-        "src/font_layout.cpp"
+        "src/font_layout.cpp",
+        "docs/FONT_SINGLE_LINE_IMPLEMENTATION.md"
       ],
       "contract": "Use established glyph records and supplied UTF16 text/scalars. Recover width/advance/alignment and rounding before connecting output to existing quad writer.",
       "integration_owner": "primary",
-      "implementation_gate": "Parent review of scalar kernel and boundary behavior. Shared FontData/geometry/probe interfaces remain parent-owned.",
-      "validation": "Existing installed font/glyph probe plus only the smallest additional behavioral case needed for a concrete rounding or control-character risk.",
-      "annotation_status": "Verified game routine names/comments applied and saved; no C++ implementation in this batch."
+      "implementation_gate": "Initial bounded implementation reviewed and integrated; further native object/lifetime/provider integration remains separate.",
+      "validation": "MSVC Win32 /W4 /WX and both existing CTests pass; full D3D9 probe passes. See reports/parallel_implementation_validation.json for fixture scope and limits.",
+      "annotation_status": "Verified implementation evidence applied and saved; existing names/comments preserved; affected standard exports refreshed.",
+      "code_ownership": [
+        "include/bsp/font_layout.hpp",
+        "src/font_layout.cpp"
+      ],
+      "next_work": "Recover bounded wrapped scalar layout and connect native text-context/material/buffer ownership separately."
     },
     {
       "id": "vfs_preload_policy",
-      "state": "analysis_reviewed_provider_flags_and_submission_pending",
+      "state": "provider_flags_and_pending_front_half_reviewed_ready_for_policy_implementation",
       "worker": "partition_audit",
       "function_addresses": [
         "00be7ab0",
         "00bde9c0",
         "0073d410",
-        "00686380"
+        "00686380",
+        "00bf4ba0",
+        "00bf5590",
+        "00bf52a0",
+        "00be7cd0",
+        "00bdda10",
+        "00bdc100"
       ],
       "code_ranges": [
         [
@@ -101,11 +115,16 @@
         ]
       ],
       "read_only_extensions": [
-        "Complete caller bodies0073d410 and00686380 and directly referenced data"
+        "Complete caller bodies0073d410 and00686380 and directly referenced data",
+        "00bf4b00..00bf5bff physical provider/open",
+        "00bdda10 overlapped dispatcher",
+        "00bdc100 visitor constructor and directly referenced data"
       ],
       "output_files": [
         "docs/VFS_PRELOAD_BOUNDARY.md",
-        "reports/vfs_preload_boundary_audit.json"
+        "reports/vfs_preload_boundary_audit.json",
+        "docs/VFS_PROVIDER_FLAGS.md",
+        "reports/vfs_provider_flags_audit.json"
       ],
       "next_code_ownership": [
         "include/bsp/resource_preload.hpp",
@@ -113,18 +132,28 @@
       ],
       "contract": "Determine the native cache selection/caller policy and stream-tracking boundary using existing mounted-stream/FileStore APIs. Keep startup and runtime requests distinct.",
       "integration_owner": "primary",
-      "implementation_gate": "Review actual caller selection and flags; replacing diagnostic priming requires assets and real policy, not an invented list.",
+      "implementation_gate": "Physical/FileStore-only policy adapter may explicitly accept observed modes2/0x32 while preserving requested flags. Shared mounted-stream API changes remain parent-owned; other providers and async lifetime require further contracts.",
       "validation": "Use the existing mounted cache/font probe where the supported policy applies; retain supplied-installation and native-startup distinctions.",
-      "findings": "Nine explicit calls: startup five scripts with0x32, menu .def with0x32/.fsb with2. Logging00bde9c0 is not stream retention. Pending completion00be78b0 leads to submission00be7cd0; no native font selection established.",
+      "findings": "Prior nine preload calls retained. Complete synchronous physical/FileStore route treats exact modes2 and0x32 identically. Pending RequestFile takes name/callback with no flags input; forwards literal2 through a separate visitor. Native font preload selection is still unverified.",
       "next_addresses": [
-        "00be7cd0",
-        "00bf5590"
+        "00bdc1e0",
+        "00bdc1d0"
       ],
-      "annotation_status": "Opened-resource logging named and previous caller description corrected; prior comments preserved."
+      "annotation_status": "Five reviewed VFS annotations applied/saved; four descriptive names added. Existing physical-stream, thunk-following and library names preserved; affected exports refreshed."
     }
   ],
   "snapshot_after_analysis": {
     "utc": "2026-09-09T20:49:33.368049+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62728,
+    "internal_function_count": 62286,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "integration_report": "reports/parallel_implementation_validation.json",
+  "snapshot_after_implementation": {
+    "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
     "total_function_count": 62728,

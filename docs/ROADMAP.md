@@ -25,8 +25,8 @@ Reuse source where the evidence supports it:
   The native library tables differ from stock `luaL_openlibs`; the current host
   fixtures do not establish native scripting-runtime equivalence.
 - **zlib 1.2.1:** checksum-pinned stock source now builds as `bsp_zlib121`.
-  Recover the game's retained-source, buffering, read/seek and raw-DEFLATE
-  adapter before connecting compressed archive entries. See
+  A bounded retained-source, buffering, read/seek and raw-DEFLATE adapter now
+  passes a multi-buffer fixture. Connect decoded MPKG entries next. See
   [zlib evidence and next boundary](ZLIB_DEPENDENCY.md).
 - **CRT, STL and compiler helpers:** use the target toolchain to generate ordinary
   runtime machinery from reconstructed declarations. Recover object layout,
@@ -117,8 +117,12 @@ resources, then loads GFX/alpha/DAT entirely from the cache with no physical-fil
 opens during that load (`MOUNTED_RESOURCE_STREAMS.md`). This establishes the
 cache-to-render path with host ownership; native preload selection, complete
 stream/provider lifetime and archive loading still need integration.
-Full text layout/batching, GUI transforms and startup
-integration also remain necessary. The draw uses supplied camera constants.
+The single-line scalar layout now produces glyph placements with recovered
+x87 width, advance and alignment arithmetic. Its installed-font fixture covers
+fractional advances, LF/CR and embedded NUL; the existing A draw consumes its
+output (`FONT_SINGLE_LINE_IMPLEMENTATION.md`). Wrapping, native text-context
+lifetime/batching, GUI transforms and startup integration remain necessary.
+The draw uses supplied camera constants.
 This advances the asset-to-render path but is not a
 runnable game target or an original-game visual comparison.
 
@@ -144,17 +148,21 @@ completion of this milestone.
 
 ## Next bounded work
 
-1. Implement the now-audited inflater seek/read contract (`INFLATE_STREAM_READ_SEEK.md`)
-   around stock zlib, preserving buffered read and forward/in-block seek behavior
-   while making host guards explicit. Stock zlib is build-tested only so far.
+1. Connect the bounded inflater adapter (`INFLATE_STREAM_IMPLEMENTATION.md`) to
+   a real MPKG entry source. Its fixed-buffer reads, forward/in-block seeks,
+   short EOF count and retained ownership now pass one deterministic fixture.
+   Cross-block rewind remains explicitly unsupported; native failure and
+   allocator behavior are not reproduced by the host guards.
 2. Complete package enumeration, transformed MPKG directory parsing, entry lookup
    and compressed/sliced source ownership (`ARCHIVE_PROVIDER_ENTRY.md`). Then
    exercise a real installed archive through the same mounted stream interface.
 3. Native preload callers are now identified (`VFS_PRELOAD_BOUNDARY.md`): five
-   startup scripts and four menu audio files, with flags 0x32/2. Recover provider
-   flag handling and pending submission `00be7cd0`; these findings do not replace
-   diagnostic font priming. Opened-resource logging is separate from selection.
-4. Continue independent renderer/window lifetime and font layout/batching work,
+   startup scripts and four menu audio files, with flags 0x32/2. The physical
+   and memory-backed FileStore routes now have verified equivalent open behavior
+   for these two modes (`VFS_PROVIDER_FLAGS.md`). Implement that bounded policy
+   without replacing diagnostic font priming. Pending submission `00be7cd0`
+   hardcodes 2; its visitor dispatch `00bdc1e0` and ownership remain to recover.
+4. Continue independent renderer/window lifetime and font wrapping/batching work,
    integrating the resulting paths before expanding gameplay. Assign disjoint
    files and address ranges to parallel agents; keep shared metadata and Ghidra
    changes coordinated through the primary agent.

@@ -1785,6 +1785,56 @@
       "status": "installed_mounted_cache_font_material_draw_checked",
       "abi_compatible": false,
       "remaining": "Native name/flags RET8; host early buffering, complete-read guards and shared ownership differ native streams. Native preload selection and other flags omitted; diagnostic explicitly primes three font resources."
+    },
+    {
+      "address": "00bbc1d0",
+      "name": "raw_inflate_stream_construct",
+      "source": "src/inflate_stream.cpp",
+      "native_range": "retained source/descriptor, fixed buffers and raw zlib initialization",
+      "status": "stored_deflate_buffered_stream_fixture_checked",
+      "abi_compatible": false,
+      "remaining": "Allocation, source errors, pimpl and shared ownership differ native; unused constructor slots omitted.",
+      "evidence": "docs/INFLATE_STREAM_IMPLEMENTATION.md; reports/parallel_implementation_validation.json"
+    },
+    {
+      "address": "00bbbf00",
+      "name": "raw_inflate_stream_refill",
+      "source": "src/inflate_stream.cpp",
+      "native_range": "fixed-buffer source/refill and native flush selection",
+      "status": "stored_deflate_buffered_stream_fixture_checked",
+      "abi_compatible": false,
+      "remaining": "Explicit error/no-progress/overproduction guards; source failures and allocator behavior not native-equivalent.",
+      "evidence": "docs/INFLATE_STREAM_IMPLEMENTATION.md; reports/parallel_implementation_validation.json"
+    },
+    {
+      "address": "00bbc060",
+      "name": "raw_inflate_stream_seek",
+      "source": "src/inflate_stream.cpp",
+      "native_range": "low-DWORD targets, forward skip and current-output-block rewind",
+      "status": "stored_deflate_buffered_stream_fixture_checked",
+      "abi_compatible": false,
+      "remaining": "Cross-block backward seek is rejected without mutation; native stale-buffer reset and failure behavior not emulated.",
+      "evidence": "docs/INFLATE_STREAM_IMPLEMENTATION.md; reports/parallel_implementation_validation.json"
+    },
+    {
+      "address": "00bbc140",
+      "name": "raw_inflate_stream_read",
+      "source": "src/inflate_stream.cpp",
+      "native_range": "buffer drain/refill and actual copied count",
+      "status": "stored_deflate_buffered_stream_fixture_checked",
+      "abi_compatible": false,
+      "remaining": "Host status result and latched errors are new; native errors and ABI omitted.",
+      "evidence": "docs/INFLATE_STREAM_IMPLEMENTATION.md; reports/parallel_implementation_validation.json"
+    },
+    {
+      "address": "00ab9fd0",
+      "name": "build_font_single_line",
+      "source": "src/font_layout.cpp",
+      "native_range": "two-pass x87 measurement/alignment and scalar glyph placements",
+      "status": "installed_font_layout_geometry_and_existing_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Supplied transformed text/scalars and host capacity/domain guards. Native text-context/resource/material/buffer lifetime and optional child UI omitted; no wrapping or native scalar differential.",
+      "evidence": "docs/FONT_SINGLE_LINE_IMPLEMENTATION.md; reports/parallel_implementation_validation.json"
     }
   ]
 }

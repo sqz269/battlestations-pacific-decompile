@@ -23,8 +23,9 @@ build, Ghidra annotation, saved-project mutation, or game validation occurred.
 
 After reviewing this audit, the primary agent applied the four proposed
 descriptive annotations, preserving existing comments and the established
-wrapped-geometry name. This changes analysis metadata only; the implementation
-boundary below still awaits C++ reconstruction and focused validation.
+wrapped-geometry name. The later C++ implementation and focused validation are recorded in
+[FONT_SINGLE_LINE_IMPLEMENTATION.md](FONT_SINGLE_LINE_IMPLEMENTATION.md).
+The body below preserves the original analysis boundary.
 
 ## Selected functions and original ABI
 

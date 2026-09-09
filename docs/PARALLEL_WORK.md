@@ -14,6 +14,9 @@ used one worker to audit scheduling, then reassigned that slot to VFS preload
 policy while the other two continued archive-stream and font-layout work.
 No throughput multiplier or completion date has been measured.
 
+The continuing-goal instructions in `AGENTS.md` now explicitly request this
+one-integrator/three-worker capacity and refilling useful independent packets.
+
 ## Concrete dispatch
 
 The durable assignment ledger is [config/parallel_work.json](../config/parallel_work.json).
@@ -26,20 +29,24 @@ segment IDs. Named but unfinished routines are explicitly eligible.
 | Single-line font layout | `00ab9fd0`, `00aba270`, `00ab6bd0`, `00ad4480` | Scalar width/advance/alignment contract before wrapping/batching | Existing FontData and glyph writer; archive loading is not a prerequisite |
 | Native preload policy | `00be7ab0`, `00bde9c0`, `0073d410`, `00686380` | Identify actual startup/runtime cache selections and flags | Existing mounted-stream/FileStore interface; shared probe edits stay with primary |
 
-Workers initially own separate evidence documents, audit reports and ignored
-export directories. The ledger reserves separate future source/header files;
-that reservation is not a claim that code has been written. Each packet records
-its implementation gate and validation boundary. Once reviewed, implementation
-can proceed independently against the agreed interfaces, then land in a small
-integration batch.
+The inflater and font packets now have bounded C++ implementations in disjoint
+source/header files. Each worker also reviewed the other's implementation.
+The primary integrated both into the existing build and D3D9 probe: MSVC Win32,
+both existing CTests, a 150,123-byte buffered inflate fixture, installed font
+layout/geometry, and the existing real font draw pass. See
+[inflater implementation](INFLATE_STREAM_IMPLEMENTATION.md),
+[font implementation](FONT_SINGLE_LINE_IMPLEMENTATION.md), and the
+[integration evidence](../reports/parallel_implementation_validation.json).
+No native ABI or original-game equivalence is established by these checks.
 
-The inflater and font investigations are complete and reviewed; their bounded
-implementation contracts are in [INFLATE_STREAM_READ_SEEK.md](INFLATE_STREAM_READ_SEEK.md)
-and [FONT_LAYOUT_BOUNDARY.md](FONT_LAYOUT_BOUNDARY.md). The primary agent has
-applied their selected descriptive names/evidence to Ghidra, preserving previous
-comments and library names. These are analyzed contracts, not new reconstructed
-C++ or a measured speedup. Native preload findings are recorded separately in
-[VFS_PRELOAD_BOUNDARY.md](VFS_PRELOAD_BOUNDARY.md).
+The third lane completed the synchronous physical/FileStore flags contract and
+pending-request front half in [VFS_PROVIDER_FLAGS.md](VFS_PROVIDER_FLAGS.md).
+Exact modes 2 and 0x32 agree on those inspected providers; the host preload
+interface still accepts only its previous mode. Pending dispatch uses a separate
+callback visitor and literal mode 2. Neither audit implements an async loader
+or identifies native font preload selection. Ready follow-ups are package entry
+integration, scalar font wrapping, and the bounded preload policy adapter;
+the primary owns their shared API and probe integration.
 
 ## Rules that keep parallel work useful
 

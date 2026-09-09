@@ -1,5 +1,6 @@
 // Installed-source diagnostic: recovered search lists, supplied loose mount.
 #include "bsp/font_geometry.hpp"
+#include "bsp/font_layout.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/material_textures.hpp"
 #include "bsp/material_samplers.hpp"
@@ -162,11 +163,18 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
     struct Vertex { float x, y, z, u, v; std::uint32_t color; };
     std::array<Vertex, 4> vertices{};
     std::array<std::uint16_t, 6> indices{};
+    bsp::FontSingleLineLayout line;
+    std::string layout_error;
+    if (!bsp::build_font_single_line_00ab9fd0_fragment(font, u"A",
+        {0.125f, 1, 0, 1}, line, layout_error) || line.placements.size() != 1) return false;
     bsp::FontGeometryParameters parameters;
-    parameters.x = 64; parameters.y = 64; parameters.height = font.scaled_height;
+    // Explicit host placement of the recovered single-line pen in the target.
+    parameters.x = 64 + line.placements[0].x;
+    parameters.y = 64 + line.placements[0].y;
+    parameters.height = line.height;
     bsp::FontGeometryLayout geometry;
     geometry.stride = sizeof(Vertex); geometry.uv_offset = 12; geometry.packed_color_offset = 20;
-    const auto& glyph = bsp::select_font_glyph_00ad4480(font, 0x41);
+    const auto& glyph = bsp::select_font_glyph_00ad4480(font, line.placements[0].code_unit);
     if (!bsp::write_font_quad_00ab98f0_fragment(glyph, parameters, geometry,
         reinterpret_cast<std::uint8_t*>(vertices.data()), sizeof(vertices), 0, indices)) return false;
     // Readback bounds derive from the generated quad and explicit host matrix.

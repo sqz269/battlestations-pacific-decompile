@@ -48,8 +48,8 @@ instruction bytes, allocator failure behavior or runtime equivalence.
 
 ## Game raw-DEFLATE wrapper
 
-The following separate game routines remain wrapper reconstruction work;
-they are not replaced simply by linking stock zlib. Every Ghidra batch verified
+The following separate game routines supply the bounded wrapper implementation
+described below; linking stock zlib alone does not replace them. Every Ghidra batch verified
 project `bsp`, `/battlestationspacific.exe`, x86 LE base 00400000. Full raw spans
 matched the installed PE:
 
@@ -104,23 +104,24 @@ descriptor; base cleanup 00bd30f0. Raw continuation past erroneously no-return
 
 Read/seek and output-drain behavior are now assembly-audited in
 [INFLATE_STREAM_READ_SEEK.md](INFLATE_STREAM_READ_SEEK.md), including stale-buffer
-rewind and no-progress hazards. The minimal next unit is a bounded typed
+rewind and no-progress hazards. The implemented unit is a bounded typed
 game stream adapter around stock raw inflate,
 with typed retained source, explicit three-DWORD descriptor, exact buffer
 sizes and flush decision. Table 00d64400 virtual +1C = 00bbc060 (seek),
 +24 = 00bbc140 (read), and their buffer behavior are established by raw bytes.
-The implementation must state host guards for short reads, no-progress/error
-handling and out-of-block rewind; exposing a whole decoded vector would bypass
-the native streaming contract. MPKG entry parsing, XOR transform and provider lookup remain
+The implementation documents host guards for short reads, no-progress/error
+handling and out-of-block rewind in `INFLATE_STREAM_IMPLEMENTATION.md`.
+MPKG entry parsing, XOR transform and provider lookup remain
 the separate `ARCHIVE_PROVIDER_ENTRY.md` dependency.
 
 ## Validation
 
 `./scripts/build.ps1` passes for all targets, including the integrated zlib
-dependency, and both existing CTests pass. The full D3D9 probe also passes,
-but does not exercise zlib. These checks establish build integration, not
-zlib behavioral equivalence, native ABI compatibility or archive decoding.
-No differential zlib fixture or archive runtime validation is claimed.
+dependency, and both existing CTests pass. The full D3D9 probe now includes a
+passing 150,123-byte raw stored-DEFLATE fixture through the buffered adapter.
+This establishes the exercised stream behavior, not full zlib equivalence,
+native ABI compatibility or archive decoding. Compressed-Huffman blocks and
+native differential execution remain untested by this fixture.
 
 Ignored verification downloads are under `exports/bsp/zlib121/`; wrapper exports are under
 `exports/bsp/owner_textures/zlib_wrapper/`.
