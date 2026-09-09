@@ -7,9 +7,15 @@ resumable per-function export, Win32 CMake build, address ledger, and five math 
 with bounded native differential tests are present. Full pseudocode export is available
 as an explicit command and has not been run.
 
-## 2. Resolve startup and the first subsystem boundary — next
+## 2. Resolve startup and the first subsystem boundary — in progress
 
-1. Confirm the prototype and arguments of `008f81f0` at its CRT call site.
+Confirmed the WinMain calling convention, application lifecycle boundaries, and the
+per-thread random subsystem. The integer PRNG and registration/lock lifecycle now compile;
+the stream matches original code over 1,500 outputs. See `STARTUP_RANDOM.md`.
+Ghidra has 24 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
+Next, resolve the platform singleton at `0109cf04` and its virtual loop slot `+24h`.
+
+1. WinMain `008f81f0`: confirmed four stack arguments and `RET 10h`; prototype updated in Ghidra.
 2. Export its direct initialization callees, starting with `00737970`, `0073d410`, and
    `00737f30`; classify them from callers, strings, imports, and object accesses.
 3. Recover constructors/vtables, sizes, ownership, global initialization order, and shutdown.

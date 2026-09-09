@@ -197,7 +197,8 @@ def verify_seeds(client, output):
     data = disk.read_bytes()
     # Lengths from assembly through the final RET (including its immediate).
     lengths = {'00401170': 0x1c, '00401c20': 0x2f, '00401cb0': 0x19,
-               '00401cd0': 0x1d, '00401cf0': 0x19}
+               '00401cd0': 0x1d, '00401cf0': 0x19,
+               '00bf0cf0': 0x2e, '00bf0d20': 0xcf, '00ba2c20': 0x5e}
     results = []
     for address, length in lengths.items():
         rva = int(address, 16) - int(summary['image_base'], 16)

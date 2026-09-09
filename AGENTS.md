@@ -9,6 +9,10 @@
 - Address, evidence, original ABI, and uncertainty must accompany every reconstruction.
   Check assembly when pseudocode has register inputs, x87 expressions, overlapping globals,
   or incorrect no-return annotations. Descriptive C++ names are hypotheses, not recovered symbols.
+- As behavior is established, rename the corresponding Ghidra functions and add evidence comments.
+  Keep an address-to-name ledger in the repository, preserve existing comments, record old values
+  before edits, and save the project. Mark uncertain interpretations as provisional; retain
+  correct library names. Refresh affected exports after annotation changes.
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
 - Write as few new test cases as possible. Default to adding no tests for routine changes;

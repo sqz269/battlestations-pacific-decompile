@@ -1,9 +1,10 @@
 # Battlestations Pacific reconstruction
 
 An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
-`battlestationspacific.exe`. The first output is a **32-bit C++ math library**, not a playable
+`battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
 rebuild of the game. The saved program reports 62,514 functions; its internal-function iterator
-exports 62,072 functions. Five small math functions have been reconstructed so far.
+exports 62,072 functions. The ledger maps 18 native routines to C++: five math routines,
+the integer random generator, and its startup/thread-registration dependencies.
 
 ## Build and test
 
@@ -14,8 +15,11 @@ and Visual Studio's CMake component. Python 3.10+ is used for the export tools; 
 ./scripts/build.ps1
 ```
 
-Produces `build/win32/Release/bsp_core.lib` and test executables. The script selects Win32,
+Produces `build/win32/Release/bsp_core.lib`, `bsp_startup_probe.exe`, and test executables. The script selects Win32,
 builds with warnings as errors, and runs CTest. It does not launch or modify the installed game.
+
+Run `./build/win32/Release/bsp_startup_probe.exe` for the reconstructed random-subsystem
+initialization, registration, draws, unregister, and cleanup path. It does not start the engine.
 
 ## Export the existing analysis
 
@@ -37,12 +41,13 @@ python -m unittest discover -s tests -p test_exporter.py
   program metadata, and current disk PE identity under `exports/bsp/`.
 - `seed`: pseudocode, assembly, and provenance for 16 starting functions, including CRT startup
   and the likely WinMain. Existing completed exports are skipped; use `--force` after Ghidra edits.
-- `verify-seeds`: compares the five rebuilt functions' complete byte ranges with the disk PE.
+- `verify-seeds`: compares eight math/PRNG functions' complete byte ranges with the disk PE.
   On a match, creates ignored `local/seed_reference.hpp` for the optional native differential test.
 - `status`: reports exports and reconstruction coverage without connecting to Ghidra.
 
-The native test executes only these five call-free math routines in its own process and compares
-455 bounded input cases, including aliased vector outputs. It does not execute game startup.
+The native test executes five math routines and the PRNG seed/refill/integer routines in its
+own process: 455 math comparisons plus one stream case covering 1,500 random values and final state.
+The PRNG's one relative call is relocated to the copied refill routine. It does not execute game startup.
 The reference bytes are locally generated, not required for the ordinary semantic test.
 Run `verify-seeds` again whenever the input executable or saved analysis changes.
 
@@ -71,7 +76,9 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `tests/` | Semantic tests and optional original-code differential tests |
 | `tools/ghidra_export.py` | Read-only inventory/export and seed byte checks |
 | `config/reconstruction.json` | Address-based reconstruction ledger |
+| `config/ghidra_names.json` | Descriptive function names and supporting evidence |
 | `docs/BASELINE.md` | Verified initial findings and validation limits |
+| `docs/STARTUP_RANDOM.md` | Startup path, PRNG/thread layout and current limits |
 | `docs/ROADMAP.md` | Next milestones toward a game rebuild |
 | `reports/` | Small, retained baseline evidence |
 | `exports/`, `local/`, `build/` | Ignored generated analysis, local fixtures, and builds |
