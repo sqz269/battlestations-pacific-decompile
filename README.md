@@ -89,6 +89,14 @@ logs prior state to `local/ghidra-tags-<stamp>.json` (`--revert <log>` restores 
 library names with a `__prov` suffix are medium-confidence source matches. Take a fresh `snapshot` and
 re-export with `--force` after applying tags.
 
+Candidate partition for parallel work: `python tools/callgraph_sweep.py` disassembles the disk
+executable over the snapshot's function ranges with Capstone and writes `exports/bsp/callgraph.json`
+and `datarefs.json` (direct calls, tail jumps and .rdata/.data immediates only). `python
+tools/partition_candidates.py` then cuts the remaining `FUN_` candidates into disjoint link-order
+address segments with string-derived labels, script-binding and vtable counts, strong dependencies
+and leaf-first waves; see `reports/library_inventory/candidate_partition.md`. Segment labels are
+ownership hints, not recovered module names, and re-run both after every fresh `snapshot`.
+
 The completed import has been [reviewed](reports/library_inventory/REVIEW.md).
 The [roadmap](docs/ROADMAP.md) now separates stock-source reuse, compiler machinery
 and game-specific contracts. Provisional tags and in-house Dyn code remain in

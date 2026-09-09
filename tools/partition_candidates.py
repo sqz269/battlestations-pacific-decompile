@@ -8,8 +8,8 @@ counts script bindings and vtables, and orders segments leaf-first by strong cal
 (strongly connected segments share a wave). Independent agents can each own one segment.
 Output: reports/library_inventory/candidate_partition.{json,md}.
 
-Inputs: exports/bsp/functions.json (fresh snapshot), a call graph and data-reference map from a
-Capstone linear sweep ({"0x401010": ["0xbf6340", ...]}), and the disk PE for strings.
+Inputs: exports/bsp/functions.json (fresh snapshot), the call graph and data-reference map written
+by tools/callgraph_sweep.py ({"0x401010": ["0xbf6340", ...]}), and the disk PE for strings.
 """
 import argparse
 import collections
@@ -58,8 +58,9 @@ def tokens_of(text):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--callgraph', required=True)
-    parser.add_argument('--datarefs', required=True)
+    parser.add_argument('--callgraph', default=str(ROOT / 'exports/bsp/callgraph.json'),
+                        help='from tools/callgraph_sweep.py')
+    parser.add_argument('--datarefs', default=str(ROOT / 'exports/bsp/datarefs.json'))
     parser.add_argument('--resolution', type=float, default=0.5)
     parser.add_argument('--window', type=int, default=12, help='label smoothing half-window (candidates)')
     parser.add_argument('--min-segment', type=int, default=60)

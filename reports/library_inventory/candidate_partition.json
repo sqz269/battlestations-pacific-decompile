@@ -1,11 +1,11 @@
 {
- "candidates": 23994,
+ "candidates": 23992,
  "segments": [
   {
    "segment": 0,
    "start": "00401010",
-   "end": "004138d0",
-   "candidates": 191,
+   "end": "004132d0",
+   "candidates": 185,
    "purity": 0.03,
    "keywords": [
     "stateindex",
@@ -16,345 +16,190 @@
    "vtables": 0,
    "calls_out": {},
    "calls_in": {
-    "68": 113,
-    "2": 20,
-    "56": 20,
-    "53": 18,
-    "52": 15,
-    "94": 15
+    "63": 113,
+    "1": 24,
+    "48": 21,
+    "86": 19,
+    "45": 18,
+    "44": 15
    },
    "calls_out_total": 0,
-   "calls_in_total": 349,
+   "calls_in_total": 343,
    "wave": 0,
    "cycle_group_size": 1
   },
   {
    "segment": 1,
-   "start": "00413d10",
-   "end": "0041db10",
-   "candidates": 154,
-   "purity": 0.55,
-   "keywords": [
-    "avoidzoneg",
-    "avoidzone"
-   ],
-   "lua_bindings": 0,
-   "vtables": 0,
-   "calls_out": {
-    "13": 11,
-    "0": 9,
-    "3": 4,
-    "57": 4,
-    "92": 3,
-    "52": 2
-   },
-   "calls_in": {
-    "60": 611,
-    "68": 378,
-    "52": 136,
-    "53": 122,
-    "63": 109,
-    "7": 103
-   },
-   "calls_out_total": 36,
-   "calls_in_total": 4167,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 2,
-   "start": "0041dd20",
+   "start": "00413330",
    "end": "0042a7e0",
-   "candidates": 202,
-   "purity": 0.19,
+   "candidates": 362,
+   "purity": 0.41,
    "keywords": [
     "mpakscenes",
     "endgroup",
     "crash",
+    "avoidzoneg",
+    "avoidzone",
     "training",
     "terraingridlayer",
     "terraingrid",
     "modes",
-    "loadwaitquit",
-    "class_enumeration",
-    "auto_"
+    "loadwaitquit"
    ],
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "1": 84,
-    "92": 32,
-    "0": 20,
-    "87": 9,
-    "78": 7,
-    "59": 5
+    "84": 35,
+    "0": 24,
+    "7": 15,
+    "80": 9,
+    "2": 7,
+    "18": 7
    },
    "calls_in": {
-    "60": 1239,
-    "48": 667,
-    "65": 146,
-    "63": 145,
-    "34": 122,
-    "46": 108
+    "53": 1780,
+    "39": 663,
+    "63": 417,
+    "4": 316,
+    "18": 303,
+    "61": 240
    },
-   "calls_out_total": 193,
-   "calls_in_total": 5761,
+   "calls_out_total": 140,
+   "calls_in_total": 9842,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 3,
+   "segment": 2,
    "start": "0042a830",
-   "end": "0043f860",
-   "candidates": 289,
-   "purity": 0.39,
+   "end": "004486a0",
+   "candidates": 429,
+   "purity": 0.31,
    "keywords": [
     "bsp_chk_save",
+    "deviceclass",
+    "daytime",
     "unlockto",
     "unlockname",
     "unlockfrom",
     "playtime",
     "difficulty",
-    "united",
-    "ptr_x_",
-    "ptr_",
-    "other_type"
-   ],
-   "lua_bindings": 0,
-   "vtables": 14,
-   "calls_out": {
-    "87": 152,
-    "1": 56,
-    "2": 50,
-    "92": 37,
-    "86": 27,
-    "34": 25
-   },
-   "calls_in": {
-    "68": 234,
-    "52": 100,
-    "53": 82,
-    "63": 82,
-    "65": 58,
-    "60": 55
-   },
-   "calls_out_total": 436,
-   "calls_in_total": 1329,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 4,
-   "start": "0043f9e0",
-   "end": "004486c0",
-   "candidates": 141,
-   "purity": 0.32,
-   "keywords": [
-    "deviceclass",
-    "daytime",
     "device",
-    "platform",
-    "weatherreconmodifiers",
-    "weatherampmultipliers",
-    "viewmodeampmultipliers",
-    "startdaytimedefault",
-    "smokemaxmodifier",
-    "single_turning_gun"
+    "default"
    ],
    "lua_bindings": 0,
-   "vtables": 2,
+   "vtables": 17,
    "calls_out": {
-    "87": 54,
-    "1": 16,
-    "2": 15,
-    "92": 14,
-    "3": 13,
-    "59": 7
+    "80": 199,
+    "1": 137,
+    "84": 51,
+    "79": 27,
+    "24": 25,
+    "49": 12
    },
    "calls_in": {
-    "7": 38,
-    "65": 26,
-    "37": 23,
-    "36": 21,
-    "46": 20,
-    "56": 18
+    "63": 232,
+    "4": 110,
+    "44": 107,
+    "45": 95,
+    "56": 93,
+    "53": 64
    },
-   "calls_out_total": 141,
-   "calls_in_total": 451,
+   "calls_out_total": 564,
+   "calls_in_total": 1767,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 5,
-   "start": "00448700",
-   "end": "0044c390",
-   "candidates": 75,
+   "segment": 3,
+   "start": "004486c0",
+   "end": "00453de0",
+   "candidates": 182,
    "purity": 0.49,
    "keywords": [
     "panel",
-    "callback",
-    "setpanel",
-    "hidepanel",
-    "character",
-    "pause",
+    "sequence",
     "message",
+    "callback",
     "suppressinterruptmsg",
+    "setpanel",
     "requesttime",
-    "panelstates"
+    "panelstates",
+    "nextunit",
+    "lastpanel"
    ],
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "2": 13,
-    "1": 9,
-    "92": 9,
-    "93": 2,
-    "87": 1,
-    "4": 1
+    "1": 62,
+    "80": 38,
+    "84": 26,
+    "2": 21,
+    "16": 4,
+    "85": 2
    },
    "calls_in": {
-    "6": 54,
-    "34": 6,
-    "60": 5,
-    "24": 3,
-    "32": 3,
-    "12": 2
+    "27": 14,
+    "53": 12,
+    "16": 10,
+    "22": 9,
+    "61": 9,
+    "4": 7
    },
-   "calls_out_total": 35,
-   "calls_in_total": 91,
-   "wave": 1,
-   "cycle_group_size": 51
+   "calls_out_total": 161,
+   "calls_in_total": 124,
+   "wave": 2,
+   "cycle_group_size": 1
   },
   {
-   "segment": 6,
-   "start": "0044c5a0",
-   "end": "00468600",
-   "candidates": 345,
-   "purity": 0.17,
-   "keywords": [
-    "action",
-    "cameraposition",
-    "activatetime",
-    "aa_flak",
-    "alpha",
-    "point",
-    "periscope",
-    "comment",
-    "artillery",
-    "torpedo"
-   ],
-   "lua_bindings": 0,
-   "vtables": 1,
-   "calls_out": {
-    "2": 69,
-    "5": 54,
-    "1": 51,
-    "87": 51,
-    "92": 49,
-    "60": 25
-   },
-   "calls_in": {
-    "7": 52,
-    "37": 26,
-    "60": 12,
-    "56": 11,
-    "66": 10,
-    "10": 9
-   },
-   "calls_out_total": 409,
-   "calls_in_total": 259,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 7,
-   "start": "00468660",
-   "end": "004ab550",
-   "candidates": 923,
-   "purity": 0.23,
+   "segment": 4,
+   "start": "00453ed0",
+   "end": "004b9680",
+   "candidates": 1450,
+   "purity": 0.08,
    "keywords": [
     "soldiertypes",
     "landvehicleclasses",
     "entity",
-    "vehicles",
-    "tempid",
-    "startpt",
-    "scenebrowsergroups",
-    "rowdev",
-    "rowcount",
-    "randomfactor"
+    "alpha",
+    "action",
+    "weight",
+    "cameraposition",
+    "activatetime",
+    "aa_flak",
+    "point"
    ],
    "lua_bindings": 0,
-   "vtables": 20,
+   "vtables": 25,
    "calls_out": {
-    "87": 121,
-    "1": 103,
-    "92": 103,
-    "2": 94,
-    "63": 84,
-    "6": 52
+    "1": 316,
+    "80": 160,
+    "84": 156,
+    "2": 110,
+    "57": 53,
+    "56": 48
    },
    "calls_in": {
-    "56": 68,
-    "63": 55,
-    "65": 43,
-    "13": 39,
-    "53": 33,
-    "8": 28
+    "7": 93,
+    "48": 93,
+    "56": 48,
+    "45": 44,
+    "5": 42,
+    "6": 37
    },
-   "calls_out_total": 807,
-   "calls_in_total": 716,
+   "calls_out_total": 1127,
+   "calls_in_total": 1015,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 8,
-   "start": "004ab580",
-   "end": "004b9680",
-   "candidates": 288,
-   "purity": 0.24,
-   "keywords": [
-    "wreckclass",
-    "timeleft",
-    "smoke",
-    "wreck",
-    "state",
-    "timemin",
-    "timemax",
-    "startvelocityangle",
-    "startvelocity",
-    "shippartclass"
-   ],
-   "lua_bindings": 0,
-   "vtables": 4,
-   "calls_out": {
-    "87": 50,
-    "7": 28,
-    "92": 21,
-    "2": 21,
-    "1": 18,
-    "4": 15
-   },
-   "calls_in": {
-    "9": 26,
-    "7": 24,
-    "11": 22,
-    "12": 18,
-    "34": 11,
-    "65": 10
-   },
-   "calls_out_total": 195,
-   "calls_in_total": 231,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 9,
+   "segment": 5,
    "start": "004b96a0",
-   "end": "004c4ed0",
-   "candidates": 217,
-   "purity": 0.28,
+   "end": "004c8260",
+   "candidates": 282,
+   "purity": 0.3,
    "keywords": [
+    "white",
     "collect",
     "collectgarbage",
     "traininggrounds",
@@ -365,36 +210,35 @@
     "party"
    ],
    "lua_bindings": 0,
-   "vtables": 0,
+   "vtables": 1,
    "calls_out": {
-    "8": 26,
-    "34": 12,
-    "92": 7,
-    "89": 6,
-    "73": 5,
-    "32": 5
+    "4": 42,
+    "1": 30,
+    "84": 18,
+    "24": 15,
+    "73": 9,
+    "82": 6
    },
    "calls_in": {
-    "10": 83,
-    "12": 68,
-    "34": 63,
-    "17": 34,
-    "26": 32,
-    "32": 32
+    "7": 111,
+    "18": 86,
+    "6": 71,
+    "24": 68,
+    "10": 39,
+    "8": 38
    },
-   "calls_out_total": 108,
-   "calls_in_total": 861,
+   "calls_out_total": 173,
+   "calls_in_total": 948,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 10,
-   "start": "004c4fe0",
-   "end": "004d17c0",
-   "candidates": 209,
-   "purity": 0.43,
+   "segment": 6,
+   "start": "004c8280",
+   "end": "004d4150",
+   "candidates": 190,
+   "purity": 0.38,
    "keywords": [
-    "white",
     "allbutingame",
     "interface",
     "textures",
@@ -403,242 +247,120 @@
     "stats",
     "sonar",
     "screenshot_",
-    "oninittitle"
-   ],
-   "lua_bindings": 0,
-   "vtables": 1,
-   "calls_out": {
-    "9": 83,
-    "92": 49,
-    "1": 47,
-    "2": 42,
-    "34": 15,
-    "77": 11
-   },
-   "calls_in": {
-    "12": 68,
-    "11": 66,
-    "34": 34,
-    "26": 22,
-    "53": 21,
-    "63": 21
-   },
-   "calls_out_total": 334,
-   "calls_in_total": 520,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 11,
-   "start": "004d1840",
-   "end": "004d6de0",
-   "candidates": 81,
-   "purity": 0.28,
-   "keywords": [
-    "reassignonplayerdrop",
-    "library",
-    "setted",
-    "planerumble",
-    "cameramover",
-    "universe",
-    "scene",
-    "collect",
-    "collectgarbage",
-    "player"
+    "oninittitle",
+    "multi_highlatency"
    ],
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "10": 66,
-    "9": 31,
-    "8": 22,
-    "87": 19,
-    "2": 11,
-    "1": 8
+    "1": 72,
+    "5": 71,
+    "84": 42,
+    "4": 37,
+    "80": 17,
+    "24": 12
    },
    "calls_in": {
-    "12": 57,
-    "29": 14,
-    "34": 12,
-    "66": 12,
-    "30": 7,
-    "32": 7
+    "7": 123,
+    "24": 37,
+    "18": 23,
+    "56": 21,
+    "19": 20,
+    "45": 19
    },
-   "calls_out_total": 217,
-   "calls_in_total": 179,
+   "calls_out_total": 337,
+   "calls_in_total": 445,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 12,
-   "start": "004d6e20",
-   "end": "004e7bb0",
-   "candidates": 147,
-   "purity": 0.41,
+   "segment": 7,
+   "start": "004d41a0",
+   "end": "004f8830",
+   "candidates": 359,
+   "purity": 0.26,
    "keywords": [
     "ggame",
     "collect",
     "collectgarbage",
+    "party",
     "ingame",
-    "skiptitle",
-    "skiplogos",
-    "skipbriefings",
-    "noskiplogos",
-    "lockitraw",
-    "lockitmark"
-   ],
-   "lua_bindings": 1,
-   "vtables": 5,
-   "calls_out": {
-    "10": 68,
-    "9": 68,
-    "11": 57,
-    "2": 54,
-    "92": 30,
-    "63": 26
-   },
-   "calls_in": {
-    "34": 45,
-    "13": 35,
-    "60": 14,
-    "18": 13,
-    "17": 10,
-    "29": 10
-   },
-   "calls_out_total": 660,
-   "calls_in_total": 225,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 13,
-   "start": "004e7c00",
-   "end": "004f8830",
-   "candidates": 177,
-   "purity": 0.33,
-   "keywords": [
+    "scene",
+    "ocean",
     "ambient",
     "sound",
-    "party",
-    "noisetexture",
-    "landconvoy",
-    "stationary",
-    "filename",
-    "cloudtype",
-    "launchedclass",
-    "landingpoint"
+    "skiptitle"
    ],
-   "lua_bindings": 0,
-   "vtables": 6,
+   "lua_bindings": 1,
+   "vtables": 11,
    "calls_out": {
-    "2": 68,
-    "63": 50,
-    "7": 39,
-    "12": 35,
-    "1": 19,
-    "87": 16
+    "1": 171,
+    "6": 123,
+    "5": 111,
+    "4": 93,
+    "56": 58,
+    "84": 48
    },
    "calls_in": {
-    "34": 62,
-    "32": 24,
-    "17": 21,
-    "30": 20,
-    "15": 15,
-    "25": 14
+    "24": 115,
+    "18": 70,
+    "10": 37,
+    "22": 37,
+    "11": 30,
+    "19": 29
    },
-   "calls_out_total": 333,
-   "calls_in_total": 332,
+   "calls_out_total": 1016,
+   "calls_in_total": 598,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 14,
+   "segment": 8,
    "start": "004f8970",
-   "end": "00505d50",
-   "candidates": 192,
-   "purity": 0.62,
+   "end": "0051e4d0",
+   "candidates": 366,
+   "purity": 0.64,
    "keywords": [
     "menuitem_text",
     "vehicleclass",
-    "unitlib_nounlock",
     "back",
     "globals",
     "dview",
-    "change",
     "navigate",
-    "tutorial_group",
-    "taclib_unlocks_title"
-   ],
-   "lua_bindings": 0,
-   "vtables": 0,
-   "calls_out": {
-    "2": 64,
-    "87": 57,
-    "92": 46,
-    "1": 42,
-    "79": 26,
-    "78": 22
-   },
-   "calls_in": {
-    "15": 136,
-    "32": 9,
-    "34": 9,
-    "57": 9,
-    "12": 8,
-    "24": 8
-   },
-   "calls_out_total": 359,
-   "calls_in_total": 264,
-   "wave": 2,
-   "cycle_group_size": 1
-  },
-  {
-   "segment": 15,
-   "start": "00505de0",
-   "end": "0051e650",
-   "candidates": 175,
-   "purity": 0.55,
-   "keywords": [
-    "back",
-    "dview",
     "scroll_menu",
-    "globals",
-    "navigate",
-    "vehicleclass",
-    "szarnyas_framebox",
-    "giachievements",
-    "title_text",
-    "groupname"
+    "change",
+    "unitlib_nounlock",
+    "datatables"
    ],
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "14": 136,
-    "87": 102,
-    "2": 76,
-    "92": 49,
-    "1": 42,
-    "79": 39
+    "1": 224,
+    "80": 147,
+    "74": 102,
+    "84": 95,
+    "2": 40,
+    "5": 38
    },
    "calls_in": {
-    "63": 35,
-    "27": 13,
-    "24": 11,
-    "23": 9,
-    "26": 9,
-    "32": 8
+    "56": 43,
+    "18": 37,
+    "16": 20,
+    "22": 17,
+    "15": 14,
+    "24": 14
    },
-   "calls_out_total": 681,
-   "calls_in_total": 158,
-   "wave": 3,
+   "calls_out_total": 900,
+   "calls_in_total": 281,
+   "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 16,
-   "start": "0051e6e0",
+   "segment": 9,
+   "start": "0051e650",
    "end": "00527c80",
-   "candidates": 110,
-   "purity": 0.71,
+   "candidates": 111,
+   "purity": 0.73,
    "keywords": [
     "attackmove",
     "cycle",
@@ -654,32 +376,32 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "34": 31,
-    "9": 18,
-    "1": 14,
-    "3": 11,
-    "2": 10,
-    "49": 10
+    "24": 31,
+    "1": 24,
+    "5": 18,
+    "2": 12,
+    "7": 11,
+    "4": 10
    },
    "calls_in": {
-    "41": 33,
-    "68": 24,
-    "45": 14,
-    "56": 13,
-    "32": 12,
-    "63": 10
+    "31": 33,
+    "63": 24,
+    "48": 16,
+    "35": 14,
+    "22": 12,
+    "56": 10
    },
-   "calls_out_total": 189,
+   "calls_out_total": 188,
    "calls_in_total": 191,
    "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 17,
+   "segment": 10,
    "start": "00527cb0",
    "end": "00543a30",
    "candidates": 311,
-   "purity": 0.39,
+   "purity": 0.36,
    "keywords": [
     "back",
     "mshd",
@@ -695,20 +417,20 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "79": 74,
-    "2": 66,
-    "1": 49,
-    "92": 43,
-    "9": 34,
-    "81": 31
+    "1": 115,
+    "74": 91,
+    "84": 43,
+    "5": 39,
+    "7": 37,
+    "75": 31
    },
    "calls_in": {
-    "24": 29,
-    "91": 20,
-    "18": 17,
-    "34": 16,
-    "26": 15,
-    "60": 12
+    "18": 30,
+    "16": 29,
+    "84": 19,
+    "11": 17,
+    "24": 16,
+    "75": 13
    },
    "calls_out_total": 523,
    "calls_in_total": 237,
@@ -716,11 +438,11 @@
    "cycle_group_size": 1
   },
   {
-   "segment": 18,
+   "segment": 11,
    "start": "00543a60",
-   "end": "005525b0",
-   "candidates": 174,
-   "purity": 0.55,
+   "end": "00558ed0",
+   "candidates": 315,
+   "purity": 0.29,
    "keywords": [
     "button_framebox",
     "basicship2",
@@ -734,75 +456,34 @@
     "ship_dc_group"
    ],
    "lua_bindings": 0,
-   "vtables": 2,
+   "vtables": 3,
    "calls_out": {
-    "2": 32,
-    "34": 32,
-    "79": 20,
-    "17": 17,
-    "1": 17,
-    "9": 15
+    "1": 77,
+    "24": 36,
+    "84": 32,
+    "7": 30,
+    "74": 28,
+    "5": 23
    },
    "calls_in": {
-    "32": 18,
-    "15": 16,
-    "28": 14,
-    "34": 13,
-    "24": 12,
-    "65": 10
+    "12": 76,
+    "18": 29,
+    "26": 25,
+    "24": 24,
+    "8": 20,
+    "22": 19
    },
-   "calls_out_total": 266,
-   "calls_in_total": 188,
-   "wave": 3,
-   "cycle_group_size": 1
-  },
-  {
-   "segment": 19,
-   "start": "00552630",
-   "end": "00558640",
-   "candidates": 134,
-   "purity": 0.55,
-   "keywords": [
-    "setting_group",
-    "selectedconflict_text",
-    "listbox_framebox",
-    "fe_controls_pc_listbox",
-    "fe_controls_pc",
-    "column_framebox",
-    "toggle_text_group",
-    "scroll_up_icon",
-    "scroll_down_icon",
-    "clipbox_clipbox"
-   ],
-   "lua_bindings": 0,
-   "vtables": 1,
-   "calls_out": {
-    "1": 17,
-    "92": 17,
-    "2": 8,
-    "79": 7,
-    "34": 4,
-    "9": 4
-   },
-   "calls_in": {
-    "20": 71,
-    "36": 28,
-    "34": 9,
-    "37": 7,
-    "35": 6,
-    "60": 5
-   },
-   "calls_out_total": 72,
-   "calls_in_total": 149,
+   "calls_out_total": 344,
+   "calls_in_total": 337,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 20,
-   "start": "00558680",
+   "segment": 12,
+   "start": "00558f80",
    "end": "00568930",
-   "candidates": 190,
-   "purity": 0.37,
+   "candidates": 183,
+   "purity": 0.26,
    "keywords": [
     "fe_pc",
     "preset",
@@ -818,28 +499,28 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "19": 71,
-    "2": 49,
-    "78": 49,
-    "79": 33,
-    "87": 29,
-    "34": 28
+    "11": 76,
+    "74": 76,
+    "1": 73,
+    "24": 31,
+    "80": 29,
+    "84": 25
    },
    "calls_in": {
-    "21": 31,
-    "36": 31,
-    "22": 23,
-    "37": 14,
-    "34": 3,
-    "28": 2
+    "13": 31,
+    "26": 26,
+    "14": 23,
+    "27": 19,
+    "24": 3,
+    "18": 2
    },
-   "calls_out_total": 452,
+   "calls_out_total": 446,
    "calls_in_total": 115,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 21,
+   "segment": 13,
    "start": "00568cb0",
    "end": "0056f320",
    "candidates": 102,
@@ -859,26 +540,26 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "20": 31,
-    "2": 18,
-    "79": 11,
-    "78": 9,
-    "34": 7,
-    "1": 7
+    "12": 31,
+    "1": 25,
+    "74": 20,
+    "24": 7,
+    "84": 7,
+    "75": 7
    },
    "calls_in": {
-    "22": 71,
-    "34": 2,
-    "25": 1,
-    "60": 1
+    "14": 71,
+    "24": 2,
+    "16": 1,
+    "53": 1
    },
    "calls_out_total": 106,
    "calls_in_total": 75,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 22,
+   "segment": 14,
    "start": "00570300",
    "end": "00584110",
    "candidates": 330,
@@ -898,32 +579,32 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "21": 71,
-    "2": 38,
-    "79": 23,
-    "20": 23,
-    "92": 19,
-    "1": 18
+    "13": 71,
+    "1": 56,
+    "74": 36,
+    "12": 23,
+    "84": 19,
+    "75": 18
    },
    "calls_in": {
-    "63": 79,
-    "24": 43,
-    "23": 39,
-    "27": 31,
-    "32": 17,
-    "60": 13
+    "56": 78,
+    "16": 49,
+    "15": 39,
+    "18": 33,
+    "22": 17,
+    "53": 13
    },
    "calls_out_total": 312,
    "calls_in_total": 298,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 23,
+   "segment": 15,
    "start": "00584170",
    "end": "0058d470",
    "candidates": 72,
-   "purity": 0.56,
+   "purity": 0.57,
    "keywords": [
     "globals",
     "select",
@@ -939,32 +620,32 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "2": 45,
-    "22": 39,
-    "78": 23,
-    "79": 22,
-    "1": 21,
-    "92": 20
+    "1": 66,
+    "74": 41,
+    "14": 39,
+    "84": 20,
+    "75": 15,
+    "8": 14
    },
    "calls_in": {
-    "24": 61,
-    "63": 11,
-    "32": 4,
-    "45": 4,
-    "34": 3,
-    "37": 3
+    "16": 62,
+    "56": 11,
+    "22": 4,
+    "35": 4,
+    "24": 3,
+    "27": 3
    },
    "calls_out_total": 272,
    "calls_in_total": 107,
-   "wave": 2,
+   "wave": 3,
    "cycle_group_size": 1
   },
   {
-   "segment": 24,
+   "segment": 16,
    "start": "0058d4b0",
-   "end": "005c5cd0",
-   "candidates": 494,
-   "purity": 0.15,
+   "end": "005caff0",
+   "candidates": 555,
+   "purity": 0.13,
    "keywords": [
     "globals",
     "mission_mappoint_",
@@ -975,201 +656,119 @@
     "group",
     "mvfm",
     "mshd",
-    "mapmodel"
+    "missiontree"
    ],
    "lua_bindings": 0,
    "vtables": 2,
    "calls_out": {
-    "2": 97,
-    "79": 65,
-    "23": 61,
-    "1": 59,
-    "87": 55,
-    "81": 49
+    "1": 163,
+    "74": 77,
+    "15": 62,
+    "75": 56,
+    "84": 51,
+    "14": 49
    },
    "calls_in": {
-    "34": 42,
-    "32": 16,
-    "63": 15,
-    "25": 14,
-    "60": 14,
-    "65": 10
+    "24": 43,
+    "53": 19,
+    "22": 16,
+    "18": 15,
+    "56": 15,
+    "61": 11
    },
-   "calls_out_total": 834,
-   "calls_in_total": 201,
-   "wave": 3,
-   "cycle_group_size": 1
-  },
-  {
-   "segment": 25,
-   "start": "005c5da0",
-   "end": "005ce9d0",
-   "candidates": 137,
-   "purity": 0.35,
-   "keywords": [
-    "up_icon",
-    "helpline",
-    "gui_movie",
-    "down_icon",
-    "datatables",
-    "scripts",
-    "uniquemultisettings",
-    "tempeditcursor_icon",
-    "tempeditarrow_icon",
-    "targetnames_text"
-   ],
-   "lua_bindings": 0,
-   "vtables": 0,
-   "calls_out": {
-    "87": 16,
-    "24": 14,
-    "13": 14,
-    "1": 11,
-    "9": 11,
-    "92": 11
-   },
-   "calls_in": {
-    "60": 32,
-    "51": 19,
-    "52": 17,
-    "48": 9,
-    "34": 8,
-    "27": 6
-   },
-   "calls_out_total": 154,
-   "calls_in_total": 102,
+   "calls_out_total": 879,
+   "calls_in_total": 202,
    "wave": 4,
    "cycle_group_size": 1
   },
   {
-   "segment": 26,
-   "start": "005cea60",
-   "end": "005df510",
-   "candidates": 144,
-   "purity": 0.72,
+   "segment": 17,
+   "start": "005cb0a0",
+   "end": "005ce340",
+   "candidates": 69,
+   "purity": 0.39,
    "keywords": [
-    "globals",
-    "ingame",
-    "messagetemplate_text",
-    "settings_group",
-    "player_name_text",
-    "willendsession",
-    "unlock_group",
-    "unlock_framebox",
-    "swapplayer2",
-    "swapplayer1"
+    "up_icon",
+    "gui_movie",
+    "down_icon",
+    "tempeditcursor_icon",
+    "tempeditarrow_icon",
+    "targetnames_text",
+    "rotationspeeddefaultlimit",
+    "overviewmodedefaultheight",
+    "movespeeddefaultlimit",
+    "gui_moviecamera_debug"
    ],
    "lua_bindings": 0,
-   "vtables": 1,
+   "vtables": 0,
    "calls_out": {
-    "2": 63,
-    "9": 32,
-    "1": 31,
-    "92": 31,
-    "79": 28,
-    "78": 25
+    "1": 13,
+    "7": 9,
+    "5": 9,
+    "74": 8,
+    "84": 8,
+    "80": 8
    },
    "calls_in": {
-    "27": 75,
-    "49": 14,
-    "2": 5,
-    "12": 3,
-    "22": 3,
-    "34": 3
+    "53": 27,
+    "43": 17,
+    "44": 17,
+    "18": 8,
+    "24": 6,
+    "39": 6
    },
-   "calls_out_total": 403,
-   "calls_in_total": 110,
-   "wave": 2,
-   "cycle_group_size": 1
+   "calls_out_total": 89,
+   "calls_in_total": 94,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 27,
-   "start": "005e09a0",
-   "end": "005ee440",
-   "candidates": 76,
-   "purity": 0.63,
+   "segment": 18,
+   "start": "005ce410",
+   "end": "005fb080",
+   "candidates": 334,
+   "purity": 0.73,
    "keywords": [
     "globals",
-    "navigate",
     "back",
-    "achievement_lock_icon",
-    "players_listbox",
-    "rank_icon",
-    "change",
-    "scroll_menu",
-    "mainlistbox_text",
-    "select"
-   ],
-   "lua_bindings": 0,
-   "vtables": 3,
-   "calls_out": {
-    "26": 75,
-    "2": 57,
-    "34": 45,
-    "79": 44,
-    "78": 37,
-    "22": 31
-   },
-   "calls_in": {
-    "34": 7,
-    "28": 4,
-    "24": 3,
-    "49": 3,
-    "2": 2,
-    "12": 1
-   },
-   "calls_out_total": 491,
-   "calls_in_total": 23,
-   "wave": 3,
-   "cycle_group_size": 1
-  },
-  {
-   "segment": 28,
-   "start": "005ee4a0",
-   "end": "005fd180",
-   "candidates": 123,
-   "purity": 0.63,
-   "keywords": [
     "xsm_saveconfirm",
     "fe_xbox",
-    "xsm_dlcchanged",
-    "arrow_left_icon",
-    "arrow_right_icon",
-    "slider0",
-    "main_text",
-    "opt_title_main",
     "mainlistbox_text",
-    "select"
+    "select",
+    "main_listbox",
+    "navigate",
+    "ingame",
+    "xsm_dlcchanged"
    ],
    "lua_bindings": 0,
-   "vtables": 2,
+   "vtables": 6,
    "calls_out": {
-    "2": 85,
-    "1": 47,
-    "92": 45,
-    "78": 35,
-    "60": 32,
-    "79": 31
+    "1": 303,
+    "74": 188,
+    "84": 96,
+    "5": 86,
+    "24": 81,
+    "7": 70
    },
    "calls_in": {
-    "29": 24,
-    "34": 6,
-    "20": 4,
-    "32": 3,
-    "60": 2,
-    "91": 2
+    "40": 18,
+    "24": 14,
+    "1": 7,
+    "7": 4,
+    "12": 4,
+    "16": 4
    },
-   "calls_out_total": 451,
-   "calls_in_total": 50,
+   "calls_out_total": 1279,
+   "calls_in_total": 77,
    "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 29,
-   "start": "005fd190",
+   "segment": 19,
+   "start": "005fc620",
    "end": "006049f0",
-   "candidates": 62,
-   "purity": 0.66,
+   "candidates": 78,
+   "purity": 0.64,
    "keywords": [
     "ingame",
     "felkialtojel_text",
@@ -1185,28 +784,28 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "2": 33,
-    "28": 24,
-    "78": 23,
-    "1": 17,
-    "92": 17,
-    "79": 17
+    "1": 50,
+    "74": 36,
+    "7": 29,
+    "6": 20,
+    "84": 17,
+    "5": 14
    },
    "calls_in": {
-    "34": 14,
-    "37": 10,
-    "26": 5,
-    "63": 3,
-    "10": 2,
-    "12": 2
+    "24": 17,
+    "27": 10,
+    "18": 5,
+    "56": 3,
+    "6": 2,
+    "7": 2
    },
-   "calls_out_total": 248,
-   "calls_in_total": 41,
-   "wave": 3,
+   "calls_out_total": 225,
+   "calls_in_total": 45,
+   "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 30,
+   "segment": 20,
    "start": "00604a20",
    "end": "0060de90",
    "candidates": 87,
@@ -1226,32 +825,32 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "3": 39,
-    "52": 36,
-    "1": 25,
-    "34": 23,
-    "9": 22,
-    "13": 20
+    "2": 41,
+    "44": 36,
+    "1": 35,
+    "7": 28,
+    "5": 26,
+    "24": 23
    },
    "calls_in": {
-    "68": 10,
-    "31": 9,
-    "34": 8,
-    "51": 4,
-    "57": 4,
-    "53": 3
+    "63": 10,
+    "21": 9,
+    "24": 8,
+    "43": 4,
+    "49": 4,
+    "45": 3
    },
    "calls_out_total": 289,
    "calls_in_total": 55,
-   "wave": 7,
+   "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 31,
+   "segment": 21,
    "start": "0060dfb0",
    "end": "00622990",
    "candidates": 204,
-   "purity": 0.36,
+   "purity": 0.33,
    "keywords": [
     "showgamercard",
     "globals",
@@ -1267,20 +866,20 @@
    "lua_bindings": 0,
    "vtables": 2,
    "calls_out": {
-    "2": 42,
-    "79": 39,
-    "92": 27,
-    "1": 26,
-    "81": 15,
-    "87": 15
+    "1": 68,
+    "74": 43,
+    "84": 27,
+    "75": 15,
+    "80": 15,
+    "2": 13
    },
    "calls_in": {
-    "32": 83,
-    "61": 16,
-    "34": 12,
-    "53": 6,
-    "25": 2,
-    "33": 1
+    "22": 83,
+    "55": 16,
+    "24": 12,
+    "45": 6,
+    "17": 2,
+    "23": 1
    },
    "calls_out_total": 279,
    "calls_in_total": 121,
@@ -1288,7 +887,7 @@
    "cycle_group_size": 1
   },
   {
-   "segment": 32,
+   "segment": 22,
    "start": "00622a10",
    "end": "00654650",
    "candidates": 364,
@@ -1308,20 +907,20 @@
    "lua_bindings": 0,
    "vtables": 6,
    "calls_out": {
-    "2": 100,
-    "31": 83,
-    "79": 64,
-    "1": 60,
-    "34": 53,
-    "92": 39
+    "1": 160,
+    "21": 83,
+    "74": 68,
+    "24": 53,
+    "84": 39,
+    "7": 37
    },
    "calls_in": {
-    "34": 37,
-    "63": 25,
-    "30": 9,
-    "60": 9,
-    "24": 8,
-    "68": 7
+    "24": 37,
+    "56": 25,
+    "20": 9,
+    "16": 8,
+    "53": 8,
+    "63": 7
    },
    "calls_out_total": 837,
    "calls_in_total": 170,
@@ -1329,11 +928,11 @@
    "cycle_group_size": 1
   },
   {
-   "segment": 33,
+   "segment": 23,
    "start": "00654a70",
-   "end": "00664030",
-   "candidates": 208,
-   "purity": 0.3,
+   "end": "00664120",
+   "candidates": 210,
+   "purity": 0.45,
    "keywords": [
     "circle_hl_icon",
     "ingamegui",
@@ -1349,32 +948,32 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "2": 38,
-    "76": 24,
-    "79": 23,
-    "1": 22,
-    "34": 21,
-    "92": 21
+    "1": 60,
+    "72": 24,
+    "74": 23,
+    "24": 21,
+    "84": 21,
+    "39": 6
    },
    "calls_in": {
-    "34": 174,
-    "31": 11,
-    "38": 9,
-    "65": 7,
-    "56": 5,
-    "60": 1
+    "24": 175,
+    "21": 11,
+    "28": 9,
+    "59": 7,
+    "48": 6,
+    "53": 1
    },
-   "calls_out_total": 179,
-   "calls_in_total": 211,
+   "calls_out_total": 180,
+   "calls_in_total": 213,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 34,
-   "start": "00664070",
-   "end": "006980e0",
-   "candidates": 500,
-   "purity": 0.17,
+   "segment": 24,
+   "start": "006641b0",
+   "end": "0069a9e0",
+   "candidates": 516,
+   "purity": 0.2,
    "keywords": [
     "ingame",
     "gvmultimenu",
@@ -1382,119 +981,110 @@
     "globals",
     "interface",
     "textures",
+    "datatables",
+    "scripts",
     "unitclass_spawnpoint",
-    "sm_support",
-    "pushrequestinterface",
-    "inferiorfailure"
+    "sm_support"
    ],
    "lua_bindings": 0,
    "vtables": 9,
    "calls_out": {
-    "33": 174,
-    "2": 122,
-    "1": 66,
-    "9": 63,
-    "92": 63,
-    "87": 63
+    "1": 191,
+    "23": 175,
+    "7": 115,
+    "80": 75,
+    "5": 68,
+    "74": 65
    },
    "calls_in": {
-    "38": 81,
-    "68": 67,
-    "32": 53,
-    "27": 45,
-    "41": 43,
-    "53": 41
+    "18": 81,
+    "28": 81,
+    "63": 67,
+    "22": 53,
+    "31": 43,
+    "45": 41
    },
-   "calls_out_total": 1251,
-   "calls_in_total": 1050,
+   "calls_out_total": 1283,
+   "calls_in_total": 1043,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 35,
-   "start": "006981c0",
-   "end": "0069fe70",
-   "candidates": 133,
-   "purity": 0.44,
+   "segment": 25,
+   "start": "0069aa10",
+   "end": "006a0aa0",
+   "candidates": 119,
+   "purity": 0.43,
    "keywords": [
-    "swapstickpairs",
-    "swapstickmap",
-    "swapstickgeneral",
-    "press",
     "invio",
-    "inputmodifiers",
     "indietro",
-    "helper",
-    "inputs",
-    "cs_unknown"
+    "cs_unknown",
+    "fe_pc"
    ],
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "87": 17,
-    "2": 17,
-    "34": 14,
-    "1": 8,
-    "92": 8,
-    "19": 6
+    "1": 24,
+    "84": 9,
+    "11": 6,
+    "2": 2,
+    "7": 1
    },
    "calls_in": {
-    "36": 52,
-    "37": 10,
-    "20": 4,
-    "28": 2,
-    "34": 2,
-    "60": 2
+    "26": 52,
+    "27": 10,
+    "53": 2,
+    "12": 1
    },
-   "calls_out_total": 83,
-   "calls_in_total": 73,
-   "wave": 2,
-   "cycle_group_size": 1
+   "calls_out_total": 42,
+   "calls_in_total": 65,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 36,
-   "start": "0069ff40",
-   "end": "006a9f70",
-   "candidates": 125,
-   "purity": 0.64,
+   "segment": 26,
+   "start": "006a0ba0",
+   "end": "006a7be0",
+   "candidates": 116,
+   "purity": 0.59,
    "keywords": [
-    "devinputs",
     "sensitivitysettings",
     "inputsettings",
     "devicetype",
     "deviceidx",
     "slider",
-    "down",
     "reverse",
-    "globals",
-    "sensitivities"
+    "sensitivities",
+    "pairs",
+    "min1senshacks",
+    "inputnames"
    ],
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "35": 52,
-    "20": 31,
-    "19": 28,
-    "4": 21,
-    "87": 20,
-    "92": 14
+    "25": 52,
+    "12": 26,
+    "11": 25,
+    "2": 21,
+    "80": 20,
+    "1": 18
    },
    "calls_in": {
-    "37": 17,
-    "20": 7,
-    "60": 3,
-    "65": 1
+    "27": 20,
+    "53": 3,
+    "12": 1,
+    "60": 1
    },
-   "calls_out_total": 223,
-   "calls_in_total": 28,
-   "wave": 3,
-   "cycle_group_size": 1
+   "calls_out_total": 197,
+   "calls_in_total": 25,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 37,
-   "start": "006aa090",
+   "segment": 27,
+   "start": "006a9850",
    "end": "006be980",
-   "candidates": 210,
+   "candidates": 215,
    "purity": 0.4,
    "keywords": [
     "savedata",
@@ -1511,32 +1101,32 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "87": 349,
-    "2": 107,
-    "1": 59,
-    "92": 48,
-    "6": 26,
-    "4": 23
+    "80": 349,
+    "1": 173,
+    "84": 50,
+    "4": 36,
+    "2": 34,
+    "26": 20
    },
    "calls_in": {
-    "38": 73,
-    "60": 57,
-    "59": 51,
-    "66": 23,
-    "68": 16,
-    "53": 15
+    "28": 73,
+    "53": 57,
+    "52": 51,
+    "61": 23,
+    "7": 19,
+    "63": 16
    },
-   "calls_out_total": 812,
-   "calls_in_total": 379,
+   "calls_out_total": 836,
+   "calls_in_total": 385,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 38,
+   "segment": 28,
    "start": "006beb10",
-   "end": "006d6310",
-   "candidates": 299,
-   "purity": 0.55,
+   "end": "006d6450",
+   "candidates": 301,
+   "purity": 0.54,
    "keywords": [
     "equipment",
     "state",
@@ -1552,32 +1142,32 @@
    "lua_bindings": 0,
    "vtables": 17,
    "calls_out": {
-    "34": 81,
-    "37": 73,
-    "1": 70,
-    "3": 30,
-    "2": 30,
-    "63": 28
+    "1": 100,
+    "24": 81,
+    "27": 73,
+    "2": 33,
+    "41": 24,
+    "4": 19
    },
    "calls_in": {
-    "68": 34,
-    "60": 15,
-    "48": 11,
-    "53": 9,
-    "47": 8,
-    "42": 5
+    "63": 34,
+    "53": 13,
+    "39": 11,
+    "45": 9,
+    "38": 8,
+    "32": 5
    },
    "calls_out_total": 491,
    "calls_in_total": 108,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 39,
-   "start": "006d6350",
+   "segment": 29,
+   "start": "006d6470",
    "end": "006da670",
-   "candidates": 102,
-   "purity": 0.4,
+   "candidates": 100,
+   "purity": 0.41,
    "keywords": [
     "recursiveguihighlights",
     "positionmarkers",
@@ -1587,17 +1177,17 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "1": 10,
-    "92": 10,
-    "2": 10,
-    "86": 2,
-    "37": 1,
-    "3": 1
+    "1": 20,
+    "84": 10,
+    "2": 2,
+    "79": 2,
+    "27": 1,
+    "81": 1
    },
    "calls_in": {
-    "40": 46,
-    "6": 1,
-    "12": 1
+    "30": 46,
+    "4": 1,
+    "7": 1
    },
    "calls_out_total": 38,
    "calls_in_total": 48,
@@ -1605,7 +1195,7 @@
    "cycle_group_size": 1
   },
   {
-   "segment": 40,
+   "segment": 30,
    "start": "006da6b0",
    "end": "006deca0",
    "candidates": 67,
@@ -1620,19 +1210,20 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "39": 46,
-    "87": 10,
-    "1": 6,
-    "92": 6,
-    "4": 6,
-    "2": 3
+    "29": 46,
+    "80": 10,
+    "1": 9,
+    "84": 6,
+    "2": 6,
+    "28": 3
    },
    "calls_in": {
-    "60": 6,
-    "12": 3,
-    "15": 2,
-    "28": 1,
-    "34": 1
+    "7": 3,
+    "53": 3,
+    "54": 3,
+    "8": 2,
+    "18": 1,
+    "24": 1
    },
    "calls_out_total": 87,
    "calls_in_total": 13,
@@ -1640,11 +1231,11 @@
    "cycle_group_size": 1
   },
   {
-   "segment": 41,
+   "segment": 31,
    "start": "006dee40",
-   "end": "006face0",
-   "candidates": 331,
-   "purity": 0.37,
+   "end": "006faf00",
+   "candidates": 333,
+   "purity": 0.41,
    "keywords": [
     "orgammo",
     "bulletbase",
@@ -1660,32 +1251,32 @@
    "lua_bindings": 1,
    "vtables": 22,
    "calls_out": {
-    "87": 97,
-    "2": 76,
-    "1": 60,
-    "63": 51,
-    "46": 43,
-    "34": 43
+    "1": 137,
+    "80": 72,
+    "24": 43,
+    "2": 38,
+    "57": 34,
+    "36": 33
    },
    "calls_in": {
-    "42": 43,
-    "66": 32,
-    "57": 21,
-    "59": 21,
-    "52": 19,
-    "60": 17
+    "61": 34,
+    "32": 32,
+    "52": 21,
+    "44": 19,
+    "53": 17,
+    "48": 14
    },
-   "calls_out_total": 705,
-   "calls_in_total": 318,
+   "calls_out_total": 709,
+   "calls_in_total": 313,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 42,
-   "start": "006fad70",
-   "end": "0070cae0",
-   "candidates": 241,
-   "purity": 0.24,
+   "segment": 32,
+   "start": "006fb030",
+   "end": "0070bba0",
+   "candidates": 227,
+   "purity": 0.26,
    "keywords": [
     "openaftertime",
     "messages",
@@ -1699,75 +1290,75 @@
     "cargoentity"
    ],
    "lua_bindings": 0,
-   "vtables": 10,
+   "vtables": 8,
    "calls_out": {
-    "87": 73,
-    "2": 47,
-    "41": 43,
-    "1": 36,
-    "92": 33,
-    "63": 28
+    "1": 79,
+    "80": 45,
+    "31": 32,
+    "84": 32,
+    "2": 30,
+    "57": 21
    },
    "calls_in": {
-    "24": 25,
-    "38": 13,
-    "65": 7,
-    "60": 5,
-    "46": 4,
-    "57": 3
+    "16": 25,
+    "28": 13,
+    "61": 6,
+    "33": 5,
+    "36": 4,
+    "53": 3
    },
-   "calls_out_total": 455,
-   "calls_in_total": 72,
+   "calls_out_total": 415,
+   "calls_in_total": 75,
    "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 43,
-   "start": "0070cc30",
+   "segment": 33,
+   "start": "0070bc30",
    "end": "00717980",
-   "candidates": 152,
-   "purity": 0.31,
+   "candidates": 164,
+   "purity": 0.34,
    "keywords": [
     "unitlist",
     "unitid",
+    "shouldblast",
     "shipnumber",
     "shape",
     "num_0",
-    "relativeposition",
-    "leader",
-    "maxspeed",
-    "pf43nf43uf44cc",
-    "shouldblast"
+    "mindist2",
+    "flakbullet",
+    "blastdist",
+    "relativeposition"
    ],
    "lua_bindings": 0,
-   "vtables": 0,
+   "vtables": 2,
    "calls_out": {
-    "1": 11,
-    "87": 8,
-    "3": 7,
-    "2": 7,
-    "54": 6,
-    "34": 6
+    "1": 21,
+    "2": 10,
+    "82": 9,
+    "31": 8,
+    "81": 6,
+    "46": 6
    },
    "calls_in": {
-    "44": 57,
-    "49": 17,
-    "68": 12,
-    "17": 10,
-    "60": 6,
-    "59": 4
+    "34": 57,
+    "41": 17,
+    "63": 12,
+    "10": 10,
+    "53": 6,
+    "83": 6
    },
-   "calls_out_total": 95,
-   "calls_in_total": 157,
-   "wave": 2,
-   "cycle_group_size": 1
+   "calls_out_total": 130,
+   "calls_in_total": 158,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 44,
+   "segment": 34,
    "start": "00717c70",
-   "end": "0071b940",
-   "candidates": 82,
-   "purity": 0.56,
+   "end": "0071b8d0",
+   "candidates": 81,
+   "purity": 0.64,
    "keywords": [
     "mzonedesc",
     "sphere",
@@ -1780,32 +1371,32 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "43": 57,
-    "95": 11,
-    "90": 8,
-    "89": 7,
-    "9": 4,
-    "0": 4
+    "33": 57,
+    "83": 13,
+    "86": 11,
+    "5": 4,
+    "0": 4,
+    "31": 3
    },
    "calls_in": {
-    "46": 7,
-    "56": 6,
-    "53": 5,
-    "45": 4,
-    "7": 3,
-    "34": 3
+    "48": 9,
+    "45": 5,
+    "35": 4,
+    "37": 4,
+    "4": 3,
+    "8": 3
    },
    "calls_out_total": 101,
    "calls_in_total": 52,
-   "wave": 3,
+   "wave": 2,
    "cycle_group_size": 1
   },
   {
-   "segment": 45,
-   "start": "0071b9b0",
-   "end": "00727bd0",
-   "candidates": 188,
-   "purity": 0.51,
+   "segment": 35,
+   "start": "0071b940",
+   "end": "00728fa0",
+   "candidates": 215,
+   "purity": 0.5,
    "keywords": [
     "startmode",
     "followmode",
@@ -1819,75 +1410,116 @@
     "mode"
    ],
    "lua_bindings": 0,
-   "vtables": 5,
+   "vtables": 14,
    "calls_out": {
-    "2": 37,
-    "49": 21,
-    "48": 21,
-    "1": 19,
-    "52": 14,
-    "16": 14
+    "1": 63,
+    "39": 27,
+    "41": 19,
+    "44": 14,
+    "9": 14,
+    "24": 9
    },
    "calls_in": {
-    "68": 56,
-    "56": 37,
-    "53": 24,
-    "69": 19,
-    "54": 17,
-    "60": 14
+    "63": 58,
+    "48": 40,
+    "45": 24,
+    "64": 19,
+    "46": 18,
+    "53": 14
    },
-   "calls_out_total": 190,
-   "calls_in_total": 219,
-   "wave": 7,
+   "calls_out_total": 208,
+   "calls_in_total": 248,
+   "wave": 3,
    "cycle_group_size": 1
   },
   {
-   "segment": 46,
-   "start": "00727c30",
-   "end": "0074e540",
-   "candidates": 458,
-   "purity": 0.3,
+   "segment": 36,
+   "start": "007290d0",
+   "end": "00741140",
+   "candidates": 274,
+   "purity": 0.27,
    "keywords": [
     "destroyed",
-    "speed",
     "sounddevice",
     "memsize",
     "gpudeviceid",
     "barreldelaytime",
     "cpuspeed",
-    "landvehicle",
-    "landingship",
-    "landfort"
+    "torpedo",
+    "titlelist",
+    "throwb",
+    "throwa"
    ],
    "lua_bindings": 0,
-   "vtables": 36,
+   "vtables": 17,
    "calls_out": {
-    "2": 108,
-    "87": 102,
-    "92": 65,
-    "1": 62,
-    "48": 40,
-    "65": 34
+    "1": 99,
+    "84": 48,
+    "80": 46,
+    "2": 24,
+    "62": 15,
+    "4": 14
    },
    "calls_in": {
-    "41": 43,
-    "65": 34,
-    "63": 23,
-    "60": 19,
-    "56": 14,
-    "68": 14
+    "31": 33,
+    "56": 20,
+    "53": 14,
+    "60": 14,
+    "63": 10,
+    "76": 9
    },
-   "calls_out_total": 768,
-   "calls_in_total": 253,
+   "calls_out_total": 399,
+   "calls_in_total": 177,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 47,
+   "segment": 37,
+   "start": "00741160",
+   "end": "0074e540",
+   "candidates": 158,
+   "purity": 0.4,
+   "keywords": [
+    "landvehicle",
+    "landingship",
+    "landfort",
+    "rampaelfordulas",
+    "partraszalltunk",
+    "partraszallas",
+    "nyitzartimer",
+    "nyitva",
+    "lasttalaj",
+    "horgonypont"
+   ],
+   "lua_bindings": 0,
+   "vtables": 10,
+   "calls_out": {
+    "1": 64,
+    "80": 43,
+    "60": 27,
+    "39": 22,
+    "57": 21,
+    "41": 20
+   },
+   "calls_in": {
+    "60": 16,
+    "31": 8,
+    "48": 7,
+    "47": 6,
+    "45": 4,
+    "46": 3
+   },
+   "calls_out_total": 365,
+   "calls_in_total": 61,
+   "wave": 2,
+   "cycle_group_size": 2
+  },
+  {
+   "segment": 38,
    "start": "0074e5d0",
-   "end": "00758eb0",
-   "candidates": 60,
-   "purity": 0.47,
+   "end": "00758f90",
+   "candidates": 61,
+   "purity": 0.48,
    "keywords": [
     "sumleaks",
     "sumforces",
@@ -1901,116 +1533,157 @@
     "attackmove"
    ],
    "lua_bindings": 0,
-   "vtables": 5,
+   "vtables": 6,
    "calls_out": {
-    "2": 15,
-    "54": 11,
-    "7": 8,
-    "38": 8,
-    "48": 8,
-    "1": 8
+    "1": 23,
+    "46": 11,
+    "4": 9,
+    "28": 8,
+    "39": 8,
+    "52": 7
    },
    "calls_in": {
-    "60": 12,
-    "55": 6,
-    "54": 3,
-    "65": 3,
-    "38": 2,
-    "53": 2
+    "53": 12,
+    "47": 6,
+    "46": 3,
+    "60": 3,
+    "28": 2,
+    "45": 2
    },
-   "calls_out_total": 102,
+   "calls_out_total": 104,
    "calls_in_total": 33,
+   "wave": 5,
+   "cycle_group_size": 1
+  },
+  {
+   "segment": 39,
+   "start": "00758fe0",
+   "end": "0076bd70",
+   "candidates": 365,
+   "purity": 0.84,
+   "keywords": [
+    "runwaycenter",
+    "maxlandingplanesonboard",
+    "liftexitpoint",
+    "deckcamera",
+    "carrierescort",
+    "elevator_2",
+    "vertangle",
+    "horzangle",
+    "runwaywidth",
+    "runwaylength"
+   ],
+   "lua_bindings": 0,
+   "vtables": 3,
+   "calls_out": {
+    "1": 663,
+    "84": 12,
+    "28": 11,
+    "80": 8,
+    "31": 7,
+    "46": 7
+   },
+   "calls_in": {
+    "40": 74,
+    "44": 46,
+    "53": 42,
+    "31": 33,
+    "41": 30,
+    "35": 27
+   },
+   "calls_out_total": 768,
+   "calls_in_total": 498,
+   "wave": 1,
+   "cycle_group_size": 46
+  },
+  {
+   "segment": 40,
+   "start": "0076be10",
+   "end": "007788b0",
+   "candidates": 193,
+   "purity": 0.56,
+   "keywords": [
+    "p2p_voice__",
+    "mmultiplayer",
+    "peer",
+    "gamestate",
+    "dropped",
+    "tick",
+    "just",
+    "because",
+    "multi",
+    "unlock"
+   ],
+   "lua_bindings": 0,
+   "vtables": 1,
+   "calls_out": {
+    "39": 74,
+    "41": 74,
+    "1": 57,
+    "5": 23,
+    "18": 18,
+    "84": 18
+   },
+   "calls_in": {
+    "18": 38,
+    "53": 22,
+    "63": 13,
+    "41": 10,
+    "7": 9,
+    "16": 9
+   },
+   "calls_out_total": 384,
+   "calls_in_total": 164,
    "wave": 3,
    "cycle_group_size": 1
   },
   {
-   "segment": 48,
-   "start": "00758f90",
-   "end": "0076f210",
-   "candidates": 441,
-   "purity": 0.77,
-   "keywords": [
-    "p2p_voice__",
-    "woice",
-    "serversendscenescoring",
-    "runwaycenter",
-    "receive",
-    "nonce",
-    "myplayer",
-    "msgplayer",
-    "maxlandingplanesonboard",
-    "lofing"
-   ],
-   "lua_bindings": 0,
-   "vtables": 5,
-   "calls_out": {
-    "2": 667,
-    "50": 33,
-    "1": 13,
-    "92": 13,
-    "38": 11,
-    "49": 10
-   },
-   "calls_in": {
-    "49": 131,
-    "60": 54,
-    "52": 46,
-    "46": 40,
-    "41": 33,
-    "54": 27
-   },
-   "calls_out_total": 850,
-   "calls_in_total": 556,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 49,
-   "start": "0076f280",
-   "end": "007828a0",
-   "candidates": 277,
-   "purity": 0.3,
+   "segment": 41,
+   "start": "007788d0",
+   "end": "00786a80",
+   "candidates": 229,
+   "purity": 0.34,
    "keywords": [
     "reconlevel",
     "multiscore",
     "lastbanto",
-    "p2p_voice__",
     "recondata",
-    "peer",
     "netentity",
     "multiscore_save",
     "hasplrcmd",
-    "mmultiplayer"
+    "formation",
+    "follow",
+    "ssskirmishai"
    ],
    "lua_bindings": 0,
-   "vtables": 24,
+   "vtables": 27,
    "calls_out": {
-    "48": 131,
-    "2": 57,
-    "87": 56,
-    "50": 38,
-    "63": 37,
-    "92": 35
+    "1": 60,
+    "80": 44,
+    "39": 30,
+    "57": 27,
+    "84": 18,
+    "33": 17
    },
    "calls_in": {
-    "60": 75,
-    "52": 32,
-    "46": 29,
-    "54": 25,
-    "38": 24,
-    "53": 24
+    "40": 74,
+    "53": 53,
+    "44": 32,
+    "48": 25,
+    "28": 24,
+    "45": 24
    },
-   "calls_out_total": 606,
-   "calls_in_total": 552,
+   "calls_out_total": 297,
+   "calls_in_total": 508,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 50,
-   "start": "007828b0",
-   "end": "0078c9b0",
-   "candidates": 135,
-   "purity": 0.31,
+   "segment": 42,
+   "start": "00786be0",
+   "end": "0078cf20",
+   "candidates": 66,
+   "purity": 0.48,
    "keywords": [
     "send_",
     "recv_",
@@ -2019,34 +1692,34 @@
     "server"
    ],
    "lua_bindings": 0,
-   "vtables": 3,
+   "vtables": 0,
    "calls_out": {
-    "91": 22,
-    "2": 18,
-    "89": 13,
-    "48": 10,
-    "1": 7,
-    "92": 7
+    "84": 28,
+    "1": 16,
+    "83": 15,
+    "2": 2,
+    "41": 1,
+    "39": 1
    },
    "calls_in": {
-    "49": 38,
-    "48": 33,
-    "73": 15,
-    "91": 4,
-    "12": 3,
-    "26": 2
+    "48": 9,
+    "44": 5,
+    "2": 4,
+    "4": 4,
+    "43": 4,
+    "84": 4
    },
-   "calls_out_total": 86,
-   "calls_in_total": 100,
-   "wave": 1,
-   "cycle_group_size": 51
+   "calls_out_total": 67,
+   "calls_in_total": 48,
+   "wave": 2,
+   "cycle_group_size": 1
   },
   {
-   "segment": 51,
-   "start": "0078cf20",
+   "segment": 43,
+   "start": "0078cff0",
    "end": "007a4860",
-   "candidates": 254,
-   "purity": 0.41,
+   "candidates": 253,
+   "purity": 0.4,
    "keywords": [
     "postype",
     "camera",
@@ -2062,32 +1735,32 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "1": 79,
-    "87": 62,
-    "3": 51,
-    "2": 44,
-    "34": 38,
-    "25": 19
+    "1": 123,
+    "80": 61,
+    "2": 55,
+    "24": 38,
+    "84": 28,
+    "17": 17
    },
    "calls_in": {
-    "52": 84,
-    "56": 11,
-    "60": 10,
-    "65": 9,
-    "48": 6,
-    "25": 5
+    "44": 79,
+    "53": 10,
+    "60": 9,
+    "17": 5,
+    "39": 5,
+    "48": 5
    },
-   "calls_out_total": 413,
-   "calls_in_total": 165,
-   "wave": 5,
-   "cycle_group_size": 1
+   "calls_out_total": 414,
+   "calls_in_total": 132,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 52,
+   "segment": 44,
    "start": "007a49a0",
-   "end": "007d1d30",
-   "candidates": 472,
-   "purity": 0.67,
+   "end": "007d1dc0",
+   "candidates": 473,
+   "purity": 0.7,
    "keywords": [
     "powerlost",
     "explosion",
@@ -2103,32 +1776,32 @@
    "lua_bindings": 0,
    "vtables": 21,
    "calls_out": {
-    "1": 136,
-    "3": 100,
-    "51": 84,
-    "53": 78,
-    "2": 69,
-    "63": 49
+    "1": 205,
+    "2": 107,
+    "43": 79,
+    "45": 78,
+    "39": 46,
+    "84": 44
    },
    "calls_in": {
-    "68": 270,
-    "53": 58,
-    "30": 36,
-    "60": 26,
-    "7": 24,
-    "45": 14
+    "63": 269,
+    "45": 58,
+    "20": 36,
+    "53": 26,
+    "4": 25,
+    "48": 15
    },
    "calls_out_total": 1005,
    "calls_in_total": 546,
-   "wave": 6,
-   "cycle_group_size": 2
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 53,
-   "start": "007d1dc0",
-   "end": "0080da00",
-   "candidates": 557,
-   "purity": 0.43,
+   "segment": 45,
+   "start": "007d1e50",
+   "end": "0080d9b0",
+   "candidates": 555,
+   "purity": 0.44,
    "keywords": [
     "travelspeed",
     "gears",
@@ -2144,32 +1817,32 @@
    "lua_bindings": 1,
    "vtables": 7,
    "calls_out": {
-    "1": 122,
-    "87": 118,
-    "3": 82,
-    "2": 79,
-    "52": 58,
-    "92": 55
+    "1": 201,
+    "80": 99,
+    "2": 95,
+    "44": 58,
+    "84": 55,
+    "4": 44
    },
    "calls_in": {
-    "52": 78,
-    "68": 46,
-    "60": 27,
-    "65": 23,
-    "69": 19,
-    "24": 16
+    "44": 78,
+    "63": 46,
+    "53": 27,
+    "64": 19,
+    "16": 16,
+    "24": 15
    },
    "calls_out_total": 993,
-   "calls_in_total": 384,
-   "wave": 6,
-   "cycle_group_size": 2
+   "calls_in_total": 383,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 54,
-   "start": "0080dad0",
+   "segment": 46,
+   "start": "0080da00",
    "end": "0081aa10",
-   "candidates": 162,
-   "purity": 0.6,
+   "candidates": 163,
+   "purity": 0.69,
    "keywords": [
     "steeringjam",
     "enginejam",
@@ -2185,32 +1858,32 @@
    "lua_bindings": 0,
    "vtables": 38,
    "calls_out": {
-    "65": 36,
-    "48": 27,
-    "49": 25,
-    "1": 24,
-    "2": 22,
-    "63": 19
+    "1": 46,
+    "60": 35,
+    "39": 27,
+    "41": 21,
+    "35": 18,
+    "57": 17
    },
    "calls_in": {
-    "55": 76,
-    "68": 29,
-    "47": 11,
-    "32": 9,
-    "46": 7,
-    "48": 7
+    "47": 77,
+    "63": 29,
+    "38": 11,
+    "22": 9,
+    "37": 7,
+    "39": 7
    },
    "calls_out_total": 295,
-   "calls_in_total": 181,
-   "wave": 2,
+   "calls_in_total": 182,
+   "wave": 4,
    "cycle_group_size": 1
   },
   {
-   "segment": 55,
+   "segment": 47,
    "start": "0081aa60",
-   "end": "008288d0",
-   "candidates": 98,
-   "purity": 0.43,
+   "end": "00828810",
+   "candidates": 96,
+   "purity": 0.44,
    "keywords": [
     "camocolorgun",
     "shipyardlaunch",
@@ -2226,114 +1899,114 @@
    "lua_bindings": 0,
    "vtables": 9,
    "calls_out": {
-    "54": 76,
-    "1": 25,
-    "2": 25,
-    "63": 24,
+    "46": 77,
+    "1": 50,
     "57": 18,
-    "87": 18
+    "49": 16,
+    "80": 16,
+    "84": 14
    },
    "calls_in": {
-    "56": 14,
-    "57": 8,
-    "47": 6,
-    "65": 6,
-    "46": 5,
-    "60": 4
+    "48": 15,
+    "38": 6,
+    "37": 5,
+    "53": 4,
+    "60": 4,
+    "58": 3
    },
    "calls_out_total": 327,
-   "calls_in_total": 57,
-   "wave": 3,
+   "calls_in_total": 51,
+   "wave": 5,
    "cycle_group_size": 1
   },
   {
-   "segment": 56,
-   "start": "00828930",
-   "end": "00851ee0",
-   "candidates": 434,
+   "segment": 48,
+   "start": "00828870",
+   "end": "00858660",
+   "candidates": 491,
    "purity": 0.24,
    "keywords": [
     "gameunit",
     "classid",
     "stock",
+    "torpedo",
     "torpedoavoidance",
     "object",
+    "submarine",
     "state",
-    "torpedoenabled",
-    "stockvec",
-    "slotvec",
-    "singleturninggun"
+    "unlimitedair",
+    "torpedoenabled"
    ],
    "lua_bindings": 2,
-   "vtables": 7,
+   "vtables": 12,
    "calls_out": {
-    "7": 68,
-    "87": 64,
-    "2": 55,
-    "1": 37,
-    "45": 37,
-    "63": 27
+    "1": 128,
+    "4": 93,
+    "80": 69,
+    "2": 46,
+    "35": 40,
+    "49": 30
    },
    "calls_in": {
-    "68": 15,
-    "65": 13,
-    "34": 11,
-    "41": 10,
-    "54": 10,
-    "60": 10
+    "63": 22,
+    "24": 12,
+    "60": 12,
+    "22": 11,
+    "46": 11,
+    "53": 11
    },
-   "calls_out_total": 629,
-   "calls_in_total": 146,
-   "wave": 8,
+   "calls_out_total": 817,
+   "calls_in_total": 184,
+   "wave": 4,
    "cycle_group_size": 1
   },
   {
-   "segment": 57,
-   "start": "00851f50",
+   "segment": 49,
+   "start": "00858700",
    "end": "0086af80",
-   "candidates": 297,
-   "purity": 0.47,
+   "candidates": 242,
+   "purity": 0.55,
    "keywords": [
     "radius",
-    "submarine",
-    "torpedo",
-    "unlimitedair",
     "tvertangle",
     "turninggun",
     "thorzangle",
-    "periscopey",
-    "periscopestate",
-    "periscopeout"
+    "horzrotdir",
+    "vertangle",
+    "horzangle",
+    "uvtilelength",
+    "triggerradius",
+    "timetotal"
    ],
    "lua_bindings": 0,
-   "vtables": 10,
+   "vtables": 5,
    "calls_out": {
-    "87": 70,
-    "1": 50,
-    "3": 38,
-    "2": 23,
-    "41": 21,
-    "63": 18
+    "80": 40,
+    "1": 38,
+    "2": 31,
+    "45": 12,
+    "50": 12,
+    "84": 11
    },
    "calls_in": {
-    "68": 43,
-    "53": 31,
-    "46": 27,
-    "52": 27,
-    "58": 27,
-    "41": 24
+    "63": 36,
+    "45": 31,
+    "48": 30,
+    "4": 29,
+    "44": 27,
+    "50": 27
    },
-   "calls_out_total": 452,
-   "calls_in_total": 460,
+   "calls_out_total": 270,
+   "calls_in_total": 434,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 58,
+   "segment": 50,
    "start": "0086afc0",
-   "end": "00877e40",
-   "candidates": 167,
-   "purity": 0.41,
+   "end": "00877e50",
+   "candidates": 168,
+   "purity": 0.39,
    "keywords": [
     "effects",
     "minlifetime",
@@ -2349,76 +2022,114 @@
    "lua_bindings": 0,
    "vtables": 2,
    "calls_out": {
-    "87": 76,
-    "92": 41,
-    "57": 27,
-    "1": 26,
-    "2": 23,
-    "91": 19
+    "80": 66,
+    "84": 60,
+    "1": 49,
+    "49": 27,
+    "76": 11,
+    "81": 10
    },
    "calls_in": {
-    "59": 27,
-    "57": 14,
-    "53": 13,
-    "41": 11,
-    "46": 7,
-    "65": 6
+    "51": 26,
+    "45": 13,
+    "49": 12,
+    "31": 11,
+    "7": 10,
+    "4": 7
    },
    "calls_out_total": 304,
-   "calls_in_total": 150,
+   "calls_in_total": 149,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 59,
-   "start": "00877e50",
-   "end": "0088b120",
-   "candidates": 246,
-   "purity": 0.24,
+   "segment": 51,
+   "start": "00877fa0",
+   "end": "00882ac0",
+   "candidates": 118,
+   "purity": 0.43,
    "keywords": [
     "damage",
-    "scripts",
-    "debugtrap",
-    "datatables",
     "yellow",
     "weaponsystems",
     "weapondirectorthinktime",
     "warningscrollspeeds",
     "visibletimeout",
-    "visibilityrange"
+    "visibilityrange",
+    "viewerheightmul",
+    "viewerheightadd",
+    "ustarget"
    ],
    "lua_bindings": 0,
    "vtables": 2,
    "calls_out": {
-    "87": 88,
-    "2": 51,
-    "37": 51,
-    "92": 32,
-    "1": 31,
-    "58": 27
+    "80": 33,
+    "1": 30,
+    "50": 26,
+    "84": 14,
+    "4": 11,
+    "2": 8
    },
    "calls_in": {
-    "60": 437,
-    "66": 93,
-    "65": 23,
-    "41": 14,
-    "63": 13,
-    "7": 11
+    "4": 11,
+    "2": 10,
+    "60": 10,
+    "44": 5,
+    "36": 4,
+    "58": 4
    },
-   "calls_out_total": 408,
-   "calls_in_total": 684,
-   "wave": 1,
-   "cycle_group_size": 51
+   "calls_out_total": 182,
+   "calls_in_total": 58,
+   "wave": 2,
+   "cycle_group_size": 1
   },
   {
-   "segment": 60,
+   "segment": 52,
+   "start": "008840b0",
+   "end": "0088b120",
+   "candidates": 127,
+   "purity": 0.54,
+   "keywords": [
+    "scripts",
+    "debugtrap",
+    "luab",
+    "missions",
+    "fundamentals",
+    "autoload",
+    "global",
+    "datatables"
+   ],
+   "lua_bindings": 0,
+   "vtables": 0,
+   "calls_out": {
+    "1": 52,
+    "27": 51,
+    "80": 46,
+    "84": 22,
+    "31": 21,
+    "41": 7
+   },
+   "calls_in": {
+    "53": 436,
+    "61": 94,
+    "31": 13,
+    "59": 11,
+    "41": 10,
+    "38": 7
+   },
+   "calls_out_total": 225,
+   "calls_in_total": 626,
+   "wave": 2,
+   "cycle_group_size": 1
+  },
+  {
+   "segment": 53,
    "start": "0088b190",
-   "end": "008e5c10",
-   "candidates": 876,
-   "purity": 0.76,
+   "end": "008ddf90",
+   "candidates": 748,
+   "purity": 0.84,
    "keywords": [
     "luakod",
-    "szurkenyil",
     "options",
     "hardwarereported",
     "english",
@@ -2426,37 +2137,79 @@
     "vsync",
     "texturedetail",
     "targetindicator",
-    "swapsticks"
+    "swapsticks",
+    "swapmapsticks"
    ],
    "lua_bindings": 528,
-   "vtables": 2,
+   "vtables": 0,
    "calls_out": {
-    "87": 3876,
-    "2": 1239,
-    "1": 611,
-    "92": 602,
-    "59": 437,
-    "49": 75
+    "80": 3870,
+    "1": 1780,
+    "84": 592,
+    "52": 436,
+    "2": 64,
+    "27": 57
    },
    "calls_in": {
-    "61": 52,
-    "28": 32,
-    "6": 25,
-    "63": 24,
-    "7": 19,
-    "24": 11
+    "54": 55,
+    "4": 44,
+    "18": 31,
+    "56": 31,
+    "16": 9,
+    "22": 8
    },
-   "calls_out_total": 7554,
-   "calls_in_total": 243,
-   "wave": 1,
-   "cycle_group_size": 51
+   "calls_out_total": 7435,
+   "calls_in_total": 230,
+   "wave": 3,
+   "cycle_group_size": 1
   },
   {
-   "segment": 61,
-   "start": "008e5c20",
-   "end": "008ee670",
-   "candidates": 120,
-   "purity": 0.62,
+   "segment": 54,
+   "start": "008ddfe0",
+   "end": "008e5c40",
+   "candidates": 131,
+   "purity": 0.37,
+   "keywords": [
+    "szurkenyil",
+    "secobjprefix",
+    "pinged",
+    "missionglobals",
+    "flagprocess",
+    "quiet",
+    "objectivelist",
+    "objectiveentities",
+    "defend",
+    "positions"
+   ],
+   "lua_bindings": 0,
+   "vtables": 2,
+   "calls_out": {
+    "1": 70,
+    "53": 55,
+    "84": 10,
+    "24": 9,
+    "40": 8,
+    "39": 4
+   },
+   "calls_in": {
+    "55": 49,
+    "53": 9,
+    "7": 3,
+    "16": 2,
+    "21": 2,
+    "40": 2
+   },
+   "calls_out_total": 183,
+   "calls_in_total": 74,
+   "wave": 4,
+   "cycle_group_size": 1
+  },
+  {
+   "segment": 55,
+   "start": "008e5c50",
+   "end": "008ee5f0",
+   "candidates": 116,
+   "purity": 0.53,
    "keywords": [
     "pup_gain",
     "pum1stget",
@@ -2472,72 +2225,34 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "60": 52,
-    "2": 36,
-    "87": 25,
-    "1": 23,
-    "92": 23,
-    "31": 16
+    "1": 59,
+    "54": 49,
+    "80": 25,
+    "84": 23,
+    "2": 18,
+    "21": 16
    },
    "calls_in": {
-    "66": 13,
-    "53": 5,
-    "64": 5,
-    "49": 4,
-    "7": 3,
-    "31": 3
+    "61": 13,
+    "45": 5,
+    "58": 5,
+    "40": 4,
+    "4": 3,
+    "21": 3
    },
-   "calls_out_total": 253,
-   "calls_in_total": 55,
-   "wave": 3,
+   "calls_out_total": 250,
+   "calls_in_total": 54,
+   "wave": 5,
    "cycle_group_size": 1
   },
   {
-   "segment": 62,
-   "start": "008ee990",
-   "end": "008f1720",
-   "candidates": 83,
-   "purity": 0.69,
-   "keywords": [
-    "vec3array",
-    "intarray",
-    "floatarray",
-    "bytes",
-    "none",
-    "lua_s"
-   ],
-   "lua_bindings": 0,
-   "vtables": 0,
-   "calls_out": {
-    "3": 12,
-    "65": 9,
-    "60": 7,
-    "7": 3,
-    "61": 2,
-    "13": 2
-   },
-   "calls_in": {
-    "63": 59,
-    "13": 13,
-    "7": 5,
-    "38": 3,
-    "53": 3,
-    "56": 3
-   },
-   "calls_out_total": 41,
-   "calls_in_total": 98,
-   "wave": 2,
-   "cycle_group_size": 1
-  },
-  {
-   "segment": 63,
-   "start": "008f1790",
-   "end": "0092df80",
-   "candidates": 676,
-   "purity": 0.27,
+   "segment": 56,
+   "start": "008ee670",
+   "end": "00922c80",
+   "candidates": 581,
+   "purity": 0.17,
    "keywords": [
     "bulletthrowmul",
-    "entity",
     "vertangleerror",
     "torpedobot",
     "thinktimeleft",
@@ -2545,37 +2260,79 @@
     "pilotbot",
     "horzangleerror",
     "depthchargebot",
-    "artillerysubdirectorbot"
+    "artillerysubdirectorbot",
+    "artillerygunnerbot"
    ],
    "lua_bindings": 1,
-   "vtables": 80,
+   "vtables": 2,
    "calls_out": {
-    "2": 145,
-    "87": 137,
-    "1": 109,
-    "92": 83,
-    "3": 82,
-    "22": 79
+    "1": 218,
+    "80": 94,
+    "2": 93,
+    "14": 78,
+    "84": 67,
+    "4": 48
    },
    "calls_in": {
-    "7": 84,
-    "65": 58,
-    "60": 55,
-    "41": 51,
-    "53": 51,
-    "13": 50
+    "7": 58,
+    "4": 48,
+    "59": 35,
+    "53": 34,
+    "45": 20,
+    "31": 18
    },
-   "calls_out_total": 1150,
-   "calls_in_total": 928,
+   "calls_out_total": 930,
+   "calls_in_total": 395,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 64,
-   "start": "0092dfe0",
-   "end": "00943c00",
-   "candidates": 209,
-   "purity": 0.43,
+   "segment": 57,
+   "start": "00922de0",
+   "end": "0092dfe0",
+   "candidates": 180,
+   "purity": 0.46,
+   "keywords": [
+    "party",
+    "entity",
+    "timing",
+    "thinkfunction",
+    "roleavailable",
+    "gameentity",
+    "deadmeat",
+    "invincible",
+    "active",
+    "unitcommand"
+   ],
+   "lua_bindings": 0,
+   "vtables": 78,
+   "calls_out": {
+    "80": 40,
+    "1": 38,
+    "4": 20,
+    "84": 17,
+    "24": 12,
+    "27": 12
+   },
+   "calls_in": {
+    "4": 53,
+    "44": 35,
+    "31": 34,
+    "45": 34,
+    "7": 32,
+    "58": 31
+   },
+   "calls_out_total": 226,
+   "calls_in_total": 598,
+   "wave": 1,
+   "cycle_group_size": 46
+  },
+  {
+   "segment": 58,
+   "start": "0092e0b0",
+   "end": "00943d80",
+   "candidates": 210,
+   "purity": 0.34,
    "keywords": [
     "cSmoothMapZoomLevel",
     "periszkop",
@@ -2591,122 +2348,163 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "2": 46,
-    "87": 40,
-    "63": 38,
-    "1": 35,
-    "92": 24,
+    "1": 81,
+    "57": 31,
+    "84": 24,
+    "81": 22,
+    "2": 17,
+    "82": 16
+   },
+   "calls_in": {
+    "59": 24,
+    "47": 12,
+    "46": 10,
+    "10": 5,
+    "16": 5,
+    "24": 5
+   },
+   "calls_out_total": 310,
+   "calls_in_total": 86,
+   "wave": 2,
+   "cycle_group_size": 1
+  },
+  {
+   "segment": 59,
+   "start": "00943e40",
+   "end": "00951d00",
+   "candidates": 146,
+   "purity": 0.4,
+   "keywords": [
+    "resourceusage",
+    "ownerplayer",
+    "supportmanager",
+    "velocitysi",
+    "effect",
+    "camocolor",
+    "autoattacktarget",
+    "wingcount",
+    "equipment",
+    "luakod"
+   ],
+   "lua_bindings": 0,
+   "vtables": 1,
+   "calls_out": {
+    "80": 69,
+    "1": 68,
+    "56": 35,
+    "58": 24,
+    "84": 22,
+    "4": 20
+   },
+   "calls_in": {
+    "56": 22,
+    "60": 12,
+    "4": 10,
+    "7": 7,
+    "24": 7,
+    "57": 6
+   },
+   "calls_out_total": 340,
+   "calls_in_total": 89,
+   "wave": 3,
+   "cycle_group_size": 1
+  },
+  {
+   "segment": 60,
+   "start": "00951d20",
+   "end": "00968e00",
+   "candidates": 279,
+   "purity": 0.27,
+   "keywords": [
+    "vehicleclass",
+    "inferiorfailure",
+    "reconplane",
+    "torpedobomber",
+    "torpedoboat",
+    "divebomber",
+    "cargo",
+    "fighter",
+    "cruiser",
+    "destroyer"
+   ],
+   "lua_bindings": 0,
+   "vtables": 37,
+   "calls_out": {
+    "1": 76,
+    "80": 74,
+    "2": 63,
+    "4": 30,
+    "37": 16,
     "57": 14
    },
    "calls_in": {
-    "65": 22,
-    "55": 12,
-    "54": 10,
-    "17": 5,
-    "24": 5,
-    "34": 5
+    "61": 81,
+    "46": 35,
+    "37": 27,
+    "44": 25,
+    "48": 20,
+    "7": 15
    },
-   "calls_out_total": 309,
-   "calls_in_total": 84,
+   "calls_out_total": 477,
+   "calls_in_total": 349,
    "wave": 2,
-   "cycle_group_size": 1
+   "cycle_group_size": 2
   },
   {
-   "segment": 65,
-   "start": "00943d60",
-   "end": "00978c70",
-   "candidates": 696,
-   "purity": 0.23,
+   "segment": 61,
+   "start": "00968e80",
+   "end": "0098c510",
+   "candidates": 473,
+   "purity": 0.31,
    "keywords": [
-    "callback",
-    "vehicleclass",
     "player",
+    "callback",
     "entity",
     "message",
-    "inferiorfailure",
-    "ambient",
     "oldlevel",
     "newlevel",
-    "party"
-   ],
-   "lua_bindings": 0,
-   "vtables": 64,
-   "calls_out": {
-    "87": 148,
-    "2": 146,
-    "1": 88,
-    "63": 58,
-    "92": 58,
-    "3": 58
-   },
-   "calls_in": {
-    "66": 188,
-    "54": 36,
-    "46": 34,
-    "52": 25,
-    "63": 20,
-    "56": 19
-   },
-   "calls_out_total": 989,
-   "calls_in_total": 556,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 66,
-   "start": "00978ca0",
-   "end": "0098c820",
-   "candidates": 206,
-   "purity": 0.27,
-   "keywords": [
-    "repair",
-    "player",
-    "shiplanded",
-    "musicover",
-    "hpevent",
-    "generate",
-    "entitykilled",
-    "surrender",
+    "ambient",
     "exitzone",
-    "ammotype"
+    "ammotype",
+    "repair"
    ],
    "lua_bindings": 0,
-   "vtables": 3,
+   "vtables": 29,
    "calls_out": {
-    "65": 188,
-    "59": 93,
-    "2": 78,
-    "1": 72,
-    "92": 69,
-    "41": 32
+    "1": 240,
+    "84": 95,
+    "52": 94,
+    "60": 81,
+    "31": 34,
+    "4": 31
    },
    "calls_in": {
-    "38": 7,
-    "63": 7,
-    "43": 6,
-    "49": 6,
-    "3": 5,
-    "56": 5
+    "53": 9,
+    "48": 8,
+    "28": 7,
+    "33": 6,
+    "2": 5,
+    "31": 5
    },
-   "calls_out_total": 739,
-   "calls_in_total": 80,
-   "wave": 2,
+   "calls_out_total": 821,
+   "calls_in_total": 106,
+   "wave": 3,
    "cycle_group_size": 1
   },
   {
-   "segment": 67,
-   "start": "0098c870",
-   "end": "00996120",
-   "candidates": 149,
-   "purity": 0.52,
+   "segment": 62,
+   "start": "0098c630",
+   "end": "009965d0",
+   "candidates": 155,
+   "purity": 0.5,
    "keywords": [
     "software",
+    "bsm_hwd",
+    "eidos",
     "mpkg",
     "cast",
-    "bsm_hwd",
     "content",
     "language",
-    "eidos",
     "system",
     "workstation",
     "winnt"
@@ -2714,32 +2512,32 @@
    "lua_bindings": 0,
    "vtables": 2,
    "calls_out": {
-    "2": 20,
-    "92": 15,
-    "1": 14,
+    "1": 38,
+    "84": 15,
     "0": 12,
-    "3": 5,
-    "94": 4
+    "2": 8,
+    "86": 4,
+    "6": 3
    },
    "calls_in": {
-    "46": 15,
-    "74": 14,
-    "73": 7,
-    "28": 3,
-    "12": 2,
-    "60": 2
+    "70": 21,
+    "36": 15,
+    "18": 4,
+    "7": 2,
+    "53": 2,
+    "56": 2
    },
-   "calls_out_total": 82,
-   "calls_in_total": 44,
-   "wave": 2,
-   "cycle_group_size": 1
+   "calls_out_total": 92,
+   "calls_in_total": 48,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 68,
-   "start": "00996270",
-   "end": "009f69c0",
-   "candidates": 847,
-   "purity": 0.86,
+   "segment": 63,
+   "start": "00996670",
+   "end": "009f6060",
+   "candidates": 835,
+   "purity": 0.83,
    "keywords": [
     "follow",
     "moveto",
@@ -2755,32 +2553,32 @@
    "lua_bindings": 0,
    "vtables": 9,
    "calls_out": {
-    "1": 378,
-    "52": 270,
-    "3": 234,
-    "69": 167,
+    "1": 417,
+    "44": 269,
+    "2": 232,
+    "64": 167,
     "0": 113,
-    "92": 105
+    "84": 105
    },
    "calls_in": {
-    "52": 23,
-    "69": 4,
-    "41": 1,
-    "53": 1,
-    "54": 1,
-    "63": 1
+    "44": 23,
+    "64": 7,
+    "31": 1,
+    "45": 1,
+    "46": 1,
+    "56": 1
    },
-   "calls_out_total": 1849,
-   "calls_in_total": 31,
-   "wave": 9,
+   "calls_out_total": 1843,
+   "calls_in_total": 34,
+   "wave": 5,
    "cycle_group_size": 1
   },
   {
-   "segment": 69,
-   "start": "009f6a20",
-   "end": "009fe120",
-   "candidates": 88,
-   "purity": 0.75,
+   "segment": 64,
+   "start": "009f6090",
+   "end": "009fe940",
+   "candidates": 104,
+   "purity": 0.72,
    "keywords": [
     "projtime",
     "precision",
@@ -2796,80 +2594,113 @@
    "lua_bindings": 1,
    "vtables": 1,
    "calls_out": {
-    "1": 34,
-    "53": 19,
+    "1": 41,
     "45": 19,
-    "3": 15,
-    "87": 13,
-    "34": 13
+    "35": 19,
+    "2": 15,
+    "44": 15,
+    "80": 13
    },
    "calls_in": {
-    "68": 167,
-    "70": 15,
-    "52": 14,
-    "72": 4,
-    "56": 3,
-    "60": 2
+    "63": 167,
+    "66": 15,
+    "44": 14,
+    "65": 6,
+    "68": 5,
+    "48": 3
    },
-   "calls_out_total": 173,
-   "calls_in_total": 206,
-   "wave": 8,
+   "calls_out_total": 182,
+   "calls_in_total": 213,
+   "wave": 4,
    "cycle_group_size": 1
   },
   {
-   "segment": 70,
-   "start": "009fe130",
-   "end": "00a16030",
-   "candidates": 240,
-   "purity": 0.55,
+   "segment": 65,
+   "start": "009fe9c0",
+   "end": "00a079b0",
+   "candidates": 146,
+   "purity": 0.56,
+   "keywords": [
+    "vehicle",
+    "class",
+    "captureweight"
+   ],
+   "lua_bindings": 0,
+   "vtables": 0,
+   "calls_out": {
+    "1": 18,
+    "64": 6,
+    "5": 4,
+    "69": 4,
+    "84": 4,
+    "2": 4
+   },
+   "calls_in": {
+    "66": 54,
+    "68": 25,
+    "69": 3,
+    "24": 2,
+    "59": 2,
+    "67": 2
+   },
+   "calls_out_total": 72,
+   "calls_in_total": 92,
+   "wave": 2,
+   "cycle_group_size": 1
+  },
+  {
+   "segment": 66,
+   "start": "00a07a60",
+   "end": "00a19480",
+   "candidates": 132,
+   "purity": 0.58,
    "keywords": [
     "commandtype",
     "neutral",
     "aivstable_",
     "enemy",
-    "vehicle",
-    "class",
     "target",
     "vehicleclass",
     "s_to_",
-    "s_from_"
+    "s_from_",
+    "resourcelimit",
+    "overweighfactor"
    ],
    "lua_bindings": 0,
    "vtables": 5,
    "calls_out": {
-    "1": 46,
-    "72": 31,
-    "87": 27,
-    "2": 27,
-    "92": 18,
-    "65": 18
+    "1": 63,
+    "65": 54,
+    "80": 25,
+    "69": 19,
+    "68": 19,
+    "84": 18
    },
    "calls_in": {
-    "72": 45,
-    "71": 12,
-    "73": 6,
-    "34": 2,
-    "65": 2,
-    "60": 1
+    "68": 56,
+    "67": 7,
+    "69": 4,
+    "59": 1,
+    "65": 1
    },
-   "calls_out_total": 304,
-   "calls_in_total": 71,
-   "wave": 2,
-   "cycle_group_size": 3
+   "calls_out_total": 320,
+   "calls_in_total": 69,
+   "wave": 3,
+   "cycle_group_size": 5
   },
   {
-   "segment": 71,
-   "start": "00a16050",
-   "end": "00a1fa60",
-   "candidates": 171,
-   "purity": 0.62,
+   "segment": 67,
+   "start": "00a19500",
+   "end": "00a1fac0",
+   "candidates": 127,
+   "purity": 0.46,
    "keywords": [
     "coordinator",
-    "capture",
     "sell",
     "strategicgain",
     "duel",
     "defend",
+    "capture",
     "siege",
     "escort",
     "competitive",
@@ -2878,29 +2709,28 @@
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "72": 30,
-    "1": 24,
-    "2": 21,
-    "92": 15,
-    "70": 12,
-    "34": 4
+    "1": 37,
+    "68": 17,
+    "84": 11,
+    "66": 7,
+    "24": 4,
+    "69": 2
    },
    "calls_in": {
-    "72": 110,
-    "70": 8,
-    "65": 1
+    "68": 70,
+    "66": 11
    },
-   "calls_out_total": 119,
-   "calls_in_total": 119,
-   "wave": 2,
-   "cycle_group_size": 3
+   "calls_out_total": 86,
+   "calls_in_total": 81,
+   "wave": 3,
+   "cycle_group_size": 5
   },
   {
-   "segment": 72,
-   "start": "00a1fa90",
-   "end": "00a371a0",
-   "candidates": 193,
-   "purity": 0.77,
+   "segment": 68,
+   "start": "00a1fba0",
+   "end": "00a335d0",
+   "candidates": 190,
+   "purity": 0.41,
    "keywords": [
     "reconratio",
     "objectivemembers",
@@ -2916,32 +2746,32 @@
    "lua_bindings": 1,
    "vtables": 0,
    "calls_out": {
-    "71": 110,
-    "70": 45,
-    "1": 29,
-    "87": 27,
-    "9": 21,
-    "2": 19
+    "67": 70,
+    "66": 56,
+    "1": 48,
+    "80": 27,
+    "65": 25,
+    "5": 20
    },
    "calls_in": {
-    "70": 31,
-    "71": 30,
-    "73": 9,
-    "12": 1,
-    "45": 1,
-    "49": 1
+    "66": 19,
+    "67": 17,
+    "69": 9,
+    "7": 1,
+    "35": 1,
+    "41": 1
    },
-   "calls_out_total": 339,
-   "calls_in_total": 74,
-   "wave": 2,
-   "cycle_group_size": 3
+   "calls_out_total": 342,
+   "calls_in_total": 48,
+   "wave": 3,
+   "cycle_group_size": 5
   },
   {
-   "segment": 73,
-   "start": "00a371c0",
-   "end": "00a453c0",
-   "candidates": 198,
-   "purity": 0.37,
+   "segment": 69,
+   "start": "00a371a0",
+   "end": "00a427a0",
+   "candidates": 154,
+   "purity": 0.42,
    "keywords": [
     "client",
     "online",
@@ -2955,34 +2785,34 @@
     "local"
    ],
    "lua_bindings": 0,
-   "vtables": 8,
+   "vtables": 6,
    "calls_out": {
-    "74": 35,
-    "87": 19,
-    "50": 15,
-    "2": 14,
-    "92": 12,
-    "1": 10
+    "80": 19,
+    "1": 16,
+    "41": 13,
+    "68": 9,
+    "84": 8,
+    "70": 8
    },
    "calls_in": {
-    "74": 31,
-    "12": 10,
-    "34": 9,
-    "9": 5,
-    "31": 5,
-    "49": 5
+    "70": 22,
+    "66": 19,
+    "7": 9,
+    "24": 9,
+    "68": 7,
+    "40": 6
    },
-   "calls_out_total": 169,
-   "calls_in_total": 93,
+   "calls_out_total": 111,
+   "calls_in_total": 116,
    "wave": 3,
-   "cycle_group_size": 2
+   "cycle_group_size": 5
   },
   {
-   "segment": 74,
-   "start": "00a45510",
-   "end": "00a61040",
-   "candidates": 128,
-   "purity": 0.52,
+   "segment": 70,
+   "start": "00a428d0",
+   "end": "00a625d0",
+   "candidates": 180,
+   "purity": 0.49,
    "keywords": [
     "online",
     "server",
@@ -2996,74 +2826,75 @@
     "remove"
    ],
    "lua_bindings": 0,
-   "vtables": 1,
+   "vtables": 3,
    "calls_out": {
-    "73": 31,
-    "67": 14,
-    "2": 9,
-    "22": 9,
-    "9": 8,
-    "34": 8
+    "1": 23,
+    "69": 22,
+    "62": 21,
+    "5": 15,
+    "24": 10,
+    "84": 10
    },
    "calls_in": {
-    "73": 35,
-    "9": 1,
-    "46": 1,
-    "49": 1,
-    "80": 1
+    "69": 8,
+    "5": 1,
+    "7": 1,
+    "36": 1,
+    "40": 1,
+    "75": 1
    },
-   "calls_out_total": 107,
-   "calls_in_total": 39,
+   "calls_out_total": 132,
+   "calls_in_total": 13,
    "wave": 3,
-   "cycle_group_size": 2
+   "cycle_group_size": 5
   },
   {
-   "segment": 75,
-   "start": "00a62150",
+   "segment": 71,
+   "start": "00a62660",
    "end": "00a798c0",
-   "candidates": 336,
-   "purity": 0.65,
+   "candidates": 329,
+   "purity": 0.64,
    "keywords": [
     "unexpected",
     "chunk",
     "precompiled",
     "complex",
-    "closed",
-    "attempt",
     "expression",
     "call",
     "many",
-    "long"
+    "long",
+    "tail",
+    "syntax"
    ],
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "77": 16,
-    "92": 13,
-    "1": 12,
-    "2": 12,
-    "3": 3,
-    "10": 2
+    "1": 24,
+    "73": 16,
+    "84": 13,
+    "2": 3,
+    "6": 2,
+    "4": 1
    },
    "calls_in": {
-    "87": 31,
-    "37": 11,
-    "42": 6,
-    "77": 5,
-    "60": 3,
-    "10": 2
+    "80": 31,
+    "27": 11,
+    "32": 6,
+    "73": 5,
+    "7": 3,
+    "53": 3
    },
    "calls_out_total": 59,
-   "calls_in_total": 69,
+   "calls_in_total": 70,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 76,
+   "segment": 72,
    "start": "00a79910",
    "end": "00a82b70",
    "candidates": 134,
-   "purity": 0.67,
+   "purity": 0.69,
    "keywords": [
     "memory",
     "sounjd",
@@ -3079,31 +2910,31 @@
    "lua_bindings": 0,
    "vtables": 7,
    "calls_out": {
-    "87": 35,
-    "2": 21,
-    "92": 19,
-    "1": 12,
-    "10": 6,
-    "3": 3
+    "80": 35,
+    "1": 33,
+    "84": 19,
+    "5": 6,
+    "2": 3,
+    "58": 3
    },
    "calls_in": {
-    "77": 46,
-    "33": 24,
-    "34": 7,
-    "60": 7,
-    "42": 6,
-    "12": 5
+    "73": 46,
+    "23": 24,
+    "24": 7,
+    "53": 7,
+    "7": 6,
+    "32": 6
    },
    "calls_out_total": 106,
    "calls_in_total": 129,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 77,
+   "segment": 73,
    "start": "00a82c60",
-   "end": "00a98400",
-   "candidates": 291,
+   "end": "00a9b720",
+   "candidates": 324,
    "purity": 0.28,
    "keywords": [
     "memory",
@@ -3118,75 +2949,34 @@
     "already"
    ],
    "lua_bindings": 0,
-   "vtables": 6,
+   "vtables": 8,
    "calls_out": {
-    "2": 49,
-    "92": 48,
-    "76": 46,
-    "1": 33,
-    "84": 20,
-    "87": 20
+    "1": 91,
+    "84": 50,
+    "72": 46,
+    "77": 20,
+    "86": 17,
+    "82": 10
    },
    "calls_in": {
-    "75": 16,
-    "12": 14,
-    "34": 14,
-    "10": 11,
-    "17": 10,
-    "16": 8
+    "18": 29,
+    "24": 23,
+    "7": 17,
+    "71": 16,
+    "10": 15,
+    "8": 14
    },
-   "calls_out_total": 295,
-   "calls_in_total": 190,
+   "calls_out_total": 305,
+   "calls_in_total": 243,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 78,
-   "start": "00a98cc0",
-   "end": "00aa0ff0",
-   "candidates": 107,
-   "purity": 0.6,
-   "keywords": [
-    "heightplus",
-    "dontmovetheitems",
-    "centervertical",
-    "autocontrol",
-    "lockit",
-    "linedistance",
-    "items",
-    "scrollright_icon",
-    "scrollleft_icon",
-    "newhighlightindex"
-   ],
-   "lua_bindings": 0,
-   "vtables": 3,
-   "calls_out": {
-    "2": 22,
-    "79": 21,
-    "1": 9,
-    "92": 9,
-    "9": 5,
-    "3": 4
-   },
-   "calls_in": {
-    "20": 49,
-    "27": 37,
-    "28": 35,
-    "26": 25,
-    "23": 23,
-    "29": 23
-   },
-   "calls_out_total": 97,
-   "calls_in_total": 361,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 79,
-   "start": "00aa1040",
-   "end": "00aabc70",
-   "candidates": 188,
-   "purity": 0.27,
+   "segment": 74,
+   "start": "00a9b740",
+   "end": "00aabee0",
+   "candidates": 266,
+   "purity": 0.33,
    "keywords": [
     "cGuiManager",
     "widescreenalign",
@@ -3196,239 +2986,152 @@
     "mouseblock",
     "lowcolor",
     "highcolor",
-    "camerastore",
-    "cGuiElement"
+    "heightplus",
+    "dontmovetheitems"
    ],
    "lua_bindings": 0,
-   "vtables": 37,
+   "vtables": 39,
    "calls_out": {
-    "81": 35,
-    "87": 29,
-    "2": 20,
-    "1": 15,
-    "92": 13,
-    "78": 11
+    "1": 57,
+    "75": 45,
+    "84": 20,
+    "5": 16,
+    "82": 15,
+    "81": 15
    },
    "calls_in": {
-    "81": 141,
-    "17": 74,
-    "24": 65,
-    "32": 64,
-    "34": 56,
-    "27": 44
+    "18": 188,
+    "75": 172,
+    "8": 102,
+    "10": 91,
+    "16": 77,
+    "12": 76
    },
-   "calls_out_total": 164,
-   "calls_in_total": 862,
+   "calls_out_total": 221,
+   "calls_in_total": 1138,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 80,
-   "start": "00aabd60",
-   "end": "00ab5f00",
-   "candidates": 149,
-   "purity": 0.54,
-   "keywords": [
-    "partialdisplaytype",
-    "partialdisplayratio",
-    "label",
-    "dynamicvb",
-    "delayedtextureload",
-    "autorotate",
-    "moviename",
-    "hastexture",
-    "states",
-    "shadername"
-   ],
-   "lua_bindings": 0,
-   "vtables": 3,
-   "calls_out": {
-    "2": 31,
-    "79": 30,
-    "92": 28,
-    "1": 27,
-    "87": 21,
-    "81": 4
-   },
-   "calls_in": {
-    "81": 25,
-    "79": 8,
-    "24": 7,
-    "14": 6,
-    "15": 6,
-    "23": 5
-   },
-   "calls_out_total": 155,
-   "calls_in_total": 62,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 81,
-   "start": "00ab6070",
-   "end": "00ad8a00",
-   "candidates": 464,
+   "segment": 75,
+   "start": "00aabf80",
+   "end": "00ada900",
+   "candidates": 641,
    "purity": 0.25,
    "keywords": [
-    "simplecolor",
     "texture",
     "mshd",
     "guidefault",
+    "simplecolor",
     "mvfm",
+    "shadername",
+    "hastexture",
     "cOverbrightFactor",
     "cLowColor",
-    "cHighColor",
-    "cBlendFactor",
-    "shadername"
+    "cHighColor"
    ],
    "lua_bindings": 0,
-   "vtables": 17,
+   "vtables": 19,
    "calls_out": {
-    "79": 141,
-    "87": 101,
-    "2": 66,
-    "92": 54,
-    "1": 52,
+    "1": 191,
+    "74": 172,
+    "84": 90,
+    "82": 82,
+    "76": 37,
     "80": 25
    },
    "calls_in": {
-    "24": 49,
-    "79": 35,
-    "17": 31,
-    "34": 26,
-    "82": 25,
-    "32": 24
+    "16": 56,
+    "18": 45,
+    "74": 45,
+    "8": 33,
+    "10": 31,
+    "24": 29
    },
-   "calls_out_total": 597,
-   "calls_in_total": 369,
+   "calls_out_total": 754,
+   "calls_in_total": 393,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 82,
-   "start": "00ad8a90",
-   "end": "00af90a0",
-   "candidates": 403,
-   "purity": 0.33,
+   "segment": 76,
+   "start": "00ada990",
+   "end": "00b1bc70",
+   "candidates": 735,
+   "purity": 0.3,
    "keywords": [
-    "terrain",
-    "mshd",
-    "mvfm",
-    "visibility",
     "param",
-    "group",
-    "atlas",
-    "model",
-    "treegroup",
-    "particlefloating"
+    "mvfm",
+    "mshd",
+    "emitter",
+    "terrain",
+    "additive",
+    "particlefloating",
+    "dynamic_light_",
+    "rotationspeed",
+    "particle"
    ],
    "lua_bindings": 0,
-   "vtables": 8,
+   "vtables": 18,
    "calls_out": {
-    "87": 100,
-    "1": 66,
-    "2": 65,
-    "92": 65,
-    "95": 45,
-    "84": 31
+    "1": 240,
+    "84": 115,
+    "82": 71,
+    "86": 49,
+    "79": 49,
+    "81": 40
    },
    "calls_in": {
-    "84": 31,
-    "81": 14,
-    "58": 11,
-    "57": 10,
-    "83": 9,
-    "59": 4
+    "84": 40,
+    "75": 37,
+    "79": 18,
+    "7": 15,
+    "24": 11,
+    "50": 11
    },
-   "calls_out_total": 491,
-   "calls_in_total": 90,
+   "calls_out_total": 747,
+   "calls_in_total": 235,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 83,
-   "start": "00af9660",
-   "end": "00aff690",
-   "candidates": 62,
+   "segment": 77,
+   "start": "00b1bd20",
+   "end": "00b20dc0",
+   "candidates": 99,
    "purity": 0.63,
    "keywords": [
-    "persec",
-    "permeter",
-    "sphereemitter",
-    "smartareaemitter",
-    "renderpriority",
-    "particleemission",
-    "partemissiontype",
-    "maxparticles",
-    "looping",
-    "lodfadeoutwidth"
+    "instanced"
    ],
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "84": 17,
-    "1": 15,
-    "2": 14,
-    "92": 12,
-    "82": 9,
-    "89": 2
+    "1": 21,
+    "80": 9,
+    "84": 9,
+    "79": 8,
+    "82": 6,
+    "6": 1
    },
    "calls_in": {
-    "84": 62,
-    "82": 20
+    "84": 24,
+    "79": 23,
+    "76": 22,
+    "73": 20,
+    "78": 20,
+    "83": 8
    },
-   "calls_out_total": 76,
-   "calls_in_total": 82,
+   "calls_out_total": 57,
+   "calls_in_total": 136,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 84,
-   "start": "00aff700",
-   "end": "00b20c50",
-   "candidates": 399,
-   "purity": 0.32,
-   "keywords": [
-    "param",
-    "additive",
-    "emitter",
-    "particle",
-    "mvfm",
-    "initialrotation",
-    "emittedspeed",
-    "cShaderDataSource",
-    "dynamic_light_",
-    "width"
-   ],
-   "lua_bindings": 0,
-   "vtables": 10,
-   "calls_out": {
-    "83": 62,
-    "2": 60,
-    "1": 56,
-    "92": 55,
-    "87": 52,
-    "86": 49
-   },
-   "calls_in": {
-    "91": 54,
-    "86": 41,
-    "82": 31,
-    "77": 20,
-    "85": 19,
-    "83": 17
-   },
-   "calls_out_total": 419,
-   "calls_in_total": 331,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 85,
-   "start": "00b20d30",
-   "end": "00b4c6a0",
-   "candidates": 490,
-   "purity": 0.35,
+   "segment": 78,
+   "start": "00b20e70",
+   "end": "00b4b0a0",
+   "candidates": 479,
+   "purity": 0.36,
    "keywords": [
     "mvfm",
     "pf43cc",
@@ -3444,32 +3147,32 @@
    "lua_bindings": 0,
    "vtables": 12,
    "calls_out": {
-    "2": 43,
-    "92": 41,
-    "1": 40,
-    "86": 24,
-    "87": 21,
-    "84": 19
+    "1": 83,
+    "84": 41,
+    "79": 24,
+    "77": 20,
+    "82": 11,
+    "5": 11
    },
    "calls_in": {
-    "86": 29,
-    "84": 7,
-    "91": 6,
-    "89": 5,
-    "95": 3,
-    "46": 2
+    "79": 34,
+    "76": 7,
+    "84": 6,
+    "83": 5,
+    "86": 3,
+    "36": 2
    },
-   "calls_out_total": 232,
-   "calls_in_total": 60,
+   "calls_out_total": 240,
+   "calls_in_total": 64,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 86,
-   "start": "00b4c6d0",
+   "segment": 79,
+   "start": "00b4b490",
    "end": "00b659d0",
-   "candidates": 255,
-   "purity": 0.15,
+   "candidates": 264,
+   "purity": 0.26,
    "keywords": [
     "mshd",
     "cSampleOffsets",
@@ -3485,190 +3188,186 @@
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "87": 112,
-    "1": 42,
-    "2": 42,
+    "1": 84,
+    "80": 67,
     "84": 41,
-    "92": 41,
-    "85": 29
+    "78": 34,
+    "82": 33,
+    "77": 23
    },
    "calls_in": {
-    "84": 49,
-    "3": 27,
-    "52": 27,
-    "85": 24,
-    "87": 21,
-    "91": 13
+    "76": 49,
+    "2": 27,
+    "44": 27,
+    "78": 24,
+    "84": 16,
+    "82": 14
    },
-   "calls_out_total": 327,
-   "calls_in_total": 318,
+   "calls_out_total": 332,
+   "calls_in_total": 319,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 87,
+   "segment": 80,
    "start": "00b65ac0",
-   "end": "00b75610",
-   "candidates": 310,
-   "purity": 0.48,
+   "end": "00b6d7b0",
+   "candidates": 136,
+   "purity": 0.78,
    "keywords": [
     "dofile",
     "userdata",
     "thread",
     "lightuserdata",
     "dobuffer",
-    "cDummy",
-    "c3dobject",
-    "c3dnode",
     "fundamentals",
-    "scripts"
-   ],
-   "lua_bindings": 0,
-   "vtables": 31,
-   "calls_out": {
-    "2": 34,
-    "75": 31,
-    "1": 25,
-    "86": 21,
-    "92": 15,
-    "91": 8
-   },
-   "calls_in": {
-    "60": 3876,
-    "37": 349,
-    "91": 191,
-    "3": 152,
-    "65": 148,
-    "63": 137
-   },
-   "calls_out_total": 189,
-   "calls_in_total": 7488,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 88,
-   "start": "00b75720",
-   "end": "00b78e80",
-   "candidates": 72,
-   "purity": 0.65,
-   "keywords": [
-    "c3dnodeanimator",
-    "cAnimTrack",
-    "cOptimized3dNodeAnimator",
-    "cCameraAnimator"
+    "scripts",
+    "x360comp",
+    "region"
    ],
    "lua_bindings": 0,
    "vtables": 0,
    "calls_out": {
-    "41": 5,
-    "87": 4,
-    "95": 4,
-    "1": 4,
-    "92": 4,
-    "2": 3
+    "1": 39,
+    "71": 31,
+    "84": 12,
+    "2": 5,
+    "4": 3,
+    "3": 3
    },
    "calls_in": {
-    "89": 17,
-    "90": 10,
-    "91": 3,
-    "8": 2,
-    "52": 1,
-    "53": 1
+    "53": 3870,
+    "27": 349,
+    "2": 199,
+    "4": 160,
+    "8": 147,
+    "45": 99
    },
-   "calls_out_total": 31,
-   "calls_in_total": 36,
-   "wave": 0,
-   "cycle_group_size": 1
+   "calls_out_total": 103,
+   "calls_in_total": 6542,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 89,
-   "start": "00b78ed0",
-   "end": "00b868b0",
-   "candidates": 259,
-   "purity": 0.25,
+   "segment": 81,
+   "start": "00b6d820",
+   "end": "00b70fe0",
+   "candidates": 76,
+   "purity": 0.55,
    "keywords": [
+    "c3dnode"
+   ],
+   "lua_bindings": 0,
+   "vtables": 31,
+   "calls_out": {
+    "1": 12,
+    "82": 8,
+    "79": 8,
+    "83": 7,
+    "8": 3,
+    "31": 2
+   },
+   "calls_in": {
+    "84": 61,
+    "76": 40,
+    "82": 31,
+    "83": 29,
+    "58": 22,
+    "16": 21
+   },
+   "calls_out_total": 49,
+   "calls_in_total": 428,
+   "wave": 1,
+   "cycle_group_size": 46
+  },
+  {
+   "segment": 82,
+   "start": "00b71120",
+   "end": "00b811a0",
+   "candidates": 336,
+   "purity": 0.51,
+   "keywords": [
+    "c3dnodeanimator",
     "cLight",
+    "cDummy",
+    "cAnimTrack",
     "cAmbientLight",
+    "c3dobject",
     "boundingbox",
     "resource",
-    "resourcedump_",
-    "refcounter",
     "matrix",
-    "hierarchy",
-    "cPointLight",
-    "cDirectionalLight"
+    "hierarchy"
    ],
    "lua_bindings": 0,
    "vtables": 1,
    "calls_out": {
-    "2": 35,
-    "95": 25,
-    "92": 24,
-    "1": 23,
-    "87": 21,
-    "88": 17
+    "1": 57,
+    "81": 31,
+    "86": 27,
+    "84": 23,
+    "83": 22,
+    "79": 14
    },
    "calls_in": {
-    "91": 48,
-    "81": 19,
-    "51": 15,
-    "50": 13,
-    "90": 13,
-    "14": 12
+    "84": 154,
+    "75": 82,
+    "83": 73,
+    "76": 71,
+    "79": 33,
+    "16": 28
    },
-   "calls_out_total": 196,
-   "calls_in_total": 248,
+   "calls_out_total": 219,
+   "calls_in_total": 625,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 90,
-   "start": "00b86930",
-   "end": "00b8e6c0",
-   "candidates": 123,
-   "purity": 0.5,
+   "segment": 83,
+   "start": "00b811c0",
+   "end": "00b999f0",
+   "candidates": 396,
+   "purity": 0.64,
    "keywords": [
     "cSceneResource",
+    "cRenderMeshResource",
+    "cGroupParamsResource",
+    "cGroup",
     "flare",
+    "boundingsphere",
+    "mvfm",
+    "mshd",
     "zoomfactor",
-    "targetname",
-    "node",
-    "flare2",
-    "dissolve",
-    "channelanimation",
-    "cNullSceneResource",
-    "cCameraResource"
+    "weightmapnames"
    ],
    "lua_bindings": 0,
-   "vtables": 3,
+   "vtables": 4,
    "calls_out": {
-    "95": 22,
-    "87": 18,
-    "2": 13,
-    "1": 13,
-    "89": 13,
-    "92": 12
+    "82": 73,
+    "86": 70,
+    "1": 61,
+    "81": 29,
+    "84": 26,
+    "31": 12
    },
    "calls_in": {
-    "44": 8,
-    "89": 5,
-    "91": 5,
-    "43": 2,
-    "45": 2,
-    "88": 2
+    "84": 41,
+    "82": 22,
+    "75": 17,
+    "43": 16,
+    "42": 15,
+    "34": 13
    },
-   "calls_out_total": 122,
-   "calls_in_total": 27,
-   "wave": 2,
-   "cycle_group_size": 1
+   "calls_out_total": 328,
+   "calls_in_total": 216,
+   "wave": 1,
+   "cycle_group_size": 46
   },
   {
-   "segment": 91,
-   "start": "00b8e6f0",
-   "end": "00bb82f0",
-   "candidates": 464,
-   "purity": 0.19,
+   "segment": 84,
+   "start": "00b99bf0",
+   "end": "00bd4200",
+   "candidates": 640,
+   "purity": 0.37,
    "keywords": [
     "mvfm",
     "mshd",
@@ -3677,187 +3376,103 @@
     "cCorner1",
     "cCorner0",
     "coast",
-    "cWaveScale",
-    "cRenderMeshResource",
-    "cGroupParamsResource"
-   ],
-   "lua_bindings": 0,
-   "vtables": 1,
-   "calls_out": {
-    "87": 191,
-    "2": 69,
-    "1": 66,
-    "84": 54,
-    "92": 50,
-    "89": 48
-   },
-   "calls_in": {
-    "50": 22,
-    "58": 19,
-    "51": 12,
-    "87": 8,
-    "89": 8,
-    "92": 8
-   },
-   "calls_out_total": 655,
-   "calls_in_total": 92,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 92,
-   "start": "00bb83a0",
-   "end": "00bd4200",
-   "candidates": 356,
-   "purity": 0.31,
-   "keywords": [
-    "mvfm",
-    "mshd",
     "cloud",
-    "waterdrops",
-    "thunder",
-    "streamed",
-    "lightning_002",
-    "fatal",
-    "dynamic_light_3dlightning",
-    "dlightning"
+    "cWaveScale",
+    "cFunnyMatrix"
    ],
    "lua_bindings": 0,
-   "vtables": 94,
+   "vtables": 93,
    "calls_out": {
-    "87": 66,
-    "2": 63,
-    "1": 55,
-    "95": 28,
-    "84": 11,
-    "89": 11
+    "1": 234,
+    "82": 154,
+    "81": 61,
+    "83": 41,
+    "76": 40,
+    "86": 35
    },
    "calls_in": {
-    "60": 602,
-    "68": 105,
-    "7": 103,
-    "63": 83,
-    "66": 69,
-    "46": 65
+    "53": 592,
+    "4": 156,
+    "76": 115,
+    "86": 108,
+    "63": 105,
+    "18": 96
    },
-   "calls_out_total": 289,
-   "calls_in_total": 3167,
+   "calls_out_total": 722,
+   "calls_in_total": 3185,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 93,
+   "segment": 85,
    "start": "00bd4270",
    "end": "00bdb1e0",
    "candidates": 98,
-   "purity": 0.46,
-   "keywords": [
-    "files"
-   ],
+   "purity": 0.4,
+   "keywords": [],
    "lua_bindings": 0,
    "vtables": 2,
    "calls_out": {
-    "87": 83,
-    "2": 28,
-    "92": 21,
-    "1": 12,
-    "10": 2,
-    "49": 2
+    "80": 83,
+    "1": 40,
+    "84": 21,
+    "4": 2,
+    "6": 2,
+    "41": 2
    },
    "calls_in": {
-    "94": 32,
-    "68": 25,
-    "53": 13,
-    "56": 12,
-    "81": 11,
-    "38": 10
+    "86": 39,
+    "63": 25,
+    "48": 16,
+    "75": 14,
+    "45": 13,
+    "2": 11
    },
    "calls_out_total": 153,
    "calls_in_total": 218,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   },
   {
-   "segment": 94,
+   "segment": 86,
    "start": "00bdb2e0",
-   "end": "00be8820",
-   "candidates": 268,
-   "purity": 0.34,
+   "end": "00c30570",
+   "candidates": 536,
+   "purity": 0.36,
    "keywords": [
     "cFileStore",
     "long",
     "iterator",
+    "cPhysicalDirectoryX86",
+    "openfileoverlapped",
     "removefile",
     "removed",
-    "nagybetu",
-    "fileblock",
-    "remove",
-    "startup",
-    "srch"
-   ],
-   "lua_bindings": 0,
-   "vtables": 13,
-   "calls_out": {
-    "2": 56,
-    "92": 55,
-    "1": 50,
-    "93": 32,
-    "0": 15,
-    "18": 6
-   },
-   "calls_in": {
-    "12": 13,
-    "95": 12,
-    "34": 11,
-    "10": 5,
-    "85": 5,
-    "91": 5
-   },
-   "calls_out_total": 253,
-   "calls_in_total": 98,
-   "wave": 1,
-   "cycle_group_size": 51
-  },
-  {
-   "segment": 95,
-   "start": "00be88c0",
-   "end": "00c30570",
-   "candidates": 270,
-   "purity": 0.42,
-   "keywords": [
-    "cPhysicalDirectoryX86",
     "readfile",
     "profile",
-    "cShaderTextureSource",
-    "cFileX86",
-    "openfileoverlapped",
-    "code",
-    "saving_pc",
-    "savefailed",
-    "protected"
+    "nagybetu"
    ],
    "lua_bindings": 0,
-   "vtables": 7,
+   "vtables": 20,
    "calls_out": {
-    "2": 56,
-    "92": 51,
-    "1": 43,
-    "87": 15,
-    "94": 12,
-    "93": 7
+    "1": 202,
+    "84": 108,
+    "85": 39,
+    "0": 19,
+    "80": 15,
+    "11": 12
    },
    "calls_in": {
-    "91": 47,
-    "82": 45,
-    "92": 28,
-    "89": 25,
-    "90": 22,
-    "77": 14
+    "83": 70,
+    "76": 49,
+    "84": 35,
+    "82": 27,
+    "7": 19,
+    "73": 17
    },
-   "calls_out_total": 234,
-   "calls_in_total": 248,
+   "calls_out_total": 465,
+   "calls_in_total": 328,
    "wave": 1,
-   "cycle_group_size": 51
+   "cycle_group_size": 46
   }
  ],
  "vtables_total": 847,
