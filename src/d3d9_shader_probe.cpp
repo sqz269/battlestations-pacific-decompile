@@ -2,6 +2,7 @@
 #include "bsp/d3d9_states.hpp"
 #include "bsp/shader_source.hpp"
 #include "bsp/material_constants.hpp"
+#include "bsp/camera_projection.hpp"
 #include <d3dcompiler.h>
 #include <cstdio>
 #include <cstring>
@@ -34,14 +35,29 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         if (SUCCEEDED(result)) result = device.SetRenderState(setting.first, setting.second);
     }
     float vertex_constants[77 * 4]{};
-    const float view_projection[]{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
-    bsp::write_system_matrix_00b404a0(vertex_constants + 60, view_projection);
+    bsp::CameraProjection camera;
+    bsp::set_camera_fov_00b6fbb0(camera, 1.57079637f);
+    bsp::set_camera_aspect_00b6fbd0(camera, 1);
+    bsp::set_camera_near_00b6fbf0(camera, .1f);
+    bsp::set_camera_far_00b6fc10(camera, 100);
+    const bsp::CameraMatrix supplied{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+    bsp::set_camera_projection_00b6fd60(camera, supplied);
+    bool camera_checked = bsp::get_camera_projection_00b6fcf0(camera) == supplied;
+    bsp::set_camera_aspect_00b6fbd0(camera, 1); // Equal scalar still invalidates custom projection.
+    camera_checked = camera_checked && !(camera.valid_flags & 8);
+    const auto& view_projection = bsp::get_camera_projection_00b6fcf0(camera);
+    camera_checked = camera_checked && (camera.valid_flags & 8)
+        && view_projection == camera.original && view_projection[11] == 1 && view_projection[15] == 0
+        && view_projection[10] > 1 && view_projection[10] < 1.002f
+        && view_projection[14] < -.1f && view_projection[14] > -.101f;
+    if (!camera_checked) result = E_FAIL;
+    bsp::write_system_matrix_00b404a0(vertex_constants + 60, view_projection.data());
     float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
     if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);
     if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 77);
     struct Vertex { float position[4], color[4]; };
-    const Vertex vertices[] = {{{-.75f, -.75f, 0, 1}, {.25f, .5f, .75f, 1}},
-        {{0, .75f, 0, 1}, {.25f, .5f, .75f, 1}}, {{.75f, -.75f, 0, 1}, {.25f, .5f, .75f, 1}}};
+    const Vertex vertices[] = {{{-.75f, -.75f, 1, 1}, {.25f, .5f, .75f, 1}},
+        {{0, .75f, 1, 1}, {.25f, .5f, .75f, 1}}, {{.75f, -.75f, 1, 1}, {.25f, .5f, .75f, 1}}};
     auto physical = std::make_shared<bsp::VertexBufferBinding>();
     physical->flags = 0x1000; physical->capacity = sizeof(vertices);
     auto stream = std::make_shared<bsp::LogicalVertexStream>();

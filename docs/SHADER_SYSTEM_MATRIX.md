@@ -29,3 +29,7 @@ added. Exceptional FP inputs, overlap and native differential behavior were not
 fixture-tested. Full camera caching, prefix gathering/upload and game execution
 remain unfinished; parallel findings are recorded in the constant dispatch,
 lighting and camera analysis documents.
+
+Follow-up: the generated draw now obtains a perspective matrix from the recovered
+lazy camera projection slice instead of its earlier identity-only fixture.
+See `CAMERA_PROJECTION_EVIDENCE.md` for the current validation boundary.

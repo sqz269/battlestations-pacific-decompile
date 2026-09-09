@@ -135,3 +135,9 @@ Status: requested accessors and immediate refresh helpers exported; ABI,
 mathematical layout, cache gates and projection setters assembly-inspected.
 No reconstruction, build, native differential execution or game validation was
 performed for this document.
+
+Follow-up: the lazy projection slice is now implemented and exercised in the
+generated shader draw; see `CAMERA_PROJECTION_EVIDENCE.md`. World/view and inverse
+work remains open. The subsequent `CAMERA_MATRIX_DEPENDENCIES.md` clarifies that
+00b63b30 begins with REP MOVSD and is unsafe in place; its initial copy is not
+the x87 copy helper used by projection accessors.
