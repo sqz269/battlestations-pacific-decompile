@@ -578,5 +578,25 @@
     "address": "004bbc50",
     "name": "BSP_Game_OnQuitConfirmation",
     "evidence": "Recovered missing callback passed at004ca3b6. ECX is response integer. Always clears platform0109cf04+180h; sets global exit00e1ae75 only when ECX==1. Other responses preserve existing global exit. RET, no stack args. UI event dispatch ABI outside callback remains unverified."
+  },
+  {
+    "address": "004e4a40",
+    "name": "BSP_Game_OnMove",
+    "evidence": "Name supported by GGame::OnMove and GGame::OnMove::game profiler strings. ECX game, float stack delta, calls close policy004ca2f0 before state-dependent simulation/render work. Bounded Capstone CFG audit against original bytes reaches745 instructions/152 call sites/two RETs; calls assumed to return. Stored Ghidra body remains only8 bytes despite recreate/disassembly; decompiler traverses more code. Not reconstructed; game state+5D4h and frame phase+34h distinct."
+  },
+  {
+    "address": "004ca440",
+    "name": "BSP_Game_Render",
+    "evidence": "GGame::Render profiler string. Gate game+34h==1, set phase2 before callbacks. Calls singleton00f88c20 virtual+C(delta fromgame+21F0h), then+4; branches scene/render paths and submits command work00b1ebe0. Full renderer/scene/UI dependencies unresolved. Not reconstructed."
+  },
+  {
+    "address": "004ca1f0",
+    "name": "BSP_Game_FinishRenderFrame",
+    "evidence": "Gate game frame phase+34h==2 and queue helper00b1bf90==0. Global00e188ad false selects renderer+14h, true selects+10h with004c9a00 result. Then phase=0. Distinct from actual EndScene/Present implementation00b2d8e0; alternate+14h path unresolved."
+  },
+  {
+    "address": "00b2b200",
+    "name": "BSP_D3D9Renderer_BeginFrame",
+    "evidence": "Renderer primary vtable+Ch. If active+1998h==0, set1, decrement nonzero inhibit+1D90h, process device reset00b2abd0, conditionally device BeginScene(vtable+A4h) when inhibit0 and lost+1D8Ah false, optional callback00b15090 when00f8d39c nonzero. Always returns1. Full reset/callback path unported."
   }
 ]
