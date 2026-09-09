@@ -1,0 +1,27 @@
+{
+  "ranges": [
+    {
+      "address": "00b2f4a0",
+      "length": 8,
+      "sha256": "1a016c4cac15d2174c80632094372e0c315f7b36696c85bb522dd4dcb918a4f7",
+      "disk_matches_ghidra": true,
+      "assembly": "00b2f4a0: push 0\n00b2f4a2: call 0xb2d8e0\n00b2f4a7: ret "
+    },
+    {
+      "address": "00b1bf90",
+      "length": 4,
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "disk_matches_ghidra": true,
+      "assembly": "00b1bf90: mov eax, dword ptr [ecx + 0x20]\n00b1bf93: ret "
+    },
+    {
+      "address": "00b1ebe0",
+      "length": 187,
+      "sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+      "disk_matches_ghidra": true,
+      "assembly": "00b1ebe0: push ebx\n00b1ebe1: push esi\n00b1ebe2: mov esi, ecx\n00b1ebe4: xor ebx, ebx\n00b1ebe6: cmp dword ptr [esi + 0x18], ebx\n00b1ebe9: jle 0xb1ec88\n00b1ebef: push edi\n00b1ebf0: mov eax, dword ptr [esi + 0x14]\n00b1ebf3: mov ecx, dword ptr [eax + ebx*4]\n00b1ebf6: mov eax, dword ptr [ecx + 0x28]\n00b1ebf9: mov edi, dword ptr [esi + 0x30]\n00b1ebfc: cmp edi, eax\n00b1ebfe: je 0xb1ec2b\n00b1ec00: test eax, eax\n00b1ec02: mov dword ptr [esi + 0x30], eax\n00b1ec05: je 0xb1ec11\n00b1ec07: add eax, 4\n00b1ec0a: push eax\n00b1ec0b: call dword ptr [0xce221c]\n00b1ec11: test edi, edi\n00b1ec13: je 0xb1ec2b\n00b1ec15: lea edx, [edi + 4]\n00b1ec18: push edx\n00b1ec19: call dword ptr [0xce2220]\n00b1ec1f: test eax, eax\n00b1ec21: jne 0xb1ec2b\n00b1ec23: mov eax, dword ptr [edi]\n00b1ec25: mov edx, dword ptr [eax]\n00b1ec27: mov ecx, edi\n00b1ec29: call edx\n00b1ec2b: mov eax, dword ptr [esi + 0x14]\n00b1ec2e: mov ecx, dword ptr [eax + ebx*4]\n00b1ec31: mov edx, dword ptr [ecx]\n00b1ec33: mov eax, dword ptr [edx]\n00b1ec35: call eax\n00b1ec37: mov edi, dword ptr [esi + 0x30]\n00b1ec3a: test edi, edi\n00b1ec3c: je 0xb1ec5b\n00b1ec3e: lea ecx, [edi + 4]\n00b1ec41: push ecx\n00b1ec42: call dword ptr [0xce2220]\n00b1ec48: test eax, eax\n00b1ec4a: jne 0xb1ec54\n00b1ec4c: mov edx, dword ptr [edi]\n00b1ec4e: mov eax, dword ptr [edx]\n00b1ec50: mov ecx, edi\n00b1ec52: call eax\n00b1ec54: mov dword ptr [esi + 0x30], 0\n00b1ec5b: cmp dword ptr [esi + 0x20], 0\n00b1ec5f: jne 0xb1ec7b\n00b1ec61: mov ecx, dword ptr [esi + 0x14]\n00b1ec64: mov edi, dword ptr [ecx + ebx*4]\n00b1ec67: test edi, edi\n00b1ec69: je 0xb1ec7b\n00b1ec6b: mov ecx, edi\n00b1ec6d: call 0xb1ddd0\n00b1ec72: push edi\n00b1ec73: call 0xbf65ac\n00b1ec78: add esp, 4\n00b1ec7b: add ebx, 1\n00b1ec7e: cmp ebx, dword ptr [esi + 0x18]\n00b1ec81: jl 0xb1ebf0\n00b1ec87: pop edi\n00b1ec88: cmp dword ptr [esi + 0x20], 0\n00b1ec8c: jne 0xb1ec98\n00b1ec8e: push 0\n00b1ec90: lea ecx, [esi + 0x14]\n00b1ec93: call 0xb1cc80\n00b1ec98: pop esi\n00b1ec99: pop ebx\n00b1ec9a: ret "
+    }
+  ],
+  "decoder": "Capstone5.0.7 x86-32",
+  "note": "Static byte parity and assembly; no runtime command execution validation."
+}

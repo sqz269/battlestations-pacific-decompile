@@ -598,5 +598,30 @@
     "address": "00b2b200",
     "name": "BSP_D3D9Renderer_BeginFrame",
     "evidence": "Renderer primary vtable+Ch. If active+1998h==0, set1, decrement nonzero inhibit+1D90h, process device reset00b2abd0, conditionally device BeginScene(vtable+A4h) when inhibit0 and lost+1D8Ah false, optional callback00b15090 when00f8d39c nonzero. Always returns1. Full reset/callback path unported."
+  },
+  {
+    "address": "00b2f4a0",
+    "name": "BSP_D3D9Renderer_EndFrameDefault",
+    "evidence": "Primary renderer vtable+14h: PUSH0; CALL00b2d8e0; RET. Same EndFrameAndPresent body as+10h, with zero optional argument. Not a separate no-Present implementation."
+  },
+  {
+    "address": "00b1bf90",
+    "name": "BSP_RenderCommandQueue_GetRetentionControl",
+    "evidence": "MOV EAX,[ECX+20h]; RET. Getter returns retention/control field, NOT queued count (+18h). Nonzero blocks game frame phase transitions and preserves commands after execution; exact writer/nesting policy still unresolved."
+  },
+  {
+    "address": "00b1ebe0",
+    "name": "BSP_RenderCommandQueue_Execute",
+    "evidence": "Queue list+14h/count+18h; for each command retain context+28h into current+30h, invoke command virtual+0, release current context. If control+20h==0, invoke destructor00b1ddd0/free each command then resize array to0; nonzero retains list. Raw bytes00b1ec78 show stack cleanup and continuation afterfree, contradicting truncated pseudocode return. No full command-type reconstruction yet."
+  },
+  {
+    "address": "004c11f0",
+    "name": "BSP_RenderCommandQueue_GetSingleton",
+    "evidence": "Lazy global00f8d440, double checked under optional manager critical section, allocate34h and construct00b1f280, register with manager00bd0c30. Queue singleton used by frame gates and render execution."
+  },
+  {
+    "address": "004c6c30",
+    "name": "BSP_Game_TryBeginRenderFrame",
+    "evidence": "ECX game. Nonzero phase+34h returns1; phase0 and queue control00b1bf90 nonzero returns0; otherwise renderer vtable+Ch BeginFrame then phase1 and return1. Does not test queued command count."
   }
 ]
