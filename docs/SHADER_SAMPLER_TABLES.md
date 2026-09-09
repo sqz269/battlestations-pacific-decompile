@@ -139,3 +139,22 @@ Live Ghidra bytes matched the original disk PE for these complete bodies:
 |00b41830..00b419a8|377|1e22f771cc9ae446482ae0df189a67024766c619ce2e0d86954019125e61055f|
 |00b57b50..00b57fcc|1149|2a72cdf3d77507ffc20c4d678a25be378fc9c4b2a03e172a05275f19f405ae4d|
 |00b585a0..00b59e48|6313|54922e72d2050e41c8013de250fbab2357c6bdc2ee3b6f5d0b974ce89b6a7f60|
+
+## Implemented adapter
+
+`ShaderLuaSampler` and `read_samplers` in src/shader_lua.cpp now retain the
+name/stage/dimension, source/index/name and both ordered state lists. The
+existing state conversion is shared across all three registries. Malformed
+selected entries and nonconvertible required names report host errors; no
+native crash, allocator lifetime or arbitrary metamethod parity is claimed.
+The second Samplers lookup is checked for TABLE explicitly; state-list
+lookups likewise tolerate a second non-table as empty host output.
+
+The existing D3D9 probe evaluates installed alphablend.shfx and verifies one
+MyTexture pixel sampler, dimension2, source/index0, U/V wrap states in that
+order and its generated s0 declaration. Win32 build, both existing CTests
+and the complete installed-asset D3D9 probe pass. Debug/dummy have no samplers;
+their parsed declaration vectors are now passed into both stage generators.
+This check does not exercise a textured alphablend draw, texture-source
+resolution, nonempty texture-stage states or arbitrary sampler records.
+Those remain separate work; no new test target or test framework was added.

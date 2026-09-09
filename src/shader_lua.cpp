@@ -104,13 +104,21 @@ bool read_options(lua_State* state, ShaderLuaOptions& output, std::string& error
     boolean("WriteDepth", output.write_depth);
     return true;
 }
-bool read_render_states(lua_State* state, std::vector<ShaderLuaRenderState>& output, std::string& error) {
-    struct Definition { const char* key; std::uint32_t id, tag; };
-    const Definition definitions[] = {
+struct StateDefinition { const char* key; std::uint32_t id, tag; };
+const StateDefinition render_definitions[] = {
 #include "shader_render_state_registry.inc"
-    };
+};
+const StateDefinition sampler_definitions[] = {
+#include "shader_sampler_state_registry.inc"
+};
+const StateDefinition texture_stage_definitions[] = {
+#include "shader_texture_stage_state_registry.inc"
+};
+template<std::size_t N>
+bool read_states(lua_State* state, const char* key, const StateDefinition (&definitions)[N],
+    std::vector<ShaderLuaRenderState>& output, std::string& error) {
     const int saved = lua_gettop(state);
-    lua_getfield(state, -1, "RenderStates");
+    lua_getfield(state, -1, key);
     if (!lua_istable(state, -1)) { lua_settop(state, saved); return true; }
     for (const auto& definition : definitions) {
         lua_getfield(state, -1, definition.key);
@@ -169,6 +177,75 @@ bool read_combiners(lua_State* state, std::array<std::string, 14>& output, std::
                 error = "Combiner has no valid destination slot"; return false;
             }
             output[static_cast<std::size_t>(mode)] = std::move(name);
+        }
+        lua_pop(state, 1);
+    }
+    lua_settop(state, saved);
+    return true;
+}
+bool read_samplers(lua_State* state, std::vector<ShaderLuaSampler>& output, std::string& error) {
+    const int saved = lua_gettop(state);
+    lua_getfield(state, -1, "Samplers");
+    const bool present = lua_istable(state, -1) != 0;
+    lua_pop(state, 1);
+    if (!present) return true;
+    lua_getfield(state, -1, "Samplers"); // Native fetches again after its gate.
+    if (!lua_istable(state, -1)) { error = "Samplers changed to a non-table"; return false; }
+    const int list = lua_gettop(state);
+    lua_pushnil(state);
+    while (lua_next(state, list)) {
+        if (integer_key(state, -2)) {
+            if (!lua_istable(state, -1)) { error = "Sampler value is not a table"; return false; }
+            ShaderLuaSampler sampler;
+            const auto name = [&](const char* key, std::string& value) {
+                lua_getfield(state, -1, key);
+                const char* text = lua_tostring(state, -1); // Coerces numbers; native copies through NUL.
+                if (text) value = text;
+                lua_pop(state, 1);
+                if (!text) error = std::string("Sampler ") + key + " is not string-convertible";
+                return text != nullptr;
+            };
+            const auto optional_integer = [&](const char* key, std::int32_t& value) {
+                lua_getfield(state, -1, key);
+                const bool accepted = integer_key(state, -1);
+                lua_pop(state, 1);
+                if (!accepted) return true;
+                lua_getfield(state, -1, key);
+                const bool ok = integer_value(state, -1, false, value);
+                lua_pop(state, 1);
+                if (!ok) error = std::string("Unsupported sampler ") + key + " conversion";
+                return ok;
+            };
+            if (!name("Name", sampler.declaration.name)) return false;
+            lua_getfield(state, -1, "Type");
+            std::int32_t dimension{};
+            const bool dimension_ok = integer_value(state, -1, false, dimension);
+            lua_pop(state, 1);
+            if (!dimension_ok) { error = "Unsupported sampler Type conversion"; return false; }
+            sampler.declaration.dimension = static_cast<std::uint32_t>(dimension);
+            if (!optional_integer("TextureSource", sampler.texture_source)) return false;
+            if ((sampler.texture_source == 1 || sampler.texture_source == 3)
+                && !name("TextureSourceName", sampler.texture_source_name)) return false;
+            if (!optional_integer("Index", sampler.index)) return false;
+            lua_getfield(state, -1, "VertexSampler");
+            const bool boolean = lua_type(state, -1) == LUA_TBOOLEAN;
+            lua_pop(state, 1);
+            if (boolean) {
+                lua_getfield(state, -1, "VertexSampler");
+                sampler.declaration.vertex_stage = lua_type(state, -1) == LUA_TBOOLEAN
+                    && lua_toboolean(state, -1) != 0;
+                lua_pop(state, 1);
+            }
+            // Each native state-list owner tests TABLE then obtains a fresh reference.
+            const auto states = [&](const char* key, const auto& definitions, auto& values) {
+                lua_getfield(state, -1, key);
+                const bool table = lua_istable(state, -1) != 0;
+                lua_pop(state, 1);
+                return !table || read_states(state, key, definitions, values, error);
+            };
+            if (!states("SamplerStates", sampler_definitions, sampler.sampler_states)
+                || !states("TextureStageStates", texture_stage_definitions, sampler.texture_stage_states)) return false;
+            output.push_back(std::move(sampler));
         }
         lua_pop(state, 1);
     }
@@ -251,7 +328,8 @@ bool load_shader_lua_code(const ShaderScriptResolver& resolver, const std::strin
                 && read_fields(state, "VertexInput", loaded.vertex_inputs, context.error)
                 && read_fields(state, "Interpolators", loaded.interpolators, context.error)
                 && read_combiners(state, loaded.combiners, context.error)
-                && read_render_states(state, loaded.render_states, context.error);
+                && read_states(state, "RenderStates", render_definitions, loaded.render_states, context.error)
+                && read_samplers(state, loaded.samplers, context.error);
         }
     }
     lua_close(state);

@@ -10,6 +10,12 @@ namespace bsp {
 // Host resolver supplies native-requested names explicitly; no guessed overlays.
 using ShaderScriptResolver = std::function<bool(const std::string&, std::string&, std::string&)>;
 struct ShaderLuaRenderState { std::uint32_t state, value; };
+struct ShaderLuaSampler {
+    ShaderSamplerDeclaration declaration;
+    std::int32_t texture_source{}, index{};
+    std::string texture_source_name;
+    std::vector<ShaderLuaRenderState> sampler_states, texture_stage_states;
+};
 // Scalar/string portion of00b43b00. Typed host representation, not native layout.
 struct ShaderLuaOptions {
     std::int32_t pipe_id{}, priority{};
@@ -31,11 +37,13 @@ struct ShaderLuaCode {
     std::vector<ShaderField> vertex_inputs, interpolators;
     std::array<std::string, 14> combiners; // native descriptor+48: eight-byte string slots
     std::vector<ShaderLuaRenderState> render_states;
+    std::vector<ShaderLuaSampler> samplers;
 };
 // Adapter for00b6a020/00b69d40 and code-string portion of00b43b00.
 // Opens base only, PC=true, supplied X360COMP/REGION, fundamentals then descriptor.
 // Uses protected host calls and explicit errors instead of native panic/SEH.
-// Successful strings require exact Lua string type. Output unchanged on failure.
+// Code strings require exact STRING; sampler names use native coercion.
+// Output unchanged on failure. Texture ownership/binding remains separate.
 bool load_shader_lua_code(const ShaderScriptResolver&, const std::string& descriptor,
     bool x360comp, const std::optional<std::string>& region,
     ShaderLuaCode& output, std::string& error);

@@ -1222,12 +1222,12 @@
   {
     "address": "00b41830",
     "name": "BSP_ShaderDescriptor_ReadSamplerTable",
-    "evidence": "ECX=descriptor, stack Shader reference, RET4. Exact Samplers table gate then fresh lookup. Lua next iteration accepts integer-number keys via00b66a60; appends00b57b50 results to descriptor+C4 in iteration order. No clear/sort; see docs/SHADER_SAMPLER_TABLES.md. Analysis only, typed parser not yet implemented."
+    "evidence": "ECX=descriptor, stack Shader reference, RET4. Exact Samplers table gate then fresh lookup. Lua next iteration accepts integer-number keys via00b66a60; appends00b57b50 results to descriptor+C4 in iteration order. No clear/sort; see docs/SHADER_SAMPLER_TABLES.md. Analysis only, typed parser not yet implemented. Follow-up: typed sampler projection implemented in src/shader_lua.cpp, including state registries and explicit host error checks. Installed alphablend.shfx sampler and generated s0 declaration verified in existing probe; texture ownership/binding remains unported."
   },
   {
     "address": "00b57b50",
     "name": "BSP_ShaderStateDefinitions_ReadSampler",
-    "evidence": "ECX=state-definition manager, stack entry Lua reference, RET4; returns allocated2Ch sampler. Reads named Name/Type/TextureSource/TextureSourceName/Index/VertexSampler/SamplerStates/TextureStageStates. Required names coerce Lua strings/numbers then unchecked C-string copy; stage exactBOOLEAN defaultfalse. State tables use00b579b0 with manager+10/+1C. See docs/SHADER_SAMPLER_TABLES.md; analysis only."
+    "evidence": "ECX=state-definition manager, stack entry Lua reference, RET4; returns allocated2Ch sampler. Reads named Name/Type/TextureSource/TextureSourceName/Index/VertexSampler/SamplerStates/TextureStageStates. Required names coerce Lua strings/numbers then unchecked C-string copy; stage exactBOOLEAN defaultfalse. State tables use00b579b0 with manager+10/+1C. See docs/SHADER_SAMPLER_TABLES.md; analysis only. Follow-up: typed sampler projection implemented in src/shader_lua.cpp, including state registries and explicit host error checks. Installed alphablend.shfx sampler and generated s0 declaration verified in existing probe; texture ownership/binding remains unported."
   },
   {
     "address": "00b3aea0",

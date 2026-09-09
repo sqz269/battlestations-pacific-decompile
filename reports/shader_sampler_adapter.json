@@ -1,0 +1,26 @@
+{
+  "asset": "shaderfx/common/alphablend.shfx",
+  "size": 1196,
+  "sha256": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64",
+  "sampler_count": 1,
+  "name": "MyTexture",
+  "dimension": 2,
+  "vertex_stage": false,
+  "texture_source": 0,
+  "index": 0,
+  "sampler_states": [
+    {
+      "state": 1,
+      "value": 1
+    },
+    {
+      "state": 2,
+      "value": 1
+    }
+  ],
+  "texture_stage_states": [],
+  "declaration": "sampler2D\tMyTexture\t\t: register(s0);\n",
+  "validation": "Win32 build, existing two CTests and complete installed-asset D3D9 probe pass",
+  "textured_alphablend_draw_validated": false,
+  "abi_compatible": false
+}

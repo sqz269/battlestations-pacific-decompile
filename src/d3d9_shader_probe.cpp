@@ -200,6 +200,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         }
         if (path == "dummy.shfx") path = "shaderfx/lights/dummy.shfx"; // Explicit asset resolver mapping.
         if (path != "scripts/fundamentals.lua" && path != "shaderfx/dx9_lua.inc"
+            && path != "shaderfx/common/alphablend.shfx"
             && path != "shaderfx/common/debugshader.shfx" && path != "shaderfx/lights/dummy.shfx") {
             error = "Unmapped shader asset: " + requested; return false;
         }
@@ -227,6 +228,25 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         && debug_script.options.final_lod_fade_out_range == 0.01f;
     std::printf("Lua descriptor scalar defaults/overrides: %d (draw decode binding still pending)\n", options_match);
     if (!options_match) return false;
+    bsp::ShaderLuaCode alpha_script;
+    if (!bsp::load_shader_lua_code(resolver, "shaderfx/common/alphablend.shfx", false, {}, alpha_script, script_error)) {
+        std::fprintf(stderr, "%s\n", script_error.c_str()); return false;
+    }
+    bool sampler_matches = alpha_script.samplers.size() == 1;
+    std::string installed_sampler_source;
+    if (sampler_matches) {
+        const auto& sampler = alpha_script.samplers[0];
+        sampler_matches = sampler.declaration.name == "MyTexture" && sampler.declaration.dimension == 2
+            && !sampler.declaration.vertex_stage && sampler.texture_source == 0 && sampler.index == 0
+            && sampler.texture_source_name.empty() && sampler.texture_stage_states.empty()
+            && sampler.sampler_states.size() == 2
+            && sampler.sampler_states[0].state == D3DSAMP_ADDRESSU && sampler.sampler_states[0].value == D3DTADDRESS_WRAP
+            && sampler.sampler_states[1].state == D3DSAMP_ADDRESSV && sampler.sampler_states[1].value == D3DTADDRESS_WRAP;
+        bsp::append_pixel_samplers_00b37ef0({sampler.declaration}, {}, installed_sampler_source);
+        sampler_matches = sampler_matches && installed_sampler_source == "sampler2D\tMyTexture\t\t: register(s0);\n";
+    }
+    std::printf("Installed Lua sampler: name_dimension_stage_source_order_and_declaration=%d\n", sampler_matches);
+    if (!sampler_matches) return false;
     const bool states_match = debug_script.render_states.size() == 2
         && debug_script.render_states[0].state == D3DRS_ZWRITEENABLE && debug_script.render_states[0].value == 0
         && debug_script.render_states[1].state == D3DRS_ZENABLE && debug_script.render_states[1].value == 0;
@@ -361,6 +381,8 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     debug_program.effect.header = dummy_script.constants;
     debug_program.base.vertex_code = debug_script.vertex;
     debug_program.effect.vertex_code = dummy_script.vertex;
+    for (const auto& sampler : debug_script.samplers) debug_program.base.samplers.push_back(sampler.declaration);
+    for (const auto& sampler : dummy_script.samplers) debug_program.effect.samplers.push_back(sampler.declaration);
     std::string debug_source;
     const auto debug_profiles = bsp::select_shader_profiles_00b43b00(3, debug_script.vertex_profile, debug_script.pixel_profile);
     const bool full_vertex_generated = selected_debug_fields && bsp::generate_vertex_source_00b39110(debug_program,
@@ -383,6 +405,8 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     debug_pixel.effect.header = dummy_script.constants;
     debug_pixel.base.pixel_code = debug_script.pixel;
     debug_pixel.effect.pixel_code = dummy_script.pixel;
+    debug_pixel.base.samplers = debug_program.base.samplers;
+    debug_pixel.effect.samplers = debug_program.effect.samplers;
     std::string debug_pixel_source;
     const bool full_pixel_generated = bsp::generate_pixel_source_00b39880(debug_pixel,
         debug_pixel_source) == bsp::ShaderSourceStatus::complete;

@@ -1,0 +1,14 @@
+// Native00b585a0 ordered definitions; see docs/SHADER_SAMPLER_TABLES.md.
+{"ADDRU", 1, 0}, // 00b59269
+{"ADDRV", 2, 0}, // 00b592cc
+{"ADDRW", 3, 0}, // 00b5932f
+{"BORDERCOLOR", 4, 0}, // 00b59392
+{"MAGFILTER", 5, 0}, // 00b593f5
+{"MINFILTER", 6, 0}, // 00b59458
+{"MIPFILTER", 7, 0}, // 00b594bb
+{"MIPMAPLODBIAS", 8, 1}, // 00b5951f
+{"MAXMIPMAPLEVEL", 9, 0}, // 00b59582
+{"MAXANISOTROPY", 10, 0}, // 00b595e5
+{"SRGBTEXTURE", 11, 0}, // 00b59648
+{"ELEMENTINDEX", 12, 0}, // 00b596ab
+{"DMAPOFFSET", 13, 0}, // 00b5970e
