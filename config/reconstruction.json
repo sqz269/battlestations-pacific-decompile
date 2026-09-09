@@ -706,6 +706,14 @@
       "status": "x87_store_boundaries_five_mode_native_fixture_and_atlas_checked",
       "abi_compatible": false,
       "remaining": "All100 floatwords match one isolated native five-mode fixture. Arbitrary input/FPcontrol/exceptionstatus and native mapped stream/GUI ownership remain unverified."
+    },
+    {
+      "address": "00b5bf70",
+      "name": "make_system_constant_registry",
+      "source": "src/shader_source.cpp",
+      "status": "native_order_registry_generated_shader_pixel_readback_checked",
+      "abi_compatible": false,
+      "remaining": "52-record constructor projection only; native singleton registration, record runtime metadata and allocator lifecycle unported."
     }
   ]
 }

@@ -32,11 +32,11 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         {D3DRS_SRGBWRITEENABLE, FALSE}, {D3DRS_COLORWRITEENABLE, 15}}) {
         if (SUCCEEDED(result)) result = device.SetRenderState(setting.first, setting.second);
     }
-    float vertex_constants[68]{};
-    vertex_constants[0] = vertex_constants[5] = vertex_constants[10] = vertex_constants[15] = 1;
-    float pixel_constants[68]{}; // Includes cElapsedTime: conditional transform disabled.
-    if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 17);
-    if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 17);
+    float vertex_constants[77 * 4]{};
+    vertex_constants[60] = vertex_constants[65] = vertex_constants[70] = vertex_constants[75] = 1;
+    float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
+    if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);
+    if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 77);
     struct Vertex { float position[4], color[4]; };
     const Vertex vertices[] = {{{-.75f, -.75f, 0, 1}, {.25f, .5f, .75f, 1}},
         {{0, .75f, 0, 1}, {.25f, .5f, .75f, 1}}, {{.75f, -.75f, 0, 1}, {.25f, .5f, .75f, 1}}};
@@ -220,9 +220,8 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     debug_program.outputs = {system_position, color};
     debug_program.packing_fields = debug_program.outputs;
     bsp::append_interpolator_mapping_00b34aa0(debug_program.outputs, debug_program.interpolators);
-    debug_program.constants = {{"cViewProjMat", 4, 4, 1}, {"cAmbientCube", 1, 4, 6},
-        {"cFogDirColor4", 1, 4, 4}, {"cFogColor", 1, 4, 1}};
-    debug_program.register_limit = 256; // Diagnostic registry limit, not recovered global.
+    debug_program.constants = bsp::make_system_constant_registry_00b5bf70();
+    debug_program.register_limit = bsp::system_constant_annotation_limit;
     debug_program.base.vertex_code = "SYS.ObjectSpacePos=IN.Position;\n"
         "SYS.WorldSpacePos=IN.Position;\nSYS.ScreenSpacePos=mul(SYS.WorldSpacePos,cViewProjMat);\n"
         "OUT.Color = IN.Color;";
@@ -243,8 +242,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     debug_pixel.system_values = {diffuse};
     debug_pixel.interpolators = debug_program.interpolators;
     debug_pixel.constants = debug_program.constants;
-    debug_pixel.constants.push_back({"cElapsedTime", 1, 1, 2});
-    debug_pixel.register_limit = 32; // Diagnostic projection, not native registry.
+    debug_pixel.register_limit = bsp::system_constant_annotation_limit;
     debug_pixel.base.pixel_code = "SYS.DiffuseColor = IN.Color;";
     debug_pixel.effect.pixel_code = "FinalColor[0] = SYS.DiffuseColor;";
     std::string debug_pixel_source;
@@ -252,7 +250,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         debug_pixel_source) == bsp::ShaderSourceStatus::complete;
     ID3DBlob* debug_pixel_code = nullptr;
     if (SUCCEEDED(result)) result = full_pixel_generated
-        ? assemble_host_shader(debug_pixel_source.c_str(), "ps_2_0", &debug_pixel_code) : E_FAIL;
+        ? assemble_host_shader(debug_pixel_source.c_str(), "ps_3_0", &debug_pixel_code) : E_FAIL;
     if (SUCCEEDED(result)) {
         pixel_code->Release(); pixel_code = debug_pixel_code; debug_pixel_code = nullptr;
     }

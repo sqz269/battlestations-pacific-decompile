@@ -3,6 +3,12 @@
 #include <utility>
 
 namespace bsp {
+std::vector<ShaderSystemConstant> make_system_constant_registry_00b5bf70() {
+    return {
+#include "shader_system_registry.inc"
+    };
+}
+
 void append_zero_shader_fields_00b357d0(const std::string& instance,
     const std::vector<ShaderField>& fields, std::string& output) {
     for (const auto& field : fields) {

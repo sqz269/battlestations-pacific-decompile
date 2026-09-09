@@ -1018,5 +1018,15 @@
     "address": "00b382b0",
     "name": "BSP_ShaderBuilder_AppendMapShadowHelper",
     "evidence": "ECX builder RET. Emits original HLSL literals; +AAh selects projected tex2Dproj path versus four red-sample strict-depth comparisons and bilinear filtering. GetShadow uses cShadowMapSizeData and cascade fade; GetMapShadow filtered path hardcodes2048. Typed boolean/string emitter implemented with byte-verified literals. Mixed filtered GetShadow/projected GetMapShadow compile ps_2_0 in existing probe; no shadow rendering validation. See docs/SHADER_SHADOW_HELPERS.md."
+  },
+  {
+    "address": "00b5bf70",
+    "name": "BSP_SystemConstants_ConstructRegistry",
+    "evidence": "Constructor publishes singleton through00b5b9e0, installsD62A3C, zeros vector+4/+8/+C, appends52records in fixed order. Name/dimension/count/semantic-id table verified from assembly. Typed registry projection integrated; native singleton/allocator lifecycle omitted. cViewProjMat starts15, cElapsedTime float4 at34, annotation cutoffglobalE13078=77. See docs/SHADER_SYSTEM_REGISTRY.md."
+  },
+  {
+    "address": "00b5bbc0",
+    "name": "BSP_SystemConstant_ConstructRecord",
+    "evidence": "Thiscall RET14h name/id/secondDimension/firstDimension/arrayCount. Record+0=FFFF,+4=dimensionproduct,+8=second,+C=first,+10=array,+14/+18=name,+1C=semanticid. Typed registry preserves name/dimensions/count/id; other ownership/runtime metadata not ported. See docs/SHADER_SYSTEM_REGISTRY.md."
   }
 ]

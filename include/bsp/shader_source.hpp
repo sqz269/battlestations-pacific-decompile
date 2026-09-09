@@ -56,7 +56,12 @@ struct ShaderSystemConstant {
     std::uint32_t second_dimension{1}; // +8, getter00b5b840.
     std::uint32_t first_dimension{1};  // +C, getter00b5b850.
     std::uint32_t array_count{1};      // +10, getter00b5b860.
+    std::uint32_t semantic_id{};      // +1Ch; native constant source selector.
 };
+// Typed ordered registry projection from constructor00b5bf70; does not recreate
+// singleton registration, intrusive storage or renderer value population.
+std::vector<ShaderSystemConstant> make_system_constant_registry_00b5bf70();
+inline constexpr std::uint32_t system_constant_annotation_limit = 77; // Disk/saved00e13078.
 // Thiscall RET8 and RET4 respectively. New explicit records replace native
 // singleton00b5b890. The header register limit is native global00e13078.
 void append_system_constant_00b38c60(const ShaderSystemConstant&,

@@ -1,0 +1,429 @@
+{
+  "address": "00b5bf70",
+  "length": 8076,
+  "sha256": "0456f34770332748dbb1a0f72da428e7279f38142fd2b1e028ad43dd70d911c0",
+  "disk_matches_ghidra": true,
+  "all_constructor_arguments_checked_in_assembly": true,
+  "records": [
+    {
+      "name": "cScreenToTextureMat",
+      "semantic_id": 7,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 0
+    },
+    {
+      "name": "cCloudShadowMat",
+      "semantic_id": 8,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 2,
+      "start_register": 4
+    },
+    {
+      "name": "cWorldSpaceEyePos",
+      "semantic_id": 9,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 6
+    },
+    {
+      "name": "cViewMat",
+      "semantic_id": 2,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 7
+    },
+    {
+      "name": "cInvViewMat",
+      "semantic_id": 3,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 11
+    },
+    {
+      "name": "cViewProjMat",
+      "semantic_id": 5,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 15
+    },
+    {
+      "name": "cInvViewProjMat",
+      "semantic_id": 4,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 19
+    },
+    {
+      "name": "cProjMat",
+      "semantic_id": 6,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 23
+    },
+    {
+      "name": "cSysParam0",
+      "semantic_id": 48,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 27
+    },
+    {
+      "name": "cSysParam1",
+      "semantic_id": 49,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 28
+    },
+    {
+      "name": "cSysParam2",
+      "semantic_id": 50,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 29
+    },
+    {
+      "name": "cSysParam3",
+      "semantic_id": 51,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 30
+    },
+    {
+      "name": "cWorldSpaceCamXaxis",
+      "semantic_id": 52,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 31
+    },
+    {
+      "name": "cWorldSpaceCamYaxis",
+      "semantic_id": 53,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 32
+    },
+    {
+      "name": "cTime",
+      "semantic_id": 38,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 33
+    },
+    {
+      "name": "cElapsedTime",
+      "semantic_id": 39,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 34
+    },
+    {
+      "name": "cFogParams",
+      "semantic_id": 20,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 35
+    },
+    {
+      "name": "cFogHeightParams",
+      "semantic_id": 21,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 36
+    },
+    {
+      "name": "cFogColor",
+      "semantic_id": 18,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 37
+    },
+    {
+      "name": "cFogDirColor4",
+      "semantic_id": 19,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 4,
+      "start_register": 38
+    },
+    {
+      "name": "cSpecularPower",
+      "semantic_id": 14,
+      "second_dimension": 1,
+      "first_dimension": 1,
+      "array_count": 1,
+      "start_register": 42
+    },
+    {
+      "name": "cAmbientColor",
+      "semantic_id": 15,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 43
+    },
+    {
+      "name": "cDirLightDiffuseColor",
+      "semantic_id": 12,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 44
+    },
+    {
+      "name": "cDirLightSpecularColor",
+      "semantic_id": 13,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 45
+    },
+    {
+      "name": "cAmbientCube",
+      "semantic_id": 16,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 6,
+      "start_register": 46
+    },
+    {
+      "name": "cDirLightWorldSpaceDir",
+      "semantic_id": 10,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 52
+    },
+    {
+      "name": "cShadowMapMat0",
+      "semantic_id": 26,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 53
+    },
+    {
+      "name": "cShadowMapMat1",
+      "semantic_id": 27,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 57
+    },
+    {
+      "name": "cShadowMapMat2",
+      "semantic_id": 28,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 61
+    },
+    {
+      "name": "cShadowMapMat3",
+      "semantic_id": 29,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 65
+    },
+    {
+      "name": "cShadowLightDir",
+      "semantic_id": 30,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 69
+    },
+    {
+      "name": "cShadowLimits",
+      "semantic_id": 31,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 70
+    },
+    {
+      "name": "cShadowDepthScale",
+      "semantic_id": 32,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 71
+    },
+    {
+      "name": "cFogUWParams",
+      "semantic_id": 33,
+      "second_dimension": 1,
+      "first_dimension": 2,
+      "array_count": 1,
+      "start_register": 72
+    },
+    {
+      "name": "cFogUWHeightParams",
+      "semantic_id": 34,
+      "second_dimension": 1,
+      "first_dimension": 3,
+      "array_count": 1,
+      "start_register": 73
+    },
+    {
+      "name": "cFogUWColor",
+      "semantic_id": 35,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 74
+    },
+    {
+      "name": "cIsOverWave",
+      "semantic_id": 36,
+      "second_dimension": 1,
+      "first_dimension": 2,
+      "array_count": 1,
+      "start_register": 75
+    },
+    {
+      "name": "cShadowMapSizeData",
+      "semantic_id": 37,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 76
+    },
+    {
+      "name": "cCausticsScale",
+      "semantic_id": 22,
+      "second_dimension": 1,
+      "first_dimension": 2,
+      "array_count": 1,
+      "start_register": 77
+    },
+    {
+      "name": "cCausticsColor",
+      "semantic_id": 23,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 78
+    },
+    {
+      "name": "cWorldMat",
+      "semantic_id": 0,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 79
+    },
+    {
+      "name": "cInvWorldMat",
+      "semantic_id": 1,
+      "second_dimension": 4,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 83
+    },
+    {
+      "name": "cVtxElemScale",
+      "semantic_id": 24,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 8,
+      "start_register": 87
+    },
+    {
+      "name": "cVtxElemOffset",
+      "semantic_id": 25,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 8,
+      "start_register": 95
+    },
+    {
+      "name": "cBoneMatrices",
+      "semantic_id": 40,
+      "second_dimension": 3,
+      "first_dimension": 4,
+      "array_count": 24,
+      "start_register": 103
+    },
+    {
+      "name": "cPrevBoneMatrices",
+      "semantic_id": 41,
+      "second_dimension": 3,
+      "first_dimension": 4,
+      "array_count": 24,
+      "start_register": 175
+    },
+    {
+      "name": "cSkinMatrices",
+      "semantic_id": 42,
+      "second_dimension": 3,
+      "first_dimension": 4,
+      "array_count": 24,
+      "start_register": 247
+    },
+    {
+      "name": "cVisibility",
+      "semantic_id": 43,
+      "second_dimension": 1,
+      "first_dimension": 1,
+      "array_count": 1,
+      "start_register": 319
+    },
+    {
+      "name": "cLODValue",
+      "semantic_id": 44,
+      "second_dimension": 1,
+      "first_dimension": 1,
+      "array_count": 1,
+      "start_register": 320
+    },
+    {
+      "name": "cPointLightCount",
+      "semantic_id": 45,
+      "second_dimension": 1,
+      "first_dimension": 1,
+      "array_count": 1,
+      "start_register": 321
+    },
+    {
+      "name": "cPointLightsData",
+      "semantic_id": 46,
+      "second_dimension": 2,
+      "first_dimension": 4,
+      "array_count": 4,
+      "start_register": 322
+    },
+    {
+      "name": "cMatDiffColor",
+      "semantic_id": 47,
+      "second_dimension": 1,
+      "first_dimension": 4,
+      "array_count": 1,
+      "start_register": 330
+    }
+  ],
+  "register_annotation_limit": 77,
+  "nominal_register_span": 331,
+  "all_names_verified_from_constructor_string_references": true,
+  "validation": "Full generated debug draw with52-record native-order registry and limit77 passes; cViewProjMat c15, cElapsedTime float4 c34, centerFF407FBF outsideFF000000. VS2/PS3 diagnostic profiles; native profile selection and runtime population unported. Build/twoCTest/fullprobe pass."
+}

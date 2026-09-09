@@ -1,5 +1,10 @@
 # Generated debug shader draw
 
+Registry follow-up: the draw now uses the recovered52-record registry with
+annotation cutoff77, identity matrix at c15 and float4 cElapsedTime at c34.
+The pixel profile is ps_3_0; the original diagnostic assignments described below
+are historical. Pixel results remain unchanged. See `SHADER_SYSTEM_REGISTRY.md`.
+
 The existing D3D9 shader probe now draws through the full reconstructed vertex
 and pixel generators using the installed debug/dummy statements. This closes
 the earlier compilation/binding-only boundary for one diagnostic fixture.
