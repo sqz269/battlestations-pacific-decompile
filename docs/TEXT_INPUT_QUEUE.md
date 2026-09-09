@@ -39,8 +39,28 @@ passed. This is a focused host check, not a native queue differential test or
 proof that arbitrary allocation failures are equivalent. No new test target
 was introduced.
 
-Window input enabling/clearing00a965a0, full message filtering, clipboard flag
-handling, text-owner callback/fallback processing and actual native window
-lifecycle remain separate dependencies. In particular, native enable clears the
-queue even if the requested state equals its previous state. These behaviors
-must be implemented before connecting this storage to a real text field.
+PlatformTextInput now implements enable/clear00a965a0 and the WM_CHAR/WM_KEYDOWN
+side effects of00bed3b0. Enable always clears the queue, even with the same state.
+WM_CHAR queues its low byte; exactly WPARAM16h also sets the clipboard-request
+flag. Keydown compares the full DWORD against the recovered navigation/edit key
+list before truncating. These side effects do not consume the Windows message:
+native DefWindowProcA processing remains outside the fragment's interface.
+
+The dispatcher projection00a96f40 pops before invoking the required owner
+callback. A false return invokes the required fallback even if the first callback
+disabled the owner. Each subsequent iteration rereads owner-enabled and live
+queue count. This flag is distinct from platform input-enabled. The original
+unused stack argument and undefined upper bits of the event argument slots are
+not modeled by the typed byte interface. As in the native caller, queue and owner
+must remain alive and access must be coordinated on the input thread.
+
+The existing platform probe now passes one extended input sequence: disabled
+filtering, same-state clear, rejection of a key value with extra high bits,
+character/key FIFO order, clipboard request plus queued character, and callback
+disable/fallback ordering. The probe callbacks only verify dispatch; they do not
+implement the game text editor. Build and both existing CTests passed.
+
+Native text-field activation, clipboard contents and request consumption,
+glyph-dependent character acceptance, editing fallback00a96750, notification
+callbacks and the actual native window lifecycle remain unported. The dispatch
+and message paths are recorded as fragments, not complete native routines.

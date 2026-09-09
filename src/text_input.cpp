@@ -46,6 +46,12 @@ void TextInputQueue::append_00bed370(TextInputEvent event) {
 }
 
 void TextInputQueue::destroy_00bec730() noexcept {
+    clear_nodes();
+    delete sentinel_;
+    sentinel_ = nullptr;
+}
+
+void TextInputQueue::clear_nodes() noexcept {
     auto* node = sentinel_->next;
     sentinel_->next = sentinel_;
     sentinel_->previous = sentinel_;
@@ -55,8 +61,6 @@ void TextInputQueue::destroy_00bec730() noexcept {
         delete node;
         node = next;
     }
-    delete sentinel_;
-    sentinel_ = nullptr;
 }
 
 const TextInputEvent* TextInputQueue::front() const noexcept {
@@ -74,5 +78,37 @@ bool TextInputQueue::pop_00bece90(TextInputEvent& event) noexcept {
     delete node;
     --count_;
     return true;
+}
+
+void PlatformTextInput::enable_00a965a0(bool value) noexcept {
+    enabled = value;
+    queue.clear_nodes();
+}
+
+void PlatformTextInput::enqueue_message_00bed3b0_fragment(
+    std::uint32_t message, std::uint32_t wparam) {
+    if (!enabled) return;
+    if (message == 0x102) { // WM_CHAR
+        if (wparam == 0x16) clipboard_requested = true;
+        queue.append_00bed370({static_cast<std::uint8_t>(wparam), 0});
+    } else if (message == 0x100) { // WM_KEYDOWN: compare the full DWORD first
+        switch (wparam) {
+        case 0x26: case 0x28: case 0x25: case 0x27: case 0x24: case 0x09:
+        case 0x23: case 0x2e: case 0x2d: case 0x14: case 0x21: case 0x22:
+            queue.append_00bed370({static_cast<std::uint8_t>(wparam), 1});
+            break;
+        default: break;
+        }
+    }
+}
+
+void dispatch_text_input_00a96f40_fragment(TextInputQueue& queue, TextInputCallbacks& owner) {
+    while (owner.enabled && queue.size() != 0) {
+        TextInputEvent event;
+        queue.pop_00bece90(event);
+        if (!owner.on_event(event)) owner.fallback(event);
+        // A callback may disable the owner or mutate/clear the queue. Re-read
+        // both on the next iteration; fallback still runs if on_event disabled it.
+    }
 }
 }

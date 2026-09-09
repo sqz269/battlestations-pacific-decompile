@@ -996,6 +996,13 @@
       "source": "src/physical_file.cpp",
       "status": "probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00a965a0",
+      "name": "enable_and_clear_text_input",
+      "source": "src/text_input.cpp",
+      "status": "platform_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -1153,6 +1160,24 @@
       "status": "installed_dds_read_checked",
       "abi_compatible": false,
       "remaining": "Native deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported."
+    },
+    {
+      "address": "00bed3b0",
+      "name": "enqueue_text_message",
+      "source": "src/text_input.cpp",
+      "native_range": "00bed607..00bed67d and00bed6db..00bed6fe",
+      "status": "platform_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Window dispatch/default processing and activation/renderer/audio branches remain unported. Typed side-effect-only API."
+    },
+    {
+      "address": "00a96f40",
+      "name": "dispatch_text_input",
+      "source": "src/text_input.cpp",
+      "native_range": "00a96f40..00a96fa1 control-flow projection",
+      "status": "platform_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Original00a96750 editing fallback and ownerallocation unported; requiredtypedcallbackboundary, upperstackpadding bits not recovered."
     }
   ]
 }

@@ -1,5 +1,9 @@
 # Platform text-input delivery
 
+Implementation update: TEXT_INPUT_QUEUE records the enable/clear implementation
+and typed message/consumer projections, with their current probe validation.
+The original read-only audit below remains the native evidence.
+
 Read-only audit on 2026-09-09. Live batches verified `bsp`, program
 `/battlestationspacific.exe`. This follows STARTUP_WINDOW_HANDOFF and the queue
 storage reconstruction owned by the primary agent. No Ghidra mutations or C++

@@ -5,6 +5,22 @@
 #include <stdexcept>
 
 namespace {
+// Probe-only owner checks delivery order; it is not a text-editor fallback.
+class ProbeTextOwner final : public bsp::TextInputCallbacks {
+public:
+    explicit ProbeTextOwner(bsp::TextInputQueue& queue) : queue_(queue) { enabled = true; }
+    bool removed_before_callback{}, fallback_after_disable{};
+    bool on_event(bsp::TextInputEvent event) override {
+        removed_before_callback = queue_.size() == 1 && event.value == 'A' && event.key_event == 0;
+        enabled = false;
+        return false;
+    }
+    void fallback(bsp::TextInputEvent event) override {
+        fallback_after_disable = !enabled && event.value == 'A' && event.key_event == 0;
+    }
+private:
+    bsp::TextInputQueue& queue_;
+};
 // Probe-only callbacks exercise the real OS queue. They do not simulate game/XLive behavior.
 class ProbeCallbacks final : public bsp::PlatformLoopCallbacks {
 public:
@@ -28,16 +44,30 @@ private:
 }
 
 int main() {
-    bsp::TextInputQueue text;
-    text.append_00bed370({'A', 0});
-    text.append_00bed370({VK_LEFT, 1});
+    bsp::PlatformTextInput input_state;
+    auto& text = input_state.queue;
+    input_state.enqueue_message_00bed3b0_fragment(WM_CHAR, 'X');
+    if (text.size() != 0) return 2;
+    input_state.enable_00a965a0(true);
+    input_state.enqueue_message_00bed3b0_fragment(WM_CHAR, 'X');
+    input_state.enable_00a965a0(true); // Even same-state enable clears pending input.
+    if (text.size() != 0) return 2;
+    input_state.enqueue_message_00bed3b0_fragment(WM_KEYDOWN, 0x10000u | VK_LEFT);
+    input_state.enqueue_message_00bed3b0_fragment(WM_CHAR, 'A');
+    input_state.enqueue_message_00bed3b0_fragment(WM_KEYDOWN, VK_LEFT);
+    ProbeTextOwner owner(text);
+    bsp::dispatch_text_input_00a96f40_fragment(text, owner);
     bsp::TextInputEvent input{};
-    const bool text_ok = text.size() == 2 && text.pop_00bece90(input)
-        && input.value == 'A' && input.key_event == 0 && text.pop_00bece90(input)
+    const bool text_ok = owner.removed_before_callback && owner.fallback_after_disable
+        && text.size() == 1 && text.pop_00bece90(input)
         && input.value == VK_LEFT && input.key_event == 1 && text.size() == 0;
+    input_state.enqueue_message_00bed3b0_fragment(WM_CHAR, 0x16);
+    if (!input_state.clipboard_requested || !text.pop_00bece90(input)
+        || input.value != 0x16 || input.key_event != 0) return 2;
     // Leave one node for the destructor's nonempty cleanup path.
     text.append_00bed370({'B', 0});
     std::cout << "Text input queue: byte_event_order=" << text_ok << '\n';
+    std::cout << "Text input policy: enable_clear_full_key_filter_clipboard_and_callback_order=" << text_ok << '\n';
     if (!text_ok) return 2;
     // Same auto-reset event type used for worker wake/idle acknowledgment.
     bsp::Win32Event event(false);

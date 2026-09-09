@@ -152,7 +152,7 @@
   {
     "address": "00bed3b0",
     "name": "BSP_Win32Platform_HandleMessage",
-    "evidence": "Concrete vtable +28h. WM_CREATE stores object in window-extra offset0; handles activation, resize, text input, sizing loop, and close-request byte +180h. Includes unresolved audio/input/UI calls."
+    "evidence": "Concrete vtable +28h. WM_CREATE stores object in window-extra offset0; handles activation, resize, text input, sizing loop, and close-request byte +180h. Includes unresolved audio/input/UI calls. Text branches00bed607..67d and00bed6db..6fe: gate+170, WM_CHAR anylowbyte/category0 and exactWPARAM16 sets+44; WM_KEYDOWN fullDWORD whitelist categories1. Both continueDefWindowProcA. Typed enqueue-only fragment does not consumeWindowsmessage or implementfullhandler."
   },
   {
     "address": "00bece70",
@@ -1393,5 +1393,15 @@
     "address": "00bf5090",
     "name": "BSP_PhysicalStream_DeletingDestructor",
     "evidence": "Native deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported."
+  },
+  {
+    "address": "00a965a0",
+    "name": "BSP_Platform_EnableAndClearTextInput",
+    "evidence": "ECX platform, enabledbyte stack, RET4. Always store+170 then detach/free all queued nodes and countzero, retaining sentinel. Even same-state calls clear. Raw continuation afterfree inspected; typed allocator/ABI boundary. Existingplatformprobe checks."
+  },
+  {
+    "address": "00a96f40",
+    "name": "BSP_TextOwner_DispatchQueuedEvents",
+    "evidence": "ECX owner, unusedstackarg,RET4. Snapshotplatform, loop whileowner+4 and count+17C. Pop beforevirtual0; ifALfalse call00a96750 fallback even ifcallbackdisabledowner. Recheckenabled/count. Typed dispatchfragment requires realcallbacks; fullnativeediting unported."
   }
 ]
