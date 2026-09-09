@@ -978,5 +978,15 @@
     "address": "00b39110",
     "name": "BSP_ShaderBuilder_GenerateVertexSource",
     "evidence": "ECX builder, full vertex source generator. Clears source+4Ch, render mode define, constant header00b38ff0, structures, system helper00b38080, base/effect descriptor VS strings+F0h, pack00b35540 and main returning PackInterpolators(OUT). Full body remains unported; descriptive name. See docs/SHADER_INTERPOLATORS.md."
+  },
+  {
+    "address": "00b38c60",
+    "name": "BSP_ShaderBuilder_AppendSystemConstant",
+    "evidence": "Thiscall RET8 constant record/register index. Name string+14h; firstdimension+C, seconddimension+8, arraycount+10. Float scalar/vector/matrix and optional array using signed %i text selected with unsigned >1. Nonnegative signed register adds register(cN). Typed source emitter exacttext and shadercompile checked. See docs/SHADER_CONSTANT_HEADER.md. Native ABI/allocator/registry unported."
+  },
+  {
+    "address": "00b38ff0",
+    "name": "BSP_ShaderBuilder_AppendSystemConstantHeader",
+    "evidence": "Thiscall RET4 explicitregisters flag. Singleton list00b5b890 records20h; unsigned cursor starts0, optional register when cursor<global00e13078, increments second_dimension*array_count with DWORD wrap. Checks start only; formatter omits signednegative register. Typed explicit vector/limit replaces singleton lookup. Exacttext and shadercompile checked. See docs/SHADER_CONSTANT_HEADER.md. Native ABI/allocator/registry unported."
   }
 ]

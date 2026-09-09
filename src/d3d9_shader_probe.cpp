@@ -33,12 +33,19 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     IDirect3DVertexShader9* saved_vertex = nullptr;
     IDirect3DPixelShader9* saved_pixel = nullptr;
     std::string declarations;
+    const std::vector<bsp::ShaderSystemConstant> constants{
+        {"ProbeTransform", 4, 4, 1}, {"ProbeTint", 1, 4, 2}, {"ProbeBias", 1, 1, 1}};
+    bsp::append_system_constant_header_00b38ff0(constants, true, 6, declarations);
+    const bool constant_header_matches = declarations ==
+        "float4x4 ProbeTransform : register(c0);\nfloat4 ProbeTint[2] : register(c4);\nfloat ProbeBias;\n";
     bsp::ShaderField position;
     position.name = "Position"; position.component_count = 4;
     bsp::ShaderStructOptions options; options.include_semantics = true;
     const auto generated = bsp::append_shader_struct_00b38b50("ProbeInput", {position}, options, declarations);
     const std::string expected = "\nstruct ProbeInput\n{\n\tfloat4\t\tPosition\t\t : POSITION0;\n};\n\n";
-    const bool declaration_matches = generated == bsp::ShaderSourceStatus::complete && declarations == expected;
+    const bool declaration_matches = generated == bsp::ShaderSourceStatus::complete
+        && constant_header_matches && declarations.size() >= expected.size()
+        && declarations.compare(declarations.size() - expected.size(), expected.size(), expected) == 0;
     HRESULT result = declaration_matches ? S_OK : E_FAIL;
     // Exercise native component packing across a register boundary, followed
     // by generated declarations and unpack code in the existing compile probe.
@@ -81,7 +88,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     const bool pack_matches = declarations.find("INT.TexCoord0.y = OUT.UV.z;") != std::string::npos
         && declarations.find("INT.TexCoord1.x = OUT.Extra.z;") != std::string::npos;
     declarations += "sInterpolators main(ProbeInput IN) { sVertexOut OUT; "
-        "OUT.ScreenSpacePos=IN.Position; OUT.UV=float4(0,0,1,0); "
+        "OUT.ScreenSpacePos=mul(IN.Position,ProbeTransform); OUT.UV=ProbeTint[1]+ProbeBias; "
         "OUT.Extra=float4(0,0,0,0); OUT.Color=float4(0,0,0,1); return PackInterpolators(OUT); }";
     if (SUCCEEDED(result)) result = vertex_generated && pack_matches
         ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;

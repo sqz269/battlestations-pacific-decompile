@@ -3,6 +3,48 @@
 #include <utility>
 
 namespace bsp {
+namespace {
+std::string signed_decimal(std::uint32_t value) {
+    // Native variadic %i interprets the full DWORD as signed, even though
+    // dimension selection above one uses unsigned comparisons.
+    return std::to_string(value <= 0x7fffffffu ? static_cast<std::int64_t>(value)
+        : static_cast<std::int64_t>(value) - 0x100000000ll);
+}
+}
+
+void append_system_constant_00b38c60(const ShaderSystemConstant& constant,
+    std::int32_t register_index, std::string& output) {
+    std::string result("float");
+    if (constant.second_dimension > 1) {
+        result += signed_decimal(constant.first_dimension);
+        result += 'x'; result += signed_decimal(constant.second_dimension);
+    } else if (constant.first_dimension > 1) {
+        result += signed_decimal(constant.first_dimension);
+    }
+    result += ' '; result += constant.name.c_str();
+    if (constant.array_count > 1) {
+        result += '['; result += signed_decimal(constant.array_count); result += ']';
+    }
+    if (register_index >= 0) {
+        result += " : register(c"; result += std::to_string(register_index); result += ')';
+    }
+    result += ";\n";
+    output += result;
+}
+
+void append_system_constant_header_00b38ff0(const std::vector<ShaderSystemConstant>& constants,
+    bool explicit_registers, std::uint32_t register_limit, std::string& output) {
+    std::uint32_t cursor = 0;
+    for (const auto& constant : constants) {
+        // A cursor with its sign bit set is passed by native but the emitter
+        // suppresses its annotation; only the starting cursor is limit-checked.
+        const auto index = explicit_registers && cursor < register_limit && cursor <= 0x7fffffffu
+            ? static_cast<std::int32_t>(cursor) : -1;
+        append_system_constant_00b38c60(constant, index, output);
+        cursor += constant.second_dimension * constant.array_count; // DWORD wrap.
+    }
+}
+
 ShaderSourceStatus append_interpolator_pack_00b35540(const std::vector<ShaderField>& fields,
     const ShaderInterpolatorLayout& layout, std::string& output) {
     for (const auto* components : {&layout.texcoords, &layout.colors}) {

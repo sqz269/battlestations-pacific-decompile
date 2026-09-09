@@ -22,6 +22,21 @@ struct ShaderField {
 
 enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic, invalid_packing };
 
+// Projection of the native 20h system constant record. Native declaration
+// order is float<first>x<second>; register advance is second*array_count.
+struct ShaderSystemConstant {
+    std::string name; // +14h/+18h native string, getter00b5b820.
+    std::uint32_t second_dimension{1}; // +8, getter00b5b840.
+    std::uint32_t first_dimension{1};  // +C, getter00b5b850.
+    std::uint32_t array_count{1};      // +10, getter00b5b860.
+};
+// Thiscall RET8 and RET4 respectively. New explicit records replace native
+// singleton00b5b890. The header register limit is native global00e13078.
+void append_system_constant_00b38c60(const ShaderSystemConstant&,
+    std::int32_t register_index, std::string& output);
+void append_system_constant_header_00b38ff0(const std::vector<ShaderSystemConstant>&,
+    bool explicit_registers, std::uint32_t register_limit, std::string& output);
+
 struct ShaderPackedComponent {
     std::uint8_t field{}, component{};
 };
