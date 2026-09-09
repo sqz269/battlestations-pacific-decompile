@@ -1,0 +1,5 @@
+{"address": "00401170", "name": "BSP_Math_AbsFloat", "evidence": "FLD float, FABS, round through float, ST0 return and RET 4. Native fixtures match the C++ semantic port."}
+{"address": "00401c20", "name": "BSP_Vec3d_CrossReversed", "evidence": "Output EAX; inputs ECX, EDX. Sequential stores implement b cross a; preserves alias side effects. Native fixtures verified."}
+{"address": "00401cb0", "name": "BSP_Vec3d_SubtractReversed", "evidence": "Output EAX; inputs ECX, EDX. Three double components of b minus a. Native fixtures verified."}
+{"address": "00401cd0", "name": "BSP_Vec3d_ScaleInPlace", "evidence": "Vector EAX, stack double factor, RET 8. Native fixtures verified."}
+{"address": "00401cf0", "name": "BSP_Vec3d_LengthSquared", "evidence": "Vector EAX, x87 ST0 result. Assembly adds y squared plus x squared before z squared. Native fixtures verified."}

@@ -26,6 +26,13 @@
   Keep an address-to-name ledger in the repository, preserve existing comments, record old values
   before edits, and save the project. Mark uncertain interpretations as provisional; retain
   correct library names. Refresh affected exports after annotation changes.
+- Ledgers are sharded JSON Lines under `config/names/`, `config/reconstruction/` and `config/tags/`
+  (one 64 KB address band per file; see `docs/LEDGER_INDEX.md`). Never read a ledger, the tag
+  shards or the docs directory whole: query `python tools/bsp.py lookup <address>` (also `range`,
+  `callers`, `callees`, `docs-for`, `segment`, `find`, all capped by `--limit`) and rebuild the
+  index with `python tools/bsp.py index` after snapshots or ledger edits. Add records with
+  `python tools/bsp.py ledger add-name|add-function|add-fragment`. If a legacy monolithic
+  `config/*.json` ledger exists, run `python tools/bsp.py ledger migrate` before committing.
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
 - Write as few new test cases as possible. Default to adding no tests for routine changes;

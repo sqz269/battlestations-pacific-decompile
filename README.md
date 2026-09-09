@@ -97,6 +97,14 @@ address segments with string-derived labels, script-binding and vtable counts, s
 and leaf-first waves; see `reports/library_inventory/candidate_partition.md`. Segment labels are
 ownership hints, not recovered module names, and re-run both after every fresh `snapshot`.
 
+Ledgers and lookups: reviewed names, reconstruction records and inventory tags are sharded JSON Lines
+under `config/names/`, `config/reconstruction/` and `config/tags/` (one 64 KB address band per file).
+`python tools/bsp.py index` builds an ignored SQLite index; `python tools/bsp.py lookup <address>`
+(and `range`, `callers`, `callees`, `docs-for`, `segment`, `find`) answer with capped output so no
+ledger or docs directory is ever read whole. `python tools/bsp.py ledger add-name|add-function|add-fragment`
+appends records; `ledger migrate` folds any legacy monolithic `config/*.json` ledger into shards.
+See [ledger and index](docs/LEDGER_INDEX.md).
+
 The completed import has been [reviewed](reports/library_inventory/REVIEW.md).
 The [roadmap](docs/ROADMAP.md) now separates stock-source reuse, compiler machinery
 and game-specific contracts. Provisional tags and in-house Dyn code remain in

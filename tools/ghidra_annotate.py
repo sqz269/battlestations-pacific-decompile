@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 from ghidra_export import Client, ROOT, write
+from ledger import load_names
 
 
 def main():
@@ -15,7 +16,7 @@ def main():
     args = parser.parse_args()
     client = Client(json.loads((ROOT / 'config/target.json').read_text()))
     client.verify()
-    entries = json.loads((ROOT / 'config/ghidra_names.json').read_text())
+    entries = load_names()  # sharded config/names/*.jsonl plus any legacy config/ghidra_names.json
     if args.addresses:
         selected = {f'{int(address, 16):08x}' for address in args.addresses}
         unknown = selected - {row['address'] for row in entries}

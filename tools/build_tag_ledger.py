@@ -9,7 +9,11 @@ stock library names, not recovered symbols; medium/low confidence library names 
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from ledger import load_names, load_reconstruction, load_tags, write_tags  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 INV = ROOT / 'reports/library_inventory'
@@ -66,14 +70,19 @@ def source_function(source):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', default=str(ROOT / 'config/ghidra_tags.json'))
+    parser.add_argument('--legacy-json', help='Also write the flat legacy JSON list to this path')
     args = parser.parse_args()
 
     functions = {row['address']: row for row in json.loads((ROOT / 'exports/bsp/functions.json').read_text())}
-    existing_names = {row['name'] for row in functions.values()}
-    reviewed = {row['address'] for row in json.loads((ROOT / 'config/ghidra_names.json').read_text())}
-    ledger = json.loads((ROOT / 'config/reconstruction.json').read_text())
+    name_addresses = {}
+    for row in functions.values():
+        name_addresses.setdefault(row['name'], set()).add(row['address'])
+    reviewed = {row['address'] for row in load_names()}
+    ledger = load_reconstruction()
     reviewed |= {row['address'] for row in ledger['functions']} | {row['address'] for row in ledger.get('fragments', [])}
+    # Existing tag records: a function already renamed to its tag (or created by the tag run) stays taggable,
+    # and records the reports no longer derive are kept so the ledger remains the record of applied tags.
+    existing_tags = {row['address']: row for row in load_tags()}
 
     lua = json.loads((INV / 'lua.json').read_text())
     zlib = json.loads((INV / 'zlib_and_borrowed.json').read_text())
@@ -95,21 +104,25 @@ def main():
             skipped['reviewed'] += 1
             return
         row = functions.get(address)
+        previous = existing_tags.get(address)
         if row is None:
-            if not create:
+            if not create and previous is None:
                 skipped['no_function'] += 1
                 return
         else:
             if row.get('isThunk'):
                 skipped['thunk'] += 1
                 return
-            if not row['name'].startswith('FUN_'):
+            already_tagged = previous is not None and row['name'] in (previous.get('name'), f'FUN_{address}')
+            if not row['name'].startswith('FUN_') and not already_tagged:
                 skipped['not_fun'] += 1
                 return
             create = False
         if action == 'rename':
             name = sanitize(name)
-            if name in existing_names or any(e['name'] == name for e in entries[-2000:]):
+            # Collision only with a different address: a function already carrying this tag name keeps it.
+            taken_elsewhere = name_addresses.get(name, set()) - {address}
+            if taken_elsewhere or any(e['name'] == name for e in entries[-2000:]):
                 name = f'{name}_{address}'
         claimed[address] = category
         entries.append({'address': address, 'name': name if action == 'rename' else '', 'category': category,
@@ -205,12 +218,17 @@ def main():
               'calls _invalid_parameter_noinfo 00bf6713 with body 97-256 bytes (precision ~0.6-0.8); bookmark only',
               'reports/library_inventory/templates_and_generated.json', action='bookmark')
 
+    derived = {e['address'] for e in entries}
+    kept = [row for address, row in existing_tags.items() if address not in derived]
+    entries.extend(kept)
     entries.sort(key=lambda e: int(e['address'], 16))
-    Path(args.output).write_text(json.dumps(entries, indent=1) + '\n')
+    shards, evidence_ids = write_tags(entries)
+    if args.legacy_json:
+        Path(args.legacy_json).write_text(json.dumps(entries, indent=1) + '\n')
     counts = {}
     for e in entries:
         counts[e['category']] = counts.get(e['category'], 0) + 1
-    print(f'wrote {len(entries)} entries to {args.output}')
+    print(f'wrote {len(entries)} entries to config/tags/ ({shards} shards, {evidence_ids} evidence texts)')
     for cat in CATEGORIES:
         if cat in counts:
             print(f'  {counts[cat]:6d}  {cat}')

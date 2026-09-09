@@ -19,6 +19,7 @@ from urllib.request import Request, urlopen
 
 from build_tag_ledger import PLATE_CATEGORIES
 from ghidra_export import Client, ROOT, write
+from ledger import load_tags
 
 
 def make_post(client):
@@ -155,7 +156,7 @@ def main():
     if args.revert:
         revert(client, post, ROOT / args.revert if not args.revert.startswith(('/', 'C:', 'J:')) else __import__('pathlib').Path(args.revert), not args.no_save)
         return
-    entries = json.loads((ROOT / 'config/ghidra_tags.json').read_text())
+    entries = load_tags()  # sharded config/tags/*.jsonl plus any legacy config/ghidra_tags.json
     if args.category:
         entries = [e for e in entries if e['category'] in set(args.category)]
     if args.resume:

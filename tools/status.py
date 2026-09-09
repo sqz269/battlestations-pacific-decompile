@@ -1,10 +1,14 @@
 """Report local export and reconstruction coverage without a live Ghidra connection."""
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from ledger import load_reconstruction, load_tags  # noqa: E402
+
 root = Path(__file__).resolve().parents[1]
-ledger = json.loads((root / 'config/reconstruction.json').read_text())
+ledger = load_reconstruction()  # sharded config/reconstruction/*.jsonl plus any legacy file
 snapshot_path = root / 'exports/bsp/snapshot.json'
 if snapshot_path.exists():
     snapshot = json.loads(snapshot_path.read_text())
@@ -28,9 +32,8 @@ if snapshot_path.exists():
         print(f"Other named internal functions: {other_named} (includes libraries, generated and in-house code)")
         print(f"FUN_ names: {default_names} (may still carry provisional bookmarks)")
         print("Naming/tagging does not establish a reduced reconstruction denominator or completed behavior.")
-    tags_path = root / 'config/ghidra_tags.json'
-    if tags_path.exists():
-        tags = json.loads(tags_path.read_text())
+    tags = load_tags()  # sharded config/tags/*.jsonl plus any legacy file
+    if tags:
         renames = sum(tag['action'] == 'rename' for tag in tags)
         print(f"Inventory tag ledger: {renames} names + {len(tags) - renames} bookmark-only entries (tools/ghidra_tag.py)")
         counts = Counter(tag['category'] for tag in tags)

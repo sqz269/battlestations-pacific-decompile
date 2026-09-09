@@ -1,0 +1,1 @@
+{"address": "00ba2c20", "name": "BSP_RandomState_NextU32", "evidence": "ECX state. Guard bytes +09c5 && !+09c4 trigger null write. Refill at index>=624, then shifts 11,7,15,18 with observed masks. Returns uint in EAX."}
