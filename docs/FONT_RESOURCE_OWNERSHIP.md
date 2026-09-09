@@ -120,6 +120,7 @@ D3D9 probe. Actual font metadata drives this factory; its three resolver calls
 match GFX/alpha/DAT order, decoded height/count match, atlas recreation works,
 and the installed bilinear shader draws a bounded glyph. Follow-up integration
 resolves the white resource through recovered startup search lists and ordered
-candidate passes, using one supplied loose-directory mount. Archive/mount
-priority remains unported. See `VFS_MOUNT_LOOKUP.md`, `FONT_MATERIAL_DRAW.md`
+candidate passes, using recovered physical mount/factory policies and a supplied
+root. Full cache/archive integration remains unported. See
+`PROVIDER_FACTORY_STARTUP.md`, `VFS_MOUNT_LOOKUP.md`, `FONT_MATERIAL_DRAW.md`
 and `reports/vfs_font_draw_probe.txt`.

@@ -113,6 +113,8 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `docs/FONT_GEOMETRY.md` | Glyph quad prefix, native comparison and text rendering boundaries |
 | `docs/FONT_MATERIAL_DRAW.md` | Installed bilinear glyph draw with supplied mount/camera inputs |
 | `docs/VFS_MOUNT_LOOKUP.md` | Ordered lookup, native search lists and installed font resolution |
+| `docs/PROVIDER_FACTORY_STARTUP.md` | Physical factory/mount reconstruction and FileStore integration boundary |
+| `docs/ARCHIVE_PROVIDER_ENTRY.md` | Memory-backed FileStore and the separate MPKG reader dependencies |
 | `docs/FONT_RESOURCE_OWNERSHIP.md` | Font image ownership, loading order and reload boundaries |
 | `docs/FONT_MATERIAL_BINDINGS.md` | Font texture slots, shader selection and native ownership boundaries |
 | `docs/TEXTURE_IMAGE_LOADING.md` | Shared image-info/loading route and actual recreation metadata |

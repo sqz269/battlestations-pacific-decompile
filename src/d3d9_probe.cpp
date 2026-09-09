@@ -24,6 +24,7 @@
 #include "bsp/resource_path.hpp"
 #include "bsp/stream_scalars.hpp"
 #include "loose_asset_probe.hpp"
+#include "bsp/file_store.hpp"
 #include <filesystem>
 #include <algorithm>
 
@@ -78,6 +79,29 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     if (!file.open_read_only_00bf52a0_fragment(path.string().c_str(), error)
         || !bsp::memory_stream_from_physical_00bef750_fragment(file, stream, error)
         || !file.close_00bf5090_fragment(error)) return false;
+    // One installed DAT cache round trip: store owns the supplied wrapper,
+    // each open has a fresh cursor, and the opened backing survives the store.
+    std::weak_ptr<bsp::MemoryStream> stored_wrapper;
+    bool cache_checked = false;
+    {
+        bsp::FileStore cache;
+        auto source = std::make_shared<bsp::MemoryStream>(std::move(stream));
+        stored_wrapper = source;
+        if (!source->seek_00bef540(7, 0)
+            || cache.add_file_00be7760(" Fonts\\arial18.dat ", source)
+                != bsp::FileStoreInsertResult::inserted) return false;
+        auto opened = cache.open_00be5fa0("fonts/ARIAL18.dat", 2);
+        if (!opened || opened->position_00bef580() != 0
+            || opened->data_00bef610() != source->data_00bef610()
+            || source->position_00bef580() != 7
+            || cache.open_00be5fa0("fonts/arial18.dat", 1)) return false;
+        source.reset();
+        cache_checked = !stored_wrapper.expired();
+        stream = std::move(*opened);
+    }
+    cache_checked = cache_checked && stored_wrapper.expired() && stream.fully_initialized();
+    std::printf("FileStore installed DAT: retained_wrapper_fresh_cursor_and_shared_backing_lifetime=%d\n", cache_checked);
+    if (!cache_checked) return false;
     bsp::FontData font;
     if (!bsp::decode_font_data_00ad4c30_fragment(stream, descriptor->scale_ratio, font, decode_error)) {
         std::printf("Font DAT: %s\n", decode_error.c_str());

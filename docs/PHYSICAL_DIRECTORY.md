@@ -1,8 +1,8 @@
 # Physical directory provider fragment
 
 `PhysicalDirectory` implements native root-plus-suffix construction and the
-ordinary non-indexed existence/virtual-name resolution route. It supports
-provider constructor flag+28=false and an empty indexed tree (+34=0). It is
+ordinary non-indexed existence/virtual-name resolution route. It now supports
+both values of constructor flag+28 and an empty indexed tree (+34=0). It is
 not the complete native directory provider, mount manager or archive search.
 
 ## Evidence and dispatch
@@ -66,8 +66,9 @@ must supply the intended root bytes and desired trailing separator.
 length returns false without changing the previous cache. Otherwise00435c40
 compares suffix to last-success+20 using equal lengths then CRT `_stricmp`.
 A match immediately returns true, even if the file has since disappeared.
-Nonzero constructor byte+28 also immediately returns true for nonempty names;
-that mode is outside this typed fragment.
+Nonzero constructor byte+28 also immediately returns true for nonempty names
+without changing the cache. Follow-up `PROVIDER_FACTORY_STARTUP.md` implements
+this mode and establishes its selection for virtual `persistent_data`.
 
 With a nonmatching cache, flag false and indexed count zero, provider+1C builds
 the physical path. `GetFileAttributesA` at00bf4157 returns success whenever its
@@ -89,8 +90,8 @@ the physical path on success. Only the+24 behavior is exposed as `resolve`.
 
 ## Typed boundaries and validation
 
-The host supplies an immutable root and models only the supported flag/tree
-state. `supported()` is false for embedded NUL or root length above INT32_MAX;
+The host supplies an immutable root/flag and an empty indexed tree.
+`supported()` is false for embedded NUL or root length above INT32_MAX;
 method inputs and concatenation length receive the same explicit safety guard.
 Valid empty root is allowed. No dot-segment/path canonicalization or sandbox
 policy is inferred from native concatenation. String allocations may throw.

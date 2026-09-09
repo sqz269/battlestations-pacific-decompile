@@ -59,10 +59,11 @@ are identity. These are controlled inputs, not a recovered GUI camera or full
 system-constant gatherer. Unknown reflected constants cause failure.
 
 The resolver now uses the recovered startup texture/shader lists and ordered
-VFS candidate logic with one supplied loose-directory mount. This resolves
+VFS candidate logic with the first two physical startup mounts and a supplied
+installation root (`PROVIDER_FACTORY_STARTUP.md`). This resolves
 `Fonts/white.tga` to `effects/white.dds` and the two shader basenames under
 `shaderfx/gui` and `shaderfx/lights` without per-filename mappings. Native
-mount insertion, archives and their priority remain unported. The successful
+provider teardown, mounted FileStore population and archive loading remain unported. The successful
 draw does not prove the original game's current resource selection.
 See `VFS_MOUNT_LOOKUP.md` and `reports/vfs_font_draw_probe.txt`.
 

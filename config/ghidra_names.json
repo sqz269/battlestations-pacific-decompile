@@ -1742,11 +1742,106 @@
   {
     "address": "00bf3f70",
     "name": "BSP_PhysicalDirectory_Exists",
-    "evidence": "ECX provider; suffix stack RET4 AL bool. Empty false; equal-length _stricmp last-success+20 returns true without OS query. Flag+28 nonzero accepts nonempty, nonzero index count+34 uses separate tree. Supported flagfalse/indexempty path builds physical path and GetFileAttributesA!=FFFFFFFF (directories accepted); success caches suffix, failure clears. Typed fragment excludes indexed/accept-all modes."
+    "evidence": "ECX provider; suffix stack RET4 AL bool. Emptyfalse, equal-length _stricmp lastsuccess+20 true; flag+28 nonzero accepts anynonempty suffix withoutOScall/cacheupdate. Emptyindexcount+34 ordinarypath GetFileAttributesA!=FFFFFFFF accepts directories, cachesontrue/clearsonfalse. Physicalfactory selects flag1 forvirtualpersistent_data. Typedbothflagmodes, indexedmode omitted; docs/PROVIDER_FACTORY_STARTUP.md."
   },
   {
     "address": "00bf0fb0",
-    "name": "BSP_PhysicalDirectory_ResolveLogicalName",
-    "evidence": "ECX provider; suffix/output stack RET8 AL bool. Calls provider+10 existence; success copies original logical suffix, preserves alias identity, false leaves output unchanged. Distinct provider+18 method00bf39c0 returns physical path. Full75bytes verified."
+    "name": "BSP_FileProvider_ResolveLogicalName",
+    "evidence": "Sharedprovider+24 inphysical00d69168 andFileStore00d689e8 tables. ECX provider; suffix/output stack RET8 ALbool. Callsvirtual+10exists; successcopies ORIGINALlogicalsuffix, aliasidentityskip, falsepreservesoutput. Not physicalpath helper+18. Full75bytes verified; C++implementations inPhysicalDirectory andFileStore."
+  },
+  {
+    "address": "00be1740",
+    "name": "BSP_VFS_RegisterPrioritizedMount",
+    "evidence": "ECX manager; provider,prefix,signed priority,ownership byte stack RET10h. Canonicalizes00bee390 then trims trailing slash00584110 preserving sole slash. Payload copies raw provider and byte without AddRef; inserts into manager+3C/+40. Higher signed priorities first; equal priorities retain insertion order. Typed vector/callback ownership is a new interface; docs/VFS_MOUNT_REGISTRATION.md."
+  },
+  {
+    "address": "00be1330",
+    "name": "BSP_VFS_InsertMountDescendingPriority",
+    "evidence": "Native CMP newpriority,oldpriority; SETG at00be1350..1355 chooses left. Equality chooses right, retaining existing-before-new inorder. No sameprefix replacement. Redblack rotations preserve traversal order; rawrecord provider lifetime unported."
+  },
+  {
+    "address": "00bee390",
+    "name": "BSP_Path_CanonicalizeMountName",
+    "evidence": "ECX output string, EDX input, EAX output, ordinary RET. CRT lowercase, slash/backslash collapse, dot/parent segment cursor/barrier algorithm. Finaldot can retreat one byte; leading unresolved parents retained. Not the space-trimming00bee690. Typed mountfragment supports ASCII/NULfree only; docs/VFS_MOUNT_REGISTRATION.md."
+  },
+  {
+    "address": "00be1890",
+    "name": "BSP_VFS_MountSystemPath",
+    "evidence": "ECX manager; FIVE stack args systempath,virtualpath,priority,ownershipbyte,deviceid; RET14h. Calls manager+18 factoryselector, null invokes globalmanager+90 errorcallback. Success stores fiftharg provider+10, logs, forwards provider/virtualpath/priority/ownership to00be1740. Assembly authoritative over malformed decompilerstack."
+  },
+  {
+    "address": "00bdb040",
+    "name": "BSP_VFS_CreateProviderForPath",
+    "evidence": "ECX manager; system/virtual strings stack RET8 EAX provider. Iterates factorylist manager+30/+34 forward; calls eachfactory+4 withsame2args, firstnonnull wins. No reorder/removal/refcount seen. Full85-byte body verified."
+  },
+  {
+    "address": "00be0660",
+    "name": "BSP_VFS_RegisterProviderFactory",
+    "evidence": "ECX manager; factoryptr stack RET4. Appends before sentinel manager+34 via00bdab20; rawfactory pointer node+8, no AddRef. Initial registrationorder physical00bed990 thenFileStore004fc150 thenMPKG00736a90."
+  },
+  {
+    "address": "00bf4df0",
+    "name": "BSP_PhysicalDirectoryFactory_Create",
+    "evidence": "ECX factory; system/virtual paths stack RET8. Onlynonempty systempath ending backslash accepted; no diskexists. Virtualname equals persistent_data via00425850 selects ctor00bf4d30 flag1 else0. Nativepool allocation; typedsharedownership fragment. Full187bytesverified."
+  },
+  {
+    "address": "0073cb10",
+    "name": "BSP_Application_MountPackages",
+    "evidence": "Noargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md."
+  },
+  {
+    "address": "00be7760",
+    "name": "BSP_FileStore_AddFile",
+    "evidence": "ECX store; name/stream stack RET8. Copiedname normalized00bee780/00bee690; primarytree+14 lookup. Firstduplicate logs/returnswithoutretainingreplacement. Newentry retains suppliedstream wrapper, theninserts/balancestemporaryrefs. TypedMemoryStream-only map ownership testedwithinstalledDAT; no secondarytree/batch behavior. docs/ARCHIVE_PROVIDER_ENTRY.md."
+  },
+  {
+    "address": "00be5c00",
+    "name": "BSP_FileStore_ContainsFile",
+    "evidence": "ECX store; name stack RET4 ALbool. Primarytree+14 via00be5a50; emptygates then_stricmpkeyequivalence, no lengthtie-break, no normalizationonlookup. Full62-bytebody verified."
+  },
+  {
+    "address": "00be5fa0",
+    "name": "BSP_FileStore_Open",
+    "evidence": "ECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture."
+  },
+  {
+    "address": "00be7ab0",
+    "name": "BSP_FileStore_CacheFromVFS",
+    "evidence": "ECX store; path stack RET4. Opensoriginal viaVFS, obtains00bef750 memoryview, registers00be7760, releasesmemory/source temporaries. Nativepopulationadapter is separate fromadd/lookup/open implementation andnotyetconnected tofontresolver."
+  },
+  {
+    "address": "00be8120",
+    "name": "BSP_FileStoreFactory_Create",
+    "evidence": "ECX factory; system/virtual strings stack RET8 EAXprovider. Nonempty systemname_stricmpequals filestore selects00be80b0 cached/lazyprovider; virtualargunused. Filestoreisnamedmemoryprovider, not diskarchive."
+  },
+  {
+    "address": "00be80b0",
+    "name": "BSP_FileStoreFactory_GetOrCreate",
+    "evidence": "ECX factory, plainRET EAXprovider. Returnscachedfactory+8 or allocates/constructs00be7fa0 andstoresit. Assemblyreturnvalue correctsdecompilervoid. Providerfactorylifetime notmodeled byFileStoreclass."
+  },
+  {
+    "address": "00be7fa0",
+    "name": "BSP_FileStore_Construct",
+    "evidence": "ECX provider; emptybaseroot, table00d689e8 andtwoemptytrees+14/+20. Primarymethodsopen+8=00be5fa0,exists+10=00be5c00,resolve+24=shared00bf0fb0. Secondarymethods andnativedestructionremainunported."
+  },
+  {
+    "address": "00bb9d90",
+    "name": "BSP_MPKGFactory_Create",
+    "evidence": "ECX factory; system/virtual paths stack RET8 EAXprovider. Systemlength>5 andcase-insensitive last5equals .mpkg gatesallocation18h/ctor00bb9cb0. MPKG distinctfromnamedFileStoreprovider; format implementationpending."
+  },
+  {
+    "address": "00bb9920",
+    "name": "BSP_MPKG_OpenDecodedArchive",
+    "evidence": "Archive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md."
+  },
+  {
+    "address": "00bb87a0",
+    "name": "BSP_MPKG_FindEndOfCentralDirectory",
+    "evidence": "Scanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation."
+  },
+  {
+    "address": "00bb8be0",
+    "name": "BSP_MPKG_OpenEntryStream",
+    "evidence": "Entryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only."
   }
 ]

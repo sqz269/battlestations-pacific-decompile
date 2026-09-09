@@ -1,5 +1,11 @@
 # Ordered mount lookup and installed font integration
 
+Follow-up `PROVIDER_FACTORY_STARTUP.md` now constructs the first two physical
+startup mounts through recovered factory, prefix and priority policies. The
+single-mount integration described below is the earlier milestone. FileStore
+cache behavior is now implemented separately; full cache/package startup
+integration remains pending.
+
 The existing font probe now uses reconstructed name normalization, ordered
 candidate searches and physical directory checks. Startup-derived texture and
 shader lists replace its per-filename mappings. With one supplied loose game

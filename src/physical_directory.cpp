@@ -13,8 +13,9 @@ bool supported_string(const std::string& value) noexcept {
 }
 }
 
-PhysicalDirectory::PhysicalDirectory(std::string root) : root_(std::move(root)),
-    supported_(supported_string(root_)) {}
+PhysicalDirectory::PhysicalDirectory(std::string root, bool accept_nonempty_names)
+    : root_(std::move(root)), supported_(supported_string(root_)),
+      accept_nonempty_names_(accept_nonempty_names) {}
 
 bool PhysicalDirectory::build_path_00bf3970(const std::string& suffix,
     std::string& output) const {
@@ -33,6 +34,7 @@ bool PhysicalDirectory::exists_00bf3f70_fragment(const std::string& suffix) {
     // 00435c40 compares stored lengths, then CRT case-insensitive C strings.
     if (suffix.size() == last_success_.size() &&
         _stricmp(suffix.c_str(), last_success_.c_str()) == 0) return true;
+    if (accept_nonempty_names_) return true;
     std::string path;
     if (!build_path_00bf3970(suffix, path)) return false;
     const bool found = GetFileAttributesA(path.c_str()) != INVALID_FILE_ATTRIBUTES;
@@ -45,5 +47,12 @@ bool PhysicalDirectory::resolve_00bf0fb0(const std::string& suffix, std::string&
     if (!exists_00bf3f70_fragment(suffix)) return false;
     if (&suffix != &output) output = suffix;
     return true;
+}
+std::shared_ptr<PhysicalDirectory> create_physical_directory_00bf4df0_fragment(
+    const std::string& system_path, const std::string& virtual_path) {
+    if (!supported_string(system_path) || !supported_string(virtual_path)
+        || system_path.empty() || system_path.back() != '\\') return {};
+    return std::make_shared<PhysicalDirectory>(system_path,
+        _stricmp(virtual_path.c_str(), "persistent_data") == 0);
 }
 }

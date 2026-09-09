@@ -1215,6 +1215,14 @@
       "status": "installed_loose_font_lookup_checked",
       "abi_compatible": false,
       "evidence": "docs/VFS_MOUNT_LOOKUP.md; supplied ordered search/provider state, typed supported-string domain"
+    },
+    {
+      "address": "00be5c00",
+      "name": "file_store_contains_file",
+      "source": "src/file_store.cpp",
+      "status": "build_checked",
+      "abi_compatible": false,
+      "evidence": "docs/ARCHIVE_PROVIDER_ENTRY.md; primary-tree membership, no lookup normalization"
     }
   ],
   "fragments": [
@@ -1674,10 +1682,10 @@
       "address": "00bf3f70",
       "name": "physical_directory_exists",
       "source": "src/physical_directory.cpp",
-      "native_range": "flagfalse and emptyindex route with last-success cache",
+      "native_range": "both constructor-flag modes with empty index and last-success cache",
       "status": "installed_loose_font_lookup_checked",
       "abi_compatible": false,
-      "remaining": "Accept-all and indexed modes, enumeration and synchronization omitted."
+      "remaining": "Indexed tree, enumeration and native ownership/synchronization omitted; accept-all persistent-name branch is assembly-backed, not independently runtime-tested."
     },
     {
       "address": "00bdd440",
@@ -1705,6 +1713,51 @@
       "status": "installed_loose_font_lookup_checked",
       "abi_compatible": false,
       "remaining": "Successful-search logging, native allocation/mount/archive state omitted."
+    },
+    {
+      "address": "00be1740",
+      "name": "register_prioritized_mount",
+      "source": "src/vfs_mount_registration.cpp",
+      "native_range": "prefix canonicalization/trim and ordered insertion",
+      "status": "installed_physical_mount_font_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Native tree allocator/rotations, raw provider lifetime/deletion, deviceid omitted. Priorityties andpath edge cases assembly-backed."
+    },
+    {
+      "address": "00bf4df0",
+      "name": "create_physical_directory",
+      "source": "src/physical_directory.cpp",
+      "native_range": "path gate and constructor flag selection",
+      "status": "installed_physical_mount_font_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Native pool/SEH/ABI excluded; empty indexedtree only."
+    },
+    {
+      "address": "0073cb10",
+      "name": "package_mount_priority",
+      "source": "src/package_mounts.cpp",
+      "native_range": "0073cc75..0073cd0c name priority",
+      "status": "build_checked",
+      "abi_compatible": false,
+      "remaining": "Enumeration, deduplication, mounted-provider checks, actualmounting andoriginalCRTlocale unported."
+    },
+    {
+      "address": "00be7760",
+      "name": "file_store_add_file",
+      "source": "src/file_store.cpp",
+      "native_range": "primary-tree normalized first-insert ownership",
+      "status": "installed_DAT_cache_roundtrip_checked",
+      "abi_compatible": false,
+      "remaining": "MemoryStream inputsonly; native logging/container/allocator/refcount andsecondarytree APIs omitted."
+    },
+    {
+      "address": "00be5fa0",
+      "name": "file_store_open",
+      "source": "src/file_store.cpp",
+      "native_range": "primary-tree flags andmemory-stream open route",
+      "status": "installed_DAT_cache_roundtrip_checked",
+      "abi_compatible": false,
+      "remaining": "Nonmemory native stream types, fullsingleton/mountedFileStore startup andproviderownership unported."
     }
   ]
 }

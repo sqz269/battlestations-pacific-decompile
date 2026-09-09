@@ -12,6 +12,8 @@ target_sources(bsp_core PRIVATE src/material_samplers.cpp)
 target_sources(bsp_core PRIVATE src/resource_path.cpp)
 target_sources(bsp_core PRIVATE src/vfs_mounts.cpp src/vfs_candidates.cpp
   src/physical_directory.cpp src/vfs_search_defaults.cpp src/resource_lookup.cpp)
+target_sources(bsp_core PRIVATE src/vfs_mount_registration.cpp src/package_mounts.cpp)
+target_sources(bsp_core PRIVATE src/file_store.cpp)
 target_sources(bsp_core PRIVATE src/frame_clock.cpp)
 target_sources(bsp_core PRIVATE src/text_input.cpp)
 target_sources(bsp_core PRIVATE src/physical_file.cpp)

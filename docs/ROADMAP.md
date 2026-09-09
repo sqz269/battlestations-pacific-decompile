@@ -62,9 +62,13 @@ generates a native-compared glyph quad and draws an installed bilinear font
 shader through material slots and indexed buffers (`FONT_MATERIAL_DRAW.md`).
 Shader suffix rewriting and font image ownership are recovered. Native texture/
 shader search lists, ordered fallback and physical directory resolution now
-drive the draw with a supplied loose mount (`VFS_MOUNT_LOOKUP.md`). Next trace
-mount insertion `00be1740`, virtual `.` handling, package registration and
-archive precedence; full text layout/batching, GUI transforms and startup
+drive the draw (`VFS_MOUNT_LOOKUP.md`). Recovered mount insertion, virtual `.`
+handling and physical factory policy now connect the first two startup mounts
+with a supplied root (`PROVIDER_FACTORY_STARTUP.md`). FileStore memory-cache
+operations and package-name priorities are also recovered. Next connect VFS
+stream loading and FileStore population/priority300 into font ownership, then
+package enumeration, transformed archive parsing and compressed/sliced streams.
+Full text layout/batching, GUI transforms and startup
 integration also remain necessary. The draw uses supplied camera constants.
 This advances the asset-to-render path but is not a
 runnable game target or an original-game visual comparison.

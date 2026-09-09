@@ -1,5 +1,11 @@
 # Startup VFS search registrations
 
+Follow-up `VFS_MOUNT_REGISTRATION.md` resolves signed descending mount priority,
+stable ties and virtual `.` becoming empty. `PROVIDER_FACTORY_STARTUP.md`
+connects the two physical mounts, while `ARCHIVE_PROVIDER_ENTRY.md` distinguishes
+the memory-backed FileStore provider from MPKG. The initial-mount caveats below
+record the earlier audit; complete cache/package startup remains unported.
+
 The shader and texture search directories are hardcoded in `00738360`, called
 by application initialization at `0073d894`. They are not inferred from an
 installed directory walk or from a Lua configuration. This establishes actual
