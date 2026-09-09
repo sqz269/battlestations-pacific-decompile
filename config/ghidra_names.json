@@ -237,7 +237,7 @@
   {
     "address": "00b238d0",
     "name": "BSP_D3D9Renderer_CaptureDefaultSurfaces",
-    "evidence": "ECX renderer,RET. GetRT0, extra GetDesc, constructwrapper(surface,0,0), replace+197C retainbeforerelease, drop getter; getdepth, sameconstructor(surface,0,0), replace+198C and drop getter, binddepth00b21690. BOTH recreation-kind fields zero, including depth. Typed COM ownership fragment implemented; fullintrusivewrapper/registry/allocator and redundant accessor refpairs unported. ExistingD3D9probe checks reacquisition and binding. See docs/DEFAULT_SURFACES.md."
+    "evidence": "ECX renderer,RET. GetRT0, extra GetDesc, constructwrapper(surface,0,0), replace+197C retainbeforerelease, drop getter; getdepth, sameconstructor(surface,0,0), replace+198C and drop getter, binddepth00b21690. BOTH recreation-kind fields zero, including depth. Typed COM ownership fragment implemented; fullintrusivewrapper/allocator/support-singleton lifetime and redundant accessor refpairs unported. ExistingD3D9probe checks reacquisition and binding. See docs/DEFAULT_SURFACES.md. Correction:00b3e730 called byconstructor only ensures/registers its ownsingleton for shutdown, not the surface. Default capture does not append renderer resetlist; explicit offscreenfactory00b2a7c0 does. See SURFACE_REGISTRATION_AUDIT."
   },
   {
     "address": "00b3f630",
@@ -1403,5 +1403,40 @@
     "address": "00a96f40",
     "name": "BSP_TextOwner_DispatchQueuedEvents",
     "evidence": "ECX owner, unusedstackarg,RET4. Snapshotplatform, loop whileowner+4 and count+17C. Pop beforevirtual0; ifALfalse call00a96750 fallback even ifcallbackdisabledowner. Recheckenabled/count. Typed dispatchfragment requires realcallbacks; fullnativeediting unported."
+  },
+  {
+    "address": "00415350",
+    "name": "BSP_SingletonLifetime_GetManager",
+    "evidence": "No input consumed; EAX manager, RET. Lazily allocate20 bytes, construct00bd0960, publish01090aa0. Getter has no explicit lock. Native allocation failure leaves null; unported lifetime dependency."
+  },
+  {
+    "address": "00bd0960",
+    "name": "BSP_SingletonLifetime_Construct",
+    "evidence": "ECX object, EAX sameobject, RET. Zero vector begin/end/capacity+4/+8/+C, reserve256pointer slots via00bd0600, create trackedcriticalsection00bd1860 at+10. Offset0 not initialized here."
+  },
+  {
+    "address": "00bd0c30",
+    "name": "BSP_SingletonLifetime_Register",
+    "evidence": "ECX manager, oneobjectpointer stack,RET4. Validate end>=begin, ignore null, append nonnull via00bd0bc0. No AddRef, duplicate filtering or internal lock. Manager deletes registeredobjects LIFO atshutdown."
+  },
+  {
+    "address": "00bd0bc0",
+    "name": "BSP_PointerVector_Append",
+    "evidence": "ECX vector owner, pointer-to-value stack,RET4. Write at end and advance4 if capacity available; otherwise checked iterator and00bd08d0 insertion/growth. Pointer vector helper, allocator/debug ABI unported."
+  },
+  {
+    "address": "00bd0400",
+    "name": "BSP_SingletonLifetime_Destroy",
+    "evidence": "ECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463."
+  },
+  {
+    "address": "00bcf910",
+    "name": "BSP_PointerVector_Count",
+    "evidence": "ECX vector owner, EAX count,RET. Nullbegin+4 returns0; otherwise subtract begin fromend+8 and arithmeticshift right2. Assembly is19bytes; descriptive genericpointervector role."
+  },
+  {
+    "address": "00b3e730",
+    "name": "BSP_ResourceSupport_GetSingleton",
+    "evidence": "Provisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT."
   }
 ]

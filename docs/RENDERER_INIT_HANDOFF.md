@@ -62,7 +62,9 @@ those ownership transfers. They do not create an extra retained lifetime.
 The surface constructor's `00b3cc80` initializer retains the surface COM
 reference and records its description; that leaf is already implemented.
 The complete constructor additionally establishes intrusive metadata and calls
-`00b3e730`, whose surrounding registry behavior is not a substituteable no-op.
+`00b3e730`, which ensures a support singleton exists; its class/purpose remains unknown.
+This call is not per-surface registration. SURFACE_REGISTRATION_AUDIT corrects
+the earlier inference and traces the separate explicit reset-list append/remove.
 
 A critical reset detail: **both captured wrappers receive recreation-kind
 byte zero**, even the depth wrapper. Assembly at `00b3f689..00b3f699` copies

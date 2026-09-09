@@ -3,7 +3,7 @@
 The renderer probe now uses a typed capture projection of00b238d0 instead of
 directly constructing only a color binding. D3D9DefaultSurfaces uniquely owns
 both color and depth COM references and releases them on destruction. Native
-intrusive wrapper construction, allocation and registration remain unported;
+intrusive wrapper construction, allocation and support-singleton lifetime remain unported;
 capture is recorded as a fragment, excluded from whole-routine coverage.
 
 Capture gets render target0, performs the native extra GetDesc, and initializes
@@ -27,7 +27,7 @@ Capture has no whole-operation guard; its final depth setter guards itself.
 Callers must coordinate owner access and retain device/synchronization/lock
 lifetimes. Failures preserve preceding successful changes: depth-get failure can
 leave color replaced. Temporary references are cleaned up on initialization
-failure. Native unchecked failures, wrapper registry side effects and redundant
+failure. Native unchecked failures, complete wrapper lifetime side effects and redundant
 balanced accessor AddRef/Release pairs are outside this projection. The new
 owner cannot be shallow-copied; its cleanup is not the native wrapper destructor.
 
@@ -48,5 +48,12 @@ DDS/atlas checks also passed in that run. Results are retained in
 `reports/default_surface_probe.txt`; no test target was added.
 
 This is a real-device ownership/binding check, not a native execution differential
-or proof of complete startup/reset behavior. Registry participation, thread
+or proof of complete startup/reset behavior. Explicit offscreen-resource registry handling, thread
 ownership, focus-gated reset and resource restoration remain dependencies.
+
+Correction from SURFACE_REGISTRATION_AUDIT:00b3e730 only ensures a singleton
+exists and records it for shutdown. It does not register the surface. Default
+capture does not append to the renderer reset list; offscreen factory00b2a7c0
+does so explicitly. Generic wrapper destruction attempts removal from that list.
+The singleton class/purpose is not established; its getter must not be called a
+resource-registration operation.

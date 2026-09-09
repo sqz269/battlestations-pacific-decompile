@@ -1202,7 +1202,7 @@
       "native_range": "00b238d0..00b23b01 COM ownership projection",
       "status": "device_reacquisition_and_depth_binding_checked",
       "abi_compatible": false,
-      "remaining": "Original intrusive wrapper constructor/registry/allocator and redundant accessor AddRef/Release pairs unported; typed sequentialowners expose HRESULT failures. Full native reset lifecycle not established."
+      "remaining": "Original intrusive wrapper constructor/allocator/support-singleton lifetime and redundant accessor AddRef/Release pairs unported; typed sequentialowners expose HRESULT failures. Default capture does not append the renderer reset list; separate offscreen factories do. Full native reset lifecycle not established."
     }
   ]
 }
