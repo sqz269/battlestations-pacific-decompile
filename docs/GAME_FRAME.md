@@ -99,3 +99,6 @@ D3D9 probe uses it to enable guarded state updates; build, existing CTest target
 and device/pixel probes pass. This does not validate concurrent mode switching or
 worker shutdown. No new test case or target was added. Evidence is retained in
 `reports/queue_mode_evidence.json` and `reports/queue_mode_probe.txt`.
+
+Worker virtual +8h is now resolved as an infinite event wait. See
+`RENDER_WORKER.md` for the idle acknowledgment versus thread-join distinction.

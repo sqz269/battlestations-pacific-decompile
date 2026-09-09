@@ -642,11 +642,51 @@
   {
     "address": "00b33bf0",
     "name": "BSP_RenderWorker_RequestStop",
-    "evidence": "ECX worker: clear byte+4h, load interface+10h, tail jump interface virtual+8h. Exact wait/signal behavior of interface unresolved, so stop completion not established."
+    "evidence": "ECX worker: clear byte+4h, load interface+10h, tail jump interface virtual+8h. Exact wait/signal behavior of interface unresolved, so stop completion not established. Interface now resolved: auto-reset event+10h, virtual+8h WaitForSingleObject(INFINITE). Waits idle acknowledgment, not thread termination; thread join occurs00b33b50."
   },
   {
     "address": "00b33aa0",
     "name": "BSP_Renderer_SetOptionalSynchronization",
     "evidence": "Stack byte argument RET4 sets globals0108d6dc and0108d6dd to same value. Does not touch nesting0108d6e0 or locks. Ported for boolean semantic synchronization state; callers must coordinate worker lifecycle."
+  },
+  {
+    "address": "00bd1970",
+    "name": "BSP_Event_Create",
+    "evidence": "Allocate8-byte vtable00d6821c object; CreateEventA(NULL, CL manual-reset byte, FALSE, NULL), handle+4h. Renderer worker passes CL0 for both events. C++ wrapper uses direct object lifetime instead of native allocation ABI."
+  },
+  {
+    "address": "00bd1910",
+    "name": "BSP_Event_Signal",
+    "evidence": "Event vtable+4h; SetEvent(handle+4h). Typed C++ port exposes native ignored BOOL result."
+  },
+  {
+    "address": "00bd17c0",
+    "name": "BSP_Event_Wait",
+    "evidence": "Event vtable+8h; WaitForSingleObject(handle+4h, INFINITE). Typed port exposes ignored DWORD result. Resolves worker stop acknowledgment wait."
+  },
+  {
+    "address": "00bd1960",
+    "name": "BSP_Event_Reset",
+    "evidence": "Event vtable+Ch; ResetEvent(handle+4h). Typed port exposes ignored BOOL result."
+  },
+  {
+    "address": "00bd19b0",
+    "name": "BSP_Event_DeletingDestruct",
+    "evidence": "CloseHandle(+4h), restore base vtable, free object if stack flags&1. C++ RAII handle cleanup mirrors release, not native deleting-destructor ABI."
+  },
+  {
+    "address": "00b33da0",
+    "name": "BSP_RenderWorker_Construct",
+    "evidence": "Two auto-reset initially unsignaled events: wake+C and idle acknowledgment+10h. CreateThread suspended with00b33c20 andworker, storehandle+8h/id+14h, priority-2, ResumeThread. Run+4 andshutdown+5 initially0. Not ported."
+  },
+  {
+    "address": "00b33b50",
+    "name": "BSP_RenderWorker_Destruct",
+    "evidence": "Set shutdown+5=1; signal wake event+C; WaitForSingleObject(thread+8h,INFINITE), close/clearthread, destroy both event wrappers. Separate from idle stop00b33bf0. Must coordinate active run flag before destruction; not ported."
+  },
+  {
+    "address": "00b33c20",
+    "name": "BSP_RenderWorker_ThreadMain",
+    "evidence": "Initially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported."
   }
 ]

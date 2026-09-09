@@ -1,4 +1,5 @@
 #include "bsp/platform_loop.hpp"
+#include "bsp/win32_event.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -26,6 +27,17 @@ private:
 }
 
 int main() {
+    // Same auto-reset event type used for worker wake/idle acknowledgment.
+    bsp::Win32Event event(false);
+    const bool event_ok = event.valid()
+        && WaitForSingleObject(event.native(), 0) == WAIT_TIMEOUT
+        && event.signal_00bd1910()
+        && event.wait_00bd17c0() == WAIT_OBJECT_0
+        && WaitForSingleObject(event.native(), 0) == WAIT_TIMEOUT
+        && event.signal_00bd1910() && event.reset_00bd1960()
+        && WaitForSingleObject(event.native(), 0) == WAIT_TIMEOUT;
+    std::cout << "Reconstructed event: auto_reset_and_explicit_reset=" << event_ok << '\n';
+    if (!event_ok) return 1;
     bsp::PlatformLoopState state{true, false, false};
     ProbeCallbacks callbacks(state);
     bsp::platform_run_loop_00bec1a0(state, callbacks);

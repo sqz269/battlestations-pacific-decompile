@@ -390,6 +390,27 @@
       "source": "src/d3d9_states.cpp",
       "status": "semantic_existing_device_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00bd1910",
+      "name": "event_signal",
+      "source": "src/win32_event.cpp",
+      "status": "semantic_real_windows_event_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd17c0",
+      "name": "event_wait",
+      "source": "src/win32_event.cpp",
+      "status": "semantic_real_windows_event_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd1960",
+      "name": "event_reset",
+      "source": "src/win32_event.cpp",
+      "status": "semantic_real_windows_event_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
