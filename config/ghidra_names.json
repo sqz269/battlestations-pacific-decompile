@@ -177,7 +177,7 @@
   {
     "address": "00737a50",
     "name": "BSP_Application_RunFrame",
-    "evidence": "Application vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed."
+    "evidence": "Application vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request."
   },
   {
     "address": "00bec3b0",
@@ -563,5 +563,20 @@
     "address": "00b231c0",
     "name": "BSP_PhysicalIndexBuffer_Rewind",
     "evidence": "ECX is renderer shared physical IB+1978h at00b2d9bb. Optional renderer guard; iterate registry+8h/count+Ch and call logical virtual+8h (00b48dd0 invalidates offset), then zero cursor+1Ch and dynamic lock count+24h; preserve lock depth+20h and COM+28h. Called after vertex rewind before debug draws. Typed semantic C++ port and real-device reuse readback checked."
+  },
+  {
+    "address": "004b4560",
+    "name": "BSP_Win32Platform_ConsumeCloseRequest",
+    "evidence": "Recovered missing function. ECX platform; reads byte+180h into AL, clears +180h, RET. No caller currently established; equivalent operation is inlined in004ca2f0. Does not change loop exit+181h."
+  },
+  {
+    "address": "004ca2f0",
+    "name": "BSP_Game_ProcessWindowCloseRequest",
+    "evidence": "Recovered missing function called at004e4a79 during application update. Consumes/clears platform0109cf04+180h before checks; drops request if singleton00f8abe8+3E8h nonzero (meaning unresolved). Game state ECX+5D4h in1/2/4 sets global exit00e1ae75. Otherwise opens FE_pc.main_quit_confirm via00531b00(type6, callback004bbc50) and00530c20. UI/string dependencies unported; do not bypass confirmation."
+  },
+  {
+    "address": "004bbc50",
+    "name": "BSP_Game_OnQuitConfirmation",
+    "evidence": "Recovered missing callback passed at004ca3b6. ECX is response integer. Always clears platform0109cf04+180h; sets global exit00e1ae75 only when ECX==1. Other responses preserve existing global exit. RET, no stack args. UI event dispatch ABI outside callback remains unverified."
   }
 ]

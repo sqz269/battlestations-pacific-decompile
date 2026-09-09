@@ -61,7 +61,8 @@ The probe does not execute this function or those settings changes.
 `00bed3b0` stores the object in window-extra offset zero during WM_CREATE. It handles activation,
 resize, input, and sizing-loop frame suppression; WM_CLOSE sets close-request byte +180h and
 returns zero. That byte is distinct from loop exit +181h. The path from +180h to global
-`00e1ae75` still needs tracing. Posting WM_QUIT alone cannot be assumed to end the ported loop.
+`00e1ae75` is now established in `WINDOW_CLOSE.md`, including confirmation UI
+and a request-suppression gate. Posting WM_QUIT alone cannot be assumed to end the ported loop.
 
 Window creation and frame callbacks have many renderer/audio/input/UI dependencies. The current
 library does not invent those dependencies to make a fake game executable link.
@@ -74,5 +75,6 @@ private thread message; the pretranslation callback consumes it and sets exit. O
 one frame, one consumed message, and loop-finished=true. This is a controlled probe, not proof
 of XLive integration, visible rendering, gameplay, or full window shutdown.
 
-Next: recover `00bec3b0`, the close-request consumers and renderer initialization. Keep the
+Next: integrate the close-request policy in `WINDOW_CLOSE.md`, recover its UI
+dependencies and finish native window/renderer initialization. Keep the
 existing game and its saved analysis intact except for recorded, evidence-backed Ghidra edits.

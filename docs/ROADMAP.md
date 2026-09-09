@@ -34,7 +34,8 @@ physical cursor rewind and explicit registry operations are now ported
 (`BUFFER_LIFETIME.md`) with real-device reuse readback.
 Next, integrate native stream constructor/destructor and base teardown
 and integrate the reset/presentation path, and trace the
-close-request-to-application-exit path before wiring a complete window lifecycle.
+close-request confirmation UI and update path (`WINDOW_CLOSE.md`) before wiring
+a complete window lifecycle.
 
 1. WinMain `008f81f0`: confirmed four stack arguments and `RET 10h`; prototype updated in Ghidra.
 2. Export its direct initialization callees, starting with `00737970`, `0073d410`, and
