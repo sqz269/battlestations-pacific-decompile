@@ -863,6 +863,34 @@
       "source": "src/resource_path.cpp",
       "status": "assembly_backed_port_installed_resource_resolution_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00530890",
+      "name": "BSP_Timestamp_Subtract",
+      "source": "src/frame_clock.cpp",
+      "status": "semantic_native_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bedbd0",
+      "name": "BSP_FrameClock_Initialize",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bedc30",
+      "name": "BSP_FrameClock_Update",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bedb20",
+      "name": "BSP_FrameClock_EnableFixedMilliseconds",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

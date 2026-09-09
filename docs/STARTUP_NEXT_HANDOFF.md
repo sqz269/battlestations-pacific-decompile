@@ -1,5 +1,9 @@
 # Startup dependency handoff
 
+Subsequent implementation: FRAME_CLOCK records the reconstructed timestamp,
+initialization, update and fixed-counter setter plus current validation.
+The original audit below remains evidence for the startup route and ownership gap.
+
 Audit on 2026-09-09 against the current sources and saved `bsp` project,
 `/battlestationspacific.exe`, x86 Windows, image base 00400000. The target was
 verified before each live analysis batch. No program annotations were changed.

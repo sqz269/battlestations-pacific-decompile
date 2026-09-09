@@ -1288,5 +1288,25 @@
     "address": "00b31c20",
     "name": "BSP_TextureManager_ResolveName",
     "evidence": "ECX texture manager, stack output string/request/flags (flags unused), RET0Ch. Initializes fallback via00b31bd0, copies request, resolves through00bdf4c0; missing logs and substitutes manager+14 fallback name. Analysis only; full VFS path rules unported."
+  },
+  {
+    "address": "00530890",
+    "name": "BSP_Timestamp_Subtract",
+    "evidence": "ECX left, stack destination/right, EAX destination, RET8. Equal frequency subtracts ticks modulo2^64; unequal rescales right via low64 multiplication and signed magnitude division before subtracting. Left frequency retained. Exact aliases and overflow corner cases match13 native comparisons. Descriptive semantic C++ interface, not native ABI."
+  },
+  {
+    "address": "00bedbd0",
+    "name": "BSP_FrameClock_Initialize",
+    "evidence": "ECX clock, RET. Clear paused+68 and update counter+8, read QPC frequency+60 and start pair+10, then virtual+8 twice. Typed reconstruction supports concrete clock implementation; host reports QPC failures which native ignores. Singleton lifetime unported."
+  },
+  {
+    "address": "00bedc30",
+    "name": "BSP_FrameClock_Update",
+    "evidence": "ECX clock, RET. Paused+68 zeros interval by self-subtraction without advancing. Otherwise increment counter, copy current to previous, read QPC or add fixed increment+70 to synthetic+78, subtract start and previous. x87 signed64 ratio spills float32; strictly negative restores previous and zero interval, unordered skips rollback. See docs/FRAME_CLOCK.md."
+  },
+  {
+    "address": "00bedb20",
+    "name": "BSP_FrameClock_EnableFixedMilliseconds",
+    "evidence": "ECX clock, signed int32 milliseconds stack, RET4. Set+69, QPC into+78, low64(frequency+60 * signextended milliseconds)/signed1000 into+70. Startup passes50 under global00e1ae81 gate. No negative/zero validation. Typed host reports QPC failure."
   }
 ]
