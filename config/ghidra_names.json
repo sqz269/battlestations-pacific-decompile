@@ -178,5 +178,20 @@
     "address": "00737a50",
     "name": "BSP_Application_RunFrame",
     "evidence": "Application vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed."
+  },
+  {
+    "address": "00bec3b0",
+    "name": "BSP_Win32Platform_WindowProcThunk",
+    "evidence": "WNDCLASSA.lpfnWndProc in 00becee0. Loads singleton 0109cf04, forwards object plus four WNDPROC stack arguments to vtable +28h; RET 10h. Function recovered from confirmed code target."
+  },
+  {
+    "address": "00b32410",
+    "name": "BSP_D3D9Renderer_Construct",
+    "evidence": "Called by application initialization 0073da88. Installs primary vtable 00d5f0a8 and secondary 00d5f0a4; calls Direct3DCreate9(32), stores interface at this+1990h. Full constructor not ported."
+  },
+  {
+    "address": "00b2aeb0",
+    "name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
+    "evidence": "Renderer vtable 00d5f0a8 slot +4h, thiscall RET 28h. Builds 56-byte presentation parameters at +1a28h, gets HAL caps, creates device at +1a10h using MULTITHREADED plus HW VP iff HW T&L and shader low word >=0101h; otherwise SW VP. CreateDevice initially receives Windowed=TRUE; only afterward stored Windowed becomes !fullscreen. Later initializes render state and dynamic vertex/index buffers. Only device-creation prefix currently ported."
   }
 ]

@@ -134,5 +134,16 @@
       "status": "real_queue_probe_checked_external_callbacks_pending",
       "abi_compatible": false
     }
+  ],
+  "fragments": [
+    {
+      "address": "00b2aeb0",
+      "name": "d3d9_create_device_prefix",
+      "source": "src/d3d9_startup.cpp",
+      "native_range": "00b2aed1-00b2b014",
+      "status": "real_d3d9_device_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Timer, renderer state, resource wrappers, dynamic buffers and final initialization; full routine is not reconstructed."
+    }
   ]
 }

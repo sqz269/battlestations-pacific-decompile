@@ -14,6 +14,7 @@ if snapshot_path.exists():
     print(f"Internal functions: {count}; total including externals: {snapshot['total_function_count']}")
     print(f"Pseudocode + assembly exported: {complete}/{count}")
     print(f"Reconstructed: {len(ledger['functions'])}/{count} ({100 * len(ledger['functions']) / count:.4f}%)")
+    print(f"Partial routine fragments: {len(ledger.get('fragments', []))} (excluded from reconstructed count)")
 else:
     print('No local export snapshot. Run ghidra_export.py snapshot first.')
 print('Game rebuild: incomplete; no game executable target')

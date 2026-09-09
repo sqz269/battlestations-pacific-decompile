@@ -1,0 +1,22 @@
+{
+  "utc": "2026-09-09T04:13:01.826097+00:00",
+  "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b2aeb0",
+      "length": 834,
+      "matches_disk": true,
+      "sha256": "656d7fc3fed03e6cae9b92c3fd866aa362d6dc022c573f25e9260121408bd134"
+    },
+    {
+      "address": "00bec3b0",
+      "length": 36,
+      "matches_disk": true,
+      "sha256": "01e60e1316d293035548925c1dfa9a93708490eb43824567fcde534954951d7d"
+    }
+  ],
+  "probe_output": "D3D9 device probe: hr=0x00000000 flags=0x44 size=640x480 windowed=1 format=21 depth=75 interval=0x0",
+  "probe_exit_code": 0,
+  "game_validated": false,
+  "notes": "Device prefix only; no native differential, fullscreen, resource setup or rendered imagery validation. Existing CTest 2/2 pass."
+}
