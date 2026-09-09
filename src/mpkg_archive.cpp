@@ -1,8 +1,10 @@
 #include "bsp/mpkg_archive.hpp"
+#include "bsp/resource_enumeration.hpp"
 #include <algorithm>
 #include <array>
 #include <cstring>
 #include <limits>
+#include <iterator>
 #include <utility>
 #include <vector>
 
@@ -87,6 +89,18 @@ bool copy_result(const void* data, std::uint32_t size,
     error = "MPKG memory copy failed with error " + std::to_string(copy_error) + ".";
     return false;
 }
+
+class SourceMaterializationGuard {
+public:
+    explicit SourceMaterializationGuard(bool* active) noexcept : active_(active) {
+        if (active_) *active_ = true;
+    }
+    ~SourceMaterializationGuard() { if (active_) *active_ = false; }
+    SourceMaterializationGuard(const SourceMaterializationGuard&) = delete;
+    SourceMaterializationGuard& operator=(const SourceMaterializationGuard&) = delete;
+private:
+    bool* active_;
+};
 }
 
 struct MpkgArchive::Impl {
@@ -179,6 +193,7 @@ struct MpkgArchive::Impl {
     std::uint32_t directory_size{};
     std::uint32_t directory_offset{};
     std::uint32_t prefix{};
+    bool materializing_original_source{};
 };
 
 MpkgArchive::MpkgArchive() noexcept = default;
@@ -226,6 +241,41 @@ std::size_t MpkgArchive::entry_count() const noexcept {
 
 bool MpkgArchive::contains_00bb8e00(std::string_view name) const noexcept {
     return impl_ && impl_->find(name) != nullptr;
+}
+
+bool MpkgArchive::enumerate_00bb97b0_fragment(std::string_view directory,
+    std::string_view extension, std::uint32_t flags,
+    std::vector<std::string>& output, std::string& error) const {
+    error.clear();
+    if (!impl_) {
+        error = "MPKG archive is not loaded.";
+        return false;
+    }
+    // Validate the query even when there are no directory records.
+    if (resource_enumeration_match_00bee340_fragment(directory, extension, flags, {}) ==
+        ResourceEnumerationMatch::unsupported) {
+        error = "MPKG enumeration requires a nonempty directory and bounded NUL-free strings.";
+        return false;
+    }
+    std::vector<std::string> selected;
+    for (const auto& entry : impl_->entries) {
+        const auto match = resource_enumeration_match_00bee340_fragment(
+            directory, extension, flags, entry.name);
+        if (match == ResourceEnumerationMatch::unsupported) {
+            error = "MPKG enumeration encountered an unsupported stored name.";
+            return false;
+        }
+        if (match == ResourceEnumerationMatch::match) selected.push_back(entry.name);
+    }
+    const auto maximum_count = static_cast<std::size_t>(
+        (std::numeric_limits<std::int32_t>::max)());
+    if (output.size() > maximum_count || selected.size() > maximum_count - output.size()) {
+        error = "MPKG enumeration output exceeds the supported count.";
+        return false;
+    }
+    output.insert(output.end(), std::make_move_iterator(selected.begin()),
+        std::make_move_iterator(selected.end()));
+    return true;
 }
 
 bool MpkgArchive::plan_entry_00bb8d60_fragment(std::string_view name,
@@ -297,17 +347,26 @@ bool MpkgArchive::open_entry_00bb8d60_fragment(std::string_view name,
         return copy_result(impl_->decoded.data_00bef610() + plan.source_offset,
             plan.decoded_size, output, error);
 
+    const bool reopening = plan.route == MpkgEntryRoute::reopen_original_range;
+    if (reopening && impl_->materializing_original_source) {
+        error = "MPKG recursive original-source reopen was rejected.";
+        return false;
+    }
+    SourceMaterializationGuard reentry_guard(
+        reopening ? &impl_->materializing_original_source : nullptr);
+
     std::shared_ptr<InflateSource> original_source;
     if (plan.route == MpkgEntryRoute::reopen_original_range) {
         if (!impl_->reopen_original) {
             error = "MPKG large stored entry requires an original-source reopen callback.";
             return false;
         }
-        original_source = impl_->reopen_original();
+        original_source = impl_->reopen_original(error);
         if (!original_source) {
-            error = "MPKG original-source reopen returned no source.";
+            if (error.empty()) error = "MPKG original-source reopen returned no source.";
             return false;
         }
+        error.clear();
         if (!original_source->seek_absolute(plan.source_offset)) {
             error = "MPKG reopened source seek failed.";
             return false;

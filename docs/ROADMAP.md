@@ -45,21 +45,27 @@ Track completion by working subsystem paths and explicit validation evidence,
 not by the number of functions renamed or a projected functions-per-day rate.
 
 The partition review supplies three concrete parallel lanes: archive loading,
-font layout/context ownership, and native cache/pending I/O. The inflater,
-bounded MPKG parser/materializer, single-line/wrapped scalar layout and five-script
-startup preload policy are integrated. See
-[parallel work](PARALLEL_WORK.md) and `config/parallel_work.json` for current
-ownership and implementation gates. The corrected review-baseline graph places
-84 of 87 segments in one dependency cycle, so whole-segment waves are not independent
-implementation tasks. Named-but-incomplete functions remain part of each lane's
-dependency review.
+font context/material ownership, and native cache/pending I/O. Mounted MPKG
+factory/open/enumeration, owned font geometry, physical pending reads and shared
+provider enumeration now join the earlier parser/layout/preload implementations.
+The required Win32 build, both CTests and focused existing probes pass; see
+[latest integration evidence](../reports/parallel_provider_validation.json).
+Next are the two-pass startup package scan, live font material binding and the
+manager/FileStore pending-dispatch path. These are independent bounded packets;
+shared VFS APIs, metadata, Ghidra writes and integration remain with the primary.
+
+Use [parallel work](PARALLEL_WORK.md), `config/parallel_work.json`, and capped
+`python tools/bsp.py` queries for current ownership and evidence. Rebuild the
+SQLite index after snapshots or sharded ledger updates. Historical whole-segment
+waves are not independent implementation tasks; named-but-incomplete functions
+remain dependencies. No subsystem fixture establishes a runnable game rebuild.
 
 ## 2. Resolve startup and the first subsystem boundary — in progress
 
 Confirmed the WinMain calling convention, application lifecycle boundaries, and the
 per-thread random subsystem. The integer PRNG and registration/lock lifecycle now compile;
 the stream matches original code over 1,500 outputs. See `STARTUP_RANDOM.md`.
-Useful names and evidence comments are tracked in `config/ghidra_names.json`;
+Useful names and evidence comments are tracked in `config/names/`;
 library classifications have their own ledger. The incorrect CRT free noreturn
 flag was corrected, though some saved bodies still require raw-tail inspection.
 Resolved the concrete Windows vtable at `00d68cc4`; its loop is `00bec1a0`, now ported with

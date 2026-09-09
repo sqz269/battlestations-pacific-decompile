@@ -51,6 +51,11 @@ public:
         if (!ready_) { completed = 0; error = "Startup mounts unavailable."; return false; }
         return bsp::preload_startup_scripts_0073d410_fragment(*store_, mounts_, completed, error);
     }
+    bool enumerate(const std::string& directory, const std::string& extension,
+        std::uint32_t flags, std::vector<std::string>& output, std::string& error) {
+        return ready_ && bsp::enumerate_resources_00bdd990_fragment(
+            mounts_, directory, extension, flags, output, error);
+    }
     struct OpenObservation { std::string name; std::uint32_t flags; bool cache; };
     const std::vector<OpenObservation>& opens() const noexcept { return opens_; }
     std::size_t cached_opens() const noexcept { return cached_opens_; }

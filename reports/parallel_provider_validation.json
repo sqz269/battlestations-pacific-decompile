@@ -1,0 +1,259 @@
+{
+  "utc": "2026-09-09T22:43:24.021915+00:00",
+  "baseline_commit": "070ac7bfa82fe06824da75f85d8549f38a14f238",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "snapshot": {
+    "utc": "2026-09-09T22:37:45.812665+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62737,
+    "internal_function_count": 62295,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "target": "MSVC Win32 /W4 /WX /fp:strict",
+    "ctests_passed": 2,
+    "log": "reports/parallel_provider_build.txt"
+  },
+  "probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "log": "reports/parallel_provider_probe.txt"
+  },
+  "mpkg": {
+    "fixture_bytes": 263567,
+    "large_source_bytes": 262181,
+    "current_source_calls": 5,
+    "checks": [
+      "unchanged logical path flags2",
+      "current alias selects changed source",
+      "independent cursor",
+      "recursive source rejected and guard resets",
+      "expired weak VFS diagnostic",
+      "positive enumeration ignores aliases",
+      "provider byte flags",
+      "preexisting first spelling",
+      "FileStore absent-extension length+1 sentinel"
+    ],
+    "limits": [
+      "synthetic archive only",
+      "multi-entry MPKG enumeration order source-reviewed",
+      "native large reader is live/unclamped; host materializes declared extent",
+      "registration/unmount ABI pending"
+    ]
+  },
+  "physical_pending": {
+    "installed_file": "scripts/datatables/inputs.lua",
+    "logical_bytes": 71090,
+    "rounded_request_bytes": 131072,
+    "callbacks": 2,
+    "successful_completions": 2,
+    "observed_pumps": 2,
+    "total_transferred": 142180,
+    "checks": [
+      "no callback at submission",
+      "callback appends next request",
+      "stable names across growth",
+      "mode2 and0x32",
+      "shutdown/drain",
+      "owned streams after queue destruction",
+      "aliased pump error output restored"
+    ],
+    "limits": [
+      "successful reads only",
+      "manager/FileStore/frame integration pending",
+      "no cancellation; destruction requires drained owner"
+    ]
+  },
+  "enumeration": {
+    "installed_names": 34,
+    "cache_first": 5,
+    "physical_additions": 29,
+    "cached_duplicates": 0,
+    "limits": [
+      "recursive and OS-error physical cases source-reviewed",
+      "nonnull empty host strings explicit",
+      "guarded failures transactional"
+    ]
+  },
+  "font_owner": {
+    "single_pixels": 74,
+    "wrapped_pixels": 900,
+    "outside_pixels": 0,
+    "state_restored": true,
+    "checks": [
+      "bound move construction",
+      "case-only skip",
+      "fresh rebuild",
+      "empty keeps buffers/stale metrics",
+      "empty rebuild skips",
+      "changed text fresh allocation",
+      "main/shadow shared geometry",
+      "detach"
+    ],
+    "limits": [
+      "move assignment and device-failure cleanup not exercised",
+      "pixel bounds derive from uploaded geometry; consistency not independent native geometry parity",
+      "fixed supplied font/shaders/simplecolor",
+      "scene/localization/optional child/reset pending"
+    ]
+  },
+  "reviews": [
+    {
+      "reviewer": "partition_audit",
+      "scope": "MPKG/shared manager/probe",
+      "findings": "Fixed full-width flags and alias-positive fixture; narrowed order claim."
+    },
+    {
+      "reviewer": "font_layout_boundary",
+      "scope": "physical pending owner/probe",
+      "findings": "Fixed callback aliasing of pump error DWORD; focused existing scenario checks it."
+    },
+    {
+      "reviewer": "inflate_read_seek",
+      "scope": "physical/FileStore/path and font owner",
+      "findings": "No concrete defects within documented domain; validation limits retained."
+    }
+  ],
+  "native_evidence": "reports/parallel_provider_native_identity.json",
+  "annotations": "reports/parallel_provider_annotations.json",
+  "library_rename_tags_preserved": 8780,
+  "reviewed_names": 462,
+  "reconstructed_routines": 174,
+  "partial_fragments": 89,
+  "baseline_reconstruction_keys_preserved": 249,
+  "partition": {
+    "utc": "2026-09-09T22:39:26.509128+00:00",
+    "candidates": 23937,
+    "segments": 85,
+    "largest_strong_cycle_segments": 82,
+    "sha256": "23d248ed3b20c3ff2362d559dbe6fba663b107415142bf87e395d9c738994507",
+    "note": "Fresh saved snapshot and direct-call sweep. Community partitions change after renaming; explicit addresses/files define work."
+  },
+  "source_hashes": {
+    "CMakeLists.txt": {
+      "built_file_sha256": "9957664f9789a9cb701b230361b10a5777f7bdd62172fabb3013498e308b58a8",
+      "git_lf_sha256": "9957664f9789a9cb701b230361b10a5777f7bdd62172fabb3013498e308b58a8"
+    },
+    "include/bsp/file_store.hpp": {
+      "built_file_sha256": "1a9ee0c2dfb6ab098fc20ff74013de5bc317ff28616a7c4a309865a727a45796",
+      "git_lf_sha256": "1a9ee0c2dfb6ab098fc20ff74013de5bc317ff28616a7c4a309865a727a45796"
+    },
+    "include/bsp/font_geometry_owner.hpp": {
+      "built_file_sha256": "2f39d5eb3ca7edd994554c7751911256b6535aed5b6165798c65a8d885082e24",
+      "git_lf_sha256": "2f39d5eb3ca7edd994554c7751911256b6535aed5b6165798c65a8d885082e24"
+    },
+    "include/bsp/mpkg_archive.hpp": {
+      "built_file_sha256": "810609cb94322209c4572e43d6547ff5ef9b43764193fda548e2af3a04ad7d9d",
+      "git_lf_sha256": "810609cb94322209c4572e43d6547ff5ef9b43764193fda548e2af3a04ad7d9d"
+    },
+    "include/bsp/mpkg_provider.hpp": {
+      "built_file_sha256": "32e69d11bae170043a7f89f72a4be5b0e792e7a8b53305e5acfaa9dd5c44848c",
+      "git_lf_sha256": "32e69d11bae170043a7f89f72a4be5b0e792e7a8b53305e5acfaa9dd5c44848c"
+    },
+    "include/bsp/physical_directory.hpp": {
+      "built_file_sha256": "6f169fe64df7841dcf395d2e3fdc23aaa449ded46f8fa934fb12c93a1b67a910",
+      "git_lf_sha256": "6f169fe64df7841dcf395d2e3fdc23aaa449ded46f8fa934fb12c93a1b67a910"
+    },
+    "include/bsp/physical_pending_reads.hpp": {
+      "built_file_sha256": "5bc2cfbebf0df7d6826c4251018c8f4541fd28f16e21863cb1eb37e89eeb0595",
+      "git_lf_sha256": "5bc2cfbebf0df7d6826c4251018c8f4541fd28f16e21863cb1eb37e89eeb0595"
+    },
+    "include/bsp/resource_enumeration.hpp": {
+      "built_file_sha256": "591d7ce679cc487e6e31c0924fc79892d802f814da1ee876ebd2ab8f49c35d42",
+      "git_lf_sha256": "591d7ce679cc487e6e31c0924fc79892d802f814da1ee876ebd2ab8f49c35d42"
+    },
+    "include/bsp/resource_path.hpp": {
+      "built_file_sha256": "535071af4ef7ade72b4ab405398060b307c69795a76a43b2c342ecaabf8cc3f4",
+      "git_lf_sha256": "535071af4ef7ade72b4ab405398060b307c69795a76a43b2c342ecaabf8cc3f4"
+    },
+    "include/bsp/vfs_mounts.hpp": {
+      "built_file_sha256": "34578b7e4260081010b0b406a3c9f687854c7827c5e9d0b69b9cd3b3f970c1d4",
+      "git_lf_sha256": "34578b7e4260081010b0b406a3c9f687854c7827c5e9d0b69b9cd3b3f970c1d4"
+    },
+    "src/asset_stream_probe.hpp": {
+      "built_file_sha256": "b8632bf3d30a31ead8277f30454b7ece0533132530c1067f0789f47ec8b2b828",
+      "git_lf_sha256": "b8632bf3d30a31ead8277f30454b7ece0533132530c1067f0789f47ec8b2b828"
+    },
+    "src/d3d9_font_probe.cpp": {
+      "built_file_sha256": "53d9b6c4eb18b08e2827496df6a2b2774f80789d9b0c8edbf3b487d3e5a7d64f",
+      "git_lf_sha256": "c3eec56023f70589403dfd99793bd89c2096eff102f21284e0bf3155177493ba"
+    },
+    "src/d3d9_probe.cpp": {
+      "built_file_sha256": "d3709b0a55698e1808479d6293daf99c384ee6093b2c892aa4054c9eb09331e9",
+      "git_lf_sha256": "d3709b0a55698e1808479d6293daf99c384ee6093b2c892aa4054c9eb09331e9"
+    },
+    "src/file_store.cpp": {
+      "built_file_sha256": "4a2a987ea2355fcb2c870b5121aa36573dcc063172e433c78544a71889a6e76c",
+      "git_lf_sha256": "4a2a987ea2355fcb2c870b5121aa36573dcc063172e433c78544a71889a6e76c"
+    },
+    "src/font_geometry_owner.cpp": {
+      "built_file_sha256": "7ad7210221084a91b7aa8bac99ac1ea9845a1713e1eb2e4daf620a326ecb7646",
+      "git_lf_sha256": "7ad7210221084a91b7aa8bac99ac1ea9845a1713e1eb2e4daf620a326ecb7646"
+    },
+    "src/mounted_streams.cpp": {
+      "built_file_sha256": "17cf9bbe8fda784db5cd8e79eb2e9842b542a29d60866d971c9d94cce053efce",
+      "git_lf_sha256": "17cf9bbe8fda784db5cd8e79eb2e9842b542a29d60866d971c9d94cce053efce"
+    },
+    "src/mpkg_archive.cpp": {
+      "built_file_sha256": "e55c888cd24ff3d74a26769263aac6197a82b33d22af3fabeb9692d268128341",
+      "git_lf_sha256": "e55c888cd24ff3d74a26769263aac6197a82b33d22af3fabeb9692d268128341"
+    },
+    "src/mpkg_archive_probe.cpp": {
+      "built_file_sha256": "6304333feeb4f44210df99262fceae386dd8f0d5d62ab32bc00d5ca8875066b1",
+      "git_lf_sha256": "6304333feeb4f44210df99262fceae386dd8f0d5d62ab32bc00d5ca8875066b1"
+    },
+    "src/mpkg_provider.cpp": {
+      "built_file_sha256": "587c8175f70f8cdf98401175d25644d7912e85769c320d3f565cf072a339a8fe",
+      "git_lf_sha256": "587c8175f70f8cdf98401175d25644d7912e85769c320d3f565cf072a339a8fe"
+    },
+    "src/physical_directory.cpp": {
+      "built_file_sha256": "ce1d290ba427a8ad1dd20153c80c52e83c0f72b5c876163ff25ee7849accf227",
+      "git_lf_sha256": "ce1d290ba427a8ad1dd20153c80c52e83c0f72b5c876163ff25ee7849accf227"
+    },
+    "src/physical_pending_reads.cpp": {
+      "built_file_sha256": "cb7c9689bddcd0d194c272c3b3e1b8e62f1c8c83611cb3afa3e755edb4b0de6b",
+      "git_lf_sha256": "cb7c9689bddcd0d194c272c3b3e1b8e62f1c8c83611cb3afa3e755edb4b0de6b"
+    },
+    "src/physical_pending_reads_probe.cpp": {
+      "built_file_sha256": "3b230208e72aa545e6c3dd0c75554c08865ae2f8885275b98d7dcbab9ba941e7",
+      "git_lf_sha256": "3b230208e72aa545e6c3dd0c75554c08865ae2f8885275b98d7dcbab9ba941e7"
+    },
+    "src/resource_enumeration.cpp": {
+      "built_file_sha256": "0cd62bdeee4ce5133f04baa8c622b1e6c9517db6e0f71cdaa4950a08c046cade",
+      "git_lf_sha256": "0cd62bdeee4ce5133f04baa8c622b1e6c9517db6e0f71cdaa4950a08c046cade"
+    },
+    "src/resource_path.cpp": {
+      "built_file_sha256": "325e8753947ae02d371d4189340b709369da68f7c8340203854584f9712001e6",
+      "git_lf_sha256": "325e8753947ae02d371d4189340b709369da68f7c8340203854584f9712001e6"
+    },
+    "src/resource_preload_probe.cpp": {
+      "built_file_sha256": "9be71f2d0ca9082400a3e98547ffcc4780ef6fa9bf1913ca586ad8d359ce9842",
+      "git_lf_sha256": "9be71f2d0ca9082400a3e98547ffcc4780ef6fa9bf1913ca586ad8d359ce9842"
+    },
+    "src/vfs_mount_registration.cpp": {
+      "built_file_sha256": "e76426ab35dbfcbd391cee3bfbbdd9f349f57d7b6a582a17db4b62e16a18036f",
+      "git_lf_sha256": "e76426ab35dbfcbd391cee3bfbbdd9f349f57d7b6a582a17db4b62e16a18036f"
+    },
+    "src/vfs_mounts.cpp": {
+      "built_file_sha256": "d93e64bd33e929b8eb0ab0b561e38c5672344f68d862590a2a786c894354afb0",
+      "git_lf_sha256": "d93e64bd33e929b8eb0ab0b561e38c5672344f68d862590a2a786c894354afb0"
+    }
+  },
+  "artifact_sha256": "f4db1385090ad469901f6761620012fb29a38a44c7a44d8e8916fb2efaf37c5e",
+  "new_test_targets": 0,
+  "abi_compatible": false,
+  "game_rebuilt": false,
+  "goal_status": "active",
+  "report_sha256": {
+    "reports/parallel_provider_build.txt": "5811b5a9c9c34a7bdd5f0bcc206d5d2034196305fbc41011abe46d486db7df8e",
+    "reports/parallel_provider_probe.txt": "6df1994669895db9dc9fb5ff89449cdef1d4ccafc864b7d65a1c5ca102e049d1",
+    "reports/parallel_provider_native_identity.json": "80ea563e8545726154d6f68226dd7cebe3483da4ba5399fc26244e9df167d9e0",
+    "reports/parallel_provider_annotations.json": "be946b3ea149e312bcf79b1eeaba332c7cb3dd25851c20bb9210de785dfd1336",
+    "reports/provider_enumeration_audit.json": "dd7419fce7fd7fce4fbac664ab096eed1867d7d5e1eddb7cd59932dc4c638c67"
+  }
+}

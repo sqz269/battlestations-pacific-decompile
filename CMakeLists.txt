@@ -18,7 +18,8 @@ target_sources(bsp_core PRIVATE src/file_store.cpp)
 target_sources(bsp_core PRIVATE src/mounted_streams.cpp src/resource_preload.cpp)
 
 target_sources(bsp_core PRIVATE src/inflate_stream.cpp)
-target_sources(bsp_core PRIVATE src/mpkg_archive.cpp)
+target_sources(bsp_core PRIVATE src/mpkg_archive.cpp src/mpkg_provider.cpp
+  src/resource_enumeration.cpp src/physical_pending_reads.cpp)
 target_sources(bsp_core PRIVATE src/frame_clock.cpp)
 target_sources(bsp_core PRIVATE src/text_input.cpp)
 target_sources(bsp_core PRIVATE src/physical_file.cpp)
@@ -26,7 +27,8 @@ target_sources(bsp_core PRIVATE src/memory_stream.cpp)
 target_sources(bsp_core PRIVATE src/stream_scalars.cpp src/font_data.cpp src/d3d9_reset_texture.cpp)
 target_sources(bsp_core PRIVATE src/font_registry.cpp src/texture_load_policy.cpp)
 target_sources(bsp_core PRIVATE src/d3d9_query.cpp)
-target_sources(bsp_core PRIVATE src/font_geometry.cpp src/font_layout.cpp src/font_wrapped_layout.cpp)
+target_sources(bsp_core PRIVATE src/font_geometry.cpp src/font_layout.cpp src/font_wrapped_layout.cpp
+  src/font_geometry_owner.cpp)
 target_sources(bsp_core PRIVATE src/font_shader.cpp src/font_resources.cpp src/material_textures.cpp)
 target_sources(bsp_core PRIVATE src/win32_window.cpp)
 target_compile_features(bsp_core PUBLIC cxx_std_17)
@@ -37,7 +39,7 @@ target_sources(bsp_d3d9_probe PRIVATE src/d3d9_alpha_probe.cpp)
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_font_probe.cpp)
 
 target_sources(bsp_d3d9_probe PRIVATE src/inflate_stream_probe.cpp src/mpkg_archive_probe.cpp
-  src/resource_preload_probe.cpp)
+  src/resource_preload_probe.cpp src/physical_pending_reads_probe.cpp)
 target_link_libraries(bsp_d3d9_probe PRIVATE bsp_core)
 target_link_libraries(bsp_d3d9_probe PRIVATE bsp_d3dx_headers)
 target_compile_options(bsp_d3d9_probe PRIVATE /W4 /WX /fp:strict)

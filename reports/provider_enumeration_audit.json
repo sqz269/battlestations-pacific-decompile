@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "status": "complete_static_contract_and_read_only_implementation_review",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "batches": [
+    {
+      "utc": "2026-09-09T22:25:32.727146+00:00",
+      "project": {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 106,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      "program": {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 62737,
+        "symbol_count": 139017,
+        "data_type_count": 752,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    },
+    {
+      "utc": "2026-09-09T22:27:27.575083+00:00",
+      "project": {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 106,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      "program": {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 62737,
+        "symbol_count": 139017,
+        "data_type_count": 752,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    },
+    {
+      "utc": "2026-09-09T22:28:33.128328+00:00",
+      "project": {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 106,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      "program": {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 62737,
+        "symbol_count": 139017,
+        "data_type_count": 752,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    }
+  ],
+  "ranges": [
+    {
+      "address": "00bf47e0",
+      "length": 912,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "22bfdb84f7a28f1575d605e31fd73c6796d0c830f1f279570070e087ed5cef39",
+      "hex": "6aff683d7ccc0064a100000000506489250000000081ec780100005355568bd98b8c24940100008b038b401c57518d54241c528bcbffd08b4c241c8b54241833f6807c11ff5c89b42490010000740b6a5c8d4c241ce8366295ff8b4424186a01508d4c2418897424188974241ce8ee9482ff397424188b6c241474138b4c24108b54241c515255e8142e000083c40c6a016a018d4c2428c684249801000001897424288974242ce8b49482ff8b7c24243bfe8b74242074128d46015068c4e9cf0057e8d92d000083c40c85f6c684249001000002742a8b6c24108bcd8d140e6a01528d4c2418e8759482ff8b4424145603c55750e8a72d00008b6c242083c40c85ffc68424900100000174136a018d46015057e8c85382ff8bc8e811ccfdff85ed8bc57505b8ecdb09018d4c24485150ff152821ce0083f8ff89442420752085edc6842490010000000f84fc0100008b4424106a0183c0015055e9e00100008bbc24a40100008bac249c0100008d49008d4424748d50018a0883c00184c975f72bc2807c24742e8bd00f8476010000f6442448100f85c80000008d4424748d70018a0883c00184c975f78b4d002bc63bc10f864e0100002bd18d541474528bcde8ab0e83ff84c00f84380100008d442474685491d60050e80336000083c40885c00f841e0100008d4c2474518d4c2434e89b9e82ff8b942498010000508d4c2444c684249401000003e8329bffff508bcfc684249401000004e822928dff8b44244485c0c68424900100000374178b4c24406a0183c1015150e8a25282ff8bc8e8ebcafdff8b4c243485c9c6842490010000010f84ac0000008b442430e99000000080bc24a0010000000f84950000008d542474528d4c242ce8129e82ff8b9424980100008d442428508d4c243cc684249401000005e8a59affff8b8c24a00100008b138b5214575155508bcbc68424a001000006ffd28b44243c85c0c68424900100000574178b4c24386a0183c1015150e8095282ff8bc8e852cafdff8b4c242c85c9c68424900100000174178b4424286a0183c0015051e8e25182ff8bc8e82bcafdff8b7424208d4424485056ff152c21ce0085c00f8553feffff56ff153021ce008b4c241485c9c68424900100000074178b4424106a0183c0015051e89c5182ff8bc8e8e5c9fdff8b4c241c85c9c7842490010000ffffffff74178b4424186a0183c0015051e8725182ff8bc8e8bbc9fdff8b8c24880100005f5e5d5b64890d0000000081c484010000c21000",
+      "assembly": "00bf47e0 push -1\n00bf47e2 push 0xcc7c3d\n00bf47e7 mov eax, dword ptr fs:[0]\n00bf47ed push eax\n00bf47ee mov dword ptr fs:[0], esp\n00bf47f5 sub esp, 0x178\n00bf47fb push ebx\n00bf47fc push ebp\n00bf47fd push esi\n00bf47fe mov ebx, ecx\n00bf4800 mov ecx, dword ptr [esp + 0x194]\n00bf4807 mov eax, dword ptr [ebx]\n00bf4809 mov eax, dword ptr [eax + 0x1c]\n00bf480c push edi\n00bf480d push ecx\n00bf480e lea edx, [esp + 0x1c]\n00bf4812 push edx\n00bf4813 mov ecx, ebx\n00bf4815 call eax\n00bf4817 mov ecx, dword ptr [esp + 0x1c]\n00bf481b mov edx, dword ptr [esp + 0x18]\n00bf481f xor esi, esi\n00bf4821 cmp byte ptr [ecx + edx - 1], 0x5c\n00bf4826 mov dword ptr [esp + 0x190], esi\n00bf482d je 0xbf483a\n00bf482f push 0x5c\n00bf4831 lea ecx, [esp + 0x1c]\n00bf4835 call 0x54aa70\n00bf483a mov eax, dword ptr [esp + 0x18]\n00bf483e push 1\n00bf4840 push eax\n00bf4841 lea ecx, [esp + 0x18]\n00bf4845 mov dword ptr [esp + 0x18], esi\n00bf4849 mov dword ptr [esp + 0x1c], esi\n00bf484d call 0x41dd40\n00bf4852 cmp dword ptr [esp + 0x18], esi\n00bf4856 mov ebp, dword ptr [esp + 0x14]\n00bf485a je 0xbf486f\n00bf485c mov ecx, dword ptr [esp + 0x10]\n00bf4860 mov edx, dword ptr [esp + 0x1c]\n00bf4864 push ecx\n00bf4865 push edx\n00bf4866 push ebp\n00bf4867 call 0xbf7680\n00bf486c add esp, 0xc\n00bf486f push 1\n00bf4871 push 1\n00bf4873 lea ecx, [esp + 0x28]\n00bf4877 mov byte ptr [esp + 0x198], 1\n00bf487f mov dword ptr [esp + 0x28], esi\n00bf4883 mov dword ptr [esp + 0x2c], esi\n00bf4887 call 0x41dd40\n00bf488c mov edi, dword ptr [esp + 0x24]\n00bf4890 cmp edi, esi\n00bf4892 mov esi, dword ptr [esp + 0x20]\n00bf4896 je 0xbf48aa\n00bf4898 lea eax, [esi + 1]\n00bf489b push eax\n00bf489c push 0xcfe9c4\n00bf48a1 push edi\n00bf48a2 call 0xbf7680\n00bf48a7 add esp, 0xc\n00bf48aa test esi, esi\n00bf48ac mov byte ptr [esp + 0x190], 2\n00bf48b4 je 0xbf48e0\n00bf48b6 mov ebp, dword ptr [esp + 0x10]\n00bf48ba mov ecx, ebp\n00bf48bc lea edx, [esi + ecx]\n00bf48bf push 1\n00bf48c1 push edx\n00bf48c2 lea ecx, [esp + 0x18]\n00bf48c6 call 0x41dd40\n00bf48cb mov eax, dword ptr [esp + 0x14]\n00bf48cf push esi\n00bf48d0 add eax, ebp\n00bf48d2 push edi\n00bf48d3 push eax\n00bf48d4 call 0xbf7680\n00bf48d9 mov ebp, dword ptr [esp + 0x20]\n00bf48dd add esp, 0xc\n00bf48e0 test edi, edi\n00bf48e2 mov byte ptr [esp + 0x190], 1\n00bf48ea je 0xbf48ff\n00bf48ec push 1\n00bf48ee lea eax, [esi + 1]\n00bf48f1 push eax\n00bf48f2 push edi\n00bf48f3 call 0x419cc0\n00bf48f8 mov ecx, eax\n00bf48fa call 0xbd1510\n00bf48ff test ebp, ebp\n00bf4901 mov eax, ebp\n00bf4903 jne 0xbf490a\n00bf4905 mov eax, 0x109dbec\n00bf490a lea ecx, [esp + 0x48]\n00bf490e push ecx\n00bf490f push eax\n00bf4910 call dword ptr [0xce2128]\n00bf4916 cmp eax, -1\n00bf4919 mov dword ptr [esp + 0x20], eax\n00bf491d jne 0xbf493f\n00bf491f test ebp, ebp\n00bf4921 mov byte ptr [esp + 0x190], 0\n00bf4929 je 0xbf4b2b\n00bf492f mov eax, dword ptr [esp + 0x10]\n00bf4933 push 1\n00bf4935 add eax, 1\n00bf4938 push eax\n00bf4939 push ebp\n00bf493a jmp 0xbf4b1f\n00bf493f mov edi, dword ptr [esp + 0x1a4]\n00bf4946 mov ebp, dword ptr [esp + 0x19c]\n00bf494d lea ecx, [ecx]\n00bf4950 lea eax, [esp + 0x74]\n00bf4954 lea edx, [eax + 1]\n00bf4957 mov cl, byte ptr [eax]\n00bf4959 add eax, 1\n00bf495c test cl, cl\n00bf495e jne 0xbf4957\n00bf4960 sub eax, edx\n00bf4962 cmp byte ptr [esp + 0x74], 0x2e\n00bf4967 mov edx, eax\n00bf4969 je 0xbf4ae5\n00bf496f test byte ptr [esp + 0x48], 0x10\n00bf4974 jne 0xbf4a42\n00bf497a lea eax, [esp + 0x74]\n00bf497e lea esi, [eax + 1]\n00bf4981 mov cl, byte ptr [eax]\n00bf4983 add eax, 1\n00bf4986 test cl, cl\n00bf4988 jne 0xbf4981\n00bf498a mov ecx, dword ptr [ebp]\n00bf498d sub eax, esi\n00bf498f cmp eax, ecx\n00bf4991 jbe 0xbf4ae5\n00bf4997 sub edx, ecx\n00bf4999 lea edx, [esp + edx + 0x74]\n00bf499d push edx\n00bf499e mov ecx, ebp\n00bf49a0 call 0x425850\n00bf49a5 test al, al\n00bf49a7 je 0xbf4ae5\n00bf49ad lea eax, [esp + 0x74]\n00bf49b1 push 0xd69154\n00bf49b6 push eax\n00bf49b7 call 0xbf7fbf\n00bf49bc add esp, 8\n00bf49bf test eax, eax\n00bf49c1 je 0xbf4ae5\n00bf49c7 lea ecx, [esp + 0x74]\n00bf49cb push ecx\n00bf49cc lea ecx, [esp + 0x34]\n00bf49d0 call 0x41e870\n00bf49d5 mov edx, dword ptr [esp + 0x198]\n00bf49dc push eax\n00bf49dd lea ecx, [esp + 0x44]\n00bf49e1 mov byte ptr [esp + 0x194], 3\n00bf49e9 call 0xbee520\n00bf49ee push eax\n00bf49ef mov ecx, edi\n00bf49f1 mov byte ptr [esp + 0x194], 4\n00bf49f9 call 0x4cdc20\n00bf49fe mov eax, dword ptr [esp + 0x44]\n00bf4a02 test eax, eax\n00bf4a04 mov byte ptr [esp + 0x190], 3\n00bf4a0c je 0xbf4a25\n00bf4a0e mov ecx, dword ptr [esp + 0x40]\n00bf4a12 push 1\n00bf4a14 add ecx, 1\n00bf4a17 push ecx\n00bf4a18 push eax\n00bf4a19 call 0x419cc0\n00bf4a1e mov ecx, eax\n00bf4a20 call 0xbd1510\n00bf4a25 mov ecx, dword ptr [esp + 0x34]\n00bf4a29 test ecx, ecx\n00bf4a2b mov byte ptr [esp + 0x190], 1\n00bf4a33 je 0xbf4ae5\n00bf4a39 mov eax, dword ptr [esp + 0x30]\n00bf4a3d jmp 0xbf4ad2\n00bf4a42 cmp byte ptr [esp + 0x1a0], 0\n00bf4a4a je 0xbf4ae5\n00bf4a50 lea edx, [esp + 0x74]\n00bf4a54 push edx\n00bf4a55 lea ecx, [esp + 0x2c]\n00bf4a59 call 0x41e870\n00bf4a5e mov edx, dword ptr [esp + 0x198]\n00bf4a65 lea eax, [esp + 0x28]\n00bf4a69 push eax\n00bf4a6a lea ecx, [esp + 0x3c]\n00bf4a6e mov byte ptr [esp + 0x194], 5\n00bf4a76 call 0xbee520\n00bf4a7b mov ecx, dword ptr [esp + 0x1a0]\n00bf4a82 mov edx, dword ptr [ebx]\n00bf4a84 mov edx, dword ptr [edx + 0x14]\n00bf4a87 push edi\n00bf4a88 push ecx\n00bf4a89 push ebp\n00bf4a8a push eax\n00bf4a8b mov ecx, ebx\n00bf4a8d mov byte ptr [esp + 0x1a0], 6\n00bf4a95 call edx\n00bf4a97 mov eax, dword ptr [esp + 0x3c]\n00bf4a9b test eax, eax\n00bf4a9d mov byte ptr [esp + 0x190], 5\n00bf4aa5 je 0xbf4abe\n00bf4aa7 mov ecx, dword ptr [esp + 0x38]\n00bf4aab push 1\n00bf4aad add ecx, 1\n00bf4ab0 push ecx\n00bf4ab1 push eax\n00bf4ab2 call 0x419cc0\n00bf4ab7 mov ecx, eax\n00bf4ab9 call 0xbd1510\n00bf4abe mov ecx, dword ptr [esp + 0x2c]\n00bf4ac2 test ecx, ecx\n00bf4ac4 mov byte ptr [esp + 0x190], 1\n00bf4acc je 0xbf4ae5\n00bf4ace mov eax, dword ptr [esp + 0x28]\n00bf4ad2 push 1\n00bf4ad4 add eax, 1\n00bf4ad7 push eax\n00bf4ad8 push ecx\n00bf4ad9 call 0x419cc0\n00bf4ade mov ecx, eax\n00bf4ae0 call 0xbd1510\n00bf4ae5 mov esi, dword ptr [esp + 0x20]\n00bf4ae9 lea eax, [esp + 0x48]\n00bf4aed push eax\n00bf4aee push esi\n00bf4aef call dword ptr [0xce212c]\n00bf4af5 test eax, eax\n00bf4af7 jne 0xbf4950\n00bf4afd push esi\n00bf4afe call dword ptr [0xce2130]\n00bf4b04 mov ecx, dword ptr [esp + 0x14]\n00bf4b08 test ecx, ecx\n00bf4b0a mov byte ptr [esp + 0x190], 0\n00bf4b12 je 0xbf4b2b\n00bf4b14 mov eax, dword ptr [esp + 0x10]\n00bf4b18 push 1\n00bf4b1a add eax, 1\n00bf4b1d push eax\n00bf4b1e push ecx\n00bf4b1f call 0x419cc0\n00bf4b24 mov ecx, eax\n00bf4b26 call 0xbd1510\n00bf4b2b mov ecx, dword ptr [esp + 0x1c]\n00bf4b2f test ecx, ecx\n00bf4b31 mov dword ptr [esp + 0x190], 0xffffffff\n00bf4b3c je 0xbf4b55\n00bf4b3e mov eax, dword ptr [esp + 0x18]\n00bf4b42 push 1\n00bf4b44 add eax, 1\n00bf4b47 push eax\n00bf4b48 push ecx\n00bf4b49 call 0x419cc0\n00bf4b4e mov ecx, eax\n00bf4b50 call 0xbd1510\n00bf4b55 mov ecx, dword ptr [esp + 0x188]\n00bf4b5c pop edi\n00bf4b5d pop esi\n00bf4b5e pop ebp\n00bf4b5f pop ebx\n00bf4b60 mov dword ptr fs:[0], ecx\n00bf4b67 add esp, 0x184\n00bf4b6d ret 0x10"
+    },
+    {
+      "address": "00be6480",
+      "length": 205,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "ebe69187dc5e615e57365b8e5037d35ce1c9340370fb2de2cedc4979782a9c36",
+      "hex": "83ec108b411853558b6c24208d5914568b30578bfb8bc889742414897c2410894c241c85ff74043bfb7405e8630201003b74241c0f848900000085ff7505e8500201003b77047505e8460201008b46108b5424248b4a0483c60c85c0744f85c9744b5150e8572f010083c40885c0743d8b4e042bc185c0753485c98b4504741785c074135051e8352f010083c40885c074052b4604eb0383c8ff8b0e2b4d003bc1750a8b4c243056e8f3768eff8d4c2410e8fae6ffff8b7424148b7c2410e960ffffff5f5e5d5b83c410c21000",
+      "assembly": "00be6480 sub esp, 0x10\n00be6483 mov eax, dword ptr [ecx + 0x18]\n00be6486 push ebx\n00be6487 push ebp\n00be6488 mov ebp, dword ptr [esp + 0x20]\n00be648c lea ebx, [ecx + 0x14]\n00be648f push esi\n00be6490 mov esi, dword ptr [eax]\n00be6492 push edi\n00be6493 mov edi, ebx\n00be6495 mov ecx, eax\n00be6497 mov dword ptr [esp + 0x14], esi\n00be649b mov dword ptr [esp + 0x10], edi\n00be649f mov dword ptr [esp + 0x1c], ecx\n00be64a3 test edi, edi\n00be64a5 je 0xbe64ab\n00be64a7 cmp edi, ebx\n00be64a9 je 0xbe64b0\n00be64ab call 0xbf6713\n00be64b0 cmp esi, dword ptr [esp + 0x1c]\n00be64b4 je 0xbe6543\n00be64ba test edi, edi\n00be64bc jne 0xbe64c3\n00be64be call 0xbf6713\n00be64c3 cmp esi, dword ptr [edi + 4]\n00be64c6 jne 0xbe64cd\n00be64c8 call 0xbf6713\n00be64cd mov eax, dword ptr [esi + 0x10]\n00be64d0 mov edx, dword ptr [esp + 0x24]\n00be64d4 mov ecx, dword ptr [edx + 4]\n00be64d7 add esi, 0xc\n00be64da test eax, eax\n00be64dc je 0xbe652d\n00be64de test ecx, ecx\n00be64e0 je 0xbe652d\n00be64e2 push ecx\n00be64e3 push eax\n00be64e4 call 0xbf9440\n00be64e9 add esp, 8\n00be64ec test eax, eax\n00be64ee je 0xbe652d\n00be64f0 mov ecx, dword ptr [esi + 4]\n00be64f3 sub eax, ecx\n00be64f5 test eax, eax\n00be64f7 jne 0xbe652d\n00be64f9 test ecx, ecx\n00be64fb mov eax, dword ptr [ebp + 4]\n00be64fe je 0xbe6517\n00be6500 test eax, eax\n00be6502 je 0xbe6517\n00be6504 push eax\n00be6505 push ecx\n00be6506 call 0xbf9440\n00be650b add esp, 8\n00be650e test eax, eax\n00be6510 je 0xbe6517\n00be6512 sub eax, dword ptr [esi + 4]\n00be6515 jmp 0xbe651a\n00be6517 or eax, 0xffffffff\n00be651a mov ecx, dword ptr [esi]\n00be651c sub ecx, dword ptr [ebp]\n00be651f cmp eax, ecx\n00be6521 jne 0xbe652d\n00be6523 mov ecx, dword ptr [esp + 0x30]\n00be6527 push esi\n00be6528 call 0x4cdc20\n00be652d lea ecx, [esp + 0x10]\n00be6531 call 0xbe4c30\n00be6536 mov esi, dword ptr [esp + 0x14]\n00be653a mov edi, dword ptr [esp + 0x10]\n00be653e jmp 0xbe64a3\n00be6543 pop edi\n00be6544 pop esi\n00be6545 pop ebp\n00be6546 pop ebx\n00be6547 add esp, 0x10\n00be654a ret 0x10"
+    },
+    {
+      "address": "00bee520",
+      "length": 356,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "80b2cba3a3c109ea684cedcf661eaf44846a867d9e700baac181f2eef36ca9d6",
+      "hex": "6aff689975cc0064a100000000506489250000000083ec2853568bf28bd9c744240800000000833e00895c240c751e8b542440e838feffff5e8bc35b8b4c242864890d0000000083c434c20400578b7c2444833f00750ae814feffffe9ed000000689878ce008d4c2418e8e10283ff8d442414508d4c2430518bcec744244401000000e8f87b83ff578d542428528bc8c644244402e8e67b83ff8bd08d4c241cc644243c03e8c6fdffff8b44242885c0c644243c0574178b4c24246a0183c1015150e8d9b682ff8bc8e8222ffeff8b4c243085c9c644243c0674178b44242c6a0183c0015051e8b5b682ff8bc8e8fe2efeff8b4c241885c9c644243c0774178b4424146a0183c0015051e891b682ff8bc8e8da2efeff8d44241c508bcbe81e7a83ff8b44242085c0c744240c01000000c644243c0074178b4c241c6a0183c1015150e859b682ff8bc8e8a22efeff8b4c24345f5e8bc35b64890d0000000083c434c20400",
+      "assembly": "00bee520 push -1\n00bee522 push 0xcc7599\n00bee527 mov eax, dword ptr fs:[0]\n00bee52d push eax\n00bee52e mov dword ptr fs:[0], esp\n00bee535 sub esp, 0x28\n00bee538 push ebx\n00bee539 push esi\n00bee53a mov esi, edx\n00bee53c mov ebx, ecx\n00bee53e mov dword ptr [esp + 8], 0\n00bee546 cmp dword ptr [esi], 0\n00bee549 mov dword ptr [esp + 0xc], ebx\n00bee54d jne 0xbee56d\n00bee54f mov edx, dword ptr [esp + 0x40]\n00bee553 call 0xbee390\n00bee558 pop esi\n00bee559 mov eax, ebx\n00bee55b pop ebx\n00bee55c mov ecx, dword ptr [esp + 0x28]\n00bee560 mov dword ptr fs:[0], ecx\n00bee567 add esp, 0x34\n00bee56a ret 4\n00bee56d push edi\n00bee56e mov edi, dword ptr [esp + 0x44]\n00bee572 cmp dword ptr [edi], 0\n00bee575 jne 0xbee581\n00bee577 call 0xbee390\n00bee57c jmp 0xbee66e\n00bee581 push 0xce7898\n00bee586 lea ecx, [esp + 0x18]\n00bee58a call 0x41e870\n00bee58f lea eax, [esp + 0x14]\n00bee593 push eax\n00bee594 lea ecx, [esp + 0x30]\n00bee598 push ecx\n00bee599 mov ecx, esi\n00bee59b mov dword ptr [esp + 0x44], 1\n00bee5a3 call 0x4261a0\n00bee5a8 push edi\n00bee5a9 lea edx, [esp + 0x28]\n00bee5ad push edx\n00bee5ae mov ecx, eax\n00bee5b0 mov byte ptr [esp + 0x44], 2\n00bee5b5 call 0x4261a0\n00bee5ba mov edx, eax\n00bee5bc lea ecx, [esp + 0x1c]\n00bee5c0 mov byte ptr [esp + 0x3c], 3\n00bee5c5 call 0xbee390\n00bee5ca mov eax, dword ptr [esp + 0x28]\n00bee5ce test eax, eax\n00bee5d0 mov byte ptr [esp + 0x3c], 5\n00bee5d5 je 0xbee5ee\n00bee5d7 mov ecx, dword ptr [esp + 0x24]\n00bee5db push 1\n00bee5dd add ecx, 1\n00bee5e0 push ecx\n00bee5e1 push eax\n00bee5e2 call 0x419cc0\n00bee5e7 mov ecx, eax\n00bee5e9 call 0xbd1510\n00bee5ee mov ecx, dword ptr [esp + 0x30]\n00bee5f2 test ecx, ecx\n00bee5f4 mov byte ptr [esp + 0x3c], 6\n00bee5f9 je 0xbee612\n00bee5fb mov eax, dword ptr [esp + 0x2c]\n00bee5ff push 1\n00bee601 add eax, 1\n00bee604 push eax\n00bee605 push ecx\n00bee606 call 0x419cc0\n00bee60b mov ecx, eax\n00bee60d call 0xbd1510\n00bee612 mov ecx, dword ptr [esp + 0x18]\n00bee616 test ecx, ecx\n00bee618 mov byte ptr [esp + 0x3c], 7\n00bee61d je 0xbee636\n00bee61f mov eax, dword ptr [esp + 0x14]\n00bee623 push 1\n00bee625 add eax, 1\n00bee628 push eax\n00bee629 push ecx\n00bee62a call 0x419cc0\n00bee62f mov ecx, eax\n00bee631 call 0xbd1510\n00bee636 lea eax, [esp + 0x1c]\n00bee63a push eax\n00bee63b mov ecx, ebx\n00bee63d call 0x426060\n00bee642 mov eax, dword ptr [esp + 0x20]\n00bee646 test eax, eax\n00bee648 mov dword ptr [esp + 0xc], 1\n00bee650 mov byte ptr [esp + 0x3c], 0\n00bee655 je 0xbee66e\n00bee657 mov ecx, dword ptr [esp + 0x1c]\n00bee65b push 1\n00bee65d add ecx, 1\n00bee660 push ecx\n00bee661 push eax\n00bee662 call 0x419cc0\n00bee667 mov ecx, eax\n00bee669 call 0xbd1510\n00bee66e mov ecx, dword ptr [esp + 0x34]\n00bee672 pop edi\n00bee673 pop esi\n00bee674 mov eax, ebx\n00bee676 pop ebx\n00bee677 mov dword ptr fs:[0], ecx\n00bee67e add esp, 0x34\n00bee681 ret 4"
+    },
+    {
+      "address": "00bee390",
+      "length": 387,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "f3db474665b49451a2e7ec5b0662cbbac9c9531025ba92c19256c2f6eafc134a",
+      "hex": "81ec1001000055568bf28b063d00010000894c2410c744240c0000000073068d6c2414eb0e83c00150e80072000083c4048be88b4e0485c97505b991db09018bd58a01880283c10183c20184c075f28b068d0c288a45003c2f5357894c24148bfd8bf5896c241074043c5c750d8d7d018bf7c645002f897424103bf9b3010f84d20000008a1780fa2f740580fa5c751883c70184db0f85af000000c6062f83c601b301e9a200000084db0f848400000080fa2e757f8bc12bc783f80174638a4f0180f92f746980f95c74643aca756583f802740b8a47023c2f74043c5c75553b742410741f83ee013bf5742e8d642400807eff2f742483c6ff3bf575f383c702b301eb46c6062e83c601c6062e83c601c6062f83c6018974241083c702b301eb2983c7013bf5760383ee0132dbeb1b83c702eb160fbec25032dbe842b10000880683c40483c60183c7018b4c24143bf90f852effffffc606008b742418558bcee87b0383ff8d44241c3be85f5b740955e8a780000083c4048bc65e5d81c410010000c3",
+      "assembly": "00bee390 sub esp, 0x110\n00bee396 push ebp\n00bee397 push esi\n00bee398 mov esi, edx\n00bee39a mov eax, dword ptr [esi]\n00bee39c cmp eax, 0x100\n00bee3a1 mov dword ptr [esp + 0x10], ecx\n00bee3a5 mov dword ptr [esp + 0xc], 0\n00bee3ad jae 0xbee3b5\n00bee3af lea ebp, [esp + 0x14]\n00bee3b3 jmp 0xbee3c3\n00bee3b5 add eax, 1\n00bee3b8 push eax\n00bee3b9 call 0xbf55be\n00bee3be add esp, 4\n00bee3c1 mov ebp, eax\n00bee3c3 mov ecx, dword ptr [esi + 4]\n00bee3c6 test ecx, ecx\n00bee3c8 jne 0xbee3cf\n00bee3ca mov ecx, 0x109db91\n00bee3cf mov edx, ebp\n00bee3d1 mov al, byte ptr [ecx]\n00bee3d3 mov byte ptr [edx], al\n00bee3d5 add ecx, 1\n00bee3d8 add edx, 1\n00bee3db test al, al\n00bee3dd jne 0xbee3d1\n00bee3df mov eax, dword ptr [esi]\n00bee3e1 lea ecx, [eax + ebp]\n00bee3e4 mov al, byte ptr [ebp]\n00bee3e7 cmp al, 0x2f\n00bee3e9 push ebx\n00bee3ea push edi\n00bee3eb mov dword ptr [esp + 0x14], ecx\n00bee3ef mov edi, ebp\n00bee3f1 mov esi, ebp\n00bee3f3 mov dword ptr [esp + 0x10], ebp\n00bee3f7 je 0xbee3fd\n00bee3f9 cmp al, 0x5c\n00bee3fb jne 0xbee40a\n00bee3fd lea edi, [ebp + 1]\n00bee400 mov esi, edi\n00bee402 mov byte ptr [ebp], 0x2f\n00bee406 mov dword ptr [esp + 0x10], esi\n00bee40a cmp edi, ecx\n00bee40c mov bl, 1\n00bee40e je 0xbee4e6\n00bee414 mov dl, byte ptr [edi]\n00bee416 cmp dl, 0x2f\n00bee419 je 0xbee420\n00bee41b cmp dl, 0x5c\n00bee41e jne 0xbee438\n00bee420 add edi, 1\n00bee423 test bl, bl\n00bee425 jne 0xbee4da\n00bee42b mov byte ptr [esi], 0x2f\n00bee42e add esi, 1\n00bee431 mov bl, 1\n00bee433 jmp 0xbee4da\n00bee438 test bl, bl\n00bee43a je 0xbee4c4\n00bee440 cmp dl, 0x2e\n00bee443 jne 0xbee4c4\n00bee445 mov eax, ecx\n00bee447 sub eax, edi\n00bee449 cmp eax, 1\n00bee44c je 0xbee4b1\n00bee44e mov cl, byte ptr [edi + 1]\n00bee451 cmp cl, 0x2f\n00bee454 je 0xbee4bf\n00bee456 cmp cl, 0x5c\n00bee459 je 0xbee4bf\n00bee45b cmp cl, dl\n00bee45d jne 0xbee4c4\n00bee45f cmp eax, 2\n00bee462 je 0xbee46f\n00bee464 mov al, byte ptr [edi + 2]\n00bee467 cmp al, 0x2f\n00bee469 je 0xbee46f\n00bee46b cmp al, 0x5c\n00bee46d jne 0xbee4c4\n00bee46f cmp esi, dword ptr [esp + 0x10]\n00bee473 je 0xbee494\n00bee475 sub esi, 1\n00bee478 cmp esi, ebp\n00bee47a je 0xbee4aa\n00bee47c lea esp, [esp]\n00bee480 cmp byte ptr [esi - 1], 0x2f\n00bee484 je 0xbee4aa\n00bee486 add esi, -1\n00bee489 cmp esi, ebp\n00bee48b jne 0xbee480\n00bee48d add edi, 2\n00bee490 mov bl, 1\n00bee492 jmp 0xbee4da\n00bee494 mov byte ptr [esi], 0x2e\n00bee497 add esi, 1\n00bee49a mov byte ptr [esi], 0x2e\n00bee49d add esi, 1\n00bee4a0 mov byte ptr [esi], 0x2f\n00bee4a3 add esi, 1\n00bee4a6 mov dword ptr [esp + 0x10], esi\n00bee4aa add edi, 2\n00bee4ad mov bl, 1\n00bee4af jmp 0xbee4da\n00bee4b1 add edi, 1\n00bee4b4 cmp esi, ebp\n00bee4b6 jbe 0xbee4bb\n00bee4b8 sub esi, 1\n00bee4bb xor bl, bl\n00bee4bd jmp 0xbee4da\n00bee4bf add edi, 2\n00bee4c2 jmp 0xbee4da\n00bee4c4 movsx eax, dl\n00bee4c7 push eax\n00bee4c8 xor bl, bl\n00bee4ca call 0xbf9611\n00bee4cf mov byte ptr [esi], al\n00bee4d1 add esp, 4\n00bee4d4 add esi, 1\n00bee4d7 add edi, 1\n00bee4da mov ecx, dword ptr [esp + 0x14]\n00bee4de cmp edi, ecx\n00bee4e0 jne 0xbee414\n00bee4e6 mov byte ptr [esi], 0\n00bee4e9 mov esi, dword ptr [esp + 0x18]\n00bee4ed push ebp\n00bee4ee mov ecx, esi\n00bee4f0 call 0x41e870\n00bee4f5 lea eax, [esp + 0x1c]\n00bee4f9 cmp ebp, eax\n00bee4fb pop edi\n00bee4fc pop ebx\n00bee4fd je 0xbee508\n00bee4ff push ebp\n00bee500 call 0xbf65ac\n00bee505 add esp, 4\n00bee508 mov eax, esi\n00bee50a pop esi\n00bee50b pop ebp\n00bee50c add esp, 0x110\n00bee512 ret "
+    },
+    {
+      "address": "00be4c30",
+      "length": 99,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "5820cc905f639c22ac31c02a4c5f7a865941908b5f698b7c1909173051c478c8",
+      "hex": "568bf1833e007505e8d61a01008b46048078190074065ee9c71a01008b480880791900751a8b0180781900750d8d49008bc88b018078190074f6894e045ec38b40048078190075168b4e043b4808750e8946048bd08b42048078190074ea8946045ec3",
+      "assembly": "00be4c30 push esi\n00be4c31 mov esi, ecx\n00be4c33 cmp dword ptr [esi], 0\n00be4c36 jne 0xbe4c3d\n00be4c38 call 0xbf6713\n00be4c3d mov eax, dword ptr [esi + 4]\n00be4c40 cmp byte ptr [eax + 0x19], 0\n00be4c44 je 0xbe4c4c\n00be4c46 pop esi\n00be4c47 jmp 0xbf6713\n00be4c4c mov ecx, dword ptr [eax + 8]\n00be4c4f cmp byte ptr [ecx + 0x19], 0\n00be4c53 jne 0xbe4c6f\n00be4c55 mov eax, dword ptr [ecx]\n00be4c57 cmp byte ptr [eax + 0x19], 0\n00be4c5b jne 0xbe4c6a\n00be4c5d lea ecx, [ecx]\n00be4c60 mov ecx, eax\n00be4c62 mov eax, dword ptr [ecx]\n00be4c64 cmp byte ptr [eax + 0x19], 0\n00be4c68 je 0xbe4c60\n00be4c6a mov dword ptr [esi + 4], ecx\n00be4c6d pop esi\n00be4c6e ret \n00be4c6f mov eax, dword ptr [eax + 4]\n00be4c72 cmp byte ptr [eax + 0x19], 0\n00be4c76 jne 0xbe4c8e\n00be4c78 mov ecx, dword ptr [esi + 4]\n00be4c7b cmp ecx, dword ptr [eax + 8]\n00be4c7e jne 0xbe4c8e\n00be4c80 mov dword ptr [esi + 4], eax\n00be4c83 mov edx, eax\n00be4c85 mov eax, dword ptr [edx + 4]\n00be4c88 cmp byte ptr [eax + 0x19], 0\n00be4c8c je 0xbe4c78\n00be4c8e mov dword ptr [esi + 4], eax\n00be4c91 pop esi\n00be4c92 ret "
+    },
+    {
+      "address": "00bf3970",
+      "length": 65,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "83322b019ce0e47cdec0a1fbce1d04a3d9593917cb2064655650fb18ef603a7b",
+      "hex": "518b44240c568b74240c578d790850568bcfc744241000000000e8112883ff8b073b0673148b4e0403c880392f7503c6015c83c0013b0672ec5f8bc65e59c20800",
+      "assembly": "00bf3970 push ecx\n00bf3971 mov eax, dword ptr [esp + 0xc]\n00bf3975 push esi\n00bf3976 mov esi, dword ptr [esp + 0xc]\n00bf397a push edi\n00bf397b lea edi, [ecx + 8]\n00bf397e push eax\n00bf397f push esi\n00bf3980 mov ecx, edi\n00bf3982 mov dword ptr [esp + 0x10], 0\n00bf398a call 0x4261a0\n00bf398f mov eax, dword ptr [edi]\n00bf3991 cmp eax, dword ptr [esi]\n00bf3993 jae 0xbf39a9\n00bf3995 mov ecx, dword ptr [esi + 4]\n00bf3998 add ecx, eax\n00bf399a cmp byte ptr [ecx], 0x2f\n00bf399d jne 0xbf39a2\n00bf399f mov byte ptr [ecx], 0x5c\n00bf39a2 add eax, 1\n00bf39a5 cmp eax, dword ptr [esi]\n00bf39a7 jb 0xbf3995\n00bf39a9 pop edi\n00bf39aa mov eax, esi\n00bf39ac pop esi\n00bf39ad pop ecx\n00bf39ae ret 8"
+    },
+    {
+      "address": "00bdd0a0",
+      "length": 672,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397",
+      "hex": "558bec83e4f86aff68e962cc0064a100000000506489250000000083ec3853568b750833db57895c24108d4424183bc68bf9c74718ffffffff895c2418895c241c74288b066a01508d4c2420e84f0c84ff391e74168b4c24188b56048b44241c515250e878a5010083c40c8b47408d4f3c8b38895c244c8bd9894c2414897c242c895c242885db8b710474043bd97405e8de9501003bfe0f84c801000085db7505e8cd9501003b7b047505e8c39501008b471083c71085c0743839442418762e506a008d4c2438518d4c2424e8cfc688ff834c241001578bc8e8c28a85ff84c0740c8b078b54241c803c022f740432dbeb02b301f64424100174248b4c243483642410fe85c974178b4424306a0183c0015051e808cb83ff8bc8e85143ffff84db0f84ed0000008b0785c0742568ffffff7f83c001508d442440508d4c2424e85cc688ff8bf0834c241002c644244c01eb048d74241833db8d4c24203bce895c2420895c242474248b066a0150e82e0b84ff391e74168b5424208b46048b4c2424525051e857a4010083c40cf644241002c744244c0300000074248b4c243c83642410fd3bcb74178b4424386a0183c0015051e868ca83ff8bc8e8b142ffff8b54242c8b4424283b50047505e8a29401008b750c8b168b52048d44242050578bceffd28b068b50088bceffd284c08b4c2424c644244c0075353bcb74178b4424206a0183c0015051e813ca83ff8bc8e85c42ffff8d4c2428e823c5ffff8b7c242c8b4c24148b5c2428e957feffff3bcb74178b4424206a0183c0015051e8dec983ff8bc8e82742ffff8b44241c3bc3c744244cffffffff74338b4c24186a0183c10151eb1a8b44241c85c0c744244cffffffff74178b5424186a0183c2015250e89bc983ff8bc8e8e441ffff8b4c24445f5e64890d000000005b8be55dc20800",
+      "assembly": "00bdd0a0 push ebp\n00bdd0a1 mov ebp, esp\n00bdd0a3 and esp, 0xfffffff8\n00bdd0a6 push -1\n00bdd0a8 push 0xcc62e9\n00bdd0ad mov eax, dword ptr fs:[0]\n00bdd0b3 push eax\n00bdd0b4 mov dword ptr fs:[0], esp\n00bdd0bb sub esp, 0x38\n00bdd0be push ebx\n00bdd0bf push esi\n00bdd0c0 mov esi, dword ptr [ebp + 8]\n00bdd0c3 xor ebx, ebx\n00bdd0c5 push edi\n00bdd0c6 mov dword ptr [esp + 0x10], ebx\n00bdd0ca lea eax, [esp + 0x18]\n00bdd0ce cmp eax, esi\n00bdd0d0 mov edi, ecx\n00bdd0d2 mov dword ptr [edi + 0x18], 0xffffffff\n00bdd0d9 mov dword ptr [esp + 0x18], ebx\n00bdd0dd mov dword ptr [esp + 0x1c], ebx\n00bdd0e1 je 0xbdd10b\n00bdd0e3 mov eax, dword ptr [esi]\n00bdd0e5 push 1\n00bdd0e7 push eax\n00bdd0e8 lea ecx, [esp + 0x20]\n00bdd0ec call 0x41dd40\n00bdd0f1 cmp dword ptr [esi], ebx\n00bdd0f3 je 0xbdd10b\n00bdd0f5 mov ecx, dword ptr [esp + 0x18]\n00bdd0f9 mov edx, dword ptr [esi + 4]\n00bdd0fc mov eax, dword ptr [esp + 0x1c]\n00bdd100 push ecx\n00bdd101 push edx\n00bdd102 push eax\n00bdd103 call 0xbf7680\n00bdd108 add esp, 0xc\n00bdd10b mov eax, dword ptr [edi + 0x40]\n00bdd10e lea ecx, [edi + 0x3c]\n00bdd111 mov edi, dword ptr [eax]\n00bdd113 mov dword ptr [esp + 0x4c], ebx\n00bdd117 mov ebx, ecx\n00bdd119 mov dword ptr [esp + 0x14], ecx\n00bdd11d mov dword ptr [esp + 0x2c], edi\n00bdd121 mov dword ptr [esp + 0x28], ebx\n00bdd125 test ebx, ebx\n00bdd127 mov esi, dword ptr [ecx + 4]\n00bdd12a je 0xbdd130\n00bdd12c cmp ebx, ecx\n00bdd12e je 0xbdd135\n00bdd130 call 0xbf6713\n00bdd135 cmp edi, esi\n00bdd137 je 0xbdd305\n00bdd13d test ebx, ebx\n00bdd13f jne 0xbdd146\n00bdd141 call 0xbf6713\n00bdd146 cmp edi, dword ptr [ebx + 4]\n00bdd149 jne 0xbdd150\n00bdd14b call 0xbf6713\n00bdd150 mov eax, dword ptr [edi + 0x10]\n00bdd153 add edi, 0x10\n00bdd156 test eax, eax\n00bdd158 je 0xbdd192\n00bdd15a cmp dword ptr [esp + 0x18], eax\n00bdd15e jbe 0xbdd18e\n00bdd160 push eax\n00bdd161 push 0\n00bdd163 lea ecx, [esp + 0x38]\n00bdd167 push ecx\n00bdd168 lea ecx, [esp + 0x24]\n00bdd16c call 0x469840\n00bdd171 or dword ptr [esp + 0x10], 1\n00bdd176 push edi\n00bdd177 mov ecx, eax\n00bdd179 call 0x435c40\n00bdd17e test al, al\n00bdd180 je 0xbdd18e\n00bdd182 mov eax, dword ptr [edi]\n00bdd184 mov edx, dword ptr [esp + 0x1c]\n00bdd188 cmp byte ptr [edx + eax], 0x2f\n00bdd18c je 0xbdd192\n00bdd18e xor bl, bl\n00bdd190 jmp 0xbdd194\n00bdd192 mov bl, 1\n00bdd194 test byte ptr [esp + 0x10], 1\n00bdd199 je 0xbdd1bf\n00bdd19b mov ecx, dword ptr [esp + 0x34]\n00bdd19f and dword ptr [esp + 0x10], 0xfffffffe\n00bdd1a4 test ecx, ecx\n00bdd1a6 je 0xbdd1bf\n00bdd1a8 mov eax, dword ptr [esp + 0x30]\n00bdd1ac push 1\n00bdd1ae add eax, 1\n00bdd1b1 push eax\n00bdd1b2 push ecx\n00bdd1b3 call 0x419cc0\n00bdd1b8 mov ecx, eax\n00bdd1ba call 0xbd1510\n00bdd1bf test bl, bl\n00bdd1c1 je 0xbdd2b4\n00bdd1c7 mov eax, dword ptr [edi]\n00bdd1c9 test eax, eax\n00bdd1cb je 0xbdd1f2\n00bdd1cd push 0x7fffffff\n00bdd1d2 add eax, 1\n00bdd1d5 push eax\n00bdd1d6 lea eax, [esp + 0x40]\n00bdd1da push eax\n00bdd1db lea ecx, [esp + 0x24]\n00bdd1df call 0x469840\n00bdd1e4 mov esi, eax\n00bdd1e6 or dword ptr [esp + 0x10], 2\n00bdd1eb mov byte ptr [esp + 0x4c], 1\n00bdd1f0 jmp 0xbdd1f6\n00bdd1f2 lea esi, [esp + 0x18]\n00bdd1f6 xor ebx, ebx\n00bdd1f8 lea ecx, [esp + 0x20]\n00bdd1fc cmp ecx, esi\n00bdd1fe mov dword ptr [esp + 0x20], ebx\n00bdd202 mov dword ptr [esp + 0x24], ebx\n00bdd206 je 0xbdd22c\n00bdd208 mov eax, dword ptr [esi]\n00bdd20a push 1\n00bdd20c push eax\n00bdd20d call 0x41dd40\n00bdd212 cmp dword ptr [esi], ebx\n00bdd214 je 0xbdd22c\n00bdd216 mov edx, dword ptr [esp + 0x20]\n00bdd21a mov eax, dword ptr [esi + 4]\n00bdd21d mov ecx, dword ptr [esp + 0x24]\n00bdd221 push edx\n00bdd222 push eax\n00bdd223 push ecx\n00bdd224 call 0xbf7680\n00bdd229 add esp, 0xc\n00bdd22c test byte ptr [esp + 0x10], 2\n00bdd231 mov dword ptr [esp + 0x4c], 3\n00bdd239 je 0xbdd25f\n00bdd23b mov ecx, dword ptr [esp + 0x3c]\n00bdd23f and dword ptr [esp + 0x10], 0xfffffffd\n00bdd244 cmp ecx, ebx\n00bdd246 je 0xbdd25f\n00bdd248 mov eax, dword ptr [esp + 0x38]\n00bdd24c push 1\n00bdd24e add eax, 1\n00bdd251 push eax\n00bdd252 push ecx\n00bdd253 call 0x419cc0\n00bdd258 mov ecx, eax\n00bdd25a call 0xbd1510\n00bdd25f mov edx, dword ptr [esp + 0x2c]\n00bdd263 mov eax, dword ptr [esp + 0x28]\n00bdd267 cmp edx, dword ptr [eax + 4]\n00bdd26a jne 0xbdd271\n00bdd26c call 0xbf6713\n00bdd271 mov esi, dword ptr [ebp + 0xc]\n00bdd274 mov edx, dword ptr [esi]\n00bdd276 mov edx, dword ptr [edx + 4]\n00bdd279 lea eax, [esp + 0x20]\n00bdd27d push eax\n00bdd27e push edi\n00bdd27f mov ecx, esi\n00bdd281 call edx\n00bdd283 mov eax, dword ptr [esi]\n00bdd285 mov edx, dword ptr [eax + 8]\n00bdd288 mov ecx, esi\n00bdd28a call edx\n00bdd28c test al, al\n00bdd28e mov ecx, dword ptr [esp + 0x24]\n00bdd292 mov byte ptr [esp + 0x4c], 0\n00bdd297 jne 0xbdd2ce\n00bdd299 cmp ecx, ebx\n00bdd29b je 0xbdd2b4\n00bdd29d mov eax, dword ptr [esp + 0x20]\n00bdd2a1 push 1\n00bdd2a3 add eax, 1\n00bdd2a6 push eax\n00bdd2a7 push ecx\n00bdd2a8 call 0x419cc0\n00bdd2ad mov ecx, eax\n00bdd2af call 0xbd1510\n00bdd2b4 lea ecx, [esp + 0x28]\n00bdd2b8 call 0xbd97e0\n00bdd2bd mov edi, dword ptr [esp + 0x2c]\n00bdd2c1 mov ecx, dword ptr [esp + 0x14]\n00bdd2c5 mov ebx, dword ptr [esp + 0x28]\n00bdd2c9 jmp 0xbdd125\n00bdd2ce cmp ecx, ebx\n00bdd2d0 je 0xbdd2e9\n00bdd2d2 mov eax, dword ptr [esp + 0x20]\n00bdd2d6 push 1\n00bdd2d8 add eax, 1\n00bdd2db push eax\n00bdd2dc push ecx\n00bdd2dd call 0x419cc0\n00bdd2e2 mov ecx, eax\n00bdd2e4 call 0xbd1510\n00bdd2e9 mov eax, dword ptr [esp + 0x1c]\n00bdd2ed cmp eax, ebx\n00bdd2ef mov dword ptr [esp + 0x4c], 0xffffffff\n00bdd2f7 je 0xbdd32c\n00bdd2f9 mov ecx, dword ptr [esp + 0x18]\n00bdd2fd push 1\n00bdd2ff add ecx, 1\n00bdd302 push ecx\n00bdd303 jmp 0xbdd31f\n00bdd305 mov eax, dword ptr [esp + 0x1c]\n00bdd309 test eax, eax\n00bdd30b mov dword ptr [esp + 0x4c], 0xffffffff\n00bdd313 je 0xbdd32c\n00bdd315 mov edx, dword ptr [esp + 0x18]\n00bdd319 push 1\n00bdd31b add edx, 1\n00bdd31e push edx\n00bdd31f push eax\n00bdd320 call 0x419cc0\n00bdd325 mov ecx, eax\n00bdd327 call 0xbd1510\n00bdd32c mov ecx, dword ptr [esp + 0x44]\n00bdd330 pop edi\n00bdd331 pop esi\n00bdd332 mov dword ptr fs:[0], ecx\n00bdd339 pop ebx\n00bdd33a mov esp, ebp\n00bdd33c pop ebp\n00bdd33d ret 8"
+    },
+    {
+      "address": "00cfe9c4",
+      "length": 2,
+      "span_kind": "literal",
+      "matches_installed_pe": true,
+      "sha256": "17d5f5a33ab5f6aed0395d2bc0a4e5df61d92441ea8d77b0952c01bc8aa8bde0",
+      "hex": "2a00"
+    },
+    {
+      "address": "00d69154",
+      "length": 20,
+      "span_kind": "literal_with_padding",
+      "matches_installed_pe": true,
+      "sha256": "a08520ee19129183dad12061e4eca38aae9c5a8712a8accf8bd969760857e9ef",
+      "hex": "4d6964776179444c5f436f6e74656e7400000000"
+    },
+    {
+      "address": "00ce7898",
+      "length": 2,
+      "span_kind": "literal",
+      "matches_installed_pe": true,
+      "sha256": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+      "hex": "2f00"
+    },
+    {
+      "address": "00d69168",
+      "length": 44,
+      "span_kind": "vtable",
+      "matches_installed_pe": true,
+      "sha256": "647f1cb3a32c73e34215133240a985a1726f2d034a1f7a1cad561d589e5617ab",
+      "hex": "e030bd00d04dbf00a04bbf00b043bf00703fbf00e047bf00c039bf007039bf00803abf00b00fbf00b046bf00"
+    },
+    {
+      "address": "00d689e8",
+      "length": 44,
+      "span_kind": "vtable",
+      "matches_installed_pe": true,
+      "sha256": "699ad14715b26910d53c8258d884f08fef22b0bd0cc1c743474773eeb0b64fb7",
+      "hex": "e030bd009080be00a05fbe00b07cbe00005cbe008064be00405cbe004060be00805cbe00b00fbf00c07cbe00"
+    },
+    {
+      "address": "004261a0",
+      "length": 166,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "025e33b4d97cbfa811c37a521873d3b3686165e85b854529726afaf9e01fa6b6",
+      "hex": "6aff6849e8c50064a1000000005064892500000000515333db5556895c240c8b742420578bf93bf7895c241c891e895e0474238b076a01508bcee8617bffff391f74138b068b4e04508b47045051e88d147d0083c40c8b6c24288b7d003bfb895c241cc74424100100000074228b1e6a018d143b528bcee8247bffff8b45048b4e04575003cb51e854147d0083c40c8b4c24145f8bc65e5d5b64890d0000000083c410c20800",
+      "assembly": "004261a0 push -1\n004261a2 push 0xc5e849\n004261a7 mov eax, dword ptr fs:[0]\n004261ad push eax\n004261ae mov dword ptr fs:[0], esp\n004261b5 push ecx\n004261b6 push ebx\n004261b7 xor ebx, ebx\n004261b9 push ebp\n004261ba push esi\n004261bb mov dword ptr [esp + 0xc], ebx\n004261bf mov esi, dword ptr [esp + 0x20]\n004261c3 push edi\n004261c4 mov edi, ecx\n004261c6 cmp esi, edi\n004261c8 mov dword ptr [esp + 0x1c], ebx\n004261cc mov dword ptr [esi], ebx\n004261ce mov dword ptr [esi + 4], ebx\n004261d1 je 0x4261f6\n004261d3 mov eax, dword ptr [edi]\n004261d5 push 1\n004261d7 push eax\n004261d8 mov ecx, esi\n004261da call 0x41dd40\n004261df cmp dword ptr [edi], ebx\n004261e1 je 0x4261f6\n004261e3 mov eax, dword ptr [esi]\n004261e5 mov ecx, dword ptr [esi + 4]\n004261e8 push eax\n004261e9 mov eax, dword ptr [edi + 4]\n004261ec push eax\n004261ed push ecx\n004261ee call 0xbf7680\n004261f3 add esp, 0xc\n004261f6 mov ebp, dword ptr [esp + 0x28]\n004261fa mov edi, dword ptr [ebp]\n004261fd cmp edi, ebx\n004261ff mov dword ptr [esp + 0x1c], ebx\n00426203 mov dword ptr [esp + 0x10], 1\n0042620b je 0x42622f\n0042620d mov ebx, dword ptr [esi]\n0042620f push 1\n00426211 lea edx, [ebx + edi]\n00426214 push edx\n00426215 mov ecx, esi\n00426217 call 0x41dd40\n0042621c mov eax, dword ptr [ebp + 4]\n0042621f mov ecx, dword ptr [esi + 4]\n00426222 push edi\n00426223 push eax\n00426224 add ecx, ebx\n00426226 push ecx\n00426227 call 0xbf7680\n0042622c add esp, 0xc\n0042622f mov ecx, dword ptr [esp + 0x14]\n00426233 pop edi\n00426234 mov eax, esi\n00426236 pop esi\n00426237 pop ebp\n00426238 pop ebx\n00426239 mov dword ptr fs:[0], ecx\n00426240 add esp, 0x10\n00426243 ret 8"
+    },
+    {
+      "address": "00425850",
+      "length": 76,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "499cea889390e1f820bb2b3c74103d73b69b67fd3702a93d448ab58dd03250e5",
+      "hex": "8b410485c075218b44240485c07505b001c204008d50018a0883c00184c975f72bc20f94c0c204008b54240485d2750839110f94c0c204005250e830277d0083c408f7d81bc083c001c20400",
+      "assembly": "00425850 mov eax, dword ptr [ecx + 4]\n00425853 test eax, eax\n00425855 jne 0x425878\n00425857 mov eax, dword ptr [esp + 4]\n0042585b test eax, eax\n0042585d jne 0x425864\n0042585f mov al, 1\n00425861 ret 4\n00425864 lea edx, [eax + 1]\n00425867 mov cl, byte ptr [eax]\n00425869 add eax, 1\n0042586c test cl, cl\n0042586e jne 0x425867\n00425870 sub eax, edx\n00425872 sete al\n00425875 ret 4\n00425878 mov edx, dword ptr [esp + 4]\n0042587c test edx, edx\n0042587e jne 0x425888\n00425880 cmp dword ptr [ecx], edx\n00425882 sete al\n00425885 ret 4\n00425888 push edx\n00425889 push eax\n0042588a call 0xbf7fbf\n0042588f add esp, 8\n00425892 neg eax\n00425894 sbb eax, eax\n00425896 add eax, 1\n00425899 ret 4"
+    },
+    {
+      "address": "00be54d0",
+      "length": 83,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "5bdcf1cde7eca209d12843f8b773035de68ccef488273a8e44ef4cc61b9a0da7",
+      "hex": "8b410453568b7004807e19008bd8753e578b7c2410837e0c0075088b07f7d81bc0eb15833f0074198b47048b4e105051e8ba2a010083c40885c07d058b7608eb048bde8b36807e190074ca8bc35f5e5bc20400",
+      "assembly": "00be54d0 mov eax, dword ptr [ecx + 4]\n00be54d3 push ebx\n00be54d4 push esi\n00be54d5 mov esi, dword ptr [eax + 4]\n00be54d8 cmp byte ptr [esi + 0x19], 0\n00be54dc mov ebx, eax\n00be54de jne 0xbe551e\n00be54e0 push edi\n00be54e1 mov edi, dword ptr [esp + 0x10]\n00be54e5 cmp dword ptr [esi + 0xc], 0\n00be54e9 jne 0xbe54f3\n00be54eb mov eax, dword ptr [edi]\n00be54ed neg eax\n00be54ef sbb eax, eax\n00be54f1 jmp 0xbe5508\n00be54f3 cmp dword ptr [edi], 0\n00be54f6 je 0xbe5511\n00be54f8 mov eax, dword ptr [edi + 4]\n00be54fb mov ecx, dword ptr [esi + 0x10]\n00be54fe push eax\n00be54ff push ecx\n00be5500 call 0xbf7fbf\n00be5505 add esp, 8\n00be5508 test eax, eax\n00be550a jge 0xbe5511\n00be550c mov esi, dword ptr [esi + 8]\n00be550f jmp 0xbe5515\n00be5511 mov ebx, esi\n00be5513 mov esi, dword ptr [esi]\n00be5515 cmp byte ptr [esi + 0x19], 0\n00be5519 je 0xbe54e5\n00be551b mov eax, ebx\n00be551d pop edi\n00be551e pop esi\n00be551f pop ebx\n00be5520 ret 4"
+    },
+    {
+      "address": "00443d00",
+      "length": 81,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "hex": "8b4c24048339008b44240875128b00f7d81bc033c985c00f9cc18ac1c208008338007511b80100000033c985c00f9cc18ac1c208008b50048b41045250e87d427b0033c983c40885c00f9cc18ac1c20800",
+      "assembly": "00443d00 mov ecx, dword ptr [esp + 4]\n00443d04 cmp dword ptr [ecx], 0\n00443d07 mov eax, dword ptr [esp + 8]\n00443d0b jne 0x443d1f\n00443d0d mov eax, dword ptr [eax]\n00443d0f neg eax\n00443d11 sbb eax, eax\n00443d13 xor ecx, ecx\n00443d15 test eax, eax\n00443d17 setl cl\n00443d1a mov al, cl\n00443d1c ret 8\n00443d1f cmp dword ptr [eax], 0\n00443d22 jne 0x443d35\n00443d24 mov eax, 1\n00443d29 xor ecx, ecx\n00443d2b test eax, eax\n00443d2d setl cl\n00443d30 mov al, cl\n00443d32 ret 8\n00443d35 mov edx, dword ptr [eax + 4]\n00443d38 mov eax, dword ptr [ecx + 4]\n00443d3b push edx\n00443d3c push eax\n00443d3d call 0xbf7fbf\n00443d42 xor ecx, ecx\n00443d44 add esp, 8\n00443d47 test eax, eax\n00443d49 setl cl\n00443d4c mov al, cl\n00443d4e ret 8"
+    },
+    {
+      "address": "00bdd990",
+      "length": 113,
+      "span_kind": "complete_body",
+      "matches_installed_pe": true,
+      "sha256": "1085b6f58d29be12200ad20d4f2fe09b7ae0ce85113d8d6fe0167572e4361209",
+      "hex": "6aff68c863cc0064a100000000506489250000000083ec148b4424308b542428566a008bf18b4c24345051528d4c2414e85be4ffff8b4c24288d44240450518bcec744242800000000e8c2f6ffff8d4c2404c7442420ffffffffe8f1dcffff8b4c24185e64890d0000000083c420c21000",
+      "assembly": "00bdd990 push -1\n00bdd992 push 0xcc63c8\n00bdd997 mov eax, dword ptr fs:[0]\n00bdd99d push eax\n00bdd99e mov dword ptr fs:[0], esp\n00bdd9a5 sub esp, 0x14\n00bdd9a8 mov eax, dword ptr [esp + 0x30]\n00bdd9ac mov edx, dword ptr [esp + 0x28]\n00bdd9b0 push esi\n00bdd9b1 push 0\n00bdd9b3 mov esi, ecx\n00bdd9b5 mov ecx, dword ptr [esp + 0x34]\n00bdd9b9 push eax\n00bdd9ba push ecx\n00bdd9bb push edx\n00bdd9bc lea ecx, [esp + 0x14]\n00bdd9c0 call 0xbdbe20\n00bdd9c5 mov ecx, dword ptr [esp + 0x28]\n00bdd9c9 lea eax, [esp + 4]\n00bdd9cd push eax\n00bdd9ce push ecx\n00bdd9cf mov ecx, esi\n00bdd9d1 mov dword ptr [esp + 0x28], 0\n00bdd9d9 call 0xbdd0a0\n00bdd9de lea ecx, [esp + 4]\n00bdd9e2 mov dword ptr [esp + 0x20], 0xffffffff\n00bdd9ea call 0xbdb6e0\n00bdd9ef mov ecx, dword ptr [esp + 0x18]\n00bdd9f3 pop esi\n00bdd9f4 mov dword ptr fs:[0], ecx\n00bdd9fb add esp, 0x20\n00bdd9fe ret 0x10"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bee520",
+      "assembly": "00bee520: PUSH -0x1 \n00bee522: PUSH 0xcc7599 \n00bee527: MOV EAX,FS:[0x0] \n00bee52d: PUSH EAX \n00bee52e: MOV dword ptr FS:[0x0],ESP \n00bee535: SUB ESP,0x28 \n00bee538: PUSH EBX \n00bee539: PUSH ESI \n00bee53a: MOV ESI,EDX \n00bee53c: MOV EBX,ECX \n00bee53e: MOV dword ptr [ESP + 0x8],0x0 \n00bee546: CMP dword ptr [ESI],0x0 \n00bee549: MOV dword ptr [ESP + 0xc],EBX \n00bee54d: JNZ 0x00bee56d \n00bee54f: MOV EDX,dword ptr [ESP + 0x40] \n00bee553: CALL 0x00bee390 \n00bee558: POP ESI \n00bee559: MOV EAX,EBX \n00bee55b: POP EBX \n00bee55c: MOV ECX,dword ptr [ESP + 0x28] \n00bee560: MOV dword ptr FS:[0x0],ECX \n00bee567: ADD ESP,0x34 \n00bee56a: RET 0x4 \n00bee56d: PUSH EDI \n00bee56e: MOV EDI,dword ptr [ESP + 0x44] \n00bee572: CMP dword ptr [EDI],0x0 \n00bee575: JNZ 0x00bee581 \n00bee577: CALL 0x00bee390 \n00bee57c: JMP 0x00bee66e \n00bee581: PUSH 0xce7898 \n00bee586: LEA ECX,[ESP + 0x18] \n00bee58a: CALL 0x0041e870 \n00bee58f: LEA EAX,[ESP + 0x14] \n00bee593: PUSH EAX \n00bee594: LEA ECX,[ESP + 0x30] \n00bee598: PUSH ECX \n00bee599: MOV ECX,ESI \n00bee59b: MOV dword ptr [ESP + 0x44],0x1 \n00bee5a3: CALL 0x004261a0 \n00bee5a8: PUSH EDI \n00bee5a9: LEA EDX,[ESP + 0x28] \n00bee5ad: PUSH EDX \n00bee5ae: MOV ECX,EAX \n00bee5b0: MOV byte ptr [ESP + 0x44],0x2 \n00bee5b5: CALL 0x004261a0 \n00bee5ba: MOV EDX,EAX \n00bee5bc: LEA ECX,[ESP + 0x1c] \n00bee5c0: MOV byte ptr [ESP + 0x3c],0x3 \n00bee5c5: CALL 0x00bee390 \n00bee5ca: MOV EAX,dword ptr [ESP + 0x28] \n00bee5ce: TEST EAX,EAX \n00bee5d0: MOV byte ptr [ESP + 0x3c],0x5 \n00bee5d5: JZ 0x00bee5ee \n00bee5d7: MOV ECX,dword ptr [ESP + 0x24] \n00bee5db: PUSH 0x1 \n00bee5dd: ADD ECX,0x1 \n00bee5e0: PUSH ECX \n00bee5e1: PUSH EAX \n00bee5e2: CALL 0x00419cc0 \n00bee5e7: MOV ECX,EAX \n00bee5e9: CALL 0x00bd1510 \n00bee5ee: MOV ECX,dword ptr [ESP + 0x30] \n00bee5f2: TEST ECX,ECX \n00bee5f4: MOV byte ptr [ESP + 0x3c],0x6 \n00bee5f9: JZ 0x00bee612 \n00bee5fb: MOV EAX,dword ptr [ESP + 0x2c] \n00bee5ff: PUSH 0x1 \n00bee601: ADD EAX,0x1 \n00bee604: PUSH EAX \n00bee605: PUSH ECX \n00bee606: CALL 0x00419cc0 \n00bee60b: MOV ECX,EAX \n00bee60d: CALL 0x00bd1510 \n00bee612: MOV ECX,dword ptr [ESP + 0x18] \n00bee616: TEST ECX,ECX \n00bee618: MOV byte ptr [ESP + 0x3c],0x7 \n00bee61d: JZ 0x00bee636 \n00bee61f: MOV EAX,dword ptr [ESP + 0x14] \n00bee623: PUSH 0x1 \n00bee625: ADD EAX,0x1 \n00bee628: PUSH EAX \n00bee629: PUSH ECX \n00bee62a: CALL 0x00419cc0 \n00bee62f: MOV ECX,EAX \n00bee631: CALL 0x00bd1510 \n00bee636: LEA EAX,[ESP + 0x1c] \n00bee63a: PUSH EAX \n00bee63b: MOV ECX,EBX \n00bee63d: CALL 0x00426060 \n00bee642: MOV EAX,dword ptr [ESP + 0x20] \n00bee646: TEST EAX,EAX \n00bee648: MOV dword ptr [ESP + 0xc],0x1 \n00bee650: MOV byte ptr [ESP + 0x3c],0x0 \n00bee655: JZ 0x00bee66e \n00bee657: MOV ECX,dword ptr [ESP + 0x1c] \n00bee65b: PUSH 0x1 \n00bee65d: ADD ECX,0x1 \n00bee660: PUSH ECX \n00bee661: PUSH EAX \n00bee662: CALL 0x00419cc0 \n00bee667: MOV ECX,EAX \n00bee669: CALL 0x00bd1510 \n00bee66e: MOV ECX,dword ptr [ESP + 0x34] \n00bee672: POP EDI \n00bee673: POP ESI \n00bee674: MOV EAX,EBX \n00bee676: POP EBX \n00bee677: MOV dword ptr FS:[0x0],ECX \n00bee67e: ADD ESP,0x34 \n00bee681: RET 0x4 \n",
+      "decompiled": "\r\nundefined4 __fastcall FUN_00bee520(undefined4 param_1,int *param_2,int *param_3)\r\n\r\n{\r\n  int iVar1;\r\n  undefined4 uVar2;\r\n  int local_2c;\r\n  int local_28;\r\n  int local_24;\r\n  int local_20;\r\n  int local_1c;\r\n  int local_18;\r\n  int local_14;\r\n  int local_10;\r\n  void *local_c;\r\n  undefined1 *puStack_8;\r\n  int local_4;\r\n  \r\n  local_4 = 0xffffffff;\r\n  puStack_8 = &LAB_00cc7599;\r\n  local_c = ExceptionList;\r\n  if (*param_2 == 0) {\r\n    ExceptionList = &local_c;\r\n    BSP_Path_CanonicalizeMountName();\r\n    ExceptionList = local_c;\r\n    return param_1;\r\n  }\r\n  if (*param_3 == 0) {\r\n    ExceptionList = &local_c;\r\n    BSP_Path_CanonicalizeMountName();\r\n  }\r\n  else {\r\n    ExceptionList = &local_c;\r\n    FUN_0041e870(&DAT_00ce7898);\r\n    local_4 = 1;\r\n    FUN_004261a0(&local_14,&local_2c);\r\n    local_4._0_1_ = 2;\r\n    FUN_004261a0(&local_1c,param_3);\r\n    local_4._0_1_ = 3;\r\n    BSP_Path_CanonicalizeMountName();\r\n    local_4._0_1_ = 5;\r\n    if (local_18 != 0) {\r\n      uVar2 = 1;\r\n      iVar1 = local_1c + 1;\r\n      FUN_00419cc0(local_18,iVar1,1);\r\n      FUN_00bd1510(local_18,iVar1,uVar2);\r\n    }\r\n    local_4._0_1_ = 6;\r\n    if (local_10 != 0) {\r\n      uVar2 = 1;\r\n      iVar1 = local_14 + 1;\r\n      FUN_00419cc0(local_10,iVar1,1);\r\n      FUN_00bd1510(local_10,iVar1,uVar2);\r\n    }\r\n    local_4._0_1_ = 7;\r\n    if (local_28 != 0) {\r\n      uVar2 = 1;\r\n      iVar1 = local_2c + 1;\r\n      FUN_00419cc0(local_28,iVar1,1);\r\n      FUN_00bd1510(local_28,iVar1,uVar2);\r\n    }\r\n    FUN_00426060(&local_24);\r\n    local_4 = (uint)local_4._1_3_ << 8;\r\n    if (local_20 != 0) {\r\n      uVar2 = 1;\r\n      iVar1 = local_24 + 1;\r\n      FUN_00419cc0(local_20,iVar1,1);\r\n      FUN_00bd1510(local_20,iVar1,uVar2);\r\n    }\r\n  }\r\n  ExceptionList = local_c;\r\n  return param_1;\r\n}\r\n\r\n"
+    },
+    {
+      "address": "00be4c30",
+      "assembly": "00be4c30: PUSH ESI \n00be4c31: MOV ESI,ECX \n00be4c33: CMP dword ptr [ESI],0x0 \n00be4c36: JNZ 0x00be4c3d \n00be4c38: CALL 0x00bf6713 \n00be4c3d: MOV EAX,dword ptr [ESI + 0x4] \n00be4c40: CMP byte ptr [EAX + 0x19],0x0 \n00be4c44: JZ 0x00be4c4c \n00be4c46: POP ESI \n00be4c47: JMP 0x00bf6713 \n00be4c4c: MOV ECX,dword ptr [EAX + 0x8] \n00be4c4f: CMP byte ptr [ECX + 0x19],0x0 \n00be4c53: JNZ 0x00be4c6f \n00be4c55: MOV EAX,dword ptr [ECX] \n00be4c57: CMP byte ptr [EAX + 0x19],0x0 \n00be4c5b: JNZ 0x00be4c6a \n00be4c5d: LEA ECX,[ECX] \n00be4c60: MOV ECX,EAX \n00be4c62: MOV EAX,dword ptr [ECX] \n00be4c64: CMP byte ptr [EAX + 0x19],0x0 \n00be4c68: JZ 0x00be4c60 \n00be4c6a: MOV dword ptr [ESI + 0x4],ECX \n00be4c6d: POP ESI \n00be4c6e: RET \n00be4c6f: MOV EAX,dword ptr [EAX + 0x4] \n00be4c72: CMP byte ptr [EAX + 0x19],0x0 \n00be4c76: JNZ 0x00be4c8e \n00be4c78: MOV ECX,dword ptr [ESI + 0x4] \n00be4c7b: CMP ECX,dword ptr [EAX + 0x8] \n00be4c7e: JNZ 0x00be4c8e \n00be4c80: MOV dword ptr [ESI + 0x4],EAX \n00be4c83: MOV EDX,EAX \n00be4c85: MOV EAX,dword ptr [EDX + 0x4] \n00be4c88: CMP byte ptr [EAX + 0x19],0x0 \n00be4c8c: JZ 0x00be4c78 \n00be4c8e: MOV dword ptr [ESI + 0x4],EAX \n00be4c91: POP ESI \n00be4c92: RET \n",
+      "decompiled": "\r\nvoid __fastcall FUN_00be4c30(int *param_1)\r\n\r\n{\r\n  char cVar1;\r\n  int iVar2;\r\n  int *piVar3;\r\n  int *piVar4;\r\n  \r\n  if (*param_1 == 0) {\r\n    LIBCRT_unmatched_00bf6713();\r\n  }\r\n  iVar2 = param_1[1];\r\n  if (*(char *)(iVar2 + 0x19) == '\\0') {\r\n    piVar3 = *(int **)(iVar2 + 8);\r\n    if (*(char *)((int)piVar3 + 0x19) != '\\0') {\r\n      iVar2 = *(int *)(iVar2 + 4);\r\n      cVar1 = *(char *)(iVar2 + 0x19);\r\n      while ((cVar1 == '\\0' && (param_1[1] == *(int *)(iVar2 + 8)))) {\r\n        param_1[1] = iVar2;\r\n        iVar2 = *(int *)(iVar2 + 4);\r\n        cVar1 = *(char *)(iVar2 + 0x19);\r\n      }\r\n      param_1[1] = iVar2;\r\n      return;\r\n    }\r\n    cVar1 = *(char *)(*piVar3 + 0x19);\r\n    piVar4 = (int *)*piVar3;\r\n    while (cVar1 == '\\0') {\r\n      cVar1 = *(char *)(*piVar4 + 0x19);\r\n      piVar3 = piVar4;\r\n      piVar4 = (int *)*piVar4;\r\n    }\r\n    param_1[1] = (int)piVar3;\r\n    return;\r\n  }\r\n  LIBCRT_unmatched_00bf6713();\r\n  return;\r\n}\r\n\r\n"
+    },
+    {
+      "address": "00bee390",
+      "assembly": "00bee390: SUB ESP,0x110 \n00bee396: PUSH EBP \n00bee397: PUSH ESI \n00bee398: MOV ESI,EDX \n00bee39a: MOV EAX,dword ptr [ESI] \n00bee39c: CMP EAX,0x100 \n00bee3a1: MOV dword ptr [ESP + 0x10],ECX \n00bee3a5: MOV dword ptr [ESP + 0xc],0x0 \n00bee3ad: JNC 0x00bee3b5 \n00bee3af: LEA EBP,[ESP + 0x14] \n00bee3b3: JMP 0x00bee3c3 \n00bee3b5: ADD EAX,0x1 \n00bee3b8: PUSH EAX \n00bee3b9: CALL 0x00bf55be \n00bee3be: ADD ESP,0x4 \n00bee3c1: MOV EBP,EAX \n00bee3c3: MOV ECX,dword ptr [ESI + 0x4] \n00bee3c6: TEST ECX,ECX \n00bee3c8: JNZ 0x00bee3cf \n00bee3ca: MOV ECX,0x109db91 \n00bee3cf: MOV EDX,EBP \n00bee3d1: MOV AL,byte ptr [ECX] \n00bee3d3: MOV byte ptr [EDX],AL \n00bee3d5: ADD ECX,0x1 \n00bee3d8: ADD EDX,0x1 \n00bee3db: TEST AL,AL \n00bee3dd: JNZ 0x00bee3d1 \n00bee3df: MOV EAX,dword ptr [ESI] \n00bee3e1: LEA ECX,[EAX + EBP*0x1] \n00bee3e4: MOV AL,byte ptr [EBP] \n00bee3e7: CMP AL,0x2f \n00bee3e9: PUSH EBX \n00bee3ea: PUSH EDI \n00bee3eb: MOV dword ptr [ESP + 0x14],ECX \n00bee3ef: MOV EDI,EBP \n00bee3f1: MOV ESI,EBP \n00bee3f3: MOV dword ptr [ESP + 0x10],EBP \n00bee3f7: JZ 0x00bee3fd \n00bee3f9: CMP AL,0x5c \n00bee3fb: JNZ 0x00bee40a \n00bee3fd: LEA EDI,[EBP + 0x1] \n00bee400: MOV ESI,EDI \n00bee402: MOV byte ptr [EBP],0x2f \n00bee406: MOV dword ptr [ESP + 0x10],ESI \n00bee40a: CMP EDI,ECX \n00bee40c: MOV BL,0x1 \n00bee40e: JZ 0x00bee4e6 \n00bee414: MOV DL,byte ptr [EDI] \n00bee416: CMP DL,0x2f \n00bee419: JZ 0x00bee420 \n00bee41b: CMP DL,0x5c \n00bee41e: JNZ 0x00bee438 \n00bee420: ADD EDI,0x1 \n00bee423: TEST BL,BL \n00bee425: JNZ 0x00bee4da \n00bee42b: MOV byte ptr [ESI],0x2f \n00bee42e: ADD ESI,0x1 \n00bee431: MOV BL,0x1 \n00bee433: JMP 0x00bee4da \n00bee438: TEST BL,BL \n00bee43a: JZ 0x00bee4c4 \n00bee440: CMP DL,0x2e \n00bee443: JNZ 0x00bee4c4 \n00bee445: MOV EAX,ECX \n00bee447: SUB EAX,EDI \n00bee449: CMP EAX,0x1 \n00bee44c: JZ 0x00bee4b1 \n00bee44e: MOV CL,byte ptr [EDI + 0x1] \n00bee451: CMP CL,0x2f \n00bee454: JZ 0x00bee4bf \n00bee456: CMP CL,0x5c \n00bee459: JZ 0x00bee4bf \n00bee45b: CMP CL,DL \n00bee45d: JNZ 0x00bee4c4 \n00bee45f: CMP EAX,0x2 \n00bee462: JZ 0x00bee46f \n00bee464: MOV AL,byte ptr [EDI + 0x2] \n00bee467: CMP AL,0x2f \n00bee469: JZ 0x00bee46f \n00bee46b: CMP AL,0x5c \n00bee46d: JNZ 0x00bee4c4 \n00bee46f: CMP ESI,dword ptr [ESP + 0x10] \n00bee473: JZ 0x00bee494 \n00bee475: SUB ESI,0x1 \n00bee478: CMP ESI,EBP \n00bee47a: JZ 0x00bee4aa \n00bee47c: LEA ESP,[ESP] \n00bee480: CMP byte ptr [ESI + -0x1],0x2f \n00bee484: JZ 0x00bee4aa \n00bee486: ADD ESI,-0x1 \n00bee489: CMP ESI,EBP \n00bee48b: JNZ 0x00bee480 \n00bee48d: ADD EDI,0x2 \n00bee490: MOV BL,0x1 \n00bee492: JMP 0x00bee4da \n00bee494: MOV byte ptr [ESI],0x2e \n00bee497: ADD ESI,0x1 \n00bee49a: MOV byte ptr [ESI],0x2e \n00bee49d: ADD ESI,0x1 \n00bee4a0: MOV byte ptr [ESI],0x2f \n00bee4a3: ADD ESI,0x1 \n00bee4a6: MOV dword ptr [ESP + 0x10],ESI \n00bee4aa: ADD EDI,0x2 \n00bee4ad: MOV BL,0x1 \n00bee4af: JMP 0x00bee4da \n00bee4b1: ADD EDI,0x1 \n00bee4b4: CMP ESI,EBP \n00bee4b6: JBE 0x00bee4bb \n00bee4b8: SUB ESI,0x1 \n00bee4bb: XOR BL,BL \n00bee4bd: JMP 0x00bee4da \n00bee4bf: ADD EDI,0x2 \n00bee4c2: JMP 0x00bee4da \n00bee4c4: MOVSX EAX,DL \n00bee4c7: PUSH EAX \n00bee4c8: XOR BL,BL \n00bee4ca: CALL 0x00bf9611 \n00bee4cf: MOV byte ptr [ESI],AL \n00bee4d1: ADD ESP,0x4 \n00bee4d4: ADD ESI,0x1 \n00bee4d7: ADD EDI,0x1 \n00bee4da: MOV ECX,dword ptr [ESP + 0x14] \n00bee4de: CMP EDI,ECX \n00bee4e0: JNZ 0x00bee414 \n00bee4e6: MOV byte ptr [ESI],0x0 \n00bee4e9: MOV ESI,dword ptr [ESP + 0x18] \n00bee4ed: PUSH EBP \n00bee4ee: MOV ECX,ESI \n00bee4f0: CALL 0x0041e870 \n00bee4f5: LEA EAX,[ESP + 0x1c] \n00bee4f9: CMP EBP,EAX \n00bee4fb: POP EDI \n00bee4fc: POP EBX \n00bee4fd: JZ 0x00bee508 \n00bee4ff: PUSH EBP \n00bee500: CALL 0x00bf65ac \n00bee508: MOV EAX,ESI \n00bee50a: POP ESI \n00bee50b: POP EBP \n00bee50c: ADD ESP,0x110 \n00bee512: RET \n",
+      "decompiled": "\r\n/* [BSP reconstruction 00bee390]\r\n   ECX output string, EDX input, EAX output, ordinary RET. CRT lowercase, slash/backslash collapse,\r\n   dot/parent segment cursor/barrier algorithm. Finaldot can retreat one byte; leading unresolved\r\n   parents retained. Not the space-trimming00bee690. Typed mountfragment supports ASCII/NULfree\r\n   only; docs/VFS_MOUNT_REGISTRATION.md. */\r\n\r\nundefined4 __fastcall BSP_Path_CanonicalizeMountName(undefined4 param_1,uint *param_2)\r\n\r\n{\r\n  char cVar1;\r\n  char cVar2;\r\n  uint uVar3;\r\n  bool bVar4;\r\n  char *_Memory;\r\n  int iVar5;\r\n  undefined4 extraout_EAX;\r\n  char *pcVar6;\r\n  char *pcVar7;\r\n  char *local_110;\r\n  char local_104 [260];\r\n  \r\n  if (*param_2 < 0x100) {\r\n    _Memory = local_104;\r\n  }\r\n  else {\r\n    _Memory = (char *)LIBCRT_unmatched_00bf681b(*param_2 + 1);\r\n  }\r\n  pcVar6 = (char *)param_2[1];\r\n  pcVar7 = _Memory;\r\n  if (pcVar6 == (char *)0x0) {\r\n    pcVar6 = &DAT_0109db91;\r\n  }\r\n  do {\r\n    cVar1 = *pcVar6;\r\n    *pcVar7 = cVar1;\r\n    pcVar6 = pcVar6 + 1;\r\n    pcVar7 = pcVar7 + 1;\r\n  } while (cVar1 != '\\0');\r\n  uVar3 = *param_2;\r\n  if ((*_Memory == '/') || (pcVar6 = _Memory, *_Memory == '\\\\')) {\r\n    pcVar6 = _Memory + 1;\r\n    *_Memory = '/';\r\n  }\r\n  bVar4 = true;\r\n  pcVar7 = pcVar6;\r\n  local_110 = pcVar6;\r\njoined_r0x00bee40e:\r\n  do {\r\n    while( true ) {\r\n      while( true ) {\r\n        if (pcVar7 == _Memory + uVar3) {\r\n          *pcVar6 = '\\0';\r\n          FUN_0041e870(_Memory);\r\n          if (_Memory != local_104) {\r\n            _free(_Memory);\r\n            return extraout_EAX;\r\n          }\r\n          return param_1;\r\n        }\r\n        cVar1 = *pcVar7;\r\n        if ((cVar1 != '/') && (cVar1 != '\\\\')) break;\r\n        pcVar7 = pcVar7 + 1;\r\n        if (!bVar4) {\r\n          *pcVar6 = '/';\r\n          pcVar6 = pcVar6 + 1;\r\n          bVar4 = true;\r\n        }\r\n      }\r\n      if ((bVar4) && (cVar1 == '.')) break;\r\nLAB_00bee4c4:\r\n      bVar4 = false;\r\n      iVar5 = _tolower((int)cVar1);\r\n      *pcVar6 = (char)iVar5;\r\n      pcVar6 = pcVar6 + 1;\r\n      pcVar7 = pcVar7 + 1;\r\n    }\r\n    iVar5 = (int)(_Memory + uVar3) - (int)pcVar7;\r\n    if (iVar5 != 1) {\r\n      cVar2 = pcVar7[1];\r\n      if ((cVar2 != '/') && (cVar2 != '\\\\')) {\r\n        if ((cVar2 != '.') || (((iVar5 != 2 && (pcVar7[2] != '/')) && (pcVar7[2] != '\\\\'))))\r\n        goto LAB_00bee4c4;\r\n        if (pcVar6 == local_110) {\r\n          *pcVar6 = '.';\r\n          pcVar6[1] = '.';\r\n          pcVar6[2] = '/';\r\n          pcVar6 = pcVar6 + 3;\r\n          local_110 = pcVar6;\r\n        }\r\n        else {\r\n          pcVar6 = pcVar6 + -1;\r\n          if (pcVar6 != _Memory) {\r\n            do {\r\n              if (pcVar6[-1] == '/') goto LAB_00bee4aa;\r\n              pcVar6 = pcVar6 + -1;\r\n            } while (pcVar6 != _Memory);\r\n            pcVar7 = pcVar7 + 2;\r\n            bVar4 = true;\r\n            goto joined_r0x00bee40e;\r\n          }\r\n        }\r\nLAB_00bee4aa:\r\n        pcVar7 = pcVar7 + 2;\r\n        bVar4 = true;\r\n        goto joined_r0x00bee40e;\r\n      }\r\n      pcVar7 = pcVar7 + 2;\r\n      goto joined_r0x00bee40e;\r\n    }\r\n    pcVar7 = pcVar7 + 1;\r\n    if (_Memory < pcVar6) {\r\n      pcVar6 = pcVar6 + -1;\r\n    }\r\n    bVar4 = false;\r\n  } while( true );\r\n}\r\n\r\n"
+    },
+    {
+      "address": "004261a0",
+      "assembly": "004261a0: PUSH -0x1 \n004261a2: PUSH 0xc5e849 \n004261a7: MOV EAX,FS:[0x0] \n004261ad: PUSH EAX \n004261ae: MOV dword ptr FS:[0x0],ESP \n004261b5: PUSH ECX \n004261b6: PUSH EBX \n004261b7: XOR EBX,EBX \n004261b9: PUSH EBP \n004261ba: PUSH ESI \n004261bb: MOV dword ptr [ESP + 0xc],EBX \n004261bf: MOV ESI,dword ptr [ESP + 0x20] \n004261c3: PUSH EDI \n004261c4: MOV EDI,ECX \n004261c6: CMP ESI,EDI \n004261c8: MOV dword ptr [ESP + 0x1c],EBX \n004261cc: MOV dword ptr [ESI],EBX \n004261ce: MOV dword ptr [ESI + 0x4],EBX \n004261d1: JZ 0x004261f6 \n004261d3: MOV EAX,dword ptr [EDI] \n004261d5: PUSH 0x1 \n004261d7: PUSH EAX \n004261d8: MOV ECX,ESI \n004261da: CALL 0x0041dd40 \n004261df: CMP dword ptr [EDI],EBX \n004261e1: JZ 0x004261f6 \n004261e3: MOV EAX,dword ptr [ESI] \n004261e5: MOV ECX,dword ptr [ESI + 0x4] \n004261e8: PUSH EAX \n004261e9: MOV EAX,dword ptr [EDI + 0x4] \n004261ec: PUSH EAX \n004261ed: PUSH ECX \n004261ee: CALL 0x00bf7680 \n004261f3: ADD ESP,0xc \n004261f6: MOV EBP,dword ptr [ESP + 0x28] \n004261fa: MOV EDI,dword ptr [EBP] \n004261fd: CMP EDI,EBX \n004261ff: MOV dword ptr [ESP + 0x1c],EBX \n00426203: MOV dword ptr [ESP + 0x10],0x1 \n0042620b: JZ 0x0042622f \n0042620d: MOV EBX,dword ptr [ESI] \n0042620f: PUSH 0x1 \n00426211: LEA EDX,[EBX + EDI*0x1] \n00426214: PUSH EDX \n00426215: MOV ECX,ESI \n00426217: CALL 0x0041dd40 \n0042621c: MOV EAX,dword ptr [EBP + 0x4] \n0042621f: MOV ECX,dword ptr [ESI + 0x4] \n00426222: PUSH EDI \n00426223: PUSH EAX \n00426224: ADD ECX,EBX \n00426226: PUSH ECX \n00426227: CALL 0x00bf7680 \n0042622c: ADD ESP,0xc \n0042622f: MOV ECX,dword ptr [ESP + 0x14] \n00426233: POP EDI \n00426234: MOV EAX,ESI \n00426236: POP ESI \n00426237: POP EBP \n00426238: POP EBX \n00426239: MOV dword ptr FS:[0x0],ECX \n00426240: ADD ESP,0x10 \n00426243: RET 0x8 \n",
+      "decompiled": "\r\nsize_t * __thiscall FUN_004261a0(size_t *param_1,size_t *param_2,size_t *param_3)\r\n\r\n{\r\n  size_t _Size;\r\n  size_t sVar1;\r\n  void *local_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 local_4;\r\n  \r\n  puStack_8 = &LAB_00c5e849;\r\n  local_c = ExceptionList;\r\n  local_4 = 0;\r\n  ExceptionList = &local_c;\r\n  *param_2 = 0;\r\n  param_2[1] = 0;\r\n  if (param_2 != param_1) {\r\n    FUN_0041dd40(*param_1,1);\r\n    if (*param_1 != 0) {\r\n      _memcpy((void *)param_2[1],(void *)param_1[1],*param_2);\r\n    }\r\n  }\r\n  _Size = *param_3;\r\n  local_4 = 0;\r\n  if (_Size != 0) {\r\n    sVar1 = *param_2;\r\n    FUN_0041dd40(sVar1 + _Size,1);\r\n    _memcpy((void *)(param_2[1] + sVar1),(void *)param_3[1],_Size);\r\n  }\r\n  ExceptionList = local_c;\r\n  return param_2;\r\n}\r\n\r\n"
+    },
+    {
+      "address": "00be54d0",
+      "assembly": "00be54d0: MOV EAX,dword ptr [ECX + 0x4] \n00be54d3: PUSH EBX \n00be54d4: PUSH ESI \n00be54d5: MOV ESI,dword ptr [EAX + 0x4] \n00be54d8: CMP byte ptr [ESI + 0x19],0x0 \n00be54dc: MOV EBX,EAX \n00be54de: JNZ 0x00be551e \n00be54e0: PUSH EDI \n00be54e1: MOV EDI,dword ptr [ESP + 0x10] \n00be54e5: CMP dword ptr [ESI + 0xc],0x0 \n00be54e9: JNZ 0x00be54f3 \n00be54eb: MOV EAX,dword ptr [EDI] \n00be54ed: NEG EAX \n00be54ef: SBB EAX,EAX \n00be54f1: JMP 0x00be5508 \n00be54f3: CMP dword ptr [EDI],0x0 \n00be54f6: JZ 0x00be5511 \n00be54f8: MOV EAX,dword ptr [EDI + 0x4] \n00be54fb: MOV ECX,dword ptr [ESI + 0x10] \n00be54fe: PUSH EAX \n00be54ff: PUSH ECX \n00be5500: CALL 0x00bf7fbf \n00be5505: ADD ESP,0x8 \n00be5508: TEST EAX,EAX \n00be550a: JGE 0x00be5511 \n00be550c: MOV ESI,dword ptr [ESI + 0x8] \n00be550f: JMP 0x00be5515 \n00be5511: MOV EBX,ESI \n00be5513: MOV ESI,dword ptr [ESI] \n00be5515: CMP byte ptr [ESI + 0x19],0x0 \n00be5519: JZ 0x00be54e5 \n00be551b: MOV EAX,EBX \n00be551d: POP EDI \n00be551e: POP ESI \n00be551f: POP EBX \n00be5520: RET 0x4 \n",
+      "decompiled": "\r\nundefined4 * __thiscall FUN_00be54d0(int param_1,int *param_2)\r\n\r\n{\r\n  char cVar1;\r\n  undefined4 *puVar2;\r\n  int iVar3;\r\n  undefined4 *puVar4;\r\n  undefined4 *puVar5;\r\n  \r\n  puVar4 = (undefined4 *)(*(undefined4 **)(param_1 + 4))[1];\r\n  cVar1 = *(char *)((int)puVar4 + 0x19);\r\n  puVar2 = *(undefined4 **)(param_1 + 4);\r\n  do {\r\n    if (cVar1 != '\\0') {\r\n      return puVar2;\r\n    }\r\n    if (puVar4[3] == 0) {\r\n      iVar3 = -(uint)(*param_2 != 0);\r\nLAB_00be5508:\r\n      if (-1 < iVar3) goto LAB_00be5511;\r\n      puVar5 = (undefined4 *)puVar4[2];\r\n      puVar4 = puVar2;\r\n    }\r\n    else {\r\n      if (*param_2 != 0) {\r\n        iVar3 = __stricmp((char *)puVar4[4],(char *)param_2[1]);\r\n        goto LAB_00be5508;\r\n      }\r\nLAB_00be5511:\r\n      puVar5 = (undefined4 *)*puVar4;\r\n    }\r\n    cVar1 = *(char *)((int)puVar5 + 0x19);\r\n    puVar2 = puVar4;\r\n    puVar4 = puVar5;\r\n  } while( true );\r\n}\r\n\r\n"
+    },
+    {
+      "address": "00443d00",
+      "assembly": "00443d00: MOV ECX,dword ptr [ESP + 0x4] \n00443d04: CMP dword ptr [ECX],0x0 \n00443d07: MOV EAX,dword ptr [ESP + 0x8] \n00443d0b: JNZ 0x00443d1f \n00443d0d: MOV EAX,dword ptr [EAX] \n00443d0f: NEG EAX \n00443d11: SBB EAX,EAX \n00443d13: XOR ECX,ECX \n00443d15: TEST EAX,EAX \n00443d17: SETL CL \n00443d1a: MOV AL,CL \n00443d1c: RET 0x8 \n00443d1f: CMP dword ptr [EAX],0x0 \n00443d22: JNZ 0x00443d35 \n00443d24: MOV EAX,0x1 \n00443d29: XOR ECX,ECX \n00443d2b: TEST EAX,EAX \n00443d2d: SETL CL \n00443d30: MOV AL,CL \n00443d32: RET 0x8 \n00443d35: MOV EDX,dword ptr [EAX + 0x4] \n00443d38: MOV EAX,dword ptr [ECX + 0x4] \n00443d3b: PUSH EDX \n00443d3c: PUSH EAX \n00443d3d: CALL 0x00bf7fbf \n00443d42: XOR ECX,ECX \n00443d44: ADD ESP,0x8 \n00443d47: TEST EAX,EAX \n00443d49: SETL CL \n00443d4c: MOV AL,CL \n00443d4e: RET 0x8 \n",
+      "decompiled": "\r\nbool FUN_00443d00(int *param_1,int *param_2)\r\n\r\n{\r\n  int iVar1;\r\n  \r\n  if (*param_1 == 0) {\r\n    return (int)-(uint)(*param_2 != 0) < 0;\r\n  }\r\n  if (*param_2 == 0) {\r\n    return false;\r\n  }\r\n  iVar1 = __stricmp((char *)param_1[1],(char *)param_2[1]);\r\n  return iVar1 < 0;\r\n}\r\n\r\n"
+    }
+  ],
+  "physical_enumeration_imports": [
+    {
+      "slot": "00ce2128",
+      "dll": "KERNEL32.dll",
+      "name": "FindFirstFileA"
+    },
+    {
+      "slot": "00ce212c",
+      "dll": "KERNEL32.dll",
+      "name": "FindNextFileA"
+    },
+    {
+      "slot": "00ce2130",
+      "dll": "KERNEL32.dll",
+      "name": "FindClose"
+    }
+  ],
+  "completed_utc": "2026-09-09T22:32:42.346796+00:00",
+  "function_contracts": [
+    {
+      "address": "00bf47e0",
+      "complete_length": 912,
+      "sha256": "22bfdb84f7a28f1575d605e31fd73c6796d0c830f1f279570070e087ed5cef39",
+      "abi": "ECX physical provider; stack directory,extension,flags,output_vector; no semantic return; RET10h",
+      "proposed_name": "BSP_PhysicalDirectory_EnumerateNames",
+      "contract": "Construct OS path using provider+1C, ensure trailing backslash, append star; Win32 order, dot-prefix skip, file-only strict-length case-insensitive suffix and MidwayDL_Content exclusion; low flag byte controls depth-first recursion."
+    },
+    {
+      "address": "00be6480",
+      "complete_length": 205,
+      "sha256": "ebe69187dc5e615e57365b8e5037d35ce1c9340370fb2de2cedc4979782a9c36",
+      "abi": "ECX FileStore; stack directory,extension,flags(unused),output_vector; no semantic return; RET10h",
+      "proposed_name": "BSP_FileStore_EnumerateNames",
+      "contract": "Primary tree in-order; pointer-gated first strstr prefix and first strstr index compared with wrapped stored-length difference. Failed extension indexFFFFFFFF collides with extension length name+1."
+    },
+    {
+      "address": "00bee520",
+      "complete_length": 356,
+      "sha256": "80b2cba3a3c109ea684cedcf661eaf44846a867d9e700baac181f2eef36ca9d6",
+      "abi": "ECX destination string; EDX directory string; stack child string; EAX destination; RET4",
+      "proposed_name": "BSP_Path_JoinCanonical",
+      "contract": "Canonicalize the nonempty side, otherwise concatenate directory/slash/child and canonicalize; no trailing trim00584110."
+    },
+    {
+      "address": "00bee390",
+      "complete_length": 387,
+      "sha256": "f3db474665b49451a2e7ec5b0662cbbac9c9531025ba92c19256c2f6eafc134a",
+      "abi": "ECX destination string; EDX source string; EAX destination; plain RET",
+      "proposed_name": null,
+      "contract": "Existing canonicalizer: CRT lowercase, slash collapse, dot/parent segment cursor algorithm; full post-free tail inspected. Preserve existing name."
+    },
+    {
+      "address": "00bf3970",
+      "complete_length": 65,
+      "sha256": "83322b019ce0e47cdec0a1fbce1d04a3d9593917cb2064655650fb18ef603a7b",
+      "abi": "ECX provider; stack output,suffix; EAX output; RET8",
+      "proposed_name": null,
+      "contract": "Root+suffix, no inserted separator; convert slash only in appended suffix. Preserve current physical path helper name."
+    },
+    {
+      "address": "00be4c30",
+      "complete_length": 99,
+      "sha256": "5820cc905f639c22ac31c02a4c5f7a865941908b5f698b7c1909173051c478c8",
+      "abi": "ECX iterator owner/node pair; no stack arguments; plain RET",
+      "proposed_name": null,
+      "contract": "Tree in-order successor; current iterator node+8 right/leftmost or parent climb; preserve helper identity."
+    },
+    {
+      "address": "00be54d0",
+      "complete_length": 83,
+      "sha256": "5bdcf1cde7eca209d12843f8b773035de68ccef488273a8e44ef4cc61b9a0da7",
+      "abi": "ECX tree; stack query string; EAX lower-bound node; RET4",
+      "proposed_name": null,
+      "contract": "Empty-name ordering gates then CRT_stricmp; preserve string/tree helper identity."
+    },
+    {
+      "address": "00443d00",
+      "complete_length": 81,
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "abi": "Incoming ECX unused; stack left,right native strings; AL left_less; RET8",
+      "proposed_name": null,
+      "contract": "Empty key first; otherwise CRT_stricmp<0 without length tie-break; preserve comparator identity."
+    },
+    {
+      "address": "004261a0",
+      "complete_length": 166,
+      "sha256": "025e33b4d97cbfa811c37a521873d3b3686165e85b854529726afaf9e01fa6b6",
+      "abi": "ECX left string; stack output,right string; EAX output; RET8",
+      "proposed_name": null,
+      "contract": "Copy left then append right bytes; preserve generic string helper identity."
+    },
+    {
+      "address": "00425850",
+      "complete_length": 76,
+      "sha256": "499cea889390e1f820bb2b3c74103d73b69b67fd3702a93d448ab58dd03250e5",
+      "abi": "ECX native string; stack C-string; AL equality; RET4",
+      "proposed_name": null,
+      "contract": "Non-null equality delegates to CRT_stricmp; null/empty gates retained in native."
+    },
+    {
+      "address": "00bdd990",
+      "complete_length": 113,
+      "sha256": "1085b6f58d29be12200ad20d4f2fe09b7ae0ce85113d8d6fe0167572e4361209",
+      "abi": "ECX manager; stack directory,extension,flag,output_list; no semantic return; RET10h",
+      "proposed_name": null,
+      "contract": "Construct enumeration callback and dispatch00bdd0a0 on original directory; preserve current manager identity."
+    },
+    {
+      "address": "00bdd0a0",
+      "complete_length": 672,
+      "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397",
+      "abi": "ECX manager; stack path,callback; RET8",
+      "proposed_name": null,
+      "contract": "Reset manager+18=FFFFFFFF at00bdd0d2, then traverse ordered matching mounts with provider-relative suffix; no normalization/aliases."
+    }
+  ],
+  "physical_contract": {
+    "output_policy": "Append canonical joined logical names; no sort/dedup; depth-first children in OS encounter order.",
+    "physical_pattern": "provider00bf3970(root+directory, suffix slash conversion), append backslash unless final byte already backslash, append star.",
+    "empty_path": "Native unguarded last-byte read; host empty constructed path guard is explicit. Empty directory with nonempty root remains usable.",
+    "file_match": "First byte is not dot; no directory attribute; filename length strictly greater than extension length; case-insensitive suffix; case-insensitive filename != MidwayDL_Content.",
+    "directory_policy": "First byte not dot and flags low byte nonzero; no extension or MidwayDL_Content test for directories; no reparse guard observed.",
+    "win32_failures": "FindFirst invalid yields no additions; any FindNext false stops current scan preserving results; FindClose result ignored; no GetLastError or success bool.",
+    "provider_state": "Does not read existence cache, constructor+28 shortcut, or indexed-name count+34."
+  },
+  "filestore_contract": {
+    "order": "Primary tree+14 in-order, empty key first then CRT_stricmp; second tree ignored.",
+    "prefix": "Require candidate and directory data nonnull; first strstr(candidate,directory) must equal candidate.",
+    "extension": "First strstr if pointer/search succeeds, otherwise indexFFFFFFFF; compare with DWORD(name_stored_length-extension_stored_length).",
+    "sentinel_collision": "Absent/null extension exactly one byte longer than stored name passes after directory prefix.",
+    "empty_pointer_gates": [
+      "Null candidate or directory always skips.",
+      "Nonnull empty directory prefix passes.",
+      "Null extension leaves sentinelFFFFFFFF.",
+      "Nonnull empty extension returns index0, matching only when stored-length difference0; valid all-empty nonnull case can append empty name."
+    ],
+    "flags": "Never read; no recursion/depth filter.",
+    "outputs": "Append copies of whole stored names; no normalization/join/sort/dedup or stream access."
+  },
+  "joined_path_contract": {
+    "abi": "ECX output, EDX directory, stack child, EAX output, RET4",
+    "operation": "00bee390(nonempty side) for empty-other side, otherwise00bee390(directory+slash+child).",
+    "trailing_slash_trim": false,
+    "normalizer": "00bee390, not00bee690",
+    "root_dot_example": "dot plus Patch2.MPKG emits patch2.mpkg (assembly-derived)"
+  },
+  "manager_error_reset": {
+    "address": "00bdd0d2",
+    "instruction": "MOV dword ptr [EDI+18h],FFFFFFFFh",
+    "verified": true,
+    "caller": "00bdd990 via00bdd0a0"
+  },
+  "raw_tail_notes": [
+    "Physical decompiler parameter count/unaff_retaddr/string temporaries are misleading; full raw body returns at00bf4b6d RET10h.",
+    "FileStore full raw body returns at00be654a RET10h, flags never loaded.",
+    "00bee390 raw00bee505 ADD ESP,4 exists after free; EAX destination restored and common RET reached."
+  ],
+  "implementation_review": {
+    "mode": "read_only",
+    "files": [
+      "src/physical_directory.cpp",
+      "src/file_store.cpp",
+      "src/resource_path.cpp",
+      "src/vfs_mount_registration.cpp",
+      "src/mounted_streams.cpp",
+      "include/bsp/physical_directory.hpp",
+      "include/bsp/file_store.hpp"
+    ],
+    "concrete_defects_found": [],
+    "notes": [
+      "Physical root/suffix, canonical logical join, depth-first order and OS partial completion match.",
+      "FileStore first-occurrence/sentinel collision preserved; header explicitly chooses nonnull host empty-string representation.",
+      "Canonicalizer extracted before separate mount trim; join does not silently apply trim.",
+      "Provider callback argument forwarding matches recovered four-argument methods."
+    ]
+  },
+  "boundaries": [
+    "Static byte/source review only; no native differential or runtime enumeration performed.",
+    "Native malformed tree/string storage, allocator failures, locale/high-byte behavior and reparse cycles not runtime validated.",
+    "Host guards/output staging/exception policy are explicit differences, not inferred native error status.",
+    "No provider lifetime/unmount or startup scan reconstruction added."
+  ],
+  "validation": {
+    "recorded_ranges": 17,
+    "complete_code_bodies": 12,
+    "target_verified_batches": 3,
+    "all_ranges_match_installed_pe": true,
+    "ghidra_writes": false,
+    "code_edits": false,
+    "shared_metadata_edits": false,
+    "tests_or_builds": false,
+    "installed_files_changed": false
+  },
+  "document": "docs/PROVIDER_ENUMERATION.md"
+}

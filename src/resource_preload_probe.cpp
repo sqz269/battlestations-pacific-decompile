@@ -18,6 +18,20 @@ bool probe_startup_script_preloads(AssetStreamProbe& assets,
     const auto observed = assets.opens();
     if (completed != 5 || observed.size() != 5 || assets.cache_entries() != 5
         || assets.physical_opens() != 5 || assets.cached_opens() != 0) return false;
+    std::vector<std::string> names, cached_names;
+    for (const auto& request : observed) cached_names.push_back(request.name);
+    std::sort(cached_names.begin(), cached_names.end());
+    if (!assets.enumerate("scripts/datatables", "lua", 0, names, error)
+        || names.size() < cached_names.size()
+        || !std::equal(cached_names.begin(), cached_names.end(), names.begin())) return false;
+    // The cache contributes its five sorted names first. Physical enumeration
+    // adds the other loose scripts; duplicates across providers appear once.
+    bool enumeration_checked = names.size() > cached_names.size();
+    for (const auto& name : cached_names)
+        enumeration_checked = enumeration_checked && std::count(names.begin(), names.end(), name) == 1;
+    std::printf("Installed provider enumeration: names=%zu cache_first=%zu physical_additions=%zu first_spelling_and_dedup=%d\n",
+        names.size(), cached_names.size(), names.size() - cached_names.size(), enumeration_checked);
+    if (!enumeration_checked) return false;
     std::uint64_t total_bytes = 0;
     for (const auto& request : observed) {
         if (request.flags != 0x32 || request.cache) return false;

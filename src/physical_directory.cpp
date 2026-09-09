@@ -1,5 +1,6 @@
 #include "bsp/physical_directory.hpp"
 #include "bsp/physical_file.hpp"
+#include "bsp/resource_path.hpp"
 #include <cstdint>
 #include <limits>
 #include <cstring>
@@ -46,6 +47,48 @@ bool PhysicalDirectory::exists_00bf3f70_fragment(const std::string& suffix) {
 bool PhysicalDirectory::resolve_00bf0fb0(const std::string& suffix, std::string& output) {
     if (!exists_00bf3f70_fragment(suffix)) return false;
     if (&suffix != &output) output = suffix;
+    return true;
+}
+bool PhysicalDirectory::enumerate_00bf47e0_fragment(const std::string& directory,
+    const std::string& extension, std::uint32_t flags,
+    std::vector<std::string>& output, std::string& error) const {
+    error.clear();
+    std::string path;
+    if (!supported_string(extension) || !build_path_00bf3970(directory, path)
+        || path.empty() || path.size() > static_cast<std::size_t>(INT32_MAX) - 2) {
+        error = "Unsupported physical enumeration path or extension.";
+        return false;
+    }
+    if (path.back() != '\\') path += '\\';
+    path += '*';
+    WIN32_FIND_DATAA data{};
+    struct FindHandle {
+        HANDLE value;
+        ~FindHandle() { if (value != INVALID_HANDLE_VALUE) FindClose(value); }
+    } found{FindFirstFileA(path.c_str(), &data)};
+    if (found.value == INVALID_HANDLE_VALUE) return true;
+    auto result = output;
+    do {
+        const std::string child = data.cFileName;
+        if (child.empty() || child.front() == '.') continue;
+        const bool is_directory = (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+        if (is_directory) {
+            if ((flags & 0xffu) == 0) continue;
+        } else {
+            if (child.size() <= extension.size()
+                || _stricmp(child.c_str() + child.size() - extension.size(), extension.c_str()) != 0
+                || _stricmp(child.c_str(), "MidwayDL_Content") == 0) continue;
+        }
+        std::string logical;
+        if (!join_resource_path_00bee520_fragment(directory, child, logical)) {
+            error = "Unsupported physical enumeration logical name.";
+            return false;
+        }
+        if (is_directory) {
+            if (!enumerate_00bf47e0_fragment(logical, extension, flags, result, error)) return false;
+        } else result.push_back(std::move(logical));
+    } while (FindNextFileA(found.value, &data));
+    output = std::move(result);
     return true;
 }
 std::shared_ptr<PhysicalDirectory> create_physical_directory_00bf4df0_fragment(

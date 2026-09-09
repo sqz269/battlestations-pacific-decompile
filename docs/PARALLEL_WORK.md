@@ -15,7 +15,7 @@ policy while the other two continued archive-stream and font-layout work.
 No throughput multiplier or completion date has been measured.
 
 After the latest saved function definitions/names, the refreshed graph groups
-23,941 candidates into 92 segments, with 85 in its largest strong dependency
+23,937 candidates into 85 segments, with 82 in its largest strong dependency
 cycle. These current segment IDs replace the earlier snapshot's IDs; the
 87-segment figures above describe the historical method-review baseline.
 Packet function addresses and file ownership remain the scheduling contract.
@@ -31,9 +31,9 @@ segment IDs. Named but unfinished routines are explicitly eligible.
 
 | Work packet | Native anchors | Independent deliverable | Integration boundary |
 |---|---|---|---|
-| Archive loading | `00bb9920`, `00bb8d60`, `00bbc140`, `00bb9d90` | Transform/directory/entry materializer integrated; provider enumeration and reopening next | Existing source interface and pinned zlib; shared mount wiring stays with primary |
-| Font layout/context | `00ab9fd0`, `00aba270`, `00aba8d0` | Single-line/wrapped layout and draw integrated; context/section lifetime next | Existing FontData, glyph writer and D3D9 resources; archive loading is not a prerequisite |
-| Preload/pending I/O | `0073d410`, `00be7cd0`, `00bf43b0`, `00bf46b0` | Five-script policy integrated; pending queue ownership and frame pump next | Existing mounted-stream/FileStore interface; shared API/probe edits stay with primary |
+| Archive loading | `00bb9920`, `00bb8d60`, `00bbc140`, `00bb9d90` | Mounted factory/open/enumeration integrated; startup scans next | Existing source interface and pinned zlib; shared mount wiring stays with primary |
+| Font layout/context | `00ab9fd0`, `00aba270`, `00aba8d0` | Owned single-line/wrapped geometry and draw integrated; material binding next | Existing FontData, glyph writer and D3D9 resources; archive loading is not a prerequisite |
+| Preload/pending I/O | `0073d410`, `00be7cd0`, `00bf43b0`, `00bf46b0` | Five-script policy and physical pending owner integrated; manager/FileStore dispatch next | Existing mounted-stream/FileStore interface; shared API/probe edits stay with primary |
 
 The inflater and font packets now have bounded C++ implementations in disjoint
 source/header files. Each worker also reviewed the other's implementation.
@@ -54,16 +54,22 @@ three lines. The preload scenario checks the exact native order/flags and all
 140,625 installed script bytes. No new test targets were added. See
 [integration evidence](../reports/parallel_entry_validation.json).
 
-The pending-I/O lane also recovered visitor dispatch, physical submission and
-the completion pump in [VFS_PENDING_DISPATCH.md](VFS_PENDING_DISPATCH.md).
-Only its independent memory-copy dependency is implemented so far; the async
-loader remains an explicit next boundary. The next three independent audits
-are complete: [MPKG mount/reopening](MPKG_MOUNT_INTEGRATION.md),
-[font context ownership](FONT_CONTEXT_OWNERSHIP.md), and
-[pending queue lifetime](VFS_PENDING_LIFETIME.md). They supply the next API
-contracts; their lifecycle and failure limits remain explicit. Their static
-evidence and Ghidra integration are recorded separately in
-[follow-up contracts](../reports/parallel_followup_contracts.json).
+The next implementation batch is integrated: mounted MPKG factory/open and
+current-VFS reopening, retained font geometry, real physical overlapped reads,
+and physical/FileStore/manager enumeration. Workers implemented disjoint files
+and cross-reviewed other lanes. Review fixed provider flag-byte truncation
+and callback aliasing of the pending pump error output. Existing synthetic
+archive and installed font/preload scenarios were extended; one actual-file
+pending-read scenario was added to the same probe, with no new test targets.
+
+See [current integration evidence](../reports/parallel_provider_validation.json),
+[MPKG provider](MPKG_PROVIDER_IMPLEMENTATION.md),
+[font owner](FONT_GEOMETRY_OWNER.md), [pending reads](PHYSICAL_PENDING_READS.md),
+and [provider enumeration](PROVIDER_ENUMERATION.md). The required Win32 build,
+both CTests and full D3D9 probe pass. Real archives, original object ABI and a
+runnable game remain unvalidated. Next packets cover startup package scanning,
+live font material binding and manager/FileStore pending dispatch. Capped
+tools/bsp.py queries and sharded ledgers provide their context.
 
 ## Rules that keep parallel work useful
 

@@ -49,4 +49,27 @@ bool FileStore::resolve_00bf0fb0(const std::string& name, std::string& output) c
     if (&name != &output) output = name;
     return true;
 }
+bool FileStore::enumerate_00be6480(const std::string& directory,
+    const std::string& extension, std::uint32_t flags,
+    std::vector<std::string>& output, std::string& error) const {
+    (void)flags;
+    error.clear();
+    if (!supported_name(directory) || !supported_name(extension)) {
+        error = "Unsupported FileStore enumeration query.";
+        return false;
+    }
+    auto result = output;
+    for (const auto& entry : files_) {
+        const auto& name = entry.first;
+        if (name.find(directory) != 0) continue;
+        const auto found = name.find(extension);
+        const auto index = found == std::string::npos ? UINT32_MAX
+            : static_cast<std::uint32_t>(found);
+        const auto suffix = static_cast<std::uint32_t>(name.size())
+            - static_cast<std::uint32_t>(extension.size());
+        if (index == suffix) result.push_back(name);
+    }
+    output = std::move(result);
+    return true;
+}
 }

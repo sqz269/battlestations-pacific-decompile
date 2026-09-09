@@ -52,7 +52,7 @@
         "include/bsp/inflate_stream.hpp",
         "src/inflate_stream.cpp"
       ],
-      "next_work": "MPKG compressed source is connected and dynamic-Huffman entry fixture passes. Native source ABI, cross-block rewind and provider wiring remain incomplete."
+      "next_work": "Bounded MPKG provider/current-VFS reopening is connected. Native live-stream ABI, cross-block rewind and real archives remain unvalidated."
     },
     {
       "id": "font_single_line_layout",
@@ -90,7 +90,7 @@
         "include/bsp/font_layout.hpp",
         "src/font_layout.cpp"
       ],
-      "next_work": "Wrapped scalar layout/draw is integrated in its own packet. Continue native text-context/draw-section ownership and update lifetime."
+      "next_work": "Owned geometry updates are integrated. Continue font material/scene/reset contracts from explicit packet state."
     },
     {
       "id": "vfs_preload_policy",
@@ -145,7 +145,7 @@
     {
       "id": "mpkg_entry_loading",
       "worker": "inflate_read_seek",
-      "state": "bounded_implementation_integrated_build_and_fixture_checked",
+      "state": "bounded_mounted_provider_integrated_build_and_fixture_checked",
       "function_addresses": [
         "00bb87a0",
         "00bb8850",
@@ -178,14 +178,14 @@
       ],
       "contract": "Whole encoded backing, ordered directory and named materialization with explicit original-source callback. Preserve native tail/prefix/source route quirks.",
       "integration_owner": "primary",
-      "validation": "MSVC Win32, both existing CTests and full D3D9 probe pass; reports/parallel_entry_validation.json.",
-      "annotation_status": "Evidence applied and saved; previous comments and imported names preserved; standard exports refreshed.",
-      "next_work": "Provider registration/enumeration and original-path reopening contract audit is assigned to inflate_read_seek; native live stream and real archives remain unvalidated."
+      "validation": "reports/parallel_provider_validation.json",
+      "annotation_status": "Reviewed evidence saved, old comments retained, selected exports refreshed.",
+      "next_work": "MPKG factory/current-VFS reopen and provider enumeration are integrated. Next: exact two-pass startup scan and provider system-name/registration metadata."
     },
     {
       "id": "font_wrapped_layout",
       "worker": "font_layout_boundary",
-      "state": "bounded_implementation_integrated_build_and_fixture_checked",
+      "state": "bounded_owned_geometry_integrated_build_and_installed_draw_checked",
       "function_addresses": [
         "00aba270"
       ],
@@ -201,14 +201,14 @@
       ],
       "contract": "Supplied FontData/UTF16/scalars to wrapped placements and normalized vertical offset;00aba860 is an interior block.",
       "integration_owner": "primary",
-      "validation": "MSVC Win32, both existing CTests and full D3D9 probe pass; reports/parallel_entry_validation.json.",
-      "annotation_status": "Evidence applied and saved; previous comments and imported names preserved; standard exports refreshed.",
-      "next_work": "Native text-context/section ownership update audit assigned to font_layout_boundary; lifecycle integration next."
+      "validation": "reports/parallel_provider_validation.json",
+      "annotation_status": "Reviewed evidence saved, old comments retained, selected exports refreshed.",
+      "next_work": "Retained geometry now drives the draw. Next: live shader selection/material parameter binding; optional children/scene/reset remain separate."
     },
     {
       "id": "vfs_pending_dispatch",
       "worker": "partition_audit",
-      "state": "native_contract_audited_memory_copy_helper_integrated",
+      "state": "bounded_physical_pending_owner_integrated_build_and_installed_io_checked",
       "function_addresses": [
         "00bdc1d0",
         "00bdc1e0",
@@ -226,9 +226,9 @@
       ],
       "integration_owner": "primary",
       "contract": "Physical overlapped submit with deferred callback even on immediate success; explicit pump copies logical size and cleans I/O resources.",
-      "validation": "Native byte/assembly review; only00befa40 memory copy reconstructed. No asynchronous I/O fixture or integration.",
-      "annotation_status": "Nine evidence annotations applied/saved; missing visitor entries defined from verified bytes; exports refreshed.",
-      "next_work": "Queue lifetime/outer scheduling audit assigned to partition_audit; actual pending submission/pump implementation remains next."
+      "validation": "reports/parallel_provider_validation.json",
+      "annotation_status": "Reviewed evidence saved, old comments retained, selected exports refreshed.",
+      "next_work": "Physical submit/pump/shutdown/drain pass actual I/O. Next: manager visitor/FileStore pending dispatch and frame/stop-loop routing."
     }
   ],
   "snapshot_after_analysis": {
@@ -240,7 +240,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/parallel_implementation_validation.json",
+  "integration_report": "reports/parallel_provider_validation.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -251,7 +251,7 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-09T22:03:11.097926+00:00",
+    "utc": "2026-09-09T22:37:45.812665+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
     "total_function_count": 62737,
@@ -263,57 +263,116 @@
     {
       "worker": "inflate_read_seek",
       "packet": "mpkg_mount_integration",
-      "state": "native_contract_reviewed_annotated_ready_for_bounded_implementation",
+      "state": "integrated_independently_reviewed_build_and_focused_fixture_checked",
       "owned_files": [
         "docs/MPKG_MOUNT_INTEGRATION.md",
         "reports/mpkg_mount_integration_audit.json"
       ],
-      "annotation_validation": "reports/parallel_followup_contracts.json"
+      "annotation_validation": "reports/parallel_provider_annotations.json",
+      "code_ownership": [
+        "include/bsp/mpkg_archive.hpp",
+        "src/mpkg_archive.cpp",
+        "include/bsp/mpkg_provider.hpp",
+        "src/mpkg_provider.cpp",
+        "include/bsp/resource_enumeration.hpp",
+        "src/resource_enumeration.cpp",
+        "docs/MPKG_PROVIDER_IMPLEMENTATION.md"
+      ],
+      "validation": "reports/parallel_provider_validation.json"
     },
     {
       "worker": "font_layout_boundary",
       "packet": "font_context_ownership",
-      "state": "native_contract_reviewed_annotated_ready_for_bounded_implementation",
+      "state": "integrated_independently_reviewed_build_and_focused_fixture_checked",
       "owned_files": [
         "docs/FONT_CONTEXT_OWNERSHIP.md",
         "reports/font_context_ownership_audit.json"
       ],
-      "annotation_validation": "reports/parallel_followup_contracts.json"
+      "annotation_validation": "reports/parallel_provider_annotations.json",
+      "code_ownership": [
+        "include/bsp/font_geometry_owner.hpp",
+        "src/font_geometry_owner.cpp",
+        "src/d3d9_font_probe.cpp",
+        "docs/FONT_GEOMETRY_OWNER.md"
+      ],
+      "validation": "reports/parallel_provider_validation.json"
     },
     {
       "worker": "partition_audit",
       "packet": "vfs_pending_lifetime",
-      "state": "native_contract_reviewed_annotated_ready_for_bounded_implementation",
+      "state": "integrated_independently_reviewed_build_and_focused_fixture_checked",
       "owned_files": [
         "docs/VFS_PENDING_LIFETIME.md",
         "reports/vfs_pending_lifetime_audit.json"
       ],
-      "annotation_validation": "reports/parallel_followup_contracts.json"
+      "annotation_validation": "reports/parallel_provider_annotations.json",
+      "code_ownership": [
+        "include/bsp/physical_pending_reads.hpp",
+        "src/physical_pending_reads.cpp",
+        "src/physical_pending_reads_probe.cpp",
+        "docs/PHYSICAL_PENDING_READS.md"
+      ],
+      "validation": "reports/parallel_provider_validation.json"
     }
   ],
   "next_dispatch": [
     {
       "worker": "inflate_read_seek",
-      "work": "Implement MPKG enumeration in archive source/header and integrate current-VFS factory/open callback with primary-owned mount metadata.",
-      "boundary": "Physical/FileStore enumeration and complete startup two-pass scan remain separate; source reentry and recursion guards must be explicit."
+      "work": "Implement the audited two-pass startup package scan and narrow provider system-name registration metadata.",
+      "function_addresses": [
+        "0073cb10",
+        "00bdb120",
+        "00be1890"
+      ],
+      "owned_files": [
+        "include/bsp/package_scan.hpp",
+        "src/package_scan.cpp",
+        "docs/PACKAGE_SCAN_IMPLEMENTATION.md"
+      ],
+      "primary_owned_dependencies": [
+        "include/bsp/vfs_mount_registration.hpp",
+        "src/vfs_mount_registration.cpp",
+        "include/bsp/vfs_mounts.hpp"
+      ],
+      "boundary": "Two fresh scans, first result fixed before mounting, whole-name priority, existing-system-name dedup. Recover remaining factory/device metadata before implementation; no no-op providers."
     },
     {
       "worker": "font_layout_boundary",
-      "work": "Implement retained FontGeometryOwner update/rebuild from reviewed ownership contract.",
-      "boundary": "Explicit device access; stable wrapper/parameter storage; fixed supplied shader/font domain; preserve same-text/empty behavior and shared shadow buffers."
+      "work": "Audit live font shader selection and material parameter binding needed to replace supplied shader/constant setup.",
+      "function_addresses": [
+        "00ab8ce0",
+        "00ab8530",
+        "00b19210"
+      ],
+      "owned_files": [
+        "docs/FONT_CONTEXT_MATERIAL_BINDINGS.md",
+        "reports/font_context_material_bindings_audit.json"
+      ],
+      "boundary": "Keep existing owner stable. Recover parameter address lifetime/cache changes; no scene/optional-child stubs or reset assumptions."
     },
     {
       "worker": "partition_audit",
-      "work": "Implement bounded physical overlapped submission and explicit pump using reviewed stable request ownership.",
-      "boundary": "Serialize owner/pump; no inline callbacks; require drain before destruction; native cancellation and FileStore terminal-failure cleanup remain unresolved."
+      "work": "Recover manager visitor and FileStore pending dispatch around working physical submit/pump.",
+      "function_addresses": [
+        "00bdc1e0",
+        "00be7cb0",
+        "00be7cc0",
+        "00be7cd0",
+        "00bdb0b0"
+      ],
+      "owned_files": [
+        "docs/VFS_PENDING_MANAGER_INTEGRATION.md",
+        "reports/vfs_pending_manager_integration_audit.json"
+      ],
+      "boundary": "Resolve cache hit/miss, names/aliases, terminal failures and lifetimes before code. Primary owns shared APIs; no implicit thread affinity/cancellation or fake completions."
     }
   ],
   "current_partition": {
-    "utc": "2026-09-09T22:08:56.560406+00:00",
-    "candidates": 23941,
-    "segments": 92,
-    "largest_strong_cycle_segments": 85,
-    "sha256": "a9fc544581e8f753f7d826ddf7404faccf09abb1432b2aad754f261279d6e8da",
-    "note": "Refreshed after current saved inventory and direct-call sweep; historical review baseline remains separate. Explicit packet addresses/files remain authoritative."
+    "utc": "2026-09-09T22:39:26.509128+00:00",
+    "candidates": 23937,
+    "segments": 85,
+    "largest_strong_cycle_segments": 82,
+    "sha256": "23d248ed3b20c3ff2362d559dbe6fba663b107415142bf87e395d9c738994507",
+    "note": "Fresh saved snapshot and direct-call sweep. Community partitions change after renaming; explicit addresses/files define work."
   }
 }

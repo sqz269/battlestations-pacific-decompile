@@ -1,0 +1,231 @@
+{
+  "utc": "2026-09-09T22:43:24.015324+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "saved": true,
+  "refreshed_exports": 16,
+  "preserved_library_rename_tags": 8780,
+  "annotations": [
+    {
+      "address": "00bb8d60",
+      "before": {
+        "address": "00bb8d60",
+        "function_name": "BSP_MPKG_OpenNamedEntry",
+        "comment": "[BSP reconstruction 00bb8d60]\nECX state; stack name/flags; RET8; EAX stream ornull. Rejectflagsbit0; ordered36-byte entries; equal stored lengths then_stricmp; first match wins; no normalization. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+      },
+      "after": {
+        "address": "00bb8d60",
+        "function_name": "BSP_MPKG_OpenNamedEntry",
+        "comment": "[BSP reconstruction 00bb8d60]\nECX state; stack name/flags; RET8; EAX stream ornull. Rejectflagsbit0; ordered36-byte entries; equal stored lengths then_stricmp; first match wins; no normalization. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed.\n\n[BSP reconstruction 00bb8d60] update\nECX state; stack name/flags; RET8; EAX stream ornull. Rejectflagsbit0; ordered36-byte entries; equal stored lengths then_stricmp; first match wins; no normalization. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. Mounted host provider now selects named entries through current VFS; each large-source reopen uses the original unchanged logical path with flags2. Weak context ownership, independent source cursor, explicit recursive-source and expired-owner errors. Synthetic alias-change/reentry recovery fixture passes; native unclamped live-stream ABI and real archives remain unvalidated. docs/MPKG_PROVIDER_IMPLEMENTATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb9920",
+      "before": {
+        "address": "00bb9920",
+        "function_name": "BSP_MPKG_OpenDecodedArchive",
+        "comment": "[BSP reconstruction 00bb9920]\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md.\n\n[BSP reconstruction 00bb9920] update\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md. ECX state; stack original path string; RET4; EAX state. Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed.\n\n[BSP reconstruction 00bb9920] update\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md. ECX state; stack original path string; RET4; EAX state. Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. ECX archive state; stack logical_path; EAX state; RET4 Copies logical path and calls current global manager+4 flags2 before mount insertion; prior entry audit reverified. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bb9920",
+        "function_name": "BSP_MPKG_OpenDecodedArchive",
+        "comment": "[BSP reconstruction 00bb9920]\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md.\n\n[BSP reconstruction 00bb9920] update\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md. ECX state; stack original path string; RET4; EAX state. Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed.\n\n[BSP reconstruction 00bb9920] update\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md. ECX state; stack original path string; RET4; EAX state. Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. ECX archive state; stack logical_path; EAX state; RET4 Copies logical path and calls current global manager+4 flags2 before mount insertion; prior entry audit reverified. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bb9920] update\nArchive-state ctor/load: VFS mode2 whole-source memoryview, transforms blocks2F1h withreversedbyteindices XORtable00e144f0 period219h, wrapsdecodedbytes then00bb87a0 EOCD and00bb9700 directoryparse. Exactedge/compression/source-slice semantics unresolved; analysis-only, docs/ARCHIVE_PROVIDER_ENTRY.md. ECX state; stack original path string; RET4; EAX state. Transform positive signed lowDWORD size using global i%L partial-block phase and XOR key[source_index%537]; retain decoded memory; parse EOCDcount/size/offset and prefix=EOCD-offset-size. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. ECX archive state; stack logical_path; EAX state; RET4 Copies logical path and calls current global manager+4 flags2 before mount insertion; prior entry audit reverified. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Bounded host factory now obtains initial complete source via current VFS flags2 and retains unchanged logical path for later current-VFS reopens. docs/MPKG_PROVIDER_IMPLEMENTATION.md; reports/parallel_provider_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb9d90",
+      "before": {
+        "address": "00bb9d90",
+        "function_name": "BSP_MPKGFactory_Create",
+        "comment": "[BSP reconstruction 00bb9d90]\nECX factory; system/virtual paths stack RET8 EAXprovider. Systemlength>5 andcase-insensitive last5equals .mpkg gatesallocation18h/ctor00bb9cb0. MPKG distinctfromnamedFileStoreprovider; format implementationpending.\n\n[BSP reconstruction 00bb9d90] update\nECX factory; system/virtual paths stack RET8 EAXprovider. Systemlength>5 andcase-insensitive last5equals .mpkg gatesallocation18h/ctor00bb9cb0. MPKG distinctfromnamedFileStoreprovider; format implementationpending. ECX factory (unused); stack system_path,virtual_path (unused); EAX provider/null; RET8 Length >5 and final .mpkg through case-insensitive00425850; construct before registration. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bb9d90",
+        "function_name": "BSP_MPKGFactory_Create",
+        "comment": "[BSP reconstruction 00bb9d90]\nECX factory; system/virtual paths stack RET8 EAXprovider. Systemlength>5 andcase-insensitive last5equals .mpkg gatesallocation18h/ctor00bb9cb0. MPKG distinctfromnamedFileStoreprovider; format implementationpending.\n\n[BSP reconstruction 00bb9d90] update\nECX factory; system/virtual paths stack RET8 EAXprovider. Systemlength>5 andcase-insensitive last5equals .mpkg gatesallocation18h/ctor00bb9cb0. MPKG distinctfromnamedFileStoreprovider; format implementationpending. ECX factory (unused); stack system_path,virtual_path (unused); EAX provider/null; RET8 Length >5 and final .mpkg through case-insensitive00425850; construct before registration. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bb9d90] update\nECX factory; system/virtual paths stack RET8 EAXprovider. Systemlength>5 andcase-insensitive last5equals .mpkg gatesallocation18h/ctor00bb9cb0. MPKG distinctfromnamedFileStoreprovider; format implementationpending. ECX factory (unused); stack system_path,virtual_path (unused); EAX provider/null; RET8 Length >5 and final .mpkg through case-insensitive00425850; construct before registration. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Factory and owning VfsMount binding implemented in src/mpkg_provider.cpp: declined/loaded/failed outcomes, unchanged logical source path, flags2, no registration or invented device metadata. Current-VFS synthetic fixture passes. docs/MPKG_PROVIDER_IMPLEMENTATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb97b0",
+      "before": {
+        "address": "00bb97b0",
+        "function_name": "BSP_MpkgArchive_AppendFilteredNames",
+        "comment": "[BSP reconstruction 00bb97b0]\nECX archive; stack directory,extension,flag,output_vector; no semantic return; RET10h Central order, full stored names, append not clear; appended-slash local is unused by filter. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bb97b0",
+        "function_name": "BSP_MpkgArchive_AppendFilteredNames",
+        "comment": "[BSP reconstruction 00bb97b0]\nECX archive; stack directory,extension,flag,output_vector; no semantic return; RET10h Central order, full stored names, append not clear; appended-slash local is unused by filter. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bb97b0] update\nECX archive; stack directory,extension,flag,output_vector; no semantic return; RET10h Central order, full stored names, append not clear; appended-slash local is unused by filter. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Bounded C++ enumeration now appends central names in order via exact00bee340 policy. Shared manager retains whole names and first case-insensitive spelling; synthetic mounted fixture passes. docs/MPKG_PROVIDER_IMPLEMENTATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bee340",
+      "before": {
+        "address": "00bee340",
+        "function_name": "BSP_ProviderName_MatchesEnumerationFilter",
+        "comment": "[BSP reconstruction 00bee340]\nECX directory; EDX extension; stack flag,candidate; AL bool; RET8 Case-sensitive prefix/suffix; flag low byte0 requires unsigned lastslash<=directorylength; no slash UINT32MAX rejects. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bee340",
+        "function_name": "BSP_ProviderName_MatchesEnumerationFilter",
+        "comment": "[BSP reconstruction 00bee340]\nECX directory; EDX extension; stack flag,candidate; AL bool; RET8 Case-sensitive prefix/suffix; flag low byte0 requires unsigned lastslash<=directorylength; no slash UINT32MAX rejects. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bee340] update\nECX directory; EDX extension; stack flag,candidate; AL bool; RET8 Case-sensitive prefix/suffix; flag low byte0 requires unsigned lastslash<=directorylength; no slash UINT32MAX rejects. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Bounded pure predicate implemented in src/resource_enumeration.cpp; nonempty directory/NUL-free/INT32 domain is explicit. Native last-slash unsigned test and low-byte flag preserved. This policy is not shared by physical/FileStore enumeration. docs/MPKG_PROVIDER_IMPLEMENTATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdd990",
+      "before": {
+        "address": "00bdd990",
+        "function_name": "FUN_00bdd990",
+        "comment": "[BSP reconstruction 00bdd990]\nECX manager; stack directory,extension,flag,output_list; RET10h Build query callback and traverse supplied directory without normalization/alias. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bdd990",
+        "function_name": "BSP_VFS_EnumerateResources",
+        "comment": "[BSP reconstruction 00bdd990]\nECX manager; stack directory,extension,flag,output_list; RET10h Build query callback and traverse supplied directory without normalization/alias. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdd990] update\nECX manager; stack directory,extension,flag,output_list; RET10h Build query callback and traverse supplied directory without normalization/alias. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json ECX manager; stack directory/extension/flags/output, RET10h. Callback traversal does not normalize/apply aliases; all matching providers contribute whole names in order, equal-length _stricmp dedup retains first spelling. Host transactionality on guarded errors and missing callbacks is explicit. src/vfs_mounts.cpp; docs/PROVIDER_ENUMERATION.md; installed cache/physical enumeration yielded34 names,5 cache-first and29 physical additions."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bee390",
+      "before": {
+        "address": "00bee390",
+        "function_name": "BSP_Path_CanonicalizeMountName",
+        "comment": "[BSP reconstruction 00bee390]\nECX output string, EDX input, EAX output, ordinary RET. CRT lowercase, slash/backslash collapse, dot/parent segment cursor/barrier algorithm. Finaldot can retreat one byte; leading unresolved parents retained. Not the space-trimming00bee690. Typed mountfragment supports ASCII/NULfree only; docs/VFS_MOUNT_REGISTRATION.md."
+      },
+      "after": {
+        "address": "00bee390",
+        "function_name": "BSP_Path_CanonicalizeMountName",
+        "comment": "[BSP reconstruction 00bee390]\nECX output string, EDX input, EAX output, ordinary RET. CRT lowercase, slash/backslash collapse, dot/parent segment cursor/barrier algorithm. Finaldot can retreat one byte; leading unresolved parents retained. Not the space-trimming00bee690. Typed mountfragment supports ASCII/NULfree only; docs/VFS_MOUNT_REGISTRATION.md.\n\n[BSP reconstruction 00bee390] update\nECX output string, EDX input, EAX output, ordinary RET. CRT lowercase, slash/backslash collapse, dot/parent segment cursor/barrier algorithm. Finaldot can retreat one byte; leading unresolved parents retained. Not the space-trimming00bee690. Typed mountfragment supports ASCII/NULfree only; docs/VFS_MOUNT_REGISTRATION.md. Canonicalization core extracted unchanged from existing mount preparation into src/resource_path.cpp, keeping native trailing separators. Mount preparation still calls00584110 trim separately. ASCII/NUL-free bounded host domain; docs/PROVIDER_ENUMERATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bee520",
+      "before": {
+        "address": "00bee520",
+        "function_name": "FUN_00bee520"
+      },
+      "after": {
+        "address": "00bee520",
+        "function_name": "BSP_Path_JoinCanonicalName",
+        "comment": "[BSP reconstruction 00bee520]\nECX destination string; EDX directory string; stack child string; EAX destination; RET4 Canonicalize the nonempty side, otherwise concatenate directory/slash/child and canonicalize; no trailing trim00584110. Implemented bounded join/canonicalize in src/resource_path.cpp; docs/PROVIDER_ENUMERATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be6480",
+      "before": {
+        "address": "00be6480",
+        "function_name": "FUN_00be6480"
+      },
+      "after": {
+        "address": "00be6480",
+        "function_name": "BSP_FileStore_AppendFilteredNames",
+        "comment": "[BSP reconstruction 00be6480]\nECX FileStore; stack directory,extension,flags(unused),output_vector; no semantic return; RET10h Primary tree in-order; pointer-gated first strstr prefix and first strstr index compared with wrapped stored-length difference. Failed extension indexFFFFFFFF collides with extension length name+1. src/file_store.cpp preserves unsigned absent-extension length+1 sentinel. Host empty strings have nonnull data. Installed cache order and focused sentinel fixture pass. docs/PROVIDER_ENUMERATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf47e0",
+      "before": {
+        "address": "00bf47e0",
+        "function_name": "FUN_00bf47e0"
+      },
+      "after": {
+        "address": "00bf47e0",
+        "function_name": "BSP_PhysicalDirectory_EnumerateNames",
+        "comment": "[BSP reconstruction 00bf47e0]\nECX physical provider; stack directory,extension,flags,output_vector; no semantic return; RET10h Construct OS path using provider+1C, ensure trailing backslash, append star; Win32 order, dot-prefix skip, file-only strict-length case-insensitive suffix and MidwayDL_Content exclusion; low flag byte controls depth-first recursion. Bounded host implementation in src/physical_directory.cpp; ASCII canonical names and nonempty built-path guards explicit. Installed nonrecursive script enumeration passes; recursive/error cases source-reviewed only. docs/PROVIDER_ENUMERATION.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00aba8d0",
+      "before": {
+        "address": "00aba8d0",
+        "function_name": "BSP_TextContext_UpdateUtf16Geometry",
+        "comment": "[BSP reconstruction 00aba8d0]\nECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "after": {
+        "address": "00aba8d0",
+        "function_name": "BSP_TextContext_UpdateUtf16Geometry",
+        "comment": "[BSP reconstruction 00aba8d0]\nECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aba8d0] update\nECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Owning fixed-font/prepared-shader host projection implemented in src/font_geometry_owner.cpp. Stable heap wrappers, retained resources, case-insensitive skip, changed-empty count/width clear retaining buffers/stale metrics, fresh changed-text geometry. Existing A/wrapped draws now use owner; lifecycle/move/fresh-buffer checks pass. Optional child/localization/scene/reset and original ABI remain outside scope. docs/FONT_GEOMETRY_OWNER.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00abb1d0",
+      "before": {
+        "address": "00abb1d0",
+        "function_name": "BSP_TextContext_RebuildCurrentText",
+        "comment": "[BSP reconstruction 00abb1d0]\nECX context; no stack args; RET. Copy current UTF16, replace cached string with empty, call00aba8d0 with saved copy. Forces rebuild for old nonempty string, not empty-to-empty. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "after": {
+        "address": "00abb1d0",
+        "function_name": "BSP_TextContext_RebuildCurrentText",
+        "comment": "[BSP reconstruction 00abb1d0]\nECX context; no stack args; RET. Copy current UTF16, replace cached string with empty, call00aba8d0 with saved copy. Forces rebuild for old nonempty string, not empty-to-empty. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00abb1d0] update\nECX context; no stack args; RET. Copy current UTF16, replace cached string with empty, call00aba8d0 with saved copy. Forces rebuild for old nonempty string, not empty-to-empty. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Explicit rebuild API now forces nonempty cached text through owned geometry update; empty rebuild skips. Existing real-device fixture checks old buffer release and new generation. docs/FONT_GEOMETRY_OWNER.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00ab8400",
+      "before": {
+        "address": "00ab8400",
+        "function_name": "BSP_TextContext_CreateGlyphBuffers",
+        "comment": "[BSP reconstruction 00ab8400]\nTwo stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "after": {
+        "address": "00ab8400",
+        "function_name": "BSP_TextContext_CreateGlyphBuffers",
+        "comment": "[BSP reconstruction 00ab8400]\nTwo stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab8400] update\nTwo stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Host owner allocates fresh real vertex/index buffers from text capacity, writes checked simplecolor geometry, registers/unregisters borrowed logical-stream pointers, shares main/shadow resources. Supplied declaration/font/shader projection is not native allocator/factory ABI. docs/FONT_GEOMETRY_OWNER.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b865a0",
+      "before": {
+        "address": "00b865a0",
+        "function_name": "BSP_DrawSection_RebuildVertexLayout",
+        "comment": "[BSP reconstruction 00b865a0]\nECX section; geometry stack; RET4. If layout+50 exists, clear retained streams via00b86550 then release layout. If count+4C zero, retain geometry stream0. Query retained stream virtual+24 descriptors and request renderer+40 layout into+50. Nonzero stream count with null layout is reused. Decompiler drops geometry stack arg. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "after": {
+        "address": "00b865a0",
+        "function_name": "BSP_DrawSection_RebuildVertexLayout",
+        "comment": "[BSP reconstruction 00b865a0]\nECX section; geometry stack; RET4. If layout+50 exists, clear retained streams via00b86550 then release layout. If count+4C zero, retain geometry stream0. Query retained stream virtual+24 descriptors and request renderer+40 layout into+50. Nonzero stream count with null layout is reused. Decompiler drops geometry stack arg. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00b865a0] update\nECX section; geometry stack; RET4. If layout+50 exists, clear retained streams via00b86550 then release layout. If count+4C zero, retain geometry stream0. Query retained stream virtual+24 descriptors and request renderer+40 layout into+50. Nonzero stream count with null layout is reused. Decompiler drops geometry stack arg. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Owned font generation supplies retained streams/index/layout and real device declaration; all binding slots have explicit exclusive scope and detach before release. Generic section/factory/scene lifecycle remains unreconstructed. docs/FONT_GEOMETRY_OWNER.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf43b0",
+      "before": {
+        "address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      },
+      "after": {
+        "address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf43b0] update\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf46b0",
+      "before": {
+        "address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "after": {
+        "address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md."
+      },
+      "previous_comment_preserved": true
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <cstdint>
+#include <vector>
 
 namespace bsp {
 // Physical-provider projection with empty indexed-name tree (+34=0).
@@ -23,6 +25,14 @@ public:
     // copies the original logical suffix, NOT the constructed physical path.
     // Failure preserves output. Source/output aliasing is supported.
     bool resolve_00bf0fb0(const std::string& suffix, std::string& output);
+    // ECX provider; directory/extension/flags/output stack, RET10h. Win32 find
+    // order with depth-first recursion when the low flag byte is nonzero;
+    // suffix matching is case-insensitive, joined output is00bee520 canonical.
+    // Native FindFirst/FindNext failures end that scan without a status. Host
+    // guards reject unrepresentable/empty physical paths and keep output.
+    bool enumerate_00bf47e0_fragment(const std::string& directory,
+        const std::string& extension, std::uint32_t flags,
+        std::vector<std::string>& output, std::string& error) const;
 private:
     std::string root_;
     std::string last_success_;

@@ -29,6 +29,11 @@ struct VfsMount {
     // establish support rather than assume all read-only modes are equivalent.
     // The provider adapter reports conversion failure separately from no open.
     std::function<VfsMemoryOpen(const std::string&, std::uint32_t)> open_read_only;
+    // Provider +14h: append whole provider names in its native order. The
+    // manager passes the unnormalized relative directory, extension and flags.
+    // Missing support is reported by enumeration; open/resolve remain usable.
+    std::function<bool(const std::string&, const std::string&, std::uint32_t,
+        std::vector<std::string>&, std::string&)> enumerate;
 };
 struct VfsMountContext {
     // Supplied native iteration order; vfs_mount_registration builds this view.
@@ -54,4 +59,11 @@ bool apply_resource_alias_00bdca80_fragment(const std::vector<VfsAlias>&, std::s
 // Other flag values are outside the recovered host domain and rejected.
 VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext&,
     const std::string&, std::uint32_t flags = 2);
+//00bdd990/00be1130/00be0fc0: visit matching mounts without normalization or
+// aliases. Append provider names unchanged; equal-length case-insensitive
+// duplicates keep the first spelling, including entries already in output.
+// Guarded failure preserves output; native partial mutations/errors differ.
+bool enumerate_resources_00bdd990_fragment(VfsMountContext&,
+    const std::string& directory, const std::string& extension, std::uint32_t flags,
+    std::vector<std::string>& output, std::string& error);
 }

@@ -33,15 +33,19 @@
 bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_inflate_stream();
 bool probe_mpkg_archive();
+bool probe_physical_pending_reads(const std::string& physical_path);
 bool probe_startup_script_preloads(AssetStreamProbe&, const std::filesystem::path&);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
-bool probe_font_material(IDirect3DDevice9&, const bsp::FontData&,
-    const std::shared_ptr<bsp::D3D9RetainedTexture2D>&,
-    const std::shared_ptr<bsp::D3D9RetainedTexture2D>&, const char*, const std::string&, bool wrapped = false);
+bool probe_font_material(IDirect3DDevice9&, const std::shared_ptr<const bsp::FontResources>&,
+    const char*, const std::string&, bool wrapped = false);
 
 static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_path) {
     const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
+    bsp::PhysicalDirectory physical(game_root.string() + "\\");
+    std::string pending_path;
+    if (!physical.build_path_00bf3970("scripts/datatables/inputs.lua", pending_path)
+        || !probe_physical_pending_reads(pending_path)) return false;
     AssetStreamProbe assets(game_root.string() + "\\");
     if (!probe_startup_script_preloads(assets, game_root)) return false;
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
@@ -261,13 +265,14 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     resources_checked = resources_checked
         && bsp::shader_descriptor_name_00b2ebb0_fragment(shader_name, script_name)
         && script_name == "guifontbilinear.shfx";
+    std::shared_ptr<const bsp::FontResources> shared_resources(std::move(resources));
     if (texture_checked && resources_checked)
-        resources_checked = probe_font_material(device, resources->data, resources->gfx,
-            resources->alpha, game_root.string().c_str(), script_name);
+        resources_checked = probe_font_material(device, shared_resources,
+            game_root.string().c_str(), script_name);
     if (texture_checked && resources_checked)
-        resources_checked = probe_font_material(device, resources->data, resources->gfx,
-            resources->alpha, game_root.string().c_str(), script_name, true);
-    resources.reset();
+        resources_checked = probe_font_material(device, shared_resources,
+            game_root.string().c_str(), script_name, true);
+    shared_resources.reset();
     owner.reset();
     texture_checked = texture_checked && retained.expired();
     FreeLibrary(module);

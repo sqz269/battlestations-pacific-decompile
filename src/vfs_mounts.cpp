@@ -94,4 +94,50 @@ VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext& context,
     }
     return {false, {}, last_error.empty() ? "No provider opened resource: " + normalized : std::move(last_error)};
 }
+bool enumerate_resources_00bdd990_fragment(VfsMountContext& context,
+    const std::string& directory, const std::string& extension, std::uint32_t flags,
+    std::vector<std::string>& output, std::string& error) {
+    error.clear();
+    if (!valid_string(directory) || !valid_string(extension)) {
+        error = "Unsupported VFS enumeration query.";
+        return false;
+    }
+    for (const auto& name : output) if (!valid_string(name)) {
+        error = "Unsupported existing VFS enumeration name.";
+        return false;
+    }
+    for (const auto& mount : context.mounts) if (!valid_string(mount.prefix)) {
+        error = "Unsupported VFS enumeration prefix.";
+        return false;
+    }
+    context.error_code = -1;
+    auto result = output;
+    for (const auto& mount : context.mounts) {
+        std::string suffix;
+        if (!suffix_for_mount(directory, mount.prefix, suffix)) continue;
+        if (!mount.enumerate) {
+            error = "Matching VFS provider has no reconstructed enumeration operation.";
+            return false;
+        }
+        std::vector<std::string> names;
+        if (!mount.enumerate(suffix, extension, flags & 0xffu, names, error)) return false;
+        for (auto& name : names) {
+            if (!valid_string(name)) {
+                error = "Provider returned an unsupported enumeration name.";
+                return false;
+            }
+            bool duplicate = false;
+            for (const auto& prior : result) {
+                if (prior.size() == name.size() && _stricmp(prior.c_str(), name.c_str()) == 0) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) result.push_back(std::move(name));
+        }
+    }
+    output = std::move(result);
+    error.clear();
+    return true;
+}
 }

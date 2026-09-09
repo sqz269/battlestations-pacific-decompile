@@ -7,12 +7,14 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace bsp {
 // Return a newly owned source for the ORIGINAL logical archive path. This is
 // used only for method-zero entries larger than 0x40000, never as a decoded
 // backing substitute. The returned source must have an independent cursor.
-using MpkgReopenSource = std::function<std::shared_ptr<InflateSource>()>;
+// On failure return null and optionally supply a specific diagnostic.
+using MpkgReopenSource = std::function<std::shared_ptr<InflateSource>(std::string& error)>;
 
 enum class MpkgEntryRoute {
     raw_inflate_from_decoded,
@@ -50,6 +52,15 @@ public:
     std::size_t entry_count() const noexcept;
     bool contains_00bb8e00(std::string_view name) const noexcept;
 
+    //00bb97b0: ECX archive, directory/extension/flag/output stack, RET10h.
+    // Append whole names in central-directory order; no sort or deduplication.
+    // Uses the ORIGINAL directory with exact00bee340 filtering. Host rejects
+    // empty directory, embedded NUL and oversized strings/counts; guarded
+    // failure preserves output. Allocation exceptions propagate.
+    bool enumerate_00bb97b0_fragment(std::string_view directory,
+        std::string_view extension, std::uint32_t flags,
+        std::vector<std::string>& output, std::string& error) const;
+
     // First equal stored length + case-insensitive name wins; bit0 rejects.
     // Resolves local name/extra lengths lazily. The plan is a scalar snapshot;
     // the archive retains its backing and the original-source callback.
@@ -60,6 +71,8 @@ public:
     // the real copy helper00befa40. Large stored entries require reopen_original.
     // Host bounds/short-read/inflate guards return false and preserve output.
     // Zero decoded size is explicitly unsupported by the current copy helper.
+    // Recursive materialization of this archive's original source fails with
+    // a diagnostic. This archive, including its lazy cache, is not thread-safe.
     bool open_entry_00bb8d60_fragment(std::string_view name, std::uint32_t flags,
         MemoryStream& output, std::string& error);
 

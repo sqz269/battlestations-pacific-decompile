@@ -1,6 +1,8 @@
 // One synthetic MPKG archive scenario. Framing and payload oracles are independent
 // of MpkgArchive; see docs/MPKG_FIXTURE.md for generator identity and boundaries.
 #include "bsp/mpkg_archive.hpp"
+#include "bsp/mpkg_provider.hpp"
+#include "bsp/mounted_streams.hpp"
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -190,6 +192,96 @@ bool matches_owned_output(bsp::MemoryStream& stream, const Bytes& expected) {
         && std::equal(expected.begin(), expected.end(), observed.begin())
         && std::all_of(observed.begin() + actual, observed.end(), [](auto byte) { return byte == 0xcc; });
 }
+
+// Extend this same archive fixture through real mounted-provider selection.
+// The changed source and recursive alias distinguish a live VFS callback from
+// a captured physical source or copied mount snapshot.
+bool mounted_fixture(const Fixture& fixture, std::string& error) {
+    auto context = std::make_shared<bsp::VfsMountContext>();
+    auto store = std::make_shared<bsp::FileStore>();
+    const auto put = [&](const char* name, const Bytes& bytes) {
+        auto memory = std::make_shared<bsp::MemoryStream>();
+        DWORD failure{};
+        return bsp::memory_stream_from_bytes_00befa40_fragment(bytes.data(),
+            static_cast<std::uint32_t>(bytes.size()), *memory, failure)
+            && memory->seek_00bef540(7, 0)
+            && store->add_file_00be7760(name, memory) == bsp::FileStoreInsertResult::inserted;
+    };
+    auto changed = fixture.encoded;
+    const auto offset = fixture.entries[3].data_offset;
+    std::fill(changed.begin() + offset, changed.begin() + offset + large_size, 0xa5);
+    if (!put("fixture.mpkg", fixture.encoded) || !put("changed.mpkg", changed)) return false;
+    std::vector<std::string> sentinel_names;
+    if (!store->enumerate_00be6480("fixture", std::string(13, '?'), 0, sentinel_names, error)
+        || sentinel_names != std::vector<std::string>{"fixture.mpkg"}) return false;
+    context->mounts.push_back(bsp::bind_file_store_fragment("", store));
+    std::weak_ptr<bsp::VfsMountContext> current = context;
+    unsigned source_calls{};
+    bool source_arguments = true;
+    bsp::MpkgLogicalOpen open = [current, &source_calls, &source_arguments]
+        (const std::string& name, std::uint32_t flags) {
+        ++source_calls;
+        source_arguments = source_arguments && name == "Fixture.MpKg" && flags == 2;
+        auto live = current.lock();
+        return live ? bsp::open_resource_memory_00bdf310_fragment(*live, name, flags)
+            : bsp::VfsMemoryOpen{false, {}, "Current VFS expired."};
+    };
+    std::shared_ptr<bsp::MpkgArchive> archive;
+    bool checked = bsp::create_mpkg_archive_00bb9d90_fragment("Fixture.MpKg", open,
+        archive, error) == bsp::MpkgCreateStatus::loaded;
+    if (!checked) return false;
+    auto mounted = bsp::bind_mpkg_archive_fragment("packages", archive);
+    std::uint32_t provider_flags = UINT32_MAX;
+    const auto enumerate = mounted.enumerate;
+    mounted.enumerate = [enumerate, &provider_flags](const std::string& directory,
+        const std::string& extension, std::uint32_t flags,
+        std::vector<std::string>& output, std::string& diagnostic) {
+        provider_flags = flags;
+        return enumerate(directory, extension, flags, output, diagnostic);
+    };
+    context->mounts.insert(context->mounts.begin(), std::move(mounted));
+    std::vector<std::string> names{"pACKED.tXT"};
+    // Enumeration does not normalize or alias; whole names keep first spelling.
+    context->aliases = {{"packages/P", "ignored"}};
+    checked = bsp::enumerate_resources_00bdd990_fragment(*context, "packages/P", "TXT", 1, names, error)
+        && names == std::vector<std::string>{"pACKED.tXT"};
+    names.clear();
+    checked = checked && bsp::enumerate_resources_00bdd990_fragment(*context,
+        "packages/P", "TXT", 0x101, names, error)
+        && names == std::vector<std::string>{"Packed.TXT"} && provider_flags == 1;
+    names.clear();
+    checked = checked && bsp::enumerate_resources_00bdd990_fragment(*context,
+        "packages/C", "TXT", 1, names, error) && names == std::vector<std::string>{"Case.TXT"};
+    names.clear();
+    checked = checked && archive->enumerate_00bb97b0_fragment("P", "TXT", 0x100, names, error)
+        && names.empty(); // Low flag byte zero rejects a name with no slash.
+    context->aliases = {{"fixture.mpkg", "changed.mpkg"}};
+    auto opened = bsp::open_resource_memory_00bdf310_fragment(*context, "packages/Large.BIN", 0x32);
+    checked = checked && opened.provider_opened && opened.stream
+        && matches_owned_output(*opened.stream, Bytes(large_size, 0xa5));
+    if (!opened.error.empty()) error = opened.error;
+    // Source aliases back to this archive's large entry: guard must return a
+    // diagnostic and unwind, then a subsequent legitimate open must succeed.
+    context->aliases = {{"fixture.mpkg", "packages/large.bin"}};
+    auto recursive = bsp::open_resource_memory_00bdf310_fragment(*context, "packages/large.bin", 2);
+    const bool recursion_rejected = recursive.provider_opened && !recursive.stream
+        && recursive.error.find("recursive") != std::string::npos;
+    checked = checked && recursion_rejected;
+    context->aliases.clear();
+    auto original = bsp::open_resource_memory_00bdf310_fragment(*context, "packages/large.bin", 2);
+    checked = checked && original.provider_opened && original.stream
+        && matches_owned_output(*original.stream, Bytes(fixture.encoded.begin() + offset,
+            fixture.encoded.begin() + offset + large_size))
+        && source_calls == 4 && source_arguments;
+    context.reset();
+    auto expired = bsp::bind_mpkg_archive_fragment("", archive).open_read_only("large.bin", 2);
+    checked = checked && expired.provider_opened && !expired.stream
+        && expired.error == "Current VFS expired.";
+    std::printf("Mounted MPKG: source_calls=%u live_alias_reopen_and_cursor=%d enumeration_alias_flag_and_first_spelling=%d recursive_source_rejected=%d expired_owner_error=%d error=%s\n",
+        source_calls, checked, checked, recursion_rejected,
+        expired.error == "Current VFS expired.", error.c_str());
+    return checked;
+}
 }
 
 bool probe_mpkg_archive() {
@@ -206,6 +298,7 @@ bool probe_mpkg_archive() {
     std::uint32_t fixture_size{}, directory{}, central_size{}, eocd{}, padding{}, partial_phase{};
     {
         auto fixture = make_fixture();
+        if (!mounted_fixture(fixture, error)) return false;
         fixture_size = static_cast<std::uint32_t>(fixture.encoded.size());
         directory = fixture.central_offset; central_size = fixture.central_size;
         eocd = fixture.eocd_offset; padding = fixture.padding;
@@ -236,7 +329,7 @@ bool probe_mpkg_archive() {
             static_cast<std::uint32_t>(original->size()), encoded, copy_error)
             && encoded.seek_00bef540(7, 0)
             && archive.load_00bb9920_fragment(encoded,
-                [original, trace, &reopened_lifetime]() -> std::shared_ptr<bsp::InflateSource> {
+                [original, trace, &reopened_lifetime](std::string&) -> std::shared_ptr<bsp::InflateSource> {
                     ++trace->calls;
                     auto source = std::make_shared<OriginalEncodedSource>(original, trace);
                     trace->original_identity = trace->original_identity && source->identity() == original.get();

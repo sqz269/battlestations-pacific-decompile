@@ -1,7 +1,5 @@
 // Installed-source diagnostic: recovered search lists, supplied loose mount.
-#include "bsp/font_geometry.hpp"
-#include "bsp/font_layout.hpp"
-#include "bsp/font_wrapped_layout.hpp"
+#include "bsp/font_geometry_owner.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/material_textures.hpp"
 #include "bsp/material_samplers.hpp"
@@ -17,6 +15,8 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <limits>
+#include <utility>
 
 namespace {
 template<class T> struct OwnedCom {
@@ -76,12 +76,12 @@ bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
 }
 }
 
-bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
-    const std::shared_ptr<bsp::D3D9RetainedTexture2D>& gfx,
-    const std::shared_ptr<bsp::D3D9RetainedTexture2D>& alpha,
+bool probe_font_material(IDirect3DDevice9& device,
+    const std::shared_ptr<const bsp::FontResources>& resources,
     const char* game_root, const std::string& descriptor_name, bool wrapped) {
-    if (!game_root || !gfx || !alpha || !gfx->texture() || !alpha->texture()
-        || !bsp::font_has_glyph_00ad4500(font, 0x41)) return false;
+    if (!game_root || !resources || !resources->gfx || !resources->alpha
+        || !resources->gfx->texture() || !resources->alpha->texture()
+        || !bsp::font_has_glyph_00ad4500(resources->data, 0x41)) return false;
     auto selected_name = descriptor_name;
     if (!bsp::normalize_resource_path_00bee690(selected_name) || selected_name != "guifontbilinear.shfx") return false;
     AssetStreamProbe assets(std::string(game_root) + "\\");
@@ -155,91 +155,17 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
         || !bsp::append_material_samplers_00b3b280(effect.samplers, pass, counters)
         || counters.pixel != 2 || counters.vertex != 0 || pb.sampler_mask != 1) return false;
     bsp::prune_material_sampler_states(pass, pb.sampler_mask);
-    bsp::MaterialTextureSlots slots;
-    auto gfx_logical = std::make_shared<bsp::LogicalTexture>(); gfx_logical->texture = gfx->texture();
-    auto alpha_logical = std::make_shared<bsp::LogicalTexture>(); alpha_logical->texture = alpha->texture();
-    if (!bsp::set_material_texture_00b189f0(slots, 0, gfx_logical)
-        || !bsp::set_material_texture_00b189f0(slots, 1, alpha_logical)) return false;
-
-    struct Vertex { float x, y, z, u, v; std::uint32_t color; };
-    std::vector<bsp::FontGlyphPlacement> placements;
-    float width_scale = 1, vertical_scale = 1, vertical_offset = 0;
-    std::string layout_error;
-    if (wrapped) {
-        bsp::FontWrappedLayout lines;
-        const bsp::FontWrappedParameters p{0.03125f, 0.25f, 2, 2, 0, 1, 1, 5, 3};
-        bool checked = bsp::build_font_wrapped_00aba270_fragment(font, u"A A\nA", p, lines, layout_error)
-            && lines.lines.size() == 3 && lines.placements.size() == 5
-            && lines.container_width == 30 && lines.measured_width == 15
-            && lines.height == 23 && std::fabs(lines.measured_height - 62.1f) < 0.00001f
-            && std::fabs(lines.normalized_height - 0.1725f) < 0.0000001f
-            && std::fabs(lines.normalized_vertical_offset - 0.16375f) < 0.0000001f;
-        constexpr std::array<float, 5> expected_x{5, 25, 5, 25, 5};
-        constexpr std::array<float, 5> expected_y{0, 0, 19.55f, 19.55f, 39.1f};
-        constexpr std::array<std::uint16_t, 5> expected_code{0x41, 0x20, 0x41, 0x0a, 0x41};
-        for (std::size_t i = 0; checked && i < 5; ++i)
-            checked = lines.placements[i].code_unit == expected_code[i]
-                && lines.placements[i].x == expected_x[i]
-                && std::fabs(lines.placements[i].y - expected_y[i]) < 0.00001f;
-        // D3D9 selected24-bit x87 precision here. The native-style line step
-        // retains that environment, so decimal y/height checks allow a few ULPs.
-        unsigned short control;
-        __asm fnstcw control
-        std::printf("Installed wrapped font layout: lines=%zu glyphs=%zu width=%g height=%.9g vertical_offset=%.9g x87=0x%x soft_wrap_LF_spacing_and_alignment=%d error=%s\n",
-            lines.lines.size(), lines.placements.size(), lines.measured_width,
-            lines.measured_height, lines.normalized_vertical_offset, control, checked, layout_error.c_str());
-        if (!checked) {
-            std::printf("Wrapped scalar detail: x87=0x%x height=%.9g normalized=%.9g offset=%.9g\n",
-                control, lines.measured_height, lines.normalized_height, lines.normalized_vertical_offset);
-            for (const auto& point : lines.placements)
-                std::printf("Wrapped placement: code=%04x x=%.9g y=%.9g\n", point.code_unit, point.x, point.y);
-        }
-        if (!checked) return false;
-        placements = std::move(lines.placements);
-        width_scale = p.width_scale; vertical_scale = p.vertical_scale;
-        vertical_offset = lines.normalized_vertical_offset;
-    } else {
-        bsp::FontSingleLineLayout line;
-        if (!bsp::build_font_single_line_00ab9fd0_fragment(font, u"A",
-            {0.125f, 1, 0, 1}, line, layout_error) || line.placements.size() != 1) return false;
-        placements = std::move(line.placements);
-    }
-    const auto glyph_count = static_cast<std::uint32_t>(placements.size());
-    const auto vertex_count = glyph_count * 4;
-    const auto index_count = glyph_count * 6;
-    std::vector<Vertex> vertices(vertex_count);
-    std::vector<std::uint16_t> indices(index_count);
-    const auto vertex_bytes = static_cast<std::uint32_t>(vertices.size() * sizeof(Vertex));
-    const auto index_bytes = static_cast<std::uint32_t>(indices.size() * sizeof(std::uint16_t));
+    const std::u16string_view fixture = wrapped ? u"A A\nA" : u"A";
+    const std::u16string_view case_only = wrapped ? u"a a\na" : u"a";
+    bsp::FontGeometryUpdateParameters parameters;
+    parameters.multiline = wrapped ? 1 : 0;
+    parameters.single_line = {0.125f, 1, 0, 1};
+    parameters.wrapped = {0.03125f, 0.25f, 2, 2, 0, 1, 1, 5, 3};
+    parameters.origin_x = 64;
+    parameters.origin_y = wrapped ? 0.0f : 64.0f;
     struct InkBounds { int left, top, right, bottom; unsigned pixels{}; };
     std::vector<InkBounds> ink_bounds;
-    bsp::FontGeometryLayout geometry;
-    geometry.stride = sizeof(Vertex); geometry.uv_offset = 12; geometry.packed_color_offset = 20;
     int left = 256, top = 256, right = -1, bottom = -1;
-    for (std::uint32_t i = 0; i < glyph_count; ++i) {
-        const auto& placement = placements[i];
-        // Explicit host placement; the native normalized offset stays separate.
-        const bsp::FontGeometryParameters p{64 + placement.x,
-            (wrapped ? 0 : 64) + placement.y, width_scale, vertical_scale, font.scaled_height, i};
-        const auto& glyph = bsp::select_font_glyph_00ad4480(font, placement.code_unit);
-        std::array<std::uint16_t, 6> quad_indices;
-        if (!bsp::write_font_quad_00ab98f0_fragment(glyph, p, geometry,
-            reinterpret_cast<std::uint8_t*>(vertices.data()), vertex_bytes, i * 4, quad_indices)) return false;
-        std::copy(quad_indices.begin(), quad_indices.end(), indices.begin() + i * 6);
-        if (wrapped) for (std::uint32_t j = 0; j < 4; ++j)
-            if (!bsp::apply_font_wrapped_vertical_offset_00aba860_fragment(
-                vertices[i * 4 + j].y, vertical_offset, vertices[i * 4 + j].y)) return false;
-        if (placement.code_unit != 0x41) continue; // This fixture's spaces/LF have no ink.
-        const auto& a = vertices[i * 4]; const auto& b = vertices[i * 4 + 2];
-        const InkBounds bounds{static_cast<int>(std::floor(a.x * 960)) - 1,
-            static_cast<int>(std::floor(a.y * 720)) - 1,
-            static_cast<int>(std::ceil(b.x * 960)) + 1,
-            static_cast<int>(std::ceil(b.y * 720)) + 1};
-        ink_bounds.push_back(bounds);
-        left = (std::min)(left, bounds.left); top = (std::min)(top, bounds.top);
-        right = (std::max)(right, bounds.right); bottom = (std::max)(bottom, bounds.bottom);
-    }
-    if (left < 2 || top < 2 || right >= 254 || bottom >= 254 || left >= right || top >= bottom) return false;
     OwnedCom<IDirect3DStateBlock9> saved;
     OwnedCom<IDirect3DSurface9> old_target, old_depth, target, readback;
     OwnedCom<IDirect3DVertexShader9> vertex_shader;
@@ -252,106 +178,199 @@ bool probe_font_material(IDirect3DDevice9& device, const bsp::FontData& font,
     }
     // No device mutation until all required restoration handles are captured.
     if (FAILED(hr)) return false;
-    hr = device.CreateRenderTarget(256, 256, D3DFMT_A8R8G8B8, D3DMULTISAMPLE_NONE, 0, FALSE, &target.p, nullptr);
-    if (SUCCEEDED(hr)) hr = device.CreateOffscreenPlainSurface(256, 256, D3DFMT_A8R8G8B8, D3DPOOL_SYSTEMMEM, &readback.p, nullptr);
-    if (SUCCEEDED(hr)) hr = device.CreateVertexShader(static_cast<const DWORD*>(vs.p->GetBufferPointer()), &vertex_shader.p);
-    if (SUCCEEDED(hr)) hr = device.CreatePixelShader(static_cast<const DWORD*>(ps.p->GetBufferPointer()), &pixel_shader.p);
-    if (SUCCEEDED(hr)) hr = device.SetDepthStencilSurface(nullptr);
-    if (SUCCEEDED(hr)) hr = device.SetRenderTarget(0, target.p);
-    const D3DVIEWPORT9 viewport{0,0,256,256,0,1};
-    if (SUCCEEDED(hr)) hr = device.SetViewport(&viewport);
-    for (const auto& setting : {std::pair<D3DRENDERSTATETYPE, DWORD>{D3DRS_CULLMODE,D3DCULL_NONE},
-        {D3DRS_SCISSORTESTENABLE,FALSE}, {D3DRS_SRGBWRITEENABLE,FALSE}, {D3DRS_COLORWRITEENABLE,15},
-        {D3DRS_SEPARATEALPHABLENDENABLE,FALSE}, {D3DRS_BLENDOP,D3DBLENDOP_ADD}})
-        if (SUCCEEDED(hr)) hr = device.SetRenderState(setting.first, setting.second);
-    if (SUCCEEDED(hr)) hr = device.SetSamplerState(0, D3DSAMP_SRGBTEXTURE, FALSE);
     unsigned visible = 0, outside = 0;
     int min_x = 256, min_y = 256, max_x = -1, max_y = -1;
-    {
-        bsp::RendererSynchronization sync{};
-        bsp::D3D9StateCache state(device, sync, nullptr);
-        const bsp::LogicalVertexShader vshader{vertex_shader.p};
-        const bsp::LogicalPixelShader pshader{pixel_shader.p};
-        if (SUCCEEDED(hr)) hr = state.bind_vertex_shader_00b21d10(&vshader);
-        if (SUCCEEDED(hr)) hr = state.bind_pixel_shader_00b21c20(&pshader);
-        auto states = std::make_shared<bsp::RenderStateBlock>();
-        for (const auto* script : {&base, &effect}) for (const auto& setting : script->render_states)
-            states->states.push_back({static_cast<D3DRENDERSTATETYPE>(setting.state), setting.value});
-        if (SUCCEEDED(hr)) {
-            state.bind_render_state_block_00b27a80(states);
-            state.bind_sampler_state_block_00b27b90(std::make_shared<bsp::SamplerStateBlock>(pass.sampler_states));
-            hr = bsp::bind_material_textures_00b43470(state, pass, slots.textures(), pb.sampler_mask);
-        }
-        for (const auto& c : vr) if (c.register_set == 2 && SUCCEEDED(hr))
-            hr = state.set_vertex_shader_constants_f_00b21820(c.register_index, vwords.data() + c.register_index * 4, c.register_count);
-        for (const auto& c : pr) if (c.register_set == 2 && SUCCEEDED(hr))
-            hr = state.set_pixel_shader_constants_f_00b218c0(c.register_index, pwords.data() + c.register_index * 4, c.register_count);
-        auto stream = std::make_shared<bsp::LogicalVertexStream>();
-        stream->physical = std::make_shared<bsp::VertexBufferBinding>();
-        stream->physical->flags = 0x1000; stream->physical->capacity = vertex_bytes;
-        stream->flags = 0x1000; stream->tag = 0x40000001;
-        stream->declaration = std::make_shared<bsp::VertexDeclaration>();
-        stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION);
-        stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT2, D3DDECLUSAGE_TEXCOORD);
-        stream->declaration->append_00b48330(D3DDECLTYPE_D3DCOLOR, D3DDECLUSAGE_COLOR);
-        auto layout = std::make_shared<bsp::D3D9VertexLayout>(); layout->append_stream_00b48a00(stream->declaration);
-        auto index_stream = std::make_shared<bsp::LogicalIndexStream>();
-        index_stream->physical = std::make_shared<bsp::IndexBufferBinding>();
-        index_stream->physical->flags = 0x1000; index_stream->physical->capacity = index_bytes;
-        index_stream->index_count = index_count;
-        if (SUCCEEDED(hr)) hr = bsp::vertex_buffer_recreate_00b492b0(*stream->physical, device);
-        if (SUCCEEDED(hr)) hr = bsp::index_buffer_recreate_00b49180(*index_stream->physical, device);
-        if (SUCCEEDED(hr)) hr = layout->create_if_missing_00b60a10(device);
-        void* mapped = nullptr;
-        if (SUCCEEDED(hr)) hr = state.lock_vertex_stream_00b49980(*stream, vertex_count, 0, false, mapped);
-        if (SUCCEEDED(hr)) {
-            std::memcpy(mapped, vertices.data(), vertex_bytes);
-            state.unlock_vertex_stream_00b49a80(*stream);
-            state.bind_vertex_stream_00b24840(0, stream);
-            hr = state.bind_vertex_layout_00b23f20(layout);
-        }
-        if (SUCCEEDED(hr)) hr = state.lock_index_stream_00b49b60(*index_stream, 0, 0, false, mapped);
-        if (SUCCEEDED(hr)) {
-            std::memcpy(mapped, indices.data(), index_bytes);
-            state.unlock_index_stream_00b49c70(*index_stream);
-            state.bind_index_stream_00b24b00(index_stream, 0);
-        }
-        if (SUCCEEDED(hr)) hr = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
-        if (SUCCEEDED(hr)) hr = device.BeginScene();
-        if (SUCCEEDED(hr)) {
-            hr = state.draw_indexed_00b24010({}, D3DPT_TRIANGLELIST, 0, vertex_count, 0, glyph_count * 2);
-            const HRESULT ended = device.EndScene();
-            if (SUCCEEDED(hr)) hr = ended;
-        }
-        if (SUCCEEDED(hr)) hr = device.GetRenderTargetData(target.p, readback.p);
-        D3DLOCKED_RECT pixels{};
-        if (SUCCEEDED(hr)) hr = readback.p->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
-        if (SUCCEEDED(hr)) {
-            const auto* data = static_cast<const unsigned char*>(pixels.pBits);
-            for (int y = 0; y < 256; ++y) for (int x = 0; x < 256; ++x) {
-                DWORD color{}; std::memcpy(&color, data + y * pixels.Pitch + x * 4, 4);
-                if (color & 0xffffff) {
-                    ++visible;
-                    min_x = (std::min)(min_x, x); max_x = (std::max)(max_x, x);
-                    min_y = (std::min)(min_y, y); max_y = (std::max)(max_y, y);
-                    bool inside = false;
-                    for (auto& bounds : ink_bounds)
-                        if (x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom) {
-                            ++bounds.pixels; inside = true;
-                        }
-                    if (!inside) ++outside;
+    bool lifecycle_checked = false;
+    try {
+        hr = device.CreateRenderTarget(256, 256, D3DFMT_A8R8G8B8, D3DMULTISAMPLE_NONE, 0, FALSE, &target.p, nullptr);
+        if (SUCCEEDED(hr)) hr = device.CreateOffscreenPlainSurface(256, 256, D3DFMT_A8R8G8B8, D3DPOOL_SYSTEMMEM, &readback.p, nullptr);
+        if (SUCCEEDED(hr)) hr = device.CreateVertexShader(static_cast<const DWORD*>(vs.p->GetBufferPointer()), &vertex_shader.p);
+        if (SUCCEEDED(hr)) hr = device.CreatePixelShader(static_cast<const DWORD*>(ps.p->GetBufferPointer()), &pixel_shader.p);
+        if (SUCCEEDED(hr)) hr = device.SetDepthStencilSurface(nullptr);
+        if (SUCCEEDED(hr)) hr = device.SetRenderTarget(0, target.p);
+        const D3DVIEWPORT9 viewport{0,0,256,256,0,1};
+        if (SUCCEEDED(hr)) hr = device.SetViewport(&viewport);
+        for (const auto& setting : {std::pair<D3DRENDERSTATETYPE, DWORD>{D3DRS_CULLMODE,D3DCULL_NONE},
+            {D3DRS_SCISSORTESTENABLE,FALSE}, {D3DRS_SRGBWRITEENABLE,FALSE}, {D3DRS_COLORWRITEENABLE,15},
+            {D3DRS_SEPARATEALPHABLENDENABLE,FALSE}, {D3DRS_BLENDOP,D3DBLENDOP_ADD}})
+            if (SUCCEEDED(hr)) hr = device.SetRenderState(setting.first, setting.second);
+        if (SUCCEEDED(hr)) hr = device.SetSamplerState(0, D3DSAMP_SRGBTEXTURE, FALSE);
+        {
+            bsp::RendererSynchronization sync{};
+            bsp::D3D9StateCache state(device, sync, nullptr);
+            std::unique_ptr<bsp::FontGeometryOwner> geometry_owner;
+            if (SUCCEEDED(hr)) {
+                bsp::FontGeometryOwner staged(device, state,
+                    {resources, vertex_shader.p, pixel_shader.p, pass, pb.sampler_mask});
+                const auto initial = staged.update_00aba8d0_fragment(fixture, parameters, error);
+                if (initial != bsp::FontGeometryUpdate::rebuilt) hr = E_FAIL;
+                if (SUCCEEDED(hr)) hr = staged.bind();
+                const auto* bound_vertex_shader = state.vertex_shader();
+                const auto* bound_pixel_shader = state.pixel_shader();
+                const auto* bound_stream = staged.geometry().main.vertices.get();
+                geometry_owner = std::make_unique<bsp::FontGeometryOwner>(std::move(staged));
+                auto& owner = *geometry_owner;
+                const bool moved = SUCCEEDED(hr) && bound_vertex_shader && bound_pixel_shader
+                    && state.vertex_shader() == bound_vertex_shader && state.pixel_shader() == bound_pixel_shader
+                    && owner.geometry().main.vertices.get() == bound_stream
+                    && staged.text().empty() && staged.bind() == D3DERR_INVALIDCALL;
+                auto invalid = parameters;
+                invalid.origin_x = std::numeric_limits<float>::quiet_NaN();
+                const bool same = moved
+                    && owner.update_00aba8d0_fragment(case_only, invalid, error) == bsp::FontGeometryUpdate::unchanged
+                    && owner.text() == fixture && owner.geometry().main.vertices.get() == bound_stream
+                    && state.vertex_shader() == bound_vertex_shader && state.pixel_shader() == bound_pixel_shader;
+                const std::weak_ptr<bsp::LogicalVertexStream> first_vertex = owner.geometry().main.vertices;
+                const std::weak_ptr<bsp::LogicalIndexStream> first_index = owner.geometry().main.indices;
+                const bool rebuilt = same
+                    && owner.rebuild_00abb1d0_fragment(parameters, error) == bsp::FontGeometryUpdate::rebuilt
+                    && first_vertex.expired() && first_index.expired()
+                    && !state.vertex_shader() && !state.pixel_shader();
+                const auto stale = owner.metrics();
+                const auto* retained_vertex = owner.geometry().main.vertices.get();
+                const auto* retained_index = owner.geometry().main.indices.get();
+                const auto* retained_layout = owner.geometry().main.layout.get();
+                const auto* retained_bytes = owner.geometry().vertices.data();
+                const auto retained_count = owner.geometry().placements.size();
+                const bool cleared = rebuilt
+                    && owner.update_00aba8d0_fragment({}, invalid, error) == bsp::FontGeometryUpdate::cleared
+                    && owner.text().empty() && owner.metrics().measured_width == 0
+                    && owner.metrics().line_count == stale.line_count
+                    && owner.metrics().wrapped_height == stale.wrapped_height
+                    && owner.metrics().initial_x == stale.initial_x
+                    && owner.metrics().normalized_vertical_offset == stale.normalized_vertical_offset
+                    && owner.geometry().main.vertices.get() == retained_vertex
+                    && owner.geometry().main.indices.get() == retained_index
+                    && owner.geometry().main.layout.get() == retained_layout
+                    && owner.geometry().vertices.data() == retained_bytes
+                    && owner.geometry().placements.size() == retained_count
+                    && owner.geometry().main.vertex_count == 0 && owner.geometry().main.primitive_count == 0
+                    && owner.geometry().shadow.vertex_count == 0 && owner.geometry().shadow.primitive_count == 0;
+                const bool empty_rebuild = cleared
+                    && owner.rebuild_00abb1d0_fragment(invalid, error) == bsp::FontGeometryUpdate::unchanged;
+                const std::weak_ptr<bsp::LogicalVertexStream> cleared_vertex = owner.geometry().main.vertices;
+                const std::weak_ptr<bsp::LogicalIndexStream> cleared_index = owner.geometry().main.indices;
+                const bool refilled = empty_rebuild
+                    && owner.update_00aba8d0_fragment(fixture, parameters, error) == bsp::FontGeometryUpdate::rebuilt
+                    && cleared_vertex.expired() && cleared_index.expired();
+                const auto& snapshot = owner.geometry();
+                const bool shared = refilled && snapshot.main.vertices == snapshot.shadow.vertices
+                    && snapshot.main.indices == snapshot.shadow.indices && snapshot.main.layout == snapshot.shadow.layout
+                    && snapshot.main.vertex_count == snapshot.shadow.vertex_count
+                    && snapshot.main.primitive_count == snapshot.shadow.primitive_count
+                    && snapshot.main.vertices->physical->logical_streams.size() == 1
+                    && snapshot.main.indices->physical->logical_streams.size() == 1;
+                lifecycle_checked = moved && same && rebuilt && cleared && empty_rebuild && refilled && shared;
+                if (!lifecycle_checked) hr = E_FAIL;
+                if (SUCCEEDED(hr)) hr = owner.bind(true);
+                if (SUCCEEDED(hr)) hr = owner.bind(false);
+                std::printf("Installed font owner: wrapped=%d bound_move=%d same_text=%d explicit_rebuild_fresh=%d empty_retains=%d empty_rebuild_skips=%d changed_fresh=%d main_shadow_shared=%d checked=%d error=%s\n",
+                    wrapped, moved, same, rebuilt, cleared, empty_rebuild, refilled, shared, lifecycle_checked, error.c_str());
+                if (SUCCEEDED(hr)) {
+                    const auto& metric = owner.metrics();
+                    const auto& placements = snapshot.placements;
+                    bool scalar_checked = placements.size() == 1;
+                    if (wrapped) {
+                        scalar_checked = snapshot.lines.size() == 3 && placements.size() == 5
+                            && metric.line_count == 3 && metric.container_width == 30 && metric.measured_width == 15
+                            && metric.height == 23 && std::fabs(metric.wrapped_height - 62.1f) < 0.00001f
+                            && std::fabs(metric.normalized_wrapped_height - 0.1725f) < 0.0000001f
+                            && std::fabs(metric.normalized_vertical_offset - 0.16375f) < 0.0000001f;
+                        constexpr std::array<float, 5> expected_x{5, 25, 5, 25, 5};
+                        constexpr std::array<float, 5> expected_y{0, 0, 19.55f, 19.55f, 39.1f};
+                        constexpr std::array<std::uint16_t, 5> expected_code{0x41, 0x20, 0x41, 0x0a, 0x41};
+                        for (std::size_t i = 0; scalar_checked && i < 5; ++i)
+                            scalar_checked = placements[i].code_unit == expected_code[i]
+                                && placements[i].x == expected_x[i]
+                                && std::fabs(placements[i].y - expected_y[i]) < 0.00001f;
+                        // D3D9 selected 24-bit x87 precision here. Keep the existing
+                        // decimal tolerances for the native-style y/height spills.
+                        unsigned short control;
+                        __asm fnstcw control
+                        std::printf("Installed wrapped font layout: lines=%zu glyphs=%zu width=%g height=%.9g vertical_offset=%.9g x87=0x%x soft_wrap_LF_spacing_and_alignment=%d error=%s\n",
+                            snapshot.lines.size(), placements.size(), metric.measured_width,
+                            metric.wrapped_height, metric.normalized_vertical_offset, control, scalar_checked, error.c_str());
+                        if (!scalar_checked) for (const auto& point : placements)
+                            std::printf("Wrapped placement: code=%04x x=%.9g y=%.9g\n", point.code_unit, point.x, point.y);
+                    }
+                    if (!scalar_checked) hr = E_FAIL;
+                    // The owner uploaded this exact CPU snapshot. Bounds consume it
+                    // without running another scalar pass or writing another quad.
+                    for (std::size_t i = 0; SUCCEEDED(hr) && i < placements.size(); ++i) {
+                        if (placements[i].code_unit != 0x41) continue; // Spaces/LF have no ink in this fixture.
+                        const auto& a = snapshot.vertices[i * 4];
+                        const auto& b = snapshot.vertices[i * 4 + 2];
+                        const InkBounds bounds{static_cast<int>(std::floor(a.x * 960)) - 1,
+                            static_cast<int>(std::floor(a.y * 720)) - 1,
+                            static_cast<int>(std::ceil(b.x * 960)) + 1,
+                            static_cast<int>(std::ceil(b.y * 720)) + 1};
+                        ink_bounds.push_back(bounds);
+                        left = (std::min)(left, bounds.left); top = (std::min)(top, bounds.top);
+                        right = (std::max)(right, bounds.right); bottom = (std::max)(bottom, bounds.bottom);
+                    }
+                    if (left < 2 || top < 2 || right >= 254 || bottom >= 254 || left >= right || top >= bottom) hr = E_FAIL;
                 }
             }
-            hr = readback.p->UnlockRect();
+            auto states = std::make_shared<bsp::RenderStateBlock>();
+            for (const auto* script : {&base, &effect}) for (const auto& setting : script->render_states)
+                states->states.push_back({static_cast<D3DRENDERSTATETYPE>(setting.state), setting.value});
+            if (SUCCEEDED(hr)) {
+                state.bind_render_state_block_00b27a80(states);
+                state.bind_sampler_state_block_00b27b90(std::make_shared<bsp::SamplerStateBlock>(pass.sampler_states));
+            }
+            for (const auto& c : vr) if (c.register_set == 2 && SUCCEEDED(hr))
+                hr = state.set_vertex_shader_constants_f_00b21820(c.register_index, vwords.data() + c.register_index * 4, c.register_count);
+            for (const auto& c : pr) if (c.register_set == 2 && SUCCEEDED(hr))
+                hr = state.set_pixel_shader_constants_f_00b218c0(c.register_index, pwords.data() + c.register_index * 4, c.register_count);
+            if (SUCCEEDED(hr)) hr = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
+            if (SUCCEEDED(hr)) hr = device.BeginScene();
+            if (SUCCEEDED(hr)) {
+                const auto& range = geometry_owner->geometry().main;
+                hr = state.draw_indexed_00b24010({}, range.primitive_type, range.minimum_vertex,
+                    range.vertex_count, range.start_index, range.primitive_count);
+                const HRESULT ended = device.EndScene();
+                if (SUCCEEDED(hr)) hr = ended;
+            }
+            if (SUCCEEDED(hr)) hr = device.GetRenderTargetData(target.p, readback.p);
+            D3DLOCKED_RECT pixels{};
+            if (SUCCEEDED(hr)) hr = readback.p->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
+            if (SUCCEEDED(hr)) {
+                const auto* data = static_cast<const unsigned char*>(pixels.pBits);
+                for (int y = 0; y < 256; ++y) for (int x = 0; x < 256; ++x) {
+                    DWORD color{}; std::memcpy(&color, data + y * pixels.Pitch + x * 4, 4);
+                    if (color & 0xffffff) {
+                        ++visible;
+                        min_x = (std::min)(min_x, x); max_x = (std::max)(max_x, x);
+                        min_y = (std::min)(min_y, y); max_y = (std::max)(max_y, y);
+                        bool inside = false;
+                        for (auto& bounds : ink_bounds)
+                            if (x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom) {
+                                ++bounds.pixels; inside = true;
+                            }
+                        if (!inside) ++outside;
+                    }
+                }
+                hr = readback.p->UnlockRect();
+            }
+            if (geometry_owner) {
+                const HRESULT unbound = geometry_owner->unbind();
+                const bool detached = SUCCEEDED(unbound) && !state.vertex_shader() && !state.pixel_shader();
+                if (SUCCEEDED(hr)) hr = detached ? S_OK : E_FAIL;
+                std::printf("Installed font owner cleanup: wrapped=%d detached=%d\n", wrapped, detached);
+                geometry_owner.reset(); // Owner and registries go before the borrowed cache.
+            }
+            state.invalidate();
         }
-        state.invalidate();
+    } catch (const std::exception& exception) {
+        std::fprintf(stderr, "Font owner probe exception: %s\n", exception.what());
+        hr = E_FAIL;
     }
     bool restored = SUCCEEDED(device.SetRenderTarget(0, old_target.p));
     restored = SUCCEEDED(device.SetDepthStencilSurface(old_depth.p)) && restored;
     restored = SUCCEEDED(saved.p->Apply()) && restored;
     const auto lit_lines = std::count_if(ink_bounds.begin(), ink_bounds.end(),
         [](const InkBounds& bounds) { return bounds.pixels != 0; });
-    const bool matched = SUCCEEDED(hr) && visible > 0 && outside == 0 && restored
+    const bool matched = SUCCEEDED(hr) && lifecycle_checked && visible > 0 && outside == 0 && restored
         && lit_lines == (wrapped ? 3 : 1);
     std::printf("Installed bilinear font draw: descriptor=%s glyph=%s hr=0x%08lx visible=%u outside=%u bounds=%d,%d..%d,%d expected=%d,%d..%d,%d sampler_mask=%u restored=%d lit_lines=%td checked=%d\n",
         descriptor_name.c_str(), wrapped ? "wrapped_A_space_A_LF_A" : "A", static_cast<unsigned long>(hr), visible, outside,

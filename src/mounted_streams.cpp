@@ -36,6 +36,10 @@ VfsMount bind_physical_directory_fragment(std::string prefix,
             }
             result.stream = std::move(memory);
             return result;
+        },
+        [directory](const std::string& name, const std::string& extension, std::uint32_t flags,
+            std::vector<std::string>& output, std::string& error) {
+            return directory->enumerate_00bf47e0_fragment(name, extension, flags, output, error);
         }};
 }
 VfsMount bind_file_store_fragment(std::string prefix, const std::shared_ptr<FileStore>& store) {
@@ -48,6 +52,10 @@ VfsMount bind_file_store_fragment(std::string prefix, const std::shared_ptr<File
                 return VfsMemoryOpen{false, {}, "Unsupported FileStore read flags."};
             auto stream = store->open_00be5fa0(name, flags);
             return VfsMemoryOpen{stream != nullptr, std::move(stream), {}};
+        },
+        [store](const std::string& name, const std::string& extension, std::uint32_t flags,
+            std::vector<std::string>& output, std::string& error) {
+            return store->enumerate_00be6480(name, extension, flags, output, error);
         }};
 }
 bool cache_resource_00be7ab0_fragment(FileStore& store, VfsMountContext& mounts,
