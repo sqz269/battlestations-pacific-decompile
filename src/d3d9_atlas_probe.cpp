@@ -2,6 +2,7 @@
 // not the game's UI material or window implementation.
 #include "bsp/texture_atlas.hpp"
 #include "bsp/gui_texture.hpp"
+#include "bsp/gui_geometry.hpp"
 #include <cmath>
 #include "bsp/d3d9_states.hpp"
 #include <filesystem>
@@ -125,9 +126,18 @@ bool probe_texture_atlas(IDirect3DDevice9& device, IDirect3DTexture9& texture,
     state.set_sampler_state_00b24610(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
     state.set_sampler_state_00b24610(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
     struct Vertex { float x, y, z, rhw, u, v; };
-    const auto& uv = resolved_uv;
-    const Vertex quad[]{{-0.5f,-0.5f,0,1,uv[0],uv[1]}, {255.5f,-0.5f,0,1,uv[2],uv[1]},
-        {-0.5f,255.5f,0,1,uv[0],uv[3]}, {255.5f,255.5f,0,1,uv[2],uv[3]}};
+    bsp::GuiQuadParameters geometry;
+    geometry.width = logical_size[0]; geometry.height = logical_size[1];
+    geometry.y_scale = 0.75f; // Observed native global, supplied explicitly.
+    geometry.uv = {resolved_uv[0], resolved_uv[1], resolved_uv[2], resolved_uv[3]};
+    std::array<bsp::GuiQuadVertex, 4> generated{};
+    if (!bsp::gui_write_cropped_quad_00ab1860(geometry, generated)) result = E_FAIL;
+    Vertex quad[4]{};
+    // Diagnostic logical-to-pixel projection; native geometry supplies corners.
+    for (std::size_t i = 0; i < generated.size(); ++i) {
+        const auto& v = generated[i];
+        quad[i] = {v.x * 960.0f - 0.5f, v.y * 960.0f - 0.5f, v.z, 1, v.u, v.v};
+    }
     if (SUCCEEDED(result)) result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xffff00ff, 1, 0);
     if (SUCCEEDED(result)) result = device.BeginScene();
     if (SUCCEEDED(result)) {

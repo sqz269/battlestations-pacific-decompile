@@ -1,5 +1,6 @@
 // Diagnostic host shaders only: native shader loading/material execution is unported.
 #include "bsp/d3d9_states.hpp"
+#include "bsp/shader_source.hpp"
 #include <d3dcompiler.h>
 #include <cstdio>
 #include <cstring>
@@ -31,8 +32,16 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     IDirect3DPixelShader9* pixel = nullptr;
     IDirect3DVertexShader9* saved_vertex = nullptr;
     IDirect3DPixelShader9* saved_pixel = nullptr;
-    HRESULT result = assemble_host_shader(
-        "float4 main(float4 p : POSITION) : POSITION { return p; }", "vs_2_0", &vertex_code);
+    std::string declarations;
+    bsp::ShaderField position;
+    position.name = "Position"; position.component_count = 4;
+    bsp::ShaderStructOptions options; options.include_semantics = true;
+    const auto generated = bsp::append_shader_struct_00b38b50("ProbeInput", {position}, options, declarations);
+    const std::string expected = "\nstruct ProbeInput\n{\n\tfloat4\t\tPosition\t\t : POSITION0;\n};\n\n";
+    const bool declaration_matches = generated == bsp::ShaderSourceStatus::complete && declarations == expected;
+    declarations += "float4 main(ProbeInput IN) : POSITION { return IN.Position; }";
+    HRESULT result = declaration_matches
+        ? assemble_host_shader(declarations.c_str(), "vs_2_0", &vertex_code) : E_FAIL;
     if (SUCCEEDED(result)) result = assemble_host_shader(
         "float4 main() : COLOR { return float4(0,1,0,1); }", "ps_2_0", &pixel_code);
     if (SUCCEEDED(result)) result = vertex_code

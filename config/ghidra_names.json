@@ -917,7 +917,7 @@
   {
     "address": "00ab1860",
     "name": "BSP_GUIStatefulImage_WriteCroppedQuad",
-    "evidence": "Recovered missing confirmedvtable+7Ch, thiscall7stackargs RET1Ch. Writes float3position/float2UV via dynamicstreamstride/offsets, fourvertexstrip; mode0 TL/TR/BL/BR;5partialdisplaymodes, ratio orderedclamp NaNunchanged; yScaleglobal00e12fd0 observed0.75. FullGUI/FP/runtime semantics unported. See docs/GUI_GEOMETRY_DISPATCH.md."
+    "evidence": "Recovered missing confirmedvtable+7Ch, thiscall7stackargs RET1Ch. Writes float3position/float2UV via dynamicstreamstride/offsets, fourvertexstrip; mode0 TL/TR/BL/BR;5partialdisplaymodes, ratio orderedclamp NaNunchanged; yScaleglobal00e12fd0 observed0.75. FullGUI/FP/runtime semantics unported. See docs/GUI_GEOMETRY_DISPATCH.md. Typed float32 five-mode projection implemented; mode0 realatlasdraw checked. Originalx87 numerical/status parity andothermodevalidation pending; countedfragment."
   },
   {
     "address": "00b36800",
@@ -932,11 +932,11 @@
   {
     "address": "00b385b0",
     "name": "BSP_ShaderField_FormatDeclaration",
-    "evidence": "thiscall ECX field; hidden/output string pointer then semantics flag on stack; RET8; EAX output string pointer. type + count suffix if unsigned count>1 + two tabs + name + optional(two tabs plus space-colon-space + semantic + decimal index) + semicolon Unknown enum values outside initial valid projection; allocation failure and original string ownership not reconstructed Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+    "evidence": "thiscall ECX field; hidden/output string pointer then semantics flag on stack; RET8; EAX output string pointer. type + count suffix if unsigned count>1 + two tabs + name + optional(two tabs plus space-colon-space + semantic + decimal index) + semicolon Unknown enum values outside initial valid projection; allocation failure and original string ownership not reconstructed Typed C++ formatter implemented; ProbeInput exacttext and actualD3DCompile/bind checked. Complete shaderbuilder remains unported. See docs/SHADER_SOURCE_GENERATION.md."
   },
   {
     "address": "00b38b50",
     "name": "BSP_ShaderBuilder_AppendStructDeclaration",
-    "evidence": "thiscall ECX builder; unsigned start index, name string pointer, field-list pointer, semantics flag, allow_vpos flag; RET14h. newline struct NAME newline { newline; tab-prefixed newline-terminated field declarations; optional tab float2 vPos; newline; }; followed by two newlines  Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+    "evidence": "thiscall ECX builder; unsigned start index, name string pointer, field-list pointer, semantics flag, allow_vpos flag; RET14h. newline struct NAME newline { newline; tab-prefixed newline-terminated field declarations; optional tab float2 vPos; newline; }; followed by two newlines  Typed C++ formatter implemented; ProbeInput exacttext and actualD3DCompile/bind checked. Complete shaderbuilder remains unported. See docs/SHADER_SOURCE_GENERATION.md."
   }
 ]

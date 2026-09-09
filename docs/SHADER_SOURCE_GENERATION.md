@@ -125,7 +125,40 @@ No C++, analysis metadata, naming ledger, or saved Ghidra project changed.
 No generated shader compilation, native differential test or gameplay validation
 was performed.
 
+## Formatter implementation follow-up
+
+`include/bsp/shader_source.hpp` and `src/shader_source.cpp` now implement the
+field formatter and struct emitter through new typed interfaces:
+`format_shader_field_00b385b0` replaces an output string, and
+`append_shader_struct_00b38b50` appends a declaration block. Unsupported scalar
+types or consumed semantic kinds return an explicit new-interface status,
+leaving the output unchanged; no fallback tokens are invented. Skipped fields
+and disabled semantic annotations do not validate unconsumed values.
+
+The implementation preserves tabs, semicolons, formatter-added linefeeds,
+double linefeed after the closing brace, unsigned count/index formatting,
+start-index skipping and the two-descriptor vPos condition. A focused follow-up
+inspection of `00711370` confirmed its decimal formatter uses `%u`, including
+for component suffixes and semantic indices; its raw export is retained with
+the earlier evidence. Counts 0 and 1 omit the suffix, while larger uint32 counts
+are formatted verbatim. This operation formats source rather than validates
+that every resulting declaration is accepted HLSL.
+
+Native length-based field names and later `%s` termination are modeled:
+field formatting retains embedded NULs, and struct name/field insertion stops
+at the first NUL. No native string allocator or exception ABI is recreated.
+Integration registers both helpers in bsp_core. The existing shader probe
+checks exact generated ProbeInput text, compiles it as part of a vs_2_0
+shader and validates actual device binding. Win32 build and2existingCTest
+checks pass. This
+change adds no test or build configuration and does not implement the full
+shader generator, descriptor parsing, register assignment or compilation.
+
 Integration follow-up: proposed function names and evidence comments were saved
 in Ghidra, and affected exports refreshed. These investigated routines remain
 unported; the separate GUI texture resolver/lookup now passes its installed
 atlas integration probe.
+
+The complete shader generator remains unported. Unsupported enum and optional
+vPos branches are implemented but not exhaustively validated; no broad test
+suite was added. See reports/gui_shader_integration_validation.json.

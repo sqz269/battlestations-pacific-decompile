@@ -81,7 +81,36 @@ game validation is claimed.
 the one permitted function creation, and proposed evidence-based names for
 parent integration. Raw exports remain in ignored `exports/gui_geometry/`.
 
+# Typed reconstruction
+
+`gui_write_cropped_quad_00ab1860` now reconstructs all five modes in
+`include/bsp/gui_geometry.hpp` and `src/gui_geometry.cpp`. It takes explicit
+UV bounds, crop bounds, dimensions, Y scale, mode and mutable ratio; it emits
+four typed position/UV vertices in triangle-strip order. Mode zero emits the
+full rectangle. Modes 1/2 retain the top/bottom fraction; modes 3/4 retain the
+left/right fraction, moving the corresponding geometry and UV edge together.
+Ratio clamps preserve NaN and signed zero. Invalid unsigned modes return false
+after updating ratio and leave the supplied vertex array unchanged.
+
+This is a bounded semantic numerical port. It uses float32 intermediate
+expressions under the project's strict floating-point compilation. Native
+x87 extended intermediates and distinct spill sequences can produce different
+last bits, and exceptional inputs can expose different arithmetic/status
+behavior. No bitwise, floating-point-exception or native differential parity
+is claimed. Invalid-mode arithmetic is skipped in the typed interface after
+clamping, whereas native code evaluates some UV arithmetic before returning.
+The default Y scale records the saved/disk 0.75 value and remains an explicit
+caller-controlled parameter. Stream packing, allocation, color fields,
+materials and the stateful object's lifetime remain outside this function.
+
 Integration follow-up: proposed function names and evidence comments were saved
-in Ghidra, and affected exports refreshed. These investigated routines remain
-unported; the separate GUI texture resolver/lookup now passes its installed
-atlas integration probe.
+in Ghidra, and affected exports refreshed. The geometry writer now has a typed float32 projection; construction and
+full state rebuild remain unported.
+
+Validation: the existing Win32 probe now consumes mode0 typed vertices, projects
+logical coordinates with an explicit host scale and renders the installed atlas.
+Its BMP hash is unchanged from the previous diagnostic corners. All five modes
+are represented in source, but only mode0 is draw-validated. The planned isolated
+native comparison was not completed when parallel agents stopped on a usage
+limit. Numerical native equivalence and modes1..4 validation remain next work;
+the ledger counts this as a fragment. Build and2existingCTest checks pass.
