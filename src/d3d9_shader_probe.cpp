@@ -219,6 +219,14 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         debug_script.vertex_inputs.size(), debug_script.interpolators.size(),
         debug_script.executed_paths.size(), dummy_script.executed_paths.size());
     std::printf("Lua normal-mode combiner: %s\n", debug_script.combiners[0].c_str());
+    const bool options_match = debug_script.options.compressed_vertices
+        && debug_script.options.compressed_element_count == 999
+        && debug_script.options.priority == 23 && dummy_script.options.priority == 0
+        && debug_script.options.visibility_fade && !debug_script.options.output_alpha
+        && dummy_script.options.output_alpha && debug_script.options.render_target_count == 1
+        && debug_script.options.final_lod_fade_out_range == 0.01f;
+    std::printf("Lua descriptor scalar defaults/overrides: %d (draw decode binding still pending)\n", options_match);
+    if (!options_match) return false;
     const bool states_match = debug_script.render_states.size() == 2
         && debug_script.render_states[0].state == D3DRS_ZWRITEENABLE && debug_script.render_states[0].value == 0
         && debug_script.render_states[1].state == D3DRS_ZENABLE && debug_script.render_states[1].value == 0;

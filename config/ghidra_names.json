@@ -1032,7 +1032,7 @@
   {
     "address": "00b43b00",
     "name": "BSP_ShaderDescriptor_ReadShaderTable",
-    "evidence": "Large Shader-table reader, full routine unported. Profile fragment00b440e4..00b4427e reads VSVersion/PSVersion through string-type helper00b660a0; string overrides copied with strlen, includingempty. Otherwise unsigned second stack argument<3 selects vs_2_a/ps_2_b, >=3 selects vs_3_0/ps_3_0. Callers00b45f5e and00b46104 push3. Descriptor strings+34h/+3Ch. Typed selection fragment integrated into successful generated debug draw. See docs/SHADER_PROFILES.md. Follow-up: real stockLua5.1.1 adapter evaluates installed scripts and extracts code/profile/field tables in src/shader_lua.cpp. Explicitresolver/protectederrors, fullreaderunported; see docs/SHADER_LUA_ADAPTER.md."
+    "evidence": "Large Shader-table reader, full routine unported. Profile fragment00b440e4..00b4427e reads VSVersion/PSVersion through string-type helper00b660a0; string overrides copied with strlen, includingempty. Otherwise unsigned second stack argument<3 selects vs_2_a/ps_2_b, >=3 selects vs_3_0/ps_3_0. Callers00b45f5e and00b46104 push3. Descriptor strings+34h/+3Ch. Typed selection fragment integrated into successful generated debug draw. See docs/SHADER_PROFILES.md. Follow-up: real stockLua5.1.1 adapter evaluates installed scripts and extracts code/profile/field tables in src/shader_lua.cpp. Explicitresolver/protectederrors, fullreaderunported; see docs/SHADER_LUA_ADAPTER.md. Scalar options00b43b8f..00b440df now extracted in ShaderLuaOptions; exact BOOLEAN/NUMBER gates, float32 integer conversion, default CompressedVertices=true/CompressedElemCount=999, native VisilityFade spelling. Options not yet integrated into diagnostic draw. See docs/SHADER_DESCRIPTOR_OPTIONS.md."
   },
   {
     "address": "00b35930",
@@ -1203,5 +1203,35 @@
     "address": "00b585a0",
     "name": "BSP_ShaderStateDefinitions_Initialize",
     "evidence": "Constructor registers31 ordered render definitions atmanager+4 via00b58200/00b58050; then separate sampler+10/stage+1C registries. ZWRITE->14, ZTEST->7; noZENABLE key. DEPTHBIAS195 andSLOPESCALEDEPTHBIAS175 usefloattag1; other29 integer0. Only renderregistryprojected. Adapter src/shader_lua.cpp verified installednormalcombiner and2renderstates throughdevice/pixelreadback. Native malformednumeric/allocator/registryobject andfullmaterialABI unported. See docs/SHADER_COMBINERS.md, docs/SHADER_RENDER_STATE_TABLE.md and reports/shader_combiner_states.json."
+  },
+  {
+    "address": "00b662f0",
+    "name": "BSP_LuaReference_GetBooleanOrDefault",
+    "evidence": "ECX=reference, stack default, RET4. Valid reference kind2 and Lua type1 BOOLEAN required; returns normalized AL else supplied default byte. Used by00b43b00 scalar adapter."
+  },
+  {
+    "address": "00b66330",
+    "name": "BSP_LuaReference_GetFloatOrDefault",
+    "evidence": "ECX=reference, stack float default, RET4/ST0. Valid reference kind2 and Lua type3 NUMBER required; conversion spills float32 then reloads; else loads default. See docs/SHADER_DESCRIPTOR_OPTIONS.md."
+  },
+  {
+    "address": "00b66380",
+    "name": "BSP_LuaReference_GetIntegerOrDefault",
+    "evidence": "ECX=reference, stack integer default, RET4/EAX. Valid reference kind2 and Lua type3 NUMBER required; number spills float32 then calls00bf7420 signed conversion; else returns default. Host adapter rejects exceptional/out-of-range integer conversion."
+  },
+  {
+    "address": "00b41830",
+    "name": "BSP_ShaderDescriptor_ReadSamplerTable",
+    "evidence": "ECX=descriptor, stack Shader reference, RET4. Exact Samplers table gate then fresh lookup. Lua next iteration accepts integer-number keys via00b66a60; appends00b57b50 results to descriptor+C4 in iteration order. No clear/sort; see docs/SHADER_SAMPLER_TABLES.md. Analysis only, typed parser not yet implemented."
+  },
+  {
+    "address": "00b57b50",
+    "name": "BSP_ShaderStateDefinitions_ReadSampler",
+    "evidence": "ECX=state-definition manager, stack entry Lua reference, RET4; returns allocated2Ch sampler. Reads named Name/Type/TextureSource/TextureSourceName/Index/VertexSampler/SamplerStates/TextureStageStates. Required names coerce Lua strings/numbers then unchecked C-string copy; stage exactBOOLEAN defaultfalse. State tables use00b579b0 with manager+10/+1C. See docs/SHADER_SAMPLER_TABLES.md; analysis only."
+  },
+  {
+    "address": "00b3aea0",
+    "name": "BSP_Shader_ReflectConstantBindings",
+    "evidence": "Stack bytecode then metadata, RET8; ECX is not this. D3DXGetShaderConstantTable enumerates descriptors and maps TypeFLOAT names through system registry into byte register/count arrays+8/+3E. Decode semantics24/25 use+20/+21, counts+56/+57; nominal87/95 are not binding locations. See docs/SHADER_COMPILED_CONSTANT_BINDING.md. Analysis only; compiler/layout and error assumptions documented."
   }
 ]

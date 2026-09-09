@@ -61,6 +61,49 @@ bool integer_key(lua_State* state, int index) {
     return lua_type(state, index) == LUA_TNUMBER && integer_value(state, index, true, key)
         && static_cast<float>(lua_tonumber(state, index)) == static_cast<float>(key);
 }
+bool read_options(lua_State* state, ShaderLuaOptions& output, std::string& error) {
+    const auto boolean = [&](const char* key, bool& value) {
+        lua_getfield(state, -1, key);
+        if (lua_type(state, -1) == LUA_TBOOLEAN) value = lua_toboolean(state, -1) != 0;
+        lua_pop(state, 1);
+    };
+    const auto integer = [&](const char* key, std::int32_t& value) {
+        lua_getfield(state, -1, key);
+        const bool ok = lua_type(state, -1) != LUA_TNUMBER || integer_value(state, -1, true, value);
+        lua_pop(state, 1);
+        if (!ok) error = std::string(key) + ": unsupported numeric conversion";
+        return ok;
+    };
+    const auto string = [&](const char* key, std::string& value) {
+        lua_getfield(state, -1, key);
+        if (lua_type(state, -1) == LUA_TSTRING) value = lua_tostring(state, -1);
+        lua_pop(state, 1);
+    };
+    // Preserve native lookup order, including its exact type gates and defaults.
+    if (!integer("PipeID", output.pipe_id) || !integer("Priority", output.priority)) return false;
+    string("VertexFormat", output.vertex_format);
+    boolean("ReceiveShadows", output.receive_shadows);
+    string("ShadowShader", output.shadow_shader);
+    output.has_shadow_shader = !output.shadow_shader.empty();
+    boolean("FinalLODFadeOut", output.final_lod_fade_out);
+    lua_getfield(state, -1, "FinalLODFadeOutRange");
+    if (lua_type(state, -1) == LUA_TNUMBER)
+        output.final_lod_fade_out_range = static_cast<float>(lua_tonumber(state, -1));
+    lua_pop(state, 1);
+    if (!integer("RTCount", output.render_target_count)) return false;
+    boolean("VisilityFade", output.visibility_fade);
+    boolean("AlphaToCoverage", output.alpha_to_coverage);
+    boolean("NoBandingFix", output.no_banding_fix);
+    boolean("DisableAlphaToCoverage", output.disable_alpha_to_coverage);
+    boolean("CompressedVertices", output.compressed_vertices);
+    if (!integer("CompressedElemCount", output.compressed_element_count)) return false;
+    string("InstanceGenerator", output.instance_generator);
+    boolean("PixelPositionRegister", output.pixel_position_register);
+    boolean("OutputAlpha", output.output_alpha);
+    boolean("LoResBlend", output.lo_res_blend);
+    boolean("WriteDepth", output.write_depth);
+    return true;
+}
 bool read_render_states(lua_State* state, std::vector<ShaderLuaRenderState>& output, std::string& error) {
     struct Definition { const char* key; std::uint32_t id, tag; };
     const Definition definitions[] = {
@@ -204,7 +247,8 @@ bool load_shader_lua_code(const ShaderScriptResolver& resolver, const std::strin
             loaded.vertex_profile = string_field(state, "VSVersion");
             loaded.pixel_profile = string_field(state, "PSVersion");
             loaded.executed_paths = context.paths;
-            ok = read_fields(state, "VertexInput", loaded.vertex_inputs, context.error)
+            ok = read_options(state, loaded.options, context.error)
+                && read_fields(state, "VertexInput", loaded.vertex_inputs, context.error)
                 && read_fields(state, "Interpolators", loaded.interpolators, context.error)
                 && read_combiners(state, loaded.combiners, context.error)
                 && read_render_states(state, loaded.render_states, context.error);
