@@ -1,0 +1,94 @@
+{
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00ab98f0",
+      "end_exclusive": "00ab9fc3",
+      "length": 1747,
+      "label": "glyph writer full body",
+      "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+      "disk_matches_saved_image": true
+    },
+    {
+      "address": "00ab98f0",
+      "end_exclusive": "00ab9c5e",
+      "length": 878,
+      "label": "implemented glyph prefix",
+      "sha256": "6a4b223b92f3da617f26cf8ede3290aee7e6f3a1f7b39cf49b00c0e5349ec685",
+      "disk_matches_saved_image": true
+    },
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "label": "texture constructor",
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "disk_matches_saved_image": true
+    },
+    {
+      "address": "00b2c3d9",
+      "end_exclusive": "00b2c405",
+      "length": 44,
+      "label": "image info call and 2D gate",
+      "sha256": "5d195706e3f1ab24f0cc8df369e60f876833e885942f3e055405a336dae90c74",
+      "disk_matches_saved_image": true
+    },
+    {
+      "address": "00b2c618",
+      "end_exclusive": "00b2c648",
+      "length": 48,
+      "label": "retained stream and requested mip metadata",
+      "sha256": "35a8528393dcd2e6e6470d64971c61e6a260605209804382d60c2f2385f7f9a7",
+      "disk_matches_saved_image": true
+    }
+  ],
+  "assets": [
+    {
+      "relative_path": "Fonts/arial18.tga",
+      "size": 524332,
+      "sha256": "1f88a76ca802aedd1015d5ba7fe0af6d8a700b2501c3c7320f85564cc9a7fba4"
+    },
+    {
+      "relative_path": "Fonts/arial18.dat",
+      "size": 4974,
+      "sha256": "1824a05fd233f289dd810b67116b42b418dd725f5e7d1acf3f657398b60c1787"
+    },
+    {
+      "relative_path": "Fonts/Fonts.lua",
+      "size": 1115,
+      "sha256": "26ebc6c0905f3aff36e95f40195c0fe8693d9f17474d2fcd3e51bcc7091fdd93"
+    }
+  ],
+  "native_prefix_fixture": {
+    "full_address": "00ab98f0",
+    "full_length": 1747,
+    "full_sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+    "disk_matches_ghidra": true,
+    "copied_start": "00ab990c",
+    "copied_end_exclusive": "00ab9c5e",
+    "copied_sha256": "20a2f48511d4ff7b12a2bcf8f32032569ebeafb5d085f549fab4a500937d27cd",
+    "wrapper_hex": "83ec4853555657",
+    "restore_hex": "5f5e5d5b83c448c22800",
+    "absolute_operands": [
+      [
+        123,
+        14131788
+      ],
+      [
+        155,
+        13550464
+      ],
+      [
+        173,
+        13562296
+      ],
+      [
+        181,
+        14757844
+      ]
+    ],
+    "omitted": "SEH registration and optional post-prefix child-UI path"
+  }
+}

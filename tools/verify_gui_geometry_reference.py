@@ -59,11 +59,51 @@ def main():
     header += 'struct GuiReferencePatch { unsigned offset; unsigned target; };\n'
     header += 'inline constexpr GuiReferencePatch gui_reference_patches[] = {'
     header += ','.join('{' + str(offset) + ',' + str(target) + '}' for offset, target in patches) + '};\n'
+    # Isolate the font writer before its optional child-UI branch. Replace the
+    # SEH setup/local allocation with the same 58h total stack displacement.
+    font_base, font_end = 0xab990c, 0xab9c5e
+    font_full = verified(0xab98f0, 1747)
+    if hashlib.sha256(font_full).hexdigest() != '795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236':
+        raise RuntimeError('Unexpected full font writer bytes')
+    font_body = font_full[font_base - 0xab98f0:font_end - 0xab98f0]
+    wrapper = bytes.fromhex('83ec4853555657')  # SUB ESP,48h; PUSH EBX,EBP,ESI,EDI
+    restore = bytes.fromhex('5f5e5d5b83c448c22800')
+    font_patches = []
+    end = font_base
+    for instruction in disassembler.disasm(font_body, font_base):
+        if instruction.mnemonic in ('call', 'ret', 'retf'):
+            raise RuntimeError('Font prefix has an unexpected call/return')
+        for operand in instruction.operands:
+            if operand.type == X86_OP_MEM and not operand.mem.base and operand.mem.disp >= 0x400000:
+                if operand.mem.disp not in (0xd7a24c, 0xcec380, 0xcef1b8, 0xe12fd4):
+                    raise RuntimeError('Unexpected font absolute memory reference')
+                font_patches.append((len(wrapper) + instruction.address - font_base + instruction.disp_offset, operand.mem.disp))
+            if instruction.mnemonic.startswith('j'):
+                if operand.type != X86_OP_IMM or not font_base <= operand.imm < font_end:
+                    raise RuntimeError('Font branch leaves isolated prefix')
+        end = instruction.address + instruction.size
+    if end != font_end or len(font_patches) != 4:
+        raise RuntimeError('Unexpected font prefix/relocation layout')
+    for address, value in ((0xcec380, 960.0), (0xcef1b8, 720.0)):
+        if verified(address, 8) != struct.pack('<d', value):
+            raise RuntimeError('Font normalization constant changed')
+    # 00e12fd4 is mutable: the fixture supplies a private explicit input.
+    font_code = wrapper + font_body + restore
+    header += 'inline constexpr unsigned char font_reference_bytes[] = {' + ','.join(map(str, font_code)) + '};\n'
+    header += 'inline constexpr GuiReferencePatch font_reference_patches[] = {'
+    header += ','.join('{' + str(offset) + ',' + str(target) + '}' for offset, target in font_patches) + '};\n'
     write(ROOT / 'local/gui_geometry_reference.hpp', header)
     write(ROOT / 'local/gui_reference_audit.json', dict(address=f'{base:08x}', length=length,
           sha256=hashlib.sha256(body).hexdigest(), disk_matches_ghidra=True,
           absolute_operands=patches, table_entries=entries))
-    print('Verified GUI code, jump table and constants; emitted local reference header.')
+    write(ROOT / 'local/font_reference_audit.json', dict(
+          full_address='00ab98f0', full_length=len(font_full),
+          full_sha256=hashlib.sha256(font_full).hexdigest(), disk_matches_ghidra=True,
+          copied_start=f'{font_base:08x}', copied_end_exclusive=f'{font_end:08x}',
+          copied_sha256=hashlib.sha256(font_body).hexdigest(),
+          wrapper_hex=wrapper.hex(), restore_hex=restore.hex(),
+          absolute_operands=font_patches, omitted='SEH registration and optional post-prefix child-UI path'))
+    print('Verified GUI writer and isolated font prefix; emitted local reference header.')
 
 
 if __name__ == '__main__':

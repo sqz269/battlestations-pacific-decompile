@@ -1523,12 +1523,12 @@
     },
     {
       "address": "00b2c2d0",
-      "name": "initialize_retained_texture",
+      "name": "load_retained_texture_2d",
       "source": "src/d3d9_texture.cpp",
-      "native_range": "successful2D COMcreate andsource retention projection",
-      "status": "installed_font_registry_and_texture_policy_probe_checked",
+      "native_range": "image-info/policy/2D create, constructor metadata and retained source",
+      "status": "installed_DDS_and_font_TGA_recreation_checked",
       "abi_compatible": false,
-      "remaining": "Typedcaller suppliesimageinfo/policy/options; missingretry/managercache/optionalcallback/nativewrapperallocation. Shortreadguard andHRESULTreport explicit."
+      "remaining": "Typed stable device/quality/imports; source completeness and HRESULT boundaries explicit. Native VFS/cache/optional guard/callback/retry and intrusive allocation absent."
     },
     {
       "address": "00b5fe90",
@@ -1574,6 +1574,24 @@
       "status": "installed_font_special_glyph_checked",
       "abi_compatible": false,
       "remaining": "Nativepadding/tworesourcefields/allocatorownership excluded; projectedscalarcopy preservesknownfloatbits. Fullfontload/rendering unported."
+    },
+    {
+      "address": "00ab98f0",
+      "name": "write_font_quad",
+      "source": "src/font_geometry.cpp",
+      "native_range": "00ab98f0..00ab9c5e exclusive ordinary quad prefix",
+      "status": "single_native_prefix_byte_comparison_and_installed_glyph_checked",
+      "abi_compatible": false,
+      "remaining": "Native context/writer ABI, optional post-prefix UV blanking and child-UI path, full layout/material drawing and FPexception dispatch unported. Packed-color finite fixture only; float-color branch assembly-backed."
+    },
+    {
+      "address": "00b3f930",
+      "name": "capture_loaded_texture_metadata",
+      "source": "src/d3d9_texture.cpp",
+      "native_range": "GetLevelDesc stores +28/+2C/+18 only",
+      "status": "installed_DDS_and_font_TGA_recreation_checked",
+      "abi_compatible": false,
+      "remaining": "Native constructor allocation/base/registry and diagnostic reference pairs omitted; requested mip count retained separately. GetLevelDesc failure handled explicitly by host."
     }
   ]
 }

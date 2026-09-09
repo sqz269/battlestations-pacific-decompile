@@ -110,6 +110,10 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `docs/FRAME_CLOCK.md` | QPC/fixed frame clock, native timestamp comparison and ownership limits |
 | `docs/TEXT_INPUT_QUEUE.md` | Platform event storage and remaining text-input policy |
 | `docs/PHYSICAL_FILE.md` | Physical asset reader and VFS/pooling boundaries |
+| `docs/FONT_GEOMETRY.md` | Glyph quad prefix, native comparison and text rendering boundaries |
+| `docs/FONT_MATERIAL_BINDINGS.md` | Font texture slots, shader selection and unresolved compiled materials |
+| `docs/TEXTURE_IMAGE_LOADING.md` | Shared image-info/loading route and actual recreation metadata |
+| `docs/OCCLUSION_QUERY_CALLERS.md` | Frame-end polling and flare cached-sample consumers |
 | `docs/WINDOW_CREATION.md` | Recovered Win32 setup and remaining native lifecycle |
 | `docs/DEFAULT_SURFACES.md` | Default color/depth capture and native reset boundaries |
 | `docs/SURFACE_RESET_LIST.md` | Borrowed surface registration, removal and reset traversal |

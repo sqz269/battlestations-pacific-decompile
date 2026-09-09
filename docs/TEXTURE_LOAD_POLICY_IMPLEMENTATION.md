@@ -81,3 +81,8 @@ those remain assembly/source-backed. The Win32 build, both CTests and full
 D3D9 probe pass without a new test target. See
 `reports/font_registry_texture_policy_probe.txt`. Native loader evidence comments
 were preserved/extended, saved and exports refreshed.
+
+The later [image-loading integration](TEXTURE_IMAGE_LOADING.md) moves image
+inspection and policy composition into reusable code and corrects recreation
+metadata to use actual level-zero description. Its report covers both this DDS
+and the installed font TGA; the report above records the earlier direct check.

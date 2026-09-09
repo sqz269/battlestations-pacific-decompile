@@ -547,7 +547,7 @@
   {
     "address": "00b2d8e0",
     "name": "BSP_D3D9Renderer_EndFrameAndPresent",
-    "evidence": "Provisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied."
+    "evidence": "Provisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied. Query polling at00b2dadb..00b2db14 traverses borrowed array+19A0 before Present: state+8==0 only, one virtual10 poll per entry, AL ignored, no wait/retry or local lost-device gate; base/count reloaded by index. See docs/OCCLUSION_QUERY_CALLERS.md."
   },
   {
     "address": "00b2f4b0",
@@ -1557,7 +1557,7 @@
   {
     "address": "00b2c2d0",
     "name": "BSP_TextureManager_LoadFromFile",
-    "evidence": "Initial2D policy00b2c405..00b2c530 nowported: requestedWHFFFFFFFF defaults, unsignedmips>1/nonzeroquality gate, whole_stricmp detail.dds vs casesensitive noseart/gui substrings, SHR(Q&31), fullDWORDmipssubtract,signed>1 clamps. TypedstableQ differs native secondread. InitialCOMcreation fragment usesrealD3DXimageinfo/policy and retainsmemorysource afternonnulloutput; retry/managercache/VFS/nativewrapper remainunported."
+    "evidence": "Typed successful2D route now composes real D3DX image info, existing exact initial mip policy, COM creation, actual constructor metadata and retained source. Source base/length independent of cursor. Host complete-input, empty-output and HRESULT boundaries explicit; native VFS/cache/optional guard/callback/retry/intrusive ABI remain unported. Installed DXT1 atlas and Arial TGA load/recreation pass; docs/TEXTURE_IMAGE_LOADING.md."
   },
   {
     "address": "00b5fe90",
@@ -1613,5 +1613,40 @@
     "address": "00ad4480",
     "name": "BSP_Font_SelectGlyph",
     "evidence": "ECXfont,u16key stackRET4/EAXpayload.20/LF0A=>embedded+4C,CR0D=>+8C; exactunsignedtreeglyph elsecopied0091fallback+6C. Nouppercasehere. TypedscalarFontData projection checked installedfont; resources/padding/nativeiterators omitted."
+  },
+  {
+    "address": "00ab98f0",
+    "name": "BSP_TextContext_WriteGlyphQuad",
+    "evidence": "ECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md."
+  },
+  {
+    "address": "00b3f930",
+    "name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+    "evidence": "ECX wrapper, five stack arguments, RET14h. Actual GetLevelDesc(0) Width/Height/Format stored at +28/+2C/+18; saved policy dimensions are separate +34/+38. Loader subsequently sets +3C to requested mips. Typed initializer now captures actual metadata for retained recreation; native allocator/base/registry/diagnostic reference pairs remain outside projection. Complete337 bytes verified; docs/TEXTURE_IMAGE_LOADING.md."
+  },
+  {
+    "address": "00b189f0",
+    "name": "BSP_Material_SetTextureSlot",
+    "evidence": "ECX material; unsigned slot and resource pointer stack, RET8. Slots at +10+4*index; signed16 +34 high-water count compared as unsigned and raised to low16(index+1) before identity skip. Changed pointer stores/retains new before releasing old. No native bounds guard. Text geometry binds glyph+18 to slot0, +1C to slot1 once on initial binding block; docs/FONT_MATERIAL_BINDINGS.md."
+  },
+  {
+    "address": "00ab8ce0",
+    "name": "BSP_TextContext_EnsureFontShader",
+    "evidence": "ECX context, no stack args. Existing +1EC skips selection. Nonempty +1C0 explicit shader wins; otherwise GuiFont only for float(global0109cf04->DWORD+28)==720 and font scale+18==1 ordered, else GuiFontBilinear. AL indicates selection attempted including null result, not success. Compiled mshd versus installed shfx constant mapping unresolved; docs/FONT_MATERIAL_BINDINGS.md."
+  },
+  {
+    "address": "00aba270",
+    "name": "BSP_TextContext_BuildGlyphGeometry",
+    "evidence": "Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md."
+  },
+  {
+    "address": "00b8dac0",
+    "name": "BSP_Flare_InitializeOcclusionResources",
+    "evidence": "Provisional descriptive name; surrounding flare constructor/string and flareocclusion.mshd establish subsystem. ECX owner RET. Renderer virtual24 factory calls at00b8dd24/00b8dd37 install two query owners at+1D0/+1D4. Actual Begin/End draw scopes and depth roles unresolved; docs/OCCLUSION_QUERY_CALLERS.md."
+  },
+  {
+    "address": "00b8d150",
+    "name": "BSP_Flare_UpdateFromCachedOcclusionSamples",
+    "evidence": "Provisional descriptive name; ECX owner, pointer and delta-float stack, RET8. Nonnull queries+1D0/+1D4 read cached samples via virtual14 without readiness/poll. Nonzero denominator yields unsigned A/B ratio; modifies owner+AC and+184 through x87 attenuation calculations, then downstream geometry and later +AC restore1. Depth-tested roles and final rendered opacity unproven; docs/OCCLUSION_QUERY_CALLERS.md."
   }
 ]

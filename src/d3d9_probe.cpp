@@ -18,6 +18,7 @@
 #include <d3dx9.h>
 #include "bsp/font_data.hpp"
 #include "bsp/font_registry.hpp"
+#include "bsp/font_geometry.hpp"
 #include "bsp/stream_scalars.hpp"
 #include <filesystem>
 #include <algorithm>
@@ -27,7 +28,7 @@ bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 
-static bool probe_installed_font(const char* atlas_path) {
+static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_path) {
     const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
         std::string& bytes, std::string& message) {
@@ -113,7 +114,71 @@ static bool probe_installed_font(const char* atlas_path) {
         && stream.position_00bef580() == stream.size_00bef600();
     std::printf("Installed font DAT: glyphs=%zu scaled_height=%u signed_byte_acceptance=%d short_scalar=%d special_glyphs=%d\n",
         font.glyphs.size(), static_cast<unsigned>(font.scaled_height), decoded && fields, short_scalar, special_glyphs);
-    return decoded && fields && short_scalar && special_glyphs;
+    if (!(decoded && fields && short_scalar && special_glyphs)) return false;
+    struct FontVertex { float x, y, z, u, v; DWORD color; };
+    std::array<FontVertex, 4> vertices{};
+    std::array<std::uint16_t, 6> indices{};
+    const bsp::FontGeometryParameters geometry{120, 90, 1, 1, font.scaled_height, 0};
+    const bsp::FontGeometryLayout layout{sizeof(FontVertex), 0, 12, 20, {}};
+    const bool quad = bsp::write_font_quad_00ab98f0_fragment(letter->second, geometry,
+        layout, reinterpret_cast<std::uint8_t*>(vertices.data()), sizeof(vertices), 0, indices)
+        && vertices[0].x == 0.125f && vertices[0].y == 0.125f
+        && vertices[2].x > vertices[0].x && vertices[2].y > vertices[0].y
+        && vertices[0].u == 0.240234375f && vertices[0].v == 0.1015625f
+        && vertices[2].u == 0.263671875f && vertices[2].v == 0.203125f
+        && std::all_of(vertices.begin(), vertices.end(), [](const FontVertex& v) {
+            return v.z == 0 && v.color == 0xffffffffu;
+        }) && indices == std::array<std::uint16_t, 6>{0, 1, 2, 0, 2, 3};
+    std::printf("Installed font quad: normalized_positions_UVs_colors_and_indices=%d\n", quad);
+    if (!quad) return false;
+    const std::string gfx_name = "Fonts/" + descriptor->gfx_file;
+    auto texture_stream = std::make_shared<bsp::MemoryStream>();
+    if (!file.open_read_only_00bf52a0_fragment((game_root / gfx_name).string().c_str(), error)
+        || !bsp::memory_stream_from_physical_00bef750_fragment(file, *texture_stream, error)
+        || !file.close_00bf5090_fragment(error)) return false;
+    HMODULE module = LoadLibraryExW(L"d3dx9_40.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    if (!module) return false;
+    FARPROC address = GetProcAddress(module, "D3DXCreateTextureFromFileInMemoryEx");
+    bsp::CreateTextureFromMemory create{};
+    static_assert(sizeof(create) == sizeof(address));
+    std::memcpy(&create, &address, sizeof(create));
+    address = GetProcAddress(module, "D3DXGetImageInfoFromFileInMemory");
+    bsp::ReadImageInfoFromMemory read_info{};
+    static_assert(sizeof(read_info) == sizeof(address));
+    std::memcpy(&read_info, &address, sizeof(read_info));
+    std::unique_ptr<bsp::D3D9RetainedTexture2D> owner;
+    HRESULT result = bsp::load_retained_texture_2d_00b2c2d0_fragment(device, read_info, create,
+        texture_stream, {static_cast<std::uint32_t>(gfx_name.size()), gfx_name.c_str()}, 0, owner);
+    std::weak_ptr<bsp::MemoryStream> retained = texture_stream;
+    texture_stream.reset();
+    // The installed font image is 512x256, 32-bit TGA. Metadata is independently
+    // checked from its file header; this is not a native font material draw.
+    D3DSURFACE_DESC initial{}, recreated{};
+    if (SUCCEEDED(result) && !owner) result = E_FAIL;
+    if (SUCCEEDED(result)) result = owner->texture()->GetLevelDesc(0, &initial);
+    bool texture_checked = SUCCEEDED(result) && !retained.expired();
+    if (texture_checked) {
+        const auto* tga = owner->source()->data_00bef610();
+        texture_checked = owner->source()->size_00bef600() >= 18
+            && tga[12] == 0 && tga[13] == 2 && tga[14] == 0 && tga[15] == 1 && tga[16] == 32
+            && initial.Width == 512 && initial.Height == 256 && initial.Format == D3DFMT_A8R8G8B8
+            && initial.Pool == D3DPOOL_MANAGED && initial.Usage == 0 && owner->texture()->GetLevelCount() == 1
+            && owner->options().width == initial.Width && owner->options().height == initial.Height
+            && owner->options().format == initial.Format && owner->options().mip_levels == 1;
+        owner->release_com();
+        result = owner->recreate_00b3e190(device, create);
+        if (SUCCEEDED(result)) result = owner->texture()->GetLevelDesc(0, &recreated);
+        texture_checked = texture_checked && SUCCEEDED(result)
+            && recreated.Width == initial.Width && recreated.Height == initial.Height
+            && recreated.Format == initial.Format && owner->source()->position_00bef580() == 0;
+    }
+    owner.reset();
+    texture_checked = texture_checked && retained.expired();
+    FreeLibrary(module);
+    std::printf("Installed font texture: hr=0x%08lx size=%ux%u format=%u retained_recreation=%d\n",
+        static_cast<unsigned long>(result), recreated.Width, recreated.Height,
+        static_cast<unsigned>(recreated.Format), texture_checked);
+    return texture_checked;
 }
 
 // Recovered physical-to-memory route with explicit completeness checks and DLL
@@ -160,29 +225,19 @@ static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
     bsp::CreateTextureFromMemory create{};
     static_assert(sizeof(create) == sizeof(address));
     std::memcpy(&create, &address, sizeof(create));
-    using ReadImageInfo = HRESULT (WINAPI *)(const void*, UINT, D3DXIMAGE_INFO*);
-    ReadImageInfo read_info{};
+    bsp::ReadImageInfoFromMemory read_info{};
     address = GetProcAddress(module, "D3DXGetImageInfoFromFileInMemory");
     static_assert(sizeof(read_info) == sizeof(address));
     std::memcpy(&read_info, &address, sizeof(read_info));
-    D3DXIMAGE_INFO image_info{};
-    bsp::TextureLoadPolicy policy;
-    const bool policy_checked = read_info
-        && SUCCEEDED(read_info(bytes, static_cast<UINT>(byte_count), &image_info))
-        && image_info.ResourceType == D3DRTYPE_TEXTURE && image_info.Width == width
-        && image_info.Height == height && image_info.Format == D3DFMT_DXT1
-        && bsp::select_initial_texture_load_policy_00b2c405(
-            {static_cast<std::uint32_t>(std::strlen(path)), path},
-            {image_info.Width, image_info.Height, image_info.MipLevels}, 0, policy)
-        && policy.requested_width == 0xffffffffu && policy.requested_height == 0xffffffffu;
-    if (!policy_checked) { FreeLibrary(module); return false; }
-    const bsp::MemoryTextureOptions options{policy.saved_width, policy.saved_height,
-        policy.requested_mip_levels, image_info.Format};
-    bsp::D3D9RetainedTexture2D owner(options);
+    std::unique_ptr<bsp::D3D9RetainedTexture2D> loaded;
     std::weak_ptr<bsp::MemoryStream> retained = stream;
-    HRESULT result = owner.initialize_00b2c2d0_fragment(device, create, stream, policy);
-    std::printf("Initial texture policy: D3DX_image_info_default_dimensions_and_source_retention=%d\n",
-        SUCCEEDED(result) && owner.source() == stream);
+    HRESULT result = bsp::load_retained_texture_2d_00b2c2d0_fragment(device, read_info, create,
+        stream, {static_cast<std::uint32_t>(std::strlen(path)), path}, 0, loaded);
+    if (!loaded) { FreeLibrary(module); return false; }
+    auto& owner = *loaded;
+    std::printf("Initial texture load: D3DX_image_info_actual_metadata_and_source_retention=%d\n",
+        SUCCEEDED(result) && owner.source() == stream && owner.options().width == width
+        && owner.options().height == height && owner.options().format == D3DFMT_DXT1);
     stream.reset();
     clone = bsp::MemoryStream{};
     // The texture is now the only wrapper/backing owner. Recreate using that
@@ -480,6 +535,7 @@ static bool probe_draw(IDirect3DDevice9& device) {
 
 #ifdef BSP_HAS_GUI_REFERENCE
 bool probe_gui_geometry_reference();
+bool probe_font_geometry_reference();
 #endif
 #ifdef BSP_HAS_CAMERA_REFERENCE
 bool probe_camera_reference();
@@ -490,6 +546,7 @@ int main(int argc, char** argv) {
 #endif
 #ifdef BSP_HAS_GUI_REFERENCE
     if (!probe_gui_geometry_reference()) return 1;
+    if (!probe_font_geometry_reference()) return 1;
 #endif
     const HINSTANCE instance = GetModuleHandleA(nullptr);
     const char* name = "BSP D3D9 reconstruction probe";
@@ -829,7 +886,7 @@ int main(int argc, char** argv) {
     else if (matched) std::puts("Shader asset probe skipped: supply installed atlas DDS path to locate game scripts.");
     if (matched) matched = probe_material_states_and_constants(*device);
     if (matched && argc > 1) matched = probe_memory_texture(*device, argv[1]);
-    if (matched && argc > 1) matched = probe_installed_font(argv[1]);
+    if (matched && argc > 1) matched = probe_installed_font(*device, argv[1]);
     if (device) device->Release();
     if (api) api->Release();
     DestroyWindow(window);
