@@ -19,6 +19,11 @@ struct RendererSynchronization {
 // coordinated mode transition; this does not stop workers or release held locks.
 void set_renderer_synchronization_00b33aa0(RendererSynchronization&, bool enabled);
 
+// Polls the separate device-lifecycle lock stored at native renderer+199Ch.
+// This plain signed-depth observation does not acquire a lock or establish
+// thread-safe access in this semantic interface.
+bool renderer_device_lifecycle_busy_00b20220(const TrackedCriticalSection&);
+
 struct D3D9DrawState {
     std::uint32_t inhibit{}; // Native renderer +1d90h, exact meaning unresolved.
     bool device_lost{};     // Native +1d8ah.

@@ -248,13 +248,21 @@ int main() {
         auto* lock = bsp::critical_section_create_00bd1860();
         if (!lock) matched = false;
         else {
+            const bool initially_idle = !bsp::renderer_device_lifecycle_busy_00b20220(*lock);
+            EnterCriticalSection(&lock->native);
+            ++lock->depth;
+            const bool observed_busy = bsp::renderer_device_lifecycle_busy_00b20220(*lock);
+            --lock->depth;
+            LeaveCriticalSection(&lock->native);
+            const bool lifecycle_gate = initially_idle && observed_busy
+                && !bsp::renderer_device_lifecycle_busy_00b20220(*lock);
             bsp::RendererSynchronization synchronization{};
             bsp::set_renderer_synchronization_00b33aa0(synchronization, true);
             bsp::D3D9StateCache cache(*device, synchronization, lock);
             cache.initialize_defaults_00b26170();
             cache.initialize_defaults_00b26170();
             DWORD zfunc{}, cull{}, min_filter{}, vertex_filter{};
-            matched = SUCCEEDED(device->GetRenderState(D3DRS_ZFUNC, &zfunc))
+            matched = lifecycle_gate && SUCCEEDED(device->GetRenderState(D3DRS_ZFUNC, &zfunc))
                 && SUCCEEDED(device->GetRenderState(D3DRS_CULLMODE, &cull))
                 && SUCCEEDED(device->GetSamplerState(0, D3DSAMP_MINFILTER, &min_filter))
                 && SUCCEEDED(device->GetSamplerState(D3DVERTEXTEXTURESAMPLER0,

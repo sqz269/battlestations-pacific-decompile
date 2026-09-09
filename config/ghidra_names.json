@@ -711,7 +711,17 @@
   },
   {
     "address": "00b20220",
-    "name": "BSP_D3D9Renderer_HasPendingCount",
-    "evidence": "ECX renderer. Loadpointer+199Ch then signed compare object+18h >0; returnboolean inAL. Worker polls withSleep10 whiletrue and rechecks before Begin/End. Not queue retention mode+20h; pointee identity still unconfirmed."
+    "name": "BSP_D3D9Renderer_IsDeviceLifecycleBusy",
+    "evidence": "Corrected earlier HasPendingCount hypothesis: constructor00b328d3 calls tracked critical section factory00bd1860 and stores pointer at renderer+199Ch. Getter returns AL=(signed depth at lock+18h)>0. Device recreation00b29670 and presentation-mode change00b29e60 hold this lock. Plain observation, not acquisition or queue count. Typed port checked idle/held/idle on real tracked critical section; concurrent polling unverified."
+  },
+  {
+    "address": "00b29670",
+    "name": "BSP_D3D9Renderer_RecreateDevice",
+    "evidence": "Holds tracked lock pointer+199Ch through release resources/device, HAL CreateDevice, default states and resource restore callbacks. Separate from Reset processor00b2abd0. Increments/decrements lock+18h depth; worker polls this depth. Full routine unported."
+  },
+  {
+    "address": "00b29e60",
+    "name": "BSP_D3D9Renderer_ChangePresentationMode",
+    "evidence": "Holds lock+199Ch, checks/stores presentation parameters; same Windowed value sets pending reset0108d4b8, changed Windowed invokes00b29670 device recreation. Reentrant tracked lock depth blocks worker frame calls. Full mode/parameter semantics unported."
   }
 ]

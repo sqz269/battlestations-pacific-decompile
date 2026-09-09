@@ -7,6 +7,10 @@ void set_renderer_synchronization_00b33aa0(RendererSynchronization& state, bool 
     state.observed_enabled = enabled;
 }
 
+bool renderer_device_lifecycle_busy_00b20220(const TrackedCriticalSection& lock) {
+    return lock.depth > 0;
+}
+
 bool D3D9StateCache::enter_00b33ad0() {
     ++synchronization_.nesting;
     if (!synchronization_.enabled || !lock_) return false;

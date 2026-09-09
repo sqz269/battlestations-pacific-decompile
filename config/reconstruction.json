@@ -411,6 +411,13 @@
       "source": "src/win32_event.cpp",
       "status": "semantic_real_windows_event_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b20220",
+      "name": "renderer_device_lifecycle_busy",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_tracked_lock_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

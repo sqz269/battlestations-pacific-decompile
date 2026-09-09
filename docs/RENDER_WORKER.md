@@ -63,3 +63,30 @@ Five further functions were named and the thread comment updated in Ghidra.
 `reports/worker_start_evidence.json` retains byte-checked assembly. No C++ or tests
 changed in this start-contract investigation. Next trace descriptor preparation,
 renderer+199Ch ownership and the callback implementations selected by callers.
+
+
+## Correction: lifecycle lock, not pending work
+
+Constructor assembly00b328d3 calls00bd1860 (already reconstructed tracked
+CRITICAL_SECTION factory) and00b328df stores it at renderer+199Ch. Thus the
++18h value polled by00b20220 is signed recursion depth. Earlier references to
+pending commands/count were provisional and are superseded by this evidence.
+
+Device recreation00b29670 and presentation-mode change00b29e60 enter this lock,
+increment depth, do lifecycle work, then decrement and leave. Mode change can
+invoke recreation while already holding it. This lock differs from the optional
+renderer guard's embedded critical section at+19F4h. The worker polls the
+lifecycle depth until it is no longer positive before issuing frame calls.
+
+The getter is now ported as renderer_device_lifecycle_busy_00b20220 with an
+explicit TrackedCriticalSection reference. It reads signed depth>0; it neither
+acquires a lock nor supplies C++ cross-thread synchronization. The D3D9 probe
+checks idle/held/idle with real Enter/Leave and tracked depth changes. Build,
+existing tests and pixel checks pass. No new test target was introduced.
+
+The two known worker-start callers select callbacks0060d650 and0057ca00 at rate25.
+The latter addresses wave_Icon and interface/menu state. Their broader UI/context
+preparation is still unported; this is evidence of a UI update path, not proof of
+complete gameplay rendering on the worker. See reports/device_lifecycle_gate.json
+for verified getter and lock-holder assembly. Next recover these UI command
+preparation dependencies and the rendering commands retained in mode2.
