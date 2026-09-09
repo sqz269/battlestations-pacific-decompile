@@ -12,13 +12,14 @@ as an explicit command and has not been run.
 Confirmed the WinMain calling convention, application lifecycle boundaries, and the
 per-thread random subsystem. The integer PRNG and registration/lock lifecycle now compile;
 the stream matches original code over 1,500 outputs. See `STARTUP_RANDOM.md`.
-Ghidra has 39 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
+Ghidra has 46 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
 Resolved the concrete Windows vtable at `00d68cc4`; its loop is `00bec1a0`, now ported with
 explicit external callback interfaces and a real-message-queue probe. Recovered eight missing
 vtable-target functions and named the application frame method. See `PLATFORM_LOOP.md`.
 Recovered the window-procedure thunk and concrete D3D9 constructor/device initializer.
 Its device-creation prefix now runs against a real D3D9 device; see `D3D9_STARTUP.md`.
-Next, recover renderer state/resource setup and the reset/presentation path, and trace the
+Default render/sampler states and their cached setters/guards now compile and pass a real-device
+probe; see `D3D9_STATES.md`. Next, recover resource wrappers and the reset/presentation path, and trace the
 close-request-to-application-exit path before wiring a complete window lifecycle.
 
 1. WinMain `008f81f0`: confirmed four stack arguments and `RET 10h`; prototype updated in Ghidra.

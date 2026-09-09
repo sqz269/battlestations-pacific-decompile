@@ -41,9 +41,10 @@ assembly's stack offsets. No mixed or pure-device fallback appears here.
 
 **CreateDevice receives Windowed=TRUE even for a fullscreen request.** Only after
 the COM call does `00b2b014` store `!fullscreen` into the presentation structure.
-The port preserves this ordering and the API's other parameter mutations. This
-does not establish how the later renderer changes display mode; its reset path
-still needs recovery. Fullscreen behavior has not been exercised.
+The port preserves this ordering and the API's other parameter mutations. The
+later reset processor `00b2abd0` uses the stored parameters when the platform window
+is active and focused; see `D3D9_STATES.md`. Its dependencies still need reconstruction.
+Fullscreen behavior has not been exercised.
 
 The native prefix ignores HRESULTs. The new interface reports failures and guards
 against overwriting an owned output pointer; these are documented interface
@@ -64,7 +65,8 @@ After the ported prefix, the native routine records a thread ID, calls
 `00b26170`, and creates dynamic default-pool buffers: a 16 MiB vertex buffer and
 a 1 MiB 16-bit index buffer, both usage `208h` (DYNAMIC | WRITEONLY). It attaches
 them to unresolved wrappers and continues engine setup. These operations are
-not part of the current port.
+not part of the device prefix. The default-state helper `00b26170` and its cached
+setters have since been reconstructed separately; see `D3D9_STATES.md`.
 
 Also recovered `00bec3b0`, the original stdcall window-procedure thunk: it loads
 singleton `0109cf04` and forwards object, HWND, message, WPARAM and LPARAM to

@@ -193,5 +193,40 @@
     "address": "00b2aeb0",
     "name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
     "evidence": "Renderer vtable 00d5f0a8 slot +4h, thiscall RET 28h. Builds 56-byte presentation parameters at +1a28h, gets HAL caps, creates device at +1a10h using MULTITHREADED plus HW VP iff HW T&L and shader low word >=0101h; otherwise SW VP. CreateDevice initially receives Windowed=TRUE; only afterward stored Windowed becomes !fullscreen. Later initializes render state and dynamic vertex/index buffers. Only device-creation prefix currently ported."
+  },
+  {
+    "address": "00b24460",
+    "name": "BSP_D3D9Renderer_SetRenderStateCached",
+    "evidence": "thiscall RET 8h. Valid byte at this+40h+state, value at this+114h+4*state. Writes cache before device virtual E4h SetRenderState, increments +1ba0h even on API failure; skips unchanged valid entries. Optional renderer guard."
+  },
+  {
+    "address": "00b24610",
+    "name": "BSP_D3D9Renderer_SetSamplerStateCached",
+    "evidence": "thiscall RET Ch. Twenty internal sampler banks; samplers >=16 map to API sampler+F1h (vertex samplers 257..260). Cache validity at +11cch+72*sampler+state, DWORD value at +11dch+72*sampler+4*state. Device virtual 114h SetSamplerState; counter +1ba4h; cache updated even on failure."
+  },
+  {
+    "address": "00b26170",
+    "name": "BSP_D3D9Renderer_InitializeDefaultStates",
+    "evidence": "thiscall no stack args. Calls cached setter for 19 ordered render states, then seven sampler defaults on each of twenty banks. Defaults include ZFUNC LESS, CULL CCW, linear min/mag, point mip and wrap UVW. Invoked at startup and after successful device reset."
+  },
+  {
+    "address": "00b33ad0",
+    "name": "BSP_Renderer_EnterOptionalGuard",
+    "evidence": "Increments non-atomic global nesting 0108d6e0; if mode 0108d6dc enabled and this+4 lock nonnull, enters tracked critical section and increments depth+18h, returns true; otherwise false."
+  },
+  {
+    "address": "00b33b00",
+    "name": "BSP_Renderer_LeaveOptionalGuard",
+    "evidence": "thiscall RET 4h; ignores saved enter-result stack argument. Decrements nesting 0108d6e0, conditionally decrements depth/leaves this+4 lock using CURRENT mode 0108d6dc, and when nesting zero copies mode to observed byte 0108d6dd. Concurrent mode transitions not validated."
+  },
+  {
+    "address": "00b24a40",
+    "name": "BSP_D3D9Renderer_SetStreamFrequencyCached",
+    "evidence": "thiscall RET 8h. Compares stream cache DWORD this+1780h+16*stream, updates on change, calls device virtual 198h SetStreamSourceFreq(stream,value), with optional renderer guard."
+  },
+  {
+    "address": "00b2abd0",
+    "name": "BSP_D3D9Renderer_ProcessDeviceReset",
+    "evidence": "Checks render thread ID and global pending/lost flags 0108d4b8/b9. TestCooperativeLevel handles DEVICELOST/DEVICENOTRESET; requires active focused platform window, releases state/resources, calls device Reset with stored presentation parameters, restores resources/default states on success. Dependencies not yet ported."
   }
 ]

@@ -133,6 +133,41 @@
       "source": "src/platform_loop.cpp",
       "status": "real_queue_probe_checked_external_callbacks_pending",
       "abi_compatible": false
+    },
+    {
+      "address": "00b24460",
+      "name": "BSP_D3D9Renderer_SetRenderStateCached",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b24610",
+      "name": "BSP_D3D9Renderer_SetSamplerStateCached",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b26170",
+      "name": "BSP_D3D9Renderer_InitializeDefaultStates",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b33ad0",
+      "name": "BSP_Renderer_EnterOptionalGuard",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b33b00",
+      "name": "BSP_Renderer_LeaveOptionalGuard",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+      "abi_compatible": false
     }
   ],
   "fragments": [

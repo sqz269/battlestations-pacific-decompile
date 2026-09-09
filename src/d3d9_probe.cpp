@@ -1,5 +1,6 @@
 // Diagnostic host window only; this is not the reconstructed game window handler.
 #include "bsp/d3d9_startup.hpp"
+#include "bsp/d3d9_states.hpp"
 #include <cstdio>
 
 int main() {
@@ -39,11 +40,37 @@ int main() {
         actual.BackBufferHeight, actual.Windowed,
         static_cast<unsigned>(actual.BackBufferFormat),
         static_cast<unsigned>(actual.AutoDepthStencilFormat), actual.PresentationInterval);
-    const bool matched = SUCCEEDED(result) && actual.BackBufferWidth == 640
+    bool matched = SUCCEEDED(result) && actual.BackBufferWidth == 640
         && actual.BackBufferHeight == 480 && actual.Windowed
         && actual.BackBufferFormat == D3DFMT_A8R8G8B8
         && actual.EnableAutoDepthStencil && actual.AutoDepthStencilFormat == D3DFMT_D24S8
         && actual.PresentationInterval == D3DPRESENT_INTERVAL_DEFAULT;
+    if (matched) {
+        auto* lock = bsp::critical_section_create_00bd1860();
+        if (!lock) matched = false;
+        else {
+            bsp::RendererSynchronization synchronization{true, false, 0};
+            bsp::D3D9StateCache cache(*device, synchronization, lock);
+            cache.initialize_defaults_00b26170();
+            cache.initialize_defaults_00b26170();
+            DWORD zfunc{}, cull{}, min_filter{}, vertex_filter{};
+            matched = SUCCEEDED(device->GetRenderState(D3DRS_ZFUNC, &zfunc))
+                && SUCCEEDED(device->GetRenderState(D3DRS_CULLMODE, &cull))
+                && SUCCEEDED(device->GetSamplerState(0, D3DSAMP_MINFILTER, &min_filter))
+                && SUCCEEDED(device->GetSamplerState(D3DVERTEXTEXTURESAMPLER0,
+                    D3DSAMP_MINFILTER, &vertex_filter))
+                && zfunc == D3DCMP_LESS && cull == D3DCULL_CCW
+                && min_filter == D3DTEXF_LINEAR && vertex_filter == D3DTEXF_LINEAR
+                && cache.render_calls() == 19 && cache.sampler_calls() == 140
+                && lock->depth == 0 && synchronization.nesting == 0
+                && synchronization.observed_enabled;
+            std::printf("D3D9 defaults: render_calls=%u sampler_calls=%u zfunc=%lu "
+                "cull=%lu min_filter=%lu vertex_filter=%lu balanced=%d checked=%d\n",
+                cache.render_calls(), cache.sampler_calls(), zfunc, cull, min_filter,
+                vertex_filter, lock->depth == 0 && synchronization.nesting == 0, matched);
+        }
+        bsp::critical_section_destroy_owned_0041cc80(lock);
+    }
     if (swap_chain) swap_chain->Release();
     if (device) device->Release();
     if (api) api->Release();
