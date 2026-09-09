@@ -21,10 +21,11 @@ refresh uses disjoint matrices. Original camera function ABIs and offsets are in
 the preceding camera analysis documents; body hashes are in
 `reports/camera_transform.json`.
 
-Parent pointers must refer to live objects in an acyclic graph. Editing local or
-parent fields does not automatically invalidate children or camera caches in this
-interface. Native setters, dirty callbacks, hierarchy ownership and construction
-remain separate work. No cycle handling or guessed dirty propagation is added.
+Parent pointers must refer to live objects in an acyclic graph. Direct field edits
+do not invalidate caches. The subsequent local-matrix setter port supports native
+selective descendant invalidation and the direct camera override; see the local
+edit follow-up below. Parent changes, hierarchy ownership and construction remain
+separate work. No cycle handling or guessed ancestor camera invalidation is added.
 
 The existing probe initializes parent localZ=-0.75 and child localZ=-0.25, both
 with invalid caches. The combined accessor produces worldZ=-1, viewZ=1 and sets
@@ -34,3 +35,32 @@ camera comparison now includes affine composition on the existing scaled/rotated
 fixture; all16 words match. Win32 build, two existing CTests and the full D3D9
 probe pass. No new test target was added. These checks do not prove dirty edit
 behavior, arbitrary hierarchies, exceptional FP inputs or game execution.
+
+## Local edit follow-up
+
+The typed transform now includes first-child/next-sibling links, auxiliary flags
+and an explicit optional notification function/context. This models the native
+attached+A0 virtual+3C call boundary; it does not implement group ownership.
+`set_transform_local_matrix_00b6db10` copies first, then only when flags&A is
+nonzero clears own flags, notifies, and invalidates world-valid descendants.
+`invalidate_camera_descendants_00b6da30` skips entire already-invalid subtrees
+and leaves camera projection/combined flags untouched.
+
+`set_camera_local_matrix_00b71430` clears camera flags withFFFFFE4B before the
+base setter, then refreshes world direction and target through00b70660. The latter
+retains x87 operand order and intermediate stores, including position-first X
+addition versus direction-first Y/Z. These semantic names are provisional.
+World/position setters, reparenting and callbacks for arbitrary group types are
+still unported. A direct ancestor edit must not be described as automatically
+invalidating descendant camera combined caches.
+
+The existing draw fixture now changes child localZ from-0.25 to-0.5 after caches
+are valid. Its supplied notification observes own flags cleared, projection8
+preserved, VP10 cleared and the descendant still valid; afterward that descendant
+is invalidated. DirectionZ=1, targetZ=-0.25 and rebuilt viewZ=1.25 pass. The
+regenerated view-projection renders the expected center/outside pixels and
+restores state. Win32 build, both existing CTests, native matrix comparisons
+and full D3D9 probe pass. No new test target was added. Evidence is in
+`reports/camera_local_edit.json`; attached cGroup callback analysis is in
+`CAMERA_ATTACHED_CALLBACK.md`. This is one explicit callback/hierarchy fixture,
+not native callback ownership or gameplay validation.

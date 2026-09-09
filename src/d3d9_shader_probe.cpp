@@ -58,14 +58,40 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
     bsp::CameraTransform parent;
     parent.local = supplied; parent.local[14] = -.75f;
     scene_camera.transform.parent = &parent;
+    parent.first_child = &scene_camera.transform;
     scene_camera.transform.local = supplied; scene_camera.transform.local[14] = -.25f;
-    const auto& combined = bsp::get_camera_view_projection_00b70490(scene_camera);
+    bsp::get_camera_view_projection_00b70490(scene_camera);
     camera_checked = camera_checked && (parent.valid_flags & 2)
         && (scene_camera.transform.valid_flags & 10) == 10
         && (camera.valid_flags & 0x18) == 0x18
         && scene_camera.transform.world[14] == -1 && scene_camera.transform.view[14] == 1;
     if (!camera_checked) result = E_FAIL;
-    bsp::write_system_matrix_00b404a0(vertex_constants + 60, combined.data());
+    bsp::CameraTransform descendant;
+    descendant.parent = &scene_camera.transform;
+    descendant.valid_flags = 10; descendant.auxiliary_flags = 0xff;
+    scene_camera.transform.first_child = &descendant;
+    struct NotificationCheck { bsp::CameraState* camera; bsp::CameraTransform* child; unsigned calls{}; bool order{}; };
+    NotificationCheck notification{&scene_camera, &descendant};
+    scene_camera.transform.notification_context = &notification;
+    scene_camera.transform.notify_changed = [](void* context) {
+        auto& check = *static_cast<NotificationCheck*>(context);
+        ++check.calls;
+        check.order = check.camera->transform.valid_flags == 0
+            && check.camera->transform.local[14] == -.5f && check.child->valid_flags == 10
+            && (check.camera->projection.valid_flags & 0x18) == 8;
+    };
+    auto changed_local = supplied; changed_local[14] = -.5f;
+    bsp::set_camera_local_matrix_00b71430(scene_camera, changed_local);
+    camera_checked = camera_checked && notification.calls == 1 && notification.order
+        && descendant.valid_flags == 0 && descendant.auxiliary_flags == 0xcf
+        && scene_camera.transform.valid_flags == 2 && (camera.valid_flags & 0x18) == 8
+        && scene_camera.direction[2] == 1 && scene_camera.target[2] == -.25f;
+    const auto& refreshed = bsp::get_camera_view_projection_00b70490(scene_camera);
+    camera_checked = camera_checked && scene_camera.transform.view[14] == 1.25f
+        && (camera.valid_flags & 0x18) == 0x18;
+    if (!camera_checked) result = E_FAIL;
+    std::printf("Camera local edit: callback_order_and_cache_refresh=%d\n", camera_checked);
+    bsp::write_system_matrix_00b404a0(vertex_constants + 60, refreshed.data());
     float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
     if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);
     if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 77);
