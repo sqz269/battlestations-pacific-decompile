@@ -1028,5 +1028,10 @@
     "address": "00b5bbc0",
     "name": "BSP_SystemConstant_ConstructRecord",
     "evidence": "Thiscall RET14h name/id/secondDimension/firstDimension/arrayCount. Record+0=FFFF,+4=dimensionproduct,+8=second,+C=first,+10=array,+14/+18=name,+1C=semanticid. Typed registry preserves name/dimensions/count/id; other ownership/runtime metadata not ported. See docs/SHADER_SYSTEM_REGISTRY.md."
+  },
+  {
+    "address": "00b43b00",
+    "name": "BSP_ShaderDescriptor_ReadShaderTable",
+    "evidence": "Large Shader-table reader, full routine unported. Profile fragment00b440e4..00b4427e reads VSVersion/PSVersion through string-type helper00b660a0; string overrides copied with strlen, includingempty. Otherwise unsigned second stack argument<3 selects vs_2_a/ps_2_b, >=3 selects vs_3_0/ps_3_0. Callers00b45f5e and00b46104 push3. Descriptor strings+34h/+3Ch. Typed selection fragment integrated into successful generated debug draw. See docs/SHADER_PROFILES.md."
   }
 ]

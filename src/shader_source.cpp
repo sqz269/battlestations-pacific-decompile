@@ -3,6 +3,14 @@
 #include <utility>
 
 namespace bsp {
+ShaderProfiles select_shader_profiles_00b43b00(std::uint32_t version,
+    const std::optional<std::string>& vertex_override,
+    const std::optional<std::string>& pixel_override) {
+    // Native source strings are copied using strlen, not the Lua byte length.
+    return {vertex_override ? std::string(vertex_override->c_str()) : version < 3 ? "vs_2_a" : "vs_3_0",
+        pixel_override ? std::string(pixel_override->c_str()) : version < 3 ? "ps_2_b" : "ps_3_0"};
+}
+
 std::vector<ShaderSystemConstant> make_system_constant_registry_00b5bf70() {
     return {
 #include "shader_system_registry.inc"

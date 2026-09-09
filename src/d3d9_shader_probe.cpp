@@ -226,11 +226,12 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         "SYS.WorldSpacePos=IN.Position;\nSYS.ScreenSpacePos=mul(SYS.WorldSpacePos,cViewProjMat);\n"
         "OUT.Color = IN.Color;";
     std::string debug_source;
+    const auto debug_profiles = bsp::select_shader_profiles_00b43b00(3);
     const bool full_vertex_generated = bsp::generate_vertex_source_00b39110(debug_program,
         debug_source) == bsp::ShaderSourceStatus::complete;
     ID3DBlob* debug_code = nullptr;
     if (SUCCEEDED(result)) result = full_vertex_generated
-        ? assemble_host_shader(debug_source.c_str(), "vs_2_0", &debug_code) : E_FAIL;
+        ? assemble_host_shader(debug_source.c_str(), debug_profiles.vertex.c_str(), &debug_code) : E_FAIL;
     if (SUCCEEDED(result)) {
         vertex_code->Release(); vertex_code = debug_code; debug_code = nullptr;
     }
@@ -250,7 +251,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         debug_pixel_source) == bsp::ShaderSourceStatus::complete;
     ID3DBlob* debug_pixel_code = nullptr;
     if (SUCCEEDED(result)) result = full_pixel_generated
-        ? assemble_host_shader(debug_pixel_source.c_str(), "ps_3_0", &debug_pixel_code) : E_FAIL;
+        ? assemble_host_shader(debug_pixel_source.c_str(), debug_profiles.pixel.c_str(), &debug_pixel_code) : E_FAIL;
     if (SUCCEEDED(result)) {
         pixel_code->Release(); pixel_code = debug_pixel_code; debug_pixel_code = nullptr;
     }

@@ -2,8 +2,16 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace bsp {
+struct ShaderProfiles { std::string vertex, pixel; };
+// Descriptor reader00b43b00 profile-selection fragment: unsigned version<3
+// defaults to vs_2_a/ps_2_b, otherwise vs_3_0/ps_3_0. Optional values represent
+// fields that passed the native string-type check; absent/non-string use defaults.
+ShaderProfiles select_shader_profiles_00b43b00(std::uint32_t version,
+    const std::optional<std::string>& vertex_override = {},
+    const std::optional<std::string>& pixel_override = {});
 enum class ShaderScalarType : std::uint32_t { floating = 0, integer = 1 };
 enum class ShaderSemantic : std::uint32_t {
     position = 0, color, texcoord, normal, binormal, tangent,

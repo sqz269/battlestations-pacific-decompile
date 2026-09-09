@@ -714,6 +714,15 @@
       "status": "native_order_registry_generated_shader_pixel_readback_checked",
       "abi_compatible": false,
       "remaining": "52-record constructor projection only; native singleton registration, record runtime metadata and allocator lifecycle unported."
+    },
+    {
+      "address": "00b43b00",
+      "name": "select_shader_profiles",
+      "source": "src/shader_source.cpp",
+      "native_range": "00b440e4-00b4427f",
+      "status": "native_version3_defaults_generated_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Full Lua table parser, descriptor ownership and compiler wrapper remain unported. Typed optional strings represent successful native string-type checks."
     }
   ]
 }
