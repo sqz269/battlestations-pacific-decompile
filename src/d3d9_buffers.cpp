@@ -57,6 +57,19 @@ template<class Buffer> void unlock(D3D9BufferBinding<Buffer>& binding) {
         --binding.lock_depth;
     }
 }
+
+template<class Buffer> void release_for_reset(D3D9BufferBinding<Buffer>& binding) {
+    // Native reads the member again after the balanced COM access pair.
+    Buffer* observed = binding.buffer;
+    if (observed) {
+        observed->AddRef();
+        observed->Release();
+    }
+    if (binding.buffer) {
+        binding.buffer->Release();
+        binding.buffer = nullptr;
+    }
+}
 }
 
 HRESULT vertex_buffer_recreate_00b492b0(VertexBufferBinding& binding, IDirect3DDevice9& device) {
@@ -75,6 +88,23 @@ HRESULT index_buffer_recreate_00b49180(IndexBufferBinding& binding, IDirect3DDev
     const HRESULT result = device.CreateIndexBuffer(binding.capacity, usage, D3DFMT_INDEX16, pool, &created, nullptr);
     if (SUCCEEDED(result)) install(binding, created);
     return result;
+}
+
+void release_dynamic_buffers_for_reset_00b237d0_fragment(bool& ready,
+    VertexBufferBinding& vertices, IndexBufferBinding& indices) {
+    if (!ready) return;
+    ready = false;
+    release_for_reset(vertices);
+    release_for_reset(indices);
+}
+
+HRESULT restore_dynamic_buffers_00b1fd90(bool& ready, bool device_lost,
+    VertexBufferBinding& vertices, IndexBufferBinding& indices, IDirect3DDevice9& device) {
+    if (ready || device_lost) return S_FALSE;
+    ready = true;
+    const HRESULT vertex_result = vertex_buffer_recreate_00b492b0(vertices, device);
+    const HRESULT index_result = index_buffer_recreate_00b49180(indices, device);
+    return FAILED(vertex_result) ? vertex_result : index_result;
 }
 
 HRESULT vertex_buffer_lock_00b4ba00(VertexBufferBinding& b, UINT bytes, UINT offset,

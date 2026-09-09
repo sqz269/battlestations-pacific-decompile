@@ -461,8 +461,34 @@ int main(int argc, char** argv) {
         bsp::D3D9SurfaceBinding color{}, depth{};
         bsp::D3D9DefaultSurfaces defaults;
         bsp::RendererSynchronization synchronization{};
-        bsp::D3D9StateCache cache(*device, synchronization, nullptr);
+        bsp::set_renderer_synchronization_00b33aa0(synchronization, true);
+        auto* lock = bsp::critical_section_create_00bd1860();
+        const auto release_lock = [](bsp::TrackedCriticalSection* value) {
+            bsp::critical_section_destroy_owned_0041cc80(value);
+        };
+        std::unique_ptr<bsp::TrackedCriticalSection, decltype(release_lock)> lock_owner(lock, release_lock);
+        bsp::D3D9StateCache cache(*device, synchronization, lock);
+        bsp::VertexBufferBinding reset_vertices;
+        bsp::IndexBufferBinding reset_indices;
+        reset_vertices.flags = reset_indices.flags = 0x1000;
+        reset_vertices.capacity = 0x1000000;
+        reset_indices.capacity = 0x100000;
+        bool buffers_ready = false;
+        const bool lost_skip = bsp::restore_dynamic_buffers_00b1fd90(buffers_ready, true,
+            reset_vertices, reset_indices, *device) == S_FALSE
+            && !buffers_ready && !reset_vertices.buffer && !reset_indices.buffer;
         result = cache.capture_default_surfaces_00b238d0_fragment(defaults);
+        if (SUCCEEDED(result)) result = bsp::restore_dynamic_buffers_00b1fd90(buffers_ready, false,
+            reset_vertices, reset_indices, *device);
+        auto* const first_vertices = reset_vertices.buffer;
+        auto* const first_indices = reset_indices.buffer;
+        const bool ready_skip = SUCCEEDED(result)
+            && bsp::restore_dynamic_buffers_00b1fd90(buffers_ready, false,
+                reset_vertices, reset_indices, *device) == S_FALSE
+            && reset_vertices.buffer == first_vertices && reset_indices.buffer == first_indices;
+        // Seed valid upload metadata to distinguish COM release from stream rewind.
+        reset_vertices.cursor = 48;
+        reset_indices.cursor = 6;
         auto* const original_color_owner = &defaults.color;
         auto* const original_depth_owner = &defaults.depth;
         color.format = D3DFMT_A8R8G8B8;
@@ -474,6 +500,11 @@ int main(int argc, char** argv) {
         registry.append_00b2a7c0_fragment(color);
         registry.append_00b2a7c0_fragment(depth);
         if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        cache.release_dynamic_buffers_00b237d0(buffers_ready, reset_vertices, reset_indices);
+        cache.release_dynamic_buffers_00b237d0(buffers_ready, reset_vertices, reset_indices);
+        const bool released_buffers = !buffers_ready && !reset_vertices.buffer && !reset_indices.buffer
+            && reset_vertices.cursor == 48 && reset_indices.cursor == 6
+            && lock->depth == 0 && synchronization.nesting == 0;
         defaults.release_for_reset_00b262c0_fragment();
         const bool released_defaults = !defaults.color.surface && !defaults.depth.surface
             && defaults.color.width == 640 && defaults.depth.width == 640;
@@ -481,6 +512,19 @@ int main(int argc, char** argv) {
         if (SUCCEEDED(result)) result = device->Reset(&stored);
         if (SUCCEEDED(result)) result = defaults.restore_00b23b10_fragment(*device);
         if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        if (SUCCEEDED(result)) result = bsp::restore_dynamic_buffers_00b1fd90(buffers_ready, false,
+            reset_vertices, reset_indices, *device);
+        D3DVERTEXBUFFER_DESC reset_vertex_desc{};
+        D3DINDEXBUFFER_DESC reset_index_desc{};
+        if (SUCCEEDED(result)) result = reset_vertices.buffer->GetDesc(&reset_vertex_desc);
+        if (SUCCEEDED(result)) result = reset_indices.buffer->GetDesc(&reset_index_desc);
+        const bool restored_buffers = SUCCEEDED(result) && lost_skip && ready_skip && released_buffers
+            && buffers_ready && reset_vertex_desc.Size == 0x1000000 && reset_index_desc.Size == 0x100000
+            && reset_vertex_desc.Pool == D3DPOOL_DEFAULT && reset_index_desc.Pool == D3DPOOL_DEFAULT
+            && reset_vertex_desc.Usage == 0x208 && reset_index_desc.Usage == 0x208
+            && reset_index_desc.Format == D3DFMT_INDEX16
+            && reset_vertices.cursor == 48 && reset_indices.cursor == 6;
+        std::printf("Dynamic buffer reset: readiness_lost_gates_metadata_and_guard=%d\n", restored_buffers);
         IDirect3DSurface9* restored_color{}, *restored_depth{};
         if (SUCCEEDED(result)) result = device->GetRenderTarget(0, &restored_color);
         if (SUCCEEDED(result)) result = device->GetDepthStencilSurface(&restored_depth);
@@ -500,7 +544,8 @@ int main(int argc, char** argv) {
         D3DSURFACE_DESC color_desc{}, depth_desc{};
         if (SUCCEEDED(result)) result = color.surface->GetDesc(&color_desc);
         if (SUCCEEDED(result)) result = depth.surface->GetDesc(&depth_desc);
-        matched = restored_defaults && SUCCEEDED(result) && color_desc.Width == 128 && color_desc.Height == 128
+        matched = restored_buffers && restored_defaults && SUCCEEDED(result)
+            && color_desc.Width == 128 && color_desc.Height == 128
             && depth_desc.Width == 128 && depth_desc.Height == 128
             && color_desc.Format == D3DFMT_A8R8G8B8 && depth_desc.Format == D3DFMT_D24S8
             && color_desc.Usage == D3DUSAGE_RENDERTARGET

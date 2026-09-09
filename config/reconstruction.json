@@ -1017,6 +1017,20 @@
       "source": "src/d3d9_resources.cpp",
       "status": "device_reset_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b237d0",
+      "name": "release_dynamic_buffers",
+      "source": "src/d3d9_states.cpp",
+      "status": "real_device_reset_readiness_metadata_guard_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b1fd90",
+      "name": "restore_dynamic_buffers",
+      "source": "src/d3d9_buffers.cpp",
+      "status": "real_device_reset_readiness_metadata_guard_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

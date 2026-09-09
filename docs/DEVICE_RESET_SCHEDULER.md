@@ -120,8 +120,8 @@ logic with a fixed periodic reset loop.
 The import table independently identifies `00ce223c=GetCurrentThreadId`,
 `00ce2310=GetFocus`, and `00ce2230=Sleep`.
 
-The nearest still-missing, bounded implementation pair is dynamic-buffer
-readiness around existing buffer wrappers:
+The dynamic-buffer readiness pair identified by this audit has now been
+implemented around the existing buffer wrappers (see DYNAMIC_BUFFER_RESET):
 
 - `00b237d0`: optional guard; skip when `+1d8c=0`; otherwise clear it before
   callbacks, release/null the vertex COM buffer at owner `+1974` first and
@@ -134,10 +134,10 @@ readiness around existing buffer wrappers:
   each callback. No HRESULT rollback is present.
 
 Current `VertexBufferBinding` / `IndexBufferBinding` and recreation helpers
-supply much of this pair's operation. Preserve the early readiness writes,
-vertex-before-index order, and explicit error differences. This pair can close
-a concrete scheduler dependency without duplicating default-surface work or
-inventing a full renderer object.
+supply this pair's buffer operations. The integrated implementation preserves
+early readiness writes, vertex-before-index order and the release guard, with
+explicit error differences. The combined device reset probe passed. This closes
+the typed buffer phase; it does not establish a complete renderer object.
 
 The scheduler itself still needs a coherent renderer/platform owner, exact
 surface/resource release and restore traversal, cached gamma behavior, and the

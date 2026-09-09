@@ -33,6 +33,20 @@ using IndexBufferBinding = D3D9BufferBinding<IDirect3DIndexBuffer9>;
 HRESULT vertex_buffer_recreate_00b492b0(VertexBufferBinding&, IDirect3DDevice9&);
 HRESULT index_buffer_recreate_00b49180(IndexBufferBinding&, IDirect3DDevice9&);
 
+// Body phase of renderer00b237d0: caller supplies its optional renderer guard.
+// Skip if not ready; otherwise clear ready before vertex then index COM drops.
+// Preserve wrapper identities and all metadata; release has no lost-state gate.
+void release_dynamic_buffers_for_reset_00b237d0_fragment(bool& ready,
+    VertexBufferBinding& vertices, IndexBufferBinding& indices);
+
+// Native renderer ECX, no stack arguments. No internal guard. Set ready before
+// vertex then index recreation; index is attempted even when vertex fails.
+// New HRESULT report: S_FALSE when ready/lost skips, otherwise first failure
+// or final index result. Native ignores results and never rolls ready back.
+// Stable wrappers/device required; full renderer layout/virtual dispatch omitted.
+HRESULT restore_dynamic_buffers_00b1fd90(bool& ready, bool device_lost,
+    VertexBufferBinding& vertices, IndexBufferBinding& indices, IDirect3DDevice9& device);
+
 struct BufferLockResult { void* data{}; UINT base_offset{}; DWORD flags{}; };
 // Native argument 3 is unused and omitted here. Partial port: null-buffer sentinel
 // and diagnostic singleton paths return INVALIDCALL instead of executing them.

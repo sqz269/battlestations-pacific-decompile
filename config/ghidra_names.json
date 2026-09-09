@@ -292,7 +292,7 @@
   {
     "address": "00b237d0",
     "name": "BSP_D3D9Renderer_ReleaseDynamicBuffersForReset",
-    "evidence": "Optional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive."
+    "evidence": "Optional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive. Guardedtyped implementation now composes bodyfragment; guard precedes readinessskip, ready cleared before vertex/index COMoperations. Preserve wrappermetadata/registration/cursor, no lostgate. Realdevice release/reset/restore and balancedguard checked."
   },
   {
     "address": "00b262c0",
@@ -342,7 +342,7 @@
   {
     "address": "00b1fd90",
     "name": "BSP_D3D9Renderer_RestoreDynamicBuffers",
-    "evidence": "If dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported."
+    "evidence": "If dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported. Typedstableowner/device implementation now composes verified vtable+20 targets00b492b0/00b49180. Ready0andlost0 gate, ready1 beforevertex, indexstillattemptedafterfailure, no rollback; typedHRESULTfirstfailure orS_FALSEskip is newinterface. Realdevice resetreadiness and unchanged cursors checked."
   },
   {
     "address": "00b24840",
@@ -792,7 +792,7 @@
   {
     "address": "00b3e190",
     "name": "BSP_D3D9Texture_CreateFromRetainedMemory",
-    "evidence": "ECX wrapper RET, device getter00b1fef0 and retained file+4Ch size virtual+30h/data00bef610. D3DXCreateTextureFromFileInMemoryEx receives width+28h,height+2Ch,mips+3Ch, usage0, R8G8B8 converted to A8R8G8B8 otherwise UNKNOWN, poolMANAGED, filters70004h/FFFFFFFFh, zero optional arguments, output+10h. Typed port checked installed DXT1 atlas byte parity; registry/ABI unported."
+    "evidence": "ECX wrapper RET, device getter00b1fef0 and retained file+4Ch size virtual+30h/data00bef610. D3DXCreateTextureFromFileInMemoryEx receives width+28h,height+2Ch,mips+3Ch, usage0, R8G8B8 converted to A8R8G8B8 otherwise UNKNOWN, poolMANAGED, filters70004h/FFFFFFFFh, zero optional arguments, output+10h. Typed port checked installed DXT1 atlas byte parity; registry/ABI unported. TEXTURE_STREAM_LIFETIME confirms source is retained memory stream at2Dtexture+4C, assigned by00b2c2d0 via00b23640 before localrelease; destructor00b3f2e0 releases it. Vtable+2C uses retainedbytes; separate+8 diskreload00b3fa90 does not replace retainedsource in inspectedbody. Current typedblob interface stillrequirescaller-owned backing lifetime."
   },
   {
     "address": "00aeeaf0",

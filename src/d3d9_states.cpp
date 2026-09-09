@@ -50,6 +50,12 @@ HRESULT D3D9StateCache::bind_depth_surface_00b21690(const D3D9SurfaceBinding* su
     return result;
 }
 
+void D3D9StateCache::release_dynamic_buffers_00b237d0(bool& ready,
+    VertexBufferBinding& vertices, IndexBufferBinding& indices) {
+    Guard guard(*this);
+    release_dynamic_buffers_for_reset_00b237d0_fragment(ready, vertices, indices);
+}
+
 HRESULT D3D9StateCache::capture_default_surfaces_00b238d0_fragment(D3D9DefaultSurfaces& surfaces) {
     IDirect3DSurface9* acquired{};
     HRESULT result = device_.GetRenderTarget(0, &acquired);

@@ -87,6 +87,10 @@ public:
     // registry/allocator and redundant accessor reference pairs remain unported.
     // Failure exposes HRESULT and retains any already-installed color/depth state.
     HRESULT capture_default_surfaces_00b238d0_fragment(D3D9DefaultSurfaces& surfaces);
+    // Optional guard precedes even the readiness skip. Drops vertex then index
+    // COM ownership while retaining wrapper metadata; no lost-state gate.
+    void release_dynamic_buffers_00b237d0(bool& ready,
+        VertexBufferBinding& vertices, IndexBufferBinding& indices);
     // Native thiscall RET4. No outer guard: each individual setter enters its
     // own guard. Identity skips even mutated blocks; null releases the block
     // without resetting device states. shared_ptr replaces intrusive ownership.
