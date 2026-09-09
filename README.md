@@ -2,8 +2,8 @@
 
 An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
 `battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
-rebuild of the game. The saved program now reports 62,530 functions; its internal-function iterator
-exports 62,088 functions after recovering sixteen missing code targets. The ledger maps 33 native
+rebuild of the game. The saved program now reports 62,535 functions; its internal-function iterator
+exports 62,093 functions after recovering twenty-one missing code targets. The ledger maps 36 native
 routines to C++: math, the integer random generator, thread registration, the platform loop,
 cached renderer defaults/guards, surface binding/reset, buffer recreation/unlock and draw submission,
 plus four separately tracked renderer fragments.
@@ -33,7 +33,7 @@ routine is tracked separately; resource setup and game rendering remain pending.
 It also checks cached defaults, balanced renderer locking, surface binding and dynamic buffer
 descriptions; see [resource ownership](docs/D3D9_RESOURCES.md),
 [D3D9 startup evidence](docs/D3D9_STARTUP.md) and [renderer states](docs/D3D9_STATES.md).
-The recovered non-indexed draw path also passes a diagnostic triangle pixel readback;
+The recovered non-indexed and indexed draw paths pass diagnostic triangle pixel readbacks;
 see [draw evidence and remaining stream work](docs/D3D9_DRAW.md).
 
 ## Export the existing analysis

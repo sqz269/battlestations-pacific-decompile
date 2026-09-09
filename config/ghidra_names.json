@@ -347,17 +347,17 @@
   {
     "address": "00b24840",
     "name": "BSP_D3D9Renderer_BindVertexStream",
-    "evidence": "Vtable+134h. Caches logical stream object and intrusive ref; compares underlying COM buffer, stride from declaration+cc and offset to skip redundant SetStreamSource. Same logical object returns early. Device slot190h, counter+1bb4h. Wrapper-based path not yet ported."
+    "evidence": "Vtable+134h. Caches logical stream object and intrusive ref; compares underlying COM buffer, stride from declaration+cc and offset to skip redundant SetStreamSource. Same logical object returns early. Device slot190h, counter+1bb4h. Wrapper-based path not yet ported. Update: semantic binding/draw projection now ported with shared logical ownership and diagnostic indexed pixel readback; native constructors, registry and ABI remain incomplete."
   },
   {
     "address": "00b24b00",
     "name": "BSP_D3D9Renderer_BindIndexStream",
-    "evidence": "Recovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported."
+    "evidence": "Recovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported. Update: semantic binding/draw projection now ported with shared logical ownership and diagnostic indexed pixel readback; native constructors, registry and ABI remain incomplete."
   },
   {
     "address": "00b24010",
     "name": "BSP_D3D9Renderer_DrawIndexedPrimitive",
-    "evidence": "Recovered vtable+13ch, RET14h. Gated by inhibit+1d90h/lost+1d8ah and nonzero vertex/primitive counts; special stream0 tag40000001h rejects requested vertices beyond stream count. Calls DrawIndexedPrimitive with stored base vertex+17bch, optional guard. Logical stream gate remains unported."
+    "evidence": "Recovered vtable+13ch, RET14h. Gated by inhibit+1d90h/lost+1d8ah and nonzero vertex/primitive counts; special stream0 tag40000001h rejects requested vertices beyond stream count. Calls DrawIndexedPrimitive with stored base vertex+17bch, optional guard. Logical stream gate remains unported. Update: semantic binding/draw projection now ported with shared logical ownership and diagnostic indexed pixel readback; native constructors, registry and ABI remain incomplete."
   },
   {
     "address": "00b21b40",
@@ -368,5 +368,40 @@
     "address": "00b23c50",
     "name": "BSP_D3D9Renderer_CopyRenderTargetToOpaqueSurface",
     "evidence": "Recovered vtable+110h. Nonempty argument triggers surface allocation, D3DXLoadSurfaceFromSurface from current render target, LockRect alpha bits OR ff000000, then output helper00b5e490. Exact output format/API and pitch behavior need assembly review; not ported."
+  },
+  {
+    "address": "00b4bc00",
+    "name": "BSP_D3D9LogicalVertexStream_Construct",
+    "evidence": "Factory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported."
+  },
+  {
+    "address": "00b4bf30",
+    "name": "BSP_D3D9LogicalIndexStream_Construct",
+    "evidence": "Factory00b288b0 allocates logical index stream, installs vtable00d61de0. Physical buffer wrapper at+8h. Flags choose pool/usage, input format chooses 16/32-bit element size. Full constructor unported."
+  },
+  {
+    "address": "00b48cd0",
+    "name": "BSP_D3D9LogicalVertexStream_GetVertexCount",
+    "evidence": "Recovered vtable+20h getter; MOV EAX,[ECX+64h]; RET. Used in indexed-draw stream0 limit gate."
+  },
+  {
+    "address": "00b48ce0",
+    "name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+    "evidence": "Recovered vtable+24h getter; returns stream+68h pointer. Vertex binding reads declaration stride at+ cch."
+  },
+  {
+    "address": "00b48d10",
+    "name": "BSP_D3D9LogicalVertexStream_GetByteOffset",
+    "evidence": "Recovered vtable+28h getter; returns DWORD stream+5ch, passed as SetStreamSource offset."
+  },
+  {
+    "address": "00b48cf0",
+    "name": "BSP_D3D9LogicalVertexStream_GetBuffer",
+    "evidence": "Recovered vtable+2ch; loads physical wrapper stream+58h then tailcalls wrapper+1ch. Concrete physical getter00b4b9f0 bytes8b4128c3 returns COM buffer+28h."
+  },
+  {
+    "address": "00b48dc0",
+    "name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+    "evidence": "Recovered vtable+28h; loads physical wrapper stream+8h then tailcalls wrapper+1ch. Concrete physical getter00b4b840 bytes8b4128c3 returns COM buffer+28h."
   }
 ]

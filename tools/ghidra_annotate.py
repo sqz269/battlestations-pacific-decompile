@@ -46,6 +46,8 @@ def main():
         comment = previous
         if marker not in previous:
             comment = (previous + '\n\n' if previous else '') + marker + '\n' + entry['evidence']
+        elif entry['evidence'] not in previous:
+            comment = previous + '\n\n' + marker + ' update\n' + entry['evidence']
         changes.append({'address': address, 'before': old, 'after': entry, 'status': 'pending'})
         write(log, changes)
         post('rename_function_by_address', function_address=address, new_name=entry['name'])

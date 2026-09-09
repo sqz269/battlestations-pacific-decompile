@@ -1,0 +1,30 @@
+{
+  "utc": "2026-09-09T04:46:50.618259+00:00",
+  "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b24840",
+      "length": 504,
+      "matches_disk": true,
+      "sha256": "4ad1011fcd017a2680c9d11335211300b8a2053aaa30ae00a6c1d30e2df80451"
+    },
+    {
+      "address": "00b24b00",
+      "length": 236,
+      "matches_disk": true,
+      "sha256": "bf824859fcd01fd2cf56c451217ebb156f75e7dfe705b7b1af66bf2403d4a3ba"
+    },
+    {
+      "address": "00b24010",
+      "length": 331,
+      "matches_disk": true,
+      "sha256": "686bc37b4011a057dc5ddc020da96574f13b3fb52d9b62540b3afdd6e1169d8b"
+    }
+  ],
+  "probe_output": "D3D9 device probe: hr=0x00000000 flags=0x44 size=640x480 windowed=1 format=21 depth=75 interval=0x0\nD3D9 defaults: render_calls=19 sampler_calls=140 zfunc=2 cull=3 min_filter=2 vertex_filter=2 balanced=1 checked=1\nD3D9 resources: hr=0x00000000 surface=640x480 vertex_bytes=16777216 index_bytes=1048576 checked=1\nD3D9 surface reset: hr=0x00000000 color_usage=1 depth_usage=2 checked=1\nD3D9 buffer uploads: hr=0x00000000 vertex_cursor=96 index_cursor=12 checked=1\nD3D9 draw readback: hr=0x00000000 inside=0xff00ff00 outside=0xff000000 checked=1\nD3D9 indexed readback: hr=0x00000000 inside=0xff00ff00 vertex_binds=1 index_binds=1 checked=1",
+  "probe_exit_code": 0,
+  "existing_ctest": "2/2 passed",
+  "diagnostic_indexed_pixel_readback_validated": true,
+  "game_validated": false,
+  "native_stream_constructors_validated": false
+}

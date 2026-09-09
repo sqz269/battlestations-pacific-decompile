@@ -1,7 +1,9 @@
 #pragma once
 #include "bsp/d3d9_startup.hpp"
 #include "bsp/random_threads.hpp"
+#include "bsp/d3d9_buffers.hpp"
 #include <array>
+#include <memory>
 
 namespace bsp {
 // Semantic equivalents of globals 0108d6dc/dd/e0. The original counter is
@@ -17,6 +19,19 @@ struct D3D9DrawState {
     bool device_lost{};     // Native +1d8ah.
 };
 
+// Semantic projections of stream getters, not full native constructors/layouts.
+struct VertexDeclarationView { UINT stride{}; }; // Native declaration +cch.
+struct LogicalVertexStream {
+    std::shared_ptr<VertexBufferBinding> physical; // Native stream +58h.
+    std::shared_ptr<VertexDeclarationView> declaration; // +68h.
+    UINT offset{};       // +5ch.
+    UINT vertex_count{}; // +64h.
+    DWORD tag{};         // +54h.
+};
+struct LogicalIndexStream {
+    std::shared_ptr<IndexBufferBinding> physical; // Native stream +8h.
+};
+
 // New interface, not the original renderer's memory layout. Device, shared sync
 // state and optional tracked lock must outlive this object. No COM ownership.
 class D3D9StateCache {
@@ -30,6 +45,12 @@ public:
     // S_FALSE means the native draw gate skipped the call; native ignores HRESULT.
     HRESULT draw_primitive_00b21b40(const D3D9DrawState&, D3DPRIMITIVETYPE,
         UINT start_vertex, UINT primitive_count);
+    void bind_vertex_stream_00b24840(UINT stream, std::shared_ptr<LogicalVertexStream> value);
+    void bind_index_stream_00b24b00(std::shared_ptr<LogicalIndexStream> value, INT base_vertex);
+    HRESULT draw_indexed_00b24010(const D3D9DrawState&, D3DPRIMITIVETYPE,
+        UINT minimum_vertex, UINT vertex_count, UINT start_index, UINT primitive_count);
+    std::uint32_t vertex_binding_calls() const { return vertex_binding_calls_; }
+    std::uint32_t index_binding_calls() const { return index_binding_calls_; }
     // Needed after device reset; caller owns reset sequencing.
     void invalidate();
     std::uint32_t render_calls() const { return render_calls_; }
@@ -46,6 +67,16 @@ private:
     std::array<Entry, 212> render_{};
     std::array<std::array<Entry, 14>, 20> samplers_{};
     std::array<UINT, 4> stream_frequencies_{};
+    struct StreamBinding {
+        std::shared_ptr<LogicalVertexStream> object;
+        UINT stride{};
+        UINT offset{};
+    };
+    std::array<StreamBinding, 4> streams_{};
+    std::shared_ptr<LogicalIndexStream> indices_;
+    INT base_vertex_{};
+    std::uint32_t vertex_binding_calls_{};
+    std::uint32_t index_binding_calls_{};
     std::uint32_t render_calls_{};
     std::uint32_t sampler_calls_{};
 };

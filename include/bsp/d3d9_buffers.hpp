@@ -4,8 +4,13 @@
 
 namespace bsp {
 // Semantic wrapper fields +14h..28h, without intrusive ownership/diagnostics.
-// Owns one COM reference. Release explicitly before destruction/reset.
+// Owns one COM reference. Release explicitly for reset; new-interface destructor
+// releases any remaining reference (not the complete native wrapper destructor).
 template<class Buffer> struct D3D9BufferBinding {
+    D3D9BufferBinding() = default;
+    D3D9BufferBinding(const D3D9BufferBinding&) = delete;
+    D3D9BufferBinding& operator=(const D3D9BufferBinding&) = delete;
+    ~D3D9BufferBinding() { if (buffer) buffer->Release(); }
     DWORD flags{};
     UINT capacity{};
     UINT cursor{};

@@ -231,6 +231,27 @@
       "source": "src/d3d9_states.cpp",
       "status": "diagnostic_triangle_pixel_readback_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b24840",
+      "name": "bind_vertex_stream",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_logical_stream_indexed_pixel_readback_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b24b00",
+      "name": "bind_index_stream",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_logical_stream_indexed_pixel_readback_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b24010",
+      "name": "draw_indexed",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_logical_stream_indexed_pixel_readback_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

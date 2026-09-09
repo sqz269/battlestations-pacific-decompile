@@ -11,9 +11,10 @@ static bool probe_draw(IDirect3DDevice9& device) {
     IDirect3DSurface9* target = nullptr;
     IDirect3DSurface9* readback = nullptr;
     IDirect3DSurface9* original = nullptr;
-    bsp::VertexBufferBinding vertices{};
+    auto physical_vertices = std::make_shared<bsp::VertexBufferBinding>();
+    auto& vertices = *physical_vertices;
     vertices.flags = 0x1000;
-    vertices.capacity = 60;
+    vertices.capacity = 80;
     HRESULT result = device.GetRenderTarget(0, &original);
     if (SUCCEEDED(result)) result = device.CreateRenderTarget(64, 64, D3DFMT_A8R8G8B8,
         D3DMULTISAMPLE_NONE, 0, FALSE, &target, nullptr);
@@ -21,11 +22,11 @@ static bool probe_draw(IDirect3DDevice9& device) {
         D3DPOOL_SYSTEMMEM, &readback, nullptr);
     if (SUCCEEDED(result)) result = bsp::vertex_buffer_recreate_00b492b0(vertices, device);
     bsp::BufferLockResult upload{};
-    if (SUCCEEDED(result)) result = bsp::vertex_buffer_lock_00b4ba00(vertices, 60, 0, false, upload);
+    if (SUCCEEDED(result)) result = bsp::vertex_buffer_lock_00b4ba00(vertices, 80, 0, false, upload);
     if (SUCCEEDED(result)) {
         struct Vertex { float x, y, z, rhw; DWORD diffuse; };
         static_assert(sizeof(Vertex) == 20);
-        const Vertex triangle[] = {{4, 4, 0, 1, 0xff00ff00},
+        const Vertex triangle[] = {{-100, -100, 0, 1, 0xffff0000}, {4, 4, 0, 1, 0xff00ff00},
             {60, 4, 0, 1, 0xff00ff00}, {4, 60, 0, 1, 0xff00ff00}};
         std::memcpy(upload.data, triangle, sizeof(triangle));
         bsp::vertex_buffer_unlock_00b4b9d0(vertices);
@@ -34,7 +35,18 @@ static bool probe_draw(IDirect3DDevice9& device) {
     bsp::RendererSynchronization sync{};
     bsp::D3D9StateCache states(device, sync, nullptr);
     if (SUCCEEDED(result)) result = device.SetDepthStencilSurface(nullptr);
-    if (SUCCEEDED(result)) result = device.SetStreamSource(0, vertices.buffer, 0, 20);
+    auto stream = std::make_shared<bsp::LogicalVertexStream>();
+    stream->physical = physical_vertices;
+    stream->declaration = std::make_shared<bsp::VertexDeclarationView>();
+    stream->declaration->stride = 20;
+    stream->vertex_count = 4;
+    stream->tag = 0x40000001;
+    if (SUCCEEDED(result)) {
+        states.bind_vertex_stream_00b24840(0, stream);
+        auto equivalent = std::make_shared<bsp::LogicalVertexStream>(*stream);
+        states.bind_vertex_stream_00b24840(0, equivalent);
+        states.bind_vertex_stream_00b24840(0, stream);
+    }
     if (SUCCEEDED(result)) result = device.SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
@@ -48,7 +60,7 @@ static bool probe_draw(IDirect3DDevice9& device) {
     }
     if (SUCCEEDED(result)) result = device.BeginScene();
     if (SUCCEEDED(result)) {
-        result = states.draw_primitive_00b21b40({}, D3DPT_TRIANGLELIST, 0, 1);
+        result = states.draw_primitive_00b21b40({}, D3DPT_TRIANGLELIST, 1, 1);
         const HRESULT ended = device.EndScene();
         if (SUCCEEDED(result)) result = ended;
     }
@@ -62,11 +74,48 @@ static bool probe_draw(IDirect3DDevice9& device) {
         std::memcpy(&outside, bytes + 60 * pixels.Pitch + 60 * 4, 4);
         result = readback->UnlockRect();
     }
-    const bool matched = SUCCEEDED(result) && (inside & 0xffffff) == 0x00ff00
+    bool matched = SUCCEEDED(result) && (inside & 0xffffff) == 0x00ff00
         && (outside & 0xffffff) == 0;
     std::printf("D3D9 draw readback: hr=0x%08lx inside=0x%08lx outside=0x%08lx checked=%d\n",
         static_cast<unsigned long>(result), inside, outside, matched);
-    device.SetStreamSource(0, nullptr, 0, 0);
+    auto index_stream = std::make_shared<bsp::LogicalIndexStream>();
+    index_stream->physical = std::make_shared<bsp::IndexBufferBinding>();
+    auto& indices = *index_stream->physical;
+    indices.flags = 0x1000;
+    indices.capacity = 6;
+    if (matched) result = bsp::index_buffer_recreate_00b49180(indices, device);
+    if (matched && SUCCEEDED(result)) result = bsp::index_buffer_lock_00b4b850(indices, 6, 0, false, upload);
+    if (matched && SUCCEEDED(result)) {
+        const unsigned short elements[] = {0, 1, 2};
+        std::memcpy(upload.data, elements, sizeof(elements));
+        bsp::index_buffer_unlock_00b4b820(indices);
+        states.bind_index_stream_00b24b00(index_stream, 0);
+        states.bind_index_stream_00b24b00(index_stream, 1); // Same object, new base vertex.
+        result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
+    }
+    if (matched && SUCCEEDED(result)) result = device.BeginScene();
+    if (matched && SUCCEEDED(result)) {
+        const HRESULT rejected = states.draw_indexed_00b24010({}, D3DPT_TRIANGLELIST, 0, 5, 0, 1);
+        result = rejected == S_FALSE
+            ? states.draw_indexed_00b24010({}, D3DPT_TRIANGLELIST, 0, 3, 0, 1) : E_FAIL;
+        const HRESULT ended = device.EndScene();
+        if (SUCCEEDED(result)) result = ended;
+    }
+    if (matched && SUCCEEDED(result)) result = device.GetRenderTargetData(target, readback);
+    if (matched && SUCCEEDED(result)) result = readback->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
+    if (matched && SUCCEEDED(result)) {
+        const auto* bytes = static_cast<const unsigned char*>(pixels.pBits);
+        std::memcpy(&inside, bytes + 16 * pixels.Pitch + 16 * 4, 4);
+        std::memcpy(&outside, bytes + 60 * pixels.Pitch + 60 * 4, 4);
+        result = readback->UnlockRect();
+    }
+    matched = matched && SUCCEEDED(result) && (inside & 0xffffff) == 0xff00
+        && (outside & 0xffffff) == 0 && states.vertex_binding_calls() == 1
+        && states.index_binding_calls() == 1;
+    std::printf("D3D9 indexed readback: hr=0x%08lx inside=0x%08lx vertex_binds=%u index_binds=%u checked=%d\n",
+        static_cast<unsigned long>(result), inside, states.vertex_binding_calls(), states.index_binding_calls(), matched);
+    states.bind_vertex_stream_00b24840(0, nullptr);
+    states.bind_index_stream_00b24b00(nullptr, 0);
     if (original) { device.SetRenderTarget(0, original); original->Release(); }
     bsp::buffer_release(vertices);
     if (readback) readback->Release();

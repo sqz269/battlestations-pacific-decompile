@@ -62,6 +62,55 @@ void D3D9StateCache::invalidate() {
     render_ = {};
     samplers_ = {};
     stream_frequencies_ = {};
+    streams_ = {};
+    indices_.reset();
+    base_vertex_ = 0;
+}
+
+void D3D9StateCache::bind_vertex_stream_00b24840(UINT stream, std::shared_ptr<LogicalVertexStream> value) {
+    if (stream >= streams_.size() || (value && (!value->physical || !value->declaration))) std::abort();
+    Guard guard(*this);
+    auto& cached = streams_[stream];
+    if (cached.object == value) return;
+    if (cached.object && value
+        && cached.object->physical->buffer == value->physical->buffer
+        && cached.stride == value->declaration->stride && cached.offset == value->offset) {
+        cached.object = std::move(value); // Transfer logical ownership without API call.
+        return;
+    }
+    cached.object = std::move(value);
+    IDirect3DVertexBuffer9* buffer = nullptr;
+    cached.stride = cached.offset = 0;
+    if (cached.object) {
+        buffer = cached.object->physical->buffer;
+        cached.stride = cached.object->declaration->stride;
+        cached.offset = cached.object->offset;
+    }
+    device_.SetStreamSource(stream, buffer, cached.offset, cached.stride);
+    ++vertex_binding_calls_;
+}
+
+void D3D9StateCache::bind_index_stream_00b24b00(std::shared_ptr<LogicalIndexStream> value, INT base_vertex) {
+    if (value && !value->physical) std::abort();
+    Guard guard(*this);
+    base_vertex_ = base_vertex; // Updated even for the same logical object.
+    if (indices_ != value) {
+        indices_ = std::move(value);
+        device_.SetIndices(indices_ ? indices_->physical->buffer : nullptr);
+        ++index_binding_calls_;
+    }
+}
+
+HRESULT D3D9StateCache::draw_indexed_00b24010(const D3D9DrawState& state,
+    D3DPRIMITIVETYPE type, UINT minimum_vertex, UINT vertex_count,
+    UINT start_index, UINT primitive_count) {
+    if (state.inhibit || state.device_lost) return S_FALSE;
+    Guard guard(*this); // Native guard precedes the zero-count checks here.
+    if (vertex_count == 0 || primitive_count == 0) return S_FALSE;
+    const auto& stream = streams_[0].object;
+    if (stream && vertex_count > stream->vertex_count && stream->tag == 0x40000001) return S_FALSE;
+    return device_.DrawIndexedPrimitive(type, base_vertex_, minimum_vertex,
+        vertex_count, start_index, primitive_count);
 }
 
 void D3D9StateCache::set_stream_frequency_00b24a40(UINT stream, UINT frequency) {

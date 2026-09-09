@@ -37,16 +37,49 @@ logical stream binding, indexed draw gates, scene rendering, visual parity or
 gameplay. No additional CTest cases were introduced; build and existing tests pass.
 Retained original assembly and byte hashes are under `reports/d3d9_draw_*`.
 
-## Remaining logical stream work
+## Logical streams and indexed drawing
 
 Vertex binding holds intrusive references to logical stream objects. It compares
 their COM buffer, stride and offset before SetStreamSource, and can replace a
 logical reference without changing API state when those values match. A repeated
 identical logical object returns early. Stride comes from a declaration at `+cch`;
-those declarations and wrapper methods must be recovered before porting.
+the declaration itself remains a stride-only projection in the new interface.
 
 Index binding always updates stored base vertex `+17bch`, even when its logical
 index object is unchanged. It only calls SetIndices on object changes. Indexed
 draw uses that base vertex, skips zero vertex/primitive counts, and has an
-additional stream-zero count/tag condition (`40000001h`) that remains unported.
-The diagnostic host's direct SetStreamSource is not a replacement for these methods.
+additional stream-zero count/tag condition (`40000001h`). These three routines
+are now reconstructed with typed logical stream projections and shared ownership.
+The probe uses the recovered binding methods instead of direct SetStreamSource.
+
+Factory `00b287c0` calls vertex constructor `00b4bc00`, installing vtable `00d61d6c`.
+Recovered getters read vertex count at `+64h`, declaration at `+68h`, offset at
+`+5ch`, and obtain the COM buffer through physical wrapper `+58h` virtual `+1ch`.
+The physical getter returns its `+28h` COM pointer. Index constructor `00b4bf30`
+installs vtable `00d61de0`; its getter delegates through physical wrapper `+8h`.
+Full constructors, shared-buffer allocation, declaration formats and resource
+registry are still unported. Getter evidence supports the projections, not complete
+native object layout or ABI equivalence.
+
+The typed cache retains logical streams with shared_ptr rather than copying native
+intrusive objects. Logical streams retain physical bindings; the new physical
+binding destructor releases any remaining COM reference. Explicit reset release
+still preserves metadata. This is new interface ownership, not the complete native
+wrapper teardown. Invalidation releases logical references but requires the caller
+to coordinate actual device unbinding/reset. Same-object binding deliberately returns
+early even if its fields have changed; equivalent distinct objects transfer ownership
+without API rebinding. The implementation preserves both native behaviors.
+
+Indexed drawing checks inhibit/lost flags, then enters the optional guard before
+checking counts. An oversized vertex count is rejected only when stream zero is
+present and has tag `40000001h`. It calls DrawIndexedPrimitive with the base vertex
+stored by index binding. As with non-indexed drawing, the new interface exposes
+HRESULT or S_FALSE; native code ignores API errors.
+
+The probe preserves the non-indexed pixel check and adds indexed readback. Three
+equivalent vertex bindings generate only one SetStreamSource; rebinding the same
+index object with base vertex 1 generates only one SetIndices while selecting the
+correct triangle after a dummy vertex. A request exceeding the tagged stream count
+returns S_FALSE. The valid indexed draw again yields green inside and black outside.
+The limits of this check are recorded separately in `reports/d3d9_indexed_validation.json`.
+No game-material, full stream-constructor, registry, concurrent or gameplay claim follows.
