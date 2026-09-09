@@ -12,6 +12,11 @@ struct RendererSynchronization {
     std::uint32_t nesting{};
 };
 
+struct D3D9DrawState {
+    std::uint32_t inhibit{}; // Native renderer +1d90h, exact meaning unresolved.
+    bool device_lost{};     // Native +1d8ah.
+};
+
 // New interface, not the original renderer's memory layout. Device, shared sync
 // state and optional tracked lock must outlive this object. No COM ownership.
 class D3D9StateCache {
@@ -21,6 +26,10 @@ public:
     void set_render_state_00b24460(D3DRENDERSTATETYPE state, DWORD value);
     void set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYPE state, DWORD value);
     void initialize_defaults_00b26170();
+    void set_stream_frequency_00b24a40(UINT stream, UINT frequency);
+    // S_FALSE means the native draw gate skipped the call; native ignores HRESULT.
+    HRESULT draw_primitive_00b21b40(const D3D9DrawState&, D3DPRIMITIVETYPE,
+        UINT start_vertex, UINT primitive_count);
     // Needed after device reset; caller owns reset sequencing.
     void invalidate();
     std::uint32_t render_calls() const { return render_calls_; }
@@ -36,6 +45,7 @@ private:
     // Native render-valid area +40h..113h; sampler states 0..13 in twenty banks.
     std::array<Entry, 212> render_{};
     std::array<std::array<Entry, 14>, 20> samplers_{};
+    std::array<UINT, 4> stream_frequencies_{};
     std::uint32_t render_calls_{};
     std::uint32_t sampler_calls_{};
 };

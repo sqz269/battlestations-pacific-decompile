@@ -343,5 +343,30 @@
     "address": "00b1fd90",
     "name": "BSP_D3D9Renderer_RestoreDynamicBuffers",
     "evidence": "If dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported."
+  },
+  {
+    "address": "00b24840",
+    "name": "BSP_D3D9Renderer_BindVertexStream",
+    "evidence": "Vtable+134h. Caches logical stream object and intrusive ref; compares underlying COM buffer, stride from declaration+cc and offset to skip redundant SetStreamSource. Same logical object returns early. Device slot190h, counter+1bb4h. Wrapper-based path not yet ported."
+  },
+  {
+    "address": "00b24b00",
+    "name": "BSP_D3D9Renderer_BindIndexStream",
+    "evidence": "Recovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported."
+  },
+  {
+    "address": "00b24010",
+    "name": "BSP_D3D9Renderer_DrawIndexedPrimitive",
+    "evidence": "Recovered vtable+13ch, RET14h. Gated by inhibit+1d90h/lost+1d8ah and nonzero vertex/primitive counts; special stream0 tag40000001h rejects requested vertices beyond stream count. Calls DrawIndexedPrimitive with stored base vertex+17bch, optional guard. Logical stream gate remains unported."
+  },
+  {
+    "address": "00b21b40",
+    "name": "BSP_D3D9Renderer_DrawPrimitive",
+    "evidence": "Recovered vtable+140h, RETCh. Skips inhibit+1d90h, device-lost+1d8ah or zero primitive count; optional guard then device slot144h DrawPrimitive. Helper00b1f740 called on object+1904h only computes unused ECX+10h (LEA/RET), no observable side effects. New interface returns HRESULT/S_FALSE."
+  },
+  {
+    "address": "00b23c50",
+    "name": "BSP_D3D9Renderer_CopyRenderTargetToOpaqueSurface",
+    "evidence": "Recovered vtable+110h. Nonempty argument triggers surface allocation, D3DXLoadSurfaceFromSurface from current render target, LockRect alpha bits OR ff000000, then output helper00b5e490. Exact output format/API and pitch behavior need assembly review; not ported."
   }
 ]

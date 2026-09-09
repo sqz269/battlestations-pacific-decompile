@@ -61,6 +61,26 @@ void D3D9StateCache::invalidate() {
     Guard guard(*this);
     render_ = {};
     samplers_ = {};
+    stream_frequencies_ = {};
+}
+
+void D3D9StateCache::set_stream_frequency_00b24a40(UINT stream, UINT frequency) {
+    if (stream >= stream_frequencies_.size()) std::abort();
+    Guard guard(*this);
+    if (stream_frequencies_[stream] != frequency) {
+        stream_frequencies_[stream] = frequency;
+        device_.SetStreamSourceFreq(stream, frequency);
+    }
+}
+
+HRESULT D3D9StateCache::draw_primitive_00b21b40(const D3D9DrawState& state,
+    D3DPRIMITIVETYPE type, UINT start_vertex, UINT primitive_count) {
+    if (state.inhibit || state.device_lost) return S_FALSE;
+    // Native calls 00b1f740 with object at +1904h: LEA EAX,[ECX+10h]; RET.
+    // Its unused return and absence of memory accesses produce no observable work.
+    if (primitive_count == 0) return S_FALSE;
+    Guard guard(*this);
+    return device_.DrawPrimitive(type, start_vertex, primitive_count);
 }
 
 void D3D9StateCache::initialize_defaults_00b26170() {

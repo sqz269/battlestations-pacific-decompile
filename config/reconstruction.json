@@ -217,6 +217,20 @@
       "source": "src/d3d9_buffers.cpp",
       "status": "real_buffer_upload_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b21b40",
+      "name": "draw_primitive",
+      "source": "src/d3d9_states.cpp",
+      "status": "diagnostic_triangle_pixel_readback_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b24a40",
+      "name": "set_stream_frequency",
+      "source": "src/d3d9_states.cpp",
+      "status": "diagnostic_triangle_pixel_readback_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

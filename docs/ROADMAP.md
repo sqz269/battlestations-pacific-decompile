@@ -12,7 +12,7 @@ as an explicit command and has not been run.
 Confirmed the WinMain calling convention, application lifecycle boundaries, and the
 per-thread random subsystem. The integer PRNG and registration/lock lifecycle now compile;
 the stream matches original code over 1,500 outputs. See `STARTUP_RANDOM.md`.
-Ghidra has 69 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
+Ghidra has 74 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
 Resolved the concrete Windows vtable at `00d68cc4`; its loop is `00bec1a0`, now ported with
 explicit external callback interfaces and a real-message-queue probe. Recovered eight missing
 vtable-target functions and named the application frame method. See `PLATFORM_LOOP.md`.
@@ -23,6 +23,8 @@ probe; see `D3D9_STATES.md`. Surface binding and dynamic buffer creation now hav
 checks; surface release/recreation also passes a real host-driven device Reset. Wrapper ownership
 and native reset dependencies are traced in `D3D9_RESOURCES.md`. Buffer recreation and partial lock
 paths now upload real data with DISCARD/NOOVERWRITE; see `D3D9_BUFFER_UPLOAD.md`.
+Non-indexed draw and stream frequency are ported with a diagnostic triangle pixel readback;
+logical stream binding and indexed draw remain pending (`D3D9_DRAW.md`).
 Next, recover registry/base teardown
 and integrate the reset/presentation path, and trace the
 close-request-to-application-exit path before wiring a complete window lifecycle.

@@ -6,6 +6,74 @@
 #include <cstring>
 #include <cstdio>
 
+// Host setup for a bounded pixel check, not the game's material/stream pipeline.
+static bool probe_draw(IDirect3DDevice9& device) {
+    IDirect3DSurface9* target = nullptr;
+    IDirect3DSurface9* readback = nullptr;
+    IDirect3DSurface9* original = nullptr;
+    bsp::VertexBufferBinding vertices{};
+    vertices.flags = 0x1000;
+    vertices.capacity = 60;
+    HRESULT result = device.GetRenderTarget(0, &original);
+    if (SUCCEEDED(result)) result = device.CreateRenderTarget(64, 64, D3DFMT_A8R8G8B8,
+        D3DMULTISAMPLE_NONE, 0, FALSE, &target, nullptr);
+    if (SUCCEEDED(result)) result = device.CreateOffscreenPlainSurface(64, 64, D3DFMT_A8R8G8B8,
+        D3DPOOL_SYSTEMMEM, &readback, nullptr);
+    if (SUCCEEDED(result)) result = bsp::vertex_buffer_recreate_00b492b0(vertices, device);
+    bsp::BufferLockResult upload{};
+    if (SUCCEEDED(result)) result = bsp::vertex_buffer_lock_00b4ba00(vertices, 60, 0, false, upload);
+    if (SUCCEEDED(result)) {
+        struct Vertex { float x, y, z, rhw; DWORD diffuse; };
+        static_assert(sizeof(Vertex) == 20);
+        const Vertex triangle[] = {{4, 4, 0, 1, 0xff00ff00},
+            {60, 4, 0, 1, 0xff00ff00}, {4, 60, 0, 1, 0xff00ff00}};
+        std::memcpy(upload.data, triangle, sizeof(triangle));
+        bsp::vertex_buffer_unlock_00b4b9d0(vertices);
+        result = device.SetRenderTarget(0, target);
+    }
+    bsp::RendererSynchronization sync{};
+    bsp::D3D9StateCache states(device, sync, nullptr);
+    if (SUCCEEDED(result)) result = device.SetDepthStencilSurface(nullptr);
+    if (SUCCEEDED(result)) result = device.SetStreamSource(0, vertices.buffer, 0, 20);
+    if (SUCCEEDED(result)) result = device.SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
+    if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+    if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+    if (SUCCEEDED(result)) {
+        states.initialize_defaults_00b26170();
+        states.set_stream_frequency_00b24a40(0, 1);
+        states.set_render_state_00b24460(D3DRS_ZENABLE, FALSE);
+        states.set_render_state_00b24460(D3DRS_CULLMODE, D3DCULL_NONE);
+        states.set_render_state_00b24460(D3DRS_LIGHTING, FALSE);
+        result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
+    }
+    if (SUCCEEDED(result)) result = device.BeginScene();
+    if (SUCCEEDED(result)) {
+        result = states.draw_primitive_00b21b40({}, D3DPT_TRIANGLELIST, 0, 1);
+        const HRESULT ended = device.EndScene();
+        if (SUCCEEDED(result)) result = ended;
+    }
+    if (SUCCEEDED(result)) result = device.GetRenderTargetData(target, readback);
+    D3DLOCKED_RECT pixels{};
+    if (SUCCEEDED(result)) result = readback->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
+    DWORD inside{}, outside{};
+    if (SUCCEEDED(result)) {
+        const auto* bytes = static_cast<const unsigned char*>(pixels.pBits);
+        std::memcpy(&inside, bytes + 16 * pixels.Pitch + 16 * 4, 4);
+        std::memcpy(&outside, bytes + 60 * pixels.Pitch + 60 * 4, 4);
+        result = readback->UnlockRect();
+    }
+    const bool matched = SUCCEEDED(result) && (inside & 0xffffff) == 0x00ff00
+        && (outside & 0xffffff) == 0;
+    std::printf("D3D9 draw readback: hr=0x%08lx inside=0x%08lx outside=0x%08lx checked=%d\n",
+        static_cast<unsigned long>(result), inside, outside, matched);
+    device.SetStreamSource(0, nullptr, 0, 0);
+    if (original) { device.SetRenderTarget(0, original); original->Release(); }
+    bsp::buffer_release(vertices);
+    if (readback) readback->Release();
+    if (target) target->Release();
+    return matched;
+}
+
 int main() {
     const HINSTANCE instance = GetModuleHandleA(nullptr);
     const char* name = "BSP D3D9 reconstruction probe";
@@ -165,6 +233,7 @@ int main() {
         bsp::buffer_release(indices);
         bsp::buffer_release(vertices);
     }
+    if (matched) matched = probe_draw(*device);
     if (device) device->Release();
     if (api) api->Release();
     DestroyWindow(window);
