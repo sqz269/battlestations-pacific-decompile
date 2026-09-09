@@ -2,6 +2,21 @@
 #include <cstring>
 
 namespace bsp {
+void write_system_matrix_00b404a0(float* destination, const float* source) {
+    for (unsigned row = 0; row < 4; ++row) {
+        for (unsigned column = 0; column < 4; ++column) {
+            const float* input = source + column * 4 + row;
+            float* output = destination + row * 4 + column;
+            __asm {
+                mov eax, input
+                mov ecx, output
+                fld dword ptr [eax]
+                fstp dword ptr [ecx]
+            }
+        }
+    }
+}
+
 namespace {
 static_assert(sizeof(float) == sizeof(std::uint32_t));
 

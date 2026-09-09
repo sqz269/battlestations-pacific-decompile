@@ -54,6 +54,9 @@ bool probe_material_states_and_constants(IDirect3DDevice9& device) {
             {matrix, scalar}, 0, {{2,4}, {2,2}}, vertex, pixel);
         std::vector<float> expected_vertex(32, -99), expected_pixel(32, -99);
         const float transposed[]{1,5,9,13,2,6,10,14,3,7,11,15,4,8,12,16};
+        float system_matrix[16]{};
+        bsp::write_system_matrix_00b404a0(system_matrix, matrix_values);
+        matched = matched && std::memcmp(system_matrix, transposed, sizeof(transposed)) == 0;
         std::memcpy(expected_vertex.data(), scalar_values, sizeof(scalar_values));
         std::memcpy(expected_vertex.data() + 8, transposed, 8 * sizeof(float));
         std::memcpy(expected_pixel.data() + 4, transposed, sizeof(transposed));

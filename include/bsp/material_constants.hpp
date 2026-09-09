@@ -4,6 +4,11 @@
 #include <vector>
 
 namespace bsp {
+// Native ECX destination, stack source, RET4. Both pointers must cover16 floats.
+// Sequential destination-order x87 loads/stores preserve native overlap effects;
+// this is not an in-place transpose. New C++ calling convention, Win32 only.
+void write_system_matrix_00b404a0(float* destination, const float* source);
+
 // New semantic projections of parameter +8h/+Ch, +10h, +14h and +4Ch.
 // Nonmatrices copy every source word, including a partial float4. Matrices
 // require at least 16 words when selected; additional words are ignored.

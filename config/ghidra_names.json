@@ -1053,5 +1053,15 @@
     "address": "00b61280",
     "name": "BSP_PixelShader_CompileAndCollectInputUsage",
     "evidence": "Fastcall ECX engine name string, EDX profile, stack source/outShader/texcoordMasks/colorMasks, RET10h. D3DX compile then CreatePixelShader and optional disassembly. Both mask pointers required; texcoord[0]==500 skips parsing. Parser00b61613..00b61aa8 searches dcl_texcoord/dcl_color substrings, one-character indices at+12/+9, body+14/+11 until LF; x/y/z/w OR1/2/4/8, no letters OR15. Caller00b3b3c0 supplies TEXCOORD[10],COLOR[2] and feeds00b36800. Typed parser fragment in shader_source.cpp; adapter draw verified, full native wrapper unported. See docs/SHADER_REFLECTION_ANALYSIS.md and reports/shader_pixel_usage.json."
+  },
+  {
+    "address": "00b404a0",
+    "name": "BSP_ShaderConstants_WriteTransposedMatrix",
+    "evidence": "ECX destination float[16], stack source float[16], RET4. Sixteen sequential x87 FLD/FSTP pairs in destination order: dst[4*r+c]=src[4*c+r]. Overlap observes earlier writes; not in-place transpose. Called by00b46a70 for fixed camera matrices. Win32 C++ port retains x87 load/store sequence with new calling convention; existing non-symmetric fixture and generated draw pass. Full original/saved101-byte body match in reports/shader_system_matrix.json. Native ABI and exceptional FP differential validation not established."
+  },
+  {
+    "address": "00b46a70",
+    "name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+    "evidence": "ECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis."
   }
 ]

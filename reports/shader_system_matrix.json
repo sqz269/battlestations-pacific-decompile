@@ -1,0 +1,9 @@
+{
+  "address": "00b404a0",
+  "length": 101,
+  "sha256": "6b9c5862e0bd255777adc773d325a5dbbe575adc8548b8e40f583f5bf6fd5e30",
+  "disk_matches_ghidra": true,
+  "abi": "ECX destination, stack source, RET4",
+  "operation": "Sequential destination-order x87 FLD/FSTP transpose, 16 floats",
+  "validation": "Existing non-symmetric material matrix fixture and generated shader identity-view-projection draw; no native differential or exceptional FP fixture"
+}

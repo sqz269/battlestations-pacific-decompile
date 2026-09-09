@@ -118,3 +118,8 @@ Saved-image bytes matched the original executable for all checked ranges:
 
 Fog getters00b84cb0/cc0/ca0/c60 also matched their four-byte original bodies.
 These comparisons establish only the listed ranges, not whole-image identity.
+
+Follow-up: the complete matrix writer is now ported and exercised by existing
+fixtures; see `SHADER_SYSTEM_MATRIX.md`. The parent also applied the descriptive
+name BSP_ShaderConstants_GatherAndUploadSystemPrefix to00b46a70 with preserved
+prior comments. The full gatherer remains unported.

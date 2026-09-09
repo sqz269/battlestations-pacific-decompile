@@ -1,6 +1,7 @@
 // Diagnostic host shaders only: native shader loading/material execution is unported.
 #include "bsp/d3d9_states.hpp"
 #include "bsp/shader_source.hpp"
+#include "bsp/material_constants.hpp"
 #include <d3dcompiler.h>
 #include <cstdio>
 #include <cstring>
@@ -33,7 +34,8 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         if (SUCCEEDED(result)) result = device.SetRenderState(setting.first, setting.second);
     }
     float vertex_constants[77 * 4]{};
-    vertex_constants[60] = vertex_constants[65] = vertex_constants[70] = vertex_constants[75] = 1;
+    const float view_projection[]{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+    bsp::write_system_matrix_00b404a0(vertex_constants + 60, view_projection);
     float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
     if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);
     if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 77);
