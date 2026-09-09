@@ -4,6 +4,35 @@
 #include "bsp/camera_multiply.hpp"
 
 namespace bsp {
+void derive_camera_local_from_world_00b6e7e0(CameraTransform& transform) {
+    if (transform.parent) {
+        const auto& parent_inverse = get_camera_view_00b6fcb0(*transform.parent);
+        CameraMatrix temporary;
+        multiply_camera_matrices_00413920(temporary, transform.world, parent_inverse);
+        copy_camera_matrix_004134f0(transform.local, temporary);
+    } else {
+        copy_camera_matrix_004134f0(transform.local, transform.world);
+    }
+}
+void notify_camera_world_changed_00b6dbe0(CameraTransform& transform) {
+    transform.auxiliary_flags &= 0xffffffcfu;
+    if (transform.notify_changed) transform.notify_changed(transform.notification_context);
+}
+void set_transform_world_matrix_00b6e870(CameraTransform& transform, const CameraMatrix& source,
+    void (&world_changed)(CameraTransform&)) {
+    copy_camera_matrix_004134f0(transform.world, source);
+    if (transform.notify_changed) transform.notify_changed(transform.notification_context);
+    derive_camera_local_from_world_00b6e7e0(transform);
+    invalidate_camera_descendants_00b6da30(transform);
+    world_changed(transform);
+    transform.valid_flags = 2;
+}
+void set_camera_world_matrix_00b71460(CameraState& camera, const CameraMatrix& source) {
+    camera.projection.valid_flags &= 0xfffffe4bu;
+    set_transform_world_matrix_00b6e870(camera.transform, source, notify_camera_world_changed_00b6dbe0);
+    refresh_camera_direction_00b70660(camera);
+}
+
 void invalidate_camera_descendants_00b6da30(CameraTransform& transform) {
     for (auto* child = transform.first_child; child; child = child->next_sibling) {
         if (child->valid_flags & 2) {

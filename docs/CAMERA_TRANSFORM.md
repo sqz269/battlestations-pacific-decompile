@@ -50,7 +50,7 @@ and leaves camera projection/combined flags untouched.
 base setter, then refreshes world direction and target through00b70660. The latter
 retains x87 operand order and intermediate stores, including position-first X
 addition versus direction-first Y/Z. These semantic names are provisional.
-World/position setters, reparenting and callbacks for arbitrary group types are
+Position setters, reparenting and callbacks for arbitrary group types are
 still unported. A direct ancestor edit must not be described as automatically
 invalidating descendant camera combined caches.
 
@@ -64,3 +64,30 @@ and full D3D9 probe pass. No new test target was added. Evidence is in
 `reports/camera_local_edit.json`; attached cGroup callback analysis is in
 `CAMERA_ATTACHED_CALLBACK.md`. This is one explicit callback/hierarchy fixture,
 not native callback ownership or gameplay validation.
+
+## World edit follow-up
+
+`derive_camera_local_from_world_00b6e7e0` copies world to local for a root; a
+parented transform ensures the parent inverse cache, multiplies world by that
+inverse and copies the result to local. `set_transform_world_matrix_00b6e870`
+copies world, notifies the attachment, derives local, invalidates descendants,
+invokes its required virtual40 callback, then assigns validity flags=2. The
+callback argument explicitly represents dispatch; it is not an optional stub.
+
+The camera override00b71460 clears camera flags withFFFFFE4B, calls that base
+setter with the known00b6dbe0 callback, then refreshes direction/target. That
+callback clears auxiliary bits10/20 and notifies the attachment again. The two
+notifications see the old transform flags; the final flags=2 assignment happens
+after both. The explicit callback/context interface does not implement native
+cGroup ownership or resolve all other virtual overrides.
+
+The existing parent-camera fixture now follows its local edit with worldZ=-1.5.
+Its first notification sees prior localZ=-0.5 and a valid descendant; its second
+sees derived localZ=-0.75, an invalidated descendant and cleared auxiliary bits.
+Both see old world/view validity and projection8 preserved/VP10 invalid. Final
+flags2, parent inverse validity, targetZ=-0.5 and rebuilt viewZ=1.5 pass, followed
+by expected pixel readback and state restoration. Build, both existing CTests,
+all existing native matrix comparisons and the full D3D9 probe pass. No new
+test target was added. Byte evidence is in `reports/camera_world_edit.json`.
+Position/view setters, reparenting, full group ownership and gameplay remain
+unported; no arbitrary hierarchy or exceptional-FP claim follows.

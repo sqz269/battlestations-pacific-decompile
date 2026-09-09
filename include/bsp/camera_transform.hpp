@@ -31,4 +31,11 @@ void invalidate_camera_descendants_00b6da30(CameraTransform&);
 void set_transform_local_matrix_00b6db10(CameraTransform&, const CameraMatrix&);
 void refresh_camera_direction_00b70660(CameraState&);
 void set_camera_local_matrix_00b71430(CameraState&, const CameraMatrix&);
+void derive_camera_local_from_world_00b6e7e0(CameraTransform&);
+void notify_camera_world_changed_00b6dbe0(CameraTransform&);
+// Required callback projects native virtual+40; callers select the actual override.
+// Flags=2 is assigned only after notification, derivation, descendants and callback.
+void set_transform_world_matrix_00b6e870(CameraTransform&, const CameraMatrix&,
+    void (&world_changed)(CameraTransform&));
+void set_camera_world_matrix_00b71460(CameraState&, const CameraMatrix&);
 }
