@@ -25,12 +25,24 @@ int main() {
     clock.increment = -clock.increment;
     if (!bsp::update_frame_clock_00bedc30(clock)
         || clock.current.ticks != elapsed || clock.interval.ticks != 0) return 6;
-    clock.paused = true;
+    const auto origin = clock.start.ticks;
+    if (!bsp::pause_frame_clock_00bedae0(clock)
+        || clock.pause_snapshot.ticks != clock.current.ticks) return 8;
     const auto updates = clock.updates;
     const auto counter = clock.synthetic_counter;
     if (!bsp::update_frame_clock_00bedc30(clock) || clock.updates != updates
         || clock.synthetic_counter != counter || clock.interval.ticks != 0) return 7;
+    if (!bsp::resume_frame_clock_00beddc0(clock) || clock.paused
+        || clock.start.ticks != origin) return 9;
+    bsp::disable_fixed_clock_00bedb60(clock);
+    bsp::ClockTimestamp absolute;
+    if (!bsp::sample_frame_clock_00bee080(clock, absolute)
+        || absolute.frequency != clock.frequency || absolute.ticks < clock.start.ticks
+        || !bsp::pause_frame_clock_00bedae0(clock)
+        || !bsp::resume_frame_clock_00beddc0(clock)
+        || clock.paused || clock.start.ticks < origin) return 10;
     std::cout << "Fixed 50ms increment, backward-time rollback and paused update checked.\n";
+    std::cout << "Fixed elapsed sampling, absolute QPC sampling and pause/resume origin adjustment checked.\n";
     bsp::RandomThreads random;
     auto* fallback = &random.state_00bd2ed0(bsp::RandomStream::primary);
     random.register_current_00bd2fe0();

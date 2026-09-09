@@ -1,5 +1,10 @@
 # Clock control and timestamp sampling
 
+Implementation update: `src/frame_clock.cpp` now implements addition, sampling,
+pause/resume and mode disable along with the previously reconstructed fixed
+setter. FRAME_CLOCK records the integrated probe result and ABI/ownership limits.
+The original read-only audit below documents the native evidence.
+
 Read-only audit on 2026-09-09. Each live batch verified project `bsp`, program
 `/battlestationspacific.exe`, image base 00400000. The concrete clock has vtable
 00d68d50; application initialization allocates 80h bytes at 0073d48f before

@@ -14,6 +14,9 @@ static_assert(sizeof(ClockTimestamp) == 16);
 ClockTimestamp& subtract_timestamp_00530890(ClockTimestamp& destination,
     const ClockTimestamp& left, const ClockTimestamp& right) noexcept;
 float timestamp_seconds_x87(const ClockTimestamp& value) noexcept;
+// Native ECX=left, stack right, EAX=left, RET 4. Same rescaling as subtraction.
+ClockTimestamp& add_timestamp_00bedb70(ClockTimestamp& left,
+    const ClockTimestamp& right) noexcept;
 
 // Typed state projection, not the original singleton/vtable object ABI.
 // Fixed-counter fields must be supplied by the recovered control path before use.
@@ -36,6 +39,13 @@ struct FrameClock {
 // native ignores that failure. No singleton registration or virtual overrides.
 bool initialize_frame_clock_00bedbd0(FrameClock& clock) noexcept;
 bool update_frame_clock_00bedc30(FrameClock& clock) noexcept;
-// Native ECX=this, signed int32 milliseconds on stack, RET 4. Startup supplies50.
+// Native ECX=this, signed int32 milliseconds on stack, RET 4. Startup supplies 50.
 bool enable_fixed_clock_00bedb20(FrameClock& clock, std::int32_t milliseconds) noexcept;
+void disable_fixed_clock_00bedb60(FrameClock& clock) noexcept;
+// Native ECX=this, stack destination, EAX=destination, RET 4. In fixed mode
+// returns cached elapsed time; otherwise absolute QPC time (also when paused).
+bool sample_frame_clock_00bee080(const FrameClock& clock, ClockTimestamp& destination) noexcept;
+// Native ECX=this, RET. Flags change before sampling; false is a host QPC error.
+bool pause_frame_clock_00bedae0(FrameClock& clock) noexcept;
+bool resume_frame_clock_00beddc0(FrameClock& clock) noexcept;
 }

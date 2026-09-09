@@ -1308,5 +1308,30 @@
     "address": "00bedb20",
     "name": "BSP_FrameClock_EnableFixedMilliseconds",
     "evidence": "ECX clock, signed int32 milliseconds stack, RET4. Set+69, QPC into+78, low64(frequency+60 * signextended milliseconds)/signed1000 into+70. Startup passes50 under global00e1ae81 gate. No negative/zero validation. Typed host reports QPC failure."
+  },
+  {
+    "address": "00bedb70",
+    "name": "BSP_Timestamp_AddInPlace",
+    "evidence": "ECX left, stack right, EAX left, RET4. Equal frequency modular64 add; unequal low64(rightticks*leftfrequency) signed-divided by rightfrequency before modular add. Left frequency unchanged. Exact self alias supported; host typed interface not native ABI. See docs/CLOCK_CONTROLS.md."
+  },
+  {
+    "address": "00bee080",
+    "name": "BSP_FrameClock_SampleTimestamp",
+    "evidence": "ECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning."
+  },
+  {
+    "address": "00bedae0",
+    "name": "BSP_FrameClock_Pause",
+    "evidence": "ECX clock, RET. Already paused returns; otherwise set+68 before virtual+20 sample and copy into pause snapshot+50. Does not zero interval until update. Typed concrete implementation and successful QPC path reconstructed."
+  },
+  {
+    "address": "00beddc0",
+    "name": "BSP_FrameClock_Resume",
+    "evidence": "ECX clock, RET. Unpaused returns; otherwise clear+68 before virtual+20 sample, subtract pause snapshot+50 using00530890, then add duration into origin+10 through00bedb70. No counter/current/previous/interval changes. Mode transitions are not normalized."
+  },
+  {
+    "address": "00bedb60",
+    "name": "BSP_FrameClock_DisableFixedCounter",
+    "evidence": "ECX clock, RET. Five-byte MOV byte[this+69],0;RET. No QPC sampling or origin/counter adjustment. Function created from verified raw bytes and typed semantic projection reconstructed."
   }
 ]

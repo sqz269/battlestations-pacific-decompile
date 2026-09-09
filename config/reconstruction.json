@@ -891,6 +891,41 @@
       "source": "src/frame_clock.cpp",
       "status": "startup_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00bedb70",
+      "name": "BSP_Timestamp_AddInPlace",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bee080",
+      "name": "BSP_FrameClock_SampleTimestamp",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bedae0",
+      "name": "BSP_FrameClock_Pause",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00beddc0",
+      "name": "BSP_FrameClock_Resume",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bedb60",
+      "name": "BSP_FrameClock_DisableFixedCounter",
+      "source": "src/frame_clock.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

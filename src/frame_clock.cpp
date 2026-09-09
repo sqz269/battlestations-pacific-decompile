@@ -59,6 +59,17 @@ float timestamp_seconds_x87(const ClockTimestamp& value) noexcept {
     return seconds;
 }
 
+ClockTimestamp& add_timestamp_00bedb70(ClockTimestamp& left,
+    const ClockTimestamp& right) noexcept {
+    auto right_ticks = static_cast<std::uint64_t>(right.ticks);
+    if (left.frequency != right.frequency) {
+        right_ticks = divide_signed_bits(right_ticks *
+            static_cast<std::uint64_t>(left.frequency), right.frequency);
+    }
+    left.ticks = signed_bits(static_cast<std::uint64_t>(left.ticks) + right_ticks);
+    return left;
+}
+
 bool update_frame_clock_00bedc30(FrameClock& clock) noexcept {
     if (clock.paused) {
         subtract_timestamp_00530890(clock.interval, clock.interval, clock.interval);
@@ -117,6 +128,40 @@ bool enable_fixed_clock_00bedb20(FrameClock& clock, std::int32_t milliseconds) n
     const auto product = static_cast<std::uint64_t>(clock.frequency) *
         static_cast<std::uint64_t>(static_cast<std::int64_t>(milliseconds));
     clock.increment = signed_bits(divide_signed_bits(product, 1000));
+    return true;
+}
+
+void disable_fixed_clock_00bedb60(FrameClock& clock) noexcept {
+    clock.fixed_counter = false;
+}
+
+bool sample_frame_clock_00bee080(const FrameClock& clock, ClockTimestamp& destination) noexcept {
+    if (clock.fixed_counter) {
+        destination = clock.current;
+    } else {
+        LARGE_INTEGER counter;
+        if (!QueryPerformanceCounter(&counter)) return false;
+        destination = {counter.QuadPart, clock.frequency};
+    }
+    return true;
+}
+
+bool pause_frame_clock_00bedae0(FrameClock& clock) noexcept {
+    if (clock.paused) return true;
+    clock.paused = true;
+    ClockTimestamp sampled;
+    if (!sample_frame_clock_00bee080(clock, sampled)) return false;
+    clock.pause_snapshot = sampled;
+    return true;
+}
+
+bool resume_frame_clock_00beddc0(FrameClock& clock) noexcept {
+    if (!clock.paused) return true;
+    clock.paused = false;
+    ClockTimestamp sampled, duration;
+    if (!sample_frame_clock_00bee080(clock, sampled)) return false;
+    subtract_timestamp_00530890(duration, sampled, clock.pause_snapshot);
+    add_timestamp_00bedb70(clock.start, duration);
     return true;
 }
 }

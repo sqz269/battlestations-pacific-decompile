@@ -2,6 +2,8 @@
 
 `src/frame_clock.cpp` reconstructs timestamp subtraction00530890, concrete
 clock initialization00bedbd0, update00bedc30 and fixed-step selection00bedb20.
+It also implements timestamp addition00bedb70, mode disable00bedb60,
+sampling00bee080, pause00bedae0 and resume00beddc0.
 Application frame00737a50 updates this clock and consumes its interval as
 float32; the clock is now available to the startup probe. The application frame
 and game object are still unimplemented.
@@ -49,8 +51,15 @@ The concrete method calls here do not emulate arbitrary virtual overrides.
 Native code ignores QPC failures; host functions return false at a failed call,
 retaining preceding mutations. Callers must stop on false. Successful API paths
 preserve operation order. No new frequency/range normalization is introduced.
-Pause/resume setters, mode-dependent sampling and timestamp addition are
-documented in CLOCK_CONTROLS but remain to be integrated.
+Pause sets the flag before sampling into its saved pair. Resume clears the flag
+before sampling, subtracts the saved pair and adds that duration to the origin.
+Repeated pause/resume calls in the same state return immediately. The sampler
+returns cached elapsed time in fixed mode and absolute QPC time otherwise;
+neither branch checks pause. Mode disable only clears the mode flag. These
+controls are integrated without normalizing transitions between clock modes.
+In-place addition shares subtraction's rescaling and modular arithmetic; its
+original interface is ECX=left, stack right, EAX=left, RET4. CLOCK_CONTROLS
+contains detailed ABIs and byte evidence for all five added routines.
 
 ## Evidence and validation
 
@@ -59,7 +68,8 @@ initialization and update. CLOCK_CONTROLS records the setter's 61-byte body hash
 TIMESTAMP_INTEGER_HELPERS records the compiler helper semantics and hashes.
 All analysis/export batches verified project `bsp`, program
 `/battlestationspacific.exe`. Four descriptive names and evidence comments were
-applied, preserving prior values in ignored annotation logs, and the project
+applied initially, followed by five control/addition names, preserving prior
+values in ignored annotation logs, and the project
 was saved. Correct CRT helper names were retained.
 
 Run `python tools/verify_timestamp_reference.py` to compare 358 bytes from three
@@ -73,5 +83,10 @@ exception execution and arbitrary partial overlaps were not tested.
 The same existing probe passed real QPC initialization/update and one fixed 50ms
 state sequence covering consecutive fixed intervals, backward-time rollback and
 paused update preservation. These clock checks are reconstruction checks, not
-native clock differential comparisons. Both existing CTests passed; no test
+native clock differential comparisons. The sequence now also checks fixed-mode
+pause sampling, resume without origin movement, normal-mode absolute sampling
+and QPC pause/resume origin adjustment. The five-byte mode-disable routine was
+created in Ghidra from verified bytes before annotation and export. Timestamp
+addition is assembly-backed and exercised by resume, but has no separate native
+differential fixture. Both existing CTests passed; no test
 target or broad suite was added. None of this establishes game/runtime parity.
