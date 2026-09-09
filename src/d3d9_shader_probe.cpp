@@ -3,6 +3,8 @@
 #include "bsp/shader_source.hpp"
 #include "bsp/material_constants.hpp"
 #include "bsp/camera_projection.hpp"
+#include "bsp/camera_inverse.hpp"
+#include "bsp/camera_multiply.hpp"
 #include <d3dcompiler.h>
 #include <cstdio>
 #include <cstring>
@@ -51,7 +53,11 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         && view_projection[10] > 1 && view_projection[10] < 1.002f
         && view_projection[14] < -.1f && view_projection[14] > -.101f;
     if (!camera_checked) result = E_FAIL;
-    bsp::write_system_matrix_00b404a0(vertex_constants + 60, view_projection.data());
+    const bsp::CameraMatrix camera_world{1,0,0,0,0,1,0,0,0,0,1,0,0,0,-1,1};
+    bsp::CameraMatrix view, combined;
+    bsp::invert_camera_affine_00b63b30(view, camera_world);
+    bsp::multiply_camera_matrices_00413920(combined, view, view_projection);
+    bsp::write_system_matrix_00b404a0(vertex_constants + 60, combined.data());
     float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
     if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);
     if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 77);

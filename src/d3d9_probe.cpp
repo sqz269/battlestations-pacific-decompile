@@ -301,7 +301,13 @@ static bool probe_draw(IDirect3DDevice9& device) {
 #ifdef BSP_HAS_GUI_REFERENCE
 bool probe_gui_geometry_reference();
 #endif
+#ifdef BSP_HAS_CAMERA_REFERENCE
+bool probe_camera_reference();
+#endif
 int main(int argc, char** argv) {
+#ifdef BSP_HAS_CAMERA_REFERENCE
+    if (!probe_camera_reference()) return 1;
+#endif
 #ifdef BSP_HAS_GUI_REFERENCE
     if (!probe_gui_geometry_reference()) return 1;
 #endif

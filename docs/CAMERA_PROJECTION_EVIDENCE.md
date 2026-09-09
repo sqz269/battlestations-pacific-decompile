@@ -118,3 +118,23 @@ added; native differential FP, alternate control words and degenerate inputs
 remain untested. This does not establish world/view camera integration or a
 runnable game. Body hashes for all seven routines and supporting copy/tangent
 helpers are in `reports/camera_projection.json`.
+
+## Native comparison and integration follow-up
+
+The existing D3D9 probe now includes an optional isolated native camera fixture.
+Run `python tools/verify_camera_reference.py` before building to audit original
+versus saved bytes and emit the ignored header. The probe copies only four
+verified helpers and three constants to private memory, relocates four operands,
+then changes that allocation from writable to executable/read-only. It loads no
+game executable or game DLL. Audit hashes are in `reports/camera_reference_audit.json`.
+
+One rotated/scaled/translated matrix and one perspective matrix compare all16
+words bit for bit for inverse, projection and multiplication. Multiplication
+also matches with output equal to left, right, or both inputs. These checks
+passed in the probe default FP environment; results and limitations are in
+`reports/camera_reference_result.json`. No exceptional-value/all-environment
+claim follows. The existing generated draw now computes a view from camera
+worldZ=-1, multiplies view*projection and uploads the transpose. CenterFF407FBF,
+outsideFF000000 and state restore pass. Win32 build and both existing CTests
+pass. No new test target was added. Full scene/camera lifecycle and gameplay
+remain unported.

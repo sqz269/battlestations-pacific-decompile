@@ -1098,5 +1098,15 @@
     "address": "00b6fcf0",
     "name": "BSP_Camera_GetProjectionMatrix",
     "evidence": "Camera projection slice, typed port src/camera_projection.cpp. Builder00b642f0: ECX destination, fov/aspect/near/far stack, RET10h; FSINCOS tangent00412e20 float32 spill, reciprocal scale spill, far/(far-near) ratio spill, positivezero fill. Scalar setters ECX camera/stack float/RET4: AND flags+2F0 withFFFFFF41 then store +1C4/+1C8/+1D4/+1D8. Explicit setter00b6fd60 copies into+1E0 and+2A0, flags=(flags&FFFFFF4B)|8. Getter00b6fcf0 ECX/RET/EAX cache+2A0, refresh if bit8 clear; x87 argument/copy spills retained. New C++ ownership/ABI; original ctor not recovered. Existing perspective draw/cache fixture passes, no native FP differential claim. See reports/camera_projection.json and docs/CAMERA_PROJECTION_EVIDENCE.md."
+  },
+  {
+    "address": "00b63b30",
+    "name": "BSP_Matrix_InvertOrthogonalScaledAffine",
+    "evidence": "ECX destination, EDX source, RET/EAX destination. Initial REP MOVSD16 preserves last column. Three float32-spilled squared components per norm; x87 scaled transpose; translation dot spills then SSE SUBSS from negativezero80000000. Source/destination must be disjoint; no shear/singular fallback. Typed C++ wrapper over reassembled private kernel in src/camera_inverse.cpp. One isolated native input fixture matches all16 words; multiplication exact aliases also match. Translated camera view*projection shader draw passes. Original/saved range hashes reports/camera_reference_audit.json. Full camera/world lifecycle, exceptional inputs and all FP environments unvalidated."
+  },
+  {
+    "address": "00413920",
+    "name": "BSP_Matrix_Multiply4x4",
+    "evidence": "ECX left, stack destination/right, RET8/EAX destination. Row-major left*right with native x87 register/float32 cache schedule. Exact destination=left, destination=right and all equal preserve native behavior; arbitrary partial overlap unsupported. Typed C++ wrapper over reassembled private kernel in src/camera_multiply.cpp. One isolated native input fixture matches all16 words; multiplication exact aliases also match. Translated camera view*projection shader draw passes. Original/saved range hashes reports/camera_reference_audit.json. Full camera/world lifecycle, exceptional inputs and all FP environments unvalidated."
   }
 ]
