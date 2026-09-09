@@ -147,7 +147,7 @@
   {
     "address": "00becee0",
     "name": "BSP_Win32Platform_CreateWindowAndDevice",
-    "evidence": "Concrete vtable +4h target recovered as a missing function. Registers CS_GLOBALCLASS class with 24 extra bytes; creates caption/popup window; initializes renderer and changes power/screensaver state. Not yet ported/executed."
+    "evidence": "Cdecl eleven stack arguments including explicit platform pointer; caller ADD ESP,2Ch and callee RET. Native registers CS_GLOBALCLASS with24 extra bytes, adjusts caption rectangle, creates withplatform lpParam, applies windowed0300h/fullscreenTOPMOST styles and SetWindowPos0,0. Fragment00becf29..00bed087 reconstructed and windoweddiagnosticHWND verified. Native thunk/oldwindowstop/title/aspect/ShowWindow/fullrenderer/buffer/power setup remain outside host fragment. See docs/WINDOW_CREATION.md."
   },
   {
     "address": "00bed3b0",

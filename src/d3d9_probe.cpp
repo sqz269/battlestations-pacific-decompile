@@ -4,6 +4,7 @@
 #include "bsp/d3d9_resources.hpp"
 #include "bsp/d3d9_buffers.hpp"
 #include "bsp/d3d9_vertex_layout.hpp"
+#include "bsp/win32_window.hpp"
 #include <cstring>
 #include <cstdio>
 #include "bsp/physical_file.hpp"
@@ -319,16 +320,30 @@ int main(int argc, char** argv) {
 #endif
     const HINSTANCE instance = GetModuleHandleA(nullptr);
     const char* name = "BSP D3D9 reconstruction probe";
-    WNDCLASSA window_class{};
-    window_class.lpfnWndProc = DefWindowProcA;
-    window_class.hInstance = instance;
-    window_class.lpszClassName = name;
-    if (!RegisterClassA(&window_class)) return 1;
-    const HWND window = CreateWindowExA(0, name, name, WS_CAPTION,
-        CW_USEDEFAULT, CW_USEDEFAULT, 640, 480, nullptr, nullptr, instance, nullptr);
-    if (!window) {
-        UnregisterClassA(name, instance);
+    HWND window{};
+    ATOM window_class{};
+    DWORD window_error{};
+    const bsp::PlatformWindowOptions window_options{
+        instance, name, DefWindowProcA, nullptr, false, CW_USEDEFAULT, CW_USEDEFAULT, 640, 480};
+    if (!bsp::create_platform_window_00becee0_fragment(window_options, window, window_class, window_error)) {
+        if (window) DestroyWindow(window);
+        if (window_class) UnregisterClassA(name, instance);
         return 1;
+    }
+    RECT outer{}, expected{0, 0, 640, 480};
+    const bool window_checked = GetWindowRect(window, &outer)
+        && AdjustWindowRect(&expected, WS_CAPTION, FALSE)
+        && outer.left == 0 && outer.top == 0
+        && outer.right - outer.left == expected.right - expected.left
+        && outer.bottom - outer.top == expected.bottom - expected.top
+        && GetClassLongA(window, GCL_CBWNDEXTRA) == 24
+        && (GetClassLongA(window, GCL_STYLE) & CS_GLOBALCLASS) != 0
+        && (GetWindowLongA(window, GWL_STYLE) & WS_CAPTION) == WS_CAPTION
+        && (GetWindowLongA(window, GWL_EXSTYLE) & 0x300) == 0x300
+        && !IsWindowVisible(window);
+    std::printf("Recovered window creation: class_extra_style_geometry_hidden=%d\n", window_checked);
+    if (!window_checked) {
+        DestroyWindow(window); UnregisterClassA(name, instance); return 1;
     }
     // SDK 32 matches Direct3DCreate9(20h) in renderer constructor 00b32410.
     IDirect3D9* api = Direct3DCreate9(D3D_SDK_VERSION);

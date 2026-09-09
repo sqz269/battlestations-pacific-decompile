@@ -1178,6 +1178,15 @@
       "status": "platform_probe_checked",
       "abi_compatible": false,
       "remaining": "Original00a96750 editing fallback and ownerallocation unported; requiredtypedcallbackboundary, upperstackpadding bits not recovered."
+    },
+    {
+      "address": "00becee0",
+      "name": "create_platform_window",
+      "source": "src/win32_window.cpp",
+      "native_range": "00becf29..00bed087",
+      "status": "windowed_creation_and_d3d9_probe_checked",
+      "abi_compatible": false,
+      "remaining": "Explicit procedure/lpParam dependency; native platform object, old-window stop, title/aspect setup, ShowWindow, fullrenderer/buffer/power initialization and native HWND shutdown remain unported. Fullscreen and failure paths not runtimevalidated."
     }
   ]
 }

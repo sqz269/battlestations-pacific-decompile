@@ -52,7 +52,8 @@ differences. It does not invent a renderer object with unresolved globals.
 
 ## Validation and remaining work
 
-`bsp_d3d9_probe` supplies an ordinary hidden diagnostic HWND, calls the recovered
+`bsp_d3d9_probe` supplies a hidden HWND through the recovered window creation
+fragment (WINDOW_CREATION), retaining an explicit diagnostic procedure, calls the recovered
 prefix against the installed D3D9 runtime, and queries the resulting swap chain.
 It observed success, flags `44h`, 640x480, windowed, color format 21, depth 75 and
 interval 0. It releases all COM references and destroys the diagnostic window.
