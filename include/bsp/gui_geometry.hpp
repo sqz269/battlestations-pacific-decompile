@@ -20,9 +20,10 @@ struct GuiQuadParameters {
 // not an original stream layout/ABI. Produces slots TL,TR,BL,BR for a strip.
 // Modes 1/2 retain the top/bottom ratio; modes 3/4 retain the left/right ratio.
 // Invalid modes return false after ratio clamp, leaving all vertices unchanged.
-// Ordered ratio values clamp to [0,1]; NaN remains NaN. Coordinates/UVs use
-// float32 intermediates: x87 extended precision, status flags and exceptions
-// are not reproduced. See docs/GUI_GEOMETRY_DISPATCH.md for evidence boundaries.
+// Ordered ratio values clamp to [0,1]; NaN remains NaN. Win32 x87 helpers
+// preserve crop and multiply/add store boundaries. One native fixture matches
+// all five modes bit-for-bit; arbitrary FP settings/status and exceptions
+// are not established. See docs/GUI_GEOMETRY_DISPATCH.md for evidence boundaries.
 bool gui_write_cropped_quad_00ab1860(GuiQuadParameters&,
     std::array<GuiQuadVertex, 4>& vertices) noexcept;
 }

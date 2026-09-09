@@ -917,7 +917,7 @@
   {
     "address": "00ab1860",
     "name": "BSP_GUIStatefulImage_WriteCroppedQuad",
-    "evidence": "Recovered missing confirmedvtable+7Ch, thiscall7stackargs RET1Ch. Writes float3position/float2UV via dynamicstreamstride/offsets, fourvertexstrip; mode0 TL/TR/BL/BR;5partialdisplaymodes, ratio orderedclamp NaNunchanged; yScaleglobal00e12fd0 observed0.75. FullGUI/FP/runtime semantics unported. See docs/GUI_GEOMETRY_DISPATCH.md. Typed float32 five-mode projection implemented; mode0 realatlasdraw checked. Originalx87 numerical/status parity andothermodevalidation pending; countedfragment."
+    "evidence": "Recovered missing confirmedvtable+7Ch, thiscall7stackargs RET1Ch. Writes float3position/float2UV via dynamicstreamstride/offsets, fourvertexstrip; mode0 TL/TR/BL/BR;5partialdisplaymodes, ratio orderedclamp NaNunchanged; yScaleglobal00e12fd0 observed0.75. FullGUI/FP/runtime semantics unported. See docs/GUI_GEOMETRY_DISPATCH.md. Typed float32 five-mode projection implemented; mode0 realatlasdraw checked. Originalx87 numerical/status parity andothermodevalidation pending; countedfragment. Follow-up: corrected premature floatstores with x87 interpolation/mul-add and corner-specific multiplication order. All100 output words across5modes match one isolated originalbyte fixture; fullatlasprobe passes. GeneralFPstatus/input coverage andnativeownership remain unverified."
   },
   {
     "address": "00b36800",

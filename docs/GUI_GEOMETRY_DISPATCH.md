@@ -114,3 +114,29 @@ are represented in source, but only mode0 is draw-validated. The planned isolate
 native comparison was not completed when parallel agents stopped on a usage
 limit. Numerical native equivalence and modes1..4 validation remain next work;
 the ledger counts this as a fragment. Build and2existingCTest checks pass.
+
+## Native numerical follow-up
+
+The isolated reference is now implemented. Run
+`python tools/verify_gui_geometry_reference.py` then `./scripts/build.ps1`.
+The verifier checks code/jump-table/constants against disk and live Ghidra,
+rejects external calls and out-of-body branches, and emits an ignored local
+header. CMake conditionally includes its helper in the existing D3D9 probe.
+The helper copies bytes into private memory, relocates seven absolute operands
+and five jump-table entries, supplies private object/stream/output records,
+and changes the page from writable to executable/read-only. It never maps
+original addresses or loads/patches the game.
+
+One nontrivial decimal UV/crop/size fixture is exercised across all five modes.
+The initial float32 implementation differed in four words per mode, up to
+5.96046448e-8. Crop interpolation and later multiply/add now use x87 until the
+native float stores; opposite vertical corners preserve their distinct
+three-factor multiplication order. All100 output words now match bit-for-bit.
+The build, both existing CTest checks and full installed-atlas D3D9 probe pass.
+
+This resolves the earlier pending comparison for the selected fixture. It does
+not prove all inputs, exceptional values, alternative FP control settings or
+native stream/GUI lifecycle equivalence. The routine remains classified as a
+fragment until those broader boundaries are addressed. Reference generation
+needs Python capstone and the verified local target; no original code bytes are
+committed. See reports/gui_reference_audit.json.

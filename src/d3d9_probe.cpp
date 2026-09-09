@@ -298,7 +298,13 @@ static bool probe_draw(IDirect3DDevice9& device) {
     return matched;
 }
 
+#ifdef BSP_HAS_GUI_REFERENCE
+bool probe_gui_geometry_reference();
+#endif
 int main(int argc, char** argv) {
+#ifdef BSP_HAS_GUI_REFERENCE
+    if (!probe_gui_geometry_reference()) return 1;
+#endif
     const HINSTANCE instance = GetModuleHandleA(nullptr);
     const char* name = "BSP D3D9 reconstruction probe";
     WNDCLASSA window_class{};

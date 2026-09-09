@@ -1,0 +1,88 @@
+{
+  "address": "00ab1860",
+  "length": 1672,
+  "sha256": "037c19f58747e3d9aeb47ffe31fe03e500a8614996475d5ea61b6372deae4d2d",
+  "disk_matches_ghidra": true,
+  "external_calls": 0,
+  "absolute_operands": [
+    {
+      "offset": 28,
+      "target": "0xd7a24c"
+    },
+    {
+      "offset": 231,
+      "target": "0xab1ed4"
+    },
+    {
+      "offset": 354,
+      "target": "0xe12fd0"
+    },
+    {
+      "offset": 602,
+      "target": "0xe12fd0"
+    },
+    {
+      "offset": 804,
+      "target": "0xe12fd0"
+    },
+    {
+      "offset": 1250,
+      "target": "0xe12fd0"
+    },
+    {
+      "offset": 1529,
+      "target": "0xe12fd0"
+    }
+  ],
+  "table_entries": [
+    "0xab194b",
+    "0xab1a46",
+    "0xab1b6f",
+    "0xab1c96",
+    "0xab1dc5"
+  ],
+  "scope": "Isolated private reference executed; no game process/global mapping or binary changes.",
+  "comparison": {
+    "fixture": {
+      "ratio": 0.37,
+      "width": 0.73,
+      "height": 0.61,
+      "uv": [
+        0.11,
+        0.23,
+        0.87,
+        0.93
+      ],
+      "crop": [
+        0.13,
+        0.19,
+        0.83,
+        0.91
+      ],
+      "y_scale": 0.75
+    },
+    "modes": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "initial_differing_words_per_mode": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_differing_words_per_mode": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "validated_words": 100
+  },
+  "reproduce": "python tools/verify_gui_geometry_reference.py; scripts/build.ps1; bsp_d3d9_probe"
+}
