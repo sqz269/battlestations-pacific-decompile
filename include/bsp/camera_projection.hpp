@@ -4,6 +4,8 @@
 
 namespace bsp {
 using CameraMatrix = std::array<float, 16>;
+//004134f0: sequential x87 copy; native ECX dst/stack src/RET4 returns dst.
+void copy_camera_matrix_004134f0(CameraMatrix&, const CameraMatrix&);
 // New owning projection of scalar/cache fields, not a native camera object.
 // Initial zeros are interface defaults, not recovered constructor defaults.
 struct CameraProjection {

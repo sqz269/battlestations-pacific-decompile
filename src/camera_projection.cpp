@@ -4,9 +4,8 @@
 namespace bsp {
 static_assert(offsetof(CameraProjection, aspect) == 4
     && offsetof(CameraProjection, near_plane) == 8 && offsetof(CameraProjection, far_plane) == 12);
-namespace {
 //004134f0 copy semantics; caller retains both native matrix copies.
-void copy_matrix(CameraMatrix& output, const CameraMatrix& input) {
+void copy_camera_matrix_004134f0(CameraMatrix& output, const CameraMatrix& input) {
     for (unsigned i = 0; i < 16; ++i) {
         const float* source = input.data() + i;
         float* destination = output.data() + i;
@@ -17,7 +16,6 @@ void copy_matrix(CameraMatrix& output, const CameraMatrix& input) {
             fstp dword ptr [ecx]
         }
     }
-}
 }
 void build_projection_00b642f0(CameraMatrix& output, float fov, float aspect,
     float near_plane, float far_plane) {
@@ -82,8 +80,8 @@ void set_camera_far_00b6fc10(CameraProjection& camera, float value) {
     camera.valid_flags &= 0xffffff41u; camera.far_plane = value;
 }
 void set_camera_projection_00b6fd60(CameraProjection& camera, const CameraMatrix& source) {
-    copy_matrix(camera.original, source);
-    copy_matrix(camera.cached, source);
+    copy_camera_matrix_004134f0(camera.original, source);
+    copy_camera_matrix_004134f0(camera.cached, source);
     camera.valid_flags = (camera.valid_flags & 0xffffff4bu) | 8;
 }
 const CameraMatrix& get_camera_projection_00b6fcf0(CameraProjection& camera) {
@@ -104,8 +102,8 @@ const CameraMatrix& get_camera_projection_00b6fcf0(CameraProjection& camera) {
             fstp fov
         }
         build_projection_00b642f0(temporary, fov, aspect, near_plane, far_plane);
-        copy_matrix(camera.original, temporary);
-        copy_matrix(camera.cached, camera.original);
+        copy_camera_matrix_004134f0(camera.original, temporary);
+        copy_camera_matrix_004134f0(camera.cached, camera.original);
         camera.valid_flags |= 8;
     }
     return camera.cached;

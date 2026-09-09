@@ -47,6 +47,16 @@ a complete window lifecycle.
 
 ## 3. Reconstruct a vertical slice
 
+The diagnostic path now loads the installed atlas, generates and compiles shader
+sources, filters interpolators from pixel disassembly, and draws through recovered
+buffer/layout/state operations. Camera projection, affine parent-world refresh,
+view inverse and combined view-projection caches feed the generated shader draw.
+Focused isolated native camera fixtures and pixel readback pass; this remains a
+diagnostic host, not a game runtime. Current dependencies include transform-edit
+invalidation/ownership, the complete system constant gatherer, shader descriptor
+loading, material execution and startup integration. See `CAMERA_TRANSFORM.md`
+and `SHADER_CONSTANT_DISPATCH_ANALYSIS.md` for concrete next boundaries.
+
 Choose one real path from file loading through decoded data to a visible result. Recover
 archive/resource formats and object interfaces, then window/input/device lifecycle and a
 minimal render path. Use the user's installed assets as local inputs. Add evidence fixtures

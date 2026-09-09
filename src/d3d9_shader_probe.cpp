@@ -5,6 +5,7 @@
 #include "bsp/camera_projection.hpp"
 #include "bsp/camera_inverse.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/camera_transform.hpp"
 #include <d3dcompiler.h>
 #include <cstdio>
 #include <cstring>
@@ -37,7 +38,8 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         if (SUCCEEDED(result)) result = device.SetRenderState(setting.first, setting.second);
     }
     float vertex_constants[77 * 4]{};
-    bsp::CameraProjection camera;
+    bsp::CameraState scene_camera;
+    auto& camera = scene_camera.projection;
     bsp::set_camera_fov_00b6fbb0(camera, 1.57079637f);
     bsp::set_camera_aspect_00b6fbd0(camera, 1);
     bsp::set_camera_near_00b6fbf0(camera, .1f);
@@ -53,10 +55,16 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         && view_projection[10] > 1 && view_projection[10] < 1.002f
         && view_projection[14] < -.1f && view_projection[14] > -.101f;
     if (!camera_checked) result = E_FAIL;
-    const bsp::CameraMatrix camera_world{1,0,0,0,0,1,0,0,0,0,1,0,0,0,-1,1};
-    bsp::CameraMatrix view, combined;
-    bsp::invert_camera_affine_00b63b30(view, camera_world);
-    bsp::multiply_camera_matrices_00413920(combined, view, view_projection);
+    bsp::CameraTransform parent;
+    parent.local = supplied; parent.local[14] = -.75f;
+    scene_camera.transform.parent = &parent;
+    scene_camera.transform.local = supplied; scene_camera.transform.local[14] = -.25f;
+    const auto& combined = bsp::get_camera_view_projection_00b70490(scene_camera);
+    camera_checked = camera_checked && (parent.valid_flags & 2)
+        && (scene_camera.transform.valid_flags & 10) == 10
+        && (camera.valid_flags & 0x18) == 0x18
+        && scene_camera.transform.world[14] == -1 && scene_camera.transform.view[14] == 1;
+    if (!camera_checked) result = E_FAIL;
     bsp::write_system_matrix_00b404a0(vertex_constants + 60, combined.data());
     float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
     if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);

@@ -3,6 +3,7 @@
   "projection_bit_equal": true,
   "multiply_distinct_and_exact_aliases_bit_equal": true,
   "fixture": "One scaled/rotated/translated matrix and one perspective matrix, default probe FP environment;16 words compared per output",
-  "generated_draw": "Camera world translation Z=-1, triangle Z=1, view*projection; centerff407fbf/outsideff000000; state restored",
-  "limitations": "No exceptional input, alternate FP environment, arbitrary partial overlap, scene hierarchy or gameplay validation"
+  "generated_draw": "Parent localZ=-.75 and childlocalZ=-.25 ->worldZ=-1 ->viewZ=1 ->view*projection; centerff407fbf/outsideff000000, state restored",
+  "limitations": "No exceptional input, alternate FP environment, arbitrary partial overlap, scene hierarchy or gameplay validation",
+  "affine_bit_equal": true
 }

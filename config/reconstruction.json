@@ -737,6 +737,41 @@
       "source": "src/camera_multiply.cpp",
       "status": "x87_native_fixture_and_translated_camera_draw_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "004134f0",
+      "name": "copy_camera_matrix",
+      "source": "src/camera_projection.cpp",
+      "status": "camera_hierarchy_cache_draw_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b6d4d0",
+      "name": "compose_camera_affine",
+      "source": "src/camera_affine.cpp",
+      "status": "camera_hierarchy_cache_draw_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b6db70",
+      "name": "refresh_camera_world",
+      "source": "src/camera_transform.cpp",
+      "status": "camera_hierarchy_cache_draw_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b6fcb0",
+      "name": "get_camera_view",
+      "source": "src/camera_transform.cpp",
+      "status": "camera_hierarchy_cache_draw_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b70490",
+      "name": "get_camera_view_projection",
+      "source": "src/camera_transform.cpp",
+      "status": "camera_hierarchy_cache_draw_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [

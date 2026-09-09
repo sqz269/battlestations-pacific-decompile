@@ -1,4 +1,4 @@
-"""Audit four isolated native camera helpers and emit an ignored probe header."""
+"""Audit five isolated native camera helpers and emit an ignored probe header."""
 import hashlib
 import json
 import struct
@@ -13,7 +13,7 @@ def main():
     client = Client(config)
     client.verify()
     pe = pefile.PE(config['binary'])
-    ranges = {0x413920: 874, 0xb63b30: 531, 0xb642f0: 176, 0x412e20: 19,
+    ranges = {0x413920: 874, 0xb63b30: 531, 0xb642f0: 176, 0x412e20: 19, 0xb6d4d0: 339,
               0xd7a208: 4, 0xd7a280: 8, 0xd7a24c: 4}
     offsets, records, bodies = {}, [], {}
     payload = bytearray()
@@ -35,7 +35,7 @@ def main():
     allowed = set('add sub mov fld fst fstp fmul fmulp fadd faddp fxch ret fdiv fdivp fdivr fdivrp '
                   'movaps movss pop push subss call fchs fld1 fsubr xorps fsincos'.split())
     patches = []
-    for address in list(ranges)[:4]:
+    for address in list(ranges)[:5]:
         end = address
         for ins in md.disasm(bodies[address], address):
             if ins.mnemonic not in allowed and ins.mnemonic != 'rep movsd':
@@ -60,7 +60,7 @@ def main():
     header += 'struct CameraReferencePatch { unsigned offset, target; bool relative; };\n'
     header += 'inline constexpr CameraReferencePatch camera_reference_patches[] = {'
     header += ','.join('{%d,%d,%s}' % (a,b,str(c).lower()) for a,b,c in patches) + '};\n'
-    for address in list(ranges)[:4]:
+    for address in list(ranges)[:5]:
         header += f'inline constexpr unsigned camera_reference_{address:08x} = {offsets[address]};\n'
     write(ROOT / 'local/camera_reference.hpp', header)
     write(ROOT / 'reports/camera_reference_audit.json', json.dumps(
