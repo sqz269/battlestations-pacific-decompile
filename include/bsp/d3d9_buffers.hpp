@@ -1,8 +1,12 @@
 #pragma once
 #include "bsp/d3d9_startup.hpp"
 #include <cstdint>
+#include <type_traits>
+#include <vector>
 
 namespace bsp {
+struct LogicalVertexStream;
+struct LogicalIndexStream;
 // Semantic wrapper fields +14h..28h, without intrusive ownership/diagnostics.
 // Owns one COM reference. Release explicitly for reset; new-interface destructor
 // releases any remaining reference (not the complete native wrapper destructor).
@@ -11,6 +15,11 @@ template<class Buffer> struct D3D9BufferBinding {
     D3D9BufferBinding(const D3D9BufferBinding&) = delete;
     D3D9BufferBinding& operator=(const D3D9BufferBinding&) = delete;
     ~D3D9BufferBinding() { if (buffer) buffer->Release(); }
+    using LogicalStream = std::conditional_t<std::is_same_v<Buffer, IDirect3DVertexBuffer9>,
+        LogicalVertexStream, LogicalIndexStream>;
+    // Non-owning registry (+8h/+Ch/+10h). Explicitly unregister before stream
+    // destruction; full native constructors/destructors remain unported.
+    std::vector<LogicalStream*> logical_streams;
     DWORD flags{};
     UINT capacity{};
     UINT cursor{};

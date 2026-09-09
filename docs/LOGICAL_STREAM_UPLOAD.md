@@ -42,3 +42,6 @@ not rewind the physical buffer. Vtable target `00b4aaa0` is a single RET no-op.
 Next: recover physical cursor reset and registered-stream invalidation, then connect
 the actual shared-buffer constructor and resource release/recreate orchestration.
 This remains a diagnostic geometry path, not a game startup or gameplay result.
+
+Physical rewind and explicit registry operations are now implemented; see
+`BUFFER_LIFETIME.md` for evidence, frame ordering and remaining native lifecycle gaps.

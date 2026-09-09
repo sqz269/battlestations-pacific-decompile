@@ -1,0 +1,20 @@
+{
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b232b0",
+      "length": 162,
+      "sha256": "1d929ea60ded156ddd69d4c82b7b4112b883c53bce00d896a52da0cc00151c62",
+      "disk_matches_ghidra": true,
+      "assembly": "00b232b0: MOV EAX,FS:[0x0] \n00b232b6: PUSH -0x1 \n00b232b8: PUSH 0xcbce98 \n00b232bd: PUSH EAX \n00b232be: MOV dword ptr FS:[0x0],ESP \n00b232c5: SUB ESP,0x8 \n00b232c8: CMP byte ptr [0x0108d6dc],0x0 \n00b232cf: PUSH EBP \n00b232d0: PUSH EDI \n00b232d1: MOV EDI,ECX \n00b232d3: JZ 0x00b232ec \n00b232d5: MOV EBP,dword ptr [0x00f8d394] \n00b232db: MOV ECX,EBP \n00b232dd: MOV dword ptr [ESP + 0xc],EBP \n00b232e1: CALL 0x00b33ad0 \n00b232e6: MOV byte ptr [ESP + 0x8],AL \n00b232ea: JMP 0x00b232f0 \n00b232ec: MOV EBP,dword ptr [ESP + 0xc] \n00b232f0: PUSH ESI \n00b232f1: XOR ESI,ESI \n00b232f3: CMP dword ptr [EDI + 0xc],ESI \n00b232f6: MOV dword ptr [ESP + 0x1c],0x0 \n00b232fe: JLE 0x00b23315 \n00b23300: MOV EAX,dword ptr [EDI + 0x8] \n00b23303: MOV ECX,dword ptr [EAX + ESI*0x4] \n00b23306: MOV EDX,dword ptr [ECX] \n00b23308: MOV EAX,dword ptr [EDX + 0x8] \n00b2330b: CALL EAX \n00b2330d: ADD ESI,0x1 \n00b23310: CMP ESI,dword ptr [EDI + 0xc] \n00b23313: JL 0x00b23300 \n00b23315: MOV dword ptr [EDI + 0x1c],0x0 \n00b2331c: MOV dword ptr [EDI + 0x24],0x0 \n00b23323: CMP byte ptr [0x0108d6dc],0x0 \n00b2332a: MOV dword ptr [ESP + 0x1c],0xffffffff \n00b23332: POP ESI \n00b23333: JZ 0x00b23341 \n00b23335: MOV ECX,dword ptr [ESP + 0x8] \n00b23339: PUSH ECX \n00b2333a: MOV ECX,EBP \n00b2333c: CALL 0x00b33b00 \n00b23341: MOV ECX,dword ptr [ESP + 0x10] \n00b23345: POP EDI \n00b23346: POP EBP \n00b23347: MOV dword ptr FS:[0x0],ECX \n00b2334e: ADD ESP,0x14 \n00b23351: RET \n"
+    },
+    {
+      "address": "00b231c0",
+      "length": 162,
+      "sha256": "900e2e06215880732ad7ce7a6a7d2315a9018d52cce99ba8a2068c9504cbb0b5",
+      "disk_matches_ghidra": true,
+      "assembly": "00b231c0: MOV EAX,FS:[0x0] \n00b231c6: PUSH -0x1 \n00b231c8: PUSH 0xcbce78 \n00b231cd: PUSH EAX \n00b231ce: MOV dword ptr FS:[0x0],ESP \n00b231d5: SUB ESP,0x8 \n00b231d8: CMP byte ptr [0x0108d6dc],0x0 \n00b231df: PUSH EBP \n00b231e0: PUSH EDI \n00b231e1: MOV EDI,ECX \n00b231e3: JZ 0x00b231fc \n00b231e5: MOV EBP,dword ptr [0x00f8d394] \n00b231eb: MOV ECX,EBP \n00b231ed: MOV dword ptr [ESP + 0xc],EBP \n00b231f1: CALL 0x00b33ad0 \n00b231f6: MOV byte ptr [ESP + 0x8],AL \n00b231fa: JMP 0x00b23200 \n00b231fc: MOV EBP,dword ptr [ESP + 0xc] \n00b23200: PUSH ESI \n00b23201: XOR ESI,ESI \n00b23203: CMP dword ptr [EDI + 0xc],ESI \n00b23206: MOV dword ptr [ESP + 0x1c],0x0 \n00b2320e: JLE 0x00b23225 \n00b23210: MOV EAX,dword ptr [EDI + 0x8] \n00b23213: MOV ECX,dword ptr [EAX + ESI*0x4] \n00b23216: MOV EDX,dword ptr [ECX] \n00b23218: MOV EAX,dword ptr [EDX + 0x8] \n00b2321b: CALL EAX \n00b2321d: ADD ESI,0x1 \n00b23220: CMP ESI,dword ptr [EDI + 0xc] \n00b23223: JL 0x00b23210 \n00b23225: MOV dword ptr [EDI + 0x1c],0x0 \n00b2322c: MOV dword ptr [EDI + 0x24],0x0 \n00b23233: CMP byte ptr [0x0108d6dc],0x0 \n00b2323a: MOV dword ptr [ESP + 0x1c],0xffffffff \n00b23242: POP ESI \n00b23243: JZ 0x00b23251 \n00b23245: MOV ECX,dword ptr [ESP + 0x8] \n00b23249: PUSH ECX \n00b2324a: MOV ECX,EBP \n00b2324c: CALL 0x00b33b00 \n00b23251: MOV ECX,dword ptr [ESP + 0x10] \n00b23255: POP EDI \n00b23256: POP EBP \n00b23257: MOV dword ptr FS:[0x0],ECX \n00b2325e: ADD ESP,0x14 \n00b23261: RET \n"
+    }
+  ],
+  "note": "Entry-through-return byte parity. Runtime evidence separately in buffer_rewind_probe.txt; no native ABI or full game equivalence claimed."
+}

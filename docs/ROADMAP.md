@@ -30,8 +30,9 @@ Declaration append/stride/semantic lookup now drive the probe's stream stride (`
 Hardware element conversion and declaration creation now replace FVF in both draw checks
 (`HARDWARE_VERTEX_LAYOUT.md`); surrounding diagnostics and full layout lifetime are pending.
 Logical vertex/index locks now drive the drawing probe (`LOGICAL_STREAM_UPLOAD.md`);
-physical cursor reset and registry lifetime remain pending.
-Next, recover registry/base teardown
+physical cursor rewind and explicit registry operations are now ported
+(`BUFFER_LIFETIME.md`) with real-device reuse readback.
+Next, integrate native stream constructor/destructor and base teardown
 and integrate the reset/presentation path, and trace the
 close-request-to-application-exit path before wiring a complete window lifecycle.
 

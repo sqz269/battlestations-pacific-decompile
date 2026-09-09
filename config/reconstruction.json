@@ -343,6 +343,46 @@
       "source": "src/d3d9_states.cpp",
       "status": "logical_upload_pixel_readback_checked_physical_lock_limits_apply",
       "abi_compatible": false
+    },
+    {
+      "address": "00b232b0",
+      "name": "rewind_vertex_buffer",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_explicit_registry_real_device_reuse_checked",
+      "abi_compatible": false,
+      "limitations": "Typed logical streams and explicit lifetime API; full native constructors/destructors, allocator ABI and SEH remain unported."
+    },
+    {
+      "address": "00b231c0",
+      "name": "rewind_index_buffer",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_explicit_registry_real_device_reuse_checked",
+      "abi_compatible": false,
+      "limitations": "Typed logical streams and explicit lifetime API; full native constructors/destructors, allocator ABI and SEH remain unported."
+    },
+    {
+      "address": "00b4b1e0",
+      "name": "register_logical_stream",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_explicit_registry_real_device_reuse_checked",
+      "abi_compatible": false,
+      "limitations": "Typed logical streams and explicit lifetime API; full native constructors/destructors, allocator ABI and SEH remain unported."
+    },
+    {
+      "address": "00b4b3f0",
+      "name": "unregister_vertex_stream",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_explicit_registry_real_device_reuse_checked",
+      "abi_compatible": false,
+      "limitations": "Typed logical streams and explicit lifetime API; full native constructors/destructors, allocator ABI and SEH remain unported."
+    },
+    {
+      "address": "00b4b390",
+      "name": "unregister_index_stream",
+      "source": "src/d3d9_states.cpp",
+      "status": "semantic_explicit_registry_real_device_reuse_checked",
+      "abi_compatible": false,
+      "limitations": "Typed logical streams and explicit lifetime API; full native constructors/destructors, allocator ABI and SEH remain unported."
     }
   ],
   "fragments": [

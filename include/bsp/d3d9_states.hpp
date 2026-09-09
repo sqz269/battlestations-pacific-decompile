@@ -62,6 +62,14 @@ public:
     HRESULT lock_index_stream_00b49b60(LogicalIndexStream&, UINT count, UINT offset,
         bool read_only, void*& data);
     void unlock_index_stream_00b49c70(LogicalIndexStream&);
+    // Explicit lifecycle for semantic stream projections. Registered pointers must
+    // remain valid until unregister; operations use the optional renderer guard.
+    void register_logical_stream_00b4b1e0(VertexBufferBinding&, LogicalVertexStream&);
+    void register_logical_stream_00b4b1e0(IndexBufferBinding&, LogicalIndexStream&);
+    void unregister_vertex_stream_00b4b3f0(VertexBufferBinding&, LogicalVertexStream&);
+    void unregister_index_stream_00b4b390(IndexBufferBinding&, LogicalIndexStream&);
+    void rewind_vertex_buffer_00b232b0(VertexBufferBinding&);
+    void rewind_index_buffer_00b231c0(IndexBufferBinding&);
     std::uint32_t vertex_binding_calls() const { return vertex_binding_calls_; }
     std::uint32_t index_binding_calls() const { return index_binding_calls_; }
     // Needed after device reset; caller owns reset sequencing.

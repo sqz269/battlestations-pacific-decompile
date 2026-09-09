@@ -1,6 +1,7 @@
 # Physical buffer registry and frame boundary
 
-This is analysis evidence, not additional reconstructed C++. Names are inferred
+The initial lifetime investigation was analysis-only. The rewind and explicit
+registry port is described below. Names are inferred
 from the executable. All eleven annotated function ranges match the installed
 binary byte-for-byte; see `reports/buffer_lifetime_evidence.json`.
 
@@ -22,7 +23,8 @@ the stream flags satisfy `(flags & 0xf000) == 0x1000`, before releasing their
 physical reference. Vertex destruction additionally holds the renderer's tracked
 critical section around unregister. Renderer callbacks 00b26900/00b268e0 and
 base destruction remain dependencies; the current C++ shared ownership model
-does not reproduce this native destructor path or raw registry.
+now exposes a raw registry with explicit registration/removal, but does not
+reproduce this native destructor path.
 
 Physical vtable +10h targets 00b4b480 (index) and 00b4b520 (vertex) are single
 RET no-ops. They do not rewind the cursor. Vtable +18h targets 00b4b800 and
@@ -38,5 +40,37 @@ XLiveRender, a conditional device EndScene call (+A8h), cache clearing, and a
 conditional Present call (+44h). Present's 0x88760868 result sets device-lost
 global 0108d4b9. The routine increments renderer+14h. This supplies a concrete
 frame-boundary route for continued tracing, but is not a reconstructed frame
-loop. Physical cursor rewind and the complete frame callback dependencies remain
-unresolved.
+loop. Physical cursor rewind is now recovered below; the complete frame callback
+dependencies remain unresolved.
+
+
+## Rewind port
+
+Physical vertex rewind 00b232b0 and index rewind 00b231c0 each take their physical
+wrapper in ECX and return with RET. Under the optional renderer guard, they call
+virtual +8h on every registered logical stream in array order, then write zero
+to cursor +1Ch and dynamic-lock count +24h. Lock depth +20h, capacity, flags and
+COM ownership are unchanged. There is no null-COM gate or implicit Unlock.
+Logical vtable targets 00b48d40/00b48dd0 write offset 0xffffffff.
+
+EndFrame assembly at 00b2d9a5/00b2d9ab passes renderer+1974h to vertex rewind
+under the tracked renderer critical section. At 00b2d9bb/00b2d9c1 it passes
+renderer+1978h to index rewind. This occurs after unbinding streams/index and
+before debug draw callbacks, EndScene and Present. A future frame-loop port
+must preserve that ordering; the standalone rewind methods do not unbind.
+
+`D3D9StateCache` implements both rewinds for the current typed logical-stream
+projections, plus explicit unique registration and swap-last removal. The vector
+holds non-owning pointers, preserving the absence of native AddRef on registration.
+Callers must unregister before destroying a stream, coordinate shared-buffer
+access, and unbind before reuse. Native constructors/destructors, arbitrary virtual
+stream subclasses, allocator layout and SEH are not supplied by this interface.
+The helper's unused boolean removal result is omitted in C++.
+
+The existing D3D9 probe draws green, unbinds, registers and rewinds both buffers,
+checks invalid offsets/zero cursors and counters, uploads blue geometry into the
+same buffers, rebinds and reads back blue inside/black outside. It also checks
+duplicate suppression and explicit removal. This is a real-device buffer reuse
+check, not the original game's complete frame loop or gameplay equivalence.
+Build and the two existing CTest targets passed; no test target was added.
+See `reports/buffer_rewind_probe.txt` and `reports/buffer_rewind_evidence.json`.

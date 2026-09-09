@@ -139,6 +139,61 @@ static bool probe_draw(IDirect3DDevice9& device) {
         static_cast<unsigned long>(result), inside, states.vertex_binding_calls(), states.index_binding_calls(), matched);
     states.bind_vertex_stream_00b24840(0, nullptr);
     states.bind_index_stream_00b24b00(nullptr, 0);
+    // Explicit registry lifecycle until native stream constructors/destructors are ported.
+    states.register_logical_stream_00b4b1e0(vertices, *stream);
+    states.register_logical_stream_00b4b1e0(vertices, *stream); // Duplicate suppressed.
+    states.register_logical_stream_00b4b1e0(indices, *index_stream);
+    states.rewind_vertex_buffer_00b232b0(vertices);
+    states.rewind_index_buffer_00b231c0(indices);
+    matched = matched && vertices.logical_streams.size() == 1
+        && stream->offset == 0xffffffff && index_stream->offset == 0xffffffff
+        && vertices.cursor == 0 && indices.cursor == 0
+        && vertices.dynamic_locks == 0 && indices.dynamic_locks == 0
+        && vertices.lock_depth == 0 && indices.lock_depth == 0;
+    if (matched) result = states.lock_vertex_stream_00b49980(*stream, 4, 0, false, mapped);
+    if (matched && SUCCEEDED(result)) {
+        struct Vertex { float x, y, z, rhw; DWORD diffuse; };
+        const Vertex triangle[] = {{-100, -100, 0, 1, 0xffff0000}, {4, 4, 0, 1, 0xff0000ff},
+            {60, 4, 0, 1, 0xff0000ff}, {4, 60, 0, 1, 0xff0000ff}};
+        std::memcpy(mapped, triangle, sizeof(triangle));
+        states.unlock_vertex_stream_00b49a80(*stream);
+        result = states.lock_index_stream_00b49b60(*index_stream, 0, 0, false, mapped);
+        if (SUCCEEDED(result)) {
+            const unsigned short elements[] = {0, 1, 2};
+            std::memcpy(mapped, elements, sizeof(elements));
+            states.unlock_index_stream_00b49c70(*index_stream);
+        }
+    }
+    if (matched && SUCCEEDED(result)) {
+        states.bind_vertex_stream_00b24840(0, stream);
+        states.bind_index_stream_00b24b00(index_stream, 1);
+        result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
+    }
+    if (matched && SUCCEEDED(result)) result = device.BeginScene();
+    if (matched && SUCCEEDED(result)) {
+        result = states.draw_indexed_00b24010({}, D3DPT_TRIANGLELIST, 0, 3, 0, 1);
+        const HRESULT ended = device.EndScene();
+        if (SUCCEEDED(result)) result = ended;
+    }
+    if (matched && SUCCEEDED(result)) result = device.GetRenderTargetData(target, readback);
+    if (matched && SUCCEEDED(result)) result = readback->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
+    if (matched && SUCCEEDED(result)) {
+        const auto* bytes = static_cast<const unsigned char*>(pixels.pBits);
+        std::memcpy(&inside, bytes + 16 * pixels.Pitch + 16 * 4, 4);
+        std::memcpy(&outside, bytes + 60 * pixels.Pitch + 60 * 4, 4);
+        result = readback->UnlockRect();
+    }
+    matched = matched && SUCCEEDED(result) && (inside & 0xffffff) == 0xff
+        && (outside & 0xffffff) == 0 && stream->offset == 0 && index_stream->offset == 0
+        && vertices.cursor == 80 && indices.cursor == 6
+        && vertices.dynamic_locks == 1 && indices.dynamic_locks == 1;
+    states.bind_vertex_stream_00b24840(0, nullptr);
+    states.bind_index_stream_00b24b00(nullptr, 0);
+    states.unregister_vertex_stream_00b4b3f0(vertices, *stream);
+    states.unregister_index_stream_00b4b390(indices, *index_stream);
+    matched = matched && vertices.logical_streams.empty() && indices.logical_streams.empty();
+    std::printf("D3D9 buffer rewind: hr=0x%08lx reused_pixel=0x%08lx checked=%d\n",
+        static_cast<unsigned long>(result), inside, matched);
     device.SetVertexDeclaration(nullptr);
     if (original) { device.SetRenderTarget(0, original); original->Release(); }
     bsp::buffer_release(vertices);

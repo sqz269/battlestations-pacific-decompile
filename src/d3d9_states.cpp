@@ -163,6 +163,54 @@ void D3D9StateCache::unlock_index_stream_00b49c70(LogicalIndexStream& stream) {
     if (stream.physical) index_buffer_unlock_00b4b820(*stream.physical);
 }
 
+namespace {
+template<class Stream> void register_unique(std::vector<Stream*>& registry, Stream& stream) {
+    for (const auto* existing : registry) if (existing == &stream) return;
+    if (registry.size() == registry.capacity())
+        registry.reserve(registry.capacity() ? registry.capacity() * 2 : 1);
+    registry.push_back(&stream);
+}
+template<class Stream> void remove_swap_last_00b4b2e0(std::vector<Stream*>& registry, Stream& stream) {
+    for (auto& existing : registry) {
+        if (existing == &stream) {
+            existing = registry.back();
+            registry.pop_back();
+            return;
+        }
+    }
+}
+}
+void D3D9StateCache::register_logical_stream_00b4b1e0(VertexBufferBinding& buffer, LogicalVertexStream& stream) {
+    Guard guard(*this);
+    register_unique(buffer.logical_streams, stream);
+}
+void D3D9StateCache::register_logical_stream_00b4b1e0(IndexBufferBinding& buffer, LogicalIndexStream& stream) {
+    Guard guard(*this);
+    register_unique(buffer.logical_streams, stream);
+}
+void D3D9StateCache::unregister_vertex_stream_00b4b3f0(VertexBufferBinding& buffer, LogicalVertexStream& stream) {
+    Guard guard(*this);
+    remove_swap_last_00b4b2e0(buffer.logical_streams, stream);
+}
+void D3D9StateCache::unregister_index_stream_00b4b390(IndexBufferBinding& buffer, LogicalIndexStream& stream) {
+    Guard guard(*this);
+    remove_swap_last_00b4b2e0(buffer.logical_streams, stream);
+}
+void D3D9StateCache::rewind_vertex_buffer_00b232b0(VertexBufferBinding& buffer) {
+    Guard guard(*this);
+    // Native virtual +8h resolves to 00b48d40 for these logical streams.
+    for (auto* stream : buffer.logical_streams) stream->offset = 0xffffffff;
+    buffer.cursor = 0;
+    buffer.dynamic_locks = 0;
+}
+void D3D9StateCache::rewind_index_buffer_00b231c0(IndexBufferBinding& buffer) {
+    Guard guard(*this);
+    // Native virtual +8h resolves to 00b48dd0. Lock depth is not reset.
+    for (auto* stream : buffer.logical_streams) stream->offset = 0xffffffff;
+    buffer.cursor = 0;
+    buffer.dynamic_locks = 0;
+}
+
 void D3D9StateCache::set_stream_frequency_00b24a40(UINT stream, UINT frequency) {
     if (stream >= stream_frequencies_.size()) std::abort();
     Guard guard(*this);

@@ -553,5 +553,15 @@
     "address": "00b2f4b0",
     "name": "BSP_D3D9Renderer_EndFrameAndPresentThunk",
     "evidence": "Renderer primary vtable00d5f0a8+10h; single JMP00b2d8e0. Newly recovered missing function; target is provisionally named EndFrameAndPresent."
+  },
+  {
+    "address": "00b232b0",
+    "name": "BSP_PhysicalVertexBuffer_Rewind",
+    "evidence": "ECX is renderer shared physical VB+1974h at00b2d9a5. Optional renderer guard; iterate raw registry+8h/count+Ch and call logical virtual+8h (00b48d40 invalidates offset), then zero cursor+1Ch and dynamic lock count+24h; preserve lock depth+20h and COM+28h. EndFrame calls this under additional renderer critical section before index rewind and debug draws. Typed semantic C++ port and real-device reuse readback checked."
+  },
+  {
+    "address": "00b231c0",
+    "name": "BSP_PhysicalIndexBuffer_Rewind",
+    "evidence": "ECX is renderer shared physical IB+1978h at00b2d9bb. Optional renderer guard; iterate registry+8h/count+Ch and call logical virtual+8h (00b48dd0 invalidates offset), then zero cursor+1Ch and dynamic lock count+24h; preserve lock depth+20h and COM+28h. Called after vertex rewind before debug draws. Typed semantic C++ port and real-device reuse readback checked."
   }
 ]
