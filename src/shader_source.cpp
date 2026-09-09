@@ -30,6 +30,7 @@ void append_vertex_input_decode_00b35820(const std::vector<ShaderField>& fields,
 namespace {
 #include "shader_vertex_literals.inc"
 #include "shader_shadow_literals.inc"
+#include "shader_pixel_literals.inc"
 std::string signed_decimal(std::uint32_t value) {
     // Native variadic %i interprets the full DWORD as signed, even though
     // dimension selection above one uses unsigned comparisons.
@@ -47,6 +48,87 @@ void append_shadow_helper_00b38230(bool projected_sampling, std::string& output)
         output += shadow_filtered_body; output += '\n';
     }
     output += "}\n";
+}
+
+ShaderSourceStatus generate_pixel_source_00b39880(ShaderPixelProgram& program, std::string& output) {
+    if (program.color_outputs < 1 || program.color_outputs > 4) return ShaderSourceStatus::invalid_packing;
+    std::string source;
+    auto line = [&](const std::string& text) { source += text; source += '\n'; };
+    const char* mode = nullptr;
+    switch (program.effect.render_mode) {
+    case 0: mode = "NORMAL"; break; case 1: mode = "REFLECTION"; break;
+    case 3: mode = "UNDERWATER"; break; case 4: mode = "REFRACTION"; break;
+    case 6: mode = "DRAW_SHADOW"; break; case 7: mode = "MAP"; break;
+    default: break;
+    }
+    if (mode) line(std::string("#define RM_") + mode + " 1");
+    append_system_constant_header_00b38ff0(program.constants, true, program.register_limit, source);
+    source += '\n'; source += program.base.header.c_str(); source += '\n';
+    source += program.effect.header.c_str(); source += '\n';
+    auto layout = program.interpolators;
+    ShaderInterpolatorOptions io;
+    io.include_fog = !program.zero_fog; io.allow_vpos = true; io.zero_fog = program.zero_fog;
+    io.base_descriptor_vpos = program.base.vpos; io.effect_descriptor_vpos = program.effect.vpos;
+    auto status = append_interpolator_struct_00b36e30(layout, io, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    ShaderStructOptions so; so.first_field = 1; so.allow_vpos = true;
+    so.base_descriptor_vpos = program.base.vpos; so.effect_descriptor_vpos = program.effect.vpos;
+    status = append_shader_struct_00b38b50("sPixelIn", program.inputs, so, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    so = {};
+    status = append_shader_struct_00b38b50("sSysValues", program.system_values, so, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    append_pixel_samplers_00b37ef0(program.base.samplers, program.effect.samplers, source);
+    if (program.effect.shadow_helpers) {
+        append_shadow_helper_00b38230(program.projected_shadow, source);
+        append_map_shadow_helper_00b382b0(program.projected_shadow, source);
+    }
+    line(pixel_ambient_fog_helpers); line(pixel_srgb_helpers);
+    line("\nvoid ShaderCode(sPixelIn IN, inout sSysValues SYS)");
+    line("{"); line(program.base.pixel_code); line("}");
+    const auto count = std::to_string(program.color_outputs);
+    line("\nvoid EffectCode(sPixelIn IN, inout sSysValues SYS, out float4 FinalColor[" + count
+        + (program.depth_output ? "], out float Depth)" : "])"));
+    line("{"); line(program.effect.pixel_code); line("}");
+    status = append_interpolator_unpack_00b37000(program.unpack_fields, layout, io, source);
+    if (status != ShaderSourceStatus::complete) return status;
+    source += "\nvoid main(sInterpolators INT";
+    for (std::uint32_t i = 0; i < program.color_outputs; ++i) {
+        const auto index = std::to_string(i);
+        source += ", out float4 Color" + index + " : COLOR" + index;
+    }
+    if (program.depth_output) source += ", out float Depth : DEPTH";
+    line(")"); source += "{\n\n";
+    for (std::uint32_t i = 0; i < program.color_outputs; ++i) {
+        if (i) source += ' ';
+        source += "Color" + std::to_string(i) + "=0;";
+    }
+    if (program.depth_output) source += " Depth=0;";
+    source += '\n';
+    line("\t\tsPixelIn\t\tIN = UnpackInterpolators(INT);\n\t\tsSysValues\t\tSYS;\n\t\tfloat4\t\t\tFinalColors[" + count + "];");
+    append_zero_shader_fields_00b357d0("SYS", program.system_values, source);
+    line(program.depth_output ? "\n\t\t\tShaderCode(IN,SYS);\n\t\t\tEffectCode(IN,SYS,FinalColors,Depth);"
+        : "\n\t\t\tShaderCode(IN,SYS);\n\t\t\tEffectCode(IN,SYS,FinalColors);");
+    const auto render_mode = program.effect.render_mode;
+    if (render_mode == 3 || render_mode == 9 || render_mode == 11)
+        line("\nFinalColors[0].xyz = min(pow(FinalColors[0].xyz,0.25)*23,120*FinalColors[0].xyz);\n");
+    if ((render_mode == 0 || render_mode == 12 || render_mode == 8 || render_mode == 10)
+        && !program.base.suppress_time_transform)
+        line("\nif(cElapsedTime[1]>0.5)\nFinalColors[0].xyz = min(pow(FinalColors[0].xyz,0.25)*23,120*FinalColors[0].xyz);\n");
+    const bool fog = layout.fog.field != 0xff && !program.zero_fog;
+    line("\nColor0=FinalColors[0];\n");
+    if (fog) line("Color0.rgb=lerp(cFogDirColor,Color0.rgb,INT.Fog);\n");
+    if (program.effect.alpha_override)
+        line(program.visibility_alpha ? "Color0.a=SYS.DiffuseColor.a * saturate(cVisibility);\n"
+            : "Color0.a=SYS.DiffuseColor.a;\n");
+    if (!fog && program.base.premultiply_alpha) line("Color0.rgb *= Color0.a;");
+    for (std::uint32_t i = 1; i < program.color_outputs; ++i) {
+        const auto index = std::to_string(i);
+        line("\nColor" + index + "=FinalColors[" + index + "];");
+    }
+    line("\n}");
+    output = std::move(source); program.interpolators = std::move(layout);
+    return ShaderSourceStatus::complete;
 }
 
 void append_map_shadow_helper_00b382b0(bool projected_sampling, std::string& output) {

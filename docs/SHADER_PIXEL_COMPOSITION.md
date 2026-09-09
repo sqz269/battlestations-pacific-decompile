@@ -44,3 +44,36 @@ and `00b382b0`, unconditional ambient/fog and sRGB sampling helper literals,
 base/effect PS strings at +F8h, separate declaration/unpack field lists and
 system-value list +34h. These must be composed with the recovered sampler,
 constant, struct and unpack emitters before a matched game shader pair can run.
+
+## Full pixel composition implementation
+
+`generate_pixel_source_00b39880` now implements the full sequence through a
+ShaderPixelProgram projection. Separate input and unpack lists preserve the
+native two-argument distinction. Constants, descriptor flags and system-value
+fields remain explicit inputs. The implementation composes all recovered
+helpers, length-preserved PS bodies, formatted headers, output signatures,
+SYS initialization and the output policies above. Source and interpolator
+metadata are replaced only on success. Counts outside1..4 produce a typed
+error with unchanged outputs; native malformed source for those counts and
+native allocator/exception ABI are not reproduced.
+
+Pixel-specific ambient/fog and sRGB helper literals are retained separately in
+`src/shader_pixel_literals.inc`, with original/saved byte agreement. They are
+not substituted with the similar vertex literals. The generator preserves the
+native distinction between alpha premultiplication in the no-fog path and its
+absence in the fog path, plus the two possible effect signatures for depth.
+
+The existing shader probe now compiles full generated debug/dummy vertex and
+pixel source and creates/binds that pair. Pixel statements were compared with
+the installed descriptors ignoring whitespace; hashes and validation scope
+are in `reports/shader_pixel_generator.json`. The fixture uses normal mode,
+one color output, no depth or fog, and explicit DiffuseColor system state.
+Its registry adds a scalar cElapsedTime[2] declaration to support the emitted
+conditional color transform. The supplied register limits256/32 and ordering
+are diagnostic projections, not recovered native register identity.
+
+Win32 build, both existing CTests and the full D3D9 probe pass. Other output,
+depth, vPos and fog/alpha branch combinations have assembly-grounded source
+implementations but were not compiled or executed in this fixture. The pair
+has not been used for draw/readback. Descriptor loading, native system registry,
+material execution and the runnable game remain incomplete.

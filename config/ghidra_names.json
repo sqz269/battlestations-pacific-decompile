@@ -927,7 +927,7 @@
   {
     "address": "00b39880",
     "name": "BSP_ShaderBuilder_GeneratePixelSource",
-    "evidence": "thiscall ECX builder; two field/interpolator-list stack arguments; RET8. Headers, structures, ShaderCode wrapper, EffectCode wrapper, interpolator conversion, main, output policy Complete headers, register assignment, interpolator code and flags remain dependencies Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md."
+    "evidence": "thiscall ECX builder; two field/interpolator-list stack arguments; RET8. Headers, structures, ShaderCode wrapper, EffectCode wrapper, interpolator conversion, main, output policy Complete headers, register assignment, interpolator code and flags remain dependencies Assembly-backed investigation; unported. See docs/SHADER_SOURCE_GENERATION.md. Follow-up: full typed source composition implemented with original helper literals, wrappers, 1..4 outputs/depth, render-mode transforms, fog/alpha/visibility/premultiply branches. Debug/dummy PS statements compile ps_2_0 and bind beside generated vertex shader using explicit projected registry. One output/no fog/no depth fixture only; remaining branches and native loader/ABI unvalidated. See docs/SHADER_PIXEL_COMPOSITION.md."
   },
   {
     "address": "00b385b0",

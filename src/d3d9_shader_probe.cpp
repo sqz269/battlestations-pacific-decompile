@@ -146,6 +146,27 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         vertex_code->Release(); vertex_code = debug_code; debug_code = nullptr;
     }
     if (debug_code) debug_code->Release();
+    bsp::ShaderPixelProgram debug_pixel;
+    debug_pixel.inputs = debug_program.outputs;
+    debug_pixel.unpack_fields = debug_program.outputs;
+    auto diffuse = color; diffuse.name = "DiffuseColor";
+    debug_pixel.system_values = {diffuse};
+    debug_pixel.interpolators = debug_program.interpolators;
+    debug_pixel.constants = debug_program.constants;
+    debug_pixel.constants.push_back({"cElapsedTime", 1, 1, 2});
+    debug_pixel.register_limit = 32; // Diagnostic projection, not native registry.
+    debug_pixel.base.pixel_code = "SYS.DiffuseColor = IN.Color;";
+    debug_pixel.effect.pixel_code = "FinalColor[0] = SYS.DiffuseColor;";
+    std::string debug_pixel_source;
+    const bool full_pixel_generated = bsp::generate_pixel_source_00b39880(debug_pixel,
+        debug_pixel_source) == bsp::ShaderSourceStatus::complete;
+    ID3DBlob* debug_pixel_code = nullptr;
+    if (SUCCEEDED(result)) result = full_pixel_generated
+        ? assemble_host_shader(debug_pixel_source.c_str(), "ps_2_0", &debug_pixel_code) : E_FAIL;
+    if (SUCCEEDED(result)) {
+        pixel_code->Release(); pixel_code = debug_pixel_code; debug_pixel_code = nullptr;
+    }
+    if (debug_pixel_code) debug_pixel_code->Release();
     if (SUCCEEDED(result)) result = vertex_code
         ? device.CreateVertexShader(static_cast<const DWORD*>(vertex_code->GetBufferPointer()), &vertex) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_code

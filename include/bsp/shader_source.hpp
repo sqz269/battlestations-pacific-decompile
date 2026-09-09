@@ -140,4 +140,24 @@ struct ShaderVertexProgram {
 // updates interpolator metadata on success; typed validation failure leaves
 // both unchanged. Descriptor selection/registry population/compilation separate.
 ShaderSourceStatus generate_vertex_source_00b39110(ShaderVertexProgram&, std::string& output);
+
+struct ShaderPixelDescriptor {
+    std::string header, pixel_code;
+    std::vector<ShaderSamplerDeclaration> samplers;
+    std::int32_t render_mode{};
+    bool shadow_helpers{}, vpos{}, alpha_override{}; // Effect +15h, either +30h, effect +31h.
+    bool suppress_time_transform{}, premultiply_alpha{}; // Base +1Dh/+32h.
+};
+struct ShaderPixelProgram {
+    ShaderPixelDescriptor base, effect;
+    std::vector<ShaderField> inputs, unpack_fields, system_values;
+    std::vector<ShaderSystemConstant> constants;
+    std::uint32_t register_limit{}, color_outputs{1};
+    bool depth_output{}, zero_fog{}, visibility_alpha{}, projected_shadow{};
+    ShaderInterpolatorLayout interpolators;
+};
+// 00b39880 thiscall RET8, two distinct input-list arguments. Explicit typed
+// state replaces builder/registry. Invalid output counts outside1..4 return
+// invalid_packing rather than emitting native malformed source.
+ShaderSourceStatus generate_pixel_source_00b39880(ShaderPixelProgram&, std::string& output);
 }

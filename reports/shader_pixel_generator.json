@@ -1,0 +1,27 @@
+{
+  "helper_literals": [
+    {
+      "address": "00d60448",
+      "sha256": "46e588862d344b26f2abce7af87cb1cbb187b4fcf721636f8cb6aa5377f99c9e",
+      "length": 668
+    },
+    {
+      "address": "00d60258",
+      "sha256": "ad01e4ee86e69bb05e10174375eea1343e942307547c4645ce8c0d4e1dedd32a",
+      "length": 494
+    }
+  ],
+  "descriptors": [
+    {
+      "path": "common/debugshader.shfx",
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "statements_match_ignoring_whitespace": true
+    },
+    {
+      "path": "lights/dummy.shfx",
+      "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b",
+      "statements_match_ignoring_whitespace": true
+    }
+  ],
+  "validation": "Full generated vs_2_0/ps_2_0 debug/dummy statement pair compiles, creates and binds on D3D9. One output/no depth/no fog normal mode fixture. Explicit field/constant projection with vertex limit256/pixel limit32; no draw, native bytecode/register parity or game runtime verification. Win32 build, two existing CTests and full probe pass."
+}
