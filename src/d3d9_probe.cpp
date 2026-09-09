@@ -459,6 +459,12 @@ int main(int argc, char** argv) {
         // Exercise the recovered surface methods with registered-style offscreen
         // resources. The host orchestrates Reset, not the incomplete game reset loop.
         bsp::D3D9SurfaceBinding color{}, depth{};
+        bsp::D3D9DefaultSurfaces defaults;
+        bsp::RendererSynchronization synchronization{};
+        bsp::D3D9StateCache cache(*device, synchronization, nullptr);
+        result = cache.capture_default_surfaces_00b238d0_fragment(defaults);
+        auto* const original_color_owner = &defaults.color;
+        auto* const original_depth_owner = &defaults.depth;
         color.format = D3DFMT_A8R8G8B8;
         color.width = depth.width = 128;
         color.height = depth.height = 128;
@@ -467,14 +473,34 @@ int main(int argc, char** argv) {
         bsp::D3D9SurfaceRegistry registry;
         registry.append_00b2a7c0_fragment(color);
         registry.append_00b2a7c0_fragment(depth);
-        result = registry.recreate_00b23b10_fragment(*device);
+        if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        defaults.release_for_reset_00b262c0_fragment();
+        const bool released_defaults = !defaults.color.surface && !defaults.depth.surface
+            && defaults.color.width == 640 && defaults.depth.width == 640;
         registry.release_for_reset_00b262c0_fragment();
         if (SUCCEEDED(result)) result = device->Reset(&stored);
+        if (SUCCEEDED(result)) result = defaults.restore_00b23b10_fragment(*device);
         if (SUCCEEDED(result)) result = registry.recreate_00b23b10_fragment(*device);
+        IDirect3DSurface9* restored_color{}, *restored_depth{};
+        if (SUCCEEDED(result)) result = device->GetRenderTarget(0, &restored_color);
+        if (SUCCEEDED(result)) result = device->GetDepthStencilSurface(&restored_depth);
+        const bool restored_defaults = SUCCEEDED(result) && released_defaults
+            && &defaults.color == original_color_owner && &defaults.depth == original_depth_owner
+            && restored_color == defaults.color.surface && restored_depth == defaults.depth.surface
+            && defaults.color.width == 640 && defaults.color.height == 480
+            && defaults.depth.width == 640 && defaults.depth.height == 480
+            && defaults.color.format == D3DFMT_A8R8G8B8 && defaults.depth.format == D3DFMT_D24S8
+            && defaults.color.wrapper_flags == 0 && defaults.depth.wrapper_flags == 0
+            && !defaults.color.depth_stencil && !defaults.depth.depth_stencil
+            && cache.depth_binding_calls() == 1;
+        if (restored_color) restored_color->Release();
+        if (restored_depth) restored_depth->Release();
+        std::printf("Default surface reset: existing_owners_reinitialized_without_depth_bind=%d\n",
+            restored_defaults);
         D3DSURFACE_DESC color_desc{}, depth_desc{};
         if (SUCCEEDED(result)) result = color.surface->GetDesc(&color_desc);
         if (SUCCEEDED(result)) result = depth.surface->GetDesc(&depth_desc);
-        matched = SUCCEEDED(result) && color_desc.Width == 128 && color_desc.Height == 128
+        matched = restored_defaults && SUCCEEDED(result) && color_desc.Width == 128 && color_desc.Height == 128
             && depth_desc.Width == 128 && depth_desc.Height == 128
             && color_desc.Format == D3DFMT_A8R8G8B8 && depth_desc.Format == D3DFMT_D24S8
             && color_desc.Usage == D3DUSAGE_RENDERTARGET

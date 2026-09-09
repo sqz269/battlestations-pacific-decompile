@@ -29,6 +29,12 @@ struct D3D9DefaultSurfaces {
     ~D3D9DefaultSurfaces();
     D3D9DefaultSurfaces(const D3D9DefaultSurfaces&) = delete;
     D3D9DefaultSurfaces& operator=(const D3D9DefaultSurfaces&) = delete;
+    // Default-owner fragments only: no readiness/lost gates, other three color
+    // slots, guard, resource/listener callbacks or binding-cache operations.
+    void release_for_reset_00b262c0_fragment();
+    // Reinitializes these existing bindings, color before depth, without binding
+    // depth to the device. Both COM owners must be empty after release.
+    HRESULT restore_00b23b10_fragment(IDirect3DDevice9& device);
 };
 
 // Borrowed reset-list projection of renderer+1B0Ch/+1B10h/+1B14h.

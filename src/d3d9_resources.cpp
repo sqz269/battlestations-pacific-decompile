@@ -7,6 +7,30 @@ D3D9DefaultSurfaces::~D3D9DefaultSurfaces() {
     surface_release(color);
 }
 
+void D3D9DefaultSurfaces::release_for_reset_00b262c0_fragment() {
+    surface_release_for_reset_00b3d510(depth);
+    surface_release_for_reset_00b3d510(color);
+}
+
+HRESULT D3D9DefaultSurfaces::restore_00b23b10_fragment(IDirect3DDevice9& device) {
+    // Typed ownership preflight; native assumes release has emptied the owners.
+    if (color.surface || depth.surface) return D3DERR_INVALIDCALL;
+    IDirect3DSurface9* acquired{};
+    HRESULT result = device.GetRenderTarget(0, &acquired);
+    if (SUCCEEDED(result)) result = acquired
+        ? surface_initialize_00b3cc80(color, acquired) : E_POINTER;
+    if (acquired) acquired->Release();
+    if (FAILED(result)) return result;
+    acquired = nullptr;
+    result = device.GetDepthStencilSurface(&acquired);
+    if (SUCCEEDED(result)) result = acquired
+        ? surface_initialize_00b3cc80(depth, acquired) : E_POINTER;
+    if (acquired) acquired->Release();
+    // Sequential ownership: a later depth failure leaves restored color alive.
+    // Native ignores failures. No rollback or final depth bind occurs here.
+    return result;
+}
+
 void D3D9SurfaceRegistry::append_00b2a7c0_fragment(D3D9SurfaceBinding& surface) {
     // Native pointer array grows separately and does not retain the wrapper.
     // std::vector replaces its allocator/capacity bookkeeping in this projection.

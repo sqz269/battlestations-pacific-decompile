@@ -227,7 +227,7 @@
   {
     "address": "00b2abd0",
     "name": "BSP_D3D9Renderer_ProcessDeviceReset",
-    "evidence": "Checks render thread ID and global pending/lost flags 0108d4b8/b9. TestCooperativeLevel handles DEVICELOST/DEVICENOTRESET; requires active focused platform window, releases state/resources, calls device Reset with stored presentation parameters, restores resources/default states on success. Dependencies not yet ported."
+    "evidence": "Checks render thread ID and global pending/lost flags 0108d4b8/b9. TestCooperativeLevel handles DEVICELOST/DEVICENOTRESET; requires active focused platform window, releases state/resources, calls device Reset with stored presentation parameters, restores resources/default states on success. Dependencies not yet ported. Assembly audit DEVICE_RESET_SCHEDULER: current-thread gate under optionalguard; cooperative query only when0108D4B9; DEVICELOST unsignedcounter>10 plus active/GetFocus may recreate. Reset accepts exactzero only; release buffers thenresources, restore resources thenbuffers, three100ms sleeps perattempt. Pending/polling flags clear only successafterdefaults/gamma. Fullscheduler notported."
   },
   {
     "address": "00b3cc80",
@@ -297,12 +297,12 @@
   {
     "address": "00b262c0",
     "name": "BSP_D3D9Renderer_ReleaseResourcesForReset",
-    "evidence": "Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported. Surface loop00b263FF..00b26432 retains rawcursor and reloadsbase/count, mutation unsafe. Concrete wrapper release listfragment ported with stable-list precondition. Fullgates/defaultowners/otherlisteners excluded."
+    "evidence": "Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported. Surface loop00b263FF..00b26432 retains rawcursor and reloadsbase/count, mutation unsafe. Concrete wrapper release listfragment ported with stable-list precondition. Fullgates/defaultowners/otherlisteners excluded. Defaultowner fragment now releases depth+198C before color0+197C preserving metadata; extra3owners and fullgates remain outside typedprojection. Verified realdevice Reset with existingdefault wrappers."
   },
   {
     "address": "00b23b10",
     "name": "BSP_D3D9Renderer_RestoreResourcesAfterReset",
-    "evidence": "Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Not yet ported. Surface loop00b23BEB..00b23C25 rawcursor/reloadedend is mutation unsafe; stable-list concretewrapper recreation fragment ported, continues all HRESULTresults and reports firstfailure. Fullrestore reinitializes existingdefaults, not initialcapture/replacement."
+    "evidence": "Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Fullroutine not ported. Surface loop00b23BEB..00b23C25 rawcursor/reloadedend is mutation unsafe; stable-list concretewrapper recreation fragment ported, continues all HRESULTresults and reports firstfailure. Fullrestore reinitializes existingdefaults, not initialcapture/replacement. Defaultowner fragment reinitializes existing color0 then depth, releases getterreferences, no final depthbind. No localguard; ready written1 before COMcalls. Typedinterface checks emptyowners and reports sequentialfailures, nativeunchecked. Realdevice reset verified."
   },
   {
     "address": "00b241c0",

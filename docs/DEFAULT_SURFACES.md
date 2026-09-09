@@ -57,3 +57,37 @@ capture does not append to the renderer reset list; offscreen factory00b2a7c0
 does so explicitly. Generic wrapper destruction attempts removal from that list.
 The singleton class/purpose is not established; its getter must not be called a
 resource-registration operation.
+
+## Existing defaults across reset
+
+`D3D9DefaultSurfaces::release_for_reset_00b262c0_fragment` releases depth
+before color0 using the established wrapper helper, preserving metadata and
+the wrapper objects. It represents the two owned slots within
+`00b26373..00b263a4`; the three additional native color slots remain outside
+this owner type. Native ECX is the renderer and there are no stack arguments.
+
+`restore_00b23b10_fragment` implements the default-owner portion
+`00b23b41..00b23baf`: GetRenderTarget(0), initialize the existing color binding,
+release the getter reference, then repeat with GetDepthStencilSurface and the
+existing depth binding. There is no replacement allocation or final depth
+bind. It does not restore default surfaces through the generic recreation
+API; both native default wrappers retain recreation kind zero.
+
+These are phase fragments, not the full native routines. Readiness/lost gates,
+early readiness writes, optional release guard, other owners/resources and
+listener calls are described in SURFACE_RESET_TRAVERSAL and
+DEVICE_RESET_SCHEDULER. They are not silently supplied by these methods.
+The typed restore requires both COM owners empty before starting and reports
+HRESULT failures instead of the native unchecked behavior. A depth failure
+leaves the successfully restored color owned; no rollback is invented. The
+device and owners must remain stable for the call.
+
+The existing real-device reset probe now captures defaults, releases them
+before the registered offscreen list, resets the device, and restores defaults
+before the list. It checks the same wrapper addresses, reacquired COM identity,
+640x480 descriptions, formats, zero flags/kinds and unchanged depth-bind count.
+Both existing CTests and the full installed-asset D3D9 probe passed; no new test
+target was added. See `reports/default_surface_reset_probe.txt` and the fresh
+disk/live full-body hashes in `reports/default_surface_reset_audit.json`.
+This validates this owner sequence on the real device, not scheduler behavior,
+native ABI compatibility or gameplay.

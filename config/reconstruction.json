@@ -1237,6 +1237,24 @@
       "status": "device_reset_probe_checked",
       "abi_compatible": false,
       "remaining": "Typed borrowed vector with stable membership/storage/lifetimes. Fullfactory/retry/stats, native capacity allocator, defaultowners, resetgates and other resource/listener processing remain outside projection."
+    },
+    {
+      "address": "00b262c0",
+      "name": "release_default_surfaces",
+      "source": "src/d3d9_resources.cpp",
+      "native_range": "00b26373..00b263a4 depth and first color owner projection",
+      "status": "real_device_default_and_registered_surface_reset_checked",
+      "abi_compatible": false,
+      "remaining": "Typed existing color0/depth owners only; release depth then color, restore color then depth without binding. Readiness/lost gates, other three fixed color slots, guard, other resources/listeners and scheduler remain unported. Empty-owner preflight and sequential HRESULT failure reporting are new interface boundaries."
+    },
+    {
+      "address": "00b23b10",
+      "name": "restore_default_surfaces",
+      "source": "src/d3d9_resources.cpp",
+      "native_range": "00b23b41..00b23baf existing default-owner reacquisition",
+      "status": "real_device_default_and_registered_surface_reset_checked",
+      "abi_compatible": false,
+      "remaining": "Typed existing color0/depth owners only; release depth then color, restore color then depth without binding. Readiness/lost gates, other three fixed color slots, guard, other resources/listeners and scheduler remain unported. Empty-owner preflight and sequential HRESULT failure reporting are new interface boundaries."
     }
   ]
 }
