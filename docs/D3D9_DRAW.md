@@ -84,3 +84,5 @@ correct triangle after a dummy vertex. A request exceeding the tagged stream cou
 returns S_FALSE. The valid indexed draw again yields green inside and black outside.
 The limits of this check are recorded separately in `reports/d3d9_indexed_validation.json`.
 No game-material, full stream-constructor, registry, concurrent or gameplay claim follows.
+Hardware layout update: the probe now creates and binds an actual vertex declaration
+using the conversion in `HARDWARE_VERTEX_LAYOUT.md`; its original FVF setup has been replaced.

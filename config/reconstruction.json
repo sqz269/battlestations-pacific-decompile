@@ -301,6 +301,20 @@
       "source": "src/vertex_declaration.cpp",
       "status": "declaration_driven_stream_pixel_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b48a00",
+      "name": "BSP_VertexLayout_AppendStream",
+      "source": "src/d3d9_vertex_layout.cpp",
+      "status": "hardware_declaration_and_pixel_readback_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b47d60",
+      "name": "BSP_VertexLayout_RecomputeStride",
+      "source": "src/d3d9_vertex_layout.cpp",
+      "status": "hardware_declaration_and_pixel_readback_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -336,6 +350,14 @@
       "status": "nonnull_nondiagnostic_dynamic_lock_path_checked",
       "abi_compatible": false,
       "remaining": "Null-buffer sentinel and diagnostic singleton branches omitted; new API returns INVALIDCALL."
+    },
+    {
+      "address": "00b60a10",
+      "name": "create_if_missing",
+      "source": "src/d3d9_vertex_layout.cpp",
+      "status": "hardware_declaration_and_pixel_readback_checked",
+      "abi_compatible": false,
+      "remaining": "Diagnostic string/singleton calls omitted; constructor, full registry and lifecycle remain incomplete."
     }
   ]
 }

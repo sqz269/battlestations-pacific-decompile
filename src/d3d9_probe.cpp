@@ -3,6 +3,7 @@
 #include "bsp/d3d9_states.hpp"
 #include "bsp/d3d9_resources.hpp"
 #include "bsp/d3d9_buffers.hpp"
+#include "bsp/d3d9_vertex_layout.hpp"
 #include <cstring>
 #include <cstdio>
 
@@ -53,7 +54,20 @@ static bool probe_draw(IDirect3DDevice9& device) {
         states.bind_vertex_stream_00b24840(0, equivalent);
         states.bind_vertex_stream_00b24840(0, stream);
     }
-    if (SUCCEEDED(result)) result = device.SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
+    bsp::D3D9VertexLayout layout;
+    layout.append_stream_00b48a00(stream->declaration);
+    if (SUCCEEDED(result)) result = layout.create_if_missing_00b60a10(device);
+    D3DVERTEXELEMENT9 declaration_elements[3]{};
+    UINT declaration_count = 3;
+    if (SUCCEEDED(result)) result = layout.native()->GetDeclaration(declaration_elements, &declaration_count);
+    if (SUCCEEDED(result) && (declaration_count != 3 || layout.stride() != 20
+        || declaration_elements[0].Type != D3DDECLTYPE_FLOAT4
+        || declaration_elements[0].Usage != D3DDECLUSAGE_POSITIONT
+        || declaration_elements[1].Offset != 16 || declaration_elements[1].Usage != D3DDECLUSAGE_COLOR
+        || declaration_elements[2].Stream != 0xff)) result = E_FAIL;
+    if (SUCCEEDED(result)) result = device.SetVertexDeclaration(layout.native());
+    std::printf("D3D9 vertex layout: hr=0x%08lx elements=%u stride=%u\n",
+        static_cast<unsigned long>(result), declaration_count, layout.stride());
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
     if (SUCCEEDED(result)) {
@@ -122,6 +136,7 @@ static bool probe_draw(IDirect3DDevice9& device) {
         static_cast<unsigned long>(result), inside, states.vertex_binding_calls(), states.index_binding_calls(), matched);
     states.bind_vertex_stream_00b24840(0, nullptr);
     states.bind_index_stream_00b24b00(nullptr, 0);
+    device.SetVertexDeclaration(nullptr);
     if (original) { device.SetRenderTarget(0, original); original->Release(); }
     bsp::buffer_release(vertices);
     if (readback) readback->Release();

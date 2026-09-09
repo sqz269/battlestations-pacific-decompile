@@ -443,5 +443,25 @@
     "address": "00b61e20",
     "name": "BSP_LogicalVertexStreamBase_Construct",
     "evidence": "Initializes intrusive refcount, monotonically increasing ID0108fee0, default tag40000000h, stride from declaration+cch and selected usage metadata via semantic lookup helpers. Full native constructor not yet ported."
+  },
+  {
+    "address": "00b48a00",
+    "name": "BSP_VertexLayout_AppendStream",
+    "evidence": "Adds retained declaration to next12-byte stream record at+8h, increments count+38h, writes record frequency1 and extra0. New interface uses shared ownership and bounds to four streams."
+  },
+  {
+    "address": "00b47d60",
+    "name": "BSP_VertexLayout_RecomputeStride",
+    "evidence": "Clears layout+3ch and sums declaration+cch for stream records at+8h spaced12 bytes, count+38h."
+  },
+  {
+    "address": "00b60790",
+    "name": "BSP_D3D9VertexLayout_CreateFromStreams",
+    "evidence": "Appends input declarations via00b48a00; converts20-byte records to8-byte D3DVERTEXELEMENT9, stream index from input order, offset low16 bits, type/method/usage low8, usage index from14 per-usage counters shared across streams. Appends END, creates COM declaration+40h and recomputes stride. Includes unported diagnostic singleton calls."
+  },
+  {
+    "address": "00b60a10",
+    "name": "BSP_D3D9VertexLayout_CreateIfMissing",
+    "evidence": "If COM pointer+40h null, converts stored stream declarations with same cross-stream usage counters and END as00b60790, calls CreateVertexDeclaration then recomputes total stride. Conversion/API/stride path ported; diagnostics omitted and new API returns HRESULT/S_FALSE."
   }
 ]

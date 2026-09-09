@@ -33,7 +33,7 @@ in the reconstructed logical stream. Non-indexed and indexed pixel readbacks bot
 pass. This covers packed append and those lookups. Explicit-offset behavior is
 assembly-grounded but has no runtime differential check. No new test cases were added.
 
-The host still uses SetFVF; this change does not claim CreateVertexDeclaration,
-shader input linkage, native declaration allocator/ABI or gameplay equivalence.
-Next, trace how declaration records become hardware vertex elements and connect
-the native logical stream constructor and shared-buffer allocation path.
+The hardware conversion is now recovered separately in `HARDWARE_VERTEX_LAYOUT.md`;
+the probe uses CreateVertexDeclaration/SetVertexDeclaration instead of SetFVF.
+Shader input linkage, native declaration allocator/ABI and gameplay remain unverified.
+Next, connect the native logical stream constructor and shared-buffer allocation path.
