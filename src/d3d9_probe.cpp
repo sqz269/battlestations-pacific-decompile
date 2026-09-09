@@ -409,12 +409,33 @@ int main(int argc, char** argv) {
         bsp::critical_section_destroy_owned_0041cc80(lock);
     }
     if (matched) {
-        IDirect3DSurface9* surface = nullptr;
-        bsp::D3D9SurfaceBinding binding{};
+        bsp::D3D9DefaultSurfaces surfaces;
+        auto& binding = surfaces.color;
+        bsp::RendererSynchronization synchronization{};
+        bsp::set_renderer_synchronization_00b33aa0(synchronization, true);
+        auto* lock = bsp::critical_section_create_00bd1860();
+        const auto release_lock = [](bsp::TrackedCriticalSection* value) {
+            bsp::critical_section_destroy_owned_0041cc80(value);
+        };
+        std::unique_ptr<bsp::TrackedCriticalSection, decltype(release_lock)> lock_owner(lock, release_lock);
+        bsp::D3D9StateCache cache(*device, synchronization, lock);
         bsp::D3D9DynamicBuffers buffers{};
-        result = device->GetRenderTarget(0, &surface);
-        if (SUCCEEDED(result)) result = bsp::surface_initialize_00b3cc80(binding, surface);
-        if (surface) surface->Release(); // Binding must survive the getter reference.
+        result = cache.capture_default_surfaces_00b238d0_fragment(surfaces);
+        // Reacquisition exercises replacement ownership of the same COM surfaces.
+        if (SUCCEEDED(result)) result = cache.capture_default_surfaces_00b238d0_fragment(surfaces);
+        if (SUCCEEDED(result)) result = cache.bind_depth_surface_00b21690(nullptr);
+        const bsp::D3D9SurfaceBinding empty_wrapper{};
+        if (SUCCEEDED(result)) result = cache.bind_depth_surface_00b21690(&empty_wrapper);
+        if (SUCCEEDED(result)) result = cache.bind_depth_surface_00b21690(&surfaces.depth);
+        IDirect3DSurface9* bound_depth{};
+        if (SUCCEEDED(result)) result = device->GetDepthStencilSurface(&bound_depth);
+        const bool capture_checked = SUCCEEDED(result) && bound_depth == surfaces.depth.surface
+            && surfaces.depth.format == D3DFMT_D24S8 && !surfaces.depth.depth_stencil
+            && !surfaces.color.depth_stencil && surfaces.color.wrapper_flags == 0
+            && surfaces.depth.wrapper_flags == 0 && cache.depth_binding_calls() == 4
+            && lock->depth == 0 && synchronization.nesting == 0;
+        if (bound_depth) bound_depth->Release();
+        std::printf("Default surfaces: retained_color_depth_kind_zero_and_depth_bind_count=%d\n", capture_checked);
         D3DSURFACE_DESC retained_surface{};
         if (SUCCEEDED(result)) result = binding.surface->GetDesc(&retained_surface);
         if (SUCCEEDED(result)) result = bsp::create_dynamic_buffers_00b2aeb0(*device, buffers);
@@ -422,7 +443,7 @@ int main(int argc, char** argv) {
         D3DINDEXBUFFER_DESC indices{};
         if (SUCCEEDED(result)) result = buffers.vertices->GetDesc(&vertices);
         if (SUCCEEDED(result)) result = buffers.indices->GetDesc(&indices);
-        matched = SUCCEEDED(result) && retained_surface.Width == binding.width
+        matched = capture_checked && SUCCEEDED(result) && retained_surface.Width == binding.width
             && retained_surface.Height == binding.height && binding.width == 640 && binding.height == 480
             && binding.format == D3DFMT_A8R8G8B8 && vertices.Size == 0x1000000
             && indices.Size == 0x100000 && indices.Format == D3DFMT_INDEX16
@@ -432,7 +453,6 @@ int main(int argc, char** argv) {
             "index_bytes=%u checked=%d\n", static_cast<unsigned long>(result),
             binding.width, binding.height, vertices.Size, indices.Size, matched);
         bsp::release_dynamic_buffers(buffers);
-        bsp::surface_release(binding);
     }
     if (swap_chain) { swap_chain->Release(); swap_chain = nullptr; }
     if (matched) {

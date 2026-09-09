@@ -18,6 +18,18 @@ void surface_release(D3D9SurfaceBinding& binding);
 void surface_release_for_reset_00b3d510(D3D9SurfaceBinding& binding);
 HRESULT surface_recreate_00b3d550(D3D9SurfaceBinding& binding, IDirect3DDevice9& device);
 
+// Unique typed COM owners for renderer+197Ch/+198Ch. Full native wrapper
+// construction, intrusive references and registry participation are not modeled.
+// Reacquire defaults after reset; do not recreate them using generic surfaces.
+struct D3D9DefaultSurfaces {
+    D3D9SurfaceBinding color;
+    D3D9SurfaceBinding depth;
+    D3D9DefaultSurfaces() = default;
+    ~D3D9DefaultSurfaces();
+    D3D9DefaultSurfaces(const D3D9DefaultSurfaces&) = delete;
+    D3D9DefaultSurfaces& operator=(const D3D9DefaultSurfaces&) = delete;
+};
+
 // Owned COM resources created within 00b2aeb0. Engine wrapper attachment,
 // resource registry and stream allocation bookkeeping are still separate work.
 struct D3D9DynamicBuffers {

@@ -237,7 +237,7 @@
   {
     "address": "00b238d0",
     "name": "BSP_D3D9Renderer_CaptureDefaultSurfaces",
-    "evidence": "Gets render target 0 and depth surface; constructs 34h surface wrappers via 00b3f630(surface,0,0), installs intrusive references at +197ch/+198ch, releases temporary wrapper/getter references, then binds depth via 00b21690. Assembly confirms COM ownership despite broken decompiler stack tracking. Full routine not ported."
+    "evidence": "ECX renderer,RET. GetRT0, extra GetDesc, constructwrapper(surface,0,0), replace+197C retainbeforerelease, drop getter; getdepth, sameconstructor(surface,0,0), replace+198C and drop getter, binddepth00b21690. BOTH recreation-kind fields zero, including depth. Typed COM ownership fragment implemented; fullintrusivewrapper/registry/allocator and redundant accessor refpairs unported. ExistingD3D9probe checks reacquisition and binding. See docs/DEFAULT_SURFACES.md."
   },
   {
     "address": "00b3f630",
@@ -277,7 +277,7 @@
   {
     "address": "00b21690",
     "name": "BSP_D3D9Renderer_BindDepthSurface",
-    "evidence": "Optional renderer guard around device virtual 9ch SetDepthStencilSurface; null wrapper binds null, otherwise uses surface at wrapper+2ch and increments counter this+1bcch. Not yet ported."
+    "evidence": "ECX renderer, stack surface-wrapper pointer, RET4. Optional renderer guard; always call SetDepthStencilSurface with wrapper+2C or null. Non-null wrapper increments32-bit counter+1BCC even if COMpointer null or HRESULTfailure; nullwrapper doesnotincrement. Uncached and no retainedwrapper. Typed semantic port exposes HRESULT; probe checked guard, counts and device binding."
   },
   {
     "address": "00b3d510",

@@ -1,4 +1,5 @@
 #include "bsp/d3d9_states.hpp"
+#include "bsp/d3d9_resources.hpp"
 #include <cstdlib>
 
 namespace bsp {
@@ -41,6 +42,42 @@ struct D3D9StateCache::Guard {
         if (owner.synchronization_.enabled) owner.leave_00b33b00(entered);
     }
 };
+
+HRESULT D3D9StateCache::bind_depth_surface_00b21690(const D3D9SurfaceBinding* surface) {
+    Guard guard(*this);
+    const auto result = device_.SetDepthStencilSurface(surface ? surface->surface : nullptr);
+    if (surface) ++depth_binding_calls_;
+    return result;
+}
+
+HRESULT D3D9StateCache::capture_default_surfaces_00b238d0_fragment(D3D9DefaultSurfaces& surfaces) {
+    IDirect3DSurface9* acquired{};
+    HRESULT result = device_.GetRenderTarget(0, &acquired);
+    if (FAILED(result)) return result;
+    if (!acquired) return E_FAIL; // Native assumes successful non-null getters.
+    D3DSURFACE_DESC unused_description{};
+    result = acquired->GetDesc(&unused_description); // Native extra query before constructor.
+    D3D9SurfaceBinding replacement{}; // Both constructor flags/recreation kind are zero.
+    if (SUCCEEDED(result)) result = surface_initialize_00b3cc80(replacement, acquired);
+    if (FAILED(result)) { acquired->Release(); return result; }
+    auto previous = surfaces.color;
+    surfaces.color = replacement; // Retained new COM reference before old-owner release.
+    surface_release(previous);
+    acquired->Release();
+
+    acquired = nullptr;
+    result = device_.GetDepthStencilSurface(&acquired);
+    if (FAILED(result)) return result; // Color has already changed, as in native sequence.
+    if (!acquired) return E_FAIL;
+    replacement = {};
+    result = surface_initialize_00b3cc80(replacement, acquired);
+    if (FAILED(result)) { acquired->Release(); return result; }
+    previous = surfaces.depth;
+    surfaces.depth = replacement;
+    surface_release(previous);
+    acquired->Release();
+    return bind_depth_surface_00b21690(&surfaces.depth);
+}
 
 void D3D9StateCache::set_render_state_00b24460(D3DRENDERSTATETYPE state, DWORD value) {
     const auto index = static_cast<UINT>(state);

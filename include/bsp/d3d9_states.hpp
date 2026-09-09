@@ -9,6 +9,8 @@
 #include <vector>
 
 namespace bsp {
+struct D3D9SurfaceBinding;
+struct D3D9DefaultSurfaces;
 // Semantic equivalents of globals 0108d6dc/dd/e0. The original counter is
 // non-atomic. Configure locking before workers start; live mode changes unverified.
 struct RendererSynchronization {
@@ -77,6 +79,14 @@ public:
         TrackedCriticalSection* lock) : device_(device), synchronization_(synchronization), lock_(lock) {}
     void set_render_state_00b24460(D3DRENDERSTATETYPE state, DWORD value);
     void set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYPE state, DWORD value);
+    // Uncached, optional guard; non-null wrapper increments native+1BCCh even
+    // when its surface is null or the COM call fails. No wrapper ownership.
+    HRESULT bind_depth_surface_00b21690(const D3D9SurfaceBinding* surface);
+    std::uint32_t depth_binding_calls() const { return depth_binding_calls_; }
+    // Sequential color/depth replacement, then depth bind. Native wrapper
+    // registry/allocator and redundant accessor reference pairs remain unported.
+    // Failure exposes HRESULT and retains any already-installed color/depth state.
+    HRESULT capture_default_surfaces_00b238d0_fragment(D3D9DefaultSurfaces& surfaces);
     // Native thiscall RET4. No outer guard: each individual setter enters its
     // own guard. Identity skips even mutated blocks; null releases the block
     // without resetting device states. shared_ptr replaces intrusive ownership.
@@ -165,6 +175,7 @@ private:
     INT base_vertex_{};
     std::uint32_t vertex_binding_calls_{};
     std::uint32_t index_binding_calls_{};
+    std::uint32_t depth_binding_calls_{};
     std::array<std::shared_ptr<LogicalTexture>, 20> textures_{};
     std::uint32_t texture_binding_calls_{};
     std::shared_ptr<D3D9VertexLayout> vertex_layout_;

@@ -2,6 +2,10 @@
 #include <cstddef>
 
 namespace bsp {
+D3D9DefaultSurfaces::~D3D9DefaultSurfaces() {
+    surface_release(depth);
+    surface_release(color);
+}
 static_assert(offsetof(D3DSURFACE_DESC, MultiSampleType) == 0x10);
 static_assert(offsetof(D3DSURFACE_DESC, Width) == 0x18);
 static_assert(offsetof(D3DSURFACE_DESC, Height) == 0x1c);

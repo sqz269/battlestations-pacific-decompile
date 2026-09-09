@@ -1003,6 +1003,13 @@
       "source": "src/text_input.cpp",
       "status": "platform_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b21690",
+      "name": "bind_depth_surface",
+      "source": "src/d3d9_states.cpp",
+      "status": "device_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -1187,6 +1194,15 @@
       "status": "windowed_creation_and_d3d9_probe_checked",
       "abi_compatible": false,
       "remaining": "Explicit procedure/lpParam dependency; native platform object, old-window stop, title/aspect setup, ShowWindow, fullrenderer/buffer/power initialization and native HWND shutdown remain unported. Fullscreen and failure paths not runtimevalidated."
+    },
+    {
+      "address": "00b238d0",
+      "name": "capture_default_surfaces",
+      "source": "src/d3d9_states.cpp",
+      "native_range": "00b238d0..00b23b01 COM ownership projection",
+      "status": "device_reacquisition_and_depth_binding_checked",
+      "abi_compatible": false,
+      "remaining": "Original intrusive wrapper constructor/registry/allocator and redundant accessor AddRef/Release pairs unported; typed sequentialowners expose HRESULT failures. Full native reset lifecycle not established."
     }
   ]
 }
