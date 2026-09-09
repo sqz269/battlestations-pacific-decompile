@@ -1048,5 +1048,10 @@
     "address": "00b372d0",
     "name": "BSP_ShaderBuilder_AppendPixelSystemFields",
     "evidence": "ECX builder RET. Appends16fixed fields into builder+34h: DiffuseColor/SpecularColor/EmissiveColor, SpecularPower/Normal/Depth then customscalar/vector fields. All semanticsTEXCOORD, masks/index0; constructor arguments checked. Typed value-vector projection integrated into successful generated shader draw. Native allocator/null-entry failure and ownership ABI unported. See docs/SHADER_SYSTEM_FIELDS.md."
+  },
+  {
+    "address": "00b61280",
+    "name": "BSP_PixelShader_CompileAndCollectInputUsage",
+    "evidence": "Fastcall ECX engine name string, EDX profile, stack source/outShader/texcoordMasks/colorMasks, RET10h. D3DX compile then CreatePixelShader and optional disassembly. Both mask pointers required; texcoord[0]==500 skips parsing. Parser00b61613..00b61aa8 searches dcl_texcoord/dcl_color substrings, one-character indices at+12/+9, body+14/+11 until LF; x/y/z/w OR1/2/4/8, no letters OR15. Caller00b3b3c0 supplies TEXCOORD[10],COLOR[2] and feeds00b36800. Typed parser fragment in shader_source.cpp; adapter draw verified, full native wrapper unported. See docs/SHADER_REFLECTION_ANALYSIS.md and reports/shader_pixel_usage.json."
   }
 ]

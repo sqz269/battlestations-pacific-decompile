@@ -233,7 +233,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     if (SUCCEEDED(result)) {
         vertex_code->Release(); vertex_code = debug_code; debug_code = nullptr;
     }
-    if (debug_code) debug_code->Release();
+    if (debug_code) { debug_code->Release(); debug_code = nullptr; }
     bsp::ShaderPixelProgram debug_pixel;
     debug_pixel.inputs = debug_program.outputs;
     debug_pixel.unpack_fields = debug_program.outputs;
@@ -253,6 +253,43 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
         pixel_code->Release(); pixel_code = debug_pixel_code; debug_pixel_code = nullptr;
     }
     if (debug_pixel_code) debug_pixel_code->Release();
+    // Native00b61280 obtains these masks from pixel disassembly. The installed
+    // compiler is an adapter; the native D3DX compiler/cache wrapper is unported.
+    decltype(&D3DDisassemble) disassemble{};
+    const FARPROC disassembly_address = GetProcAddress(module, "D3DDisassemble");
+    static_assert(sizeof(disassemble) == sizeof(disassembly_address));
+    std::memcpy(&disassemble, &disassembly_address, sizeof(disassemble));
+    ID3DBlob* disassembly = nullptr;
+    if (SUCCEEDED(result)) result = disassemble ? disassemble(pixel_code->GetBufferPointer(),
+        pixel_code->GetBufferSize(), 0, nullptr, &disassembly) : E_FAIL;
+    std::vector<std::uint32_t> texcoord_usage(10), color_usage(2);
+    std::vector<bsp::ShaderField> filtered_fields;
+    if (SUCCEEDED(result)) {
+        const std::string text(static_cast<const char*>(disassembly->GetBufferPointer()));
+        const bool parsed = bsp::parse_pixel_usage_00b61280(text, texcoord_usage, color_usage)
+            == bsp::ShaderSourceStatus::complete;
+        const bool selected = parsed && bsp::append_selected_interpolators_00b36800(
+            {color}, {}, &texcoord_usage, &color_usage, filtered_fields) == bsp::ShaderSourceStatus::complete;
+        if (!selected || color_usage[0] != 15 || filtered_fields.size() != 2
+            || filtered_fields[1].component_mask != 15) result = E_FAIL;
+        if (SUCCEEDED(result)) {
+            debug_program.outputs = filtered_fields;
+            debug_program.packing_fields = filtered_fields;
+            debug_program.interpolators = {};
+            bsp::append_interpolator_mapping_00b34aa0(filtered_fields, debug_program.interpolators);
+            result = bsp::generate_vertex_source_00b39110(debug_program, debug_source)
+                == bsp::ShaderSourceStatus::complete ? S_OK : E_FAIL;
+        }
+        if (SUCCEEDED(result)) result = assemble_host_shader(debug_source.c_str(),
+            debug_profiles.vertex.c_str(), &debug_code);
+        if (SUCCEEDED(result)) {
+            vertex_code->Release(); vertex_code = debug_code; debug_code = nullptr;
+        }
+        std::printf("Pixel disassembly usage: COLOR0=%lu filtered_fields=%zu hr=0x%08lx\n",
+            static_cast<unsigned long>(color_usage[0]), filtered_fields.size(), static_cast<unsigned long>(result));
+    }
+    if (disassembly) disassembly->Release();
+    if (debug_code) { debug_code->Release(); debug_code = nullptr; }
     if (SUCCEEDED(result)) result = vertex_code
         ? device.CreateVertexShader(static_cast<const DWORD*>(vertex_code->GetBufferPointer()), &vertex) : E_FAIL;
     if (SUCCEEDED(result)) result = pixel_code

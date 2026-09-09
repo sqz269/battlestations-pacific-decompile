@@ -752,6 +752,15 @@
       "status": "native_version3_defaults_generated_draw_checked",
       "abi_compatible": false,
       "remaining": "Full Lua table parser, descriptor ownership and compiler wrapper remain unported. Typed optional strings represent successful native string-type checks."
+    },
+    {
+      "address": "00b61280",
+      "name": "parse_pixel_usage",
+      "source": "src/shader_source.cpp",
+      "native_range": "00b61613-00b61aa8",
+      "status": "disassembly_adapter_filtered_selection_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Full native compiler, device creation, file writes and exception lifecycle unported. Bounded transactional parser interface rejects malformed input."
     }
   ]
 }

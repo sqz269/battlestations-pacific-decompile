@@ -3,6 +3,41 @@
 #include <utility>
 
 namespace bsp {
+ShaderSourceStatus parse_pixel_usage_00b61280(const std::string& disassembly,
+    std::vector<std::uint32_t>& texcoord, std::vector<std::uint32_t>& color) {
+    if (texcoord.empty()) return ShaderSourceStatus::invalid_packing;
+    if (texcoord[0] == 500) return ShaderSourceStatus::complete;
+    const std::string text(disassembly.c_str());
+    auto tex = texcoord, colors = color;
+    auto parse = [&](const char* token, std::size_t index_offset,
+                     std::vector<std::uint32_t>& masks) {
+        std::size_t scan = 0;
+        while ((scan = text.find(token, scan)) != std::string::npos) {
+            const auto index_pos = scan + index_offset;
+            const auto body = index_pos + 2;
+            if (body > text.size()) return false;
+            const auto end = text.find('\n', body);
+            if (end == std::string::npos) return false;
+            const char digit = text[index_pos];
+            const auto index = static_cast<std::size_t>(digit >= '0' && digit <= '9' ? digit - '0' : 0);
+            if (index >= masks.size()) return false;
+            std::uint32_t mask = 0;
+            const char* components = "xyzw";
+            for (unsigned bit = 0; bit < 4; ++bit) {
+                const auto found = text.find(components[bit], body);
+                if (found != std::string::npos && found < end) mask |= 1u << bit;
+            }
+            masks[index] |= mask ? mask : 15;
+            scan = end;
+        }
+        return true;
+    };
+    if (!parse("dcl_texcoord", 12, tex) || !parse("dcl_color", 9, colors))
+        return ShaderSourceStatus::invalid_packing;
+    texcoord = std::move(tex); color = std::move(colors);
+    return ShaderSourceStatus::complete;
+}
+
 ShaderSourceStatus append_selected_interpolators_00b36800(
     const std::vector<ShaderField>& base, const std::vector<ShaderField>& effect,
     const std::vector<std::uint32_t>* texcoord_usage,

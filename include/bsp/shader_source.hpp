@@ -37,6 +37,11 @@ void append_vertex_inputs_00b35930(const std::vector<ShaderField>& base,
     const std::vector<ShaderField>& effect, std::vector<ShaderField>& output);
 
 enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic, invalid_packing };
+// Disassembly parser fragment of00b61280; ORs usage masks. Index is one decimal
+// character, component letters are searched anywhere in the remaining line.
+// texcoord[0]==500 skips both loops. Malformed/bounds errors leave masks unchanged.
+ShaderSourceStatus parse_pixel_usage_00b61280(const std::string& disassembly,
+    std::vector<std::uint32_t>& texcoord, std::vector<std::uint32_t>& color);
 // Thiscall RET0Ch: optional TEXCOORD/COLOR usage pointers and output list.
 // Each usage DWORD contains low-four-bit register component flags. Null/null
 // copies all fields with regenerated masks. Any filtering drops other semantics.

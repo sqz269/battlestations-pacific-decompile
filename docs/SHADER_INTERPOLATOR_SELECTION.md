@@ -32,3 +32,7 @@ the D3D9 probe passed, including VS3/PS3 compilation and centerFF407FBF /
 outsideFF000000 readback. No tests were added. The filtered branch has assembly
 evidence only; reflection-producer integration and native differential validation
 remain pending. This does not establish a runnable game or gameplay parity.
+
+Follow-up: the existing draw now exercises filtering from compiled pixel-shader
+disassembly with COLOR0=15. See `SHADER_REFLECTION_ANALYSIS.md`; sparse masks and
+native differential validation remain pending.
