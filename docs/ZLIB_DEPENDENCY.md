@@ -102,14 +102,16 @@ descriptor; base cleanup 00bd30f0. Raw continuation past erroneously no-return
 
 ## Concrete next integration
 
-The minimal next unit is the game stream adapter around stock raw inflate,
+Read/seek and output-drain behavior are now assembly-audited in
+[INFLATE_STREAM_READ_SEEK.md](INFLATE_STREAM_READ_SEEK.md), including stale-buffer
+rewind and no-progress hazards. The minimal next unit is a bounded typed
+game stream adapter around stock raw inflate,
 with typed retained source, explicit three-DWORD descriptor, exact buffer
-sizes and flush decision. Before implementing complete read/seek semantics,
-recover table 00d64400 virtual +1C = 00bbc060 (seek), +24 = 00bbc140 (read), and their
-immediate output-drain helpers as actually called.
-That work must resolve short reads, no-progress/error handling, buffered reset
-and produced-byte reporting; exposing a whole decoded vector would bypass
-those behaviors. MPKG entry parsing, XOR transform and provider lookup remain
+sizes and flush decision. Table 00d64400 virtual +1C = 00bbc060 (seek),
++24 = 00bbc140 (read), and their buffer behavior are established by raw bytes.
+The implementation must state host guards for short reads, no-progress/error
+handling and out-of-block rewind; exposing a whole decoded vector would bypass
+the native streaming contract. MPKG entry parsing, XOR transform and provider lookup remain
 the separate `ARCHIVE_PROVIDER_ENTRY.md` dependency.
 
 ## Validation

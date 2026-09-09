@@ -1,0 +1,200 @@
+{
+  "utc": "2026-09-09T20:39:54.991512+00:00",
+  "frozen_inputs": {
+    "utc": "2026-09-09T20:32:47.262036+00:00",
+    "inputs": [
+      {
+        "path": "reports/library_inventory/candidate_partition.md",
+        "sha256": "68663ee4979698992d4fde3b3334be8dfaf657d30fbe6ff5d53b6d2731619cd1",
+        "bytes": 14931
+      },
+      {
+        "path": "reports/library_inventory/candidate_partition.json",
+        "sha256": "9c82c52e8e86b6e5d70fe5697c4a7c762545f10c70c7a65ec5388b3219af44b4",
+        "bytes": 58907
+      },
+      {
+        "path": "tools/partition_candidates.py",
+        "sha256": "27cbe49c2d615ce01d9814e899210d13cd4057c5b81c9b48b5dffbcf9fd5afcb",
+        "bytes": 10184
+      },
+      {
+        "path": "tools/callgraph_sweep.py",
+        "sha256": "73cc533df9cbeea1e47f8fe535058c62c567a431886e7679c16fa7465daeb9a3",
+        "bytes": 4175
+      },
+      {
+        "path": "exports/bsp/callgraph.json",
+        "sha256": "f1fb03218ac52a96758889fdc55f00f207f93a09766f25015f24ae6979b4b7ef",
+        "bytes": 2515336
+      },
+      {
+        "path": "exports/bsp/datarefs.json",
+        "sha256": "fb7b888197b9a9b5b8ab46a490caa52eca963d5b05fe917271db7a69c8687dba",
+        "bytes": 663022
+      },
+      {
+        "path": "exports/bsp/callgraph_meta.json",
+        "sha256": "9767e572fab86d8cfe0d5e889fe30b04a9c8de28d2e9ed50a77b636a3594602c",
+        "bytes": 560
+      },
+      {
+        "path": "exports/bsp/functions.json",
+        "sha256": "9647f0029c0775463efc630162fe38a0844b0c83a6d0cccaf63ad61381eb1687",
+        "bytes": 7032313
+      },
+      {
+        "path": "exports/bsp/snapshot.json",
+        "sha256": "baae6170379ea1b52b996ef29986120a419bf89cab81113f44193ae850cd7705",
+        "bytes": 321
+      },
+      {
+        "path": "config/ghidra_tags.json",
+        "sha256": "9d9d9aedf6777ef3e8dfc3f55eca14f294915c68bcf1dcb498492660f6299f55",
+        "bytes": 3738273
+      },
+      {
+        "path": "config/reconstruction.json",
+        "sha256": "76414dc877b738711e7898b9c90ca3e084e8f737165c9e4ed0c3b435965e1f2b",
+        "bytes": 72395
+      }
+    ]
+  },
+  "candidate_count": 23992,
+  "segment_count": 87,
+  "unchanged_ranges_after_fix": true,
+  "omitted_strong_edges_before": 458,
+  "omitted_strong_relationships_before": 7309,
+  "omitted_examples": [
+    {
+      "source": 63,
+      "target": 24,
+      "relationships": 67
+    },
+    {
+      "source": 24,
+      "target": 84,
+      "relationships": 64
+    },
+    {
+      "source": 63,
+      "target": 35,
+      "relationships": 58
+    },
+    {
+      "source": 53,
+      "target": 41,
+      "relationships": 53
+    },
+    {
+      "source": 63,
+      "target": 45,
+      "relationships": 46
+    },
+    {
+      "source": 18,
+      "target": 75,
+      "relationships": 45
+    },
+    {
+      "source": 4,
+      "target": 53,
+      "relationships": 44
+    },
+    {
+      "source": 24,
+      "target": 16,
+      "relationships": 43
+    },
+    {
+      "source": 56,
+      "target": 8,
+      "relationships": 43
+    },
+    {
+      "source": 53,
+      "target": 39,
+      "relationships": 42
+    },
+    {
+      "source": 45,
+      "target": 24,
+      "relationships": 41
+    },
+    {
+      "source": 24,
+      "target": 2,
+      "relationships": 39
+    }
+  ],
+  "omitted_strong_edges_after": 0,
+  "largest_scc_before": 46,
+  "largest_scc_after": 84,
+  "changed_waves": 38,
+  "changed_purity_fields": 8,
+  "median_reported_purity_before": 0.42,
+  "median_purity_after": 0.42,
+  "candidate_inventory_tag_overlap": 1554,
+  "incomplete_fragment_distinct_addresses_excluded": 54,
+  "candidate_to_named_relationships_omitted_from_partition_graph": 23047,
+  "candidate_to_non_entry_relationships": 217,
+  "callgraph_meta": {
+    "utc": "2026-09-09T20:41:47.517197+00:00",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "functions_sha256": "9647f0029c0775463efc630162fe38a0844b0c83a6d0cccaf63ad61381eb1687",
+    "tool_sha256": "5667f3fe58c21645ff9c669b66b8633a81bf350ee2043836e726c3e15e0e2036",
+    "capstone_version": "5.0.7",
+    "functions_json_entries": 62284,
+    "function_starts_swept": 62284,
+    "instructions": 3349796,
+    "callers": 56972,
+    "call_edges": 143144,
+    "functions_with_datarefs": 16319,
+    "seconds": 2.3,
+    "edge_weight": "unique caller-target relationships; direct calls and out-of-range direct tail jumps",
+    "note": "Linear Capstone sweep of disk bytes from each snapshot function start to the next; not validated function bodies. No indirect calls, jump tables or vtable dispatch."
+  },
+  "scope": "Real exported graph inspection, not native execution or proof of source-module boundaries. No new test suite. Indirect dispatch/shared state/weak/named dependencies remain outside candidate SCC calculation.",
+  "same_input_corrected_report_sha256": "5b39b18196c42a7a07ee7437771d199688589bec5e795eb6bf15632c36957bb0",
+  "same_input_corrected_generator_sha256": "e37b83002d45a9eb8809dfd12273433cadb7e801faff209058b7ff76326590ab",
+  "all_baseline_corrected_segment_edge_maps_match_input_graph": true,
+  "all_baseline_corrected_waves_and_scc_memberships_match_full_thresholded_graph": true,
+  "post_annotation_partition": {
+    "snapshot": {
+      "utc": "2026-09-09T20:49:33.368049+00:00",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "total_function_count": 62728,
+      "internal_function_count": 62286,
+      "external_symbol_count": 443,
+      "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+    },
+    "candidate_count": 23985,
+    "segment_count": 90,
+    "largest_scc": 81,
+    "report_sha256": "cf160269c3f0caaf34d6f7ececfbc7e02c5d308e83a566db2c01981e1256339d",
+    "all_incoming_outgoing_maps_match": true,
+    "all_waves_scc_metadata_match": true,
+    "all_recorded_input_hashes_match": true,
+    "imported_rename_tag_mismatches": 0,
+    "annotations_verified_with_prior_comments_preserved": [
+      "00bbc1d0",
+      "00bbbf00",
+      "00bbbe10",
+      "00bbc060",
+      "00bbc140",
+      "00ab9fd0",
+      "00aba270",
+      "00ab6bd0",
+      "00ab8f00",
+      "00bde9c0",
+      "00bdf310"
+    ],
+    "new_game_function_definitions": [
+      "00bbc060",
+      "00bbc140"
+    ],
+    "reconstruction_coverage_unchanged": true
+  }
+}

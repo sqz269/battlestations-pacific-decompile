@@ -1,0 +1,527 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-09-09T20:42:01.437086+00:00",
+  "status": "byte-verified assembly contract; no C++ or game validation",
+  "document": "docs/INFLATE_STREAM_READ_SEEK.md",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "config": "config/target.json",
+    "disk_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "owned_code": "00bbbd80..00bbc3ff",
+    "parent_authorized_read_only_extensions": [
+      "00d643f8..00d6443f",
+      "00bc9650..00bc969f"
+    ],
+    "ghidra_writes": false,
+    "cpp_changes": false,
+    "new_tests": false,
+    "shared_metadata_changes": false,
+    "ignored_evidence": "exports/bsp/parallel_inflate/"
+  },
+  "byte_comparisons": [
+    {
+      "address": "00bbbd80",
+      "length": 1664,
+      "matches_disk": true,
+      "sha256": "6170337200869ee5c3fdbb44b91ebfabc8bdbb8f43e87b0c138277d7fc7b2ddb"
+    },
+    {
+      "address": "00d643f8",
+      "length": 72,
+      "matches_disk": true,
+      "sha256": "7f5e91ce63c733791c027fd304756d76cc82747331245d383d5bef85e0a0b42f"
+    },
+    {
+      "address": "00bc9650",
+      "length": 80,
+      "matches_disk": true,
+      "sha256": "b9c5c15dfd6a63307cbba5f4501724909450407f64d79a67de0cc4fc741ccc87"
+    }
+  ],
+  "vtable": {
+    "address": "00d64400",
+    "entries": [
+      {
+        "offset": "0x0",
+        "target": "00bd30e0"
+      },
+      {
+        "offset": "0x4",
+        "target": "00bbc3e0"
+      },
+      {
+        "offset": "0x8",
+        "target": "00be4080"
+      },
+      {
+        "offset": "0xc",
+        "target": "00bb8b80"
+      },
+      {
+        "offset": "0x10",
+        "target": "006f9d20"
+      },
+      {
+        "offset": "0x14",
+        "target": "00be4090"
+      },
+      {
+        "offset": "0x18",
+        "target": "00bbbdc0"
+      },
+      {
+        "offset": "0x1c",
+        "target": "00bbc060"
+      },
+      {
+        "offset": "0x20",
+        "target": "00bbbe50"
+      },
+      {
+        "offset": "0x24",
+        "target": "00bbc140"
+      },
+      {
+        "offset": "0x28",
+        "target": "00bbc1c0"
+      },
+      {
+        "offset": "0x2c",
+        "target": "00be41a0"
+      },
+      {
+        "offset": "0x30",
+        "target": "00bbbdd0"
+      },
+      {
+        "offset": "0x34",
+        "target": "00be42e0"
+      },
+      {
+        "offset": "0x38",
+        "target": "00be4300"
+      },
+      {
+        "offset": "0x3c",
+        "target": "00be4340"
+      }
+    ],
+    "literal": "1.2.1"
+  },
+  "functions": [
+    {
+      "address": "00bbbdc0",
+      "end_inclusive": "00bbbdc3",
+      "length": 4,
+      "body_sha256": "d577cc6b1b05cb0c2be7f658f60d7baf98684eeaad579cd874c21150f6dd70ab",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "RawInflateStream_StatusByte_00bbbdc0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; RET; AL=[this+9].",
+      "proposed_evidence_comment": "Provisional status-byte meaning; constructor sets byte to 1; vtable +18."
+    },
+    {
+      "address": "00bbbdd0",
+      "end_inclusive": "00bbbdd5",
+      "length": 6,
+      "body_sha256": "83fbd357367e7a31f9338401e419f053221a7291adc49979e5732ecf63914914",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "RawInflateStream_Size_00bbbdd0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; RET; EDX:EAX=zero-extended DWORD declared size.",
+      "proposed_evidence_comment": "MOV EAX,[ECX+18]; XOR EDX,EDX; vtable +30."
+    },
+    {
+      "address": "00bbbde0",
+      "end_inclusive": "00bbbe09",
+      "length": 42,
+      "body_sha256": "6120830746638712cac8db17b3b042578245948bf362eed2a0609f7061994dd7",
+      "inventory_old_name": "FUN_00bbbde0",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": "RawInflateStream_ResetSourceCounters_00bbbde0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; no stack args; RET; no stable semantic result.",
+      "proposed_evidence_comment": "Seek source to descriptor offset with high DWORD 0 and origin 0; set position 0; restore compressed/decoded remaining counts; no buffer or zlib reset."
+    },
+    {
+      "address": "00bbbe10",
+      "end_inclusive": "00bbbe41",
+      "length": 50,
+      "body_sha256": "44fbaedf220800085a67c0969e10d806d0dcc905b608efbd31ada85b74183c3d",
+      "inventory_old_name": "FUN_00bbbe10",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": "RawInflateStream_ResetDecoderSourceCounters_00bbbe10",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; no stack args; RET; no stable semantic result.",
+      "proposed_evidence_comment": "Call stock inflateReset then source seek; restore counters only. Both buffer cursors/ends and z_stream next/avail fields survive reset. Not a clean arbitrary rewind."
+    },
+    {
+      "address": "00bbbe50",
+      "end_inclusive": "00bbbe55",
+      "length": 6,
+      "body_sha256": "635c2569f0b6d1e8a5a00ce8d22ae047641a78786f0f7f311ea2c7ef031a1ea4",
+      "inventory_old_name": null,
+      "live_definition_evidence": "undefined: decompile_function returned No function found",
+      "proposed_name": "RawInflateStream_Position_00bbbe50",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; RET; EDX:EAX=zero-extended DWORD position.",
+      "proposed_evidence_comment": "MOV EAX,[ECX+24]; XOR EDX,EDX; vtable +20."
+    },
+    {
+      "address": "00bbbe60",
+      "end_inclusive": "00bbbe91",
+      "length": 50,
+      "body_sha256": "0c800233a5564106f47b02275af44fa8301970fca00880d6fcbee7b7da6616dc",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "RawInflateStream_AllocateDecoder_00bbbe60",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "No consumed register/stack inputs; RET; EAX allocated z_stream.",
+      "proposed_evidence_comment": "Allocate 38h bytes; zero alloc/free/opaque and next_in/avail_in; initialize raw inflate with ECX stream, EDX=-15, stack version 1.2.1/size38h; ignore init status."
+    },
+    {
+      "address": "00bbbea0",
+      "end_inclusive": "00bbbeb0",
+      "length": 17,
+      "body_sha256": "a4ca03dbee8a002754cc2f01ce9b62e08a519cbe77033c752916bad0688293f2",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "StreamBuffer_PublishExtent_00bbbea0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX buffer; stack count; RET4.",
+      "proposed_evidence_comment": "Set buffer+4=base+count and buffer+C=base without bounds checks."
+    },
+    {
+      "address": "00bbbec0",
+      "end_inclusive": "00bbbec9",
+      "length": 10,
+      "body_sha256": "0a5b1a6d212e0caedbf2d98dea5a75fa8dba9f19919dae6658f37365af35e72f",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "StreamBuffer_AssignCursor_00bbbec0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX buffer; stack pointer; RET4.",
+      "proposed_evidence_comment": "Assign buffer+C from stack pointer without checking bounds."
+    },
+    {
+      "address": "00bbbed0",
+      "end_inclusive": "00bbbefe",
+      "length": 47,
+      "body_sha256": "cc4bd42db9f97ac5196605eddcca6d7eb061ffec6c7a34289e76caf940e15b62",
+      "inventory_old_name": "FUN_00bbbed0",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": "StreamBuffer_Read_00bbbed0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX buffer; stack destination/count; RET8; EAX actual.",
+      "proposed_evidence_comment": "Unsigned min(request,end-cursor), memcpy, advance cursor by copied count. Same drain operation inlined in wrapper read."
+    },
+    {
+      "address": "00bbbf00",
+      "end_inclusive": "00bbc000",
+      "length": 257,
+      "body_sha256": "61dd0e75f92566b2d8ba514893c0faf7dbf29fc755d04fb48d2f67a93e931dbb",
+      "inventory_old_name": "FUN_00bbbf00",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": "RawInflateStream_RefillOutput_00bbbf00",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; no stack args; RET; no stable result/status.",
+      "proposed_evidence_comment": "Reset output destination to base/capacity. Read input on exhaustion, subtract actual source count. EDX flush=4 only when compressed remaining==0 and decoded remaining<=avail_out, else2. Subtract total_out delta and update input cursor. Break on any nonzero inflate status and publish produced output."
+    },
+    {
+      "address": "00bbc010",
+      "end_inclusive": "00bbc02a",
+      "length": 27,
+      "body_sha256": "b008f764ddbb92e7a8c5d8478d4ce990b69080809f549eeae8993bb60216ed09",
+      "inventory_old_name": null,
+      "live_definition_evidence": "undefined: decompile_function returned No function found",
+      "proposed_name": "RawInflateStream_EnsureOutputAttempt_00bbc010",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; RET; AL bool.",
+      "proposed_evidence_comment": "False only when output empty and decoded remaining==0; otherwise refill if empty then true without validating refill progress. Provisional descriptive name."
+    },
+    {
+      "address": "00bbc030",
+      "end_inclusive": "00bbc051",
+      "length": 34,
+      "body_sha256": "9f66dfc0af1a67d88aece7ab852ca97150b21af3cd45aa7d5cb97750ad39512a",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "RawInflateStream_SeekOriginBase_00bbc030",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; stack origin; RET4; EDX:EAX zero-extended base.",
+      "proposed_evidence_comment": "Origin0=0,1=position,all others=declared decoded length. Same calculation inlined in seek."
+    },
+    {
+      "address": "00bbc060",
+      "end_inclusive": "00bbc131",
+      "length": 210,
+      "body_sha256": "a9f24e87c9f54adec80cd743a69d0ab71f44d6afecb4dc6a0cb060e1afce0072",
+      "inventory_old_name": null,
+      "live_definition_evidence": "undefined: decompile_function returned No function found",
+      "proposed_name": "RawInflateStream_Seek_00bbc060",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; stack low offset/high offset/origin; RET0Ch; no stable return.",
+      "proposed_evidence_comment": "Low DWORD target wraps32; high ignored; origins0/1/other select0/current/length. Backward seek within output adjusts cursor+position; otherwise reset00bbbe10 leaves stale buffers. Forward skip refills until target or output empty with decoded remaining0. No no-progress guard."
+    },
+    {
+      "address": "00bbc140",
+      "end_inclusive": "00bbc1b5",
+      "length": 118,
+      "body_sha256": "94570804ad4861df0695ed31e04bfebc81445d9f81c2be2b5972eca6f173f06d",
+      "inventory_old_name": null,
+      "live_definition_evidence": "undefined: decompile_function returned No function found",
+      "proposed_name": "RawInflateStream_Read_00bbc140",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; stack destination/requested DWORD/optional actual DWORD pointer; RET0Ch; EAX actual pointer at epilogue.",
+      "proposed_evidence_comment": "Refill only on empty output with decoded remaining!=0; unsigned min copy and cursor/position increments; repeat until request exhausted or declared EOF. Actual count is advanced destination minus original, written at return. No zero-progress guard or error propagation."
+    },
+    {
+      "address": "00bbc1c0",
+      "end_inclusive": "00bbc1c2",
+      "length": 3,
+      "body_sha256": "dbd1a662565b07272069f88faadf4327acaf51b7d14f236c84c0a9679d07cef3",
+      "inventory_old_name": null,
+      "live_definition_evidence": "not_queried; parent must verify before annotation",
+      "proposed_name": "RawInflateStream_WriteNoOp_00bbc1c0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "RET0Ch; no consumed inputs or defined return.",
+      "proposed_evidence_comment": "Empty vtable+28 method after read+24; write interpretation provisional, body simply RET0Ch."
+    },
+    {
+      "address": "00bbc1d0",
+      "end_inclusive": "00bbc31d",
+      "length": 334,
+      "body_sha256": "e452dcd3c3ea85998071d0b82885e92bec5e174c9ad732225e2215355f091e86",
+      "inventory_old_name": "FUN_00bbc1d0",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": "RawInflateStream_Construct_00bbc1d0",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this.",
+      "proposed_evidence_comment": "Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused."
+    },
+    {
+      "address": "00bbc320",
+      "end_inclusive": "00bbc3d9",
+      "length": 186,
+      "body_sha256": "fa39ded96a5501adf264511a8f061a57ca12fd12a49edcfbff017c412dca459a",
+      "inventory_old_name": "FUN_00bbc320",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": "RawInflateStream_Destroy_00bbc320",
+      "name_status": "descriptive hypothesis",
+      "original_abi": "ECX this; no stack args; RET.",
+      "proposed_evidence_comment": "Release source, inflateEnd/free stream, free input backing/descriptor, output backing/descriptor, base00bd30f0. Full raw continuation after falsely no-return _free ends at00bbc3d9."
+    },
+    {
+      "address": "00bbc3e0",
+      "end_inclusive": "00bbc3fd",
+      "length": 30,
+      "body_sha256": "a944f499cfed74a9b4906bace1fb1c5f061a052c41b7a228c5d86f770c4bc41a",
+      "inventory_old_name": "CG_scalar_deleting_dtor_00bbc3e0",
+      "live_definition_evidence": "defined: decompiler export captured",
+      "proposed_name": null,
+      "name_status": "preserve existing compiler-generated name",
+      "original_abi": "ECX this; stack flags; RET4; EAX this.",
+      "proposed_evidence_comment": "Preserve CG_scalar_deleting_dtor_00bbc3e0. Call destructor; flags bit0 requests object free."
+    }
+  ],
+  "native_fields": {
+    "wrapper": {
+      "00": "vtable",
+      "04": "intrusive reference count",
+      "09": "status byte; exact name provisional",
+      "0c": "retained source",
+      "10": "source offset",
+      "14": "declared compressed bytes",
+      "18": "declared decoded bytes",
+      "1c": "input buffer descriptor",
+      "20": "output buffer descriptor",
+      "24": "logical decoded position",
+      "28": "z_stream pointer",
+      "2c": "compressed bytes not yet read from source",
+      "30": "decoded bytes not yet produced"
+    },
+    "buffer": {
+      "00": "base",
+      "04": "data_end",
+      "08": "allocation_end",
+      "0c": "cursor"
+    },
+    "capacities": {
+      "input": 16384,
+      "output": 65536,
+      "z_stream": 56
+    },
+    "origin_rules": {
+      "0": "start",
+      "1": "current",
+      "other": "declared decoded length"
+    },
+    "signedness": "DWORD counts and unsigned comparisons; tell/size zero-extend through EDX=0; seek discards offset high DWORD and wraps low32",
+    "provenance": "constructor and raw method assembly, not host MemoryStream layout"
+  },
+  "decisive_instructions": [
+    {
+      "range": "00bbbf56..00bbbf92",
+      "claim": "Source read virtual+24; actual count pointer is local slot seeded by entry PUSH ECX, not zeroed; source return ignored."
+    },
+    {
+      "range": "00bbbf95..00bbbfb6",
+      "claim": "ECX z_stream, EDX flush4 for compressed_remaining0 and decoded_remaining<=avail_out, else2."
+    },
+    {
+      "range": "00bbbfbb..00bbbff9",
+      "claim": "Update input cursor, subtract produced count, stop any nonzero zlib status, publish output extent."
+    },
+    {
+      "range": "00bbc060..00bbc096",
+      "claim": "Read origin entryESP+C and offset low entryESP+4; entryESP+8 ignored; target modulo32."
+    },
+    {
+      "range": "00bbc09e..00bbc0cc",
+      "claim": "Backwards candidate within output base..end accepted; fallback reset has no buffer cleanup at caller."
+    },
+    {
+      "range": "00bbbe10..00bbbe41",
+      "claim": "Reset only zlib, source seek and wrapper counters; no buffer field stores."
+    },
+    {
+      "range": "00bc9650..00bc9694",
+      "claim": "Native inflateReset zeros totals/message and internal state; no next_in/avail_in/next_out/avail_out stores."
+    },
+    {
+      "range": "00bbc0d2..00bbc127",
+      "claim": "Forward skip retries empty refill with positive decoded remaining; no progress guard."
+    },
+    {
+      "range": "00bbc140..00bbc1b5",
+      "claim": "Read actual count from advanced destination minus original destination; no stable bool/count EAX return."
+    },
+    {
+      "range": "00bbc37c..00bbc3d9",
+      "claim": "Destructor continues after _free, contrary to truncated Ghidra pseudocode."
+    }
+  ],
+  "risks": [
+    {
+      "id": "cross_block_rewind",
+      "observed": "Inflater/source/counters reset, descriptors and z_stream input fields retained.",
+      "consequence": "Stale output can be returned as stream beginning; stale compressed input can start fresh decode state.",
+      "evidence_level": "direct wrapper/reset assembly; symbolic consequence, not runtime fixture"
+    },
+    {
+      "id": "no_progress",
+      "observed": "Read/seek retry when output empty but decoded remaining nonzero even after nonzero inflate status.",
+      "consequence": "Persistent zero source reads, truncated/corrupt input, early stream end or size mismatch can loop indefinitely."
+    },
+    {
+      "id": "source_actual_contract",
+      "observed": "No zero-init before source read, no actual<=request/capacity check, return value ignored.",
+      "consequence": "Failing source that does not report actual count can cause invalid pointer and count arithmetic."
+    },
+    {
+      "id": "decoded_overproduction",
+      "observed": "Output capacity always65536; not bounded by declared remaining; subtract uint32 produced delta.",
+      "consequence": "Declared decoded size smaller than output can underflow remaining count."
+    },
+    {
+      "id": "status_loss",
+      "observed": "Refill does not retain zlib status and publishes a partial prefix even after error.",
+      "consequence": "Native cannot distinguish declared EOF, stream completion and error through read return; prefix may be delivered before hang."
+    },
+    {
+      "id": "finish_buffer_error",
+      "observed": "Pinned upstream inflate.c1079..1080 returns Z_BUF_ERROR for unfinished Z_FINISH even after progress.",
+      "consequence": "Host must not identify every Z_BUF_ERROR with zero progress or discard produced output.",
+      "evidence_level": "local pinned upstream source; full native inflate body not newly compared in this batch"
+    }
+  ],
+  "next_implementation": {
+    "unit": "new retained-source buffered raw inflate adapter around bsp_zlib121",
+    "supported": "valid initialized source, fixed descriptor/buffers, read, forward seek and rewind within current output block",
+    "must_preserve": [
+      "positive source short reads",
+      "flush selection",
+      "decoded produced versus consumed counters",
+      "output buffering",
+      "optional actual count",
+      "low32 target/origin rules"
+    ],
+    "host_guards_to_document": [
+      "allocation and source failures",
+      "actual count bounds",
+      "terminal decoder errors while preserving delivered prefix",
+      "declared decoded overproduction",
+      "empty refill without recoverable progress",
+      "reject out-of-block backward seek before mutation"
+    ],
+    "not_claimed": [
+      "native failure or hang equivalence",
+      "correct arbitrary rewind parity",
+      "drop-in native ABI",
+      "MPKG parsing or decoding integration"
+    ],
+    "source_interface": "retained seekable source read with actual count; existing MemoryStream may adapt through public methods and real ownership only",
+    "remaining_external_dependency": "MPKG transform, entry/provider contracts and archive fixtures in docs/ARCHIVE_PROVIDER_ENTRY.md"
+  },
+  "annotation_rules": [
+    "Parent re-verifies live names and definitions; inventory old names here are only snapshots.",
+    "Define raw-only complete methods before assigning reviewed names.",
+    "Preserve existing comments and record old values in ledger before writes.",
+    "Preserve inflateReset/inflateInit2_/inflate/inflateEnd and existing compiler-generated destructor identities.",
+    "Save project and refresh affected exports after parent annotations."
+  ],
+  "validation": {
+    "target_verified": true,
+    "full_owned_bytes_equal_disk": true,
+    "assembly_analyzed": true,
+    "reconstructed_cpp": false,
+    "build_run_this_batch": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "prior_art_read": [
+    "docs/ZLIB_DEPENDENCY.md",
+    "docs/ARCHIVE_PROVIDER_ENTRY.md",
+    "reports/library_inventory/zlib_and_borrowed.json",
+    "exports/bsp/owner_textures/archive/00bb8be0/assembly.txt",
+    "build/win32/_deps/zlib121-src/inflate.c"
+  ],
+  "parent_integration": {
+    "annotated_functions": [
+      {
+        "address": "00bbc1d0",
+        "name": "BSP_RawInflateStream_Construct"
+      },
+      {
+        "address": "00bbbf00",
+        "name": "BSP_RawInflateStream_RefillOutput"
+      },
+      {
+        "address": "00bbbe10",
+        "name": "BSP_RawInflateStream_ResetDecoderAndCounters"
+      },
+      {
+        "address": "00bbc060",
+        "name": "BSP_RawInflateStream_Seek"
+      },
+      {
+        "address": "00bbc140",
+        "name": "BSP_RawInflateStream_Read"
+      }
+    ],
+    "readback_and_prior_comment_preservation_verified": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "cpp_changes": false
+  }
+}

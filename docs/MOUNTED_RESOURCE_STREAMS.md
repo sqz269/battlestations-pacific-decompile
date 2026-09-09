@@ -42,7 +42,7 @@ open followed by host buffering failure. Once true, traversal stops even when
 `stream` is null or conversion reports an error. Falling through at that point
 would incorrectly replace the selected resource with a lower-priority file.
 Before any provider opens, a later matching provider may still be tried.
-Native logging, stream counters/tracking and manager error callbacks are not
+Native opened-resource logging, counters and manager error callbacks are not
 implemented; host failure text and domain checks are explicit substitutes.
 
 ## Real provider adapters and lifetime

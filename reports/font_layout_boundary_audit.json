@@ -1,0 +1,467 @@
+{
+  "utc": "2026-09-09T20:42:52.305406+00:00",
+  "scope": "Read-only independent font layout boundary audit; no C++, tests, build, Ghidra writes or installed-file writes.",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "live_code_partition": {
+    "start": "00ab6000",
+    "end_inclusive": "00ad89ff"
+  },
+  "approved_data_spans": [
+    {
+      "address": "00cec380",
+      "bytes": 8,
+      "type": "d",
+      "hex": "0000000000008e40",
+      "value": 960.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00cef1b8",
+      "bytes": 8,
+      "type": "d",
+      "hex": "0000000000808640",
+      "value": 720.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce3978",
+      "bytes": 4,
+      "type": "f",
+      "hex": "0000804f",
+      "value": 4294967296.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00d7a210",
+      "bytes": 8,
+      "type": "d",
+      "hex": "000000000000f03f",
+      "value": 1.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce6618",
+      "bytes": 8,
+      "type": "d",
+      "hex": "000000403333c33f",
+      "value": 0.15000000596046448,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00d7a280",
+      "bytes": 8,
+      "type": "d",
+      "hex": "000000000000e03f",
+      "value": 0.5,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00d7a2b0",
+      "bytes": 8,
+      "type": "d",
+      "hex": "0000000000000840",
+      "value": 3.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce4970",
+      "bytes": 4,
+      "type": "f",
+      "hex": "f9021550",
+      "value": 10000000000.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00ce4adc",
+      "bytes": 4,
+      "type": "f",
+      "hex": "f90215d0",
+      "value": -10000000000.0,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    },
+    {
+      "address": "00f8be50",
+      "bytes": 2,
+      "type": "H",
+      "hex": "0000",
+      "value": 0,
+      "disk_backed": false,
+      "matches_pe_zero_fill": true
+    },
+    {
+      "address": "00e12fd4",
+      "bytes": 4,
+      "type": "f",
+      "hex": "0000403f",
+      "value": 0.75,
+      "disk_backed": true,
+      "matches_disk_bytes": true
+    }
+  ],
+  "binary_identity": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ranges": [
+      {
+        "start": "00ab6bd0",
+        "end_exclusive": "00ab6c28",
+        "bytes": 88,
+        "file_offset": 7039952,
+        "sha256": "15ff2522be095170c10d36732bb1e556efaefd2b3168b3d70be68c577177b1b8",
+        "matches_disk": true
+      },
+      {
+        "start": "00ab8f00",
+        "end_exclusive": "00ab9240",
+        "bytes": 832,
+        "file_offset": 7048960,
+        "sha256": "3b7ea64623a1834efe8beeab7fb6028a15c920c8ed04affacfd5cb78aea3e6eb",
+        "matches_disk": true
+      },
+      {
+        "start": "00ab9fd0",
+        "end_exclusive": "00aba264",
+        "bytes": 660,
+        "file_offset": 7053264,
+        "sha256": "a0e2dd07ffac72765efcbb1242ec201f77f66202a88d649051f3424859a3c52b",
+        "matches_disk": true
+      },
+      {
+        "start": "00aba270",
+        "end_exclusive": "00aba8c7",
+        "bytes": 1623,
+        "file_offset": 7053936,
+        "sha256": "4c435d42b8c60f1eeab6987c2530b1bd54216c74c9d1b325f0f491f8d114d54b",
+        "matches_disk": true
+      },
+      {
+        "start": "00ad4480",
+        "end_exclusive": "00ad44fe",
+        "bytes": 126,
+        "file_offset": 7160960,
+        "sha256": "fe786a41f924b7a9ef37af1db008c658c9d494a19f10a90d2adf400579efd1ce",
+        "matches_disk": true
+      },
+      {
+        "start": "00abab59",
+        "end_exclusive": "00abab7d",
+        "bytes": 36,
+        "file_offset": 7056217,
+        "sha256": "3086313d817f61354e96df2ac536beb4adff201eedf52955eec06275fd6011b9",
+        "matches_disk": true
+      },
+      {
+        "start": "00aba955",
+        "end_exclusive": "00aba992",
+        "bytes": 61,
+        "file_offset": 7055701,
+        "sha256": "00c3cac19814155ee6385f68eafd1b164427019e392798ffde7e4823eb242f7a",
+        "matches_disk": true
+      },
+      {
+        "start": "00ab8400",
+        "end_exclusive": "00ab8530",
+        "bytes": 304,
+        "file_offset": 7046144,
+        "sha256": "8ead9201e4f128d524b15b6769a96b57601415b22021065589fd404052c739d7",
+        "matches_disk": true
+      }
+    ],
+    "scope": "Only compared spans; not whole Ghidra image identity."
+  },
+  "selected_family": [
+    {
+      "address": "00ab9fd0",
+      "existing_name": "FUN_00ab9fd0",
+      "proposed_name": "BSP_TextContext_BuildSingleLineGlyphGeometry",
+      "abi": "ECX text context; stack1 UTF16 wrapper (unused by body), stack2 draw section; RET8; side effects; no established return.",
+      "inputs": [
+        "context+EC/F0 text length/data",
+        "context+108 font",
+        "context+20 normalized width",
+        "context+100 alignment",
+        "context+1D8 scale"
+      ],
+      "outputs": [
+        "float context+114 accumulated scaled advance",
+        "float context+18C first emitted x",
+        "context+110 reset to0",
+        "vertex/index buffers and section counts"
+      ],
+      "external_or_existing_contracts": [
+        "00ad4480 glyph selection",
+        "00ab98f0 glyph quad writer",
+        "00b74640 geometry lookup",
+        "00b73260 vertex stream lookup",
+        "vertex virtual+10/+14 lock/unlock",
+        "index virtual+0C/+10 lock/unlock",
+        "00b189f0 material slot retention",
+        "00b865a0 external geometry association"
+      ],
+      "old_comment_blocks_from_decompiler": [],
+      "evidence_assembly": "exports/bsp/parallel_font_layout/00ab9fd0.asm",
+      "status": "analysis_and_PE_byte_verified_only"
+    },
+    {
+      "address": "00aba270",
+      "existing_name": "BSP_TextContext_BuildGlyphGeometry",
+      "proposed_name": "BSP_TextContext_BuildGlyphGeometry",
+      "abi": "ECX text context; stack UTF16 wrapper, draw section; RET8; side effects.",
+      "inputs": [
+        "UTF16 source wrapper",
+        "context+108 font",
+        "context+20/+24 container",
+        "context+100/+104 alignment",
+        "context+10C line spacing",
+        "context+1D8 scale",
+        "mutable00e12fd4 vertical scale"
+      ],
+      "outputs": [
+        "copied context+EC/F0 text",
+        "context+110 line count",
+        "context+114 raised emitted-line metric",
+        "context+178 vertical extent",
+        "context+18C first x",
+        "vertex/index buffers and section counts"
+      ],
+      "external_or_existing_contracts": [
+        "00ad4480",
+        "00ab98f0",
+        "00ab80c0 optional child cleanup",
+        "004c53e0 native string allocation",
+        "00b74640/00b73260 geometry and writer",
+        "00b189f0 material retention",
+        "004768d0 vertex position readback",
+        "virtual stream lock/unlock"
+      ],
+      "old_comment_blocks_from_decompiler": [
+        "/* [BSP reconstruction 00aba270]\n   Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8;\n   decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20\n   material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid\n   layout/batching. Full native ownership and text renderer remain unported;\n   docs/FONT_MATERIAL_BINDINGS.md. */"
+      ],
+      "evidence_assembly": "exports/bsp/parallel_font_layout/00aba270.asm",
+      "status": "analysis_and_PE_byte_verified_only"
+    },
+    {
+      "address": "00ab6bd0",
+      "existing_name": "FUN_00ab6bd0",
+      "proposed_name": "BSP_TextContext_GetNormalizedTextHeight",
+      "abi": "ECX text context; no stack arguments; RET; float32-spilled result in x87 ST0.",
+      "inputs": [
+        "context+FC multiline flag",
+        "context+178 measured height if multiline",
+        "context+108 borrowed font if single-line"
+      ],
+      "outputs": [
+        "normalized float32 height returned through ST0"
+      ],
+      "external_or_existing_contracts": [],
+      "old_comment_blocks_from_decompiler": [],
+      "evidence_assembly": "exports/bsp/parallel_font_layout/00ab6bd0.asm",
+      "status": "analysis_and_PE_byte_verified_only"
+    },
+    {
+      "address": "00ab8f00",
+      "existing_name": "FUN_00ab8f00",
+      "proposed_name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+      "abi": "ECX text context; stack destination UTF16 wrapper, source wrapper, normalized float width; RET0C; EAX destination.",
+      "inputs": [
+        "source UTF16",
+        "context+108 font and uppercase flag+48",
+        "context+1D8 horizontal scale",
+        "normalized width"
+      ],
+      "outputs": [
+        "owned native destination string containing source or retained prefix plus..."
+      ],
+      "external_or_existing_contracts": [
+        "004c8dd0 native string copy construction",
+        "00a9ec30 optional code-unit transformation outside live code partition",
+        "00ad4480 glyph selection",
+        "004c53e0 native string allocation",
+        "00770e50 prefix substring",
+        "005cf570 concatenate",
+        "00419cc0/00bd1510 allocation release"
+      ],
+      "old_comment_blocks_from_decompiler": [],
+      "evidence_assembly": "exports/bsp/parallel_font_layout/00ab8f00.asm",
+      "status": "analysis_and_PE_byte_verified_only"
+    },
+    {
+      "address": "00ad4480",
+      "existing_name": "BSP_Font_SelectGlyph",
+      "proposed_name": "BSP_Font_SelectGlyph",
+      "abi": "ECX font; one stack low16 key; RET4; EAX borrowed glyph payload.",
+      "inputs": [
+        "decoded/live font glyph data",
+        "unsigned16 code unit"
+      ],
+      "outputs": [
+        "borrowed payload for space/LF,CR,map key,or missing0091 fallback"
+      ],
+      "external_or_existing_contracts": [
+        "00ad4370 exact unsigned lookup",
+        "STL_inst_00ad3e70 existing iterator access"
+      ],
+      "old_comment_blocks_from_decompiler": [
+        "/* [BSP reconstruction 00ad4480]\n   ECXfont,u16key stackRET4/EAXpayload.20/LF0A=>embedded+4C,CR0D=>+8C; exactunsignedtreeglyph\n   elsecopied0091fallback+6C. Nouppercasehere. TypedscalarFontData projection checked installedfont;\n   resources/padding/nativeiterators omitted. */"
+      ],
+      "evidence_assembly": "exports/bsp/parallel_font_layout/00ad4480.asm",
+      "status": "analysis_and_PE_byte_verified_only"
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00ab9fd0",
+      "old_name": "FUN_00ab9fd0",
+      "new_name": "BSP_TextContext_BuildSingleLineGlyphGeometry",
+      "old_comments": [],
+      "append_comment": "Provisional descriptive name. ECX context, two stack slots RET8; first UTF16-wrapper slot is unused, second is draw section. Reads context+EC/F0. Two code-unit loops measure and emit unsigned glyph+12 advances times context+1D8 with x87 float spills; no LF/CR break or pair kerning. Width is trunc_i64(context+20*double960) lowDWORD, then unsigned conversion. Modes1/2 center/right; others start0. Font height uses unsigned low16; first glyph binds material slots0/1 once. Geometry/resource lifetime and optional child UI are external. docs/FONT_LAYOUT_BOUNDARY.md;660 bytes match PE.",
+      "mutation_performed": false,
+      "instruction": "Preserve all preexisting comments and correct library names; parent captures full comment metadata before any mutation, saves project, then refreshes exports."
+    },
+    {
+      "address": "00aba270",
+      "old_name": "BSP_TextContext_BuildGlyphGeometry",
+      "new_name": "BSP_TextContext_BuildGlyphGeometry",
+      "old_comments": [
+        "/* [BSP reconstruction 00aba270]\n   Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8;\n   decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20\n   material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid\n   layout/batching. Full native ownership and text renderer remain unported;\n   docs/FONT_MATERIAL_BINDINGS.md. */"
+      ],
+      "append_comment": "Additional read-only layout evidence: ECX context plus UTF16 wrapper/draw section, RET8. LF terminates scan but is included in emission interval; CR is not a break. Scanning scales all unsigned advances, emission uses unscaled natural/justified space spacing and scaled nonspaces. Emitted-line metric+114 adds unscaled nonspaces. Justification divides by accepted_spaces-1, guarding only zero count. Line y=((spacing+double1)-double0.15000000596046448)*signed_font_height+old_y. Final quad count narrows low16. Preserve these quirks; no generic word-wrap equivalence. docs/FONT_LAYOUT_BOUNDARY.md;1623 bytes match PE.",
+      "mutation_performed": false,
+      "instruction": "Preserve all preexisting comments and correct library names; parent captures full comment metadata before any mutation, saves project, then refreshes exports."
+    },
+    {
+      "address": "00ab6bd0",
+      "old_name": "FUN_00ab6bd0",
+      "new_name": "BSP_TextContext_GetNormalizedTextHeight",
+      "old_comments": [],
+      "append_comment": "Provisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE.",
+      "mutation_performed": false,
+      "instruction": "Preserve all preexisting comments and correct library names; parent captures full comment metadata before any mutation, saves project, then refreshes exports."
+    },
+    {
+      "address": "00ab8f00",
+      "old_name": "FUN_00ab8f00",
+      "new_name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+      "old_comments": [],
+      "append_comment": "Provisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE.",
+      "mutation_performed": false,
+      "instruction": "Preserve all preexisting comments and correct library names; parent captures full comment metadata before any mutation, saves project, then refreshes exports."
+    }
+  ],
+  "next_implementation": {
+    "first": "Single-line scalar measurement/alignment/placement fragment from00ab9fd0; reuse existing selector00ad4480 and quad prefix00ab98f0.",
+    "host_inputs": [
+      "loaded FontData",
+      "already transformed UTF16 code units",
+      "horizontal scale",
+      "normalized container width",
+      "alignment0/1/2",
+      "explicit caller geometry and font-resource lifetime"
+    ],
+    "host_outputs": [
+      "owned placement records of code_unit,x,y",
+      "measured scalar advance width",
+      "initial x",
+      "glyph count"
+    ],
+    "arithmetic": [
+      "unsigned16 glyph+12 advance",
+      "x87 multiply/add and per-character float32 spills",
+      "trunc_i64(width*double960),lowDWORD,unsigned conversion",
+      "height and ellipsis remain distinct algorithms"
+    ],
+    "independence": "No path, mount, preload, MPKG or stream operation in scalar layout. Loaded font/resource owner is an explicit existing input.",
+    "separate_future_ports": [
+      "height query00ab6bd0",
+      "wrapped scalar layout00aba270",
+      "ellipsis00ab8f00 and separately evidenced preprocessing"
+    ]
+  },
+  "behavioral_findings": {
+    "kerning": "No pair-dependent metric lookup in the selected placement and ellipsis loops; no claim about every engine subsystem.",
+    "text_encoding": "16-bit code units, null-terminated; no surrogate pairing or shaping in inspected loops.",
+    "singleline_lf_cr": "Neither causes line break; selector special records still apply.",
+    "wrapped_lf": "Scan boundary included in emitted interval.",
+    "wrapped_cr": "Not tested as line boundary.",
+    "wrapped_spaces": "Scanner multiplies advances by scale; emitted spaces use unscaled natural/justified space spacing.",
+    "wrapping_unbroken_word": "No accepted space can cause inclusion of overflowing code unit.",
+    "justification": "accepted_space_count-1 divisor; zero count guarded, one not guarded.",
+    "line_metric": "context+114 compares emitted-line unscaled nonspace sum plus chosen space increments, not necessarily final x.",
+    "vertical_step": "((spacing+double1)-double0.15000000596046448)*signed_height+old_y, float32 spill.",
+    "height_query": "Normalized extent or signed font height divided by720; no vertical-scale multiplier.",
+    "ellipsis": "Per-code-unit trunc_i32 then low16;3-dot reserve also trunc/low16, allowing tiny-target wrap."
+  },
+  "ownership_boundaries": [
+    "Native stream lock/unlock and allocation owners are external to scalar fragment.",
+    "Only first emitted glyph binds font resource pair; no multipage batching inferred.",
+    "Native optional child UI prefix cleanup and writer suffix remain unported.",
+    "00ab8400 assigns newly created buffers and releases local references; external setters and full final ownership not audited here.",
+    "00aba8d0 shares geometry buffers with subsequent route; host must not infer unique per-string native buffers.",
+    "Host placement list should own scalar records and borrow loaded FontData only during generation."
+  ],
+  "exploratory_gap": {
+    "span": "00ab6d70..00ab6f5f",
+    "finding": "Raw code gap contains an unrecognized bounds-adjustment routine00ab6d70..00ab6eda that calls height query00ab6bd0, not an additional glyph-advance routine. Not added to selected family or Ghidra.",
+    "raw_export": "exports/bsp/parallel_font_layout/00ab6d70_00ab6f60.capstone.asm",
+    "matches_disk": true,
+    "sha256": "b7867488513acd1ec3476caeff7132495941254222229545626e4d03d4be62ed"
+  },
+  "verification_files": [
+    "exports/bsp/parallel_font_layout/verification_callers.json",
+    "exports/bsp/parallel_font_layout/verification_code_identity.json",
+    "exports/bsp/parallel_font_layout/verification_constants.json",
+    "exports/bsp/parallel_font_layout/verification_family_abi.json",
+    "exports/bsp/parallel_font_layout/verification_fontmeasure.json",
+    "exports/bsp/parallel_font_layout/verification_gap_constants.json",
+    "exports/bsp/parallel_font_layout/verification_helpers.json",
+    "exports/bsp/parallel_font_layout/verification_initial.json",
+    "exports/bsp/parallel_font_layout/verification_measure.json",
+    "exports/bsp/parallel_font_layout/verification_measure2.json",
+    "exports/bsp/parallel_font_layout/verification_unrecognized_measure.json"
+  ],
+  "evidence_limits": [
+    "All five selected complete code bodies match original PE; not whole Ghidra image identity.",
+    "Mutable vertical scale0.75 is saved-image/disk initialization only, not runtime state.",
+    "Empty UTF16 global00f8be50 is PE zero-fill, not disk-backed bytes.",
+    "No native differential fixture, host build, rendering run or game validation performed in this audit.",
+    "Existing full glyph-A host rendering evidence comes from FONT_MATERIAL_DRAW.md and MOUNTED_RESOURCE_STREAMS.md, not a fresh run here.",
+    "Old comment blocks are captured from decompiler output; parent must also retain any other comment types during annotation integration."
+  ],
+  "parent_integration": {
+    "annotated_functions": [
+      {
+        "address": "00ab9fd0",
+        "name": "BSP_TextContext_BuildSingleLineGlyphGeometry"
+      },
+      {
+        "address": "00aba270",
+        "name": "BSP_TextContext_BuildGlyphGeometry"
+      },
+      {
+        "address": "00ab6bd0",
+        "name": "BSP_TextContext_GetNormalizedTextHeight"
+      },
+      {
+        "address": "00ab8f00",
+        "name": "BSP_TextContext_EllipsizeUtf16ToWidth"
+      }
+    ],
+    "readback_and_prior_comment_preservation_verified": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "cpp_changes": false
+  }
+}

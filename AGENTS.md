@@ -3,6 +3,9 @@
 - Use parallel subagents for independent, bounded reconstruction work when useful.
   Assign disjoint files and Ghidra address ranges; coordinate shared metadata edits
   and integration through the primary agent. Review evidence before accepting results.
+  Use `config/parallel_work.json` and `docs/PARALLEL_WORK.md` for concrete packets.
+  Partition waves are candidate-graph hints, not proof of independent work; include
+  named-but-incomplete dependencies and use explicit function/file ownership.
 
 - Use the existing `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`.
   Verify project and program before every analysis/export batch. Do not re-import into `wows`.

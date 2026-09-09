@@ -1,0 +1,135 @@
+{
+  "snapshot_at_dispatch": {
+    "utc": "2026-09-09T20:11:25.035145+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62726,
+    "internal_function_count": 62284,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "concurrency": {
+    "primary": 1,
+    "workers": 3
+  },
+  "partition_reference": "reports/library_inventory/candidate_partition.json",
+  "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Proposed next_code_ownership is reserved planning, not implemented code.",
+  "packets": [
+    {
+      "id": "archive_inflate_stream",
+      "state": "analysis_reviewed_ready_for_bounded_implementation",
+      "worker": "inflate_read_seek",
+      "function_addresses": [
+        "00bbc1d0",
+        "00bbbf00",
+        "00bbbe10",
+        "00bbc060",
+        "00bbc140"
+      ],
+      "code_ranges": [
+        [
+          "00bbbd80",
+          "00bbc3ff"
+        ]
+      ],
+      "read_only_extensions": [
+        "00bc9650..00bc969f inflateReset",
+        "00d643f8..00d6443f vtable/version"
+      ],
+      "output_files": [
+        "docs/INFLATE_STREAM_READ_SEEK.md",
+        "reports/inflate_stream_read_seek_audit.json"
+      ],
+      "next_code_ownership": [
+        "include/bsp/inflate_stream.hpp",
+        "src/inflate_stream.cpp"
+      ],
+      "contract": "Retained seekable source, explicit entry descriptor, fixed input/output buffers, raw zlib1.2.1 calls, actual-count and seek results. Resolve reset/no-progress guards explicitly.",
+      "integration_owner": "primary",
+      "implementation_gate": "Parent review of full raw read/seek/reset contract; do not require MPKG parser completion to implement this stream adapter.",
+      "validation": "Focused valid compressed fixture through the existing probe when implemented; no claimed archive runtime or native failure equivalence.",
+      "annotation_status": "Verified game routine names/comments applied and saved; no C++ implementation in this batch."
+    },
+    {
+      "id": "font_single_line_layout",
+      "state": "analysis_reviewed_ready_for_bounded_implementation",
+      "worker": "font_layout_boundary",
+      "function_addresses": [
+        "00ab9fd0",
+        "00aba270",
+        "00ab6bd0",
+        "00ab8f00",
+        "00ad4480"
+      ],
+      "code_ranges": [
+        [
+          "00ab6000",
+          "00ad89ff"
+        ]
+      ],
+      "read_only_extensions": [
+        "Explicit constant and UTF16 data reads listed in the worker audit"
+      ],
+      "output_files": [
+        "docs/FONT_LAYOUT_BOUNDARY.md",
+        "reports/font_layout_boundary_audit.json"
+      ],
+      "next_code_ownership": [
+        "include/bsp/font_layout.hpp",
+        "src/font_layout.cpp"
+      ],
+      "contract": "Use established glyph records and supplied UTF16 text/scalars. Recover width/advance/alignment and rounding before connecting output to existing quad writer.",
+      "integration_owner": "primary",
+      "implementation_gate": "Parent review of scalar kernel and boundary behavior. Shared FontData/geometry/probe interfaces remain parent-owned.",
+      "validation": "Existing installed font/glyph probe plus only the smallest additional behavioral case needed for a concrete rounding or control-character risk.",
+      "annotation_status": "Verified game routine names/comments applied and saved; no C++ implementation in this batch."
+    },
+    {
+      "id": "vfs_preload_policy",
+      "state": "analysis_reviewed_provider_flags_and_submission_pending",
+      "worker": "partition_audit",
+      "function_addresses": [
+        "00be7ab0",
+        "00bde9c0",
+        "0073d410",
+        "00686380"
+      ],
+      "code_ranges": [
+        [
+          "00bdb2e0",
+          "00be882f"
+        ]
+      ],
+      "read_only_extensions": [
+        "Complete caller bodies0073d410 and00686380 and directly referenced data"
+      ],
+      "output_files": [
+        "docs/VFS_PRELOAD_BOUNDARY.md",
+        "reports/vfs_preload_boundary_audit.json"
+      ],
+      "next_code_ownership": [
+        "include/bsp/resource_preload.hpp",
+        "src/resource_preload.cpp"
+      ],
+      "contract": "Determine the native cache selection/caller policy and stream-tracking boundary using existing mounted-stream/FileStore APIs. Keep startup and runtime requests distinct.",
+      "integration_owner": "primary",
+      "implementation_gate": "Review actual caller selection and flags; replacing diagnostic priming requires assets and real policy, not an invented list.",
+      "validation": "Use the existing mounted cache/font probe where the supported policy applies; retain supplied-installation and native-startup distinctions.",
+      "findings": "Nine explicit calls: startup five scripts with0x32, menu .def with0x32/.fsb with2. Logging00bde9c0 is not stream retention. Pending completion00be78b0 leads to submission00be7cd0; no native font selection established.",
+      "next_addresses": [
+        "00be7cd0",
+        "00bf5590"
+      ],
+      "annotation_status": "Opened-resource logging named and previous caller description corrected; prior comments preserved."
+    }
+  ],
+  "snapshot_after_analysis": {
+    "utc": "2026-09-09T20:49:33.368049+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62728,
+    "internal_function_count": 62286,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  }
+}

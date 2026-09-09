@@ -103,6 +103,10 @@ and game-specific contracts. Provisional tags and in-house Dyn code remain in
 scope when needed. [zlib 1.2.1](docs/ZLIB_DEPENDENCY.md) now compiles; its game
 stream wrappers and archive integration remain pending.
 
+[Parallel work assignments](docs/PARALLEL_WORK.md) use explicit function families
+and file ownership. The corrected [candidate partitions](reports/library_inventory/candidate_partition.md)
+help locate code; their waves do not establish independent implementation tasks.
+
 The native test executes five math routines and the PRNG seed/refill/integer routines in its
 own process: 455 math comparisons plus one stream case covering 1,500 random values and final state.
 The PRNG's one relative call is relocated to the copied refill routine. It does not execute game startup.

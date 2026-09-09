@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pefile
-from capstone import CS_ARCH_X86, CS_MODE_32, Cs
+from capstone import CS_ARCH_X86, CS_MODE_32, Cs, __version__ as capstone_version
 
 ROOT = Path(__file__).resolve().parents[1]
 IMM = re.compile(r'0x([0-9a-f]{6,8})')
@@ -31,7 +31,8 @@ def main():
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding='utf-8'))
     binary = Path(config['binary'])
-    functions = json.loads((args.output / 'functions.json').read_text())
+    functions_raw = (args.output / 'functions.json').read_bytes()
+    functions = json.loads(functions_raw)
 
     pe = pefile.PE(str(binary), fast_load=True)
     base = pe.OPTIONAL_HEADER.ImageBase
@@ -79,10 +80,14 @@ def main():
     edges = sum(len(v) for v in calls.values())
     meta = {'utc': datetime.now(timezone.utc).isoformat(), 'binary': str(binary),
             'disk_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
+            'functions_sha256': hashlib.sha256(functions_raw).hexdigest(),
+            'tool_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            'capstone_version': capstone_version,
             'functions_json_entries': len(functions), 'function_starts_swept': len(starts),
             'instructions': instructions, 'callers': len(calls), 'call_edges': edges,
             'functions_with_datarefs': len(datarefs), 'seconds': round(elapsed, 1),
-            'note': 'Linear Capstone sweep of disk bytes over snapshot function ranges; no indirect calls, jump tables or vtable dispatch.'}
+            'edge_weight': 'unique caller-target relationships; direct calls and out-of-range direct tail jumps',
+            'note': 'Linear Capstone sweep of disk bytes from each snapshot function start to the next; not validated function bodies. No indirect calls, jump tables or vtable dispatch.'}
     (args.output / 'callgraph_meta.json').write_text(json.dumps(meta, indent=1))
     print(json.dumps(meta, indent=1))
 

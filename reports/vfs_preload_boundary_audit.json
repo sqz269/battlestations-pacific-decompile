@@ -1,0 +1,466 @@
+{
+  "utc": "2026-09-09T20:49:18.422765+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "image_base": "00400000",
+  "language": "x86:LE:32:default",
+  "scope": {
+    "mode": "read-only assembly/data/caller audit",
+    "assigned_code_range": [
+      "00bdb2e0",
+      "00be882f"
+    ],
+    "parent_authorized_read_only_caller_extensions": [
+      "0073d410",
+      "00686380"
+    ],
+    "primary_routines": [
+      "00be7ab0",
+      "0073d410",
+      "00686380",
+      "00bdf310",
+      "00bde9c0",
+      "00be78b0"
+    ],
+    "supporting_adapter": "00be7b20",
+    "ghidra_mutations": false,
+    "cpp_changes": false,
+    "tests_run": false
+  },
+  "target_checks": {
+    "batch_count": 8,
+    "artifact_glob": "exports/bsp/parallel_vfs_preload/target_batch*.json",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe"
+  },
+  "direct_population": {
+    "entry": "00be7ab0",
+    "abi": "ECX store; name, flags stack; RET8 at00be7b17; return value not consumed by observed callers",
+    "live_direct_caller_count": 2,
+    "live_direct_call_site_count": 9,
+    "callers": [
+      "0073d410",
+      "00686380"
+    ],
+    "disk_sweep_agrees_on_callers": true,
+    "scope_limit": "Live xrefs and direct disk sweep only; not proof against arbitrary indirect use",
+    "startup_requests": [
+      {
+        "order": 1,
+        "call_site": "0073e239",
+        "literal_address": "00cfeb80",
+        "name": "scripts/datatables/inputs.lua",
+        "flags": 50,
+        "flags_hex": "0x32"
+      },
+      {
+        "order": 2,
+        "call_site": "0073e2b7",
+        "literal_address": "00cfeb58",
+        "name": "scripts/datatables/keyboardsetup.lua",
+        "flags": 50,
+        "flags_hex": "0x32"
+      },
+      {
+        "order": 3,
+        "call_site": "0073e335",
+        "literal_address": "00cfeb2c",
+        "name": "scripts/datatables/controllerinputnames.lua",
+        "flags": 50,
+        "flags_hex": "0x32"
+      },
+      {
+        "order": 4,
+        "call_site": "0073e3b3",
+        "literal_address": "00cfeb04",
+        "name": "scripts/datatables/controlpresets.lua",
+        "flags": 50,
+        "flags_hex": "0x32"
+      },
+      {
+        "order": 5,
+        "call_site": "0073e431",
+        "literal_address": "00cff188",
+        "name": "scripts/datatables/scoring.lua",
+        "flags": 50,
+        "flags_hex": "0x32"
+      }
+    ],
+    "menu_requests": [
+      {
+        "order": 1,
+        "call_site": "00686476",
+        "name": "sound/music/titlescreen.def",
+        "flags": 50,
+        "flags_hex": "0x32"
+      },
+      {
+        "order": 2,
+        "call_site": "006864f5",
+        "name": "sound/music/titlescreen.fsb",
+        "flags": 2,
+        "flags_hex": "0x2"
+      },
+      {
+        "order": 3,
+        "call_site": "0068659e",
+        "name": "sound/music/creditsfinal.def",
+        "flags": 50,
+        "flags_hex": "0x32"
+      },
+      {
+        "order": 4,
+        "call_site": "0068661d",
+        "name": "sound/music/creditsfinal.fsb",
+        "flags": 2,
+        "flags_hex": "0x2"
+      }
+    ],
+    "menu_name_construction": {
+      "fsb_literal_addresses": [
+        "00cf77a4",
+        "00cf777c"
+      ],
+      "companion_suffix_address": "00cf779c",
+      "companion_suffix": ".def",
+      "operation": "substring(original,0,length-4), then concatenate .def",
+      "dependencies": [
+        "00469840",
+        "004261a0"
+      ],
+      "dependency_evidence": "existing cached exports/docs; caller assembly and constants newly verified"
+    },
+    "selection_conclusion": "Observed direct callers contain fixed native startup/menu requests, not a data-driven preload table",
+    "font_selection_established": false
+  },
+  "tracing": {
+    "entry": "00bde9c0",
+    "abi": "ECX manager; name, stream, selected-mount payload byte stack; RET0Ch at00bdeb36",
+    "length": 377,
+    "sha256": "dbab7cc9478aab0e0b2e85391cf1ec6946539c7aff40303cfe964f5c1d8085a8",
+    "saved_matches_disk": true,
+    "stream_argument_consumed": false,
+    "retains_or_registers_stream": false,
+    "inserts_filestore_entry": false,
+    "trace_shape": "<FILE><name>",
+    "positive_gates": [
+      "global0109cee8 !=0",
+      "manager byte+79h !=0",
+      "third stack argument low byte !=0"
+    ],
+    "suppression": "last dot and preceding underscore have positive helper indices, their distance is8 and all seven intervening bytes are ASCII digits",
+    "cached_search_helper": "00467cf0",
+    "caller": "00bdf310",
+    "caller_site": "00bdf44b",
+    "caller_name": "normalized and first-alias-adjusted name",
+    "payload_source": "selected mount node+0Ch via cached00bda690 callback",
+    "counters_separate": {
+      "read_success": "manager+28h increment; manager+2Ch += stream virtual+2Ch(0) EAX",
+      "bit0_success": "manager+24h increment",
+      "not_established": "bytes physically read or stream lifetime accounting"
+    }
+  },
+  "ghidra_annotation_proposal": {
+    "address": "00bde9c0",
+    "name": "BSP_VFS_TraceOpenedResource",
+    "name_is_reconstruction_hypothesis": true,
+    "behavior_confidence": "high for complete inspected body",
+    "original_abi": "__thiscall; ECX manager; three stack arguments(name,stream,mount payload byte); RET0Ch",
+    "complete_span_length": 377,
+    "complete_span_sha256": "dbab7cc9478aab0e0b2e85391cf1ec6946539c7aff40303cfe964f5c1d8085a8",
+    "comment": "ECX manager; resource name, stream and selected-mount payload byte as three stack arguments; RET 0Ch at 00bdeb36. The complete 377-byte body matches saved Ghidra and installed PE, SHA-256 dbab7cc9478aab0e0b2e85391cf1ec6946539c7aff40303cfe964f5c1d8085a8. Emits <FILE><name> through the native builder only when global 0109cee8, manager byte +79h and the payload byte are nonzero, excluding the underscore plus seven ASCII digits before the last dot pattern. The stream argument is unused: this body does not retain/register a stream or insert into FileStore. Caller 00bdf310 separately updates successful-open counters. Proposed descriptive reconstruction name, not recovered symbol. Evidence: docs/VFS_PRELOAD_BOUNDARY.md and reports/vfs_preload_boundary_audit.json.",
+    "preserve_existing_comments": true,
+    "applied_by_this_lane": false
+  },
+  "pending_completion": {
+    "entry": "00be78b0",
+    "abi": "ECX store; name,opaque callback argument,stream stack; RET0Ch at00be797c",
+    "valid_domain": "matching pending record exists in secondary tree atstore+20h",
+    "operations": [
+      "normalize local name",
+      "find secondary-tree pending entry",
+      "read callback fromnode+14h",
+      "remove pending record via00be6a20",
+      "insert supplied stream through00be7760",
+      "invoke saved callback(original name,opaque argument)"
+    ],
+    "adapter": {
+      "address": "00be7b20",
+      "abi": "three stack arguments(stream,name,opaque); RET0Ch at00be7b3c",
+      "store_source": "004fc150 result+8h",
+      "forwarding": "00be78b0(store,name,opaque,stream)"
+    },
+    "adapter_registration_reference": {
+      "from": "00be7ee4",
+      "containing_function": "00be7cd0",
+      "xref_type": "DATA",
+      "submission_body_inspected": false
+    },
+    "next_boundary": "Recover00be7cd0 pending submission, producer callback contract and caller selection before asserting broader preload policy"
+  },
+  "next_implementation_contract": {
+    "startup_policy": "Ordered exact five-name batch withflags0x32; population obtains existing factory/store and does not invent font entries or search fallback",
+    "menu_policy": "Separate fixed .def/.fsb batch at menu setup; outer virtual trigger remains unverified",
+    "required_flags_work": "Current host mounted callbacks/population projectflags2 only. Preserve0x32 through chosen provider or verify every skipped bit on complete route; cached physical endpoint alone is insufficient",
+    "trace_unit": "Exact trace gate/filter plus successful-open counters, using explicit real observation/sink interface; no silent telemetry stub",
+    "font_probe": "Retain explicit diagnostic font priming; this lane did not establish native selection of those font assets"
+  },
+  "byte_validation": {
+    "code_spans": [
+      {
+        "address": "00be7ab0",
+        "length": 106,
+        "actual_length": 106,
+        "scope": "complete routine",
+        "sha256": "7b91fe3afa47a5a50baa1944ac0ce230a16cc5baba7ed3d322efdf6a31384e9b",
+        "matches_disk": true
+      },
+      {
+        "address": "00bde9c0",
+        "length": 377,
+        "actual_length": 377,
+        "scope": "complete routine",
+        "sha256": "dbab7cc9478aab0e0b2e85391cf1ec6946539c7aff40303cfe964f5c1d8085a8",
+        "matches_disk": true
+      },
+      {
+        "address": "00bdf310",
+        "length": 421,
+        "actual_length": 421,
+        "scope": "complete routine",
+        "sha256": "e354c379eeae3b582f71333f00c627d34b1d19e8c2c835c861922bda2cd7e748",
+        "matches_disk": true
+      },
+      {
+        "address": "00686380",
+        "length": 1404,
+        "actual_length": 1404,
+        "scope": "complete routine",
+        "sha256": "3743380290537dc77ea3bbc7ec43ab4c6ece99e8296375c2cb8270aaf7643d73",
+        "matches_disk": true
+      },
+      {
+        "address": "0073e1e2",
+        "length": 634,
+        "actual_length": 634,
+        "scope": "startup cache policy block",
+        "sha256": "8d77671e5e046bf45559a66f10f57113660922df9d4a020bb5b8a35a9ece90e7",
+        "matches_disk": true
+      },
+      {
+        "address": "00be78b0",
+        "length": 207,
+        "actual_length": 207,
+        "scope": "complete secondary-tree completion routine",
+        "sha256": "ffe366b168f1c38effdc9a28ae7aaa25bc5e572ecebc697798d72f56a2bb5f90",
+        "matches_disk": true
+      },
+      {
+        "address": "00be7b20",
+        "length": 32,
+        "actual_length": 32,
+        "scope": "completion adapter context",
+        "sha256": "e245f77b24b59fbc5724792039b75e478ff5df1e96a937ba896560cca559694f",
+        "matches_disk": true
+      },
+      {
+        "address": "0073e1ce",
+        "length": 26,
+        "actual_length": 26,
+        "scope": "startup policy block preceding context",
+        "sha256": "bd090743cae78a76c130e381ffd6f589c9806cd4b1416050751f025450ec0614",
+        "matches_disk": true
+      }
+    ],
+    "string_and_format_spans": [
+      {
+        "address": "00cfeb80",
+        "length": 30,
+        "sha256": "ab60df8ec3203cfee4712d5d6f8720ad04e316f05d1ff88602d92cd809a9f286",
+        "matches_disk": true,
+        "hex": "736372697074732f646174617461626c65732f696e707574732e6c756100",
+        "ascii": "scripts/datatables/inputs.lua",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cfeb58",
+        "length": 37,
+        "sha256": "8299c70598607d0342a5829f7e22ca26961dd0b175c87f9c8f22676715005b13",
+        "matches_disk": true,
+        "hex": "736372697074732f646174617461626c65732f6b6579626f61726473657475702e6c756100",
+        "ascii": "scripts/datatables/keyboardsetup.lua",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cfeb2c",
+        "length": 44,
+        "sha256": "3e77467afabe53eeb4ea8aad27ab255b4bc79a24eb469529bb517c0dd250ebaf",
+        "matches_disk": true,
+        "hex": "736372697074732f646174617461626c65732f636f6e74726f6c6c6572696e7075746e616d65732e6c756100",
+        "ascii": "scripts/datatables/controllerinputnames.lua",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cfeb04",
+        "length": 38,
+        "sha256": "2432105aa63bd8dc142e9091c702b8efa0d020453ca3f96816e2615df5ed9a3a",
+        "matches_disk": true,
+        "hex": "736372697074732f646174617461626c65732f636f6e74726f6c707265736574732e6c756100",
+        "ascii": "scripts/datatables/controlpresets.lua",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cff188",
+        "length": 31,
+        "sha256": "dcdae55e0e484d36867133b0504ffef6f4e4fd149a77a0bd021f826ba6874b21",
+        "matches_disk": true,
+        "hex": "736372697074732f646174617461626c65732f73636f72696e672e6c756100",
+        "ascii": "scripts/datatables/scoring.lua",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cf77a4",
+        "length": 28,
+        "sha256": "c0b40d32397bdad1dd0a40530fbcd63d6dfeaef734cce1ce627bc661f0a823d1",
+        "matches_disk": true,
+        "hex": "736f756e642f6d757369632f7469746c6573637265656e2e66736200",
+        "ascii": "sound/music/titlescreen.fsb",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cf777c",
+        "length": 29,
+        "sha256": "9cc772052c1318fe4ed4aef1c5d13d9852ad0c5e88fbaaafbc3ce8b90fcecbe2",
+        "matches_disk": true,
+        "hex": "736f756e642f6d757369632f6372656469747366696e616c2e66736200",
+        "ascii": "sound/music/creditsfinal.fsb",
+        "nul_terminated": true
+      },
+      {
+        "address": "00cf779c",
+        "length": 5,
+        "sha256": "36790947f06dc15db5871ae89b104b2a21bbcf627f465cc1673b4433561e212f",
+        "matches_disk": true,
+        "hex": "2e64656600",
+        "ascii": ".def"
+      },
+      {
+        "address": "00ce3a70",
+        "length": 2,
+        "sha256": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce",
+        "matches_disk": true,
+        "hex": "2e00",
+        "ascii": "."
+      },
+      {
+        "address": "00ce7890",
+        "length": 2,
+        "sha256": "090c554bb6a344300e5690ce6f80c4ef6ee6cf5bd0fef3fde87a079dee2fa70c",
+        "matches_disk": true,
+        "hex": "5f00",
+        "ascii": "_"
+      },
+      {
+        "address": "00d684c4",
+        "length": 8,
+        "sha256": "94d0e7ee26aa67424a337bc3d4fc17e82d6389a7fc997998dc4570f626be4254",
+        "matches_disk": true,
+        "hex": "3c46494c453e3c00",
+        "ascii": "<FILE><"
+      },
+      {
+        "address": "00cfd358",
+        "length": 8,
+        "sha256": "68dad99e13e9300aa3d9aa612913818e51f1a89202fdfb299c1c4db631afc009",
+        "matches_disk": true,
+        "hex": "3e0000004d657373",
+        "ascii": ">"
+      }
+    ],
+    "menu_entry_pointer": {
+      "address": "00cf7750",
+      "length": 4,
+      "hex": "80636800",
+      "sha256": "ff48a2d263fbca772d1a5a04ec1a5d5d4a2cab7ee8b8d44b21e45fadd2d60ba1",
+      "matches_disk": true,
+      "pointer": "00686380"
+    },
+    "all_selected_bytes_match_disk": true,
+    "whole_executable_identity_verified": false
+  },
+  "evidence_boundaries": [
+    "Read-only target verification, live xrefs, selected native byte agreement and source interpretation",
+    "Startup caller complete export inspected, but only decisive preload block byte-compared",
+    "Selected dependency helper semantics use cached exports, identified in documentation",
+    "No original-game execution, preload runtime trace, build or fixture test",
+    "Indirect submission at00be7cd0 and flags0x32 full provider semantics remain unresolved"
+  ],
+  "artifacts": {
+    "document": "docs/VFS_PRELOAD_BOUNDARY.md",
+    "exports_directory": "exports/bsp/parallel_vfs_preload",
+    "export_sha256": {
+      "exports/bsp/parallel_vfs_preload/00686380.asm": "6213a813a4de86e69624ba29823b678724f349024428c4ab543f791c4a8a4630",
+      "exports/bsp/parallel_vfs_preload/00686380.c": "32831e120a15532ae51882041009d9f2005e8b24f99a08451ae195a0df4dfdc2",
+      "exports/bsp/parallel_vfs_preload/00686380.callers.json": "d5c19e73f0245d35c181cc5b39930460960e3ef0790b6d27b78ad0e041297619",
+      "exports/bsp/parallel_vfs_preload/00686380.raw.asm": "8d3e22dea9a30c724b92d86b3f2bca47c1879df3eb50dc0a77201cce6b3161d2",
+      "exports/bsp/parallel_vfs_preload/00686380.xrefs.json": "f64eb95f1f8ade52bc481d6baa534b7f9f20348bcae3f3cb76f1e4eec7a1d1c8",
+      "exports/bsp/parallel_vfs_preload/0073d410.asm": "1b54aab552d096ada814fb99a042a789c12cdb39d42844707a1b8bd3898a1d6b",
+      "exports/bsp/parallel_vfs_preload/0073d410.c": "abfde4f29eade443133357d1da15758311f1ffcc5e56d93427fa0ef56cab2b3a",
+      "exports/bsp/parallel_vfs_preload/0073d410.callers.json": "1f9dc0d49d32a000d975d89095b60397db49bec2bfc4d8de2b18d03cc4e1004a",
+      "exports/bsp/parallel_vfs_preload/0073e1ce.raw.asm": "42a616604aa4368eb01512afad56dd494fff32e768b9036bd6b3bef38b0dfa18",
+      "exports/bsp/parallel_vfs_preload/0073e1e2.raw.asm": "0ec12f7903b2cae876c0e00591dfe3577fa94b1261270cdeb061e920f9db1371",
+      "exports/bsp/parallel_vfs_preload/00bde9c0.asm": "61f0643697092b9e122317c85f3f9568d69ece3db005ba7bb89bd425534beb4b",
+      "exports/bsp/parallel_vfs_preload/00bde9c0.c": "450f2ff4b0b9b8b8ecaceb803db53c5ac65ac01a9d978ff19e040478aaec21ad",
+      "exports/bsp/parallel_vfs_preload/00bde9c0.callers.json": "30f6dcb727c275e66fa0206fbe11da6434380caa1edcbd83a759ec1b4088a1f8",
+      "exports/bsp/parallel_vfs_preload/00bde9c0.raw.asm": "84db5cecd283524b91ba77a50be0cb1a32d523227260c03fb72c99e5289a2abc",
+      "exports/bsp/parallel_vfs_preload/00bdf310.asm": "5e0cad389730c7a45287e1285991d6634ef1d67ed985cd35717ac1ed6bc3f837",
+      "exports/bsp/parallel_vfs_preload/00bdf310.c": "69bafc95cf3f572b2aba96f7e313fe3344a40d8d54fe7348c26ba5c2de1be41b",
+      "exports/bsp/parallel_vfs_preload/00bdf310.callers.json": "d5c19e73f0245d35c181cc5b39930460960e3ef0790b6d27b78ad0e041297619",
+      "exports/bsp/parallel_vfs_preload/00bdf310.raw.asm": "9f17dfcee355dd83a8ea95bccfe918fcb6cf26e22f5742b16d8b9f8c5d3d4621",
+      "exports/bsp/parallel_vfs_preload/00be7760.xrefs.json": "8f4f7efc891f73f1c93ec2dbb58bed83f798bb8b80c6d9bdfb50ac1e8797f751",
+      "exports/bsp/parallel_vfs_preload/00be78b0.asm": "ed4fc932fe2408668a2a9033811f3fa0bce5945ea07c169c1310aebf00507873",
+      "exports/bsp/parallel_vfs_preload/00be78b0.c": "5a9cfddce20a061855964579b5bea5f910fd750669e4b34e212f67b076dd2b80",
+      "exports/bsp/parallel_vfs_preload/00be78b0.callers.json": "d5c19e73f0245d35c181cc5b39930460960e3ef0790b6d27b78ad0e041297619",
+      "exports/bsp/parallel_vfs_preload/00be78b0.raw.asm": "f3d5065e99a691d9344a59d84ba3f8af722ac777adc4db09dccd9f063adb20a5",
+      "exports/bsp/parallel_vfs_preload/00be78b0.xrefs.json": "c5b32d52da7b9ad065370d6e8b2147ed4e37b6a00cdd2d71fdabd68f896cbbce",
+      "exports/bsp/parallel_vfs_preload/00be7ab0.asm": "510f0e183285c9090fc4b0ccf7ca64cb16644c90a44e800f21335624aff71c08",
+      "exports/bsp/parallel_vfs_preload/00be7ab0.c": "65a167cfeecac91cf48db10f902497ae8b652969199674e0e63379df77cfcfdd",
+      "exports/bsp/parallel_vfs_preload/00be7ab0.raw.asm": "c94029736a97661ab7d721f0b8d900eea196c5d69155a4a059f7aca534c51ad5",
+      "exports/bsp/parallel_vfs_preload/00be7ab0_bytes.json": "751c4907aba3eb0a40bfe904899455370bfb4a25233896b40a31d2ccc3dc6203",
+      "exports/bsp/parallel_vfs_preload/00be7b20.raw.asm": "d8003edbb060203e90c5af3fe8ad9963130ee455db170fe0836787dd6f4cb9bd",
+      "exports/bsp/parallel_vfs_preload/00be7b20.xrefs.json": "3f1e64b729a319c6d84d7d35e19e4ee00a79d543aab5624bd0e4106859445e93",
+      "exports/bsp/parallel_vfs_preload/code_bytes.json": "976db034b6186f1539ce057b08db816929f177f22cbc8f0638582de6554ff040",
+      "exports/bsp/parallel_vfs_preload/constant_bytes.json": "265029b5b5c4a81ef96e47c77adc085bb23c3e98b1a38bedae02a513484e9f9e",
+      "exports/bsp/parallel_vfs_preload/get_function_callers_00be7ab0.json": "298b1edf7edb76963db71b58a481defc197a8b89e8e733ebb969024563c18901",
+      "exports/bsp/parallel_vfs_preload/get_function_xrefs_00be7ab0.json": "57fc702a1ee9ebe8432cf04d613db97d7018f643752a1c165d194f7deb918d28",
+      "exports/bsp/parallel_vfs_preload/get_xrefs_to_00be7ab0.json": "57fc702a1ee9ebe8432cf04d613db97d7018f643752a1c165d194f7deb918d28",
+      "exports/bsp/parallel_vfs_preload/menu_entry_pointer.json": "c9d0b3e4f1860d0a57a5d2d4f442a009f382628ce5f7929aa55292bf958a42bc",
+      "exports/bsp/parallel_vfs_preload/target_batch1.json": "c65ae69271c1c5011d39e97554bcbead9e5d32d4264c345d0becbfa01fa76b1c",
+      "exports/bsp/parallel_vfs_preload/target_batch2.json": "825c9b7c96611e54c5d0b64278bdc76e80d1533d9d4d02007e36dae6c8eb243d",
+      "exports/bsp/parallel_vfs_preload/target_batch3.json": "fbe1421f665767fa24a943b47fe724bcc1a86ef6865960f87e46b187cd2af845",
+      "exports/bsp/parallel_vfs_preload/target_batch4.json": "069139552c875de5696599dcf3a70a18ea2f2e3e6629ee28fd0bf91d647edf32",
+      "exports/bsp/parallel_vfs_preload/target_batch5.json": "2f2ed4024515a1f9a931406924a0266328a1271dd2e1506ea907f04314e0aa85",
+      "exports/bsp/parallel_vfs_preload/target_batch6.json": "0193aa918171e29854106be89dc99bd5780f49a7009a6d4c29f67c94619f66ff",
+      "exports/bsp/parallel_vfs_preload/target_batch7.json": "66365f0969addbac49a906f61d0d08f1addd5c54f94919f650b2a7ecc0c2bc0e",
+      "exports/bsp/parallel_vfs_preload/target_batch8.json": "c8939a824e60f03b53eff5b220283f32da8f5b5a237432075d7c140caacd905c"
+    }
+  },
+  "disk_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "disk_file_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "parent_integration": {
+    "annotated_functions": [
+      {
+        "address": "00bde9c0",
+        "name": "BSP_VFS_LogOpenedResource"
+      },
+      {
+        "address": "00bdf310",
+        "name": "BSP_VFS_OpenResource"
+      }
+    ],
+    "readback_and_prior_comment_preservation_verified": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "cpp_changes": false
+  }
+}

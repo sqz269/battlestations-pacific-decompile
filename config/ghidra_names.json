@@ -1637,7 +1637,7 @@
   {
     "address": "00aba270",
     "name": "BSP_TextContext_BuildGlyphGeometry",
-    "evidence": "Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md."
+    "evidence": "Provisional descriptive name. ECX context, UTF16 string and draw-section pointer stack, RET8; decompiler omits second arg. Initial resource block binds selected glyph+18/+1C to section+20 material slots0/1, then clears local binding flag. Calls glyph selector and quad writer amid layout/batching. Full native ownership and text renderer remain unported; docs/FONT_MATERIAL_BINDINGS.md. Additional read-only layout evidence: ECX context plus UTF16 wrapper/draw section, RET8. LF terminates scan but is included in emission interval; CR is not a break. Scanning scales all unsigned advances, emission uses unscaled natural/justified space spacing and scaled nonspaces. Emitted-line metric+114 adds unscaled nonspaces. Justification divides by accepted_spaces-1, guarding only zero count. Line y=((spacing+double1)-double0.15000000596046448)*signed_font_height+old_y. Final quad count narrows low16. Preserve these quirks; no generic word-wrap equivalence. docs/FONT_LAYOUT_BOUNDARY.md;1623 bytes match PE."
   },
   {
     "address": "00b8dac0",
@@ -1847,7 +1847,7 @@
   {
     "address": "00bdf310",
     "name": "BSP_VFS_OpenResource",
-    "evidence": "ECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity."
+    "evidence": "ECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism."
   },
   {
     "address": "00bdca80",
@@ -1858,5 +1858,50 @@
     "address": "00bda690",
     "name": "BSP_VFS_OpenMountCallback",
     "evidence": "ECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte."
+  },
+  {
+    "address": "00bbbe10",
+    "name": "BSP_RawInflateStream_ResetDecoderAndCounters",
+    "evidence": "ECX this; no stack args; RET; no stable semantic result. Call stock inflateReset then source seek; restore counters only. Both buffer cursors/ends and z_stream next/avail fields survive reset. Not a clean arbitrary rewind. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+  },
+  {
+    "address": "00bbbf00",
+    "name": "BSP_RawInflateStream_RefillOutput",
+    "evidence": "ECX this; no stack args; RET; no stable result/status. Reset output destination to base/capacity. Read input on exhaustion, subtract actual source count. EDX flush=4 only when compressed remaining==0 and decoded remaining<=avail_out, else2. Subtract total_out delta and update input cursor. Break on any nonzero inflate status and publish produced output. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+  },
+  {
+    "address": "00bbc060",
+    "name": "BSP_RawInflateStream_Seek",
+    "evidence": "ECX this; stack low offset/high offset/origin; RET0Ch; no stable return. Low DWORD target wraps32; high ignored; origins0/1/other select0/current/length. Backward seek within output adjusts cursor+position; otherwise reset00bbbe10 leaves stale buffers. Forward skip refills until target or output empty with decoded remaining0. No no-progress guard. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+  },
+  {
+    "address": "00bbc140",
+    "name": "BSP_RawInflateStream_Read",
+    "evidence": "ECX this; stack destination/requested DWORD/optional actual DWORD pointer; RET0Ch; EAX actual pointer at epilogue. Refill only on empty output with decoded remaining!=0; unsigned min copy and cursor/position increments; repeat until request exhausted or declared EOF. Actual count is advanced destination minus original, written at return. No zero-progress guard or error propagation. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+  },
+  {
+    "address": "00bbc1d0",
+    "name": "BSP_RawInflateStream_Construct",
+    "evidence": "ECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md."
+  },
+  {
+    "address": "00ab9fd0",
+    "name": "BSP_TextContext_BuildSingleLineGlyphGeometry",
+    "evidence": "Provisional descriptive name. ECX context, two stack slots RET8; first UTF16-wrapper slot is unused, second is draw section. Reads context+EC/F0. Two code-unit loops measure and emit unsigned glyph+12 advances times context+1D8 with x87 float spills; no LF/CR break or pair kerning. Width is trunc_i64(context+20*double960) lowDWORD, then unsigned conversion. Modes1/2 center/right; others start0. Font height uses unsigned low16; first glyph binds material slots0/1 once. Geometry/resource lifetime and optional child UI are external. docs/FONT_LAYOUT_BOUNDARY.md;660 bytes match PE."
+  },
+  {
+    "address": "00ab6bd0",
+    "name": "BSP_TextContext_GetNormalizedTextHeight",
+    "evidence": "Provisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE."
+  },
+  {
+    "address": "00ab8f00",
+    "name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+    "evidence": "Provisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE."
+  },
+  {
+    "address": "00bde9c0",
+    "name": "BSP_VFS_LogOpenedResource",
+    "evidence": "ECX manager, name/stream/ownership byte stack, RET0C. Stream argument unused in body. Applies filename exclusion, then gates <FILE><name> logging on global0109cee8, manager+79 and ownership byte. No stream-retain/list insertion or cache selection in this routine. Corrects earlier broad stream-tracking description of caller00bdf310. Complete377-byte body matches installed PE; static analysis only. docs/VFS_PRELOAD_BOUNDARY.md."
   }
 ]

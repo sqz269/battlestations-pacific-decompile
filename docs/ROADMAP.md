@@ -43,6 +43,14 @@ ranges, but named functions and indirect-call dependencies must remain in scope.
 Track completion by working subsystem paths and explicit validation evidence,
 not by the number of functions renamed or a projected functions-per-day rate.
 
+The partition review now supplies three concrete parallel lanes: buffered inflater
+read/seek, single-line font layout, and native cache preload policy. See
+[parallel work](PARALLEL_WORK.md) and `config/parallel_work.json` for current
+ownership and implementation gates. The corrected review-baseline graph places
+84 of 87 segments in one dependency cycle, so whole-segment waves are not independent
+implementation tasks. Named-but-incomplete functions remain part of each lane's
+dependency review.
+
 ## 2. Resolve startup and the first subsystem boundary — in progress
 
 Confirmed the WinMain calling convention, application lifecycle boundaries, and the
@@ -136,14 +144,16 @@ completion of this milestone.
 
 ## Next bounded work
 
-1. Recover inflater seek `00bbc060`, read `00bbc140` and output-drain helpers;
-   connect them to the identified raw-inflate wrapper without bypassing buffered
-   reset, short-read or error behavior. Stock zlib is build-tested only so far.
+1. Implement the now-audited inflater seek/read contract (`INFLATE_STREAM_READ_SEEK.md`)
+   around stock zlib, preserving buffered read and forward/in-block seek behavior
+   while making host guards explicit. Stock zlib is build-tested only so far.
 2. Complete package enumeration, transformed MPKG directory parsing, entry lookup
    and compressed/sliced source ownership (`ARCHIVE_PROVIDER_ENTRY.md`). Then
    exercise a real installed archive through the same mounted stream interface.
-3. Recover native FileStore preload policy and stream tracking, replacing explicit
-   diagnostic priming only when the actual initialization path is established.
+3. Native preload callers are now identified (`VFS_PRELOAD_BOUNDARY.md`): five
+   startup scripts and four menu audio files, with flags 0x32/2. Recover provider
+   flag handling and pending submission `00be7cd0`; these findings do not replace
+   diagnostic font priming. Opened-resource logging is separate from selection.
 4. Continue independent renderer/window lifetime and font layout/batching work,
    integrating the resulting paths before expanding gameplay. Assign disjoint
    files and address ranges to parallel agents; keep shared metadata and Ghidra
