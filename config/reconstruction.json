@@ -926,6 +926,76 @@
       "source": "src/frame_clock.cpp",
       "status": "startup_probe_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00bec710",
+      "name": "BSP_TextQueue_CreateSentinel",
+      "source": "src/text_input.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bec7b0",
+      "name": "BSP_TextQueue_CreateNode",
+      "source": "src/text_input.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bed290",
+      "name": "BSP_TextQueue_IncreaseCount",
+      "source": "src/text_input.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bed370",
+      "name": "BSP_TextQueue_Append",
+      "source": "src/text_input.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bec730",
+      "name": "BSP_TextQueue_Destroy",
+      "source": "src/text_input.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bece90",
+      "name": "BSP_Platform_PopTextEvent",
+      "source": "src/text_input.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bf5020",
+      "name": "BSP_PhysicalStream_IsValid",
+      "source": "src/physical_file.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bf4f90",
+      "name": "BSP_PhysicalStream_GetSize",
+      "source": "src/physical_file.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bf4f20",
+      "name": "BSP_PhysicalStream_Seek",
+      "source": "src/physical_file.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bf5030",
+      "name": "BSP_PhysicalStream_Read",
+      "source": "src/physical_file.cpp",
+      "status": "probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -1065,6 +1135,24 @@
       "status": "installed_debug_and_alpha_textured_draw_checked",
       "abi_compatible": false,
       "remaining": "Typed base/effect input, explicit external flags; native owner/cache/resource lifecycle and separate shadow pass unported. Host compiler/fixtures are not gameplay validation."
+    },
+    {
+      "address": "00bf52a0",
+      "name": "BSP_PhysicalStream_Open",
+      "source": "src/physical_file.cpp",
+      "native_range": "flags2 successful read-only open path",
+      "status": "installed_dds_read_checked",
+      "abi_compatible": false,
+      "remaining": "ECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported."
+    },
+    {
+      "address": "00bf5090",
+      "name": "BSP_PhysicalStream_DeletingDestructor",
+      "source": "src/physical_file.cpp",
+      "native_range": "handle close and invalidation path",
+      "status": "installed_dds_read_checked",
+      "abi_compatible": false,
+      "remaining": "Native deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported."
     }
   ]
 }

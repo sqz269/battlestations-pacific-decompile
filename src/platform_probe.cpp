@@ -1,5 +1,6 @@
 #include "bsp/platform_loop.hpp"
 #include "bsp/win32_event.hpp"
+#include "bsp/text_input.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -27,6 +28,17 @@ private:
 }
 
 int main() {
+    bsp::TextInputQueue text;
+    text.append_00bed370({'A', 0});
+    text.append_00bed370({VK_LEFT, 1});
+    bsp::TextInputEvent input{};
+    const bool text_ok = text.size() == 2 && text.pop_00bece90(input)
+        && input.value == 'A' && input.key_event == 0 && text.pop_00bece90(input)
+        && input.value == VK_LEFT && input.key_event == 1 && text.size() == 0;
+    // Leave one node for the destructor's nonempty cleanup path.
+    text.append_00bed370({'B', 0});
+    std::cout << "Text input queue: byte_event_order=" << text_ok << '\n';
+    if (!text_ok) return 2;
     // Same auto-reset event type used for worker wake/idle acknowledgment.
     bsp::Win32Event event(false);
     const bool event_ok = event.valid()

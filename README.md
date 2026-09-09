@@ -108,6 +108,8 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `docs/BASELINE.md` | Verified initial findings and validation limits |
 | `docs/STARTUP_RANDOM.md` | Startup path, PRNG/thread layout and current limits |
 | `docs/FRAME_CLOCK.md` | QPC/fixed frame clock, native timestamp comparison and ownership limits |
+| `docs/TEXT_INPUT_QUEUE.md` | Platform event storage and remaining text-input policy |
+| `docs/PHYSICAL_FILE.md` | Physical asset reader and VFS/pooling boundaries |
 | `docs/PLATFORM_LOOP.md` | Concrete Windows vtable, message loop, and exit behavior |
 | `docs/ROADMAP.md` | Next milestones toward a game rebuild |
 | `reports/` | Small, retained baseline evidence |

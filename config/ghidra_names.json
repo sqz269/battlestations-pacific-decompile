@@ -1333,5 +1333,65 @@
     "address": "00bedb60",
     "name": "BSP_FrameClock_DisableFixedCounter",
     "evidence": "ECX clock, RET. Five-byte MOV byte[this+69],0;RET. No QPC sampling or origin/counter adjustment. Function created from verified raw bytes and typed semantic projection reconstructed."
+  },
+  {
+    "address": "00bec710",
+    "name": "BSP_TextQueue_CreateSentinel",
+    "evidence": "Allocate12-byte node and link next/previous to itself, RET; payload uninitialized. Typed C++ allocation, not original allocator ABI."
+  },
+  {
+    "address": "00bec7b0",
+    "name": "BSP_TextQueue_CreateNode",
+    "evidence": "Three stack arguments next/previous/event pointer; EAX allocated12-byte node, RET0Ch. Copy next, previous and two event bytes; finalpadding untouched. ECX unused. Host throwing new boundary."
+  },
+  {
+    "address": "00bed290",
+    "name": "BSP_TextQueue_IncreaseCount",
+    "evidence": "ECX list; unsignedincrement stack; RET4. Unsigned7fffffff-count comparison throws length_error list<T> too long before countupdate. Native SEH/exception object ABI not ported."
+  },
+  {
+    "address": "00bed370",
+    "name": "BSP_TextQueue_Append",
+    "evidence": "ECX list,eventpointer stack,RET4. Allocate node before countincrement, then sentinel.previous=node and priorlast.next=node. Host RAII cleans unlinked node on exception unlike native path. Two-byte record is value/keyflag."
+  },
+  {
+    "address": "00bec730",
+    "name": "BSP_TextQueue_Destroy",
+    "evidence": "ECX list,RET. Verified raw00bec730..777 resets sentinel links/count, frees every node via savednext, frees sentinel and clears pointer. Export prematurely ended at firstfree; raw continuation used for C++."
+  },
+  {
+    "address": "00bece90",
+    "name": "BSP_Platform_PopTextEvent",
+    "evidence": "ECX platform; two byteoutput pointers stack,RET8. Read firstevent value/keyflag, then erase via00bec990. Native empty invalidparameter handler replaced by explicitfalse in typed queue. Successful erase unlinks, frees, decrementscount; native iterator ABI unported."
+  },
+  {
+    "address": "00bf5020",
+    "name": "BSP_PhysicalStream_IsValid",
+    "evidence": "ECX stream,RET; AL tests handle+8 != INVALID_HANDLE_VALUE. Typed owning stream reconstruction; no VFS/pool ABI."
+  },
+  {
+    "address": "00bf4f90",
+    "name": "BSP_PhysicalStream_GetSize",
+    "evidence": "ECX stream,RET; EDX:EAX cached64-bit size+18. Typed projection returns samebits; no size refresh."
+  },
+  {
+    "address": "00bf4f20",
+    "name": "BSP_PhysicalStream_Seek",
+    "evidence": "ECX stream, signed64distance and DWORDorigin stack,RET0Ch. SetFilePointerEx writes cachedposition+10. Typed host returns explicit Win32 error; preserves output state, no normalization."
+  },
+  {
+    "address": "00bf5030",
+    "name": "BSP_PhysicalStream_Read",
+    "evidence": "ECX stream,destination/requested/optionalactualcount stack,RET0Ch. One synchronous ReadFile, actualcount initiallyzero; add countto64-bit position and returncount. Native failure callback unported; typed host reports Win32 error. InstalledDDS path checked."
+  },
+  {
+    "address": "00bf52a0",
+    "name": "BSP_PhysicalStream_Open",
+    "evidence": "ECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported."
+  },
+  {
+    "address": "00bf5090",
+    "name": "BSP_PhysicalStream_DeletingDestructor",
+    "evidence": "Native deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported."
   }
 ]

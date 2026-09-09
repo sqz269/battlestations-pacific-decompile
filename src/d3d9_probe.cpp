@@ -6,7 +6,7 @@
 #include "bsp/d3d9_vertex_layout.hpp"
 #include <cstring>
 #include <cstdio>
-#include <fstream>
+#include "bsp/physical_file.hpp"
 #include <vector>
 #include <limits>
 #include "bsp/d3d9_texture.hpp"
@@ -16,16 +16,22 @@ bool probe_shader_bindings(IDirect3DDevice9&, const char*);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 
-// Diagnostic file access and DLL import adapter, not the native asset manager.
+// Recovered physical read route with diagnostic size/short-read checks and DLL
+// import adapter. This is not the native VFS/memory-wrapper implementation.
 // The optional input is the single-level DXT1 atlas identified in ASSET_ENTRY.md.
 static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
-    std::ifstream file(path, std::ios::binary | std::ios::ate);
-    if (!file) return false;
-    const auto end = file.tellg();
+    bsp::PhysicalFile file;
+    DWORD error{};
+    if (!file.open_read_only_00bf52a0_fragment(path, error) || !file.valid_00bf5020()) return false;
+    const auto end = file.size_00bf4f90();
     if (end < 128 || end > (std::numeric_limits<UINT>::max)()) return false;
     std::vector<char> bytes(static_cast<std::size_t>(end));
-    file.seekg(0);
-    if (!file.read(bytes.data(), static_cast<std::streamsize>(bytes.size()))) return false;
+    std::uint32_t actual{};
+    if (!file.seek_00bf4f20(0, FILE_BEGIN, error)
+        || !file.read_00bf5030(bytes.data(), static_cast<std::uint32_t>(bytes.size()), actual, error)
+        || actual != bytes.size() || file.position() != end
+        || !file.close_00bf5090_fragment(error) || file.valid_00bf5020()) return false;
+    std::printf("Physical asset read: bytes=%u cached_position_matches_size=1 closed=1\n", actual);
     auto word = [&](std::size_t offset) {
         DWORD value{};
         std::memcpy(&value, bytes.data() + offset, sizeof(value));
