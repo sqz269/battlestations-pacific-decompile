@@ -1,6 +1,7 @@
 // Diagnostic host window only; this is not the reconstructed game window handler.
 #include "bsp/d3d9_startup.hpp"
 #include "bsp/d3d9_states.hpp"
+#include "bsp/d3d9_resources.hpp"
 #include <cstdio>
 
 int main() {
@@ -70,6 +71,32 @@ int main() {
                 vertex_filter, lock->depth == 0 && synchronization.nesting == 0, matched);
         }
         bsp::critical_section_destroy_owned_0041cc80(lock);
+    }
+    if (matched) {
+        IDirect3DSurface9* surface = nullptr;
+        bsp::D3D9SurfaceBinding binding{};
+        bsp::D3D9DynamicBuffers buffers{};
+        result = device->GetRenderTarget(0, &surface);
+        if (SUCCEEDED(result)) result = bsp::surface_initialize_00b3cc80(binding, surface);
+        if (surface) surface->Release(); // Binding must survive the getter reference.
+        D3DSURFACE_DESC retained_surface{};
+        if (SUCCEEDED(result)) result = binding.surface->GetDesc(&retained_surface);
+        if (SUCCEEDED(result)) result = bsp::create_dynamic_buffers_00b2aeb0(*device, buffers);
+        D3DVERTEXBUFFER_DESC vertices{};
+        D3DINDEXBUFFER_DESC indices{};
+        if (SUCCEEDED(result)) result = buffers.vertices->GetDesc(&vertices);
+        if (SUCCEEDED(result)) result = buffers.indices->GetDesc(&indices);
+        matched = SUCCEEDED(result) && retained_surface.Width == binding.width
+            && retained_surface.Height == binding.height && binding.width == 640 && binding.height == 480
+            && binding.format == D3DFMT_A8R8G8B8 && vertices.Size == 0x1000000
+            && indices.Size == 0x100000 && indices.Format == D3DFMT_INDEX16
+            && vertices.Usage == 0x208 && indices.Usage == 0x208
+            && vertices.Pool == D3DPOOL_DEFAULT && indices.Pool == D3DPOOL_DEFAULT;
+        std::printf("D3D9 resources: hr=0x%08lx surface=%ux%u vertex_bytes=%u "
+            "index_bytes=%u checked=%d\n", static_cast<unsigned long>(result),
+            binding.width, binding.height, vertices.Size, indices.Size, matched);
+        bsp::release_dynamic_buffers(buffers);
+        bsp::surface_release(binding);
     }
     if (swap_chain) swap_chain->Release();
     if (device) device->Release();

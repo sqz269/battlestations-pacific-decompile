@@ -228,5 +228,55 @@
     "address": "00b2abd0",
     "name": "BSP_D3D9Renderer_ProcessDeviceReset",
     "evidence": "Checks render thread ID and global pending/lost flags 0108d4b8/b9. TestCooperativeLevel handles DEVICELOST/DEVICENOTRESET; requires active focused platform window, releases state/resources, calls device Reset with stored presentation parameters, restores resources/default states on success. Dependencies not yet ported."
+  },
+  {
+    "address": "00b3cc80",
+    "name": "BSP_D3D9Surface_InitializeBinding",
+    "evidence": "thiscall RET 4h. Stores surface at +2ch without releasing prior pointer, AddRefs nonnull input, GetDesc copies Format to +18h, Width/Height to +1ch/+20h and MultiSampleType to +24h; leaves +28h unchanged. Null clears +18h..28h. Assembly resolves corrupt pseudocode stack locals. Constructor-use helper, not replacement assignment."
+  },
+  {
+    "address": "00b238d0",
+    "name": "BSP_D3D9Renderer_CaptureDefaultSurfaces",
+    "evidence": "Gets render target 0 and depth surface; constructs 34h surface wrappers via 00b3f630(surface,0,0), installs intrusive references at +197ch/+198ch, releases temporary wrapper/getter references, then binds depth via 00b21690. Assembly confirms COM ownership despite broken decompiler stack tracking. Full routine not ported."
+  },
+  {
+    "address": "00b3f630",
+    "name": "BSP_D3D9Surface_Construct",
+    "evidence": "34h wrapper with intrusive count +4h=1, vtable 00d619a0; calls surface initialize helper 00b3cc80, diagnostic singleton 00b3e730 and adjusts tracking global when flags 10h/100h set. Full constructor not ported."
+  },
+  {
+    "address": "00b4bbb0",
+    "name": "BSP_D3D9VertexBuffer_Construct",
+    "evidence": "2ch wrapper initialized with intrusive count1, remaining fields zero, final vtable 00d61e7c. Used before CreateVertexBuffer in renderer initialization."
+  },
+  {
+    "address": "00b4bb60",
+    "name": "BSP_D3D9IndexBuffer_Construct",
+    "evidence": "2ch wrapper initialized with intrusive count1, remaining fields zero, final vtable 00d61e58. Used before CreateIndexBuffer in renderer initialization."
+  },
+  {
+    "address": "00b4c370",
+    "name": "BSP_D3D9VertexBuffer_Attach",
+    "evidence": "thiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+  },
+  {
+    "address": "00b4c250",
+    "name": "BSP_D3D9IndexBuffer_Attach",
+    "evidence": "thiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+  },
+  {
+    "address": "00b4bab0",
+    "name": "BSP_D3D9VertexBuffer_Destruct",
+    "evidence": "Calls singleton 00b3e730, releases and clears COM buffer +28h, then base destructor 00b4b530. Full registry/base cleanup not ported."
+  },
+  {
+    "address": "00b4b900",
+    "name": "BSP_D3D9IndexBuffer_Destruct",
+    "evidence": "Calls singleton 00b3e730, releases and clears COM buffer +28h, then base destructor 00b4b490. Full registry/base cleanup not ported."
+  },
+  {
+    "address": "00b21690",
+    "name": "BSP_D3D9Renderer_BindDepthSurface",
+    "evidence": "Optional renderer guard around device virtual 9ch SetDepthStencilSurface; null wrapper binds null, otherwise uses surface at wrapper+2ch and increments counter this+1bcch. Not yet ported."
   }
 ]

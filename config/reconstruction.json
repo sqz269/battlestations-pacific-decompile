@@ -168,6 +168,13 @@
       "source": "src/d3d9_states.cpp",
       "status": "real_device_defaults_and_cache_probe_checked_single_thread",
       "abi_compatible": false
+    },
+    {
+      "address": "00b3cc80",
+      "name": "surface_initialize",
+      "source": "src/d3d9_resources.cpp",
+      "status": "real_surface_probe_checked",
+      "abi_compatible": false
     }
   ],
   "fragments": [
@@ -179,6 +186,14 @@
       "status": "real_d3d9_device_probe_checked",
       "abi_compatible": false,
       "remaining": "Timer, renderer state, resource wrappers, dynamic buffers and final initialization; full routine is not reconstructed."
+    },
+    {
+      "address": "00b2aeb0",
+      "name": "create_dynamic_buffers",
+      "source": "src/d3d9_resources.cpp",
+      "status": "real_buffer_descriptors_checked",
+      "abi_compatible": false,
+      "remaining": "Wrapper allocation/attachment, diagnostic registry and full initialization ordering remain unported. API creation calls extracted from 00b2b08d..00b2b163."
     }
   ]
 }

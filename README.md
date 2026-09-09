@@ -3,9 +3,9 @@
 An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
 `battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
 rebuild of the game. The saved program now reports 62,524 functions; its internal-function iterator
-exports 62,082 functions after recovering ten missing code targets. The ledger maps 24 native
+exports 62,082 functions after recovering ten missing code targets. The ledger maps 25 native
 routines to C++: math, the integer random generator, thread registration, the platform loop,
-and cached renderer defaults/guards, plus a separately tracked device-creation fragment.
+cached renderer defaults/guards and surface binding, plus two separately tracked renderer fragments.
 
 ## Build and test
 
@@ -29,7 +29,8 @@ pending XLive and application-frame implementations; it does not create the game
 `./build/win32/Release/bsp_d3d9_probe.exe` creates a real D3D9 device using the recovered
 prefix of renderer initialization, then queries its swap chain and releases it. This partial
 routine is tracked separately; resource setup and game rendering remain pending.
-It also checks cached defaults and balanced renderer locking; see
+It also checks cached defaults, balanced renderer locking, surface binding and dynamic buffer
+descriptions; see [resource ownership](docs/D3D9_RESOURCES.md),
 [D3D9 startup evidence](docs/D3D9_STARTUP.md) and [renderer states](docs/D3D9_STATES.md).
 
 ## Export the existing analysis
