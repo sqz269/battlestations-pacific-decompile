@@ -33,5 +33,33 @@ not been checked against native execution. No additional CTest cases were added.
 The device call sites were located through the CreateVertexDeclaration vtable
 offset 158h and checked in assembly, including byte/word truncation and the shared
 usage counters. Retained evidence is in `reports/hardware_vertex_layout_*`.
-Next: full logical stream allocation/lifetime and native renderer layout binding,
-then use these paths with recovered game resources and shader inputs.
+
+## Renderer binding and atlas integration
+
+`00b23f20` is a thiscall method with one logical layout argument (RET 4).
+It compares the renderer's cached layout at `+17b4h` before entering the optional
+guard, retains the replacement and releases the previous layout. For a nonnull
+replacement it obtains the native declaration through virtual slot `+8h` and
+calls device `SetVertexDeclaration` (vtable `+15ch`). A null replacement releases
+the logical cache without unbinding the device declaration. Every replacement,
+including null, increments renderer counter `+1bach`; identity skips do not.
+
+The concrete constructor `00b60cb0` installs vtable `00d62af4`; its `+8h` entry
+`00b5ff00` is exactly `mov eax,[ecx+40h]; ret`. This getter does not lazily create
+a declaration. The C++ binder preserves this behavior and uses shared ownership
+for the logical layout. Its HRESULT/S_FALSE return is a new interface; native
+code ignores the device HRESULT. Native intrusive reference counts, object ABI,
+and concurrent misuse are not reproduced by this interface.
+
+The installed-atlas probe now uploads its quad through the recovered logical
+vertex stream lock/unlock/bind path and draws with `00b21b40`, using this binder
+for a FLOAT4/POSITIONT plus FLOAT2/TEXCOORD declaration. It checks identity skip,
+null replacement, the retained device declaration and two replacement counts.
+The resulting BMP hash is unchanged from the earlier atlas probe. The Win32
+Release build, both existing CTests and the complete D3D9 probe passed; no new
+CTest was added. Byte comparisons and assembly are retained in
+`reports/vertex_layout_binding.json`.
+
+The host still projects recovered GUI coordinates into POSITIONT vertices and
+uses a diagnostic fixed-function material. Full native GUI ownership, material
+and generated shader integration remain necessary before a game rendering claim.

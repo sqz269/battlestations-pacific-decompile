@@ -146,6 +146,15 @@ HRESULT D3D9StateCache::bind_texture_00b24710(UINT sampler,
     return result;
 }
 
+HRESULT D3D9StateCache::bind_vertex_layout_00b23f20(std::shared_ptr<D3D9VertexLayout> value) {
+    if (vertex_layout_ == value) return S_FALSE;
+    Guard guard(*this);
+    vertex_layout_ = value;
+    const HRESULT result = value ? device_.SetVertexDeclaration(value->native()) : S_OK;
+    ++vertex_layout_calls_; // Native +1BACh, also counts null replacement.
+    return result;
+}
+
 void D3D9StateCache::invalidate() {
     Guard guard(*this);
     render_ = {};
@@ -153,6 +162,7 @@ void D3D9StateCache::invalidate() {
     render_block_.reset();
     sampler_block_.reset();
     textures_ = {};
+    vertex_layout_.reset();
     stream_frequencies_ = {};
     streams_ = {};
     indices_.reset();

@@ -113,7 +113,7 @@ bool probe_texture_atlas(IDirect3DDevice9& device, IDirect3DTexture9& texture,
     if (bound) bound->Release();
     if (SUCCEEDED(result)) result = device.SetVertexShader(nullptr);
     if (SUCCEEDED(result)) result = device.SetPixelShader(nullptr);
-    if (SUCCEEDED(result)) result = device.SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
+
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
     if (SUCCEEDED(result)) result = device.SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
@@ -138,10 +138,30 @@ bool probe_texture_atlas(IDirect3DDevice9& device, IDirect3DTexture9& texture,
         const auto& v = generated[i];
         quad[i] = {v.x * 960.0f - 0.5f, v.y * 960.0f - 0.5f, v.z, 1, v.u, v.v};
     }
+    auto physical = std::make_shared<bsp::VertexBufferBinding>();
+    physical->flags = 0x1000; physical->capacity = sizeof(quad);
+    auto stream = std::make_shared<bsp::LogicalVertexStream>();
+    stream->physical = physical; stream->flags = 0x1000; stream->tag = 0x40000001;
+    stream->declaration = std::make_shared<bsp::VertexDeclaration>();
+    stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT4, D3DDECLUSAGE_POSITIONT);
+    stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT2, D3DDECLUSAGE_TEXCOORD);
+    auto layout = std::make_shared<bsp::D3D9VertexLayout>();
+    layout->append_stream_00b48a00(stream->declaration);
+    if (SUCCEEDED(result)) result = bsp::vertex_buffer_recreate_00b492b0(*physical, device);
+    if (SUCCEEDED(result)) result = layout->create_if_missing_00b60a10(device);
+    void* mapped = nullptr;
+    if (SUCCEEDED(result)) result = state.lock_vertex_stream_00b49980(*stream, 4, 0, true, mapped);
+    if (SUCCEEDED(result)) {
+        std::memcpy(mapped, quad, sizeof(quad));
+        state.unlock_vertex_stream_00b49a80(*stream);
+        state.bind_vertex_stream_00b24840(0, stream);
+        result = state.bind_vertex_layout_00b23f20(layout);
+        if (SUCCEEDED(result) && state.bind_vertex_layout_00b23f20(layout) != S_FALSE) result = E_FAIL;
+    }
     if (SUCCEEDED(result)) result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xffff00ff, 1, 0);
     if (SUCCEEDED(result)) result = device.BeginScene();
     if (SUCCEEDED(result)) {
-        result = device.DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, quad, sizeof(Vertex));
+        result = state.draw_primitive_00b21b40({}, D3DPT_TRIANGLESTRIP, 0, 2);
         const HRESULT ended = device.EndScene();
         if (SUCCEEDED(result)) result = ended;
     }
@@ -166,8 +186,14 @@ bool probe_texture_atlas(IDirect3DDevice9& device, IDirect3DTexture9& texture,
         image.flush(); written = image.good();
         result = readback->UnlockRect();
     }
+    const HRESULT null_layout = state.bind_vertex_layout_00b23f20(nullptr);
+    IDirect3DVertexDeclaration9* retained_layout = nullptr;
+    const HRESULT got_layout = device.GetVertexDeclaration(&retained_layout);
+    const bool layout_checked = SUCCEEDED(null_layout) && SUCCEEDED(got_layout)
+        && retained_layout == layout->native() && state.vertex_layout_calls() == 2;
+    if (retained_layout) retained_layout->Release();
     const HRESULT unbound = state.bind_texture_00b24710(0, nullptr);
-    bool matched = SUCCEEDED(result) && SUCCEEDED(unbound) && written
+    bool matched = SUCCEEDED(result) && SUCCEEDED(unbound) && written && layout_checked
         && state.texture_binding_calls() == 2;
     bound = nullptr;
     if (FAILED(device.GetTexture(0, &bound)) || bound) matched = false;

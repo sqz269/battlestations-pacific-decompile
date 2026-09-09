@@ -938,5 +938,20 @@
     "address": "00b38b50",
     "name": "BSP_ShaderBuilder_AppendStructDeclaration",
     "evidence": "thiscall ECX builder; unsigned start index, name string pointer, field-list pointer, semantics flag, allow_vpos flag; RET14h. newline struct NAME newline { newline; tab-prefixed newline-terminated field declarations; optional tab float2 vPos; newline; }; followed by two newlines  Typed C++ formatter implemented; ProbeInput exacttext and actualD3DCompile/bind checked. Complete shaderbuilder remains unported. See docs/SHADER_SOURCE_GENERATION.md."
+  },
+  {
+    "address": "00b23f20",
+    "name": "BSP_D3D9Renderer_BindVertexLayout",
+    "evidence": "Thiscall RET4. Renderer+17B4h logical identity check before optional guard. Retain new/release old layout; nonnull virtual+8 returns COM declaration then device+15Ch SetVertexDeclaration. Null replacement releases cached layout without API unbind. Renderer+1BACh increments for replacements including null. Typed shared ownership port exposes HRESULT; native ignores API result. Atlas logical stream draw and identity/null readback checked. See docs/HARDWARE_VERTEX_LAYOUT.md."
+  },
+  {
+    "address": "00b5ff00",
+    "name": "BSP_D3D9VertexLayout_GetNativeDeclaration",
+    "evidence": "Four-byte thiscall getter MOV EAX,[ECX+40h]; RET. Vtable00d62af4 slot+8 installed by constructor00b60cb0. Direct borrowed COM declaration pointer, no lazy creation. Original disk bytes match saved Ghidra. Getter used by renderer00b23f20."
+  },
+  {
+    "address": "00b60cb0",
+    "name": "BSP_D3D9VertexLayout_ConstructFromStreams",
+    "evidence": "Constructor calls base00b48c00, clears native declaration+40h, installs vtable00d62af4 and calls creation00b60790. Vtable+8 is direct getter00b5ff00. Descriptive name; full native constructor/registry lifetime not ported."
   }
 ]

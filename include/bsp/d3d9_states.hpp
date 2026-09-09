@@ -3,6 +3,7 @@
 #include "bsp/random_threads.hpp"
 #include "bsp/d3d9_buffers.hpp"
 #include "bsp/vertex_declaration.hpp"
+#include "bsp/d3d9_vertex_layout.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -97,6 +98,10 @@ public:
     // identical logical pointer; otherwise cache updates even on API failure.
     HRESULT bind_texture_00b24710(UINT sampler, std::shared_ptr<LogicalTexture>);
     std::uint32_t texture_binding_calls() const { return texture_binding_calls_; }
+    // Native RET4: identity skip precedes guard. Null releases the retained
+    // layout without calling SetVertexDeclaration; changed requests count.
+    HRESULT bind_vertex_layout_00b23f20(std::shared_ptr<D3D9VertexLayout>);
+    std::uint32_t vertex_layout_calls() const { return vertex_layout_calls_; }
     void initialize_defaults_00b26170();
     void set_stream_frequency_00b24a40(UINT stream, UINT frequency);
     // S_FALSE means the native draw gate skipped the call; native ignores HRESULT.
@@ -162,6 +167,8 @@ private:
     std::uint32_t index_binding_calls_{};
     std::array<std::shared_ptr<LogicalTexture>, 20> textures_{};
     std::uint32_t texture_binding_calls_{};
+    std::shared_ptr<D3D9VertexLayout> vertex_layout_;
+    std::uint32_t vertex_layout_calls_{};
     std::uint32_t render_calls_{};
     std::uint32_t sampler_calls_{};
     std::shared_ptr<RenderStateBlock> render_block_;   // Native renderer +34h.
