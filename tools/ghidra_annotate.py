@@ -11,10 +11,17 @@ from ghidra_export import Client, ROOT, write
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply', action='store_true')
+    parser.add_argument('--addresses', nargs='+', help='Apply only selected ledger addresses')
     args = parser.parse_args()
     client = Client(json.loads((ROOT / 'config/target.json').read_text()))
     client.verify()
     entries = json.loads((ROOT / 'config/ghidra_names.json').read_text())
+    if args.addresses:
+        selected = {f'{int(address, 16):08x}' for address in args.addresses}
+        unknown = selected - {row['address'] for row in entries}
+        if unknown:
+            parser.error(f'Addresses not present in naming ledger: {sorted(unknown)}')
+        entries = [row for row in entries if row['address'] in selected]
     if not args.apply:
         print(json.dumps(entries, indent=2))
         return

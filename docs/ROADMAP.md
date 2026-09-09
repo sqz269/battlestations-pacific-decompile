@@ -13,7 +13,11 @@ Confirmed the WinMain calling convention, application lifecycle boundaries, and 
 per-thread random subsystem. The integer PRNG and registration/lock lifecycle now compile;
 the stream matches original code over 1,500 outputs. See `STARTUP_RANDOM.md`.
 Ghidra has 24 useful names with evidence comments; its incorrect CRT free noreturn flag is corrected.
-Next, resolve the platform singleton at `0109cf04` and its virtual loop slot `+24h`.
+Resolved the concrete Windows vtable at `00d68cc4`; its loop is `00bec1a0`, now ported with
+explicit external callback interfaces and a real-message-queue probe. Recovered eight missing
+vtable-target functions and named the application frame method. See `PLATFORM_LOOP.md`.
+Next, recover the window-procedure thunk and window/device initialization dependencies, and
+trace the close-request-to-application-exit path before wiring a complete window lifecycle.
 
 1. WinMain `008f81f0`: confirmed four stack arguments and `RET 10h`; prototype updated in Ghidra.
 2. Export its direct initialization callees, starting with `00737970`, `0073d410`, and

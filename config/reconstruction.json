@@ -1,23 +1,138 @@
 {
   "game_rebuilt": false,
   "functions": [
-    {"address": "00401170", "name": "abs", "source": "src/math.cpp", "status": "semantic_native_fixture_tested", "abi_compatible": false},
-    {"address": "00401c20", "name": "cross_reversed", "source": "src/math.cpp", "status": "semantic_native_fixture_tested", "abi_compatible": false},
-    {"address": "00401cb0", "name": "subtract_reversed", "source": "src/math.cpp", "status": "semantic_native_fixture_tested", "abi_compatible": false},
-    {"address": "00401cd0", "name": "scale", "source": "src/math.cpp", "status": "semantic_native_fixture_tested", "abi_compatible": false},
-    {"address": "00401cf0", "name": "length_squared", "source": "src/math.cpp", "status": "semantic_native_fixture_tested", "abi_compatible": false},
-    {"address": "00bd2e00", "name": "random_construct_default", "source": "src/random.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "00bf0cf0", "name": "random_seed", "source": "src/random.cpp", "status": "native_stream_fixture_tested", "abi_compatible": false},
-    {"address": "00bf0d20", "name": "random_refill", "source": "src/random.cpp", "status": "native_stream_fixture_tested", "abi_compatible": false},
-    {"address": "00ba2c20", "name": "random_next_u32", "source": "src/random.cpp", "status": "native_stream_fixture_tested", "abi_compatible": false},
-    {"address": "00bd1860", "name": "critical_section_create", "source": "src/random_threads.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "0041cc80", "name": "critical_section_destroy_owned", "source": "src/random_threads.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "00bd2e20", "name": "random_threads_initialize", "source": "src/random_threads.cpp", "status": "startup_semantics_in_constructor", "abi_compatible": false},
-    {"address": "00bd2fe0", "name": "random_threads_register_current", "source": "src/random_threads.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "00bd3050", "name": "random_threads_unregister_current", "source": "src/random_threads.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "00bd30d0", "name": "random_threads_shutdown", "source": "src/random_threads.cpp", "status": "startup_semantics_in_destructor", "abi_compatible": false},
-    {"address": "00bd2ed0", "name": "random_threads_get_state", "source": "src/random_threads.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "00bd2fc0", "name": "random_threads_next_u32", "source": "src/random_threads.cpp", "status": "startup_probe_checked", "abi_compatible": false},
-    {"address": "00bd2fd0", "name": "random_threads_seed", "source": "src/random_threads.cpp", "status": "build_checked", "abi_compatible": false}
+    {
+      "address": "00401170",
+      "name": "abs",
+      "source": "src/math.cpp",
+      "status": "semantic_native_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00401c20",
+      "name": "cross_reversed",
+      "source": "src/math.cpp",
+      "status": "semantic_native_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00401cb0",
+      "name": "subtract_reversed",
+      "source": "src/math.cpp",
+      "status": "semantic_native_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00401cd0",
+      "name": "scale",
+      "source": "src/math.cpp",
+      "status": "semantic_native_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00401cf0",
+      "name": "length_squared",
+      "source": "src/math.cpp",
+      "status": "semantic_native_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd2e00",
+      "name": "random_construct_default",
+      "source": "src/random.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bf0cf0",
+      "name": "random_seed",
+      "source": "src/random.cpp",
+      "status": "native_stream_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bf0d20",
+      "name": "random_refill",
+      "source": "src/random.cpp",
+      "status": "native_stream_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00ba2c20",
+      "name": "random_next_u32",
+      "source": "src/random.cpp",
+      "status": "native_stream_fixture_tested",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd1860",
+      "name": "critical_section_create",
+      "source": "src/random_threads.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "0041cc80",
+      "name": "critical_section_destroy_owned",
+      "source": "src/random_threads.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd2e20",
+      "name": "random_threads_initialize",
+      "source": "src/random_threads.cpp",
+      "status": "startup_semantics_in_constructor",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd2fe0",
+      "name": "random_threads_register_current",
+      "source": "src/random_threads.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd3050",
+      "name": "random_threads_unregister_current",
+      "source": "src/random_threads.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd30d0",
+      "name": "random_threads_shutdown",
+      "source": "src/random_threads.cpp",
+      "status": "startup_semantics_in_destructor",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd2ed0",
+      "name": "random_threads_get_state",
+      "source": "src/random_threads.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd2fc0",
+      "name": "random_threads_next_u32",
+      "source": "src/random_threads.cpp",
+      "status": "startup_probe_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bd2fd0",
+      "name": "random_threads_seed",
+      "source": "src/random_threads.cpp",
+      "status": "build_checked",
+      "abi_compatible": false
+    },
+    {
+      "address": "00bec1a0",
+      "name": "platform_run_loop",
+      "source": "src/platform_loop.cpp",
+      "status": "real_queue_probe_checked_external_callbacks_pending",
+      "abi_compatible": false
+    }
   ]
 }

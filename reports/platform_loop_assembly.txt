@@ -1,0 +1,46 @@
+00bec1a0: SUB ESP,0x1c
+00bec1a3: PUSH EBX
+00bec1a4: MOV EBX,dword ptr [0x00ce233c]
+00bec1aa: PUSH EBP
+00bec1ab: MOV EBP,dword ptr [0x00ce2338]
+00bec1b1: PUSH ESI
+00bec1b2: PUSH EDI
+00bec1b3: MOV EDI,dword ptr [0x00ce2334]
+00bec1b9: MOV ESI,ECX
+00bec1bb: JMP 0x00bec1c0
+00bec1c0: PUSH 0x1
+00bec1c2: PUSH 0x0
+00bec1c4: PUSH 0x0
+00bec1c6: PUSH 0x0
+00bec1c8: LEA EAX,[ESP + 0x20]
+00bec1cc: PUSH EAX
+00bec1cd: CALL EDI
+00bec1cf: TEST EAX,EAX
+00bec1d1: JZ 0x00bec1f1
+00bec1d3: LEA ECX,[ESP + 0x10]
+00bec1d7: PUSH ECX
+00bec1d8: CALL 0x00c2f1d2
+00bec1dd: TEST EAX,EAX
+00bec1df: JNZ 0x00bec200
+00bec1e1: LEA EDX,[ESP + 0x10]
+00bec1e5: PUSH EDX
+00bec1e6: CALL EBX
+00bec1e8: LEA EAX,[ESP + 0x10]
+00bec1ec: PUSH EAX
+00bec1ed: CALL EBP
+00bec1ef: JMP 0x00bec200
+00bec1f1: CMP byte ptr [ESI + 0x42],0x0
+00bec1f5: JZ 0x00bec200
+00bec1f7: MOV EDX,dword ptr [ESI]
+00bec1f9: MOV EAX,dword ptr [EDX + 0x20]
+00bec1fc: MOV ECX,ESI
+00bec1fe: CALL EAX
+00bec200: CMP byte ptr [ESI + 0x181],0x0
+00bec207: JZ 0x00bec1c0
+00bec209: POP EDI
+00bec20a: MOV byte ptr [ESI + 0x43],0x1
+00bec20e: POP ESI
+00bec20f: POP EBP
+00bec210: POP EBX
+00bec211: ADD ESP,0x1c
+00bec214: RET

@@ -2,9 +2,9 @@
 
 An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
 `battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
-rebuild of the game. The saved program reports 62,514 functions; its internal-function iterator
-exports 62,072 functions. The ledger maps 18 native routines to C++: five math routines,
-the integer random generator, and its startup/thread-registration dependencies.
+rebuild of the game. The saved program now reports 62,522 functions; its internal-function iterator
+exports 62,080 functions after recovering eight missing vtable targets. The ledger maps 19 native
+routines to C++: math, the integer random generator, thread registration, and the platform loop.
 
 ## Build and test
 
@@ -20,6 +20,10 @@ builds with warnings as errors, and runs CTest. It does not launch or modify the
 
 Run `./build/win32/Release/bsp_startup_probe.exe` for the reconstructed random-subsystem
 initialization, registration, draws, unregister, and cleanup path. It does not start the engine.
+
+`./build/win32/Release/bsp_platform_probe.exe` exercises the reconstructed platform loop against
+the real Windows thread-message queue. Its probe callbacks are explicitly separate from the
+pending XLive and application-frame implementations; it does not create the game window.
 
 ## Export the existing analysis
 
@@ -79,6 +83,7 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `config/ghidra_names.json` | Descriptive function names and supporting evidence |
 | `docs/BASELINE.md` | Verified initial findings and validation limits |
 | `docs/STARTUP_RANDOM.md` | Startup path, PRNG/thread layout and current limits |
+| `docs/PLATFORM_LOOP.md` | Concrete Windows vtable, message loop, and exit behavior |
 | `docs/ROADMAP.md` | Next milestones toward a game rebuild |
 | `reports/` | Small, retained baseline evidence |
 | `exports/`, `local/`, `build/` | Ignored generated analysis, local fixtures, and builds |
