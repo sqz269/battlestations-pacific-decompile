@@ -1,0 +1,31 @@
+{
+  "evidence": [
+    {
+      "address": "00b437f0",
+      "length": 449,
+      "sha256": "748a8603234af16034e6c3b279f66e26766b7f10c66ba5eddf0e609f378b6cb2",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00b439c0",
+      "length": 320,
+      "sha256": "bd2f27d04235ec3d4a7b887575d021a32ab62932785613b20f2b153f3912a59d",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00b579b0",
+      "length": 402,
+      "sha256": "edc97aa70a68a1dabe863b98270c6f4aaee54523b46e0a503a54c08fd768c52a",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00b585a0",
+      "length": 3172,
+      "scope": "constructor prefix through final render-state registration; excludes sampler/stage tables",
+      "sha256": "4af1c6f37a9f010ca40d402c3a48aa3480d1d6f343c4b8b0a5b5c174862e804f",
+      "disk_matches_ghidra": true
+    }
+  ],
+  "validation": "Installed debug Combiners selects slot0 dummy.shfx through explicit resolver, states [{14,0},{7,0}] in registry order; both D3D9 values readback0; expected shader pixels and restore pass",
+  "limits": "Normal-mode fixture only; native hash iteration, malformed tables, float-state exceptional payloads, registry ownership and full material lifecycle unvalidated"
+}

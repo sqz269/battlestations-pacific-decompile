@@ -15,7 +15,8 @@
 #include <cstring>
 
 namespace {
-bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& state) {
+bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& state,
+    const std::vector<bsp::ShaderLuaRenderState>& render_states) {
     IDirect3DStateBlock9* saved = nullptr;
     IDirect3DSurface9* old_target = nullptr;
     IDirect3DSurface9* old_depth = nullptr;
@@ -41,6 +42,14 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
         {D3DRS_SRGBWRITEENABLE, FALSE}, {D3DRS_COLORWRITEENABLE, 15}}) {
         if (SUCCEEDED(result)) result = device.SetRenderState(setting.first, setting.second);
     }
+    auto material_states = std::make_shared<bsp::RenderStateBlock>();
+    for (const auto& entry : render_states)
+        material_states->states.push_back({static_cast<D3DRENDERSTATETYPE>(entry.state), entry.value});
+    if (SUCCEEDED(result)) state.bind_render_state_block_00b27a80(material_states);
+    DWORD depth_write{}, depth_enable{};
+    if (SUCCEEDED(result)) result = device.GetRenderState(D3DRS_ZWRITEENABLE, &depth_write);
+    if (SUCCEEDED(result)) result = device.GetRenderState(D3DRS_ZENABLE, &depth_enable);
+    if (SUCCEEDED(result) && (depth_write != 0 || depth_enable != 0)) result = E_FAIL;
     float vertex_constants[77 * 4]{};
     bsp::CameraState scene_camera;
     auto& camera = scene_camera.projection;
@@ -189,6 +198,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
             if (c == '\\') c = '/';
             if (c >= 'A' && c <= 'Z') c = static_cast<char>(c + ('a' - 'A'));
         }
+        if (path == "dummy.shfx") path = "shaderfx/lights/dummy.shfx"; // Explicit asset resolver mapping.
         if (path != "scripts/fundamentals.lua" && path != "shaderfx/dx9_lua.inc"
             && path != "shaderfx/common/debugshader.shfx" && path != "shaderfx/lights/dummy.shfx") {
             error = "Unmapped shader asset: " + requested; return false;
@@ -202,12 +212,18 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     bsp::ShaderLuaCode debug_script, dummy_script;
     std::string script_error;
     const bool scripts_loaded = bsp::load_shader_lua_code(resolver, "shaderfx/common/debugshader.shfx",
-        false, {}, debug_script, script_error) && bsp::load_shader_lua_code(resolver,
-        "shaderfx/lights/dummy.shfx", false, {}, dummy_script, script_error);
+        false, {}, debug_script, script_error) && !debug_script.combiners[0].empty()
+        && bsp::load_shader_lua_code(resolver, debug_script.combiners[0], false, {}, dummy_script, script_error);
     if (!scripts_loaded) { std::fprintf(stderr, "%s\n", script_error.c_str()); return false; }
     std::printf("Installed Lua shaders: inputs=%zu interpolators=%zu debug_chunks=%zu dummy_chunks=%zu\n",
         debug_script.vertex_inputs.size(), debug_script.interpolators.size(),
         debug_script.executed_paths.size(), dummy_script.executed_paths.size());
+    std::printf("Lua normal-mode combiner: %s\n", debug_script.combiners[0].c_str());
+    const bool states_match = debug_script.render_states.size() == 2
+        && debug_script.render_states[0].state == D3DRS_ZWRITEENABLE && debug_script.render_states[0].value == 0
+        && debug_script.render_states[1].state == D3DRS_ZENABLE && debug_script.render_states[1].value == 0;
+    std::printf("Lua debug render states: native_order_and_ids=%d\n", states_match);
+    if (!states_match) return false;
 
     // Use the installed compiler and the SDK declaration rather than inventing
     // shader bytecode or a private D3DX buffer/assembler ABI.
@@ -443,7 +459,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
             && state.vertex_shader_calls() == 1 && state.pixel_shader_calls() == 1;
         if (observed_vertex) observed_vertex->Release();
         if (observed_pixel) observed_pixel->Release();
-        if (matched) matched = draw_generated_debug_pair(device, state);
+        if (matched) matched = draw_generated_debug_pair(device, state, debug_script.render_states);
         result = state.bind_vertex_shader_00b21d10(nullptr);
         if (SUCCEEDED(result)) result = state.bind_pixel_shader_00b21c20(nullptr);
         observed_vertex = nullptr;

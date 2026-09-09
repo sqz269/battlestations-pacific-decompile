@@ -1,5 +1,6 @@
 #include "bsp/shader_lua.hpp"
 #include <cmath>
+#include <cstring>
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
@@ -55,6 +56,82 @@ bool integer_value(lua_State* state, int index, bool strict, std::int32_t& resul
     result = static_cast<std::int32_t>(rounded);
     return true;
 }
+bool integer_key(lua_State* state, int index) {
+    std::int32_t key{};
+    return lua_type(state, index) == LUA_TNUMBER && integer_value(state, index, true, key)
+        && static_cast<float>(lua_tonumber(state, index)) == static_cast<float>(key);
+}
+bool read_render_states(lua_State* state, std::vector<ShaderLuaRenderState>& output, std::string& error) {
+    struct Definition { const char* key; std::uint32_t id, tag; };
+    const Definition definitions[] = {
+#include "shader_render_state_registry.inc"
+    };
+    const int saved = lua_gettop(state);
+    lua_getfield(state, -1, "RenderStates");
+    if (!lua_istable(state, -1)) { lua_settop(state, saved); return true; }
+    for (const auto& definition : definitions) {
+        lua_getfield(state, -1, definition.key);
+        const bool numeric = lua_type(state, -1) == LUA_TNUMBER;
+        lua_pop(state, 1);
+        if (!numeric) continue;
+        lua_getfield(state, -1, definition.key); // Native performs a fresh lookup after type checking.
+        std::uint32_t bits{};
+        if (definition.tag == 0) {
+            std::int32_t value{};
+            if (!integer_value(state, -1, false, value)) { error = "Unsupported render-state integer"; return false; }
+            bits = static_cast<std::uint32_t>(value);
+        } else {
+            const float value = static_cast<float>(lua_tonumber(state, -1));
+            std::memcpy(&bits, &value, sizeof(bits));
+        }
+        lua_pop(state, 1);
+        bool existing = false;
+        for (const auto& entry : output) if (entry.state == definition.id) existing = true;
+        if (!existing) output.push_back({definition.id, bits});
+    }
+    lua_settop(state, saved);
+    return true;
+}
+bool read_combiners(lua_State* state, std::array<std::string, 14>& output, std::string& error) {
+    const int saved = lua_gettop(state);
+    lua_getfield(state, -1, "Combiners");
+    if (!lua_istable(state, -1)) { lua_settop(state, saved); return true; }
+    const int list = lua_gettop(state);
+    lua_pushnil(state);
+    while (lua_next(state, list)) {
+        if (integer_key(state, -2)) {
+            if (!lua_istable(state, -1)) { error = "Combiner value is not a table"; return false; }
+            const int record = lua_gettop(state);
+            unsigned ordinal = 0;
+            std::int32_t mode{};
+            bool have_mode = false;
+            std::string name;
+            lua_pushnil(state);
+            while (lua_next(state, record)) {
+                if (integer_key(state, -2)) {
+                    if (ordinal == 0) {
+                        mode = 13;
+                        if (lua_type(state, -1) == LUA_TNUMBER && !integer_value(state, -1, true, mode)) {
+                            error = "Unsupported combiner mode conversion"; return false;
+                        }
+                        have_mode = true;
+                    } else if (ordinal == 1 && lua_type(state, -1) == LUA_TSTRING) {
+                        name = lua_tostring(state, -1);
+                    }
+                }
+                ++ordinal; // Unlike field records, every entry advances native ordinal.
+                lua_pop(state, 1);
+            }
+            if (!have_mode || mode < 0 || static_cast<std::size_t>(mode) >= output.size()) {
+                error = "Combiner has no valid destination slot"; return false;
+            }
+            output[static_cast<std::size_t>(mode)] = std::move(name);
+        }
+        lua_pop(state, 1);
+    }
+    lua_settop(state, saved);
+    return true;
+}
 bool read_fields(lua_State* state, const char* key, std::vector<ShaderField>& output, std::string& error) {
     const int saved = lua_gettop(state);
     lua_getfield(state, -1, key);
@@ -69,10 +146,7 @@ bool read_fields(lua_State* state, const char* key, std::vector<ShaderField>& ou
         unsigned ordinal = 0;
         lua_pushnil(state);
         while (lua_next(state, record)) {
-            std::int32_t integer_key{};
-            const bool accepted = lua_type(state, -2) == LUA_TNUMBER
-                && integer_value(state, -2, true, integer_key)
-                && static_cast<float>(lua_tonumber(state, -2)) == static_cast<float>(integer_key);
+            const bool accepted = integer_key(state, -2);
             if (accepted) {
                 if (ordinal == 0) field.name = lua_type(state, -1) == LUA_TSTRING ? lua_tostring(state, -1) : "undef";
                 else if (ordinal < 5) {
@@ -131,7 +205,9 @@ bool load_shader_lua_code(const ShaderScriptResolver& resolver, const std::strin
             loaded.pixel_profile = string_field(state, "PSVersion");
             loaded.executed_paths = context.paths;
             ok = read_fields(state, "VertexInput", loaded.vertex_inputs, context.error)
-                && read_fields(state, "Interpolators", loaded.interpolators, context.error);
+                && read_fields(state, "Interpolators", loaded.interpolators, context.error)
+                && read_combiners(state, loaded.combiners, context.error)
+                && read_render_states(state, loaded.render_states, context.error);
         }
     }
     lua_close(state);

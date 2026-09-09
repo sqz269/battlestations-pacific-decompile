@@ -20,8 +20,8 @@ additional-content overlays and cached fundamentals provenance remain unported.
 The diagnostic resolver derives the installation root from the supplied atlas
 DDS path. It maps only fundamentals.lua, dx9_lua.inc, common/debugshader.shfx and
 lights/dummy.shfx. It does not implement a general asset resolver or infer that
-all combiners reside in lights. The selected dummy combiner remains an explicit
-fixture choice until native Combiners table conversion and loading are recovered.
+all combiners reside in lights. The probe selects normal mode0 from the evaluated Combiners slots. Basename
+resolution remains an explicit fixture mapping; see SHADER_COMBINERS.md.
 
 The adapter extracts Constants, VS, PS, VSVersion and PSVersion only when their
 Lua type is exactly string. Code strings retain their byte lengths; absent code
@@ -48,6 +48,10 @@ Without an atlas path the D3D9 probe explicitly skips shader asset checks. With
 the documented installed path, it exercises the complete adapter route above.
 The reconstructed-function count does not include upstream Lua or claim a full
 native shader loader: this integration is recorded as a descriptor fragment.
-Remaining work includes descriptor flags, sampler/constants metadata, render
-states, combiner selection/ownership, full file resolution and material/startup
+Remaining work includes descriptor flags, sampler/constants metadata, combiner
+ownership/pass creation, full file resolution and material/startup
 integration. The game rebuild is not runnable yet.
+
+Follow-up: Combiners and RenderStates conversion now feed the installed-asset
+probe. Read SHADER_COMBINERS.md and SHADER_RENDER_STATE_TABLE.md for exact
+iteration/default/lookup rules and current validation boundaries.

@@ -3,16 +3,20 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include <array>
 #include "bsp/shader_source.hpp"
 
 namespace bsp {
 // Host resolver supplies native-requested names explicitly; no guessed overlays.
 using ShaderScriptResolver = std::function<bool(const std::string&, std::string&, std::string&)>;
+struct ShaderLuaRenderState { std::uint32_t state, value; };
 struct ShaderLuaCode {
     std::string constants, vertex, pixel;
     std::optional<std::string> vertex_profile, pixel_profile;
     std::vector<std::string> executed_paths;
     std::vector<ShaderField> vertex_inputs, interpolators;
+    std::array<std::string, 14> combiners; // native descriptor+48: eight-byte string slots
+    std::vector<ShaderLuaRenderState> render_states;
 };
 // Adapter for00b6a020/00b69d40 and code-string portion of00b43b00.
 // Opens base only, PC=true, supplied X360COMP/REGION, fundamentals then descriptor.

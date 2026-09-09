@@ -1183,5 +1183,25 @@
     "address": "00b573f0",
     "name": "BSP_ShaderField_FromLuaTable",
     "evidence": "lua_next inner table; accepts only NUMBER keys whose float32 value equals signed32-truncated value. Accepted ordinal0..4, not actualkey: name/stringelseundef; type/coercing number; count/exactNUMBERelse0; semantic/coercing number; index/exactNUMBERelse0. Numericvalues spillfloat32 then truncate; name C-string truncatesNUL. Mask0,indexdefault0; missing type/count/semantic uninitializednativevalues. Host adapter src/shader_lua.cpp uses stockLua5.1.1 lua_next and explicit malformed/bounds errors; installed debug/dummy field extraction and generated draw pass. Native allocator, arbitrary hash order and conversion exceptions unvalidated. See docs/SHADER_FIELD_TABLES.md and docs/SHADER_LUA_ADAPTER.md."
+  },
+  {
+    "address": "00b437f0",
+    "name": "BSP_ShaderDescriptor_ReadCombinerEntry",
+    "evidence": "Two stackargs destination14stringarray/Luaentry; RET8. Inner lua_next: integer-key gate, but ordinal advances EVERY entry. ordinal0 mode exactNUMBER else13; ordinal1 exactSTRING elseempty; missingordinal0 leaves nativeindexuninitialized. Writes string at mode*8, no bounds check; duplicates last wins. Adapter src/shader_lua.cpp verified installednormalcombiner and2renderstates throughdevice/pixelreadback. Native malformednumeric/allocator/registryobject andfullmaterialABI unported. See docs/SHADER_COMBINERS.md, docs/SHADER_RENDER_STATE_TABLE.md and reports/shader_combiner_states.json."
+  },
+  {
+    "address": "00b439c0",
+    "name": "BSP_ShaderDescriptor_ReadCombinerTable",
+    "evidence": "ECX descriptor passthrough and three stackargs destinationslots/Shaderreference/fieldname; RET0Ch. Missing/nontable leaves slotsunchanged; outerlua_next accepts integer-numberkeys only, eachvalue calls00b437f0. Adapter src/shader_lua.cpp verified installednormalcombiner and2renderstates throughdevice/pixelreadback. Native malformednumeric/allocator/registryobject andfullmaterialABI unported. See docs/SHADER_COMBINERS.md, docs/SHADER_RENDER_STATE_TABLE.md and reports/shader_combiner_states.json."
+  },
+  {
+    "address": "00b579b0",
+    "name": "BSP_ShaderDescriptor_ReadRenderStates",
+    "evidence": "Three stackargs outputlist/registry/Luareference RET0Ch. Iterate definitionregistry order; exactNUMBER gate on first lookup, then fresh lookup and numericcoercion:tag0 float32 signedtruncate DWORD,tag1 float32bitcast. AppendUnique00b567b0 firststateIDwins; unknown keys ignored. Adapter src/shader_lua.cpp verified installednormalcombiner and2renderstates throughdevice/pixelreadback. Native malformednumeric/allocator/registryobject andfullmaterialABI unported. See docs/SHADER_COMBINERS.md, docs/SHADER_RENDER_STATE_TABLE.md and reports/shader_combiner_states.json."
+  },
+  {
+    "address": "00b585a0",
+    "name": "BSP_ShaderStateDefinitions_Initialize",
+    "evidence": "Constructor registers31 ordered render definitions atmanager+4 via00b58200/00b58050; then separate sampler+10/stage+1C registries. ZWRITE->14, ZTEST->7; noZENABLE key. DEPTHBIAS195 andSLOPESCALEDEPTHBIAS175 usefloattag1; other29 integer0. Only renderregistryprojected. Adapter src/shader_lua.cpp verified installednormalcombiner and2renderstates throughdevice/pixelreadback. Native malformednumeric/allocator/registryobject andfullmaterialABI unported. See docs/SHADER_COMBINERS.md, docs/SHADER_RENDER_STATE_TABLE.md and reports/shader_combiner_states.json."
   }
 ]

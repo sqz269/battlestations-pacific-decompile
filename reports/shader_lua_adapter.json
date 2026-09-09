@@ -31,7 +31,19 @@
     "color0_usage": 15,
     "draw_center": "ff407fbf",
     "draw_outside": "ff000000",
-    "state_restored": true
+    "state_restored": true,
+    "normal_combiner": "dummy.shfx",
+    "render_states": [
+      {
+        "state": 14,
+        "value": 0
+      },
+      {
+        "state": 7,
+        "value": 0
+      }
+    ],
+    "depth_state_device_readback": true
   },
-  "limitations": "Stock runtime/explicit four-path resolver; no native hash-order/ABI equivalence, overlay resolution, full flags/states/combiners/samplers/material lifecycle"
+  "limitations": "Stock runtime/explicit path resolver; no native hash-order/ABI equivalence, overlay resolution, full flags/samplers/constants metadata or material lifecycle"
 }
