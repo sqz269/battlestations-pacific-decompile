@@ -5,6 +5,96 @@
 #include <cstdio>
 #include <cstring>
 
+namespace {
+bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& state) {
+    IDirect3DStateBlock9* saved = nullptr;
+    IDirect3DSurface9* old_target = nullptr;
+    IDirect3DSurface9* old_depth = nullptr;
+    IDirect3DSurface9* target = nullptr;
+    IDirect3DSurface9* readback = nullptr;
+    HRESULT result = device.CreateStateBlock(D3DSBT_ALL, &saved);
+    if (SUCCEEDED(result)) result = device.GetRenderTarget(0, &old_target);
+    if (SUCCEEDED(result)) {
+        const HRESULT depth_result = device.GetDepthStencilSurface(&old_depth);
+        if (FAILED(depth_result) && depth_result != D3DERR_NOTFOUND) result = depth_result;
+    }
+    if (SUCCEEDED(result)) result = device.CreateRenderTarget(64, 64, D3DFMT_A8R8G8B8,
+        D3DMULTISAMPLE_NONE, 0, FALSE, &target, nullptr);
+    if (SUCCEEDED(result)) result = device.CreateOffscreenPlainSurface(64, 64, D3DFMT_A8R8G8B8,
+        D3DPOOL_SYSTEMMEM, &readback, nullptr);
+    if (SUCCEEDED(result)) result = device.SetDepthStencilSurface(nullptr);
+    if (SUCCEEDED(result)) result = device.SetRenderTarget(0, target);
+    const D3DVIEWPORT9 viewport{0, 0, 64, 64, 0, 1};
+    if (SUCCEEDED(result)) result = device.SetViewport(&viewport);
+    for (const auto& setting : {std::pair<D3DRENDERSTATETYPE, DWORD>{D3DRS_ZENABLE, FALSE},
+        {D3DRS_ALPHABLENDENABLE, FALSE}, {D3DRS_ALPHATESTENABLE, FALSE}, {D3DRS_FOGENABLE, FALSE},
+        {D3DRS_CULLMODE, D3DCULL_NONE}, {D3DRS_SCISSORTESTENABLE, FALSE},
+        {D3DRS_SRGBWRITEENABLE, FALSE}, {D3DRS_COLORWRITEENABLE, 15}}) {
+        if (SUCCEEDED(result)) result = device.SetRenderState(setting.first, setting.second);
+    }
+    float vertex_constants[68]{};
+    vertex_constants[0] = vertex_constants[5] = vertex_constants[10] = vertex_constants[15] = 1;
+    float pixel_constants[68]{}; // Includes cElapsedTime: conditional transform disabled.
+    if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 17);
+    if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 17);
+    struct Vertex { float position[4], color[4]; };
+    const Vertex vertices[] = {{{-.75f, -.75f, 0, 1}, {.25f, .5f, .75f, 1}},
+        {{0, .75f, 0, 1}, {.25f, .5f, .75f, 1}}, {{.75f, -.75f, 0, 1}, {.25f, .5f, .75f, 1}}};
+    auto physical = std::make_shared<bsp::VertexBufferBinding>();
+    physical->flags = 0x1000; physical->capacity = sizeof(vertices);
+    auto stream = std::make_shared<bsp::LogicalVertexStream>();
+    stream->physical = physical; stream->flags = 0x1000; stream->tag = 0x40000001;
+    stream->declaration = std::make_shared<bsp::VertexDeclaration>();
+    stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT4, D3DDECLUSAGE_POSITION);
+    stream->declaration->append_00b48330(D3DDECLTYPE_FLOAT4, D3DDECLUSAGE_COLOR);
+    auto layout = std::make_shared<bsp::D3D9VertexLayout>();
+    layout->append_stream_00b48a00(stream->declaration);
+    if (SUCCEEDED(result)) result = bsp::vertex_buffer_recreate_00b492b0(*physical, device);
+    if (SUCCEEDED(result)) result = layout->create_if_missing_00b60a10(device);
+    void* mapped = nullptr;
+    if (SUCCEEDED(result)) result = state.lock_vertex_stream_00b49980(*stream, 3, 0, true, mapped);
+    if (SUCCEEDED(result)) {
+        std::memcpy(mapped, vertices, sizeof(vertices));
+        state.unlock_vertex_stream_00b49a80(*stream);
+        state.bind_vertex_stream_00b24840(0, stream);
+        result = state.bind_vertex_layout_00b23f20(layout);
+    }
+    if (SUCCEEDED(result)) result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
+    if (SUCCEEDED(result)) result = device.BeginScene();
+    if (SUCCEEDED(result)) {
+        result = state.draw_primitive_00b21b40({}, D3DPT_TRIANGLELIST, 0, 1);
+        const HRESULT ended = device.EndScene();
+        if (SUCCEEDED(result)) result = ended;
+    }
+    if (SUCCEEDED(result)) result = device.GetRenderTargetData(target, readback);
+    D3DLOCKED_RECT pixels{};
+    DWORD center = 0, outside = 0;
+    if (SUCCEEDED(result)) result = readback->LockRect(&pixels, nullptr, D3DLOCK_READONLY);
+    if (SUCCEEDED(result)) {
+        const auto* bytes = static_cast<const unsigned char*>(pixels.pBits);
+        std::memcpy(&center, bytes + 32 * pixels.Pitch + 32 * 4, 4);
+        std::memcpy(&outside, bytes + 2 * pixels.Pitch + 2 * 4, 4);
+        result = readback->UnlockRect();
+    }
+    const bool matched = SUCCEEDED(result) && outside == 0xff000000
+        && (center >> 24) == 255 && ((center >> 16) & 255) >= 63 && ((center >> 16) & 255) <= 64
+        && ((center >> 8) & 255) >= 127 && ((center >> 8) & 255) <= 128
+        && (center & 255) >= 191 && (center & 255) <= 192;
+    bool restored = true;
+    if (old_target) {
+        restored = SUCCEEDED(device.SetRenderTarget(0, old_target));
+        restored = SUCCEEDED(device.SetDepthStencilSurface(old_depth)) && restored;
+    }
+    if (saved) restored = SUCCEEDED(saved->Apply()) && restored;
+    std::printf("Generated debug shader draw: hr=0x%08lx center=0x%08lx outside=0x%08lx checked=%d restored=%d\n",
+        static_cast<unsigned long>(result), center, outside, matched, restored);
+    if (readback) readback->Release(); if (target) target->Release();
+    if (old_depth) old_depth->Release(); if (old_target) old_target->Release();
+    if (saved) saved->Release();
+    return matched && restored;
+}
+}
+
 bool probe_shader_bindings(IDirect3DDevice9& device) {
     // Use the installed compiler and the SDK declaration rather than inventing
     // shader bytecode or a private D3DX buffer/assembler ABI.
@@ -204,6 +294,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
             && state.vertex_shader_calls() == 1 && state.pixel_shader_calls() == 1;
         if (observed_vertex) observed_vertex->Release();
         if (observed_pixel) observed_pixel->Release();
+        if (matched) matched = draw_generated_debug_pair(device, state);
         result = state.bind_vertex_shader_00b21d10(nullptr);
         if (SUCCEEDED(result)) result = state.bind_pixel_shader_00b21c20(nullptr);
         observed_vertex = nullptr;
