@@ -1,0 +1,230 @@
+{
+  "utc": "2026-09-09T23:18:34.253999+00:00",
+  "baseline_commit": "324ac6c619c4c0599572906b7e6da5247ed40b78",
+  "snapshot": {
+    "utc": "2026-09-09T23:13:24.938218+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62743,
+    "internal_function_count": 62301,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "target": "MSVC Win32 /W4 /WX /fp:strict",
+    "ctests_passed": 2,
+    "log": "reports/startup_manager_build.txt"
+  },
+  "probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "log": "reports/startup_manager_probe.txt"
+  },
+  "startup_packages": {
+    "outer_bytes": 1523,
+    "inner_bytes": 770,
+    "scans": 2,
+    "lookups": 7,
+    "mount_requests": 6,
+    "first_entries": 3,
+    "second_entries": 4,
+    "checks": [
+      "nested package discovered on second fresh scan",
+      "guarded bad package failure and five-character factory decline continue",
+      "already mounted outer skipped",
+      "whole-name priority1000",
+      "shared FileStore empty identity and device ID updates",
+      "retained marker bytes"
+    ],
+    "installed_scan_entries": [
+      0,
+      0
+    ],
+    "limits": [
+      "synthetic archive sources",
+      "native malformed archive failure behavior unknown",
+      "original factory/manager object ABI and teardown remain"
+    ]
+  },
+  "pending_filestore": {
+    "logical_bytes": 71090,
+    "callbacks": 1,
+    "duplicate_callbacks": 0,
+    "cache_declines": 1,
+    "physical_submissions": 1,
+    "pumps": 2,
+    "no_op_visits": 2,
+    "physical_visits": 2,
+    "completed": 1,
+    "failed": 0,
+    "checks": [
+      "pending and resident dedup",
+      "first callback retained",
+      "resolved and original names",
+      "alias bypass",
+      "cache-hit bytes",
+      "explicit stop and drain",
+      "output stream survives owners"
+    ],
+    "limits": [
+      "nonempty-prefix selection by second name is source-reviewed",
+      "duplicate records sharing one provider are source-reviewed",
+      "terminal I/O failure and stranded keys are source-reviewed",
+      "native loader/frame/shutdown and singleton replacement remain"
+    ]
+  },
+  "material_bindings": {
+    "selectors_exercised": [
+      0
+    ],
+    "vertex_material_constants": 0,
+    "pixel_material_constants": 5,
+    "single_pixels": 74,
+    "wrapped_pixels": 900,
+    "outside_pixels": 0,
+    "state_restored": true,
+    "checks": [
+      "actual compiled non-system names",
+      "same-shader assignment clears records",
+      "borrowed alpha update reaches actual pixel register",
+      "both final font draws retain prior results"
+    ],
+    "limits": [
+      "fixed explicit context inputs",
+      "VS/matrix/stale-selector paths source-reviewed",
+      "no independent shader retention assertion; ownership established from code",
+      "effect-cache/scene/reset/dynamic clipping remain"
+    ]
+  },
+  "reviews": [
+    {
+      "reviewer": "inflate_read_seek",
+      "scope": "manager/scanner and pending/FileStore",
+      "result": "No concrete defect; six decisive pending spans independently matched to original PE."
+    },
+    {
+      "reviewer": "font_layout_boundary",
+      "scope": "provider manager/shared mounts/AssetStreamProbe",
+      "result": "No concrete defect within documented domain; allocator false-positive proven by allocation/caller data flow."
+    },
+    {
+      "reviewer": "partition_audit",
+      "scope": "material bindings and font probe",
+      "result": "No blocking defect; PS-only coverage and source-established ownership stated explicitly."
+    }
+  ],
+  "native_evidence": "reports/startup_manager_native_identity.json",
+  "annotations": "reports/startup_manager_annotations.json",
+  "reviewed_names": 481,
+  "reconstructed_routines": 174,
+  "partial_fragments": 103,
+  "baseline_reconstruction_keys_preserved": 263,
+  "remaining_rename_tags_verified": 8777,
+  "rejected_generated_tags": 1,
+  "generic_names_refined_preserving_classification": 2,
+  "partition": {
+    "utc": "2026-09-09T23:14:26.357828+00:00",
+    "candidates": 23927,
+    "segments": 92,
+    "largest_strong_cycle_segments": 87,
+    "sha256": "a5d154fcb4ddd4e09e3439bc8e1e64d8ae9983d6b4fc2bd916bbf6c97562574f",
+    "note": "Saved snapshot and fresh direct-call sweep; partitions are hints, explicit addresses/files define ownership."
+  },
+  "source_hashes": {
+    "CMakeLists.txt": {
+      "built_file_sha256": "34c0e59f11e4f0b6a26f66411df5b7522bea45d42633487d9d919f228e2772e2",
+      "git_lf_sha256": "34c0e59f11e4f0b6a26f66411df5b7522bea45d42633487d9d919f228e2772e2"
+    },
+    "include/bsp/file_store_requests.hpp": {
+      "built_file_sha256": "7ccb1eaa69f1f874ca06e8dc6bd294be09675c3909c7fbd65bcba552518f809f",
+      "git_lf_sha256": "7ccb1eaa69f1f874ca06e8dc6bd294be09675c3909c7fbd65bcba552518f809f"
+    },
+    "include/bsp/material_parameter_bindings.hpp": {
+      "built_file_sha256": "ac579e95507c641a9eb53c53d7b9bcf06642d6f83aa8cc807af3c41bd1091014",
+      "git_lf_sha256": "ac579e95507c641a9eb53c53d7b9bcf06642d6f83aa8cc807af3c41bd1091014"
+    },
+    "include/bsp/package_scan.hpp": {
+      "built_file_sha256": "f3b1cd37e8c5b2592c2422e299a6b4cf4231d311d0cb2f99c869791af78b0a27",
+      "git_lf_sha256": "f3b1cd37e8c5b2592c2422e299a6b4cf4231d311d0cb2f99c869791af78b0a27"
+    },
+    "include/bsp/vfs_mounts.hpp": {
+      "built_file_sha256": "cb42f0bd84b55c987e57db4a3def5ec39a0a74ed9371d3856f6a1ab6a5077019",
+      "git_lf_sha256": "cb42f0bd84b55c987e57db4a3def5ec39a0a74ed9371d3856f6a1ab6a5077019"
+    },
+    "include/bsp/vfs_pending.hpp": {
+      "built_file_sha256": "3279aaa873785eac3219f82d207c6b7c5fcd646dc1e6251b099fe03780b6aa3c",
+      "git_lf_sha256": "3279aaa873785eac3219f82d207c6b7c5fcd646dc1e6251b099fe03780b6aa3c"
+    },
+    "include/bsp/vfs_provider_manager.hpp": {
+      "built_file_sha256": "98b9d4f40cff2a3760ed2892242f21ca51ad22b8f8580276bf1b3011c3db3bc4",
+      "git_lf_sha256": "98b9d4f40cff2a3760ed2892242f21ca51ad22b8f8580276bf1b3011c3db3bc4"
+    },
+    "src/asset_stream_probe.hpp": {
+      "built_file_sha256": "765c03e45ef1e54fa09f2df69428c51f8e3f46c534b1f134dfb9832539bbc983",
+      "git_lf_sha256": "765c03e45ef1e54fa09f2df69428c51f8e3f46c534b1f134dfb9832539bbc983"
+    },
+    "src/d3d9_font_probe.cpp": {
+      "built_file_sha256": "98374286791470e05a9084222b757ce738b304a998fea673c7f708b14c380021",
+      "git_lf_sha256": "98374286791470e05a9084222b757ce738b304a998fea673c7f708b14c380021"
+    },
+    "src/file_store_requests.cpp": {
+      "built_file_sha256": "e033d3a17d8fdbfcf1f65f75443e689d03e71f51e8c03871cd90a8b331b52172",
+      "git_lf_sha256": "e033d3a17d8fdbfcf1f65f75443e689d03e71f51e8c03871cd90a8b331b52172"
+    },
+    "src/material_parameter_bindings.cpp": {
+      "built_file_sha256": "1b2c72150608a25d4175de9ca6f820451a9831812d3a700783ed1bcc0a11bbb3",
+      "git_lf_sha256": "1b2c72150608a25d4175de9ca6f820451a9831812d3a700783ed1bcc0a11bbb3"
+    },
+    "src/mpkg_archive_probe.cpp": {
+      "built_file_sha256": "b80960a862a417bd40bd99614935cf07c004e3ee8197c74689285b74caa079c5",
+      "git_lf_sha256": "b80960a862a417bd40bd99614935cf07c004e3ee8197c74689285b74caa079c5"
+    },
+    "src/package_scan.cpp": {
+      "built_file_sha256": "45208f915c52c6ddb75199b21a56483d1cd7fd125f1e44614af99138ad50f494",
+      "git_lf_sha256": "45208f915c52c6ddb75199b21a56483d1cd7fd125f1e44614af99138ad50f494"
+    },
+    "src/physical_pending_reads_probe.cpp": {
+      "built_file_sha256": "91e7dc614cbbe50ac6ef67cc58b45c59fcd068587a926ad2bb55690fe04339d8",
+      "git_lf_sha256": "91e7dc614cbbe50ac6ef67cc58b45c59fcd068587a926ad2bb55690fe04339d8"
+    },
+    "src/resource_preload_probe.cpp": {
+      "built_file_sha256": "b713fb98c5ccfe13225bd4adbc5586836fdaf78cc3851a1365e4cf9cce55a0f0",
+      "git_lf_sha256": "b713fb98c5ccfe13225bd4adbc5586836fdaf78cc3851a1365e4cf9cce55a0f0"
+    },
+    "src/vfs_pending.cpp": {
+      "built_file_sha256": "5adaf57cc4575c83faa93463ce6ffc3b60c4f5776fbba3db8ae4fd4e43969389",
+      "git_lf_sha256": "5adaf57cc4575c83faa93463ce6ffc3b60c4f5776fbba3db8ae4fd4e43969389"
+    },
+    "src/vfs_provider_manager.cpp": {
+      "built_file_sha256": "47f88703ba23b2b34563240a1f8f6fc71e2ea91bff4372e47b4cd616cf528641",
+      "git_lf_sha256": "47f88703ba23b2b34563240a1f8f6fc71e2ea91bff4372e47b4cd616cf528641"
+    }
+  },
+  "artifact_sha256": "bbacf71690236957d29f83cb86762799a6a669a95564d63b1af9be332e5a0d56",
+  "new_test_targets": 0,
+  "abi_compatible": false,
+  "game_rebuilt": false,
+  "goal_status": "active",
+  "report_sha256": {
+    "reports/startup_manager_build.txt": "ea97efb66f7fd55528407b443326c65408c6eca4672010a786e910e02f4f9faa",
+    "reports/startup_manager_probe.txt": "c2556936225a1555d35f23b56d42fbba6cfeccb65860aa8c312e7afabc29ce46",
+    "reports/startup_manager_native_identity.json": "8e1103ed0c9b7b7ba0dd83976a6f2970273e79523add0b42242b4005f88b8dba",
+    "reports/startup_manager_annotations.json": "7eb3d6b877189bd9136c2a37b49d6049450dad08623096620fdaebbdb3b63a7a",
+    "reports/startup_provider_manager_audit.json": "6ff4606e5df6073a47ca0a3b95297c18e50b343a92979c38733b3e79f725c7d4",
+    "reports/package_scan_audit.json": "9adc34b95603b57149b37680915ff511708d8b0c19a21fe60adf7b94c527f6f6",
+    "reports/font_context_material_bindings_audit.json": "ab3ed577570e4ee5f4cc4b38b5d7199a610fcc42218ea91a06eab457db6b8d57",
+    "reports/vfs_pending_manager_integration_audit.json": "c60a664582ae49286a8e61691bda73f17b3d37bc6b74cf4ba0bc1d5d8429d597"
+  },
+  "context_tooling": {
+    "command": "python tools/bsp.py ghidra comments <addresses...> [--lines N] [--start N] [--output local/name.json]",
+    "validation": [
+      "32 selected annotation records exported and checked",
+      "capped read and paging exercised",
+      "output outside local rejected before writing",
+      "Python bytecode compilation passed"
+    ],
+    "new_tests": 0
+  }
+}

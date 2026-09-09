@@ -59,6 +59,13 @@ stored/compressed entries and original-source reopening. See
 [current integration evidence](reports/parallel_entry_validation.json);
 native provider/context ownership and game startup remain incomplete.
 
+The latest batch connects the startup provider manager and two package scans,
+FileStore async request/completion and named material parameters. The existing
+probe checks nested package discovery, an installed queued read with cached
+completion, and both font draws through actual compiled parameter metadata.
+See [validation and remaining limits](reports/startup_manager_validation.json).
+Native outer-loop/effect-cache lifetime and a runnable game remain incomplete.
+
 ## Export the existing analysis
 
 Open `C:/Users/sqz269/bsp.gpr` in Ghidra with the Ghidra MCP plugin enabled and open its

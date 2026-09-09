@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "topic": "pending VFS manager and FileStore integration",
+  "status": "reconstructed; Win32 build and existing CTests passed; installed host probe passed (primary integrator report)",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verifications": [
+      "exports/bsp/parallel_vfs_pending_manager/target_batch1.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch2.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch3.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch4.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch5.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch6.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch7.json",
+      "exports/bsp/parallel_vfs_pending_manager/target_batch8.json"
+    ]
+  },
+  "code_spans": [
+    {
+      "address": "00bdda10",
+      "end_inclusive": "00bdda96",
+      "end_exclusive": "00bdda97",
+      "length": 135,
+      "sha256": "863787e64da8b336a152f22c9d18308bc82758c060a228f532d8d9b5d1e29465",
+      "abi": "ECX manager; firstName,secondName,callback,flags stack; AL; RET10h",
+      "meaning": "manager pending dispatcher",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bdda10.full.bin"
+    },
+    {
+      "address": "00bdc100",
+      "end_inclusive": "00bdc1c2",
+      "end_exclusive": "00bdc1c3",
+      "length": 195,
+      "sha256": "19f017079835b48e6cffabe76353218ac0cbb009cef4887cd4a8a96b5fa9bf29",
+      "abi": "ECX visitor; two names,callback,flags stack; EAX visitor; RET10h",
+      "meaning": "owned pending visitor constructor",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bdc100.full.bin"
+    },
+    {
+      "address": "00bdc1d0",
+      "end_inclusive": "00bdc1d3",
+      "end_exclusive": "00bdc1d4",
+      "length": 4,
+      "sha256": "bc29e77cf9f63e4f2ee3f89f7d24872b50e9c4a50820b39016f3194edda5e499",
+      "abi": "ECX visitor; AL acceptance; RET",
+      "meaning": "acceptance query",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bdc1d0.full.bin"
+    },
+    {
+      "address": "00bdc1e0",
+      "end_inclusive": "00bdc207",
+      "end_exclusive": "00bdc208",
+      "length": 40,
+      "sha256": "f138e09efa930df24ef96b0128bfcc1175c9380af3e65e151dfe3f698a8ee1fc",
+      "abi": "ECX visitor; mount,suffix stack; RET8",
+      "meaning": "provider pending dispatch; suffix unused",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bdc1e0.full.bin"
+    },
+    {
+      "address": "00be7cd0",
+      "end_inclusive": "00be7f6f",
+      "end_exclusive": "00be7f70",
+      "length": 672,
+      "sha256": "b3c3de9393c34484889ba7b9a69049ec9007839098ff1c877a09435fa32f3593",
+      "abi": "ECX store; originalName,userCallback stack; AL; RET8",
+      "meaning": "FileStore request",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7cd0.full.bin"
+    },
+    {
+      "address": "00be78b0",
+      "end_inclusive": "00be797e",
+      "end_exclusive": "00be797f",
+      "length": 207,
+      "sha256": "ffe366b168f1c38effdc9a28ae7aaa25bc5e572ecebc697798d72f56a2bb5f90",
+      "abi": "ECX store; firstName,secondName,stream stack; RET0Ch",
+      "meaning": "pending completion",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be78b0.full.bin"
+    },
+    {
+      "address": "00be7b20",
+      "end_inclusive": "00be7b3e",
+      "end_exclusive": "00be7b3f",
+      "length": 31,
+      "sha256": "c56e6b6237f5e7eeb68b08e3bd1d07a0391ca67dc4ceaf01e8b66ff77a403d08",
+      "abi": "stack stream,firstName,secondName; RET0Ch",
+      "meaning": "current singleton store completion adapter",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7b20.full.bin"
+    },
+    {
+      "address": "00be7cb0",
+      "end_inclusive": "00be7cb4",
+      "end_exclusive": "00be7cb5",
+      "length": 5,
+      "sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "abi": "ECX provider; firstName,secondName,callback,flags stack; AL false; RET10h",
+      "meaning": "FileStore pending decline",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7cb0.full.bin"
+    },
+    {
+      "address": "00be7cc0",
+      "end_inclusive": "00be7cc0",
+      "end_exclusive": "00be7cc1",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "abi": "ECX provider; RET",
+      "meaning": "FileStore Tick no-op",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7cc0.full.bin"
+    },
+    {
+      "address": "00bdb0b0",
+      "end_inclusive": "00bdb11b",
+      "end_exclusive": "00bdb11c",
+      "length": 108,
+      "sha256": "244d6db8597f8891403e5d462c09bc3dfd0d90932678a0c7e835c77d61f8b8be",
+      "abi": "ECX manager; RET",
+      "meaning": "pump every mount record",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bdb0b0.full.bin"
+    },
+    {
+      "address": "004fc150",
+      "end_inclusive": "004fc216",
+      "end_exclusive": "004fc217",
+      "length": 199,
+      "sha256": "581430b58651839f558de527aa0766ad06072dc6d12141caa5fc15373670143e",
+      "abi": "no arguments; EAX current/lazy factory; RET",
+      "meaning": "FileStore factory singleton getter",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/004fc150.full.bin"
+    },
+    {
+      "address": "00bb9d30",
+      "end_inclusive": "00bb9d34",
+      "end_exclusive": "00bb9d35",
+      "length": 5,
+      "sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "abi": "ECX provider; firstName,secondName,callback,flags stack; AL false; RET10h",
+      "meaning": "MPKG pending decline",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bb9d30.full.bin"
+    },
+    {
+      "address": "00bb9d40",
+      "end_inclusive": "00bb9d40",
+      "end_exclusive": "00bb9d41",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "abi": "ECX provider; RET",
+      "meaning": "MPKG Tick no-op",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bb9d40.full.bin"
+    },
+    {
+      "address": "00bee780",
+      "end_inclusive": "00bee7fd",
+      "end_exclusive": "00bee7fe",
+      "length": 126,
+      "sha256": "14a34be0c91d9f77cc09d81e87338a40c7d85390709f3c979ce5f33901c818af",
+      "abi": "ECX destination,EDX source name; EAX destination; RET",
+      "meaning": "normalize copied name",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bee780.full.bin"
+    },
+    {
+      "address": "00bdf4c0",
+      "end_inclusive": "00bdf588",
+      "end_exclusive": "00bdf589",
+      "length": 201,
+      "sha256": "1af8f347987129b4c22a38cb7d495bf0fda69e57fce9e682e59e64638554cb16",
+      "abi": "ECX manager; mutable name stack; AL; RET4",
+      "meaning": "resolve normalized name through existing candidates",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bdf4c0.full.bin"
+    },
+    {
+      "address": "00be5530",
+      "end_inclusive": "00be5582",
+      "end_exclusive": "00be5583",
+      "length": 83,
+      "sha256": "611b49942a288502702a6e57dd247b25d6abb0bd49027751b741639dea52ecd7",
+      "abi": "ECX pending tree; key stack; EAX node; RET4",
+      "meaning": "case-insensitive lower bound",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be5530.full.bin"
+    },
+    {
+      "address": "00443d00",
+      "end_inclusive": "00443d50",
+      "end_exclusive": "00443d51",
+      "length": 81,
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "abi": "two string pointers stack; AL left-less-than-right; RET8",
+      "meaning": "case-insensitive string comparator",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00443d00.full.bin"
+    },
+    {
+      "address": "00be5f00",
+      "end_inclusive": "00be5f65",
+      "end_exclusive": "00be5f66",
+      "length": 102,
+      "sha256": "965d5fa887b093dec04c5837d26a11096598857850170ddc86c552a002d4f0ab",
+      "abi": "ECX pending tree; result iterator,key stack; EAX result; RET8",
+      "meaning": "pending key find",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be5f00.full.bin"
+    },
+    {
+      "address": "00be6120",
+      "end_inclusive": "00be616a",
+      "end_exclusive": "00be616b",
+      "length": 75,
+      "sha256": "8f5c5eea9511bd990f3c28e22b50abfda4850139cd7dc921e5acf6dda846f5d0",
+      "abi": "ECX pair; name,callback-pointer-address stack; EAX pair; RET8",
+      "meaning": "copy key and callback pair",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be6120.full.bin"
+    },
+    {
+      "address": "00be62e0",
+      "end_inclusive": "00be6327",
+      "end_exclusive": "00be6328",
+      "length": 72,
+      "sha256": "dcd0d14732ce66667d507dfbc36975f0b591a7cc63214f35722d724f163a216f",
+      "abi": "ECX destination pair; source pair stack; EAX pair; RET4",
+      "meaning": "pending pair copy constructor",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be62e0.full.bin"
+    },
+    {
+      "address": "00be7460",
+      "end_inclusive": "00be7573",
+      "end_exclusive": "00be7574",
+      "length": 276,
+      "sha256": "76ff99c73f44034330927ffc32fe434b22e17508a6ac22d7695edce3755b5196",
+      "abi": "ECX pending tree; result,pair stack; EAX result; RET8",
+      "meaning": "unique pending pair insertion",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7460.full.bin"
+    },
+    {
+      "address": "00be79c0",
+      "end_inclusive": "00be7a2a",
+      "end_exclusive": "00be7a2b",
+      "length": 107,
+      "sha256": "6e84d6d945e7e641738f42f388c83b11b0baee8ab60f57e16930969deb721b50",
+      "abi": "ECX pending tree; key stack; EAX erased count; RET4",
+      "meaning": "remove pending key on immediate rejection",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be79c0.full.bin"
+    },
+    {
+      "address": "00be6a20",
+      "end_inclusive": "00be6ceb",
+      "end_exclusive": "00be6cec",
+      "length": 716,
+      "sha256": "3fff6f1c22c1149722268774a7e2372538dc287cc23b2b8e4082f9c9bace5383",
+      "abi": "ECX pending tree; result,iterator-container,iterator-node stack; EAX result; RET0Ch",
+      "meaning": "erase node and release key; count decrement in raw tail",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be6a20.full.bin"
+    },
+    {
+      "address": "00be7580",
+      "end_inclusive": "00be7648",
+      "end_exclusive": "00be7649",
+      "length": 201,
+      "sha256": "12bd7a75200fe5a112f88983a6e4ebadd8a7b370d681f502fc3be6f54fa9272b",
+      "abi": "ECX pending tree; result,first-container,first-node,last-container,last-node stack; EAX result; RET14h",
+      "meaning": "erase pending range",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7580.full.bin"
+    },
+    {
+      "address": "00be66c0",
+      "end_inclusive": "00be6711",
+      "end_exclusive": "00be6712",
+      "length": 82,
+      "sha256": "120cefe0fcf103775bb51b4d8c7754f614054cfcff13603144029578f0a7c380",
+      "abi": "ECX pending tree; subtree root stack; RET4",
+      "meaning": "free pending subtree names/nodes, no callback",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be66c0.full.bin"
+    },
+    {
+      "address": "00be72c0",
+      "end_inclusive": "00be733b",
+      "end_exclusive": "00be733c",
+      "length": 124,
+      "sha256": "75e02d78155ced4b04ceadcf2dabc47df1b2706e5c5f1e645dba2e0489c3ff25",
+      "abi": "ECX FileStore; RET",
+      "meaning": "clear resident tree and release streams",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be72c0.full.bin"
+    },
+    {
+      "address": "00be7bf0",
+      "end_inclusive": "00be7ca3",
+      "end_exclusive": "00be7ca4",
+      "length": 180,
+      "sha256": "f2f30e2d28ef6d94fc5b470b31097d9ce22032659d38929bf8038a82776730c3",
+      "abi": "ECX FileStore; RET",
+      "meaning": "provider destructor through raw tail",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7bf0.full.bin"
+    },
+    {
+      "address": "00be7a70",
+      "end_inclusive": "00be7aa3",
+      "end_exclusive": "00be7aa4",
+      "length": 52,
+      "sha256": "b29f568f71b1a9cbed0191b48208756996362f5c00d947980d0e9255319e2c5d",
+      "abi": "ECX pending tree; RET",
+      "meaning": "pending tree destructor used by unwind",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00be7a70.full.bin"
+    },
+    {
+      "address": "00bd9e30",
+      "end_inclusive": "00bd9e3a",
+      "end_exclusive": "00bd9e3b",
+      "length": 11,
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "abi": "ECX manager; one stack value discarded by RET4; indirect call to manager+90h",
+      "meaning": "error handler wrapper; does not push caller stack value",
+      "matches_saved_ghidra_and_disk": true,
+      "raw": "exports/bsp/parallel_vfs_pending_manager/00bd9e30.full.bin"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00d689e8",
+      "length": 44,
+      "sha256": "699ad14715b26910d53c8258d884f08fef22b0bd0cc1c743474773eeb0b64fb7",
+      "meaning": "FileStore provider table",
+      "matches_saved_ghidra_and_disk": true
+    },
+    {
+      "address": "00d64390",
+      "length": 44,
+      "sha256": "888d4133abb4a1ee84947195840dc2fb26a73e710087d9f976ab49b48e69b64a",
+      "meaning": "MPKG provider table",
+      "matches_saved_ghidra_and_disk": true
+    },
+    {
+      "address": "00d68a14",
+      "length": 352,
+      "sha256": "91906a8aecc34ccf7e07ab9a754a860e8fcdd682edb09c4adce44c226b0eb5a0",
+      "meaning": "RequestFile diagnostic strings",
+      "matches_saved_ghidra_and_disk": true
+    }
+  ],
+  "singleton_storage": {
+    "address": "0109db68",
+    "saved_ghidra_hex": "00000000",
+    "raw_file_bytes_available": false,
+    "reason": "PE .data virtual zero-filled tail; not a runtime singleton observation",
+    "evidence": "exports/bsp/parallel_vfs_pending_manager/0109db68.memory.json"
+  },
+  "native_contract": {
+    "manager": {
+      "dispatch": "00bdda10",
+      "normalize": false,
+      "apply_alias": false,
+      "traversal_name": "second/original",
+      "provider_first_name": "complete first/resolved",
+      "provider_second_name": "complete second/original",
+      "provider_flags": "unchanged full32-bit",
+      "suffix_used": false,
+      "acceptance": "first provider AL true",
+      "tick": "00bdb0b0 every mount record; repeated provider identities not deduplicated"
+    },
+    "providers": {
+      "file_store": {
+        "table": "00d689e8",
+        "pending_open": "00be7cb0 false RET10h",
+        "tick": "00be7cc0 RET"
+      },
+      "mpkg": {
+        "table": "00d64390",
+        "pending_open": "00bb9d30 false RET10h",
+        "tick": "00bb9d40 RET"
+      },
+      "physical": {
+        "implementation": "PhysicalPendingReads",
+        "evidence": "reports/vfs_pending_dispatch_audit.json + reports/vfs_pending_lifetime_audit.json"
+      }
+    },
+    "filestore": {
+      "request": "00be7cd0",
+      "lookup_order": [
+        "normalize copy",
+        "resolve through00bdf4c0",
+        "resident tree+14",
+        "pending tree+20"
+      ],
+      "key_comparison": "CRT case-insensitive without length tie-break",
+      "duplicate_callback": "not invoked or registered; first pending callback retained",
+      "submit_flags": 2,
+      "pending_record": "owned string key plus one callback pointer",
+      "immediate_rejection": "erase pending key then manager+90 error wrapper; false if handler returns",
+      "completion_adapter": "00be7b20 reloads current singleton004fc150, then factory+8",
+      "completion_order": [
+        "normalize firstName for key",
+        "find pending callback",
+        "erase pending record",
+        "AddFile retains resident first duplicate",
+        "user callback(firstName,secondName)"
+      ],
+      "user_callback_stream_argument": false,
+      "terminal_physical_failure": "no callback; pending key remains",
+      "destruction": "free bookkeeping, not proven OS cancellation"
+    }
+  },
+  "host_contract": {
+    "factory": "One FileStoreRequests per stable shared factory store; factory/store identity unchanged until all accepted physical queues drain",
+    "ownership": "No VFS/context/queue owner in FileStoreRequests; accepted callback retains shared state and store",
+    "shutdown": "Stop submissions, explicit manager pump, drain physical queues; never clear stranded pending keys implicitly",
+    "reentrancy": "Caller serialized; manager TLS guard rejects nested pumps but imposes no thread affinity; no mount mutation/owner destruction during callbacks",
+    "exceptions": "Provider allocation/callback-copy exceptions precede acceptance; request erases new key. Completion removes pending key before AddFile/user callback; later exception does not roll back earlier mutations. Physical pump reports/releases terminal request then rethrows.",
+    "reports": "One report per mount visit; remaining_observations may count one provider more than once"
+  },
+  "annotation_proposals": [
+    {
+      "address": "00be7b20",
+      "proposed_name": "BSP_FileStore_CompletePendingRequestAdapter",
+      "old_function_observation": "No function found for 00be7b20",
+      "comment": "Missing31-byte body. Calls004fc150, reads current factory+8, rearranges(stream,first,second) to ECX-store completion(first,second,stream). RET0Ch. Does not capture an originating store.",
+      "abi": "stack stream,firstName,secondName; RET0Ch",
+      "length": 31,
+      "end_inclusive": "00be7b3e",
+      "end_exclusive": "00be7b3f",
+      "sha256": "c56e6b6237f5e7eeb68b08e3bd1d07a0391ca67dc4ceaf01e8b66ff77a403d08",
+      "writes_performed": false
+    },
+    {
+      "address": "00be78b0",
+      "proposed_name": "BSP_FileStore_CompletePendingRequest",
+      "old_function_observation": "Function: FUN_00be78b0 at 00be78b0\nSignature: undefined FUN_00be78b0(void)\nEntry: 00be78b0\nBody: 00be78b0 - 00be797e",
+      "comment": "Normalizes firstName for pending lookup; saves node+14 callback, erases pending key, calls AddFile, then caller callback(firstName,secondName), no stream argument. ECX store, three stack arguments, RET0Ch.",
+      "abi": "ECX store; firstName,secondName,stream stack; RET0Ch",
+      "length": 207,
+      "end_inclusive": "00be797e",
+      "end_exclusive": "00be797f",
+      "sha256": "ffe366b168f1c38effdc9a28ae7aaa25bc5e572ecebc697798d72f56a2bb5f90",
+      "writes_performed": false
+    },
+    {
+      "address": "00be7cb0",
+      "proposed_name": "BSP_FileStore_RejectPendingOpen",
+      "old_function_observation": "No function found for 00be7cb0",
+      "comment": "Missing5-byte body. FileStore table00d689e8+0Ch. XOR AL,AL; RET10h. Never queues/calls callback.",
+      "abi": "ECX provider; firstName,secondName,callback,flags stack; AL false; RET10h",
+      "length": 5,
+      "end_inclusive": "00be7cb4",
+      "end_exclusive": "00be7cb5",
+      "sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "writes_performed": false
+    },
+    {
+      "address": "00be7cc0",
+      "proposed_name": "BSP_FileStore_TickNoOp",
+      "old_function_observation": "No function found for 00be7cc0",
+      "comment": "Missing1-byte RET. FileStore table00d689e8+28h. No pending processing.",
+      "abi": "ECX provider; RET",
+      "length": 1,
+      "end_inclusive": "00be7cc0",
+      "end_exclusive": "00be7cc1",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "writes_performed": false
+    },
+    {
+      "address": "00bb9d30",
+      "proposed_name": "BSP_MPKG_RejectPendingOpen",
+      "old_function_observation": "No function found for 00bb9d30",
+      "comment": "Missing5-byte body. MPKG table00d64390+0Ch. XOR AL,AL; RET10h.",
+      "abi": "ECX provider; firstName,secondName,callback,flags stack; AL false; RET10h",
+      "length": 5,
+      "end_inclusive": "00bb9d34",
+      "end_exclusive": "00bb9d35",
+      "sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "writes_performed": false
+    },
+    {
+      "address": "00bb9d40",
+      "proposed_name": "BSP_MPKG_TickNoOp",
+      "old_function_observation": "No function definition observed; table/raw bytes authoritative.",
+      "comment": "Missing1-byte RET. MPKG table00d64390+28h.",
+      "abi": "ECX provider; RET",
+      "length": 1,
+      "end_inclusive": "00bb9d40",
+      "end_exclusive": "00bb9d41",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "writes_performed": false
+    },
+    {
+      "address": "00be7bf0",
+      "proposed_name": "BSP_FileStore_Destroy",
+      "old_function_observation": "Function: FUN_00be7bf0 at 00be7bf0\nSignature: undefined FUN_00be7bf0(void)\nEntry: 00be7bf0\nBody: 00be7bf0 - 00be7c49",
+      "comment": "Full180-byte body through00be7ca3; Ghidra stops at00be7c49 after _free. Clears resident streams, erases pending keys/nodes, frees sentinels, destroys provider base. No physical cancellation/callback dispatch established.",
+      "abi": "ECX FileStore; RET",
+      "length": 180,
+      "end_inclusive": "00be7ca3",
+      "end_exclusive": "00be7ca4",
+      "sha256": "f2f30e2d28ef6d94fc5b470b31097d9ce22032659d38929bf8038a82776730c3",
+      "writes_performed": false
+    }
+  ],
+  "implementation_files": [
+    "include/bsp/vfs_pending.hpp",
+    "src/vfs_pending.cpp",
+    "include/bsp/file_store_requests.hpp",
+    "src/file_store_requests.cpp"
+  ],
+  "probe": {
+    "path": "src/physical_pending_reads_probe.cpp",
+    "scenario": "Existing inputs.lua physical scenario extended through actual factory/manager/FileStoreRequests",
+    "oracle": "Existing ordinary ifstream read of installed file, shared by direct and mounted checks",
+    "checks": [
+      "previous two physical reads and callback append retained",
+      "previous callback output-DWORD alias guard retained",
+      "actual FileStore decline and physical accept counters",
+      "no callback during submit and pending duplicate",
+      "first user callback only; resident duplicate no callback",
+      "resolved first vs untouched original second",
+      "pending manager ignores open-only alias",
+      "per-mount no-op/physical pump reports",
+      "stop then explicit drain",
+      "cached bytes and backing survive owner destruction"
+    ],
+    "limits": [
+      "no forced terminal I/O failure",
+      "no duplicate provider identity pump fixture",
+      "no singleton replacement",
+      "no cancellation or hidden pending-key clearing",
+      "deadline/possibly-active-I/O exception exits process",
+      "second-name routing with a distinguishing nonempty mount prefix remains source-reviewed; fixture root prefixes are empty",
+      "terminal I/O pending-key stranding remains source-reviewed"
+    ]
+  },
+  "validation": {
+    "code_syntax": "MSVC Win32 /Zs /std:c++17 /EHsc /W4 /WX /fp:strict passed for manager/controller/probe",
+    "new_test_targets": 0,
+    "live_game_execution": false,
+    "native_differential": false,
+    "ghidra_writes": false,
+    "shared_ledger_writes": false,
+    "commit": false,
+    "parent_reported_integration": {
+      "build": "MSVC Win32 passed",
+      "existing_ctests_passed": 2,
+      "full_installed_probe": "passed",
+      "mounted_filestore": {
+        "callbacks": 1,
+        "duplicate_callbacks": 0,
+        "cache_declines": 1,
+        "physical_submissions": 1,
+        "pumps": 2,
+        "no_op_visits": 2,
+        "physical_visits": 2,
+        "completed": 1,
+        "failed": 0
+      },
+      "evidence_source": "Primary integrator completed-build/probe message; not native differential/game execution"
+    }
+  },
+  "raw_tail_notes": [
+    {
+      "address": "00be6a20",
+      "ghidra_end": "00be6cb1",
+      "actual_end": "00be6ceb",
+      "meaning": "After _free, decrement count and return iterator/RET0Ch"
+    },
+    {
+      "address": "00be7bf0",
+      "ghidra_end": "00be7c49",
+      "actual_end": "00be7ca3",
+      "meaning": "After pending sentinel _free, clear tree descriptor, destroy resident descriptor and provider base"
+    },
+    {
+      "address": "00be7a70",
+      "ghidra_end": "00be7a93",
+      "actual_end": "00be7aa3",
+      "meaning": "Clear descriptor and return after _free"
+    }
+  ],
+  "remaining_boundaries": [
+    "Native global factory replacement/destruction while requests exist",
+    "Any external failed-I/O pending-map recovery",
+    "Arbitrary unknown provider virtual methods",
+    "Full cancellation/unmount/allocator/exception ABI parity",
+    "Concurrency beyond explicit serialized domain",
+    "Native runtime/game loading validation"
+  ],
+  "provenance_notes": [
+    "All authoritative code spans are complete slices of saved byte-matched live reads; exploratory padded/truncated windows are excluded from code_spans.",
+    "An exploratory singleton raw-file equality assertion failed because its address is in the PE virtual zero-filled tail; subsequent target-verified inspection records that fact explicitly.",
+    "An exploratory00bf9d40 byte was not an MPKG target and is excluded; actual table+28 is00bb9d40."
+  ]
+}

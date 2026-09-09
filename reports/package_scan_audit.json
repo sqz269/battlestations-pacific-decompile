@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet": "package_scan",
+  "status": "implemented_build_and_synthetic_fixture_verified",
+  "utc": "2026-09-09T22:48:41.041796+00:00",
+  "target": {
+    "config": "config/target.json",
+    "verification": {
+      "project": {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 107,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      "program": {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 62737,
+        "symbol_count": 139017,
+        "data_type_count": 752,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    }
+  },
+  "binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "ranges": [
+    {
+      "address": "0073cb10",
+      "end_exclusive": "0073ce16",
+      "length": 774,
+      "span_kind": "complete_body",
+      "sha256": "d6f12a9f69158bb91207a30f83b1c56f532ecd830274fc17c7684d3bad51f2fa",
+      "matches_original_pe": true,
+      "matches_prior_raw": true,
+      "raw_file": "exports/bsp/parallel_mpkg_mount/0073cb10_0073ce16.bin",
+      "assembly_file": "exports/bsp/parallel_mpkg_mount/0073cb10.raw.asm",
+      "abi": "No stack arguments; incoming ECX unused; no semantic return; plain RET at 0073ce15"
+    },
+    {
+      "address": "00bdb120",
+      "end_exclusive": "00bdb1de",
+      "length": 190,
+      "span_kind": "complete_body",
+      "sha256": "331e9a5034d15f406819c3d027db02d1b69d68fdcf909ebcd7ee04f0caaeed8f",
+      "matches_original_pe": true,
+      "matches_prior_raw": true,
+      "raw_file": "exports/bsp/parallel_mpkg_mount/00bdb120_00bdb1de.bin",
+      "assembly_file": "exports/bsp/parallel_mpkg_mount/00bdb120.raw.asm",
+      "abi": "ECX manager; system_name native string on stack; EAX first provider or null; RET4"
+    },
+    {
+      "address": "0073d87b",
+      "end_exclusive": "0073d899",
+      "length": 30,
+      "span_kind": "startup_call_window",
+      "sha256": "e197032a1690a98ffc715b7d213f7ad092bd852743693905089ebac851c20f1b",
+      "matches_original_pe": true,
+      "matches_prior_raw": true,
+      "raw_file": "exports/bsp/parallel_mpkg_mount/0073d87b_0073d899.bin",
+      "assembly_file": "exports/bsp/parallel_mpkg_mount/0073d87b.raw.asm",
+      "abi": "Same application ECX passed to two fresh 0073cb10 calls at 0073d881 and 0073d888"
+    }
+  ],
+  "prior_evidence": [
+    "docs/PACKAGE_MOUNT_STARTUP.md",
+    "docs/MPKG_MOUNT_INTEGRATION.md",
+    "docs/PROVIDER_ENUMERATION.md",
+    "reports/mpkg_mount_integration_audit.json"
+  ],
+  "shared_dependency": {
+    "address": "00be1890",
+    "owner": "primary",
+    "note": "Factory and mount metadata adapter owned by primary; scanner passes unchanged name, dot, priority, zero ownership byte and minus-one device id.",
+    "configured_failure_callback": {
+      "address": "00530620",
+      "installed_at": "0073d642",
+      "observation": "Primary reports exact one-byte RET; startup mount failure callback has no side effects.",
+      "provenance": "Concurrent primary provider-manager audit; not freshly read by this worker."
+    }
+  },
+  "validation": {
+    "live_target_verified": true,
+    "full_spans_match_pe": true,
+    "source_review_pending": false,
+    "build_by_primary_pending": false,
+    "fixture_by_primary_pending": false,
+    "native_differential": false,
+    "original_game": false,
+    "build_log": "reports/startup_manager_build.txt",
+    "probe_log": "reports/startup_manager_probe.txt",
+    "msvc_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "synthetic_package_scan": {
+      "outer_bytes": 1523,
+      "inner_bytes": 770,
+      "scans": 2,
+      "lookups": 7,
+      "mount_requests": 6,
+      "first_entries": 3,
+      "second_entries": 4,
+      "shared_factory_and_system_identity": true,
+      "fresh_nested_scan_and_failure_continuation": true,
+      "first_outcomes": [
+        "failed",
+        "mounted",
+        "declined"
+      ],
+      "second_outcomes": [
+        "mounted",
+        "failed",
+        "already_mounted",
+        "declined"
+      ]
+    },
+    "evidence_boundary": "Worker inspected the named coordinated logs. Native differential scanner execution and original-game startup remain unverified."
+  },
+  "ghidra_mutations": false,
+  "implementation": {
+    "header": "include/bsp/package_scan.hpp",
+    "source": "src/package_scan.cpp",
+    "documentation": "docs/PACKAGE_SCAN_IMPLEMENTATION.md",
+    "new_host_abi": true,
+    "contracts": [
+      "Exactly one fresh dot/mpkg/flag0 enumeration per scan; retain fixed private result order during mounting.",
+      "Use original logical name and whole-name priority; compute priority before current provider-system-name lookup.",
+      "Call mount with name,dot,priority,ownership0,device-1; continue on returning declined or failed status.",
+      "Startup always calls two fresh scans on ordinary returns, including after a false first result.",
+      "Report each skip/mount/decline/failure; preserve prior successful per-entry work. Exceptions propagate."
+    ],
+    "host_guards": [
+      "Missing callbacks reject before query.",
+      "Failed enumeration produces no mounts in that pass.",
+      "Existing priority helper excludes non-ASCII, embedded NUL and length above INT32_MAX; unsupported entries skip lookup/mount and later entries continue."
+    ]
+  }
+}

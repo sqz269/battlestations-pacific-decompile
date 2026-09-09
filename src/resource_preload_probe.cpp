@@ -11,6 +11,9 @@ bool probe_startup_script_preloads(AssetStreamProbe& assets,
     const std::filesystem::path& game_root) {
     std::size_t completed = 0;
     std::string error;
+    const auto& scans = assets.package_scans();
+    std::printf("Installed startup package scans: passes=2 first_enumerated=%d first_entries=%zu second_enumerated=%d second_entries=%zu\n",
+        scans[0].enumerated, scans[0].entries.size(), scans[1].enumerated, scans[1].entries.size());
     if (!assets.preload_startup_scripts(completed, error)) {
         std::printf("Startup script preload: completed=%zu error=%s\n", completed, error.c_str());
         return false;

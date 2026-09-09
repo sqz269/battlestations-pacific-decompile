@@ -31,9 +31,9 @@ segment IDs. Named but unfinished routines are explicitly eligible.
 
 | Work packet | Native anchors | Independent deliverable | Integration boundary |
 |---|---|---|---|
-| Archive loading | `00bb9920`, `00bb8d60`, `00bbc140`, `00bb9d90` | Mounted factory/open/enumeration integrated; startup scans next | Existing source interface and pinned zlib; shared mount wiring stays with primary |
-| Font layout/context | `00ab9fd0`, `00aba270`, `00aba8d0` | Owned single-line/wrapped geometry and draw integrated; material binding next | Existing FontData, glyph writer and D3D9 resources; archive loading is not a prerequisite |
-| Preload/pending I/O | `0073d410`, `00be7cd0`, `00bf43b0`, `00bf46b0` | Five-script policy and physical pending owner integrated; manager/FileStore dispatch next | Existing mounted-stream/FileStore interface; shared API/probe edits stay with primary |
+| Archive loading | `00bb9920`, `00bb8d60`, `00bbc140`, `00bb9d90` | Provider manager and startup scans integrated; native stream lifetime next | Existing source interface and pinned zlib; shared mount wiring stays with primary |
+| Font layout/context | `00b31090`, `00b318b0`, `00b2ebb0` | Owned geometry and parameter table integrated; effect-cache ownership next | Existing font/material contracts; shared renderer/compiler APIs stay with primary |
+| Preload/pending I/O | `00509190`, `005092e0`, `00737a50` | Manager/FileStore requests integrated; outer loader/frame lifetime next | Existing manager pump and stable factory; no invented cancellation or failure callbacks |
 
 The inflater and font packets now have bounded C++ implementations in disjoint
 source/header files. Each worker also reviewed the other's implementation.
@@ -67,9 +67,20 @@ See [current integration evidence](../reports/parallel_provider_validation.json)
 [font owner](FONT_GEOMETRY_OWNER.md), [pending reads](PHYSICAL_PENDING_READS.md),
 and [provider enumeration](PROVIDER_ENUMERATION.md). The required Win32 build,
 both CTests and full D3D9 probe pass. Real archives, original object ABI and a
-runnable game remain unvalidated. Next packets cover startup package scanning,
-live font material binding and manager/FileStore pending dispatch. Capped
-tools/bsp.py queries and sharded ledgers provide their context.
+runnable game remain unvalidated.
+
+The current batch integrates the startup provider manager and both package
+scans, manager/FileStore pending dispatch and the borrowed material parameter
+table. A nested archive checks the second scan and failure continuation. An
+installed request checks deduplication, completion and cached bytes. Actual
+compiled font metadata binds five pixel constants with unchanged 74/900-pixel
+draws. The Win32 build, both existing CTests and full probe pass; see
+[current integration evidence](../reports/startup_manager_validation.json).
+Workers independently reviewed the other lanes. One automatic destructor tag
+was corrected to an allocation helper using its data flow; other library tags
+were preserved. Next packets cover archive stream lifetime, effect-cache
+ownership and outer loader/frame pumping. Capped tools/bsp.py queries and
+sharded ledgers provide their context.
 
 ## Rules that keep parallel work useful
 

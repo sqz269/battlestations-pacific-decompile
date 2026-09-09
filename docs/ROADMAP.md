@@ -48,10 +48,12 @@ The partition review supplies three concrete parallel lanes: archive loading,
 font context/material ownership, and native cache/pending I/O. Mounted MPKG
 factory/open/enumeration, owned font geometry, physical pending reads and shared
 provider enumeration now join the earlier parser/layout/preload implementations.
+The startup provider manager and two fresh package scans, manager/FileStore
+pending requests and named material parameter bindings are also integrated.
 The required Win32 build, both CTests and focused existing probes pass; see
-[latest integration evidence](../reports/parallel_provider_validation.json).
-Next are the two-pass startup package scan, live font material binding and the
-manager/FileStore pending-dispatch path. These are independent bounded packets;
+[latest integration evidence](../reports/startup_manager_validation.json).
+Next are archive stream lifetime, effect-cache ownership and the native
+loader/frame pump lifetime. These are independent bounded evidence packets;
 shared VFS APIs, metadata, Ghidra writes and integration remain with the primary.
 
 Use [parallel work](PARALLEL_WORK.md), `config/parallel_work.json`, and capped
@@ -161,25 +163,28 @@ completion of this milestone.
 
 ## Next bounded work
 
-1. Connect the bounded MPKG parser/materializer to provider registration and
-   enumeration (`MPKG_ENTRY_LOADING.md`). The single synthetic archive covers
+1. Recover native archive stream lifetime beyond the connected parser,
+   provider registration and enumeration (`MPKG_ENTRY_LOADING.md`). The original synthetic archive covers
    all three source routes and dynamic-Huffman output beyond 64 KiB
    (`MPKG_FIXTURE.md`). Large stored entries reopen the original logical path
    through the current VFS (`MPKG_MOUNT_INTEGRATION.md`);
    the host materializes their declared extent, while the native reader is
    unclamped. Native live-stream ownership and inflater cross-block rewind remain
    incomplete. No installed MPKG/ZIP/PAK was found in the recorded local search;
-   real-archive validation remains unproven.
-2. Replace font probe lifetime/batching glue with the recovered text-context
-   update and draw-section ownership path. Wrapped arithmetic/drawing now pass;
-   empty text, retained material/buffers and native invalidation still need
-   implementation of the audited contracts in `FONT_CONTEXT_OWNERSHIP.md`.
-3. Integrate pending VFS submission and the explicit completion pump
-   (`VFS_PENDING_DISPATCH.md`). Accepted immediate and pending reads both queue
-   their callbacks. Resolve queue removal/growth, outer tick scheduling and
-   cancellation/reentrancy before connecting asynchronous loading. Queue
-   relocation, ordered erase and outer pump callers are now audited in
-   `VFS_PENDING_LIFETIME.md`; native cancellation remains unresolved. The five
+   real-archive validation remains unproven. A nested synthetic archive now
+   verifies both startup scans, current registration visibility and continuation
+   after a guarded failure/decline (`PACKAGE_SCAN_IMPLEMENTATION.md`).
+2. Recover effect-cache ownership at `00b31090`, `00b318b0`, `00b2ebb0` to
+   connect font selection to retained effects. Owned geometry updates and the
+   named parameter table now drive both font draws. The current parameter
+   fixture covers selector 0 and five pixel constants; vertex/matrix paths,
+   dynamic clipping, optional children and scene/reset integration remain.
+3. Recover loader submission/update `00509190`, stop-wait `005092e0` and frame
+   ordering `00737a50`. Manager pending dispatch, per-mount pumping and stable
+   FileStore request dedup/completion now pass installed-file checks
+   (`VFS_PENDING_MANAGER_INTEGRATION.md`). Terminal I/O failure has no callback
+   and leaves a pending key; native outer-loop termination and cancellation
+   remain unresolved. The five
    startup script preloads are implemented; the four menu-audio selections and
    native font preload policy remain separate work.
 4. Continue renderer/window reset, presentation and startup ownership in

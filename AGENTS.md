@@ -41,7 +41,7 @@
     to page). Take one representation at a time; open the assembly only when the pseudocode shows
     register inputs, x87, overlapping globals or a suspect no-return. Never `Get-Content`/`cat` a whole
     export, ledger, functions.json or doc; use `--lines`, `-TotalCount`, or `rg -n -C` on a known term.
-  - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|
+  - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|comments|
     decompile|disasm|export` instead of inline Python; when a query repeats twice, add a subcommand.
   - Cap every command's output (`--limit`, `head`, `Select-Object -First`); write anything larger to
     `local/` and grep it. A truncated output is wasted work.

@@ -1,0 +1,602 @@
+{
+  "utc": "2026-09-09T23:18:34.235568+00:00",
+  "saved": true,
+  "readback_command": "python tools/bsp.py ghidra comments <32 selected addresses> --output local/startup_annotations_after.json",
+  "annotations": [
+    {
+      "address": "00530620",
+      "before": {
+        "address": "00530620",
+        "function_name": "FUN_00530620"
+      },
+      "after": {
+        "address": "00530620",
+        "function_name": "BSP_Application_IgnoreMountFailure",
+        "comment": "[BSP reconstruction 00530620]\nOne-byte C3 RET, followed by INT3 padding. Startup0073d642 installs this address at manager+90. No semantic arguments/return; no stack adjustment. This concrete startup mount-failure handler does nothing. Function was absent before this batch; created with exact1-byte body. reports/startup_provider_manager_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "0073cb10",
+      "before": {
+        "address": "0073cb10",
+        "function_name": "BSP_Application_MountPackages",
+        "comment": "[BSP reconstruction 0073cb10]\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md.\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "0073cb10",
+        "function_name": "BSP_Application_MountPackages",
+        "comment": "[BSP reconstruction 0073cb10]\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md.\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Implemented fresh dot/mpkg/flag0 query, private fixed name list, whole-name priority before live system-name lookup; mount unchanged name at dot, priority, ownership0, device-1. Returning mount failures do not stop later entries. Two-pass nested synthetic archive and failure/decline continuation pass. No arguments, plain RET; new host aggregate diagnostics not native return. docs/PACKAGE_SCAN_IMPLEMENTATION.md; reports/package_scan_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "0073d410",
+      "before": {
+        "address": "0073d410",
+        "function_name": "BSP_Application_Initialize",
+        "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md."
+      },
+      "after": {
+        "address": "0073d410",
+        "function_name": "BSP_Application_Initialize",
+        "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00aa9390",
+      "before": {
+        "address": "00aa9390",
+        "function_name": "FUN_00aa9390"
+      },
+      "after": {
+        "address": "00aa9390",
+        "function_name": "BSP_UIContext_Construct",
+        "comment": "[BSP reconstruction 00aa9390]\nECX destination, type DWORD stack RET4, EAX context. Relevant defaults: overbright+94=0, low+A4=(0,0,0,1), high+B4=(1,1,1,1), blend+C4=0. Text00ab9650 passes type3. Full scene lifetime is outside host binding table. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00aa9f10",
+      "before": {
+        "address": "00aa9f10",
+        "function_name": "FUN_00aa9f10"
+      },
+      "after": {
+        "address": "00aa9f10",
+        "function_name": "BSP_UIContext_RegisterClipParameters",
+        "comment": "[BSP reconstruction 00aa9f10]\nECX context, material stack RET4. Walk self/parent+70 until virtual+5C returns16; context+E8=1/0 and bind cClip. Active only: ancestor+EC pair cClipCenter, ancestor+F4 float4 cClipBorder, global00e12fc0 cAspectRatio. Source addresses borrowed; no inactive default writes. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00ab8ce0",
+      "before": {
+        "address": "00ab8ce0",
+        "function_name": "BSP_TextContext_EnsureFontShader",
+        "comment": "[BSP reconstruction 00ab8ce0]\nECX context, no stack args. Existing +1EC skips selection. Nonempty +1C0 explicit shader wins; otherwise GuiFont only for float(global0109cf04->DWORD+28)==720 and font scale+18==1 ordered, else GuiFontBilinear. AL indicates selection attempted including null result, not success. Compiled mshd versus installed shfx constant mapping unresolved; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00ab8ce0] update\nSelection fragment now typed: explicit override else CVTSI2SS(reference DWORD) ordered==720 and font scale==1 selects GuiFont, otherwise GuiFontBilinear. Cache skip/load/store remains native only. Correction: downstream00b2ebb0 rewrites .mshd to .shfx; compiled-mshd assumption was unsupported. Actual Arial16 scale selects bilinear and installed source draws74 bounded pixels with explicit VFS/camera fixture; docs/FONT_SHADER_RESOLUTION.md.\n\n[BSP reconstruction 00ab8ce0] update\nSelection fragment now typed: explicit override else CVTSI2SS(reference DWORD) ordered==720 and font scale==1 selects GuiFont, otherwise GuiFontBilinear. Cache skip/load/store remains native only. Correction: downstream00b2ebb0 rewrites .mshd to .shfx; compiled-mshd assumption was unsupported. Actual Arial16 scale selects bilinear and installed source draws74 bounded pixels with explicit VFS/camera fixture; docs/FONT_SHADER_RESOLUTION.md. ECX context; no stack args; AL selection attempted; RET. Retain established shader-selection name/comment. Cached nonnull+1EC returns0. New selection returns1 including null result; caller saves that AL rather than receiving an extra flag. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "after": {
+        "address": "00ab8ce0",
+        "function_name": "BSP_TextContext_EnsureFontShader",
+        "comment": "[BSP reconstruction 00ab8ce0]\nECX context, no stack args. Existing +1EC skips selection. Nonempty +1C0 explicit shader wins; otherwise GuiFont only for float(global0109cf04->DWORD+28)==720 and font scale+18==1 ordered, else GuiFontBilinear. AL indicates selection attempted including null result, not success. Compiled mshd versus installed shfx constant mapping unresolved; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00ab8ce0] update\nSelection fragment now typed: explicit override else CVTSI2SS(reference DWORD) ordered==720 and font scale==1 selects GuiFont, otherwise GuiFontBilinear. Cache skip/load/store remains native only. Correction: downstream00b2ebb0 rewrites .mshd to .shfx; compiled-mshd assumption was unsupported. Actual Arial16 scale selects bilinear and installed source draws74 bounded pixels with explicit VFS/camera fixture; docs/FONT_SHADER_RESOLUTION.md.\n\n[BSP reconstruction 00ab8ce0] update\nSelection fragment now typed: explicit override else CVTSI2SS(reference DWORD) ordered==720 and font scale==1 selects GuiFont, otherwise GuiFontBilinear. Cache skip/load/store remains native only. Correction: downstream00b2ebb0 rewrites .mshd to .shfx; compiled-mshd assumption was unsupported. Actual Arial16 scale selects bilinear and installed source draws74 bounded pixels with explicit VFS/camera fixture; docs/FONT_SHADER_RESOLUTION.md. ECX context; no stack args; AL selection attempted; RET. Retain established shader-selection name/comment. Cached nonnull+1EC returns0. New selection returns1 including null result; caller saves that AL rather than receiving an extra flag. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab8ce0] update\nSelection fragment now typed: explicit override else CVTSI2SS(reference DWORD) ordered==720 and font scale==1 selects GuiFont, otherwise GuiFontBilinear. Cache skip/load/store remains native only. Correction: downstream00b2ebb0 rewrites .mshd to .shfx; compiled-mshd assumption was unsupported. Actual Arial16 scale selects bilinear and installed source draws74 bounded pixels with explicit VFS/camera fixture; docs/FONT_SHADER_RESOLUTION.md. ECX context; no stack args; AL selection attempted; RET. Retain established shader-selection name/comment. Cached nonnull+1EC returns0. New selection returns1 including null result; caller saves that AL rather than receiving an extra flag. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Cache+1EC skips selection. New attempt returns AL1 even null result; caller copies pair+1DC/+1E0 and registers material pointers only when attempted. Same-text update returns before this call, even after font-name cache invalidation. Existing name-selection fragment is not complete renderer cache ownership. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b179f0",
+      "before": {
+        "address": "00b179f0",
+        "function_name": "TRIV_body_00b179f0"
+      },
+      "after": {
+        "address": "00b179f0",
+        "function_name": "BSP_Material_GetDiffuseColor",
+        "comment": "[BSP reconstruction 00b179f0]\nECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b17e10",
+      "before": {
+        "address": "00b17e10",
+        "function_name": "FUN_00b17e10"
+      },
+      "after": {
+        "address": "00b17e10",
+        "function_name": "BSP_Material_RegisterParameter",
+        "comment": "[BSP reconstruction 00b17e10]\nNull shader returns null. First equal-length __stricmp name match in material+80 pointer table/count+100 supplies existing record to effect virtual+10, else null. Four args name/source/wordcount/matrix; borrowed source. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b18790",
+      "before": {
+        "address": "00b18790",
+        "function_name": "CG_static_dtor_stub_00b18790"
+      },
+      "after": {
+        "address": "00b18790",
+        "function_name": "BSP_MaterialParameter_Allocate",
+        "comment": "[BSP reconstruction 00b18790]\nPool allocation trampoline: MOV ECX,00f8d3e4; JMP00b185a0. Not a static destructor. Allocator decrements chunk+4500 free count, reads free-index table+4400, computes chunk+index*88h and returns slot in EAX at both real RETs. Binder00b44ec4 initializes returned name/register arrays and appends material+80/+100. Caller MOV ECX,84h is overwritten. Scoped exclusion from cg_static_dtor_stub is justified by allocation/use data flow. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b18aa0",
+      "before": {
+        "address": "00b18aa0",
+        "function_name": "FUN_00b18aa0"
+      },
+      "after": {
+        "address": "00b18aa0",
+        "function_name": "BSP_Material_RegisterFloat4Parameter",
+        "comment": "[BSP reconstruction 00b18aa0]\nECX material, name/source stack RET8; forward4 source DWORDs and matrix0 to00b17e10. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b18ac0",
+      "before": {
+        "address": "00b18ac0",
+        "function_name": "FUN_00b18ac0"
+      },
+      "after": {
+        "address": "00b18ac0",
+        "function_name": "BSP_Material_RegisterFloat4ArrayParameter",
+        "comment": "[BSP reconstruction 00b18ac0]\nECX material, name/source/vectorcount stack RET0Ch; forward4*count source DWORDs and matrix0 to00b17e10. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b18b00",
+      "before": {
+        "address": "00b18b00",
+        "function_name": "FUN_00b18b00"
+      },
+      "after": {
+        "address": "00b18b00",
+        "function_name": "BSP_Material_RegisterFloat2Parameter",
+        "comment": "[BSP reconstruction 00b18b00]\nECX material, name/source stack RET8; forward2 source DWORDs and matrix0 to00b17e10. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b18b20",
+      "before": {
+        "address": "00b18b20",
+        "function_name": "FUN_00b18b20"
+      },
+      "after": {
+        "address": "00b18b20",
+        "function_name": "BSP_Material_RegisterFloatParameter",
+        "comment": "[BSP reconstruction 00b18b20]\nECX material, name/source stack RET8; forward1 source DWORD and matrix0 to00b17e10. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b19210",
+      "before": {
+        "address": "00b19210",
+        "function_name": "BSP_Material_SetShaderAndClearParameters",
+        "comment": "[BSP reconstruction 00b19210]\nECX material; shader stack; RET4. Retain-new/release-old shader+7C on pointer change, mark nonnull shader+B4=1, free parameter entries and reset+100 even for same shader pointer. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "after": {
+        "address": "00b19210",
+        "function_name": "BSP_Material_SetShaderAndClearParameters",
+        "comment": "[BSP reconstruction 00b19210]\nECX material; shader stack; RET4. Retain-new/release-old shader+7C on pointer change, mark nonnull shader+B4=1, free parameter entries and reset+100 even for same shader pointer. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00b19210] update\nECX material; shader stack; RET4. Retain-new/release-old shader+7C on pointer change, mark nonnull shader+B4=1, free parameter entries and reset+100 even for same shader pointer. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Retain-new/release-old effect+7C on identity change; set nonnull effect+B4=1. Clear parameter names and return records to pool even for equal effect identity; borrowed source words not freed. New MaterialParameterBindings implements bounded table-clear portion with external effect dirty signaling. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b44d60",
+      "before": {
+        "address": "00b44d60",
+        "function_name": "FUN_00b44d60"
+      },
+      "after": {
+        "address": "00b44d60",
+        "function_name": "BSP_MaterialEffect_BindParameterRegisters",
+        "comment": "[BSP reconstruction 00b44d60]\nEffect vtable00d61a00+10. Scan14 pass slots+C8..+FC; first equal-length case-insensitive compiled non-system name match per VS/PS. Allocate record only for nonnegative stage match. Copy name/source/count/flag once even on existing record; qualifying selector writes both indices, skipped selectors preserve old indices. All-no-match returns existing unchanged. RET18h. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b5b880",
+      "before": {
+        "address": "00b5b880",
+        "function_name": "TRIV_body_00b5b880"
+      },
+      "after": {
+        "address": "00b5b880",
+        "function_name": "BSP_ShaderConstant_GetRegisterCount",
+        "comment": "[BSP reconstruction 00b5b880]\nECX metadata record, EAX DWORD+4, RET.00b5bc60 stores reflected RegisterCount here, distinct from descriptor Rows at+8. Existing host VertexConstantShape.row_count must use register_count. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb9d30",
+      "before": {
+        "address": "00bb9d30",
+        "function_name": "FUN_00bb9d30"
+      },
+      "after": {
+        "address": "00bb9d30",
+        "function_name": "BSP_MPKG_RejectPendingOpen",
+        "comment": "[BSP reconstruction 00bb9d30]\nMissing5-byte body. MPKG table00d64390+0Ch. XOR AL,AL; RET10h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb9d40",
+      "before": {
+        "address": "00bb9d40",
+        "function_name": "FUN_00bb9d40"
+      },
+      "after": {
+        "address": "00bb9d40",
+        "function_name": "BSP_MPKG_TickNoOp",
+        "comment": "[BSP reconstruction 00bb9d40]\nMissing1-byte RET. MPKG table00d64390+28h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdb040",
+      "before": {
+        "address": "00bdb040",
+        "function_name": "BSP_VFS_CreateProviderForPath",
+        "comment": "[BSP reconstruction 00bdb040]\nECX manager; system/virtual strings stack RET8 EAX provider. Iterates factorylist manager+30/+34 forward; calls eachfactory+4 withsame2args, firstnonnull wins. No reorder/removal/refcount seen. Full85-byte body verified.\n\n[BSP reconstruction 00bdb040] update\nECX manager; system/virtual strings stack RET8 EAX provider. Iterates factorylist manager+30/+34 forward; calls eachfactory+4 withsame2args, firstnonnull wins. No reorder/removal/refcount seen. Full85-byte body verified. ECX manager; stack system_path,virtual_path; EAX provider/null; RET8 Factory order; return first nonnull provider. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bdb040",
+        "function_name": "BSP_VFS_CreateProviderForPath",
+        "comment": "[BSP reconstruction 00bdb040]\nECX manager; system/virtual strings stack RET8 EAX provider. Iterates factorylist manager+30/+34 forward; calls eachfactory+4 withsame2args, firstnonnull wins. No reorder/removal/refcount seen. Full85-byte body verified.\n\n[BSP reconstruction 00bdb040] update\nECX manager; system/virtual strings stack RET8 EAX provider. Iterates factorylist manager+30/+34 forward; calls eachfactory+4 withsame2args, firstnonnull wins. No reorder/removal/refcount seen. Full85-byte body verified. ECX manager; stack system_path,virtual_path; EAX provider/null; RET8 Factory order; return first nonnull provider. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdb040] update\nECX manager; system/virtual strings stack RET8 EAX provider. Iterates factorylist manager+30/+34 forward; calls eachfactory+4 withsame2args, firstnonnull wins. No reorder/removal/refcount seen. Full85-byte body verified. ECX manager; stack system_path,virtual_path; EAX provider/null; RET8 Factory order; return first nonnull provider. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Bounded three-factory host manager now dispatches physical, FileStore, MPKG in startup order. Decline/failure output remains unchanged; diagnostics and allocation transactionality are host boundaries. ECX manager, two paths stack, RET8. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdb0b0",
+      "before": {
+        "address": "00bdb0b0",
+        "function_name": "BSP_VFS_TickProviders",
+        "comment": "[BSP reconstruction 00bdb0b0]\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "after": {
+        "address": "00bdb0b0",
+        "function_name": "BSP_VFS_TickProviders",
+        "comment": "[BSP reconstruction 00bdb0b0]\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bdb0b0] update\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json ECX manager; RET. pump every mount record. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdb120",
+      "before": {
+        "address": "00bdb120",
+        "function_name": "FUN_00bdb120",
+        "comment": "[BSP reconstruction 00bdb120]\nECX manager; stack system_name; EAX provider/null; RET4 Compare provider+8/+C by stored length and CRT_stricmp, not virtual prefix. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bdb120",
+        "function_name": "FUN_00bdb120",
+        "comment": "[BSP reconstruction 00bdb120]\nECX manager; stack system_name; EAX provider/null; RET4 Compare provider+8/+C by stored length and CRT_stricmp, not virtual prefix. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdb120] update\nECX manager; stack system_name; EAX provider/null; RET4 Compare provider+8/+C by stored length and CRT_stricmp, not virtual prefix. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Bounded system-name lookup now traverses registrations in order, comparing stored length then _stricmp, returning first provider identity. Empty name matches FileStore; original full MPKG logical name retained. ECX manager, name stack, RET4. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdc1e0",
+      "before": {
+        "address": "00bdc1e0",
+        "function_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+        "comment": "[BSP reconstruction 00bdc1e0]\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      },
+      "after": {
+        "address": "00bdc1e0",
+        "function_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+        "comment": "[BSP reconstruction 00bdc1e0]\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bdc1e0] update\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX visitor; mount,suffix stack; RET8. provider pending dispatch; suffix unused. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdda10",
+      "before": {
+        "address": "00bdda10",
+        "function_name": "BSP_VFS_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bdda10]\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+      },
+      "after": {
+        "address": "00bdda10",
+        "function_name": "BSP_VFS_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bdda10]\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00bdda10] update\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX manager; firstName,secondName,callback,flags stack; AL; RET10h. manager pending dispatcher. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be1890",
+      "before": {
+        "address": "00be1890",
+        "function_name": "BSP_VFS_MountSystemPath",
+        "comment": "[BSP reconstruction 00be1890]\nECX manager; FIVE stack args systempath,virtualpath,priority,ownershipbyte,deviceid; RET14h. Calls manager+18 factoryselector, null invokes globalmanager+90 errorcallback. Success stores fiftharg provider+10, logs, forwards provider/virtualpath/priority/ownership to00be1740. Assembly authoritative over malformed decompilerstack.\n\n[BSP reconstruction 00be1890] update\nECX manager; FIVE stack args systempath,virtualpath,priority,ownershipbyte,deviceid; RET14h. Calls manager+18 factoryselector, null invokes globalmanager+90 errorcallback. Success stores fiftharg provider+10, logs, forwards provider/virtualpath/priority/ownership to00be1740. Assembly authoritative over malformed decompilerstack. ECX manager; stack system_path,virtual_path,priority,byte_payload,device_id; EAX provider/null; RET14h Construct first; set device+10 then register. Global error callback on factory failure. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00be1890",
+        "function_name": "BSP_VFS_MountSystemPath",
+        "comment": "[BSP reconstruction 00be1890]\nECX manager; FIVE stack args systempath,virtualpath,priority,ownershipbyte,deviceid; RET14h. Calls manager+18 factoryselector, null invokes globalmanager+90 errorcallback. Success stores fiftharg provider+10, logs, forwards provider/virtualpath/priority/ownership to00be1740. Assembly authoritative over malformed decompilerstack.\n\n[BSP reconstruction 00be1890] update\nECX manager; FIVE stack args systempath,virtualpath,priority,ownershipbyte,deviceid; RET14h. Calls manager+18 factoryselector, null invokes globalmanager+90 errorcallback. Success stores fiftharg provider+10, logs, forwards provider/virtualpath/priority/ownership to00be1740. Assembly authoritative over malformed decompilerstack. ECX manager; stack system_path,virtual_path,priority,byte_payload,device_id; EAX provider/null; RET14h Construct first; set device+10 then register. Global error callback on factory failure. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be1890] update\nECX manager; FIVE stack args systempath,virtualpath,priority,ownershipbyte,deviceid; RET14h. Calls manager+18 factoryselector, null invokes globalmanager+90 errorcallback. Success stores fiftharg provider+10, logs, forwards provider/virtualpath/priority/ownership to00be1740. Assembly authoritative over malformed decompilerstack. ECX manager; stack system_path,virtual_path,priority,byte_payload,device_id; EAX provider/null; RET14h Construct first; set device+10 then register. Global error callback on factory failure. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Bounded host mount constructs before ordered insertion; copies provider system name, applies fifth-argument device ID, retains ownership byte and shared lazy FileStore identity. ECX manager, system/virtual/priority/ownership/device stack, RET14h. Startup failure callback00530620 is a verified RET. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be78b0",
+      "before": {
+        "address": "00be78b0",
+        "function_name": "FUN_00be78b0"
+      },
+      "after": {
+        "address": "00be78b0",
+        "function_name": "BSP_FileStore_CompletePendingRequest",
+        "comment": "[BSP reconstruction 00be78b0]\nNormalizes firstName for pending lookup; saves node+14 callback, erases pending key, calls AddFile, then caller callback(firstName,secondName), no stream argument. ECX store, three stack arguments, RET0Ch. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be7b20",
+      "before": {
+        "address": "00be7b20",
+        "function_name": "FUN_00be7b20"
+      },
+      "after": {
+        "address": "00be7b20",
+        "function_name": "BSP_FileStore_CompletePendingRequestAdapter",
+        "comment": "[BSP reconstruction 00be7b20]\nMissing31-byte body. Calls004fc150, reads current factory+8, rearranges(stream,first,second) to ECX-store completion(first,second,stream). RET0Ch. Does not capture an originating store. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be7bf0",
+      "before": {
+        "address": "00be7bf0",
+        "function_name": "FUN_00be7bf0"
+      },
+      "after": {
+        "address": "00be7bf0",
+        "function_name": "BSP_FileStore_Destroy",
+        "comment": "[BSP reconstruction 00be7bf0]\nFull180-byte body through00be7ca3; Ghidra stops at00be7c49 after _free. Clears resident streams, erases pending keys/nodes, frees sentinels, destroys provider base. No physical cancellation/callback dispatch established. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be7cb0",
+      "before": {
+        "address": "00be7cb0",
+        "function_name": "FUN_00be7cb0"
+      },
+      "after": {
+        "address": "00be7cb0",
+        "function_name": "BSP_FileStore_RejectPendingOpen",
+        "comment": "[BSP reconstruction 00be7cb0]\nMissing5-byte body. FileStore table00d689e8+0Ch. XOR AL,AL; RET10h. Never queues/calls callback. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be7cc0",
+      "before": {
+        "address": "00be7cc0",
+        "function_name": "FUN_00be7cc0"
+      },
+      "after": {
+        "address": "00be7cc0",
+        "function_name": "BSP_FileStore_TickNoOp",
+        "comment": "[BSP reconstruction 00be7cc0]\nMissing1-byte RET. FileStore table00d689e8+28h. No pending processing. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be7cd0",
+      "before": {
+        "address": "00be7cd0",
+        "function_name": "BSP_FileStore_RequestFile",
+        "comment": "[BSP reconstruction 00be7cd0]\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+      },
+      "after": {
+        "address": "00be7cd0",
+        "function_name": "BSP_FileStore_RequestFile",
+        "comment": "[BSP reconstruction 00be7cd0]\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00be7cd0] update\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX store; originalName,userCallback stack; AL; RET8. FileStore request. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be80b0",
+      "before": {
+        "address": "00be80b0",
+        "function_name": "BSP_FileStoreFactory_GetOrCreate",
+        "comment": "[BSP reconstruction 00be80b0]\nECX factory, plainRET EAXprovider. Returnscachedfactory+8 or allocates/constructs00be7fa0 andstoresit. Assemblyreturnvalue correctsdecompilervoid. Providerfactorylifetime notmodeled byFileStoreclass.\n\n[BSP reconstruction 00be80b0] update\nECX factory, plainRET EAXprovider. Returnscachedfactory+8 or allocates/constructs00be7fa0 andstoresit. Assemblyreturnvalue correctsdecompilervoid. Providerfactorylifetime notmodeled byFileStoreclass. ECX FileStore factory; no stack args; EAX provider; plain RET Lazy provider at factory+8; not void. Preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00be80b0",
+        "function_name": "BSP_FileStoreFactory_GetOrCreate",
+        "comment": "[BSP reconstruction 00be80b0]\nECX factory, plainRET EAXprovider. Returnscachedfactory+8 or allocates/constructs00be7fa0 andstoresit. Assemblyreturnvalue correctsdecompilervoid. Providerfactorylifetime notmodeled byFileStoreclass.\n\n[BSP reconstruction 00be80b0] update\nECX factory, plainRET EAXprovider. Returnscachedfactory+8 or allocates/constructs00be7fa0 andstoresit. Assemblyreturnvalue correctsdecompilervoid. Providerfactorylifetime notmodeled byFileStoreclass. ECX FileStore factory; no stack args; EAX provider; plain RET Lazy provider at factory+8; not void. Preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be80b0] update\nECX factory, plainRET EAXprovider. Returnscachedfactory+8 or allocates/constructs00be7fa0 andstoresit. Assemblyreturnvalue correctsdecompilervoid. Providerfactorylifetime notmodeled byFileStoreclass. ECX FileStore factory; no stack args; EAX provider; plain RET Lazy provider at factory+8; not void. Preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Factory-owned lazy FileStore now shared across explicit host managers. Its provider system name is empty; repeated mounts update the same device ID. ECX factory, no stack arguments, EAX cached/new provider. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be8120",
+      "before": {
+        "address": "00be8120",
+        "function_name": "BSP_FileStoreFactory_Create",
+        "comment": "[BSP reconstruction 00be8120]\nECX factory; system/virtual strings stack RET8 EAXprovider. Nonempty systemname_stricmpequals filestore selects00be80b0 cached/lazyprovider; virtualargunused. Filestoreisnamedmemoryprovider, not diskarchive.\n\n[BSP reconstruction 00be8120] update\nECX factory; system/virtual strings stack RET8 EAXprovider. Nonempty systemname_stricmpequals filestore selects00be80b0 cached/lazyprovider; virtualargunused. Filestoreisnamedmemoryprovider, not diskarchive. ECX FileStore factory; stack system_path,virtual_path(unused); EAX provider/null; RET8 Matches filestore only, separate from MPKG; preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00be8120",
+        "function_name": "BSP_FileStoreFactory_Create",
+        "comment": "[BSP reconstruction 00be8120]\nECX factory; system/virtual strings stack RET8 EAXprovider. Nonempty systemname_stricmpequals filestore selects00be80b0 cached/lazyprovider; virtualargunused. Filestoreisnamedmemoryprovider, not diskarchive.\n\n[BSP reconstruction 00be8120] update\nECX factory; system/virtual strings stack RET8 EAXprovider. Nonempty systemname_stricmpequals filestore selects00be80b0 cached/lazyprovider; virtualargunused. Filestoreisnamedmemoryprovider, not diskarchive. ECX FileStore factory; stack system_path,virtual_path(unused); EAX provider/null; RET8 Matches filestore only, separate from MPKG; preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be8120] update\nECX factory; system/virtual strings stack RET8 EAXprovider. Nonempty systemname_stricmpequals filestore selects00be80b0 cached/lazyprovider; virtualargunused. Filestoreisnamedmemoryprovider, not diskarchive. ECX FileStore factory; stack system_path,virtual_path(unused); EAX provider/null; RET8 Matches filestore only, separate from MPKG; preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Startup FileStore factory recognizes nonempty case-insensitive filestore string and delegates lazy accessor00be80b0. ECX factory, system/virtual paths stack, RET8; virtual path ignored. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json."
+      },
+      "previous_comment_preserved": true
+    }
+  ],
+  "created_functions_before": [
+    {
+      "address": "00530620",
+      "before": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":\"No function at address: 0x00530620\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"error\":\"No function at address: 0x00530620\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00be7b20",
+      "before": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":\"No function at address: 0x00be7b20\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"error\":\"No function at address: 0x00be7b20\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00be7cb0",
+      "before": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":\"No function at address: 0x00be7cb0\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"error\":\"No function at address: 0x00be7cb0\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00be7cc0",
+      "before": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":\"No function at address: 0x00be7cc0\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"error\":\"No function at address: 0x00be7cc0\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00bb9d30",
+      "before": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":\"No function at address: 0x00bb9d30\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"error\":\"No function at address: 0x00bb9d30\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00bb9d40",
+      "before": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":\"No function at address: 0x00bb9d40\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"error\":\"No function at address: 0x00bb9d40\"}"
+        },
+        "isError": false
+      }
+    }
+  ],
+  "created_body_lengths": {
+    "00530620": 1,
+    "00be7b20": 31,
+    "00be7cb0": 5,
+    "00be7cc0": 1,
+    "00bb9d30": 5,
+    "00bb9d40": 1
+  },
+  "rejected_generated_tag": {
+    "before": {
+      "address": "00b18790",
+      "name": "CG_static_dtor_stub_00b18790",
+      "category": "cg_static_dtor_stub",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence": "atexit-registered static destructor stub"
+    },
+    "after": "reviewed allocation helper in config/names/",
+    "evidence": "reports/font_context_material_bindings_audit.json; 00b185a0 returns88h pool slots and binder consumes them as new parameter records."
+  },
+  "semantic_name_refinements": [
+    {
+      "address": "00b179f0",
+      "before": {
+        "address": "00b179f0",
+        "name": "TRIV_body_00b179f0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b179f0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Trivial-body classification retained; reviewed semantic name supersedes generic automatic name."
+    },
+    {
+      "address": "00b5b880",
+      "before": {
+        "address": "00b5b880",
+        "name": "TRIV_body_00b5b880",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b5b880",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Trivial-body classification retained; reviewed semantic name supersedes generic automatic name."
+    }
+  ],
+  "remaining_rename_tags_verified": 8777,
+  "limits": "Misleading no-return truncation in older allocator/destructor exports is documented in the raw-span audits; body repair was not included."
+}

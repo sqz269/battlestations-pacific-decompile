@@ -3,6 +3,8 @@
 #include "bsp/mpkg_archive.hpp"
 #include "bsp/mpkg_provider.hpp"
 #include "bsp/mounted_streams.hpp"
+#include "bsp/package_scan.hpp"
+#include "bsp/vfs_provider_manager.hpp"
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -78,23 +80,15 @@ struct FixtureEntry {
 };
 struct Fixture {
     Bytes encoded;
-    std::array<FixtureEntry, 4> entries;
+    std::vector<FixtureEntry> entries;
     std::uint32_t central_offset{}, central_size{}, eocd_offset{}, padding{};
 };
-Fixture make_fixture() {
+Fixture make_fixture(std::vector<FixtureEntry> entries) {
     Fixture f;
-    f.entries[0] = {"Case.TXT", "different-local-name", 0, 5, 1, 2,
-        ascii("first small decoded entry\n")};
-    f.entries[1] = {"cASE.tXT", "duplicate", 0, 0, 0, 0,
-        ascii("duplicate must not win\n")};
-    f.entries[2] = {"Packed.TXT", "raw", 8, 3, 0, 1, from_hex(dynamic_hex)};
-    f.entries[3] = {"Large.BIN", "original-source", 0, 2, 0, 0, Bytes(large_size)};
-    for (std::uint32_t i = 0; i < large_size; ++i)
-        f.entries[3].payload[i] = static_cast<std::uint8_t>((i * 17u + 31u) & 255u);
+    f.entries = std::move(entries);
     Bytes decoded(prefix_size, 0x3d);
     for (auto& entry : f.entries) {
-        entry.decoded_size = entry.method ? static_cast<std::uint32_t>(phrase.size() * 2048)
-            : static_cast<std::uint32_t>(entry.payload.size());
+        if (!entry.method) entry.decoded_size = static_cast<std::uint32_t>(entry.payload.size());
         entry.local_offset = static_cast<std::uint32_t>(decoded.size());
         const auto start = decoded.size();
         decoded.resize(start + 30, 0);
@@ -135,7 +129,9 @@ Fixture make_fixture() {
     f.central_size = f.eocd_offset - f.central_offset - prefix_size;
     decoded.resize(decoded.size() + 22, 0);
     dword(decoded, f.eocd_offset, 0x06054b50);
-    word(decoded, f.eocd_offset + 8, 4); word(decoded, f.eocd_offset + 10, 4);
+    const auto entry_count = static_cast<std::uint16_t>(f.entries.size());
+    word(decoded, f.eocd_offset + 8, entry_count);
+    word(decoded, f.eocd_offset + 10, entry_count);
     dword(decoded, f.eocd_offset + 12, f.central_size);
     dword(decoded, f.eocd_offset + 16, f.central_offset);
     const auto key = from_hex(key_hex);
@@ -150,6 +146,19 @@ Fixture make_fixture() {
         f.encoded[source] = decoded[i] ^ key[source % key.size()];
     }
     return f;
+}
+Fixture make_fixture() {
+    std::vector<FixtureEntry> entries(4);
+    entries[0] = {"Case.TXT", "different-local-name", 0, 5, 1, 2,
+        ascii("first small decoded entry\n")};
+    entries[1] = {"cASE.tXT", "duplicate", 0, 0, 0, 0,
+        ascii("duplicate must not win\n")};
+    entries[2] = {"Packed.TXT", "raw", 8, 3, 0, 1, from_hex(dynamic_hex),
+        static_cast<std::uint32_t>(phrase.size() * 2048)};
+    entries[3] = {"Large.BIN", "original-source", 0, 2, 0, 0, Bytes(large_size)};
+    for (std::uint32_t i = 0; i < large_size; ++i)
+        entries[3].payload[i] = static_cast<std::uint8_t>((i * 17u + 31u) & 255u);
+    return make_fixture(std::move(entries));
 }
 struct ReopenTrace {
     std::uint32_t calls{}, seeks{}, reads{}, first_seek{}, source_size{};
@@ -191,6 +200,138 @@ bool matches_owned_output(bsp::MemoryStream& stream, const Bytes& expected) {
         && actual == expected.size() && stream.position_00bef580() == expected.size()
         && std::equal(expected.begin(), expected.end(), observed.begin())
         && std::all_of(observed.begin() + actual, observed.end(), [](auto byte) { return byte == 0xcc; });
+}
+
+// Same synthetic framing, now with real nested encoded bytes and the three
+// startup factories. No physical fixture file or installed asset is created.
+bool package_scan_fixture(std::string& error) {
+    const auto marker_bytes = ascii("opened through the second freshly mounted package\n");
+    const auto inner = make_fixture({{"marker.txt", "marker", 0, 0, 0, 0, marker_bytes}});
+    const auto outer = make_fixture({{"./inner.mpkg", "nested", 0, 0, 0, 0, inner.encoded}});
+    if (inner.encoded.size() > 0x40000) return false; // Must take decoded small-copy route.
+    auto factories = std::make_shared<bsp::VfsProviderFactories>();
+    std::shared_ptr<bsp::MemoryStream> marker;
+    bool checked = true;
+    unsigned queries{}, lookups{}, requests{};
+    bool arguments = true, publication = true;
+    std::array<bsp::PackageScanPass, 2> reports;
+    {
+        bsp::VfsProviderManager manager(factories);
+        bsp::VfsProviderManager peer(factories);
+        std::shared_ptr<bsp::VfsProviderIdentity> store_identity, peer_identity, physical_identity;
+        checked = manager.mount_system_path_00be1890_fragment("filestore", ".", 0, 0, 3,
+            store_identity, error) == bsp::VfsProviderCreateStatus::created
+            && peer.mount_system_path_00be1890_fragment("FILESTORE", ".", 0, 0, 7,
+                peer_identity, error) == bsp::VfsProviderCreateStatus::created
+            && store_identity == peer_identity && store_identity->system_name.empty()
+            && store_identity->kind == bsp::VfsProviderKind::file_store && store_identity->device_id == 7
+            && manager.find_system_name_00bdb120("") == store_identity
+            && !manager.find_system_name_00bdb120("filestore")
+            && manager.file_store_00be80b0_fragment() == peer.file_store_00be80b0_fragment();
+        // The physical factory's audited trailing-backslash gate creates a
+        // provider without checking the filesystem. Keep it in the peer only.
+        checked = checked && peer.mount_system_path_00be1890_fragment("synthetic-root\\", "physical",
+            4, 1, 8, physical_identity, error) == bsp::VfsProviderCreateStatus::created
+            && physical_identity->kind == bsp::VfsProviderKind::physical_directory
+            && physical_identity->system_name == "synthetic-root\\" && physical_identity->device_id == 8
+            && peer.registrations().front().native_ownership_flag == 1;
+        if (!checked) return false;
+        auto store = manager.file_store_00be80b0_fragment();
+        std::vector<std::shared_ptr<bsp::MemoryStream>> stored_sources;
+        const auto put = [&](const char* name, const Bytes& bytes) {
+            auto source = std::make_shared<bsp::MemoryStream>();
+            DWORD copy_error{};
+            if (!bsp::memory_stream_from_bytes_00befa40_fragment(bytes.data(),
+                static_cast<std::uint32_t>(bytes.size()), *source, copy_error)
+                || !source->seek_00bef540(7, 0)
+                || store->add_file_00be7760(name, source) != bsp::FileStoreInsertResult::inserted)
+                return false;
+            stored_sources.push_back(std::move(source));
+            return true;
+        };
+        // FileStore preserves './'. Its native tree ordering puts bad before
+        // patch2 and '.mpkg' last; the last name fails factory's length>5 gate.
+        if (!put("./patch2.mpkg", outer.encoded) || !put("./bad.mpkg", ascii("not an MPKG archive\n"))
+            || !put(".mpkg", outer.encoded)) return false;
+        bsp::PackageScanCallbacks callbacks;
+        callbacks.enumerate = [&](const std::string& directory, const std::string& extension,
+            std::uint32_t flags, std::vector<std::string>& names, std::string& diagnostic) {
+            ++queries;
+            arguments = arguments && directory == "." && extension == "mpkg" && flags == 0;
+            return bsp::enumerate_resources_00bdd990_fragment(manager.context(), directory,
+                extension, flags, names, diagnostic);
+        };
+        callbacks.already_mounted = [&](const std::string& name) {
+            ++lookups;
+            return static_cast<bool>(manager.find_system_name_00bdb120(name));
+        };
+        callbacks.mount = [&](const std::string& name, const std::string& prefix,
+            std::int32_t priority, std::uint8_t ownership, std::int32_t device,
+            std::string& diagnostic) {
+            ++requests;
+            arguments = arguments && prefix == "." && priority == 1000 && ownership == 0 && device == -1;
+            const auto count = manager.registrations().size();
+            auto provider = store_identity; // Decline/failure must preserve the caller's output.
+            const auto result = manager.mount_system_path_00be1890_fragment(name, prefix,
+                priority, ownership, device, provider, diagnostic);
+            if (result == bsp::VfsProviderCreateStatus::created) {
+                publication = publication && manager.registrations().size() == count + 1
+                    && provider && provider->kind == bsp::VfsProviderKind::mpkg
+                    && provider->system_name == name && provider->device_id == -1;
+                return bsp::PackageMountStatus::mounted;
+            }
+            publication = publication && manager.registrations().size() == count && provider == store_identity;
+            return result == bsp::VfsProviderCreateStatus::declined
+                ? bsp::PackageMountStatus::declined : bsp::PackageMountStatus::failed;
+        };
+        const bool scan_success = bsp::startup_scan_packages_0073d881_fragment(callbacks, reports);
+        const auto entry_is = [](const bsp::PackageScanEntry& entry, const char* name,
+            bsp::PackageScanDisposition disposition) {
+            return entry.system_name == name && entry.priority == 1000 && entry.disposition == disposition;
+        };
+        using Disposition = bsp::PackageScanDisposition;
+        checked = !scan_success && queries == 2 && lookups == 7 && requests == 6
+            && arguments && publication && reports[0].enumerated && reports[1].enumerated
+            && reports[0].entries.size() == 3 && reports[1].entries.size() == 4
+            && entry_is(reports[0].entries[0], "./bad.mpkg", Disposition::failed)
+            && entry_is(reports[0].entries[1], "./patch2.mpkg", Disposition::mounted)
+            && entry_is(reports[0].entries[2], ".mpkg", Disposition::declined)
+            && entry_is(reports[1].entries[0], "./inner.mpkg", Disposition::mounted)
+            && entry_is(reports[1].entries[1], "./bad.mpkg", Disposition::failed)
+            && entry_is(reports[1].entries[2], "./patch2.mpkg", Disposition::already_mounted)
+            && entry_is(reports[1].entries[3], ".mpkg", Disposition::declined)
+            && !reports[0].error.empty() && !reports[1].error.empty()
+            && manager.registrations().size() == 3 && store_identity->device_id == 7;
+        const auto mounted_outer = manager.find_system_name_00bdb120("./PATCH2.MPKG");
+        const auto mounted_inner = manager.find_system_name_00bdb120("./inner.mpkg");
+        checked = checked && mounted_outer && mounted_outer->system_name == "./patch2.mpkg"
+            && mounted_inner && mounted_inner->system_name == "./inner.mpkg"
+            && !manager.find_system_name_00bdb120("inner.mpkg");
+        for (const auto& source : stored_sources) checked = checked && source->position_00bef580() == 7;
+        auto opened = bsp::open_resource_memory_00bdf310_fragment(manager.context(), "marker.txt", 2);
+        checked = checked && opened.provider_opened && opened.stream;
+        marker = std::move(opened.stream);
+        if (!opened.error.empty()) error = opened.error;
+        const auto outcome_name = [](Disposition disposition) {
+            switch (disposition) {
+            case Disposition::already_mounted: return "already_mounted";
+            case Disposition::mounted: return "mounted";
+            case Disposition::declined: return "declined";
+            case Disposition::failed: return "failed";
+            default: return "unsupported";
+            }
+        };
+        for (std::size_t pass = 0; pass < reports.size(); ++pass)
+            for (const auto& entry : reports[pass].entries)
+                std::printf("Package scan entry: pass=%zu name=%s prefix=. priority=%d ownership=0 device=-1 outcome=%s error=%s\n",
+                    pass + 1, entry.system_name.c_str(), entry.priority,
+                    outcome_name(entry.disposition), entry.error.c_str());
+    }
+    checked = checked && marker && matches_owned_output(*marker, marker_bytes);
+    std::printf("Synthetic package startup: outer_bytes=%zu inner_bytes=%zu scans=%u lookups=%u mount_requests=%u first_entries=%zu second_entries=%zu shared_factory_and_system_identity=%d fresh_nested_scan_and_failure_continuation=%d error=%s\n",
+        outer.encoded.size(), inner.encoded.size(), queries, lookups, requests,
+        reports[0].entries.size(), reports[1].entries.size(), checked, checked, error.c_str());
+    return checked;
 }
 
 // Extend this same archive fixture through real mounted-provider selection.
@@ -298,6 +439,7 @@ bool probe_mpkg_archive() {
     std::uint32_t fixture_size{}, directory{}, central_size{}, eocd{}, padding{}, partial_phase{};
     {
         auto fixture = make_fixture();
+        if (!package_scan_fixture(error)) return false;
         if (!mounted_fixture(fixture, error)) return false;
         fixture_size = static_cast<std::uint32_t>(fixture.encoded.size());
         directory = fixture.central_offset; central_size = fixture.central_size;

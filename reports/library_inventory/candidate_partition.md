@@ -1,6 +1,6 @@
 # Candidate partition: disjoint link-order segments
 
-23937 unnamed non-thunk FUN_ candidates grouped into 85 disjoint function-start ranges (Louvain resolution 0.5, smoothing window 12, min segment 60); 847 candidate function-pointer runs found in .rdata. These are not validated vtables.
+23927 unnamed non-thunk FUN_ candidates grouped into 92 disjoint function-start ranges (Louvain resolution 0.5, smoothing window 12, min segment 60); 848 candidate function-pointer runs found in .rdata. These are not validated vtables.
 
 Waves use every candidate-to-candidate segment dependency with >= 8 unique caller-target relationships (including direct tail jumps). JSON retains all edges; only the table display is shortened. Segments in one SCC share a wave and remain mutually dependent. Wave 0 means no outgoing strong edge to another SCC in this limited graph, not that the code is ready to implement independently.
 
@@ -8,88 +8,95 @@ Named/incomplete functions, indirect calls, shared state and below-threshold dep
 
 | Seg | Function-start range | Cands | Purity | Wave | SCC | SCC size | Lua hints | Pointer runs | Keywords | Strong deps out (segment:relationships) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 0 | 00401010-004138d0 | 191 | 0.09 | 0 | 0 | 1 | 0 | 0 | stateindex, undefined, state |  |
-| 1 | 00413d10-0041dd40 | 156 | 0.55 | 1 | 1 | 82 | 0 | 0 | avoidzoneg, avoidzone | 10:11, 0:9 |
-| 2 | 0041ddf0-0042a830 | 201 | 0.23 | 1 | 1 | 82 | 0 | 0 | mpakscenes, endgroup, crash, training, terraingridlayer, terraingrid, modes | 1:100, 83:29, 0:20, 80:9 |
-| 3 | 0042a920-0044c5d0 | 506 | 0.28 | 1 | 1 | 82 | 0 | 18 | bsp_chk_save, panel, deviceclass, daytime, callback, unlockto, unlockname | 80:207, 1:118, 83:60, 2:44, 79:27, 28:25; +8 more in JSON |
-| 4 | 0044c620-00450450 | 64 | 0.67 | 1 | 1 | 82 | 0 | 0 | dialogdefaultpausetime, dialogcharacters, dialogues, dialogglobals, picture, sequence, message | 3:44, 80:27, 1:18, 83:9 |
-| 5 | 00450500-0047c2a0 | 612 | 0.35 | 1 | 1 | 82 | 0 | 3 | alpha, action, cameraposition, activatetime, aa_flak, point, periscope | 1:169, 83:103, 3:76, 80:68, 52:44, 2:43; +7 more in JSON |
-| 6 | 0047c4d0-004ba080 | 884 | 0.22 | 1 | 1 | 82 | 0 | 22 | soldiertypes, landvehicleclasses, weight, wreckclass, tempid, startpt, smokeefx | 80:127, 1:104, 3:65, 83:61, 5:29, 58:29; +7 more in JSON |
-| 7 | 004ba0a0-004c3080 | 171 | 0.3 | 1 | 1 | 82 | 0 | 0 | collect, collectgarbage, traininggrounds, cloudsmall, multi, cloud | 6:26, 28:12 |
-| 8 | 004c3180-004d30f0 | 277 | 0.26 | 1 | 1 | 82 | 0 | 1 | white, allbutingame, interface, textures, writestats, userleft, stats | 7:109, 1:69, 83:52, 6:32, 2:25, 5:19; +5 more in JSON |
-| 9 | 004d32a0-004e7ef0 | 208 | 0.36 | 1 | 1 | 82 | 1 | 6 | ggame, collect, collectgarbage, ingame, scene, skiptitle, skiplogos | 8:143, 7:80, 2:45, 1:43, 6:39, 83:35; +20 more in JSON |
-| 10 | 004e7f90-004f9d30 | 200 | 0.29 | 1 | 1 | 82 | 0 | 5 | ambient, sound, party, noisetexture, landconvoy, stationary, filename | 1:56, 9:36, 2:34, 57:29, 5:22, 80:22; +10 more in JSON |
-| 11 | 004f9d80-0051e650 | 336 | 0.37 | 1 | 1 | 82 | 0 | 1 | menuitem_text, vehicleclass, back, globals, dview, navigate, scroll_menu | 1:160, 80:153, 75:106, 83:94, 2:63, 10:44; +12 more in JSON |
-| 12 | 0051e6e0-0052dfb0 | 193 | 0.41 | 1 | 1 | 82 | 0 | 1 | attackmove, cycle, target, text_b_text, text_a_text, submarine_group, stearring | 1:52, 75:46, 28:36, 83:25, 38:25, 2:23; +8 more in JSON |
-| 13 | 0052e020-005439b0 | 227 | 0.35 | 1 | 1 | 82 | 0 | 0 | mshd, vidm, starty, rowspace, pg_6s_text, pg_6p_text, pg_6_text | 75:55, 1:51, 7:25, 80:24, 83:23, 76:19; +10 more in JSON |
-| 14 | 00543a30-00552510 | 172 | 0.35 | 1 | 1 | 82 | 0 | 2 | button_framebox, basicship2, basicplane3, basicplane2, basicsub, basicship, basicplane | 28:31, 1:30, 75:20, 2:19, 13:17, 9:16; +8 more in JSON |
-| 15 | 00552530-00563440 | 263 | 0.41 | 1 | 1 | 82 | 0 | 1 | fe_pc, preset, presets, opt_normal, opt_inverted, opt_cancel, arrow_right_icon | 75:68, 1:62, 28:42, 83:37, 2:24, 3:21; +4 more in JSON |
-| 16 | 00563540-0058d3f0 | 566 | 0.54 | 1 | 1 | 82 | 0 | 3 | globals, back, navigate, select, server_text, players_text, mode_text | 75:128, 1:104, 2:58, 83:53, 76:42, 28:38; +12 more in JSON |
-| 17 | 0058d430-005cff40 | 665 | 0.26 | 1 | 1 | 82 | 0 | 2 | globals, mission_mappoint_, bushgroup, visibility, terrain, message, group | 1:129, 16:115, 75:94, 83:63, 80:63, 2:55; +18 more in JSON |
-| 18 | 005cff60-005df510 | 112 | 0.74 | 1 | 1 | 82 | 0 | 0 | globals, ingame, messagetemplate_text, settings_group, player_name_text, willendsession, unlock_group | 1:53, 75:51, 2:33, 7:28, 83:27, 38:24; +10 more in JSON |
-| 19 | 005e09a0-005f5af0 | 140 | 0.57 | 1 | 1 | 82 | 0 | 4 | globals, back, select, navigate, arrow_right_icon, arrow_left_icon, change | 75:138, 1:101, 18:74, 2:61, 83:53, 28:46; +11 more in JSON |
-| 20 | 005f5b30-00604c80 | 126 | 0.61 | 1 | 1 | 82 | 0 | 1 | xsm_dlcchanged, xsm_saveconfirm, fe_xbox, ingame, felkialtojel_text, aaaaaa, paused | 1:57, 75:49, 19:43, 2:40, 83:29, 8:29; +10 more in JSON |
-| 21 | 00604cf0-00612500 | 119 | 0.39 | 1 | 1 | 82 | 0 | 2 | usn_point_text, usn_icon, player_point_text, usn_text, turbo_group, turbo_effect, ship_speed_num3_icon | 1:40, 75:40, 3:38, 42:36, 28:23, 7:22; +6 more in JSON |
-| 22 | 00612550-0061cf80 | 110 | 0.38 | 1 | 1 | 82 | 0 | 1 | radar_sweep, pumpermanent, circle_full_, section, number_text, circle_small_02_group, circle_small_01_group | 75:25, 1:22, 3:12, 83:12, 76:10, 26:9 |
-| 23 | 0061d010-00639f40 | 176 | 0.48 | 1 | 1 | 82 | 0 | 1 | globals, rank_icon, continue, scoring_unlock_text, playerreview, move_group, debriefing_clipbox | 1:50, 80:28, 75:23, 16:23, 2:23, 83:22; +9 more in JSON |
-| 24 | 0063a280-00651370 | 216 | 0.19 | 1 | 1 | 82 | 0 | 5 | ingame, type_icon, commandbuilding_icon, close_group, unit_name_text, vehicleclass, globals | 1:71, 75:49, 23:38, 28:38, 2:36, 83:25; +14 more in JSON |
-| 25 | 006515b0-006596e0 | 111 | 0.4 | 1 | 1 | 82 | 0 | 0 |  | 28:14, 38:9, 2:8 |
-| 26 | 00659760-006605c0 | 117 | 0.56 | 1 | 1 | 82 | 0 | 0 | ingamegui, normal, icon_l_icon, circle_hl_icon, circle_small_02_group, circle_small_01_group, without_pload_group | 25:34, 1:32, 73:24, 83:16, 75:14, 2:12; +1 more in JSON |
-| 27 | 00660b10-00681e60 | 213 | 0.69 | 1 | 1 | 82 | 0 | 2 | circle_hl_icon, sm_cp, globals, ingame, unitclass_spawnpoint, sm_support, icon_l_icon | 26:116, 1:68, 25:60, 75:54, 2:40, 7:35; +15 more in JSON |
-| 28 | 00681e90-006ac1f0 | 568 | 0.37 | 1 | 1 | 82 | 0 | 7 | gvmultimenu, ingame, datatables, scripts, sensitivitysettings, pushrequestinterface, inputsettings | 1:103, 15:94, 80:80, 83:60, 3:55, 10:49; +16 more in JSON |
-| 29 | 006ac260-006be980 | 196 | 0.41 | 1 | 1 | 82 | 0 | 0 | savedata, scoring, entities, missionid, entidcont, cont1, cont0 | 80:340, 1:85, 2:76, 83:46, 5:35, 3:24; +6 more in JSON |
-| 30 | 006beb10-006d64b0 | 303 | 0.5 | 1 | 1 | 82 | 0 | 17 | equipment, state, slots, runwaywidth, runwaylength, runwayfailure, hangarfailure | 28:81, 29:73, 1:73, 38:37, 3:33, 2:27; +9 more in JSON |
-| 31 | 006d69e0-006da6b0 | 99 | 0.39 | 2 | 31 | 1 | 0 | 0 | recursiveguihighlights, positionmarkers, guihighlights, entitymarkers | 1:19, 83:11 |
-| 32 | 006dadc0-006deca0 | 66 | 0.7 | 3 | 32 | 1 | 0 | 0 | markerclasses, recursiveguihighlights, positionmarkers, guihighlights, entitymarkers | 31:49, 80:10, 1:8 |
-| 33 | 006dee40-00718350 | 742 | 0.29 | 1 | 1 | 82 | 1 | 32 | orgammo, bulletbase, depthcharge, mvfm, openaftertime, flytime, bulletclass | 80:168, 1:142, 2:95, 3:79, 28:69, 83:67; +22 more in JSON |
-| 34 | 00718380-0071d6d0 | 101 | 0.39 | 1 | 1 | 82 | 0 | 3 | sphere, identifier, mzonedesc, mnote, armor, points, category | 33:55, 2:18, 38:15, 84:11, 82:10 |
-| 35 | 0071d780-00722fb0 | 86 | 0.53 | 1 | 1 | 82 | 0 | 3 | startmode, followmode, userpath, pathfollowparams, pathcursor, internalclearprimarycommand, emptycommand | 38:27, 2:20, 12:13, 1:12, 34:11, 41:11; +1 more in JSON |
-| 36 | 00723030-00728fa0 | 91 | 0.48 | 1 | 1 | 82 | 0 | 9 | mgeommesh | 35:13, 2:8 |
-| 37 | 007290d0-00758cf0 | 488 | 0.26 | 1 | 1 | 82 | 0 | 30 | destroyed, speed, sounddevice, memsize, gpudeviceid, barreldelaytime, cpuspeed | 1:102, 80:102, 2:84, 38:73, 83:69, 3:42; +20 more in JSON |
-| 38 | 00758d30-00782840 | 719 | 0.59 | 1 | 1 | 82 | 0 | 28 | p2p_voice__, reconlevel, multiscore, mmultiplayer, lastbanto, player, recondata | 2:699, 39:72, 1:72, 80:65, 83:48, 33:41; +17 more in JSON |
-| 39 | 00782870-0078c9b0 | 138 | 0.36 | 1 | 1 | 82 | 0 | 5 | send_, recv_, time, client, server | 83:29, 2:15, 81:13, 38:10, 1:10 |
-| 40 | 0078cf20-007a42c0 | 251 | 0.42 | 1 | 1 | 82 | 0 | 0 | camera, thetalinearblend, theta, rholinearblend, blendtime, postype, initialization | 1:89, 80:57, 3:50, 28:38, 2:37, 83:30; +4 more in JSON |
-| 41 | 007a44d0-007b38d0 | 147 | 0.53 | 1 | 1 | 82 | 0 | 11 | pathbaseentity, simple, sustainbefore, rotrefentity, pathpoints, pathintf, pathid | 40:83, 1:64, 3:33, 80:32, 38:21, 79:20; +8 more in JSON |
-| 42 | 007b3920-007d1e50 | 330 | 0.59 | 1 | 1 | 82 | 0 | 10 | powerlost, explosion, splash, enginefire, rightspinning, leftspinning, spinning | 1:90, 3:76, 43:70, 38:57, 83:35, 2:33; +11 more in JSON |
-| 43 | 007d1f70-007f84e0 | 291 | 0.56 | 1 | 1 | 82 | 1 | 5 | travelspeed, gears, baydoor, wings, state, windsound, timeout | 1:90, 3:58, 42:54, 80:46, 38:38, 2:34; +16 more in JSON |
-| 44 | 007f8540-00809820 | 213 | 0.34 | 1 | 1 | 82 | 0 | 2 | enemy, neutral, unlocks, selectedmissionid, selecteddifficulty, seenunlocks, savedlobbyfilters | 80:66, 1:57, 83:35, 3:23, 43:19, 8:16; +5 more in JSON |
-| 45 | 00809880-0081aa10 | 213 | 0.51 | 1 | 1 | 82 | 0 | 39 | steeringjam, enginejam, periscope, torpedostock, thrust, attackmove, explosion | 38:52, 60:36, 1:31, 3:31, 2:22, 58:21; +9 more in JSON |
-| 46 | 0081aa60-008286f0 | 93 | 0.45 | 1 | 1 | 82 | 0 | 9 | camocolorgun, shipyardlaunch, camocolor, steeringjam, enginejam, explosion, weapons | 45:83, 1:31, 2:19, 58:18, 80:18, 48:16; +7 more in JSON |
-| 47 | 00828750-00858700 | 495 | 0.3 | 1 | 1 | 82 | 2 | 12 | gameunit, classid, stock, torpedo, torpedoavoidance, object, submarine | 80:92, 1:91, 6:67, 38:47, 3:46, 2:39; +20 more in JSON |
-| 48 | 00859240-0086af80 | 241 | 0.46 | 1 | 1 | 82 | 0 | 5 | radius, tvertangle, turninggun, thorzangle, horzrotdir, vertangle, horzangle | 80:42, 3:31, 1:26, 33:12, 49:12, 83:10; +7 more in JSON |
-| 49 | 0086afc0-00877e50 | 168 | 0.41 | 1 | 1 | 82 | 0 | 2 | effects, minlifetime, maxlifetime, lightning, particle, widthwave, widthscaler | 80:76, 83:60, 1:41, 48:27, 78:11, 38:11; +4 more in JSON |
-| 50 | 00877fa0-008828e0 | 117 | 0.44 | 1 | 1 | 82 | 0 | 2 | damage, yellow, weaponsystems, weapondirectorthinktime, warningscrollspeeds, visibletimeout, visibilityrange | 80:41, 49:26, 1:14, 83:12 |
-| 51 | 00882ac0-0088b120 | 128 | 0.58 | 1 | 1 | 82 | 0 | 0 | scripts, debugtrap, shallowwater, modelpath, luab, filepath, colormap | 29:51, 80:47, 1:36, 2:25, 83:24, 33:22; +1 more in JSON |
-| 52 | 0088b190-008ddf90 | 748 | 0.86 | 1 | 1 | 82 | 528 | 0 | luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail | 80:3876, 1:1168, 2:612, 83:592, 51:436, 38:117; +27 more in JSON |
-| 53 | 008ddfe0-008e2b90 | 76 | 0.63 | 1 | 1 | 82 | 0 | 1 | szurkenyil, secobjprefix, missionglobals, flagprocess, quiet, objectivelist, objectiveentities | 52:55, 1:19, 2:16, 38:10, 83:9, 28:9 |
-| 54 | 008e2bf0-008e6430 | 69 | 0.35 | 1 | 1 | 82 | 0 | 1 | pinged, defend, attack | 2:33 |
-| 55 | 008e64a0-008ec550 | 90 | 0.56 | 1 | 1 | 82 | 0 | 1 | uspumicon, uselimit, unitclassindex, targettype, targetfilter, random, pumicon | 54:39, 1:34, 83:17, 80:17, 3:16, 22:12; +2 more in JSON |
-| 56 | 008ec650-008f10a0 | 85 | 0.52 | 1 | 1 | 82 | 0 | 0 | pup_gain, pum1stget, vec3array, pup_lost, powerupclassid, intarray, floatarray | 55:23, 3:15, 54:10, 60:9, 80:8 |
-| 57 | 008f10b0-00922b90 | 507 | 0.3 | 1 | 1 | 82 | 1 | 2 | bulletthrowmul, vertangleerror, torpedobot, thinktimeleft, tailgunnerbot, pilotbot, horzangleerror | 1:138, 80:94, 16:89, 3:82, 2:78, 83:67; +18 more in JSON |
-| 58 | 00922c80-0092dfe0 | 181 | 0.4 | 1 | 1 | 82 | 0 | 78 | party, entity, timing, thinkfunction, roleavailable, gameentity, deadmeat | 80:43, 1:23, 2:17, 83:17, 28:12, 29:12; +5 more in JSON |
-| 59 | 0092e0b0-00943bb0 | 207 | 0.34 | 1 | 1 | 82 | 0 | 1 | cSmoothMapZoomLevel, periszkop, hajobelso, fizika_, cStaticShot_Size_OffsetX_OffsetY, enginejam, utkozoje | 1:51, 80:38, 58:31, 2:30, 83:24, 3:17; +3 more in JSON |
-| 60 | 00943c00-00973110 | 616 | 0.27 | 1 | 1 | 82 | 0 | 57 | callback, vehicleclass, entity, inferiorfailure, party, oldlevel, newlevel | 80:148, 1:114, 3:80, 2:56, 83:44, 6:40; +19 more in JSON |
-| 61 | 00973150-0098c820 | 287 | 0.42 | 1 | 1 | 82 | 0 | 10 | player, exitzone, repair, recon, plane, other, ambient | 60:178, 1:146, 51:93, 83:83, 2:68, 33:37; +13 more in JSON |
-| 62 | 0098c870-009965d0 | 153 | 0.51 | 1 | 1 | 82 | 0 | 2 | software, mpkg, cast, bsm_hwd, content, language, eidos | 1:33, 83:15, 0:12, 3:8 |
-| 63 | 00996670-009f69c0 | 843 | 0.81 | 1 | 1 | 82 | 0 | 9 | follow, moveto, state_moveto, targetlock, prepare, goaway, attackrun | 1:375, 42:265, 3:232, 64:167, 0:113, 83:105; +22 more in JSON |
-| 64 | 009f6a20-009ffad0 | 117 | 0.64 | 1 | 1 | 82 | 1 | 1 | projtime, precision, bullpos, vehicle, torpedobomb, squadronfreeattacktargets, nonfightergun | 1:35, 43:15, 3:15, 42:15, 35:14, 80:13; +2 more in JSON |
-| 65 | 009ffb40-00a07d40 | 130 | 0.57 | 1 | 1 | 82 | 0 | 0 | vehicle, class, captureweight | 64:34, 1:13 |
-| 66 | 00a07e40-00a19480 | 127 | 0.59 | 1 | 1 | 82 | 0 | 5 | commandtype, neutral, aivstable_, enemy, target, vehicleclass, s_to_ | 65:51, 1:49, 69:34, 80:25, 83:18, 3:16; +7 more in JSON |
-| 67 | 00a19500-00a1fac0 | 127 | 0.43 | 1 | 1 | 82 | 0 | 0 | coordinator, sell, strategicgain, duel, defend, capture, siege | 1:27, 69:19, 83:11, 2:10 |
-| 68 | 00a1fba0-00a284e0 | 108 | 0.64 | 1 | 1 | 82 | 0 | 0 | strategicgain, siege, escort, competitive | 67:51, 66:25, 69:15, 1:13, 65:12 |
-| 69 | 00a286a0-00a371a0 | 83 | 0.66 | 1 | 1 | 82 | 1 | 0 | reconratio, objectivemembers, autogrouping, unittypes, members, leader, party | 66:28, 80:25, 68:23, 1:21, 67:19, 65:16; +5 more in JSON |
-| 70 | 00a371c0-00a428d0 | 154 | 0.45 | 1 | 1 | 82 | 0 | 6 | client, online, xenonsystemmanager, online__, network, player, mnetworkclientxlive | 80:19, 39:15, 1:11, 71:10, 69:9, 83:8 |
-| 71 | 00a42cf0-00a625d0 | 179 | 0.46 | 1 | 1 | 82 | 0 | 3 | online, server, player, query, matchmaking, remote, movie | 70:22, 62:21, 1:17, 16:13, 83:10, 28:8; +1 more in JSON |
-| 72 | 00a62660-00a7a440 | 335 | 0.63 | 1 | 1 | 82 | 0 | 1 | unexpected, chunk, precompiled, call, complex, expression, many | 1:21, 74:16, 83:13 |
-| 73 | 00a7a460-00a82870 | 124 | 0.63 | 1 | 1 | 82 | 0 | 5 | sounjd, memory, sound, volume, play, event, system | 80:35, 1:24, 83:19, 2:9 |
-| 74 | 00a82880-00a9a4a0 | 305 | 0.22 | 1 | 1 | 82 | 0 | 6 | memory, sounjd, stream, sound, streaming, stereo, request | 1:59, 83:50, 73:38, 2:30, 78:20, 80:20; +5 more in JSON |
-| 75 | 00a9a5a0-00aacd90 | 312 | 0.37 | 1 | 1 | 82 | 0 | 41 | cGuiManager, widescreenalign, visible, rotate, mousehit, mouseblock, lowcolor | 1:38, 80:33, 76:30, 2:22, 83:21, 7:13; +1 more in JSON |
-| 76 | 00aace40-00acc0d0 | 381 | 0.37 | 1 | 1 | 82 | 0 | 12 | texture, simplecolor, mvfm, mshd, guidefault, shadername, vertical_scrollbar | 75:129, 1:106, 80:77, 83:58, 2:24, 84:10; +4 more in JSON |
-| 77 | 00acc1c0-00ad7b90 | 192 | 0.37 | 1 | 1 | 82 | 0 | 7 | mshd, scalevector, rotationeuler, playbydefault, modeltextureoverride, framesizesy, cGuiSound | 75:38, 1:27, 78:20, 83:16, 76:10, 80:9 |
-| 78 | 00ad7fe0-00b20dc0 | 869 | 0.3 | 1 | 1 | 82 | 0 | 18 | param, mvfm, mshd, terrain, emitter, additive, particlefloating | 1:224, 80:143, 83:132, 79:63, 2:55, 84:49; +7 more in JSON |
-| 79 | 00b20e70-00b65560 | 736 | 0.26 | 1 | 1 | 82 | 0 | 13 | mshd, cSampleOffsets, mvfm, pf43cc, shadowmap, posteffectsysobj, posteffectsyscam | 1:141, 80:123, 83:82, 78:68, 2:26, 7:12; +2 more in JSON |
-| 80 | 00b65660-00b75d80 | 319 | 0.52 | 1 | 1 | 82 | 0 | 31 | dofile, userdata, thread, lightuserdata, dobuffer, cDummy, c3dobject | 1:40, 72:31, 2:19, 79:17, 83:17, 81:9 |
-| 81 | 00b75de0-00b86390 | 315 | 0.49 | 1 | 1 | 82 | 0 | 1 | c3dnodeanimator, cLight, cAnimTrack, cAmbientLight, boundingbox, resource, resourcedump_ | 1:51, 83:35, 84:29, 80:24, 33:14, 2:14; +2 more in JSON |
-| 82 | 00b86420-00b90280 | 172 | 0.47 | 1 | 1 | 82 | 0 | 3 | cSceneResource, cGroupParamsResource, cGroup, flare, zoomfactor, targetname, node | 80:27, 84:22, 1:21, 81:18, 83:15, 33:8 |
-| 83 | 00b90380-00bd4200 | 765 | 0.26 | 1 | 1 | 82 | 0 | 97 | mvfm, mshd, cCorner3, cCorner2, cCorner1, cCorner0, coast | 80:204, 1:195, 84:80, 78:65, 2:49, 81:31; +8 more in JSON |
-| 84 | 00bd4270-00c30570 | 609 | 0.34 | 1 | 1 | 82 | 0 | 22 | long, iterator, cFileStore, removefile, removed, profile, nagybetu | 1:173, 83:116, 80:98, 2:45, 0:19, 14:11; +2 more in JSON |
+| 0 | 00401010-004133f0 | 188 | 0.1 | 0 | 0 | 1 | 0 | 0 | stateindex, undefined, state |  |
+| 1 | 00413470-0042a7e0 | 359 | 0.36 | 1 | 1 | 87 | 0 | 0 | mpakscenes, endgroup, crash, avoidzoneg, avoidzone, training, terraingridlayer | 90:35, 0:29, 9:15, 86:9 |
+| 2 | 0042a830-0043f480 | 282 | 0.43 | 1 | 1 | 87 | 0 | 14 | bsp_chk_save, unlockto, unlockname, unlockfrom, playtime, difficulty, united | 86:152, 1:106, 90:37, 85:27, 29:25, 55:19; +4 more in JSON |
+| 3 | 0043f4d0-0044c390 | 223 | 0.29 | 1 | 1 | 87 | 0 | 3 | panel, deviceclass, daytime, callback, setpanel, hidepanel, character | 86:55, 1:53, 90:23, 57:9 |
+| 4 | 0044c5a0-004553e0 | 112 | 0.47 | 1 | 1 | 87 | 0 | 0 | dialogues, sequence, dialogdefaultpausetime, dialogcharacters, suppressinterruptmsg, requesttime, panelstates | 3:66, 1:41, 86:37, 90:19, 2:8 |
+| 5 | 00455520-004ab550 | 1156 | 0.23 | 1 | 1 | 87 | 0 | 21 | soldiertypes, landvehicleclasses, entity, alpha, action, cameraposition, activatetime | 1:276, 86:135, 90:133, 2:52, 63:48, 59:44; +11 more in JSON |
+| 6 | 004ab580-004ba080 | 294 | 0.21 | 1 | 1 | 87 | 0 | 4 | wreckclass, timeleft, smoke, wreck, state, timemin, timemax | 86:50, 1:39, 5:28, 90:21, 3:15 |
+| 7 | 004ba0a0-004c4ed0 | 211 | 0.26 | 1 | 1 | 87 | 0 | 0 | collect, collectgarbage, traininggrounds, cloudsmall, multi, cloud, player | 6:29, 29:12 |
+| 8 | 004c4fe0-004d1840 | 210 | 0.41 | 1 | 1 | 87 | 0 | 1 | white, allbutingame, interface, textures, writestats, userleft, stats | 1:89, 7:82, 90:49, 5:16, 6:12, 29:12; +1 more in JSON |
+| 9 | 004d19c0-004f8830 | 404 | 0.28 | 1 | 1 | 87 | 1 | 11 | ggame, collect, collectgarbage, party, ingame, universe, scene | 1:179, 8:137, 7:112, 5:76, 86:57, 90:52; +25 more in JSON |
+| 10 | 004f8970-00506ed0 | 212 | 0.62 | 1 | 1 | 87 | 0 | 0 | menuitem_text, vehicleclass, unitlib_nounlock, back, globals, dview, change | 1:110, 86:57, 90:47, 81:32, 80:27, 82:13; +4 more in JSON |
+| 11 | 00506f00-0051e6e0 | 156 | 0.53 | 1 | 1 | 87 | 0 | 1 | back, dview, scroll_menu, globals, navigate, vehicleclass, szarnyas_framebox | 10:138, 1:114, 86:102, 90:48, 7:31, 81:31; +8 more in JSON |
+| 12 | 0051e730-00527c80 | 109 | 0.72 | 1 | 1 | 87 | 0 | 0 | attackmove, cycle, target, stearring, showocean, showfoliage, showboundings | 29:31, 1:24, 7:18, 9:10, 2:10, 14:9; +2 more in JSON |
+| 13 | 00527cb0-005439b0 | 310 | 0.4 | 1 | 1 | 87 | 0 | 1 | back, mshd, globals, vidm, text_b_text, text_a_text, submarine_group | 1:115, 81:57, 90:43, 80:39, 9:37, 7:34; +8 more in JSON |
+| 14 | 00543a30-00558640 | 309 | 0.3 | 1 | 1 | 87 | 0 | 3 | button_framebox, basicship2, basicplane3, basicplane2, basicsub, basicship, basicplane | 1:74, 29:31, 90:30, 9:29, 81:21, 7:19; +7 more in JSON |
+| 15 | 00558680-00568930 | 190 | 0.28 | 1 | 1 | 87 | 0 | 0 | fe_pc, preset, presets, globals, opt_normal, opt_inverted, opt_cancel | 1:76, 14:76, 80:53, 81:29, 86:29, 90:27; +7 more in JSON |
+| 16 | 00568cb0-0056d9a0 | 92 | 0.7 | 1 | 1 | 87 | 0 | 0 | cucc_group, setting_var_text, tilt_icon, slider_pos_group, setting_template_next_line_group, servers_framebox, servers_fix_group | 15:28, 1:9 |
+| 17 | 0056dd80-00584110 | 340 | 0.3 | 1 | 1 | 87 | 0 | 1 | globals, server_text, players_text, mode_text, scroll_right_icon, wave_icon, main_newprofile | 1:72, 16:61, 15:26, 80:24, 90:23, 81:22; +5 more in JSON |
+| 18 | 00584170-0058d470 | 72 | 0.56 | 1 | 1 | 87 | 0 | 1 | globals, select, navigate, back, mission_mappoint_, fe_pc, xsm_requiresprofile | 1:66, 17:39, 81:24, 80:24, 90:20, 86:12; +3 more in JSON |
+| 19 | 0058d4b0-005c5cd0 | 494 | 0.27 | 1 | 1 | 87 | 0 | 2 | globals, mission_mappoint_, bushgroup, visibility, terrain, message, group | 1:156, 81:64, 18:61, 90:48, 86:47, 17:43; +15 more in JSON |
+| 20 | 005c5da0-005ce450 | 132 | 0.36 | 1 | 1 | 87 | 0 | 0 | up_icon, helpline, gui_movie, down_icon, datatables, scripts, uniquemultisettings | 1:20, 9:16, 86:16, 19:14, 90:11, 7:10 |
+| 21 | 005ce490-005df510 | 149 | 0.72 | 1 | 1 | 87 | 0 | 1 | globals, ingame, messagetemplate_text, settings_group, player_name_text, willendsession, unlock_group | 1:94, 7:33, 80:31, 90:31, 9:26, 81:23; +9 more in JSON |
+| 22 | 005e09a0-005fd0c0 | 197 | 0.63 | 1 | 1 | 87 | 0 | 5 | xsm_saveconfirm, fe_xbox, globals, back, xsm_dlcchanged, arrow_left_icon, mainlistbox_text | 1:209, 80:84, 21:76, 90:65, 81:63, 9:45; +16 more in JSON |
+| 23 | 005fd120-006049f0 | 64 | 0.62 | 1 | 1 | 87 | 0 | 0 | ingame, felkialtojel_text, aaaaaa, paused, title_group, silverline_framebox, secondary_objectives_text | 1:50, 9:34, 80:27, 22:21, 90:17, 8:15; +4 more in JSON |
+| 24 | 00604a20-00622990 | 291 | 0.27 | 1 | 1 | 87 | 0 | 3 | showgamercard, globals, usn_point_text, usn_icon, radar_sweep, pumpermanent, playerreview | 1:103, 81:45, 9:42, 2:41, 50:36, 90:33; +11 more in JSON |
+| 25 | 00622a10-00654230 | 360 | 0.25 | 1 | 1 | 87 | 0 | 6 | ingame, globals, type_icon, scoring_unlock_text, score_text, medal_icon, commandbuilding_icon | 1:160, 24:83, 81:48, 29:47, 90:39, 9:37; +22 more in JSON |
+| 26 | 00654250-006596e0 | 86 | 0.35 | 1 | 1 | 87 | 0 | 0 |  | 29:8 |
+| 27 | 00659760-006626e0 | 124 | 0.36 | 1 | 1 | 87 | 0 | 0 | circle_hl_icon, ingamegui, normal, icon_l_icon, circle_small_02_group, circle_small_01_group, number_text | 1:54, 26:31, 78:24, 90:21, 81:20, 29:13 |
+| 28 | 00663370-00683fa0 | 241 | 0.46 | 1 | 1 | 87 | 0 | 3 | ingame, sm_cp, globals, unitclass_spawnpoint, sm_support, inferiorfailure, warning_2_text | 27:119, 1:111, 26:55, 81:42, 9:42, 7:41; +15 more in JSON |
+| 29 | 00684010-00696470 | 229 | 0.3 | 1 | 1 | 87 | 0 | 6 | gvmultimenu, pushrequestinterface, interface, textures, missionunique, missionhint, unique | 1:77, 9:73, 86:30, 90:30, 8:25, 25:24; +11 more in JSON |
+| 30 | 006964b0-0069f940 | 161 | 0.58 | 1 | 1 | 87 | 0 | 0 | swapstickpairs, swapstickmap, swapstickgeneral, press, invio, inputmodifiers, indietro | 1:25, 86:21, 14:12, 90:8 |
+| 31 | 0069fa40-006ad120 | 156 | 0.52 | 1 | 1 | 87 | 0 | 0 | sensitivitysettings, inputsettings, devicetype, deviceidx, slider, reverse, devinputs | 30:64, 1:47, 15:45, 14:37, 86:29, 3:28; +3 more in JSON |
+| 32 | 006ad150-006be920 | 182 | 0.4 | 1 | 1 | 87 | 0 | 0 | savedata, scoring, missionid, entidcont, cont1, cont0, actunitid | 86:340, 1:146, 90:45, 5:23, 44:19, 3:16; +4 more in JSON |
+| 33 | 006be980-006d6450 | 302 | 0.55 | 1 | 1 | 87 | 0 | 17 | equipment, state, slots, runwaywidth, runwaylength, runwayfailure, hangarfailure | 1:100, 29:81, 32:74, 2:30, 46:24, 5:19; +9 more in JSON |
+| 34 | 006d6470-006dae20 | 103 | 0.38 | 2 | 34 | 1 | 0 | 0 | recursiveguihighlights, positionmarkers, guihighlights, entitymarkers | 1:22, 90:12 |
+| 35 | 006dae90-006deff0 | 67 | 0.69 | 3 | 35 | 1 | 0 | 0 | markerclasses, recursiveguihighlights, positionmarkers, guihighlights, entitymarkers | 34:50, 86:10, 1:8 |
+| 36 | 006df170-006f1380 | 219 | 0.42 | 1 | 1 | 87 | 0 | 20 | orgammo, bulletbase, flytime, bulletclass, bomb, owner, bullets | 1:95, 86:74, 42:31, 29:29, 63:29, 44:24; +10 more in JSON |
+| 37 | 006f1440-006faf00 | 111 | 0.41 | 1 | 1 | 87 | 1 | 2 | tutorial, singleinvincibletime, shipyardrepairtime, repairtime, repairmedium, repairexpert, repairbasic | 1:41, 12:30, 86:20, 29:14, 90:10, 44:9; +1 more in JSON |
+| 38 | 006fb030-0070c210 | 238 | 0.28 | 1 | 1 | 87 | 0 | 10 | openaftertime, messages, whosaysthat, velocity, openstate, dragvert, divedepth | 1:82, 86:67, 36:36, 90:33, 63:22, 5:20; +6 more in JSON |
+| 39 | 0070cae0-00717980 | 153 | 0.33 | 1 | 1 | 87 | 0 | 0 | unitlist, unitid, shipnumber, shape, num_0, relativeposition, leader | 1:18 |
+| 40 | 00717c70-0071b940 | 82 | 0.62 | 2 | 40 | 1 | 0 | 1 | mzonedesc, sphere, identifier, mnote, armor, points, category | 39:57, 89:13, 91:11 |
+| 41 | 0071b9b0-00728fa0 | 214 | 0.45 | 1 | 1 | 87 | 0 | 14 | startmode, followmode, userpath, pathfollowparams, pathcursor, mgeommesh, internalclearprimarycommand | 1:63, 44:27, 46:19, 12:14, 49:12, 29:9 |
+| 42 | 007290d0-00741140 | 274 | 0.27 | 1 | 1 | 87 | 0 | 17 | destroyed, sounddevice, memsize, gpudeviceid, barreldelaytime, cpuspeed, torpedo | 1:99, 86:54, 90:48, 3:17, 41:13, 44:12; +5 more in JSON |
+| 43 | 00741160-00758eb0 | 218 | 0.42 | 1 | 1 | 87 | 0 | 13 | landvehicle, landingship, landfort, sumleaks, sumforces, rampaelfordulas, partraszalltunk | 1:87, 86:48, 44:30, 66:28, 63:25, 5:24; +9 more in JSON |
+| 44 | 00758f90-0076ea10 | 434 | 0.73 | 1 | 1 | 87 | 0 | 5 | p2p_voice__, woice, serversendscenescoring, runwaycenter, receive, nonce, myplayer | 1:679, 46:36, 90:12, 33:11, 86:9, 20:9 |
+| 45 | 0076eaa0-007788b0 | 125 | 0.44 | 1 | 1 | 87 | 0 | 0 | p2p_voice__, peer, mmultiplayer, xusercheckprivilege, xuserareusersfriends, valid, setmuted | 44:104, 46:44, 1:41, 90:18, 7:14, 21:14; +3 more in JSON |
+| 46 | 007788d0-00786a80 | 229 | 0.34 | 1 | 1 | 87 | 0 | 27 | reconlevel, multiscore, lastbanto, recondata, netentity, multiscore_save, hasplrcmd | 1:60, 86:44, 44:34, 63:27, 90:18, 39:17; +3 more in JSON |
+| 47 | 00786be0-0078cf20 | 66 | 0.45 | 2 | 47 | 1 | 0 | 0 | send_, recv_, time, client, server | 90:30, 1:16, 88:13 |
+| 48 | 0078cff0-007a4860 | 253 | 0.4 | 1 | 1 | 87 | 0 | 0 | postype, camera, thetalinearblend, theta, rholinearblend, blendtime, initialization | 1:123, 86:62, 2:51, 29:38, 90:29, 20:19; +4 more in JSON |
+| 49 | 007a49a0-007b2dd0 | 132 | 0.61 | 1 | 1 | 87 | 0 | 8 | pathid, pathbaseentity, simple, paratrooper, soldieranim, slowfactoropened, slowfactorclosed | 48:79, 1:78, 2:28, 86:27, 85:20, 29:18; +6 more in JSON |
+| 50 | 007b2e40-007d1d30 | 340 | 0.71 | 1 | 1 | 87 | 0 | 13 | powerlost, explosion, splash, enginefire, rightspinning, pathpoints, leftspinning | 1:127, 51:77, 2:72, 90:36, 44:33, 63:30; +12 more in JSON |
+| 51 | 007d1dc0-0080d9b0 | 556 | 0.43 | 1 | 1 | 87 | 1 | 7 | travelspeed, gears, baydoor, wings, enemy, neutral, state | 1:201, 86:115, 2:82, 90:55, 50:54, 29:41; +19 more in JSON |
+| 52 | 0080da00-0081a9c0 | 162 | 0.64 | 1 | 1 | 87 | 0 | 38 | steeringjam, enginejam, periscope, torpedostock, thrust, attackmove, explosion | 1:46, 66:35, 44:27, 46:21, 41:18, 63:17; +6 more in JSON |
+| 53 | 0081aa10-00828810 | 97 | 0.44 | 1 | 1 | 87 | 0 | 9 | camocolorgun, shipyardlaunch, camocolor, steeringjam, enginejam, explosion, weapons | 52:78, 1:50, 55:18, 63:18, 86:18, 90:14; +5 more in JSON |
+| 54 | 00828870-00851c70 | 430 | 0.27 | 1 | 1 | 87 | 2 | 7 | gameunit, classid, stock, torpedoavoidance, object, state, torpedoenabled | 1:91, 5:79, 86:60, 41:39, 90:23, 46:22; +15 more in JSON |
+| 55 | 00851cb0-0086af80 | 303 | 0.53 | 1 | 1 | 87 | 0 | 10 | radius, submarine, torpedo, unlimitedair, tvertangle, turninggun, thorzangle | 1:74, 86:74, 2:38, 36:21, 90:17, 5:16; +13 more in JSON |
+| 56 | 0086afc0-00878340 | 176 | 0.4 | 1 | 1 | 87 | 0 | 4 | effects, minlifetime, maxlifetime, lightning, particle, widthwave, widthscaler | 86:77, 90:60, 1:49, 55:27, 82:11, 63:10; +1 more in JSON |
+| 57 | 00878350-008828e0 | 109 | 0.43 | 1 | 1 | 87 | 0 | 2 | damage, yellow, weaponsystems, weapondirectorthinktime, warningscrollspeeds, visibletimeout, visibilityrange | 86:40, 56:33, 1:21, 90:12 |
+| 58 | 00882ac0-0088b120 | 128 | 0.55 | 1 | 1 | 87 | 0 | 0 | scripts, debugtrap, shallowwater, modelpath, luab, filepath, colormap | 1:61, 32:51, 86:47, 90:24, 36:21 |
+| 59 | 0088b190-008e5c40 | 879 | 0.76 | 1 | 1 | 87 | 528 | 2 | luakod, szurkenyil, options, hardwarereported, english, xboxcompatibilitymode, vsync | 86:3876, 1:1850, 90:602, 58:436, 2:55, 32:55; +31 more in JSON |
+| 60 | 008e5c50-008ee9b0 | 119 | 0.6 | 1 | 1 | 87 | 0 | 1 | pup_gain, pum1stget, uspumicon, uselimit, unitclassindex, targettype, targetfilter | 1:59, 59:49, 86:25, 90:23, 24:16, 3:16; +2 more in JSON |
+| 61 | 008eea80-008f10b0 | 71 | 0.58 | 1 | 1 | 87 | 0 | 0 | vec3array, intarray, floatarray, bytes, none, lua_s | 2:11, 65:9 |
+| 62 | 008f10c0-00922c80 | 507 | 0.31 | 1 | 1 | 87 | 1 | 2 | bulletthrowmul, vertangleerror, torpedobot, thinktimeleft, tailgunnerbot, pilotbot, horzangleerror | 1:218, 86:94, 17:78, 2:77, 90:67, 61:62; +16 more in JSON |
+| 63 | 00922de0-0092dfe0 | 180 | 0.47 | 1 | 1 | 87 | 0 | 78 | party, entity, timing, thinkfunction, roleavailable, gameentity, deadmeat | 86:43, 1:38, 5:19, 90:17, 29:12, 32:12; +1 more in JSON |
+| 64 | 0092e0b0-00943d60 | 209 | 0.34 | 1 | 1 | 87 | 0 | 1 | cSmoothMapZoomLevel, periszkop, hajobelso, fizika_, cStaticShot_Size_OffsetX_OffsetY, enginejam, utkozoje | 1:81, 86:38, 63:31, 90:24, 55:14, 2:13; +2 more in JSON |
+| 65 | 00943d80-00951d00 | 147 | 0.42 | 1 | 1 | 87 | 0 | 1 | resourceusage, ownerplayer, supportmanager, velocitysi, effect, camocolor, autoattacktarget | 86:69, 1:68, 62:32, 64:23, 90:22, 5:18; +2 more in JSON |
+| 66 | 00951d20-00968e00 | 279 | 0.29 | 1 | 1 | 87 | 0 | 37 | vehicleclass, inferiorfailure, reconplane, torpedobomber, torpedoboat, divebomber, cargo | 86:79, 1:76, 2:45, 5:24, 43:19, 3:18; +10 more in JSON |
+| 67 | 00968e80-0098c9c0 | 479 | 0.33 | 1 | 1 | 87 | 0 | 29 | player, callback, entity, message, oldlevel, newlevel, ambient | 1:240, 90:95, 58:94, 66:81, 36:34, 86:31; +14 more in JSON |
+| 68 | 0098d400-00996510 | 148 | 0.44 | 1 | 1 | 87 | 0 | 2 | mpkg, cast, bsm_hwd, content, language, eidos, software | 1:38, 90:15, 0:12 |
+| 69 | 009965d0-009f69c0 | 844 | 0.83 | 1 | 1 | 87 | 0 | 9 | follow, moveto, state_moveto, targetlock, prepare, goaway, attackrun | 1:417, 50:266, 2:233, 70:167, 0:113, 90:105; +21 more in JSON |
+| 70 | 009f6a20-009ffad0 | 117 | 0.63 | 1 | 1 | 87 | 1 | 1 | projtime, precision, bullpos, vehicle, torpedobomb, squadronfreeattacktargets, nonfightergun | 1:41, 51:19, 41:19, 2:15, 50:15, 86:13; +2 more in JSON |
+| 71 | 009ffb40-00a07d40 | 130 | 0.59 | 1 | 1 | 87 | 0 | 0 | vehicle, class, captureweight | 70:34, 1:19 |
+| 72 | 00a07e40-00a19410 | 126 | 0.59 | 1 | 1 | 87 | 0 | 5 | commandtype, neutral, aivstable_, enemy, target, vehicleclass, s_to_ | 1:62, 71:51, 86:25, 75:19, 74:19, 90:18; +7 more in JSON |
+| 73 | 00a19480-00a1fba0 | 129 | 0.41 | 1 | 1 | 87 | 0 | 0 | coordinator, sell, strategicgain, duel, defend, capture, siege | 1:37, 74:17, 90:11 |
+| 74 | 00a1fdb0-00a335d0 | 189 | 0.38 | 1 | 1 | 87 | 1 | 0 | reconratio, objectivemembers, autogrouping, unittypes, members, leader, party | 73:73, 72:50, 1:48, 71:27, 86:27, 7:20; +3 more in JSON |
+| 75 | 00a371a0-00a427a0 | 154 | 0.42 | 1 | 1 | 87 | 0 | 6 | client, online, xenonsystemmanager, online__, network, player, mnetworkclientxlive | 86:19, 1:16, 46:13, 74:9, 90:8, 76:8 |
+| 76 | 00a428d0-00a625d0 | 180 | 0.51 | 1 | 1 | 87 | 0 | 3 | online, server, player, query, matchmaking, remote, movie | 1:23, 75:22, 68:21, 7:11, 90:10, 17:9; +1 more in JSON |
+| 77 | 00a62660-00a798c0 | 329 | 0.64 | 1 | 1 | 87 | 0 | 1 | unexpected, chunk, precompiled, complex, expression, call, many | 1:24, 79:16, 90:13 |
+| 78 | 00a79910-00a82b70 | 134 | 0.67 | 1 | 1 | 87 | 0 | 7 | memory, sounjd, sound, play, event, system, init | 86:35, 1:33, 90:19 |
+| 79 | 00a82c60-00a98400 | 291 | 0.29 | 1 | 1 | 87 | 0 | 6 | memory, sounjd, stream, sound, streaming, stereo, request | 1:82, 90:48, 78:46, 84:20, 86:20, 91:15; +2 more in JSON |
+| 80 | 00a98cc0-00aa5b40 | 202 | 0.38 | 1 | 1 | 87 | 0 | 3 | cGuiManager, heightplus, dontmovetheitems, centervertical, camerastore, autocontrol, lockit | 1:45, 82:39, 81:31, 90:15, 7:11 |
+| 81 | 00aa5d70-00aaf4a0 | 164 | 0.43 | 1 | 1 | 87 | 0 | 38 | widescreenalign, visible, rotate, mousehit, mouseblock, lowcolor, label | 1:42, 80:34, 86:31, 90:16 |
+| 82 | 00aaf4e0-00af9660 | 935 | 0.3 | 1 | 1 | 87 | 0 | 27 | mshd, texture, mvfm, shadername, guidefault, simplecolor, terrain | 1:278, 86:172, 81:148, 90:132, 91:58, 84:32; +9 more in JSON |
+| 83 | 00af9d00-00aff690 | 61 | 0.62 | 1 | 1 | 87 | 0 | 0 | persec, permeter, sphereemitter, smartareaemitter, renderpriority, particleemission, partemissiontype | 1:25, 84:17, 90:11 |
+| 84 | 00aff700-00b20910 | 390 | 0.26 | 1 | 1 | 87 | 0 | 10 | param, additive, emitter, particle, mvfm, initialrotation, emittedspeed | 1:115, 83:62, 85:56, 90:54, 86:52, 82:31; +1 more in JSON |
+| 85 | 00b20a80-00b65ac0 | 748 | 0.27 | 1 | 1 | 87 | 0 | 13 | mshd, cSampleOffsets, mvfm, pf43cc, shadowmap, posteffectsysobj, posteffectsyscam | 1:166, 86:123, 90:82, 84:44, 7:12, 91:9 |
+| 86 | 00b65ba0-00b75d80 | 311 | 0.46 | 1 | 1 | 87 | 0 | 31 | dofile, userdata, thread, lightuserdata, dobuffer, cDummy, c3dobject | 1:59, 77:31, 85:24, 90:17, 88:8 |
+| 87 | 00b75de0-00b78ed0 | 68 | 0.69 | 1 | 1 | 87 | 0 | 0 | c3dnodeanimator, cAnimTrack, cOptimized3dNodeAnimator, cCameraAnimator | 1:8 |
+| 88 | 00b78f60-00b866c0 | 252 | 0.41 | 1 | 1 | 87 | 0 | 1 | cLight, cAmbientLight, boundingbox, resource, resourcedump_, refcounter, matrix | 1:57, 90:29, 91:25, 86:19, 87:17, 84:9 |
+| 89 | 00b86720-00b91000 | 186 | 0.47 | 1 | 1 | 87 | 0 | 3 | cSceneResource, cGroupParamsResource, cGroup, flare, zoomfactor, targetname, node | 86:29, 1:28, 91:22, 90:13, 87:11 |
+| 90 | 00b911d0-00bd4200 | 746 | 0.22 | 1 | 1 | 87 | 0 | 96 | mvfm, mshd, cCorner3, cCorner2, cCorner1, cCorner0, coast | 1:244, 86:201, 91:80, 84:50, 88:35, 13:28; +5 more in JSON |
+| 91 | 00bd4270-00c30570 | 607 | 0.34 | 1 | 1 | 87 | 0 | 23 | long, iterator, cFileStore, removefile, removed, profile, nagybetu | 1:217, 90:114, 86:98, 0:19, 14:11, 5:9; +1 more in JSON |

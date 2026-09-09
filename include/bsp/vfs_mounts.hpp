@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/physical_pending_reads.hpp"
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -7,6 +8,14 @@
 
 namespace bsp {
 class MemoryStream;
+enum class VfsProviderKind { physical_directory, file_store, mpkg };
+struct VfsProviderIdentity {
+    VfsProviderKind kind{};
+    // Provider base +8/+C, separate from the mount's virtual prefix. FileStore
+    // constructs this name empty. Shared across mounts of the same provider.
+    std::string system_name;
+    std::int32_t device_id{-1}; // Base +10; each successful mount overwrites it.
+};
 struct VfsMemoryOpen {
     // Set once the underlying provider has opened a stream. A subsequent host
     // buffering failure must not make traversal fall through to another mount.
@@ -34,6 +43,15 @@ struct VfsMount {
     // Missing support is reported by enumeration; open/resolve remain usable.
     std::function<bool(const std::string&, const std::string&, std::uint32_t,
         std::vector<std::string>&, std::string&)> enumerate;
+    std::shared_ptr<VfsProviderIdentity> provider;
+    // Provider +0Ch/+28h. Dispatch traverses by second name but passes both
+    // complete names unchanged. No recursive pump or mount mutation in callbacks.
+    std::function<bool(const std::string&, const std::string&, PhysicalReadCallback,
+        std::uint32_t, DWORD&)> submit_pending;
+    std::function<bool(PhysicalReadPumpReport&, DWORD&)> pump_pending;
+    // Host shutdown contract only: stop accepting work, then explicitly pump
+    // until drained. This is not a recovered native provider virtual slot.
+    std::function<bool(DWORD&)> stop_pending_submissions;
 };
 struct VfsMountContext {
     // Supplied native iteration order; vfs_mount_registration builds this view.

@@ -42,7 +42,9 @@ moves them into shards and removes them; run it before committing if a legacy fi
   of the exported pseudocode or listing with its callees named (`--live` fetches an unsaved
   view when nothing is exported).
 - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|
-  callees|bytes|decompile|disasm|export ...` (capped, verified project) instead of inline Python.
+  callees|bytes|comments|decompile|disasm|export ...` (capped, verified project) instead of inline Python.
+  For annotation readback, `ghidra comments <addresses...> --output local/comments.json`
+  stores full records in ignored storage and prints only their count and path.
 - `range`, `callers`, `callees`, `docs-for`, `segment` and `find` are capped by `--limit`;
   raise it deliberately rather than dumping everything.
 - `python tools/bsp.py snapshot` takes a snapshot and rebuilds the index only when Ghidra's

@@ -9,7 +9,7 @@ from the snapshot, sharded ledgers, tags, call graph, partition, PE strings and 
   python tools/bsp.py show 00ab9fd0 [--asm] [--lines 80] [--start 0]   capped export excerpt
   python tools/bsp.py range 00ab0000 00ac0000 --only FUN_
   python tools/bsp.py callers|callees|docs-for 00ab9fd0 / segment 12 / find GuiManager
-  python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|decompile|disasm|export ...
+  python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|comments|decompile|disasm|export ...
   python tools/bsp.py snapshot [--force]         snapshot + index only if Ghidra's function count changed
   python tools/bsp.py index [--if-stale]
   python tools/bsp.py ledger add-name|add-function|add-fragment|migrate ...
@@ -445,6 +445,22 @@ def ghidra_cmd(args):
             cap(as_text(c.get('get_function_signature', address=a)), args.lines)
         except RuntimeError as exc:
             print(f'(signature unavailable: {str(exc)[:120]})')
+    elif sub == 'comments':
+        # Annotation readback often spans a batch. Persist complete records in
+        # ignored local storage while keeping the interactive view bounded.
+        path = None
+        if args.output:
+            path = (ROOT / args.output).resolve()
+            if not path.is_relative_to((ROOT / 'local').resolve()) or path.suffix != '.json':
+                sys.exit('Comment output must be a JSON file under local/.')
+        rows = [{'address': norm(a), 'annotation': c.get('get_plate_comment', address=norm(a))}
+                for a in args.addresses]
+        if path:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(rows, indent=2) + '\n', encoding='utf-8', newline='\n')
+            print(f'Saved {len(rows)} comment records to {path.relative_to(ROOT).as_posix()}')
+        else:
+            cap(as_text(rows), args.lines, args.start)
     elif sub in ('xrefs', 'callers', 'callees'):
         a = norm(args.address)
         endpoint = {'xrefs': 'get_xrefs_to', 'callers': 'get_function_callers', 'callees': 'get_function_callees'}[sub]
@@ -530,6 +546,7 @@ def main():
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')
     q = gs.add_parser('proto'); q.add_argument('address'); q.add_argument('--lines', type=int, default=20)
+    q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--limit', type=int, default=25); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('bytes'); q.add_argument('address'); q.add_argument('--length', type=int, default=64)

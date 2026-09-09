@@ -14,7 +14,8 @@ target_sources(bsp_core PRIVATE src/resource_path.cpp)
 target_sources(bsp_core PRIVATE src/vfs_mounts.cpp src/vfs_candidates.cpp
   src/physical_directory.cpp src/vfs_search_defaults.cpp src/resource_lookup.cpp)
 target_sources(bsp_core PRIVATE src/vfs_mount_registration.cpp src/package_mounts.cpp)
-target_sources(bsp_core PRIVATE src/file_store.cpp)
+target_sources(bsp_core PRIVATE src/package_scan.cpp src/vfs_provider_manager.cpp src/vfs_pending.cpp)
+target_sources(bsp_core PRIVATE src/file_store.cpp src/file_store_requests.cpp)
 target_sources(bsp_core PRIVATE src/mounted_streams.cpp src/resource_preload.cpp)
 
 target_sources(bsp_core PRIVATE src/inflate_stream.cpp)
@@ -30,6 +31,7 @@ target_sources(bsp_core PRIVATE src/d3d9_query.cpp)
 target_sources(bsp_core PRIVATE src/font_geometry.cpp src/font_layout.cpp src/font_wrapped_layout.cpp
   src/font_geometry_owner.cpp)
 target_sources(bsp_core PRIVATE src/font_shader.cpp src/font_resources.cpp src/material_textures.cpp)
+target_sources(bsp_core PRIVATE src/material_parameter_bindings.cpp)
 target_sources(bsp_core PRIVATE src/win32_window.cpp)
 target_compile_features(bsp_core PUBLIC cxx_std_17)
 target_compile_options(bsp_core PRIVATE /W4 /WX /fp:strict)

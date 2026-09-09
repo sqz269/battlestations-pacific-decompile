@@ -4,6 +4,7 @@
 #include "bsp/material_textures.hpp"
 #include "bsp/material_samplers.hpp"
 #include "bsp/material_constants.hpp"
+#include "bsp/material_parameter_bindings.hpp"
 #include "bsp/shader_reflection.hpp"
 #include "bsp/resource_path.hpp"
 #include "asset_stream_probe.hpp"
@@ -30,9 +31,19 @@ struct CompilerModule {
     HMODULE value = LoadLibraryExW(L"d3dcompiler_47.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
     ~CompilerModule() { if (value) FreeLibrary(value); }
 };
+struct FontShaderOwner {
+    IDirect3DVertexShader9* vertex;
+    IDirect3DPixelShader9* pixel;
+    FontShaderOwner(IDirect3DVertexShader9& vs, IDirect3DPixelShader9& ps) : vertex(&vs), pixel(&ps) {
+        vertex->AddRef(); pixel->AddRef();
+    }
+    ~FontShaderOwner() { pixel->Release(); vertex->Release(); }
+    FontShaderOwner(const FontShaderOwner&) = delete;
+    FontShaderOwner& operator=(const FontShaderOwner&) = delete;
+};
 
 bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
-    std::vector<float>& words, bool vertex) {
+    const bsp::ShaderConstantBindings& bindings, std::vector<float>& words, bool vertex) {
     std::vector<bool> occupied(words.size() / 4);
     for (const auto& c : reflection) {
         if (c.register_set == 3) {
@@ -45,6 +56,10 @@ bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
             if (occupied[c.register_index + i]) return false;
             occupied[c.register_index + i] = true;
         }
+        // Non-system values are supplied through the recovered named parameter
+        // table below. Matrices, visibility and time remain renderer inputs.
+        if (std::any_of(bindings.material_constants.begin(), bindings.material_constants.end(),
+                [&](const auto& material) { return material.name == c.name; })) continue;
         auto* out = words.data() + 4 * c.register_index;
         if (c.name == "cWorldMat" || c.name == "cViewProjMat") {
             if (!vertex || c.register_count != 4 || c.rows != 4 || c.columns != 4) return false;
@@ -59,11 +74,8 @@ bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
         } else {
             if (c.register_count != 1 || c.rows != 1) return false;
             if (c.name == "cMatDiffColor" && c.columns == 4) std::fill(out, out + 4, 1.0f);
-            else if ((c.name == "cVisibility" || c.name == "cAspectRatio") && c.columns == 1) out[0] = 1;
-            else if (c.name == "cOverbrightAlphatex" && c.columns == 2) { out[0] = 0; out[1] = 1; }
-            else if (c.name == "cClipBorder" && c.columns == 4) std::fill(out, out + 4, 1.0f);
-            else if ((c.name == "cClip" || c.name == "cElapsedTime") && c.columns == 1) out[0] = 0;
-            else if (c.name == "cClipCenter" && c.columns == 2) { out[0] = 0; out[1] = 0; }
+            else if (c.name == "cVisibility" && c.columns == 1) out[0] = 1;
+            else if (c.name == "cElapsedTime" && c.columns == 1) out[0] = 0;
             else {
                 std::fprintf(stderr, "Font draw unresolved reflected constant: %s\n", c.name.c_str());
                 return false;
@@ -72,6 +84,63 @@ bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
         std::printf("Font %s constant %s: c%u count=%u\n", vertex ? "VS" : "PS",
             c.name.c_str(), c.register_index, c.register_count);
     }
+    return true;
+}
+
+bool font_material_constants(IDirect3DVertexShader9& vertex, IDirect3DPixelShader9& pixel,
+    const bsp::ShaderConstantBindings& vb, const bsp::ShaderConstantBindings& pb,
+    std::vector<float>& vwords, std::vector<float>& pwords, std::string& error) {
+    // Explicit inputs for this installed-font draw: resolved alpha scale 1,
+    // unclipped viewport and base context colors. This is not a reconstructed
+    // context constructor or the unresolved font/effect cache selection path.
+    struct Input { const char* name; std::array<float, 4> words; std::uint32_t count; };
+    std::array<Input, 8> inputs{{
+        {"cOverbrightAlphatex", {0,1,0,0}, 2}, {"cLowColor", {0,0,0,1}, 4},
+        {"cHighColor", {1,1,1,1}, 4}, {"cBlendFactor", {0,0,0,0}, 1},
+        {"cClip", {0,0,0,0}, 1}, {"cClipCenter", {0,0,0,0}, 2},
+        {"cClipBorder", {1,1,1,1}, 4}, {"cAspectRatio", {1,0,0,0}, 1}
+    }};
+    for (const auto* stage : {&vb, &pb}) for (const auto& constant : stage->material_constants) {
+        const auto input = std::find_if(inputs.begin(), inputs.end(),
+            [&](const auto& value) { return constant.name == value.name; });
+        if (input == inputs.end() || constant.register_set != 2 || constant.parameter_type != 3
+            || constant.register_count != 1 || constant.rows != 1 || constant.columns != input->count) {
+            error = "Unresolved font material input: " + constant.name;
+            return false;
+        }
+    }
+    auto shaders = std::make_shared<FontShaderOwner>(vertex, pixel);
+    bsp::MaterialParameterSelectors selectors;
+    selectors[0] = bsp::MaterialParameterSelector{vb, pb};
+    bsp::MaterialParameterBindings bindings;
+    const auto register_inputs = [&]() {
+        for (const auto& input : inputs)
+            if (bindings.register_words_00b17e10_00b44d60(input.name,
+                    {input.words.data(), input.words.size(), input.count, false}, error).status
+                == bsp::MaterialParameterRegistrationStatus::unsupported) return false;
+        return true;
+    };
+    if (!bindings.set_shader_00b19210_fragment(shaders, selectors, error) || !register_inputs()) return false;
+    // One lifecycle exercise against actual compiled metadata: assignment of the
+    // same shader clears registrations, then borrowed alpha changes reach its
+    // real register without re-registration. Pack final values before drawing.
+    const auto registered = bindings.size();
+    if (!registered || !bindings.set_shader_00b19210_fragment(shaders, selectors, error)
+        || bindings.size() != 0 || bindings.shader_identity() != shaders.get() || !register_inputs()
+        || bindings.size() != registered) return false;
+    const bsp::MaterialParameterRecord* alpha = nullptr;
+    for (std::size_t i = 0; i < bindings.size(); ++i)
+        if (bindings.record(i)->name == "cOverbrightAlphatex") alpha = bindings.record(i);
+    if (!alpha) return false;
+    inputs[0].words[1] = 0.5f;
+    if (bindings.pack_00b423c5(0, vwords, pwords) != bsp::MaterialConstantPackStatus::complete) return false;
+    for (const auto& stage : {std::pair<std::int32_t, const std::vector<float>*>{alpha->vertex_registers[0], &vwords},
+             {alpha->pixel_registers[0], &pwords}})
+        if (stage.first >= 0 && (*stage.second)[static_cast<std::size_t>(stage.first) * 4 + 1] != 0.5f) return false;
+    inputs[0].words[1] = 1;
+    if (bindings.pack_00b423c5(0, vwords, pwords) != bsp::MaterialConstantPackStatus::complete) return false;
+    std::printf("Installed font material bindings: VS=%zu PS=%zu registered=%zu same_shader_clear=1 borrowed_alpha_update=1 retained_shader_owner=1\n",
+        vb.material_constants.size(), pb.material_constants.size(), bindings.size());
     return true;
 }
 }
@@ -148,7 +217,7 @@ bool probe_font_material(IDirect3DDevice9& device,
         || !bsp::map_shader_constants_00b3aea0(vr, registry, vb)
         || !bsp::map_shader_constants_00b3aea0(pr, registry, pb)) return false;
     std::vector<float> vwords(256 * 4), pwords(224 * 4);
-    if (!font_constants(vr, vwords, true) || !font_constants(pr, pwords, false)) return false;
+    if (!font_constants(vr, vb, vwords, true) || !font_constants(pr, pb, pwords, false)) return false;
     bsp::MaterialSamplerPass pass;
     bsp::MaterialSamplerCounters counters;
     if (!bsp::append_material_samplers_00b3b280(base.samplers, pass, counters)
@@ -186,6 +255,10 @@ bool probe_font_material(IDirect3DDevice9& device,
         if (SUCCEEDED(hr)) hr = device.CreateOffscreenPlainSurface(256, 256, D3DFMT_A8R8G8B8, D3DPOOL_SYSTEMMEM, &readback.p, nullptr);
         if (SUCCEEDED(hr)) hr = device.CreateVertexShader(static_cast<const DWORD*>(vs.p->GetBufferPointer()), &vertex_shader.p);
         if (SUCCEEDED(hr)) hr = device.CreatePixelShader(static_cast<const DWORD*>(ps.p->GetBufferPointer()), &pixel_shader.p);
+        if (SUCCEEDED(hr) && !font_material_constants(*vertex_shader.p, *pixel_shader.p, vb, pb, vwords, pwords, error)) {
+            std::fprintf(stderr, "Font material binding failed: %s\n", error.c_str());
+            hr = E_FAIL;
+        }
         if (SUCCEEDED(hr)) hr = device.SetDepthStencilSurface(nullptr);
         if (SUCCEEDED(hr)) hr = device.SetRenderTarget(0, target.p);
         const D3DVIEWPORT9 viewport{0,0,256,256,0,1};
