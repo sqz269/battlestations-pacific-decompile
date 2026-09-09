@@ -1,0 +1,135 @@
+{
+  "program": "battlestationspacific.exe",
+  "source": "exports/bsp/functions.json (62191 entries) + Ghidra FID bookmarks (category 'Function ID Analyzer', 712 total) + read-only decompile/xref probes",
+  "ranges": [
+    {
+      "start": "00bf55be",
+      "end": "00c2ddd0",
+      "label": "MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator)",
+      "real_functions": 1039,
+      "named": 707,
+      "fun_": 322,
+      "thunks": 9,
+      "other_named": 1,
+      "other_named_note": "entry @ 00bfd2bd",
+      "fid_first": "00bf576a",
+      "fid_last": "00c2dda6",
+      "boundary_evidence": "00bf5520/00bf55a0 are game code (call BSP_PhysicalStream_Open, FUN_00bf42a0). 00bf55be = thunk to operator new; 00bf55c3 = operator new[] (overflow check -> bad_alloc); 00bf5695 = std::_Xlen ('string too long'); 00bf56d4 = std::_Xran ('invalid string position'); 00bf576a = __Tolower (first FID hit). 00c2dda6 = __mbsnicmp (last FID hit); 00c2ddd0 starts the import jump-thunk block.",
+      "reconstruct": false
+    },
+    {
+      "start": "00c2ddd0",
+      "end": "00c2f3e0",
+      "label": "Import jump thunks (jmp [__imp_*]) for FMOD, D3DX9_40, DINPUT8, XINPUT1_3, XLIVE, POWRPROF, RtlUnwind",
+      "real_functions": 114,
+      "named": 114,
+      "fun_": 0,
+      "thunks": 114,
+      "reconstruct": false
+    },
+    {
+      "start": "00c2f3e0",
+      "end": "00c5df60",
+      "label": "NOT library: game/engine code placed after the CRT by link order (Lua loadlib.c at 00c2f3e0-00c30210 per string xrefs; rest sampled as engine code: shaderfx/animtextures.lua loader @00c30570, polygon-plane clipper @00c33710, vec3 math user @00c3cc30)",
+      "real_functions": 282,
+      "named": 3,
+      "fun_": 279,
+      "thunks": 3,
+      "reconstruct": true
+    },
+    {
+      "start": "00c5df60",
+      "end": "00cc8930",
+      "label": ".text$x - MSVC exception-handling unwind funclets",
+      "real_functions": 0,
+      "funclets": 27369,
+      "named": 0,
+      "fun_": 0,
+      "note": "functions.json has 27369 entries here, all named Unwind@...; zero non-funclet functions inside",
+      "reconstruct": false
+    },
+    {
+      "start": "00cc893b",
+      "end": "00ce2000",
+      "label": ".text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks",
+      "real_functions": 170,
+      "named": 3,
+      "fun_": 167,
+      "thunks": 3,
+      "undefined_code_bytes_approx": 92000,
+      "undefined_gaps": [
+        {"start": "00cc893b", "end": "00ccffdf", "size": 30373, "orphaned_instructions": true},
+        {"start": "00cd002d", "end": "00cd29df", "size": 10675},
+        {"start": "00cd2a7c", "end": "00cd907e", "size": 26115, "orphaned_instructions": true},
+        {"start": "00cd9255", "end": "00cd9adf", "size": 2187},
+        {"start": "00cd9f2c", "end": "00cdae0f", "size": 3812},
+        {"start": "00cdb6ae", "end": "00cdc69f", "size": 4082},
+        {"start": "00cdcd2a", "end": "00cdee3f", "size": 8470, "orphaned_instructions": true},
+        {"start": "00cdf4e5", "end": "00cdff0f", "size": 2603},
+        {"start": "00ce110e", "end": "00ce1fff", "size": 3826}
+      ],
+      "evidence": "FUN_00cd91d0 = DeleteCriticalSection(global); FUN_00ce0a00 = jmp global dtor FUN_00a9afd0; FUN_00cdc720 = global object dtor (vtable reset + list unlink); the defined functions are referenced only by DATA refs from inside the undefined gaps (push offset dtor / call _atexit), e.g. 00cc8955->00cd91d0, 00cce5a1->00cdc720. operator new registers LAB_00ce1122 with _atexit, which is not a defined function.",
+      "reconstruct": false,
+      "note": "Not hand-written code, but the initializer bodies enumerate every global object with a constructor; useful as a globals inventory."
+    }
+  ],
+  "scattered": [
+    {"label": "Catch_All@ funclets (catch handler bodies, part of the enclosing function's try/catch)", "count": 617, "min": "00408a50", "max": "00c06f0c", "reconstruct": false},
+    {"label": "FID hits outside the cluster", "entries": [
+      {"address": "00403560", "name": "??_H@YGXPAXIHP6EPAX0@Z@Z (vector constructor iterator)", "verdict": "CRT COMDAT helper, library"},
+      {"address": "0098e2b0", "name": "_String_const_iterator<char>::operator*", "verdict": "STL template instantiation"},
+      {"address": "0098f0c0", "name": "_String_const_iterator<char>::operator*", "verdict": "STL template instantiation"},
+      {"address": "00778840", "name": "??1SubAllocator@details@Concurrency", "verdict": "PROVISIONAL / likely FID false positive (VS2005 has no ConcRT)"},
+      {"address": "009ddba0", "name": "??1SubAllocator@details@Concurrency", "verdict": "PROVISIONAL / likely FID false positive"}
+    ]}
+  ],
+  "stl_in_game_code": {
+    "method": "xrefs to the Dinkumware length-error strings; each xref is a standalone ~0x40-byte _Xlen() thrower emitted once per container instantiation (verified: FUN_0051ba70 = vector<T>::_Xlen builds std::string + length_error and throws). basic_string methods are shared COMDATs that call std::_Xlen/_Xran in the CRT cluster.",
+    "vector_instantiations": 220,
+    "map_set_instantiations": 137,
+    "list_instantiations": 76,
+    "deque_instantiations": 2,
+    "basic_string_xlen_callers": ["00408120", "00408720", "004c90d0", "0056f160", "0067d5a0", "007b7cc0", "0098f9a0", "0098fa90"],
+    "string_anchors": {"vector<T> too long": "00ce37e0", "map/set<T> too long": "00ce47bc", "list<T> too long": "00ce38f8", "deque<T> too long": "00ce78a0", "string too long": "00d69274", "invalid string position": "00d69284"},
+    "estimated_functions": "roughly 2000-4500 (435 instantiations x ~5-10 emitted methods each); not measured",
+    "note": "BSP_TextQueue_IncreaseCount (00bed2be) references 'list<T> too long': one std::list instantiation has already been hand-reconstructed."
+  },
+  "totals": {
+    "functions_json_entries": 62191,
+    "unwind_funclets": 27369,
+    "catch_all_funclets": 617,
+    "crt_stl_cluster": 1039,
+    "import_thunks": 114,
+    "text_yc_yd_tail": 170,
+    "non_target_entries": 29309,
+    "remaining_after_exclusion": 32882,
+    "fid_bookmarks_total": 712,
+    "fid_bookmarks_in_cluster": 707,
+    "fun_inside_cluster_sampled": 15,
+    "fun_inside_cluster_sampled_crt": 15
+  },
+  "samples_fun_inside_cluster": [
+    {"address": "00bf55c3", "identified_as": "operator new[] (size overflow check, throws bad_alloc)"},
+    {"address": "00bf5673", "identified_as": "std::invalid_argument scalar deleting destructor"},
+    {"address": "00bf5695", "identified_as": "std::_Xlen ('string too long')"},
+    {"address": "00bf56d4", "identified_as": "std::_Xran ('invalid string position')"},
+    {"address": "00bf6477", "identified_as": "std::bad_cast::bad_cast(const char*)"},
+    {"address": "00bf681b", "identified_as": "operator new (malloc/_callnewh loop, throws bad_alloc)"},
+    {"address": "00bf6ed1", "identified_as": "__onexit_nolock table growth (_realloc_crt of atexit table)"},
+    {"address": "00bf704d", "identified_as": "CRT math one-argument error dispatcher (__startOneArgErrorHandling/__math_exit)"},
+    {"address": "00bf7030", "identified_as": "CRT _CI* math intrinsic wrapper"},
+    {"address": "00bf7420", "identified_as": "_ftol2 (x87 -> int64 with rounding fixup)"},
+    {"address": "00bf7b93", "identified_as": "_snprintf/_vsnprintf_c_l wrapper"},
+    {"address": "00bf85b0", "identified_as": "floor/ceil with SSE2 fast path (__frnd, __except1)"},
+    {"address": "00bf8b45", "identified_as": "_splitpath_s"},
+    {"address": "00bfa910", "identified_as": "_CIfloor-style dispatcher (SSE2 vs x87)"},
+    {"address": "00c0cd20", "identified_as": "__updatetmbcinfo/setSBCS code-page table init"},
+    {"address": "00c1ca85", "identified_as": "free wrapper for a CRT struct field"},
+    {"address": "00c211a0", "identified_as": "__convertcp helper (MultiByteToWideChar/WideCharToMultiByte)"}
+  ],
+  "recommendation": {
+    "exclude_from_targets": "everything in ranges with reconstruct=false plus Catch_All@ funclets; 29309 of 62191 entries",
+    "fid": "Ghidra bundled VS2005 x86 FID (libcmt/libcpmt) is already applied: 707 hits in the cluster. The 322 unmatched FUN_ in the cluster are small helpers, math/SSE2 variants and FID_conflict cases; re-running FID adds little. No VS2005 toolchain exists locally (only MSVC 14.29/14.44/14.51) so a custom FID from libcmt.lib is not available; name-by-range is sufficient.",
+    "rebuild": "Link the modern MSVC CRT/STL; nothing in the cluster is written by hand. Global-object initializers in .text$yc fall out of declaring the globals. STL container instantiations fall out of using std::vector/map/set/list/string in reconstructed headers; enumerate them from the _Xlen anchors before choosing reconstruction targets."
+  }
+}

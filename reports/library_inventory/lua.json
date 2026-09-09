@@ -1,0 +1,2768 @@
+{
+ "library": "Lua 5.1.1 (lua_ident '$Lua: Lua 5.1.1 Copyright (C) 1994-2006 Lua.org, PUC-Rio $' at 0x00d57fe8)",
+ "ranges": [
+  {
+   "name": "main block (ldblib, lmathlib, lstrlib, loslib, liolib, ltablib, lbaselib, lapi, lstate, ldo, lauxlib, ldebug, lobject, lgc, lvm, ltm, ltable, lstring, lmem, lfunc/lzio, llex, lparser, lundump/ldump, lcode)",
+   "start": "00a60870",
+   "end": "00a7772f",
+   "first_function": "db_getregistry 0x00a60870",
+   "last_function": "luaK_patchlist 0x00a77670",
+   "ghidra_defined_functions": 513,
+   "additional_undefined_functions_found": 79,
+   "real_functions": 592,
+   "below": "import jump thunks 0x00a607e8-0x00a60865 and game code (<=0x00a60624)",
+   "above": "game sound/FMOD code from 0x00a77730"
+  },
+  {
+   "name": "loadlib.c block",
+   "start": "00c2f3e0",
+   "end": "00c3018f",
+   "first_function": "setprogdir 0x00c2f3e0",
+   "last_function": "luaopen_package 0x00c2ff90-0x00c30189",
+   "ghidra_defined_functions": 14,
+   "additional_undefined_functions_found": 8,
+   "real_functions": 22,
+   "below": "CRT/RtlUnwind thunks 0x00c2f166-0x00c2f25c",
+   "above": "game shader-texture-source code from 0x00c30190"
+  }
+ ],
+ "total_real_functions": 614,
+ "not_present": [
+  "linit.c (luaL_openlibs replaced by game routine 0x00b6a020 that walks the stock lualibs table 0x00d62bb8 with a per-library bitmask)",
+  "lua.c/luac.c/print.c",
+  "luaB_dofile (removed from base_funcs)",
+  "math_random/math_randomseed (removed from mathlib)",
+  "lua_setallocf (dropped, unreferenced)"
+ ],
+ "data_tables": {
+  "lualibs": "00d62bb8",
+  "game_lualibs_without_package": "00cf8350",
+  "dblib": "00d56f80",
+  "mathlib": "00d57240",
+  "strlib": "00d57398",
+  "syslib": "00d576f0",
+  "iolib": "00d578a8",
+  "flib": "00d57908",
+  "tab_funcs": "00d57a80",
+  "base_funcs": "00d57c78",
+  "co_funcs": "00d57d38",
+  "pk_funcs": "00d79840",
+  "ll_funcs": "00d79858",
+  "loaders": "00d79870",
+  "lua_ident": "00d57fe8"
+ },
+ "modifications": {
+  "verdict": "stock 5.1.1 core with three deliberate edits (allocator, base_funcs, mathlib) and a replaced linit; compiled inside the game with MSVC 2005 LTCG",
+  "lua_Number": "double (lua_pushnumber 0x00a679d0: FLD/FSTP qword; TValue 16 bytes, tt at +8)",
+  "LUAI_MAXCCALLS": "200 (luaD_call 0x00a69580: ==200 -> 'C stack overflow', >=225 -> luaD_throw)",
+  "LUAI_MAXCALLS": "20000 (growCI 0x00a69370)",
+  "LUAI_GCPAUSE_GCMUL": "200/200 (lua_newstate 0x00a68950)",
+  "sizeof_LG": "0x178, sizeof(lua_State) 0x78 (stock 5.1.1 x86)",
+  "pseudo_indices": "LUA_REGISTRYINDEX -10000, ENVIRONINDEX -10001, GLOBALSINDEX -10002 (stock)",
+  "allocator": "MODIFIED: l_alloc 0x00a6a1d0 = if nsize==0 -> NULL else GameAlloc(nsize) [0x00bd1780]; memcpy(min(osize,nsize)); if osize GameFree(ptr,osize) [0x00bd17a0]. luaL_newstate 0x00a6a260 still passes it to lua_newstate.",
+  "base_funcs": "MODIFIED: 23 entries, 'dofile' removed (game registers its own 'DoFile' C function in 0x00b6a020 and luaMW_DoFile*)",
+  "mathlib": "MODIFIED: 26 entries, 'random' and 'randomseed' removed",
+  "other_library_tables": "dblib(14), strlib(15), syslib(11), iolib(11 incl. popen), flib(9), tab_funcs(9), co_funcs(6), pk_funcs(2), ll_funcs(2), loaders(4) all stock",
+  "openlibs": "linit.c luaL_openlibs not linked; game routine 0x00b6a020 (script-state constructor) does luaL_newstate, lua_atpanic, then opens libs from stock lualibs 0x00d62bb8 selected by a bitmask, registers 'DoFile', runs region defines and Scripts\\fundamentals.lua; a second game table 0x00cf8350 lists the libs without 'package' (used by 0x006b8740)",
+  "version_specific": "findfile calls luaO_pushfstring directly (5.1.1 loadlib.c line 366; changed to lua_pushfstring in 5.1.2) -> exactly 5.1.1",
+  "codegen": "Whole-program optimisation: internal functions use register conventions (L in ECX, next arg in EDX, rest on stack), cdecl kept only for varargs (luaL_error, lua_pushfstring); errorlimit/enterlevel/tofile/readable/loaderror inlined into callers; unreferenced functions dropped; loadlib.c placed apart from the rest"
+ },
+ "ghidra_gaps": {
+  "note": "Ghidra defined no function for C functions referenced only from luaL_Reg tables/data pointers. Found so far: 87 such entry points inside the Lua ranges (listed with ghidra_defined=false). Expect a few more static helpers referenced only by pointer (hookf, panic, getF, sort_comp, gmatch_aux, io_readline, ipairs/pairs aux).",
+  "undefined_addresses": [
+   "00a60870",
+   "00a60880",
+   "00a608b0",
+   "00a60900",
+   "00a60910",
+   "00a60e80",
+   "00a60ef0",
+   "00a60f60",
+   "00a61620",
+   "00a61640",
+   "00a61670",
+   "00a616a0",
+   "00a616d0",
+   "00a61700",
+   "00a61730",
+   "00a61760",
+   "00a61790",
+   "00a617c0",
+   "00a617f0",
+   "00a61870",
+   "00a618a0",
+   "00a61970",
+   "00a619f0",
+   "00a61a20",
+   "00a61a50",
+   "00a61a80",
+   "00a61ab0",
+   "00a61b30",
+   "00a61c50",
+   "00a62ec0",
+   "00a62ed0",
+   "00a62fb0",
+   "00a63000",
+   "00a63910",
+   "00a63a10",
+   "00a63a40",
+   "00a63a70",
+   "00a63af0",
+   "00a640c0",
+   "00a64120",
+   "00a64170",
+   "00a64190",
+   "00a64270",
+   "00a644b0",
+   "00a64520",
+   "00a64570",
+   "00a64780",
+   "00a64920",
+   "00a64930",
+   "00a64cc0",
+   "00a64d00",
+   "00a64ed0",
+   "00a64f20",
+   "00a64f60",
+   "00a654e0",
+   "00a65530",
+   "00a65690",
+   "00a657d0",
+   "00a65800",
+   "00a65fa0",
+   "00a66010",
+   "00a66220",
+   "00a66280",
+   "00a662d0",
+   "00a66430",
+   "00a664d0",
+   "00a66510",
+   "00a66550",
+   "00a665a0",
+   "00a66660",
+   "00a666a0",
+   "00a66850",
+   "00a66920",
+   "00a66990",
+   "00a66b00",
+   "00a66b50",
+   "00a66bb0",
+   "00a66e50",
+   "00a670c0",
+   "00c2f5d0",
+   "00c2f670",
+   "00c2f8b0",
+   "00c2f9e0",
+   "00c2fa70",
+   "00c2fae0",
+   "00c2feb0",
+   "00c2ff90"
+  ]
+ },
+ "map": [
+  {
+   "address": "00a60870",
+   "source": "ldblib.c:db_getregistry",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; decoded from raw bytes (Ghidra had no function here)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60880",
+   "source": "ldblib.c:db_getmetatable",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; decoded from raw bytes (Ghidra had no function here)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a608b0",
+   "source": "ldblib.c:db_setmetatable",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; decoded from raw bytes (Ghidra had no function here)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60900",
+   "source": "ldblib.c:db_getfenv",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; decoded from raw bytes (Ghidra had no function here)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60910",
+   "source": "ldblib.c:db_setfenv",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; decoded from raw bytes (Ghidra had no function here)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60950",
+   "source": "ldblib.c:settabss",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a60950"
+  },
+  {
+   "address": "00a60970",
+   "source": "ldblib.c:settabsi",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a60970"
+  },
+  {
+   "address": "00a609c0",
+   "source": "ldblib.c:treatstackoption",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a609c0"
+  },
+  {
+   "address": "00a60a10",
+   "source": "ldblib.c:db_getinfo",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; \"flnSu\", \"function or level expected\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a60a10"
+  },
+  {
+   "address": "00a60ca0",
+   "source": "ldblib.c:db_getlocal",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; \"level out of range\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a60ca0"
+  },
+  {
+   "address": "00a60d60",
+   "source": "ldblib.c:db_setlocal",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; \"level out of range\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a60d60"
+  },
+  {
+   "address": "00a60e80",
+   "source": "ldblib.c:db_getupvalue",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry (undefined in Ghidra)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60ef0",
+   "source": "ldblib.c:db_setupvalue",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry (undefined in Ghidra)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60f60",
+   "source": "ldblib.c:hookf",
+   "confidence": "medium",
+   "evidence": "compared against lua_gethook result in db_gethook; not a Ghidra function",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a60ff0",
+   "source": "ldblib.c:makemask",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source strchr c/r/l",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a60ff0"
+  },
+  {
+   "address": "00a61080",
+   "source": "ldblib.c:gethooktable",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61080"
+  },
+  {
+   "address": "00a610f0",
+   "source": "ldblib.c:db_sethook",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a610f0"
+  },
+  {
+   "address": "00a611d0",
+   "source": "ldblib.c:db_gethook",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source; \"external hook\" pushlstring(13)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a611d0"
+  },
+  {
+   "address": "00a612b0",
+   "source": "ldblib.c:db_debug",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry; \"lua_debug> \"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a612b0"
+  },
+  {
+   "address": "00a613e0",
+   "source": "ldblib.c:db_errorfb",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry \"traceback\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a613e0"
+  },
+  {
+   "address": "00a61620",
+   "source": "ldblib.c:luaopen_debug",
+   "confidence": "high",
+   "evidence": "lualibs table 0x00d62bb8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61640",
+   "source": "lmathlib.c:math_abs",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61670",
+   "source": "lmathlib.c:math_sin",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a616a0",
+   "source": "lmathlib.c:math_sinh",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a616d0",
+   "source": "lmathlib.c:math_cos",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61700",
+   "source": "lmathlib.c:math_cosh",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61730",
+   "source": "lmathlib.c:math_tan",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61760",
+   "source": "lmathlib.c:math_tanh",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61790",
+   "source": "lmathlib.c:math_asin",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a617c0",
+   "source": "lmathlib.c:math_acos",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a617f0",
+   "source": "lmathlib.c:math_atan",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61820",
+   "source": "lmathlib.c:math_atan2",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61820"
+  },
+  {
+   "address": "00a61870",
+   "source": "lmathlib.c:math_ceil",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a618a0",
+   "source": "lmathlib.c:math_floor",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a618d0",
+   "source": "lmathlib.c:math_fmod",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a618d0"
+  },
+  {
+   "address": "00a61920",
+   "source": "lmathlib.c:math_modf",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61920"
+  },
+  {
+   "address": "00a61970",
+   "source": "lmathlib.c:math_sqrt",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a619a0",
+   "source": "lmathlib.c:math_pow",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a619a0"
+  },
+  {
+   "address": "00a619f0",
+   "source": "lmathlib.c:math_log",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61a20",
+   "source": "lmathlib.c:math_log10",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61a50",
+   "source": "lmathlib.c:math_exp",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61a80",
+   "source": "lmathlib.c:math_deg",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61ab0",
+   "source": "lmathlib.c:math_rad",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61ae0",
+   "source": "lmathlib.c:math_frexp",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61ae0"
+  },
+  {
+   "address": "00a61b30",
+   "source": "lmathlib.c:math_ldexp",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61b70",
+   "source": "lmathlib.c:math_min",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61b70"
+  },
+  {
+   "address": "00a61be0",
+   "source": "lmathlib.c:math_max",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57240 (names verified in .rdata)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61be0"
+  },
+  {
+   "address": "00a61c50",
+   "source": "lmathlib.c:luaopen_math",
+   "confidence": "high",
+   "evidence": "lualibs table",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a61ce0",
+   "source": "lstrlib.c:str_len",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61ce0"
+  },
+  {
+   "address": "00a61d20",
+   "source": "lstrlib.c:str_sub",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61d20"
+  },
+  {
+   "address": "00a61dc0",
+   "source": "lstrlib.c:str_reverse",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61dc0"
+  },
+  {
+   "address": "00a61e40",
+   "source": "lstrlib.c:str_lower",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61e40"
+  },
+  {
+   "address": "00a61ed0",
+   "source": "lstrlib.c:str_upper",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61ed0"
+  },
+  {
+   "address": "00a61f60",
+   "source": "lstrlib.c:str_rep",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61f60"
+  },
+  {
+   "address": "00a61fd0",
+   "source": "lstrlib.c:str_byte",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a61fd0"
+  },
+  {
+   "address": "00a620b0",
+   "source": "lstrlib.c:str_char",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a620b0"
+  },
+  {
+   "address": "00a62170",
+   "source": "lstrlib.c:str_dump",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a62170"
+  },
+  {
+   "address": "00a62250",
+   "source": "lstrlib.c:classEnd",
+   "confidence": "high",
+   "evidence": "string anchor xref \"malformed pattern (missing ])\" / \"(ends with %)\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a62250"
+  },
+  {
+   "address": "00a626b0",
+   "source": "lstrlib.c:check_capture",
+   "confidence": "medium",
+   "evidence": "string anchor xref \"invalid pattern capture\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a626b0"
+  },
+  {
+   "address": "00a62710",
+   "source": "lstrlib.c:capture_to_close",
+   "confidence": "high",
+   "evidence": "string anchor xref \"invalid capture index\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a62710"
+  },
+  {
+   "address": "00a627f0",
+   "source": "lstrlib.c:match",
+   "confidence": "medium",
+   "evidence": "largest lstrlib routine between capture helpers and push_onecapture",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a627f0"
+  },
+  {
+   "address": "00a62be0",
+   "source": "lstrlib.c:push_onecapture",
+   "confidence": "medium",
+   "evidence": "string anchor xref \"invalid capture index\"+\"unfinished capture\" (inlined copy)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a62be0"
+  },
+  {
+   "address": "00a62c50",
+   "source": "lstrlib.c:push_captures",
+   "confidence": "medium",
+   "evidence": "string anchor xref second inlined push_onecapture copy",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a62c50"
+  },
+  {
+   "address": "00a62ec0",
+   "source": "lstrlib.c:str_find",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a62ed0",
+   "source": "lstrlib.c:str_match",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a62fb0",
+   "source": "lstrlib.c:gmatch",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a63000",
+   "source": "lstrlib.c:gfind_nodef",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a63210",
+   "source": "lstrlib.c:str_gsub",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a63210"
+  },
+  {
+   "address": "00a634c0",
+   "source": "lstrlib.c:scanformat",
+   "confidence": "high",
+   "evidence": "string anchor xref \"invalid format (repeated flags)\"/\"(width or precision too long)\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a634c0"
+  },
+  {
+   "address": "00a635f0",
+   "source": "lstrlib.c:str_format",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57398",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a635f0"
+  },
+  {
+   "address": "00a638a0",
+   "source": "lstrlib.c:createmetatable",
+   "confidence": "medium",
+   "evidence": "string anchor xref \"__index\" 0x00a638e9",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a638a0"
+  },
+  {
+   "address": "00a63910",
+   "source": "lstrlib.c:luaopen_string",
+   "confidence": "high",
+   "evidence": "lualibs table; \"gfind\" xref 0x00a63931",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a639b0",
+   "source": "loslib.c:os_pushresult",
+   "confidence": "medium",
+   "evidence": "precedes os_execute; shared by remove/rename",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a639b0"
+  },
+  {
+   "address": "00a63a10",
+   "source": "loslib.c:os_execute",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a63a40",
+   "source": "loslib.c:os_remove",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a63a70",
+   "source": "loslib.c:os_rename",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a63ab0",
+   "source": "loslib.c:os_tmpname",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a63ab0"
+  },
+  {
+   "address": "00a63af0",
+   "source": "loslib.c:os_getenv",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a63b20",
+   "source": "loslib.c:os_clock",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a63b20"
+  },
+  {
+   "address": "00a63c30",
+   "source": "loslib.c:os_date",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a63c30"
+  },
+  {
+   "address": "00a63e50",
+   "source": "loslib.c:os_time",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a63e50"
+  },
+  {
+   "address": "00a640c0",
+   "source": "loslib.c:os_difftime",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64120",
+   "source": "loslib.c:os_setlocale",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64170",
+   "source": "loslib.c:os_exit",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d576f0",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64190",
+   "source": "loslib.c:luaopen_os",
+   "confidence": "high",
+   "evidence": "lualibs table",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64270",
+   "source": "liolib.c:io_type",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a644b0",
+   "source": "liolib.c:io_close",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64520",
+   "source": "liolib.c:io_gc",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64570",
+   "source": "liolib.c:io_tostring",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a645c0",
+   "source": "liolib.c:io_open",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a645c0"
+  },
+  {
+   "address": "00a646a0",
+   "source": "liolib.c:io_popen",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a646a0"
+  },
+  {
+   "address": "00a64780",
+   "source": "liolib.c:io_tmpfile",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64840",
+   "source": "liolib.c:aux_lines/getiofile",
+   "confidence": "low",
+   "evidence": "string anchor xref closed-file xref 0x00a648d3",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a64840"
+  },
+  {
+   "address": "00a64920",
+   "source": "liolib.c:io_input",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64930",
+   "source": "liolib.c:io_output",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64b10",
+   "source": "liolib.c:g_read",
+   "confidence": "medium",
+   "evidence": "string anchor xref \"invalid format\" 0x00a64c7b, \"invalid option\" 0x00a64c20",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a64b10"
+  },
+  {
+   "address": "00a64cc0",
+   "source": "liolib.c:io_read",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64d00",
+   "source": "liolib.c:f_read",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64ed0",
+   "source": "liolib.c:io_write",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64f20",
+   "source": "liolib.c:f_write",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a64f60",
+   "source": "liolib.c:f_seek",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a65020",
+   "source": "liolib.c:f_setvbuf",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a65020"
+  },
+  {
+   "address": "00a650d0",
+   "source": "liolib.c:io_flush",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a650d0"
+  },
+  {
+   "address": "00a65170",
+   "source": "liolib.c:f_flush",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a65170"
+  },
+  {
+   "address": "00a652b0",
+   "source": "liolib.c:luaopen_io",
+   "confidence": "high",
+   "evidence": "lualibs table; createmeta inlined (\"__index\" 0x00a652c9)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a652b0"
+  },
+  {
+   "address": "00a654e0",
+   "source": "liolib.c:f_lines",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry flib 0x00d57908; \"attempt to use a closed file\" xrefs agree",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a65530",
+   "source": "liolib.c:io_lines",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry iolib 0x00d578a8",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a655f0",
+   "source": "ltablib.c:foreachi",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a655f0"
+  },
+  {
+   "address": "00a65690",
+   "source": "ltablib.c:foreach",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a65730",
+   "source": "ltablib.c:maxn",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a65730"
+  },
+  {
+   "address": "00a657d0",
+   "source": "ltablib.c:getn",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a65800",
+   "source": "ltablib.c:setn",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a65830",
+   "source": "ltablib.c:tinsert",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a65830"
+  },
+  {
+   "address": "00a658e0",
+   "source": "ltablib.c:tremove",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a658e0"
+  },
+  {
+   "address": "00a65980",
+   "source": "ltablib.c:tconcat",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a65980"
+  },
+  {
+   "address": "00a65b00",
+   "source": "ltablib.c:auxsort",
+   "confidence": "medium",
+   "evidence": "large recursive routine before sort",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a65b00"
+  },
+  {
+   "address": "00a65fa0",
+   "source": "ltablib.c:sort",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry 0x00d57a80",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66010",
+   "source": "ltablib.c:luaopen_table",
+   "confidence": "high",
+   "evidence": "lualibs table",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66030",
+   "source": "lbaselib.c:luaB_print",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66030"
+  },
+  {
+   "address": "00a66110",
+   "source": "lbaselib.c:luaB_tonumber",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66110"
+  },
+  {
+   "address": "00a66220",
+   "source": "lbaselib.c:luaB_error",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66280",
+   "source": "lbaselib.c:luaB_getmetatable",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a662d0",
+   "source": "lbaselib.c:luaB_setmetatable",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a663f0",
+   "source": "lbaselib.c:luaB_getfenv",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a663f0"
+  },
+  {
+   "address": "00a66430",
+   "source": "lbaselib.c:luaB_setfenv",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a664d0",
+   "source": "lbaselib.c:luaB_rawequal",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66510",
+   "source": "lbaselib.c:luaB_rawget",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66550",
+   "source": "lbaselib.c:luaB_rawset",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a665a0",
+   "source": "lbaselib.c:luaB_gcinfo",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a665c0",
+   "source": "lbaselib.c:luaB_collectgarbage",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a665c0"
+  },
+  {
+   "address": "00a66660",
+   "source": "lbaselib.c:luaB_type",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a666a0",
+   "source": "lbaselib.c:luaB_next",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a667e0",
+   "source": "lbaselib.c:luaB_loadstring",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a667e0"
+  },
+  {
+   "address": "00a66850",
+   "source": "lbaselib.c:luaB_loadfile",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66920",
+   "source": "lbaselib.c:luaB_load",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66990",
+   "source": "lbaselib.c:luaB_assert",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a669e0",
+   "source": "lbaselib.c:luaB_unpack",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a669e0"
+  },
+  {
+   "address": "00a66a80",
+   "source": "lbaselib.c:luaB_select",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66a80"
+  },
+  {
+   "address": "00a66b00",
+   "source": "lbaselib.c:luaB_pcall",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66b50",
+   "source": "lbaselib.c:luaB_xpcall",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66bb0",
+   "source": "lbaselib.c:luaB_tostring",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry base_funcs 0x00d57c78 (23 entries, no dofile)",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66da0",
+   "source": "lbaselib.c:auxresume",
+   "confidence": "high",
+   "evidence": "string anchor xref \"cannot resume dead coroutine\" 0x00a66dd6",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66da0"
+  },
+  {
+   "address": "00a66e50",
+   "source": "lbaselib.c:luaB_coresume",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry co_funcs 0x00d57d38",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a66f30",
+   "source": "lbaselib.c:luaB_cocreate",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry co_funcs 0x00d57d38",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66f30"
+  },
+  {
+   "address": "00a66f90",
+   "source": "lbaselib.c:luaB_cowrap",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry co_funcs 0x00d57d38",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66f90"
+  },
+  {
+   "address": "00a66fb0",
+   "source": "lbaselib.c:luaB_yield",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry co_funcs 0x00d57d38",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66fb0"
+  },
+  {
+   "address": "00a66fd0",
+   "source": "lbaselib.c:luaB_costatus",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry co_funcs 0x00d57d38",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a66fd0"
+  },
+  {
+   "address": "00a670c0",
+   "source": "lbaselib.c:luaB_corunning",
+   "confidence": "high",
+   "evidence": "luaL_Reg table entry co_funcs 0x00d57d38",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00a67100",
+   "source": "lbaselib.c:base_open",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source _G/_VERSION/ipairs/pairs/newproxy",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67100"
+  },
+  {
+   "address": "00a67210",
+   "source": "lbaselib.c:luaopen_base",
+   "confidence": "high",
+   "evidence": "base_open + luaL_register(\"coroutine\"); lualibs table",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67210"
+  },
+  {
+   "address": "00a67340",
+   "source": "lapi.c:lua_xmove",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67340"
+  },
+  {
+   "address": "00a67390",
+   "source": "lapi.c:lua_atpanic",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67390"
+  },
+  {
+   "address": "00a673d0",
+   "source": "lapi.c:lua_gettop",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a673d0"
+  },
+  {
+   "address": "00a673e0",
+   "source": "lapi.c:lua_settop",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a673e0"
+  },
+  {
+   "address": "00a67430",
+   "source": "lapi.c:lua_remove",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67430"
+  },
+  {
+   "address": "00a67470",
+   "source": "lapi.c:lua_insert",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67470"
+  },
+  {
+   "address": "00a674c0",
+   "source": "lapi.c:lua_replace",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a674c0"
+  },
+  {
+   "address": "00a67570",
+   "source": "lapi.c:lua_pushvalue",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67570"
+  },
+  {
+   "address": "00a675a0",
+   "source": "lapi.c:lua_type",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a675a0"
+  },
+  {
+   "address": "00a675c0",
+   "source": "lapi.c:lua_typename",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a675c0"
+  },
+  {
+   "address": "00a675e0",
+   "source": "lapi.c:lua_iscfunction",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a675e0"
+  },
+  {
+   "address": "00a67600",
+   "source": "lapi.c:lua_isnumber",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67600"
+  },
+  {
+   "address": "00a67630",
+   "source": "lapi.c:lua_isstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67630"
+  },
+  {
+   "address": "00a67770",
+   "source": "lapi.c:lua_tonumber",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67770"
+  },
+  {
+   "address": "00a677a0",
+   "source": "lapi.c:lua_tointeger",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a677a0"
+  },
+  {
+   "address": "00a677e0",
+   "source": "lapi.c:lua_toboolean",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a677e0"
+  },
+  {
+   "address": "00a67810",
+   "source": "lapi.c:lua_tolstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67810"
+  },
+  {
+   "address": "00a67910",
+   "source": "lapi.c:lua_touserdata",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67910"
+  },
+  {
+   "address": "00a67930",
+   "source": "lapi.c:lua_tothread",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67930"
+  },
+  {
+   "address": "00a679c0",
+   "source": "lapi.c:lua_pushnil",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a679c0"
+  },
+  {
+   "address": "00a679d0",
+   "source": "lapi.c:lua_pushnumber",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a679d0"
+  },
+  {
+   "address": "00a679f0",
+   "source": "lapi.c:lua_pushinteger",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a679f0"
+  },
+  {
+   "address": "00a67a10",
+   "source": "lapi.c:lua_pushlstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67a10"
+  },
+  {
+   "address": "00a67a50",
+   "source": "lapi.c:lua_pushstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67a50"
+  },
+  {
+   "address": "00a67ac0",
+   "source": "lapi.c:lua_pushvfstring",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67ac0"
+  },
+  {
+   "address": "00a67af0",
+   "source": "lapi.c:lua_pushfstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67af0"
+  },
+  {
+   "address": "00a67b20",
+   "source": "lapi.c:lua_pushcclosure",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67b20"
+  },
+  {
+   "address": "00a67bc0",
+   "source": "lapi.c:lua_pushboolean",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67bc0"
+  },
+  {
+   "address": "00a67be0",
+   "source": "lapi.c:lua_pushlightuserdata",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67be0"
+  },
+  {
+   "address": "00a67c00",
+   "source": "lapi.c:lua_pushthread",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67c00"
+  },
+  {
+   "address": "00a67c20",
+   "source": "lapi.c:lua_gettable",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67c20"
+  },
+  {
+   "address": "00a67c40",
+   "source": "lapi.c:lua_getfield",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67c40"
+  },
+  {
+   "address": "00a67ca0",
+   "source": "lapi.c:lua_rawget",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67ca0"
+  },
+  {
+   "address": "00a67cd0",
+   "source": "lapi.c:lua_rawgeti",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67cd0"
+  },
+  {
+   "address": "00a67d10",
+   "source": "lapi.c:lua_createtable",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67d10"
+  },
+  {
+   "address": "00a67d50",
+   "source": "lapi.c:lua_getmetatable",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67d50"
+  },
+  {
+   "address": "00a67da0",
+   "source": "lapi.c:lua_getfenv",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67da0"
+  },
+  {
+   "address": "00a67e10",
+   "source": "lapi.c:lua_settable",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67e10"
+  },
+  {
+   "address": "00a67e40",
+   "source": "lapi.c:lua_setfield",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67e40"
+  },
+  {
+   "address": "00a67ea0",
+   "source": "lapi.c:lua_rawset",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67ea0"
+  },
+  {
+   "address": "00a67f00",
+   "source": "lapi.c:lua_rawseti",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67f00"
+  },
+  {
+   "address": "00a67f70",
+   "source": "lapi.c:lua_setmetatable",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a67f70"
+  },
+  {
+   "address": "00a68010",
+   "source": "lapi.c:lua_setfenv",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68010"
+  },
+  {
+   "address": "00a68090",
+   "source": "lapi.c:lua_call",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68090"
+  },
+  {
+   "address": "00a680e0",
+   "source": "lapi.c:lua_pcall",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a680e0"
+  },
+  {
+   "address": "00a68150",
+   "source": "lapi.c:lua_cpcall",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68150"
+  },
+  {
+   "address": "00a681f0",
+   "source": "lapi.c:lua_load",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a681f0"
+  },
+  {
+   "address": "00a68270",
+   "source": "lapi.c:lua_status",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68270"
+  },
+  {
+   "address": "00a68280",
+   "source": "lapi.c:lua_gc",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68280"
+  },
+  {
+   "address": "00a68390",
+   "source": "lapi.c:lua_error",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68390"
+  },
+  {
+   "address": "00a683a0",
+   "source": "lapi.c:lua_next",
+   "confidence": "medium",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a683a0"
+  },
+  {
+   "address": "00a683d0",
+   "source": "lapi.c:lua_concat",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a683d0"
+  },
+  {
+   "address": "00a68460",
+   "source": "lapi.c:lua_getallocf",
+   "confidence": "low",
+   "evidence": "lapi.c source order between verified neighbours",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68460"
+  },
+  {
+   "address": "00a68480",
+   "source": "lapi.c:lua_newuserdata",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source from ldblib/loadlib callers; register ABI (L in ECX)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68480"
+  },
+  {
+   "address": "00a68670",
+   "source": "lstate.c:stack_init",
+   "confidence": "medium",
+   "evidence": "first call in luaE_newthread and f_luaopen",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68670"
+  },
+  {
+   "address": "00a68720",
+   "source": "lstate.c:f_luaopen",
+   "confidence": "high",
+   "evidence": "luaH_new x2, luaS_resize, luaT_init, luaX_init, luaS_newlstr(\"not enough memory\",17), GCthreshold=4*totalbytes",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68720"
+  },
+  {
+   "address": "00a687e0",
+   "source": "lstate.c:close_state",
+   "confidence": "medium",
+   "evidence": "called on failed lua_newstate and from lua_close",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a687e0"
+  },
+  {
+   "address": "00a68870",
+   "source": "lstate.c:luaE_newthread",
+   "confidence": "high",
+   "evidence": "luaM_realloc_(0,0x78)=sizeof(lua_State), luaC_link, preinit_state inlined",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68870"
+  },
+  {
+   "address": "00a68900",
+   "source": "lstate.c:luaE_freethread",
+   "confidence": "medium",
+   "evidence": "frees CI array (0x18 each), stack (0x10 each), 0x78",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68900"
+  },
+  {
+   "address": "00a68950",
+   "source": "lstate.c:lua_newstate",
+   "confidence": "high",
+   "evidence": "f(ud,NULL,0,0x178)=sizeof(LG); gcpause=200; gcstepmul=200; luaD_rawrunprotected(f_luaopen)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68950"
+  },
+  {
+   "address": "00a68a90",
+   "source": "lstate.c:lua_close",
+   "confidence": "medium",
+   "evidence": "luaF_close, luaC_freeall loop, close_state",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68a90"
+  },
+  {
+   "address": "00a68af0",
+   "source": "ldo.c:seterrorobj",
+   "confidence": "high",
+   "evidence": "string anchor xref \"not enough memory\"/\"error in error handling\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68af0"
+  },
+  {
+   "address": "00a68b80",
+   "source": "ldo.c:luaD_rawrunprotected",
+   "confidence": "high",
+   "evidence": "called from lua_newstate/lua_close",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68b80"
+  },
+  {
+   "address": "00a68cd0",
+   "source": "ldo.c:luaD_reallocCI",
+   "confidence": "medium",
+   "evidence": "called from growCI",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a68cd0"
+  },
+  {
+   "address": "00a69330",
+   "source": "ldo.c:luaD_throw",
+   "confidence": "high",
+   "evidence": "noreturn (int3 after) from luaD_call/growCI",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a69330"
+  },
+  {
+   "address": "00a69370",
+   "source": "ldo.c:growCI",
+   "confidence": "high",
+   "evidence": "LUAI_MAXCALLS 20000 checks",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a69370"
+  },
+  {
+   "address": "00a693b0",
+   "source": "ldo.c:luaD_precall",
+   "confidence": "high",
+   "evidence": "luaD_call: precall==PCRLUA -> luaV_execute",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a693b0"
+  },
+  {
+   "address": "00a69580",
+   "source": "ldo.c:luaD_call",
+   "confidence": "high",
+   "evidence": "string anchor xref \"C stack overflow\"; nCcalls 200/225",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a69580"
+  },
+  {
+   "address": "00a69670",
+   "source": "ldo.c:lua_resume",
+   "confidence": "high",
+   "evidence": "string anchor xref \"cannot resume dead coroutine\" 0x00a6967e",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a69670"
+  },
+  {
+   "address": "00a698b0",
+   "source": "lauxlib.c:luaL_error",
+   "confidence": "high",
+   "evidence": "cdecl varargs, used by ldblib/loadlib",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a698b0"
+  },
+  {
+   "address": "00a698f0",
+   "source": "lauxlib.c:luaL_newmetatable",
+   "confidence": "high",
+   "evidence": "luaopen_package(\"_LOADLIB\")",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a698f0"
+  },
+  {
+   "address": "00a69950",
+   "source": "lauxlib.c:luaL_checkstack",
+   "confidence": "high",
+   "evidence": "string anchor xref \"stack overflow (%s)\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a69950"
+  },
+  {
+   "address": "00a69a60",
+   "source": "lauxlib.c:luaL_findtable",
+   "confidence": "high",
+   "evidence": "ll_module / luaopen_package",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a69a60"
+  },
+  {
+   "address": "00a6a140",
+   "source": "lauxlib.c:getS",
+   "confidence": "high",
+   "evidence": "reader used by luaL_loadbuffer/loadstring",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a140"
+  },
+  {
+   "address": "00a6a160",
+   "source": "lauxlib.c:luaL_loadbuffer",
+   "confidence": "high",
+   "evidence": "lua_load with getS",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a160"
+  },
+  {
+   "address": "00a6a190",
+   "source": "lauxlib.c:luaL_loadstring",
+   "confidence": "high",
+   "evidence": "strlen + lua_load(getS)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a190"
+  },
+  {
+   "address": "00a6a1d0",
+   "source": "lauxlib.c:l_alloc",
+   "confidence": "high",
+   "evidence": "MODIFIED: game alloc(0x00bd1780)+memcpy+free(0x00bd17a0)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a1d0"
+  },
+  {
+   "address": "00a6a260",
+   "source": "lauxlib.c:luaL_newstate",
+   "confidence": "high",
+   "evidence": "lua_newstate + lua_atpanic",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a260"
+  },
+  {
+   "address": "00a6a290",
+   "source": "lauxlib.c:luaL_argerror",
+   "confidence": "high",
+   "evidence": "string anchor xref \"bad argument #%d to ...\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a290"
+  },
+  {
+   "address": "00a6a450",
+   "source": "lauxlib.c:luaL_checktype",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a450"
+  },
+  {
+   "address": "00a6a4b0",
+   "source": "lauxlib.c:luaL_checkany",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a4b0"
+  },
+  {
+   "address": "00a6a4e0",
+   "source": "lauxlib.c:luaL_checklstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a4e0"
+  },
+  {
+   "address": "00a6a540",
+   "source": "lauxlib.c:luaL_optlstring",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source db_getinfo \"flnSu\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a540"
+  },
+  {
+   "address": "00a6a650",
+   "source": "lauxlib.c:luaL_checkinteger",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a650"
+  },
+  {
+   "address": "00a6a820",
+   "source": "lauxlib.c:luaL_gsub",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source setpath/mkfuncname",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a820"
+  },
+  {
+   "address": "00a6a950",
+   "source": "lauxlib.c:luaL_checkoption",
+   "confidence": "high",
+   "evidence": "string anchor xref \"invalid option %s\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6a950"
+  },
+  {
+   "address": "00a6aa00",
+   "source": "lauxlib.c:luaL_register",
+   "confidence": "high",
+   "evidence": "luaopen_base/package",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6aa00"
+  },
+  {
+   "address": "00a6aae0",
+   "source": "ldebug.c:lua_gethook",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6aae0"
+  },
+  {
+   "address": "00a6aaf0",
+   "source": "ldebug.c:lua_gethookmask",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6aaf0"
+  },
+  {
+   "address": "00a6ab00",
+   "source": "ldebug.c:lua_gethookcount",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ab00"
+  },
+  {
+   "address": "00a6ab10",
+   "source": "ldebug.c:lua_getstack",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ab10"
+  },
+  {
+   "address": "00a6ac20",
+   "source": "ldebug.c:lua_getlocal",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ac20"
+  },
+  {
+   "address": "00a6ac70",
+   "source": "ldebug.c:lua_setlocal",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ac70"
+  },
+  {
+   "address": "00a6b360",
+   "source": "ldebug.c:getobjname",
+   "confidence": "medium",
+   "evidence": "callee of luaG_typeerror",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b360"
+  },
+  {
+   "address": "00a6b6d0",
+   "source": "ldebug.c:luaG_runerror",
+   "confidence": "high",
+   "evidence": "callee of typeerror/luaD_call/growCI",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b6d0"
+  },
+  {
+   "address": "00a6b840",
+   "source": "ldebug.c:lua_getinfo",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b840"
+  },
+  {
+   "address": "00a6b900",
+   "source": "ldebug.c:luaG_typeerror",
+   "confidence": "high",
+   "evidence": "string anchor xref \"attempt to %s a %s value\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b900"
+  },
+  {
+   "address": "00a6b990",
+   "source": "ldebug.c:luaG_concaterror",
+   "confidence": "high",
+   "evidence": "typeerror(\"concatenate\")",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b990"
+  },
+  {
+   "address": "00a6b9b0",
+   "source": "ldebug.c:luaG_aritherror",
+   "confidence": "high",
+   "evidence": "luaV_tonumber + typeerror(\"perform arithmetic on\")",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b9b0"
+  },
+  {
+   "address": "00a6b9f0",
+   "source": "ldebug.c:luaG_ordererror",
+   "confidence": "high",
+   "evidence": "string anchor xref \"attempt to compare %s with %s\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6b9f0"
+  },
+  {
+   "address": "00a6ba50",
+   "source": "lobject.c:luaO_int2fb",
+   "confidence": "high",
+   "evidence": "body match",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ba50"
+  },
+  {
+   "address": "00a6ba80",
+   "source": "lobject.c:luaO_fb2int",
+   "confidence": "high",
+   "evidence": "body match",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ba80"
+  },
+  {
+   "address": "00a6baa0",
+   "source": "lobject.c:luaO_log2",
+   "confidence": "high",
+   "evidence": "log_2 table 0x00d583b0",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6baa0"
+  },
+  {
+   "address": "00a6bad0",
+   "source": "lobject.c:luaO_rawequalObj",
+   "confidence": "medium",
+   "evidence": "source order",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6bad0"
+  },
+  {
+   "address": "00a6bb20",
+   "source": "lobject.c:luaO_str2d",
+   "confidence": "medium",
+   "evidence": "source order",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6bb20"
+  },
+  {
+   "address": "00a6bc20",
+   "source": "lobject.c:luaO_pushvfstring",
+   "confidence": "medium",
+   "evidence": "source order/size",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6bc20"
+  },
+  {
+   "address": "00a6bf60",
+   "source": "lobject.c:luaO_pushfstring",
+   "confidence": "high",
+   "evidence": "called directly from findfile (5.1.1-specific)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6bf60"
+  },
+  {
+   "address": "00a6bf80",
+   "source": "lobject.c:luaO_chunkid",
+   "confidence": "medium",
+   "evidence": "source order/size",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6bf80"
+  },
+  {
+   "address": "00a6c1f0",
+   "source": "lgc.c:luaC_freeall",
+   "confidence": "medium",
+   "evidence": "lua_close",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6c1f0"
+  },
+  {
+   "address": "00a6cee0",
+   "source": "lgc.c:luaC_step",
+   "confidence": "high",
+   "evidence": "GC threshold check in luaD_call",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6cee0"
+  },
+  {
+   "address": "00a6d020",
+   "source": "lgc.c:luaC_link",
+   "confidence": "high",
+   "evidence": "luaE_newthread(...,8)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6d020"
+  },
+  {
+   "address": "00a6d090",
+   "source": "ltm.c:luaT_init",
+   "confidence": "high",
+   "evidence": "string anchor xref \"__index\" READ 0x00a6d0c0",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6d090"
+  },
+  {
+   "address": "00a6d190",
+   "source": "lvm.c:luaV_tonumber",
+   "confidence": "high",
+   "evidence": "luaG_aritherror",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6d190"
+  },
+  {
+   "address": "00a6ddb0",
+   "source": "lvm.c:luaV_execute",
+   "confidence": "high",
+   "evidence": "~4KB body called from luaD_call",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6ddb0"
+  },
+  {
+   "address": "00a6eea0",
+   "source": "ltable.c:luaH_next",
+   "confidence": "high",
+   "evidence": "string anchor xref \"invalid key to next\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6eea0"
+  },
+  {
+   "address": "00a6f2d0",
+   "source": "ltable.c:setnodevector",
+   "confidence": "high",
+   "evidence": "string anchor xref \"table overflow\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6f2d0"
+  },
+  {
+   "address": "00a6f380",
+   "source": "ltable.c:luaH_new",
+   "confidence": "high",
+   "evidence": "f_luaopen",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6f380"
+  },
+  {
+   "address": "00a6fbb0",
+   "source": "lstring.c:luaS_resize",
+   "confidence": "high",
+   "evidence": "f_luaopen",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6fbb0"
+  },
+  {
+   "address": "00a6fd10",
+   "source": "lstring.c:luaS_newlstr",
+   "confidence": "high",
+   "evidence": "f_luaopen len 17",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a6fd10"
+  },
+  {
+   "address": "00a70070",
+   "source": "lfunc.c:luaF_close",
+   "confidence": "medium",
+   "evidence": "luaE_freethread/lua_close",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a70070"
+  },
+  {
+   "address": "00a70a10",
+   "source": "lmem.c:luaM_realloc_",
+   "confidence": "high",
+   "evidence": "luaE_newthread/freethread",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a70a10"
+  },
+  {
+   "address": "00a70ba0",
+   "source": "llex.c:luaX_init",
+   "confidence": "high",
+   "evidence": "f_luaopen",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a70ba0"
+  },
+  {
+   "address": "00a70d60",
+   "source": "llex.c:inclinenumber",
+   "confidence": "high",
+   "evidence": "string anchor xref \"chunk has too many lines\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a70d60"
+  },
+  {
+   "address": "00a70ef0",
+   "source": "llex.c:read_numeral",
+   "confidence": "high",
+   "evidence": "string anchor xref \"malformed number\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a70ef0"
+  },
+  {
+   "address": "00a715f0",
+   "source": "llex.c:read_string",
+   "confidence": "high",
+   "evidence": "string anchor xref \"unfinished string\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a715f0"
+  },
+  {
+   "address": "00a71b10",
+   "source": "llex.c:llex",
+   "confidence": "medium",
+   "evidence": "large switch after read_string",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a71b10"
+  },
+  {
+   "address": "00a72280",
+   "source": "lparser.c:(errorlimit inlined) new_localvar",
+   "confidence": "medium",
+   "evidence": "string anchor xref errorlimit strings",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a72280"
+  },
+  {
+   "address": "00a72550",
+   "source": "lparser.c:(errorlimit inlined) indexupvalue",
+   "confidence": "medium",
+   "evidence": "string anchor xref",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a72550"
+  },
+  {
+   "address": "00a72650",
+   "source": "lparser.c:(errorlimit inlined)",
+   "confidence": "medium",
+   "evidence": "string anchor xref",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a72650"
+  },
+  {
+   "address": "00a72a40",
+   "source": "lcode.c:addk",
+   "confidence": "high",
+   "evidence": "string anchor xref \"constant table overflow\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a72a40"
+  },
+  {
+   "address": "00a72fa0",
+   "source": "lparser.c:(errorlimit inlined) luaY_checklimit user",
+   "confidence": "medium",
+   "evidence": "string anchor xref",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a72fa0"
+  },
+  {
+   "address": "00a73c00",
+   "source": "lparser.c:chunk (enterlevel inlined)",
+   "confidence": "medium",
+   "evidence": "string anchor xref \"chunk has too many syntax levels\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a73c00"
+  },
+  {
+   "address": "00a74ec0",
+   "source": "lparser.c:subexpr",
+   "confidence": "high",
+   "evidence": "string anchor xref \"chunk has too many syntax levels\" 0x00a74ed9",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a74ec0"
+  },
+  {
+   "address": "00a75080",
+   "source": "lundump.c:Load* helpers (error inlined) ...0x00a759a0",
+   "confidence": "medium",
+   "evidence": "string anchor xref 27 xrefs of the precompiled-chunk message",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a75080"
+  },
+  {
+   "address": "00a759e0",
+   "source": "lundump.c:luaU_undump",
+   "confidence": "high",
+   "evidence": "string anchor xref \"%s: %s in precompiled chunk\" + \"binary string\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a759e0"
+  },
+  {
+   "address": "00a75b80",
+   "source": "lcode.c:fixjump",
+   "confidence": "high",
+   "evidence": "string anchor xref \"control structure too long\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a75b80"
+  },
+  {
+   "address": "00a75d10",
+   "source": "lcode.c:removevalues",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a75d10"
+  },
+  {
+   "address": "00a75d90",
+   "source": "lcode.c:patchlistaux",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source fixjump inlined",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a75d90"
+  },
+  {
+   "address": "00a75e60",
+   "source": "lcode.c:luaK_concat",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a75e60"
+  },
+  {
+   "address": "00a761f0",
+   "source": "lcode.c:invertjump",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a761f0"
+  },
+  {
+   "address": "00a76350",
+   "source": "lcode.c:luaK_code",
+   "confidence": "high",
+   "evidence": "string anchor xref \"code size overflow\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76350"
+  },
+  {
+   "address": "00a76570",
+   "source": "lcode.c:luaK_jump",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76570"
+  },
+  {
+   "address": "00a765e0",
+   "source": "lcode.c:condjump",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source OP_TEST=0x1a",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a765e0"
+  },
+  {
+   "address": "00a76650",
+   "source": "lcode.c:luaK_dischargevars",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76650"
+  },
+  {
+   "address": "00a76880",
+   "source": "lcode.c:discharge2anyreg",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76880"
+  },
+  {
+   "address": "00a76a60",
+   "source": "lcode.c:luaK_exp2anyreg",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76a60"
+  },
+  {
+   "address": "00a76e90",
+   "source": "lcode.c:luaK_goiftrue",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source expkind switch",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76e90"
+  },
+  {
+   "address": "00a76fc0",
+   "source": "lcode.c:luaK_goiffalse",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a76fc0"
+  },
+  {
+   "address": "00a770f0",
+   "source": "lcode.c:codenot",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source OP_NOT=0x13",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a770f0"
+  },
+  {
+   "address": "00a771d0",
+   "source": "lcode.c:codearith",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a771d0"
+  },
+  {
+   "address": "00a77330",
+   "source": "lcode.c:luaK_prefix",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source OP_UNM/OP_LEN",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a77330"
+  },
+  {
+   "address": "00a77670",
+   "source": "lcode.c:luaK_patchlist",
+   "confidence": "high",
+   "evidence": "call-structure match against stock source (last Lua function in main block)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00a77670"
+  },
+  {
+   "address": "00c2f3e0",
+   "source": "loadlib.c:setprogdir",
+   "confidence": "high",
+   "evidence": "GetModuleFileNameA + luaL_gsub(LUA_EXECDIR)",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f3e0"
+  },
+  {
+   "address": "00c2f470",
+   "source": "loadlib.c:pusherror",
+   "confidence": "high",
+   "evidence": "FormatMessageA",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f470"
+  },
+  {
+   "address": "00c2f520",
+   "source": "loadlib.c:ll_register",
+   "confidence": "high",
+   "evidence": "\"LOADLIB: %s\", newuserdata, \"_LOADLIB\" metatable",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f520"
+  },
+  {
+   "address": "00c2f5d0",
+   "source": "loadlib.c:gctm",
+   "confidence": "high",
+   "evidence": "\"_LOADLIB\" xref 0x00c2f5d1; pushed as __gc in luaopen_package; undefined in Ghidra",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2f600",
+   "source": "loadlib.c:ll_loadfunc",
+   "confidence": "high",
+   "evidence": "LoadLibraryA/GetProcAddress",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f600"
+  },
+  {
+   "address": "00c2f670",
+   "source": "loadlib.c:ll_loadlib",
+   "confidence": "high",
+   "evidence": "pk_funcs table; undefined in Ghidra",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2f710",
+   "source": "loadlib.c:pushnexttemplate",
+   "confidence": "high",
+   "evidence": "LUA_PATHSEP scan",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f710"
+  },
+  {
+   "address": "00c2f780",
+   "source": "loadlib.c:findfile",
+   "confidence": "high",
+   "evidence": "fopen \"r\" loop, luaO_pushfstring(\"no file\")",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f780"
+  },
+  {
+   "address": "00c2f870",
+   "source": "loadlib.c:loaderror",
+   "confidence": "high",
+   "evidence": "luaL_error(\"error loading module ...\")",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f870"
+  },
+  {
+   "address": "00c2f8b0",
+   "source": "loadlib.c:loader_Lua",
+   "confidence": "high",
+   "evidence": "loaders[1]; undefined in Ghidra",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2f920",
+   "source": "loadlib.c:mkfuncname",
+   "confidence": "high",
+   "evidence": "\"luaopen_%s\" + gsub(\".\",\"_\")",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f920"
+  },
+  {
+   "address": "00c2f970",
+   "source": "loadlib.c:loader_C",
+   "confidence": "high",
+   "evidence": "findfile(cpath)+mkfuncname+ll_loadfunc",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2f970"
+  },
+  {
+   "address": "00c2f9e0",
+   "source": "loadlib.c:loader_Croot",
+   "confidence": "high",
+   "evidence": "decoded from raw bytes (Ghidra had no function here); loaders[3]",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2fa70",
+   "source": "loadlib.c:loader_preload",
+   "confidence": "high",
+   "evidence": "decoded from raw bytes (Ghidra had no function here); \"package.preload must be a table\"",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2fae0",
+   "source": "loadlib.c:ll_require",
+   "confidence": "high",
+   "evidence": "decoded from raw bytes (Ghidra had no function here); sentinel 0x00d7983c, loaders loop",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2fcc0",
+   "source": "loadlib.c:setfenv",
+   "confidence": "high",
+   "evidence": "lua_getstack/getinfo(\"f\")/lua_setfenv",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2fcc0"
+  },
+  {
+   "address": "00c2fd10",
+   "source": "loadlib.c:dooptions",
+   "confidence": "high",
+   "evidence": "lua_call loop",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2fd10"
+  },
+  {
+   "address": "00c2fd50",
+   "source": "loadlib.c:modinit",
+   "confidence": "high",
+   "evidence": "\"_M\",\"_NAME\",\"_PACKAGE\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2fd50"
+  },
+  {
+   "address": "00c2fdc0",
+   "source": "loadlib.c:ll_module",
+   "confidence": "high",
+   "evidence": "\"_LOADED\", luaL_findtable, \"name conflict for module\"",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2fdc0"
+  },
+  {
+   "address": "00c2feb0",
+   "source": "loadlib.c:ll_seeall",
+   "confidence": "high",
+   "evidence": "pk_funcs table; \"__index\" xref 0x00c2fefc; undefined in Ghidra",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  },
+  {
+   "address": "00c2ff20",
+   "source": "loadlib.c:setpath",
+   "confidence": "high",
+   "evidence": "getenv + gsub(\";;\") + setprogdir + setfield",
+   "ghidra_defined": true,
+   "ghidra_name": "FUN_00c2ff20"
+  },
+  {
+   "address": "00c2ff90",
+   "source": "loadlib.c:luaopen_package",
+   "confidence": "high",
+   "evidence": "decoded from raw bytes (Ghidra had no function here); LUA_PATH/LUA_CPATH, loaders, \"config\", \"_LOADED\", \"preload\", ll_funcs",
+   "ghidra_defined": false,
+   "ghidra_name": ""
+  }
+ ],
+ "total_identified": 324,
+ "confidence_counts": {
+  "high": 282,
+  "medium": 40,
+  "low": 2
+ },
+ "recommendation": [
+  "Do not hand-reconstruct any of these ~614 functions. Import the stock lua-5.1.1 source already fetched by the build (build/win32/_deps/lua511-src) and apply three edits: lauxlib.c l_alloc -> game allocator wrapper (alloc/copy/free), lbaselib.c base_funcs without dofile, lmathlib.c without random/randomseed; drop linit.c and model the game's masked opener 0x00b6a020 as game code.",
+  "Use this address->source map (and the luaL_Reg tables, which are authoritative) to annotate Ghidra; the table-only entry points need functions created first.",
+  "Binary identity with the shipped code is not expected: it was compiled with MSVC 2005 /GL (LTCG) inside the game project, so register conventions, inlining and ordering differ from a stock static library. Matching should be source-level (function identity + behaviour), with an ABI note that internal calls pass lua_State* in ECX.",
+  "Treat luaMW_* bindings, the script-state constructor (0x00b6a020), the 'DoFile' replacement and the MPAK-based script loader as game code outside this inventory."
+ ]
+}

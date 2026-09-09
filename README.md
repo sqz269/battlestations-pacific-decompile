@@ -71,7 +71,18 @@ python -m unittest discover -s tests -p test_exporter.py
   and the likely WinMain. Existing completed exports are skipped; use `--force` after Ghidra edits.
 - `verify-seeds`: compares eight math/PRNG functions' complete byte ranges with the disk PE.
   On a match, creates ignored `local/seed_reference.hpp` for the optional native differential test.
-- `status`: reports exports and reconstruction coverage without connecting to Ghidra.
+- `status`: reports exports and reconstruction coverage without connecting to Ghidra, including
+  how many entries are compiler EH funclets, library or inventory-tagged names, and untagged candidates.
+
+Library and generated-code tagging: `python tools/build_tag_ledger.py` derives `config/ghidra_tags.json`
+from the inventories under `reports/library_inventory/` (stock Lua 5.1.1 and zlib 1.2.1 names,
+RTTI vtable slots, CRT leftovers, telemetry/physics blocks, STL instantiations and compiler-generated
+helpers). `python tools/ghidra_tag.py` previews it; `--apply` renames only Ghidra-default `FUN_`
+functions, creates the table-referenced entry points Ghidra missed, sets `Inventory:` bookmarks, and
+logs prior state to `local/ghidra-tags-<stamp>.json` (`--revert <log>` restores it). Tag names such as
+`STL_inst_*`, `CG_*`, `TRIV_body_*`, `DYN_physics_*` and `TELEMETRY_*` are inventory hypotheses;
+library names with a `__prov` suffix are medium-confidence source matches. Take a fresh `snapshot` and
+re-export with `--force` after applying tags.
 
 The native test executes five math routines and the PRNG seed/refill/integer routines in its
 own process: 455 math comparisons plus one stream case covering 1,500 random values and final state.
@@ -105,6 +116,7 @@ after replacing the analyzed binary, use a new `--output` directory and a fresh 
 | `tools/ghidra_export.py` | Read-only inventory/export and seed byte checks |
 | `config/reconstruction.json` | Address-based reconstruction ledger |
 | `config/ghidra_names.json` | Descriptive function names and supporting evidence |
+| `config/ghidra_tags.json` | Generated library / compiler-generated / template tag ledger (see `reports/library_inventory/SUMMARY.md`) |
 | `docs/BASELINE.md` | Verified initial findings and validation limits |
 | `docs/STARTUP_RANDOM.md` | Startup path, PRNG/thread layout and current limits |
 | `docs/FRAME_CLOCK.md` | QPC/fixed frame clock, native timestamp comparison and ownership limits |

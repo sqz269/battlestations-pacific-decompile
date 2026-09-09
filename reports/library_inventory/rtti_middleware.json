@@ -1,0 +1,100 @@
+{
+ "meta": {
+  "method": "Offline MSVC RTTI walk of the disk PE (TypeDescriptor -> CompleteObjectLocator -> vtable -> slots) mapped onto exports/bsp/functions.json, plus a Capstone static call graph of .text (56,884 callers) to bound blocks by caller/callee locality. Ghidra used read-only for strings, xrefs and 6 decompiles.",
+  "rtti_coverage": "Only 130 type descriptors exist in the image (128 with vtables): iostdnet 72, Dyn 27, std 14, iometrics 7, CRT undname 6, Mit 4. The game's own classes carry no RTTI (built /GR-), so game class recovery must come from vtable xrefs and strings, not RTTI.",
+  "ghidra_state": "vftable labels exist for these classes, but their methods are not placed in class namespaces and RTTI data has no references, so namespace/class searches return nothing.",
+  "scratch_artifacts": "rtti_classes.json, callgraph.json, datarefs.json, block_analysis*.json in the session scratchpad"
+ },
+ "blocks": [
+  {
+   "name": "Dyn physics/collision (mitengine 'Dynamics' module)",
+   "vendor": "in-house",
+   "vendor_evidence": [
+    "source paths y:\\mitengine\\sources\\physics\\source\\... (DynConvexMeshShape.cpp, DynBody.cpp, DynFixedVector.h) at 0x00d79d00-0x00d7a008",
+    "engine core namespace Mit (Mithis Entertainment = Eidos Hungary); ..\\System\\mitmaximizedarray.h, ..\\System\\MitStlCloneVector.h",
+    "no vendor copyright/version strings; no PhysX/Havok/ODE/Newton/Bullet identifiers anywhere in the image"
+   ],
+   "ranges": [
+    {"start": "00c30930", "end": "00c5df60", "real_functions": 257, "note": "main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)"},
+    {"start": "00403610", "end": "00406400", "real_functions": 35, "note": "header-instantiated Dyn/Mit code emitted in the first game object: 21 Dyn vtable slots (shape ctors/dtors, LCPSolverTask/LCPSolver2Task/IntersectTask2 Run) plus Mit::allocator_list_elem"},
+    {"start": "00cc7eb0", "end": "00cc9000", "real_functions": 0, "note": "154 Unwind@ EH funclets belonging to Dyn objects (unwind block is in link order); compiler generated, not reconstruction targets"}
+   ],
+   "classes": ["Dyn::BoxBoxIntersect", "Dyn::BoxRayIntersection", "Dyn::BoxShape", "Dyn::BoxSphereIntersect", "Dyn::BroadPhaseManager", "Dyn::CollisionSystem::IntersectTask2", "Dyn::ConvexMeshShape", "Dyn::ConvexRayIntersection", "Dyn::ConvexShape", "Dyn::CylinderShape", "Dyn::GeneralConvexIntersect", "Dyn::RayIntersection", "Dyn::SAPBroadPhaseManager", "Dyn::SAPBroadPhaseManager2", "Dyn::SAPRadixBroadPhaseManager", "Dyn::Scene::LCPSolver2Task", "Dyn::Scene::LCPSolverTask", "Dyn::Shape", "Dyn::ShapeIntersect", "Dyn::SphereRayIntersection", "Dyn::SphereShape", "Dyn::SphereSphereIntersect", "Dyn::Task", "Dyn::TerrainConvexIntersect", "Dyn::TerrainConvexMeshIntersect", "Dyn::TerrainShape", "Dyn::TriangleShape"],
+   "virtual_methods_unique": 64,
+   "entry_call_sites": 297,
+   "external_caller_functions": 179,
+   "external_caller_functions_excluding_eh_funclets": 78,
+   "entry_targets": 73,
+   "top_entry_targets": ["00c32000 (18)", "00c38040 (16)", "00c31f40 (12)", "00c336c0 (12)", "00c31dc0 (11)", "00c31f90 (9)", "00c34f70 (9)", "00c37450 (9)", "00c33650 (8)", "00c37e50 (8)", "00c5d580 (8)"],
+   "game_side_integration_layer": "0092a000-0093a000 (31 caller functions, e.g. 0092aae0, 009329c0, 00935d30, 00937c90) plus 00447510/00447b80, 006fa540/006fa6d0, 008255b0/00825f20",
+   "outbound_dependencies": ["CRT: malloc(00bf681b)/free/memcpy/memset/_alloca_probe", "Mit core math+allocators at 00401000-0040f810 (32 functions incl. BSP_Math_AbsFloat, BSP_Vec3d_*, cPoolAllocator, 00407960/004077f0)", "rdtsc profiler with named markers"],
+   "profiler_markers": ["SAPSort", "SAPSweep", "SAPObjectNum", "SAPPossiblePairNum", "SAPPairNum", "Collide", "BroadPhase", "BroadPhaseUpdate", "ManifoldUpdate", "IntersectLoop", "GetManifold", "SolverPreStep", "SolveConstraints", "Simulate", "CreateGroups", "Solve", "UpdatePosition", "SleepGroups"],
+   "anchors": {"00c570f9": "BroadPhase", "00c5748f": "BroadPhaseUpdate", "00c5c7ce (FUN_00c5c7a0)": "SolverPreStep", "00c50390": "profiler node lookup"},
+   "recommendation": "reconstruct (no importable source exists). Treat as a self-contained module with ~73 entry points; defer until game code needs it. Free names: 27 RTTI classes, 64 vtable slots, 18 profiler markers."
+  },
+  {
+   "name": "iostdnet + iometrics telemetry library",
+   "vendor": "Eidos-internal (not public)",
+   "vendor_evidence": [
+    "endpoint http://bp-g4w-game.metrics.eidos.co.uk!0x534307E8.xlsp:1000 at 0x00d012e8 (bp = Battlestations Pacific, g4w = Games for Windows)",
+    "namespaces iostdnet/iometrics with Z*/T*/I* naming; 79 RTTI classes; no copyright string",
+    "log line 'MetricsSystem ... Initialised ...' in the game wrapper FUN_007524d0"
+   ],
+   "ranges": [
+    {"start": "00a4d610", "end": "00a5de34", "real_functions": 510, "note": "library body (iostdnet core: ZString/ZLog/ZSocket/ZThread/ZHttpConnection/ZUrl/ZTextDecoder/ZMemoryPool + iometrics ZMetric/ZQueue/ZHttpTransmitter); begins right after the XLIVE import-thunk group 00a4d356-00a4d608"},
+    {"start": "0094cab0", "end": "0094ec00", "real_functions": 64, "note": "iostdnet template instantiation TOrderedMap<char const*,ZString>/TRedBlackTree emitted in a game object; callers are only iometrics (00a4e9a0) and EH funclets"},
+    {"start": "00750820", "end": "00758000", "real_functions": 123, "note": "game-side MetricsSystem wrapper object; 33 of its functions call the library"}
+   ],
+   "classes_non_template": ["iometrics::ITransmitter", "iometrics::ZHttpTransmitter", "iometrics::ZMetric", "iometrics::ZMetric::IStoredData", "iometrics::ZQueue", "iometrics::ZQueue::ZQueueProperties", "iostdnet::IAllocator", "iostdnet::IHashable", "iostdnet::IWriter", "iostdnet::ZDateTime", "iostdnet::ZEvent", "iostdnet::ZFileWriter", "iostdnet::ZHttpConnection", "iostdnet::ZLog", "iostdnet::ZMemoryPool", "iostdnet::ZMemoryPoolAllocator", "iostdnet::ZMemoryPooledObject", "iostdnet::ZMutex", "iostdnet::ZSocket", "iostdnet::ZString", "iostdnet::ZStringBuilder", "iostdnet::ZTextDecoder", "iostdnet::ZTextDecoder::IFeeder", "iostdnet::ZTextDecoder::Z8BitFeeder", "iostdnet::ZTextDecoder::ZUtf16BigFeeder", "iostdnet::ZTextDecoder::ZUtf16LittleFeeder", "iostdnet::ZTextDecoder::ZUtf8Feeder", "iostdnet::ZThread", "iostdnet::ZUrl", "iostdnet::ZUtf8Buffer"],
+   "template_instantiation_classes": 49,
+   "known_functions": {"00a53210": "iostdnet::ZString::~ZString (150 call edges, 132 from EH funclets)", "00a50210": "iometrics::ZHttpTransmitter::ZHttpTransmitter", "007524d0": "game MetricsSystem::Init (copies endpoint URL, logs 'MetricsSystem ... Initialised ...')"},
+   "entry_call_sites": 75,
+   "external_caller_functions": 34,
+   "entry_targets": 33,
+   "external_callers_breakdown": "33 functions inside the MetricsSystem wrapper (00750820-00757ea0) + 1 static-init/atexit helper at 00cdcd20",
+   "game_to_wrapper_entry_points": ["00750910 (58 callers, almost all EH funclets: destructor of a metrics record)", "00753570 <- 005f65c0", "00753810 <- 0058bdf0, 005e5b30, 00777850", "007556a0 <- 004d7970", "00757ce0 <- 004e4a40"],
+   "zstring_used_outside_telemetry": false,
+   "outbound_dependencies": ["CRT", "XLIVE sockets: XSocket*, XOnlineStartup/XOnlineCleanup, XEnumerate", "`vector_constructor_iterator'", "one game callback 00843000"],
+   "recommendation": "stub. Provide a no-op MetricsSystem behind the 5 game-facing wrapper entry points (or keep the wrapper and stub the 510+64 library functions). Removes ~700 functions from the reconstruction denominator with no gameplay effect (telemetry endpoint is dead)."
+  },
+  {
+   "name": "Mit core (engine base: math, allocators, containers)",
+   "vendor": "in-house",
+   "vendor_evidence": ["namespace Mit; cPoolAllocator<20,128>/<36,128>/<532,128>, allocator_list_elem (RTTI vtable slots at 00407750/00407bb0/00407e30, 00403970)", "header names ..\\System\\mitmaximizedarray.h, ..\\System\\MitStlCloneVector.h"],
+   "ranges": [
+    {"start": "00401000", "end": "0040f810", "real_functions": null, "note": "not bounded by this pass; Dyn calls 32 functions here (BSP_Math_AbsFloat, BSP_Vec3d_*, 00407960/004077f0 allocators, 004011d0 math). Already the target of the main reconstruction effort (BSP_* names)."}
+   ],
+   "classes": ["Mit::cPoolAllocator<20,128>", "Mit::cPoolAllocator<36,128>", "Mit::cPoolAllocator<532,128>", "Mit::allocator_list_elem"],
+   "entry_call_sites": null,
+   "recommendation": "reconstruct (already in progress); no import source."
+  },
+  {
+   "name": "Unidentified named-pipe IPC helper (non-MSVC-aligned build)",
+   "vendor": "unknown (third-party static lib; candidate Microsoft GFWL-side helper or launcher/DRM IPC)",
+   "vendor_evidence": [
+    "functions at unaligned entry points, size-optimized, HRESULT-style returns (E_PENDING 0x8000000A, E_UNEXPECTED 0x8000FFFF)",
+    "FUN_00a5e844: CreateNamedPipeW / CreateFileW on L\"\\\\\\\\.\\\\pipe\\\\%08x\" keyed by process id, DACL denying S-1-5-2 (NETWORK), parent-process lookup via CreateToolhelp32Snapshot/Process32FirstW/NextW (own thunk group 00a607d0-00a607e2)",
+    "game state machine FUN_00a4be50 sleeps 14897 ms then exchanges length-prefixed messages with 5000 ms timeouts"
+   ],
+   "ranges": [
+    {"start": "00a5de34", "end": "00a607e8", "real_functions": 131, "note": "immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"}
+   ],
+   "classes": [],
+   "entry_call_sites": 21,
+   "external_caller_functions": 5,
+   "external_callers": ["00a4bde0", "00a4be50", "00a4c030", "00cd29e0 (9 calls)", "00ce099a"],
+   "recommendation": "identify before reconstructing; stub-able (5 entry functions, no gameplay coupling found)."
+  },
+  {
+   "name": "CRT-owned RTTI (std::*, DName/DNameNode/charNode/pcharNode/DNameStatusNode = undname, type_info)",
+   "vendor": "third-party: MSVC 2005 CRT/STL",
+   "vendor_evidence": ["FID bookmarks 'Visual Studio 2005 Release'"],
+   "ranges": [
+    {"start": "00be0000", "end": "00ce2000", "real_functions": null, "note": "owned by the CRT/STL agent; listed here only because these are the remaining RTTI-bearing classes"}
+   ],
+   "classes": ["std::__non_rtti_object", "std::bad_alloc", "std::bad_cast", "std::bad_exception", "std::bad_typeid", "std::exception", "std::invalid_argument", "std::ios_base::failure", "std::length_error", "std::locale::_Locimp", "std::locale::facet", "std::logic_error", "std::out_of_range", "std::runtime_error", "DNameNode", "DNameStatusNode", "charNode", "pDNameNode", "pcharNode", "type_info"],
+   "entry_call_sites": null,
+   "recommendation": "import/match (out of scope here)."
+  }
+ ]
+}
