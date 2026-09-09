@@ -1033,5 +1033,20 @@
     "address": "00b43b00",
     "name": "BSP_ShaderDescriptor_ReadShaderTable",
     "evidence": "Large Shader-table reader, full routine unported. Profile fragment00b440e4..00b4427e reads VSVersion/PSVersion through string-type helper00b660a0; string overrides copied with strlen, includingempty. Otherwise unsigned second stack argument<3 selects vs_2_a/ps_2_b, >=3 selects vs_3_0/ps_3_0. Callers00b45f5e and00b46104 push3. Descriptor strings+34h/+3Ch. Typed selection fragment integrated into successful generated debug draw. See docs/SHADER_PROFILES.md."
+  },
+  {
+    "address": "00b35930",
+    "name": "BSP_ShaderBuilder_AppendVertexInputs",
+    "evidence": "ECX builder RET. Copies base then effect descriptor lists+D0h/count+D4h into builder+4h list; preserves name/type/count/semantic/index but zeros mask+10h. Appends without dedup or clear. Typed value-vector projection integrated into successful generated shader draw. Native allocator/null-entry failure and ownership ABI unported. See docs/SHADER_SYSTEM_FIELDS.md."
+  },
+  {
+    "address": "00b35be0",
+    "name": "BSP_ShaderBuilder_AppendVertexSystemFields",
+    "evidence": "ECX builder RET. Appends16fixed fields into builder+10h, beginning ScreenSpacePos/ObjectSpacePos/WorldSpacePos, Normal/Tangent/BiNormal then customscalar/vector fields. All masks/index0; constructor arguments and native order checked. Typed value-vector projection integrated into successful generated shader draw. Native allocator/null-entry failure and ownership ABI unported. See docs/SHADER_SYSTEM_FIELDS.md."
+  },
+  {
+    "address": "00b372d0",
+    "name": "BSP_ShaderBuilder_AppendPixelSystemFields",
+    "evidence": "ECX builder RET. Appends16fixed fields into builder+34h: DiffuseColor/SpecularColor/EmissiveColor, SpecularPower/Normal/Depth then customscalar/vector fields. All semanticsTEXCOORD, masks/index0; constructor arguments checked. Typed value-vector projection integrated into successful generated shader draw. Native allocator/null-entry failure and ownership ABI unported. See docs/SHADER_SYSTEM_FIELDS.md."
   }
 ]

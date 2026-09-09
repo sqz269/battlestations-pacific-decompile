@@ -27,6 +27,14 @@ struct ShaderField {
     std::uint32_t semantic_index{}; // +18h; unsigned decimal, including zero.
     std::uint32_t component_mask{0xf}; // +10h; packing consumes low four bits.
 };
+// Fixed system lists appended by native ECX-builder routines (RET). New values
+// preserve field order and zero masks; no allocator/null-entry failure model.
+void append_vertex_system_fields_00b35be0(std::vector<ShaderField>&);
+void append_pixel_system_fields_00b372d0(std::vector<ShaderField>&);
+// Base/effect input records copied in order, masks reset to zero, no dedup.
+// Output must be distinct from both source vectors.
+void append_vertex_inputs_00b35930(const std::vector<ShaderField>& base,
+    const std::vector<ShaderField>& effect, std::vector<ShaderField>& output);
 
 enum class ShaderSourceStatus { complete, unsupported_scalar_type, unsupported_semantic, invalid_packing };
 

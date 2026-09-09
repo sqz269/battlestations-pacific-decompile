@@ -212,11 +212,9 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     // Installed debugshader.shfx VS projection; field/constant registry is
     // explicit here, pending native descriptor loading and registry recovery.
     bsp::ShaderVertexProgram debug_program;
-    debug_program.inputs = {position, color};
-    auto system_position = position; system_position.name = "ObjectSpacePos";
-    debug_program.system_values.push_back(system_position);
-    system_position.name = "WorldSpacePos"; debug_program.system_values.push_back(system_position);
-    system_position.name = "ScreenSpacePos"; debug_program.system_values.push_back(system_position);
+    bsp::append_vertex_inputs_00b35930({position, color}, {}, debug_program.inputs);
+    bsp::append_vertex_system_fields_00b35be0(debug_program.system_values);
+    auto system_position = position; system_position.name = "ScreenSpacePos";
     debug_program.outputs = {system_position, color};
     debug_program.packing_fields = debug_program.outputs;
     bsp::append_interpolator_mapping_00b34aa0(debug_program.outputs, debug_program.interpolators);
@@ -239,8 +237,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device) {
     bsp::ShaderPixelProgram debug_pixel;
     debug_pixel.inputs = debug_program.outputs;
     debug_pixel.unpack_fields = debug_program.outputs;
-    auto diffuse = color; diffuse.name = "DiffuseColor";
-    debug_pixel.system_values = {diffuse};
+    bsp::append_pixel_system_fields_00b372d0(debug_pixel.system_values);
     debug_pixel.interpolators = debug_program.interpolators;
     debug_pixel.constants = debug_program.constants;
     debug_pixel.register_limit = bsp::system_constant_annotation_limit;

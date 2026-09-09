@@ -3,6 +3,27 @@
 #include <utility>
 
 namespace bsp {
+void append_vertex_system_fields_00b35be0(std::vector<ShaderField>& output) {
+    const ShaderField fields[] = {
+#include "shader_vertex_system_fields.inc"
+    };
+    output.insert(output.end(), std::begin(fields), std::end(fields));
+}
+void append_pixel_system_fields_00b372d0(std::vector<ShaderField>& output) {
+    const ShaderField fields[] = {
+#include "shader_pixel_system_fields.inc"
+    };
+    output.insert(output.end(), std::begin(fields), std::end(fields));
+}
+void append_vertex_inputs_00b35930(const std::vector<ShaderField>& base,
+    const std::vector<ShaderField>& effect, std::vector<ShaderField>& output) {
+    for (const auto* fields : {&base, &effect}) {
+        for (const auto& field : *fields) {
+            output.push_back(field); output.back().component_mask = 0;
+        }
+    }
+}
+
 ShaderProfiles select_shader_profiles_00b43b00(std::uint32_t version,
     const std::optional<std::string>& vertex_override,
     const std::optional<std::string>& pixel_override) {
