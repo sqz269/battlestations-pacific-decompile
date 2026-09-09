@@ -687,6 +687,31 @@
   {
     "address": "00b33c20",
     "name": "BSP_RenderWorker_ThreadMain",
-    "evidence": "Initially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported."
+    "evidence": "Initially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported. Timing constants verified:1000.0 double, -0.0 float, 2^32 float. Float-stored elapsed uses positive delta else -0.0-delta; strict elapsed>1000/unsigned rate runs callback with context inECX, otherwise SwitchToThread. Zero rate is not guarded. Stop flag is not checked in inner Sleep10 pending-count loop."
+  },
+  {
+    "address": "00aa4040",
+    "name": "BSP_RenderMode_PrepareAndStartWorker",
+    "evidence": "Thiscall owner plus4 stackargs RET10h. Set queue mode1, invoke00aa3e00 using descriptor+ECh and descriptor+F0h->18h; setmode2, forward callback/context/rate through00b1c4a0. Descriptor preparation semantics unresolved; name provisional."
+  },
+  {
+    "address": "00b1c4a0",
+    "name": "BSP_RenderCommandQueue_StartWorker",
+    "evidence": "Tail JMP renderer singleton virtual+118h (00b21740), forwarding3 stackargs unchanged. No argument cleanup here; target consumes them."
+  },
+  {
+    "address": "00b21740",
+    "name": "BSP_D3D9Renderer_StartWorker",
+    "evidence": "Thiscall renderer pluscallback/context/rate. If worker+1970h nonnull enable optional sync then call00b33bc0 onworker. Nullworker branch does nothing. Vtable+118h."
+  },
+  {
+    "address": "00b33bc0",
+    "name": "BSP_RenderWorker_Start",
+    "evidence": "Thiscall worker plus3 stackargs: callback->1Ch, context->20h, unsigned rate->18h; setrun+4=1, signalwake event+Ch. Does not reset idle acknowledgment explicitly. Thread callback call00b33cfc loads storedcontext intoECX."
+  },
+  {
+    "address": "00b20220",
+    "name": "BSP_D3D9Renderer_HasPendingCount",
+    "evidence": "ECX renderer. Loadpointer+199Ch then signed compare object+18h >0; returnboolean inAL. Worker polls withSleep10 whiletrue and rechecks before Begin/End. Not queue retention mode+20h; pointee identity still unconfirmed."
   }
 ]

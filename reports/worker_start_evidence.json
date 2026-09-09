@@ -1,0 +1,40 @@
+{
+  "ranges": [
+    {
+      "address": "00aa4040",
+      "length": 90,
+      "sha256": "5a85143c26925edca8c8b1c959969aaec567de43923a85bf3d0c06d419d4c848",
+      "disk_matches_ghidra": true,
+      "assembly": "00aa4040: PUSH ESI \n00aa4041: PUSH 0x1 \n00aa4043: MOV ESI,ECX \n00aa4045: CALL 0x004c11f0 \n00aa404a: MOV ECX,EAX \n00aa404c: CALL 0x00b1c460 \n00aa4051: MOV EAX,dword ptr [ESP + 0x8] \n00aa4055: MOV ECX,dword ptr [EAX + 0xf0] \n00aa405b: MOV EDX,dword ptr [ECX + 0x18] \n00aa405e: MOV EAX,dword ptr [EAX + 0xec] \n00aa4064: PUSH EDX \n00aa4065: PUSH EAX \n00aa4066: MOV ECX,ESI \n00aa4068: CALL 0x00aa3e00 \n00aa406d: PUSH 0x2 \n00aa406f: CALL 0x004c11f0 \n00aa4074: MOV ECX,EAX \n00aa4076: CALL 0x00b1c460 \n00aa407b: MOV ECX,dword ptr [ESP + 0x14] \n00aa407f: MOV EDX,dword ptr [ESP + 0x10] \n00aa4083: MOV EAX,dword ptr [ESP + 0xc] \n00aa4087: PUSH ECX \n00aa4088: PUSH EDX \n00aa4089: PUSH EAX \n00aa408a: CALL 0x004c11f0 \n00aa408f: MOV ECX,EAX \n00aa4091: CALL 0x00b1c4a0 \n00aa4096: POP ESI \n00aa4097: RET 0x10 \n"
+    },
+    {
+      "address": "00b1c4a0",
+      "length": 16,
+      "sha256": "ef52e452c33925466512bf0f9d1d5b028acd436f6033456dd0b74ce76f34f875",
+      "disk_matches_ghidra": true,
+      "assembly": "00b1c4a0: MOV ECX,dword ptr [0x00f8d394] \n00b1c4a6: MOV EAX,dword ptr [ECX] \n00b1c4a8: MOV EAX,dword ptr [EAX + 0x118] \n00b1c4ae: JMP EAX \n"
+    },
+    {
+      "address": "00b21740",
+      "length": 49,
+      "sha256": "053a8d6696688efb351dec4441701035400b28b7e876d88e84e1ab46e8bead0f",
+      "disk_matches_ghidra": true,
+      "assembly": "00b21740: PUSH ESI \n00b21741: MOV ESI,ECX \n00b21743: CMP dword ptr [ESI + 0x1970],0x0 \n00b2174a: JZ 0x00b2176d \n00b2174c: PUSH 0x1 \n00b2174e: CALL 0x00b33aa0 \n00b21753: MOV EAX,dword ptr [ESP + 0x10] \n00b21757: MOV ECX,dword ptr [ESP + 0xc] \n00b2175b: MOV EDX,dword ptr [ESP + 0x8] \n00b2175f: PUSH EAX \n00b21760: PUSH ECX \n00b21761: MOV ECX,dword ptr [ESI + 0x1970] \n00b21767: PUSH EDX \n00b21768: CALL 0x00b33bc0 \n00b2176d: POP ESI \n00b2176e: RET 0xc \n"
+    },
+    {
+      "address": "00b33bc0",
+      "length": 38,
+      "sha256": "3d2fbd16c67edd92a62d088da197dfa792da77fede6bcda3bdc7c747949eedd5",
+      "disk_matches_ghidra": true,
+      "assembly": "00b33bc0: MOV EAX,dword ptr [ESP + 0x4] \n00b33bc4: MOV EDX,dword ptr [ESP + 0x8] \n00b33bc8: MOV dword ptr [ECX + 0x1c],EAX \n00b33bcb: MOV EAX,dword ptr [ESP + 0xc] \n00b33bcf: MOV dword ptr [ECX + 0x18],EAX \n00b33bd2: MOV dword ptr [ECX + 0x20],EDX \n00b33bd5: MOV byte ptr [ECX + 0x4],0x1 \n00b33bd9: MOV ECX,dword ptr [ECX + 0xc] \n00b33bdc: MOV EDX,dword ptr [ECX] \n00b33bde: MOV EAX,dword ptr [EDX + 0x4] \n00b33be1: CALL EAX \n00b33be3: RET 0xc \n"
+    },
+    {
+      "address": "00b20220",
+      "length": 17,
+      "sha256": "b7eff1078d433b851b415e6b098240fb45d978ce3a36a7ea2920dc65c88fafa7",
+      "disk_matches_ghidra": true,
+      "assembly": "00b20220: MOV EAX,dword ptr [ECX + 0x199c] \n00b20226: XOR ECX,ECX \n00b20228: CMP dword ptr [EAX + 0x18],ECX \n00b2022b: SETG CL \n00b2022e: MOV AL,CL \n00b20230: RET \n"
+    }
+  ],
+  "note": "Static ABI/start-order evidence only; worker not run."
+}

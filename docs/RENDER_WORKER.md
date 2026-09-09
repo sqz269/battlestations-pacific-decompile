@@ -34,3 +34,32 @@ Assembly and original-binary byte parity are recorded in
 `reports/worker_event_evidence.json`. Eight new names and an updated stop comment
 were saved in Ghidra. Next dependencies are worker-start call ordering, timing,
 callback arguments and renderer gate 00b20220.
+
+
+## Start and timing contract
+
+00aa4040 sets queue mode1, prepares work through00aa3e00, sets mode2 and forwards
+callback/context/rate through00b1c4a0. That helper tail-jumps renderer+118h to
+00b21740. When worker+1970h exists, synchronization is enabled before worker start
+00b33bc0. Start stores callback+1Ch, context+20h and unsigned rate+18h, sets run,
+and signals wake. It does not explicitly reset the acknowledgment event.
+
+Thread call00b33cfc loads context into ECX before calling the stored function;
+treating the decompiler's no-argument callback as authoritative would lose this
+ABI input. The worker computes float-stored milliseconds using the timer ratio
+and double1000.0. Nonpositive elapsed deltas become -0.0 minus delta. Work runs
+only for elapsed strictly greater than1000/unsigned rate; otherwise it calls
+SwitchToThread. Unsigned conversion adds2^32 for a negative signed DWORD. The
+native code does not guard a zero rate. Preserve x87 rounding when porting.
+
+00b20220 returns AL = signed(*(renderer+199Ch)+18h) > 0. This is distinct from
+queue retention mode+20h; the pointee's identity still needs confirmation. The
+worker invokes its callback, polls this count with Sleep10 while true, rechecks,
+then conditionally begins/ends a frame. It does not check run/shutdown in the
+inner polling loop. Thus stop can wait for this count to drain before it receives
+an acknowledgment. Full worker runtime validation remains outstanding.
+
+Five further functions were named and the thread comment updated in Ghidra.
+`reports/worker_start_evidence.json` retains byte-checked assembly. No C++ or tests
+changed in this start-contract investigation. Next trace descriptor preparation,
+renderer+199Ch ownership and the callback implementations selected by callers.
