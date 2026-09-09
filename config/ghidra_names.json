@@ -1232,6 +1232,6 @@
   {
     "address": "00b3aea0",
     "name": "BSP_Shader_ReflectConstantBindings",
-    "evidence": "Stack bytecode then metadata, RET8; ECX is not this. D3DXGetShaderConstantTable enumerates descriptors and maps TypeFLOAT names through system registry into byte register/count arrays+8/+3E. Decode semantics24/25 use+20/+21, counts+56/+57; nominal87/95 are not binding locations. See docs/SHADER_COMPILED_CONSTANT_BINDING.md. Analysis only; compiler/layout and error assumptions documented."
+    "evidence": "Stack bytecode then metadata, RET8; ECX is not this. D3DXGetShaderConstantTable enumerates descriptors and maps TypeFLOAT names through system registry into byte register/count arrays+8/+3E. Decode semantics24/25 use+20/+21, counts+56/+57; nominal87/95 are not binding locations. See docs/SHADER_COMPILED_CONSTANT_BINDING.md. Analysis only; compiler/layout and error assumptions documented. Follow-up: official SDK/installed D3DX9_40 enumeration projection implemented in src/shader_reflection.cpp. Final compiled debug VS scale c77/count2, offset c79/count2; PS visibility c77/count1. Decoded-input and actual normal flags draw passes with explicit identity decode/full visibility. Native metadata mapping/end tracking/ownership unported."
   }
 ]

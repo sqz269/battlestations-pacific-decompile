@@ -930,7 +930,16 @@
       "native_range": "Script initialization, code/profile strings, fields via00b419b0/00b573f0, Combiners via00b439c0/00b437f0 and RenderStates via00b579b0; discontiguous adapter; scalar options00b43b8f..00b440df; sampler projection00b41830/00b57b50",
       "status": "installed_lua_options_sampler_tables_and_generated_draw_checked",
       "abi_compatible": false,
-      "remaining": "Stock Lua5.1.1 C API, explicit resolver and protected errors. Options not yet fully wired into draw; sampler parsing retained but native texture resolution/material binding unported. Constants metadata, path overlays, full lookup ordering and object/allocator lifecycle remain."
+      "remaining": "Stock Lua5.1.1 C API, explicit resolver and protected errors. Normal debug/dummy generator flags and reflected decode/visibility connected; native texture resolution/material lifecycle, constants metadata, overlays and full lookup ordering remain."
+    },
+    {
+      "address": "00b3aea0",
+      "name": "reflect_shader_constants",
+      "source": "src/shader_reflection.cpp",
+      "native_range": "D3DX top-level enumeration/first-descriptor projection",
+      "status": "final_shader_reflection_decode_visibility_draw_checked",
+      "abi_compatible": false,
+      "remaining": "Official SDK/installed runtime adapter with error checks. Native system-id arrays, byte truncation/end tracking, material constant metadata and ownership remain unported."
     }
   ]
 }

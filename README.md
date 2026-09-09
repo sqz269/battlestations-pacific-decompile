@@ -2,16 +2,17 @@
 
 An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
 `battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
-rebuild of the game. The saved program now reports 62,542 functions; its internal-function iterator
-exports 62,100 functions after recovering twenty-eight missing code targets. The ledger maps 49 native
-routines to C++: math, the integer random generator, thread registration, the platform loop,
-cached renderer defaults/guards, surface binding/reset, buffer recreation/unlock, declaration records and draw submission,
-plus five separately tracked renderer fragments, including hardware declaration creation.
+rebuild of the game. The current export/reconstruction counts and remaining validation boundaries
+are recorded in [current status](reports/current_status.txt). Raw exports, reconstructed routines,
+partial adapters and isolated probe results are tracked separately; no gameplay equivalence is established.
 
 ## Build and test
 
 Requires Windows, Visual Studio 2022/2026 with the MSVC x86/x64 C++ tools, Windows SDK,
-and Visual Studio's CMake component. Python 3.10+ is used for the export tools; no pip packages.
+and Visual Studio's CMake component. First configuration downloads checksum-pinned Lua and
+D3DX SDK dependencies; see [dependency details](third_party/README.md). Shader reflection uses
+the installed x86 D3DX9_40 runtime. Python 3.10+ is used for the export tools; optional native
+reference verification also uses pefile and Capstone.
 
 ```powershell
 ./scripts/build.ps1

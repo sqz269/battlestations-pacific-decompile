@@ -2,6 +2,7 @@
 #include "bsp/d3d9_states.hpp"
 #include "bsp/shader_source.hpp"
 #include "bsp/shader_lua.hpp"
+#include "bsp/shader_reflection.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -16,7 +17,9 @@
 
 namespace {
 bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& state,
-    const std::vector<bsp::ShaderLuaRenderState>& render_states) {
+    const std::vector<bsp::ShaderLuaRenderState>& render_states,
+    const std::vector<bsp::ReflectedShaderConstant>& vertex_reflection,
+    const std::vector<bsp::ReflectedShaderConstant>& pixel_reflection) {
     IDirect3DStateBlock9* saved = nullptr;
     IDirect3DSurface9* old_target = nullptr;
     IDirect3DSurface9* old_depth = nullptr;
@@ -132,6 +135,39 @@ bool draw_generated_debug_pair(IDirect3DDevice9& device, bsp::D3D9StateCache& st
     float pixel_constants[77 * 4]{}; // Native cElapsedTime at c34: conditional transform disabled.
     if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(0, vertex_constants, 77);
     if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(0, pixel_constants, 77);
+    // Native00b428c0 uses reflected locations; this uncompressed stream has
+    // identity decode records. Upload directly after the diagnostic prefix.
+    for (const char* name : {"cVtxElemScale", "cVtxElemOffset"}) {
+        const bsp::ReflectedShaderConstant* binding = nullptr;
+        for (const auto& constant : vertex_reflection) if (constant.name == name) binding = &constant;
+        if (!binding || binding->register_set != 2 || binding->parameter_type != 3
+            || binding->columns != 4 || binding->rows != 1 || binding->register_count < 2
+            || binding->register_count > 8 || binding->register_index > 256 - binding->register_count) {
+            result = E_FAIL; break;
+        }
+        for (const auto& other : vertex_reflection) {
+            if (&other == binding || other.register_set != 2) continue;
+            if (binding->register_index < other.register_index + other.register_count
+                && other.register_index < binding->register_index + binding->register_count) result = E_FAIL;
+        }
+        std::vector<float> values(binding->register_count * 4, std::strcmp(name, "cVtxElemScale") == 0 ? 1.0f : 0.0f);
+        if (SUCCEEDED(result)) result = state.set_vertex_shader_constants_f_00b21820(
+            binding->register_index, values.data(), binding->register_count);
+        std::printf("Reflected decode %s: c%u count=%u hr=0x%08lx\n", name,
+            binding->register_index, binding->register_count, static_cast<unsigned long>(result));
+    }
+    // Explicit fully visible diagnostic entry, not a descriptor default.
+    // Native00b42e4a writes entry+18h followed by three zero words.
+    bool visibility_bound = false;
+    for (const auto& binding : pixel_reflection) if (binding.name == "cVisibility") {
+        if (binding.register_set != 2 || binding.parameter_type != 3 || binding.register_count != 1
+            || binding.register_index >= 224) { result = E_FAIL; break; }
+        const float visibility[4]{1, 0, 0, 0};
+        if (SUCCEEDED(result)) result = state.set_pixel_shader_constants_f_00b218c0(binding.register_index, visibility, 1);
+        visibility_bound = SUCCEEDED(result);
+        std::printf("Reflected visibility: c%u value=1 hr=0x%08lx\n", binding.register_index, static_cast<unsigned long>(result));
+    }
+    if (!visibility_bound) result = E_FAIL;
     struct Vertex { float position[4], color[4]; };
     const Vertex vertices[] = {{{-.75f, -.75f, 1, 1}, {.25f, .5f, .75f, 1}},
         {{0, .75f, 1, 1}, {.25f, .5f, .75f, 1}}, {{.75f, -.75f, 1, 1}, {.25f, .5f, .75f, 1}}};
@@ -226,7 +262,7 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
         && debug_script.options.visibility_fade && !debug_script.options.output_alpha
         && dummy_script.options.output_alpha && debug_script.options.render_target_count == 1
         && debug_script.options.final_lod_fade_out_range == 0.01f;
-    std::printf("Lua descriptor scalar defaults/overrides: %d (draw decode binding still pending)\n", options_match);
+    std::printf("Lua descriptor scalar defaults/overrides: %d\n", options_match);
     if (!options_match) return false;
     bsp::ShaderLuaCode alpha_script;
     if (!bsp::load_shader_lua_code(resolver, "shaderfx/common/alphablend.shfx", false, {}, alpha_script, script_error)) {
@@ -381,6 +417,9 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     debug_program.effect.header = dummy_script.constants;
     debug_program.base.vertex_code = debug_script.vertex;
     debug_program.effect.vertex_code = dummy_script.vertex;
+    debug_program.base.decode_inputs = debug_script.options.compressed_vertices;
+    debug_program.base.decode_field_limit = static_cast<std::uint32_t>(debug_script.options.compressed_element_count);
+    debug_program.effect.shadow_helper = dummy_script.options.receive_shadows;
     for (const auto& sampler : debug_script.samplers) debug_program.base.samplers.push_back(sampler.declaration);
     for (const auto& sampler : dummy_script.samplers) debug_program.effect.samplers.push_back(sampler.declaration);
     std::string debug_source;
@@ -405,6 +444,19 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
     debug_pixel.effect.header = dummy_script.constants;
     debug_pixel.base.pixel_code = debug_script.pixel;
     debug_pixel.effect.pixel_code = dummy_script.pixel;
+    // Normal mode0 route from00b45ee0/00b3c3a0. External projected selection
+    // is explicitly false in this host fixture; generation is3.
+    debug_pixel.effect.shadow_helpers = dummy_script.options.receive_shadows;
+    debug_pixel.effect.alpha_override = dummy_script.options.output_alpha;
+    debug_pixel.base.vpos = debug_script.options.pixel_position_register;
+    debug_pixel.effect.vpos = dummy_script.options.pixel_position_register;
+    debug_pixel.base.suppress_time_transform = debug_script.options.no_banding_fix;
+    debug_pixel.base.premultiply_alpha = debug_script.options.lo_res_blend;
+    debug_pixel.color_outputs = static_cast<std::uint32_t>(dummy_script.options.render_target_count);
+    debug_pixel.depth_output = dummy_script.options.write_depth;
+    debug_pixel.visibility_alpha = debug_script.options.visibility_fade;
+    debug_pixel.zero_fog = false;
+    debug_pixel.projected_shadow = false;
     debug_pixel.base.samplers = debug_program.base.samplers;
     debug_pixel.effect.samplers = debug_program.effect.samplers;
     std::string debug_pixel_source;
@@ -491,7 +543,14 @@ bool probe_shader_bindings(IDirect3DDevice9& device, const char* atlas_path) {
             && state.vertex_shader_calls() == 1 && state.pixel_shader_calls() == 1;
         if (observed_vertex) observed_vertex->Release();
         if (observed_pixel) observed_pixel->Release();
-        if (matched) matched = draw_generated_debug_pair(device, state, debug_script.render_states);
+        std::vector<bsp::ReflectedShaderConstant> reflected, pixel_reflected;
+        std::string reflection_error;
+        if (matched) matched = bsp::reflect_shader_constants_00b3aea0(
+            static_cast<const std::uint32_t*>(vertex_code->GetBufferPointer()), reflected, reflection_error);
+        if (matched) matched = bsp::reflect_shader_constants_00b3aea0(
+            static_cast<const std::uint32_t*>(pixel_code->GetBufferPointer()), pixel_reflected, reflection_error);
+        if (!reflection_error.empty()) std::fprintf(stderr, "%s\n", reflection_error.c_str());
+        if (matched) matched = draw_generated_debug_pair(device, state, debug_script.render_states, reflected, pixel_reflected);
         result = state.bind_vertex_shader_00b21d10(nullptr);
         if (SUCCEEDED(result)) result = state.bind_pixel_shader_00b21c20(nullptr);
         observed_vertex = nullptr;

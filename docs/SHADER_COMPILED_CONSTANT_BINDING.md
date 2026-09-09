@@ -132,3 +132,29 @@ These saved-image ranges matched the original executable byte-for-byte:
 | 00b60f60 | 604 | e63a9273b3513f86036092e16674f849dde8d9e26af6b35e94e8323d3542cb6f |
 | 00b43410 | 600 | 0dca81aa71a05c9c00cf5656a12f976cbefe8f0415eb9bc73e290cce0673399c |
 | 00b428c0 fragment | 444 | 166aecc12b9e5fddc233eb109cff881737f46764ddc07f21fff3b725efa547da |
+
+## Implemented reflection and diagnostic integration
+
+src/shader_reflection.cpp now enumerates the installed D3DX9_40 constant
+table using official SDK declarations. The [documented API](https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dxgetshaderconstanttable)
+returns the table embedded in shader bytecode. This adapter preserves native
+top-level enumeration and first-descriptor selection, retaining names,
+register ranges and type/shape. It adds HRESULT/null checks and transactional
+output; native registry-id mapping, byte truncation, material metadata
+ownership and end-register tracking remain unported. Input must be valid
+compiled bytecode; the underlying API has no buffer-length parameter.
+
+The existing installed debug/dummy probe now routes normal descriptor flags
+according to SHADER_DESCRIPTOR_FLAG_ROUTE.md, including CompressedVertices.
+Reflection runs on final filtered vertex bytecode. Actual VS bindings are
+scale c77/count2 and offset c79/count2; identity scale/zero offset are uploaded
+after the diagnostic prefix, with range/shape/overlap checks. The PS reflects
+cVisibility at c77/count1 and receives explicit host entry value1 plus three
+zeros. Value1 denotes this fully visible fixture, not a recovered constructor
+default. The native entry producer and material lifecycle remain incomplete.
+
+Win32 build, both existing CTests and the complete installed-asset D3D9 probe
+pass. Expected center ff407fbf/outside ff000000 and state restoration remain
+unchanged. This is evidence for compiled-register reflection and an isolated
+uncompressed draw; general compressed mesh/material/game validation remains
+outstanding. No new test suite or test target was added.

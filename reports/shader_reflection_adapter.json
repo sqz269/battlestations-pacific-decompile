@@ -1,0 +1,32 @@
+{
+  "runtime": "installed D3DX9_40.dll",
+  "sdk_package": "Microsoft.DXSDK.D3DX9.29.952.8",
+  "sdk_package_sha256": "ead0906ae8a26c18a7525da7490127a2110f7c58f18293738283e30e97c6ea4b",
+  "vertex_bindings": [
+    {
+      "name": "cVtxElemScale",
+      "register": 77,
+      "count": 2
+    },
+    {
+      "name": "cVtxElemOffset",
+      "register": 79,
+      "count": 2
+    }
+  ],
+  "pixel_bindings": [
+    {
+      "name": "cVisibility",
+      "register": 77,
+      "count": 1
+    }
+  ],
+  "entry_visibility": 1,
+  "visibility_is_native_default": false,
+  "center": "ff407fbf",
+  "outside": "ff000000",
+  "state_restored": true,
+  "validation": "Win32 build, existing two CTests and complete installed-asset D3D9 probe pass",
+  "abi_compatible": false,
+  "game_validated": false
+}

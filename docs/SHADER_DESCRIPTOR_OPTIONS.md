@@ -55,3 +55,8 @@ options. In particular, enabling decoded inputs requires compiled reflection
 and runtime scale/offset binding: nominal registry slots87/95 are beyond the
 explicit-register cutoff77 and cannot be assumed to be compiled slots.
 No full material execution, ABI equivalence or gameplay validation is claimed.
+
+Follow-up: normal debug/dummy source-generator flags are now routed from the
+options and reflected decode/visibility bindings are exercised in the draw.
+See SHADER_COMPILED_CONSTANT_BINDING.md. Remaining scalar options still need
+the native material lifecycle; this is not a complete descriptor consumer.
