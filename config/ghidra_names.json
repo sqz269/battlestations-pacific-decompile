@@ -463,5 +463,40 @@
     "address": "00b60a10",
     "name": "BSP_D3D9VertexLayout_CreateIfMissing",
     "evidence": "If COM pointer+40h null, converts stored stream declarations with same cross-stream usage counters and END as00b60790, calls CreateVertexDeclaration then recomputes total stride. Conversion/API/stride path ported; diagnostics omitted and new API returns HRESULT/S_FALSE."
+  },
+  {
+    "address": "00b49980",
+    "name": "BSP_LogicalVertexStream_Lock",
+    "evidence": "Recovered vtable+10h. Optional global renderer guard. Dynamic flags nibble1000h with physical wrapper sets count+64h, locks count*stride bytes and offset*stride, forces read-only false, captures physical base offset at+5ch. Non-dynamic zero-byte count uses full stored count, adds base vertex+70h to offset, preserves bound offset. Caches mapped pointer+8h."
+  },
+  {
+    "address": "00b49a80",
+    "name": "BSP_LogicalVertexStream_Unlock",
+    "evidence": "Recovered vtable+14h. Optional global renderer guard; calls physical wrapper+Ch Unlock when present, always clears mapped pointer+8h."
+  },
+  {
+    "address": "00b49b60",
+    "name": "BSP_LogicalIndexStream_Lock",
+    "evidence": "Recovered vtable+Ch. Optional renderer guard; INDEX16/32 imply2/4 bytes, other format0. Zero requested byte count uses stored count+14h; byte offset=(base index+20h+requested offset)*size. Captures physical lock offset at+Ch; physical wrapper at+8h."
+  },
+  {
+    "address": "00b49c70",
+    "name": "BSP_LogicalIndexStream_Unlock",
+    "evidence": "Recovered vtable+10h. Optional renderer guard then physical wrapper+Ch Unlock if physical pointer+8h exists."
+  },
+  {
+    "address": "00b4b1e0",
+    "name": "BSP_PhysicalBuffer_RegisterLogicalStream",
+    "evidence": "Optional renderer guard around unique pointer registration into physical wrapper array+8h/count+Ch/capacity+10h. Linear search suppresses duplicates, doubles capacity with minimum1 when full. Raw pointer registration does not AddRef stream."
+  },
+  {
+    "address": "00b48d40",
+    "name": "BSP_LogicalVertexStream_InvalidateOffset",
+    "evidence": "Recovered vtable+8h; writes ffffffff to stream+5ch. Does not rewind physical cursor."
+  },
+  {
+    "address": "00b48dd0",
+    "name": "BSP_LogicalIndexStream_InvalidateOffset",
+    "evidence": "Recovered vtable+8h; writes ffffffff to stream+Ch. Does not rewind physical cursor."
   }
 ]

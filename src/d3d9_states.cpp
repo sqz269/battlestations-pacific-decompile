@@ -113,6 +113,56 @@ HRESULT D3D9StateCache::draw_indexed_00b24010(const D3D9DrawState& state,
         vertex_count, start_index, primitive_count);
 }
 
+HRESULT D3D9StateCache::lock_vertex_stream_00b49980(LogicalVertexStream& stream,
+    UINT count, UINT offset, bool read_only, void*& data) {
+    Guard guard(*this);
+    data = stream.mapped;
+    if (!stream.physical) return S_FALSE;
+    if (!stream.declaration) std::abort();
+    const UINT stride = stream.declaration->stride;
+    const bool dynamic = (stream.flags & 0xf000) == 0x1000;
+    UINT bytes = stride * count;
+    UINT extra;
+    if (dynamic) {
+        stream.vertex_count = count;
+        extra = stride * offset;
+        read_only = false;
+    } else {
+        if (bytes == 0) bytes = stream.vertex_count * stride;
+        extra = (stream.base_vertex + offset) * stride;
+    }
+    BufferLockResult output{};
+    const HRESULT result = vertex_buffer_lock_00b4ba00(*stream.physical, bytes, extra, read_only, output);
+    if (dynamic) stream.offset = output.base_offset;
+    stream.mapped = data = output.data;
+    return result;
+}
+void D3D9StateCache::unlock_vertex_stream_00b49a80(LogicalVertexStream& stream) {
+    Guard guard(*this);
+    if (stream.physical) vertex_buffer_unlock_00b4b9d0(*stream.physical);
+    stream.mapped = nullptr;
+}
+HRESULT D3D9StateCache::lock_index_stream_00b49b60(LogicalIndexStream& stream,
+    UINT count, UINT offset, bool read_only, void*& data) {
+    Guard guard(*this);
+    data = nullptr;
+    if (!stream.physical) return S_FALSE;
+    const UINT size = stream.format == D3DFMT_INDEX16 ? 2u
+        : stream.format == D3DFMT_INDEX32 ? 4u : 0u;
+    UINT bytes = size * count;
+    if (bytes == 0) bytes = size * stream.index_count;
+    BufferLockResult output{};
+    const HRESULT result = index_buffer_lock_00b4b850(*stream.physical, bytes,
+        (stream.base_index + offset) * size, read_only, output);
+    stream.offset = output.base_offset;
+    data = output.data;
+    return result;
+}
+void D3D9StateCache::unlock_index_stream_00b49c70(LogicalIndexStream& stream) {
+    Guard guard(*this);
+    if (stream.physical) index_buffer_unlock_00b4b820(*stream.physical);
+}
+
 void D3D9StateCache::set_stream_frequency_00b24a40(UINT stream, UINT frequency) {
     if (stream >= stream_frequencies_.size()) std::abort();
     Guard guard(*this);

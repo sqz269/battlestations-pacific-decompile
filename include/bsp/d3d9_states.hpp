@@ -27,9 +27,16 @@ struct LogicalVertexStream {
     UINT offset{};       // +5ch.
     UINT vertex_count{}; // +64h.
     DWORD tag{};         // +54h.
+    DWORD flags{};       // +60h.
+    UINT base_vertex{};  // +70h, used by non-dynamic locks.
+    void* mapped{};      // +8h.
 };
 struct LogicalIndexStream {
     std::shared_ptr<IndexBufferBinding> physical; // Native stream +8h.
+    UINT offset{};      // +ch, physical lock's returned byte offset.
+    UINT index_count{}; // +14h.
+    D3DFORMAT format{D3DFMT_INDEX16}; // +18h.
+    UINT base_index{};  // +20h.
 };
 
 // New interface, not the original renderer's memory layout. Device, shared sync
@@ -49,6 +56,12 @@ public:
     void bind_index_stream_00b24b00(std::shared_ptr<LogicalIndexStream> value, INT base_vertex);
     HRESULT draw_indexed_00b24010(const D3D9DrawState&, D3DPRIMITIVETYPE,
         UINT minimum_vertex, UINT vertex_count, UINT start_index, UINT primitive_count);
+    HRESULT lock_vertex_stream_00b49980(LogicalVertexStream&, UINT count, UINT offset,
+        bool read_only, void*& data);
+    void unlock_vertex_stream_00b49a80(LogicalVertexStream&);
+    HRESULT lock_index_stream_00b49b60(LogicalIndexStream&, UINT count, UINT offset,
+        bool read_only, void*& data);
+    void unlock_index_stream_00b49c70(LogicalIndexStream&);
     std::uint32_t vertex_binding_calls() const { return vertex_binding_calls_; }
     std::uint32_t index_binding_calls() const { return index_binding_calls_; }
     // Needed after device reset; caller owns reset sequencing.

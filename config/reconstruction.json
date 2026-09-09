@@ -315,6 +315,34 @@
       "source": "src/d3d9_vertex_layout.cpp",
       "status": "hardware_declaration_and_pixel_readback_checked",
       "abi_compatible": false
+    },
+    {
+      "address": "00b49980",
+      "name": "BSP_LogicalVertexStream_Lock",
+      "source": "src/d3d9_states.cpp",
+      "status": "logical_upload_pixel_readback_checked_physical_lock_limits_apply",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b49a80",
+      "name": "BSP_LogicalVertexStream_Unlock",
+      "source": "src/d3d9_states.cpp",
+      "status": "logical_upload_pixel_readback_checked_physical_lock_limits_apply",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b49b60",
+      "name": "BSP_LogicalIndexStream_Lock",
+      "source": "src/d3d9_states.cpp",
+      "status": "logical_upload_pixel_readback_checked_physical_lock_limits_apply",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b49c70",
+      "name": "BSP_LogicalIndexStream_Unlock",
+      "source": "src/d3d9_states.cpp",
+      "status": "logical_upload_pixel_readback_checked_physical_lock_limits_apply",
+      "abi_compatible": false
     }
   ],
   "fragments": [

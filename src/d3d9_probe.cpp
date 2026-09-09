@@ -22,17 +22,7 @@ static bool probe_draw(IDirect3DDevice9& device) {
     if (SUCCEEDED(result)) result = device.CreateOffscreenPlainSurface(64, 64, D3DFMT_A8R8G8B8,
         D3DPOOL_SYSTEMMEM, &readback, nullptr);
     if (SUCCEEDED(result)) result = bsp::vertex_buffer_recreate_00b492b0(vertices, device);
-    bsp::BufferLockResult upload{};
-    if (SUCCEEDED(result)) result = bsp::vertex_buffer_lock_00b4ba00(vertices, 80, 0, false, upload);
-    if (SUCCEEDED(result)) {
-        struct Vertex { float x, y, z, rhw; DWORD diffuse; };
-        static_assert(sizeof(Vertex) == 20);
-        const Vertex triangle[] = {{-100, -100, 0, 1, 0xffff0000}, {4, 4, 0, 1, 0xff00ff00},
-            {60, 4, 0, 1, 0xff00ff00}, {4, 60, 0, 1, 0xff00ff00}};
-        std::memcpy(upload.data, triangle, sizeof(triangle));
-        bsp::vertex_buffer_unlock_00b4b9d0(vertices);
-        result = device.SetRenderTarget(0, target);
-    }
+    if (SUCCEEDED(result)) result = device.SetRenderTarget(0, target);
     bsp::RendererSynchronization sync{};
     bsp::D3D9StateCache states(device, sync, nullptr);
     if (SUCCEEDED(result)) result = device.SetDepthStencilSurface(nullptr);
@@ -46,8 +36,20 @@ static bool probe_draw(IDirect3DDevice9& device) {
         || stream->declaration->find_00b47ce0(D3DDECLUSAGE_COLOR, 0) != 1
         || stream->declaration->offset_00b47c40(D3DDECLUSAGE_COLOR, 0) != 16
         || stream->declaration->size_00b47c60(D3DDECLUSAGE_COLOR, 0) != 4) result = E_FAIL;
-    stream->vertex_count = 4;
+    stream->flags = 0x1000;
     stream->tag = 0x40000001;
+    void* mapped = nullptr;
+    if (SUCCEEDED(result)) result = states.lock_vertex_stream_00b49980(*stream, 4, 0, true, mapped);
+    if (SUCCEEDED(result)) {
+        struct Vertex { float x, y, z, rhw; DWORD diffuse; };
+        static_assert(sizeof(Vertex) == 20);
+        const Vertex triangle[] = {{-100, -100, 0, 1, 0xffff0000}, {4, 4, 0, 1, 0xff00ff00},
+            {60, 4, 0, 1, 0xff00ff00}, {4, 60, 0, 1, 0xff00ff00}};
+        std::memcpy(mapped, triangle, sizeof(triangle));
+        states.unlock_vertex_stream_00b49a80(*stream);
+        if (stream->mapped || stream->vertex_count != 4 || stream->offset != 0
+            || vertices.cursor != 80 || vertices.lock_depth != 0) result = E_FAIL;
+    }
     if (SUCCEEDED(result)) {
         states.bind_vertex_stream_00b24840(0, stream);
         auto equivalent = std::make_shared<bsp::LogicalVertexStream>(*stream);
@@ -103,12 +105,13 @@ static bool probe_draw(IDirect3DDevice9& device) {
     auto& indices = *index_stream->physical;
     indices.flags = 0x1000;
     indices.capacity = 6;
+    index_stream->index_count = 3;
     if (matched) result = bsp::index_buffer_recreate_00b49180(indices, device);
-    if (matched && SUCCEEDED(result)) result = bsp::index_buffer_lock_00b4b850(indices, 6, 0, false, upload);
+    if (matched && SUCCEEDED(result)) result = states.lock_index_stream_00b49b60(*index_stream, 0, 0, false, mapped);
     if (matched && SUCCEEDED(result)) {
         const unsigned short elements[] = {0, 1, 2};
-        std::memcpy(upload.data, elements, sizeof(elements));
-        bsp::index_buffer_unlock_00b4b820(indices);
+        std::memcpy(mapped, elements, sizeof(elements));
+        states.unlock_index_stream_00b49c70(*index_stream);
         states.bind_index_stream_00b24b00(index_stream, 0);
         states.bind_index_stream_00b24b00(index_stream, 1); // Same object, new base vertex.
         result = device.Clear(0, nullptr, D3DCLEAR_TARGET, 0xff000000, 1, 0);
