@@ -1,0 +1,64 @@
+{
+  "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "size": 12223752,
+  "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "machine": "x86",
+  "timestamp": 1245831434,
+  "image_base": "00400000",
+  "entry_point": "00bfd2bd",
+  "sections": [
+    {
+      "name": ".text",
+      "rva": "00001000",
+      "virtual_size": 9306422,
+      "raw_size": 9310208,
+      "raw_offset": 4096,
+      "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+    },
+    {
+      "name": ".rdata",
+      "rva": "008e2000",
+      "virtual_size": 1202980,
+      "raw_size": 1204224,
+      "raw_offset": 9314304,
+      "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+    },
+    {
+      "name": ".data",
+      "rva": "00a08000",
+      "virtual_size": 2719452,
+      "raw_size": 65536,
+      "raw_offset": 10518528,
+      "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+    },
+    {
+      "name": ".rsrc",
+      "rva": "00ca0000",
+      "virtual_size": 1630400,
+      "raw_size": 1634304,
+      "raw_offset": 10584064,
+      "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+    }
+  ],
+  "imported_dlls": [
+    "fmodex.dll",
+    "DSOUND.dll",
+    "d3d9.dll",
+    "d3dx9_40.dll",
+    "binkw32.dll",
+    "USER32.dll",
+    "ole32.dll",
+    "SHELL32.dll",
+    "xlive.dll",
+    "KERNEL32.dll",
+    "ADVAPI32.dll",
+    "WS2_32.dll",
+    "POWRPROF.dll",
+    "fmod_event.dll",
+    "WINMM.dll",
+    "DINPUT8.dll",
+    "GDI32.dll",
+    "XINPUT1_3.dll"
+  ],
+  "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+}

@@ -1,0 +1,72 @@
+Function 00401170
+00401170: PUSH EBP
+00401171: MOV EBP,ESP
+00401173: AND ESP,0xfffffff8
+00401176: SUB ESP,0x8
+00401179: FLD float ptr [EBP + 0x8]
+0040117c: FABS
+0040117e: FSTP float ptr [ESP + 0x4]
+00401182: FLD float ptr [ESP + 0x4]
+00401186: MOV ESP,EBP
+00401188: POP EBP
+00401189: RET 0x4
+
+Function 00401c20
+00401c20: FLD double ptr [ECX + 0x10]
+00401c23: FMUL double ptr [EDX + 0x8]
+00401c26: FLD double ptr [EDX + 0x10]
+00401c29: FMUL double ptr [ECX + 0x8]
+00401c2c: FSUBP
+00401c2e: FSTP double ptr [EAX]
+00401c30: FLD double ptr [EDX + 0x10]
+00401c33: FMUL double ptr [ECX]
+00401c35: FLD double ptr [ECX + 0x10]
+00401c38: FMUL double ptr [EDX]
+00401c3a: FSUBP
+00401c3c: FSTP double ptr [EAX + 0x8]
+00401c3f: FLD double ptr [ECX + 0x8]
+00401c42: FMUL double ptr [EDX]
+00401c44: FLD double ptr [ECX]
+00401c46: FMUL double ptr [EDX + 0x8]
+00401c49: FSUBP
+00401c4b: FSTP double ptr [EAX + 0x10]
+00401c4e: RET
+
+Function 00401cb0
+00401cb0: FLD double ptr [EDX]
+00401cb2: FSUB double ptr [ECX]
+00401cb4: FSTP double ptr [EAX]
+00401cb6: FLD double ptr [EDX + 0x8]
+00401cb9: FSUB double ptr [ECX + 0x8]
+00401cbc: FSTP double ptr [EAX + 0x8]
+00401cbf: FLD double ptr [EDX + 0x10]
+00401cc2: FSUB double ptr [ECX + 0x10]
+00401cc5: FSTP double ptr [EAX + 0x10]
+00401cc8: RET
+
+Function 00401cd0
+00401cd0: FLD double ptr [EAX]
+00401cd2: FLD double ptr [ESP + 0x4]
+00401cd6: FMUL ST1
+00401cd8: FXCH
+00401cda: FSTP double ptr [EAX]
+00401cdc: FLD double ptr [EAX + 0x8]
+00401cdf: FMUL ST1
+00401ce1: FSTP double ptr [EAX + 0x8]
+00401ce4: FMUL double ptr [EAX + 0x10]
+00401ce7: FSTP double ptr [EAX + 0x10]
+00401cea: RET 0x8
+
+Function 00401cf0
+00401cf0: FLD double ptr [EAX + 0x8]
+00401cf3: FLD double ptr [EAX]
+00401cf5: FLD double ptr [EAX + 0x10]
+00401cf8: FLD ST1
+00401cfa: FMULP ST2
+00401cfc: FLD ST2
+00401cfe: FMULP ST3
+00401d00: FXCH
+00401d02: FADDP ST2,ST0
+00401d04: FMUL ST0
+00401d06: FADDP
+00401d08: RET
