@@ -1,0 +1,490 @@
+{
+  "schema_version": 1,
+  "packet": "camera_configuration_leaves",
+  "status": "implemented_strict_compile_existing_build_and_focused_native_fixture_passed_pending_primary_integration",
+  "verified_utc": "2026-09-10T19:36:05.066665+00:00",
+  "base_commit": "a35d2623341146cfc5a49de572f1b9bf3512cba5",
+  "owned_addresses": [
+    "00b6fc30",
+    "00b6fdf0",
+    "00b6fe10",
+    "00b6fec0"
+  ],
+  "owned_files": [
+    "include/bsp/camera_configuration.hpp",
+    "src/camera_configuration.cpp",
+    "docs/CAMERA_CONFIGURATION.md",
+    "reports/camera_configuration_audit.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Every bsp.py ghidra bytes command verifies project/program before reading. Complete decoded extents through final RET match installed PE; original assembly and compiled object inspected."
+  },
+  "function_evidence": [
+    {
+      "address": "00b6fc30",
+      "end_exclusive": "00b6fc45",
+      "length": 21,
+      "disk_offset": 7797808,
+      "disk_sha256": "2d5dd2c9726f5d5d1df2bb34ed1d3647d2aecdbf643544850a44db4f986f38de",
+      "live_sha256": "2d5dd2c9726f5d5d1df2bb34ed1d3647d2aecdbf643544850a44db4f986f38de",
+      "live_matches_disk": true,
+      "instructions": [
+        "00b6fc30 push ecx",
+        "00b6fc31 fld dword ptr [ecx + 0x1c8]",
+        "00b6fc37 fmul dword ptr [ecx + 0x1c4]",
+        "00b6fc3d fstp dword ptr [esp]",
+        "00b6fc40 fld dword ptr [esp]",
+        "00b6fc43 pop ecx",
+        "00b6fc44 ret"
+      ],
+      "proposed_name": "BSP_Camera_GetFovAspectProduct",
+      "implementation": "get_camera_fov_aspect_product_00b6fc30",
+      "source": "src/camera_configuration.cpp",
+      "source_line": 20,
+      "original_abi": "ECX camera; ST0 float32-rounded product; RET0",
+      "behavior": "FLD actual aspect+1C8; FMUL actual fov+1C4; FSTP32 stack; FLD32 same stack slot. No camera write or cache refresh.",
+      "uncertainty": "Descriptive name is a behavioral interpretation, not a recovered symbol. Typed view API is not native ABI-compatible.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_passed"
+    },
+    {
+      "address": "00b6fdf0",
+      "end_exclusive": "00b6fe0c",
+      "length": 28,
+      "disk_offset": 7798256,
+      "disk_sha256": "e601f0a42946d456ee82f8630141f06cb1671dab3d951dbdb071e27db4a29f1e",
+      "live_sha256": "e601f0a42946d456ee82f8630141f06cb1671dab3d951dbdb071e27db4a29f1e",
+      "live_matches_disk": true,
+      "instructions": [
+        "00b6fdf0 mov eax, ecx",
+        "00b6fdf2 mov ecx, dword ptr [esp + 4]",
+        "00b6fdf6 mov edx, 1",
+        "00b6fdfb shl edx, cl",
+        "00b6fdfd mov dword ptr [eax + 0x198], ecx",
+        "00b6fe03 mov dword ptr [eax + 0x19c], edx",
+        "00b6fe09 ret 4"
+      ],
+      "proposed_name": "BSP_Camera_SetRenderModeAndMask",
+      "implementation": "set_camera_render_mode_00b6fdf0",
+      "source": "src/camera_configuration.cpp",
+      "source_line": 24,
+      "original_abi": "ECX camera; stack DWORD mode; EAX same camera; RET4",
+      "behavior": "Write full mode+198 followed by 1u<<(mode&31) at+19C. Typed interface returns same supplied CameraFrameState view.",
+      "uncertainty": "Descriptive name is a behavioral interpretation, not a recovered symbol. Typed view API is not native ABI-compatible.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_passed"
+    },
+    {
+      "address": "00b6fe10",
+      "end_exclusive": "00b6fe1d",
+      "length": 13,
+      "disk_offset": 7798288,
+      "disk_sha256": "150f2fcd59ec216dc6df5ac51fee42a6d0163d7c38afa6a6754c9d2ed2e28f5a",
+      "live_sha256": "150f2fcd59ec216dc6df5ac51fee42a6d0163d7c38afa6a6754c9d2ed2e28f5a",
+      "live_matches_disk": true,
+      "instructions": [
+        "00b6fe10 mov eax, dword ptr [esp + 4]",
+        "00b6fe14 mov dword ptr [ecx + 0x188], eax",
+        "00b6fe1a ret 4"
+      ],
+      "proposed_name": "BSP_Camera_SetClearFlags",
+      "implementation": "set_camera_clear_flags_00b6fe10",
+      "source": "src/camera_configuration.cpp",
+      "source_line": 32,
+      "original_abi": "ECX camera; stack DWORD flags; EAX flags; RET4",
+      "behavior": "Write complete supplied flags DWORD to actual+188; return flags. No other state changes.",
+      "uncertainty": "Descriptive name is a behavioral interpretation, not a recovered symbol. Typed view API is not native ABI-compatible.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_passed"
+    },
+    {
+      "address": "00b6fec0",
+      "end_exclusive": "00b6fecd",
+      "length": 13,
+      "disk_offset": 7798464,
+      "disk_sha256": "8dd8498c272e8d20bb7193609ccae5d68b7f36075e12d4d047ff22ce909c0d07",
+      "live_sha256": "8dd8498c272e8d20bb7193609ccae5d68b7f36075e12d4d047ff22ce909c0d07",
+      "live_matches_disk": true,
+      "instructions": [
+        "00b6fec0 mov eax, dword ptr [esp + 4]",
+        "00b6fec4 mov dword ptr [ecx + 0x43c], eax",
+        "00b6feca ret 4"
+      ],
+      "proposed_name": "BSP_Camera_SetContextDepthScalePointer",
+      "implementation": "set_camera_context_depth_scale_00b6fec0",
+      "source": "src/camera_configuration.cpp",
+      "source_line": 37,
+      "original_abi": "ECX camera; stack pointer; EAX same pointer; RET4",
+      "behavior": "Write supplied pointer to actual+43C; return pointer. No pointee read or retention.",
+      "uncertainty": "Descriptive name is a behavioral interpretation, not a recovered symbol. Typed view API is not native ABI-compatible.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_passed"
+    }
+  ],
+  "dependency_code_evidence": [],
+  "data_evidence": [],
+  "fixture_relocations": [],
+  "storage_contract": {
+    "views": "Existing CameraProjection and CameraFrameState, borrowed actual fields. No new owner or cache storage.",
+    "fov": "CameraProjection.fov actual camera+1C4",
+    "aspect": "CameraProjection.aspect actual camera+1C8",
+    "render_mode": "CameraFrameState.render_mode actual camera+198",
+    "render_mask": "Explicit uint32_t& actual same camera+19C",
+    "clear_flags": "CameraFrameState.clear_flags actual camera+188",
+    "context_pointer": "CameraFrameState.context_depth_scale_43c actual camera+43C",
+    "mode_return": "Same CameraFrameState& supplied by caller; typed same-owner identity, not raw native ECX address ABI.",
+    "validity_flags_modified": false,
+    "pointer_retention": false,
+    "pointee_read": false,
+    "copy_from_borrowed_backing": false
+  },
+  "validation": {
+    "strict_compile": {
+      "result": "PASS",
+      "target": "MSVC Win32",
+      "flags": "/std:c++20 /EHsc /O2 /Oy- /MD /Gy /Gw /W4 /WX /fp:strict",
+      "sources": [
+        "src/camera_configuration.cpp",
+        "local/camera_configuration_native_check.cpp"
+      ]
+    },
+    "existing_repository_build": {
+      "result": "PASS",
+      "command": "./scripts/build.ps1",
+      "existing_ctest": "1/1 reconstructed_math passed",
+      "new_source_in_baseline_cmake": false
+    },
+    "focused_native_fixture": {
+      "result": "PASS",
+      "local_sequences": 1,
+      "new_repository_test_cases": 0,
+      "checkpoints": 15,
+      "words_per_checkpoint": 292,
+      "matching_words": 4380,
+      "word_layout": [
+        "4 leading canary DWORDs",
+        "279 camera DWORDs covering full45C slot",
+        "4 trailing canary DWORDs",
+        "return bits",
+        "normalized identity match",
+        "x87 status",
+        "x87 control",
+        "MXCSR"
+      ],
+      "states": [
+        {
+          "index": 0,
+          "label": "mode_full_word_and_masked_shift",
+          "words": 292,
+          "raw_words_sha256": "001d6cc39230ed6f5fe51fb7ec7c7c9bf8f2590172cacdab605307eb901ee597",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 1,
+          "label": "mode_full_word_and_masked_shift",
+          "words": 292,
+          "raw_words_sha256": "020271f3cdc29444fc48512eb2b393926218560afdd77c67f676f907e4d5952b",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 2,
+          "label": "mode_full_word_and_masked_shift",
+          "words": 292,
+          "raw_words_sha256": "b22109f86ab0419ddbd0630cfa8342ad047cff34119577bc17deb7ee0f0a8265",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 3,
+          "label": "mode_full_word_and_masked_shift",
+          "words": 292,
+          "raw_words_sha256": "66b37b624c60859775136007403276a76830883cf5a33200e66bbc4a6ecf0e08",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 4,
+          "label": "mode_full_word_and_masked_shift",
+          "words": 292,
+          "raw_words_sha256": "cc4075a0c65d7276f140b3e96e1df594bcf2f6a828aac89e331e8c549ea4ce30",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 5,
+          "label": "clear_flags_full_word_and_return",
+          "words": 292,
+          "raw_words_sha256": "2489459cfe852c2d0c1a3ba0f7b2fdb9bc29e120b7ea98ff1e3e8efba291fa4b",
+          "return_bits": "80000007",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 6,
+          "label": "clear_flags_full_word_and_return",
+          "words": 292,
+          "raw_words_sha256": "d19303560dd92b73f4cb1a918959cb22d927439830b08a36a884981128183d67",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 7,
+          "label": "context_pointer_identity_without_pointee_read",
+          "words": 292,
+          "raw_words_sha256": "4ccd3b54f539d76f11bd98a8883d29888c380751531b83a18e03324d38997b75",
+          "return_bits": "30005660",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 8,
+          "label": "context_pointer_identity_without_pointee_read",
+          "words": 292,
+          "raw_words_sha256": "cf58f5828a010fdeb9b9a5893fd10c49e381e20e7089b53c3ab8875d3580f234",
+          "return_bits": "deadbeec",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 9,
+          "label": "context_pointer_identity_without_pointee_read",
+          "words": 292,
+          "raw_words_sha256": "196b52b1f69b2d0b3ea7bc1f139d4eb22e6db59473c11bfaf7f7c07428beba8d",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 10,
+          "label": "product_live_operands_float32_spill_and_fp_status",
+          "words": 292,
+          "raw_words_sha256": "381a9cf11768113ad012bf4378d167b631119afef57e5006bc88b5f93b250111",
+          "return_bits": "3f81f5a3",
+          "identity_match": "00000001",
+          "x87_status": "00000020",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 11,
+          "label": "product_live_operands_float32_spill_and_fp_status",
+          "words": 292,
+          "raw_words_sha256": "7683f4e64d2741509942a4f9d1dda640157176f1ba808f84724f22cca5d41aa8",
+          "return_bits": "80000000",
+          "identity_match": "00000001",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 12,
+          "label": "product_live_operands_float32_spill_and_fp_status",
+          "words": 292,
+          "raw_words_sha256": "0f407b2ca5f61ce1b706ca385961803f948bf7258beae9f07dfc74fcb2a91528",
+          "return_bits": "7fc00001",
+          "identity_match": "00000001",
+          "x87_status": "00000001",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 13,
+          "label": "product_live_operands_float32_spill_and_fp_status",
+          "words": 292,
+          "raw_words_sha256": "115958b6629b6611528024f53f2b3b26baa979e0162d46dc2694ca2b857e54c5",
+          "return_bits": "7f800000",
+          "identity_match": "00000001",
+          "x87_status": "00000028",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        },
+        {
+          "index": 14,
+          "label": "product_live_operands_float32_spill_and_fp_status",
+          "words": 292,
+          "raw_words_sha256": "429f8f589f8167eb493b3cb424add179f442096a5bf3752d0b5fe435dcafb335",
+          "return_bits": "00000000",
+          "identity_match": "00000001",
+          "x87_status": "00000032",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80"
+        }
+      ],
+      "native_execution": "Original 75 installed bytes in an isolated private executable page; no hooks, dependencies, relocation patches or replacement functions.",
+      "backing": "Existing projection/state/frame views bind actual offsets of raw camera slot. Unused node transform uses diagnostic storage. Binding verified to preserve all camera preimage bytes.",
+      "mode_inputs": [
+        "00000000",
+        "0000001f",
+        "00000020",
+        "ffffffff",
+        "80000002"
+      ],
+      "clear_flags_inputs": [
+        "80000007",
+        "00000000"
+      ],
+      "pointer_inputs": [
+        "actual static CameraPlane address shared across both sequences",
+        "deadbeec (not dereferenced)",
+        "00000000"
+      ],
+      "product_inputs_fov_aspect": [
+        [
+          "3f123457",
+          "3fe38e39"
+        ],
+        [
+          "80000000",
+          "3f800000"
+        ],
+        [
+          "7f800001",
+          "3f800000"
+        ],
+        [
+          "7f7fffff",
+          "40000000"
+        ],
+        [
+          "00000001",
+          "3f000000"
+        ]
+      ],
+      "fp_environment": {
+        "x87_control": "027f",
+        "mxcsr": "1f80",
+        "exception_flags_cleared_before_each_call": true
+      },
+      "product_observations": [
+        "finite result3F81F5A3, precision flag20",
+        "negative zero80000000, status0",
+        "sNaN quieted7FC00001, invalid flag1",
+        "overflow+infinity7F800000, status28",
+        "subnormal rounds+zero, status32"
+      ]
+    },
+    "compiled_order_review": "Public getter loads actual fov/aspect backing pointers then tail-jumps to FLD/FMUL/FSTP32/FLD32 kernel. Mode writes full mode then mask and retains input view in EAX. Other setters write argument and return it unchanged.",
+    "verified_code_spans": 4,
+    "verified_code_bytes": 75,
+    "verified_data_spans": 0,
+    "verified_data_bytes": 0
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\include\\bsp\\camera_configuration.hpp",
+      "sha256": "66fe6217ccef756181e792595f752c29e6aa7ffb00ebc1df7145a0228b3a405a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\src\\camera_configuration.cpp",
+      "sha256": "f7de30b2c88f66b6a5d9c67030eb59e98600db72759c92500d97a2101b528250"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\docs\\CAMERA_CONFIGURATION.md",
+      "sha256": "73fef819268d234e9be4fff01d357a6362d5e719c139536618f7affa19a5776a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\include\\bsp\\camera_projection.hpp",
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\src\\camera_projection.cpp",
+      "sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\include\\bsp\\camera_transform.hpp",
+      "sha256": "5ee72dd1f62be59041025658fdd8568102839add061e1312a89ae21c039d2bcd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\src\\camera_transform.cpp",
+      "sha256": "e4c628ffc42a9df306312d438a806a2e9785682e14155d9f427b0908cec2c96d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\include\\bsp\\camera_frame_state.hpp",
+      "sha256": "0437f26af70b4f56b043c7a606fc1239c92ab7429f91a3ab8b16ca2f8406cafb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\src\\camera_frame_state.cpp",
+      "sha256": "5b3038e5de84eb5110e2a37d7cbafe475240ed7e58406deaef8cd1d2f4073c1d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\include\\bsp\\system_fog_slot.hpp",
+      "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\src\\system_fog_slot.cpp",
+      "sha256": "9d5781b2a998af2efb2b470162adfc6581c96f170b0d8168a989e211a9657838"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\prepare_camera_configuration_native.py",
+      "sha256": "508b484c87fd08b084f3b4812f72e1b2adfb1aea68b5e650384f78fad519e53c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\camera_configuration_native_spans.hpp",
+      "sha256": "b87c539ef1a9bc433400f6982c9d6c89608e7cae25087384a373caafe7c68f53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\camera_configuration_native_preparation.json",
+      "sha256": "17e04dfbc99cda822459af7e8e82a40f50eb9ea201265af6580b68099facc598"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\camera_configuration_native_check.cpp",
+      "sha256": "a67d6ad428f1474390a23996f1ad60135c54faadb91b0da0e406af2c8f708a12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\build_camera_configuration_native_check.ps1",
+      "sha256": "12f531eca12fc14d4fe18c498ed748381b46396cc2931263c58a3e812d2c9286"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\camera_configuration_native_check.log",
+      "sha256": "29f7762728501d750506e2b2de76598cbf9f83d920eaa17a629fb24299efc76a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\camera_configuration_compiled_disasm.txt",
+      "sha256": "37558a3916e4f131dab00667a20632a7f48d64d375fa1f01478795da06fc88e5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\local\\camera_configuration_repository_build.log",
+      "sha256": "ee22707fe0927a1d5fa0dcd311a9968d8728e7f9879068f7f8bd4926249e6da0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-config-20260910\\build\\camera-configuration-check\\camera_configuration_native_check.exe",
+      "sha256": "92d5a7d4e295c2b5f3dcaf9937351c4dd602dad1d21e5d30671a65009366f344"
+    }
+  ],
+  "limits": [
+    "New typed view interfaces are not drop-in native ABI replacements and have no gameplay validation.",
+    "The same-camera +19C mask binding is an explicit caller precondition, not runtime-validated by the leaf.",
+    "Fixture uses x87CW027F/MXCSR1F80 and masked exceptions; other FP modes and unmasked exceptions were not executed.",
+    "Concurrent mutation, invalid field bindings and aliases inconsistent with the native layout were not exercised.",
+    "Native-owner constructor, retention, renderer dispatch and destruction are outside these four pure configuration leaves.",
+    "Primary owns CMake registration, Ghidra annotation/export/snapshot, ledgers and owner composition; no shared metadata edits are included."
+  ]
+}
