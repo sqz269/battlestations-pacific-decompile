@@ -1,0 +1,1005 @@
+{
+ "packet": "ship_class_fields",
+ "doc": "docs/SHIP_CLASS_FIELDS.md",
+ "summary": "00831840 BSP_ShipClass_ReadLuaFields decoded in full: __thiscall(descriptor, LuaObject* row), RET 4 at 00834688, chaining to 00960230 at 0083186E and then reading 67 key paths in body order into ship-descriptor offsets +138h..+804h. The nested walks the earlier packet only tabulated are decoded: HoD as 20 records of 30h bytes at +138h, Traffic and Idle as two independent record vectors at +6DCh and +6FCh, Camos as an integer-keyed array of heap camo records at +710h, and the DamagedGFXRemove integer lists. Six reviewed names were recorded.",
+ "routines": [
+  {
+   "address": "00831840",
+   "name": "BSP_ShipClass_ReadLuaFields",
+   "convention": "__thiscall(ship descriptor, LuaObject* row)",
+   "ret": "RET 4 at 00834688",
+   "body": "00831840-0083468a",
+   "instructions": 2776,
+   "role": "the ship family override of descriptor vtable slot +8h",
+   "state": "exported, analysed, reconstructed, build-tested, installed-file-checked"
+  },
+  {
+   "address": "00870cd0",
+   "name": "BSP_EffectHandle_Acquire",
+   "convention": "RET 4",
+   "role": "wraps an effect or sound id in the refcounted handle a descriptor slot keeps; 12 call sites in 00831840",
+   "state": "exported, analysed (signature and role), name recorded"
+  },
+  {
+   "address": "004d9c00",
+   "name": "BSP_RefCountedPointerVector_PushBack",
+   "convention": "__thiscall(vector, value)",
+   "role": "appends an effect handle to the vectors at descriptor+664h, +7E4h and +7F4h",
+   "state": "exported, analysed, name recorded"
+  },
+  {
+   "address": "0082fd20",
+   "name": "BSP_ShipClass_ResizeTrafficRecords",
+   "role": "resizes the 50h-byte Traffic record vector at descriptor+6DCh",
+   "state": "exported, analysed (call-site role), name recorded"
+  },
+  {
+   "address": "0082f8e0",
+   "name": "BSP_ShipClass_ResizeIdleRecords",
+   "role": "resizes the 1Ch-byte Idle record vector at descriptor+6FCh",
+   "state": "exported, analysed (call-site role), name recorded"
+  },
+  {
+   "address": "0082e1f0",
+   "name": "BSP_ShipIdleRecord_Construct",
+   "role": "default-constructs the 1Ch-byte Idle record",
+   "state": "exported, analysed (call-site role), name recorded"
+  },
+  {
+   "address": "0049d4c0",
+   "name": null,
+   "role": "fills the rest of a Traffic record from the same Lua element (called at 00832F54 with ECX = the record and the element pushed)",
+   "state": "exported only; not analysed, not named"
+  },
+  {
+   "address": "0049f9b0",
+   "name": null,
+   "role": "default-constructs the 50h-byte Traffic record prototype at 00832EBC",
+   "state": "exported only; six callers, so it was not given a ship-specific name"
+  },
+  {
+   "address": "00499030",
+   "name": null,
+   "role": "returns the float slot for a class pointer in the Idle templates map",
+   "state": "exported only; generic container helper, not named"
+  },
+  {
+   "address": "00444be0",
+   "name": null,
+   "role": "returns the float slot for a string key in the Idle anims map",
+   "state": "exported only; 16 callers, generic container helper, not named"
+  },
+  {
+   "address": "00424c40",
+   "name": null,
+   "role": "the settings object 00831840 takes three defaults from (+238h, +23Ch, +74Ch)",
+   "state": "exported only; 99 callers, not named"
+  }
+ ],
+ "calling_convention": {
+  "this": "ECX, the ship descriptor (MOV EDI,ECX at 00831867)",
+  "argument": "[EBP+8], the LuaObject row (MOV ESI,[EBP+8] at 00831863), forwarded to 00960230 at 0083186E",
+  "ret": "RET 4",
+  "note": "ESI and EDI both hold the descriptor or the row at different points; the listing reloads the row from [EBP+8] at 00832FB5 and 00833C08, which is what settles the Traffic/Idle nesting."
+ },
+ "keys": [
+  {
+   "path": "MaxRotAngle",
+   "conversion": "Number",
+   "offset": 1272,
+   "site": "00831882",
+   "default": "",
+   "store": "00831899",
+   "note": ""
+  },
+  {
+   "path": "MaxRotAngleChangeRatio",
+   "conversion": "Number",
+   "offset": 1276,
+   "site": "008318c4",
+   "default": "",
+   "store": "008318db",
+   "note": ""
+  },
+  {
+   "path": "MaxSpeed",
+   "conversion": "Number",
+   "offset": 1280,
+   "site": "00831903",
+   "default": "",
+   "store": "0083191a",
+   "note": ""
+  },
+  {
+   "path": "MaxAccel",
+   "conversion": "Number",
+   "offset": 1284,
+   "site": "00831942",
+   "default": "",
+   "store": "00831959",
+   "note": ""
+  },
+  {
+   "path": "Retardation",
+   "conversion": "Number",
+   "offset": 1288,
+   "site": "00831981",
+   "default": "",
+   "store": "00831998",
+   "note": ""
+  },
+  {
+   "path": "CollisionMaxSpeedDamage",
+   "conversion": "NumberOr",
+   "offset": 1292,
+   "site": "008319c0",
+   "default": "0.0f",
+   "store": "008319dd",
+   "note": "FLDZ at 008319d0"
+  },
+  {
+   "path": "KamikazeDamage",
+   "conversion": "NumberOr",
+   "offset": 1296,
+   "site": "00831a05",
+   "default": "0.0f",
+   "store": "00831a22",
+   "note": ""
+  },
+  {
+   "path": "KamikazeBlastDamage",
+   "conversion": "NumberOr",
+   "offset": 1300,
+   "site": "00831a4a",
+   "default": "0.0f",
+   "store": "00831a67",
+   "note": ""
+  },
+  {
+   "path": "KamikazeBlastRange",
+   "conversion": "NumberOr",
+   "offset": 1304,
+   "site": "00831a8f",
+   "default": "0.0f",
+   "store": "00831aac",
+   "note": ""
+  },
+  {
+   "path": "RotorSpdTurnDiff",
+   "conversion": "NumberOr",
+   "offset": 1692,
+   "site": "00831ad4",
+   "default": "0.0f",
+   "store": "00831af1",
+   "note": ""
+  },
+  {
+   "path": "RotorSpd",
+   "conversion": "NumberOr",
+   "offset": 1696,
+   "site": "00831b19",
+   "default": "15.0f",
+   "store": "00831b41",
+   "note": "FLD [00ce5380] = 41700000h"
+  },
+  {
+   "path": "DeathEfx",
+   "conversion": "EffectHandle",
+   "offset": 1372,
+   "site": "00831ba9",
+   "default": "0",
+   "store": "00831be8",
+   "note": "guarded by IsInteger at 00831b62; GetIntegerOrDefault then 00870CD0"
+  },
+  {
+   "path": "ExplosionEfx",
+   "conversion": "EffectHandle",
+   "offset": 1308,
+   "site": "00831cb7",
+   "default": "",
+   "store": "00831cf4",
+   "note": "guarded by IsInteger at 00831c70; GetInteger then 00870CD0"
+  },
+  {
+   "path": "UnderwaterArmour",
+   "conversion": "NumberOr",
+   "offset": 1716,
+   "site": "00831d7c",
+   "default": "0.0f",
+   "store": "00831d99",
+   "note": ""
+  },
+  {
+   "path": "DamageThreshold",
+   "conversion": "NumberOr",
+   "offset": 1720,
+   "site": "00831dc4",
+   "default": "100.0f",
+   "store": "00831de5",
+   "note": "FLD [00ce3d08] = 42C80000h"
+  },
+  {
+   "path": "CaptainCameraHeight",
+   "conversion": "NumberOrSlot",
+   "offset": 1336,
+   "site": "00831e0d",
+   "default": "DAT_00ce38b8",
+   "store": "00831e39",
+   "note": "IsNil at 00831e24 selects the global default"
+  },
+  {
+   "path": "CameraDistanceFront",
+   "conversion": "NumberOrSlot",
+   "offset": 1340,
+   "site": "00831e60",
+   "default": "descriptor+A0h (Length)",
+   "store": "00831eb7",
+   "note": "IsNil at 00831e95"
+  },
+  {
+   "path": "CameraDistanceSide",
+   "conversion": "NumberOrSlot",
+   "offset": 1344,
+   "site": "00831ec7",
+   "default": "descriptor+53Ch",
+   "store": "00831f1e",
+   "note": ""
+  },
+  {
+   "path": "CameraDistanceVertical",
+   "conversion": "NumberOrSlot",
+   "offset": 1348,
+   "site": "00831f2e",
+   "default": "descriptor+53Ch",
+   "store": "00831f85",
+   "note": ""
+  },
+  {
+   "path": "CameraMinHeight",
+   "conversion": "NumberOrSlot",
+   "offset": 1352,
+   "site": "00831f95",
+   "default": "descriptor+538h",
+   "store": "00831fec",
+   "note": ""
+  },
+  {
+   "path": "DamageToDeath",
+   "conversion": "NumberOr",
+   "offset": 1356,
+   "site": "00831ffc",
+   "default": "-1.0f",
+   "store": "0083201a",
+   "note": "FLD [00d7a260] = BF800000h"
+  },
+  {
+   "path": "TimeToDeath",
+   "conversion": "NumberOr",
+   "offset": 1360,
+   "site": "00832043",
+   "default": "-1.0f",
+   "store": "00832061",
+   "note": ""
+  },
+  {
+   "path": "PumpTimeToEmpty",
+   "conversion": "NumberOr",
+   "offset": 1364,
+   "site": "0083208a",
+   "default": "-1.0f",
+   "store": "008320a8",
+   "note": ""
+  },
+  {
+   "path": "WaterForceMultiplier",
+   "conversion": "NumberOr",
+   "offset": 1368,
+   "site": "008320d1",
+   "default": "1.0f",
+   "store": "008320eb",
+   "note": "FLD1 at 008320d6"
+  },
+  {
+   "path": "BowParticle",
+   "conversion": "EffectHandle",
+   "offset": 1452,
+   "site": "00832114",
+   "default": "",
+   "store": "00832167",
+   "note": "guarded by IsInteger at 00832128"
+  },
+  {
+   "path": "BowWave",
+   "conversion": "EffectHandle",
+   "offset": 1584,
+   "site": "008321d8",
+   "default": "",
+   "store": "0083222b",
+   "note": ""
+  },
+  {
+   "path": "WaveStern",
+   "conversion": "EffectHandle",
+   "offset": 1588,
+   "site": "0083229c",
+   "default": "",
+   "store": "008322ef",
+   "note": ""
+  },
+  {
+   "path": "RotorParticle",
+   "conversion": "EffectHandle",
+   "offset": 1628,
+   "site": "00832360",
+   "default": "",
+   "store": "008323d4",
+   "note": ""
+  },
+  {
+   "path": "DamageSmoke",
+   "conversion": "Table",
+   "offset": "kNoOffset",
+   "site": "00832445",
+   "default": "",
+   "store": "",
+   "note": "IsTable at 00832459; when absent +660h = 0 and the +664h vector is cleared by 004D17C0 at 00832654"
+  },
+  {
+   "path": "DamageSmoke.MaxNumber",
+   "conversion": "Integer",
+   "offset": 1632,
+   "site": "0083247a",
+   "default": "",
+   "store": "00832495",
+   "note": ""
+  },
+  {
+   "path": "DamageSmoke.Effect",
+   "conversion": "EffectHandleList",
+   "offset": 1636,
+   "site": "008324c1",
+   "default": "0",
+   "store": "00832577",
+   "note": "walked by index from 1; IsInteger guard at 008324ed, GetIntegerOrDefault at 00832538, 00870CD0 then 004D9C00 appends into the vector at +664h"
+  },
+  {
+   "path": "HoD",
+   "conversion": "Table",
+   "offset": 312,
+   "site": "0083266c",
+   "default": "",
+   "store": "",
+   "note": "20 records of 30h bytes at descriptor+138h; the cursor EBX = record+24h is set by LEA EBX,[EDI+0x15c] at 00832695"
+  },
+  {
+   "path": "HoD[].Flag",
+   "conversion": "IntegerList",
+   "offset": 312,
+   "site": "0083270e",
+   "default": "",
+   "store": "0083277a",
+   "note": "record+0h; each entry GetInteger at 00832764 then 00442190"
+  },
+  {
+   "path": "HoD[].Smoke",
+   "conversion": "IntegerList",
+   "offset": 332,
+   "site": "008327d5",
+   "default": "",
+   "store": "",
+   "note": "record+14h {begin,end,capacity}; push_back or 00441F30 on growth"
+  },
+  {
+   "path": "HoD[].Idle",
+   "conversion": "IntegerList",
+   "offset": 348,
+   "site": "008328fe",
+   "default": "",
+   "store": "",
+   "note": "record+24h {begin,end,capacity}"
+  },
+  {
+   "path": "ExplosionTypes",
+   "conversion": "IntegerArray",
+   "offset": 1680,
+   "site": "00832a73",
+   "default": "",
+   "store": "",
+   "note": "indices 1..23; IsInteger guard at 00832ac3, GetInteger at 00832b05; data +690h, count +694h, capacity +698h, grown by 004674F0"
+  },
+  {
+   "path": "Smoke",
+   "conversion": "EffectHandle",
+   "offset": 1652,
+   "site": "00832b7a",
+   "default": "0",
+   "store": "00832bb6",
+   "note": "the same id also builds two more handles, stored at +6A4h and +6A8h"
+  },
+  {
+   "path": "Hull",
+   "conversion": "Table",
+   "offset": "kNoOffset",
+   "site": "00832d51",
+   "default": "",
+   "store": "",
+   "note": "IsTable at 00832d65"
+  },
+  {
+   "path": "Hull.WaterLineRatio",
+   "conversion": "Number",
+   "offset": 1820,
+   "site": "00832d86",
+   "default": "",
+   "store": "00832d9a",
+   "note": ""
+  },
+  {
+   "path": "Hull.Segments",
+   "conversion": "NumberToInt",
+   "offset": 1824,
+   "site": "00832dc8",
+   "default": "",
+   "store": "00832de8",
+   "note": "GetNumber then the CRT float-to-int at 00BF7420"
+  },
+  {
+   "path": "Traffic",
+   "conversion": "RecordVector",
+   "offset": 1756,
+   "site": "00832e0a",
+   "default": "",
+   "store": "",
+   "note": "IsNil at 00832e1e; vector at +6DCh {?, begin +6E0h, end +6E4h} of 50h-byte records; resize by 0082FD20, element constructed by 0049F9B0"
+  },
+  {
+   "path": "Traffic[].pathID",
+   "conversion": "IntegerMinusOne",
+   "offset": 76,
+   "site": "00832f1c",
+   "default": "",
+   "store": "00832f3a",
+   "note": "record+4Ch; the rest of the record is filled by 0049D4C0 at 00832f54 from the same Lua element"
+  },
+  {
+   "path": "Idle",
+   "conversion": "RecordVector",
+   "offset": 1788,
+   "site": "00832fc7",
+   "default": "",
+   "store": "",
+   "note": "a row-level sibling of Traffic, not nested under it: ECX is reloaded from [EBP+8] at 00832fb5; vector at +6FCh of 1Ch-byte records, resize by 0082F8E0, element constructed by 0082E1F0"
+  },
+  {
+   "path": "Idle[].posID",
+   "conversion": "IntegerMinusOne",
+   "offset": 24,
+   "site": "008330c5",
+   "default": "",
+   "store": "008330e3",
+   "note": "record+18h"
+  },
+  {
+   "path": "Idle[].templates",
+   "conversion": "ClassWeightMap",
+   "offset": 0,
+   "site": "00833107",
+   "default": "",
+   "store": "0083328c",
+   "note": "record+0h; key/value iteration; the key names a class looked up in LandVehicleclasses (00CE6710) via 0048E960/0048E8D0, resolved by BSP_VehicleClass_GetOrCreate 00964790, else in SoldierTypes (00CE6700) via 004B1400; the Lua number is stored as a float through 00499030"
+  },
+  {
+   "path": "Idle[].anims",
+   "conversion": "NameWeightMap",
+   "offset": 12,
+   "site": "00833301",
+   "default": "",
+   "store": "008333f2",
+   "note": "record+0Ch; the key string is copied into a native string and 00444BE0 returns the float slot"
+  },
+  {
+   "path": "Camos",
+   "conversion": "CamoArray",
+   "offset": 1808,
+   "site": "00833501",
+   "default": "",
+   "store": "",
+   "note": "IsTable at 00833515; key/value iteration, the integer key indexes the array at +710h (begin) / +714h (end); each value allocates a refcounted camo record (vtable 00D099B0) that replaces the slot"
+  },
+  {
+   "path": "Camos[].TextureRemaps",
+   "conversion": "StringPairList",
+   "offset": "kNoOffset",
+   "site": "0083368b",
+   "default": "",
+   "store": "",
+   "note": "a list of two-element string arrays; both strings are read by GetString at 0083374e and 008337bb and appended by 0082B170 / 0082E160 / 0082AD20"
+  },
+  {
+   "path": "Camos[].GunColor",
+   "conversion": "Vector4",
+   "offset": 28,
+   "site": "0083394a",
+   "default": "",
+   "store": "00833980",
+   "note": "camo record: +18h = 1 when present else 0; the four floats land at +1Ch..+28h, read by 00B67C40"
+  },
+  {
+   "path": "LSClassId",
+   "conversion": "Integer",
+   "offset": 1828,
+   "site": "00833a3a",
+   "default": "",
+   "store": "00833a76",
+   "note": "IsNil guard at 00833a4e"
+  },
+  {
+   "path": "LSPoints",
+   "conversion": "Vector3Array8",
+   "offset": 1832,
+   "site": "00833a7c",
+   "default": "",
+   "store": "",
+   "note": "exactly 8 entries; each is read by 00B677E0 / 00B67A80 into a 12-byte slot, +728h..+787h"
+  },
+  {
+   "path": "LSReload",
+   "conversion": "NumberReciprocal",
+   "offset": 1928,
+   "site": "00833afe",
+   "default": "",
+   "store": "00833b2d",
+   "note": "stored as 1.0f / value"
+  },
+  {
+   "path": "LandingShip",
+   "conversion": "ClassPointerOr",
+   "offset": 1932,
+   "site": "00833b6c",
+   "default": "0",
+   "store": "00833bb6",
+   "note": "+78Ch is cleared first; the id resolves through BSP_VehicleClass_GetOrCreate and is stored only when virtual slot +18h returns true"
+  },
+  {
+   "path": "LandingShipAmount",
+   "conversion": "IntegerOr",
+   "offset": 1936,
+   "site": "00833bcb",
+   "default": "0",
+   "store": "00833be8",
+   "note": ""
+  },
+  {
+   "path": "LandingShipCoolDown",
+   "conversion": "IntegerOr",
+   "offset": 1940,
+   "site": "00833c0a",
+   "default": "60",
+   "store": "00833c27",
+   "note": ""
+  },
+  {
+   "path": "Fire",
+   "conversion": "Table",
+   "offset": "kNoOffset",
+   "site": "00833c49",
+   "default": "",
+   "store": "",
+   "note": "IsNil at 00833c64; the settings object comes from 00424C40"
+  },
+  {
+   "path": "Fire.FireDamagePerFireTick",
+   "conversion": "NumberOrSettings",
+   "offset": 1396,
+   "site": "00833c81",
+   "default": "settings+74Ch",
+   "store": "00833cb9",
+   "note": "IsNumber at 00833c95 selects the settings default"
+  },
+  {
+   "path": "MaxTorpedoStock",
+   "conversion": "IntegerOrZero",
+   "offset": 1952,
+   "site": "00833ce6",
+   "default": "0",
+   "store": "00833d1b",
+   "note": "IsNil at 00833cf7 writes 0 at 00833d00"
+  },
+  {
+   "path": "DamagedGFXRemove",
+   "conversion": "Table",
+   "offset": "kNoOffset",
+   "site": "00833d2a",
+   "default": "",
+   "store": "",
+   "note": "IsNil at 00833d59"
+  },
+  {
+   "path": "DamagedGFXRemove.Slots",
+   "conversion": "IntegerList",
+   "offset": 1960,
+   "site": "00833d74",
+   "default": "",
+   "store": "",
+   "note": "{begin +7A8h, end +7ACh, capacity +7B0h}; values stored unchanged"
+  },
+  {
+   "path": "DamagedGFXRemove.Funnels",
+   "conversion": "IntegerListMinusOne",
+   "offset": 1976,
+   "site": "00833eab",
+   "default": "",
+   "store": "",
+   "note": "{+7B8h, +7BCh, +7C0h}; values stored minus one"
+  },
+  {
+   "path": "DamagedGFXRemove.Flags",
+   "conversion": "IntegerListMinusOne",
+   "offset": 1992,
+   "site": "00833fd0",
+   "default": "",
+   "store": "",
+   "note": "{+7C8h, +7CCh, +7D0h}; values stored minus one"
+  },
+  {
+   "path": "InnerExplosionEfx",
+   "conversion": "IndexedEffectList",
+   "offset": 2008,
+   "site": "0083413c",
+   "default": "",
+   "store": "",
+   "note": "row-level: ECX is the row at 0083413a; the integer key lands in the vector at {+7D8h, +7DCh, +7E0h} and the value builds a handle appended to the vector at +7E4h (LEA EBX,[EAX+0x7e4] at 008341dc)"
+  },
+  {
+   "path": "StructuralDamageEfx",
+   "conversion": "EffectHandleList",
+   "offset": 2036,
+   "site": "0083430d",
+   "default": "",
+   "store": "",
+   "note": "row-level; only the value is used: GetInteger, 00870CD0, then 004D9C00 into the vector at +7F4h (LEA EBX,[ESI+0x7f4] at 008343a3)"
+  },
+  {
+   "path": "HackShipRotationAdd",
+   "conversion": "NumberOrSettings",
+   "offset": 1944,
+   "site": "00834476",
+   "default": "settings+238h",
+   "store": "008344b9",
+   "note": ""
+  },
+  {
+   "path": "HackShipHeightAdd",
+   "conversion": "NumberOrSettings",
+   "offset": 1948,
+   "site": "008344ce",
+   "default": "settings+23Ch",
+   "store": "00834511",
+   "note": ""
+  },
+  {
+   "path": "CapturePower",
+   "conversion": "IntegerOrAsFloat",
+   "offset": 2052,
+   "site": "00834526",
+   "default": "10",
+   "store": "00834547",
+   "note": "CVTSI2SS at 0083453c; the slot is a float"
+  }
+ ],
+ "descriptor_layout": {
+  "note": "byte offsets into the ship descriptor; +0h..+134h belong to the base and the shared pre-reader and are in docs/VEHICLE_CLASS_FIELDS.md",
+  "hod_records": {
+   "base": "0x138",
+   "stride": "0x30",
+   "count": 20,
+   "span": "0x138..0x4F7",
+   "fields": {
+    "Flag list": "+0h",
+    "Smoke {begin,end,capacity}": "+14h",
+    "Idle {begin,end,capacity}": "+24h",
+    "unattributed": "+0Ch..+13h and +20h"
+   }
+  },
+  "traffic_record": {
+   "base": "descriptor+0x6DC",
+   "stride": "0x50",
+   "fields": {
+    "pathID - 1": "+4Ch",
+    "the rest": "filled by 0049D4C0, not attributed"
+   }
+  },
+  "idle_record": {
+   "base": "descriptor+0x6FC",
+   "stride": "0x1C",
+   "fields": {
+    "templates weight map": "+0h",
+    "anims weight map": "+0Ch",
+    "posID - 1": "+18h"
+   }
+  },
+  "camo_record": {
+   "base": "the array at descriptor+0x710",
+   "fields": {
+    "GunColor present flag": "+18h (byte)",
+    "GunColor rgba": "+1Ch..+28h",
+    "TextureRemaps": "appended by 0082B170 / 0082E160 / 0082AD20"
+   }
+  },
+  "settings": {
+   "source": "00424C40",
+   "fields": {
+    "HackShipRotationAdd default": "+238h",
+    "HackShipHeightAdd default": "+23Ch",
+    "Fire.FireDamagePerFireTick default": "+74Ch"
+   }
+  }
+ },
+ "callers": [
+  "006e00f0",
+  "006eb4a0",
+  "006fb550",
+  "006fe6a0",
+  "0074c630",
+  "00759590",
+  "00854230",
+  "00857f40"
+ ],
+ "installed_file_check": {
+  "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua",
+  "method": "read-only parse by an independent Lua-subset parser written for this packet (local/shipcheck.py in the worktree); block comments treated as nesting, which excludes the five commented-out trailing records",
+  "ship_row_rule": "Type is one of BattleShip, Cargo, Cruiser, Destroyer, LandingShip, MotherShip, Submarine, TorpedoBoat",
+  "rows": 633,
+  "ship_rows": 160,
+  "ship_types": {
+   "BattleShip": 39,
+   "Cargo": 13,
+   "Cruiser": 41,
+   "Destroyer": 31,
+   "LandingShip": 6,
+   "MotherShip": 18,
+   "Submarine": 9,
+   "TorpedoBoat": 3
+  },
+  "distinct_ship_key_paths": 211,
+  "schema_key_paths": 67,
+  "schema_paths_no_ship_row_provides": [
+   "DamageToDeath",
+   "Fire",
+   "Fire.FireDamagePerFireTick",
+   "LSClassId",
+   "LSPoints",
+   "LSReload",
+   "RotorSpd",
+   "RotorSpdTurnDiff"
+  ],
+  "shipped_ship_paths_no_reader_consumes": 74,
+  "shipped_ship_paths_the_base_reader_consumes": 61,
+  "map_data_leaves": 17,
+  "counts": {
+   "MaxRotAngle": 160,
+   "MaxRotAngleChangeRatio": 160,
+   "MaxSpeed": 160,
+   "MaxAccel": 160,
+   "Retardation": 160,
+   "CollisionMaxSpeedDamage": 160,
+   "KamikazeDamage": 2,
+   "KamikazeBlastDamage": 2,
+   "KamikazeBlastRange": 2,
+   "RotorSpdTurnDiff": 0,
+   "RotorSpd": 0,
+   "DeathEfx": 160,
+   "ExplosionEfx": 12,
+   "UnderwaterArmour": 149,
+   "DamageThreshold": 146,
+   "CaptainCameraHeight": 11,
+   "CameraDistanceFront": 160,
+   "CameraDistanceSide": 160,
+   "CameraDistanceVertical": 160,
+   "CameraMinHeight": 151,
+   "DamageToDeath": 0,
+   "TimeToDeath": 73,
+   "PumpTimeToEmpty": 38,
+   "WaterForceMultiplier": 14,
+   "BowParticle": 159,
+   "BowWave": 159,
+   "WaveStern": 160,
+   "RotorParticle": 159,
+   "DamageSmoke": 153,
+   "DamageSmoke.MaxNumber": 153,
+   "DamageSmoke.Effect": 153,
+   "HoD": 141,
+   "HoD[].Flag": 123,
+   "HoD[].Smoke": 121,
+   "HoD[].Idle": 108,
+   "ExplosionTypes": 137,
+   "Smoke": 142,
+   "Hull": 160,
+   "Hull.WaterLineRatio": 160,
+   "Hull.Segments": 160,
+   "Traffic": 134,
+   "Traffic[].pathID": 16,
+   "Idle": 142,
+   "Idle[].posID": 125,
+   "Idle[].templates": 125,
+   "Idle[].anims": 125,
+   "Camos": 160,
+   "Camos[].TextureRemaps": 16,
+   "Camos[].GunColor": 141,
+   "LSClassId": 0,
+   "LSPoints": 0,
+   "LSReload": 0,
+   "LandingShip": 2,
+   "LandingShipAmount": 2,
+   "LandingShipCoolDown": 2,
+   "Fire": 0,
+   "Fire.FireDamagePerFireTick": 0,
+   "MaxTorpedoStock": 74,
+   "DamagedGFXRemove": 125,
+   "DamagedGFXRemove.Slots": 105,
+   "DamagedGFXRemove.Funnels": 106,
+   "DamagedGFXRemove.Flags": 125,
+   "InnerExplosionEfx": 147,
+   "StructuralDamageEfx": 147,
+   "HackShipRotationAdd": 112,
+   "HackShipHeightAdd": 99,
+   "CapturePower": 160
+  },
+  "unconsumed": {
+   "ArmorIndexes": 160,
+   "Damage.Sections[].HPBlack": 160,
+   "Race": 160,
+   "Type": 160,
+   "HP_Realistic": 158,
+   "MaxSpeed_Realistic": 154,
+   "MovieCameraPositions.SnittPositions.IncomingAttack": 143,
+   "PlatformDirections": 117,
+   "PlatformDirections.AFT": 117,
+   "PlatformDirections.FORWARD": 117,
+   "PlatformDirections.LEFT": 117,
+   "PlatformDirections.RIGHT": 117,
+   "Unlock": 74,
+   "MaxTorpedoStock_Realistic": 71,
+   "UnitlibViewDistance": 68,
+   "SmokeScreen": 47,
+   "SmokeScreenCooldown": 47,
+   "SmokeScreenDuration": 47,
+   "SmokeScreenRadius": 47,
+   "SmokeScreenSpawnTime": 47,
+   "UnlockID": 46,
+   "DeckCamera": 25,
+   "DeckCamera.HorzAngle": 25,
+   "DeckCamera.Position": 25,
+   "DeckCamera.VertAngle": 25,
+   "HeavyCruiser": 25,
+   "Traffic[].anims": 16,
+   "Traffic[].anims.walk_unarmed_matroz": 16,
+   "Traffic[].columnDev": 16,
+   "Traffic[].columnGap": 16,
+   "Traffic[].columns": 16,
+   "Traffic[].cyclic": 16,
+   "Traffic[].endPt": 16,
+   "Traffic[].randomFactor": 16,
+   "Traffic[].rowCount": 16,
+   "Traffic[].rowDev": 16,
+   "Traffic[].smoothFactor": 16,
+   "Traffic[].speed": 16,
+   "Traffic[].startPt": 16,
+   "Traffic[].templates": 16,
+   "AirReloadTime": 9,
+   "AirRunOutTime": 9,
+   "DownSpeed": 9,
+   "SubType": 9,
+   "Traffic[].rowGap": 9,
+   "Traffic[].templates.JPMatroz_shiptraffic": 9,
+   "UpSpeed": 9,
+   "PeriscopeDepth": 8,
+   "PeriscopeMoveRange": 8,
+   "Battlecruiser": 7,
+   "MovieCameraPositions.SnittPositions.Landing1": 7,
+   "MovieCameraPositions.SnittPositions.Landing2": 7,
+   "MovieCameraPositions.SnittPositions.Takeoff1": 7,
+   "MovieCameraPositions.SnittPositions.Takeoff2": 7,
+   "MovieCameraPositions.SnittPositions.Takeoff4": 7,
+   "PeriscopeWave": 7,
+   "Traffic[].templates.USMatroz_shiptraffic": 7,
+   "AssaultedFortNum": 6,
+   "LandingTroopType": 6,
+   "CarrierEscort": 5,
+   "LandedCapturePower": 5,
+   "LandedDamage": 5,
+   "Traffic[].anims.run_unarmed_matroz": 5,
+   "Traffic[].anims.us_officer_walk": 5,
+   "Traffic[].templates.USOfficer_shiptraffic": 5,
+   "BigLandingShip": 4,
+   "Camo": 4,
+   "Camo[].TextureRemaps": 4,
+   "NoRepairGUI": 3,
+   "Traffic[].anims.JP_officer_walk": 3,
+   "Traffic[].templates.JPOfficer_shiptraffic": 3,
+   "UE_DLC": 3,
+   "HoD[].smoke": 1,
+   "Rocketer": 1
+  }
+ },
+ "no_ghidra_function": [],
+ "flow_gaps": {
+  "note": "bsp.py ghidra flow 00831840 reports seven gaps, all alignment padding after an unconditional JMP and none after a CALL, so none was repaired",
+  "gaps": [
+   "0083269d..008326a0",
+   "0083282d..00832830",
+   "00832e85..00832e90",
+   "00833038..00833040",
+   "00833178..00833180",
+   "00833df9..00833e00",
+   "00834049..00834050"
+  ]
+ },
+ "uncertainties": [
+  "The 0x50-byte Traffic record is decoded only for pathID at +4Ch; 0049D4C0 fills the rest and was not analysed, which is why only 16 of the 134 shipped rows with a Traffic table carry pathID at all.",
+  "The HoD record leaves +0Ch..+13h and +20h unattributed, and the Flag container at record+0h is only known through 00442190, whose element type was not decoded.",
+  "The Smoke key builds three handles from one id (+674h, +6A4h, +6A8h); the reason for three was not established.",
+  "The camo record beyond +18h..+28h and the TextureRemaps container built by 0082B170 / 0082E160 / 0082AD20 were not decoded.",
+  "DAT_00CE38B8, the CaptainCameraHeight fallback, was read as an address, not as a value; nothing here establishes what writes it.",
+  "The reconstruction is not ABI compatible and was not run against the game."
+ ],
+ "followups": [
+  {
+   "packet": "ship_traffic_record",
+   "addresses": [
+    "0049d4c0",
+    "0049f9b0",
+    "0082fd20"
+   ],
+   "files": [
+    "docs/SHIP_TRAFFIC_RECORD.md"
+   ],
+   "contract": "Decode the 50h-byte Traffic record 0049D4C0 fills from the Lua element and say which subsystem walks descriptor+6DCh"
+  },
+  {
+   "packet": "ship_hod_record",
+   "addresses": [
+    "00442190",
+    "0083270e",
+    "008327d5",
+    "008328fe"
+   ],
+   "files": [
+    "docs/SHIP_HOD_RECORD.md"
+   ],
+   "contract": "Decode the 30h-byte HoD record at descriptor+138h, its Flag container and the 20-slot indexing, and find its read sites"
+  },
+  {
+   "packet": "ship_camo_record",
+   "addresses": [
+    "00833501",
+    "0082b170",
+    "0082ad20",
+    "0082e160"
+   ],
+   "files": [
+    "docs/SHIP_CAMO_RECORD.md"
+   ],
+   "contract": "Decode the camo record allocated at 008335BD and the TextureRemaps string-pair container, and find where the renderer reads +710h"
+  },
+  {
+   "packet": "plane_class_fields",
+   "addresses": [
+    "007d1f70"
+   ],
+   "files": [
+    "docs/PLANE_CLASS_FIELDS.md"
+   ],
+   "contract": "The same treatment for the 77-key plane reader, whose nested BayDoor and PartAnims blocks the earlier packet also only tabulated"
+  }
+ ],
+ "state": {
+  "00831840": "exported, analysed, reconstructed, build-tested, installed-file-checked",
+  "00870cd0": "exported, analysed, name recorded",
+  "004d9c00": "exported, analysed, name recorded",
+  "0082fd20": "exported, analysed (call-site role), name recorded",
+  "0082f8e0": "exported, analysed (call-site role), name recorded",
+  "0082e1f0": "exported, analysed (call-site role), name recorded",
+  "0049d4c0, 0049f9b0, 00499030, 00444be0, 00424c40": "exported only"
+ }
+}
