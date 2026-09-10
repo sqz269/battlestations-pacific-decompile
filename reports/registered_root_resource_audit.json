@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "packet": "registered_root_resource",
+  "status": "implemented_pending_primary_build_and_installed_probe",
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "verification": "Each live query uses bsp.py ghidra; client() verifies project, program, language, and image base before querying. Complete code spans independently matched installed PE in this packet."
+  },
+  "functions": [
+    {
+      "address": "00b7f430",
+      "inclusive_end": "00b7f5ab",
+      "length": 380,
+      "file_offset": 7861296,
+      "original_abi": "ECX manager; stack pointer to parent node-handle wrapper; no meaningful return value; RET4.",
+      "old_name": "BSP_ResourceManager_DispatchRoot",
+      "old_signature": "undefined BSP_ResourceManager_DispatchRoot(void)",
+      "old_annotation": {
+        "address": "00b7f430",
+        "function_name": "BSP_ResourceManager_DispatchRoot",
+        "comment": "[BSP reconstruction 00b7f430]\nECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "live_sha256": "d7accc863ec42895fbfc4192218599ddb97eedee20721a52134b1b717373d843",
+      "disk_sha256": "d7accc863ec42895fbfc4192218599ddb97eedee20721a52134b1b717373d843",
+      "matches_disk": true,
+      "proposed_name": "BSP_ResourceManager_DispatchRoot",
+      "proposed_comment": "Registered root host traversal now composes actual parser registry, retained owning wire records, hierarchy Item parser and last root BoundingBox. Begins before control read; ends only after normal traversal. Observed D3D9 table00d5f0a8 hooks00b1fe40/00b28570 have no normal renderer state effect. Native current resource manager+24, virtual item ownership/cache/SEH remain separate. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json."
+    },
+    {
+      "address": "00b7f100",
+      "inclusive_end": "00b7f1a3",
+      "length": 164,
+      "file_offset": 7860480,
+      "original_abi": "ECX manager; stack pointer to Hierarchy node-handle wrapper; no meaningful return value; RET4.",
+      "old_name": "BSP_StructuredResource_ParseHierarchy",
+      "old_signature": "undefined BSP_StructuredResource_ParseHierarchy(void)",
+      "old_annotation": {
+        "address": "00b7f100",
+        "function_name": "BSP_StructuredResource_ParseHierarchy",
+        "comment": "[BSP reconstruction 00b7f100]\n[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "live_sha256": "0f5a60c33e9fdfa2348eda00bcf32c3f6169af6f83dab2cbf8800f51a9b73735",
+      "disk_sha256": "0f5a60c33e9fdfa2348eda00bcf32c3f6169af6f83dab2cbf8800f51a9b73735",
+      "matches_disk": true,
+      "proposed_name": "BSP_StructuredResource_ParseHierarchy",
+      "proposed_comment": "Retained host Hierarchy container parser now appends actual00b7eb90 Item values, compares Item through CRT stricmp, and explicitly skips unknown children. Repeated containers append; recognized child close never seeks an unread tail. Original ECX manager/stack wrapper/RET4, no graph validation or native object ABI claim. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json."
+    },
+    {
+      "address": "00b1fe40",
+      "inclusive_end": "00b1fe40",
+      "length": 1,
+      "file_offset": 7470656,
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "matches_disk": true,
+      "original_abi": "ECX renderer unused; no stack arguments; no meaningful return value; RET.",
+      "old_name": null,
+      "old_signature": null,
+      "old_annotation": null,
+      "old_annotation_query": "get_plate_comment: No function at address; no old function annotation available.",
+      "function_definition_missing": true,
+      "decoded_instructions": [
+        "00b1fe40: ret"
+      ],
+      "normal_behavior": "RET only.",
+      "proposed_name": "BSP_D3D9Renderer_BeginStructuredRoot",
+      "proposed_comment": "RET only. Concrete D3D9 table00d5f0a8 +50 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json."
+    },
+    {
+      "address": "00b28570",
+      "inclusive_end": "00b28592",
+      "length": 35,
+      "file_offset": 7505264,
+      "live_sha256": "6c797289aab8bee109c477a3e6b77939ff18fe512109da6ae72844c11b7219c3",
+      "disk_sha256": "6c797289aab8bee109c477a3e6b77939ff18fe512109da6ae72844c11b7219c3",
+      "matches_disk": true,
+      "original_abi": "ECX renderer unused; no stack arguments; no meaningful return value; RET.",
+      "old_name": null,
+      "old_signature": null,
+      "old_annotation": null,
+      "old_annotation_query": "get_plate_comment: No function at address; no old function annotation available.",
+      "function_definition_missing": true,
+      "decoded_instructions": [
+        "00b28570: mov eax, dword ptr fs:[0]",
+        "00b28576: push -1",
+        "00b28578: push 0xcbd220",
+        "00b2857d: push eax",
+        "00b2857e: mov dword ptr fs:[0], esp",
+        "00b28585: mov ecx, dword ptr [esp]",
+        "00b28588: mov dword ptr fs:[0], ecx",
+        "00b2858f: add esp, 0xc",
+        "00b28592: ret"
+      ],
+      "normal_behavior": "SEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call.",
+      "proposed_name": "BSP_D3D9Renderer_EndStructuredRoot",
+      "proposed_comment": "SEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json."
+    }
+  ],
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/structured_model.hpp",
+    "src/structured_model.cpp"
+  ],
+  "validation": {
+    "live_code_matches_installed_pe": true,
+    "source_implemented": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "native_contract": {
+    "begin_call": "00b7f457: global00f8d394 virtual+50, ECX renderer, no stack arguments, before control-word read",
+    "end_call": "00b7f597: reload global00f8d394 and call virtual+54 on normal completion, including empty root",
+    "current_resource": "manager+24; root BoundingBox reload at00b7f51c writes six float words to+28..+3C; root dispatcher does not set/restore manager+24",
+    "dispatch": "Resource then Hierarchy then BoundingBox case-insensitive C-string comparisons; unknown payloads explicitly skipped; each child handle released without implicit unread-tail seek",
+    "hierarchy": "Each Item routes to00b7eb90; other tags explicitly skipped. Repeated containers append; no graph validation.",
+    "bounds": "Later root BoundingBox overwrites all six prior words; no bounds normalization; absent root bounds leave prior destination unchanged.",
+    "concrete_hooks": "Observed D3D9 table00d5f0a8 +50->00b1fe40 (RET), +54->00b28570 (35-byte SEH setup/immediate restore/RET); both have no normal-path renderer state effect.",
+    "renderer_provenance": {
+      "constructor": "00b32410 stores table00d5f0a8 at00b3243b; independently live-disassembled by geometry worker.",
+      "application_call": "0073da88 CALL00b32410; geometry worker current bytes, also docs/D3D9_STARTUP.md.",
+      "scope": "Concrete table provenance; arbitrary alternate renderer implementations are not assumed to share these hooks.",
+      "global_assignment": "00b283f0 passes renderer+0C to00b25f40 at00b28420;00b25f96/9B assigns subobject-0C to global00f8d394. Both complete supporting constructor spans independently matched live/PE.",
+      "base_tables": "Primary base table00d5e628 +50/+54 both00bf698e. Table00d5e610 belongs singleton subobject at renderer+0C; it is not the primary renderer dispatch table."
+    }
+  },
+  "host_contract": {
+    "model": "Owning supported wire payloads and HierarchyItem records with zero-initialized default bounds, presence bit and encounter diagnostics; not native GameResource layout.",
+    "registrations": "Actual borrowed Mesh/Note/GroupParams parser implementations are registered by caller; no synthesized native singleton parsers.",
+    "unsupported": "Retained Resource record has nullopt payload; unsupported bytes are skipped; no fabricated native fallback object.",
+    "hooks": "Pure virtual begin_root/end_root required; no default renderer implementation. Hook exceptions propagate. Host read/parser/allocation failure omits end_root and leaves consumed input/completed output.",
+    "destination": "Fixed caller-supplied model for full traversal; reentrant current-resource/global-renderer replacement not modeled.",
+    "control": "Reads root control itself; does not impose root tag or version checks absent from00b7f430.",
+    "concrete_hooks": "Caller can explicitly choose RendererRootHooks_00d5f0a8 to reproduce the two verified empty normal bodies. Required dispatch hook argument remains; no arbitrary renderer receives implicit no-op defaults. Native SEH and asynchronous exception behavior remain outside host interface."
+  },
+  "unresolved_dependencies": [
+    "Native resource factory/cache insertion/current-resource bind and restore remain enclosing loader contracts.",
+    "Registered parser native object ownership, virtual append/classification and full resource-item object types remain separate from owning wire values.",
+    "Native exception unwind and short-read behavior remain outside typed complete-transfer domain.",
+    "Native global/current-resource replacement during reentrant callbacks remains outside fixed host binding."
+  ],
+  "data_ranges": [
+    {
+      "address": "00d5f0f8",
+      "inclusive_end": "00d5f0ff",
+      "length": 8,
+      "file_offset": 9826552,
+      "live_sha256": "75a391a8636171a160980d33e9279db952031bb6768d2759e6a1d05bcc3b3cae",
+      "disk_sha256": "75a391a8636171a160980d33e9279db952031bb6768d2759e6a1d05bcc3b3cae",
+      "matches_disk": true,
+      "role": "concrete_renderer_vtable00d5f0a8_plus50_plus54",
+      "bytes": "40 fe b1 00 70 85 b2 00",
+      "targets": [
+        "00b1fe40",
+        "00b28570"
+      ]
+    },
+    {
+      "address": "00d5e678",
+      "inclusive_end": "00d5e67f",
+      "length": 8,
+      "file_offset": 9823864,
+      "live_sha256": "fc807c2cadc5ca0f150fc9aca33a0cbf8914bab49fd5e7d3c1e68777fd3ac550",
+      "disk_sha256": "fc807c2cadc5ca0f150fc9aca33a0cbf8914bab49fd5e7d3c1e68777fd3ac550",
+      "matches_disk": true,
+      "role": "primary_base_renderer_vtable00d5e628_plus50_plus54",
+      "bytes": "8e 69 bf 00 8e 69 bf 00",
+      "targets": [
+        "00bf698e",
+        "00bf698e"
+      ]
+    }
+  ],
+  "supporting_functions": [
+    {
+      "address": "00b25f40",
+      "inclusive_end": "00b25fd7",
+      "length": 152,
+      "file_offset": 7495488,
+      "live_sha256": "126928885c0e94ac53db4fb2adbe8eecf81a4c48eea36608e184b86fc471738b",
+      "disk_sha256": "126928885c0e94ac53db4fb2adbe8eecf81a4c48eea36608e184b86fc471738b",
+      "matches_disk": true,
+      "original_abi": "ECX renderer singleton subobject at primary object+0C; no stack arguments; EAX same subobject; RET.",
+      "old_name": "FUN_00b25f40",
+      "old_signature": "undefined FUN_00b25f40(void)",
+      "old_annotation": {
+        "address": "00b25f40",
+        "function_name": "FUN_00b25f40"
+      },
+      "scope": "Read-only binding provenance; constructor/lifetime services not implemented by this packet.",
+      "evidence": [
+        "00b25f5a saves incoming ECX in EDI.",
+        "00b25f68 stores singleton-subobject table00d5e610 at[EDI].",
+        "00b25f96 LEA EAX,[EDI-0C];00b25f9b MOV[00f8d394],EAX."
+      ]
+    },
+    {
+      "address": "00b283f0",
+      "inclusive_end": "00b2844e",
+      "length": 95,
+      "file_offset": 7504880,
+      "live_sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a",
+      "disk_sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a",
+      "matches_disk": true,
+      "original_abi": "ECX primary renderer object; no stack arguments; EAX same object; RET.",
+      "old_name": "FUN_00b283f0",
+      "old_signature": "undefined FUN_00b283f0(void)",
+      "old_annotation": {
+        "address": "00b283f0",
+        "function_name": "FUN_00b283f0"
+      },
+      "scope": "Read-only binding provenance; constructor/lifetime services not implemented by this packet.",
+      "evidence": [
+        "00b28407 saves renderer ECX in ESI.",
+        "00b28413 LEA EDI,[ESI+0C];00b28416 MOV ECX,EDI;00b28420 CALL00b25f40.",
+        "00b28429 stores singleton-subobject table00d5e76c at[EDI];00b2842f stores primary base renderer table00d5e628 at[ESI]."
+      ]
+    }
+  ]
+}
