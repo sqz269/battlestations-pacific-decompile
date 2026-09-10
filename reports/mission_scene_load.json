@@ -1,0 +1,403 @@
+{
+  "packet": "mission_scene_load",
+  "owner": "agent/scene-load",
+  "date": "2026-09-10",
+  "kind": "analysis+reconstruction",
+  "doc": "docs/MISSION_SCENE_LOAD.md",
+  "anchor": "004dfb70",
+  "headline": "004dfb70 is the single handler for state requests 0Ah and 0Bh and performs the whole mission scene load synchronously: it tears down the front end, raises the loading screen in mode 1, loads the scene file in three passes, builds the world and the global subsystems, runs the mission Lua, loads the spoken-warning banks, ends the loading screen and leaves game+5D4h = 0Ch. State 0Dh is reached the next frame by 004da6c0, out of the state 0Ch handler 004db920.",
+  "abi": {
+    "004dfb70": {
+      "convention": "__thiscall void(GGame* this)",
+      "ecx": "game object; 004dfb94 MOV EDI,ECX and the body uses EDI throughout",
+      "stack_args": 0,
+      "ret": "RET 0 at 004e18d9",
+      "seh": "handler 00c6750c, EBP-relative 0x74 frame",
+      "body": "004dfb70-004e18d9",
+      "instructions": 2239,
+      "basic_blocks": 354,
+      "cyclomatic_complexity": 183,
+      "callers": [
+        "004e4430 BSP_Game_DrainStateRequestQueue"
+      ],
+      "callee_count": 94
+    },
+    "004cd7f0": {
+      "convention": "__thiscall(NativeString* out, NativeString* path, char)",
+      "ecx": "out string",
+      "edx": "input path",
+      "ret": "RET 4"
+    },
+    "008860b0": {
+      "convention": "Ghidra renders __cdecl(NativeString* name); 004e0a38 loads ECX from game+1a08h first",
+      "uncertain": true
+    },
+    "0046df00": {
+      "convention": "__thiscall(this=[00e18680], const char* scenePath, 0, char pass_b, void* record, const char* override, char pass_a)",
+      "call_site": "004e01d7"
+    },
+    "004da6c0": {
+      "convention": "__fastcall void(GGame*)",
+      "scope_literal": "GGame::SceneInit()"
+    }
+  },
+  "request_dispatch": {
+    "source": "docs/GAME_FRAME_CONTROL.md drain table; the drain writes the dequeued request into game+5D4h before dispatch",
+    "0x0A": "loading_screen_scene (00CE7EF0)",
+    "0x0B": "loading_screen_reload (00CE7ED8)",
+    "other": "this_will_not_work (00CE7EC4), unreachable through the dispatch table",
+    "decision_site": "004dfdd5",
+    "difference": "the VFS file block label around the loading-screen bring-up, nothing else"
+  },
+  "mission_selection": {
+    "scene_record": "game+5FCh, set by 004c6890 (not here); read-only in 004dfb70",
+    "scene_index": "game+60Ch",
+    "scene_list": "singly linked list at game+5F4h, count at game+5F0h, record at node+8h",
+    "override_string": "game+600h/604h, emptied by 004c6890, passed to 0046df00 as argument 5",
+    "record_fields": {
+      "0x90C": "scene path (NativeString), argument 1 of 0046df00 and input of 004cd7f0",
+      "0x928": "mission script name table, stride 8, indexed by the normalised slot",
+      "0x980": "comma separated localisation table list",
+      "0x988": "side block count, read by 004c6890",
+      "0x1098": "mission id, published to [00F8A2FC]+48h at 004e183d"
+    },
+    "side": "[game+18CCh + game+18ECh*4]+28h; 0 selects _Ally, non-zero selects _Jp",
+    "script_slot_rule": "004e087b: slot 9 always becomes 8; outside network play (game+1FE4h==0) without the force byte game+61Ch every slot other than 8 also becomes 8",
+    "arm_rule": "004e0a50 re-reads the raw game+614h: slot 9 runs only luaEngineMovieInit, every other slot runs precache + stage init"
+  },
+  "path_resolution": {
+    "vfs_block_short_name": "004cd7f0: '\\\\'->'/', text after the last '/', truncate at the SECOND '_', then drop a trailing '.scn' (stricmp). Both tail steps always run.",
+    "mission_script": "008860b0: 'Scripts/missions/' + name + '.lua' (00CFD2C8), then 00885fb0(path, 1)"
+  },
+  "file_blocks": [
+    {
+      "enter": "004dfe3f",
+      "name": "loading_screen_{scene,reload}",
+      "leave": "004dfe7e",
+      "contents": "0057d0c0 then BSP_LoadingScreen_Begin(1)"
+    },
+    {
+      "enter": "004dff7a",
+      "name": "1_<short>",
+      "leave": "004e0370 (heap, virtual +4h)",
+      "contents": "scene pass 1, world construction, Lua reset"
+    },
+    {
+      "enter": "004e04b9",
+      "name": "GvSpace_Init (00CE7E94)",
+      "leave": "004e0514",
+      "contents": "in-mission HUD manager bring-up"
+    },
+    {
+      "enter": "004e099a",
+      "name": "3_<short>",
+      "leave": "004e0a4b",
+      "contents": "Scripts/missions/<name>.lua"
+    },
+    {
+      "enter": "004e0b95",
+      "name": "4_<short>",
+      "leave": "004e0c48",
+      "contents": "luaStageInitMulti, luaStageInit"
+    },
+    {
+      "enter": "004e0d5c",
+      "name": "5_<short>",
+      "leave": "004e0dff",
+      "contents": "luaEngineMovieInit"
+    },
+    {
+      "enter": "004e0eb4",
+      "name": "6_<short>",
+      "leave": "004e0f5b",
+      "contents": "[00F8D394] vtable +E4h"
+    },
+    {
+      "enter": "004e11c3",
+      "name": "Warnings_<lang><side>",
+      "leave": "004e125a",
+      "contents": "007065e0(1)"
+    },
+    {
+      "enter": "004e129c",
+      "name": "dummy DO NOT USE",
+      "leave": "004e12d5",
+      "contents": "007065e0(0)"
+    },
+    {
+      "enter": "004e14d3",
+      "name": "Warnings_englishauthentic<side>",
+      "leave": "004e17fb virtual +4h",
+      "contents": "007065e0(1)"
+    },
+    {
+      "enter": "004e16cc",
+      "name": "Warnings_<lang><side>",
+      "leave": "004e17fb virtual +4h",
+      "contents": "007065e0(1)"
+    }
+  ],
+  "loading_screen": {
+    "begin": "0057cb60 with ECX = 1 (MOV ECX,1 at 004dfe6a): mode LoadingImage, not a this pointer",
+    "config": "0057d0c0, a one-caller stub tagged CG_static_dtor_stub that reaches BSP_LoadingScreen_PublishConfig 0057cff0",
+    "end": "0057c250 at 004e185c, inside the same call",
+    "asynchrony": "none; the load is synchronous and the screen is animated by the render worker begin starts",
+    "loading_queue": "004fde20 / 00509190 are NOT used by this path"
+  },
+  "front_end_teardown": {
+    "00e198ac": "virtual +0h with 1, then nulled, unconditional (004dfda6)",
+    "00e198b4": "virtual +0h with 1, then nulled, single player only (004dfdc6)",
+    "network": "006878f0 instead of releasing 00e198b4",
+    "session": "0076da60 on game+1EF0h",
+    "network_lists": "00e18a64 and 00e18a70 reset, 00e188bd = 0",
+    "previous_result": "game+7188h freed at 004dfeaa"
+  },
+  "world_objects": {
+    "game+0x21A0": "BSP_Game_OnInit at startup (004e3e74), NOT this path",
+    "game+0x21D0": "004dc6a0, allocation at 004dc80f",
+    "game+0x21D4": "004de610, allocation at 004df9de",
+    "game+0x19CC": "004de610, allocation at 004de686"
+  },
+  "game_object_writes": {
+    "+0x1EE7": "0 at 004dfb9d, the first instruction",
+    "+0x610": "0 at 004dfc08",
+    "+0x18CC..0x18E8": "the eight participant records (004bb160 / 004bb440)",
+    "+0x18EC": "0 at 004dfd77 in single player",
+    "+0x193C": "0 at 004e0360 and 004e05a2",
+    "+0x1910..0x192C": "-1, then the network view ids at 004e0378",
+    "+0x648": "0 at 004e075a",
+    "+0x64C": "0.0f at 004e0764",
+    "+0x5CC/0x5D0": "list emptied at 004e0770",
+    "+0x5D4": "0Ch at 004e086b",
+    "not_written": [
+      "+0x634",
+      "+0x635",
+      "+0x7184",
+      "+0x1EE1..+0x1EE5"
+    ]
+  },
+  "completion": {
+    "signal": "none; BSP_LoadingScreen_End at 004e185c is inside 004dfb70",
+    "state_left": "0x0C",
+    "state_0Ch_handler": "004db920 BSP_Game_UpdateDeviceWaitScreen",
+    "state_0Dh_writers": [
+      "004e47ff (drain, request 12h arm)",
+      "004da6c0"
+    ],
+    "004da6c0": "clears game+1EE1h/1EE2h/1EE4h/1EE5h, sets +1EE3h from game+1FE4h != 0, sets game+5D4h = 0Dh, calls 004c9ca0(0) and BSP_Game_SetCinematicMode(0,0,1), clears game+608h; carries the scope literal GGame::SceneInit()"
+  },
+  "startup_comparison": {
+    "004e5540": "the .scn branch writes game+5D4h = 10 and pushes request 10 (0Ah) with 004d3ed0(game+5D8h,&10) after draining, per docs/APP_INIT_GAME_ENTRY.md",
+    "conclusion": "decimal 10 is 0Ah, so the startup .scn path does not start a scene directly; it queues the same request and 004dfb70 handles it",
+    "differences": [
+      "004e5540 runs 004dd5b0 OnInitOnce, 004c9a70 OnInitTitle and 004e3aa0 OnInit first",
+      "004e5540 drains before pushing, so 0Ah is alone in the queue",
+      "the mission tree pushes 6 then 0Ah, so the interface change is serviced first in the same pass"
+    ]
+  },
+  "reconstruction": {
+    "header": "include/bsp/mission_scene_load.hpp",
+    "source": "src/mission_scene_load.cpp",
+    "entry": "bsp::run_mission_scene_load(MissionSceneLoadState&, MissionSceneLoadHost&)",
+    "pure_functions": [
+      "mission_scene_load_block_label",
+      "mission_load_phase_prefix",
+      "mission_load_phase_block_name",
+      "derive_scene_short_name",
+      "mission_script_path",
+      "normalise_mission_script_slot",
+      "mission_uses_engine_movie",
+      "mission_side_suffix",
+      "warnings_bank_name",
+      "authentic_warnings_bank_name",
+      "language_entry_matches",
+      "split_locale_table_list"
+    ],
+    "reused_types": [
+      "bsp::LoadingScreenMode from bsp/frontend_entry.hpp"
+    ],
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math: 1/1 passed; one focused case added to tests/math_tests.cpp for derive_scene_short_name",
+    "status": "reconstructed, build-tested; not ABI compatible and not game validated"
+  },
+  "recorded_names": [
+    {
+      "address": "004dfb70",
+      "name": "BSP_Game_LoadMissionScene"
+    },
+    {
+      "address": "004cd7f0",
+      "name": "BSP_Scene_DeriveShortName"
+    },
+    {
+      "address": "004c6890",
+      "name": "BSP_Game_SelectSceneRecord"
+    },
+    {
+      "address": "004da6c0",
+      "name": "BSP_Game_EnterMissionState"
+    },
+    {
+      "address": "004dc6a0",
+      "name": "BSP_Game_ConstructGlobalSubsystems"
+    },
+    {
+      "address": "004de610",
+      "name": "BSP_Game_ConstructWorld"
+    },
+    {
+      "address": "004d4df0",
+      "name": "BSP_Game_LoadSceneContents"
+    },
+    {
+      "address": "004d30f0",
+      "name": "BSP_Game_RefillScriptedNameList"
+    },
+    {
+      "address": "004bb160",
+      "name": "BSP_Game_ResetParticipantTable"
+    },
+    {
+      "address": "004bb440",
+      "name": "BSP_Game_ClaimParticipantRecord"
+    },
+    {
+      "address": "004f2800",
+      "name": "BSP_Scene_ResolveNamedObjects"
+    },
+    {
+      "address": "004c3840",
+      "name": "BSP_Game_AssignPartyPlayerSlots"
+    },
+    {
+      "address": "004c9ca0",
+      "name": "BSP_Game_ApplyInGameInterface"
+    },
+    {
+      "address": "0046df00",
+      "name": "BSP_SceneDatabase_LoadSceneFile"
+    },
+    {
+      "address": "008860b0",
+      "name": "BSP_MissionScript_RunFile"
+    }
+  ],
+  "no_ghidra_function": [],
+  "open_questions": [
+    "participant+28h is written as a 0/1 boolean at 004dfd7c and dereferenced as a base pointer at 004e0fcb; the two readings conflict and the reconstruction keeps it opaque",
+    "008860b0's convention: Ghidra renders __cdecl(NativeString*) but 004e0a38 loads ECX from game+1a08h first",
+    "the 'Scene initialization failed' string at 00CE7EA4 is built at 004e014d and released with no reader",
+    "004d30f0's container at game+1934h was not identified; the name is provisional",
+    "004c9680 and the three 008053c0 calls at 004e0539 were not read",
+    "0046df00's three-pass argument scheme (param_4 and param_7 across the three call sites) is recorded but not explained"
+  ],
+  "corrections_offered": [
+    "The free helpers 00bf65ac and 00bf6989 are annotated no-return in Ghidra. That makes the decompiler emit spurious return statements throughout 004dfb70 and drop reachable blocks (004e1353..004e1373 is missing from the listing dump). Every case checked falls through in the raw listing. Clearing the annotation would fix every SEH-heavy function in this area.",
+    "0057d0c0 is tagged cg_static_dtor_stub but is a one-caller forwarder to BSP_LoadingScreen_PublishConfig (0057cff0) used by 004dfb70 to publish the loading-screen configuration before mode 1."
+  ],
+  "external_contracts": [
+    "004e4430 BSP_Game_DrainStateRequestQueue (docs/GAME_FRAME_CONTROL.md), read only",
+    "004e3aa0 BSP_Game_OnInit and 004e4000 BSP_Game_EnterFrontEndShell, read only",
+    "0057cb60 / 0057c250 / 0057cff0 loading screen (docs/GAME_FRONTEND_ENTRY.md)",
+    "00be0a30 / 00bdcb30 VFS file blocks (docs/FILE_BLOCK_SETUP.md)",
+    "004e2770 BSP_Game_SetPendingScene and 004e1d70 (docs/MISSION_TREE_BRIEFING_SCREENS.md)",
+    "004db920 BSP_Game_UpdateDeviceWaitScreen (docs/GAME_FRAME_CONTROL.md)"
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "scene_file_parser",
+      "addresses": [
+        "0046df00",
+        "0046a9f0",
+        "0046aab0",
+        "00467e10"
+      ],
+      "files": [
+        "docs/SCENE_FILE_PARSER.md",
+        "include/bsp/scene_file.hpp",
+        "src/scene_file.cpp"
+      ],
+      "contract": "The .scn reader: its three passes, the record it fills, the entity and terrain keys it recognises."
+    },
+    {
+      "packet": "game_world_construct",
+      "addresses": [
+        "004de610",
+        "004cb030",
+        "006deca0"
+      ],
+      "files": [
+        "docs/GAME_WORLD_CONSTRUCT.md",
+        "include/bsp/game_world_construct.hpp",
+        "src/game_world_construct.cpp"
+      ],
+      "contract": "game+19CCh and game+21D4h: sizes, constructors, ocean and sky bring-up, Ocean initialization failed."
+    },
+    {
+      "packet": "mission_script_host",
+      "addresses": [
+        "008860b0",
+        "00885fb0",
+        "0045f440",
+        "0045f520",
+        "00887b30",
+        "00887e50"
+      ],
+      "files": [
+        "docs/MISSION_SCRIPT_HOST.md",
+        "include/bsp/mission_script_host.hpp",
+        "src/mission_script_host.cpp"
+      ],
+      "contract": "The Lua host at game+1A08h: file load, named entry-point dispatch, the game+644h re-entry guard."
+    },
+    {
+      "packet": "game_scene_records",
+      "addresses": [
+        "004c6890",
+        "004e1d70",
+        "004e2770"
+      ],
+      "files": [
+        "docs/GAME_SCENE_RECORDS.md",
+        "include/bsp/game_scene_records.hpp",
+        "src/game_scene_records.cpp"
+      ],
+      "contract": "The scene list at game+5F0h/5F4h, how 004e1d70 builds a record, and the 0120h side blocks."
+    },
+    {
+      "packet": "mission_device_wait",
+      "addresses": [
+        "004db920",
+        "004da6c0",
+        "00427190",
+        "00777850"
+      ],
+      "files": [
+        "docs/MISSION_DEVICE_WAIT.md",
+        "include/bsp/mission_device_wait.hpp",
+        "src/mission_device_wait.cpp"
+      ],
+      "contract": "State 0Ch and the 0Ch to 0Dh transition, including the one-shots 004da6c0 arms."
+    },
+    {
+      "packet": "warning_bank_loader",
+      "addresses": [
+        "007065e0",
+        "008d76c0",
+        "008d56c0",
+        "007f8890"
+      ],
+      "files": [
+        "docs/WARNING_BANK_LOADER.md",
+        "include/bsp/warning_bank_loader.hpp",
+        "src/warning_bank_loader.cpp"
+      ],
+      "contract": "The spoken-warning bank eviction pass and the DL_Content_0000062 switch."
+    }
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": "none, read-only for this packet"
+  }
+}

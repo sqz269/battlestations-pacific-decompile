@@ -23,6 +23,7 @@
 #include "bsp/press_start_screen.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_entities.hpp"
+#include "bsp/mission_scene_load.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
 #include <algorithm>
@@ -925,6 +926,18 @@ int main() {
             "the control reset leaves both invert bytes different from the omitted default");
         check(!has("imperial") && !has("cameraShake"),
             "rows still holding the serializer default are dropped");
+    }
+
+    {
+        // 004cd7f0 keys every numbered VFS block of the mission load, and the
+        // order of its two tail steps is the part that is easy to get wrong:
+        // the truncation happens at the SECOND underscore, and only a name that
+        // survives it still carries the ".scn" the last step drops.
+        check(bsp::derive_scene_short_name("universe\\scenes\\pearl_harbor_01.scn")
+                == "pearl_harbor",
+            "the short name is cut at the second underscore, before the extension test");
+        check(bsp::derive_scene_short_name("universe/scenes/midway.scn") == "midway",
+            "a name with no second underscore keeps its stem and loses .scn");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
