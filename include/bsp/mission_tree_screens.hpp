@@ -158,13 +158,13 @@ struct MissionRecord {
 };
 
 // One 34h group entry.
-struct MissionGroup {
+struct MissionGroupRecord {
     std::vector<MissionRecord> missions; // group+28h..+2Ch, stride 434h
 };
 
 // The mission-tree screen's own state.
 struct MissionTreeScreenState {
-    std::vector<MissionGroup> groups;   // +18h..+1Ch, stride 34h
+    std::vector<MissionGroupRecord> groups;   // +18h..+1Ch, stride 34h
     std::vector<MissionRecord> records; // +28h..+2Ch, stride 434h
     std::uint32_t selected_mission{};   // +0Ch
     std::uint32_t selected_group{};     // +10h

@@ -846,7 +846,7 @@ int main() {
         // selectors must agree on the four groups they share, which is the claim
         // that corrects the campaign-page naming of docs/MAIN_MENU_SCREENS.md.
         using bsp::MainMenuPage;
-        using bsp::MissionGroup;
+        using bsp::MissionGroupRecord;
         check(bsp::mission_group_for_page(static_cast<MainMenuPage>(0x04)) == MissionGroup::Ijn
                 && bsp::mission_group_for_page(static_cast<MainMenuPage>(0x05)) == MissionGroup::Usn
                 && bsp::mission_group_for_page(static_cast<MainMenuPage>(0x08)) == MissionGroup::Training
