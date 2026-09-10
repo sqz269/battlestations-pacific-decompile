@@ -1073,7 +1073,22 @@ HRESULT D3D9CameraFrameAccess::clear_00b21430(DWORD count, const D3DRECT* rectan
 HRESULT D3D9CameraFrameAccess::set_clip_plane_00b23e50(UINT index,
     const CameraPlane& plane) {
     Guard guard(cache_);
-    std::memcpy(clip_planes_[index].data(), plane.data(), sizeof(plane));
+    const float* source = plane.data();
+    float* destination = clip_planes_[index].data();
+    // Native copies via x87: masked signaling NaNs quiet in the cache, while
+    // SetClipPlane still receives the original input pointer and its bits.
+    __asm {
+        mov eax, source
+        mov edx, destination
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+        fld dword ptr [eax+4]
+        fstp dword ptr [edx+4]
+        fld dword ptr [eax+8]
+        fstp dword ptr [edx+8]
+        fld dword ptr [eax+12]
+        fstp dword ptr [edx+12]
+    }
     return cache_.device_.SetClipPlane(index, plane.data());
 }
 void D3D9CameraFrameAccess::restore_pending_planes_00b25080() {
@@ -1090,7 +1105,23 @@ void D3D9CameraFrameAccess::prepare_camera_00b285a0(CameraFrameState& frame) {
     get_camera_inverse_view_projection_00b70510(frame);
     const auto& camera_planes = get_camera_frustum_00b70710(frame);
     static_assert(sizeof(CameraPlaneRecord) == 20 && sizeof(CameraPlaneSet) == 324);
-    std::memcpy(plane_set_.planes.data(), camera_planes.planes.data(), 0x140);
+    for (std::size_t i = 0; i < plane_set_.planes.size(); ++i) {
+        const float* source = camera_planes.planes[i].coefficients.data();
+        float* destination = plane_set_.planes[i].coefficients.data();
+        __asm {
+            mov eax, source
+            mov edx, destination
+            fld dword ptr [eax]
+            fstp dword ptr [edx]
+            fld dword ptr [eax+4]
+            fstp dword ptr [edx+4]
+            fld dword ptr [eax+8]
+            fstp dword ptr [edx+8]
+            fld dword ptr [eax+12]
+            fstp dword ptr [edx+12]
+        }
+        plane_set_.planes[i].flags = camera_planes.planes[i].flags;
+    }
     plane_set_.count = camera_planes.count;
     active_plane_count_ = 0;
     pending_plane_count_ = 0;
@@ -1122,7 +1153,14 @@ void D3D9CameraFrameAccess::execute_camera_command_00b71360(CameraFrameState& fr
     if (!frame.enabled) return;
     prepare_camera_00b285a0(frame);
     bind_viewport_00b26770(*frame.viewport);
+    const float* source_depth = &frame.clear_depth;
+    float command_depth;
+    __asm {
+        mov eax, source_depth
+        fld dword ptr [eax]
+        fstp command_depth
+    }
     clear_00b21430(0, nullptr, frame.clear_flags, &frame.clear_color,
-        frame.clear_depth, frame.clear_stencil);
+        command_depth, frame.clear_stencil);
 }
 }
