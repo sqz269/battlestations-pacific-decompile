@@ -24,7 +24,7 @@ void D3D9RetainedTexture2D::release_com() noexcept {
 
 HRESULT D3D9RetainedTexture2D::initialize_00b2c2d0_fragment(IDirect3DDevice9& device,
     CreateTextureFromMemory create, const std::shared_ptr<MemoryStream>& source,
-    const TextureLoadPolicy& policy) {
+    const TextureLoadPolicy& policy, MaterialSortMetadataCounters* construction_counters) {
     if (!source || !source->fully_initialized() || source_ || texture_) return D3DERR_INVALIDCALL;
     const MemoryTextureOptions requested{policy.requested_width, policy.requested_height,
         policy.requested_mip_levels, options_.format};
@@ -33,6 +33,8 @@ HRESULT D3D9RetainedTexture2D::initialize_00b2c2d0_fragment(IDirect3DDevice9& de
     // Native creates a logical wrapper whenever the resulting COM pointer exists,
     // then retains its source. Report HRESULT without assuming pointer/HR parity.
     if (texture_) {
+        if (construction_counters && !sort_metadata_)
+            sort_metadata_ = construct_logical_texture_sort_metadata_00b34120(*construction_counters);
         // 00b3f930 stores actual level-zero Width/Height/Format at +28/+2C/+18;
         // policy saved dimensions instead go to native +34/+38. They can differ
         // after D3DX conversion. +3C receives requested mips after construction.
@@ -76,7 +78,8 @@ HRESULT texture_create_from_retained_memory_00b3e190(IDirect3DDevice9& device,
 HRESULT load_retained_texture_2d_00b2c2d0_fragment(IDirect3DDevice9& device,
     ReadImageInfoFromMemory read_info, CreateTextureFromMemory create,
     const std::shared_ptr<MemoryStream>& source, const TextureLoadNameView& name,
-    std::uint32_t mip_reduction, std::unique_ptr<D3D9RetainedTexture2D>& output) {
+    std::uint32_t mip_reduction, std::unique_ptr<D3D9RetainedTexture2D>& output,
+    MaterialSortMetadataCounters* construction_counters) {
     if (!read_info || !create || !source || !source->fully_initialized() || output)
         return D3DERR_INVALIDCALL;
     D3DXIMAGE_INFO info{};
@@ -90,7 +93,7 @@ HRESULT load_retained_texture_2d_00b2c2d0_fragment(IDirect3DDevice9& device,
         return D3DERR_INVALIDCALL;
     auto owner = std::make_unique<D3D9RetainedTexture2D>(MemoryTextureOptions{
         policy.saved_width, policy.saved_height, policy.requested_mip_levels, info.Format});
-    const HRESULT result = owner->initialize_00b2c2d0_fragment(device, create, source, policy);
+    const HRESULT result = owner->initialize_00b2c2d0_fragment(device, create, source, policy, construction_counters);
     if (owner->texture()) output = std::move(owner);
     return result;
 }

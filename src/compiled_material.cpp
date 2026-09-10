@@ -1,4 +1,5 @@
 #include "bsp/compiled_material.hpp"
+#include "bsp/material_clone.hpp"
 #include <d3dx9shader.h>
 #include <cstring>
 #include <limits>
@@ -18,6 +19,31 @@ struct CompilerModule {
 };
 }
 namespace bsp {
+bool read_compiled_material_sort_fields(const MaterialCloneState& material,
+    const CompiledMaterialPass& pass, RenderBatchMaterialKeyFields& output,
+    std::string& error) {
+    error.clear();
+    if (material.effect.get() != &pass || !pass.effect_owner
+        || !pass.effect_owner->sort_metadata.descriptor_assigned) {
+        error = "Material key requires its retained effect and loaded descriptor metadata";
+        return false;
+    }
+    RenderBatchMaterialKeyFields fields;
+    const auto& effect = pass.effect_owner->sort_metadata;
+    fields.effect_b0 = effect.priority_b0;
+    fields.effect_c0 = static_cast<std::uint8_t>(effect.construction_serial_c0);
+    fields.material_count34 = material.textures.count();
+    if (fields.material_count34 > 0 && material.textures.textures()[0]) {
+        const auto& texture = *material.textures.textures()[0];
+        if (!texture.sort_metadata) {
+            error = "Material key first texture has no construction metadata";
+            return false;
+        }
+        fields.texture0_present = true;
+        fields.texture20 = texture.sort_metadata->construction_serial20;
+    }
+    output = fields; return true;
+}
 CompiledMaterialPass::~CompiledMaterialPass() {
     if (pixel) pixel->Release();
     if (vertex) vertex->Release();
@@ -31,8 +57,10 @@ bool compile_material_pass(IDirect3DDevice9& device, const ShaderScriptResolver&
     error = "Material compiler could not complete the selected pass.";
     ShaderLuaCode base, effect;
     if (mode < 0 || mode >= 14 || descriptor.find('\0') != std::string::npos
-        || !load_shader_lua_code(resolver, descriptor, false, {}, base, error)
-        || base.combiners[static_cast<std::size_t>(mode)].empty()
+        || !load_shader_lua_code(resolver, descriptor, false, {}, base, error)) return false;
+    if (settings.effect_owner)
+        apply_material_effect_sort_descriptor_00b45ee0(settings.effect_owner->sort_metadata, base.options);
+    if (base.combiners[static_cast<std::size_t>(mode)].empty()
         || !load_shader_lua_code(resolver, base.combiners[static_cast<std::size_t>(mode)], false, {}, effect, error)) return false;
     bsp::ShaderVertexProgram vp;
     bsp::ShaderPixelProgram pp;
@@ -83,6 +111,7 @@ bool compile_material_pass(IDirect3DDevice9& device, const ShaderScriptResolver&
     if (bsp::generate_vertex_source_00b39110(vp, vs_source) != bsp::ShaderSourceStatus::complete
         || FAILED(compile_source(vs_source, profiles.vertex, 0x1200, &vs.p))) return false;
     auto owner = std::make_shared<CompiledMaterialPass>();
+    owner->effect_owner = settings.effect_owner;
     auto& vr = owner->vr; auto& pr = owner->pr;
     auto& vb = owner->vb; auto& pb = owner->pb;
     const auto registry = bsp::make_system_constant_registry_00b5bf70();

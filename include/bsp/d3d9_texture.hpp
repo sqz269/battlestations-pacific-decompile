@@ -1,4 +1,6 @@
 #pragma once
+#include "bsp/material_sort_metadata.hpp"
+#include <optional>
 #include "bsp/d3d9_startup.hpp"
 #include <memory>
 #include <cstdint>
@@ -47,17 +49,20 @@ public:
     // info/policy and an empty COM/source owner. Native retry, quality-setting
     // ownership and registry absent.
     HRESULT initialize_00b2c2d0_fragment(IDirect3DDevice9&, CreateTextureFromMemory,
-        const std::shared_ptr<MemoryStream>& source, const TextureLoadPolicy& policy);
+        const std::shared_ptr<MemoryStream>& source, const TextureLoadPolicy& policy,
+        MaterialSortMetadataCounters* construction_counters = nullptr);
     HRESULT recreate_00b3e190(IDirect3DDevice9&, CreateTextureFromMemory);
     IDirect3DTexture9* texture() const noexcept { return texture_; }
     const MemoryTextureOptions& options() const noexcept { return options_; }
     const std::shared_ptr<MemoryStream>& source() const noexcept { return source_; }
+    const std::optional<LogicalTextureSortMetadata>& sort_metadata() const noexcept { return sort_metadata_; }
     // Host orchestration helper only, not a recovered complete reset callback.
     void release_com() noexcept;
 private:
     MemoryTextureOptions options_;
     std::shared_ptr<MemoryStream> source_;
     IDirect3DTexture9* texture_{};
+    std::optional<LogicalTextureSortMetadata> sort_metadata_;
 };
 
 // Successful 2D image-info/policy/create/retain route from 00b2c2d0, including
@@ -66,9 +71,13 @@ private:
 // Host checks image-info/description HRESULTs; native ignores them. Non-2D
 // resources are rejected; VFS, optional guard/callback, retry and cache omitted.
 // A nonnull created texture publishes an owner even if creation reports failure;
-// allocation exceptions propagate. This is a typed interface, not native ABI.
+// allocation exceptions propagate. Optional shared counters consume a serial
+// only after D3DX produced a nonnull COM texture, before level metadata reads.
+// Later failure keeps the consumed serial; recreation never consumes another.
+// Host allocation is earlier than native wrapper allocation and is not its ABI.
 HRESULT load_retained_texture_2d_00b2c2d0_fragment(IDirect3DDevice9&,
     ReadImageInfoFromMemory, CreateTextureFromMemory,
     const std::shared_ptr<MemoryStream>& source, const TextureLoadNameView& name,
-    std::uint32_t mip_reduction, std::unique_ptr<D3D9RetainedTexture2D>& output);
+    std::uint32_t mip_reduction, std::unique_ptr<D3D9RetainedTexture2D>& output,
+    MaterialSortMetadataCounters* construction_counters = nullptr);
 }

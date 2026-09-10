@@ -309,4 +309,10 @@ bool prepare_render_batch_00b51df0(std::vector<InstanceRenderEntry*>& entries,
     sort_range_00b1dce0(entries, 0, entries.size(), entries.size(), key_less);
     return true;
 }
+
+bool prepare_render_batch_00b51df0(InstanceRenderQueue& queue, std::uint32_t batch_index,
+    const std::vector<RenderBatchSortConfiguration>& configurations,
+    const RenderBatchMaterialKeySource& source, std::string& error) {
+    return prepare_render_batch_00b51df0(queue.entries_, batch_index, configurations, source, error);
+}
 }

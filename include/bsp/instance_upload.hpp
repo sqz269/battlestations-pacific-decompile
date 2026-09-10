@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/camera_transform.hpp"
 #include "bsp/d3d9_states.hpp"
+#include "bsp/instance_sort.hpp"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -72,6 +73,9 @@ public:
     std::uint32_t capacity() const { return capacity_; }
     void clear() noexcept { entries_.clear(); }
 private:
+    friend bool prepare_render_batch_00b51df0(InstanceRenderQueue&, std::uint32_t,
+        const std::vector<RenderBatchSortConfiguration>&,
+        const RenderBatchMaterialKeySource&, std::string&);
     friend bool append_instance_render_entry_00b51cb0(InstanceRenderQueue&,
         InstanceRenderEntry&, std::string&);
     std::vector<InstanceRenderEntry*> entries_;

@@ -51,6 +51,39 @@ HRESULT D3D9StateCache::bind_depth_surface_00b21690(const D3D9SurfaceBinding* su
     return result;
 }
 
+HRESULT D3D9StateCache::bind_color_surface_00b23d80(UINT slot,
+    const D3D9SurfaceBinding* surface, const D3D9SurfaceBinding& default_color) {
+    Guard guard(*this);
+    auto* native_surface = surface ? surface->surface
+        : (slot == 0 ? default_color.surface : nullptr);
+    const HRESULT result = device_.SetRenderTarget(slot, native_surface);
+    if (surface) ++color_binding_calls_;
+    return result;
+}
+
+HRESULT D3D9StateCache::bind_frame_targets_00b24e70(
+    std::shared_ptr<D3D9FrameTargets> value, const D3D9SurfaceBinding& default_color,
+    bool manage_srgb_write) {
+    Guard guard(*this);
+    if (frame_targets_ == value) return S_FALSE;
+    auto previous = std::move(frame_targets_);
+    frame_targets_ = value;
+    previous.reset();
+    if (!value) return S_OK;
+    if (manage_srgb_write)
+        set_render_state_00b24460(D3DRS_SRGBWRITEENABLE, value->srgb_write);
+    HRESULT result = S_OK;
+    const auto record = [&result](HRESULT next) {
+        if (SUCCEEDED(result) && FAILED(next)) result = next;
+    };
+    for (UINT slot = 1; slot < 4; ++slot)
+        record(bind_color_surface_00b23d80(slot, nullptr, default_color));
+    for (UINT slot = 0; slot < 4; ++slot)
+        record(bind_color_surface_00b23d80(slot, value->colors[slot].get(), default_color));
+    record(bind_depth_surface_00b21690(value->depth.get()));
+    return result;
+}
+
 void D3D9StateCache::release_dynamic_buffers_00b237d0(bool& ready,
     VertexBufferBinding& vertices, IndexBufferBinding& indices) {
     Guard guard(*this);
@@ -223,6 +256,7 @@ void D3D9StateCache::invalidate() {
     sampler_block_.reset();
     textures_ = {};
     vertex_layout_.reset();
+    frame_targets_.reset();
     stream_frequencies_ = {};
     streams_ = {};
     indices_.reset();

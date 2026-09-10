@@ -4,8 +4,10 @@
 #include "bsp/d3d9_buffers.hpp"
 #include "bsp/vertex_declaration.hpp"
 #include "bsp/d3d9_vertex_layout.hpp"
+#include "bsp/material_sort_metadata.hpp"
 #include <array>
 #include <memory>
+#include <optional>
 #include <vector>
 
 namespace bsp {
@@ -33,6 +35,15 @@ bool renderer_device_lifecycle_busy_00b20220(const TrackedCriticalSection&);
 struct D3D9DrawState {
     std::uint32_t inhibit{}; // Native renderer +1d90h, exact meaning unresolved.
     bool device_lost{};     // Native +1d8ah.
+};
+
+// Retained surface-wrapper identities from native target group +08..14/+18,
+// with its exact +3C sRGB-write byte. Each shared owner must also keep the
+// underlying surface COM reference alive; D3D9SurfaceBinding itself is borrowed.
+struct D3D9FrameTargets {
+    std::array<std::shared_ptr<D3D9SurfaceBinding>, 4> colors;
+    std::shared_ptr<D3D9SurfaceBinding> depth;
+    std::uint8_t srgb_write{};
 };
 
 // Semantic projections of stream getters, not full native constructors/layouts.
@@ -63,7 +74,12 @@ struct LogicalPixelShader { IDirect3DPixelShader9* shader{}; };
 // Retained logical identity with a borrowed COM texture. The COM object must
 // outlive this projection and every cache reference to it. Native virtual+1Ch
 // is projected to this pointer; native intrusive lifetime is not the C++ ABI.
-struct LogicalTexture { IDirect3DBaseTexture9* texture{}; };
+struct LogicalTexture {
+    IDirect3DBaseTexture9* texture{};
+    // Missing means this projection has no recovered construction identity.
+    // Recreation and copies preserve it; never derive it from the COM pointer.
+    std::optional<LogicalTextureSortMetadata> sort_metadata;
+};
 
 // Semantic state-block arrays: native +8h data, +Ch signed count. Vector sizes
 // represent nonnegative counts and must fit INT32_MAX; malformed native
@@ -76,6 +92,7 @@ struct SamplerStateBlock { std::vector<SamplerStateValue> states; };
 // New interface, not the original renderer's memory layout. Device, shared sync
 // state and optional tracked lock must outlive this object. No COM ownership.
 class D3D9StateCache {
+    friend class D3D9CameraFrameAccess;
 public:
     D3D9StateCache(IDirect3DDevice9& device, RendererSynchronization& synchronization,
         TrackedCriticalSection* lock) : device_(device), synchronization_(synchronization), lock_(lock) {}
@@ -85,6 +102,22 @@ public:
     // when its surface is null or the COM call fails. No wrapper ownership.
     HRESULT bind_depth_surface_00b21690(const D3D9SurfaceBinding* surface);
     std::uint32_t depth_binding_calls() const { return depth_binding_calls_; }
+    // Native thiscall RET8. Null slot0 binds the retained default color surface;
+    // null slots1..3 unbind. Only a non-null wrapper increments native+1BA0,
+    // including a null COM pointer or failed call. No surface ownership change.
+    HRESULT bind_color_surface_00b23d80(UINT slot, const D3D9SurfaceBinding* surface,
+        const D3D9SurfaceBinding& default_color);
+    std::uint32_t color_binding_calls() const { return color_binding_calls_; }
+    // Native thiscall RET4. Guard precedes identity skip. Publish/retain new
+    // group before releasing old; null replacement changes no device bindings.
+    // Non-null: optional sRGB state194, clear colors1..3, set colors0..3, depth.
+    // manage_srgb_write is application global00F8D398, not a device-capability
+    // inference. Continue after COM errors and return the first surface-binding
+    // failure here; the void render-state setter does not expose its HRESULT.
+    // the native routine ignores HRESULT. S_FALSE denotes identity skip.
+    HRESULT bind_frame_targets_00b24e70(std::shared_ptr<D3D9FrameTargets>,
+        const D3D9SurfaceBinding& default_color, bool manage_srgb_write);
+    const D3D9FrameTargets* frame_targets() const { return frame_targets_.get(); }
     // Sequential color/depth replacement, then depth bind. Native wrapper
     // registry/allocator and redundant accessor reference pairs remain unported.
     // Failure exposes HRESULT and retains any already-installed color/depth state.
@@ -187,6 +220,8 @@ private:
     std::uint32_t vertex_binding_calls_{};
     std::uint32_t index_binding_calls_{};
     std::uint32_t depth_binding_calls_{};
+    std::uint32_t color_binding_calls_{};
+    std::shared_ptr<D3D9FrameTargets> frame_targets_; // Native renderer+1908.
     std::array<std::shared_ptr<LogicalTexture>, 20> textures_{};
     std::uint32_t texture_binding_calls_{};
     std::shared_ptr<D3D9VertexLayout> vertex_layout_;

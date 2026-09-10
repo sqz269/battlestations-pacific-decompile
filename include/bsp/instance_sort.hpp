@@ -5,6 +5,7 @@
 
 namespace bsp {
 struct InstanceRenderEntry;
+class InstanceRenderQueue;
 
 // Native00b1dce0: ECX first pointer slot, EDX one-past-last slot; stack signed
 // ideal budget, comparator; RET8. This entry point supplies budget=entry count
@@ -76,5 +77,10 @@ std::uint64_t make_render_batch_key_00b51df0(float depth,
 bool prepare_render_batch_00b51df0(std::vector<InstanceRenderEntry*>& entries,
     std::uint32_t batch_index,
     const std::vector<RenderBatchSortConfiguration>& configurations,
+    const RenderBatchMaterialKeySource&, std::string& error);
+// Same operation on the retained queue's actual pointer array. Capacity and
+// entry ownership stay unchanged; this does not sort a detached copy.
+bool prepare_render_batch_00b51df0(InstanceRenderQueue&, std::uint32_t batch_index,
+    const std::vector<RenderBatchSortConfiguration>&,
     const RenderBatchMaterialKeySource&, std::string& error);
 }

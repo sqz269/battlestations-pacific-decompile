@@ -1,0 +1,244 @@
+{
+  "utc": "2026-09-10T03:59:16.437297+00:00",
+  "packet": "d3d9_frame_targets",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b24e70",
+      "length": 318,
+      "sha256": "8178a8012e24c0950fb5221d5ec4bb5f7689e17ac0687af1852a854d15eeb31e",
+      "pe_live_match": true,
+      "proposed_name": "BSP_D3D9Renderer_BindFrameTargets",
+      "original_abi": "ECX renderer; stack target-group pointer; RET4.",
+      "contract": "Optional guard before identity comparison. Publish and retain new renderer+1908 target group before releasing old. Null changes no GPU state. Nonnull optionally writes render state194 from exact group+3C byte, unbinds color slots1..3, binds all four color slots from group+8..14, then depth from+18. Application global00F8D398 enables the sRGB state write; it is copied from setting00F88A0C in application initialization, not inferred from device caps.",
+      "proposed_comment": "Optional guard before identity comparison. Publish and retain new renderer+1908 target group before releasing old. Null changes no GPU state. Nonnull optionally writes render state194 from exact group+3C byte, unbinds color slots1..3, binds all four color slots from group+8..14, then depth from+18. Application global00F8D398 enables the sRGB state write; it is copied from setting00F88A0C in application initialization, not inferred from device caps. Original ABI: ECX renderer; stack target-group pointer; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation."
+    },
+    {
+      "address": "00b23d80",
+      "length": 207,
+      "sha256": "804abb888e6d511df739c72320e39600dbc5ae0d076ea3e3b83e6266722616fa",
+      "pe_live_match": true,
+      "proposed_name": "BSP_D3D9Renderer_BindColorSurface",
+      "original_abi": "ECX renderer; stack slot, surface wrapper; RET8.",
+      "contract": "Optional guard; direct SetRenderTarget. Nonnull wrapper supplies COM surface+2C and increments renderer+1BA0 even after failed call. Null slot0 reads retained default wrapper renderer+197C; other null slots unbind. No wrapper retain/release or identity cache.",
+      "proposed_comment": "Optional guard; direct SetRenderTarget. Nonnull wrapper supplies COM surface+2C and increments renderer+1BA0 even after failed call. Null slot0 reads retained default wrapper renderer+197C; other null slots unbind. No wrapper retain/release or identity cache. Original ABI: ECX renderer; stack slot, surface wrapper; RET8. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation."
+    },
+    {
+      "address": "00b1f710",
+      "length": 4,
+      "sha256": "f0796b52ef91eb1efe247aaf211420318d599b2ce1e74a3c2781b8f4b568072e",
+      "pe_live_match": true,
+      "proposed_name": "BSP_FrameTargets_GetSrgbWriteByte",
+      "original_abi": "ECX target group; AL byte result; RET.",
+      "contract": "Returns exact byte+3C. Frame-target binding zero-extends it for render state194.",
+      "proposed_comment": "Returns exact byte+3C. Frame-target binding zero-extends it for render state194. Original ABI: ECX target group; AL byte result; RET. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation."
+    },
+    {
+      "address": "00b1f6d0",
+      "length": 11,
+      "sha256": "b14a7b09c3199f06b3507c37d04715f477b72ec61c3f4e8a40a213ac6413f7bd",
+      "pe_live_match": true,
+      "proposed_name": "BSP_FrameTargets_GetColorSurface",
+      "original_abi": "ECX target group; stack slot; EAX borrowed wrapper; RET4.",
+      "contract": "Returns DWORD target+8+4*slot; no bounds check or retention. Binding caller supplies slots0..3.",
+      "proposed_comment": "Returns DWORD target+8+4*slot; no bounds check or retention. Binding caller supplies slots0..3. Original ABI: ECX target group; stack slot; EAX borrowed wrapper; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation."
+    },
+    {
+      "address": "00b1f6e0",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "pe_live_match": true,
+      "proposed_name": "BSP_FrameTargets_GetDepthSurface",
+      "original_abi": "ECX target group; EAX borrowed wrapper; RET.",
+      "contract": "Returns DWORD target+18; no retention.",
+      "proposed_comment": "Returns DWORD target+18; no retention. Original ABI: ECX target group; EAX borrowed wrapper; RET. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation."
+    },
+    {
+      "address": "00b20210",
+      "length": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "pe_live_match": true,
+      "proposed_name": "BSP_D3D9Renderer_CommandHookNoOp",
+      "original_abi": "ECX renderer; one ignored stack DWORD; RET4.",
+      "contract": "Entire concrete vtable+114 body is RET4. Command execution passes address command+1C; this renderer override does nothing. No interpretation of the ignored argument is required.",
+      "proposed_comment": "Entire concrete vtable+114 body is RET4. Command execution passes address command+1C; this renderer override does nothing. No interpretation of the ignored argument is required. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation."
+    }
+  ],
+  "comments_before": [
+    {
+      "address": "00b24e70",
+      "annotation": {
+        "address": "00b24e70",
+        "function_name": "BSP_D3D9Renderer_BindFrameTargets"
+      }
+    },
+    {
+      "address": "00b23d80",
+      "annotation": {
+        "address": "00b23d80",
+        "function_name": "FUN_00b23d80"
+      }
+    },
+    {
+      "address": "00b1f710",
+      "annotation": {
+        "address": "00b1f710",
+        "function_name": "TRIV_body_00b1f710"
+      }
+    },
+    {
+      "address": "00b1f6d0",
+      "annotation": {
+        "address": "00b1f6d0",
+        "function_name": "FUN_00b1f6d0"
+      }
+    },
+    {
+      "address": "00b1f6e0",
+      "annotation": {
+        "address": "00b1f6e0",
+        "function_name": "TRIV_body_00b1f6e0"
+      }
+    },
+    {
+      "address": "00b20210",
+      "annotation": {
+        "address": "00b20210",
+        "function_name": "BSP_D3D9Renderer_CommandHookNoOp"
+      }
+    }
+  ],
+  "function_definitions": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "definitions": [
+      {
+        "address": "00b24e70",
+        "end_exclusive": "00b24fae",
+        "length": 318,
+        "sha256": "8178a8012e24c0950fb5221d5ec4bb5f7689e17ac0687af1852a854d15eeb31e",
+        "pe_live_match": true,
+        "before": "No function found for 00b24e70",
+        "name": "BSP_D3D9Renderer_BindFrameTargets",
+        "after": "Function: BSP_D3D9Renderer_BindFrameTargets at 00b24e70\nSignature: undefined BSP_D3D9Renderer_BindFrameTargets(void)\nEntry: 00b24e70\nBody: 00b24e70 - 00b24fad"
+      },
+      {
+        "address": "00b20210",
+        "end_exclusive": "00b20213",
+        "length": 3,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "pe_live_match": true,
+        "before": "No function found for 00b20210",
+        "name": "BSP_D3D9Renderer_CommandHookNoOp",
+        "after": "Function: BSP_D3D9Renderer_CommandHookNoOp at 00b20210\nSignature: undefined BSP_D3D9Renderer_CommandHookNoOp(void)\nEntry: 00b20210\nBody: 00b20210 - 00b20212"
+      }
+    ],
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b24e70",
+          "end_address": "00b24fae"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00b24e70",
+          "end_address": "00b24fad",
+          "bytes_disassembled": 318,
+          "message": "Successfully disassembled 318 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b24e70",
+          "name": "BSP_D3D9Renderer_BindFrameTargets",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00b24e70",
+          "function_name": "BSP_D3D9Renderer_BindFrameTargets",
+          "entry_point": "00b24e70",
+          "body_size": 318,
+          "message": "Function created successfully at 00b24e70",
+          "warnings": [
+            "Function name 'BSP_D3D9Renderer_BindFrameTargets' \u2014 main part 'D3D9Renderer_BindFrameTargets' is not PascalCase. Expected: D3d9rendererBindframetargets",
+            "Function name 'BSP_D3D9Renderer_BindFrameTargets' \u2014 main part 'D3D9Renderer_BindFrameTargets' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_D3D9Renderer_BindFrameTargets' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b20210",
+          "end_address": "00b20213"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00b20210",
+          "end_address": "00b20212",
+          "bytes_disassembled": 3,
+          "message": "Successfully disassembled 3 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b20210",
+          "name": "BSP_D3D9Renderer_CommandHookNoOp",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00b20210",
+          "function_name": "BSP_D3D9Renderer_CommandHookNoOp",
+          "entry_point": "00b20210",
+          "body_size": 3,
+          "message": "Function created successfully at 00b20210",
+          "warnings": [
+            "Function name 'BSP_D3D9Renderer_CommandHookNoOp' \u2014 main part 'D3D9Renderer_CommandHookNoOp' is not PascalCase. Expected: D3d9rendererCommandhooknoop",
+            "Function name 'BSP_D3D9Renderer_CommandHookNoOp' \u2014 main part 'D3D9Renderer_CommandHookNoOp' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_D3D9Renderer_CommandHookNoOp' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ],
+    "applied": true
+  },
+  "source_files": {
+    "include/bsp/d3d9_states.hpp": "77bf2779a1b1556538dd57cde8a2761ae550539bd18c609d7437ea354e2c458e",
+    "src/d3d9_states.cpp": "5cd94fa04d677b97055cb75c86f9b5952e9a40228e238a0b4c0ffd51e34f0f08",
+    "src/d3d9_mesh_probe.cpp": "3b3b7ec3ee4e883861bb773ebd2e6aa4f116d6807ede57f0e9b40554af39c715"
+  },
+  "validation": {
+    "build_tested": true,
+    "existing_ctests_passed": 2,
+    "installed_d3d9_probe_exit_code": 0,
+    "target_bindings": "Actual target/depth pointers, default slot0 fallback, empty slots1..3, sRGB state, counters, identity skip and null-group preservation checked.",
+    "mesh_pixels": 2499,
+    "mesh_colors": 54,
+    "game_validated": false,
+    "native_abi_compatible": false
+  },
+  "limits": [
+    "Group and wrapper lifetime use retained C++ owners, not native intrusive ABI.",
+    "Caller supplies retained default color wrapper and application sRGB-write management flag.",
+    "New HRESULT reports first failed surface call while all native calls continue; cached render-state API remains void.",
+    "No injected COM failure test. Optional-guard internals reuse existing implementation; current installed draw uses unguarded mode.",
+    "Raw target output is not final-display or original-game visual parity. Full command execution and material-pass dispatch remain separate."
+  ]
+}
