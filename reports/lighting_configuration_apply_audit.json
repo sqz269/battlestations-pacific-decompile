@@ -1,0 +1,747 @@
+{
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "004bacd0",
+      "end_exclusive": "004bb155",
+      "length": 1157,
+      "disk_offset": 765136,
+      "disk_sha256": "e1a3c02845906ef9959947f7684ba1137ed3256b6600d1a9b8acf109fd64760a",
+      "live_sha256": "e1a3c02845906ef9959947f7684ba1137ed3256b6600d1a9b8acf109fd64760a",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Lighting_ApplyConfiguration",
+      "native_abi": "ECX ambient; EDX directional; stack optionalconfiguration; RET4",
+      "cpp_symbol": "apply_lighting_configuration_004bacd0",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 195,
+      "behavior": "Complete null and nonnull color/direction update paths on actualborrowed fields. Null preserves194..1A3 and1DC.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "004b4d80",
+      "end_exclusive": "004b4df3",
+      "length": 115,
+      "disk_offset": 740736,
+      "disk_sha256": "3caba52a2c20cb5f199dded7662a2e7afb8f213f64ac7ec38d774382be7dc08d",
+      "live_sha256": "3caba52a2c20cb5f199dded7662a2e7afb8f213f64ac7ec38d774382be7dc08d",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Lighting_DirectionFromAngles",
+      "native_abi": "ECX outputfloat3; stackfirst/second float32angles; EAXoutput; RET8",
+      "cpp_symbol": "lighting_direction_from_angles_004b4d80",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 156,
+      "behavior": "Repeated x87FCOS/FSIN andnative32bitspills; noCRTtrig.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "004b62e0",
+      "end_exclusive": "004b6369",
+      "length": 137,
+      "disk_offset": 746208,
+      "disk_sha256": "ee974dc03e08f036f8d9f35c5af7df5b89dd947b90f61e2d18281e96fa83979b",
+      "live_sha256": "ee974dc03e08f036f8d9f35c5af7df5b89dd947b90f61e2d18281e96fa83979b",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Light_SetBaseDiffuse",
+      "native_abi": "ECX light; stackfloat4pointer; RET4",
+      "cpp_symbol": "set_lighting_base_diffuse_004b62e0",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 124,
+      "behavior": "Spill current1D8, sequentiallycopybase1A4 thenreread originalsource andcompute effective184.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "00b7af20",
+      "end_exclusive": "00b7af3e",
+      "length": 30,
+      "disk_offset": 7843616,
+      "disk_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+      "live_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_AmbientLight_SetAmbient",
+      "native_abi": "ECX ambient; stackfloat4pointer; RET4",
+      "cpp_symbol": "set_lighting_ambient_00b7af20",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 112,
+      "behavior": "Sequential raw4DWORD copies to18.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "00b7af40",
+      "end_exclusive": "00b7af5e",
+      "length": 30,
+      "disk_offset": 7843648,
+      "disk_sha256": "75502b2addb208fbee66927128d2250d95a6e3c3deab84f2b9297424640b4e1e",
+      "live_sha256": "75502b2addb208fbee66927128d2250d95a6e3c3deab84f2b9297424640b4e1e",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_AmbientLight_SetMode3Ambient",
+      "native_abi": "ECX ambient; stackfloat4pointer; RET4",
+      "cpp_symbol": "set_lighting_mode3_ambient_00b7af40",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 116,
+      "behavior": "Sequential raw4DWORD copies to28.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "00b7af60",
+      "end_exclusive": "00b7af88",
+      "length": 40,
+      "disk_offset": 7843680,
+      "disk_sha256": "23c0eec7591a8cd90ec31087f5871f2d908d0cf37026e8eaac04f5a7c15ca5da",
+      "live_sha256": "23c0eec7591a8cd90ec31087f5871f2d908d0cf37026e8eaac04f5a7c15ca5da",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_AmbientLight_SetCubeFace",
+      "native_abi": "ECX ambient; stackfloat4pointer,index; RET8",
+      "cpp_symbol": "set_lighting_ambient_cube_00b7af60",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 120,
+      "behavior": "Sequential raw4DWORD copies to38+index*16; typedowner requiresindex0..5.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "00b7af90",
+      "end_exclusive": "00b7b003",
+      "length": 115,
+      "disk_offset": 7843728,
+      "disk_sha256": "9e2f20c00353a702d872fe9dd30cd4b587bba2f1bf477c1999b170084e6edc25",
+      "live_sha256": "9e2f20c00353a702d872fe9dd30cd4b587bba2f1bf477c1999b170084e6edc25",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Light_SetDiffuseScale",
+      "native_abi": "ECX light; stackfloat32scale; RET4",
+      "cpp_symbol": "set_lighting_diffuse_scale_00b7af90",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 143,
+      "behavior": "Rawstore1D8 thenx87scale base1A4 intoeffective184.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    },
+    {
+      "address": "00b7b010",
+      "end_exclusive": "00b7b083",
+      "length": 115,
+      "disk_offset": 7843856,
+      "disk_sha256": "681fab4b038b0ff1a06113c4dd3ac70c3a32ee67592466dc6e636517427f6178",
+      "live_sha256": "681fab4b038b0ff1a06113c4dd3ac70c3a32ee67592466dc6e636517427f6178",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Light_SetSpecularScale",
+      "native_abi": "ECX light; stackfloat32scale; RET4",
+      "cpp_symbol": "set_lighting_specular_scale_00b7b010",
+      "source": "src/lighting_configuration_apply.cpp",
+      "source_line": 149,
+      "behavior": "Rawstore1DC thenx87scale base1C4 intoeffective194.",
+      "status": "reconstructed_strict_build_and_focused_native_fixture_pass"
+    }
+  ],
+  "data": [
+    {
+      "address": "00e18ae0",
+      "end_exclusive": "00e18b1c",
+      "length": 60,
+      "disk_offset": null,
+      "disk_sha256": "5dcc1b5872dd9ff1c234501f1fefda01f664164e1583c3e1bb3dbea47588ab31",
+      "live_sha256": "5dcc1b5872dd9ff1c234501f1fefda01f664164e1583c3e1bb3dbea47588ab31",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00f8758c",
+      "end_exclusive": "00f87598",
+      "length": 12,
+      "disk_offset": null,
+      "disk_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "live_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00f88a0c",
+      "end_exclusive": "00f88a0d",
+      "length": 1,
+      "disk_offset": null,
+      "disk_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce3800",
+      "end_exclusive": "00ce3804",
+      "length": 4,
+      "disk_offset": 9320448,
+      "disk_sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "live_sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "disk_offset": 9937484,
+      "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "pointer_patches": [
+    {
+      "address": "004baced",
+      "preimage": "00f88a0c"
+    },
+    {
+      "address": "004bad8a",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004badc7",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004baf12",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004baf1b",
+      "preimage": "00ce3800"
+    },
+    {
+      "address": "004baf23",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004baf2c",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004baf34",
+      "preimage": "00e18b0c"
+    },
+    {
+      "address": "004baf3c",
+      "preimage": "00e18b10"
+    },
+    {
+      "address": "004baf44",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004baf4c",
+      "preimage": "00e18b14"
+    },
+    {
+      "address": "004baf52",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004baf67",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004baf77",
+      "preimage": "00ce3800"
+    },
+    {
+      "address": "004baf7d",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004baf85",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004baf8d",
+      "preimage": "00e18b0c"
+    },
+    {
+      "address": "004baf95",
+      "preimage": "00e18b10"
+    },
+    {
+      "address": "004baf9d",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004bafa5",
+      "preimage": "00e18b14"
+    },
+    {
+      "address": "004bafaa",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004bafb7",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004bafc2",
+      "preimage": "00ce3800"
+    },
+    {
+      "address": "004bafc8",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004bafd0",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004bafd8",
+      "preimage": "00e18b0c"
+    },
+    {
+      "address": "004bafe0",
+      "preimage": "00e18b10"
+    },
+    {
+      "address": "004bafe8",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004baff0",
+      "preimage": "00e18b14"
+    },
+    {
+      "address": "004baff5",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004bb002",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004bb00d",
+      "preimage": "00ce3800"
+    },
+    {
+      "address": "004bb013",
+      "preimage": "00e18b18"
+    },
+    {
+      "address": "004bb01b",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004bb023",
+      "preimage": "00e18b0c"
+    },
+    {
+      "address": "004bb02b",
+      "preimage": "00e18b10"
+    },
+    {
+      "address": "004bb033",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004bb03b",
+      "preimage": "00e18b14"
+    },
+    {
+      "address": "004bb045",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004bb04b",
+      "preimage": "00e18b04"
+    },
+    {
+      "address": "004bb051",
+      "preimage": "00e18b08"
+    },
+    {
+      "address": "004bb05d",
+      "preimage": "00e18b0c"
+    },
+    {
+      "address": "004bb069",
+      "preimage": "00e18b10"
+    },
+    {
+      "address": "004bb074",
+      "preimage": "00e18b14"
+    },
+    {
+      "address": "004bb082",
+      "preimage": "00e18b04"
+    },
+    {
+      "address": "004bb08a",
+      "preimage": "00e18af4"
+    },
+    {
+      "address": "004bb092",
+      "preimage": "00e18af8"
+    },
+    {
+      "address": "004bb09a",
+      "preimage": "00e18afc"
+    },
+    {
+      "address": "004bb0a2",
+      "preimage": "00e18b00"
+    },
+    {
+      "address": "004bb0a7",
+      "preimage": "00e18af4"
+    },
+    {
+      "address": "004bb0b4",
+      "preimage": "00e18af0"
+    },
+    {
+      "address": "004bb0bd",
+      "preimage": "00f8758c"
+    },
+    {
+      "address": "004bb0cd",
+      "preimage": "00f87590"
+    },
+    {
+      "address": "004bb0dd",
+      "preimage": "00f87594"
+    },
+    {
+      "address": "004bb0f0",
+      "preimage": "00e18af0"
+    },
+    {
+      "address": "004bb0f8",
+      "preimage": "00e18ae0"
+    },
+    {
+      "address": "004bb100",
+      "preimage": "00e18ae4"
+    },
+    {
+      "address": "004bb108",
+      "preimage": "00e18ae8"
+    },
+    {
+      "address": "004bb110",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "004bb118",
+      "preimage": "00e18aec"
+    },
+    {
+      "address": "004bb11e",
+      "preimage": "00e18ae0"
+    },
+    {
+      "address": "004bb12a",
+      "preimage": "00e18ae4"
+    },
+    {
+      "address": "004bb135",
+      "preimage": "00e18ae8"
+    },
+    {
+      "address": "004bb142",
+      "preimage": "00e18aec"
+    }
+  ],
+  "packet": "lighting_configuration_apply",
+  "base_commit": "7b216e691eba8f1b40f9550aa3b5a4aa1114f80d",
+  "owned_files": [
+    "include/bsp/lighting_configuration_apply.hpp",
+    "src/lighting_configuration_apply.cpp",
+    "docs/LIGHTING_CONFIGURATION_APPLY.md",
+    "reports/lighting_configuration_apply_audit.json"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Repository CLI verified project and program for each analysis/export/bytes batch",
+    "mutations_by_worker": false
+  },
+  "bindings": {
+    "ambient": "ExistingConcreteSystemAmbientLight ambient18/mode3_28/cube38; helperbinderretains samefields aslighting readview",
+    "directional": "C workeractualNativeLightTailStorage diffuse184/specular194/base_diffuse1A4/mode31B4/base_specular1C4/diffusescale1D8/specularscale1DC/direction1E0; noownerorvaluecopy",
+    "configuration": [
+      {
+        "address_offset": "00000f48",
+        "role": "ambient4; alpha isoptionalRGBmultiplier"
+      },
+      {
+        "address_offset": "00000f58",
+        "role": "mode3ambient4"
+      },
+      {
+        "address_offset": "00000f68",
+        "role": "6cube float4records, eachalphascalesRGB"
+      },
+      {
+        "address_offset": "00000fc8",
+        "role": "baseDiffuse4"
+      },
+      {
+        "address_offset": "00000fd8",
+        "role": "mode3Diffuse4"
+      },
+      {
+        "address_offset": "00000fe8",
+        "role": "baseSpecular4"
+      },
+      {
+        "address_offset": "00000ffc",
+        "role": "diffuseScale"
+      },
+      {
+        "address_offset": "00001000",
+        "role": "specularScale"
+      },
+      {
+        "address_offset": "00001004",
+        "role": "secondangle"
+      },
+      {
+        "address_offset": "00001008",
+        "role": "firstangle"
+      }
+    ],
+    "unused_configuration_offset": "00000ff8",
+    "globals": [
+      {
+        "address": "00e18b18",
+        "role": "halfcolor guardDWORD"
+      },
+      {
+        "address": "00e18b08",
+        "role": "halfcolor float4"
+      },
+      {
+        "address": "00e18b04",
+        "role": "diffusecolor guardDWORD"
+      },
+      {
+        "address": "00e18af4",
+        "role": "diffusecolor float4"
+      },
+      {
+        "address": "00e18af0",
+        "role": "specularcolor guardDWORD"
+      },
+      {
+        "address": "00e18ae0",
+        "role": "specularcolor float4"
+      },
+      {
+        "address": "00f8758c",
+        "role": "currentdefaultdirection3DWORD"
+      },
+      {
+        "address": "00f88a0c",
+        "role": "currentambientscale byte"
+      },
+      {
+        "address": "00ce3800",
+        "role": "currenthalfsourceword; installed3F000000"
+      },
+      {
+        "address": "00d7a24c",
+        "role": "currentonesourceword; installed3F800000"
+      }
+    ],
+    "guard_rule": "Test mask0x1 in actual lowbyte; firstuse OR0x1 into fullDWORD, preserveotherbits; no constructorinitializer",
+    "null_preserves": [
+      "effectiveSpecular194..1A3",
+      "specularScale1DC",
+      "diffuseScale1D8",
+      "unknownscalar1D4",
+      "node/retention/poolIDfields"
+    ],
+    "null_reads_current": "Uses existingdiffuseScale1D8, guardedmutablefallbackwords andliveF8758C/90/94; zero-filledPE globals do not imply livezeros."
+  },
+  "numeric_evidence": [
+    "Ambient multiplier israwMOVSS; cube multiplier FLD/FSTP32 quiets sNaNs beforeproducts.",
+    "RGB uses source*scale x87operandorder; fourthuses scale*sourcealpha.",
+    "Alpha products execute then areoverwrittenwith liveD7A24C, includingotherwise discardedoverflow.",
+    "Scalers preserve32bitspillpointsonx/y/z/alpha andwriteeffectivex/ywhilealphaproductstilllive.",
+    "4B62E0 captures/spills existing1D8 beforebasecopies thenrereadssource; leaves1D8storageunchanged.",
+    "Main spills config1004then1008beforecall;4B4D80 repeatsFCOSthree timesandFSINtwice withnativefloatspills; noCRTtrig.",
+    "Main directionstoresviaFLD/FSTP32; fallbackdirectionrawMOVSS.",
+    "Nativeguarddecisionsfordiffuse/specular arecapturedbeforemode3/directionstores; constantreadpoints retained."
+  ],
+  "validation": {
+    "strict_build": "MSVCWin32 /std:c++17 /EHsc /O2 /Oy- /MT /Gy /Gw /W4 /WX PASS; actualexistingowner/string/pool/registry/lifetime sources linked, no unresolved stubs",
+    "repository_build": "./scripts/build.ps1 PASS; reconstructed_math existingCTest1/1PASS; sharedCMake source registration stillownedbyprimary",
+    "fixture": "One four-call native/host timeline PASS",
+    "phases": [
+      "firstnull guardedfallbackinitialization",
+      "secondnull afteractualfallbackwords/defaultdirection/sourceconstantsmutated",
+      "nonnullF88A0C0",
+      "nonnullF88A0CFF"
+    ],
+    "states": [
+      {
+        "phase": 0,
+        "control": "027f",
+        "status_mask_47ff": "0000",
+        "compared_bytes": 729,
+        "diffuse_scale": "3f4ccccd",
+        "specular_scale": "7f923456",
+        "direction_words": [
+          "7f812345",
+          "80000000",
+          "3f800000"
+        ],
+        "snapshot_hex": "3c2fd600010000000000000000000000000000000000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f0000003f0000003f0000003f0000803f5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5acdcc4c3fcdcc4c3fcdcc4c3fcdcc4c3f4523917f00000080010000008967c57f0000803f0000803f0000803f0000803f0000003f0000003f0000003f0000803f0000000000000000000000000000803f5a5a5a5acdcc4c3f5634927f4523817f000000800000803f5a5a5a5a0000000000000000000000000000803f612457130000803f0000803f0000803f0000803f511368240000003f0000003f0000003f0000803fa15892364523817f000000800000803f000000003f0000803f",
+        "snapshot_sha256": "44caee9b80b6b22aca247106b005ec8cebac7934927eb72c1dd14bfd612db6ef"
+      },
+      {
+        "phase": 1,
+        "control": "067f",
+        "status_mask_47ff": "0003",
+        "compared_bytes": 729,
+        "diffuse_scale": "7f889abc",
+        "specular_scale": "7f923456",
+        "direction_words": [
+          "80000000",
+          "7f8789ab",
+          "3e123456"
+        ],
+        "snapshot_hex": "3c2fd600010000000000000000000000000000000000803f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5634123e8967857f000000805734123f5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5abc9ac87fbc9ac87fbc9ac87fbc9ac87f4523917f00000080010000008967c57f5634123f325476bf010000000000803f5634123e8967857f000000805734123f9a78867fabaaaa3e000000803254763f5a5a5a5abc9a887f5634927f00000080ab89877f5634123e5a5a5a5a9a78867fabaaaa3e000000803254763f612457135634123f325476bf010000000000803f511368245634123e8967857f000000805734123fa158923600000080ab89877f5634123e000000603f0000403f",
+        "snapshot_sha256": "0efb7a47edb9f70f323c0c91517aaec7d8daa886f9da7aea422d0cc67e07870b"
+      },
+      {
+        "phase": 2,
+        "control": "0a7f",
+        "status_mask_47ff": "0033",
+        "compared_bytes": 729,
+        "diffuse_scale": "3eaaaaab",
+        "specular_scale": "3f123457",
+        "direction_words": [
+          "3f316c45",
+          "bf25c9ce",
+          "3ea220b7"
+        ],
+        "snapshot_hex": "3c2fd600010000000000000000000000000000000000803f08e53c1e08e53c9e010080000000403f4523817f000000805634123f010000008988883e58ede9be686666000000403f8b88883e5aede9be696666000000403f8c88883e5dede9be6a6666000000403f8e88883e60ede9be6c6666000000403f8f88883e63ede9be6d6666000000403f5634c27f5634c27f5634c27f0000403f5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a74f0423e2138a4be01000000adaaaa3e7856c47f2143c57f01000000000000805634123f325476bf010000000100803f6745837fabaaaa3e000000804523c17f7856847f2143c57f01000000000000805a5a5a5aabaaaa3e5734123f456c313fcec925bfb720a23e5a5a5a5a9a78867fabaaaa3e000000803254763f612457135634123f325476bf010000000000803f511368245634123e8967857f000000805734123fa158923600000080ab89877f5634123e000000603f0000403f",
+        "snapshot_sha256": "ce190dee3542831732d05632e838e0113cce5c5c6d41b272d0cff5300371df45"
+      },
+      {
+        "phase": 3,
+        "control": "0e7f",
+        "status_mask_47ff": "003b",
+        "compared_bytes": 729,
+        "diffuse_scale": "3eaaaaab",
+        "specular_scale": "3f123457",
+        "direction_words": [
+          "3f316c42",
+          "bf25c9ce",
+          "3ea220b4"
+        ],
+        "snapshot_hex": "3c2fd600010000000000000000000000000000000000803fffff7f3fffff7fbfed78ad215734123f4523817f000000805634123f010000008888883e58ede9be676666005734123f8a88883e5aede9be686666005734123f8b88883e5dede9be696666005734123f8d88883e60ede9be6b6666005734123f8e88883e63ede9be6c6666005734123f5634c27f5634c27f5634c27f5734123f5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a73f0423e2138a4be00000000acaaaa3e7856c47f2143c57f00000000000000805634123f325476bf010000000100803f6745837fabaaaa3e000000804523c17f7856847f2143c57f01000000000000805a5a5a5aabaaaa3e5734123f426c313fcec925bfb420a23e5a5a5a5a9a78867fabaaaa3e000000803254763f612457135634123f325476bf010000000000803f511368245634123e8967857f000000805734123fa158923600000080ab89877f5634123eff0000603f5734123f",
+        "snapshot_sha256": "ebd6b39bc3f45d0e95714751ecc2ccc5576cc0a903d01d9e69c40b4e6890fac0"
+      }
+    ],
+    "matching_bytes": 2916,
+    "owner_bytes_per_snapshot": {
+      "ambient_native_prefix": 152,
+      "whole_directional_slot": 496,
+      "fallback_colors_and_guards": 60,
+      "default_direction": 12,
+      "ambient_scale_byte": 1,
+      "two_sourceconstants": 8
+    },
+    "retained_null_specular": "Eachnullcall assertsall16effectiveSpecularbytes+4scaleBytesunchanged; startswith signalingNaNpreimages.",
+    "guard_high_bits": "13572460/24681350/369258A0 become13572461/24681351/369258A1 andstaysetafterfallbackmutation.",
+    "x87": "Control027F/067F/0A7F/0E7F unchanged; native/hoststatus mask47FF0000/0003/0033/003B; lastphaseoverflowbit0x8specificallyrequiredfromdiscardedambientalphasquare.",
+    "native_mapping": {
+      "code_spans": 8,
+      "code_bytes": 1739,
+      "data_spans": 5,
+      "data_bytes": 81,
+      "absolute_operand_rebases": 64,
+      "allocation": "WholeimagesparsePAGE_NOACCESSreservation; onlyneededpagescommitted andINT3filledbeforecopy",
+      "native_hooks": 0,
+      "imports": 0,
+      "unresolved_call_stubs": false,
+      "full_pe_loader_or_game_entrypoint": false
+    }
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\include\\bsp\\lighting_configuration_apply.hpp",
+      "sha256": "a4e80a89f3c05b1ef7cbb4d46395d0aca8d3bea8cec67098e66df6317121a7e7",
+      "owned_source": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\src\\lighting_configuration_apply.cpp",
+      "sha256": "3acacf1ca889179555766d2e63e517f985336d5675e1f14e7024a381b69028cb",
+      "owned_source": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\include\\bsp\\system_lighting_owners.hpp",
+      "sha256": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\src\\system_lighting_owners.cpp",
+      "sha256": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\src\\native_string.cpp",
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\src\\storage_pool.cpp",
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\src\\scene_attachment.cpp",
+      "sha256": "f669b4b082c01166533917a6452fc5415cb97bf3b75772306afa02621bf05b34",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\src\\singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\local\\prepare_lighting_apply_native.py",
+      "sha256": "19a39f635319b9621f77a1bd58f778b4d24ad27765103d92cbfd986226b2db1c",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\local\\lighting_apply_native_spans.hpp",
+      "sha256": "9cc9cee742e34abeccd1ce32e64abfaaede313220a930c631bc60f18ae7f7fae",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\local\\lighting_apply_native_check.cpp",
+      "sha256": "d6daf45b4b14ddaa7fc55d521544ca8c1ffc0acc07b6423c390a683526aeb9e7",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\local\\build_lighting_apply_native_check.ps1",
+      "sha256": "2d5beb4bb2e92ae93ad8954df6471a361d7e9ab4f3152c018abc7757d58942ae",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\local\\lighting_apply_native_check.log",
+      "sha256": "3ade242d4252f9fb35a1d21f192d2f90c1704f52441e8e5a94a316d43a06d3d0",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\local\\lighting_apply_repository_build.log",
+      "sha256": "6bcb5586ee5960a8018f1cbcca00b99012fe518426d968482df2b0d0e4414858",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-lighting-configuration-apply-20260910\\build\\lighting-apply-check\\lighting_apply_native_check.exe",
+      "sha256": "8a619407b405bd037fbd320f23ecdf9d33e3300942168aa8aac086b192152551",
+      "owned_source": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-directional-light-owner-20260910\\include\\bsp\\directional_light_owner.hpp",
+      "sha256": "4f5e99d8f81ab349a4c2c1732df96d3907c36f659f8ef72d1fe3c4e91c5baf75",
+      "role": "ActualCworkertailtypecompiledbyfixture; commit94345e3; declaration-only forwardreferencefornewsharedshadowresolver"
+    }
+  ],
+  "limitations": [
+    "Typed C++ API is notdrop-in nativeABI; game/runtimevisual result notvalidated.",
+    "No authoredconfigurationownerconstruction/schema inferred; referencesrequireactual suppliedfields.",
+    "PrimaryownsCMake/nativeglobalandownerviewbindings, Ghidraannotations/ledgers andprocessstartup.",
+    "Unmaskedx87traps, concurrentexternalmutation, invalidcubeindices andallpossiblealiases notfixtureexecuted.",
+    "Guard/defaultglobalszero-filledPEpreimage isnotcurrentliveprocessvalue; callerprovidescurrentowners."
+  ]
+}
