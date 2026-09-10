@@ -229,6 +229,377 @@
       "validation": "reports/structured_resource_validation.json",
       "annotation_status": "123 reviewed annotations saved;15 missing definitions recovered;7 truncated bodies restored;27 flow sites read back NONE;forced exports refreshed.",
       "next_work": "Actual structured reader, hierarchy metadata and Note payload integrated; queue work-item and resource/cache ownership audited. Next connect concrete mesh parsers and audited manager ownership before real async resource completion."
+    },
+    {
+      "worker": "instance_geometry_worker",
+      "packet": "generated_instance_geometry",
+      "function_addresses": [
+        "00b4c8d0"
+      ],
+      "work": "Recover native generated-geometry allocation, stream1 backing/flags/tag and ownership used twice by00b1dff0. Replace explicit host instance storage only after the native contract is closed.",
+      "owned_files": [
+        "include/bsp/instance_geometry.hpp",
+        "src/instance_geometry.cpp",
+        "docs/GENERATED_INSTANCE_GEOMETRY.md",
+        "reports/generated_instance_geometry_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b4bc00",
+          "status": "mesh private flags1 path implemented; native instance allocation flags/registry may differ"
+        },
+        {
+          "address": "00b450d0",
+          "status": "building144-byte declaration and combined layout audited; generator object lifetime not ported"
+        },
+        {
+          "address": "00b1dff0",
+          "status": "group producer calls00b4c8d0 for two categories; primary owns larger visibility/grouping integration"
+        }
+      ],
+      "boundary": "Exact allocator function ownership; request helper expansion. Primary owns shared buffer/state classes and mesh probe. Coordinate typed generated-geometry contract with upload worker.",
+      "id": "generated_instance_geometry",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "done": true,
+      "depends_on": [],
+      "output_files": [
+        "include/bsp/instance_geometry.hpp",
+        "src/instance_geometry.cpp",
+        "docs/GENERATED_INSTANCE_GEOMETRY.md",
+        "reports/generated_instance_geometry_audit.json"
+      ],
+      "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "worker": "instance_upload_worker",
+      "packet": "instance_group_upload",
+      "function_addresses": [
+        "00b1e990",
+        "00b85590"
+      ],
+      "work": "Recover two-category group loop: actual stream1 lock, generator writer dispatch per entry, declaration-stride advance, unlock, section instance count, entry construction and queue append. Preserve ordering and category1 sort.",
+      "owned_files": [
+        "include/bsp/instance_upload.hpp",
+        "src/instance_upload.cpp",
+        "docs/INSTANCE_GROUP_UPLOAD.md",
+        "reports/instance_group_upload_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b55780",
+          "status": "building writer implemented and installedmesh exercised with host backing"
+        },
+        {
+          "address": "00b4c8d0",
+          "status": "allocator worker owns new geometry contract; do not infer backing/tag"
+        },
+        {
+          "address": "00b51cb0",
+          "status": "render-entry queue append requires bounded ownership review before full native upload/queue realization"
+        },
+        {
+          "address": "00b1dff0",
+          "status": "group producer and x87 fade remain primary-owned next integration"
+        }
+      ],
+      "boundary": "Upload/count functions only. Coordinate interfaces, do not edit allocator/shared renderer/queue files or substitute an invented per-frame allocator.",
+      "id": "instance_group_upload",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "done": true,
+      "depends_on": [],
+      "output_files": [
+        "include/bsp/instance_upload.hpp",
+        "src/instance_upload.cpp",
+        "docs/INSTANCE_GROUP_UPLOAD.md",
+        "reports/instance_group_upload_audit.json"
+      ],
+      "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "worker": "root_resource_worker",
+      "packet": "registered_root_resource",
+      "function_addresses": [
+        "00b7f430",
+        "00b7f100"
+      ],
+      "work": "Move actual root control/Resource/Hierarchy/BoundingBox encounter-order dispatch into the registered resource path. Establish renderer begin/end hooks and current-resource writes; preserve repeated containers and explicit unknown skips.",
+      "owned_files": [
+        "include/bsp/structured_model.hpp",
+        "src/structured_model.cpp",
+        "docs/REGISTERED_ROOT_RESOURCE.md",
+        "reports/registered_root_resource_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b7e970",
+          "status": "registered wire dispatch implemented; native item objects/currentresource virtualappend separate"
+        },
+        {
+          "address": "00b88260",
+          "status": "native base resource constructor and ownership audited; host model must not impersonate native object ABI"
+        },
+        {
+          "address": "0071bb40",
+          "status": "typed classification and primary owning item array audited; integrate actual payload ownership only"
+        },
+        {
+          "address": "00b7eb90",
+          "status": "hierarchy item wire parser exists; containing branch/root lifecycle requires integration"
+        }
+      ],
+      "boundary": "Disjoint structured-root functions; request exact renderer-hook helper ownership before expansion. Primary owns registry interfaces, existing probe, shared metadata and CMake.",
+      "id": "registered_root_resource",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "done": true,
+      "depends_on": [],
+      "output_files": [
+        "include/bsp/structured_model.hpp",
+        "src/structured_model.cpp",
+        "docs/REGISTERED_ROOT_RESOURCE.md",
+        "reports/registered_root_resource_audit.json"
+      ],
+      "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "id": "generated_material_clone",
+      "packet": "generated_material_clone",
+      "worker": "completed_followon_worker",
+      "function_addresses": [
+        "00b18b60"
+      ],
+      "owned_files": [
+        "include/bsp/material_clone.hpp",
+        "src/material_clone.cpp",
+        "docs/GENERATED_MATERIAL_CLONE.md",
+        "reports/generated_material_clone_audit.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "validation": "reports/instance_integration_validation.json",
+      "output_files": [
+        "include/bsp/material_clone.hpp",
+        "src/material_clone.cpp",
+        "docs/GENERATED_MATERIAL_CLONE.md",
+        "reports/generated_material_clone_audit.json"
+      ]
+    },
+    {
+      "id": "instance_category_sort",
+      "packet": "instance_category_sort",
+      "worker": "completed_followon_worker",
+      "function_addresses": [
+        "00b1dce0"
+      ],
+      "owned_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/INSTANCE_CATEGORY_SORT.md",
+        "reports/instance_category_sort_audit.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "validation": "reports/instance_integration_validation.json",
+      "output_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/INSTANCE_CATEGORY_SORT.md",
+        "reports/instance_category_sort_audit.json"
+      ],
+      "native_differential": "90 runs,5652 pointer positions; primary rerun passed"
+    },
+    {
+      "id": "instance_grouping",
+      "packet": "instance_grouping",
+      "worker": "primary",
+      "function_addresses": [
+        "00b1dff0",
+        "00b73770"
+      ],
+      "owned_files": [
+        "include/bsp/instance_grouping.hpp",
+        "src/instance_grouping.cpp",
+        "docs/INSTANCE_GROUPING.md",
+        "reports/instance_grouping_audit.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "validation": "reports/instance_integration_validation.json",
+      "output_files": [
+        "include/bsp/instance_grouping.hpp",
+        "src/instance_grouping.cpp",
+        "docs/INSTANCE_GROUPING.md",
+        "reports/instance_grouping_audit.json"
+      ]
+    },
+    {
+      "worker": "model_world_bounds_worker",
+      "packet": "model_world_bounds",
+      "function_addresses": [
+        "00b6e8c0",
+        "007c1180",
+        "007bb620"
+      ],
+      "work": "Recover native world-sphere cache and max-basis scale, reuse CameraTransform flags/world refresh and the existing affine point kernel. Preserve x87 stores and radius multiplication; establish explicit finite/CRT environment limits.",
+      "owned_files": [
+        "include/bsp/model_bounds.hpp",
+        "src/model_bounds.cpp",
+        "docs/MODEL_WORLD_BOUNDS.md",
+        "reports/model_world_bounds_audit.json"
+      ],
+      "depends_on": [
+        "instance_group_upload",
+        "registered_root_resource"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "004142e0",
+          "status": "Exact point kernel is private in instance_upload.cpp; primary must expose/reuse it in shared affine code."
+        },
+        {
+          "address": "00b6db70",
+          "status": "World refresh exists in CameraTransform; use existing valid_flags/auxiliary_flags, do not duplicate them."
+        },
+        {
+          "address": "00bf7030",
+          "status": "CRT sqrt wrapper normal FSQRT path established; control-word/exception helpers00c083a5/00c083bc/00c08347 andreturntails remain unaudited."
+        }
+      ],
+      "boundary": "Cache hits when EITHER auxiliary bit0x30 is set. Local sphere population remains an explicit producer contract; wire mesh sphere handlers consume/discard. Primary owns shared affine kernel promotion and probe integration.",
+      "id": "model_world_bounds",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "output_files": [
+        "include/bsp/model_bounds.hpp",
+        "src/model_bounds.cpp",
+        "docs/MODEL_WORLD_BOUNDS.md",
+        "reports/model_world_bounds_audit.json"
+      ]
+    },
+    {
+      "worker": "scene_attachment_worker",
+      "packet": "model_scene_attachment",
+      "function_addresses": [
+        "00b6ed80",
+        "00b83d50",
+        "00b83ec0",
+        "00b7aa70",
+        "006ef860",
+        "00b83700",
+        "00b83e50"
+      ],
+      "work": "Implement actual scene reference attachment, type-gated pointer registry and recursive child traversal. Close registry node lifetimes before assigning ownership; preserve detach/reload/publish/retain/release/reload/add order and post-callback sibling reload.",
+      "owned_files": [
+        "include/bsp/scene_attachment.hpp",
+        "src/scene_attachment.cpp",
+        "docs/SCENE_NODE_ATTACHMENT.md",
+        "reports/scene_node_attachment_audit.json"
+      ],
+      "depends_on": [
+        "generated_instance_geometry",
+        "instance_group_upload"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "006ef860",
+          "status": "Missing40B RET4 leaf checks token against runtimeIDs01090034/38/3C. RuntimeID initialization and subset meanings unresolved; do not hardcode eligibility."
+        },
+        {
+          "address": "00b823b0",
+          "status": "Node allocation/value construction; pointer-key registry ownership not yet proved."
+        },
+        {
+          "address": "00b83d90",
+          "status": "Range erase/destruction; subordinate node lifetime must be closed."
+        },
+        {
+          "address": "00b82d30",
+          "status": "List size/length-limit update has library-like name; review actual behavior."
+        },
+        {
+          "address": "00b83490",
+          "status": "Bucket iterator-pair storage growth."
+        },
+        {
+          "address": "00b82650",
+          "status": "Key equal-range lookup."
+        },
+        {
+          "address": "00b820b0",
+          "status": "Iterator-range count, currently library-classified."
+        },
+        {
+          "address": "00c03dbe",
+          "status": "Native hash division helper."
+        }
+      ],
+      "boundary": "Registry is unique pointer-key linear hashing with linked list/bucket intervals, not a tree. Gate token is runtime0109018C. Core has no direct world/cache flag writes. Request exact helper leases; primary owns CameraTransform/probe/shared metadata.",
+      "id": "model_scene_attachment",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "output_files": [
+        "include/bsp/scene_attachment.hpp",
+        "src/scene_attachment.cpp",
+        "docs/SCENE_NODE_ATTACHMENT.md",
+        "reports/scene_node_attachment_audit.json"
+      ]
+    },
+    {
+      "worker": "batch_preparation_worker",
+      "packet": "batch_preparation",
+      "function_addresses": [
+        "00b51df0",
+        "00b1cb30",
+        "00bf7456"
+      ],
+      "work": "Recover batch sort enable and unsigned64 material/texture/depth key, then generalize existing exact sort to accept either native comparator while retaining category1 API. Establish x87 depth-conversion semantics before any C++ cast.",
+      "owned_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/RENDER_BATCH_PREPARATION.md",
+        "reports/render_batch_preparation_audit.json"
+      ],
+      "depends_on": [
+        "instance_category_sort"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00bf7456",
+          "status": "ST0 depth conversion to EAX; rounding/overflow/nonfinite behavior unresolved."
+        },
+        {
+          "address": "00b1dce0",
+          "status": "Complete finite-depth pointer permutation implemented; primary delegates these sort files exclusively to this packet."
+        },
+        {
+          "address": "00b51b00",
+          "status": "Existing unsigned64 key predicate; mode0 needs key packing and comparator-parametric reuse."
+        },
+        {
+          "address": "00b1ebe0",
+          "status": "Command execution has current-context ownership/iteration/cleanup still unported."
+        },
+        {
+          "address": "00b1d950",
+          "status": "Renderer setup, camera/system constants, profiling and job-service dependencies remain."
+        },
+        {
+          "address": "00b45360",
+          "status": "Concrete material virtual14 dispatcher and downstream00b44750 are unimplemented; fixedNORMALprobe is not fullpassdispatch."
+        }
+      ],
+      "boundary": "Mode0 prefix uses effectB0 low6bits, optional firsttexture20 low12bits and effectC0 byte, shifts by37 then adds zeroextended EAX. Textureword only when signedmaterialcount34>0 andslot0nonnull. Other modes use material/depth predicate. No other worker may edit current sort files.",
+      "id": "batch_preparation",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "output_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/RENDER_BATCH_PREPARATION.md",
+        "reports/render_batch_preparation_audit.json"
+      ]
     }
   ],
   "snapshot_after_analysis": {
@@ -240,7 +611,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/mesh_material_validation.json",
+  "integration_report": "reports/instance_integration_validation.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -251,11 +622,11 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-10T02:16:51.516335+00:00",
+    "utc": "2026-09-10T03:22:56.096372+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
-    "total_function_count": 62763,
-    "internal_function_count": 62321,
+    "total_function_count": 62765,
+    "internal_function_count": 62323,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
@@ -401,111 +772,253 @@
       "worker": "primary",
       "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
       "validation": "reports/mesh_material_validation.json"
-    }
-  ],
-  "next_dispatch": [
+    },
     {
       "worker": "instance_geometry_worker",
       "packet": "generated_instance_geometry",
-      "function_addresses": [
-        "00b4c8d0"
-      ],
-      "work": "Recover native generated-geometry allocation, stream1 backing/flags/tag and ownership used twice by00b1dff0. Replace explicit host instance storage only after the native contract is closed.",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
       "owned_files": [
         "include/bsp/instance_geometry.hpp",
         "src/instance_geometry.cpp",
         "docs/GENERATED_INSTANCE_GEOMETRY.md",
         "reports/generated_instance_geometry_audit.json"
       ],
-      "named_but_incomplete_dependencies": [
-        {
-          "address": "00b4bc00",
-          "status": "mesh private flags1 path implemented; native instance allocation flags/registry may differ"
-        },
-        {
-          "address": "00b450d0",
-          "status": "building144-byte declaration and combined layout audited; generator object lifetime not ported"
-        },
-        {
-          "address": "00b1dff0",
-          "status": "group producer calls00b4c8d0 for two categories; primary owns larger visibility/grouping integration"
-        }
-      ],
-      "boundary": "Exact allocator function ownership; request helper expansion. Primary owns shared buffer/state classes and mesh probe. Coordinate typed generated-geometry contract with upload worker."
+      "validation": "reports/instance_integration_validation.json"
     },
     {
       "worker": "instance_upload_worker",
       "packet": "instance_group_upload",
-      "function_addresses": [
-        "00b1e990",
-        "00b85590"
-      ],
-      "work": "Recover two-category group loop: actual stream1 lock, generator writer dispatch per entry, declaration-stride advance, unlock, section instance count, entry construction and queue append. Preserve ordering and category1 sort.",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
       "owned_files": [
         "include/bsp/instance_upload.hpp",
         "src/instance_upload.cpp",
         "docs/INSTANCE_GROUP_UPLOAD.md",
         "reports/instance_group_upload_audit.json"
       ],
-      "named_but_incomplete_dependencies": [
-        {
-          "address": "00b55780",
-          "status": "building writer implemented and installedmesh exercised with host backing"
-        },
-        {
-          "address": "00b4c8d0",
-          "status": "allocator worker owns new geometry contract; do not infer backing/tag"
-        },
-        {
-          "address": "00b51cb0",
-          "status": "render-entry queue append requires bounded ownership review before full native upload/queue realization"
-        },
-        {
-          "address": "00b1dff0",
-          "status": "group producer and x87 fade remain primary-owned next integration"
-        }
-      ],
-      "boundary": "Upload/count functions only. Coordinate interfaces, do not edit allocator/shared renderer/queue files or substitute an invented per-frame allocator."
+      "validation": "reports/instance_integration_validation.json"
     },
     {
       "worker": "root_resource_worker",
       "packet": "registered_root_resource",
-      "function_addresses": [
-        "00b7f430",
-        "00b7f100"
-      ],
-      "work": "Move actual root control/Resource/Hierarchy/BoundingBox encounter-order dispatch into the registered resource path. Establish renderer begin/end hooks and current-resource writes; preserve repeated containers and explicit unknown skips.",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
       "owned_files": [
         "include/bsp/structured_model.hpp",
         "src/structured_model.cpp",
         "docs/REGISTERED_ROOT_RESOURCE.md",
         "reports/registered_root_resource_audit.json"
       ],
+      "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "worker": "completed_followon_worker",
+      "packet": "generated_material_clone",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "owned_files": [
+        "include/bsp/material_clone.hpp",
+        "src/material_clone.cpp",
+        "docs/GENERATED_MATERIAL_CLONE.md",
+        "reports/generated_material_clone_audit.json"
+      ],
+      "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "worker": "completed_followon_worker",
+      "packet": "instance_category_sort",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "owned_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/INSTANCE_CATEGORY_SORT.md",
+        "reports/instance_category_sort_audit.json"
+      ],
+      "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "worker": "primary",
+      "packet": "instance_grouping",
+      "state": "integrated_reviewed_build_and_installed_fixture_checked",
+      "owned_files": [
+        "include/bsp/instance_grouping.hpp",
+        "src/instance_grouping.cpp",
+        "docs/INSTANCE_GROUPING.md",
+        "reports/instance_grouping_audit.json"
+      ],
+      "validation": "reports/instance_integration_validation.json"
+    }
+  ],
+  "next_dispatch": [
+    {
+      "worker": "model_world_bounds_worker",
+      "packet": "model_world_bounds",
+      "function_addresses": [
+        "00b6e8c0",
+        "007c1180",
+        "007bb620"
+      ],
+      "work": "Recover native world-sphere cache and max-basis scale, reuse CameraTransform flags/world refresh and the existing affine point kernel. Preserve x87 stores and radius multiplication; establish explicit finite/CRT environment limits.",
+      "owned_files": [
+        "include/bsp/model_bounds.hpp",
+        "src/model_bounds.cpp",
+        "docs/MODEL_WORLD_BOUNDS.md",
+        "reports/model_world_bounds_audit.json"
+      ],
+      "depends_on": [
+        "instance_group_upload",
+        "registered_root_resource"
+      ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00b7e970",
-          "status": "registered wire dispatch implemented; native item objects/currentresource virtualappend separate"
+          "address": "004142e0",
+          "status": "Exact point kernel is private in instance_upload.cpp; primary must expose/reuse it in shared affine code."
         },
         {
-          "address": "00b88260",
-          "status": "native base resource constructor and ownership audited; host model must not impersonate native object ABI"
+          "address": "00b6db70",
+          "status": "World refresh exists in CameraTransform; use existing valid_flags/auxiliary_flags, do not duplicate them."
         },
         {
-          "address": "0071bb40",
-          "status": "typed classification and primary owning item array audited; integrate actual payload ownership only"
-        },
-        {
-          "address": "00b7eb90",
-          "status": "hierarchy item wire parser exists; containing branch/root lifecycle requires integration"
+          "address": "00bf7030",
+          "status": "CRT sqrt wrapper normal FSQRT path established; control-word/exception helpers00c083a5/00c083bc/00c08347 andreturntails remain unaudited."
         }
       ],
-      "boundary": "Disjoint structured-root functions; request exact renderer-hook helper ownership before expansion. Primary owns registry interfaces, existing probe, shared metadata and CMake."
+      "boundary": "Cache hits when EITHER auxiliary bit0x30 is set. Local sphere population remains an explicit producer contract; wire mesh sphere handlers consume/discard. Primary owns shared affine kernel promotion and probe integration.",
+      "id": "model_world_bounds",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "output_files": [
+        "include/bsp/model_bounds.hpp",
+        "src/model_bounds.cpp",
+        "docs/MODEL_WORLD_BOUNDS.md",
+        "reports/model_world_bounds_audit.json"
+      ]
+    },
+    {
+      "worker": "scene_attachment_worker",
+      "packet": "model_scene_attachment",
+      "function_addresses": [
+        "00b6ed80",
+        "00b83d50",
+        "00b83ec0",
+        "00b7aa70",
+        "006ef860",
+        "00b83700",
+        "00b83e50"
+      ],
+      "work": "Implement actual scene reference attachment, type-gated pointer registry and recursive child traversal. Close registry node lifetimes before assigning ownership; preserve detach/reload/publish/retain/release/reload/add order and post-callback sibling reload.",
+      "owned_files": [
+        "include/bsp/scene_attachment.hpp",
+        "src/scene_attachment.cpp",
+        "docs/SCENE_NODE_ATTACHMENT.md",
+        "reports/scene_node_attachment_audit.json"
+      ],
+      "depends_on": [
+        "generated_instance_geometry",
+        "instance_group_upload"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "006ef860",
+          "status": "Missing40B RET4 leaf checks token against runtimeIDs01090034/38/3C. RuntimeID initialization and subset meanings unresolved; do not hardcode eligibility."
+        },
+        {
+          "address": "00b823b0",
+          "status": "Node allocation/value construction; pointer-key registry ownership not yet proved."
+        },
+        {
+          "address": "00b83d90",
+          "status": "Range erase/destruction; subordinate node lifetime must be closed."
+        },
+        {
+          "address": "00b82d30",
+          "status": "List size/length-limit update has library-like name; review actual behavior."
+        },
+        {
+          "address": "00b83490",
+          "status": "Bucket iterator-pair storage growth."
+        },
+        {
+          "address": "00b82650",
+          "status": "Key equal-range lookup."
+        },
+        {
+          "address": "00b820b0",
+          "status": "Iterator-range count, currently library-classified."
+        },
+        {
+          "address": "00c03dbe",
+          "status": "Native hash division helper."
+        }
+      ],
+      "boundary": "Registry is unique pointer-key linear hashing with linked list/bucket intervals, not a tree. Gate token is runtime0109018C. Core has no direct world/cache flag writes. Request exact helper leases; primary owns CameraTransform/probe/shared metadata.",
+      "id": "model_scene_attachment",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "output_files": [
+        "include/bsp/scene_attachment.hpp",
+        "src/scene_attachment.cpp",
+        "docs/SCENE_NODE_ATTACHMENT.md",
+        "reports/scene_node_attachment_audit.json"
+      ]
+    },
+    {
+      "worker": "batch_preparation_worker",
+      "packet": "batch_preparation",
+      "function_addresses": [
+        "00b51df0",
+        "00b1cb30",
+        "00bf7456"
+      ],
+      "work": "Recover batch sort enable and unsigned64 material/texture/depth key, then generalize existing exact sort to accept either native comparator while retaining category1 API. Establish x87 depth-conversion semantics before any C++ cast.",
+      "owned_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/RENDER_BATCH_PREPARATION.md",
+        "reports/render_batch_preparation_audit.json"
+      ],
+      "depends_on": [
+        "instance_category_sort"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00bf7456",
+          "status": "ST0 depth conversion to EAX; rounding/overflow/nonfinite behavior unresolved."
+        },
+        {
+          "address": "00b1dce0",
+          "status": "Complete finite-depth pointer permutation implemented; primary delegates these sort files exclusively to this packet."
+        },
+        {
+          "address": "00b51b00",
+          "status": "Existing unsigned64 key predicate; mode0 needs key packing and comparator-parametric reuse."
+        },
+        {
+          "address": "00b1ebe0",
+          "status": "Command execution has current-context ownership/iteration/cleanup still unported."
+        },
+        {
+          "address": "00b1d950",
+          "status": "Renderer setup, camera/system constants, profiling and job-service dependencies remain."
+        },
+        {
+          "address": "00b45360",
+          "status": "Concrete material virtual14 dispatcher and downstream00b44750 are unimplemented; fixedNORMALprobe is not fullpassdispatch."
+        }
+      ],
+      "boundary": "Mode0 prefix uses effectB0 low6bits, optional firsttexture20 low12bits and effectC0 byte, shifts by37 then adds zeroextended EAX. Textureword only when signedmaterialcount34>0 andslot0nonnull. Other modes use material/depth predicate. No other worker may edit current sort files.",
+      "id": "batch_preparation",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "output_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/RENDER_BATCH_PREPARATION.md",
+        "reports/render_batch_preparation_audit.json"
+      ]
     }
   ],
   "current_partition": {
-    "utc": "2026-09-10T02:19:04.316903+00:00",
-    "candidates": 23728,
-    "segments": 99,
+    "utc": "2026-09-10T03:25:05.752091+00:00",
+    "candidates": 23700,
+    "segments": 98,
     "strong": 8,
     "scope": "Candidate graph hints only; exact function/fragment ownership and named incomplete dependencies remain mandatory."
   },
@@ -565,6 +1078,21 @@
         "primary": 1,
         "workers": 3
       }
+    },
+    {
+      "batch": "registered_model_instances",
+      "state": "installedroot_sharedinstance_upload_materialclone_sort_andqueuedNORMALdraw_checked; nativescene_andfullpassdispatch_remaining",
+      "report": "reports/instance_integration_validation.json",
+      "workers": [
+        "instance_geometry",
+        "instance_upload",
+        "root_resource"
+      ],
+      "concurrency_verified": {
+        "primary": 1,
+        "workers": 3
+      },
+      "coordination": "Isolated worker worktrees, exact address/file leases, primary shared integration and machineglobal Ghidra write lock."
     }
   ]
 }

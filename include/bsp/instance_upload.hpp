@@ -4,6 +4,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -19,6 +20,9 @@ struct GeneratedInstanceSection;
 struct InstanceUploadModel {
     GeneratedInstanceGeometry* geometry{};
     void* context{};
+    // Optional for direct borrowed uploads. A factory-created group requires
+    // this owner when context is nonnull, so the callback target stays alive.
+    std::shared_ptr<void> context_owner;
     bool (*attach_scene)(void*, const void* scene, bool recurse, std::string&){};
     bool (*world_sphere_center)(void*, std::array<float, 3>&, std::string&){};
 };
@@ -108,15 +112,17 @@ bool append_instance_render_entry_00b51cb0(InstanceRenderQueue&,
 // Original ECX context, RET, no stack args. Groups in list order; category0 then
 // category1. Empty counts skip everything. Source counts must match, pointers
 // and generator stride must be valid/stable, and callbacks cannot mutate lists.
-// Category1 uses the recovered material/depth predicate: <=32 entries preserve
-// native insertion order for ties; larger lists require distinct finite keys
-// (the native partition/heapsort tie permutation remains outside this port).
+// Category1 uses the complete recovered material/depth sort, including native
+// partition/heapsort tie permutations above32 entries. Depths must be finite.
 // Each category attaches(scene,false), sorts, locks stream1(count,0,false),
 // dispatches generator writes/stride advances, unlocks, sets section count,
 // initializes its retained output entry (0,visibility1/.5,depth0,flags555h), and
 // appends its actual pointer to the selected queue. Failure is not atomic:
 // previous categories remain queued, mapped streams are unlocked, and already
 // written bytes/callback state remain. Native ignores lock/generator failures.
+// Host capacity rejection happens before attach/lock. A failed attempted COM
+// lock is balanced using the physical depth increment; a preflight failure is
+// not unlocked. Neither error path silently rewinds the native cursor.
 HRESULT upload_instance_groups_00b1e990_fragment(D3D9StateCache&,
     InstanceUploadContext&, InstanceUploadStats&, std::string& error);
 }

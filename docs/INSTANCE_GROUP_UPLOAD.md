@@ -98,23 +98,28 @@ coordinated by the primary agent; this worker only records proposals/evidence.
 Category-one inputs use signed material order ascending and depth descending.
 For at most32 entries, `00b1dce0` selects `00b1d420`, whose strict comparisons
 and single-element rotation `00b1c210` preserve equivalent-item input order.
-The C++ insertion pass preserves that permutation. For larger lists, the current
-interface accepts finite, comparator-distinct keys: there is exactly one sorted
-permutation, independent of the native partition/heapsort implementation. Larger
-lists with ties and all nonfinite depths are rejected explicitly. The complete
-native large-list sort, its tie permutations and unordered behavior remain open.
+The upload now calls the complete recovered sort, including median/ninther pivot
+selection, equal-band partition movement and heap fallback. Larger lists retain
+the native tie permutations; they are not generally stable. The isolated native
+comparison passed90 runs and5652 pointer positions, including duplicate pointers
+and forced heap paths. See `INSTANCE_CATEGORY_SORT.md`. Nonfinite depths remain
+outside the typed sort domain.
 
 ## Valid domain and verification
 
 Counts must fit valid nonnegative native containers, source list size must match
-its active category count, and total stream bytes must fit a DWORD. Output entry
+its active category count, and total stream bytes must fit a DWORD and the
+remaining physical buffer capacity. Output entry
 must be distinct from source entries. Model/generator/geometry identities,
 declarations and list storage remain stable during callbacks. Callback failures
 and HRESULTs are host diagnostics; the native routine does not handle them.
 
 Failure is intentionally not transactional: previously queued categories remain,
 already performed scene changes and mapped writes remain, and a successful lock
-is unlocked during unwinding. Section count changes after upload; entry fields
+is unlocked during unwinding. Capacity rejection precedes attachment and locking.
+The physical lock helper increments depth even on an attempted COM failure;
+upload now balances that pair only when depth actually changed, leaving preflight
+failures alone and preserving the native cursor/dynamic-lock counters. Section count changes after upload; entry fields
 can be partly updated if the world-sphere callback fails. Queue append stores
 the original pointer. Native malformed containers, byte-size overflow and
 allocation-failure corruption paths are outside this interface.
@@ -122,5 +127,8 @@ allocation-failure corruption paths are outside this interface.
 Full bytes for upload(494), setter(10), entry constructor(139), append(60), reserve
 helper(98), and point transform(132) compare equal to the installed PE. The source
 compiles with MSVC Win32 `/std:c++17 /W4 /WX /fp:strict`; primary integration owns
-the full build and existing checks. No new tests were added. Standalone compilation
-and PE identity do not establish fixture, original-ABI or in-game validation.
+the full build and existing checks. No permanent test target was added. Final
+installed-model upload, both queued stream-offset/frequency checks, the focused
+capacity rejection and draw validation are recorded in `INSTANCE_INTEGRATION.md`
+and `reports/instance_integration_validation.json`. Native object ABI and full
+scene/gameplay behavior remain separate.

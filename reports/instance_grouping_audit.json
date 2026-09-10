@@ -1,0 +1,181 @@
+{
+  "utc": "2026-09-10T03:01:14.967261+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b1dff0",
+      "suggested_name": "BSP_RenderContext_CollectInstanceEntry",
+      "original_abi": "ECX context, stack entry pointer; RET4.",
+      "contract": "Descriptor16 gates visibility. Camera/modeled world translation distance and threshold fade multiply entry18. Skip below promotedfloat0.03. No binding routes actual entry pointer by faded/material queue. Binding+8 indexes retained group; creates category0 then1 once, modulo5 diffuse tint, reserves8 lists, count increment then ordered borrowed source pointer append. Typed fragment omits debug strings, exact native pool and model wrapper allocation.",
+      "code_identity": {
+        "address": "00b1dff0",
+        "length": 1720,
+        "sha256": "df649377f1b426eb5a4c70afd35cce4f6696d7607ab888ccf0bfe8e9b5ebbc40",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1dff0 at 00b1dff0\nSignature: undefined FUN_00b1dff0(void)\nEntry: 00b1dff0\nBody: 00b1dff0 - 00b1e6a7",
+      "assembly_export": "exports/bsp/functions/00b1dff0/assembly.txt"
+    },
+    {
+      "address": "00419440",
+      "suggested_name": "BSP_Vector3f_Length",
+      "original_abi": "ECX three-float vector; x87 ST0 float result; RET.",
+      "contract": "Stores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate.",
+      "code_identity": {
+        "address": "00419440",
+        "length": 98,
+        "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00419440 at 00419440\nSignature: undefined FUN_00419440(void)\nEntry: 00419440\nBody: 00419440 - 004194a1",
+      "assembly_export": "exports/bsp/functions/00419440/assembly.txt"
+    },
+    {
+      "address": "00b73770",
+      "suggested_name": "BSP_StreamParameters_ComputeThresholdFade",
+      "original_abi": "ECX stream parameters; stack floatinput,floatfraction; ST0; RET8.",
+      "contract": "Index+50 selects default3f7eb852 or float+4+16*index. Widthfloatstore then x87 final subtraction/reciprocal/product, finalfloatstore and ordered clamp0..1; NaN passes. Typed API takes the actual resolved threshold; grouping caller multiplies without interveningfloatstores.",
+      "code_identity": {
+        "address": "00b73770",
+        "length": 139,
+        "sha256": "fdc084707cea40aba2b2da3f0a61755e0b36afb3c2db9635cea0cb3955123954",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: BSP_StreamParameters_ComputeThresholdFade at 00b73770\nSignature: undefined BSP_StreamParameters_ComputeThresholdFade(void)\nEntry: 00b73770\nBody: 00b73770 - 00b737fa",
+      "assembly_export": "exports/bsp/functions/00b73770/assembly.txt"
+    },
+    {
+      "address": "00b1d6f0",
+      "suggested_name": "BSP_InstanceGroup_Construct",
+      "original_abi": "ECX fresh4Ch group; EAX group; RET.",
+      "contract": "Zero binding and native string header, construct two threeDWORD source arrays at24/30, zero two counts, outputentries and generatedmodels. Host uses pinned owning group and output entries rather than native rawpool ABI.",
+      "code_identity": {
+        "address": "00b1d6f0",
+        "length": 104,
+        "sha256": "7660926333bb58da5ca7f6fd9bfec64ff039e6a568587a796bbf4de6dedff602",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: CG_array_ctor_helper_00b1d6f0 at 00b1d6f0\nSignature: undefined CG_array_ctor_helper_00b1d6f0(void)\nEntry: 00b1d6f0\nBody: 00b1d6f0 - 00b1d757",
+      "assembly_export": "exports/bsp/functions/00b1d6f0/assembly.txt"
+    },
+    {
+      "address": "00b1ca50",
+      "suggested_name": "BSP_InstanceBinding_AssignRetained",
+      "original_abi": "ECX destination pointer cell, EDX source cell; EAX destination; RET.",
+      "contract": "On identitychange store incomingpointer, InterlockedIncrement incoming+4 before InterlockedDecrement old+4, call oldvirtual0 on zero. Host shared binding retains native reachability, not exact refcountlayout.",
+      "code_identity": {
+        "address": "00b1ca50",
+        "length": 59,
+        "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1ca50 at 00b1ca50\nSignature: undefined FUN_00b1ca50(void)\nEntry: 00b1ca50\nBody: 00b1ca50 - 00b1ca8a",
+      "assembly_export": "exports/bsp/functions/00b1ca50/assembly.txt"
+    },
+    {
+      "address": "00b1c500",
+      "suggested_name": "BSP_InstanceEntryPointers_Reserve",
+      "original_abi": "ECX pointerarray {data,count,capacity}, stack requestedcapacity; RET4.",
+      "contract": "Clamprequestminimum1, growonly, allocate4*capacity, copy existing borrowed pointers in order, freeold, publishdata/capacity. Verified returning continuation restored after misclassified free call.",
+      "code_identity": {
+        "address": "00b1c500",
+        "length": 95,
+        "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1c500 at 00b1c500\nSignature: undefined FUN_00b1c500(void)\nEntry: 00b1c500\nBody: 00b1c500 - 00b1c55e",
+      "assembly_export": "exports/bsp/functions/00b1c500/assembly.txt"
+    },
+    {
+      "address": "00b1c660",
+      "suggested_name": "BSP_InstanceGroupPointers_Reserve",
+      "original_abi": "ECX pointerarray {data,count,capacity}, stack requestedcapacity; RET4.",
+      "contract": "Same4-byte borrowedpointer grow/copy/free/publishalgorithm as instanceentryarray. Verified returning continuation restored after misclassified free call. Caller uses it for indexedgroupstorage and orderedgrouptraversal.",
+      "code_identity": {
+        "address": "00b1c660",
+        "length": 95,
+        "sha256": "bbef96f1a2d08755ee1eeb55e920111010dd72249c49005d6f47a92945a05b65",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1c660 at 00b1c660\nSignature: undefined FUN_00b1c660(void)\nEntry: 00b1c660\nBody: 00b1c660 - 00b1c6be",
+      "assembly_export": "exports/bsp/functions/00b1c660/assembly.txt"
+    },
+    {
+      "address": "00b1c7c0",
+      "suggested_name": "BSP_InstanceGroupPointers_ResizeCleared",
+      "original_abi": "ECX pointerarray, stack signednewcount; RET4.",
+      "contract": "Reserveexactnewcount if needed; initialize every newlyexposed pointer to zero; shrink count without freeing pointedobjects; assignnewcount. Typed grouping by-binding vector mirrors validnonnegative index semantics.",
+      "code_identity": {
+        "address": "00b1c7c0",
+        "length": 80,
+        "sha256": "eaa0a54de99c18d84f790db994ecc7d5445472a7b9db25293995f648f8b2ef9b",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1c7c0 at 00b1c7c0\nSignature: undefined FUN_00b1c7c0(void)\nEntry: 00b1c7c0\nBody: 00b1c7c0 - 00b1c80f",
+      "assembly_export": "exports/bsp/functions/00b1c7c0/assembly.txt"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "pe_live_match": true,
+      "value": "float1"
+    },
+    {
+      "address": "00ce4d70",
+      "length": 8,
+      "sha256": "c30d5efd01ab79c7da031ce3f5237bd3e1de500d22bfbf0da3b79ea25256aacc",
+      "pe_live_match": true,
+      "value": "double200"
+    },
+    {
+      "address": "00ceb690",
+      "length": 8,
+      "sha256": "a5e77ff708c82a01240376c3c8bfa846ced3267567a4f9ac9867e78da390d415",
+      "pe_live_match": true,
+      "value": "double0.029999999329447746"
+    },
+    {
+      "address": "00ce77dc",
+      "length": 4,
+      "sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+      "pe_live_match": true,
+      "value": "floatbits3f7eb852"
+    }
+  ],
+  "source_files": {
+    "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+    "src/instance_grouping.cpp": "06c4328b8c7cd75af5c3d8e9f41e41efc151508145dc2b8b17324e8177b67aa9"
+  },
+  "status": "typed_fragment_integrated_build_and_fixture_checked",
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Nativeworldrefresh is explicitcallerinput.",
+    "CRT sqrt error diagnostics omitted; finiteposition core only.",
+    "Sourceentry pointers borrowed until queues consumed.",
+    "Pinned hostgroup/outputstorage replaces4Ch nativepool and globalatomicentrypool.",
+    "Required factory retains actualtypedclone/modelcontext; nativefullscenegraph/objectABI remains separate.",
+    "Diagnosticgroup strings omitted.",
+    "Maskedfloatingexception domain; native x87 controls restored for conversion."
+  ],
+  "worker_source_files": {
+    "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+    "src/instance_grouping.cpp": "06c4328b8c7cd75af5c3d8e9f41e41efc151508145dc2b8b17324e8177b67aa9"
+  },
+  "primary_integration": {
+    "validation": "reports/instance_integration_validation.json",
+    "annotations": "reports/instance_integration_annotations.json",
+    "scope": "Installed owning model root -> materialclone -> retained shared dynamic instance geometry -> ordered grouping/upload -> actual queued NORMAL diagnostic draws. Host scene/model context is explicit; native batch key preparation/full command execution/passselection and gameplay remain separate.",
+    "annotations_applied": true,
+    "annotations_saved_and_exports_refreshed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

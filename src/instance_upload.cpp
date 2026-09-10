@@ -1,6 +1,6 @@
 #include "bsp/instance_upload.hpp"
 #include "bsp/instance_geometry.hpp"
-#include "bsp/render_sort.hpp"
+#include "bsp/instance_sort.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -66,49 +66,6 @@ void transform_point_004142e0(const std::array<float, 3>& point,
         fadd dword ptr [ecx + 56]
         fstp dword ptr [eax + 8]
     }
-}
-
-bool entry_less(const InstanceRenderEntry* left, const InstanceRenderEntry* right) {
-    return render_entry_material_value_less_00b51ab0(
-        {left->sort_key, left->section->material_order, left->depth},
-        {right->sort_key, right->section->material_order, right->depth});
-}
-
-bool sort_category_one(std::vector<InstanceRenderEntry*>& entries, std::string& error) {
-    for (const auto* entry : entries) {
-        if (!entry || !entry->section || !std::isfinite(entry->depth)) {
-            error = "Instance category1 requires valid entries and finite sort depths";
-            return false;
-        }
-    }
-    if (entries.size() <= 32) {
-        //00b1dce0 selects00b1d420 at<=32. Its strict comparisons and single
-        // element00b1c210 rotations insert before the first larger item while
-        // retaining the input order of equivalent material/depth records.
-        for (std::size_t at = 1; at < entries.size(); ++at) {
-            auto* value = entries[at];
-            auto destination = at;
-            while (destination && entry_less(value, entries[destination - 1])) {
-                entries[destination] = entries[destination - 1];
-                --destination;
-            }
-            entries[destination] = value;
-        }
-        return true;
-    }
-    // Distinct finite keys have one possible sorted permutation, independent
-    // of the unported native partition/heapsort strategy. Ties are rejected
-    // before replacing the original list; no native tie ordering is invented.
-    auto sorted = entries;
-    std::sort(sorted.begin(), sorted.end(), entry_less);
-    for (std::size_t at = 1; at < sorted.size(); ++at) {
-        if (!entry_less(sorted[at - 1], sorted[at])) {
-            error = "Native category1 tie permutation above32 entries is not reconstructed";
-            return false;
-        }
-    }
-    entries.swap(sorted);
-    return true;
 }
 
 struct StreamUnlock {
@@ -228,6 +185,12 @@ HRESULT upload_instance_groups_00b1e990_fragment(D3D9StateCache& states,
                 error = "Generated stream1 and generator declaration have invalid byte bounds";
                 return D3DERR_INVALIDCALL;
             }
+            const auto bytes = category.instance_count * stride;
+            if (stream->physical->cursor > stream->physical->capacity
+                || bytes > stream->physical->capacity - stream->physical->cursor) {
+                error = "Instance upload exceeds the remaining shared vertex capacity";
+                return D3DERR_INVALIDCALL;
+            }
             for (auto* entry : category.source_entries) {
                 if (!entry || entry == category.output_entry) {
                     error = "Instance source entries must be valid and distinct from the output entry";
@@ -240,13 +203,22 @@ HRESULT upload_instance_groups_00b1e990_fragment(D3D9StateCache& states,
                 if (error.empty()) error = "Generated model scene attachment failed";
                 return E_FAIL;
             }
-            if (category_index && !sort_category_one(category.source_entries, error))
+            if (category_index && !sort_instance_entries_00b1dce0(category.source_entries, error))
                 return D3DERR_INVALIDCALL;
 
             void* mapped = nullptr;
+            const auto lock_depth_before = stream->physical->lock_depth;
             const auto lock_result = states.lock_vertex_stream_00b49980(*stream,
                 category.instance_count, 0, false, mapped);
-            if (FAILED(lock_result)) return lock_result;
+            if (FAILED(lock_result)) {
+                // The physical helper increments depth after an attempted COM
+                // Lock even on failure. Preflight failures do not increment it.
+                // Balance only the attempted pair; preserve native cursor and
+                // dynamic-lock counters instead of inventing a rewind.
+                if (stream->physical->lock_depth != lock_depth_before)
+                    states.unlock_vertex_stream_00b49a80(*stream);
+                return lock_result;
+            }
             StreamUnlock unlock{states, *stream};
             if (!mapped) {
                 error = "Generated instance stream lock returned no mapped address";

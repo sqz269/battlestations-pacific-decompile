@@ -84,7 +84,7 @@
   "status": {
     "reconstructed": true,
     "standalone_msvc_win32_compiled": true,
-    "build_tested": false,
+    "build_tested": true,
     "native_differential_tested": true,
     "abi_compatible": false,
     "game_validated": false
@@ -95,80 +95,90 @@
       "old_name": "FUN_00b1dce0",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_SortIntrospective",
-      "applied": false,
-      "proposed_comment": "Insertion at count<=32; otherwise median equal-band partition, ideal=floor(ideal/2)+floor(ideal/4), smaller-side recursion/right-on-tie, heap fallback at ideal<=0. Native category1 caller initializes ideal=count. Typed full finite-domain pointer sort;90 native differential runs match5652 pointer positions including ties/heap fallback. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Insertion at count<=32; otherwise median equal-band partition, ideal=floor(ideal/2)+floor(ideal/4), smaller-side recursion/right-on-tie, heap fallback at ideal<=0. Native category1 caller initializes ideal=count. Typed full finite-domain pointer sort;90 native differential runs match5652 pointer positions including ties/heap fallback. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1d420",
       "old_name": "FUN_00b1d420",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_InsertionSort",
-      "applied": false,
-      "proposed_comment": "Stable strict-predicate insertion: first-element sentinel, predecessor/backwards scan then00b1c210 single-element rotation. Native<=32 tail of00b1dce0. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Stable strict-predicate insertion: first-element sentinel, predecessor/backwards scan then00b1c210 single-element rotation. Native<=32 tail of00b1dce0. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1c210",
       "old_name": "FUN_00b1c210",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_RotatePointers",
-      "applied": false,
-      "proposed_comment": "Rotate pointer-slot[first,middle),[middle,last) by gcd cycles; native starts cycle at first+gcd then decrements. Used by00b1d420 insertion. Original ABI: ECX first,EDX middle; stack last,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Rotate pointer-slot[first,middle),[middle,last) by gcd cycles; native starts cycle at first+gcd then decrements. Used by00b1d420 insertion. Original ABI: ECX first,EDX middle; stack last,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1d280",
       "old_name": "FUN_00b1d280",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_PartitionEqualPivot",
-      "applied": false,
-      "proposed_comment": "Median pivot with existing equal-band expansion, outward scans and explicit two-swap equal-band slides. Returns equal range in output pair. Preserves native large-list equivalent-pointer permutation. Original ABI: ECX output pair,EDX first; stack last,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Median pivot with existing equal-band expansion, outward scans and explicit two-swap equal-band slides. Returns equal range in output pair. Preserves native large-list equivalent-pointer permutation. Original ABI: ECX output pair,EDX first; stack last,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1cf80",
       "old_name": "FUN_00b1cf80",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_ChooseMedianPivot",
-      "applied": false,
-      "proposed_comment": "Median3 first/middle/final when final-first<=40 pointers; count>=42 uses count/8 step,three triples then median of their middles. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Median3 first/middle/final when final-first<=40 pointers; count>=42 uses count/8 step,three triples then median of their middles. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1c8c0",
       "old_name": "FUN_00b1c8c0",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_OrderThreeSamples",
-      "applied": false,
-      "proposed_comment": "Unconditional three strict comparisons in middle/first,final/middle,middle/first order, swapping when comparatorAL true. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Unconditional three strict comparisons in middle/first,final/middle,middle/first order, swapping when comparatorAL true. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1c910",
       "old_name": "FUN_00b1c910",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_AdjustHeap",
-      "applied": false,
-      "proposed_comment": "Descend heap hole choosing left only if right<left; equivalent children choose right. Move lone left child when present,then00b1c1b0 pushes saved value up from hole to original top. Original ABI: ECX first,EDX hole; stack length,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Descend heap hole choosing left only if right<left; equivalent children choose right. Move lone left child when present,then00b1c1b0 pushes saved value up from hole to original top. Original ABI: ECX first,EDX hole; stack length,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1c1b0",
       "old_name": "FUN_00b1c1b0",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_PushHeap",
-      "applied": false,
-      "proposed_comment": "Push saved heap value upward while parent<value and hole>top; equivalent parent stops. Stores saved value at final hole. Original ABI: ECX first,EDX hole; stack top,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Push saved heap value upward while parent<value and hole>top; equivalent parent stops. Stores saved value at final hole. Original ABI: ECX first,EDX hole; stack top,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1d020",
       "old_name": "FUN_00b1d020",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_MakeHeap",
-      "applied": false,
-      "proposed_comment": "Build max heap from count/2-1 through0 using00b1c910. RET0Ch includes two unused stack words after comparator. Original ABI: ECX first,EDX last; stack comparator,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Build max heap from count/2-1 through0 using00b1c910. RET0Ch includes two unused stack words after comparator. Original ABI: ECX first,EDX last; stack comparator,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b1d6a0",
       "old_name": "FUN_00b1d6a0",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntries_SortHeap",
-      "applied": false,
-      "proposed_comment": "Pop root into last slot,adjust saved former last into reduced heap,repeat until length<=1. Uses00b1c910. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim."
+      "applied": true,
+      "proposed_comment": "Pop root into last slot,adjust saved former last into reduced heap,repeat until length<=1. Uses00b1c910. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim.",
+      "worker_applied_before_integration": false
     }
   ],
   "native_differential": {
@@ -208,7 +218,12 @@
     "permanent_tests_added": false,
     "fixture_source_sha256": "666f553a7e09c57813eb56fd5acfb1e347bede4565c28f67bcd3632059734f8b",
     "byte_header_sha256": "a54bcb5cd4184dc238d8b1da088542c3d3e3a193f98d4c217848d6328a34581c",
-    "fixture_exe_sha256": "7b99530b6cf48ca748f58d10f9f573e466faddfe4b089e117755c46ce508b9f8"
+    "fixture_exe_sha256": "7b99530b6cf48ca748f58d10f9f573e466faddfe4b089e117755c46ce508b9f8",
+    "primary_rerun": {
+      "exit_code": 0,
+      "result": "Native instance sort differential: cases=90 forced_heap=30 pointer_positions=5652 exact_permutation=1 finite_guard=1",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-bsp_instance_upload"
+    }
   },
   "source_files": {
     "include/bsp/instance_sort.hpp": "1c420be6947329b1bc0638c16aebf0c1e5394687d2b3d3e720340721a0a0bf6c",
@@ -232,7 +247,22 @@
     "Comparator is the established projected00b51ab0 signed-material/depth predicate; native object graph traversal is outside this fixture.",
     "Finite depths and stable valid entry/section objects are required; invalid values rejected before mutation.",
     "Count times4 must fit INT32_MAX native pointer-distance arithmetic.",
-    "Native algorithm agreement is limited to the recorded90-run corpus, not an exhaustive proof or game rendering validation.",
-    "Main integration and full build remain primary-owned."
-  ]
+    "Native algorithm agreement is limited to the recorded90-run corpus, not an exhaustive proof or game rendering validation."
+  ],
+  "worker_source_files": {
+    "include/bsp/instance_sort.hpp": "1c420be6947329b1bc0638c16aebf0c1e5394687d2b3d3e720340721a0a0bf6c",
+    "src/instance_sort.cpp": "58bb2c01ab63950aa0865cf2cebf0bab441f81943e40de3f60b29aaa6e04dfe5",
+    "docs/INSTANCE_CATEGORY_SORT.md": "cae7c81733d01d4edd30216108ce89b9f9855fe84a4a005a927655d7ed9f0fd2"
+  },
+  "primary_integration": {
+    "validation": "reports/instance_integration_validation.json",
+    "annotations": "reports/instance_integration_annotations.json",
+    "scope": "Installed owning model root -> materialclone -> retained shared dynamic instance geometry -> ordered grouping/upload -> actual queued NORMAL diagnostic draws. Host scene/model context is explicit; native batch key preparation/full command execution/passselection and gameplay remain separate.",
+    "annotations_applied": true,
+    "annotations_saved_and_exports_refreshed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }

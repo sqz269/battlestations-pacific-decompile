@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "registered_root_resource",
-  "status": "implemented_pending_primary_build_and_installed_probe",
+  "status": "typed_fragment_integrated_build_and_fixture_checked",
   "identity": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -100,16 +100,16 @@
       "proposed_comment": "SEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json."
     }
   ],
-  "ghidra_mutations": false,
-  "source_files": [
-    "include/bsp/structured_model.hpp",
-    "src/structured_model.cpp"
-  ],
+  "ghidra_mutations": true,
+  "source_files": {
+    "include/bsp/structured_model.hpp": "eed27ba6a3a83906001c363d394c800d8cae594dbde135f1ca0e4e643b7dc552",
+    "src/structured_model.cpp": "05453a58bcaee515076eeb551a8cdcf8ac444dfa8cf5e70d7689798288285b33"
+  },
   "validation": {
     "live_code_matches_installed_pe": true,
     "source_implemented": true,
-    "build_tested": false,
-    "fixture_tested": false,
+    "build_tested": true,
+    "fixture_tested": true,
     "native_differential_tested": false,
     "abi_compatible": false,
     "game_validated": false
@@ -222,5 +222,21 @@
         "00b28429 stores singleton-subobject table00d5e76c at[EDI];00b2842f stores primary base renderer table00d5e628 at[ESI]."
       ]
     }
-  ]
+  ],
+  "worker_source_files": [
+    "include/bsp/structured_model.hpp",
+    "src/structured_model.cpp"
+  ],
+  "primary_integration": {
+    "validation": "reports/instance_integration_validation.json",
+    "annotations": "reports/instance_integration_annotations.json",
+    "scope": "Installed owning model root -> materialclone -> retained shared dynamic instance geometry -> ordered grouping/upload -> actual queued NORMAL diagnostic draws. Host scene/model context is explicit; native batch key preparation/full command execution/passselection and gameplay remain separate.",
+    "annotations_applied": true,
+    "annotations_saved_and_exports_refreshed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_ghidra_mutations_before_integration": false
 }

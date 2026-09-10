@@ -148,3 +148,23 @@ The next three bounded packets are generated instance geometry00b4c8d0,
 instance upload/count00b1e990/00b85590, and root resource00b7f430/00b7f100.
 The primary coordinates shared types and the larger00b1dff0 grouping/fade path.
 Use `config/parallel_work.json` for disjoint ownership and incomplete dependencies.
+
+## Registered model and instance batch
+
+The generated geometry, upload and registered root packets are integrated, along
+with the primary visibility/grouping fragment. Completed workers then closed
+material cloning and the full native category-one sort. Independent reviews
+checked retained model contexts, destruction order, failed-lock bookkeeping,
+ordinary material defaults, root-bound checks and per-draw device bindings.
+The Win32 build, existing checks, installed reader/draw and native sort corpus
+pass; exact evidence and limits are in `INSTANCE_INTEGRATION.md` and
+`reports/instance_integration_validation.json`.
+
+The next three packets are model world bounds, scene-node attachment/registry
+closure, and render-batch key preparation. They have disjoint native functions
+and file ownership. World bounds reuses `CameraTransform` flags and requires the
+primary to expose the existing point-transform kernel. Batch preparation owns
+the current sort files for comparator reuse; other workers must not modify them.
+Scene registry type IDs and subordinate node ownership require evidence before
+implementation. Native full command execution and material pass selection are
+still outside the controlled NORMAL diagnostic.

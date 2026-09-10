@@ -29,6 +29,7 @@ target_sources(bsp_core PRIVATE src/physical_file.cpp)
 target_sources(bsp_core PRIVATE src/memory_stream.cpp)
 target_sources(bsp_core PRIVATE src/structured_reader.cpp src/structured_resource.cpp src/structured_hierarchy.cpp)
 target_sources(bsp_core PRIVATE src/compiled_material.cpp src/mesh_decode_bindings.cpp src/mesh_gpu_streams.cpp src/building_instance.cpp src/resource_parser_map.cpp src/structured_resource_registry.cpp)
+target_sources(bsp_core PRIVATE src/instance_geometry.cpp src/instance_upload.cpp src/instance_grouping.cpp src/structured_model.cpp src/material_clone.cpp src/instance_sort.cpp)
 
 target_sources(bsp_core PRIVATE src/mesh_buffers.cpp src/mesh_fields.cpp src/mesh_resource.cpp src/vertex_format.cpp)
 target_sources(bsp_core PRIVATE src/stream_scalars.cpp src/font_data.cpp src/d3d9_reset_texture.cpp)

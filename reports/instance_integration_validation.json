@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "utc": "2026-09-10T03:37:47.978087+00:00",
+  "batch": "registered_model_instance_integration",
+  "repository_head_at_report_finalization": "974b3f5ad0d486c46b5691f9e7281126a87c029b",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_binary_unchanged": true
+  },
+  "status": {
+    "exported": true,
+    "reconstructed_scoped_fragments": true,
+    "build_tested": true,
+    "installed_fixture_tested": true,
+    "native_sort_differential_tested": true,
+    "native_object_abi_compatible": false,
+    "game_validated": false,
+    "runnable_game_rebuild": false
+  },
+  "integrated_scopes": [
+    "generated_instance_geometry",
+    "instance_group_upload",
+    "registered_root_resource",
+    "generated_material_clone",
+    "instance_category_sort",
+    "instance_grouping"
+  ],
+  "source_sha256": {
+    "CMakeLists.txt": "6ee7194cf60b8932dc21f790a646b34d2c5f8031cf3dd3d1434ae81b2150bad1",
+    "src/d3d9_mesh_probe.cpp": "a7d3b4664fcd1c7cf56c8ad1f5cf7a3b0adc2c61de5afab88704aeab84740ee6",
+    "src/structured_resource_probe.cpp": "673b2ad47557798266d4e2e311a949848f9640dc3c427c9618faf715aab54927",
+    "include/bsp/instance_geometry.hpp": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4",
+    "src/instance_geometry.cpp": "2eff689daae905e776b7c23c2599faa5b50a96995a4d7d6804dd6fe9d0b01cff",
+    "include/bsp/instance_upload.hpp": "528ae2b368b1611ea674968ee70f604352c05dcd1ab5b2648e9c44589667a10b",
+    "src/instance_upload.cpp": "c7c865a7246c2e82edba97ec2649c4270698327f4e116e45dd64b2946a704139",
+    "include/bsp/structured_model.hpp": "eed27ba6a3a83906001c363d394c800d8cae594dbde135f1ca0e4e643b7dc552",
+    "src/structured_model.cpp": "05453a58bcaee515076eeb551a8cdcf8ac444dfa8cf5e70d7689798288285b33",
+    "include/bsp/material_clone.hpp": "2acc8e3a63f67fa2a7e1c8fab6252464845ba41b80f46b953616d7666b847c55",
+    "src/material_clone.cpp": "01ff2dbb1b015535c5b5ce943291fff5a1c200a92c4befd1687f28615a96c134",
+    "include/bsp/instance_sort.hpp": "1c420be6947329b1bc0638c16aebf0c1e5394687d2b3d3e720340721a0a0bf6c",
+    "src/instance_sort.cpp": "58bb2c01ab63950aa0865cf2cebf0bab441f81943e40de3f60b29aaa6e04dfe5",
+    "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+    "src/instance_grouping.cpp": "06c4328b8c7cd75af5c3d8e9f41e41efc151508145dc2b8b17324e8177b67aa9"
+  },
+  "documentation_sha256": {
+    "docs/INSTANCE_INTEGRATION.md": "430175a096963d243d2727539c9583858e69a7327368cd44093ac9f8f48ba824",
+    "docs/INSTANCE_GROUPING.md": "4d3c8c951eb8d230400acb4a218f59870a9a671b199257fcebf85c091ec09b2e",
+    "docs/INSTANCE_GROUP_UPLOAD.md": "ae9c3e4888ff5be9a95eed88475f0814da9374eb7dc9f9f66551968b70c97100"
+  },
+  "artifact_sha256": {
+    "build/win32/Release/bsp_core.lib": "f472cf2f719e53e35fffead239a4db558234a7e0298a662414d8f10148c93215",
+    "build/win32/Release/bsp_d3d9_probe.exe": "67b2eb3e05b92fce10ebd7f8f0aaf400016f6d60b53dadfc1ee05054e0ea08eb",
+    "build/win32/Release/bsp_math_tests.exe": "179d7d771f3a092c567eaf13bca245021bd3741c54c71ef8e027f24fab9253b0",
+    "build/win32/Release/bsp_native_math_tests.exe": "715e93cb6a8820c7415b8aa68f0bfb068c7bbe1aff28e2e10b96eefbb4887f8a",
+    "reports/instance_integration_build.txt": "a34a92910e58a69a8c3fd35dbffba7cb90432036c04650385e7933e9278b7c4a",
+    "reports/instance_integration_reader.txt": "cade979b786a659b3a0edab04701bc66085df1f88a06616b4e5034cb67c0d620",
+    "reports/instance_integration_probe.txt": "17426dc7e8a6087dccf8c685c172b43195297bd5c0f83ea0aa8285c850c3ff91",
+    "reports/instance_integration_readback.bmp": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+    "reports/instance_integration_annotations.json": "b61999b2517e3f1cc07f6b784a6fa569ef71a459200d36df7613edfd8a6076f2",
+    "reports/instance_integration_review.json": "b085dc7e43a7f4fd6d40c4a8d813677f1f0ddf55c0430c17f798fa96f69ee6e3",
+    "reports/instance_integration_native_identity.json": "c45d79e9170d8f070d6b689f849c383df69c6d2cceb1df9ed9fa19e8ddb114a7",
+    "reports/library_inventory/candidate_partition.json": "6b5319e30064bccf914ba216dac0c6218565e73d7c7b61b8d0e742c2e2b6dbd9",
+    "reports/library_inventory/candidate_partition.md": "c5eb8c13964716e17f465b22cbf58132e2676ea8f49162ef00bab618ff349841",
+    "reports/generated_instance_geometry_audit.json": "39623947190b4481c5aef56ce45d57cbb2d640dddd153ca941e90ad352f911a3",
+    "reports/instance_group_upload_audit.json": "f802f490fe1872e7856fdb77592e0e289a844ace20d3d1dab9f64626aec6162f",
+    "reports/registered_root_resource_audit.json": "b90d1f9d181d0352411b7c3fa23f966973410367ecad5564efc6f82ab8c51b2d",
+    "reports/generated_material_clone_audit.json": "d420f255e954522c4d83cf0bd11ee6b209125c7171b65a34ca8de5733fa14bc0",
+    "reports/instance_category_sort_audit.json": "5df924cac3a329cc9a9600831e25e0e41ea9f86e927615f2c6ef53b20310a0bd",
+    "reports/instance_grouping_audit.json": "5f65c80a3251ba6247639a09074564537dc076e5ce2999cf112ae6327da9fc0a"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "platform": "MSVC Win32",
+    "flags": "/W4 /WX /fp:strict",
+    "existing_ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_permanent_test_targets": 0
+  },
+  "installed_reader": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe --structured-resource \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+    "exit_code": 0,
+    "root_resources": 3,
+    "hierarchy_items": 1,
+    "root_tags": 4,
+    "root_bounds_checked": true,
+    "begin_end_calls": [
+      1,
+      1
+    ],
+    "file_bytes_consumed": 1303
+  },
+  "installed_gpu_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds\"",
+    "exit_code": 0,
+    "instance_groups": 1,
+    "categories": 2,
+    "building_records": 2,
+    "queued_entries": 2,
+    "shared_dynamic_vertex_bytes": 16777216,
+    "stream_1_offsets": [
+      0,
+      144
+    ],
+    "registered_streams": 2,
+    "distinct_material_clones": true,
+    "capacity_rejection_checked": true,
+    "per_queued_entry_gpu_bindings_checked": 2,
+    "mesh_visible_pixels": 2499,
+    "mesh_colors": 54,
+    "font_visible_pixels": [
+      74,
+      900
+    ],
+    "device_state_restored": true
+  },
+  "native_sort_differential": {
+    "cases": 90,
+    "normal_budget_runs": 60,
+    "forced_heap_runs": 30,
+    "pointer_positions_compared": 5652,
+    "exact_pointer_permutation_match": true,
+    "nonfinite_guard_checked": true,
+    "primary_rerun_exit_code": 0,
+    "primary_rerun_result": "Native instance sort differential: cases=90 forced_heap=30 pointer_positions=5652 exact_permutation=1 finite_guard=1",
+    "verified_native_function_ranges": 10,
+    "corpus_and_binary_hashes": "reports/instance_category_sort_audit.json"
+  },
+  "fixture_inspection": {
+    "installed_model_sha256": "5fab0cfe63220f84693cae4140fc98689670316585993dae71bd4f503bc7a7e6",
+    "root_children": [
+      {
+        "tag": "BoundingSphere",
+        "header": 16,
+        "data": 38,
+        "length": 16
+      },
+      {
+        "tag": "BoundingBox",
+        "header": 54,
+        "data": 73,
+        "length": 24,
+        "words": [
+          "bea01636",
+          "bf011209",
+          "c01ef14a",
+          "3ea01636",
+          "3f011209",
+          "401ef14a"
+        ]
+      },
+      {
+        "tag": "Resource",
+        "header": 97,
+        "data": 113,
+        "length": 889
+      },
+      {
+        "tag": "Hierarchy",
+        "header": 1002,
+        "data": 1019,
+        "length": 284
+      }
+    ],
+    "current_rgb_equal_prior": true,
+    "current_rgb_channel_extrema": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        9
+      ]
+    ]
+  },
+  "analysis": {
+    "snapshot": {
+      "utc": "2026-09-10T03:22:56.096372+00:00",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "total_function_count": 62765,
+      "internal_function_count": 62323,
+      "external_symbol_count": 443,
+      "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+    },
+    "reviewed_names_in_current_ledger": 765,
+    "function_reconstructions_in_current_ledger": 174,
+    "fragments_in_current_ledger": 168,
+    "tag_records_in_current_ledger": 10333,
+    "annotations_applied_this_batch": 40,
+    "unique_pe_matched_ranges_this_batch": 50,
+    "false_no_return_continuations_restored": 3,
+    "concrete_root_hooks_defined": 2,
+    "candidate_count": 23700,
+    "candidate_segments": 98,
+    "strong_candidate_segments": 8,
+    "concurrent_input_settings_names": "Two repository name records were preserved. Live Ghidra still uses FUN_ names for those two addresses; they are outside this batch ownership and annotation count."
+  },
+  "limitations": [
+    "Controlled installed-asset D3D9 diagnostic; the game has not been rebuilt or run.",
+    "Typed interfaces and standard-library ownership are not native model/material/resource/container ABI.",
+    "Real scene attachment and world-sphere service remain explicit host inputs; world-bounds and scene-registry packets are ready next.",
+    "Native batch keys, full command execution, system constants and material pass selection remain incomplete; this diagnostic uses the NORMAL pass.",
+    "Raw linear render-target RGB equals the prior diagnostic and remains very dark (maximum channels 3/7/9); BMP alpha differs. Original-game visual and final-display parity are unverified.",
+    "Native sorting agreement covers only the recorded finite-domain corpus. Visibility nonfixture branches and exceptional floating-point paths are not native-differential-tested.",
+    "Attempted COM Lock failure cleanup is source-reviewed; a real COM failure was not injected."
+  ],
+  "next_packets": [
+    "model_world_bounds",
+    "model_scene_attachment",
+    "batch_preparation"
+  ]
+}

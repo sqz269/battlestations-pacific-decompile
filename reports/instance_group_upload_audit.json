@@ -97,8 +97,8 @@
   ],
   "status": {
     "reconstructed": true,
-    "build_tested": false,
-    "fixture_tested": false,
+    "build_tested": true,
+    "fixture_tested": true,
     "abi_compatible": false,
     "game_validated": false,
     "standalone_msvc_win32_compiled": true
@@ -109,48 +109,52 @@
       "old_name": "FUN_00b1e990",
       "old_comments": [],
       "proposed_name": "BSP_InstanceGroups_UploadAndQueue",
-      "applied": false,
-      "proposed_comment": "Group-order/category0-then1 upload: attach(scene,false), category1 signed-material/depth sort, geometry0 stream1 lock(count,0,0), generator v+8 writes and declaration+CC advances, unlock, section0+1C count, retained entry initialize, borrowed pointer queue append. Checked typed success domain; exact insertion<=32, larger finite distinct keys only. See docs/INSTANCE_GROUP_UPLOAD.md and reports/instance_group_upload_audit.json."
+      "applied": true,
+      "proposed_comment": "Group-order/category0-then1 upload: attach(scene,false), category1 signed-material/depth sort, geometry0 stream1 lock(count,0,0), generator v+8 writes and declaration+CC advances, unlock, section0+1C count, retained entry initialize, borrowed pointer queue append. Checked typed success domain; complete native finite-depth sort including larger-list tie permutations; remaining-pool capacity guard and attempted-lock cleanup. See docs/INSTANCE_GROUP_UPLOAD.md and reports/instance_group_upload_audit.json.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b85590",
       "old_name": "FUN_00b85590",
       "old_comments": [],
       "proposed_name": "BSP_DrawSection_SetInstanceCount",
-      "applied": false,
-      "proposed_comment": "ECX section, stack count, RET4; unconditional DWORD store to+1C. Typed GeneratedInstanceSection instance_count setter, no native layout ABI claim. See docs/INSTANCE_GROUP_UPLOAD.md."
+      "applied": true,
+      "proposed_comment": "ECX section, stack count, RET4; unconditional DWORD store to+1C. Typed GeneratedInstanceSection instance_count setter, no native layout ABI claim. See docs/INSTANCE_GROUP_UPLOAD.md.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b51a20",
       "old_name": "FUN_00b51a20",
       "old_comments": [],
       "proposed_name": "BSP_RenderEntry_Initialize",
-      "applied": false,
-      "proposed_comment": "ECX entry,8 stack words,RET20h. Stores leading/section/geometry/model/camera/visibility/flags, preserves+20/+24 key. Positive depth override direct; otherwise camera view then v+48 actual world sphere center,004142e0 transform Z plussection+34. Callback and x87 value projection, no native object ownership ABI. See docs/INSTANCE_GROUP_UPLOAD.md."
+      "applied": true,
+      "proposed_comment": "ECX entry,8 stack words,RET20h. Stores leading/section/geometry/model/camera/visibility/flags, preserves+20/+24 key. Positive depth override direct; otherwise camera view then v+48 actual world sphere center,004142e0 transform Z plussection+34. Callback and x87 value projection, no native object ownership ABI. See docs/INSTANCE_GROUP_UPLOAD.md.",
+      "worker_applied_before_integration": false
     },
     {
       "address": "00b51cb0",
       "old_name": "FUN_00b51cb0",
       "old_comments": [],
       "proposed_name": "BSP_RenderBatch_AppendEntry",
-      "applied": false,
-      "proposed_comment": "ECX batch,stack borrowed entry,RET4. Grow queue pointer capacity max256 or double when full via00b51b50, then store pointer/increment count; no retain or clone. Full allocator tail verified despite no-return free annotation. New owning pointer-array interface with borrowed entries. See docs/INSTANCE_GROUP_UPLOAD.md."
+      "applied": true,
+      "proposed_comment": "ECX batch,stack borrowed entry,RET4. Grow queue pointer capacity max256 or double when full via00b51b50, then store pointer/increment count; no retain or clone. Full allocator tail verified despite no-return free annotation. New owning pointer-array interface with borrowed entries. See docs/INSTANCE_GROUP_UPLOAD.md.",
+      "worker_applied_before_integration": false
     }
   ],
   "validation": {
     "compiler_flags": "/std:c++17 /W4 /WX /EHsc /fp:strict",
     "standalone_object": "local/instance_upload.obj",
     "headers": "Owned upload header plus geometry worker instance_geometry.hpp",
-    "full_build": "Primary integration pending",
+    "full_build": "Win32 build and existing2CTests passed; reports/instance_integration_validation.json",
     "new_tests_added": false,
     "native_execution": "Not performed by this worker",
     "game_execution": "Not performed by this worker"
   },
-  "source_files": [
-    "include/bsp/instance_upload.hpp",
-    "src/instance_upload.cpp",
-    "docs/INSTANCE_GROUP_UPLOAD.md"
-  ],
+  "source_files": {
+    "include/bsp/instance_upload.hpp": "528ae2b368b1611ea674968ee70f604352c05dcd1ab5b2648e9c44589667a10b",
+    "src/instance_upload.cpp": "c7c865a7246c2e82edba97ec2649c4270698327f4e116e45dd64b2946a704139",
+    "docs/INSTANCE_GROUP_UPLOAD.md": "ae9c3e4888ff5be9a95eed88475f0814da9374eb7dc9f9f66551968b70c97100"
+  },
   "original_abi": {
     "00b1e990": "ECX=context; no stack args; RET. Model attach v+50 consumes scene and recurse=false because getter00b72110 is zero-arg RET.",
     "00b85590": "ECX=section; stack DWORD count; RET4; stores+1C.",
@@ -176,11 +180,35 @@
     "New host types do not reproduce native object layouts or intrusive lifetimes.",
     "Callbacks must bind actual borrowed model scene attachment, world sphere and generator operations; no default callbacks exist.",
     "Generated geometry/material clone/scene producer contracts remain owned by their separate reconstruction packets.",
-    "Category1 supports finite depths; <=32 preserves native stable insertion permutation; larger inputs require comparator-distinct keys. Native large-list partition/heapsort tie order is unported.",
+    "Category1 uses full recovered native insertion/partition/heapsort tie permutations; depths must be finite. See INSTANCE_CATEGORY_SORT.md.",
     "Source count must equal active instance count; declarations, lists and bound identities must remain stable during callbacks.",
     "Native malformed-container, overflow and ignored failure behavior are replaced by explicit host errors.",
     "Queue owns pointer storage only; caller-owned entries/models/cameras/geometry must outlive consumption.",
-    "Previous category effects persist after failure; successful stream locks are unlocked during failure unwinding.",
+    "Previous category effects persist after failure; capacity is checked before attach/lock; attempted COM failures are unlocked only when physical depth changed, without rewinding cursor.",
     "x87 kernel operation/spill order is retained; no surrounding native FP exception or NaN payload claim."
-  ]
+  ],
+  "worker_status_before_integration": {
+    "reconstructed": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "standalone_msvc_win32_compiled": true
+  },
+  "worker_source_files": [
+    "include/bsp/instance_upload.hpp",
+    "src/instance_upload.cpp",
+    "docs/INSTANCE_GROUP_UPLOAD.md"
+  ],
+  "primary_integration": {
+    "validation": "reports/instance_integration_validation.json",
+    "annotations": "reports/instance_integration_annotations.json",
+    "scope": "Installed owning model root -> materialclone -> retained shared dynamic instance geometry -> ordered grouping/upload -> actual queued NORMAL diagnostic draws. Host scene/model context is explicit; native batch key preparation/full command execution/passselection and gameplay remain separate.",
+    "annotations_applied": true,
+    "annotations_saved_and_exports_refreshed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }

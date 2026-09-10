@@ -13,6 +13,10 @@
 #include "bsp/material_textures.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/texture_load_policy.hpp"
+#include "bsp/instance_grouping.hpp"
+#include "bsp/instance_geometry.hpp"
+#include "bsp/material_clone.hpp"
+#include "bsp/d3d9_resources.hpp"
 #include <algorithm>
 #include <cstring>
 #include <set>
@@ -114,8 +118,78 @@ bool write_bitmap(const D3DLOCKED_RECT& locked, UINT width, UINT height) {
     return static_cast<bool>(output);
 }
 
+// Actual owned state for this controlled diagnostic scene. The installed
+// hierarchy is identity (checked by the reader), so its serialized sphere
+// center is also its world center. Native scene graph/model wrappers remain
+// separate; these callbacks retain and update this explicit host scene state.
+struct MeshInstanceModel {
+    bsp::CameraMatrix world{};
+    std::array<float, 3> sphere_center{};
+    const void* scene{};
+    unsigned attachments{};
+};
+bool attach_mesh_scene(void* opaque, const void* scene, bool recurse, std::string& error) {
+    if (!opaque || recurse) { error = "Installed mesh scene binding requires a nonrecursive model"; return false; }
+    auto& model = *static_cast<MeshInstanceModel*>(opaque);
+    model.scene = scene; ++model.attachments; return true;
+}
+bool mesh_world_sphere(void* opaque, std::array<float, 3>& center, std::string& error) {
+    if (!opaque) { error = "Installed mesh model context is missing"; return false; }
+    center = static_cast<MeshInstanceModel*>(opaque)->sphere_center; return true;
+}
+struct InstanceWriteEvidence {
+    std::vector<bsp::BuildingInstanceData> records;
+    bool mapped_bytes_match{true};
+};
+bool write_mesh_instance(void* opaque, const bsp::InstanceRenderEntry& entry,
+    std::uint8_t* output, std::size_t available, std::string& error) {
+    if (!entry.model || !entry.model->context || !entry.section
+        || !entry.section->material_clone_owner || available < sizeof(bsp::BuildingInstanceData)) return false;
+    const auto& model = *static_cast<const MeshInstanceModel*>(entry.model->context);
+    const auto material = std::static_pointer_cast<bsp::MaterialCloneState>(entry.section->material_clone_owner);
+    bsp::BuildingInstanceData record;
+    if (!bsp::write_building_instance_data_00b55780(model.world, {}, entry.visibility,
+        material->lighting.diffuse_color_00b179f0(0)[3], record, error)) return false;
+    std::memcpy(output, record.data(), sizeof(record));
+    auto& evidence = *static_cast<InstanceWriteEvidence*>(opaque);
+    evidence.mapped_bytes_match = evidence.mapped_bytes_match
+        && std::memcmp(output, record.data(), sizeof(record)) == 0;
+    evidence.records.push_back(record); return true;
+}
+class MeshInstanceFactory final : public bsp::InstanceGroupFactory {
+public:
+    MeshInstanceFactory(bsp::D3D9StateCache& states,
+        std::shared_ptr<bsp::VertexBufferBinding> physical,
+        bsp::GeneratedInstanceGeometrySource source,
+        bsp::GeneratedInstanceGeometryGenerator generator)
+        : states_(states), physical_(std::move(physical)), source_(std::move(source)),
+          generator_(std::move(generator)) {}
+    bool create(const bsp::InstanceRenderEntry& entry, const bsp::InstanceGroupingBinding&,
+        std::uint32_t, const std::array<float, 4>& tint, bsp::InstanceUploadModel& model,
+        std::shared_ptr<bsp::GeneratedInstanceGeometry>& geometry, std::string& error) override {
+        const auto source_material = std::static_pointer_cast<bsp::MaterialCloneState>(entry.section->material_clone_owner);
+        std::shared_ptr<bsp::MaterialCloneState> material;
+        auto hr = bsp::clone_material_00b18b60(*source_material, material);
+        if (SUCCEEDED(hr)) hr = bsp::create_generated_instance_geometry_00b4c8d0_fragment(
+            states_, physical_, source_, generator_, {material, entry.section->material_order,
+                entry.section->material_queue_index}, geometry);
+        if (FAILED(hr)) { error = "Generated mesh/material creation failed"; return false; }
+        std::memcpy(material->lighting.diffuse_color_00b179f0(0), tint.data(), sizeof(tint));
+        auto context = std::make_shared<MeshInstanceModel>(*static_cast<MeshInstanceModel*>(entry.model->context));
+        model.geometry = geometry.get(); model.context = context.get(); model.context_owner = context;
+        model.attach_scene = attach_mesh_scene; model.world_sphere_center = mesh_world_sphere;
+        return true;
+    }
+private:
+    bsp::D3D9StateCache& states_;
+    std::shared_ptr<bsp::VertexBufferBinding> physical_;
+    bsp::GeneratedInstanceGeometrySource source_;
+    bsp::GeneratedInstanceGeometryGenerator generator_;
+};
+
 bool draw_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets,
-    const InstalledModelProbe& model, const bsp::CompiledMaterialPass& shaders, std::string& error) {
+    const InstalledModelProbe& model, const std::shared_ptr<bsp::CompiledMaterialPass>& material_pass, std::string& error) {
+    const auto& shaders = *material_pass;
     if (shaders.base.options.instance_generator != "building" || !model.hierarchy.matrix
         || shaders.shadow_samplers.shadow_texture_slot != 1 || shaders.shadow_samplers.shadow_map_slot != -1)
         return false;
@@ -172,6 +246,8 @@ bool draw_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets,
     if (FAILED(hr)) return false;
     unsigned visible = 0; std::set<DWORD> colors;
     bool buffers_match = false, constants_match = false, layout_match = false, bindings_match = false;
+    bool groups_match = false, capacity_guard = false;
+    unsigned queued_bindings_checked = 0;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
@@ -180,22 +256,119 @@ bool draw_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets,
         hr = bsp::create_mesh_vertex_stream_00b4bc00_fragment(device, states,
             *ordered_streams[0], declaration, vertices);
         if (SUCCEEDED(hr)) hr = bsp::create_mesh_index_stream_00b4bf30_fragment(device, states, *mesh.indices, indices);
-        // Explicit host backing for the recovered instance record. The native
-        // per-frame instance allocator is not reconstructed by this diagnostic.
-        auto instances = std::make_shared<bsp::LogicalVertexStream>();
-        instances->physical = std::make_shared<bsp::VertexBufferBinding>();
-        instances->physical->flags = 1; instances->physical->capacity = sizeof(instance);
-        instances->declaration = instance_declaration; instances->vertex_count = 1;
-        instances->flags = 1; instances->tag = static_cast<DWORD>(D3DSTREAMSOURCE_INSTANCEDATA);
-        if (SUCCEEDED(hr)) hr = bsp::vertex_buffer_recreate_00b492b0(*instances->physical, device);
-        void* mapped = nullptr;
-        if (SUCCEEDED(hr)) hr = states.lock_vertex_stream_00b49980(*instances, 1, 0, false, mapped);
-        if (SUCCEEDED(hr) && mapped) {
-            std::memcpy(mapped, instance.data(), sizeof(instance)); states.unlock_vertex_stream_00b49a80(*instances);
-        } else if (SUCCEEDED(hr)) hr = E_FAIL;
         auto layout = std::make_shared<bsp::D3D9VertexLayout>();
         layout->append_stream_00b48a00(declaration); layout->append_stream_00b48a00(instance_declaration);
         if (SUCCEEDED(hr)) hr = layout->create_if_missing_00b60a10(device);
+        auto shared_vertices = std::make_shared<bsp::VertexBufferBinding>();
+        bsp::D3D9DynamicBuffers dynamic_buffers;
+        if (SUCCEEDED(hr)) hr = bsp::create_dynamic_buffers_00b2aeb0(device, dynamic_buffers);
+        shared_vertices->buffer = dynamic_buffers.vertices; dynamic_buffers.vertices = nullptr;
+        bsp::release_dynamic_buffers(dynamic_buffers);
+        shared_vertices->flags = bsp::generated_instance_stream_flags;
+        shared_vertices->capacity = bsp::generated_instance_shared_vertex_capacity;
+
+        auto source_material = std::make_shared<bsp::MaterialCloneState>();
+        source_material->textures = slots; source_material->lighting = lighting;
+        source_material->effect = material_pass;
+        // Ordinary constructor00b18900 initializes both offset-named words
+        // toFFFFFFFF; clone00b18b60 then copies them without interpretation.
+        source_material->word104 = source_material->word108 = 0xffffffffu;
+        bsp::GeneratedInstanceGeometry source_geometry;
+        source_geometry.mesh_stream = vertices; source_geometry.indices = indices;
+        source_geometry.section.primitive = subset.native_primitive;
+        source_geometry.section.range_words = subset.range_words;
+        source_geometry.section.material_order = shaders.base.options.priority;
+        source_geometry.section.material_queue_index = static_cast<std::uint32_t>(shaders.base.options.pipe_id);
+        source_geometry.section.material_clone_owner = source_material;
+        auto source_model_state = std::make_shared<MeshInstanceModel>();
+        source_model_state->world = *model.hierarchy.matrix;
+        std::copy_n(model.hierarchy.sphere.data(), 3, source_model_state->sphere_center.begin());
+        bsp::InstanceUploadModel source_model;
+        source_model.geometry = &source_geometry; source_model.context = source_model_state.get();
+        source_model.context_owner = source_model_state; source_model.attach_scene = attach_mesh_scene;
+        source_model.world_sphere_center = mesh_world_sphere;
+        bsp::CameraTransform camera;
+        bsp::set_transform_local_matrix_00b6db10(camera, *model.hierarchy.matrix);
+        std::array<bsp::InstanceRenderEntry, 2> source_entries;
+        for (std::uint32_t i=0; i<2 && SUCCEEDED(hr); ++i)
+            if (!bsp::initialize_instance_render_entry_00b51a20(source_entries[i],0,
+                source_geometry.section,source_geometry,source_model,camera,i ? .5f : 1.0f,0,0x555,error)) hr=E_FAIL;
+        InstanceWriteEvidence writes;
+        auto generator = std::make_shared<bsp::InstanceUploadGenerator>();
+        generator->declaration = instance_declaration.get(); generator->context = &writes;
+        generator->write_record = write_mesh_instance;
+        auto binding = std::make_shared<bsp::InstanceGroupingBinding>();
+        binding->id = 0; binding->generator = generator;
+        bsp::InstanceGroupingState groups;
+        bsp::InstanceRenderQueue opaque_queue, faded_queue;
+        const std::vector<bsp::InstanceRenderQueue*> queues{&opaque_queue,&faded_queue};
+        MeshInstanceFactory factory(states,shared_vertices,{vertices,indices,subset.native_primitive,subset.range_words},
+            {instance_declaration,layout});
+        bsp::InstanceVisibilityInputs visibility;
+        visibility.enabled = shaders.base.options.final_lod_fade_out;
+        visibility.model_world_position = {(*model.hierarchy.matrix)[12],(*model.hierarchy.matrix)[13],(*model.hierarchy.matrix)[14]};
+        visibility.camera_world_position = visibility.model_world_position;
+        visibility.camera_mode = 3; // Explicit host camera mode bypasses distance fade.
+        visibility.descriptor_fraction = shaders.base.options.final_lod_fade_out_range;
+        for (auto& entry : source_entries) {
+            bsp::InstanceGroupingResult result{};
+            if (SUCCEEDED(hr) && (!bsp::group_instance_render_entry_00b1dff0_fragment(
+                groups,entry,visibility,binding,factory,queues,result,error)
+                || result != bsp::InstanceGroupingResult::grouped)) hr=E_FAIL;
+        }
+        bsp::InstanceUploadStats upload;
+        const unsigned scene_identity = 1;
+        bsp::InstanceUploadContext upload_context{groups.ordered_groups,&scene_identity,&camera,queues};
+        if (SUCCEEDED(hr)) hr = bsp::upload_instance_groups_00b1e990_fragment(states,upload_context,upload,error);
+        if (FAILED(hr)) throw std::runtime_error("Instance grouping/upload: " + error);
+        auto& full = groups.by_binding[0]->upload.categories[0];
+        auto& faded = groups.by_binding[0]->upload.categories[1];
+        const auto generated = groups.by_binding[0]->geometries[0];
+        auto instances = generated->instance_stream;
+        const auto faded_instances = groups.by_binding[0]->geometries[1]->instance_stream;
+        const auto clone = std::static_pointer_cast<bsp::MaterialCloneState>(generated->section.material_clone_owner);
+        groups_match = upload.groups_visited == 1 && upload.categories_uploaded == 2
+            && upload.records_written == 2 && upload.entries_queued == 2
+            && opaque_queue.entries().size() == 1 && faded_queue.entries().size() == 1
+            && opaque_queue.entries()[0] == full.output_entry && faded_queue.entries()[0] == faded.output_entry
+            && full.source_entries[0] == &source_entries[0] && faded.source_entries[0] == &source_entries[1]
+            && full.output_entry->visibility == 1 && faded.output_entry->visibility == .5f
+            && full.output_entry->flags == 0x555 && faded.output_entry->flags == 0x555
+            && full.generated_model->geometry->section.instance_count == 1
+            && faded.generated_model->geometry->section.instance_count == 1
+            && shared_vertices->logical_streams.size() == 2 && instances->physical == shared_vertices
+            && faded_instances->physical == shared_vertices && instances->offset != faded_instances->offset
+            && generated->mesh_stream == vertices && generated->indices == indices && generated->combined_layout == layout
+            && clone.get() != source_material.get() && clone->effect == source_material->effect
+            && clone->word104 == 0xffffffffu && clone->word108 == 0xffffffffu
+            && clone->textures.textures() == source_material->textures.textures() && clone->lighting.flag_10c()
+            && clone->lighting.diffuse_color_00b179f0(0)[0] == 1 && clone->lighting.diffuse_color_00b179f0(0)[1] == 0
+            && writes.records.size() == 2 && writes.mapped_bytes_match
+            && std::memcmp(writes.records[0].data(),instance.data(),sizeof(instance)) == 0
+            && writes.records[1][27] == .5f
+            && static_cast<MeshInstanceModel*>(full.generated_model->context)->scene == &scene_identity
+            && static_cast<MeshInstanceModel*>(faded.generated_model->context)->scene == &scene_identity;
+        {
+            struct RestoreCursor { bsp::VertexBufferBinding& buffer; UINT cursor;
+                ~RestoreCursor() { buffer.cursor = cursor; } } restore{*shared_vertices,shared_vertices->cursor};
+            const auto prior_depth = shared_vertices->lock_depth, prior_locks = shared_vertices->dynamic_locks;
+            const auto prior_attachments = static_cast<MeshInstanceModel*>(full.generated_model->context)->attachments;
+            shared_vertices->cursor = shared_vertices->capacity;
+            bsp::InstanceUploadStats rejected_upload; std::string capacity_error;
+            const auto rejected = bsp::upload_instance_groups_00b1e990_fragment(states,upload_context,rejected_upload,capacity_error);
+            capacity_guard = rejected == D3DERR_INVALIDCALL && !capacity_error.empty()
+                && rejected_upload.categories_uploaded == 0 && rejected_upload.records_written == 0
+                && rejected_upload.entries_queued == 0 && shared_vertices->lock_depth == prior_depth
+                && shared_vertices->dynamic_locks == prior_locks && shared_vertices->cursor == shared_vertices->capacity
+                && static_cast<MeshInstanceModel*>(full.generated_model->context)->attachments == prior_attachments
+                && opaque_queue.entries().size() == 1 && faded_queue.entries().size() == 1;
+        }
+        groups_match = groups_match && capacity_guard;
+        std::printf("Installed instance groups: groups=%zu categories=%zu records=%zu queued=%zu pool=%u offsets=%u/%u shared_registry=%zu clone_distinct=%d capacity_guard=%d checked=%d\n",
+            upload.groups_visited,upload.categories_uploaded,upload.records_written,upload.entries_queued,
+            shared_vertices->capacity,instances->offset,faded_instances->offset,shared_vertices->logical_streams.size(),
+            clone.get()!=source_material.get(),capacity_guard,groups_match);
+        void* mapped = nullptr;
         const auto elements = layout->elements();
         layout_match = elements.size() == 13 && layout->stride() == 160;
         for (UINT i = 0; layout_match && i < 9; ++i)
@@ -218,11 +391,10 @@ bool draw_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets,
                 buffers_match = buffers_match && std::memcmp(mapped, mesh.indices->bytes.data(), id.Size) == 0;
                 hr = indices->physical->buffer->Unlock();
             }
-            if (SUCCEEDED(hr)) hr = instances->physical->buffer->Lock(0, 0, &mapped, D3DLOCK_READONLY);
-            if (SUCCEEDED(hr)) {
-                buffers_match = buffers_match && std::memcmp(mapped, instance.data(), sizeof(instance)) == 0;
-                hr = instances->physical->buffer->Unlock();
-            }
+            D3DVERTEXBUFFER_DESC dynamic_description{};
+            if (SUCCEEDED(hr)) hr = shared_vertices->buffer->GetDesc(&dynamic_description);
+            buffers_match = buffers_match && SUCCEEDED(hr) && dynamic_description.Size == 0x1000000
+                && dynamic_description.Pool == D3DPOOL_DEFAULT && dynamic_description.Usage == 0x208;
         }
         if (SUCCEEDED(hr)) hr = device.CreateRenderTarget(256,256,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,0,FALSE,&target.p,nullptr);
         if (SUCCEEDED(hr)) hr = device.CreateDepthStencilSurface(256,256,D3DFMT_D24S8,D3DMULTISAMPLE_NONE,0,TRUE,&depth.p,nullptr);
@@ -268,12 +440,45 @@ bool draw_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets,
             bindings_match = f0 == 0x40000001 && f1 == 0x80000001
                 && t0.p == slots.textures()[0]->texture && t1.p == shadow->texture;
         }
-        if (SUCCEEDED(hr) && !(buffers_match && constants_match && layout_match && bindings_match)) hr = E_FAIL;
+        if (SUCCEEDED(hr) && !(buffers_match && constants_match && layout_match && bindings_match && groups_match)) hr = E_FAIL;
         if (SUCCEEDED(hr)) hr = device.Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0);
         if (SUCCEEDED(hr)) hr = device.BeginScene();
         if (SUCCEEDED(hr)) {
-            hr = states.draw_indexed_00b24010({},static_cast<D3DPRIMITIVETYPE>(subset.native_primitive),
-                subset.range_words[0],subset.range_words[1],subset.range_words[2]+indices->base_index,subset.range_words[3]);
+            for (const auto* queue : queues) for (const auto* entry : queue->entries()) {
+                if (FAILED(hr)) continue;
+                const auto& geometry = *entry->geometry;
+                const auto& section = *entry->section;
+                hr = states.bind_vertex_layout_00b23f20(geometry.combined_layout);
+                states.bind_index_stream_00b24b00(geometry.indices,static_cast<INT>(geometry.mesh_stream->base_vertex));
+                states.bind_vertex_stream_00b24840(0,geometry.mesh_stream);
+                states.bind_vertex_stream_00b24840(1,geometry.instance_stream);
+                states.set_stream_frequency_00b24a40(0,geometry.mesh_stream->tag | section.instance_count);
+                states.set_stream_frequency_00b24a40(1,geometry.instance_stream->tag | 1);
+                OwnedCom<IDirect3DVertexBuffer9> actual_mesh, actual_instances;
+                OwnedCom<IDirect3DIndexBuffer9> actual_indices;
+                OwnedCom<IDirect3DVertexDeclaration9> actual_layout;
+                UINT mesh_offset=0, mesh_stride=0, instance_offset=0, instance_stride=0, mesh_frequency=0, instance_frequency=0;
+                if (SUCCEEDED(hr)) hr = device.GetStreamSource(0,&actual_mesh.p,&mesh_offset,&mesh_stride);
+                if (SUCCEEDED(hr)) hr = device.GetStreamSource(1,&actual_instances.p,&instance_offset,&instance_stride);
+                if (SUCCEEDED(hr)) hr = device.GetStreamSourceFreq(0,&mesh_frequency);
+                if (SUCCEEDED(hr)) hr = device.GetStreamSourceFreq(1,&instance_frequency);
+                if (SUCCEEDED(hr)) hr = device.GetIndices(&actual_indices.p);
+                if (SUCCEEDED(hr)) hr = device.GetVertexDeclaration(&actual_layout.p);
+                const bool queue_binding = SUCCEEDED(hr)
+                    && actual_mesh.p == geometry.mesh_stream->physical->buffer
+                    && actual_instances.p == geometry.instance_stream->physical->buffer
+                    && actual_indices.p == geometry.indices->physical->buffer
+                    && actual_layout.p == geometry.combined_layout->native()
+                    && mesh_offset == geometry.mesh_stream->offset && mesh_stride == geometry.mesh_stream->declaration->stride
+                    && instance_offset == geometry.instance_stream->offset && instance_stride == geometry.instance_stream->declaration->stride
+                    && mesh_frequency == (geometry.mesh_stream->tag | section.instance_count)
+                    && instance_frequency == (geometry.instance_stream->tag | 1);
+                bindings_match = bindings_match && queue_binding;
+                if (!queue_binding) hr = E_FAIL;
+                else ++queued_bindings_checked;
+                if (SUCCEEDED(hr)) hr = states.draw_indexed_00b24010({},static_cast<D3DPRIMITIVETYPE>(section.primitive),
+                    section.range_words[0],section.range_words[1],section.range_words[2]+geometry.indices->base_index,section.range_words[3]);
+            }
             const auto ended = device.EndScene(); if (SUCCEEDED(hr)) hr = ended;
         }
         if (SUCCEEDED(hr)) hr = device.GetRenderTargetData(target.p,readback.p);
@@ -303,11 +508,11 @@ bool draw_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets,
     restored = SUCCEEDED(device.SetRenderTarget(0,old_target.p)) && restored;
     restored = SUCCEEDED(device.SetDepthStencilSurface(old_depth.p)) && restored;
     restored = SUCCEEDED(saved.p->Apply()) && restored;
-    const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match
-        && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
-    std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d visible=%u colors=%zu restored=%d checked=%d error=%s\n",
+    const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match
+        && queued_bindings_checked == 2 && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
+    std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,
-        decoded.records_from_metadata,constants_match,layout_match,bindings_match,visible,colors.size(),restored,checked,error.c_str());
+        decoded.records_from_metadata,constants_match,layout_match,bindings_match,queued_bindings_checked,visible,colors.size(),restored,checked,error.c_str());
     return checked;
 }
 }
@@ -341,5 +546,5 @@ bool probe_installed_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets) {
     std::printf("Installed mesh compiled: descriptor=%s combiner=%s samplers=%u/%u usage=%u instance=%s\n",
         descriptor.c_str(), shaders->base.combiners[0].c_str(), shaders->sampler_counts.pixel,
         shaders->sampler_counts.vertex, shaders->pb.sampler_mask, shaders->base.options.instance_generator.c_str());
-    return draw_mesh(device, assets, model, *shaders, error);
+    return draw_mesh(device, assets, model, shaders, error);
 }

@@ -6,6 +6,7 @@
 #include "bsp/mesh_resource.hpp"
 #include "bsp/vertex_format.hpp"
 #include "bsp/structured_resource_registry.hpp"
+#include "bsp/structured_model.hpp"
 #include "installed_model_probe.hpp"
 #include <array>
 #include <cstdio>
@@ -18,8 +19,7 @@ bool probe_model_metadata(AssetStreamProbe& assets, InstalledModelProbe* output)
     if (!assets.read(name, source, error)) return false;
     bsp::StructuredReader reader(source);
     auto root = reader.read_root_00bea700();
-    if (!root || root->tag() != "MMOD" || !root->read_control_00be9a40()
-        || reader.control_word() != 14) return false;
+    if (!root || root->tag() != "MMOD") return false;
     std::string note;
     bsp::HierarchyItem hierarchy;
     bsp::MeshResourcePayload mesh;
@@ -33,38 +33,33 @@ bool probe_model_metadata(AssetStreamProbe& assets, InstalledModelProbe* output)
     if (!registry.register_parser(mesh_parser) || !registry.register_parser(note_parser)
         || !registry.register_parser(group_parser) || registry.register_parser(mesh_parser)
         || registry.size() != 3 || registry.find_parser("mEsH") != &mesh_parser) return false;
-    while (root->has_remaining_00715bf0()) {
-        auto container = root->read_child_00bea680();
-        if (!container) return false;
-        if (container->tag() == "Resource") {
-            std::vector<bsp::DecodedStructuredResource> items;
-            if (!registry.dispatch_items_00b7e970(*container, items, error)) {
-                std::printf("Resource dispatch: %s\n", error.c_str()); return false;
-            }
-            for (auto& item : items) {
-                if (!item.payload) ++skipped_items;
-                else if (auto* value = std::get_if<bsp::NoteResourcePayload>(&*item.payload)) {
-                    note = std::move(value->text); ++note_count;
-                } else if (auto* mesh_value = std::get_if<bsp::MeshResourcePayload>(&*item.payload)) {
-                    mesh = std::move(*mesh_value); ++mesh_count;
-                } else if (auto* group_value = std::get_if<bsp::GroupParamsResourcePayload>(&*item.payload)) {
-                    group_params = group_value->value; ++group_count;
-                }
-            }
-        } else if (container->tag() == "Hierarchy") {
-            while (container->has_remaining_00715bf0()) {
-                auto item = container->read_child_00bea680();
-                if (!item || item->tag() != "Item"
-                    || !bsp::parse_hierarchy_item_00b7eb90(*item, hierarchy, error)) {
-                    std::printf("Hierarchy reader: %s\n", error.c_str());
-                    return false;
-                }
-                if (!item->close()) return false;
-                ++hierarchy_count;
-            }
-        } else if (!container->skip_00be9c40()) return false;
-        if (!container->close()) return false;
+    struct ObservedHooks final : bsp::StructuredModelDispatchHooks {
+        bsp::RendererRootHooks_00d5f0a8 concrete;
+        unsigned begins{}, ends{};
+        void begin_root() override { ++begins; concrete.begin_root(); }
+        void end_root() override { ++ends; concrete.end_root(); }
+    } hooks;
+    bsp::StructuredModel decoded_model;
+    if (!bsp::dispatch_root_00b7f430(*root, registry, decoded_model, hooks, error)) {
+        std::printf("Registered root dispatch: %s\n", error.c_str()); return false;
     }
+    if (reader.control_word() != 14 || hooks.begins != 1 || hooks.ends != 1
+        || decoded_model.hierarchy.size() != 1 || !decoded_model.skipped_hierarchy_tags.empty()) return false;
+    for (auto& item : decoded_model.resources) {
+        if (!item.payload) ++skipped_items;
+        else if (auto* value = std::get_if<bsp::NoteResourcePayload>(&*item.payload)) {
+            note = std::move(value->text); ++note_count;
+        } else if (auto* mesh_value = std::get_if<bsp::MeshResourcePayload>(&*item.payload)) {
+            mesh = std::move(*mesh_value); ++mesh_count;
+        } else if (auto* group_value = std::get_if<bsp::GroupParamsResourcePayload>(&*item.payload)) {
+            group_params = group_value->value; ++group_count;
+        }
+    }
+    hierarchy_count = decoded_model.hierarchy.size();
+    hierarchy = std::move(decoded_model.hierarchy.front());
+    std::printf("Registered model root: resources=%zu hierarchy=%zu root_tags=%zu bounds=%d begin=%u end=%u\n",
+        decoded_model.resources.size(), hierarchy_count, decoded_model.root_order.size(),
+        decoded_model.has_bounding_box, hooks.begins, hooks.ends);
     if (reader.error() != bsp::StructuredReaderError::none || !root->close()
         || !hierarchy.matrix) return false;
     bool matrix_matches = true;
@@ -91,6 +86,11 @@ bool probe_model_metadata(AssetStreamProbe& assets, InstalledModelProbe* output)
         || mesh.vertex_streams.size() != 1 || !mesh.indices
         || mesh.subsets.size() != 1 || mesh.lod_phases.size() != 1) return false;
     const auto* original = source->data_00bef610();
+    // Independently read the installed root headers: payload73 is BoundingBox;
+    // the initial BoundingSphere is an explicitly skipped root child.
+    const bool root_checked = decoded_model.has_bounding_box
+        && decoded_model.root_order == std::vector<std::string>{"BoundingSphere","BoundingBox","Resource","Hierarchy"}
+        && std::memcmp(decoded_model.bounding_box.data(),original+73,24) == 0;
     const auto& stream = mesh.vertex_streams.front();
     const auto& indices = *mesh.indices;
     const auto& subset = mesh.subsets.front();
@@ -131,7 +131,7 @@ bool probe_model_metadata(AssetStreamProbe& assets, InstalledModelProbe* output)
     const bool group_checked = group_count == 1
         && std::memcmp(&group_params, original + 998, 4) == 0;
     const bool checked = note_count == 1 && note == "visp100-visp1.5"
-        && skipped_items == 0 && hierarchy_count == 1 && mesh_checked && group_checked
+        && skipped_items == 0 && hierarchy_count == 1 && mesh_checked && group_checked && root_checked
         && hierarchy.name == "repulogepdarabok_004"
         && hierarchy.parent == 0xffffffffu && hierarchy.flags == 0
         && hierarchy.resources == std::vector<std::uint32_t>{0, 1, 2}

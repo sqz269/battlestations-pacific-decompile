@@ -9,6 +9,8 @@ namespace bsp {
 // Semantic projection of every field transferred by00b18b60, plus its
 // explicitly reset+100h word. Offsets retain their names where meaning is
 // unresolved. Unwritten native+80h..+FCh bytes are not synthesized here.
+// Default aggregate values are not the ordinary constructor00b18900: that
+// constructor sets+104h/+108h toFFFFFFFF. Supply the actual source values.
 struct MaterialCloneState {
     std::uint32_t word08{};
     const void* pointer0c{};

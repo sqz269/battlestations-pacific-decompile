@@ -14,7 +14,7 @@
       "original_name": "FUN_00b18b60",
       "suggested_name": "BSP_Material_CloneConstruct",
       "original_abi": "ECX fresh110h-byte destination; stack source material; EAX destination; RET4.",
-      "status": "typed_field_and_ownership_clone_implemented_build_pending",
+      "status": "typed_fragment_integrated_build_and_installed_fixture_checked",
       "source": "src/material_clone.cpp",
       "confidence": "high for every listed initialization,copy and retain; offset-named field meanings and full native layout remain unresolved",
       "byte_evidence": {
@@ -30,7 +30,8 @@
         "function_name": "FUN_00b18b60"
       },
       "evidence": "Constructor initializes reference1/vtable00d5e520; copies08,conditional borrowed-or-retained0C,exact10D,counted texture pointers10..30,17DWORD38..78,retained effect7C,104/108. Forces10C=1 and resets100=0. Full span PE-verified; no deep resource copies.",
-      "suggested_plate_comment": "BSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation."
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation.",
+      "worker_status_before_integration": "typed_field_and_ownership_clone_implemented_build_pending"
     }
   ],
   "fields": [
@@ -139,8 +140,8 @@
   },
   "validation": {
     "complete_function_bytes_match_installed_pe": true,
-    "build_tested": false,
-    "fixture_tested": false,
+    "build_tested": true,
+    "fixture_tested": true,
     "native_abi_compatible": false,
     "game_validated": false,
     "new_tests_added": 0,
@@ -157,5 +158,16 @@
     "Full native110h object ABI,virtual dispatch,unwritten cache consumers,destructor order and CPU allocator remain separate.",
     "Borrowed0C and LogicalTexture COM pointers require external lifetimes.",
     "Malformed count,OOM,SEH and intrusive reference-count timing are not reproduced."
-  ]
+  ],
+  "primary_integration": {
+    "validation": "reports/instance_integration_validation.json",
+    "annotations": "reports/instance_integration_annotations.json",
+    "scope": "Installed owning model root -> materialclone -> retained shared dynamic instance geometry -> ordered grouping/upload -> actual queued NORMAL diagnostic draws. Host scene/model context is explicit; native batch key preparation/full command execution/passselection and gameplay remain separate.",
+    "annotations_applied": true,
+    "annotations_saved_and_exports_refreshed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }

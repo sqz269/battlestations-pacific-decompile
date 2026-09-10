@@ -1,0 +1,2051 @@
+{
+  "utc": "2026-09-10T03:37:47.978087+00:00",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "annotation_count": 40,
+  "applied_and_saved": true,
+  "serialized_by_machine_global_ghidra_lock": true,
+  "name_ledger_before": [
+    {
+      "address": "00b4c8d0",
+      "absent": true
+    },
+    {
+      "address": "00b4bc00",
+      "name": "BSP_D3D9LogicalVertexStream_Construct",
+      "evidence": "BSP reconstruction hypothesis: Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only. ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+    },
+    {
+      "address": "00b287c0",
+      "name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "evidence": "BSP reconstruction hypothesis: Call allocator00b4b370 then00b4bc00 with count,declaration,flags; append raw stream pointer in renderer+1AACh array; additionally+19B0h array when virtual+58h returns AL==1. Allocation/growth/native lifecycle unported. ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+    },
+    {
+      "address": "00b75030",
+      "absent": true
+    },
+    {
+      "address": "00b75170",
+      "absent": true
+    },
+    {
+      "address": "00b556b0",
+      "absent": true
+    },
+    {
+      "address": "00b556c0",
+      "absent": true
+    },
+    {
+      "address": "00b1e990",
+      "absent": true
+    },
+    {
+      "address": "00b85590",
+      "absent": true
+    },
+    {
+      "address": "00b51a20",
+      "absent": true
+    },
+    {
+      "address": "00b51cb0",
+      "absent": true
+    },
+    {
+      "address": "00b7f430",
+      "name": "BSP_ResourceManager_DispatchRoot",
+      "evidence": "ECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+    },
+    {
+      "address": "00b7f100",
+      "name": "BSP_StructuredResource_ParseHierarchy",
+      "evidence": "[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+    },
+    {
+      "address": "00b1fe40",
+      "absent": true
+    },
+    {
+      "address": "00b28570",
+      "absent": true
+    },
+    {
+      "address": "00b25f40",
+      "absent": true
+    },
+    {
+      "address": "00b283f0",
+      "absent": true
+    },
+    {
+      "address": "00b18b60",
+      "absent": true
+    },
+    {
+      "address": "00b1dce0",
+      "absent": true
+    },
+    {
+      "address": "00b1d420",
+      "absent": true
+    },
+    {
+      "address": "00b1c210",
+      "absent": true
+    },
+    {
+      "address": "00b1d280",
+      "absent": true
+    },
+    {
+      "address": "00b1cf80",
+      "absent": true
+    },
+    {
+      "address": "00b1c8c0",
+      "absent": true
+    },
+    {
+      "address": "00b1c910",
+      "absent": true
+    },
+    {
+      "address": "00b1c1b0",
+      "absent": true
+    },
+    {
+      "address": "00b1d020",
+      "absent": true
+    },
+    {
+      "address": "00b1d6a0",
+      "absent": true
+    },
+    {
+      "address": "00b1dff0",
+      "absent": true
+    },
+    {
+      "address": "00419440",
+      "absent": true
+    },
+    {
+      "address": "00b73770",
+      "name": "BSP_StreamParameters_ComputeThresholdFade",
+      "evidence": "Provisional semantic name. Thiscall2floatargs RET8 ST0. Object+50h index chooses threshold default0.995f or object+4+16*index. Width=float32(threshold*fraction); float32(1-(input-(threshold-width))*(1/width)), compare clamp0..1, NaN passes. Caller uses0.01f and writes onePSfloat4. Unported; input domain meaning unresolved."
+    },
+    {
+      "address": "00b1d6f0",
+      "absent": true
+    },
+    {
+      "address": "00b1ca50",
+      "absent": true
+    },
+    {
+      "address": "00b1c500",
+      "absent": true
+    },
+    {
+      "address": "00b1c660",
+      "absent": true
+    },
+    {
+      "address": "00b1c7c0",
+      "absent": true
+    },
+    {
+      "address": "00b51b50",
+      "absent": true
+    },
+    {
+      "address": "004142e0",
+      "absent": true
+    },
+    {
+      "address": "00b18900",
+      "name": "BSP_Material_ConstructWithEffect",
+      "evidence": "Lighting-only host fragment: initialize embedded68-byte record at material+38h through00b17840, then initialize byte+10Ch to0. Complete PE body also zeroes textures/other fields, installs vtables and retains effect; those ownership operations are not reconstructed by MaterialLighting. Original ABI: ECX material; stack effect pointer; EAX material; RET4; x86 SEH. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+    },
+    {
+      "address": "00bf9dc8",
+      "name": "_free",
+      "evidence": "Correct returning CRT free remains named _free. Five verified continuations and definitions repaired at00b22d10,00b4ae80,00b7f730,00b7f790,00b454e0; all five CALL_RETURN overrides cleared after restoring bytes; source game binary unchanged. Evidence: docs/MESH_MATERIAL_INTEGRATION.md; reports/mesh_material_annotations.json. Original ABI unchanged; no gameplay validation."
+    }
+  ],
+  "annotation_before_after": [
+    {
+      "address": "004142e0",
+      "before": {
+        "address": "004142e0",
+        "function_name": "FUN_004142e0"
+      },
+      "after": {
+        "address": "004142e0",
+        "name": "BSP_Vector3f_TransformAffinePoint",
+        "evidence": "Stage XYZ then full x87 row-vector affine transform; preserve source staging and three output floatstores. Native ECXinputpoint; stack outputpoint,matrix; RET8. Typed shared valuekernel used by entry depth; no object ABI. Original ABI: ECX=source XYZ; stack destination XYZ,matrix; RET8; EAX=destination. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00419440",
+      "before": {
+        "address": "00419440",
+        "function_name": "FUN_00419440"
+      },
+      "after": {
+        "address": "00419440",
+        "name": "BSP_Vector3f_Length",
+        "evidence": "Stores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b18900",
+      "before": {
+        "address": "00b18900",
+        "function_name": "BSP_Material_ConstructWithEffect",
+        "comment": "[BSP reconstruction 00b18900]\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n\n[BSP reconstruction 00b18900] update\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits.\n\n[BSP reconstruction 00b18900] update\nLighting-only host fragment: initialize embedded68-byte record at material+38h through00b17840, then initialize byte+10Ch to0. Complete PE body also zeroes textures/other fields, installs vtables and retains effect; those ownership operations are not reconstructed by MaterialLighting. Original ABI: ECX material; stack effect pointer; EAX material; RET4; x86 SEH. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "after": {
+        "address": "00b18900",
+        "name": "BSP_Material_ConstructWithEffect",
+        "evidence": "Ordinary material constructor explicitly sets word104 and word108 toFFFFFFFF, after zero100 and before flag10C/10D zero. Installed source material now supplies these values; clone copies them. Full ordinary native object/vtable/cache ABI remains separate. Evidence: docs/INSTANCE_INTEGRATION.md; reports/instance_integration_annotations.json. Original library ABI unchanged; no game validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b18b60",
+      "before": {
+        "address": "00b18b60",
+        "function_name": "FUN_00b18b60"
+      },
+      "after": {
+        "address": "00b18b60",
+        "name": "BSP_Material_CloneConstruct",
+        "evidence": "BSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation. Original ABI: ECX fresh110h-byte destination; stack source material; EAX destination; RET4. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c1b0",
+      "before": {
+        "address": "00b1c1b0",
+        "function_name": "FUN_00b1c1b0"
+      },
+      "after": {
+        "address": "00b1c1b0",
+        "name": "BSP_RenderEntries_PushHeap",
+        "evidence": "Push saved heap value upward while parent<value and hole>top; equivalent parent stops. Stores saved value at final hole. Original ABI: ECX first,EDX hole; stack top,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX hole; stack top,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c210",
+      "before": {
+        "address": "00b1c210",
+        "function_name": "FUN_00b1c210"
+      },
+      "after": {
+        "address": "00b1c210",
+        "name": "BSP_RenderEntries_RotatePointers",
+        "evidence": "Rotate pointer-slot[first,middle),[middle,last) by gcd cycles; native starts cycle at first+gcd then decrements. Used by00b1d420 insertion. Original ABI: ECX first,EDX middle; stack last,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX middle; stack last,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c500",
+      "before": {
+        "address": "00b1c500",
+        "function_name": "FUN_00b1c500"
+      },
+      "after": {
+        "address": "00b1c500",
+        "name": "BSP_InstanceEntryPointers_Reserve",
+        "evidence": "Clamprequestminimum1, growonly, allocate4*capacity, copy existing borrowed pointers in order, freeold, publishdata/capacity. Verified returning continuation restored after misclassified free call. Original ABI: ECX pointerarray {data,count,capacity}, stack requestedcapacity; RET4. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c660",
+      "before": {
+        "address": "00b1c660",
+        "function_name": "FUN_00b1c660"
+      },
+      "after": {
+        "address": "00b1c660",
+        "name": "BSP_InstanceGroupPointers_Reserve",
+        "evidence": "Same4-byte borrowedpointer grow/copy/free/publishalgorithm as instanceentryarray. Verified returning continuation restored after misclassified free call. Caller uses it for indexedgroupstorage and orderedgrouptraversal. Original ABI: ECX pointerarray {data,count,capacity}, stack requestedcapacity; RET4. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c7c0",
+      "before": {
+        "address": "00b1c7c0",
+        "function_name": "FUN_00b1c7c0"
+      },
+      "after": {
+        "address": "00b1c7c0",
+        "name": "BSP_InstanceGroupPointers_ResizeCleared",
+        "evidence": "Reserveexactnewcount if needed; initialize every newlyexposed pointer to zero; shrink count without freeing pointedobjects; assignnewcount. Typed grouping by-binding vector mirrors validnonnegative index semantics. Original ABI: ECX pointerarray, stack signednewcount; RET4. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c8c0",
+      "before": {
+        "address": "00b1c8c0",
+        "function_name": "FUN_00b1c8c0"
+      },
+      "after": {
+        "address": "00b1c8c0",
+        "name": "BSP_RenderEntries_OrderThreeSamples",
+        "evidence": "Unconditional three strict comparisons in middle/first,final/middle,middle/first order, swapping when comparatorAL true. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1c910",
+      "before": {
+        "address": "00b1c910",
+        "function_name": "FUN_00b1c910"
+      },
+      "after": {
+        "address": "00b1c910",
+        "name": "BSP_RenderEntries_AdjustHeap",
+        "evidence": "Descend heap hole choosing left only if right<left; equivalent children choose right. Move lone left child when present,then00b1c1b0 pushes saved value up from hole to original top. Original ABI: ECX first,EDX hole; stack length,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX hole; stack length,value,comparator; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1ca50",
+      "before": {
+        "address": "00b1ca50",
+        "function_name": "FUN_00b1ca50"
+      },
+      "after": {
+        "address": "00b1ca50",
+        "name": "BSP_InstanceBinding_AssignRetained",
+        "evidence": "On identitychange store incomingpointer, InterlockedIncrement incoming+4 before InterlockedDecrement old+4, call oldvirtual0 on zero. Host shared binding retains native reachability, not exact refcountlayout. Original ABI: ECX destination pointer cell, EDX source cell; EAX destination; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1cf80",
+      "before": {
+        "address": "00b1cf80",
+        "function_name": "FUN_00b1cf80"
+      },
+      "after": {
+        "address": "00b1cf80",
+        "name": "BSP_RenderEntries_ChooseMedianPivot",
+        "evidence": "Median3 first/middle/final when final-first<=40 pointers; count>=42 uses count/8 step,three triples then median of their middles. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX middle; stack final element,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1d020",
+      "before": {
+        "address": "00b1d020",
+        "function_name": "FUN_00b1d020"
+      },
+      "after": {
+        "address": "00b1d020",
+        "name": "BSP_RenderEntries_MakeHeap",
+        "evidence": "Build max heap from count/2-1 through0 using00b1c910. RET0Ch includes two unused stack words after comparator. Original ABI: ECX first,EDX last; stack comparator,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack comparator,two unused words; RET0Ch. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1d280",
+      "before": {
+        "address": "00b1d280",
+        "function_name": "FUN_00b1d280"
+      },
+      "after": {
+        "address": "00b1d280",
+        "name": "BSP_RenderEntries_PartitionEqualPivot",
+        "evidence": "Median pivot with existing equal-band expansion, outward scans and explicit two-swap equal-band slides. Returns equal range in output pair. Preserves native large-list equivalent-pointer permutation. Original ABI: ECX output pair,EDX first; stack last,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX output pair,EDX first; stack last,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1d420",
+      "before": {
+        "address": "00b1d420",
+        "function_name": "FUN_00b1d420"
+      },
+      "after": {
+        "address": "00b1d420",
+        "name": "BSP_RenderEntries_InsertionSort",
+        "evidence": "Stable strict-predicate insertion: first-element sentinel, predecessor/backwards scan then00b1c210 single-element rotation. Native<=32 tail of00b1dce0. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1d6a0",
+      "before": {
+        "address": "00b1d6a0",
+        "function_name": "FUN_00b1d6a0"
+      },
+      "after": {
+        "address": "00b1d6a0",
+        "name": "BSP_RenderEntries_SortHeap",
+        "evidence": "Pop root into last slot,adjust saved former last into reduced heap,repeat until length<=1. Uses00b1c910. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack comparator; RET4. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1d6f0",
+      "before": {
+        "address": "00b1d6f0",
+        "function_name": "CG_array_ctor_helper_00b1d6f0"
+      },
+      "after": {
+        "address": "00b1d6f0",
+        "name": "BSP_InstanceGroup_Construct",
+        "evidence": "Zero binding and native string header, construct two threeDWORD source arrays at24/30, zero two counts, outputentries and generatedmodels. Host uses pinned owning group and output entries rather than native rawpool ABI. Original ABI: ECX fresh4Ch group; EAX group; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1dce0",
+      "before": {
+        "address": "00b1dce0",
+        "function_name": "FUN_00b1dce0"
+      },
+      "after": {
+        "address": "00b1dce0",
+        "name": "BSP_RenderEntries_SortIntrospective",
+        "evidence": "Insertion at count<=32; otherwise median equal-band partition, ideal=floor(ideal/2)+floor(ideal/4), smaller-side recursion/right-on-tie, heap fallback at ideal<=0. Native category1 caller initializes ideal=count. Typed full finite-domain pointer sort;90 native differential runs match5652 pointer positions including ties/heap fallback. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1dff0",
+      "before": {
+        "address": "00b1dff0",
+        "function_name": "FUN_00b1dff0"
+      },
+      "after": {
+        "address": "00b1dff0",
+        "name": "BSP_RenderContext_CollectInstanceEntry",
+        "evidence": "Descriptor16 gates visibility. Camera/modeled world translation distance and threshold fade multiply entry18. Skip below promotedfloat0.03. No binding routes actual entry pointer by faded/material queue. Binding+8 indexes retained group; creates category0 then1 once, modulo5 diffuse tint, reserves8 lists, count increment then ordered borrowed source pointer append. Typed fragment omits debug strings, exact native pool and model wrapper allocation. Original ABI: ECX context, stack entry pointer; RET4. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1e990",
+      "before": {
+        "address": "00b1e990",
+        "function_name": "FUN_00b1e990"
+      },
+      "after": {
+        "address": "00b1e990",
+        "name": "BSP_InstanceGroups_UploadAndQueue",
+        "evidence": "Group-order/category0-then1 upload: attach(scene,false), category1 signed-material/depth sort, geometry0 stream1 lock(count,0,0), generator v+8 writes and declaration+CC advances, unlock, section0+1C count, retained entry initialize, borrowed pointer queue append. Checked typed success domain; complete native finite-depth sort including larger-list tie permutations; remaining-pool capacity guard and attempted-lock cleanup. See docs/INSTANCE_GROUP_UPLOAD.md and reports/instance_group_upload_audit.json. Original ABI: ECX=context; no stack args; RET. Model attach v+50 consumes scene and recurse=false because getter00b72110 is zero-arg RET. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1fe40",
+      "before": {
+        "address": "00b1fe40",
+        "function_name": "BSP_Renderer_BeginRootResourceLoad"
+      },
+      "after": {
+        "address": "00b1fe40",
+        "name": "BSP_D3D9Renderer_BeginStructuredRoot",
+        "evidence": "RET only. Concrete D3D9 table00d5f0a8 +50 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b25f40",
+      "before": {
+        "address": "00b25f40",
+        "function_name": "FUN_00b25f40"
+      },
+      "after": {
+        "address": "00b25f40",
+        "name": "BSP_RendererSingletonSubobject_Construct",
+        "evidence": "00b25f5a saves incoming ECX in EDI.; 00b25f68 stores singleton-subobject table00d5e610 at[EDI].; 00b25f96 LEA EAX,[EDI-0C];00b25f9b MOV[00f8d394],EAX. Original ABI: ECX renderer singleton subobject at primary object+0C; no stack arguments; EAX same subobject; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b283f0",
+      "before": {
+        "address": "00b283f0",
+        "function_name": "FUN_00b283f0"
+      },
+      "after": {
+        "address": "00b283f0",
+        "name": "BSP_RendererBase_Construct",
+        "evidence": "00b28407 saves renderer ECX in ESI.; 00b28413 LEA EDI,[ESI+0C];00b28416 MOV ECX,EDI;00b28420 CALL00b25f40.; 00b28429 stores singleton-subobject table00d5e76c at[EDI];00b2842f stores primary base renderer table00d5e628 at[ESI]. Original ABI: ECX primary renderer object; no stack arguments; EAX same object; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b28570",
+      "before": {
+        "address": "00b28570",
+        "function_name": "BSP_Renderer_EndRootResourceLoad"
+      },
+      "after": {
+        "address": "00b28570",
+        "name": "BSP_D3D9Renderer_EndStructuredRoot",
+        "evidence": "SEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b287c0",
+      "before": {
+        "address": "00b287c0",
+        "function_name": "BSP_Renderer_CreateRegisteredVertexStream",
+        "comment": "[BSP reconstruction 00b287c0]\nBSP reconstruction hypothesis: Call allocator00b4b370 then00b4bc00 with count,declaration,flags; append raw stream pointer in renderer+1AACh array; additionally+19B0h array when virtual+58h returns AL==1. Allocation/growth/native lifecycle unported. ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b287c0",
+        "name": "BSP_Renderer_CreateRegisteredVertexStream",
+        "evidence": "Renderer00d5f0a8+5C=00b287c0; reorder constructor arguments, append raw renderer registry pointers; registry factory remains a bounded dependency. Original ABI: ECX renderer; stack count,flags,declaration; EAX stream; RETCh. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b4bc00",
+      "before": {
+        "address": "00b4bc00",
+        "function_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bc00]\nFactory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported.\n\n[BSP reconstruction 00b4bc00] update\nBSP reconstruction hypothesis: Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only. ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "after": {
+        "address": "00b4bc00",
+        "name": "BSP_D3D9LogicalVertexStream_Construct",
+        "evidence": "Dynamic iff(flags&F000h)==1000h: retain renderer+1974, register logical stream, offsetFFFFFFFFh, original flags+60/count+64/declaration+68. Private allocation skipped. Original ABI: ECX stream; stack count,declaration,flags; EAX stream; RETCh. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b4c8d0",
+      "before": {
+        "address": "00b4c8d0",
+        "function_name": "FUN_00b4c8d0"
+      },
+      "after": {
+        "address": "00b4c8d0",
+        "name": "BSP_InstanceGeometry_CreateGeneratedModel",
+        "evidence": "BSP reconstruction hypothesis: ECX model constructor argument, EDX generator, stack source mesh/selected section, RET8; returns generated model wrapper. Creates mesh with selected section first vertex stream and retained source index; creates stream1 through renderer+5C count0 flags1000h, shared16MiB dynamic vertex backing, offsetFFFFFFFFh, tag80000000h. Copies five section draw words, clones material00b18b60, retains generator combined layout. Host geometry success fragment only; full model/material lifetime, CPU pools and renderer raw registries remain explicit. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Not native ABI or gameplay validation. Original ABI: ECX model-constructor argument; EDX generator; stack source mesh, selected draw section; EAX generated model wrapper; RET8. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b51a20",
+      "before": {
+        "address": "00b51a20",
+        "function_name": "FUN_00b51a20"
+      },
+      "after": {
+        "address": "00b51a20",
+        "name": "BSP_RenderEntry_Initialize",
+        "evidence": "ECX entry,8 stack words,RET20h. Stores leading/section/geometry/model/camera/visibility/flags, preserves+20/+24 key. Positive depth override direct; otherwise camera view then v+48 actual world sphere center,004142e0 transform Z plussection+34. Callback and x87 value projection, no native object ownership ABI. See docs/INSTANCE_GROUP_UPLOAD.md. Original ABI: ECX=entry; 8 stack words: float leading,section,geometry,model,camera,float visibility,float depth_override,DWORD flags; RET20h. Model sphere getter v+48 takes no stack args. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b51b50",
+      "before": {
+        "address": "00b51b50",
+        "function_name": "FUN_00b51b50"
+      },
+      "after": {
+        "address": "00b51b50",
+        "name": "BSP_RenderBatch_ReserveEntryPointers",
+        "evidence": "Grow-only pointerarray storage, clampcapacity>=256, allocate/copy/free then publishdata/capacity; full98B continuation restored and saved. Original ABI: ECX=array descriptor; stack requested capacity; RET4; full98B includes hidden tail after free. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b51cb0",
+      "before": {
+        "address": "00b51cb0",
+        "function_name": "FUN_00b51cb0"
+      },
+      "after": {
+        "address": "00b51cb0",
+        "name": "BSP_RenderBatch_AppendEntry",
+        "evidence": "ECX batch,stack borrowed entry,RET4. Grow queue pointer capacity max256 or double when full via00b51b50, then store pointer/increment count; no retain or clone. Full allocator tail verified despite no-return free annotation. New owning pointer-array interface with borrowed entries. See docs/INSTANCE_GROUP_UPLOAD.md. Original ABI: ECX=batch; stack borrowed entry pointer; RET4. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b556b0",
+      "before": {
+        "address": "00b556b0",
+        "function_name": "TRIV_body_00b556b0"
+      },
+      "after": {
+        "address": "00b556b0",
+        "name": "BSP_InstanceGenerator_GetInstanceDeclaration",
+        "evidence": "Return borrowed instance declaration from generator+10. Original ABI: ECX generator; EAX declaration+10h; plain RET. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b556c0",
+      "before": {
+        "address": "00b556c0",
+        "function_name": "TRIV_body_00b556c0"
+      },
+      "after": {
+        "address": "00b556c0",
+        "name": "BSP_InstanceGenerator_GetCombinedLayout",
+        "evidence": "Return borrowed precomputed combined layout from generator+14. Original ABI: ECX generator; EAX combined layout+14h; plain RET. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b73770",
+      "before": {
+        "address": "00b73770",
+        "function_name": "BSP_StreamParameters_ComputeThresholdFade",
+        "comment": "[BSP reconstruction 00b73770]\nProvisional semantic name. Thiscall2floatargs RET8 ST0. Object+50h index chooses threshold default0.995f or object+4+16*index. Width=float32(threshold*fraction); float32(1-(input-(threshold-width))*(1/width)), compare clamp0..1, NaN passes. Caller uses0.01f and writes onePSfloat4. Unported; input domain meaning unresolved."
+      },
+      "after": {
+        "address": "00b73770",
+        "name": "BSP_StreamParameters_ComputeThresholdFade",
+        "evidence": "Index+50 selects default3f7eb852 or float+4+16*index. Widthfloatstore then x87 final subtraction/reciprocal/product, finalfloatstore and ordered clamp0..1; NaN passes. Typed API takes the actual resolved threshold; grouping caller multiplies without interveningfloatstores. Original ABI: ECX stream parameters; stack floatinput,floatfraction; ST0; RET8. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b75030",
+      "before": {
+        "address": "00b75030",
+        "function_name": "FUN_00b75030"
+      },
+      "after": {
+        "address": "00b75030",
+        "name": "BSP_GeneratedModel_Construct",
+        "evidence": "Construct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported. Original ABI: ECX destination; stack model-constructor argument; EAX destination; RET4. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b75170",
+      "before": {
+        "address": "00b75170",
+        "function_name": "FUN_00b75170"
+      },
+      "after": {
+        "address": "00b75170",
+        "name": "BSP_GeneratedModel_SetGeometry",
+        "evidence": "Retain mesh at+180, replace+178/+17C only for arguments other than-1.0f; exact argument1 meaning unresolved. Original ABI: ECX model; stack unused word,mesh,float,float; RET10h. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b7f100",
+      "before": {
+        "address": "00b7f100",
+        "function_name": "BSP_StructuredResource_ParseHierarchy",
+        "comment": "[BSP reconstruction 00b7f100]\n[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "after": {
+        "address": "00b7f100",
+        "name": "BSP_StructuredResource_ParseHierarchy",
+        "evidence": "Retained host Hierarchy container parser now appends actual00b7eb90 Item values, compares Item through CRT stricmp, and explicitly skips unknown children. Repeated containers append; recognized child close never seeks an unread tail. Original ECX manager/stack wrapper/RET4, no graph validation or native object ABI claim. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to Hierarchy node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b7f430",
+      "before": {
+        "address": "00b7f430",
+        "function_name": "BSP_ResourceManager_DispatchRoot",
+        "comment": "[BSP reconstruction 00b7f430]\nECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "after": {
+        "address": "00b7f430",
+        "name": "BSP_ResourceManager_DispatchRoot",
+        "evidence": "Registered root host traversal now composes actual parser registry, retained owning wire records, hierarchy Item parser and last root BoundingBox. Begins before control read; ends only after normal traversal. Observed D3D9 table00d5f0a8 hooks00b1fe40/00b28570 have no normal renderer state effect. Native current resource manager+24, virtual item ownership/cache/SEH remain separate. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to parent node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b85590",
+      "before": {
+        "address": "00b85590",
+        "function_name": "FUN_00b85590"
+      },
+      "after": {
+        "address": "00b85590",
+        "name": "BSP_DrawSection_SetInstanceCount",
+        "evidence": "ECX section, stack count, RET4; unconditional DWORD store to+1C. Typed GeneratedInstanceSection instance_count setter, no native layout ABI claim. See docs/INSTANCE_GROUP_UPLOAD.md. Original ABI: ECX=section; stack DWORD count; RET4; stores+1C. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bf9dc8",
+      "before": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect returning CRT free remains named _free. Five verified continuations and definitions repaired at00b22d10,00b4ae80,00b7f730,00b7f790,00b454e0; all five CALL_RETURN overrides cleared after restoring bytes; source game binary unchanged. Evidence: docs/MESH_MATERIAL_INTEGRATION.md; reports/mesh_material_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "after": {
+        "address": "00bf9dc8",
+        "name": "_free",
+        "evidence": "Returning CRT free is preserved. Three complete PE/live-matched caller continuations00b1c500,00b1c660,00b51b50 restored, falseCALL_RETURN overrides cleared, definitions rebuilt only after verifying unknown signatures and preserving comments; two concrete rendererhook functions created; saved under machineglobal Ghidra write lock. Evidence: docs/INSTANCE_INTEGRATION.md; reports/instance_integration_annotations.json. Original library ABI unchanged; no game validation."
+      },
+      "status": "applied"
+    }
+  ],
+  "tag_refinements_before_after": [
+    {
+      "address": "00b556b0",
+      "before": {
+        "address": "00b556b0",
+        "name": "TRIV_body_00b556b0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b556b0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed semantic name supersedes generated label; classification retained."
+    },
+    {
+      "address": "00b556c0",
+      "before": {
+        "address": "00b556c0",
+        "name": "TRIV_body_00b556c0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b556c0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed semantic name supersedes generated label; classification retained."
+    },
+    {
+      "address": "00b1d6f0",
+      "before": {
+        "address": "00b1d6f0",
+        "name": "CG_array_ctor_helper_00b1d6f0",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "after": {
+        "address": "00b1d6f0",
+        "name": "",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "reason": "Reviewed semantic name supersedes generated label; classification retained."
+    }
+  ],
+  "flow_and_function_definition_repair": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "spans": [
+      {
+        "address": "00b1c500",
+        "end_exclusive": "00b1c55f",
+        "length": 95,
+        "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485",
+        "pe_live_match": true,
+        "documentation_before": {
+          "hash": "247933803670655498059e9bf3a9da1926ded142b2f2d9e622726e958e75ae0e",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b1c500",
+          "function_name": "FUN_00b1c500",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b1c512"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b1c533"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b1c53e"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b1c549"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b1c55a"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "site": "00b1c54c",
+        "documentation_after": {
+          "hash": "26d706b48f01cb34bbd3495ed2d2013918305e09018d1ce6901d0b2117e03509",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b1c500",
+          "function_name": "FUN_00b1c500",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b1c512"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b1c533"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b1c53e"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b1c549"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b1c55a"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_after": "Function: FUN_00b1c500 at 00b1c500\nSignature: undefined FUN_00b1c500(void)\nEntry: 00b1c500\nBody: 00b1c500 - 00b1c55e"
+      },
+      {
+        "address": "00b1c660",
+        "end_exclusive": "00b1c6bf",
+        "length": 95,
+        "sha256": "bbef96f1a2d08755ee1eeb55e920111010dd72249c49005d6f47a92945a05b65",
+        "pe_live_match": true,
+        "documentation_before": {
+          "hash": "247933803670655498059e9bf3a9da1926ded142b2f2d9e622726e958e75ae0e",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b1c660",
+          "function_name": "FUN_00b1c660",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b1c672"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b1c693"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b1c69e"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b1c6a9"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b1c6ba"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "site": "00b1c6ac",
+        "documentation_after": {
+          "hash": "d34def5c979b943b20e077cee63e8dd0ec65769091fc8f0ce4400279d24df817",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b1c660",
+          "function_name": "FUN_00b1c660",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b1c672"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b1c693"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b1c69e"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b1c6a9"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b1c6ba"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_after": "Function: FUN_00b1c660 at 00b1c660\nSignature: undefined FUN_00b1c660(void)\nEntry: 00b1c660\nBody: 00b1c660 - 00b1c6be"
+      },
+      {
+        "address": "00b51b50",
+        "end_exclusive": "00b51bb2",
+        "length": 98,
+        "sha256": "5d1747b4e013a9bd91c70c441b3115fadfa5273e0e7a103c4a3ae143b73a9b83",
+        "pe_live_match": true,
+        "documentation_before": {
+          "hash": "fc75d33fca8b9c2bed8880963a777557b6054cee050701fecefdf6218b8e0858",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b51b50",
+          "function_name": "FUN_00b51b50",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 21,
+              "name": "LAB_00b51b65"
+            },
+            {
+              "relative_offset": 54,
+              "name": "LAB_00b51b86"
+            },
+            {
+              "relative_offset": 65,
+              "name": "LAB_00b51b91"
+            },
+            {
+              "relative_offset": 76,
+              "name": "LAB_00b51b9c"
+            },
+            {
+              "relative_offset": 93,
+              "name": "LAB_00b51bad"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "site": "00b51b9f",
+        "documentation_after": {
+          "hash": "3262fc915f8c15729c8a86624f4989476e6bacd1be0a95e2db4b5140fbcab89a",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b51b50",
+          "function_name": "FUN_00b51b50",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 21,
+              "name": "LAB_00b51b65"
+            },
+            {
+              "relative_offset": 54,
+              "name": "LAB_00b51b86"
+            },
+            {
+              "relative_offset": 65,
+              "name": "LAB_00b51b91"
+            },
+            {
+              "relative_offset": 76,
+              "name": "LAB_00b51b9c"
+            },
+            {
+              "relative_offset": 93,
+              "name": "LAB_00b51bad"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_after": "Function: FUN_00b51b50 at 00b51b50\nSignature: undefined FUN_00b51b50(void)\nEntry: 00b51b50\nBody: 00b51b50 - 00b51bb1"
+      }
+    ],
+    "hooks": [
+      {
+        "address": "00b1fe40",
+        "end_exclusive": "00b1fe41",
+        "length": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "pe_live_match": true,
+        "function_before": "No function found for 00b1fe40",
+        "name": "BSP_Renderer_BeginRootResourceLoad",
+        "function_after": "Function: BSP_Renderer_BeginRootResourceLoad at 00b1fe40\nSignature: undefined BSP_Renderer_BeginRootResourceLoad(void)\nEntry: 00b1fe40\nBody: 00b1fe40 - 00b1fe40"
+      },
+      {
+        "address": "00b28570",
+        "end_exclusive": "00b28593",
+        "length": 35,
+        "sha256": "6c797289aab8bee109c477a3e6b77939ff18fe512109da6ae72844c11b7219c3",
+        "pe_live_match": true,
+        "function_before": "No function found for 00b28570",
+        "name": "BSP_Renderer_EndRootResourceLoad",
+        "function_after": "Function: BSP_Renderer_EndRootResourceLoad at 00b28570\nSignature: undefined BSP_Renderer_EndRootResourceLoad(void)\nEntry: 00b28570\nBody: 00b28570 - 00b28592"
+      }
+    ],
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b1c551",
+          "end_address": "00b1c55f"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b1c551",
+          "end_address": "00b1c55e",
+          "bytes_disassembled": 14,
+          "message": "Successfully disassembled 14 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b1c6b1",
+          "end_address": "00b1c6bf"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b1c6b1",
+          "end_address": "00b1c6be",
+          "bytes_disassembled": 14,
+          "message": "Successfully disassembled 14 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b51ba4",
+          "end_address": "00b51bb2"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b51ba4",
+          "end_address": "00b51bb1",
+          "bytes_disassembled": 14,
+          "message": "Successfully disassembled 14 byte(s)"
+        }
+      },
+      {
+        "endpoint": "set_function_no_return",
+        "body": {
+          "function_address": "00bf9dc8",
+          "no_return": false
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Set function '_free' at 00bf9dc8 from returning to returning"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b1c54c"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b1c54c (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b1c6ac"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b1c6ac (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b51b9f"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b51b9f (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b1c500"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b1c500",
+          "deleted_function": "FUN_00b1c500",
+          "body_size": 86,
+          "message": "Function 'FUN_00b1c500' deleted at 00b1c500"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b1c500",
+          "name": "FUN_00b1c500",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b1c500",
+          "function_name": "FUN_00b1c500",
+          "entry_point": "00b1c500",
+          "body_size": 95,
+          "message": "Function created successfully at 00b1c500"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b1c660"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b1c660",
+          "deleted_function": "FUN_00b1c660",
+          "body_size": 86,
+          "message": "Function 'FUN_00b1c660' deleted at 00b1c660"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b1c660",
+          "name": "FUN_00b1c660",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b1c660",
+          "function_name": "FUN_00b1c660",
+          "entry_point": "00b1c660",
+          "body_size": 95,
+          "message": "Function created successfully at 00b1c660"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b51b50"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b51b50",
+          "deleted_function": "FUN_00b51b50",
+          "body_size": 89,
+          "message": "Function 'FUN_00b51b50' deleted at 00b51b50"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b51b50",
+          "name": "FUN_00b51b50",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b51b50",
+          "function_name": "FUN_00b51b50",
+          "entry_point": "00b51b50",
+          "body_size": 98,
+          "message": "Function created successfully at 00b51b50"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b1fe40",
+          "end_address": "00b1fe41"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b1fe40",
+          "end_address": "00b1fe40",
+          "bytes_disassembled": 1,
+          "message": "Successfully disassembled 1 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b1fe40",
+          "name": "BSP_Renderer_BeginRootResourceLoad",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b1fe40",
+          "function_name": "BSP_Renderer_BeginRootResourceLoad",
+          "entry_point": "00b1fe40",
+          "body_size": 1,
+          "message": "Function created successfully at 00b1fe40",
+          "warnings": [
+            "Function name 'BSP_Renderer_BeginRootResourceLoad' \u2014 main part 'Renderer_BeginRootResourceLoad' is not PascalCase. Expected: RendererBeginrootresourceload",
+            "Function name 'BSP_Renderer_BeginRootResourceLoad' \u2014 main part 'Renderer_BeginRootResourceLoad' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_Renderer_BeginRootResourceLoad' does not start with a recognized verb. First word 'Renderer_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b28570",
+          "end_address": "00b28593"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b28570",
+          "end_address": "00b28592",
+          "bytes_disassembled": 35,
+          "message": "Successfully disassembled 35 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b28570",
+          "name": "BSP_Renderer_EndRootResourceLoad",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b28570",
+          "function_name": "BSP_Renderer_EndRootResourceLoad",
+          "entry_point": "00b28570",
+          "body_size": 35,
+          "message": "Function created successfully at 00b28570",
+          "warnings": [
+            "Function name 'BSP_Renderer_EndRootResourceLoad' \u2014 main part 'Renderer_EndRootResourceLoad' is not PascalCase. Expected: RendererEndrootresourceload",
+            "Function name 'BSP_Renderer_EndRootResourceLoad' \u2014 main part 'Renderer_EndRootResourceLoad' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_Renderer_EndRootResourceLoad' does not start with a recognized verb. First word 'Renderer_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b1c54c"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b1c54c (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b1c6ac"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b1c6ac (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b51b9f"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b51b9f (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ],
+    "free_before": {
+      "hash": "b5d6d6e6c5869326f21135a6cd0207d037805c7d8e2f97fcec5cdda5d55f665e",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00bf9dc8",
+      "function_name": "_free",
+      "return_type": "void",
+      "calling_convention": "__cdecl",
+      "plate_comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect returning CRT free remains named _free. Five verified continuations and definitions repaired at00b22d10,00b4ae80,00b7f730,00b7f790,00b454e0; all five CALL_RETURN overrides cleared after restoring bytes; source game binary unchanged. Evidence: docs/MESH_MATERIAL_INTEGRATION.md; reports/mesh_material_annotations.json. Original ABI unchanged; no gameplay validation.",
+      "parameters": [
+        {
+          "ordinal": 0,
+          "name": "_Memory",
+          "type": "void *"
+        }
+      ],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "BVar2",
+          "type": "BOOL",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "uVar5",
+          "type": "undefined4",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "puVar3",
+          "type": "undefined4 *",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "DVar4",
+          "type": "DWORD",
+          "storage": "(register, 0x0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 63,
+          "name": "LAB_00bf9e07"
+        },
+        {
+          "relative_offset": 95,
+          "name": "LAB_00bf9e27"
+        },
+        {
+          "relative_offset": 96,
+          "name": "LAB_00bf9e28"
+        },
+        {
+          "relative_offset": 136,
+          "name": "LAB_00bf9e50"
+        }
+      ],
+      "completeness_score": 100.0
+    },
+    "final_flow": [
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1c54c (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1c6ac (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b51b9f (was: NONE, now: NONE)"
+      }
+    ],
+    "applied": true
+  },
+  "flow_comments_before": [
+    {
+      "address": "00b1c500",
+      "annotation": {
+        "address": "00b1c500",
+        "function_name": "FUN_00b1c500"
+      }
+    },
+    {
+      "address": "00b1c660",
+      "annotation": {
+        "address": "00b1c660",
+        "function_name": "FUN_00b1c660"
+      }
+    },
+    {
+      "address": "00b51b50",
+      "annotation": {
+        "address": "00b51b50",
+        "function_name": "FUN_00b51b50"
+      }
+    }
+  ],
+  "post_annotation_flow_overrides": [
+    {
+      "address": "00b1c54c",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1c54c (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b1c6ac",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1c6ac (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b51b9f",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b51b9f (was: NONE, now: NONE)"
+      }
+    }
+  ],
+  "snapshot": {
+    "utc": "2026-09-10T03:22:56.096372+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62765,
+    "internal_function_count": 62323,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "refreshed_exports": [
+    {
+      "address": "004142e0",
+      "name": "BSP_Vector3f_TransformAffinePoint",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/004142e0/metadata.json": "bc80084a70716ab23246e15d80788a9856c519f85ac8a5d2ae00d8908301cf0c",
+        "exports/bsp/functions/004142e0/decompiled.c": "76ae8a47fb68c94f2ef94375e1530152449aa3c4fe15491dd6bfaa1d4f96f0de",
+        "exports/bsp/functions/004142e0/assembly.txt": "2c670d8673ef2afddd236a396d6a53a465539a7d7e246cfa70ab772d60dbd6ee"
+      }
+    },
+    {
+      "address": "00419440",
+      "name": "BSP_Vector3f_Length",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00419440/metadata.json": "66dc8ab542ff2f4a0d76b7353840b2655de9c12724717ea5d35969b83ca65765",
+        "exports/bsp/functions/00419440/decompiled.c": "a40e7566e3edb001fad4bc7569c1fe9eabf05b6504964b35598175cb893f5e59",
+        "exports/bsp/functions/00419440/assembly.txt": "d52b8b070ff7ff7d003665cf614fb11e177866cf536c2ef59b64c81945c15b5b"
+      }
+    },
+    {
+      "address": "00b18900",
+      "name": "BSP_Material_ConstructWithEffect",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b18900/metadata.json": "88674365889c33eb5775f2c80debab2993bc8cb6877930a556675e996367ece2",
+        "exports/bsp/functions/00b18900/decompiled.c": "567e56b74171c8c4fb74d1263c86701d9c5c333f3df99034719f8feee5a4acdc",
+        "exports/bsp/functions/00b18900/assembly.txt": "7bbfaeb977d75352e7e4f95b3b7a2fc1857f2c4f84dd485fdc4c10bf8a24ae68"
+      }
+    },
+    {
+      "address": "00b18b60",
+      "name": "BSP_Material_CloneConstruct",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b18b60/metadata.json": "f04f22f070b43a1ed6810a48729e7bfdfd17786d4e86fdbe32baf0e2492ebc3b",
+        "exports/bsp/functions/00b18b60/decompiled.c": "7681cb5f595d6e747242cc35c68a9fadf8b0fedb2ec8ef3d1ca591b9513e4f7c",
+        "exports/bsp/functions/00b18b60/assembly.txt": "859c10bafcdedc79d55753371180014f02ce0db36ab307b48caedd0372b5be53"
+      }
+    },
+    {
+      "address": "00b1c1b0",
+      "name": "BSP_RenderEntries_PushHeap",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c1b0/metadata.json": "5b4147e3c8a29c29dc075a5c869bea3aa742b1189356043c26e5fa4e531d91ee",
+        "exports/bsp/functions/00b1c1b0/decompiled.c": "b99006d43c0445f74790246e70d6860a8135a17d14e4df36aa5546f3c17144a0",
+        "exports/bsp/functions/00b1c1b0/assembly.txt": "08970ddcc45e2935292d9de201927f62307baccec6423f29d2e970f2481f9bca"
+      }
+    },
+    {
+      "address": "00b1c210",
+      "name": "BSP_RenderEntries_RotatePointers",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c210/metadata.json": "3c53e9a2f18acd68a8c444aef77747167b8e269cc5657861450228d8c896fb2c",
+        "exports/bsp/functions/00b1c210/decompiled.c": "a130f382432333c755f97cbf9275401475150673a0ab36942541b4aa77e2df73",
+        "exports/bsp/functions/00b1c210/assembly.txt": "75e940d66b7c2c8a8f077a5510feb1cc9d5cb5aeb51d5ff0ac3ae7a4b7ec59c4"
+      }
+    },
+    {
+      "address": "00b1c500",
+      "name": "BSP_InstanceEntryPointers_Reserve",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c500/metadata.json": "0fff47341299fc359a4408ee740b27ee62614e19db4933fe9b6f1f7574023ab1",
+        "exports/bsp/functions/00b1c500/decompiled.c": "f89ea586f70aa640314d4780961dbd0ae2ee8713f1be9f1516c752a70241b28b",
+        "exports/bsp/functions/00b1c500/assembly.txt": "7fcc1274921d84fb8bb6e2692de58e7b45afb13aa40cd983b7a3d2235b447911"
+      }
+    },
+    {
+      "address": "00b1c660",
+      "name": "BSP_InstanceGroupPointers_Reserve",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c660/metadata.json": "c3e5a841c6843a926575ff62c1e61a7a27d6f999a45deb7cb1c68d5ca4084f8c",
+        "exports/bsp/functions/00b1c660/decompiled.c": "33ca14dd394bd534f90b99f69279e9f545ccd5cb3eaed44c1871e6ef418b302f",
+        "exports/bsp/functions/00b1c660/assembly.txt": "786ac728bf06274eb8dda19b54587b3dee26ed8211e6b3d145ed725dc92fce79"
+      }
+    },
+    {
+      "address": "00b1c7c0",
+      "name": "BSP_InstanceGroupPointers_ResizeCleared",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c7c0/metadata.json": "b0e7ace04cce5239d304f13e6ecb6371fd396845660301803c89f48f05322a8b",
+        "exports/bsp/functions/00b1c7c0/decompiled.c": "8f00f20369691216e04fedc64f503e776a9cbfe1e4efecfc7882bb5e89c638a4",
+        "exports/bsp/functions/00b1c7c0/assembly.txt": "b16dc9c41add1f673442df8b3e66ed6afb9c19ac2d2bf7921acbdc194283e0e8"
+      }
+    },
+    {
+      "address": "00b1c8c0",
+      "name": "BSP_RenderEntries_OrderThreeSamples",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c8c0/metadata.json": "655e477f29526e984e7bd938ebfd1e5809a42268a2b55726760e47b72e2485b7",
+        "exports/bsp/functions/00b1c8c0/decompiled.c": "606dca215f8e3ea809759d4a87cf21f3193d6795995f6bb70c0f6534d2c8c708",
+        "exports/bsp/functions/00b1c8c0/assembly.txt": "a81eb9421a61c9ed8ef6398bd7cfe8e4d3cd6b86bdb0f2aea6a1e1f453b44eb3"
+      }
+    },
+    {
+      "address": "00b1c910",
+      "name": "BSP_RenderEntries_AdjustHeap",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1c910/metadata.json": "b14a5d62d9b7a5a32e395cf0c70c2bb592a9ea9bd149914dd0e39183b397f619",
+        "exports/bsp/functions/00b1c910/decompiled.c": "826e118d700e651ecc0732e3116fe2b513131cf96fd232fd37dca79ac4d809c4",
+        "exports/bsp/functions/00b1c910/assembly.txt": "f1d614924f49ea999208f65feb784a81cafa6e97ab6471622f42d32e59eeb8de"
+      }
+    },
+    {
+      "address": "00b1ca50",
+      "name": "BSP_InstanceBinding_AssignRetained",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1ca50/metadata.json": "ba775e73fb3106aaaac11de861d67d8381b8d3ee2d945e476a8f356983c76d53",
+        "exports/bsp/functions/00b1ca50/decompiled.c": "e81831adb7b43a7bf834f86c8529a3aa35c8a3c96e1a0230b7a5644acc144d57",
+        "exports/bsp/functions/00b1ca50/assembly.txt": "e57710bee0d8e063183181a54023656ea383588879a2df3f8cdff4444f69f1db"
+      }
+    },
+    {
+      "address": "00b1cf80",
+      "name": "BSP_RenderEntries_ChooseMedianPivot",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1cf80/metadata.json": "29ca6cd8d223cc8b55de11226c80bd824eab7be8c980d06036c310e00209723a",
+        "exports/bsp/functions/00b1cf80/decompiled.c": "b5e34751a4a9a5b4231c71c259a9c2f8dbad9ee40f6b2fe5c283690f9e8ec7fb",
+        "exports/bsp/functions/00b1cf80/assembly.txt": "47ebfcbcf44704d692dfa67e76ea044d720a362341acc6c48d0b63e3b9bd4d07"
+      }
+    },
+    {
+      "address": "00b1d020",
+      "name": "BSP_RenderEntries_MakeHeap",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1d020/metadata.json": "da53ae5f7fde53eb16c8535efe8405af944358583f7dacaf61fa27d11b19092f",
+        "exports/bsp/functions/00b1d020/decompiled.c": "a64b882c057a1b039a9fa35dfeabbc7002509edcf43a73e6da8eabab5b9dcce0",
+        "exports/bsp/functions/00b1d020/assembly.txt": "22efb0c454d0604bb2293bd3decfb0511df2ccb29fbb97f211a3845ef8a3f58c"
+      }
+    },
+    {
+      "address": "00b1d280",
+      "name": "BSP_RenderEntries_PartitionEqualPivot",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1d280/metadata.json": "bdcab7aef85119866f1578caaa1a008ab5d0eeaba15f1af2fac63fe0116e7cb8",
+        "exports/bsp/functions/00b1d280/decompiled.c": "a007197a7838e4eb0956e78a1652d36b4ef20b5ce71a50f761f0c9434dd80c95",
+        "exports/bsp/functions/00b1d280/assembly.txt": "1ed6f0ab1e010fa821f67814625d233cc38293bbfecb04cebd35c51a06c0b584"
+      }
+    },
+    {
+      "address": "00b1d420",
+      "name": "BSP_RenderEntries_InsertionSort",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1d420/metadata.json": "df71960de3f8fa2ed446a53f8734d2aad7f84b54042e2ef85081b66aa3ac5f72",
+        "exports/bsp/functions/00b1d420/decompiled.c": "6190bb9a5db31cd9f58552deb3b31907c2013255b4c6d0a943aa4eed8868cdb1",
+        "exports/bsp/functions/00b1d420/assembly.txt": "2bc86794243314daa10fe3b518d9ad1fc00d113f277b55f85ebe6ae5132e19c7"
+      }
+    },
+    {
+      "address": "00b1d6a0",
+      "name": "BSP_RenderEntries_SortHeap",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1d6a0/metadata.json": "cf12e2f94b3a2efddb08bb6f417fb1627d794682964d89efc3b8b28788835b28",
+        "exports/bsp/functions/00b1d6a0/decompiled.c": "ec54a4ac551d3840493ebe58a3e2ad00a5bcba2346d54ba5d9efdfc1d1ff2a09",
+        "exports/bsp/functions/00b1d6a0/assembly.txt": "61af61774629d07da7bd7f6c5a8ed26173bffa1823ec38b7d37e6ababc45934c"
+      }
+    },
+    {
+      "address": "00b1d6f0",
+      "name": "BSP_InstanceGroup_Construct",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1d6f0/metadata.json": "4e41cf535fb0696aad071c0982c1d7b7f5eb356462195cc416b9b23ac24273c4",
+        "exports/bsp/functions/00b1d6f0/decompiled.c": "02eff6846a1cde6aec045537de571443deae5591fc50137b204b75b9b3896742",
+        "exports/bsp/functions/00b1d6f0/assembly.txt": "2c1721af7588c3562fc0b2c99c91ba69dd3a4d73e741f683cb9848c5764e1c43"
+      }
+    },
+    {
+      "address": "00b1dce0",
+      "name": "BSP_RenderEntries_SortIntrospective",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1dce0/metadata.json": "6bb6985d3840e25a01749ecc995679e97d47f26ce318a9b20ff3027e1824a7b7",
+        "exports/bsp/functions/00b1dce0/decompiled.c": "68c8806ae44c62c3a5b7957785615530a163b5b8ffc9e528c901d469c349bfd5",
+        "exports/bsp/functions/00b1dce0/assembly.txt": "172da449eeba2a5f104f7dc74c5d8fe02b0f18de42cf2ae49b45eb57effd94ae"
+      }
+    },
+    {
+      "address": "00b1dff0",
+      "name": "BSP_RenderContext_CollectInstanceEntry",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1dff0/metadata.json": "a5304ba15c4d4980de76819b0dcf89190b7357ab7b152b3ee40096abf972f822",
+        "exports/bsp/functions/00b1dff0/decompiled.c": "b440c62f7253730a85ba50e08cb6e66cb5a0f274712acbd8ea76dbb123e4687e",
+        "exports/bsp/functions/00b1dff0/assembly.txt": "6c69ffa5006936f00119f26967abbb2c3e412b1d9d492d95d2b8a7f40c241fce"
+      }
+    },
+    {
+      "address": "00b1e990",
+      "name": "BSP_InstanceGroups_UploadAndQueue",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1e990/metadata.json": "cff7d3bdafa479f7da16cb3893842df9e371a1c244b0a0676e7ed7763ad69230",
+        "exports/bsp/functions/00b1e990/decompiled.c": "8b69e5e9e6cd6a73cebccf72d01aa0a3130e0c6ff87d3c1d59003059c2a3e84f",
+        "exports/bsp/functions/00b1e990/assembly.txt": "4094f472cbb4f6306f9fbcbfeb647b1d6017804d9537629ca44c50ee6141464f"
+      }
+    },
+    {
+      "address": "00b1fe40",
+      "name": "BSP_D3D9Renderer_BeginStructuredRoot",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b1fe40/metadata.json": "a4cc0122c5097a6f0c6553ab891b2da67c2a3ec22010d9bee955b21e3a23a660",
+        "exports/bsp/functions/00b1fe40/decompiled.c": "664e0ee2b501ea7a32f27cb0817c04ac2d5aa60c0c8a30b6160b09b59caf4cb2",
+        "exports/bsp/functions/00b1fe40/assembly.txt": "aeb0d2bc0820e872dec82356b77efab31283b90a2e53bac4e0c098fd835c7c48"
+      }
+    },
+    {
+      "address": "00b25f40",
+      "name": "BSP_RendererSingletonSubobject_Construct",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b25f40/metadata.json": "18329f645ba1d7471407ab5ccb9c710d09492fc6da637c8a36c06614020535ab",
+        "exports/bsp/functions/00b25f40/decompiled.c": "4d54b43df991ae9771f80d3312bfd512b97af902f0476f9ba083567c052c1cc4",
+        "exports/bsp/functions/00b25f40/assembly.txt": "c87afeeca588c3341d6ae69678b510064e0385fca8b82e3b80a05929b4c1f6d4"
+      }
+    },
+    {
+      "address": "00b283f0",
+      "name": "BSP_RendererBase_Construct",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b283f0/metadata.json": "39765206e1bc8fdaaf1ae8ad0b6c725325845800ea45cf0cead9943257163006",
+        "exports/bsp/functions/00b283f0/decompiled.c": "3c390d0d71080668103a3c7a31a1364635dd3b34ed9839f499f95add3be47f29",
+        "exports/bsp/functions/00b283f0/assembly.txt": "79ee6bb0f3dabfb43b1d6595d94bdedb9ba2b60fd3a61cd96ac1c3b5393348db"
+      }
+    },
+    {
+      "address": "00b28570",
+      "name": "BSP_D3D9Renderer_EndStructuredRoot",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b28570/metadata.json": "05c5ad5aa7c943b70c4f7cac03b482e1d1cfe1b5f949204eb06dd806bac36a81",
+        "exports/bsp/functions/00b28570/decompiled.c": "efabd0a96905929e60292c0928e235dfef7a535220741e5a3a8b649d7490237b",
+        "exports/bsp/functions/00b28570/assembly.txt": "0bf86c6a89e244e2642b74d70c597996f0481db8f0f5340215622c8a3bee2b21"
+      }
+    },
+    {
+      "address": "00b287c0",
+      "name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b287c0/metadata.json": "4508c37ecda1eeadedd351b0dc533e9c92f717e31f6936a2359d3e9331ab889c",
+        "exports/bsp/functions/00b287c0/decompiled.c": "40f11e59724df25bbea81bcb908b8c61970ffa90be9d6680ad93ac7bc163db3d",
+        "exports/bsp/functions/00b287c0/assembly.txt": "e09720bbcecced2ec1609590a08d8e3013421056f2ed4c0d1f5e1799c3f4aa35"
+      }
+    },
+    {
+      "address": "00b4bc00",
+      "name": "BSP_D3D9LogicalVertexStream_Construct",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b4bc00/metadata.json": "ec3c36e1e8cbbf8f71975e1908d7c564509eea83f71e2b3225af72ed2090e5a1",
+        "exports/bsp/functions/00b4bc00/decompiled.c": "ee4e02d5e80f530bbfde4d4a59bdf128c79f86767486023fab043fbc8e4a6067",
+        "exports/bsp/functions/00b4bc00/assembly.txt": "0ce46acea0bf5f4a876785ce653421aff677bbac900843728dd130323200f967"
+      }
+    },
+    {
+      "address": "00b4c8d0",
+      "name": "BSP_InstanceGeometry_CreateGeneratedModel",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b4c8d0/metadata.json": "65e7d22e7375e79d113c7fdd4661176a92e1638fa86332e0bfee47f989e0c5da",
+        "exports/bsp/functions/00b4c8d0/decompiled.c": "eec24eee3461911a63f4ebcde9bae13e0f8e1c06393f046d412623f643dd05af",
+        "exports/bsp/functions/00b4c8d0/assembly.txt": "5009419d0b2fef7d9e8337625196bc697c50e43dce2c5c9b79af929f51625e98"
+      }
+    },
+    {
+      "address": "00b51a20",
+      "name": "BSP_RenderEntry_Initialize",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b51a20/metadata.json": "cea4191ed486cf9dc0f03a2ef3db0e93ffd8c1729a7c129b3e32cb5d9363bdcf",
+        "exports/bsp/functions/00b51a20/decompiled.c": "5a98b0fba484dc26ce75cf1a076c628180dd3a89b521b13aa2ec5a798cfd2263",
+        "exports/bsp/functions/00b51a20/assembly.txt": "6ff13f08143ac6990702c060eb7c1832c68819874b3664bfaf6979d945f24b2c"
+      }
+    },
+    {
+      "address": "00b51b50",
+      "name": "BSP_RenderBatch_ReserveEntryPointers",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b51b50/metadata.json": "50e305e626395ce7b55fc25ee3f2bdef777eea9e425f0eeb6d8cdb3e72a7fd36",
+        "exports/bsp/functions/00b51b50/decompiled.c": "ebd725463ad84e4b9ef7a6d7c30d12b65861ba754bf95f807fcd7bd7cb380c2d",
+        "exports/bsp/functions/00b51b50/assembly.txt": "a566769daf34f8381f7225fdb01b2567a327ea7d71b8e9985c1208d3f20318dd"
+      }
+    },
+    {
+      "address": "00b51cb0",
+      "name": "BSP_RenderBatch_AppendEntry",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b51cb0/metadata.json": "4259d01c69c098d0439996b5a14a46ac84cf4e97c4e42fdde32b20ce44e81bfc",
+        "exports/bsp/functions/00b51cb0/decompiled.c": "d7078a8a6d4d9e52a6c8168fd303d08dcff3fb5af891ddb319651b0ca7694046",
+        "exports/bsp/functions/00b51cb0/assembly.txt": "d964741992447878c5aaa815c8e35874ed265d4510795e492bc562fb0143c5ff"
+      }
+    },
+    {
+      "address": "00b556b0",
+      "name": "BSP_InstanceGenerator_GetInstanceDeclaration",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b556b0/metadata.json": "1d56803e87f004a5ea44736a7547f305b5fc8da3e465e3dab7295e543c6ff8fa",
+        "exports/bsp/functions/00b556b0/decompiled.c": "5bdeca9dedab0f40cb34e05946d5383c794e727adc1dc949556c0fb712b3c1ce",
+        "exports/bsp/functions/00b556b0/assembly.txt": "cf8d4152979d2fe43d88d1e358496a79334f9554338647a0c4e82227a3345d51"
+      }
+    },
+    {
+      "address": "00b556c0",
+      "name": "BSP_InstanceGenerator_GetCombinedLayout",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b556c0/metadata.json": "5d0628bcfddea46b518fbcc825153ca4ea4d04253890b65566243810a8d7fca7",
+        "exports/bsp/functions/00b556c0/decompiled.c": "70682fd11c27d6556b63aab647598c4761615aa8dcad6a0ccd68150bf7c40b46",
+        "exports/bsp/functions/00b556c0/assembly.txt": "c0013c1534cd9da2e451e5fdcca9f885e78c027b1dcdd20bca82af4820d0591e"
+      }
+    },
+    {
+      "address": "00b73770",
+      "name": "BSP_StreamParameters_ComputeThresholdFade",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b73770/metadata.json": "e704efe568290ca728cd316fa605c83a1ab5055448cd093cf513279c9a768703",
+        "exports/bsp/functions/00b73770/decompiled.c": "caeaa1acddaa90840ee8777569ab514b272416fb504317c926363fb97cbc918c",
+        "exports/bsp/functions/00b73770/assembly.txt": "1d35c502c26ee50d2b211cca951e17e0ffe58743bdc7314631cd5084fd6b666b"
+      }
+    },
+    {
+      "address": "00b75030",
+      "name": "BSP_GeneratedModel_Construct",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b75030/metadata.json": "db8beb17a376ae63df87435895b99f792a4e1d15337ee1ae6f5783696a198199",
+        "exports/bsp/functions/00b75030/decompiled.c": "640cb1807e495077a0a084b34f1f868cfa87d5eed7f9b909a153de6b52a95668",
+        "exports/bsp/functions/00b75030/assembly.txt": "ddd42be2eada1b5d4daff507bf97cc42db7902d044afc8cb002b45d4b6f40ff1"
+      }
+    },
+    {
+      "address": "00b75170",
+      "name": "BSP_GeneratedModel_SetGeometry",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b75170/metadata.json": "af2c4940e2c7a669bd2a82214ea6b65cfe81dc0905f4de353dc698f0a75f1e6a",
+        "exports/bsp/functions/00b75170/decompiled.c": "f54b436dc7dbaaa1543083829ef315df90dcc6e90182fb5d3d78c280433c3293",
+        "exports/bsp/functions/00b75170/assembly.txt": "70685985d0ab7f71ee783f69b792027997069dfb6038b7f92968ff674a1272bd"
+      }
+    },
+    {
+      "address": "00b7f100",
+      "name": "BSP_StructuredResource_ParseHierarchy",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b7f100/metadata.json": "a352bac9e58bb9e94dcc22c086a76dfddefe3460e7ded7742959d0fb226bef36",
+        "exports/bsp/functions/00b7f100/decompiled.c": "2e141f36115ab1e71ee2c584a7656df16f62435e4e7177cf25516331bff4f39a",
+        "exports/bsp/functions/00b7f100/assembly.txt": "0b19d75f90177c567eaf1f9e3daf12ceee0b3ff2b9114a71d8c579bd6863e92d"
+      }
+    },
+    {
+      "address": "00b7f430",
+      "name": "BSP_ResourceManager_DispatchRoot",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b7f430/metadata.json": "0f75b2bb9c38d648e0c0676d636753b538702df5d4ecb397dd65bf6bb489595b",
+        "exports/bsp/functions/00b7f430/decompiled.c": "da790290932d5f717c228ecc9d5d93a722c5e9ce8f357a0f4d4c6cc18163eb4c",
+        "exports/bsp/functions/00b7f430/assembly.txt": "4cd6f9e3bfce880c2d5457f494d0632b5c28af0408415169e10e528761b9cf33"
+      }
+    },
+    {
+      "address": "00b85590",
+      "name": "BSP_DrawSection_SetInstanceCount",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00b85590/metadata.json": "a20ca0f41e20ad6c43f5f0465e3e7eb9c1f4726b86bcbfe9f405ef74e7980cd8",
+        "exports/bsp/functions/00b85590/decompiled.c": "10e4fe21a25cb3e9e8c123ddf7926582c219a3ad051e4582323520f22cd27e74",
+        "exports/bsp/functions/00b85590/assembly.txt": "700c47c915e9574b66c4c3778c8fc044b0cf9b1fc4b0029af8a4031a489c5ca9"
+      }
+    },
+    {
+      "address": "00bf9dc8",
+      "name": "_free",
+      "ledger_name_matches": true,
+      "saved_export_name_matches": true,
+      "additive_comment_marker_present": true,
+      "export_sha256": {
+        "exports/bsp/functions/00bf9dc8/metadata.json": "7e0b22a5340751bff7178159ee4555ffbf9435cb8afc8de87c5a8c5fbd0eba09",
+        "exports/bsp/functions/00bf9dc8/decompiled.c": "937623c75c5ba992c6c923d59437d602a3b2a15b11e954a686e772442cd5d3d6",
+        "exports/bsp/functions/00bf9dc8/assembly.txt": "c3e216b47d8a20547817265c08f5c8e064df215a573b026b6c323c967c3f66d8"
+      }
+    }
+  ],
+  "scope": "Descriptive names are hypotheses. Additive comments preserve existing evidence. Byte and saved-analysis checks do not prove original object ABI, native frame execution or gameplay."
+}

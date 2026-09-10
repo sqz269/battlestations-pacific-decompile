@@ -1,0 +1,84 @@
+{
+  "utc": "2026-09-10T03:37:47.978087+00:00",
+  "reviewers": [
+    "root_resource",
+    "instance_geometry",
+    "instance_upload"
+  ],
+  "integration_owner": "main",
+  "review_method": "Independent bounded source/native-evidence reviews with disjoint ownership, followed by primary integration and final existing-fixture checks.",
+  "findings": [
+    {
+      "id": "context_lifetime",
+      "reviewer": "root_resource",
+      "finding": "Borrowed context pointers and destruction order require owned model contexts to outlive upload and die before geometry.",
+      "resolution": "Require a shared owner for every nonnull model context; declare owned geometries before models; keep physical states alive through final stream unregistration.",
+      "validation": "Source lifetime review and successful two-category diagnostic; no injected allocation-failure lifetime test.",
+      "status": "resolved",
+      "final_source_sha256": {
+        "include/bsp/instance_upload.hpp": "528ae2b368b1611ea674968ee70f604352c05dcd1ab5b2648e9c44589667a10b",
+        "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+        "src/instance_grouping.cpp": "06c4328b8c7cd75af5c3d8e9f41e41efc151508145dc2b8b17324e8177b67aa9",
+        "src/d3d9_mesh_probe.cpp": "a7d3b4664fcd1c7cf56c8ad1f5cf7a3b0adc2c61de5afab88704aeab84740ee6"
+      }
+    },
+    {
+      "id": "failed_lock_and_capacity",
+      "reviewer": "instance_geometry",
+      "finding": "The physical buffer helper can increment lock depth even on a failed COM Lock; early return skipped balancing.",
+      "resolution": "Snapshot depth and unlock an attempted failure only if depth advanced. Check remaining physical bytes before scene attachment or locking; do not rewind native cursors.",
+      "validation": "Installed probe capacity_guard=1 rejects before attachment/COM/queue mutation. COM failure branch source-reviewed only.",
+      "status": "resolved",
+      "final_source_sha256": {
+        "src/instance_upload.cpp": "c7c865a7246c2e82edba97ec2649c4270698327f4e116e45dd64b2946a704139",
+        "src/d3d9_mesh_probe.cpp": "a7d3b4664fcd1c7cf56c8ad1f5cf7a3b0adc2c61de5afab88704aeab84740ee6"
+      }
+    },
+    {
+      "id": "root_bounds_assertions",
+      "reviewer": "root_resource",
+      "finding": "Printed tag/bounds presence was outside checked, and hierarchy bounds did not verify root bounds.",
+      "resolution": "Assert the installed four-tag order and compare the root BoundingBox directly with 24 file bytes at offset 73.",
+      "validation": "Both reader-only and full probe pass with all 1303 bytes consumed.",
+      "status": "resolved",
+      "final_source_sha256": {
+        "src/structured_resource_probe.cpp": "673b2ad47557798266d4e2e311a949848f9640dc3c427c9618faf715aab54927"
+      }
+    },
+    {
+      "id": "queued_gpu_bindings",
+      "reviewer": "root_resource",
+      "finding": "Pre-loop frequency checks could miss a wrong offset in the second coincident draw.",
+      "resolution": "Bind layout and indices per queued entry; query each stream buffer/offset/stride/frequency, index buffer and declaration identity inside each draw.",
+      "validation": "queued_bindings=2 at stream-1 offsets 0 and 144; draw and state restoration pass.",
+      "status": "resolved",
+      "final_source_sha256": {
+        "src/d3d9_mesh_probe.cpp": "a7d3b4664fcd1c7cf56c8ad1f5cf7a3b0adc2c61de5afab88704aeab84740ee6"
+      }
+    },
+    {
+      "id": "ordinary_material_defaults",
+      "reviewer": "instance_upload",
+      "finding": "Clone copied words 104/108 correctly, but the diagnostic source supplied zero instead of the ordinary constructor defaults.",
+      "resolution": "Set source words 104/108 to FFFFFFFF using the native 00b18900 evidence; document that aggregate-zero clone state is not the ordinary constructor.",
+      "validation": "Saved native constructor evidence plus final build/probe; full ordinary object constructor remains separate.",
+      "status": "resolved",
+      "final_source_sha256": {
+        "src/d3d9_mesh_probe.cpp": "a7d3b4664fcd1c7cf56c8ad1f5cf7a3b0adc2c61de5afab88704aeab84740ee6",
+        "include/bsp/material_clone.hpp": "2acc8e3a63f67fa2a7e1c8fab6252464845ba41b80f46b953616d7666b847c55"
+      }
+    }
+  ],
+  "sort_validation": {
+    "cases": 90,
+    "forced_heap_runs": 30,
+    "pointer_positions": 5652,
+    "exact": true,
+    "primary_rerun": "Native instance sort differential: cases=90 forced_heap=30 pointer_positions=5652 exact_permutation=1 finite_guard=1"
+  },
+  "limitations": [
+    "Reviews are scoped to the reconstructed projections.",
+    "Native ABI, full command execution and gameplay are unverified.",
+    "Exceptional floating-point and failed COM Lock execution are not covered by the native sort corpus."
+  ]
+}
