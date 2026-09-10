@@ -28,6 +28,14 @@ struct CameraAxesCrtAccess {
     CameraAxes87Except except_00c27489;
 };
 
+// Shared recovered kernels. Length keeps the native ECX vector / ST0 result
+// schedule and adds the actual CRT binding in EDX. Both pointers must be valid.
+// Cross retains ECX destination, EDX left, stack right, RET4 and EAX destination;
+// its first destination store precedes later source reads (do not assume alias
+// safety). The pointed-to vectors each contain three float words.
+float __fastcall camera_vector_length_00419440(const float*, const CameraAxesCrtAccess*);
+float* __fastcall camera_vector_cross_004f9b30(float*, const float*, const float*);
+
 // Native ECX=camera, no stack args, EAX=&camera+440 / +44C. New typed ABI.
 // Both refresh the same CameraFrameState.axis_y/axis_x pair and the actual
 // CameraState.projection.valid_flags bit100. World refresh uses the same

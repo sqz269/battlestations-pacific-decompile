@@ -28,8 +28,6 @@ void __cdecl crt_nan_kernel();
 void __cdecl crt_classify_kernel();
 void __cdecl crt_sqrt_body_kernel();
 void __cdecl crt_sqrt_kernel();
-float __fastcall axis_length_kernel(const float*, const CameraAxesCrtAccess*);
-float* __fastcall axis_cross_kernel(float*, const float*, const float*);
 float* __fastcall axis_normalize_kernel(float*, const float*, const CameraAxesCrtAccess*);
 
 __declspec(naked) void __cdecl crt_dispatch_kernel() {
@@ -200,7 +198,9 @@ __declspec(naked) void __cdecl crt_sqrt_kernel() {
     }
 }
 
-__declspec(naked) float __fastcall axis_length_kernel(const float*, const CameraAxesCrtAccess*) {
+} // namespace
+
+__declspec(naked) float __fastcall camera_vector_length_00419440(const float*, const CameraAxesCrtAccess*) {
     __asm {
         push ebx
         mov ebx, edx // explicit borrowed CRT access
@@ -239,7 +239,7 @@ __declspec(naked) float __fastcall axis_length_kernel(const float*, const Camera
     }
 }
 
-__declspec(naked) float* __fastcall axis_cross_kernel(float*, const float*, const float*) {
+__declspec(naked) float* __fastcall camera_vector_cross_004f9b30(float*, const float*, const float*) {
     __asm {
         sub esp,0xc // 004f9b30
         fld dword ptr [edx + 0x4] // 004f9b33
@@ -288,6 +288,7 @@ __declspec(naked) float* __fastcall axis_cross_kernel(float*, const float*, cons
     }
 }
 
+namespace {
 __declspec(naked) float* __fastcall axis_normalize_kernel(float*, const float*, const CameraAxesCrtAccess*) {
     __asm {
         push ecx // 00419510
@@ -297,7 +298,7 @@ __declspec(naked) float* __fastcall axis_normalize_kernel(float*, const float*, 
         mov edi,ecx // 00419515
         mov ecx,esi // 00419517
         mov edx, dword ptr [esp + 0x10] // explicit CRT access stack argument
-        call axis_length_kernel // 00419519
+        call camera_vector_length_00419440 // 00419519
         fstp dword ptr [esp + 0x8] // 0041951e
         fldz // 00419522
         fld dword ptr [esp + 0x8] // 00419524
@@ -356,7 +357,7 @@ bool below_fallback_threshold(const CameraAxis& axis, const CameraAxesCrtAccess&
     __asm {
         mov ecx, value
         mov edx, access
-        call axis_length_kernel
+        call camera_vector_length_00419440
         fld axis_fallback_threshold
         fcomip st(0), st(1)
         fstp st(0)
@@ -376,11 +377,11 @@ void refresh_axes(CameraFrameState& frame, const CameraAxesCrtAccess& crt) {
     const CameraAxis forward{transform.world[8], transform.world[9], transform.world[10]};
     const CameraAxis world_up{0.0f, axis_one, 0.0f};
     CameraAxis first, second, normalized;
-    axis_cross_kernel(first.data(), forward.data(), world_up.data());
-    axis_cross_kernel(second.data(), first.data(), forward.data());
+    camera_vector_cross_004f9b30(first.data(), forward.data(), world_up.data());
+    camera_vector_cross_004f9b30(second.data(), first.data(), forward.data());
     axis_normalize_kernel(normalized.data(), second.data(), &crt);
     store_axis(frame.axis_y, normalized);
-    axis_cross_kernel(normalized.data(), forward.data(), frame.axis_y.data());
+    camera_vector_cross_004f9b30(normalized.data(), forward.data(), frame.axis_y.data());
     axis_normalize_kernel(first.data(), normalized.data(), &crt);
     store_axis(frame.axis_x, first);
     if (below_fallback_threshold(frame.axis_y, crt)) {
