@@ -260,3 +260,7 @@ None of this is ABI-compatible or game-validated.
 ## Correction from docs/GAME_FRONTEND_ENTRY.md
 
 Game state 4 never survives `BSP_Game_EnterFrontEndShell`: `GGame::OnInit` stores `game+5D4h = 3` at `004e3ac2`, the gate at `004e4151` compares against that 3, and `004e4279` writes 5. So 4 is a drain request value only and the main-menu shell rests at state 5 (listed as "no call" in the drain table); the gate fails only when the platform session poll moved the state off 3, the sign-out abort path.
+
+## Correction from docs/GAME_TITLE_INIT.md
+
+The logo sequence has no timed advance. `BSP_LogoSequence_AdvanceOrFinish` installs the trampoline `00685060` (four instructions, no Ghidra function until the integrator defined it) on the movie player before starting each entry, and that trampoline re-enters the advance when the movie ends. The float at `logo+78h` is the minimum age before a manual skip is accepted, not a timeout. The title bring-up loads one atlas and four GUI layouts (`allbutingame.ats`, `FE_frame`, `FE_frame_title`, `FE_attract`, `FE_initial`); the first interactive state is the `FE_initial` press-start screen.
