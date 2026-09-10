@@ -1,0 +1,224 @@
+{
+  "packet": "material_builder_parameter_review",
+  "reviewed_utc": "2026-09-10T05:58:55.257959+00:00",
+  "status": "focused_native_parameter_differential_and_host_clone_checks_passed",
+  "scope": "Read-only review and one local native fixture; no shared source/CMake/ledger/Ghidra changes by this worker.",
+  "main_head_at_review": "9da323a62468f39460f45dc4b7d20f4d2bb507a0",
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project_file_exists": true,
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "binary_size": 12223752,
+    "identities": [
+      {
+        "address": "00b423c5",
+        "end_exclusive": "00b42694",
+        "length": 719,
+        "file_offset": 7611333,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "20583b2c078243bc89aaa86e0c34174758f4d9a48e00678a218e1828f6e232f9",
+        "preimage_hex": "8bb424b80000008b46048b4820e8b94ffdff8b4e108b91980100008b8880000000895424108d14883bc289442418894424140f84970200008d49008b4424148b008b4c24108b7c881483ffff0f8eb8010000807810000f84900100008b43708b507c8b7078c1e20503d633ed3bf274298bcee8349401003bc775098bcee8399401008be88b43708b487c83c078c1e105030883c6203bf175d78b5424148b028b40088bcd83e9020f84d200000083e901747783e9010f854f010000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ce9e1000000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592ce98b000000f30f1000f30f11442434f30f104010f30f11442438f30f104020f30f1144243cf30f104030f30f11442440f30f104004f30f11442444f30f104014f30f11442448f30f104024c1e704f30f1144244cf30f10403481c7f4eb0801b9080000008d742434f30f11442450f3a5eb1e8b480c8b500803c903c951c1e7045281c7f4eb080157e8b4500b0083c40c8b4424148b008b4c24108b4c884c83f9ff0f8e87000000c1e10481c1ecdb08018078100074638b4008d900d919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ceb158b500c8b400803d203d2525051e816500b0083c40c8b4424188b4c24148b908000000083c1048d04903bc8894c24140f8573fdffff8bb424b8000000"
+      },
+      {
+        "address": "00bf7680",
+        "end_exclusive": "00bf79e5",
+        "length": 869,
+        "file_offset": 8353408,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "preimage_hex": "558bec57568b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00901877bf004477bf006877bf0023d18a0688078a46018847018a4602c1e90288470283c60383c70383f90872ccf3a5ff2495f477bf008d490023d18a0688078a4601c1e90288470183c60283c70283f90872a6f3a5ff2495f477bf009023d18a06880783c601c1e90283c70183f9087288f3a5ff2495f477bf008d4900eb77bf00d877bf00d077bf00c877bf00c077bf00b877bf00b077bf00a877bf008b448ee489448fe48b448ee889448fe88b448eec89448fec8b448ef089448ff08b448ef489448ff48b448ef889448ff88b448efc89448ffc8d048d0000000003f003f8ff2495f477bf008bff0478bf000c78bf001878bf002c78bf008b45085e5fc9c3908a0688078b45085e5fc9c3908a0688078a46018847018b45085e5fc9c38d49008a0688078a46018847018a46028847028b45085e5fc9c3908d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bfff7d9ff248d4079bf008d49008bc7ba0300000083f904720c83e0032bc8ff24859478bf00ff248d9079bf0090a478bf00c878bf00f078bf008a460323d188470383ee01c1e90283ef0183f90872b2fdf3a5fcff24959079bf008d49008a460323d18847038a4602c1e90288470283ee0283ef0283f9087288fdf3a5fcff24959079bf00908a460323d18847038a46028847028a4601c1e90288470183ee0383ef0383f9080f8256fffffffdf3a5fcff24959079bf008d49004479bf004c79bf005479bf005c79bf006479bf006c79bf007479bf008779bf008b448e1c89448f1c8b448e1889448f188b448e1489448f148b448e1089448f108b448e0c89448f0c8b448e0889448f088b448e0489448f048d048d0000000003f003f8ff24959079bf008bffa079bf00a879bf00b879bf00cc79bf008b45085e5fc9c3908a46038847038b45085e5fc9c38d49008a46038847038a46028847028b45085e5fc9c3908a46038847038a46028847028a46018847018b45085e5fc9c3"
+      },
+      {
+        "address": "00b17390",
+        "end_exclusive": "00b17397",
+        "length": 7,
+        "file_offset": 7435152,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41",
+        "preimage_hex": "8d8180000000c3"
+      },
+      {
+        "address": "00b5b870",
+        "end_exclusive": "00b5b873",
+        "length": 3,
+        "file_offset": 7714928,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+        "preimage_hex": "8b01c3"
+      },
+      {
+        "address": "00b5b880",
+        "end_exclusive": "00b5b884",
+        "length": 4,
+        "file_offset": 7714944,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+        "preimage_hex": "8b4104c3"
+      }
+    ],
+    "verification": "Each tools/bsp.py ghidra bytes command verifies project, program path, language and image base before reading."
+  },
+  "original_abi": {
+    "parent_00b42350": "ECX pass, stack entry and override, RET8. Parameter span is internal code, not a separately callable function.",
+    "parameter_fragment_00b423c5": "EBX actual pass; caller entry at [ESP+B8]. Fetch table from [[entry+4]+20] via00b17390; camera selector from [[entry+10]+198].",
+    "00b17390": "ECX material; EAX material+80; RET.",
+    "00b5b870": "ECX reflected metadata record; EAX DWORD[ECX] register index; RET.",
+    "00b5b880": "ECX reflected metadata record; EAX DWORD[ECX+4] RegisterCount; RET.",
+    "00bf7680": "cdecl destination, source, byte count; EAX destination, caller stack cleanup. Actual code detects overlap and copies backward when source<destination<source+bytes."
+  },
+  "review_findings": [
+    {
+      "id": "raw_copy_overlap",
+      "state": "fixed_and_native_fixture_checked",
+      "before": "Builder rejected every overlapping raw source/destination, including self-copy.",
+      "native_evidence": "00BF7692..769A selects the backward branch00BF7844 when destination lies inside source span;00BF785F..7862 uses STD REP MOVSD CLD. Equal source/destination follows valid forward path.",
+      "after": "Main raw_copy uses std::memmove and retains checked source/destination bounds and overflow failure."
+    },
+    {
+      "id": "clone_parameter_registration_binding",
+      "state": "fixed_and_host_fixture_checked",
+      "before": "Clone copied effect ownership but default-constructed parameter binding had null shader_identity, so every new registration returned no_match.",
+      "native_evidence": "00B18BCD zeros new+100 count;00B18C8D..CA3 retains source+7C effect without copying records.00B17E14 checks material+7C;00B17E93 dispatches that effect virtual+10 for new registration.",
+      "after": "Canonical assignment shares actual effect metadata; clone_shader_binding_empty retains that owner/metadata and leaves parameter records empty."
+    },
+    {
+      "id": "dynamic_texture_reload_order",
+      "state": "assembly_review_matches",
+      "native_evidence": "00B4237A renderer capture before texture virtual+2C;00B4238B slot reload after getter;00B42394..96 source reload after bind; metadata read for constants virtual+30;00B423C0 reloads live source count.",
+      "boundary": "Requires documented retained callback objects and fixed inline slot storage; no dynamic-source implementation or game execution was tested here."
+    },
+    {
+      "id": "shadow_capture_order",
+      "state": "assembly_review_matches",
+      "native_evidence": "ShadowTexture renderer capture00B430D5 precedes getter00B430E3 and slot reload00B430EF. ShadowMap renderer capture00B43125 follows first-owner lookup, precedes owner texture virtual+8 at00B43132, then slot reload00B43134.",
+      "boundary": "Read-only review of orchestrator ordering; texture/renderer runtime behavior remains separate."
+    },
+    {
+      "id": "matrix_and_live_parameter_order",
+      "state": "assembly_review_and_native_fixture_match",
+      "native_evidence": "VS last matching RegisterCount00B42440..47; row2 MOVSS staging00B42544..AD; row3/4 sequential FLD/FSTP; PS reload00B425CF and always4 matrix rows; table count reload00B42675."
+    }
+  ],
+  "fixture": {
+    "count": 1,
+    "execution": "One invocation of the original719-byte parameter fragment with six ordered parameter records, followed by one targeted host clone-registration scenario.",
+    "main_function": "write_material_parameters_00b423c5",
+    "native_copy": "Full869-byte00BF7680 body, including original jump tables.46 internal absolute jump-table references/entries relocated. Copies in this fixture are at most32 bytes; optional >=256-byte accelerated tail is not exercised.",
+    "native_relocations": [
+      "VS/PS global bank bases",
+      "five relative calls to copied native helpers",
+      "copy body internal jump tables",
+      "copy optional feature-flag address to explicit zero"
+    ],
+    "native_wrapper": "Preserves nonvolatile registers, supplies EBX pass and entry at original stack+B8, allocates original fragment scratch space, appends RET at end-exclusive00B42694.",
+    "records": [
+      {
+        "name": "raw_back",
+        "kind": "8 DWORD raw",
+        "source": "VS word0",
+        "VS_register": 1,
+        "PS_register": 0,
+        "risk": "Backward overlapping copy then PS reads the changed VS source."
+      },
+      {
+        "name": "raw_self",
+        "kind": "4 DWORD raw",
+        "source": "PS word0",
+        "VS_register": 8,
+        "PS_register": 0,
+        "risk": "Exact self-copy remains valid and follows the preceding VS stage."
+      },
+      {
+        "name": "raw_forward",
+        "kind": "8 DWORD raw",
+        "source": "VS word4",
+        "VS_register": 0,
+        "PS_register": 4,
+        "risk": "Forward overlapping copy then PS reads the changed source."
+      },
+      {
+        "name": "matrix2",
+        "kind": "16 DWORD matrix",
+        "source": "VS word64",
+        "VS_register": 16,
+        "PS_register": 16,
+        "metadata": "First same-register VS count1 followed by count2; PS count1.",
+        "risk": "VS2 stages raw bits before destination writes, preserving signaling NaN; PS4 reloads the changed source and quiets it through x87."
+      },
+      {
+        "name": "matrix3",
+        "kind": "16 DWORD matrix",
+        "source": "VS word96",
+        "VS_register": 24,
+        "PS_register": 24,
+        "metadata": "First same-register VS count1 followed by count3; PS count1.",
+        "risk": "Sequential x87 stores with source/destination identity, followed by live PS4 source reads."
+      },
+      {
+        "name": "matrix4",
+        "kind": "16 DWORD matrix",
+        "source": "VS word128",
+        "VS_register": 32,
+        "PS_register": 32,
+        "metadata": "First same-register VS count1 followed by count4; PS count1.",
+        "risk": "Sequential x87 stores with source/destination identity, followed by live PS4 source reads."
+      }
+    ],
+    "comparison": {
+      "vertex_words": 192,
+      "pixel_words": 192,
+      "all_words_bit_identical": true,
+      "untouched_upload_cursor": true,
+      "row2_signaling_nan_bits": "7fa12345",
+      "x87_quiet_nan_bits": "7fe12345",
+      "explicit_live_source_assertions": true
+    },
+    "clone_assertions": [
+      "Source has six registered records; cloned table starts empty.",
+      "Clone retains the same material.effect and actual effect-owner shader_identity.",
+      "Clone can register a new raw_back parameter after cloning.",
+      "Later mode5 metadata addition becomes available to clone registration.",
+      "A later mode3 register edit is observed when clone re-registers its record.",
+      "Source record remains independent until explicitly re-registered, then sees the same metadata edit.",
+      "Shared metadata edits retain both effect and registration owner identities."
+    ],
+    "passed": true,
+    "compile_options": [
+      "MSVC Win32",
+      "/std:c++17",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "linked_library": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+    "linked_library_sha256": "60704531fa9596b39973fa4b26a87db562eceec8f677df99f538a0d3ce33f313",
+    "library_mtime_utc": "2026-09-10T05:52:43.589997+00:00",
+    "fixture_worktree": "J:\\PROG\\battlestations-pacific-decompile-material-scalar-20260910",
+    "source": "local/material_builder_parameter_fixture.cpp",
+    "source_sha256": "fd1bef5f4221cdce85d8f6b68e0c289c3f1d410a63c48d87cecfa1127fc9b80b",
+    "native_reference": "local/material_builder_parameter_reference.hpp",
+    "native_reference_sha256": "8975b8eaaab2ead270e177e4e751618e576061f58405b0c1a47999e816b04fcd",
+    "native_evidence_generator": "local/material_builder_parameter_evidence.py",
+    "native_evidence_generator_sha256": "e1ab6d08c57d71796c6a867702d7564ad6d3f10517d45ec67c3ca9a038f18b97",
+    "compile_log": "local/material_builder_parameter_compile.log",
+    "result_log": "local/material_builder_parameter_result.log",
+    "result": "PASS: one native parameter fragment, six ordered records, exact384-bank-word comparison; backward/forward overlap, self-copy, VS2/3/4 and PS4, live PS rereads, last RegisterCount; clone empty records and shared metadata registration. Native copy table relocations=46"
+  },
+  "boundaries": [
+    "No new tracked test suite; fixture and generated native header remain local.",
+    "Native buffer comparison exercises the assigned parameter span, not the complete builder, renderer, asset loading or game loop.",
+    "Clone registration/metadata assertions execute reconstructed host code; native clone/registration behavior was grounded by assembly review, not native clone execution in this fixture.",
+    "Default masked floating-point environment only; no unmasked exception-context equivalence claim.",
+    "Native function names remain descriptive or saved library labels. The observed overlapping-copy behavior supersedes assumptions based on the _memcpy label.",
+    "Native layout wrappers and address relocations are confined to the local fixture. No game installation or saved Ghidra mutation."
+  ],
+  "native_abi_compatible": false,
+  "game_validated": false
+}
