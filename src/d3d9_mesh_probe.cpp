@@ -32,11 +32,15 @@
 #include "bsp/system_fog_world_factory.hpp"
 #include "bsp/legacy_crt_math.hpp"
 #include "bsp/particle_clock_lifetime.hpp"
+#include "bsp/directional_light_owner.hpp"
+#include "bsp/light_type_bootstrap.hpp"
+#include "bsp/lighting_configuration_apply.hpp"
 #include <algorithm>
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
 #include <set>
+#include <stdexcept>
 #include <cstdio>
 #include <fstream>
 #include <filesystem>
@@ -116,8 +120,17 @@ private:
 struct MeshParticleLifetimeCallbacks {
     bsp::ConcreteParticleClockLifetimeAccess* access{};
     unsigned& destroyed;
+    bsp::TypeIdCounterLifetime* types{};
+    bsp::TypeIdCounterStorage* volatile* type_slot{};
+    unsigned types_destroyed{};
     static void destroy(void* context, void* owner, std::uint32_t flags) noexcept {
         auto& self = *static_cast<MeshParticleLifetimeCallbacks*>(context);
+        if (self.type_slot && owner == *self.type_slot) {
+            self.types->deleting_destructor_006fad40(
+                static_cast<bsp::TypeIdCounterStorage*>(owner), flags);
+            ++self.types_destroyed;
+            return;
+        }
         self.access->deleting_destructor_004de340(static_cast<bsp::ParticleClock*>(owner),flags);
         ++self.destroyed;
     }
@@ -132,6 +145,73 @@ struct MeshFogCameraShutdown {
     ~MeshFogCameraShutdown() { bsp::clear_system_fog_camera_slot_00b71f68(slot); }
 };
 
+struct MeshLightTypes {
+    // Explicit zero-filled process-start preimage for this isolated type domain.
+    std::uint8_t root_guard{}, node_guard{}, light_guard{}, directional_guard{};
+    bsp::RootTypeDescriptor root{};
+    bsp::NodeTypeDescriptor node{};
+    bsp::LightTypeDescriptor light{};
+    bsp::DirectionalLightTypeDescriptor directional{};
+    bsp::LightTypeBootstrap bootstrap;
+    explicit MeshLightTypes(bsp::TypeIdCounterLifetime& counter)
+        : bootstrap(counter, {root_guard, root, node_guard, node, light_guard, light,
+            directional_guard, directional}) {
+        bootstrap.initialize_directional_00cd80f0();
+    }
+};
+struct MeshLightSceneRuntime final : bsp::SceneAttachmentRuntime {
+    bsp::LightTypeBootstrap& types;
+    explicit MeshLightSceneRuntime(MeshLightTypes& value)
+        // No c3dObject owner/dispatch is supplied or invoked in this light scope.
+        : SceneAttachmentRuntime(value.light.own_id, {}), types(value.bootstrap) {}
+    static bool node_type(bsp::SceneAttachmentRuntime& runtime,
+        bsp::SceneNodeAttachment&, std::uint32_t token) {
+        return static_cast<MeshLightSceneRuntime&>(runtime).types.node_is_type_00b6f570(token);
+    }
+    static bool light_type(bsp::SceneAttachmentRuntime& runtime,
+        bsp::SceneNodeAttachment&, std::uint32_t token) {
+        return static_cast<MeshLightSceneRuntime&>(runtime).types.light_is_type_00b7c580(token);
+    }
+    static bool directional_type(bsp::SceneAttachmentRuntime& runtime,
+        bsp::SceneNodeAttachment&, std::uint32_t token) {
+        return static_cast<MeshLightSceneRuntime&>(runtime).types.directional_is_type_00b7c6d0(token);
+    }
+};
+struct MeshAbsentShadow final : bsp::SystemShadowOwnerResolver {
+    bsp::SystemShadowMapOwner* resolve_shadow(void*) override {
+        throw std::logic_error("Installed light has no constructed native shadow owner");
+    }
+};
+struct MeshLightPoolShutdown {
+    bsp::DirectionalLightPool& pool;
+    ~MeshLightPoolShutdown() { pool.destroy_00b7b230(); }
+};
+struct MeshLightSlotShutdown {
+    bsp::DirectionalLightPool& pool;
+    void* raw;
+    ~MeshLightSlotShutdown() { if (raw) pool.return_raw_slot_00b7b2f0(raw); }
+};
+struct MeshLightShutdown {
+    bsp::DirectionalLightOwner* owner;
+    void close() {
+        if (owner) {
+            auto* captured = owner;
+            owner = nullptr;
+            bsp::delete_native_directional_light_00b7c820(*captured, 1);
+        }
+    }
+    ~MeshLightShutdown() { close(); }
+};
+struct MeshLightingSceneRelease {
+    void operator()(bsp::ConcreteSystemSceneResource* value) const noexcept {
+        if (value && value->references.fetch_sub(1) == 1) value->destroy_on_zero(*value);
+    }
+};
+struct MeshLightingSlotShutdown {
+    bsp::SceneResource*& slot;
+    ~MeshLightingSlotShutdown() { bsp::set_system_scene_resource_00b723f0(slot, nullptr); }
+};
+
 bool gpu_system_prefix_matches(IDirect3DDevice9& device,
     const bsp::SystemConstantPrefix& prefix) {
     bsp::SystemConstantPrefix vertex{}, pixel{};
@@ -144,7 +224,9 @@ bool gpu_system_prefix_matches(IDirect3DDevice9& device,
 bool build_mesh_system_constants(bsp::CameraFrameState& camera,
     bsp::D3D9StateCache* const volatile& renderer,
     bsp::ParticleClock* volatile& particle_slot, bsp::ParticleClockLifetimeAccess& lifetime,
-    bsp::SystemConstantPrefix& prefix, HRESULT& result, std::string& error) {
+    bsp::TypeIdCounterLifetime& type_counter, bsp::SizedStoragePool& strings,
+    bool& light_ownership_checked, bsp::SystemConstantPrefix& prefix,
+    HRESULT& result, std::string& error) {
     // Explicit isolated-scene owners. Native factories/world initialization
     // are not implied by these chosen values or by the zero scratch preimage.
     bsp::FrameClock frame;
@@ -179,25 +261,72 @@ bool build_mesh_system_constants(bsp::CameraFrameState& camera,
     const auto diffuse = words4({.65f,.65f,.65f,1});
     const auto specular = words4({0,0,0,0});
     std::array<bsp::SystemLightingWords4,6> cube; cube.fill(ambient);
-    bsp::SystemLightingWords3 direction;
-    const std::array<float,3> direction_values{.577350269f,.577350269f,.577350269f};
-    std::memcpy(direction.data(),direction_values.data(),sizeof(direction));
-    bsp::SystemShadowMapOwner* shadow_owner = nullptr;
-    bsp::SystemDirectionalLight light{shadow_owner,diffuse,specular,diffuse,direction};
-    bsp::SystemLightEnvironment lighting_environment{ambient,ambient,cube};
-    auto* environment_slot = &lighting_environment;
-    bsp::SystemLightListNode* sentinel_next = nullptr;
-    bsp::SystemLightListNode* first_next = nullptr;
-    bsp::SystemDirectionalLight* sentinel_light = nullptr;
-    auto* first_light = &light;
-    bsp::SystemLightListNode sentinel{sentinel_next,sentinel_light};
-    bsp::SystemLightListNode first{first_next,first_light};
-    sentinel_next = &first; first_next = &sentinel;
-    auto* sentinel_slot = &sentinel;
-    bsp::BorrowedSystemLightListAccess light_list{sentinel_slot};
-    bsp::BorrowedSystemSceneLighting lighting{environment_slot,light_list};
-    bsp::SystemSceneLighting* lighting_slot = &lighting;
-    bsp::BorrowedSystemLightingScene scene{lighting_slot};
+    MeshLightTypes types(type_counter);
+    MeshLightSceneRuntime scenes(types);
+    bsp::GeneratedModelLifetimeRuntime attachments(scenes);
+    bsp::NativeNodeDestructionRuntime node_runtime(scenes, attachments, strings,
+        &MeshLightSceneRuntime::node_type);
+    bsp::AllocatorListElement* allocator_head = nullptr;
+    bsp::AllocatorListDomain allocators(allocator_head);
+    bsp::DirectionalLightPoolStorage pool_storage{};
+    bsp::DirectionalLightPool pool(allocators, pool_storage);
+    pool.initialize_00b7b940();
+    MeshLightPoolShutdown pool_shutdown{pool};
+    MeshLightSlotShutdown slot_shutdown{pool, pool.allocate_raw_slot_00b7bac0()};
+    const bsp::NativeString empty_name;
+    auto native = bsp::construct_native_directional_light_00b7c6b0(
+        slot_shutdown.raw, bsp::DirectionalLightPool::slot_bytes, empty_name, strings);
+    MeshAbsentShadow shadow;
+    bsp::DirectionalLightOwner light(native, pool, node_runtime,
+        &MeshLightSceneRuntime::directional_type, &MeshLightSceneRuntime::light_type, shadow);
+    scenes.bind(light.node.scene_attachment);
+    MeshLightShutdown light_shutdown{&light};
+    slot_shutdown.raw = nullptr; // the bound deleting destructor now returns it
+    std::unique_ptr<bsp::ConcreteSystemSceneResource, MeshLightingSceneRelease> resource(
+        bsp::allocate_system_scene_resource_00b83c50(strings, empty_name, scenes));
+    bsp::SceneResource* scene_slot = nullptr;
+    bsp::set_system_scene_resource_00b723f0(scene_slot, resource.get());
+    MeshLightingSlotShutdown scene_shutdown{scene_slot};
+    bsp::SystemSceneResourceSlot scene(scene_slot);
+
+    // The recovered configuration route initializes every shader-consumed field.
+    // Chosen diagnostic values are not an authored map/environment record.
+    const auto raw_float = [](float value) {
+        std::uint32_t word; std::memcpy(&word, &value, sizeof(word)); return word;
+    };
+    const auto one = raw_float(1), half = raw_float(.5f);
+    const auto elevation = raw_float(.6154797087f), yaw = raw_float(.7853981634f);
+    const bsp::LightingConfigurationFields config{ambient, ambient, cube, diffuse, diffuse,
+        specular, one, one, yaw, elevation};
+    std::uint32_t half_guard{}, diffuse_guard{}, specular_guard{};
+    bsp::SystemLightingWords4 half_fallback{}, diffuse_fallback{}, specular_fallback{};
+    const bsp::SystemLightingWords3 unused_direction{};
+    const std::uint8_t scale_ambient = 1;
+    bsp::LightingConfigurationGlobals globals{half_guard, half_fallback, diffuse_guard,
+        diffuse_fallback, specular_guard, specular_fallback, unused_direction, scale_ambient, half, one};
+    auto& fields = light.light;
+    bsp::LightingDirectionalFields directional_fields{fields.diffuse_184, fields.specular_194,
+        fields.base_diffuse_1a4, fields.diffuse_mode3_1b4, fields.base_specular_1c4,
+        fields.diffuse_scale_1d8, fields.specular_scale_1dc, fields.direction_1e0};
+    bsp::apply_lighting_configuration_004bacd0(
+        bsp::lighting_ambient_fields(*resource->environment_10), directional_fields, &config, globals);
+    try {
+        bsp::attach_light_scene_00b7c020(scenes, light.retained_scenes, resource.get(), false);
+    } catch (...) {
+        // This isolated light started with an empty back array. Native attach
+        // publishes its entry before registry allocation and the final retain.
+        // Give that partial entry its real reference before the diagnostic
+        // guards run the native deleting destructor and release the two owners.
+        // The recovered attach routine itself keeps its original ordering.
+        if (fields.scenes_178.count_04 == 1 && fields.scenes_178.begin_00[0] == resource.get())
+            resource->references.fetch_add(1);
+        throw;
+    }
+    const bool light_bound = resource->registry.size() == 1
+        && scenes.resolve_light(light.node.scene_attachment.pointer_key) == &light.lighting
+        && &light.lighting.diffuse_184 == &fields.diffuse_184
+        && &light.lighting.specular_194 == &fields.specular_194
+        && light.lighting.shadow_owner_174() == nullptr;
 
     // Diagnostic runtime words use verified PE preimages, including zero fill.
     // Binding persists safely after this draw; actual native startup may alter it.
@@ -210,8 +339,17 @@ bool build_mesh_system_constants(bsp::CameraFrameState& camera,
     const std::uint32_t exponent = 0x43000000;
     bsp::SystemConstantBuilderEnvironment bindings{time,axes,parameters.data(),
         renderer,register_count,exponent,nullptr};
-    return bsp::build_and_upload_system_constants_00b46a70(&scene,camera,prefix,
+    const bool built = bsp::build_and_upload_system_constants_00b46a70(&scene,camera,prefix,
         bindings,result,error);
+    light_shutdown.close();
+    bsp::set_system_scene_resource_00b723f0(scene_slot, nullptr);
+    light_ownership_checked = light_bound && resource->registry.size() == 0
+        && resource->references == 1 && resource->environment_10->references_04 == 1;
+    resource.reset(); // final scene and ambient release
+    pool.trim_empty_slabs_00b7ba20();
+    light_ownership_checked = light_ownership_checked && pool_storage.slab_count_2c == 0
+        && pool_storage.recursion_24 == 0;
+    return built && light_ownership_checked;
 }
 
 bool write_bitmap(const D3DLOCKED_RECT& locked, UINT width, UINT height) {
@@ -533,9 +671,10 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     MeshModelLifetimeEvidence model_lifetimes;
     unsigned queued_bindings_checked = 0;
     unsigned material_constants_built = 0;
-    unsigned system_constants_built = 0, particle_clocks_destroyed = 0;
+    unsigned system_constants_built = 0, particle_clocks_destroyed = 0, type_counters_destroyed = 0;
     bool system_prefix_match = false, particle_lifetime_match = false, fog_lifetime_match = false;
     bool fog_factory_match = false;
+    bool light_ownership_match = false, type_lifetime_match = false;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
@@ -860,10 +999,15 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             &MeshParticleLifetimeCallbacks::destroy,&MeshParticleLifetimeCallbacks::invalid_parameter});
         bsp::ConcreteParticleClockLifetimeAccess particle_lifetime(lifetime,particle_slot,particle_strings);
         lifetime_callbacks.access = &particle_lifetime;
+        bsp::TypeIdCounterStorage* type_slot = nullptr;
+        bsp::TypeIdCounterLifetime type_lifetime(lifetime, type_slot);
+        lifetime_callbacks.types = &type_lifetime;
+        lifetime_callbacks.type_slot = &type_slot;
         MeshSingletonShutdown lifetime_shutdown{lifetime};
         bsp::SystemConstantPrefix system_prefix{}; // Explicit initialized host preimage.
         if (SUCCEEDED(hr) && !build_mesh_system_constants(camera_frame,current_renderer,
-            particle_slot,particle_lifetime,system_prefix,hr,error)) hr = E_FAIL;
+            particle_slot,particle_lifetime,type_lifetime,particle_strings,
+            light_ownership_match,system_prefix,hr,error)) hr = E_FAIL;
         if (SUCCEEDED(hr)) {
             ++system_constants_built;
             system_prefix_match = gpu_system_prefix_matches(device,system_prefix);
@@ -953,6 +1097,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         lifetime.shutdown();
         particle_lifetime_match = particle_slot == nullptr && particle_clocks_destroyed == 1
             && lifetime.published_manager() == nullptr;
+        type_counters_destroyed = lifetime_callbacks.types_destroyed;
+        type_lifetime_match = type_slot == nullptr && type_counters_destroyed == 1;
         fog_lifetime_match = camera_frame.fog_184 == &fog->fields_08 && fog->references_04 == 1;
         bsp::clear_system_fog_camera_slot_00b71f68(camera_frame.fog_184);
         fog_lifetime_match = fog_lifetime_match && camera_frame.fog_184 == nullptr;
@@ -978,6 +1124,7 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
         && camera_frame_match && model_lifetime_match
         && system_constants_built == 1 && system_prefix_match && particle_lifetime_match && fog_lifetime_match && fog_factory_match
+        && light_ownership_match && type_lifetime_match
         && material_constants_built == 2 && queued_bindings_checked == 2
         && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
     std::printf("Installed material builder: actual_stream_and_clone_owners_ordered_constants=%u checked=%d\n",
@@ -986,6 +1133,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         system_constants_built,system_prefix_match,particle_clocks_destroyed,particle_lifetime_match);
     std::printf("Installed fog owner: native_constructor_environment_apply_counted_camera_clear=%d world_factory_publication_packed=%d\n",
         fog_lifetime_match,fog_factory_match);
+    std::printf("Installed light owner: native_pool_types_config_canonical_registry_cleanup=%d type_counters_destroyed=%u shared_lifetime_checked=%d\n",
+        light_ownership_match,type_counters_destroyed,type_lifetime_match);
     std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,
         decoded.records_from_metadata,constants_match,layout_match,bindings_match,queued_bindings_checked,visible,colors.size(),restored,checked,error.c_str());

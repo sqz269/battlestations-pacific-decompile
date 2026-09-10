@@ -1,0 +1,749 @@
+{
+  "packet": "native_light_chain_integration",
+  "utc": "2026-09-10T18:33:59.983262+00:00",
+  "status": {
+    "typed_modules_integrated": true,
+    "strict_win32_build_passed": true,
+    "existing_ctest": "2/2",
+    "selected_native_and_host_fixtures_passed": true,
+    "installed_asset_draw_passed": true,
+    "same_light_scene_registry_and_shader_storage": true,
+    "shared_type_particle_lifetime_checked": true,
+    "full_native_world_composed": false,
+    "nonnull_shadow_owner_constructed": false,
+    "actual_process_startup_composed": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "visual_parity_validated": false
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_binary": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "unchanged_verified_utc": "2026-09-10T18:33:59.983262+00:00",
+    "installed_game_written": false
+  },
+  "components": [
+    "reports/light_type_bootstrap_audit.json",
+    "reports/directional_light_owner_audit.json",
+    "reports/lighting_configuration_apply_audit.json"
+  ],
+  "primary_component_review": {
+    "review": "primary independent installed-byte/source verification",
+    "function_ranges": [
+      {
+        "address": "00cd80a0",
+        "bytes": 79,
+        "sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f"
+      },
+      {
+        "address": "00cd80f0",
+        "bytes": 161,
+        "sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc"
+      },
+      {
+        "address": "00b7c580",
+        "bytes": 40,
+        "sha256": "82bbc576e0c79236d102b11f29891d5361ffb294f6312b2319b1078d6b74981f"
+      },
+      {
+        "address": "00b7c6d0",
+        "bytes": 40,
+        "sha256": "28ca340870395abd5eafe823ef7c4f4ac5762b214a78f3372178a1ad91ac1ce0"
+      },
+      {
+        "address": "00b6f570",
+        "bytes": 40,
+        "sha256": "7095e2c04cee72abb7739aec21df6c82bacd74068312a2bfd8d75c44fae68376"
+      },
+      {
+        "address": "00b6f110",
+        "bytes": 62,
+        "sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84"
+      },
+      {
+        "address": "006fac20",
+        "bytes": 181,
+        "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678"
+      },
+      {
+        "address": "00bea780",
+        "bytes": 44,
+        "sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac"
+      },
+      {
+        "address": "006fad40",
+        "bytes": 41,
+        "sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce"
+      },
+      {
+        "address": "00bf65ac",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "address": "004bacd0",
+        "bytes": 1157,
+        "sha256": "e1a3c02845906ef9959947f7684ba1137ed3256b6600d1a9b8acf109fd64760a"
+      },
+      {
+        "address": "004b4d80",
+        "bytes": 115,
+        "sha256": "3caba52a2c20cb5f199dded7662a2e7afb8f213f64ac7ec38d774382be7dc08d"
+      },
+      {
+        "address": "004b62e0",
+        "bytes": 137,
+        "sha256": "ee974dc03e08f036f8d9f35c5af7df5b89dd947b90f61e2d18281e96fa83979b"
+      },
+      {
+        "address": "00b7af20",
+        "bytes": 30,
+        "sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1"
+      },
+      {
+        "address": "00b7af40",
+        "bytes": 30,
+        "sha256": "75502b2addb208fbee66927128d2250d95a6e3c3deab84f2b9297424640b4e1e"
+      },
+      {
+        "address": "00b7af60",
+        "bytes": 40,
+        "sha256": "23c0eec7591a8cd90ec31087f5871f2d908d0cf37026e8eaac04f5a7c15ca5da"
+      },
+      {
+        "address": "00b7af90",
+        "bytes": 115,
+        "sha256": "9e2f20c00353a702d872fe9dd30cd4b587bba2f1bf477c1999b170084e6edc25"
+      },
+      {
+        "address": "00b7b010",
+        "bytes": 115,
+        "sha256": "681fab4b038b0ff1a06113c4dd3ac70c3a32ee67592466dc6e636517427f6178"
+      },
+      {
+        "address": "00b7c4c0",
+        "bytes": 182,
+        "sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a"
+      },
+      {
+        "address": "00b7c6b0",
+        "bytes": 25,
+        "sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0"
+      },
+      {
+        "address": "00b7c5b0",
+        "bytes": 250,
+        "sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493"
+      },
+      {
+        "address": "00b7c820",
+        "bytes": 38,
+        "sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153"
+      },
+      {
+        "address": "00b6f5a0",
+        "bytes": 814,
+        "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b"
+      },
+      {
+        "address": "004134f0",
+        "bytes": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+      },
+      {
+        "address": "0041dd40",
+        "bytes": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+      },
+      {
+        "address": "00b6f440",
+        "bytes": 297,
+        "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8"
+      },
+      {
+        "address": "00b6e680",
+        "bytes": 204,
+        "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1"
+      },
+      {
+        "address": "00b6ee10",
+        "bytes": 110,
+        "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03"
+      },
+      {
+        "address": "00b6ec70",
+        "bytes": 80,
+        "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174"
+      },
+      {
+        "address": "00bd30f0",
+        "bytes": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "address": "00b7bc70",
+        "bytes": 80,
+        "sha256": "0913e64047831192604a6566eedf25024b09bc5b09abb6a7b8b4adfef2e2e500"
+      },
+      {
+        "address": "00b7b2f0",
+        "bytes": 108,
+        "sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe"
+      },
+      {
+        "address": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "address": "00ce4970",
+        "bytes": 4,
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+      },
+      {
+        "address": "00ce4adc",
+        "bytes": 4,
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+      },
+      {
+        "address": "00ce7820",
+        "bytes": 4,
+        "sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537"
+      },
+      {
+        "address": "00cc1ee6",
+        "bytes": 10,
+        "sha256": "aa701866771c767e6496f736f1e5b4a85687525d7bd1d718b9ff09983a073d8e"
+      },
+      {
+        "address": "00dfafc4",
+        "bytes": 36,
+        "sha256": "e0574b1294e180957c9bab6627b0de5dae2e7f613b9d4e6a9e052dddc8c4239a"
+      },
+      {
+        "address": "00dfafb4",
+        "bytes": 16,
+        "sha256": "ea8f52d3f4bcfe918ca912fe6b4da5e533e7ff0c88b4b452a3c84e3954940a2a"
+      },
+      {
+        "address": "00cc1ed0",
+        "bytes": 22,
+        "sha256": "5081237860ba704769be4d7377e4139004051aba4b7eab879476c2b815d24e4b"
+      },
+      {
+        "address": "00d62f58",
+        "bytes": 88,
+        "sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3"
+      },
+      {
+        "address": "00d62fb0",
+        "bytes": 88,
+        "sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799"
+      }
+    ],
+    "source_snapshots": [
+      {
+        "path": "include/bsp/light_type_bootstrap.hpp",
+        "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34"
+      },
+      {
+        "path": "src/light_type_bootstrap.cpp",
+        "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "path": "include/bsp/lighting_configuration_apply.hpp",
+        "sha256": "a4e80a89f3c05b1ef7cbb4d46395d0aca8d3bea8cec67098e66df6317121a7e7"
+      },
+      {
+        "path": "src/lighting_configuration_apply.cpp",
+        "sha256": "3acacf1ca889179555766d2e63e517f985336d5675e1f14e7024a381b69028cb"
+      },
+      {
+        "path": "include/bsp/system_lighting_owners.hpp",
+        "sha256": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd"
+      },
+      {
+        "path": "src/system_lighting_owners.cpp",
+        "sha256": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6"
+      },
+      {
+        "path": "src/storage_pool.cpp",
+        "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+      },
+      {
+        "path": "src/scene_attachment.cpp",
+        "sha256": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "path": "include/bsp/directional_light_owner.hpp",
+        "sha256": "4f5e99d8f81ab349a4c2c1732df96d3907c36f659f8ef72d1fe3c4e91c5baf75"
+      },
+      {
+        "path": "include/bsp/directional_light_owner.hpp",
+        "sha256": "4f5e99d8f81ab349a4c2c1732df96d3907c36f659f8ef72d1fe3c4e91c5baf75"
+      },
+      {
+        "path": "src/directional_light_owner.cpp",
+        "sha256": "2266a76c063bb2e9e21011b826ccab18bff1df3b0713ccb1814bdc3673c52483"
+      },
+      {
+        "path": "include/bsp/system_lighting_constants.hpp",
+        "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+      },
+      {
+        "path": "src/system_lighting_constants.cpp",
+        "sha256": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8"
+      }
+    ],
+    "historical_source_deltas": [
+      {
+        "path": "src/scene_attachment.cpp",
+        "fixture_source_sha256": "f669b4b082c01166533917a6452fc5415cb97bf3b75772306afa02621bf05b34",
+        "current_source_sha256": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01",
+        "reviewed_delta": "Only association erase was extracted into forget_destroyed_binding; registry/ambient/numeric behavior unchanged. Current helper exercised in installed native light cleanup."
+      }
+    ],
+    "game_validated": false,
+    "native_abi_compatible": false
+  },
+  "validation": {
+    "build": {
+      "path": "reports/native_light_chain_build.txt",
+      "bytes": 1539,
+      "sha256": "b551d8932b35e00b365e5ff8646706725211721b510ed045eed05225b5b1bf21"
+    },
+    "probe": {
+      "path": "reports/native_light_chain_probe.txt",
+      "bytes": 15828,
+      "sha256": "53676777265d5d60f6aa7b8527ce019a8134c07f89ed26fc01ea4d0539721d53"
+    },
+    "executed_probe": {
+      "path": "build/win32/Release/bsp_d3d9_probe.exe",
+      "bytes": 915456,
+      "sha256": "d04607ade7bb573b6c0987e0275be6cd63cf2bbd1def87f597bc176174f402fb"
+    },
+    "image": {
+      "path": "local/light_chain_render_20260910.bmp",
+      "bytes": 262198,
+      "sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51"
+    },
+    "viewed_png": {
+      "path": "local/light_chain_render.png",
+      "bytes": 3415,
+      "sha256": "30578452f2913e449e7e8f4e8bdc56f6aa7c1efa53a0d8d0e710d1cfe69f8dc4"
+    },
+    "image_identical_to_previous": true,
+    "image_assessment": "Viewed current PNG: almost-black diagnostic geometry; byte-identical BMP is not visual game parity.",
+    "native_type": {
+      "snapshots": 6,
+      "compared_bytes": 480,
+      "predicate_calls_per_path": 108,
+      "native_slow_counter_creation_registration": false,
+      "host_real_manager_teardown": true
+    },
+    "native_owner": {
+      "flags": [
+        0,
+        1
+      ],
+      "whole_slot_bytes": 496,
+      "actual_pool_return": true,
+      "native_nonempty_ownership_or_eh": false,
+      "host_reentry_and_unwind": true
+    },
+    "native_configuration": {
+      "calls": 4,
+      "compared_bytes": 2916,
+      "x87_control_and_status_match": true,
+      "native_hooks_or_imports": 0
+    },
+    "primary_fixture_reruns": [
+      {
+        "component": "type",
+        "output": {
+          "path": "local/light_chain_type_fixture_review.txt",
+          "bytes": 7427,
+          "sha256": "502687bb0d61171e777a054fff026075b3466423aaf10c0e677fa8060b1a7ffa"
+        },
+        "primary_rerun_passed": true
+      },
+      {
+        "component": "owner",
+        "output": {
+          "path": "local/light_chain_owner_fixture_review.txt",
+          "bytes": 159,
+          "sha256": "1738e5939b74880062f4d2f2643817d4142f5f6bd42ad7f6cbd630ba2c9d3d2f"
+        },
+        "primary_rerun_passed": true
+      },
+      {
+        "component": "configuration",
+        "output": {
+          "path": "local/light_chain_config_fixture_review.txt",
+          "bytes": 15545,
+          "sha256": "d9fda9f16a178076ba9dd76b787055c627dabc66198712acaed3290db0899dd6"
+        },
+        "primary_rerun_passed": true
+      }
+    ],
+    "new_tracked_tests": 0
+  },
+  "source_artifacts": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 7586,
+      "sha256": "113f5e07a33986cb6dabbb16b1f55cb99ba4da9be31986a5425e8e79f0e09c8b"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "bytes": 74894,
+      "sha256": "11509492de7b78f4a723c30ce2b3d5138060211e45b4dfb3bafecfb8680791ff"
+    },
+    {
+      "path": "include/bsp/system_lighting_constants.hpp",
+      "bytes": 8718,
+      "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+    },
+    {
+      "path": "src/system_lighting_constants.cpp",
+      "bytes": 6855,
+      "sha256": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8"
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "bytes": 3183,
+      "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34"
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "bytes": 6499,
+      "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9"
+    },
+    {
+      "path": "include/bsp/directional_light_owner.hpp",
+      "bytes": 3730,
+      "sha256": "4f5e99d8f81ab349a4c2c1732df96d3907c36f659f8ef72d1fe3c4e91c5baf75"
+    },
+    {
+      "path": "src/directional_light_owner.cpp",
+      "bytes": 8070,
+      "sha256": "2266a76c063bb2e9e21011b826ccab18bff1df3b0713ccb1814bdc3673c52483"
+    },
+    {
+      "path": "include/bsp/lighting_configuration_apply.hpp",
+      "bytes": 3454,
+      "sha256": "a4e80a89f3c05b1ef7cbb4d46395d0aca8d3bea8cec67098e66df6317121a7e7"
+    },
+    {
+      "path": "src/lighting_configuration_apply.cpp",
+      "bytes": 10604,
+      "sha256": "3acacf1ca889179555766d2e63e517f985336d5675e1f14e7024a381b69028cb"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "bytes": 7425,
+      "sha256": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "bytes": 15650,
+      "sha256": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01"
+    },
+    {
+      "path": "include/bsp/system_lighting_owners.hpp",
+      "bytes": 5141,
+      "sha256": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd"
+    },
+    {
+      "path": "src/system_lighting_owners.cpp",
+      "bytes": 10604,
+      "sha256": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 3319,
+      "sha256": "5a481169233850684c0deb9042f5424f76cdf6a0a264725c8bbc633c721e4464"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 6173,
+      "sha256": "2834c10fdfbe3a752c3e6775fa9ef502d729d3426fa4f6a08c19f6a542f4d547"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 3688,
+      "sha256": "f46cd8d00aa92c7c2b4fb2a4ffcff8adfa9c70fec19461d75f0dab35cf180b8a"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "bytes": 10487,
+      "sha256": "ea0ef4205524f0f664bc9827632aaca678aa4c21046c830a8fae643fc6a062f4"
+    },
+    {
+      "path": "include/bsp/light_scene_retention.hpp",
+      "bytes": 1444,
+      "sha256": "79139691d3ff6de00b153817efef80853556d703a0ea76e510457c52b7654eff"
+    },
+    {
+      "path": "src/light_scene_retention.cpp",
+      "bytes": 3938,
+      "sha256": "1969265622880f219ce93469f7eca81419560bb8cd925ab218ea784a184fe0db"
+    },
+    {
+      "path": "include/bsp/directional_light_pool.hpp",
+      "bytes": 2942,
+      "sha256": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510"
+    },
+    {
+      "path": "src/directional_light_pool.cpp",
+      "bytes": 11361,
+      "sha256": "979f62fffe2df06c6528155031b42d15ae83808de8284a12ee9925d217a405e0"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "bytes": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 4426,
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 3655,
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6"
+    }
+  ],
+  "annotations_applied": true,
+  "remaining": [
+    "Complete native shadow/camera/viewport owners, actual scene/world composition and updates remain.",
+    "Probe config values and root descriptor zero preimages are explicit isolated diagnostic inputs, not authored map/process startup.",
+    "The separate model geometry scope still uses its existing diagnostic scene/type inputs; only system lighting now uses this canonical concrete light scene.",
+    "Native constructor/destructor callbacks/EH, type slow allocation/registration, full native CRT ABI and gameplay remain unvalidated."
+  ],
+  "saved_annotations": {
+    "log": "reports/native_light_chain_annotations.json",
+    "sha256": "6f1785735b62517bda687198b0b303115db0b4af697e3e121777f71d7cc29612",
+    "count": 22,
+    "all_applied": true,
+    "original_names_and_existing_comments_recorded": true,
+    "project_saved": true,
+    "created_function_definitions": "reports/light_type_defined_functions.json"
+  },
+  "refreshed_exports": {
+    "utc": "2026-09-10T18:38:48.094660+00:00",
+    "count": 22,
+    "functions": [
+      {
+        "address": "00cd80a0",
+        "old_name": "BSP_TypeInfo_StaticInitialize_cLight",
+        "name": "BSP_TypeInfo_StaticInitialize_cLight",
+        "path": "exports/bsp/functions/00cd80a0/decompiled.c",
+        "sha256": "30cc6e915469f45748502a883962ba3bdb2d6b1efe4ba37047e28a631209de72"
+      },
+      {
+        "address": "00cd80f0",
+        "old_name": "BSP_TypeInfo_StaticInitialize_cDirectionalLight",
+        "name": "BSP_TypeInfo_StaticInitialize_cDirectionalLight",
+        "path": "exports/bsp/functions/00cd80f0/decompiled.c",
+        "sha256": "d856b25b47bfed3d472031a85bb1f3a5c5f83882f2871fa3af706fa75df037ba"
+      },
+      {
+        "address": "00b7c580",
+        "old_name": "FUN_00b7c580",
+        "name": "BSP_Light_IsType",
+        "path": "exports/bsp/functions/00b7c580/decompiled.c",
+        "sha256": "bbe4cb06b8c5d6e46a4cd3560c3ab41d0504785344ad155658a17d9bc41cf07a"
+      },
+      {
+        "address": "00b7c6d0",
+        "old_name": "FUN_00b7c6d0",
+        "name": "BSP_DirectionalLight_IsType",
+        "path": "exports/bsp/functions/00b7c6d0/decompiled.c",
+        "sha256": "cb9b6b86387fafe5dcb1175f937e98c55984908ae31b18517ce5d01b56753998"
+      },
+      {
+        "address": "00b6f570",
+        "old_name": "FUN_00b6f570",
+        "name": "BSP_Node_IsType",
+        "path": "exports/bsp/functions/00b6f570/decompiled.c",
+        "sha256": "bcebd64a885994f2aa497dbb868b7fd7d207df954d42450b3f809230d6a86988"
+      },
+      {
+        "address": "00b6f110",
+        "old_name": "BSP_TypeInfo_Initialize3dNode",
+        "name": "BSP_TypeInfo_Initialize3dNode",
+        "path": "exports/bsp/functions/00b6f110/decompiled.c",
+        "sha256": "9ad2323bc428eba95a6d692a833c15f1e8fe0128fba6b736abb3a5c3afbd43af"
+      },
+      {
+        "address": "006fac20",
+        "old_name": "BSP_TypeId_GetCounterSingleton",
+        "name": "BSP_TypeId_GetCounterSingleton",
+        "path": "exports/bsp/functions/006fac20/decompiled.c",
+        "sha256": "466f261c19bf39b27c1a24682deb0658b9976b90ec2bc73c1540f08d2f639a55"
+      },
+      {
+        "address": "00bea780",
+        "old_name": "BSP_TypeInfo_InitializeRoot",
+        "name": "BSP_TypeInfo_InitializeRoot",
+        "path": "exports/bsp/functions/00bea780/decompiled.c",
+        "sha256": "8d72771013ea5675037ccb2607f0d3effea790920941507c7a8e3d2a0512ea32"
+      },
+      {
+        "address": "006fad40",
+        "old_name": "FUN_006fad40",
+        "name": "BSP_TypeIdCounter_DeletingDestructor",
+        "path": "exports/bsp/functions/006fad40/decompiled.c",
+        "sha256": "64b1d3361af1cc8b8eaddee6b709d15795f138d8e567414a92a628014e6e92d2"
+      },
+      {
+        "address": "00b7c4c0",
+        "old_name": "FUN_00b7c4c0",
+        "name": "BSP_Light_Construct",
+        "path": "exports/bsp/functions/00b7c4c0/decompiled.c",
+        "sha256": "dd11c1f567f81f1fed0c341af740df7c34c69198c01d3207b0bcaae84f307700"
+      },
+      {
+        "address": "00b7c6b0",
+        "old_name": "FUN_00b7c6b0",
+        "name": "BSP_DirectionalLight_Construct",
+        "path": "exports/bsp/functions/00b7c6b0/decompiled.c",
+        "sha256": "d688226579b9e2faa0b408e4997bd4c29008e45edefd704f22f059059010edd7"
+      },
+      {
+        "address": "00b7c5b0",
+        "old_name": "FUN_00b7c5b0",
+        "name": "BSP_Light_Destroy",
+        "path": "exports/bsp/functions/00b7c5b0/decompiled.c",
+        "sha256": "f5929bb718caa22cb44a067d4676bbcfb3d77c85a36d8af54cdd4fef31b7b900"
+      },
+      {
+        "address": "00b7c820",
+        "old_name": "FUN_00b7c820",
+        "name": "BSP_DirectionalLight_DeletingDestructor",
+        "path": "exports/bsp/functions/00b7c820/decompiled.c",
+        "sha256": "27b8e3ae064a1462757d9a47008fbfd88ee2f59b0bfc838634bdd992bd029a4d"
+      },
+      {
+        "address": "004bacd0",
+        "old_name": "FUN_004bacd0",
+        "name": "BSP_Lighting_ApplyConfiguration",
+        "path": "exports/bsp/functions/004bacd0/decompiled.c",
+        "sha256": "31a5cc8c3d068addeb939f85ab75f62c7a00a016169ae058e4b7e09f252a5042"
+      },
+      {
+        "address": "004b4d80",
+        "old_name": "FUN_004b4d80",
+        "name": "BSP_Lighting_DirectionFromAngles",
+        "path": "exports/bsp/functions/004b4d80/decompiled.c",
+        "sha256": "afcb5f2e1fef5a23991d1259cc8c048f931d32da1611855ad1230ae006a3d717"
+      },
+      {
+        "address": "004b62e0",
+        "old_name": "FUN_004b62e0",
+        "name": "BSP_Light_SetBaseDiffuse",
+        "path": "exports/bsp/functions/004b62e0/decompiled.c",
+        "sha256": "2ea7fc48bdf45fca693a232adaf18c8bc59b35caac3ef70b45f004c6ec59e677"
+      },
+      {
+        "address": "00b7af20",
+        "old_name": "FUN_00b7af20",
+        "name": "BSP_AmbientLight_SetAmbient",
+        "path": "exports/bsp/functions/00b7af20/decompiled.c",
+        "sha256": "42cd7e07ffe17deb55c639b2aebe4cfdd53892dfb01798a7e09c2c1cb9c07293"
+      },
+      {
+        "address": "00b7af40",
+        "old_name": "FUN_00b7af40",
+        "name": "BSP_AmbientLight_SetMode3Ambient",
+        "path": "exports/bsp/functions/00b7af40/decompiled.c",
+        "sha256": "ef6bc7d5baddf0e7bed646390fb65bfbfc397eee83d4652ec064391cfedd18a0"
+      },
+      {
+        "address": "00b7af60",
+        "old_name": "FUN_00b7af60",
+        "name": "BSP_AmbientLight_SetCubeFace",
+        "path": "exports/bsp/functions/00b7af60/decompiled.c",
+        "sha256": "316e0c21b8caaf3fc5a88c5af5838a4513692f73eadbb836a760974a6d1a0dc3"
+      },
+      {
+        "address": "00b7af90",
+        "old_name": "FUN_00b7af90",
+        "name": "BSP_Light_SetDiffuseScale",
+        "path": "exports/bsp/functions/00b7af90/decompiled.c",
+        "sha256": "f8e274ddc1458c54b4d830f8fd994dd1eec229829815a2ccb33a7951b96aebd4"
+      },
+      {
+        "address": "00b7b010",
+        "old_name": "FUN_00b7b010",
+        "name": "BSP_Light_SetSpecularScale",
+        "path": "exports/bsp/functions/00b7b010/decompiled.c",
+        "sha256": "bae056d8fcdf28db6d72a81c74856ef1389ca6640f0870e412b7b543971ee8ac"
+      },
+      {
+        "address": "00b7aab0",
+        "old_name": "BSP_Light_GetShadowMapOwner",
+        "name": "BSP_Light_GetShadowMapOwner",
+        "path": "exports/bsp/functions/00b7aab0/decompiled.c",
+        "sha256": "dfd1f93f1448931197ee6a1c2dfc9f05a3aa102c6f5065a17eccb00fa18aa30e"
+      }
+    ]
+  },
+  "independent_review": {
+    "report": "reports/native_light_chain_review.json",
+    "sha256": "2779e9ee42c2244e1ea3638ae01b332cf4b66b2e95bd494f2361347c36e9bacd",
+    "all_27_source_hashes_rechecked": true,
+    "resolved_finding": "Published but unretained scene backlink on registry insertion failure now receives its actual required retain before probe guard cleanup.",
+    "exception_path_fault_injected": false,
+    "normal_build_and_installed_draw_passed_after_fix": true
+  },
+  "closure_source_hashes_rechecked_utc": "2026-09-10T18:38:48.094660+00:00"
+}

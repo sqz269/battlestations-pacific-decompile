@@ -1,0 +1,294 @@
+[
+  {
+    "address": "004b4d80",
+    "before": {
+      "address": "004b4d80",
+      "function_name": "FUN_004b4d80"
+    },
+    "after": {
+      "address": "004b4d80",
+      "name": "BSP_Lighting_DirectionFromAngles",
+      "evidence": "Native [004b4d80,004b4df3); ECX outputfloat3; stackfirst/second float32angles; EAXoutput; RET8. Repeated x87FCOS/FSIN andnative32bitspills; noCRTtrig. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004b62e0",
+    "before": {
+      "address": "004b62e0",
+      "function_name": "FUN_004b62e0"
+    },
+    "after": {
+      "address": "004b62e0",
+      "name": "BSP_Light_SetBaseDiffuse",
+      "evidence": "Native [004b62e0,004b6369); ECX light; stackfloat4pointer; RET4. Spill current1D8, sequentiallycopybase1A4 thenreread originalsource andcompute effective184. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004bacd0",
+    "before": {
+      "address": "004bacd0",
+      "function_name": "FUN_004bacd0"
+    },
+    "after": {
+      "address": "004bacd0",
+      "name": "BSP_Lighting_ApplyConfiguration",
+      "evidence": "Native [004bacd0,004bb155); ECX ambient; EDX directional; stack optionalconfiguration; RET4. Complete null and nonnull color/direction update paths on actualborrowed fields. Null preserves194..1A3 and1DC. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "006fac20",
+    "before": {
+      "address": "006fac20",
+      "function_name": "BSP_TypeId_GetCounterSingleton",
+      "comment": "[BSP reconstruction 006fac20]\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "006fac20",
+      "name": "BSP_TypeId_GetCounterSingleton",
+      "evidence": "Return shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [006fac20,006facd5); No arguments; EAX actual shared owner; RET. Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "006fad40",
+    "before": {
+      "address": "006fad40",
+      "function_name": "FUN_006fad40"
+    },
+    "after": {
+      "address": "006fad40",
+      "name": "BSP_TypeIdCounter_DeletingDestructor",
+      "evidence": "Native [006fad40,006fad69); ECX owner; stack flags; EAX original address; RET4. Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6f110",
+    "before": {
+      "address": "00b6f110",
+      "function_name": "BSP_TypeInfo_Initialize3dNode",
+      "comment": "[BSP reconstruction 00b6f110]\nGuarded c3dNode type descriptor initializer: initialize cRoot, copy root ID, consume shared counter at singleton+4 for own ID and store name c3dNode. Original ABI: ECX=descriptor; no stack arguments; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b6f110",
+      "name": "BSP_TypeInfo_Initialize3dNode",
+      "evidence": "Guarded c3dNode type descriptor initializer: initialize cRoot, copy root ID, consume shared counter at singleton+4 for own ID and store name c3dNode. Original ABI: ECX=descriptor; no stack arguments; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [00b6f110,00b6f14e); ECX target descriptor; RET. Process guard0108FF54; write caller target name, initialize actualroot, copyrootID, consume sharedcounter. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6f570",
+    "before": {
+      "address": "00b6f570",
+      "function_name": "FUN_00b6f570"
+    },
+    "after": {
+      "address": "00b6f570",
+      "name": "BSP_Node_IsType",
+      "evidence": "Native [00b6f570,00b6f598); Stack token; AL boolean; RET4; ECX input ignored. Sequential live2DWORD scan0108FF90/94, firstmatch; noinit. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7aab0",
+    "before": {
+      "address": "00b7aab0",
+      "function_name": "BSP_Light_GetShadowMapOwner",
+      "comment": "[BSP reconstruction 00b7aab0]\nBSP reconstruction hypothesis: Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null. ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7aab0] update\nBSP reconstruction hypothesis: Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null. ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX first light; EAX [ECX+174]; plain RET. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00b7aab0",
+      "name": "BSP_Light_GetShadowMapOwner",
+      "evidence": "BSP reconstruction hypothesis: Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null. ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX first light; EAX [ECX+174]; plain RET. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Native [00b7aab0,00b7aab7); ECX light, no stack arguments, EAX borrowed owner; RET. SystemDirectionalLight now borrows either the legacy typed slot or actual raw174 slot plus required SystemShadowOwnerResolver. Every call reloads the current raw owner; null bypasses resolver, nonnull unbound identity raises explicit binding error. No cached pointer or second count. Same field is used by DirectionalLightOwner destruction and shader consumption. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7af20",
+    "before": {
+      "address": "00b7af20",
+      "function_name": "FUN_00b7af20"
+    },
+    "after": {
+      "address": "00b7af20",
+      "name": "BSP_AmbientLight_SetAmbient",
+      "evidence": "Native [00b7af20,00b7af3e); ECX ambient; stackfloat4pointer; RET4. Sequential raw4DWORD copies to18. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7af40",
+    "before": {
+      "address": "00b7af40",
+      "function_name": "FUN_00b7af40"
+    },
+    "after": {
+      "address": "00b7af40",
+      "name": "BSP_AmbientLight_SetMode3Ambient",
+      "evidence": "Native [00b7af40,00b7af5e); ECX ambient; stackfloat4pointer; RET4. Sequential raw4DWORD copies to28. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7af60",
+    "before": {
+      "address": "00b7af60",
+      "function_name": "FUN_00b7af60"
+    },
+    "after": {
+      "address": "00b7af60",
+      "name": "BSP_AmbientLight_SetCubeFace",
+      "evidence": "Native [00b7af60,00b7af88); ECX ambient; stackfloat4pointer,index; RET8. Sequential raw4DWORD copies to38+index*16; typedowner requiresindex0..5. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7af90",
+    "before": {
+      "address": "00b7af90",
+      "function_name": "FUN_00b7af90"
+    },
+    "after": {
+      "address": "00b7af90",
+      "name": "BSP_Light_SetDiffuseScale",
+      "evidence": "Native [00b7af90,00b7b003); ECX light; stackfloat32scale; RET4. Rawstore1D8 thenx87scale base1A4 intoeffective184. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7b010",
+    "before": {
+      "address": "00b7b010",
+      "function_name": "FUN_00b7b010"
+    },
+    "after": {
+      "address": "00b7b010",
+      "name": "BSP_Light_SetSpecularScale",
+      "evidence": "Native [00b7b010,00b7b083); ECX light; stackfloat32scale; RET4. Rawstore1DC thenx87scale base1C4 intoeffective194. Borrows the same ambient/light/configuration words and actual shared fallback globals. Preserve sequential raw loads/stores, x87 products and float32 spills, discarded alpha square, live constant reads and null-config unwritten194/1DC. One native four-call timeline matched2916bytes and x87 state using actual tail/ambient bindings. No hooks or imports in native numeric closure. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7c4c0",
+    "before": {
+      "address": "00b7c4c0",
+      "function_name": "FUN_00b7c4c0"
+    },
+    "after": {
+      "address": "00b7c4c0",
+      "name": "BSP_Light_Construct",
+      "evidence": "Native [00b7c4c0,00b7c576); ECX owner; stack name; EAX same owner; RET4. Complete base-light constructor. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7c580",
+    "before": {
+      "address": "00b7c580",
+      "function_name": "FUN_00b7c580"
+    },
+    "after": {
+      "address": "00b7c580",
+      "name": "BSP_Light_IsType",
+      "evidence": "Native [00b7c580,00b7c5a8); Stack token; AL boolean; RET4; ECX input ignored. Sequential live3DWORD scan0109018C/90/94, firstmatch; noinit. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7c5b0",
+    "before": {
+      "address": "00b7c5b0",
+      "function_name": "FUN_00b7c5b0"
+    },
+    "after": {
+      "address": "00b7c5b0",
+      "name": "BSP_Light_Destroy",
+      "evidence": "Native [00b7c5b0,00b7c6aa); ECX light; RET. Complete light body including returning node-base tail and reconstructed cleanup unwind. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7c6b0",
+    "before": {
+      "address": "00b7c6b0",
+      "function_name": "FUN_00b7c6b0"
+    },
+    "after": {
+      "address": "00b7c6b0",
+      "name": "BSP_DirectionalLight_Construct",
+      "evidence": "Native [00b7c6b0,00b7c6c9); ECX owner; stack name; EAX same owner; RET4. Complete directional constructor. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7c6d0",
+    "before": {
+      "address": "00b7c6d0",
+      "function_name": "FUN_00b7c6d0"
+    },
+    "after": {
+      "address": "00b7c6d0",
+      "name": "BSP_DirectionalLight_IsType",
+      "evidence": "Native [00b7c6d0,00b7c6f8); Stack token; AL boolean; RET4; ECX input ignored. Sequential live4DWORD scan0109019C/A0/A4/A8, firstmatch; noinit. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7c820",
+    "before": {
+      "address": "00b7c820",
+      "function_name": "FUN_00b7c820"
+    },
+    "after": {
+      "address": "00b7c820",
+      "name": "BSP_DirectionalLight_DeletingDestructor",
+      "evidence": "Native [00b7c820,00b7c846); ECX light; stack flags; EAX original raw address; RET4. Complete directional deleting destructor. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bea780",
+    "before": {
+      "address": "00bea780",
+      "function_name": "BSP_TypeInfo_InitializeRoot",
+      "comment": "[BSP reconstruction 00bea780]\nGuarded cRoot descriptor initializer: consume shared singleton counter+4 and increment it, store own ID and name cRoot. Guard0109DB80. Original ABI: ECX=descriptor; no stack arguments; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00bea780",
+      "name": "BSP_TypeInfo_InitializeRoot",
+      "evidence": "Guarded cRoot descriptor initializer: consume shared singleton counter+4 and increment it, store own ID and name cRoot. Guard0109DB80. Original ABI: ECX=descriptor; no stack arguments; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [00bea780,00bea7ac); ECX target descriptor; RET. Process guard0109DB80 then consume shared counter and write caller target ownID/name. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cd80a0",
+    "before": {
+      "address": "00cd80a0",
+      "function_name": "BSP_TypeInfo_StaticInitialize_cLight",
+      "comment": "[BSP reconstruction 00cd80a0]\nGuarded native type initializer for cLight; descriptor 0109018c consumes shared monotonic type counter and retains recovered parent/type-name identities. Analysis only; production type bootstrap not implemented. Original ABI: no arguments; guarded type initializer; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00cd80a0",
+      "name": "BSP_TypeInfo_StaticInitialize_cLight",
+      "evidence": "Guarded native type initializer for cLight; descriptor 0109018c consumes shared monotonic type counter and retains recovered parent/type-name identities. Analysis only; production type bootstrap not implemented. Original ABI: no arguments; guarded type initializer; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [00cd80a0,00cd80ef); No arguments; RET. Actualguard0109010D anddescriptor0109018C; initializeactualnode, capture/copy2parenttokens, consumeownID. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cd80f0",
+    "before": {
+      "address": "00cd80f0",
+      "function_name": "BSP_TypeInfo_StaticInitialize_cDirectionalLight",
+      "comment": "[BSP reconstruction 00cd80f0]\nGuarded native type initializer for cDirectionalLight; descriptor 0109019c consumes shared monotonic type counter and retains recovered parent/type-name identities. Analysis only; production type bootstrap not implemented. Original ABI: no arguments; guarded type initializer; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00cd80f0",
+      "name": "BSP_TypeInfo_StaticInitialize_cDirectionalLight",
+      "evidence": "Guarded native type initializer for cDirectionalLight; descriptor 0109019c consumes shared monotonic type counter and retains recovered parent/type-name identities. Analysis only; production type bootstrap not implemented. Original ABI: no arguments; guarded type initializer; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [00cd80f0,00cd8191); No arguments; RET. Actualguard0109010E/descriptor0109019C; capturelightguard BEFOREdirectionalguard/namewrites, conditionallyinitlight, capture/copy3parenttokens, consumeownID. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+    },
+    "status": "applied"
+  }
+]

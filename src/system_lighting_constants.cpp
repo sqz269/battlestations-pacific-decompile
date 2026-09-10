@@ -1,7 +1,17 @@
 #include "bsp/system_lighting_constants.hpp"
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
+SystemShadowMapOwner* SystemDirectionalLight::shadow_owner_174() const {
+    if (typed_shadow_) return *typed_shadow_;
+    void* actual = *raw_shadow_;
+    if (!actual) return nullptr;
+    auto* shadow = resolver_->resolve_shadow(actual);
+    if (!shadow) throw std::logic_error("Native shadow owner has no concrete shader binding");
+    return shadow;
+}
+
 SystemSceneLighting* get_system_scene_lighting_00b72110(const SystemLightingScene& scene) {
     return scene.lighting_1c();
 }
@@ -16,7 +26,7 @@ const SystemLightingWords4& get_system_ambient_cube_00b7aa40(
     return owner.ambient_cube_38[index];
 }
 SystemShadowMapOwner* get_system_shadow_owner_00b7aab0(const SystemDirectionalLight& light) {
-    return light.shadow_174;
+    return light.shadow_owner_174();
 }
 
 namespace {

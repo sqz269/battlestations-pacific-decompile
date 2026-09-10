@@ -1,5 +1,9 @@
 # Native light storage, node lifetime and fog factory
 
+Subsequent work is recorded in [native light chain integration](NATIVE_LIGHT_CHAIN_INTEGRATION.md):
+the directional owner, type bootstrap and lighting configuration now run together
+in the installed-asset diagnostic. The results below describe this earlier batch.
+
 This batch integrates the shared directional slot pool, native node construction
 and direct destruction, light scene retention, and the bounded world fog factory.
 The complete directional-light owner and process startup composition remain

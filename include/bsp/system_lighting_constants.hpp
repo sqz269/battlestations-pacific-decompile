@@ -33,12 +33,36 @@ public:
     const SystemLightingWords4& limits_390;
 };
 
+// Resolve a companion for the actual retained native owner identity. A nonnull
+// native pointer must have a concrete binding; null is the native absent case.
+class SystemShadowOwnerResolver {
+public:
+    virtual ~SystemShadowOwnerResolver() = default;
+    virtual SystemShadowMapOwner* resolve_shadow(void* actual_owner) = 0;
+};
+
 struct SystemDirectionalLight {
-    SystemShadowMapOwner* const& shadow_174;
+    SystemDirectionalLight(SystemShadowMapOwner* const& shadow,
+        const SystemLightingWords4& diffuse, const SystemLightingWords4& specular,
+        const SystemLightingWords4& mode3_diffuse, const SystemLightingWords3& direction)
+        : diffuse_184(diffuse), specular_194(specular), diffuse_mode3_1b4(mode3_diffuse),
+          direction_1e0(direction), typed_shadow_(&shadow) {}
+    SystemDirectionalLight(void* const& actual_shadow174, SystemShadowOwnerResolver& resolver,
+        const SystemLightingWords4& diffuse, const SystemLightingWords4& specular,
+        const SystemLightingWords4& mode3_diffuse, const SystemLightingWords3& direction)
+        : diffuse_184(diffuse), specular_194(specular), diffuse_mode3_1b4(mode3_diffuse),
+          direction_1e0(direction), raw_shadow_(&actual_shadow174), resolver_(&resolver) {}
+
+    // Reload +174 on every access. No second owner pointer or retention count.
+    SystemShadowMapOwner* shadow_owner_174() const;
     const SystemLightingWords4& diffuse_184;
     const SystemLightingWords4& specular_194;
     const SystemLightingWords4& diffuse_mode3_1b4;
     const SystemLightingWords3& direction_1e0;
+private:
+    SystemShadowMapOwner* const* typed_shadow_{};
+    void* const* raw_shadow_{};
+    SystemShadowOwnerResolver* resolver_{};
 };
 struct SystemLightEnvironment {
     const SystemLightingWords4& ambient_18;
