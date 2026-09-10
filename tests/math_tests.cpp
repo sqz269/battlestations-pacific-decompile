@@ -6,6 +6,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/input_tick.hpp"
+#include "bsp/session_polls.hpp"
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -325,6 +326,80 @@ int main() {
             "requests behind the stop and the one a handler added survive the pass");
         check(bsp::front_state_request(state.requests) == 0x02u,
             "the next frame resumes at the request that followed the stop");
+    }
+
+    {
+        // The drain at 004e5455 re-polls 006840f0 after every pass and stops only
+        // when no channel is left with a mismatched index pair. The first channel
+        // needs two passes; the second is active but already matched, and the
+        // third has a null global.
+        struct DrainHost : bsp::SessionPollHost {
+            bsp::MenuInterfaceState menus{};
+            int peer_pumps{0};
+            int interface_updates{0};
+            int latch_clears{0};
+
+            void service_menu_channel(std::size_t index, std::int32_t target_a,
+                std::int32_t target_b) override {
+                // The native virtual +10h advances the channel toward its target.
+                bsp::MenuRequestChannel& channel = menus.channels[index];
+                if (channel.current_a < target_a) ++channel.current_a;
+                channel.current_b = target_b;
+            }
+            void read_menu_interface_state(bsp::MenuInterfaceState& out) override { out = menus; }
+            void pump_peer_messages_00776230() override { ++peer_pumps; }
+            void update_interface_only_004c40f0() override { ++interface_updates; }
+            void clear_menu_transition_latch_00e18cdc() override { ++latch_clears; }
+            void update_multiplayer_interface_004d80d0() override {}
+
+            void pump_platform_manager_00a409f0() override {}
+            bool system_ui_flag_00e188ae() override { return false; }
+            void on_system_ui_raised_004ceb40() override {}
+            bool profile_changed_pending() override { return false; }
+            bool take_storage_removed() override { return false; }
+            bool take_invite_accepted() override { return false; }
+            int game_state() override { return 0x0D; }
+            bool game_flag_620() override { return false; }
+            void game_620_handler_004d94f0() override {}
+            bool game_flag_61f() override { return false; }
+            void game_61f_handler_004d95f0() override {}
+            void profile_lost_in_state4_004d7f90() override {}
+            void teardown_menu_objects_004db190() override {}
+            void teardown_session_004cccc0() override {}
+            void clear_game_flag_2180() override {}
+            void on_init_title_004c9a70() override {}
+            bool storage_owner_idle_0109cecc() override { return false; }
+            void storage_removed_side_effect_00bd3450() override {}
+            void dismiss_dialog_layers_00530650() override {}
+            void invite_decision_inputs(bsp::InviteDecisionInputs&) override {}
+            bool leaving_ends_session_004bb8a0() override { return false; }
+            void accept_invite_004d8000() override {}
+            void show_prompt_00531b00(const bsp::PromptRequest&) override {}
+            void update_online_stats_write_004caa90() override {}
+            void multiplayer_pre_tick_00778450(float) override {}
+            void multiplayer_post_tick_0076ffc0(float) override {}
+        };
+
+        DrainHost host;
+        host.menus.channels[0].present = true;
+        host.menus.channels[0].active = true;
+        host.menus.channels[0].target_a = 2;
+        host.menus.channels[0].target_b = 7;
+        host.menus.channels[1].present = true;
+        host.menus.channels[1].active = true;
+        host.menus.channels[1].current_a = 5;
+        host.menus.channels[1].target_a = 5;
+        host.menus.channels[2].active = true; // global is null, so it is skipped
+        host.menus.channels[2].target_a = 4;
+
+        const int iterations = bsp::run_menu_interface_drain_004e5434(host);
+        check(iterations == 2, "the menu drain repeats until a poll reports nothing pending");
+        check(host.peer_pumps == 2 && host.interface_updates == 2,
+            "each drain pass runs the peer pump and the interface-only update once");
+        check(host.latch_clears == iterations + 1,
+            "00e18cdc is cleared after the first poll and after every re-poll");
+        check(host.menus.channels[2].current_a == 0,
+            "a null channel global is skipped even when its indices differ");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

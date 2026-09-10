@@ -1,0 +1,644 @@
+{
+  "packet": "game_session_polls",
+  "owner": "agent/game-session-polls",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/GAME_SESSION_POLLS.md",
+  "sources": [
+    "include/bsp/session_polls.hpp",
+    "src/session_polls.cpp"
+  ],
+  "addresses": [
+    "004db290",
+    "004caa90",
+    "004d80d0",
+    "006840f0",
+    "00776230",
+    "004c40f0",
+    "00778560"
+  ],
+  "call_sites_in_004e4a40": [
+    {
+      "site": "004e4b91",
+      "callee": "004db290",
+      "ecx": "game",
+      "args": [],
+      "phase": "step 8, after the blocking-screen fast path"
+    },
+    {
+      "site": "004e4b98",
+      "callee": "004caa90",
+      "ecx": "game",
+      "args": [],
+      "phase": "step 8"
+    },
+    {
+      "site": "004e5036",
+      "callee": "00778560",
+      "ecx": "game+1EF0h",
+      "args": [
+        "raw delta from [esp+24h]"
+      ],
+      "phase": "step 16, skipped when state 0Dh and 00f876b0 >= 1 and the scaled delta is positive"
+    },
+    {
+      "site": "004e5434",
+      "callee": "004d80d0",
+      "ecx": "game",
+      "args": [],
+      "phase": "step 23, post-simulation"
+    },
+    {
+      "site": "004e5442",
+      "callee": "006840f0",
+      "ecx": "&[esp+1Bh]",
+      "args": [],
+      "phase": "step 23, first request poll"
+    },
+    {
+      "site": "004e5462",
+      "callee": "00776230",
+      "ecx": "game+1EF0h",
+      "args": [],
+      "phase": "inside the dropped drain loop"
+    },
+    {
+      "site": "004e5469",
+      "callee": "004c40f0",
+      "ecx": "game",
+      "args": [],
+      "phase": "inside the dropped drain loop"
+    },
+    {
+      "site": "004e5477",
+      "callee": "006840f0",
+      "ecx": "&[esp+1Bh]",
+      "args": [],
+      "phase": "the loop's re-poll"
+    }
+  ],
+  "abi": [
+    {
+      "address": "004db290",
+      "convention": "__fastcall(GGame*)",
+      "ret": "ret",
+      "notes": "ECX = game; ESI loaded from 00f8abe8. SEH handler 00c668e8."
+    },
+    {
+      "address": "004caa90",
+      "convention": "__fastcall(GGame*)",
+      "ret": "ret at 004cac2a",
+      "notes": "SEH handler 00c65598."
+    },
+    {
+      "address": "004d80d0",
+      "convention": "__fastcall(GGame*)",
+      "ret": "ret at 004d8606 and 004d861f",
+      "notes": "EAX carries the last callee's value; no caller reads it. SEH handler 00c66498."
+    },
+    {
+      "address": "006840f0",
+      "convention": "__fastcall(bool *out)",
+      "ret": "ret at 006841e6",
+      "notes": "ECX holds the out pointer, not a this pointer."
+    },
+    {
+      "address": "00776230",
+      "convention": "__fastcall(void* peer)",
+      "ret": "ret at 0077648a",
+      "notes": "ECX = game+1EF0h."
+    },
+    {
+      "address": "004c40f0",
+      "convention": "__fastcall(GGame*)",
+      "ret": "ret at 004c42f8",
+      "notes": ""
+    },
+    {
+      "address": "00778560",
+      "convention": "__fastcall(void* peer, float seconds)",
+      "ret": "ret 4 at 00778582",
+      "notes": "ECX = game+1EF0h."
+    }
+  ],
+  "notification_table": {
+    "drain": "00a40110",
+    "reached_from": "004db2bc -> 00a409f0 -> 00a40110",
+    "listener_areas": "0x2f",
+    "arms": [
+      {
+        "id": "00000009",
+        "name": "XN_SYS_UI",
+        "arm": "switch",
+        "effect": "hook 00f8abec (004ceb40, installed 004e555e); manager+3E8h = parameter != 0"
+      },
+      {
+        "id": "0000000A",
+        "name": "XN_SYS_SIGNINCHANGED",
+        "arm": "switch",
+        "effect": "00a3f440"
+      },
+      {
+        "id": "0000000B",
+        "name": "XN_SYS_STORAGEDEVICESCHANGED",
+        "arm": "switch",
+        "effect": "hook 00f8abf0, never written in the image, so a no-op on this build"
+      },
+      {
+        "id": "0000000E",
+        "name": "XN_SYS_PROFILESETTINGCHANGED",
+        "arm": "switch",
+        "effect": "00a3e600(parameter)"
+      },
+      {
+        "id": "00000015",
+        "name": "XN_SYS_XLIVETITLEUPDATE",
+        "arm": "00a40416",
+        "effect": "compares a built path against \\setup.exe"
+      },
+      {
+        "id": "00000016",
+        "name": "XN_SYS_XLIVESYSTEMUPDATE",
+        "arm": "00a404a9",
+        "effect": "XLiveUpdateSystem then _exit(0)"
+      },
+      {
+        "id": "02000001",
+        "name": "XN_LIVE_CONNECTIONCHANGED",
+        "arm": "00a40353",
+        "effect": "001510F0h -> 00a3fa70(1) at 00a40391; 80151005h -> manager+128h = 1 at 00a403b1"
+      },
+      {
+        "id": "02000002",
+        "name": "XN_LIVE_INVITE_ACCEPTED",
+        "arm": "00a4031e",
+        "effect": "XInviteGetAcceptedInfo (00a4d5a8); manager+31h = 1 at 00a4033c; REP MOVSD 15h dwords into manager+32h at 00a4034c"
+      },
+      {
+        "id": "02000003",
+        "name": "XN_LIVE_LINK_STATE_CHANGED",
+        "arm": "00a403bd",
+        "effect": "log only"
+      },
+      {
+        "id": "02000007",
+        "name": "XN_LIVE_CONTENT_INSTALLED",
+        "arm": "00a40400",
+        "effect": "manager+30h = 1"
+      },
+      {
+        "id": "04000002",
+        "name": "XN_FRIENDS_*",
+        "arm": "00a403e6",
+        "effect": "00f8a2fc virtual +28h"
+      },
+      {
+        "id": "04000003",
+        "name": "XN_FRIENDS_*",
+        "arm": "00a403e6",
+        "effect": "00f8a2fc virtual +28h"
+      }
+    ],
+    "id_names_provisional": true,
+    "corroborated_by_log_strings": [
+      "02000001",
+      "02000003",
+      "02000007"
+    ]
+  },
+  "xinvite_info": {
+    "address": "manager+32h",
+    "size": 84,
+    "evidence": "REP MOVSD of 15h dwords at 00a4034c matches XUID+XUID+DWORD+XSESSION_INFO+BOOL",
+    "fields": [
+      {
+        "offset": "+00h",
+        "size": 8,
+        "field": "xuidInvitee",
+        "read_by": "00a3e470"
+      },
+      {
+        "offset": "+08h",
+        "size": 8,
+        "field": "xuidInviter",
+        "read_by": "00a3e4b0"
+      },
+      {
+        "offset": "+10h",
+        "size": 4,
+        "field": "dwTitleID",
+        "read_by": "004db574 against 534307FAh"
+      },
+      {
+        "offset": "+14h",
+        "size": 8,
+        "field": "hostInfo.sessionID",
+        "read_by": "004db54f against 00a43560(00f8a2fc)"
+      },
+      {
+        "offset": "+1Ch",
+        "size": 36,
+        "field": "hostInfo.hostAddress",
+        "read_by": "004db58d, XNetXnAddrToPlatform"
+      },
+      {
+        "offset": "+40h",
+        "size": 16,
+        "field": "hostInfo.keyExchangeKey",
+        "read_by": null
+      },
+      {
+        "offset": "+50h",
+        "size": 4,
+        "field": "fFromGameInvite",
+        "read_by": "004db805"
+      }
+    ]
+  },
+  "manager_accessors": [
+    {
+      "address": "00a3e3b0",
+      "behaviour": "manager+2Ch != 0 && manager+3C0h != 3E5h; no clear"
+    },
+    {
+      "address": "00a3e3e0",
+      "behaviour": "test-and-clear of manager+2Dh (unused here)"
+    },
+    {
+      "address": "00a3e400",
+      "behaviour": "test-and-clear of manager+2Eh (unused here)"
+    },
+    {
+      "address": "00a3e420",
+      "behaviour": "test-and-clear of manager+2Fh, storage removed"
+    },
+    {
+      "address": "00a3e440",
+      "behaviour": "test-and-clear of manager+31h, invite accepted"
+    },
+    {
+      "address": "00a3e460",
+      "behaviour": "lea eax,[ecx+32h], address of the XINVITE_INFO"
+    },
+    {
+      "address": "00a3e470",
+      "behaviour": "local slot index whose key at manager+110h equals info+00h, else 1"
+    },
+    {
+      "address": "00a3e4b0",
+      "behaviour": "the same search against info+08h"
+    },
+    {
+      "address": "00a3eac0",
+      "behaviour": "manager+11Ch, the active local slot index"
+    }
+  ],
+  "invite_decision_tree": [
+    {
+      "step": 1,
+      "at": "004db509",
+      "rule": "not suppressed by game+610h, signed in (004b44f0), invitee slot == active slot, game+1FE4h != 0, and info.sessionID == the current session key",
+      "outcome": "return, already in the invited session"
+    },
+    {
+      "step": 2,
+      "at": "004db561",
+      "rule": "always",
+      "outcome": "00530650 dismisses seven dialog layers"
+    },
+    {
+      "step": 3,
+      "at": "004db574",
+      "rule": "info.dwTitleID != 534307FAh",
+      "outcome": "return without a prompt"
+    },
+    {
+      "step": 4,
+      "at": "004db596",
+      "rule": "XNetXnAddrToPlatform succeeded and reported != 2",
+      "outcome": "FE.crossplatform_notsupported"
+    },
+    {
+      "step": 5,
+      "at": "004db620",
+      "rule": "00a3e4b0 != 1, the inviter is a local user",
+      "outcome": "FE_xbox.xsm_invitesameconsole"
+    },
+    {
+      "step": 6,
+      "at": "004db69d",
+      "rule": "game+5D4h == 2",
+      "outcome": "004d8000, accepted without a prompt"
+    },
+    {
+      "step": 7,
+      "at": "004db6c0",
+      "rule": "signed in and invitee slot == active slot",
+      "outcome": "FE_xbox.xsm_joinwarning|.\\n| [+ globals.willendsession|.\\n| when 004bb8a0] + globals.areyousure, callback 004db260"
+    },
+    {
+      "step": 8,
+      "at": "004db7fe",
+      "rule": "otherwise",
+      "outcome": "FE_xbox.xsm_inviteotherplayer when info+50h else FE_xbox.xsm_joinotherplayer, callback 004db240"
+    }
+  ],
+  "prompt_call": {
+    "callee": "00531b00",
+    "this": "00425d10",
+    "signature": "(kind, const String& message, style, callback, flag, const String& title, 0.0f, 0)",
+    "title": "always the empty string at 00ce3a0c",
+    "sites": [
+      {
+        "at": "004db39d",
+        "kind": 2,
+        "style": 2,
+        "callback": 0,
+        "flag": 0,
+        "message": "FE_xbox.xsm_profilechanged"
+      },
+      {
+        "at": "004db497",
+        "kind": 0,
+        "style": 2,
+        "callback": 0,
+        "flag": 0,
+        "message": "FE_xbox.xsm_storageremovedauto"
+      },
+      {
+        "at": "004db602",
+        "kind": 2,
+        "style": 2,
+        "callback": 0,
+        "flag": 0,
+        "message": "FE.crossplatform_notsupported"
+      },
+      {
+        "at": "004db686",
+        "kind": 2,
+        "style": 2,
+        "callback": 0,
+        "flag": 0,
+        "message": "FE_xbox.xsm_invitesameconsole"
+      },
+      {
+        "at": "004db7da",
+        "kind": 2,
+        "style": 1,
+        "callback": "004db260",
+        "flag": 1,
+        "message": "the composed join warning"
+      },
+      {
+        "at": "004db86f",
+        "kind": 2,
+        "style": 1,
+        "callback": "004db240",
+        "flag": 0,
+        "message": "FE_xbox.xsm_inviteotherplayer"
+      },
+      {
+        "at": "004db8de",
+        "kind": 2,
+        "style": 1,
+        "callback": "004db240",
+        "flag": 0,
+        "message": "FE_xbox.xsm_joinotherplayer"
+      }
+    ],
+    "callbacks": [
+      {
+        "address": "004db240",
+        "convention": "__fastcall(int result)",
+        "behaviour": "result == 1 tail-jumps to 004d8000(game)"
+      },
+      {
+        "address": "004db260",
+        "convention": "__fastcall(int result)",
+        "behaviour": "result == 1 and game+1FE4h == 1 calls 007728b0(game+1EF0h, 0) first, then 004d8000(game)"
+      }
+    ],
+    "note": "both callbacks sit inside the Ghidra body of 004db220, which belongs to another packet; read only"
+  },
+  "online_stats_write": {
+    "gates": [
+      "game+22DDh != 0",
+      "game+7038h != 3E5h"
+    ],
+    "overlapped": "game+7038h, XGetOverlappedResult and XGetOverlappedExtendedError",
+    "queue": {
+      "container": "00f8a2fc+2200h",
+      "head": "+2204h",
+      "count": "+2208h",
+      "shape": "12-byte MSVC list"
+    },
+    "rule": "success pops the front through 004c4cc0 and resubmits the next through 004c04c0 with 0Eh dwords of payload; failure resubmits the same front entry; an empty queue logs WriteStats kaput",
+    "drained_tail": "when game+1FE4h == 2: 004c9780(*(00e188a8+18C8h), 4) -> 00770af0, then 004c5f10"
+  },
+  "multiplayer_interface": {
+    "unconditional": [
+      {
+        "at": "004d8100",
+        "call": "00f8a2fc virtual +0Ch",
+        "arg": "(float)game+21ECh"
+      },
+      {
+        "at": "004d811b",
+        "call": "006890b0",
+        "this": "00e198b4"
+      },
+      {
+        "at": "004d8126",
+        "call": "0076a750",
+        "this": "game+1EF0h"
+      }
+    ],
+    "gate_fields": {
+      "game+1FE4h": "session mode; 0 returns after clearing 00f1b038",
+      "game+624h": "termination reason; set to 3 once reason 1 or 2 is handled",
+      "game+610h": "suppresses the whole termination arm",
+      "game+5D4h": "state; 0Ch and 0Dh take the dialog path, 0Ch/0Dh/12h run 0076c500",
+      "00f1b038": "three-valued phase latch shared with code outside this packet"
+    },
+    "log_strings": {
+      "00ce7a44": "GGame::MultiInterfaceUpdate() -> SCENE_TERM, on the mode-2/reason-0 path",
+      "00ce79c0": "GGame::MultiInterfaceUpdate() -> SCENE_AUTO_TERM, on the reason-1-or-2 path"
+    },
+    "dialogs": [
+      "FE.multi_terminated_client",
+      "ingame.multi_gameclosed_xbox",
+      "FE.multi_terminated"
+    ],
+    "state_requests": {
+      "id": "10h",
+      "sites": [
+        "004d8290",
+        "004d8514"
+      ],
+      "producer": "004d3ed0, documented in docs/GAME_FRAME_CONTROL.md"
+    }
+  },
+  "menu_request_service": {
+    "callee": "006840f0",
+    "channels": [
+      "00e198ac",
+      "00e198b4",
+      "00e198b8",
+      "00e198c4"
+    ],
+    "predicate": "obj != 0 && *(char*)(obj+3Ch) != 0 && (*(int*)(obj+04h) != *(int*)(obj+20h) || *(int*)(obj+1Ch) != *(int*)(obj+38h))",
+    "action": "(*(obj->vtbl + 10h))(*(int*)(obj+20h), *(int*)(obj+38h)) then *out = 1",
+    "note": "the out byte means work was done, not that a channel is active"
+  },
+  "drain_loop": {
+    "range": "004e5455-004e5488",
+    "why_dropped": "Ghidra cannot see that 006840f0 writes through its pointer argument, so it proves the je at 004e5453 always taken; the export opens with 'Removing unreachable block (ram,0x004e5455)' and '(ram,0x004e5460)'",
+    "body": [
+      "00776230 with ECX = game+1EF0h (edi hoisted at 004e5455)",
+      "004c40f0 with ECX = game",
+      "clear the stack byte, 006840f0 again, 00e18cdc = 0"
+    ],
+    "termination": "the loop ends when a whole pass over the four channels finds no active channel with a mismatched index pair; there is no iteration bound",
+    "latch": "00e18cdc is cleared after every poll including the first; it is written by 004f8390..004f8830, another packet",
+    "dead_tail": "the store at 004e548a and the cmp/jne at 004e54b5/004e54ba are dead: both paths reach 004e548a with the byte already clear and nothing writes it before the compare"
+  },
+  "peer_pump": {
+    "callee": "00776230",
+    "network_object": "peer+188h if set, otherwise peer+18Ch",
+    "queues": [
+      {
+        "container": "net+28h",
+        "head": "+2Ch",
+        "count": "+30h",
+        "cs": "+34h",
+        "per_node": [
+          "00774ab0",
+          "007752d0",
+          "007717a0"
+        ]
+      },
+      {
+        "container": "net+18h",
+        "head": "+1Ch",
+        "count": "+20h",
+        "cs": "+24h",
+        "per_node": [
+          "007702e0 when node[2]+D50h is set",
+          "00772ec0"
+        ]
+      }
+    ],
+    "correction": "the pseudocode returns after the first node; the listing at 007762ff-00776309 loops back to 00776286, so each queue is drained fully",
+    "throttle": "when peer+F4h is set, 01090ab0 virtual +20h gives {counter, frequency}; when counter/frequency - 00e0af18 exceeds 00d7a348, 00784c40 and 007850e0 run with 00ce3918"
+  },
+  "interface_only": {
+    "callee": "004c40f0",
+    "latch": "guide_path = (00e188ae != 0 || 00e18b34 != 0) && game+719Eh == 0; then game+719Eh = 0 and 00e18b34 = 00e188ae",
+    "guide_path": "00e198c4 sub-objects at +C8h, +9Ch, +A4h; +5 set selects 004b6e50 when +4 clear else 004f71f0(game+21F0h)",
+    "normal_path": "00425d10 +25Ch clear runs 004f8830 with game+21F0h, or game+21ECh when game+635h is set; +25Ch set branches on +4",
+    "tail": "game+624h != 0 and 00e198c4+A4h forces that sub-object active, 004f83b0, its virtual +18h, then 005b6960",
+    "external": [
+      "004b6e50",
+      "004f71f0",
+      "004f8830"
+    ]
+  },
+  "recorded_names": [
+    {
+      "address": "004c40f0",
+      "name": "BSP_Game_UpdateInterfaceOnly",
+      "action": "new"
+    },
+    {
+      "address": "00778560",
+      "name": "BSP_Multiplayer_Tick",
+      "action": "new"
+    },
+    {
+      "address": "00776230",
+      "name": "BSP_PeerManager_PumpMessageQueues",
+      "action": "new"
+    },
+    {
+      "address": "00a40110",
+      "name": "BSP_XenonSystemManager_DrainNotifications",
+      "action": "new"
+    },
+    {
+      "address": "00a3e3b0",
+      "name": "BSP_XenonSystemManager_IsProfileChangePending",
+      "action": "new"
+    },
+    {
+      "address": "00a3e420",
+      "name": "BSP_XenonSystemManager_TakeStorageRemoved",
+      "action": "new"
+    },
+    {
+      "address": "00a3e440",
+      "name": "BSP_XenonSystemManager_TakeInviteAccepted",
+      "action": "new"
+    },
+    {
+      "address": "00a3e460",
+      "name": "BSP_XenonSystemManager_GetAcceptedInviteInfo",
+      "action": "new"
+    },
+    {
+      "address": "00a3e470",
+      "name": "BSP_XenonSystemManager_FindSlotForInvitee",
+      "action": "new"
+    },
+    {
+      "address": "00a3e4b0",
+      "name": "BSP_XenonSystemManager_FindSlotForInviter",
+      "action": "new"
+    },
+    {
+      "address": "00a3eac0",
+      "name": "BSP_XenonSystemManager_GetActiveUserSlot",
+      "action": "new"
+    },
+    {
+      "address": "004db290",
+      "name": "BSP_Game_PollPlatformSessionEvents",
+      "action": "replaced, the earlier record was a string-immediate summary"
+    },
+    {
+      "address": "004caa90",
+      "name": "BSP_OnlineStats_UpdateWrite",
+      "action": "evidence appended"
+    },
+    {
+      "address": "004d80d0",
+      "name": "BSP_Game_UpdateMultiplayerInterface",
+      "action": "evidence appended"
+    },
+    {
+      "address": "006840f0",
+      "name": "BSP_MenuInterface_ServicePendingRequests",
+      "action": "evidence appended"
+    }
+  ],
+  "uncertainties": [
+    "No writer of manager+2Ch or +2Fh exists in the XenonSystemManager segment 00a371c0-00a46930; only +30h and +31h are written there, both in 00a40110",
+    "004d94f0 and 004d95f0 take a byte argument and are called with 0; their bodies were not analysed",
+    "The fifth argument of 00531b00 is 1 only on the join warning; the first argument is 0 only on the storage prompt; both meanings unresolved",
+    "004d80d0's dialog arms are documented from pseudocode control flow; the argument lists inside them were not each checked against the listing",
+    "00f1b038's values 1 and 2 are produced outside this packet",
+    "FE_xbox.xsm_invitewarning|.\\n| at 00ce7bb8 is unreachable through the compare at 004db6df",
+    "004b44f0's parameter is inferred from this call site only; Ghidra types it as taking none"
+  ],
+  "state": {
+    "004db290": "exported, analysed, reconstructed, build-tested",
+    "004caa90": "exported, analysed, reconstructed, build-tested",
+    "004d80d0": "exported, analysed",
+    "006840f0": "exported, analysed, reconstructed, build-tested",
+    "00776230": "exported, analysed",
+    "004c40f0": "exported, analysed",
+    "00778560": "exported, analysed, reconstructed, build-tested",
+    "004e5455-004e5488": "recovered from the listing, reconstructed, fixture-tested"
+  },
+  "not_game_validated": true,
+  "lease_extension": "00a40110, 00a3e3b0, 00a3e420, 00a3e440, 00a3e460, 00a3e470, 00a3e4b0 and 00a3eac0 were added to the packet lease so their names could be recorded; they are direct callees of 004db290."
+}
