@@ -9,7 +9,7 @@ std::uint32_t frame_marker_color_00737a6c(FrameMarkerColor& color) noexcept {
     return color.argb;
 }
 
-bool is_mission_game_state(int game_state) noexcept {
+bool is_front_end_game_state(int game_state) noexcept {
     return game_state == 1 || game_state == 2 || game_state == 4;
 }
 
@@ -19,7 +19,7 @@ float run_application_frame(ApplicationFrameState& state, FrameMarkerColor& colo
     host.profiler_begin_frame_slot();
 
     state.input_action_latch = false;
-    if (!is_mission_game_state(host.game_state())
+    if (!is_front_end_game_state(host.game_state())
         && host.input_action_pressed(kApplicationFrameInputAction)) {
         state.input_action_latch = true;
     }

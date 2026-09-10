@@ -23,8 +23,10 @@ struct FrameMarkerColor {
 std::uint32_t frame_marker_color_00737a6c(FrameMarkerColor& color) noexcept;
 
 // Game states 1, 2 and 4 read from *(00e188a8)+5D4h. The same three values gate
-// the close policy in 004ca2f0; their semantic names are not recovered.
-bool is_mission_game_state(int game_state) noexcept;
+// the close policy in 004ca2f0. docs/APP_INIT_GAME_ENTRY.md establishes 1 as the
+// logo sequence and 2 as the title screen, so this is the front-end set; the
+// input edge test in the frame runs only outside it (in-mission states).
+bool is_front_end_game_state(int game_state) noexcept;
 
 // Input action index pushed to 004c43c0 at 00737ae7. The action table entry is
 // not identified, so this is a raw index rather than a named control.

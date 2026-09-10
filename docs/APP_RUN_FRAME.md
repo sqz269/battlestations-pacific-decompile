@@ -24,7 +24,7 @@ the game update, exit propagation, and two loader pumps. The message pump lives 
 | 00737ab4 | Profiler singleton again, then begin counter `00be3640(slot)`; trylevel becomes 0 |
 | 00737ac0 | Clear application+19h |
 | 00737acc | Read game state `*(00e188a8)+5D4h` |
-| 00737ae7 | Non-mission states only: `004c43c0(0Eh)`; a true result sets application+19h |
+| 00737ae7 | Outside the front-end states 1, 2, 4 only (1 = logo sequence, 2 = title screen per docs/APP_INIT_GAME_ENTRY.md; an earlier reading called these the mission states): `004c43c0(0Eh)`; a true result sets application+19h |
 | 00737af6 | Frame clock `01090ab0` virtual +8h, `00bedc30`, advances the clock |
 | 00737b03 | Frame clock virtual +1Ch, `00bee070`, returns the interval timestamp at clock+40h |
 | 00737b10 | `FILD`/`FILD`/`FDIVP` on ticks and frequency, spilled to float32 |
