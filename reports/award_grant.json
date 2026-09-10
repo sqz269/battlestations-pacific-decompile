@@ -1,0 +1,510 @@
+{
+  "packet": "award_grant_path",
+  "owner": "agent/award-grant",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/AWARD_GRANT.md",
+  "addresses": [
+    "00a41030",
+    "00a40d60",
+    "0090c5d0",
+    "00a3e520",
+    "004b44f0",
+    "006b8da0",
+    "00a3e510",
+    "00a3ead0"
+  ],
+  "headline": {
+    "claim": "00a41030 and 00a40d60 are std::vector<int> push_back and insert, not grant entry points; the grant entry is 00a410a0 and the queue it appends to is drained into XUserWriteAchievements by 00a3fa70.",
+    "evidence": [
+      "00a41030 body: _Myfirst +4h, _Mylast +8h, _Myend +0Ch; stores *value at _Mylast and advances it when size < capacity, else calls 00a40d60 with a checked end iterator. __thiscall(this, const int*), RET 4.",
+      "00a40d60 returns a checked iterator {_Mycont=this, _Ptr=_Myfirst+offset} through an sret pointer and ends in RET 0x10 at 00a40de6; it calls 00a40b90 (_Insert_n) which can throw through 00a40ad0 (_Xlen).",
+      "00a410d3 ADD ECX,0x360 before CALL 0x00a41030: the vector is at manager+360h.",
+      "00a3fa70 reads +364h/+368h, builds an 8-byte-per-entry array at +3A0h, and is the only caller of XUserWriteAchievements 00a4d596 in the image.",
+      "00a40d60 has a second caller 00bb7c50, so the instantiation is shared and not award specific."
+    ]
+  },
+  "registry": {
+    "global": "00E19900",
+    "note": "00E19900 holds a pointer. 004e3d7f allocates 20h bytes, 004e3d98 runs the constructor 006b9450, 004e3daf stores the pointer.",
+    "instance_size": 32,
+    "layout": {
+      "+0h..+0Fh": "std::vector, cleared by the constructor, element type unknown",
+      "+10h": "std::map<NativeString, AwardDefinition, case-insensitive less>",
+      "+14h": "map head node",
+      "+1Ch": "map size, incremented once per parsed row at 006b9c56"
+    },
+    "source": "Scripts\\datatables\\Achievements.lua, table \"Achievements\"",
+    "comparator": {
+      "address": "00443d00",
+      "name": "BSP_NativeString_LessCaseInsensitive",
+      "note": "lookup and ordering are case-insensitive"
+    },
+    "value_offsets": {
+      "0x00": "Name (localisation key)",
+      "0x08": "ID (GUI icon index)",
+      "0x0C": "Description",
+      "0x14": "GUITexture",
+      "0x1C": "Sound",
+      "0x24": "Multi (byte)",
+      "0x28": "Unlock",
+      "0x34": "Index (list of integers)",
+      "0x3C": "Score, default 0",
+      "0x40": "XLastAchievementID, default -1"
+    },
+    "value_base_evidence": "0050fc30, the map operator[], returns node+14h; the NativeString key is 8 bytes, so pair::first is node+0Ch and the value node+14h. 006b8da0 returns node+54h = value+40h.",
+    "id_range": {
+      "min": 1,
+      "max": 99,
+      "evidence": "004e437a LEA EAX,[ESI-1]; CMP EAX,0x62; JA, and the unsigned (id-1) < 99 at 0090ef86. Rejects the -1 default of rows without the column and the 0 of the RANK row."
+    },
+    "table_provenance": "Read from the retail scripts/datatables/achievements.lua of the Steam install and resolved through the ACHIEVEMENT_* constant block in the same file. Shipped data, not recovered code.",
+    "table_summary": {
+      "rows_in_file": 75,
+      "rows_with_column": 53,
+      "rows_in_range": 52,
+      "id_min": 27,
+      "id_max": 78,
+      "duplicates": 0,
+      "GA_HM": 76
+    },
+    "name_to_id": [
+      {
+        "name": "RUA_DU",
+        "id": 27
+      },
+      {
+        "name": "RUA_CU",
+        "id": 28
+      },
+      {
+        "name": "RUA_BU",
+        "id": 29
+      },
+      {
+        "name": "RUA_MU",
+        "id": 30
+      },
+      {
+        "name": "RUA_SU",
+        "id": 31
+      },
+      {
+        "name": "RUA_FU",
+        "id": 32
+      },
+      {
+        "name": "RUA_TBU",
+        "id": 33
+      },
+      {
+        "name": "RUA_DBU",
+        "id": 34
+      },
+      {
+        "name": "RUA_LBU",
+        "id": 35
+      },
+      {
+        "name": "GA_SL",
+        "id": 36
+      },
+      {
+        "name": "GA_AE",
+        "id": 37
+      },
+      {
+        "name": "RUA_KU",
+        "id": 38
+      },
+      {
+        "name": "MA_SA",
+        "id": 39
+      },
+      {
+        "name": "MA_TP",
+        "id": 40
+      },
+      {
+        "name": "MA_PS",
+        "id": 41
+      },
+      {
+        "name": "MA_FD",
+        "id": 42
+      },
+      {
+        "name": "MA_QS",
+        "id": 43
+      },
+      {
+        "name": "MA_MT",
+        "id": 44
+      },
+      {
+        "name": "MA_YC",
+        "id": 45
+      },
+      {
+        "name": "SA_PM",
+        "id": 46
+      },
+      {
+        "name": "SA_IM",
+        "id": 47
+      },
+      {
+        "name": "SA_UH",
+        "id": 48
+      },
+      {
+        "name": "SA_TK",
+        "id": 49
+      },
+      {
+        "name": "SA_OC",
+        "id": 50
+      },
+      {
+        "name": "AO_MOH",
+        "id": 51
+      },
+      {
+        "name": "CA_USV",
+        "id": 52
+      },
+      {
+        "name": "CA_USE",
+        "id": 53
+      },
+      {
+        "name": "CA_JPV",
+        "id": 54
+      },
+      {
+        "name": "CA_JPE",
+        "id": 55
+      },
+      {
+        "name": "CA_HOS",
+        "id": 56
+      },
+      {
+        "name": "CA_WOG",
+        "id": 57
+      },
+      {
+        "name": "CA_AA",
+        "id": 58
+      },
+      {
+        "name": "CA_FA",
+        "id": 59
+      },
+      {
+        "name": "CA_CJM",
+        "id": 60
+      },
+      {
+        "name": "CA_CUM",
+        "id": 61
+      },
+      {
+        "name": "GA_SH",
+        "id": 62
+      },
+      {
+        "name": "CA_OF",
+        "id": 63
+      },
+      {
+        "name": "CA_SA",
+        "id": 64
+      },
+      {
+        "name": "CA_IC",
+        "id": 65
+      },
+      {
+        "name": "CA_VR",
+        "id": 66
+      },
+      {
+        "name": "RANK_FR",
+        "id": 67
+      },
+      {
+        "name": "RANK_SR",
+        "id": 68
+      },
+      {
+        "name": "GA_DN",
+        "id": 69
+      },
+      {
+        "name": "GA_AI",
+        "id": 70
+      },
+      {
+        "name": "GA_DB",
+        "id": 71
+      },
+      {
+        "name": "GA_PL",
+        "id": 72
+      },
+      {
+        "name": "GA_AO",
+        "id": 73
+      },
+      {
+        "name": "GA_WY",
+        "id": 74
+      },
+      {
+        "name": "GA_MP",
+        "id": 75
+      },
+      {
+        "name": "GA_HM",
+        "id": 76
+      },
+      {
+        "name": "MA_LM",
+        "id": 77
+      },
+      {
+        "name": "MA_CS",
+        "id": 78
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "006b8da0",
+      "name": "BSP_AwardRegistry_GetAchievementId",
+      "abi": "__thiscall(this, const NativeString* name), RET 4, ECX = *(00E19900)",
+      "returns": "the XLastAchievementID at node+54h, or 0 when the name is not a row",
+      "state": "reconstructed, build-tested",
+      "callers": [
+        "004e4350",
+        "0090f086"
+      ]
+    },
+    {
+      "address": "0090c5d0",
+      "name": "BSP_LegacySave_MidwayFolderPreexisted",
+      "abi": "no arguments, RET; the 004e42ec call site loads ECX from *(*(00E188A8)+21A0h) but the body never reads it",
+      "returns": "1 only when CreateDirectoryA fails with ERROR_ALREADY_EXISTS (0B7h)",
+      "behaviour": "SHGetSpecialFolderPathA(0, buf, 5 /*CSIDL_PERSONAL*/, 0), concatenates \\Battlestations-Midway\\save, CreateDirectoryA. A newly created folder returns 0, and so does a failed SHGetSpecialFolderPathA.",
+      "state": "reconstructed, build-tested",
+      "callers": [
+        "004e42f2"
+      ]
+    },
+    {
+      "address": "00a3e520",
+      "name": "BSP_XenonSystemManager_IsLiveEnabledAccount",
+      "abi": "__fastcall(this), RET, returns AL; MOV AL,[ECX+11Ah]; RET",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00a3e510",
+      "name": "BSP_XenonSystemManager_HasSelectedUser",
+      "abi": "__fastcall(this), RET, returns AL; MOV AL,[ECX+119h]; RET",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00a3ead0",
+      "name": "BSP_XenonSystemManager_GetSelectedSignInState",
+      "abi": "__fastcall(this), RET, returns EAX; MOV EAX,[ECX+11Ch]; MOV EAX,[ECX+EAX*4+8Ch]; RET, no bound check",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "004b44f0",
+      "name": "BSP_XenonSystemManager_IsSignedIntoLive",
+      "abi": "__thiscall(this), RET, EAX 0 or 1, ECX = *(00F8ABE8)",
+      "predicate": "00a3e510 && 00a3ead0 == 2",
+      "state": "reconstructed, build-tested",
+      "callers": [
+        "004db290",
+        "004e4397",
+        "005e5b30",
+        "0060de90"
+      ]
+    },
+    {
+      "address": "00a41030",
+      "name": "BSP_StlVectorInt_PushBack",
+      "abi": "__thiscall(this, const int* value), RET 4",
+      "state": "analyzed, not ported (STL instantiation)"
+    },
+    {
+      "address": "00a40d60",
+      "name": "BSP_StlVectorInt_Insert",
+      "abi": "__thiscall(this = ECX) with four stack dwords, RET 0x10: [ESP+4] sret iterator, [ESP+8] _Where._Mycont, [ESP+0Ch] _Where._Ptr, [ESP+10h] value pointer",
+      "state": "analyzed, not ported (STL instantiation)"
+    }
+  ],
+  "online_gate": {
+    "manager": "00F8ABE8",
+    "shared_with": "docs/GAME_SESSION_POLLS.md projects the same object as PlatformManagerFlags; these fields are disjoint from the six recorded there.",
+    "fields": {
+      "+8Ch": "per-slot sign-in state, one dword per slot: 0 signed out, 1 local profile, 2 signed in to LIVE",
+      "+119h": "a user slot has been selected",
+      "+11Ah": "the selected account is LIVE enabled (XUSER_INFO_FLAG_LIVE_ENABLED)",
+      "+11Ch": "the selected XUser slot index"
+    },
+    "writers": {
+      "00a40510": "state 4 sets +119h and copies +11Ch from +3B4h (00a408c3, 00a40822); state 5 stores XUserGetSigninInfo dwInfoFlags bit 0 into +11Ah (00a40925)",
+      "00a3e6a0": "clears +119h and +11Ah, resets +11Ch to 1",
+      "00a40020": "BSP_XenonSystemManager_ResetSignInState clears +11Ah"
+    },
+    "slot_state_evidence": "00a3fbb3 selects the literal \"LIVE\" when *(this+8Ch+this+11Ch*4) == 2 and \"Local\" otherwise, in the log line \"Write to UpLoad Queue Achievement %s %d: %d \".",
+    "call_site_predicate": "midway save folder pre-existed && 1 <= id <= 99 && +11Ah && (+119h && slot state == 2)",
+    "inner_gate_00a410a0": "+119h && (slot state == 1 || slot state == 2) && +11Ah, which the call-site gate already implies"
+  },
+  "upload_queue": {
+    "offsets": {
+      "queue": "0x360",
+      "array": "0x3A0",
+      "count": "0x3A4",
+      "overlapped": "0x384",
+      "last_result": "0x3A8"
+    },
+    "pump": "00a3fa70, called from 00a40110 (BSP_XenonSystemManager_DrainNotifications) and 00a409f0",
+    "api": "XUserWriteAchievements 00a4d596, XGetOverlappedResult 00a4d42e, XGetOverlappedExtendedError 00a4d422",
+    "entry": "8 bytes: {dwUserIndex = *(manager+11Ch), dwAchievementId = queue[i]}",
+    "pending_status": "3E5h (ERROR_IO_PENDING), already named kAsyncStatusPending in include/bsp/session_polls.hpp",
+    "completion": "each written id is erased from the queue with memmove_s, the count is zeroed and the array freed"
+  },
+  "call_site": {
+    "function": "004e4000 BSP_Game_EnterFrontEndShell",
+    "range": [
+      "004e42e6",
+      "004e43e2"
+    ],
+    "note": "Ghidra's stored body for 004e4000 is truncated; this range was read with disasm-raw from disk bytes.",
+    "award_name": {
+      "string": "GA_HM",
+      "address": "00CE824C",
+      "id": 76
+    },
+    "local_record": {
+      "address": "007fbe20",
+      "name": "BSP_AwardTracker_RecordAtLeast",
+      "ecx": "*(00E188A8)+650h",
+      "arguments": [
+        "GA_HM",
+        1
+      ],
+      "owner": "docs/GAME_AWARD_TRACKERS.md",
+      "note": "inside the same branch, so this build never records the award locally without queueing it online"
+    }
+  },
+  "second_call_site": {
+    "address": "0090ede0",
+    "leased": false,
+    "note": "The general in-mission grant. Same three steps (006b8da0, unsigned (id-1) < 99, 00a410a0, then BSP_AwardTracker_RecordAtLeast) with different guards: no folder probe, no explicit sign-in test, and two prefix rejections through 00553c80 against \"RANK\" at 00CEF15C (only when the name is longer than five characters) and \"Counter\" at 00D18794. RANK_FR (67) and RANK_SR (68) exist in the table but this path never uploads them.",
+    "name_block": "00D18794 onwards is a dense .rdata block of award identifiers used by the in-mission callers"
+  },
+  "corrections": [
+    {
+      "doc": "docs/GAME_FRONTEND_ENTRY.md",
+      "was": "0090c5d0 with ECX = *(00E188A8)+21A0h",
+      "is": "ECX = *(*(00E188A8)+21A0h), a double dereference at 004e42e6..004e42ec, and the body never reads ECX"
+    },
+    {
+      "doc": "docs/GAME_FRONTEND_ENTRY.md",
+      "was": "00a41030 / 00a40d60 listed as award grant entry points in the packet proposal",
+      "is": "they are std::vector<int>::push_back and ::insert; the grant entry is 00a410a0"
+    },
+    {
+      "doc": "docs/GAME_FRONTEND_ENTRY.md",
+      "was": "0090c5d0, 00a3e520, 004b44f0 and 006b8da0 identified by call shape and string only",
+      "is": "all four are now read in full and named"
+    }
+  ],
+  "reconstruction": {
+    "header": "include/bsp/award_grant.hpp",
+    "source": "src/award_grant.cpp",
+    "reused": [
+      "bsp::kAwardIdMin and bsp::kAwardIdMax from include/bsp/frontend_entry.hpp",
+      "bsp::kFirstMainMenuAwardKey from include/bsp/frontend_entry.hpp"
+    ],
+    "not_ported": [
+      "00a41030 and 00a40d60, both STL instantiations"
+    ],
+    "test": "one case in tests/math_tests.cpp covering the short-circuit order of grant_award_if_earned and the rejection of the RANK row",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: passed",
+    "tests": "ctest reconstructed_math: 1/1 passed"
+  },
+  "uncertainties": [
+    "The vector at registry +0h..+0Fh is cleared by the constructor and never read on this path; its element type is unknown.",
+    "The Params (+30h) and Index (+34h) container offsets are inferred from the 00442190 and 004857f0 call shapes only.",
+    "0090c5d0's ECX is loaded but unread; whether it is a member of the object at game+21A0h or a free function reached with a stale register was not settled.",
+    "00a3e6a0 resets +11Ch to 1 rather than 0; session_polls.hpp already records kNoLocalSlot = 1 for the same manager, which is probably the same convention.",
+    "Four sign-in slots is an inference from the console's pad count; +8Ch is indexed without a bound check and no bound appears in the code.",
+    "The id table was read from one retail install; the patch level was not checked."
+  ],
+  "follow_up_packets": [
+    {
+      "id": "achievement_upload_pump",
+      "addresses": [
+        "00a3fa70",
+        "00a409f0",
+        "00a40110"
+      ],
+      "files": [
+        "docs/AWARD_UPLOAD.md",
+        "include/bsp/award_upload.hpp"
+      ],
+      "contract": "The XUSER_ACHIEVEMENT array at manager+3A0h, the XOVERLAPPED at +384h, the ERROR_IO_PENDING state machine across +3A4h/+3A8h, the erase-on-completion loop, and who pumps it each frame with what force flag."
+    },
+    {
+      "id": "award_registry_construction",
+      "addresses": [
+        "006b9450",
+        "0050fc30",
+        "006b8ce0",
+        "006b8d50"
+      ],
+      "files": [
+        "docs/AWARD_REGISTRY.md",
+        "include/bsp/award_registry.hpp"
+      ],
+      "contract": "The whole Achievements.lua row schema including Params and Index, the vector at registry +0h, and the Lua table-walk helpers 00b65f50/00b660a0/00b66420 shared with every other data table loader."
+    },
+    {
+      "id": "in_mission_award_grant",
+      "addresses": [
+        "0090ede0",
+        "00553c80",
+        "005070c0",
+        "00648ab0"
+      ],
+      "files": [
+        "docs/AWARD_IN_MISSION.md"
+      ],
+      "contract": "The per-name counter 005070c0 returns, the RANK and Counter prefix rejections, and how a mission event reaches this routine."
+    },
+    {
+      "id": "xenon_signin_state_machine",
+      "addresses": [
+        "00a40510",
+        "00a40020",
+        "00a3e6a0",
+        "00a3ed10"
+      ],
+      "files": [
+        "docs/XENON_SIGNIN.md"
+      ],
+      "contract": "The eight states at manager+3B0h, the XShowSigninUI and XShowMessageBoxUI prompts, and which state sets +119h, +11Ah and +11Ch."
+    }
+  ],
+  "ghidra": {
+    "mode": "read-only",
+    "functions_missing": [],
+    "note": "Every address named in this packet already has a Ghidra function; none needed defining. Names are in the ledger only and are not applied to the project."
+  }
+}
