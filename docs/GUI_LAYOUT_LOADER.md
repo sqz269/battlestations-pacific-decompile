@@ -369,3 +369,8 @@ base-widget descriptors; the rest belong to classes this packet did not read.
 Nothing here is ABI-compatible or game-validated. "Installed-file-checked" means
 the recovered rules were run over the shipped `interface/*.lua` and produced a
 consistent tree, not that the game was observed doing so.
+
+## Corrections from docs/GUI_TEXT_WIDGET.md and docs/GUI_ICON_WIDGET.md
+
+- `00ac2090` / `00ac2de0` are not the Text class: they are the describe/read pair of a Curve class whose only property is an integer-keyed `Points` array. The Text class (id 3) allocates at `00ab79e0` (tagged `cg_static_dtor_stub` in the inventory, wrongly: it allocates), constructs at `00ab9650` with vtable `00d5c6c8`; virtual +18h is the reader `00abb630` and +1Ch the describer `00ab7b60`. It is the object the font packets call the text context. The describer's `ShadowPos` compare at `00ab8028` is dead, so a `Front` widget always describes as `Behind`.
+- `00acce20` is the Model widget's property reader (type id 9: `ModelName`, `ModelTextureOverride`, `ScaleVector`, `RotationEuler`), not part of the Icon class.
