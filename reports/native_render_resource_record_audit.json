@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_resource_record_storage",
+  "generated_at_utc": "2026-09-10T21:16:42.552219+00:00",
+  "base_commit": "dcbc670",
+  "implementation_status": "complete_typed_storage_destructor_strict_win32_build_and_one_native_differential_lifetime_case_passed",
+  "address": "00b2f990",
+  "end_exclusive": "00b2fa08",
+  "descriptive_name": "BSP_RenderResourceRecord_DestroyStorage",
+  "name_status": "Descriptive hypothesis, not a recovered symbol; Ghidra mutation belongs to the integrator.",
+  "original_abi": "ECX actual 2Ch record; no EDX input or stack parameters; RET0; no semantic return value.",
+  "typed_interface": "void destroy_native_render_resource_record_00b2f990(NativeRenderResourceRecord&, SizedStoragePool& actual_string_pool)",
+  "source_files": [
+    "include/bsp/native_render_resource_record.hpp",
+    "src/native_render_resource_record.cpp"
+  ],
+  "layout": {
+    "record_bytes": 44,
+    "alias_node_bytes": 16,
+    "record": {
+      "00": "name length",
+      "04": "pooled name buffer",
+      "08": "unknown preserved word",
+      "0c": "actual alias-list sentinel pointer",
+      "10": "alias count",
+      "14..24": "five preserved payload DWORDs",
+      "28": "opaque actual resource pointer, untouched"
+    },
+    "node": {
+      "00": "next",
+      "04": "previous",
+      "08": "string length",
+      "0c": "pooled string buffer"
+    },
+    "compile_checks": "sizeof and every documented field offset are statically asserted under MSVC Win32."
+  },
+  "ownership_contract": [
+    "Use actual retained record and node allocations. No std::vector/std::string replacement and no resource/COM/sink dispatch.",
+    "Receive the same concrete string-pool domain that allocated these buffers; node and sentinel releases use the existing singleton_lifetime_free ordinary allocator domain.",
+    "Capture first node, reset actual sentinel next/previous to itself, and set count zero before releasing nodes.",
+    "Capture each node data and next before callbacks; return its nonnull string by current length+1, ordinary-free node, then compare captured next with the current record sentinel.",
+    "Reload current sentinel, ordinary-free, then clear only record+0C. Capture name pointer afterward.",
+    "Disarm name unwind before normal name release; return captured name pointer by current length+1 and retain all raw name fields after callbacks.",
+    "Do not free the 2Ch record itself; preserve unknown+08, payload+14..+24 and resource+28."
+  ],
+  "reused_source_contracts": [
+    {
+      "file": "src/particle_clock_lifetime.cpp",
+      "lines": [
+        29,
+        55
+      ],
+      "use": "Existing concrete 004D05E0 alias list/name destruction semantics; no particle-specific sink ownership is reused."
+    },
+    {
+      "file": "src/singleton_lifetime.cpp",
+      "lines": [
+        65,
+        67
+      ],
+      "use": "Actual ordinary free boundary forwards to std::free."
+    },
+    {
+      "file": "src/storage_pool.cpp",
+      "symbol": "SizedStoragePool::release_00bd1510",
+      "use": "Real sized-pool return operation; larger blocks reach its actual SystemAllocator."
+    },
+    {
+      "file": "src/native_string.cpp",
+      "lines": [
+        84,
+        92
+      ],
+      "use": "release_to clears raw fields, so it cannot substitute for this destructor."
+    }
+  ],
+  "eh_boundary": {
+    "function_info": "00df6100",
+    "unwind_map": "00df60f8",
+    "state_0_action": "00cbd840 loads saved original record, then jumps to 0041dd20 raw pooled name destruction; next state is -1.",
+    "active_region": "004D05E0 list clear and sentinel free, before the state -1 store at 00B2F9D8.",
+    "typed_representation": "RecordNameUnwind holds the real record and pool; disarm after sentinel free/clear and name capture, before normal name-buffer return.",
+    "no_artificial_test_api": "Pool release and singleton_lifetime_free remain the existing nonthrowing contracts; no throwing allocator seam added.",
+    "native_exception_injection": false,
+    "binary_exception_abi_compatible": false
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live read uses bsp.py ghidra which verifies project/program before the query.",
+    "function_name_before_integration": "FUN_00b2f990",
+    "stored_extent_before_integration": [
+      "00b2f990",
+      "00b2f9c9"
+    ],
+    "complete_extent": [
+      "00b2f990",
+      "00b2fa08"
+    ],
+    "repair_needed": "False _free no-return at 00B2F9C4 omits [00B2F9C9,00B2FA08); integrator owns extent repair, annotation, ledger updates and export refresh.",
+    "mutated_by_worker": false
+  },
+  "installed_image": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "size_bytes": 12223752,
+    "scope": "Whole file hashed. Only listed spans and standard seeds compared with Ghidra."
+  },
+  "proof_spans": [
+    {
+      "address": "00b2f990",
+      "end_exclusive": "00b2fa08",
+      "length": 120,
+      "label": "complete resource record storage destructor",
+      "file_offset": "0072f990",
+      "sha256": "1001bf8ce6b71d52fb1ebbf7a0ecb839385119012b325611478775258b59ba4c",
+      "hex": "6aff6848d8cb0064a10000000050648925000000005156578bf9897c24088d77088bcec744241400000000e8200c9aff8b460450e8e36b0c00c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8d0a28eff8bc8e8191b0a008b4c240c5f5e64890d0000000083c410c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004d05e0",
+      "end_exclusive": "004d0633",
+      "length": 83,
+      "label": "complete existing alias-list clear including post-free tail",
+      "file_offset": "000d05e0",
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+      "hex": "56578bf98b47048b3089008b47048940043b7704c74708000000007433538bff8b4e0c85c98b1e74168b46086a0183c0015051e8a896f4ff8bc8e8f10e700056e8875f720083c4043b5f048bf375d15b5f5ec3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "label": "native pooled string destruction used by unwind",
+      "file_offset": "0001dd20",
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00cbd840",
+      "end_exclusive": "00cbd852",
+      "length": 18,
+      "label": "record destructor unwind action and EH stub",
+      "file_offset": "008bd840",
+      "sha256": "19ed602fecf65645d392b12f6016efa4ac62f8bfda63a6d38612e7b1227cc0b9",
+      "hex": "8b4df0e9d80476ffb80061df00e9f192f3ff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df60f8",
+      "end_exclusive": "00df6100",
+      "length": 8,
+      "label": "record destructor unwind map",
+      "file_offset": "009f60f8",
+      "sha256": "09751ab6394378d12022706c2255ee6b0f34edb05b69d86643cb2df2e7d7e71e",
+      "hex": "ffffffff40d8cb00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df6100",
+      "end_exclusive": "00df6124",
+      "length": 36,
+      "label": "record destructor FuncInfo",
+      "file_offset": "009f6100",
+      "sha256": "0d64b3c1218625731406e8107c6eef65e099b6dbec9e1f962bde2d26ef6a6ab6",
+      "hex": "2205931901000000f860df00000000000000000000000000000000000000000001000000",
+      "current_ghidra_equals_installed_pe": true
+    }
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "./local/build_resource_record_worker.ps1 -> ./scripts/build.ps1",
+      "result": "PASS",
+      "platform": "MSVC Win32 Release",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "source_actually_compiled": "local/resource_record_worker_build.txt:219",
+      "ctest": "1/1 reconstructed_math PASS, log lines 324 and 326",
+      "registration": "Ignored local/resource_record_worker.cmake passed through CMAKE_PROJECT_TOP_LEVEL_INCLUDES; no worker edits to shared CMake files."
+    },
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py --output local/resource_record_seed_verification verify-seeds",
+      "result": "PASS",
+      "matched_spans": 8
+    },
+    "target_byte_comparison": {
+      "result": "PASS",
+      "matched_spans": 6
+    },
+    "native_differential_lifetime_case": {
+      "result": "PASS",
+      "case_count": 1,
+      "command": "./local/build_native_resource_record_check.ps1",
+      "fixture": "local/native_resource_record_check.cpp",
+      "normal_native_spans": [
+        "00b2f990..00b2fa08",
+        "004d05e0..004d0633"
+      ],
+      "original_control_flow": "Complete installed function bytes copied to executable fixture memory; original internal branches and stack/ECX conventions retained.",
+      "call_relocations": [
+        {
+          "site": "00b2f9bb",
+          "target": "copied complete 004d05e0 list clear"
+        },
+        {
+          "site": "00b2f9c4",
+          "target": "observed actual ordinary std::free"
+        },
+        {
+          "site": "00b2f9eb",
+          "target": "actual shared test string-pool getter, preserves native stack args"
+        },
+        {
+          "site": "00b2f9f2",
+          "target": "actual SizedStoragePool::release_00bd1510, native three-stack-word bridge"
+        },
+        {
+          "site": "004d0613",
+          "target": "same actual shared pool getter"
+        },
+        {
+          "site": "004d061a",
+          "target": "same real sized pool return"
+        },
+        {
+          "site": "004d0620",
+          "target": "same observed ordinary std::free"
+        }
+      ],
+      "host_free_observer": "Fixture link supplies singleton_lifetime_free as the production std::free operation plus allocation/order observation; source implementation is unchanged.",
+      "pool": "Actual SizedStoragePool(string_pool_config_00419cc0(), ObservedSystem); real malloc/free larger-block allocations, no substitute alias container.",
+      "callback_mutations": [
+        "First alias string release observes sentinel self links and count zero, then overwrites first.next after capture and changes second.next before capture.",
+        "Second alias release replaces the record sentinel with the actual replacement allocation.",
+        "Actual sentinel free observes the still-current sentinel field, then replaces current name length/data.",
+        "Final name release observes null sentinel and replacement name, then changes name fields again; destructor retains those changes."
+      ],
+      "exact_event_sequence": [
+        "pool:first_alias",
+        "free:first_node",
+        "pool:second_alias",
+        "free:second_node",
+        "free:current_sentinel",
+        "pool:current_name"
+      ],
+      "checks": [
+        "native/typed event equality",
+        "captured next used after callback mutation",
+        "current sentinel comparison and free",
+        "name loaded after sentinel free callback",
+        "final name callback writes retained",
+        "count zero",
+        "unknown and five payload DWORDs unchanged",
+        "actual opaque resource allocation and pointer untouched",
+        "current-owned allocations each released once"
+      ],
+      "excluded": [
+        "native EH execution",
+        "full resource lifetime",
+        "renderer notification",
+        "record assignment",
+        "game execution"
+      ]
+    },
+    "game_validated": false,
+    "native_binary_drop_in": false,
+    "multithreaded_allocator_validated": false,
+    "shared_metadata_modified": false
+  },
+  "worker_artifacts": [
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "sha256": "305165937c7d932c714ebaf48041ba22e73a4c0f1d1169ddd772994e088579ec",
+      "size_bytes": 1699
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "sha256": "7bd881e10368e1801c079a0f130023c9d24a6d2abef31d85125e77e7acf0c13e",
+      "size_bytes": 3141
+    },
+    {
+      "path": "local/resource_record_worker.cmake",
+      "sha256": "b870d74fc880961eaa5f53f1a44fa0690988ee77c2160dcd1940a880c2b5c579",
+      "size_bytes": 129
+    },
+    {
+      "path": "local/build_resource_record_worker.ps1",
+      "sha256": "12bf4aabd0dc9fc8e75a63f7d0945fb400363c6dcef67f2c6e764c4b2944f569",
+      "size_bytes": 1046
+    },
+    {
+      "path": "local/resource_record_worker_build.txt",
+      "sha256": "37b52738af314bf00ed822817abb8706a9de3d56bd264fa46a41d7c40307fe29",
+      "size_bytes": 10008
+    },
+    {
+      "path": "local/native_resource_record_check.cpp",
+      "sha256": "a6950bc6fa69c0dac6c0a49a50e8aae871a227fc20f8d1e89a06b6f21e0a11d5",
+      "size_bytes": 12258
+    },
+    {
+      "path": "local/build_native_resource_record_check.ps1",
+      "sha256": "00ece898cf6c277b5ec70b5240df2aba7aa0eff12db1ef42f0624d3df63d7388",
+      "size_bytes": 1390
+    },
+    {
+      "path": "local/native_resource_record_check.txt",
+      "sha256": "eba8f3e9c5ecc22a8c08fbc628445a83549197b905a81da91218ca18be5071e7",
+      "size_bytes": 325
+    }
+  ]
+}
