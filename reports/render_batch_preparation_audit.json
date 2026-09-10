@@ -1,0 +1,445 @@
+{
+  "packet": "batch_preparation",
+  "evidence_date_utc": "2026-09-10",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "verification": "Each live bsp.py ghidra batch verifies project/program/language/image base. All16 complete function ranges match installed PE. Worker performed no Ghidra or ledger mutations.",
+  "ranges": [
+    {
+      "address": "00b51df0",
+      "length": 284,
+      "matches_installed_pe": true,
+      "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2",
+      "bytes_hex": "83ec1056578b7c241c8bf18d44241c508d4c240f515789742418c644241700e8dcf396ff8bc8e815adfcff807c240b000f84de00000085ff0f85b8000000397e100f8e9d00000053558da424000000008b560c8b34ba8b46048b482066837934008b597c8b83b0000000998954241c7e0c8b491085c974058b4920eb0233c983e03fba00100000f7e281e1ff0f00006a0033ed03c8680001000013ea5551e85d5f0a000fb68bc000000033db6a2003c15313d35250e8465f0a008bd8d946148beae8a0550a0033d203d813ea895e20896e248b74241483c7013b7e100f8c6effffff5d5b8b460c8b56108d14908bc868001bb500eb118b4e108b560c8d148a8b4e0c68b01ab5008bc22bc1c1f80250e8dcbdfcff5f5e83c410c20400"
+    },
+    {
+      "address": "00b1cb30",
+      "length": 31,
+      "matches_installed_pe": true,
+      "sha256": "5f7382acdc77434bbf706c53e44671981d88a9ade9e5859171a8db390dc011bd",
+      "bytes_hex": "8b4424048a54c104568b74240c88168b44c1088b4c24108901b0015ec20c00"
+    },
+    {
+      "address": "00bf7456",
+      "length": 117,
+      "matches_installed_pe": true,
+      "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+      "bytes_hex": "558bec83ec2083e4f0d9c0d9542418df7c2410df6c24108b5424188b44241085c0743cdee985d2791ed91c248b0c2481f10000008081c1ffffff7f83d0008b54241483d200eb2cd91c248b0c2481c1ffffff7f83d8008b54241483da00eb148b542414f7c2ffffff7f75b8d95c2418d95c2418c9c3"
+    },
+    {
+      "address": "00bf7df0",
+      "length": 52,
+      "matches_installed_pe": true,
+      "sha256": "3d0898d998acc8af3ea17032ff56fd1b963c685b072f669c52d4b8267f9d0a78",
+      "bytes_hex": "8b4424088b4c24100bc88b4c240c75098b442404f7e1c2100053f7e18bd88b442408f764241403d88b442408f7e103d35bc21000"
+    },
+    {
+      "address": "00b51b00",
+      "length": 27,
+      "matches_installed_pe": true,
+      "sha256": "084fb8170aabc99ecc8a6c435dc47dd3d942c76632cbd3781c5ac9902195c5c8",
+      "bytes_hex": "8b41243b4224771072088b49203b4a207306b801000000c333c0c3"
+    },
+    {
+      "address": "00b51ab0",
+      "length": 69,
+      "matches_installed_pe": true,
+      "sha256": "de7b6fe4974c5fad7b7b22baeb6c6e8b8268ddcfc81ea32d09c4082b945db353",
+      "bytes_hex": "8b41048b4020568b707c8b42048b40208b407c8b80b00000008bb6b00000003bf07517d94214d94114dff1ddd87607b8010000005ec333c05ec333c93bf00f9cc18ac15ec3"
+    },
+    {
+      "address": "00b1dce0",
+      "length": 235,
+      "matches_installed_pe": true,
+      "sha256": "df3b6a3ed0dd92fca4028745fe2cae1ea65c42c54a2d2c0d615b8db6d8b4a1c6",
+      "bytes_hex": "83ec08535556578bfa8bd98bc72bc3c1f80283f8207e7c8b74241ceb038d490085f60f8e880000008b44242050578bd38d4c2418e867f5ffff8b6c24148bc6992bc2d1f88bf0992bc28b542410d1f803f08bcf8bc22bcd2bc383e1fc83e0fc3bc17d118b4c242051568bcbe890ffffff8bddeb138b54242052568bd78bcde87dffffff8b7c24108bc72bc3c1f80283f8207f8d83f8017e0e8b442420508bd78bcbe89af6ffff5f5e5d5b83c408c2080083f8207ede8bc72bc383e0fc83f8047e128b4c24206a006a00518bd78bcbe86df2ffff8b542420528bd78bcbe8dff8ffff5f5e5d5b83c408c20800"
+    },
+    {
+      "address": "00b1d420",
+      "length": 150,
+      "matches_installed_pe": true,
+      "sha256": "929943dae9485fc9fc14a4c1b641bfef1c9f52784ffef4df2e0c98c4ed3ccd88",
+      "bytes_hex": "83ec08578bf93bfa89542408897c2404747d568d77043bf2747453558d6e04908b178b0e8b5c241cffd384c074183bfe744e3bf5744a6a006a00558bd68bcfe8acedffffeb3a8b55f88b0e8d7df8ffd384c074288b57fc8b0e8bdf83ef04ff54241c84c075ee3bde74123bf5740e6a006a00558bd68bcbe874edffff8b7c241083c60483c5043b74241475945d5b5e5f83c408c20400"
+    },
+    {
+      "address": "00b1c210",
+      "length": 145,
+      "matches_installed_pe": true,
+      "sha256": "80d27cb2032a3e6c5297579b5f7414164d18e4f1dd31ae41c7a2e9ce5ec6cf1f",
+      "bytes_hex": "5155568b7424102bd1c1fa022bf18beac1fe0285ed578bc68bfd740f8d64240099f7ff8bc785d28bfa75f53bc67d5b85c07e57538d1c818b138d34ab3b7424188bfb8954241075028bf13bf3742b8bff8b1689178b5424182bd6c1fa023bea8bfe7d0b8d14ad0000000003f2eb078bf52bf28d34b13bf375d78b54241083e80183eb0485c089177fae5b5f5e5d59c20c00"
+    },
+    {
+      "address": "00b1d280",
+      "length": 382,
+      "matches_installed_pe": true,
+      "sha256": "8c7a88234e3741e6403ff0b096e5cbfeadf075b30dfdf59c3eda92d914ad3cb0",
+      "bytes_hex": "83ec0c538b5c24185556894c24148b4c241c578bfa8bc12bc7c1f802992bc2d1f883c1fc538d3487518bd68bcf897c2418e8cafcffff3bfe8d6e0473208d49008b168b4efcffd384c075128b56fc8b0effd384c0750783c6fc3bfe72e38b7c24203bef731d8b168b4d00ffd384c075128b55008b0effd384c0750783c5043bef72e38bfd8bde3b7c242073328d6424008b178b0eff54242484c075198b168b0fff54242484c075168b178bc58b08891083c504890f83c7043b7c242072d23b5c241076358b168b4bfcff54242484c0751b8b53fc8b0eff54242484c075178b4bfc8b46fc83ee04890e8943fc83c3fc395c241072cf3b5c241075363b7c2420746a3bef740a8b55008b0689168945008bce8b118bc7895424148b1089118b4c241483c50483c60483c7048908e955ffffff83eb043b7c2420752183ee043bde74088b168b03891389068b4dfc8b0683ed04890e894500e92bffffff8b078b138917890383c704e91bffffff8b4424185f89305e8968045d5b83c40cc20800"
+    },
+    {
+      "address": "00b1cf80",
+      "length": 156,
+      "matches_installed_pe": true,
+      "sha256": "2b7aaf334a7cd3f53960b24c26acebf49eeefc448a866046fb8bd26ded1e5a7e",
+      "bytes_hex": "83ec08558b6c24108bc52bc1c1f80283f828578bfa7e7083c0019983e20703c2538b5c241cc1f8038d14c50000000056895424108d34850000000003d18d040e53528bd08944241ce8f3f8ffff538d043e8bcf502bce8bd7e8e3f8ffff8b4c241c53512b4c24182bee8bd5e8d0f8ffff8b4c241453558bd7e8c3f8ffff5e5b5f5d83c408c208008b54241852558bd7e8acf8ffff5f5d83c408c20800"
+    },
+    {
+      "address": "00b1c8c0",
+      "length": 77,
+      "matches_installed_pe": true,
+      "sha256": "8ad21098707297da5d3b3bfbf951c5bd722300c34ec6b7cd254053d58808ed49",
+      "bytes_hex": "53558b6c241056578bf28bf98b178b0effd584c074088b0f8b06890e89078b5c24148b168b0bffd584c074088b168b03891389068b178b0effd584c074088b0f8b06890e89075f5e5d5bc20800"
+    },
+    {
+      "address": "00b1c910",
+      "length": 110,
+      "matches_installed_pe": true,
+      "sha256": "56b101e7dda83824a1f77bcf59304accc4336203684faa107bf240e59d857224",
+      "bytes_hex": "5153558b6c24108bda568d741b023bf5578bf9895c24107d298da424000000008b54b7fc8b0cb7ff54242084c0740383ee018b04b789049f8bde8d7436023bf57cde750a8b4caffc890c9f8d5dff8b5424208b44241c8b4c24105250518bd38bcfe83af8ffff5f5e5d5b59c20c00"
+    },
+    {
+      "address": "00b1c1b0",
+      "length": 92,
+      "matches_installed_pe": true,
+      "sha256": "dc13bace7a1f15cf9acda1a0631c923ee370ca28b0e8e707fcd998f81aadf734",
+      "bytes_hex": "5356578bfa8d47ff992bc28bf0d1fe397c24108bd97d38558b6c24188d6424008b0cb38bd5ff54241c84c074188b04b38904bb8d46ff992bc28bfed1f8397c24148bf07cdb892cbb5d5f5e5bc20c008b4c2414890cbb5f5e5bc20c00"
+    },
+    {
+      "address": "00b1d020",
+      "length": 62,
+      "matches_installed_pe": true,
+      "sha256": "fd04bf3b6fff2bbb0b9693905ea2da8336646fd1fb9e5f733fcd84013d5fa570",
+      "bytes_hex": "5356578bf92bd7c1fa028bda8bc3992bc28bf0d1fe85f67e1f558b6c24148bff8b44b7fc83ee015550538bd68bcfe8bdf8ffff85f67fe95d5f5e5bc20c00"
+    },
+    {
+      "address": "00b1d6a0",
+      "length": 70,
+      "matches_installed_pe": true,
+      "sha256": "52b76cc9e88809aa9b565e4a344f5795aea2f712315d7e770f0ff028d9a2bd65",
+      "bytes_hex": "56578bf98bf22bf78bc6c1f80283f8017e2f538b5c24108b4437fc8b0f538d56fcc1fa0250894c37fc5233d28bcfe83df2ffff83ee048bc6c1f80283f8017fd75b5f5ec20400"
+    }
+  ],
+  "reconstruction": {
+    "source": "src/instance_sort.cpp",
+    "header": "include/bsp/instance_sort.hpp",
+    "configuration": {
+      "enable": "uint8 queue+4+index*8",
+      "value": "uint32 queue+8+index*8",
+      "selector": "original batch index; copied DWORD ignored by00b51df0"
+    },
+    "material_key_fields": {
+      "effect_b0": "int32 effect+B0, low6 for key",
+      "material_count34": "signed16 material+34",
+      "texture0_present": "nonnull material+10, read only for count>0",
+      "texture20": "uint32 texture+20, low12",
+      "effect_c0": "uint8 effect+C0"
+    },
+    "key_formula": "prefix=((uint32(effectB0)&0x3f)*0x1000+(texture20_or_zero&0xfff))*0x100+uint8(effectC0); key=(uint64(prefix)<<37)+uint64(helper_EAX)",
+    "depth_domain": "Every binary32 numerical result with x87 exceptions masked: finite signed64 truncation low32, NaN/infinity/overflow EAX0. Exactly -2^63 has valid low32 zero. No flags/traps/general extended ST0 emulation.",
+    "other_mode": "Every nonzero original index uses existing finite-domain signed-material/depth comparator and leaves keys unchanged.",
+    "failure_semantics": "Config/count guards are host checks; disabled skips entries; adapter failure retains prior key stores; sort follows all successful stores.",
+    "sort_reuse": "Existing insertion/partition/heapsort carries selected predicate through every comparison; existing public category1 API unchanged."
+  },
+  "tests": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "msvc_target": "Win32 Release",
+      "passed": true,
+      "ctest_passed": 1
+    },
+    "existing_category1": {
+      "compiled_unchanged_corpus": true,
+      "native_cases": 90,
+      "forced_heaps": 30,
+      "exact_pointer_positions": 5652,
+      "finite_guard_passed": true,
+      "result": "Native instance sort differential: cases=90 forced_heap=30 pointer_positions=5652 exact_permutation=1 finite_guard=1",
+      "inputs": [
+        {
+          "filename": "native_instance_sort_probe.cpp",
+          "original_path": "J:\\PROG\\battlestations-pacific-decompile-bsp_instance_upload\\local\\native_instance_sort_probe.cpp",
+          "sha256": "666f553a7e09c57813eb56fd5acfb1e347bede4565c28f67bcd3632059734f8b",
+          "copied_without_changes": true
+        },
+        {
+          "filename": "instance_sort_reference.hpp",
+          "original_path": "J:\\PROG\\battlestations-pacific-decompile-bsp_instance_upload\\local\\instance_sort_reference.hpp",
+          "sha256": "a54bcb5cd4184dc238d8b1da088542c3d3e3a193f98d4c217848d6328a34581c",
+          "copied_without_changes": true
+        }
+      ]
+    },
+    "batch_native": {
+      "native_entrypoint": "00b51df0",
+      "depth_input_bit_patterns": 4141,
+      "x87_control_words": 12,
+      "precision_modes": [
+        "24-bit",
+        "53-bit",
+        "64-bit"
+      ],
+      "rounding_modes": [
+        "nearest",
+        "down",
+        "up",
+        "toward-zero"
+      ],
+      "depth_eax_comparisons": 49692,
+      "full_batch_runs": 24,
+      "original_indices": [
+        0,
+        1,
+        2
+      ],
+      "counts": [
+        0,
+        1,
+        32,
+        33,
+        41,
+        42,
+        65,
+        257
+      ],
+      "exact_pointer_positions": 1413,
+      "per_record_key_checks": 1413,
+      "forced_key_heaps": 5,
+      "disabled_malformed_entry_guard": true,
+      "copied_dword_does_not_select_mode": true,
+      "callback_slot_order": true,
+      "partial_failure_retains_prior_key": true,
+      "nonpositive_count_ignores_invalid_texture_pointer": true,
+      "native_execution_adjustments": [
+        {
+          "operand_address": "00b51e10",
+          "kind": "relative CALL destination",
+          "purpose": "adapt singleton004c11f0 to synthetic queue pointer"
+        },
+        {
+          "operand_address": "00b51ee0",
+          "kind": "absolute PUSH immediate",
+          "purpose": "relocate comparator00b51b00"
+        },
+        {
+          "operand_address": "00b51ef3",
+          "kind": "absolute PUSH immediate",
+          "purpose": "relocate comparator00b51ab0"
+        }
+      ],
+      "other_instruction_changes": false,
+      "result": "Native batch differential: depth_checks=49692 control_words=12 input_bits=4141 batch_runs=24 pointer_positions=1413 key_checks=1413 key_forced_heaps=5 disabled_guard=1 config_copy=1 callback_order=1 partial_failure=1"
+    }
+  },
+  "annotation_preimages": [
+    {
+      "address": "00b51df0",
+      "annotation": {
+        "address": "00b51df0",
+        "function_name": "BSP_RenderBatch_PrepareSort",
+        "comment": "[BSP reconstruction 00b51df0]\nVtable00d5e5ac+Ch. Query queue sortconfig00b1cb30; only sort when enabled. Batchindex0 derives64-bit key atentry+20h from material-related values then comparator00b51b00; other index comparator00b51ab0. Exact key/ordering semantics andsorthelper00b1dce0 unported; no opaque/transparent naming assumed."
+      }
+    },
+    {
+      "address": "00b1cb30",
+      "annotation": {
+        "address": "00b1cb30",
+        "function_name": "FUN_00b1cb30"
+      }
+    },
+    {
+      "address": "00bf7456",
+      "annotation": {
+        "address": "00bf7456",
+        "function_name": "LIBCRT_unmatched_00bf7456",
+        "comment": "[BSP inventory 00bf7456] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00b51b00",
+      "annotation": {
+        "address": "00b51b00",
+        "function_name": "BSP_RenderEntry_LessUnsignedKey64",
+        "comment": "[BSP reconstruction 00b51b00]\nJA/JC at00b51b06/08 compare unsigned high DWORD; JNC at00b51b10 compares unsigned low DWORD; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
+      }
+    },
+    {
+      "address": "00b51ab0",
+      "annotation": {
+        "address": "00b51ab0",
+        "function_name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+        "comment": "[BSP reconstruction 00b51ab0]\nSETL at00b51aee; FCOMIP at00b51ad9 and JBE at00b51add; only AL defined on material mismatch; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
+      }
+    },
+    {
+      "address": "00b1dce0",
+      "annotation": {
+        "address": "00b1dce0",
+        "function_name": "BSP_RenderEntries_SortIntrospective",
+        "comment": "[BSP reconstruction 00b1dce0]\nInsertion at count<=32; otherwise median equal-band partition, ideal=floor(ideal/2)+floor(ideal/4), smaller-side recursion/right-on-tie, heap fallback at ideal<=0. Native category1 caller initializes ideal=count. Typed full finite-domain pointer sort;90 native differential runs match5652 pointer positions including ties/heap fallback. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      }
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00b51df0",
+      "old_name": "BSP_RenderBatch_PrepareSort",
+      "old_comment": "[BSP reconstruction 00b51df0]\nVtable00d5e5ac+Ch. Query queue sortconfig00b1cb30; only sort when enabled. Batchindex0 derives64-bit key atentry+20h from material-related values then comparator00b51b00; other index comparator00b51ab0. Exact key/ordering semantics andsorthelper00b1dce0 unported; no opaque/transparent naming assumed.",
+      "old_comments": [
+        "[BSP reconstruction 00b51df0]\nVtable00d5e5ac+Ch. Query queue sortconfig00b1cb30; only sort when enabled. Batchindex0 derives64-bit key atentry+20h from material-related values then comparator00b51b00; other index comparator00b51ab0. Exact key/ordering semantics andsorthelper00b1dce0 unported; no opaque/transparent naming assumed."
+      ],
+      "proposed_name": "BSP_RenderBatch_PrepareSort",
+      "original_abi": "ECX batch; stack original batch index; RET4; virtual+0C.",
+      "proposed_comment": "Read enable byte via00b1cb30 using original index. Disabled skips entries. Enabled index0: signed16 material+34>0 and nonnull slot0 gate texture+20 read; prefix=(((effect+B0)&3f)*1000h+(texture20&fff))*100h+byte(effect+C0); key=(uint64(prefix)<<37)+zeroextended EAX from00bf7456 on entry+14 binary32. Other indices use signed-material/depth comparator00b51ab0; copied config DWORD does not select comparator. Generate keys in current slot order then00b1dce0 ideal=count. Typed borrowed projection requires stable bindings. Native synthetic batch/permutation and masked-x87 numerical checks pass. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim.",
+      "applied": false,
+      "preserve_prior_comment": true
+    },
+    {
+      "address": "00b1cb30",
+      "old_name": "FUN_00b1cb30",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_RenderCommandQueue_GetBatchSortConfiguration",
+      "original_abi": "ECX queue; stack index, byte-output, DWORD-output; RET0Ch; AL=1.",
+      "proposed_comment": "Copy byte queue+4+index*8 first, then DWORD queue+8+index*8, return AL=1; EAX upper24 bits retain copied DWORD. Native has no bounds checks.00b51df0 saves original index in EDI and overwrites stack index with DWORD output; mode selection uses EDI and enable byte only. Typed checked projection reconstructs configuration fields and access order. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim.",
+      "applied": false,
+      "preserve_prior_comment": true
+    },
+    {
+      "address": "00bf7456",
+      "old_name": "LIBCRT_unmatched_00bf7456",
+      "old_comment": "[BSP inventory 00bf7456] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)",
+      "old_comments": [
+        "[BSP inventory 00bf7456] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      ],
+      "proposed_name": "LIBCRT_unmatched_00bf7456",
+      "original_abi": "Input ST0; pop one x87 value; EDX:EAX signed64 result; RET.",
+      "proposed_comment": "CRT conversion helper: duplicate ST0, FISTP qword under current rounding mode, reload integer, subtract, correct ADC/SBB toward zero; zero and integer-indefinite shortcut. For binary32 input with masked x87 exceptions EAX is low32 of signed64 truncation; NaN/infinity/signed64 overflow EAX0. 00b51df0 discards EDX and zeroextends EAX.49,692 native comparisons across 4,141 binary32 patterns and12 control words pass. Typed port reconstructs numeric EAX only, not flags, unmasked traps or arbitrary extended ST0. Existing CRT inventory name retained pending actual symbol proof. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim.",
+      "applied": false,
+      "preserve_prior_comment": true
+    },
+    {
+      "address": "00b1dce0",
+      "old_name": "BSP_RenderEntries_SortIntrospective",
+      "old_comment": "[BSP reconstruction 00b1dce0]\nInsertion at count<=32; otherwise median equal-band partition, ideal=floor(ideal/2)+floor(ideal/4), smaller-side recursion/right-on-tie, heap fallback at ideal<=0. Native category1 caller initializes ideal=count. Typed full finite-domain pointer sort;90 native differential runs match5652 pointer positions including ties/heap fallback. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.",
+      "old_comments": [
+        "[BSP reconstruction 00b1dce0]\nInsertion at count<=32; otherwise median equal-band partition, ideal=floor(ideal/2)+floor(ideal/4), smaller-side recursion/right-on-tie, heap fallback at ideal<=0. Native category1 caller initializes ideal=count. Typed full finite-domain pointer sort;90 native differential runs match5652 pointer positions including ties/heap fallback. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Descriptive names are hypotheses; no original ABI/game validation claim. Original ABI: ECX first,EDX last; stack ideal,comparator; RET8. Evidence: docs/INSTANCE_CATEGORY_SORT.md; reports/instance_category_sort_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      ],
+      "proposed_name": "BSP_RenderEntries_SortIntrospective",
+      "original_abi": "ECX first, EDX one-past-last; stack ideal, comparator; RET8.",
+      "proposed_comment": "Comparator carried through every recovered insertion/median/equal-band/heap operation. Both00b51df0 comparator branches supply ideal=count. Existing category1 API retained:90 native cases/30 forced heaps/5652 pointer positions match unchanged corpus. Added index0 unsigned-key batch checks plus5 forced key heaps match native. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim.",
+      "applied": false,
+      "preserve_prior_comment": true
+    },
+    {
+      "address": "00b51b00",
+      "old_name": "BSP_RenderEntry_LessUnsignedKey64",
+      "old_comment": "[BSP reconstruction 00b51b00]\nJA/JC at00b51b06/08 compare unsigned high DWORD; JNC at00b51b10 compares unsigned low DWORD; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported.",
+      "old_comments": [
+        "[BSP reconstruction 00b51b00]\nJA/JC at00b51b06/08 compare unsigned high DWORD; JNC at00b51b10 compares unsigned low DWORD; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
+      ],
+      "proposed_name": "BSP_RenderEntry_LessUnsignedKey64",
+      "original_abi": "ECX left entry, EDX right entry; RET; AL predicate.",
+      "proposed_comment": "Unsigned high DWORD then low DWORD comparison. Now consumed by the full recovered index0 batch key/preparation path and chosen-comparator sort; native synthetic batch and forced-key-heap pointer permutations match. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim.",
+      "applied": false,
+      "preserve_prior_comment": true
+    },
+    {
+      "address": "00b51ab0",
+      "old_name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+      "old_comment": "[BSP reconstruction 00b51ab0]\nSETL at00b51aee; FCOMIP at00b51ad9 and JBE at00b51add; only AL defined on material mismatch; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported.",
+      "old_comments": [
+        "[BSP reconstruction 00b51ab0]\nSETL at00b51aee; FCOMIP at00b51ad9 and JBE at00b51add; only AL defined on material mismatch; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported."
+      ],
+      "proposed_name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+      "original_abi": "ECX left entry, EDX right entry; RET; AL predicate.",
+      "proposed_comment": "Signed effect+B0 ascending, then entry+14 float descending. Now consumed by the recovered nonzero-index batch path and category1 sort. Public sort domain retains finite-depth guard; keys remain unchanged. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim.",
+      "applied": false,
+      "preserve_prior_comment": true
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/native_batch_probe.cpp",
+      "size": 12251,
+      "sha256": "77683239286c60f57d1b776cebb935b1f6249d27d41816cb121cfcd9b05238fc"
+    },
+    {
+      "path": "local/native_batch_reference.hpp",
+      "size": 11397,
+      "sha256": "c18f9fdebe8ae73e3c890d9f75c8b74999b61780ddde94462a6307648de6d2a5"
+    },
+    {
+      "path": "local/native_batch_probe.exe",
+      "size": 156672,
+      "sha256": "18dc7bef76eeb541694b474d562ac087e1306e6a30e157cc8e875b9f7ff6766c"
+    },
+    {
+      "path": "local/native_batch_probe_result.txt",
+      "size": 218,
+      "sha256": "d24edfec9ed514dd5ee3e84717403a2a6d1aa40c70df7c2818a0c04af9f127ee"
+    },
+    {
+      "path": "local/compile_batch_probe.cmd",
+      "size": 279,
+      "sha256": "782663d33edce7a49ba67d55a02a588ab7ba5aa0f183f1a4ec0c1dddb40dd5ee"
+    },
+    {
+      "path": "local/batch_probe_compile.txt",
+      "size": 61,
+      "sha256": "f526457d5e3882bb564c3ed70b306e3466e68cc2efd2cc55a409a46538838b17"
+    },
+    {
+      "path": "local/native_instance_sort_probe.cpp",
+      "size": 5280,
+      "sha256": "666f553a7e09c57813eb56fd5acfb1e347bede4565c28f67bcd3632059734f8b"
+    },
+    {
+      "path": "local/instance_sort_reference.hpp",
+      "size": 8541,
+      "sha256": "a54bcb5cd4184dc238d8b1da088542c3d3e3a193f98d4c217848d6328a34581c"
+    },
+    {
+      "path": "local/native_instance_sort_probe.exe",
+      "size": 159232,
+      "sha256": "8f36927268dff164a2ecb2ee107be78591b9563447ae38829e58fc1b38e51050"
+    },
+    {
+      "path": "local/native_instance_sort_result.txt",
+      "size": 118,
+      "sha256": "9068554434058c1f896624cd75d31ac1b44ecb9e0b8e31763adaa5db5ab17a88"
+    },
+    {
+      "path": "local/compile_instance_sort.cmd",
+      "size": 295,
+      "sha256": "685c5b62015010d6de807450240da02cacdcb46ff76087ee871017b4b28e6cae"
+    },
+    {
+      "path": "local/batch_build_result.txt",
+      "size": 5956,
+      "sha256": "ec09e0ac383f28f7627c8cb50dd2b233e9299be184c48ac4daa25bac4f56d9d6"
+    }
+  ],
+  "status": {
+    "exported": true,
+    "reconstructed": true,
+    "standalone_msvc_win32_compiled": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "native_synthetic_differential_tested": true,
+    "abi_compatible": false,
+    "full_frame_execution": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Borrowed actual material/effect/texture projection requires stable retained owner bindings supplied by integrator.",
+    "No semantic claim for assigning effect+B0/C0 or texture+20 beyond observed key use.",
+    "No singleton lifetime, full-frame orchestration, material-pass execution or drawing in packet.",
+    "No x87 exception flags or unmasked traps; numeric EAX for binary32 input only.",
+    "No callback-induced/concurrent queue or material mutation; original has direct reads.",
+    "No Ghidra/ledger mutation; preimages and unapplied proposals supplied for primary integration."
+  ]
+}
