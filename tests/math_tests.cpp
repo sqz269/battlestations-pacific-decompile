@@ -4,6 +4,7 @@
 #include "bsp/game_entry.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
+#include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/native_string.hpp"
@@ -607,6 +608,19 @@ int main() {
             = bsp::select_shadow_depth_format_00a8fe30(caps, true, true);
         check(gated.format == bsp::ShadowDepthFormat::none && gated.d3d_format == 0,
             "below ps_2_0 the probe records no format even when both are supported");
+    }
+
+    {
+        // 00be2fa0 indexes the job array with the value InterlockedDecrement
+        // returned, so BSP_Game_Render's two enqueues drain in reverse: the
+        // camera update runs before the world view. A FIFO reading of the pool
+        // would silently reverse the frame's job order.
+        const std::vector<bsp::GameRenderJob> enqueued{
+            bsp::GameRenderJob::kWorldView004bbd00, bsp::GameRenderJob::kCameraUpdate004b4820};
+        const std::vector<bsp::GameRenderJob> drained = bsp::frame_job_drain_order(enqueued);
+        check(drained.size() == 2 && drained[0] == bsp::GameRenderJob::kCameraUpdate004b4820
+                && drained[1] == bsp::GameRenderJob::kWorldView004bbd00,
+            "the frame job pool drains last in first out");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
