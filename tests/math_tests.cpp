@@ -15,6 +15,7 @@
 #include "bsp/renderer_startup.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
+#include "bsp/main_menu_screen.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_entities.hpp"
@@ -800,6 +801,27 @@ int main() {
         bsp::set_front_end_screen_set_004f8710(stack, table, bindings, nullptr, 0);
         check(!briefing.wanted && overlay.wanted && stack.dirty,
             "an empty screen set clears its own level and leaves the other levels standing");
+    }
+
+    {
+        // 00599DB0 picks the mission group from the page on the five list pages
+        // and from the two campaign bytes on the mission-detail page. The two
+        // selectors must agree on the four groups they share, which is the claim
+        // that corrects the campaign-page naming of docs/MAIN_MENU_SCREENS.md.
+        using bsp::MainMenuPage;
+        using bsp::MissionGroup;
+        check(bsp::mission_group_for_page(static_cast<MainMenuPage>(0x04)) == MissionGroup::Ijn
+                && bsp::mission_group_for_page(static_cast<MainMenuPage>(0x05)) == MissionGroup::Usn
+                && bsp::mission_group_for_page(static_cast<MainMenuPage>(0x08)) == MissionGroup::Training
+                && bsp::mission_group_for_page(static_cast<MainMenuPage>(0x06)) == MissionGroup::IjnDlc
+                && bsp::mission_group_for_page(static_cast<MainMenuPage>(0x07)) == MissionGroup::UsnDlc,
+            "the five mission-list pages map to the groups 0059A4B4 selects");
+        check(bsp::mission_group_for_detail(false, false) == MissionGroup::Ijn
+                && bsp::mission_group_for_detail(true, false) == MissionGroup::Usn
+                && bsp::mission_group_for_detail(false, true) == MissionGroup::IjnDlc
+                && bsp::mission_group_for_detail(true, true) == MissionGroup::UsnDlc
+                && bsp::mission_group_binding(MissionGroup::Training).handle_offset == 0x320,
+            "the detail page reaches the same four groups and never training");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
