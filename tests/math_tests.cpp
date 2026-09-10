@@ -7,6 +7,7 @@
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/renderer_startup.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/session_polls.hpp"
@@ -581,6 +582,31 @@ int main() {
             "an already orthogonal up axis survives the Gram-Schmidt step");
         check(ocean.frame.scale == 1.0f && ocean.frame.visible_layer_count == 0,
             "the ocean tick rewrites the scale and clears the visible layer count");
+    }
+
+    {
+        // 00a8fe30: the capability gate comes first, then 'DF16', and only a
+        // refused 'DF16' asks for D3DFMT_D16. A device that accepts both must
+        // still end up on 'DF16' with the plain-depth flag clear.
+        bsp::RendererCapabilityRecord caps;
+        caps.pixel_shader_version = 0x0200;
+        const bsp::ShadowDepthProbeResult both
+            = bsp::select_shadow_depth_format_00a8fe30(caps, true, true);
+        check(both.format == bsp::ShadowDepthFormat::df16
+                && both.d3d_format == bsp::kFourCcDf16 && !both.plain_depth_fallback,
+            "DF16 wins over D3DFMT_D16 when the device accepts both");
+
+        const bsp::ShadowDepthProbeResult fallback
+            = bsp::select_shadow_depth_format_00a8fe30(caps, false, true);
+        check(fallback.format == bsp::ShadowDepthFormat::d16
+                && fallback.d3d_format == bsp::kD3dFmtD16 && fallback.plain_depth_fallback,
+            "a refused DF16 falls back to D3DFMT_D16 and sets the plain-depth flag");
+
+        caps.pixel_shader_version = 0x01FF;
+        const bsp::ShadowDepthProbeResult gated
+            = bsp::select_shadow_depth_format_00a8fe30(caps, true, true);
+        check(gated.format == bsp::ShadowDepthFormat::none && gated.d3d_format == 0,
+            "below ps_2_0 the probe records no format even when both are supported");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

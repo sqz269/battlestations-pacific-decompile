@@ -1,0 +1,216 @@
+{
+  "packet": "app_init_renderer_device",
+  "parent": "0073d410",
+  "parent_name": "BSP_Application_Initialize",
+  "scope": "Phase 4 renderer construction at 0073da88, phase 7 renderer subsystems at 0073dcc4-0073dd2f and the phase 9 renderer resource objects at 0073dedf-0073df57. Device creation itself happens in phase 6 inside 00becee0 and is already reconstructed in D3D9_STARTUP.md; it is joined here, not re-derived.",
+  "doc": "docs/APP_INIT_RENDERER.md",
+  "sources": ["include/bsp/renderer_startup.hpp", "src/renderer_startup.cpp"],
+  "naming_disclaimer": "Every descriptive name is a hypothesis, not a recovered symbol. Field roles are inferred from call sites and readers, not from a recovered class layout.",
+  "ghidra_writes": "none; read-only packet, ledger names recorded for the integrator to apply",
+
+  "packet_table_correction": "The packet brief places 00b14a10, 00b3c4c0 and 00ad9f90 in phase 7. APP_INITIALIZE_MAP.md places them in phase 9, steps 50 and 51, at 0073df01, 0073df2c and 0073df57. Phase 7 ends at 0073dd2f.",
+
+  "call_order": [
+    {"phase": 4, "site": "0073d9d3", "callee": "00737c40", "gate": "DAT_00e1ae77 != 0 && DAT_0109cee8 == 0"},
+    {"phase": 4, "site": "0073da25", "allocation_bytes": 28, "callee": "00be0a30", "gate": "allocation non-null", "subject": "Skel_Init"},
+    {"phase": 4, "site": "0073da88", "allocation_bytes": 7572, "allocation_hex": "0x1d94", "callee": "00b32410", "gate": "allocation non-null", "publishes": "00f8d394", "creates_device": false},
+    {"phase": 6, "site": "0073dc25", "callee": "00becee0", "via": "platform 0109cf04 virtual +4h", "note": "creates the HWND then calls renderer virtual +4h 00b2aeb0, the reconstructed device-creation prefix"},
+    {"phase": 7, "site": "0073dcbf", "allocation_bytes": 4195312, "allocation_hex": "0x4003f0", "callee": "00a3d060", "gate": "DAT_00f8abdc == 0 then allocation non-null", "owner": "not this packet"},
+    {"phase": 7, "site": "0073dd04", "allocation_bytes": 44, "allocation_hex": "0x2c", "callee": "00a8fe30", "gate": "allocation non-null", "publishes": "00f8bbf0", "arguments": "extent, extent"},
+    {"phase": 7, "site": "0073dd12", "callee": "0073bf80", "this": "application object from frame slot [ESP+0x2c], loaded at 0073dcbd..0073dd09"},
+    {"phase": 7, "site": "0073dd2f", "callee": "00b21960", "via": "renderer virtual +0xf0, table word 00d5f198", "argument": "float at 00f889e4"},
+    {"phase": 9, "site": "0073df01", "allocation_bytes": 1708, "allocation_hex": "0x6ac", "callee": "00b14a10", "gate": "allocation non-null", "publishes": "00f8d39c"},
+    {"phase": 9, "site": "0073df2c", "allocation_bytes": 4, "callee": "00b3c4c0", "gate": "allocation non-null", "publishes": "0108fed8"},
+    {"phase": 9, "site": "0073df57", "allocation_bytes": 20, "allocation_hex": "0x14", "callee": "00ad9f90", "gate": "allocation non-null", "publishes": "00f8c218"},
+    {"phase": 9, "site": "0073df82", "allocation_bytes": 48, "callee": "00af1450", "gate": "allocation non-null", "owner": "not this packet"},
+    {"phase": 9, "site": "0073df99", "callee": "00ad9cb0", "via": "DAT_00f8c218 virtual +0xc", "note": "bare RET; a no-op on the object created at 0073df57"}
+  ],
+
+  "abi": [
+    {"address": "00b32410", "name": "BSP_D3D9Renderer_Construct", "convention": "thiscall", "ret": 0, "returns": "this", "object_bytes": 7572, "seh_handler": "00cbdef5"},
+    {"address": "00a8fe30", "name": "BSP_ShadowDepthTarget_Construct", "convention": "thiscall", "stack_args": 2, "ret": 8, "returns": "this", "object_bytes": 44},
+    {"address": "0073bf80", "name": "BSP_ShaderCache_PreloadFromScript", "convention": "thiscall", "ret": 0, "returns": "void", "this": "application"},
+    {"address": "00b14a10", "name": "BSP_RenderResources_LoadDefaultTextures", "convention": "thiscall", "ret": 0, "returns": "this", "object_bytes": 1708, "note": "pseudocode truncated; read from the listing 00b14a10-00b14f5b, two RET sites 00b14f44 and 00b14f5b"},
+    {"address": "00b3c4c0", "convention": "thiscall", "ret": 0, "returns": "this", "object_bytes": 4},
+    {"address": "00ad9f90", "convention": "thiscall", "ret": 0, "returns": "this", "object_bytes": 20},
+    {"address": "00b1ff50", "convention": "thiscall", "ret": 0, "body": "lea eax,[ecx+0x1b18]; ret", "role": "renderer virtual +0x104, capability record accessor", "ghidra_function": false},
+    {"address": "00b21ec0", "convention": "thiscall", "stack_args": 4, "ret": 16, "role": "renderer virtual +0xf8, IDirect3D9::CheckDeviceFormat wrapper", "ghidra_function": false},
+    {"address": "00b24dc0", "convention": "thiscall", "stack_args": 1, "ret": 4, "body": "mov eax,[ecx+0x197c]; ret 4", "role": "renderer virtual +0x128", "ghidra_function": false},
+    {"address": "00b20090", "convention": "thiscall", "ret": 0, "body": "mov eax,[ecx+0x198c]; ret", "role": "renderer virtual +0x12c", "ghidra_function": false},
+    {"address": "00b20a80", "convention": "fastcall-like", "stack_args": 2, "ret": 8, "role": "engine resource flags to D3DPOOL through EDX and D3DUSAGE through ECX", "ghidra_function": true},
+    {"address": "00b318b0", "convention": "thiscall", "stack_args": 1, "ret": 4, "role": "renderer virtual +0x48, effect loader"},
+    {"address": "00b319b0", "name": "BSP_Renderer_LoadTextureByName", "convention": "thiscall", "stack_args": 2, "ret": 8, "role": "renderer virtual +0x64"}
+  ],
+
+  "renderer_construction_00b32410": {
+    "vtables": {"primary": "00d5f0a8 at 00b3243b", "secondary": "00d5f0a4 at 00b32441 on this+0xc",
+      "subobjects": {"0x1a60": "00d5f060", "0x1a74": "00d5f088", "0x1a98": "00d5f074 (effect registry, MATERIAL_DISPATCH.md)"}},
+    "steps": [
+      {"site": "00b32434", "callee": "00b283f0", "effect": "base ctor; through 00b25f40 stores the primary pointer in 00f8d394"},
+      {"site": "00b3246c", "callee": "00b29430", "ecx": "this+0x34", "effect": "binding/state cache; cached gamma this+0x196c set to +0.0f"},
+      {"site": "00b32479", "callee": "Direct3DCreate9(0x20)", "store": "this+0x1990", "also": "this+0x1994 = 0"},
+      {"site": "00b32503", "callee": "InitializeCriticalSection", "argument": "this+0x19f4"},
+      {"site": "00b32709", "callee": "00b0cce0", "ecx": "this+0x1b78"},
+      {"site": "00b32764", "callee": "00b5e270", "ecx": "this+0x1d2c"},
+      {"site": "00b327b7", "effect": "0108d4b8 = 0, 0108d4b9 = 0"},
+      {"site": "00b327fb", "allocation_bytes": 1228, "callee": "00b1bb90", "pointer": "discarded"},
+      {"site": "00b32824", "allocation_bytes": 44, "callee": "00b585a0 BSP_ShaderStateDefinitions_Initialize", "pointer": "discarded"},
+      {"site": "00b3284d", "allocation_bytes": 16, "callee": "00b5bf70 BSP_SystemConstants_ConstructRegistry", "pointer": "discarded"},
+      {"site": "00b3285c", "callee": "00b27d80", "ecx": "this"},
+      {"site": "00b32874", "callee": "IDirect3D9::GetAdapterIdentifier", "via": "IDirect3D9 vtable +0x14", "arguments": "adapter 0, flags 0, buffer at ESP+0x14"},
+      {"site": "00b32883", "callee": "strstr", "arguments": "identifier + 0x200 (Description), \"NVIDIA\"", "store": "this+0x1d88",
+       "correction": "the decompiler splits the stack buffer at 0x1f0 and appears to read Description at offset 496; the listing pairs lea ecx,[esp+0x214] with lea edx,[esp+0x14], so the offset is exactly 0x200"},
+      {"site": "00b3289b", "callee": "00b2c8e0", "ecx": "this", "effect": "GetDeviceCaps(0, D3DDEVTYPE_HAL) at 00b2c91a fills the record at this+0x1b18"},
+      {"site": "00b328bc", "allocation_bytes": 36, "callee": "00b33da0 BSP_RenderWorker_Construct", "store": "this+0x1970", "else": 0},
+      {"site": "00b328d3", "callee": "00bd1860 BSP_CriticalSection_Create", "store": "this+0x199c"}
+    ]
+  },
+
+  "capability_record": {
+    "accessor": "renderer virtual +0x104 -> 00b1ff50, lea eax,[ecx+0x1b18]",
+    "filled_by": "00b2c8e0 from IDirect3D9::GetDeviceCaps(0, D3DDEVTYPE_HAL, &caps) at 00b2c91a",
+    "d3dcaps9_baseline_after_call": "ESP+0x1f4, anchored by the Caps2 read at ESP+0x200 (GAMMA_CAPABILITIES.md)",
+    "fields": [
+      {"record": "0x00", "renderer": "0x1b18", "written": "00b2c95a", "source": "D3DCAPS9.MaxTextureWidth (+0x58)"},
+      {"record": "0x04", "renderer": "0x1b1c", "written": "00b2c948", "source": "D3DCAPS9.MaxTextureHeight (+0x5c)"},
+      {"record": "0x08", "renderer": "0x1b20", "written": "00b2c98b", "source": "D3DCAPS9+0x60", "confidence": "provisional"},
+      {"record": "0x28", "renderer": "0x1b40", "written": "00b2c985", "source": "LOWORD(D3DCAPS9.PixelShaderVersion) (+0xcc)"},
+      {"record": "0x2c", "renderer": "0x1b44", "written": "00b2c977", "source": "LOWORD(D3DCAPS9.VertexShaderVersion) (+0xc4)"},
+      {"record": "0x30", "renderer": "0x1b48", "written": "00b2caa0", "source": "(pixel_shader_version < 0x200) ? 1 : 2"},
+      {"record": "0x3b", "renderer": "0x1b53", "written": "00b2c96a", "source": "D3DCAPS2 bit 17, D3DCAPS2_FULLSCREENGAMMA"},
+      {"record": "0x3c", "renderer": "0x1b54", "written": "00b2c936", "source": "D3DCAPS2 bit 20, D3DCAPS2_CANCALIBRATEGAMMA"},
+      {"record": "0x5c", "renderer": "0x1b74", "written": "00b2cb3c", "source": "set when LOWORD(VertexShaderVersion) < 0x101; 0x1b44 then forced to 0x101 at 00b2cb4b"}
+    ]
+  },
+
+  "shadow_depth_probe_00a8fe30": {
+    "extent": {"site": "0073dccb-0073dce3", "expression": "DAT_00f8899d ? 0x1000 : 0x800", "settings_field": "+0x1d", "token": "HiResShadow", "literal": "00d15f04", "store_site": "008d8487 family", "note": "the same value is passed as both stack arguments"},
+    "gate": {"site": "00a8fe96", "test": "capability record +0x28 >= 0x200", "meaning": "pixel shader model 2.0 or better"},
+    "queries": [
+      {"site": "00a8fead", "format": "0x36314644 'DF16'", "on_success": {"+0x24": "0x17", "+0x28": "0x36314644", "+0x0e": 0}},
+      {"site": "00a8fef5", "format": "0x50 D3DFMT_D16", "only_if": "the DF16 query failed", "on_success": {"+0x24": "0x17", "+0x28": "0x50", "+0x0e": 1}}
+    ],
+    "on_total_failure": {"+0x24": 0, "+0x28": 0, "+0x0e": 0, "note": "+0x24 and +0x28 cleared at 00a8fe7c/00a8fe7f, +0x0e cleared by base 00a8a980"},
+    "wrapper": {
+      "address": "00b21ec0", "via": "renderer virtual +0xf8",
+      "translator": "00b20a80 writes a D3DPOOL from flags & 0xf through EDX and a D3DUSAGE mask through ECX; the wrapper forwards the usage and ignores the pool",
+      "call": "IDirect3D9::CheckDeviceFormat(0, D3DDEVTYPE_HAL, AdapterFormat=0x16 D3DFMT_X8R8G8B8, Usage=D3DUSAGE_DEPTHSTENCIL, RType=3 D3DRTYPE_TEXTURE, CheckFormat=<query>) through IDirect3D9 vtable +0x28 at 00b21efb",
+      "result": "HRESULT >= 0 as a byte",
+      "usage_source": "engine flags 0x100 map to D3DUSAGE_DEPTHSTENCIL at 00b20af8"
+    },
+    "unresolved": "0x17 at +0x24 is written for both accepted formats, so it is an engine texture kind, not a D3DFORMAT"
+  },
+
+  "shader_preload_0073bf80": {
+    "this": "the application object; 0073dd09 loads it from the initializer frame slot [ESP+0x2c] filled at 0073d437",
+    "script": "shaderfx/shaderpreload.lua",
+    "table_key": "FileNames",
+    "log_lines": ["--- SHADER LOADING BEGIN ---", "--- SHADER LOADING END  ---"],
+    "per_entry": "renderer virtual +0x48 (00b318b0, RET 4), the effect loader that rewrites .mshd to .shfx and resolves through the registry at renderer+0x1a98 (MATERIAL_DISPATCH.md)",
+    "destination": "application vector at +0x8 data, +0xc size, +0x10 capacity, grown by doubling through 00735ec0 with a floor of 1"
+  },
+
+  "render_resources_00b14a10": {
+    "base": {"callee": "00b0f020", "vtable": "00d5e158", "publishes": "00f8d39c", "registers_with": "00415350 singleton 01090aa0 then 00bd0c30"},
+    "derived_vtable": "00d5e480 at 00b14a36",
+    "steps": [
+      {"site": "00b14bef", "callee": "00b0cd80", "ecx": "this+0x2ac"},
+      {"site": "00b14d89", "allocation_bytes": 64, "callee": "00b1fbb0", "store": "this+0x1d4"},
+      {"site": "00b14dac", "callee": "renderer virtual +0x128 (00b24dc0, returns renderer+0x197c)", "then": "00b1fab0(this+0x1d4, 0, value)"},
+      {"site": "00b14dc9", "callee": "renderer virtual +0x12c (00b20090, returns renderer+0x198c)", "then": "00b1fb00(this+0x1d4, value)"},
+      {"site": "00b14e20", "callee": "renderer virtual +0x64", "argument": "noise.dds (00d5e474, resize 9), flag 0", "store": "this+0x668"},
+      {"site": "00b14e95", "callee": "renderer virtual +0x64", "argument": "black.tga (00d5e468, resize 9), flag 0", "store": "this+0x67c"},
+      {"site": "00b14edd", "allocation_bytes": 204, "callee": "00b52550", "store": "this+0x34"},
+      {"site": "00b14ef3", "effect": "4-byte string \"XXXX\" (00d5e460) into this+0x684"},
+      {"site": "00b14f29", "allocation_bytes": 36, "callee": "00b3c800", "store": "this+0xc", "else": 0}
+    ],
+    "gates": "none; both textures are loaded unconditionally"
+  },
+
+  "small_singletons": {
+    "00b3c4c0": {"object_bytes": 4, "base": "00b61c70 -> 00b61b10", "base_vtable": "00d62b50", "derived_vtable": "00d61844",
+      "publishes": "0108fed8 at 00b61b66",
+      "slots": {"+0x4": "00b3c4f0 bare RET", "+0x8": "00b3c500 bare RET", "+0xc": "00b3c510 bare RET"},
+      "identity": "not established; 0108fed8 has no reader outside this constructor family"},
+    "00ad9f90": {"object_bytes": 20, "base": "00ad9d00", "base_vtable": "00d5d284", "derived_vtable": "00d5d2a0",
+      "publishes": "00f8c218 at 00ad9d56",
+      "slots": {"+0x8": "00ad9fd0, assigns the literal 00d5d2b8 \"Terrain.mshd\" into a caller-supplied string", "+0xc": "00ad9cb0 bare RET"},
+      "identity": "terrain render object provider, provisional",
+      "new_join": "00f8c218 is the global the map's step 53 calls through at 0073df99; slot +0xc is a bare RET, so step 53 is a no-op on the object step 51 just created"}
+  },
+
+  "globals": [
+    {"address": "00f8d394", "role": "primary renderer", "written_at": "00b25f9b via 00b283f0", "read_here": ["00a8fe82", "00a8fe9f", "0073dd1d", "00b14d98", "00b14e0a", "00b14e7f"]},
+    {"address": "00f8bbf0", "role": "shadow depth target", "written_at": "00a8a876", "read_by": ["008d5ff5 BSP_Settings_ApplyAll", "007380bb BSP_Application_Shutdown"]},
+    {"address": "00f8d39c", "role": "render resources", "written_at": "00b0f076", "read_by": ["007380a9 BSP_Application_Shutdown", "render diagnostics"]},
+    {"address": "0108fed8", "role": "00b3c4c0 singleton slot", "written_at": "00b61b66", "read_by": []},
+    {"address": "00f8c218", "role": "terrain render object", "written_at": "00ad9d56", "read_by": ["0073df87"]},
+    {"address": "0108d4b8", "role": "cleared by the renderer constructor", "written_at": "00b327b7"},
+    {"address": "0108d4b9", "role": "cleared by the renderer constructor", "written_at": "00b327bd"},
+    {"address": "00f8899d", "role": "HiResShadow, selects the shadow extent", "read_here": ["0073dccb"]},
+    {"address": "00f889e4", "role": "gamma argument of renderer virtual +0xf0", "written_at": "no located writer", "read_by": ["0073dd17", "004de8ad"]},
+    {"address": "00f8abdc", "role": "XLive array gate", "read_here": ["0073dcb2"]}
+  ],
+
+  "settings_gates": [
+    {"platform_argument": "fullscreen", "global": "00f8899e", "settings_offset": "+0x1e", "token": "Fullscreen"},
+    {"platform_argument": "fourth argument", "global": "00f889e0", "settings_offset": "+0x60", "token": "VSync"},
+    {"platform_argument": "width", "global": "00f88994", "settings_offset": "+0x14", "token": "Resolution"},
+    {"platform_argument": "height", "global": "00f88998", "settings_offset": "+0x18", "token": "Resolution"},
+    {"platform_argument": "multisample", "global": "00f889d8", "settings_offset": "+0x58", "token": "Antialias"}
+  ],
+
+  "corrections": [
+    {"target": "docs/APP_INIT_PLATFORM.md", "claim": "argument 4 is a colour-depth selector",
+     "correction": "00f889e0 is settings +0x60, written from the VSync token (literal 00d15ef4 verified, byte reader 008d9a80, store mov byte ptr [esi+0x60],al at 008d8487). It is the vsync setting.",
+     "edited": false},
+    {"target": "docs/D3D9_STARTUP.md", "claim": "presentation sync is a boolean derived from nonzero requested bit depth",
+     "correction": "the same 00f889e0 byte; the observed presentation behaviour is unaffected, only the name of the input changes.",
+     "edited": false},
+    {"target": "docs/APP_INIT_PLATFORM.md", "claim": "argument 9 is a renderer option, forwarded unchanged",
+     "correction": "00f889d8 is settings +0x58, the Antialias sample count snapped onto the table at 00f88968, forwarded as the multisample type.",
+     "edited": false},
+    {"target": "docs/APP_INIT_BOOTSTRAP.md", "claim": "caps+0x28 unidentified in the settings tail",
+     "correction": "the record is renderer+0x1b18 and +0x28 is LOWORD(D3DCAPS9.PixelShaderVersion), written at 00b2c985; the gate means pixel shader model below 2.0 disables shadows. Nothing in the bootstrap description is wrong; the field now has a source.",
+     "edited": false}
+  ],
+
+  "reconstruction_state": {
+    "00b32410": "analysed",
+    "00a8fe30": "reconstructed, build-tested, one focused fixture test",
+    "0073bf80": "reconstructed, build-tested",
+    "00b14a10": "analysed from the listing; the two texture loads are sequenced in the port",
+    "00b3c4c0": "analysed",
+    "00ad9f90": "analysed",
+    "00b1ff50": "analysed as a contract",
+    "00b21ec0": "analysed as a contract",
+    "00b20a80": "analysed as a contract",
+    "00b2aeb0": "already reconstructed in D3D9_STARTUP.md; joined here, not re-derived"
+  },
+
+  "no_ghidra_function": [
+    {"address": "00b1ff50", "content": "lea eax,[ecx+0x1b18]; ret", "role": "renderer virtual +0x104"},
+    {"address": "00b21ec0", "content": "CheckDeviceFormat wrapper, RET 0x10", "role": "renderer virtual +0xf8"},
+    {"address": "00b24dc0", "content": "mov eax,[ecx+0x197c]; ret 4", "role": "renderer virtual +0x128"},
+    {"address": "00b20090", "content": "mov eax,[ecx+0x198c]; ret", "role": "renderer virtual +0x12c"}
+  ],
+
+  "names_recorded": [
+    {"address": "00a8fe30", "name": "BSP_ShadowDepthTarget_Construct"},
+    {"address": "00ad9f90", "name": "BSP_TerrainRenderObject_ConstructSingleton_Provisional"},
+    {"address": "00b3c4c0", "name": "BSP_RenderSingleton0108FED8_Construct_Provisional"},
+    {"address": "00b20a80", "name": "BSP_D3D9_TranslateResourceFlags", "conditional": "only if the lease permits; it is a renderer internal"}
+  ],
+
+  "uncertainties": [
+    "0x17 at shadow target +0x24 is an engine texture kind of unknown meaning; it is written for both accepted formats.",
+    "Capability record +0x08 (renderer+0x1b20) reads D3DCAPS9+0x60 on the derived baseline; neighbouring fields anchor the baseline, this one does not.",
+    "00f889e4 has no located writer; whether 004de610 writes it through a pointer was not traced.",
+    "The three heap singletons inside 00b32410 discard their pointers; where each registers itself was not traced.",
+    "00b3c4c0's subsystem is unidentified.",
+    "00b14a10's float field initialisation and the helpers 00b52550, 00b3c800 and 00b1fbb0 are not analysed.",
+    "The renderer object layout beyond the offsets listed here is not reproduced, and no fullscreen path has been exercised."
+  ],
+
+  "build": {"script": "./scripts/build.ps1", "result": "clean, warnings as errors", "tests": "1/1 reconstructed_math passed, including the new depth-format fallback case"}
+}
