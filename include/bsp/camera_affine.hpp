@@ -10,4 +10,11 @@ namespace bsp {
 // object lifetime or camera dirty-cache behavior is added.
 void compose_camera_affine_00b6d4d0(CameraMatrix& destination,
     const CameraMatrix& left, const CameraMatrix& right);
+// Native ECX=source XYZ; stack=destination XYZ,matrix; RET8; EAX=destination.
+// Stages all source components before writes, retaining x87 product/add/store
+// order. Source and result may be the same array. Matrix/result overlap is not
+// supported by this typed API. No perspective divide or validation is added.
+void transform_point_004142e0(const std::array<float, 3>& source,
+    const CameraMatrix& matrix, std::array<float, 3>& result);
+
 }

@@ -134,4 +134,66 @@ void compose_camera_affine_00b6d4d0(CameraMatrix& destination,
     const CameraMatrix& left, const CameraMatrix& right) {
     compose_kernel(destination.data(), left.data(), right.data());
 }
+
+// Value/kernel projection of004142e0; no original object-layout assumptions.
+// Preserve all three outputs and the original x87 product/add/spill order even
+// though00b51a20 consumes only Z. Native input XYZ is staged before any writes.
+void transform_point_004142e0(const std::array<float, 3>& point,
+    const CameraMatrix& matrix, std::array<float, 3>& result) {
+    const float* source = point.data();
+    const float* transform = matrix.data();
+    float* output = result.data();
+    float values[3];
+    __asm {
+        mov ecx, source
+        fld dword ptr [ecx + 4]
+        fstp dword ptr values[0]
+        fld dword ptr [ecx]
+        fstp dword ptr values[4]
+        fld dword ptr [ecx + 8]
+        fstp dword ptr values[8]
+        mov ecx, transform
+        mov eax, output
+        fld dword ptr [ecx + 16]
+        fld dword ptr values[0]
+        fld st(0)
+        fmulp st(2), st(0)
+        fld dword ptr [ecx]
+        fld dword ptr values[4]
+        fld st(0)
+        fmulp st(2), st(0)
+        fxch st(3)
+        faddp st(1), st(0)
+        fld dword ptr [ecx + 32]
+        fld dword ptr values[8]
+        fld st(0)
+        fmulp st(2), st(0)
+        fxch st(2)
+        faddp st(1), st(0)
+        fadd dword ptr [ecx + 48]
+        fstp dword ptr [eax]
+        fld dword ptr [ecx + 4]
+        fmul st(0), st(3)
+        fld dword ptr [ecx + 20]
+        fmul st(0), st(3)
+        faddp st(1), st(0)
+        fld dword ptr [ecx + 36]
+        fmul st(0), st(2)
+        faddp st(1), st(0)
+        fadd dword ptr [ecx + 52]
+        fstp dword ptr [eax + 4]
+        fld dword ptr [ecx + 8]
+        fmulp st(3), st(0)
+        fld dword ptr [ecx + 24]
+        fmulp st(2), st(0)
+        fxch st(2)
+        faddp st(1), st(0)
+        fld dword ptr [ecx + 40]
+        fmulp st(2), st(0)
+        faddp st(1), st(0)
+        fadd dword ptr [ecx + 56]
+        fstp dword ptr [eax + 8]
+    }
+}
+
 }
