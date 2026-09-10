@@ -29,7 +29,9 @@ shared headers, CMake, probes and Ghidra mutations as before.
 
 `python tools/integrate_workers.py agent/<name> [agent/<other>...] [--no-push] [--skip-build]`,
 run from the main checkout, merges each branch into the `agent/integrate` worktree (create it once
-with `python tools/bsp.py worktree add integrate`), resolves the mechanical conflicts through
+with `python tools/bsp.py worktree add integrate`; a second orchestrator sets `BSP_INTEGRATE=<name>` and
+`BSP_AGENT=<name>` so it merges through its own `agent/<name>` worktree and its Ghidra lock and ad hoc
+leases carry its name), resolves the mechanical conflicts through
 `tools/merge_resolve.py` (registry-line union for `cmake/startup.cmake`, address union for ledger
 shards with the incoming side winning for records it changed, same-spot insertions and diff3
 pure insertions in text files), builds and runs the tests there, fast-forwards `main` (merging

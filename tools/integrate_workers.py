@@ -11,7 +11,12 @@ from pathlib import Path
 MAIN = Path(__file__).resolve().parents[1]
 _TRAILER_FILE = MAIN / 'local/commit-trailer.txt'
 TRAILER = _TRAILER_FILE.read_text(encoding='utf-8').strip() if _TRAILER_FILE.exists() else ''
-INTEGRATE = MAIN.parent / 'battlestations-pacific-decompile-integrate'
+import os
+# a second orchestrator uses its own integrate worktree: BSP_INTEGRATE=<name> selects
+# ../battlestations-pacific-decompile-<name> on branch agent/<name> (create it with bsp.py worktree add <name>)
+INTEGRATE_NAME = os.environ.get('BSP_INTEGRATE', 'integrate')
+INTEGRATE = MAIN.parent / f'{MAIN.name}-{INTEGRATE_NAME}'
+INTEGRATE_BRANCH = f'agent/{INTEGRATE_NAME}'
 branches = [a for a in sys.argv[1:] if not a.startswith('--')]
 no_push = '--no-push' in sys.argv
 skip_build = '--skip-build' in sys.argv
@@ -100,7 +105,7 @@ def manual_ff(blocking):
     print(f'main fast-forwarded {old[:8]} -> {new[:8]}; {len(to_checkout)} files refreshed; {len(unions)} dirty shard(s) merged in place')
 
 
-assert INTEGRATE.exists(), 'run: python tools/bsp.py worktree add integrate'
+assert INTEGRATE.exists(), f'run: python tools/bsp.py worktree add {INTEGRATE_NAME}'
 base = git(MAIN, 'rev-parse', 'main')
 print('main at', base[:8])
 git(INTEGRATE, 'merge', '--ff-only', 'main', check=False)
@@ -176,7 +181,7 @@ import re as _re
 import time as _time
 deadline = _time.time() + 30 * 60
 while True:
-    ff = run(['git', 'merge', '--ff-only', 'agent/integrate'], MAIN, check=False)
+    ff = run(['git', 'merge', '--ff-only', INTEGRATE_BRANCH], MAIN, check=False)
     if ff.returncode == 0:
         break
     err = ff.stdout + ff.stderr
