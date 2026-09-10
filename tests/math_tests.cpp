@@ -17,6 +17,7 @@
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_screen_sets.hpp"
+#include "bsp/ingame_interface.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -1424,6 +1425,29 @@ int main() {
                   && map.to_class_index(261) == 121 && map.to_type_id(121) == 261
                   && map.to_class_index(bsp::kVehicleClassIndexMapSize) == -1,
             "the class index map is the identity apart from one remapped pair");
+    }
+
+    {
+        // 0068ACA0. Every screen id any in-session arm publishes to level 1 must
+        // be one of the 42 screens the manager itself constructed in 0068CC70;
+        // a level-1 id the manager does not own would leave the HUD arm pointing
+        // at another manager's registry slot. This guards the transcription of
+        // both tables at once.
+        bool every_id_owned = true;
+        for (int id = bsp::kFirstInGameInterface; id <= bsp::kLastInGameInterface; ++id) {
+            const bsp::InGameInterfaceScreenSet set = bsp::in_game_interface_screen_set(id);
+            for (std::size_t i = 0; i < set.screen_count; ++i) {
+                if (bsp::in_game_hud_screen_index_for_slot(set.screen_ids[i])
+                    == bsp::kInGameHudScreenCount) {
+                    every_id_owned = false;
+                }
+            }
+        }
+        check(every_id_owned
+                  && bsp::in_game_interface_screen_set(bsp::kInterfaceMap).sets_screen_set
+                  && !bsp::in_game_interface_screen_set(bsp::kInterfaceAirbase).sets_screen_set,
+            "every level-1 screen id in the in-session map names a screen the "
+            "manager owns, 21h clears level 1 and 32h leaves it alone");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

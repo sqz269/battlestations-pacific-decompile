@@ -1,0 +1,956 @@
+{
+  "packet": "in_mission_interface_manager",
+  "owner": "agent/ingame-interface",
+  "object": {
+    "global": "00E198C4",
+    "size_bytes": "0x108",
+    "vtable": "00CF7A60",
+    "base_class_constructor": "00684E10",
+    "created_at": "004E0452..004E0480 in BSP_Game_LoadMissionScene 004DFB70",
+    "creation_note": "Ghidra's xrefs for 00E198C4 do not list the store at 004E0480; found by scanning for the encoding a3 c4 98 e1 00.",
+    "global_writes": [
+      "004E0480 (create)",
+      "0068CCFE (Init, same value)",
+      "004DAB94 (=0, mission teardown 004DA780)",
+      "004DA6B3 (=0, BSP_FrontEnd_DestroyManagers)",
+      "0068BBxx (=0, inside the destructor body 0068B630)"
+    ]
+  },
+  "vtable_slots": {
+    "+00h": {
+      "address": "0068BC60",
+      "role": "scalar deleting destructor",
+      "abi": "__thiscall(this, byte flags)",
+      "ret": "RET 4 at 0068BC7B"
+    },
+    "+04h": {
+      "address": "0068CC70",
+      "role": "Init",
+      "abi": "__thiscall(this)",
+      "ret": "RET at 0068D759"
+    },
+    "+08h": {
+      "address": "00684700",
+      "role": "Activate (base body, external)"
+    },
+    "+0Ch": {
+      "address": "00683AA0",
+      "role": "Deactivate (base body, external)"
+    },
+    "+10h": {
+      "address": "0068ACA0",
+      "role": "ApplyPendingInterface override",
+      "abi": "__thiscall(this, int id, void* payload) -> bool in AL",
+      "ret": "RET 8 at 0068ACE1 and 0068AFA8"
+    }
+  },
+  "layout": {
+    "+00h..+3Fh": "shared front-end manager base",
+    "+40h..+E8h": "42 HUD screen pointers (see hud_screens)",
+    "+D0h": "never written by the constructor, Init or the destructor",
+    "+ECh": "zeroed at 0068A9AE, never read",
+    "+FDh": "byte cleared at 0068A9B6, never read",
+    "+100h": "ambient sound source, assigned by 004E7BB0 at 0068B2DE, compared at 0068B2A7",
+    "+104h": "playing sound instance, stopped by virtual +8h(0) and 0054D510 at 0068AF8F"
+  },
+  "init_0068cc70": {
+    "atlas": "interface/Textures/game.ats",
+    "installed_file_check": "no game.ats on disk; interface/Textures has game_dxt1.ats, game_dxt5_1.ats and game_dxt5_2.ats, so the literal is a stem",
+    "registration": "each screen's virtual +10h is BSP_FrontEndScreen_Register 004F71D0, which calls the screen's virtual +00h for a registry slot id and stores the screen at [00E18B60 + id*4]",
+    "first_request": "004CC460(20h, 0) then 00644220(0)"
+  },
+  "hud_screens": [
+    {
+      "offset": "0x40",
+      "registry_slot": "0x44",
+      "constructor": "0068BF60",
+      "constructor_inline": false,
+      "vtable": "00CF5A9C",
+      "size_bytes": "0x174",
+      "init_order": 0
+    },
+    {
+      "offset": "0x44",
+      "registry_slot": "0x27",
+      "constructor": "0068A8A0",
+      "constructor_inline": false,
+      "vtable": "00CF7A38",
+      "size_bytes": "0x34",
+      "init_order": 1
+    },
+    {
+      "offset": "0x48",
+      "registry_slot": "0x4d",
+      "constructor": "00640C80",
+      "constructor_inline": false,
+      "vtable": "00CF5950",
+      "size_bytes": "0xb0",
+      "init_order": 2
+    },
+    {
+      "offset": "0x4c",
+      "registry_slot": "0x26",
+      "constructor": "0051E950",
+      "constructor_inline": false,
+      "vtable": "00CEC9B0",
+      "size_bytes": "0x50",
+      "init_order": 3
+    },
+    {
+      "offset": "0x50",
+      "registry_slot": "0x2e",
+      "constructor": "005472F0",
+      "constructor_inline": false,
+      "vtable": "00CEDF34",
+      "size_bytes": "0x114",
+      "init_order": 4
+    },
+    {
+      "offset": "0x54",
+      "registry_slot": "0x4c",
+      "constructor": "005AAEF0",
+      "constructor_inline": false,
+      "vtable": "00CF0134",
+      "size_bytes": "0x614",
+      "init_order": 5
+    },
+    {
+      "offset": "0x58",
+      "registry_slot": "0x35",
+      "constructor": "005C0810",
+      "constructor_inline": false,
+      "vtable": "00CF1404",
+      "size_bytes": "0x1b0",
+      "init_order": 6
+    },
+    {
+      "offset": "0x5c",
+      "registry_slot": "0x2a",
+      "constructor": "00538E30",
+      "constructor_inline": false,
+      "vtable": "00CED6FC",
+      "size_bytes": "0x1ac",
+      "init_order": 7
+    },
+    {
+      "offset": "0x60",
+      "registry_slot": "0x39",
+      "constructor": "005EE440",
+      "constructor_inline": false,
+      "vtable": "00CF2D20",
+      "size_bytes": "0x74",
+      "init_order": 8
+    },
+    {
+      "offset": "0x64",
+      "registry_slot": "0x3b",
+      "constructor": "005F9440",
+      "constructor_inline": false,
+      "vtable": "00CF3B7C",
+      "size_bytes": "0x90",
+      "init_order": 9
+    },
+    {
+      "offset": "0x68",
+      "registry_slot": "0x3e",
+      "constructor": "00608E60",
+      "constructor_inline": false,
+      "vtable": "00CF4544",
+      "size_bytes": "0x194",
+      "init_order": 10
+    },
+    {
+      "offset": "0x6c",
+      "registry_slot": "0x3f",
+      "constructor": "00606470",
+      "constructor_inline": false,
+      "vtable": "00CF43AC",
+      "size_bytes": "0x110",
+      "init_order": 11
+    },
+    {
+      "offset": "0x70",
+      "registry_slot": "0x25",
+      "constructor": null,
+      "constructor_inline": true,
+      "vtable": "00CEC590",
+      "size_bytes": "0x30",
+      "init_order": 12
+    },
+    {
+      "offset": "0x74",
+      "registry_slot": "0x41",
+      "constructor": "0060CAE0",
+      "constructor_inline": false,
+      "vtable": "00CF4A7C",
+      "size_bytes": "0x2c",
+      "init_order": 13
+    },
+    {
+      "offset": "0x78",
+      "registry_slot": "0x45",
+      "constructor": "0064B780",
+      "constructor_inline": false,
+      "vtable": "00CF5E30",
+      "size_bytes": "0x1b0",
+      "init_order": 14
+    },
+    {
+      "offset": "0x7c",
+      "registry_slot": "0x46",
+      "constructor": null,
+      "constructor_inline": true,
+      "vtable": "00CF7978",
+      "size_bytes": "0x38",
+      "init_order": 15
+    },
+    {
+      "offset": "0x80",
+      "registry_slot": "0x4a",
+      "constructor": null,
+      "constructor_inline": true,
+      "vtable": "00CF79F8",
+      "size_bytes": "0x30",
+      "init_order": 16
+    },
+    {
+      "offset": "0x84",
+      "registry_slot": "0x47",
+      "constructor": "00650B00",
+      "constructor_inline": false,
+      "vtable": "00CF639C",
+      "size_bytes": "0x7c",
+      "init_order": 17
+    },
+    {
+      "offset": "0x88",
+      "registry_slot": "0x48",
+      "constructor": "00650140",
+      "constructor_inline": false,
+      "vtable": "00CF61D4",
+      "size_bytes": "0x24",
+      "init_order": 18
+    },
+    {
+      "offset": "0x8c",
+      "registry_slot": "0x24",
+      "constructor": null,
+      "constructor_inline": true,
+      "vtable": "00CF7938",
+      "size_bytes": "0x58",
+      "init_order": 19
+    },
+    {
+      "offset": "0x90",
+      "registry_slot": "0x2b",
+      "constructor": "00540BA0",
+      "constructor_inline": false,
+      "vtable": "00CEDCA8",
+      "size_bytes": "0x90",
+      "init_order": 20
+    },
+    {
+      "offset": "0x94",
+      "registry_slot": "0x2c",
+      "constructor": "0054F8C0",
+      "constructor_inline": false,
+      "vtable": "00CEE408",
+      "size_bytes": "0x28",
+      "init_order": 21
+    },
+    {
+      "offset": "0x98",
+      "registry_slot": "0x36",
+      "constructor": "005CE610",
+      "constructor_inline": false,
+      "vtable": "00CF1968",
+      "size_bytes": "0x84",
+      "init_order": 22
+    },
+    {
+      "offset": "0x9c",
+      "registry_slot": "0x37",
+      "constructor": "005CC120",
+      "constructor_inline": false,
+      "vtable": "00CF17A8",
+      "size_bytes": "0x38",
+      "init_order": 23
+    },
+    {
+      "offset": "0xa0",
+      "registry_slot": "0x38",
+      "constructor": "005CB0A0",
+      "constructor_inline": false,
+      "vtable": "00CF17D0",
+      "size_bytes": "0x20",
+      "init_order": 24
+    },
+    {
+      "offset": "0xa4",
+      "registry_slot": "0x33",
+      "constructor": "005BA7B0",
+      "constructor_inline": false,
+      "vtable": "00CF0ED8",
+      "size_bytes": "0xe8",
+      "init_order": 25
+    },
+    {
+      "offset": "0xa8",
+      "registry_slot": "0x34",
+      "constructor": "0054D680",
+      "constructor_inline": false,
+      "vtable": "00CEE290",
+      "size_bytes": "0x7c",
+      "init_order": 26
+    },
+    {
+      "offset": "0xac",
+      "registry_slot": "0x23",
+      "constructor": "005178B0",
+      "constructor_inline": false,
+      "vtable": "00CEC194",
+      "size_bytes": "0x2c",
+      "init_order": 27
+    },
+    {
+      "offset": "0xb0",
+      "registry_slot": "0x2f",
+      "constructor": null,
+      "constructor_inline": true,
+      "vtable": "00CF79B8",
+      "size_bytes": "0x24",
+      "init_order": 28
+    },
+    {
+      "offset": "0xb4",
+      "registry_slot": "0x49",
+      "constructor": "0067BE30",
+      "constructor_inline": false,
+      "vtable": "00CF6D68",
+      "size_bytes": "0xc",
+      "init_order": 29
+    },
+    {
+      "offset": "0xcc",
+      "registry_slot": "0x29",
+      "constructor": "00525A90",
+      "constructor_inline": false,
+      "vtable": "00CECCF8",
+      "size_bytes": "0xf0",
+      "init_order": 30
+    },
+    {
+      "offset": "0xd4",
+      "registry_slot": "0x5a",
+      "constructor": "00636D90",
+      "constructor_inline": false,
+      "vtable": "00CF569C",
+      "size_bytes": "0x34",
+      "init_order": 31
+    },
+    {
+      "offset": "0xd8",
+      "registry_slot": "0x3c",
+      "constructor": "005FFCB0",
+      "constructor_inline": false,
+      "vtable": "00CF3EF4",
+      "size_bytes": "0x164",
+      "init_order": 32
+    },
+    {
+      "offset": "0xdc",
+      "registry_slot": "0x3d",
+      "constructor": "00604780",
+      "constructor_inline": false,
+      "vtable": "00CF41A0",
+      "size_bytes": "0xc",
+      "init_order": 33
+    },
+    {
+      "offset": "0xe0",
+      "registry_slot": "0x5e",
+      "constructor": "0060FD90",
+      "constructor_inline": false,
+      "vtable": "00CF4B98",
+      "size_bytes": "0x48",
+      "init_order": 34
+    },
+    {
+      "offset": "0xe4",
+      "registry_slot": "0x19",
+      "constructor": "005D3540",
+      "constructor_inline": false,
+      "vtable": "00CF1D70",
+      "size_bytes": "0x28",
+      "init_order": 35
+    },
+    {
+      "offset": "0xe8",
+      "registry_slot": "0x32",
+      "constructor": "00565D40",
+      "constructor_inline": false,
+      "vtable": "00CEEBAC",
+      "size_bytes": "0x1c",
+      "init_order": 36
+    },
+    {
+      "offset": "0xb8",
+      "registry_slot": "0x43",
+      "constructor": "00643DA0",
+      "constructor_inline": false,
+      "vtable": "00CF5998",
+      "size_bytes": "0x18",
+      "init_order": 37
+    },
+    {
+      "offset": "0xbc",
+      "registry_slot": "0x4e",
+      "constructor": "006735D0",
+      "constructor_inline": false,
+      "vtable": "00CF6B44",
+      "size_bytes": "0x480",
+      "init_order": 38
+    },
+    {
+      "offset": "0xc0",
+      "registry_slot": "0x4f",
+      "constructor": "0061A480",
+      "constructor_inline": false,
+      "vtable": "00CF4DEC",
+      "size_bytes": "0x270",
+      "init_order": 39
+    },
+    {
+      "offset": "0xc4",
+      "registry_slot": "0x50",
+      "constructor": "006821C0",
+      "constructor_inline": false,
+      "vtable": "00CF7184",
+      "size_bytes": "0x7c",
+      "init_order": 40
+    },
+    {
+      "offset": "0xc8",
+      "registry_slot": "0x51",
+      "constructor": "0052B030",
+      "constructor_inline": false,
+      "vtable": "00CED0AC",
+      "size_bytes": "0x2c",
+      "init_order": 41
+    }
+  ],
+  "interface_id_map": {
+    "0x20": {
+      "name": "INTF_SCENE3D",
+      "arm": "0068AE0B",
+      "level1_screen_ids": null,
+      "level1_input_contexts": null,
+      "note": "unit-type refinement; null payload arm at 0068AF2F",
+      "screen_handoffs": []
+    },
+    "0x21": {
+      "name": "INTF_MAP",
+      "arm": "0068B230",
+      "level1_screen_ids": [],
+      "level1_input_contexts": null,
+      "note": "shares the default arm: clears level 1",
+      "screen_handoffs": []
+    },
+    "0x22": {
+      "name": "INTF_PLANE",
+      "arm": "0068B008",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x3e",
+        "0x3f",
+        "0x35",
+        "0x50"
+      ],
+      "level1_input_contexts": [
+        "0xa",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "",
+      "screen_handoffs": [
+        "+6Ch 00608D50",
+        "+68h 00609390"
+      ]
+    },
+    "0x23": {
+      "name": "INTF_PLANEBOMBER",
+      "arm": "0068AFB8",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x3e",
+        "0x25",
+        "0x26",
+        "0x2e",
+        "0x35",
+        "0x50"
+      ],
+      "level1_input_contexts": [
+        "0x9",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "",
+      "screen_handoffs": [
+        "+70h 00519B00",
+        "+68h 00609390"
+      ]
+    },
+    "0x24": {
+      "name": "INTF_PLANESPAWN",
+      "arm": "0068B055",
+      "level1_screen_ids": [
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x50",
+        "0x41",
+        "0x35"
+      ],
+      "level1_input_contexts": [
+        "0x17",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "",
+      "screen_handoffs": [
+        "+74h 0060CF90"
+      ]
+    },
+    "0x25": {
+      "name": "INTF_CAPTAIN",
+      "arm": "0068B115",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x45",
+        "0x46",
+        "0x26",
+        "0x2e",
+        "0x35",
+        "0x50"
+      ],
+      "level1_input_contexts": [
+        "0x6",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "contexts via 00689FA0",
+      "screen_handoffs": [
+        "+7Ch 0064DA40",
+        "+78h 0064D590"
+      ]
+    },
+    "0x26": {
+      "name": "INTF_BOMBVIEW",
+      "arm": "0068B153",
+      "level1_screen_ids": [
+        "0x27",
+        "0x4d",
+        "0x24"
+      ],
+      "level1_input_contexts": [
+        "0x5",
+        "0x4",
+        "0xa"
+      ],
+      "note": "the two +8Ch calls straddle the setters",
+      "screen_handoffs": [
+        "+8Ch 0067B4D0(payload, +40h 00644230())",
+        "+8Ch[34h] = +40h 00644230()"
+      ]
+    },
+    "0x27": {
+      "name": "INTF_TBOATHELMSMAN",
+      "arm": "0068B093",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x45",
+        "0x4a",
+        "0x26",
+        "0x2e",
+        "0x35",
+        "0x50"
+      ],
+      "level1_input_contexts": [
+        "0x6",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "contexts via 00689FE0",
+      "screen_handoffs": [
+        "+80h 0067C1A0",
+        "+78h 0064D590"
+      ]
+    },
+    "0x28": {
+      "name": "INTF_SUBMARINE",
+      "arm": "0068B0D4",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x45",
+        "0x47",
+        "0x48",
+        "0x2e",
+        "0x35",
+        "0x50"
+      ],
+      "level1_input_contexts": [
+        "0x7",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "contexts via 00689FC0",
+      "screen_handoffs": [
+        "+84h 00651760",
+        "+78h 0064D590"
+      ]
+    },
+    "0x29": {
+      "name": "INTF_FREECAMERA",
+      "arm": "0068AD5B",
+      "level1_screen_ids": [
+        "0x2b"
+      ],
+      "level1_input_contexts": [
+        "0x2"
+      ],
+      "note": "",
+      "screen_handoffs": []
+    },
+    "0x2a": {
+      "name": "INTF_IDLECAMERA",
+      "arm": "0068AD7C",
+      "level1_screen_ids": [
+        "0x2c",
+        "0x29",
+        "0x49"
+      ],
+      "level1_input_contexts": [
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "",
+      "screen_handoffs": []
+    },
+    "0x2b": {
+      "name": "INTF_MOVIECAMERA",
+      "arm": "0068ADA9",
+      "level1_screen_ids": [
+        "0x36"
+      ],
+      "level1_input_contexts": [
+        "0x3"
+      ],
+      "note": "",
+      "screen_handoffs": []
+    },
+    "0x2c": {
+      "name": "INTF_MOVIECAMERANEW",
+      "arm": "0068ADC9",
+      "level1_screen_ids": [
+        "0x37"
+      ],
+      "level1_input_contexts": [
+        "0x3"
+      ],
+      "note": "the id the lock 00E19894 exempts",
+      "screen_handoffs": []
+    },
+    "0x2d": {
+      "name": "INTF_ENGINEMOVIECAMERA",
+      "arm": "0068ADEA",
+      "level1_screen_ids": [
+        "0x38"
+      ],
+      "level1_input_contexts": [
+        "0x3"
+      ],
+      "note": "",
+      "screen_handoffs": []
+    },
+    "0x2e": {
+      "name": "INTF_AIRFIELD",
+      "arm": "0068B23A",
+      "level1_screen_ids": null,
+      "level1_input_contexts": null,
+      "note": "untouched, straight to the tail",
+      "screen_handoffs": []
+    },
+    "0x2f": {
+      "name": "INTF_COMMANDBUILDING",
+      "arm": "0068B1A1",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x2f",
+        "0x26",
+        "0x2e",
+        "0x35",
+        "0x50"
+      ],
+      "level1_input_contexts": [
+        "0x6",
+        "0x4",
+        "0x11",
+        "0x12",
+        "0xc",
+        "0xb"
+      ],
+      "note": "",
+      "screen_handoffs": [
+        "+B0h 005213D0"
+      ]
+    },
+    "0x30": {
+      "name": "INTF_SHIPYARD_STAREDUMB",
+      "arm": "0068B23A",
+      "level1_screen_ids": null,
+      "level1_input_contexts": null,
+      "note": "untouched",
+      "screen_handoffs": []
+    },
+    "0x31": {
+      "name": "INTF_SHIPYARD",
+      "arm": "0068B23A",
+      "level1_screen_ids": null,
+      "level1_input_contexts": null,
+      "note": "untouched",
+      "screen_handoffs": []
+    },
+    "0x32": {
+      "name": "INTF_AIRBASE",
+      "arm": "0068B23A",
+      "level1_screen_ids": null,
+      "level1_input_contexts": null,
+      "note": "untouched",
+      "screen_handoffs": []
+    },
+    "0x33": {
+      "name": "INTF_LAUNCHLANDING",
+      "arm": "0068B1E7",
+      "level1_screen_ids": [
+        "0x29",
+        "0x49",
+        "0x44",
+        "0x27",
+        "0x4d",
+        "0x35"
+      ],
+      "level1_input_contexts": [
+        "0x16",
+        "0x11",
+        "0x12"
+      ],
+      "note": "",
+      "screen_handoffs": []
+    },
+    "0x34": {
+      "name": "INTF_LIMBO",
+      "arm": "0068B212",
+      "level1_screen_ids": [
+        "0x32"
+      ],
+      "level1_input_contexts": [
+        "0x13"
+      ],
+      "note": "",
+      "screen_handoffs": []
+    },
+    "0x35": {
+      "name": "INTF_SUPPORTMANAGER",
+      "arm": "0068B23A",
+      "level1_screen_ids": null,
+      "level1_input_contexts": null,
+      "note": "untouched",
+      "screen_handoffs": []
+    }
+  },
+  "interface_id_map_closure": "every screen id in every level-1 list is one of the 42 screens the manager constructs; asserted in tests/math_tests.cpp",
+  "scene3d_refinement_0068ae0b": {
+    "0x0E": "0x27 INTF_TBOATHELMSMAN",
+    "0x08": "0x28 INTF_SUBMARINE",
+    "0x06": "0x25 INTF_CAPTAIN",
+    "0x0F": "0x22 INTF_PLANE when 007BB9A0(unit) else 0x24 INTF_PLANESPAWN",
+    "0x45": "0x2E INTF_AIRFIELD",
+    "0x1C": "0x2F INTF_COMMANDBUILDING",
+    "0x46": "0x30 INTF_SHIPYARD_STAREDUMB",
+    "0x18": "0x20 INTF_SCENE3D again with unit->[3D0h]",
+    "null_payload": "game+1FE4h == 0 installs {29h,49h,44h,35h} with contexts {4,11h,12h,0Ch,0Bh}; non-zero redispatches 2Ah with a null payload"
+  },
+  "prologue_0068aca0": [
+    "00684600(this, id, payload); false returns false",
+    "payload && payload->[5Dh]: +E8h screen takes payload->[70h] via 00565FB0, id forced to 34h",
+    "[this+40h]->00646040(id, payload)",
+    "if (game->[1ED4h]) 0042A930()",
+    "0068AB80(this, id in {29h,2Bh,2Ch,2Dh}, 1)",
+    "switch (id - 20h) through the jump table at 0068B390, 16h entries"
+  ],
+  "ambient_tail_0068b23a": {
+    "gate": "payload non-null, payload->vtable[5Ch](6) true, id not in {29h,2Bh,2Ch,2Dh,34h}",
+    "source": "payload->[538h]->[10Ch], assigned to +100h by 004E7BB0",
+    "sound": "3DEffect (00CE7860) / Normal (00CECD20) through 00A7B0A0, 00A7ACF0, 00A7E490 on the sound manager 00F8BBD8, stored at +104h by 0054D4C0",
+    "stop_path": "0068AF68 releases +104h only and leaves +100h stale"
+  },
+  "collapse_0068ab80": {
+    "abi": "__thiscall(this, char clear_level2, char run_extra_hook)",
+    "ret": "RET 8 at 0068AC21",
+    "level3": "when 00E18D1C/00E18D20 is non-empty: if [00E198C4+BCh]+30h then [this+BCh]+0Ah = 1; 004F8670(0), 004D8B70(game,0), 0068AA40(004B4B00())",
+    "extra_hook": "0051E8E0, always requested by 0068ACA0",
+    "level2": "only when clear_level2 and [this+54h]+4h: 004F85D0(0), 004D8AE0(game,0), 0068AA40(004B4B00())"
+  },
+  "teardown": [
+    "0068BC60 scalar deleting destructor -> 0068B630",
+    "restore vtable 00CF7A60; stop and release +104h",
+    "collect the 42 screens with 00686C20 (de-duplicating), hide each (virtual +1Ch, clear +4h/+5h, BSP_FrontEndScreen_CommitVisibility)",
+    "second pass: screen->vtable[0Ch](1), which unregisters through 004F71A0",
+    "[00E198C4] = 0; unload interface/Textures/game.ats through 00AEFA30",
+    "BSP_MenuCommandScreen_GetSingleton(1) then 00530630(1)",
+    "free the vector, release +104h and +100h, BSP_FrontEndManager_DestroyBase 00684FA0",
+    "004DA780 clears the lock at 004DAB53 (if [00E198C4] then [00E19894] = 0) before destroying the manager at 004DAB82"
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0068ACA0",
+      "end": "0068B38B",
+      "role": "ApplyPendingInterface override, vtable 00CF7A60 slot +10h. Body 0068ACA0..0068B38F; the 16h-entry jump table at 0068B390 follows it."
+    }
+  ],
+  "ghidra_flow_gaps": [
+    {
+      "function": "0068B630",
+      "after_call": "0068BBD6 (_free)",
+      "gap": "0068BBDB..0068BBDE",
+      "bytes": 3,
+      "effect": "the export shows the +104h/+100h release and 00684FA0 as unreachable; reported, not repaired"
+    }
+  ],
+  "corrections": [
+    "00E08CD8 has 36h entries (00E08CD8..00E08DAF); kInterfaceNameCount in include/bsp/frontend_managers.hpp says 45, so front_end_interface_name returns nullptr for ids 2Dh..35h",
+    "entry 2Dh reads INTF_ENGINEMOVIECAMERA; kInterfaceEngineMovie in include/bsp/simulation_gate.hpp is named one word short",
+    "the packet brief labelled 004CD0F0 BSP_InGameInterface_Update; the ledger name is BSP_Game_SetCinematicMode and the manager's per-frame tick is 0068C1F0, already named and covered by docs/GAME_SIMULATION_GATE.md. Neither was analysed or claimed here.",
+    "docs/FRONTEND_SCREEN_SETS.md asks for the callers of 004F8530; the sole in-session caller is 0068ACA0, so level 1 is the HUD"
+  ],
+  "uncertainties": [
+    "+ECh, +FDh and +D0h are written or skipped by the constructor and read by nothing traced",
+    "what 007BB9A0 tests, and therefore the 22h/24h split",
+    "which interface/gui_*.lua page backs each registry slot; registration carries only the numeric slot",
+    "[this+BCh]+0Ah and +30h in 0068AB80",
+    "whether the registry slots this manager never publishes are self-managed or published from another level"
+  ],
+  "follow_up_packets": [
+    {
+      "id": "in_mission_hud_root_screen",
+      "addresses": [
+        "0068BF60",
+        "00646040",
+        "00644230",
+        "00644220"
+      ],
+      "files": [
+        "docs/IN_MISSION_HUD_ROOT_SCREEN.md"
+      ],
+      "contract": "registry slot 44h, the screen every interface change notifies: its layout and what 00646040 does with the id and the unit"
+    },
+    {
+      "id": "in_mission_camera_screen",
+      "addresses": [
+        "006735D0",
+        "0068AA40",
+        "004B4B00"
+      ],
+      "files": [
+        "docs/IN_MISSION_CAMERA_SCREEN.md"
+      ],
+      "contract": "registry slot 4Eh, 480h bytes: the flags at +8h, +0Ah and +30h and the free-camera path docs/GAME_SIMULATION_GATE.md leaves open"
+    },
+    {
+      "id": "front_end_screen_self_management",
+      "addresses": [
+        "004F7570",
+        "004F7580",
+        "004F7620"
+      ],
+      "files": [
+        "docs/FRONTEND_SCREEN_SETS.md"
+      ],
+      "contract": "which of the 95 registry slots override +4h (exempt) and +8h (occluding)"
+    },
+    {
+      "id": "in_mission_unit_type_codes",
+      "addresses": [
+        "007BB9A0"
+      ],
+      "files": [
+        "docs/IN_MISSION_UNIT_TYPE_CODES.md"
+      ],
+      "contract": "name the unit class behind vtable[5Ch] codes 6, 8, 0Eh, 0Fh, 18h, 1Ch, 45h and 46h"
+    }
+  ],
+  "state_reached": {
+    "0068ACA0": "exported (raw listing only), analyzed, reconstructed, build-tested",
+    "0068A990": "exported, analyzed, reconstructed, build-tested",
+    "0068CC70": "exported, analyzed, reconstructed, build-tested",
+    "0068B630": "exported, analyzed, reconstructed, build-tested",
+    "0068BC60": "exported, analyzed",
+    "0068AB80": "exported, analyzed, reconstructed, build-tested",
+    "00689FA0": "analyzed from raw bytes, reconstructed as data, build-tested",
+    "00689FC0": "analyzed from raw bytes, reconstructed as data, build-tested",
+    "00689FE0": "analyzed from raw bytes, reconstructed as data, build-tested",
+    "004E0452..004E0480": "analyzed from the listing",
+    "004DA780, 004DA650": "read only, not claimed",
+    "the 42 screen constructors": "analyzed only far enough to read their registry slot",
+    "interface/Textures/game.ats": "installed-file-checked: stem, variants on disk",
+    "interface/gui_*.lua": "installed-file-checked: 47 pages, none tied to a slot",
+    "004CD0F0, 0068C1F0": "not analysed here; covered by game_simulation_gate"
+  },
+  "build": "scripts/build.ps1 Win32 Release, warnings as errors: passed",
+  "tests": "ctest reconstructed_math: 1/1 passed, including one new case asserting the level-1 id closure"
+}
