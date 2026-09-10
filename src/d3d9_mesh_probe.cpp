@@ -22,6 +22,7 @@
 #include "bsp/camera_frame_state.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/material_constants.hpp"
+#include "bsp/material_constant_builder.hpp"
 #include <algorithm>
 #include <cstring>
 #include <set>
@@ -192,6 +193,74 @@ struct MeshInstanceModel {
     MeshInstanceModel(const MeshInstanceModel&) = delete;
     MeshInstanceModel& operator=(const MeshInstanceModel&) = delete;
 };
+class MeshMaterialConstantOwners final : public bsp::MaterialConstantOwners {
+public:
+    MeshMaterialConstantOwners(bsp::CameraFrameState& camera,
+        std::shared_ptr<bsp::LogicalTexture> shadow)
+        : camera_(camera), shadow_(std::move(shadow)) {}
+    bool material(bsp::InstanceRenderEntry& entry, bsp::MaterialCloneState*& value,
+        std::string& error) override {
+        if (!entry.section || !entry.section->material_clone_owner)
+            return missing("actual section material", error);
+        value = static_cast<bsp::MaterialCloneState*>(entry.section->material_clone_owner.get());
+        return true;
+    }
+    bool camera_mode(bsp::InstanceRenderEntry& entry, std::uint32_t& value,
+        std::string& error) override {
+        if (entry.camera != &camera_.camera.transform) return missing("actual camera companion", error);
+        value = camera_.render_mode; return true;
+    }
+    bool transform(bsp::InstanceRenderEntry& entry, bsp::CameraTransform*& value,
+        std::string& error) override {
+        auto* owner = model(entry, error);
+        if (!owner) return false;
+        value = &owner->transform; return true;
+    }
+    bool bone_model(bsp::InstanceRenderEntry&, bsp::MaterialBoneModel*&, std::string& error) override {
+        return missing("bone-model owner (this scene has ordinary generated models)", error);
+    }
+    bool skin_model(bsp::InstanceRenderEntry&, bsp::MaterialSkinModel*&, std::string& error) override {
+        return missing("skin-model owner (this scene has ordinary generated models)", error);
+    }
+    bool decode_inputs(bsp::InstanceRenderEntry& entry, const bsp::CompiledMaterialPass& pass,
+        std::vector<const bsp::LogicalVertexStream*>& streams,
+        bsp::MeshDecodeDescriptorLimits& limits, std::string& error) override {
+        if (!entry.geometry || &entry.geometry->section != entry.section
+            || !entry.geometry->mesh_stream || !entry.geometry->instance_stream)
+            return missing("actual generated section streams", error);
+        streams = {entry.geometry->mesh_stream.get(), entry.geometry->instance_stream.get()};
+        limits.element_limit20 = static_cast<std::uint32_t>(pass.base.options.compressed_element_count);
+        // This NORMAL pass has no configured ShadowShader descriptor owner.
+        limits.element_limit24.reset();
+        return true;
+    }
+    bool lod_threshold(bsp::InstanceRenderEntry&, const float*&, std::string& error) override {
+        return missing("selected stream LOD parameter owner", error);
+    }
+    bool model_lifetime(bsp::InstanceRenderEntry& entry, bsp::GeneratedModelLifetime*& value,
+        std::string& error) override {
+        auto* owner = model(entry, error);
+        if (!owner) return false;
+        value = &owner->lifetime; return true;
+    }
+    bool shadow_texture(std::shared_ptr<bsp::LogicalTexture>& value, std::string&) override {
+        value = shadow_; return true; // Actual explicit unoccluded host-scene image.
+    }
+    bool first_shadow_light(bsp::InstanceRenderEntry&, bool&, bsp::MaterialShadowMapOwner*&,
+        std::string& error) override {
+        return missing("selected directional-light shadow owner", error);
+    }
+private:
+    static bool missing(const char* value, std::string& error) {
+        error = std::string("Installed mesh scene has no ") + value; return false;
+    }
+    static MeshInstanceModel* model(bsp::InstanceRenderEntry& entry, std::string& error) {
+        if (!entry.model || !entry.model->context) { missing("actual model", error); return nullptr; }
+        return static_cast<MeshInstanceModel*>(entry.model->context);
+    }
+    bsp::CameraFrameState& camera_;
+    std::shared_ptr<bsp::LogicalTexture> shadow_;
+};
 MeshModelControl::~MeshModelControl() {
     if (model) bsp::unlink_and_release_render_model_00b6dfa0(model->lifetime);
 }
@@ -359,6 +428,9 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             {static_cast<std::uint32_t>(shaders.base.options.compressed_element_count), {}},
             0, vertex_words, decoded, error)
         || decoded.records_from_metadata != 3 || decoded.records_written != 3) return false;
+    std::array<float, 24> expected_decode_constants;
+    std::memcpy(expected_decode_constants.data(),
+        vertex_words.data() + shaders.vb.registers[24] * 4, sizeof(expected_decode_constants));
     bsp::BuildingInstanceData instance;
     if (!bsp::write_building_instance_data_00b55780(*model.hierarchy.matrix, {}, 1,
         lighting.diffuse_color_00b179f0(0)[3], instance, error)) return false;
@@ -386,6 +458,7 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     bool groups_match = false, capacity_guard = false, frame_targets_match = false, camera_frame_match = false;
     MeshModelLifetimeEvidence model_lifetimes;
     unsigned queued_bindings_checked = 0;
+    unsigned material_constants_built = 0;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
@@ -408,7 +481,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
 
         auto source_material = std::make_shared<bsp::MaterialCloneState>();
         source_material->textures = slots; source_material->lighting = lighting;
-        source_material->effect = material_pass;
+        if (!bsp::assign_compiled_material_effect_00b19210_fragment(
+            *source_material, material_pass, error)) throw std::runtime_error(error);
         // Ordinary constructor00b18900 initializes both offset-named words
         // toFFFFFFFF; clone00b18b60 then copies them without interpretation.
         source_material->word104 = source_material->word108 = 0xffffffffu;
@@ -656,7 +730,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         camera_frame.enabled = 1; camera_frame.viewport = &viewport; camera_frame.ambient_rgba = &ambient;
         camera_frame.clear_flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER;
         camera_frame.clear_color = 0xff000000; camera_frame.clear_depth = 1;
-        camera_frame.render_mode = 3; camera_frame.frustum.count = 6;
+        camera_frame.render_mode = 0; // The actual compiled NORMAL program used below.
+        camera_frame.frustum.count = 6;
         camera_access.user_clip_planes_supported = true;
         camera_access.sse2_color_truncation = true; // Explicit host mode, not native startup recovery.
         if (SUCCEEDED(hr)) {
@@ -677,8 +752,14 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             if (!camera_frame_match && SUCCEEDED(hr)) hr = E_FAIL;
         }
         if (SUCCEEDED(hr)) hr = device.BeginScene();
+        MeshMaterialConstantOwners material_owners(camera_frame, shadow);
+        bsp::D3D9StateCache* current_renderer = &states;
+        std::uint32_t first_constant_register = 0, vertex_header = 0, pixel_header = 0;
+        bsp::MaterialEntryConstantState material_constants{first_constant_register, vertex_words, pixel_words};
+        bsp::MaterialConstantBuilderEnvironment material_environment{current_renderer, nullptr,
+            vertex_header, pixel_header, material_owners};
         if (SUCCEEDED(hr)) {
-            for (const auto* queue : queues) for (const auto* entry : queue->entries()) {
+            for (const auto* queue : queues) for (auto* entry : queue->entries()) {
                 if (FAILED(hr)) continue;
                 const auto& geometry = *entry->geometry;
                 const auto& section = *entry->section;
@@ -688,6 +769,25 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
                 states.bind_vertex_stream_00b24840(1,geometry.instance_stream);
                 states.set_stream_frequency_00b24a40(0,geometry.mesh_stream->tag | section.instance_count);
                 states.set_stream_frequency_00b24a40(1,geometry.instance_stream->tag | 1);
+                // Poison just the decoded register span so the actual GPU-owner
+                // builder must replace it; the earlier parsed-payload fixture
+                // cannot conceal a missing runtime write.
+                auto* decode_begin = vertex_words.data() + shaders.vb.registers[24] * 4;
+                std::fill(decode_begin, decode_begin + expected_decode_constants.size(), -12345.0f);
+                HRESULT constants_result = S_OK;
+                if (SUCCEEDED(hr) && !bsp::build_material_constants_00b42350(*material_pass,
+                    *entry, nullptr, material_constants, material_environment, constants_result, error)) hr = E_FAIL;
+                if (SUCCEEDED(hr)) hr = constants_result;
+                if (SUCCEEDED(hr)) {
+                    constants_match = constants_match && std::memcmp(decode_begin,
+                        expected_decode_constants.data(), sizeof(expected_decode_constants)) == 0;
+                    if (!constants_match) hr = E_FAIL;
+                    else ++material_constants_built;
+                }
+                if (SUCCEEDED(hr)) hr = states.set_vertex_shader_constants_f_00b21820(0,
+                    vertex_words.data(), shaders.vb.end_register);
+                if (SUCCEEDED(hr)) hr = states.set_pixel_shader_constants_f_00b218c0(0,
+                    pixel_words.data(), shaders.pb.end_register);
                 OwnedCom<IDirect3DVertexBuffer9> actual_mesh, actual_instances;
                 OwnedCom<IDirect3DIndexBuffer9> actual_indices;
                 OwnedCom<IDirect3DVertexDeclaration9> actual_layout;
@@ -752,7 +852,10 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         model_lifetimes.constructed, model_lifetimes.disposed, model_lifetimes.cleanup_matches, model_lifetime_match);
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
         && camera_frame_match && model_lifetime_match
-        && queued_bindings_checked == 2 && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
+        && material_constants_built == 2 && queued_bindings_checked == 2
+        && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
+    std::printf("Installed material builder: actual_stream_and_clone_owners_ordered_constants=%u checked=%d\n",
+        material_constants_built, material_constants_built == 2 && constants_match);
     std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,
         decoded.records_from_metadata,constants_match,layout_match,bindings_match,queued_bindings_checked,visible,colors.size(),restored,checked,error.c_str());

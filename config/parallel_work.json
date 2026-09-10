@@ -685,8 +685,8 @@
       "id": "material_transform_tail",
       "packet": "material_transform_tail",
       "worker": "material_transform_tail_worker",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
+      "done": true,
+      "state": "integrated_reviewed_build_native_fragment_and_installed_builder_checked",
       "work": "Actual CameraTransform reference, existing reflected metadata and shared output spans. Implement matrix/cache value fragment only; no owner lookup defaults.",
       "boundary": "PS world matrix uses VS row count; snapshotting whole builder or general inverse changes behavior.",
       "function_addresses": [
@@ -734,14 +734,15 @@
       "code_ranges": [
         "00b42a7c-00b42e49",
         "00b42ef9-00b4305c"
-      ]
+      ],
+      "validation": "reports/material_constant_builder_audit.json"
     },
     {
       "id": "material_scalar_color_tail",
       "packet": "material_scalar_color_tail",
       "worker": "material_scalar_color_tail_worker",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
+      "done": true,
+      "state": "integrated_reviewed_build_native_fragment_and_installed_builder_checked",
       "work": "Expose visibility/LOD and diffuse as separate ordered functions because inverse-world fragment executes between them. Require actual threshold when LOD selected.",
       "boundary": "No clamping visibility, no fake threshold source, preserve bitwise scalar/color copies and x87 helper schedule.",
       "function_addresses": [],
@@ -787,14 +788,15 @@
       "code_ranges": [
         "00b42e4a-00b42ef8",
         "00b4305d-00b430ce"
-      ]
+      ],
+      "validation": "reports/material_constant_builder_audit.json"
     },
     {
       "id": "material_point_light_tail",
       "packet": "material_point_light_tail",
       "worker": "material_point_light_tail_worker",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
+      "done": true,
+      "state": "integrated_reviewed_build_native_fragment_and_installed_builder_checked",
       "work": "Use corrected SAME actual ordered model point-light list. Primitive value writer may borrow these records but must not create a second ownership/list domain.",
       "boundary": "4-light material packing differs from3-light instance packing. No broad zero fill; skip data if count metadata absent.",
       "function_addresses": [
@@ -837,7 +839,128 @@
       "handoff": "reports/material_constants_builder_next.json",
       "code_ranges": [
         "00b43160-00b43402"
-      ]
+      ],
+      "validation": "reports/material_constant_builder_audit.json"
+    },
+    {
+      "id": "system_camera_matrix_prefix",
+      "packet": "system_camera_matrix_prefix",
+      "worker": "system_camera_matrix_prefix_worker",
+      "done": false,
+      "state": "worker_committed_pending_primary_review_and_integration",
+      "work": "Patch supplied initialized prefix words with the exact ordered camera matrices, eye xyz and16 global words. Take actual CameraFrameState plus captured screen-service matrix owner and actual global word references; never create a second camera cache. Excludes axis getters and timers. Primary supplies service captured at00B46A7B and owns prelude/owner loading.",
+      "function_addresses": [
+        "00b0d100"
+      ],
+      "fragment_ranges": [
+        "00b46a84-00b46c4f"
+      ],
+      "code_ownership": [
+        "include/bsp/system_camera_constants.hpp",
+        "src/system_camera_constants.cpp",
+        "docs/SYSTEM_CAMERA_CONSTANTS.md",
+        "reports/system_camera_constants_audit.json"
+      ],
+      "next_code_ownership": [
+        "include/bsp/system_camera_constants.hpp",
+        "src/system_camera_constants.cpp",
+        "docs/SYSTEM_CAMERA_CONSTANTS.md",
+        "reports/system_camera_constants_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        "actual renderer/service00F8D39C owner supplying+1D8 matrix; getter body known, service lifecycle unresolved",
+        "CameraFrameState is typed companion, not native camera constructor/lifecycle",
+        "00B46A70 primary composition/upload still required"
+      ],
+      "boundary": "Disjoint outputs c0..3,c6.xyz,c7..30 and disjoint files; depends only on existing camera helpers and explicit owner inputs. No fog/lighting/shadow code dependency. Preserve native serial runtime order.",
+      "evidence": "reports/material_system_builder_next.json",
+      "worker_commit": "af35286a098a455ba5ac41995443278c38b69952"
+    },
+    {
+      "id": "system_fog_prefix",
+      "packet": "system_fog_prefix",
+      "worker": "system_fog_prefix_worker",
+      "done": false,
+      "state": "worker_committed_pending_primary_review_and_integration",
+      "work": "Borrow actual camera+184 fog owner with exact scalar/color fields; preserve captured-versus-reloaded owner schedule and null gate. Patch c72,c73,c35,c36,c38..41,c37,c74 in execution order using x87 scalars and raw colors; never zero padding. No MaterialLighting reinterpretation: fog is a separate owner.",
+      "function_addresses": [
+        "00b84ca0",
+        "00b84cb0",
+        "00b84cc0",
+        "00b84cd0",
+        "00b84ce0",
+        "00b84cf0",
+        "00b84da0",
+        "00b84db0",
+        "00b84e20",
+        "00b84e30",
+        "00b84e40",
+        "00b84fd0",
+        "00b84c60",
+        "00b84c90"
+      ],
+      "fragment_ranges": [
+        "00b46d97-00b46ed0"
+      ],
+      "code_ownership": [
+        "include/bsp/system_fog_constants.hpp",
+        "src/system_fog_constants.cpp",
+        "docs/SYSTEM_FOG_CONSTANTS.md",
+        "reports/system_fog_constants_audit.json"
+      ],
+      "next_code_ownership": [
+        "include/bsp/system_fog_constants.hpp",
+        "src/system_fog_constants.cpp",
+        "docs/SYSTEM_FOG_CONSTANTS.md",
+        "reports/system_fog_constants_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        "Fog owner field/getter contracts are verified; native owner factory/lifecycle remains required",
+        "CameraFrameState.ambient_rgba currently exposes only owner+08 color; it is not the full fog object",
+        "Primary captures fog pointer at00B46D79 and keeps its live camera binding for later color getter reloads"
+      ],
+      "boundary": "Disjoint register subset and files; plain getter field bodies and outputs are independent of camera-cache, timer and lighting implementation. No callback-derived result from another worker is required.",
+      "evidence": "reports/material_system_builder_next.json",
+      "worker_commit": "504e3971c339190cbcbabe89ec2eb2b9f7465dbf"
+    },
+    {
+      "id": "system_scene_lighting_shadow_prefix",
+      "packet": "system_scene_lighting_shadow_prefix",
+      "worker": "system_scene_lighting_shadow_prefix_worker",
+      "done": false,
+      "state": "worker_committed_pending_primary_review_and_integration",
+      "work": "Keep scene lighting and shadow in one packet because shadow depends on the exact first light captured by lighting. Expose actual retained scene/environment/light/shadow projections and required texture width/height callbacks. Patch c42.x,c43..51,c52.xyz,c53..68,c69.xyz,c70,c76 in native order; skip only actual absence; empty list is explicit failure. Separate raw shadow transpose from x87 camera transpose.",
+      "function_addresses": [
+        "00b72110",
+        "00b7aa20",
+        "00b7aa30",
+        "00b7aa40",
+        "00b7aab0"
+      ],
+      "fragment_ranges": [
+        "00b46ed1-00b475b3"
+      ],
+      "code_ownership": [
+        "include/bsp/system_lighting_constants.hpp",
+        "src/system_lighting_constants.cpp",
+        "docs/SYSTEM_LIGHTING_CONSTANTS.md",
+        "reports/system_lighting_constants_audit.json"
+      ],
+      "next_code_ownership": [
+        "include/bsp/system_lighting_constants.hpp",
+        "src/system_lighting_constants.cpp",
+        "docs/SYSTEM_LIGHTING_CONSTANTS.md",
+        "reports/system_lighting_constants_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        "Full scene list/sentinel ownership and directional-light/environment objects remain unconstructed",
+        "00B7AAB0 has a known pointer getter; existing name does not establish shadow owner implementation",
+        "Shadow virtual+8 returned-object virtual+3C/+40 concrete ABI/owner adapters remain required",
+        "00BF6713 failure semantics must remain explicit; it is not a no-op or absent-light fallback"
+      ],
+      "boundary": "All coupled first-light/shadow state remains inside this packet, with outputs disjoint from camera and fog packets. Primary supplies real owner bindings and shared output span; no shared metadata or sibling code edits required.",
+      "evidence": "reports/material_system_builder_next.json",
+      "worker_commit": "a3ad02d2e6a0a75ffde76f0add133a370bb3ceda"
     }
   ],
   "snapshot_after_analysis": {
@@ -849,7 +972,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/frame_bounds_integration_validation.json",
+  "integration_report": "reports/material_constant_builder_audit.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -1188,162 +1311,124 @@
   ],
   "next_dispatch": [
     {
-      "id": "material_transform_tail",
-      "packet": "material_transform_tail",
-      "worker": "material_transform_tail_worker",
+      "id": "system_camera_matrix_prefix",
+      "packet": "system_camera_matrix_prefix",
+      "worker": "system_camera_matrix_prefix_worker",
       "done": false,
-      "state": "ready_bounded_native_reconstruction",
-      "work": "Actual CameraTransform reference, existing reflected metadata and shared output spans. Implement matrix/cache value fragment only; no owner lookup defaults.",
-      "boundary": "PS world matrix uses VS row count; snapshotting whole builder or general inverse changes behavior.",
+      "state": "worker_committed_pending_primary_review_and_integration",
+      "work": "Patch supplied initialized prefix words with the exact ordered camera matrices, eye xyz and16 global words. Take actual CameraFrameState plus captured screen-service matrix owner and actual global word references; never create a second camera cache. Excludes axis getters and timers. Primary supplies service captured at00B46A7B and owns prelude/owner loading.",
       "function_addresses": [
-        "00b6e0d0"
+        "00b0d100"
       ],
-      "shared_function": "00b42350",
-      "address_ranges": [
-        {
-          "start": "00b42a7c",
-          "end_exclusive": "00b42e4a"
-        },
-        {
-          "start": "00b42ef9",
-          "end_exclusive": "00b4305d"
-        }
+      "fragment_ranges": [
+        "00b46a84-00b46c4f"
       ],
-      "owned_files": [
-        "include/bsp/material_transform_constants.hpp",
-        "src/material_transform_constants.cpp",
-        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
-        "reports/material_transform_constants_audit.json"
+      "code_ownership": [
+        "include/bsp/system_camera_constants.hpp",
+        "src/system_camera_constants.cpp",
+        "docs/SYSTEM_CAMERA_CONSTANTS.md",
+        "reports/system_camera_constants_audit.json"
       ],
-      "output_files": [
-        "include/bsp/material_transform_constants.hpp",
-        "src/material_transform_constants.cpp",
-        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
-        "reports/material_transform_constants_audit.json"
-      ],
-      "depends_on": [
-        "material_entry_dispatch",
-        "camera_frame_state",
-        "generated_model_lifetime"
+      "next_code_ownership": [
+        "include/bsp/system_camera_constants.hpp",
+        "src/system_camera_constants.cpp",
+        "docs/SYSTEM_CAMERA_CONSTANTS.md",
+        "reports/system_camera_constants_audit.json"
       ],
       "named_but_incomplete_dependencies": [
-        {
-          "address": "00b42350",
-          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
-        },
-        {
-          "address": "00b46a70",
-          "status": "Full upstream scene/system prefix remains required."
-        }
+        "actual renderer/service00F8D39C owner supplying+1D8 matrix; getter body known, service lifecycle unresolved",
+        "CameraFrameState is typed companion, not native camera constructor/lifecycle",
+        "00B46A70 primary composition/upload still required"
       ],
-      "handoff": "reports/material_constants_builder_next.json",
-      "code_ranges": [
-        "00b42a7c-00b42e49",
-        "00b42ef9-00b4305c"
-      ]
+      "boundary": "Disjoint outputs c0..3,c6.xyz,c7..30 and disjoint files; depends only on existing camera helpers and explicit owner inputs. No fog/lighting/shadow code dependency. Preserve native serial runtime order.",
+      "evidence": "reports/material_system_builder_next.json",
+      "worker_commit": "af35286a098a455ba5ac41995443278c38b69952"
     },
     {
-      "id": "material_scalar_color_tail",
-      "packet": "material_scalar_color_tail",
-      "worker": "material_scalar_color_tail_worker",
+      "id": "system_fog_prefix",
+      "packet": "system_fog_prefix",
+      "worker": "system_fog_prefix_worker",
       "done": false,
-      "state": "ready_bounded_native_reconstruction",
-      "work": "Expose visibility/LOD and diffuse as separate ordered functions because inverse-world fragment executes between them. Require actual threshold when LOD selected.",
-      "boundary": "No clamping visibility, no fake threshold source, preserve bitwise scalar/color copies and x87 helper schedule.",
-      "function_addresses": [],
-      "shared_function": "00b42350",
-      "address_ranges": [
-        {
-          "start": "00b42e4a",
-          "end_exclusive": "00b42ef9"
-        },
-        {
-          "start": "00b4305d",
-          "end_exclusive": "00b430cf"
-        }
+      "state": "worker_committed_pending_primary_review_and_integration",
+      "work": "Borrow actual camera+184 fog owner with exact scalar/color fields; preserve captured-versus-reloaded owner schedule and null gate. Patch c72,c73,c35,c36,c38..41,c37,c74 in execution order using x87 scalars and raw colors; never zero padding. No MaterialLighting reinterpretation: fog is a separate owner.",
+      "function_addresses": [
+        "00b84ca0",
+        "00b84cb0",
+        "00b84cc0",
+        "00b84cd0",
+        "00b84ce0",
+        "00b84cf0",
+        "00b84da0",
+        "00b84db0",
+        "00b84e20",
+        "00b84e30",
+        "00b84e40",
+        "00b84fd0",
+        "00b84c60",
+        "00b84c90"
       ],
-      "owned_files": [
-        "include/bsp/material_scalar_constants.hpp",
-        "src/material_scalar_constants.cpp",
-        "docs/MATERIAL_SCALAR_CONSTANTS.md",
-        "reports/material_scalar_constants_audit.json"
+      "fragment_ranges": [
+        "00b46d97-00b46ed0"
       ],
-      "output_files": [
-        "include/bsp/material_scalar_constants.hpp",
-        "src/material_scalar_constants.cpp",
-        "docs/MATERIAL_SCALAR_CONSTANTS.md",
-        "reports/material_scalar_constants_audit.json"
+      "code_ownership": [
+        "include/bsp/system_fog_constants.hpp",
+        "src/system_fog_constants.cpp",
+        "docs/SYSTEM_FOG_CONSTANTS.md",
+        "reports/system_fog_constants_audit.json"
       ],
-      "depends_on": [
-        "material_entry_dispatch",
-        "camera_frame_state",
-        "generated_model_lifetime"
+      "next_code_ownership": [
+        "include/bsp/system_fog_constants.hpp",
+        "src/system_fog_constants.cpp",
+        "docs/SYSTEM_FOG_CONSTANTS.md",
+        "reports/system_fog_constants_audit.json"
       ],
       "named_but_incomplete_dependencies": [
-        {
-          "address": "00b42350",
-          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
-        },
-        {
-          "address": "00b46a70",
-          "status": "Full upstream scene/system prefix remains required."
-        }
+        "Fog owner field/getter contracts are verified; native owner factory/lifecycle remains required",
+        "CameraFrameState.ambient_rgba currently exposes only owner+08 color; it is not the full fog object",
+        "Primary captures fog pointer at00B46D79 and keeps its live camera binding for later color getter reloads"
       ],
-      "handoff": "reports/material_constants_builder_next.json",
-      "code_ranges": [
-        "00b42e4a-00b42ef8",
-        "00b4305d-00b430ce"
-      ]
+      "boundary": "Disjoint register subset and files; plain getter field bodies and outputs are independent of camera-cache, timer and lighting implementation. No callback-derived result from another worker is required.",
+      "evidence": "reports/material_system_builder_next.json",
+      "worker_commit": "504e3971c339190cbcbabe89ec2eb2b9f7465dbf"
     },
     {
-      "id": "material_point_light_tail",
-      "packet": "material_point_light_tail",
-      "worker": "material_point_light_tail_worker",
+      "id": "system_scene_lighting_shadow_prefix",
+      "packet": "system_scene_lighting_shadow_prefix",
+      "worker": "system_scene_lighting_shadow_prefix_worker",
       "done": false,
-      "state": "ready_bounded_native_reconstruction",
-      "work": "Use corrected SAME actual ordered model point-light list. Primitive value writer may borrow these records but must not create a second ownership/list domain.",
-      "boundary": "4-light material packing differs from3-light instance packing. No broad zero fill; skip data if count metadata absent.",
+      "state": "worker_committed_pending_primary_review_and_integration",
+      "work": "Keep scene lighting and shadow in one packet because shadow depends on the exact first light captured by lighting. Expose actual retained scene/environment/light/shadow projections and required texture width/height callbacks. Patch c42.x,c43..51,c52.xyz,c53..68,c69.xyz,c70,c76 in native order; skip only actual absence; empty list is explicit failure. Separate raw shadow transpose from x87 camera transpose.",
       "function_addresses": [
-        "00b6dc50"
+        "00b72110",
+        "00b7aa20",
+        "00b7aa30",
+        "00b7aa40",
+        "00b7aab0"
       ],
-      "shared_function": "00b42350",
-      "address_ranges": [
-        {
-          "start": "00b43160",
-          "end_exclusive": "00b43403"
-        }
+      "fragment_ranges": [
+        "00b46ed1-00b475b3"
       ],
-      "owned_files": [
-        "include/bsp/material_point_light_constants.hpp",
-        "src/material_point_light_constants.cpp",
-        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
-        "reports/material_point_light_constants_audit.json"
+      "code_ownership": [
+        "include/bsp/system_lighting_constants.hpp",
+        "src/system_lighting_constants.cpp",
+        "docs/SYSTEM_LIGHTING_CONSTANTS.md",
+        "reports/system_lighting_constants_audit.json"
       ],
-      "output_files": [
-        "include/bsp/material_point_light_constants.hpp",
-        "src/material_point_light_constants.cpp",
-        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
-        "reports/material_point_light_constants_audit.json"
-      ],
-      "depends_on": [
-        "material_entry_dispatch",
-        "camera_frame_state",
-        "generated_model_lifetime"
+      "next_code_ownership": [
+        "include/bsp/system_lighting_constants.hpp",
+        "src/system_lighting_constants.cpp",
+        "docs/SYSTEM_LIGHTING_CONSTANTS.md",
+        "reports/system_lighting_constants_audit.json"
       ],
       "named_but_incomplete_dependencies": [
-        {
-          "address": "00b42350",
-          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
-        },
-        {
-          "address": "00b46a70",
-          "status": "Full upstream scene/system prefix remains required."
-        }
+        "Full scene list/sentinel ownership and directional-light/environment objects remain unconstructed",
+        "00B7AAB0 has a known pointer getter; existing name does not establish shadow owner implementation",
+        "Shadow virtual+8 returned-object virtual+3C/+40 concrete ABI/owner adapters remain required",
+        "00BF6713 failure semantics must remain explicit; it is not a no-op or absent-light fallback"
       ],
-      "handoff": "reports/material_constants_builder_next.json",
-      "code_ranges": [
-        "00b43160-00b43402"
-      ]
+      "boundary": "All coupled first-light/shadow state remains inside this packet, with outputs disjoint from camera and fog packets. Primary supplies real owner bindings and shared output span; no shared metadata or sibling code edits required.",
+      "evidence": "reports/material_system_builder_next.json",
+      "worker_commit": "a3ad02d2e6a0a75ffde76f0add133a370bb3ceda"
     }
   ],
   "current_partition": {
@@ -1429,6 +1514,20 @@
       "utc": "2026-09-10T05:21:44.918099+00:00",
       "report": "reports/frame_bounds_integration_validation.json",
       "state": "bounded_modules_integrated_build_and_installed_diagnostic_checked"
+    },
+    {
+      "utc": "2026-09-10T06:28:40.986865+00:00",
+      "report": "reports/material_constant_builder_audit.json",
+      "completed_packets": [
+        "material_point_light_tail",
+        "material_scalar_color_tail",
+        "material_transform_tail"
+      ],
+      "next_packets": [
+        "system_camera_matrix_prefix",
+        "system_fog_prefix",
+        "system_scene_lighting_shadow_prefix"
+      ]
     }
   ]
 }

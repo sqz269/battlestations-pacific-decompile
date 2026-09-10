@@ -59,6 +59,14 @@ public:
     // Metadata guards fail atomically; allocation exceptions propagate.
     bool set_shader_00b19210_fragment(std::shared_ptr<const void> shader,
         const MaterialParameterSelectors& selectors, std::string& error);
+    // Actual compiled effect owns this shared metadata. Newly compiled modes
+    // become visible to registration without clearing existing parameters.
+    bool set_shared_shader_00b19210_fragment(std::shared_ptr<const void> shader,
+        std::shared_ptr<const MaterialParameterSelectors>, std::string& error);
+    // Clone retains the same shader/metadata binding with an EMPTY table.
+    // It never copies borrowed parameter records from the source material.
+    bool clone_shader_binding_empty_00b18b60_fragment(
+        const MaterialParameterBindings&, std::string& error);
     // Explicit host metadata refresh without shader assignment/record clearing.
     // Existing registrations keep their old selector indices until re-registered.
     bool replace_selectors(const MaterialParameterSelectors&, std::string& error);

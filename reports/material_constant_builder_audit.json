@@ -1,0 +1,789 @@
+{
+  "recorded_utc": "2026-09-10T06:28:40.986865+00:00",
+  "status": "ordered_typed_builder_integrated_strict_win32_native_fragments_and_installed_mesh_checked",
+  "address": "00b42350",
+  "native_range": "00b42350-00b4340f",
+  "source": "src/material_constant_builder.cpp",
+  "original_abi": "ECX compiled pass; stack entry, override; RET8. Override has no body read.",
+  "native_evidence": {
+    "utc": "2026-09-10T06:09:13.225998+00:00",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "query_route": "bsp.py ghidra proto/comments/bytes; each command verifies target",
+    "native_ranges": [
+      {
+        "address": "00b42350",
+        "old_name": "BSP_MaterialPass_BuildShaderConstants",
+        "old_signature": "undefined BSP_MaterialPass_BuildShaderConstants(void)",
+        "start": "00b42350",
+        "end_exclusive": "00b43410",
+        "bytes": 4288,
+        "sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b17390",
+        "old_name": "TRIV_body_00b17390",
+        "old_signature": "undefined TRIV_body_00b17390(void)",
+        "start": "00b17390",
+        "end_exclusive": "00b17397",
+        "bytes": 7,
+        "sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b5b870",
+        "old_name": "TRIV_body_00b5b870",
+        "old_signature": "undefined TRIV_body_00b5b870(void)",
+        "start": "00b5b870",
+        "end_exclusive": "00b5b873",
+        "bytes": 3,
+        "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b5b880",
+        "old_name": "BSP_ShaderConstant_GetRegisterCount",
+        "old_signature": "undefined BSP_ShaderConstant_GetRegisterCount(void)",
+        "start": "00b5b880",
+        "end_exclusive": "00b5b884",
+        "bytes": 4,
+        "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b8ff00",
+        "old_name": "TRIV_body_00b8ff00",
+        "old_signature": "undefined TRIV_body_00b8ff00(void)",
+        "start": "00b8ff00",
+        "end_exclusive": "00b8ff07",
+        "bytes": 7,
+        "sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b90620",
+        "old_name": "FUN_00b90620",
+        "old_signature": "undefined FUN_00b90620(void)",
+        "start": "00b90620",
+        "end_exclusive": "00b90630",
+        "bytes": 16,
+        "sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b75e50",
+        "old_name": "TRIV_body_00b75e50",
+        "old_signature": "undefined TRIV_body_00b75e50(void)",
+        "start": "00b75e50",
+        "end_exclusive": "00b75e56",
+        "bytes": 6,
+        "sha256": "2b4f1290dd630ea02869f8dc9c45a88e27460c5f4a254aac68a48f979e84917c",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b781f0",
+        "old_name": "FUN_00b781f0",
+        "old_signature": "undefined FUN_00b781f0(void)",
+        "start": "00b781f0",
+        "end_exclusive": "00b7826d",
+        "bytes": 125,
+        "sha256": "6e3d775463714e571ccdfb8469385c638ae47e313a2ba7b27a5472df92b0d325",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b6e0d0",
+        "old_name": "FUN_00b6e0d0",
+        "old_signature": "undefined FUN_00b6e0d0(void)",
+        "start": "00b6e0d0",
+        "end_exclusive": "00b6e10a",
+        "bytes": 58,
+        "sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b6dc50",
+        "old_name": "BSP_Node_GetPointLights",
+        "old_signature": "undefined BSP_Node_GetPointLights(void)",
+        "start": "00b6dc50",
+        "end_exclusive": "00b6dc57",
+        "bytes": 7,
+        "sha256": "d8ce96a6373a2f955f031e90e9e04c3ff42d3ace920d7c0be0c50017e1650c9a",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b18b60",
+        "old_name": "BSP_Material_CloneConstruct",
+        "old_signature": "undefined BSP_Material_CloneConstruct(void)",
+        "start": "00b18b60",
+        "end_exclusive": "00b18cf1",
+        "bytes": 401,
+        "sha256": "06200809c976f2b86146280c20861c7c649bc19c3ddfa3458bfbe9ad1beb568e",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b19210",
+        "old_name": "BSP_Material_SetShaderAndClearParameters",
+        "old_signature": "undefined BSP_Material_SetShaderAndClearParameters(void)",
+        "start": "00b19210",
+        "end_exclusive": "00b192c9",
+        "bytes": 185,
+        "sha256": "343e21259b1b1d3a236abf56c62acd46d3d2462f18dab37804c16e608aaa9d33",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b18d60",
+        "old_name": "BSP_MaterialEffectBase_Construct",
+        "old_signature": "undefined BSP_MaterialEffectBase_Construct(void)",
+        "start": "00b18d60",
+        "end_exclusive": "00b18e90",
+        "bytes": 304,
+        "sha256": "b7aa3f1e6a7a8f18575d4901439ba841e54aa873fb6a2b236dcc8ee7335ebebc",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00bf7680",
+        "old_name": "_memcpy",
+        "old_signature": "void * __cdecl _memcpy(void * _Dst, void * _Src, size_t _Size)",
+        "start": "00bf7680",
+        "end_exclusive": "00bf79e5",
+        "bytes": 869,
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b4bc00",
+        "old_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "old_signature": "undefined BSP_D3D9LogicalVertexStream_Construct(void)",
+        "start": "00b4bc00",
+        "end_exclusive": "00b4bef6",
+        "bytes": 758,
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b61e20",
+        "old_name": "BSP_LogicalVertexStreamBase_Construct",
+        "old_signature": "undefined BSP_LogicalVertexStreamBase_Construct(void)",
+        "start": "00b61e20",
+        "end_exclusive": "00b61f84",
+        "bytes": 356,
+        "sha256": "65814249bf85c9940a1681dbf7028b3ebbcf7109de5ce21cc2f15003569b9185",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b61e10",
+        "old_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "old_signature": "undefined BSP_LogicalVertexStream_GetDecodeRecord(void)",
+        "start": "00b61e10",
+        "end_exclusive": "00b61e1d",
+        "bytes": 13,
+        "sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b48ce0",
+        "old_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+        "old_signature": "undefined BSP_D3D9LogicalVertexStream_GetDeclaration(void)",
+        "start": "00b48ce0",
+        "end_exclusive": "00b48ce4",
+        "bytes": 4,
+        "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+        "installed_matches_ghidra": true
+      },
+      {
+        "address": "00b47900",
+        "old_name": "BSP_VertexDeclaration_GetElementCount",
+        "old_signature": "undefined BSP_VertexDeclaration_GetElementCount(void)",
+        "start": "00b47900",
+        "end_exclusive": "00b47904",
+        "bytes": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "installed_matches_ghidra": true
+      }
+    ],
+    "comments_before": [
+      {
+        "address": "00b42350",
+        "annotation": {
+          "address": "00b42350",
+          "function_name": "BSP_MaterialPass_BuildShaderConstants",
+          "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nRequired backend for MaterialEntryDispatcher, NOT reconstructed in full. Patches actual shared VS0108EBF4/PS0108DBEC blocks and dynamic textures using selected pass/entry. Existing reflected parameter, matrix/decode and shadow fragments do not cover all model/camera/light/visibility/texture owner inputs. Never synthesize zero constant blocks to make downstream draw run. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+        }
+      },
+      {
+        "address": "00b17390",
+        "annotation": {
+          "address": "00b17390",
+          "function_name": "TRIV_body_00b17390"
+        }
+      },
+      {
+        "address": "00b5b870",
+        "annotation": {
+          "address": "00b5b870",
+          "function_name": "TRIV_body_00b5b870"
+        }
+      },
+      {
+        "address": "00b5b880",
+        "annotation": {
+          "address": "00b5b880",
+          "function_name": "BSP_ShaderConstant_GetRegisterCount",
+          "comment": "[BSP reconstruction 00b5b880]\nECX metadata record, EAX DWORD+4, RET.00b5bc60 stores reflected RegisterCount here, distinct from descriptor Rows at+8. Existing host VertexConstantShape.row_count must use register_count. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+        }
+      },
+      {
+        "address": "00b8ff00",
+        "annotation": {
+          "address": "00b8ff00",
+          "function_name": "TRIV_body_00b8ff00"
+        }
+      },
+      {
+        "address": "00b90620",
+        "annotation": {
+          "address": "00b90620",
+          "function_name": "FUN_00b90620"
+        }
+      },
+      {
+        "address": "00b75e50",
+        "annotation": {
+          "address": "00b75e50",
+          "function_name": "TRIV_body_00b75e50"
+        }
+      },
+      {
+        "address": "00b781f0",
+        "annotation": {
+          "address": "00b781f0",
+          "function_name": "FUN_00b781f0"
+        }
+      },
+      {
+        "address": "00b6e0d0",
+        "annotation": {
+          "address": "00b6e0d0",
+          "function_name": "FUN_00b6e0d0"
+        }
+      },
+      {
+        "address": "00b6dc50",
+        "annotation": {
+          "address": "00b6dc50",
+          "function_name": "BSP_Node_GetPointLights",
+          "comment": "[BSP reconstruction 00b6dc50]\nReturns ECX+164. Material builder callsite00B43163 and existing building-instance consumer read this same list. Analysis only; typed point-light identity/value/backlink companion is separate from native construction/type boot. Original ABI: ECX model; EAX borrowed array; RET. Evidence: reports/model_point_light_owner_review.json; docs/GENERATED_MODEL_LIFETIME.md."
+        }
+      },
+      {
+        "address": "00b18b60",
+        "annotation": {
+          "address": "00b18b60",
+          "function_name": "BSP_Material_CloneConstruct",
+          "comment": "[BSP reconstruction 00b18b60]\nBSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation. Original ABI: ECX fresh110h-byte destination; stack source material; EAX destination; RET4. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+        }
+      },
+      {
+        "address": "00b19210",
+        "annotation": {
+          "address": "00b19210",
+          "function_name": "BSP_Material_SetShaderAndClearParameters",
+          "comment": "[BSP reconstruction 00b19210]\nECX material; shader stack; RET4. Retain-new/release-old shader+7C on pointer change, mark nonnull shader+B4=1, free parameter entries and reset+100 even for same shader pointer. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00b19210] update\nECX material; shader stack; RET4. Retain-new/release-old shader+7C on pointer change, mark nonnull shader+B4=1, free parameter entries and reset+100 even for same shader pointer. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Retain-new/release-old effect+7C on identity change; set nonnull effect+B4=1. Clear parameter names and return records to pool even for equal effect identity; borrowed source words not freed. New MaterialParameterBindings implements bounded table-clear portion with external effect dirty signaling. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+        }
+      },
+      {
+        "address": "00b18d60",
+        "annotation": {
+          "address": "00b18d60",
+          "function_name": "BSP_MaterialEffectBase_Construct",
+          "comment": "[BSP reconstruction 00b18d60]\nRefcounted effect-base constructor. After renderer virtual+64 acquires error.tga and stores owned result at+98, clean temporary string then 00b18e60 reads DWORD global00f8d3a8;00b18e69 stores full DWORD at+C0; 00b18e7b stores incremented counter modulo2^32. Batch uses lowBYTE of+C0. Does not initialize+B0 or+AC. Existing CG_array_ctor_helper classification is an inventory hypothesis, replaced with behavior-based name. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation. Original ABI: ECX object; RET; EAX object. Evidence: docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+        }
+      },
+      {
+        "address": "00bf7680",
+        "annotation": {
+          "address": "00bf7680",
+          "function_name": "_memcpy",
+          "comment": "Library Function - Multiple Matches With Different Base Names\n _memcpy\n _memmove\n\nLibraries: Visual Studio 2005 Debug, Visual Studio 2005 Release, Visual Studio 2008 Debug, Visual Studio 2008 Release"
+        }
+      },
+      {
+        "address": "00b4bc00",
+        "annotation": {
+          "address": "00b4bc00",
+          "function_name": "BSP_D3D9LogicalVertexStream_Construct",
+          "comment": "[BSP reconstruction 00b4bc00]\nFactory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported.\n\n[BSP reconstruction 00b4bc00] update\nBSP reconstruction hypothesis: Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only. ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b4bc00] update\nDynamic iff(flags&F000h)==1000h: retain renderer+1974, register logical stream, offsetFFFFFFFFh, original flags+60/count+64/declaration+68. Private allocation skipped. Original ABI: ECX stream; stack count,declaration,flags; EAX stream; RETCh. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+        }
+      },
+      {
+        "address": "00b61e20",
+        "annotation": {
+          "address": "00b61e20",
+          "function_name": "BSP_LogicalVertexStreamBase_Construct",
+          "comment": "[BSP reconstruction 00b61e20]\nInitializes intrusive refcount, monotonically increasing ID0108fee0, default tag40000000h, stride from declaration+cch and selected usage metadata via semantic lookup helpers. Full native constructor not yet ported."
+        }
+      },
+      {
+        "address": "00b61e10",
+        "annotation": {
+          "address": "00b61e10",
+          "function_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+          "comment": "[BSP reconstruction 00b61e10]\nReturn compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. Original ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b61e10] update\nChecked value projection in src/mesh_decode_bindings.cpp reads the actual parsed 32-byte element record as float4 scale then float4 offset. Native getter remains unchecked EAX=[ECX+50]+stack_index*20h, RET4. Complete 13-byte body matches original PE. Caller fragment00b428c0..00b42a7b now projected into the existing reflected VS word vector; new host bounds errors are atomic. No CPU vertex decompression, native ABI or gameplay claim. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+        }
+      },
+      {
+        "address": "00b48ce0",
+        "annotation": {
+          "address": "00b48ce0",
+          "function_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+          "comment": "[BSP reconstruction 00b48ce0]\nRecovered vtable+24h getter; returns stream+68h pointer. Vertex binding reads declaration stride at+ cch."
+        }
+      },
+      {
+        "address": "00b47900",
+        "annotation": {
+          "address": "00b47900",
+          "function_name": "BSP_VertexDeclaration_GetElementCount",
+          "comment": "[BSP reconstruction 00b47900]\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+        }
+      }
+    ],
+    "optimized_type_binding": {
+      "address": "00cd8000",
+      "bytes_hex": "b9fc000901e9e601eaff",
+      "operation": "ECX=010900FC; JMP00B781F0; helper names cOptimized3dNodeAnimator",
+      "source": "installed PE raw disassembly, wrapper is not yet a defined Ghidra function"
+    },
+    "mutations_applied": false
+  },
+  "native_range_count": 19,
+  "matched_native_bytes": 7415,
+  "annotation_closeout": {
+    "status": "saved_preserving_previous_comments_and_names_verified_live",
+    "applied_utc": "2026-09-10T06:32:36Z",
+    "reverified_utc": "2026-09-10T15:06:30.934303+00:00",
+    "changes": [
+      {
+        "address": "00b17390",
+        "old_name": "TRIV_body_00b17390",
+        "new_name": "BSP_Material_GetParameterTable",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b18b60",
+        "old_name": "BSP_Material_CloneConstruct",
+        "new_name": "BSP_Material_CloneConstruct",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b18d60",
+        "old_name": "BSP_MaterialEffectBase_Construct",
+        "new_name": "BSP_MaterialEffectBase_Construct",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b19210",
+        "old_name": "BSP_Material_SetShaderAndClearParameters",
+        "new_name": "BSP_Material_SetShaderAndClearParameters",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b42350",
+        "old_name": "BSP_MaterialPass_BuildShaderConstants",
+        "new_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b47900",
+        "old_name": "BSP_VertexDeclaration_GetElementCount",
+        "new_name": "BSP_VertexDeclaration_GetElementCount",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b48ce0",
+        "old_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+        "new_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b4bc00",
+        "old_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "new_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b5b870",
+        "old_name": "TRIV_body_00b5b870",
+        "new_name": "BSP_ShaderConstant_GetRegisterIndex",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b5b880",
+        "old_name": "BSP_ShaderConstant_GetRegisterCount",
+        "new_name": "BSP_ShaderConstant_GetRegisterCount",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b61e10",
+        "old_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "new_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b61e20",
+        "old_name": "BSP_LogicalVertexStreamBase_Construct",
+        "new_name": "BSP_LogicalVertexStreamBase_Construct",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b6dc50",
+        "old_name": "BSP_Node_GetPointLights",
+        "new_name": "BSP_Node_GetPointLights",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b6e0d0",
+        "old_name": "FUN_00b6e0d0",
+        "new_name": "BSP_Node_GetInverseWorldMatrix",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b75e50",
+        "old_name": "TRIV_body_00b75e50",
+        "new_name": "BSP_Optimized3dNodeAnimator_GetTypeId",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b781f0",
+        "old_name": "FUN_00b781f0",
+        "new_name": "BSP_Optimized3dNodeAnimator_InitializeTypeInfo",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b8ff00",
+        "old_name": "TRIV_body_00b8ff00",
+        "new_name": "BSP_Model_GetBoneCount",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00b90620",
+        "old_name": "FUN_00b90620",
+        "new_name": "BSP_Model_GetBoneNode",
+        "comment_preimage_preserved": true
+      },
+      {
+        "address": "00bf7680",
+        "old_name": "_memcpy",
+        "new_name": "_memcpy",
+        "comment_preimage_preserved": true
+      }
+    ],
+    "local_preimage_log": {
+      "path": "local/ghidra-annotations-20260910T063236Z.json",
+      "sha256": "ef1d9f08640f22653f8298ec884a2519a1f950011ed32f9af0ca101e8ae16f97"
+    },
+    "live_after_comments": {
+      "path": "local/material_builder_comments_after.json",
+      "sha256": "1b6f128e2f2283dd08073a3885e7c979dd9b3ba9e98ffef64f805d93c048c378"
+    },
+    "exports_refreshed": [
+      "00b17390",
+      "00b18b60",
+      "00b18d60",
+      "00b19210",
+      "00b42350",
+      "00b47900",
+      "00b48ce0",
+      "00b4bc00",
+      "00b5b870",
+      "00b5b880",
+      "00b61e10",
+      "00b61e20",
+      "00b6dc50",
+      "00b6e0d0",
+      "00b75e50",
+      "00b781f0",
+      "00b8ff00",
+      "00b90620",
+      "00bf7680"
+    ],
+    "snapshot_refresh": "Forced after annotation save at unchanged62783 total functions; rebuilt function inventory, call graph and local index. Later unrelated analysis snapshots may advance counts.",
+    "original_code_or_prototypes_changed": false,
+    "captured_native_evidence_note": "native_evidence.mutations_applied describes the pre-annotation capture, not this completed closeout."
+  },
+  "ordered_stages": [
+    "dynamic texture virtual2C/bind/virtual30",
+    "live material parameters VS then PS per record",
+    "bone matrices",
+    "skin accepted palette or fallback matrices",
+    "actual stream decode constants",
+    "world VS then PS",
+    "visibility VS then PS and LOD PS",
+    "inverse world VS",
+    "diffuse PS then VS",
+    "ShadowTexture",
+    "ShadowMap",
+    "actual model point lights"
+  ],
+  "contracts": [
+    "Shared VS/PS words and opaque preceding DWORDs are actual retained references; no wide clear, resize, replacement owners or complete pass snapshots.",
+    "Metadata, count, source, renderer and owner loads preserve native callback boundaries.",
+    "Raw CRT copies support overlap; matrix rows preserve native raw staging or sequential x87 as appropriate.",
+    "Material clone inherits effect/shared selectors with empty records; assignment clears even identical/null effects and sets actual B4 dirty byte; constructor B4 remains zero.",
+    "Actual GPU streams own optional decode bytes; generated streams retain constructor-null state.",
+    "Texture HRESULT failures accumulate while uploads, callback, draw and statistics continue; invalid host bindings return an explicit error with prior effects retained."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "architecture": "MSVC Win32 Release",
+      "options": "/W4 /WX /fp:strict",
+      "result": "passed",
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "log": {
+        "path": "reports/material_builder_build.txt",
+        "sha256": "a7839e2f11d8eea5dbd81fed121c1c7d26a1fb75d724bd649a43787a725a214c"
+      }
+    },
+    "installed_probe": {
+      "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+      "result": "passed",
+      "actual_builder_invocations": 2,
+      "queued_bindings": 2,
+      "visible_pixels": 2499,
+      "colors": 54,
+      "restored_state": true,
+      "decode_constant_readback": true,
+      "constructed_models": 3,
+      "disposed_models": 3,
+      "log": {
+        "path": "reports/material_builder_probe.txt",
+        "sha256": "e44a541367d28bd24670a82cf5c5a1fa689bbd6f17ef40ea86f859df302610ba"
+      },
+      "image": {
+        "path": "local/installed_mesh/render.bmp",
+        "sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51"
+      },
+      "visual_limit": "Captured image is very dark; no original-game frame comparison or visual parity claim."
+    },
+    "focused_reviews": [
+      {
+        "path": "reports/material_builder_parameter_review.json",
+        "sha256": "b55ddff0115c14a2c741ab9adf4e51f589730b8e84ec3716b394019dfb01bedd"
+      },
+      {
+        "path": "reports/material_builder_bone_skin_review.json",
+        "sha256": "350086947d69a471ae539d3cfb1bd7b89060affc1b42e566845341db711166f0"
+      },
+      {
+        "path": "reports/material_transform_constants_audit.json",
+        "sha256": "6b45d3410e7924173b66219952252371af4463c38f5ff268adeb8a787fe34461"
+      },
+      {
+        "path": "reports/material_scalar_constants_audit.json",
+        "sha256": "171b6be0e828b25fbca586e904851b652ab695a7721cc6e69eeb962b22bede88"
+      },
+      {
+        "path": "reports/material_point_light_constants_audit.json",
+        "sha256": "13fff6e4656cf983608eb0253ba789f7daa870e6e218c3b55c8a09712e726519"
+      },
+      {
+        "path": "reports/material_decode_live_owners_review.json",
+        "sha256": "fac96916c707f1cc91cdd47a4c38de4edd2527fca5f57f14f0c18dbacd3ee4a3"
+      },
+      {
+        "path": "reports/material_builder_entry_review.json",
+        "sha256": "304aa09a478eb7f51d8f2079728e98a4231fe927925f9c2be7f315591a322140"
+      }
+    ],
+    "review_revision_boundary": "Bone/skin and parameter reviews tested the integrated numerical implementation before the later dispatcher-only HRESULT interface change. Their source/library hashes are retained in each report. The strict build, installed probe and focused entry review ran after that change.",
+    "new_tracked_tests": 0
+  },
+  "source_sha256": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "86ed67537141f2bc2b9320257911bbef12575675ad03ba93f43b835f97749536"
+    },
+    {
+      "path": "include/bsp/material_constant_builder.hpp",
+      "sha256": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271"
+    },
+    {
+      "path": "src/material_constant_builder.cpp",
+      "sha256": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4"
+    },
+    {
+      "path": "src/material_entry_dispatch.cpp",
+      "sha256": "3bd6a4f8a6ac727178cabdef90225b736ecd5e0b40083595c7a7566482116f03"
+    },
+    {
+      "path": "include/bsp/material_entry_dispatch.hpp",
+      "sha256": "f1714be37172cba022297256cdb68c511742bc19ea1a683e7294a2fb3d762949"
+    },
+    {
+      "path": "src/material_parameter_bindings.cpp",
+      "sha256": "ddd305b5bddc1f9f78d7468332924d4ce837b65208712e6019241a1729192a53"
+    },
+    {
+      "path": "include/bsp/material_parameter_bindings.hpp",
+      "sha256": "e7c44b00cbc0f32b104b0ca3ef7dcb6bd752ce02eaaf80a2624fd8014c15c96c"
+    },
+    {
+      "path": "src/compiled_material.cpp",
+      "sha256": "4e3afb34fa336efb28976b0deeec108f58320d842f38e3b91e7f3564fa3e5f23"
+    },
+    {
+      "path": "include/bsp/compiled_material.hpp",
+      "sha256": "0001f9e528e8d59116d16df38a80f0a13cfe06150156436ef269b027e2627aa0"
+    },
+    {
+      "path": "src/material_clone.cpp",
+      "sha256": "3442983e1590e378a0b55c0c8ae93b609774f25ffea445e10ee674d200cb28d1"
+    },
+    {
+      "path": "include/bsp/material_clone.hpp",
+      "sha256": "3e760a26b5ebda0766efd778eac76855ce2f26b65c9bf8e3f803eb9208e1dcbd"
+    },
+    {
+      "path": "src/material_transform_constants.cpp",
+      "sha256": "0e0a4caf7f924d5dd45601b8e78efa26e31f32b35ccdb6341a79a5a999b85fc4"
+    },
+    {
+      "path": "include/bsp/material_transform_constants.hpp",
+      "sha256": "c08f7fdd5300130b13ee53bd09d880cc42b456468a9fa46ca5ca857e22cf5e47"
+    },
+    {
+      "path": "src/material_scalar_constants.cpp",
+      "sha256": "466f7d4a41ba726d0c838bfd02750ed4cfbb1c681c0bec92c57983870cad3100"
+    },
+    {
+      "path": "include/bsp/material_scalar_constants.hpp",
+      "sha256": "f8358dafc5a32b884e581b509ffe9bf270e2495759610304a3f1d2bdc7bf792d"
+    },
+    {
+      "path": "src/material_point_light_constants.cpp",
+      "sha256": "389b0b705fa5bf628791cd44d291d4cd8b61bf73a628dcb6e12a8746a84dd612"
+    },
+    {
+      "path": "include/bsp/material_point_light_constants.hpp",
+      "sha256": "167a38dc4e15f7ce644e0d5c2413e82e6e7b3a01ade03b2e639c256bf88281fe"
+    },
+    {
+      "path": "src/mesh_decode_bindings.cpp",
+      "sha256": "4944ba1a4282b6eb9daf94a60fdfda0d7d1a76d2b7c2ec4f801bbbd05cef2f8f"
+    },
+    {
+      "path": "include/bsp/mesh_decode_bindings.hpp",
+      "sha256": "1be8f4525bfbd464e4c7fdacc5722d348d02a9e4102329b6cb970e2c8f2afa68"
+    },
+    {
+      "path": "src/d3d9_states.cpp",
+      "sha256": "5cd94fa04d677b97055cb75c86f9b5952e9a40228e238a0b4c0ffd51e34f0f08"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "sha256": "2d1c59399dbf9caddd3839b1166b0b8e05524952b3652610135553d23fe6e92d"
+    },
+    {
+      "path": "src/mesh_gpu_streams.cpp",
+      "sha256": "ad3216c4cdd07e44e961c3484f6af1cd66f50b73028d7473ee54dfd3d9095dda"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "sha256": "78a963ca48b87924e9859815c0775968659aa084337f23bced043f215ad433fa"
+    }
+  ],
+  "artifacts_at_recording": [
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "947f3d3b41493c2736def3363c1bac8ee226b3e81b03beede8709d987bac3889"
+    },
+    {
+      "path": "build/win32/Release/bsp_d3d9_probe.exe",
+      "sha256": "f73a0ec76a0e786daf4bbefc957b88445180e58aebde8bf70ca24a821727ef20"
+    }
+  ],
+  "remaining": [
+    "00B46A70 system prefix builder, native scene/time/fog/light/shadow owners and lifecycle.",
+    "Dynamic source kinds1/3 implementation and their factories; current compiler explicitly rejects them.",
+    "Native bone/skin animator owner construction, optimized type runtime initialization and LOD threshold source.",
+    "Native ShadowTexture generation, directional shadow factory and pass+84 fallback acquisition.",
+    "Full native material-entry orchestration in the installed mesh probe; it currently exercises the ordered material builder in its existing host draw.",
+    "Binary-compatible object layout, allocation/intrusive lifetime, complete game executable and required gameplay validation."
+  ],
+  "abi_compatible": false,
+  "original_game_visual_parity": false,
+  "game_validated": false,
+  "next_packet_plan": {
+    "path": "reports/material_system_builder_next.json",
+    "sha256": "e9f8dcb6b5b2c77dc57b21572e652edb9542b3dd31d3fb23a1d2f7c709df3125"
+  },
+  "source_hash_reverification_utc": "2026-09-10T15:06:30.935791+00:00",
+  "original_executable_hash_reverified": true
+}

@@ -1,0 +1,475 @@
+{
+  "task": "next bounded reconstruction after material00B42350",
+  "created_utc": "2026-09-10T06:10:47.898994+00:00",
+  "status": "read_only_native_plan_no_implementation_or_game_validation",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "project_file_exists": true,
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "verification": "Every live query used tools/bsp.py ghidra, whose client verifies the configured project/program/language/base before reading; no imports, Ghidra mutations or ledger edits.",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_extent": {
+    "start": "00b46a70",
+    "end_exclusive": "00b47639",
+    "length": 3017,
+    "sha256": "60ecc210cbbafe2cbeece90dd0d4a6ebac84d90bc598c725729451981e93b3c2",
+    "ghidra_matches_installed_pe": true
+  },
+  "original_abi": "ECX optional scene/lighting owner, EDX camera, no stack arguments, plain RET. EBP/EDI preserve those inputs. This is separate from00B42350 material-tail writer.",
+  "constants": [
+    {
+      "start": "00e13078",
+      "end_exclusive": "00e1307c",
+      "length": 4,
+      "sha256": "95e71cbf73f14e32da496e2d12a460fe9f33c385a2f22141088eba28b61c4f09",
+      "ghidra_matches_installed_pe": true,
+      "bits_le": "4d000000"
+    },
+    {
+      "start": "00cfad80",
+      "end_exclusive": "00cfad84",
+      "length": 4,
+      "sha256": "ad286c64373644140ff927b256b8415467b5d27645ff997010b15519d022631b",
+      "ghidra_matches_installed_pe": true,
+      "bits_le": "00000043"
+    },
+    {
+      "start": "00ce3978",
+      "end_exclusive": "00ce397c",
+      "length": 4,
+      "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+      "ghidra_matches_installed_pe": true,
+      "bits_le": "0000804f"
+    }
+  ],
+  "execution_ordered_segments": [
+    {
+      "id": "prologue_capture",
+      "range": {
+        "start": "00b46a70",
+        "end_exclusive": "00b46a84",
+        "length": 20,
+        "sha256": "3fc1f0af5d0af7ad247485fc729a09a7128204d7b893789dfb64211c6075ac6f"
+      },
+      "actions": "Reserve4D4 stack bytes, retain incoming scene in EBP and camera in EDI, capture global00F8D39C service in ECX. Prefix starts post-prologue ESP+14; no clear."
+    },
+    {
+      "id": "camera_matrices",
+      "range": {
+        "start": "00b46a84",
+        "end_exclusive": "00b46b3e",
+        "length": 186,
+        "sha256": "ed5dcd85f7fdd2c98b782e043dc6d2cec11edb24feba20b935c858e707bc0d6d"
+      },
+      "writes_in_order": [
+        "c0..3 screen-to-texture",
+        "c6.xyz eye position",
+        "c7..10 view",
+        "c11..14 inverse view/world",
+        "c15..18 view-projection",
+        "c23..26 projection",
+        "c19..22 inverse view-projection"
+      ],
+      "inputs": [
+        "captured service+1D8 matrix via00B0D100",
+        "actual CameraFrameState/CameraState/CameraTransform; native world+F0, translation+120/124/128 and dirty bits"
+      ],
+      "calls": [
+        "00B404A0 at00B46A92,ADE,AFD,B11,B25,B39",
+        "00B6DB70 on clear transform bit2 at00B46AA0 and00B46AEA",
+        "00B6FCB0 view at00B46AD1",
+        "00B70490 view-projection at00B46B04",
+        "00B6FCF0 projection at00B46B18",
+        "00B70510 inverse view-projection at00B46B2C"
+      ],
+      "semantics": "Matrix copies use x87 FLD/FSTP; eye position captures three MOVSS words before stores. Projection executes before inverse view-projection although register order differs."
+    },
+    {
+      "id": "system_parameter_words",
+      "range": {
+        "start": "00b46b3e",
+        "end_exclusive": "00b46c50",
+        "length": 274,
+        "sha256": "50b789f51c139578f4e5a000fbb2ff6c9ebd4216de212a5074388bf70a8a4f3f"
+      },
+      "writes_in_order": [
+        "c27..30"
+      ],
+      "inputs": [
+        "global0108FC30..0108FC6C sixteen live DWORDs"
+      ],
+      "semantics": "MOVSS exact per-word copies; no independent snapshot or numerical conversion."
+    },
+    {
+      "id": "camera_axes",
+      "range": {
+        "start": "00b46c50",
+        "end_exclusive": "00b46cb4",
+        "length": 100,
+        "sha256": "5dbb840a7a71623fc4adb1bdf414ad7f7f2f8729b8ffd53880ad2114539ef1cc"
+      },
+      "writes_in_order": [
+        "c31.xyz X axis",
+        "c32.xyz Y axis"
+      ],
+      "calls": [
+        "00B70FE0 at00B46C50",
+        "00B70EA0 at00B46C80"
+      ],
+      "inputs": [
+        "same camera+2F0 shared flag100; cached Y+440 and X+44C; world forward+110/+114/+118"
+      ],
+      "handoff": "00B46C89 captures global01090AB0 into ECX before last two Y stores; that exact owner supplies following c33.x. Axis getters must remain one shared-cache packet."
+    },
+    {
+      "id": "time_elapsed_wave",
+      "range": {
+        "start": "00b46cb4",
+        "end_exclusive": "00b46d97",
+        "length": 227,
+        "sha256": "a1b83b2cd967c13e6d44ea0413048206d5c56a89dbb660ff89c0773b91bc2374"
+      },
+      "writes_in_order": [
+        "c33.x captured timer+4 exact",
+        "c33.y lazy service004DE4B0 result+18 exact",
+        "c33.z global00F8C274 owner+2C x87 getter00AF0460",
+        "c33.w global00F8C210 owner+8 x87 getter00AD5700",
+        "c34.x signed64 numerator/denominator via timer virtual+1C",
+        "c34.y byte24 of00B0CF30(global00F8D39C) to float",
+        "c34.z second independent00B0CF30 result+28 exact",
+        "c75.x camera byte174 to float",
+        "c34.w reciprocal camera+1C4 using x87",
+        "c75.y00AD5740(global00F8C210) AL byte11 to float"
+      ],
+      "callback_boundaries": [
+        "004DE4B0 at00B46CC2 is lazy singleton initialization, not a plain no-op getter",
+        "reload global01090AB0 at00B46CF9; call its virtual+1C at00B46D04 returns pointer to two signed64 values",
+        "00B0CF30 separately at00B46D1A and00B46D36",
+        "global00F8C210 reload before00AD5740 at00B46D74"
+      ],
+      "handoff": "Capture camera+184 fog pointer in ESI at00B46D79; after c75.y store, null skips to00B46ED1. Preserve FILD64/FILD64/FDIVP/FSTP and reciprocal spill order, not guessed time units."
+    },
+    {
+      "id": "fog_and_underwater",
+      "range": {
+        "start": "00b46d97",
+        "end_exclusive": "00b46ed1",
+        "length": 314,
+        "sha256": "6a8e1fa96f216135451a61f0040541a50d4aa6aff969073e73a6358a923e87ef"
+      },
+      "writes_in_order": [
+        "c72.xy from fog+80,+84",
+        "c73.xyz from fog+88,+8C,+90",
+        "c35.xyz from fog+6C,+70,+68",
+        "c36.xyz from fog+74,+78,+7C",
+        "c38..41 four directional colors fog+28+16*i",
+        "c37 fog color+08",
+        "c74 underwater color+18"
+      ],
+      "inputs": [
+        "captured fog owner ESI for scalar and directional reads; reload current camera+184 separately before c37 and c74 color getters"
+      ],
+      "calls": [
+        "scalar FLD/RET getters00B84DA0,DB0,E20,E30,E40,CB0,CC0,CA0,CD0,CE0,CF0",
+        "00B84FD0(index0..3), ECX fog, EAX fog+28+16*index, RET4",
+        "00B84C60 EAX fog+08 and00B84C90 EAX fog+18, RET"
+      ],
+      "semantics": "Scalar loads/stores are x87, color copies are ordered raw DWORD pairs. Captured fog absence preserves all these destinations; padding is untouched."
+    },
+    {
+      "id": "scene_lighting",
+      "range": {
+        "start": "00b46ed1",
+        "end_exclusive": "00b4707b",
+        "length": 426,
+        "sha256": "a5f5dc4199ec677a0db11433a9b90806f9af0575f067fca55a32386bf1e54c36"
+      },
+      "writes_in_order": [
+        "c43 ambient and c44 diffuse selected by camera mode3",
+        "c45 specular",
+        "c52.xyz direction",
+        "c42.x native128",
+        "c46..51 ambient cube six raw float4 records"
+      ],
+      "inputs": [
+        "optional incoming scene;00B72110 returns[scene+1C]=A; A+1C sentinel->first node+8=L; A+10=E",
+        "mode3 uses E+28 and L+1B4; other modes E+18 and L+184",
+        "L+194 specular4; L+1E0 direction3; E+38+16*i ambient cube"
+      ],
+      "boundary": "Scene null or A null skips lighting AND shadow. Empty first-light list calls00BF6713 native failure; do not convert it into absent lighting. L and E have no additional native null checks. Retain the same first light L for following shadow owner getter."
+    },
+    {
+      "id": "shadow_owner",
+      "range": {
+        "start": "00b4707b",
+        "end_exclusive": "00b4708c",
+        "length": 17,
+        "sha256": "9e863030386a8ec03bfbe6032e728b144a92a390e4854920599af3915b793e82"
+      },
+      "calls": [
+        "00B7AAB0 at00B4707D: ECX=L, EAX=[L+174], RET"
+      ],
+      "inputs": [
+        "same first directional light from preceding scene-lighting stage"
+      ],
+      "boundary": "Capture shadow owner S in ESI; null skips to00B475B4."
+    },
+    {
+      "id": "shadow_matrices",
+      "range": {
+        "start": "00b4708c",
+        "end_exclusive": "00b474cc",
+        "length": 1088,
+        "sha256": "f497459a6190a81be350f9c2ed53f08bd05f138a96f2372505111a65047b762c"
+      },
+      "writes_in_order": [
+        "c53..56 S+144 transposed",
+        "c57..60 S+184 transposed",
+        "c61..64 S+1C4 transposed",
+        "c65..68 S+204 transposed"
+      ],
+      "semantics": "Inline MOVSS read/store pairs, raw-bit transpose in destination order. Do not reuse00B404A0 x87 writer here; it quiets signaling NaNs."
+    },
+    {
+      "id": "shadow_direction_limits",
+      "range": {
+        "start": "00b474cc",
+        "end_exclusive": "00b4753a",
+        "length": 110,
+        "sha256": "59d8ba1d8c9d8da576c3da9521c299b8bdb45402711b52fc0c6e81543ca2a610"
+      },
+      "writes_in_order": [
+        "c69.xyz S+38/+3C/+40",
+        "c70 S+390/+394/+398/+39C"
+      ],
+      "semantics": "Capture all three direction words before stores; capture all four limit words before stores. c69.w untouched."
+    },
+    {
+      "id": "shadow_dimensions",
+      "range": {
+        "start": "00b4753a",
+        "end_exclusive": "00b475b4",
+        "length": 122,
+        "sha256": "cdd2e3da096fa5c7c3b79e092d0dc96318e0032851f0ac941463c645dcdffa8d"
+      },
+      "writes_in_order": [
+        "c76.x width",
+        "c76.y height",
+        "c76.z reciprocal stored width",
+        "c76.w reciprocal stored height"
+      ],
+      "callback_boundaries": [
+        "S virtual+8 at00B47541 then returned texture virtual+3C at00B4754A",
+        "S virtual+8 AGAIN at00B4756C then returned texture virtual+40 at00B47575"
+      ],
+      "semantics": "Do not cache the returned texture across width/height; callbacks may return different owners. DWORD dimensions use FILD signed32 plus conditional2^32 correction, each float spill occurs before x87 reciprocals. Zero dimensions have no guard."
+    },
+    {
+      "id": "optional_context_depth_scale",
+      "range": {
+        "start": "00b475b4",
+        "end_exclusive": "00b475fd",
+        "length": 73,
+        "sha256": "324c0119f28a50dbba973e93339da4dffe4b82e808d1725b07c2d9b654a31f74"
+      },
+      "writes_in_order": [
+        "c71 exact float4"
+      ],
+      "inputs": [
+        "00B6FEB0 returns[camera+43C] pointer"
+      ],
+      "semantics": "Call getter at00B475B6 to test; call again at00B475C1 when nonnull, then MOVSS copy. Independent of scene/shadow absence."
+    },
+    {
+      "id": "dual_upload",
+      "range": {
+        "start": "00b475fd",
+        "end_exclusive": "00b4762e",
+        "length": 49,
+        "sha256": "5ff5862c669526e534021f1b82de166e29c52c12433bf346b99b0c856043c6fa"
+      },
+      "calls": [
+        "00B21820 VS at00B47611",
+        "00B218C0 PS at00B47629"
+      ],
+      "inputs": [
+        "same local prefix buffer starting post-prologue ESP+14",
+        "start register0",
+        "live global00E13078 count independently reloaded before VS and PS",
+        "live global00F8D394 renderer independently reloaded before each call"
+      ],
+      "semantics": "No HRESULT branch; PS still executes after VS failure. Installed initial count is77, but preserve actual count reads."
+    },
+    {
+      "id": "epilogue",
+      "range": {
+        "start": "00b4762e",
+        "end_exclusive": "00b47639",
+        "length": 11,
+        "sha256": "4b870f18d7a21c0c7564adf6efb40a7dca4e13cc713966c003e78d82e314b377"
+      },
+      "actions": "Restore EDI/ESI/EBP/EBX; ADD ESP,4D4; plain RET."
+    }
+  ],
+  "already_reconstructed_helpers": [
+    "00B404A0 src/material_constants.cpp exact sequential x87 transpose",
+    "00B6DB70/00B6FCB0/00B70490 src/camera_transform.cpp existing cache helpers",
+    "00B6FCF0 src/camera_projection.cpp projection cache",
+    "00B70510 src/camera_frame_state.cpp inverse view-projection companion",
+    "00B21820/00B218C0 D3D9StateCache constant upload methods"
+  ],
+  "next_wave_packets": [
+    {
+      "id": "system_camera_matrix_prefix",
+      "ready": true,
+      "range": {
+        "start": "00b46a84",
+        "end_exclusive": "00b46c50",
+        "length": 460,
+        "sha256": "6b083167f0c8bdcd2018887cc2e221752f23fe26a32605bd9156b5e9c3c0ac28"
+      },
+      "owned_files": [
+        "include/bsp/system_camera_constants.hpp",
+        "src/system_camera_constants.cpp",
+        "docs/SYSTEM_CAMERA_CONSTANTS.md",
+        "reports/system_camera_constants_audit.json"
+      ],
+      "helper_addresses": [
+        "00b0d100"
+      ],
+      "contract": "Patch supplied initialized prefix words with the exact ordered camera matrices, eye xyz and16 global words. Take actual CameraFrameState plus captured screen-service matrix owner and actual global word references; never create a second camera cache. Excludes axis getters and timers. Primary supplies service captured at00B46A7B and owns prelude/owner loading.",
+      "reuse": [
+        "write_system_matrix_00b404a0",
+        "refresh_camera_world_00b6db70",
+        "get_camera_view_00b6fcb0",
+        "get_camera_view_projection_00b70490",
+        "get_camera_projection_00b6fcf0",
+        "get_camera_inverse_view_projection_00b70510"
+      ],
+      "named_but_incomplete_dependencies": [
+        "actual renderer/service00F8D39C owner supplying+1D8 matrix; getter body known, service lifecycle unresolved",
+        "CameraFrameState is typed companion, not native camera constructor/lifecycle",
+        "00B46A70 primary composition/upload still required"
+      ],
+      "why_independent": "Disjoint outputs c0..3,c6.xyz,c7..30 and disjoint files; depends only on existing camera helpers and explicit owner inputs. No fog/lighting/shadow code dependency. Preserve native serial runtime order."
+    },
+    {
+      "id": "system_fog_prefix",
+      "ready": true,
+      "range": {
+        "start": "00b46d97",
+        "end_exclusive": "00b46ed1",
+        "length": 314,
+        "sha256": "6a8e1fa96f216135451a61f0040541a50d4aa6aff969073e73a6358a923e87ef"
+      },
+      "owned_files": [
+        "include/bsp/system_fog_constants.hpp",
+        "src/system_fog_constants.cpp",
+        "docs/SYSTEM_FOG_CONSTANTS.md",
+        "reports/system_fog_constants_audit.json"
+      ],
+      "helper_addresses": [
+        "00b84ca0",
+        "00b84cb0",
+        "00b84cc0",
+        "00b84cd0",
+        "00b84ce0",
+        "00b84cf0",
+        "00b84da0",
+        "00b84db0",
+        "00b84e20",
+        "00b84e30",
+        "00b84e40",
+        "00b84fd0",
+        "00b84c60",
+        "00b84c90"
+      ],
+      "contract": "Borrow actual camera+184 fog owner with exact scalar/color fields; preserve captured-versus-reloaded owner schedule and null gate. Patch c72,c73,c35,c36,c38..41,c37,c74 in execution order using x87 scalars and raw colors; never zero padding. No MaterialLighting reinterpretation: fog is a separate owner.",
+      "reuse": [],
+      "named_but_incomplete_dependencies": [
+        "Fog owner field/getter contracts are verified; native owner factory/lifecycle remains required",
+        "CameraFrameState.ambient_rgba currently exposes only owner+08 color; it is not the full fog object",
+        "Primary captures fog pointer at00B46D79 and keeps its live camera binding for later color getter reloads"
+      ],
+      "why_independent": "Disjoint register subset and files; plain getter field bodies and outputs are independent of camera-cache, timer and lighting implementation. No callback-derived result from another worker is required."
+    },
+    {
+      "id": "system_scene_lighting_shadow_prefix",
+      "ready": true,
+      "range": {
+        "start": "00b46ed1",
+        "end_exclusive": "00b475b4",
+        "length": 1763,
+        "sha256": "f5a3f7b2b12066c3fa7ee6e3c0de48753cee39e278317e7ab37585bb1fb4c082"
+      },
+      "owned_files": [
+        "include/bsp/system_lighting_constants.hpp",
+        "src/system_lighting_constants.cpp",
+        "docs/SYSTEM_LIGHTING_CONSTANTS.md",
+        "reports/system_lighting_constants_audit.json"
+      ],
+      "helper_addresses": [
+        "00b72110",
+        "00b7aa20",
+        "00b7aa30",
+        "00b7aa40",
+        "00b7aab0"
+      ],
+      "contract": "Keep scene lighting and shadow in one packet because shadow depends on the exact first light captured by lighting. Expose actual retained scene/environment/light/shadow projections and required texture width/height callbacks. Patch c42.x,c43..51,c52.xyz,c53..68,c69.xyz,c70,c76 in native order; skip only actual absence; empty list is explicit failure. Separate raw shadow transpose from x87 camera transpose.",
+      "reuse": [
+        "Existing MaterialShadowMapOwner texture_08 concept may be adapted, but virtual+3C/+40 dimension callbacks and retained concrete texture owner must be established; do not assume LogicalTexture nominal metadata equals those results."
+      ],
+      "named_but_incomplete_dependencies": [
+        "Full scene list/sentinel ownership and directional-light/environment objects remain unconstructed",
+        "00B7AAB0 has a known pointer getter; existing name does not establish shadow owner implementation",
+        "Shadow virtual+8 returned-object virtual+3C/+40 concrete ABI/owner adapters remain required",
+        "00BF6713 failure semantics must remain explicit; it is not a no-op or absent-light fallback"
+      ],
+      "why_independent": "All coupled first-light/shadow state remains inside this packet, with outputs disjoint from camera and fog packets. Primary supplies real owner bindings and shared output span; no shared metadata or sibling code edits required."
+    }
+  ],
+  "primary_remaining": [
+    "Prelude actual screen-service capture and77-register scratch/output ownership",
+    "Camera axes00B46C50..00B46CB3: shared flag100, outputs+440/+44C; both00B70EA0/00B70FE0 together, not independent. Existing names/camera helpers do not implement these axes.",
+    "Axis dependencies004F9B30 and00419510 are unreconstructed;00419440 only has finite nonnegative sqrt core fragments, native exceptional CRT behavior00BF7030 remains open.",
+    "Time/wave00B46CB4..00B46D96: actual lazy singleton004DE4B0 (global00F8D420), timer01090AB0 virtual+1C and actual00F8C274/00F8C210/00F8D39C service owners; no guessed clock meanings or default values.",
+    "Optional camera+43C context depth-scale00B475B4..00B475FC getter is known, producer/lifetime unresolved.",
+    "Final VS/PS upload00B475FD..00B4762D with independently live renderer/count reloads; no early exit solely because VS HRESULT failed."
+  ],
+  "unwritten_words": {
+    "always": [
+      "c4..5 all",
+      "c6.w",
+      "c31.w",
+      "c32.w",
+      "c35.w",
+      "c36.w",
+      "c42.yzw",
+      "c52.w",
+      "c69.w",
+      "c72.zw",
+      "c73.w",
+      "c75.zw"
+    ],
+    "conditional": [
+      "No fog: c35.xyz,c36.xyz,c37..41,c72.xy,c73.xyz,c74",
+      "No scene or scene+1C: c42.x,c43..51,c52.xyz and all shadow outputs",
+      "No shadow owner: c53..68,c69.xyz,c70,c76",
+      "No camera+43C pointer: c71"
+    ],
+    "prior_doc_correction": "SHADER_CONSTANT_LIGHTING_ANALYSIS.md always-unwritten list omits c6.w,c31.w,c32.w,c35.w,c36.w. Full current listing has no stores to their offsets80,210,220,250,260, and matrix writes do not cover them.",
+    "required_contract": "Use an explicitly supplied initialized preimage buffer and preserve every unwritten component in bounded fragment tests. Native local stack is not cleared; any deterministic whole-prefix seed in production is an explicit behavior choice, never recovered zero defaults."
+  },
+  "execution_concurrency": "The three packets are independent for implementation/ownership only. Compose them serially in native order, with primary handling excluded axes/time/context/upload ranges and real owner bindings. A partition segment is not declared independent.",
+  "validation_plan": "Use strict Win32 build and existing checks first. At most focused native copy/cache cases for x87 versus raw transfers, no-clear/absent-owner preservation, mode3 choice and repeated shadow texture callbacks. No broad new suite.",
+  "evidence_pointers": [
+    "docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md",
+    "docs/SHADER_CONSTANT_LIGHTING_ANALYSIS.md",
+    "exports/bsp/functions/00b46a70/assembly.txt via tools/bsp.py show",
+    "include/bsp/camera_frame_state.hpp",
+    "src/material_constants.cpp"
+  ],
+  "full_system_builder_complete": false,
+  "game_validated": false
+}

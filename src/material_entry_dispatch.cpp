@@ -208,8 +208,10 @@ bool MaterialEntryDispatcher::bind_and_draw(MaterialEntryEffect& effect,
         }
         remember_failure(renderer.bind_texture_00b24710(sampler++, std::move(texture)), first_failure);
     }
+    HRESULT constant_failure = S_OK;
     if (!operations.build_constants_00b42350(program, entry, override_value,
-        environment_.constants, error)) return false;
+        environment_.constants, constant_failure, error)) return false;
+    remember_failure(constant_failure, first_failure);
     auto& constants = environment_.constants;
     std::uint32_t first = constants.first_register;
     const std::int32_t vertex_count = signed_word(static_cast<std::uint32_t>(pass.vb.end_register) - first);

@@ -133,7 +133,27 @@ bool compile_material_pass(IDirect3DDevice9& device, const ShaderScriptResolver&
     owner->base = std::move(base); owner->effect = std::move(effect);
     owner->engine_program_name = engine_name;
     owner->vertex_source = std::move(vs_source); owner->pixel_source = std::move(ps_source);
+    if (owner->effect_owner)
+        (*owner->effect_owner->parameter_selectors)[static_cast<std::size_t>(mode)] =
+            MaterialParameterSelector{owner->vb, owner->pb};
     output = std::move(owner); error.clear();
+    return true;
+}
+bool assign_compiled_material_effect_00b19210_fragment(MaterialCloneState& material,
+    std::shared_ptr<const CompiledMaterialPass> pass, std::string& error) {
+    if (!pass) {
+        if (!material.parameters.set_shader_00b19210_fragment({}, {}, error)) return false;
+        material.effect.reset();
+        return true;
+    }
+    if (!pass->effect_owner || !pass->effect_owner->parameter_selectors) {
+        error = "Material assignment requires the actual compiled effect and mode metadata";
+        return false;
+    }
+    if (!material.parameters.set_shared_shader_00b19210_fragment(pass->effect_owner,
+        pass->effect_owner->parameter_selectors, error)) return false;
+    pass->effect_owner->parameter_dirty_b4 = 1;
+    material.effect = std::move(pass);
     return true;
 }
 }

@@ -3,11 +3,13 @@
 #include "bsp/shader_reflection.hpp"
 #include "bsp/material_shadow_samplers.hpp"
 #include "bsp/instance_sort.hpp"
+#include "bsp/material_parameter_bindings.hpp"
 #include <memory>
 #include <utility>
 
 namespace bsp {
 struct MaterialCloneState;
+struct MaterialDynamicTextureBinding;
 // One native effect identity spans all fourteen mode programs. Its owned
 // fallback at+98 is acquired before the construction serial is consumed.
 // Shared ownership keeps metadata/fallback identity common across mode passes
@@ -18,6 +20,11 @@ struct CompiledMaterialEffect {
         : sort_metadata(metadata), fallback_texture_98(std::move(fallback)) {}
     MaterialEffectSortMetadata sort_metadata;
     std::shared_ptr<LogicalTexture> fallback_texture_98;
+    std::uint8_t parameter_dirty_b4{}; // ctor00B18E75 zero; setter00B19210 one
+    // Same actual fourteen-mode reflected metadata read by effect virtual+10.
+    // Materials/clones share it, so later compiled modes remain registrable.
+    std::shared_ptr<MaterialParameterSelectors> parameter_selectors =
+        std::make_shared<MaterialParameterSelectors>();
 };
 // Typed ownership for one compiled descriptor/combiner pass. This composes the
 // recovered source, reflection and state builders; it is not the complete
@@ -29,6 +36,10 @@ struct CompiledMaterialPass {
     ShaderConstantBindings vb, pb;
     MaterialSamplerPass pass;
     MaterialSamplerCounters sampler_counts;
+    // Native inline pointer slots+5C..68 and live DWORD count+6C. The current
+    // compiler accepts static/special sources only, so constructs an empty list.
+    std::array<std::shared_ptr<MaterialDynamicTextureBinding>, 4> dynamic_sources;
+    std::uint32_t dynamic_source_count{};
     MaterialShadowSamplerPass shadow_samplers;
     std::shared_ptr<RenderStateBlock> states = std::make_shared<RenderStateBlock>();
     ShaderLuaCode base, effect;
@@ -61,4 +72,11 @@ bool compile_material_pass(IDirect3DDevice9&, const ShaderScriptResolver&,
 // metadata is an explicit failure; no pointer/name hash or zero ID is invented.
 bool read_compiled_material_sort_fields(const MaterialCloneState&,
     const CompiledMaterialPass&, RenderBatchMaterialKeyFields&, std::string& error);
+// Actual effect assignment plus empty parameter table binding. The pass is
+// the retained typed owner already used by the material/sort consumer; its
+// shared effect supplies all compiled mode metadata; null clears the binding.
+// Marks actual effect+B4 on every nonnull assignment, including same identity.
+// Pool allocation/free and intrusive release ABI remain separate.
+bool assign_compiled_material_effect_00b19210_fragment(MaterialCloneState&,
+    std::shared_ptr<const CompiledMaterialPass>, std::string& error);
 }

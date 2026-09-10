@@ -85,11 +85,14 @@ public:
         InstanceRenderEntry&, float distance, std::string&) = 0;
     virtual bool effect_texture_00b17d90(MaterialEntryEffect&, std::uint32_t,
         std::shared_ptr<LogicalTexture>&, std::string&) = 0;
-    // REQUIRED real00B42350 builder. Patch actual shared blocks in place;
-    // dynamic textures/parameters/model/camera/lights/shadows remain inputs.
+    // Use recovered build_material_constants_00b42350 with actual retained
+    // owner bindings and shared blocks. Native dynamic source implementations
+    // and the system prefix are separate dependencies of those bindings.
+    // False is an owner/adapter error. Return accumulated COM failures through
+    // device_result while continuing subsequent native uploads/callback/draw.
     virtual bool build_constants_00b42350(MaterialEntryProgram&,
         InstanceRenderEntry&, MaterialEntryOverride*, MaterialEntryConstantState&,
-        std::string&) = 0;
+        HRESULT& device_result, std::string&) = 0;
     // Selected only when actual material+08 is nonzero. Native CALL EAX has
     // ECX=entry and no explicit stack arguments; callback ABI is unresolved.
     virtual bool material_callback(MaterialCloneState&, InstanceRenderEntry&,

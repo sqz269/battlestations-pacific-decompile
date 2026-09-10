@@ -28,9 +28,12 @@ HRESULT clone_material_00b18b60(const MaterialCloneState& source,
         // The existing setter has the same order and preserves all float bits.
         clone->lighting.set_lighting_record_00b179d0(0, source.lighting.values());
         clone->effect = source.effect;
+        std::string binding_error;
+        if (!clone->parameters.clone_shader_binding_empty_00b18b60_fragment(
+            source.parameters, binding_error)) return E_INVALIDARG;
         clone->word104 = source.word104;
         clone->word108 = source.word108;
-        // word100 remains its fresh-constructor zero, regardless of source.
+        // Parameter table/count+100 remains empty, regardless of source.
         output = std::move(clone);
         return S_OK;
     } catch (const std::bad_alloc&) {

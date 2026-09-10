@@ -1,0 +1,58 @@
+{
+  "recorded_utc": "2026-09-10T06:28:40.986865+00:00",
+  "status": "strict_win32_focused_native_selector_and_com_failure_continuation_passed",
+  "original_abi": "00B44750/00B43410 projections; new host interfaces, not native ABI.",
+  "scope": "Reuse existing local native selector fixture; one added case for failed material-constant texture COM binding followed by both constant uploads, callback, draw and statistics.",
+  "selector_cases": 21,
+  "selected_program_override_identities": 24,
+  "com_failure_continuation_cases": 1,
+  "fixture_dependencies": "Synthetic focused dependencies; this fixture is separate from the installed mesh probe.",
+  "commands": [
+    "cmd /d /c J:\\PROG\\battlestations-pacific-decompile\\local\\material_builder_entry_review.cmd",
+    "local/material_builder_entry_review.exe"
+  ],
+  "artifacts": [
+    {
+      "path": "local/material_builder_entry_review.cpp",
+      "sha256": "c9156b7ce3615ebca6e330f6056f838d498cb42ac479dab0a3e46373314aa589"
+    },
+    {
+      "path": "local/material_builder_entry_reference.hpp",
+      "sha256": "9567dc25f159715dfee3b2a02dc891201e1547c19de8c1c70310483e98675d3c"
+    },
+    {
+      "path": "local/material_builder_entry_review.cmd",
+      "sha256": "2842b0df826acdee180f70a0fc38d90bf9ad837707b003e57934ffa90a832c1b"
+    },
+    {
+      "path": "local/material_builder_entry_review.exe",
+      "sha256": "0cccf4ad47c955b0c2152e10f3a5541697c8deff79040447e84d4fe3520d9216"
+    },
+    {
+      "path": "local/material_builder_entry_compile.txt",
+      "sha256": "d65d2e6ec8bef6039a07781d4b86c508f512ef978ec5f30d17849911e5ab50b6"
+    },
+    {
+      "path": "reports/material_builder_entry_result.txt",
+      "sha256": "d74969aaae5e25a49543c8cc8ce9879c05cfff5bfc93086cf0b7086c659a0889"
+    },
+    {
+      "path": "src/material_entry_dispatch.cpp",
+      "sha256": "3bd6a4f8a6ac727178cabdef90225b736ecd5e0b40083595c7a7566482116f03"
+    },
+    {
+      "path": "include/bsp/material_entry_dispatch.hpp",
+      "sha256": "f1714be37172cba022297256cdb68c511742bc19ea1a683e7294a2fb3d762949"
+    },
+    {
+      "path": "src/material_constant_builder.cpp",
+      "sha256": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "947f3d3b41493c2736def3363c1bac8ee226b3e81b03beede8709d987bac3889"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}

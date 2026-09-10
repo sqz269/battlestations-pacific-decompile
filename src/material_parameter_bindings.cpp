@@ -58,7 +58,11 @@ bool overlaps(const void* source, std::size_t words, const std::vector<float>& o
 struct MaterialParameterBindings::Impl {
     std::shared_ptr<const void> shader;
     MaterialParameterSelectors selectors;
+    std::shared_ptr<const MaterialParameterSelectors> shared_selectors;
     std::vector<std::unique_ptr<MaterialParameterRecord>> parameters;
+    const MaterialParameterSelectors& metadata() const noexcept {
+        return shared_selectors ? *shared_selectors : selectors;
+    }
 };
 
 MaterialParameterBindings::MaterialParameterBindings() : impl_(std::make_unique<Impl>()) {}
@@ -74,8 +78,28 @@ bool MaterialParameterBindings::set_shader_00b19210_fragment(std::shared_ptr<con
     auto copied = selectors;
     impl_->parameters.clear(); // Also required when shader.get() did not change.
     impl_->selectors = std::move(copied);
+    impl_->shared_selectors.reset();
     impl_->shader = std::move(shader);
     return true;
+}
+bool MaterialParameterBindings::set_shared_shader_00b19210_fragment(
+    std::shared_ptr<const void> shader,
+    std::shared_ptr<const MaterialParameterSelectors> selectors, std::string& error) {
+    error.clear();
+    if (!impl_ || !selectors) { error = "Shared material metadata is missing or table was moved from."; return false; }
+    if (!valid_selectors(*selectors, error)) return false;
+    impl_->parameters.clear();
+    impl_->shared_selectors = std::move(selectors);
+    impl_->shader = std::move(shader);
+    return true;
+}
+bool MaterialParameterBindings::clone_shader_binding_empty_00b18b60_fragment(
+    const MaterialParameterBindings& source, std::string& error) {
+    if (!source.impl_) { error = "Source material parameter binding was moved from."; return false; }
+    if (source.impl_->shared_selectors)
+        return set_shared_shader_00b19210_fragment(source.impl_->shader,
+            source.impl_->shared_selectors, error);
+    return set_shader_00b19210_fragment(source.impl_->shader, source.impl_->selectors, error);
 }
 bool MaterialParameterBindings::replace_selectors(const MaterialParameterSelectors& selectors,
     std::string& error) {
@@ -84,6 +108,7 @@ bool MaterialParameterBindings::replace_selectors(const MaterialParameterSelecto
     if (!valid_selectors(selectors, error)) return false;
     auto copied = selectors;
     impl_->selectors = std::move(copied);
+    impl_->shared_selectors.reset();
     return true;
 }
 
@@ -105,8 +130,9 @@ MaterialParameterRegistration MaterialParameterBindings::register_words_00b17e10
     }
     auto next = existing ? *existing : MaterialParameterRecord{};
     bool found = false;
-    for (std::size_t i = 0; i < impl_->selectors.size(); ++i) if (impl_->selectors[i]) {
-        const auto& selector = *impl_->selectors[i];
+    const auto& metadata = impl_->metadata();
+    for (std::size_t i = 0; i < metadata.size(); ++i) if (metadata[i]) {
+        const auto& selector = *metadata[i];
         const auto vertex = first_register(selector.vertex, owned_name);
         const auto pixel = first_register(selector.pixel, owned_name);
         if (vertex < 0 && pixel < 0) continue; // Preserve both old selector words.
@@ -142,8 +168,8 @@ MaterialConstantPackStatus MaterialParameterBindings::pack_00b423c5(std::size_t 
     if (&vertex_words == &pixel_words) return MaterialConstantPackStatus::shared_output_buffer;
     if (!impl_) return MaterialConstantPackStatus::selector_out_of_range;
     std::vector<VertexConstantShape> shapes;
-    if (impl_->selectors[selector]) {
-        const auto& metadata = impl_->selectors[selector]->vertex.material_constants;
+    if (impl_->metadata()[selector]) {
+        const auto& metadata = impl_->metadata()[selector]->vertex.material_constants;
         shapes.reserve(metadata.size());
         for (const auto& constant : metadata)
             // Native00b5bc60 stores reflected RegisterCount at record+4h.

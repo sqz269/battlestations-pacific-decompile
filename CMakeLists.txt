@@ -32,6 +32,8 @@ target_sources(bsp_core PRIVATE src/compiled_material.cpp src/mesh_decode_bindin
 target_sources(bsp_core PRIVATE src/instance_geometry.cpp src/instance_upload.cpp src/instance_grouping.cpp src/structured_model.cpp src/material_clone.cpp src/instance_sort.cpp)
 target_sources(bsp_core PRIVATE src/scene_attachment.cpp src/model_bounds.cpp
   src/generated_model_lifetime.cpp src/camera_frame_state.cpp src/material_entry_dispatch.cpp)
+target_sources(bsp_core PRIVATE src/material_constant_builder.cpp
+  src/material_transform_constants.cpp src/material_scalar_constants.cpp src/material_point_light_constants.cpp)
 target_sources(bsp_core PRIVATE src/material_sort_metadata.cpp src/render_command_queue.cpp src/render_command_execution.cpp)
 
 target_sources(bsp_core PRIVATE src/mesh_buffers.cpp src/mesh_fields.cpp src/mesh_resource.cpp src/vertex_format.cpp)
