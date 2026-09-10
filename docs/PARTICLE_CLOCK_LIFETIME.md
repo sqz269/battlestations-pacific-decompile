@@ -5,6 +5,13 @@ manager mapping, captured Win32 critical section, registration and destruction
 used by `particle_clock_singleton_004de4b0`. It uses the same `ParticleClock` and
 `00F8D420` slot as the frame-time updater and system constant prefix.
 
+The root integration also preserves the updater's raw `shader_time` store and
+the separate per-sink x87 argument load/spill. One original-byte comparison with
+signaling NaN `7F800123` retains that word in the clock, forwards quieted
+`7FC00123`, and matches x87 invalid status. This is separate from the lifecycle
+fixture described below. The installed-system probe now exercises actual lazy
+allocation, one manager-driven particle destruction and both cleared slots.
+
 The adapter requires the actual `SingletonLifetimeDomain` and string
 `SizedStoragePool`. It creates neither another manager nor another allocator or
 lock. Its callback target and string pool must remain alive through domain

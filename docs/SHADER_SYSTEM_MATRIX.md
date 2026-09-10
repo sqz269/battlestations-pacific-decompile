@@ -26,9 +26,10 @@ writer to prepare cViewProjMat atc15 from the diagnostic identity camera matrix.
 Win32 Release build, both existing CTests and the full D3D9 probe pass, including
 centerFF407FBF/outsideFF000000 with state restoration. No new test target was
 added. Exceptional FP inputs, overlap and native differential behavior were not
-fixture-tested. Full camera caching, prefix gathering/upload and game execution
-remain unfinished; parallel findings are recorded in the constant dispatch,
-lighting and camera analysis documents.
+fixture-tested in that initial helper batch. Camera caching and the complete
+ordered typed prefix gathering/upload are now integrated; see
+`CAMERA_FRAME_STATE.md` and `SYSTEM_CONSTANT_BUILDER.md` for current evidence.
+Native world/service construction and game execution remain unfinished.
 
 Follow-up: the generated draw now obtains a perspective matrix from the recovered
 lazy camera projection slice instead of its earlier identity-only fixture.

@@ -68,12 +68,22 @@ const SystemLightingWords4& get_system_ambient_cube_00b7aa40(
     const SystemLightEnvironment&, std::uint32_t index); // caller ensures index<6
 SystemShadowMapOwner* get_system_shadow_owner_00b7aab0(const SystemDirectionalLight&);
 
+// Actual runtime adapter for00BF6713 ->00BF66EF(0,0,0,0,0). The decoded
+// installed handler may return. A successful return continues from the native
+// call site using the retained lighting and first/sentinel pointers. False is
+// an unavailable host runtime/binding, never the native empty-list behavior.
+class SystemInvalidParameterRuntime {
+public:
+    virtual ~SystemInvalidParameterRuntime() = default;
+    virtual bool invalid_parameter_noinfo_00bf6713(std::string&) = 0;
+};
+
 enum class SystemLightingPrefixStatus {
     complete,
     scene_absent,
     lighting_absent,
     shadow_absent,
-    native_empty_light_list_failure,
+    invalid_parameter_runtime_unbound,
     invalid_projection,
     callback_failed,
     output_too_short
@@ -84,11 +94,14 @@ enum class SystemLightingPrefixStatus {
 // Prefix is the caller's initialized77-register float buffer; no clear/resize.
 // Pass the actual camera+198 mode and native00CFAD80 word references. The
 // latter is installed128.0f. Required shadow callbacks execute at native points;
-// callback failure keeps earlier writes. Empty list explicitly stops this host
-// boundary at00BF6713: the native CRT handler/possible return is unresolved.
+// callback failure keeps earlier writes. Empty first==sentinel calls the actual
+// supplied invalid-parameter runtime; a returned handler continues with that
+// captured sentinel, without re-reading scene, sentinel slot or next pointer.
+// Camera mode, environment and sentinel+8 are read AFTER the handler returns.
 // No texture dimension fallback, null-texture skip, zero-size guard or upload.
 SystemLightingPrefixStatus write_system_lighting_shadow_prefix_00b46ed1(
     const SystemLightingScene* scene, const std::uint32_t& camera_mode_198,
     const std::uint32_t& exponent_word_00cfad80, float* prefix,
-    std::size_t word_count, std::string& error);
+    std::size_t word_count, std::string& error,
+    SystemInvalidParameterRuntime* invalid_parameter_runtime = nullptr);
 }

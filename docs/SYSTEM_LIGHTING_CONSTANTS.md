@@ -44,11 +44,16 @@ texture; the first result is not reused. `SystemShadowMapOwner` can be bound to
 the same real owner as the parent-owned `MaterialShadowMapOwner`, but that
 adapter and native lifecycle remain integration dependencies.
 
-An empty first-light list is the distinct `native_empty_light_list_failure`
-boundary at `00BF6713`, before any lighting write. It is not successful absence.
-The inspected CRT wrapper calls `00BF66EF` with five zero arguments and has a
-return path; the native caller continues at `00B46EF8` if it returns. This
-packet does not invent a no-return property or emulate an unknown CRT handler.
+An empty first-light list calls `00BF6713`, before any lighting write. The
+wrapper calls `00BF66EF` with five zero arguments. Current integration requires
+the actual `SystemInvalidParameterRuntime` on that path; a returned handler
+continues at `00B46EF8` using the retained lighting and first/sentinel pointers.
+Camera mode, environment, and the sentinel's light are then reloaded. Appending
+a node or replacing the scene/sentinel slot does not select another node.
+An unbound runtime is an explicit host error. The earlier packet audit records
+the superseded unconditional stop; the correction and native comparison are in
+[SYSTEM_EMPTY_LIGHT_HANDLER.md](SYSTEM_EMPTY_LIGHT_HANDLER.md) and
+[the review report](../reports/system_empty_light_handler_review.json).
 The companion returns the explicit boundary status; native handler behavior and
 possible sentinel payload continuation remain unreconstructed.
 

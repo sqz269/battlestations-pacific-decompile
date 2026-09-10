@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/camera_transform.hpp"
 #include "bsp/d3d9_states.hpp"
+#include "bsp/system_fog_constants.hpp"
 
 namespace bsp {
 using CameraPlane = std::array<float, 4>;
@@ -20,15 +21,16 @@ struct CameraViewport {
 
 // One stable companion per CameraState, sharing its projection.valid_flags.
 // New storage/lifetime API, not the original camera layout or constructor.
-// Borrowed viewport/ambient objects must remain alive through their last use.
+// Borrowed viewport/fog/context objects must remain alive through their last use.
 struct CameraFrameState {
     explicit CameraFrameState(CameraState& value) : camera(value) {}
     CameraFrameState(const CameraFrameState&) = delete;
     CameraFrameState& operator=(const CameraFrameState&) = delete;
     CameraState& camera;
+    std::uint8_t byte_174{}; // native +174; system prefix c75.x
     std::uint8_t enabled{}; // +17C
     const CameraViewport* viewport{}; // +180; required when enabled
-    const CameraPlane* ambient_rgba{}; // +184 object's +08 float4, optional
+    const SystemFogState* fog_184{}; // one actual +184 owner, including ambient +08
     DWORD clear_flags{}; // +188
     float clear_depth{}; // +18C
     D3DCOLOR clear_color{}; // +190
@@ -36,6 +38,8 @@ struct CameraFrameState {
     std::uint32_t render_mode{}; // +198; material pass selector, not batch index
     CameraMatrix inverse_view_projection{}; // +260; projection flag20
     CameraPlaneSet frustum; // +2F4; projection flag4
+    const CameraPlane* context_depth_scale_43c{}; // native +43C, optional c71
+    std::array<float, 3> axis_y{}, axis_x{}; // native +440,+44C; shared projection flag100
 };
 
 // Original fastcall ECX=dst, EDX=src, RET. Exact x87/SSE operation schedule;
@@ -72,6 +76,7 @@ public:
     void execute_camera_command_00b71360(CameraFrameState&);
     void restore_pending_planes_00b25080();
     void append_plane_00b25040(const CameraPlane&);
+    D3D9StateCache& cache() const noexcept { return cache_; } // Host companion identity check.
     const CameraViewport* viewport() const { return viewport_; }
     const CameraPlaneSet& plane_set() const { return plane_set_; }
     const std::array<CameraPlane, 14>& device_clip_planes() const { return clip_planes_; }

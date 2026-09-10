@@ -32,16 +32,27 @@ inline constexpr std::uint32_t kParticleClockRecordSinkOffset = 0x28u;
 // Allocated by 004de4b0 with 1Ch bytes; the constructor stores two vtables at +0
 // and +4 and zeroes +8h..+14h. +18h is written only by 00b19a10 and read by the
 // shader system-constant prefix at 00b46cb4 as component y of "Time" (c33).
+struct ParticleClockOwnedRecord;
 struct ParticleClock {
     float shader_time{}; // +18h
     ParticleTimeSink** sinks{}; // derived from +8h, which points at the records
     std::uint32_t sink_count{}; // +0Ch
+    // Opaque native identities/words, not callable host vtables or layout.
+    // The lazy constructor writes these and sinks/count, leaving shader_time
+    // at its supplied allocation preimage. Aggregate defaults are host choices.
+    std::uint32_t base_vtable_00{}, secondary_vtable_04{};
+    std::uint32_t native_capacity_10{}, native_extra_14{};
+    // Actual owned +8h record array, when supplied by the concrete lifetime
+    // adapter. The earlier sinks field is a borrowed projection for callers
+    // that do not own native records. The updater prefers this actual array.
+    ParticleClockOwnedRecord* owned_records{};
 };
 
-// 00b19a10, __thiscall(this, float), RET 4. Stores the time, then walks the
-// records front to back. The native loop reloads +8h and +0Ch on every iteration
-// but advances a raw pointer, so a sink that reallocates the container is not
-// handled; that is reproduced here by re-reading the count each step.
+// 00b19a10, __thiscall(this, float), RET 4. Captures +8h, stores raw time, then
+// walks owned records front to back. After each per-call x87 argument spill and
+// virtual call, reloads +8h/+0Ch for the end while advancing its raw cursor.
+// A sink reallocating records retains the native invalidation risk. The older
+// borrowed sinks projection retains its checked index-based compatibility path.
 void set_particle_clock_time_00b19a10(ParticleClock& clock, float time_ms);
 
 // ---------------------------------------------------------------------------

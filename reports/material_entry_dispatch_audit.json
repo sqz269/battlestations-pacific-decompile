@@ -408,5 +408,14 @@
     "material_entry_dispatch",
     "material_entry_dispatch_helpers",
     "material_entry_dispatch_apply_helpers"
-  ]
+  ],
+  "superseding_integration_review": {
+    "evidence": "reports/material_renderer_reloads_audit.json; reports/system_constant_builder_audit.json",
+    "corrections": [
+      "00B43453 pushes0x39: D3DRS_STENCILREF57. OldALPHAREF/nameproposalpreservedbelowashistoricalevidence.",
+      "Renderer is a live slot with savedstate/planeowners and independentreloads.",
+      "Ordered00B42350and00B46A70builders nowintegrated; oldrequired-buildertextdescribesearlierpacket."
+    ],
+    "original_preimages_and_proposals_preserved": true
+  }
 }

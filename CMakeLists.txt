@@ -31,9 +31,14 @@ target_sources(bsp_core PRIVATE src/structured_reader.cpp src/structured_resourc
 target_sources(bsp_core PRIVATE src/compiled_material.cpp src/mesh_decode_bindings.cpp src/mesh_gpu_streams.cpp src/building_instance.cpp src/resource_parser_map.cpp src/structured_resource_registry.cpp)
 target_sources(bsp_core PRIVATE src/instance_geometry.cpp src/instance_upload.cpp src/instance_grouping.cpp src/structured_model.cpp src/material_clone.cpp src/instance_sort.cpp)
 target_sources(bsp_core PRIVATE src/scene_attachment.cpp src/model_bounds.cpp
-  src/generated_model_lifetime.cpp src/camera_frame_state.cpp src/material_entry_dispatch.cpp)
+  src/generated_model_lifetime.cpp src/camera_frame_state.cpp src/material_entry_dispatch.cpp
+  src/material_effect_plane.cpp)
 target_sources(bsp_core PRIVATE src/material_constant_builder.cpp
   src/material_transform_constants.cpp src/material_scalar_constants.cpp src/material_point_light_constants.cpp)
+target_sources(bsp_core PRIVATE src/system_camera_constants.cpp
+  src/system_fog_constants.cpp src/system_lighting_constants.cpp
+  src/system_camera_axes.cpp src/system_time_constants.cpp src/system_constant_builder.cpp
+  src/legacy_crt_math.cpp src/singleton_lifetime.cpp src/particle_clock_lifetime.cpp)
 target_sources(bsp_core PRIVATE src/material_sort_metadata.cpp src/render_command_queue.cpp src/render_command_execution.cpp)
 
 target_sources(bsp_core PRIVATE src/mesh_buffers.cpp src/mesh_fields.cpp src/mesh_resource.cpp src/vertex_format.cpp)

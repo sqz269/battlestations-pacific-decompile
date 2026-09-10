@@ -72,7 +72,8 @@ SystemLightingPrefixStatus invalid(std::string& error, const char* message) {
 SystemLightingPrefixStatus write_system_lighting_shadow_prefix_00b46ed1(
     const SystemLightingScene* scene, const std::uint32_t& camera_mode_198,
     const std::uint32_t& exponent_word_00cfad80, float* prefix,
-    std::size_t word_count, std::string& error) {
+    std::size_t word_count, std::string& error,
+    SystemInvalidParameterRuntime* invalid_parameter_runtime) {
     if (!prefix || word_count < 77 * 4) {
         error = "System lighting requires an initialized 77-register prefix";
         return SystemLightingPrefixStatus::output_too_short;
@@ -84,8 +85,14 @@ SystemLightingPrefixStatus write_system_lighting_shadow_prefix_00b46ed1(
     if (!sentinel) return invalid(error, "Scene lighting sentinel+1C is unbound");
     const auto* first = sentinel->next_00;
     if (first == sentinel) {
-        error = "Native empty-first-light failure at00BF6713; CRT continuation unresolved";
-        return SystemLightingPrefixStatus::native_empty_light_list_failure;
+        if (!invalid_parameter_runtime) {
+            error = "Empty first-light list requires the actual invalid-parameter runtime";
+            return SystemLightingPrefixStatus::invalid_parameter_runtime_unbound;
+        }
+        if (!invalid_parameter_runtime->invalid_parameter_noinfo_00bf6713(error))
+            return SystemLightingPrefixStatus::callback_failed;
+        //00B46EF8 continues with ESI lighting and EBX first/sentinel preserved.
+        // Appending a node in a returning handler does not select the new node.
     }
     if (!first) return invalid(error, "Scene lighting first node is unbound");
     const bool mode3 = camera_mode_198 == 3;
