@@ -106,7 +106,17 @@ print('main at', base[:8])
 git(INTEGRATE, 'merge', '--ff-only', 'main', check=False)
 if git(INTEGRATE, 'rev-parse', 'HEAD') != base:
     print('integrate branch had diverged; merging main into it')
-    git(INTEGRATE, 'merge', '--no-edit', 'main')
+    result = run(['git', 'merge', '--no-edit', 'main'], INTEGRATE, check=False)
+    if result.returncode:
+        # the same mechanical resolution as for worker branches (ledger shards, registry lines)
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import merge_resolve  # noqa: E402
+        conflicted, unresolved = merge_resolve.resolve_all(INTEGRATE)
+        if not conflicted or unresolved:
+            sys.exit(f'merge conflict merging main into the integrate branch; unresolved {unresolved}:\n'
+                     f'{result.stdout[-1200:]}\nresolve in {INTEGRATE} or `git merge --abort` there')
+        run(['git', '-c', 'core.editor=true', 'commit', '--no-edit', '-q'], INTEGRATE)
+        print(f'merged main into integrate with mechanical resolution of {conflicted}')
 merged = []
 for branch in branches:
     ahead = git(MAIN, 'rev-list', '--count', f'main..{branch}')

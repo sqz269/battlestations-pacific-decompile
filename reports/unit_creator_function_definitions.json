@@ -120,6 +120,179 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f0930",
+    "end_address": "004f09f1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f0930",
+    "end_address": "004f09f0",
+    "bytes_disassembled": 193,
+    "message": "Successfully disassembled 193 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f0930",
+    "disassemble_first": false,
+    "name": "BSP_SceneUnit_CreateAirField"
+   },
+   "result": {
+    "success": true,
+    "address": "004f0930",
+    "function_name": "BSP_SceneUnit_CreateAirField",
+    "entry_point": "004f0930",
+    "body_size": 193,
+    "message": "Function created successfully at 004f0930",
+    "warnings": [
+     "Function name 'BSP_SceneUnit_CreateAirField' \u2014 main part 'SceneUnit_CreateAirField' is not PascalCase. Expected: SceneunitCreateairfield",
+     "Function name 'BSP_SceneUnit_CreateAirField' \u2014 main part 'SceneUnit_CreateAirField' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneUnit_CreateAirField' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f0930",
+   "end": "004f09f1",
+   "name": "BSP_SceneUnit_CreateAirField",
+   "after": "Function: BSP_SceneUnit_CreateAirField at 004f0930\nSignature: undefined BSP_SceneUnit_CreateAirField(void)\nEntry: 004f0930\nBody: 004f0930 - 004f09f0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f0a00",
+    "end_address": "004f0ac1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f0a00",
+    "end_address": "004f0ac0",
+    "bytes_disassembled": 193,
+    "message": "Successfully disassembled 193 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f0a00",
+    "disassemble_first": false,
+    "name": "BSP_SceneUnit_CreateShipyard"
+   },
+   "result": {
+    "success": true,
+    "address": "004f0a00",
+    "function_name": "BSP_SceneUnit_CreateShipyard",
+    "entry_point": "004f0a00",
+    "body_size": 193,
+    "message": "Function created successfully at 004f0a00",
+    "warnings": [
+     "Function name 'BSP_SceneUnit_CreateShipyard' \u2014 main part 'SceneUnit_CreateShipyard' is not PascalCase. Expected: SceneunitCreateshipyard",
+     "Function name 'BSP_SceneUnit_CreateShipyard' \u2014 main part 'SceneUnit_CreateShipyard' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneUnit_CreateShipyard' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f0a00",
+   "end": "004f0ac1",
+   "name": "BSP_SceneUnit_CreateShipyard",
+   "after": "Function: BSP_SceneUnit_CreateShipyard at 004f0a00\nSignature: undefined BSP_SceneUnit_CreateShipyard(void)\nEntry: 004f0a00\nBody: 004f0a00 - 004f0ac0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f0fb0",
+    "end_address": "004f10a9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f0fb0",
+    "end_address": "004f10a8",
+    "bytes_disassembled": 249,
+    "message": "Successfully disassembled 249 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f0fb0",
+    "disassemble_first": false,
+    "name": "BSP_SceneUnit_CreateLandFort"
+   },
+   "result": {
+    "success": true,
+    "address": "004f0fb0",
+    "function_name": "BSP_SceneUnit_CreateLandFort",
+    "entry_point": "004f0fb0",
+    "body_size": 249,
+    "message": "Function created successfully at 004f0fb0",
+    "warnings": [
+     "Function name 'BSP_SceneUnit_CreateLandFort' \u2014 main part 'SceneUnit_CreateLandFort' is not PascalCase. Expected: SceneunitCreatelandfort",
+     "Function name 'BSP_SceneUnit_CreateLandFort' \u2014 main part 'SceneUnit_CreateLandFort' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneUnit_CreateLandFort' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f0fb0",
+   "end": "004f10a9",
+   "name": "BSP_SceneUnit_CreateLandFort",
+   "after": "Function: BSP_SceneUnit_CreateLandFort at 004f0fb0\nSignature: undefined BSP_SceneUnit_CreateLandFort(void)\nEntry: 004f0fb0\nBody: 004f0fb0 - 004f10a8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac57e0",
+    "end_address": "00ac5819"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac57e0",
+    "end_address": "00ac5818",
+    "bytes_disassembled": 57,
+    "message": "Successfully disassembled 57 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac57e0",
+    "disassemble_first": false,
+    "name": "BSP_GuiLayer_SetName"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac57e0",
+    "function_name": "BSP_GuiLayer_SetName",
+    "entry_point": "00ac57e0",
+    "body_size": 57,
+    "message": "Function created successfully at 00ac57e0",
+    "warnings": [
+     "Function name 'BSP_GuiLayer_SetName' \u2014 main part 'GuiLayer_SetName' is not PascalCase. Expected: GuilayerSetname",
+     "Function name 'BSP_GuiLayer_SetName' \u2014 main part 'GuiLayer_SetName' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiLayer_SetName' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac57e0",
+   "end": "00ac5819",
+   "name": "BSP_GuiLayer_SetName",
+   "after": "Function: BSP_GuiLayer_SetName at 00ac57e0\nSignature: undefined BSP_GuiLayer_SetName(void)\nEntry: 00ac57e0\nBody: 00ac57e0 - 00ac5818"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
