@@ -1,0 +1,211 @@
+{
+  "packet": "mission_tree_lua_reader",
+  "owner": "agent/mission-tree-lua",
+  "doc": "docs/MISSION_TREE_LUA_READER.md",
+  "source": ["include/bsp/mission_tree_data.hpp", "src/mission_tree_data.cpp"],
+  "no_ghidra_function": [],
+  "flow_gaps": {
+    "005caaf0": 0,
+    "005c6a70": 0,
+    "005c9f70": 0,
+    "005c5da0": 0
+  },
+  "script": {
+    "path_literal": "Scripts/datatables/MissionTree.lua",
+    "path_literal_address": "00cf176c",
+    "path_length": 34,
+    "global_table": "MissionTree",
+    "global_table_literal_address": "00cf1760",
+    "installed_file": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/missiontree.lua",
+    "lua_library_mask": 4,
+    "lua_library_mask_note": "005cab28 pushes 4 into 00b6a020: the table library alone, not the GUI's 65h",
+    "run_call": "00b69d40(path, 0) at 005cab85, so VFS overrides of the file also run, unprotected",
+    "top_level_keys": {
+      "missionGroups": {
+        "literal": "00cf1750",
+        "enter_site": "005cac68",
+        "vector": "screen+14h",
+        "stride": "0x34",
+        "push_back": "005caa40",
+        "entry_reader": "005c9f70"
+      },
+      "multiMissionInfos": {
+        "literal": "00cf1734",
+        "enter_site": "005cad8e",
+        "vector": "screen+24h",
+        "stride": "0x434",
+        "push_back": "005c9e30",
+        "entry_reader": "005c6a70"
+      }
+    },
+    "resolves_prior_inference": "docs/MISSION_TREE_BRIEFING_SCREENS.md inferred which key fills which vector from the role split; the two LEAs at 005cacc8 and 005cadcf read it off directly and confirm the inference",
+    "progress": {
+      "formula": "(float)(one_based_group_index * 0.02 + 0.45)",
+      "scale_address": "00d7a2f8",
+      "base_address": "00cf1748",
+      "callee": "0057bec0",
+      "note": "reported once per group only; the multiMissionInfos loop reports nothing"
+    }
+  },
+  "abi": [
+    {"address": "005caaf0", "name": "BSP_MissionTreeScreen_Register", "convention": "__fastcall(this)", "ret": "RET", "frame": "SEH, 994h of stack"},
+    {"address": "005c9f70", "name": "BSP_MissionTree_ReadGroupFromLua", "convention": "__thiscall(MissionGroup* this, LuaReader* reader)", "ret": "RET 4", "instructions": 168},
+    {"address": "005c6a70", "name": "BSP_MissionTree_ReadMissionFromLua", "convention": "__thiscall(MissionRecord* this, LuaReader* reader)", "ret": "RET 4", "instructions": 1144},
+    {"address": "005c5da0", "name": "BSP_MissionTree_ReadSideBlockFromLua", "convention": "__thiscall(MissionSideBlock* this, LuaReader* reader)", "ret": "RET 4", "instructions": 485},
+    {"address": "005c5860", "name": "BSP_MissionTree_ReadStringVector", "convention": "__thiscall(LuaReader* reader, int key_kind, const char* key, vector<NativeString>* out)", "ret": "RET 0Ch"},
+    {"address": "005c4ad0", "name": "BSP_MissionTree_ReadIntVector", "convention": "__thiscall(LuaReader* reader, int key_kind, const char* key, vector<int>* out)", "ret": "RET 0Ch"},
+    {"address": "005caa40", "name": "BSP_MissionTree_PushBackGroup", "convention": "__thiscall(vector* this, const MissionGroup* value)", "ret": "RET 4", "stride": "0x34"},
+    {"address": "005c9e30", "name": "BSP_MissionTree_PushBackMission", "convention": "__thiscall(vector* this, const MissionRecord* value)", "ret": "RET 4", "stride": "0x434"},
+    {"address": "005ca300", "name": "BSP_MissionTree_CopyGroupRange", "convention": "__fastcall(dest, count, source)", "ret": "RET", "element_ctor": "005c9830"},
+    {"address": "005c9b60", "name": "BSP_MissionTree_DestroyGroup", "convention": "__fastcall(MissionGroup* this)", "ret": "RET"}
+  ],
+  "lua_api": {
+    "note": "every table access goes through the 00CE44FC reader of docs/GUI_LUA_READER.md; the Lua 5.1.1 entry points are that document's, not re-derived here",
+    "reader_slots_used": {
+      "+04h 00bd8e20": "enter: lua_pushlstring/lua_pushnumber + lua_gettable",
+      "+08h 00bd7a20": "leave: pop_back",
+      "+0Ch 00bd68d0": "read with a default (lua_type == 0 takes the default)",
+      "+10h 00bd6830": "read with no presence test",
+      "+14h 00bd5eb0": "presence: !IsNil",
+      "+18h 00bd5f50": "key enumeration via lua_pushnil/lua_pushvalue + lua_next, used only inside UniqueMultiSettings"
+    },
+    "state_lifecycle": ["00b66bd0 construct owner", "00b6a020(4) luaL_newstate + lua_atpanic + library loop", "00b69d40 -> 00b66ca0 luaL_loadbuffer + lua_call", "00b67980 globals LuaObject (LUA_GLOBALSINDEX)", "00b67800 lua_pushlstring + lua_gettable for MissionTree", "004425c0 reader construct", "00b669a0 lua_close"]
+  },
+  "walk_shape": "Enter(key); for (i = 1; HasKey(Index, i); ++i) { push_back(empty); ~temp(); element = _Mylast - stride; Enter(Index, i); ReadEntry(element, reader); Leave(); } Leave(). The element is appended empty and filled in place.",
+  "group_schema": [
+    {"offset": "0x00", "key": "groupName", "type": "String", "slot": "+10h"},
+    {"offset": "0x08", "key": "helpLine", "type": "String", "slot": "+10h", "note": "capital L, unlike the record's helpline"},
+    {"offset": "0x10", "key": "gratMsg", "type": "String", "slot": "+10h"},
+    {"offset": "0x18", "key": "gratDate", "type": "Vec3 truncated to int[3]", "slot": "+10h", "note": "year, month, day"},
+    {"offset": "0x24", "key": "missions", "type": "nested vector<MissionRecord>", "slot": "enter", "cleared_by": "005c92f0"}
+  ],
+  "record_schema": [
+    {"offset": "0x000", "key": "id", "type": "String", "slot": "+10h", "literal": "00cf16bc", "note": "the key 005c3470 matches with __stricmp and 005c5600 saves at game+2198h"},
+    {"offset": "0x008", "key": "name", "type": "String", "slot": "+10h", "literal": "00ce49b8", "note": "the display title, briefing +0C4h"},
+    {"offset": "0x010", "key": "contentID", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x018", "key": "helpline", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x020", "key": "sceneFile", "type": "String", "slot": "+10h"},
+    {"offset": "0x028", "key": null, "type": null, "note": "never written; 8-byte hole"},
+    {"offset": "0x030", "key": "background", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x038", "key": "debriefingText", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x040", "key": "backgroundMovie", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x048", "key": "backgroundVoice", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x050", "key": "debriefingVoice", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x058", "key": "MovieName", "type": "String", "slot": "+0Ch", "default": ""},
+    {"offset": "0x060", "key": "date", "type": "Vec3 truncated to int[3]", "slot": "+10h", "literal": "00cf1690", "note": "year, month, day; copied to briefing +0CCh..+0D4h"},
+    {"offset": "0x06c", "key": "Pos", "type": "Vec3", "slot": "+14h then +10h", "default": "{0,0,0} written with XORPS"},
+    {"offset": "0x078", "key": "prerequisites", "type": "vector<NativeString>", "slot": "005c5860", "note": "the unlock requirement list 007fc820 walks; values are mission ids"},
+    {"offset": "0x088", "key": "navalacademy", "type": "vector<int>", "slot": "005c4ad0"},
+    {"offset": "0x098", "key": "description", "type": "String", "slot": "+10h", "literal": "00cebaa4"},
+    {"offset": "0x0a0", "key": "picture", "type": "texture handle", "slot": "+10h into a temp, then 00aa2660", "literal": "00ce4994", "note": "empty string releases and leaves null; +0A4h..+0B3h is the atlas rectangle"},
+    {"offset": "0x0b4", "key": "forcedDifficultyLevel", "type": "Int", "slot": "+0Ch", "default": 3, "literal": "00cf1654", "note": "the default pair at 005c7641 is (tag 1, 3), which is why 3 means the player's choice"},
+    {"offset": "0x0b8", "key": "allied", "type": "side block 0", "slot": "005c5da0", "literal": "00ce5618"},
+    {"offset": "0x20c", "key": "japanese", "type": "side block 1", "slot": "005c5da0", "literal": "00ce560c"},
+    {"offset": "0x360", "key": "sideMission", "type": "Bool", "slot": "+14h then +10h", "default": false, "literal": "00cf1648"},
+    {"offset": "0x364", "key": "MultiPlayMapSizes", "type": "16 x Vec3", "slot": "nested", "literal": "00ce8b10"},
+    {"offset": "0x424", "key": "UniqueMultiSettings", "type": "Bool presence byte", "slot": "+14h", "literal": "00cf15e8"},
+    {"offset": "0x428", "key": null, "type": null, "note": "never written"},
+    {"offset": "0x42c", "key": "UniqueMultiSettings", "type": "ordered map head + size", "slot": "nested key enumeration", "note": "leaf key MenuDIS at 00cf15e0, stored negated by the SETZ at 005c7a7d"}
+  ],
+  "side_block_schema": [
+    {"offset": "0x000", "key": null, "note": "set to 1 at 005c5da5 before any read, so it is a side-presence dword"},
+    {"offset": "0x004", "key": "briefingGuiLayer", "type": "String", "slot": "+10h"},
+    {"offset": "0x00c", "key": null, "note": "never written; 8-byte hole"},
+    {"offset": "0x014", "key": "primaryObjectives", "type": "vector<NativeString>"},
+    {"offset": "0x024", "key": "secondaryObjectives", "type": "vector<NativeString>"},
+    {"offset": "0x034", "key": "hiddenObjectives", "type": "vector<NativeString>"},
+    {"offset": "0x044", "key": "hiddenHints", "type": "vector<NativeString>"},
+    {"offset": "0x054", "key": "loadingBackgrounds", "type": "vector<NativeString>"},
+    {"offset": "0x064", "key": "hints", "type": "vector<NativeString>", "note": "the list 005c5600 hands to 0057d060"},
+    {"offset": "0x074", "key": "allunitsid", "type": "vector<NativeString>"},
+    {"offset": "0x084", "key": "allunitsnum", "type": "vector<NativeString>"},
+    {"offset": "0x094", "key": "changeables", "type": "vector<NativeString>"},
+    {"offset": "0x0a4", "key": "allunitslockid", "type": "vector<NativeString>"},
+    {"offset": "0x0b4", "key": "allunitslocknum", "type": "vector<NativeString>"},
+    {"offset": "0x0c4", "key": "allunitslockhint", "type": "vector<NativeString>"},
+    {"offset": "0x0d4", "key": "multiunitsidDuel", "type": "vector<NativeString>"},
+    {"offset": "0x0e4", "key": "multiunitsidSiege", "type": "vector<NativeString>"},
+    {"offset": "0x0f4", "key": "multiunitsidEscort", "type": "vector<NativeString>"},
+    {"offset": "0x104", "key": "multiunitsidCompetitive", "type": "vector<NativeString>"},
+    {"offset": "0x114", "key": "multiunitsidIC1v1", "type": "vector<NativeString>"},
+    {"offset": "0x124", "key": "multiunitsidIC2v2", "type": "vector<NativeString>"},
+    {"offset": "0x134", "key": "multiunitsidIC3v3", "type": "vector<NativeString>"},
+    {"offset": "0x144", "key": "multiunitsidIC4v4", "type": "vector<NativeString>"}
+  ],
+  "multiplay_map_sizes": {
+    "table_offset": "0x364",
+    "corner_stride": "0x0c",
+    "corners": 16,
+    "offset_order": ["IslandCapture1v1", "IslandCapture2v2", "IslandCapture3v3", "IslandCapture4v4", "Siege", "Competitive", "Duel", "Escort"],
+    "call_order": ["Competitive", "Duel", "Escort", "IslandCapture1v1", "IslandCapture2v2", "IslandCapture3v3", "IslandCapture4v4", "Siege"],
+    "side_unit_list_order": ["Duel", "Siege", "Escort", "Competitive", "IslandCapture1v1", "IslandCapture2v2", "IslandCapture3v3", "IslandCapture4v4"],
+    "missing_table_default": {"nw": [-15000.0, 0.0, 15000.0], "se": [15000.0, 0.0, -15000.0], "constants": ["00cf1458", "00cf1464"]},
+    "missing_corner_default": [0.0, 0.0, 0.0],
+    "note": "the two defaults disagree; that asymmetry is the packet's one added test case"
+  },
+  "invocation": {
+    "only_reference_to_005caaf0": "00cf171c, slot +10h of vtable 00cf170c",
+    "conclusion": "the table is parsed once when the main-menu manager initialises (00686380, GVMainMenu::Init, screen at 00e198ac+5Ch), not on shell entry and not on mission-tree enter",
+    "supporting_docs": ["docs/MAIN_MENU_SCREENS.md", "docs/FRONTEND_MANAGERS.md"],
+    "not_read": "the instruction inside 00686380 that calls slot +10h"
+  },
+  "installed_file_check": {
+    "tool": "local/parse_missiontree.py (scratch, independent Lua-subset parser, read-only)",
+    "groups": 5,
+    "campaign_missions": 143,
+    "campaign_side_blocks": 143,
+    "campaign_allied_blocks": 68,
+    "campaign_japanese_blocks": 75,
+    "campaign_distinct_mission_keys": 20,
+    "campaign_distinct_side_keys": 13,
+    "multi_entries": 34,
+    "multi_side_blocks": 68,
+    "multi_distinct_mission_keys": 13,
+    "entries_with_unlock_requirements": 0,
+    "primary_objective_rows": 301,
+    "secondary_objective_rows": 124,
+    "hidden_objective_rows": 141,
+    "side_mission_entries": 20,
+    "keys_present_but_unread_by_any_reader": ["demotips"],
+    "keys_read_but_absent_from_the_file": ["contentID"],
+    "installation_is_modded": true,
+    "modded_note": "188 prerequisites lists are commented out, so the installed table locks nothing; the commented values are mission id strings, which is what a prerequisite requirement string is"
+  },
+  "reconstruction": {
+    "schema_tables": ["kMissionGroupSchema", "kMissionRecordSchema", "kMissionSideBlockSchema"],
+    "pure_rules": ["read_mission_side_block_005c5da0", "read_mission_record_005c6a70", "read_mission_group_005c9f70", "read_mission_map_sizes_005c6dbe", "default_mission_map_sizes", "find_mission_by_id_005c3470", "mission_tree_load_progress"],
+    "abstract_view": "MissionTreeLuaView",
+    "injected_host": "MissionTreeScriptHost",
+    "sequence": "load_mission_tree_005caaf0",
+    "reused_types": ["bsp/gui_lua_reader.hpp: GuiLuaFieldType, GuiLuaKeyKind, GuiLuaVariant", "bsp/mission_tree_screens.hpp: MissionRecord, MissionGroup, MissionSideBlock, MissionTreeIndex, kMissionSideBlockCount, kMissionDifficultyFromPlayer"],
+    "aggregation_note": "MissionSideBlockData and MissionRecordData hold the existing structs plus an Extra for the bytes they do not name, so no field has two homes",
+    "tests_added": 1,
+    "test": "a missing MultiPlayMapSizes is the +/-15000 box while a present one defaults each absent corner to the origin"
+  },
+  "state": {
+    "analyzed_reconstructed_build_tested_installed_file_checked": ["005caaf0", "005c9f70", "005c6a70", "005c5da0"],
+    "analyzed_reconstructed_build_tested": ["005c5860", "005c4ad0"],
+    "analyzed": ["005caa40", "005c9e30", "005ca300", "005c9b60"],
+    "exported_only": ["005c9830", "005c9370", "005c92f0", "005c6850", "005c49c0"]
+  },
+  "uncertainties": [
+    "00b6a020's luaL_loadstring + lua_pcall bootstrap: with library mask 4 the base library is not opened, yet the shipped file calls DoFile, pairs and type at load",
+    "005c6850 and 005c49c0 were not read, so the UniqueMultiSettings container's key order and whether it is a map or a set of pairs are provisional",
+    "record +028h, record +428h and side block +00Ch are written by no reader",
+    "the SETZ at 005c7a7d inverts the stored MenuDIS value and the reason is not recovered",
+    "00586150, the source of the requested mission id, was not read",
+    "the call site of vtable slot +10h inside 00686380",
+    "whether any other subsystem reads the unread demotips key"
+  ],
+  "follow_up_packets": [
+    {"id": "mission_unique_multi_settings", "addresses": ["005c6850", "005c49c0", "005c4040"], "files": ["docs/MISSION_UNIQUE_MULTI_SETTINGS.md"], "contract": "the container at record +42Ch: key type, ordering, who reads it back, and what the inverted MenuDIS byte gates in the lobby"},
+    {"id": "mission_picture_atlas", "addresses": ["00aa2660", "004c12b0"], "files": ["docs/GUI_TEXTURE_ATLAS_RESOLVE.md"], "contract": "the texture and atlas resolve the mission record inlines, its refcount protocol and the meaning of the 1.0f argument"},
+    {"id": "lua_state_owner_bootstrap", "addresses": ["00b6a020", "00b66bd0", "00b669a0"], "files": ["docs/MISSION_LUA_HOST.md"], "contract": "which C functions and Lua helpers a state gets beyond its library mask, which is what makes DoFile work under mask 4"},
+    {"id": "mission_tree_saved_selection", "addresses": ["00586150", "005c3470"], "files": ["docs/MISSION_TREE_SELECTION.md"], "contract": "where the requested mission id comes from and how it survives a session"}
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "src/mission_tree_data.cpp compiles clean at /W4 /WX (mission_tree_data.obj produced); bsp_core fails to build only in src/render_tail.cpp with 'owned_records is not a member of bsp::ParticleClock', an in-flight change in the integrator's tree, so the test executable could not be linked or run",
+    "standalone_verification": "local/mission_tree_check.cpp compiled with cl /W4 /WX /std:c++17 against src/mission_tree_data.cpp and the added test case passes"
+  }
+}

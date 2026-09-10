@@ -37,6 +37,7 @@
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
 #include <algorithm>
@@ -1362,6 +1363,52 @@ int main() {
 
         check(child_beats_parent && hidden_skipped,
             "the smallest half-width containing the pointer wins, ties keep the first");
+    }
+
+    {
+        // 005C6DBE's two arms disagree about what "no size for this mode"
+        // means, which is the one mission-tree default a caller would get
+        // wrong by assuming a single fallback.
+        struct MapSizeView : bsp::MissionTreeLuaView {
+            bool table_present{true};
+            void enter_by_name(std::string_view) override {}
+            void enter_by_index(std::int32_t) override {}
+            void leave() override {}
+            bool has_name(std::string_view key) override {
+                return key == "MultiPlayMapSizes" ? table_present : false;
+            }
+            bool has_index(std::int32_t) override { return false; }
+            std::string read_string(std::string_view, std::string_view fallback) override {
+                return std::string(fallback);
+            }
+            std::int32_t read_int(std::string_view, std::int32_t fallback) override {
+                return fallback;
+            }
+            bool read_bool(std::string_view, bool fallback) override { return fallback; }
+            std::array<float, 3> read_vec3(std::string_view,
+                                           const std::array<float, 3>& fallback) override {
+                return fallback;
+            }
+            std::vector<std::string> read_string_array(std::string_view) override { return {}; }
+            std::vector<std::int32_t> read_int_array(std::string_view) override { return {}; }
+            std::vector<std::string> string_keys() override { return {}; }
+        };
+
+        MapSizeView absent;
+        absent.table_present = false;
+        bsp::MissionRecordData without{};
+        bsp::read_mission_record_005c6a70(absent, without);
+
+        MapSizeView present;
+        bsp::MissionRecordData with{};
+        bsp::read_mission_record_005c6a70(present, with);
+
+        check(without.extra.map_sizes[0].north_west == bsp::kMissionMapDefaultNorthWest
+                  && without.extra.map_sizes[0].south_east == bsp::kMissionMapDefaultSouthEast
+                  && with.extra.map_sizes[0].north_west == bsp::kMissionMapMissingCorner
+                  && with.screen.difficulty == bsp::kMissionDifficultyFromPlayer,
+            "a missing MultiPlayMapSizes is the +/-15000 box while a present one "
+            "defaults each absent corner to the origin");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
