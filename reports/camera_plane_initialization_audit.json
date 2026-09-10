@@ -1,0 +1,478 @@
+{
+  "schema_version": 1,
+  "packet": "camera_plane_initialization",
+  "status": "implemented_strict_compile_existing_build_and_focused_native_fixture_passed_pending_primary_integration",
+  "verified_utc": "2026-09-10T19:24:26.466567+00:00",
+  "base_commit": "24365a0c828ae2c8a13f13b12cdef6d5cf096f4f",
+  "owned_addresses": [
+    "00b652d0",
+    "00b659d0"
+  ],
+  "owned_files": [
+    "include/bsp/camera_plane_initialization.hpp",
+    "src/camera_plane_initialization.cpp",
+    "docs/CAMERA_PLANE_INITIALIZATION.md",
+    "reports/camera_plane_initialization_audit.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Each bsp.py ghidra bytes verifies configured project/program before reading; all spans match installed PE bytes or zero-fill. Native and compiled assembly ordering inspected."
+  },
+  "function_evidence": [
+    {
+      "address": "00b652d0",
+      "end_exclusive": "00b65314",
+      "length": 68,
+      "disk_offset": 7754448,
+      "disk_sha256": "bfd146eed932da949f3cf2e8afa3a1a4ad4ad9417743dc2c7ce22274a5348b7e",
+      "live_sha256": "bfd146eed932da949f3cf2e8afa3a1a4ad4ad9417743dc2c7ce22274a5348b7e",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_PlaneSet_InitializeSixteenRecords",
+      "implementation": "initialize_camera_plane_records_00b652d0",
+      "source": "src/camera_plane_initialization.cpp",
+      "source_line": 43,
+      "original_abi": "ECX destination; EAX original destination; RET 0",
+      "behavior": "Capture actual D7A24C once; write 16 records in forward order as +0/captured/+0/+0/flags1 using MOVSS/MOV. Count+140 remains untouched.",
+      "evidence_note": "Ghidra initial pseudocode declares void, but MOV EAX,ECX at B652DB and unchanged EAX through final RET establish returned destination.",
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols; explicit-constant C++ API is not a native ABI replacement.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested"
+    },
+    {
+      "address": "00b659d0",
+      "end_exclusive": "00b65a75",
+      "length": 165,
+      "disk_offset": 7756240,
+      "disk_sha256": "ceb95d5a12137cd77b33e4c94874af527b83547531a6c716dba0367d8919c983",
+      "live_sha256": "ceb95d5a12137cd77b33e4c94874af527b83547531a6c716dba0367d8919c983",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_PlaneSet_ConstructInitialFrustum",
+      "implementation": "construct_camera_plane_set_00b659d0",
+      "source": "src/camera_plane_initialization.cpp",
+      "source_line": 48,
+      "original_abi": "ECX destination; EAX original destination; RET 0",
+      "behavior": "Initialize 16 records, reload actual D7A24C, store count6, build diagonal matrix, call existing exact frustum extraction and six-plane assignment flags7, return same storage.",
+      "evidence_note": "Temporary matrix is identity only for installed D7A24C=3F800000. Reused extraction preserves its documented finite-square-root scope.",
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols; explicit-constant C++ API is not a native ABI replacement.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested"
+    }
+  ],
+  "dependency_code_evidence": [
+    {
+      "address": "00b653f0",
+      "end_exclusive": "00b65558",
+      "length": 360,
+      "disk_offset": 7754736,
+      "disk_sha256": "b0903b45985f724d124508411960cc54d213b0ccf31782bd799503f5c9273ec0",
+      "live_sha256": "b0903b45985f724d124508411960cc54d213b0ccf31782bd799503f5c9273ec0",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Existing frame extraction/assignment/vector-length dependency, original bytes used in fixture."
+    },
+    {
+      "address": "00b658e0",
+      "end_exclusive": "00b6598b",
+      "length": 171,
+      "disk_offset": 7756000,
+      "disk_sha256": "c565808bfd1a03115ee448f82ae5c447f118e292e998797730ebf68816dab4a8",
+      "live_sha256": "c565808bfd1a03115ee448f82ae5c447f118e292e998797730ebf68816dab4a8",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Existing frame extraction/assignment/vector-length dependency, original bytes used in fixture."
+    },
+    {
+      "address": "00b650b0",
+      "end_exclusive": "00b65107",
+      "length": 87,
+      "disk_offset": 7753904,
+      "disk_sha256": "8be4e359b99f4e599f3d102878dd84332307878dfe237bc3622f014699951f18",
+      "live_sha256": "8be4e359b99f4e599f3d102878dd84332307878dfe237bc3622f014699951f18",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Existing frame extraction/assignment/vector-length dependency, original bytes used in fixture."
+    },
+    {
+      "address": "00419440",
+      "end_exclusive": "004194a2",
+      "length": 98,
+      "disk_offset": 103488,
+      "disk_sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+      "live_sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Existing frame extraction/assignment/vector-length dependency, original bytes used in fixture."
+    },
+    {
+      "address": "00bf7030",
+      "end_exclusive": "00bf7044",
+      "length": 20,
+      "disk_offset": 8351792,
+      "disk_sha256": "204b44024d5ad691ddd38ad34bc9d5d0e9eb4930f96cb8294bb70ded80fb3638",
+      "live_sha256": "204b44024d5ad691ddd38ad34bc9d5d0e9eb4930f96cb8294bb70ded80fb3638",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Read-only capture of original CRT finite square-root support; not reconstructed or claimed by this packet."
+    },
+    {
+      "address": "00bf704d",
+      "end_exclusive": "00bf70ea",
+      "length": 157,
+      "disk_offset": 8351821,
+      "disk_sha256": "3f831d8c23e911d66e29eef7d2adce8cfc4e071914654b0474221d06de6410f3",
+      "live_sha256": "3f831d8c23e911d66e29eef7d2adce8cfc4e071914654b0474221d06de6410f3",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Read-only capture of original CRT finite square-root support; not reconstructed or claimed by this packet."
+    },
+    {
+      "address": "00c08418",
+      "end_exclusive": "00c0842e",
+      "length": 22,
+      "disk_offset": 8422424,
+      "disk_sha256": "4adcaaeddff7fc3980a56d0f0bd062f443e97ac27181910e7fc475851b93b5d9",
+      "live_sha256": "4adcaaeddff7fc3980a56d0f0bd062f443e97ac27181910e7fc475851b93b5d9",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Read-only capture of original CRT finite square-root support; not reconstructed or claimed by this packet."
+    },
+    {
+      "address": "00c083a5",
+      "end_exclusive": "00c083bc",
+      "length": 23,
+      "disk_offset": 8422309,
+      "disk_sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "live_sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Read-only capture of original CRT finite square-root support; not reconstructed or claimed by this packet."
+    },
+    {
+      "address": "00c0842e",
+      "end_exclusive": "00c0843b",
+      "length": 13,
+      "disk_offset": 8422446,
+      "disk_sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "live_sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Read-only capture of original CRT finite square-root support; not reconstructed or claimed by this packet."
+    },
+    {
+      "address": "00c0843b",
+      "end_exclusive": "00c08465",
+      "length": 42,
+      "disk_offset": 8422459,
+      "disk_sha256": "c52b11c2f87cb280a857bc4f1442e274b39ddcfb68cb9167f941f707193e58da",
+      "live_sha256": "c52b11c2f87cb280a857bc4f1442e274b39ddcfb68cb9167f941f707193e58da",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "outside this packet",
+      "role": "Read-only capture of original CRT finite square-root support; not reconstructed or claimed by this packet."
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "disk_offset": 9937484,
+      "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "length": 4,
+      "disk_offset": 9937416,
+      "disk_sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109dd78",
+      "end_exclusive": "0109dd7c",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "storage_contract": {
+    "type": "existing CameraPlaneSet, borrowed same storage",
+    "record_count": 16,
+    "record_stride": 20,
+    "record_flags_offset": 16,
+    "count_offset": 320,
+    "total_size": 324,
+    "record_initializer_write_extent": 320,
+    "record_initializer_writes_count": false,
+    "record_store_order": [
+      "coefficient0=positive zero",
+      "coefficient1=captured live raw word",
+      "coefficient2=positive zero",
+      "coefficient3=positive zero",
+      "flags=1"
+    ],
+    "live_constant": {
+      "address": "00d7a24c",
+      "installed_bits": "3f800000",
+      "binding": "const volatile uint32_t&",
+      "record_initializer_loads": 1,
+      "constructor_additional_loads": 1,
+      "constructor_second_load_after": "all sixteen record writes",
+      "constructor_second_load_before": "count=6 store"
+    },
+    "constructor_final_count": 6,
+    "constructor_first_six_flags": 7,
+    "constructor_remaining_ten_flags": 1,
+    "constructor_matrix": "Second captured raw constant in four diagonal positions; positive zero in other twelve positions; forward MOVSS stores.",
+    "existing_extraction_call": "extract_camera_frustum_00b653f0(planes,matrix)",
+    "existing_assignment_call": "assign_camera_frustum_planes_00b658e0(destination,planes,7u)",
+    "uses_dirty_cache_getter": false,
+    "new_numeric_assignment_kernel": false,
+    "new_owner_or_cache_storage": false
+  },
+  "shared_helper_integration": {
+    "owner": "primary",
+    "public_api": "void assign_camera_frustum_planes_00b658e0(CameraPlaneSet&, const std::array<CameraPlane,6>&, uint32_t flags)",
+    "change": "Primary extracted the existing forward FLD/FSTP six-record loop from get_camera_frustum_00b70710 and made that getter delegate flags7.",
+    "supplied_header_sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+    "supplied_source_sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+    "shared_files_in_packet_commit": false
+  },
+  "validation": {
+    "strict_compile": {
+      "result": "PASS",
+      "target": "MSVC Win32",
+      "flags": "/std:c++20 /EHsc /O2 /Oy- /MD /Gy /Gw /W4 /WX /fp:strict",
+      "sources": [
+        "src/camera_plane_initialization.cpp",
+        "primary-supplied src/camera_frame_state.cpp",
+        "local/camera_plane_native_check.cpp"
+      ]
+    },
+    "existing_repository_build": {
+      "result": "PASS",
+      "command": "./scripts/build.ps1",
+      "existing_ctest": "1/1 reconstructed_math passed",
+      "new_source_in_baseline_cmake": false,
+      "base": "24365a0 plus primary-supplied shared frame extraction"
+    },
+    "focused_native_fixture": {
+      "result": "PASS",
+      "local_sequences": 1,
+      "new_repository_test_cases": 0,
+      "checkpoints": 5,
+      "words_per_checkpoint": 93,
+      "matching_words": 465,
+      "word_layout": [
+        "4 leading canary DWORDs",
+        "80 record DWORDs",
+        "count DWORD",
+        "4 trailing canary DWORDs",
+        "x87 status",
+        "x87 control",
+        "MXCSR",
+        "live constant DWORD"
+      ],
+      "states": [
+        {
+          "index": 0,
+          "label": "records_leave_count_and_canaries_untouched",
+          "words": 93,
+          "raw_words_sha256": "764e4da564565c4edddcdb7ea94f9d35a18b93d84730586b1fd5bcadc08d240c",
+          "count_word": "12345678",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80",
+          "live_constant_bits": "3f800000"
+        },
+        {
+          "index": 1,
+          "label": "constructor_sets_six_extracted_planes_and_tail_defaults",
+          "words": 93,
+          "raw_words_sha256": "2e10ec7cd7f677d873e4aebf70f7ec9f103c169361307478ce6d0ba7d76fc066",
+          "count_word": "00000006",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80",
+          "live_constant_bits": "3f800000"
+        },
+        {
+          "index": 2,
+          "label": "records_reload_live_constant_preserve_existing_count",
+          "words": 93,
+          "raw_words_sha256": "c996b73a8248a96275c52eb889399504c2c94ba08c9c442ea2d9a16fcbe04f71",
+          "count_word": "00000006",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80",
+          "live_constant_bits": "40000000"
+        },
+        {
+          "index": 3,
+          "label": "constructor_reloads_scaled_diagonal_and_preserves_tail_flags",
+          "words": 93,
+          "raw_words_sha256": "d3adbff06e243abf4f0df93663631df582d6ecfc1efc2215f76e2bca726953a9",
+          "count_word": "00000006",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80",
+          "live_constant_bits": "40000000"
+        },
+        {
+          "index": 4,
+          "label": "record_movss_preserves_signaling_nan_bits_and_fp_status",
+          "words": 93,
+          "raw_words_sha256": "ed91765136d31070616b413be09491ff6901259d97d580c99591501ed466db59",
+          "count_word": "00000006",
+          "x87_status": "00000000",
+          "x87_control": "0000027f",
+          "mxcsr": "00001f80",
+          "live_constant_bits": "7f800001"
+        }
+      ],
+      "native_returns": "Both original entries returned exact caller destination on every executed call.",
+      "native_execution": "Original installed instructions in isolated relocated Win32 image, including original CRT finite sqrt route; no function hooks or square-root stub.",
+      "crt_mode_0109dd78": "Actual PE zero-fill zero retained. Fixture does not force fast CRT mode.",
+      "fp_environment": {
+        "x87_control": "027f",
+        "mxcsr": "1f80",
+        "exception_flags_cleared_before_each_call": true
+      },
+      "inputs": "Preimage A5 bytes/count12345678; record+constructor with live one; record+constructor with live two; final record-only MOVSS with signaling NaN7F800001.",
+      "signals": "All 16 sNaN payloads remain unquieted and both x87/SSE invalid flags remain clear after record-only initializer."
+    },
+    "compiled_order_review": "Object disassembly confirms record-kernel call, borrowed-word reload at constructor+24, count store+2F, forward matrix MOVSS stores, existing extraction call+AA and assignment call+B9.",
+    "verified_code_spans": 12,
+    "verified_code_bytes": 1226,
+    "verified_data_spans": 3,
+    "verified_data_bytes": 12
+  },
+  "fixture_relocations": [
+    {
+      "address": "00b652d7",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "00b654d6",
+      "preimage": "00d7a208"
+    },
+    {
+      "address": "00b659e5",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "00bf7070",
+      "preimage": "0109dd78"
+    },
+    {
+      "address": "00bf7082",
+      "preimage": "00e154e0"
+    },
+    {
+      "address": "00bf70c2",
+      "preimage": "00e15c70"
+    },
+    {
+      "address": "00bf70cd",
+      "preimage": "0109dd78"
+    },
+    {
+      "address": "00bf70df",
+      "preimage": "00e154e0"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\include\\bsp\\camera_plane_initialization.hpp",
+      "sha256": "0785c22154db5d197ce3102d849ad1301700f851892ddab1cc06f3677172a3d3",
+      "ownership": "packet-owned"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\src\\camera_plane_initialization.cpp",
+      "sha256": "29eaa8553756eab5debd5a7a33cdd6684468455e4d474a2a9a7f8b4a5b999982",
+      "ownership": "packet-owned"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\docs\\CAMERA_PLANE_INITIALIZATION.md",
+      "sha256": "9919222d6a12efaf6c5dce3d2b39ac2f87c790fa6adc6f9866bb6181ddd50326",
+      "ownership": "packet-owned"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\include\\bsp\\camera_frame_state.hpp",
+      "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+      "ownership": "primary-supplied shared dependency, not part of packet commit"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\src\\camera_frame_state.cpp",
+      "sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+      "ownership": "primary-supplied shared dependency, not part of packet commit"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\include\\bsp\\system_fog_slot.hpp",
+      "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\src\\system_fog_slot.cpp",
+      "sha256": "9d5781b2a998af2efb2b470162adfc6581c96f170b0d8168a989e211a9657838",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\prepare_camera_plane_native.py",
+      "sha256": "593bcdbc9b6f3b9d50f143b669e22b089e5de620431b6ffb02d5634a65f997fc",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\camera_plane_native_spans.hpp",
+      "sha256": "161edf2633ced7c1b5b94d2e92ebbc0f280391b1bb0ff1c4de9def9a024a8a44",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\camera_plane_native_preparation.json",
+      "sha256": "cffaffc07ca008b461ec08d1d0c1ddc6afc977e966ac2bc2b14687d25497693b",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\camera_plane_native_check.cpp",
+      "sha256": "522eb4937a9a5d47c9b4e19dc937f1c1e4267e0da2fe83c9daab2beb1cfed296",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\build_camera_plane_native_check.ps1",
+      "sha256": "8270ebc2a4eb6e0d78c6d71ff0b0071e609b575eaff15509a9c95b33849f6385",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\camera_plane_native_check.log",
+      "sha256": "a2c01e344f1b7d3018f2172a97fadf290114c1c841e02bae0790c2e2706106af",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\camera_plane_compiled_disasm.txt",
+      "sha256": "099dd2d1ca403a6f8b3b7b760149be38c47e097e5668264c847486ffec2cecbc",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\local\\camera_plane_repository_build.log",
+      "sha256": "5a685b3eec601c80b97e990772169585138875f985c36c3abaf51d6c2d6207fd",
+      "ownership": "local fixture/build artifact or existing dependency"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-plane-init-20260910\\build\\camera-plane-check\\camera_plane_native_check.exe",
+      "sha256": "98f8b77069fd20f8ea5a357ec53d0159a274d41e1795922ae39aa58bd5687dbf",
+      "ownership": "local fixture/build artifact or existing dependency"
+    }
+  ],
+  "limits": [
+    "New explicit-constant typed APIs are not drop-in binary ABI replacements; no gameplay or camera-owner composition validation.",
+    "Constructor fixture uses finite positive one/two with x87CW027F and MXCSR1F80. Signaling NaN is exercised only in record initialization, not extraction.",
+    "Native CRT exceptional diagnostics, other floating-point modes, concurrent mutation between the two live loads and alternate overlap patterns were not executed.",
+    "Shared extract_camera_frustum_00b653f0 retains its existing finite-square-root implementation scope.",
+    "Primary owns shared helper commit, CMake, Ghidra annotations/snapshot/export, address ledgers and later owner composition. Only B652D0/B659D0 are claimed here."
+  ]
+}
