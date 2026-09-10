@@ -1,0 +1,1073 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_alias_checked_ops_next",
+  "status": "readonly_discovery_complete_four_checked_operations_ready_error_construction_separate",
+  "captured_utc": "2026-09-10T21:59:13.579791+00:00",
+  "base_commit": "5edfeccf05c00df025c4e4caa0c2dfdc80a6a07c",
+  "owned_files": [
+    "docs/NATIVE_RENDER_ALIAS_CHECKED_OPS_NEXT.md",
+    "reports/native_render_alias_checked_ops_next.json"
+  ],
+  "target": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each uncached bsp.py ghidra bytes call verifies configured project/program before the read."
+  },
+  "recommended_packet": {
+    "id": "native_render_alias_checked_ops",
+    "readiness": "complete_semantics_grounded_ready_for_typed_implementation",
+    "addresses": [
+      "004be820",
+      "004becc0",
+      "004b9ff0",
+      "004d0990"
+    ],
+    "suggested_files": [
+      "include/bsp/native_render_alias_checked_ops.hpp",
+      "src/native_render_alias_checked_ops.cpp",
+      "docs/NATIVE_RENDER_ALIAS_CHECKED_OPS.md",
+      "reports/native_render_alias_checked_ops_audit.json"
+    ],
+    "required_actual_bindings": [
+      "Existing NativeRenderResourceAliasNode and actual owner+0/+4/+8 storage/identity",
+      "Same required invalid_parameter(context) binding shape as SingletonLifetimeCallbacks; preserve returning handlers",
+      "Existing actual SizedStoragePool and singleton_lifetime_free for pooled strings and raw nodes"
+    ],
+    "must_not_substitute": [
+      "Copied host list or wrapper-address iterator owner",
+      "No-op or unconditional-abort validation default",
+      "Fixed fallback result on invalid iterator",
+      "Only valid-input branches",
+      "New manager or private CRT policy"
+    ],
+    "minimal_validation": "Prefer one focused native fixture extension covering repaired iterator continuation, previous publication before handler, and erase capture/pool-return/free/current-count-decrement order."
+  },
+  "functions": [
+    {
+      "address": "004be820",
+      "readiness": "core_ready_with_required_existing_validation_binding",
+      "proposed_descriptive_name": "BSP_RenderAliasIterator_NotEqual",
+      "original_abi": "ECX left iterator address; stack right iterator address; AL boolean, upper EAX incidental; RET4",
+      "contract": "Capture both iterator addresses. Read left owner once; null or differing right owner calls BF6713. After return read current left/right node words and compare; do not revalidate owners.",
+      "callback_boundary": "A returning handler can mutate either iterator node; both nodes are loaded after the callback.",
+      "dependencies": [
+        "00bf6713"
+      ],
+      "span": {
+        "address": "004be820",
+        "end_exclusive": "004be849",
+        "kind": "code",
+        "length": 41,
+        "disk_offset": 780320,
+        "sha256": "5d497d265c7ca6c2474b9c1801eab82163d4244ad03df5b6d46dd7d650b6e8f9",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 18,
+        "last_instruction": "004be846: ret 4"
+      },
+      "old_ghidra_annotation": {
+        "address": "004be820",
+        "function_name": "STL_inst_004be820"
+      },
+      "old_ghidra_name": "STL_inst_004be820",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    },
+    {
+      "address": "004becc0",
+      "readiness": "core_ready_with_required_existing_validation_binding",
+      "proposed_descriptive_name": "BSP_RenderAliasIterator_Previous",
+      "original_abi": "ECX iterator address; EAX same address; RET0",
+      "contract": "Check owner null; after handler return reload node and its previous, capture current owner, publish previous, then compare captured previous with captured owner current sentinel. Handler on equality runs after publication; return original iterator address.",
+      "callback_boundary": "First handler can repair current owner/node. Second handler observes already-published previous and its repairs remain; no post-handler overwrite.",
+      "dependencies": [
+        "00bf6713"
+      ],
+      "span": {
+        "address": "004becc0",
+        "end_exclusive": "004bece6",
+        "kind": "code",
+        "length": 38,
+        "disk_offset": 781504,
+        "sha256": "bddcf9a515fd515f591d772dcf8ab8140d9ac561385c5c72a25bfe0618a51ef0",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 15,
+        "last_instruction": "004bece5: ret"
+      },
+      "old_ghidra_annotation": {
+        "address": "004becc0",
+        "function_name": "STL_inst_004becc0"
+      },
+      "old_ghidra_name": "STL_inst_004becc0",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    },
+    {
+      "address": "004b9ff0",
+      "readiness": "core_ready_with_required_existing_validation_binding",
+      "proposed_descriptive_name": "BSP_RenderAliasIterator_Next",
+      "original_abi": "ECX iterator address; EAX same address; RET0",
+      "contract": "Check owner null; reload current owner/node for sentinel validation; after any returning handler reload current node and publish its next pointer.",
+      "callback_boundary": "The final node reload follows the sentinel handler and retains repairs; do not cache node before validation.",
+      "dependencies": [
+        "00bf6713"
+      ],
+      "span": {
+        "address": "004b9ff0",
+        "end_exclusive": "004ba018",
+        "kind": "code",
+        "length": 40,
+        "disk_offset": 761840,
+        "sha256": "8276fbaefffa30abe86fdc50b43ea441e151b9fb4efa8a9473b6177b34ec2ce3",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 16,
+        "last_instruction": "004ba017: ret"
+      },
+      "old_ghidra_annotation": {
+        "address": "004b9ff0",
+        "function_name": "STL_inst_004b9ff0"
+      },
+      "old_ghidra_name": "STL_inst_004b9ff0",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    },
+    {
+      "address": "004d0990",
+      "readiness": "core_ready_with_required_existing_validation_and_allocator_bindings",
+      "proposed_descriptive_name": "BSP_RenderAliasList_EraseNode",
+      "original_abi": "ECX destination owner; stack output iterator address, input owner pointer, input node pointer; EAX output address; RET0Ch",
+      "contract": "Capture destination and by-value input owner/node. Validate input owner nonnull and node not input sentinel. No owner equality check. Compare node with current destination sentinel and capture next even on suppressed branch. Otherwise unlink, release captured string, free captured node, decrement current destination count. Publish output node before input owner and return output address.",
+      "callback_boundary": "Captured null input owner remains null after callback and is subsequently dereferenced; caller iterator repair does not change the captured value. Current destination sentinel and count are reloaded at their native points. Link writes reload node next/previous after first neighbor write.",
+      "hidden_tail": [
+        "004d09f1 ADD ESP,4",
+        "004d09f4 ADD DWORD PTR [EDI+8],-1"
+      ],
+      "dependencies": [
+        "00bf6713",
+        "00419cc0",
+        "00bd1510",
+        "00bf65ac"
+      ],
+      "span": {
+        "address": "004d0990",
+        "end_exclusive": "004d0a0b",
+        "kind": "code",
+        "length": 123,
+        "disk_offset": 854416,
+        "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 48,
+        "last_instruction": "004d0a08: ret 0xc"
+      },
+      "old_ghidra_annotation": {
+        "address": "004d0990",
+        "function_name": "FUN_004d0990"
+      },
+      "old_ghidra_name": "FUN_004d0990",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    },
+    {
+      "address": "004ce780",
+      "readiness": "blocked_native_sbo_and_length_error_construction",
+      "proposed_descriptive_name": "BSP_RenderAliasList_CheckAndAddCount",
+      "original_abi": "ECX list owner; stack unsigned increment; no defined result; RET4",
+      "contract": "Capture count. If uint32(1FFFFFFF-count) < increment, construct 16-character legacy SBO message and40-byte length_error and throw; otherwise store captured count plus increment. No node allocation/link and no count write on error branch.",
+      "unsigned_boundary": "Do not add a count<=max invariant: wrapped subtraction allows some already-overlimit counts, and the published sum wraps.",
+      "dependencies": [
+        "00408720",
+        "00411700",
+        "00bf6885",
+        "004072d0"
+      ],
+      "span": {
+        "address": "004ce780",
+        "end_exclusive": "004ce813",
+        "kind": "code",
+        "length": 147,
+        "disk_offset": 845696,
+        "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 37,
+        "last_instruction": "004ce810: ret 4"
+      },
+      "old_ghidra_annotation": {
+        "address": "004ce780",
+        "function_name": "STL_xlen_throw_004ce780"
+      },
+      "old_ghidra_name": "STL_xlen_throw_004ce780",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    },
+    {
+      "address": "004d26a0",
+      "readiness": "blocked_checked_ops_node_construction_and_count_error_closure",
+      "proposed_descriptive_name": "BSP_RenderAliasList_InsertRange",
+      "original_abi": "ECX destination owner; seven stack DWORDs: position owner/node, first owner/node, last owner/node, unread seventh word; no defined result; RET1Ch",
+      "contract": "Save original first iterator. Validate range/current node, allocate/copy node, check/increment count, link, validate again, and advance source. Ellipsis catch4D2746 erases backwards while original-first differs from advanced-first, advancing original-first each erase, then BF6885(0,0) rethrows.",
+      "rollback_boundary": "Rollback follows source cursor advancement. Count failure leaves the fresh unlinked allocation outside node-copy catch and range cleanup. A handler throwing after link but before cursor advancement can leave the latest linked insertion outside rollback.",
+      "dependencies": [
+        "004ce6f0",
+        "004ce780",
+        "004be820",
+        "004becc0",
+        "004d0990",
+        "004b9ff0",
+        "00bf6713",
+        "00bf6885"
+      ],
+      "span": {
+        "address": "004d26a0",
+        "end_exclusive": "004d27b4",
+        "kind": "code",
+        "length": 276,
+        "disk_offset": 861856,
+        "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 96,
+        "last_instruction": "004d27b1: ret 0x1c"
+      },
+      "old_ghidra_annotation": {
+        "address": "004d26a0",
+        "function_name": "FUN_004d26a0"
+      },
+      "old_ghidra_name": "FUN_004d26a0",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    },
+    {
+      "address": "00b30510",
+      "readiness": "blocked_range_insertion_and_raw_name_storage_composition",
+      "proposed_descriptive_name": "BSP_RenderResourceRecord_Assign",
+      "original_abi": "ECX destination actual2Ch record; stack source actual2Ch record; EAX destination; RET4",
+      "contract": "Assign pooled name unless self. Capture source alias sentinel/first before clearing destination, call4D26A0, then copy six current source payload/resource words+14..28 in read/store pairs. No local EH and no rollback of name after list failure.",
+      "dependencies": [
+        "0041dd40",
+        "00bf7680",
+        "004d05e0",
+        "004d26a0"
+      ],
+      "span": {
+        "address": "00b30510",
+        "end_exclusive": "00b305b2",
+        "kind": "code",
+        "length": 162,
+        "disk_offset": 7537936,
+        "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+        "live_matches_installed_binary_or_zero_fill": true,
+        "instruction_count": 66,
+        "last_instruction": "00b305af: ret 4"
+      },
+      "old_ghidra_annotation": {
+        "address": "00b30510",
+        "function_name": "FUN_00b30510"
+      },
+      "old_ghidra_name": "FUN_00b30510",
+      "uncertainty": "Descriptive names are hypotheses. Read-only discovery, not a compiled or game-validated implementation."
+    }
+  ],
+  "storage": {
+    "list_owner": {
+      "native_size": 12,
+      "record_offset": 8,
+      "fields": {
+        "untouched_prefix": 0,
+        "sentinel": 4,
+        "count": 8
+      }
+    },
+    "iterator": {
+      "native_size": 8,
+      "fields": {
+        "raw_owner_identity": 0,
+        "node": 4
+      }
+    },
+    "node": {
+      "native_size": 16,
+      "existing_type": "NativeRenderResourceAliasNode",
+      "fields": {
+        "next_00": 0,
+        "previous_04": 4,
+        "string_length_08": 8,
+        "string_data_0c": 12
+      }
+    },
+    "distinct_strings": {
+      "renderer_pooled": "8-byte length/data; actual SizedStoragePool; existing NativeString contracts and separate raw node constructor packet.",
+      "legacy_sbo": "28-byte object; untouched prefix+0, inline-or-pointer+4, size+14h, capacity+18h; inline when capacity<16; CRT allocation."
+    }
+  },
+  "invalid_parameter_contract": {
+    "wrapper": "00BF6713 calls00BF66EF with five zero DWORDs, cleans20 stack bytes and returns.",
+    "handler_selection": "00BF66EF reads encoded0109DD64, passes captured value to00C04FDE, and tail-jumps to a nonnull decoded handler with all five arguments. Handler may return.",
+    "default_path": "When decoded handler null, call00C04EF3(2), then tail-jump actual__invoke_watson00BF65BB. Current00C04EF3 only clears0109EEA8. Watson buildsC000000D and invokes TerminateProcess.",
+    "existing_source_evidence": [
+      "include/bsp/singleton_lifetime.hpp:23-29",
+      "src/singleton_lifetime.cpp:119-120",
+      "src/singleton_lifetime.cpp:129-195",
+      "include/bsp/system_lighting_constants.hpp:150-157"
+    ],
+    "boundary_limit": "No invalid-parameter runtime was executed. Reuse a required actual callback binding; presence of an interface is not proof that every external runtime handler is installed."
+  },
+  "length_error_contract": {
+    "message": {
+      "address": "00ce38f8",
+      "text": "list<T> too long",
+      "count_without_nul": 16
+    },
+    "construction": [
+      "Initialize empty28-byte SBO temporary with capacity15,size0,first byteNUL.",
+      "00408720 assigns literal16; fresh reserve normally allocates32 bytes, retry on first allocation exception requests17.",
+      "00411700 initializes12-byte exception base through00BF632F, writes logic_error vtableD69248, initializes28-byte message at+0C, and copies through00408120(source,0,FFFFFFFF).",
+      "004CE780 publishes length_error vtableD69260 then00BF6885(object,D83F98) throws."
+    ],
+    "object": {
+      "native_size": 40,
+      "exception_base_size": 12,
+      "message_offset": 12,
+      "message_data_offset": 16,
+      "message_size_offset": 32,
+      "message_capacity_offset": 36
+    },
+    "throw_info": {
+      "address": "00d83f98",
+      "destructor": "00411780",
+      "catchable_array": "00d83fd4",
+      "types": [
+        {
+          "name": "std::length_error",
+          "type_descriptor": "00e08000",
+          "size": 40,
+          "copy": "00411940"
+        },
+        {
+          "name": "std::logic_error",
+          "type_descriptor": "00e08020",
+          "size": 40,
+          "copy": "004118d0"
+        },
+        {
+          "name": "std::exception",
+          "type_descriptor": "00e174f0",
+          "size": 12,
+          "copy": "00bf63a6"
+        }
+      ]
+    },
+    "throw_runtime": {
+      "address": "00bf6885",
+      "preserve_library_name": "__CxxThrowException@8",
+      "exception_code": "e06d7363",
+      "flags": 1,
+      "parameter_count": 3,
+      "magic": "19930520",
+      "arguments": [
+        "magic",
+        "object pointer",
+        "ThrowInfo pointer"
+      ],
+      "throw_info_flag8_magic": "01994000",
+      "rethrow": "Calls with object0 and ThrowInfo0 occur in native catch bodies and rethrow the current exception."
+    },
+    "count_helper_cleanup": {
+      "func_info": "00d8e3d0",
+      "unwind_map": "00d8e3c8",
+      "state": 0,
+      "funclet": "00c65a80",
+      "cleanup": "004072d0 on temporary at frame-50h; armed only after counted assignment returns."
+    },
+    "logic_constructor_cleanup": {
+      "func_info": "00d83f74",
+      "unwind_map": "00d83f6c",
+      "state": 0,
+      "funclet": "00c5e010",
+      "cleanup": "00bf6454 on captured completed exception base if embedded string assignment throws."
+    }
+  },
+  "error_followup": {
+    "readiness": "separate_required_dependency_packet_not_claimed_complete",
+    "sbo_core_addresses": [
+      "00408720",
+      "00408120",
+      "004072d0",
+      "004089e0",
+      "00408b60",
+      "004087f0"
+    ],
+    "count_and_exception_addresses": [
+      "004ce780",
+      "00411700",
+      "00411780",
+      "004118d0",
+      "00411940"
+    ],
+    "additional_required_boundaries": [
+      "00bf5695 string length error",
+      "00bf56d4 string range error",
+      "00bf672c memcpy_s with real validation semantics",
+      "00bf681b operator_new and allocation-handler failure semantics",
+      "Existing CRT exception base/copy/destructor and00BF6885 throw/rethrow ABI boundary"
+    ],
+    "premise_correction": "00408720 has a name and native ABI documentation in this checkout, not an implemented native28-byte SBO assignment. NativeString is the distinct8-byte pooled representation.",
+    "reserve_contract": "Complete body4089E0..408B0F: capacity growth, catch408A50 exact-size retry, continuation408A78, catch408AE0 old-buffer release/empty reset/rethrow. FuncInfoE049B8 has two catch descriptors."
+  },
+  "range_exception_map": {
+    "func_info": "00d8eb30",
+    "unwind_map": "00d8eb0c",
+    "try_map": "00d8eb1c",
+    "handler_descriptor": "00d8eafc",
+    "handler_adjectives": "00000040",
+    "handler_type": "ellipsis",
+    "handler_entry": "004d2746",
+    "try_low": 0,
+    "try_high": 0,
+    "catch_high": 1,
+    "node_copy_boundary": "Separate004CE6F0 worker owns raw allocation/copy/catch. Later count-check failure is outside that catch."
+  },
+  "body_corrections": [
+    {
+      "entry": "004d0990",
+      "correction": "Recover hidden4D09F1 ADDESP4 and4D09F4 count decrement after_free; retain returned iterator publication andRET0Ch."
+    },
+    {
+      "entry": "004d26a0",
+      "correction": "Include real catch4D2746..4D27A0 and seven stack DWORDs. Decompiler omits catch and misleadingly shows only six formal arguments."
+    },
+    {
+      "entry": "004089e0",
+      "correction": "Complete304-byte parent includes first catch408A50, orphaned continuation408A78, normalRET8 at408ADD, and second catch408AE0 through rethrow408B0B."
+    },
+    {
+      "entry": "004072d0",
+      "correction": "False_free no-return hides4072E2 ADDESP4; reset capacity,size,NUL and return after free."
+    },
+    {
+      "entry": "00411780",
+      "correction": "False_free no-return hides411798 ADDESP4; reset embedded message then tail-call base destructor on heap branch too."
+    },
+    {
+      "entry": "004117c0",
+      "correction": "Continue after message free, destroy base, honor deleting flag, free owner if requested, and return original owner withRET4."
+    },
+    {
+      "entry": "00411940",
+      "correction": "No Ghidra function starts at this25-byte length_error copy constructor; call4118D0, write length_error vtable, return original destination withRET4."
+    },
+    {
+      "entry": "00bf6454",
+      "correction": "Free-wrapper branch includes omittedBF6468 POPECX beforeRET."
+    },
+    {
+      "entry": "00bf6713",
+      "correction": "Do not propagate no-return from default Watson path across installed-handler path."
+    }
+  ],
+  "support_annotations": [
+    {
+      "address": "004072d0",
+      "function_name": "FUN_004072d0"
+    },
+    {
+      "address": "00408120",
+      "function_name": "FUN_00408120"
+    },
+    {
+      "address": "00408720",
+      "function_name": "BSP_CharacterString_AssignCounted",
+      "comment": "[BSP reconstruction 00408720]\nObserved MSVC-style character-string assignment; exact library symbol unproven. ECXdest,stackcharptr/count,EAXdest,RET8. Buffer+4,size+14h,capacity+18h;inlineifcapacity<16. Externalalias00408120/reserve004089e0. Freshnonaliased path copies count bytes and terminatesNUL. Keep library identity provisional. Original ABI: ECX destination string; stack character pointer and unsigned count; EAX destination; RET8. Inline bytes+4, length+14h, capacity+18h; capacity>=16 uses heap pointer at+4. External alias-copy00408120 and reserve004089e0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "004089e0",
+      "function_name": "FUN_004089e0"
+    },
+    {
+      "address": "00408a78",
+      "function_name": "FUN_00408a78"
+    },
+    {
+      "address": "00408b60",
+      "function_name": "FUN_00408b60"
+    },
+    {
+      "address": "00411550",
+      "function_name": "FUN_00411550"
+    },
+    {
+      "address": "00411700",
+      "function_name": "FUN_00411700"
+    },
+    {
+      "address": "00411780",
+      "function_name": "FUN_00411780"
+    },
+    {
+      "address": "004117c0",
+      "function_name": "CG_scalar_deleting_dtor_004117c0"
+    },
+    {
+      "address": "004118d0",
+      "function_name": "FUN_004118d0"
+    },
+    {
+      "address": "00bf632f",
+      "function_name": "LIBCRT_unmatched_00bf632f",
+      "comment": "[BSP inventory 00bf632f] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    {
+      "address": "00bf63a6",
+      "function_name": "exception",
+      "comment": "Library Function - Single Match\n public: __thiscall std::exception::exception(class std::exception const &)\n\nLibrary: Visual Studio 2005 Release"
+    },
+    {
+      "address": "00bf6454",
+      "function_name": "LIBCRT_unmatched_00bf6454",
+      "comment": "[BSP inventory 00bf6454] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    {
+      "address": "00bf65bb",
+      "function_name": "__invoke_watson",
+      "comment": "Library Function - Single Match\n __invoke_watson\n\nLibrary: Visual Studio 2005 Release"
+    },
+    {
+      "address": "00bf66ef",
+      "function_name": "LIBCRT_unmatched_00bf66ef",
+      "comment": "[BSP inventory 00bf66ef] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    {
+      "address": "00bf6713",
+      "function_name": "LIBCRT_unmatched_00bf6713",
+      "comment": "[BSP inventory 00bf6713] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    {
+      "address": "00bf6885",
+      "function_name": "__CxxThrowException@8",
+      "comment": "Library Function - Single Match\n __CxxThrowException@8\n\nLibrary: Visual Studio 2005 Release"
+    },
+    {
+      "address": "00c04ef3",
+      "function_name": "LIBCRT_unmatched_00c04ef3",
+      "comment": "[BSP inventory 00c04ef3] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    {
+      "address": "00c04fde",
+      "function_name": "LIBCRT_unmatched_00c04fde",
+      "comment": "[BSP inventory 00c04fde] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    }
+  ],
+  "exact_spans": [
+    {
+      "address": "004ce780",
+      "end_exclusive": "004ce813",
+      "kind": "code",
+      "length": 147,
+      "disk_offset": 845696,
+      "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 37,
+      "last_instruction": "004ce810: ret 4"
+    },
+    {
+      "address": "004be820",
+      "end_exclusive": "004be849",
+      "kind": "code",
+      "length": 41,
+      "disk_offset": 780320,
+      "sha256": "5d497d265c7ca6c2474b9c1801eab82163d4244ad03df5b6d46dd7d650b6e8f9",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 18,
+      "last_instruction": "004be846: ret 4"
+    },
+    {
+      "address": "004becc0",
+      "end_exclusive": "004bece6",
+      "kind": "code",
+      "length": 38,
+      "disk_offset": 781504,
+      "sha256": "bddcf9a515fd515f591d772dcf8ab8140d9ac561385c5c72a25bfe0618a51ef0",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 15,
+      "last_instruction": "004bece5: ret"
+    },
+    {
+      "address": "004b9ff0",
+      "end_exclusive": "004ba018",
+      "kind": "code",
+      "length": 40,
+      "disk_offset": 761840,
+      "sha256": "8276fbaefffa30abe86fdc50b43ea441e151b9fb4efa8a9473b6177b34ec2ce3",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 16,
+      "last_instruction": "004ba017: ret"
+    },
+    {
+      "address": "004d0990",
+      "end_exclusive": "004d0a0b",
+      "kind": "code",
+      "length": 123,
+      "disk_offset": 854416,
+      "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 48,
+      "last_instruction": "004d0a08: ret 0xc"
+    },
+    {
+      "address": "004d26a0",
+      "end_exclusive": "004d27b4",
+      "kind": "code",
+      "length": 276,
+      "disk_offset": 861856,
+      "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 96,
+      "last_instruction": "004d27b1: ret 0x1c"
+    },
+    {
+      "address": "00b30510",
+      "end_exclusive": "00b305b2",
+      "kind": "code",
+      "length": 162,
+      "disk_offset": 7537936,
+      "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 66,
+      "last_instruction": "00b305af: ret 4"
+    },
+    {
+      "address": "00411700",
+      "end_exclusive": "0041175f",
+      "kind": "code",
+      "length": 95,
+      "disk_offset": 71424,
+      "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 28,
+      "last_instruction": "0041175c: ret 4"
+    },
+    {
+      "address": "00408720",
+      "end_exclusive": "004087e1",
+      "kind": "code",
+      "length": 193,
+      "disk_offset": 34592,
+      "sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 88,
+      "last_instruction": "004087de: ret 8"
+    },
+    {
+      "address": "00408120",
+      "end_exclusive": "004081f9",
+      "kind": "code",
+      "length": 217,
+      "disk_offset": 33056,
+      "sha256": "e4104d83c47c8751f42572271b41b74d8eeb30b93a83c688ea62144542019175",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 96,
+      "last_instruction": "004081f6: ret 0xc"
+    },
+    {
+      "address": "004072d0",
+      "end_exclusive": "004072f6",
+      "kind": "code",
+      "length": 38,
+      "disk_offset": 29392,
+      "sha256": "2f179ded49a9621df35befbde920bb2a9b2cb84c7600d74530e7e3c4c45ddce9",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 14,
+      "last_instruction": "004072f5: ret"
+    },
+    {
+      "address": "004089e0",
+      "end_exclusive": "00408b10",
+      "kind": "code",
+      "length": 304,
+      "disk_offset": 35296,
+      "sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 107,
+      "last_instruction": "00408b0b: call 0xbf6885"
+    },
+    {
+      "address": "00408b60",
+      "end_exclusive": "00408bb5",
+      "kind": "code",
+      "length": 85,
+      "disk_offset": 35680,
+      "sha256": "0ae014e5db77545ed05d24a175da22eae05e7f7ad1a446364d703edef6ad83e2",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 25,
+      "last_instruction": "00408bb0: call 0xbf6885"
+    },
+    {
+      "address": "00411780",
+      "end_exclusive": "004117b2",
+      "kind": "code",
+      "length": 50,
+      "disk_offset": 71552,
+      "sha256": "8490cd3c81f5f5b9fe0419d9b86450f6cfcfcff186fb0de91b56c7b36fc199f5",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 16,
+      "last_instruction": "004117ad: jmp 0xbf6454"
+    },
+    {
+      "address": "004117c0",
+      "end_exclusive": "00411807",
+      "kind": "code",
+      "length": 71,
+      "disk_offset": 71616,
+      "sha256": "d5a155f5fe810a4f2b09601226aa838a8647524489e416bc6878a89bbbd618f5",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 23,
+      "last_instruction": "00411804: ret 4"
+    },
+    {
+      "address": "004118d0",
+      "end_exclusive": "00411935",
+      "kind": "code",
+      "length": 101,
+      "disk_offset": 71888,
+      "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 32,
+      "last_instruction": "00411932: ret 4"
+    },
+    {
+      "address": "00411940",
+      "end_exclusive": "00411959",
+      "kind": "code",
+      "length": 25,
+      "disk_offset": 72000,
+      "sha256": "70437509a99231553565df048ed07fdfa6e166270e55daaeb8bd8b82fc1eb1ca",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 9,
+      "last_instruction": "00411956: ret 4"
+    },
+    {
+      "address": "00411550",
+      "end_exclusive": "0041155e",
+      "kind": "code",
+      "length": 14,
+      "disk_offset": 70992,
+      "sha256": "ca202af414b13781e9608e7be7dab88fdae1b17b8508e2ee6ef7a9b9ffa6e1fa",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 6,
+      "last_instruction": "0041155d: ret"
+    },
+    {
+      "address": "00bf632f",
+      "end_exclusive": "00bf6340",
+      "kind": "code",
+      "length": 17,
+      "disk_offset": 8348463,
+      "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 5,
+      "last_instruction": "00bf633f: ret"
+    },
+    {
+      "address": "00bf63a6",
+      "end_exclusive": "00bf63fe",
+      "kind": "code",
+      "length": 88,
+      "disk_offset": 8348582,
+      "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 38,
+      "last_instruction": "00bf63fb: ret 4"
+    },
+    {
+      "address": "00bf6454",
+      "end_exclusive": "00bf646a",
+      "kind": "code",
+      "length": 22,
+      "disk_offset": 8348756,
+      "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 7,
+      "last_instruction": "00bf6469: ret"
+    },
+    {
+      "address": "00bf6713",
+      "end_exclusive": "00bf6723",
+      "kind": "code",
+      "length": 16,
+      "disk_offset": 8349459,
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 9,
+      "last_instruction": "00bf6722: ret"
+    },
+    {
+      "address": "00bf66ef",
+      "end_exclusive": "00bf6713",
+      "kind": "code",
+      "length": 36,
+      "disk_offset": 8349423,
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 14,
+      "last_instruction": "00bf670e: jmp 0xbf65bb"
+    },
+    {
+      "address": "00bf6885",
+      "end_exclusive": "00bf68cf",
+      "kind": "code",
+      "length": 74,
+      "disk_offset": 8349829,
+      "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 29,
+      "last_instruction": "00bf68cc: ret 8"
+    },
+    {
+      "address": "00bf65bb",
+      "end_exclusive": "00bf66b7",
+      "kind": "code",
+      "length": 252,
+      "disk_offset": 8349115,
+      "sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 65,
+      "last_instruction": "00bf66b6: ret"
+    },
+    {
+      "address": "00c04ef3",
+      "end_exclusive": "00c04efb",
+      "kind": "code",
+      "length": 8,
+      "disk_offset": 8408819,
+      "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00c04efa: ret"
+    },
+    {
+      "address": "00c04fde",
+      "end_exclusive": "00c0504c",
+      "kind": "code",
+      "length": 110,
+      "disk_offset": 8409054,
+      "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 36,
+      "last_instruction": "00c0504b: ret"
+    },
+    {
+      "address": "00c65a80",
+      "end_exclusive": "00c65a88",
+      "kind": "code",
+      "length": 8,
+      "disk_offset": 8804992,
+      "sha256": "81b837021dd2c92d6456c8455401ad56f84800149e7f5d19e1c16ec103b4183b",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00c65a83: jmp 0x4072d0"
+    },
+    {
+      "address": "00c65a88",
+      "end_exclusive": "00c65a92",
+      "kind": "code",
+      "length": 10,
+      "disk_offset": 8805000,
+      "sha256": "e4b0f6d558206bfc0ce82e2c1b67aaf3c194a2e79b31ec7b000c8f01b46b5b0e",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00c65a8d: jmp 0xbf6b43"
+    },
+    {
+      "address": "00c5e010",
+      "end_exclusive": "00c5e018",
+      "kind": "code",
+      "length": 8,
+      "disk_offset": 8773648,
+      "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00c5e013: jmp 0xbf6454"
+    },
+    {
+      "address": "00c5e018",
+      "end_exclusive": "00c5e022",
+      "kind": "code",
+      "length": 10,
+      "disk_offset": 8773656,
+      "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00c5e01d: jmp 0xbf6b43"
+    },
+    {
+      "address": "00c65eb0",
+      "end_exclusive": "00c65eba",
+      "kind": "code",
+      "length": 10,
+      "disk_offset": 8806064,
+      "sha256": "881eecfbee792d2caef6ccc058da7f98a78a99eb4dd5a468a5babc9ee4664dd2",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00c65eb5: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cc8890",
+      "end_exclusive": "00cc889a",
+      "kind": "code",
+      "length": 10,
+      "disk_offset": 9210000,
+      "sha256": "c6608f5116ef57a9aa53049332e750d8da79d6ace7e3aa65653e62a07b9978f8",
+      "live_matches_installed_binary_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cc8895: jmp 0xbf6b43"
+    },
+    {
+      "address": "00ce38f8",
+      "end_exclusive": "00ce3909",
+      "kind": "data",
+      "length": 17,
+      "disk_offset": 9320696,
+      "sha256": "137ba7b8130c7be0ea882fe7eb408a7dd1c2b6913a9577da91b84bbdd756734c",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d8e3c8",
+      "end_exclusive": "00d8e3f4",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 10019784,
+      "sha256": "567b09522eed3498454461707dc097f34480b546162ccd45a231806b51f47cc0",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d83f6c",
+      "end_exclusive": "00d83f98",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 9977708,
+      "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d83f98",
+      "end_exclusive": "00d83fa8",
+      "kind": "data",
+      "length": 16,
+      "disk_offset": 9977752,
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d83fd4",
+      "end_exclusive": "00d8401c",
+      "kind": "data",
+      "length": 72,
+      "disk_offset": 9977812,
+      "sha256": "0a1de79f19047d416a59f59ce1b157aad0e0f193a3adfe5306a3da7961eccbcb",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00e03c7c",
+      "end_exclusive": "00e03c98",
+      "kind": "data",
+      "length": 28,
+      "disk_offset": 10501244,
+      "sha256": "9fa41aa7ae4c2be7d89eea68c3e5b98ae3b6fb7822f78c013edb988305f079f4",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00e08000",
+      "end_exclusive": "00e08040",
+      "kind": "data",
+      "length": 64,
+      "disk_offset": 10518528,
+      "sha256": "9a446ec3d413662af356f81bab8cbc2409ff036649d2ccd76f29fe895f1bb82f",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00e174f0",
+      "end_exclusive": "00e17510",
+      "kind": "data",
+      "length": 32,
+      "disk_offset": 10581232,
+      "sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d69248",
+      "end_exclusive": "00d69250",
+      "kind": "data",
+      "length": 8,
+      "disk_offset": 9867848,
+      "sha256": "e10ccae2b5dcc6bbcbded9a4c3e85418befaf2d85536a9f7af2eb291d2ddcb11",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d69260",
+      "end_exclusive": "00d69268",
+      "kind": "data",
+      "length": 8,
+      "disk_offset": 9867872,
+      "sha256": "aa94ce6bb47734f38297a04c9d0479503ab7496c94be6fe058f44399a2c9f84f",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d693b0",
+      "end_exclusive": "00d693d0",
+      "kind": "data",
+      "length": 32,
+      "disk_offset": 9868208,
+      "sha256": "47319cfc7d36ae39541424fbeb90ab2cff937bd3bd6e1576c7351210075e0420",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "0109dd64",
+      "end_exclusive": "0109dd68",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00d8eafc",
+      "end_exclusive": "00d8eb54",
+      "kind": "data",
+      "length": 88,
+      "disk_offset": 10021628,
+      "sha256": "a64790c96dc50eab4ca53f081db4e255bc0c1af46fb96549ac1cadf20bcd7f7f",
+      "live_matches_installed_binary_or_zero_fill": true
+    },
+    {
+      "address": "00e04950",
+      "end_exclusive": "00e049dc",
+      "kind": "data",
+      "length": 140,
+      "disk_offset": 10504528,
+      "sha256": "b58a878e108a61a4129aa31326a85cd6bddf0e129242a88b216b7ec438c20c95",
+      "live_matches_installed_binary_or_zero_fill": true
+    }
+  ],
+  "verification": {
+    "code_spans": 33,
+    "data_spans": 14,
+    "all_spans_match_saved_analysis_and_installed_image": true,
+    "ghidra_mutations": 0,
+    "cpp_files_changed": 0,
+    "tests_added": 0,
+    "build_run": false,
+    "native_execution": false,
+    "scope": "Read-only current code/data inspection and byte comparison; no native execution, binary ABI, game or visual claim."
+  },
+  "artifact_hashes": {
+    "docs/NATIVE_RENDER_ALIAS_CHECKED_OPS_NEXT.md": "25976a1bc242263042672023198ec7ad83ec493e0ce87d5e878efe692ac12e43",
+    "local/alias_checked_verified_spans.json": "7b3c4da6957df59605640ec3494d1940601b25dcf40e9c615518412868035691",
+    "local/alias_checked_old_annotations.json": "f8c750a18380a3cdabc2317de01692e805e107c1f1f02f3bb7d3283dc1342a1c",
+    "local/alias_checked_support_annotations.json": "1516d7d4eebdde47776270d872f5402823bb8a5618fc998b857c99897cbb4de3",
+    "include/bsp/singleton_lifetime.hpp": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+    "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+    "include/bsp/native_render_resource_record.hpp": "305165937c7d932c714ebaf48041ba22e73a4c0f1d1169ddd772994e088579ec",
+    "src/native_render_resource_record.cpp": "7bd881e10368e1801c079a0f130023c9d24a6d2abef31d85125e77e7acf0c13e",
+    "include/bsp/native_string.hpp": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079",
+    "src/native_string.cpp": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6"
+  },
+  "limits": [
+    "Four ready entries require real actual-storage and returning-validation bindings; no default handler policy is provided by this discovery.",
+    "SBO allocation/memcpy_s/string error helper transitive bodies beyond those recorded remain for independent dependency closure.",
+    "Names are hypotheses except recognized CRT/library identities; Ghidra annotations and shared metadata belong to primary integration.",
+    "Native node/string constructor work and model/group owner work remain with their disjoint workers."
+  ]
+}
