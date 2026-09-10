@@ -1,0 +1,175 @@
+{
+  "utc": "2026-09-10T03:54:21.974165+00:00",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live bytes/prototype/comment/export command used bsp.py ghidra, whose Client.verify checks project/program/language/image_base before querying. PE comparison covers only listed ranges, not whole-image identity.",
+  "functions": [
+    {
+      "address": "00b6e8c0",
+      "suggested_name": "BSP_Model_GetWorldSphere",
+      "original_abi": "ECX=model; no stack arguments; EAX=model+13C; RET. Native virtual+48.",
+      "contract": "Model+8 local float4, +F0 world matrix, +5C world-valid bit2, +138 auxiliary flags, +13C cached world float4. If either auxiliary bit0x30 is set, return cache without refreshing world. Otherwise refresh world only when bit2 clear, call007C1180, copy all four floats with FLD/FSTP, OR0x30, return cache. New typed API shares CameraTransform state; local-sphere producer and native constructor/lifetime remain caller contracts.",
+      "code_identity": {
+        "address": "00b6e8c0",
+        "length": 99,
+        "sha256": "abd86e5982ec56551665990e4f9cb3aa74c1d61676494fb429fb27d3d1278ddb",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6e8c0 at 00b6e8c0\nSignature: undefined FUN_00b6e8c0(void)\nEntry: 00b6e8c0\nBody: 00b6e8c0 - 00b6e922",
+      "annotation_before": {
+        "address": "00b6e8c0",
+        "function_name": "FUN_00b6e8c0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Model+8 local float4, +F0 world matrix, +5C world-valid bit2, +138 auxiliary flags, +13C cached world float4. If either auxiliary bit0x30 is set, return cache without refreshing world. Otherwise refresh world only when bit2 clear, call007C1180, copy all four floats with FLD/FSTP, OR0x30, return cache. New typed API shares CameraTransform state; local-sphere producer and native constructor/lifetime remain caller contracts.",
+      "assembly_export": "exports/bsp/functions/00b6e8c0/assembly.txt"
+    },
+    {
+      "address": "007c1180",
+      "suggested_name": "BSP_Sphere_TransformAffine",
+      "original_abi": "ECX=source float4 sphere; stack[ESP+4]=destination float4, [ESP+8]=matrix; EAX=destination; RET8.",
+      "contract": "Call007BB620 on matrix, register-input CRT sqrt00BF7030, store scale float, multiply signed source radius and store float before affine center004142E0. Copy XYZ and saved radius with FLD/FSTP. No abs or perspective divide. Finite result/CW parity established for masked nearest CW007F/027F, including harmless masked-inexact CRT path; NaN/domain/unmasked/other CW and full status-word parity remain open.",
+      "code_identity": {
+        "address": "007c1180",
+        "length": 88,
+        "sha256": "b0ba0b0f256e0d67a98f0b8ca3bf481e4931cc3c88ee88bf722581a123c4f943",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_007c1180 at 007c1180\nSignature: undefined FUN_007c1180(void)\nEntry: 007c1180\nBody: 007c1180 - 007c11d7",
+      "annotation_before": {
+        "address": "007c1180",
+        "function_name": "FUN_007c1180"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Call007BB620 on matrix, register-input CRT sqrt00BF7030, store scale float, multiply signed source radius and store float before affine center004142E0. Copy XYZ and saved radius with FLD/FSTP. No abs or perspective divide. Finite result/CW parity established for masked nearest CW007F/027F, including harmless masked-inexact CRT path; NaN/domain/unmasked/other CW and full status-word parity remain open.",
+      "assembly_export": "exports/bsp/functions/007c1180/assembly.txt"
+    },
+    {
+      "address": "007bb620",
+      "suggested_name": "BSP_Matrix_GetMaximumBasisLengthSquared",
+      "original_abi": "ECX=16-float matrix; x87 ST0=float result reloaded from float storage; RET.",
+      "contract": "For rows0/1/2, x87 computes x*x, y*y, combines ySquared+xSquared, then adds z*z and stores completed sum float. FCOMI/JC selects between rows0/1, then FCOMIP/JC compares selected row to row2. Carry includes unordered; equality retains earlier row. Ignores last column and translation. Native max-row rule, not spectral norm. Typed implementation retains instruction and float-store order.",
+      "code_identity": {
+        "address": "007bb620",
+        "length": 183,
+        "sha256": "cfe195f35352e3df6fbb19f80f406a9022730cc9d5c81210414c98df73920f5d",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_007bb620 at 007bb620\nSignature: undefined FUN_007bb620(void)\nEntry: 007bb620\nBody: 007bb620 - 007bb6d6",
+      "annotation_before": {
+        "address": "007bb620",
+        "function_name": "FUN_007bb620"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] For rows0/1/2, x87 computes x*x, y*y, combines ySquared+xSquared, then adds z*z and stores completed sum float. FCOMI/JC selects between rows0/1, then FCOMIP/JC compares selected row to row2. Carry includes unordered; equality retains earlier row. Ignores last column and translation. Native max-row rule, not spectral norm. Typed implementation retains instruction and float-store order.",
+      "assembly_export": "exports/bsp/functions/007bb620/assembly.txt"
+    }
+  ],
+  "crt_code_identities": [
+    {
+      "address": "00bf7030",
+      "length": 20,
+      "sha256": "204b44024d5ad691ddd38ad34bc9d5d0e9eb4930f96cb8294bb70ded80fb3638",
+      "pe_live_match": true
+    },
+    {
+      "address": "00bf704d",
+      "length": 157,
+      "sha256": "3f831d8c23e911d66e29eef7d2adce8cfc4e071914654b0474221d06de6410f3",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c08418",
+      "length": 22,
+      "sha256": "4adcaaeddff7fc3980a56d0f0bd062f443e97ac27181910e7fc475851b93b5d9",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c083a5",
+      "length": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c083bc",
+      "length": 25,
+      "sha256": "4da26adac922f63397a27f44d0dae33235d9f17151c2cc5379f1238f549bf536",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c08347",
+      "length": 60,
+      "sha256": "e85628693ac77644ea4dda52242997f14584925d68b117c29866d0e6b8554f48",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c0842e",
+      "length": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c0843b",
+      "length": 42,
+      "sha256": "c52b11c2f87cb280a857bc4f1442e274b39ddcfb68cb9167f941f707193e58da",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c27489",
+      "length": 252,
+      "sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c13364",
+      "length": 481,
+      "sha256": "0ed90647eb3b74de20c933e32515482eeabf079d0e5689d556b4dbf5a5a442de",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c13545",
+      "length": 40,
+      "sha256": "f3bb9d95acdc6618bae3d06dac8ee51a662c0841cc217fc19ff6398fc1a93aef",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c138a7",
+      "length": 39,
+      "sha256": "778473908a8335c4091f62e6b0dfdb7cc2e6cc322e07237a64edf075d2adf26b",
+      "pe_live_match": true
+    },
+    {
+      "address": "00c138ce",
+      "length": 86,
+      "sha256": "102773fa887fb2cee8f5a79c9c17bb6191cb2b3da5e57b8783828b5dd573e581",
+      "pe_live_match": true
+    }
+  ],
+  "crt_audit": {
+    "wrapper": "00BF7030 FST double preserves ST0 and calls exponent classifier00C08418, then00BF704D; positive finite operand executes FSQRT at00BF706C.",
+    "control": "00BF704D saves CW; if not027F,00C083A5 installs(savedCW&0300)|007F. Both007F and027F are unchanged. Direct00C0842E exit restores savedCW when needed.",
+    "inexact_exit": "__math_exit00C0843B with savedCW007F and status bit20 passes code8 to00C08347, which stores result double and invokes__87except00C27489. It maps code8 to exception mask10; __handle_exc00C13364 with savedCW bit20 calls00C138CE(20), which FLDPI/FSTPdouble preserves result and sets already-set inexact flag; returns handled. __ctrlfp00C138A7 restoresCW. Code8 skips matherr and __set_errno_from_matherr00C13545(8) does nothing. Reloaded double is exact for24-bit FSQRT result. Global0109DD78 selects this path or direct exit without changing the finite numeric result/CW.",
+    "excluded": "Other control words, unmasked exceptions, negative sqrt input, NaN/infinity diagnostics, user matherr/SEH behavior, complete status-word/FIP/FDP equivalence. Masked-inexact callback identity was established from assembly, not replaced with a fabricated handler.",
+    "disassembly_gaps": "9B-prefixed FSTCW/FSTSW instructions are split by Ghidra listing; raw bytes verified over containing helper bodies. No Ghidra instruction mutation was made."
+  },
+  "producer_contract": "ModelBounds.local_sphere is supplied by the model owner, with both auxiliary0x30 bits cleared on a bounds edit. StructuredHierarchy.sphere is a real available producer parsed by read_sphere_00b932e0 (constructor default sphere is separate). Mesh payload consume_mesh_sphere_00b93590 reads/discards4 floats and does not populate model bounds. Shared CameraTransform world refresh/dirty behavior is reused, not duplicated.",
+  "validation": {
+    "source_compile": "MSVC Win32 /O2 /MD /W4 /WX /fp:strict compiled model_bounds.cpp and linked focused native comparison against bsp_core.lib; passed.",
+    "repository_build": "scripts/build.ps1 completed; reconstructed_math and native_math_differential both passed after verify-seeds. Worker CMake did not yet include new source; scoped compile covers it.",
+    "native_basis_differential": {
+      "comparison": "Unchanged PE bytes007BB620 vs reconstructed kernel; precision-sensitive matrix and unordered carry variant; CW007F/027F.",
+      "comparisons": 4,
+      "failures": 0,
+      "finite_results": {
+        "007f": "4b800000",
+        "027f": "4b800001"
+      },
+      "control_word_preserved": true,
+      "output": "local/model_bounds_native_check.txt",
+      "whole_native_sphere_or_crt_execution": false
+    },
+    "game_validated": false,
+    "abi_drop_in": false
+  },
+  "shared_integration": "Primary owns CMake/probe integration, address/name/reconstruction ledgers, Ghidra annotation application and refreshed exports. Shared affine kernel promotion4234a7f is a prerequisite. No Ghidra mutation performed by this worker."
+}
