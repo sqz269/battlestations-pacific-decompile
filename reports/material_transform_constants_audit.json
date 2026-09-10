@@ -1,0 +1,254 @@
+{
+  "schema": 1,
+  "packet": "material_transform_tail",
+  "source_base": "dd5fe80",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "query_route": "python tools/bsp.py ghidra; target verified by each invocation",
+    "mutations_applied": false
+  },
+  "installed_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "native_ranges": [
+    {
+      "start": "00b42a7c",
+      "end_exclusive": "00b42e4a",
+      "byte_count": 974,
+      "sha256": "b2ffa1d8d80ea9e73941ef65a636291e4e4f1c1600eef9e17e4d554692061f52",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00b42ef9",
+      "end_exclusive": "00b4305d",
+      "byte_count": 356,
+      "sha256": "b81f4bccb1eb5c1a5088f050b47104fb136b8e035193d06319656f6781271c08",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00b6e0d0",
+      "end_exclusive": "00b6e10a",
+      "byte_count": 58,
+      "sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00b6db70",
+      "end_exclusive": "00b6dbc0",
+      "byte_count": 80,
+      "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "004134f0",
+      "end_exclusive": "00413557",
+      "byte_count": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00b63b30",
+      "end_exclusive": "00b63d43",
+      "byte_count": 531,
+      "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00b6d4d0",
+      "end_exclusive": "00b6d623",
+      "byte_count": 339,
+      "sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "byte_count": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00b6fcb0",
+      "end_exclusive": "00b6fcea",
+      "byte_count": 58,
+      "sha256": "8b4b0f0440ec1d808154d06308255ecb4c34e8ee4f9784b0d0c7f67315c29e4b",
+      "installed_pe_matches_ghidra": true
+    },
+    {
+      "start": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "byte_count": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "installed_pe_matches_ghidra": true
+    }
+  ],
+  "comparison_getters_normalized_instruction_identical": true,
+  "native_probe": {
+    "relocations": 39,
+    "fragment_end_adapters": "One RET appended at each owned fragment end",
+    "helper_policy": "All refresh/inverse/copy/affine calls target verified copied native bodies; no stubbed calls",
+    "shared_output_relocation": "Both native constant-array immediates rebound to caller probe buffers"
+  },
+  "recorded_utc": "2026-09-10T05:43:58.349423+00:00",
+  "status": "bounded_implemented_native_compared_not_parent_integrated",
+  "owned_native_ranges": [
+    "00b42a7c-00b42e4a exclusive",
+    "00b42ef9-00b4305d exclusive",
+    "00b6e0d0-00b6e10a exclusive"
+  ],
+  "original_abi": {
+    "parent_00b42350": "ECX pass; stack entry, override; RET8; no direct override read in inspected parent",
+    "fragments": "Interior blocks: EBX pass; EBP render-entry. World block reloads EBP from [ESP+B8]. No independent function ABI.",
+    "getter_00b6e0d0": "ECX transform, no stack arguments, RET, EAX transform+60",
+    "inverse_00b63b30": "ECX destination temporary, EDX world source, RET, EAX destination",
+    "copy_004134f0": "ECX destination, stack source, RET4, EAX destination"
+  },
+  "new_interfaces": {
+    "header": "include/bsp/material_transform_constants.hpp",
+    "source": "src/material_transform_constants.cpp",
+    "functions": [
+      "get_transform_inverse_world_00b6e0d0",
+      "pack_material_world_constants_00b42a7c",
+      "pack_material_inverse_world_constants_00b42ef9"
+    ],
+    "owners": "Actual CompiledMaterialPass.vb/pb, CameraTransform reference and caller-owned existing vector<float> constant words",
+    "cache_identity": "Getter returns the existing transform.view by reference via get_camera_view_00b6fcb0; no second cache or copied model",
+    "missing_owner_policy": "No owner resolution, fallback owner, substitute matrix, production callback or zero-filled constant block",
+    "capacity_failure": "New host false/error after cache resolution, before affected stage writes; prior writes/cache effects persist",
+    "same_output_vector": "Permitted; VS then PS writes retain their original order",
+    "storage_domain": "Transform and metadata storage remain separate from output vectors; borrowed references are valid and stable"
+  },
+  "fragment_contracts": [
+    {
+      "start": "00b42a7c",
+      "end_exclusive": "00b42e4a",
+      "stages": [
+        "VS world",
+        "PS world"
+      ],
+      "enabled_by": "Per-stage register[0] != FF",
+      "row_source": "BOTH stages use VS counts[0], even when VS register[0] == FF",
+      "row_capture_sites": [
+        "00b42a97",
+        "00b42c7c"
+      ],
+      "register_reload_sites": [
+        "00b42aaa",
+        "00b42c8f"
+      ],
+      "cache": "Each enabled stage captures rows then refreshes model world only if flag2 absent, even with unsupported rows",
+      "matrix": "model+F0, CameraTransform.world",
+      "output_bases": [
+        "0108ebf4",
+        "0108dbec"
+      ]
+    },
+    {
+      "start": "00b42ef9",
+      "end_exclusive": "00b4305d",
+      "stages": [
+        "VS inverse world"
+      ],
+      "enabled_by": "VS register[1] != FF",
+      "row_source": "VS counts[1]",
+      "capture_sites": [
+        "00b42f0b",
+        "00b42f0f"
+      ],
+      "getter_call": "00b42f13 -> 00b6e0d0",
+      "cache": "Capture rows/register, then resolve flag8 cache before row validation; valid flag8 bypasses flag2 check",
+      "matrix": "model+60, existing CameraTransform.view",
+      "output_bases": [
+        "0108ebf4"
+      ]
+    }
+  ],
+  "copy_semantics": {
+    "rows_2": "Snapshot src[0,4,8,12,1,5,9,13] as raw MOVSS words before REP MOVSD; reconstruction uses raw uint32 temporary and memcpy",
+    "rows_3_4": "Sequential destination-order x87 FLD/FSTP; dst[4*r+c]=src[4*c+r]. Preserve sNaN quieting and caller x87 flags/control.",
+    "unsupported_rows": "No output writes, but enabled stage has already resolved cache",
+    "ordering": "world VS then PS; visibility/LOD; inverse VS; diffuse. No whole-builder snapshot, clearing or resizing."
+  },
+  "annotation_preimages": [
+    {
+      "address": "00b6e0d0",
+      "function_name": "FUN_00b6e0d0"
+    },
+    {
+      "address": "00b42350",
+      "function_name": "BSP_MaterialPass_BuildShaderConstants",
+      "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nRequired backend for MaterialEntryDispatcher, NOT reconstructed in full. Patches actual shared VS0108EBF4/PS0108DBEC blocks and dynamic textures using selected pass/entry. Existing reflected parameter, matrix/decode and shadow fragments do not cover all model/camera/light/visibility/texture owner inputs. Never synthesize zero constant blocks to make downstream draw run. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    }
+  ],
+  "annotation_proposals_not_applied": [
+    {
+      "address": "00b6e0d0",
+      "name": "BSP_Transform_GetInverseWorldMatrix",
+      "confidence": "behavior established; descriptive name is a hypothesis",
+      "append_comment": "ECX transform, RET, EAX transform+60. Return existing cache when +5C flag8 set; otherwise ensure world flag2 via00B6DB70, invert specialized affine world+F0 into temp with00B63B30, copy with004134F0 to+60, setflag8. Normalized instruction schedule matches00B6FCB0 and shares the same CameraTransform.view identity. src/material_transform_constants.cpp; docs/MATERIAL_TRANSFORM_CONSTANTS.md; reports/material_transform_constants_audit.json. Typed C++ API is not native layout/ABI or game validation."
+    },
+    {
+      "address": "00b42350",
+      "name": "BSP_MaterialPass_BuildShaderConstants",
+      "preserve_existing_comment": true,
+      "append_comment": "Additional bounded fragments00B42A7C..00B42E49 world VS thenPS, and00B42EF9..00B4305C inverse-world VS after visibility/LOD. Both world stages read VS row count+3E; PS register comes from PS metadata+8. Enabled unsupported counts still refresh shared model caches. Rows2 raw eight-word stack snapshot; rows3/4 sequential x87 transpose. Reuses actual CompiledMaterialPass.vb/pb, CameraTransform and shared output buffers. Full builder/live owner adapters remain unported. Evidence docs/MATERIAL_TRANSFORM_CONSTANTS.md and reports/material_transform_constants_audit.json; original parent ECX pass, stack entry/override, RET8; fragments have no standalone native ABI."
+    }
+  ],
+  "validation": {
+    "base_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "test": "reconstructed_math 1/1 passed",
+      "scope": "Existing base Win32 target; worker-owned source not yet registered in primary CMake",
+      "log": "local/material_transform_base_build.log"
+    },
+    "packet_compile": {
+      "command": "./local/build_material_transform_probe.ps1",
+      "result": "passed",
+      "platform": "MSVC Win32",
+      "options": "/EHsc /MD /std:c++17 /W4 /WX /fp:strict /O2"
+    },
+    "native_differential": {
+      "result": "passed",
+      "fixture_count": 1,
+      "fragment_comparisons": 14,
+      "variants": "Rows1/2/3/4 finite matrices; rows2/3/4 raw exceptional matrices. Per variant: world then inverse with intervening scalar write.",
+      "checked": [
+        "all output words bitwise",
+        "world matrix bytes",
+        "inverse matrix bytes",
+        "valid flags",
+        "x87 exception-status low6 bits",
+        "VS row count used for PS despite different PS count",
+        "shared destination overlap and scalar-before-inverse overwrite",
+        "unsupported row1 still refreshes world/inverse caches"
+      ],
+      "native_helper_stubs": false,
+      "log": "local/material_transform_probe.log",
+      "limits": "Root transforms and default masked FP environment. No arbitrary parent graph, all FP modes, metadata/output alias, or game execution."
+    },
+    "host_boundaries": {
+      "result": "passed",
+      "checks": [
+        "Short PS vector fails after retaining VS writes/world refresh",
+        "getter returns exact shared transform.view reference and does not refresh flag2 when flag8 already valid"
+      ]
+    },
+    "git_diff_check": "passed",
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "complete_parent_builder": false
+  },
+  "artifact_sha256": {
+    "include/bsp/material_transform_constants.hpp": "c08f7fdd5300130b13ee53bd09d880cc42b456468a9fa46ca5ca857e22cf5e47",
+    "src/material_transform_constants.cpp": "0e0a4caf7f924d5dd45601b8e78efa26e31f32b35ccdb6341a79a5a999b85fc4",
+    "docs/MATERIAL_TRANSFORM_CONSTANTS.md": "6c5689eaffb4c652a784da266b2078f3d630355311028ea75e7fa54f3aea3c5f",
+    "local/prepare_material_transform_probe.py": "a2d205723306dd6ecd896dc0c55ecc1931571c3174deabd70acd796ddd3fba4f",
+    "local/material_transform_probe.cpp": "99fb5e610613b5f0306eb58d07c4a8787150e797d852ff9760708f2f68990b50",
+    "local/build_material_transform_probe.ps1": "fcdb6e1c34234224eed1d61927a5e449cecb27c4de863e6df73dde901654d570"
+  }
+}
