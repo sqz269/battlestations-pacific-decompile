@@ -1,0 +1,513 @@
+{
+  "schema": 1,
+  "packet": "system_fog_prefix",
+  "source_base": "5ef2756102e7a0485ddb10bb442e784a8d28ae74",
+  "recorded_utc": "2026-09-10T06:41:33.366439+00:00",
+  "status": "bounded_reconstruction_strict_win32_compile_and_focused_native_fixture_passed",
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project_file_exists": true,
+    "program_path": "/battlestationspacific.exe",
+    "verification": "bsp.py client verifies project/program/language/image base for every live command"
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_ranges": [
+    {
+      "start": "00b46d97",
+      "end_exclusive": "00b46ed1",
+      "length": 314,
+      "sha256": "6a8e1fa96f216135451a61f0040541a50d4aa6aff969073e73a6358a923e87ef",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8bcee802e00300d99c24940400008bcee804e00300d99c24980400008bcee866e00300d99c24a40400008bcee868e00300d99c24a80400008bcee86ae00300d99c24ac0400008bcee8ccde0300d99c24440200008bcee8cede0300d99c24480200008bcee8a0de0300d99c244c0200008bcee8c2de0300d99c24540200008bcee8c4de0300d99c24580200008bcee8c6de0300d99c245c02000033ed8d9c24740200008d9b00000000558bcee888e103008b08890b8b50048953048b4808894b088b500c89530c83c50183c31083fd0472d78b8f84010000e8ecdd03008b08898c24640200008b5004899424680200008b4808898c246c0200008b500c8b8f8401000089942470020000e8eadd03008b088b6c2410898c24b40400008b5004899424b80400008b4808898c24bc0400008b500c899424c0040000"
+    },
+    {
+      "start": "00b84ca0",
+      "end_exclusive": "00b84ca4",
+      "length": 4,
+      "sha256": "b1b787968f12f0d6c1afc62c914e0b742af6182080929aee80de55c17a61b999",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d94168c3"
+    },
+    {
+      "start": "00b84cb0",
+      "end_exclusive": "00b84cb4",
+      "length": 4,
+      "sha256": "cf038c6c47f8fe220ea8191589a6f143aa127fb93e688ed3a3cd3eeaa1fad646",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d9416cc3"
+    },
+    {
+      "start": "00b84cc0",
+      "end_exclusive": "00b84cc4",
+      "length": 4,
+      "sha256": "7466c0e11b8231d512bc0d2f2ab8e7a264d33ed56fc0fe8b0914ff5333699a9e",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d94170c3"
+    },
+    {
+      "start": "00b84cd0",
+      "end_exclusive": "00b84cd4",
+      "length": 4,
+      "sha256": "2cb02d6dd2bb43452b0cf1dfdfb874a387e4ff7f42e17ef6418da0ae5ece3bc4",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d94174c3"
+    },
+    {
+      "start": "00b84ce0",
+      "end_exclusive": "00b84ce4",
+      "length": 4,
+      "sha256": "b16d4e3077290c38aa42e904ab428226f3961ba6376875ec3f272c2bd2e87a12",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d94178c3"
+    },
+    {
+      "start": "00b84cf0",
+      "end_exclusive": "00b84cf4",
+      "length": 4,
+      "sha256": "8e7eaed3215eda5b51a0f7e1fa7aa6182e46499c4ae15aa1afa45e033c421f00",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d9417cc3"
+    },
+    {
+      "start": "00b84da0",
+      "end_exclusive": "00b84da7",
+      "length": 7,
+      "sha256": "1af21071871fd62cbbdf55f350637b2bafad844cd2bc6e5700654e0348b76caf",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d98180000000c3"
+    },
+    {
+      "start": "00b84db0",
+      "end_exclusive": "00b84db7",
+      "length": 7,
+      "sha256": "f16c150298d9e6c126e094146780fd774e2e72a9ab4aa4bba2da89728ce88c44",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d98184000000c3"
+    },
+    {
+      "start": "00b84e20",
+      "end_exclusive": "00b84e27",
+      "length": 7,
+      "sha256": "c434145c6de8bf49e5a5c87e5e886fd2ea2b66289fea4ba44e921f4b1da1e26f",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d98188000000c3"
+    },
+    {
+      "start": "00b84e30",
+      "end_exclusive": "00b84e37",
+      "length": 7,
+      "sha256": "925bf02f0a1e4fc33a27d7a88ae0e53c9e29f6196705cb301e571576f4f7d7a1",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d9818c000000c3"
+    },
+    {
+      "start": "00b84e40",
+      "end_exclusive": "00b84e47",
+      "length": 7,
+      "sha256": "805efafd089116c6a38d877dc05bfa27fdbbf27d591e58166001f9c0a988854c",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "d98190000000c3"
+    },
+    {
+      "start": "00b84fd0",
+      "end_exclusive": "00b84fde",
+      "length": 14,
+      "sha256": "6de3c55d069922ee28eab3d489626788e5dbd93e6175fdaa2c808a9c76fc23e8",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8b442404c1e0048d440828c20400"
+    },
+    {
+      "start": "00b84c60",
+      "end_exclusive": "00b84c64",
+      "length": 4,
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8d4108c3"
+    },
+    {
+      "start": "00b84c90",
+      "end_exclusive": "00b84c94",
+      "length": 4,
+      "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8d4118c3"
+    }
+  ],
+  "owned_native_range": {
+    "start": "00b46d97",
+    "end_exclusive": "00b46ed1"
+  },
+  "original_abi": {
+    "parent_00b46a70": "ECX optional scene owner; EDX camera; no stack args; plain RET",
+    "fragment": "ESI=camera+184 captured00B46D79; EDI=camera; prefix at ESP+14; saved scene at ESP+10 restored into EBP00B46EA8",
+    "scalar_getters": "ECX owner; FLD m32 at established offset; ST0 result; plain RET",
+    "directional_getter_00b84fd0": "ECX owner; one stack DWORD index; EAX=owner+28+16*index; RET4; no bounds check",
+    "color_getters": "ECX owner; EAX=owner+08 (00B84C60) or owner+18 (00B84C90); plain RET"
+  },
+  "new_interface": {
+    "name": "bsp::write_system_fog_constants_00b46d97",
+    "arguments": [
+      "const SystemFogState* captured_fog",
+      "const SystemFogState* const& current_camera_fog",
+      "float* prefix",
+      "size_t word_count",
+      "string& error"
+    ],
+    "owner": "Retained field projection, no default values or native object header/lifecycle; offset suffixes name native offsets, not C++ layout",
+    "storage": "Caller-initialized >=300 words when captured nonnull; null captured skips before output validation",
+    "getter_implementation": "Getter field bodies are composed into the bounded writer, not published as native ABI entry points"
+  },
+  "execution_order": {
+    "scalars": [
+      {
+        "destination": "c72.x",
+        "captured_native_field": "+80",
+        "getter": "00b84da0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c72.y",
+        "captured_native_field": "+84",
+        "getter": "00b84db0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c73.x",
+        "captured_native_field": "+88",
+        "getter": "00b84e20",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c73.y",
+        "captured_native_field": "+8c",
+        "getter": "00b84e30",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c73.z",
+        "captured_native_field": "+90",
+        "getter": "00b84e40",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c35.x",
+        "captured_native_field": "+6c",
+        "getter": "00b84cb0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c35.y",
+        "captured_native_field": "+70",
+        "getter": "00b84cc0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c35.z",
+        "captured_native_field": "+68",
+        "getter": "00b84ca0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c36.x",
+        "captured_native_field": "+74",
+        "getter": "00b84cd0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c36.y",
+        "captured_native_field": "+78",
+        "getter": "00b84ce0",
+        "operations": "FLD m32; FSTP m32"
+      },
+      {
+        "destination": "c36.z",
+        "captured_native_field": "+7c",
+        "getter": "00b84cf0",
+        "operations": "FLD m32; FSTP m32"
+      }
+    ],
+    "directional_colors": "c38..41 from captured owner+28+16*i, i0..3; ordered raw read/store per DWORD",
+    "c37": "reload current camera+184 at00B46E69; getter+08; three ordered raw read/store pairs",
+    "c37_w_interleave": [
+      "00B46E91 read old color pointer+0C into EDX",
+      "00B46E94 reload camera+184 into ECX",
+      "00B46E9A write EDX to c37.w"
+    ],
+    "c74": "00B46EA1 getter+18 on ECX from E94; four ordered raw read/store pairs"
+  },
+  "preimage_contract": {
+    "always_preserved": [
+      "c35.w",
+      "c36.w",
+      "c72.zw",
+      "c73.w",
+      "all other unselected words"
+    ],
+    "null_capture": "00B46D7F test;00B46D91 skip preserves every fog word",
+    "host_error": "New host errors for short storage/current owner missing; retain prior writes, including c37.w before absent underwater owner error",
+    "late_native_null": "Native has no late-null gate; invalid owner is not an absent-fog skip"
+  },
+  "annotation_preimages": [
+    {
+      "address": "00b84ca0",
+      "annotation": {
+        "address": "00b84ca0",
+        "function_name": "TRIV_body_00b84ca0"
+      }
+    },
+    {
+      "address": "00b84cb0",
+      "annotation": {
+        "address": "00b84cb0",
+        "function_name": "TRIV_body_00b84cb0"
+      }
+    },
+    {
+      "address": "00b84cc0",
+      "annotation": {
+        "address": "00b84cc0",
+        "function_name": "TRIV_body_00b84cc0"
+      }
+    },
+    {
+      "address": "00b84cd0",
+      "annotation": {
+        "address": "00b84cd0",
+        "function_name": "TRIV_body_00b84cd0"
+      }
+    },
+    {
+      "address": "00b84ce0",
+      "annotation": {
+        "address": "00b84ce0",
+        "function_name": "TRIV_body_00b84ce0"
+      }
+    },
+    {
+      "address": "00b84cf0",
+      "annotation": {
+        "address": "00b84cf0",
+        "function_name": "TRIV_body_00b84cf0"
+      }
+    },
+    {
+      "address": "00b84da0",
+      "annotation": {
+        "address": "00b84da0",
+        "function_name": "TRIV_body_00b84da0"
+      }
+    },
+    {
+      "address": "00b84db0",
+      "annotation": {
+        "address": "00b84db0",
+        "function_name": "TRIV_body_00b84db0"
+      }
+    },
+    {
+      "address": "00b84e20",
+      "annotation": {
+        "address": "00b84e20",
+        "function_name": "TRIV_body_00b84e20"
+      }
+    },
+    {
+      "address": "00b84e30",
+      "annotation": {
+        "address": "00b84e30",
+        "function_name": "TRIV_body_00b84e30"
+      }
+    },
+    {
+      "address": "00b84e40",
+      "annotation": {
+        "address": "00b84e40",
+        "function_name": "TRIV_body_00b84e40"
+      }
+    },
+    {
+      "address": "00b84fd0",
+      "annotation": {
+        "address": "00b84fd0",
+        "function_name": "FUN_00b84fd0"
+      }
+    },
+    {
+      "address": "00b84c60",
+      "annotation": {
+        "address": "00b84c60",
+        "function_name": "BSP_AmbientLight_GetColor",
+        "comment": "[BSP reconstruction 00b84c60]\n[BSP reconstruction] Returns object+08 float4. Ambient semantic name follows camera+184 caller; constructor remains outside this packet. Original ABI: ECX ambient light; EAX object+08; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b84c90",
+      "annotation": {
+        "address": "00b84c90",
+        "function_name": "TRIV_body_00b84c90"
+      }
+    }
+  ],
+  "annotation_proposals_not_applied": [
+    {
+      "address": "00b84ca0",
+      "old_name": "TRIV_body_00b84ca0",
+      "proposed_name": "BSP_FogOwner_LoadScalar68_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x68]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84cb0",
+      "old_name": "TRIV_body_00b84cb0",
+      "proposed_name": "BSP_FogOwner_LoadScalar6C_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x6c]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84cc0",
+      "old_name": "TRIV_body_00b84cc0",
+      "proposed_name": "BSP_FogOwner_LoadScalar70_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x70]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84cd0",
+      "old_name": "TRIV_body_00b84cd0",
+      "proposed_name": "BSP_FogOwner_LoadScalar74_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x74]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84ce0",
+      "old_name": "TRIV_body_00b84ce0",
+      "proposed_name": "BSP_FogOwner_LoadScalar78_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x78]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84cf0",
+      "old_name": "TRIV_body_00b84cf0",
+      "proposed_name": "BSP_FogOwner_LoadScalar7C_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x7c]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84da0",
+      "old_name": "TRIV_body_00b84da0",
+      "proposed_name": "BSP_FogOwner_LoadScalar80_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x80]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84db0",
+      "old_name": "TRIV_body_00b84db0",
+      "proposed_name": "BSP_FogOwner_LoadScalar84_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x84]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84e20",
+      "old_name": "TRIV_body_00b84e20",
+      "proposed_name": "BSP_FogOwner_LoadScalar88_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x88]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84e30",
+      "old_name": "TRIV_body_00b84e30",
+      "proposed_name": "BSP_FogOwner_LoadScalar8C_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x8c]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84e40",
+      "old_name": "TRIV_body_00b84e40",
+      "proposed_name": "BSP_FogOwner_LoadScalar90_X87",
+      "append_comment": "ECX actual fog owner; FLD float32 [ECX+0x90]; plain RET; returns ST0 without a local spill. System builder immediately FSTP stores it. Scalar semantic units remain unestablished. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84fd0",
+      "old_name": "FUN_00b84fd0",
+      "proposed_name": "BSP_FogOwner_GetDirectionalColor",
+      "append_comment": "ECX actual fog owner; stack index; EAX=ECX+0x28+16*index; RET4. No index check. System builder calls indices0..3 and raw-copies four DWORDs each. Directional color label is a descriptive hypothesis. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84c60",
+      "old_name": "BSP_AmbientLight_GetColor",
+      "proposed_name": "BSP_AmbientLight_GetColor",
+      "append_comment": "Preserve existing ambient getter name/comment. Additional system builder use: ECX actual camera+184 fog owner; EAX=ECX+0x08; plain RET. This color field is c37 after camera owner reload00B46E69; the ambient color projection alone does not supply the full fog state. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    },
+    {
+      "address": "00b84c90",
+      "old_name": "TRIV_body_00b84c90",
+      "proposed_name": "BSP_FogOwner_GetUnderwaterColor",
+      "append_comment": "ECX actual fog owner; EAX=ECX+0x18; plain RET. System builder reloads camera+184 at00B46E94 before committing c37.w and calls this getter at00B46EA1, raw-copying its float4 to c74. Underwater label is a descriptive hypothesis. Evidence: docs/SYSTEM_FOG_CONSTANTS.md; reports/system_fog_constants_audit.json. C++ field projection is not native object lifecycle or ABI/game validation.",
+      "applied": false
+    }
+  ],
+  "validation": {
+    "packet_compile": {
+      "command": "./local/build_system_fog_probe.ps1",
+      "result": "passed",
+      "platform": "MSVC Win32",
+      "options": "/EHsc /MD /std:c++17 /W4 /WX /fp:strict /O2",
+      "log": "local/system_fog_probe.log"
+    },
+    "native_differential": {
+      "result": "passed",
+      "fixture_count": 1,
+      "fragment_comparisons": 2,
+      "reference": "314-byte installed fragment with all14 verified getter bodies; rebase14 relative CALLs; append RET at continuation; original ESI/EDI/stack contract",
+      "native_helper_stubs": false,
+      "variants": [
+        "distinct captured/current owners",
+        "live camera slot aliases c37.w; raw c37.w sNaN poisons any incorrectly delayed reload"
+      ],
+      "checked": [
+        "all308 output words bitwise including padding and previous effects",
+        "both source owner preimages",
+        "x87 exception status low6 bits (3 for both variants)",
+        "scalar signaling-NaN quieting",
+        "raw color NaN payloads",
+        "reload-before-c37.w-store interleave"
+      ],
+      "limits": "Caller initial x87 control with exceptions masked; not all FP modes, native trapping/IP metadata, original lifecycle, concurrent mutation or gameplay"
+    },
+    "host_boundaries": {
+      "result": "passed",
+      "checks": [
+        "null captured owner leaves308 words unchanged",
+        "missing first reloaded owner retains scalar/directional writes and leaves c37 intact",
+        "missing second reloaded owner retains complete c37 and leaves c74 intact"
+      ]
+    },
+    "integration_build": "Primary will register source and run scripts/build.ps1 after integration; worker ran strict isolated compilation only",
+    "git_diff_check": "passed",
+    "native_abi_compatible": false,
+    "complete_parent_builder": false,
+    "game_validated": false
+  },
+  "remaining_dependencies": [
+    "Actual native fog factory/constructor/destructor and retained ownership",
+    "Primary CameraFrameState full fog pointer binding; ambient_rgba only covers+08",
+    "Parent time/wave capture at00B46D79 and sequential builder composition/upload"
+  ],
+  "artifact_sha256": {
+    "include/bsp/system_fog_constants.hpp": "5b6ebfc5b12a7cf06125a05bc2b1dd07536b65656b4c65024a3ad2f77a770ea7",
+    "src/system_fog_constants.cpp": "3d61e4eeea46e4d36128e38651e798e6442bce5f888e7820aacaf8543c929c6c",
+    "docs/SYSTEM_FOG_CONSTANTS.md": "77876a17fde18f5abb56701a623fa17a44ec5e46ce1619cfc818563b5fc42023",
+    "local/prepare_system_fog_reference.py": "3ac7a777efdcb6176474467ac6edbed88fed5e97c87644f74cc783f6c0c03bc0",
+    "local/system_fog_reference.hpp": "d32bdf46372f212b5d01b0984f89884ba02c158ce16cb8298346241511f1fa58",
+    "local/system_fog_probe.cpp": "47b0c9d1466954659e94841289bb627d5b745e5acfb93c44a2cd89245d20f6e4",
+    "local/build_system_fog_probe.ps1": "c8f20f28f659232a79cc8a22938babdc0f270b480fe56643aae35b4f00d287b3",
+    "local/system_fog_probe.exe": "1227fa674d75b2a3af7531dc85d5c6aef6ef6855bd4cc0253c1470ae2aeb6c90",
+    "local/system_fog_probe.log": "15a64640ff3dc943558219d0a29ad6bb3fd8b123331c59be6cd97af2df40509c"
+  }
+}
