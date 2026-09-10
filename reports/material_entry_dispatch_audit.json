@@ -1,0 +1,412 @@
+{
+  "packet": "material_entry_dispatch",
+  "evidence_date_utc": "2026-09-10",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "address": "00b45360",
+      "length": 359,
+      "scope": "complete function",
+      "sha256": "f93649a9fd94f436d20e1abadf2c0f2198d78393242d68639c9c29b07624450c",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b44750",
+      "length": 948,
+      "scope": "complete function",
+      "sha256": "f7eb5a9057acf5af9e2b25b4a707e2f1824ef829a72469b0c794913103b750bd",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b43410",
+      "length": 624,
+      "scope": "complete code plus six-DWORD jump table",
+      "sha256": "3f1edf73bae253283b78ade89d921230f400941c3d0b4fd855a1ab9227b7f477",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b42350",
+      "length": 4288,
+      "scope": "complete function, required dependency",
+      "sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b16f80",
+      "length": 566,
+      "scope": "complete function, required dependency",
+      "sha256": "e204f90613026678c7bcfb3bcf4e504925cc16a879bd2a085510e8acbc4face1",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b855a0",
+      "length": 4,
+      "scope": "complete getter",
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b855f0",
+      "length": 4,
+      "scope": "complete getter",
+      "sha256": "f337a2904cce096929a4b1149426d9c53e899af6c011d55b2cb0a2e982703852",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b48d50",
+      "length": 4,
+      "scope": "complete getter",
+      "sha256": "6adcb7ca87b78d8ea2260c2586dbba1ec45af1f7781b84427c334943708e2b7f",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b48de0",
+      "length": 4,
+      "scope": "complete getter",
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b7aae0",
+      "length": 6,
+      "scope": "complete getter",
+      "sha256": "1fd7c5b1649c49e88c0890a04663dd3d92480c34f886fe031c3aa1938f2a6b98",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b172c0",
+      "length": 4,
+      "scope": "complete getter",
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00b17320",
+      "length": 7,
+      "scope": "complete getter",
+      "sha256": "b6072d4fcefdd088e536843289a7c138f74a202b7213f420ff155a3cb220ec2e",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "scope": "binary32 constant1",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "complete_live_and_disk_match": true
+    },
+    {
+      "address": "00d7a218",
+      "length": 4,
+      "scope": "binary32 constant0",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "complete_live_and_disk_match": true
+    }
+  ],
+  "verification": "Every bsp.py ghidra read batch verified bsp project, program path, x86 language and00400000 image base. Offline complete live-memory/disk comparisons passed for14 ranges. No worker Ghidra/ledger mutations.",
+  "reconstruction": {
+    "source": "src/material_entry_dispatch.cpp",
+    "header": "include/bsp/material_entry_dispatch.hpp",
+    "scope": "Effect selector plus geometry/apply orchestration around mandatory unresolved native operations",
+    "entry_interface": "MaterialEntryDispatcher derives RenderBatchMaterialDispatch",
+    "shared_identity": "CompiledMaterialEffect shared by14 programs and same const void*& owner slot reset by batch execution",
+    "buffers": "Actual shared VS/PS float vectors and uint32 first-register reference; never allocated/cleared by this dispatcher",
+    "selector_native_differential": true,
+    "geometry_apply_native_differential": false
+  },
+  "selector": {
+    "mode": "live camera+198 DWORD, checked0..13",
+    "special": "mode2 nonnull effect138 with null override before all gates",
+    "skip": "root FinalLODFadeOut byte16 AND visibility<1 AND mode6",
+    "alternate": "mode0 AND visibility<1 uses effect100, otherwise effectC8+4*mode",
+    "unordered": "COMISS/JBE regular path; numerical comparisons verified with quiet NaN; no FP exception flag/trap claim",
+    "collection": "capture model170 before optional model operation; nonnull empty skips; reload FRONT every iteration, invoke override virtualC with current global0109019C, then reread mode/visibility/count"
+  },
+  "required_operations": [
+    {
+      "operation": "resolve_effect/read_camera_mode/capture_overrides/resolve_geometry",
+      "reason": "Actual retained identities/layout fields not present in all current projections; side-effect-free adapters only"
+    },
+    {
+      "operation": "update_model_and_renderer",
+      "native": "model virtual48(camera,flags), renderer virtualC8(result)",
+      "reason": "Called only for effect08/mode0; original object operation interpretation unresolved"
+    },
+    {
+      "operation": "restore_pending_planes_00b25080",
+      "reason": "Must use the actual same-renderer camera companion; never unconditional disable"
+    },
+    {
+      "operation": "construct_and_append_effect_plane",
+      "native": "00B448A3..00B44A54 within00B44750",
+      "reason": "Current command actor/camera, world/view/inverse-projection and plane math inputs required; then actual00B25040"
+    },
+    {
+      "operation": "effect_texture_00b17d90",
+      "reason": "Negative pass texture references need actual effect-owned texture array/getter"
+    },
+    {
+      "operation": "build_constants_00b42350",
+      "reason": "Large constant/dynamic-texture/parameter/model/camera/light/visibility/shadow operation remains required; existing fragments alone insufficient"
+    },
+    {
+      "operation": "material_callback",
+      "reason": "Nonzero material08 raw function invocation, no guessed ABI"
+    },
+    {
+      "operation": "record_statistics_00b16f80",
+      "reason": "Actual diagnostic enable/string/effect registry; no fabricated statistics ownership"
+    }
+  ],
+  "validation": {
+    "standalone_compile": "MSVC Win32 C++17 /MD /W4 /WX /fp:strict passed",
+    "baseline_build": "scripts/build.ps1 passed; existing reconstructed_math1/1; primary owns CMake registration of new source",
+    "native_selector": {
+      "cases": 21,
+      "selected_program_override_identities": 24,
+      "result": "PASS",
+      "coverage": [
+        "all14 modes",
+        "special precedence",
+        "final-LOD skip",
+        "alternate0",
+        "quiet NaN regular path",
+        "front/count/context rereads",
+        "same-front repetition",
+        "collection captured before model update"
+      ],
+      "fixture": "359 original verified bytes relocated into isolated executable memory; three draw calls/context getter/sentinel exception patched to synthetic callee adapters; constant1 and renderer slot relocated; synthetic COM state bindings in reconstructed path",
+      "claim": "Selector equivalence only; fixture does not execute complete native geometry/apply/constants or real material rendering"
+    },
+    "game_validated": false,
+    "visual_validated": false,
+    "abi_compatible": false
+  },
+  "host_policy": [
+    "Checked mode/stream/sampler/constant capacities",
+    "shared_ptr lifetime API replaces original intrusive ownership",
+    "Stable geometry owner bindings during each bind/draw; live documented count/range/camera/collection fields",
+    "COM failures accumulated through later native stages, then bool reports first failure",
+    "Malformed binding/backend failure stops preserving prior effects",
+    "No exact floating-point exception flags, unmasked traps, native SEH or allocation behavior claim"
+  ],
+  "annotations": [
+    {
+      "address": "00b45360",
+      "old_name": "BSP_MaterialEffect_DispatchEntry",
+      "old_comment": "[BSP reconstruction 00b45360]\nEffect vtable00d61a00+14h, recovered missing. Selects pass by entry+10h object+198h and entry+18h factor, optionalobject+Ch+170h collection, calls00b44750. Full pass/override semantics unresolved; no opaque/transparent naming assumed.",
+      "old_comments": [
+        "[BSP reconstruction 00b45360]\nEffect vtable00d61a00+14h, recovered missing. Selects pass by entry+10h object+198h and entry+18h factor, optionalobject+Ch+170h collection, calls00b44750. Full pass/override semantics unresolved; no opaque/transparent naming assumed."
+      ],
+      "proposed_name": "BSP_MaterialEffect_DispatchEntry",
+      "original_abi": "ECX effect; stack entry; RET4; effect virtual+14",
+      "proposed_comment": "Recovered selector orchestration. Mode2 special+138 precedes all gates. Root descriptor+C4 byte16 is FinalLODFadeOut; mode6 and visibility<1 skip. Capture model+170 before optional mode0 model virtual48/rendererC8. Mode0 visibility<1 selects+100, otherwise+C8+4*live camera mode. COMISS/JBE unordered uses regular pass. Override collection reloads FRONT each iteration, calls virtualC(global0109019C), rereads mode/visibility/count. Native selector differential21 cases/24 program-override identities passes; geometry/apply and required constants backend remain bounded fragments. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b44750",
+      "old_name": "BSP_MaterialPass_BindGeometryAndDraw",
+      "old_comment": "[BSP reconstruction 00b44750]\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.",
+      "old_comments": [
+        "[BSP reconstruction 00b44750]\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported."
+      ],
+      "proposed_name": "BSP_MaterialPass_BindGeometryAndDraw",
+      "original_abi": "ECX selected pass; stack entry, override; RET8",
+      "proposed_comment": "Recovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b43410",
+      "old_name": "BSP_MaterialPass_ApplyStateAndDraw",
+      "old_comment": "[BSP reconstruction 00b43410]\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.",
+      "old_comments": [
+        "[BSP reconstruction 00b43410]\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported."
+      ],
+      "proposed_name": "BSP_MaterialPass_ApplyStateAndDraw",
+      "original_abi": "ECX pass; stack entry, override, indexed flag, index stream, index base, vertex base; RET18",
+      "proposed_comment": "Recovered apply sequence around REQUIRED00B42350: render/sampler blocks; signed material104>=0 ALPHAREF; logical shaders; ordinal-bit static sampler loop including negative effect texture slots via00B17D90. Compute signed byte-end minus shared00E13078 upload counts; reread first and PS end after VS for PS gate but push old PS count. Material08 CALL EAX optional with ECX entry/no explicit args. Draw indexed/nonindexed with wrapping bases, then diagnostic00B16F80 even for skipped/failed draw. Constant builder, raw callback, effect texture and diagnostic owners remain actual required operations. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b42350",
+      "old_name": "BSP_MaterialPass_BuildShaderConstants",
+      "old_comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+      "old_comments": [
+        "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      ],
+      "proposed_name": "BSP_MaterialPass_BuildShaderConstants",
+      "original_abi": "ECX pass; stack entry, override; RET8",
+      "proposed_comment": "Required backend for MaterialEntryDispatcher, NOT reconstructed in full. Patches actual shared VS0108EBF4/PS0108DBEC blocks and dynamic textures using selected pass/entry. Existing reflected parameter, matrix/decode and shadow fragments do not cover all model/camera/light/visibility/texture owner inputs. Never synthesize zero constant blocks to make downstream draw run. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b855a0",
+      "old_name": "TRIV_body_00b855a0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_DrawSection_GetInstanceCount",
+      "original_abi": "ECX section; RET; EAX DWORD",
+      "proposed_comment": "Complete getter returns section+1C DWORD; geometry binder reads it initially and again for non-special instanced stream frequency. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b855f0",
+      "old_name": "TRIV_body_00b855f0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_DrawSection_IsIndexed",
+      "original_abi": "ECX section; RET; AL byte",
+      "proposed_comment": "Complete getter returns section+58 byte.00B44750 tests AL only when geometry+60 index stream is nonnull; nonzero selects indexed draw. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b48d50",
+      "old_name": "TRIV_body_00b48d50",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalVertexStream_GetBaseVertex",
+      "original_abi": "ECX logical vertex stream; RET; EAX DWORD",
+      "proposed_comment": "Complete getter returns stream+70 DWORD.00B44750 reads before bind-index then again for downstream nonindexed draw base; do not confuse with byte-offset getter00B48D10. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b48de0",
+      "old_name": "TRIV_body_00b48de0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalIndexStream_GetBaseIndex",
+      "original_abi": "ECX logical index stream; RET; EAX DWORD",
+      "proposed_comment": "Complete getter returns index stream+20 DWORD.00B44750 supplies zero when index stream is null; apply adds it to section+14 modulo2^32. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b7aae0",
+      "old_name": "TRIV_body_00b7aae0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_Render_GetOverrideContextWord",
+      "original_abi": "No object/stack inputs; RET; EAX DWORD",
+      "proposed_comment": "Complete MOV EAX,[0109019C];RET getter.00B45360 passes this global word to each current-front override virtual+C. Context meaning beyond this use remains provisional; ECX is not an input. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b172c0",
+      "old_name": "TRIV_body_00b172c0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_MaterialPass_GetEffectOwner",
+      "original_abi": "ECX pass; RET; EAX pointer",
+      "proposed_comment": "Complete getter returns pass+14 effect owner.00B43410 passes actual effect identity to diagnostic00B16F80. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b17320",
+      "old_name": "TRIV_body_00b17320",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_Material_GetAlphaReferenceWord",
+      "original_abi": "ECX material; RET; EAX DWORD",
+      "proposed_comment": "Complete getter returns material+104 DWORD.00B43410 signed-compares greater than-1 and sets D3DRS_ALPHAREF57 when selected. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b16f80",
+      "old_name": "FUN_00b16f80",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_MaterialDiagnostics_RecordDraw",
+      "original_abi": "ECX diagnostic; stack effect, mode, primitives, vertices, VS count, PS count; RET18",
+      "proposed_comment": "Required diagnostic operation, not fully ported. Byte+681 enable gate; search record by effect pointer and current+684 string, last match wins; create if absent. Fourteen-mode DWORD arrays record+4/+3C/+74/+AC/+E4 add draw1/primitives/vertices/VS/PS. Full body byte-verified; native registry/string construction remains unresolved and must not be replaced by an invented dummy map. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements.",
+      "preserve_prior_comment": true,
+      "applied": false
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/material_entry_compile.txt",
+      "size": 29,
+      "sha256": "39a7d9ce7fa745a84d6350ec99c0987e388dc4241662826cc8a82be52df6f1d3"
+    },
+    {
+      "path": "local/material_entry_probe_compile.txt",
+      "size": 35,
+      "sha256": "1303be51a31fadb53bf85176f8e9fd0bf1d034c9c466aa368b186fd4f76a5e3c"
+    },
+    {
+      "path": "local/material_entry_selector_result.txt",
+      "size": 265,
+      "sha256": "888128776421c9a55a4b2d305d5a347afb3e0027eae2e8b9fbdbe3738eb7d5c0"
+    },
+    {
+      "path": "local/material_entry_build.log",
+      "size": 2410,
+      "sha256": "48b264f1c2a98789c0daec97b3fd1817dc8a0265dbba8f9fbb46db4b5eb523be"
+    },
+    {
+      "path": "local/material_entry_selector_probe.cpp",
+      "size": 11624,
+      "sha256": "01c42995583f2638915abd8e374be62cf2b2bca5de31bd6dd37fd4e225e131bc"
+    },
+    {
+      "path": "local/material_entry_reference.hpp",
+      "size": 1745,
+      "sha256": "9567dc25f159715dfee3b2a02dc891201e1547c19de8c1c70310483e98675d3c"
+    },
+    {
+      "path": "local/material_entry_selector_probe.exe",
+      "size": 171008,
+      "sha256": "ecb47e752d31f13bce17c806db44573557333485704fafa9dfba7814da9c5630"
+    },
+    {
+      "path": "local/compile_material_entry.cmd",
+      "size": 297,
+      "sha256": "d28e15c0530cc033b19ee7c2ae8038f04e57ac2c88f99a6805c92d5697d1aee1"
+    },
+    {
+      "path": "local/compile_material_entry_probe.cmd",
+      "size": 476,
+      "sha256": "7b0fbf9eb6a501f5d3f41ed3632d4b35c4e17c4a78627682d4fd714eac60bb94"
+    },
+    {
+      "path": "local/verify_material_entry.py",
+      "size": 2501,
+      "sha256": "1fbd39f3022ca27b64cbc525719b2920746cb01e839dc8c87e6b4d7ccf1216a0"
+    },
+    {
+      "path": "local/material_entry_verified.json",
+      "size": 3859,
+      "sha256": "04e0ccdef160f88c32cabf8c955d09f310774193799d4e3388422518324f9ab3"
+    },
+    {
+      "path": "local/material_entry_comment_preimages.json",
+      "size": 5246,
+      "sha256": "26793ebf6fae4c60d362234a616fdfcac5a908a41fbc2bf706e26550eb92525e"
+    }
+  ],
+  "leases_held_until_primary_acceptance": [
+    "material_entry_dispatch",
+    "material_entry_dispatch_helpers",
+    "material_entry_dispatch_apply_helpers"
+  ]
+}
