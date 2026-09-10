@@ -1,0 +1,672 @@
+{
+  "packet": "directional_light_native_owner",
+  "date": "2026-09-10",
+  "base_commit": "7b216e6",
+  "shared_dependencies_committed": "1f476a2 plus primary raw-shadow snapshot below",
+  "status": "implemented_strict_win32_native_and_host_fixtures_passed_pending_primary_integration",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owned_addresses": [
+    {
+      "address": "00b7c4c0",
+      "end_exclusive": "00b7c576",
+      "length": 182,
+      "coverage": "Complete base-light constructor",
+      "native_abi": "ECX owner; stack name; EAX same owner; RET4"
+    },
+    {
+      "address": "00b7c6b0",
+      "end_exclusive": "00b7c6c9",
+      "length": 25,
+      "coverage": "Complete directional constructor",
+      "native_abi": "ECX owner; stack name; EAX same owner; RET4"
+    },
+    {
+      "address": "00b7c5b0",
+      "end_exclusive": "00b7c6aa",
+      "length": 250,
+      "coverage": "Complete light body including returning node-base tail and reconstructed cleanup unwind",
+      "native_abi": "ECX light; RET"
+    },
+    {
+      "address": "00b7c820",
+      "end_exclusive": "00b7c846",
+      "length": 38,
+      "coverage": "Complete directional deleting destructor",
+      "native_abi": "ECX light; stack flags; EAX original raw address; RET4"
+    }
+  ],
+  "missed_export_extent": {
+    "function": "00b7c5b0",
+    "export_stops_at": "00b7c681 call free",
+    "verified_tail": [
+      "00b7c686 add esp,4",
+      "00b7c68b unwind state=-1",
+      "00b7c693 call 00b6f440",
+      "00b7c698..00b7c6a9 restore SEH and RET"
+    ],
+    "full_native_bytes": 250
+  },
+  "storage": {
+    "slot_bytes": 496,
+    "node_prefix": "Existing NativeNodeStorage at000..173",
+    "tail": "NativeLightTailStorage exact120bytes at174..1EB",
+    "pool_metadata": "Live slab index1EC..1EF excluded from both raw lifetimes and preserved",
+    "shadow174": "Actual void* identity; required existing real count+04/final-release binding when nonnull",
+    "retained_scene_array178": "SAME SystemAmbientBacklinks actual pointer/count/capacity, supplied to LightSceneRetention",
+    "rendering": "SAME raw field references in SystemDirectionalLight; raw shadow accessor reloads174 and resolves actual nonnull identity on every access",
+    "canonical_fields": [
+      "diffuse_184",
+      "specular_194",
+      "base_diffuse_1a4",
+      "diffuse_mode3_1b4",
+      "base_specular_1c4",
+      "scalar_1d4",
+      "diffuse_scale_1d8",
+      "specular_scale_1dc",
+      "direction_1e0"
+    ],
+    "constructor_preserved_spans": [
+      "194..1A3",
+      "1B4..1C3",
+      "1DC..1EB"
+    ],
+    "typed_lifetime_note": "Actual preimage words are read/restored while starting typed lifetimes; preserved values are not zero/color defaults."
+  },
+  "constructor_writes": {
+    "node": "Existing00B6F5A0 first",
+    "vtable": "00D62F58 then directional-only00D62FB0",
+    "174_178_17c_180": 0,
+    "184": [
+      "3F800000",
+      "3F800000",
+      "3F800000",
+      "3F800000"
+    ],
+    "1a4": [
+      "3F800000",
+      "3F800000",
+      "3F800000",
+      "3F800000"
+    ],
+    "1c4": [
+      "0",
+      "0",
+      "0",
+      "3F800000"
+    ],
+    "1d4": "42800000 from00CE7820",
+    "1d8": "3F800000"
+  },
+  "phase_dispatch": {
+    "directional": {
+      "vtable": "00d62fb0",
+      "required_actual_type": "00b7c6d0"
+    },
+    "light": {
+      "vtable": "00d62f58",
+      "required_actual_type": "00b7c580"
+    },
+    "node": {
+      "vtable": "00d62c88",
+      "required_actual_type": "00b6f570"
+    },
+    "light_virtual50_54": [
+      "00b7c020",
+      "00b7bd60"
+    ],
+    "node_virtual50_54": [
+      "00b6ed80",
+      "00b6ee10"
+    ],
+    "virtual40": "00b6dbe0",
+    "runtime_type_values_hardcoded": false
+  },
+  "destructor_invariants": [
+    "Read current back scene for B83EC0, then reload both actual array pointer/count and back scene for reference release",
+    "After scene-zero callback reload actual count; decrement if nonzero and repeat only while positive",
+    "After scene loop capture current actual174, decrement real count and invoke required zero callback, then clear174",
+    "Do not release a replacement shadow or re-drain scenes inserted during shadow callback",
+    "Resize/free actual178 array without clearing pointer/capacity; direct node B6F440 follows returning native tail",
+    "Forget destroyed host association without reading dead raw fields or detaching callback-installed replacement scene",
+    "Deleting flags low bit alone controls return to SAME actual pool; preserve live1EC until return"
+  ],
+  "unwind": {
+    "handler": "00cc1ee6",
+    "descriptor": "00dfafc4",
+    "map": "00dfafb4",
+    "state1_to0": [
+      "00b7c1c0 array cleanup",
+      "00b6f440 direct node destructor"
+    ],
+    "shadow_or_extra_scene_release_added": false,
+    "pool_return_reached_on_exception": false,
+    "host_scene_zero_exception_check": "passed",
+    "native_handler_executed": false
+  },
+  "bounded_shadow_profile": {
+    "native_constructor_shadow": "Proven null",
+    "nonnull_release": "Supported only with actual retained-owner binding in SAME NativeNodeDestructionRuntime",
+    "nonnull_rendering": "Requires actual live borrowed view from supplied SystemShadowOwnerResolver",
+    "concrete_shadow_creation": "Separate packet; no substitute owner/default callback",
+    "null_resolution": "Returns null without resolver call"
+  },
+  "evidence_spans": [
+    {
+      "address": "00b7c4c0",
+      "length": 182,
+      "sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c6b0",
+      "length": 25,
+      "sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c5b0",
+      "length": 250,
+      "sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c820",
+      "length": 38,
+      "sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6f5a0",
+      "length": 814,
+      "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004134f0",
+      "length": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0041dd40",
+      "length": 164,
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6f440",
+      "length": 297,
+      "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6e680",
+      "length": 204,
+      "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6ee10",
+      "length": 110,
+      "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6ec70",
+      "length": 80,
+      "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bd30f0",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7bc70",
+      "length": 80,
+      "sha256": "0913e64047831192604a6566eedf25024b09bc5b09abb6a7b8b4adfef2e2e500",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b2f0",
+      "length": 108,
+      "sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce4970",
+      "length": 4,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce4adc",
+      "length": 4,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce7820",
+      "length": 4,
+      "sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cc1ee6",
+      "length": 10,
+      "sha256": "aa701866771c767e6496f736f1e5b4a85687525d7bd1d718b9ff09983a073d8e",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00dfafc4",
+      "length": 36,
+      "sha256": "e0574b1294e180957c9bab6627b0de5dae2e7f613b9d4e6a9e052dddc8c4239a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00dfafb4",
+      "length": 16,
+      "sha256": "ea8f52d3f4bcfe918ca912fe6b4da5e533e7ff0c88b4b452a3c84e3954940a2a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cc1ed0",
+      "length": 22,
+      "sha256": "5081237860ba704769be4d7377e4139004051aba4b7eab879476c2b815d24e4b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62f58",
+      "length": 88,
+      "sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62fb0",
+      "length": 88,
+      "sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "live_matches_disk": true
+    }
+  ],
+  "native_fixture": {
+    "result": "passed",
+    "native_bodies": [
+      "00b7c4c0",
+      "00b7c6b0",
+      "00b7c5b0",
+      "00b7c820",
+      "00b6f5a0",
+      "004134f0",
+      "0041dd40",
+      "00b6f440",
+      "00b6e680",
+      "00b6ee10",
+      "00b6ec70",
+      "00bd30f0",
+      "00b7bc70",
+      "00b7b2f0"
+    ],
+    "flags_tested": [
+      0,
+      1
+    ],
+    "comparison": "All496bytes after original directional constructor and deleting destructor; actual pool free count/recursion and every preserved preimage also compared",
+    "operand_relocations": [
+      [
+        0,
+        9,
+        4,
+        1
+      ],
+      [
+        0,
+        17,
+        100,
+        0
+      ],
+      [
+        0,
+        148,
+        103,
+        0
+      ],
+      [
+        1,
+        9,
+        0,
+        1
+      ],
+      [
+        2,
+        47,
+        300,
+        0
+      ],
+      [
+        2,
+        202,
+        12,
+        1
+      ],
+      [
+        2,
+        210,
+        200,
+        1
+      ],
+      [
+        2,
+        228,
+        7,
+        1
+      ],
+      [
+        3,
+        10,
+        2,
+        1
+      ],
+      [
+        3,
+        23,
+        400,
+        0
+      ],
+      [
+        3,
+        28,
+        13,
+        1
+      ],
+      [
+        4,
+        57,
+        101,
+        0
+      ],
+      [
+        4,
+        183,
+        6,
+        1
+      ],
+      [
+        4,
+        218,
+        100,
+        0
+      ],
+      [
+        4,
+        346,
+        5,
+        1
+      ],
+      [
+        4,
+        357,
+        100,
+        0
+      ],
+      [
+        4,
+        484,
+        5,
+        1
+      ],
+      [
+        4,
+        495,
+        100,
+        0
+      ],
+      [
+        4,
+        655,
+        5,
+        1
+      ],
+      [
+        4,
+        666,
+        102,
+        0
+      ],
+      [
+        4,
+        708,
+        101,
+        0
+      ],
+      [
+        7,
+        73,
+        8,
+        1
+      ],
+      [
+        7,
+        151,
+        300,
+        0
+      ],
+      [
+        7,
+        191,
+        9,
+        1
+      ],
+      [
+        7,
+        210,
+        10,
+        1
+      ],
+      [
+        7,
+        218,
+        200,
+        1
+      ],
+      [
+        7,
+        275,
+        11,
+        1
+      ],
+      [
+        9,
+        55,
+        300,
+        0
+      ],
+      [
+        13,
+        12,
+        301,
+        0
+      ],
+      [
+        13,
+        97,
+        302,
+        0
+      ]
+    ],
+    "relocation_targets": {
+      "100": "one constant",
+      "101": "positive bound",
+      "102": "negative bound",
+      "103": "64.0 constant",
+      "200": "actual host CRT free",
+      "300": "actual atomic decrement IAT slot",
+      "301": "actual EnterCriticalSection IAT slot",
+      "302": "actual LeaveCriticalSection IAT slot",
+      "400": "same actual native fixture pool storage"
+    },
+    "vtable_rewritten": false,
+    "unreached_direct_calls": [
+      {
+        "source": "00b7c601",
+        "target": "00b83ec0"
+      },
+      {
+        "source": "00b6f66b",
+        "target": "00bf7680"
+      },
+      {
+        "source": "0041dd64",
+        "target": "00419cc0"
+      },
+      {
+        "source": "0041dd6b",
+        "target": "00bd1510"
+      },
+      {
+        "source": "0041dd83",
+        "target": "00419cc0"
+      },
+      {
+        "source": "0041dd90",
+        "target": "00bd1120"
+      },
+      {
+        "source": "0041ddb1",
+        "target": "00bf7680"
+      },
+      {
+        "source": "0041ddc9",
+        "target": "00419cc0"
+      },
+      {
+        "source": "0041ddd0",
+        "target": "00bd1510"
+      },
+      {
+        "source": "00b6f47a",
+        "target": "00b8f4c0"
+      },
+      {
+        "source": "00b6f4a6",
+        "target": "00b72220"
+      },
+      {
+        "source": "00b6f4bb",
+        "target": "00b6d890"
+      },
+      {
+        "source": "00b6f536",
+        "target": "00419cc0"
+      },
+      {
+        "source": "00b6f53d",
+        "target": "00bd1510"
+      },
+      {
+        "source": "00b6e69b",
+        "target": "00b6d940"
+      },
+      {
+        "source": "00b6e6ab",
+        "target": "00b8f4c0"
+      },
+      {
+        "source": "00b6e6bb",
+        "target": "00b6d890"
+      },
+      {
+        "source": "00b6e6c7",
+        "target": "00b8e600"
+      },
+      {
+        "source": "00b6e6e3",
+        "target": "00b6e010"
+      },
+      {
+        "source": "00b6e710",
+        "target": "00b6d890"
+      },
+      {
+        "source": "00b6e717",
+        "target": "00b6d850"
+      },
+      {
+        "source": "00b6e738",
+        "target": "00b6da30"
+      },
+      {
+        "source": "00b6ee27",
+        "target": "00b83ec0"
+      },
+      {
+        "source": "00b6ec7e",
+        "target": "00b6e500"
+      },
+      {
+        "source": "00b7bc7e",
+        "target": "00b7b390"
+      }
+    ],
+    "limits": "Empty name, no hierarchy/scene/shadow/point-array ownership, no native exception path; original constructors/deleting flags/pool return are executed."
+  },
+  "host_fixture": {
+    "result": "passed",
+    "observed_trace": [
+      "registry predicate reallocates/replaces back array",
+      "reloaded back scene zero rewrites count",
+      "shadow zero replaces174 and appends retained scene",
+      "node130 zero observes node vtable phase"
+    ],
+    "other_checks": [
+      "Real retained-owner heap deletion and association removal",
+      "Actual rendering and retained-array field alias addresses",
+      "Raw null shadow bypasses resolver",
+      "Nonnull unbound shadow throws without fallback",
+      "Unreached replacement shadow remains referenced while native174 clears",
+      "Scene appended during shadow zero remains referenced after native array shrink/free",
+      "Scene-zero exception cleans array/node while leaving shadow reference and pool allocation untouched"
+    ]
+  },
+  "shared_source_snapshot": {
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8"
+  },
+  "fixture_artifacts": {
+    "local/native_light_fixture.cpp": "63744f1d182583a47535716719e846895124b2322354d2e7517532925eead87e",
+    "local/run_light_fixture.cmd": "2e48c0ddb17012ccd9e6263781d9f95dc565579c8dfb58cc6e434ca25f01df1a",
+    "local/prepare_light_fixture.py": "cf45c4c83ef58e109a425a8bd428c8ef92a776f357111a33665a38e02a7b7583",
+    "local/light_reference_bytes.hpp": "0b435967e323f2c66171c8407e112d53f17e0b63a053e8a3ebd4d9e9ae882c9e",
+    "local/light_verified_evidence.json": "e6a7703874eb7a97268fa4080d11613e8fd990652d4777b36f6a9ea78a72996a"
+  },
+  "validation": {
+    "strict_win32_compile": "passed: MSVC C++20 /W4 /WX /EHsc /fp:strict /MD",
+    "focused_fixture": "passed",
+    "scripts_build_ps1": "pending primary CMake integration gate",
+    "installed_pe_bytes_verified": true,
+    "game_validated": false,
+    "visual_validated": false,
+    "binary_abi_compatible": false,
+    "new_committed_tests": 0
+  },
+  "not_implemented": [
+    "Concrete nonnull shadow creation/camera/texture ownership",
+    "Native world allocation caller/factory fragments",
+    "Runtime type bootstrap (separate packet)",
+    "Non-null reparenting beyond existing null-parent closure"
+  ],
+  "ghidra_mutated": false,
+  "ledgers_written": false,
+  "installed_game_written": false
+}
