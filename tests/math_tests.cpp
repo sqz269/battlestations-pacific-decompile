@@ -1,9 +1,11 @@
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/game_entry.hpp"
+#include "bsp/gui_startup.hpp"
 #include "bsp/math.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/input_settings.hpp"
 #include <cmath>
+#include <memory>
 #include <cstring>
 #include <iostream>
 #include <limits>
@@ -60,6 +62,50 @@ public:
 
 private:
     const char* line_;
+};
+
+// Records the call order of 0073bae0's GUI half so the deferred visibility call
+// and the double store of MousePtrFE_Icon cannot silently drift.
+class GuiStartupRecorder final : public bsp::GuiStartupHost {
+public:
+    std::string language_font_path() override { return {}; }
+    bsp::FontRegistry& font_registry() override { return registry_; }
+    bool load_font_descriptors(bsp::FontRegistry&, std::string_view, std::string_view,
+        std::string_view) override
+    {
+        return true;
+    }
+    void preload_fallback_glyph_table() override {}
+    void* gui_manager() override { return &registry_; }
+    void* create_gui_resource(void*, void* parent,
+        const bsp::GuiManagerResource& entry) override
+    {
+        std::string line = "create ";
+        line += entry.name;
+        line += " parent=";
+        line += parent ? name_of(parent) : "none";
+        transcript.push_back(line);
+        names_.emplace_back(new std::string(entry.name));
+        return names_.back().get();
+    }
+    void store_gui_resource(void*, std::uint16_t offset, void*) override
+    {
+        transcript.push_back("store " + std::to_string(offset));
+    }
+    void set_gui_resource_visibility(void* resource, bool visible) override
+    {
+        transcript.push_back("visible " + name_of(resource) + (visible ? " 1" : " 0"));
+    }
+    void clear_gui_manager_ready_flag(void*) override
+    {
+        transcript.push_back("clear ready flag");
+    }
+    std::vector<std::string> transcript;
+
+private:
+    static std::string name_of(void* handle) { return *static_cast<std::string*>(handle); }
+    bsp::FontRegistry registry_;
+    std::vector<std::unique_ptr<std::string>> names_;
 };
 }
 
@@ -158,6 +204,47 @@ int main() {
                 && scenario.mission_initialized && flags.skip_title && flags.skip_logos
                 && scenario.queued == GameStartupState::kScenarioLoad,
             "a .scn path overrides noskipLogos and reaches the mission state");
+    }
+    {
+        // 00aa5e20 stores MousePtrFE_Icon at both +0x54 and +0x50 and issues its
+        // visibility call only after MousePtrGUI_Icon's, at 00aa60a3. Nothing in
+        // the type system pins that order, so the transcript is the check.
+        GuiStartupRecorder host;
+        const bsp::GuiStartupResult result = bsp::run_gui_startup(host);
+        check(result.stores == 10 && result.resources_created == 10,
+            "the GUI resource list makes ten stores for ten resources");
+        const std::vector<std::string> expected{
+            "create data/interface/textures/whiteGui.tga parent=none",
+            "store 40",
+            "create interface/textures/common/transparent.tga parent=none",
+            "store 44",
+            "create _Mouse parent=none",
+            "store 76",
+            "visible _Mouse 1",
+            "create MousePtrFE_Icon parent=_Mouse",
+            "store 84",
+            "store 80",
+            "create MousePtrGUI_Icon parent=_Mouse",
+            "store 88",
+            "visible MousePtrGUI_Icon 0",
+            "visible MousePtrFE_Icon 0",
+            "create _Highlight parent=none",
+            "visible _Highlight 1",
+            "create hl_FrameBox parent=_Highlight",
+            "store 116",
+            "visible hl_FrameBox 0",
+            "create hlCircle_FrameBox parent=_Highlight",
+            "store 120",
+            "visible hlCircle_FrameBox 0",
+            "create safezone_43_FrameBox parent=_Highlight",
+            "store 124",
+            "visible safezone_43_FrameBox 0",
+            "create safezone_169_FrameBox parent=_Highlight",
+            "store 128",
+            "visible safezone_169_FrameBox 0",
+            "clear ready flag",
+        };
+        check(host.transcript == expected, "the GUI resource list runs in native order");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
