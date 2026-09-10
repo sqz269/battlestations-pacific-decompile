@@ -6,6 +6,7 @@
 #include "bsp/game_settings.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_text.hpp"
 #include "bsp/gui_widget.hpp"
@@ -1183,6 +1184,29 @@ int main() {
               && recorded.channel_objects == bsp::kChannelObjectCount
               && recorded.marker_manager == 0x121D4u,
             "004DE610 builds an ocean on both branches and never reports a failure");
+    }
+
+    {
+        // 00BD63B0 and 00BD61C0 disagree on field type 0Ah: the value path runs
+        // lua_tolstring and parses the text (00BD67F2), the default path takes
+        // the fallback word as a float already (00BD62F0). Making the pair
+        // symmetric in either direction would silently read every defaulted
+        // 0Ah field as a pointer or every authored one as raw bits.
+        float parsed_value = -1.0f;
+        float defaulted = -1.0f;
+        const bsp::GuiLuaVariant parsed_value_field =
+            bsp::gui_lua_field(bsp::GuiLuaFieldType::ParsedFloat, &parsed_value);
+        const bsp::GuiLuaVariant defaulted_field =
+            bsp::gui_lua_field(bsp::GuiLuaFieldType::ParsedFloat, &defaulted);
+        bsp::GuiLuaVariant fallback;
+        fallback.value.number = 2.5f;
+        check(bsp::gui_lua_store_value_00bd63b0(bsp::GuiValue(std::string("1.5")),
+                                                parsed_value_field, nullptr)
+                  && parsed_value == 1.5f,
+            "field type 0Ah parses the script's string");
+        check(bsp::gui_lua_store_default_00bd61c0(defaulted_field, fallback)
+                  && defaulted == 2.5f,
+            "field type 0Ah takes its default as a plain float");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

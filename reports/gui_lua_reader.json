@@ -1,0 +1,840 @@
+{
+  "packet": "gui_lua_reader",
+  "doc": "docs/GUI_LUA_READER.md",
+  "owner": "agent/gui-lua-reader",
+  "addresses": [
+    "00AC6600",
+    "00B6A020",
+    "00B669C0",
+    "00B69D40",
+    "00B66CA0",
+    "00B67980",
+    "004425C0",
+    "00441A70",
+    "00441210",
+    "00442220",
+    "00BD8E20",
+    "00BD7A20",
+    "00BD7130",
+    "00BD68D0",
+    "00BD6830",
+    "00BD5EB0",
+    "00BD5F50",
+    "00BD5790",
+    "00BD63B0",
+    "00BD61C0",
+    "00B65F50",
+    "00B65FB0",
+    "00B66050",
+    "00B660A0",
+    "00B661B0",
+    "00B66250",
+    "00B66270",
+    "00B66290",
+    "00B662B0",
+    "00B66420",
+    "00B66A60",
+    "00B67080",
+    "00B67190",
+    "00B67690",
+    "00B67700",
+    "00B67720",
+    "00B67800",
+    "00B66BD0",
+    "00B669A0",
+    "00B6D890"
+  ],
+  "files": [
+    "docs/GUI_LUA_READER.md",
+    "reports/gui_lua_reader.json",
+    "include/bsp/gui_lua_reader.hpp",
+    "src/gui_lua_reader.cpp"
+  ],
+  "finding": "The GUI creates a private Lua 5.1.1 interpreter for every page it constructs, opens base/table/string/math only, runs interface/_Common.lua and interface/<page>.lua through luaL_loadbuffer + lua_call (unprotected), wraps the globals table in a std::vector<LuaObject> reader with six virtuals, descends into the global table GuiScreen, hands the reader to the widget walk and closes the interpreter again before returning.",
+  "interpreter": {
+    "created_at": "00B6A020, called from 00AC672B with mask 0x65",
+    "new_state": "00A6A260 luaL_newstate, stored at owner+4h; owner+0h = 1 (owns)",
+    "panic_handler": "00B669C0, installed with lua_atpanic 00A67390 at 00B6A03B",
+    "panic_body": "lua_gettop, lua_tolstring on that index, result discarded, return 0",
+    "library_table": "00D62BB8, {const char* name, lua_CFunction opener} pairs, null-terminated",
+    "libraries": [
+      {
+        "bit": "0x01",
+        "name": "",
+        "name_address": "00CE3A0C",
+        "opener": "00A67210",
+        "opened": true
+      },
+      {
+        "bit": "0x02",
+        "name": "package",
+        "name_address": "00D62BB0",
+        "opener": "00C2FF90",
+        "opened": false
+      },
+      {
+        "bit": "0x04",
+        "name": "table",
+        "name_address": "00CF8344",
+        "opener": "00A66010",
+        "opened": true
+      },
+      {
+        "bit": "0x08",
+        "name": "io",
+        "name_address": "00CF8340",
+        "opener": "00A652B0",
+        "opened": false
+      },
+      {
+        "bit": "0x10",
+        "name": "os",
+        "name_address": "00CF833C",
+        "opener": "00A64190",
+        "opened": false
+      },
+      {
+        "bit": "0x20",
+        "name": "string",
+        "name_address": "00CF8334",
+        "opener": "00A63910",
+        "opened": true
+      },
+      {
+        "bit": "0x40",
+        "name": "math",
+        "name_address": "00CF832C",
+        "opener": "00A61C50",
+        "opened": true
+      },
+      {
+        "bit": "0x80",
+        "name": "debug",
+        "name_address": "00CF8324",
+        "opener": "00A61620",
+        "opened": false
+      }
+    ],
+    "open_sequence": "lua_pushcclosure 00A67B20, lua_pushstring 00A67A50, lua_call(L,1,0) 00A68090",
+    "base_top_cached_at": "owner+8h, from lua_gettop 00A673D0",
+    "closed_at": "00B669A0, lua_close 00A68A90 when owner+4h != 0 and owner+0h != 0",
+    "registers_no_game_c_functions": true
+  },
+  "script_loading": {
+    "00B69D40": {
+      "convention": "__thiscall(owner, const NativeString* path, char obfuscated), RET 8",
+      "behaviour": "runs 00B66CA0 on the path, then asks the VFS singleton 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each, in search order; the 8-byte list is freed with 00427110 then _free"
+    },
+    "00B66CA0": {
+      "convention": "__thiscall(owner, const NativeString* path, char obfuscated), RET 8",
+      "steps": [
+        "VFS singleton vtable +4h opens the path with mode 2",
+        "vtable +18h must report open, vtable +30h must report a non-zero size",
+        "vtable +24h reads the file into a malloc buffer",
+        "if obfuscated != 0, 00B66D1F rotates every byte's nibbles with a marker byte (GUI passes 0)",
+        "luaL_loadbuffer 00A6A160 with the path text as the chunk name, or 0108FF2C when empty",
+        "the stream is released",
+        "lua_call 00A68090 with 0 arguments and LUA_MULTRET",
+        "the buffer is freed"
+      ],
+      "load_result_tested": false,
+      "protected": false,
+      "silent_cases": [
+        "missing file",
+        "stream not open",
+        "zero-length file"
+      ]
+    },
+    "error_behaviour": "A compile error leaves the message string where the function should be and lua_call then calls a string; a run-time error raises directly. Both are unprotected, so Lua 5.1.1's luaD_throw finds no errorJmp, calls the panic function at 00B669C0 and then exit(EXIT_FAILURE). There is no per-page recovery: a malformed page script terminates the process rather than skipping the page. The exit step is read from the matched Lua 5.1.1 source, not from this binary's luaD_throw.",
+    "call_order_in_00AC6600": [
+      "00AC5600(\"_Common\") -> interface/_Common.lua, run by 00B69D40 with flag 0",
+      "00AC5770(page name) -> interface/<page>.lua, run by 00B69D40 with flag 0"
+    ]
+  },
+  "reader_object": {
+    "constructor": "004425C0, __thiscall(this, LuaObject root_by_value), RET 14h",
+    "destructor": "00441A70; the vector is cleared by 00441210, push_back is 00442220",
+    "vtable": "00CE44FC",
+    "abstract_base_vtable": "00CE374C (+0h dtor 00410610, +4h..+18h __purecall 00BF698E)",
+    "second_implementation": "00CE3768 (00410760, 004106A0, 004106C0, 00410700, 004106D0, 00410730, 00410750), unused by the GUI",
+    "size": "0x14",
+    "layout": {
+      "+0h": "vtable",
+      "+4h": "secure-SCL proxy word of std::vector<LuaObject>",
+      "+8h": "_Myfirst",
+      "+0Ch": "_Mylast",
+      "+10h": "_Myend"
+    },
+    "element_size": "0x14",
+    "element_size_evidence": [
+      "00441210 steps the destroy loop by 14h",
+      "00BD8E20 takes _Mylast - 14h as the back element",
+      "00BD7130 divides the byte span by 14h with the 66666667h reciprocal"
+    ]
+  },
+  "visitor_vtable": [
+    {
+      "slot": "+0h",
+      "address": "00441A70",
+      "role": "destructor"
+    },
+    {
+      "slot": "+4h",
+      "address": "00BD8E20",
+      "convention": "__thiscall(kind, key), RET 8",
+      "role": "look the key up in the back element and push the result; a missing key pushes nil"
+    },
+    {
+      "slot": "+8h",
+      "address": "00BD7A20",
+      "convention": "adjustor thunk ECX += 4, JMP 00BD7130, RET",
+      "role": "pop_back"
+    },
+    {
+      "slot": "+0Ch",
+      "address": "00BD68D0",
+      "convention": "__thiscall(kind, key, field_type, dest, default_type, default_value), RET 18h",
+      "role": "read with a default: nil takes 00BD61C0, otherwise 00BD63B0"
+    },
+    {
+      "slot": "+10h",
+      "address": "00BD6830",
+      "convention": "__thiscall(kind, key, field_type, dest), RET 10h",
+      "role": "read with no presence test; an absent key reaches 00BD63B0 as nil"
+    },
+    {
+      "slot": "+14h",
+      "address": "00BD5EB0",
+      "convention": "__thiscall(kind, key), RET 8, returns bool",
+      "role": "!IsNil(lookup)"
+    },
+    {
+      "slot": "+18h",
+      "address": "00BD5F50",
+      "convention": "__thiscall(KeyArray* out), RET 4",
+      "role": "enumerate the current table's keys"
+    }
+  ],
+  "key_lookup_00BD5790": {
+    "convention": "__fastcall(ECX = out LuaObject, EDX = parent LuaObject, key_kind, key_value), RET 8, returns ECX",
+    "kinds": [
+      {
+        "kind": 0,
+        "path": "00B67800 lua_pushlstring + lua_gettable",
+        "value": "const char*"
+      },
+      {
+        "kind": 1,
+        "path": "00B67720 lua_pushnumber + lua_gettable",
+        "value": "int"
+      },
+      {
+        "kind": 2,
+        "path": "CVTTSS2SI then the kind 1 path",
+        "value": "float"
+      },
+      {
+        "kind": ">=3",
+        "path": "nothing runs; the output stays unbound, which reads back as not-nil"
+      }
+    ]
+  },
+  "key_array": {
+    "entry_size": 8,
+    "capacity": 250,
+    "count_offset": "0x7D0",
+    "total_size": "0x7D4",
+    "reconciliation": "docs/GUI_LAYOUT_LOADER.md's '500-entry array' is 500 dwords, and its count at [ESP+804h] is this field: its array base is ESP+34h and 804h - 34h = 7D0h.",
+    "cleared_by_caller_to": "0xFFFFFFFF over the 7D0h bytes, count 0",
+    "caches": "keys, not descriptor indices and not interned strings",
+    "string_lifetime": "the word is the char* lua_tolstring returned, which points into the live Lua string and is valid only while the interpreter is open; 00AAA710 copies it into a NativeString before use",
+    "entry_tags": {
+      "0": "string key, char*",
+      "1": "integral number key, int",
+      "2": "other number key, float"
+    },
+    "walk": [
+      "00B67080 IterateFirst (lua_gettop, lua_pushnil, lua_next)",
+      "00B66420 IsUnbound(key) ends the loop (key kind == 0)",
+      "00B67190 IterateNext (lua_gettop, lua_pushvalue, lua_next)"
+    ],
+    "unrecorded_keys": "a key that is neither a string nor a number advances the walk but is not recorded and does not move the count",
+    "bounds_checked": false
+  },
+  "field_types": [
+    {
+      "tag": 0,
+      "field": "native string",
+      "value": "lua_tolstring, strlen, resize + memcpy; a null pointer resizes to zero",
+      "default": "strlen + memcpy of the default char*"
+    },
+    {
+      "tag": 1,
+      "field": "int",
+      "value": "lua_tonumber narrowed by __ftol",
+      "default": "the default word"
+    },
+    {
+      "tag": 2,
+      "field": "float",
+      "value": "lua_tonumber",
+      "default": "the default word as a float"
+    },
+    {
+      "tag": 3,
+      "field": "bool byte",
+      "value": "lua_toboolean",
+      "default": "the default byte"
+    },
+    {
+      "tag": 4,
+      "field": "int handle",
+      "value": "integral number through 0109CED4, table through 0109CED8, anything else ignored",
+      "default": "the default word, with no resolver"
+    },
+    {
+      "tag": 5,
+      "field": "float[3]",
+      "value": "t[1], t[2], t[3]",
+      "default": "3 floats from the default pointer"
+    },
+    {
+      "tag": 6,
+      "field": "float[2]",
+      "value": "t[1], t[2]",
+      "default": "2 floats"
+    },
+    {
+      "tag": 7,
+      "field": "float[16]",
+      "value": "t[i][j], both 1..4, row major",
+      "default": "tail call to 004134F0 BSP_Matrix_Copy4x4X87"
+    },
+    {
+      "tag": 8,
+      "field": "float[4]",
+      "value": "t[1]..t[4]",
+      "default": "4 dwords"
+    },
+    {
+      "tag": 9,
+      "field": "none",
+      "value": "no case at all",
+      "default": "no case at all"
+    },
+    {
+      "tag": 10,
+      "field": "float",
+      "value": "lua_tolstring then the CRT parse at 00BF8417",
+      "default": "the default word as a float"
+    }
+  ],
+  "field_type_notes": [
+    "the field pair and the default pair are the same 8-byte record: a dword tag and one machine word",
+    "00BD61C0 reads the tag from the field pair only, so a default whose own tag disagrees is still written as the field's type",
+    "tag 0Ah is the one asymmetry: the value path parses a string, the default path takes a plain float",
+    "tag 4 tests 00B66A60 (a number whose value is integral) first, then 00B661B0, which compares lua_type against 5 (LUA_TTABLE), not a string",
+    "tags 5..8 index the value with lua_gettable, so a missing index is nil and becomes 0.0f; a value that is not a table is indexed anyway, which raises in Lua 5.1 and is therefore fatal here",
+    "GuiValueTag in include/bsp/gui_layout_loader.hpp names tags 0, 2, 3, 5, 6 and 8; this packet fills 1, 4 and 7 and adds 9 and 0Ah"
+  ],
+  "lua_object": {
+    "size": "0x14",
+    "layout": {
+      "+0h": "owner",
+      "+4h": "kind (0 unbound, 1 pseudo-index, 2 stack reference)",
+      "+8h": "index or reference",
+      "+0Ch": "unread",
+      "+10h": "unread byte"
+    },
+    "globals": "00B67980 builds kind 1 with index 0xFFFFD8EE = -10002 = LUA_GLOBALSINDEX"
+  },
+  "lua_api_boundary": [
+    {
+      "wrapper": "00B65F50",
+      "role": "LuaObject construct",
+      "lua": []
+    },
+    {
+      "wrapper": "00B65FB0",
+      "role": "IsNil",
+      "lua": [
+        "lua_type 00A675A0"
+      ]
+    },
+    {
+      "wrapper": "00B66050",
+      "role": "IsNumber",
+      "lua": [
+        "lua_type"
+      ]
+    },
+    {
+      "wrapper": "00B660A0",
+      "role": "IsString",
+      "lua": [
+        "lua_type"
+      ]
+    },
+    {
+      "wrapper": "00B661B0",
+      "role": "IsTable",
+      "lua": [
+        "lua_type"
+      ]
+    },
+    {
+      "wrapper": "00B66A60",
+      "role": "IsInteger",
+      "lua": [
+        "lua_type",
+        "lua_tonumber 00A67770"
+      ]
+    },
+    {
+      "wrapper": "00B66250",
+      "role": "GetBoolean",
+      "lua": [
+        "lua_toboolean 00A677E0"
+      ]
+    },
+    {
+      "wrapper": "00B66270",
+      "role": "GetNumber",
+      "lua": [
+        "lua_tonumber"
+      ]
+    },
+    {
+      "wrapper": "00B66290",
+      "role": "GetInteger",
+      "lua": [
+        "lua_tonumber",
+        "__ftol"
+      ]
+    },
+    {
+      "wrapper": "00B662B0",
+      "role": "GetString",
+      "lua": [
+        "lua_tolstring 00A67810"
+      ]
+    },
+    {
+      "wrapper": "00B66420",
+      "role": "IsUnbound",
+      "lua": []
+    },
+    {
+      "wrapper": "00B67080",
+      "role": "IterateFirst",
+      "lua": [
+        "lua_gettop 00A673D0",
+        "lua_pushnil 00A679C0",
+        "lua_next 00A683A0"
+      ]
+    },
+    {
+      "wrapper": "00B67190",
+      "role": "IterateNext",
+      "lua": [
+        "lua_gettop",
+        "lua_pushvalue 00A67570",
+        "lua_next"
+      ]
+    },
+    {
+      "wrapper": "00B67690",
+      "role": "assign",
+      "lua": [
+        "ref helper 00B66DE0"
+      ]
+    },
+    {
+      "wrapper": "00B67700",
+      "role": "destroy",
+      "lua": [
+        "ref helper 00B66DE0"
+      ]
+    },
+    {
+      "wrapper": "00B67720",
+      "role": "GetByIndex",
+      "lua": [
+        "lua_gettop",
+        "lua_pushnumber 00A679D0",
+        "lua_gettable 00A67C20"
+      ]
+    },
+    {
+      "wrapper": "00B67800",
+      "role": "GetByName",
+      "lua": [
+        "lua_gettop",
+        "lua_pushlstring 00A67A10",
+        "lua_gettable"
+      ]
+    },
+    {
+      "wrapper": "00B67980",
+      "role": "GetGlobals",
+      "lua": []
+    },
+    {
+      "wrapper": "00B66CA0",
+      "role": "load and run a chunk",
+      "lua": [
+        "luaL_loadbuffer 00A6A160",
+        "lua_call 00A68090"
+      ]
+    },
+    {
+      "wrapper": "00B6A020",
+      "role": "create and configure the state",
+      "lua": [
+        "luaL_newstate 00A6A260",
+        "lua_atpanic 00A67390",
+        "lua_pushcclosure 00A67B20",
+        "lua_pushstring 00A67A50",
+        "lua_call",
+        "lua_gettop",
+        "lua_setfield 00A67E40",
+        "luaL_loadstring 00A6A190",
+        "lua_pcall 00A680E0"
+      ]
+    },
+    {
+      "wrapper": "00B669A0",
+      "role": "close the state",
+      "lua": [
+        "lua_close 00A68A90"
+      ]
+    },
+    {
+      "wrapper": "00B669C0",
+      "role": "panic handler",
+      "lua": [
+        "lua_gettop",
+        "lua_tolstring"
+      ]
+    }
+  ],
+  "conventions": {
+    "00AC6600": "__thiscall(ECX = screen, const NativeString* name, void* model, char flag), RET 0Ch",
+    "00B6A020": "__thiscall(owner, unsigned library_mask), RET 4",
+    "00B669A0": "__thiscall(owner), RET",
+    "00B669C0": "__fastcall(ECX = lua_State*), RET, returns 0",
+    "00B69D40": "__thiscall(owner, const NativeString* path, char obfuscated), RET 8",
+    "00B66CA0": "__thiscall(owner, const NativeString* path, char obfuscated), RET 8",
+    "00B67980": "__thiscall(owner, LuaObject* out), RET 4",
+    "004425C0": "__thiscall(this, LuaObject root_by_value), RET 14h, returns this",
+    "00441A70": "__thiscall(this), RET",
+    "00441210": "__thiscall(&vector proxy), RET",
+    "00442220": "__thiscall(&vector proxy, const LuaObject*), RET 4",
+    "00BD7130": "__thiscall(&vector proxy), RET",
+    "00BD7A20": "adjustor thunk: ECX += 4, JMP 00BD7130",
+    "00BD8E20": "__thiscall(this, int key_kind, key_value), RET 8",
+    "00BD5EB0": "__thiscall(this, int key_kind, key_value), RET 8, returns bool in AL",
+    "00BD6830": "__thiscall(this, int key_kind, key_value, int field_type, void* dest), RET 10h",
+    "00BD68D0": "__thiscall(this, int key_kind, key_value, int field_type, void* dest, int default_type, default_value), RET 18h",
+    "00BD5F50": "__thiscall(this, KeyArray* out), RET 4",
+    "00BD5790": "__fastcall(ECX = out LuaObject, EDX = parent LuaObject, int key_kind, key_value), RET 8",
+    "00BD63B0": "__fastcall(ECX = LuaObject, EDX = field pair), RET",
+    "00BD61C0": "__thiscall(ECX = field pair, const Variant* default pair), RET 4",
+    "00B66420": "__thiscall(ignored, const LuaObject*), RET 4, returns bool in AL",
+    "00B6D890": "__thiscall(scene node, node* new_parent), RET 4"
+  },
+  "corrections": [
+    {
+      "doc": "docs/GUI_LAYOUT_LOADER.md",
+      "claim": "the literal GuiScreen is at 00D5CB20",
+      "correction": "it is at 00D5CB24; 00D5CB18 holds \"interface/\" and 00D5CB20 is its padding"
+    },
+    {
+      "doc": "docs/GUI_LAYOUT_LOADER.md",
+      "claim": "00B67980 and 00B6D890 in the same tail live in segment 87 ... That is Lua",
+      "correction": "00B67980 is Lua (it builds the globals LuaObject) but 00B6D890 is not: it is in segment 88, is __thiscall(node, new_parent) RET 4, rewrites node+A4h and unlinks/relinks through 00B72220 and 00B721F0. It is a scene-node reparent."
+    },
+    {
+      "doc": "docs/GUI_LAYOUT_LOADER.md",
+      "claim": "a 500-entry array of variants, count at [ESP+804h]",
+      "correction": "the same field: the array is 250 8-byte entries (500 dwords) with the count at base+7D0h, and 804h - 34h = 7D0h from that function's array base"
+    },
+    {
+      "doc": "docs/GUI_LAYOUT_LOADER.md",
+      "claim": "_debugtexts.lua is malformed Lua, so the shipped file cannot load in the game either",
+      "correction": "correct, and the consequence is stronger than a failed page: the chunk is run with lua_call, so the raise is unprotected and terminates the process"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00B669C0",
+      "end": "00B669D6",
+      "role": "lua_atpanic handler installed by 00B6A020; lua_gettop, lua_tolstring, discard, return 0. Ten instructions followed by int3 padding."
+    }
+  ],
+  "names_recorded": [
+    {
+      "address": "00BD8E20",
+      "name": "BSP_LuaReader_EnterKey"
+    },
+    {
+      "address": "00BD7A20",
+      "name": "BSP_LuaReader_LeaveKeyThunk"
+    },
+    {
+      "address": "00BD7130",
+      "name": "BSP_LuaObjectVector_PopBack"
+    },
+    {
+      "address": "00BD68D0",
+      "name": "BSP_LuaReader_ReadFieldOrDefault"
+    },
+    {
+      "address": "00BD6830",
+      "name": "BSP_LuaReader_ReadField"
+    },
+    {
+      "address": "00BD5EB0",
+      "name": "BSP_LuaReader_HasKey"
+    },
+    {
+      "address": "00BD5F50",
+      "name": "BSP_LuaReader_EnumerateKeys"
+    },
+    {
+      "address": "00BD5790",
+      "name": "BSP_LuaReader_LookupChild"
+    },
+    {
+      "address": "00BD63B0",
+      "name": "BSP_LuaReader_StoreValue"
+    },
+    {
+      "address": "00BD61C0",
+      "name": "BSP_LuaReader_StoreDefault"
+    },
+    {
+      "address": "004425C0",
+      "name": "BSP_LuaReader_Construct"
+    },
+    {
+      "address": "00441A70",
+      "name": "BSP_LuaReader_Destruct"
+    },
+    {
+      "address": "00441210",
+      "name": "BSP_LuaObjectVector_Tidy"
+    },
+    {
+      "address": "00442220",
+      "name": "BSP_LuaObjectVector_PushBack"
+    },
+    {
+      "address": "00B66BD0",
+      "name": "BSP_LuaStateOwner_Construct"
+    },
+    {
+      "address": "00B6A020",
+      "name": "BSP_LuaStateOwner_Open"
+    },
+    {
+      "address": "00B669A0",
+      "name": "BSP_LuaStateOwner_Close"
+    },
+    {
+      "address": "00B669C0",
+      "name": "BSP_LuaStateOwner_Panic"
+    },
+    {
+      "address": "00B69D40",
+      "name": "BSP_LuaStateOwner_RunScriptWithOverrides"
+    },
+    {
+      "address": "00B66CA0",
+      "name": "BSP_LuaStateOwner_LoadAndCallChunk"
+    },
+    {
+      "address": "00B67980",
+      "name": "BSP_LuaStateOwner_GetGlobals"
+    },
+    {
+      "address": "00B65F50",
+      "name": "BSP_LuaObject_Construct"
+    },
+    {
+      "address": "00B65FB0",
+      "name": "BSP_LuaObject_IsNil"
+    },
+    {
+      "address": "00B66050",
+      "name": "BSP_LuaObject_IsNumber"
+    },
+    {
+      "address": "00B660A0",
+      "name": "BSP_LuaObject_IsString"
+    },
+    {
+      "address": "00B661B0",
+      "name": "BSP_LuaObject_IsTable"
+    },
+    {
+      "address": "00B66A60",
+      "name": "BSP_LuaObject_IsInteger"
+    },
+    {
+      "address": "00B66250",
+      "name": "BSP_LuaObject_GetBoolean"
+    },
+    {
+      "address": "00B66270",
+      "name": "BSP_LuaObject_GetNumber"
+    },
+    {
+      "address": "00B66290",
+      "name": "BSP_LuaObject_GetInteger"
+    },
+    {
+      "address": "00B662B0",
+      "name": "BSP_LuaObject_GetString"
+    },
+    {
+      "address": "00B66420",
+      "name": "BSP_LuaObject_IsUnbound"
+    },
+    {
+      "address": "00B67080",
+      "name": "BSP_LuaObject_IterateFirst"
+    },
+    {
+      "address": "00B67190",
+      "name": "BSP_LuaObject_IterateNext"
+    },
+    {
+      "address": "00B67690",
+      "name": "BSP_LuaObject_Assign"
+    },
+    {
+      "address": "00B67700",
+      "name": "BSP_LuaObject_Destruct"
+    },
+    {
+      "address": "00B67720",
+      "name": "BSP_LuaObject_GetByIndex"
+    },
+    {
+      "address": "00B67800",
+      "name": "BSP_LuaObject_GetByName"
+    }
+  ],
+  "uncertainties": [
+    "00AC5600's exact signature: __thiscall with an 8-byte NativeString stack argument and RET 8, ECX a caller frame slot that comes back holding {length, char*}; whether ECX is a return buffer or a small object was not settled and belongs to the layout-loader packet",
+    "00B6A020's tail past the library loop (about 220 instructions) uses lua_setfield, luaL_loadstring and lua_pcall; it is the wrapper's own bootstrap, it is protected, and whether it installs C functions a page script could call is open",
+    "the two handle resolvers at 0109CED4 and 0109CED8, installed by 00BD4FC0, were not followed",
+    "the obfuscation transform at 00B66D1F was read only far enough to see a nibble rotation with a marker byte; the GUI never enables it and it is not reconstructed",
+    "exit(EXIT_FAILURE) after the panic is read from the matched Lua 5.1.1 source; this binary's luaD_throw was not disassembled",
+    "the wrapper's provenance matches the LuaPlus family in shape but no version string was found, so it is documented from its own code rather than matched"
+  ],
+  "what_remains": [
+    "00B6A020's bootstrap tail and the game C functions, if any, that reach the script namespace",
+    "the VFS override search 00BDEF90 and what package can shadow interface/*.lua",
+    "the LuaObject reference model behind 00B66DE0",
+    "whether any shipped page reaches a tag 4, 7, 9 or 0Ah field; only 0, 2, 3, 5, 6 and 8 are known to be used by the base widget descriptors"
+  ],
+  "followups": [
+    {
+      "packet": "lua_state_bootstrap",
+      "addresses": [
+        "00B6A020",
+        "00BD4FC0"
+      ],
+      "files": [
+        "docs/LUA_STATE_BOOTSTRAP.md"
+      ],
+      "contract": "The 220-instruction tail of 00B6A020: what luaL_loadstring + lua_pcall install, which C functions reach the script namespace, and what 00BD4FC0 registers at 0109CED4/0109CED8."
+    },
+    {
+      "packet": "lua_script_overrides",
+      "addresses": [
+        "00BDEF90",
+        "00427110",
+        "00B66D1F"
+      ],
+      "files": [
+        "docs/LUA_SCRIPT_OVERRIDES.md"
+      ],
+      "contract": "The VFS search behind 00B69D40's second pass and the byte transform 00B66CA0 applies when its flag is set: which packages can override a script and what an encrypted chunk looks like on disk."
+    },
+    {
+      "packet": "lua_object_refs",
+      "addresses": [
+        "00B66DE0",
+        "00B67690",
+        "00B67700",
+        "00B65F50"
+      ],
+      "files": [
+        "docs/LUA_OBJECT_REFS.md"
+      ],
+      "contract": "The LuaObject reference model: what kind 1 and kind 2 mean, how 00B66DE0 refs and unrefs, and whether a stored object survives the stack frame that made it."
+    }
+  ],
+  "callers": {
+    "00AC6600": [
+      "00AA5840 BSP_GuiManager_LoadPage"
+    ],
+    "004425C0": "37 callers, so the reader is a general engine facility and the GUI is one client",
+    "00B6A020": "50 callers, including 0046DF00 BSP_SceneDatabase_LoadSceneFile",
+    "004426C0": "the smallest example of the whole idiom: construct, enter _device, read platform, leave, destroy"
+  },
+  "state": {
+    "00AC6600": "analyzed (script half), reconstructed, build-tested",
+    "00BD63B0": "analyzed, reconstructed, build-tested",
+    "00BD61C0": "analyzed, reconstructed, build-tested",
+    "00BD5790": "analyzed, reconstructed, build-tested",
+    "00BD8E20": "analyzed, reconstructed, build-tested",
+    "00BD7A20": "analyzed, reconstructed, build-tested",
+    "00BD5EB0": "analyzed, reconstructed, build-tested",
+    "00BD6830": "analyzed, reconstructed, build-tested",
+    "00BD68D0": "analyzed, reconstructed, build-tested",
+    "00BD5F50": "analyzed, reconstructed, build-tested",
+    "004425C0": "analyzed, reconstructed, build-tested",
+    "00B66CA0": "analyzed, reconstructed, build-tested",
+    "00B69D40": "analyzed, reconstructed, build-tested",
+    "00B6A020": "analyzed (library loop and state creation), modelled as host configuration",
+    "00B669A0": "analyzed, modelled as host configuration",
+    "00B669C0": "analyzed, not reconstructed (no Ghidra function)",
+    "00B67980": "analyzed, modelled as a host method",
+    "00B67720": "analyzed, modelled as a host method",
+    "00B67800": "analyzed, modelled as a host method",
+    "00B67080": "analyzed, modelled as a host method",
+    "00B67190": "analyzed, modelled as a host method",
+    "00B65FB0": "analyzed, modelled as a host method",
+    "00B66050": "analyzed, modelled as a host method",
+    "00B660A0": "analyzed, modelled as a host method",
+    "00B661B0": "analyzed, modelled as a host method",
+    "00B66A60": "analyzed, modelled as a host method",
+    "00B66250": "analyzed, modelled as a host method",
+    "00B66270": "analyzed, modelled as a host method",
+    "00B66290": "analyzed, modelled as a host method",
+    "00B662B0": "analyzed, modelled as a host method",
+    "00B66420": "analyzed, modelled as a host method",
+    "00B65F50": "analyzed only",
+    "00B67690": "analyzed only",
+    "00B67700": "analyzed only",
+    "00441210": "analyzed only",
+    "00442220": "analyzed only",
+    "00441A70": "analyzed only",
+    "00BD7130": "analyzed only",
+    "00B66BD0": "analyzed only",
+    "00B6D890": "analyzed only (a scene-node reparent, left to the scene-node packet)"
+  },
+  "build": {
+    "header": "include/bsp/gui_lua_reader.hpp",
+    "source": "src/gui_lua_reader.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "toolchain": "MSVC Win32, /W4 /WX /fp:strict",
+    "result": "clean",
+    "tests": "reconstructed_math passed; one case added to tests/math_tests.cpp for the tag 0Ah asymmetry"
+  },
+  "not_binary_compatible": "The reader here holds host handles, not Lua references, and the conversions write std::string, std::int32_t, float and bool rather than a NativeString and raw widget offsets. Nothing here is ABI compatible or game validated."
+}
