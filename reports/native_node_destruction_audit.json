@@ -1,0 +1,456 @@
+{
+  "packet": "native_node_destruction",
+  "date": "2026-09-10",
+  "base_commit": "539a9aa",
+  "status": "implemented_strict_win32_native_and_host_fixtures_passed_pending_primary_integration",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owned_addresses": [
+    {
+      "address": "00b6f440",
+      "end_exclusive": "00b6f569",
+      "coverage": "Complete direct body and reconstructed cleanup unwind",
+      "native_abi": "ECX owner; no stack arguments; RET"
+    },
+    {
+      "address": "00b6e680",
+      "end_exclusive": "00b6e74c",
+      "coverage": "Requested-parent-null path only, including equal-null return; nonnull requested parent excluded",
+      "native_abi": "ECX node; stack parent; RET4"
+    },
+    {
+      "address": "00b6d940",
+      "end_exclusive": "00b6d980",
+      "coverage": "Complete unlink leaf",
+      "native_abi": "ECX parent; stack child; RET4"
+    },
+    {
+      "address": "00b6d850",
+      "end_exclusive": "00b6d884",
+      "coverage": "Complete recursive attachment unregister",
+      "native_abi": "ECX node; RET"
+    },
+    {
+      "address": "00b6d890",
+      "end_exclusive": "00b6d934",
+      "coverage": "Complete root propagation",
+      "native_abi": "ECX node; stack requested root; RET4"
+    },
+    {
+      "address": "00b721f0",
+      "end_exclusive": "00b72211",
+      "coverage": "Complete root prepend leaf",
+      "native_abi": "ECX root; stack node; RET4"
+    }
+  ],
+  "canonical_storage": {
+    "node": "Existing NativeNodeStorage 0x174 prefix in the actual supplied 0x1F0 pool slot",
+    "scene_dispatch": "Same SceneNodeAttachment/SceneAttachmentRuntime; world_changed and remove_scene are explicit actual virtual40/54 fields; no second node map",
+    "roots": "Existing RenderNodeRootList borrows actual head+0C and scene+1C, with no copies",
+    "attachments": "Existing GeneratedModelLifetimeRuntime associations and actual GeneratedModelAttachmentLinks backlinks",
+    "retained_130": "Actual identity, atomic count at identity+4 (address checked), required actual virtual00 callback; no secondary count",
+    "array_164": "Actual pointer/count/capacity; count shrunk and pointer freed, pointer/capacity not cleared",
+    "name_54": "Actual NativeString allocation returned to existing SizedStoragePool at length+1, fields not cleared",
+    "tail": "All bytes 0x174..0x1EF preserved, including slab ID at 0x1EC"
+  },
+  "phase_policy": {
+    "entry": "00D62C88 node phase; only dying binding changes",
+    "virtual_0c": "Required supplied actual 00B6F570 predicate; its two tokens are 0108FF90/94, not the 006EF860 three-token object predicate",
+    "virtual_40": "00B6DBE0",
+    "virtual_50": "00B6ED80",
+    "virtual_54": "00B6EE10 universal adapter using the same child remove_scene dispatch",
+    "tail": [
+      "00D5C104",
+      "00CEB130"
+    ],
+    "type_bootstrap": "Separate primary-assigned packet; no duplicate implementation here"
+  },
+  "reload_invariants": [
+    "B6D940 clears child parent before sibling/head/count stores; child sibling pointers survive",
+    "B6D890 same-root early return requires a parent; otherwise unlink and prepend; requested root held across recursive child calls",
+    "B6D890 captures current virtual50 before simple B72110 root-scene slot read",
+    "B6E680 requested-null captures old root after attachment unregister; clears parent/root/A0 before root propagation; later reloads current virtual40",
+    "B6F440 reloads parent/root after null-parent callbacks and keeps its asymmetric root-or-parentless condition",
+    "Retained130 is captured, decremented and potentially destroyed before clear; second clear occurs after fresh scene load",
+    "B6EE10 reloads scene after registry/type callback, publishes null before release, preserves scene installed during zero callback",
+    "Child virtual50/54 paths reload next sibling after every callback"
+  ],
+  "unwind": {
+    "handler": "00cc1a01",
+    "descriptor": "00dfa900",
+    "map": "00dfa8e8",
+    "state_2_to_0": [
+      "00b6f3e0 array cleanup",
+      "0041dd20 name return",
+      "00aa6e10 -> 00bd30f0 reference base"
+    ],
+    "host_callback_exception_check": "passed",
+    "native_handler_executed": false
+  },
+  "evidence_spans": [
+    {
+      "address": "00b6f440",
+      "length": 297,
+      "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6e680",
+      "length": 204,
+      "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6d940",
+      "length": 64,
+      "sha256": "b0335543971c1fb9de1b9f4c48f5b028e3befb783c28a44bf38e070df6e2942e",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6d850",
+      "length": 52,
+      "sha256": "f715c86f58ee6289ae4a82219f126c95bbe02839efeee19cf402a60d42856fbd",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6d890",
+      "length": 164,
+      "sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b721f0",
+      "length": 33,
+      "sha256": "374ac88ecab9457eda32abc61b2b72dbd6e113b85e9e7bd2273a55f3936352c7",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b72220",
+      "length": 44,
+      "sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6ed80",
+      "length": 140,
+      "sha256": "017e7433a6d5d7d2deafe5a855fa99a1981665f3c5da173eac53379f46413bf0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6ee10",
+      "length": 110,
+      "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6ec70",
+      "length": 80,
+      "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6dbe0",
+      "length": 25,
+      "sha256": "dd48a01f78dcfc35f8948c8a6eaf0c1579f7db81a406e7b45dbc0b981fcb1008",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b72110",
+      "length": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bd30f0",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62c88",
+      "length": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6f570",
+      "length": 40,
+      "sha256": "7095e2c04cee72abb7739aec21df6c82bacd74068312a2bfd8d75c44fae68376",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cc1a01",
+      "length": 10,
+      "sha256": "e8e8217664d905d2eba99804ac0953ce596a9999ee2addd3f079c77e3334b83a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00dfa900",
+      "length": 36,
+      "sha256": "fe3693f4e4fdf5c195e312b401e51db494a97084fbb9a7c74f318750ba5ae79c",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00dfa8e8",
+      "length": 24,
+      "sha256": "b320d2d1dc5872d6d29d3f9efdb510b2dec0e628f27fba675378799e20032450",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cc19e0",
+      "length": 33,
+      "sha256": "6de2746b0041b5bc6201ee4328c1a29614e94d9ddc22bfadb0037080c3490afd",
+      "live_matches_disk": true
+    }
+  ],
+  "native_fixture": {
+    "result": "passed",
+    "comparison": "Four complete 496-byte slots, normalizing only native/C++ pointer identities at +30/+34/+3C/+40/+A4; root head also checked",
+    "path": "Nonzero parent and nonempty root list; captured-root propagation, root prepend/unlink, node virtual40 and empty node virtual50/54 paths",
+    "original_bodies": [
+      "00b6f440",
+      "00b6e680",
+      "00b6d940",
+      "00b6d850",
+      "00b6d890",
+      "00b721f0",
+      "00b72220",
+      "00b6ed80",
+      "00b6ee10",
+      "00b6ec70",
+      "00b6dbe0",
+      "00b72110",
+      "00bd30f0"
+    ],
+    "operand_relocations": [
+      [
+        0,
+        33,
+        101,
+        0
+      ],
+      [
+        0,
+        73,
+        1,
+        1
+      ],
+      [
+        0,
+        103,
+        6,
+        1
+      ],
+      [
+        0,
+        124,
+        4,
+        1
+      ],
+      [
+        0,
+        191,
+        8,
+        1
+      ],
+      [
+        0,
+        210,
+        9,
+        1
+      ],
+      [
+        0,
+        218,
+        100,
+        1
+      ],
+      [
+        0,
+        275,
+        12,
+        1
+      ],
+      [
+        1,
+        28,
+        2,
+        1
+      ],
+      [
+        1,
+        60,
+        4,
+        1
+      ],
+      [
+        1,
+        145,
+        4,
+        1
+      ],
+      [
+        1,
+        152,
+        3,
+        1
+      ],
+      [
+        3,
+        39,
+        3,
+        1
+      ],
+      [
+        4,
+        40,
+        6,
+        1
+      ],
+      [
+        4,
+        65,
+        5,
+        1
+      ],
+      [
+        4,
+        93,
+        11,
+        1
+      ],
+      [
+        4,
+        148,
+        4,
+        1
+      ]
+    ],
+    "operand_relocation_key": [
+      "source body index",
+      "operand offset",
+      "target body index (100=host CRT free,101=copied vtable)",
+      "relative CALL flag"
+    ],
+    "virtual_table_relocations": [
+      "+40 -> copied B6DBE0",
+      "+50 -> copied B6ED80",
+      "+54 -> copied B6EE10"
+    ],
+    "unreached_direct_calls": [
+      {
+        "source": "00b6f47a",
+        "target": "00b8f4c0"
+      },
+      {
+        "source": "00b6f536",
+        "target": "00419cc0"
+      },
+      {
+        "source": "00b6f53d",
+        "target": "00bd1510"
+      },
+      {
+        "source": "00b6e6ab",
+        "target": "00b8f4c0"
+      },
+      {
+        "source": "00b6e6c7",
+        "target": "00b8e600"
+      },
+      {
+        "source": "00b6e6e3",
+        "target": "00b6e010"
+      },
+      {
+        "source": "00b6e738",
+        "target": "00b6da30"
+      },
+      {
+        "source": "00b6d85e",
+        "target": "00b8f4c0"
+      },
+      {
+        "source": "00b6ed97",
+        "target": "00b83ec0"
+      },
+      {
+        "source": "00b6ede1",
+        "target": "00b83d50"
+      },
+      {
+        "source": "00b6ee27",
+        "target": "00b83ec0"
+      },
+      {
+        "source": "00b6ec7e",
+        "target": "00b6e500"
+      }
+    ],
+    "actual_host_boundary": "Native free(null) uses the actual host CRT free function",
+    "unexecuted_native_paths": [
+      "A0 unregister",
+      "retained-owner decrement/final release",
+      "nonnull scene and registry ownership",
+      "name allocation/return",
+      "nonnull point-array free",
+      "native EH handler",
+      "nonnull requested parent"
+    ]
+  },
+  "host_fixture": {
+    "result": "passed",
+    "observed_trace": [
+      "first child virtual50 changes next sibling",
+      "new next child virtual50",
+      "actual retained130 count reaches zero and changes scene",
+      "scene170 zero callback installs replacement scene",
+      "first child current virtual54",
+      "next child current virtual54"
+    ],
+    "other_checks": [
+      "Actual A0 reverse-link array emptied",
+      "Nonempty pooled name returned without clearing its words",
+      "Actual point array freed with count0 and unchanged pointer/capacity",
+      "Callback-installed replacement +170 preserved",
+      "One throwing retained-owner callback performs cleanup unwind",
+      "Every pool tail preserved"
+    ]
+  },
+  "shared_source_snapshot": {
+    "include/bsp/render_command_queue.hpp": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec",
+    "include/bsp/scene_attachment.hpp": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "src/scene_attachment.cpp": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01"
+  },
+  "fixture_artifacts": {
+    "local/native_destruction_fixture.cpp": "7465a3327173570ccad6f224d866160a21269799fe23b0641ba2503ef8929dd7",
+    "local/run_destruction_fixture.cmd": "db0651c47a970257cf89cb58dadbfc890a79859507d913435866621ce7b3e490",
+    "local/prepare_destruction_fixture.py": "ded567e423d770cc7ef7683582d81109d2eba7e128bfb5351af6716668278139",
+    "local/destruction_reference_bytes.hpp": "630bf2d966bb697989bb41d09bf73341a9d6ee006bc4b1c9c3a5fd511223d3bb",
+    "local/destruction_verified_evidence.json": "9fec1eb45b62567a7249cf209dd5c98009a4db830cdf957b8c04f3f80b1e663c"
+  },
+  "disposal": "Prefix lifetime ends after reference-base tail (also unwind); caller then forget_destroyed_binding without raw reads, destroys external companion, and returns actual pool slot. No replacement-scene detach or registry cleanup is invented.",
+  "validation": {
+    "strict_win32_compile": "passed: MSVC C++20 /W4 /WX /EHsc /fp:strict /MD",
+    "focused_fixture": "passed",
+    "scripts_build_ps1": "pending primary CMake integration gate",
+    "native_bytes_match_installed_pe": true,
+    "game_validated": false,
+    "visual_validated": false,
+    "binary_abi_compatible": false,
+    "new_committed_tests": 0
+  },
+  "not_implemented": [
+    "Nonnull-parent reparenting through 00B6E010",
+    "Type-token startup",
+    "Derived light ownership/construction",
+    "Physical pool return"
+  ],
+  "ghidra_mutated": false,
+  "ledgers_written": false,
+  "installed_game_written": false
+}
