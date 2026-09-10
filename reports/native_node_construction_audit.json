@@ -1,0 +1,242 @@
+{
+  "packet": "native_node_construction",
+  "base_commit": "d3243ed",
+  "date": "2026-09-10",
+  "status": "implemented_strict_win32_and_full_slot_native_fixture_passed_pending_primary_integration",
+  "owned_address": "00b6f5a0",
+  "end_exclusive": "00b6f8ce",
+  "native_abi": "ECX raw owner; stack NativeString*; EAX same owner; RET4",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_query_policy": "Every bsp.py ghidra query verifies configured project/program."
+  },
+  "owned_files": [
+    "include/bsp/native_node_construction.hpp",
+    "src/native_node_construction.cpp",
+    "docs/NATIVE_NODE_CONSTRUCTION.md",
+    "reports/native_node_construction_audit.json"
+  ],
+  "storage": {
+    "native_slot_bytes": 496,
+    "constructed_prefix_bytes": 372,
+    "untouched_ranges_exclusive": [
+      [
+        "08",
+        "30"
+      ],
+      [
+        "45",
+        "48"
+      ],
+      [
+        "135",
+        "138"
+      ],
+      [
+        "174",
+        "1f0"
+      ]
+    ],
+    "pool_id_preserved": "1ec..1ef",
+    "native_pointlight_array": "164/168/16c; singleborrowedpointer/count/capacity",
+    "canonical_bindings": "CameraTransformBacking references raw slot fields; SceneNodeAttachment.scene references actual +170; pointer_key is the actual slot address; external stable companion.",
+    "new_cpp_abi": "Native-width rawscalarstorage; hierarchy pointers refer tohostbindings; notbinaryreplacement."
+  },
+  "write_map": {
+    "vtable": "CEB130 thenD62C88",
+    "references04": 1,
+    "hierarchy30_40": "allzero",
+    "mask48": "0 thenFFFFF",
+    "scalar50": "501502F9",
+    "name54_58": "nativepooledcopy",
+    "a0_a4_a8_130_164_168_16c_170": "zero",
+    "4c_ac": "3F800000",
+    "5c": 0,
+    "matrix_order": [
+      "b0",
+      "f0",
+      "60"
+    ],
+    "matrix_helper": "004134f0 actualx87sequentialcopy",
+    "138": "40",
+    "13c_sphere": [
+      "0",
+      "0",
+      "0",
+      "501502F9"
+    ],
+    "14c_min": [
+      "D01502F9",
+      "D01502F9",
+      "D01502F9"
+    ],
+    "158_max": [
+      "501502F9",
+      "501502F9",
+      "501502F9"
+    ],
+    "44": "byte0",
+    "134": "byte1"
+  },
+  "required_shared_changes": {
+    "owner": "primary",
+    "camera": "12-reference CameraTransformBacking and constructor binding without writes; legacy owned default storage; explicit owned copy/move and assignment into target backing.",
+    "scene": "SceneNodeAttachment.scene reference with actual +170 overload; legacy owned null default.",
+    "copy_audit": "Tracked src/tests/include/tools/scripts has no current by-value copy/assignment/container use; concrete owned declarations in D3D9 shader/mesh probes; value semantics preserved."
+  },
+  "constructor_unwind": {
+    "handler": "00cc1a31",
+    "descriptor": "00dfa93c",
+    "map": "00dfa924",
+    "order": [
+      "00b6f3e0 arrayresize0/free",
+      "0041dd20 namepoolrelease",
+      "00aa6e10 ->00bd30f0 vtable"
+    ],
+    "physical_slot": "Caller retains ownership; no constructorpoolreturn."
+  },
+  "evidence_spans": [
+    {
+      "address": "00b6f5a0",
+      "length": 814,
+      "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004134f0",
+      "length": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0041dd40",
+      "length": 164,
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce4970",
+      "length": 4,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce4adc",
+      "length": 4,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk": true
+    }
+  ],
+  "validation": {
+    "strict_win32_compile": "passed: MSVC Win32 C++20 /W4 /WX /EHsc /fp:strict /MD",
+    "focused_fixture": "passed",
+    "scripts_build_ps1": "pending primary integration gate; shared backing build already passed in main",
+    "game_validated": false,
+    "visual_validated": false,
+    "binary_abi_compatible": false,
+    "new_committed_tests": 0
+  },
+  "remaining": [
+    "directbase destructor",
+    "derivedlightconstructionandvtablephase policies",
+    "actualtypebootstrap",
+    "nonnullretainedowner destruction",
+    "directionalpoolfactoryintegration"
+  ],
+  "ghidra_mutated": false,
+  "ledgers_written": false,
+  "installed_game_written": false,
+  "proposed_ghidra_annotation": {
+    "address": "00b6f5a0",
+    "name": "BSP_Node_Construct",
+    "comment": "Native174prefix in actualpoolslot: ref1, pooledname54, hierarchy/attachment/scene/pointlightarrayzero, identitymatricesB0/F0/60 in order, exactbounds501502F9/D01502F9; preserve08..2F,45..47,135..137 andall174..1EF. Newsharedbackingview ABI; nofullterminalownership claim."
+  },
+  "native_check": {
+    "fixture": "local/native_node_fixture.cpp",
+    "runner": "local/run_node_fixture.cmd",
+    "byte_comparison": "All 496 bytes matched actual installed native constructor for identical nonzero preimages and an empty name; preserved every constructor-unwritten byte.",
+    "relocations": [
+      [
+        57,
+        3
+      ],
+      [
+        183,
+        2
+      ],
+      [
+        218,
+        5
+      ],
+      [
+        346,
+        1
+      ],
+      [
+        357,
+        5
+      ],
+      [
+        484,
+        1
+      ],
+      [
+        495,
+        5
+      ],
+      [
+        655,
+        1
+      ],
+      [
+        666,
+        4
+      ],
+      [
+        708,
+        3
+      ]
+    ],
+    "native_callees": "Original 004134F0 and 0041DD40 bytes; string resize equality fast path; no simulated dependency callbacks.",
+    "limits": "Native empty-name path only; unused native allocation/memcpy/EH paths not executed. Nonempty host name and shared binding checks were separate.",
+    "result": "passed",
+    "relocation_scope": "Ten 32-bit operands: four relative CALL targets (three matrix copies, one string resize), six absolute constant reads. No instruction behavior replaced.",
+    "relocation_kind_map": {
+      "1": "matrix copy CALL target",
+      "2": "string resize CALL target",
+      "3": "positive bound address",
+      "4": "negative bound address",
+      "5": "one word address"
+    },
+    "host_checks": [
+      "Placement binding writes no native field",
+      "Existing local matrix setter updates actual +B0",
+      "Raw +5C edits visible through existing transform",
+      "Copied CameraTransform owns fresh storage",
+      "Assignment into bound CameraTransform retains target backing",
+      "Existing generic scene attach updates actual +170 and retain count, then releases it",
+      "Pool tail +174..1EF preserved throughout",
+      "Nonempty name copied into independent storage from the same reconstructed pool"
+    ]
+  },
+  "shared_source_snapshot": {
+    "include/bsp/camera_transform.hpp": "b8b1100f9c9ea6d93b8af2887bec506ccf2409ee780e85cf6384f9b9ff2b8d09",
+    "include/bsp/scene_attachment.hpp": "2cc77633c2debe28bdc521c5568be9e8c5e977bc108d4352c916dfd28e3920bc",
+    "src/camera_transform.cpp": "3f149685e67bf9c6b3f40a695399af30cc90faba372e9ffb5f945f7fbc6e8ec9",
+    "src/scene_attachment.cpp": "0bc7657b151c7928f1b2d2b1ca858332e1baec01b1cccbaa55be80ead328645b"
+  },
+  "fixture_artifacts": {
+    "local/native_node_fixture.cpp": "b34346f382659b6cb6b61b13c4628d47c2ed970c9b44c09ba6872c8fdc21422c",
+    "local/run_node_fixture.cmd": "6543731130ac64e2478a0f6f5faa0a79812b7740cb9232437708f82e129a9ac6",
+    "local/node_reference_bytes.hpp": "64dd29243db9124df2debc78911350dce5feb77bd314b300cad7beb2b81e783c",
+    "local/node_verified_evidence.json": "526409f79ebd59af501dcbf6744c426f7173c044d3b8f2e15fdfbcfc53ed47fb"
+  }
+}
