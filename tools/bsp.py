@@ -100,7 +100,7 @@ def load_strings(binary):
         if section.Name.rstrip(b'\0') in (b'.rdata', b'.data'):
             data = section.get_data()
             va = base + section.VirtualAddress
-            for match in re.finditer(rb'[\x20-\x7e]{5,}\x00', data):
+            for match in re.finditer(rb'[\x20-\x7e]{3,}\x00', data):
                 strings[va + match.start()] = match.group()[:-1].decode('ascii', errors='ignore')
     return strings
 
