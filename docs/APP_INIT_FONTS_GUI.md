@@ -331,3 +331,7 @@ SHA256 over the function body bytes as they sit in the installed
 | 00be9620..00be9623 | 4181cb1fec090d6487f323c8ce84a17ff37429613d7843b4f5f40f5eae266b77 |
 | 00be9760..00be988b | 37b54d0f17122a891ebe14f1092c42f0962a049cf6e82772d5631e5ddd8e1dc8 |
 | 00736540..007365d5 | 3d7f1bf492d1ea9a2384ec4ecfacab2ec3b29aa57d113ad77578d99d95bf7630 |
+
+### Correction from docs/GUI_LAYOUT_LOADER.md
+
+GUI pages are Lua source: a page name resolves to `interface/<name>.lua` (composed by `00ac5600`), the screen constructor runs `interface/_common.lua` first, then the page, then builds the widget tree from the global table `GuiScreen`, with the widget class carried in the key suffix after the last underscore (seventeen types). `00aa7e00` creates nothing: it finds an existing child one level deep, so the names listed above as created by the two factories are keys in the installed `_mouse.lua` and `_highlight.lua`; its documented recursive flag is popped by `RET 8` and never read. `00aaa480` is the MSVC `std::sort` introsort loop.
