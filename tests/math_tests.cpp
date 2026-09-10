@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/gui_startup.hpp"
+#include "bsp/gui_widget.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
@@ -858,6 +859,41 @@ int main() {
             "the branch just below that boundary agrees with it");
         check(!empty.scrollable && empty.thumb_height == 52.0f && empty.thumb_travel == 0.0f,
             "a zero range fills the track with the thumb and reports not scrollable");
+    }
+
+    {
+        // 00AA6750 stores (parent_resolved + own_position) to the frame before
+        // it subtracts the parent's pivot offset, so it is not the same float
+        // result as folding the pivot in first. The magnitudes below are chosen
+        // so the sum loses the low bit that the other order keeps, and
+        // 00AA8240 has to invert whatever the getter produced.
+        bsp::GuiWidgetTransform root{};
+        root.size.width = 1.0f;
+        root.pivot_x = 1.0f;
+        bsp::GuiWidgetTransform child{};
+        child.parent = &root;
+        root.position.x = 16777216.0f; // 2^24, where adding one rounds away
+        child.position.x = 1.0f;
+
+        const bsp::GuiWidgetPoint resolved = bsp::resolved_position(child);
+        const float folded_first = (16777216.0f - 1.0f) + 1.0f;
+        check(resolved.x == 16777215.0f && folded_first == 16777216.0f,
+            "the parent chain sums before it subtracts the pivot offset");
+        check(bsp::local_position_for_resolved(child, resolved).x
+                == (resolved.x - 16777216.0f) + 1.0f,
+            "00AA8240 inverts the getter in the same operation order");
+
+        // 00AA7220 scales only the Y lanes by the 4:3 factor, and the pivot Y is
+        // negated and sized before that factor is applied.
+        child.pivot_y = 0.5f;
+        child.size.height = 8.0f;
+        child.position.y = 4.0f;
+        const bsp::GuiWidgetLocalTransform local = bsp::local_transform(child);
+        check(local.translation.x == child.position.x
+                && local.translation.y == 3.0f
+                && local.pivot_translation_x == 0.0f
+                && local.pivot_translation_y == -3.0f,
+            "the aspect factor reaches the Y translation and the Y pivot only");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
