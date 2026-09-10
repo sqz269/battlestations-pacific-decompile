@@ -1,4 +1,5 @@
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/award_grant.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
@@ -739,6 +740,42 @@ int main() {
         check(bsp::logo_skip_allowed(3.0F, 2.0F, true), "a late skip with the button fires");
         check(!bsp::logo_skip_allowed(3.0F, 2.0F, false), "elapsed time alone never skips");
         check(!bsp::logo_skip_allowed(2.0F, 2.0F, true), "the delay comparison is strict");
+    }
+
+    {
+        // 004e4310 stops at the first failing gate, so a host must not see a
+        // call the native would not have made. The "RANK" row exists in the
+        // shipped table with XLastAchievementID 0, which the range check at
+        // 004e437a rejects: looking the name up must not reach the manager.
+        struct RecordingHost : bsp::AwardGrantHost {
+            std::vector<std::string> calls;
+            bool midway_save_folder_preexisted() override {
+                calls.push_back("folder");
+                return true;
+            }
+            int award_id_for_name(const char* name) override {
+                calls.push_back("lookup");
+                return bsp::award_id_for_name_006b8da0(name);
+            }
+            bool live_enabled_account() override {
+                calls.push_back("live");
+                return true;
+            }
+            bool signed_into_live() override {
+                calls.push_back("signed");
+                return true;
+            }
+            void queue_online_award(int) override { calls.push_back("queue"); }
+            void record_local_award(const char*, int) override { calls.push_back("record"); }
+        };
+        RecordingHost rank;
+        check(!bsp::grant_award_if_earned(rank, "RANK", 1)
+                && rank.calls.size() == 2 && rank.calls[1] == "lookup",
+            "an ungrantable id stops the sequence before the online checks");
+        RecordingHost granted;
+        check(bsp::grant_midway_save_award(granted) && granted.calls.size() == 6
+                && granted.calls[4] == "queue" && granted.calls[5] == "record",
+            "GA_HM queues the online award before the local record");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
