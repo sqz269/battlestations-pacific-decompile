@@ -31,4 +31,9 @@ void set_camera_world_position_00b71400(CameraState&, const CameraAxis&, const C
 // Both adapters and CRT bindings are checked before any input read/output change.
 void set_camera_look_at_00b700e0(CameraState&, const CameraAxis& eye, const CameraAxis& target,
     const CameraPoseAccess&, const CameraAxesCrtAccess&);
+// Bound variant captures actual D7A24C for up.y at B7016F, then passes its
+// address to the builder's later independent B64232 reload. Legacy overload
+// uses the installed positive-one word; no extra FLD/FSTP conversions.
+void set_camera_look_at_00b700e0(CameraState&, const CameraAxis& eye, const CameraAxis& target,
+    const CameraPoseAccess&, const CameraAxesCrtAccess&, const volatile std::uint32_t& one_00d7a24c);
 }

@@ -122,6 +122,11 @@ void transform_camera_plane_00b65ba0(CameraPlane&, const CameraPlane&, const Cam
 // native negates each D then normalizes all four coefficients by normal length.
 // Finite nonnegative CRT sqrt core recovered; exceptional CRT diagnostics open.
 void extract_camera_frustum_00b653f0(std::array<CameraPlane, 6>&, const CameraMatrix&);
+// Native ECX destination plane set, stack six-plane source and DWORD flags,
+// RET8. Forward x87 coefficient read/store pairs; supplied flags per record.
+// Writes only the first six records and leaves the actual count unchanged.
+void assign_camera_frustum_planes_00b658e0(CameraPlaneSet&,
+    const std::array<CameraPlane, 6>&, std::uint32_t flags);
 const CameraMatrix& get_camera_inverse_view_projection_00b70510(CameraFrameState&);
 const CameraPlaneSet& get_camera_frustum_00b70710(CameraFrameState&);
 // Native runtime global0109EEA4 chooses SSE2 double spill/CVTTSD2SI or x87

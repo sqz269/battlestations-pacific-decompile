@@ -123,5 +123,11 @@ NativeNodeBinding::NativeNodeBinding(NativeNodeStorage& node,
         throw std::invalid_argument("native node attachment and notification callback must be bound together");
     // Fresh construction has A0=null, so its caller explicitly passes null.
 }
+NativeNodeBinding::NativeNodeBinding(NativeNodeStorage& node, NativeNodePreconstructionBinding,
+    SceneTypePredicate actual_virtual_0c, SceneAttachOverride actual_virtual_50,
+    void* dispatch_context)
+    : storage(node), transform(transform_backing(node), nullptr),
+      scene_attachment(transform, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&node)),
+          node.scene_170, actual_virtual_0c, actual_virtual_50, dispatch_context) {}
 
 } // namespace bsp

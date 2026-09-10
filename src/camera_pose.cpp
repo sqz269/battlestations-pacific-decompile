@@ -58,6 +58,12 @@ void set_camera_world_position_00b71400(CameraState& camera, const CameraAxis& p
 
 void set_camera_look_at_00b700e0(CameraState& camera, const CameraAxis& eye,
     const CameraAxis& target, const CameraPoseAccess& access, const CameraAxesCrtAccess& crt) {
+    static const std::uint32_t one = 0x3f800000u;
+    set_camera_look_at_00b700e0(camera, eye, target, access, crt, one);
+}
+void set_camera_look_at_00b700e0(CameraState& camera, const CameraAxis& eye,
+    const CameraAxis& target, const CameraPoseAccess& access, const CameraAxesCrtAccess& crt,
+    const volatile std::uint32_t& one_00d7a24c) {
     require_world_access(access);
     if (!access.invoke_position_30 || !crt.dispatch_bypass_0109dd78 || !crt.except_00c27489)
         throw std::invalid_argument("camera look-at requires actual position dispatch and CRT access");
@@ -71,6 +77,9 @@ void set_camera_look_at_00b700e0(CameraState& camera, const CameraAxis& eye,
     float* actual_target = camera.target.data();
     float* actual_direction = camera.direction.data();
     const auto* actual_crt = &crt;
+    const volatile std::uint32_t* actual_one = &one_00d7a24c;
+    CameraAxis up;
+    float* up_words = up.data();
     float difference[3], reciprocal, scaled[3];
     __asm {
         mov eax,input
@@ -110,6 +119,8 @@ void set_camera_look_at_00b700e0(CameraState& camera, const CameraAxis& eye,
         movss dword ptr reciprocal,xmm0 // B70165
     multiply_direction:
         fld dword ptr difference[0] // B7016B
+        mov eax,actual_one
+        movss xmm1,dword ptr [eax] // B7016F
         fld dword ptr reciprocal // B70177
         fld st(0) // B7017E
         fmulp st(2),st(0) // B70182
@@ -127,11 +138,13 @@ void set_camera_look_at_00b700e0(CameraState& camera, const CameraAxis& eye,
         fstp dword ptr [esi+4] // B701B1
         fld dword ptr scaled[8] // B701B7
         fstp dword ptr [esi+8] // B701BB
+        mov eax,up_words
+        movss dword ptr [eax],xmm0 // B701C1
+        movss dword ptr [eax+4],xmm1 // B701C5
+        movss dword ptr [eax+8],xmm0 // B701CA
     }
-    // The native up argument is raw (+0,+1,+0), loaded after the first length.
-    const CameraAxis up{0.0f, 1.0f, 0.0f};
     CameraMatrix view, world;
-    build_camera_look_at_00b63f10(view, eye, camera.target, up, crt); // B701CF
+    build_camera_look_at_00b63f10(view, eye, camera.target, up, crt, one_00d7a24c); // B701CF
     const auto world_table = access.load_vtable(access.context, camera); // B701D4
     invert_camera_affine_00b63b30(world, view); // B701DC
     const auto world_entry = access.load_slot(access.context, world_table, 0x34); // B701E2

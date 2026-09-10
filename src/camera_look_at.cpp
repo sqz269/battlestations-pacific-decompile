@@ -10,13 +10,14 @@ namespace {
 const unsigned char negative_zero[] = {0,0,0,0x80}; // 00D7A208, float -0
 const unsigned char parallel_threshold[] = {0x2b,0x87,0x16,0xd9,0xce,0xf7,0xef,0x3f}; // 00D62BA0, double 0.999
 const unsigned char up_perturbation[] = {0,0,0,0xa0,0x99,0x99,0xb9,0x3f}; // 00D7A3A0, double(float(0.1))
-const unsigned char homogeneous_one[] = {0,0,0x80,0x3f}; // 00D7A24C
+const std::uint32_t homogeneous_one = 0x3f800000u; // installed 00D7A24C
 
 // Original frame and argument words remain at their native offsets. The
 // additional final argument holds the actual CRT access at ESP+50h before
-// each length call. Only its register load and RET14h differ from that ABI.
+// each length call. The following argument borrows actual D7A24C at ESP+54h.
+// Only the binding loads and RET18h differ from the native ABI.
 __declspec(naked) float* __fastcall look_at_kernel(float*, const float*,
-    const float*, float, float, float, const CameraAxesCrtAccess*) {
+    const float*, float, float, float, const CameraAxesCrtAccess*, const volatile std::uint32_t*) {
     __asm {
         sub esp,0x34 // 00b63f10
         push esi // 00b63f13
@@ -288,7 +289,8 @@ L_00b641cb:
         movss xmm1,dword ptr [esp + 0x14] // 00b64223
         fmul dword ptr [esp + 0x20] // 00b64229
         movss dword ptr [esi + 0x2c],xmm0 // 00b6422d
-        movss xmm0,dword ptr homogeneous_one // 00b64232
+        mov eax,dword ptr [esp + 0x54] // borrowed actual D7A24C address
+        movss xmm0,dword ptr [eax] // 00b64232; after all builder callbacks
         pop edi // 00b6423a
         fstp dword ptr [esp + 0x28] // 00b6423b
         movss dword ptr [esi + 0x28],xmm1 // 00b6423f
@@ -346,7 +348,7 @@ L_00b641cb:
         fstp dword ptr [esi + 0x38] // 00b642d8
         pop esi // 00b642db
         add esp,0x34 // 00b642dc
-        ret 0x14 // native RET10h plus added CRT pointer // 00b642df
+        ret 0x18 // native RET10h plus CRT and constant pointers // 00b642df
     }
 }
 } // namespace
@@ -354,6 +356,11 @@ L_00b641cb:
 CameraMatrix& build_camera_look_at_00b63f10(CameraMatrix& destination,
     const CameraAxis& eye, const CameraAxis& target, const CameraAxis& world_up,
     const CameraAxesCrtAccess& crt) {
+    return build_camera_look_at_00b63f10(destination, eye, target, world_up, crt, homogeneous_one);
+}
+CameraMatrix& build_camera_look_at_00b63f10(CameraMatrix& destination,
+    const CameraAxis& eye, const CameraAxis& target, const CameraAxis& world_up,
+    const CameraAxesCrtAccess& crt, const volatile std::uint32_t& one_00d7a24c) {
     if (!crt.dispatch_bypass_0109dd78 || !crt.except_00c27489)
         throw std::invalid_argument("Camera look-at requires actual CRT state and __87except binding");
     float* output = destination.data();
@@ -361,7 +368,9 @@ CameraMatrix& build_camera_look_at_00b63f10(CameraMatrix& destination,
     const float* aim = target.data();
     const float* up = world_up.data();
     const CameraAxesCrtAccess* access = &crt;
+    const volatile std::uint32_t* actual_one = &one_00d7a24c;
     __asm {
+        push actual_one
         push access
         mov eax, up
         push dword ptr [eax + 8]

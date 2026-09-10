@@ -12,4 +12,9 @@ namespace bsp {
 CameraMatrix& build_camera_look_at_00b63f10(CameraMatrix& destination,
     const CameraAxis& eye, const CameraAxis& target, const CameraAxis& world_up,
     const CameraAxesCrtAccess& crt);
+// Native-owner variant: reload actual D7A24C at B64232, after the builder's
+// length/CRT callbacks. The legacy overload uses its installed constant bits.
+CameraMatrix& build_camera_look_at_00b63f10(CameraMatrix& destination,
+    const CameraAxis& eye, const CameraAxis& target, const CameraAxis& world_up,
+    const CameraAxesCrtAccess& crt, const volatile std::uint32_t& one_00d7a24c);
 }

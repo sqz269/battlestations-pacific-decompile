@@ -1,0 +1,569 @@
+[
+  {
+    "address": "00b63f10",
+    "before": {
+      "address": "00b63f10",
+      "function_name": "FUN_00b63f10"
+    },
+    "after": {
+      "address": "00b63f10",
+      "name": "BSP_Matrix_BuildLookAt",
+      "evidence": "Native [00b63f10,00b642e2); ECX destination; EDX eye; stack target pointer then up.x/up.y/up.z float words; RET10h; EAX destination. complete native function; descriptive name is hypothesis Primary overload binds actual live D7A24C; pose MOVSS capture at B7016F and builder MOVSS at B64232 preserved; original convenience overload retains installed one profile. Component: reports/camera_look_at_builder_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b63f10"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00419440",
+    "before": {
+      "address": "00419440",
+      "function_name": "BSP_Vector3f_Length",
+      "comment": "[BSP reconstruction 00419440]\nStores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00419440] update\nStores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n[BSP reconstruction] Existing BSP_Vector3f_Length name preserved. Typed finite nonnegative square-root core reused with exact native input/result spills. Full CRT exceptional diagnostics, other CW and status parity remain outside scope. Original ABI: ECX vector3f; ST0 binary32 length; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00419440] update\nStores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n[BSP reconstruction] Existing BSP_Vector3f_Length name preserved. Typed finite nonnegative square-root core reused with exact native input/result spills. Full CRT exceptional diagnostics, other CW and status parity remain outside scope. Original ABI: ECX vector3f; ST0 binary32 length; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | [BSP reconstruction 00419440] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00419440",
+      "name": "BSP_Vector3f_Length",
+      "evidence": "Native [00419440,004194a2); ECX vector3f; RET; ST0 float length. expose existing kernel unchanged; added EDX actual CRT access already belonged to private implementation Component: reports/camera_look_at_builder_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "BSP_Vector3f_Length"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004f9b30",
+    "before": {
+      "address": "004f9b30",
+      "function_name": "BSP_Vector3f_Cross",
+      "comment": "[BSP reconstruction 004f9b30]\nHypothesis, not a recovered symbol. __fastcall(out = ECX, a = EDX, b = [ESP+4]), RET 4, and leaves out in EAX, which 00BBD310 relies on when chaining. Standard right-handed cross product: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z, out.z = b.y*a.x - a.y*b.x. Used twice per axis by the ocean frame step. docs/GAME_WORLD_OCEAN.md.\n\n[BSP reconstruction 004f9b30] update\nHypothesis, not a recovered symbol. __fastcall(out = ECX, a = EDX, b = [ESP+4]), RET 4, and leaves out in EAX, which 00BBD310 relies on when chaining. Standard right-handed cross product: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z, out.z = b.y*a.x - a.y*b.x. Used twice per axis by the ocean frame step. docs/GAME_WORLD_OCEAN.md. | [BSP reconstruction 004f9b30] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "004f9b30",
+      "name": "BSP_Vector3f_Cross",
+      "evidence": "Native [004f9b30,004f9ba9); ECX destination; EDX left; one stack right; RET4; EAX destination. expose existing kernel unchanged; preserve first output before later source loads Component: reports/camera_look_at_builder_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "BSP_Vector3f_Cross"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fb60",
+    "before": {
+      "address": "00b6fb60",
+      "function_name": "FUN_00b6fb60"
+    },
+    "after": {
+      "address": "00b6fb60",
+      "name": "BSP_Camera_GetRuntimeTypeId",
+      "evidence": "Native [00b6fb60,00b6fb66); ECX owner unused; EAX actual [0108FFA0]; RET 0. Read current global own token without initialization. Component: reports/camera_type_bootstrap_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b6fb60"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71ce0",
+    "before": {
+      "address": "00b71ce0",
+      "function_name": "FUN_00b71ce0"
+    },
+    "after": {
+      "address": "00b71ce0",
+      "name": "BSP_Camera_IsType",
+      "evidence": "Native [00b71ce0,00b71d08); ECX owner unused; stack token at ESP+4; AL boolean only; RET 4. Short-circuit scan of actual camera/node/root token words in address order; no initialization. Component: reports/camera_type_bootstrap_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71ce0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cd7d80",
+    "before": {
+      "address": "00cd7d80",
+      "function_name": "FUN_00cd7d80"
+    },
+    "after": {
+      "address": "00cd7d80",
+      "name": "BSP_TypeInfo_StaticInitialize_cCamera",
+      "evidence": "Native [00cd7d80,00cd7dcf); No arguments; no stable result; RET 0. Check actual guard; set guard/name; initialize actual shared node; capture both ancestry words before either store; consume shared counter. Component: reports/camera_type_bootstrap_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00cd7d80"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b719e0",
+    "before": {
+      "address": "00b719e0",
+      "function_name": "FUN_00b719e0"
+    },
+    "after": {
+      "address": "00b719e0",
+      "name": "BSP_TypeInfo_InitializeCameraDescriptor",
+      "evidence": "Native [00b719e0,00b71a27); ECX target descriptor; no stable result; RET 0. Global guard with caller target; name then shared node; interleaved ancestry read/store; consume same counter. Component: reports/camera_type_bootstrap_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b719e0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71a30",
+    "before": {
+      "address": "00b71a30",
+      "function_name": "FUN_00b71a30"
+    },
+    "after": {
+      "address": "00b71a30",
+      "name": "BSP_TypeInfo_ConstructCameraDescriptor",
+      "evidence": "Native [00b71a30,00b71a79); ECX target descriptor; EAX same target on cold and guarded paths; RET 0. Same caller-target/global-guard bootstrap sequence as 00B719E0, followed by explicit target return. Component: reports/camera_type_bootstrap_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71a30"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f2a0",
+    "before": {
+      "address": "00b3f2a0",
+      "function_name": "CG_static_dtor_stub_00b3f2a0"
+    },
+    "after": {
+      "address": "00b3f2a0",
+      "name": "D3D9SurfacePool_AllocateCanonicalSlot",
+      "evidence": "Native [00b3f2a0,00b3f2aa); No arguments; replace ECX with 0108db00; tail 00b3ed40; EAX raw slot.. surface_pool_allocation_thunk Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "CG_static_dtor_stub_00b3f2a0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ed40",
+    "before": {
+      "address": "00b3ed40",
+      "function_name": "FUN_00b3ed40"
+    },
+    "after": {
+      "address": "00b3ed40",
+      "name": "D3D9SurfacePool_AllocateRawSlot",
+      "evidence": "Native [00b3ed40,00b3ee7c); ECX pool; EAX raw slot; RET; no local allocation-path EH.. surface_pool_allocator_with_free_continuation Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3ed40"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d860",
+    "before": {
+      "address": "00b3d860",
+      "function_name": "FUN_00b3d860"
+    },
+    "after": {
+      "address": "00b3d860",
+      "name": "D3D9SurfacePool_ReturnRawSlot",
+      "evidence": "Native [00b3d860,00b3d8c9); ECX pool; stack raw slot; RET4.. surface_pool_slot_return Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3d860"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d120",
+    "before": {
+      "address": "00b3d120",
+      "function_name": "FUN_00b3d120"
+    },
+    "after": {
+      "address": "00b3d120",
+      "name": "D3D9SurfacePool_InitializeSlab",
+      "evidence": "Native [00b3d120,00b3d160); ECX raw slab; stack slab-table index; EAX slab; RET4.. surface_pool_slab_construct Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3d120"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ec60",
+    "before": {
+      "address": "00b3ec60",
+      "function_name": "FUN_00b3ec60"
+    },
+    "after": {
+      "address": "00b3ec60",
+      "name": "D3D9SurfacePool_Construct",
+      "evidence": "Native [00b3ec60,00b3ed33); ECX pool; EAX pool; RET; constructor EH state map at 00df764c.. surface_pool_construct Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3ec60"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3e2b0",
+    "before": {
+      "address": "00b3e2b0",
+      "function_name": "FUN_00b3e2b0"
+    },
+    "after": {
+      "address": "00b3e2b0",
+      "name": "D3D9SurfacePool_Destroy",
+      "evidence": "Native [00b3e2b0,00b3e33a); ECX pool; RET; all returning free continuations included.. surface_pool_destroy_with_free_continuations Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3e2b0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3e390",
+    "before": {
+      "address": "00b3e390",
+      "function_name": "FUN_00b3e390"
+    },
+    "after": {
+      "address": "00b3e390",
+      "name": "D3D9SurfacePool_TrimEmptySlabs",
+      "evidence": "Native [00b3e390,00b3e430); ECX pool; RET; no internal critical-section entry.. surface_pool_trim_with_free_continuation Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3e390"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d370",
+    "before": {
+      "address": "00b3d370",
+      "function_name": "FUN_00b3d370"
+    },
+    "after": {
+      "address": "00b3d370",
+      "name": "D3D9SurfacePool_FreeTableUnwind",
+      "evidence": "Native [00b3d370,00b3d37e); ECX pointer-table header; free nonnull first word; RET; no clearing.. surface_pool_unwind_free_table Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3d370"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3dcc0",
+    "before": {
+      "address": "00b3dcc0",
+      "function_name": "FUN_00b3dcc0"
+    },
+    "after": {
+      "address": "00b3dcc0",
+      "name": "D3D9SurfacePool_ReturnCanonicalSlot",
+      "evidence": "Native [00b3dcc0,00b3dccc); Incoming ECX raw slot; push ECX; replace ECX with 0108db00; call 00b3d860; RET.. surface_pool_return_thunk Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b3dcc0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cd7b40",
+    "before": {
+      "address": "00cd7b40",
+      "function_name": "FUN_00cd7b40"
+    },
+    "after": {
+      "address": "00cd7b40",
+      "name": "D3D9SurfacePool_StaticInitialize",
+      "evidence": "Native [00cd7b40,00cd7b56); No arguments; construct 0108db00, register 00ce0c90 with atexit; EAX registration result; RET.. surface_pool_static_initialize Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00cd7b40"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ce0c90",
+    "before": {
+      "address": "00ce0c90",
+      "function_name": "CG_static_init_00ce0c90",
+      "comment": "[BSP inventory 00ce0c90] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+    },
+    "after": {
+      "address": "00ce0c90",
+      "name": "D3D9SurfacePool_StaticDestroy",
+      "evidence": "Native [00ce0c90,00ce0c9a); No arguments; replace ECX with 0108db00; tail 00b3e2b0.. surface_pool_static_destroy Component: reports/d3d9_surface_pool_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "CG_static_init_00ce0c90"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6dae0",
+    "before": {
+      "address": "00b6dae0",
+      "function_name": "FUN_00b6dae0"
+    },
+    "after": {
+      "address": "00b6dae0",
+      "name": "BSP_Transform_SetWorldPosition",
+      "evidence": "Native [00b6dae0,00b6db0f); ECX=object, [ESP+4]=position; tail JMP selected virtual+34 with [ESP+4]=object+F0. x87 ordered FLD/FSTP into actual world+30/+34; input.z FLD before current vtable and slot+34 loads, FSTP world+38 after them; actual world matrix is passed directly to selected entry; overlapping input observes earlier stores Component: reports/camera_pose_dispatch_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b6dae0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71400",
+    "before": {
+      "address": "00b71400",
+      "function_name": "FUN_00b71400"
+    },
+    "after": {
+      "address": "00b71400",
+      "name": "BSP_Camera_SetWorldPosition",
+      "evidence": "Native [00b71400,00b71422); ECX=camera, [ESP+4]=position, RET4. actual flags+2F0 &= FFFFFE4B; call full00B6DAE0 with live position, then00B70660 on same camera Component: reports/camera_pose_dispatch_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71400"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b700e0",
+    "before": {
+      "address": "00b700e0",
+      "function_name": "FUN_00b700e0"
+    },
+    "after": {
+      "address": "00b700e0",
+      "name": "BSP_Camera_SetLookAt",
+      "evidence": "Native [00b700e0,00b701f5); ECX=camera, [ESP+4]=eye, [ESP+8]=target, RET8. load vtable then slot+30 before clearing actual flags+2F0 and invoking eye callback; reread target after callback; x87 copy into actual target+1A0, then spilled target-eye; shared actual CRT length call, float32 length spill and FCOMI/JBE unordered-or-nonpositive zero reciprocal; exact native x87 normalization spill/store schedule into direction+1AC; full00B63F10 builder reads live eye and actual target, raw up0/1/0; capture current vtable before00B63B30 inverse; load slot+34 from captured table afterward; invoke with distinct temporaryworld Primary overload binds actual live D7A24C; pose MOVSS capture at B7016F and builder MOVSS at B64232 preserved; original convenience overload retains installed one profile. Component: reports/camera_pose_dispatch_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b700e0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b652d0",
+    "before": {
+      "address": "00b652d0",
+      "function_name": "FUN_00b652d0"
+    },
+    "after": {
+      "address": "00b652d0",
+      "name": "BSP_PlaneSet_InitializeSixteenRecords",
+      "evidence": "Native [00b652d0,00b65314); ECX destination; EAX original destination; RET 0. Capture actual D7A24C once; write 16 records in forward order as +0/captured/+0/+0/flags1 using MOVSS/MOV. Count+140 remains untouched. Component: reports/camera_plane_initialization_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b652d0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b659d0",
+    "before": {
+      "address": "00b659d0",
+      "function_name": "FUN_00b659d0"
+    },
+    "after": {
+      "address": "00b659d0",
+      "name": "BSP_PlaneSet_ConstructInitialFrustum",
+      "evidence": "Native [00b659d0,00b65a75); ECX destination; EAX original destination; RET 0. Initialize 16 records, reload actual D7A24C, store count6, build diagonal matrix, call existing exact frustum extraction and six-plane assignment flags7, return same storage. Component: reports/camera_plane_initialization_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b659d0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b70410",
+    "before": {
+      "address": "00b70410",
+      "function_name": "FUN_00b70410"
+    },
+    "after": {
+      "address": "00b70410",
+      "name": "BSP_Camera_SetExtraClipPlane",
+      "evidence": "Native [00b70410,00b70462); thiscall ECX=camera; stack=plane pointer; RET4; typed API returns void. Four ordered x87 copies to camera+2E0; set actual plane count6; append original live source at record6 flags3; OR actual shared camera flags40 last. Component: reports/camera_clip_planes_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b70410"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b70470",
+    "before": {
+      "address": "00b70470",
+      "function_name": "FUN_00b70470"
+    },
+    "after": {
+      "address": "00b70470",
+      "name": "BSP_Camera_ClearExtraClipPlane",
+      "evidence": "Native [00b70470,00b70489); ECX=camera; no stack arguments; RET; typed API returns void. Set actual plane count6 then AND actual shared camera flagsFFFFFFBF. Coefficients and record flags survive. Component: reports/camera_clip_planes_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b70470"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b65070",
+    "before": {
+      "address": "00b65070",
+      "function_name": "FUN_00b65070"
+    },
+    "after": {
+      "address": "00b65070",
+      "name": "BSP_PlaneSet_SetCount",
+      "evidence": "Native [00b65070,00b6507d); thiscall ECX=plane set; stack=count DWORD; RET4; typed API returns void. Store complete count DWORD at +140 without validation or floating-point operation. Component: reports/camera_clip_planes_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b65070"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b65990",
+    "before": {
+      "address": "00b65990",
+      "function_name": "FUN_00b65990"
+    },
+    "after": {
+      "address": "00b65990",
+      "name": "BSP_PlaneSet_Append",
+      "evidence": "Native [00b65990,00b659c9); thiscall ECX=plane set; stack=source pointer,flags DWORD; RET8; typed API returns void. Load old count, increment/store modulo2^32 before source reads, calculate oldcount*20 modulo2^32, forward four x87 pairs, flags DWORD store last. Component: reports/camera_clip_planes_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b65990"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fc30",
+    "before": {
+      "address": "00b6fc30",
+      "function_name": "FUN_00b6fc30"
+    },
+    "after": {
+      "address": "00b6fc30",
+      "name": "BSP_Camera_GetFovAspectProduct",
+      "evidence": "Native [00b6fc30,00b6fc45); ECX camera; ST0 float32-rounded product; RET0. FLD actual aspect+1C8; FMUL actual fov+1C4; FSTP32 stack; FLD32 same stack slot. No camera write or cache refresh. Component: reports/camera_configuration_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b6fc30"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fdf0",
+    "before": {
+      "address": "00b6fdf0",
+      "function_name": "FUN_00b6fdf0"
+    },
+    "after": {
+      "address": "00b6fdf0",
+      "name": "BSP_Camera_SetRenderModeAndMask",
+      "evidence": "Native [00b6fdf0,00b6fe0c); ECX camera; stack DWORD mode; EAX same camera; RET4. Write full mode+198 followed by 1u<<(mode&31) at+19C. Typed interface returns same supplied CameraFrameState view. Component: reports/camera_configuration_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b6fdf0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fe10",
+    "before": {
+      "address": "00b6fe10",
+      "function_name": "FUN_00b6fe10"
+    },
+    "after": {
+      "address": "00b6fe10",
+      "name": "BSP_Camera_SetClearFlags",
+      "evidence": "Native [00b6fe10,00b6fe1d); ECX camera; stack DWORD flags; EAX flags; RET4. Write complete supplied flags DWORD to actual+188; return flags. No other state changes. Component: reports/camera_configuration_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b6fe10"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fec0",
+    "before": {
+      "address": "00b6fec0",
+      "function_name": "FUN_00b6fec0"
+    },
+    "after": {
+      "address": "00b6fec0",
+      "name": "BSP_Camera_SetContextDepthScalePointer",
+      "evidence": "Native [00b6fec0,00b6fecd); ECX camera; stack pointer; EAX same pointer; RET4. Write supplied pointer to actual+43C; return pointer. No pointee read or retention. Component: reports/camera_configuration_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b6fec0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3e730",
+    "before": {
+      "address": "00b3e730",
+      "function_name": "BSP_ResourceSupport_GetSingleton",
+      "comment": "[BSP reconstruction 00b3e730]\nProvisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT."
+    },
+    "after": {
+      "address": "00b3e730",
+      "name": "bsp_resource_support_get_singleton",
+      "evidence": "Native [00b3e730,00b3e7ed); No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.. lazy resource-support getter Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "BSP_ResourceSupport_GetSingleton"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b61d50",
+    "before": {
+      "address": "00b61d50",
+      "function_name": "FUN_00b61d50"
+    },
+    "after": {
+      "address": "00b61d50",
+      "name": "bsp_resource_support_construct",
+      "evidence": "Native [00b61d50,00b61d59); ECX raw8-byte owner; EAX same owner; RET; write vtable only.. resource-support constructor Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b61d50"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b61d60",
+    "before": {
+      "address": "00b61d60",
+      "function_name": "CG_scalar_deleting_dtor_00b61d60"
+    },
+    "after": {
+      "address": "00b61d60",
+      "name": "bsp_resource_support_scalar_deleting_destructor",
+      "evidence": "Native [00b61d60,00b61d89); ECX owner; stack flags; unconditional canonical clear/base profile, free if flags&1, EAX original owner; RET4.. complete resource-support deleting destructor Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "CG_scalar_deleting_dtor_00b61d60"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71a80",
+    "before": {
+      "address": "00b71a80",
+      "function_name": "FUN_00b71a80",
+      "comment": "[BSP reconstruction 00b71a80]\n[BSP fog owner 00b71ae3] Verified native[00b71ae3,00b71ae9); interior ESI camera; EBX zero; continue00b71ae9. Typed concrete implementation initialize_system_fog_camera_slot_00b71ae3 uses actual SystemFogOwner.fields_08, exact raw scalar/color bits and shared CRT allocation/free. Native D63180 owner profile only; Fog/AmbientLight semantic names are hypotheses. Constructor leaves28..67 untouched; setter publishes before retain/release and camera destruction clears after release. Complete ABI/preimages/native comparison and limitations: docs/SYSTEM_FOG_OWNER.md; reports/system_fog_owner_audit.json. Only this interior fragment is reconstructed; parent name and remaining body are preserved.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+    },
+    "after": {
+      "address": "00b71a80",
+      "name": "BSP_Camera_Construct",
+      "evidence": "Native [00b71a80,00b71cdc); ECX slot; stack name; EAX same slot; RET4. Same45Ch pool slot, exact174h node and2E4h tail. Native node/viewport/planes/live pose/final defaults; base reentry then actual camera dispatch. Constructor EH does not release published180/184; actual438 and node cleanup preserved. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71a80"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71990",
+    "before": {
+      "address": "00b71990",
+      "function_name": "FUN_00b71990"
+    },
+    "after": {
+      "address": "00b71990",
+      "name": "BSP_Camera_SetViewport",
+      "evidence": "Native [00b71990,00b719d1); ECX camera; stack viewport; RET4. Identity skip, publish new180, retain actual new04 then release captured old04. Concrete D5E5F8 profile. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71990"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71f10",
+    "before": {
+      "address": "00b71f10",
+      "function_name": "FUN_00b71f10",
+      "comment": "[BSP reconstruction 00b71f10]\n[BSP fog owner 00b71f68] Verified native[00b71f68,00b71f8a); interior ESI camera; EBX zero; EBP InterlockedDecrement; EDI scratch; continue00b71f8a. Typed concrete implementation clear_system_fog_camera_slot_00b71f68 uses actual SystemFogOwner.fields_08, exact raw scalar/color bits and shared CRT allocation/free. Native D63180 owner profile only; Fog/AmbientLight semantic names are hypotheses. Constructor leaves28..67 untouched; setter publishes before retain/release and camera destruction clears after release. Complete ABI/preimages/native comparison and limitations: docs/SYSTEM_FOG_OWNER.md; reports/system_fog_owner_audit.json. Only this interior fragment is reconstructed; parent name and remaining body are preserved.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+    },
+    "after": {
+      "address": "00b71f10",
+      "name": "BSP_Camera_Destroy",
+      "evidence": "Native [00b71f10,00b71fd2); ECX camera; RET. Install camera phase, release current180 then184 then438 with postcallback clears and live reloads; node base cleanup. Borrowed43C untouched. EH state changes before438 to avoid repeated explicit throwing release. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71f10"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71fe0",
+    "before": {
+      "address": "00b71fe0",
+      "function_name": "FUN_00b71fe0"
+    },
+    "after": {
+      "address": "00b71fe0",
+      "name": "BSP_Camera_ScalarDeletingDestructor",
+      "evidence": "Native [00b71fe0,00b72000); ECX camera; stack flags; EAX original slot; RET4. Complete ordinary destructor then SAME canonical108FFB0 pool return B711E0 only flags&1. No ordinary free or extra count decrement. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "FUN_00b71fe0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b658e0",
+    "before": {
+      "address": "00b658e0",
+      "function_name": "BSP_PlaneSet_AssignSixFrustumPlanes",
+      "comment": "[BSP reconstruction 00b658e0]\n[BSP reconstruction] Copy six coefficient float4s into20-byte records via FLD/FSTP and assign each record supplied DWORD flags. Does not change count. Original ABI: ECX plane set; stack six-plane pointer, DWORD flags; RET8; count unchanged. See docs/CAMERA_FRAME_STATE.md. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b658e0",
+      "name": "BSP_PlaneSet_AssignSixFrustumPlanes",
+      "evidence": "Native [00b658e0,00b6598b); ECX plane set; stack six-plane source, flags; RET8. Full171-byte body; six forward x87 coefficient copies and flags; count untouched. Public existing helper used by camera plane constructor and getter. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.",
+      "old_name": "BSP_PlaneSet_AssignSixFrustumPlanes"
+    },
+    "status": "applied"
+  }
+]

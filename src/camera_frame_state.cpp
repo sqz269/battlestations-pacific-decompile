@@ -1052,6 +1052,26 @@ const CameraMatrix& get_camera_inverse_view_projection_00b70510(CameraFrameState
     }
     return frame.inverse_view_projection;
 }
+void assign_camera_frustum_planes_00b658e0(CameraPlaneSet& output,
+    const std::array<CameraPlane, 6>& planes, std::uint32_t flags) {
+    for (std::size_t i = 0; i < planes.size(); ++i) {
+        const float* source = planes[i].data();
+        float* destination = output.planes[i].coefficients.data();
+        __asm {
+            mov eax, source
+            mov ecx, destination
+            fld dword ptr [eax]
+            fstp dword ptr [ecx]
+            fld dword ptr [eax+4]
+            fstp dword ptr [ecx+4]
+            fld dword ptr [eax+8]
+            fstp dword ptr [ecx+8]
+            fld dword ptr [eax+12]
+            fstp dword ptr [ecx+12]
+        }
+        output.planes[i].flags = flags;
+    }
+}
 const CameraPlaneSet& get_camera_frustum_00b70710(CameraFrameState& frame) {
     auto& flags = frame.camera.projection.valid_flags;
     if (!(flags & 4u)) {
@@ -1059,24 +1079,7 @@ const CameraPlaneSet& get_camera_frustum_00b70710(CameraFrameState& frame) {
         std::array<CameraPlane, 6> planes;
         extract_camera_frustum_00b653f0(planes,
             get_camera_view_projection_00b70490(frame.camera));
-        // 00b658e0 sets the first six records and flags7, never changes count.
-        for (std::size_t i = 0; i < planes.size(); ++i) {
-            const float* source = planes[i].data();
-            float* destination = frame.frustum.planes[i].coefficients.data();
-            __asm {
-                mov eax, source
-                mov ecx, destination
-                fld dword ptr [eax]
-                fstp dword ptr [ecx]
-                fld dword ptr [eax+4]
-                fstp dword ptr [ecx+4]
-                fld dword ptr [eax+8]
-                fstp dword ptr [ecx+8]
-                fld dword ptr [eax+12]
-                fstp dword ptr [ecx+12]
-            }
-            frame.frustum.planes[i].flags = 7u;
-        }
+        assign_camera_frustum_planes_00b658e0(frame.frustum, planes, 7u);
     }
     return frame.frustum;
 }

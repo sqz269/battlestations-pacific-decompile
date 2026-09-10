@@ -68,10 +68,17 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
 // External companion; both members bind references to the SAME raw slot. It
 // must remain stable while hierarchy/scene runtimes refer to it. It does not
 // retain/register anything and supplies no invented virtual implementation.
+struct NativeNodePreconstructionBinding final {};
 class NativeNodeBinding final {
 public:
     NativeNodeBinding(NativeNodeStorage&, SceneTypePredicate actual_virtual_0c,
         SceneAttachOverride actual_virtual_50, void (*actual_notify_changed)(void*),
+        void* dispatch_context = nullptr);
+    // Only bind addresses before the native constructor runs. The backing's
+    // typed lifetimes must exist, but its bytes are still allocation preimages:
+    // do not inspect +A0 or provide a notification callback until initialized.
+    NativeNodeBinding(NativeNodeStorage&, NativeNodePreconstructionBinding,
+        SceneTypePredicate actual_virtual_0c, SceneAttachOverride actual_virtual_50,
         void* dispatch_context = nullptr);
     NativeNodeBinding(const NativeNodeBinding&) = delete;
     NativeNodeBinding& operator=(const NativeNodeBinding&) = delete;
