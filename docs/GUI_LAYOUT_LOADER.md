@@ -374,3 +374,8 @@ consistent tree, not that the game was observed doing so.
 
 - `00ac2090` / `00ac2de0` are not the Text class: they are the describe/read pair of a Curve class whose only property is an integer-keyed `Points` array. The Text class (id 3) allocates at `00ab79e0` (tagged `cg_static_dtor_stub` in the inventory, wrongly: it allocates), constructs at `00ab9650` with vtable `00d5c6c8`; virtual +18h is the reader `00abb630` and +1Ch the describer `00ab7b60`. It is the object the font packets call the text context. The describer's `ShadowPos` compare at `00ab8028` is dead, so a `Front` widget always describes as `Behind`.
 - `00acce20` is the Model widget's property reader (type id 9: `ModelName`, `ModelTextureOverride`, `ScaleVector`, `RotationEuler`), not part of the Icon class.
+
+## Corrections from docs/GUI_LUA_READER.md
+
+- The `GuiScreen` literal is at `00d5cb24`, not `00d5cb20`; `00b6d890` is a scene-node reparent, not a Lua call; the 500-entry array is 500 dwords (250 eight-byte key pairs with the count at +7D0h, caching live Lua string pointers, no bounds check).
+- Every page construction creates a private Lua 5.1.1 state with base, table, string and math only (mask 65h through the `{name, opener}` table at `00d62bb8`), registers no C functions, loads with `luaL_loadbuffer` without testing the result and runs the chunk with `lua_call`, so a malformed page reaches the panic handler `00b669c0` and Lua exits the process; a missing script file is silent.
