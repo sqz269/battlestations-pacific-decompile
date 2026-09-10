@@ -52,7 +52,7 @@ application-wide exit request at `00e1ae75` to platform byte +181h. It is named 
 
 ## Window lifecycle findings, still unported
 
-`00becee0` registers a CS_GLOBALCLASS class with 24 extra window bytes, thunk `00bec3b0`, and an
+`00becee0` registers a CS_BYTEALIGNWINDOW (0x2000, stored at 00becf36) class with 24 extra window bytes, thunk `00bec3b0`, and an
 arrow cursor. It creates a captioned window, then applies captioned or topmost-popup styles,
 records dimensions and aspect data, shows the window, and calls the renderer singleton at
 `00f8d394` virtual +4. It subsequently initializes timing and modifies power/screensaver settings.
