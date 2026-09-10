@@ -1,0 +1,435 @@
+{
+  "utc": "2026-09-10T04:18:34.918774+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live export/bytes/proto/comment query used bsp.py ghidra and verified project/program/language/image base. Offline Capstone decoded PE/live-matching full raw ranges, including false-no-return gaps. No Ghidra mutation by worker.",
+  "functions": [
+    {
+      "address": "00b1ebe0",
+      "suggested_name": "BSP_RenderCommandQueue_Execute",
+      "original_abi": "ECX queue; no stack arguments; RET.",
+      "contract": "Reread list+14/count+18 around callbacks; publish current+30 before retaining incoming command+28 and releasing old. Reread command for virtual0; release CURRENT+30 after execute then clear after callback. Reread control+20: zero destroys/frees current indexed command; reload count; final zero mode resizes list to0 retaining capacity.",
+      "code_identity": {
+        "length": 187,
+        "end_exclusive": "00b1ec9b",
+        "sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: BSP_RenderCommandQueue_Execute at 00b1ebe0\nSignature: undefined BSP_RenderCommandQueue_Execute(void)\nEntry: 00b1ebe0\nBody: 00b1ebe0 - 00b1ec9a",
+      "annotation_before": {
+        "address": "00b1ebe0",
+        "function_name": "BSP_RenderCommandQueue_Execute",
+        "comment": "[BSP reconstruction 00b1ebe0]\nQueue list+14h/count+18h; for each command retain context+28h into current+30h, invoke command virtual+0, release current context. If control+20h==0, invoke destructor00b1ddd0/free each command then resize array to0; nonzero retains list. Raw bytes00b1ec78 show stack cleanup and continuation afterfree, contradicting truncated pseudocode return. No full command-type reconstruction yet."
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Reread list+14/count+18 around callbacks; publish current+30 before retaining incoming command+28 and releasing old. Reread command for virtual0; release CURRENT+30 after execute then clear after callback. Reread control+20: zero destroys/frees current indexed command; reload count; final zero mode resizes list to0 retaining capacity.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b1ec73",
+          "continuation": "00b1ec78",
+          "instructions": [
+            "00b1ec78: add esp, 4",
+            "00b1ec7b: add ebx, 1",
+            "00b1ec7e: cmp ebx, dword ptr [esi + 0x18]",
+            "00b1ec81: jl 0xb1ebf0",
+            "00b1ec87: pop edi"
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/render_command_raw_00b1ebe0.txt"
+    },
+    {
+      "address": "00b1ddd0",
+      "suggested_name": "BSP_RenderCommand_Destroy",
+      "original_abi": "ECX command; no stack arguments; RET.",
+      "contract": "Release required batch refs+C then+10. Walk indexed owned groups+2C/count+30, destroy00B1D760/free then clear original cell; recompute end each iteration. Release/clear refs+4 and+28. Shrink/free borrowed ordered array+38, then indexed array+2C, return diagnostic storage+18 with length+14 plus1. Typed API uses actual intrusive owners, existing grouping ownership and allocator-backed diagnostic strings; exact global native allocator and EH/corrupt array paths remain outside.",
+      "code_identity": {
+        "length": 541,
+        "end_exclusive": "00b1dfed",
+        "sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1ddd0 at 00b1ddd0\nSignature: undefined FUN_00b1ddd0(void)\nEntry: 00b1ddd0\nBody: 00b1ddd0 - 00b1df29",
+      "annotation_before": {
+        "address": "00b1ddd0",
+        "function_name": "FUN_00b1ddd0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Release required batch refs+C then+10. Walk indexed owned groups+2C/count+30, destroy00B1D760/free then clear original cell; recompute end each iteration. Release/clear refs+4 and+28. Shrink/free borrowed ordered array+38, then indexed array+2C, return diagnostic storage+18 with length+14 plus1. Typed API uses actual intrusive owners, existing grouping ownership and allocator-backed diagnostic strings; exact global native allocator and EH/corrupt array paths remain outside.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b1de40",
+          "continuation": "00b1de45",
+          "instructions": [
+            "00b1de45: add esp, 4",
+            "00b1de48: mov dword ptr [edi], ebx",
+            "00b1de4a: mov ecx, dword ptr [esi + 0x30]",
+            "00b1de4d: mov edx, dword ptr [esi + 0x2c]",
+            "00b1de50: add edi, 4",
+            "00b1de53: lea eax, [edx + ecx*4]"
+          ]
+        },
+        {
+          "callsite": "00b1dedb",
+          "continuation": "00b1dee0",
+          "instructions": [
+            "00b1dee0: add esp, 4",
+            "00b1dee3: mov dword ptr [esi + 0x38], edi",
+            "00b1dee6: mov dword ptr [esi + 0x40], 1",
+            "00b1deed: mov eax, dword ptr [esi + 0x3c]"
+          ]
+        },
+        {
+          "callsite": "00b1df25",
+          "continuation": "00b1df2a",
+          "instructions": [
+            "00b1df2a: mov eax, dword ptr [esi + 0x34]",
+            "00b1df2d: add esp, 4",
+            "00b1df30: cmp eax, ebx",
+            "00b1df32: mov byte ptr [esp + 0x1c], bl",
+            "00b1df36: jge 0xb1df7f",
+            "00b1df38: cmp eax, 1"
+          ]
+        },
+        {
+          "callsite": "00b1df6d",
+          "continuation": "00b1df72",
+          "instructions": [
+            "00b1df72: add esp, 4",
+            "00b1df75: mov dword ptr [esi + 0x2c], edi",
+            "00b1df78: mov dword ptr [esi + 0x34], 1",
+            "00b1df7f: mov eax, dword ptr [esi + 0x30]"
+          ]
+        },
+        {
+          "callsite": "00b1dfb2",
+          "continuation": "00b1dfb7",
+          "instructions": [
+            "00b1dfb7: mov eax, dword ptr [esi + 0x18]",
+            "00b1dfba: add esp, 4",
+            "00b1dfbd: cmp eax, ebx",
+            "00b1dfbf: mov dword ptr [esp + 0x18], ebp",
+            "00b1dfc3: je 0xb1dfdb",
+            "00b1dfc5: mov esi, dword ptr [esi + 0x14]"
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/render_command_raw_00b1ddd0.txt"
+    },
+    {
+      "address": "00b1d760",
+      "suggested_name": "BSP_InstanceGroup_Destroy",
+      "original_abi": "ECX group; no stack arguments; RET.",
+      "contract": "Release/clear binding+0; call00B6DFA0 for model+1C then+20 and clear each; reverse-destroy two12-byte borrowed-pointer arrays+24/+30 through00B1D1D0; return pooled name storage+8 with length+4 plus1. This is a group destructor, not a vector-deleting destructor. Typed existing shared_ptr binding observability is limited during terminal deleter; actual model virtual18 operation remains required after concrete unlink.",
+      "code_identity": {
+        "length": 187,
+        "end_exclusive": "00b1d81b",
+        "sha256": "30eca5db1f1352c6bd29b9d7e3b7a83b2587d96178b2e3fef6ee09a70c3d8afb",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: CG_vector_deleting_dtor_00b1d760 at 00b1d760\nSignature: undefined CG_vector_deleting_dtor_00b1d760(void)\nEntry: 00b1d760\nBody: 00b1d760 - 00b1d81a",
+      "annotation_before": {
+        "address": "00b1d760",
+        "function_name": "CG_vector_deleting_dtor_00b1d760"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Release/clear binding+0; call00B6DFA0 for model+1C then+20 and clear each; reverse-destroy two12-byte borrowed-pointer arrays+24/+30 through00B1D1D0; return pooled name storage+8 with length+4 plus1. This is a group destructor, not a vector-deleting destructor. Typed existing shared_ptr binding observability is limited during terminal deleter; actual model virtual18 operation remains required after concrete unlink.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b1d760.txt"
+    },
+    {
+      "address": "00b1cc80",
+      "suggested_name": "BSP_RenderCommandPointers_ResizeCleared",
+      "original_abi": "ECX pointer-array {data,count,capacity}; stack signed new count; RET4.",
+      "contract": "Reserve exact requested count via00B1C6C0 when greater than capacity; null newly exposed pointers; decrement count while shrinking then assign requested count. Shrink retains capacity and pointed commands.",
+      "code_identity": {
+        "length": 80,
+        "end_exclusive": "00b1ccd0",
+        "sha256": "d3898f872314baf70929152426d739361659c985ba0abd338d5247a7cdef5101",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1cc80 at 00b1cc80\nSignature: undefined FUN_00b1cc80(void)\nEntry: 00b1cc80\nBody: 00b1cc80 - 00b1cccf",
+      "annotation_before": {
+        "address": "00b1cc80",
+        "function_name": "FUN_00b1cc80"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Reserve exact requested count via00B1C6C0 when greater than capacity; null newly exposed pointers; decrement count while shrinking then assign requested count. Shrink retains capacity and pointed commands.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b1cc80.txt"
+    },
+    {
+      "address": "00b1c6c0",
+      "suggested_name": "BSP_RenderCommandPointers_Reserve",
+      "original_abi": "ECX pointer-array {data,count,capacity}; stack signed requested capacity; RET4.",
+      "contract": "Clamp requested capacity minimum1; grow only; allocate4*capacity, copy existing borrowed pointers in order, free old buffer, publish new data then capacity. Missing raw continuation at00B1C711 is ADD ESP4; MOV[ESI],EBX; MOV[ESI+8],EDI; POP EBX. Host rejects byte overflow/allocation failure instead of native corruption.",
+      "code_identity": {
+        "length": 95,
+        "end_exclusive": "00b1c71f",
+        "sha256": "9d502ec64f63189c98b80c47a88cac16192ece06d4ebbe1ae2dd05047c63ed4c",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1c6c0 at 00b1c6c0\nSignature: undefined FUN_00b1c6c0(void)\nEntry: 00b1c6c0\nBody: 00b1c6c0 - 00b1c71e",
+      "annotation_before": {
+        "address": "00b1c6c0",
+        "function_name": "FUN_00b1c6c0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Clamp requested capacity minimum1; grow only; allocate4*capacity, copy existing borrowed pointers in order, free old buffer, publish new data then capacity. Missing raw continuation at00B1C711 is ADD ESP4; MOV[ESI],EBX; MOV[ESI+8],EDI; POP EBX. Host rejects byte overflow/allocation failure instead of native corruption.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b1c70c",
+          "continuation": "00b1c711",
+          "instructions": [
+            "00b1c711: add esp, 4",
+            "00b1c714: mov dword ptr [esi], ebx",
+            "00b1c716: mov dword ptr [esi + 8], edi",
+            "00b1c719: pop ebx",
+            "00b1c71a: pop edi",
+            "00b1c71b: pop esi",
+            "00b1c71c: ret 4"
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/render_command_raw_00b1c6c0.txt"
+    },
+    {
+      "address": "00b1d1d0",
+      "suggested_name": "BSP_InstanceEntryPointers_Destroy",
+      "original_abi": "ECX pointer-array; no stack arguments; RET.",
+      "contract": "Call00B1C770(0), free array data, clean stack and return. New missing function candidate; used indirectly by reverse eh_vector_destructor_iterator in00B1D760.",
+      "code_identity": {
+        "length": 23,
+        "end_exclusive": "00b1d1e7",
+        "sha256": "6a6d9d35f7ff392dbe07eab7b41dd03eb2a468fa46f085f929ceac45a3f3685b",
+        "pe_live_match": true
+      },
+      "prototype_before": "No function found for 00b1d1d0\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00b1d1d0'})",
+      "annotation_before": {
+        "function_did_not_exist": true
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Call00B1C770(0), free array data, clean stack and return. New missing function candidate; used indirectly by reverse eh_vector_destructor_iterator in00B1D760.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b1d1dd",
+          "continuation": "00b1d1e2",
+          "instructions": [
+            "00b1d1e2: add esp, 4",
+            "00b1d1e5: pop esi",
+            "00b1d1e6: ret "
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/render_command_raw_00b1d1d0.txt"
+    },
+    {
+      "address": "00b1c770",
+      "suggested_name": "BSP_InstanceEntryPointers_ResizeCleared",
+      "original_abi": "ECX pointer-array; stack signed new count; RET4.",
+      "contract": "Reserve via reviewed00B1C500 if needed, initialize newly exposed pointers to0, shrink count without deleting borrowed entries, assign requested count. Missing function candidate, distinct from00B1C7C0.",
+      "code_identity": {
+        "length": 80,
+        "end_exclusive": "00b1c7c0",
+        "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94",
+        "pe_live_match": true
+      },
+      "prototype_before": "No function found for 00b1c770\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00b1c770'})",
+      "annotation_before": {
+        "function_did_not_exist": true
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Reserve via reviewed00B1C500 if needed, initialize newly exposed pointers to0, shrink count without deleting borrowed entries, assign requested count. Missing function candidate, distinct from00B1C7C0.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b1c770.txt"
+    },
+    {
+      "address": "00b6dfa0",
+      "suggested_name": "BSP_Node_UnlinkAndRelease",
+      "original_abi": "ECX node; no stack args; tail jump node virtual+18.",
+      "contract": "If parent+30 exists, clear parent, patch previous+40/next+3C siblings, replace parent first+34 if needed, decrement parent count+38, clear parent again. Otherwise unlink root-list+A4 with00B72220 and clear root-list. Tail virtual18 resolves00B6F310 for generated model table00D62DE8. Typed implementation updates shared CameraTransform hierarchy before required actual virtual operation.",
+      "code_identity": {
+        "length": 105,
+        "end_exclusive": "00b6e009",
+        "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6dfa0 at 00b6dfa0\nSignature: undefined FUN_00b6dfa0(void)\nEntry: 00b6dfa0\nBody: 00b6dfa0 - 00b6e008",
+      "annotation_before": {
+        "address": "00b6dfa0",
+        "function_name": "FUN_00b6dfa0",
+        "comment": "[BSP reconstruction 00b6dfa0]\nECX drawable; no stack args; tail jump virtual+18. Unlink parent/list or registration then invoke drawable virtual+18. Complete virtual target destruction remains unresolved; no COM lifetime sequence inferred. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] If parent+30 exists, clear parent, patch previous+40/next+3C siblings, replace parent first+34 if needed, decrement parent count+38, clear parent again. Otherwise unlink root-list+A4 with00B72220 and clear root-list. Tail virtual18 resolves00B6F310 for generated model table00D62DE8. Typed implementation updates shared CameraTransform hierarchy before required actual virtual operation.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b6dfa0.txt"
+    },
+    {
+      "address": "00b72220",
+      "suggested_name": "BSP_NodeRootList_Unlink",
+      "original_abi": "ECX root registration list; stack node; RET4.",
+      "contract": "Patch next.previous and previous.next; if no previous, root+0C first=node.next. Does not clear node fields or release references.",
+      "code_identity": {
+        "length": 44,
+        "end_exclusive": "00b7224c",
+        "sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b72220 at 00b72220\nSignature: undefined FUN_00b72220(void)\nEntry: 00b72220\nBody: 00b72220 - 00b7224b",
+      "annotation_before": {
+        "address": "00b72220",
+        "function_name": "FUN_00b72220"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Patch next.previous and previous.next; if no previous, root+0C first=node.next. Does not clear node fields or release references.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b72220.txt"
+    },
+    {
+      "address": "00b6f310",
+      "suggested_name": "BSP_Node_ReleaseGeometryChildrenAndSelf_Provisional",
+      "original_abi": "ECX node; no stack args; RET or tail virtual0 at final zero reference.",
+      "contract": "Resolved generated-model virtual18 boundary, not fully reimplemented by this packet: remove node from each linked geometry via00B7C1A0; resize+164 array0 via00B6EC70; detach/release children virtual18; on first+44 disposal clear root/hierarchy links and set flag, unregister+A0 through00B8F4C0, atomic release self and virtual0 at zero. Required typed model operation must perform actual equivalent owner teardown, not no-op.",
+      "code_identity": {
+        "length": 176,
+        "end_exclusive": "00b6f3c0",
+        "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6f310 at 00b6f310\nSignature: undefined FUN_00b6f310(void)\nEntry: 00b6f310\nBody: 00b6f310 - 00b6f3bf",
+      "annotation_before": {
+        "address": "00b6f310",
+        "function_name": "FUN_00b6f310"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Resolved generated-model virtual18 boundary, not fully reimplemented by this packet: remove node from each linked geometry via00B7C1A0; resize+164 array0 via00B6EC70; detach/release children virtual18; on first+44 disposal clear root/hierarchy links and set flag, unregister+A0 through00B8F4C0, atomic release self and virtual0 at zero. Required typed model operation must perform actual equivalent owner teardown, not no-op.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b6f310.txt"
+    },
+    {
+      "address": "00b1d120",
+      "suggested_name": "BSP_RenderCommandContext_Destroy",
+      "original_abi": "ECX18-byte native context; RET.",
+      "contract": "Release then clear retained camera+8, scene+C, target+14 in order, reloading each after previous terminal callbacks. Borrowed command backpointer+10 untouched. Then refcount base destructor.",
+      "code_identity": {
+        "length": 168,
+        "end_exclusive": "00b1d1c8",
+        "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b1d120 at 00b1d120\nSignature: undefined FUN_00b1d120(void)\nEntry: 00b1d120\nBody: 00b1d120 - 00b1d1c7",
+      "annotation_before": {
+        "address": "00b1d120",
+        "function_name": "FUN_00b1d120"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Release then clear retained camera+8, scene+C, target+14 in order, reloading each after previous terminal callbacks. Borrowed command backpointer+10 untouched. Then refcount base destructor.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b1d120.txt"
+    },
+    {
+      "address": "00b1d570",
+      "suggested_name": "BSP_RenderCommandContext_DeletingDestructor",
+      "original_abi": "ECX context; stack delete flags; EAX context; RET4.",
+      "contract": "Call00B1D120, free context when flags&1, return original this. Free continuation00B1D585 cleans4 stack bytes.",
+      "code_identity": {
+        "length": 30,
+        "end_exclusive": "00b1d58e",
+        "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: CG_scalar_deleting_dtor_00b1d570 at 00b1d570\nSignature: undefined CG_scalar_deleting_dtor_00b1d570(void)\nEntry: 00b1d570\nBody: 00b1d570 - 00b1d58d",
+      "annotation_before": {
+        "address": "00b1d570",
+        "function_name": "CG_scalar_deleting_dtor_00b1d570"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Call00B1D120, free context when flags&1, return original this. Free continuation00B1D585 cleans4 stack bytes.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b1d580",
+          "continuation": "00b1d585",
+          "instructions": [
+            "00b1d585: add esp, 4",
+            "00b1d588: mov eax, esi",
+            "00b1d58a: pop esi",
+            "00b1d58b: ret 4"
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/render_command_raw_00b1d570.txt"
+    },
+    {
+      "address": "00b1edc0",
+      "suggested_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "original_abi": "ECX command; stack command scene,camera,context scene,target; RET10h.",
+      "contract": "Allocate18-byte refcount1 context table00D5E5C4 at+28, retained assignment command+4 and context+8/C/14, set context+10 backpointer, acquire two native pooled batches+C/+10, initialize one-byte diagnostic. Typed fragment reconstructs context/ref assignments and consumes two explicitly acquired actual batch references; native pool acquisition and diagnostic initializer remain separate.",
+      "code_identity": {
+        "length": 407,
+        "end_exclusive": "00b1ef57",
+        "sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: BSP_RenderCommand_InitializeContextAndBatches at 00b1edc0\nSignature: undefined BSP_RenderCommand_InitializeContextAndBatches(void)\nEntry: 00b1edc0\nBody: 00b1edc0 - 00b1ef56",
+      "annotation_before": {
+        "address": "00b1edc0",
+        "function_name": "BSP_RenderCommand_InitializeContextAndBatches",
+        "comment": "[BSP reconstruction 00b1edc0]\nAllocates18h context vtable00d5e5c4 atcommand+28h, retains supplied references into context+8/+C/+14 andcommand+4, context+10 points back tocommand. Acquires two pooled batches into+C/+10h via00b1e870/00b1d5b0. Allocator and ownership teardown still unported."
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Allocate18-byte refcount1 context table00D5E5C4 at+28, retained assignment command+4 and context+8/C/14, set context+10 backpointer, acquire two native pooled batches+C/+10, initialize one-byte diagnostic. Typed fragment reconstructs context/ref assignments and consumes two explicitly acquired actual batch references; native pool acquisition and diagnostic initializer remain separate.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/render_command_raw_00b1edc0.txt"
+    }
+  ],
+  "validation": {
+    "strict_win32_compile": "Passed MSVC Win32 /O2 /MD /W4 /WX /fp:strict scoped source compilation and focused lifetime executable link.",
+    "focused_lifetime_check": {
+      "passed": true,
+      "cases": 1,
+      "events": 8,
+      "checks": [
+        "publish/retain before terminal old-context release",
+        "list replacement and count growth reread",
+        "release CURRENT context after execute",
+        "clear after terminal callback even if overwritten",
+        "control reread causes command disposal",
+        "context release before field clear",
+        "exact diagnostic pool byte counts and order",
+        "final resize0 retains pointer capacity",
+        "shared hierarchy unlink before required virtual18"
+      ],
+      "output": "local/render_command_lifetime_check.txt",
+      "native_binary_execution": false
+    },
+    "repository_build": "scripts/build.ps1 passed after verify-seeds; both reconstructed_math and native_math_differential passed. Worker CMake did not include new source; separate strict source compile/link covers it.",
+    "abi_drop_in": false,
+    "game_validated": false
+  },
+  "limits": [
+    "New typed lifetime/storage interface, not native object or intrusive vtable ABI.",
+    "Concrete00B6DFA0 hierarchy/root unlink precedes required actual model virtual18 operation; downstream00B6F310 geometry/children/self teardown is a resolved explicit operation boundary.",
+    "Command/context refs preserve queue callback ordering; callbacks must leave indexed command slots valid. Native mode changes after deletion can retain stale list pointers; owner must keep subsequent list use valid.",
+    "Existing OwnedInstanceGroup uses shared_ptr/unique_ptr host ownership; group-array structural mutation and inspecting a shared_ptr during its terminal deleter are excluded during command destruction.",
+    "Diagnostic bytes return to actual supplied std::pmr::memory_resource with exact length+1/alignment1; native global pool layout/class selection, Win32 EH and corrupt/negative arrays/allocation failure remain outside."
+  ],
+  "primary_integration": "Primary applies missing functions/false-noreturn repairs, ledger/name/comment updates, CMake and actual command execution adapters.",
+  "vtable_identities": [
+    {
+      "address": "00d5e5c4",
+      "length": 8,
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "pe_live_match": true,
+      "entries": [
+        "00bd30e0",
+        "00b1d570"
+      ]
+    },
+    {
+      "address": "00d62de8",
+      "length": 28,
+      "sha256": "7625988a33c039ca9241943ce6d23382e6e42a221227363bbe629812162aca69",
+      "pe_live_match": true,
+      "entries": [
+        "00bd30e0",
+        "00b75290",
+        "00b74330",
+        "006ef860",
+        "00b752b0",
+        "00b74340",
+        "00b6f310"
+      ]
+    }
+  ]
+}
