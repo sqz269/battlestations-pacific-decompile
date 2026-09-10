@@ -6,6 +6,7 @@
 #include "bsp/game_settings.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_render_order.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_text.hpp"
@@ -1245,6 +1246,30 @@ int main() {
         const bool underflows = guard.depth() == -1 && !guard.active();
         check(idle && nested && still_held && released && underflows,
             "game+644h suppresses the loading-screen bindings only while the depth is positive");
+    }
+
+    {
+        // 00AA4960 descends left only on a strictly smaller key, so layers that
+        // share a RenderOrder draw in creation order, and an empty widget name
+        // sorts first without dereferencing its null character pointer.
+        bsp::GuiCameraStore first{};
+        bsp::GuiCameraStore second{};
+        bsp::GuiCameraStore ahead{};
+        first.key.render_order = 4.0f;
+        second.key.render_order = 4.0f;
+        ahead.key.render_order = -1.0f;
+        bsp::GuiCameraStoreMap map;
+        map.insert_00aa5070(first);
+        map.insert_00aa5070(second);
+        map.insert_00aa5070(ahead);
+        check(map.entries().size() == 3 && map.entries()[0].second == &ahead
+                  && map.entries()[1].second == &first
+                  && map.entries()[2].second == &second,
+            "equal RenderOrder keeps insertion order behind a smaller key");
+        check(bsp::widget_name_less_00aa2c80("", "a")
+                  && !bsp::widget_name_less_00aa2c80("", "")
+                  && bsp::widget_name_less_00aa2c80("Alpha", "beta"),
+            "empty widget names sort first and the rest fold case");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
