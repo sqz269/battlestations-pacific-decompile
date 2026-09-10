@@ -17,6 +17,7 @@
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_screen_sets.hpp"
+#include "bsp/hud_screens.hpp"
 #include "bsp/ingame_interface.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
@@ -1482,6 +1483,31 @@ int main() {
               && bsp::vehicle_class_spec_role_009606bc(nullptr)
                   == bsp::kVehicleClassSpecRoleDefault,
             "SpecRole matches BomberPilot case-insensitively and FlyingControll exactly");
+    }
+
+    {
+        // The HUD page table and the per-screen layouts are generated from the
+        // same recovered map, so the risk is that they drift apart: a layout
+        // naming a page the page table does not carry, or a registry slot the
+        // manager does not own. docs/HUD_SCREEN_PAGES.md.
+        bool closed = true;
+        for (const bsp::HudScreenLayout& layout : bsp::kHudScreenLayouts) {
+            if (bsp::in_game_hud_screen_index_for_slot(layout.registry_slot)
+                == bsp::kInGameHudScreenCount) {
+                closed = false;
+            }
+            for (std::size_t i = 0; i < layout.page_count; ++i) {
+                if (bsp::hud_screen_page(layout.pages[i]) == nullptr) {
+                    closed = false;
+                }
+            }
+        }
+        check(closed
+                  && bsp::hud_screen_layout_for_slot(0x4D) != nullptr
+                  && bsp::hud_screen_slot_raised_by_interface(0x4D, bsp::kInterfaceBombView)
+                  && !bsp::hud_screen_slot_raised_by_interface(0x4D, bsp::kInterfaceLimbo),
+            "every HUD screen layout names a slot the manager owns and pages the "
+            "page table carries, and slot 4Dh rises with 26h but not 34h");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

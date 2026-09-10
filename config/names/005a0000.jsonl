@@ -1,0 +1,1 @@
+{"address": "005ab190", "name": "BSP_HudMapScreen_Register", "evidence": "Hypothesis, not a recovered symbol. Packet hud_screen_pages, docs/HUD_SCREEN_PAGES.md. Vtable +10h of HUD screen slot 4Ch (manager +54h). Loads GUI_map and GUI_classicons and binds 24 widgets. Slot 4Ch is the level-2 overlay 0068AB80 tests through [this+54h]+4h; no level-1 arm lists it."}

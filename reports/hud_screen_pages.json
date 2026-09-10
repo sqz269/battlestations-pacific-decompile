@@ -1,0 +1,7012 @@
+{
+ "packet": "hud_screen_pages",
+ "binary": "battlestationspacific.exe",
+ "manager": {
+  "address": "0068CC70",
+  "note": "Init that constructs the 42 screens; see docs/IN_MISSION_INTERFACE_MANAGER.md"
+ },
+ "screen_base": {
+  "vtable": "00CEAE54",
+  "constructor": "004F7180",
+  "register": "004F71D0",
+  "slots": {
+   "00h": "registry slot id (__purecall in the base)",
+   "10h": "register: 004F71D0 in the base, overridden by all 42",
+   "14h": "load layout / bind widgets: 004F7590 no-op in the base",
+   "18h": "enter: 004F75A0",
+   "1Ch": "exit: 004F75B0",
+   "20h": "update(float): 004F75C0"
+  },
+  "slot_count": 10
+ },
+ "page_factory": {
+  "address": "00AA5840",
+  "name": "BSP_GuiManager_LoadPage"
+ },
+ "child_lookup": {
+  "address": "00AA7E00",
+  "name": "child widget lookup by name"
+ },
+ "controlled_unit_global": {
+  "address": "00E188D8",
+  "writer": "004C0880 BSP_Game_SetControlledUnit",
+  "accessor": "00644230"
+ },
+ "screens": [
+  {
+   "offset": "40h",
+   "registry_slot": "44h",
+   "constructor": "0068BF60",
+   "vtable": "00CF5A9C",
+   "size": "174h",
+   "init_order": 0,
+   "virtuals": {
+    "id": {
+     "address": "00647FE0",
+     "no_ghidra_function": true,
+     "body": "00647FE0-00647FE5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00648040",
+     "ghidra_name": "CG_scalar_deleting_dtor_00648040",
+     "body": "00648040-0064805D"
+    },
+    "register": {
+     "address": "00645F10",
+     "ghidra_name": "FUN_00645f10",
+     "body": "00645F10-00645FA3"
+    },
+    "bind": {
+     "address": "006463E0",
+     "ghidra_name": "FUN_006463e0",
+     "body": "006463E0-00646C41",
+     "pages": [
+      "GUI_powerups",
+      "GUI_unit",
+      "GUI_selector"
+     ],
+     "widgets": [
+      "puptemplate_Icon",
+      "circletemplate_Section",
+      "unit_name_Text",
+      "FlagJP_Icon",
+      "FlagUS_Icon",
+      "unit_payload_Icon",
+      "unit_HP_damage_Icon",
+      "unit_HP_healthy_Icon",
+      "unit_command_Icon",
+      "Units_Group",
+      "ClosedUnitHUD_Group",
+      "Medal_Icon",
+      "Medal_Text",
+      "WeaponInfo_Text"
+     ]
+    },
+    "enter": {
+     "address": "006488D0",
+     "no_ghidra_function": true,
+     "body": "006488D0-00648923",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "00646C50",
+     "ghidra_name": "FUN_00646c50",
+     "body": "00646C50-00646D2F"
+    },
+    "update": {
+     "address": "00649860",
+     "ghidra_name": "FUN_00649860",
+     "body": "00649860-0064A24C"
+    },
+    "v24": {
+     "address": "00648000",
+     "ghidra_name": "FUN_00648000",
+     "body": "00648000-00648030"
+    }
+   },
+   "pages": [
+    "GUI_powerups",
+    "GUI_unit",
+    "GUI_selector"
+   ],
+   "installed_pages": {
+    "GUI_powerups": {
+     "file": "interface/gui_powerups.lua",
+     "exists": true,
+     "widget_keys": 2
+    },
+    "GUI_unit": {
+     "file": "interface/gui_unit.lua",
+     "exists": true,
+     "widget_keys": 8
+    },
+    "GUI_selector": {
+     "file": "interface/gui_selector.lua",
+     "exists": true,
+     "widget_keys": 9
+    }
+   },
+   "widgets": [
+    {
+     "name": "puptemplate_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circletemplate_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_name_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "FlagJP_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "FlagUS_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_payload_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_HP_damage_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_HP_healthy_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_command_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Units_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ClosedUnitHUD_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Medal_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Medal_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "WeaponInfo_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "20h",
+    "22h",
+    "23h",
+    "24h",
+    "25h",
+    "27h",
+    "28h",
+    "2Fh",
+    "33h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_SCENE3D",
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_PLANESPAWN",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_COMMANDBUILDING",
+    "INTF_LAUNCHLANDING"
+   ]
+  },
+  {
+   "offset": "44h",
+   "registry_slot": "27h",
+   "constructor": "0068A8A0",
+   "vtable": "00CF7A38",
+   "size": "34h",
+   "init_order": 1,
+   "virtuals": {
+    "id": {
+     "address": "0068A8F0",
+     "no_ghidra_function": true,
+     "body": "0068A8F0-0068A8F5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0068A970",
+     "ghidra_name": "CG_scalar_deleting_dtor_0068a970",
+     "body": "0068A970-0068A98D"
+    },
+    "register": {
+     "address": "0067B3F0",
+     "no_ghidra_function": true,
+     "body": "0067B3F0-0067B3F0",
+     "sweep_terminated": true
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0067B400",
+     "no_ghidra_function": true,
+     "body": "0067B400-0067B400",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0067B410",
+     "no_ghidra_function": true,
+     "body": "0067B410-0067B410",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0067BB50",
+     "ghidra_name": "FUN_0067bb50",
+     "body": "0067BB50-0067BC59"
+    },
+    "v24": {
+     "address": "004F75D0",
+     "base_default": "base_noop_24"
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "22h",
+    "23h",
+    "24h",
+    "25h",
+    "26h",
+    "27h",
+    "28h",
+    "2Fh",
+    "33h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_PLANESPAWN",
+    "INTF_CAPTAIN",
+    "INTF_BOMBVIEW",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_COMMANDBUILDING",
+    "INTF_LAUNCHLANDING"
+   ]
+  },
+  {
+   "offset": "48h",
+   "registry_slot": "4Dh",
+   "constructor": "00640C80",
+   "vtable": "00CF5950",
+   "size": "B0h",
+   "init_order": 2,
+   "virtuals": {
+    "id": {
+     "address": "006405E0",
+     "no_ghidra_function": true,
+     "body": "006405E0-006405E5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00640D50",
+     "ghidra_name": "CG_scalar_deleting_dtor_00640d50",
+     "body": "00640D50-00640D6D"
+    },
+    "register": {
+     "address": "0063E280",
+     "ghidra_name": "FUN_0063e280",
+     "body": "0063E280-0063E358",
+     "pages": [
+      "GUI_markers"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00639480",
+     "no_ghidra_function": true,
+     "body": "00639480-006394A2",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0063E360",
+     "ghidra_name": "FUN_0063e360",
+     "body": "0063E360-0063E5B8"
+    },
+    "update": {
+     "address": "006435D0",
+     "no_ghidra_function": true,
+     "body": "006435D0-00643D94",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00640600",
+     "no_ghidra_function": true,
+     "body": "00640600-00640610",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_markers"
+   ],
+   "installed_pages": {
+    "GUI_markers": {
+     "file": "interface/gui_markers.lua",
+     "exists": true,
+     "widget_keys": 23
+    }
+   },
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "22h",
+    "23h",
+    "24h",
+    "25h",
+    "26h",
+    "27h",
+    "28h",
+    "2Fh",
+    "33h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_PLANESPAWN",
+    "INTF_CAPTAIN",
+    "INTF_BOMBVIEW",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_COMMANDBUILDING",
+    "INTF_LAUNCHLANDING"
+   ]
+  },
+  {
+   "offset": "4Ch",
+   "registry_slot": "26h",
+   "constructor": "0051E950",
+   "vtable": "00CEC9B0",
+   "size": "50h",
+   "init_order": 3,
+   "virtuals": {
+    "id": {
+     "address": "0051E990",
+     "no_ghidra_function": true,
+     "body": "0051E990-0051E995",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0051ED40",
+     "ghidra_name": "CG_scalar_deleting_dtor_0051ed40",
+     "body": "0051ED40-0051ED5D"
+    },
+    "register": {
+     "address": "0051ED60",
+     "ghidra_name": "FUN_0051ed60",
+     "body": "0051ED60-0051EE47",
+     "pages": [
+      "GUI_binoculars"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0051EE50",
+     "ghidra_name": "FUN_0051ee50",
+     "body": "0051EE50-0051EEFD",
+     "widgets": [
+      "Tavcso_Model"
+     ]
+    },
+    "exit": {
+     "address": "0051E9B0",
+     "no_ghidra_function": true,
+     "body": "0051E9B0-0051E9F0",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "004F75C0",
+     "base_default": "base_update"
+    },
+    "v24": {
+     "address": "0051F040",
+     "no_ghidra_function": true,
+     "body": "0051F040-0051F04D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_binoculars"
+   ],
+   "installed_pages": {
+    "GUI_binoculars": {
+     "file": "interface/gui_binoculars.lua",
+     "exists": true,
+     "widget_keys": 1
+    }
+   },
+   "widgets": [
+    {
+     "name": "Tavcso_Model",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "23h",
+    "25h",
+    "27h",
+    "2Fh"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANEBOMBER",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_COMMANDBUILDING"
+   ]
+  },
+  {
+   "offset": "50h",
+   "registry_slot": "2Eh",
+   "constructor": "005472F0",
+   "vtable": "00CEDF34",
+   "size": "114h",
+   "init_order": 4,
+   "virtuals": {
+    "id": {
+     "address": "00547370",
+     "no_ghidra_function": true,
+     "body": "00547370-00547375",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00547A00",
+     "ghidra_name": "CG_scalar_deleting_dtor_00547a00",
+     "body": "00547A00-00547A1D"
+    },
+    "register": {
+     "address": "005468B0",
+     "ghidra_name": "FUN_005468b0",
+     "body": "005468B0-00546A11",
+     "pages": [
+      "GUI_cross_gunstate",
+      "GUI_cross_ship"
+     ]
+    },
+    "bind": {
+     "address": "00546A20",
+     "ghidra_name": "FUN_00546a20",
+     "body": "00546A20-00547076",
+     "widgets": [
+      "ship_AA_Group",
+      "ship_art_Group",
+      "ship_rocket_Group",
+      "ship_torpedo_Group",
+      "ship_DC_Group",
+      "cross_botton_Icon",
+      "cross_left_Icon",
+      "cross_right_Icon",
+      "cross_F_Icon",
+      "cross_H_Icon",
+      "cross_HF_Icon",
+      "cross_L_Icon",
+      "cross_F2_Icon",
+      "CrosshairDisable_Icon",
+      "GunState_Icon",
+      "circle_Section"
+     ],
+     "other_literals": [
+      "cross__Icon"
+     ]
+    },
+    "enter": {
+     "address": "005494C0",
+     "ghidra_name": "FUN_005494c0",
+     "body": "005494C0-00549564"
+    },
+    "exit": {
+     "address": "005470A0",
+     "no_ghidra_function": true,
+     "body": "005470A0-005470BC",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "004F75C0",
+     "base_default": "base_update"
+    },
+    "v24": {
+     "address": "005482D0",
+     "no_ghidra_function": true,
+     "body": "005482D0-005482F3",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_cross_gunstate",
+    "GUI_cross_ship"
+   ],
+   "installed_pages": {
+    "GUI_cross_gunstate": {
+     "file": "interface/gui_cross_gunstate.lua",
+     "exists": true,
+     "widget_keys": 3
+    },
+    "GUI_cross_ship": {
+     "file": "interface/gui_cross_ship.lua",
+     "exists": true,
+     "widget_keys": 32
+    }
+   },
+   "widgets": [
+    {
+     "name": "ship_AA_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_art_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_rocket_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_torpedo_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_DC_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_botton_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_left_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_right_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_F_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_H_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_HF_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_L_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_F2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "CrosshairDisable_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "GunState_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "23h",
+    "25h",
+    "27h",
+    "28h",
+    "2Fh"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANEBOMBER",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_COMMANDBUILDING"
+   ]
+  },
+  {
+   "offset": "54h",
+   "registry_slot": "4Ch",
+   "constructor": "005AAEF0",
+   "vtable": "00CF0134",
+   "size": "614h",
+   "init_order": 5,
+   "virtuals": {
+    "id": {
+     "address": "005A8EE0",
+     "no_ghidra_function": true,
+     "body": "005A8EE0-005A8EE5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "005A8EF0",
+     "no_ghidra_function": true,
+     "body": "005A8EF0-005A8EF2",
+     "sweep_terminated": true
+    },
+    "v0C": {
+     "address": "005AB140",
+     "ghidra_name": "CG_scalar_deleting_dtor_005ab140",
+     "body": "005AB140-005AB15D"
+    },
+    "register": {
+     "address": "005AB190",
+     "ghidra_name": "FUN_005ab190",
+     "body": "005AB190-005ADD9B",
+     "pages": [
+      "GUI_map",
+      "GUI_classicons"
+     ],
+     "other_literals": [
+      "Terrain child %s",
+      "map_texturednonormal_ocean.mshd",
+      "map_ocean_shadow.mshd",
+      "guialphastencildiff.mshd",
+      "guialphamul.mshd",
+      "guialphamul.mshd",
+      "guialphamul.mshd",
+      "guialphamul.mshd",
+      "guialphamul.mshd",
+      "guialphamul.mshd",
+      "map_texturednonormal_bordergrid.mshd",
+      "cLength",
+      "cOffset",
+      "guialphamulborder.mshd",
+      "cLength",
+      "cOffset",
+      "guialphamuldarken.mshd",
+      "guialphawrite.mshd",
+      "guialphawrite.mshd",
+      "models/gui/map/units/battleshipmap.MMOD",
+      "models/gui/map/units/cruisermap.MMOD",
+      "models/gui/map/units/destroyermap.MMOD",
+      "models/gui/map/units/destroyermap_low.MMOD",
+      "models/gui/map/units/carriermap.MMOD",
+      "models/gui/map/units/carriermap_low.MMOD",
+      "models/gui/map/units/biglandingmap.MMOD",
+      "models/gui/map/units/landingmap.MMOD",
+      "models/gui/map/units/ptboatmap.MMOD",
+      "models/gui/map/units/submarinemap.MMOD",
+      "models/gui/map/units/fightermap.MMOD",
+      "models/gui/map/units/fightermap_low.MMOD",
+      "models/gui/map/units/divebombermap.MMOD",
+      "models/gui/map/units/fightermap_low.MMOD",
+      "models/gui/map/units/fightermap.MMOD",
+      "models/gui/map/units/fightermap_low.MMOD",
+      "models/gui/map/units/bombermap.MMOD",
+      "models/gui/map/units/reconmap.MMOD",
+      "models/gui/map/units/reconmap.MMOD",
+      "models/gui/map/units/Ohkamap.MMOD",
+      "models/gui/map/units/airfieldmap.MMOD",
+      "models/gui/map/units/shipyardmap.MMOD",
+      "models/gui/map/units/torpedomap.MMOD",
+      "models/gui/map/units/waterminemap.MMOD",
+      "models/gui/map/units/coastalgunmap.MMOD",
+      "models/gui/map/units/aagunmap.MMOD",
+      "models/gui/map/units/fortressmap.MMOD",
+      "models/gui/map/units/bunkermap.MMOD",
+      "models/gui/map/units/radarmap.MMOD",
+      "models/gui/map/units/commanbuildingmap.MMOD",
+      "models/gui/map/units/commanbuildingmap2.MMOD",
+      "models/gui/map/units/commanbuildingmap3.MMOD",
+      "models/gui/map/units/commanbuildingmap3.MMOD",
+      "models/gui/map/units/paramap.MMOD",
+      "models/gui/map/icons/map_arrow_leader.MMOD",
+      "models/gui/map/icons/map_obj_primary.MMOD",
+      "models/gui/map/icons/map_obj_secondary.MMOD",
+      "models/gui/map/units/shipmap_us.dds",
+      "models/gui/map/units/shipmap_jap.dds",
+      "models/gui/map/units/shipmap_neutral.dds",
+      "models/gui/map/units/planemap_us.dds",
+      "models/gui/map/units/planemap_jap.dds",
+      "models/gui/map/units/planemap_neutral.dds",
+      "models/gui/map/units/buildingsmap_us.dds",
+      "models/gui/map/units/buildingsmap_jap.dds",
+      "models/gui/map/units/buildingsmap_neutral.dds",
+      "models/gui/map/units/bulletmap_us.dds",
+      "models/gui/map/units/bulletmap_jap.dds",
+      "models/gui/map/units/bulletmap_neutral.dds",
+      "models/gui/map/units/mapparticle_bowwave_00.dds",
+      "models/gui/map/units/mapparticle_bowwave_01.dds",
+      "models/gui/map/units/mapparticle_bowwave_02.dds"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005B3470",
+     "ghidra_name": "FUN_005b3470",
+     "body": "005B3470-005B45B3",
+     "widgets": [
+      "All_Group",
+      "PlayerNameTemplate_Text",
+      "PlayerTalkingTemplate_Icon",
+      "radio_Icon",
+      "actunit_Icon",
+      "PupTemplate_Icon",
+      "unit_name_Text",
+      "WarningTemplate_Icon",
+      "HealthTemplate_Icon",
+      "JapCaptureTemplate_Icon",
+      "USCaptureTemplate_Icon",
+      "HealthTemplate2_Icon",
+      "distance_A_Icon",
+      "distance_B_Icon",
+      "map_corner_Icon",
+      "popup_FrameBox",
+      "select_Icon",
+      "target_Icon",
+      "mission_HL_Icon",
+      "filter_panel_Icon",
+      "filter_item_Icon",
+      "filter_panel2_Icon",
+      "filter_Text",
+      "map_class_Icon"
+     ],
+     "other_literals": [
+      "MAP1STUSE",
+      "MAPPERMANENT",
+      "MAP1STUSE",
+      "Terrain Visibility Group",
+      "BushGroup"
+     ]
+    },
+    "exit": {
+     "address": "005A4200",
+     "ghidra_name": "FUN_005a4200",
+     "body": "005A4200-005A485D",
+     "other_literals": [
+      "Terrain Visibility Group",
+      "BushGroup",
+      "TreeGroup",
+      "wavedamp",
+      "TreeGroup"
+     ]
+    },
+    "update": {
+     "address": "005B45C0",
+     "no_ghidra_function": true,
+     "body": "005B45C0-005B59B9",
+     "sweep_terminated": false,
+     "other_literals": [
+      "MAPPERMANENT",
+      "ingame.filters_nofilter",
+      "ingame.filters_health",
+      "ingame.filters_cbinfo",
+      "ingame.filters_powerups",
+      "ingame.filters_failures"
+     ]
+    },
+    "v24": {
+     "address": "005A8F20",
+     "ghidra_name": "FUN_005a8f20",
+     "body": "005A8F20-005A8F48"
+    }
+   },
+   "pages": [
+    "GUI_map",
+    "GUI_classicons"
+   ],
+   "installed_pages": {
+    "GUI_map": {
+     "file": "interface/gui_map.lua",
+     "exists": true,
+     "widget_keys": 28
+    },
+    "GUI_classicons": {
+     "file": "interface/gui_classicons.lua",
+     "exists": true,
+     "widget_keys": 1
+    }
+   },
+   "widgets": [
+    {
+     "name": "All_Group",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "PlayerNameTemplate_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "PlayerTalkingTemplate_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "radio_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "actunit_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "PupTemplate_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_name_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "WarningTemplate_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "HealthTemplate_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "JapCaptureTemplate_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USCaptureTemplate_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "HealthTemplate2_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "distance_A_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "distance_B_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "map_corner_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "popup_FrameBox",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "select_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "target_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "mission_HL_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "filter_panel_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "filter_item_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "filter_panel2_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "filter_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "map_class_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "58h",
+   "registry_slot": "35h",
+   "constructor": "005C0810",
+   "vtable": "00CF1404",
+   "size": "1B0h",
+   "init_order": 6,
+   "virtuals": {
+    "id": {
+     "address": "005C06B0",
+     "no_ghidra_function": true,
+     "body": "005C06B0-005C06B5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005C0910",
+     "ghidra_name": "CG_scalar_deleting_dtor_005c0910",
+     "body": "005C0910-005C092D"
+    },
+    "register": {
+     "address": "005BEC50",
+     "ghidra_name": "FUN_005bec50",
+     "body": "005BEC50-005BF7E5",
+     "pages": [
+      "GUI_minimap"
+     ],
+     "widgets": [
+      "minimap_islandmap_Icon",
+      "capture_icon_Group",
+      "icon_big_item_Icon",
+      "icon_big_item_hit_Icon",
+      "icon_big_Icon",
+      "bluecapture_Section",
+      "redcapture_Section",
+      "capturebg_Section"
+     ],
+     "other_literals": [
+      "cWorldCamPos",
+      "/",
+      "\\",
+      "_ICS",
+      "_ICM",
+      "_ICL",
+      "_ICH",
+      "_D",
+      "_E",
+      "_S",
+      "_C",
+      "_xxx",
+      ".dds",
+      "map_bordergrid.tga",
+      "cWorldBorderNWSE",
+      "cBorderFlash"
+     ]
+    },
+    "bind": {
+     "address": "005BE240",
+     "ghidra_name": "FUN_005be240",
+     "body": "005BE240-005BEC18",
+     "widgets": [
+      "minimap_compass_Icon",
+      "minimap_units_white_Group",
+      "item_ship_Icon",
+      "item_plane_Icon",
+      "item_sub_Icon",
+      "item_building_Icon",
+      "item_marker_Icon",
+      "minimap_units_red_Group",
+      "item_ship_Icon",
+      "minimap_units_blue_Group",
+      "item_ship_Icon",
+      "minimap_units_grey_Group",
+      "item_ship_Icon",
+      "minimap_units_yellow_Group",
+      "item_ship_Icon",
+      "minimap_units_silver_Group",
+      "item_ship_Icon",
+      "minimap_dir_Icon",
+      "unit_marker_Group"
+     ]
+    },
+    "enter": {
+     "address": "005BD550",
+     "ghidra_name": "FUN_005bd550",
+     "body": "005BD550-005BD582"
+    },
+    "exit": {
+     "address": "005C0E10",
+     "ghidra_name": "FUN_005c0e10",
+     "body": "005C0E10-005C0F19"
+    },
+    "update": {
+     "address": "005C0F20",
+     "no_ghidra_function": true,
+     "body": "005C0F20-005C2319",
+     "sweep_terminated": false
+    },
+    "v24": {
+     "address": "005C0800",
+     "no_ghidra_function": true,
+     "body": "005C0800-005C080D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_minimap"
+   ],
+   "installed_pages": {
+    "GUI_minimap": {
+     "file": "interface/gui_minimap.lua",
+     "exists": true,
+     "widget_keys": 33
+    }
+   },
+   "widgets": [
+    {
+     "name": "minimap_islandmap_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "capture_icon_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "icon_big_item_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "icon_big_item_hit_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "icon_big_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "bluecapture_Section",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "redcapture_Section",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "capturebg_Section",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_compass_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_units_white_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_ship_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_plane_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_sub_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_building_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_marker_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_units_red_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_ship_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_units_blue_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_ship_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_units_grey_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_ship_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_units_yellow_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_ship_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_units_silver_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "item_ship_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_dir_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_marker_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "20h",
+    "22h",
+    "23h",
+    "24h",
+    "25h",
+    "27h",
+    "28h",
+    "2Fh",
+    "33h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_SCENE3D",
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_PLANESPAWN",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_COMMANDBUILDING",
+    "INTF_LAUNCHLANDING"
+   ]
+  },
+  {
+   "offset": "5Ch",
+   "registry_slot": "2Ah",
+   "constructor": "00538E30",
+   "vtable": "00CED6FC",
+   "size": "1ACh",
+   "init_order": 7,
+   "virtuals": {
+    "id": {
+     "address": "00538CD0",
+     "no_ghidra_function": true,
+     "body": "00538CD0-00538CD5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "00538CE0",
+     "no_ghidra_function": true,
+     "body": "00538CE0-00538CE2",
+     "sweep_terminated": true
+    },
+    "v0C": {
+     "address": "00538F60",
+     "ghidra_name": "CG_scalar_deleting_dtor_00538f60",
+     "body": "00538F60-00538F7D"
+    },
+    "register": {
+     "address": "00538F80",
+     "ghidra_name": "FUN_00538f80",
+     "body": "00538F80-0053A4CD",
+     "pages": [
+      "GUI_formation",
+      "GUI_classicons",
+      "GUI_unit",
+      "GUI_formation_circle",
+      "GUI_formationOvrly"
+     ],
+     "widgets": [
+      "ship_plane_agressive_Icon",
+      "ship_plane_defensive_Icon",
+      "form_line_Icon",
+      "form_side_Icon",
+      "form_gem_Icon",
+      "all_ship_leave_form_Icon",
+      "cancel_Icon",
+      "repair_hl_west_Icon",
+      "repair_hl_east_Icon",
+      "repair_hl_north_Icon",
+      "repair_hl_south_Icon",
+      "repair_hl_middle_Icon",
+      "repair_glass_Icon",
+      "repair_frame_Icon",
+      "info_Text",
+      "unit_name_Text",
+      "FlagJP_Icon",
+      "FlagUS_Icon",
+      "unit_payload_Icon",
+      "unit_HP_damage_Icon",
+      "unit_HP_healthy_Icon",
+      "unit_command_Icon",
+      "circle_Group",
+      "map_class_Icon",
+      "Jobboldali_Listbox"
+     ],
+     "other_literals": [
+      "guialphawrite.mshd",
+      "mapzone",
+      "map_texturednonormal_ocean.mshd",
+      "guialphastencildiff.mshd"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0053A4D0",
+     "ghidra_name": "FUN_0053a4d0",
+     "body": "0053A4D0-0053A8DE",
+     "widgets": [
+      "icon_Icon"
+     ],
+     "other_literals": [
+      "FORMATIONPERMANENT"
+     ]
+    },
+    "exit": {
+     "address": "00536800",
+     "ghidra_name": "FUN_00536800",
+     "body": "00536800-00536A80"
+    },
+    "update": {
+     "address": "0053A8E0",
+     "no_ghidra_function": true,
+     "body": "0053A8E0-0053B9CA",
+     "sweep_terminated": true,
+     "other_literals": [
+      "MAPPERMANENT"
+     ]
+    },
+    "v24": {
+     "address": "00538D20",
+     "ghidra_name": "FUN_00538d20",
+     "body": "00538D20-00538D56"
+    }
+   },
+   "pages": [
+    "GUI_formation",
+    "GUI_classicons",
+    "GUI_unit",
+    "GUI_formation_circle",
+    "GUI_formationOvrly"
+   ],
+   "installed_pages": {
+    "GUI_formation": {
+     "file": "interface/gui_formation.lua",
+     "exists": true,
+     "widget_keys": 1
+    },
+    "GUI_classicons": {
+     "file": "interface/gui_classicons.lua",
+     "exists": true,
+     "widget_keys": 1
+    },
+    "GUI_unit": {
+     "file": "interface/gui_unit.lua",
+     "exists": true,
+     "widget_keys": 8
+    },
+    "GUI_formation_circle": {
+     "file": "interface/gui_formation_circle.lua",
+     "exists": true,
+     "widget_keys": 4
+    },
+    "GUI_formationOvrly": {
+     "file": "interface/gui_formationovrly.lua",
+     "exists": true,
+     "widget_keys": 15
+    }
+   },
+   "widgets": [
+    {
+     "name": "ship_plane_agressive_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_plane_defensive_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "form_line_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "form_side_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "form_gem_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "all_ship_leave_form_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cancel_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_west_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_east_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_north_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_south_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_middle_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_glass_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_frame_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "info_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_name_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "FlagJP_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "FlagUS_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_payload_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_HP_damage_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_HP_healthy_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_command_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "map_class_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Jobboldali_Listbox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "icon_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "60h",
+   "registry_slot": "39h",
+   "constructor": "005EE440",
+   "vtable": "00CF2D20",
+   "size": "74h",
+   "init_order": 8,
+   "virtuals": {
+    "id": {
+     "address": "005EDFD0",
+     "no_ghidra_function": true,
+     "body": "005EDFD0-005EDFD5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005EE100",
+     "ghidra_name": "CG_scalar_deleting_dtor_005ee100",
+     "body": "005EE100-005EE11D"
+    },
+    "register": {
+     "address": "005EE010",
+     "ghidra_name": "FUN_005ee010",
+     "body": "005EE010-005EE0C1",
+     "pages": [
+      "GUI_objectives"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005EEA00",
+     "ghidra_name": "FUN_005eea00",
+     "body": "005EEA00-005EEF5C",
+     "widgets": [
+      "Open_Group",
+      "obj_main_Icon",
+      "obj_text_top_Icon",
+      "obj_scale_Icon",
+      "obj_text_bottom_Icon",
+      "PrimaryNumbers_Text",
+      "SecondaryNumbers_Text",
+      "ObjectiveNumbers_Listbox",
+      "ObjectiveNumbersTemplate_Text",
+      "KisPocset_Icon",
+      "SelectedObjective_Text"
+     ]
+    },
+    "exit": {
+     "address": "005ED5C0",
+     "no_ghidra_function": true,
+     "body": "005ED5C0-005ED5C0",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005EEF60",
+     "ghidra_name": "FUN_005eef60",
+     "body": "005EEF60-005EF45E",
+     "other_literals": [
+      "ingame.objgui_noactive"
+     ]
+    },
+    "v24": {
+     "address": "005EE510",
+     "no_ghidra_function": true,
+     "body": "005EE510-005EE51D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_objectives"
+   ],
+   "installed_pages": {
+    "GUI_objectives": {
+     "file": "interface/gui_objectives.lua",
+     "exists": true,
+     "widget_keys": 12
+    }
+   },
+   "widgets": [
+    {
+     "name": "Open_Group",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "obj_main_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "obj_text_top_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "obj_scale_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "obj_text_bottom_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "PrimaryNumbers_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "SecondaryNumbers_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ObjectiveNumbers_Listbox",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ObjectiveNumbersTemplate_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "KisPocset_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "SelectedObjective_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "64h",
+   "registry_slot": "3Bh",
+   "constructor": "005F9440",
+   "vtable": "00CF3B7C",
+   "size": "90h",
+   "init_order": 9,
+   "virtuals": {
+    "id": {
+     "address": "005F9460",
+     "no_ghidra_function": true,
+     "body": "005F9460-005F9465",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005F9FD0",
+     "ghidra_name": "CG_scalar_deleting_dtor_005f9fd0",
+     "body": "005F9FD0-005F9FED"
+    },
+    "register": {
+     "address": "005F9FF0",
+     "ghidra_name": "FUN_005f9ff0",
+     "body": "005F9FF0-005FA0E5",
+     "pages": [
+      "GUI_order"
+     ]
+    },
+    "bind": {
+     "address": "005FA0F0",
+     "ghidra_name": "FUN_005fa0f0",
+     "body": "005FA0F0-005FA9E5",
+     "widgets": [
+      "ship_plane_agressive_Icon",
+      "ship_plane_defensive_Icon",
+      "plane_formation_Icon",
+      "ship_formation_Icon",
+      "ship_plane_move_Icon",
+      "plane_attack_Icon",
+      "ship_attack_Icon",
+      "ship_sell_Icon",
+      "ship_leave_form_Icon",
+      "plane_retreat_Icon",
+      "plane_landing_Icon",
+      "repair_glass_Icon",
+      "repair_frame_Icon",
+      "cancel_Icon",
+      "repair_hl_west_Icon",
+      "repair_hl_east_Icon",
+      "repair_hl_north_Icon",
+      "repair_hl_south_Icon",
+      "repair_hl_middle_Icon",
+      "info_Text"
+     ]
+    },
+    "enter": {
+     "address": "005FAD70",
+     "ghidra_name": "FUN_005fad70",
+     "body": "005FAD70-005FB07B",
+     "other_literals": [
+      "ORDPERMANENT",
+      "ORDPERMANENT"
+     ]
+    },
+    "exit": {
+     "address": "005F9480",
+     "no_ghidra_function": true,
+     "body": "005F9480-005F948E",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005F9DD0",
+     "ghidra_name": "FUN_005f9dd0",
+     "body": "005F9DD0-005F9FC7"
+    },
+    "v24": {
+     "address": "005FAD60",
+     "no_ghidra_function": true,
+     "body": "005FAD60-005FAD6D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_order"
+   ],
+   "installed_pages": {
+    "GUI_order": {
+     "file": "interface/gui_order.lua",
+     "exists": true,
+     "widget_keys": 21
+    }
+   },
+   "widgets": [
+    {
+     "name": "ship_plane_agressive_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_plane_defensive_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_formation_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_formation_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_plane_move_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_attack_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_attack_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_sell_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_leave_form_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_retreat_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_landing_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_glass_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_frame_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cancel_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_west_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_east_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_north_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_south_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_middle_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "info_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "68h",
+   "registry_slot": "3Eh",
+   "constructor": "00608E60",
+   "vtable": "00CF4544",
+   "size": "194h",
+   "init_order": 10,
+   "virtuals": {
+    "id": {
+     "address": "00606A80",
+     "no_ghidra_function": true,
+     "body": "00606A80-00606A85",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00608260",
+     "ghidra_name": "CG_scalar_deleting_dtor_00608260",
+     "body": "00608260-0060827D"
+    },
+    "register": {
+     "address": "00606A90",
+     "ghidra_name": "FUN_00606a90",
+     "body": "00606A90-00606C59",
+     "other_literals": [
+      "PlaneRumble"
+     ]
+    },
+    "bind": {
+     "address": "00606C60",
+     "ghidra_name": "FUN_00606c60",
+     "body": "00606C60-00607BAF",
+     "pages": [
+      "GUI_cross_all",
+      "GUI_plane_effects",
+      "GUI_plane"
+     ],
+     "widgets": [
+      "cross_tilt_Icon",
+      "plane_AA_Group",
+      "plane_rocket_Group",
+      "plane_bomb_Group",
+      "plane_torpedo_Group",
+      "plane_DC_Group",
+      "plane_parat_Group",
+      "cross_F_Icon",
+      "cross_H_Icon",
+      "cross_HF_Icon",
+      "cross_L_Icon",
+      "cross_F2_Icon",
+      "payload_template_Icon",
+      "payload_template_Section",
+      "AttackRun_Text",
+      "RepairZone_Text",
+      "VillanasFelso_Icon",
+      "VillanasAlso_Icon",
+      "VillanasBal_Icon",
+      "VillanasJobb_Icon",
+      "plane_stick_Icon",
+      "turbo_Group",
+      "plane_turbo_arrow_Icon",
+      "plane_turbo_warning_Icon",
+      "plane_arrow_blue_Icon",
+      "plane_arrow_red_Icon",
+      "plane_warning_Icon",
+      "ship_speed_num1_Icon",
+      "ship_speed_num2_Icon",
+      "ship_speed_num3_Icon",
+      "muhorizont_Model",
+      "plane_payload_Group",
+      "ship_payload_1_Icon",
+      "ship_payload_2_Icon",
+      "payload_type_Icon"
+     ],
+     "other_literals": [
+      "cross__Icon"
+     ]
+    },
+    "enter": {
+     "address": "006093D0",
+     "ghidra_name": "FUN_006093d0",
+     "body": "006093D0-0060961B"
+    },
+    "exit": {
+     "address": "006088F0",
+     "ghidra_name": "FUN_006088f0",
+     "body": "006088F0-00608B5A"
+    },
+    "update": {
+     "address": "004F75C0",
+     "base_default": "base_update"
+    },
+    "v24": {
+     "address": "00608EF0",
+     "ghidra_name": "FUN_00608ef0",
+     "body": "00608EF0-00608F23"
+    }
+   },
+   "pages": [
+    "GUI_cross_all",
+    "GUI_plane_effects",
+    "GUI_plane"
+   ],
+   "installed_pages": {
+    "GUI_cross_all": {
+     "file": "interface/gui_cross_all.lua",
+     "exists": true,
+     "widget_keys": 34
+    },
+    "GUI_plane_effects": {
+     "file": "interface/gui_plane_effects.lua",
+     "exists": true,
+     "widget_keys": 8
+    },
+    "GUI_plane": {
+     "file": "interface/gui_plane.lua",
+     "exists": true,
+     "widget_keys": 21
+    }
+   },
+   "widgets": [
+    {
+     "name": "cross_tilt_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_AA_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_rocket_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_bomb_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_torpedo_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_DC_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_parat_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_F_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_H_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_HF_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_L_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "cross_F2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "payload_template_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "payload_template_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "AttackRun_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "RepairZone_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasFelso_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasAlso_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasBal_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasJobb_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_stick_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "turbo_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_turbo_arrow_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_turbo_warning_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_arrow_blue_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_arrow_red_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_warning_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_speed_num1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_speed_num2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_speed_num3_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "muhorizont_Model",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_payload_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_payload_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_payload_2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "payload_type_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "22h",
+    "23h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER"
+   ]
+  },
+  {
+   "offset": "6Ch",
+   "registry_slot": "3Fh",
+   "constructor": "00606470",
+   "vtable": "00CF43AC",
+   "size": "110h",
+   "init_order": 11,
+   "virtuals": {
+    "id": {
+     "address": "00606220",
+     "no_ghidra_function": true,
+     "body": "00606220-00606225",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "006065B0",
+     "ghidra_name": "CG_scalar_deleting_dtor_006065b0",
+     "body": "006065B0-006065CD"
+    },
+    "register": {
+     "address": "00607BE0",
+     "no_ghidra_function": true,
+     "body": "00607BE0-00607F57",
+     "sweep_terminated": true,
+     "other_literals": [
+      "Planewindsmoke",
+      "warning heartbeat only",
+      "Turbo_Effect"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00608C30",
+     "ghidra_name": "FUN_00608c30",
+     "body": "00608C30-00608D4E"
+    },
+    "exit": {
+     "address": "00605CC0",
+     "ghidra_name": "FUN_00605cc0",
+     "body": "00605CC0-00605E4A"
+    },
+    "update": {
+     "address": "0060ABD0",
+     "no_ghidra_function": true,
+     "body": "0060ABD0-0060BFC9",
+     "sweep_terminated": false
+    },
+    "v24": {
+     "address": "00606230",
+     "no_ghidra_function": true,
+     "body": "00606230-00606230",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "22h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANE"
+   ]
+  },
+  {
+   "offset": "70h",
+   "registry_slot": "25h",
+   "constructor": "inline",
+   "vtable": "00CEC590",
+   "size": "30h",
+   "init_order": 12,
+   "virtuals": {
+    "id": {
+     "address": "00519450",
+     "no_ghidra_function": true,
+     "body": "00519450-00519455",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00519470",
+     "ghidra_name": "CG_scalar_deleting_dtor_00519470",
+     "body": "00519470-0051948D"
+    },
+    "register": {
+     "address": "00519830",
+     "ghidra_name": "FUN_00519830",
+     "body": "00519830-005198E0",
+     "pages": [
+      "GUI_bomber"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00519120",
+     "no_ghidra_function": true,
+     "body": "00519120-0051915D",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "00519160",
+     "no_ghidra_function": true,
+     "body": "00519160-005191A3",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00519BB0",
+     "no_ghidra_function": true,
+     "body": "00519BB0-00519D3D",
+     "sweep_terminated": true,
+     "widgets": [
+      "role_Text",
+      "ingame.pilotplayer",
+      "ingame.pilotai"
+     ]
+    },
+    "v24": {
+     "address": "00519D40",
+     "no_ghidra_function": true,
+     "body": "00519D40-00519D4D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_bomber"
+   ],
+   "installed_pages": {
+    "GUI_bomber": {
+     "file": "interface/gui_bomber.lua",
+     "exists": true,
+     "widget_keys": 1
+    }
+   },
+   "widgets": [
+    {
+     "name": "role_Text",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [
+    "ingame.pilotplayer",
+    "ingame.pilotai"
+   ],
+   "raised_by_interface_ids": [
+    "23h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANEBOMBER"
+   ]
+  },
+  {
+   "offset": "74h",
+   "registry_slot": "41h",
+   "constructor": "0060CAE0",
+   "vtable": "00CF4A7C",
+   "size": "2Ch",
+   "init_order": 13,
+   "virtuals": {
+    "id": {
+     "address": "0060CB20",
+     "no_ghidra_function": true,
+     "body": "0060CB20-0060CB25",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0060D1A0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0060d1a0",
+     "body": "0060D1A0-0060D1BD"
+    },
+    "register": {
+     "address": "0060D1C0",
+     "ghidra_name": "FUN_0060d1c0",
+     "body": "0060D1C0-0060D270",
+     "pages": [
+      "GUI_plane_spawn"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0060C870",
+     "no_ghidra_function": true,
+     "body": "0060C870-0060C87B",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0060C880",
+     "ghidra_name": "FUN_0060c880",
+     "body": "0060C880-0060C909"
+    },
+    "update": {
+     "address": "0060C830",
+     "ghidra_name": "FUN_0060c830",
+     "body": "0060C830-0060C86E"
+    },
+    "v24": {
+     "address": "0060D280",
+     "no_ghidra_function": true,
+     "body": "0060D280-0060D28D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_plane_spawn"
+   ],
+   "installed_pages": {
+    "GUI_plane_spawn": {
+     "file": "interface/gui_plane_spawn.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "24h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANESPAWN"
+   ]
+  },
+  {
+   "offset": "78h",
+   "registry_slot": "45h",
+   "constructor": "0064B780",
+   "vtable": "00CF5E30",
+   "size": "1B0h",
+   "init_order": 14,
+   "virtuals": {
+    "id": {
+     "address": "0064B860",
+     "no_ghidra_function": true,
+     "body": "0064B860-0064B865",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0064D9E0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0064d9e0",
+     "body": "0064D9E0-0064D9FD"
+    },
+    "register": {
+     "address": "0064BB90",
+     "ghidra_name": "FUN_0064bb90",
+     "body": "0064BB90-0064BF5A",
+     "other_literals": [
+      "environment/environment_unavailable.fsb"
+     ]
+    },
+    "bind": {
+     "address": "0064C0F0",
+     "ghidra_name": "FUN_0064c0f0",
+     "body": "0064C0F0-0064D58A",
+     "pages": [
+      "GUI_ship",
+      "GUI_repair",
+      "GUI_ship_effects",
+      "GUI_ship_damage"
+     ],
+     "widgets": [
+      "ship_stick_Icon",
+      "ship_dir_Icon",
+      "ship_speed_num1_Icon",
+      "ship_speed_num2_Icon",
+      "ship_recon_num1_Icon",
+      "ship_recon_num2_Icon",
+      "ship_torpedo_num1_Icon",
+      "ship_torpedo_num2_Icon",
+      "ship_relation_Icon",
+      "ship_recon_Icon",
+      "ship_torpedo_Icon",
+      "repair_hl_west_Icon",
+      "repair_hl_east_Icon",
+      "repair_hl_north_Icon",
+      "repair_hl_south_Icon",
+      "repair_ikons_periscope_Icon",
+      "repair_ikons_engine_Icon",
+      "repair_warning_west_Icon",
+      "repair_warning_east_Icon",
+      "repair_warning_north_Icon",
+      "repair_warning_south_Icon",
+      "repair_hl_middle_Icon",
+      "repair_Text",
+      "Icon_1_Icon",
+      "Icon_2_Icon",
+      "Icon_3_Icon",
+      "Icon_4_Icon",
+      "Icon_5_Icon",
+      "Hl_1_Icon",
+      "Hl_2_Icon",
+      "Hl_3_Icon",
+      "Hl_4_Icon",
+      "circle_1_Section",
+      "circle_2_Section",
+      "circle_3_Section",
+      "circle_4_Section",
+      "VillanasFelso_Icon",
+      "VillanasAlso_Icon",
+      "VillanasBal_Icon",
+      "VillanasJobb_Icon"
+     ]
+    },
+    "enter": {
+     "address": "0064B370",
+     "ghidra_name": "FUN_0064b370",
+     "body": "0064B370-0064B561"
+    },
+    "exit": {
+     "address": "0064D8D0",
+     "no_ghidra_function": true,
+     "body": "0064D8D0-0064D9DE",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0064DD30",
+     "ghidra_name": "FUN_0064dd30",
+     "body": "0064DD30-006500E2",
+     "other_literals": [
+      "REPAIR1STUSE",
+      "REPAIR1STUSE",
+      "REPAIR1STUSE",
+      "VehicleClass",
+      "NoRepairGUI",
+      "REPPERMANENT",
+      "REPAIR1STUSE",
+      "REPPERMANENT",
+      "ingame.repair_armament",
+      "ingame.repair_water",
+      "ingame.repair_periscope",
+      "ingame.repair_engine",
+      "ingame.repair_fire",
+      "ingame.repair_body",
+      "EngineJam"
+     ]
+    },
+    "v24": {
+     "address": "0064DA00",
+     "ghidra_name": "FUN_0064da00",
+     "body": "0064DA00-0064DA38"
+    }
+   },
+   "pages": [
+    "GUI_ship",
+    "GUI_repair",
+    "GUI_ship_effects",
+    "GUI_ship_damage"
+   ],
+   "installed_pages": {
+    "GUI_ship": {
+     "file": "interface/gui_ship.lua",
+     "exists": true,
+     "widget_keys": 13
+    },
+    "GUI_repair": {
+     "file": "interface/gui_repair.lua",
+     "exists": true,
+     "widget_keys": 15
+    },
+    "GUI_ship_effects": {
+     "file": "interface/gui_ship_effects.lua",
+     "exists": true,
+     "widget_keys": 24
+    },
+    "GUI_ship_damage": {
+     "file": "interface/gui_ship_damage.lua",
+     "exists": true,
+     "widget_keys": 17
+    }
+   },
+   "widgets": [
+    {
+     "name": "ship_stick_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_dir_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_speed_num1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_speed_num2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_recon_num1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_recon_num2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_torpedo_num1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_torpedo_num2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_relation_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_recon_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ship_torpedo_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_west_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_east_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_north_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_south_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_ikons_periscope_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_ikons_engine_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_warning_west_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_warning_east_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_warning_north_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_warning_south_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_hl_middle_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "repair_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Icon_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Icon_2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Icon_3_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Icon_4_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Icon_5_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Hl_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Hl_2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Hl_3_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Hl_4_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_1_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_2_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_3_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_4_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasFelso_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasAlso_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasBal_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "VillanasJobb_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "25h",
+    "27h",
+    "28h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE"
+   ]
+  },
+  {
+   "offset": "7Ch",
+   "registry_slot": "46h",
+   "constructor": "inline",
+   "vtable": "00CF7978",
+   "size": "38h",
+   "init_order": 15,
+   "virtuals": {
+    "id": {
+     "address": "0068A400",
+     "no_ghidra_function": true,
+     "body": "0068A400-0068A405",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0068A480",
+     "ghidra_name": "CG_scalar_deleting_dtor_0068a480",
+     "body": "0068A480-0068A49D"
+    },
+    "register": {
+     "address": "0064A360",
+     "ghidra_name": "FUN_0064a360",
+     "body": "0064A360-0064A370"
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0064A450",
+     "no_ghidra_function": true,
+     "body": "0064A450-0064A48D",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0064A490",
+     "no_ghidra_function": true,
+     "body": "0064A490-0064A4B4",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0064D610",
+     "no_ghidra_function": true,
+     "body": "0064D610-0064D72E",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "0068A410",
+     "no_ghidra_function": true,
+     "body": "0068A410-0068A410",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "25h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_CAPTAIN"
+   ]
+  },
+  {
+   "offset": "80h",
+   "registry_slot": "4Ah",
+   "constructor": "inline",
+   "vtable": "00CF79F8",
+   "size": "30h",
+   "init_order": 16,
+   "virtuals": {
+    "id": {
+     "address": "0068A5D0",
+     "no_ghidra_function": true,
+     "body": "0068A5D0-0068A5D5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0068A650",
+     "ghidra_name": "CG_scalar_deleting_dtor_0068a650",
+     "body": "0068A650-0068A66D"
+    },
+    "register": {
+     "address": "0067C430",
+     "ghidra_name": "FUN_0067c430",
+     "body": "0067C430-0067C4EB",
+     "pages": [
+      "GUI_binoculars"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0067C050",
+     "no_ghidra_function": true,
+     "body": "0067C050-0067C097",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0067C0A0",
+     "no_ghidra_function": true,
+     "body": "0067C0A0-0067C0CD",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0067C4F0",
+     "ghidra_name": "FUN_0067c4f0",
+     "body": "0067C4F0-0067C80E"
+    },
+    "v24": {
+     "address": "0068A5E0",
+     "no_ghidra_function": true,
+     "body": "0068A5E0-0068A5E0",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_binoculars"
+   ],
+   "installed_pages": {
+    "GUI_binoculars": {
+     "file": "interface/gui_binoculars.lua",
+     "exists": true,
+     "widget_keys": 1
+    }
+   },
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "27h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_TBOATHELMSMAN"
+   ]
+  },
+  {
+   "offset": "84h",
+   "registry_slot": "47h",
+   "constructor": "00650B00",
+   "vtable": "00CF639C",
+   "size": "7Ch",
+   "init_order": 17,
+   "virtuals": {
+    "id": {
+     "address": "00650AC0",
+     "no_ghidra_function": true,
+     "body": "00650AC0-00650AC5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00650AE0",
+     "ghidra_name": "CG_scalar_deleting_dtor_00650ae0",
+     "body": "00650AE0-00650AFD"
+    },
+    "register": {
+     "address": "00650E00",
+     "ghidra_name": "FUN_00650e00",
+     "body": "00650E00-0065122C",
+     "pages": [
+      "GUI_periscope"
+     ],
+     "other_literals": [
+      "Warning Dive DIVE Dive",
+      "Lvl3Water",
+      "PeriscopeEmerge",
+      "PeriscopeDrops"
+     ]
+    },
+    "bind": {
+     "address": "00651230",
+     "ghidra_name": "FUN_00651230",
+     "body": "00651230-00651342",
+     "widgets": [
+      "Periscope_Model",
+      "Tavcso_Model"
+     ]
+    },
+    "enter": {
+     "address": "00650750",
+     "ghidra_name": "FUN_00650750",
+     "body": "00650750-0065080C"
+    },
+    "exit": {
+     "address": "00650810",
+     "no_ghidra_function": true,
+     "body": "00650810-00650821",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00651800",
+     "no_ghidra_function": true,
+     "body": "00651800-00652814",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00651360",
+     "no_ghidra_function": true,
+     "body": "00651360-0065136D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_periscope"
+   ],
+   "installed_pages": {
+    "GUI_periscope": {
+     "file": "interface/gui_periscope.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [
+    {
+     "name": "Periscope_Model",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Tavcso_Model",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "28h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_SUBMARINE"
+   ]
+  },
+  {
+   "offset": "88h",
+   "registry_slot": "48h",
+   "constructor": "00650140",
+   "vtable": "00CF61D4",
+   "size": "24h",
+   "init_order": 18,
+   "virtuals": {
+    "id": {
+     "address": "00650160",
+     "no_ghidra_function": true,
+     "body": "00650160-00650165",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00650B70",
+     "ghidra_name": "CG_scalar_deleting_dtor_00650b70",
+     "body": "00650B70-00650B8D"
+    },
+    "register": {
+     "address": "00650170",
+     "ghidra_name": "FUN_00650170",
+     "body": "00650170-0065018E"
+    },
+    "bind": {
+     "address": "00650B90",
+     "ghidra_name": "FUN_00650b90",
+     "body": "00650B90-00650DF4",
+     "pages": [
+      "GUI_sub"
+     ],
+     "widgets": [
+      "sub_depht_arrow_dest_Icon",
+      "sub_depth_arrow_Icon",
+      "sub_air_arrow_Icon",
+      "sub_air_warning_Icon"
+     ]
+    },
+    "enter": {
+     "address": "00650190",
+     "no_ghidra_function": true,
+     "body": "00650190-00650190",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "004F75B0",
+     "base_default": "base_exit"
+    },
+    "update": {
+     "address": "00650450",
+     "no_ghidra_function": true,
+     "body": "00650450-006506D5",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00651350",
+     "no_ghidra_function": true,
+     "body": "00651350-0065135D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_sub"
+   ],
+   "installed_pages": {
+    "GUI_sub": {
+     "file": "interface/gui_sub.lua",
+     "exists": true,
+     "widget_keys": 6
+    }
+   },
+   "widgets": [
+    {
+     "name": "sub_depht_arrow_dest_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "sub_depth_arrow_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "sub_air_arrow_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "sub_air_warning_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "28h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_SUBMARINE"
+   ]
+  },
+  {
+   "offset": "8Ch",
+   "registry_slot": "24h",
+   "constructor": "inline",
+   "vtable": "00CF7938",
+   "size": "58h",
+   "init_order": 19,
+   "virtuals": {
+    "id": {
+     "address": "0068A320",
+     "no_ghidra_function": true,
+     "body": "0068A320-0068A325",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0068A390",
+     "ghidra_name": "CG_scalar_deleting_dtor_0068a390",
+     "body": "0068A390-0068A3AD"
+    },
+    "register": {
+     "address": "0067B390",
+     "ghidra_name": "BSP_FrontEndScreen_Register",
+     "body": "0067B390-0067B394"
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0067BAA0",
+     "no_ghidra_function": true,
+     "body": "0067BAA0-0067BB4B",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0067B450",
+     "ghidra_name": "FUN_0067b450",
+     "body": "0067B450-0067B4C1"
+    },
+    "update": {
+     "address": "0067B7E0",
+     "ghidra_name": "FUN_0067b7e0",
+     "body": "0067B7E0-0067BA98"
+    },
+    "v24": {
+     "address": "004F75D0",
+     "base_default": "base_noop_24"
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "26h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_BOMBVIEW"
+   ]
+  },
+  {
+   "offset": "90h",
+   "registry_slot": "2Bh",
+   "constructor": "00540BA0",
+   "vtable": "00CEDCA8",
+   "size": "90h",
+   "init_order": 20,
+   "virtuals": {
+    "id": {
+     "address": "00540360",
+     "no_ghidra_function": true,
+     "body": "00540360-00540365",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00540C80",
+     "ghidra_name": "CG_scalar_deleting_dtor_00540c80",
+     "body": "00540C80-00540C9D"
+    },
+    "register": {
+     "address": "00540FE0",
+     "ghidra_name": "FUN_00540fe0",
+     "body": "00540FE0-0054111F",
+     "pages": [
+      "GUI_freecam"
+     ],
+     "widgets": [
+      "weapon_Text"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0053DD90",
+     "no_ghidra_function": true,
+     "body": "0053DD90-0053DF3B",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0053D280",
+     "no_ghidra_function": true,
+     "body": "0053D280-0053D280",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00540390",
+     "ghidra_name": "FUN_00540390",
+     "body": "00540390-00540AE9",
+     "other_literals": [
+      "NO MORE PLAYER UNITS"
+     ]
+    },
+    "v24": {
+     "address": "00540380",
+     "no_ghidra_function": true,
+     "body": "00540380-0054038D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_freecam"
+   ],
+   "installed_pages": {
+    "GUI_freecam": {
+     "file": "interface/gui_freecam.lua",
+     "exists": true,
+     "widget_keys": 1
+    }
+   },
+   "widgets": [
+    {
+     "name": "weapon_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "29h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_FREECAMERA"
+   ]
+  },
+  {
+   "offset": "94h",
+   "registry_slot": "2Ch",
+   "constructor": "0054F8C0",
+   "vtable": "00CEE408",
+   "size": "28h",
+   "init_order": 21,
+   "virtuals": {
+    "id": {
+     "address": "0054ECF0",
+     "no_ghidra_function": true,
+     "body": "0054ECF0-0054ECF5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0054EFA0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0054efa0",
+     "body": "0054EFA0-0054EFBD"
+    },
+    "register": {
+     "address": "0054ED00",
+     "no_ghidra_function": true,
+     "body": "0054ED00-0054ED00",
+     "sweep_terminated": true
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "0054F900",
+     "ghidra_name": "FUN_0054f900",
+     "body": "0054F900-005501E9"
+    },
+    "exit": {
+     "address": "0054EFC0",
+     "no_ghidra_function": true,
+     "body": "0054EFC0-0054F3D8",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00550410",
+     "no_ghidra_function": true,
+     "body": "00550410-00550662",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "004F75D0",
+     "base_default": "base_noop_24"
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "2Ah"
+   ],
+   "raised_by_interface_names": [
+    "INTF_IDLECAMERA"
+   ]
+  },
+  {
+   "offset": "98h",
+   "registry_slot": "36h",
+   "constructor": "005CE610",
+   "vtable": "00CF1968",
+   "size": "84h",
+   "init_order": 22,
+   "virtuals": {
+    "id": {
+     "address": "005CE5B0",
+     "no_ghidra_function": true,
+     "body": "005CE5B0-005CE5B5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005CE6D0",
+     "ghidra_name": "CG_scalar_deleting_dtor_005ce6d0",
+     "body": "005CE6D0-005CE6ED"
+    },
+    "register": {
+     "address": "005CC770",
+     "ghidra_name": "FUN_005cc770",
+     "body": "005CC770-005CCA74",
+     "pages": [
+      "GUI_moviecamera_debug"
+     ],
+     "other_literals": [
+      "Scripts\\datatables\\MovieCamera.lua",
+      "MovieCamera",
+      "MoveSpeedDefaultLimit",
+      "RotationSpeedDefaultLimit",
+      "GeneralAccelerationDefaultTime",
+      "DefaultDeviationFactor",
+      "OverviewModeDefaultHeight"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005CCA80",
+     "ghidra_name": "FUN_005cca80",
+     "body": "005CCA80-005CCCAA",
+     "widgets": [
+      "TargetNames_Text",
+      "DeckPosName_Text",
+      "TempEditCursor_Icon",
+      "TempEditArrow_Icon"
+     ]
+    },
+    "exit": {
+     "address": "005CC590",
+     "no_ghidra_function": true,
+     "body": "005CC590-005CC5DD",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005CAF60",
+     "no_ghidra_function": true,
+     "body": "005CAF60-005CAF60",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "005CE5D0",
+     "no_ghidra_function": true,
+     "body": "005CE5D0-005CE5DD",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_moviecamera_debug"
+   ],
+   "installed_pages": {
+    "GUI_moviecamera_debug": {
+     "file": "interface/gui_moviecamera_debug.lua",
+     "exists": true,
+     "widget_keys": 4
+    }
+   },
+   "widgets": [
+    {
+     "name": "TargetNames_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "DeckPosName_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "TempEditCursor_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "TempEditArrow_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "2Bh"
+   ],
+   "raised_by_interface_names": [
+    "INTF_MOVIECAMERA"
+   ]
+  },
+  {
+   "offset": "9Ch",
+   "registry_slot": "37h",
+   "constructor": "005CC120",
+   "vtable": "00CF17A8",
+   "size": "38h",
+   "init_order": 23,
+   "virtuals": {
+    "id": {
+     "address": "005CB070",
+     "no_ghidra_function": true,
+     "body": "005CB070-005CB075",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005CBAD0",
+     "ghidra_name": "CG_scalar_deleting_dtor_005cbad0",
+     "body": "005CBAD0-005CBAED"
+    },
+    "register": {
+     "address": "005CCCB0",
+     "ghidra_name": "FUN_005cccb0",
+     "body": "005CCCB0-005CCE6A",
+     "pages": [
+      "GUI_movie"
+     ],
+     "widgets": [
+      "up_Icon",
+      "down_Icon"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005CD9C0",
+     "no_ghidra_function": true,
+     "body": "005CD9C0-005CDAF5",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "005CDB00",
+     "ghidra_name": "FUN_005cdb00",
+     "body": "005CDB00-005CDC46"
+    },
+    "update": {
+     "address": "005CBAF0",
+     "ghidra_name": "FUN_005cbaf0",
+     "body": "005CBAF0-005CBC2A"
+    },
+    "v24": {
+     "address": "005CDF30",
+     "no_ghidra_function": true,
+     "body": "005CDF30-005CDF3D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_movie"
+   ],
+   "installed_pages": {
+    "GUI_movie": {
+     "file": "interface/gui_movie.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [
+    {
+     "name": "up_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "down_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "2Ch"
+   ],
+   "raised_by_interface_names": [
+    "INTF_MOVIECAMERANEW"
+   ]
+  },
+  {
+   "offset": "A0h",
+   "registry_slot": "38h",
+   "constructor": "005CB0A0",
+   "vtable": "00CF17D0",
+   "size": "20h",
+   "init_order": 24,
+   "virtuals": {
+    "id": {
+     "address": "005CB0D0",
+     "no_ghidra_function": true,
+     "body": "005CB0D0-005CB0D5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005CBD60",
+     "ghidra_name": "CG_scalar_deleting_dtor_005cbd60",
+     "body": "005CBD60-005CBD83"
+    },
+    "register": {
+     "address": "005CCE70",
+     "ghidra_name": "FUN_005cce70",
+     "body": "005CCE70-005CD027",
+     "pages": [
+      "GUI_movie"
+     ],
+     "widgets": [
+      "up_Icon",
+      "down_Icon"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005CDC50",
+     "ghidra_name": "FUN_005cdc50",
+     "body": "005CDC50-005CDD69"
+    },
+    "exit": {
+     "address": "005CDD70",
+     "no_ghidra_function": true,
+     "body": "005CDD70-005CDEBE",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005CBD90",
+     "ghidra_name": "FUN_005cbd90",
+     "body": "005CBD90-005CBECA"
+    },
+    "v24": {
+     "address": "005CDF40",
+     "no_ghidra_function": true,
+     "body": "005CDF40-005CDF4D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_movie"
+   ],
+   "installed_pages": {
+    "GUI_movie": {
+     "file": "interface/gui_movie.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [
+    {
+     "name": "up_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "down_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "2Dh"
+   ],
+   "raised_by_interface_names": [
+    "INTF_ENGINEMOVIECAMERA"
+   ]
+  },
+  {
+   "offset": "A4h",
+   "registry_slot": "33h",
+   "constructor": "005BA7B0",
+   "vtable": "00CF0ED8",
+   "size": "E8h",
+   "init_order": 25,
+   "virtuals": {
+    "id": {
+     "address": "005B9E90",
+     "no_ghidra_function": true,
+     "body": "005B9E90-005B9E95",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "005B9EA0",
+     "no_ghidra_function": true,
+     "body": "005B9EA0-005B9EA2",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005BA480",
+     "ghidra_name": "CG_scalar_deleting_dtor_005ba480",
+     "body": "005BA480-005BA49D"
+    },
+    "register": {
+     "address": "005BB130",
+     "ghidra_name": "FUN_005bb130",
+     "body": "005BB130-005BBC0C",
+     "pages": [
+      "GUI_blackout",
+      "GUI_subtitle",
+      "GUI_narrative"
+     ],
+     "widgets": [
+      "Warnings_Group",
+      "MessageBoxTemplate_Group",
+      "textbox_main_Group",
+      "textbox_main_Text",
+      "textbox_main_Text",
+      "textbox_main_FrameBox",
+      "textbox_main_Icon",
+      "textbox_main_FrameBox",
+      "textbox_main_Text",
+      "TempWaitBase",
+      "Blackout_Icon",
+      "MissionInfoTitle_Group",
+      "textbox_obj_Text",
+      "textbox_obj_FrameBox"
+     ],
+     "other_literals": [
+      "Scripts/datatables/DialogGlobals.lua",
+      "DialogFadeTime",
+      "TempCharWait"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005B5BD0",
+     "ghidra_name": "FUN_005b5bd0",
+     "body": "005B5BD0-005B5BFB"
+    },
+    "exit": {
+     "address": "005B5C00",
+     "no_ghidra_function": true,
+     "body": "005B5C00-005B5C00",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005BC920",
+     "no_ghidra_function": true,
+     "body": "005BC920-005BCA14",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "005BB0F0",
+     "ghidra_name": "FUN_005bb0f0",
+     "body": "005BB0F0-005BB112"
+    }
+   },
+   "pages": [
+    "GUI_blackout",
+    "GUI_subtitle",
+    "GUI_narrative"
+   ],
+   "installed_pages": {
+    "GUI_blackout": {
+     "file": "interface/gui_blackout.lua",
+     "exists": true,
+     "widget_keys": 13
+    },
+    "GUI_subtitle": {
+     "file": "interface/gui_subtitle.lua",
+     "exists": true,
+     "widget_keys": 4
+    },
+    "GUI_narrative": {
+     "file": "interface/gui_narrative.lua",
+     "exists": true,
+     "widget_keys": 3
+    }
+   },
+   "widgets": [
+    {
+     "name": "Warnings_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "MessageBoxTemplate_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_main_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Blackout_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "MissionInfoTitle_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_obj_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "textbox_obj_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [
+    "TempWaitBase"
+   ],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "A8h",
+   "registry_slot": "34h",
+   "constructor": "0054D680",
+   "vtable": "00CEE290",
+   "size": "7Ch",
+   "init_order": 26,
+   "virtuals": {
+    "id": {
+     "address": "0054D660",
+     "no_ghidra_function": true,
+     "body": "0054D660-0054D665",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "0054D670",
+     "no_ghidra_function": true,
+     "body": "0054D670-0054D672",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0054D840",
+     "ghidra_name": "CG_scalar_deleting_dtor_0054d840",
+     "body": "0054D840-0054D85D"
+    },
+    "register": {
+     "address": "0054D860",
+     "ghidra_name": "FUN_0054d860",
+     "body": "0054D860-0054D972",
+     "pages": [
+      "GUI_hints"
+     ]
+    },
+    "bind": {
+     "address": "0054D980",
+     "ghidra_name": "FUN_0054d980",
+     "body": "0054D980-0054DE85",
+     "widgets": [
+      "hints_pause_Group",
+      "hints_title_Text",
+      "hints_description_Text",
+      "hints_button_Text",
+      "hints_1_Icon",
+      "hints_2_Icon",
+      "hints_FrameBox",
+      "hints_normal_Group",
+      "hints_description_Text",
+      "hints_FrameBox",
+      "hints_1_Icon"
+     ]
+    },
+    "enter": {
+     "address": "0054E380",
+     "ghidra_name": "FUN_0054e380",
+     "body": "0054E380-0054E3C0"
+    },
+    "exit": {
+     "address": "0054E3D0",
+     "ghidra_name": "FUN_0054e3d0",
+     "body": "0054E3D0-0054E437"
+    },
+    "update": {
+     "address": "0054E6B0",
+     "ghidra_name": "FUN_0054e6b0",
+     "body": "0054E6B0-0054EC89",
+     "other_literals": [
+      "hints.pressa",
+      "hints.pressenter",
+      "BASICPLANE",
+      "BASICPLANE2",
+      "BASICPLANE3",
+      "BASICSHIP",
+      "BASICSHIP2",
+      "BASICSUB",
+      "BASICSUB2"
+     ]
+    },
+    "v24": {
+     "address": "0054E370",
+     "no_ghidra_function": true,
+     "body": "0054E370-0054E37D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_hints"
+   ],
+   "installed_pages": {
+    "GUI_hints": {
+     "file": "interface/gui_hints.lua",
+     "exists": true,
+     "widget_keys": 11
+    }
+   },
+   "widgets": [
+    {
+     "name": "hints_pause_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_title_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_description_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_button_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_FrameBox",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_normal_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_description_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_FrameBox",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hints_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "ACh",
+   "registry_slot": "23h",
+   "constructor": "005178B0",
+   "vtable": "00CEC194",
+   "size": "2Ch",
+   "init_order": 27,
+   "virtuals": {
+    "id": {
+     "address": "00517680",
+     "no_ghidra_function": true,
+     "body": "00517680-00517685",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00517800",
+     "ghidra_name": "CG_scalar_deleting_dtor_00517800",
+     "body": "00517800-0051781D"
+    },
+    "register": {
+     "address": "005176A0",
+     "ghidra_name": "FUN_005176a0",
+     "body": "005176A0-005176B0"
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00517820",
+     "no_ghidra_function": true,
+     "body": "00517820-0051785A",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "00517860",
+     "no_ghidra_function": true,
+     "body": "00517860-00517873",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005178A0",
+     "no_ghidra_function": true,
+     "body": "005178A0-005178A0",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00517690",
+     "no_ghidra_function": true,
+     "body": "00517690-00517690",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "B0h",
+   "registry_slot": "2Fh",
+   "constructor": "inline",
+   "vtable": "00CF79B8",
+   "size": "24h",
+   "init_order": 28,
+   "virtuals": {
+    "id": {
+     "address": "0068A4E0",
+     "no_ghidra_function": true,
+     "body": "0068A4E0-0068A4E5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0068A550",
+     "ghidra_name": "CG_scalar_deleting_dtor_0068a550",
+     "body": "0068A550-0068A56D"
+    },
+    "register": {
+     "address": "005211B0",
+     "ghidra_name": "FUN_005211b0",
+     "body": "005211B0-005211C0"
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005212A0",
+     "no_ghidra_function": true,
+     "body": "005212A0-005212DD",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "005212E0",
+     "no_ghidra_function": true,
+     "body": "005212E0-00521304",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00521240",
+     "no_ghidra_function": true,
+     "body": "00521240-00521294",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "004F75D0",
+     "base_default": "base_noop_24"
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "2Fh"
+   ],
+   "raised_by_interface_names": [
+    "INTF_COMMANDBUILDING"
+   ]
+  },
+  {
+   "offset": "B4h",
+   "registry_slot": "49h",
+   "constructor": "0067BE30",
+   "vtable": "00CF6D68",
+   "size": "Ch",
+   "init_order": 29,
+   "virtuals": {
+    "id": {
+     "address": "0067BE50",
+     "no_ghidra_function": true,
+     "body": "0067BE50-0067BE55",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0067BED0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0067bed0",
+     "body": "0067BED0-0067BEF3"
+    },
+    "register": {
+     "address": "0067BE80",
+     "ghidra_name": "FUN_0067be80",
+     "body": "0067BE80-0067BE91"
+    },
+    "bind": {
+     "address": "0067BEA0",
+     "no_ghidra_function": true,
+     "body": "0067BEA0-0067BEA0",
+     "sweep_terminated": true
+    },
+    "enter": {
+     "address": "0067BEB0",
+     "no_ghidra_function": true,
+     "body": "0067BEB0-0067BEB0",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "0067BEC0",
+     "no_ghidra_function": true,
+     "body": "0067BEC0-0067BEC7",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0067BF00",
+     "no_ghidra_function": true,
+     "body": "0067BF00-0067BFC7",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "0067BE60",
+     "no_ghidra_function": true,
+     "body": "0067BE60-0067BE60",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "20h",
+    "22h",
+    "23h",
+    "25h",
+    "27h",
+    "28h",
+    "2Ah",
+    "2Fh",
+    "33h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_SCENE3D",
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_IDLECAMERA",
+    "INTF_COMMANDBUILDING",
+    "INTF_LAUNCHLANDING"
+   ]
+  },
+  {
+   "offset": "CCh",
+   "registry_slot": "29h",
+   "constructor": "00525A90",
+   "vtable": "00CECCF8",
+   "size": "F0h",
+   "init_order": 30,
+   "virtuals": {
+    "id": {
+     "address": "00524D10",
+     "no_ghidra_function": true,
+     "body": "00524D10-00524D15",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00524F90",
+     "ghidra_name": "CG_scalar_deleting_dtor_00524f90",
+     "body": "00524F90-00524FAD"
+    },
+    "register": {
+     "address": "00521670",
+     "ghidra_name": "FUN_00521670",
+     "body": "00521670-00521683"
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00524960",
+     "ghidra_name": "FUN_00524960",
+     "body": "00524960-005249AD"
+    },
+    "exit": {
+     "address": "00521690",
+     "no_ghidra_function": true,
+     "body": "00521690-00521690",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00527260",
+     "no_ghidra_function": true,
+     "body": "00527260-00527BDD",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "004F75D0",
+     "base_default": "base_noop_24"
+    }
+   },
+   "pages": [],
+   "installed_pages": {},
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "20h",
+    "22h",
+    "23h",
+    "25h",
+    "27h",
+    "28h",
+    "2Ah",
+    "2Fh",
+    "33h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_SCENE3D",
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_IDLECAMERA",
+    "INTF_COMMANDBUILDING",
+    "INTF_LAUNCHLANDING"
+   ]
+  },
+  {
+   "offset": "D4h",
+   "registry_slot": "5Ah",
+   "constructor": "00636D90",
+   "vtable": "00CF569C",
+   "size": "34h",
+   "init_order": 31,
+   "virtuals": {
+    "id": {
+     "address": "00636DC0",
+     "no_ghidra_function": true,
+     "body": "00636DC0-00636DC5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "00636DE0",
+     "no_ghidra_function": true,
+     "body": "00636DE0-00636DE2",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "00636DD0",
+     "no_ghidra_function": true,
+     "body": "00636DD0-00636DD2",
+     "sweep_terminated": true
+    },
+    "v0C": {
+     "address": "00636F10",
+     "ghidra_name": "CG_scalar_deleting_dtor_00636f10",
+     "body": "00636F10-00636F2D"
+    },
+    "register": {
+     "address": "00636F30",
+     "ghidra_name": "FUN_00636f30",
+     "body": "00636F30-0063707D",
+     "pages": [
+      "FE_sceneinit"
+     ],
+     "widgets": [
+      "Message_Text"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00637080",
+     "ghidra_name": "FUN_00637080",
+     "body": "00637080-00637468",
+     "widgets": [
+      "hint_Text",
+      "bg_Group",
+      "title_Text",
+      "frameFlag_Icon",
+      "loadingLogo_FrameBox"
+     ],
+     "other_literals": [
+      "FE_pc.init_start",
+      "ingame.init_waitothers"
+     ]
+    },
+    "exit": {
+     "address": "00636D80",
+     "no_ghidra_function": true,
+     "body": "00636D80-00636D89",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00636E80",
+     "ghidra_name": "FUN_00636e80",
+     "body": "00636E80-00636F08"
+    },
+    "v24": {
+     "address": "00637470",
+     "no_ghidra_function": true,
+     "body": "00637470-0063747D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "FE_sceneinit"
+   ],
+   "installed_pages": {
+    "FE_sceneinit": {
+     "file": "interface/fe_sceneinit.lua",
+     "exists": true,
+     "widget_keys": 13
+    }
+   },
+   "widgets": [
+    {
+     "name": "Message_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hint_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "bg_Group",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "title_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "frameFlag_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "loadingLogo_FrameBox",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "D8h",
+   "registry_slot": "3Ch",
+   "constructor": "005FFCB0",
+   "vtable": "00CF3EF4",
+   "size": "164h",
+   "init_order": 32,
+   "virtuals": {
+    "id": {
+     "address": "005FFA80",
+     "no_ghidra_function": true,
+     "body": "005FFA80-005FFA85",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "005FFA90",
+     "no_ghidra_function": true,
+     "body": "005FFA90-005FFA92",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005FFD80",
+     "ghidra_name": "CG_scalar_deleting_dtor_005ffd80",
+     "body": "005FFD80-005FFD9D"
+    },
+    "register": {
+     "address": "00602280",
+     "ghidra_name": "FUN_00602280",
+     "body": "00602280-0060311E",
+     "pages": [
+      "GUI_pause_single",
+      "GUI_pause_tip",
+      "GUI_pause_objectives"
+     ],
+     "widgets": [
+      "title_Group",
+      "hint_title_Text",
+      "parent_Group",
+      "child_Group",
+      "HintTitle_Listbox",
+      "slider_Group",
+      "slider_FrameBox",
+      "back_Icon",
+      "info_Group",
+      "info_Clipbox",
+      "info_text_group",
+      "info_Text",
+      "silverline_FrameBox",
+      "title_Text",
+      "slider_Group",
+      "slider_FrameBox",
+      "ScrollUp_Icon",
+      "ScrollDown_Icon",
+      "back_Icon",
+      "back_Icon",
+      "GUI_pause_objectives_FrameBox",
+      "objectives_listbox_Text",
+      "Primary_Listbox",
+      "Secondary_Listbox",
+      "primary_objectives_Text",
+      "secondary_objectives_Text"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00603120",
+     "ghidra_name": "FUN_00603120",
+     "body": "00603120-006037CD",
+     "widgets": [
+      "Main_Listbox",
+      "felki_bal_Icon",
+      "felki_jobb_Icon",
+      "MainListbox_Text"
+     ],
+     "other_literals": [
+      "ingame.paused"
+     ]
+    },
+    "exit": {
+     "address": "005FD880",
+     "no_ghidra_function": true,
+     "body": "005FD880-005FD880",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00603CA0",
+     "ghidra_name": "FUN_00603ca0",
+     "body": "00603CA0-00604186",
+     "other_literals": [
+      "globals.back",
+      "globals.navigate",
+      "globals.back",
+      "globals.navigate",
+      "globals.select"
+     ]
+    },
+    "v24": {
+     "address": "005FFAC0",
+     "ghidra_name": "FUN_005ffac0",
+     "body": "005FFAC0-005FFAED"
+    }
+   },
+   "pages": [
+    "GUI_pause_single",
+    "GUI_pause_tip",
+    "GUI_pause_objectives"
+   ],
+   "installed_pages": {
+    "GUI_pause_single": {
+     "file": "interface/gui_pause_single.lua",
+     "exists": true,
+     "widget_keys": 4
+    },
+    "GUI_pause_tip": {
+     "file": "interface/gui_pause_tip.lua",
+     "exists": true,
+     "widget_keys": 30
+    },
+    "GUI_pause_objectives": {
+     "file": "interface/gui_pause_objectives.lua",
+     "exists": true,
+     "widget_keys": 6
+    }
+   },
+   "widgets": [
+    {
+     "name": "title_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "hint_title_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "parent_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "child_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "HintTitle_Listbox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "slider_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "slider_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "back_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "info_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "info_Clipbox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "info_text_group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "info_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "silverline_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "title_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "slider_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "slider_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ScrollUp_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "ScrollDown_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "back_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "back_Icon",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "GUI_pause_objectives_FrameBox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "objectives_listbox_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Primary_Listbox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Secondary_Listbox",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "primary_objectives_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "secondary_objectives_Text",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Main_Listbox",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "felki_bal_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "felki_jobb_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "MainListbox_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "DCh",
+   "registry_slot": "3Dh",
+   "constructor": "00604780",
+   "vtable": "00CF41A0",
+   "size": "Ch",
+   "init_order": 33,
+   "virtuals": {
+    "id": {
+     "address": "006047A0",
+     "no_ghidra_function": true,
+     "body": "006047A0-006047A5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "006047B0",
+     "no_ghidra_function": true,
+     "body": "006047B0-006047B2",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00604870",
+     "ghidra_name": "CG_scalar_deleting_dtor_00604870",
+     "body": "00604870-0060488D"
+    },
+    "register": {
+     "address": "00604890",
+     "ghidra_name": "FUN_00604890",
+     "body": "00604890-00604940",
+     "pages": [
+      "GUI_pause_cheat"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "006047C0",
+     "no_ghidra_function": true,
+     "body": "006047C0-006047C0",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "006047D0",
+     "no_ghidra_function": true,
+     "body": "006047D0-006047D0",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00604800",
+     "no_ghidra_function": true,
+     "body": "00604800-00604800",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00604950",
+     "no_ghidra_function": true,
+     "body": "00604950-0060495D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_pause_cheat"
+   ],
+   "installed_pages": {
+    "GUI_pause_cheat": {
+     "file": "interface/gui_pause_cheat.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "E0h",
+   "registry_slot": "5Eh",
+   "constructor": "0060FD90",
+   "vtable": "00CF4B98",
+   "size": "48h",
+   "init_order": 34,
+   "virtuals": {
+    "id": {
+     "address": "0060FE00",
+     "no_ghidra_function": true,
+     "body": "0060FE00-0060FE05",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "0060FE20",
+     "no_ghidra_function": true,
+     "body": "0060FE20-0060FE31",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0060FFA0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0060ffa0",
+     "body": "0060FFA0-0060FFBD"
+    },
+    "register": {
+     "address": "0060D740",
+     "ghidra_name": "FUN_0060d740",
+     "body": "0060D740-0060D75E"
+    },
+    "bind": {
+     "address": "0060F210",
+     "ghidra_name": "FUN_0060f210",
+     "body": "0060F210-0060F4C4",
+     "pages": [
+      "GUI_scoring"
+     ],
+     "widgets": [
+      "Header_Group",
+      "Main_Listbox",
+      "Player_Group",
+      "Connection_Group"
+     ]
+    },
+    "enter": {
+     "address": "00610070",
+     "ghidra_name": "FUN_00610070",
+     "body": "00610070-00611351",
+     "widgets": [
+      "USN_Icon",
+      "USN_point_Text",
+      "USN_Text",
+      "ingame.score_usa",
+      "Player_point_Text",
+      "globals.newplayer",
+      "Player_name_Text",
+      "Player_clan_Text",
+      "USN_Icon",
+      "USN_point_Text",
+      "USN_Text",
+      "ingame.score_jap",
+      "Player_point_Text",
+      "globals.newplayer",
+      "Player_name_Text",
+      "Player_clan_Text"
+     ],
+     "other_literals": [
+      " ",
+      "FE.multi_lobby_normalai",
+      "FE.multi_lobby_normalai"
+     ]
+    },
+    "exit": {
+     "address": "0060D980",
+     "no_ghidra_function": true,
+     "body": "0060D980-0060D9E5",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0060E440",
+     "ghidra_name": "FUN_0060e440",
+     "body": "0060E440-0060EF45",
+     "widgets": [
+      "Player_point_Text",
+      "mic_Icon",
+      "Player_point_Text",
+      "mic_Icon",
+      "mic_Icon",
+      "USN_Icon",
+      "USN_point_Text",
+      "USN_Icon",
+      "USN_point_Text"
+     ]
+    },
+    "v24": {
+     "address": "0060FE40",
+     "no_ghidra_function": true,
+     "body": "0060FE40-0060FE4D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_scoring"
+   ],
+   "installed_pages": {
+    "GUI_scoring": {
+     "file": "interface/gui_scoring.lua",
+     "exists": true,
+     "widget_keys": 20
+    }
+   },
+   "widgets": [
+    {
+     "name": "Header_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Main_Listbox",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Connection_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_point_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_point_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_name_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_clan_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_point_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_point_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_name_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_clan_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_point_Text",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "mic_Icon",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Player_point_Text",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "mic_Icon",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "mic_Icon",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_Icon",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_point_Text",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_Icon",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "USN_point_Text",
+     "bound_in": "update",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [
+    "ingame.score_usa",
+    "globals.newplayer",
+    "ingame.score_jap"
+   ],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "E4h",
+   "registry_slot": "19h",
+   "constructor": "005D3540",
+   "vtable": "00CF1D70",
+   "size": "28h",
+   "init_order": 35,
+   "virtuals": {
+    "id": {
+     "address": "005D3580",
+     "no_ghidra_function": true,
+     "body": "005D3580-005D3585",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "005D3880",
+     "ghidra_name": "CG_scalar_deleting_dtor_005d3880",
+     "body": "005D3880-005D389D"
+    },
+    "register": {
+     "address": "005D38A0",
+     "ghidra_name": "FUN_005d38a0",
+     "body": "005D38A0-005D3950",
+     "pages": [
+      "GUI_pause_multi"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "005D3B40",
+     "no_ghidra_function": true,
+     "body": "005D3B40-005D3F18",
+     "sweep_terminated": true,
+     "widgets": [
+      "ingame.pause_multi_title",
+      "Main_Listbox",
+      "felki_bal_Icon",
+      "felki_jobb_Icon"
+     ],
+     "other_literals": [
+      "ingame.paused"
+     ]
+    },
+    "exit": {
+     "address": "005D3960",
+     "no_ghidra_function": true,
+     "body": "005D3960-005D397E",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "005D3F20",
+     "ghidra_name": "FUN_005d3f20",
+     "body": "005D3F20-005D43B5",
+     "other_literals": [
+      "globals.back",
+      "globals.navigate",
+      "globals.select"
+     ]
+    },
+    "v24": {
+     "address": "005D3990",
+     "no_ghidra_function": true,
+     "body": "005D3990-005D399D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_pause_multi"
+   ],
+   "installed_pages": {
+    "GUI_pause_multi": {
+     "file": "interface/gui_pause_multi.lua",
+     "exists": true,
+     "widget_keys": 4
+    }
+   },
+   "widgets": [
+    {
+     "name": "Main_Listbox",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "felki_bal_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "felki_jobb_Icon",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [
+    "ingame.pause_multi_title"
+   ],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "E8h",
+   "registry_slot": "32h",
+   "constructor": "00565D40",
+   "vtable": "00CEEBAC",
+   "size": "1Ch",
+   "init_order": 36,
+   "virtuals": {
+    "id": {
+     "address": "00565D60",
+     "no_ghidra_function": true,
+     "body": "00565D60-00565D65",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00565EC0",
+     "ghidra_name": "CG_scalar_deleting_dtor_00565ec0",
+     "body": "00565EC0-00565EDD"
+    },
+    "register": {
+     "address": "00565EE0",
+     "ghidra_name": "FUN_00565ee0",
+     "body": "00565EE0-00565F90",
+     "pages": [
+      "GUI_limbo"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00566080",
+     "ghidra_name": "FUN_00566080",
+     "body": "00566080-005661BA",
+     "widgets": [
+      "Message_Text",
+      "Continue_Text"
+     ]
+    },
+    "exit": {
+     "address": "00565D70",
+     "no_ghidra_function": true,
+     "body": "00565D70-00565D77",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00565E00",
+     "no_ghidra_function": true,
+     "body": "00565E00-00565E54",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00565FA0",
+     "no_ghidra_function": true,
+     "body": "00565FA0-00565FAD",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_limbo"
+   ],
+   "installed_pages": {
+    "GUI_limbo": {
+     "file": "interface/gui_limbo.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [
+    {
+     "name": "Message_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Continue_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "34h"
+   ],
+   "raised_by_interface_names": [
+    "INTF_LIMBO"
+   ]
+  },
+  {
+   "offset": "B8h",
+   "registry_slot": "43h",
+   "constructor": "00643DA0",
+   "vtable": "00CF5998",
+   "size": "18h",
+   "init_order": 37,
+   "virtuals": {
+    "id": {
+     "address": "00643DC0",
+     "no_ghidra_function": true,
+     "body": "00643DC0-00643DC5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "00643DD0",
+     "no_ghidra_function": true,
+     "body": "00643DD0-00643DD2",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "00643E60",
+     "ghidra_name": "CG_scalar_deleting_dtor_00643e60",
+     "body": "00643E60-00643E7D"
+    },
+    "register": {
+     "address": "00643E80",
+     "ghidra_name": "FUN_00643e80",
+     "body": "00643E80-00643F35",
+     "pages": [
+      "GUI_spectator"
+     ]
+    },
+    "bind": {
+     "address": "004F7590",
+     "base_default": "base_noop_14"
+    },
+    "enter": {
+     "address": "00643F40",
+     "ghidra_name": "FUN_00643f40",
+     "body": "00643F40-0064405D",
+     "widgets": [
+      "Score_Text",
+      "Spectator_Text"
+     ]
+    },
+    "exit": {
+     "address": "00643DE0",
+     "no_ghidra_function": true,
+     "body": "00643DE0-00643DE0",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00643DF0",
+     "no_ghidra_function": true,
+     "body": "00643DF0-00643DF0",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00644060",
+     "no_ghidra_function": true,
+     "body": "00644060-0064406D",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_spectator"
+   ],
+   "installed_pages": {
+    "GUI_spectator": {
+     "file": "interface/gui_spectator.lua",
+     "exists": true,
+     "widget_keys": 2
+    }
+   },
+   "widgets": [
+    {
+     "name": "Score_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Spectator_Text",
+     "bound_in": "enter",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "BCh",
+   "registry_slot": "4Eh",
+   "constructor": "006735D0",
+   "vtable": "00CF6B44",
+   "size": "480h",
+   "init_order": 38,
+   "virtuals": {
+    "id": {
+     "address": "006730F0",
+     "no_ghidra_function": true,
+     "body": "006730F0-006730F5",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "006739F0",
+     "ghidra_name": "CG_scalar_deleting_dtor_006739f0",
+     "body": "006739F0-00673A0D"
+    },
+    "register": {
+     "address": "0066EA60",
+     "ghidra_name": "FUN_0066ea60",
+     "body": "0066EA60-0066FADD",
+     "pages": [
+      "GUI_support_full"
+     ],
+     "other_literals": [
+      "environment/environment_unavailable.fsb",
+      "environment/sm_sp_to_unit.fsb",
+      "environment/sm_change_weap.fsb",
+      "environment/sm_launch_unit.fsb",
+      "environment/sm_unit_to_unit.fsb",
+      "environment/sm_left_right.fsb",
+      "environment/sm_open.fsb",
+      "environment/sm_close.fsb",
+      "/",
+      "\\",
+      "_ICS",
+      "_ICM",
+      "_ICL",
+      "_ICH",
+      "_D",
+      "_E",
+      "_S",
+      "_C",
+      "_xxx",
+      ".dds"
+     ]
+    },
+    "bind": {
+     "address": "0065DAA0",
+     "ghidra_name": "FUN_0065daa0",
+     "body": "0065DAA0-0065E86A",
+     "pages": [
+      "GUI_support_infopanel"
+     ],
+     "widgets": [
+      "pum_info_Text",
+      "sm_close_Group",
+      "circle_full_Section",
+      "circle_left_Section",
+      "circle_right_Section",
+      "center_Group",
+      "nagykep_Icon",
+      "without_pload_Group",
+      "pload_Group",
+      "icon_L_Icon",
+      "up_1_Icon",
+      "up_4_Icon",
+      "up_2_Icon",
+      "up_3_Icon",
+      "circle_large_Group",
+      "unit_name_Text",
+      "resource_Text",
+      "piros_Icon",
+      "vilagos_Icon",
+      "sotet_Icon",
+      "keret_FrameBox",
+      "support_Icon",
+      "map_Group",
+      "minimap_map_Icon",
+      "SpawnThing_Icon",
+      "Unit_Icon",
+      "minimap_FrameBox",
+      "powerup_tip_FrameBox"
+     ]
+    },
+    "enter": {
+     "address": "00674B80",
+     "ghidra_name": "FUN_00674b80",
+     "body": "00674B80-00675C31",
+     "other_literals": [
+      "SM1STUSE",
+      "SM1STUSE",
+      "globals.unitclass_spawnpoint",
+      "-",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_cp|.: "
+     ]
+    },
+    "exit": {
+     "address": "00662470",
+     "no_ghidra_function": true,
+     "body": "00662470-0066268B",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "00675C40",
+     "ghidra_name": "FUN_00675c40",
+     "body": "00675C40-0067AF2B",
+     "other_literals": [
+      "ingame.sm_annoying_message_pc",
+      "ingame.sm_annoying_message_xbox",
+      "InferiorFailure",
+      "InferiorFailure",
+      "SM1STUSE",
+      "SMPERMANENTSPLEVEL",
+      "SMPERMANENTSPLEVEL",
+      "SMPERMANENTSPLEVELSPECT",
+      "SMPERMANENTUNITLEVEL",
+      "SMPERMANENTUNITLEVEL",
+      "SMPERMANENTUNITLEVELSPECT",
+      "SMPERMANENTUNITLEVELPLANE",
+      "SMPERMANENTUNITLEVELPLANE",
+      "SMPERMANENTUNITLEVELPLANESPECT",
+      "SMPERMANENTSHIP",
+      "SMPERMANENTSHIP",
+      "SMPERMANENTSHIPSPECT",
+      "SMPERMANENTPLANE",
+      "SMPERMANENTPLANE",
+      "SMPERMANENTPLANESPECT",
+      "SMPERMANENTSHIP",
+      "SMPERMANENTSHIP",
+      "SMPERMANENTSHIPSPECT",
+      "SMPERMANENTPLANE",
+      "SMPERMANENTPLANE",
+      "SMPERMANENTPLANESPECT",
+      "globals.unitclass_spawnpoint",
+      "ingame.sm_na",
+      "ingame.sm_cp|.: ",
+      "globals.unitclass_kamikazeboat",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_cp|.: ",
+      "globals.unitclass_spawnpoint",
+      "globals.unitclass_kamikazeboat",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_cp|.: ",
+      "globals.unitclass_spawnpoint",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_slots|.: ",
+      "ingame.sm_support",
+      "ingame.sm_cp|.: "
+     ]
+    },
+    "v24": {
+     "address": "00673100",
+     "ghidra_name": "FUN_00673100",
+     "body": "00673100-00673125"
+    }
+   },
+   "pages": [
+    "GUI_support_full",
+    "GUI_support_infopanel"
+   ],
+   "installed_pages": {
+    "GUI_support_full": {
+     "file": "interface/gui_support_full.lua",
+     "exists": true,
+     "widget_keys": 50
+    },
+    "GUI_support_infopanel": {
+     "file": "interface/gui_support_infopanel.lua",
+     "exists": true,
+     "widget_keys": 7
+    }
+   },
+   "widgets": [
+    {
+     "name": "pum_info_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "sm_close_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_full_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_left_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_right_Section",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "center_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "nagykep_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "without_pload_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "pload_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "icon_L_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "up_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "up_4_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "up_2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "up_3_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "circle_large_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "unit_name_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "resource_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "piros_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "vilagos_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "sotet_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "keret_FrameBox",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "support_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "map_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_map_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "SpawnThing_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "Unit_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "minimap_FrameBox",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "powerup_tip_FrameBox",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "C0h",
+   "registry_slot": "4Fh",
+   "constructor": "0061A480",
+   "vtable": "00CF4DEC",
+   "size": "270h",
+   "init_order": 39,
+   "virtuals": {
+    "id": {
+     "address": "00619160",
+     "no_ghidra_function": true,
+     "body": "00619160-00619165",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0061A6A0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0061a6a0",
+     "body": "0061A6A0-0061A6BD"
+    },
+    "register": {
+     "address": "00614170",
+     "ghidra_name": "FUN_00614170",
+     "body": "00614170-0061431D",
+     "widgets": [
+      "map_Group"
+     ]
+    },
+    "bind": {
+     "address": "00614600",
+     "ghidra_name": "FUN_00614600",
+     "body": "00614600-00614ED6",
+     "pages": [
+      "GUI_support_full",
+      "GUI_powerups_info"
+     ],
+     "widgets": [
+      "New_Group",
+      "text_Text",
+      "left_circle_Icon",
+      "right_circle_Icon",
+      "empty_circle_Icon",
+      "tile_Icon",
+      "icon_Icon",
+      "center_Group",
+      "power_up_Group",
+      "color_Icon",
+      "radar_Icon",
+      "sipp_Icon",
+      "szub_Icon",
+      "plane_Icon",
+      "command_Icon"
+     ]
+    },
+    "enter": {
+     "address": "0061B850",
+     "ghidra_name": "FUN_0061b850",
+     "body": "0061B850-0061BE97",
+     "other_literals": [
+      "PUM1STUSE",
+      "PUMPERMANENT",
+      "PUM1STUSE"
+     ]
+    },
+    "exit": {
+     "address": "006169F0",
+     "ghidra_name": "FUN_006169f0",
+     "body": "006169F0-00616C68"
+    },
+    "update": {
+     "address": "0061BEA0",
+     "ghidra_name": "FUN_0061bea0",
+     "body": "0061BEA0-0061C79F",
+     "other_literals": [
+      "ingame.pum_annoying_message_pc",
+      "ingame.pum_annoying_message_xbox",
+      "PUMPERMANENT",
+      "PUMPERMANENT"
+     ]
+    },
+    "v24": {
+     "address": "00619170",
+     "ghidra_name": "FUN_00619170",
+     "body": "00619170-00619195"
+    }
+   },
+   "pages": [
+    "GUI_support_full",
+    "GUI_powerups_info"
+   ],
+   "installed_pages": {
+    "GUI_support_full": {
+     "file": "interface/gui_support_full.lua",
+     "exists": true,
+     "widget_keys": 50
+    },
+    "GUI_powerups_info": {
+     "file": "interface/gui_powerups_info.lua",
+     "exists": true,
+     "widget_keys": 7
+    }
+   },
+   "widgets": [
+    {
+     "name": "map_Group",
+     "bound_in": "register",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "New_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "text_Text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "left_circle_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "right_circle_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "empty_circle_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "tile_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "icon_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "center_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "power_up_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "color_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "radar_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "sipp_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "szub_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "plane_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "command_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  },
+  {
+   "offset": "C4h",
+   "registry_slot": "50h",
+   "constructor": "006821C0",
+   "vtable": "00CF7184",
+   "size": "7Ch",
+   "init_order": 40,
+   "virtuals": {
+    "id": {
+     "address": "00682140",
+     "no_ghidra_function": true,
+     "body": "00682140-00682145",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "004F7570",
+     "base_default": "base_noop_04"
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "006823A0",
+     "ghidra_name": "CG_scalar_deleting_dtor_006823a0",
+     "body": "006823A0-006823BD"
+    },
+    "register": {
+     "address": "00682740",
+     "ghidra_name": "FUN_00682740",
+     "body": "00682740-006827F4",
+     "pages": [
+      "GUI_Warning"
+     ]
+    },
+    "bind": {
+     "address": "006823C0",
+     "ghidra_name": "FUN_006823c0",
+     "body": "006823C0-00682737",
+     "widgets": [
+      "first_Group",
+      "warning_text",
+      "warning_1_Icon",
+      "warning_2_Icon",
+      "second_Group",
+      "third_Group",
+      "warning_2_text"
+     ]
+    },
+    "enter": {
+     "address": "00681E60",
+     "ghidra_name": "FUN_00681e60",
+     "body": "00681E60-00681E88"
+    },
+    "exit": {
+     "address": "00682150",
+     "ghidra_name": "FUN_00682150",
+     "body": "00682150-006821B8"
+    },
+    "update": {
+     "address": "00683020",
+     "no_ghidra_function": true,
+     "body": "00683020-006832E6",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "00682EC0",
+     "no_ghidra_function": true,
+     "body": "00682EC0-00682ECD",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_Warning"
+   ],
+   "installed_pages": {
+    "GUI_Warning": {
+     "file": "interface/gui_warning.lua",
+     "exists": true,
+     "widget_keys": 12
+    }
+   },
+   "widgets": [
+    {
+     "name": "first_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "warning_text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "warning_1_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "warning_2_Icon",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "second_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "third_Group",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    },
+    {
+     "name": "warning_2_text",
+     "bound_in": "bind",
+     "found_in_installed_page": true
+    }
+   ],
+   "text_keys": [],
+   "raised_by_interface_ids": [
+    "22h",
+    "23h",
+    "24h",
+    "25h",
+    "27h",
+    "28h",
+    "2Fh"
+   ],
+   "raised_by_interface_names": [
+    "INTF_PLANE",
+    "INTF_PLANEBOMBER",
+    "INTF_PLANESPAWN",
+    "INTF_CAPTAIN",
+    "INTF_TBOATHELMSMAN",
+    "INTF_SUBMARINE",
+    "INTF_COMMANDBUILDING"
+   ]
+  },
+  {
+   "offset": "C8h",
+   "registry_slot": "51h",
+   "constructor": "0052B030",
+   "vtable": "00CED0AC",
+   "size": "2Ch",
+   "init_order": 41,
+   "virtuals": {
+    "id": {
+     "address": "0052B060",
+     "no_ghidra_function": true,
+     "body": "0052B060-0052B065",
+     "sweep_terminated": true
+    },
+    "v04": {
+     "address": "0052B070",
+     "no_ghidra_function": true,
+     "body": "0052B070-0052B072",
+     "sweep_terminated": true
+    },
+    "v08": {
+     "address": "004F7580",
+     "base_default": "base_noop_08"
+    },
+    "v0C": {
+     "address": "0052D1B0",
+     "ghidra_name": "CG_scalar_deleting_dtor_0052d1b0",
+     "body": "0052D1B0-0052D1CD"
+    },
+    "register": {
+     "address": "0052CBF0",
+     "ghidra_name": "FUN_0052cbf0",
+     "body": "0052CBF0-0052CD9E",
+     "pages": [
+      "GUI_counters"
+     ]
+    },
+    "bind": {
+     "address": "00528C60",
+     "no_ghidra_function": true,
+     "body": "00528C60-00528C60",
+     "sweep_terminated": true
+    },
+    "enter": {
+     "address": "00528C40",
+     "no_ghidra_function": true,
+     "body": "00528C40-00528C4C",
+     "sweep_terminated": true
+    },
+    "exit": {
+     "address": "00528C50",
+     "no_ghidra_function": true,
+     "body": "00528C50-00528C5C",
+     "sweep_terminated": true
+    },
+    "update": {
+     "address": "0052BAA0",
+     "no_ghidra_function": true,
+     "body": "0052BAA0-0052BAFC",
+     "sweep_terminated": true
+    },
+    "v24": {
+     "address": "0052D1D0",
+     "no_ghidra_function": true,
+     "body": "0052D1D0-0052D1DD",
+     "sweep_terminated": true
+    }
+   },
+   "pages": [
+    "GUI_counters"
+   ],
+   "installed_pages": {
+    "GUI_counters": {
+     "file": "interface/gui_counters.lua",
+     "exists": true,
+     "widget_keys": 12
+    }
+   },
+   "widgets": [],
+   "text_keys": [],
+   "raised_by_interface_ids": [],
+   "raised_by_interface_names": []
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "address": "00517680",
+   "end": "00517685",
+   "role": "id virtual +00h of HUD screen slot 23h (no page)"
+  },
+  {
+   "address": "00517690",
+   "end": "00517690",
+   "role": "v24 virtual +24h of HUD screen slot 23h (no page)"
+  },
+  {
+   "address": "00517820",
+   "end": "0051785A",
+   "role": "enter virtual +18h of HUD screen slot 23h (no page)"
+  },
+  {
+   "address": "00517860",
+   "end": "00517873",
+   "role": "exit virtual +1Ch of HUD screen slot 23h (no page)"
+  },
+  {
+   "address": "005178A0",
+   "end": "005178A0",
+   "role": "update virtual +20h of HUD screen slot 23h (no page)"
+  },
+  {
+   "address": "00519120",
+   "end": "0051915D",
+   "role": "enter virtual +18h of HUD screen slot 25h (GUI_bomber)"
+  },
+  {
+   "address": "00519160",
+   "end": "005191A3",
+   "role": "exit virtual +1Ch of HUD screen slot 25h (GUI_bomber)"
+  },
+  {
+   "address": "00519450",
+   "end": "00519455",
+   "role": "id virtual +00h of HUD screen slot 25h (GUI_bomber)"
+  },
+  {
+   "address": "00519BB0",
+   "end": "00519D3D",
+   "role": "update virtual +20h of HUD screen slot 25h (GUI_bomber)"
+  },
+  {
+   "address": "00519D40",
+   "end": "00519D4D",
+   "role": "v24 virtual +24h of HUD screen slot 25h (GUI_bomber)"
+  },
+  {
+   "address": "0051E990",
+   "end": "0051E995",
+   "role": "id virtual +00h of HUD screen slot 26h (GUI_binoculars)"
+  },
+  {
+   "address": "0051E9B0",
+   "end": "0051E9F0",
+   "role": "exit virtual +1Ch of HUD screen slot 26h (GUI_binoculars)"
+  },
+  {
+   "address": "0051F040",
+   "end": "0051F04D",
+   "role": "v24 virtual +24h of HUD screen slot 26h (GUI_binoculars)"
+  },
+  {
+   "address": "00521240",
+   "end": "00521294",
+   "role": "update virtual +20h of HUD screen slot 2Fh (no page)"
+  },
+  {
+   "address": "005212A0",
+   "end": "005212DD",
+   "role": "enter virtual +18h of HUD screen slot 2Fh (no page)"
+  },
+  {
+   "address": "005212E0",
+   "end": "00521304",
+   "role": "exit virtual +1Ch of HUD screen slot 2Fh (no page)"
+  },
+  {
+   "address": "00521690",
+   "end": "00521690",
+   "role": "exit virtual +1Ch of HUD screen slot 29h (no page)"
+  },
+  {
+   "address": "00524D10",
+   "end": "00524D15",
+   "role": "id virtual +00h of HUD screen slot 29h (no page)"
+  },
+  {
+   "address": "00527260",
+   "end": "00527BDD",
+   "role": "update virtual +20h of HUD screen slot 29h (no page)"
+  },
+  {
+   "address": "00528C40",
+   "end": "00528C4C",
+   "role": "enter virtual +18h of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "00528C50",
+   "end": "00528C5C",
+   "role": "exit virtual +1Ch of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "00528C60",
+   "end": "00528C60",
+   "role": "bind virtual +14h of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "0052B060",
+   "end": "0052B065",
+   "role": "id virtual +00h of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "0052B070",
+   "end": "0052B072",
+   "role": "v04 virtual +04h of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "0052BAA0",
+   "end": "0052BAFC",
+   "role": "update virtual +20h of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "0052D1D0",
+   "end": "0052D1DD",
+   "role": "v24 virtual +24h of HUD screen slot 51h (GUI_counters)"
+  },
+  {
+   "address": "00538CD0",
+   "end": "00538CD5",
+   "role": "id virtual +00h of HUD screen slot 2Ah (GUI_formation, GUI_classicons, GUI_unit, GUI_formation_circle, GUI_formationOvrly)"
+  },
+  {
+   "address": "00538CE0",
+   "end": "00538CE2",
+   "role": "v08 virtual +08h of HUD screen slot 2Ah (GUI_formation, GUI_classicons, GUI_unit, GUI_formation_circle, GUI_formationOvrly)"
+  },
+  {
+   "address": "0053A8E0",
+   "end": "0053B9CA",
+   "role": "update virtual +20h of HUD screen slot 2Ah (GUI_formation, GUI_classicons, GUI_unit, GUI_formation_circle, GUI_formationOvrly)"
+  },
+  {
+   "address": "0053D280",
+   "end": "0053D280",
+   "role": "exit virtual +1Ch of HUD screen slot 2Bh (GUI_freecam)"
+  },
+  {
+   "address": "0053DD90",
+   "end": "0053DF3B",
+   "role": "enter virtual +18h of HUD screen slot 2Bh (GUI_freecam)"
+  },
+  {
+   "address": "00540360",
+   "end": "00540365",
+   "role": "id virtual +00h of HUD screen slot 2Bh (GUI_freecam)"
+  },
+  {
+   "address": "00540380",
+   "end": "0054038D",
+   "role": "v24 virtual +24h of HUD screen slot 2Bh (GUI_freecam)"
+  },
+  {
+   "address": "005470A0",
+   "end": "005470BC",
+   "role": "exit virtual +1Ch of HUD screen slot 2Eh (GUI_cross_gunstate, GUI_cross_ship)"
+  },
+  {
+   "address": "00547370",
+   "end": "00547375",
+   "role": "id virtual +00h of HUD screen slot 2Eh (GUI_cross_gunstate, GUI_cross_ship)"
+  },
+  {
+   "address": "005482D0",
+   "end": "005482F3",
+   "role": "v24 virtual +24h of HUD screen slot 2Eh (GUI_cross_gunstate, GUI_cross_ship)"
+  },
+  {
+   "address": "0054D660",
+   "end": "0054D665",
+   "role": "id virtual +00h of HUD screen slot 34h (GUI_hints)"
+  },
+  {
+   "address": "0054D670",
+   "end": "0054D672",
+   "role": "v04 virtual +04h of HUD screen slot 34h (GUI_hints)"
+  },
+  {
+   "address": "0054E370",
+   "end": "0054E37D",
+   "role": "v24 virtual +24h of HUD screen slot 34h (GUI_hints)"
+  },
+  {
+   "address": "0054ECF0",
+   "end": "0054ECF5",
+   "role": "id virtual +00h of HUD screen slot 2Ch (no page)"
+  },
+  {
+   "address": "0054ED00",
+   "end": "0054ED00",
+   "role": "register virtual +10h of HUD screen slot 2Ch (no page)"
+  },
+  {
+   "address": "0054EFC0",
+   "end": "0054F3D8",
+   "role": "exit virtual +1Ch of HUD screen slot 2Ch (no page)"
+  },
+  {
+   "address": "00550410",
+   "end": "00550662",
+   "role": "update virtual +20h of HUD screen slot 2Ch (no page)"
+  },
+  {
+   "address": "00565D60",
+   "end": "00565D65",
+   "role": "id virtual +00h of HUD screen slot 32h (GUI_limbo)"
+  },
+  {
+   "address": "00565D70",
+   "end": "00565D77",
+   "role": "exit virtual +1Ch of HUD screen slot 32h (GUI_limbo)"
+  },
+  {
+   "address": "00565E00",
+   "end": "00565E54",
+   "role": "update virtual +20h of HUD screen slot 32h (GUI_limbo)"
+  },
+  {
+   "address": "00565FA0",
+   "end": "00565FAD",
+   "role": "v24 virtual +24h of HUD screen slot 32h (GUI_limbo)"
+  },
+  {
+   "address": "005A8EE0",
+   "end": "005A8EE5",
+   "role": "id virtual +00h of HUD screen slot 4Ch (GUI_map, GUI_classicons)"
+  },
+  {
+   "address": "005A8EF0",
+   "end": "005A8EF2",
+   "role": "v08 virtual +08h of HUD screen slot 4Ch (GUI_map, GUI_classicons)"
+  },
+  {
+   "address": "005B45C0",
+   "end": "005B59B9",
+   "role": "update virtual +20h of HUD screen slot 4Ch (GUI_map, GUI_classicons)"
+  },
+  {
+   "address": "005B5C00",
+   "end": "005B5C00",
+   "role": "exit virtual +1Ch of HUD screen slot 33h (GUI_blackout, GUI_subtitle, GUI_narrative)"
+  },
+  {
+   "address": "005B9E90",
+   "end": "005B9E95",
+   "role": "id virtual +00h of HUD screen slot 33h (GUI_blackout, GUI_subtitle, GUI_narrative)"
+  },
+  {
+   "address": "005B9EA0",
+   "end": "005B9EA2",
+   "role": "v04 virtual +04h of HUD screen slot 33h (GUI_blackout, GUI_subtitle, GUI_narrative)"
+  },
+  {
+   "address": "005BC920",
+   "end": "005BCA14",
+   "role": "update virtual +20h of HUD screen slot 33h (GUI_blackout, GUI_subtitle, GUI_narrative)"
+  },
+  {
+   "address": "005C06B0",
+   "end": "005C06B5",
+   "role": "id virtual +00h of HUD screen slot 35h (GUI_minimap)"
+  },
+  {
+   "address": "005C0800",
+   "end": "005C080D",
+   "role": "v24 virtual +24h of HUD screen slot 35h (GUI_minimap)"
+  },
+  {
+   "address": "005C0F20",
+   "end": "005C2319",
+   "role": "update virtual +20h of HUD screen slot 35h (GUI_minimap)"
+  },
+  {
+   "address": "005CAF60",
+   "end": "005CAF60",
+   "role": "update virtual +20h of HUD screen slot 36h (GUI_moviecamera_debug)"
+  },
+  {
+   "address": "005CB070",
+   "end": "005CB075",
+   "role": "id virtual +00h of HUD screen slot 37h (GUI_movie)"
+  },
+  {
+   "address": "005CB0D0",
+   "end": "005CB0D5",
+   "role": "id virtual +00h of HUD screen slot 38h (GUI_movie)"
+  },
+  {
+   "address": "005CC590",
+   "end": "005CC5DD",
+   "role": "exit virtual +1Ch of HUD screen slot 36h (GUI_moviecamera_debug)"
+  },
+  {
+   "address": "005CD9C0",
+   "end": "005CDAF5",
+   "role": "enter virtual +18h of HUD screen slot 37h (GUI_movie)"
+  },
+  {
+   "address": "005CDD70",
+   "end": "005CDEBE",
+   "role": "exit virtual +1Ch of HUD screen slot 38h (GUI_movie)"
+  },
+  {
+   "address": "005CDF30",
+   "end": "005CDF3D",
+   "role": "v24 virtual +24h of HUD screen slot 37h (GUI_movie)"
+  },
+  {
+   "address": "005CDF40",
+   "end": "005CDF4D",
+   "role": "v24 virtual +24h of HUD screen slot 38h (GUI_movie)"
+  },
+  {
+   "address": "005CE5B0",
+   "end": "005CE5B5",
+   "role": "id virtual +00h of HUD screen slot 36h (GUI_moviecamera_debug)"
+  },
+  {
+   "address": "005CE5D0",
+   "end": "005CE5DD",
+   "role": "v24 virtual +24h of HUD screen slot 36h (GUI_moviecamera_debug)"
+  },
+  {
+   "address": "005D3580",
+   "end": "005D3585",
+   "role": "id virtual +00h of HUD screen slot 19h (GUI_pause_multi)"
+  },
+  {
+   "address": "005D3960",
+   "end": "005D397E",
+   "role": "exit virtual +1Ch of HUD screen slot 19h (GUI_pause_multi)"
+  },
+  {
+   "address": "005D3990",
+   "end": "005D399D",
+   "role": "v24 virtual +24h of HUD screen slot 19h (GUI_pause_multi)"
+  },
+  {
+   "address": "005D3B40",
+   "end": "005D3F18",
+   "role": "enter virtual +18h of HUD screen slot 19h (GUI_pause_multi)"
+  },
+  {
+   "address": "005ED5C0",
+   "end": "005ED5C0",
+   "role": "exit virtual +1Ch of HUD screen slot 39h (GUI_objectives)"
+  },
+  {
+   "address": "005EDFD0",
+   "end": "005EDFD5",
+   "role": "id virtual +00h of HUD screen slot 39h (GUI_objectives)"
+  },
+  {
+   "address": "005EE510",
+   "end": "005EE51D",
+   "role": "v24 virtual +24h of HUD screen slot 39h (GUI_objectives)"
+  },
+  {
+   "address": "005F9460",
+   "end": "005F9465",
+   "role": "id virtual +00h of HUD screen slot 3Bh (GUI_order)"
+  },
+  {
+   "address": "005F9480",
+   "end": "005F948E",
+   "role": "exit virtual +1Ch of HUD screen slot 3Bh (GUI_order)"
+  },
+  {
+   "address": "005FAD60",
+   "end": "005FAD6D",
+   "role": "v24 virtual +24h of HUD screen slot 3Bh (GUI_order)"
+  },
+  {
+   "address": "005FD880",
+   "end": "005FD880",
+   "role": "exit virtual +1Ch of HUD screen slot 3Ch (GUI_pause_single, GUI_pause_tip, GUI_pause_objectives)"
+  },
+  {
+   "address": "005FFA80",
+   "end": "005FFA85",
+   "role": "id virtual +00h of HUD screen slot 3Ch (GUI_pause_single, GUI_pause_tip, GUI_pause_objectives)"
+  },
+  {
+   "address": "005FFA90",
+   "end": "005FFA92",
+   "role": "v04 virtual +04h of HUD screen slot 3Ch (GUI_pause_single, GUI_pause_tip, GUI_pause_objectives)"
+  },
+  {
+   "address": "006047A0",
+   "end": "006047A5",
+   "role": "id virtual +00h of HUD screen slot 3Dh (GUI_pause_cheat)"
+  },
+  {
+   "address": "006047B0",
+   "end": "006047B2",
+   "role": "v04 virtual +04h of HUD screen slot 3Dh (GUI_pause_cheat)"
+  },
+  {
+   "address": "006047C0",
+   "end": "006047C0",
+   "role": "enter virtual +18h of HUD screen slot 3Dh (GUI_pause_cheat)"
+  },
+  {
+   "address": "006047D0",
+   "end": "006047D0",
+   "role": "exit virtual +1Ch of HUD screen slot 3Dh (GUI_pause_cheat)"
+  },
+  {
+   "address": "00604800",
+   "end": "00604800",
+   "role": "update virtual +20h of HUD screen slot 3Dh (GUI_pause_cheat)"
+  },
+  {
+   "address": "00604950",
+   "end": "0060495D",
+   "role": "v24 virtual +24h of HUD screen slot 3Dh (GUI_pause_cheat)"
+  },
+  {
+   "address": "00606220",
+   "end": "00606225",
+   "role": "id virtual +00h of HUD screen slot 3Fh (no page)"
+  },
+  {
+   "address": "00606230",
+   "end": "00606230",
+   "role": "v24 virtual +24h of HUD screen slot 3Fh (no page)"
+  },
+  {
+   "address": "00606A80",
+   "end": "00606A85",
+   "role": "id virtual +00h of HUD screen slot 3Eh (GUI_cross_all, GUI_plane_effects, GUI_plane)"
+  },
+  {
+   "address": "00607BE0",
+   "end": "00607F57",
+   "role": "register virtual +10h of HUD screen slot 3Fh (no page)"
+  },
+  {
+   "address": "0060ABD0",
+   "end": "0060BFC9",
+   "role": "update virtual +20h of HUD screen slot 3Fh (no page)"
+  },
+  {
+   "address": "0060C870",
+   "end": "0060C87B",
+   "role": "enter virtual +18h of HUD screen slot 41h (GUI_plane_spawn)"
+  },
+  {
+   "address": "0060CB20",
+   "end": "0060CB25",
+   "role": "id virtual +00h of HUD screen slot 41h (GUI_plane_spawn)"
+  },
+  {
+   "address": "0060D280",
+   "end": "0060D28D",
+   "role": "v24 virtual +24h of HUD screen slot 41h (GUI_plane_spawn)"
+  },
+  {
+   "address": "0060D980",
+   "end": "0060D9E5",
+   "role": "exit virtual +1Ch of HUD screen slot 5Eh (GUI_scoring)"
+  },
+  {
+   "address": "0060FE00",
+   "end": "0060FE05",
+   "role": "id virtual +00h of HUD screen slot 5Eh (GUI_scoring)"
+  },
+  {
+   "address": "0060FE20",
+   "end": "0060FE31",
+   "role": "v04 virtual +04h of HUD screen slot 5Eh (GUI_scoring)"
+  },
+  {
+   "address": "0060FE40",
+   "end": "0060FE4D",
+   "role": "v24 virtual +24h of HUD screen slot 5Eh (GUI_scoring)"
+  },
+  {
+   "address": "00619160",
+   "end": "00619165",
+   "role": "id virtual +00h of HUD screen slot 4Fh (GUI_support_full, GUI_powerups_info)"
+  },
+  {
+   "address": "00636D80",
+   "end": "00636D89",
+   "role": "exit virtual +1Ch of HUD screen slot 5Ah (FE_sceneinit)"
+  },
+  {
+   "address": "00636DC0",
+   "end": "00636DC5",
+   "role": "id virtual +00h of HUD screen slot 5Ah (FE_sceneinit)"
+  },
+  {
+   "address": "00636DD0",
+   "end": "00636DD2",
+   "role": "v08 virtual +08h of HUD screen slot 5Ah (FE_sceneinit)"
+  },
+  {
+   "address": "00636DE0",
+   "end": "00636DE2",
+   "role": "v04 virtual +04h of HUD screen slot 5Ah (FE_sceneinit)"
+  },
+  {
+   "address": "00637470",
+   "end": "0063747D",
+   "role": "v24 virtual +24h of HUD screen slot 5Ah (FE_sceneinit)"
+  },
+  {
+   "address": "00639480",
+   "end": "006394A2",
+   "role": "enter virtual +18h of HUD screen slot 4Dh (GUI_markers)"
+  },
+  {
+   "address": "006405E0",
+   "end": "006405E5",
+   "role": "id virtual +00h of HUD screen slot 4Dh (GUI_markers)"
+  },
+  {
+   "address": "00640600",
+   "end": "00640610",
+   "role": "v24 virtual +24h of HUD screen slot 4Dh (GUI_markers)"
+  },
+  {
+   "address": "006435D0",
+   "end": "00643D94",
+   "role": "update virtual +20h of HUD screen slot 4Dh (GUI_markers)"
+  },
+  {
+   "address": "00643DC0",
+   "end": "00643DC5",
+   "role": "id virtual +00h of HUD screen slot 43h (GUI_spectator)"
+  },
+  {
+   "address": "00643DD0",
+   "end": "00643DD2",
+   "role": "v04 virtual +04h of HUD screen slot 43h (GUI_spectator)"
+  },
+  {
+   "address": "00643DE0",
+   "end": "00643DE0",
+   "role": "exit virtual +1Ch of HUD screen slot 43h (GUI_spectator)"
+  },
+  {
+   "address": "00643DF0",
+   "end": "00643DF0",
+   "role": "update virtual +20h of HUD screen slot 43h (GUI_spectator)"
+  },
+  {
+   "address": "00644060",
+   "end": "0064406D",
+   "role": "v24 virtual +24h of HUD screen slot 43h (GUI_spectator)"
+  },
+  {
+   "address": "00647FE0",
+   "end": "00647FE5",
+   "role": "id virtual +00h of HUD screen slot 44h (GUI_powerups, GUI_unit, GUI_selector)"
+  },
+  {
+   "address": "006488D0",
+   "end": "00648923",
+   "role": "enter virtual +18h of HUD screen slot 44h (GUI_powerups, GUI_unit, GUI_selector)"
+  },
+  {
+   "address": "0064A450",
+   "end": "0064A48D",
+   "role": "enter virtual +18h of HUD screen slot 46h (no page)"
+  },
+  {
+   "address": "0064A490",
+   "end": "0064A4B4",
+   "role": "exit virtual +1Ch of HUD screen slot 46h (no page)"
+  },
+  {
+   "address": "0064B860",
+   "end": "0064B865",
+   "role": "id virtual +00h of HUD screen slot 45h (GUI_ship, GUI_repair, GUI_ship_effects, GUI_ship_damage)"
+  },
+  {
+   "address": "0064D610",
+   "end": "0064D72E",
+   "role": "update virtual +20h of HUD screen slot 46h (no page)"
+  },
+  {
+   "address": "0064D8D0",
+   "end": "0064D9DE",
+   "role": "exit virtual +1Ch of HUD screen slot 45h (GUI_ship, GUI_repair, GUI_ship_effects, GUI_ship_damage)"
+  },
+  {
+   "address": "00650160",
+   "end": "00650165",
+   "role": "id virtual +00h of HUD screen slot 48h (GUI_sub)"
+  },
+  {
+   "address": "00650190",
+   "end": "00650190",
+   "role": "enter virtual +18h of HUD screen slot 48h (GUI_sub)"
+  },
+  {
+   "address": "00650450",
+   "end": "006506D5",
+   "role": "update virtual +20h of HUD screen slot 48h (GUI_sub)"
+  },
+  {
+   "address": "00650810",
+   "end": "00650821",
+   "role": "exit virtual +1Ch of HUD screen slot 47h (GUI_periscope)"
+  },
+  {
+   "address": "00650AC0",
+   "end": "00650AC5",
+   "role": "id virtual +00h of HUD screen slot 47h (GUI_periscope)"
+  },
+  {
+   "address": "00651350",
+   "end": "0065135D",
+   "role": "v24 virtual +24h of HUD screen slot 48h (GUI_sub)"
+  },
+  {
+   "address": "00651360",
+   "end": "0065136D",
+   "role": "v24 virtual +24h of HUD screen slot 47h (GUI_periscope)"
+  },
+  {
+   "address": "00651800",
+   "end": "00652814",
+   "role": "update virtual +20h of HUD screen slot 47h (GUI_periscope)"
+  },
+  {
+   "address": "00662470",
+   "end": "0066268B",
+   "role": "exit virtual +1Ch of HUD screen slot 4Eh (GUI_support_full, GUI_support_infopanel)"
+  },
+  {
+   "address": "006730F0",
+   "end": "006730F5",
+   "role": "id virtual +00h of HUD screen slot 4Eh (GUI_support_full, GUI_support_infopanel)"
+  },
+  {
+   "address": "0067B3F0",
+   "end": "0067B3F0",
+   "role": "register virtual +10h of HUD screen slot 27h (no page)"
+  },
+  {
+   "address": "0067B400",
+   "end": "0067B400",
+   "role": "enter virtual +18h of HUD screen slot 27h (no page)"
+  },
+  {
+   "address": "0067B410",
+   "end": "0067B410",
+   "role": "exit virtual +1Ch of HUD screen slot 27h (no page)"
+  },
+  {
+   "address": "0067BAA0",
+   "end": "0067BB4B",
+   "role": "enter virtual +18h of HUD screen slot 24h (no page)"
+  },
+  {
+   "address": "0067BE50",
+   "end": "0067BE55",
+   "role": "id virtual +00h of HUD screen slot 49h (no page)"
+  },
+  {
+   "address": "0067BE60",
+   "end": "0067BE60",
+   "role": "v24 virtual +24h of HUD screen slot 49h (no page)"
+  },
+  {
+   "address": "0067BEA0",
+   "end": "0067BEA0",
+   "role": "bind virtual +14h of HUD screen slot 49h (no page)"
+  },
+  {
+   "address": "0067BEB0",
+   "end": "0067BEB0",
+   "role": "enter virtual +18h of HUD screen slot 49h (no page)"
+  },
+  {
+   "address": "0067BEC0",
+   "end": "0067BEC7",
+   "role": "exit virtual +1Ch of HUD screen slot 49h (no page)"
+  },
+  {
+   "address": "0067BF00",
+   "end": "0067BFC7",
+   "role": "update virtual +20h of HUD screen slot 49h (no page)"
+  },
+  {
+   "address": "0067C050",
+   "end": "0067C097",
+   "role": "enter virtual +18h of HUD screen slot 4Ah (GUI_binoculars)"
+  },
+  {
+   "address": "0067C0A0",
+   "end": "0067C0CD",
+   "role": "exit virtual +1Ch of HUD screen slot 4Ah (GUI_binoculars)"
+  },
+  {
+   "address": "00682140",
+   "end": "00682145",
+   "role": "id virtual +00h of HUD screen slot 50h (GUI_Warning)"
+  },
+  {
+   "address": "00682EC0",
+   "end": "00682ECD",
+   "role": "v24 virtual +24h of HUD screen slot 50h (GUI_Warning)"
+  },
+  {
+   "address": "00683020",
+   "end": "006832E6",
+   "role": "update virtual +20h of HUD screen slot 50h (GUI_Warning)"
+  },
+  {
+   "address": "0068A320",
+   "end": "0068A325",
+   "role": "id virtual +00h of HUD screen slot 24h (no page)"
+  },
+  {
+   "address": "0068A400",
+   "end": "0068A405",
+   "role": "id virtual +00h of HUD screen slot 46h (no page)"
+  },
+  {
+   "address": "0068A410",
+   "end": "0068A410",
+   "role": "v24 virtual +24h of HUD screen slot 46h (no page)"
+  },
+  {
+   "address": "0068A4E0",
+   "end": "0068A4E5",
+   "role": "id virtual +00h of HUD screen slot 2Fh (no page)"
+  },
+  {
+   "address": "0068A5D0",
+   "end": "0068A5D5",
+   "role": "id virtual +00h of HUD screen slot 4Ah (GUI_binoculars)"
+  },
+  {
+   "address": "0068A5E0",
+   "end": "0068A5E0",
+   "role": "v24 virtual +24h of HUD screen slot 4Ah (GUI_binoculars)"
+  },
+  {
+   "address": "0068A8F0",
+   "end": "0068A8F5",
+   "role": "id virtual +00h of HUD screen slot 27h (no page)"
+  }
+ ]
+}
