@@ -1,0 +1,557 @@
+{
+  "packet": "scene_unit_creators",
+  "worktree": "agent/unit-creators",
+  "ghidra": "read-only",
+  "names_are_hypotheses": true,
+  "recovered_symbol": {
+    "name": "MDestroyer",
+    "address": "00d1ad28",
+    "evidence": "ASCII directly behind the class descriptor's vtable at 00d1acf8"
+  },
+  "supersedes": {
+    "doc": "docs/SCENE_ENTITY_FACTORY.md",
+    "claim": "the nine `unit` classes are data-driven spawners whose instance comes from the unit-class registry and whose size therefore depends on the `Type` value",
+    "correction": "There are two objects. 00964790 returns a vehicle-class descriptor (0x138..0x870 bytes, one per VehicleClass row, cached by class index); the descriptor's vtable +28h then allocates the unit instance (0x1188 bytes for MDestroyer). Also, the class table lists ten `unit` rows, not nine."
+  },
+  "creator_abi": {
+    "signature": "UnitInstance* __fastcall create(int classId /*ECX*/, const char* entityName /*EDX*/, void* hierarchyParent, const float localFrame[16], PropertyBag* properties, void* unused)",
+    "ret": "0x10",
+    "call_site": "0046d5a4 inside 0046cf40",
+    "ecx": "descriptor+0, the class id; dead in all ten bodies",
+    "edx": "the entity's quoted name as a C string, LEA [ESP+0xb0] at the call site",
+    "stack_arg_1": "hierarchy parent, may be null ([ESP+0x1b4] at the call site)",
+    "stack_arg_2": "pointer to the 16-float local frame (LEA [ESP+0x50])",
+    "stack_arg_3": "the property bag (EBX)",
+    "stack_arg_4": "[ESP+0x1b8]; never read by any of the ten but popped by RET 0x10",
+    "evidence": "Ghidra drops the stack arguments (none of the ten is prototyped); the frame arithmetic was taken from the listing, e.g. 004f0522 MOV EBP,[ESP+0x14] after two pushes is entry+0x0c."
+  },
+  "creators": [
+    {
+      "class_id": 7,
+      "scene_class": "DestroyerGen",
+      "create": "004f0520",
+      "register": "004e98e0",
+      "scn_count": 9778,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "the exemplar, read in full"
+    },
+    {
+      "class_id": 8,
+      "scene_class": "SubmarineGen",
+      "create": "004f05f0",
+      "register": "004e98e0",
+      "scn_count": 330,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "instruction-for-instruction the exemplar"
+    },
+    {
+      "class_id": 9,
+      "scene_class": "MotherShipGen",
+      "create": "004f0860",
+      "register": "004e98f0",
+      "scn_count": 1089,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "instruction-for-instruction the exemplar"
+    },
+    {
+      "class_id": 12,
+      "scene_class": "LandingShipGen",
+      "create": "004f0790",
+      "register": "004e98e0",
+      "scn_count": 390,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "instruction-for-instruction the exemplar"
+    },
+    {
+      "class_id": 14,
+      "scene_class": "TBoatGen",
+      "create": "004f06c0",
+      "register": "004e98e0",
+      "scn_count": 652,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "instruction-for-instruction the exemplar"
+    },
+    {
+      "class_id": 24,
+      "scene_class": "PlaneSquadronGen",
+      "create": "004f0ad0",
+      "register": "004e6bc0",
+      "scn_count": 2131,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "allocates its own 0x414 object via 007f2c60; 00964790's result is discarded"
+    },
+    {
+      "class_id": 27,
+      "scene_class": "LandFort",
+      "create": "004f0fb0",
+      "register": "004e5ba0",
+      "scn_count": 72615,
+      "applies_command_property": false,
+      "extra_key": "Stationary",
+      "divergence": "Stationary split to 00748c40; no 004e6b30"
+    },
+    {
+      "class_id": 28,
+      "scene_class": "CommandBuilding",
+      "create": "004f10b0",
+      "register": "004e5ba0",
+      "scn_count": 649,
+      "applies_command_property": false,
+      "extra_key": null,
+      "divergence": "the exemplar minus the 004e6b30 call"
+    },
+    {
+      "class_id": 69,
+      "scene_class": "AirField",
+      "create": "004f0930",
+      "register": "004e9900",
+      "scn_count": 256,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "instruction-for-instruction the exemplar"
+    },
+    {
+      "class_id": 70,
+      "scene_class": "Shipyard",
+      "create": "004f0a00",
+      "register": "004e9910",
+      "scn_count": 243,
+      "applies_command_property": true,
+      "extra_key": null,
+      "divergence": "instruction-for-instruction the exemplar"
+    }
+  ],
+  "exemplar_004f0520": {
+    "steps": [
+      "008f2260(bag, \"Type\" 00ce4780), value dword at +0ch",
+      "00964790(ECX = Type, DL = 1) -> vehicle-class descriptor",
+      "descriptor->vtable[0x28](0) -> unit instance",
+      "004c1130()+4 vtable[0x10]() -> byte; zero places, non-zero defers",
+      "place: instance->vtable[0x98](hierarchyParent, *(*(00e188a8)+0x19cc), localFrame)",
+      "defer: 004f03c0(bag, hierarchyParent, localFrame)",
+      "0041dd40 resize + memcpy into the native string at instance+0x154/+0x158",
+      "004e6b30(instance, bag), the Command property",
+      "return the instance in EAX"
+    ],
+    "placement_predicate": {
+      "address": "004c1130",
+      "identity": "the frame job pool (docs/GAME_RENDER_FRAME.md), base subobject at +4",
+      "slot": "0x10",
+      "status": "provisional: which branch a shipped load takes was not established"
+    }
+  },
+  "type_resolution": {
+    "property": "Type (00ce4780)",
+    "authored_as": "E ShipClasses : PACK3_Pennsylvania (ships), E PlaneClasses : Warhawk (planes)",
+    "stored": "the property descriptor declares the type and the reader stores the resolved integer at +0ch; that integer is a VehicleClass row index",
+    "enum_tables_not_found": "a lexical search of the installed Scripts/ tree found no definition of the ShipClasses / PlaneClasses symbol tables",
+    "data_file": "Scripts/datatables/autoload/vehicleclasses.lua",
+    "data_file_lines": 191122,
+    "rows": 633,
+    "index_range": [
+      1,
+      999
+    ],
+    "unused_indices_in_range": 366,
+    "lookup_routine": "00964790",
+    "lookup_abi": "__fastcall(int typeId /*ECX*/, bool readRace /*DL*/); all ten creators pass DL=1",
+    "singleton": "00437f50",
+    "singleton_layout": {
+      "+0x04": "descriptor cache data pointer, indexed by class index",
+      "+0x08": "descriptor cache capacity; grown by 00437bd0",
+      "+0x10": "int typeToClassIndex[0x1000], indexed by the Type value",
+      "+0x4010": "per-party required-class array, stride 3, grown by 004359e0"
+    },
+    "cache_test": "009647f9 NEG EAX / SBB EAX,EAX / TEST EAX,0xf8a0bd / JNZ; that is `cached != 0` with a junk immediate, no second condition",
+    "lua_fields_read": [
+      "Type (string)",
+      "LandingShip (int, recurses when non-zero)",
+      "Race (int, only when DL != 0)"
+    ],
+    "allocator": "00470b80 = operator new(ECX) + memset 0 of the same size"
+  },
+  "vehicle_class_kinds": [
+    {
+      "type": "Destroyer",
+      "descriptor_size": "0x808",
+      "constructor": "00963380 (inlined new)",
+      "seh_state": "0xa",
+      "installed_rows": 31
+    },
+    {
+      "type": "Cruiser",
+      "descriptor_size": "0x80c",
+      "constructor": "inlined new",
+      "seh_state": "0xb",
+      "installed_rows": 41
+    },
+    {
+      "type": "LandingShip",
+      "descriptor_size": "0x81c",
+      "constructor": "00963c20",
+      "seh_state": "0xc",
+      "installed_rows": 6
+    },
+    {
+      "type": "Cargo",
+      "descriptor_size": "0x80c",
+      "constructor": "00963cb0",
+      "seh_state": "0xd",
+      "installed_rows": 13
+    },
+    {
+      "type": "BattleShip",
+      "descriptor_size": "0x80c",
+      "constructor": "00963d30",
+      "seh_state": "0xe",
+      "installed_rows": 39
+    },
+    {
+      "type": "Submarine",
+      "descriptor_size": "0x840",
+      "constructor": "00963db0",
+      "seh_state": "0xf",
+      "installed_rows": 9
+    },
+    {
+      "type": "TorpedoBoat",
+      "descriptor_size": "0x814",
+      "constructor": "00963e40",
+      "seh_state": "0x10",
+      "installed_rows": 3
+    },
+    {
+      "type": "MotherShip",
+      "descriptor_size": "0x870",
+      "constructor": "00963ec0",
+      "seh_state": "0x11",
+      "installed_rows": 18
+    },
+    {
+      "type": "ReconPlane",
+      "descriptor_size": "0x60c",
+      "constructor": "00951aa0",
+      "seh_state": "0x12",
+      "installed_rows": 0
+    },
+    {
+      "type": "SmallReconPlane",
+      "descriptor_size": "0x60c",
+      "constructor": "009536e0",
+      "seh_state": "0x13",
+      "installed_rows": 5
+    },
+    {
+      "type": "LargeReconPlane",
+      "descriptor_size": "0x60c",
+      "constructor": "00953770",
+      "seh_state": "0x14",
+      "installed_rows": 4
+    },
+    {
+      "type": "Fighter",
+      "descriptor_size": "0x60c",
+      "constructor": "00951af0",
+      "seh_state": "0x15",
+      "installed_rows": 28
+    },
+    {
+      "type": "DiveBomber",
+      "descriptor_size": "0x60c",
+      "constructor": "00951b40",
+      "seh_state": "0x16",
+      "installed_rows": 9
+    },
+    {
+      "type": "TorpedoBomber",
+      "descriptor_size": "0x60c",
+      "constructor": "00951c20",
+      "seh_state": "0x17",
+      "installed_rows": 9
+    },
+    {
+      "type": "Kamikaze",
+      "descriptor_size": "0x60c",
+      "constructor": "00951d00",
+      "seh_state": "0x18",
+      "installed_rows": 6
+    },
+    {
+      "type": "LevelBomber",
+      "descriptor_size": "0x60c",
+      "constructor": "00951de0",
+      "seh_state": "0x19",
+      "installed_rows": 11
+    },
+    {
+      "type": "AirField",
+      "descriptor_size": "0x140",
+      "constructor": "0095fee0",
+      "seh_state": "0x1a",
+      "installed_rows": 2
+    },
+    {
+      "type": "Shipyard",
+      "descriptor_size": "0x138",
+      "constructor": "0095ff50",
+      "seh_state": "0x1b",
+      "installed_rows": 2
+    },
+    {
+      "type": "LandVehicle",
+      "descriptor_size": "0x150",
+      "constructor": "0095ffc0",
+      "seh_state": "0x1c",
+      "installed_rows": 21
+    },
+    {
+      "type": "LandFort",
+      "descriptor_size": "0x180",
+      "constructor": "00749180",
+      "seh_state": "0x1d",
+      "installed_rows": 368
+    },
+    {
+      "type": "CommandBuilding",
+      "descriptor_size": "0x1ac",
+      "constructor": "00951e30",
+      "seh_state": "0x1e",
+      "installed_rows": 7
+    },
+    {
+      "type": "DummyTargetVehicle",
+      "descriptor_size": "0x144",
+      "constructor": "00960050",
+      "seh_state": "0x1f",
+      "installed_rows": 1
+    }
+  ],
+  "instance": {
+    "create_slot": "descriptor vtable +0x28",
+    "destroyer_slot": "006fe590",
+    "destroyer_descriptor_vtable": "00d1acf8",
+    "destroyer_descriptor_second_vptr": "00d1acf4 (stored at descriptor+0x6c)",
+    "destroyer_instance_size": "0x1188",
+    "destroyer_instance_vtable": "00cfc3d0",
+    "constructor": "006fe460(instance, flag)",
+    "class_binding": "009553d0(instance, descriptor) refcounted setter at instance+0x538",
+    "class_back_pointer": "instance+0x354, non-owning",
+    "name_string": {
+      "length": "+0x154",
+      "buffer": "+0x158"
+    },
+    "place_slot": "instance vtable +0x98 = 00cfc468 -> 006dfe40 (JMP 00928860)",
+    "world_registration": "00928860 calls vtable+0x130 (006fe620) once the instance has a parent; 006fe620 pushes it onto five intrusive lists of the parent node at +0x30, +0x48, +0x54, +0x60 and +0x6c through 00484540",
+    "world_parent_node": "*(*(00e188a8)+0x19cc)",
+    "leave_slot": "instance vtable +0x134 (006fe670)"
+  },
+  "plane_squadron_004f0ad0": {
+    "instance_size": "0x414",
+    "allocator": "00bf55be + 00bf79f0 inline, then 007f2c60(instance, 0)",
+    "vehicle_class_call": "00964790(Type, 1) at 004f0b3c with the result discarded; EDI still holds the squadron at the placement call 004f0b75",
+    "purpose": "cache side effect only: the plane class exists before the squadron is placed",
+    "shares_with_exemplar": [
+      "the 004c1130 predicate",
+      "vtable+0x98 / 004f03c0",
+      "the name string at +0x154",
+      "004e6b30"
+    ],
+    "seh": "00c680b8",
+    "second_caller": "006c5050, outside the scene reader; not read"
+  },
+  "registration_pass": {
+    "004e96d0": {
+      "abi": "__thiscall(PropertyBag* bag), RET 0",
+      "steps": [
+        "Type (00ce4780) and Party (00ce5804) from +0ch",
+        "0095ba60(ECX = Type, EDX = Party)",
+        "LaunchClassID (00ce9270): present, type code 0, value >= 0 wins outright",
+        "else build \"VehicleClass.\" + itoa(Type) + \".Catapult.LaunchedClass\" and read it through 00b68d70 with a default of -1",
+        "if the result is > -1: 0095ba60(launchClass, Party) and 0046be90(*(00e18680), launchClass) = BSP_SceneEntity_RegisterHiddenStockUnit"
+      ],
+      "installed_evidence": "vehicleclasses.lua row 261 (Pennsylvania 1941, Type BattleShip) carries [\"LaunchedClass\"] = 121"
+    },
+    "004e6bc0": {
+      "abi": "__thiscall(PropertyBag* bag), RET 0",
+      "steps": [
+        "Type and Party from the bag",
+        "0095ba60(Type, Party)",
+        "0046be90(*(00e18680), Type)"
+      ],
+      "note": "no LaunchClassID, no Lua; the squadron registers its own Type as hidden stock"
+    },
+    "0095ba60": {
+      "abi": "__fastcall(int typeId /*ECX*/, int party /*EDX*/), RET 0",
+      "behaviour": "returns immediately unless party is 0 or 1; otherwise sets byte[classIndex*3 + party] = 1 in the array at singleton+0x4010, growing it through 004359e0",
+      "meaning": "the whole registration pass produces one bitmap of which vehicle classes each party needs; the third byte of each row is never written here"
+    },
+    "stock_walks": {
+      "006bcf40": "PlaneStock %d + Party; reached by 004e98f0 (MotherShipGen) and 004e9900 (AirField); calls 0095ba60 and 0046be90 per slot",
+      "008433c0": "Stock %d + Party; reached by 004e9910 (Shipyard)",
+      "status": "not read further; belongs to the proposed scene_multiplayer_stock packet"
+    }
+  },
+  "shared_helpers": {
+    "004f03c0": {
+      "abi": "__fastcall(PropertyBag* bag /*ECX*/, void* parent /*EDX*/), one stack arg, RET 4",
+      "behaviour": "erases SetHierarchy (00cea028), HierarchyParent (00cea018) and HierarchyMatrix (00cea008) through 004f01f0, writes SetHierarchy = 1 via 008f3940, writes HierarchyParent = parent name (00926420 then +4, or the global at 00e18b5d) via 008f3ac0, and writes the 16 floats as HierarchyMatrix via 008f3880 after a REP MOVSD ECX=0x10"
+    },
+    "004e6b30": {
+      "abi": "__fastcall(void* instance /*ECX*/, PropertyBag* bag /*EDX*/), RET 0",
+      "behaviour": "requires the Command property's type code at +4 to be 6 (nested block); reads Command and CommandTarget out of the sub-bag; queues only when the inner Command key exists; the target defaults to \"\" at 00ce3a0c",
+      "sink": "00469610(*(00e18680), instance, commandName, targetName), which allocates a record through 00bf681b and appends it through 004690d0",
+      "shipped_shape": "\"Command\" { CommandTarget = R \"\" ; } queues nothing"
+    }
+  },
+  "no_ghidra_function": [
+    {
+      "address": "004e98e0",
+      "end": "004e98e0",
+      "role": "JMP 004e96d0; the registration creator of DestroyerGen, SubmarineGen, LandingShipGen and TBoatGen"
+    },
+    {
+      "address": "004e6bc0",
+      "end": "004e6bf5",
+      "role": "the PlaneSquadronGen registration creator"
+    },
+    {
+      "address": "006dfe40",
+      "end": "006dfe40",
+      "role": "JMP 00928860; the unit instance's vtable +0x98 placement slot"
+    }
+  ],
+  "ghidra_flow_gaps": [],
+  "tooling_problems": [
+    "python tools/bsp.py ghidra export failed for 004e98e0 and 004e6bc0 because neither has a Ghidra function; the failure message says 'rerun to retry', which is misleading for that cause. disasm-raw handled both.",
+    "exports/bsp is not visible from the worktree as a relative path: grep on exports/bsp/functions/... has to be run from the main checkout, although bsp.py show resolves it correctly from the worktree."
+  ],
+  "uncertainties": [
+    "the 004c1130()+4 vtable[0x10] predicate: which branch a shipped load takes is unproven, and the deferred branch's meaning is inferred from what it writes",
+    "00964790's recursion guard 00f8a098 and the 00bf681b(0x1c) / 00e0cfc0 block around vtable[0x18](0x19) and vtable[0x18](0x1b) were not decoded",
+    "what fills typeToClassIndex at singleton+0x10; 00438020 calls both 00437f50 and 00964790 and is the likely filler",
+    "the third byte of each singleton+0x4010 row is never written by 0095ba60",
+    "00748c40's object size and vtable (LandFort + Stationary)",
+    "004e5ba0, the registration creator LandFort and CommandBuilding share with the typed classes",
+    "the unit instance layout beyond +0x154, +0x354 and +0x538, and the meaning of the five parent-node lists 006fe620 links into",
+    "the ShipClasses / PlaneClasses enum symbol tables"
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "vehicle_class_descriptor",
+      "addresses": [
+        "00964790",
+        "00963380",
+        "00963c20",
+        "00749180",
+        "00437f50",
+        "00437bd0"
+      ],
+      "files": [
+        "docs/VEHICLE_CLASS_DESCRIPTOR.md"
+      ],
+      "contract": "the 0x808 MDestroyer descriptor's layout, the twelve-slot vtable at 00d1acf8, and which vehicleclasses.lua fields each constructor reads"
+    },
+    {
+      "packet": "vehicle_class_index_table",
+      "addresses": [
+        "00438020",
+        "00437f50",
+        "00437bd0",
+        "004359e0"
+      ],
+      "files": [
+        "docs/VEHICLE_CLASS_INDEX_TABLE.md"
+      ],
+      "contract": "what fills typeToClassIndex at singleton+0x10, and the third byte of the +0x4010 party rows"
+    },
+    {
+      "packet": "unit_instance_layout",
+      "addresses": [
+        "006fe460",
+        "006fe590",
+        "009553d0",
+        "00928860",
+        "009258f0",
+        "006fe620",
+        "00484540"
+      ],
+      "files": [
+        "docs/UNIT_INSTANCE_LAYOUT.md"
+      ],
+      "contract": "the 0x1188 instance: constructor, vtable 00cfc3d0, the five parent-node lists and the world node *(*(00e188a8)+0x19cc)"
+    },
+    {
+      "packet": "scene_stationary_fort",
+      "addresses": [
+        "004f0fb0",
+        "00748c40",
+        "00748a40",
+        "0084f7f0",
+        "0048e9f0"
+      ],
+      "files": [
+        "docs/SCENE_STATIONARY_FORT.md"
+      ],
+      "contract": "the Stationary LandFort variant, 72615 authored entities"
+    },
+    {
+      "packet": "scene_entity_command_queue",
+      "addresses": [
+        "00469610",
+        "004690d0",
+        "00468350",
+        "004e6b30"
+      ],
+      "files": [
+        "docs/SCENE_ENTITY_COMMAND_QUEUE.md"
+      ],
+      "contract": "the record 004e6b30 queues on the scene database and who drains it"
+    }
+  ],
+  "reconstruction": {
+    "header": "include/bsp/scene_unit_creators.hpp",
+    "source": "src/scene_unit_creators.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "build": "scripts/build.ps1, Win32 MSVC Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math: 1/1 passed, one case added to tests/math_tests.cpp for the 004e6b30 inner-Command rule",
+    "reused_types": [
+      "bsp::ScenePropertyBlock",
+      "bsp::SceneProperty",
+      "bsp::find_scene_property_block",
+      "bsp::scene_property_bool"
+    ],
+    "not_binary_equivalent": true
+  },
+  "state_per_address": {
+    "004f0520": "exported, analyzed, reconstructed, build-tested",
+    "004f05f0": "analyzed (listing), tabulated",
+    "004f06c0": "analyzed (listing), tabulated",
+    "004f0790": "analyzed (listing), tabulated",
+    "004f0860": "analyzed (listing), tabulated",
+    "004f0930": "analyzed (listing), tabulated",
+    "004f0a00": "analyzed (listing), tabulated",
+    "004f0ad0": "exported, analyzed, reconstructed, build-tested",
+    "004f0fb0": "analyzed (listing), tabulated",
+    "004f10b0": "analyzed (listing), tabulated",
+    "004e96d0": "exported, analyzed, reconstructed, build-tested",
+    "004e98e0": "analyzed (listing only, no Ghidra function)",
+    "004e98f0": "analyzed (listing)",
+    "004e9900": "analyzed (listing)",
+    "004e9910": "analyzed (listing)",
+    "004e6bc0": "analyzed (listing only, no Ghidra function)",
+    "004e6b30": "exported, analyzed, reconstructed, build-tested",
+    "004f03c0": "exported, analyzed, reconstructed, build-tested",
+    "00964790": "exported, analyzed, reconstructed, installed-file-checked",
+    "0095ba60": "analyzed (listing), reconstructed",
+    "00470b80": "analyzed (listing)",
+    "006fe590": "analyzed (listing)",
+    "009553d0": "analyzed (listing)",
+    "00469610": "not read past its call site"
+  }
+}
