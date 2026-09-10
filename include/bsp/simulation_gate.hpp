@@ -84,7 +84,7 @@ inline constexpr int kAlternatePauseAction = 0x4B; // 004E5180
 // index by the id at menu+20h to print `INTF_*` in their trace strings.
 inline constexpr int kInterfaceMultiInGame = 0x17; // INTF_MULTIINGAME
 inline constexpr int kInterfaceFreeCamera = 0x29; // INTF_FREECAMERA
-inline constexpr int kInterfaceEngineMovie = 0x2D; // INTF_ENGINEMOVIE
+inline constexpr int kInterfaceEngineMovie = 0x2D; // INTF_ENGINEMOVIECAMERA in the 00e08cd8 table
 inline constexpr int kInterfaceShipyard = 0x31; // INTF_SHIPYARD
 inline constexpr int kInterfaceAirbase = 0x32; // INTF_AIRBASE
 

@@ -29,7 +29,7 @@ namespace bsp {
 // table as an id-to-name map rather than an unrelated string array. Ids 00h..1Fh
 // are front-end interfaces; 20h and above are in-session HUD interfaces, and
 // 00683E90 splits the two ranges at exactly that boundary.
-inline constexpr std::size_t kInterfaceNameCount = 45;
+inline constexpr std::size_t kInterfaceNameCount = 54; // 36h entries at 00e08cd8 (docs/IN_MISSION_INTERFACE_MANAGER.md)
 inline constexpr int kFirstInGameInterface = 0x20;      // 00683EA2
 inline constexpr int kMovieCameraNewInterface = 0x2C;   // 00683E9D, the one exempt id
 

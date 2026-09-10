@@ -51,6 +51,15 @@ constexpr const char* kInterfaceNames[kInterfaceNameCount] = {
     "INTF_IDLECAMERA",              // 2A
     "INTF_MOVIECAMERA",             // 2B
     "INTF_MOVIECAMERANEW",          // 2C
+    "INTF_ENGINEMOVIECAMERA",       // 2D
+    "INTF_AIRFIELD",                // 2E
+    "INTF_COMMANDBUILDING",         // 2F
+    "INTF_SHIPYARD_STAREDUMB",      // 30
+    "INTF_SHIPYARD",                // 31
+    "INTF_AIRBASE",                 // 32
+    "INTF_LAUNCHLANDING",           // 33
+    "INTF_LIMBO",                   // 34
+    "INTF_SUPPORTMANAGER",          // 35
 };
 
 // 004BEF00 builds a counted handle from the raw payload on the stack and

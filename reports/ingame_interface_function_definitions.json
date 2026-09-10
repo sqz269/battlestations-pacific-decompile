@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0068aca0",
+    "end_address": "0068b390"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0068aca0",
+    "end_address": "0068b38f",
+    "bytes_disassembled": 1776,
+    "message": "Successfully disassembled 1776 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0068aca0",
+    "disassemble_first": false,
+    "name": "BSP_InGameInterface_ApplyPendingInterface"
+   },
+   "result": {
+    "success": true,
+    "address": "0068aca0",
+    "function_name": "BSP_InGameInterface_ApplyPendingInterface",
+    "entry_point": "0068aca0",
+    "body_size": 1776,
+    "message": "Function created successfully at 0068aca0",
+    "warnings": [
+     "Function name 'BSP_InGameInterface_ApplyPendingInterface' \u2014 main part 'InGameInterface_ApplyPendingInterface' is not PascalCase. Expected: IngameinterfaceApplypendinginterface",
+     "Function name 'BSP_InGameInterface_ApplyPendingInterface' \u2014 main part 'InGameInterface_ApplyPendingInterface' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InGameInterface_ApplyPendingInterface' does not start with a recognized verb. First word 'In' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0068aca0",
+   "end": "0068b390",
+   "name": "BSP_InGameInterface_ApplyPendingInterface",
+   "after": "Function: BSP_InGameInterface_ApplyPendingInterface at 0068aca0\nSignature: undefined BSP_InGameInterface_ApplyPendingInterface(void)\nEntry: 0068aca0\nBody: 0068aca0 - 0068b38f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
