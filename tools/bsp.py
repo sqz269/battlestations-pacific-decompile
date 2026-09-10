@@ -344,6 +344,14 @@ def show(args):
         return
     if args.asm:
         text = mark_asm_gaps(text)
+    elif args.start == 0:
+        # A long evidence comment at the top of an export would otherwise eat the whole line budget:
+        # print it capped separately so --lines always yields code.
+        m = re.match(r'\s*(/\*.*?\*/\s*)+', text, re.S)
+        if m and m.end() < len(text):
+            comment, text = text[:m.end()], text[m.end():]
+            rows = comment.strip().splitlines()
+            print('\n'.join(rows[:10]) + (f'\n   ... {len(rows) - 10} more comment lines (see the export file)' if len(rows) > 10 else ''))
     cap(text, args.lines, args.start)
     if db and not args.asm and args.start == 0:
         callees = [r[0] for r in db.execute('SELECT callee FROM calls WHERE caller=? ORDER BY callee', (a,))]

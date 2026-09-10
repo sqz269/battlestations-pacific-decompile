@@ -42,6 +42,7 @@ across branches. Library helpers (`_memcpy`, `_memset`, `_strstr`, `_strcat_s`, 
 ### Phase 0, allocator and process identity (0073d43f - 0073d4bd)
 
 1. `00bd1780`, `00bd17a0` - two allocator hook installers (`FUN_00bd1680` plus
+   Correction (docs/APP_INIT_ALLOC_STRINGS.md): `00bd1780`/`00bd17a0` are GameAlloc and GameFree, not hook installers; the site at `0073d431` allocates sixteen bytes and frees them to warm the lazy game-pool singleton.
    `FUN_00bd11f0` / `FUN_00bd1620`). Run before anything else.
 2. `this+0x18 = 1`, `this+0x19 = 0`.
 3. `00439040` `BSP_Application_CaptureModulePath` - `GetModuleFileNameA`, `__strlwr`, `_splitpath`
