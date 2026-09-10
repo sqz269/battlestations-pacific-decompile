@@ -878,8 +878,14 @@ def worktree_cmd(args):
             if probe.returncode == 0:
                 subprocess.run(['cmd', '/c', 'rmdir', str(link)], capture_output=True, text=True)
                 print(f'detached exports junction in {path}')
-        run = subprocess.run(['git', 'worktree', 'remove', '--force', str(path)], cwd=main, capture_output=True, text=True)
-        print((run.stdout + run.stderr).strip() or f'removed {path}')
+        if not path.exists():
+            # already gone (an earlier remove kept only the branch): prune the stale entry and go on
+            subprocess.run(['git', 'worktree', 'prune'], cwd=main, capture_output=True, text=True)
+            print(f'{path} is already gone; pruned stale worktree entries')
+            run = subprocess.CompletedProcess(args=[], returncode=0, stdout='', stderr='')
+        else:
+            run = subprocess.run(['git', 'worktree', 'remove', '--force', str(path)], cwd=main, capture_output=True, text=True)
+            print((run.stdout + run.stderr).strip() or f'removed {path}')
         if args.delete_branch and run.returncode == 0:
             # -d refuses an unmerged branch; the worktree is gone but the commits stay reachable.
             deletion = subprocess.run(['git', 'branch', '-d', f'agent/{args.name}'], cwd=main, capture_output=True, text=True)
