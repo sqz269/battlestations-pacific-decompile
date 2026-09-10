@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_batch_keys",
+  "status": "integrated_actual_storage_original_byte_fixture_and_strict_win32_build_checked",
+  "new_complete_functions": 1,
+  "upgraded_complete_functions": 1,
+  "new_fragments": 1,
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00bf7456",
+      "name": "native_x87_truncate_st0_00bf7456",
+      "cpp_symbol": "native_x87_truncate_st0_00bf7456",
+      "source": "src/native_render_batch_keys.cpp",
+      "native_end_exclusive": "00bf74cb",
+      "original_abi": "InputST0 consumed; EDX:EAX result; RET",
+      "evidence": "reports/native_render_batch_keys_audit.json",
+      "status": "actual_storage_original_byte_fixture_and_strict_win32_build_checked",
+      "current_integration_scope": "Complete117-byte x87 hardware body; duplicate/sign-store/FISTP/FILD/residual correction and zero/indefinite two-pop path retained. CurrentCW/status/exception instructions preserved; fixture masked exceptions only.",
+      "native_differential_fixture": true,
+      "abi_compatible": true,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b51ab0",
+      "name": "native_render_entry_material_depth_less_00b51ab0",
+      "cpp_symbol": "native_render_entry_material_depth_less_00b51ab0",
+      "source": "src/native_render_batch_keys.cpp",
+      "native_end_exclusive": "00b51af5",
+      "original_abi": "ECX/EDX actual entry addresses; AL predicate; RET",
+      "evidence": "reports/native_render_batch_keys_audit.json",
+      "status": "actual_storage_original_byte_fixture_and_strict_win32_build_checked",
+      "current_integration_scope": "Complete69-byte raw material predicate; left effect captured before rightB0 then leftB0 read. Signed unequal path replacesAL only, retains right upper24EAX. Equal path right-depth FLD then left-depth FLD, FCOMIP/FSTP/JBE; unorderedfalse when masked.",
+      "native_differential_fixture": true,
+      "abi_compatible": true,
+      "game_validated": false,
+      "previous_interfaces": [
+        {
+          "address": "00b51ab0",
+          "name": "render_entry_material_value_less",
+          "source": "src/render_sort.cpp",
+          "status": "semantic_assembly_reviewed_build_checked",
+          "abi_compatible": false,
+          "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation.",
+          "kind": "function"
+        }
+      ]
+    },
+    {
+      "kind": "fragment",
+      "address": "00b51df0",
+      "name": "prepare_native_render_batch_keys_00b51df0",
+      "cpp_symbol": "prepare_native_render_batch_keys_00b51df0",
+      "source": "src/native_render_batch_keys.cpp",
+      "native_end_exclusive": "00b51f0c",
+      "original_abi": "ParentECX batch and stack index RET4; sliceESI batch/EDI0 with parent frame; newC++ batch-reference ABI",
+      "evidence": "reports/native_render_batch_keys_audit.json",
+      "status": "actual_storage_original_byte_fixture_and_strict_win32_build_checked",
+      "current_integration_scope": "Enabled index0 loop B51E2E..B51ED4 only: current signed count/array, rawentry-section-material-effect-texture chain, conditional signed16 texture gate, late unsigned effectC0 and x87 depth, prefix<<37 plus zeroextendedEAX, low/high ordered stores. Noqueuegetter/config/sort closure claim.",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_slice_start": "00b51e2e",
+      "native_slice_end_exclusive": "00b51ed4",
+      "parent_complete": false
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "sha256": "41a5e8c480a784a70ca0827e2ce32415deb1d12765a85a48f88b2028f7fc9e3b"
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "sha256": "fa6a16afd510a1a0b7bc24bb928b5b908268266ef7a2603112aef0a56e9152c0"
+    },
+    {
+      "path": "docs/NATIVE_RENDER_BATCH_KEYS.md",
+      "sha256": "7797aecb3973762132223f4194914d2df4889af34f6c3fa687c728e2a5bff3e8"
+    },
+    {
+      "path": "local/native_batch_keys_check.cpp",
+      "sha256": "c62152c16c17989f1730bb52502ba52aa566acd66f2f2fbd3f9c4249e433f858"
+    },
+    {
+      "path": "local/native_batch_keys_spans.hpp",
+      "sha256": "6c3977d6f23b1e3d3ae5b2ddba890bf1ee5fa98d594f30c80748b4d126f8b237"
+    },
+    {
+      "path": "local/build_native_batch_keys_check.ps1",
+      "sha256": "26c85e594db7cd12f4e0c5858f8ce10852d8a204b8a652192dd82d84be96b252"
+    },
+    {
+      "path": "local/native_batch_keys_fixture.txt",
+      "sha256": "22fcdf983374945270c5b4f3b4b5939b81797137bcc7716ecf1b8324a8f8ed6b"
+    },
+    {
+      "path": "build/batch-keys-check/native_batch_keys_trace.bin",
+      "sha256": "9f3c6e8e5941834be951324d16ad9b135ea69bf4a56c89f09c402206bad91ecf"
+    },
+    {
+      "path": "local/prepare_native_batch_keys_fixture.py",
+      "sha256": "9fb1fdf5e7ba5efd07e6f347e46b3ef51e3c677bde3da62924880461ac748044"
+    }
+  ],
+  "discovery_review": {
+    "report": "reports/native_render_batch_preparation_next.json",
+    "worker_commit": "557cf258860bd120d8949487300d09dc559d0e98",
+    "verified_spans": [
+      {
+        "address": "00b51df0",
+        "length": 284,
+        "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1cb30",
+        "length": 31,
+        "sha256": "5f7382acdc77434bbf706c53e44671981d88a9ade9e5859171a8db390dc011bd",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf7456",
+        "length": 117,
+        "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf7df0",
+        "length": 52,
+        "sha256": "3d0898d998acc8af3ea17032ff56fd1b963c685b072f669c52d4b8267f9d0a78",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b51b00",
+        "length": 27,
+        "sha256": "084fb8170aabc99ecc8a6c435dc47dd3d942c76632cbd3781c5ac9902195c5c8",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b51ab0",
+        "length": 69,
+        "sha256": "de7b6fe4974c5fad7b7b22baeb6c6e8b8268ddcfc81ea32d09c4082b945db353",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1dce0",
+        "length": 235,
+        "sha256": "df3b6a3ed0dd92fca4028745fe2cae1ea65c42c54a2d2c0d615b8db6d8b4a1c6",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d420",
+        "length": 150,
+        "sha256": "929943dae9485fc9fc14a4c1b641bfef1c9f52784ffef4df2e0c98c4ed3ccd88",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c210",
+        "length": 145,
+        "sha256": "80d27cb2032a3e6c5297579b5f7414164d18e4f1dd31ae41c7a2e9ce5ec6cf1f",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d280",
+        "length": 382,
+        "sha256": "8c7a88234e3741e6403ff0b096e5cbfeadf075b30dfdf59c3eda92d914ad3cb0",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1cf80",
+        "length": 156,
+        "sha256": "2b7aaf334a7cd3f53960b24c26acebf49eeefc448a866046fb8bd26ded1e5a7e",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c8c0",
+        "length": 77,
+        "sha256": "8ad21098707297da5d3b3bfbf951c5bd722300c34ec6b7cd254053d58808ed49",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c910",
+        "length": 110,
+        "sha256": "56b101e7dda83824a1f77bcf59304accc4336203684faa107bf240e59d857224",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c1b0",
+        "length": 92,
+        "sha256": "dc13bace7a1f15cf9acda1a0631c923ee370ca28b0e8e707fcd998f81aadf734",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d020",
+        "length": 62,
+        "sha256": "fd04bf3b6fff2bbb0b9693905ea2da8336646fd1fb9e5f733fcd84013d5fa570",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d6a0",
+        "length": 70,
+        "sha256": "52b76cc9e88809aa9b565e4a344f5795aea2f712315d7e770f0ff028d9a2bd65",
+        "live_matches_installed": true
+      },
+      {
+        "address": "004c11f0",
+        "length": 189,
+        "sha256": "e5a79fe265e15ba3285d2a4b6944100bd038fb08567592f2c72f6f3f05c597a5",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d5e5ac",
+        "length": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+        "live_matches_installed": true
+      }
+    ],
+    "pinned_source_blobs": [
+      {
+        "path": "include/bsp/native_render_batch_lifetime.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead"
+      },
+      {
+        "path": "src/native_render_batch_lifetime.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc"
+      },
+      {
+        "path": "include/bsp/native_render_batch_reference.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "718c0d01db56c184ea00e374eb4b3b8dfbf3c5c496028789354e4589603a0ec1"
+      },
+      {
+        "path": "src/native_render_batch_reference.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "68fa270b02d19929faad4ec55b92cdb83538e9967c57918e6054020515dbf176"
+      },
+      {
+        "path": "include/bsp/native_render_queue_access.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "c023ce7e28e4a3c7d80e829ae26a038247cb279a78fd1167a7158258018962ed"
+      },
+      {
+        "path": "src/native_render_queue_access.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "4756ec29c6d94911bbdfcf1fe806b0a6d610240c7ebbadaa549e709760113993"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "aaa149c6ae8b6ff66c33d9351d85450c2d63a25308cf997cbc7592263eca12c2"
+      },
+      {
+        "path": "src/native_render_pointer_arrays.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "578800f83ea01eb9b3ee176b9f2c2c3bee836870c5def0a9a216a75afb3a535e"
+      },
+      {
+        "path": "include/bsp/instance_upload.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "src/instance_upload.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "194d00d2130eb1b433e8b6433bbb0951c7f0becc8ad3c25403bf0d25ae1e97b0"
+      },
+      {
+        "path": "include/bsp/instance_sort.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "src/instance_sort.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "845cc7172422040b563bc3c75b1a635f0dba571ee685aa2cf02ec83ba579fcc9"
+      },
+      {
+        "path": "include/bsp/instance_geometry.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+      },
+      {
+        "path": "include/bsp/render_sort.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "6d0e6ff254d4aaafbea40ff0e00f8e5fec3e5c4315157bb722f5cef23a9762fe"
+      },
+      {
+        "path": "src/render_sort.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "43a0478ff42d807856294ef891a7afb9659c382fc6c7fe718d0a54ba9922e02d"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "src/render_command_queue.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+      },
+      {
+        "path": "include/bsp/render_command_execution.hpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "8fff16c9fa9fa22e086f82db7b79d9e4dcf82e394610cad5c2b976ef7e62d08d"
+      },
+      {
+        "path": "src/render_command_execution.cpp",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "commit": "eb6b5a6c50b46ca30da4bf6b1a35d5997e23ab96",
+        "sha256": "09fdb4083e20b61c2c04ee6c007a31d87c80c2a172378eae67c54a40b5920614"
+      }
+    ]
+  },
+  "fixture": {
+    "passed": true,
+    "trace_words": 1236,
+    "extended_conversion_pairs": 132,
+    "raw_comparator_pairs": 60,
+    "key_loop_pairs": 12,
+    "leaf_machine_bytes_identical": 186,
+    "full_original_conversion_executed": true,
+    "full_original_comparator_executed": true,
+    "original_key_loop_slice_only": true,
+    "original_allmul_executed": true,
+    "queue_getter_stub": false,
+    "masked_exceptions_only": true,
+    "state_fields": [
+      "control",
+      "status",
+      "tag"
+    ],
+    "unmasked_exception_delivery_tested": false
+  },
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "new_tracked_tests": 0,
+    "path": "reports/native_render_batch_keys_build.txt",
+    "sha256": "274ff52194bfb82087f11f334504da001c543d6cb90f1fa101360ca3fd8b83ad"
+  },
+  "old_semantic_comparator": [
+    {
+      "address": "00b51ab0",
+      "name": "render_entry_material_value_less",
+      "source": "src/render_sort.cpp",
+      "status": "semantic_assembly_reviewed_build_checked",
+      "abi_compatible": false,
+      "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation.",
+      "kind": "function"
+    }
+  ],
+  "ledger_consolidated": true,
+  "annotations_applied": true,
+  "parent_b51df0_complete": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_render_batch_keys_annotations.json",
+    "sha256": "b52cfdb20f95a3c9b3da07d789254d2d08950bf1bbedae35b293a1a7092629b8",
+    "old_names_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00bf7456",
+      "path": "exports/bsp/functions/00bf7456/decompiled.c",
+      "sha256": "9a69cac3e0edf29c2fde10d91368dbc14cccb18d145b69163c896c79f9f1cc65"
+    },
+    {
+      "address": "00b51ab0",
+      "path": "exports/bsp/functions/00b51ab0/decompiled.c",
+      "sha256": "5c5cf57f6181506e987a88152f21a40af8f86dcce138b6953a96107e965bec08"
+    },
+    {
+      "address": "00b51df0",
+      "path": "exports/bsp/functions/00b51df0/decompiled.c",
+      "sha256": "609d4b83824f55283f85da51a9890fa4c37c8ee3d00d763b35621dd1bd45d74d"
+    }
+  ],
+  "closure_utc": "2026-09-10T23:48:10.854961+00:00"
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00bf7456",
+    "before": {
+      "address": "00bf7456",
+      "function_name": "LIBCRT_unmatched_00bf7456",
+      "comment": "[BSP inventory 00bf7456] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)\n\n[BSP reconstruction 00bf7456]\nCRT conversion helper: duplicate ST0, FISTP qword under current rounding mode, reload integer, subtract, correct ADC/SBB toward zero; zero and integer-indefinite shortcut. For binary32 input with masked x87 exceptions EAX is low32 of signed64 truncation; NaN/infinity/signed64 overflow EAX0. 00b51df0 discards EDX and zeroextends EAX.49,692 native comparisons across 4,141 binary32 patterns and12 control words pass. Typed port reconstructs numeric EAX only, not flags, unmasked traps or arbitrary extended ST0. Existing CRT inventory name retained pending actual symbol proof. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim. Original ABI: Input ST0; pop one x87 value; EDX:EAX signed64 result; RET. Evidence: docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00bf7456] update\nCRT conversion helper: duplicate ST0, FISTP qword under current rounding mode, reload integer, subtract, correct ADC/SBB toward zero; zero and integer-indefinite shortcut. For binary32 input with masked x87 exceptions EAX is low32 of signed64 truncation; NaN/infinity/signed64 overflow EAX0. 00b51df0 discards EDX and zeroextends EAX.49,692 native comparisons across 4,141 binary32 patterns and12 control words pass. Typed port reconstructs numeric EAX only, not flags, unmasked traps or arbitrary extended ST0. Existing CRT inventory name retained pending actual symbol proof. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim. Original ABI: Input ST0; pop one x87 value; EDX:EAX signed64 result; RET. Evidence: docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n[BSP reconstruction] Shared primary-owned CRT helper; existing library name preserved. Private complete kernel supports extended-ST0 ambient inputs and preserves original x87 truncation schedule; do not replace with binary32-only batch-depth converter. Original ABI: ST0 extended input; EDX:EAX signed64 truncation; pops ST0; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00bf7456",
+      "old_name": "LIBCRT_unmatched_00bf7456",
+      "name": "LIBCRT_unmatched_00bf7456",
+      "evidence": "Complete117-byte x87 hardware body; duplicate/sign-store/FISTP/FILD/residual correction and zero/indefinite two-pop path retained. CurrentCW/status/exception instructions preserved; fixture masked exceptions only. Original ABI: InputST0 consumed; EDX:EAX result; RET. Evidence reports/native_render_batch_keys_audit.json; one private fixture1236normalizedwords,186identical fullleaf machinebytes; strictMSVCWin32+2existing CTests passed. ParentB51DF0 remains fragment; no gameplay validation. Existing comments/library names preserved."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51ab0",
+    "before": {
+      "address": "00b51ab0",
+      "function_name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+      "comment": "[BSP reconstruction 00b51ab0]\nSETL at00b51aee; FCOMIP at00b51ad9 and JBE at00b51add; only AL defined on material mismatch; ECX/EDX entry pointers, AL predicate consumed by sort caller. Typed projected-field C++ port; native sort/key generation and ABI unported.\n\n[BSP reconstruction 00b51ab0] update\nSigned effect+B0 ascending, then entry+14 float descending. Now consumed by the recovered nonzero-index batch path and category1 sort. Public sort domain retains finite-depth guard; keys remain unchanged. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim. Original ABI: ECX left entry, EDX right entry; RET; AL predicate. Evidence: docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b51ab0",
+      "old_name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+      "name": "BSP_RenderEntry_LessSignedMaterialThenFloatDescending",
+      "evidence": "Complete69-byte raw material predicate; left effect captured before rightB0 then leftB0 read. Signed unequal path replacesAL only, retains right upper24EAX. Equal path right-depth FLD then left-depth FLD, FCOMIP/FSTP/JBE; unorderedfalse when masked. Original ABI: ECX/EDX actual entry addresses; AL predicate; RET. Evidence reports/native_render_batch_keys_audit.json; one private fixture1236normalizedwords,186identical fullleaf machinebytes; strictMSVCWin32+2existing CTests passed. ParentB51DF0 remains fragment; no gameplay validation. Existing comments/library names preserved."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51df0",
+    "before": {
+      "address": "00b51df0",
+      "function_name": "BSP_RenderBatch_PrepareSort",
+      "comment": "[BSP reconstruction 00b51df0]\nVtable00d5e5ac+Ch. Query queue sortconfig00b1cb30; only sort when enabled. Batchindex0 derives64-bit key atentry+20h from material-related values then comparator00b51b00; other index comparator00b51ab0. Exact key/ordering semantics andsorthelper00b1dce0 unported; no opaque/transparent naming assumed.\n\n[BSP reconstruction 00b51df0] update\nRead enable byte via00b1cb30 using original index. Disabled skips entries. Enabled index0: signed16 material+34>0 and nonnull slot0 gate texture+20 read; prefix=(((effect+B0)&3f)*1000h+(texture20&fff))*100h+byte(effect+C0); key=(uint64(prefix)<<37)+zeroextended EAX from00bf7456 on entry+14 binary32. Other indices use signed-material/depth comparator00b51ab0; copied config DWORD does not select comparator. Generate keys in current slot order then00b1dce0 ideal=count. Typed borrowed projection requires stable bindings. Native synthetic batch/permutation and masked-x87 numerical checks pass. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim. Original ABI: ECX batch; stack original batch index; RET4; virtual+0C. Evidence: docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b51df0",
+      "old_name": "BSP_RenderBatch_PrepareSort",
+      "name": "BSP_RenderBatch_PrepareSort",
+      "evidence": "Enabled index0 loop B51E2E..B51ED4 only: current signed count/array, rawentry-section-material-effect-texture chain, conditional signed16 texture gate, late unsigned effectC0 and x87 depth, prefix<<37 plus zeroextendedEAX, low/high ordered stores. Noqueuegetter/config/sort closure claim. Original ABI: ParentECX batch and stack index RET4; sliceESI batch/EDI0 with parent frame; newC++ batch-reference ABI. Evidence reports/native_render_batch_keys_audit.json; one private fixture1236normalizedwords,186identical fullleaf machinebytes; strictMSVCWin32+2existing CTests passed. ParentB51DF0 remains fragment; no gameplay validation. Existing comments/library names preserved."
+    },
+    "status": "applied"
+  }
+]
