@@ -48,6 +48,11 @@ struct D3D9FrameTargets {
 
 // Semantic projections of stream getters, not full native constructors/layouts.
 struct LogicalVertexStream {
+    // Native base ctor00B61E20 sets +50 to null; mesh handler00B93800 later
+    // attaches owned32-byte decode records through00B61D90. Disengaged means
+    // that actual null state, distinct from a present empty allocation. Mesh
+    // GPU creation copies the real parsed bytes; generated streams retain null.
+    std::optional<std::vector<std::uint8_t>> compressed_format_bytes_50;
     std::shared_ptr<VertexBufferBinding> physical; // Native stream +58h.
     std::shared_ptr<VertexDeclaration> declaration; // +68h.
     UINT offset{};       // +5ch.

@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace bsp {
+struct LogicalVertexStream;
 // The 20h bytes attached by00b93800 and addressed by00b61e10 contain two
 // little-endian float4s. Values remain in the shader's D3D declaration domain;
 // reading this record does not decompress or rewrite any vertex bytes.
@@ -19,7 +20,8 @@ struct MeshVertexDecodeRecord {
 
 // Host checked value projection of native ECX stream, stack element index,
 // EAX=[stream+50]+index*20h, RET4. The native getter has no checks. This
-// interface rejects absent/short metadata and leaves output unchanged.
+// interface rejects absent/short metadata and leaves output unchanged. It
+// returns source bits without FP conversion; packing below applies native x87.
 bool read_mesh_vertex_decode_record_00b61e10(const MeshVertexStreamPayload&,
     std::uint32_t element_index, MeshVertexDecodeRecord& output,
     std::string& error);
@@ -54,12 +56,32 @@ struct MeshDecodeBindingStats {
 //
 // Writes only visited float4 pairs into the caller's existing VS word vector;
 // never clears/resizes it. Null metadata supplies (1,1,1,1)/(+0,+0,+0,+0).
-// Host source/destination bounds validation is atomic: errors leave words and
-// stats unchanged. Overlapping destinations retain native element write order.
-// x87 NaN payload conversion/FP exception state is outside this value projection.
+// Each selected record writes immediately, in scale0123 then offset0123 order,
+// using eight x87 FLD m32/FSTP m32 pairs. No whole-record or whole-call staging;
+// signaling NaNs quiet/set invalid as native, under the caller's x87 control.
+// Host errors retain completed writes; stats reset at entry and track completed
+// records/visited streams even on failure. Per-record source/destination bounds
+// checks are new host safeguards, not native error paths. Overlapping output
+// registers retain native element order. No callbacks run within this concrete
+// owner loop; containers/owners must remain valid for its duration.
 // Evidence: docs/MESH_VERTEX_DECODE_BINDING.md.
 bool pack_mesh_vertex_decode_constants_00b428c0(
     const std::vector<const MeshVertexStreamPayload*>& ordered_streams,
+    const ShaderConstantBindings& vertex_bindings,
+    const MeshDecodeDescriptorLimits& descriptor, std::uint32_t selector,
+    std::vector<float>& vertex_words, MeshDecodeBindingStats& stats,
+    std::string& error);
+
+// Same fragment over actual live draw-section owners. Resolve these streams
+// after preceding builder callbacks. Concrete native virtual+24 is00B48CE0,
+// a plain stream+68 declaration getter;00B47900 reads declaration+10 count.
+// This overload reads that retained declaration's elements() and the SAME
+// stream.compressed_format_bytes_50 backing. Presence is captured per stream
+// before the declaration read; record backing is fetched afresh per element.
+// Generated instance streams use their real constructor-null metadata state.
+// No separate parsed-payload snapshot or synthetic declaration is constructed.
+bool pack_mesh_vertex_decode_constants_00b428c0(
+    const std::vector<const LogicalVertexStream*>& ordered_streams,
     const ShaderConstantBindings& vertex_bindings,
     const MeshDecodeDescriptorLimits& descriptor, std::uint32_t selector,
     std::vector<float>& vertex_words, MeshDecodeBindingStats& stats,

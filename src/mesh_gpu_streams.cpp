@@ -23,12 +23,20 @@ HRESULT create_mesh_vertex_stream_00b4bc00_fragment(IDirect3DDevice9& device,
     UINT capacity = 0;
     if (!declaration || declaration->stride != payload.layout.stride
         || declaration->elements().size() != payload.layout.element_count
+        || (payload.has_compressed_data
+            && std::uint64_t(payload.layout.element_count) * 0x20
+                != payload.compressed_format_bytes.size())
         || !payload_capacity(payload.count, declaration->stride,
             payload.bytes.size(), capacity)) return E_INVALIDARG;
     try {
         auto candidate = std::make_shared<LogicalVertexStream>();
         candidate->physical = std::make_shared<VertexBufferBinding>();
         candidate->declaration = declaration;
+        // The complete parsed mesh already includes00B93800's later+50
+        // attachment. Retain those exact bytes on this actual logical owner;
+        // this is separate from00B4BC00's native constructor-null default.
+        if (payload.has_compressed_data)
+            candidate->compressed_format_bytes_50 = payload.compressed_format_bytes;
         candidate->vertex_count = payload.count;
         candidate->flags = 1;
         candidate->tag = 0x40000000; // Base constructor 00b61ea6.

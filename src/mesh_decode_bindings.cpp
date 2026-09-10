@@ -1,18 +1,29 @@
 #include "bsp/mesh_decode_bindings.hpp"
+#include "bsp/d3d9_states.hpp"
 #include <algorithm>
 #include <cstring>
 
 namespace bsp {
 namespace {
-float read_float_le(const std::uint8_t* source) {
-    const std::uint32_t bits = std::uint32_t(source[0])
-        | (std::uint32_t(source[1]) << 8)
-        | (std::uint32_t(source[2]) << 16)
-        | (std::uint32_t(source[3]) << 24);
-    float value;
-    static_assert(sizeof(value) == sizeof(bits), "32-bit mesh float required");
-    std::memcpy(&value, &bits, sizeof(value));
-    return value;
+std::uint32_t read_word_le(const std::uint8_t* source) {
+    return std::uint32_t(source[0]) | (std::uint32_t(source[1]) << 8)
+        | (std::uint32_t(source[2]) << 16) | (std::uint32_t(source[3]) << 24);
+}
+
+void write_word(float& destination, std::uint32_t bits) {
+    static_assert(sizeof(destination) == sizeof(bits), "32-bit mesh float required");
+    std::memcpy(&destination, &bits, sizeof(bits));
+}
+
+void copy_decode_word_x87(float* destination, const std::uint8_t* source) {
+    //00B429D4..00B42A12 loads and stores EACH word before reading the next.
+    // C++ float assignment may preserve signaling bits using MOVSS instead.
+    __asm {
+        mov eax, source
+        mov edx, destination
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+    }
 }
 
 std::int64_t signed_dword(std::uint32_t word) {
@@ -20,10 +31,109 @@ std::int64_t signed_dword(std::uint32_t word) {
         : std::int64_t(word) - 0x100000000ll;
 }
 
-struct PendingDecodeWrite {
-    std::size_t scale_word{}, offset_word{};
-    MeshVertexDecodeRecord record;
-};
+bool has_records(const MeshVertexStreamPayload& stream) {
+    return stream.has_compressed_data;
+}
+bool has_records(const LogicalVertexStream& stream) {
+    return stream.compressed_format_bytes_50.has_value();
+}
+const std::vector<std::uint8_t>* record_bytes(const MeshVertexStreamPayload& stream) {
+    return &stream.compressed_format_bytes;
+}
+const std::vector<std::uint8_t>* record_bytes(const LogicalVertexStream& stream) {
+    return stream.compressed_format_bytes_50 ? &*stream.compressed_format_bytes_50 : nullptr;
+}
+bool element_count(const MeshVertexStreamPayload& stream, std::uint32_t& count,
+    std::string&) {
+    count = stream.layout.element_count;
+    return true;
+}
+bool element_count(const LogicalVertexStream& stream, std::uint32_t& count,
+    std::string& error) {
+    if (!stream.declaration) {
+        error = "Mesh decode logical stream has no retained declaration";
+        return false;
+    }
+    static_assert(sizeof(std::size_t) == sizeof(std::uint32_t), "Native Win32 counts");
+    count = static_cast<std::uint32_t>(stream.declaration->elements().size());
+    return true;
+}
+
+template<class Stream>
+bool pack_decode(const std::vector<const Stream*>& ordered_streams,
+    const ShaderConstantBindings& vertex_bindings,
+    const MeshDecodeDescriptorLimits& descriptor, std::uint32_t selector,
+    std::vector<float>& vertex_words, MeshDecodeBindingStats& stats,
+    std::string& error) {
+    stats = {};
+    error.clear();
+    std::size_t scale_cursor = vertex_bindings.registers[24];
+    if (scale_cursor == 0xff) {
+        stats.scale_register_absent = true;
+        return true;
+    }
+    std::size_t offset_cursor = vertex_bindings.registers[25];
+    if (selector == 2 && !descriptor.element_limit24) {
+        error = "Mesh decode selector2 requires the explicit descriptor+24 limit";
+        return false;
+    }
+    const auto gap = std::int64_t(offset_cursor) - std::int64_t(scale_cursor);
+    stats.remaining_gap = static_cast<std::uint32_t>(gap);
+    stats.remaining_descriptor_limit = selector == 2
+        ? *descriptor.element_limit24 : descriptor.element_limit20;
+    for (std::size_t stream_index = 0; stream_index < ordered_streams.size(); ++stream_index) {
+        if (!stats.remaining_descriptor_limit || !stats.remaining_gap) break;
+        const auto* stream = ordered_streams[stream_index];
+        if (!stream) {
+            error = "Mesh decode draw section contains a null stream";
+            return false;
+        }
+        ++stats.streams_visited;
+        //00B4294E/5B captures+50 presence BEFORE the concrete declaration getter.
+        const bool compressed = has_records(*stream);
+        std::uint32_t declaration_count;
+        if (!element_count(*stream, declaration_count, error)) return false;
+        const auto count = (std::min)(signed_dword(declaration_count), gap);
+        if (count <= 0) continue;
+        const auto elements = static_cast<std::uint32_t>(count);
+        for (std::uint32_t element = 0; element < elements; ++element) {
+            const auto capacity = vertex_words.size() / 4;
+            if (scale_cursor >= capacity || offset_cursor >= capacity) {
+                error = "Mesh decode constants exceed the VS destination word capacity";
+                return false;
+            }
+            const auto scale_word = scale_cursor * 4;
+            const auto offset_word = offset_cursor * 4;
+            if (compressed) {
+                //00B61E10 rereads stream+50 for EACH record. Do not cache all
+                // source values, nor pass them through a float-return helper.
+                const auto* bytes = record_bytes(*stream);
+                if (!bytes || element >= bytes->size() / 0x20) {
+                    error = "Mesh decode record exceeds current compressed metadata bounds";
+                    return false;
+                }
+                const auto* source = bytes->data() + static_cast<std::size_t>(element) * 0x20;
+                for (std::size_t lane = 0; lane < 4; ++lane)
+                    copy_decode_word_x87(&vertex_words[scale_word + lane], source + lane * 4);
+                for (std::size_t lane = 0; lane < 4; ++lane)
+                    copy_decode_word_x87(&vertex_words[offset_word + lane], source + 0x10 + lane * 4);
+                ++stats.records_from_metadata;
+            } else {
+                //00D7A24C is raw3F800000; native identity branch uses MOVSS.
+                for (std::size_t lane = 0; lane < 4; ++lane)
+                    write_word(vertex_words[scale_word + lane], 0x3f800000u);
+                for (std::size_t lane = 0; lane < 4; ++lane)
+                    write_word(vertex_words[offset_word + lane], 0u);
+            }
+            ++scale_cursor;
+            ++offset_cursor;
+            ++stats.records_written;
+            --stats.remaining_gap;
+            --stats.remaining_descriptor_limit;
+        }
+    }
+    return true;
+}
 }
 
 bool read_mesh_vertex_decode_record_00b61e10(const MeshVertexStreamPayload& stream,
@@ -41,11 +151,11 @@ bool read_mesh_vertex_decode_record_00b61e10(const MeshVertexStreamPayload& stre
     const auto* source = stream.compressed_format_bytes.data()
         + static_cast<std::size_t>(element_index) * 0x20;
     MeshVertexDecodeRecord record;
-    for (std::size_t i = 0; i < 4; ++i) {
-        record.scale[i] = read_float_le(source + i * 4);
-        record.offset[i] = read_float_le(source + 0x10 + i * 4);
+    for (std::size_t lane = 0; lane < 4; ++lane) {
+        write_word(record.scale[lane], read_word_le(source + lane * 4));
+        write_word(record.offset[lane], read_word_le(source + 0x10 + lane * 4));
     }
-    output = record;
+    std::memcpy(&output, &record, sizeof(record));
     error.clear();
     return true;
 }
@@ -56,69 +166,17 @@ bool pack_mesh_vertex_decode_constants_00b428c0(
     const MeshDecodeDescriptorLimits& descriptor, std::uint32_t selector,
     std::vector<float>& vertex_words, MeshDecodeBindingStats& stats,
     std::string& error) {
-    MeshDecodeBindingStats result;
-    std::size_t scale_cursor = vertex_bindings.registers[24];
-    std::size_t offset_cursor = vertex_bindings.registers[25];
-    if (scale_cursor == 0xff) {
-        result.scale_register_absent = true;
-        stats = result;
-        error.clear();
-        return true;
-    }
-    if (selector == 2 && !descriptor.element_limit24) {
-        error = "Mesh decode selector2 requires the explicit descriptor+24 limit";
-        return false;
-    }
-    const auto gap = std::int64_t(offset_cursor) - std::int64_t(scale_cursor);
-    result.remaining_gap = static_cast<std::uint32_t>(gap);
-    result.remaining_descriptor_limit = selector == 2
-        ? *descriptor.element_limit24 : descriptor.element_limit20;
+    return pack_decode(ordered_streams, vertex_bindings, descriptor, selector,
+        vertex_words, stats, error);
+}
 
-    // Stage values as well as addresses so a late host bounds failure cannot
-    // partially alter the shared VS register vector. This is a host safeguard,
-    // not a reconstructed native error path or a different loop clamp.
-    std::vector<PendingDecodeWrite> writes;
-    for (const auto* stream : ordered_streams) {
-        if (!result.remaining_descriptor_limit || !result.remaining_gap) break;
-        if (!stream) {
-            error = "Mesh decode draw section contains a null stream";
-            return false;
-        }
-        ++result.streams_visited;
-        const auto count = (std::min)(signed_dword(stream->layout.element_count), gap);
-        if (count <= 0) continue;
-        const auto elements = static_cast<std::size_t>(count);
-        const auto capacity = vertex_words.size() / 4;
-        if (scale_cursor > capacity || elements > capacity - scale_cursor
-            || offset_cursor > capacity || elements > capacity - offset_cursor) {
-            error = "Mesh decode constants exceed the VS destination word capacity";
-            return false;
-        }
-        for (std::uint32_t element = 0; element < elements; ++element) {
-            PendingDecodeWrite write;
-            write.scale_word = (scale_cursor + element) * 4;
-            write.offset_word = (offset_cursor + element) * 4;
-            if (stream->has_compressed_data) {
-                if (!read_mesh_vertex_decode_record_00b61e10(*stream, element,
-                    write.record, error)) return false;
-                ++result.records_from_metadata;
-            }
-            writes.push_back(write);
-        }
-        scale_cursor += elements;
-        offset_cursor += elements;
-        result.records_written += elements;
-        result.remaining_gap -= static_cast<std::uint32_t>(elements);
-        result.remaining_descriptor_limit -= static_cast<std::uint32_t>(elements);
-    }
-    for (const auto& write : writes) {
-        for (std::size_t i = 0; i < 4; ++i)
-            vertex_words[write.scale_word + i] = write.record.scale[i];
-        for (std::size_t i = 0; i < 4; ++i)
-            vertex_words[write.offset_word + i] = write.record.offset[i];
-    }
-    stats = result;
-    error.clear();
-    return true;
+bool pack_mesh_vertex_decode_constants_00b428c0(
+    const std::vector<const LogicalVertexStream*>& ordered_streams,
+    const ShaderConstantBindings& vertex_bindings,
+    const MeshDecodeDescriptorLimits& descriptor, std::uint32_t selector,
+    std::vector<float>& vertex_words, MeshDecodeBindingStats& stats,
+    std::string& error) {
+    return pack_decode(ordered_streams, vertex_bindings, descriptor, selector,
+        vertex_words, stats, error);
 }
 }
