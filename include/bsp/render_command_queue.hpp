@@ -2,21 +2,28 @@
 #include "bsp/instance_grouping.hpp"
 #include <atomic>
 #include <memory_resource>
+#include <optional>
 
 namespace bsp {
 struct RenderCommand;
 struct SceneResource;
 
-// Host intrusive ownership, not a native vtable/layout overlay. A subclass owns
-// the actual camera/scene/target/batch object and implements its terminal release.
-// The callback can observe/reenter the queue; it must not throw. New references
-// start at one, as the native context constructor does.
+// Host intrusive interface, not a native vtable/layout overlay. Concrete native
+// companions borrow the owner's actual count; diagnostic objects own a count
+// initialized to one. A borrowed binding neither initializes nor retains its
+// word and has no second live count. The terminal callback may dispose this
+// interface and reenter the queue, but must not throw.
 class RenderCommandReference {
+private:
+    std::optional<std::atomic<std::int32_t>> owned_reference_count_;
 public:
-    std::atomic<std::int32_t> reference_count{1};
+    std::atomic<std::int32_t>& reference_count;
     virtual void release_zero_references() noexcept = 0;
     virtual ~RenderCommandReference() = default;
-    RenderCommandReference() = default;
+    RenderCommandReference() noexcept
+        : owned_reference_count_(std::in_place, 1), reference_count(*owned_reference_count_) {}
+    explicit RenderCommandReference(std::atomic<std::int32_t>& actual_count) noexcept
+        : reference_count(actual_count) {}
     RenderCommandReference(const RenderCommandReference&) = delete;
     RenderCommandReference& operator=(const RenderCommandReference&) = delete;
 };
