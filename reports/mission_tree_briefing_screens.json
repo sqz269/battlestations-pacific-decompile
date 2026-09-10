@@ -1,0 +1,258 @@
+{
+  "packet": "mission_tree_briefing_screens",
+  "owner": "agent/mission-tree-screens",
+  "doc": "docs/MISSION_TREE_BRIEFING_SCREENS.md",
+  "sources": [
+    "include/bsp/mission_tree_screens.hpp",
+    "src/mission_tree_screens.cpp"
+  ],
+  "screens": [
+    {
+      "name": "mission tree",
+      "manager_field": "00E198AC+5Ch",
+      "constructor": "005ca880",
+      "object_size_bytes": 52,
+      "primary_vtable": "00cf170c",
+      "secondary_vtables": [{"offset": "+08h", "address": "00cf16f8"}],
+      "screen_id": 2,
+      "interface": "INTF_MISSIONTREE",
+      "gui_layout": null,
+      "data_table": "Scripts/datatables/MissionTree.lua",
+      "lua_keys": ["multiMissionInfos", "missionGroups"],
+      "vtable": {
+        "+00h_id_leaf": "005ca8e0",
+        "+04h": "004f7570",
+        "+08h": "004f7580",
+        "+0Ch_destroy": "005caa20",
+        "+10h_register": "005caaf0",
+        "+14h": "004f7590",
+        "+18h_enter": "005c27f0",
+        "+1Ch_exit": "005c2800",
+        "+20h_update": "005c4040",
+        "+24h": "004f75d0"
+      },
+      "fields": [
+        {"offset": "+0Ch", "role": "selected mission index", "evidence": "005cae9a from 005c3470[0]"},
+        {"offset": "+10h", "role": "selected group index", "evidence": "005caea0 from 005c3470[1]"},
+        {"offset": "+14h", "role": "vector<MissionGroup>, proxy/first/last/end, stride 34h", "evidence": "005cab90 bound checks"},
+        {"offset": "+24h", "role": "vector<MissionRecord>, proxy/first/last/end, stride 434h", "evidence": "005cadf0 bound checks"}
+      ]
+    },
+    {
+      "name": "briefing",
+      "manager_field": "00E198AC+64h",
+      "constructor": "0051e4d0",
+      "object_size_bytes": 312,
+      "primary_vtable": "00cec948",
+      "secondary_vtables": [
+        {"offset": "+08h", "address": "00cec934", "slots": ["0051e260", "0051b8c0", "0051b250", "004f8f20", "004f8f30"]},
+        {"offset": "+0Ch", "address": "00cec914", "slots": ["0051aa70", "004fa110", "004fa120", "004fa130"]}
+      ],
+      "screen_id": 3,
+      "interface": "INTF_BRIEFING",
+      "gui_layout": ["FE_briefing_listbox", "FE_briefing_grid"],
+      "vtable": {
+        "+00h_id_leaf": "0051e250",
+        "+04h": "004f7570",
+        "+08h": "004f7580",
+        "+0Ch_destroy": "0051e5f0",
+        "+10h_register": "0051e280",
+        "+14h": "004f7590",
+        "+18h_enter": "0051cde0",
+        "+1Ch_exit": "0051b1b0",
+        "+20h_update": "0051c7d0",
+        "+24h": "0051e270"
+      },
+      "fields": [
+        {"offset": "+10h", "role": "GUI page FE_briefing_listbox", "evidence": "0051e280"},
+        {"offset": "+14h", "role": "GUI page FE_briefing_grid, hidden at bind time", "evidence": "0051e280"},
+        {"offset": "+18h", "role": "widget Main_Listbox", "evidence": "0051e280"},
+        {"offset": "+1Ch", "role": "widget MainListbox_Text", "evidence": "0051e280"},
+        {"offset": "+28h", "role": "active briefing key, copied from +0D8h", "evidence": "0051cde0 via 0051cc90"},
+        {"offset": "+54h", "role": "cleared on enter", "evidence": "0051cde0"},
+        {"offset": "+60h", "role": "list-box object 00A9C7C0 selects into", "evidence": "0051aa70"},
+        {"offset": "+9Ch", "role": "difficulty widget 0", "evidence": "0051b7b0 writes game+6ACh/+6B0h = 0"},
+        {"offset": "+A0h", "role": "difficulty widget 1", "evidence": "0051b7b0 writes 1"},
+        {"offset": "+A4h", "role": "difficulty widget 2", "evidence": "0051b7b0 writes 2"},
+        {"offset": "+ACh", "role": "vector of item widget handles", "evidence": "0051aa70"},
+        {"offset": "+C4h", "role": "mission title string", "evidence": "0051dce0 from record+08h"},
+        {"offset": "+CCh", "role": "record+60h", "evidence": "0051dce0"},
+        {"offset": "+D0h", "role": "record+64h", "evidence": "0051dce0"},
+        {"offset": "+D4h", "role": "record+68h", "evidence": "0051dce0"},
+        {"offset": "+D8h", "role": "briefing key string, per side", "evidence": "0051dce0 from block+04h"},
+        {"offset": "+FCh", "role": "history previous widget", "evidence": "0051aa70"},
+        {"offset": "+100h", "role": "history next widget", "evidence": "0051aa70"},
+        {"offset": "+104h", "role": "history availability", "evidence": "0051b450"},
+        {"offset": "+114h", "role": "history page index, stepped by +/-1", "evidence": "0051aa70"},
+        {"offset": "+130h", "role": "circular list head allocated by 0051acb0", "evidence": "0051e4d0"}
+      ]
+    }
+  ],
+  "mission_record": {
+    "size_bytes": 1076,
+    "string_shape": "{size_t size; char* data;}",
+    "fields": [
+      {"offset": "+00h", "name": "name", "evidence": "005c56c9 -> game+2198h, 005c5705 -> game+6B8h, 005c3470 __stricmp"},
+      {"offset": "+08h", "name": "title", "evidence": "005c5600 -> 0057d060, 0051dce0 -> briefing+0C4h"},
+      {"offset": "+20h", "name": "scene", "evidence": "005c5600 reads +24h data pointer and calls 004e2770"},
+      {"offset": "+60h", "name": "briefing word 0", "evidence": "0051dce0"},
+      {"offset": "+64h", "name": "briefing word 1", "evidence": "0051dce0"},
+      {"offset": "+68h", "name": "briefing word 2", "evidence": "0051dce0"},
+      {"offset": "+78h", "name": "unlock requirement container", "evidence": "005c57d0 passes it to 007fc820 with ECX = game+650h"},
+      {"offset": "+B4h", "name": "difficulty, 3 = player's choice", "evidence": "005c5769..005c5793"},
+      {"offset": "+B8h", "name": "side block 0", "evidence": "005c572a"},
+      {"offset": "+20Ch", "name": "side block 1", "evidence": "psVar2[0x83] in 005c5600"}
+    ],
+    "side_block": {
+      "size_bytes": 340,
+      "fields": [
+        {"offset": "+00h", "name": "enabled/kind dword", "evidence": "005c572a low byte"},
+        {"offset": "+04h", "name": "briefing key string", "evidence": "0051dce0; its size is the branch at 005c573a"},
+        {"offset": "+14h", "name": "string vector", "evidence": "0051dce0 BSP_StringVector_Assign"},
+        {"offset": "+24h", "name": "string vector", "evidence": "0051dce0 BSP_StringVector_Assign"},
+        {"offset": "+64h", "name": "loading-screen text list", "evidence": "005c5600 -> 0057d060"}
+      ],
+      "side_selection": "side = (record[0B8h] low byte == 0) ? 1 : 0"
+    }
+  },
+  "mission_group": {
+    "size_bytes": 52,
+    "fields": [
+      {"offset": "+24h", "name": "vector<MissionRecord>, proxy/first/last/end, stride 434h", "evidence": "005c3870, 005c3470"}
+    ]
+  },
+  "selection": {
+    "accessor": "005c3870",
+    "campaign_arm": "groups[this+10h].missions[this+0Ch], bound-checked; gate is game+1FE4h == 0",
+    "non_campaign_arm": "linear __stricmp scan of the +24h record vector against the key at game+2198h",
+    "reverse_lookup": "005c3470, writes {missionIndex, groupIndex}, default {FFFFFFFFh, 0}",
+    "restore": "005caaf0 clamps a negative mission index to (0, 0)",
+    "selectability": "005c57d0 calls 007fc820(ECX = game+650h, record+78h); a locked mission does nothing"
+  },
+  "start_mission": {
+    "entry": "005c57d0 -> 005c5600",
+    "steps": [
+      "record = 005c3870(this)",
+      "side = (record[0B8h] == 0)",
+      "game+2198h = record.name",
+      "004e2770(ECX = game, record.scene or empty, 0): clears game+5FCh and the string at +600h, then 004e1d70(scene, 0, FFFFFFFFh, flags) and 004c6890(0)",
+      "0057d060(side block +64h text, record.title, low byte of record+20Ch) -> BSP_LoadingScreen_PublishConfig 0057cff0",
+      "game+6B8h = record.name",
+      "00626930(ECX = record, EDX = side)",
+      "branch on the selected side block's briefing key size at 005c573a",
+      "empty: game+6ACh = (record+0B4h == 3) ? game+6B0h : record+0B4h, then 00439020",
+      "non-empty: 0051dce0(ECX = [00E198AC]+64h, record, side), then 004cc460(ECX = [00E198AC], 1, 0)",
+      "004bec00 then 00a92c40 with 0.0f, then 004d2a80"
+    ],
+    "request_sequence": {
+      "helper": "00439020",
+      "requests": ["06h", "0Ah"],
+      "meaning": "06h runs the manager virtual +0Ch (00685820, publishes the screen set and input context); 0Ah runs 004dfb70, one of two callers of BSP_LoadingScreen_Begin (0057cb60). The drain is FIFO and re-reads the count, so both run in the same pass.",
+      "in_mission_state": "0Dh is not enqueued here; it is reached from 004dfb70's own path"
+    },
+    "fields_written_first": ["game+2198h", "game+5FCh", "game+600h/+604h", "game+6ACh", "game+6B8h"]
+  },
+  "briefing_help_line": {
+    "builder": "0051b450",
+    "signature": "__thiscall(this, bool suppress_all, bool suppress_history), RET 8",
+    "sink": "0054b530",
+    "entries": [
+      {"code": "0A2h", "key": "FE.briefing_play", "condition": "!suppress_all && game+1FE4h == 0"},
+      {"code": "0A7h", "key": "FE.briefing_history", "condition": "!suppress_history && this+104h != 0"},
+      {"code": "0AFh", "key": "FE_xbox.bhelp_navigate", "condition": "always"},
+      {"code": "0A3h", "key": "globals.back", "condition": "always"}
+    ]
+  },
+  "updates": {
+    "005c4040": "__thiscall(this, float), RET 4. action 4Bh through 004d92b0 -> 004cc460([00E198AC], 1, 0); otherwise 00427190(004c1e90 singleton, 3), the MPakScenes.lua backdrop.",
+    "0051c7d0": "__thiscall(this, float), RET 4. action 4Bh -> if game+1FE4h then 006881f0 on [00E198B4] else 004cc460([00E198AC], 2, 0).",
+    "0051b890": "__thiscall(this), RET. The same back body without the action test."
+  },
+  "no_ghidra_function": [
+    {"address": "005c27f0", "end": "005c27f0", "role": "mission-tree enter virtual, a bare RET"},
+    {"address": "005c2800", "end": "005c2800", "role": "mission-tree exit virtual, a bare RET"},
+    {"address": "005c4040", "end": "005c4073", "role": "mission-tree update virtual, RET 4; inside FUN_005C3DE0's stored body"},
+    {"address": "0051c7d0", "end": "0051c818", "role": "briefing update virtual, RET 4; inside FUN_0051C7A0's stored body"},
+    {"address": "0051b890", "end": "0051b8b8", "role": "briefing back action, RET"}
+  ],
+  "callers": {
+    "005c5600": ["005c57d0"],
+    "005c57d0": [],
+    "0051dce0": ["005c5600"],
+    "00439020": ["0051b7b0", "0058bdf0", "005c5600"],
+    "005c3870": ["00580940", "0058c010", "005c5600", "005c57d0", "0062c2c0"],
+    "005c3470": ["005caaf0"]
+  },
+  "external_callees": {
+    "004f7180": "BSP_FrontEndScreen_Construct",
+    "004f71d0": "BSP_FrontEndScreen_Register",
+    "004d92b0": "BSP_FrontEnd_ActionEdgeOrRepeat",
+    "004cc460": "BSP_FrontEndManager_PushInterfaceRequest",
+    "004d7920": "BSP_Game_RequestState",
+    "0057cff0": "BSP_LoadingScreen_PublishConfig",
+    "0057cb60": "BSP_LoadingScreen_Begin, reached from request 0Ah via 004dfb70",
+    "00427190": "MPakScenes.lua backdrop selector",
+    "004bca50": "BSP_Game_GetEffectiveGameMode",
+    "007fc4c0": "per-requirement unlock predicate, not read",
+    "00626930": "publishes the record to the scoring side, not read"
+  },
+  "uncertainties": [
+    "No site in .text requests interface 3. A byte scan for '6A 00 6A 03' finds no 004cc460 call, and 005c5760 pushes 1. How INTF_BRIEFING becomes current is unresolved; the briefing surface may be drawn by the main-menu screen, whose 005861b0 names FE_briefing and FE_briefing_grid.",
+    "Which Lua key fills which vector is inferred from the role split proved by 005c3870, not read off the call: 005caaf0's decompilation loses its register arguments.",
+    "The two 154h side blocks are assumed to be two variants of one mission; only the enabled byte, the briefing key and three string vectors are recovered.",
+    "007fc4c0, the per-requirement unlock predicate, is unread, so selectability is recovered at the list level only.",
+    "0051b7b0's selector between the difficulty arm and the 00439020 arm lies outside Ghidra's stored body and was read in the raw listing only.",
+    "Mission completion state is not touched by anything in this packet; the list icons are drawn by the main-menu screen's 00588c70."
+  ],
+  "state": {
+    "005ca880": "analyzed",
+    "0051e4d0": "analyzed",
+    "005caaf0": "analyzed",
+    "005c3470": "analyzed, reconstructed, build-tested",
+    "005c3870": "analyzed, reconstructed, build-tested",
+    "005c57d0": "analyzed, reconstructed, build-tested",
+    "005c5600": "analyzed, reconstructed, build-tested",
+    "00439020": "analyzed, reconstructed, build-tested",
+    "005c4040": "analyzed, reconstructed, build-tested",
+    "0051c7d0": "analyzed, reconstructed, build-tested",
+    "0051b890": "analyzed, reconstructed, build-tested",
+    "0051e280": "analyzed, reconstructed, build-tested",
+    "0051dce0": "analyzed, reconstructed, build-tested",
+    "0051b450": "analyzed, reconstructed, build-tested",
+    "0051aa70": "analyzed, reconstructed, build-tested",
+    "0051cde0": "analyzed",
+    "0051b7b0": "analyzed",
+    "0051b1b0": "exported only",
+    "005caa20": "exported only",
+    "0051e5f0": "exported only",
+    "004e2770": "analyzed as a boundary call",
+    "0057d060": "analyzed as a boundary call",
+    "007fc820": "analyzed as a boundary call"
+  },
+  "follow_up_packets": [
+    {
+      "id": "briefing_enter_objectives",
+      "addresses": ["0051cde0", "0051cc90", "00518da0", "005189b0", "004bca50"],
+      "files": ["docs/BRIEFING_OBJECTIVES.md", "include/bsp/briefing_objectives.hpp", "src/briefing_objectives.cpp"],
+      "contract": "The 589-line enter virtual: how side-block +14h/+24h become the primary and secondary objective rows, which mode group the effective game mode selects, and what DAT_00E18D91 gates."
+    },
+    {
+      "id": "profile_unlock_predicate",
+      "addresses": ["007fc4c0", "007fc820"],
+      "files": ["docs/PROFILE_UNLOCKS.md", "include/bsp/profile_unlocks.hpp", "src/profile_unlocks.cpp"],
+      "contract": "How one unlock requirement is parsed and evaluated against the profile block at game+650h, and therefore what makes a mission, a unit or an award available."
+    },
+    {
+      "id": "interface_three_raiser",
+      "addresses": ["00685820", "004cc460", "005861b0", "00594bf0"],
+      "files": ["docs/BRIEFING_RAISE_PATH.md"],
+      "contract": "Settle how INTF_BRIEFING becomes the current interface, or prove that the briefing surface is drawn by the main-menu screen and the briefing object is a data holder."
+    },
+    {
+      "id": "mission_tree_lua_reader",
+      "addresses": ["005caaf0", "005ca300", "005c9e30", "005c9f70", "005c6a70", "005c9b60"],
+      "files": ["docs/MISSION_TREE_TABLE.md"],
+      "contract": "The per-entry readers, so the remaining 24h bytes of a group and the remaining 12Ch bytes of a side block get names from the Lua keys."
+    }
+  ]
+}
