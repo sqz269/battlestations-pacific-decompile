@@ -1,0 +1,451 @@
+{
+  "packet": "game_world_entities",
+  "owner": "agent/game-world-entities",
+  "date": "2026-09-09",
+  "kind": "reconstruction",
+  "doc": "docs/GAME_WORLD_ENTITIES.md",
+  "sources": [
+    "include/bsp/world_entities.hpp",
+    "src/world_entities.cpp"
+  ],
+  "addresses": [
+    "00481640",
+    "00914ef0",
+    "006dc1a0",
+    "00740e10",
+    "00903670",
+    "00987590",
+    "008eb110",
+    "004d8cd0"
+  ],
+  "contract": "The entity, marker, decal, bot, power-up and mission-event updates driven from the scaled delta at game+21F0h with ECX taken from game+21A0h, +21D0h and +21D4h.",
+  "read_method": "004e4a40 has an eight-byte stored Ghidra body; phase 20 was read with 'bsp.py disasm-raw 004e4a40 --length 2808'. Object fields were located with 'bsp.py scan-bytes'.",
+  "call_sites_in_004e4a40": [
+    {
+      "site": "004e4e67",
+      "callee": "00987590",
+      "ecx": "game+21E0h",
+      "args": [
+        "scaled delta from game+21F0h"
+      ],
+      "gate": "state 0Dh, game+634h == 0, game+21E0h non-null, scaled delta > 0.0f (00d7a218)",
+      "phase": "step 15, outside the simulation gate"
+    },
+    {
+      "site": "004e4feb",
+      "callee": "004d8cd0",
+      "ecx": "game",
+      "args": [],
+      "gate": "none; the join point every path reaches",
+      "phase": "step 16, immediately before game+648h += 1"
+    },
+    {
+      "site": "004e52ca",
+      "callee": "00914ef0",
+      "ecx": "game+21A0h",
+      "args": [
+        "scaled delta"
+      ],
+      "gate": "simulation gate 004e50b0",
+      "phase": "step 20"
+    },
+    {
+      "site": "004e52df",
+      "callee": "006dc1a0",
+      "ecx": "game+21D4h",
+      "args": [
+        "scaled delta"
+      ],
+      "gate": "simulation gate",
+      "phase": "step 20"
+    },
+    {
+      "site": "004e52f4",
+      "callee": "00481640",
+      "ecx": "game+21D0h",
+      "args": [
+        "scaled delta"
+      ],
+      "gate": "simulation gate",
+      "phase": "step 20"
+    },
+    {
+      "site": "004e533a",
+      "callee": "00740e10",
+      "ecx": "DAT_00e1aea0",
+      "args": [
+        "scaled delta, unused by the callee"
+      ],
+      "gate": "simulation gate",
+      "phase": "step 20"
+    },
+    {
+      "site": "004e535a",
+      "callee": "008eb110",
+      "ecx": "DAT_00f88c30",
+      "args": [],
+      "gate": "simulation gate",
+      "phase": "step 20"
+    },
+    {
+      "site": "004e5382",
+      "callee": "00903670",
+      "ecx": "game+19CCh",
+      "args": [],
+      "gate": "simulation gate",
+      "phase": "step 20"
+    }
+  ],
+  "simulation_gate": {
+    "address": "004e50b0",
+    "condition": "(game+634h == 0 || game+635h != 0) && game+5D4h == 0Dh && game+7184h == 0",
+    "note": "The +635h escape is absent from the effect-list gate at 004e4e31, so 00987590 sits behind the strictly narrower condition. The gate itself is packet game_simulation_gate and is treated as an external contract."
+  },
+  "subsystem_objects": [
+    {
+      "field": "game+21A0h",
+      "size": "0x14B8",
+      "constructor": "0091d640",
+      "initializer": "0091b2e0",
+      "allocation_site": "004e3e74",
+      "vtable": "00d18acc",
+      "rtti": "absent"
+    },
+    {
+      "field": "game+21D0h",
+      "size": "0x58",
+      "constructor": "004a43c0",
+      "initializer": "0049d690",
+      "allocation_site": "004dc80f",
+      "vtable": "00ce68d0",
+      "rtti": "absent"
+    },
+    {
+      "field": "game+21D4h",
+      "size": "0x50",
+      "constructor": "006deca0",
+      "initializer": "006d6200",
+      "allocation_site": "004df9de",
+      "vtable": "00cf8ff8",
+      "rtti": "absent"
+    },
+    {
+      "field": "game+19CCh",
+      "size": "not recovered",
+      "constructor": "004cb030",
+      "initializer": "009037f0(1, 1)",
+      "allocation_site": "004de686",
+      "vtable": "00ce7784",
+      "rtti": "absent"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00481640",
+      "name": "BSP_EntityManager_Update",
+      "convention": "__thiscall(this, float)",
+      "ret": "RET 4",
+      "ecx": "game+21D0h",
+      "behavior": "Reads the world object through the game singleton at 00e188a8, returns when [game+19CCh]+4ACh is zero, otherwise dispatches vtable slot 1 (vtable+4) on the sub-manager at this+8h with the scaled delta.",
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "indirect vtable+4"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "00914ef0",
+      "name": "BSP_BotScheduler_Update",
+      "convention": "__thiscall(this, float)",
+      "ret": "RET 4",
+      "ecx": "game+21A0h",
+      "behavior": "Two countdowns and one accumulator gated on game+1FE4h being 0 or 1 and this+1498h. The retarget timer at +149Ch reloads from +14A8h and runs 0075b430(15h) plus eight passes over the 284h-stride records at +1E4h (00914390 when +14A4h is set; CG_adjustor_thunk_0076a9f0 with code 12h when the mode is exactly 1). The think timer at +1494h reloads from +14ACh and runs eight passes of 00911e80 then 00912a60. Separately, when the mode is not 2 and +14A4h is set, +14A0h accumulates the delta.",
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "0075b430",
+        "00914390",
+        "0076a9f0",
+        "00911e80",
+        "00912a60"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "006dc1a0",
+      "name": "BSP_MarkerManager_Update",
+      "convention": "__thiscall(this, float)",
+      "ret": "RET 4 (006dc597)",
+      "ecx": "game+21D4h",
+      "behavior": "Five std::list walks. +14h and +20h are two-level: the inner list sits at value+8h and value+10h respectively, and each inner element's object at +0Ch gets vtable slot 1 with the delta. +2Ch writes target+94h = |cos(2*(game+64Ch - 00e19970))| * 0.28. +38h calls 006dbac0(target, 1, 0, 1.0f). +44h reads four floats with vtable+54h, replaces the fourth with |cos(...)| * 0.75 + 0.25, and writes them back with vtable+50h.",
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "006d6ad0",
+        "006d6b70",
+        "006d7d20",
+        "006d7da0",
+        "006dbac0",
+        "indirect vtable+4, +50h, +54h"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "00740e10",
+      "name": "BSP_DecalManager_Update",
+      "convention": "__thiscall(this, float)",
+      "ret": "RET 4 (00740ea7)",
+      "ecx": "DAT_00e1aea0",
+      "behavior": "One-shot profiler label 'cDecalManager::Update' behind bit 0 of 00e1aeb0, then a walk over begin at this+4h with count at this+8h and stride 4. The loop body is empty in the shipped image (00740e91..00740e96) and the delta argument is never read.",
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "0041e870",
+        "00419cc0",
+        "00bd1510"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "name_status": "already reviewed in the ledger; evidence appended"
+    },
+    {
+      "address": "00903670",
+      "name": "BSP_EntityWorld_FlushActivations",
+      "convention": "__thiscall(this)",
+      "ret": "RET (009036a8)",
+      "ecx": "game+19CCh",
+      "behavior": "Walks the intrusive chain from [this+4h] linked through node+38h and calls 00922fd0(node) when node+5Eh is set, node+6Ch is clear and either node+3Ch is null or its +5Eh is clear. 00922fd0 sets +5Eh and +5Dh, clears +5Ch, latches +6Ch, recurses over children from node+48h linked through +44h, and tail-calls virtual +84h.",
+      "callers": [
+        "004e4a40",
+        "004d7ea0",
+        "0046b730"
+      ],
+      "callees": [
+        "00922fd0"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "00987590",
+      "name": "BSP_MissionEvents_Update",
+      "convention": "__thiscall(this, float)",
+      "ret": "RET 4 (00987748)",
+      "ecx": "game+21E0h",
+      "behavior": "00982540, then this+198h accumulates the delta and is reset to zero (not decremented) with 00977990 once it exceeds 4.0f (00ce3d34), then 0096d540 and 00968550. Returns when the +E0h list size at +E8h is zero. Walking it, an event whose clock 00f876a4 minus its vtable+1Ch start time has reached its +10h duration is destroyed through vtable+0h(1), unlinked, freed, and the routine returns, abandoning any selection. Otherwise 005b71d0(event+14h) marks it ready and the strictly highest vtable+18h priority wins; 00974070 applies it at the end.",
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "00982540",
+        "00977990",
+        "0096d540",
+        "00968550",
+        "005b71d0",
+        "00974070",
+        "_free",
+        "indirect vtable+0h, +18h, +1Ch"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "008eb110",
+      "name": "BSP_PowerUpManager_Update",
+      "convention": "__thiscall(this)",
+      "ret": "RET (008eb341)",
+      "ecx": "DAT_00f88c30",
+      "behavior": "008eac80, then sixteen channel lists at this+84h with stride 0Ch: any node whose value+18h float is below the clock 00f876a4 gets 008e8c30(value), with no erase. Then the per-player list at this+14Ch + slot*0Ch for the active local-player slot game+18ECh: the deadline is value+18h, or *(value+10h)+80h plus the clock when value+1Ch is set, so the relative form fires only once that source float is negative. Crossing it latches value+8h and, when the ready list size at this+28h + slot*0Ch is non-zero, builds 'pup_ready' and calls 009789a0(slot, readyHead->_Prev + 8, &string). 00613760 runs at the end of every iteration.",
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "008eac80",
+        "008e8c30",
+        "009789a0",
+        "00613760",
+        "0041dd40",
+        "00419cc0",
+        "00bd1510",
+        "_memcpy"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "004d8cd0",
+      "name": "BSP_Game_RecordActionDeadlines",
+      "convention": "__thiscall(this)",
+      "ret": "RET (004d92aa)",
+      "ecx": "game",
+      "behavior": "Sixteen blocks. Each fetches the input singleton with 004bec00, applies the 004c43c0 edge test to one 30h-byte record at inputSingleton+4h + id*30h (record+28h set, +24h > 0, and either +20h clear or +1Ch <= 0), and on a press writes game+64Ch + 0.4 into the std::map<int,float> at 00e18a7c through operator[] at 004d6900, whose ECX is the literal 0E18A7Ch.",
+      "action_ids": [
+        "0x4A",
+        "0x4B",
+        "0x4E",
+        "0x4F",
+        "0x50",
+        "0x51",
+        "0x52",
+        "0x53",
+        "0x54",
+        "0x55",
+        "0x46",
+        "0x47",
+        "0x4C",
+        "0x4D",
+        "0x57",
+        "0x58"
+      ],
+      "callers": [
+        "004e4a40"
+      ],
+      "callees": [
+        "004bec00",
+        "004d6900"
+      ],
+      "state": "exported, analyzed, reconstructed, build-tested"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00ce3d34",
+      "value": "40800000h = 4.0f",
+      "use": "00987590 periodic tick period"
+    },
+    {
+      "address": "00ce65d0",
+      "value": "3FD99999A0000000h, the double promotion of 0.4f",
+      "use": "004d8cd0 deadline delay"
+    },
+    {
+      "address": "00cf8fc8",
+      "value": "3FD1EB8520000000h, the double promotion of 0.28f",
+      "use": "006dc1a0 highlight pulse scale"
+    },
+    {
+      "address": "00cec9d8",
+      "value": "3FE8000000000000h = 0.75",
+      "use": "006dc1a0 alpha pulse scale"
+    },
+    {
+      "address": "00d7a348",
+      "value": "3FD0000000000000h = 0.25",
+      "use": "006dc1a0 alpha pulse bias"
+    },
+    {
+      "address": "00d7a218",
+      "value": "0.0f",
+      "use": "positive-delta comparisons at 004e4e50 and 004e5019"
+    },
+    {
+      "address": "00e19970",
+      "value": "0.0f in the image",
+      "use": "006dc1a0 pulse epoch; no writer found"
+    },
+    {
+      "address": "00f876a4",
+      "value": "runtime",
+      "use": "mission clock read by 008eb110 and 00987590"
+    }
+  ],
+  "layouts": [
+    {
+      "container": "MSVC std::list with _SECURE_SCL",
+      "base": "{_Myfirstiter, _Myhead, _Mysize}",
+      "node": "{_Next, _Prev, value}",
+      "note": "The LIBCRT_unmatched_00bf6713 calls throughout the pseudocode are that build's iterator validations, not program logic."
+    },
+    {
+      "container": "marker manager game+21D4h",
+      "lists": [
+        "+14h two-level, inner at value+8h, object at innerValue+0Ch",
+        "+20h two-level, inner at value+10h, object at innerValue+0Ch",
+        "+2Ch target at value+4h",
+        "+38h target at value+4h",
+        "+44h target at value+4h"
+      ]
+    },
+    {
+      "container": "power-up manager DAT_00f88c30",
+      "lists": [
+        "+84h, 16 channels, stride 0Ch, expiry at node value+18h",
+        "+14Ch + slot*0Ch per-player; value fields +8h notified, +10h source, +18h absolute expiry, +1Ch relative flag",
+        "+20h + slot*0Ch ready list, _Myhead at +24h, _Mysize at +28h"
+      ]
+    },
+    {
+      "container": "bot scheduler game+21A0h",
+      "array": "8 records, stride 284h, first at +1E4h; only the first dword of each is read"
+    },
+    {
+      "container": "entity activation chain game+19CCh",
+      "head": "[this+4h]",
+      "next": "node+38h",
+      "fields": [
+        "+3Ch parent",
+        "+5Ch..+5Eh flags",
+        "+6Ch activated latch",
+        "+48h first child",
+        "+44h next sibling"
+      ]
+    },
+    {
+      "container": "decal manager DAT_00e1aea0",
+      "array": "begin at +4h, count at +8h, stride 4"
+    },
+    {
+      "container": "mission event queue game+21E0h",
+      "list": "+E0h base, _Myhead +E4h, _Mysize +E8h; value is an event pointer",
+      "fields": [
+        "event+10h duration",
+        "event+14h readiness argument",
+        "vtable+18h priority",
+        "vtable+1Ch start time"
+      ]
+    }
+  ],
+  "reconstruction": {
+    "entry": "bsp::run_world_tick",
+    "host": "bsp::WorldTickHost, one virtual per native call site",
+    "routines": [
+      "update_bot_scheduler_00914ef0",
+      "update_markers_006dc1a0",
+      "update_entity_manager_00481640",
+      "update_decal_manager_00740e10",
+      "update_power_ups_008eb110",
+      "flush_entity_activations_00903670",
+      "update_mission_events_00987590",
+      "record_action_deadlines_004d8cd0",
+      "world_tick_runs",
+      "mission_events_run",
+      "marker_pulse_magnitude",
+      "activation_pending"
+    ],
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math passes; one focused case added to tests/math_tests.cpp for the retire-wins-over-apply rule in 00987590",
+    "not_binary_equivalent": true
+  },
+  "uncertainties": [
+    "No RTTI locator at vtable-4 for any of the four objects, so all names are behavioural hypotheses, not recovered symbols.",
+    "8 records of 284h bytes from game+21A0h+1E4h would end at +1604h, past the 14B8h allocation; only the first dword of each is read, so the count and the stride are solid but the record size is not.",
+    "game+19CCh's allocation size and constructor arguments were not recovered.",
+    "game+21D0h+8h, the object the entity forwarder dispatches on, is written by 0049d690, which was not read.",
+    "The stack payload 00914ef0 hands to CG_adjustor_thunk_0076a9f0 (vtable PTR_LAB_00d035b8, code 12h at +184h, slot at +180h) has an untraced consumer; 0075b430(15h) is likewise unread.",
+    "00987590's vtable+18h and vtable+1Ch are read as priority and start time from how they combine; 005b71d0 is read as a readiness predicate. None of the three bodies was read.",
+    "Marker vtable slots 50h and 54h are read as a colour setter and getter from the shared four-float buffer; neither body was read.",
+    "DAT_00e1aea0, DAT_00f88c30, DAT_00f89b3c, DAT_00e18a7c and the writer of 00e19970 were not traced.",
+    "008eb110's 009789a0 and 008e8c30 were not read; the ready list is observed only through its _Mysize gate and its _Prev element."
+  ],
+  "ghidra": {
+    "mutations": "none; read-only for this packet",
+    "missing_functions": "none; all eight addresses have real Ghidra functions"
+  },
+  "corrections_to_docs_GAME_ON_MOVE_MAP": [
+    "00740e10 takes ECX from DAT_00e1aea0, 008eb110 from DAT_00f88c30, 0094c8f0 from DAT_00f89b3c and 00903670 from game+19CCh; the map lists these four without an ECX.",
+    "00740e10's per-decal loop body is empty in the shipped image, so cDecalManager::Update does no per-decal work.",
+    "008eb110 is a power-up manager, not a units-and-AI routine; it builds the literal pup_ready.",
+    "00903670 runs on game+19CCh, the same world object whose +4ACh byte gates 00481640."
+  ]
+}
