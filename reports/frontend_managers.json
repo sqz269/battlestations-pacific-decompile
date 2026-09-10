@@ -1,0 +1,211 @@
+{
+  "packet": "frontend_manager_trio",
+  "owner": "agent/frontend-managers",
+  "doc": "docs/FRONTEND_MANAGERS.md",
+  "files": [
+    "docs/FRONTEND_MANAGERS.md",
+    "reports/frontend_managers.json",
+    "include/bsp/frontend_managers.hpp",
+    "src/frontend_managers.cpp"
+  ],
+  "summary": "The three singletons BSP_Game_EnterFrontEndShell builds into 00E198B8, 00E198AC and 00E198B4 are three derivations of one base class (constructor 00684E10). The base carries two 1Ch-byte interface-request records at +04h and +20h, a bool at +3Ch and membership in a std::map of every manager at 00E19898. Drain requests 16h, 06h and 09h do not destroy anything: each calls virtual +0Ch, which is the shared deactivate 00683AA0, so the object, its screens and both records survive.",
+  "globals": {
+    "00E198B8": {
+      "role": "options manager",
+      "size_bytes": 76,
+      "constructor": "00689800",
+      "init": "006898C0",
+      "destructor": "00689A10",
+      "vtable": "00CF78C4",
+      "load_block": "GVOptions",
+      "load_block_string": "00CF78DC",
+      "root_interface_id": 12,
+      "root_interface_name": "INTF_OPTIONS",
+      "self_publish_site": "0068991E",
+      "global_clear_site": "00689B53"
+    },
+    "00E198AC": {
+      "role": "main menu manager",
+      "size_bytes": 120,
+      "constructor": "00686170",
+      "init": "00686380",
+      "destructor": "00686C90",
+      "vtable": "00CF774C",
+      "load_block": "GVMainMenu",
+      "load_block_string": "00CF7754",
+      "root_interface_id": "1 (INTF_MAINMENU) or 4 (INTF_REWARDS) when DAT_00E198B0 == 1",
+      "root_interface_site": "006868AD..006868BD"
+    },
+    "00E198B4": {
+      "role": "multiplayer menu manager",
+      "size_bytes": 104,
+      "constructor": "006887E0",
+      "init": "00689540",
+      "destructor": "006888E0",
+      "vtable": "00CF7820",
+      "load_block": "GVMultiMenu::Init",
+      "load_block_string": "00CF7834",
+      "root_interface_id": 15,
+      "root_interface_name": "INTF_MULTIMAINMENU",
+      "self_publish_site": "00689685",
+      "commit_site": "006897D3"
+    },
+    "00E198BC": {
+      "role": "attract screen, another instance of the same base",
+      "vtable": "00CF78E8",
+      "reference": "docs/GAME_BLOCKING_SCREEN.md"
+    },
+    "00E198C4": {
+      "role": "in-mission interface manager, another instance of the same base and the one 00684700 exempts from the replay",
+      "reference": "docs/GAME_SIMULATION_GATE.md"
+    },
+    "00E19898": {
+      "role": "std::map of every registered manager, keyed by manager pointer; head node pointer at 00E1989C",
+      "insert": "00684C40",
+      "erase": "00684EF0",
+      "iterate": "00683D10"
+    },
+    "00E19894": {
+      "role": "interface lock byte. While set, every request with id >= 20h is dropped and the first request with id < 20h clears it; id 2Ch is exempt.",
+      "readers": ["00683E90", "004CC478", "0068461C"],
+      "writers_not_analysed": ["004DAB5D", "004D2C5F", "004BC493", "005CD1E9"]
+    },
+    "00E08CD8": {
+      "role": "45-entry table of interface names indexed by the id at +04h/+20h",
+      "evidence": "00688AD0 formats \"GVMultiMenu::PushRequestInterface() req:%s set:%s\" with two entries",
+      "string_range": "00CF7370..00CF76CD, descending"
+    }
+  },
+  "base_class": {
+    "constructor": "00684E10",
+    "destructor": "00684FA0",
+    "size_bytes": 64,
+    "vtable": "00CF76D0",
+    "layout": [
+      {"offset": "+00h", "field": "vtable"},
+      {"offset": "+04h", "field": "applied interface id"},
+      {"offset": "+08h", "field": "embedded object, vtable 00CE3CF0, unidentified"},
+      {"offset": "+0Ch,+10h,+14h", "field": "zeroed by 00684E10"},
+      {"offset": "+18h", "field": "byte, set to 1 by 00684E10"},
+      {"offset": "+1Ch", "field": "applied payload, refcounted"},
+      {"offset": "+20h", "field": "pending interface id"},
+      {"offset": "+24h", "field": "embedded object, vtable 00CE3CF0, unidentified"},
+      {"offset": "+28h,+2Ch,+30h", "field": "zeroed by 00684E10"},
+      {"offset": "+34h", "field": "byte, set to 1 by 00684E10"},
+      {"offset": "+38h", "field": "pending payload, refcounted"},
+      {"offset": "+3Ch", "field": "bool active; set at 0068477A, cleared at 00683AA2, tested at 006840FE"}
+    ],
+    "virtuals": {
+      "+00h": {"base": "00685040", "role": "scalar deleting destructor"},
+      "+04h": {"base": "00683A90", "role": "Init; the base body is a bare RET"},
+      "+08h": {"base": "00684700", "role": "Activate"},
+      "+0Ch": {"base": "00683AA0", "role": "Deactivate"},
+      "+10h": {"base": "00684600", "role": "ApplyPendingInterface"}
+    },
+    "derived_vtables": {
+      "00CF78C4": ["00689BA0", "006898C0", "00684700", "00683AA0", "00689820"],
+      "00CF774C": ["00687300", "00686380", "00684700", "00683AA0", "00685820"],
+      "00CF7820": ["006892F0", "00689540", "00689510", "00687320", "00687800"],
+      "00CF78E8": ["00689E60", "00689BD0", "00689E80", "00689C00", "00684600"]
+    }
+  },
+  "layouts": {
+    "00E198B8": [
+      {"offset": "+40h", "size": "0x270", "constructor": "005F6030", "progress_before": 0.35},
+      {"offset": "+44h", "size": "0x30", "constructor": "00527D00", "progress_before": 0.37},
+      {"offset": "+48h", "size": "0x250", "constructor": "00555770", "progress_before": null}
+    ],
+    "00E198AC": [
+      {"offset": "+40h", "field": "native string sound/music/titlescreen.fsb"},
+      {"offset": "+48h", "field": "native string sound/music/creditsfinal.fsb"},
+      {"offset": "+50h", "field": "refcounted handle, released in 00686C90; provisionally the title music stream"},
+      {"offset": "+54h", "field": "refcounted handle, released in 00686C90; provisionally the credits music stream"},
+      {"offset": "+58h", "size": "0x578", "constructor": "005902E0", "progress_before": 0.40, "note": "the shell drives it directly at 004E4271 through 005884A0"},
+      {"offset": "+5Ch", "size": "0x34", "constructor": "005CA880", "progress_before": 0.45},
+      {"offset": "+60h", "size": "0x260", "constructor": "00626630", "progress_before": 0.50},
+      {"offset": "+64h", "size": "0x138", "constructor": "0051E4D0", "progress_before": 0.55},
+      {"offset": "+68h", "size": "0x5C", "constructor": "0052FCE0", "progress_before": 0.80},
+      {"offset": "+6Ch", "size": "0x16C", "constructor": "00563370", "progress_before": 0.94},
+      {"offset": "+70h", "size": "0x5D0", "constructor": "005098B0", "progress_before": 0.96},
+      {"offset": "+74h", "field": "byte, zeroed by the constructor, never written by Init"}
+    ],
+    "00E198B4": [
+      {"offset": "+40h", "size": "0xF8", "constructor": "005E6D90"},
+      {"offset": "+44h", "size": "0x100", "constructor": "005EA8C0"},
+      {"offset": "+48h", "size": "0x300", "constructor": "005E3290"},
+      {"offset": "+4Ch", "size": "0x2D0", "constructor": "00574240"},
+      {"offset": "+50h", "size": "0x5C", "constructor": "005D2F90"},
+      {"offset": "+54h", "size": "0x90", "constructor": "005CFDA0"},
+      {"offset": "+58h", "field": "unidentified; not written by the constructor, Init or the destructor"},
+      {"offset": "+5Ch..+64h", "field": "vector {first,last,end}, zeroed by the constructor, freed by the destructor; never filled by anything traced"}
+    ]
+  },
+  "manager_ac_plus_4h": {
+    "question": "what does *(00E198AC)+4h count",
+    "answer": "nothing; it is the interface id currently applied by the main menu manager, an index into 00E08CD8",
+    "evidence": "00686380 writes 4 (INTF_REWARDS) when DAT_00E198B0 == 1 and 1 (INTF_MAINMENU) otherwise at 006868AD..006868BD; the shell compares it against 4 at 004E4250 and pushes INTF_MAINMENU at 004E4257 when it differs"
+  },
+  "drain_requests": {
+    "0x16": {"target": "00E198B8", "virtual": "+0Ch", "body": "00683AA0", "effect": "clears +3Ch, hides both screen sets; destroys nothing"},
+    "0x06": {"target": "00E198AC", "virtual": "+0Ch", "body": "00683AA0", "effect": "same"},
+    "0x09": {"target": "00E198B4", "virtual": "+0Ch", "body": "00687320, a five-byte jmp to 00683AA0", "effect": "same"},
+    "why_individual": "Activate (00684700) already deactivates every other registered manager, so the only thing a caller can ask for that Activate does not provide is lowering one manager and raising nothing. One request per manager lets the drain name the one it means. What must survive is the pending record at +20h/+38h: 00684700 replays it when the manager comes back, so freeing anything in +0Ch would leave nothing to show.",
+    "0x14": {"handler": "004BAC20", "effect": "lazily build 00E198B8, Init, Lua GC, Activate, game+5D4h = 15h"},
+    "0x07": {"handler": "004BFC70", "effect": "lazily build 00E198B4, Init, Lua GC, push INTF_MULTIMAINMENU at 004BFCFC when *(00F8A2FC)+4Ch is clear, Activate at 004BFD0E, then on game+218Ch clear 00E19610, push INTF_MULTIMODESELECTOR at 004BFD1F and apply at 004BFD46; game+5D4h = 8"}
+  },
+  "destruction": {
+    "004DA650": {"convention": "__cdecl(), RET", "order": ["004D95F0(0)", "00E198AC", "00E198B4", "00E198B8", "00E198C4"], "mechanism": "virtual +00h with the delete flag, then the global is cleared"},
+    "004DB190": {"convention": "__cdecl(), RET", "order": ["00E08874 = 1", "lower 00E198C4 via 004D7970(0) and 004DA780", "00E198B4", "00E198B8", "00E198AC", "004C1710", "00A4C2C0", "BSP_Game_DrainStateRequests"]}
+  },
+  "servicing": {
+    "006840F0": {
+      "name": "BSP_MenuInterface_ServicePendingRequests",
+      "convention": "__thiscall(this = out byte), RET",
+      "order": ["00E198AC", "00E198B4", "00E198B8"],
+      "rule": "skip null; skip when +3Ch is clear; otherwise if +04h != +20h or +1Ch != +38h call virtual +10h(+20h, +38h) and write 1 through ECX",
+      "note": "the second compare at 00684116 cannot change the outcome"
+    }
+  },
+  "conventions": [
+    {"addresses": ["00689800", "00686170", "006887E0"], "convention": "__thiscall(this), returns this in EAX", "ret": 0},
+    {"addresses": ["006898C0", "00686380", "00689540", "00689A10", "00686C90", "006888E0", "00684E10", "00684FA0", "00684700", "00683AA0", "00683A90", "00689510", "006840F0"], "convention": "__thiscall(this)", "ret": 0},
+    {"addresses": ["00689BA0", "00687300", "006892F0"], "convention": "__thiscall(this, unsigned flags)", "ret": 4},
+    {"addresses": ["00684600", "004CC460"], "convention": "__thiscall(this, int id, void* payload)", "ret": 8},
+    {"addresses": ["00689820", "00685820", "00687800"], "convention": "__thiscall(this, int id, void* payload) -> bool in AL", "ret": 8},
+    {"addresses": ["00683E90", "00687330"], "convention": "__stdcall(int id)", "ret": 4},
+    {"addresses": ["004DA650", "004DB190"], "convention": "__cdecl()", "ret": 0},
+    {"addresses": ["004BAC20", "004BFC70"], "convention": "__thiscall(this = game)", "ret": 0},
+    {"addresses": ["00687320"], "convention": "five-byte jmp 00683AA0", "ret": null},
+    {"addresses": ["004F8710", "004D8C00"], "convention": "__cdecl varargs, zero-terminated id list", "ret": 0}
+  ],
+  "missing_ghidra_functions": [
+    {"address": "00689820", "role": "00E198B8 virtual +10h", "note": "ret 8; Ghidra folds it into the tail of 00689800"},
+    {"address": "00685820", "role": "00E198AC virtual +10h", "note": "ret 8; folded into the body around 00685300"},
+    {"address": "00687800", "role": "00E198B4 virtual +10h", "note": "ret 8; folded into the body around 006876D0"},
+    {"address": "00687320", "role": "00E198B4 virtual +0Ch", "note": "five-byte jmp thunk; folded into 00687300, whose real body ends at 0068731B"}
+  ],
+  "uncertainties": [
+    "The embedded objects at base +08h and +24h (vtable 00CE3CF0, scalar deleting destructor 0042EC80) are zeroed and never read by anything traced here.",
+    "00E198B4+58h is written by nothing in this packet.",
+    "00E198AC+50h and +54h are identified as refcounted handles from the release sequence only; that they are the two music streams is an inference from the adjacent paths.",
+    "00E198AC+74h is zeroed by the constructor and never written by Init.",
+    "The element type of the vector at 00E198B4+5Ch is unknown.",
+    "The four writers of 00E19894 were not analysed.",
+    "The Init callees 00576B10, 00687C00, 008D2F50 and 0076F0E0 were identified by call site only."
+  ],
+  "state": {
+    "reconstructed_build_tested": ["00684E10", "00684700", "00683AA0", "00683A90", "00684600", "004CC460", "00683E90", "006840F0", "00689800", "006898C0", "00689A10", "00686170", "00686380", "00686C90", "006887E0", "00689540", "006888E0", "004DA650", "004DB190", "004BAC20", "004BFC70"],
+    "analysed_not_reconstructed": ["00684FA0", "00689510", "00687330", "00688AD0", "00688B20"],
+    "analysed_no_ghidra_function": ["00689820", "00685820", "00687800", "00687320"],
+    "identified_by_role_only": ["00684C40", "00684EF0", "00683D10", "004BEF00", "0042BCA0", "00694A60", "006952A0"],
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "follow_up_packets": [
+    {"id": "front_end_screen_sets", "addresses": ["004F8710", "004D8C00", "004F83B0", "00687330"], "files": ["docs/FRONT_END_SCREEN_SETS.md", "include/bsp/front_end_screen_sets.hpp"], "contract": "The two zero-terminated varargs screen-set calls every Activate and every +10h override makes, the jump table at 006873EC, and what an empty list does to the 95-slot screen registry."},
+    {"id": "front_end_interface_lock", "addresses": ["004DAB5D", "004D2C5F", "004BC493", "005CD1E9"], "files": ["docs/FRONT_END_INTERFACE_LOCK.md"], "contract": "What raises the 00E19894 lock that blocks every in-session HUD interface, and why id 2Ch is exempt."},
+    {"id": "main_menu_screens", "addresses": ["005902E0", "005CA880", "00626630", "0051E4D0", "0052FCE0", "00563370", "005098B0"], "files": ["docs/MAIN_MENU_SCREENS.md"], "contract": "The seven objects at 00E198AC+58h..+70h, which interface id each serves, and the one the shell drives through 005884A0."},
+    {"id": "multi_menu_screens", "addresses": ["005E6D90", "005EA8C0", "005E3290", "00574240", "005D2F90", "005CFDA0", "00689310"], "files": ["docs/MULTI_MENU_SCREENS.md"], "contract": "The six objects at 00E198B4+40h..+54h, the unidentified +58h member and the vector at +5Ch, and the online refresh 00689510 gates on."},
+    {"id": "front_end_manager_registry", "addresses": ["00684C40", "00684EF0", "00683D10", "00683C80", "00684990"], "files": ["docs/FRONT_END_MANAGER_REGISTRY.md"], "contract": "The std::map at 00E19898 keyed by manager pointer, its node layout, and whether anything other than 00684700 iterates it."}
+  ]
+}
