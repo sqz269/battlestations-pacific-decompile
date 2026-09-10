@@ -483,3 +483,7 @@ Nothing here is ABI compatible or game validated.
 - `options_storage_prompt`: 005F6FB0, 005F5B90, 005EFCB0, 005EFCD0, 005EF4F0, 00531B00, 005F7050.
   Files `docs/OPTIONS_STORAGE_PROMPT.md`. Contract: the overlapped save and load path the update
   virtual polls, and the four modal callbacks the options screen installs.
+
+## Correction from docs/OPTIONS_SETTINGS_COMMIT.md
+
+No field of the settings block at `00f88980` reaches the registry, and none of the commit-path routines writes the options file. Persistence runs through the serializer `008d64a0` (24-row key table, omit-when-default rule); the path builder `008d5150` has only two callers, both readers, and the only options-file writer in the binary belongs to the hardware probe. The shipped options file carries exactly the loader's tokens plus `HardwareReported`, matched case-insensitively. The four control bytes described earlier as detail bytes are input stick modifiers.

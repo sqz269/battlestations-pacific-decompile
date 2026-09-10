@@ -407,3 +407,7 @@ where a plausible per-token reading of the switch table gives the wrong answer.
 ### Correction from docs/APP_INIT_RENDERER.md
 
 `caps+0x28` behind renderer virtual `+0x104` (`00b1ff50`, an accessor for the capability record at renderer+1B18h) is `LOWORD(D3DCAPS9.PixelShaderVersion)`, so `caps+0x28 < 0x200` means pixel shader model below 2.0, which disables shadows.
+
+### Correction from docs/OPTIONS_SETTINGS_COMMIT.md
+
+The Eidos registry key on the installed game holds `ApplicationDir`, `Patch` and `languages` and no value named `language`, so the loader's registry fallback for the language would not fire on this install; settings persist through the serializer `008d64a0` to the options file, never to the registry.
