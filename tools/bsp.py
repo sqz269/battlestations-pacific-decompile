@@ -464,6 +464,8 @@ def scan_bytes(args):
     db = connect(required=False)
     shown = 0
     total = 0
+    lo = int(args.range.split('-')[0], 16) if args.range else 0
+    hi = int(args.range.split('-')[1], 16) if args.range else 1 << 32
     for section in pe.sections:
         name = section.Name.rstrip(b'\x00').decode(errors='replace')
         if args.section and name != args.section:
@@ -471,9 +473,11 @@ def scan_bytes(args):
         data = section.get_data()
         start = base + section.VirtualAddress
         for m in regex.finditer(data):
+            a = start + m.start()
+            if not (lo <= a < hi):
+                continue
             total += 1
             if shown < args.limit:
-                a = start + m.start()
                 where = ''
                 if db:
                     row = db.execute('SELECT address, name FROM functions WHERE address <= ? ORDER BY address DESC LIMIT 1', (a,)).fetchone()
@@ -928,7 +932,7 @@ def main():
     p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes from an address (must be an instruction start), even where Ghidra has no function'); p.add_argument('address')
     p.add_argument('--length', '--limit', dest='length', type=int, default=96, help='bytes to decode (bounds the output)'); p.add_argument('--lines', type=int, default=0, help='optional instruction cap'); p.set_defaults(func=disasm_raw)
     p = sub.add_parser('scan-bytes', help='find a byte pattern (?? wildcards) in the disk image, with the enclosing function'); p.add_argument('pattern')
-    p.add_argument('--limit', type=int, default=20); p.add_argument('--section', help='restrict to one section, e.g. .text'); p.set_defaults(func=scan_bytes)
+    p.add_argument('--limit', type=int, default=20); p.add_argument('--section', help='restrict to one section, e.g. .text'); p.add_argument('--range', help='hex lo-hi address window, e.g. 00680000-006a0000'); p.set_defaults(func=scan_bytes)
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')

@@ -167,7 +167,13 @@ def decompile(client, output, addresses, force=False):
     for index, address in enumerate(addresses):
         address = f'{int(address, 16):08x}'
         if address not in inventory:
-            raise ValueError(f'{address} is not a function in this snapshot')
+            # defined after the snapshot (integrator definitions, worker-found leaves): accept it when
+            # Ghidra has a function there now, and note the provenance in the metadata
+            info = str(client.get('get_function_by_address', address=address))
+            if 'No function' in info or 'error' in info.lower():
+                raise ValueError(f'{address} is not a function in this snapshot or in Ghidra')
+            name = info.splitlines()[0].split('Function:', 1)[-1].split(' at ')[0].strip() or f'FUN_{address}'
+            inventory[address] = {'address': address, 'name': name, 'snapshot': 'live (defined after the last snapshot)'}
         folder = output / 'functions' / address
         if not force and all((folder / file).exists() for file in ('decompiled.c', 'assembly.txt', 'metadata.json')):
             continue
