@@ -1,0 +1,674 @@
+{
+  "packet": "main_menu_screen_update",
+  "owner": "agent/main-menu-update",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "doc": "docs/MAIN_MENU_SCREEN_UPDATE.md",
+  "sources": [
+    "include/bsp/main_menu_screen.hpp",
+    "src/main_menu_screen.cpp"
+  ],
+  "subject": {
+    "class": "the main-menu screen at 00E198AC+58h",
+    "constructor": "005902E0",
+    "object_size": "0x578",
+    "screen_id": 1,
+    "interface_name": "INTF_MAINMENU",
+    "primary_vtable": "00CEFC5C"
+  },
+  "virtuals": [
+    {
+      "slot": "+0Ch destroy",
+      "address": "00590D60",
+      "convention": "__thiscall",
+      "ret": 4,
+      "signature": "void*(this, unsigned char flags)",
+      "summary": "scalar deleting destructor: 00590600 then _free when bit 0 is set"
+    },
+    {
+      "slot": "+10h register",
+      "address": "00582F30",
+      "convention": "__thiscall",
+      "ret": 0,
+      "signature": "void(this)",
+      "summary": "chains 004F71D0, calls its own +14h, writes +2B0h/+2B4h from two text heights, hides +470h, clears +564h and +565h, sets the D3D9 presentation mode"
+    },
+    {
+      "slot": "+14h bind layout",
+      "address": "005861B0",
+      "convention": "__thiscall",
+      "ret": 0,
+      "signature": "void(this)",
+      "summary": "binds FE_main and the widget set; fills +310h..+320h, +328h, +32Ch and +1B8h"
+    },
+    {
+      "slot": "+18h enter",
+      "address": "005987F0",
+      "convention": "__thiscall",
+      "ret": 0,
+      "signature": "void(this)",
+      "summary": "opens the selected page; sets the map zoom +130h to 1.0"
+    },
+    {
+      "slot": "+1Ch exit",
+      "address": "0058F560",
+      "convention": "__thiscall",
+      "ret": 0,
+      "signature": "void(this)",
+      "summary": "hides +2F0h, resets the page to 1 unless game state is 10 or the page is 1/2/3, then 00583E50 and 0058D9E0(1)"
+    },
+    {
+      "slot": "+20h update",
+      "address": "00599DB0",
+      "convention": "__thiscall",
+      "ret": 4,
+      "signature": "void(this, float seconds)",
+      "summary": "the per-frame page machine"
+    },
+    {
+      "slot": "+24h fill list",
+      "address": "005905E0",
+      "convention": "__thiscall",
+      "ret": 4,
+      "signature": "void(this, void* sink)",
+      "summary": "ADD ECX,470h / PUSH ECX / MOV ECX,[ESP+8] / CALL 004D6790: hands the +470h sub-object to 004D6790 with the stack argument in ECX; Ghidra drops the swap"
+    }
+  ],
+  "update_stack_argument": {
+    "type": "float seconds",
+    "evidence": "FLD dword ptr [ESP+0B0h] at 0059A3BD and [ESP+0B4h] at 0059A66B, both the first argument of 00588C70; also the argument of 00A96F40 at 00599DD8"
+  },
+  "return_paths": {
+    "ret_instructions": 1,
+    "ret_address": "0059A6E0",
+    "ret_operand": 4,
+    "shared_epilogue": "0059A6C8",
+    "note": "Ghidra reports sixteen returns and the decompiled form shows eight; the three early returns inside the page-0Ah block are artifacts of the inlined string destructors. 0059A214 JC 0059A22C rejoins the same path after the free."
+  },
+  "fields": [
+    {
+      "offset": "0x010",
+      "name": "text_queue_flag",
+      "evidence": "00599DD2 then 00A96F40(this+0Ch, dt)"
+    },
+    {
+      "offset": "0x070",
+      "name": "ten_widget_vectors",
+      "evidence": "005902E0 clears ten 0x10 vectors"
+    },
+    {
+      "offset": "0x110",
+      "name": "active_mission_group_handle",
+      "evidence": "00599DB0 copies +310h..+320h"
+    },
+    {
+      "offset": "0x124",
+      "name": "backdrop_position",
+      "evidence": "005861B0; 0059A68E passes it to 00AA8240"
+    },
+    {
+      "offset": "0x130",
+      "name": "map_zoom",
+      "evidence": "005987F0 sets 1.0; 00588C70 clamps to [0.5,1.5]"
+    },
+    {
+      "offset": "0x134",
+      "name": "five_mission_point_vectors",
+      "evidence": "005902E0 vector ctor iterator (this+134h, 0x10, 5); 00588C70 indexes +134h+i*10h"
+    },
+    {
+      "offset": "0x184",
+      "name": "map_anchor",
+      "evidence": "00588C70 stores the 005803E0 result"
+    },
+    {
+      "offset": "0x190",
+      "name": "map_base_offset",
+      "evidence": "00582F30 writes 0.2, 0.39, 0"
+    },
+    {
+      "offset": "0x19C",
+      "name": "second_smoothing_gate",
+      "evidence": "00588C70 reads it; no writer in this packet"
+    },
+    {
+      "offset": "0x1A0",
+      "name": "zoom_axis_latch",
+      "evidence": "0059A5E5 stores 1; no clear site found"
+    },
+    {
+      "offset": "0x1A4",
+      "name": "map_offset",
+      "evidence": "00582F30 clears +1A4h/+1A8h/+1ACh"
+    },
+    {
+      "offset": "0x1B8",
+      "name": "top_level_list_box",
+      "evidence": "00584AE0 and 00588A80"
+    },
+    {
+      "offset": "0x1D4",
+      "name": "page_animator",
+      "evidence": "0059A6AF 00683820(this+1D4h, byte +56Ch)"
+    },
+    {
+      "offset": "0x238",
+      "name": "list_entry_pool",
+      "evidence": "00584AE0 00AAB4C0(this+238h, 0)"
+    },
+    {
+      "offset": "0x2B0",
+      "name": "text_height_extents",
+      "evidence": "00582F30 from 00AB6BD0 and 00AA6750"
+    },
+    {
+      "offset": "0x2F0",
+      "name": "exit_hide_target",
+      "evidence": "0058F560 virtual +34h with 0"
+    },
+    {
+      "offset": "0x310",
+      "name": "missions_US_Group",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x314",
+      "name": "missions_JP_Group",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x318",
+      "name": "missions_US_DLC_Group",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x31C",
+      "name": "missions_JP_DLC_Group",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x320",
+      "name": "training_Group",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x328",
+      "name": "bg_01_Icon",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x32C",
+      "name": "background_Icon",
+      "evidence": "005861B0"
+    },
+    {
+      "offset": "0x354",
+      "name": "detail_animator",
+      "evidence": "0059A3F0 and 0059A41C 00683820(this+354h, 1)"
+    },
+    {
+      "offset": "0x470",
+      "name": "fill_list_subobject",
+      "evidence": "00582F30 hides it; 005905E0 passes it out"
+    },
+    {
+      "offset": "0x500",
+      "name": "async_text_pending",
+      "evidence": "00590A00 sets; 0059A041/0059A07A clear"
+    },
+    {
+      "offset": "0x504",
+      "name": "std_string_a",
+      "evidence": "005902E0 writes buffer 508h, size 518h, capacity 51Ch; VC8 secure-SCL layout, 0x1C bytes"
+    },
+    {
+      "offset": "0x520",
+      "name": "std_string_b",
+      "evidence": "005902E0 writes buffer 524h, size 534h, capacity 538h"
+    },
+    {
+      "offset": "0x564",
+      "name": "us_campaign_selected",
+      "evidence": "00582F30 clears; 0059A32A/0059A356 read"
+    },
+    {
+      "offset": "0x565",
+      "name": "dlc_campaign_selected",
+      "evidence": "00582F30 clears; 0059A31C reads"
+    },
+    {
+      "offset": "0x56C",
+      "name": "pad_axis_override_off",
+      "evidence": "005978A1 writes; 0059A532 and 0059A6A7 read"
+    }
+  ],
+  "mission_groups": [
+    {
+      "index": 0,
+      "handle": "0x314",
+      "widget": "missions_JP_Group",
+      "point_list": "0x134",
+      "page": "0x04",
+      "detail_dlc": false,
+      "detail_us": false
+    },
+    {
+      "index": 1,
+      "handle": "0x310",
+      "widget": "missions_US_Group",
+      "point_list": "0x144",
+      "page": "0x05",
+      "detail_dlc": false,
+      "detail_us": true
+    },
+    {
+      "index": 2,
+      "handle": "0x320",
+      "widget": "training_Group",
+      "point_list": "0x154",
+      "page": "0x08",
+      "detail_dlc": null,
+      "detail_us": null
+    },
+    {
+      "index": 3,
+      "handle": "0x31C",
+      "widget": "missions_JP_DLC_Group",
+      "point_list": "0x164",
+      "page": "0x06",
+      "detail_dlc": true,
+      "detail_us": false
+    },
+    {
+      "index": 4,
+      "handle": "0x318",
+      "widget": "missions_US_DLC_Group",
+      "point_list": "0x174",
+      "page": "0x07",
+      "detail_dlc": true,
+      "detail_us": true
+    }
+  ],
+  "page_machine": [
+    {
+      "page": "0x01",
+      "action": null,
+      "effect": "nothing",
+      "scene": 1
+    },
+    {
+      "page": "0x02",
+      "action": "0x4B back",
+      "effect": "00584AE0(this, 0)",
+      "scene": 1
+    },
+    {
+      "page": "0x03",
+      "action": "0x4B back",
+      "effect": "00584AE0(this, 0)",
+      "scene": 1
+    },
+    {
+      "page": "0x0B",
+      "action": "0x4B back",
+      "effect": "00584AE0(this, 0)",
+      "scene": null,
+      "note": "0059A2DC jumps past the epilogue"
+    },
+    {
+      "page": "0x04,0x05,0x06,0x07,0x08",
+      "action": "0x4B back",
+      "effect": "00AA8240(this+328h, this+124h) then 00584F50",
+      "scene": 3
+    },
+    {
+      "page": "0x09",
+      "action": "0x4B back",
+      "effect": "00599340",
+      "scene": 4
+    },
+    {
+      "page": "0x09",
+      "action": "0x4A accept",
+      "effect": "00594BF0",
+      "scene": 4
+    },
+    {
+      "page": "0x0C",
+      "action": "0x4B back",
+      "effect": "0058C010",
+      "scene": 5
+    },
+    {
+      "page": "0x0C",
+      "action": "0x4A accept",
+      "effect": "005885D0",
+      "scene": 5
+    },
+    {
+      "page": "0x0C",
+      "action": "0x50 context",
+      "effect": "005806A0, mode 2 into manager+70h, then 005886C0",
+      "scene": 5
+    },
+    {
+      "page": "0x0A",
+      "action": "0x4B back",
+      "effect": "manager virtual +70h(this+504h, this+520h, 1) then 00590A00(this, 1)",
+      "scene": null
+    },
+    {
+      "page": "0x0A",
+      "action": "0x4A accept",
+      "effect": "BSP_Game_RequestState 6 and 7, page = 1",
+      "scene": 1
+    }
+  ],
+  "action_query_004d92b0": {
+    "convention": "__thiscall(ECX = the game at 00E188A8, int action)",
+    "record_stride": "0x30",
+    "record_fields": {
+      "previous_hold": "+1Ch",
+      "previous_down": "+20h",
+      "current_hold": "+24h",
+      "current_down": "+28h"
+    },
+    "repeat_delay_seconds": 0.4,
+    "repeat_delay_constant": "00CE65D0 (double)",
+    "repeat_interval_seconds": 0.1,
+    "repeat_interval_constant": "00D7A3A0 (double)",
+    "hold_floor_constant": "00D7A218 (0.0f)",
+    "deadline_map": "004D6900 keyed by action index; the clock is game+64Ch",
+    "sound_slots": {
+      "+19h navigate": [
+        "0x46",
+        "0x47",
+        "0x4C",
+        "0x4D",
+        "0x57",
+        "0x58"
+      ],
+      "+1Ah select": [
+        "0x4A",
+        "0x4E",
+        "0x4F",
+        "0x50",
+        "0x51",
+        "0x52",
+        "0x53",
+        "0x54",
+        "0x55"
+      ],
+      "+1Bh back": [
+        "0x4B"
+      ]
+    },
+    "action_meanings": {
+      "0x4A": "accept",
+      "0x4B": "back",
+      "0x50": "context (matches GUI control code 0xA7)"
+    },
+    "mapping_evidence": "the GUI event handler 005993A0 runs the same page switch off a control code at event+0F0h: code 0xA2 matches action 0x4A on every shared page and code 0xA3 matches action 0x4B"
+  },
+  "top_level_menu": {
+    "builder": "00584AE0",
+    "convention": "__thiscall(this, bool select_first), RET 4",
+    "selection_rule": "00584C2F: a zero argument restores 00E194C4, non-zero selects item 0",
+    "selection_cache": "00E194C4",
+    "enable_table": "00CEF77C, seven bytes, all 1 in this image",
+    "label_table": "00E087B8",
+    "dispatcher": "00588A80",
+    "items": [
+      {
+        "index": 0,
+        "label": "FE.main_singleplayer",
+        "effect": "00584F50 (page 2)"
+      },
+      {
+        "index": 1,
+        "label": "FE.main_multiplayer",
+        "effect": "005853C0 (page 3)"
+      },
+      {
+        "index": 2,
+        "label": "FE.main_tacticallibrary",
+        "effect": "006B8AD0 luaLoadControlFunctionNames() then 005886F0 (page 0Bh)"
+      },
+      {
+        "index": 3,
+        "label": "FE.main_options",
+        "effect": "00E19650 = 0, then BSP_Game_RequestState 6 and 0x14",
+        "state_requests": [
+          6,
+          20
+        ]
+      },
+      {
+        "index": 4,
+        "label": "globals.live",
+        "effect": "XShowGuideUI(0) at 00A4D44C"
+      },
+      {
+        "index": 5,
+        "label": "FE_pc.main_marketplace",
+        "effect": "00585B40 and 00585810 must both pass, then XShowMarketplaceUI(BSP_XenonSystemManager_GetActiveUserSlot(0))"
+      },
+      {
+        "index": 6,
+        "label": "FE_pc.main_quit",
+        "effect": "FE_pc.main_quit_confirm modal through 00531B00 with callback 0057D3B0, then 00530C20 on the menu-command screen"
+      }
+    ]
+  },
+  "map_camera": {
+    "driver": "00588C70",
+    "zoom_field": "+130h",
+    "zoom_min": 0.5,
+    "zoom_min_constant": "00CE3800",
+    "zoom_max": 1.5,
+    "zoom_max_constant": "00CE380C",
+    "zoom_gain": 0.1,
+    "zoom_gain_constant": "00D7A3A0 (double)",
+    "idle_threshold": 1.0,
+    "idle_threshold_constant": "00D7A24C",
+    "idle_drift": -0.2,
+    "idle_drift_constant": "00CE69CC",
+    "offset_decay": "offset + (0 - offset) * 0.1 at 0059A5F2..0059A60E",
+    "zoom_out_action": "0x121 field +24h (records+3654h)",
+    "zoom_in_action": "0x122 field +24h (records+3684h)",
+    "pad_axis": "first element of the vector at 00F8BBF4+94h..+98h, virtual +24h with 0x0A, consulted only when +56Ch is clear",
+    "detail_page_delta": 0.2,
+    "detail_page_delta_constant": "00CE54A0",
+    "detail_page_blend": "00414130(ECX = &this+1A8h, &-0.21 at 00CEFF04, &0.1 at 00D7A2F0)"
+  },
+  "modals": {
+    "damaged": {
+      "key": "FE_xbox.xsm_dlcdamaged",
+      "address": "00CEFF34",
+      "gate": "00E0887C set and 00F8A304 non-null; walks entries stride 0x18 testing +12h"
+    },
+    "downloaded": {
+      "key": "FE_xbox.xsm_dlcdownloaded",
+      "address": "00CEFF18",
+      "gate": "00F8ABE8+30h set, menu-command screen +5h zero, a selected user, sign-in state 2, and 00F8A304 virtual +18h"
+    }
+  },
+  "corrections": [
+    {
+      "doc": "docs/MAIN_MENU_SCREENS.md",
+      "claim": "no screen in 0050..0062 produces on the game+5D8h state-request deque",
+      "correction": "00588AF9 and 00588B06 push 6 and 0x14 for the options item; 0059A1EC and 0059A1F9 push 6 and 7 in the update's page-0Ah arm. Request 0x14 is BSP_Game_RaiseOptionsMenu (004BAC20) and request 7 is BSP_Game_RaiseMultiplayerMenu (004BFC70)."
+    },
+    {
+      "doc": "docs/MAIN_MENU_SCREENS.md",
+      "claim": "pages 4..7 are USN, USN-DLC, IJN, IJN-DLC (marked provisional)",
+      "correction": "the widget each page binds gives page 4 = missions_JP_Group, 5 = missions_US_Group, 6 = missions_JP_DLC_Group, 7 = missions_US_DLC_Group, and identifies the unnamed page 8 as training_Group."
+    },
+    {
+      "doc": "docs/MAIN_MENU_SCREENS.md",
+      "claim": "page 0Ch has no identified writer",
+      "correction": "00594C51 in 00594BF0 stores 0Ch. A page writer outside the doc's list is 004B4130 in FUN_004B3FC0."
+    },
+    {
+      "doc": "exports 00599DB0",
+      "claim": "the decompiled body returns early inside the page-0Ah block",
+      "correction": "the listing has one RET 4 at 0059A6E0; those returns are artifacts of the inlined string destructors."
+    }
+  ],
+  "uncertainties": [
+    "The page-0Ah arm is entered only when [00F8A2FC] is zero (0059A026 JZ 0059A085) and then dereferences the same global at 0059A0E9. Verified against the disk bytes. No site stores an immediate 0Ah into 00E08874, so the arm is probably dead, but that was not proved; the register writers 00580940, 00597870, 004B3FC0, 00515BC0 and 00686380 were not followed.",
+    "00F8A2FC is unidentified. Virtuals used: +38h, +3Ch (status, field +34h vs 4 and 2), +44h, +70h(a, b, 1), +148h(dst, tmp).",
+    "00414130, 00683820, 004D6790, 00427190, 004C1E90 and 005803E0 were used but not read.",
+    "+19Ch gates the second smoothing branch of 00588C70 and has no writer in this packet.",
+    "+1A0h has no clear site in this packet.",
+    "0057D3B0 has no Ghidra function; it sits inside the stored body of 0057D0D0 and is the quit-confirm callback. It also holds the page write at 0057D472.",
+    "The sound slot names navigate/select/back come from the action grouping, not from a string."
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0057D3B0",
+      "note": "quit-confirm callback passed to 00531B00 by 00588A80; currently inside the body of 0057D0D0 BSP_LoadingScreen_BuildDefaultConfig. Define before naming."
+    }
+  ],
+  "names_recorded": [
+    {
+      "address": "00599DB0",
+      "name": "BSP_MainMenuScreen_Update",
+      "mode": "append-evidence"
+    },
+    {
+      "address": "005905E0",
+      "name": "BSP_MainMenuScreen_FillActiveList",
+      "mode": "replace"
+    },
+    {
+      "address": "00590D60",
+      "name": "BSP_MainMenuScreen_ScalarDeletingDtor",
+      "mode": "new"
+    },
+    {
+      "address": "00582F30",
+      "name": "BSP_MainMenuScreen_Register",
+      "mode": "new"
+    },
+    {
+      "address": "005861B0",
+      "name": "BSP_MainMenuScreen_BindLayout",
+      "mode": "new"
+    },
+    {
+      "address": "005987F0",
+      "name": "BSP_MainMenuScreen_Enter",
+      "mode": "new"
+    },
+    {
+      "address": "0058F560",
+      "name": "BSP_MainMenuScreen_Exit",
+      "mode": "new"
+    },
+    {
+      "address": "00584AE0",
+      "name": "BSP_MainMenu_BuildTopLevelPage",
+      "mode": "append-evidence"
+    },
+    {
+      "address": "004D92B0",
+      "name": "BSP_FrontEnd_ActionEdgeOrRepeat",
+      "mode": "new",
+      "note": "lease extended to cover this direct callee"
+    },
+    {
+      "address": "00588A80",
+      "name": "BSP_MainMenu_ActivateTopLevelItem",
+      "mode": "new",
+      "note": "lease extended"
+    },
+    {
+      "address": "00590A00",
+      "name": "BSP_MainMenu_FinishAsyncTextRequest",
+      "mode": "new",
+      "note": "lease extended; Ghidra's decompilation drops its stack argument"
+    }
+  ],
+  "follow_up_packets": [
+    {
+      "id": "main_menu_page_builders",
+      "addresses": [
+        "00584F50",
+        "005853C0",
+        "005886F0",
+        "00580940",
+        "00597870"
+      ],
+      "files": [
+        "docs/MAIN_MENU_PAGES.md",
+        "include/bsp/main_menu_pages.hpp",
+        "src/main_menu_pages.cpp"
+      ],
+      "contract": "the five page builders, what each opens, and the parameter 00597870 turns into pages 4..7 and the +56Ch byte, closing the page-0Ah reachability question"
+    },
+    {
+      "id": "main_menu_gui_events",
+      "addresses": [
+        "005993A0",
+        "00598B60",
+        "00588A80"
+      ],
+      "files": [
+        "docs/MAIN_MENU_GUI_EVENTS.md",
+        "include/bsp/main_menu_gui_events.hpp",
+        "src/main_menu_gui_events.cpp"
+      ],
+      "contract": "the control-code switch at event+0F0h, the widget search over +248h/+260h/+268h, and the full item dispatch including the quit callback"
+    },
+    {
+      "id": "front_end_action_query",
+      "addresses": [
+        "004D92B0",
+        "004D6900",
+        "004C1B90"
+      ],
+      "files": [
+        "docs/FRONT_END_ACTION_QUERY.md"
+      ],
+      "contract": "the repeat map keyed by action index, the three sound slots, and which controls the fifteen named action indices correspond to"
+    },
+    {
+      "id": "mission_map_camera",
+      "addresses": [
+        "00588C70",
+        "005803E0",
+        "00414130",
+        "00683820"
+      ],
+      "files": [
+        "docs/MISSION_MAP_CAMERA.md",
+        "include/bsp/mission_map_camera.hpp"
+      ],
+      "contract": "the point-list element layout, the mission_mappoint_ widget walk and the +19Ch gate"
+    }
+  ],
+  "state": {
+    "00599DB0": "analyzed to the instruction, reconstructed, build-tested",
+    "00584AE0": "analyzed, selection rule reconstructed, build-tested",
+    "00588A80": "analyzed, item table reconstructed as data, build-tested",
+    "004D92B0": "analyzed, edge and repeat rule reconstructed, build-tested",
+    "00582F30": "analyzed, not reconstructed",
+    "0058F560": "analyzed, not reconstructed",
+    "00590D60": "analyzed, not reconstructed",
+    "005905E0": "analyzed from the listing, not reconstructed",
+    "005861B0": "partially analyzed (bound handles only)",
+    "005987F0": "exported, read only for +130h",
+    "00588C70": "partially analyzed (zoom accumulator and clamp)",
+    "005993A0": "partially analyzed (action mapping only)"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "clean, Win32 Release, warnings as errors"
+  },
+  "tests": {
+    "suite": "reconstructed_math",
+    "result": "passed",
+    "added": "one case in tests/math_tests.cpp covering the page-to-group and campaign-byte-to-group selectors"
+  }
+}
