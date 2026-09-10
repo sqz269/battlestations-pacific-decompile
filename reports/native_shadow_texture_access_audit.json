@@ -1,0 +1,325 @@
+{
+  "packet": "native_shadow_texture_access",
+  "utc": "2026-09-10T18:28:06.432271+00:00",
+  "status": "bounded_reconstructed_strict_win32_compiled_one_native_sequence_passed",
+  "source_base_commit": "e59b6cf",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "target_verified_before_every_live_query": "tools/bsp.py ghidra verifies selected project/program against target configuration",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_files": [
+    "include/bsp/native_shadow_texture_access.hpp",
+    "src/native_shadow_texture_access.cpp",
+    "docs/NATIVE_SHADOW_TEXTURE_ACCESS.md",
+    "reports/native_shadow_texture_access_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00a8fcf0",
+      "end_exclusive": "00a8fd0f",
+      "length": 31,
+      "proposed_name": "SystemShadowMap_GetDepthTexture",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX shadow; borrowed EAX; RET or tail JMP 00A8FDB0",
+      "cpp_function": "get_native_shadow_depth_texture_00a8fcf0",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00a8fd10",
+      "end_exclusive": "00a8fd2f",
+      "length": 31,
+      "proposed_name": "SystemShadowMap_GetColorTexture",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX shadow; borrowed EAX; RET or tail JMP 00A8FD90",
+      "cpp_function": "get_native_shadow_color_texture_00a8fd10",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00a8fd90",
+      "end_exclusive": "00a8fd94",
+      "length": 4,
+      "proposed_name": "SystemShadowTarget_GetColorTexture",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX target; borrowed EAX; RET",
+      "cpp_function": "get_native_shadow_color_texture_00a8fd90",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00a8fdb0",
+      "end_exclusive": "00a8fdb4",
+      "length": 4,
+      "proposed_name": "SystemShadowTarget_GetDepthTexture",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX target; borrowed EAX; RET",
+      "cpp_function": "get_native_shadow_depth_texture_00a8fdb0",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00b3ce50",
+      "end_exclusive": "00b3ce54",
+      "length": 4,
+      "proposed_name": "D3D9Texture_GetReportedWidth",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX wrapper; unsigned DWORD EAX; RET",
+      "cpp_function": "get_native_texture_width_00b3ce50",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00b3ce60",
+      "end_exclusive": "00b3ce64",
+      "length": 4,
+      "proposed_name": "D3D9Texture_GetReportedHeight",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX wrapper; unsigned DWORD EAX; RET",
+      "cpp_function": "get_native_texture_height_00b3ce60",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00b3ceb0",
+      "end_exclusive": "00b3cec1",
+      "length": 17,
+      "proposed_name": "D3D9Texture_SetReportedDimensions",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX wrapper; stack width then height; RET8; no semantic result",
+      "cpp_function": "set_native_texture_reported_dimensions_00b3ceb0",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    },
+    {
+      "address": "00a8fdd0",
+      "end_exclusive": "00a8fe24",
+      "length": 84,
+      "proposed_name": "SystemShadowTarget_ToggleReportedDimensions",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_abi": "ECX target; low byte of stack DWORD; RET4; preserves ESI; no semantic result",
+      "cpp_function": "toggle_native_shadow_target_00a8fdd0",
+      "cpp_abi": "new C++ interface, not a binary replacement",
+      "body_scope": "complete including all returning tails"
+    }
+  ],
+  "native_byte_evidence": [
+    {
+      "label": "depth_dispatch",
+      "start": "00a8fcf0",
+      "end_exclusive": "00a8fd0f",
+      "length": 31,
+      "sha256": "8db6438215b0fbf846958ff81821f76eaa1728c9406c9902d6155bd2d5786433",
+      "raw_preimage_hex": "a1f0bbf80080780c00740d80780d0074078bc8e9a80000008b8184030000c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "color_dispatch",
+      "start": "00a8fd10",
+      "end_exclusive": "00a8fd2f",
+      "length": 31,
+      "sha256": "8e91715e18fc4e2694811b48eea1e06fcc7537ef8bf286b0cb90ee9a5eed6442",
+      "raw_preimage_hex": "a1f0bbf80080780c00740d80780d0074078bc8e9680000008b8184030000c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "color_getter",
+      "start": "00a8fd90",
+      "end_exclusive": "00a8fd94",
+      "length": 4,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "raw_preimage_hex": "8b4110c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "depth_getter",
+      "start": "00a8fdb0",
+      "end_exclusive": "00a8fdb4",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "raw_preimage_hex": "8b4118c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "toggle",
+      "start": "00a8fdd0",
+      "end_exclusive": "00a8fe24",
+      "length": 84,
+      "sha256": "66ef04efc5b852e1e108c11f541a4e5b5b12c2e37deb62fa1fd2b1336d356357",
+      "raw_preimage_hex": "8a442404568bf1807e0d0088460c744084c074248b46088b4e0450518b4e10e8bcd00a008b56088b46048b4e185250e8acd00a005ec204008b4e106a086a08e89cd00a008b4e186a086a08e890d00a005ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "width",
+      "start": "00b3ce50",
+      "end_exclusive": "00b3ce54",
+      "length": 4,
+      "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "raw_preimage_hex": "8b4128c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "height",
+      "start": "00b3ce60",
+      "end_exclusive": "00b3ce64",
+      "length": 4,
+      "sha256": "4d8bbabf4078fb522f1b7e5fa9e993af5e9c941d53117c673ecfde3a5feca5c7",
+      "raw_preimage_hex": "8b412cc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "dimensions",
+      "start": "00b3ceb0",
+      "end_exclusive": "00b3cec1",
+      "length": 17,
+      "sha256": "f5f3196e69b6bb6d899d32dce9df2fca4e2dd9541dfacaceb498f175fa48be1b",
+      "raw_preimage_hex": "8b4424048b54240889412889512cc20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_profile",
+      "start": "00d5b5e8",
+      "end_exclusive": "00d5b5f4",
+      "length": 12,
+      "sha256": "e267c014ad7b7099fa5c74b2d7c2543ee7c9f81de966b95fc753f7081f90efc1",
+      "raw_preimage_hex": "c000a90030ffa800d0fda800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_profile",
+      "start": "00d61948",
+      "end_exclusive": "00d619a0",
+      "length": 88,
+      "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad",
+      "raw_preimage_hex": "e030bd0090f5b30090fab30030ceb30040ceb300803eb300903eb300a0ceb30030ddb30090ddb300b0d7b30090e1b30080fdb30090d5b300c0d5b30050ceb30060ceb30090ceb30070ceb30080ceb30010dfb30040d6b300",
+      "ghidra_matches_installed_pe": true
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_shadow_texture_access.hpp": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+    "src/native_shadow_texture_access.cpp": "89e255e913c5f0f89ae8fe4abc0d97a2ef04050ad47416163eb92c7d0ece0722",
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8",
+    "docs/NATIVE_SHADOW_TEXTURE_ACCESS.md": "7dab2a22b8eef069358dd0817369add0e989177d022438418d440d58f3e8864c"
+  },
+  "borrowed_storage_contract": [
+    "NativeShadowMapView retains existing SystemShadowMapOwner references for +144/+184/+1C4/+204 matrices, +38 direction, and +390 limits; no copies.",
+    "NativeShadowMapView binds the SAME raw global slot 00F8BBF0 and SAME actual shadow +384 fallback slot. It does not own a cached texture or global target value.",
+    "NativeShadowDepthTargetFields binds actual target +04 width, +08 height, +0C enable, +0D created/capability, raw +10 color and raw +18 depth textures.",
+    "NativeD3D9ShadowTexture binds actual wrapper current vtable and SAME mutable reported DWORDs +28/+2C consumed and written by B3CE50/B3CE60/B3CEB0.",
+    "Resolver is a nonmutating exact-identity binding lookup. It cannot invoke callbacks, retain, create, or substitute a fabricated owner. It must return nullptr when the actual identity is unavailable.",
+    "Observed profiles required by host: target D5B5E8 and texture D61948. Wrong or missing identity/profile fails explicitly. Current texture profile is checked again on dimension dispatch.",
+    "Raw target leaf getters return the borrowed native pointer value. Shadow getters resolve nonnull selected pointers to concrete bindings; selected null remains null for caller handling.",
+    "Construction and destruction of the C++ companions do not initialize, allocate, free, retain, or release native owners or textures."
+  ],
+  "ordering_evidence": [
+    {
+      "site": "00A8FCF0 / 00A8FD10",
+      "observed": "A1 captures 00F8BBF0 once; CMP +0C; conditional CMP +0D; both nonzero change ECX to captured target and tail-jump +18/+10 getter; fallback reads original shadow ECX+384."
+    },
+    {
+      "site": "00A8FDD7 / 00A8FDDB",
+      "observed": "CMP target+0D precedes MOV exact AL to target+0C; MOV preserves comparison flags; JE branches from the captured capability."
+    },
+    {
+      "site": "00A8FDE4..00A8FDF4",
+      "observed": "First enabled metadata call captures height, width, then color identity. Second reloads height at FDF4, width FDF7, depth FDFA after the first setter returns."
+    },
+    {
+      "site": "00A8FE08..00A8FE20",
+      "observed": "Disabled branch calls color setter (8,8), reloads depth identity, calls depth setter (8,8); no intervening capability check."
+    },
+    {
+      "site": "00B3CEB0..00B3CEC1",
+      "observed": "Both DWORD arguments loaded before first write. Width +28 precedes height +2C. RET8; no COM call, ownership, scaling, clamping or dimension conversion."
+    },
+    {
+      "site": "src/system_lighting_constants.cpp:135..146",
+      "observed": "Existing caller retains two separate shadow virtual+08 invocations, each followed by width+3C or height+40 dispatch. New companion does not merge them or prefetch dimensions."
+    }
+  ],
+  "validation": {
+    "native_seed_preimages": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "exit_code": 0,
+      "all_eight_match_disk": true
+    },
+    "focused_native_sequence": {
+      "command": "./local/build_native_shadow_texture_check.ps1",
+      "exit_code": 0,
+      "compiler": "MSVC Win32 C++17 /permissive- /EHsc /fp:strict /O2 /Oy- /MT /W4 /WX",
+      "sequence_count": 1,
+      "native_method": "Map installed PE into isolated host allocation; dispatch actual native profile virtual slots through their original addresses; execute all eight original bounded routine bodies.",
+      "instruction_patches": [
+        {
+          "operand_address": "00a8fcf1",
+          "preimage": "f0bbf800",
+          "purpose": "relocate absolute load address of global slot F8BBF0 to the mapped PE"
+        },
+        {
+          "operand_address": "00a8fd11",
+          "preimage": "f0bbf800",
+          "purpose": "relocate absolute load address of global slot F8BBF0 to the mapped PE"
+        }
+      ],
+      "no_other_patches": "No instruction opcode, branch, call, return, vtable word, import or continuation patch; no callback interception.",
+      "observations": [
+        "First color wrapper +28/+2C overlaps target +08/+0C in valid backing storage. First write changes target height; second depth height is reloaded as 80000011, matching native.",
+        "Both depth virtual+08 and color virtual+0C select the correct actual identity; width dispatch returns unsigned 80000011.",
+        "Changing the SAME raw global slot changes the next virtual+08 selection to another target and texture.",
+        "B3CEB0 mutates selected texture after getter but before dimension dispatch; height dispatch returns current unsigned F1234567.",
+        "Disabled target reads the current fallback slot; changing fallback identity changes the returned texture.",
+        "Disabling still updates the second depth wrapper to (8,8) after first aliased write clears capability; no spurious recheck.",
+        "Subsequent capability-zero enable changes exact byte to A5 and leaves metadata at 8.",
+        "Unsupported current D619A0 profile and unbound nonnull texture fail explicitly in host checks; these failures are not claimed native behavior."
+      ],
+      "compared_state": "Exact target bytes +00..+0F and both metadata DWORDs for each wrapper, selected actual identity correspondence, unsigned dimension values. Pointer addresses differ between isolated native and host storage and are compared by corresponding identity.",
+      "fixture_sha256": "37b6de77c5155fcda735dc50ccd1bf6ab609157b0713045f8de9be3bf80208c4",
+      "build_script_sha256": "fc6847547f9211864f92d260abd18f8bd721b7dd409139b0f6e68356896288c4",
+      "log_sha256": "cda026950d0f0c9c90b0aa228f3904847be8ffd139240fae3d2cdccb0136452d"
+    },
+    "existing_project_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "configuration": "Release Win32",
+      "ctest_passed": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "log_sha256": "5325a193b5c24a6046eaaeaa3710f511ae504777e73ace28ba151208a8851168",
+      "scope": "Existing project plus borrowed primary shared system_lighting_constants files. The new source is compiled separately by the focused fixture; no worker CMake edit."
+    }
+  },
+  "integration": {
+    "primary_owned_files_copied_for_compilation_only": [
+      "include/bsp/system_lighting_constants.hpp",
+      "src/system_lighting_constants.cpp"
+    ],
+    "primary_next_step": "Add src/native_shadow_texture_access.cpp to bsp_core; optionally define/annotate the eight verified routines under primary address ownership and refresh exports; bind NativeShadowMapView via shared SystemShadowOwnerResolver to each actual native shadow identity.",
+    "tracked_test_changes": false,
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "cmake_mutations": false
+  },
+  "uncertainty_and_limits": [
+    "Names are descriptive hypotheses. This packet supplies only the eight observed access/metadata routines and concrete borrowed profiles.",
+    "Host binding checks introduce explicit unavailable/unsupported errors; native routines dereference raw pointers without those guards.",
+    "Caller must provide correctly aligned live fields at the actual native offsets and nonmutating resolver lookups. Reference provenance cannot be validated by this API.",
+    "Single-threaded valid bindings only. Concurrent mutation and invalid native pointers are not modeled.",
+    "Errors are not transactional: prior native-ordered enable or first-wrapper writes remain applied if a later binding fails.",
+    "No shadow owner/global target/texture allocation, construction, deletion, refcount, COM creation, full rendering update, matrix initialization, or fallback texture loading is reconstructed by this packet.",
+    "No game execution, injected code, installed binary modification, Direct3D rendering, pixel comparison, or visual parity claim.",
+    "No drop-in native ABI compatibility claim; native fixture ABI invocation and host C++ behavioral reconstruction are separate evidence categories."
+  ]
+}
