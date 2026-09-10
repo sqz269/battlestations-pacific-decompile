@@ -1,0 +1,32 @@
+[
+  {
+    "address": "004d05e0",
+    "before": {
+      "address": "004d05e0",
+      "function_name": "BSP_ParticleRecordStringList_Clear",
+      "comment": "[BSP reconstruction 004d05e0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX embedded list; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "004d05e0",
+      "old_name": "BSP_ParticleRecordStringList_Clear",
+      "name": "BSP_PooledStringList_ClearStorage",
+      "evidence": "Complete original[004d05e0,004d0633); ECX actual list owner, RET0, no semantic return. Complete actual list clear: owner+4 sentinel and +8 count, captured first node, two sentinel reloads, initial compare before zero count, captured data/next, current-sentinel reload after actual pool return and node free. Retains actual sentinel and surrounding storage. Evidence reports/native_render_alias_list_clear_audit.json. Original installed bytes and actual pool/malloc/free fixture match four-event clear and six-event composed lifetime; strict MSVC Win32 build2/2. New C++ ABI, no native EH injection or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2f990",
+    "before": {
+      "address": "00b2f990",
+      "function_name": "BSP_RenderResourceRecord_DestroyStorage",
+      "comment": "[BSP reconstruction 00b2f990]\nComplete original[00b2f990,00b2fa08); ECX actual 2Ch record; no EDX input or stack parameters; RET0; no semantic return value.. Complete actual2Ch record destructor: actual alias list/name/sentinel allocations, captured-next/current-sentinel loop; sentinel null after free; current name reload; preserve payload/unknown/resource28; state0 name cleanup and state-1 before normal final return. No resource intrusive release. Evidence reports/native_render_resource_record_audit.json; docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code storage/lifetime comparisons pass. New C++ ABI; nativeEH execution/fullrenderer/fullnativecommands/gameplay remain unvalidated."
+    },
+    "after": {
+      "address": "00b2f990",
+      "old_name": "BSP_RenderResourceRecord_DestroyStorage",
+      "name": "BSP_RenderResourceRecord_DestroyStorage",
+      "evidence": "Complete original[00b2f990,00b2fa08); ECX actual2Ch record, RET0, no semantic return. Complete actual record destructor now composes shared actual list clear at record+8, preserving current-sentinel free/null, current-name capture, state0 name guard and state-1 before name return. Payload and resource unchanged. Evidence reports/native_render_alias_list_clear_audit.json. Original installed bytes and actual pool/malloc/free fixture match four-event clear and six-event composed lifetime; strict MSVC Win32 build2/2. New C++ ABI, no native EH injection or game validation."
+    },
+    "status": "applied"
+  }
+]

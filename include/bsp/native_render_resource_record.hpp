@@ -27,6 +27,16 @@ struct NativeRenderResourceRecord {
     void* resource_28;
 };
 
+// Complete 004D05E0..004D0632. Native ABI: ECX actual list owner, RET0,
+// no semantic return. For this record the owner is record+8: its preserved
+// word is +0, actual sentinel pointer +4, and count +8. No copied list header.
+// Detach the sentinel, zero count, then release each captured node string and
+// node; compare captured next against the current sentinel after callbacks.
+// Retain the sentinel allocation and all fields outside those list links/count.
+// The caller supplies the actual 00419CC0 pool; nodes use lifetime malloc/free.
+void clear_native_render_resource_aliases_004d05e0(
+    void* actual_list_owner, SizedStoragePool& actual_string_pool);
+
 // Complete 00B2F990..00B2FA07, including the tail hidden by false _free
 // no-return analysis. Native ABI: ECX actual record, RET0, no semantic return.
 // The caller supplies the shared 00419CC0 string-pool domain used to allocate

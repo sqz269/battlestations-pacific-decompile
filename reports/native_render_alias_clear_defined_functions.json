@@ -1,0 +1,205 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "004d05e0",
+      "end_exclusive": "004d0633",
+      "length": 83,
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+      "function_before": "Function: BSP_ParticleRecordStringList_Clear at 004d05e0\nSignature: undefined BSP_ParticleRecordStringList_Clear(void)\nEntry: 004d05e0\nBody: 004d05e0 - 004d0632",
+      "documentation_before": {
+        "hash": "3d37ae296343a784afd096186897dedfce629257e8e23ceb2fa58a912458a7a1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d05e0",
+        "function_name": "BSP_ParticleRecordStringList_Clear",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d05e0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX embedded list; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Memory",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 63,
+            "name": "LAB_004d061f"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_004d0630"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "returning_free_call_sites": [
+        "004d0620"
+      ],
+      "function_after": "Function: BSP_ParticleRecordStringList_Clear at 004d05e0\nSignature: undefined BSP_ParticleRecordStringList_Clear(void)\nEntry: 004d05e0\nBody: 004d05e0 - 004d0632",
+      "documentation_after": {
+        "hash": "dc0cdc45115c6721ee6dec45e02fe68b9813bb0d3e680989d4f39ff466a7cc99",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d05e0",
+        "function_name": "BSP_ParticleRecordStringList_Clear",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d05e0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX embedded list; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Memory",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_004d0600"
+          },
+          {
+            "relative_offset": 63,
+            "name": "LAB_004d061f"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_004d0630"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004d0625",
+        "end_address": "004d0633"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004d0625",
+        "end_address": "004d0632",
+        "bytes_disassembled": 14,
+        "message": "Successfully disassembled 14 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "004d0620"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 004d0620 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004d05e0"
+      },
+      "result": {
+        "success": true,
+        "address": "004d05e0",
+        "deleted_function": "BSP_ParticleRecordStringList_Clear",
+        "body_size": 72,
+        "message": "Function 'BSP_ParticleRecordStringList_Clear' deleted at 004d05e0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004d05e0",
+        "name": "BSP_ParticleRecordStringList_Clear",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004d05e0",
+        "function_name": "BSP_ParticleRecordStringList_Clear",
+        "entry_point": "004d05e0",
+        "body_size": 83,
+        "message": "Function created successfully at 004d05e0",
+        "warnings": [
+          "Function name 'BSP_ParticleRecordStringList_Clear' \u2014 main part 'ParticleRecordStringList_Clear' is not PascalCase. Expected: ParticlerecordstringlistClear",
+          "Function name 'BSP_ParticleRecordStringList_Clear' \u2014 main part 'ParticleRecordStringList_Clear' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_ParticleRecordStringList_Clear' does not start with a recognized verb. First word 'Particle' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Actual alias-list clear body rebuilt with preserved comments and returning free continuation; project saved"
+}

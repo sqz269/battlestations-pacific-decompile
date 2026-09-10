@@ -23,6 +23,16 @@ static_assert(offsetof(NativeRenderResourceRecord, payload_14_24) == 0x14);
 static_assert(offsetof(NativeRenderResourceRecord, resource_28) == 0x28);
 
 namespace {
+template<class T>
+volatile T& list_field(void* actual_owner, std::size_t offset) {
+    return *reinterpret_cast<volatile T*>(
+        static_cast<unsigned char*>(actual_owner) + offset);
+}
+
+NativeRenderResourceAliasNode* sentinel(void* actual_owner) {
+    return list_field<NativeRenderResourceAliasNode*>(actual_owner, 4);
+}
+
 // FuncInfo 00DF6100 state 0 -> 00CBD840 -> 0041DD20. Unlike
 // NativeString::release_to, native destruction retains the raw name fields.
 struct RecordNameUnwind {
@@ -41,27 +51,39 @@ struct RecordNameUnwind {
 };
 }
 
-void destroy_native_render_resource_record_00b2f990(
-    NativeRenderResourceRecord& record, SizedStoragePool& actual_string_pool) {
-    RecordNameUnwind unwind{record, actual_string_pool};
-
-    // 004D05E0 receives the embedded list at record+8. Capture its first
-    // node before resetting the real sentinel and count, then retain next
-    // across each pool release/free. Compare with the current sentinel after
-    // those calls; a cached end pointer would change allocator reentry behavior.
-    auto* cursor = record.sentinel_0c->next_00;
-    record.sentinel_0c->next_00 = record.sentinel_0c;
-    record.sentinel_0c->previous_04 = record.sentinel_0c;
-    record.alias_count_10 = 0;
-    while (cursor != record.sentinel_0c) {
-        auto* const data = cursor->string_data_0c;
-        auto* const next = cursor->next_00;
+void clear_native_render_resource_aliases_004d05e0(
+    void* actual_list_owner, SizedStoragePool& actual_string_pool) {
+    // Volatile accesses preserve reloads even when actual owner/sentinel
+    // storage overlaps. The initial equality test precedes the count store.
+    auto* first_sentinel = sentinel(actual_list_owner);
+    volatile auto* node = first_sentinel;
+    auto* cursor = node->next_00;
+    node->next_00 = first_sentinel;
+    auto* second_sentinel = sentinel(actual_list_owner);
+    node = second_sentinel;
+    node->previous_04 = second_sentinel;
+    const bool initially_empty = cursor == sentinel(actual_list_owner);
+    list_field<std::uint32_t>(actual_list_owner, 8) = 0;
+    if (initially_empty) {
+        return;
+    }
+    do {
+        node = cursor;
+        auto* const data = node->string_data_0c;
+        auto* const next = node->next_00;
         if (data) {
-            actual_string_pool.release_00bd1510(data, cursor->string_length_08 + 1u);
+            actual_string_pool.release_00bd1510(data, node->string_length_08 + 1u);
         }
         singleton_lifetime_free(cursor);
         cursor = next;
-    }
+    } while (cursor != sentinel(actual_list_owner));
+}
+
+void destroy_native_render_resource_record_00b2f990(
+    NativeRenderResourceRecord& record, SizedStoragePool& actual_string_pool) {
+    RecordNameUnwind unwind{record, actual_string_pool};
+    clear_native_render_resource_aliases_004d05e0(
+        reinterpret_cast<unsigned char*>(&record) + 8, actual_string_pool);
 
     // 00B2F9C0..00B2F9D0: reload sentinel, free it, then clear that field.
     singleton_lifetime_free(record.sentinel_0c);

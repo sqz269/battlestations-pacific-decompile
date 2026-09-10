@@ -2598,11 +2598,13 @@
       "id": "native_render_command_execution_next",
       "packet": "native_render_command_execution_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_discovering_complete_execution_and_named_incomplete_dependencies",
+      "done": true,
+      "state": "read_only_dependency_discovery_reviewed_installed_spans_and_current_sources_checked",
       "function_addresses": [
         "00b1d950"
-      ]
+      ],
+      "evidence": "reports/native_render_command_execution_next.json",
+      "worker_commit": "9998f55"
     },
     {
       "id": "native_legacy_sbo_string",
@@ -2650,6 +2652,44 @@
         "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
         "reports/native_render_alias_assignment_next.json"
       ]
+    },
+    {
+      "id": "native_render_alias_list_clear",
+      "worker": "main",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_and_original_direct_clear_composed_lifetime_fixture_passed",
+      "evidence": "reports/native_render_alias_list_clear_audit.json",
+      "function_addresses": [
+        "004d05e0",
+        "00b2f990"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_resource_record.hpp",
+        "src/native_render_resource_record.cpp",
+        "docs/NATIVE_RENDER_ALIAS_LIST_CLEAR.md",
+        "reports/native_render_alias_list_clear_audit.json"
+      ],
+      "packet": "native_render_alias_list_clear"
+    },
+    {
+      "id": "native_render_preparation_job_owner",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_actual_eight_byte_job_lifetime_same_real_manager_secondary_pointer_dispatch",
+      "function_addresses": [
+        "00b0ffb0",
+        "00b0f1d0",
+        "00b0f210",
+        "00b0f1c0",
+        "00b0d930"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_preparation_job_owner.hpp",
+        "src/native_render_preparation_job_owner.cpp",
+        "docs/NATIVE_RENDER_PREPARATION_JOB_OWNER.md",
+        "reports/native_render_preparation_job_owner_audit.json"
+      ],
+      "packet": "native_render_preparation_job_owner"
     }
   ],
   "snapshot_after_analysis": {
@@ -3446,8 +3486,8 @@
     {
       "packet": "native_render_command_execution_next",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_discovering_complete_execution_and_named_incomplete_dependencies",
-      "validation": null
+      "state": "read_only_dependency_discovery_reviewed_installed_spans_and_current_sources_checked",
+      "validation": "reports/native_render_command_execution_next.json"
     },
     {
       "packet": "native_legacy_sbo_string",
@@ -3466,16 +3506,21 @@
       "worker": "material_effect_plane",
       "state": "worker_revalidating_full_range_insert_record_assignment_and_exact_error_dependencies",
       "validation": null
+    },
+    {
+      "packet": "native_render_alias_list_clear",
+      "worker": "main",
+      "state": "integrated_reviewed_strict_win32_and_original_direct_clear_composed_lifetime_fixture_passed",
+      "validation": "reports/native_render_alias_list_clear_audit.json"
+    },
+    {
+      "packet": "native_render_preparation_job_owner",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_implementing_actual_eight_byte_job_lifetime_same_real_manager_secondary_pointer_dispatch",
+      "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_render_command_execution_next",
-      "worker": "system_fog_owner_discovery",
-      "function_addresses": [
-        "00b1d950"
-      ]
-    },
     {
       "packet": "native_legacy_exception_owner",
       "worker": "particle_clock_lifetime",
@@ -3494,6 +3539,17 @@
         "004d2660",
         "004d26a0",
         "00b30510"
+      ]
+    },
+    {
+      "packet": "native_render_preparation_job_owner",
+      "worker": "system_fog_owner_discovery",
+      "function_addresses": [
+        "00b0ffb0",
+        "00b0f1d0",
+        "00b0f210",
+        "00b0f1c0",
+        "00b0d930"
       ]
     }
   ],

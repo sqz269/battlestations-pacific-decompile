@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_alias_list_clear",
+  "status": "integrated_reviewed_strict_win32_and_original_direct_clear_composed_lifetime_fixture_passed",
+  "functions": [
+    {
+      "address": "004d05e0",
+      "name": "clear_native_render_resource_aliases_004d05e0",
+      "source": "src/native_render_resource_record.cpp",
+      "status": "actual_storage_integrated_strict_win32_and_original_direct_clear_composed_lifetime_fixture_checked",
+      "original_abi": "ECX actual list owner, RET0, no semantic return",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json; reports/system_constant_builder_audit.json; reports/native_render_alias_list_clear_audit.json",
+      "kind": "function",
+      "previous_interfaces": [
+        {
+          "address": "004d05e0",
+          "name": "BSP_ParticleRecordStringList_Clear",
+          "source": "src/particle_clock_lifetime.cpp",
+          "status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
+          "original_abi": "ECX embedded list; RET0",
+          "abi_compatible": false,
+          "game_validated": false,
+          "evidence": "docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json; reports/system_constant_builder_audit.json",
+          "remaining": "Selected typed normal-flow body; actual nonempty sink zero-reference virtual, native layout/SEH ABI and gameplay remain.",
+          "kind": "function"
+        }
+      ],
+      "cpp_symbol": "clear_native_render_resource_aliases_004d05e0",
+      "native_end_exclusive": "004d0633",
+      "current_integration_scope": "Complete actual list clear: owner+4 sentinel and +8 count, captured first node, two sentinel reloads, initial compare before zero count, captured data/next, current-sentinel reload after actual pool return and node free. Retains actual sentinel and surrounding storage."
+    },
+    {
+      "address": "00b2f990",
+      "name": "destroy_native_render_resource_record_00b2f990",
+      "cpp_symbol": "destroy_native_render_resource_record_00b2f990",
+      "source": "src/native_render_resource_record.cpp",
+      "native_end_exclusive": "00b2fa08",
+      "original_abi": "ECX actual2Ch record, RET0, no semantic return",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json; reports/native_render_alias_list_clear_audit.json",
+      "status": "actual_storage_integrated_strict_win32_and_original_direct_clear_composed_lifetime_fixture_checked",
+      "current_integration_scope": "Complete actual record destructor now composes shared actual list clear at record+8, preserving current-sentinel free/null, current-name capture, state0 name guard and state-1 before name return. Payload and resource unchanged.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "kind": "function"
+    }
+  ],
+  "new_complete_function_count": 0,
+  "upgraded_existing_function_count": 1,
+  "refactored_existing_destructor_count": 1,
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "sha256": "07b8a07854f9ebda05b6460704685a6d779c1e897a6b1efb4572ecb59fb266a7"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "sha256": "debbbfa128022b4cc8f50657fdd9e46ed9ea782c615e522bdb734fe52c6bdbb6"
+    }
+  ],
+  "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_record_evidence": "reports/native_render_resource_record_audit.json",
+  "verified_original_record_spans": [
+    {
+      "address": "00b2f990",
+      "length": 120,
+      "sha256": "1001bf8ce6b71d52fb1ebbf7a0ecb839385119012b325611478775258b59ba4c"
+    },
+    {
+      "address": "004d05e0",
+      "length": 83,
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a"
+    },
+    {
+      "address": "0041dd20",
+      "length": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626"
+    },
+    {
+      "address": "00cbd840",
+      "length": 18,
+      "sha256": "19ed602fecf65645d392b12f6016efa4ac62f8bfda63a6d38612e7b1227cc0b9"
+    },
+    {
+      "address": "00df60f8",
+      "length": 8,
+      "sha256": "09751ab6394378d12022706c2255ee6b0f34edb05b69d86643cb2df2e7d7e71e"
+    },
+    {
+      "address": "00df6100",
+      "length": 36,
+      "sha256": "0d64b3c1218625731406e8107c6eef65e099b6dbec9e1f962bde2d26ef6a6ab6"
+    }
+  ],
+  "fixture": {
+    "scope": "One existing record fixture extended with direct clear, retained current sentinel/name and four-event observation, then empty-list record destruction and six-event trace; original bytes with actual pool/malloc/free boundary",
+    "artifacts": {
+      "local/native_resource_record_check.cpp": "671b7032039bf8d764531c9142f9e522507baed3d29c994d23a560a7198bb2ea",
+      "local/build_native_resource_record_check.ps1": "00ece898cf6c277b5ec70b5240df2aba7aa0eff12db1ef42f0624d3df63d7388",
+      "local/native_alias_clear_primary_fixture.txt": "b87eb9d78d440f173fa9d58b6514f793bf77595083706f16ce49d82cb442462f"
+    },
+    "passed": true,
+    "native_eh_injected": false
+  },
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_render_alias_clear_build.txt",
+    "sha256": "ae759f963ee9a2683cc4df630476ce8e7d2279b170b3387d7f231efc56af5a30"
+  },
+  "flow_repair": "reports/native_render_alias_clear_defined_functions.json",
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "independent_command_discovery_review": {
+    "report": "reports/native_render_command_execution_next.json",
+    "commit": "9998f55",
+    "verified_native_spans": [
+      {
+        "address": "00b1d950",
+        "length": 369,
+        "sha256": "f8344c0414061b024861c969979e423f999eff4d35e6b3ca0dbd1b283771625f"
+      },
+      {
+        "address": "00b0ffb0",
+        "length": 206,
+        "sha256": "eb340826f27e52a681052714fcf74879c3f703844b1ce095e220922ceedf08c2"
+      },
+      {
+        "address": "00b0f210",
+        "length": 52,
+        "sha256": "3e32a6448ed0a1124d44d55c6bbfac48a23ba89270f25b117a4b0e288f4349c2"
+      },
+      {
+        "address": "00b0f1c0",
+        "length": 8,
+        "sha256": "8a9a0e18ceb0afe4b5c25d13ce74f72d5f2df5104f944174cb5e3c8cc1e7f10a"
+      },
+      {
+        "address": "00b0f1d0",
+        "length": 26,
+        "sha256": "5cd6c7045a05cf438fbc7240014a1b0f8d33d6145b32804bf0fc11bac262c7b5"
+      },
+      {
+        "address": "00b0d930",
+        "length": 41,
+        "sha256": "8ffb8e115f1c181f1d4ed483cd97bec7ebfe1f3b0c9adb36119258a46d026f36"
+      },
+      {
+        "address": "00b1bf70",
+        "length": 18,
+        "sha256": "e7e02ce675d5d6606f1282bdeae9c7b8161022789ca7d9052614d413fff6a113"
+      },
+      {
+        "address": "00411ee0",
+        "length": 25,
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382"
+      },
+      {
+        "address": "00cbbc40",
+        "length": 18,
+        "sha256": "212385019567627b44eb242a33259f6ddff3a22d8802086c0994207cb6a9af8e"
+      },
+      {
+        "address": "00df3eb0",
+        "length": 44,
+        "sha256": "1230aaf70821985c1e25a2d79a16e0cc33fbd135545c5f7bf617838bca2ce432"
+      },
+      {
+        "address": "00cbca60",
+        "length": 18,
+        "sha256": "0a5651fe44357902add16e60eff5d91c44f8cd89bceedccf1b61250585c1947a"
+      },
+      {
+        "address": "00df4ee8",
+        "length": 44,
+        "sha256": "5f62317833fdfe6441afbb58536077edaace9ebf6e749addd742195c582e9ff7"
+      },
+      {
+        "address": "00d5e154",
+        "length": 4,
+        "sha256": "4b03eae9b798413e1d5e8dd97dfe88d1fa92567d336a4ae209efa1d4578b75b8"
+      },
+      {
+        "address": "00d5e15c",
+        "length": 4,
+        "sha256": "d7c87f198344636b4b71aca6405045e8d9d2b49ee9ca24a4efaead12c9357f08"
+      },
+      {
+        "address": "00d5e160",
+        "length": 4,
+        "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0"
+      },
+      {
+        "address": "00ce3818",
+        "length": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f"
+      },
+      {
+        "address": "00ce7550",
+        "length": 28,
+        "sha256": "e0b3dae4b070611a2bd67effeed819acb263635a89fe7f7cfd76fcfa5ef2749e"
+      },
+      {
+        "address": "00d5f0a8",
+        "length": 312,
+        "sha256": "b6d821bb393272e7f4d7ec3fefdb2001c50452df9bc2e96f112700bcb510d9fc"
+      },
+      {
+        "address": "00b1cb30",
+        "length": 31,
+        "sha256": "5f7382acdc77434bbf706c53e44671981d88a9ade9e5859171a8db390dc011bd"
+      },
+      {
+        "address": "00b51df0",
+        "length": 284,
+        "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2"
+      },
+      {
+        "address": "00b55550",
+        "length": 70,
+        "sha256": "d545ef37f3bf96408435ceea2340a0344515d64cf444a2d3a35e947fab42e0fd"
+      },
+      {
+        "address": "00b13030",
+        "length": 57,
+        "sha256": "2f49afcb4c57b6cdde832faabafa48619d1a802f87a466b7bc0e6d0b092e9090"
+      },
+      {
+        "address": "00b13510",
+        "length": 165,
+        "sha256": "a05fe8017c36100e82cf5c93e42058337cfe2465f180a4df4263c8db1a0288ba"
+      },
+      {
+        "address": "004c1130",
+        "length": 192,
+        "sha256": "19aa7a680afae3e573f631bf6652e260ae2d511049352f83e6416d516bf11de6"
+      },
+      {
+        "address": "00be3020",
+        "length": 32,
+        "sha256": "c0b88c4502a2eed0b6d6d1875c5a5dabc3a640653503dea1d2faf7c2a7789d18"
+      },
+      {
+        "address": "00be4800",
+        "length": 79,
+        "sha256": "8290b35aa6601e65bec44d39ddaef9593035cf1c7a8de0432ff1c818fc34ffdb"
+      },
+      {
+        "address": "00b20240",
+        "length": 27,
+        "sha256": "d2dd10ffb518501973d2bcf287eb18d1bf888ae5bf69c0bdb852d99c0b8f82a0"
+      },
+      {
+        "address": "00b1fe20",
+        "length": 11,
+        "sha256": "fc66797b0caf47ea47d00b192bcdf5c7fb0768188f4a024777d52ba88b23aae1"
+      },
+      {
+        "address": "00b20210",
+        "length": 3,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99"
+      },
+      {
+        "address": "00b51b20",
+        "length": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+      },
+      {
+        "address": "00b71360",
+        "length": 102,
+        "sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f"
+      },
+      {
+        "address": "00b46a70",
+        "length": 3017,
+        "sha256": "60ecc210cbbafe2cbeece90dd0d4a6ebac84d90bc598c725729451981e93b3c2"
+      },
+      {
+        "address": "00b24e70",
+        "length": 318,
+        "sha256": "8178a8012e24c0950fb5221d5ec4bb5f7689e17ac0687af1852a854d15eeb31e"
+      },
+      {
+        "address": "00d5e5ac",
+        "length": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819"
+      },
+      {
+        "address": "00d62064",
+        "length": 16,
+        "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822"
+      },
+      {
+        "address": "00d61a14",
+        "length": 4,
+        "sha256": "307b09a6c1e48adf50c06c93677e203fd8fe6a2e4b095b21e97314c2b171c98d"
+      }
+    ],
+    "accepted_next": "native_render_preparation_job_owner",
+    "full_command_execution_ready": false,
+    "source_contracts_verified_current": 22
+  },
+  "remaining": [
+    "List count-growth and native exception construction/throw transport",
+    "Range insertion and actual pooled name assignment",
+    "Full command execution/queue/preparation and runnable game"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_render_alias_clear_annotations.json",
+    "sha256": "1e25b6e49c6dd8c2d29a938d65a2875d4d540e7cf888307e8b1495ee3596d2e2",
+    "count": 2,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "004d05e0",
+      "old_name": "BSP_ParticleRecordStringList_Clear",
+      "name": "BSP_PooledStringList_ClearStorage",
+      "path": "exports/bsp/functions/004d05e0/decompiled.c",
+      "sha256": "b1723150414b9b5748bc30243ded1bb4a7792ced024db44df1300e075b6a9c62"
+    },
+    {
+      "address": "00b2f990",
+      "old_name": "BSP_RenderResourceRecord_DestroyStorage",
+      "name": "BSP_RenderResourceRecord_DestroyStorage",
+      "path": "exports/bsp/functions/00b2f990/decompiled.c",
+      "sha256": "d34199a475202442445051fc6d04e42e63d5cb8b4ff8cb91637eeb309b2b03ce"
+    }
+  ],
+  "snapshot": {
+    "internal_functions": 62481,
+    "total_functions": 62923,
+    "utc": "2026-09-10T21:55:30.972051+00:00",
+    "index_fresh": true
+  },
+  "closure_hash_recheck_utc": "2026-09-10T22:41:46.522339+00:00"
+}
