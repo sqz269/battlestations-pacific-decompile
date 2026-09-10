@@ -1,0 +1,921 @@
+{
+  "packet": "native_render_queue_owner_next",
+  "status": "read_only_discovery_complete_full_queue_lifetime_not_closed_rows_ready",
+  "document": "docs/NATIVE_RENDER_QUEUE_OWNER_NEXT.md",
+  "scope": {
+    "leased_roots": [
+      "004c11f0",
+      "00b1f280",
+      "00b1f6b0"
+    ],
+    "owned_files": [
+      "docs/NATIVE_RENDER_QUEUE_OWNER_NEXT.md",
+      "reports/native_render_queue_owner_next.json"
+    ],
+    "base_commit": "3502565",
+    "actual_string_dependency_commit": "719dd35",
+    "reconstructed_cpp": false,
+    "ghidra_writes": false,
+    "shared_metadata_writes": false,
+    "no_new_tests_or_build_changes": true
+  },
+  "decision": {
+    "full_getter_constructor_ordinary_scalar_lifetime_ready": false,
+    "smallest_next_independent_packet": "native_render_queue_rows",
+    "next_addresses": [
+      "00b1db30",
+      "00b1e7f0",
+      "00b1f150"
+    ],
+    "next_files": [
+      "include/bsp/native_render_queue_rows.hpp",
+      "src/native_render_queue_rows.cpp",
+      "docs/NATIVE_RENDER_QUEUE_ROWS.md",
+      "reports/native_render_queue_rows_audit.json"
+    ],
+    "primary_owned_integration": [
+      "CMakeLists.txt",
+      "sharded ledgers",
+      "Ghidra names/comments/flow fixes"
+    ],
+    "why_ready": "Full reserve/resize/destructor bodies and EH are established; actual 0041DD40 is now integrated. No queue getter, execution, worker, frame or renderer dependency is called by these three entries.",
+    "additional_separate_closed_entries": [
+      "00b1c3c0 base cleanup",
+      "00b1d590 command-header destruction via existing 00b1cc80"
+    ],
+    "not_a_substitute": "Neither the row family nor the small cleanup entries closes ordinary queue destruction, which first executes the queue."
+  },
+  "actual_storage": {
+    "type": "NativeRenderCommandQueueStorage",
+    "size": 52,
+    "initialization": "none supplied by declaration",
+    "fields": {
+      "00": "native table DWORD",
+      "04": "two raw 8-byte configuration records",
+      "14": "raw command-pointer data/count/capacity header",
+      "20": "existing control DWORD",
+      "24": "raw row data/count/capacity header",
+      "30": "current actual context pointer"
+    },
+    "configuration_padding_preserved": [
+      "05..07",
+      "0d..0f"
+    ],
+    "row_stride": 20,
+    "row_fields": {
+      "00": "uint32 string length",
+      "04": "character pointer",
+      "08": "float word",
+      "0c": "float word",
+      "10": "float word"
+    },
+    "header_stride": 12,
+    "header_fields": {
+      "00": "data pointer",
+      "04": "signed count",
+      "08": "signed capacity"
+    }
+  },
+  "entries": [
+    {
+      "address": "004c11f0",
+      "abi": "no arguments; EAX returned pointer; RET",
+      "implementation_ready": false,
+      "ordered_contract": [
+        "Capture global00F8D440; return captured nonnull fast path.",
+        "First00415350; capture manager+10 optional section; enter then increment captured section+18.",
+        "Arm state0 guard; recheck live singleton. BF681B(34h), arm state1 allocation and call B1F280 if allocation nonnull.",
+        "Disarm allocation to state0; publish constructor result including null.",
+        "Second00415350 THEN reload current00F8D440 as BD0C30 registration argument, including null.",
+        "Decrement captured section+18 before leave; return new singleton read after leave."
+      ],
+      "eh": {
+        "state_0": "00411EE0 guard cleanup via00C64F00",
+        "state_1": "00BF65AC captured raw allocation via00C64F08 then state0",
+        "registration_failure": "Published object retained; guard only",
+        "constructor_failure": "Constructor member/base cleanup precedes getter allocation free and guard"
+      }
+    },
+    {
+      "address": "00b1f280",
+      "abi": "ECX actual queue; EAX same queue; RET",
+      "implementation_ready": false,
+      "ordered_contract": [
+        "Write00D5E5F4 table; clear enabled bytes/config values; arm base state0.",
+        "Zero command header14/18/1C and row header24/28/2C.",
+        "Compare uninitialized-by-this-body raw control20 to2; arm member state2; clear context30.",
+        "If comparison equal: load current renderer00F8D394, current table, virtual11C and call.",
+        "After call setcontrol20=0; clear enabled/value pairs again; write each value0/enabled1. Padding untouched.",
+        "Do not reclear command/row/context fields after renderer callback; return actual queue."
+      ],
+      "eh": {
+        "map": "00df50cc",
+        "state_0": "base00B1C3C0",
+        "state_1": "commands+14 via00B1D590 then base",
+        "state_2": "rows+24 via00B1F150 then commands then base",
+        "global_side_effect": "Base cleanup unconditionally clears00F8D440, even before getter publication"
+      }
+    },
+    {
+      "address": "00b1f330",
+      "abi": "ECX actual queue; RET; EAX not an advertised result",
+      "implementation_ready": false,
+      "native_span": "00b1f330..00b1f3ba exclusive",
+      "ordered_contract": [
+        "Write00D5E5F4; arm state2; call complete queue execution00B1EBE0.",
+        "Setstate1; B1E7F0(queue+24,0), reload row data, BF6989(data).",
+        "Setstate0; B1CC80(queue+14,0), reload command data, BF6989(data).",
+        "Clear00F8D440; write00CE3818 base table; restore SEH and return."
+      ],
+      "eh": {
+        "map": "00df5108",
+        "state_2": "row header destructor, command header destructor, base",
+        "state_1": "command header destructor, base; do not repeat row destructor",
+        "state_0": "base",
+        "execution_exception": "No retry of execute and no independent command-object drain"
+      },
+      "no_independent_context_release": true
+    },
+    {
+      "address": "00b1f6b0",
+      "abi": "ECX actual queue; stack flags; EAX original pointer; RET4",
+      "implementation_ready": false,
+      "ordered_contract": [
+        "B1F330 ordinary destruction",
+        "If flags bit0: BF65AC(original pointer)",
+        "Return original pointer; native free continuation included"
+      ]
+    },
+    {
+      "address": "00b1c3c0",
+      "abi": "ECX queue/base; RET",
+      "implementation_ready": true,
+      "ordered_contract": [
+        "Clear current global00F8D440 unconditionally",
+        "Write base table00CE3818"
+      ]
+    },
+    {
+      "address": "00b1d590",
+      "abi": "ECX command header; RET",
+      "implementation_ready": true,
+      "ordered_contract": [
+        "B1CC80(header,0)",
+        "Reload current header data",
+        "BF6989(data)",
+        "Return without clearing data/capacity"
+      ]
+    }
+  ],
+  "row_packet": {
+    "full_entries_ready": true,
+    "suggested_names_are_descriptive_hypotheses": true,
+    "entries": [
+      {
+        "address": "00b1db30",
+        "proposed_name": "BSP_RenderQueueRows_Reserve",
+        "abi": "ECX actual 12-byte header; stack signed capacity; RET4",
+        "contract": [
+          "Clamp request to minimum1; if current capacity >= request return unchanged.",
+          "BF55BE(request*20) raw allocation before any publication.",
+          "Loop using current source count. Compute destination; if nonnull capture current source row, zero destination first8 bytes; self-address comparison skips string copy.",
+          "Call actual0041DD40(destination, captured_source.length, preserve=true). Then reload captured_source.length for nonzero test and destination.length/source.data/destination.data for memcpy.",
+          "Three ordered x87 FLD32/FSTP32 copies at offsets8,C,10. No zeroing of floats.",
+          "After construction destroy old strings forward: reload headerdata/count, capture nonnull rowdata and currentlength+1; 419CC0(data,size,1), BD1510.",
+          "Reload current old headerdata for BF6989; after return publish replacementdata then capacity; leave current count unchanged."
+        ],
+        "eh": {
+          "guard": "state0 during current destination construction",
+          "action": "00CBCA80 passes current destination and replacement+constructed_count*20 to00401130",
+          "helper_actual_body": "00401130 byte C3 only; RET",
+          "outcome": "No replacement allocation or completed-string cleanup on copy failure; retain callback effects; no invented rollback"
+        }
+      },
+      {
+        "address": "00b1e7f0",
+        "proposed_name": "BSP_RenderQueueRows_Resize",
+        "abi": "ECX actual 12-byte header; stack signed count; RET4",
+        "contract": [
+          "If request > capacity call reserve; reload actual old count after return.",
+          "Growth uses captured iteration count/offset and reloads header data per slot; clear only string length/data for nonnull computed addresses; preserve floats.",
+          "Do not increment headercount during growth.",
+          "Shrink decrements actual count before reload/count*20/data and capturing last-row data/length+1.",
+          "Release nonnull data via419CC0(...,1),BD1510; do not clear rowwords; reload count for next comparison.",
+          "Final header count=requested."
+        ]
+      },
+      {
+        "address": "00b1f150",
+        "proposed_name": "BSP_RenderQueueRows_Destroy",
+        "abi": "ECX actual12-byte header; RET",
+        "contract": [
+          "B1E7F0(header,0)",
+          "Reload data",
+          "BF6989(data)",
+          "Return retaining dangling data and capacity; no auto header lifetime or reset"
+        ]
+      }
+    ],
+    "available_dependencies": [
+      {
+        "entry": "0041dd40",
+        "interface": "resize_native_string_header_0041dd40(void*, NativeStringStorage&, uint32_t, bool)",
+        "commit": "719dd35",
+        "use": "Pass actual destination row header; preserve callback-sensitive reads",
+        "inherited_limits": [
+          "Explicit NativeStringStorage replaces repeated native pool-singleton first-use side effects",
+          "release callback is noexcept",
+          "existing zero-byte native memcpy omission",
+          "existing host pool and allocator domain boundaries remain explicit"
+        ]
+      },
+      {
+        "entry": "00bf55be/00bf6989",
+        "interface": "singleton_lifetime_allocate/free",
+        "use": "Existing shared raw allocation/free boundary with matching20-byte native/host extent; no per-row allocator owner"
+      },
+      {
+        "entry": "00419cc0/00bd1510",
+        "interface": "NativeStringStorage::release/PooledStringStorage",
+        "use": "Inline row string destruction passes captured data and live length+1 without resetting row words"
+      }
+    ],
+    "required_storage_policy": "No NativeString default construction, destructor, shadow vector, second count or queue ownership. Operate on actual+24 header or identical standalone raw12 header.",
+    "focused_validation_reason": "One original-byte differential fixture can cover x87 signaling-NaN/status behavior, copy allocation failure with no cleanup, live field changes across allocation/release, shrink order, preserved float/padding words and dangling destructor header. Do not add broad tracked tests."
+  },
+  "blocking_edges": [
+    {
+      "from": "00b1f280 control20 preimage2",
+      "to": "current renderer virtual+11c",
+      "observed_profile": {
+        "table": "00d5f0a8",
+        "slot": "00d5f1c4",
+        "entry": "00b28a90"
+      },
+      "real_contract": [
+        "Capture renderer",
+        "Optional B33BF0(worker at renderer+1970)",
+        "B33AA0(false) writes both0108D6DC and0108D6DD",
+        "B26920(renderer)",
+        "Sleep(100)"
+      ],
+      "not_closed_by": [
+        "D3D9StateCache semantic shared ownership",
+        "invalidate() host reset",
+        "NativeRendererParametersOwner partial region",
+        "No-op or abstract stop callback"
+      ]
+    },
+    {
+      "from": "00b33bf0",
+      "to": "worker+10 acknowledgement actual owner virtual+8",
+      "contract": "Clearworker+4, reloadackowner/table, tailcall+8",
+      "observed_profile": {
+        "table": "00d6821c",
+        "slot_8": "00bd17c0"
+      },
+      "wait": "WaitForSingleObject(actual event handle+4, INFINITE)",
+      "missing": "Actual worker/event owners and thread/ack state; existing Win32Event host HANDLE wrapper is not that native profile",
+      "not_a_join": true
+    },
+    {
+      "from": "00b26920",
+      "to": "actual renderer binding cache+34 cleanup00b241c0",
+      "ordered_edges": [
+        "20 current-table130 sampler unbinds",
+        "4 current-table134 vertex-stream unbinds",
+        "current-table138 null index/base0",
+        "B241C0(renderer+34)",
+        "reload default color wrapper197C; B23D80(slot0)",
+        "optional guard; reload device1A10; COM+9C(null depth-stencil); optional guard leave"
+      ],
+      "observed_bind_slots": {
+        "130": "00b24710",
+        "134": "00b24840",
+        "138": "00b24b00"
+      },
+      "missing": "Full raw binding-cache reference release/validity reset and actual renderer service bindings",
+      "scope_limit": "B241C0 is an identified named-but-incomplete primitive; its whole cache owner is not reconstructed here"
+    },
+    {
+      "from": "00b1f330",
+      "to": "00b1ebe0 full queue execution",
+      "subdependency": "Reloaded command virtual+0; current00D5E5E0 resolves00B1D950",
+      "existing_lifetime_only": [
+        "actual command ordinary00B1DDD0",
+        "actual context counter+4/current terminal release",
+        "raw command header resize00B1CC80"
+      ],
+      "missing": "Concrete complete command execution, including its own dependencies",
+      "empty_queue_assumption_rejected": true
+    }
+  ],
+  "execution_state_contract": [
+    "Live signed command count and cells are reread through loop.",
+    "If incoming command+28 context differs, publish new queue30 before retainnew/releaseold; terminal uses current captured-owner table.",
+    "Reload current command cell for virtual0 call.",
+    "Reload current queue30 after execution; nonnull captured context releases through counter+4/current terminal, then queue30=null after callback.",
+    "Reload control20. Zero reloads commandcell, skips null, otherwise calls00B1DDD0 thenBF65AC; no cell clear.",
+    "Final live control zero resizes commandheader to0; nonzero retains commands.",
+    "Empty queue does not release an existing context30. Ordinary destructor supplies no separate context drain or object deletion pass."
+  ],
+  "flow_repairs_for_later_integrator": [
+    {
+      "address": "00b1f330",
+      "current_body_end": "00b1f379",
+      "verified_complete_end_inclusive": "00b1f3b9",
+      "reason": "False no-return BF6989 hides command-header cleanup, singleton clear, base table and epilogue"
+    },
+    {
+      "address": "00b1db30",
+      "omitted_range": "00b1dc49..00b1dc53 exclusive",
+      "reason": "BF6989 continuation includes replacement-data/capacity publication and saved-register pops"
+    },
+    {
+      "address": "00b1f150",
+      "current_body_end": "00b1f161",
+      "verified_complete_end_inclusive": "00b1f166",
+      "reason": "BF6989 return continuation includes ADD ESP4, POP ESI, RET"
+    },
+    {
+      "address": "00b1d590",
+      "current_body_end": "00b1d5a1",
+      "verified_complete_end_inclusive": "00b1d5a6",
+      "reason": "BF6989 return continuation includes ADD ESP4, POP ESI, RET"
+    },
+    {
+      "address": "00b1f6b0",
+      "omitted_range": "00b1f6c5..00b1f6c8 exclusive",
+      "reason": "BF65AC free continuation ADD ESP4 is part of scalar body"
+    }
+  ],
+  "annotation_before": [
+    {
+      "address": "004c11f0",
+      "annotation": {
+        "address": "004c11f0",
+        "function_name": "BSP_RenderCommandQueue_GetSingleton",
+        "comment": "[BSP reconstruction 004c11f0]\nLazy global00f8d440, double checked under optional manager critical section, allocate34h and construct00b1f280, register with manager00bd0c30. Queue singleton used by frame gates and render execution."
+      }
+    },
+    {
+      "address": "00b1f280",
+      "annotation": {
+        "address": "00b1f280",
+        "function_name": "FUN_00b1f280"
+      }
+    },
+    {
+      "address": "00b1f6b0",
+      "annotation": {
+        "address": "00b1f6b0",
+        "function_name": "CG_scalar_deleting_dtor_00b1f6b0"
+      }
+    },
+    {
+      "address": "00b1f330",
+      "annotation": {
+        "address": "00b1f330",
+        "function_name": "FUN_00b1f330"
+      }
+    },
+    {
+      "address": "00b1c3c0",
+      "annotation": {
+        "address": "00b1c3c0",
+        "function_name": "FUN_00b1c3c0"
+      }
+    },
+    {
+      "address": "00b1d590",
+      "annotation": {
+        "address": "00b1d590",
+        "function_name": "FUN_00b1d590"
+      }
+    },
+    {
+      "address": "00b1f150",
+      "annotation": {
+        "address": "00b1f150",
+        "function_name": "FUN_00b1f150"
+      }
+    },
+    {
+      "address": "00b1e7f0",
+      "annotation": {
+        "address": "00b1e7f0",
+        "function_name": "FUN_00b1e7f0"
+      }
+    },
+    {
+      "address": "00b1db30",
+      "annotation": {
+        "address": "00b1db30",
+        "function_name": "FUN_00b1db30"
+      }
+    },
+    {
+      "address": "00b1ebe0",
+      "annotation": {
+        "address": "00b1ebe0",
+        "function_name": "BSP_RenderCommandQueue_Execute",
+        "comment": "[BSP reconstruction 00b1ebe0]\nQueue list+14h/count+18h; for each command retain context+28h into current+30h, invoke command virtual+0, release current context. If control+20h==0, invoke destructor00b1ddd0/free each command then resize array to0; nonzero retains list. Raw bytes00b1ec78 show stack cleanup and continuation afterfree, contradicting truncated pseudocode return. No full command-type reconstruction yet.\n\n[BSP reconstruction 00b1ebe0] update\n[BSP reconstruction] Reread list+14/count+18 around callbacks; publish current+30 before retaining incoming command+28 and releasing old. Reread command for virtual0; release CURRENT+30 after execute then clear after callback. Reread control+20: zero destroys/frees current indexed command; reload count; final zero mode resizes list to0 retaining capacity. Original ABI: ECX queue; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b28a90",
+      "annotation": {
+        "address": "00b28a90",
+        "function_name": "BSP_D3D9Renderer_StopWorkerMode",
+        "comment": "[BSP reconstruction 00b28a90]\nRenderer vtable+11Ch. If worker+1970h nonnull call00b33bf0; set optional synchronization false via00b33aa0; clear pipeline bindings00b26920; Sleep100. Worker thread completion semantics unresolved; not ported."
+      }
+    },
+    {
+      "address": "00b33bf0",
+      "annotation": {
+        "address": "00b33bf0",
+        "function_name": "BSP_RenderWorker_RequestStop",
+        "comment": "[BSP reconstruction 00b33bf0]\nECX worker: clear byte+4h, load interface+10h, tail jump interface virtual+8h. Exact wait/signal behavior of interface unresolved, so stop completion not established.\n\n[BSP reconstruction 00b33bf0] update\nECX worker: clear byte+4h, load interface+10h, tail jump interface virtual+8h. Exact wait/signal behavior of interface unresolved, so stop completion not established. Interface now resolved: auto-reset event+10h, virtual+8h WaitForSingleObject(INFINITE). Waits idle acknowledgment, not thread termination; thread join occurs00b33b50."
+      }
+    },
+    {
+      "address": "00b26920",
+      "annotation": {
+        "address": "00b26920",
+        "function_name": "FUN_00b26920"
+      }
+    }
+  ],
+  "evidence": {
+    "verified_utc": "2026-09-10T23:26:18.785012+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "bsp.py ghidra bytes/proto invokes Client.verify for every live query",
+    "ranges": [
+      {
+        "id": "queue_getter",
+        "address": "004c11f0",
+        "end_exclusive": "004c12ad",
+        "bytes": 189,
+        "sha256": "e5a79fe265e15ba3285d2a4b6944100bd038fb08567592f2c72f6f3f05c597a5",
+        "installed_disk_equal": true,
+        "hex": "64a1000000006aff68134fc6005064892500000000a140d4f80083ec0c85c00f858900000056e83541f5ff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d40d4f80000753f6a34e8ca55730083c4048944240485c0c64424180174098bc8e818e06500eb0233c0c644241800a340d4f800e8d540f5ff8b0d40d4f800518bc8e8a7f9700085f6740b834618ff56ff151022ce00a140d4f8005e8b4c240c64890d0000000083c418c3"
+      },
+      {
+        "id": "queue_constructor",
+        "address": "00b1f280",
+        "end_exclusive": "00b1f321",
+        "bytes": 161,
+        "sha256": "4c293ee684ba469cfb24f208b4d722f1fb8bf5eb11f57c2f021df7c3f9fd6e6f",
+        "installed_disk_equal": true,
+        "hex": "6aff680ecccb0064a10000000050648925000000005153568bf18974240833dbc706f4e5d500885e04895e08885e0c895e10895c2414895e14895e18895e1c895e24895e28895e2c837e2002c644241402895e3075108b0d94d3f8008b018b901c010000ffd2895e208d4608b902000000ba010000008858fc891883c0082bca75f48b4c240c895e08885604895e1088560c8bc65e5b64890d0000000083c410c3"
+      },
+      {
+        "id": "queue_destructor_complete",
+        "address": "00b1f330",
+        "end_exclusive": "00b1f3ba",
+        "bytes": 138,
+        "sha256": "cf3cfec793623a4bdfc555f8bc96506f5f39f3b4c8bf83dc1f56c0187f2dccd2",
+        "installed_disk_equal": true,
+        "hex": "6aff683ecccb0064a100000000506489250000000051568bf15789742408c706f4e5d500c744241402000000e87ff8ffff8d7e246a008bcfc644241801e87ef4ffff8b3f57e80f760d0083c4048d7e146a008bcfc644241800e8f2d8ffff8b0750e8f3750d008b4c241083c404c70540d4f80000000000c7061838ce005f5e64890d0000000083c410c3"
+      },
+      {
+        "id": "queue_scalar_delete",
+        "address": "00b1f6b0",
+        "end_exclusive": "00b1f6ce",
+        "bytes": 30,
+        "sha256": "b7bf9c3ab758ba04388fcef07bce0806ba39b30d68dfb60a70152595e4284fa8",
+        "installed_disk_equal": true,
+        "hex": "568bf1e878fcfffff644240801740956e8e76e0d0083c4048bc65ec20400"
+      },
+      {
+        "id": "queue_base_cleanup",
+        "address": "00b1c3c0",
+        "end_exclusive": "00b1c3d1",
+        "bytes": 17,
+        "sha256": "25d3c5e2dd710b019dff95befa4edffbf9b6f37782113b2259721e5d29656be6",
+        "installed_disk_equal": true,
+        "hex": "c70540d4f80000000000c7011838ce00c3"
+      },
+      {
+        "id": "command_header_destructor_complete",
+        "address": "00b1d590",
+        "end_exclusive": "00b1d5a7",
+        "bytes": 23,
+        "sha256": "47f473001b977717cb10f6b9a310e2e7cb87a6cffb85c5d41e558c263fb40eb5",
+        "installed_disk_equal": true,
+        "hex": "566a008bf1e8e6f6ffff8b0650e8e7930d0083c4045ec3"
+      },
+      {
+        "id": "row_reserve_complete",
+        "address": "00b1db30",
+        "end_exclusive": "00b1dc66",
+        "bytes": 310,
+        "sha256": "be1f4a4894392e502a965e6d43816b11a1fc5adff775f58688b17b465876e230",
+        "installed_disk_equal": true,
+        "hex": "64a1000000006aff6897cacb00506489250000000083ec0c53568b74242483fe018bd97d0cc7442424010000008b7424243973080f8de90000008d04b65503c003c05750e8457a0d0033ed83c404396b048bf8897c2410896c24147e7b8d49008d44ad0003c003c08d34388974241833c93bf1894c242474478b3b03f83bf7890e894e0474248b076a01508bcee87e0190ff833f0074138b068b4f048b5604505152e8a99a0d0083c40cd94708d95e08d9470cd95e0cd947108b7c2410d95e1083c5013b6b04c7442424ffffffff896c24147c8c8b74242c33ed396b047e3233f68b038b4c300403c685c974158b006a0183c0015051e895c08fff8bc8e8de380b0083c50183c6143b6b047cd48b74242c8b0350e8408d0d0083c404893b5f8973085d8b4c24145e5b64890d0000000083c418c20400"
+      },
+      {
+        "id": "row_resize",
+        "address": "00b1e7f0",
+        "end_exclusive": "00b1e86d",
+        "bytes": 125,
+        "sha256": "0ee983652c78280516f480e717ed9755550a73f7205c306baa701b55c10a4c3d",
+        "installed_disk_equal": true,
+        "hex": "56578b7c240c8bf13b7e087e0657e82df3ffff8b46043bc77d268d0c8003c98bd703c92bd08b0603c1740dc70000000000c740040000000083c11483ea0175e53b7e047d30834604ff8b46048b0e8d04808d04818b480485c974158b006a0183c0015051e867b48fff8bc8e8b02c0b003b7e047cd0897e045f5ec20400"
+      },
+      {
+        "id": "row_destructor_complete",
+        "address": "00b1f150",
+        "end_exclusive": "00b1f167",
+        "bytes": 23,
+        "sha256": "2405bb0b0d58547b098a7dede6333c5467c9670c0672a95926ffd2d08a36c0aa",
+        "installed_disk_equal": true,
+        "hex": "566a008bf1e896f6ffff8b0650e827780d0083c4045ec3"
+      },
+      {
+        "id": "queue_execute",
+        "address": "00b1ebe0",
+        "end_exclusive": "00b1ec9b",
+        "bytes": 187,
+        "sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+        "installed_disk_equal": true,
+        "hex": "53568bf133db395e180f8e99000000578b46148b0c988b41288b7e303bf8742b85c0894630740a83c00450ff151c22ce0085ff74168d570452ff152022ce0085c075088b078b108bcfffd28b46148b0c988b118b02ffd08b7e3085ff741d8d4f0451ff152022ce0085c075088b178b028bcfffd0c7463000000000837e2000751a8b4e148b3c9985ff74108bcfe85ef1ffff57e834790d0083c40483c3013b5e180f8c69ffffff5f837e2000750a6a008d4e14e8e8dfffff5e5bc3"
+      },
+      {
+        "id": "renderer_stop",
+        "address": "00b28a90",
+        "end_exclusive": "00b28abc",
+        "bytes": 44,
+        "sha256": "295132c7f5e464cfa3673c050b0229712fab41ab2aac6072ba900b145de21eee",
+        "installed_disk_equal": true,
+        "hex": "568bf18b8e7019000085c97405e84eb100006a008bcee8f5af00008bcee86edeffff6a64ff153022ce005ec3"
+      },
+      {
+        "id": "worker_request_stop",
+        "address": "00b33bf0",
+        "end_exclusive": "00b33bfe",
+        "bytes": 14,
+        "sha256": "3383a671e842a4d9fe0fee023ab6e111c4a2f1e5ef84c8dc428e21eb7396f3d5",
+        "installed_disk_equal": true,
+        "hex": "c64104008b49108b018b5008ffe2"
+      },
+      {
+        "id": "renderer_set_synchronization",
+        "address": "00b33aa0",
+        "end_exclusive": "00b33ab1",
+        "bytes": 17,
+        "sha256": "2c324d785cfc8b5528228be3c3646b4bb1f85dcdd0d89846c502c0dddf03f4e1",
+        "installed_disk_equal": true,
+        "hex": "8a442404a2dcd60801a2ddd60801c20400"
+      },
+      {
+        "id": "renderer_clear_bindings",
+        "address": "00b26920",
+        "end_exclusive": "00b26a01",
+        "bytes": 225,
+        "sha256": "f6f3aadab945ae713471ed201a53a458ba12dce2ba792baa953a42fe26a206ed",
+        "installed_disk_equal": true,
+        "hex": "64a1000000006aff6868d1cb00506489250000000083ec0856578bf133ff8bff8b068b90300100006a00578bceffd283c70183ff147ce933ff8da424000000008b068b90340100006a00578bceffd283c70183ff047ce98b068b90380100006a006a008bceffd28d4e34e831d8ffff8b867c190000506a008bcee8e1d3ffff803ddcd6080100740f8bce8974240ce81dd10000884424088bb6101a00008b0e8b919c0000006a0056c744242000000000ffd2803ddcd60801005fc7442414ffffffff5e740d8b04248b4c240450e80ed100008b4c240864890d0000000083c414c3"
+      },
+      {
+        "id": "worker_constructor",
+        "address": "00b33da0",
+        "end_exclusive": "00b33e0f",
+        "bytes": 111,
+        "sha256": "078c7e8b53c377ad39280b155415522ff1ae12636b82e03904ba9e83f2b38432",
+        "installed_disk_equal": true,
+        "hex": "0f57c0568bf1578d7e14c706f0f1d500c6460400c6460500c7460800000000c7070000000032c9f30f1105e4d60801e89cdb090032c989460ce892db0900576a045668203cb3006a006a00894610ff153822ce006afe50894608ff15a022ce008b460850ff15cc22ce005f8bc65ec3"
+      },
+      {
+        "id": "event_wait",
+        "address": "00bd17c0",
+        "end_exclusive": "00bd17cd",
+        "bytes": 13,
+        "sha256": "4b8cb4b463c489df9e6015d67036d194a55191289c04371b07c214a3b698cdd1",
+        "installed_disk_equal": true,
+        "hex": "8b41046aff50ff15b022ce00c3"
+      },
+      {
+        "id": "queue_primary_profile",
+        "address": "00d5e5f4",
+        "end_exclusive": "00d5e5f8",
+        "bytes": 4,
+        "sha256": "530cc4ac2e45865034adc766d6a5009de12166fb8a51c34b0d9ed2ab8550bdcc",
+        "installed_disk_equal": true,
+        "hex": "b0f6b100"
+      },
+      {
+        "id": "queue_base_profile",
+        "address": "00ce3818",
+        "end_exclusive": "00ce381c",
+        "bytes": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "installed_disk_equal": true,
+        "hex": "40244100"
+      },
+      {
+        "id": "command_execution_slot",
+        "address": "00d5e5e0",
+        "end_exclusive": "00d5e5e4",
+        "bytes": 4,
+        "sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8",
+        "installed_disk_equal": true,
+        "hex": "50d9b100"
+      },
+      {
+        "id": "actual_string_resize",
+        "address": "0041dd40",
+        "end_exclusive": "0041dde4",
+        "bytes": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "installed_disk_equal": true,
+        "hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800"
+      },
+      {
+        "id": "renderer_stop_slot_11c",
+        "address": "00d5f1c4",
+        "end_exclusive": "00d5f1c8",
+        "bytes": 4,
+        "sha256": "c018f7f618d97d16b07374ee7f02172035955efed5b845d8c202fbdf6384e90e",
+        "installed_disk_equal": true,
+        "hex": "908ab200"
+      },
+      {
+        "id": "renderer_binding_slots_130_138",
+        "address": "00d5f1d8",
+        "end_exclusive": "00d5f1e4",
+        "bytes": 12,
+        "sha256": "d1d488699a057e9905ed7ccb8dab9df561ea84f6ec6fd631ca531ff8b86d2320",
+        "installed_disk_equal": true,
+        "hex": "1047b2004048b200004bb200"
+      },
+      {
+        "id": "event_profile",
+        "address": "00d6821c",
+        "end_exclusive": "00d6822c",
+        "bytes": 16,
+        "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+        "installed_disk_equal": true,
+        "hex": "b019bd001019bd00c017bd006019bd00"
+      },
+      {
+        "id": "getter_eh_actions_handler",
+        "address": "00c64f00",
+        "end_exclusive": "00c64f1d",
+        "bytes": 29,
+        "sha256": "098f2389b48718e4fdeaf31203026c0550f57a39b9ce15f03111b7c5ab4506f1",
+        "installed_disk_equal": true,
+        "hex": "8d4dece9d8cf7aff8b45e850e89b16f9ff59c3b824d5d800e9261cf9ff"
+      },
+      {
+        "id": "getter_eh_map_info",
+        "address": "00d8d514",
+        "end_exclusive": "00d8d548",
+        "bytes": 52,
+        "sha256": "7efb1491001e87a9fffdeecd9fbcdfc2c361529e49bd1047d16f820738639c69",
+        "installed_disk_equal": true,
+        "hex": "ffffffff004fc60000000000084fc600220593190200000014d5d800000000000000000000000000000000000000000001000000"
+      },
+      {
+        "id": "constructor_eh_actions_handler",
+        "address": "00cbcbf0",
+        "end_exclusive": "00cbcc18",
+        "bytes": 40,
+        "sha256": "0d56baa0032b053b9b3cab35f89ea06acc602e0d3e6bd8368a79da86d1941751",
+        "installed_disk_equal": true,
+        "hex": "8b4df0e9c8f7e5ff8b4df083c114e98d09e6ff8b4df083c124e94225e6ffb8e450df00e92b9ff3ff"
+      },
+      {
+        "id": "constructor_eh_map_info",
+        "address": "00df50cc",
+        "end_exclusive": "00df5108",
+        "bytes": 60,
+        "sha256": "d314b12ec4fbf2ce7406dc1a2a14d0e956becc68c141224fe9578989ffb0e5a6",
+        "installed_disk_equal": true,
+        "hex": "fffffffff0cbcb0000000000f8cbcb000100000003cccb002205931903000000cc50df00000000000000000000000000000000000000000001000000"
+      },
+      {
+        "id": "destructor_eh_actions_handler",
+        "address": "00cbcc20",
+        "end_exclusive": "00cbcc48",
+        "bytes": 40,
+        "sha256": "8f9ddfa04eb040637df499404a470843de2b18b4f4ca87158df9f314a5252062",
+        "installed_disk_equal": true,
+        "hex": "8b4df0e998f7e5ff8b4df083c114e95d09e6ff8b4df083c124e91225e6ffb82051df00e9fb9ef3ff"
+      },
+      {
+        "id": "destructor_eh_map_info",
+        "address": "00df5108",
+        "end_exclusive": "00df5144",
+        "bytes": 60,
+        "sha256": "0525416a6533c0a9816902190f7c5a7bbef2c61f07ccd47514ec58a9ab5164a1",
+        "installed_disk_equal": true,
+        "hex": "ffffffff20cccb000000000028cccb000100000033cccb0022059319030000000851df00000000000000000000000000000000000000000001000000"
+      },
+      {
+        "id": "row_reserve_eh_action_handler",
+        "address": "00cbca80",
+        "end_exclusive": "00cbcaa1",
+        "bytes": 33,
+        "sha256": "1e2b6c1579c3aa750e16f8d98b57dd036e5bd4903928e4f969a988071340d587",
+        "installed_disk_equal": true,
+        "hex": "8b45ec6bc0140345e8508b4df051e89d4674ff83c408c3b81c4fdf00e9a2a0f3ff"
+      },
+      {
+        "id": "row_reserve_eh_map_info",
+        "address": "00df4f14",
+        "end_exclusive": "00df4f40",
+        "bytes": 44,
+        "sha256": "2d36b8a685e09868df7b62fb5618bceff3525948fb7f43ed2a859089d539947a",
+        "installed_disk_equal": true,
+        "hex": "ffffffff80cacb002205931901000000144fdf00000000000000000000000000000000000000000001000000"
+      },
+      {
+        "id": "critical_section_guard_cleanup",
+        "address": "00411ee0",
+        "end_exclusive": "00411ef9",
+        "bytes": 25,
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "installed_disk_equal": true,
+        "hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3"
+      },
+      {
+        "id": "empty_row_unwind_helper",
+        "address": "00401130",
+        "end_exclusive": "00401131",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "installed_disk_equal": true,
+        "hex": "c3"
+      }
+    ],
+    "prototype_before": [
+      "004c11f0 BSP_RenderCommandQueue_GetSingleton  undefined BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac",
+      "00b1f280 FUN_00b1f280  undefined FUN_00b1f280(void)  body 00b1f280 - 00b1f320",
+      "00b1f330 FUN_00b1f330  undefined FUN_00b1f330(void)  body 00b1f330 - 00b1f379",
+      "00b1f6b0 CG_scalar_deleting_dtor_00b1f6b0  undefined CG_scalar_deleting_dtor_00b1f6b0(void)  body 00b1f6b0 - 00b1f6cd",
+      "00b1db30 FUN_00b1db30  undefined FUN_00b1db30(void)  body 00b1db30 - 00b1dc65",
+      "00b1e7f0 FUN_00b1e7f0  undefined FUN_00b1e7f0(void)  body 00b1e7f0 - 00b1e86c",
+      "00b1f150 FUN_00b1f150  undefined FUN_00b1f150(void)  body 00b1f150 - 00b1f161",
+      "00b1c3c0 BSP_RenderCommandQueueBase_DestroyBody  undefined BSP_RenderCommandQueueBase_DestroyBody(void)  body 00b1c3c0 - 00b1c3d0",
+      "00b1d590 BSP_RenderCommandPointers_DestroyStorage  undefined BSP_RenderCommandPointers_DestroyStorage(void)  body 00b1d590 - 00b1d5a6",
+      "00b28a90 BSP_D3D9Renderer_StopWorkerMode  undefined BSP_D3D9Renderer_StopWorkerMode(void)  body 00b28a90 - 00b28abb",
+      "00b33bf0 BSP_RenderWorker_RequestStop  undefined BSP_RenderWorker_RequestStop(void)  body 00b33bf0 - 00b33bfd",
+      "00b26920 FUN_00b26920  undefined FUN_00b26920(void)  body 00b26920 - 00b26a00"
+    ],
+    "source_evidence": [
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/native_render_queue_access.hpp",
+        "bytes": 2434,
+        "sha256": "c023ce7e28e4a3c7d80e829ae26a038247cb279a78fd1167a7158258018962ed"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/native_render_queue_access.cpp",
+        "bytes": 1605,
+        "sha256": "4756ec29c6d94911bbdfcf1fe806b0a6d610240c7ebbadaa549e709760113993"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "bytes": 4094,
+        "sha256": "aaa149c6ae8b6ff66c33d9351d85450c2d63a25308cf997cbc7592263eca12c2"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/native_render_pointer_arrays.cpp",
+        "bytes": 5100,
+        "sha256": "578800f83ea01eb9b3ee176b9f2c2c3bee836870c5def0a9a216a75afb3a535e"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/native_render_context.hpp",
+        "bytes": 4898,
+        "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/native_render_context.cpp",
+        "bytes": 3884,
+        "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/native_render_command_owner.hpp",
+        "bytes": 3718,
+        "sha256": "075aeabef5f471eb0ef50de21045a91ed8c7c7c0834dd729115ea4bbe64dba93"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/native_render_command_owner.cpp",
+        "bytes": 8091,
+        "sha256": "160f1102b71bc4977eb85a8bc38aaddb4c9a0ce04271d99457c2552d69608767"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/render_command_queue.hpp",
+        "bytes": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/render_command_queue.cpp",
+        "bytes": 10448,
+        "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/d3d9_states.hpp",
+        "bytes": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/d3d9_states.cpp",
+        "bytes": 19554,
+        "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/win32_event.hpp",
+        "bytes": 630,
+        "sha256": "3f09d1ef7c28426b3578781e81f8c4b78be33ac3dae6f97bb9889ce583f62a9c"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/win32_event.cpp",
+        "bytes": 443,
+        "sha256": "97d724bdb0613c26f1fc1886e9f39a499bc4c2b582f90392191d5abd0550bf23"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 3986,
+        "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 10921,
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "include/bsp/native_renderer_parameters.hpp",
+        "bytes": 2411,
+        "sha256": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605"
+      },
+      {
+        "commit": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+        "path": "src/native_renderer_parameters.cpp",
+        "bytes": 1873,
+        "sha256": "7f5a2439342111b7a1f03d6992e88893c704497638f17f74e858e7fd91ba72c3"
+      },
+      {
+        "commit": "719dd35f0759296bea023837a7df65b35dcd20ce",
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 5278,
+        "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+      },
+      {
+        "commit": "719dd35f0759296bea023837a7df65b35dcd20ce",
+        "path": "src/native_string.cpp",
+        "bytes": 5042,
+        "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+      },
+      {
+        "commit": "719dd35f0759296bea023837a7df65b35dcd20ce",
+        "path": "docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md",
+        "bytes": 8128,
+        "sha256": "0f4156e647f5df9e244dda92c9c4f8dcd37bfe413ed81e65f1d32994c39b9646"
+      },
+      {
+        "commit": "719dd35f0759296bea023837a7df65b35dcd20ce",
+        "path": "reports/native_pooled_string_actual_resize_audit.json",
+        "bytes": 19919,
+        "sha256": "753b7bf820e47ec62b4bace312267d5824a879a1f845e19fd86e0b135c040a96"
+      }
+    ]
+  },
+  "validation": {
+    "native_spans": 33,
+    "native_bytes": 2219,
+    "all_live_equal_installed": true,
+    "pinned_source_files": 22,
+    "json_parse": "checked by writing and reloading this report",
+    "diff_check": "git diff --check before commit",
+    "new_cpp_build": "not applicable; no C++ changes",
+    "new_native_fixture": "not run; discovery only",
+    "game_runtime": "not run",
+    "drop_in_abi_compatibility": "not claimed",
+    "prior_string_fixture": "719dd35 source report records prior483-word differential and build checks; not rerun or counted as queue validation"
+  }
+}
