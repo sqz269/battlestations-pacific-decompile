@@ -1,0 +1,650 @@
+{
+  "packet": "native_render_command_owner_next",
+  "written_utc": "2026-09-10T22:00:01.286003+00:00",
+  "read_only_reconstruction_discovery": true,
+  "worktree_base": "2482d10",
+  "additional_main_source_context": "0e117e4 integrates model owner c689bed and group lifetime; source hashes verified after integration",
+  "baseline": [
+    "docs/NATIVE_RENDER_COMMAND_NEXT.md",
+    "reports/native_render_command_next.json",
+    "docs/RENDER_COMMAND_QUEUE.md"
+  ],
+  "tracked_outputs": [
+    "docs/NATIVE_RENDER_COMMAND_OWNER_NEXT.md",
+    "reports/native_render_command_owner_next.json"
+  ],
+  "recommendation": {
+    "packet": "native_render_command_owner",
+    "state": "ready_bounded_implementation_with_required_binding_support_in_packet",
+    "entries": [
+      "00b1f170",
+      "00b1f1f0",
+      "00b1edc0",
+      "00b1ddd0",
+      "00b1e6b0"
+    ],
+    "original_code_bytes": 1238,
+    "storage_bytes": 68,
+    "command_reference_count": null,
+    "required_host_support": [
+      "Actual 44h storage and explicit one-time command lifetime API; no RenderCommandReference inheritance for the command.",
+      "Stable canonical context association prepared before entering native reconstruction and installed without allocation, retain, failure or semantic callbacks before command+28 publication.",
+      "Concrete NativeRenderBatchReference borrowing the same actual+04, validating current D5E5AC virtual0 B55680 and +4 B1C630, delegating real recycle then retiring its canonical association.",
+      "Required actual owner and model associations, with no missing-profile no-op."
+    ],
+    "not_claimed_complete": [
+      "B1D950 execution",
+      "actual queue singleton/publication",
+      "queue creators",
+      "scene gathering",
+      "upload/render preparation jobs",
+      "arbitrary unresolved scene/target owner profiles"
+    ]
+  },
+  "layout": {
+    "command_bytes": 68,
+    "native_hex_bytes": "44",
+    "reference_counted": false,
+    "vtable_address": "00d5e5e0",
+    "verified_vtable_entries": [
+      "00b1d950"
+    ],
+    "own_reference04": false,
+    "unwritten_field": "08",
+    "offsets": {
+      "scene": "04",
+      "batches": [
+        "0c",
+        "10"
+      ],
+      "diagnostic": [
+        "14",
+        "18"
+      ],
+      "metadata": [
+        "1c",
+        "20",
+        "24"
+      ],
+      "context": "28",
+      "indexed_groups": [
+        "2c",
+        "30",
+        "34"
+      ],
+      "ordered_groups": [
+        "38",
+        "3c",
+        "40"
+      ]
+    },
+    "separate_context_bytes": 24,
+    "inline_context_fragment": [
+      "00b1edd3",
+      "00b1edf2"
+    ],
+    "command_scalar_wrapper_in_table": false,
+    "scalar_wrapper_xrefs": "No references found byliveGhidra."
+  },
+  "functions": [
+    {
+      "address": "00b1f1f0",
+      "end_exclusive": "00b1f274",
+      "kind": "code",
+      "length": 132,
+      "disk_offset": 7467504,
+      "sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 42,
+      "last_instruction": "00b1f271: ret 0x10",
+      "provisional_name": "command_four_owner_placement_constructor",
+      "original_abi": "ECX=44h storage; stack scene,camera,second-owner,target; EAX=same; RET16",
+      "contract": "Initialize table, raw retained scene0, diagnostic0, metadata0, context0 and two group-array headers0; preserve08 and preimageC/10 until initialized; sharedB1EDC0 call; native state2 cleanup on throw.",
+      "old_ghidra_name": "FUN_00b1f1f0",
+      "proposed_name": "BSP_NativeRenderCommand_ConstructFourOwners",
+      "old_ghidra_signature": "undefined FUN_00b1f1f0(void)",
+      "current_body_end_inclusive": "00b1f273",
+      "proposed_name_is_hypothesis": true
+    },
+    {
+      "address": "00b1f170",
+      "end_exclusive": "00b1f1f0",
+      "kind": "code",
+      "length": 128,
+      "disk_offset": 7467376,
+      "sha256": "18c2429c14851703f8fbc2b1b0bc558f4d4f271973a4edf8bd7288bc8f12506b",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 41,
+      "last_instruction": "00b1f1ed: ret 0xc",
+      "provisional_name": "command_three_owner_placement_constructor",
+      "original_abi": "ECX=44h storage; stack scene,camera,target; EAX=same; RET12",
+      "contract": "Same constructor shape; pass camera as both second and third B1EDC0 arguments, so two separate context fields retain same actual count.",
+      "old_ghidra_name": "FUN_00b1f170",
+      "proposed_name": "BSP_NativeRenderCommand_ConstructThreeOwners",
+      "old_ghidra_signature": "undefined FUN_00b1f170(void)",
+      "current_body_end_inclusive": "00b1f1ef",
+      "proposed_name_is_hypothesis": true
+    },
+    {
+      "address": "00b1edc0",
+      "end_exclusive": "00b1ef57",
+      "kind": "code",
+      "length": 407,
+      "disk_offset": 7466432,
+      "sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 162,
+      "last_instruction": "00b1ef54: ret 0x10",
+      "provisional_name": "command_context_batch_diagnostic_initializer",
+      "original_abi": "ECX=command; stack scene,camera,second-owner,target; RET16",
+      "contract": "Allocate18h context, initialize and publish command28; ordered publish/retain/release assignments; currentcontextreload each next field; set borrowedcommand10; acquire actual pooled batches twice; diagnosticX length1 allocation2 alignment1.",
+      "old_ghidra_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "proposed_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "old_ghidra_signature": "undefined BSP_RenderCommand_InitializeContextAndBatches(void)",
+      "current_body_end_inclusive": "00b1ef56",
+      "proposed_name_is_hypothesis": true
+    },
+    {
+      "address": "00b1ddd0",
+      "end_exclusive": "00b1dfed",
+      "kind": "code",
+      "length": 541,
+      "disk_offset": 7462352,
+      "sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 198,
+      "last_instruction": "00b1dfec: ret",
+      "provisional_name": "command_destructor",
+      "original_abi": "ECX=44h command; RET",
+      "contract": "TableD5E5E0; required raw batchesC/10 release currentzero with no fieldclear; actual indexed groups dtor/free/originalcellclear; currentend reload; scene04 thencontext28 release/clear; ordered thenindexed array dtor; diagnosticreturn; preserve dangling data/cap/header.",
+      "old_ghidra_name": "BSP_RenderCommand_Destroy",
+      "proposed_name": "BSP_RenderCommand_Destroy",
+      "old_ghidra_signature": "undefined BSP_RenderCommand_Destroy(void)",
+      "current_body_end_inclusive": "00b1dfec",
+      "proposed_name_is_hypothesis": true
+    },
+    {
+      "address": "00b1e6b0",
+      "end_exclusive": "00b1e6ce",
+      "kind": "code",
+      "length": 30,
+      "disk_offset": 7464624,
+      "sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 11,
+      "last_instruction": "00b1e6cb: ret 4",
+      "provisional_name": "command_scalar_deleting_destructor",
+      "original_abi": "ECX=command; stackflags; EAX=original even freed; RET4",
+      "contract": "B1DDD0 then BF65AC iff flagsbit0, hiddenADDESP4 afterfree; no xrefs to wrapper found; not a commandtable slot.",
+      "old_ghidra_name": "CG_scalar_deleting_dtor_00b1e6b0",
+      "proposed_name": "BSP_NativeRenderCommand_ScalarDelete",
+      "old_ghidra_signature": "undefined CG_scalar_deleting_dtor_00b1e6b0(void)",
+      "current_body_end_inclusive": "00b1e6cd",
+      "proposed_name_is_hypothesis": true
+    }
+  ],
+  "eh": [
+    {
+      "function": "00b1ddd0",
+      "handler": "00cbcad1",
+      "func_info": "00df4f58",
+      "unwind_map": "00df4f40",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbcab0",
+          "effect": "string14 via41DD20"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbcabb",
+          "effect": "indexedarray2C viaB1D260"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cbcac6",
+          "effect": "orderedarray38 viaB1D1F0"
+        }
+      ],
+      "native_exception_execution": false
+    },
+    {
+      "function": "00b1f170",
+      "handler": "00cbcbb1",
+      "func_info": "00df506c",
+      "unwind_map": "00df5054",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbcb90",
+          "effect": "string14 via41DD20"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbcb9b",
+          "effect": "indexedarray2C viaB1D260"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cbcba6",
+          "effect": "orderedarray38 viaB1D1F0"
+        }
+      ],
+      "native_exception_execution": false
+    },
+    {
+      "function": "00b1f1f0",
+      "handler": "00cbcbe1",
+      "func_info": "00df50a8",
+      "unwind_map": "00df5090",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbcbc0",
+          "effect": "string14 via41DD20"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbcbcb",
+          "effect": "indexedarray2C viaB1D260"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cbcbd6",
+          "effect": "orderedarray38 viaB1D1F0"
+        }
+      ],
+      "native_exception_execution": false
+    }
+  ],
+  "eh_state_stores": {
+    "00b1f170": "State 0 at B1F1AA; state 2 at B1F1D2 before initializer call. State 1 is an unwind-map transition, not a separately observed store during nonthrowing array initialization.",
+    "00b1f1f0": "State 0 at B1F22A; state 2 at B1F256 before initializer call. State 1 is an unwind-map transition.",
+    "00b1ddd0": "State 2 at B1DDFA; state 1 at B1DE9F before ordered array destruction; state 0 at B1DF32 before indexed array destruction; state -1 at B1DFBF before diagnostic return.",
+    "00b1edc0": "No own EH frame. Constructor caller supplies the three array/string cleanup actions.",
+    "00b1e6b0": "No own EH frame. Free is reached only after destructor success."
+  },
+  "constructor_failure": "Only ordered array, indexed array, diagnostic are cleaned. No retained scene, context or acquired batch rollback; diagnostic/batch preimages and native publication timing must be preserved.",
+  "diagnostic": {
+    "default_address": "00ce9a38",
+    "default": "X",
+    "length": 1,
+    "allocation_bytes": 2,
+    "alignment": 1,
+    "shared_service": "SizedStoragePool configured as the same 00419CC0 Pool A used by current owners",
+    "normal_destroy": "Return nonnull data with captured current length+1; preserve header."
+  },
+  "critical_order": [
+    "B1EDC0 allocates actual 18h context and initializes its 6 words; publishes command+28; command scene assignment; reload context for camera, second owner and target assignments; reload context to publish borrowed command+10.",
+    "Each unequal retained assignment publishes incoming, retains incoming actual+04, releases captured old actual+04 and resolves current virtual0 only on zero.",
+    "Look up batch singleton twice, acquiring from each then-current pool+04 and publishing command+0C then+10 without extra retain.",
+    "Diagnostic replacement allocates first, then reloads old pointer and length for old return; publish new pointer then length then NUL; reload pointer and length for memcpy.",
+    "B1DDD0 releases required batch+0C then+10 without null guards or clearing; each later pointer is read after previous callbacks.",
+    "Indexed group cursor addresses its original cell. Destroy captured nonnull group, ordinary-free captured group, clear original cell; increment old cursor and recompute endpoint from current data/count.",
+    "Release/clear scene then context; destroy ordered then indexed arrays; return diagnostic. Dead array data/capacity, string header, table, +08, batch fields, and metadata remain."
+  ],
+  "dependencies": [
+    {
+      "edge": "context actual 18h lifetime",
+      "state": "available",
+      "api": "initialize_native_render_context_00b1edc0_fragment; NativeRenderContextReference; delete_native_render_context_00b1d570",
+      "remaining": "Caller/domain must install a canonical same-atomic companion for each newly allocated context without a new throwing publication boundary."
+    },
+    {
+      "edge": "batch actual 18h pool lifetime",
+      "state": "available",
+      "api": "NativeRenderBatchLifetime::pool_00b1e870/acquire_00b1d5b0/recycle_zero_reference_00b55680",
+      "remaining": "Current D5E5AC virtual0 B55680 bridge required; recycle method itself validates current deleting +4 B1C630, not virtual0."
+    },
+    {
+      "edge": "group actual 4Ch full lifetime",
+      "state": "available_on_main_0e117e4",
+      "api": "destroy_native_render_group_00b1d760; NativeRenderGroupModels; NativeRenderActualOwners",
+      "remaining": "Use real nonempty groups. Preserve group-destroy/free/original-cell-clear command ordering."
+    },
+    {
+      "edge": "model actual 188h lifetime",
+      "state": "accepted_on_main_c689bed",
+      "api": "NativeModelReference; NativeModelOwner; unlink_and_release_render_model_00b6dfa0",
+      "remaining": "Resolve the same raw model prefix and actual +04, shared hierarchy runtime, retained geometry owner and canonical 01090054 pool."
+    },
+    {
+      "edge": "group arrays",
+      "state": "available",
+      "api": "NativeRenderPointerArrayStorage; destroy_native_ordered_group_pointers_00b1d1f0; destroy_native_indexed_group_pointers_00b1d260",
+      "remaining": "Use actual embedded headers, no vector replacement."
+    },
+    {
+      "edge": "shared scalar allocator and strings",
+      "state": "available_semantic_domain",
+      "api": "singleton_lifetime_allocate/free; SizedStoragePool::allocate_00bd1120/release_00bd1510",
+      "remaining": "Reuse the same allocator and Pool A service; string service projection is not an original global-storage reconstruction. No private per-command pool."
+    },
+    {
+      "edge": "camera actual owner",
+      "state": "available",
+      "api": "NativeCameraReference",
+      "remaining": "Use &camera_owner.storage.node raw identity and its actual count, not address of the host view."
+    },
+    {
+      "edge": "scene/root, second owner, target, group binding",
+      "state": "required_named_but_not_generically_closed",
+      "api": "NativeRenderActualOwners",
+      "remaining": "Every nonnull raw identity needs its actual +04 and real current terminal profile. SceneResource is a host projection. NativeSurfaceOwner has real destruction/pool return but no generic canonical reference bridge and does not establish arbitrary texture targets."
+    }
+  ],
+  "binding_lifetime_rules": [
+    "A command has no own reference count. +04 is the retained scene/root. D5E5E0 has execution B1D950 at +0; +4 begins ASCII data, not a deleting slot.",
+    "Context companion storage/association must outlive both command destruction and any external context references. A command-owned unique_ptr that destroys it early is invalid.",
+    "Prepare host companion capacity before entering the original operation. Binding after native allocation/init must not allocate, retain, release, invoke caller semantics or throw in the valid domain.",
+    "On native constructor failure leave the surviving context/batch associations attached to their actual objects; never let host cleanup invent retained-owner rollback.",
+    "Direct current-profile context deletion is only valid without an outstanding canonical companion, or through that companion terminal path including retirement. It is not a substitute for shared-context ownership.",
+    "No raw scene/context/model resolver may be treated as a no-op; lookup is association only, while terminal callbacks perform the real same-domain lifetime operation."
+  ],
+  "callers_live": {
+    "00b1f170": [
+      "00b101c0",
+      "00b1f4d0",
+      "00b1f5e0"
+    ],
+    "00b1f1f0": [
+      "00a8ea20",
+      "00b1f3c0"
+    ],
+    "00b1edc0": [
+      "00b1f170",
+      "00b1f1f0"
+    ],
+    "00b1ddd0": [
+      "00b1ebe0",
+      "00b1e6b0",
+      "00b1e6d0",
+      "00b1e720"
+    ],
+    "00b1e6b0": []
+  },
+  "false_noreturn_repair": {
+    "entry": "00b1e6b0",
+    "call": "00b1e6c0",
+    "target": "00bf65ac",
+    "gap_start": "00b1e6c5",
+    "gap_end_exclusive": "00b1e6c8",
+    "bytes": "83 c4 04",
+    "instruction": "ADD ESP,4",
+    "body_already_reaches": "00b1e6cd",
+    "action": "Clear only this call-site override under the write lock, disassemble gap and refresh export. No global _free no-return change.",
+    "applied": false
+  },
+  "raw_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "All live bytes queried through bsp.py ghidra bytes, whose Client.verify checks project, program path, language and image base for each invocation.",
+    "span_count": 15,
+    "byte_count": 1583,
+    "spans": [
+      {
+        "address": "00b1ddd0",
+        "end_exclusive": "00b1dfed",
+        "length": 541,
+        "disk_offset": 7462352,
+        "sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 198,
+        "last_instruction": "00b1dfec: ret"
+      },
+      {
+        "address": "00b1e6b0",
+        "end_exclusive": "00b1e6ce",
+        "length": 30,
+        "disk_offset": 7464624,
+        "sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 11,
+        "last_instruction": "00b1e6cb: ret 4"
+      },
+      {
+        "address": "00b1edc0",
+        "end_exclusive": "00b1ef57",
+        "length": 407,
+        "disk_offset": 7466432,
+        "sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 162,
+        "last_instruction": "00b1ef54: ret 0x10"
+      },
+      {
+        "address": "00b1f170",
+        "end_exclusive": "00b1f1f0",
+        "length": 128,
+        "disk_offset": 7467376,
+        "sha256": "18c2429c14851703f8fbc2b1b0bc558f4d4f271973a4edf8bd7288bc8f12506b",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 41,
+        "last_instruction": "00b1f1ed: ret 0xc"
+      },
+      {
+        "address": "00b1f1f0",
+        "end_exclusive": "00b1f274",
+        "length": 132,
+        "disk_offset": 7467504,
+        "sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 42,
+        "last_instruction": "00b1f271: ret 0x10"
+      },
+      {
+        "address": "00cbcab0",
+        "end_exclusive": "00cbcadb",
+        "length": 43,
+        "disk_offset": 9161392,
+        "sha256": "b94254b628b7166069bbaac7aec792fc00369c959b6a580baf150d7bcfe8b620",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 11,
+        "last_instruction": "00cbcad6: jmp 0xbf6b43"
+      },
+      {
+        "address": "00cbcb90",
+        "end_exclusive": "00cbcbbb",
+        "length": 43,
+        "disk_offset": 9161616,
+        "sha256": "077247eaf24ca14f3cc483a9a13f81fda6a2c56d67bc2460fe913047e99ca251",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 11,
+        "last_instruction": "00cbcbb6: jmp 0xbf6b43"
+      },
+      {
+        "address": "00cbcbc0",
+        "end_exclusive": "00cbcbeb",
+        "length": 43,
+        "disk_offset": 9161664,
+        "sha256": "ac49519e31ea8fb5a2bc3a47eb24d55755fe020a47447e2091877ee3f9e09d09",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 11,
+        "last_instruction": "00cbcbe6: jmp 0xbf6b43"
+      },
+      {
+        "address": "00ce9a38",
+        "end_exclusive": "00ce9a3c",
+        "length": 4,
+        "disk_offset": 9345592,
+        "sha256": "9855cda098dcac49935c7cea75d9960ef8fd001b8fac4d21db934116f50e33c0",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "00000058"
+        ]
+      },
+      {
+        "address": "00d5e5ac",
+        "end_exclusive": "00d5e5b4",
+        "length": 8,
+        "disk_offset": 9823660,
+        "sha256": "6edd5d15cdafbead889736239418dca3760db6e6ef62b114896420e92315f997",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "00b55680",
+          "00b1c630"
+        ]
+      },
+      {
+        "address": "00d5e5c4",
+        "end_exclusive": "00d5e5cc",
+        "length": 8,
+        "disk_offset": 9823684,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "00bd30e0",
+          "00b1d570"
+        ]
+      },
+      {
+        "address": "00d5e5e0",
+        "end_exclusive": "00d5e5f0",
+        "length": 16,
+        "disk_offset": 9823712,
+        "sha256": "794abb88679474fd6ea24f7ff6dea7eef6c707726477b117e2881ac4372fcf02",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "00b1d950",
+          "74736e69",
+          "65636e61",
+          "202d2064"
+        ]
+      },
+      {
+        "address": "00df4f40",
+        "end_exclusive": "00df4f7c",
+        "length": 60,
+        "disk_offset": 10440512,
+        "sha256": "f13aa88e36be4342c8e2f4a19ea19f55ee4d8f4077c038bef426c23cc0118af2",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "ffffffff",
+          "00cbcab0",
+          "00000000",
+          "00cbcabb",
+          "00000001",
+          "00cbcac6",
+          "19930522",
+          "00000003",
+          "00df4f40",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ]
+      },
+      {
+        "address": "00df5054",
+        "end_exclusive": "00df5090",
+        "length": 60,
+        "disk_offset": 10440788,
+        "sha256": "4e9a64732aadb0723c223d127bfe4dd075a8a55ca71bcb8e22a31a5684c6eb97",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "ffffffff",
+          "00cbcb90",
+          "00000000",
+          "00cbcb9b",
+          "00000001",
+          "00cbcba6",
+          "19930522",
+          "00000003",
+          "00df5054",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ]
+      },
+      {
+        "address": "00df5090",
+        "end_exclusive": "00df50cc",
+        "length": 60,
+        "disk_offset": 10440848,
+        "sha256": "c555d13d8bd3ab5a59f16e8f94eb42ac9a0029c5f341957de530f17cdba6b52a",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "ffffffff",
+          "00cbcbc0",
+          "00000000",
+          "00cbcbcb",
+          "00000001",
+          "00cbcbd6",
+          "19930522",
+          "00000003",
+          "00df5090",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ]
+      }
+    ]
+  },
+  "source_artifact_sha256": {
+    "include/bsp/native_render_batch_lifetime.hpp": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead",
+    "src/native_render_batch_lifetime.cpp": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/native_render_group_storage.hpp": "4018e3eed8139fc5ddb7597342c098446b4a2c338144709720115d5c4ed4d99a",
+    "src/native_render_group_storage.cpp": "52c40287f557144147aafc7f23e6e3f1b3c29031eb7179e66b25242b6b7baf30",
+    "include/bsp/native_render_pointer_arrays.hpp": "2f122af76e1c66cd2f6cdee70c54560025359908e45f081e4df45308366057d1",
+    "src/native_render_pointer_arrays.cpp": "710fbb433443dc6033c12ce13b7fe600c203bd8f47a31ea9aa798080edeb2497",
+    "include/bsp/native_render_group_lifetime.hpp": "6fabacd6032d7bd188ace6eebc7d3a21f4173f3996ccb56d1d7f461d476c583d",
+    "src/native_render_group_lifetime.cpp": "b07b7d4f06702fca77490bd2a810f10a25773e577e43edb6f228b9c3fe3ad0a8",
+    "include/bsp/native_model_owner.hpp": "91e3ffcad188574407078603c1958ae59f4d608d9b98184cd3005d921a313041",
+    "src/native_model_owner.cpp": "0e5940c1a068bf808bef3c8881e41f4c13830ed42af49b0fa8ec8dd793c474f3",
+    "include/bsp/native_camera_reference.hpp": "52e941810a4fc335ca371f2ce6b5290bedf1fc9cafcc561cd750f0100b356be0",
+    "include/bsp/native_surface_owner.hpp": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38",
+    "include/bsp/scene_attachment.hpp": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "include/bsp/singleton_lifetime.hpp": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+  },
+  "suggested_acceptance": "Extend one focused original-byte fixture through both constructors/initializer and real destruction of a nonempty group with concrete models, binding, shared context/camera/target, two native pooled batches and shared Pool A. Compare actual storage/counts/publication and callback/free order, including callbacks mutating later fields. Add only minimal host exception cases for the three EH states; original exception dispatch remains a separate unproved axis.",
+  "validation": {
+    "live_installed_span_identity": true,
+    "complete_assembly_and_eh_inspected": true,
+    "new_cpp": false,
+    "build_run": false,
+    "native_fixture_run": false,
+    "native_exception_dispatch": false,
+    "game_or_render_validation": false,
+    "ghidra_or_shared_metadata_changed": false
+  }
+}
