@@ -6,6 +6,7 @@
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
+#include "bsp/frontend_screen_sets.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -776,6 +777,29 @@ int main() {
         check(bsp::grant_midway_save_award(granted) && granted.calls.size() == 6
                 && granted.calls[4] == "queue" && granted.calls[5] == "record",
             "GA_HM queues the online award before the local record");
+    }
+
+    {
+        // 004F8710 with only the terminator: the level is cleared and the
+        // recompute drops every screen that is not held by another level.
+        struct Bindings : bsp::FrontEndScreenSetHostBindings {
+            bool screen_manages_own_visibility(int) override { return false; }
+            bool screen_occludes_lower_levels(int) override { return false; }
+        };
+        Bindings bindings;
+        bsp::FrontEndScreenTable table{};
+        bsp::FrontEndScreen briefing{};
+        bsp::FrontEndScreen overlay{};
+        table.slots[0x03] = &briefing;
+        table.slots[0x54] = &overlay;
+        bsp::FrontEndScreenSetStack stack{};
+        const int briefing_id[1] = {0x03};
+        const int overlay_id[1] = {0x54};
+        bsp::set_front_end_screen_set_004f8710(stack, table, bindings, briefing_id, 1);
+        bsp::set_front_end_screen_set_level(stack, table, bindings, 5, overlay_id, 1);
+        bsp::set_front_end_screen_set_004f8710(stack, table, bindings, nullptr, 0);
+        check(!briefing.wanted && overlay.wanted && stack.dirty,
+            "an empty screen set clears its own level and leaves the other levels standing");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

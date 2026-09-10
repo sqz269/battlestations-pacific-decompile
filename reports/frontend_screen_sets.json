@@ -1,0 +1,617 @@
+{
+  "packet": "front_end_screen_sets",
+  "owner": "agent/screen-sets",
+  "doc": "docs/FRONTEND_SCREEN_SETS.md",
+  "files": [
+    "docs/FRONTEND_SCREEN_SETS.md",
+    "reports/frontend_screen_sets.json",
+    "include/bsp/frontend_screen_sets.hpp",
+    "src/frontend_screen_sets.cpp"
+  ],
+  "summary": "004F8710 and 004D8C00 are __cdecl varargs setters terminated by a zero id. Each replaces level 4 of a five-level (screens) or four-level (input contexts) stack of std::vector<int> and then re-derives the whole state: 004F7620 recomputes the +4h requested byte of all 95 registered screens with an occlusion floor at 00E08310, and 004C4300 pushes input-context priorities into the input manager. An empty list clears its level, which is how the front end hides everything. 00687330 is the multi menu's interface-id-to-screen-id table.",
+  "calling_conventions": {
+    "004f8710": {
+      "convention": "__cdecl varargs",
+      "args": "id..., 0",
+      "ret": "RET",
+      "seh_handler": "00c68558",
+      "level": 4,
+      "vector": "00e18d28"
+    },
+    "004d8c00": {
+      "convention": "__cdecl varargs",
+      "args": "game, id..., 0",
+      "ret": "RET",
+      "seh_handler": "00c66568",
+      "level": 4,
+      "vector": "game+5a0h"
+    },
+    "004f7620": {
+      "convention": "__cdecl",
+      "args": "none",
+      "ret": "RET"
+    },
+    "004f83b0": {
+      "convention": "__thiscall(screen)",
+      "args": "none",
+      "ret": "RET",
+      "seh_handler": "00c684d8"
+    },
+    "00687330": {
+      "convention": "id at [ESP+4], ECX loaded but unused at the caller",
+      "args": "int interfaceId",
+      "ret": "RET 4",
+      "note": "__thiscall ignoring this is as consistent as the __stdcall in docs/FRONTEND_MANAGERS.md; the callee cannot distinguish them"
+    },
+    "004c4300": {
+      "convention": "__thiscall(game, int level)",
+      "args": "int level",
+      "ret": "RET 4"
+    },
+    "004f7210": {
+      "convention": "__thiscall(vector)",
+      "args": "none",
+      "ret": "RET",
+      "role": "std::vector<int>::size"
+    },
+    "004f81d0": {
+      "convention": "__thiscall(dst, src)",
+      "args": "src",
+      "ret": "RET 4",
+      "role": "std::vector<int>::operator="
+    },
+    "004f8480": {
+      "convention": "__thiscall(vector, const int*)",
+      "args": "const int*",
+      "ret": "RET 4",
+      "role": "std::vector<int>::push_back"
+    },
+    "004f7e80": {
+      "convention": "__thiscall(vector, ...)",
+      "ret": "RET",
+      "role": "std::vector<int>::erase(begin, end); the empty-source arm of 004f81d0"
+    },
+    "00a92290": {
+      "convention": "__thiscall(inputManager, int id)",
+      "ret": "RET 4",
+      "role": "read [manager+10h][id]"
+    },
+    "004d6410": {
+      "convention": "__thiscall(game, int level, vector* ids)",
+      "args": "two",
+      "ret": "RET 8",
+      "role": "the generic input-context level setter that 004d8c00 inlines"
+    },
+    "00a933f0": {
+      "convention": "__thiscall(inputManager, int id, int level)",
+      "ret": "RET 8",
+      "role": "write [manager+10h][id] and refresh the cached maximum at +20h"
+    }
+  },
+  "screen_set_levels": {
+    "container": "16-byte MSVC _SECURE_SCL std::vector<int>: +0h iterator-debug head, +4h _Myfirst, +8h _Mylast, +0Ch _Myend",
+    "levels": [
+      {
+        "level": 1,
+        "vector": "00e18cf8",
+        "setter": "004f8530",
+        "ecx_site": "004f8592"
+      },
+      {
+        "level": 2,
+        "vector": "00e18d08",
+        "setter": "004f85d0",
+        "ecx_site": "004f8632"
+      },
+      {
+        "level": 3,
+        "vector": "00e18d18",
+        "setter": "004f8670",
+        "ecx_site": "004f86d2"
+      },
+      {
+        "level": 4,
+        "vector": "00e18d28",
+        "setter": "004f8710",
+        "ecx_site": "004f8772"
+      },
+      {
+        "level": 5,
+        "vector": "00e18d38",
+        "setter": "004f87b0",
+        "ecx_site": "004f87f6"
+      }
+    ],
+    "dirty_byte": {
+      "address": "00e18cdc",
+      "raised_at": "004f8777 and the four siblings",
+      "cleared_at": "004f8881 in the pump, 004e544c and 004e5481 in OnMove",
+      "reader": "none found; the role is a hypothesis"
+    },
+    "registry": {
+      "address": "00e18b60",
+      "slots": 95,
+      "requested_byte": "screen+4h",
+      "applied_byte": "screen+5h"
+    },
+    "empty_list_rule": "004f81d0 with an empty source falls to 004f7e80, erase(begin, end), so the level is cleared and the recompute drops every screen only that level held."
+  },
+  "recompute_004f7620": {
+    "scratch": "5Fh-byte stack bitmap, one byte per registry slot, memset at 004f7627",
+    "occlusion_level_global": "00e08310",
+    "occlusion_reset": "004f7638 sets it to 1",
+    "walk": "level 5 (00e18d38) down to level 1 (00e18cf8), ESI -= 10h each turn",
+    "raise_rule": "004f7689: while level > floor, ask the screen's virtual +8h; a true raises the floor to that level, so the first opaque screen in a level decides",
+    "request_rule": "004f76a2: bitmap[id] |= (level >= floor)",
+    "clear_pass": "004f76d0, all 95 slots: screen && !virtual+4h && !bitmap -> +4h = 0",
+    "set_pass": "004f7700, all 95 slots: screen && !virtual+4h && bitmap -> +4h = 1",
+    "pass_split": "two full sweeps, not one sweep with two arms; the +4h virtual is called twice per live slot",
+    "base_virtuals": {
+      "+04h": {
+        "address": "004f7570",
+        "body": "xor al,al; ret",
+        "role": "self-managed visibility, exempt from both passes"
+      },
+      "+08h": {
+        "address": "004f7580",
+        "body": "xor al,al; ret",
+        "role": "occludes lower levels"
+      }
+    },
+    "vtable": "00ceae54",
+    "occlusion_readers": [
+      "004ca521 in BSP_Game_Render, compared against 1",
+      "005b5757, not examined"
+    ]
+  },
+  "input_context_levels": {
+    "table_base": "game + (level + 56h) * 10h, from 004c4300",
+    "levels": [
+      {
+        "level": 1,
+        "vector": "game+570h",
+        "setter": "004d8a50",
+        "applier": "004d6410(1, &list) at 004d8ab6"
+      },
+      {
+        "level": 2,
+        "vector": "game+580h",
+        "setter": "004d8ae0",
+        "applier": "004d6410(2, &list) at 004d8b46"
+      },
+      {
+        "level": 3,
+        "vector": "game+590h",
+        "setter": "004d8b70",
+        "applier": "004d6410(3, &list) at 004d8bd6"
+      },
+      {
+        "level": 4,
+        "vector": "game+5a0h",
+        "setter": "004d8c00"
+      }
+    ],
+    "game_object": "00e188a8",
+    "input_manager": "004bec00 singleton; level array at manager+10h, count at +14h, cached maximum at +20h",
+    "id_space": "input context ids 1..19h, not screen registry slots",
+    "apply": "004c4300(game, level): for level down to 1, clear every context sitting at that level then raise each listed context whose level is lower",
+    "generic_setter": "004d6410, __thiscall(game, int level, vector*): ECX = (level + 56h) * 10h + game, 004d3740 assign, 004c4300(game, level), then the same dead scan. 004d8c00 is this routine inlined for level 4.",
+    "dead_code": "004d8c84 walks the four levels backwards for the topmost non-empty one and discards the result"
+  },
+  "call_sites": [
+    {
+      "caller": "00683aa0",
+      "name": "BSP_FrontEndManager_Deactivate",
+      "screen_set": "004f8710(0) at 00683aa6",
+      "input_set": "004d8c00(game, 0) at 00683ab3"
+    },
+    {
+      "caller": "00685820",
+      "name": "BSP_MainMenu_ApplyPendingInterface",
+      "screen_set": "004f8710(screenId, 0)",
+      "input_set": "004d8c00(game, 1, 0)",
+      "mapping": "eleven-entry jump table at 00685948 over ids 1..0Bh, identity; the default arm at 00685938 publishes the empty set and skips 004d8c00"
+    },
+    {
+      "caller": "00687800",
+      "name": "BSP_MultiMenu_ApplyPendingInterface",
+      "screen_set": "004f8710(00687330(id), 0) at 0068783e",
+      "input_set": "004d8c00(game, 1, 0) at 0068784e",
+      "mapping": "00687330; also prints the 00e08cd8 name through 004254b0 first"
+    },
+    {
+      "caller": "00689820",
+      "name": "BSP_OptionsMenu_ApplyPendingInterface",
+      "screen_set": "004f8710(screenId, 0)",
+      "input_set": "004d8c00(game, 1, 0)",
+      "mapping": "compare chain at 00689838: 0Ch->0Dh, 0Dh->0Eh, 0Eh->0Fh, default empty"
+    },
+    {
+      "caller": "004da780",
+      "name": null,
+      "screen_set": "004f8710(0) at 004da9ca",
+      "input_set": "004d8c00(game, 0) at 004da9b2",
+      "note": "004da99d..004da9ca calls all eight setters of both families with empty lists; add esp, 30h confirms four two-argument and four one-argument __cdecl calls"
+    }
+  ],
+  "multi_menu_map_00687330": {
+    "jump_table": "006873ec",
+    "entries": 29,
+    "index": "interfaceId - 3, bounded by 1Ch",
+    "default_arm": "006873e7, xor eax,eax; ret 4",
+    "rows": [
+      {
+        "interface_id": "03h",
+        "name": "INTF_BRIEFING",
+        "arm": "006873bf",
+        "screen_id": "03h"
+      },
+      {
+        "interface_id": "04h",
+        "name": "INTF_REWARDS",
+        "arm": "006873c7",
+        "screen_id": "04h"
+      },
+      {
+        "interface_id": "05h",
+        "name": "INTF_UNITLIB",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "06h",
+        "name": "INTF_VIDEOLIB",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "07h",
+        "name": "INTF_MEDALS",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "08h",
+        "name": "INTF_CREDITS",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "09h",
+        "name": "INTF_DOWNLOADEDCONTENT",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "0ah",
+        "name": "INTF_LEADERBOARDS",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "0bh",
+        "name": "INTF_ACHIEVEMENTS",
+        "arm": "006873df",
+        "screen_id": "0bh"
+      },
+      {
+        "interface_id": "0ch",
+        "name": "INTF_OPTIONS",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "0dh",
+        "name": "INTF_CONTROLLAYOUT",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "0eh",
+        "name": "INTF_KEYBOARDSETUP",
+        "arm": "006873e7",
+        "screen_id": "00h"
+      },
+      {
+        "interface_id": "0fh",
+        "name": "INTF_MULTIMAINMENU",
+        "arm": "00687347",
+        "screen_id": "10h"
+      },
+      {
+        "interface_id": "10h",
+        "name": "INTF_MULTIMODESELECTOR",
+        "arm": "0068734f",
+        "screen_id": "11h"
+      },
+      {
+        "interface_id": "11h",
+        "name": "INTF_MULTILIVERANKEDSELECTOR",
+        "arm": "00687357",
+        "screen_id": "12h"
+      },
+      {
+        "interface_id": "12h",
+        "name": "INTF_MULTILAN",
+        "arm": "0068735f",
+        "screen_id": "13h"
+      },
+      {
+        "interface_id": "13h",
+        "name": "INTF_MULTICREATELANSERVER",
+        "arm": "00687367",
+        "screen_id": "14h"
+      },
+      {
+        "interface_id": "14h",
+        "name": "INTF_MULTIGAMELOBBY",
+        "arm": "0068736f",
+        "screen_id": "16h"
+      },
+      {
+        "interface_id": "15h",
+        "name": "INTF_MULTISELECTPLAYER",
+        "arm": "00687377",
+        "screen_id": "17h"
+      },
+      {
+        "interface_id": "16h",
+        "name": "INTF_MULTIPLAYERS",
+        "arm": "0068737f",
+        "screen_id": "18h"
+      },
+      {
+        "interface_id": "17h",
+        "name": "INTF_MULTIINGAME",
+        "arm": "00687387",
+        "screen_id": "19h"
+      },
+      {
+        "interface_id": "18h",
+        "name": "INTF_MULTIFRIENDS",
+        "arm": "006873af",
+        "screen_id": "1ah"
+      },
+      {
+        "interface_id": "19h",
+        "name": "INTF_MULTISIGNIN",
+        "arm": "0068738f",
+        "screen_id": "1bh"
+      },
+      {
+        "interface_id": "1ah",
+        "name": "INTF_MULTISESSIONBROWSER",
+        "arm": "0068739f",
+        "screen_id": "1ch"
+      },
+      {
+        "interface_id": "1bh",
+        "name": "INTF_MULTIERROR",
+        "arm": "006873b7",
+        "screen_id": "1dh"
+      },
+      {
+        "interface_id": "1ch",
+        "name": "INTF_MULTICREATENEWACCOUNTPC",
+        "arm": "00687397",
+        "screen_id": "1eh"
+      },
+      {
+        "interface_id": "1dh",
+        "name": "INTF_MULTISESSIONFILTER",
+        "arm": "006873a7",
+        "screen_id": "1fh"
+      },
+      {
+        "interface_id": "1eh",
+        "name": "INTF_MULTITACTSHIT",
+        "arm": "006873cf",
+        "screen_id": "54h"
+      },
+      {
+        "interface_id": "1fh",
+        "name": "INTF_MULTIPOINTSSHIT",
+        "arm": "006873d7",
+        "screen_id": "5eh"
+      }
+    ]
+  },
+  "screen_id_space": [
+    {
+      "screen_ids": "01h..0Bh",
+      "owner": "main menu, identity with the interface id"
+    },
+    {
+      "screen_ids": "0Ch",
+      "owner": "no manager maps to it"
+    },
+    {
+      "screen_ids": "0Dh..0Fh",
+      "owner": "options menu, interface id + 1"
+    },
+    {
+      "screen_ids": "10h..14h",
+      "owner": "multi menu, interface ids 0Fh..13h"
+    },
+    {
+      "screen_ids": "15h",
+      "owner": "no manager maps to it"
+    },
+    {
+      "screen_ids": "16h..1Fh",
+      "owner": "multi menu, interface ids 14h..1Dh"
+    },
+    {
+      "screen_ids": "54h, 5Eh",
+      "owner": "multi menu, the two SHIT-suffixed debug interfaces"
+    }
+  ],
+  "commit_004f83b0": {
+    "convention": "__thiscall(screen), RET, SEH 00c684d8",
+    "behaviour": "the screen's virtual +24h fills a heap vector of child pointers; every non-null child gets its own virtual +34h called with the byte at screen+5h, the applied state, not the requested one; then the vector is freed",
+    "base_collect": "004f75d0, ret 4, so a screen with no children commits nothing",
+    "callers": 35,
+    "prior_ledger_name": "BSP_FrontEndScreen_n in config/names/004f0000.jsonl, superseded here"
+  },
+  "corrections": [
+    "include/bsp/frontend_managers.hpp calls both varargs lists interface sets. They carry two different id spaces: 004f8710 takes screen registry slots, 004d8c00 takes input-context ids 1..19h.",
+    "docs/FRONTEND_MANAGERS.md records 00687330 as __stdcall(int id). The caller at 00687838 also loads ECX, so a __thiscall that ignores this fits the same bytes."
+  ],
+  "uncertainties": [
+    "No leaf override of the screen base virtual +4h or +8h was identified, so the occlusion and exemption rules have no observed instance.",
+    "Levels 1, 2, 3 and 5 have no recovered publisher other than the 004da780 teardown.",
+    "Nothing was found that reads 00e18cdc between the setter that raises it and the pump that clears it, so 'dirty' is a hypothesis.",
+    "The dead backwards scan at 004d8c84 is unexplained.",
+    "The 16-byte vector's +0h word is never initialised by these callers; the _SECURE_SCL container-proxy reading is inferred from the 00bf6713 assertions, not traced to a writer.",
+    "005b5757 reads 00e08310 and was not examined."
+  ],
+  "remaining": [
+    "Find the screens that override +8h (occluding) and +4h (self-managed).",
+    "Identify the screen types behind registry slots 0Ch and 15h.",
+    "Trace the callers of 004f8530, 004f85d0, 004f8670 and 004f87b0 to name levels 1, 2, 3, 5.",
+    "Name the input contexts 1..19h that 004c4300 prioritises."
+  ],
+  "state_reached": {
+    "analyzed_reconstructed_build_tested": [
+      "004f8710",
+      "004f7620",
+      "004d8c00",
+      "004c4300",
+      "00687330",
+      "004f83b0"
+    ],
+    "analyzed_as_level_variants": [
+      "004f8530",
+      "004f85d0",
+      "004f8670",
+      "004f87b0"
+    ],
+    "analyzed_generic_input_setter": [
+      "004d8a50",
+      "004d8ae0",
+      "004d8b70",
+      "004d6410"
+    ],
+    "analyzed_stl_members": [
+      "004f7210",
+      "004f8480",
+      "004f81d0",
+      "004f7e80",
+      "004d6840",
+      "004d3740"
+    ],
+    "analyzed_from_raw_bytes_no_ghidra_function": [
+      "00685820",
+      "00689820",
+      "00687800"
+    ],
+    "analyzed_accessor_pair_only": [
+      "00a92290",
+      "00a933f0"
+    ],
+    "identified_by_role_only": [
+      "004da780"
+    ],
+    "note": "Nothing here is ABI-compatible or game-validated. The C++ stacks use std::vector, not the native 16-byte container layout."
+  },
+  "ghidra_functions_missing": {
+    "addresses": [
+      "00685820",
+      "00689820",
+      "00687800"
+    ],
+    "note": "The three +10h overrides have no Ghidra function; docs/FRONTEND_MANAGERS.md already records this. Read here from disk bytes through disasm-raw. They need a function defined before any name is applied."
+  },
+  "follow_up_packets": [
+    {
+      "packet": "front_end_screen_levels",
+      "addresses": [
+        "004f8530",
+        "004f85d0",
+        "004f8670",
+        "004f87b0",
+        "004da780"
+      ],
+      "files": [
+        "docs/FRONTEND_SCREEN_LEVELS.md",
+        "reports/frontend_screen_levels.json"
+      ],
+      "contract": "Who publishes levels 1, 2, 3 and 5 of 00e18cf8..00e18d38, what 004da780 is, and whether any publisher ever passes more than one id."
+    },
+    {
+      "packet": "front_end_screen_occlusion",
+      "addresses": [
+        "004f7570",
+        "004f7580",
+        "00ceae54",
+        "004ca4f0",
+        "005b5710"
+      ],
+      "files": [
+        "docs/FRONTEND_SCREEN_OCCLUSION.md"
+      ],
+      "contract": "The leaf overrides of the screen base +4h and +8h, and the two readers of the occlusion level 00e08310 outside the recompute."
+    },
+    {
+      "packet": "game_input_context_levels",
+      "addresses": [
+        "004c4300",
+        "00a92290",
+        "00a933f0",
+        "004bec00"
+      ],
+      "files": [
+        "docs/GAME_INPUT_CONTEXT_LEVELS.md"
+      ],
+      "contract": "The input-context id space 1..19h, the level array at manager+10h, and what the cached maximum at manager+20h gates."
+    }
+  ],
+  "names_recorded": [
+    {
+      "address": "00687330",
+      "name": "BSP_MultiMenu_MapInterfaceToScreen",
+      "note": "existing name kept; the full jump table appended as evidence"
+    },
+    {
+      "address": "004f8710",
+      "name": "BSP_FrontEndScreens_SetLevel4Set"
+    },
+    {
+      "address": "004f7620",
+      "name": "BSP_FrontEndScreens_RecomputeRequests"
+    },
+    {
+      "address": "004d8c00",
+      "name": "BSP_GameInputContexts_SetLevel4Set"
+    },
+    {
+      "address": "004c4300",
+      "name": "BSP_GameInputContexts_ApplyLevels"
+    },
+    {
+      "address": "004d6410",
+      "name": "BSP_GameInputContexts_SetLevelSet"
+    },
+    {
+      "address": "004f83b0",
+      "name": "BSP_FrontEndScreen_CommitVisibility",
+      "note": "supersedes BSP_FrontEndScreen_n"
+    },
+    {
+      "address": "004f8530",
+      "name": "BSP_FrontEndScreens_SetLevel1Set"
+    },
+    {
+      "address": "004f85d0",
+      "name": "BSP_FrontEndScreens_SetLevel2Set"
+    },
+    {
+      "address": "004f8670",
+      "name": "BSP_FrontEndScreens_SetLevel3Set"
+    },
+    {
+      "address": "004f87b0",
+      "name": "BSP_FrontEndScreens_SetLevel5Set"
+    }
+  ]
+}
