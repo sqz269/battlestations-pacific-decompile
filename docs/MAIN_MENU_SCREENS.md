@@ -313,3 +313,9 @@ top-level table (`kMainMenuItems`), the two tactical-library request shapes, and
 style of `bsp::run_application_frame`. Interface ids and their names are reused from
 `include/bsp/frontend_managers.hpp`; the screen base and the registry from
 `include/bsp/frontend_states.hpp`. Nothing is duplicated and no global or type is invented.
+
+## Corrections from docs/MAIN_MENU_SCREEN_UPDATE.md
+
+- The Options item enqueues state requests 6 and 14h, so a menu item does reach the game state deque.
+- Pages 4 to 8 bind the Japanese, American, training, Japanese-DLC and American-DLC mission groups, not the order guessed above; page 0Ch is written by `00594c51`.
+- The update virtual `00599db0` is `__thiscall` taking one float (the frame delta) and ends `RET 4` at `0059a6e0`; the sixteen returns Ghidra reports are inlined string-destructor artifacts. Action 4Ah is accept, 4Bh back, 50h a third action, settled against the GUI handler `005993a0`; `004d92b0` is an edge query with a 0.4 s delay and 0.1 s repeat.
