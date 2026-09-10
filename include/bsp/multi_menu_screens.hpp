@@ -126,7 +126,7 @@ inline constexpr std::string_view kMultiMainMenuRankedTitle = "FE.multi_ranked_t
 // zeroes eight floats (+0Ch..+1Ch, +24h, +2Ch, +34h..+3Ch, +54h) and clears the
 // bytes at +48h and +58h. docs/FRONTEND_SCREEN_ANIMATION.md established that this
 // is not an animation record but the constructor of the vertical scroll
-// controller (BSP_GuiScroller_*, 00683300..00683a8f); bsp::GuiScroller in
+// controller (BSP_GuiScroller_*, 00683300..00683a8f); bsp::FrontEndScreenScroller in
 // include/bsp/frontend_screen_animation.hpp is the reconstructed layout and
 // supersedes this placeholder. The main menu embeds one at +6Ch and the mode
 // selector at +3Ch (LEA ECX,[ESI+3Ch] at 005ea8f8); the lobby and the session
