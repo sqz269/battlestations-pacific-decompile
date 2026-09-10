@@ -1,0 +1,434 @@
+{
+  "packet": "gui_render_order",
+  "doc": "docs/GUI_RENDER_ORDER.md",
+  "owner": "agent/gui-render-order",
+  "addresses": [
+    "00AA45A0",
+    "00AA3E00",
+    "00AA5070",
+    "00AA3280",
+    "00AA4960",
+    "00AA2020",
+    "00AC4C50",
+    "00AC4450",
+    "00AC59A0",
+    "00AC6040",
+    "00AA5A00",
+    "00AA4E00",
+    "00AA2C80",
+    "00AA7F70"
+  ],
+  "files": [
+    "docs/GUI_RENDER_ORDER.md",
+    "reports/gui_render_order.json",
+    "include/bsp/gui_render_order.hpp",
+    "src/gui_render_order.cpp"
+  ],
+  "finding": {
+    "packet_premise": "the sorted child snapshot 00AA5A00 feeds the GUI draw queue and geOrder is the key",
+    "actual": "both halves are wrong. 00AA5A00 is an alphabetical (_stricmp) snapshot of a widget's children built only for the reflection walk 00AAAED0 and rebuilt on every call. geOrder has no literal anywhere in the image, so the runtime never reads it. GUI draw order is the float RenderOrder on a cGuiLayer, used as the key of an MSVC std::multimap<float, cGuiCameraStore*> at manager+8h that 00AA45A0 walks ascending."
+  },
+  "conventions": {
+    "00AA45A0": {
+      "convention": "__thiscall(ECX = manager)",
+      "ret": "RET",
+      "role": "GUI draw: walk the camera-store map"
+    },
+    "00AA3E00": {
+      "convention": "__thiscall(ECX = manager, scene, camera)",
+      "ret": "RET 8",
+      "role": "camera setup + one queue submit; ECX overwritten at 00AA3E18 and never read"
+    },
+    "00AA5070": {
+      "convention": "__thiscall(ECX = manager, camera, scene, const Key*)",
+      "ret": "RET 0Ch",
+      "role": "allocate 24h-byte store, copy descriptor, insert into the map"
+    },
+    "00AA3280": {
+      "convention": "__thiscall(ECX = manager, const Key*)",
+      "ret": "RET 4",
+      "role": "find a store with a matching descriptor or return 0"
+    },
+    "00AA4960": {
+      "convention": "__thiscall(ECX = &map, pair<iterator,bool>* ret, const pair<float,Store*>*)",
+      "ret": "RET 8",
+      "role": "std::_Tree::insert, multi flavour"
+    },
+    "00AA2020": {
+      "convention": "__thiscall(ECX = camera, 6 floats)",
+      "ret": "RET 18h",
+      "role": "widescreen-scale the ortho volume then BSP_Camera_SetProjectionMatrix"
+    },
+    "00AC4C50": {
+      "convention": "__thiscall(ECX = layer, visitor)",
+      "ret": "RET 4",
+      "role": "cGuiLayer property read: Priority and RenderOrder"
+    },
+    "00AC4450": {
+      "convention": "__thiscall(ECX = layer, bool visible)",
+      "ret": "RET 4",
+      "role": "cGuiLayer::SetVisible; maintains store+20h"
+    },
+    "00AC59A0": {
+      "convention": "__fastcall(ECX = layer)",
+      "ret": "RET",
+      "role": "acquire or create camera store, camera, scene, lights"
+    },
+    "00AC6040": {
+      "convention": "__thiscall(ECX = new layer, const layer* src)",
+      "ret": "RET 4",
+      "role": "cGuiLayer copy construct; calls 00AC59A0 then bumps store+20h"
+    },
+    "00AA5A00": {
+      "convention": "__fastcall(ECX = out vector, EDX = widget)",
+      "ret": "RET",
+      "role": "alphabetical child snapshot"
+    },
+    "00AA4E00": {
+      "convention": "__fastcall(ECX = first, EDX = last, int ideal, Pred)",
+      "ret": "RET 8",
+      "role": "std::_Sort introsort loop for the name comparator"
+    },
+    "00AA2C80": {
+      "convention": "__fastcall(ECX = first, EDX = last, Pred)",
+      "ret": "RET 4",
+      "role": "insertion sort half; holds the comparator body"
+    },
+    "00AA7F70": {
+      "convention": "__fastcall(ECX = first, EDX = last, Pred)",
+      "ret": "RET 4",
+      "role": "byte-identical duplicate of 00AA2C80 serving 00AAA480"
+    }
+  },
+  "layer_properties": [
+    {
+      "name": "Priority",
+      "literal": "00D5CB00",
+      "tag": 1,
+      "type": "int",
+      "fields": [
+        "layer+0FCh",
+        "layer+118h"
+      ],
+      "default": 0,
+      "note": "orders the manager page vector at +14h through 00AA52A0; not the draw order"
+    },
+    {
+      "name": "RenderOrder",
+      "literal": "00D5CAF4",
+      "tag": 2,
+      "type": "float",
+      "fields": [
+        "layer+11Ch"
+      ],
+      "default": 0.0,
+      "note": "the multimap key; ascending order is draw order"
+    },
+    {
+      "name": "geOrder",
+      "literal": null,
+      "tag": null,
+      "type": null,
+      "fields": [],
+      "default": null,
+      "note": "no literal exists in the image; scanned for 67 65 4f 72 64 65 72 with and without a terminator. Authoring metadata the runtime discards."
+    }
+  ],
+  "camera_store_key": [
+    {
+      "offset": "+108h",
+      "field": "flags",
+      "type": "int",
+      "default": 0,
+      "matched": true,
+      "note": "reaches the scene as flags|6 at 00AC5EF6"
+    },
+    {
+      "offset": "+10Ch",
+      "field": "near_plane",
+      "type": "float",
+      "default": 0.1,
+      "matched": true,
+      "constant": "00D7A2F0"
+    },
+    {
+      "offset": "+110h",
+      "field": "far_plane",
+      "type": "float",
+      "default": 1000.0,
+      "matched": true,
+      "constant": "00CE3804"
+    },
+    {
+      "offset": "+114h",
+      "field": "scale",
+      "type": "float",
+      "default": 1.0,
+      "matched": true,
+      "constant": "00D7A24C"
+    },
+    {
+      "offset": "+118h",
+      "field": "priority_copy",
+      "type": "int",
+      "default": 0,
+      "matched": false,
+      "note": "deliberately skipped by 00AA3280"
+    },
+    {
+      "offset": "+11Ch",
+      "field": "render_order",
+      "type": "float",
+      "default": 0.0,
+      "matched": true
+    }
+  ],
+  "camera_store_layout": {
+    "size": "0x24",
+    "+00h..+14h": "the descriptor above, copied verbatim at 00AA50C7..00AA50F6",
+    "+18h": "camera (GuiCam_<layer name>)",
+    "+1Ch": "scene root every layer widget node hangs under",
+    "+20h": "signed count of visible layers sharing the store; +/-1 at 00AC4465..00AC4472 and 00AC6169; the draw skips the store when <= 0"
+  },
+  "ordering_rule": {
+    "container": "MSVC std::multimap<float, cGuiCameraStore*> at manager+8h, _Myhead at +0Ch",
+    "node_layout": "_Left@0 _Parent@4 _Right@8 _Myval@0Ch _Color@14h _Isnil@15h; key at node+0Ch, store at node+10h",
+    "descent": "00AA498C FLD node key, 00AA4991 FCOMIP, 00AA4993 JBE -> right on node<=new; left only on new < node",
+    "ties": "equal RenderOrder keeps insertion (layer creation) order",
+    "comparator": "std::less<float>",
+    "evidence_multi": "no duplicate check and an unconditional true stored at 00AA49CB is MSVC _Tree::insert with _Multi = true",
+    "iteration": "begin() = _Myhead->_Left; end() = _Myhead; ++ through the checked iterator 004BDA70"
+  },
+  "draw_walk": [
+    "004CA658 in BSP_Game_Render: 004C12B0 then 00AA45A0",
+    "00AA45A7..00AA45BB: if manager+40h != 0 call its vtable +40h with no arguments",
+    "00AA45BD: begin() from *(manager+0Ch); end() is the head node",
+    "00AA45FA: skip the entry when store+20h <= 0",
+    "00AA4625: 00AA3E00(ECX = manager, store->scene, store->camera)",
+    "no scissor, clip or second-level page walk anywhere in the routine"
+  ],
+  "gui_camera": {
+    "back_buffer_size": "singleton 00F8D394 vtable +80h fills two ints",
+    "eye": "(0.5 + 0.5/width, 0.375 + 0.5/height, 0) computed in x87 from doubles 0.5 (00D7A280) and 0.375 (00CF0A90), rounded to float",
+    "target": "eye with z = -9992.0f (00D19620)",
+    "up": "(0, 1, 0)",
+    "view_builder": "00B63F10 then 00B71490 (ECX = camera)",
+    "ortho_volume": {
+      "left": -0.5,
+      "right": 0.5,
+      "bottom": 0.375,
+      "top": -0.375,
+      "near": 1.0,
+      "far": 19984.0
+    },
+    "ortho_constants": [
+      "00CE69D0",
+      "00CE3800",
+      "00D5BF4C",
+      "00D5BF50",
+      "FLD1",
+      "00CE3CC0"
+    ],
+    "y_direction": "bottom positive and top negative, so +Y runs down the screen",
+    "aspect_scaling": "00AA2020 scales left/right by base/00CF5750 and bottom/top by base/platform+10h, base = 00D5BD98 or 00D5BD9C by platform byte +0Dh",
+    "pass_label": "00CE9A38, the single character \"X\", assigned into a NativeString temporary by 0041E870",
+    "submit": "004C11F0 gets the queue; 00B1F4D0(ECX = queue, scene, camera, 00B0D0D0 result on 00F8D39C)",
+    "depth_within_pass": "the widget's own Z, the third component of authored Pos, inside near 1.0 to far 19984.0"
+  },
+  "child_snapshot": {
+    "routine": "00AA5A00",
+    "source": "the widget's std::list of children at +68h; the payload dword of each node",
+    "sort": "00AA4E00, MSVC std::_Sort(first, last, ideal = last-first, Pred); threshold 32, partition 00AA34A0, heapsort 00AA4550, ideal/2 + (ideal/2)/2",
+    "predicate": "widget vtable +28h returns a {length, char*} pair; empty length sorts least, otherwise _stricmp",
+    "predicate_bodies": [
+      "00AA2C80",
+      "00AA7F70"
+    ],
+    "stability": "std::sort is not stable; equal names have unspecified order above the 32-element threshold",
+    "rebuild_rule": "a local temporary rebuilt from scratch on every call; no dirty flag, no cached count, no field holds it",
+    "only_caller": "00AAAED0, which sorts the same vector a second time with the duplicate instantiation 00AAA480 and then visits each child through vtable +28h, visitor +4h, child +1Ch, visitor +8h"
+  },
+  "corrections": [
+    {
+      "doc": "config/parallel_work.json packet gui_render_order",
+      "claim": "the sorted child snapshot 00AA5A00 reaches the draw queue and geOrder/RenderOrder form its sort key",
+      "correction": "00AA5A00 is alphabetical and reaches only the reflection walk 00AAAED0; the draw order key is the cGuiLayer RenderOrder float at layer+11Ch, and geOrder is never read"
+    },
+    {
+      "doc": "docs/GUI_LAYOUT_LOADER.md",
+      "claim": "00AA5A00 calls 00AA4E00 with the element count",
+      "correction": "confirmed, and 00AA4E00 is itself a second std::_Sort instantiation with the same comparator as 00AAA480, not a consumer of the count"
+    }
+  ],
+  "callers": {
+    "00AA45A0": [
+      "004CA440"
+    ],
+    "00AA3E00": [
+      "00AA45A0",
+      "00AA4040"
+    ],
+    "00AA5070": [
+      "00AC59A0"
+    ],
+    "00AA3280": [
+      "00AC59A0"
+    ],
+    "00AC59A0": [
+      "00AC6040"
+    ],
+    "00AA5A00": [
+      "00AAAED0"
+    ]
+  },
+  "flow_gaps": {
+    "00AA45A0": 0,
+    "00AA3E00": 0,
+    "00AC59A0": 0,
+    "00AAAED0": 0
+  },
+  "no_ghidra_function": [],
+  "names_recorded": [
+    {
+      "address": "00aa45a0",
+      "name": "BSP_GuiManager_DrawLayers"
+    },
+    {
+      "address": "00aa3e00",
+      "name": "BSP_GuiManager_SubmitLayerPass"
+    },
+    {
+      "address": "00aa5070",
+      "name": "BSP_GuiManager_CreateCameraStore"
+    },
+    {
+      "address": "00aa3280",
+      "name": "BSP_GuiManager_FindCameraStore"
+    },
+    {
+      "address": "00aa4960",
+      "name": "STL_tree_insert_00aa4960"
+    },
+    {
+      "address": "00aa4e00",
+      "name": "STL_sort_loop_00aa4e00"
+    },
+    {
+      "address": "00aa2c80",
+      "name": "STL_insertion_sort_00aa2c80"
+    },
+    {
+      "address": "00aa7f70",
+      "name": "STL_insertion_sort_00aa7f70"
+    },
+    {
+      "address": "00aa2020",
+      "name": "BSP_Camera_SetGuiOrthoProjection"
+    },
+    {
+      "address": "00ac4c50",
+      "name": "BSP_GuiLayer_ReadProperties"
+    },
+    {
+      "address": "00ac4450",
+      "name": "BSP_GuiLayer_SetVisible"
+    },
+    {
+      "address": "00ac59a0",
+      "name": "BSP_GuiLayer_AcquireCameraStore"
+    },
+    {
+      "address": "00ac6040",
+      "name": "BSP_GuiLayer_CopyConstruct"
+    }
+  ],
+  "uncertainties": [
+    "the object at manager+40h and its vtable +40h are unidentified; called once per frame before the walk with no arguments",
+    "descriptor fields +108h..+114h are named flags/near/far/scale from their defaults and the flags OR at 00AC5EF6; no layer property writes them, so no other value was observed",
+    "the pass label at 00CE9A38 is the single character \"X\"; its consumer inside 00B1F4D0 was not followed",
+    "00AA2020's aspect divisors 00CF5750 and platform+10h were read as float globals but their producers were not traced",
+    "std::sort is not stable, so equal child names have an unspecified relative order above the 32-element threshold",
+    "the eye placement is reproduced in double while the native uses x87 extended precision; they agree after rounding to float but are not bit-identical by construction"
+  ],
+  "what_remains": [
+    "whether any layer produces a camera-store descriptor other than the defaults, which would show as more than one map entry",
+    "where widget Z inside a pass is written into the node transform, and whether the queue sorts within the scene",
+    "the cGuiLayer vtable at 00D5BE38 beyond slots +18h and +34h",
+    "00AA4040, the other caller of 00AA3E00"
+  ],
+  "followups": [
+    {
+      "packet": "gui_layer_class",
+      "addresses": [
+        "00AC4450",
+        "00AC59A0",
+        "00AC6040",
+        "00AC5F60",
+        "vtable 00D5BE38"
+      ],
+      "files": [
+        "docs/GUI_LAYER_CLASS.md",
+        "include/bsp/gui_layer.hpp"
+      ],
+      "contract": "the whole cGuiLayer: its 124h-byte layout, its lights and scene, the vtable slots not read here, and its destruction path including the store's release"
+    },
+    {
+      "packet": "gui_manager_prehook",
+      "addresses": [
+        "00AA45A7",
+        "manager+40h",
+        "00AA5D70"
+      ],
+      "files": [
+        "docs/GUI_MANAGER_PREHOOK.md"
+      ],
+      "contract": "what object sits at manager+40h, who installs it, and what its vtable +40h does each frame before the GUI draw"
+    },
+    {
+      "packet": "gui_render_mode_pass",
+      "addresses": [
+        "00AA4040",
+        "00AA3E00"
+      ],
+      "files": [
+        "docs/GUI_RENDER_MODE_PASS.md"
+      ],
+      "contract": "the second caller of the GUI pass submit: which scene and camera it uses and how it relates to the manager walk"
+    },
+    {
+      "packet": "gui_reflection_walk",
+      "addresses": [
+        "00AAAED0",
+        "00AA5A00",
+        "00AAA480"
+      ],
+      "files": [
+        "docs/GUI_REFLECTION_WALK.md"
+      ],
+      "contract": "the describer walk the alphabetical snapshot exists for: who the visitor is and what consumes the emitted tree"
+    }
+  ],
+  "state": {
+    "00AA45A0": "reconstructed, build-tested",
+    "00AA3E00": "reconstructed, build-tested",
+    "00AA5070": "reconstructed, build-tested (insert half only)",
+    "00AA3280": "reconstructed, build-tested",
+    "00AA4960": "reconstructed, build-tested (the ordering rule)",
+    "00AA5A00": "reconstructed, build-tested",
+    "00AA2C80": "reconstructed, build-tested",
+    "00AA7F70": "reconstructed, build-tested",
+    "00AA2020": "analyzed",
+    "00AA4E00": "analyzed",
+    "00AC4C50": "analyzed",
+    "00AC4450": "analyzed",
+    "00AC59A0": "analyzed",
+    "00AC6040": "analyzed"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass, Win32 Release, warnings as errors",
+    "tests": "ctest reconstructed_math 1/1 passed",
+    "new_tests": "one case in tests/math_tests.cpp covering the multimap tie rule and the empty-name comparator rule"
+  },
+  "not_binary_compatible": "the native camera store is a 24h-byte heap block held by value in an MSVC red-black tree node; GuiCameraStoreMap is a flat vector with the same iteration order, and the camera and scene are engine objects this packet only names."
+}
