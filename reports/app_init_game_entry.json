@@ -1,0 +1,238 @@
+{
+  "packet": "app_init_game_entry",
+  "owner": "agent/init-game-entry",
+  "doc": "docs/APP_INIT_GAME_ENTRY.md",
+  "scope": "Tail of cSkeletonAppMidway::Init (0073d410) from 0073e474 to the RET 0x8 at 0073e52a, plus the game startup-mode entry it calls.",
+  "application_object": {
+    "note": "EBP in the tail is the application object. It arrives as stack argument 2 of 0073d410 but is reloaded at 0073dbcd from a local; 0073e1af stores the newly built game object into EBP+0x14.",
+    "winmain_call": "008f8429 CALL 0073d410 with ECX = &app (constructed at 008f8419 by 00737970), arg1 = 0, arg2 = 0x00ce8168 \"cachedload\"",
+    "game_pointer_field": "application+0x14, mirrored at 00e188a8",
+    "cross_reference": "docs/APP_RUN_FRAME.md uses application+0x14, +0x18 and +0x19 for the same object"
+  },
+  "tail_sequence": [
+    {"address": "0073e45c", "step": "if (00e1ae78) { free(00e1ae78); 00e1ae78 = 0; } - the repaired CALL_RETURN flow break"},
+    {"address": "0073e474", "step": "ECX = [EBP+0x14] (the game object); CALL 004e5540"},
+    {"address": "0073e47c", "step": "ECX = 0x00f88980 (the settings object)"},
+    {"address": "0073e481", "step": "[EBP+0x4] = 1 (an application byte with no recovered reader)"},
+    {"address": "0073e485", "step": "CALL 008d5b50 - apply the whole settings object"},
+    {"address": "0073e48a", "step": "operator new(0x23c); when non-null CALL 00757fe0 on it; EH state 0x2f; the pointer is never read again"},
+    {"address": "0073e4b1", "step": "the 0x0c object built at 0073d467 by 00be2900: virtual slot +0x4 with argument 1"},
+    {"address": "0073e4c9", "step": "operator new(0xc); EH state 0x30"},
+    {"address": "0073e4e8", "step": "CALL 007372a0, then the derived constructor inlined at 0073e4ef"},
+    {"address": "0073e501", "step": "ECX = 0x00cff168; CALL 004c9c90 - the End of cSkeletonAppMidway::Init memory checkpoint"},
+    {"address": "0073e52a", "step": "RET 0x8"}
+  ],
+  "calling_conventions": [
+    {"address": "0073d410", "convention": "__thiscall, ECX = application, two stack arguments", "ret": "RET 0x8", "note": "Ghidra's printed signature declares only one stack argument"},
+    {"address": "004e5540", "convention": "__thiscall, ECX = game, no stack arguments, void", "ret": "RET"},
+    {"address": "004dd5b0", "convention": "__thiscall, ECX = game, one char stack argument", "ret": "RET 0x4"},
+    {"address": "004c9a70", "convention": "__thiscall, ECX = game, no stack arguments, void", "ret": "RET"},
+    {"address": "004e3aa0", "convention": "__thiscall, ECX = game, no stack arguments, void", "ret": "RET"},
+    {"address": "004c88a0", "convention": "__thiscall, ECX = game, no stack arguments, void", "ret": "RET"},
+    {"address": "004d3ed0", "convention": "__thiscall, ECX = game+0x5d8, one stack argument", "ret": "RET 0x4"},
+    {"address": "004dc200", "convention": "no arguments, returns a singleton in EAX", "ret": "RET"},
+    {"address": "008d5b50", "convention": "__thiscall, ECX = 0x00f88980, no stack arguments, void", "ret": "RET"},
+    {"address": "008d5430", "convention": "__thiscall, ECX = 0x00f88980, no stack arguments, void", "ret": "RET"},
+    {"address": "007372a0", "convention": "__thiscall, ECX = a 0x0c allocation, returns it in EAX", "ret": "RET"},
+    {"address": "00737830", "convention": "__thiscall, ECX = a 0x0c allocation, returns it in EAX", "ret": "RET"}
+  ],
+  "game_startup_entry": {
+    "address": "004e5540",
+    "name": "BSP_Game_BeginStartupSequence",
+    "supersedes": "BSP_Game_OnInit, which docs/APP_INITIALIZE_MAP.md assigned here; the literal GGame::OnInit belongs to 004e3aa0",
+    "steps": [
+      {"address": "004e555e", "step": "00f8abec = 0x004ceb40"},
+      {"address": "004e556a", "step": "operator new(0x34); constructor 004f8af0 into 00e18d48; virtual slot +0x10. 004f8af0 chains 004f7180 and installs vtables 00ceae94 at +0 and 00ceae7c at +8 (multiple inheritance). A null allocation is stored and still dereferenced."},
+      {"address": "004e55a5", "step": "004f8970 with ECX = 00e18d48 and the callback 0x004f89d0"},
+      {"address": "004e55af", "step": "if 0109cee8 != 0 then 00e188ac = 0 and the command-line scan is skipped"},
+      {"address": "004e5748", "step": "004dd5b0(game, 1); 004c9a70(game); p = 004dc200(); 008fafc0(p)"},
+      {"address": "004e5770", "step": "scenario branch: 004e3aa0(game); 004c88a0(game); game+0x5d4 = 10; 004d3ed0(game+0x5d8, &10)"},
+      {"address": "004e5815", "step": "non-scenario branch: game+0x5d4 = 2"},
+      {"address": "004e57bc", "step": "default boot: game+0x5d4 = 1; operator new(0x80); constructor 006851e0 into 00e198a4; virtual slot +0x4"}
+    ],
+    "command_line_scan": {
+      "source": "game+0x7168",
+      "test": "cmd != 0 && strstr(cmd, lit) != 0 && (strstr(cmd, lit) - cmd) != -1; the third term is dead code that cannot be false for a non-null result",
+      "switches": [
+        {"literal": "skipLogos", "string_address": "00ce7fe4", "site": "004e55c9", "effect": "00e188ac = 1"},
+        {"literal": "noskipLogos", "string_address": "00ce7fd8", "site": "004e55f7", "effect": "00e188ac = 0"},
+        {"literal": "skipTitle", "string_address": "00ce7fcc", "site": "004e5624", "effect": "00e198cc = 1"},
+        {"literal": "skipBriefings", "string_address": "00ce7fbc", "site": "004e5652", "effect": "00e18d91 = 1"},
+        {"literal": "lockitMark", "string_address": "00ce7fb0", "site": "004e5680", "effect": "00f8bc50 = 1"},
+        {"literal": "lockitRaw", "string_address": "00ce7fa4", "site": "004e56b1", "effect": "00f8bc50 = 2"},
+        {"literal": "skipBriefings", "string_address": "00ce7fbc", "site": "004e56e2", "effect": "00e18d91 = 1; a duplicate of the fourth test"},
+        {"literal": ".scn", "string_address": "00ce7888", "site": "004e5714", "effect": "00e198cc = 1; 00e188ac = 1; take the scenario branch"}
+      ]
+    }
+  },
+  "init_split": {
+    "004dd5b0": {
+      "name": "BSP_Game_OnInitOnce",
+      "evidence": "the literal GGame::OnInitOnce, referenced only here",
+      "reinit_path": "first_time == 0 runs only 004c9a70, 004dc200 and 008fafc0",
+      "first_time_path": [
+        "00884be0 runs Scripts\\fundamentals.lua and defines PC=true",
+        "00b65e20 registers DoFile on the Lua state at ***(game+0x1a08)",
+        "game+0x1a1c = 0x004c6880",
+        "00b69d40 runs Scripts\\global\\luaMW_init.lua",
+        "008d44c0(00f88a30) sets the X360COMP Lua global",
+        "00a917e0(0,1,0), (1,1,0), (2,1,0) bring up three input slots",
+        "00aa6be0, 00a9ac60, 004c1b90, 00940ec0, 00a9ac80, 00aab5e0",
+        "GUI manager 004c12b0: +4 = 0x00696590; 00f8bbfc = 0x006965a0",
+        "00aa2110(00f88a31)",
+        "when game+0x55c == 0, 00698a10 loads Scripts\\datatables\\Inputs.lua (groups, inputs, press, InvertPlaneY, InvertCameraY, SwapStickMap, SwapStickGeneral, SwapStickPairs, InputModifiers)",
+        "virtual +0x10 on 00425d10() and on 004c1ac0(), then 004c1c50()"
+      ]
+    },
+    "004c9a70": {
+      "name": "BSP_Game_OnInitTitle",
+      "evidence": "the literal GGame::OnInitTitle, referenced only here",
+      "steps": [
+        "007fdb20()",
+        "game+0x5d4 = 2",
+        "load the atlas interface/textures/allbutingame.ats",
+        "004c1ac0(0,1); 00518250(0,1)",
+        "lazily build the 0x4c singleton at 00e198bc (00689d90, virtual +0x4)",
+        "if 00e198cc == 0 lazily build the 0x44 singleton at 00e198c8 (0068d760, virtual +0x4), else call 0068d8a0",
+        "if *(00e188a8+0x21a0) != 0 call 00916980",
+        "00e198b0 = 0; if !0067c8f0() call 00a40020 and 0067c970",
+        "on 00e18d48: if byte +5 is set call virtual +0x1c; then clear +4 and +5",
+        "004f83b0()"
+      ]
+    },
+    "004e3aa0": {
+      "name": "BSP_Game_OnInit",
+      "evidence": "the literal GGame::OnInit, referenced only here",
+      "reached_from": "004e5540 on the .scn branch only",
+      "steps": [
+        "game+0x5d4 = 3",
+        "if 00e198bc != 0 call its virtual +0 and clear it",
+        "once-guard game+0x719c",
+        "preload Particles\\Textures\\, Effects\\Flares\\Textures\\, Effects\\Traceline\\, Effects\\Numbers\\ through 00aeff40",
+        "load the atlas interface/textures/common.ats",
+        "game+0x21d8 = 006afe80(new(...))",
+        "roughly thirty further subsystem calls, not opened"
+      ]
+    }
+  },
+  "game_state": {
+    "field": "game+0x5d4, read by the frame loop as *(00e188a8)+0x5d4",
+    "values": [
+      {"value": 1, "written_at": "004e57c1", "meaning": "logo sequence; the 0x80 object at 00e198a4 plays it"},
+      {"value": 2, "written_at": "004c9a70 and 004e5819", "meaning": "title screen / front end"},
+      {"value": 3, "written_at": "004e3aa0 entry", "meaning": "mission init in progress; always overwritten before Init returns"},
+      {"value": 10, "written_at": "004e578c", "meaning": "direct scenario load from a .scn command line"}
+    ],
+    "first_run_frame_observes": [1, 2, 10],
+    "request_queue": "game+0x5d8 is a ring buffer (+4 buckets, +8 capacity, +0xc head, +0x10 count, 0x10-byte elements, grown by 004d20d0(1)). 004d3ed0 pushes, 004c88a0 drains. The scenario branch drains before pushing 10.",
+    "correction": "include/bsp/app_frame.hpp names 1, 2 and 4 the mission set through is_mission_game_state. 1 is the logo sequence and 2 is the title screen, so that set is the front-end set and the predicate is misnamed. app_frame.cpp belongs to another packet and was not changed."
+  },
+  "settings_apply": {
+    "address": "008d5b50",
+    "name": "BSP_Settings_ApplyAll",
+    "supersedes": "BSP_PostEffectSystem_Initialize",
+    "this": "0x00f88980",
+    "callers": ["004de610", "005efcf0", "005f0b90", "005f5ac0", "005f5e60", "005f65c0", "005f7c40", "005f8960", "0067cfb0", "0073d410"],
+    "why_renamed": "eight of the ten call sites are in the options-menu segment 23, and the body applies the current settings object rather than initialising a post-effect system",
+    "sequence": [
+      "008d5430 applies audio (settings+0x24 to 00f8bbd8+0x70; settings+0x20 through 00a7a440; settings+0x28/0x30 into 00f8bbcc+0x218/0x21c; bus volumes for Warnings, GUIMusic, GUITestSpeech)",
+      "00b1ffb0 receives 2 - settings+0x68",
+      "virtual +0xf0 on 00f8d394 receives the float at settings+0x64",
+      "004b46e0 receives the detail bytes settings+0x41..0x44 with ECX = 00e188a8; then 004dcdf0",
+      "settings+0x54 selects one of three floats (00ce3800, 00ce3e18, 00d7a24c) into game+0x19fc's +0x4c",
+      "settings+0x6c into *(game+0x19f0)+0xa8+0xf8; settings+9 into 004c1710()+0x14",
+      "reload Fonts\\ and the lockit tables for the language named by the 0x20-stride table at 00f88974 indexed by settings+4",
+      "load the globals table through 00aa0d30, then 00aa06d0(1)",
+      "latch settings+0x8d, +0x70 and +0x84 into 00f88a44, 00f88a40 and 00f88a3d under the bit flags in 00f88a48",
+      "refresh FoliageGroup through 00b72270 and 00b6da70",
+      "BSP_D3D9Renderer_ChangePresentationMode with settings+0x14, +0x18, +0x1e, +0x58, +0x60",
+      "virtual +0xc on 0109cf04; XLiveOnResetDevice when 00e198c4 == 0",
+      "00b107f0, 00b0d080, then a copy of the string 00439100() returns"
+    ],
+    "removed_unreachable_blocks": [
+      {"address": "008d5cf8", "content": "memcpy(buffer, \"Fonts\\\\\", len+1) from 00cfefa8"},
+      {"address": "008d5d34", "content": "storage-pool release of the language-name string"},
+      {"address": "008d5db2", "content": "storage-pool release of the lockit-table name string"},
+      {"address": "008d5e64", "content": "storage-pool release of the globals string"}
+    ],
+    "removed_blocks_verdict": "all four are string housekeeping; no control flow or subsystem call is lost",
+    "unaff_esi_verdict": "unaff_ESI is the same this pointer: 008d5b6a sets ESI = ECX and never reassigns it. The closing ExceptionList = local_3c in the pseudocode is an artifact of the same reuse."
+  },
+  "lifetime_registration": {
+    "address": "007372a0",
+    "name": "BSP_FrameHook_ConstructAndRegister",
+    "behavior": "stores base vtable 00cfea68; takes the critical section at manager+0x10 from 00415350 and bumps the recursion counter at +0x18 (skipped when manager+0x10 is null); publishes the object to 00f88c20; registers it through 00bd0c30; leaves the section",
+    "destructor": "00736f70 unregisters, clears 00f88c20 and rebinds the vptr to 00ce3818",
+    "derived_constructor": {
+      "inlined_at": "0073e4ef",
+      "standalone": "00737830",
+      "identical": true,
+      "writes": ["vptr = 0x00cfea98", "byte at +4 = 0", "float at +8 = 0.0"]
+    },
+    "object_layout": "0x0c bytes: vptr, bool at +4, float at +8",
+    "derived_vtable": {
+      "address": "00cfea98",
+      "slots": [
+        {"offset": "+0", "target": "007378b0", "body": "scalar deleting destructor"},
+        {"offset": "+4", "target": "00737850", "body": "RET"},
+        {"offset": "+8", "target": "00737860", "body": "RET 4"},
+        {"offset": "+0xc", "target": "00737870", "body": "fld [esp+4]; push ecx; fstp [esp]; call 008e2560; ret 4"},
+        {"offset": "+0x10", "target": "00737880", "body": "RET"},
+        {"offset": "+0x14", "target": "00737890", "body": "RET"}
+      ],
+      "note": "decoded from disk bytes; Ghidra has no functions at these addresses"
+    },
+    "consumer": "BSP_Game_Render calls slot +0xc at 004ca472 with the float at game+0x21f0, then slot +4 at 004ca483, once per frame",
+    "base_vtable": "00cfea68, eight slots with purecalls at +0xc and +0x1c; the derived table sits immediately before the application vtable at 00cfeab0, so both classes come from one translation unit"
+  },
+  "reconstruction": {
+    "files": ["include/bsp/game_entry.hpp", "src/game_entry.cpp"],
+    "registered_in": "cmake/startup.cmake",
+    "entry_points": [
+      {"symbol": "bsp::game_on_init", "address": "004e5540", "note": "eleven native call sites are declared on the injected GameStartupSystems interface in issue order; returns the GameStartupState written to game+0x5d4"},
+      {"symbol": "bsp::frame_hook_construct", "address": "007372a0", "note": "includes the derived constructor the caller inlines"},
+      {"symbol": "bsp::startup_switch_present", "address": "004e55c9", "note": "reproduces the dead offset comparison"}
+    ],
+    "not_reconstructed": ["008d5b50 - drives D3D9 presentation mode, XLive and the localization tables, which belong to other packets"],
+    "test": "one focused case in tests/math_tests.cpp covering the three selected states, including noskipLogos cancelling skipLogos and .scn overriding both"
+  },
+  "names_recorded": [
+    {"address": "004e5540", "name": "BSP_Game_BeginStartupSequence", "action": "replace"},
+    {"address": "004e3aa0", "name": "BSP_Game_OnInit", "action": "add"},
+    {"address": "004dd5b0", "name": "BSP_Game_OnInitOnce", "action": "add"},
+    {"address": "004c9a70", "name": "BSP_Game_OnInitTitle", "action": "add"},
+    {"address": "008d5b50", "name": "BSP_Settings_ApplyAll", "action": "replace"},
+    {"address": "008d5430", "name": "BSP_Settings_ApplyAudio", "action": "add"},
+    {"address": "007372a0", "name": "BSP_FrameHook_ConstructAndRegister", "action": "add"},
+    {"address": "00737830", "name": "BSP_FrameHook_Construct", "action": "add"},
+    {"address": "004d3ed0", "name": "BSP_Game_EnqueueStateRequest", "action": "add"},
+    {"address": "004c88a0", "name": "BSP_Game_DrainStateRequests", "action": "add"},
+    {"address": "006851e0", "name": "BSP_LogoSequence_Construct", "action": "add"}
+  ],
+  "uncertainties": [
+    "application+4, set to 1 at 0073e481, has no recovered reader",
+    "the subsystem behind the 00f88c20 frame hook is unknown; 008e2560 and its callees 0070aa70 and 0070a710 carry no strings and no other callers",
+    "004f8af0 (0x34, 00e18d48), 006851e0 (0x80, 00e198a4), 00689d90 (0x4c, 00e198bc) and 0068d760 (0x44, 00e198c8) are identified only by allocation size, vtable and the branch that builds them",
+    "004dc200 is a lifetime-managed singleton getter guarded by 00f8998c; neither it nor the method 008fafc0 was identified, so neither is named",
+    "004e3aa0 was read end to end but its thirty-odd subsystem calls were not opened; its pseudocode carries unaff_EBX, unaff_ESI and unaff_EDI from string-temporary reuse"
+  ],
+  "state_reached": {
+    "004e5540": "reconstructed, build-tested, fixture-tested",
+    "007372a0": "reconstructed, build-tested",
+    "00737830": "analyzed",
+    "008d5b50": "analyzed",
+    "008d5430": "analyzed",
+    "004dd5b0": "analyzed",
+    "004c9a70": "analyzed",
+    "004e3aa0": "analyzed, partial",
+    "004c88a0": "analyzed",
+    "004d3ed0": "analyzed",
+    "006851e0": "analyzed",
+    "004f8af0": "exported",
+    "004dc200": "exported",
+    "008fafc0": "exported",
+    "004ceb40": "exported",
+    "004f8970": "exported"
+  },
+  "ghidra": "read-only for this packet; no renames, comments, prototypes or saves were applied"
+}
