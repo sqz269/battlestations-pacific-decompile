@@ -1,0 +1,1860 @@
+{
+  "schema_version": 1,
+  "packet": "native_model_pool",
+  "status": "reconstructed; strict Win32 original-instruction fixture and baseline repository build passed; primary CMake/Ghidra/ledger integration pending",
+  "completed_utc": "2026-09-10T21:22:03.153756+00:00",
+  "base_commit": "3eac4ee894e359c08ac2d509043ffc8c5a84ff4f",
+  "owned_addresses": [
+    "00b74450",
+    "00b74530",
+    "00b74690",
+    "00b74750",
+    "00b748c0",
+    "00b74b80",
+    "00b74c60",
+    "00b74d00",
+    "00b74eb0",
+    "00cd7f00",
+    "00ce0e50"
+  ],
+  "owned_files": [
+    "include/bsp/native_model_pool.hpp",
+    "src/native_model_pool.cpp",
+    "docs/NATIVE_MODEL_POOL.md",
+    "reports/native_model_pool_audit.json"
+  ],
+  "target": {
+    "target_config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "imagebase": "00400000",
+    "language": "x86:LE:32:default",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Every bsp.py ghidra bytes/comments query verifies configured project and program. All final spans were compared freshly with installed PE; no original executable or saved-analysis mutation.",
+    "ghidra_mutations": false,
+    "original_executable_modified": false
+  },
+  "source_files": [
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+    },
+    {
+      "path": "src/native_model_pool.cpp",
+      "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020"
+    },
+    {
+      "path": "docs/NATIVE_MODEL_POOL.md",
+      "sha256": "4fd9b4d4faaca70185c8157946b3446d748ef94af06a5149d3627f329212481b"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "d3b002e0858673186dbe167891862322930b34638104626b125dd0baaf3bb4b0"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    }
+  ],
+  "implemented_contract": {
+    "geometry": {
+      "canonical_owner": "01090054",
+      "native_pool_bytes": 56,
+      "native_vtable": "00d62dd0",
+      "native_virtual0": "00b74c60",
+      "shared_allocator_head": "00e188b4",
+      "slot_bytes": 392,
+      "slot_slab_id_offset": 388,
+      "slots_per_slab": 32,
+      "slab_bytes": 12612,
+      "free_index_offset": 12544,
+      "free_count_offset": 12608,
+      "untouched_tail_offset": 12610
+    },
+    "storage": "Actual Win32 38h storage, actual24-byte initialized CRITICAL_SECTION at0C, signed recursion24, real table/count/cap/first-free28/2C/30/34. One shared AllocatorListDomain and canonical owner; companion only binds profile/dispatch.",
+    "constructor": "Prepend actual element, publish profile, initialize section/fields, firstFFFFFFFF, publishcap32 before128-byte table allocation. Preserve table publication and cleanup order around callbacks.",
+    "allocation": "Enter actual section/increment explicit count, publishfirst before slab allocation and read live index afterward, publish2*cap+2 before table growth, copy live table, free old table, install new table/append slab, pop actual free WORD stack. No failure rollback or automatic unlock.",
+    "slab_initialization": "Write count32, free WORD indices31..0 and32 current slab IDs. Preserve each184h model payload and two final bytes.",
+    "return": "Read slot+184 actualID, signed low32 pointer subtraction divided188h, push WORD index, increment live count after store, lower first-free, decrement recursion/leave.",
+    "trim": "Free every empty slab with same-index retry; move last pointer, decrement count, rewrite all32 moved IDs, recalculate first-free; no internal critical-section entry.",
+    "destruction": "Free every slab then table before draining positive explicit/actual recursion, deleting section and base-unlinking same shared element. No model destructor; preserve stale fields.",
+    "static_lifetime": "Require explicit canonical binding, construct and register callback using actual CRT default, propagate registration result with no rollback, explicit shutdown via same owner. New source C++ interfaces.",
+    "dependencies": [
+      "AllocatorListDomain real shared-head contract",
+      "singleton_lifetime_allocate/free real CRT contract",
+      "Win32 Initialize/Enter/Leave/DeleteCriticalSection"
+    ],
+    "out_of_scope": [
+      "Model constructors/destructors, resources, renderer registration and scene behavior.",
+      "Shared CMake, Ghidra annotation/function creation, ledger/index edits."
+    ]
+  },
+  "function_evidence": [
+    {
+      "address": "00b74450",
+      "end_exclusive": "00b74493",
+      "length": 67,
+      "role": "initialize 32-slot model slab",
+      "native_abi": "ECX raw slab; stack slab-table index; EAX slab; RET4.",
+      "raw_preimage_hex": "538b5c2408568bc15766c78040310000200033d28db8840100008db000310000b91f0000002bca66890e891f83c20183c60281c78801000083fa207ce35f5e5bc20400",
+      "disk_offset": 7816272,
+      "disk_sha256": "befc5be331463762210385a4206f953f73af692814f8fc1db60efb5edb9456cb",
+      "live_sha256": "befc5be331463762210385a4206f953f73af692814f8fc1db60efb5edb9456cb",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_InitializeSlab",
+      "cpp_symbol": "initialize_slab_00b74450",
+      "proposed_comment": "Initialize actual3144h slab: WORD count32 at3140, WORD indices31..0 at3100, all32 DWORD slot IDs at188h stride plus184. Preserve all184h model payloads and tail3142..3143.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74450",
+        "function_name": "FUN_00b74450"
+      },
+      "returns": [
+        {
+          "address": "00b74490",
+          "bytes_hex": "c20400",
+          "instruction": "ret 4"
+        }
+      ]
+    },
+    {
+      "address": "00b74530",
+      "end_exclusive": "00b7453e",
+      "length": 14,
+      "role": "pointer-table unwind cleanup",
+      "native_abi": "ECX pointer-table header; free nonnull first word; RET; no clearing.",
+      "raw_preimage_hex": "8b0185c0740750e84d24080059c3",
+      "disk_offset": 7816496,
+      "disk_sha256": "9ea468855ba5598c68b70dca639cbddb6a5cc28d38f9a2dd126bc2d90bc254e7",
+      "live_sha256": "9ea468855ba5598c68b70dca639cbddb6a5cc28d38f9a2dd126bc2d90bc254e7",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_FreeTableUnwind",
+      "cpp_symbol": "NativeModelPool::free_table_unwind_00b74530",
+      "proposed_comment": "ECX points at table-pointer header; free nonnull first DWORD through returning BF6989. Full14-byte extent includes POP ECX atB7453C and RET; do not clear header.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74530",
+        "function_name": "FUN_00b74530"
+      },
+      "returns": [
+        {
+          "address": "00b7453d",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b74690",
+      "end_exclusive": "00b7471a",
+      "length": 138,
+      "role": "destroy raw model pool",
+      "native_abi": "ECX pool; RET; all returning free continuations included.",
+      "raw_preimage_hex": "56578bf933f639772cc707d02dd60076178b47288b0cb051e8ff1e080083c60183c4043b772c72e98b472885c0740950e8c422080083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "disk_offset": 7816848,
+      "disk_sha256": "33612028b3c07f591c480e9f46fac067b225187c304601a7c9cbbc6e9b1942a1",
+      "live_sha256": "33612028b3c07f591c480e9f46fac067b225187c304601a7c9cbbc6e9b1942a1",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_Destroy",
+      "cpp_symbol": "NativeModelPool::destroy_00b74690",
+      "proposed_comment": "Restore actualD62DD0 profile; free all live slabs and table before positive explicit recursion drain, real DeleteCriticalSection, baseD7A0C0 and unlink actual sharedE188B4 element. Complete138-byte extent; no model destructor and preserve stale fields.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74690",
+        "function_name": "FUN_00b74690"
+      },
+      "returns": [
+        {
+          "address": "00b74719",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b74750",
+      "end_exclusive": "00b747b8",
+      "length": 104,
+      "role": "return raw model slot",
+      "native_abi": "ECX pool; stack raw slot; RET4.",
+      "raw_preimage_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b98840100008b4e288b0c992bc18bd0b89d829753f7eac1fa078bc2c1e81f03c20fb79140310000668984510031000066838140310000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "disk_offset": 7817040,
+      "disk_sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627",
+      "live_sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_ReturnRawSlot",
+      "cpp_symbol": "NativeModelPool::return_raw_slot_00b74750",
+      "proposed_comment": "Under actual section/explicit recursion read actualslot+184 ID; divide low32 signed pointer difference by188h, push WORD index and increment live free count, lower first-free, decrement recursion and leave. No model destruction.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74750",
+        "function_name": "BSP_ModelPool_ReturnSlot",
+        "comment": "[BSP reconstruction 00b74750]\n[BSP reconstruction] Under pool critical section+C, read model+184 block index, derive model slot from block-relative address with stride188h, append16-bit slot to block free indices+3100/count+3140 and lower pool first-free-block+34 if needed. Exact native pool layout and lock bookkeeping are not implemented; required GeneratedModelStorageOwner must actually delete or return the host allocation after known cleanup. Original ABI: ECX model pool; stack model pointer; RET4.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      "returns": [
+        {
+          "address": "00b747b5",
+          "bytes_hex": "c20400",
+          "instruction": "ret 4"
+        }
+      ]
+    },
+    {
+      "address": "00b748c0",
+      "end_exclusive": "00b748cc",
+      "length": 12,
+      "role": "static raw-slot return adapter",
+      "native_abi": "Incoming ECX raw slot; push ECX; replace ECX with 01090054; call 00b74750; RET.",
+      "raw_preimage_hex": "51b954000901e885feffffc3",
+      "disk_offset": 7817408,
+      "disk_sha256": "39b8c53b27a69883b8e98f36c6b2eba59747d29886f9c6be65b276df2eac462d",
+      "live_sha256": "39b8c53b27a69883b8e98f36c6b2eba59747d29886f9c6be65b276df2eac462d",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_ReturnCanonicalSlot",
+      "cpp_symbol": "return_native_model_slot_00b748c0",
+      "proposed_comment": "Incoming ECX raw slot: push it, replace ECX with01090054, callB74750, RET. Host adapter selects same explicitly bound canonical storage and exposes new C++ interface.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b748c0",
+        "function_name": "FUN_00b748c0"
+      },
+      "returns": [
+        {
+          "address": "00b748cb",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b74b80",
+      "end_exclusive": "00b74c53",
+      "length": 211,
+      "role": "construct raw model pool",
+      "native_abi": "ECX pool; EAX pool; RET; constructor EH state map at 00dfac04.",
+      "raw_preimage_hex": "6aff683e1ccc0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706d02dd600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8b70908008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8501d080083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "disk_offset": 7818112,
+      "disk_sha256": "95c058abd2c9aee27cec87ac5cf1a7d762b754592b09a4159c6e184ba72c30c2",
+      "live_sha256": "95c058abd2c9aee27cec87ac5cf1a7d762b754592b09a4159c6e184ba72c30c2",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_Construct",
+      "cpp_symbol": "NativeModelPool::initialize_00b74b80",
+      "proposed_comment": "Prepend same38h pool to sharedE188B4; actualD62DD0 profile and Win32 section0C/recursion24; initialize table28/count2C/cap30/first34; publish cap32 before allocating128-byte table. Three actual constructor EH leaves are verified.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74b80",
+        "function_name": "FUN_00b74b80"
+      },
+      "returns": [
+        {
+          "address": "00b74c52",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b74c60",
+      "end_exclusive": "00b74d00",
+      "length": 160,
+      "role": "trim empty model slabs",
+      "native_abi": "ECX pool; RET; no internal critical-section entry.",
+      "raw_preimage_hex": "56578bf133ff397e2c765deb038d49008b46288b04b86683b84031000020754050e8261908008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c731c8b56288b04ba0584010000b9200000008938058801000083e90175f483ef0183c7013b7e2c72a833c039462cc74634ffffffff76278b4e288da424000000008b116683ba4031000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "disk_offset": 7818336,
+      "disk_sha256": "9810542f28f08223cfc70eb93e676e6387d7fe1eae98d15ac2a007eca937d068",
+      "live_sha256": "9810542f28f08223cfc70eb93e676e6387d7fe1eae98d15ac2a007eca937d068",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_TrimEmptySlabs",
+      "cpp_symbol": "NativeModelPool::trim_empty_slabs_00b74c60",
+      "proposed_comment": "Allocator virtual0: without internal lock free fully empty slab, replace by final table entry, decrement count, rewrite all32 moved slot IDs including occupied models, retry same index, recompute first-free. Full post-free continuationB74C86..B74CBF retained.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74c60",
+        "function_name": "FUN_00b74c60"
+      },
+      "returns": [
+        {
+          "address": "00b74cf9",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        },
+        {
+          "address": "00b74cff",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b74d00",
+      "end_exclusive": "00b74e3c",
+      "length": 316,
+      "role": "acquire raw model slot",
+      "native_abi": "ECX pool; EAX raw slot; RET; no local allocation-path EH.",
+      "raw_preimage_hex": "5355568bf1578d5e0c53ff151822ce008343180183caff3956340f85920000008b462c6844310000894634e8eb1a080083c40485c0740f8b4e34518bc8e80ef7ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e85a0808008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e8f31b080083c404897e288b462c8b4e288d048185c07402892883462c0183caff8b4e288b46348b048166818040310000ffff0fb788403100000fb7f90fb7bc780031000069ff8801000003f86685c975488b463483c0013b462c895634733a8b4e288d0c81eb078da424000000008b296683bd4031000000751c83c00183c1043b462c72e901531853ff151022ce008bc75f5e5d5bc389463401531853ff151022ce008bc75f5e5d5bc3",
+      "disk_offset": 7818496,
+      "disk_sha256": "e9626b642ce82a07ae8d4a53d9083c2a167a237fbdb67d8636ef6c66b15943a4",
+      "live_sha256": "e9626b642ce82a07ae8d4a53d9083c2a167a237fbdb67d8636ef6c66b15943a4",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_AllocateRawSlot",
+      "cpp_symbol": "NativeModelPool::allocate_raw_slot_00b74d00",
+      "proposed_comment": "Under actual section/explicit recursion publish first-free before3144h slab allocation; initialize with live post-allocation slab ID; publish2*cap+2 before table growth, copy live table, free old table, publish and append slab. Pop WORD free stack. No model construction/local EH cleanup. Complete316-byte extent includes both RETs.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74d00",
+        "function_name": "FUN_00b74d00"
+      },
+      "returns": [
+        {
+          "address": "00b74e27",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        },
+        {
+          "address": "00b74e3b",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b74eb0",
+      "end_exclusive": "00b74eba",
+      "length": 10,
+      "role": "static raw-slot acquire adapter",
+      "native_abi": "No arguments; replace ECX with 01090054; tail 00b74d00; EAX raw slot.",
+      "raw_preimage_hex": "b954000901e946feffff",
+      "disk_offset": 7818928,
+      "disk_sha256": "369941539baefd0e0a7060a7ef69aa8f2cdb28ebad41de19783d0b68d8e25001",
+      "live_sha256": "369941539baefd0e0a7060a7ef69aa8f2cdb28ebad41de19783d0b68d8e25001",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_AllocateCanonicalSlot",
+      "cpp_symbol": "allocate_native_model_slot_00b74eb0",
+      "proposed_comment": "Replace ECX with actual01090054 and tailB74D00; EAX raw188h slot. Source requires explicit same-owner binding.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b74eb0",
+        "function_name": "CG_static_dtor_stub_00b74eb0"
+      },
+      "returns": []
+    },
+    {
+      "address": "00cd7f00",
+      "end_exclusive": "00cd7f16",
+      "length": 22,
+      "role": "static model pool initializer and atexit registration",
+      "native_abi": "No arguments; construct 01090054, register 00ce0e50 with atexit; EAX registration result; RET.",
+      "raw_preimage_hex": "b954000901e876cce9ff68500ece00e8e1f0f1ff59c3",
+      "disk_offset": 9273088,
+      "disk_sha256": "6710dc7f7e04675e307a41b3f5ff461b0dba625dda2639fb30e221d6879c4b58",
+      "live_sha256": "6710dc7f7e04675e307a41b3f5ff461b0dba625dda2639fb30e221d6879c4b58",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_StaticInitialize",
+      "cpp_symbol": "initialize_static_native_model_pool_00cd7f00",
+      "proposed_comment": "Exact22-byte entry verified although Ghidra function is absent. Construct canonical01090054, registerCE0E50 through CRT atexitBF6FF5, return registration result without construction rollback.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00cd7f00",
+        "function_exists": false,
+        "function_name": null,
+        "evidence": "Live bsp.py ghidra comments returned No function at address: 00cd7f00."
+      },
+      "returns": [
+        {
+          "address": "00cd7f15",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00ce0e50",
+      "end_exclusive": "00ce0e5a",
+      "length": 10,
+      "role": "static model pool shutdown",
+      "native_abi": "No arguments; replace ECX with 01090054; tail 00b74690.",
+      "raw_preimage_hex": "b954000901e93638e9ff",
+      "disk_offset": 9309776,
+      "disk_sha256": "66ec77e286312616e37c804f6df59d96a2ab9dbceb803727890c8f562177ea2d",
+      "live_sha256": "66ec77e286312616e37c804f6df59d96a2ab9dbceb803727890c8f562177ea2d",
+      "live_matches_disk": true,
+      "proposed_name": "NativeModelPool_StaticDestroy",
+      "cpp_symbol": "destroy_static_native_model_pool_00ce0e50",
+      "proposed_comment": "No arguments: select canonical01090054 in ECX and tailB74690. Storage/domain/companion must outlive registered callback.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00ce0e50",
+        "function_name": "CG_static_init_00ce0e50",
+        "comment": "[BSP inventory 00ce0e50] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "returns": []
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "role": "existing allocator-list base unlink",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+      "disk_offset": 14704,
+      "disk_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "role": "existing critical-section cleanup",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+      "disk_offset": 12144,
+      "disk_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "role": "existing shared allocator-list traversal",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "disk_offset": 738992,
+      "disk_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cc1c20",
+      "end_exclusive": "00cc1c48",
+      "length": 40,
+      "role": "constructor EH leaves and frame handler; evidence only",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "8b4df0e9481d74ff8b4df083c10ce93d1374ff8b4df083c128e9f228ebffb81cacdf00e9fb4ef3ff",
+      "disk_offset": 9182240,
+      "disk_sha256": "557595ce8fe5ba68ae2256d45be224af492847af93ef01c485420c1f78475888",
+      "live_sha256": "557595ce8fe5ba68ae2256d45be224af492847af93ef01c485420c1f78475888",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "e958120000",
+      "disk_offset": 8345022,
+      "disk_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "558bec83ec",
+      "disk_offset": 8349723,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "e917380000",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "e91efcffff",
+      "disk_offset": 8350089,
+      "disk_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6ff5",
+      "end_exclusive": "00bf6ffa",
+      "length": 5,
+      "role": "existing CRT atexit registration boundary",
+      "native_abi": "cdecl stack callback pointer; EAX registration result; observed by the focused fixture",
+      "raw_preimage_hex": "ff742404e8",
+      "disk_offset": 8351733,
+      "disk_sha256": "7eb4924d82078b1b48adf660ced5b7467ac76e7d8ee881967b530a1e98339803",
+      "live_sha256": "7eb4924d82078b1b48adf660ced5b7467ac76e7d8ee881967b530a1e98339803",
+      "live_matches_disk": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d62dd0",
+      "length": 4,
+      "disk_offset": 9842128,
+      "disk_hex": "604cb700",
+      "live_hex": "604cb700",
+      "disk_sha256": "a3719fc3a08969ad3161ff964fa4ca280479f3e2b5ea47ea22b58299313cfbe8",
+      "live_sha256": "a3719fc3a08969ad3161ff964fa4ca280479f3e2b5ea47ea22b58299313cfbe8",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "disk_offset": null,
+      "disk_hex": "00000000",
+      "live_hex": "00000000",
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "01090054",
+      "length": 56,
+      "disk_offset": null,
+      "disk_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 4,
+      "disk_offset": 9314828,
+      "disk_hex": "6c56a000",
+      "live_hex": "6c56a000",
+      "disk_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2210",
+      "length": 4,
+      "disk_offset": 9314832,
+      "disk_hex": "8856a000",
+      "live_hex": "8856a000",
+      "disk_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2214",
+      "length": 4,
+      "disk_offset": 9314836,
+      "disk_hex": "a056a000",
+      "live_hex": "a056a000",
+      "disk_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2218",
+      "length": 4,
+      "disk_offset": 9314840,
+      "disk_hex": "b856a000",
+      "live_hex": "b856a000",
+      "disk_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00dfac04",
+      "length": 60,
+      "disk_offset": 10464260,
+      "disk_hex": "ffffffff201ccc0000000000281ccc0001000000331ccc00220593190300000004acdf00000000000000000000000000000000000000000001000000",
+      "live_hex": "ffffffff201ccc0000000000281ccc0001000000331ccc00220593190300000004acdf00000000000000000000000000000000000000000001000000",
+      "disk_sha256": "39d1e0f7c37a9836695e4f523af735b03509eaa39cb1745180fcbd79d28dcad6",
+      "live_sha256": "39d1e0f7c37a9836695e4f523af735b03509eaa39cb1745180fcbd79d28dcad6",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "constructor_eh": {
+    "handler": "00cc1c3e",
+    "funcinfo": "00dfac1c",
+    "map": "00dfac04",
+    "magic": "19930522",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "leaf": "00cc1c20",
+        "action": "base unlink00403970"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "leaf": "00cc1c28",
+        "action": "actual section cleanup00402F70"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "leaf": "00cc1c33",
+        "action": "table+28 cleanup00B74530"
+      }
+    ],
+    "instructions": [
+      {
+        "address": "00cc1c20",
+        "bytes_hex": "8b4df0",
+        "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00cc1c23",
+        "bytes_hex": "e9481d74ff",
+        "instruction": "jmp 0x403970"
+      },
+      {
+        "address": "00cc1c28",
+        "bytes_hex": "8b4df0",
+        "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00cc1c2b",
+        "bytes_hex": "83c10c",
+        "instruction": "add ecx, 0xc"
+      },
+      {
+        "address": "00cc1c2e",
+        "bytes_hex": "e93d1374ff",
+        "instruction": "jmp 0x402f70"
+      },
+      {
+        "address": "00cc1c33",
+        "bytes_hex": "8b4df0",
+        "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00cc1c36",
+        "bytes_hex": "83c128",
+        "instruction": "add ecx, 0x28"
+      },
+      {
+        "address": "00cc1c39",
+        "bytes_hex": "e9f228ebff",
+        "instruction": "jmp 0xb74530"
+      },
+      {
+        "address": "00cc1c3e",
+        "bytes_hex": "b81cacdf00",
+        "instruction": "mov eax, 0xdfac1c"
+      },
+      {
+        "address": "00cc1c43",
+        "bytes_hex": "e9fb4ef3ff",
+        "instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "validation": "Live/PE map/FuncInfo and handler matched and decoded. Source MSVC finally preserves table/section/base cleanup order. Native exception dispatch and allocation failure injection were not executed."
+  },
+  "free_continuations": [
+    {
+      "address": "00b74c39",
+      "action": "constructor stack cleanup then table publication"
+    },
+    {
+      "address": "00b74d96",
+      "action": "acquire stack cleanup then replacement table publication"
+    },
+    {
+      "address": "00b74c86",
+      "action": "trim move final slab/decrement/rewrite32IDs/retry same index"
+    },
+    {
+      "address": "00b746ad",
+      "action": "destructor increment and continue slab frees"
+    },
+    {
+      "address": "00b746c5",
+      "action": "destructor stack cleanup then recursion/section/base cleanup"
+    },
+    {
+      "address": "00b7453c",
+      "action": "table unwind POP ECX then RET"
+    }
+  ],
+  "byte_audit": {
+    "code_or_hook_spans": 20,
+    "data_spans": 8,
+    "all_live_match_installed_pe": true,
+    "pointer_relocations": [
+      {
+        "address": "00402f7c",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00402f91",
+        "preimage": "00ce2214"
+      },
+      {
+        "address": "00403977",
+        "preimage": "00d7a0c0"
+      },
+      {
+        "address": "00403989",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "004b46b3",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b7469b",
+        "preimage": "00d62dd0"
+      },
+      {
+        "address": "00b746d4",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b746e9",
+        "preimage": "00ce2214"
+      },
+      {
+        "address": "00b746f4",
+        "preimage": "00d7a0c0"
+      },
+      {
+        "address": "00b74706",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b7475b",
+        "preimage": "00ce2218"
+      },
+      {
+        "address": "00b747ae",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b748c2",
+        "preimage": "01090054"
+      },
+      {
+        "address": "00b74b83",
+        "preimage": "00cc1c3e"
+      },
+      {
+        "address": "00b74b9e",
+        "preimage": "00d7a0c0"
+      },
+      {
+        "address": "00b74ba6",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b74bae",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b74bc0",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b74bce",
+        "preimage": "00d62dd0"
+      },
+      {
+        "address": "00b74bd4",
+        "preimage": "00ce220c"
+      },
+      {
+        "address": "00b74d0c",
+        "preimage": "00ce2218"
+      },
+      {
+        "address": "00b74e1d",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b74e31",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b74eb1",
+        "preimage": "01090054"
+      },
+      {
+        "address": "00cc1c3f",
+        "preimage": "00dfac1c"
+      },
+      {
+        "address": "00cd7f01",
+        "preimage": "01090054"
+      },
+      {
+        "address": "00cd7f0b",
+        "preimage": "00ce0e50"
+      },
+      {
+        "address": "00ce0e51",
+        "preimage": "01090054"
+      },
+      {
+        "address": "00d62dd0",
+        "preimage": "00b74c60"
+      }
+    ],
+    "fixture_patch_log": [
+      "WORDPATCH 00402f7c 00ce2210 012b2210",
+      "WORDPATCH 00402f91 00ce2214 012b2214",
+      "WORDPATCH 00403977 00d7a0c0 0134a0c0",
+      "WORDPATCH 00403989 00e188b4 013e88b4",
+      "WORDPATCH 004b46b3 00e188b4 013e88b4",
+      "WORDPATCH 00b7469b 00d62dd0 01332dd0",
+      "WORDPATCH 00b746d4 00ce2210 012b2210",
+      "WORDPATCH 00b746e9 00ce2214 012b2214",
+      "WORDPATCH 00b746f4 00d7a0c0 0134a0c0",
+      "WORDPATCH 00b74706 00e188b4 013e88b4",
+      "WORDPATCH 00b7475b 00ce2218 012b2218",
+      "WORDPATCH 00b747ae 00ce2210 012b2210",
+      "WORDPATCH 00b748c2 01090054 01660054",
+      "WORDPATCH 00b74b83 00cc1c3e 01291c3e",
+      "WORDPATCH 00b74b9e 00d7a0c0 0134a0c0",
+      "WORDPATCH 00b74ba6 00e188b4 013e88b4",
+      "WORDPATCH 00b74bae 00e188b4 013e88b4",
+      "WORDPATCH 00b74bc0 00e188b4 013e88b4",
+      "WORDPATCH 00b74bce 00d62dd0 01332dd0",
+      "WORDPATCH 00b74bd4 00ce220c 012b220c",
+      "WORDPATCH 00b74d0c 00ce2218 012b2218",
+      "WORDPATCH 00b74e1d 00ce2210 012b2210",
+      "WORDPATCH 00b74e31 00ce2210 012b2210",
+      "WORDPATCH 00b74eb1 01090054 01660054",
+      "WORDPATCH 00cc1c3f 00dfac1c 013cac1c",
+      "WORDPATCH 00cd7f01 01090054 01660054",
+      "WORDPATCH 00cd7f0b 00ce0e50 012b0e50",
+      "WORDPATCH 00ce0e51 01090054 01660054",
+      "WORDPATCH 00d62dd0 00b74c60 01144c60",
+      "IATPATCH InitializeCriticalSection 00ce220c 00a0566c 779d3420",
+      "IATPATCH LeaveCriticalSection 00ce2210 00a05688 779c3460",
+      "IATPATCH DeleteCriticalSection 00ce2214 00a056a0 779d56b0",
+      "IATPATCH EnterCriticalSection 00ce2218 00a056b8 779c43e0",
+      "BYTEPATCH native_new 011c681b 558bec83ec e9e0fae32e",
+      "BYTEPATCH native_free 011c65ac e917380000 e9bffde32e",
+      "BYTEPATCH host_allocate 300024f0 558bec83ec e95b370000",
+      "BYTEPATCH host_free 30002550 e93baa0000 e91b3e0000",
+      "BYTEPATCH native_atexit 011c6ff5 ff742404e8 e916f3e32e"
+    ]
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/O2",
+        "/Oy-",
+        "/fp:strict",
+        "/MT",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "errors": 0,
+      "warnings": 0
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests_passed": 1,
+      "tests_total": 1,
+      "test": "reconstructed_math",
+      "scope": "Fresh worker baseline3eac4ee. New model source is compiled/linked separately in strict fixture; primary owns CMake registration and combined build."
+    },
+    "focused_native_fixture": {
+      "passed": true,
+      "cases": 1,
+      "states_per_path": 2089,
+      "events_per_path": 76,
+      "allocations_per_path": 37,
+      "frees_per_path": 37,
+      "live_list_reentries_per_path": 1,
+      "static_registrations_per_path": 1,
+      "raw_slab_bytes_compared": 616714188,
+      "sequence": [
+        "Execute original/host static initialization with actual canonical storage/domain/section; before first128-byte table allocation returns, traverse actual shared allocator list through profile virtual0.",
+        "Verify registered shutdown callback and deliberately nonzero17 registration result; construction remains live.",
+        "Allocate1025 slots:33 actual slabs and tablecap32->66; compare complete slab bytes and padding.",
+        "Return first32 and last slot; global trim removes two consecutive empties at same index, then rewrites all32 moved live IDs.",
+        "Return/reallocate moved slot1000 and preserve payload.",
+        "Return remaining992 slots, trim all, retain table/cap66.",
+        "Refill33 slots/two slabs, enter actual/explicit recursion2, invoke registered callback; all37 frees precede lock drain/base-unlink."
+      ],
+      "event_fields": [
+        "operation",
+        "kind0allocate1free2reentryBegin3reentryEnd",
+        "allocation_id",
+        "bytes",
+        "slab_count",
+        "table_capacity",
+        "first_free",
+        "explicit_recursion",
+        "actual_critical_recursion"
+      ],
+      "native_events_equal_host": [
+        [
+          0,
+          2,
+          0,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2,
+          12612,
+          0,
+          32,
+          0,
+          1,
+          1
+        ],
+        [
+          33,
+          0,
+          3,
+          12612,
+          1,
+          32,
+          1,
+          1,
+          1
+        ],
+        [
+          65,
+          0,
+          4,
+          12612,
+          2,
+          32,
+          2,
+          1,
+          1
+        ],
+        [
+          97,
+          0,
+          5,
+          12612,
+          3,
+          32,
+          3,
+          1,
+          1
+        ],
+        [
+          129,
+          0,
+          6,
+          12612,
+          4,
+          32,
+          4,
+          1,
+          1
+        ],
+        [
+          161,
+          0,
+          7,
+          12612,
+          5,
+          32,
+          5,
+          1,
+          1
+        ],
+        [
+          193,
+          0,
+          8,
+          12612,
+          6,
+          32,
+          6,
+          1,
+          1
+        ],
+        [
+          225,
+          0,
+          9,
+          12612,
+          7,
+          32,
+          7,
+          1,
+          1
+        ],
+        [
+          257,
+          0,
+          10,
+          12612,
+          8,
+          32,
+          8,
+          1,
+          1
+        ],
+        [
+          289,
+          0,
+          11,
+          12612,
+          9,
+          32,
+          9,
+          1,
+          1
+        ],
+        [
+          321,
+          0,
+          12,
+          12612,
+          10,
+          32,
+          10,
+          1,
+          1
+        ],
+        [
+          353,
+          0,
+          13,
+          12612,
+          11,
+          32,
+          11,
+          1,
+          1
+        ],
+        [
+          385,
+          0,
+          14,
+          12612,
+          12,
+          32,
+          12,
+          1,
+          1
+        ],
+        [
+          417,
+          0,
+          15,
+          12612,
+          13,
+          32,
+          13,
+          1,
+          1
+        ],
+        [
+          449,
+          0,
+          16,
+          12612,
+          14,
+          32,
+          14,
+          1,
+          1
+        ],
+        [
+          481,
+          0,
+          17,
+          12612,
+          15,
+          32,
+          15,
+          1,
+          1
+        ],
+        [
+          513,
+          0,
+          18,
+          12612,
+          16,
+          32,
+          16,
+          1,
+          1
+        ],
+        [
+          545,
+          0,
+          19,
+          12612,
+          17,
+          32,
+          17,
+          1,
+          1
+        ],
+        [
+          577,
+          0,
+          20,
+          12612,
+          18,
+          32,
+          18,
+          1,
+          1
+        ],
+        [
+          609,
+          0,
+          21,
+          12612,
+          19,
+          32,
+          19,
+          1,
+          1
+        ],
+        [
+          641,
+          0,
+          22,
+          12612,
+          20,
+          32,
+          20,
+          1,
+          1
+        ],
+        [
+          673,
+          0,
+          23,
+          12612,
+          21,
+          32,
+          21,
+          1,
+          1
+        ],
+        [
+          705,
+          0,
+          24,
+          12612,
+          22,
+          32,
+          22,
+          1,
+          1
+        ],
+        [
+          737,
+          0,
+          25,
+          12612,
+          23,
+          32,
+          23,
+          1,
+          1
+        ],
+        [
+          769,
+          0,
+          26,
+          12612,
+          24,
+          32,
+          24,
+          1,
+          1
+        ],
+        [
+          801,
+          0,
+          27,
+          12612,
+          25,
+          32,
+          25,
+          1,
+          1
+        ],
+        [
+          833,
+          0,
+          28,
+          12612,
+          26,
+          32,
+          26,
+          1,
+          1
+        ],
+        [
+          865,
+          0,
+          29,
+          12612,
+          27,
+          32,
+          27,
+          1,
+          1
+        ],
+        [
+          897,
+          0,
+          30,
+          12612,
+          28,
+          32,
+          28,
+          1,
+          1
+        ],
+        [
+          929,
+          0,
+          31,
+          12612,
+          29,
+          32,
+          29,
+          1,
+          1
+        ],
+        [
+          961,
+          0,
+          32,
+          12612,
+          30,
+          32,
+          30,
+          1,
+          1
+        ],
+        [
+          993,
+          0,
+          33,
+          12612,
+          31,
+          32,
+          31,
+          1,
+          1
+        ],
+        [
+          1025,
+          0,
+          34,
+          12612,
+          32,
+          32,
+          32,
+          1,
+          1
+        ],
+        [
+          1025,
+          0,
+          35,
+          264,
+          32,
+          66,
+          32,
+          1,
+          1
+        ],
+        [
+          1025,
+          1,
+          1,
+          128,
+          32,
+          66,
+          32,
+          1,
+          1
+        ],
+        [
+          1059,
+          1,
+          2,
+          12612,
+          33,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          1059,
+          1,
+          34,
+          12612,
+          32,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          33,
+          12612,
+          31,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          32,
+          12612,
+          30,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          31,
+          12612,
+          29,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          30,
+          12612,
+          28,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          29,
+          12612,
+          27,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          28,
+          12612,
+          26,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          27,
+          12612,
+          25,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          26,
+          12612,
+          24,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          25,
+          12612,
+          23,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          24,
+          12612,
+          22,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          23,
+          12612,
+          21,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          22,
+          12612,
+          20,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          21,
+          12612,
+          19,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          20,
+          12612,
+          18,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          19,
+          12612,
+          17,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          18,
+          12612,
+          16,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          17,
+          12612,
+          15,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          16,
+          12612,
+          14,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          15,
+          12612,
+          13,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          14,
+          12612,
+          12,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          13,
+          12612,
+          11,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          12,
+          12612,
+          10,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          11,
+          12612,
+          9,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          10,
+          12612,
+          8,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          9,
+          12612,
+          7,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          8,
+          12612,
+          6,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          7,
+          12612,
+          5,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          6,
+          12612,
+          4,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          5,
+          12612,
+          3,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          4,
+          12612,
+          2,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          3,
+          12612,
+          1,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2055,
+          0,
+          36,
+          12612,
+          0,
+          66,
+          0,
+          1,
+          1
+        ],
+        [
+          2087,
+          0,
+          37,
+          12612,
+          1,
+          66,
+          1,
+          1,
+          1
+        ],
+        [
+          2089,
+          1,
+          36,
+          12612,
+          2,
+          66,
+          1,
+          2,
+          2
+        ],
+        [
+          2089,
+          1,
+          37,
+          12612,
+          2,
+          66,
+          1,
+          2,
+          2
+        ],
+        [
+          2089,
+          1,
+          35,
+          264,
+          2,
+          66,
+          1,
+          2,
+          2
+        ]
+      ],
+      "comparison": "Every state compares actual scalar fields, normalized profile, table/slab allocation identities, real section recursion/lockcount, complete active slab bytes; independently assert everyID and untouchedtail, also allIDs immediately before free.",
+      "native_entries_executed": [
+        "00b74450",
+        "00b74690",
+        "00b74750",
+        "00b748c0",
+        "00b74b80",
+        "00b74c60",
+        "00b74d00",
+        "00b74eb0",
+        "00cd7f00",
+        "00ce0e50"
+      ],
+      "mapping": "Sparse original PE image with inaccessible pages/trap gaps; exact verified spans and29 guarded relocations. Four actual Win32 section imports. Native new/free and host allocation/free boundaries use actual malloc/free observers; atexit is observed, preserving callback and return semantics.",
+      "reentry_scope": "Controlled first-table allocation-boundary callback: live list/profile/cap32 published, tableNULL/count0, dispatch real pool trim and compare before/after. No real allocation failure/new-handler invocation is claimed. Other allocation states retain native code ordering and receive no injected trim callback.",
+      "not_executed": [
+        "Native allocation failure and native exception dispatcher.",
+        "Actual process-exit callback scheduling.",
+        "Standalone00B74530 table-unwind leaf; native destructor inlines the same free."
+      ],
+      "tracked_tests_added": 0
+    }
+  },
+  "primary_integration_required": [
+    "Register src/native_model_pool.cpp in shared CMake and rebuild combined checkout.",
+    "Create missing22-byte00CD7F00 under Ghidra lock; repair misleading free no-return continuations as needed.",
+    "Review/apply proposed names and evidence comments preserving old values; save correct bsp project.",
+    "Refresh affected exports and sharded name/reconstruction ledgers; update index."
+  ],
+  "uncertainty_and_limits": [
+    "Names are descriptive hypotheses.",
+    "Source provides new C++ interfaces rather than original binary calling-convention replacements.",
+    "Only184h model payload fits in actual188h slot; preserve authoritative slot+184 ID.",
+    "No model object/resource/destructor behavior was reconstructed by this packet.",
+    "No allocation failure, malformed pointer or unsynchronized concurrent trim runtime comparison; implementation adds no guards/rollback to change them.",
+    "No original game, GPU rendering or gameplay validation."
+  ],
+  "artifacts": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-model-pool-20260910",
+    "ignored_local_files": [
+      {
+        "path": "local/prepare_native_model_pool_native.py",
+        "sha256": "01242db769b13a451143b5122c7e0639a3e605f020acfec5a4d6d15135776338"
+      },
+      {
+        "path": "local/native_model_pool_native_preparation.json",
+        "sha256": "005da028f48f4b74c37a3cb44d327b7ff06edb8b4ef6e878ffb7acb3a0d8fcd7"
+      },
+      {
+        "path": "local/native_model_pool_native_preparation.log",
+        "sha256": "bbe0a37b0346ca36ae9a122dacc04a317b1dda0493df5c62860d48ebfbfe1c3e"
+      },
+      {
+        "path": "local/native_model_pool_native_spans.hpp",
+        "sha256": "6006b1bffef285bf130f60a01dffd231a971ecbe34bffb35757d35843cd6c99b"
+      },
+      {
+        "path": "local/native_model_pool_native_check.cpp",
+        "sha256": "3b72b75ab47d8ae5b0a168f9c3faa143b117312f952b44cadbbf55dfe586dc27"
+      },
+      {
+        "path": "local/build_native_model_pool_native_check.ps1",
+        "sha256": "52323b706e0d46fc60574884567f928fec9efe66906d4fc19f03bf088a0f8005"
+      },
+      {
+        "path": "local/native_model_pool_native_check.log",
+        "sha256": "102ae353f58de8c6b638c0ae6da90501b0368079e36b077a190027518402c0e4"
+      },
+      {
+        "path": "local/native_model_pool_baseline_build.log",
+        "sha256": "fc3dda07d66c456d463473f4f6dc1f990b2372aa37cf3346597864c96c7f9b24"
+      },
+      {
+        "path": "local/native_model_pool_original_comments.json",
+        "sha256": "d07350169a28126538ca5b0c1233eaacdf647ad186cbe28af99c7c697a94d82b"
+      },
+      {
+        "path": "local/write_native_model_pool_report.py",
+        "sha256": "d04dce5eea5bc3a5b2bf02c11aa9731f0ee9c0011816e5cd2901bb5fc181619d"
+      },
+      {
+        "path": "build/native-model-pool-check/native_model_pool_native_check.exe",
+        "sha256": "ad22b726ceb4ae32c04a37f4789cfa4d9e75c0c8d1d67c4b08afac89eaadaff4"
+      }
+    ]
+  }
+}
