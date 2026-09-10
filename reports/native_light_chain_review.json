@@ -1,0 +1,324 @@
+{
+  "packet": "native_light_chain_review",
+  "reviewed_utc": "2026-09-10T18:37:34.261844+00:00",
+  "status": "review_complete_no_open_actionable_findings_after_primary_fix",
+  "reviewer_worktree_base": "acb8a9b",
+  "reviewed_primary_working_files": [
+    "src/d3d9_mesh_probe.cpp",
+    "CMakeLists.txt",
+    "include/bsp/system_lighting_constants.hpp",
+    "src/system_lighting_constants.cpp"
+  ],
+  "scope": "New MeshLightTypes, MeshLightSceneRuntime, scoped shutdown guards, build_mesh_system_constants native directional owner/type/config/scene composition, and shared particle/type lifetime routing. Source-only reviewer; primary build/probe artifacts inspected.",
+  "reviewer_owned_files": [
+    "reports/native_light_chain_review.json"
+  ],
+  "current_main_source_sha256": {
+    "src/d3d9_mesh_probe.cpp": "11509492de7b78f4a723c30ce2b3d5138060211e45b4dfb3bafecfb8680791ff",
+    "CMakeLists.txt": "113f5e07a33986cb6dabbb16b1f55cb99ba4da9be31986a5425e8e79f0e09c8b",
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8",
+    "include/bsp/directional_light_owner.hpp": "4f5e99d8f81ab349a4c2c1732df96d3907c36f659f8ef72d1fe3c4e91c5baf75",
+    "src/directional_light_owner.cpp": "2266a76c063bb2e9e21011b826ccab18bff1df3b0713ccb1814bdc3673c52483",
+    "include/bsp/light_type_bootstrap.hpp": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34",
+    "src/light_type_bootstrap.cpp": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9",
+    "include/bsp/lighting_configuration_apply.hpp": "a4e80a89f3c05b1ef7cbb4d46395d0aca8d3bea8cec67098e66df6317121a7e7",
+    "src/lighting_configuration_apply.cpp": "3acacf1ca889179555766d2e63e517f985336d5675e1f14e7024a381b69028cb",
+    "include/bsp/light_scene_retention.hpp": "79139691d3ff6de00b153817efef80853556d703a0ea76e510457c52b7654eff",
+    "src/light_scene_retention.cpp": "1969265622880f219ce93469f7eca81419560bb8cd925ab218ea784a184fe0db",
+    "include/bsp/system_lighting_owners.hpp": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd",
+    "src/system_lighting_owners.cpp": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae",
+    "include/bsp/scene_attachment.hpp": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6",
+    "src/scene_attachment.cpp": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01",
+    "include/bsp/native_node_destruction.hpp": "f46cd8d00aa92c7c2b4fb2a4ffcff8adfa9c70fec19461d75f0dab35cf180b8a",
+    "src/native_node_destruction.cpp": "ea0ef4205524f0f664bc9827632aaca678aa4c21046c830a8fae643fc6a062f4",
+    "include/bsp/native_node_construction.hpp": "5a481169233850684c0deb9042f5424f76cdf6a0a264725c8bbc633c721e4464",
+    "src/native_node_construction.cpp": "2834c10fdfbe3a752c3e6775fa9ef502d729d3426fa4f6a08c19f6a542f4d547",
+    "include/bsp/directional_light_pool.hpp": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510",
+    "src/directional_light_pool.cpp": "979f62fffe2df06c6528155031b42d15ae83808de8284a12ee9925d217a405e0",
+    "include/bsp/singleton_lifetime.hpp": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+    "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+    "include/bsp/particle_clock_lifetime.hpp": "b54ea8e3be7dd654e869ff009d6adb812f5acfc6029d903dac18006a01341919",
+    "src/particle_clock_lifetime.cpp": "841a2eace4497456da6e8dfbf39f51fb83ae52e668a87797a314a8243256ed89",
+    "src/system_constant_builder.cpp": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+  },
+  "all_27_sources_rechecked_equal_current_main_before_report": true,
+  "component_evidence_report_sha256": {
+    "reports/directional_light_owner_audit.json": "b7d0677e3a24a47300a08f94ab6cd4e472debfa513007f42df43762d60ac2b78"
+  },
+  "native_target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_ghidra_verification": "Every tools/bsp.py ghidra query verified selected project/program against config/target.json before the query. Five current native spans matched the installed PE byte for byte.",
+  "native_byte_ranges": [
+    {
+      "label": "light_construct",
+      "start": "00b7c4c0",
+      "end_exclusive": "00b7c576",
+      "length": 182,
+      "sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a",
+      "raw_preimage_hex": "8b44240456508bf1e8d330fffff30f10054ca2d7000f57c9c706582fd60033c089867401000089867801000089867c010000898680010000f30f118684010000f30f118688010000f30f11868c010000f30f118690010000f30f1186a4010000f30f1186a8010000f30f1186ac010000f30f1186b0010000f30f118ec4010000f30f118ec8010000f30f118ecc010000f30f100d2078ce00f30f1186d0010000f30f118ed4010000f30f1186d80100008bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "directional_construct",
+      "start": "00b7c6b0",
+      "end_exclusive": "00b7c6c9",
+      "length": 25,
+      "sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0",
+      "raw_preimage_hex": "8b44240456508bf1e803feffffc706b02fd6008bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "light_destroy_complete_tail",
+      "start": "00b7c5b0",
+      "end_exclusive": "00b7c6aa",
+      "length": 250,
+      "sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+      "raw_preimage_hex": "6aff68e61ecc0064a10000000050648925000000005155568bf1578974240cc706582fd6008b867c01000085c08b2d2022ce00c7442418010000007e578d49008b867c0100008b8e780100008b4c81fc56e8ba7800008b967c0100008b86780100008b7c90fc8d4f0451ffd585c075088b178b028bcfffd08b867c01000085c0740983c0ff89867c01000083be7c010000007fac8bbe7401000085ff741c8d4f0451ffd585c075088b178b028bcfffd0c78674010000000000008dbe780100006a008bcfc644241c00e8f2f5ffff8b3f57e803a3070083c4048bcec7442418ffffffffe8a82dffff8b4c24105f5e5d64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "directional_delete",
+      "start": "00b7c820",
+      "end_exclusive": "00b7c846",
+      "length": 38,
+      "sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+      "raw_preimage_hex": "568bf1c706b02fd600e882fdfffff644240801740b56b954010901e8b0eaffff8bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "light_attach",
+      "start": "00b7c020",
+      "end_exclusive": "00b7c0bf",
+      "length": 159,
+      "sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "raw_preimage_hex": "538bd98b93780100008b8b7c010000568db3780100008bc28d0c883bc1578b7c241073143938740983c0043bc172f5eb072bc2c1f80279408b4608394604751403c083f8017f05b801000000508bcee81cf3ffff8b56048b068d049085c07402893883460401538bcfe8c27c00008d4f0451ff151c22ce00807c241400741a8b733485f674138b168b42506a01578bceffd08b763c85f675ed5f5e5bc20800",
+      "ghidra_matches_installed_pe": true
+    }
+  ],
+  "open_actionable_findings": [],
+  "resolved_findings": [
+    {
+      "id": "NLC-01",
+      "priority": "P2",
+      "title": "A failed registry insertion left an unretained scene pointer for later light cleanup",
+      "initial_location": "src/d3d9_mesh_probe.cpp:313 (attach call before primary fix)",
+      "trigger": "First attach to the fresh light publishes its +178 entry/count, then SceneNodeRegistry::insert_00b83700 throws during entry allocation or host bindings_.emplace before attach performs its final scene retain.",
+      "evidence": [
+        "src/light_scene_retention.cpp:41..46 publishes entry, increments count, calls add_scene_node_if_type_00b83d50, then references.fetch_add(1).",
+        "Native 00B7C080 writes entry; 00B7C082 increments count; 00B7C089 calls 00B83D50; 00B7C092 calls InterlockedIncrement. This original ordering is retained.",
+        "src/scene_attachment.cpp:163..167 entry allocation, list length check, and bindings_.emplace can throw before the registry links are committed.",
+        "The original probe declares MeshLightShutdown before resource and scene-slot guards. Unwinding destroys the slot guard, then creator resource guard, before light cleanup.",
+        "With only creator+slot references present, those two releases free the scene; the light destructor then reads the freed pointer from its published +178 entry."
+      ],
+      "primary_fix_location": "src/d3d9_mesh_probe.cpp:313..325",
+      "resolution": "Catch only around this isolated attach. If actual +178 count is one and entry zero equals resource, take one real scene reference before rethrowing. The published backlink then owns the reference expected by ordinary native light cleanup.",
+      "source_proof_conditions": [
+        "Fresh native light constructor leaves +178 count zero.",
+        "This call is recurse=false and has no shadow/hierarchy or mutating type callbacks.",
+        "MeshLightSceneRuntime predicates call complete noexcept descriptor comparisons.",
+        "Registry insertion can throw before attach retain; no operation after that final retain throws on this nonrecursive path.",
+        "A caught count-one matching entry therefore lacks exactly one retain. If reserve failed before publication, count remains zero and no compensation occurs.",
+        "After compensation scene count is three; slot and creator cleanup reduce to one, then native light unregister/release reduces to zero and returns the actual pool slot.",
+        "The native attach routine, native callback order, and native component exception behavior remain unchanged."
+      ],
+      "status": "resolved_in_primary_working_source",
+      "validation": "Correction source-reviewed; ordinary strict build and installed probe rerun by primary passed. No allocation-failure injection was performed.",
+      "not_a_general_rollback": "This guard relies on the documented fresh, single-attach, nonreentrant probe state. It is not a general transaction wrapper for arbitrary native attach calls."
+    }
+  ],
+  "reviewed_invariants": [
+    {
+      "topic": "Constructor-unwritten fields are initialized before the shader consumes them",
+      "locations": [
+        "src/directional_light_owner.cpp:62..96",
+        "src/lighting_configuration_apply.cpp:225..257",
+        "src/d3d9_mesh_probe.cpp:292..312",
+        "src/system_lighting_constants.cpp:115..127"
+      ],
+      "conclusion": "Confirmed for the installed path.",
+      "details": [
+        "Light constructor preserves effective specular+194, mode3 diffuse+1B4, specular scale+1DC, and direction+1E0 raw preimages.",
+        "The probe passes a nonnull configuration. It writes mode3 diffuse, direction, base specular and specular scale/effective specular before attach and system prefix construction.",
+        "Initial diffuse scale+1D8 is constructor one; the configuration base-diffuse setter can consume it safely before the configured scale is applied.",
+        "Ambient+18, mode3 ambient+28 and all six cube entries+38 are established through the recovered configuration setters.",
+        "The shadow slot+174 is constructor null; shader access returns shadow_absent after light fields, without reading uninitialized shadow matrices or inventing a shadow binding."
+      ]
+    },
+    {
+      "topic": "One actual light tail and one canonical registry",
+      "locations": [
+        "src/directional_light_owner.cpp:91..109",
+        "src/system_lighting_owners.cpp:125..140",
+        "src/scene_attachment.cpp:288..316",
+        "src/d3d9_mesh_probe.cpp:307..332"
+      ],
+      "conclusion": "Confirmed; no copied light list or shader-only owner data in this composition.",
+      "details": [
+        "DirectionalLightOwner binds SystemDirectionalLight color/direction references to the same NativeLightTailStorage used by configuration.",
+        "LightSceneRetention uses that same actual tail +178; native node+170 remains a distinct null scene slot.",
+        "ConcreteSystemSceneResource constructs SystemSceneResourceLightList with its inherited SceneResource.registry.",
+        "List sentinel/next/key reads use that registry directly; key resolution finds the same live SceneNodeAttachment and SystemDirectionalLight companion.",
+        "Normal-path diagnostic assertions verify registry size one, identity resolution, matching diffuse/specular field addresses and null shadow before consumption; teardown verifies registry empty."
+      ]
+    },
+    {
+      "topic": "Type bootstrap and destruction-phase callbacks",
+      "locations": [
+        "src/d3d9_mesh_probe.cpp:148..179",
+        "src/light_type_bootstrap.cpp:93..164",
+        "src/directional_light_owner.cpp:34..41",
+        "src/native_node_destruction.cpp:180..211"
+      ],
+      "conclusion": "Confirmed for stable initialized descriptors in this isolated domain.",
+      "details": [
+        "Explicit zero-filled descriptor/guard preimages are initialized through the shared TypeIdCounterLifetime before SceneAttachmentRuntime copies the resulting light registry token.",
+        "Directional callbacks accept directional/light/node/root tokens, light-phase callbacks accept light/node/root, and node-phase callbacks accept node/root.",
+        "The deleting wrapper enters directional phase, light destruction installs light predicate plus light attach/remove callbacks, then node destruction installs node predicate plus base node callbacks.",
+        "MeshLightTypes is declared before scenes, destruction runtime, pool, native light and resource; those dependent locals are cleaned up while descriptors and bootstrap are still alive.",
+        "The empty c3dObject token tuple is not used by this light-only path; no c3dObject is bound or dispatched.",
+        "No descriptor reinitialization or mutation after bootstrap occurs in this probe; this review does not extend the copied registry token to arbitrary dynamic token changes."
+      ]
+    },
+    {
+      "topic": "Real pool return and normal scene/ambient cleanup",
+      "locations": [
+        "src/d3d9_mesh_probe.cpp:184..214",
+        "src/d3d9_mesh_probe.cpp:269..290",
+        "src/d3d9_mesh_probe.cpp:344..353",
+        "src/directional_light_owner.cpp:113..162",
+        "src/directional_light_pool.cpp:144..209"
+      ],
+      "conclusion": "Confirmed by source and primary installed assertions.",
+      "details": [
+        "Pool allocates an actual 1F0-byte slot with native slab index at +1EC; node prefix and light tail preserve that final index word.",
+        "Before companion ownership transfer, MeshLightSlotShutdown returns the raw slot on setup failure. After binding, the pointer is cleared and MeshLightShutdown owns explicit native deletion.",
+        "Successful deletion drains the actual scene backlinks, releases any actual retained shadow (none here), frees array/name storage, ends node/tail lifetimes, forgets the scene binding and returns the same pool slot for flag one.",
+        "Explicit close clears its owner pointer to avoid a second deletion on normal scope exit. Explicit scene-slot clear and creator release finish scene and ambient destruction.",
+        "The probe trims the pool and asserts slab_count zero and recursion zero, providing evidence that the actual returned slot made the slab empty."
+      ]
+    },
+    {
+      "topic": "Shared lifetime routing and shutdown callback lifetime",
+      "locations": [
+        "src/d3d9_mesh_probe.cpp:119..141",
+        "src/d3d9_mesh_probe.cpp:994..1008",
+        "src/d3d9_mesh_probe.cpp:1097..1102",
+        "src/light_type_bootstrap.cpp:36..70",
+        "src/singleton_lifetime.cpp:227..245"
+      ],
+      "conclusion": "Confirmed for the two concrete registered owner kinds in this domain.",
+      "details": [
+        "Particle clock and type counter register with the same SingletonLifetimeDomain; the callback identifies the type counter by its actual currently published slot identity and otherwise dispatches the particle owner.",
+        "Only these two owner kinds register in the reviewed path. This identity switch is not advertised as a general native virtual dispatcher.",
+        "Callback context, particle adapter, type adapter, raw slots and string pool are created before MeshSingletonShutdown, so guard shutdown occurs while all are alive.",
+        "The manager removes the last registered entry before invoking destruction, giving type-counter cleanup before particle cleanup on this creation order.",
+        "Type deleting destructor clears its global without accessing MeshLightTypes descriptors; those local descriptors may already have expired safely after light/scene cleanup.",
+        "Explicit shutdown clears published manager and slots; subsequent guard/domain destructor shutdown is a no-op. Installed assertions observe exactly one counter and one particle destruction."
+      ]
+    },
+    {
+      "topic": "Other setup failures and native exception boundaries",
+      "locations": [
+        "src/directional_light_pool.cpp:69..100",
+        "src/directional_light_pool.cpp:104..140",
+        "src/directional_light_pool.cpp:196..218",
+        "src/system_lighting_owners.cpp:151..184"
+      ],
+      "conclusion": "No additional newly actionable issue identified within the isolated path; native component limitations retained.",
+      "details": [
+        "Pool initializer has its own table/critical-section/list unwind before the outer pool guard exists.",
+        "First-slab allocation failure leaves the native recursion/lock state for the pool guard destructor to drain; this fresh pool does not enter later table-growth failure after allocating a slab.",
+        "Node setup uses an empty name and fresh null arrays/retained fields; the pre-transfer raw-slot guard covers setup failure before light native cleanup is armed.",
+        "If later upload returns failure or throws after complete attach, the scene has its backlink reference, allowing resource guards before light cleanup; the resolved finding covers the incomplete-attach exception.",
+        "Existing scene constructor intentionally preserves native ambient/backlink exception behavior; this review does not reclassify it as a general strong exception guarantee.",
+        "No injected destructor callback failures, concurrent mutation, arbitrary reentrant hierarchy mutation or low-memory execution were tested by this review."
+      ]
+    }
+  ],
+  "primary_validation_artifacts": [
+    {
+      "path": "local/light_chain_integrated_build.txt",
+      "sha256": "b551d8932b35e00b365e5ff8646706725211721b510ed045eed05225b5b1bf21",
+      "bytes": 1539,
+      "modified_utc": "2026-09-10T18:32:49.382760+00:00"
+    },
+    {
+      "path": "local/light_chain_installed_probe.txt",
+      "sha256": "53676777265d5d60f6aa7b8527ce019a8134c07f89ed26fc01ea4d0539721d53",
+      "bytes": 15828,
+      "modified_utc": "2026-09-10T18:33:06.841614+00:00"
+    },
+    {
+      "path": "build/win32/Release/bsp_d3d9_probe.exe",
+      "sha256": "d04607ade7bb573b6c0987e0275be6cd63cf2bbd1def87f597bc176174f402fb",
+      "bytes": 915456,
+      "modified_utc": "2026-09-10T18:32:49.246586+00:00"
+    },
+    {
+      "path": "local/installed_mesh/render.bmp",
+      "sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+      "bytes": 262198,
+      "modified_utc": "2026-09-10T18:33:06.795755+00:00"
+    }
+  ],
+  "observed_build_evidence": [
+    {
+      "line": 18,
+      "text": "1/2 Test #1: reconstructed_math ...............   Passed    0.01 sec"
+    },
+    {
+      "line": 20,
+      "text": "2/2 Test #2: native_math_differential .........   Passed    0.01 sec"
+    },
+    {
+      "line": 22,
+      "text": "100% tests passed, 0 tests failed out of 2"
+    }
+  ],
+  "observed_installed_probe_evidence": [
+    {
+      "line": 114,
+      "text": "Installed system builder: ordered_prefix=1 VS_PS_77_retained_after_material=1 particle_clocks_destroyed=1 lifetime_checked=1"
+    },
+    {
+      "line": 116,
+      "text": "Installed light owner: native_pool_types_config_canonical_registry_cleanup=1 type_counters_destroyed=1 shared_lifetime_checked=1"
+    },
+    {
+      "line": 117,
+      "text": "Installed mesh draw: hr=0x00000000 vertices=12 primitives=8 GPU_bytes=1 decode_records=3 constant_readback=1 instance_layout=1 textures_frequencies=1 queued_bindings=2 visible=2499 colors=54 restored=1 checked=1 error="
+    }
+  ],
+  "bitmap_comparison": {
+    "before_compensation_sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+    "after_compensation_sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+    "result": "identical bitmap bytes before and after compensation; no screenshot or game-image visual comparison claimed"
+  },
+  "validation_limits": [
+    "Reviewer inspected current source, native byte evidence, source/artifact hashes and primary logs; reviewer did not rerun build or probe.",
+    "Primary strict Win32 build passed reconstructed_math and native_math_differential. Primary installed asset probe reported successful native light/type/config/registry cleanup and shared lifetime assertions.",
+    "The fixed allocation-failure path is source-reviewed, not fault-injected or runtime-tested.",
+    "The unchanged isolated diagnostic bitmap is not original-game visual parity or complete shadow rendering evidence.",
+    "The probe uses chosen diagnostic configuration values and explicit startup preimages, not a recovered authored map, full world factory, complete camera owner or constructed shadow owner.",
+    "No claims of full native ABI replacement, complete native exception semantics in host guards, or game validation."
+  ],
+  "reviewer_mutations": {
+    "root_source": false,
+    "ghidra": false,
+    "ledgers": false,
+    "cmake": false,
+    "tests": false,
+    "tracked_output": "Only this JSON review. Four copied primary files remain unstaged and are excluded from the review commit."
+  }
+}
