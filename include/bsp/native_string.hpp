@@ -39,6 +39,18 @@ private:
 // std::malloc / std::free for hosts that do not stand a pool up.
 NativeStringStorage& crt_string_storage() noexcept;
 
+// Full 0041DD20; ECX actual8h header, RET. Capture its nonnull data pointer,
+// then length+1 (DWORD wrap), and release through supplied storage. Leave the
+// header untouched, including changes performed during release. Null data
+// skips the length read and storage call. No implicit header destruction.
+void destroy_native_string_header_0041dd20(void* actual_header,
+    NativeStringStorage& storage) noexcept;
+
+// Full 004BCC00; ECX actual8h header, RET. Capture data once; walk bytes by the
+// current unsigned length, reread after every store. Convert only ASCII A..Z,
+// including after embedded NUL, and still store unchanged bytes. No allocation.
+void lowercase_native_string_header_004bcc00(void* actual_header) noexcept;
+
 // Full 0041dd40 against an existing native header: uint32 length at +0 and
 // char* data at +4, in the Win32 build. The header is neither initialized nor
 // copied into a temporary owner. Allocation/release can observe or change its
@@ -51,9 +63,9 @@ NativeStringStorage& crt_string_storage() noexcept;
 void resize_native_string_header_0041dd40(void* actual_header,
     NativeStringStorage& storage, std::uint32_t length, bool preserve);
 
-// Exact layout of the native eight-byte string. There is no destructor: the
-// native class does not free from one either, its owners call resize(0) or run
-// the release inline. release_to must be called before the object dies.
+// Exact layout of the native eight-byte string. This host wrapper has no
+// implicit destructor cleanup. Its owner calls release_to, resize(0), or the
+// actual-header destruction body before discarding owned storage.
 class NativeString {
 public:
     NativeString() noexcept = default;

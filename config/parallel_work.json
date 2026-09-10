@@ -2808,8 +2808,8 @@
     {
       "id": "native_render_queue_owner_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "read_only_queue_owner_and_row_storage_dependency_discovery",
+      "done": true,
+      "state": "reviewed_read_only_native_evidence_and_pinned_sources",
       "function_addresses": [
         "004c11f0",
         "00b1f280",
@@ -2819,7 +2819,9 @@
         "docs/NATIVE_RENDER_QUEUE_OWNER_NEXT.md",
         "reports/native_render_queue_owner_next.json"
       ],
-      "packet": "native_render_queue_owner_next"
+      "packet": "native_render_queue_owner_next",
+      "evidence": "reports/native_render_queue_owner_next.json",
+      "worker_commit": "9a517e0"
     },
     {
       "id": "native_render_batch_preparation_next",
@@ -2871,6 +2873,42 @@
         "docs/NATIVE_QUEUE_CLEANUP_HELPERS.md",
         "reports/native_queue_cleanup_helpers_audit.json"
       ]
+    },
+    {
+      "id": "native_pooled_string_cleanup_lower",
+      "worker": "main",
+      "done": true,
+      "state": "integrated_actual_header_complete_assembly_reviewed_strict_win32_build_checked",
+      "evidence": "reports/native_pooled_string_cleanup_lower_audit.json",
+      "function_addresses": [
+        "0041dd20",
+        "004bcc00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_string.hpp",
+        "src/native_string.cpp",
+        "docs/NATIVE_POOLED_STRING_CLEANUP_LOWER.md",
+        "reports/native_pooled_string_cleanup_lower_audit.json"
+      ],
+      "packet": "native_pooled_string_cleanup_lower"
+    },
+    {
+      "id": "native_render_queue_rows",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "implementing_actual20byte_row_reserve_resize_destructor_x87_and_native_noop_unwind",
+      "function_addresses": [
+        "00b1db30",
+        "00b1e7f0",
+        "00b1f150"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_queue_rows.hpp",
+        "src/native_render_queue_rows.cpp",
+        "docs/NATIVE_RENDER_QUEUE_ROWS.md",
+        "reports/native_render_queue_rows_audit.json"
+      ],
+      "packet": "native_render_queue_rows"
     }
   ],
   "snapshot_after_analysis": {
@@ -3739,8 +3777,8 @@
     {
       "packet": "native_render_queue_owner_next",
       "worker": "system_fog_owner_discovery",
-      "state": "read_only_queue_owner_and_row_storage_dependency_discovery",
-      "validation": null
+      "state": "reviewed_read_only_native_evidence_and_pinned_sources",
+      "validation": "reports/native_render_queue_owner_next.json"
     },
     {
       "packet": "native_render_batch_preparation_next",
@@ -3759,18 +3797,21 @@
       "worker": "main",
       "state": "integrated_complete_assembly_reviewed_strict_win32_build_checked",
       "validation": "reports/native_queue_cleanup_helpers_audit.json"
+    },
+    {
+      "packet": "native_pooled_string_cleanup_lower",
+      "worker": "main",
+      "state": "integrated_actual_header_complete_assembly_reviewed_strict_win32_build_checked",
+      "validation": "reports/native_pooled_string_cleanup_lower_audit.json"
+    },
+    {
+      "packet": "native_render_queue_rows",
+      "worker": "system_fog_owner_discovery",
+      "state": "implementing_actual20byte_row_reserve_resize_destructor_x87_and_native_noop_unwind",
+      "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_render_queue_owner_next",
-      "worker": "system_fog_owner_discovery",
-      "function_addresses": [
-        "004c11f0",
-        "00b1f280",
-        "00b1f6b0"
-      ]
-    },
     {
       "packet": "native_render_batch_preparation_next",
       "worker": "particle_clock_lifetime",
@@ -3786,6 +3827,15 @@
         "00b31dc0",
         "00bee780",
         "00b3ce30"
+      ]
+    },
+    {
+      "packet": "native_render_queue_rows",
+      "worker": "system_fog_owner_discovery",
+      "function_addresses": [
+        "00b1db30",
+        "00b1e7f0",
+        "00b1f150"
       ]
     }
   ],

@@ -1,0 +1,31 @@
+[
+  {
+    "address": "0041dd20",
+    "before": {
+      "address": "0041dd20",
+      "function_name": "FUN_0041dd20"
+    },
+    "after": {
+      "address": "0041dd20",
+      "old_name": "FUN_0041dd20",
+      "name": "BSP_NativeString_DestroyStorage",
+      "evidence": "Complete original[0041dd20,0041dd3d); ECX actual8h length/data header; RET; no semantic result. Capture data first; null skips length/storage. Capture current length+1 with wrap and release captured data; no header writes after call. Supplied existing NativeStringStorage replaces getter side effects. Evidence reports/native_pooled_string_cleanup_lower_audit.json; full assembly/livePE review; strictMSVCWin32 build+2existing CTests passed. No new routine-helper fixture; previous semantic lowercase API retained. New C++ ABI, valid actual storage; no gameplay claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004bcc00",
+    "before": {
+      "address": "004bcc00",
+      "function_name": "BSP_String_LowercaseAscii",
+      "comment": "[BSP reconstruction 004bcc00]\nECX native length/data string; RET. Length-based byte iteration converts only ASCII A..Z, including after embedded NUL. Typed port in resource_path.cpp; native string allocation/ABI not reproduced."
+    },
+    "after": {
+      "address": "004bcc00",
+      "old_name": "BSP_String_LowercaseAscii",
+      "name": "BSP_String_LowercaseAscii",
+      "evidence": "Complete original[004bcc00,004bcc33); ECX actual8h length/data header; RET; no semantic result. Capture data once; current unsigned length loop; ASCII A..Z only, bytes afterNUL included; write even unchanged byte; after every store reload header length; high-bit bytes unchanged. Evidence reports/native_pooled_string_cleanup_lower_audit.json; full assembly/livePE review; strictMSVCWin32 build+2existing CTests passed. No new routine-helper fixture; previous semantic lowercase API retained. New C++ ABI, valid actual storage; no gameplay claim."
+    },
+    "status": "applied"
+  }
+]

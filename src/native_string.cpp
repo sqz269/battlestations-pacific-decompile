@@ -78,6 +78,30 @@ void resize_native_string_header_0041dd40(void* actual_header,
     *reinterpret_cast<char*>(reinterpret_cast<std::uintptr_t>(block) + length) = '\0';
 }
 
+void destroy_native_string_header_0041dd20(void* actual_header,
+    NativeStringStorage& storage) noexcept {
+    auto* const data = read_header<char*>(actual_header, 4);
+    if (data != nullptr)
+        storage.release(data, read_header<std::uint32_t>(actual_header, 0) + 1u);
+}
+
+void lowercase_native_string_header_004bcc00(void* actual_header) noexcept {
+    auto* const data = read_header<unsigned char*>(actual_header, 4);
+    if (data == nullptr || read_header<std::uint32_t>(actual_header, 0) == 0)
+        return;
+    auto cursor = reinterpret_cast<std::uintptr_t>(data);
+    std::uint32_t index = 0;
+    do {
+        auto* const current = reinterpret_cast<volatile unsigned char*>(cursor);
+        auto byte = *current;
+        if (byte >= 0x41 && byte <= 0x5a)
+            byte = static_cast<unsigned char>(byte + 0x20);
+        *current = byte;
+        ++index;
+        ++cursor;
+    } while (index < read_header<std::uint32_t>(actual_header, 0));
+}
+
 void NativeString::resize_0041dd40(NativeStringStorage& storage, std::uint32_t length, bool preserve) {
     resize_native_string_header_0041dd40(this, storage, length, preserve);
 }

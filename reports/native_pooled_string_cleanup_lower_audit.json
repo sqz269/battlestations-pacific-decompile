@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "packet": "native_pooled_string_cleanup_lower",
+  "status": "integrated_actual_header_complete_assembly_reviewed_strict_win32_build_checked",
+  "new_complete_functions": 1,
+  "upgraded_complete_functions": 1,
+  "functions": [
+    {
+      "kind": "function",
+      "address": "0041dd20",
+      "name": "destroy_native_string_header_0041dd20",
+      "cpp_symbol": "destroy_native_string_header_0041dd20",
+      "source": "src/native_string.cpp",
+      "native_end_exclusive": "0041dd3d",
+      "original_abi": "ECX actual8h length/data header; RET; no semantic result",
+      "evidence": "reports/native_pooled_string_cleanup_lower_audit.json",
+      "status": "actual_header_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Capture data first; null skips length/storage. Capture current length+1 with wrap and release captured data; no header writes after call. Supplied existing NativeStringStorage replaces getter side effects.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004bcc00",
+      "name": "lowercase_native_string_header_004bcc00",
+      "cpp_symbol": "lowercase_native_string_header_004bcc00",
+      "source": "src/native_string.cpp",
+      "native_end_exclusive": "004bcc33",
+      "original_abi": "ECX actual8h length/data header; RET; no semantic result",
+      "evidence": "reports/native_pooled_string_cleanup_lower_audit.json",
+      "status": "actual_header_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Capture data once; current unsigned length loop; ASCII A..Z only, bytes afterNUL included; write even unchanged byte; after every store reload header length; high-bit bytes unchanged.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "previous_interfaces": [
+        {
+          "address": "004bcc00",
+          "name": "lowercase_resource_name",
+          "source": "src/resource_path.cpp",
+          "status": "assembly_backed_port_installed_resource_resolution_checked",
+          "abi_compatible": false,
+          "kind": "function"
+        }
+      ]
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "src/resource_path.cpp",
+      "sha256": "325e8753947ae02d371d4189340b709369da68f7c8340203854584f9712001e6"
+    }
+  ],
+  "verified_spans": [
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_matches_installed": true
+    },
+    {
+      "address": "004bcc00",
+      "end_exclusive": "004bcc33",
+      "length": 51,
+      "sha256": "cfbd487587a7f330ae49a77ec737749f5f1c5bafbe7e33a8beeab96adb6763f8",
+      "live_matches_installed": true
+    }
+  ],
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_pooled_string_cleanup_build.txt",
+    "sha256": "a3fa80643dabdd5d7564fa2ca49e5493c0d16f211f84a6ffd0f973fce43c4a27"
+  },
+  "native_differential_fixture": false,
+  "new_tests": 0,
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "previous_lowercase_record": {
+    "address": "004bcc00",
+    "name": "lowercase_resource_name",
+    "source": "src/resource_path.cpp",
+    "status": "assembly_backed_port_installed_resource_resolution_checked",
+    "abi_compatible": false,
+    "kind": "function"
+  },
+  "ledger_consolidated": true,
+  "limits": [
+    "Existing NativeStringStorage nonnull allocation/noexcept release and supplied singleton domain boundaries unchanged",
+    "Host NativeString wrapper keeps explicit cleanup; old comment denying native destructor corrected",
+    "Remaining native substring/path normalization and resource-container lifecycle separate"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_pooled_string_cleanup_annotations.json",
+    "sha256": "7691f8cdad12063ed2a537b2a3cae5405cbd5239f7430476bb8c48ea71d64977",
+    "old_names_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "0041dd20",
+      "path": "exports/bsp/functions/0041dd20/decompiled.c",
+      "sha256": "fd4a4c4bea289a247b2805c2d6a0ee1567f02f465583d70be2c0b5ce861f0581"
+    },
+    {
+      "address": "004bcc00",
+      "path": "exports/bsp/functions/004bcc00/decompiled.c",
+      "sha256": "a2b30d6c28cd658b9faf72fbe69a1bfe6e31aece054f90145aa7a397d6c97dd1"
+    }
+  ],
+  "previous_semantic_interface_retained": true,
+  "queue_discovery_review": "reports/native_render_queue_owner_next.json",
+  "closure_utc": "2026-09-10T23:30:20.569880+00:00"
+}
