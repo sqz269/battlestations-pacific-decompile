@@ -1,0 +1,577 @@
+{
+  "packet": "game_render_frame",
+  "owner": "agent/game-render-frame",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/GAME_RENDER_FRAME.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": "none; Ghidra was read-only for this packet"
+  },
+  "headline": "BSP_Game_Render (004ca440) recovered in full. The begin/finish pair is D3D9 BeginScene and EndScene+Present, not a lost-device test: renderer vtable 00d5f0a8 +0Ch reaches device +A4h, and +10h/+14h both reach 00b2d8e0. The +10h argument comes from 004c9a00, which formats a PNG path, so the selector 00e188ad is screenshot capture. Interface level 00e08310 chooses between a job-pool 3D scene (level 1) and two ortho map views (levels 2 and 3); level 1 is the only path that skips the inline world view 00735b50. The job pool drains last in first out.",
+  "source_of_truth": "assembly at 004ca440-004ca759; Ghidra pseudocode drops nearly every argument because the call sites set ECX only",
+  "frame_phase": {
+    "field": "game+34h",
+    "values": {
+      "0": "idle",
+      "1": "renderer BeginFrame has run",
+      "2": "callbacks issued"
+    },
+    "transitions": [
+      {
+        "site": "004c6c5f",
+        "to": 1
+      },
+      {
+        "site": "004ca46b",
+        "to": 2
+      },
+      {
+        "site": "004ca2c9",
+        "to": 0
+      }
+    ],
+    "note": "004c6c30 returns 1 for any non-idle phase without touching the renderer (004c6c36)"
+  },
+  "renderer_vtable_00d5f0a8": [
+    {
+      "slot": "+0Ch",
+      "target": "00b2b200",
+      "reaches": "IDirect3DDevice9::BeginScene, device vtable +A4h"
+    },
+    {
+      "slot": "+10h",
+      "target": "00b2f4b0",
+      "reaches": "JMP 00b2d8e0 EndFrameAndPresent with one argument"
+    },
+    {
+      "slot": "+14h",
+      "target": "00b2f4a0",
+      "reaches": "PUSH 0; CALL 00b2d8e0, the same body with a zero argument"
+    }
+  ],
+  "screenshot_cluster": {
+    "00e188ad": "capture enabled; toggled in BSP_Game_Render, read in BSP_Game_FinishRenderFrame",
+    "00e08210": "sequence, the %04d directory",
+    "00e188b8": "image counter, post-incremented by 004c9a00",
+    "00e1899c": "base directory override; 00e18b1c is the fallback buffer",
+    "format_directory": "%s%04d",
+    "format_image": "%s%04d\\\\scr%04d.png",
+    "probe": "00bf94c6, unidentified CRT helper; the loop exits on a zero return; _mkdir fits but is provisional",
+    "buffer": "512-byte stack buffer through 004b7f70, no length check on the base directory"
+  },
+  "frame_order": [
+    {
+      "site": "004ca45b",
+      "action": "gate: return unless game+34h == 1"
+    },
+    {
+      "site": "004ca46b",
+      "action": "game+34h = 2"
+    },
+    {
+      "site": "004ca472",
+      "action": "(*00f88c20)->vtbl+0Ch(float game+21F0h)",
+      "note": "FLD at 004ca465 precedes the phase store"
+    },
+    {
+      "site": "004ca483",
+      "action": "(*00f88c20)->vtbl+4h()"
+    },
+    {
+      "site": "004ca490",
+      "action": "one-shot profiler zone: 0041e870(\"GGame::Render\"), 00e18b38 = 0, release the temp",
+      "gate": "bit 0 of 00e18b3c"
+    },
+    {
+      "site": "004ca4e7",
+      "action": "view branch"
+    },
+    {
+      "site": "004ca5d9",
+      "action": "screenshot toggle; 004bfbf0 on the rising half",
+      "gate": "game+5D4h not in {1,2,4} and inline 004c43c0 on action 1Dh"
+    },
+    {
+      "site": "004ca64a",
+      "action": "00503510, ECX = [00e198ac+70h]",
+      "gate": "pointer non-null and its +5 byte set"
+    },
+    {
+      "site": "004ca658",
+      "action": "004c12b0 then 00aa45a0, the GUI draw"
+    },
+    {
+      "site": "004ca66e",
+      "action": "0078a430, ECX = 00f871b4",
+      "gate": "00f871b4 != 0"
+    },
+    {
+      "site": "004ca673",
+      "action": "004c11f0 then 00b1ebe0, BSP_RenderCommandQueue_Execute"
+    },
+    {
+      "site": "004ca67f",
+      "action": "004c14c0, result discarded"
+    },
+    {
+      "site": "004ca68d",
+      "action": "004c1dd0 then 00be3bf0, the profiler overlay",
+      "gate": "game+2191h"
+    },
+    {
+      "site": "004ca699",
+      "action": "second toggle, target 00e18b35",
+      "gate": "same state gate, action 29h"
+    },
+    {
+      "site": "004ca6ee",
+      "action": "00b7aab0 then 00a8ac00",
+      "gate": "game+19F8h and a non-null shadow owner"
+    },
+    {
+      "site": "004ca713",
+      "action": "(*(game+19F0h + A8h))->vtbl+8h()",
+      "gate": "game+19F0h"
+    },
+    {
+      "site": "004ca72c",
+      "action": "00b0d190, ECX = 00f8d39c"
+    },
+    {
+      "site": "004ca737",
+      "action": "004c11f0 then 00b1ef60(game+19FCh)"
+    }
+  ],
+  "view_branch": {
+    "suppress_conjunction": "game+1FE4h == 1 && game+2058h && game+5D4h == 0Dh",
+    "other_skips": [
+      "[00e198c4] == 0",
+      "game+7184h != 0"
+    ],
+    "selector": "00e08310, the highest active interface level latched by 004f7620",
+    "levels": {
+      "1": "shadow view update, enqueue 004c0960 and 004c0a30 on the job pool, dispatch; jumps over 00735b50 at 004ca5b0",
+      "2": "0059d7b0 with ECX = [00e198c4]+54h, then 00735b50",
+      "3": "00535430 with ECX = [00e198c4]+5Ch, then 00735b50",
+      "other": "00735b50 only"
+    },
+    "uncertainty": "what the levels rank is not established; level 1 -> 3D scene is established by the branch bodies"
+  },
+  "job_pool": {
+    "singleton": "004c1130 over 0109cf08, 0x138A8 bytes, constructor 004bfa40, base built by 00be3040 with a thread count of -1 resolved by 00be4800",
+    "layout_from_pool_plus_4": {
+      "+4h": "worker thread handle array",
+      "+10h": "worker object array",
+      "+14h": "worker count",
+      "+18h": "running flag",
+      "+20h": "job count",
+      "+24h + i*8": "job slot: object pointer then a one-word argument"
+    },
+    "capacity": 10000,
+    "bounds_checked": false,
+    "enqueue": {
+      "address": "00be3020",
+      "vtable_slot": "+4h",
+      "ret": 8,
+      "ghidra_function": false
+    },
+    "dispatch": {
+      "address": "00be3150",
+      "vtable_slot": "+8h",
+      "ret": 4,
+      "zero_arg": "call worker[i]->vtbl+4h, drain on the calling thread through 00be2fa0, clear the running flag",
+      "nonzero_arg": "ResumeThread on the handles instead"
+    },
+    "drain": {
+      "address": "00be2fa0",
+      "order": "LIFO: InterlockedDecrement then index with the returned value",
+      "call": "(*(*job))(arg) with the job in ECX",
+      "after": "worker[i]->vtbl+8h for each worker"
+    },
+    "jobs": [
+      {
+        "getter": "004c0960",
+        "global": "00e18ad8",
+        "primary_vftable": "00ce753c",
+        "body": "004bbd00",
+        "lifetime_vftable": "00ce7538",
+        "dtor_thunk": "004bd080 -> 004c10b0",
+        "behavior": "identity 4x4, ECX = [00e198c4], 0068a670(manager, &matrix, &out), then (*00f8bbd8)->vtbl+4h"
+      },
+      {
+        "getter": "004c0a30",
+        "global": "00e18adc",
+        "primary_vftable": "00ce7544",
+        "body": "004b4820",
+        "lifetime_vftable": "00ce7540",
+        "dtor_thunk": "004bd0b0 -> 004c10f0",
+        "behavior": "mov ecx,[00e198c4]; call 0068a0d0; ret 4. 0068a0d0 runs 0078cff0(game+19FCh, 00f876a4) and 00b101c0(game+19ECh, game+19FCh)"
+      }
+    ],
+    "enqueue_order": [
+      "004c0960 -> kWorldView004bbd00",
+      "004c0a30 -> kCameraUpdate004b4820"
+    ],
+    "run_order": [
+      "kCameraUpdate004b4820",
+      "kWorldView004bbd00"
+    ],
+    "inline_equivalent": "00735b50 is job A's body with a null guard on 00e198c4; the ECX the call site loads from 00e1ae90 is not read by the body"
+  },
+  "debug_toggles": [
+    {
+      "site": "004ca5ee",
+      "record_offset": "+570h",
+      "action": 29,
+      "action_hex": "1Dh",
+      "target": "00e188ad",
+      "effect": "on the rising half only, 004bfbf0 opens a screenshot sequence"
+    },
+    {
+      "site": "004ca6ae",
+      "record_offset": "+7B0h",
+      "action": 41,
+      "action_hex": "29h",
+      "target": "00e18b35",
+      "effect": "none; the byte is read and written only inside BSP_Game_Render"
+    }
+  ],
+  "finish_render_frame": {
+    "address": "004ca1f0",
+    "profiler": "slot [0109db34]; colour FFFFFFFFh at 004ca20d; 00be3640 opens and 00be3660 closes, both outside the phase gate",
+    "gate": "game+34h == 2 && 00b1bf90() == 0",
+    "paths": {
+      "00e188ad == 0": "renderer vtable +14h",
+      "00e188ad != 0": "renderer vtable +10h with 004c9a00's path"
+    },
+    "on_success": "game+34h = 0; a retained queue leaves the phase at 2",
+    "seh_handler": "00c65530"
+  },
+  "functions": [
+    {
+      "address": "004ca440",
+      "name": "BSP_Game_Render",
+      "abi": "__thiscall(game), no stack arguments, plain RET, void",
+      "behavior": "Gate game+34h == 1, advance to 2, HUD render and post-render on singleton 00f88c20 with game+21F0h, one-shot profiler zone, the interface view branch, two debug toggles, the front-end preview, the GUI draw, the render command queue and the frame-end block. SEH handler 00c6557e.",
+      "callers": [
+        "004cac30",
+        "004e4a40",
+        "0060d570",
+        "006adb50"
+      ],
+      "state": "reconstructed",
+      "confidence": "high"
+    },
+    {
+      "address": "004c6c30",
+      "name": "BSP_Game_TryBeginRenderFrame",
+      "abi": "__thiscall(game) -> bool in EAX, plain RET",
+      "behavior": "Any non-idle phase returns 1 untouched. Phase 0 with a non-zero 00b1bf90 returns 0. Otherwise renderer vtable +0Ch (00b2b200, device BeginScene at +A4h) and phase = 1.",
+      "state": "reconstructed",
+      "confidence": "high"
+    },
+    {
+      "address": "004ca1f0",
+      "name": "BSP_Game_FinishRenderFrame",
+      "abi": "__thiscall(game), plain RET, void",
+      "behavior": "Profiler counter around a phase-2 gate. Selects renderer +14h or +10h on 00e188ad; the +10h argument is the 004c9a00 screenshot path. Both reach 00b2d8e0 EndFrameAndPresent. Phase returns to 0 only when the frame presented.",
+      "state": "reconstructed",
+      "confidence": "high"
+    },
+    {
+      "address": "004bfbf0",
+      "name": "BSP_Screenshot_BeginSequence",
+      "abi": "__cdecl(void), plain RET, void",
+      "behavior": "Increments 00e08210 before its first probe, formats \"%s%04d\" from the base directory and calls 00bf94c6, looping while non-zero, then stores 0 into the image counter 00e188b8.",
+      "state": "reconstructed",
+      "confidence": "medium"
+    },
+    {
+      "address": "004c9a00",
+      "name": "BSP_Screenshot_NextFramePath",
+      "abi": "__fastcall(arg) -> arg unchanged, plain RET",
+      "behavior": "Formats \"%s%04d\\\\scr%04d.png\" from the base directory, 00e08210 and 00e188b8 into a 512-byte stack buffer, post-increments the image counter, assigns the native string and returns its incoming argument.",
+      "state": "reconstructed",
+      "confidence": "high"
+    },
+    {
+      "address": "004c1130",
+      "name": "BSP_FrameJobPool_GetSingleton",
+      "abi": "__cdecl(void) -> 0109cf08, plain RET",
+      "behavior": "Double-checked lazy singleton under BSP_SingletonLifetime_GetManager()+10h. Allocates 0x138A8 bytes through 00bf681b, constructs with 004bfa40 and registers with BSP_SingletonLifetime_Register.",
+      "state": "analyzed",
+      "confidence": "high"
+    },
+    {
+      "address": "004c0960",
+      "name": "BSP_RenderWorldViewJob_GetSingleton",
+      "abi": "__cdecl(void) -> 00e18ad8, plain RET",
+      "behavior": "Lazy 8-byte singleton with a primary vftable at 00ce753c (slot 0 = 004bbd00) and a lifetime vftable at 00ce7538 (slot 0 = the adjustor thunk 004bd080 to the deleting destructor 004c10b0). Returns the primary pointer.",
+      "state": "analyzed",
+      "confidence": "high"
+    },
+    {
+      "address": "004c0a30",
+      "name": "BSP_RenderCameraUpdateJob_GetSingleton",
+      "abi": "__cdecl(void) -> 00e18adc, plain RET",
+      "behavior": "Same shape as 004c0960: primary vftable 00ce7544 (slot 0 = 004b4820), lifetime vftable 00ce7540 (thunk 004bd0b0 to 004c10f0).",
+      "state": "analyzed",
+      "confidence": "high"
+    },
+    {
+      "address": "00503510",
+      "name": "BSP_FrontEndPreview_Draw",
+      "abi": "__thiscall([00e198ac+70h]), plain RET, void",
+      "behavior": "Gated by the sub-object pointer and its +5 active byte. 0xC18 bytes referencing ColourRemap.tga and \"Rotor %d=0x%x\", walking 4x4 matrices through 004134f0 and 00413920 and reaching 00a8f3b0, the mesh binders 00b0e9b0..00b0fe10 and 0078cff0. The front-end 3D model preview draw; interior not reconstructed.",
+      "state": "analyzed",
+      "confidence": "medium"
+    },
+    {
+      "address": "0059d7b0",
+      "name": "BSP_InterfaceView_DrawGroundOrtho",
+      "abi": "__thiscall([00e198c4+54h]), tail JMP 0093d250, void",
+      "behavior": "Look-at from sub+54Ch and sub+550h on the ground plane through 00b63f10, orthographic projection from sub+30h and sub+34h through 00aa2020, a world-space extent pair scaled by 00d7a280 and 00d7a308 handed to 00b7aab0 and 00a8e860, then 0093d250.",
+      "state": "analyzed",
+      "confidence": "medium"
+    },
+    {
+      "address": "00535430",
+      "name": "BSP_InterfaceView_DrawTargetOrtho",
+      "abi": "__thiscall([00e198c4+5Ch]), plain RET, void",
+      "behavior": "Gated on sub+4. Reads a source object through [sub+138h]+14h, pushes two vectors through virtual +30h on sub+178h and sub+174h, and reaches the same 00aa2020, 00b63f10 and 0093d250.",
+      "state": "analyzed",
+      "confidence": "medium"
+    },
+    {
+      "address": "00a8f3b0",
+      "name": "BSP_ShadowMap_UpdateViewFromCamera",
+      "abi": "__thiscall(shadowOwner, camera), RET 4, void",
+      "behavior": "Builds identity matrices, normalises a direction through 00419510, forms a view through 00b63f10, inverts it through 00b63b30 and refreshes a world matrix through 00b6db70. Called with the owner 00b7aab0 returns for the light at game+19F8h and the render camera at game+19FCh; also reached from 00503510.",
+      "state": "analyzed",
+      "confidence": "medium"
+    },
+    {
+      "address": "00be3020",
+      "name": "BSP_FrameJobPool_Enqueue",
+      "abi": "__thiscall(pool+4, job, arg), RET 8, void",
+      "behavior": "Writes the pair at this+24h + count*8 and increments the count at this+20h. No bounds check against the 10000-slot array. Ghidra has no function at this address.",
+      "state": "analyzed",
+      "confidence": "high"
+    }
+  ],
+  "abi_table": [
+    {
+      "address": "004ca440",
+      "abi": "__thiscall(game)",
+      "ret": "RET"
+    },
+    {
+      "address": "004c6c30",
+      "abi": "__thiscall(game) -> bool",
+      "ret": "RET"
+    },
+    {
+      "address": "004ca1f0",
+      "abi": "__thiscall(game)",
+      "ret": "RET"
+    },
+    {
+      "address": "004bfbf0",
+      "abi": "__cdecl(void)",
+      "ret": "RET"
+    },
+    {
+      "address": "004c0960",
+      "abi": "__cdecl(void) -> 00e18ad8",
+      "ret": "RET"
+    },
+    {
+      "address": "004c0a30",
+      "abi": "__cdecl(void) -> 00e18adc",
+      "ret": "RET"
+    },
+    {
+      "address": "004c1130",
+      "abi": "__cdecl(void) -> 0109cf08",
+      "ret": "RET"
+    },
+    {
+      "address": "00503510",
+      "abi": "__thiscall([00e198ac+70h])",
+      "ret": "RET"
+    },
+    {
+      "address": "00535430",
+      "abi": "__thiscall([00e198c4+5Ch])",
+      "ret": "RET"
+    },
+    {
+      "address": "0059d7b0",
+      "abi": "__thiscall([00e198c4+54h])",
+      "ret": "tail JMP 0093d250"
+    },
+    {
+      "address": "00a8f3b0",
+      "abi": "__thiscall(owner, camera)",
+      "ret": "RET 4"
+    },
+    {
+      "address": "00be3020",
+      "abi": "__thiscall(pool+4, job, arg)",
+      "ret": "RET 8"
+    },
+    {
+      "address": "00be3150",
+      "abi": "__thiscall(pool+4, char)",
+      "ret": "RET 4"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "004b4820",
+      "what": "job B primary virtual: mov ecx,[00e198c4]; call 0068a0d0; ret 4"
+    },
+    {
+      "address": "004bd080",
+      "what": "adjustor thunk sub ecx,4; jmp 004c10b0"
+    },
+    {
+      "address": "004bd0b0",
+      "what": "adjustor thunk sub ecx,4; jmp 004c10f0"
+    },
+    {
+      "address": "00be3020",
+      "what": "job enqueue, RET 8; Ghidra's enclosing candidate is 00be2fa0"
+    }
+  ],
+  "uncertainties": [
+    "What the interface levels in 00e08310 rank. Level 1 -> 3D scene is established by the branch bodies; the names of levels 2 and 3 are not.",
+    "00bf94c6 is unidentified; the _mkdir reading behind the screenshot directory probe is provisional.",
+    "00f8bbd8, the target of job A's vtbl+4h, is not identified (written by 00a7b230, read by 004da780).",
+    "0078a430 and its owner 00f871b4 are characterised only by their callees; 'debug overlay' is a guess.",
+    "00735b50's ECX: the call site loads the application singleton 00e1ae90 but Ghidra's body does not read it.",
+    "game+2058h is read only here in this window; the split-view reading comes from its conjunction with game+1FE4h == 1."
+  ],
+  "remaining": [
+    "Interiors of 00503510, 00535430, 0059d7b0 and 00a8f3b0 are exported and characterised but not ported.",
+    "The job pool's worker loop is analysed only as far as 00be2fa0's drain; 00be2ea0 (the worker thread body) and 00be2c70 are untouched."
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "frame_job_pool",
+      "addresses": [
+        "004c1130",
+        "004bfa40",
+        "00be3040",
+        "00be3020",
+        "00be3150",
+        "00be2fa0",
+        "00be2ea0",
+        "00be2c70",
+        "00be4800"
+      ],
+      "files": [
+        "docs/FRAME_JOB_POOL.md",
+        "include/bsp/frame_job_pool.hpp",
+        "src/frame_job_pool.cpp"
+      ],
+      "contract": "The 0x138A8-byte worker pool: worker construction, the LIFO drain, the wake and idle virtuals, and the thread-count probe."
+    },
+    {
+      "packet": "interface_ortho_views",
+      "addresses": [
+        "0059d7b0",
+        "00535430",
+        "00aa2020",
+        "00b63f10",
+        "0093d250",
+        "00a8e860"
+      ],
+      "files": [
+        "docs/INTERFACE_ORTHO_VIEWS.md",
+        "include/bsp/interface_ortho_views.hpp",
+        "src/interface_ortho_views.cpp"
+      ],
+      "contract": "The two top-down map views and the ortho projection and look-at they share."
+    },
+    {
+      "packet": "screenshot_capture",
+      "addresses": [
+        "004bfbf0",
+        "004c9a00",
+        "004b7f70",
+        "00bf94c6"
+      ],
+      "files": [
+        "docs/SCREENSHOT_CAPTURE.md",
+        "include/bsp/screenshot_capture.hpp",
+        "src/screenshot_capture.cpp"
+      ],
+      "contract": "Where 00b2d8e0's +10h path writes the PNG and what the sequence directory probe actually is."
+    },
+    {
+      "packet": "front_end_preview_draw",
+      "addresses": [
+        "00503510",
+        "00502480",
+        "00b0e9b0",
+        "00b0fd70",
+        "00b0fdc0",
+        "00b0fe10"
+      ],
+      "files": [
+        "docs/FRONT_END_PREVIEW_DRAW.md",
+        "include/bsp/front_end_preview.hpp",
+        "src/front_end_preview.cpp"
+      ],
+      "contract": "The interface model preview: rotor bone animation, the colour-remap texture and the mesh binder calls."
+    },
+    {
+      "packet": "shadow_map_view",
+      "addresses": [
+        "00a8f3b0",
+        "00a8ac00",
+        "00a8e860",
+        "00b7aab0",
+        "00b63b30"
+      ],
+      "files": [
+        "docs/SHADOW_MAP_VIEW.md",
+        "include/bsp/shadow_map_view.hpp",
+        "src/shadow_map_view.cpp"
+      ],
+      "contract": "Building the shadow-map view and its extents from the render camera."
+    }
+  ],
+  "reconstruction": {
+    "header": "include/bsp/game_render_frame.hpp",
+    "source": "src/game_render_frame.cpp",
+    "registered": "cmake/startup.cmake",
+    "reused": [
+      "bsp::is_front_end_game_state from bsp/app_frame.hpp for the {1,2,4} suppression",
+      "bsp::GameStateId::kInMission from bsp/game_frame_control.hpp for the 0Dh test"
+    ],
+    "referenced_not_duplicated": [
+      "bsp::execute_render_command_queue_00b1ebe0 in bsp/render_command_queue.hpp",
+      "bsp::is_render_frame_active_00b1fe20 in bsp/render_command_execution.hpp"
+    ],
+    "fills_host_methods": [
+      "bsp::BlockingScreenHost::try_begin_render_frame",
+      "bsp::BlockingScreenHost::finish_render_frame",
+      "bsp::RenderTailHost::game_render",
+      "bsp::RenderTailHost::finish_render_frame",
+      "bsp::FrontEndStateHost::game_render"
+    ],
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math: 1/1 passed; one case added for the LIFO job drain order",
+    "status": "build-tested; not ABI compatible, not game validated"
+  },
+  "tooling_problems": [
+    "Ghidra's stored bodies for 004c6c30, 004ca1f0, 004bfbf0, 00503510, 00535430 and 0059d7b0 are truncated, so `bsp.py ghidra disasm <addr> --start <near end>` refuses the address; RET sizes had to come from the exported assembly.txt tails.",
+    "`bsp.py show <addr> --asm` reads exports from the main checkout, not the worktree, so the worktree path exports/bsp/functions/<addr>/ does not exist locally; assembly tails had to be read from J:/PROG/battlestations-pacific-decompile/exports/bsp.",
+    "`bsp.py ghidra export` has no --asm flag, so assembly is only written as a side effect of `show --asm`.",
+    "Ghidra has no function at 004b4820, 004bd080, 004bd0b0 or 00be3020, so `ghidra decompile` fails there and disasm-raw was needed."
+  ]
+}

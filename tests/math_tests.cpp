@@ -5,6 +5,7 @@
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
+#include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/native_string.hpp"
@@ -699,6 +700,19 @@ int main() {
         check(!bsp::atlas_split_name_matches_00aef3c0(request,
                   "interface/textures/fe/common_dxt1.ats"),
             "a candidate in a deeper directory is rejected");
+    }
+
+    {
+        // 00be2fa0 indexes the job array with the value InterlockedDecrement
+        // returned, so BSP_Game_Render's two enqueues drain in reverse: the
+        // camera update runs before the world view. A FIFO reading of the pool
+        // would silently reverse the frame's job order.
+        const std::vector<bsp::GameRenderJob> enqueued{
+            bsp::GameRenderJob::kWorldView004bbd00, bsp::GameRenderJob::kCameraUpdate004b4820};
+        const std::vector<bsp::GameRenderJob> drained = bsp::frame_job_drain_order(enqueued);
+        check(drained.size() == 2 && drained[0] == bsp::GameRenderJob::kCameraUpdate004b4820
+                && drained[1] == bsp::GameRenderJob::kWorldView004bbd00,
+            "the frame job pool drains last in first out");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
