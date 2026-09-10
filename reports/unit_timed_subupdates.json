@@ -1,0 +1,265 @@
+{
+  "packet": "unit_timed_subupdates",
+  "doc": "docs/UNIT_TIMED_SUBUPDATES.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "owner": "agent/unit-subupdates",
+  "caller": {
+    "address": "008255b0",
+    "name": "BSP_UnitInstance_Update",
+    "call_sites": ["00825d5a", "00825d6c", "00825d7e"],
+    "note": "step 11 of docs/UNIT_INSTANCE_UPDATE.md; the same scaled delta is reloaded from [ESP+8Ch] before each call"
+  },
+  "position_integration": {
+    "found_in_packet": false,
+    "evidence": "no ocean or terrain sample, no scene-node translation write and no heading write in 008252C0, 00956600 or 00834E90; the only motion read is 0092D730, which dots the physics body's linear velocity with one body axis",
+    "owner_hypothesis": "the controller at unit+1018h and its physics body at [+1018h]+2Ch, reached from step 6 (0092BE80) and the DYN_physics pair 00C31F40 / 00C32000"
+  },
+  "functions": [
+    {
+      "address": "008252c0",
+      "name": "BSP_UnitInstance_UpdateEngineAudio",
+      "convention": "__thiscall(this, float scaledDelta)",
+      "ret": 4,
+      "body": "008252c0..0082544b",
+      "instructions": 128,
+      "flow_gaps": 0,
+      "state": "reconstructed_build_tested",
+      "role": "smooths a presentation RPM toward the throttle magnitude and pushes it plus a normalized speed into up to three audio emitters",
+      "order": [
+        "00424C40 fetches the settings singleton, before the gate",
+        "gate on the byte at +9C4h",
+        "IsKindOf(0Eh) -> settings+5E0h, else IsKindOf(8) -> settings+604h, else settings+5BCh",
+        "step = block[+8h] * delta",
+        "target = byte_5Dh ? 0.0f : fabsf(f_980h)",
+        "0042AC60(&f_BC4h, target, step)",
+        "emitters at +BBCh and +BB8h get \"rpm\" = f_BC4h through vtable +1Ch",
+        "emitter at +BB4h gets \"param00\" = byte_5Dh ? 0 : 0092D730(controller) / 0080FC30(this)",
+        "object at +BC0h gets vtable +0Ch (0.0f) only while byte_5Dh is set"
+      ],
+      "string_constants": {"00d08688": "rpm", "00d09998": "param00"},
+      "callees": ["00424c40", "0042ac60", "0080fc30", "0092d730"]
+    },
+    {
+      "address": "00956600",
+      "name": "BSP_UnitInstance_UpdateTimers",
+      "convention": "__thiscall(this, float scaledDelta)",
+      "ret": 4,
+      "body": "00956600..00956b3e",
+      "instructions": 372,
+      "flow_gaps": 0,
+      "state": "reconstructed_build_tested",
+      "role": "age accumulator, two countdowns, the 0.2 s damage-threshold scan, the animation chain and the fade the scene node's visibility factor comes from",
+      "order": [
+        "f_524h += delta (unbounded, never reset here)",
+        "if (f_728h > 0) f_728h = max(f_728h - delta, 0)",
+        "f_6D8h -= delta, unconditional and allowed to go negative",
+        "if (f_6D8h < 0 and the descriptor damage table is non-empty) reload f_6D8h = 0.2f and run the scan",
+        "the +70Ch animation chain",
+        "the +2F4h fade toward +2F8h at 0.5 per second",
+        "00B6DA70 on the node at +4A4h with the visibility factor"
+      ],
+      "timers": [
+        {"offset": "0x524", "kind": "unbounded accumulator", "gates": "nothing inside this routine; the instance age", "site": "00956626"},
+        {"offset": "0x728", "kind": "countdown clamped at zero, only stepped while positive", "gates": "nothing inside this routine", "site": "0095662c"},
+        {"offset": "0x6d8", "kind": "countdown, unclamped, reloaded with 0.2f (00CE54A0)", "gates": "the descriptor damage-threshold scan", "site": "0095666f"},
+        {"offset": "0x2f4", "kind": "ramp toward +2F8h at 0.5 per second (00D7A280)", "gates": "the scene node visibility factor and the per-part intensity scalar 006FF270 returns", "site": "009569f8"}
+      ],
+      "damage_scan": {
+        "period_seconds": 0.2,
+        "period_constant": "00ce54a0",
+        "runs_when": "health < previous health at +364h",
+        "record_fires_when": "health <= threshold && threshold < previous health",
+        "record_stride": 16,
+        "record_layout": [
+          {"offset": "0x0", "type": "float", "meaning": "health threshold", "site": "0095674c"},
+          {"offset": "0x4", "type": "int", "meaning": "announce id; >= 0 fires the instance vtable +34h then 0049C940", "site": "009567fa"},
+          {"offset": "0x8", "type": "int", "meaning": "index into the descriptor float3 anchor array at +28h, bounded by +2Ch", "site": "009567a3"},
+          {"offset": "0xc", "type": "ptr", "meaning": "ref-counted effect template attached at the anchor", "site": "00956874"}
+        ],
+        "health_source": "00923be0"
+      },
+      "visibility_factor": {
+        "game_mode_source": "004BCA50(DAT_00E188A8)",
+        "threshold_mode": 9,
+        "threshold_constant": "00ce3800",
+        "threshold_value": 0.5,
+        "rule": "mode 9: (DAT_00F87152 || byte_2F0h) ? 1 : (fade > 0.5 ? 1 : 0); otherwise [DAT_00E188A8+61Dh] ? 1 : ((DAT_00F87152 || byte_2F0h) ? 1 : fade)"
+      },
+      "callees_analyzed": ["00923be0", "00415690"],
+      "callees_external": ["0042d7e0", "00414d10", "00414db0", "0049c940", "00440490", "008689c0", "004845d0", "00440a30", "00b78670", "00b6dc90", "00bf857a", "004bca50", "00b6da70"]
+    },
+    {
+      "address": "00834e90",
+      "name": "BSP_UnitInstance_UpdatePropellers",
+      "convention": "__thiscall(this, float scaledDelta)",
+      "ret": 4,
+      "body": "00834e90..0083558e",
+      "instructions": 437,
+      "flow_gaps": 0,
+      "state": "reconstructed_build_tested",
+      "role": "drives three steering scene nodes from one shared angle and spins four propeller nodes from per-node angular rates, gating a cavitation effect on each",
+      "seh": "00c9250b",
+      "order": [
+        "0092D730 on the controller at +1018h, result discarded at 00834EBC",
+        "steering angle at +1088h stepped toward (s + 1) * (1 - pi/4) at exactly the frame delta",
+        "each of the three nodes at +107Ch: local position from 00B6E0A0 into the translation row of an identity 4x4, 00467050(m, 0, angle, 0), node vtable +38h",
+        "shared base rate B = (1 - |throttle|) * clamp(throttle * 4, -1, 1) * (classGain * load * 1.2 + classIdle) * steering",
+        "per propeller i in 0..3: side term B or (-0.0f - B) by the sign of the node's local x; target = classGain * throttle + side; rate stepped by delta * 5",
+        "cavitation effect edge on |rate| >= 0.01 sampled before and after the step",
+        "angle delta = -((2*(i&1) - 1) * delta * rate); node local matrix left-multiplied by that rotation through 00413920",
+        "00834820, 00834CC0, 00834A70 with the same delta"
+      ],
+      "constants": {
+        "00d7a250": {"type": "double", "value": -1.0, "role": "steering bias"},
+        "00cedcd0": {"type": "double", "value": 0.78539818525314331, "role": "float pi/4, the steering blend"},
+        "00cec160": {"type": "double", "value": 1.2000000476837158, "role": "propeller load scale"},
+        "00d7a328": {"type": "double", "value": 4.0, "role": "throttle gain before the clamp"},
+        "00d7a260": {"type": "float", "value": -1.0, "role": "clamp floor"},
+        "00d7a24c": {"type": "float", "value": 1.0, "role": "clamp ceiling"},
+        "00d7a370": {"type": "double", "value": 5.0, "role": "rate slew per second"},
+        "00d7a238": {"type": "float", "value": 0.01, "role": "cavitation threshold on |rate|"},
+        "00d7a208": {"type": "float", "value": -0.0, "role": "the mirror the port-side term is produced with"}
+      },
+      "callees_analyzed": ["0042ac60", "0092d730"],
+      "callees_external": ["00b6e0a0", "00467050", "00b64780", "00b6db60", "00413920", "008687c0", "00867b10", "004845d0", "00834820", "00834a70", "00834cc0"]
+    },
+    {
+      "address": "0042ac60",
+      "name": "BSP_Math_StepTowards",
+      "convention": "__thiscall(float* state, float target, float maxStep)",
+      "ret": 8,
+      "body": "0042ac60..0042acb7",
+      "state": "reconstructed_build_tested_fixture_tested",
+      "rule": "if (maxStep > fabsf(*state - target)) *state = target; else *state = (target > *state) ? *state + maxStep : *state - maxStep;",
+      "notes": "the magnitude comes from clearing the sign bit of the stored float difference; both comparisons are strict; an unordered compare takes the stepping arm",
+      "callers": 16
+    },
+    {
+      "address": "00415690",
+      "name": "BSP_Math_ClampInPlace",
+      "convention": "__fastcall(float* value, const float* low, const float* high)",
+      "ret": 4,
+      "body": "00415690..004156ef",
+      "state": "reconstructed_build_tested",
+      "rule": "raise to low first, then lower to high; both tests strict"
+    },
+    {
+      "address": "0080fc30",
+      "name": "BSP_UnitInstance_GetReferenceSpeed",
+      "convention": "float __thiscall(this)",
+      "ret": 0,
+      "body": "0080fc30..0080fc8a",
+      "state": "reconstructed_build_tested",
+      "rule": "this->f_9C0h * ((DAT_00E0C978 && [DAT_00F88C30+0B8h]) ? 008E6430(4, this) : 1.0f)"
+    },
+    {
+      "address": "0092d730",
+      "name": "BSP_UnitController_GetBodyAxisSpeed",
+      "convention": "float __thiscall(controller)",
+      "ret": 0,
+      "body": "0092d730..0092d76e",
+      "state": "reconstructed_build_tested",
+      "rule": "body = controller->p_2Ch; axis = 00C32000(body); v = 00C31F40(body, &scratch); return (v[1]*axis[1Ch] + v[0]*axis[18h]) + v[2]*axis[20h];",
+      "notes": "axis+18h..+20h is the third 12-byte row, so the result is a signed speed along one body axis"
+    },
+    {
+      "address": "00923be0",
+      "name": "BSP_UnitInstance_GetHealth",
+      "convention": "float __thiscall(this)",
+      "ret": 0,
+      "body": "00923be0..00923c4b",
+      "state": "reconstructed_build_tested",
+      "rule": "byte_5Dh ? 0.0f : max(this->vtable[110h](), 0.0f), with the zero also written back to +164h"
+    }
+  ],
+  "instance_fields": [
+    {"offset": "0x164", "type": "float", "meaning": "health cache written by the floor in 00923BE0", "site": "00923c16"},
+    {"offset": "0x2f8", "type": "float", "meaning": "fade target that +2F4h chases", "site": "00956a0e"},
+    {"offset": "0x360", "type": "ptr", "meaning": "animation owner chain root", "site": "00956952"},
+    {"offset": "0x364", "type": "float", "meaning": "previous health the damage scan compares against", "site": "009566fe"},
+    {"offset": "0x70c", "type": "byte", "meaning": "animation-chain gate", "site": "00956946"},
+    {"offset": "0x710", "type": "float", "meaning": "animation clock base subtracted from DAT_00F876A4", "site": "009569cb"},
+    {"offset": "0x714", "type": "ptr", "meaning": "optional 00B78670 pre-step", "site": "0095697b"},
+    {"offset": "0x980", "type": "float", "meaning": "throttle / RPM source", "site": "00825331"},
+    {"offset": "0x984", "type": "float", "meaning": "steering source", "site": "00834ecf"},
+    {"offset": "0x9c0", "type": "float", "meaning": "base reference speed", "site": "0080fc58"},
+    {"offset": "0x9c4", "type": "byte", "meaning": "engine-audio gate", "site": "008252ca"},
+    {"offset": "0xb44", "type": "ptr[4]", "meaning": "cavitation effect handles", "site": "008353cd"},
+    {"offset": "0xbb4", "type": "ptr", "meaning": "\"param00\" emitter", "site": "008253b2"},
+    {"offset": "0xbb8", "type": "ptr", "meaning": "\"rpm\" emitter", "site": "0082538d"},
+    {"offset": "0xbbc", "type": "ptr", "meaning": "\"rpm\" emitter", "site": "00825367"},
+    {"offset": "0xbc0", "type": "ptr", "meaning": "audio object stopped while +5Dh is set", "site": "00825420"},
+    {"offset": "0xbc4", "type": "float", "meaning": "smoothed RPM", "site": "00825319"},
+    {"offset": "0xfc4", "type": "float", "meaning": "alternate throttle under +61h", "site": "008350c4"},
+    {"offset": "0xfdc", "type": "float", "meaning": "alternate steering under +61h", "site": "00834ec5"},
+    {"offset": "0x1030", "type": "float", "meaning": "propeller load", "site": "00835104"},
+    {"offset": "0x106c", "type": "ptr[4]", "meaning": "propeller scene nodes", "site": "00835179"},
+    {"offset": "0x107c", "type": "ptr[3]", "meaning": "steering scene nodes", "site": "00834f22"},
+    {"offset": "0x1088", "type": "float", "meaning": "shared steering angle", "site": "00834eef"},
+    {"offset": "0x108c", "type": "float[4]", "meaning": "propeller angular rates", "site": "00835161"}
+  ],
+  "class_block_fields": [
+    {"base": "unit+0x538", "offset": "0x69c", "type": "float", "meaning": "propeller idle term", "site": "00835116"},
+    {"base": "unit+0x538", "offset": "0x6a0", "type": "float", "meaning": "propeller gain, used against both load and throttle", "site": "008350f8"},
+    {"base": "unit+0x538", "offset": "0x6a4", "type": "ptr", "meaning": "cavitation effect template", "site": "008352c3"}
+  ],
+  "descriptor_fields": [
+    {"base": "unit+0x354", "offset": "0xc/0x10", "type": "ptr", "meaning": "damage-record vector begin and end, stride 0x10", "site": "009566a4"},
+    {"base": "unit+0x354", "offset": "0x28", "type": "ptr", "meaning": "float3 anchor array, stride 0x0c", "site": "009567b6"},
+    {"base": "unit+0x354", "offset": "0x2c", "type": "int", "meaning": "anchor count", "site": "009566e8"}
+  ],
+  "no_ghidra_function": [],
+  "reconstruction": {
+    "header": "include/bsp/unit_motion.hpp",
+    "source": "src/unit_motion.cpp",
+    "cmake": "cmake/startup.cmake",
+    "test": "tests/math_tests.cpp, one case on the rate limiter boundary and the fade clamp",
+    "build": "scripts/build.ps1 Win32 Release, warnings as errors, clean",
+    "tests": "ctest reconstructed_math passed",
+    "reuses": "unit_advance_age_00956626, unit_advance_clamped_countdown_0095662c and unit_advance_countdown_0095666f already in include/bsp/unit_instance.hpp are not restated"
+  },
+  "names_recorded": [
+    {"address": "008252c0", "name": "BSP_UnitInstance_UpdateEngineAudio"},
+    {"address": "00956600", "name": "BSP_UnitInstance_UpdateTimers"},
+    {"address": "00834e90", "name": "BSP_UnitInstance_UpdatePropellers"},
+    {"address": "0042ac60", "name": "BSP_Math_StepTowards"},
+    {"address": "00415690", "name": "BSP_Math_ClampInPlace"},
+    {"address": "0080fc30", "name": "BSP_UnitInstance_GetReferenceSpeed"},
+    {"address": "0092d730", "name": "BSP_UnitController_GetBodyAxisSpeed"},
+    {"address": "00923be0", "name": "BSP_UnitInstance_GetHealth"}
+  ],
+  "uncertainties": [
+    "the steering-angle formula (s + 1) * (1 - pi/4) is exact but its one-sided 0..0.4292 rad range does not read like a signed rudder command; whether the three +107Ch nodes are rudders, hydroplanes or control surfaces is not established",
+    "00467050's three arguments are Euler angles in an unverified axis order, so the shared angle is only known to be the second of three",
+    "the producer of +1030h (propeller load) was not found",
+    "008E6430(4, this) is called with a literal selector; the table it indexes is not established, only that the fallback is 1.0f",
+    "the discarded 0092D730 result at 00834EBC is assumed to be kept for a side effect on the controller; that side effect was not confirmed",
+    "00BF857A in the animation chain is an unmatched CRT x87 helper; fmod is the likely identity but is not confirmed"
+  ],
+  "remaining": [
+    "00834820, 00834CC0 and 00834A70, the three sub-updates that close 00834E90",
+    "0092BE80, the step 6 controller sub-update where the position integration most likely lives",
+    "the +70Ch animation chain and the object at [+360h]+160h"
+  ],
+  "follow_up_packets": [
+    {
+      "id": "unit_prop_tail_subupdates",
+      "addresses": ["00834820", "00834cc0", "00834a70"],
+      "files": ["docs/UNIT_PROP_TAIL_SUBUPDATES.md", "reports/unit_prop_tail_subupdates.json", "include/bsp/unit_prop_tail.hpp", "src/unit_prop_tail.cpp"],
+      "contract": "the three __thiscall(this, delta) routines 00834E90 ends with and the shared helper set 00414DB0 / 004842C0 / 0078CF20 / 00866B70 / 00867B10 they use"
+    },
+    {
+      "id": "unit_controller_motion",
+      "addresses": ["0092be80", "0092d730", "00c31f40", "00c32000"],
+      "files": ["docs/UNIT_CONTROLLER_MOTION.md", "reports/unit_controller_motion.json"],
+      "contract": "step 6's controller sub-update and the physics body it drives: where heading and position are actually integrated and what the object at unit+1018h holds"
+    },
+    {
+      "id": "unit_damage_table",
+      "addresses": ["00923be0", "0049c940", "00440490", "00440a30"],
+      "files": ["docs/UNIT_DAMAGE_TABLE.md", "reports/unit_damage_table.json"],
+      "contract": "the descriptor's 16-byte damage records end to end: who authors them, what the instance vtable +34h announce does, and the +164h health cache"
+    }
+  ]
+}

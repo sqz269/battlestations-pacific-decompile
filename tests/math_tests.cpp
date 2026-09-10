@@ -27,6 +27,7 @@
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
+#include "bsp/unit_motion.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
 #include "bsp/main_menu_screen.hpp"
@@ -1448,6 +1449,24 @@ int main() {
                   && !bsp::in_game_interface_screen_set(bsp::kInterfaceAirbase).sets_screen_set,
             "every level-1 screen id in the in-session map names a screen the "
             "manager owns, 21h clears level 1 and 32h leaves it alone");
+    }
+
+    {
+        // 0042AC60's distance test is strict (FCOMI then JBE at 0042AC8A), so a step
+        // exactly equal to the remaining distance steps instead of snapping, and it
+        // lands on the target only by arithmetic. 00956600's fade is asymmetric around
+        // that: rising is floored at zero and capped at the target, falling is clamped
+        // into [target, 1] by 00415690. Both are the results every sub-update in
+        // docs/UNIT_TIMED_SUBUPDATES.md is built out of.
+        check(bsp::unit_step_towards_0042ac60(0.0f, 1.0f, 1.0f) == 1.0f
+                  && bsp::unit_step_towards_0042ac60(0.0f, 1.0f, 2.0f) == 1.0f
+                  && bsp::unit_step_towards_0042ac60(1.0f, -1.0f, 0.5f) == 0.5f
+                  && bsp::unit_step_towards_0042ac60(1.0f, 1.0f, 0.25f) == 1.0f
+                  && bsp::unit_step_fade_009569f8(0.9f, 1.0f, 1.0f) == 1.0f
+                  && bsp::unit_step_fade_009569f8(0.1f, 0.0f, 1.0f) == 0.0f
+                  && bsp::unit_step_fade_009569f8(0.5f, 0.5f, 1.0f) == 0.5f,
+            "the unit rate limiter steps on an exactly equal step and the fade clamps "
+            "to its target on both directions");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
