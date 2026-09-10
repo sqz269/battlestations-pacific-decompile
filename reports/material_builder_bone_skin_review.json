@@ -1,0 +1,322 @@
+{
+  "schema": 1,
+  "scope": "Full native bone/skin prefix compared to primary build_material_constants_00b42350 with other semantic selections disabled",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "route": "python tools/bsp.py ghidra; each request verifies configured existing program",
+    "mutations": false
+  },
+  "installed_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_ranges": [
+    {
+      "start": "00b42694",
+      "end_exclusive": "00b428c0",
+      "byte_count": 556,
+      "sha256": "6b676a40221f0b6daa12db0695ea2c3cebf8431e09be8960a48705c86b607cb7",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b8ff00",
+      "end_exclusive": "00b8ff07",
+      "byte_count": 7,
+      "sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b90620",
+      "end_exclusive": "00b90630",
+      "byte_count": 16,
+      "sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b75e50",
+      "end_exclusive": "00b75e56",
+      "byte_count": 6,
+      "sha256": "2b4f1290dd630ea02869f8dc9c45a88e27460c5f4a254aac68a48f979e84917c",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00413920",
+      "end_exclusive": "00413c8a",
+      "byte_count": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b6e0d0",
+      "end_exclusive": "00b6e10a",
+      "byte_count": 58,
+      "sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b6db70",
+      "end_exclusive": "00b6dbc0",
+      "byte_count": 80,
+      "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "004134f0",
+      "end_exclusive": "00413557",
+      "byte_count": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b63b30",
+      "end_exclusive": "00b63d43",
+      "byte_count": 531,
+      "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00b6d4d0",
+      "end_exclusive": "00b6d623",
+      "byte_count": 339,
+      "sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00bf7680",
+      "end_exclusive": "00bf79e5",
+      "byte_count": 869,
+      "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00c0c82b",
+      "end_exclusive": "00c0c90e",
+      "byte_count": 227,
+      "sha256": "4d0f6655ca465138392aaa5eb7f25e3ceb3112ccd61328fb8cfdfd6519863235",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00c0c7a4",
+      "end_exclusive": "00c0c82b",
+      "byte_count": 135,
+      "sha256": "9e2d48d460a06c1923eddd855566386a388be278cc781390079b72c01be13738",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "byte_count": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "byte_count": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "installed_image_matches_ghidra": true,
+      "storage": "file-backed bytes"
+    },
+    {
+      "start": "010900fc",
+      "end_exclusive": "01090100",
+      "byte_count": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "installed_image_matches_ghidra": true,
+      "storage": "PE zero-initialized virtual data"
+    },
+    {
+      "start": "0109eea4",
+      "end_exclusive": "0109eea8",
+      "byte_count": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "installed_image_matches_ghidra": true,
+      "storage": "PE zero-initialized virtual data"
+    }
+  ],
+  "relocations": 81,
+  "decoded_instructions": 1189,
+  "native_adapter": {
+    "prefix": "Original00B42694..00B428BF plus one appended RET. Wrapper provides EBX pass, ESI entry, [ESP+B8] entry.",
+    "helpers": "Verified copied original getter, refresh, affine-inverse, copy, multiply, memcpy and complete vector-memcpy callees. No helper stubs.",
+    "predicate": "Controlled fixture virtual type predicate at animator vtable+0C; same accept/mutate behavior supplied through typed host interface",
+    "globals": "VS constant base relocated to probe vector; type singleton global initialized to explicit fixture identity"
+  },
+  "recorded_utc": "2026-09-10T06:14:27.251525+00:00",
+  "status": "five_native_prefix_comparisons_passed_with_integrated_host_builder",
+  "native_abi": {
+    "parent": "00B42350: ECX pass; stack entry,override; RET8",
+    "prefix": "00B42694..00B428BF is an interior block, EBX pass, ESI entry on entry, stack[ESP+B8] entry; no independent return ABI",
+    "bone_count_00b8ff00": "ECX model, RET, EAX [model+188]",
+    "bone_node_00b90620": "ECX model, stack index, RET4, EAX [[model+184]+index*4]",
+    "type_getter_00b75e50": "RET, EAX global010900FC",
+    "animator_predicate": "ECX captured animator, stack type ID, virtual vtable+0C, AL acceptance, fixture callee cleans one argument",
+    "multiply_00413920": "ECX left matrix, stack destination/right, RET8, EAX destination",
+    "palette_memcpy_00bf7680": "cdecl destination,source,byte_count; caller removes12 bytes"
+  },
+  "review_findings": [
+    {
+      "result": "matches",
+      "subject": "bone model representation",
+      "evidence": "00B426A8 snapshots+188 count;00B90620 reads+184 array stride4;00B426D0..00B4275F writes3 transposed world rows with x87",
+      "host": "write_bones"
+    },
+    {
+      "result": "matches",
+      "subject": "fallback multiplication and shared cache",
+      "evidence": "00B4282A..00B42863 captures inverse-bind+20, resolves model inverse, computes inverse_bind*bone_world followed by intermediate*model_inverse",
+      "host": "write_skin"
+    },
+    {
+      "result": "matches",
+      "subject": "optimized null palette",
+      "evidence": "00B427AD..00B427B5 loads palette after type predicate; null branches directly to00B428C0",
+      "host": "write_skin"
+    },
+    {
+      "result": "matches",
+      "subject": "register capture/reload asymmetry",
+      "evidence": "00B4277D captures initial skin register. Accepted path uses that ESI; fallback00B427EB reloads byte+32 after predicate without another FF gate.",
+      "host": "write_skin"
+    },
+    {
+      "result": "matches_by_source_review",
+      "subject": "inverse constant integration index/order",
+      "evidence": "Native00B42EF9 checks VS metadata+9, captured count+3F. Current builder checks vb.registers[1], resolves actual transform after visibility/LOD, then calls inverse writer before diffuse.",
+      "host": "build_material_constants_00b42350"
+    },
+    {
+      "result": "clarified",
+      "subject": "palette-count accessor contract",
+      "evidence": "Native00B427BB..00B427BE reads[captured animator+34]+8 directly. Current header explicitly marks palette_count_34_08 side-effect-free and not a native callback."
+    }
+  ],
+  "validation": {
+    "command": "./local/material_builder_bone_skin_build.ps1",
+    "compile": "MSVC Win32 /EHsc /MD /std:c++17 /W4 /WX /fp:strict /O2",
+    "host_entry": "Full build_material_constants_00b42350 linked from current main build/win32/Release/bsp_core.lib",
+    "result": "passed",
+    "scenarios": [
+      {
+        "name": "ordinary_bones",
+        "result": "passed",
+        "predicate_calls": 0,
+        "final_skin_register": 255,
+        "native_x87_exception_bits": "0",
+        "host_x87_exception_bits": "0",
+        "expected_destination_register": 3,
+        "detail": "Two ordinary bone nodes, count snapshot2, node pointers stride4, refresh each world and write three transposed x87 rows"
+      },
+      {
+        "name": "fallback_skin",
+        "result": "passed",
+        "predicate_calls": 0,
+        "final_skin_register": 3,
+        "native_x87_exception_bits": "20",
+        "host_x87_exception_bits": "20",
+        "expected_destination_register": 3,
+        "detail": "Two fallback skin records stride60h: (inverse_bind+20 * bone.world) * shared model.inverse; refresh model and bone caches"
+      },
+      {
+        "name": "accepted_palette_mutates_register",
+        "result": "passed",
+        "predicate_calls": 1,
+        "final_skin_register": 8,
+        "native_x87_exception_bits": "0",
+        "host_x87_exception_bits": "0",
+        "expected_destination_register": 3,
+        "detail": "Accepted predicate mutates metadata register3->8; copy96 raw palette bytes at initially captured register3, preserving exceptional float bit patterns"
+      },
+      {
+        "name": "accepted_null_skips_fallback",
+        "result": "passed",
+        "predicate_calls": 1,
+        "final_skin_register": 3,
+        "native_x87_exception_bits": "0",
+        "host_x87_exception_bits": "0",
+        "expected_destination_register": null,
+        "detail": "Accepted predicate with null palette returns before fallback; no writes or bone/model cache refresh despite two fallback records"
+      },
+      {
+        "name": "rejected_animator_mutates_register",
+        "result": "passed",
+        "predicate_calls": 1,
+        "final_skin_register": 8,
+        "native_x87_exception_bits": "20",
+        "host_x87_exception_bits": "20",
+        "expected_destination_register": 8,
+        "detail": "Rejected predicate mutates metadata register3->8; fallback reloads register8 before matrix writes"
+      }
+    ],
+    "compared": [
+      "All96 VS words bitwise",
+      "All96 PS words unchanged",
+      "first register/header DWORDs unchanged",
+      "model and two bone transforms: local/world/inverse matrices and valid flags",
+      "predicate call count and type identity",
+      "mutated reflected skin register",
+      "x87 exception-status low6 bits"
+    ],
+    "fixture_owners": "Explicit synthetic material with empty parameters, mode0, two bone/skin nodes and selected reflection slots. All unrelated owner requests fail; observed zero unexpected calls.",
+    "host_api_revision": "Optimized animator type is pointer to fixture identity; decode-owner signature uses vector<const LogicalVertexStream*>.",
+    "production_changes": "None by review worker; local fixture plus this evidence report only",
+    "native_helper_stubs": false,
+    "native_predicate": "Controlled virtual type predicate only; preserves inspected ECX/stack/AL contract",
+    "test_suite_added": false,
+    "scope_limits": [
+      "Other semantic slots and dynamic callbacks disabled by explicit fixture data",
+      "Does not exercise production native owner factories, gameplay, renderer device calls or full native parent execution",
+      "Parent/original C++ layout and function ABI compatibility are not established",
+      "Root transforms, default masked FP environment and small valid counts only",
+      "Memcpy executes96-byte nonoverlapping path; copied vector/overlap alternatives are not exercised",
+      "Native inverse register1 integration is source-reviewed, not selected in these prefix fixtures"
+    ],
+    "game_validated": false,
+    "native_abi_compatible": false
+  },
+  "main_checkout": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile",
+    "head": "80eacd1fef76b68a17ec39212e38e14a31e2fc55",
+    "note": "Integration files may be uncommitted; file and linked-library hashes identify the exact reviewed artifacts",
+    "library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "size": 11289882,
+      "modified_utc": "2026-09-10T06:13:36.976801+00:00",
+      "sha256": "7f0634a6bbfb2df9d47c338fd36936fd3646cfed591d17e78a72225c6786694e"
+    },
+    "source_sha256": {
+      "include/bsp/material_constant_builder.hpp": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271",
+      "src/material_constant_builder.cpp": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4",
+      "include/bsp/compiled_material.hpp": "0001f9e528e8d59116d16df38a80f0a13cfe06150156436ef269b027e2627aa0",
+      "src/material_transform_constants.cpp": "0e0a4caf7f924d5dd45601b8e78efa26e31f32b35ccdb6341a79a5a999b85fc4",
+      "src/camera_transform.cpp": "51f02548574e26d62741923690974629bb51bc81d5bcff9fb297b9537cbd7227",
+      "src/camera_projection.cpp": "cc4c4536d10891b28ca9daaf56dda8499deac5be085d09a6db373aa1da49a894",
+      "src/camera_inverse.cpp": "a154d9ab13a8332c3d6ee07e2157ffa053da6c327389f74c2f3af44ac554377e",
+      "src/camera_affine.cpp": "dc83d91929e3f52aaa8a310918830396c7bee5b74e27a6e9af83cdef88d8abfd",
+      "src/camera_multiply.cpp": "2459b03b810d82b4a08e83c7d733a2fb8bd980b57f964feec2a2c16810669511"
+    }
+  },
+  "local_evidence_sha256": {
+    "local/material_builder_bone_skin_prepare.py": "4d29c740677e9aaff42d5187e6ea7b1dcbd1e7e4a2c3022fc859df58fa076576",
+    "local/material_builder_bone_skin_probe.cpp": "f71959a380d509e487f6c78ec20a150c7246450d0d6be41bb887474d7a0a8bfc",
+    "local/material_builder_bone_skin_build.ps1": "bf23f568d08965594ff7c9cf4403de49457627feba2cea57a1f3975c42e6373c",
+    "local/material_builder_bone_skin_reference.hpp": "3fa4031bb95943843ed8624f3e407197ad59aeb7de6411ba2e5babe24077fc7e",
+    "local/material_builder_bone_skin_probe.log": "5f0ba047f138a0dc3149e2384d1f164fc0b38153a333477b927a47eaa8bc4eac"
+  }
+}
