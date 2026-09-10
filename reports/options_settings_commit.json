@@ -1,0 +1,1152 @@
+{
+  "packet": "options_settings_commit",
+  "owner": "agent/settings-commit",
+  "doc": "docs/OPTIONS_SETTINGS_COMMIT.md",
+  "summary": "The settings object at 00f88980: its full recovered layout, the persistence key table at 008d64a0 with its omit-when-default rule, the four reset writers, and the two commit paths 008d5b50 and 008d5430 with the exact call into each subsystem. Corrects the parent packet's premise: no settings field is written to the registry and none of these routines writes the options file; the block is serialized through a visitor the player-profile save carries.",
+  "settings_object": {
+    "address": "00f88980",
+    "class": "cGameSettings",
+    "loader": "008d8190",
+    "serializer": "008d64a0",
+    "fields": [
+      {
+        "offset": "0x4",
+        "size": 4,
+        "type": "int",
+        "name": "language_index",
+        "persisted_as": null,
+        "screen_row": "page1 row0 screen+DCh",
+        "evidence": "008d48c0, 008d56c0"
+      },
+      {
+        "offset": "0x8",
+        "size": 1,
+        "type": "bool",
+        "name": "imperial",
+        "persisted_as": "imperial",
+        "screen_row": "page1 row1 screen+E0h",
+        "evidence": "008d41c5, 008d64cd"
+      },
+      {
+        "offset": "0x9",
+        "size": 1,
+        "type": "bool",
+        "name": "subtitle",
+        "persisted_as": "subtitle",
+        "screen_row": "page1 row2 screen+E1h",
+        "evidence": "008d41c8, 008d6514"
+      },
+      {
+        "offset": "0xc",
+        "size": 4,
+        "type": "int",
+        "name": "hints",
+        "persisted_as": "hints",
+        "screen_row": "page1 row3 screen+E4h",
+        "evidence": "008d41cc, 008d6555"
+      },
+      {
+        "offset": "0x10",
+        "size": 1,
+        "type": "bool",
+        "name": "camera_shake",
+        "persisted_as": "cameraShake",
+        "screen_row": "page1 row4 screen+E8h",
+        "evidence": "008d41d3, 008d659f"
+      },
+      {
+        "offset": "0x14",
+        "size": 4,
+        "type": "int",
+        "name": "width",
+        "persisted_as": "options_file:Resolution",
+        "screen_row": "page3 row0 screen+ECh",
+        "evidence": "008d452b, 008d6086"
+      },
+      {
+        "offset": "0x18",
+        "size": 4,
+        "type": "int",
+        "name": "height",
+        "persisted_as": "options_file:Resolution",
+        "screen_row": "page3 row0 screen+F0h",
+        "evidence": "008d4532, 008d6082"
+      },
+      {
+        "offset": "0x1c",
+        "size": 1,
+        "type": "bool",
+        "name": "no_lod",
+        "persisted_as": "options_file:NoLOD",
+        "screen_row": null,
+        "evidence": "008d455d"
+      },
+      {
+        "offset": "0x1d",
+        "size": 1,
+        "type": "bool",
+        "name": "hires_shadow",
+        "persisted_as": "options_file:HiResShadow",
+        "screen_row": null,
+        "evidence": "008d455a"
+      },
+      {
+        "offset": "0x1e",
+        "size": 1,
+        "type": "bool",
+        "name": "fullscreen",
+        "persisted_as": "options_file:Fullscreen",
+        "screen_row": "page3 row1 screen+F6h",
+        "evidence": "008d4593, 008d607d"
+      },
+      {
+        "offset": "0x20",
+        "size": 4,
+        "type": "float",
+        "name": "master_volume",
+        "persisted_as": "masterVolume",
+        "screen_row": "page2 row0 screen+F8h",
+        "evidence": "008d41f8, 008d6623"
+      },
+      {
+        "offset": "0x24",
+        "size": 1,
+        "type": "bool",
+        "name": "sound_enabled",
+        "persisted_as": null,
+        "screen_row": null,
+        "evidence": "008d5452"
+      },
+      {
+        "offset": "0x28",
+        "size": 4,
+        "type": "float",
+        "name": "music_volume",
+        "persisted_as": "musicVol",
+        "screen_row": "page2 row1 screen+100h",
+        "evidence": "008d41fd, 008d6651"
+      },
+      {
+        "offset": "0x2c",
+        "size": 4,
+        "type": "float",
+        "name": "effects_volume",
+        "persisted_as": "sfxVol",
+        "screen_row": "page2 row3 screen+104h",
+        "evidence": "008d4202, 008d667d"
+      },
+      {
+        "offset": "0x30",
+        "size": 4,
+        "type": "float",
+        "name": "speech_volume",
+        "persisted_as": "speechVol",
+        "screen_row": "page2 row2 screen+108h",
+        "evidence": "008d4207, 008d66a9"
+      },
+      {
+        "offset": "0x34",
+        "size": 4,
+        "type": "float",
+        "name": "unknown_34",
+        "persisted_as": null,
+        "screen_row": null,
+        "evidence": "008d4596 stores 0x3f32b8c3"
+      },
+      {
+        "offset": "0x40",
+        "size": 1,
+        "type": "bool",
+        "name": "rumble_off",
+        "persisted_as": "rumbleOff",
+        "screen_row": "page4 row1 screen+118h",
+        "evidence": "008d4830, 008d66d5"
+      },
+      {
+        "offset": "0x41",
+        "size": 1,
+        "type": "bool",
+        "name": "swap_sticks",
+        "persisted_as": "swapSticks",
+        "screen_row": "page4 row4 screen+119h",
+        "evidence": "008d482d, 008d66f9"
+      },
+      {
+        "offset": "0x42",
+        "size": 1,
+        "type": "bool",
+        "name": "invert_camera_y",
+        "persisted_as": "invertCameraY",
+        "screen_row": "page4 row2 screen+11Ah",
+        "evidence": "008d4827, 008d6738"
+      },
+      {
+        "offset": "0x43",
+        "size": 1,
+        "type": "bool",
+        "name": "invert_plane_y",
+        "persisted_as": "invertPlaneY",
+        "screen_row": "page4 row3 screen+11Bh",
+        "evidence": "008d482a, 008d677a"
+      },
+      {
+        "offset": "0x44",
+        "size": 1,
+        "type": "bool",
+        "name": "swap_map_sticks",
+        "persisted_as": "swapMapSticks",
+        "screen_row": "page4 row5 screen+11Ch",
+        "evidence": "008d4833, 008d67bc"
+      },
+      {
+        "offset": "0x4a",
+        "size": 1,
+        "type": "bool",
+        "name": "target_indicator",
+        "persisted_as": "TargetIndicator",
+        "screen_row": "page1 row7 screen+122h",
+        "evidence": "008d41d6, 008d65e1"
+      },
+      {
+        "offset": "0x54",
+        "size": 4,
+        "type": "int",
+        "name": "object_detail",
+        "persisted_as": "options_file:ObjectDetail",
+        "screen_row": "page3 row6 screen+12Ch",
+        "evidence": "008d4560, 008d5c2c"
+      },
+      {
+        "offset": "0x58",
+        "size": 4,
+        "type": "int",
+        "name": "antialias_samples",
+        "persisted_as": "options_file:Antialias",
+        "screen_row": "page3 row2 screen+130h",
+        "evidence": "008d4548, 008d6079"
+      },
+      {
+        "offset": "0x5c",
+        "size": 4,
+        "type": "int",
+        "name": "antialias_index",
+        "persisted_as": null,
+        "screen_row": "page3 row2 screen+134h",
+        "evidence": "008d4545"
+      },
+      {
+        "offset": "0x60",
+        "size": 1,
+        "type": "bool",
+        "name": "vsync",
+        "persisted_as": "options_file:VSync",
+        "screen_row": "page3 row3 screen+138h",
+        "evidence": "008d454b, 008d6071"
+      },
+      {
+        "offset": "0x64",
+        "size": 4,
+        "type": "float",
+        "name": "gamma",
+        "persisted_as": "gamma",
+        "screen_row": "page3 row4 screen+13Ch",
+        "evidence": "008d454e, 008d693c"
+      },
+      {
+        "offset": "0x68",
+        "size": 4,
+        "type": "int",
+        "name": "texture_detail",
+        "persisted_as": "options_file:TextureDetail",
+        "screen_row": "page3 row5 screen+140h",
+        "evidence": "008d4553, 008d5b7c"
+      },
+      {
+        "offset": "0x6c",
+        "size": 1,
+        "type": "bool",
+        "name": "reflection",
+        "persisted_as": "options_file:Reflection",
+        "screen_row": "page3 row8 screen+144h",
+        "evidence": "008d4573, 008d5c7c"
+      },
+      {
+        "offset": "0x70",
+        "size": 4,
+        "type": "int",
+        "name": "unknown_70",
+        "persisted_as": null,
+        "screen_row": null,
+        "evidence": "008d4576, 008d5fb4"
+      },
+      {
+        "offset": "0x74",
+        "size": 1,
+        "type": "bool",
+        "name": "clouds",
+        "persisted_as": "options_file:Clouds",
+        "screen_row": "page3 row9 screen+14Ch",
+        "evidence": "008d4579, 008d5f7a"
+      },
+      {
+        "offset": "0x78",
+        "size": 4,
+        "type": "int",
+        "name": "resolution_index",
+        "persisted_as": null,
+        "screen_row": "page3 row0 screen+150h",
+        "evidence": "008d4528"
+      },
+      {
+        "offset": "0x7c",
+        "size": 1,
+        "type": "bool",
+        "name": "water_drops",
+        "persisted_as": "waterDrops",
+        "screen_row": "page1 row5 screen+154h",
+        "evidence": "008d41df, 008d686c"
+      },
+      {
+        "offset": "0x80",
+        "size": 4,
+        "type": "float",
+        "name": "marker_alpha",
+        "persisted_as": "markerAlpha",
+        "screen_row": "page1 row6 screen+158h",
+        "evidence": "008d41e2, 008d696c"
+      },
+      {
+        "offset": "0x84",
+        "size": 1,
+        "type": "bool",
+        "name": "shadow",
+        "persisted_as": "options_file:Shadow",
+        "screen_row": "page3 row7 screen+15Ch",
+        "evidence": "008d4567, 008d5fe6"
+      },
+      {
+        "offset": "0x85",
+        "size": 1,
+        "type": "bool",
+        "name": "shadow_secondary",
+        "persisted_as": "options_file:Shadow",
+        "screen_row": null,
+        "evidence": "008d456d"
+      },
+      {
+        "offset": "0x86",
+        "size": 1,
+        "type": "bool",
+        "name": "foliage",
+        "persisted_as": "options_file:Foliage",
+        "screen_row": "page3 row10 screen+15Eh",
+        "evidence": "008d45a3, 008d5f40"
+      },
+      {
+        "offset": "0x88",
+        "size": 4,
+        "type": "int",
+        "name": "shader_model",
+        "persisted_as": "options_file:ShaderModel",
+        "screen_row": null,
+        "evidence": "008d45a9, 008d421a"
+      },
+      {
+        "offset": "0x8c",
+        "size": 1,
+        "type": "bool",
+        "name": "post_effect_flag",
+        "persisted_as": null,
+        "screen_row": null,
+        "evidence": "008d457f, 008d60d6"
+      },
+      {
+        "offset": "0x8d",
+        "size": 1,
+        "type": "bool",
+        "name": "motion_blur",
+        "persisted_as": "MotionBlur",
+        "screen_row": "page3 row11 screen+165h",
+        "evidence": "008d4585, 008d68f7"
+      },
+      {
+        "offset": "0x90",
+        "size": 4,
+        "type": "int",
+        "name": "old_film_effect",
+        "persisted_as": "oldFilmEffect",
+        "screen_row": "page3 row12 screen+168h",
+        "evidence": "008d458b, 008d68ae"
+      },
+      {
+        "offset": "0x94",
+        "size": 1,
+        "type": "bool",
+        "name": "firewall",
+        "persisted_as": "options_file:Firewall",
+        "screen_row": null,
+        "evidence": "008d8190"
+      },
+      {
+        "offset": "0x95",
+        "size": 1,
+        "type": "bool",
+        "name": "hardware_reported",
+        "persisted_as": "HardwareReported",
+        "screen_row": null,
+        "evidence": "008d6827"
+      },
+      {
+        "offset": "0x98",
+        "size": 8,
+        "type": "vector",
+        "name": "downloaded_content",
+        "persisted_as": "DownloadedContent",
+        "screen_row": "page7",
+        "evidence": "008d6a80, count at +9Ch"
+      },
+      {
+        "offset": "0xb0",
+        "size": 1,
+        "type": "bool",
+        "name": "xbox_compatibility",
+        "persisted_as": "XboxCompatibilityMode",
+        "screen_row": "page4 row0 screen+188h",
+        "evidence": "008d44c6, 008d699f"
+      },
+      {
+        "offset": "0xb1",
+        "size": 1,
+        "type": "bool",
+        "name": "show_safe_area",
+        "persisted_as": "ShowSafeArea",
+        "screen_row": null,
+        "evidence": "008d69ca"
+      },
+      {
+        "offset": "0xb2",
+        "size": 1,
+        "type": "bool",
+        "name": "cockpit_mode",
+        "persisted_as": "CockpitMode",
+        "screen_row": "page1 row8 screen+18Ah",
+        "evidence": "008d41d9, 008d69f5"
+      },
+      {
+        "offset": "0xb8",
+        "size": 4,
+        "type": "int",
+        "name": "clan_text",
+        "persisted_as": "ClanText",
+        "screen_row": null,
+        "evidence": "008d6a2b"
+      }
+    ]
+  },
+  "persistence": {
+    "options_file": {
+      "path": "SHGetSpecialFolderPathA(CSIDL_PERSONAL) + options.txt, built by 008d5150",
+      "read_by": "008d8190",
+      "written_by": "0098f430, reached only from the hardware probe 0073c3b0 on IDYES",
+      "no_writer_among_packet_addresses": true,
+      "installed_file_checked": "C:/Users/<user>/Documents/Battlestations-Pacific/options.txt",
+      "installed_tokens": [
+        "Language englishauthentic",
+        "Fullscreen 0",
+        "Resolution 2560 1440",
+        "Vsync 1",
+        "ShaderModel 2",
+        "Antialias 0",
+        "Clouds 1",
+        "Foliage 1",
+        "Shadow 1",
+        "Reflection 1",
+        "TextureDetail 2",
+        "ObjectDetail 2",
+        "SoundEnabled 1",
+        "Firewall 0",
+        "HardwareReported 1"
+      ],
+      "notes": [
+        "Vsync in the shipped file confirms the token comparison is case-insensitive.",
+        "HardwareReported is present in the shipped file and emitted by 008d64a0 but was not located in the loader's else-chain at 008d846b-008d85ff.",
+        "No volume, control or gameplay key appears; the file carries only the video and startup subset."
+      ]
+    },
+    "registry": {
+      "key": "HKLM\\SOFTWARE\\Eidos\\Battlestations Pacific",
+      "value_read": "language",
+      "value_type_required": "REG_DWORD",
+      "read_by": "008d8190 path B only, when the options file cannot be opened",
+      "written_by": null,
+      "installed_key_checked": "HKLM\\SOFTWARE\\WOW6432Node\\Eidos\\Battlestations Pacific",
+      "installed_values": [
+        "ApplicationDir",
+        "Patch",
+        "languages"
+      ],
+      "finding": "No value named 'language' exists on this install ('languages' is a different name), so the fallback would fail its name/type test and the LCID switch at 008d8236 would never run."
+    },
+    "key_table_008d64a0": {
+      "signature": "void __thiscall(cGameSettings* this, SettingsWriter* writer), RET 4",
+      "body": "008d64a0-008d6ae0",
+      "direct_callers": [],
+      "reached_through": "a vtable slot; 007fae70 loads ECX with 00f88980 at 007fae97",
+      "writer_vtable": {
+        "04": "begin_section(Variant)",
+        "08": "end_section()",
+        "0c": "write_field(Variant key, Variant value)"
+      },
+      "variant_type_codes": {
+        "0": "string",
+        "1": "int",
+        "2": "float",
+        "3": "bool"
+      },
+      "default_guard": "00bd5680 compares the field variant with a default variant; true skips",
+      "sections": [
+        "Options (00d15d50)",
+        "keyboardSetup (00d15c94), delegated to 006a51c0 on the input-settings singleton",
+        "DownloadedContent (00d15bfc), one row per +98h/+9Ch entry keyed by the entry's char* at +4h with value = loop index"
+      ],
+      "prologue": "008d64a9 runs the hardware derivation 008d6170 before writing anything",
+      "rows": [
+        {
+          "key": "imperial",
+          "offset": "0x8",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": true,
+          "evidence": "008d64cd",
+          "key_string": "00d15d44"
+        },
+        {
+          "key": "subtitle",
+          "offset": "0x9",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": false,
+          "evidence": "008d6514",
+          "key_string": "00d15d38"
+        },
+        {
+          "key": "hints",
+          "offset": "0xc",
+          "type": "int",
+          "omit_when_default": true,
+          "default": 2,
+          "evidence": "008d6555",
+          "key_string": "00cf1568"
+        },
+        {
+          "key": "cameraShake",
+          "offset": "0x10",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": true,
+          "evidence": "008d659f",
+          "key_string": "00d15d2c"
+        },
+        {
+          "key": "TargetIndicator",
+          "offset": "0x4a",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": true,
+          "evidence": "008d65e1",
+          "key_string": "00d15d1c"
+        },
+        {
+          "key": "masterVolume",
+          "offset": "0x20",
+          "type": "float",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d6623",
+          "key_string": "00d15d0c"
+        },
+        {
+          "key": "musicVol",
+          "offset": "0x28",
+          "type": "float",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d6651",
+          "key_string": "00d15d00"
+        },
+        {
+          "key": "sfxVol",
+          "offset": "0x2c",
+          "type": "float",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d667d",
+          "key_string": "00d15cf8"
+        },
+        {
+          "key": "speechVol",
+          "offset": "0x30",
+          "type": "float",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d66a9",
+          "key_string": "00d15cec"
+        },
+        {
+          "key": "rumbleOff",
+          "offset": "0x40",
+          "type": "bool",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d66d5",
+          "key_string": "00d15ce0"
+        },
+        {
+          "key": "swapSticks",
+          "offset": "0x41",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": false,
+          "evidence": "008d66f9",
+          "key_string": "00d15cd4"
+        },
+        {
+          "key": "invertCameraY",
+          "offset": "0x42",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": true,
+          "evidence": "008d6738",
+          "key_string": "00d15cc4"
+        },
+        {
+          "key": "invertPlaneY",
+          "offset": "0x43",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": true,
+          "evidence": "008d677a",
+          "key_string": "00d15cb4"
+        },
+        {
+          "key": "swapMapSticks",
+          "offset": "0x44",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": false,
+          "evidence": "008d67bc",
+          "key_string": "00d15ca4"
+        },
+        {
+          "key": "HardwareReported",
+          "offset": "0x95",
+          "type": "bool",
+          "omit_when_default": true,
+          "default": false,
+          "evidence": "008d6827",
+          "key_string": "00d15c80"
+        },
+        {
+          "key": "waterDrops",
+          "offset": "0x7c",
+          "type": "bool",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d686c",
+          "key_string": "00d15c74"
+        },
+        {
+          "key": "oldFilmEffect",
+          "offset": "0x90",
+          "type": "int",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d68ae",
+          "key_string": "00d15c64"
+        },
+        {
+          "key": "MotionBlur",
+          "offset": "0x8d",
+          "type": "bool",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d68f7",
+          "key_string": "00ce8fec"
+        },
+        {
+          "key": "gamma",
+          "offset": "0x64",
+          "type": "float",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d693c",
+          "key_string": "00d15c5c"
+        },
+        {
+          "key": "markerAlpha",
+          "offset": "0x80",
+          "type": "float",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d696c",
+          "key_string": "00d15c50"
+        },
+        {
+          "key": "XboxCompatibilityMode",
+          "offset": "0xb0",
+          "type": "bool",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d699f",
+          "key_string": "00d15c38"
+        },
+        {
+          "key": "ShowSafeArea",
+          "offset": "0xb1",
+          "type": "bool",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d69ca",
+          "key_string": "00d15c28"
+        },
+        {
+          "key": "CockpitMode",
+          "offset": "0xb2",
+          "type": "bool",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d69f5",
+          "key_string": "00d15c1c"
+        },
+        {
+          "key": "ClanText",
+          "offset": "0xb8",
+          "type": "int",
+          "omit_when_default": false,
+          "default": null,
+          "evidence": "008d6a2b",
+          "key_string": "00d15c10"
+        }
+      ]
+    }
+  },
+  "routines": [
+    {
+      "address": "008d5b50",
+      "name": "BSP_Settings_ApplyAll",
+      "signature": "void __thiscall(void)",
+      "ret": 0,
+      "body": "008d5b50-008d6166",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "SEH handler 00ca3103. Accumulates a change byte at [ESP+0Ch] that becomes the sixth argument of 00b29e60. Ghidra drops the four control arguments to 00699b80, treats the change byte as an unrelated local, and mis-attributes the cloud flag push to 00bbddf0 (a 3-byte getter) instead of 00bbcfe0."
+    },
+    {
+      "address": "008d5430",
+      "name": "BSP_Settings_ApplyAudio",
+      "signature": "void __thiscall(void)",
+      "ret": 0,
+      "body": "008d5430-008d56bf",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "Master volume is clamped to [0,1] before the 004c1710 singleton store at +10h."
+    },
+    {
+      "address": "008d41c0",
+      "name": "BSP_Settings_ResetGameDefaults",
+      "signature": "void __thiscall(void)",
+      "ret": 0,
+      "body": "008d41c0-008d41ea",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "writes": {
+        "08": 1,
+        "09": 0,
+        "0c": 2,
+        "10": 1,
+        "4a": 1,
+        "b2": 1,
+        "7c": 1,
+        "80": 0.0
+      }
+    },
+    {
+      "address": "008d41f0",
+      "name": "BSP_Settings_ResetAudioDefaults",
+      "signature": "void __thiscall(void)",
+      "ret": 0,
+      "body": "008d41f0-008d420c",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "writes": {
+        "20": 0.5,
+        "28": 0.5,
+        "2c": 0.5,
+        "30": 0.5
+      },
+      "notes": "Constant 00ce3800 = 0x3f000000."
+    },
+    {
+      "address": "008d4520",
+      "name": "BSP_Settings_ResetVideoDefaults",
+      "signature": "void __thiscall(bool reset_resolution, bool keep_fullscreen)",
+      "ret": 8,
+      "body": "008d4520-008d45b1",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "The second flag is inverted: the JNZ at 008d4591 skips the +1Eh = 1 store, so fullscreen is forced on only when the argument is zero. Read from the listing; the intervening MOV/MOVSS/XORPS set no EFLAGS. Both call sites pass (0, 1). +34h receives 00ce7d20 = 0x3f32b8c3."
+    },
+    {
+      "address": "008d4820",
+      "name": "BSP_Settings_ResetControlDefaults",
+      "signature": "void __thiscall(void)",
+      "ret": 0,
+      "body": "008d4820-008d4862",
+      "state": "exported, analyzed, reconstructed except the 008d45d0 tail, build-tested",
+      "writes": {
+        "40": 0,
+        "41": 1,
+        "42": 0,
+        "43": 0,
+        "44": 1
+      },
+      "notes": "Tail-jumps to 008d45d0 with ECX = this when 00f8abe8 is non-null, 00a3e500 returns 2 and 00a3e510 is true. 008d45d0 was not opened."
+    },
+    {
+      "address": "008d4210",
+      "name": "BSP_Settings_VideoModeDiffers",
+      "signature": "char __thiscall(const cGameSettings* other)",
+      "ret": 4,
+      "body": "008d4210-008d4238",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "True when +88h differs, else +8Ch != other+8Ch. One caller, 005f65c0."
+    },
+    {
+      "address": "008d44c0",
+      "name": "BSP_Settings_SetXboxCompatibilityMode",
+      "signature": "void __thiscall(bool enabled)",
+      "ret": 4,
+      "body": "008d44c0-008d4518",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "Stores +B0h and 0108ff20, then pushes X360COMP=true (00cf7f38) or X360COMP=false (00cf7f28) through 006b8ad0(text, 0, 0, 2) when ((00e188a8)+1a08h)+4h is non-null."
+    },
+    {
+      "address": "008d48c0",
+      "name": "BSP_Settings_GetLanguageLockitId",
+      "signature": "const char* __thiscall(void)",
+      "ret": 0,
+      "body": "008d48c0-008d48dc",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "table[+04h * 0x20 + 0x0ch]; null falls back to the empty buffer at 00f88a3c."
+    },
+    {
+      "address": "008d4260",
+      "name": "BSP_Settings_GetUnitLabelKey",
+      "signature": "const char* __thiscall(void)",
+      "ret": 0,
+      "body": "008d4260-008d4270",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "notes": "FE.opt_game_metric (00d15aac) when +08h is non-zero, else FE.opt_game_imperial (00d15ac0)."
+    },
+    {
+      "address": "008d64a0",
+      "name": "BSP_Settings_WriteToStore",
+      "signature": "void __thiscall(SettingsWriter* writer)",
+      "ret": 4,
+      "body": "008d64a0-008d6ae0",
+      "state": "exported, analyzed, reconstructed, build-tested, installed-file-checked"
+    }
+  ],
+  "apply_all_sequence": [
+    {
+      "step": 1,
+      "at": "008d5b6c",
+      "call": "008d5430",
+      "fields": [
+        "+20h",
+        "+24h",
+        "+28h",
+        "+2ch",
+        "+30h"
+      ]
+    },
+    {
+      "step": 2,
+      "at": "008d5b80",
+      "call": "00b1ffb0(renderer 00f8d394)",
+      "effect": "renderer+1d84h = 2 - texture_detail(+68h)"
+    },
+    {
+      "step": 3,
+      "at": "008d5b9a",
+      "call": "renderer virtual +f0h",
+      "fields": [
+        "+64h gamma"
+      ]
+    },
+    {
+      "step": 4,
+      "at": "008d5bb6",
+      "call": "00699b80 via adjustor 004b46e0 on (00e188a8)+3ch, RET 0x10",
+      "effect": "input +4c9h=+41h, +4cah=+42h, +4cbh=+43h, +4cch=+44h; on change with input+520h set, 00698730 then 00698a10"
+    },
+    {
+      "step": 5,
+      "at": "008d5bc1",
+      "call": "004dcdf0(00e188a8)",
+      "effect": "not opened"
+    },
+    {
+      "step": 6,
+      "at": "008d5be2",
+      "call": "00bf681b(0x844) then 009955f0",
+      "guard": "00f8a304 null, 00f8abe8 non-null, 00a3e510 true",
+      "effect": "not opened"
+    },
+    {
+      "step": 7,
+      "at": "008d5c24",
+      "effect": "((00e188a8)+19fch)+4ch = {0.5,0.7,1.0}[+54h]"
+    },
+    {
+      "step": 8,
+      "at": "008d5c7c",
+      "effect": "(((00e188a8)+19f0h)+a8h)+f8h = +6ch"
+    },
+    {
+      "step": 9,
+      "at": "008d5c85",
+      "call": "004c1710",
+      "effect": "singleton+14h = +09h subtitles"
+    },
+    {
+      "step": 10,
+      "at": "008d5d1c",
+      "call": "007371d0 then 00ac3610",
+      "effect": "font registry entry for 'Fonts\\\\' (00cfefa8) plus language table entry +1ch"
+    },
+    {
+      "step": 11,
+      "at": "008d5da1",
+      "call": "00aa09d0 on 00f8bc4c",
+      "effect": "loads language table entry +4h"
+    },
+    {
+      "step": 12,
+      "at": "008d5dc8",
+      "call": "00a94c50",
+      "effect": "rumble on = !(game+634h) && !(+40h)"
+    },
+    {
+      "step": 13,
+      "at": "008d5de7",
+      "call": "00f8a304 virtuals +24h/+14h/+20h then 00aa0d30 and 00aa06d0",
+      "guard": "00f8a304 non-null; the virtuals also need byte +1ch"
+    },
+    {
+      "step": 14,
+      "at": "008d5e86",
+      "effect": "seed latches 00f88a44 from +8dh, 00f88a40 from +70h, 00f88a3d from +84h, bits in 00f88a48"
+    },
+    {
+      "step": 15,
+      "at": "008d5ed4",
+      "guard": "(00e188a8)+19ech non-null",
+      "effect": "00b72270 FoliageGroup then 00b6da70(+86h ? 1.0 : 0.0, 1); 00bbcfe0 with +74h; ocean reflection and +70h; shadow +84h through (00f8bbf0) virtual +8h; +8dh change flag"
+    },
+    {
+      "step": 16,
+      "at": "008d603c",
+      "call": "00b0d580(00f8d39c, +8dh, +58h)",
+      "effect": "renderer2+219h then render-target rebuild"
+    },
+    {
+      "step": 17,
+      "at": "008d6054",
+      "call": "renderer virtual +80h then 00b0fc00",
+      "guard": "current size != +14h/+18h"
+    },
+    {
+      "step": 18,
+      "at": "008d6092",
+      "call": "00b29e60 BSP_D3D9Renderer_ChangePresentationMode",
+      "args": [
+        "+14h",
+        "+18h",
+        "+1eh",
+        "+58h",
+        "+60h",
+        "accumulated change byte"
+      ]
+    },
+    {
+      "step": 19,
+      "at": "008d60af",
+      "call": "(0109cf04) virtual +0ch",
+      "args": [
+        "+1eh",
+        "+14h",
+        "+18h"
+      ]
+    },
+    {
+      "step": 20,
+      "at": "008d60c7",
+      "call": "XLiveOnResetDevice(00f8d394 + 0x1a28)",
+      "guard": "00e198c4 == 0"
+    },
+    {
+      "step": 21,
+      "at": "008d60e6",
+      "call": "00b107f0(00f8d39c, +8ch, +8dh, +58h)",
+      "effect": "not opened"
+    },
+    {
+      "step": 22,
+      "at": "008d60f4",
+      "call": "004c12b0 then 00aa4ef0",
+      "guard": "00e198c4 == 0"
+    },
+    {
+      "step": 23,
+      "at": "008d610d",
+      "call": "00b0d080(00f8d39c, +90h)",
+      "effect": "renderer2+220h"
+    },
+    {
+      "step": 24,
+      "at": "008d6112",
+      "call": "00439100",
+      "effect": "module directory copied into the native string at 0108ff24/0108ff28"
+    }
+  ],
+  "apply_audio_sequence": [
+    {
+      "at": "008d5455",
+      "effect": "(00f8bbd8)+70h = +24h"
+    },
+    {
+      "at": "008d546e",
+      "call": "00a7a440(00f8bbd8, +20h)",
+      "effect": "sound+4ch then group mask 0xffff"
+    },
+    {
+      "at": "008d5483",
+      "effect": "(00f8bbcc)+218h = +28h"
+    },
+    {
+      "at": "008d5490",
+      "effect": "(00f8bbcc)+21ch = +30h"
+    },
+    {
+      "at": "008d54ba",
+      "call": "00a864f0(((00e198ac)+50h), +28h)",
+      "effect": "obj+14h"
+    },
+    {
+      "at": "008d54d9",
+      "call": "00a7abf0(00f8bbd8, 0xffff, +2ch)",
+      "effect": "channel groups at +98h/+9ch"
+    },
+    {
+      "at": "008d5531",
+      "call": "00a7acf0(00f8bbd8, \"Warnings\", +30h) then 00a7f8e0"
+    },
+    {
+      "at": "008d55bc",
+      "call": "00a7acf0(00f8bbd8, \"GUITestSpeech\", +30h) then 00a7f8e0"
+    },
+    {
+      "at": "008d5647",
+      "call": "00a7acf0(00f8bbd8, \"GUIMusic\", +28h) then 00a7f8e0"
+    },
+    {
+      "at": "008d56b0",
+      "effect": "(004c1710())+10h = clamp(+20h, 0, 1)"
+    }
+  ],
+  "device_reset": {
+    "call": "XLiveOnResetDevice(00a4d46a)",
+    "argument": "00f8d394 + 0x1a28",
+    "site": "008d60c7",
+    "guard": "00e198c4 == 0",
+    "note": "The options screen duplicates the same call in its A2h and A7h arms per docs/OPTIONS_MENU_SCREENS.md."
+  },
+  "no_ghidra_function": [],
+  "uncertainties": [
+    "Which Lua modifier vector each of input +4c9h..+4cch gates was not pinned down; +4cah gates the vector at +4e0h and +4cbh the one at +4f0h (00698a10), and +4c9h or +4cch gates +4d0h (006974f0). The names here come from the serializer keys and the page-4 row order.",
+    "+34h, +70h and +8ch have no recovered meaning.",
+    "008d45d0, 009955f0, 00b107f0 and 004dcdf0 were not opened.",
+    "Whether the loader parses HardwareReported is open.",
+    "008d64a0's vtable owner was not resolved, so the container of the serialized block is inferred from 007fae70 alone.",
+    "The language table at 00f88974 was not enumerated; 'englishauthentic' is a single lanfile token compared by 008d56c0 against entry +0h/+4h."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/game_settings.hpp",
+    "source": "src/game_settings.cpp",
+    "reuses": [
+      "bsp::GameSettings and bsp::Resolution from bsp/app_bootstrap.hpp",
+      "bsp::LanguageEntry from bsp/locale_tables.hpp"
+    ],
+    "tests": "one case in tests/math_tests.cpp covering the omit-when-default rule",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors; 1/1 ctest passed",
+    "not_claimed": [
+      "ABI compatible",
+      "game validated"
+    ]
+  },
+  "follow_up_packets": [
+    {
+      "id": "settings_hardware_derivation",
+      "addresses": [
+        "008d6170",
+        "008d6dc0",
+        "008d6af0",
+        "008d79a0"
+      ],
+      "files": [
+        "docs/SETTINGS_HARDWARE_DERIVATION.md",
+        "include/bsp/settings_hardware.hpp"
+      ],
+      "contract": "What the no-options-file path derives from detected hardware, which fields it overwrites, and how HardwareReported gates it."
+    },
+    {
+      "id": "profile_settings_blob",
+      "addresses": [
+        "007fae70",
+        "007fa710",
+        "007ff100",
+        "007fefc0",
+        "008d6c00"
+      ],
+      "files": [
+        "docs/PROFILE_SETTINGS_BLOB.md",
+        "include/bsp/profile_blob.hpp"
+      ],
+      "contract": "The writer object whose vtable 008d64a0 drives, the save-blob format, and the read path that restores the settings block."
+    },
+    {
+      "id": "render_post_effect_rebuild",
+      "addresses": [
+        "00b107f0",
+        "00b0d580",
+        "00b0fc00",
+        "00b0f6e0",
+        "00b0d080"
+      ],
+      "files": [
+        "docs/RENDER_POST_EFFECT_REBUILD.md",
+        "include/bsp/post_effect_rebuild.hpp"
+      ],
+      "contract": "What the motion-blur, antialias and old-film fields change in the render-target set."
+    },
+    {
+      "id": "input_stick_modifiers",
+      "addresses": [
+        "00699b80",
+        "00698730",
+        "006974f0",
+        "006a51c0"
+      ],
+      "files": [
+        "docs/INPUT_STICK_MODIFIERS.md"
+      ],
+      "contract": "Which Lua modifier vector each of input +4c9h..+4cch gates, and the keyboardSetup serialization body."
+    }
+  ]
+}
