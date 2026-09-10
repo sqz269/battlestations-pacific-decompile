@@ -1,0 +1,675 @@
+{
+  "schema_version": 1,
+  "packet": "native_exception_queue_integration",
+  "status": "integrated_reviewed_strict_win32_exception_native_fixture_and_queue_assembly_checks_passed",
+  "new_complete_functions": 9,
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00411700",
+      "name": "construct_native_legacy_logic_error_00411700",
+      "cpp_symbol": "construct_native_legacy_logic_error_00411700",
+      "source": "src/native_legacy_exception_owner.cpp",
+      "native_end_exclusive": "0041175f",
+      "original_abi": "ECX actual destination; stack source NativeLegacySboStringStorage address; RET4; EAX destination",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json",
+      "status": "actual_storage_strict_win32_original_owner_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Default base: clear message and ownership, publish D69370. Publish D69248. Set member length0 then capacity15, arm state0 before first NUL store, then assign source substring offset0/countFFFFFFFF. Failed member copy cleans base only.",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00411780",
+      "name": "destroy_native_legacy_logic_error_00411780",
+      "cpp_symbol": "destroy_native_legacy_logic_error_00411780",
+      "source": "src/native_legacy_exception_owner.cpp",
+      "native_end_exclusive": "004117b2",
+      "original_abi": "ECX actual owner; RET0; no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json",
+      "status": "actual_storage_strict_win32_original_owner_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Publish D69248. Free member heap at capacity>=16; after return reset capacity15/length0/firstNUL, then destroy current base. Preserve base message/ownership fields and do not free owner.",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004117c0",
+      "name": "scalar_delete_native_legacy_logic_error_004117c0",
+      "cpp_symbol": "scalar_delete_native_legacy_logic_error_004117c0",
+      "source": "src/native_legacy_exception_owner.cpp",
+      "native_end_exclusive": "00411807",
+      "original_abi": "ECX actual owner; stack flags; RET4; EAX original owner even when freed",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json",
+      "status": "actual_storage_strict_win32_original_owner_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Perform full ordinary destruction, then flags bit0 optionally frees actual owner. Preserve both returning-free continuations and return original address.",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004118d0",
+      "name": "copy_native_legacy_logic_error_004118d0",
+      "cpp_symbol": "copy_native_legacy_logic_error_004118d0",
+      "source": "src/native_legacy_exception_owner.cpp",
+      "native_end_exclusive": "00411935",
+      "original_abi": "ECX actual destination; stack source owner address; RET4; EAX destination",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json",
+      "status": "actual_storage_strict_win32_original_owner_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Copy base while owner state is -1. Publish D69248; set member capacity15 then length0, arm state0 before first NUL store, and copy full member substring. Member failure destroys base only; base-copy failure has no owner cleanup.",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00411940",
+      "name": "copy_native_legacy_length_error_00411940",
+      "cpp_symbol": "copy_native_legacy_length_error_00411940",
+      "source": "src/native_legacy_exception_owner.cpp",
+      "native_end_exclusive": "00411959",
+      "original_abi": "ECX actual destination; stack source owner address; RET4; EAX destination",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json",
+      "status": "actual_storage_strict_win32_original_owner_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Call full logic-error copy; publish D69260 only after successful return.",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cb30",
+      "name": "read_native_render_batch_sort_configuration_00b1cb30",
+      "cpp_symbol": "read_native_render_batch_sort_configuration_00b1cb30",
+      "source": "src/native_render_queue_access.cpp",
+      "native_end_exclusive": "00b1cb4f",
+      "original_abi": "ECX actual queue, stack index/byte-output/DWORD-output, RET0Ch, EAX copied word with AL=1",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Actual queue byte read/write precedes DWORD read/write, preserving overlapping output effects; return captured word high24bits with lowbyte1; no index checks.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cb50",
+      "name": "set_native_last_render_command_metadata_00b1cb50",
+      "cpp_symbol": "set_native_last_render_command_metadata_00b1cb50",
+      "source": "src/native_render_queue_access.cpp",
+      "native_end_exclusive": "00b1cb74",
+      "original_abi": "ECX actual queue, stack source three DWORDs, RET4, no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Capture last command using count18 then data14; sequential three current source words copied to captured command1C/20/24, preserving overlap; valid nonempty queue required.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cb80",
+      "name": "append_native_instance_entry_pointer_00b1cb80",
+      "cpp_symbol": "append_native_instance_entry_pointer_00b1cb80",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1cbb9",
+      "original_abi": "ECX actual0Ch array, stack source pointer-cell address, RET4, no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Count-equals-capacity growth through actualB1C500; wrapping capacity double/signed minimum1; post-reserve count/data reload; native null destination skips source read/store; current count wrapping increment after optional write; borrowed entries.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cc20",
+      "name": "append_native_render_command_pointer_00b1cc20",
+      "cpp_symbol": "append_native_render_command_pointer_00b1cc20",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1cc59",
+      "original_abi": "ECX actual0Ch array, stack source pointer-cell address, RET4, no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Count-equals-capacity growth through actualB1C6C0; wrapping capacity double/signed minimum1; post-reserve count/data reload; native null destination skips source read/store; current count wrapping increment after optional write; borrowed commands.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "sha256": "1738ea975779ec203f1ff639ea7407754462b174b783141ffb523174d6e34452"
+    },
+    {
+      "path": "include/bsp/native_render_queue_access.hpp",
+      "sha256": "c023ce7e28e4a3c7d80e829ae26a038247cb279a78fd1167a7158258018962ed"
+    },
+    {
+      "path": "src/native_render_queue_access.cpp",
+      "sha256": "4756ec29c6d94911bbdfcf1fe806b0a6d610240c7ebbadaa549e709760113993"
+    },
+    {
+      "path": "include/bsp/native_render_pointer_arrays.hpp",
+      "sha256": "aaa149c6ae8b6ff66c33d9351d85450c2d63a25308cf997cbc7592263eca12c2"
+    },
+    {
+      "path": "src/native_render_pointer_arrays.cpp",
+      "sha256": "578800f83ea01eb9b3ee176b9f2c2c3bee836870c5def0a9a216a75afb3a535e"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "326065b957609ea4dab0a75dc868715faf6b8ba87636f0078c41d62548df1be6"
+    }
+  ],
+  "verified_spans": [
+    {
+      "packet": "exception_owner",
+      "address": "00411700",
+      "length": 95,
+      "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00411780",
+      "length": 50,
+      "sha256": "8490cd3c81f5f5b9fe0419d9b86450f6cfcfcff186fb0de91b56c7b36fc199f5"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "004117c0",
+      "length": 71,
+      "sha256": "d5a155f5fe810a4f2b09601226aa838a8647524489e416bc6878a89bbbd618f5"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "004118d0",
+      "length": 101,
+      "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00411940",
+      "length": 25,
+      "sha256": "70437509a99231553565df048ed07fdfa6e166270e55daaeb8bd8b82fc1eb1ca"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf632f",
+      "length": 17,
+      "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf63a6",
+      "length": 88,
+      "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf6454",
+      "length": 22,
+      "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf93a4",
+      "length": 101,
+      "sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00c5e010",
+      "length": 8,
+      "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00c5e018",
+      "length": 10,
+      "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00c5e050",
+      "length": 8,
+      "sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00c5e058",
+      "length": 10,
+      "sha256": "7a72ae46a76082c602940eb6fef1fbb68b68b07feb036c6548fcaf85d2e84d5c"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00408120",
+      "length": 5,
+      "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf65ac",
+      "length": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf9f1a",
+      "length": 5,
+      "sha256": "5cda66d596638726fa3617fb7f791797871e45ad0ae221a318eafa8d5334a495"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf9dc8",
+      "length": 5,
+      "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00c03de0",
+      "length": 5,
+      "sha256": "5f85ab0b310f40a69b5b6d3c69c1add39029bf41ce264cbd9e71975b31366573"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf66ef",
+      "length": 5,
+      "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bffb8b",
+      "length": 5,
+      "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf6b43",
+      "length": 5,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d83f6c",
+      "length": 44,
+      "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d8401c",
+      "length": 44,
+      "sha256": "a75d91d18050b85fd79822428ad231ae53eaa9f3690f53b95d52425b02ebffff"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d69248",
+      "length": 8,
+      "sha256": "e10ccae2b5dcc6bbcbded9a4c3e85418befaf2d85536a9f7af2eb291d2ddcb11"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d69260",
+      "length": 8,
+      "sha256": "aa94ce6bb47734f38297a04c9d0479503ab7496c94be6fe058f44399a2c9f84f"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d69370",
+      "length": 8,
+      "sha256": "14a5be654af6b77fdcd1c4e78d6b3893cf6f16f8cfa23ccdda2da15058142f19"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "004ce780",
+      "length": 147,
+      "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf5695",
+      "length": 62,
+      "sha256": "4be0df66d47a31a635e077583c46173356749da5b54d4a5660c8643e4f25beee"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf56d4",
+      "length": 62,
+      "sha256": "856eb0dad0a6a1d654ccd56e66dab5772a01e4bdc71d153672bd029a8726923f"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00bf6885",
+      "length": 74,
+      "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d83f98",
+      "length": 16,
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d83fd4",
+      "length": 72,
+      "sha256": "0a1de79f19047d416a59f59ce1b157aad0e0f193a3adfe5306a3da7961eccbcb"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d863a8",
+      "length": 16,
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814"
+    },
+    {
+      "packet": "exception_owner",
+      "address": "00d69274",
+      "length": 40,
+      "sha256": "df2ca14e6fb7420d97635a8d7b9305be2ec8fdefb3c4cde9356d72bccffbba74"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004d2660",
+      "length": 50,
+      "sha256": "856582d68c3098e61a09e7d1693771f0a01f15174ea9325d55a0cf140ccb8896"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004d26a0",
+      "length": 276,
+      "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00b30510",
+      "length": 162,
+      "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004d2746",
+      "length": 91,
+      "sha256": "ea34b405f64822989cf1681419277079ec429a0c44f9add692de5984a3da0820"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004ce780",
+      "length": 147,
+      "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004d05e0",
+      "length": 83,
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "0041dd40",
+      "length": 164,
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004ce6f0",
+      "length": 108,
+      "sha256": "a98d5b9f021b980dbdae7f7288f45918818b9c979e81898488d130ee28eeca21"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004ce75c",
+      "length": 21,
+      "sha256": "ed475c06fb5df27f7cec406abe8554aa3dca0995b3d74ec0d3a4e430abafc625"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "0044bcb0",
+      "length": 118,
+      "sha256": "19e95f36a47ba139e7914057677fb7e5f46c16600abb39fd565196a09daeebef"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004be820",
+      "length": 41,
+      "sha256": "5d497d265c7ca6c2474b9c1801eab82163d4244ad03df5b6d46dd7d650b6e8f9"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004becc0",
+      "length": 38,
+      "sha256": "bddcf9a515fd515f591d772dcf8ab8140d9ac561385c5c72a25bfe0618a51ef0"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004b9ff0",
+      "length": 40,
+      "sha256": "8276fbaefffa30abe86fdc50b43ea441e151b9fb4efa8a9473b6177b34ec2ce3"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "004d0990",
+      "length": 123,
+      "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00c65eb0",
+      "length": 10,
+      "sha256": "881eecfbee792d2caef6ccc058da7f98a78a99eb4dd5a468a5babc9ee4664dd2"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00c65a80",
+      "length": 18,
+      "sha256": "ab7c6e7cd1a19cd8f1f8bf644604d7d577565c8a6b8888166edc26f1d31a8b00"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00bf6885",
+      "length": 74,
+      "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00d8eafc",
+      "length": 88,
+      "sha256": "a64790c96dc50eab4ca53f081db4e255bc0c1af46fb96549ac1cadf20bcd7f7f"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00d8e3c8",
+      "length": 44,
+      "sha256": "567b09522eed3498454461707dc097f34480b546162ccd45a231806b51f47cc0"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00ce38f8",
+      "length": 17,
+      "sha256": "137ba7b8130c7be0ea882fe7eb408a7dd1c2b6913a9577da91b84bbdd756734c"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00d83f98",
+      "length": 16,
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00d83fd4",
+      "length": 16,
+      "sha256": "0a8b9d596c19d3c70400882f4ec012f7fcd1218ce95d18c044472052d5fed30f"
+    },
+    {
+      "packet": "assignment_discovery",
+      "address": "00e08000",
+      "length": 32,
+      "sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481"
+    }
+  ],
+  "queue_spans": [
+    {
+      "address": "00b1cb30",
+      "end_exclusive": "00b1cb4f",
+      "length": 31,
+      "sha256": "5f7382acdc77434bbf706c53e44671981d88a9ade9e5859171a8db390dc011bd",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1cb50",
+      "end_exclusive": "00b1cb74",
+      "length": 36,
+      "sha256": "2fcf27649c450efa5161f8479d816697ab7996eceb78484c50b1d1a2f77870d6",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1cb80",
+      "end_exclusive": "00b1cbb9",
+      "length": 57,
+      "sha256": "1aface3c76f13d0046335229bd422cd120509ff14fca1e37f17bc48b03f357ba",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1cc20",
+      "end_exclusive": "00b1cc59",
+      "length": 57,
+      "sha256": "ee925b2235ec11339b1b39d4a7cb207fae1b016798d696e65ca3a1cce6ef2136",
+      "live_matches_installed": true
+    }
+  ],
+  "exception_worker_commit": "46e75826b585b0f5d27103804db8d3a55040b2ba",
+  "exception_worker_source_unchanged": true,
+  "exception_fixture": {
+    "words": 463,
+    "passed": true,
+    "artifacts": {
+      "local/native_exception_owner_check.cpp": "ec05cc99f9750937b643c0bdbda5039f26c3a3bee59a8e29e2fe8ba9603670d7",
+      "local/exception_owner_spans.hpp": "1e7da21d2d01b1adcf1578bbed20477ac610605a6d5137e692c1530821de30bf",
+      "local/build_native_exception_owner_check.ps1": "8d0597f8b9126af377db1b3bb4a311c4234612aa2b8a531ebb8c667b8cad54b1",
+      "local/native_exception_owner_primary_fixture.txt": "08ae321b126bf9dff7b6a8a7b979434d351dfe532dbb19f3c51a1a4837d9eb70"
+    },
+    "host_crt_and_eh_boundaries": true
+  },
+  "queue_validation": {
+    "full_assembly_review": true,
+    "strict_win32_build": true,
+    "ctest_passed": 2,
+    "new_tests": 0,
+    "native_differential_fixture": false
+  },
+  "assignment_discovery": {
+    "report": "reports/native_render_alias_assignment_next.json",
+    "worker_commit": "1d99a2aea225dfd2d5d4d28bd7b15e69b8312d7e",
+    "archived_artifacts_verified": 22,
+    "later_root_blobs_verified": 3
+  },
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_exception_queue_build.txt",
+    "sha256": "7a9fa1b87ce3a18c521b832c84554c3f05bc405c04a036c2bbed82565cc328ee"
+  },
+  "definitions": "reports/native_legacy_exception_defined_functions.json",
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": [
+    "Native4CE780 full count/error factory",
+    "Actual4DD40 pooled-name resize",
+    "Range insertion and resource-record assignment",
+    "Actual preparation-job lifetime",
+    "Full command/queue execution and runnable game"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_exception_queue_annotations.json",
+    "sha256": "8914bea41e2d16941331352f008f8ebd0d25b79916c9aa6c6c8c1ee2a1f6c056",
+    "count": 9,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00411700",
+      "old_name": "FUN_00411700",
+      "name": "BSP_NativeLegacyLogicError_Construct",
+      "path": "exports/bsp/functions/00411700/decompiled.c",
+      "sha256": "a222c62f18bc0aae02f31a3ee1f317b947565d19b57227f034a906ede009334c"
+    },
+    {
+      "address": "00411780",
+      "old_name": "FUN_00411780",
+      "name": "BSP_NativeLegacyLogicError_Destroy",
+      "path": "exports/bsp/functions/00411780/decompiled.c",
+      "sha256": "6080aed94ffd403e5845338c947db876cf6dd88b2f6b83afddd6a3b0da8a025f"
+    },
+    {
+      "address": "004117c0",
+      "old_name": "CG_scalar_deleting_dtor_004117c0",
+      "name": "BSP_NativeLegacyLogicError_ScalarDelete",
+      "path": "exports/bsp/functions/004117c0/decompiled.c",
+      "sha256": "acb5f0c32de28545db5a82a116ed77b280dad5d1517e706e210b936a2e17be11"
+    },
+    {
+      "address": "004118d0",
+      "old_name": "FUN_004118d0",
+      "name": "BSP_NativeLegacyLogicError_Copy",
+      "path": "exports/bsp/functions/004118d0/decompiled.c",
+      "sha256": "3fc43aeac405fb40c63b5845c32574a3ad1d94ec9bc4cb1d6db5d99afd303323"
+    },
+    {
+      "address": "00411940",
+      "old_name": "FUN_00411940",
+      "name": "BSP_NativeLegacyLengthError_Copy",
+      "path": "exports/bsp/functions/00411940/decompiled.c",
+      "sha256": "576a4e7d6c64c4a0b962e9d3e37cfbec2bcfd32b69bcf5c10665d8485a0623d6"
+    },
+    {
+      "address": "00b1cb30",
+      "old_name": "BSP_RenderCommandQueue_GetBatchSortConfiguration",
+      "name": "BSP_RenderCommandQueue_GetBatchSortConfiguration",
+      "path": "exports/bsp/functions/00b1cb30/decompiled.c",
+      "sha256": "1a93799733dd2e24bdd81900be3a1e998cbca74d40726e6b578ec9cbce54f498"
+    },
+    {
+      "address": "00b1cb50",
+      "old_name": "FUN_00b1cb50",
+      "name": "BSP_RenderCommandQueue_SetLastCommandMetadata",
+      "path": "exports/bsp/functions/00b1cb50/decompiled.c",
+      "sha256": "aeda09501cb6c79eec7425a8d4d4b1fd422055da74c63fe21929beb0b8974540"
+    },
+    {
+      "address": "00b1cb80",
+      "old_name": "FUN_00b1cb80",
+      "name": "BSP_InstanceEntryPointers_Append",
+      "path": "exports/bsp/functions/00b1cb80/decompiled.c",
+      "sha256": "76f9b5519bd3e7bf04cbfd4f79a20c730de9569ce67df21c102bf4fcb482b09a"
+    },
+    {
+      "address": "00b1cc20",
+      "old_name": "FUN_00b1cc20",
+      "name": "BSP_RenderCommandPointers_Append",
+      "path": "exports/bsp/functions/00b1cc20/decompiled.c",
+      "sha256": "55061d22ace86550541dc1ae23680775e2b414d92c190d6d3253f2355bfac12d"
+    }
+  ],
+  "snapshot": {
+    "internal_functions": 62482,
+    "total_functions": 62924,
+    "utc": "2026-09-10T22:52:50.684021+00:00",
+    "index_fresh": true
+  },
+  "alias_clear_ledger_consolidation": {
+    "single_top_level_record": true,
+    "prior_typed_interface_preserved": true,
+    "new_function_count": 0
+  },
+  "closure_hash_recheck_utc": "2026-09-10T22:54:23.347158+00:00"
+}

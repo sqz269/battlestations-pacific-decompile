@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_queue_access",
+  "status": "integrated_complete_assembly_reviewed_strict_win32_build_checked",
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00b1cb30",
+      "name": "read_native_render_batch_sort_configuration_00b1cb30",
+      "cpp_symbol": "read_native_render_batch_sort_configuration_00b1cb30",
+      "source": "src/native_render_queue_access.cpp",
+      "native_end_exclusive": "00b1cb4f",
+      "original_abi": "ECX actual queue, stack index/byte-output/DWORD-output, RET0Ch, EAX copied word with AL=1",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Actual queue byte read/write precedes DWORD read/write, preserving overlapping output effects; return captured word high24bits with lowbyte1; no index checks.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cb50",
+      "name": "set_native_last_render_command_metadata_00b1cb50",
+      "cpp_symbol": "set_native_last_render_command_metadata_00b1cb50",
+      "source": "src/native_render_queue_access.cpp",
+      "native_end_exclusive": "00b1cb74",
+      "original_abi": "ECX actual queue, stack source three DWORDs, RET4, no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Capture last command using count18 then data14; sequential three current source words copied to captured command1C/20/24, preserving overlap; valid nonempty queue required.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cb80",
+      "name": "append_native_instance_entry_pointer_00b1cb80",
+      "cpp_symbol": "append_native_instance_entry_pointer_00b1cb80",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1cbb9",
+      "original_abi": "ECX actual0Ch array, stack source pointer-cell address, RET4, no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Count-equals-capacity growth through actualB1C500; wrapping capacity double/signed minimum1; post-reserve count/data reload; native null destination skips source read/store; current count wrapping increment after optional write; borrowed entries.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1cc20",
+      "name": "append_native_render_command_pointer_00b1cc20",
+      "cpp_symbol": "append_native_render_command_pointer_00b1cc20",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1cc59",
+      "original_abi": "ECX actual0Ch array, stack source pointer-cell address, RET4, no semantic result",
+      "evidence": "reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Count-equals-capacity growth through actualB1C6C0; wrapping capacity double/signed minimum1; post-reserve count/data reload; native null destination skips source read/store; current count wrapping increment after optional write; borrowed commands.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b1cb30",
+      "end_exclusive": "00b1cb4f",
+      "length": 31,
+      "sha256": "5f7382acdc77434bbf706c53e44671981d88a9ade9e5859171a8db390dc011bd",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1cb50",
+      "end_exclusive": "00b1cb74",
+      "length": 36,
+      "sha256": "2fcf27649c450efa5161f8479d816697ab7996eceb78484c50b1d1a2f77870d6",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1cb80",
+      "end_exclusive": "00b1cbb9",
+      "length": 57,
+      "sha256": "1aface3c76f13d0046335229bd422cd120509ff14fca1e37f17bc48b03f357ba",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1cc20",
+      "end_exclusive": "00b1cc59",
+      "length": 57,
+      "sha256": "ee925b2235ec11339b1b39d4a7cb207fae1b016798d696e65ca3a1cce6ef2136",
+      "live_matches_installed": true
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_render_queue_access.hpp",
+      "sha256": "c023ce7e28e4a3c7d80e829ae26a038247cb279a78fd1167a7158258018962ed"
+    },
+    {
+      "path": "src/native_render_queue_access.cpp",
+      "sha256": "4756ec29c6d94911bbdfcf1fe806b0a6d610240c7ebbadaa549e709760113993"
+    },
+    {
+      "path": "include/bsp/native_render_pointer_arrays.hpp",
+      "sha256": "aaa149c6ae8b6ff66c33d9351d85450c2d63a25308cf997cbc7592263eca12c2"
+    },
+    {
+      "path": "src/native_render_pointer_arrays.cpp",
+      "sha256": "578800f83ea01eb9b3ee176b9f2c2c3bee836870c5def0a9a216a75afb3a535e"
+    }
+  ],
+  "layout": {
+    "queue_bytes": 52,
+    "configuration_bytes": 8,
+    "configurations_offset": 4,
+    "command_array_offset": 20,
+    "control_offset": 32,
+    "rows_offset": 36,
+    "context_offset": 48,
+    "default_initialization_writes": false
+  },
+  "validation": {
+    "full_assembly_review": true,
+    "strict_win32_build": true,
+    "ctest_passed": 2,
+    "new_tests": 0,
+    "native_differential_fixture": false
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "full_queue_owner_or_execution": false,
+  "saved_annotations": true,
+  "refreshed_exports": true,
+  "primary_integration": "reports/native_exception_queue_integration_audit.json"
+}

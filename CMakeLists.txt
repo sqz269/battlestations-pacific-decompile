@@ -60,6 +60,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_render_batch_lifetime.cpp src/native_render_batch_reference.cpp
   src/native_render_command_owner.cpp
   src/native_legacy_sbo_string.cpp
+  src/native_legacy_exception_owner.cpp src/native_render_queue_access.cpp
   src/native_surface_owner.cpp
   src/camera_clip_planes.cpp src/camera_configuration.cpp)
 target_sources(bsp_core PRIVATE src/material_sort_metadata.cpp src/render_command_queue.cpp src/render_command_execution.cpp)

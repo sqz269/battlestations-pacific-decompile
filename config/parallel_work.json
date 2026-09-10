@@ -2627,22 +2627,24 @@
       "id": "native_legacy_exception_owner",
       "packet": "native_legacy_exception_owner",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_reconstructing_five_exception_owner_functions_on_actual_sbo_storage",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_original_five_owner_funcinfo_fixture_passed",
       "function_addresses": [
         "00411700",
         "00411780",
         "004117c0",
         "004118d0",
         "00411940"
-      ]
+      ],
+      "evidence": "reports/native_exception_queue_integration_audit.json",
+      "worker_commit": "46e75826b585b0f5d27103804db8d3a55040b2ba"
     },
     {
       "id": "native_render_alias_assignment_next",
       "packet": "native_render_alias_assignment_next",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_revalidating_full_range_insert_record_assignment_and_exact_error_dependencies",
+      "done": true,
+      "state": "read_only_discovery_reviewed_native_spans_archived_artifacts_and_pinned_root_integrations_checked",
       "function_addresses": [
         "004d2660",
         "004d26a0",
@@ -2651,7 +2653,9 @@
       "code_ownership": [
         "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
         "reports/native_render_alias_assignment_next.json"
-      ]
+      ],
+      "evidence": "reports/native_render_alias_assignment_next.json",
+      "worker_commit": "1d99a2aea225dfd2d5d4d28bd7b15e69b8312d7e"
     },
     {
       "id": "native_render_alias_list_clear",
@@ -2690,6 +2694,61 @@
         "reports/native_render_preparation_job_owner_audit.json"
       ],
       "packet": "native_render_preparation_job_owner"
+    },
+    {
+      "id": "native_render_queue_access",
+      "worker": "main",
+      "done": true,
+      "state": "integrated_complete_assembly_reviewed_strict_win32_build_checked",
+      "evidence": "reports/native_render_queue_access_audit.json",
+      "function_addresses": [
+        "00b1cb30",
+        "00b1cb50",
+        "00b1cb80",
+        "00b1cc20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_queue_access.hpp",
+        "src/native_render_queue_access.cpp",
+        "include/bsp/native_render_pointer_arrays.hpp",
+        "src/native_render_pointer_arrays.cpp",
+        "docs/NATIVE_RENDER_QUEUE_ACCESS.md",
+        "reports/native_render_queue_access_audit.json"
+      ],
+      "packet": "native_render_queue_access"
+    },
+    {
+      "id": "native_pooled_string_actual_resize",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_implementing_actual_eight_byte_pooled_string_header_resize_with_live_allocator_fields",
+      "function_addresses": [
+        "0041dd40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_string.hpp",
+        "src/native_string.cpp",
+        "docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md",
+        "reports/native_pooled_string_actual_resize_audit.json"
+      ],
+      "packet": "native_pooled_string_actual_resize"
+    },
+    {
+      "id": "native_alias_count_growth",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_implementing_full_count_error_factory_with_real_raw_exception_owner_and_declared_host_transport",
+      "function_addresses": [
+        "004ce780",
+        "00c65a80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_alias_count_growth.hpp",
+        "src/native_alias_count_growth.cpp",
+        "docs/NATIVE_ALIAS_COUNT_GROWTH.md",
+        "reports/native_alias_count_growth_audit.json"
+      ],
+      "packet": "native_alias_count_growth"
     }
   ],
   "snapshot_after_analysis": {
@@ -3498,14 +3557,14 @@
     {
       "packet": "native_legacy_exception_owner",
       "worker": "particle_clock_lifetime",
-      "state": "worker_reconstructing_five_exception_owner_functions_on_actual_sbo_storage",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_original_five_owner_funcinfo_fixture_passed",
+      "validation": "reports/native_exception_queue_integration_audit.json"
     },
     {
       "packet": "native_render_alias_assignment_next",
       "worker": "material_effect_plane",
-      "state": "worker_revalidating_full_range_insert_record_assignment_and_exact_error_dependencies",
-      "validation": null
+      "state": "read_only_discovery_reviewed_native_spans_archived_artifacts_and_pinned_root_integrations_checked",
+      "validation": "reports/native_render_alias_assignment_next.json"
     },
     {
       "packet": "native_render_alias_list_clear",
@@ -3518,29 +3577,27 @@
       "worker": "system_fog_owner_discovery",
       "state": "worker_implementing_actual_eight_byte_job_lifetime_same_real_manager_secondary_pointer_dispatch",
       "validation": null
+    },
+    {
+      "packet": "native_render_queue_access",
+      "worker": "main",
+      "state": "integrated_complete_assembly_reviewed_strict_win32_build_checked",
+      "validation": "reports/native_render_queue_access_audit.json"
+    },
+    {
+      "packet": "native_pooled_string_actual_resize",
+      "worker": "material_effect_plane",
+      "state": "worker_implementing_actual_eight_byte_pooled_string_header_resize_with_live_allocator_fields",
+      "validation": null
+    },
+    {
+      "packet": "native_alias_count_growth",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_implementing_full_count_error_factory_with_real_raw_exception_owner_and_declared_host_transport",
+      "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_legacy_exception_owner",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": [
-        "00411700",
-        "00411780",
-        "004117c0",
-        "004118d0",
-        "00411940"
-      ]
-    },
-    {
-      "packet": "native_render_alias_assignment_next",
-      "worker": "material_effect_plane",
-      "function_addresses": [
-        "004d2660",
-        "004d26a0",
-        "00b30510"
-      ]
-    },
     {
       "packet": "native_render_preparation_job_owner",
       "worker": "system_fog_owner_discovery",
@@ -3550,6 +3607,21 @@
         "00b0f210",
         "00b0f1c0",
         "00b0d930"
+      ]
+    },
+    {
+      "packet": "native_pooled_string_actual_resize",
+      "worker": "material_effect_plane",
+      "function_addresses": [
+        "0041dd40"
+      ]
+    },
+    {
+      "packet": "native_alias_count_growth",
+      "worker": "particle_clock_lifetime",
+      "function_addresses": [
+        "004ce780",
+        "00c65a80"
       ]
     }
   ],

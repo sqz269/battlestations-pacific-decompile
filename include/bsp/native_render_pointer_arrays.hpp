@@ -51,6 +51,15 @@ void resize_native_render_command_pointers_00b1cc80(
 void append_native_render_group_pointer_00b1cbe0(
     NativeRenderPointerArrayStorage&, const void* source_pointer_cell);
 
+// Complete sibling append specializations, ECX actual header, stack address
+// of a borrowed pointer cell, RET4. Reload header/count and source after any
+// reserve. Native null destination skips the source load/store but increments
+// count; unsigned address/count arithmetic preserves the native DWORD wrap.
+void append_native_instance_entry_pointer_00b1cb80(
+    NativeRenderPointerArrayStorage&, const void* source_pointer_cell);
+void append_native_render_command_pointer_00b1cc20(
+    NativeRenderPointerArrayStorage&, const void* source_pointer_cell);
+
 // Original ECX=actual embedded group-pointer header; RET. Resize0 then free
 // pointer storage. Retain the resulting dangling data pointer and capacity.
 // Do not destroy pointed groups or implicitly end the header's typed lifetime.

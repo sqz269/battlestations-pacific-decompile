@@ -1049,5 +1049,13 @@
     "No exhaustive malformed pointer/alias graph or concurrent-access validation.",
     "Some partial allocations intentionally remain after native pre-state0 or returning-handler behavior; fixture separately reclaims its retained allocations.",
     "No game, vtable dispatch, what(), or rendering validation."
-  ]
+  ],
+  "primary_integration": {
+    "report": "reports/native_exception_queue_integration_audit.json",
+    "source_header_unchanged": true,
+    "primary_fixture_words": 463,
+    "strict_win32_build": true,
+    "missing_copy_defined": true,
+    "three_free_continuations_restored": true
+  }
 }

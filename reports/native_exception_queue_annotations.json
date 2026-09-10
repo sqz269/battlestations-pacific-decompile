@@ -1,0 +1,129 @@
+[
+  {
+    "address": "00411700",
+    "before": {
+      "address": "00411700",
+      "function_name": "FUN_00411700"
+    },
+    "after": {
+      "address": "00411700",
+      "old_name": "FUN_00411700",
+      "name": "BSP_NativeLegacyLogicError_Construct",
+      "evidence": "Complete original[00411700,0041175f); ECX actual destination; stack source NativeLegacySboStringStorage address; RET4; EAX destination. Default base: clear message and ownership, publish D69370. Publish D69248. Set member length0 then capacity15, arm state0 before first NUL store, then assign source substring offset0/countFFFFFFFF. Failed member copy cleans base only. Evidence reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json. Strict MSVC Win32 build2/2; 463-word original five-owner/FuncInfo fixture with declared host CRT/EH boundaries passed. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00411780",
+    "before": {
+      "address": "00411780",
+      "function_name": "FUN_00411780"
+    },
+    "after": {
+      "address": "00411780",
+      "old_name": "FUN_00411780",
+      "name": "BSP_NativeLegacyLogicError_Destroy",
+      "evidence": "Complete original[00411780,004117b2); ECX actual owner; RET0; no semantic result. Publish D69248. Free member heap at capacity>=16; after return reset capacity15/length0/firstNUL, then destroy current base. Preserve base message/ownership fields and do not free owner. Evidence reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json. Strict MSVC Win32 build2/2; 463-word original five-owner/FuncInfo fixture with declared host CRT/EH boundaries passed. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004117c0",
+    "before": {
+      "address": "004117c0",
+      "function_name": "CG_scalar_deleting_dtor_004117c0"
+    },
+    "after": {
+      "address": "004117c0",
+      "old_name": "CG_scalar_deleting_dtor_004117c0",
+      "name": "BSP_NativeLegacyLogicError_ScalarDelete",
+      "evidence": "Complete original[004117c0,00411807); ECX actual owner; stack flags; RET4; EAX original owner even when freed. Perform full ordinary destruction, then flags bit0 optionally frees actual owner. Preserve both returning-free continuations and return original address. Evidence reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json. Strict MSVC Win32 build2/2; 463-word original five-owner/FuncInfo fixture with declared host CRT/EH boundaries passed. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004118d0",
+    "before": {
+      "address": "004118d0",
+      "function_name": "FUN_004118d0"
+    },
+    "after": {
+      "address": "004118d0",
+      "old_name": "FUN_004118d0",
+      "name": "BSP_NativeLegacyLogicError_Copy",
+      "evidence": "Complete original[004118d0,00411935); ECX actual destination; stack source owner address; RET4; EAX destination. Copy base while owner state is -1. Publish D69248; set member capacity15 then length0, arm state0 before first NUL store, and copy full member substring. Member failure destroys base only; base-copy failure has no owner cleanup. Evidence reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json. Strict MSVC Win32 build2/2; 463-word original five-owner/FuncInfo fixture with declared host CRT/EH boundaries passed. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00411940",
+    "before": {
+      "address": "00411940",
+      "function_name": "FUN_00411940"
+    },
+    "after": {
+      "address": "00411940",
+      "old_name": "FUN_00411940",
+      "name": "BSP_NativeLegacyLengthError_Copy",
+      "evidence": "Complete original[00411940,00411959); ECX actual destination; stack source owner address; RET4; EAX destination. Call full logic-error copy; publish D69260 only after successful return. Evidence reports/native_exception_queue_integration_audit.json; reports/native_legacy_exception_owner_audit.json. Strict MSVC Win32 build2/2; 463-word original five-owner/FuncInfo fixture with declared host CRT/EH boundaries passed. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1cb30",
+    "before": {
+      "address": "00b1cb30",
+      "function_name": "BSP_RenderCommandQueue_GetBatchSortConfiguration",
+      "comment": "[BSP reconstruction 00b1cb30]\nCopy byte queue+4+index*8 first, then DWORD queue+8+index*8, return AL=1; EAX upper24 bits retain copied DWORD. Native has no bounds checks.00b51df0 saves original index in EDI and overwrites stack index with DWORD output; mode selection uses EDI and enable byte only. Typed checked projection reconstructs configuration fields and access order. Evidence docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive application names are hypotheses; no original ABI/full-frame/game validation claim. Original ABI: ECX queue; stack index, byte-output, DWORD-output; RET0Ch; AL=1. Evidence: docs/RENDER_BATCH_PREPARATION.md; reports/render_batch_preparation_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1cb30",
+      "old_name": "BSP_RenderCommandQueue_GetBatchSortConfiguration",
+      "name": "BSP_RenderCommandQueue_GetBatchSortConfiguration",
+      "evidence": "Complete original[00b1cb30,00b1cb4f); ECX actual queue, stack index/byte-output/DWORD-output, RET0Ch, EAX copied word with AL=1. Actual queue byte read/write precedes DWORD read/write, preserving overlapping output effects; return captured word high24bits with lowbyte1; no index checks. Evidence reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json. Strict MSVC Win32 build2/2; Complete installed assembly reviewed; no new differential fixture for this routine helper. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1cb50",
+    "before": {
+      "address": "00b1cb50",
+      "function_name": "FUN_00b1cb50"
+    },
+    "after": {
+      "address": "00b1cb50",
+      "old_name": "FUN_00b1cb50",
+      "name": "BSP_RenderCommandQueue_SetLastCommandMetadata",
+      "evidence": "Complete original[00b1cb50,00b1cb74); ECX actual queue, stack source three DWORDs, RET4, no semantic result. Capture last command using count18 then data14; sequential three current source words copied to captured command1C/20/24, preserving overlap; valid nonempty queue required. Evidence reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json. Strict MSVC Win32 build2/2; Complete installed assembly reviewed; no new differential fixture for this routine helper. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1cb80",
+    "before": {
+      "address": "00b1cb80",
+      "function_name": "FUN_00b1cb80"
+    },
+    "after": {
+      "address": "00b1cb80",
+      "old_name": "FUN_00b1cb80",
+      "name": "BSP_InstanceEntryPointers_Append",
+      "evidence": "Complete original[00b1cb80,00b1cbb9); ECX actual0Ch array, stack source pointer-cell address, RET4, no semantic result. Count-equals-capacity growth through actualB1C500; wrapping capacity double/signed minimum1; post-reserve count/data reload; native null destination skips source read/store; current count wrapping increment after optional write; borrowed entries. Evidence reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json. Strict MSVC Win32 build2/2; Complete installed assembly reviewed; no new differential fixture for this routine helper. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1cc20",
+    "before": {
+      "address": "00b1cc20",
+      "function_name": "FUN_00b1cc20"
+    },
+    "after": {
+      "address": "00b1cc20",
+      "old_name": "FUN_00b1cc20",
+      "name": "BSP_RenderCommandPointers_Append",
+      "evidence": "Complete original[00b1cc20,00b1cc59); ECX actual0Ch array, stack source pointer-cell address, RET4, no semantic result. Count-equals-capacity growth through actualB1C6C0; wrapping capacity double/signed minimum1; post-reserve count/data reload; native null destination skips source read/store; current count wrapping increment after optional write; borrowed commands. Evidence reports/native_exception_queue_integration_audit.json; reports/native_render_queue_access_audit.json. Strict MSVC Win32 build2/2; Complete installed assembly reviewed; no new differential fixture for this routine helper. New C++ ABI, no game validation."
+    },
+    "status": "applied"
+  }
+]

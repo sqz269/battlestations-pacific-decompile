@@ -29,6 +29,34 @@ void destroy_group_pointers(NativeRenderPointerArrayStorage& array) {
     resize_pointers(array, 0);
     singleton_lifetime_free(array.data_00);
 }
+
+using ReservePointers = void (*)(NativeRenderPointerArrayStorage&, std::int32_t);
+
+void append_pointer(NativeRenderPointerArrayStorage& array,
+    const void* source_pointer_cell, ReservePointers reserve) {
+    volatile auto& actual = array;
+    const auto capacity = actual.capacity_08;
+    if (actual.count_04 == capacity) {
+        const auto doubled_bits = static_cast<std::uint32_t>(capacity) * 2u;
+        std::int32_t doubled;
+        std::memcpy(&doubled, &doubled_bits, sizeof(doubled));
+        if (doubled <= 1) doubled = 1;
+        reserve(array, doubled);
+    }
+    // Native LEA uses wrapping DWORD arithmetic, followed by a null test.
+    const auto count = static_cast<std::uint32_t>(actual.count_04);
+    const auto base = reinterpret_cast<std::uintptr_t>(actual.data_00);
+    const auto destination = base + count * 4u;
+    if (destination != 0) {
+        void* value;
+        std::memcpy(&value, source_pointer_cell, sizeof(value));
+        std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+    }
+    const auto next_bits = static_cast<std::uint32_t>(actual.count_04) + 1u;
+    std::int32_t next;
+    std::memcpy(&next, &next_bits, sizeof(next));
+    actual.count_04 = next;
+}
 } // namespace
 
 NativeRenderPointerArrayStorage* initialize_native_instance_entry_pointers_00b1c4f0(
@@ -79,6 +107,16 @@ void append_native_render_group_pointer_00b1cbe0(
     std::memcpy(&value, source_pointer_cell, sizeof(value));
     *destination = value;
     ++array.count_04;
+}
+
+void append_native_instance_entry_pointer_00b1cb80(
+    NativeRenderPointerArrayStorage& array, const void* source_pointer_cell) {
+    append_pointer(array, source_pointer_cell, reserve_native_instance_entry_pointers_00b1c500);
+}
+
+void append_native_render_command_pointer_00b1cc20(
+    NativeRenderPointerArrayStorage& array, const void* source_pointer_cell) {
+    append_pointer(array, source_pointer_cell, reserve_native_render_command_pointers_00b1c6c0);
 }
 
 void destroy_native_ordered_group_pointers_00b1d1f0(NativeRenderPointerArrayStorage& array) {
