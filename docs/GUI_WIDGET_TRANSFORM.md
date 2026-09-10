@@ -323,3 +323,10 @@ projection with a `std::vector` where the original has an intrusive list.
 | `gui_widget_property_reader` | 00AAA710, 00AAA480, 00AA5A00, 00AA6560 | docs/GUI_WIDGET_PROPERTY_READER.md, include/bsp/gui_widget_properties.hpp | The reader half of the descriptor table at 00AAAED0: how a parsed layout value reaches a field, and where a widget's parent is bound alongside `BSP_Node_SetParent_Provisional`. |
 | `gui_widget_node_binding` | 00AA6560, 00AAB4C0, 00AA7170, 00A9CD20 | docs/GUI_WIDGET_NODE_BINDING.md | How the scene node at widget+4Ch is created and attached, and what virtual +60h does before a bounds refresh. |
 | `gui_widget_visibility` | 00AA8320, 00A9CD20, 00AA6A30 | docs/GUI_WIDGET_VISIBILITY.md | The visibility and enable flags the descriptor table names but does not locate, and the recursive +20h walk. |
+
+## Corrections from docs/GUI_WIDGET_SCENE_VISIBILITY.md
+
+- The scene node at widget+4Ch is a separate 0x184-byte object created by `00aa6640` for a fresh widget and cloned by the copy constructor `00aa9520`; attach is `BSP_Node_SetParent_Provisional` with the child's node in ECX.
+- Virtual +60h is not visibility: its base writes the byte at widget+85h that one control class reads, so `00aa7170` clears that byte and republishes the bounds.
+- The authored `Visible` property is the byte at widget+E4h; effective visibility is the float at node+ACh, written by `BSP_GuiWidget_SetVisible` after the ancestor walk and the propagation walk, with widget+75h deciding whether a descendant takes the requested value. Draw skips on the node factor; hit tests skip on virtual +38h plus the +77h and +78h bytes.
+- The vtable +20h walk is teardown (children first, kind-of test, unlink, release), and `00aab4c0` is a subtree clone because `00aa6560` is a type-tag factory switch.

@@ -917,7 +917,7 @@ def main():
     p = sub.add_parser('find'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=find)
     p = sub.add_parser('strings', help='functions referencing a string containing the text'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=strings_query)
     p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes from an address (must be an instruction start), even where Ghidra has no function'); p.add_argument('address')
-    p.add_argument('--length', '--limit', dest='length', type=int, default=96, help='bytes to decode (bounds the output)'); p.add_argument('--lines', type=int, default=0, help='optional instruction cap'); p.set_defaults(func=disasm_raw)
+    p.add_argument('--length', '--limit', dest='length', type=lambda v: int(v, 0), default=96, help='bytes to decode, decimal or 0x hex (bounds the output)'); p.add_argument('--lines', type=int, default=0, help='optional instruction cap'); p.set_defaults(func=disasm_raw)
     p = sub.add_parser('scan-bytes', help='find a byte pattern (?? wildcards) in the disk image, with the enclosing function'); p.add_argument('pattern')
     p.add_argument('--limit', type=int, default=20); p.add_argument('--section', help='restrict to one section, e.g. .text'); p.add_argument('--range', help='hex lo-hi address window, e.g. 00680000-006a0000'); p.set_defaults(func=scan_bytes)
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
