@@ -39,6 +39,18 @@ private:
 // std::malloc / std::free for hosts that do not stand a pool up.
 NativeStringStorage& crt_string_storage() noexcept;
 
+// Full 0041dd40 against an existing native header: uint32 length at +0 and
+// char* data at +4, in the Win32 build. The header is neither initialized nor
+// copied into a temporary owner. Allocation/release can observe or change its
+// fields; later reads use those current fields. Equal length returns without
+// touching the pointer, including a stale or null one. No null-header guard.
+// NativeStringStorage remains the explicit host boundary for 00419cc0 and the
+// sized pool calls. The original __thiscall/RET 8 ABI is not this C++ interface.
+// A zero-byte native memcpy is omitted, as in the existing NativeString API.
+// Evidence and the remaining boundaries: docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md.
+void resize_native_string_header_0041dd40(void* actual_header,
+    NativeStringStorage& storage, std::uint32_t length, bool preserve);
+
 // Exact layout of the native eight-byte string. There is no destructor: the
 // native class does not free from one either, its owners call resize(0) or run
 // the release inline. release_to must be called before the object dies.
@@ -57,7 +69,7 @@ public:
     // native. Length zero releases the buffer and clears both fields. Any other
     // length allocates length + 1, optionally copies min(old, new) bytes, then
     // releases the old buffer with old_length + 1 and writes the terminator.
-    // The allocation happens before the release, so growing in place is safe.
+    // Delegates to resize_native_string_header_0041dd40 on this actual object.
     void resize_0041dd40(NativeStringStorage& storage, std::uint32_t length, bool preserve);
 
     // 0041e870, __thiscall, RET 4, returns this. This is a constructor body,

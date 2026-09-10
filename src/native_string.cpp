@@ -8,6 +8,16 @@ namespace bsp {
 namespace {
 
 static_assert(sizeof(NativeString) == 8, "Native string is a length dword plus a pointer.");
+static_assert(sizeof(std::uintptr_t) == 4);
+
+template<class T> T read_header(const void* header, std::size_t offset) noexcept {
+    T value;
+    std::memcpy(&value, static_cast<const char*>(header) + offset, sizeof(value));
+    return value;
+}
+template<class T> void write_header(void* header, std::size_t offset, T value) noexcept {
+    std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));
+}
 
 class CrtStringStorage final : public NativeStringStorage {
 public:
@@ -34,29 +44,42 @@ NativeStringStorage& crt_string_storage() noexcept {
     return storage;
 }
 
-void NativeString::resize_0041dd40(NativeStringStorage& storage, std::uint32_t length, bool preserve) {
-    if (length == length_) return; // 0041dd4a, taken even when data_ is null.
+void resize_native_string_header_0041dd40(void* actual_header,
+    NativeStringStorage& storage, std::uint32_t length, bool preserve) {
+    const auto initial_length = read_header<std::uint32_t>(actual_header, 0);
+    if (length == initial_length) return; // 0041dd4a does not read the pointer.
 
     if (length == 0) { // 0041dd52
-        if (data_ != nullptr) storage.release(data_, length_ + 1u);
-        data_ = nullptr;
-        length_ = 0;
+        auto* const old_data = read_header<char*>(actual_header, 4);
+        if (old_data != nullptr) storage.release(old_data, initial_length + 1u);
+        write_header<char*>(actual_header, 4, nullptr);
+        write_header<std::uint32_t>(actual_header, 0, 0);
         return;
     }
 
-    // 0041dd90: the new buffer is length + 1 bytes and is taken before the old
-    // one is given back, so the copy below can never read freed storage.
+    // 0041dd90 allocates before any old-buffer release. Do not snapshot the
+    // source header across this boundary: a callback may have changed it.
     char* block = storage.allocate(length + 1u);
     if (preserve) { // 0041dd95
-        const std::uint32_t copied = length > length_ ? length_ : length;
-        // The native calls memcpy unconditionally here and passes a null source
-        // when the string was empty; the count is zero in that case.
-        if (copied != 0) std::memcpy(block, data_, copied);
+        const auto current_length = read_header<std::uint32_t>(actual_header, 0);
+        const auto copied = length > current_length ? current_length : length;
+        // Preserve the existing host policy: omit native memcpy with count 0,
+        // which can pass a null source and is not a defined standard C++ call.
+        if (copied != 0)
+            std::memcpy(block, read_header<char*>(actual_header, 4), copied);
     }
-    if (data_ != nullptr) storage.release(data_, length_ + 1u); // 0041ddb9
-    data_ = block;
-    length_ = length;
-    block[length] = '\0'; // 0041ddda
+    auto* const old_data = read_header<char*>(actual_header, 4); // 0041ddb9
+    if (old_data != nullptr)
+        storage.release(old_data, read_header<std::uint32_t>(actual_header, 0) + 1u);
+    write_header<char*>(actual_header, 4, block);
+    write_header<std::uint32_t>(actual_header, 0, length);
+    // Native Win32 address addition, including uint32 wrap. No length guard or
+    // cleanup is added if the caller/storage contract cannot support the write.
+    *reinterpret_cast<char*>(reinterpret_cast<std::uintptr_t>(block) + length) = '\0';
+}
+
+void NativeString::resize_0041dd40(NativeStringStorage& storage, std::uint32_t length, bool preserve) {
+    resize_native_string_header_0041dd40(this, storage, length, preserve);
 }
 
 NativeString& NativeString::assign_0041e870(NativeStringStorage& storage, const char* text) {

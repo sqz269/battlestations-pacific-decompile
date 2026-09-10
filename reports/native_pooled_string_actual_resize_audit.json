@@ -1,0 +1,458 @@
+{
+  "packet": "native_pooled_string_actual_resize",
+  "schema_version": 1,
+  "utc": "2026-09-10T23:00:36.095328+00:00",
+  "base_revision": "a8c184b2c8c5d3a25c83052e610fc88dac2bbb63",
+  "scope": {
+    "full_functions": [
+      "0041dd40"
+    ],
+    "fragments": [],
+    "owned_files": [
+      "include/bsp/native_string.hpp",
+      "src/native_string.cpp",
+      "docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md",
+      "reports/native_pooled_string_actual_resize_audit.json"
+    ],
+    "shared_ledger_writes": false,
+    "ghidra_mutations": false,
+    "cmake_changes": false,
+    "new_tracked_tests": false,
+    "excluded": [
+      "00b3051d..00b30545 name-copy fragment",
+      "00b30510 record assignment",
+      "alias list insert/count/range/catch bodies",
+      "existing fresh-header consumer changes"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each read uses bsp.py ghidra, which verifies project/program/language/image base before its query.",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    }
+  },
+  "native_spans": [
+    {
+      "address": "0041dd40",
+      "end_exclusive": "0041dde4",
+      "length": 164,
+      "raw_offset": 122176,
+      "role": "full_function",
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "bytes_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "00419cc0",
+      "end_exclusive": "00419cc5",
+      "length": 5,
+      "raw_offset": 105664,
+      "role": "explicit_storage_getter_boundary",
+      "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+      "bytes_hex": "64a1000000",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "00bd1120",
+      "end_exclusive": "00bd1125",
+      "length": 5,
+      "raw_offset": 8196384,
+      "role": "actual_storage_allocate_boundary",
+      "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+      "bytes_hex": "538b5c2408",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "00bd1510",
+      "end_exclusive": "00bd1515",
+      "length": 5,
+      "raw_offset": 8197392,
+      "role": "actual_storage_release_boundary",
+      "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+      "bytes_hex": "538b5c240c",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "00bf7680",
+      "end_exclusive": "00bf7685",
+      "length": 5,
+      "raw_offset": 8353408,
+      "role": "host_memcpy_boundary",
+      "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "bytes_hex": "558bec5756",
+      "live_ghidra_matches_installed_disk": true
+    }
+  ],
+  "functions": [
+    {
+      "address": "0041dd40",
+      "end_exclusive": "0041dde4",
+      "byte_length": 164,
+      "existing_name": "BSP_NativeString_Resize",
+      "new_cpp_interface": "void resize_native_string_header_0041dd40(void* actual_header, NativeStringStorage& storage, uint32_t length, bool preserve)",
+      "classification": "complete native resize control flow against actual header through existing explicit host storage boundary",
+      "native_abi": {
+        "convention": "__thiscall",
+        "ecx": "actual 8-byte header: uint32 length at +0; char* data at +4",
+        "stack": [
+          "uint32 requested_length",
+          "preserve decision from low byte of next DWORD"
+        ],
+        "return_cleanup_bytes": 8,
+        "semantic_return": "void; incidental EAX not reproduced",
+        "local_eh": false
+      },
+      "behavior": [
+        {
+          "at": "0041dd43..0041dd54",
+          "fact": "Capture initial length, equal request returns before data-pointer read. Equal zero retains a stale pointer and equal nonzero retains null."
+        },
+        {
+          "at": "0041dd56..0041dd7f",
+          "fact": "Changed zero request releases captured data with captured initial_length+1, then stores null data and zero length after callback returns."
+        },
+        {
+          "at": "0041dd82..0041dd95",
+          "fact": "Allocate uint32 requested+1 before release, replacement remains unpublished."
+        },
+        {
+          "at": "0041dd9e..0041ddb6",
+          "fact": "Preserve rereads current length/data after allocation, selects unsigned min(current_length,requested), then memcpy."
+        },
+        {
+          "at": "0041ddb9..0041ddd0",
+          "fact": "After copy, reread current data; if nonnull reread length, then release captured data with current_length+1."
+        },
+        {
+          "at": "0041ddd5..0041ddda",
+          "fact": "Store data then requested length, then terminator with Win32 address addition; release callback field mutations are overwritten."
+        }
+      ],
+      "exception_semantics": "An allocation exception propagates; no local cleanup or restoration of callback mutations is inserted. Existing release boundary remains noexcept.",
+      "integration": "NativeString::resize_0041dd40 delegates on this; other NativeString methods and PooledStringStorage bodies remain unchanged.",
+      "dependencies": [
+        {
+          "address": "00419cc0",
+          "role": "global singleton lookup",
+          "boundary": "already-supplied NativeStringStorage; singleton initialization/lookup side effects excluded"
+        },
+        {
+          "address": "00bd1120",
+          "role": "allocate requested+1, native flag 1",
+          "boundary": "NativeStringStorage::allocate; PooledStringStorage still composes SizedStoragePool"
+        },
+        {
+          "address": "00bd1510",
+          "role": "release current data with correct size, native flag 1",
+          "boundary": "NativeStringStorage::release noexcept; PooledStringStorage still composes SizedStoragePool"
+        },
+        {
+          "address": "00bf7680",
+          "role": "preserve memcpy",
+          "boundary": "std::memcpy for nonzero size; existing zero-size omission retained"
+        }
+      ]
+    }
+  ],
+  "host_policy_boundaries": [
+    "No original singleton lookup/first-use global side effects; caller supplies storage.",
+    "Existing zero-count memcpy omission retained because source can be null; native call separately counted in fixture.",
+    "Existing NativeStringStorage nonnull allocation contract and noexcept release retained.",
+    "Existing CRT fallback malloc(size==0?1:size), std::bad_alloc on null, and free policy retained.",
+    "Existing SizedStoragePool host arena bounds checks and throws retained; no original pool arena-overrun equivalence claim.",
+    "NativeString initialization/move/assign/copy/release_to/duplicate behavior not changed.",
+    "No validation or recovery added for malformed headers or invalid nonzero copy ranges.",
+    "Original stack ABI, register incidental return, game CRT/pool ABI and runtime not claimed."
+  ],
+  "annotations_before": {
+    "proto": "Function: BSP_NativeString_Resize at 0041dd40\nSignature: undefined BSP_NativeString_Resize(void)\nEntry: 0041dd40\nBody: 0041dd40 - 0041dde3\n{\n \"function_name\": \"BSP_NativeString_Resize\",\n \"address\": \"0041dd40\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 65,\n \"basic_block_count\": 14,\n \"edge_count\": 18,\n \"call_count\": 7,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 6,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_SizedStoragePool_GetSingleton\",\n  \"_memcpy\",\n  \"BSP_SizedStoragePool_AllocateBlock\",\n  \"BSP_SizedStoragePool_ReturnBlock\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  8,\n  12\n ],\n \"basic_block_hashes\": [\n  \"5a63e41913c0c73b7ae9ac7dfb9801ef6d8c955800acc47f9e07c0fd94164e2e\",\n  \"b632632c489ab149f1502cc17b84bf98a70354869c455bc4240ea555e6a4a0cf\",\n  \"5c31a1c1da6ec185292f45242ecc8438fc5299d977cddb93acc34e1ea7d5e2cf\",\n  \"133e551e24674438af9fd3c5f02ec8ebd901f5184e13a9a48175c65410320814\",\n  \"b3f8714adab04070b347bab9188196f4e12caa8a3e6398d4c07ea53a443060be\",\n  \"042d215a3980cb2d1c2ef8a8d3320de12592b79c0932dab24e2b2f0e828f3d92\",\n  \"e6ddf935799620cbff1dc1101673fd97d6842eef21cef4ccd17e3bbb154c7ff1\",\n  \"2b3b8487f700a723b0dc5ea47e839c5ab502bbb555837dfbd1d40d4ea5fc6d12\",\n  \"6b4bf1b6092371bc1c5788e8a81e3ac590aa1edb68db4cb58debe791bc7e96da\",\n  \"27a92c0bb175c375da56536b757bc531f4013513e4605cdce44ac811b0d12a4d\",\n  \"f10aac7ce5b792cb516ec7f0ebb483178c4a9dcbfbbdebc70dd012e216fc3f75\",\n  \"7832f72661bb0da89e43795ec7bd98de84d43e22fad04e49d45d53aa746980db\",\n  \"043982287a2b5f6b0d413fc300b8ebcf45b413619cd9c8f18e8f5122f2ee5fab\",\n  \"01b2fbacef0cfc536fb6ad678468d30be838292b626be1a7c9b8d3eea83d4fb9\"\n ]\n}\n",
+    "comments": [
+      {
+        "address": "0041dd40",
+        "annotation": {
+          "address": "0041dd40",
+          "function_name": "BSP_NativeString_Resize",
+          "comment": "[BSP reconstruction 0041dd40]\nIf desired length unchanged do nothing; zero desired length releases old data through00419cc0/00bd1510 and clears both fields. Nonzero new length allocates length+1 through00419cc0/00bd1120, optionally copies min(old,new), returns old storage if nonnull, writes newlength/data and trailing zero byte. Resolver invokes from zeroed fresh output so old storage is absent. Original ABI: ECX8-byte string; stack desired unsigned length and preserve flag (low byte); RET8. Evidence: docs/VERTEX_FORMAT_RESOLUTION.md; reports/mesh_declaration_resolver_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 0041dd40] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX 8-byte string {uint length +0, char* data +4}, stack (uint length, char preserve), RET 8. No capacity field, no small-buffer area: the block is always length+1 bytes, so a shrink reallocates. A request for the length already held returns immediately even when data is null (0041dd4a). Length 0 releases data with old_length+1 and clears both fields. Otherwise it allocates length+1 from the string pool (00419cc0 then 00bd1120) BEFORE releasing the old block, optionally copies min(old,new) bytes, releases the old block with old_length+1, then stores data/length and writes the terminator at data[length]. 2280 callers. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+        }
+      }
+    ]
+  },
+  "annotations_recommendation": {
+    "name": "BSP_NativeString_Resize",
+    "name_change": false,
+    "preserve_existing_comments": true,
+    "integrator_owned": true,
+    "append_comment": "Full 164-byte body now exposes actual native 8-byte header via resize_native_string_header_0041dd40; NativeString::resize delegates. Capture initial length for equality and zero release; reread actual length/data after allocation for copy and release; publish pointer, length, terminator after release. Callback mutations and allocation throw propagation preserved. Existing host storage and zero-copy policy boundaries remain explicit. Evidence: docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md; reports/native_pooled_string_actual_resize_audit.json. 483-word original-byte differential fixture passed across storage/copy boundaries. No drop-in binary or gameplay claim."
+  },
+  "validation": {
+    "strict_cpp": {
+      "compiler": "MSVC Win32",
+      "switches": [
+        "/std:c++17",
+        "/O2",
+        "/Oy-",
+        "/EHsc",
+        "/fp:strict",
+        "/MD",
+        "/W4",
+        "/WX"
+      ],
+      "passed": true
+    },
+    "original_byte_differential": {
+      "passed": true,
+      "normalized_words": 483,
+      "native_getter_boundaries": 12,
+      "separately_accounted_native_zero_memcpy_calls": 1,
+      "body_patched": false,
+      "boundary_hooks": [
+        "00419cc0",
+        "00bd1120",
+        "00bd1510",
+        "00bf7680"
+      ],
+      "coverage": [
+        "shrink",
+        "grow",
+        "low-byte preserve",
+        "empty preserve copy",
+        "equal nonzero/null",
+        "equal zero/stale pointer",
+        "zero release and null branch",
+        "allocate callback changes actual header",
+        "release callback changes actual header before publication",
+        "allocation callback throws",
+        "FFFFFFFF allocation-size and terminator-address wrap"
+      ],
+      "limitations": "Controlled recording storage and host memcpy boundary; original pool and CRT bodies do not execute."
+    },
+    "scripts_build_initial": {
+      "passed": true,
+      "ctest": "1/1 reconstructed_math"
+    },
+    "verify_seeds": {
+      "passed": true,
+      "count": 8,
+      "spans": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true
+        }
+      ]
+    },
+    "scripts_build_final": {
+      "passed": true,
+      "ctest": "2/2: reconstructed_math and native_math_differential"
+    },
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "old_source_blobs": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "revision": "a8c184b2c8c5d3a25c83052e610fc88dac2bbb63",
+      "git_blob": "30c8c1d4067b34e0a657cfdfde75b6e678ea6a19",
+      "size": 4426,
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "revision": "a8c184b2c8c5d3a25c83052e610fc88dac2bbb63",
+      "git_blob": "33b776a97058f632123871ab478110c392c5c1a1",
+      "size": 3655,
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6"
+    }
+  ],
+  "evidence_hashes": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "size": 5278,
+      "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "size": 5042,
+      "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "size": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "size": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    },
+    {
+      "path": "docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md",
+      "size": 8128,
+      "sha256": "0f4156e647f5df9e244dda92c9c4f8dcd37bfe413ed81e65f1d32994c39b9646"
+    },
+    {
+      "path": "local/prepare_native_pooled_string_actual_resize.py",
+      "size": 3205,
+      "sha256": "7b271a771be56b56b7eb19d368fd15af2ff37d3ab2dd794316b3dd1fc49dcfa4"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_check.cpp",
+      "size": 7730,
+      "sha256": "958904a39be8006c2d51234db1f0e24ae94ada9a3a5a99730ab558fc81709be9"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_spans.hpp",
+      "size": 1561,
+      "sha256": "1feed843802a0ef8d6f3802ea47e0287500dc68dc8dd7eb40c0a5a2e4747b07f"
+    },
+    {
+      "path": "local/build_native_pooled_string_actual_resize_check.ps1",
+      "size": 1455,
+      "sha256": "3d9ca9f8f6711605503c517be4856ccbd422b4bfd20b9e14bbba6869eadd2a94"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_preparation.json",
+      "size": 4259,
+      "sha256": "331210cad0a481981291a826f8fe5cecc5e7f9f33d324cab46f3ace069fdf0d0"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_check.txt",
+      "size": 217,
+      "sha256": "79c023753f12f3206f8e4d7dc55eaeac2261311bd1a444bbc0158f1da8ee075e"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_build.txt",
+      "size": 10267,
+      "sha256": "2e7fed2994df1edb44fc8db6f055338bd87b6f7e667d78a5218c78ec0a121bc0"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_build_final.txt",
+      "size": 3124,
+      "sha256": "e255ac484deafbdffee770a73efc11446ce69fb235552cd19034ca1d71be8004"
+    },
+    {
+      "path": "local/native_pooled_string_actual_resize_seed_check.txt",
+      "size": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/native_pooled_string_resize_old_proto.txt",
+      "size": 1744,
+      "sha256": "d7af1faff2554afe3e151e0f3493f6a633a5aa35aa20a6091a0c136be11a3b30"
+    },
+    {
+      "path": "local/native_pooled_string_resize_old_comments.json",
+      "size": 1651,
+      "sha256": "0bd03bd4f5449703168bfa127ce2f65959cf8b37cca6656f4303ba5d6d99a40c"
+    },
+    {
+      "path": "exports/bsp/functions/0041dd40/decompiled.c",
+      "size": 1940,
+      "sha256": "b947dc7bac92f4cf9462ba968df93fa05ba110d83358f3eb1890771fe65b275c"
+    },
+    {
+      "path": "exports/bsp/functions/0041dd40/assembly.txt",
+      "size": 1700,
+      "sha256": "90c859d1773da202692e2d8b3b96ce4313dcb686deadea3f69bf937463d27216"
+    }
+  ]
+}
