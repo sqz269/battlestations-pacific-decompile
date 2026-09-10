@@ -1,0 +1,241 @@
+{
+  "packet": "system_fog_environment_apply",
+  "created_utc": "2026-09-10T16:42:13.424954+00:00",
+  "status": "bounded_fragment_strict_standalone_compile_and_native_differential_checked",
+  "scope": {
+    "parent": "0078CFF0",
+    "start": "0078D076",
+    "end_exclusive": "0078D180",
+    "bytes": 266,
+    "owns_setter_leaves": false,
+    "whole_parent_reconstructed": false
+  },
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra query verifies configured project/program before reading.",
+    "installation_modified": false
+  },
+  "preimages": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions": [
+      {
+        "role": "apply",
+        "address": "0078D076",
+        "length": 266,
+        "sha256": "7c186211614e300207f4475f94e05b27788d959bab24f3d533a009ad6a739b8c",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "role": "setters",
+        "address": "00B84C40",
+        "length": 465,
+        "sha256": "0308f99129ef683c3f1b2a795495239ddbef19fda9ae19d5fc5b3ac408c6aad5",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "role": "directional",
+        "address": "00B84FA0",
+        "length": 40,
+        "sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "live_ghidra_equals_installed": true
+      }
+    ]
+  },
+  "original_abi": "Parent0078CFF0 thiscall ECX environment; stack camera,scalar; RET8. Interior EDI environment, ESI camera, EBP directional source, EBX directional index. Interior is not an original function entrypoint.",
+  "public_api": "bool apply_environment_fog_0078d076(const EnvironmentFogFields&, const SystemFogState* const& actual_camera_fog_184, std::string&)",
+  "owner_contract": [
+    "EnvironmentFogFields borrows real contiguous11float native+08..30, color+34, directional+44..74 and underwater+84 regions. No constructor/default/snapshot.",
+    "Camera argument aliases the actual live CameraFrameState.fog_184 slot, without retaining or replacing its owner.",
+    "All nonnull views originate in live concrete SystemFogOwner.fields_08; core owner_from_state maps actual94byteowner with fields at+08. Standalone diagnostic states and foreign profiles are invalid.",
+    "Seventeen independent owner reloads; scalar source FLD precedes owner reload and FSTP follows it in one assembly sequence.",
+    "Null owner is a checked host error, preserving earlier writes and x87 effects; no fallback owner or native null-skip behavior is claimed."
+  ],
+  "scalar_order": [
+    {
+      "native_source_load": "0078D0A8",
+      "environment_offset": "08",
+      "fog_offset": "68",
+      "setter": "00B84D00"
+    },
+    {
+      "native_source_load": "0078D0BA",
+      "environment_offset": "0C",
+      "fog_offset": "6C",
+      "setter": "00B84D10"
+    },
+    {
+      "native_source_load": "0078D0CC",
+      "environment_offset": "10",
+      "fog_offset": "70",
+      "setter": "00B84D20"
+    },
+    {
+      "native_source_load": "0078D0DE",
+      "environment_offset": "14",
+      "fog_offset": "78",
+      "setter": "00B84D40"
+    },
+    {
+      "native_source_load": "0078D0F0",
+      "environment_offset": "18",
+      "fog_offset": "74",
+      "setter": "00B84D30"
+    },
+    {
+      "native_source_load": "0078D102",
+      "environment_offset": "1C",
+      "fog_offset": "7C",
+      "setter": "00B84D50"
+    },
+    {
+      "native_source_load": "0078D126",
+      "environment_offset": "2C",
+      "fog_offset": "80",
+      "setter": "00B84D60"
+    },
+    {
+      "native_source_load": "0078D138",
+      "environment_offset": "30",
+      "fog_offset": "84",
+      "setter": "00B84D80"
+    },
+    {
+      "native_source_load": "0078D14A",
+      "environment_offset": "20",
+      "fog_offset": "88",
+      "setter": "00B84DC0"
+    },
+    {
+      "native_source_load": "0078D15C",
+      "environment_offset": "28",
+      "fog_offset": "8C",
+      "setter": "00B84DE0"
+    },
+    {
+      "native_source_load": "0078D16E",
+      "environment_offset": "24",
+      "fog_offset": "90",
+      "setter": "00B84E00"
+    }
+  ],
+  "color_order": [
+    "0078D080: primary environment34 -> owner08 through00B84C40",
+    "0078D098 loop: environment44/54/64/74 -> owner28/38/48/58 through00B84FA0,indices0..3",
+    "0078D121 after six scalars: environment84 -> owner18 through00B84C70"
+  ],
+  "arithmetic": "No arithmetic in ownedfragment. Scalar FLD/FSTP uses caller x87 mode, may quiet sNaNs/set invalid or denormal flags; core setter accepts exact spilled DWORD. Color setters perform forward integer word copies.",
+  "original_annotations": [
+    {
+      "address": "0078cff0",
+      "annotation": {
+        "address": "0078cff0",
+        "function_name": "FUN_0078cff0"
+      }
+    }
+  ],
+  "annotation_proposal": {
+    "parent_address": "0078CFF0",
+    "old_name": "FUN_0078cff0",
+    "rename_parent": false,
+    "provisional_fragment_name": "BSP_Environment_ApplyFogToCamera_Fragment",
+    "status": "not_applied_worker_has_no_Ghidra_writes",
+    "append_comment": "Bounded[0078D076,0078D180) recovered. EDI environment, ESI camera. Reload camera+184 before every concrete fog setter: colorenv34, directionalenv44..74 indices0..3, scalar mappings08->68,0C->6C,10->70,14->78,18->74,1C->7C, underwaterenv84, then2C->80,30->84,20->88,28->8C,24->90. Every scalar preserves FLD(source), livecameraowner reload, FSTP stackargument; leaf MOVSS setter does no conversion. Same concrete SystemFogOwner.fields_08 as camera/system prefix; no alternateowner or defaults. Finite/specialinput native comparison matches94bytes andx87status; preceding/following parentupdates unported. Evidence docs/ENVIRONMENT_FOG_APPLY.md and reports/environment_fog_apply_audit.json; newC++API,not nativeABI/gamevalidation."
+  },
+  "implementation_hashes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-environment-fog-apply-20260910\\include\\bsp\\environment_fog_apply.hpp",
+      "bytes": 1718,
+      "sha256": "632b6cdd0daef7dc33d63533afbab7e1add73f603b4c8f00b5b272cfb467a24d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-environment-fog-apply-20260910\\src\\environment_fog_apply.cpp",
+      "bytes": 4518,
+      "sha256": "25645e5143d345ff6a58cd2dcde8eff88c3f39c00d63c27b4ee473d375d89991"
+    }
+  ],
+  "dependency_hashes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-system-fog-owner-core-20260910\\include\\bsp\\system_fog_owner.hpp",
+      "bytes": 5383,
+      "sha256": "fd355c272546d20118eea4c808ede51955356e819e0cac30ef7eabee336baf88"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-system-fog-owner-core-20260910\\src\\system_fog_owner.cpp",
+      "bytes": 8257,
+      "sha256": "60ab597fbe906866c2d0f990ad12ab56c0322d462a4626020c3651e1c77847a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-system-fog-owner-core-20260910\\build\\fog-owner-check\\system_fog_owner.obj",
+      "bytes": 9425,
+      "sha256": "b05bff27efb80c42c07a20c75f7790e9e1b5978d40b94ee4d29de13fad3ca05a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-system-fog-owner-core-20260910\\build\\fog-owner-check\\singleton_lifetime.obj",
+      "bytes": 31381,
+      "sha256": "01c34b7deefbe603697ab28d349ed57059b4da6c694763543028b344abe2cac7"
+    }
+  ],
+  "verification": {
+    "standalone_compile": "MSVC Win32 /std:c++17 /MT /W4 /WX /EHsc /O2 /fp:strict /Gy /Gw passed",
+    "seed_verification": "tools/ghidra_export.py verify-seeds passed",
+    "native_differential": {
+      "cases": 2,
+      "status": "passed",
+      "native_execution": "Original266bytefragment and originalsetterbodies; relocatedE8 targets and RET at exclusiveend only.",
+      "host_dependencies": "Concrete core setter objects, no teststubs.",
+      "compared": [
+        "all0x94 ownerbytes",
+        "x87status",
+        "unchangedreferencecountsandvtable"
+      ],
+      "finite_status": "0000 matches",
+      "special_status": "0003 matches",
+      "special_values": [
+        "signalingNaN",
+        "quietNaN",
+        "negativesignedzero",
+        "subnormal",
+        "infinity",
+        "largestfinitefloat"
+      ],
+      "not_runtime_tested": "Owner replacement during an unmasked floating-point exception; exactreloadplacement assembly-reviewed.",
+      "fixture": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-environment-fog-apply-20260910\\local\\environment_fog_review.cpp",
+        "bytes": 4091,
+        "sha256": "33f9ab398c546bd330843ec7bc530863bc59bb71e2cd2d4c98363d283f2c543f"
+      },
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-environment-fog-apply-20260910\\local\\environment_fog_review.log",
+        "bytes": 325,
+        "sha256": "ebaa2cd09bc3763ea928fdf0252714184fc2977555d9bdf7f3ad1b8b2ea02c91"
+      }
+    },
+    "repository_build": {
+      "status": "attempted_failed_on_inherited_base_integration",
+      "failure": "src/render_tail.cpp references ParticleClock.owned_records absent from baseline include/bsp/render_tail.hpp",
+      "shared_fix_made": false,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-environment-fog-apply-20260910\\local\\environment_fog_apply_baseline_build.log",
+        "bytes": 7636,
+        "sha256": "889ca712bd7249f0bc483011257a0a95ff13f43cccd581e8a97702d4402fb0a9"
+      }
+    }
+  },
+  "integration": [
+    "Merge core system_fog_owner contract and concrete implementation first",
+    "Register src/environment_fog_apply.cpp in bsp_core through primary-owned build metadata",
+    "Caller passes same actual camera.fog_184 slot and retained environment field regions",
+    "Primary handles annotations underlock,preservescomments,updatesledgers/index,savesprojectandrefreshesexports",
+    "Re-run whole strictbuild after pendingbaseParticleClock integration"
+  ],
+  "not_claimed": [
+    "Native environment constructionorfieldproducer",
+    "Otherwater/skyorclear-colorupdatesin0078CFF0",
+    "Wholeparent reconstruction",
+    "NativeABIcompatibility",
+    "GPU/gameplayvalidation"
+  ]
+}
