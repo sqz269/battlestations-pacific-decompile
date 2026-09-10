@@ -624,7 +624,15 @@ def ghidra_cmd(args):
         except RuntimeError as exc:
             _, lines = header_lines(db, int(a, 16)) if db else (None, [])
             sys.exit(f"{sub}: Ghidra has no function starting at {a} ({str(exc)[:80]}). " + (lines[0] if lines else ''))
-        cap(as_text(result), args.lines, args.start)
+        text = as_text(result)
+        if sub == 'disasm':
+            # disassemble_function lists the whole enclosing function; when the address is
+            # mid-function, start the excerpt at that instruction instead of the head.
+            lines = text.splitlines()
+            hits = [i for i, line in enumerate(lines) if line.lower().startswith(a + ':')]
+            if hits and hits[0]:
+                text = chr(10).join(lines[hits[0]:])
+        cap(text, args.lines, args.start)
     elif sub == 'export':
         addresses = [norm(x) for x in args.addresses]
         cmd = [sys.executable, str(ROOT / 'tools/ghidra_export.py'), 'decompile', '--addresses', *addresses]
@@ -855,7 +863,7 @@ def main():
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--limit', type=int, default=25); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('bytes'); q.add_argument('address'); q.add_argument('--length', '--limit', dest='length', type=int, default=64)
     for name in ('decompile', 'disasm'):
-        q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80); q.add_argument('--start', type=int, default=0)
+        q = gs.add_parser(name, help='decompile: whole function; disasm: listing from the given address to the function end'); q.add_argument('address'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80); q.add_argument('--start', type=int, default=0)
         if name == 'decompile':
             q.add_argument('--force', action='store_true', help='flush Ghidra decompiler cache before reading')
     q = gs.add_parser('export'); q.add_argument('addresses', nargs='+'); q.add_argument('--force', action='store_true')
@@ -883,7 +891,7 @@ def main():
     q = ls.add_parser('migrate'); q.add_argument('--keep-legacy', action='store_true')
     q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True)
     q.add_argument('--force', action='store_true', help='ignore another owner\'s lease'); q.add_argument('--replace', action='store_true', help='supersede an existing record')
-    q.add_argument('--append-evidence', action='store_true', help='keep the existing evidence and append this text (name is updated if it differs)')
+    q.add_argument('--append-evidence', action='store_true', help='flag: keep the existing record and append the --evidence text to its evidence (the name is updated if it differs)')
     q = ls.add_parser('add-function'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
     q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
     p.set_defaults(func=ledger_cmd)

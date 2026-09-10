@@ -43,7 +43,8 @@ moves them into shards and removes them; run it before committing if a legacy fi
   view when nothing is exported).
 - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|
   callees|bytes|comments|decompile|disasm|export ...` (capped, verified project) instead of inline Python.
-  For annotation readback, `ghidra comments <addresses...> --output local/comments.json`
+  `ghidra disasm <address>` lists from that instruction to the function end, so a mid-function
+  address reads the tail without paging. For annotation readback, `ghidra comments <addresses...> --output local/comments.json`
   stores full records in ignored storage and prints only their count and path.
 - `range`, `callers`, `callees`, `docs-for`, `segment`, `find` and `strings <text>` (functions whose
   bodies reference a string containing the text) are capped by `--limit`; raise it deliberately
