@@ -1,0 +1,764 @@
+{
+  "schema_version": 1,
+  "packet": "native_camera_pool_storage",
+  "status": "implemented_strict_compile_and_focused_native_fixture_passed_pending_primary_integration",
+  "verified_utc": "2026-09-10T18:57:31.057245+00:00",
+  "base_commit": "c358db1cd97d5df00a9a3a8da4680351e525e6f8",
+  "owned_addresses": [
+    "00b6fed0",
+    "00b6ffc0",
+    "00b71120",
+    "00b711e0",
+    "00b71350",
+    "00b715f0",
+    "00b716d0",
+    "00b71770",
+    "00b71930",
+    "00cd7dd0",
+    "00ce0e30"
+  ],
+  "owned_files": [
+    "include/bsp/native_camera_pool.hpp",
+    "src/native_camera_pool.cpp",
+    "docs/NATIVE_CAMERA_POOL.md",
+    "reports/native_camera_pool_audit.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Each bsp.py ghidra bytes command verifies the configured saved project/program before the bounded read. Every span is compared to installed PE bytes or PE zero-fill."
+  },
+  "function_evidence": [
+    {
+      "address": "00b715f0",
+      "end_exclusive": "00b716c3",
+      "length": 211,
+      "disk_offset": 7804400,
+      "disk_sha256": "5fb1a7f24ded5de2e16dd6c3e1f7cbc55168d15f60955a6437ae792e44412bf7",
+      "live_sha256": "5fb1a7f24ded5de2e16dd6c3e1f7cbc55168d15f60955a6437ae792e44412bf7",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_Construct",
+      "implementation": "NativeCameraPool::initialize_00b715f0",
+      "native_abi": "ECX=actual pool; EAX=same pool; RET 0; native MSVC EH states -1,0,2",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b71120",
+      "end_exclusive": "00b711aa",
+      "length": 138,
+      "disk_offset": 7803168,
+      "disk_sha256": "b1239c3f0497c7902bafdaba8a777f873cbd778a32a1eac04b4a94f63d931434",
+      "live_sha256": "b1239c3f0497c7902bafdaba8a777f873cbd778a32a1eac04b4a94f63d931434",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_Destruct",
+      "implementation": "NativeCameraPool::destroy_00b71120",
+      "native_abi": "ECX=actual pool; RET 0; frees slabs/table, drains section and unlinks allocator element",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b71770",
+      "end_exclusive": "00b718ac",
+      "length": 316,
+      "disk_offset": 7804784,
+      "disk_sha256": "1edc235487190a94bae6c1fae7339872d7675503e8adc943be2696de639632e5",
+      "live_sha256": "1edc235487190a94bae6c1fae7339872d7675503e8adc943be2696de639632e5",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_AllocateRawSlot",
+      "implementation": "NativeCameraPool::allocate_raw_slot_00b71770",
+      "native_abi": "ECX=actual pool; EAX=actual raw slot; RET 0",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b716d0",
+      "end_exclusive": "00b71770",
+      "length": 160,
+      "disk_offset": 7804624,
+      "disk_sha256": "bf13063286a1682a2a572c0eed7e81d0445554b9f1feeb1acf2513d796a725f6",
+      "live_sha256": "bf13063286a1682a2a572c0eed7e81d0445554b9f1feeb1acf2513d796a725f6",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_TrimEmptySlabs",
+      "implementation": "NativeCameraPool::trim_empty_slabs_00b716d0",
+      "native_abi": "ECX=actual pool; RET 0; concrete virtual zero; no internal lock",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b711e0",
+      "end_exclusive": "00b71248",
+      "length": 104,
+      "disk_offset": 7803360,
+      "disk_sha256": "0154ab9ebb31b9fac109314da8b5d2ce814db88f41cee7c66e36d3467e6d20c2",
+      "live_sha256": "0154ab9ebb31b9fac109314da8b5d2ce814db88f41cee7c66e36d3467e6d20c2",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_ReturnRawSlot",
+      "implementation": "NativeCameraPool::return_raw_slot_00b711e0",
+      "native_abi": "ECX=actual pool; stack slot pointer; RET 4; reads slot +458",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b6fed0",
+      "end_exclusive": "00b6ff13",
+      "length": 67,
+      "disk_offset": 7798480,
+      "disk_sha256": "c24e09c0eb90d6a40a4d3c4e24a5ee6bf990c7f33180a91bade2cd22ea723eb2",
+      "live_sha256": "c24e09c0eb90d6a40a4d3c4e24a5ee6bf990c7f33180a91bade2cd22ea723eb2",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_InitializeSlab",
+      "implementation": "initialize_slab_00b6fed0",
+      "native_abi": "ECX=raw slab; stack uint32 slab index; EAX=same slab; RET 4",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b71930",
+      "end_exclusive": "00b7193a",
+      "length": 10,
+      "disk_offset": 7805232,
+      "disk_sha256": "579fb4d717566de847759cadad5962f4a20a962e609e0257fa3c0185bf415d5c",
+      "live_sha256": "579fb4d717566de847759cadad5962f4a20a962e609e0257fa3c0185bf415d5c",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_AllocateStaticRawSlot",
+      "implementation": "allocate_native_camera_slot_00b71930",
+      "native_abi": "No args; MOV ECX,0108FFB0; JMP 00B71770; EAX=actual raw slot; RET 0",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b71350",
+      "end_exclusive": "00b7135c",
+      "length": 12,
+      "disk_offset": 7803728,
+      "disk_sha256": "7f1f03d892f371b00eced7f9808279c0894262bb5df77a32fe4818f248786a78",
+      "live_sha256": "7f1f03d892f371b00eced7f9808279c0894262bb5df77a32fe4818f248786a78",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_ReturnStaticRawSlot",
+      "implementation": "return_native_camera_slot_00b71350",
+      "native_abi": "ECX=actual slot; no stack args; PUSH ECX then bind pool and CALL 00B711E0; RET 0",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00cd7dd0",
+      "end_exclusive": "00cd7de6",
+      "length": 22,
+      "disk_offset": 9272784,
+      "disk_sha256": "8b239e6c676da532d0eb78d2d4e707a572d89a487d67516df1ea2c324051ec50",
+      "live_sha256": "8b239e6c676da532d0eb78d2d4e707a572d89a487d67516df1ea2c324051ec50",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_InitializeStatic",
+      "implementation": "initialize_static_native_camera_pool_00cd7dd0",
+      "native_abi": "No args; constructs actual 0108FFB0; registers 00CE0E30 via 00BF6FF5; EAX=CRT atexit result; RET 0",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00ce0e30",
+      "end_exclusive": "00ce0e3a",
+      "length": 10,
+      "disk_offset": 9309744,
+      "disk_sha256": "499585eb09b0c9fac9f3791f0a7b636d22951e374684276bcb9aa719bbfdaf90",
+      "live_sha256": "499585eb09b0c9fac9f3791f0a7b636d22951e374684276bcb9aa719bbfdaf90",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_DestroyStatic",
+      "implementation": "destroy_static_native_camera_pool_00ce0e30",
+      "native_abi": "No args; MOV ECX,0108FFB0; JMP 00B71120; RET 0",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b6ffc0",
+      "end_exclusive": "00b6ffce",
+      "length": 14,
+      "disk_offset": 7798720,
+      "disk_sha256": "24ae4aca525e8e2aced5d9907022516d8371ab1d456f3cfbad315c51372437e1",
+      "live_sha256": "24ae4aca525e8e2aced5d9907022516d8371ab1d456f3cfbad315c51372437e1",
+      "live_matches_disk": true,
+      "proposed_name": "BSP_CameraPool_FreePointerTable",
+      "implementation": "NativeCameraPool::free_table_unwind_00b6ffc0",
+      "native_abi": "ECX=address of pointer-table member (+28); conditional cdecl free; RET 0; leaves member unchanged",
+      "status": "reconstructed_new_cpp_interface"
+    }
+  ],
+  "shared_dependency_code_evidence": [
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "role": "canonical existing allocator-list or critical-section implementation",
+      "disk_offset": 14704,
+      "disk_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "role": "canonical existing allocator-list or critical-section implementation",
+      "disk_offset": 12144,
+      "disk_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "role": "canonical existing allocator-list or critical-section implementation",
+      "disk_offset": 738992,
+      "disk_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8345022,
+      "disk_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8349723,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8350089,
+      "disk_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d62ce0",
+      "length": 4,
+      "disk_offset": 9841888,
+      "disk_hex": "d016b700",
+      "live_hex": "d016b700",
+      "disk_sha256": "8185dc9960d8005afea8ca2c849a4b484170678bfeed47aa5978f3fc7f74b552",
+      "live_sha256": "8185dc9960d8005afea8ca2c849a4b484170678bfeed47aa5978f3fc7f74b552",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "disk_offset": null,
+      "disk_hex": "00000000",
+      "live_hex": "00000000",
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108ffb0",
+      "length": 56,
+      "disk_offset": null,
+      "disk_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 4,
+      "disk_offset": 9314828,
+      "disk_hex": "6c56a000",
+      "live_hex": "6c56a000",
+      "disk_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2210",
+      "length": 4,
+      "disk_offset": 9314832,
+      "disk_hex": "8856a000",
+      "live_hex": "8856a000",
+      "disk_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2214",
+      "length": 4,
+      "disk_offset": 9314836,
+      "disk_hex": "a056a000",
+      "live_hex": "a056a000",
+      "disk_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2218",
+      "length": 4,
+      "disk_offset": 9314840,
+      "disk_hex": "b856a000",
+      "live_hex": "b856a000",
+      "disk_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "constructor_eh_evidence": [
+    {
+      "address": "00cc1aa0",
+      "end_exclusive": "00cc1ac8",
+      "length": 40,
+      "role": "Constructor three unwind funclets and handler",
+      "disk_sha256": "8b6157234eef986af83fec47ea2418ffd2696a318040d02553cb7ff3e1f68130",
+      "live_sha256": "8b6157234eef986af83fec47ea2418ffd2696a318040d02553cb7ff3e1f68130",
+      "live_matches_disk": true,
+      "native_runtime_executed": false
+    },
+    {
+      "address": "00dfa9e4",
+      "end_exclusive": "00dfaa20",
+      "length": 60,
+      "role": "Constructor three-entry unwind map and EH descriptor",
+      "disk_sha256": "0aba4b45e449825cfe10d3b418cd624d80d0b33c2ca62da5f6aec2c1c3ba4e52",
+      "live_sha256": "0aba4b45e449825cfe10d3b418cd624d80d0b33c2ca62da5f6aec2c1c3ba4e52",
+      "live_matches_disk": true,
+      "native_runtime_executed": false
+    }
+  ],
+  "source_evidence": [
+    {
+      "path": "include/bsp/native_camera_pool.hpp",
+      "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038",
+      "bytes": 3029
+    },
+    {
+      "path": "src/native_camera_pool.cpp",
+      "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3",
+      "bytes": 11439
+    },
+    {
+      "path": "docs/NATIVE_CAMERA_POOL.md",
+      "sha256": "6cb3e48a4709b72ebc292eff3471707dd237cc56c42884d25531603c14485be7",
+      "bytes": 6614
+    }
+  ],
+  "discovery_correction": {
+    "address": "00b71350",
+    "superseded_end_exclusive": "00b7135a",
+    "correct_end_exclusive": "00b7135c",
+    "correct_length": 12,
+    "correct_bytes": "51 b9 b0 ff 08 01 e8 85 fe ff ff c3",
+    "correct_sha256": "7f1f03d892f371b00eced7f9808279c0894262bb5df77a32fe4818f248786a78",
+    "reason": "The old 10-byte discovery extent truncated the CALL immediate and omitted RET. Full body uses incoming ECX=slot, PUSH ECX, MOV ECX,0108FFB0, CALL B711E0, RET. Primary owns correction of integrated discovery files.",
+    "fixture_detection": "The initial fixture aborted at native operation 66 because the truncated CALL reached unprovided bytes. Recapture and correct register ABI resolved it; final native-host fixture passes."
+  },
+  "storage": {
+    "type": "NativeCameraPoolStorage",
+    "size": 56,
+    "static_identity": "0108ffb0",
+    "native_vtable": "00d62ce0",
+    "virtual0": "00b716d0",
+    "allocator_head": "00e188b4",
+    "fields": {
+      "00": "Canonical AllocatorListElement with vtable/previous/next",
+      "0c": "actual 24-byte Win32 CRITICAL_SECTION",
+      "24": "signed explicit recursion",
+      "28": "actual raw slab-pointer table",
+      "2c": "uint32 slab count",
+      "30": "uint32 table capacity",
+      "34": "uint32 first nonfull slab or FFFFFFFF"
+    },
+    "binding_initializes_raw_owner": false,
+    "second_list_or_slab_table": false,
+    "cpp_destructor_runs_native_cleanup": false
+  },
+  "slab": {
+    "bytes": 35780,
+    "slots": 32,
+    "slot_stride": 1116,
+    "live_slot_slab_id_offset": 1112,
+    "free_index_stack_offset": 35712,
+    "free_count_offset": 35776,
+    "untouched_tail_offset": 35778,
+    "untouched_tail_bytes": 2,
+    "initial_free_stack": [
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "initial_allocation_order": "within-slab indices 0..31",
+    "slot_prefix_retains_allocation_preimage": true,
+    "trim_rewrites_all_32_ids": true,
+    "trim_retries_replacement": true,
+    "slot_addresses_remain_stable_when_table_index_changes": true
+  },
+  "shared_contracts": {
+    "allocator_list": "One canonical AllocatorListDomain takes the actual E188B4 head reference. Before initialization publishes the owner, bind native D62CE0/B716D0 to this companion and concrete trim. No placeholder foreign allocator profile.",
+    "allocation": "singleton_lifetime_allocate uses actual CRT malloc/new-handler retry and throws bad_alloc when the handler refuses. Native BF55BE forwards to BF681B; table allocation uses pointer_slots/native capacity*4; slab allocation uses object/8BC4.",
+    "free": "singleton_lifetime_free uses real CRT free. Native BF6989 forwards to BF65AC.",
+    "critical_section": "Actual Win32 Initialize/Enter/Leave/DeleteCriticalSection over supplied +0C bytes. Explicit recursion +24 increments/decrements modulo 32 bits on allocation and return.",
+    "static_lifetime": "Caller must bind actual stable owner, domain and companion before startup. Startup is explicit once, calls native owner initialization and actual std::atexit by default; supplied real registration result is returned. Failure to register does not undo construction. C++ companion destruction does not run native cleanup."
+  },
+  "ordering_and_continuations": {
+    "constructor": "Base allocator prepend, pool vtable, actual section initialization, recursion/slab words initialization, first_free FFFFFFFF, capacity32 publication, real 128-byte table allocation, current pointer copy/free, replacement publication.",
+    "allocation": "Enter actual section; explicit recursion increment; publish first_free=count before slab allocation; if full table publish capacity*2+2 before allocating/copying/freeing; append real slab pointer; pop free index; scan later slabs if now full; decrement recursion then leave.",
+    "return": "Enter section; increment recursion; load actual slot+458 ID and current table entry; signed difference /45C (native IMUL 3AB95901 and SAR8), push low16 index and increment count; update minimum first_free; decrement recursion then leave.",
+    "trim": "No lock; free empty slab; copy last table pointer into hole; decrement count; rewrite every moved ID; retry same index; recompute first_free. Retain pointer-table allocation/capacity.",
+    "destruction": "Install D62CE0; free every slab without camera destructors; conditional table free; drain positive explicit recursion with real LeaveCriticalSection; DeleteCriticalSection; install D7A0C0; unlink actual allocator element without clearing old owner words.",
+    "free_continuations": [
+      "00b7113d",
+      "00b71155",
+      "00b716a9",
+      "00b716f6",
+      "00b71806",
+      "00b6ffcc"
+    ],
+    "allocation_failure": "No local catch, RAII unlock, rollback or compensating slab free. Published fields and lock recursion remain as established by assembly.",
+    "constructor_eh": {
+      "handler": "00cc1abe",
+      "descriptor": "00dfa9fc",
+      "map": "00dfa9e4",
+      "states": [
+        {
+          "state": 2,
+          "next": 1,
+          "funclet": "00cc1ab3",
+          "action": "00b6ffc0 on actual +28 pointer-table member"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cc1aa8",
+          "action": "00402f70 on actual +0c critical section"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc1aa0",
+          "action": "00403970 actual allocator-list unlink"
+        }
+      ],
+      "host": "MSVC __try/__finally in constructor only, selects matching completed subobject cleanup on abnormal termination."
+    }
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "source": "src/native_camera_pool.cpp",
+      "target": "MSVC Win32",
+      "flags": "/std:c++20 /EHsc /O2 /fp:strict /MD /W4 /WX",
+      "log": {
+        "path": "local/camera_pool_strict_compile.log",
+        "sha256": "cff2b44f935bed26266f0d400f84610b4eff71a2a9df3e3b93b4c075d2264e93",
+        "bytes": 24
+      }
+    },
+    "repository_build": {
+      "passed": true,
+      "command": "./scripts/build.ps1",
+      "tests": "reconstructed_math 1/1 passed",
+      "scope": "Existing checkout CMake build. New camera-pool module is separately compiled/linked until primary adds build registration.",
+      "log": {
+        "path": "local/camera_pool_repository_build.log",
+        "sha256": "65c3b930c2eb9cd448963dedf2ce6463670710043fa13f421018ceef2eeb0cb7",
+        "bytes": 8879
+      }
+    },
+    "focused_native_fixture": {
+      "passed": true,
+      "new_tracked_test_cases": 0,
+      "isolated_local_fixture_count": 1,
+      "target": "MSVC Win32 executable in separate process, no game injection",
+      "compile_flags": "/std:c++17 /EHsc /O2 /Oy- /MT /Gy /Gw /W4 /WX; /OPT:REF /OPT:NOICF /INCREMENTAL:NO /BASE:0x30000000 /DYNAMICBASE:NO /FIXED",
+      "states_matched": 136,
+      "events_matched": 8,
+      "allocation_count": 4,
+      "raw_slot_allocations": 65,
+      "raw_slab_bytes_compared": 8336740,
+      "scenarios": [
+        "construction with caller-owned preimage",
+        "65 allocations creating three slabs",
+        "return first slab and last slot",
+        "global allocator trim via actual owner virtual zero",
+        "empty replacement retried and freed",
+        "all32 IDs in each moved slab including empty replacement",
+        "return actual moved slot via rewritten ID",
+        "exact raw slot reuse preserves payload",
+        "trim remaining empty slab retains table/capacity",
+        "destroy while explicit and actual recursion both equal2",
+        "actual shared allocator head unlinked"
+      ],
+      "normalized_fields": [
+        "slab count",
+        "capacity",
+        "first-free",
+        "explicit recursion",
+        "actual section recursion and lock count",
+        "real allocation identity",
+        "native vtable identity",
+        "slab allocation order",
+        "entire allocated slab bytes"
+      ],
+      "allocation_boundary": "Both native BF681B and host singleton_lifetime_allocate are observed by deterministic-preimage adapters that call actual malloc and throw on failure. BF65AC and host singleton_lifetime_free call observed actual free. Native allocation/free algorithms are not replaced above those shared boundaries; new-handler failure is not exercised.",
+      "allocator_preimage": "Every real allocation is seeded with repeating uint32 6F452000+allocation_id before either constructor touches it. Entire raw slab comparisons include uninitialized prefix/tail bytes.",
+      "native_execution": "Only listed original code/data spans are copied from verified installed PE into isolated executable pages. Immediate absolute pointers are relocated with asserted preimages. Four IAT words bind actual kernel32 critical-section functions. Omitted executable bytes are traps or inaccessible; no unresolved path gets a placeholder callback. Native EH and CRT startup bodies are not executed.",
+      "event_columns": [
+        "operation",
+        "allocate0_free1",
+        "allocation_id",
+        "bytes",
+        "slab_count",
+        "capacity",
+        "first_free",
+        "explicit_recursion",
+        "actual_recursion"
+      ],
+      "events": [
+        [
+          0,
+          0,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2,
+          35780,
+          0,
+          32,
+          0,
+          1,
+          1
+        ],
+        [
+          33,
+          0,
+          3,
+          35780,
+          1,
+          32,
+          1,
+          1,
+          1
+        ],
+        [
+          65,
+          0,
+          4,
+          35780,
+          2,
+          32,
+          2,
+          1,
+          1
+        ],
+        [
+          99,
+          1,
+          2,
+          35780,
+          3,
+          32,
+          0,
+          0,
+          0
+        ],
+        [
+          99,
+          1,
+          4,
+          35780,
+          2,
+          32,
+          0,
+          0,
+          0
+        ],
+        [
+          134,
+          1,
+          3,
+          35780,
+          1,
+          32,
+          0,
+          0,
+          0
+        ],
+        [
+          136,
+          1,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          2,
+          2
+        ]
+      ],
+      "runtime_patch_manifest": [
+        "WORDPATCH 00402f7c 00ce2210 011f2210",
+        "WORDPATCH 00402f91 00ce2214 011f2214",
+        "WORDPATCH 00403977 00d7a0c0 0128a0c0",
+        "WORDPATCH 00403989 00e188b4 013288b4",
+        "WORDPATCH 004b46b3 00e188b4 013288b4",
+        "WORDPATCH 00b7112b 00d62ce0 01272ce0",
+        "WORDPATCH 00b71164 00ce2210 011f2210",
+        "WORDPATCH 00b71179 00ce2214 011f2214",
+        "WORDPATCH 00b71184 00d7a0c0 0128a0c0",
+        "WORDPATCH 00b71196 00e188b4 013288b4",
+        "WORDPATCH 00b711eb 00ce2218 011f2218",
+        "WORDPATCH 00b7123e 00ce2210 011f2210",
+        "WORDPATCH 00b71352 0108ffb0 0159ffb0",
+        "WORDPATCH 00b715f3 00cc1abe 011d1abe",
+        "WORDPATCH 00b7160e 00d7a0c0 0128a0c0",
+        "WORDPATCH 00b71616 00e188b4 013288b4",
+        "WORDPATCH 00b7161e 00e188b4 013288b4",
+        "WORDPATCH 00b71630 00e188b4 013288b4",
+        "WORDPATCH 00b7163e 00d62ce0 01272ce0",
+        "WORDPATCH 00b71644 00ce220c 011f220c",
+        "WORDPATCH 00b7177c 00ce2218 011f2218",
+        "WORDPATCH 00b7188d 00ce2210 011f2210",
+        "WORDPATCH 00b718a1 00ce2210 011f2210",
+        "WORDPATCH 00b71931 0108ffb0 0159ffb0",
+        "WORDPATCH 00cd7dd1 0108ffb0 0159ffb0",
+        "WORDPATCH 00cd7ddb 00ce0e30 011f0e30",
+        "WORDPATCH 00ce0e31 0108ffb0 0159ffb0",
+        "WORDPATCH 00d62ce0 00b716d0 010816d0",
+        "IATPATCH InitializeCriticalSection 00ce220c 00a0566c 779d3420",
+        "IATPATCH LeaveCriticalSection 00ce2210 00a05688 779c3460",
+        "IATPATCH DeleteCriticalSection 00ce2214 00a056a0 779d56b0",
+        "IATPATCH EnterCriticalSection 00ce2218 00a056b8 779c43e0",
+        "BYTEPATCH native_new 0110681b 558bec83ec e9f0f7ef2e",
+        "BYTEPATCH native_free 011065ac e917380000 e96ffaef2e",
+        "BYTEPATCH host_allocate 30002450 558bec83ec e93b350000",
+        "BYTEPATCH host_free 300024b0 e92ba60000 e96b3b0000"
+      ],
+      "log": {
+        "path": "local/camera_pool_native_check.log",
+        "sha256": "27a7574c336bd179bc553e101c7fbc09a78f73f88e7397c1b1d4656ac9e6d20f",
+        "bytes": 25378
+      }
+    }
+  },
+  "not_runtime_tested": [
+    "Table growth beyond initial 32 slabs",
+    "Injected allocation failure and new-handler traversal",
+    "Native or host exception unwinding",
+    "Foreign allocator virtual-zero profiles",
+    "Concurrent allocation/return",
+    "Actual CRT startup/atexit sequencing"
+  ],
+  "uncertainties_and_limits": [
+    "Names are descriptive reconstructions, not recovered symbols.",
+    "Raw slots passed to return must belong to this actual pool; malformed pointer/double-return recovery is not invented.",
+    "Host association-map allocation and unrelated CRT/OS traffic are outside the explicitly observed raw allocation boundary.",
+    "The 22-byte CD7DD0 initializer was not defined as a Ghidra function when queried. Primary owns any definition/name/comment changes and export refresh.",
+    "Native ABI information documents the original executable; public host methods use new C++ interfaces and do not constitute binary replacements.",
+    "Original game installation and saved analysis were not mutated by this worker."
+  ],
+  "primary_integration": [
+    "Add src/native_camera_pool.cpp to CMake.",
+    "Connect actual raw-camera construction/destruction and canonical startup binding.",
+    "Correct earlier discovery B71350 extent/ABI.",
+    "Apply reviewed names/evidence comments and refresh affected exports/ledgers under write lock.",
+    "Run integrated repository build."
+  ],
+  "artifacts": [
+    {
+      "path": "local/prepare_camera_pool_native.py",
+      "sha256": "6013563fa6eb0327cc829d8c723264e8b059f2a34b1e4383dda406852c641abb",
+      "bytes": 5735
+    },
+    {
+      "path": "local/camera_pool_native_preparation.json",
+      "sha256": "bfb1e62fd0168dd726b214fdc876489021b937ee62b6dc9d086e8aa9e9a289c0",
+      "bytes": 12423
+    },
+    {
+      "path": "local/camera_pool_native_spans.hpp",
+      "sha256": "d7aff99f526785faa41bb1d22873100e1716cc4060f04d7f3a4b9dcc1ce48ee3",
+      "bytes": 1703
+    },
+    {
+      "path": "local/camera_pool_native_check.cpp",
+      "sha256": "9954b077c6dfbead0c6159be3d3d8f0c5e0ddfaa2bc97b409f47d6c3afcf57f6",
+      "bytes": 11501
+    },
+    {
+      "path": "local/build_camera_pool_native_check.ps1",
+      "sha256": "2b30f0251f25fcadb6624d51906917375a8c6730effd44d1f1ff43dbda3246be",
+      "bytes": 1363
+    },
+    {
+      "path": "local/strict_camera_pool_compile.ps1",
+      "sha256": "a68642f5bfd4f223b0a01d3b4fa8f8bed09cc427408d6cba8d64c1674385c9cf",
+      "bytes": 1041
+    }
+  ],
+  "evidence_boundary": {
+    "exported_bytes_verified": true,
+    "reconstructed": true,
+    "strict_win32_build_passed": true,
+    "native_fixture_tested": true,
+    "drop_in_abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutations_performed": false
+  }
+}
