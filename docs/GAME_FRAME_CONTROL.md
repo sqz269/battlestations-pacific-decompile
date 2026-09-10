@@ -288,3 +288,7 @@ host interface replaces the native call sites.
 - game+1EE1h, game+624h, game+7184h and game+19C8h are carried as raw fields.
 - The `frames` console command's own sub-dispatch (004e22de..004e23a7) was not decoded past the
   state test and the pop.
+
+## Correction from docs/FRONTEND_MANAGERS.md
+
+Requests 16h, 06h and 09h do not destroy the front-end managers. Each calls virtual +0Ch, the shared deactivate `00683aa0` (the multiplayer menu reaches it through the five-byte thunk `00687320`), which clears the active byte at +3Ch and hides both screen sets; Activate already lowers every other manager, so these requests only lower one manager and raise nothing. Real destruction is `004da650` and `004db190`.
