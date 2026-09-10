@@ -1,0 +1,180 @@
+{
+  "packet": "front_end_screen_animation",
+  "doc": "docs/FRONTEND_SCREEN_ANIMATION.md",
+  "owner": "agent/screen-animation",
+  "addresses": ["00683300", "00683320", "00683330", "00683380", "006833F0", "00683440",
+    "006834A0", "00683610", "00683680", "00683700", "00683790", "00683820", "00683A40",
+    "00AA6740", "00AA6750", "00AA8240"],
+  "files": ["docs/FRONTEND_SCREEN_ANIMATION.md", "reports/frontend_screen_animation.json",
+    "include/bsp/frontend_screen_animation.hpp", "src/frontend_screen_animation.cpp"],
+
+  "finding": {
+    "packet_premise": "docs/MULTI_MENU_SCREENS.md proposed 00683610 as a fade/slide animation record shared by the front-end screens.",
+    "actual": "00683610 is the constructor of a vertical scroll controller: a content widget that slides along Y, a scroll bar thumb, two optional arrow widgets, a pointer drag path and an axis auto-scroll path.",
+    "evidence": "No phase, duration, easing curve or frame delta occurs in any of the thirteen methods at 00683300..00683A8F. 00683440 computes (offset/range)*travel and 00683820 reads input axes and a cursor position.",
+    "class_extent": "00683300..00683A8F, contiguous, immediately before BSP_FrontEndManager_InitDefault at 00683A90."
+  },
+
+  "conventions": [
+    {"address": "00683300", "convention": "__thiscall(this, int direction, float step, bool override)", "ret": "RET 0Ch", "role": "set auto-scroll direction, step and input override"},
+    {"address": "00683320", "convention": "__fastcall(this)", "ret": "RET", "role": "end thumb drag, MOV byte ptr [ECX+48h],0"},
+    {"address": "00683330", "convention": "__thiscall(this, float thumb_alpha, float arrow_start_alpha, float arrow_end_alpha)", "ret": "RET 0Ch", "role": "set the three widget alphas directly"},
+    {"address": "00683380", "convention": "__thiscall(this, void* thumb, float track, void* arrow_start, void* arrow_end)", "ret": "RET 10h", "role": "attach the scroll bar"},
+    {"address": "006833F0", "convention": "__fastcall(this)", "ret": "RET", "role": "re-capture both base positions"},
+    {"address": "00683440", "convention": "__fastcall(this)", "ret": "RET", "role": "push the thumb to the position the scroll offset implies"},
+    {"address": "006834A0", "convention": "__thiscall(this, float range)", "ret": "RET 4", "role": "set the scroll range, resize, reposition and retint the bar"},
+    {"address": "00683610", "convention": "__thiscall(this)", "ret": "RET", "role": "constructor, no callees"},
+    {"address": "00683680", "convention": "__thiscall(this, float delta)", "ret": "RET 4", "role": "scroll toward the start, clamp at 0"},
+    {"address": "00683700", "convention": "__thiscall(this, float delta)", "ret": "RET 4", "role": "scroll toward the end, clamp at -range"},
+    {"address": "00683790", "convention": "__thiscall(this, void* content)", "ret": "RET 4", "role": "attach the content widget and reset the scroll state"},
+    {"address": "00683820", "convention": "__thiscall(this, bool allow_pad_fallback)", "ret": "RET 4", "role": "per-frame pump"},
+    {"address": "00683A40", "convention": "__fastcall(this)", "ret": "RET", "role": "begin thumb drag"},
+    {"address": "00AA6740", "convention": "__thiscall(widget) -> Vec2*", "ret": "RET", "role": "LEA EAX,[ECX+20h], the widget's own size pair"},
+    {"address": "00AA6750", "convention": "__thiscall(widget, Vec3* out) -> out", "ret": "RET 4", "role": "widget position resolved through the parent chain at +70h"},
+    {"address": "00AA8240", "convention": "__thiscall(widget, const Vec3*)", "ret": "RET 4", "role": "inverse of 00AA6750"}
+  ],
+
+  "ghidra_decompiler_errors": [
+    {"address": "00683330", "problem": "Ghidra shows two arguments and reuses the first for both the thumb and the first arrow.", "truth": "Three arguments. The listing reloads [ESP+4], [ESP+0Ch] and [ESP+10h]; each intervening virtual call is a __thiscall that pops its own argument. RET 0Ch confirms three."},
+    {"address": "00683790", "problem": "Ghidra drops the ECX operand of the 00AA8240 and 00683440 calls.", "truth": "ECX is the content widget at [ESI] for 00AA8240 (loaded at 006837BE) and ESI itself for 00683440 (00683809)."}
+  ],
+
+  "layout": {
+    "size_bytes_lower_bound": 92,
+    "size_note": "5Ch is the lower bound: nothing above +5Bh is touched. The tightest spacing between two copies in one screen is 74h (00626630 at +128h and +19Ch with nothing initialised between), so the size is 5Ch..74h.",
+    "fields": [
+      {"offset": "+00h", "type": "void*", "name": "content_widget", "evidence": "MOV [ESI],ECX 006837A3; read 006839D9"},
+      {"offset": "+04h", "type": "void*", "name": "arrow_start_widget", "evidence": "MOV [ESI+4],ECX 006833DA; alpha 00683592"},
+      {"offset": "+08h", "type": "void*", "name": "arrow_end_widget", "evidence": "MOV [ESI+8],EDX 006833DD; alpha 006835C6"},
+      {"offset": "+0Ch", "type": "float", "name": "scroll_range", "evidence": "written 006834B1; gate 0<x at 0068368E, 0068370B, 0068396D; gate !=0 at 00683448"},
+      {"offset": "+10h..+18h", "type": "float[3]", "name": "content_base", "evidence": "006837AC..006837B8 from 00AA6750"},
+      {"offset": "+1Ch", "type": "float", "name": "scroll_offset", "evidence": "006836A2, 00683729, 00683994; read 00683461; always in [-range, 0]"},
+      {"offset": "+20h", "type": "int", "name": "auto_scroll_direction", "evidence": "006838D2, 006838F2; switch 006839CC; 0=none 1=toward start 2=toward end"},
+      {"offset": "+24h", "type": "float", "name": "auto_scroll_step", "evidence": "006838ED; consumed 00683A16, 00683A2B"},
+      {"offset": "+28h", "type": "void*", "name": "thumb_widget", "evidence": "MOV [ESI+28h],EDI 00683398"},
+      {"offset": "+2Ch", "type": "float", "name": "thumb_travel", "evidence": "006833A0 then narrowed 0068351B; read 00683467, 00683949"},
+      {"offset": "+30h", "type": "float", "name": "thumb_track", "evidence": "0068339B; read 006834D5; equals track length minus minimum thumb height"},
+      {"offset": "+34h..+3Ch", "type": "float[3]", "name": "thumb_base", "evidence": "006833AC..006833BA from 00AA6750"},
+      {"offset": "+40h", "type": "float", "name": "thumb_min_height", "evidence": "006833D5 from 00AA6740 +4h"},
+      {"offset": "+44h", "type": "float", "name": "thumb_height", "evidence": "006833D0, 00683523"},
+      {"offset": "+48h", "type": "bool", "name": "dragging", "evidence": "set 00683A40, cleared 00683324 and 006837D3; read 00683902"},
+      {"offset": "+4Ch", "type": "float", "name": "drag_anchor_cursor_x", "evidence": "00683A40 from GUI manager +5Ch; no reader inside the class"},
+      {"offset": "+50h", "type": "float", "name": "drag_anchor_cursor_y", "evidence": "00683A40 from GUI manager +60h; read 0068391B"},
+      {"offset": "+54h", "type": "float", "name": "drag_anchor_thumb_offset", "evidence": "00683A40; read 0068391E"},
+      {"offset": "+58h", "type": "bool", "name": "auto_scroll_overridden", "evidence": "00683316, cleared 006838FE and 006837D7; read 00683830"},
+      {"offset": "+59h", "type": "bool", "name": "input_enabled", "evidence": "constructed to 1 at 0068366D; read 00683826; no writer inside the class"},
+      {"offset": "+5Ah", "type": "bool", "name": "scrollable", "evidence": "006834B6 / 00683517; read 00683562"},
+      {"offset": "+5Bh", "type": "bool", "name": "tint_widgets", "evidence": "constructed to 1 at 00683679; read 00683558"}
+    ],
+    "constructor_leaves_uninitialised": ["+4Ch", "+50h"]
+  },
+
+  "embed_offsets": [
+    {"screen_constructor": "005902E0", "screen": "main menu", "offsets": ["+1D4h", "+354h"], "evidence": "LEA ECX,[ESI+1D4h] 0059040B before CALL 00590416; LEA ECX,[ESI+354h] 00590482 before CALL 0059048D"},
+    {"screen_constructor": "005E6D90", "screen": "multiplayer main menu", "offsets": ["+6Ch"], "evidence": "LEA ECX,[ESI+6Ch] 005E6DC8 before CALL 005E6DE4"},
+    {"screen_constructor": "005EA8C0", "screen": "multiplayer mode selector", "offsets": ["+3Ch"], "evidence": "LEA ECX,[ESI+3Ch] 005EA8F8 before CALL 005EA914; only vtable stores intervene, none touching ECX"},
+    {"screen_constructor": "00626630", "screen": "rewards", "offsets": ["+68h", "+128h", "+19Ch"], "evidence": "LEA at 0062668D, 006266AC, 006266BC"}
+  ],
+  "all_constructor_callers_of_00683610": ["005098B0", "00555770", "00563370", "00574240",
+    "005902E0", "005E3290", "005E6D90", "005EA8C0", "005FFCB0", "00626630"],
+  "contradiction": {
+    "file": "include/bsp/multi_menu_screens.hpp",
+    "symbol": "bsp::MultiMenuScreenAnimation",
+    "claim": "main menu and mode selector embed one block at +6Ch",
+    "listing": "005EA8C0 embeds at +3Ch; the +6Ch figure holds only for 005E6D90",
+    "note": "that file is not owned by this packet; the orchestrator should reconcile it against include/bsp/frontend_screen_animation.hpp"
+  },
+
+  "constants": [
+    {"address": "00D7A218", "type": "float", "value": 0.0, "use": "zero compare in 00683440, 00683700, 0068396D"},
+    {"address": "00D7A24C", "type": "float", "value": 1.0, "use": "alpha when scrollable"},
+    {"address": "00CE54A0", "type": "float", "value": 0.2, "use": "thumb alpha when not scrollable"},
+    {"address": "00CE3868", "type": "float", "value": 0.25, "use": "arrow alpha when not scrollable"},
+    {"address": "00D7A380", "type": "double", "value": 0.025, "use": "FMUL double at 006838D5, axis to per-frame step"},
+    {"address": "00CEC9E0", "type": "double", "value": -0.5, "use": "FMUL double at 006838A3, pad axis scale"},
+    {"address": "00D7A258", "type": "double", "value": 0.0, "use": "Z term in 00AA6750 and 00AA8240"}
+  ],
+
+  "x87_notes": [
+    {"address": "00683464", "note": "(offset/range)*travel: the quotient is never narrowed to float between the FDIV and the FMUL, so divide and multiply share one rounding."},
+    {"address": "006834FD", "note": "(track + min_height) - range is one x87 expression with a single store to a float slot at 00683501."},
+    {"address": "00683918", "note": "the unclamped drag Y, (thumb_base.y + anchor) + (cursor_y - anchor_cursor_y), is one expression with a single store at 0068392D."},
+    {"address": "00683984", "note": "the drag fraction IS stored to a float slot and reloaded before the multiply, so it rounds twice."},
+    {"address": "00683471", "note": "the X and Z zeros in every position composition are FLDZ: the compiler folded a zero vector, so the source reads base +/- offset rather than a direct store."},
+    {"address": "00683448", "note": "UCOMISS/LAHF/TEST AH,44h inequality pattern: a NaN range counts as not equal to zero. The COMISS/JC at 006834C3 likewise sends a NaN range down the scrollable path."},
+    {"address": "0068350B", "note": "the thumb-height max is a pointer select, so a NaN candidate keeps min_height."}
+  ],
+
+  "callers": {
+    "per_frame_pump_00683820": ["005162B0", "00560430", "00565540", "0057B600", "00599DB0",
+      "005D3F20", "005E5B30", "005ECD80", "00603CA0", "0062B640"],
+    "set_scroll_range_006834A0_count": 21,
+    "scroll_steps_outside_the_pump": ["0055CEC0", "00561860", "0056B610"],
+    "begin_drag_00683A40": ["00565190", "005993A0", "0062B3B0"],
+    "end_drag_00683320": ["004FAF40", "00561320", "005635F0", "00581970", "005E6E20",
+      "005EA990", "005FCAE0", "0061D770"],
+    "set_auto_scroll_00683300": ["004FAF40", "00561320", "00565190", "00581970", "005993A0",
+      "005E6E20", "005EA990", "0061D770", "0062B3B0"]
+  },
+
+  "no_ghidra_function": [],
+
+  "uncertainties": [
+    "The GUI Y convention is not established, so 00683680 and 00683700 are named toward the start and toward the end of the list rather than up and down.",
+    "00683820 applies +24h once per call with no frame delta; either the input axis at +36B4h is already time-scaled or the scroll is frame-rate dependent.",
+    "Input manager instance +4h fields +36B4h and +3714h are two axes with the second as a fallback; which physical control each is was not traced.",
+    "004BA6D0 is ledger-tagged stl_instantiation but is called here as __thiscall(1, 0) on the singleton at 00F8BBF4, returning an object whose virtual +24h reads an analog axis. The tag looks wrong for this call site.",
+    "+59h has no writer and +4Ch no reader inside 00683300..00683A8F.",
+    "Widget virtuals +4Ch and +58h are named alpha setter and size setter from their arguments only; the widget class was not identified."
+  ],
+
+  "remaining": [
+    "The widget class behind 00AA6740/00AA6750/00AA8240, its vtable, +4Ch and +58h.",
+    "Which list each embedded copy scrolls in each screen, and where +59h is set and cleared.",
+    "Reconciling bsp::MultiMenuScreenAnimation in include/bsp/multi_menu_screens.hpp."
+  ],
+
+  "follow_up_packets": [
+    {"id": "gui_widget_transform", "addresses": ["00AA6740", "00AA6750", "00AA8240", "00AA70E0", "00AA7220"], "files": ["docs/GUI_WIDGET_TRANSFORM.md", "include/bsp/gui_widget_transform.hpp"], "contract": "The widget parent chain at +70h, the scale pair at +18h/+1Ch and the size pair at +20h/+24h, and the vtable slots +4Ch and +58h the scroll block drives."},
+    {"id": "gui_scroll_list_bindings", "addresses": ["0055CEC0", "00561860", "0056B610", "00565190"], "files": ["docs/GUI_SCROLL_LIST_BINDINGS.md"], "contract": "The three call sites that drive 00683680/00683700 outside the pump and the drag begin at 00565190: which button and hit test each is on."},
+    {"id": "input_manager_axes", "addresses": ["004BEC00", "004BA6D0"], "files": ["docs/INPUT_MANAGER_AXES.md"], "contract": "Identify the two axis fields at instance+4h +36B4h/+3714h and the pad object 004BA6D0 returns, including whether the axis is time-scaled."}
+  ],
+
+  "names_recorded": [
+    {"address": "00683300", "name": "BSP_GuiScroller_SetAutoScroll"},
+    {"address": "00683320", "name": "BSP_GuiScroller_EndThumbDrag"},
+    {"address": "00683330", "name": "BSP_GuiScroller_SetWidgetAlphas"},
+    {"address": "00683380", "name": "BSP_GuiScroller_AttachScrollBar"},
+    {"address": "006833F0", "name": "BSP_GuiScroller_RecaptureBasePositions"},
+    {"address": "00683440", "name": "BSP_GuiScroller_SyncThumbPosition"},
+    {"address": "006834A0", "name": "BSP_GuiScroller_SetScrollRange"},
+    {"address": "00683610", "name": "BSP_GuiScroller_Construct"},
+    {"address": "00683680", "name": "BSP_GuiScroller_ScrollTowardStart"},
+    {"address": "00683700", "name": "BSP_GuiScroller_ScrollTowardEnd"},
+    {"address": "00683790", "name": "BSP_GuiScroller_AttachContent"},
+    {"address": "00683820", "name": "BSP_GuiScroller_Update"},
+    {"address": "00683A40", "name": "BSP_GuiScroller_BeginThumbDrag"},
+    {"address": "00AA6740", "name": "BSP_GuiWidget_GetSize"},
+    {"address": "00AA6750", "name": "BSP_GuiWidget_GetResolvedPosition"},
+    {"address": "00AA8240", "name": "BSP_GuiWidget_SetResolvedPosition"}
+  ],
+
+  "reconstruction": {
+    "header": "include/bsp/frontend_screen_animation.hpp",
+    "source": "src/frontend_screen_animation.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "test": "tests/math_tests.cpp, one case pinning the 006834A0 branch boundary at range == track and the zero-range arm",
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX /fp:strict, clean",
+    "tests": "ctest reconstructed_math passed"
+  },
+
+  "state_reached": [
+    {"addresses": ["00683300", "00683320", "00683330", "00683380", "006833F0", "00683440",
+      "006834A0", "00683610", "00683680", "00683700", "00683790", "00683820", "00683A40"],
+     "state": "reconstructed, build-tested"},
+    {"addresses": ["00AA6740"], "state": "analyzed; one instruction, fully recovered"},
+    {"addresses": ["00AA6750", "00AA8240"], "state": "analyzed to the parent-chain transform; not reconstructed"},
+    {"addresses": ["005902E0", "005E6D90", "005EA8C0", "00626630"], "state": "read only, for embed offsets"},
+    {"addresses": ["00599DB0"], "state": "read only; owned elsewhere"}
+  ]
+}

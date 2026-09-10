@@ -6,6 +6,7 @@
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
+#include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
@@ -800,6 +801,23 @@ int main() {
         bsp::set_front_end_screen_set_004f8710(stack, table, bindings, nullptr, 0);
         check(!briefing.wanted && overlay.wanted && stack.dirty,
             "an empty screen set clears its own level and leaves the other levels standing");
+    }
+
+    {
+        // 006834A0 flips branches at range == track (FCOMI/JC at 006834E4), and
+        // the two arms have to agree there: the thumb keeps its minimum height
+        // and the travel becomes the whole track. The zero-range arm at
+        // 006834C8 is the other boundary, where the thumb fills the track.
+        const bsp::ScrollBarGeometry at = bsp::compute_scroll_bar_geometry(40.0f, 40.0f, 12.0f);
+        const bsp::ScrollBarGeometry just_under =
+            bsp::compute_scroll_bar_geometry(std::nextafterf(40.0f, 0.0f), 40.0f, 12.0f);
+        const bsp::ScrollBarGeometry empty = bsp::compute_scroll_bar_geometry(0.0f, 40.0f, 12.0f);
+        check(at.scrollable && at.thumb_height == 12.0f && at.thumb_travel == 40.0f,
+            "a range equal to the track leaves the thumb at its minimum height");
+        check(just_under.scrollable && std::fabs(just_under.thumb_height - 12.0f) < 1.0e-4f,
+            "the branch just below that boundary agrees with it");
+        check(!empty.scrollable && empty.thumb_height == 52.0f && empty.thumb_travel == 0.0f,
+            "a zero range fills the track with the thumb and reports not scrollable");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
