@@ -1,0 +1,135 @@
+{
+  "packet": "system_constant_builder_integration_review",
+  "created_utc": "2026-09-10T16:22:02.421617+00:00",
+  "reviewed_checkout": "J:\\PROG\\battlestations-pacific-decompile",
+  "reviewed_checkout_head": "2acb795a8729a573635669ddde3347d916295005",
+  "review_basis": "Actual primary checkout working files, including current uncommitted integration; selected native assembly through bsp.py show after bsp.py ghidra count verified target.",
+  "conclusion": "No concrete integration defect or blocker found in the reviewed scope.",
+  "findings": [],
+  "checks": [
+    {
+      "topic": "Captured matrix and later time service",
+      "result": "Same environment.time.renderer_00f8d39c slot supplies the initial captured matrix_1d8 reference and independent later region_84 reads. SystemCameraMatrixService borrows the captured matrix without a second service domain.",
+      "native": "00B46A7B;00B46D0B;00B46D27"
+    },
+    {
+      "topic": "Camera/axes/time boundary",
+      "result": "The same CameraFrameState and CameraState caches feed matrix and axis writers. Axes use shared projection flag100 and return the timer captured between Y.x load and its store. Time receives that captured pointer directly, reads accumulated with MOVSS, then independently reloads the timer for virtual1C.",
+      "native": "00B46C85..00B46CB9;00B46CF9..00B46D04"
+    },
+    {
+      "topic": "FOV and fog boundary",
+      "result": "Time uses existing camera.projection.fov (native1C4) and full byte174; its returned fog owner is captured before c75.y store. Builder passes that owner plus a reference to the live same camera.fog_184 slot. Fog does not substitute an independent ambient owner.",
+      "native": "00B46D3B..00B46D97;00B46E69;00B46E94"
+    },
+    {
+      "topic": "Returning empty-list handler",
+      "result": "Builder passes camera.render_mode and exponent word by reference. Lighting preserves captured lighting/first/sentinel across a returning handler, then reads camera mode, environment and sentinel light. Complete and absent scene/lighting/shadow statuses all continue to context and final uploads.",
+      "native": "00B46ED1..00B46F02;00B47086"
+    },
+    {
+      "topic": "Prefix preservation and context",
+      "result": "Composed builder does not clear caller-initialized scratch. Optional context uses two actual pointer loads and four raw MOVSS stores only when present; absent scene/shadow still reaches it. Untouched component padding remains the caller preimage.",
+      "native": "00B475B4..00B475FC"
+    },
+    {
+      "topic": "Final upload captures and COM continuation",
+      "result": "VS count precedes VS renderer capture; PS reloads both after VS. First failing HRESULT is retained and does not suppress PS; zero count skips guard/device/counters. Capacity and missing-owner failures are explicit host checks.",
+      "native": "00B475FD..00B4762D"
+    },
+    {
+      "topic": "Probe borrowed owners",
+      "result": "Stack-local timer, foliage, service matrix, scene/light fields, pointer slots and environment adapters survive the complete synchronous build/upload call. The legacy CRT binding and its referenced preimage words are static; no dangling local runtime binding is published."
+    },
+    {
+      "topic": "Probe particle shutdown",
+      "result": "The explicit shutdown and the guard declared after the particle access run while callbacks, access, slot and string pool are alive. Domain shutdown clears its published manager, making later guard/domain shutdown calls empty. The slot and callback object outlive the domain."
+    },
+    {
+      "topic": "Material prefix retention and diagnostic claims",
+      "result": "Probe material first register is77; recovered tail uploads use that live start. Probe checks all77 VS/PS registers immediately and after each material tail. Chosen scene fog, lighting, screen-texture matrix, zero prefix and clock values are explicitly isolated host inputs, not native factory defaults."
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "include/bsp/system_constant_builder.hpp",
+      "bytes": 2615,
+      "sha256": "55fe8b47d3902a471f1ace2a70230a6239f6c9dfbdc7a371c0219e870dce131e"
+    },
+    {
+      "path": "src/system_constant_builder.cpp",
+      "bytes": 5022,
+      "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "bytes": 64953,
+      "sha256": "eb8e13c7c0e27e5f4433b2c49028209336f32feec76c01ab71c50670baa8d619"
+    },
+    {
+      "path": "include/bsp/camera_frame_state.hpp",
+      "bytes": 5393,
+      "sha256": "3e5e1c2c439a940126986f9160d78993c993479fdc09b7219df8aa6aee40479a"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "src/system_time_constants.cpp",
+      "bytes": 7336,
+      "sha256": "9e82137f33b9012a13879cd9c0237fb9245ab9b42daa3e6fbd395f7131a08886"
+    },
+    {
+      "path": "src/system_camera_axes.cpp",
+      "bytes": 15534,
+      "sha256": "eec74af11fd55b77a32927090f7e424ca72eb51b59733c106197b855ec6987a6"
+    },
+    {
+      "path": "src/system_fog_constants.cpp",
+      "bytes": 4113,
+      "sha256": "3d61e4eeea46e4d36128e38651e798e6442bce5f888e7820aacaf8543c929c6c"
+    },
+    {
+      "path": "include/bsp/system_lighting_constants.hpp",
+      "bytes": 4888,
+      "sha256": "21b6d74ffecc85494b04d086bb23d370ac80e60b45de39adbf2defa76804b603"
+    },
+    {
+      "path": "src/system_lighting_constants.cpp",
+      "bytes": 6418,
+      "sha256": "db1126a5d21494d988e65f381e88217d1f682c8968f49f760eba5f55cfc7fed5"
+    },
+    {
+      "path": "src/material_entry_dispatch.cpp",
+      "bytes": 14587,
+      "sha256": "fde34dddf3ee135ec98f0b1e64af4d1af1a375bf85ec9cb51116d1555154e563"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    }
+  ],
+  "observed_existing_evidence": [
+    {
+      "path": "reports/system_constant_builder_build.txt",
+      "observed": "2/2 existing CTest tests passed"
+    },
+    {
+      "path": "local/system_prefix_tail_review_run.txt",
+      "observed": "Two tail scenarios matched; raw signaling-NaN particle clock word7F800123 retained, forwarded7FC00123 with x87 invalid flag01"
+    },
+    {
+      "path": "reports/system_constant_builder_probe.txt",
+      "observed": "ordered_prefix=1;VS_PS_77_retained_after_material=1;particle_clocks_destroyed=1;lifetime_checked=1;mesh checked=1 restored=1"
+    }
+  ],
+  "limits": [
+    "Read-only independent composition review; no new tests or repeated component math audits.",
+    "Existing build/native/probe results were inspected, not rerun or newly claimed by this reviewer.",
+    "No Ghidra/source/shared-ledger changes.",
+    "Native object/global factory construction and ABI/game/visual claims remain outside the stated integration scope."
+  ]
+}
