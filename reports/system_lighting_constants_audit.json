@@ -1,0 +1,208 @@
+{
+  "packet": "system_scene_lighting_shadow_prefix",
+  "status": "bounded_implementation_pending_integration",
+  "created_utc": "2026-09-10T06:37:48.042116+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "project_file_exists": true,
+  "verification": "Every live read/export used tools/bsp.py ghidra, which verifies configured project/program/language/base. No Ghidra mutations.",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_evidence": [
+    {
+      "start": "00b46ed1",
+      "end_exclusive": "00b475b4",
+      "length": 1763,
+      "sha256": "f5a3f7b2b12066c3fa7ee6e3c0de48753cee39e278317e7ab37585bb1fb4c082",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b4708c",
+      "end_exclusive": "00b475b4",
+      "length": 1320,
+      "sha256": "7846bf0bc938c4a69bd203a6c38e56395603c3971513b5d7be3d910ce98379a1",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b72110",
+      "end_exclusive": "00b72114",
+      "length": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8b411cc3"
+    },
+    {
+      "start": "00b7aa20",
+      "end_exclusive": "00b7aa24",
+      "length": 4,
+      "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8d4118c3"
+    },
+    {
+      "start": "00b7aa30",
+      "end_exclusive": "00b7aa34",
+      "length": 4,
+      "sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8d4128c3"
+    },
+    {
+      "start": "00b7aa40",
+      "end_exclusive": "00b7aa4e",
+      "length": 14,
+      "sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8b442404c1e0048d440838c20400"
+    },
+    {
+      "start": "00b7aab0",
+      "end_exclusive": "00b7aab7",
+      "length": 7,
+      "sha256": "c9b009cece926c8eb8e7682d20c7fdd9188da262bdb2e3340da5111892a1350b",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8b8174010000c3"
+    },
+    {
+      "start": "00cfad80",
+      "end_exclusive": "00cfad84",
+      "length": 4,
+      "sha256": "ad286c64373644140ff927b256b8415467b5d27645ff997010b15519d022631b",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "00000043"
+    },
+    {
+      "start": "00ce3978",
+      "end_exclusive": "00ce397c",
+      "length": 4,
+      "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "0000804f"
+    }
+  ],
+  "parent_abi": "00B46A70: ECX optional scene; EDX camera; no stack arguments; plain RET. Fragment is not a native entry point.",
+  "cxx_abi_compatible": false,
+  "retained_owner_contracts": {
+    "scene": "Live pointer slot scene+1C; null scene or null lighting owner skips all writes.",
+    "lighting": "Live sentinel slot A+1C; sentinel->next node+00; same first node+08 light retained. Capture environment A+10.",
+    "environment": "Live ambient+18/mode3+28 and six16-byte ambient cube faces+38.",
+    "light": "Live shadow owner+174, diffuse+184/mode3+1B4, specular+194, direction+1E0.",
+    "shadow": "Live four matrices+144/+184/+1C4/+204, direction+38, limits+390; same actual owner supplies virtual+08.",
+    "texture": "Each virtual+08 return has a retained SystemShadowTexture projection for actual virtual+3C/+40 DWORD results; do not substitute LogicalTexture metadata."
+  },
+  "write_order": [
+    "c43",
+    "c44",
+    "c45",
+    "c52.xyz",
+    "c42.x",
+    "c46..51",
+    "c53..68",
+    "c69.xyz",
+    "c70",
+    "c76.x",
+    "c76.y",
+    "c76.z",
+    "c76.w"
+  ],
+  "callback_order": [
+    "shadow.texture_08",
+    "returned_texture.width_3c",
+    "spill c76.x",
+    "same_shadow.texture_08",
+    "new_returned_texture.height_40",
+    "spill c76.y",
+    "x87 reciprocal c76.x then c76.y"
+  ],
+  "preserved_words": "All words outside listed destinations, including c42.yzw/c52.w/c69.w, are unchanged; output is never cleared.",
+  "arithmetic": "Raw DWORD/MOVSS colors and shadow transpose preserve sNaNs. Unsigned dimensions use FILD signed32 plus conditional float2^32, float spill then exact x87 reciprocal instruction sequence.",
+  "empty_list_boundary": "Distinct native_empty_light_list_failure result at00BF6713; no success or absence fallback. Native wrapper calls00BF66EF with five zero args and may return; CRT continuation is not reconstructed.",
+  "host_validation": "Invalid output/owner projection and unavailable/null callback results return explicit new host statuses, preserving writes already made. Native has no equivalent null-field/null-texture checks.",
+  "annotations_applied": false,
+  "proposed_annotations": [
+    {
+      "address": "00b72110",
+      "preimage": {
+        "address": "00b72110",
+        "function_name": "TRIV_body_00b72110"
+      },
+      "proposed_name": "BSP_Scene_GetLightingOwner",
+      "original_abi": "ECX scene; EAX [ECX+1C]; plain RET",
+      "provisional": true,
+      "proposed_comment": "Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX scene; EAX [ECX+1C]; plain RET. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment."
+    },
+    {
+      "address": "00b7aa20",
+      "preimage": {
+        "address": "00b7aa20",
+        "function_name": "TRIV_body_00b7aa20"
+      },
+      "proposed_name": "BSP_LightEnvironment_GetAmbientColor",
+      "original_abi": "ECX environment; EAX ECX+18; plain RET",
+      "provisional": true,
+      "proposed_comment": "Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX environment; EAX ECX+18; plain RET. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment."
+    },
+    {
+      "address": "00b7aa30",
+      "preimage": {
+        "address": "00b7aa30",
+        "function_name": "TRIV_body_00b7aa30"
+      },
+      "proposed_name": "BSP_LightEnvironment_GetMode3AmbientColor",
+      "original_abi": "ECX environment; EAX ECX+28; plain RET",
+      "provisional": true,
+      "proposed_comment": "Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX environment; EAX ECX+28; plain RET. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment."
+    },
+    {
+      "address": "00b7aa40",
+      "preimage": {
+        "address": "00b7aa40",
+        "function_name": "FUN_00b7aa40"
+      },
+      "proposed_name": "BSP_LightEnvironment_GetAmbientCubeFace",
+      "original_abi": "ECX environment; stack index; EAX ECX+38+10h*index modulo32; RET4",
+      "provisional": true,
+      "proposed_comment": "Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX environment; stack index; EAX ECX+38+10h*index modulo32; RET4. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment."
+    },
+    {
+      "address": "00b7aab0",
+      "preimage": {
+        "address": "00b7aab0",
+        "function_name": "BSP_Light_GetShadowMapOwner",
+        "comment": "[BSP reconstruction 00b7aab0]\nBSP reconstruction hypothesis: Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null. ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "proposed_name": "BSP_Light_GetShadowMapOwner",
+      "original_abi": "ECX first light; EAX [ECX+174]; plain RET",
+      "provisional": true,
+      "proposed_comment": "Bounded system lighting/shadow getter reconstructed through borrowed live owner/field references. ECX first light; EAX [ECX+174]; plain RET. Evidence: docs/SYSTEM_LIGHTING_CONSTANTS.md; reports/system_lighting_constants_audit.json. Native lifecycle and full ABI adapter remain unresolved; C++ names are hypotheses. Preserve prior comment."
+    }
+  ],
+  "remaining_dependencies": [
+    "Native scene/environment/light/list/shadow factories, lifecycle and actual retained-owner bindings",
+    "Concrete shadow virtual+08 and texture virtual+3C/+40 ABI adapters, shared with parent MaterialShadowMapOwner binding",
+    "Native00BF6713/00BF66EF CRT handler and any return continuation",
+    "Parent00B46A70 composition, CMake registration and final upload",
+    "No original ABI replacement or game validation"
+  ],
+  "validation": {
+    "strict_isolated_win32_compile": "passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /O2; isolated object and focused harness compile the new source",
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and native_math_differential both passed; new source registration remains primary-owned",
+    "focused_native_shadow_comparison": "passed all308 words, 1320 verified native bytes; two absolute2^32 references relocated and RET appended; raw sNaN transpose, two returned texture identities, callback/write order, DWORD0xFFFFFFFF and zero reciprocal",
+    "focused_host_boundaries": "mode3 selection, padding, second texture callback failure with partial writes, distinct empty-list failure passed",
+    "test_scope": "one ignored local harness, no tracked test suite, no native CRT execution or game process"
+  },
+  "game_validated": false,
+  "fragment_ledger_proposal": {
+    "parent": "00b46a70",
+    "start": "00b46ed1",
+    "end_exclusive": "00b475b4",
+    "interface": "write_system_lighting_shadow_prefix_00b46ed1",
+    "status": "bounded_implementation_native_shadow_fragment_fixture_tested",
+    "source": "src/system_lighting_constants.cpp",
+    "evidence": [
+      "docs/SYSTEM_LIGHTING_CONSTANTS.md",
+      "reports/system_lighting_constants_audit.json"
+    ]
+  }
+}
