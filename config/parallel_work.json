@@ -2208,9 +2208,9 @@
     {
       "id": "native_renderer_parameters_owner",
       "packet": "native_renderer_parameters_owner",
-      "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_actual_parameter_region_and_startup_through_probe_dataflow",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
       "dependencies": [
         "native_renderer_parameters_next"
       ],
@@ -2218,26 +2218,32 @@
         "00b1ff60",
         "00b2aeb0"
       ],
-      "boundary": "Actual14h region and captured current virtual30 binding; startup writes same0C/10 before GetDeviceCaps/CreateDevice; no presentation mirror or reset-mode claim."
+      "boundary": "Actual14h region and captured current virtual30 binding; startup writes same0C/10 before GetDeviceCaps/CreateDevice; no presentation mirror or reset-mode claim.",
+      "worker_commit": "5e7f510",
+      "evidence": "reports/native_renderer_parameters_audit.json",
+      "integration_report": "reports/native_camera_render_probe_audit.json"
     },
     {
       "id": "native_camera_render_probe",
       "packet": "native_camera_render_probe",
       "worker": "primary_integration",
-      "done": false,
-      "state": "next_native_camera_replaces_diagnostic_camera_after_parameter_dataflow",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
       "dependencies": [
         "native_renderer_parameters_owner",
         "native_camera_queued_lifetime"
       ],
-      "boundary": "Use SAME raw camera slot/node/pose/frame/viewport through actual parameter binding; explicit scene inputs and unchanged image expectations; lifecycle marker and installed rendering proof."
+      "boundary": "Use SAME raw camera slot/node/pose/frame/viewport through actual parameter binding; explicit scene inputs and unchanged image expectations; lifecycle marker and installed rendering proof.",
+      "worker_commit": null,
+      "evidence": "reports/native_camera_render_probe_audit.json",
+      "integration_report": "reports/native_camera_render_probe_audit.json"
     },
     {
       "id": "native_render_context",
       "packet": "native_render_context",
       "worker": "primary_integration",
-      "done": false,
-      "state": "worker_complete_9e64eef_pending_primary_integration_and_fixture_review",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
       "worker_commit": "9e64eef",
       "dependencies": [
         "native_camera_queued_lifetime"
@@ -2251,28 +2257,32 @@
         "src/native_render_context.cpp",
         "docs/NATIVE_RENDER_CONTEXT.md",
         "reports/native_render_context_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_render_context_audit.json",
+      "integration_report": "reports/native_camera_render_probe_audit.json"
     },
     {
       "id": "native_texture2d_owner_next",
       "packet": "native_texture2d_owner_next",
-      "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_tracing_texture_pool_and_full_owner_dependency_frontier",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "discovery_integrated_primary_native_byte_review_no_implementation_claim",
       "dependencies": [
         "native_surface_owner"
       ],
       "code_ownership": [
         "docs/NATIVE_TEXTURE2D_OWNER_NEXT.md",
         "reports/native_texture2d_owner_next.json"
-      ]
+      ],
+      "worker_commit": "433c359",
+      "evidence": "reports/native_texture2d_owner_next.json"
     },
     {
       "id": "native_render_command_next",
       "packet": "native_render_command_next",
-      "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_tracing_actual44h_command_and_queue_publication_dependencies",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "discovery_integrated_primary_native_byte_review_no_implementation_claim",
       "dependencies": [
         "native_render_context",
         "native_render_batch_lifetime"
@@ -2280,7 +2290,90 @@
       "code_ownership": [
         "docs/NATIVE_RENDER_COMMAND_NEXT.md",
         "reports/native_render_command_next.json"
+      ],
+      "worker_commit": "13983b0",
+      "evidence": "reports/native_render_command_next.json"
+    },
+    {
+      "id": "native_render_group_owner_next",
+      "packet": "native_render_group_owner_next",
+      "worker": "primary_integration",
+      "done": false,
+      "state": "next_primary_actual4Ch_group_owner_and_model_terminal_frontier",
+      "dependencies": [
+        "native_render_command_next",
+        "native_render_pointer_arrays"
+      ],
+      "boundary": "Actual group storage and complete terminal edges before promoting command/queue lifetime to native ownership; no empty-group shortcut."
+    },
+    {
+      "id": "native_d3d9_texture2d_pool",
+      "packet": "native_d3d9_texture2d_pool",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_actual54h_texture_slot_pool_shared_allocator_list_and_Win32_section",
+      "dependencies": [
+        "native_texture2d_owner_next"
+      ],
+      "function_addresses": [
+        "00b3ee80",
+        "00b3ef60",
+        "00b3d1e0",
+        "00b3d8d0",
+        "00b3e510",
+        "00b3e430",
+        "00b3d3b0",
+        "00b3f2b0",
+        "00b3dcd0",
+        "00cd7b60",
+        "00ce0ca0"
+      ],
+      "code_ownership": [
+        "include/bsp/d3d9_texture2d_pool.hpp",
+        "src/d3d9_texture2d_pool.cpp",
+        "docs/D3D9_TEXTURE2D_POOL.md",
+        "reports/d3d9_texture2d_pool_audit.json"
       ]
+    },
+    {
+      "id": "native_render_pointer_arrays",
+      "packet": "native_render_pointer_arrays",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_implementing_actual12byte_pointer_arrays_with_postreserve_dereference_and_stale_slots",
+      "dependencies": [
+        "native_render_command_next"
+      ],
+      "function_addresses": [
+        "00b1c660",
+        "00b1c7c0",
+        "00b1cbe0",
+        "00b1d1f0",
+        "00b1d260",
+        "00b1c6c0",
+        "00b1cc80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_pointer_arrays.hpp",
+        "src/native_render_pointer_arrays.cpp",
+        "docs/NATIVE_RENDER_POINTER_ARRAYS.md",
+        "reports/native_render_pointer_arrays_audit.json"
+      ]
+    },
+    {
+      "id": "native_render_resource_removal_next",
+      "packet": "native_render_resource_removal_next",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_tracing_renderer_resource_removal_and_ready_native_record_storage_destructor",
+      "dependencies": [
+        "native_texture2d_owner_next"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDER_RESOURCE_REMOVAL_NEXT.md",
+        "reports/native_render_resource_removal_next.json"
+      ],
+      "boundary": "Current renderer+6C B32250 ->B31DC0 actual2Ch records/aliases; full resource terminal chain and catch rollback dependencies retained explicitly."
     }
   ],
   "snapshot_after_analysis": {
@@ -2292,7 +2385,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/native_camera_reference_audit.json",
+  "integration_report": "reports/native_camera_render_probe_audit.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -2307,7 +2400,7 @@
     "total_functions": 62918,
     "utc": "2026-09-10T20:36:59.438994+00:00",
     "index_fresh": true,
-    "report": "reports/native_camera_reference_audit.json"
+    "report": "reports/native_camera_render_probe_audit.json"
   },
   "active_followups": [
     {
@@ -2944,112 +3037,140 @@
     },
     {
       "packet": "native_renderer_parameters_owner",
-      "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_actual_parameter_region_and_startup_through_probe_dataflow",
-      "validation": null
+      "worker": "primary_integration",
+      "state": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
+      "validation": "reports/native_renderer_parameters_audit.json"
     },
     {
       "packet": "native_camera_render_probe",
       "worker": "primary_integration",
-      "state": "next_native_camera_replaces_diagnostic_camera_after_parameter_dataflow",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
+      "validation": "reports/native_camera_render_probe_audit.json"
     },
     {
       "packet": "native_render_context",
       "worker": "primary_integration",
-      "state": "worker_complete_9e64eef_pending_primary_integration_and_fixture_review",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
+      "validation": "reports/native_render_context_audit.json"
     },
     {
       "packet": "native_texture2d_owner_next",
-      "worker": "system_fog_owner_discovery",
-      "state": "worker_tracing_texture_pool_and_full_owner_dependency_frontier",
-      "validation": null
+      "worker": "primary_integration",
+      "state": "discovery_integrated_primary_native_byte_review_no_implementation_claim",
+      "validation": "reports/native_texture2d_owner_next.json"
     },
     {
       "packet": "native_render_command_next",
+      "worker": "primary_integration",
+      "state": "discovery_integrated_primary_native_byte_review_no_implementation_claim",
+      "validation": "reports/native_render_command_next.json"
+    },
+    {
+      "packet": "native_render_group_owner_next",
+      "worker": "primary_integration",
+      "state": "next_primary_actual4Ch_group_owner_and_model_terminal_frontier",
+      "validation": null
+    },
+    {
+      "packet": "native_d3d9_texture2d_pool",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_implementing_actual54h_texture_slot_pool_shared_allocator_list_and_Win32_section",
+      "validation": null
+    },
+    {
+      "packet": "native_render_pointer_arrays",
       "worker": "material_effect_plane",
-      "state": "worker_tracing_actual44h_command_and_queue_publication_dependencies",
+      "state": "worker_implementing_actual12byte_pointer_arrays_with_postreserve_dereference_and_stale_slots",
+      "validation": null
+    },
+    {
+      "packet": "native_render_resource_removal_next",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_tracing_renderer_resource_removal_and_ready_native_record_storage_destructor",
       "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "id": "native_renderer_parameters_owner",
-      "packet": "native_renderer_parameters_owner",
-      "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_actual_parameter_region_and_startup_through_probe_dataflow",
-      "dependencies": [
-        "native_renderer_parameters_next"
-      ],
-      "function_addresses": [
-        "00b1ff60",
-        "00b2aeb0"
-      ],
-      "boundary": "Actual14h region and captured current virtual30 binding; startup writes same0C/10 before GetDeviceCaps/CreateDevice; no presentation mirror or reset-mode claim."
-    },
-    {
-      "id": "native_camera_render_probe",
-      "packet": "native_camera_render_probe",
+      "id": "native_render_group_owner_next",
+      "packet": "native_render_group_owner_next",
       "worker": "primary_integration",
       "done": false,
-      "state": "next_native_camera_replaces_diagnostic_camera_after_parameter_dataflow",
+      "state": "next_primary_actual4Ch_group_owner_and_model_terminal_frontier",
       "dependencies": [
-        "native_renderer_parameters_owner",
-        "native_camera_queued_lifetime"
+        "native_render_command_next",
+        "native_render_pointer_arrays"
       ],
-      "boundary": "Use SAME raw camera slot/node/pose/frame/viewport through actual parameter binding; explicit scene inputs and unchanged image expectations; lifecycle marker and installed rendering proof."
+      "boundary": "Actual group storage and complete terminal edges before promoting command/queue lifetime to native ownership; no empty-group shortcut."
     },
     {
-      "id": "native_render_context",
-      "packet": "native_render_context",
-      "worker": "primary_integration",
-      "done": false,
-      "state": "worker_complete_9e64eef_pending_primary_integration_and_fixture_review",
-      "worker_commit": "9e64eef",
-      "dependencies": [
-        "native_camera_queued_lifetime"
-      ],
-      "function_addresses": [
-        "00b1d120",
-        "00b1d570"
-      ],
-      "code_ownership": [
-        "include/bsp/native_render_context.hpp",
-        "src/native_render_context.cpp",
-        "docs/NATIVE_RENDER_CONTEXT.md",
-        "reports/native_render_context_audit.json"
-      ]
-    },
-    {
-      "id": "native_texture2d_owner_next",
-      "packet": "native_texture2d_owner_next",
+      "id": "native_d3d9_texture2d_pool",
+      "packet": "native_d3d9_texture2d_pool",
       "worker": "system_fog_owner_discovery",
       "done": false,
-      "state": "worker_tracing_texture_pool_and_full_owner_dependency_frontier",
+      "state": "worker_implementing_actual54h_texture_slot_pool_shared_allocator_list_and_Win32_section",
       "dependencies": [
-        "native_surface_owner"
+        "native_texture2d_owner_next"
+      ],
+      "function_addresses": [
+        "00b3ee80",
+        "00b3ef60",
+        "00b3d1e0",
+        "00b3d8d0",
+        "00b3e510",
+        "00b3e430",
+        "00b3d3b0",
+        "00b3f2b0",
+        "00b3dcd0",
+        "00cd7b60",
+        "00ce0ca0"
       ],
       "code_ownership": [
-        "docs/NATIVE_TEXTURE2D_OWNER_NEXT.md",
-        "reports/native_texture2d_owner_next.json"
+        "include/bsp/d3d9_texture2d_pool.hpp",
+        "src/d3d9_texture2d_pool.cpp",
+        "docs/D3D9_TEXTURE2D_POOL.md",
+        "reports/d3d9_texture2d_pool_audit.json"
       ]
     },
     {
-      "id": "native_render_command_next",
-      "packet": "native_render_command_next",
+      "id": "native_render_pointer_arrays",
+      "packet": "native_render_pointer_arrays",
       "worker": "material_effect_plane",
       "done": false,
-      "state": "worker_tracing_actual44h_command_and_queue_publication_dependencies",
+      "state": "worker_implementing_actual12byte_pointer_arrays_with_postreserve_dereference_and_stale_slots",
       "dependencies": [
-        "native_render_context",
-        "native_render_batch_lifetime"
+        "native_render_command_next"
+      ],
+      "function_addresses": [
+        "00b1c660",
+        "00b1c7c0",
+        "00b1cbe0",
+        "00b1d1f0",
+        "00b1d260",
+        "00b1c6c0",
+        "00b1cc80"
       ],
       "code_ownership": [
-        "docs/NATIVE_RENDER_COMMAND_NEXT.md",
-        "reports/native_render_command_next.json"
+        "include/bsp/native_render_pointer_arrays.hpp",
+        "src/native_render_pointer_arrays.cpp",
+        "docs/NATIVE_RENDER_POINTER_ARRAYS.md",
+        "reports/native_render_pointer_arrays_audit.json"
       ]
+    },
+    {
+      "id": "native_render_resource_removal_next",
+      "packet": "native_render_resource_removal_next",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_tracing_renderer_resource_removal_and_ready_native_record_storage_destructor",
+      "dependencies": [
+        "native_texture2d_owner_next"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDER_RESOURCE_REMOVAL_NEXT.md",
+        "reports/native_render_resource_removal_next.json"
+      ],
+      "boundary": "Current renderer+6C B32250 ->B31DC0 actual2Ch records/aliases; full resource terminal chain and catch rollback dependencies retained explicitly."
     }
   ],
   "current_partition": {

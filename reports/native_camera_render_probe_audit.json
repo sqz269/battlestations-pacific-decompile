@@ -1,0 +1,1348 @@
+{
+  "schema_version": 1,
+  "utc": "2026-09-10T20:56:33.068592+00:00",
+  "packet": "native_camera_render_probe",
+  "status": "integrated_reviewed_strict_win32_build_native_fixtures_and_installed_actual_camera_draw_passed",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "components": [
+    "reports/native_camera_owner_audit.json",
+    "reports/native_camera_reference_audit.json",
+    "reports/native_render_context_audit.json",
+    "reports/native_renderer_parameters_audit.json"
+  ],
+  "discoveries": [
+    "reports/native_texture2d_owner_next.json",
+    "reports/native_render_command_next.json"
+  ],
+  "primary_review": {
+    "utc": "2026-09-10T20:54:37.250201+00:00",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "packet": "native_render_context",
+        "address": "00b1d120",
+        "length": 168,
+        "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00b1d570",
+        "length": 30,
+        "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00b1edd3",
+        "length": 31,
+        "sha256": "b7a65827772c3e6f220fa07ebb6a746ce1c4f9dc37ea7b94ccfeaf44bf2dc8cf"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00bd30f0",
+        "length": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00cbc9c0",
+        "length": 8,
+        "sha256": "e24a70bf7cc69996fd498a30dbcfe0f4c301a746ef03d95859fef81929ec9554"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00cbc9c8",
+        "length": 10,
+        "sha256": "d3bb101ab5cdbc3fe5978a36007d6d1d894e6f23c8ae85349d47ea806988a969"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00d5e5c4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00ceb130",
+        "length": 8,
+        "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00ce2220",
+        "length": 4,
+        "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00df4e20",
+        "length": 8,
+        "sha256": "c97f3a723bbf754fe346fb609fbc447e6983b171cd624109bfd1b83e792e6954"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00df4e28",
+        "length": 36,
+        "sha256": "3061863d26748c81d21b13f09843780ab6682ddd9efd309e72b7ec30f6d0cc6d"
+      },
+      {
+        "packet": "native_render_context",
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "packet": "native_renderer_parameters",
+        "address": "00b32512",
+        "length": 34,
+        "sha256": "aeee1afa62b310d0b15831e20d9a236c9e1e74d4ab27c76be2031c7c3306164b"
+      },
+      {
+        "packet": "native_renderer_parameters",
+        "address": "00b1ff60",
+        "length": 7,
+        "sha256": "663abb9d44b91bd83ff606f17d955bbab34cf4ab310908bfe7fed9a3e97e4ee5"
+      },
+      {
+        "packet": "native_renderer_parameters",
+        "address": "00b2af9e",
+        "length": 12,
+        "sha256": "21194d35ab5742e7ef639b861150a24d4c3ef4f34dde294ee198eeaa775321b0"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3ee80",
+        "length": 211,
+        "sha256": "902e5ac847b742c56eee1a72464f4f11521bf9c075abc081390fd355f8327815"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3ef60",
+        "length": 304,
+        "sha256": "f25617f05d0e68ea47aa0669f3f08dacb1dc03cf1eb8b683e8a147757da8f9e6"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3d1e0",
+        "length": 64,
+        "sha256": "21aa22846ed4171941b4a7f43aafda3cd4d13b4e2d29df10af6d5366aea3ee0e"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3d8d0",
+        "length": 101,
+        "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3e510",
+        "length": 160,
+        "sha256": "34aa3209c2e3e44b849165725e4144c71b15a688910e57c8beed83c0e5e8f94a"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3e430",
+        "length": 138,
+        "sha256": "ffc04fcfbc253361e89f5d0a9220e76b833f0002db9970915545527c5e0a05eb"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3d3b0",
+        "length": 14,
+        "sha256": "8c94e421fdd4df56ffe93f87d110b133e8fa8e5bbba382c851653ef62799e964"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3f2b0",
+        "length": 10,
+        "sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3dcd0",
+        "length": 12,
+        "sha256": "ffd38ad624524ee336e7d9cda60df7c7c6312535e207b5fd4c03a227346dc240"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cd7b60",
+        "length": 22,
+        "sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00ce0ca0",
+        "length": 10,
+        "sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3f630",
+        "length": 382,
+        "sha256": "f59553f64d394a4b3609c84d5d504377bcb3de224a47ef97914c50e39e4a5023"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3f7b0",
+        "length": 383,
+        "sha256": "73d5891625159872d48116a5b922d4b02095894b71240e01a20cbe31d6b5b661"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3f930",
+        "length": 337,
+        "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3f2e0",
+        "length": 302,
+        "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3f590",
+        "length": 32,
+        "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3fd80",
+        "length": 264,
+        "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3dd30",
+        "length": 86,
+        "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3dd90",
+        "length": 362,
+        "sha256": "725508b5f5d5ffcae47674b0daca2805c95bb1ff3d60603448483708ddedb81b"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3e190",
+        "length": 93,
+        "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3d9b0",
+        "length": 104,
+        "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3da20",
+        "length": 80,
+        "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3ec40",
+        "length": 23,
+        "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b33fc0",
+        "length": 71,
+        "sha256": "cbd07a687e43aa3105e7256d6195396fbafca4da73dbcca80092da34509fff79"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b34120",
+        "length": 176,
+        "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b34230",
+        "length": 37,
+        "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b33f50",
+        "length": 103,
+        "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b34010",
+        "length": 5,
+        "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b27d40",
+        "length": 19,
+        "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b25580",
+        "length": 103,
+        "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b32250",
+        "length": 240,
+        "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b31dc0",
+        "length": 520,
+        "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b33e40",
+        "length": 4,
+        "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b23640",
+        "length": 59,
+        "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "008d43c0",
+        "length": 119,
+        "sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "008d4440",
+        "length": 45,
+        "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "008d4470",
+        "length": 66,
+        "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00bef6d0",
+        "length": 124,
+        "sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00bef9c0",
+        "length": 118,
+        "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00bb8f90",
+        "length": 30,
+        "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00bef600",
+        "length": 11,
+        "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00bef610",
+        "length": 7,
+        "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b2a201",
+        "length": 298,
+        "sha256": "1736b30da804996d91beffa4f1b9230a52852b2b7463eb45a06bb3c027b7c1dc"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b2c5d4",
+        "length": 116,
+        "sha256": "fc851918d85d5c2f980f9b13c101ce7a88136ab2aa7f12a6ceec6794316f31af"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b2c833",
+        "length": 22,
+        "sha256": "10312f9984217d46d6cdbbe4370ba98f9ee51db6d951e78d621af7bb4b985189"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbee30",
+        "length": 40,
+        "sha256": "1c938f51d1d9d9e8704f598a3cf0a84e6719efdac5734cd4d1b213d85f42b643"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df7688",
+        "length": 60,
+        "sha256": "ec10ef71448e0396a6bf25e511b5265fdc5e49193a3bac2746da6fce2f598adc"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbee90",
+        "length": 29,
+        "sha256": "d533879bf906081369aba6642c341cb976c59fe8cd8ebbe9f3f3f1fa664ca42a"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df7700",
+        "length": 52,
+        "sha256": "971eb51c77805422107654e4724a48da48bbdd975c91303561e367b0dfb3fc1f"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbef20",
+        "length": 45,
+        "sha256": "26de1d29b4ab31ff26fb420927385fdaff00c8e4b12ae78a2b274c8a44103fef"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df77e0",
+        "length": 68,
+        "sha256": "aa14a3c9d053890f3255daa74015ee0bb28dd1fe350f122d4c1030d6e6b14180"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbef50",
+        "length": 37,
+        "sha256": "30499fe6e681d177ce74c941d568895fef21a28413b2a26ea0400baf34ccf590"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df7824",
+        "length": 60,
+        "sha256": "f4a8a1f2d88cdfd300b6d2317bf8550baea310d670f71d1169d3e2b606e9fbc0"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbefa0",
+        "length": 18,
+        "sha256": "a29536078f63ba79ed7c32c3bb0ec4647fac18efa6ea3065de292ae9b6c10d0f"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df788c",
+        "length": 44,
+        "sha256": "90b7856e2be94ca0c87f61e754f06a522a81ff908342dcbb76fa9c53cc194ed8"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbe090",
+        "length": 18,
+        "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df6904",
+        "length": 44,
+        "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbe0b0",
+        "length": 29,
+        "sha256": "fe885481ffb1a1b48822cbf9e8dda2040cb3b83e29da2124a75a6710b3f07d4a"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df6930",
+        "length": 52,
+        "sha256": "c6aadcbc89e62cc2a114743bd6fcbacb8099e0203b5b1261142e6520eac40029"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cbdce0",
+        "length": 26,
+        "sha256": "d06b30caa74fb6ab6b9eeecc2bb00dbf6b548b4314f6a21ab29b52640302fdf6"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df6684",
+        "length": 52,
+        "sha256": "ed6141b2ac4f80f7eeedbda84c26f7e61ceef42cbb3a5306f4843ad547d05532"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00ca2ef0",
+        "length": 18,
+        "sha256": "5728f31f843e493e0295f4bf9dac707492897aec4399e92733e43935a24ca6b0"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00dd5088",
+        "length": 44,
+        "sha256": "1c573614f9d385c5b6a9c1cdd0e49878d76ec0ee76e78b17337a8ee14af2cb71"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00cc76b0",
+        "length": 18,
+        "sha256": "a0c8a21d89fd9e761768ecf14ea99540909751a2c025335297d8066a86a06a77"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00e022a4",
+        "length": 44,
+        "sha256": "78bc2f0dbae8578795945560f2720e3b6b578159a4a86a7dc4238f0a5f41b757"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d61948",
+        "length": 88,
+        "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d61940",
+        "length": 4,
+        "sha256": "62c8210b890d305c43f2ee4096df98bab572577016be9b50b7b71e0db8041e42"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "0108db38",
+        "length": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00e188b4",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "0108daf8",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "0108d6e8",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "0108d6dc",
+        "length": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00f8d394",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d619e4",
+        "length": 17,
+        "sha256": "bc72009b12622e7f0ec62e39863f52f2659b3278df125de4cb90611c2541d129"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d5f228",
+        "length": 4,
+        "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d5f1f4",
+        "length": 4,
+        "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d5f114",
+        "length": 4,
+        "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00b3defc",
+        "length": 16,
+        "sha256": "bf6e27ad79143889b5709e8c6b17e04821abde4c73b5c53fb8468ecb6c9da448"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d642c0",
+        "length": 52,
+        "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d15ad8",
+        "length": 8,
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00d5c104",
+        "length": 4,
+        "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "0109db98",
+        "length": 8,
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00ce221c",
+        "length": 8,
+        "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258"
+      },
+      {
+        "packet": "native_texture2d_owner_discovery",
+        "address": "00df7690",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00d62cf0",
+        "length": 88,
+        "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00d62c88",
+        "length": 88,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00d5e5c4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00ce3d08",
+        "length": 4,
+        "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00ce7d20",
+        "length": 4,
+        "sha256": "c5bc52f5111b4a95d57edccb121dec6b28befe5580e5fe479e04910e0a344dd3",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00d0c5f8",
+        "length": 4,
+        "sha256": "52066a26a37a31badc03cd3a0c8daffc3fe522911c050c84957aecc2e49543ea",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00d5bd98",
+        "length": 4,
+        "sha256": "6f4cd532e8c154c45c348ae70bd34e9a5dffdb04411785cb9aa4d5f2ff1ce765",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00ce77fc",
+        "length": 4,
+        "sha256": "c36c2606ae26dfb7a6c61b3b7dd29931582302a8d695f198455710a61847fcb5",
+        "live_matches": true
+      },
+      {
+        "packet": "native_camera_probe",
+        "address": "00ce3c88",
+        "length": 4,
+        "sha256": "03a88c8867b3fbcfeefc3270af46afbeb74a27e12cad758e188154cb4aa923dc",
+        "live_matches": true
+      }
+    ],
+    "source_artifacts": [
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+        "worker_commit": "9e64eef",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+        "worker_commit": "9e64eef",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/native_renderer_parameters.hpp",
+        "sha256": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/d3d9_mesh_probe.cpp",
+        "sha256": "1e1d909638e2d1e293dbc0d2435b44ae9380781da06835d38b93649eda7233e8",
+        "worker_commit": "5e7f510",
+        "comparison": "Primary native camera replacement over integrated parameter dataflow"
+      },
+      {
+        "path": "src/d3d9_probe.cpp",
+        "sha256": "22bfb49a6e944859f7e5e7724e14274e069e56d3c4141294f88a16d51ede77d9",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/d3d9_startup.cpp",
+        "sha256": "59363f8139e450a298564a1be6ad3a89b3609645090741b3ddfce4295c1377ed",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/d3d9_states.cpp",
+        "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/native_renderer_parameters.cpp",
+        "sha256": "7f5a2439342111b7a1f03d6992e88893c704497638f17f74e858e7fd91ba72c3",
+        "worker_commit": "5e7f510",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "d3b002e0858673186dbe167891862322930b34638104626b125dd0baaf3bb4b0",
+        "comparison": "Primary actual camera/context/render probe composition"
+      },
+      {
+        "path": "src/native_camera_probe.hpp",
+        "sha256": "cf72366f1d7e48995b47d70e33a8198654d9d5ab65d167a99e390c9227b5d7c1",
+        "comparison": "Primary actual camera/context/render probe composition"
+      },
+      {
+        "path": "src/native_camera_probe.cpp",
+        "sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "comparison": "Primary actual camera/context/render probe composition"
+      }
+    ],
+    "probe_immutable_data_spans": 10
+  },
+  "functions_and_fragments": [
+    {
+      "kind": "function",
+      "address": "00b1d120",
+      "name": "destroy_native_render_context_00b1d120",
+      "cpp_symbol": "destroy_native_render_context_00b1d120",
+      "source": "src/native_render_context.cpp",
+      "native_end_exclusive": "00b1d1c8",
+      "original_abi": "ECX actual18h context; RET",
+      "evidence": "docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json",
+      "status": "integrated_strict_win32_build_native_fixtures_and_installed_native_camera_render_checked",
+      "current_integration_scope": "Complete actual context destructor: D5E5C4, capture08/decrement actual04/current zero dispatch/clear08 after callback, then reload0C and14 in order; preserve04/10; baseCEB130 normal and state0 unwind. Pure canonical lookup occurs only at zero, exact04 address verified. Prior18-byte wording corrected to18h=24bytes.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1d570",
+      "name": "delete_native_render_context_00b1d570",
+      "cpp_symbol": "delete_native_render_context_00b1d570",
+      "source": "src/native_render_context.cpp",
+      "native_end_exclusive": "00b1d58e",
+      "original_abi": "ECX actual context; stack flags; EAX original address; RET4",
+      "evidence": "docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json",
+      "status": "integrated_strict_win32_build_native_fixtures_and_installed_native_camera_render_checked",
+      "current_integration_scope": "Complete scalar deleter: context destruction first, shared scalar free iff flags&1 after successful return. No free on propagated destructor failure. Current context companion validates D5E5C4/BD30E0/B1D570 and retires after free.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "fragment",
+      "address": "00b1edc0",
+      "name": "native_render_context_placement_initialization",
+      "cpp_symbol": "initialize_native_render_context_00b1edc0_fragment",
+      "source": "src/native_render_context.cpp",
+      "native_end_exclusive": "00b1ef57",
+      "original_abi": "Fragment B1EDD3..B1EDF2; EAX aligned18h storage, ECX0",
+      "evidence": "docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json",
+      "status": "integrated_strict_win32_build_native_fixtures_and_installed_native_camera_render_checked",
+      "current_integration_scope": "Actual18h placement stores ONLY: CEB130/count1/D5E5C4 then08/0C/10/14 zero. No command allocation, full44h constructor, queue publication or batch acquisition claim. Prior18-byte wording corrected to18h=24bytes.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "fragment_start": "00b1edd3",
+      "fragment_end_exclusive": "00b1edf2",
+      "complete_native_function": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1ff60",
+      "name": "native_renderer_parameter_getter",
+      "cpp_symbol": "NativeD3D9RendererParameterDispatch::parameters_00b1ff60",
+      "source": "src/native_renderer_parameters.cpp",
+      "native_end_exclusive": "00b1ff67",
+      "original_abi": "ECX renderer; EAX renderer+1A14; RET",
+      "evidence": "docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json",
+      "status": "integrated_strict_win32_build_native_fixtures_and_installed_native_camera_render_checked",
+      "current_integration_scope": "Concrete D5F0A8 virtual30 getter represented by exact captured D3D9StateCache identity and actual14h parameter owner. Current dispatch resolved each call; return live0C/10 references. No dimension copy, presentation fallback or global recapture in adapter.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b2aeb0",
+      "name": "d3d9_create_device_prefix",
+      "source": "src/d3d9_startup.cpp",
+      "native_range": "00b2aed1-00b2b014",
+      "status": "integrated_strict_win32_build_native_fixtures_and_installed_native_camera_render_checked",
+      "abi_compatible": false,
+      "remaining": "Timer, renderer state, resource wrappers, dynamic buffers and final initialization; full routine is not reconstructed.",
+      "kind": "fragment",
+      "cpp_symbol": "d3d9_create_device_prefix_00b2aeb0",
+      "native_end_exclusive": "00b2b1f2",
+      "original_abi": "ECX renderer; ten stack args; RET28h; stores fragment widthEBP and heightECX",
+      "evidence": "docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json",
+      "current_integration_scope": "Existing device-startup prefix additionally writes SAME renderer parameter region0C/10 atB2AF9E/B2AFA4 before GetDeviceCaps/CreateDevice. Constructor padding survives; callback mutations of parameter words remain distinct from presentation block. Root threads same owner startup/font/mesh/captured renderer/native camera. No remaining full device-resource initialization or reset-mode claim.",
+      "game_validated": false,
+      "parameter_store_start": "00b2af9e",
+      "parameter_store_end_exclusive": "00b2afaa",
+      "complete_native_function": false
+    },
+    {
+      "kind": "fragment",
+      "address": "00b32410",
+      "name": "native_renderer_parameter_initialization",
+      "cpp_symbol": "initialize_native_renderer_parameters_00b32410_fragment",
+      "source": "src/native_renderer_parameters.cpp",
+      "native_end_exclusive": "00b328f8",
+      "original_abi": "Fragment B32512..B32534; ESI renderer, EBX0",
+      "evidence": "docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json",
+      "status": "integrated_strict_win32_build_native_fixtures_and_installed_native_camera_render_checked",
+      "current_integration_scope": "Five actual14h parameter-region stores at renderer1A14: byte00=0,word04=3,byte08=0,word0C=0,word10=0. Six padding bytes preserved. New typed region only, not complete1D94h renderer construction.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "fragment_start": "00b32512",
+      "fragment_end_exclusive": "00b32534",
+      "complete_native_function": false
+    }
+  ],
+  "renderer_parameters": {
+    "actual_region_bytes": 20,
+    "native_offset": "1A14",
+    "complete_native_renderer": false,
+    "same_owner_startup_to_camera": true,
+    "constructor_dimensions": [
+      640,
+      480
+    ],
+    "probe_viewport_dimensions": [
+      256,
+      256
+    ],
+    "getter": "Exact captured D3D9StateCache CURRENT dispatch; borrowed actual0C/10 references, no presentation copy or global recapture",
+    "viewport_call_sequence": "Original separate global reloads width then height; camera later captures once then height and width",
+    "startup_stores": "Actual0C/10 stores before GetDeviceCaps/CreateDevice; independent presentation callback changes survive"
+  },
+  "native_camera_composition": {
+    "actual_slot_bytes": 1116,
+    "pool_id_offset": 1112,
+    "viewport_bytes": 52,
+    "single_node_pose_projection_frame_viewport_backing": true,
+    "synthetic_camera_state_removed_from_mesh_draw": true,
+    "shared_camera_light_domains": [
+      "type counter",
+      "root/node descriptors",
+      "string pool",
+      "scene bindings",
+      "node lifetime runtime",
+      "allocator list"
+    ],
+    "preimage": "Explicit probe zero fill first458h; preserve actual458 pool ID; viewport allocation constructor preserves its own unwritten bytes",
+    "native_default_byte174": 1,
+    "chosen_scene_values": [
+      "256x256 viewport through recovered setter",
+      "world/projection matrix",
+      "fov1",
+      "clear flags/color",
+      "fog/light configuration"
+    ],
+    "context": "Explicit actual18h allocation and original placement fragment, raw camera identity=&owner.storage.node, actual04 retained; no44h command or native queue construction",
+    "count_sequence": [
+      1,
+      2,
+      1,
+      0
+    ],
+    "actual_context_terminal_retires_camera": true,
+    "fog": "Additional probe observation reference survives camera destructor, sees count1 afterward, then explicitly releases to zero",
+    "pool": "All32 slots free before trim, zero slabs after trim, real Win32 critical-section destruction and native list unlink",
+    "host_companion_retirement": "After full native camera deletion/pool return and context scalar free; no post-return raw slot read"
+  },
+  "independent_review": {
+    "reviewer": "particle_clock_lifetime",
+    "files": [
+      "src/native_camera_probe.hpp",
+      "src/native_camera_probe.cpp",
+      "src/d3d9_mesh_probe.cpp"
+    ],
+    "finding": "Camera pool native destruction unlinked its list but default companion destruction left the host virtual0 binding in an externally owned AllocatorListDomain",
+    "fix": "Probe-only RAII guard unbinds after native camera pool teardown and pre-initialize unwind. Analogous light guard added when its domain became shared. Recovered pool source unchanged.",
+    "other_concrete_findings": 0,
+    "fix_validation": "Source review and final strict build2/2 plus installed actual camera probe rerun passed; no dedicated allocation-failure stress test added"
+  },
+  "independent_fixture_reruns": [
+    {
+      "path": "local/native_context_primary_fixture_review.txt",
+      "sha256": "fab502417af607fa16daa367a6f94161ec306aa3d9d9e0050b24c4cdd34893ef",
+      "passed": true
+    },
+    {
+      "path": "local/native_renderer_parameters_primary_fixture_review.txt",
+      "sha256": "4c7c1c6a74b1a459c82ab11924a4dd44c8b336eb19d26841066bbfa1127a20e4",
+      "passed": true
+    }
+  ],
+  "context_native_fixture": {
+    "observations": 343,
+    "actual_nested_contexts": 6,
+    "passed": true,
+    "native_exception_dispatch": false
+  },
+  "parameter_native_fixture": {
+    "passed": true,
+    "original_prefix": [
+      "00b2aeb0",
+      "00b2b01a"
+    ],
+    "appended_original_epilogue": [
+      "00b2b1d7",
+      "00b2b1f2"
+    ],
+    "callback_snapshots": 2,
+    "actual_region_after_callback": [
+      803,
+      904
+    ],
+    "separate_present_after_callback": [
+      777,
+      555
+    ],
+    "zero_dimensions_preserved": true,
+    "padding_preserved": true,
+    "current_dispatch_replacement_and_unbound_rejection": true,
+    "native_exception_dispatch": false
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release W4/WX/fp:strict",
+    "passed": true,
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "log": "reports/native_camera_render_probe_build.txt",
+    "sha256": "f12bde159ef5c3207f7930ae19654d8efe5176ff2bb24de4371e3204f267a02f"
+  },
+  "installed_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "log": "reports/native_camera_render_probe.txt",
+    "log_sha256": "4444691cdb0ec36ab096a7f767ff7494b2fa790196b8cf0b7773a6d0b997c634",
+    "exe_sha256": "8daef5a98fe2d1eae61e7a118b3af181be8a5137d2c261a7d75d516c9f4c2dd8",
+    "checked_markers": [
+      "constructor_parameters=640x480 same_startup_owner=1 actual_slot_pose_frame_viewport=1 context2_logical1_terminal0=1 pool_returned_destroyed=1 checked=1",
+      "shared_camera_cache_viewport_clear_ambient_frustum=1 checked=1",
+      "ordered_prefix=1 VS_PS_77_retained_after_material=1 particle_clocks_destroyed=1 lifetime_checked=1",
+      "native_constructor_environment_apply_counted_camera_clear=1 world_factory_publication_packed=1",
+      "native_pool_types_config_canonical_registry_cleanup=1 type_counters_destroyed=1 shared_lifetime_checked=1",
+      "visible=2499 colors=54 restored=1 checked=1 error="
+    ],
+    "native_camera_render_integration": true,
+    "full_native_renderer": false,
+    "full_native_command_queue": false,
+    "render": "local/native_camera_render_20260910.bmp",
+    "render_sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+    "visible_pixels": 2499,
+    "colors": 54,
+    "identical_prior_diagnostic_camera_image": true,
+    "device_state_restored": true,
+    "native_game_visual_parity_claim": false
+  },
+  "artifacts": [
+    {
+      "path": "local/prepare_native_camera_render_batch.py",
+      "sha256": "f6449c581a343499f80282819491babf3c3ca39d252ca6c54d1741d1ece7c5e0",
+      "tracked": false
+    },
+    {
+      "path": "local/native_camera_render_primary_review.json",
+      "sha256": "15c02c8f83d484204862ca3732f7a061f7526c1fff96795354671ba0f976af91",
+      "tracked": false
+    },
+    {
+      "path": "local/integrate_native_camera_probe.py",
+      "sha256": "07466e52f7a70397fdb6d42321b2884d5694bf304b862843dd24f0fbe05f4124",
+      "tracked": false
+    }
+  ],
+  "new_tracked_test_cases": 0,
+  "annotations_applied": true,
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "remaining": [
+    "Full44h commands, native group/pointer arrays and renderer queue publication",
+    "Native texture2d pool/owner and resource-container removal",
+    "Full renderer construction/reset/mode lifecycle",
+    "World startup and runnable game/gameplay validation"
+  ],
+  "command_discovery_review": {
+    "native_spans": [
+      {
+        "address": "00b1f1f0",
+        "length": 132,
+        "sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2"
+      },
+      {
+        "address": "00b1f170",
+        "length": 128,
+        "sha256": "18c2429c14851703f8fbc2b1b0bc558f4d4f271973a4edf8bd7288bc8f12506b"
+      },
+      {
+        "address": "00b1edc0",
+        "length": 407,
+        "sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef"
+      },
+      {
+        "address": "00b1ddd0",
+        "length": 541,
+        "sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6"
+      },
+      {
+        "address": "00b1e6b0",
+        "length": 30,
+        "sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2"
+      },
+      {
+        "address": "00b1e6d0",
+        "length": 72,
+        "sha256": "59f68b09fa029e0becd4a9bbdbef06aad63ef80a18f56c605a8c9361dd2d1323"
+      },
+      {
+        "address": "00b1e720",
+        "length": 64,
+        "sha256": "68348ea988b483192cb2c09a93ab500e130cafce14b178c511f11a8726037b06"
+      },
+      {
+        "address": "00b1eb80",
+        "length": 86,
+        "sha256": "a8a1d877daf1073bdb59261209410257e71aa5556394e626f6aac17874c1a198"
+      },
+      {
+        "address": "00b1ebe0",
+        "length": 187,
+        "sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd"
+      },
+      {
+        "address": "00b1c660",
+        "length": 95,
+        "sha256": "bbef96f1a2d08755ee1eeb55e920111010dd72249c49005d6f47a92945a05b65"
+      },
+      {
+        "address": "00b1c7c0",
+        "length": 80,
+        "sha256": "eaa0a54de99c18d84f790db994ecc7d5445472a7b9db25293995f648f8b2ef9b"
+      },
+      {
+        "address": "00b1cbe0",
+        "length": 57,
+        "sha256": "968235b211b630c8dedb28b9852ef37c5f22ac5d68de4279c12c96a86c167dc9"
+      },
+      {
+        "address": "00b1d1f0",
+        "length": 23,
+        "sha256": "532a8afb9d5e3de877a34d9fb94c9fc8cddd1fd862d34e80aa6575b0f5e70d37"
+      },
+      {
+        "address": "00b1d260",
+        "length": 23,
+        "sha256": "fd27855b15976d2a5c10410dc626c1dac3e15b4f1994e3755714401d196a7c34"
+      },
+      {
+        "address": "00b1c6c0",
+        "length": 95,
+        "sha256": "9d502ec64f63189c98b80c47a88cac16192ece06d4ebbe1ae2dd05047c63ed4c"
+      },
+      {
+        "address": "00b1cc80",
+        "length": 80,
+        "sha256": "d3898f872314baf70929152426d739361659c985ba0abd338d5247a7cdef5101"
+      },
+      {
+        "address": "00b1d590",
+        "length": 23,
+        "sha256": "47f473001b977717cb10f6b9a310e2e7cb87a6cffb85c5d41e558c263fb40eb5"
+      },
+      {
+        "address": "0041dd20",
+        "length": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626"
+      },
+      {
+        "address": "004c11f0",
+        "length": 189,
+        "sha256": "e5a79fe265e15ba3285d2a4b6944100bd038fb08567592f2c72f6f3f05c597a5"
+      },
+      {
+        "address": "00b1f280",
+        "length": 161,
+        "sha256": "4c293ee684ba469cfb24f208b4d722f1fb8bf5eb11f57c2f021df7c3f9fd6e6f"
+      },
+      {
+        "address": "00b1f330",
+        "length": 138,
+        "sha256": "cf3cfec793623a4bdfc555f8bc96506f5f39f3b4c8bf83dc1f56c0187f2dccd2"
+      },
+      {
+        "address": "00b1f6b0",
+        "length": 30,
+        "sha256": "b7bf9c3ab758ba04388fcef07bce0806ba39b30d68dfb60a70152595e4284fa8"
+      },
+      {
+        "address": "00b1c3c0",
+        "length": 17,
+        "sha256": "25d3c5e2dd710b019dff95befa4edffbf9b6f37782113b2259721e5d29656be6"
+      },
+      {
+        "address": "00b1c460",
+        "length": 53,
+        "sha256": "4dbd3f3926649f12a1579eade544eae5c62c5cb7a03a5045f984e2dc558bb09e"
+      },
+      {
+        "address": "00b28a90",
+        "length": 44,
+        "sha256": "295132c7f5e464cfa3673c050b0229712fab41ab2aac6072ba900b145de21eee"
+      },
+      {
+        "address": "00b1d6f0",
+        "length": 104,
+        "sha256": "7660926333bb58da5ca7f6fd9bfec64ff039e6a568587a796bbf4de6dedff602"
+      },
+      {
+        "address": "00b1d760",
+        "length": 187,
+        "sha256": "30eca5db1f1352c6bd29b9d7e3b7a83b2587d96178b2e3fef6ee09a70c3d8afb"
+      },
+      {
+        "address": "00b1e7f0",
+        "length": 125,
+        "sha256": "0ee983652c78280516f480e717ed9755550a73f7205c306baa701b55c10a4c3d"
+      },
+      {
+        "address": "00b1f150",
+        "length": 23,
+        "sha256": "2405bb0b0d58547b098a7dede6333c5467c9670c0672a95926ffd2d08a36c0aa"
+      },
+      {
+        "address": "00b1bfa0",
+        "length": 4,
+        "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281"
+      },
+      {
+        "address": "00b1f3c0",
+        "length": 268,
+        "sha256": "6ba5988706ca665629cd821275e9fe96bbd5fb3a621bd20cb7ec18c843290915"
+      },
+      {
+        "address": "00b1f4d0",
+        "length": 263,
+        "sha256": "352a835a878ca6ed2bff51429fb24db398ff9eb36e0b1589c3d95fa8f64174f8"
+      },
+      {
+        "address": "00cbcab0",
+        "length": 43,
+        "sha256": "b94254b628b7166069bbaac7aec792fc00369c959b6a580baf150d7bcfe8b620"
+      },
+      {
+        "address": "00cbcb90",
+        "length": 43,
+        "sha256": "077247eaf24ca14f3cc483a9a13f81fda6a2c56d67bc2460fe913047e99ca251"
+      },
+      {
+        "address": "00cbcbc0",
+        "length": 43,
+        "sha256": "ac49519e31ea8fb5a2bc3a47eb24d55755fe020a47447e2091877ee3f9e09d09"
+      },
+      {
+        "address": "00cbcbf0",
+        "length": 40,
+        "sha256": "0d56baa0032b053b9b3cab35f89ea06acc602e0d3e6bd8368a79da86d1941751"
+      },
+      {
+        "address": "00cbcc20",
+        "length": 40,
+        "sha256": "8f9ddfa04eb040637df499404a470843de2b18b4f4ca87158df9f314a5252062"
+      },
+      {
+        "address": "00d5e5e0",
+        "length": 4,
+        "sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8"
+      },
+      {
+        "address": "00d5e5f4",
+        "length": 4,
+        "sha256": "530cc4ac2e45865034adc766d6a5009de12166fb8a51c34b0d9ed2ab8550bdcc"
+      },
+      {
+        "address": "00d5f1c4",
+        "length": 4,
+        "sha256": "c018f7f618d97d16b07374ee7f02172035955efed5b845d8c202fbdf6384e90e"
+      },
+      {
+        "address": "00f8d440",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "address": "00f8d394",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "address": "00ce9a38",
+        "length": 4,
+        "sha256": "9855cda098dcac49935c7cea75d9960ef8fd001b8fac4d21db934116f50e33c0"
+      },
+      {
+        "address": "00df4f40",
+        "length": 60,
+        "sha256": "f13aa88e36be4342c8e2f4a19ea19f55ee4d8f4077c038bef426c23cc0118af2"
+      },
+      {
+        "address": "00df5054",
+        "length": 60,
+        "sha256": "4e9a64732aadb0723c223d127bfe4dd075a8a55ca71bcb8e22a31a5684c6eb97"
+      },
+      {
+        "address": "00df5090",
+        "length": 60,
+        "sha256": "c555d13d8bd3ab5a59f16e8f94eb42ac9a0029c5f341957de530f17cdba6b52a"
+      },
+      {
+        "address": "00df50cc",
+        "length": 60,
+        "sha256": "d314b12ec4fbf2ce7406dc1a2a14d0e956becc68c141224fe9578989ffb0e5a6"
+      },
+      {
+        "address": "00df5108",
+        "length": 60,
+        "sha256": "0525416a6533c0a9816902190f7c5a7bbef2c61f07ccd47514ec58a9ab5164a1"
+      }
+    ],
+    "original_bytes": 4291,
+    "all_disk_hashes_match": true,
+    "implementation_claim": false
+  },
+  "saved_annotations": {
+    "path": "reports/native_camera_render_annotations.json",
+    "sha256": "f50d857a2a4055e07779b43a53f32de9e9516bd45179740d6761af2d9cdc0066",
+    "count": 6,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true,
+    "new_function_definitions": 0
+  },
+  "refreshed_exports": {
+    "count": 6,
+    "functions": [
+      {
+        "address": "00b1d120",
+        "old_name": "BSP_RenderCommandContext_Destroy",
+        "name": "BSP_RenderCommandContext_Destroy",
+        "path": "exports/bsp/functions/00b1d120/decompiled.c",
+        "sha256": "961d63cd845904b8ba613cd374c2aefbd3572b14be45061b70716d0405ff74d2"
+      },
+      {
+        "address": "00b1d570",
+        "old_name": "BSP_RenderCommandContext_DeletingDestructor",
+        "name": "BSP_RenderCommandContext_DeletingDestructor",
+        "path": "exports/bsp/functions/00b1d570/decompiled.c",
+        "sha256": "924ee1e50359c831100a04acf9fd7aa89a080d0747bb694166937e0d66a300b3"
+      },
+      {
+        "address": "00b1edc0",
+        "old_name": "BSP_RenderCommand_InitializeContextAndBatches",
+        "name": "BSP_RenderCommand_InitializeContextAndBatches",
+        "path": "exports/bsp/functions/00b1edc0/decompiled.c",
+        "sha256": "8790c1cacee305d26a839c410784298489db87eb088c7dd68d5157afd6f6576f"
+      },
+      {
+        "address": "00b1ff60",
+        "old_name": "BSP_D3D9Renderer_GetViewportParameters",
+        "name": "BSP_D3D9Renderer_GetViewportParameters",
+        "path": "exports/bsp/functions/00b1ff60/decompiled.c",
+        "sha256": "39d1ec7bc9ef808809fb7b83ae43aebc1cb5d0623a81b94709d1f13c14e11da2"
+      },
+      {
+        "address": "00b2aeb0",
+        "old_name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
+        "name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
+        "path": "exports/bsp/functions/00b2aeb0/decompiled.c",
+        "sha256": "db4d768f7a154412721d739baa45a38b6276635ce3eb8208e6d8258d9ba434c4"
+      },
+      {
+        "address": "00b32410",
+        "old_name": "BSP_D3D9Renderer_Construct",
+        "name": "BSP_D3D9Renderer_Construct",
+        "path": "exports/bsp/functions/00b32410/decompiled.c",
+        "sha256": "b916214d82af9d2d2cf91d520dcbcdbb8bda237addcdfd3004cf47b0faf97e7c"
+      }
+    ]
+  },
+  "snapshot": {
+    "internal_functions": 62476,
+    "total_functions": 62918,
+    "utc": "2026-09-10T20:36:59.438994+00:00",
+    "index_fresh": true
+  },
+  "closure_hash_recheck_utc": "2026-09-10T20:58:58.509325+00:00"
+}

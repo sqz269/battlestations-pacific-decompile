@@ -103,7 +103,7 @@
     "resolver_timing": "After captured actual04 decrements to zero only; pure identity lookup without ownership/lifecycle effects.",
     "identity_check": "&resolved.reference_count must equal captured raw_identity+04 exactly.",
     "terminal_requirement": "Canonical companion reads current native profile and performs real terminal destruction/recycle; never all-owner no-op.",
-    "concrete_camera_path": "&NativeCameraOwner::storage -> existing canonical NativeCameraReference borrowing node.references04",
+    "concrete_camera_path": "&camera_owner.storage.node -> existing canonical NativeCameraReference borrowing node.references04; storage itself is a view of references, not the raw allocation",
     "concrete_context_path": "NativeRenderContextReference borrows storage.references04; checks currentD5E5C4 slotsBD30E0/B1D570; scalarflags1 then explicit companion retirement.",
     "unsupported_context_profiles": [
       "00ceb130 base phase",

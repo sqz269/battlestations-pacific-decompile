@@ -2,6 +2,8 @@
 // no native world, shadow-buffer generation or gameplay is implied by this draw.
 #include "asset_stream_probe.hpp"
 #include "installed_model_probe.hpp"
+#include "native_camera_probe.hpp"
+#include "bsp/camera_configuration.hpp"
 #include "bsp/compiled_material.hpp"
 #include "bsp/resource_path.hpp"
 #include "bsp/vertex_format.hpp"
@@ -141,9 +143,10 @@ struct MeshSingletonShutdown {
     bsp::SingletonLifetimeDomain& domain;
     ~MeshSingletonShutdown() { domain.shutdown(); }
 };
-struct MeshFogCameraShutdown {
-    bsp::SystemFogSlotRef slot;
-    ~MeshFogCameraShutdown() { bsp::clear_system_fog_camera_slot_00b71f68(slot); }
+struct MeshFogOwnerRelease {
+    void operator()(bsp::SystemFogOwner* owner) const noexcept {
+        if (owner) bsp::release_system_fog_owner(*owner);
+    }
 };
 
 struct MeshLightTypes {
@@ -185,7 +188,12 @@ struct MeshAbsentShadow final : bsp::SystemShadowOwnerResolver {
 };
 struct MeshLightPoolShutdown {
     bsp::DirectionalLightPool& pool;
-    ~MeshLightPoolShutdown() { pool.destroy_00b7b230(); }
+    bsp::AllocatorListDomain& allocators;
+    bool initialized{};
+    ~MeshLightPoolShutdown() {
+        if (initialized) pool.destroy_00b7b230();
+        allocators.unbind_virtual0(pool.storage().allocator_00);
+    }
 };
 struct MeshLightSlotShutdown {
     bsp::DirectionalLightPool& pool;
@@ -225,7 +233,9 @@ bool gpu_system_prefix_matches(IDirect3DDevice9& device,
 bool build_mesh_system_constants(bsp::CameraFrameState& camera,
     bsp::D3D9StateCache* const volatile& renderer,
     bsp::ParticleClock* volatile& particle_slot, bsp::ParticleClockLifetimeAccess& lifetime,
-    bsp::TypeIdCounterLifetime& type_counter, bsp::SizedStoragePool& strings,
+    bsp::SizedStoragePool& strings,
+    MeshLightSceneRuntime& scenes,
+    bsp::NativeNodeDestructionRuntime& node_runtime, bsp::AllocatorListDomain& allocators,
     bool& light_ownership_checked, bsp::SystemConstantPrefix& prefix,
     HRESULT& result, std::string& error) {
     // Explicit isolated-scene owners. Native factories/world initialization
@@ -262,17 +272,11 @@ bool build_mesh_system_constants(bsp::CameraFrameState& camera,
     const auto diffuse = words4({.65f,.65f,.65f,1});
     const auto specular = words4({0,0,0,0});
     std::array<bsp::SystemLightingWords4,6> cube; cube.fill(ambient);
-    MeshLightTypes types(type_counter);
-    MeshLightSceneRuntime scenes(types);
-    bsp::GeneratedModelLifetimeRuntime attachments(scenes);
-    bsp::NativeNodeDestructionRuntime node_runtime(scenes, attachments, strings,
-        &MeshLightSceneRuntime::node_type);
-    bsp::AllocatorListElement* allocator_head = nullptr;
-    bsp::AllocatorListDomain allocators(allocator_head);
     bsp::DirectionalLightPoolStorage pool_storage{};
     bsp::DirectionalLightPool pool(allocators, pool_storage);
+    MeshLightPoolShutdown pool_shutdown{pool,allocators};
     pool.initialize_00b7b940();
-    MeshLightPoolShutdown pool_shutdown{pool};
+    pool_shutdown.initialized = true;
     MeshLightSlotShutdown slot_shutdown{pool, pool.allocate_raw_slot_00b7bac0()};
     const bsp::NativeString empty_name;
     auto native = bsp::construct_native_directional_light_00b7c6b0(
@@ -624,16 +628,6 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
     // Native shadow generation/global ownership is a separate remaining task.
     const auto shadow = textures.acquire("white.tga", error);
     if (!shadow) return false;
-    bsp::CameraState camera_state;
-    bsp::CameraMatrix camera_world{1,0,0,0, 0,1,0,0, 0,0,1,0, 8,8,8,1};
-    const bsp::CameraMatrix desired_view_projection{.24f,-.14f,-.1f,0, 0,.28f,-.1f,0,
-        -.24f,-.14f,-.1f,0, 0,0,.5f,1};
-    bsp::CameraMatrix projection;
-    bsp::set_camera_local_matrix_00b71430(camera_state, camera_world);
-    bsp::multiply_camera_matrices_00413920(projection, camera_world, desired_view_projection);
-    camera_state.projection.fov = 1; // Explicit host scalar; time prefix uses its reciprocal.
-    bsp::set_camera_projection_00b6fd60(camera_state.projection, projection);
-    auto& camera = camera_state.transform;
     std::vector<float> vertex_words(256 * 4), pixel_words(224 * 4);
     std::uint32_t first_constant_register = 77, vertex_header = 0, pixel_header = 0;
     bsp::MaterialEntryConstantState material_constants{first_constant_register, vertex_words, pixel_words};
@@ -677,12 +671,60 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
     bool system_prefix_match = false, particle_lifetime_match = false, fog_lifetime_match = false;
     bool fog_factory_match = false;
     bool light_ownership_match = false, type_lifetime_match = false;
+    NativeCameraProbeEvidence native_camera;
+    bool native_parameters_match = false;
+    std::unique_ptr<bsp::SystemFogOwner,MeshFogOwnerRelease> fog_witness;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
         bsp::NativeD3D9RendererParameterDispatch parameter_dispatch(states, renderer_parameters);
         states.bind_native_renderer_parameters(&parameter_dispatch);
         bsp::D3D9StateCache* current_renderer = &states;
+        // These actual allocation/lock/destruction adapters share one lifetime
+        // domain and one particle slot for this isolated scene.
+        bsp::SizedStoragePool particle_strings(bsp::string_pool_config_00419cc0());
+        bsp::ParticleClock* particle_slot = nullptr;
+        MeshParticleLifetimeCallbacks lifetime_callbacks{nullptr,particle_clocks_destroyed};
+        bsp::SingletonLifetimeDomain lifetime({&lifetime_callbacks,
+            &MeshParticleLifetimeCallbacks::destroy,&MeshParticleLifetimeCallbacks::invalid_parameter});
+        bsp::ConcreteParticleClockLifetimeAccess particle_lifetime(lifetime,particle_slot,particle_strings);
+        lifetime_callbacks.access = &particle_lifetime;
+        bsp::TypeIdCounterStorage* type_slot = nullptr;
+        bsp::TypeIdCounterLifetime type_lifetime(lifetime, type_slot);
+        lifetime_callbacks.types = &type_lifetime;
+        lifetime_callbacks.type_slot = &type_slot;
+        MeshSingletonShutdown lifetime_shutdown{lifetime};
+        // One actual type-counter/root/node domain, string pool and allocator
+        // list now serve both the native camera and the directional light.
+        MeshLightTypes types(type_lifetime);
+        MeshLightSceneRuntime scenes(types);
+        bsp::GeneratedModelLifetimeRuntime attachments(scenes);
+        bsp::NativeNodeDestructionRuntime node_runtime(scenes,attachments,particle_strings,
+            &MeshLightSceneRuntime::node_type);
+        bsp::AllocatorListElement* allocator_head = nullptr;
+        bsp::AllocatorListDomain allocators(allocator_head);
+        bsp::D3D9ViewportRendererAccess renderer_access;
+        NativeCameraProbe camera_probe(node_runtime,type_lifetime,types.bootstrap,
+            allocators,current_renderer,renderer_access,native_camera);
+        auto& native_owner = camera_probe.owner();
+        auto& camera_state = native_owner.camera;
+        auto& camera_frame = native_owner.frame;
+        const auto& viewport = camera_probe.viewport();
+        native_parameters_match = native_camera.constructor_width == renderer_parameters.width_0c
+            && native_camera.constructor_height == renderer_parameters.height_10;
+        if (!native_parameters_match) throw std::logic_error("camera dimensions must come from same startup parameter owner");
+        // Chosen isolated256x256 draw rectangle, through the actual viewport.
+        const DWORD probe_dimensions[2]{256,256};
+        bsp::set_native_viewport_dimensions_00b1f940(*native_owner.storage.camera.viewport_180,probe_dimensions);
+        bsp::CameraMatrix camera_world{1,0,0,0, 0,1,0,0, 0,0,1,0, 8,8,8,1};
+        const bsp::CameraMatrix desired_view_projection{.24f,-.14f,-.1f,0, 0,.28f,-.1f,0,
+            -.24f,-.14f,-.1f,0, 0,0,.5f,1};
+        bsp::CameraMatrix projection;
+        bsp::set_camera_local_matrix_00b71430(camera_state, camera_world);
+        bsp::multiply_camera_matrices_00413920(projection, camera_world, desired_view_projection);
+        camera_state.projection.fov = 1; // Explicit host scalar; time prefix uses its reciprocal.
+        bsp::set_camera_projection_00b6fd60(camera_state.projection, projection);
+        auto& camera = camera_state.transform;
         bsp::D3D9CameraFrameAccess camera_access(states);
         std::shared_ptr<bsp::LogicalVertexStream> vertices;
         std::shared_ptr<bsp::LogicalIndexStream> indices;
@@ -947,12 +989,8 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
                 && t0.p == slots.textures()[0]->texture && t1.p == shadow->texture;
         }
         if (SUCCEEDED(hr) && !(buffers_match && constants_match && layout_match && bindings_match && groups_match)) hr = E_FAIL;
-        const bsp::CameraViewport viewport{0,0,256,256,0,{0,0,256,256}};
-        bsp::CameraFrameState camera_frame(camera_state);
-        bsp::initialize_system_fog_camera_slot_00b71ae3(camera_frame.fog_184);
-        MeshFogCameraShutdown fog_shutdown{camera_frame.fog_184};
         // Exercise the actual factory's optional-receiver/absent-record path
-        // with this same diagnostic camera. Outer game ownership stays outside
+        // with this same native camera. Outer game ownership stays outside
         // this probe; the environment producer below supplies chosen draw values.
         bsp::FogReceiverFields* fog_receiver = nullptr;
         bsp::CameraFrameState* fog_camera_slot = &camera_frame;
@@ -970,11 +1008,9 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
         const bsp::EnvironmentFogFields fog_environment{
             fog_scalars,fog_color,fog_directionals,underwater_color};
         if (!bsp::apply_environment_fog_0078d076(fog_environment,camera_frame.fog_184,error)) hr = E_FAIL;
-        camera_frame.enabled = 1; camera_frame.viewport = &viewport;
-        camera_frame.clear_flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER;
+        bsp::set_camera_clear_flags_00b6fe10(camera_frame,D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER);
         camera_frame.clear_color = 0xff000000; camera_frame.clear_depth = 1;
-        camera_frame.render_mode = 0; // The actual compiled NORMAL program used below.
-        camera_frame.frustum.count = 6;
+        bsp::set_camera_render_mode_00b6fdf0(camera_frame,native_owner.storage.camera.render_mask_19c,0);
         camera_access.user_clip_planes_supported = true;
         camera_access.sse2_color_truncation = true; // Explicit host mode, not native startup recovery.
         if (SUCCEEDED(hr)) {
@@ -994,24 +1030,10 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
             std::printf("Installed camera frame: shared_camera_cache_viewport_clear_ambient_frustum=1 checked=%d\n", camera_frame_match);
             if (!camera_frame_match && SUCCEEDED(hr)) hr = E_FAIL;
         }
-        // These actual allocation/lock/destruction adapters share one lifetime
-        // domain and one particle slot for this isolated scene.
-        bsp::SizedStoragePool particle_strings(bsp::string_pool_config_00419cc0());
-        bsp::ParticleClock* particle_slot = nullptr;
-        MeshParticleLifetimeCallbacks lifetime_callbacks{nullptr,particle_clocks_destroyed};
-        bsp::SingletonLifetimeDomain lifetime({&lifetime_callbacks,
-            &MeshParticleLifetimeCallbacks::destroy,&MeshParticleLifetimeCallbacks::invalid_parameter});
-        bsp::ConcreteParticleClockLifetimeAccess particle_lifetime(lifetime,particle_slot,particle_strings);
-        lifetime_callbacks.access = &particle_lifetime;
-        bsp::TypeIdCounterStorage* type_slot = nullptr;
-        bsp::TypeIdCounterLifetime type_lifetime(lifetime, type_slot);
-        lifetime_callbacks.types = &type_lifetime;
-        lifetime_callbacks.type_slot = &type_slot;
-        MeshSingletonShutdown lifetime_shutdown{lifetime};
         bsp::SystemConstantPrefix system_prefix{}; // Explicit initialized host preimage.
         if (SUCCEEDED(hr) && !build_mesh_system_constants(camera_frame,current_renderer,
-            particle_slot,particle_lifetime,type_lifetime,particle_strings,
-            light_ownership_match,system_prefix,hr,error)) hr = E_FAIL;
+            particle_slot,particle_lifetime,particle_strings,
+            scenes,node_runtime,allocators,light_ownership_match,system_prefix,hr,error)) hr = E_FAIL;
         if (SUCCEEDED(hr)) {
             ++system_constants_built;
             system_prefix_match = gpu_system_prefix_matches(device,system_prefix);
@@ -1098,20 +1120,23 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
             const auto unlocked = readback.p->UnlockRect(); unlock.surface = nullptr;
             if (SUCCEEDED(hr)) hr = unlocked;
         }
-        lifetime.shutdown();
-        particle_lifetime_match = particle_slot == nullptr && particle_clocks_destroyed == 1
-            && lifetime.published_manager() == nullptr;
-        type_counters_destroyed = lifetime_callbacks.types_destroyed;
-        type_lifetime_match = type_slot == nullptr && type_counters_destroyed == 1;
         fog_lifetime_match = camera_frame.fog_184 == &fog->fields_08 && fog->references_04 == 1;
-        bsp::clear_system_fog_camera_slot_00b71f68(camera_frame.fog_184);
-        fog_lifetime_match = fog_lifetime_match && camera_frame.fog_184 == nullptr;
+        // Keep one observation reference through native camera destruction.
+        bsp::retain_system_fog_owner(*fog); fog_witness.reset(fog);
         states.bind_vertex_shader_00b21d10(nullptr); states.bind_pixel_shader_00b21c20(nullptr);
         states.bind_texture_00b24710(0,{}); states.bind_texture_00b24710(1,{});
         states.bind_vertex_stream_00b24840(0,{}); states.bind_vertex_stream_00b24840(1,{});
         states.bind_index_stream_00b24b00({},0); states.bind_vertex_layout_00b23f20({});
         states.set_stream_frequency_00b24a40(0,1); states.set_stream_frequency_00b24a40(1,1);
         device.SetVertexDeclaration(nullptr); states.invalidate();
+        camera_probe.close(); // logical release1, context terminal0, viewport/fog cleanup, pool return
+        fog_lifetime_match = fog_lifetime_match && fog_witness->references_04 == 1;
+        fog_witness.reset();
+        lifetime.shutdown();
+        particle_lifetime_match = particle_slot == nullptr && particle_clocks_destroyed == 1
+            && lifetime.published_manager() == nullptr;
+        type_counters_destroyed = lifetime_callbacks.types_destroyed;
+        type_lifetime_match = type_slot == nullptr && type_counters_destroyed == 1 && !allocator_head;
     } catch (const std::exception& exception) { error = exception.what(); hr = E_FAIL; }
     bool restored = SUCCEEDED(device.SetDepthStencilSurface(nullptr));
     for (UINT slot = 1; slot < 4; ++slot)
@@ -1126,11 +1151,16 @@ bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& ren
     std::printf("Installed model lifetime: constructed=%u disposed=%u recovered_group_and_virtual18_cleanup=%d checked=%d\n",
         model_lifetimes.constructed, model_lifetimes.disposed, model_lifetimes.cleanup_matches, model_lifetime_match);
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
-        && camera_frame_match && model_lifetime_match
+        && camera_frame_match && model_lifetime_match && native_camera.checked() && native_parameters_match
         && system_constants_built == 1 && system_prefix_match && particle_lifetime_match && fog_lifetime_match && fog_factory_match
         && light_ownership_match && type_lifetime_match
         && material_constants_built == 2 && queued_bindings_checked == 2
         && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
+    std::printf("Installed native camera: constructor_parameters=%lux%lu same_startup_owner=%d actual_slot_pose_frame_viewport=%d context2_logical1_terminal0=%d pool_returned_destroyed=%d checked=%d\n",
+        static_cast<unsigned long>(native_camera.constructor_width),static_cast<unsigned long>(native_camera.constructor_height),
+        native_parameters_match,native_camera.same_backing,
+        native_camera.context_two && native_camera.logical_one && native_camera.camera_retired && native_camera.context_retired,
+        native_camera.pool_returned && native_camera.pool_destroyed,native_camera.checked() && native_parameters_match);
     std::printf("Installed material builder: actual_stream_and_clone_owners_ordered_constants=%u checked=%d\n",
         material_constants_built, material_constants_built == 2 && constants_match);
     std::printf("Installed system builder: ordered_prefix=%u VS_PS_77_retained_after_material=%d particle_clocks_destroyed=%u lifetime_checked=%d\n",

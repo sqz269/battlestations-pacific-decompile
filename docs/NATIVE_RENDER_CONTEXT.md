@@ -68,7 +68,7 @@ use a no-op or cached base-destructor fallback. No owner registry, extra count,
 synthetic camera/scene/target, or private command/group/queue storage is added.
 
 For an actual native camera, the integration path is
-`&NativeCameraOwner::storage -> canonical NativeCameraReference`. That companion
+`&camera_owner.storage.node -> canonical NativeCameraReference`. That companion
 already borrows `storage.node.references_04` and owns the real camera terminal
 destruction/pool-return path. A caller's resolver can compare the raw identity to
 that storage address and return its existing stable camera companion. The context

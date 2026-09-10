@@ -1,0 +1,92 @@
+[
+  {
+    "address": "00b1d120",
+    "before": {
+      "address": "00b1d120",
+      "function_name": "BSP_RenderCommandContext_Destroy",
+      "comment": "[BSP reconstruction 00b1d120]\n[BSP reconstruction] Release then clear retained camera+8, scene+C, target+14 in order, reloading each after previous terminal callbacks. Borrowed command backpointer+10 untouched. Then refcount base destructor. Original ABI: ECX18-byte native context; RET. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1d120",
+      "old_name": "BSP_RenderCommandContext_Destroy",
+      "name": "BSP_RenderCommandContext_Destroy",
+      "evidence": "Native parent[00b1d120,00b1d1c8); ECX actual18h context; RET. Complete actual context destructor: D5E5C4, capture08/decrement actual04/current zero dispatch/clear08 after callback, then reload0C and14 in order; preserve04/10; baseCEB130 normal and state0 unwind. Pure canonical lookup occurs only at zero, exact04 address verified. Prior18-byte wording corrected to18h=24bytes. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1d570",
+    "before": {
+      "address": "00b1d570",
+      "function_name": "BSP_RenderCommandContext_DeletingDestructor",
+      "comment": "[BSP reconstruction 00b1d570]\n[BSP reconstruction] Call00B1D120, free context when flags&1, return original this. Free continuation00B1D585 cleans4 stack bytes. Original ABI: ECX context; stack delete flags; EAX context; RET4. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1d570",
+      "old_name": "BSP_RenderCommandContext_DeletingDestructor",
+      "name": "BSP_RenderCommandContext_DeletingDestructor",
+      "evidence": "Native parent[00b1d570,00b1d58e); ECX actual context; stack flags; EAX original address; RET4. Complete scalar deleter: context destruction first, shared scalar free iff flags&1 after successful return. No free on propagated destructor failure. Current context companion validates D5E5C4/BD30E0/B1D570 and retires after free. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1edc0",
+    "before": {
+      "address": "00b1edc0",
+      "function_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "comment": "[BSP reconstruction 00b1edc0]\nAllocates18h context vtable00d5e5c4 atcommand+28h, retains supplied references into context+8/+C/+14 andcommand+4, context+10 points back tocommand. Acquires two pooled batches into+C/+10h via00b1e870/00b1d5b0. Allocator and ownership teardown still unported.\n\n[BSP reconstruction 00b1edc0] update\n[BSP reconstruction] Allocate18-byte refcount1 context table00D5E5C4 at+28, retained assignment command+4 and context+8/C/14, set context+10 backpointer, acquire two native pooled batches+C/+10, initialize one-byte diagnostic. Typed fragment reconstructs context/ref assignments and consumes two explicitly acquired actual batch references; native pool acquisition and diagnostic initializer remain separate. Original ABI: ECX command; stack command scene,camera,context scene,target; RET10h. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1edc0",
+      "old_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "evidence": "Native parent[00b1edc0,00b1ef57); Fragment B1EDD3..B1EDF2; EAX aligned18h storage, ECX0. Actual18h placement stores ONLY: CEB130/count1/D5E5C4 then08/0C/10/14 zero. No command allocation, full44h constructor, queue publication or batch acquisition claim. Prior18-byte wording corrected to18h=24bytes. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1ff60",
+    "before": {
+      "address": "00b1ff60",
+      "function_name": "BSP_D3D9Renderer_GetViewportParameters",
+      "comment": "[BSP reconstruction 00b1ff60]\nNative [00b1ff60,00b1ff67); ECX concrete renderer; EAX renderer+1A14; RET. Evidence-only concrete virtual+30 getter. LEA EAX,[ECX+1A14];RET. Borrowed access boundary requires exact renderer and actual result+0C/+10 fields. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim."
+    },
+    "after": {
+      "address": "00b1ff60",
+      "old_name": "BSP_D3D9Renderer_GetViewportParameters",
+      "name": "BSP_D3D9Renderer_GetViewportParameters",
+      "evidence": "Native parent[00b1ff60,00b1ff67); ECX renderer; EAX renderer+1A14; RET. Concrete D5F0A8 virtual30 getter represented by exact captured D3D9StateCache identity and actual14h parameter owner. Current dispatch resolved each call; return live0C/10 references. No dimension copy, presentation fallback or global recapture in adapter. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2aeb0",
+    "before": {
+      "address": "00b2aeb0",
+      "function_name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
+      "comment": "[BSP reconstruction 00b2aeb0]\nRenderer vtable 00d5f0a8 slot +4h, thiscall RET 28h. Builds 56-byte presentation parameters at +1a28h, gets HAL caps, creates device at +1a10h using MULTITHREADED plus HW VP iff HW T&L and shader low word >=0101h; otherwise SW VP. CreateDevice initially receives Windowed=TRUE; only afterward stored Windowed becomes !fullscreen. Later initializes render state and dynamic vertex/index buffers. Only device-creation prefix currently ported."
+    },
+    "after": {
+      "address": "00b2aeb0",
+      "old_name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
+      "name": "BSP_D3D9Renderer_InitializeDeviceAndResources",
+      "evidence": "Native parent[00b2aeb0,00b2b1f2); ECX renderer; ten stack args; RET28h; stores fragment widthEBP and heightECX. Existing device-startup prefix additionally writes SAME renderer parameter region0C/10 atB2AF9E/B2AFA4 before GetDeviceCaps/CreateDevice. Constructor padding survives; callback mutations of parameter words remain distinct from presentation block. Root threads same owner startup/font/mesh/captured renderer/native camera. No remaining full device-resource initialization or reset-mode claim. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b32410",
+    "before": {
+      "address": "00b32410",
+      "function_name": "BSP_D3D9Renderer_Construct",
+      "comment": "[BSP reconstruction 00b32410]\nCalled by application initialization 0073da88. Installs primary vtable 00d5f0a8 and secondary 00d5f0a4; calls Direct3DCreate9(32), stores interface at this+1990h. Full constructor not ported.\n\n[BSP reconstruction 00b32410] update\nCalled by application initialization 0073da88. Installs primary vtable 00d5f0a8 and secondary 00d5f0a4; calls Direct3DCreate9(32), stores interface at this+1990h. Full constructor not ported. | Packet app_init_renderer_device: thiscall(this), plain RET, returns this; object 1D94h allocated at 0073da66. Ordered body: base 00b283f0 (publishes 00f8d394 via 00b25f40); primary vtable 00d5f0a8 at 00b3243b and secondary 00d5f0a4 on this+0Ch at 00b32441; binding/state cache ctor 00b29430 on this+34h at 00b3246c; this+1970h=0 then Direct3DCreate9(20h) into this+1990h with this+1994h=0; InitializeCriticalSection(this+19F4h) at 00b32503; embedded subobject vtables 00d5f060 at +1A60h, 00d5f088 at +1A74h and 00d5f074 at +1A98h (the effect registry); 00b0cce0 on this+1B78h; array helper 00b5e270 on this+1D2Ch; 0108d4b8/0108d4b9 cleared at 00b327b7; three heap singletons whose pointers are discarded (4CCh -> 00b1bb90, 2Ch -> 00b585a0, 10h -> 00b5bf70); 00b27d80 on this; IDirect3D9::GetAdapterIdentifier(0,0,ESP+14h) through IDirect3D9 vtable +14h at 00b32874; strstr(identifier+200h, 'NVIDIA') at 00b32883 storing the boolean at this+1D88h, where 200h is D3DADAPTER_IDENTIFIER9.Description (the decompiler splits the stack buffer at 1F0h and makes this look like offset 496; the listing pairs lea ecx,[esp+214h] with lea edx,[esp+14h]); this+14h=0; capability gather 00b2c8e0 filling the record at this+1B18h; 24h -> BSP_RenderWorker_Construct into this+1970h; BSP_CriticalSection_Create into this+199Ch. It creates NO device: the device is created later, in phase 6, when 00becee0 calls renderer virtual +4h (00b2aeb0). Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json."
+    },
+    "after": {
+      "address": "00b32410",
+      "old_name": "BSP_D3D9Renderer_Construct",
+      "name": "BSP_D3D9Renderer_Construct",
+      "evidence": "Native parent[00b32410,00b328f8); Fragment B32512..B32534; ESI renderer, EBX0. Five actual14h parameter-region stores at renderer1A14: byte00=0,word04=3,byte08=0,word0C=0,word10=0. Six padding bytes preserved. New typed region only, not complete1D94h renderer construction. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "status": "applied"
+  }
+]

@@ -50,6 +50,8 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/camera_pose.cpp src/camera_plane_initialization.cpp src/native_camera_owner.cpp
   src/native_resource_support.cpp
   src/native_camera_reference.cpp
+  src/native_render_context.cpp
+  src/native_renderer_parameters.cpp
   src/native_render_batch_lifetime.cpp
   src/native_surface_owner.cpp
   src/camera_clip_planes.cpp src/camera_configuration.cpp)
@@ -71,6 +73,7 @@ add_executable(bsp_d3d9_probe src/d3d9_probe.cpp src/d3d9_shader_probe.cpp src/d
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_alpha_probe.cpp)
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_font_probe.cpp)
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_mesh_probe.cpp)
+target_sources(bsp_d3d9_probe PRIVATE src/native_camera_probe.cpp)
 
 target_sources(bsp_d3d9_probe PRIVATE src/inflate_stream_probe.cpp src/mpkg_archive_probe.cpp
   src/resource_preload_probe.cpp src/physical_pending_reads_probe.cpp src/structured_resource_probe.cpp)
