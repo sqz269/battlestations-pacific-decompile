@@ -1,4 +1,5 @@
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/gui_startup.hpp"
@@ -475,6 +476,20 @@ int main() {
         check(bsp::decide_simulation_gate_branch(inputs)
                 == bsp::SimulationGateBranch::kPauseMenuOpened,
             "without the alternate action a press of action 1 opens the menu");
+    }
+
+    {
+        // 0068ecc8 compares 0.0 against the remaining time and skips on JBE, so
+        // a cooldown that lands exactly on zero is kept and only a strictly
+        // negative one is erased. Getting the boundary backwards would drop a
+        // hint's cooldown one frame early on every whole-number delta.
+        bsp::HintCooldown entries[2] = { { "BASICSHIP", 1.0f }, { "BASICPLANE", 1.5f } };
+        check(bsp::tick_hint_cooldowns_0068ec10(entries, 2, 1.0f) == 2
+                && entries[0].remaining == 0.0f,
+            "a cooldown resting on zero survives the tick");
+        check(bsp::tick_hint_cooldowns_0068ec10(entries, 2, 0.25f) == 1
+                && entries[0].name != nullptr && std::strcmp(entries[0].name, "BASICPLANE") == 0,
+            "the next tick erases only the entry that went negative");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
