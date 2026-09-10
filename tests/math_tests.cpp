@@ -1,4 +1,5 @@
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
@@ -325,6 +326,53 @@ int main() {
             "requests behind the stop and the one a handler added survive the pass");
         check(bsp::front_state_request(state.requests) == 0x02u,
             "the next frame resumes at the request that followed the stop");
+    }
+
+    {
+        // 00689CC0: the countdown boundary and the delta clamp. COMISS at
+        // 00689D5F skips on 0.0 <= countdown, so the frame that lands exactly on
+        // zero must not raise the screen, and the clamp at 00689D0E caps one
+        // frame's cost at DAT_00D7A24C seconds however long the hitch was.
+        struct Host final : bsp::AttractScreenHost {
+            bool button{false};
+            int state{2};
+            int activated{0};
+            int deactivated{0};
+            bool any_dynamic_device_button_down() override { return button; }
+            bool any_joystick_slot_button_down() override { return false; }
+            bool scene_context_blocks_attract() override { return false; }
+            int game_state() override { return state; }
+            void activate_attract_screen() override { ++activated; }
+            void deactivate_attract_screen() override { ++deactivated; }
+            bool front_end_menu_present() override { return false; }
+            void front_end_menu_on_attract_dismissed() override {}
+        } host;
+
+        bsp::AttractScreenState screen;
+        bsp::update_attract_screen_00689cc0(screen, host, 1000.0f);
+        check(screen.idle_countdown == bsp::kAttractIdleSeconds - bsp::kAttractDeltaClampSeconds,
+            "a long hitch costs at most one second of idle time");
+
+        screen.idle_countdown = bsp::kAttractIdleSeconds;
+        for (int i = 0; i < 45; ++i) bsp::update_attract_screen_00689cc0(screen, host, 1.0f);
+        check(screen.idle_countdown == 0.0f && host.activated == 0 && !screen.active,
+            "the attract screen does not rise on the frame the countdown reaches zero");
+
+        bsp::update_attract_screen_00689cc0(screen, host, 1.0f);
+        check(host.activated == 1 && screen.active, "it rises on the first negative frame");
+
+        host.button = true;
+        bsp::update_attract_screen_00689cc0(screen, host, 1.0f);
+        check(host.deactivated == 1 && !screen.active
+                && screen.idle_countdown == bsp::kAttractIdleSeconds,
+            "a button press dismisses it and reloads the countdown");
+
+        screen = bsp::AttractScreenState{};
+        host.button = false;
+        host.state = bsp::kAttractSuppressedGameStates[0];
+        screen.idle_countdown = -1.0f;
+        bsp::update_attract_screen_00689cc0(screen, host, 0.0f);
+        check(host.activated == 1, "a suppressed game state blocks the raise");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
