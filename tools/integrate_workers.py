@@ -171,6 +171,20 @@ added = run(['git', 'diff', f'{base}..HEAD', '--', 'config/names'], MAIN).stdout
 addresses = sorted({json.loads(line[1:])['address'] for line in added.splitlines()
                     if line.startswith('+') and not line.startswith('+++') and line[1:].strip().startswith('{')})
 print(f'{len(addresses)} reviewed names added by the merge')
+# an address leased to another owner (typically the next worker, dispatched before this merge)
+# would make the annotate tool refuse the whole batch; apply the rest now and list the deferred ones
+sys.path.insert(0, str(MAIN / 'tools'))
+import coordination  # noqa: E402
+deferred = []
+for a in list(addresses):
+    try:
+        coordination.check_writable([a])
+    except coordination.LeaseConflict as exc:
+        deferred.append(a)
+        addresses.remove(a)
+        print(f'deferring {a}: {str(exc)[:110]}')
+if deferred:
+    print(f"apply later: python tools/ghidra_annotate.py --apply --addresses {' '.join(deferred)}")
 if addresses:
     ann = run([sys.executable, str(MAIN / 'tools/ghidra_annotate.py'), '--apply', '--addresses', *addresses], MAIN, check=False)
     print((ann.stdout + ann.stderr).strip().splitlines()[-1])
