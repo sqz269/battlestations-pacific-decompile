@@ -358,3 +358,7 @@ side suffix, the bank names and the locale-list split are pure functions with ex
 over an injected host with one method per native call site, in the style of
 `bsp::run_application_frame`. `LoadingScreenMode` is reused from `bsp/frontend_entry.hpp`; nothing
 is redefined. This is a semantic reconstruction, not an ABI-compatible replacement.
+
+## Correction from docs/GAME_WORLD_CONSTRUCT.md
+
+There is no ocean failure path: the `Ocean initialization failed` literal at `00ce7d3c` is copied into a pooled buffer and returned to the pool with no reader, its guard is the scene record existing, and both branches of the ocean construction call the same constructor (the record's description or the `sky_001` literal). The only observable failure is a null pointer at `game+19E8h`, which the per-frame reader already gates on. `004cb030` is the world constructor (`BSP_World_Construct`), not an array constructor helper.
