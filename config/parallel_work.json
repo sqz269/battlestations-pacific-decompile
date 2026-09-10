@@ -1267,8 +1267,8 @@
       "id": "system_fog_owner_core",
       "packet": "system_fog_owner_core",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
       "address_ranges": [
         {
           "start": "00b84e50",
@@ -1288,7 +1288,7 @@
         {
           "start": "00bbdf20",
           "end_exclusive": "00bbdf5b",
-          "role": "world_set_owner"
+          "role": "d64518_receiver_set_owner_game19e8"
         },
         {
           "start": "00b71ae3",
@@ -1392,15 +1392,17 @@
         "InterlockedIncrement",
         "InterlockedDecrement"
       ],
-      "evidence": "reports/system_fog_owner_next.json",
-      "boundary": "Explicit shared SystemFogState owner contract agreed; primary integrates shared headers, CMake and ledger/Ghidra mutations. existing getters; full camera/world/environment construction; native ABI replacement; game validation"
+      "evidence": "reports/system_fog_owner_audit.json",
+      "boundary": "Explicit shared SystemFogState owner contract agreed; primary integrates shared headers, CMake and ledger/Ghidra mutations. existing getters; full camera/world/environment construction; native ABI replacement; game validation",
+      "validation": "reports/system_owner_integration_audit.json",
+      "worker_commit": "942c2e9"
     },
     {
       "id": "system_fog_environment_apply",
       "packet": "system_fog_environment_apply",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
       "address_ranges": [
         {
           "start": "0078d076",
@@ -1425,8 +1427,10 @@
         "live camera owner binding",
         "existing x87 preservation conventions"
       ],
-      "evidence": "reports/system_fog_owner_next.json",
-      "boundary": "Explicit shared SystemFogState owner contract agreed; primary integrates shared headers, CMake and ledger/Ghidra mutations. setter leaves; full0078cff0; other water/sky state updates"
+      "evidence": "reports/environment_fog_apply_audit.json",
+      "boundary": "Explicit shared SystemFogState owner contract agreed; primary integrates shared headers, CMake and ledger/Ghidra mutations. setter leaves; full0078cff0; other water/sky state updates",
+      "validation": "reports/system_owner_integration_audit.json",
+      "worker_commit": "950b4ef"
     },
     {
       "id": "system_lighting_owner_discovery",
@@ -1447,8 +1451,8 @@
       "id": "system_ambient_and_scene_resource_owners",
       "packet": "system_ambient_and_scene_resource_owners",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_with_shared_owner_contract_review",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
       "function_addresses": [
         "00b7c290",
         "00b7c450",
@@ -1482,8 +1486,165 @@
         "SceneResource and SceneNodeRegistry existing unique linear-hash membership/order",
         "00BD30E0/00BD30F0 refcounted dispatch/base semantics"
       ],
-      "evidence": "reports/system_lighting_owner_next.json",
-      "boundary": "Extend or bind the same SceneResource/SceneNodeRegistry objects used by SceneAttachmentRuntime. Expose stable sentinel and first-light views, retaining native sentinel payload preimage. Do not build a second independently ordered light list. Concrete ambient and scene-resource ownership, plus retain/release assignment to an already supplied actual outer owner slot. It is not yet a complete cold outer-scene or directional-light factory."
+      "evidence": "reports/system_lighting_owners_audit.json",
+      "boundary": "Extend or bind the same SceneResource/SceneNodeRegistry objects used by SceneAttachmentRuntime. Expose stable sentinel and first-light views, retaining native sentinel payload preimage. Do not build a second independently ordered light list. Concrete ambient and scene-resource ownership, plus retain/release assignment to an already supplied actual outer owner slot. It is not yet a complete cold outer-scene or directional-light factory.",
+      "validation": "reports/system_owner_integration_audit.json",
+      "worker_commit": "515d169"
+    },
+    {
+      "id": "authored_fog_source",
+      "packet": "authored_fog_source",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
+      "evidence": "reports/authored_fog_source_audit.json",
+      "validation": "reports/system_owner_integration_audit.json",
+      "worker_commit": "6ecee87"
+    },
+    {
+      "id": "canonical_scene_registry_storage",
+      "packet": "canonical_scene_registry_storage",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
+      "evidence": "reports/scene_registry_native_check.json",
+      "validation": "reports/system_owner_integration_audit.json"
+    },
+    {
+      "id": "scene_registry_storage_review",
+      "packet": "scene_registry_storage_review",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "independent_storage_review_passed",
+      "evidence": "reports/scene_registry_storage_review.json",
+      "worker_commit": "80c230f"
+    },
+    {
+      "id": "scene_registry_native_check",
+      "packet": "scene_registry_native_check",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
+      "evidence": "reports/scene_registry_native_check.json",
+      "validation": "reports/system_owner_integration_audit.json",
+      "worker_commit": "cf21d1e"
+    },
+    {
+      "id": "directional_light_owner_discovery",
+      "packet": "directional_light_owner_discovery",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "discovery_reviewed_and_integrated",
+      "evidence": "reports/directional_light_owner_next.json",
+      "worker_commit": "8ed90fa"
+    },
+    {
+      "id": "system_fog_world_factory_discovery",
+      "packet": "system_fog_world_factory_discovery",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "discovery_reviewed_and_integrated",
+      "evidence": "reports/system_fog_world_factory_next.json",
+      "worker_commit": "b4a67ae"
+    },
+    {
+      "id": "system_owner_integration",
+      "packet": "system_owner_integration",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
+      "evidence": "reports/system_owner_integration_audit.json",
+      "validation": "reports/system_owner_integration_audit.json"
+    },
+    {
+      "id": "directional_pool_storage",
+      "packet": "directional_pool_storage",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_implementing_in_isolated_worktree",
+      "function_addresses": [
+        "00b7b940",
+        "00b7bac0",
+        "00b7b2f0",
+        "00b7ac90",
+        "00b7b230",
+        "00b7ba20",
+        "00b7bd40",
+        "00b7b610",
+        "00403970",
+        "00402f70",
+        "00b7adb0",
+        "00cd8080",
+        "00ce0eb0",
+        "004b46b0"
+      ],
+      "code_ownership": [
+        "include/bsp/directional_light_pool.hpp",
+        "src/directional_light_pool.cpp",
+        "docs/DIRECTIONAL_LIGHT_POOL.md",
+        "reports/directional_light_pool_audit.json",
+        "include/bsp/allocator_list.hpp",
+        "src/allocator_list.cpp"
+      ],
+      "named_but_incomplete_dependencies": [
+        "globalstaticinitializer/atexit routing must bindcurrentstartup path",
+        "otherallocatorlist elements requireactualvirtual0 dispatch; do notinventprivatehead"
+      ],
+      "evidence": "reports/directional_light_owner_next.json",
+      "boundary": [
+        "rawslotpreimage",
+        "live1ECid afterswapcompaction",
+        "sameglobalallocatorlist",
+        "nativeallocationfailurelock/publicationsemantics"
+      ]
+    },
+    {
+      "id": "native_node_construction",
+      "packet": "native_node_construction",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_implementing_in_isolated_worktree",
+      "function_addresses": [
+        "00b6f5a0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp",
+        "docs/NATIVE_NODE_CONSTRUCTION.md",
+        "reports/native_node_construction_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        "directbase destructorclosure remains separate",
+        "genericnativepointlightarray exactallocator projection remains sharedintegration work"
+      ],
+      "evidence": "reports/directional_light_owner_next.json",
+      "boundary": [
+        "actualraw08..2F andpaddingpreimages",
+        "threeidentitymatrixwriteorder",
+        "canonicalsharedtransform/attachment",
+        "unmodifiedpool1ECmetadata"
+      ]
+    },
+    {
+      "id": "system_fog_world_factory_impl",
+      "packet": "system_fog_world_factory_impl",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_in_isolated_worktree",
+      "address_ranges": [
+        {
+          "start": "004df6a3",
+          "end_exclusive": "004df7a5"
+        }
+      ],
+      "code_ownership": [
+        "include/bsp/system_fog_world_factory.hpp",
+        "src/system_fog_world_factory.cpp",
+        "docs/SYSTEM_FOG_WORLD_FACTORY.md",
+        "reports/system_fog_world_factory_audit.json"
+      ],
+      "evidence": "reports/system_fog_world_factory_next.json",
+      "boundary": "Borrow actual D64518 receiver, same camera and live scene-record slots; preserve publication/release, raw preimage and packed temporary liveout. Whole outer owners remain incomplete."
     }
   ],
   "snapshot_after_analysis": {
@@ -1834,24 +1995,26 @@
     {
       "packet": "system_fog_owner_core",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_implementing_in_isolated_worktree",
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
       "owned_files": [
         "include/bsp/system_fog_owner.hpp",
         "src/system_fog_owner.cpp",
         "docs/SYSTEM_FOG_OWNER.md",
         "reports/system_fog_owner_audit.json"
-      ]
+      ],
+      "validation": "reports/system_fog_owner_audit.json"
     },
     {
       "packet": "system_fog_environment_apply",
       "worker": "material_effect_plane",
-      "state": "worker_implementing_in_isolated_worktree",
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
       "owned_files": [
         "include/bsp/environment_fog_apply.hpp",
         "src/environment_fog_apply.cpp",
         "docs/ENVIRONMENT_FOG_APPLY.md",
         "reports/environment_fog_apply_audit.json"
-      ]
+      ],
+      "validation": "reports/environment_fog_apply_audit.json"
     },
     {
       "packet": "system_lighting_owner_discovery",
@@ -1866,222 +2029,141 @@
     {
       "packet": "system_ambient_and_scene_resource_owners",
       "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_with_shared_owner_contract_review",
+      "state": "integrated_strict_win32_build_focused_native_and_installed_owner_probe_checked",
       "owned_files": [
         "include/bsp/system_lighting_owners.hpp",
         "src/system_lighting_owners.cpp",
         "docs/SYSTEM_LIGHTING_OWNERS.md",
         "reports/system_lighting_owners_audit.json"
+      ],
+      "validation": "reports/system_lighting_owners_audit.json"
+    },
+    {
+      "packet": "directional_pool_storage",
+      "worker": "material_effect_plane",
+      "state": "worker_implementing_in_isolated_worktree",
+      "owned_files": [
+        "include/bsp/directional_light_pool.hpp",
+        "src/directional_light_pool.cpp",
+        "docs/DIRECTIONAL_LIGHT_POOL.md",
+        "reports/directional_light_pool_audit.json",
+        "include/bsp/allocator_list.hpp",
+        "src/allocator_list.cpp"
+      ]
+    },
+    {
+      "packet": "native_node_construction",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_implementing_in_isolated_worktree",
+      "owned_files": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp",
+        "docs/NATIVE_NODE_CONSTRUCTION.md",
+        "reports/native_node_construction_audit.json"
+      ]
+    },
+    {
+      "packet": "system_fog_world_factory_impl",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_implementing_in_isolated_worktree",
+      "owned_files": [
+        "include/bsp/system_fog_world_factory.hpp",
+        "src/system_fog_world_factory.cpp",
+        "docs/SYSTEM_FOG_WORLD_FACTORY.md",
+        "reports/system_fog_world_factory_audit.json"
       ]
     }
   ],
   "next_dispatch": [
     {
-      "id": "system_fog_owner_core",
-      "packet": "system_fog_owner_core",
+      "id": "directional_pool_storage",
+      "packet": "directional_pool_storage",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_implementing_in_isolated_worktree",
+      "function_addresses": [
+        "00b7b940",
+        "00b7bac0",
+        "00b7b2f0",
+        "00b7ac90",
+        "00b7b230",
+        "00b7ba20",
+        "00b7bd40",
+        "00b7b610",
+        "00403970",
+        "00402f70",
+        "00b7adb0",
+        "00cd8080",
+        "00ce0eb0",
+        "004b46b0"
+      ],
+      "code_ownership": [
+        "include/bsp/directional_light_pool.hpp",
+        "src/directional_light_pool.cpp",
+        "docs/DIRECTIONAL_LIGHT_POOL.md",
+        "reports/directional_light_pool_audit.json",
+        "include/bsp/allocator_list.hpp",
+        "src/allocator_list.cpp"
+      ],
+      "named_but_incomplete_dependencies": [
+        "globalstaticinitializer/atexit routing must bindcurrentstartup path",
+        "otherallocatorlist elements requireactualvirtual0 dispatch; do notinventprivatehead"
+      ],
+      "evidence": "reports/directional_light_owner_next.json",
+      "boundary": [
+        "rawslotpreimage",
+        "live1ECid afterswapcompaction",
+        "sameglobalallocatorlist",
+        "nativeallocationfailurelock/publicationsemantics"
+      ]
+    },
+    {
+      "id": "native_node_construction",
+      "packet": "native_node_construction",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_implementing_in_isolated_worktree",
+      "function_addresses": [
+        "00b6f5a0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp",
+        "docs/NATIVE_NODE_CONSTRUCTION.md",
+        "reports/native_node_construction_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        "directbase destructorclosure remains separate",
+        "genericnativepointlightarray exactallocator projection remains sharedintegration work"
+      ],
+      "evidence": "reports/directional_light_owner_next.json",
+      "boundary": [
+        "actualraw08..2F andpaddingpreimages",
+        "threeidentitymatrixwriteorder",
+        "canonicalsharedtransform/attachment",
+        "unmodifiedpool1ECmetadata"
+      ]
+    },
+    {
+      "id": "system_fog_world_factory_impl",
+      "packet": "system_fog_world_factory_impl",
       "worker": "system_fog_owner_discovery",
       "done": false,
       "state": "worker_implementing_in_isolated_worktree",
       "address_ranges": [
         {
-          "start": "00b84e50",
-          "end_exclusive": "00b84f61",
-          "role": "owner_constructor"
-        },
-        {
-          "start": "00b84f70",
-          "end_exclusive": "00b84f94",
-          "role": "owner_deleting_destructor"
-        },
-        {
-          "start": "00b71940",
-          "end_exclusive": "00b71981",
-          "role": "camera_set_owner"
-        },
-        {
-          "start": "00bbdf20",
-          "end_exclusive": "00bbdf5b",
-          "role": "world_set_owner"
-        },
-        {
-          "start": "00b71ae3",
-          "end_exclusive": "00b71ae9",
-          "role": "camera_initial_null_slot"
-        },
-        {
-          "start": "00b71f68",
-          "end_exclusive": "00b71f8a",
-          "role": "camera_release_owner_fragment"
-        },
-        {
-          "start": "00b84c40",
-          "end_exclusive": "00b84c5e",
-          "role": "set_color08"
-        },
-        {
-          "start": "00b84c70",
-          "end_exclusive": "00b84c8e",
-          "role": "set_color18"
-        },
-        {
-          "start": "00b84fa0",
-          "end_exclusive": "00b84fc8",
-          "role": "set_directional28"
-        },
-        {
-          "start": "00b84d00",
-          "end_exclusive": "00b84d0e",
-          "role": "set_scalar_68"
-        },
-        {
-          "start": "00b84d10",
-          "end_exclusive": "00b84d1e",
-          "role": "set_scalar_6c"
-        },
-        {
-          "start": "00b84d20",
-          "end_exclusive": "00b84d2e",
-          "role": "set_scalar_70"
-        },
-        {
-          "start": "00b84d30",
-          "end_exclusive": "00b84d3e",
-          "role": "set_scalar_74"
-        },
-        {
-          "start": "00b84d40",
-          "end_exclusive": "00b84d4e",
-          "role": "set_scalar_78"
-        },
-        {
-          "start": "00b84d50",
-          "end_exclusive": "00b84d5e",
-          "role": "set_scalar_7c"
-        },
-        {
-          "start": "00b84d60",
-          "end_exclusive": "00b84d71",
-          "role": "set_scalar_80"
-        },
-        {
-          "start": "00b84d80",
-          "end_exclusive": "00b84d91",
-          "role": "set_scalar_84"
-        },
-        {
-          "start": "00b84dc0",
-          "end_exclusive": "00b84dd1",
-          "role": "set_scalar_88"
-        },
-        {
-          "start": "00b84de0",
-          "end_exclusive": "00b84df1",
-          "role": "set_scalar_8c"
-        },
-        {
-          "start": "00b84e00",
-          "end_exclusive": "00b84e11",
-          "role": "set_scalar_90"
+          "start": "004df6a3",
+          "end_exclusive": "004df7a5"
         }
       ],
       "code_ownership": [
-        "include/bsp/system_fog_owner.hpp",
-        "src/system_fog_owner.cpp",
-        "docs/SYSTEM_FOG_OWNER.md",
-        "reports/system_fog_owner_audit.json"
+        "include/bsp/system_fog_world_factory.hpp",
+        "src/system_fog_world_factory.cpp",
+        "docs/SYSTEM_FOG_WORLD_FACTORY.md",
+        "reports/system_fog_world_factory_audit.json"
       ],
-      "next_code_ownership": [
-        "include/bsp/system_fog_owner.hpp",
-        "src/system_fog_owner.cpp",
-        "docs/SYSTEM_FOG_OWNER.md",
-        "reports/system_fog_owner_audit.json"
-      ],
-      "named_but_incomplete_dependencies": [
-        "existing SystemFogState field projection agreement",
-        "real refcount/allocator adapter contract if creating live owners",
-        "00bd30e0",
-        "00bd30f0",
-        "00bf65ac",
-        "InterlockedIncrement",
-        "InterlockedDecrement"
-      ],
-      "evidence": "reports/system_fog_owner_next.json",
-      "boundary": "Explicit shared SystemFogState owner contract agreed; primary integrates shared headers, CMake and ledger/Ghidra mutations. existing getters; full camera/world/environment construction; native ABI replacement; game validation"
-    },
-    {
-      "id": "system_fog_environment_apply",
-      "packet": "system_fog_environment_apply",
-      "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
-      "address_ranges": [
-        {
-          "start": "0078d076",
-          "end_exclusive": "0078d180"
-        }
-      ],
-      "code_ownership": [
-        "include/bsp/environment_fog_apply.hpp",
-        "src/environment_fog_apply.cpp",
-        "docs/ENVIRONMENT_FOG_APPLY.md",
-        "reports/environment_fog_apply_audit.json"
-      ],
-      "next_code_ownership": [
-        "include/bsp/environment_fog_apply.hpp",
-        "src/environment_fog_apply.cpp",
-        "docs/ENVIRONMENT_FOG_APPLY.md",
-        "reports/environment_fog_apply_audit.json"
-      ],
-      "named_but_incomplete_dependencies": [
-        "system_fog_owner_core setters",
-        "agreed actual environment field storage",
-        "live camera owner binding",
-        "existing x87 preservation conventions"
-      ],
-      "evidence": "reports/system_fog_owner_next.json",
-      "boundary": "Explicit shared SystemFogState owner contract agreed; primary integrates shared headers, CMake and ledger/Ghidra mutations. setter leaves; full0078cff0; other water/sky state updates"
-    },
-    {
-      "id": "system_ambient_and_scene_resource_owners",
-      "packet": "system_ambient_and_scene_resource_owners",
-      "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_with_shared_owner_contract_review",
-      "function_addresses": [
-        "00b7c290",
-        "00b7c450",
-        "00b7c7e0",
-        "00b83c50",
-        "00b825d0",
-        "00b82ed0",
-        "00b83410",
-        "00b723f0",
-        "00b7b390",
-        "00b7b620",
-        "00b7bc70",
-        "00b7bd50",
-        "00b7bf90",
-        "00b83600",
-        "00b82390",
-        "00b83220",
-        "00b81b90",
-        "00b82570",
-        "00b829d0"
-      ],
-      "code_ownership": [
-        "include/bsp/system_lighting_owners.hpp",
-        "src/system_lighting_owners.cpp",
-        "docs/SYSTEM_LIGHTING_OWNERS.md",
-        "reports/system_lighting_owners_audit.json"
-      ],
-      "named_but_incomplete_dependencies": [
-        "NativeString and sized string pool",
-        "shared raw allocation/free boundary",
-        "SceneResource and SceneNodeRegistry existing unique linear-hash membership/order",
-        "00BD30E0/00BD30F0 refcounted dispatch/base semantics"
-      ],
-      "evidence": "reports/system_lighting_owner_next.json",
-      "boundary": "Extend or bind the same SceneResource/SceneNodeRegistry objects used by SceneAttachmentRuntime. Expose stable sentinel and first-light views, retaining native sentinel payload preimage. Do not build a second independently ordered light list. Concrete ambient and scene-resource ownership, plus retain/release assignment to an already supplied actual outer owner slot. It is not yet a complete cold outer-scene or directional-light factory."
+      "evidence": "reports/system_fog_world_factory_next.json",
+      "boundary": "Borrow actual D64518 receiver, same camera and live scene-record slots; preserve publication/release, raw preimage and packed temporary liveout. Whole outer owners remain incomplete."
     }
   ],
   "current_partition": {
@@ -2203,6 +2285,28 @@
         "system_fog_owner_core",
         "system_fog_environment_apply",
         "system_ambient_and_scene_resource_owners"
+      ]
+    },
+    {
+      "packet": "system_owner_integration",
+      "utc": "2026-09-10T17:28:38.227144+00:00",
+      "report": "reports/system_owner_integration_audit.json",
+      "completed_packets": [
+        "system_fog_owner_core",
+        "system_fog_environment_apply",
+        "system_ambient_and_scene_resource_owners",
+        "authored_fog_source",
+        "canonical_scene_registry_storage",
+        "scene_registry_storage_review",
+        "scene_registry_native_check",
+        "directional_light_owner_discovery",
+        "system_fog_world_factory_discovery",
+        "system_owner_integration"
+      ],
+      "next_packets": [
+        "directional_pool_storage",
+        "native_node_construction",
+        "system_fog_world_factory_impl"
       ]
     }
   ]

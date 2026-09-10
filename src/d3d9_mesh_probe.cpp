@@ -28,6 +28,7 @@
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/system_time_constants.hpp"
 #include "bsp/system_lighting_constants.hpp"
+#include "bsp/environment_fog_apply.hpp"
 #include "bsp/legacy_crt_math.hpp"
 #include "bsp/particle_clock_lifetime.hpp"
 #include <algorithm>
@@ -125,6 +126,10 @@ struct MeshSingletonShutdown {
     bsp::SingletonLifetimeDomain& domain;
     ~MeshSingletonShutdown() { domain.shutdown(); }
 };
+struct MeshFogCameraShutdown {
+    const bsp::SystemFogState*& slot;
+    ~MeshFogCameraShutdown() { bsp::clear_system_fog_camera_slot_00b71f68(slot); }
+};
 
 bool gpu_system_prefix_matches(IDirect3DDevice9& device,
     const bsp::SystemConstantPrefix& prefix) {
@@ -188,9 +193,10 @@ bool build_mesh_system_constants(bsp::CameraFrameState& camera,
     bsp::SystemLightListNode first{first_next,first_light};
     sentinel_next = &first; first_next = &sentinel;
     auto* sentinel_slot = &sentinel;
-    bsp::SystemSceneLighting lighting{environment_slot,sentinel_slot};
-    auto* lighting_slot = &lighting;
-    bsp::SystemLightingScene scene{lighting_slot};
+    bsp::BorrowedSystemLightListAccess light_list{sentinel_slot};
+    bsp::BorrowedSystemSceneLighting lighting{environment_slot,light_list};
+    bsp::SystemSceneLighting* lighting_slot = &lighting;
+    bsp::BorrowedSystemLightingScene scene{lighting_slot};
 
     // Diagnostic runtime words use verified PE preimages, including zero fill.
     // Binding persists safely after this draw; actual native startup may alter it.
@@ -527,7 +533,7 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     unsigned queued_bindings_checked = 0;
     unsigned material_constants_built = 0;
     unsigned system_constants_built = 0, particle_clocks_destroyed = 0;
-    bool system_prefix_match = false, particle_lifetime_match = false;
+    bool system_prefix_match = false, particle_lifetime_match = false, fog_lifetime_match = false;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
@@ -797,13 +803,21 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         }
         if (SUCCEEDED(hr) && !(buffers_match && constants_match && layout_match && bindings_match && groups_match)) hr = E_FAIL;
         const bsp::CameraViewport viewport{0,0,256,256,0,{0,0,256,256}};
-        // Explicit host-scene fog inputs. Camera ambient and system constants
-        // borrow this same owner; these values are not native factory defaults.
-        bsp::SystemFogState fog{};
-        fog.color_08 = {.35f,.35f,.35f,1};
-        fog.scalar_6c = 100; fog.scalar_70 = 200; fog.scalar_74 = 1;
         bsp::CameraFrameState camera_frame(camera_state);
-        camera_frame.enabled = 1; camera_frame.viewport = &viewport; camera_frame.fog_184 = &fog;
+        bsp::initialize_system_fog_camera_slot_00b71ae3(camera_frame.fog_184);
+        MeshFogCameraShutdown fog_shutdown{camera_frame.fog_184};
+        auto* fog = bsp::allocate_system_fog_owner();
+        bsp::set_system_fog_camera_owner_00b71940(camera_frame.fog_184,fog);
+        bsp::release_system_fog_owner(*fog); // Drop creator ownership; camera retains one.
+        // Explicit diagnostic environment values use the recovered producer.
+        // Native construction leaves directionals untouched until these writes.
+        const std::array<float,11> fog_scalars{0,100,200,0,1,0,0,0,0,0,0};
+        const std::array<float,4> fog_color{.35f,.35f,.35f,1}, underwater_color{};
+        const std::array<std::array<float,4>,4> fog_directionals{};
+        const bsp::EnvironmentFogFields fog_environment{
+            fog_scalars,fog_color,fog_directionals,underwater_color};
+        if (!bsp::apply_environment_fog_0078d076(fog_environment,camera_frame.fog_184,error)) hr = E_FAIL;
+        camera_frame.enabled = 1; camera_frame.viewport = &viewport;
         camera_frame.clear_flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER;
         camera_frame.clear_color = 0xff000000; camera_frame.clear_depth = 1;
         camera_frame.render_mode = 0; // The actual compiled NORMAL program used below.
@@ -929,6 +943,9 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         lifetime.shutdown();
         particle_lifetime_match = particle_slot == nullptr && particle_clocks_destroyed == 1
             && lifetime.published_manager() == nullptr;
+        fog_lifetime_match = camera_frame.fog_184 == &fog->fields_08 && fog->references_04 == 1;
+        bsp::clear_system_fog_camera_slot_00b71f68(camera_frame.fog_184);
+        fog_lifetime_match = fog_lifetime_match && camera_frame.fog_184 == nullptr;
         states.bind_vertex_shader_00b21d10(nullptr); states.bind_pixel_shader_00b21c20(nullptr);
         states.bind_texture_00b24710(0,{}); states.bind_texture_00b24710(1,{});
         states.bind_vertex_stream_00b24840(0,{}); states.bind_vertex_stream_00b24840(1,{});
@@ -950,13 +967,14 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         model_lifetimes.constructed, model_lifetimes.disposed, model_lifetimes.cleanup_matches, model_lifetime_match);
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
         && camera_frame_match && model_lifetime_match
-        && system_constants_built == 1 && system_prefix_match && particle_lifetime_match
+        && system_constants_built == 1 && system_prefix_match && particle_lifetime_match && fog_lifetime_match
         && material_constants_built == 2 && queued_bindings_checked == 2
         && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
     std::printf("Installed material builder: actual_stream_and_clone_owners_ordered_constants=%u checked=%d\n",
         material_constants_built, material_constants_built == 2 && constants_match);
     std::printf("Installed system builder: ordered_prefix=%u VS_PS_77_retained_after_material=%d particle_clocks_destroyed=%u lifetime_checked=%d\n",
         system_constants_built,system_prefix_match,particle_clocks_destroyed,particle_lifetime_match);
+    std::printf("Installed fog owner: native_constructor_environment_apply_counted_camera_clear=%d\n",fog_lifetime_match);
     std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,
         decoded.records_from_metadata,constants_match,layout_match,bindings_match,queued_bindings_checked,visible,colors.size(),restored,checked,error.c_str());

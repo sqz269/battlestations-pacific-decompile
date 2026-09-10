@@ -8,7 +8,7 @@
 namespace bsp {
 struct CameraAxesCrtAccess;
 struct SystemTimeBindings;
-struct SystemLightingScene;
+class SystemLightingScene;
 class SystemInvalidParameterRuntime;
 
 // Native00B46A70 reserves a local 77-register prefix and never clears it.

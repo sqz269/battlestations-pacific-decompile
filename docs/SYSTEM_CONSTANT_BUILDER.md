@@ -93,8 +93,11 @@ restored D3D9 state. The captured fixture remains very dark. Build and probe
 logs are retained in `reports/system_constant_builder_build.txt` and
 `reports/system_constant_builder_probe.txt`.
 
-Fragment evidence does not establish full gameplay behavior. Native factories,
-world and service initialization, scene ownership, unbound concrete virtual
-dispatch and original binary ABI remain separate reconstruction work. The
+The subsequent [owner integration](SYSTEM_OWNER_INTEGRATION.md) supplies concrete
+fog, ambient and scene-resource lifetimes and live canonical registry accessors.
+The installed probe now populates an allocated fog owner through the recovered
+environment fragment and verifies its camera release path. Directional-light
+ownership, world/service initialization, unbound concrete virtual dispatch and
+original binary ABI remain separate reconstruction work. The
 installed mesh uses explicit diagnostic scene values and an initialized prefix;
 its draw is an integration check, not native world or visual-parity proof.

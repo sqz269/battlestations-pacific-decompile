@@ -1,0 +1,513 @@
+{
+  "packet": "system_owner_integration",
+  "utc": "2026-09-10T17:20:55.940152+00:00",
+  "status": {
+    "typed_owner_modules_integrated": true,
+    "canonical_registry_storage_integrated": true,
+    "strict_win32_build_passed": true,
+    "existing_ctest_passed": "2/2",
+    "selected_native_differentials_passed": true,
+    "ambient_scene_host_fixture_passed": true,
+    "installed_mesh_probe_passed": true,
+    "original_object_abi_compatible": false,
+    "game_validated": false,
+    "visual_parity_validated": false
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged_hash_verified_utc": "2026-09-10T17:20:55.940152+00:00",
+    "game_installation_written": false
+  },
+  "components": [
+    "reports/system_fog_owner_audit.json",
+    "reports/environment_fog_apply_audit.json",
+    "reports/authored_fog_source_audit.json",
+    "reports/system_lighting_owners_audit.json",
+    "reports/scene_registry_storage_review.json",
+    "reports/scene_registry_native_check.json"
+  ],
+  "shared_contract": [
+    "SystemLightingScene and SystemSceneLighting read actual outer/resource/environment slots at the native points; no mirrored slots.",
+    "SystemLightListAccess retains opaque canonical raw node identity; returning handler does not replace captured sentinel/first.",
+    "SceneAttachmentRuntime resolves bound actual pointer keys independently of current registry membership; nonzero unbound key fails explicitly.",
+    "One canonical12-byte link chain and8-byte iterator array; actual ListOwner head/count offsets4/8; host association map contains no ordering links.",
+    "Sentinel key comes from actual allocator preimage, no zero default; constructor sentinel before vector, destructor vector before links/sentinel.",
+    "Private resize covers reachable9/17/33/... capacities and retained-capacity clear/reuse, not arbitrary native vector calls.",
+    "Fog camera slot and ambient color use SystemFogOwner.fields_08, native+8; environment producer reloads the same live camera slot.",
+    "Authored source writes the same environment regions and a distinct borrowed privateB4 owner; early owner capture and absent underwater setter preserved."
+  ],
+  "validation": {
+    "build": {
+      "path": "reports/system_owner_integration_build.txt",
+      "bytes": 1543,
+      "sha256": "bfddefd476498b796b91366bba062bf1657b59fd80ea9e5953e0e7b9719cd8ed"
+    },
+    "probe": {
+      "path": "reports/system_owner_integration_probe.txt",
+      "bytes": 15663,
+      "sha256": "72bf7340ba4a476f14514ae84493cbbed3147cec0d8c3235b51dca17f3870e6f"
+    },
+    "probe_executable": {
+      "path": "build/win32/Release/bsp_d3d9_probe.exe",
+      "bytes": 893440,
+      "sha256": "934e22832a99a7537a0d21537766fc582117fb5173570f1f54fd9fc17a1d9dec"
+    },
+    "probe_scope": {
+      "system_prefix_uploads": 1,
+      "verified_vs_ps_registers": 77,
+      "material_upload_pairs_retaining_prefix": 2,
+      "real_fog_constructor_and_environment_apply": true,
+      "fog_camera_reference_before_clear": 1,
+      "fog_camera_slot_cleared": true,
+      "particle_destructors": 1,
+      "visible_pixels": 2499,
+      "distinct_colors": 54,
+      "d3d9_state_restored": true,
+      "lighting_values_and_directional_owner_still_diagnostic": true
+    },
+    "image": {
+      "path": "local/system_owner_render_20260910.bmp",
+      "bytes": 262198,
+      "sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51"
+    },
+    "image_matches_prior_prefix_fixture": true,
+    "image_assessment": "Exact same bytes as previously inspected very dark diagnostic; no visual parity claim.",
+    "registry_native": {
+      "report": "reports/scene_registry_native_check.json",
+      "focused_sequences": 1,
+      "canonical_states_matched": 242,
+      "allocation_free_events_matched_per_path": 328,
+      "native_verified_spans": 27,
+      "native_code_bytes": 4433,
+      "source_hashes_rechecked": true,
+      "limits": [
+        "This is one bounded differential fixture, not broad registry coverage, a binary replacement, or game validation.",
+        "The full reconstructed class is 64 bytes versus native registry 40 bytes; verified element/list-owner layouts do not establish object ABI compatibility.",
+        "Allocation failure, length overflow, invalid iterator owner, CRT invalid-parameter callbacks, exception unwinding, and asynchronous native exceptions are not exercised; their unmapped paths trap instead of receiving placeholder implementations.",
+        "Extra host association-map allocations are outside the explicit singleton-lifetime allocation boundary; whole-process malloc traffic and allocator reuse policies are not compared.",
+        "The allocator hook preserves successful real allocation behavior and seeds bytes; its out-of-memory behavior is not the original CRT new-handler protocol.",
+        "No production source, Ghidra state, or ledgers were changed by this fixture."
+      ]
+    },
+    "registry_source_review": {
+      "report": "reports/scene_registry_storage_review.json",
+      "source_hashes_match": true
+    },
+    "ambient_scene_host_fixture": {
+      "report": "reports/system_lighting_owners_audit.json",
+      "result": "pass",
+      "shared_source_hashes_match": true,
+      "covers": "raw mode3 preimage; constructor/backlinks/refcounts; returning handler with nonmember sentinelkey and new appended node; actual outer slot and flags0 lifetimes"
+    },
+    "component_native_fixtures": [
+      "fog owner constructors/setters/overlap/refcounts/free observations",
+      "environment fog finite and special input bytes/x87 status",
+      "authored source2 layouts x8 control words,16 comparisons"
+    ],
+    "new_tracked_test_suites": 0
+  },
+  "annotation_plan_count": 47,
+  "annotation_preimages": {
+    "path": "local/system_owner_annotation_live_preimages.txt",
+    "bytes": 4033,
+    "sha256": "780ad151d0abd9a6f7a6b9ce5907ba49aa98f8cf5a672b441b3976c7bae7ed28"
+  },
+  "annotations_applied": true,
+  "source_artifacts": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 7267,
+      "sha256": "2984a17243fd1d67b8bc49c9d10acc0d45174b6077c3fb84df4451119bafd35d"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "bytes": 6355,
+      "sha256": "d90a5c89d446e1bf020924388fff4cba9d3c62d6c4b74982f88d1af9f3a59997"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "bytes": 15008,
+      "sha256": "65abebe502aca5e4d32a8dc33df3086d2336866a5abd56d36967583a2a8d1f8b"
+    },
+    {
+      "path": "include/bsp/system_lighting_constants.hpp",
+      "bytes": 7324,
+      "sha256": "a69f9c090f39ca93b19107a67b29ad370cfcee5fe4158784472355df45fd79a2"
+    },
+    {
+      "path": "src/system_lighting_constants.cpp",
+      "bytes": 6470,
+      "sha256": "b7bebb625aebb738f3583e51dfd11810020623265991193fc03eb6c975e8487f"
+    },
+    {
+      "path": "include/bsp/system_constant_builder.hpp",
+      "bytes": 2614,
+      "sha256": "1bd5d6d3a10b53d4765ba95500a64c617527adea79079243685583cf6d581474"
+    },
+    {
+      "path": "src/system_constant_builder.cpp",
+      "bytes": 5022,
+      "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "bytes": 66327,
+      "sha256": "60409274e42713a8ea78a8f3bfe9ef0e5266e83f5b61fcae0b107a11b78affe3"
+    },
+    {
+      "path": "include/bsp/system_fog_owner.hpp",
+      "bytes": 5383,
+      "sha256": "fd355c272546d20118eea4c808ede51955356e819e0cac30ef7eabee336baf88"
+    },
+    {
+      "path": "src/system_fog_owner.cpp",
+      "bytes": 8257,
+      "sha256": "60ab597fbe906866c2d0f990ad12ab56c0322d462a4626020c3651e1c77847a1"
+    },
+    {
+      "path": "include/bsp/environment_fog_apply.hpp",
+      "bytes": 1718,
+      "sha256": "632b6cdd0daef7dc33d63533afbab7e1add73f603b4c8f00b5b272cfb467a24d"
+    },
+    {
+      "path": "src/environment_fog_apply.cpp",
+      "bytes": 4518,
+      "sha256": "25645e5143d345ff6a58cd2dcde8eff88c3f39c00d63c27b4ee473d375d89991"
+    },
+    {
+      "path": "include/bsp/authored_fog_source.hpp",
+      "bytes": 2032,
+      "sha256": "68b97073d86e4173e58d9d34014209ccb82d22342f7ef81296e534471971dab1"
+    },
+    {
+      "path": "src/authored_fog_source.cpp",
+      "bytes": 6940,
+      "sha256": "f93b506755df71a8e672341af95b21d4266769ddac4fc60c96b5f83c54ce6c17"
+    },
+    {
+      "path": "include/bsp/system_lighting_owners.hpp",
+      "bytes": 5141,
+      "sha256": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd"
+    },
+    {
+      "path": "src/system_lighting_owners.cpp",
+      "bytes": 10604,
+      "sha256": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    }
+  ],
+  "remaining": [
+    "Native whole-object ABI and world/camera/service factories; actual40h D64518 fog receiver atgame19E8 remains borrowed, notgame19CC world.",
+    "Native directional pool, node/base destruction, lightscene virtual50/54, type boot and shadow texture owners.",
+    "Installed draw continues using explicit diagnostic scene/directional values; authored/world bootstrap and gameplay are not validated.",
+    "New host binding errors and external metadata allocation are not native faults/EH; registry allocation failure/unwind not covered by native fixture."
+  ],
+  "annotation_mutation_log": {
+    "path": "local/ghidra-annotations-20260910T172134Z.json",
+    "sha256": "829da9455d2c65c87fccf9ae12b32d0fbac2d80bb41f781e92400168582b0870",
+    "applied_count": 47,
+    "prior_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": {
+    "verified_utc": "2026-09-10T17:28:38.227144+00:00",
+    "count": 47,
+    "functions": [
+      {
+        "address": "00b84e50",
+        "name": "BSP_SystemFogOwner_Construct",
+        "path": "exports/bsp/functions/00b84e50/decompiled.c",
+        "sha256": "1bc495a299020d82c8dad7e235d87de8f07657ba404641d7635d5304956ea1ce"
+      },
+      {
+        "address": "00b84f70",
+        "name": "BSP_SystemFogOwner_ScalarDeletingDestructor",
+        "path": "exports/bsp/functions/00b84f70/decompiled.c",
+        "sha256": "1cf533530eb7707d5ecd312f656fa93f738e5fb7b889f9bd4e4651f84c88c751"
+      },
+      {
+        "address": "00b71940",
+        "name": "BSP_Camera_SetSystemFogOwner",
+        "path": "exports/bsp/functions/00b71940/decompiled.c",
+        "sha256": "758d0f49e65f5a0df23643cbaec7fa73403a8e560b40cad686051b657312a9b8"
+      },
+      {
+        "address": "00bbdf20",
+        "name": "BSP_FogReceiver_SetSystemFogOwner",
+        "path": "exports/bsp/functions/00bbdf20/decompiled.c",
+        "sha256": "aa4f0bfd385a1ce649cce0123281988dc8ddaa0170a27b2057aa0773dfc62acc"
+      },
+      {
+        "address": "00b71a80",
+        "name": "FUN_00b71a80",
+        "path": "exports/bsp/functions/00b71a80/decompiled.c",
+        "sha256": "40ae73c2f8df943d46986f6768efc9da93481314688e372eaeef991ceaf34c74"
+      },
+      {
+        "address": "00b71f10",
+        "name": "FUN_00b71f10",
+        "path": "exports/bsp/functions/00b71f10/decompiled.c",
+        "sha256": "6ca280ef178cde7bb279657eadc0d8c619573eb7325161c1d75763c0cb60a749"
+      },
+      {
+        "address": "00b84c40",
+        "name": "BSP_SystemFogOwner_SetColor08",
+        "path": "exports/bsp/functions/00b84c40/decompiled.c",
+        "sha256": "70ba836f12f0c9db9fab593c25093a96ede11e788db8aadd23a61555097de945"
+      },
+      {
+        "address": "00b84c70",
+        "name": "BSP_SystemFogOwner_SetUnderwaterColor18",
+        "path": "exports/bsp/functions/00b84c70/decompiled.c",
+        "sha256": "a2e6f95aed8bcfdb1cd0d7f8a92a032161cce9f06c058e164e826d10815cf5c5"
+      },
+      {
+        "address": "00b84fa0",
+        "name": "BSP_SystemFogOwner_SetDirectionalColor28",
+        "path": "exports/bsp/functions/00b84fa0/decompiled.c",
+        "sha256": "4ff754f2d8fa23fdf920c7b9b7ca48e6ed430e464acced691378444794333ab3"
+      },
+      {
+        "address": "00b84d00",
+        "name": "BSP_SystemFogOwner_SetScalar68",
+        "path": "exports/bsp/functions/00b84d00/decompiled.c",
+        "sha256": "0b24fd7a63a95163b47d5f4c34880eda4fbbb08d5641f4cc4148561bc2cf70fc"
+      },
+      {
+        "address": "00b84d10",
+        "name": "BSP_SystemFogOwner_SetScalar6C",
+        "path": "exports/bsp/functions/00b84d10/decompiled.c",
+        "sha256": "fa0ace08b8915ec324388b4226472623de487209fe2d47be4cad4dcd6a8b9595"
+      },
+      {
+        "address": "00b84d20",
+        "name": "BSP_SystemFogOwner_SetScalar70",
+        "path": "exports/bsp/functions/00b84d20/decompiled.c",
+        "sha256": "c3b7facca7f1a0c84c3d582b3bbb95e690b3ba386b414002fd75b87167408f1f"
+      },
+      {
+        "address": "00b84d30",
+        "name": "BSP_SystemFogOwner_SetScalar74",
+        "path": "exports/bsp/functions/00b84d30/decompiled.c",
+        "sha256": "8b226d8e4c3256dd8b627809bc4d9c9a3a23221a9c128be2710ac4214a53250d"
+      },
+      {
+        "address": "00b84d40",
+        "name": "BSP_SystemFogOwner_SetScalar78",
+        "path": "exports/bsp/functions/00b84d40/decompiled.c",
+        "sha256": "c834ee648309725be0525dcc46ed20baeee3cec71e54b18e2abe8dfa08592d63"
+      },
+      {
+        "address": "00b84d50",
+        "name": "BSP_SystemFogOwner_SetScalar7C",
+        "path": "exports/bsp/functions/00b84d50/decompiled.c",
+        "sha256": "d3dd2f60dbe31fbb34c3a44120dffce18029520bdf1c7c7d655d42fb5cc8c146"
+      },
+      {
+        "address": "00b84d60",
+        "name": "BSP_SystemFogOwner_SetScalar80",
+        "path": "exports/bsp/functions/00b84d60/decompiled.c",
+        "sha256": "93e507d1d5a80ab935c714b6cd9763672d46735de9cb3dc07b3d205c99151444"
+      },
+      {
+        "address": "00b84d80",
+        "name": "BSP_SystemFogOwner_SetScalar84",
+        "path": "exports/bsp/functions/00b84d80/decompiled.c",
+        "sha256": "09196efc56100cd56ef298c277e42b785f02eecb4443ebc3c921636271925ccf"
+      },
+      {
+        "address": "00b84dc0",
+        "name": "BSP_SystemFogOwner_SetScalar88",
+        "path": "exports/bsp/functions/00b84dc0/decompiled.c",
+        "sha256": "e2977944b60b7fa1fcf68d57d9ef891e1c7cd2d3ea118f5bcd05b1adae5ef6c8"
+      },
+      {
+        "address": "00b84de0",
+        "name": "BSP_SystemFogOwner_SetScalar8C",
+        "path": "exports/bsp/functions/00b84de0/decompiled.c",
+        "sha256": "9efb7ec1b069a3625e737cc7906f497a6d9508dda4f53337e4a75a74bcbb6888"
+      },
+      {
+        "address": "00b84e00",
+        "name": "BSP_SystemFogOwner_SetScalar90",
+        "path": "exports/bsp/functions/00b84e00/decompiled.c",
+        "sha256": "bf15daf6497b12cbd402bfee7c084ec107e65f9fee59afb3b3790bcb5ba4d376"
+      },
+      {
+        "address": "0078cff0",
+        "name": "FUN_0078cff0",
+        "path": "exports/bsp/functions/0078cff0/decompiled.c",
+        "sha256": "b94cb4b19e5fa05e88b4297bcd594d3b9afcd4cb41a221c5c283b5c49bd2b1ed"
+      },
+      {
+        "address": "0078c9b0",
+        "name": "FUN_0078c9b0",
+        "path": "exports/bsp/functions/0078c9b0/decompiled.c",
+        "sha256": "21aadefca4f5f3828f7cd66db3652b4b10793ca78849327231456d588eb6ded3"
+      },
+      {
+        "address": "00b81b90",
+        "name": "BSP_SceneRegistry_AllocateIteratorPairs",
+        "path": "exports/bsp/functions/00b81b90/decompiled.c",
+        "sha256": "c90ade57707d1f830bf3e6a39272021e2624a578028f52ab94d243b8b1f5d26a"
+      },
+      {
+        "address": "00b82570",
+        "name": "BSP_SceneRegistry_FillIteratorPairs",
+        "path": "exports/bsp/functions/00b82570/decompiled.c",
+        "sha256": "ad65800773c3e870eb4b6e59ba3500b597bf1cb77ea8f57a22bcca3e36e3f00e"
+      },
+      {
+        "address": "00b7c290",
+        "name": "BSP_AmbientLight_Construct",
+        "path": "exports/bsp/functions/00b7c290/decompiled.c",
+        "sha256": "1c67515b26215df9703102dd756c43d725c554c0c7a80844b239a8d3347c6a93"
+      },
+      {
+        "address": "00b7c450",
+        "name": "BSP_AmbientLight_Destroy",
+        "path": "exports/bsp/functions/00b7c450/decompiled.c",
+        "sha256": "a7d1767c4d058251f2b3cce7365792444f49a00825e11c6d84fe6a73853d4d61"
+      },
+      {
+        "address": "00b7c7e0",
+        "name": "BSP_AmbientLight_ScalarDeletingDestructor",
+        "path": "exports/bsp/functions/00b7c7e0/decompiled.c",
+        "sha256": "2fce8708881d2bd11da44890d8f7495daf5c6531d63eaf87f3811f4166f3b11d"
+      },
+      {
+        "address": "00b83c50",
+        "name": "BSP_SceneResource_Construct",
+        "path": "exports/bsp/functions/00b83c50/decompiled.c",
+        "sha256": "d77a37f726cfc661b2e15fbd5d09d06b1ea3e962eabc54dad412977e23e5e470"
+      },
+      {
+        "address": "00b825d0",
+        "name": "BSP_SceneResource_SetAmbientLight",
+        "path": "exports/bsp/functions/00b825d0/decompiled.c",
+        "sha256": "55ff6be5277556a875e650962f8adf070e5dd1565919958781d9ba9f91d3d2e3"
+      },
+      {
+        "address": "00b82ed0",
+        "name": "BSP_SceneResource_Destroy",
+        "path": "exports/bsp/functions/00b82ed0/decompiled.c",
+        "sha256": "7b9f1860aeecb11e67c3f2e77913d35bb9b6f2b729fd7398c030a15690d1d178"
+      },
+      {
+        "address": "00b83410",
+        "name": "BSP_SceneResource_ScalarDeletingDestructor",
+        "path": "exports/bsp/functions/00b83410/decompiled.c",
+        "sha256": "375a4e9fb4a22331b4bb6cd7a684fc12adbeb7389560051dc2e4469b8b987487"
+      },
+      {
+        "address": "00b723f0",
+        "name": "BSP_Scene_SetSceneResource",
+        "path": "exports/bsp/functions/00b723f0/decompiled.c",
+        "sha256": "21ecb2286175950722cf51247ce9d7f2fce3fa098a510da8b37b5fcd834cc5e0"
+      },
+      {
+        "address": "00b83600",
+        "name": "BSP_SceneRegistry_Construct",
+        "path": "exports/bsp/functions/00b83600/decompiled.c",
+        "sha256": "e39ec7c6e4710810e67d8a74c0e5799cd7ac795841eda1393965cb093d1a901e"
+      },
+      {
+        "address": "00b82390",
+        "name": "BSP_SceneRegistry_AllocateSentinel",
+        "path": "exports/bsp/functions/00b82390/decompiled.c",
+        "sha256": "76556ae655e28a6cb67bf6734652996af72ec990ac340fa71e697a91182b1da2"
+      },
+      {
+        "address": "00b83220",
+        "name": "BSP_SceneRegistry_ConstructIteratorVector",
+        "path": "exports/bsp/functions/00b83220/decompiled.c",
+        "sha256": "296e8f7b52593950ae161bd2688d97d8a2726959779ccee32904f9bf9b1a2874"
+      },
+      {
+        "address": "00b829d0",
+        "name": "BSP_SceneRegistry_DestroyList",
+        "path": "exports/bsp/functions/00b829d0/decompiled.c",
+        "sha256": "bb35b087ba4f29bafc530604ec58d9b0f37b3f1a436642627238dda060f0e122"
+      },
+      {
+        "address": "00b7b390",
+        "name": "BSP_AmbientBacklinks_Reserve",
+        "path": "exports/bsp/functions/00b7b390/decompiled.c",
+        "sha256": "0d403a236ee8ac9817aab4eaa3dac67cb8e6a0264ef7e1105006e18fe32202af"
+      },
+      {
+        "address": "00b7b620",
+        "name": "BSP_AmbientBacklinks_EraseFirstSwapLast",
+        "path": "exports/bsp/functions/00b7b620/decompiled.c",
+        "sha256": "0650d9e7430ecbbf1f6ea76b106fe5ea092ae171c5c454c8e82d8aa62fec42a9"
+      },
+      {
+        "address": "00b7bc70",
+        "name": "BSP_AmbientBacklinks_Resize",
+        "path": "exports/bsp/functions/00b7bc70/decompiled.c",
+        "sha256": "42f5db4ed031a91c8a54853a3dc4645ce95c54e1726c358f772c6701d5199fee"
+      },
+      {
+        "address": "00b7bd50",
+        "name": "BSP_AmbientLight_RemoveSceneBacklink",
+        "path": "exports/bsp/functions/00b7bd50/decompiled.c",
+        "sha256": "58410a4ac820537d8ee8d01bc59486c56945f628cf4c0c259b15ffa81b291a07"
+      },
+      {
+        "address": "00b7bf90",
+        "name": "BSP_AmbientLight_AppendSceneBacklink",
+        "path": "exports/bsp/functions/00b7bf90/decompiled.c",
+        "sha256": "53788daa1ce499c6840c97ce89d952b27ef5e6e6f6287382247bdaaf22690ebd"
+      },
+      {
+        "address": "00b83700",
+        "name": "BSP_SceneRegistry_InsertUnique",
+        "path": "exports/bsp/functions/00b83700/decompiled.c",
+        "sha256": "1d647d39897a77d012a186e8306a4ecce717bd84a828a6abdabf9f1ccb5ce473"
+      },
+      {
+        "address": "00b83e50",
+        "name": "BSP_SceneRegistry_EraseKey",
+        "path": "exports/bsp/functions/00b83e50/decompiled.c",
+        "sha256": "0136f91ed531b1a0832ed0a8d9db91475bf469d33ae0f89adc885789cc266b13"
+      },
+      {
+        "address": "00b83be0",
+        "name": "BSP_SceneRegistry_ClearAndReset",
+        "path": "exports/bsp/functions/00b83be0/decompiled.c",
+        "sha256": "d45e43f5c12d613d06a4297bc0628ea8c0cd715f0922fdde283099f41677841d"
+      },
+      {
+        "address": "00b82cf0",
+        "name": "FUN_00b82cf0",
+        "path": "exports/bsp/functions/00b82cf0/decompiled.c",
+        "sha256": "2f379482ca4a62deb535f388ed39d0ee6a6b371f1d1c1d27482efbca5e021785"
+      },
+      {
+        "address": "00b46a70",
+        "name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+        "path": "exports/bsp/functions/00b46a70/decompiled.c",
+        "sha256": "6123a5cf47c57158aa4093a9a31abe19c07a9b9ef817be041a4d6974d94c19f0"
+      },
+      {
+        "address": "00b72110",
+        "name": "BSP_Scene_GetLightingOwner",
+        "path": "exports/bsp/functions/00b72110/decompiled.c",
+        "sha256": "7584413d7500fb49f24b0331dae53f2962ad0e78e52c445b2ef80210784ed315"
+      }
+    ]
+  },
+  "closure_source_hashes_rechecked_utc": "2026-09-10T17:28:38.227144+00:00"
+}

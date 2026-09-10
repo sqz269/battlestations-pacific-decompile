@@ -45,18 +45,73 @@ struct SystemLightEnvironment {
     const SystemLightingWords4& ambient_mode3_28;
     const std::array<SystemLightingWords4, 6>& ambient_cube_38;
 };
-// Reference the live pointer slots. The sentinel is a real node, and first==
-// sentinel has different semantics from an absent scene/lighting owner.
+// A light-list identity is the actual canonical registry link, not a second
+// list of projection nodes. Each accessor reads at the native point; the caller
+// retains the first identity across a returning invalid-parameter handler.
+class SystemLightListAccess {
+public:
+    virtual ~SystemLightListAccess() = default;
+    virtual const void* sentinel_1c() = 0;
+    virtual const void* next_00(const void* node) = 0;
+    virtual SystemDirectionalLight* light_08(const void* node) = 0;
+};
+class SystemDirectionalLightResolver {
+public:
+    virtual ~SystemDirectionalLightResolver() = default;
+    // Zero is an actual null key. An unbound nonzero key is an explicit host
+    // binding error, including a sentinel payload after a returning handler.
+    virtual SystemDirectionalLight* resolve_light(std::uint32_t actual_key) = 0;
+};
+class SystemSceneLighting {
+public:
+    virtual ~SystemSceneLighting() = default;
+    virtual SystemLightEnvironment* environment_10() const = 0;
+    virtual SystemLightListAccess& light_list() const = 0;
+};
+class SystemLightingScene {
+public:
+    virtual ~SystemLightingScene() = default;
+    virtual SystemSceneLighting* lighting_1c() const = 0;
+};
+
+// Borrowed diagnostic companions retain references to actual supplied slots.
+// Native owner implementations supply the accessors above directly from their
+// own canonical registry and retained owner slots.
 struct SystemLightListNode {
     SystemLightListNode* const& next_00;
     SystemDirectionalLight* const& light_08;
 };
-struct SystemSceneLighting {
-    SystemLightEnvironment* const& environment_10;
-    SystemLightListNode* const& sentinel_1c;
+class BorrowedSystemLightListAccess final : public SystemLightListAccess {
+public:
+    explicit BorrowedSystemLightListAccess(SystemLightListNode* const& sentinel)
+        : sentinel_(sentinel) {}
+    const void* sentinel_1c() override { return sentinel_; }
+    const void* next_00(const void* node) override {
+        return static_cast<const SystemLightListNode*>(node)->next_00;
+    }
+    SystemDirectionalLight* light_08(const void* node) override {
+        return static_cast<const SystemLightListNode*>(node)->light_08;
+    }
+private:
+    SystemLightListNode* const& sentinel_;
 };
-struct SystemLightingScene {
-    SystemSceneLighting* const& lighting_1c;
+class BorrowedSystemSceneLighting final : public SystemSceneLighting {
+public:
+    BorrowedSystemSceneLighting(SystemLightEnvironment* const& environment,
+        SystemLightListAccess& list) : environment_(environment), list_(list) {}
+    SystemLightEnvironment* environment_10() const override { return environment_; }
+    SystemLightListAccess& light_list() const override { return list_; }
+private:
+    SystemLightEnvironment* const& environment_;
+    SystemLightListAccess& list_;
+};
+class BorrowedSystemLightingScene final : public SystemLightingScene {
+public:
+    explicit BorrowedSystemLightingScene(SystemSceneLighting* const& lighting)
+        : lighting_(lighting) {}
+    SystemSceneLighting* lighting_1c() const override { return lighting_; }
+private:
+    SystemSceneLighting* const& lighting_;
 };
 
 // Native ECX owner, EAX borrowed pointer, RET (cube getter stack index, RET4).

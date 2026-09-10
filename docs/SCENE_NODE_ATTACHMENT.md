@@ -95,6 +95,16 @@ returns the following iterator. Neither erase nor clear releases model/light
 references. The scene registry borrows bindings; only `node+170` owns a scene
 reference in this reconstructed service.
 
+The subsequent [owner integration](SYSTEM_OWNER_INTEGRATION.md) replaces the
+embedded host sentinel and reduced boundary pointers with canonical raw12-byte
+links and8-byte owner/node iterators. A native-shaped list owner puts head at+4
+and count at+8. Sentinel payload is retained from allocation; clearing preserves
+the iterator allocation/capacity. System lighting reads these same nodes through
+live accessors. Concrete directional-light attachment remains separate: its
+actual virtual+50/+54 uses the light's scene array, not the ordinary node+170
+assignment reconstructed here. A focused native growth/clear/reuse comparison is
+recorded in `reports/scene_registry_native_check.json`.
+
 The saved disassembly had two gaps after calls to `_free`. Both full function
 ranges match the installed executable. The audit preserves the exact bytes for
 the primary integrator's serialized analysis repair:

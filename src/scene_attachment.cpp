@@ -1,6 +1,9 @@
 #include "bsp/scene_attachment.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include <algorithm>
+#include <cstring>
 #include <memory>
+#include <new>
 #include <stdexcept>
 
 namespace bsp {
@@ -17,15 +20,88 @@ std::uint32_t scene_pointer_hash(std::uint32_t pointer_key) noexcept {
     return hash;
 }
 
-SceneNodeRegistry::SceneNodeRegistry() : boundaries_(9, &head_) {
-    head_.next = head_.previous = &head_;
+SceneNodeRegistry::SceneNodeRegistry(SceneRegistryInitialization initialization) {
+    if (initialization == SceneRegistryInitialization::immediate)
+        initialize_native_00b83600();
 }
 SceneNodeRegistry::~SceneNodeRegistry() {
-    for (auto* entry = head_.next; entry != &head_;) {
+    destroy_native_bucket_storage_00b82ed0();
+    destroy_native_list_storage_00b829d0();
+}
+void SceneNodeRegistry::initialize_native_00b83600() {
+    static_assert(sizeof(void*) != 4 || sizeof(Entry) == 12);
+    static_assert(sizeof(void*) != 4 || sizeof(Iterator) == 8);
+    static_assert(sizeof(void*) != 4 || offsetof(ListOwner, head) == 4);
+    static_assert(sizeof(void*) != 4 || offsetof(ListOwner, size) == 8);
+    if (list_.head || boundaries_)
+        throw std::logic_error("scene registry is already initialized");
+    void* storage = singleton_lifetime_allocate({SingletonAllocationKind::object, 12, sizeof(Entry)});
+    std::uint32_t payload;
+    std::memcpy(&payload, static_cast<const unsigned char*>(storage) + offsetof(Entry, key), 4);
+    list_.head = ::new (storage) Entry;
+    list_.head->next = list_.head->previous = list_.head;
+    list_.head->key = payload; // Native 00B82390 leaves allocator+8 untouched.
+    list_.size = 0;
+    try {
+        resize_boundaries(9); // Native source iterator is {list owner, sentinel}.
+    } catch (...) {
+        // Registry unwind CC2370 -> 00B82B40 -> 00B829D0 frees its sentinel.
+        destroy_native_list_storage_00b829d0();
+        throw;
+    }
+    mask_ = active_buckets_ = 1;
+}
+void SceneNodeRegistry::destroy_native_bucket_storage_00b82ed0() noexcept {
+    singleton_lifetime_free(boundaries_);
+    boundaries_ = nullptr;
+    boundary_count_ = boundary_capacity_ = 0;
+}
+void SceneNodeRegistry::destroy_native_list_storage_00b829d0() noexcept {
+    if (!list_.head) return;
+    auto* entry = list_.head->next;
+    list_.head->next = list_.head->previous = list_.head;
+    list_.size = 0;
+    while (entry != list_.head) {
         auto* next = entry->next;
-        delete entry;
+        singleton_lifetime_free(entry);
         entry = next;
     }
+    singleton_lifetime_free(list_.head);
+    list_.head = nullptr;
+    bindings_.clear();
+}
+void SceneNodeRegistry::require_initialized() const {
+    if (!list_.head || !boundaries_)
+        throw std::logic_error("scene registry native storage is not initialized");
+}
+void SceneNodeRegistry::resize_boundaries(std::uint32_t count) {
+    if (count > 0x1fffffffU) throw std::length_error("scene iterator vector too long");
+    if (count > boundary_capacity_) {
+        auto* replacement = static_cast<Iterator*>(singleton_lifetime_allocate({
+            SingletonAllocationKind::pointer_slots, static_cast<std::size_t>(count) * 8,
+            static_cast<std::size_t>(count) * sizeof(Iterator)}));
+        for (std::uint32_t i = 0; i < boundary_count_; ++i)
+            ::new (replacement + i) Iterator{boundaries_[i].owner, boundaries_[i].node};
+        for (std::uint32_t i = boundary_count_; i < count; ++i)
+            ::new (replacement + i) Iterator{&list_, list_.head};
+        singleton_lifetime_free(boundaries_);
+        boundaries_ = replacement;
+        boundary_capacity_ = count;
+    } else {
+        for (std::uint32_t i = boundary_count_; i < count; ++i)
+            boundaries_[i] = {&list_, list_.head};
+    }
+    boundary_count_ = count;
+}
+const void* SceneNodeRegistry::native_next(const void* node) noexcept {
+    return static_cast<const Entry*>(node)->next;
+}
+std::uint32_t SceneNodeRegistry::native_key(const void* node) noexcept {
+    return static_cast<const Entry*>(node)->key;
+}
+SceneNodeAttachment* SceneNodeRegistry::binding_for_key(std::uint32_t key) const noexcept {
+    const auto found = bindings_.find(key);
+    return found == bindings_.end() ? nullptr : found->second;
 }
 std::uint32_t SceneNodeRegistry::bucket_for(std::uint32_t key) const noexcept {
     auto bucket = scene_pointer_hash(key) & mask_;
@@ -34,48 +110,49 @@ std::uint32_t SceneNodeRegistry::bucket_for(std::uint32_t key) const noexcept {
 }
 void SceneNodeRegistry::split_before_insert() {
     // Growth precedes the duplicate check, including a duplicate insertion.
-    if (active_buckets_ > (size_ >> 2)) return;
-    if (active_buckets_ < boundaries_.size() - 1) {
+    if (active_buckets_ > (list_.size >> 2)) return;
+    if (active_buckets_ < boundary_count_ - 1) {
         if (mask_ < active_buckets_) mask_ = mask_ * 2 + 1;
     } else {
-        mask_ = static_cast<std::uint32_t>(boundaries_.size()) * 2 - 3;
-        boundaries_.resize(static_cast<std::size_t>(mask_) + 2, &head_);
+        mask_ = boundary_count_ * 2 - 3;
+        resize_boundaries(mask_ + 2);
     }
     const auto source = active_buckets_ - (mask_ >> 1) - 1;
-    auto* entry = boundaries_[source];
-    while (entry != boundaries_[source + 1]) {
+    auto* entry = boundaries_[source].node;
+    while (entry != boundaries_[source + 1].node) {
         if ((scene_pointer_hash(entry->key) & mask_) == source) {
             entry = entry->next;
             continue;
         }
         auto* next = entry->next;
-        if (next != &head_) {
+        if (next != list_.head) {
             for (auto bucket = source;; --bucket) {
-                if (boundaries_[bucket] != entry) break;
-                boundaries_[bucket] = next;
+                if (boundaries_[bucket].node != entry) break;
+                boundaries_[bucket].node = next;
                 if (bucket == 0) break;
             }
             entry->previous->next = next;
             next->previous = entry->previous;
-            entry->next = &head_;
-            entry->previous = head_.previous;
-            head_.previous->next = entry;
-            head_.previous = entry;
-            boundaries_[active_buckets_ + 1] = &head_;
+            entry->next = list_.head;
+            entry->previous = list_.head->previous;
+            list_.head->previous->next = entry;
+            list_.head->previous = entry;
+            boundaries_[active_buckets_ + 1].node = list_.head;
         }
         for (auto bucket = active_buckets_; bucket > source; --bucket) {
-            if (boundaries_[bucket] != &head_) break;
-            boundaries_[bucket] = entry;
+            if (boundaries_[bucket].node != list_.head) break;
+            boundaries_[bucket].node = entry;
         }
         entry = next;
     }
     ++active_buckets_;
 }
 bool SceneNodeRegistry::insert_00b83700(SceneNodeAttachment& binding) {
+    require_initialized();
     split_before_insert();
     auto bucket = bucket_for(binding.pointer_key);
-    auto* position = boundaries_[bucket + 1];
-    while (position != boundaries_[bucket]) {
+    auto* position = boundaries_[bucket + 1].node;
+    while (position != boundaries_[bucket].node) {
         position = position->previous;
         if (binding.pointer_key >= position->key) {
             if (binding.pointer_key == position->key) return false;
@@ -83,79 +160,92 @@ bool SceneNodeRegistry::insert_00b83700(SceneNodeAttachment& binding) {
             break;
         }
     }
-    auto entry = std::make_unique<Entry>(); // native 00B823B0 copies a raw key
-    if (size_ == 0x3fffffffu) throw std::length_error("list<T> too long");
-    ++size_; // 00B82D30 is a checked size increment, not always a throw
+    void* storage = singleton_lifetime_allocate({SingletonAllocationKind::object, 12, sizeof(Entry)});
+    auto free_entry = [](Entry* entry) { singleton_lifetime_free(entry); };
+    std::unique_ptr<Entry, decltype(free_entry)> entry(::new (storage) Entry, free_entry);
+    if (list_.size == 0x3fffffffu) throw std::length_error("list<T> too long");
+    bindings_.emplace(binding.pointer_key, &binding); // Host association, no list links.
+    ++list_.size; // 00B82D30 is a checked size increment, not always a throw
     entry->next = position;
     entry->previous = position->previous;
     entry->key = binding.pointer_key;
-    entry->binding = &binding;
     auto* inserted = entry.release();
     position->previous->next = inserted;
     position->previous = inserted;
     for (;;) {
-        if (boundaries_[bucket] != position) break;
-        boundaries_[bucket] = inserted;
+        if (boundaries_[bucket].node != position) break;
+        boundaries_[bucket].node = inserted;
         if (bucket == 0) break;
         --bucket;
     }
     return true;
 }
 void SceneNodeRegistry::clear_00b83be0() {
-    auto* entry = head_.next;
-    head_.next = head_.previous = &head_;
-    size_ = 0;
-    while (entry != &head_) {
+    auto* entry = list_.head->next;
+    list_.head->next = list_.head->previous = list_.head;
+    list_.size = 0;
+    while (entry != list_.head) {
         auto* next = entry->next;
-        delete entry;
+        singleton_lifetime_free(entry);
         entry = next;
     }
-    boundaries_.resize(9);
-    std::fill(boundaries_.begin(), boundaries_.end(), &head_);
+    bindings_.clear();
+    resize_boundaries(9);
+    for (std::uint32_t i = 0; i < boundary_count_; ++i)
+        boundaries_[i] = {&list_, list_.head};
     mask_ = active_buckets_ = 1;
 }
 std::uint32_t SceneNodeRegistry::erase_00b83e50(std::uint32_t key) {
+    require_initialized();
     auto bucket = bucket_for(key);
-    auto* first = boundaries_[bucket];
-    auto* end = boundaries_[bucket + 1];
+    auto* first = boundaries_[bucket].node;
+    auto* end = boundaries_[bucket + 1].node;
     while (first != end && first->key < key) first = first->next;
     if (first == end || first->key != key) return 0;
     // Unique insertion makes native equal_range/count at most one. The whole
     // list range goes through clear, resetting bucket growth even after erasure.
-    if (first == head_.next && first->next == &head_) {
+    if (first == list_.head->next && first->next == list_.head) {
         clear_00b83be0();
         return 1;
     }
     for (;;) {
-        if (boundaries_[bucket] != first) break;
-        boundaries_[bucket] = first->next;
+        if (boundaries_[bucket].node != first) break;
+        boundaries_[bucket].node = first->next;
         if (bucket == 0) break;
         --bucket;
     }
     first->previous->next = first->next;
     first->next->previous = first->previous;
-    delete first; // 00B827C0 frees only the list entry, never the borrowed node
-    --size_; // native continuation at 00B828DD, omitted from old pseudocode
+    singleton_lifetime_free(first); // 00B827C0 never frees the borrowed light.
+    bindings_.erase(key);
+    --list_.size; // native continuation at 00B828DD, omitted from old pseudocode
     return 1;
 }
 bool SceneNodeRegistry::contains(std::uint32_t key) const {
+    require_initialized();
     const auto bucket = bucket_for(key);
-    auto* entry = boundaries_[bucket];
-    const auto* end = boundaries_[bucket + 1];
+    auto* entry = boundaries_[bucket].node;
+    const auto* end = boundaries_[bucket + 1].node;
     while (entry != end && entry->key < key) entry = entry->next;
     return entry != end && entry->key == key;
 }
 std::vector<SceneNodeAttachment*> SceneNodeRegistry::members() const {
+    require_initialized();
     std::vector<SceneNodeAttachment*> result;
-    result.reserve(size_);
-    for (auto* entry = head_.next; entry != &head_; entry = entry->next)
-        result.push_back(entry->binding);
+    result.reserve(list_.size);
+    for (auto* entry = list_.head->next; entry != list_.head; entry = entry->next) {
+        auto* binding = binding_for_key(entry->key);
+        if (!binding) throw std::logic_error("scene registry raw key has no attachment binding");
+        result.push_back(binding);
+    }
     return result;
 }
 
 SceneResource::SceneResource(std::int32_t initial_references,
-    void (*on_zero)(SceneResource&), void* destruction_context)
-    : references(initial_references), destroy_on_zero(on_zero), context(destruction_context) {
+    void (*on_zero)(SceneResource&), void* destruction_context,
+    SceneRegistryInitialization initialization)
+    : references(initial_references), registry(initialization),
+      destroy_on_zero(on_zero), context(destruction_context) {
     if (!on_zero) throw std::invalid_argument("scene virtual+0 destruction callback is required");
 }
 SceneNodeAttachment::SceneNodeAttachment(CameraTransform& node_transform, std::uint32_t key,
@@ -183,6 +273,16 @@ void SceneAttachmentRuntime::unbind(SceneNodeAttachment& node) {
 SceneNodeAttachment& SceneAttachmentRuntime::resolve(CameraTransform& transform) const {
     for (auto* binding : bindings_) if (&binding->transform == &transform) return *binding;
     throw std::logic_error("scene hierarchy child has no live attachment binding");
+}
+SystemDirectionalLight* SceneAttachmentRuntime::resolve_light(std::uint32_t key) {
+    if (!key) return nullptr;
+    for (const auto* binding : bindings_) {
+        if (binding->pointer_key != key) continue;
+        if (!binding->system_directional_light)
+            throw std::logic_error("native light key has no directional-light projection");
+        return binding->system_directional_light;
+    }
+    throw std::logic_error("native light key has no live attachment binding");
 }
 std::uint32_t get_scene_registry_type_00b7aa70(const SceneAttachmentRuntime& runtime) noexcept {
     return runtime.registry_type_token;

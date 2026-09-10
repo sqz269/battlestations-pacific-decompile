@@ -3,7 +3,7 @@
 
 namespace bsp {
 SystemSceneLighting* get_system_scene_lighting_00b72110(const SystemLightingScene& scene) {
-    return scene.lighting_1c;
+    return scene.lighting_1c();
 }
 const SystemLightingWords4& get_system_ambient_00b7aa20(const SystemLightEnvironment& owner) {
     return owner.ambient_18;
@@ -81,9 +81,10 @@ SystemLightingPrefixStatus write_system_lighting_shadow_prefix_00b46ed1(
     if (!scene) return SystemLightingPrefixStatus::scene_absent;
     const auto* lighting = get_system_scene_lighting_00b72110(*scene);
     if (!lighting) return SystemLightingPrefixStatus::lighting_absent;
-    const auto* sentinel = lighting->sentinel_1c;
+    auto& list = lighting->light_list();
+    const auto* sentinel = list.sentinel_1c();
     if (!sentinel) return invalid(error, "Scene lighting sentinel+1C is unbound");
-    const auto* first = sentinel->next_00;
+    const auto* first = list.next_00(sentinel);
     if (first == sentinel) {
         if (!invalid_parameter_runtime) {
             error = "Empty first-light list requires the actual invalid-parameter runtime";
@@ -96,8 +97,8 @@ SystemLightingPrefixStatus write_system_lighting_shadow_prefix_00b46ed1(
     }
     if (!first) return invalid(error, "Scene lighting first node is unbound");
     const bool mode3 = camera_mode_198 == 3;
-    const auto* environment = lighting->environment_10;
-    const auto* light = first->light_08; // EBX retained through shadow owner lookup
+    const auto* environment = lighting->environment_10();
+    const auto* light = list.light_08(first); // EBX retained through shadow owner lookup
     if (!environment || !light)
         return invalid(error, "Scene environment+10 or first light+08 is unbound");
 

@@ -73,12 +73,15 @@ retaining setter or release fragment must originate from this concrete owned
 profile. A standalone diagnostic `SystemFogState` remains a valid borrowed
 shader input but must never be retained or released through this owner API.
 
-`set_system_fog_camera_owner_00b71940(camera.fog_184, owner)` and the world
-`+10h` counterpart at `00BBDF20` operate on the actual projection slot. They
+`set_system_fog_camera_owner_00b71940(camera.fog_184, owner)` and the receiver
+`+10h` counterpart at `00BBDF20` operate on the actual projection slot. The
+second receiver has vtable `D64518` and occupies `game+19E8`; it is distinct
+from the world at `game+19CC`. The existing C++ `world_owner` name is historical,
+not a recovered class name. See `SYSTEM_FOG_WORLD_FACTORY_NEXT.md`. Both setters
 compare old/new identity, publish new, increment new, then decrement old and
 destroy it if the count reaches zero. A creator can release its initial
-reference after the camera/world binding acquires one. The native method ABI
-is ECX camera/world, one stack owner pointer, `RET4`.
+reference after the camera/receiver binding acquires one. The native method ABI
+is ECX camera/receiver, one stack owner pointer, `RET4`.
 
 `initialize_system_fog_camera_slot_00b71ae3` implements only the fresh camera
 constructor null store. `clear_system_fog_camera_slot_00b71f68` implements
