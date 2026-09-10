@@ -1,0 +1,382 @@
+{
+  "packet": "system_empty_light_handler",
+  "status": "read_only_review_and_focused_native_cpp_comparison_passed",
+  "created_utc": "2026-09-10T15:17:12.459878+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "project_file_exists": true,
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "verification": "Every live query uses tools/bsp.py ghidra; its client verifies project, program path, language and image base before the query. No Ghidra writes.",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_evidence": [
+    {
+      "start": "00bf6713",
+      "end_exclusive": "00bf6723",
+      "label": "wrapper",
+      "length": 16,
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "33c05050505050e8d0ffffff83c414c3"
+    },
+    {
+      "start": "00bf66ef",
+      "end_exclusive": "00bf6713",
+      "label": "dispatcher",
+      "length": 36,
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "558becff3564dd0901e8e1e8000085c05974035dffe06a02e8e7e70000595de9a8feffff"
+    },
+    {
+      "start": "00bf65bb",
+      "end_exclusive": "00bf66b7",
+      "label": "watson",
+      "length": 252,
+      "sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "558dac2458fdffff81ec28030000a19055e10033c58985a402000056898588000000898d84000000899580000000895d7c897578897d74668c95a0000000668c8d94000000668c5d70668c456c668c6568668c6d649c8f85980000008bb5ac0200008d85ac02000089859c000000c745d80100010089b5900000008b40fc6a5089858c0000008d45806a0050e8a41300008d45808945d08d45d883c40cc745800d0000c089758c8945d4ff150821ce006a008bf0ff152c22ce008d45d050ff150c21ce0085c0750c85f675086a02e865e8000059680d0000c0ff152822ce0050ff152422ce008b8da402000033cd5ee8717a000081c5a8020000c9c3"
+    },
+    {
+      "start": "00bf65b1",
+      "end_exclusive": "00bf65bb",
+      "label": "slot_initializer",
+      "length": 10,
+      "sha256": "9bba240a59d6182e5ec64da378506ed8f22664b111c66942cf4d48d24623935a",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8b442404a364dd0901c3"
+    },
+    {
+      "start": "00bfbdfb",
+      "end_exclusive": "00bfbe47",
+      "label": "init_pointers",
+      "length": 76,
+      "sha256": "aec0936af4af64b89f90ae8c76f31fbf985dff4822b39f334eb8c9083e388618",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "56e8d49100008bf056e85797000056e82ab8010056e89ca7ffff56e8e09e000056e80ab7010056e810b2010056e85eb0010056e8c5bc000068ccbdbf00e82a91000083c424a38055e1005ec3"
+    },
+    {
+      "start": "00c04ef3",
+      "end_exclusive": "00c04efb",
+      "label": "notification",
+      "length": 8,
+      "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8325a8ee090100c3"
+    },
+    {
+      "start": "00c04f67",
+      "end_exclusive": "00c04fd5",
+      "label": "encode_pointer",
+      "length": 110,
+      "sha256": "328adfe798b86f68a150b31e42e11989d3064da0a9584fa8d769959844b6af81",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "56ff35005be1008b35bc20ce00ffd685c07421a1fc5ae10083f8ff741750ff35005be100ffd6ffd085c074088b80f8010000eb2668d09fd600ff155c21ce008bf085f67423e84affffff85c0741a68c09fd60056ff15f420ce0085c0740aff742408ffd0894424088b4424085ec3"
+    },
+    {
+      "start": "00c04fd5",
+      "end_exclusive": "00c04fde",
+      "label": "encoded_null",
+      "length": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "6a00e88bffffff59c3"
+    },
+    {
+      "start": "00c04fde",
+      "end_exclusive": "00c0504c",
+      "label": "decode_pointer",
+      "length": 110,
+      "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "56ff35005be1008b35bc20ce00ffd685c07421a1fc5ae10083f8ff741750ff35005be100ffd6ffd085c074088b80fc010000eb2668d09fd600ff155c21ce008bf085f67423e8d3feffff85c0741a68e09fd60056ff15f420ce0085c0740aff742408ffd0894424088b4424085ec3"
+    },
+    {
+      "start": "00b46ed1",
+      "end_exclusive": "00b46f09",
+      "label": "selection",
+      "length": 56,
+      "sha256": "8dbc3bf128dc089630b6ef4c57ca977fcbde29a352d4aeda3067b920267cf6f9",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "85ed0f84db0600008bcde830b202008bf085f60f84ca0600008b461c8b183bd87505e81bf80a0083bf98010000038b4e108b5b08894c2410"
+    },
+    {
+      "start": "00b72110",
+      "end_exclusive": "00b72114",
+      "label": "scene_getter",
+      "length": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "ghidra_matches_installed_pe": true,
+      "bytes_hex": "8b411cc3"
+    }
+  ],
+  "preimage_annotations": [
+    {
+      "address": "00bf6713",
+      "annotation": {
+        "address": "00bf6713",
+        "function_name": "LIBCRT_unmatched_00bf6713",
+        "comment": "[BSP inventory 00bf6713] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00bf66ef",
+      "annotation": {
+        "address": "00bf66ef",
+        "function_name": "LIBCRT_unmatched_00bf66ef",
+        "comment": "[BSP inventory 00bf66ef] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00bf65bb",
+      "annotation": {
+        "address": "00bf65bb",
+        "function_name": "__invoke_watson",
+        "comment": "Library Function - Single Match\n __invoke_watson\n\nLibrary: Visual Studio 2005 Release"
+      }
+    },
+    {
+      "address": "00bf65b1",
+      "annotation": {
+        "address": "00bf65b1",
+        "function_name": "LIBCRT_unmatched_00bf65b1",
+        "comment": "[BSP inventory 00bf65b1] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00bfbdfb",
+      "annotation": {
+        "address": "00bfbdfb",
+        "function_name": "__init_pointers",
+        "comment": "Library Function - Single Match\n __init_pointers\n\nLibrary: Visual Studio 2005 Release"
+      }
+    },
+    {
+      "address": "00c04fde",
+      "annotation": {
+        "address": "00c04fde",
+        "function_name": "LIBCRT_unmatched_00c04fde",
+        "comment": "[BSP inventory 00c04fde] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00c04ef3",
+      "annotation": {
+        "address": "00c04ef3",
+        "function_name": "LIBCRT_unmatched_00c04ef3",
+        "comment": "[BSP inventory 00c04ef3] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00c04fd5",
+      "annotation": {
+        "address": "00c04fd5",
+        "function_name": "__encoded_null",
+        "comment": "Library Function - Single Match\n __encoded_null\n\nLibraries: Visual Studio 2005 Release, Visual Studio 2008 Release"
+      }
+    },
+    {
+      "address": "00c04f67",
+      "annotation": {
+        "address": "00c04f67",
+        "function_name": "LIBCRT_unmatched_00c04f67",
+        "comment": "[BSP inventory 00c04f67] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    }
+  ],
+  "game_validated": false,
+  "cxx_abi_compatible": false,
+  "native_abi": {
+    "00bf6713": "cdecl; no inputs; pushes five zero DWORDs; calls00BF66EF; ADD ESP,14h; RET",
+    "00bf66ef": "cdecl five stack arguments; decode0109DD64; tail-JMP decoded callback or Watson; wrapper cleans arguments",
+    "00bf65b1": "cdecl one stack DWORD, stored unmodified to0109DD64; RET",
+    "00bf65bb": "Watson five stack arguments; STATUS_INVALID_PARAMETER C000000D; TerminateProcess current process; physical cookie epilogue and RET if API returns",
+    "parent00b46a70": "ECX scene, EDX camera; no stack arguments; plain RET. Reviewed selection is interior code, not a native entry point."
+  },
+  "handler_slot": {
+    "address": "0109dd64",
+    "reported_xrefs": [
+      {
+        "address": "00bf66f2",
+        "type": "READ"
+      },
+      {
+        "address": "00bf65b5",
+        "type": "WRITE"
+      }
+    ],
+    "only_reported_initializer_caller": "__init_pointers00BFBDFB",
+    "initialization": "00BFBDFC calls__encoded_null00C04FD5; ESI captures encoded null;00BFBE10 calls00BF65B1 with it",
+    "decoded_initial_value": 0,
+    "pointer_encode_decode": "00C04F67/00C04FDE consult cached TLS function pointers then KERNEL32 EncodePointer/DecodePointer; unavailable operation returns input unchanged",
+    "limitation": "Static xrefs establish no additional known writer, not immunity from dynamic/external writes; nonnull handler installation during gameplay is unverified."
+  },
+  "default_path": {
+    "dispatcher": "Calls00C04EF3(2), tail-JMP00BF65BB",
+    "00c04ef3": "AND dword ptr[0109EEA8],0; RET; passed argument ignored",
+    "watson": "Build C000000D exception; IsDebuggerPresent; SetUnhandledExceptionFilter(null); UnhandledExceptionFilter; conditional00C04EF3(2); TerminateProcess(GetCurrentProcess(),C000000D)",
+    "termination_call": "00bf669b",
+    "physical_return": "00bf66b6",
+    "normal_default_continuation": false,
+    "exception_to_noreturn": "Physical cookie-check epilogue/RET exists if termination API returns; dispatched callback return is separately ordinary supported machine-code control flow.",
+    "executed_in_review": false
+  },
+  "caller": {
+    "call_site": "00b46ef3",
+    "return_site": "00b46ef8",
+    "captured_before_call": {
+      "ESI": "original scene lighting",
+      "EBX": "original first node; original sentinel when empty",
+      "EDI": "original camera"
+    },
+    "loads_after_return": [
+      {
+        "address": "00b46ef8",
+        "value": "camera+198 == 3"
+      },
+      {
+        "address": "00b46eff",
+        "value": "retained lighting+10 environment"
+      },
+      {
+        "address": "00b46f02",
+        "value": "retained first/sentinel+08 light"
+      },
+      {
+        "address": "00b46f05",
+        "value": "save captured environment for ambient cubes"
+      }
+    ],
+    "not_reloaded": [
+      "scene+1C lighting slot",
+      "lighting+1C sentinel slot",
+      "sentinel+00 next slot"
+    ],
+    "rechecks_empty": false,
+    "append_reselects": false,
+    "native_null_light_skip": false,
+    "required_lifetime": "Captured camera, lighting and first/sentinel survive returning callback; light/environment owners used afterward are live."
+  },
+  "existing_infrastructure": {
+    "search_scope": [
+      "src/*.cpp",
+      "include/**/*.hpp"
+    ],
+    "general_invalid_parameter_runtime_found": false,
+    "known_adaptations": [
+      {
+        "path": "include/bsp/text_input.hpp",
+        "behavior": "Empty host queue returns false explicitly"
+      },
+      {
+        "path": "include/bsp/game_frame_control.hpp",
+        "behavior": "Nonempty precondition; blanket nonreturning00BF6713 comment is too strong"
+      },
+      {
+        "path": "src/d3d9_states.cpp",
+        "behavior": "std::abort calls are other host preconditions, not this runtime"
+      }
+    ]
+  },
+  "parent_correction_reviewed": {
+    "interface": "SystemInvalidParameterRuntime::bool invalid_parameter_noinfo_00bf6713(std::string&)",
+    "binding": "Optional final writer pointer, required only for captured first==sentinel",
+    "unbound_host_status": "invalid_parameter_runtime_unbound",
+    "false_host_status": "callback_failed; failure to perform actual runtime operation, not native empty behavior",
+    "true_return": "Continue using captured lighting and first/sentinel; read mode, environment and light after callback",
+    "requirements": [
+      "Invoke actual handler/termination behavior",
+      "Pass native five zero arguments to installed callback",
+      "Do not fabricate runtime or light owners",
+      "No no-op default, unconditional abort, empty skip, or list retry"
+    ],
+    "complete_crt_implemented": false
+  },
+  "fixture": {
+    "case_count": 1,
+    "source": "local/system_empty_light_compare.cpp",
+    "build_command": "cmd /c local\\compare_system_empty_light.cmd",
+    "compiler": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /fp:strict",
+    "native_ranges": [
+      "00b46ed1..00b46f08",
+      "00b72110..00b72113",
+      "00bf6713..00bf6722",
+      "00bf66ef..00bf6712"
+    ],
+    "relocations": [
+      {
+        "site": "00b46edb",
+        "target": "copied scene getter"
+      },
+      {
+        "site": "00b46ef3",
+        "target": "copied wrapper"
+      },
+      {
+        "site": "00bf671a",
+        "target": "copied dispatcher"
+      },
+      {
+        "site": "00bf66f4",
+        "target": "local encoded callback slot absolute operand"
+      },
+      {
+        "site": "00bf66f8",
+        "target": "cdecl adapter calling Win32 DecodePointer"
+      },
+      {
+        "site": "00b46f09",
+        "target": "inserted RET at capture boundary before ambient branch"
+      }
+    ],
+    "mutations": [
+      "camera mode1->3",
+      "retained lighting.environment old->new",
+      "original sentinel.light old->new",
+      "original sentinel.next->distinct appended node",
+      "retained lighting.sentinel slot->replacement",
+      "scene.lighting slot->replacement"
+    ],
+    "default_watson_executed": false,
+    "native_complete_prefix_executed": false,
+    "cpp_source": "J:/PROG/battlestations-pacific-decompile/src/system_lighting_constants.cpp",
+    "cpp_expectations": "Native captured owner/mode selection chooses expected words for c43,c44,c45,c52.xyz",
+    "results": [
+      {
+        "passed": true,
+        "handler_calls": 1,
+        "decode_calls": 1,
+        "five_zero_arguments": true,
+        "lighting_retained": true,
+        "environment_reloaded": true,
+        "sentinel_light_reloaded": true,
+        "append_and_replacement_not_reselected": true,
+        "camera_mode_reloaded": true
+      },
+      {
+        "corrected_cpp_matches_native_selection": true,
+        "cpp_runtime_calls": 1,
+        "cpp_status_shadow_absent": true,
+        "compared_registers": "c43,c44,c45,c52.xyz"
+      }
+    ],
+    "tracked_test_suite_added": false
+  },
+  "annotations_applied": false,
+  "production_files_changed_by_review": false,
+  "validation_limits": [
+    "No complete native lighting-prefix execution",
+    "No default Watson execution",
+    "No full core build claimed by this review",
+    "No game runtime/visual validation",
+    "New C++ projection ABI; no native replacement",
+    "Concrete CRT runtime and native owner lifetimes still require bindings"
+  ],
+  "artifact_hashes": {
+    "J:\\PROG\\battlestations-pacific-decompile-system-empty-light-20260910\\local\\system_empty_light_compare.cpp": "4c18c68805f898c80dc049c6ea443a0143041b9b0dd486e401c753471bf50cdf",
+    "J:\\PROG\\battlestations-pacific-decompile-system-empty-light-20260910\\local\\compare_system_empty_light.cmd": "e97fe1e8e128b46f04f1783078f0312371e830ae2943e18d38524c31d186c8c5",
+    "J:\\PROG\\battlestations-pacific-decompile-system-empty-light-20260910\\build\\system_empty_light_compare.exe": "0e8d9fcce920d27e4053007bcd6b971369df100c230c1971b13af9731642434d",
+    "J:\\PROG\\battlestations-pacific-decompile\\src\\system_lighting_constants.cpp": "db1126a5d21494d988e65f381e88217d1f682c8968f49f760eba5f55cfc7fed5",
+    "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_lighting_constants.hpp": "21b6d74ffecc85494b04d086bb23d370ac80e60b45de39adbf2defa76804b603"
+  }
+}
