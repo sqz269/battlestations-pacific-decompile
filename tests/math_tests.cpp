@@ -20,6 +20,7 @@
 #include "bsp/title_init.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
+#include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
@@ -1107,6 +1108,22 @@ int main() {
                     && ent.properties.find("--") == nullptr,
                 "a \"--\" prefix drops only the junk key, leaving the property applied");
         }
+    }
+
+    {
+        // The scene class table decides whether an entity block dispatches at
+        // all. 0046CF40 reads the descriptor out of the map node without a null
+        // check, so an unregistered class token faults rather than being
+        // skipped, and the lookup inside 00468FB0 is case-insensitive, which is
+        // the only reason the three "Landfort" entities in the shipped files
+        // resolve. Both properties have to hold together.
+        check(bsp::scene_entity_class_id_from_name("Landfort") == 0x1b
+                && bsp::scene_entity_class_name_from_id(0x1b) != nullptr,
+            "the scene class lookup is case-insensitive in both directions");
+        check(!bsp::scene_entity_class_is_registered("LandVehicle")
+                && bsp::scene_entity_class_id_from_name("LandVehicle") == bsp::kSceneUnknownClassId
+                && bsp::find_scene_entity_class_by_id(0x19) == nullptr,
+            "an unregistered class token has no descriptor to dispatch on");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
