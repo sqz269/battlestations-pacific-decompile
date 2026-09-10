@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
 #include "bsp/game_frame_control.hpp"
@@ -938,6 +939,26 @@ int main() {
             "the short name is cut at the second underscore, before the extension test");
         check(bsp::derive_scene_short_name("universe/scenes/midway.scn") == "midway",
             "a name with no second underscore keeps its stem and loses .scn");
+    }
+
+    {
+        // 00AA2490 splits on the LAST underscore, so a key that ends in one has
+        // an empty suffix and stays a property, while a key with no underscore
+        // at all is matched whole. Both boundaries decide whether a shipped key
+        // becomes a widget, and the shipped pages exercise the case folding
+        // ("keret_Framebox" against the literal "FrameBox").
+        using bsp::GuiWidgetType;
+        check(bsp::gui_widget_type_for_key_00aa2490("safezone_43_FrameBox")
+                  == GuiWidgetType::FrameBox
+              && bsp::gui_widget_type_for_key_00aa2490("keret_Framebox")
+                  == GuiWidgetType::FrameBox
+              && bsp::gui_widget_type_for_key_00aa2490("Icon")
+                  == GuiWidgetType::Icon
+              && bsp::gui_widget_type_for_key_00aa2490("Icon_")
+                  == GuiWidgetType::None
+              && bsp::gui_widget_type_for_key_00aa2490("States")
+                  == GuiWidgetType::None,
+            "00AA2490 takes the suffix after the last underscore, folded");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

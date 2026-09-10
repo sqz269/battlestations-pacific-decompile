@@ -1,0 +1,150 @@
+{
+  "packet": "gui_layout_loader",
+  "doc": "docs/GUI_LAYOUT_LOADER.md",
+  "owner": "agent/gui-layout-loader",
+  "addresses": ["00AA5840", "00AA7E00", "00AAA710", "00AA6560", "00AA2490",
+                "00AA52A0", "00AA3140", "00AC5600", "00AA5A00", "00AAA480"],
+  "files": ["docs/GUI_LAYOUT_LOADER.md", "reports/gui_layout_loader.json",
+            "include/bsp/gui_layout_loader.hpp", "src/gui_layout_loader.cpp"],
+  "finding": {
+    "packet_premise": "00AA5840 and 00AA7E00 were described as two widget factories, and 00AAA710/00AAA480/00AA5A00/00AA6560 as the reader half of the descriptor table at 00AAAED0.",
+    "actual": "GUI pages are Lua source. 00AA5840 is the page factory; 00AA7E00 is a one-level named-child search, not a factory. 00AAA710 is both the property reader and the child builder. 00AA6560 is the type-id dispatcher. 00AA5A00 is a sorted child snapshot and 00AAA480 is the MSVC std::sort introsort loop, a library template instantiation with no GUI meaning."
+  },
+  "file_format": {
+    "kind": "Lua source executed by the embedded interpreter",
+    "path": "interface/<page name>.lua",
+    "path_literals": {"directory": "00D5CB18 'interface/'", "extension": "00CFD2C8 '.lua'", "builder": "00AC5600"},
+    "prelude": "interface/_common.lua, loaded first by 00AC6600 (literal _Common at 00D5CB64)",
+    "global_table": "GuiScreen (00D5CB20)",
+    "model_sidecar": "'<page>.mmod' (00D0E67C) probed against the VFS singleton 0109CEEC; optional backdrop, not the layout",
+    "child_rule": "a string key whose suffix after the last '_' names a type becomes a child widget; other string keys are properties; integer keys are skipped by the base reader"
+  },
+  "conventions": {
+    "00AA5840": "__thiscall(ECX = GUI manager, const NativeString *name, int screen_flag, char add_reference), RET 0Ch, body 00AA5840-00AA59A9",
+    "00AA7E00": "__thiscall(ECX = widget, const NativeString *name, int unused), RET 8, body 00AA7E00-00AA7EAE; the second stack argument is popped but never read",
+    "00AAA710": "__thiscall(ECX = widget, visitor), RET 4",
+    "00AA2490": "__fastcall(ECX = key string), RET",
+    "00AA6560": "__fastcall(ECX = type id, EDX = object or 0), RET",
+    "00AA52A0": "__thiscall(ECX = manager, GuiScreen *page), RET 4",
+    "00AA3140": "__thiscall(ECX = manager, const NativeString *name), RET 4",
+    "00AC5600": "__thiscall(ECX = name string), returns the composed path"
+  },
+  "widget_types": [
+    {"id": 1, "suffix": null, "stub": "00AA3BD0", "size": "0x124", "note": "page root; no key produces it"},
+    {"id": 2, "suffix": "Group", "stub": "00AA12F0", "size": "0xEC"},
+    {"id": 3, "suffix": "Text", "stub": "00AA1380", "size": "0x1F4"},
+    {"id": 4, "suffix": "Line", "stub": "00AA1530", "size": "0x104"},
+    {"id": 5, "suffix": "Progbar", "stub": "00AA14A0", "size": "0x140"},
+    {"id": 6, "suffix": "Icon", "stub": "00AA1410", "size": "0x138"},
+    {"id": 7, "suffix": "Scrollbar", "stub": "00AA15C0", "size": "0xFC"},
+    {"id": 8, "suffix": "Grid", "stub": "00AA1650", "size": "0x124"},
+    {"id": 9, "suffix": "Model", "stub": "00AA16E0", "size": "0x11C"},
+    {"id": 10, "suffix": "Movie", "stub": "00AA1770", "size": "0x130"},
+    {"id": 11, "suffix": "Listbox", "stub": "00A9B7E0", "size": null, "note": "factory singleton 00F8BC10; 00A9DF40 when EDX is 0, 00AA5B40 otherwise"},
+    {"id": 12, "suffix": "AnimIcon", "stub": "00AA2340", "size": "0x144"},
+    {"id": 13, "suffix": "Curve", "stub": "00AA1800", "size": "0x140"},
+    {"id": 14, "suffix": "Sound", "stub": "00AA1890", "size": "0x108"},
+    {"id": 15, "suffix": "Button", "stub": "00AA4440", "size": "0xFC"},
+    {"id": 16, "suffix": "ClipBox", "stub": "00AA1920", "size": "0x10C"},
+    {"id": 17, "suffix": "Section", "stub": "00AA19B0", "size": "0x12C"},
+    {"id": 18, "suffix": "FrameBox", "stub": "00AA1A40", "size": "0x11C"}
+  ],
+  "type_suffix_split": {"routine": "00AA2490", "separator": "00CE7890 '_'", "helper": "004BCB80 last-index-of", "fallback": "whole key when there is no underscore", "compare": "__stricmp"},
+  "base_property_descriptors": [
+    {"name": "Pos", "tag": 5, "offset": "0x0C", "literal": "00CF168C"},
+    {"name": "Size", "tag": 6, "offset": "0x20", "literal": "00CFF278"},
+    {"name": "Pivot", "tag": 6, "offset": "0x18", "literal": "00D5C228"},
+    {"name": "Scale", "tag": 6, "offset": "0x28", "literal": "00CE60AC"},
+    {"name": "Rotate", "tag": 2, "offset": "0x48", "literal": "00D5C220"},
+    {"name": "Color", "tag": 8, "offset": "0x50", "literal": "00CE93F8"},
+    {"name": "LowColor", "tag": 8, "offset": "0xA4", "literal": "00D5C1F4"},
+    {"name": "HighColor", "tag": 8, "offset": "0xB4", "literal": "00D5C1EC"},
+    {"name": "BlendFactor", "tag": 2, "offset": "0xC4", "literal": "00D5C1FC"},
+    {"name": "WideScreenAlign", "tag": 0, "offset": "0xE0", "literal": "00CE92E4"},
+    {"name": "Visible", "tag": 3, "offset": "0xE4", "literal": "00D5C1E4"},
+    {"name": "MouseBlock", "tag": 3, "offset": "0x84", "literal": "00D5C1D8"},
+    {"name": "MouseHit", "tag": 3, "offset": "0x78", "literal": "00D5C1CC"}
+  ],
+  "value_tags": {"0": "C string", "2": "float", "3": "bool byte", "5": "three floats", "6": "two floats", "8": "four floats", "unused": [1, 4, 7]},
+  "visitor_vtable": {"+04h": "descend into the sub-table named by the key variant", "+08h": "ascend, no arguments", "+0Ch": "read one property: (name variant, field variant, default variant), each 8 bytes by value", "+18h": "fill a 500-entry key array, count returned in the frame"},
+  "widget_vtable": {"+18h": "the class property enumerator; reaches 00AAA710 for the base fields", "+34h": "visibility setter called after Visible is read", "+5Ch": "type id (BSP_GuiWidget_GetTypeId)", "+74h": "pre-descend hook", "+78h": "post-descend hook", "+7Ch": "page name, used by 00AA3140"},
+  "widget_offsets": {"+08h": "authored X cache", "+4Ch": "scene node (00B74EB0 184h + 00B75030)", "+64h..+6Ch": "std::list of children", "+70h": "parent", "+E0h": "WideScreenAlign enum", "+FCh": "Priority (screen only)", "+120h": "screen_flag from 00AA5840"},
+  "manager_offsets": {"+14h..+20h": "std::vector<GuiScreen*>, sorted by Priority ascending", "+30h": "the instantiated .mmod model"},
+  "registration": {"routine": "00AA52A0", "order": "sorted insert before the first page with a strictly greater +FCh", "list": "the single vector at manager +14h", "layers": "none found; Priority is the only order"},
+  "corrections": [
+    {"doc": "docs/APP_INIT_FONTS_GUI.md", "claim": "00AA7E00 takes a group and creates a child of it", "correction": "it finds an existing child by name; the names it lists are keys in the installed interface/_mouse.lua and interface/_highlight.lua"},
+    {"doc": "docs/LOADING_SCREEN_ELEMENTS.md", "claim": "the trailing 1 is 00AA7E00's recursive flag", "correction": "the argument is popped by RET 8 and never read; the search is one level deep"},
+    {"doc": "packet brief", "claim": "00AAA480 is part of the descriptor reader", "correction": "it is the MSVC std::sort introsort loop; it should not receive a BSP_Gui* name"}
+  ],
+  "installed_validation": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "mode": "read-only",
+    "interface_lua_files": 97,
+    "pages_assigning_GuiScreen": 96,
+    "accepted_by_subset_parser": 69,
+    "rejected": 27,
+    "widgets_built": 1062,
+    "max_child_depth": 5,
+    "by_type": {"Icon": 555, "Text": 248, "Group": 140, "FrameBox": 71, "Section": 19, "Listbox": 13, "ClipBox": 10, "Model": 4, "Movie": 2},
+    "cross_check": "an independent Python reference and the committed C++ implementation produce identical counts",
+    "interface_mmod_files": 0,
+    "malformed_page": "_debugtexts.lua has a stray comma and a statement-level ['Template_Text'] = {...}, which is not valid Lua"
+  },
+  "callers": {
+    "00AA5840": "67, every screen register/enter slot; 0067CA80 (FE_initial), 0057C560 (FE_loading), 00AA5E20 (_Mouse, _Highlight)",
+    "00AA7E00": "167, all screen code",
+    "00AAA710": "13, one per derived widget class",
+    "00AA2490": "1, 00AAA710",
+    "00AA6560": "00AA6640, 00AAA710, 00AAB4C0",
+    "00AC5600": "00AC5770, 00AC6600"
+  },
+  "no_ghidra_function": [],
+  "names_recorded": [
+    {"address": "00aa5840", "name": "BSP_GuiManager_LoadPage"},
+    {"address": "00aa7e00", "name": "BSP_GuiWidget_FindChildByName"},
+    {"address": "00aaa710", "name": "BSP_GuiWidget_ReadPropertiesAndChildren"},
+    {"address": "00aa2490", "name": "BSP_GuiLayout_WidgetTypeForKey"},
+    {"address": "00aa6560", "name": "BSP_GuiLayout_CreateWidgetOfType"},
+    {"address": "00aa52a0", "name": "BSP_GuiManager_RegisterPageByPriority"},
+    {"address": "00aa3140", "name": "BSP_GuiManager_FindPageByName"},
+    {"address": "00ac5600", "name": "BSP_GuiScreen_ComposeScriptPath"},
+    {"address": "00aa5a00", "name": "BSP_GuiWidget_CollectSortedChildren"},
+    {"address": "00aaa480", "name": "STL_sort_loop_00aaa480"}
+  ],
+  "uncertainties": [
+    "The second argument of 00AA5840 (1 from most screens, 0 from the loading screen) reaches screen +120h; nothing read here consumes it.",
+    "The .mmod branch is unexercised on this installation: no interface/*.mmod exists and the name carries no directory. Manager +30h was not followed.",
+    "00AC6600 was read, not reconstructed. Its pseudocode is corrupted (unaff_EBX/EBP); the Lua API it uses and its error path are unrecovered.",
+    "The variant tags are named from field widths and defaults, not from a tag table. Tags 1, 4 and 7 were not observed.",
+    "The key order the visitor's +18h yields is a Lua table's, which is undefined. The reconstruction keeps the script's textual order, which is a choice.",
+    "Six shipped keys spell 'visible' in lower case; Lua lookups are case-sensitive, so those are probably dead. Inferred from the language, not from the visitor.",
+    "00AA30C0, called first by 00AA52A0, was not read; 'retain' is a guess from position."
+  ],
+  "what_remains": [
+    "The visitor class implementing vtable +4h/+8h/+0Ch/+18h and its value coercion.",
+    "The per-class property readers, where States, Texture, Font, Align, geOrder and FrameSizesX/Y are consumed.",
+    "Widget vtable +74h and +78h.",
+    "The Listbox factory at 00F8BC10 and 00AA5B40's non-zero path."
+  ],
+  "followups": [
+    {"packet": "gui_script_visitor", "addresses": ["00AC6600", "00B67980", "00B6D890", "00441210"], "files": ["docs/GUI_SCRIPT_VISITOR.md", "include/bsp/gui_script_visitor.hpp"], "contract": "The Lua reader behind vtable +4h/+8h/+0Ch/+18h: how a table key becomes a typed value, what the 500-entry key array is, and what an erroring script leaves behind."},
+    {"packet": "gui_icon_properties", "addresses": ["00AB2B70", "00AB3310", "00ACCE20"], "files": ["docs/GUI_ICON_PROPERTIES.md"], "contract": "The Icon class (id 6, 138h bytes): States, Texture, UV_LURB, ShaderName and how a state index selects a texture."},
+    {"packet": "gui_text_properties", "addresses": ["00AC2090", "00AC2DE0"], "files": ["docs/GUI_TEXT_PROPERTIES.md"], "contract": "The Text class (id 3, 1F4h bytes): Font, Align, VerticalAlign, Multiline, DefaultText, DefaultShadow, and the tie to the font layout packet."},
+    {"packet": "gui_render_order", "addresses": ["00AA5A00", "00AA4E00", "00AAB4C0"], "files": ["docs/GUI_RENDER_ORDER.md"], "contract": "geOrder/RenderOrder: where the sorted child snapshot is consumed and how it reaches the draw queue."}
+  ],
+  "state": {
+    "00AA5840": "analyzed, reconstructed, build-tested, installed-file-checked",
+    "00AA2490": "analyzed, reconstructed, build-tested, installed-file-checked",
+    "00AAA710": "analyzed, reconstructed (both halves), build-tested, installed-file-checked",
+    "00AA7E00": "analyzed, reconstructed, build-tested",
+    "00AA6560": "analyzed, reconstructed as data",
+    "00AA52A0": "analyzed, reconstructed, build-tested",
+    "00AA3140": "analyzed, reconstructed, build-tested",
+    "00AC5600": "analyzed, reconstructed (path composition only)",
+    "00AA5A00": "analyzed",
+    "00AAA480": "analyzed; identified as std::sort",
+    "00AC6600": "exported and read; not reconstructed"
+  },
+  "build": "scripts/build.ps1, Win32 MSVC /W4 /WX, clean; reconstructed_math passes with one added case for the 00AA2490 suffix boundary",
+  "not_binary_compatible": true
+}
