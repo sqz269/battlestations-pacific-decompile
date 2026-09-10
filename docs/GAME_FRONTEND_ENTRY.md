@@ -314,3 +314,9 @@ function; none needed defining.
 - Eight named GUI objects are bound, not four: the `FE_loading` page at `+0Ch`, then `hint_Text` `+18h`, `radar_Group` `+10h`, `wave_Icon` `+14h`, a discarded `bg_Group`, `titleLogo_Icon` `+20h`, `frameFlag_Icon` `+1Ch`, `title_Text` `+24h`, `loadingLogo_FrameBox` `+28h`.
 - The `mp.loading_NN` strings are localisation keys for a rotating hint line, not textures: `0057c360` sends each through the localisation resolver to `00abaed0` with ECX = the hint widget, so mode 0 consumes the published list through the rotation rather than the mode block. A mode-1 caller is still unidentified.
 - The worker callback runs on render worker thread `00b33c20` with ECX = the `radar_Group` widget, gated at 40 ms by the rate `19h`; it issues no render command and takes no lock.
+
+## Corrections from docs/AWARD_GRANT.md
+
+- `00a41030` and `00a40d60` are not grant entry points: they are the compiler-emitted `std::vector<int>::push_back` and `insert` that `00a410a0` uses to append an achievement id to the queue at `manager+360h`, drained by `00a3fa70`, the only caller of `XUserWriteAchievements` in the image.
+- `0090c5d0`'s ECX is recorded above as `*(00e188a8)+21A0h`; it is a double dereference, and the body never reads ECX (it probes `<CSIDL_PERSONAL>/Battlestations-Midway/save` and is true only on `ERROR_ALREADY_EXISTS`).
+- The award name-to-id map has no names in the executable: `006b9450` parses `Scripts/datatables/Achievements.lua` (52 rows in range, ids 27 to 78; the 1..99 check drops the 22 local-only badges at the -1 default and the `RANK` row at 0).
