@@ -1,0 +1,1003 @@
+{
+  "schema_version": 1,
+  "packet": "native_command_alias_integration",
+  "status": "integrated_reviewed_strict_win32_build_and_original_native_command_alias_fixtures_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00b1f170",
+      "name": "construct_native_render_command_00b1f170",
+      "cpp_symbol": "construct_native_render_command_00b1f170",
+      "source": "src/native_render_command_owner.cpp",
+      "native_end_exclusive": "00b1f1f0",
+      "original_abi": "ECX actual44h command; three pointer arguments; EAX original command; RET0Ch",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Three-argument placement constructor preserves08 and batch slots until acquisition; passes camera as both context owners; full initializer; only array/name EH cleanup.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1f1f0",
+      "name": "construct_native_render_command_00b1f1f0",
+      "cpp_symbol": "construct_native_render_command_00b1f1f0",
+      "source": "src/native_render_command_owner.cpp",
+      "native_end_exclusive": "00b1f274",
+      "original_abi": "ECX actual44h command; four pointer arguments; EAX original command; RET10h",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Four-argument placement constructor preserves08 and batch slots until acquisition; full initializer; only array/name EH cleanup.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1edc0",
+      "name": "initialize_native_render_command_00b1edc0",
+      "cpp_symbol": "initialize_native_render_command_00b1edc0",
+      "source": "src/native_render_command_owner.cpp",
+      "native_end_exclusive": "00b1ef57",
+      "original_abi": "ECX actual44h command; four pointer arguments; RET10h",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Real context allocation, canonical association without retain, actual retained scene and context assignments with current context reloads; borrowed backpointer; current pool twice and real acquisitions; current pooled diagnostic X. No rollback.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1ddd0",
+      "name": "destroy_native_render_command_00b1ddd0",
+      "cpp_symbol": "destroy_native_render_command_00b1ddd0",
+      "source": "src/native_render_command_owner.cpp",
+      "native_end_exclusive": "00b1dfed",
+      "original_abi": "ECX actual44h command; RET",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Drop actual batch04 references in order, dispatch current virtual0 with throwing native pool return; walk current indexed end, complete group destruction and ordinary free then clear captured cell; release/clear scene and current context; ordered/indexed arrays then current name. Preserve stale array/name headers and08.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1e6b0",
+      "name": "delete_native_render_command_00b1e6b0",
+      "cpp_symbol": "delete_native_render_command_00b1e6b0",
+      "source": "src/native_render_command_owner.cpp",
+      "native_end_exclusive": "00b1e6ce",
+      "original_abi": "ECX actual44h command; flags DWORD; EAX original command; RET4",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Complete destructor then ordinary free iff flags&1, preserving original-address return. Actual returning-free continuation repaired with prior comments preserved.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004be820",
+      "name": "native_render_alias_iterator_not_equal_004be820",
+      "cpp_symbol": "native_render_alias_iterator_not_equal_004be820",
+      "source": "src/native_render_alias_checked_ops.cpp",
+      "native_end_exclusive": "004be849",
+      "original_abi": "ECX left iterator address; stack right iterator address; AL boolean, upper EAX incidental; RET4",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Capture both iterator addresses. Read left owner once; null or differing right owner calls BF6713. After return read current left/right node words and compare; do not revalidate owners. A returning handler can mutate either iterator node; both nodes are loaded after the callback.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004becc0",
+      "name": "native_render_alias_iterator_previous_004becc0",
+      "cpp_symbol": "native_render_alias_iterator_previous_004becc0",
+      "source": "src/native_render_alias_checked_ops.cpp",
+      "native_end_exclusive": "004bece6",
+      "original_abi": "ECX iterator address; EAX same address; RET0",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Check owner null; after handler return reload node and its previous, capture current owner, publish previous, then compare captured previous with captured owner current sentinel. Handler on equality runs after publication; return original iterator address. First handler can repair current owner/node. Second handler observes already-published previous and its repairs remain; no post-handler overwrite.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004b9ff0",
+      "name": "native_render_alias_iterator_next_004b9ff0",
+      "cpp_symbol": "native_render_alias_iterator_next_004b9ff0",
+      "source": "src/native_render_alias_checked_ops.cpp",
+      "native_end_exclusive": "004ba018",
+      "original_abi": "ECX iterator address; EAX same address; RET0",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Check owner null; reload current owner/node for sentinel validation; after any returning handler reload current node and publish its next pointer. The final node reload follows the sentinel handler and retains repairs; do not cache node before validation.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004d0990",
+      "name": "erase_native_render_alias_node_004d0990",
+      "cpp_symbol": "erase_native_render_alias_node_004d0990",
+      "source": "src/native_render_alias_checked_ops.cpp",
+      "native_end_exclusive": "004d0a0b",
+      "original_abi": "ECX destination owner; stack output iterator address, input owner pointer, input node pointer; EAX output address; RET0Ch",
+      "evidence": "reports/native_command_alias_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Capture destination and by-value input owner/node. Validate input owner nonnull and node not input sentinel. No owner equality check. Compare node with current destination sentinel and capture next even on suppressed branch. Otherwise unlink, release captured string, free captured node, decrement current destination count. Publish output node before input owner and return output address. Captured null input owner remains null after callback and is subsequently dereferenced; caller iterator repair does not change the captured value. Current destination sentinel and count are reloaded at their native points. Link writes reload node next/previous after first neighbor write.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "fragment",
+      "address": "00b55680",
+      "name": "native_render_batch_actual_reference",
+      "cpp_symbol": "NativeRenderBatchReference::release_zero_00b55680",
+      "source": "src/native_render_batch_reference.cpp",
+      "evidence": "reports/native_command_alias_integration_audit.json; reports/native_render_batch_reference_audit.json",
+      "status": "actual_storage_companion_strict_win32_real_allocator_failure_and_command_native_fixture_checked",
+      "original_abi": "Existing B55680 ECX actual18h batch, count already zero, RET. New companion adds host association only.",
+      "current_integration_scope": "Additional canonical NativeRenderBatchReference companion borrows actual04, resolves only zero, validates current virtual0 B55680 and deleting+4 B1C630, delegates existing full native pool return, retires after success or unreturned dead slot and rethrows allocation failure without native rollback. Separate throwing interface; no new original body claim.",
+      "new_original_function_count": 0,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "new_complete_functions": 9,
+  "new_host_companion_fragments": 1,
+  "primary_review": {
+    "utc": "2026-09-10T22:20:39.843298+00:00",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1f170",
+        "length": 128,
+        "sha256": "18c2429c14851703f8fbc2b1b0bc558f4d4f271973a4edf8bd7288bc8f12506b"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1f1f0",
+        "length": 132,
+        "sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1edc0",
+        "length": 407,
+        "sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1ddd0",
+        "length": 541,
+        "sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1e6b0",
+        "length": 30,
+        "sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b75030",
+        "length": 132,
+        "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b750c0",
+        "length": 165,
+        "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b75290",
+        "length": 32,
+        "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b74f20",
+        "length": 43,
+        "sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b75170",
+        "length": 123,
+        "sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6f5a0",
+        "length": 814,
+        "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "004134f0",
+        "length": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6f440",
+        "length": 297,
+        "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6e680",
+        "length": 204,
+        "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6ee10",
+        "length": 110,
+        "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6ec70",
+        "length": 80,
+        "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bd30f0",
+        "length": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6f310",
+        "length": 176,
+        "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b6dfa0",
+        "length": 105,
+        "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b74750",
+        "length": 104,
+        "sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d120",
+        "length": 168,
+        "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d570",
+        "length": 30,
+        "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b74330",
+        "length": 6,
+        "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b74340",
+        "length": 6,
+        "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "006ef860",
+        "length": 40,
+        "sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf6989",
+        "length": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00cc1c50",
+        "length": 32,
+        "sha256": "17e80cf410ddee38444a3dd0ea146bfc74c858fc6a7b6231835755d40396014f"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d760",
+        "length": 187,
+        "sha256": "30eca5db1f1352c6bd29b9d7e3b7a83b2587d96178b2e3fef6ee09a70c3d8afb"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d8e0",
+        "length": 30,
+        "sha256": "398413c19c25fd132de85c48daae9bafd07c5829418ba02a8f6a483725e8a553"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d1d0",
+        "length": 23,
+        "sha256": "6a6d9d35f7ff392dbe07eab7b41dd03eb2a468fa46f085f929ceac45a3f3685b"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c770",
+        "length": 80,
+        "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c500",
+        "length": 95,
+        "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf7c6e",
+        "length": 75,
+        "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf7cb9",
+        "length": 24,
+        "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00c07c00",
+        "length": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00c07c45",
+        "length": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00cbca30",
+        "length": 43,
+        "sha256": "0cae28063a9a4c0c6c69585c6a543bf76a46116914219c5d6b7b7574676dfeaf"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00419cc0",
+        "length": 5,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bd1510",
+        "length": 5,
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf55be",
+        "length": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b51d20",
+        "length": 33,
+        "sha256": "0ae99641aa55ecde50cd3585749e863633c5dcf14ac3995fae697767181aafe8"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b51d50",
+        "length": 113,
+        "sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c630",
+        "length": 30,
+        "sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b55680",
+        "length": 30,
+        "sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d5b0",
+        "length": 201,
+        "sha256": "c26165615886bf3f6f105641f3feba592b22862a6812a6c7fbc338efce618d32"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b555e0",
+        "length": 155,
+        "sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c830",
+        "length": 95,
+        "sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1ce50",
+        "length": 80,
+        "sha256": "28ecb559e82ba96893279a9c4ce80a9eae1933f4630b0bc5acb8ada99cde7668"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d8a0",
+        "length": 61,
+        "sha256": "112013b2a023a38a297f124d35986bf4b231a5e0c41333ccae8855b4f021ce0a"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1e870",
+        "length": 178,
+        "sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1e930",
+        "length": 49,
+        "sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1cd90",
+        "length": 189,
+        "sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c9d0",
+        "length": 69,
+        "sha256": "eb639f2a4d7cc39b5d61bd6fd7fc145497f47e0e266560752403744b48b1f8a4"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d530",
+        "length": 55,
+        "sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c3a0",
+        "length": 17,
+        "sha256": "9b31fb0a8534bbfb257e561296dcbba205de6ef4c5c05f949778a6dab53f2db8"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b51c60",
+        "length": 80,
+        "sha256": "d3cd812fc78a4b9ba8dc2178e1b62942a0ea3da7e9458de05837ac6f30d905aa"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b51d00",
+        "length": 23,
+        "sha256": "68a48a82052cefb52864a9cd2163de59010f0fbb658fcc045450ec7626e1f106"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b51b50",
+        "length": 98,
+        "sha256": "5d1747b4e013a9bd91c70c441b3115fadfa5273e0e7a103c4a3ae143b73a9b83"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d260",
+        "length": 23,
+        "sha256": "fd27855b15976d2a5c10410dc626c1dac3e15b4f1994e3755714401d196a7c34"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1d1f0",
+        "length": 23,
+        "sha256": "532a8afb9d5e3de877a34d9fb94c9fc8cddd1fd862d34e80aa6575b0f5e70d37"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c7c0",
+        "length": 80,
+        "sha256": "eaa0a54de99c18d84f790db994ecc7d5445472a7b9db25293995f648f8b2ef9b"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00b1c560",
+        "length": 95,
+        "sha256": "f750ef6efe21701a4bb6ebb2f88747730e566434786e4a196fb727e22f27d048"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bd1860",
+        "length": 5,
+        "sha256": "a2cd0d3e28b75cfa585e46f92d1eddbb2279680724ee0e689b438220ae6e90f9"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bd1120",
+        "length": 5,
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "0041cc80",
+        "length": 5,
+        "sha256": "0afb3f87d8e4f214964f0a65ed010aa6ed98ebc59e667aee06b5fe9ad6fdf3ee"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf7680",
+        "length": 5,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00415350",
+        "length": 5,
+        "sha256": "6426f859eacc9c3112aace060019e686ae1d0c42b0eccc7077c9c9274f746a91"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bd0c30",
+        "length": 5,
+        "sha256": "07c12b9d69520518eca87f5215f83fcffc895ddd38b6bc3366600ab9211abfe6"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00bf681b",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d62de8",
+        "length": 92,
+        "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d62c88",
+        "length": 88,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d5e5c4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00ce4970",
+        "length": 4,
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00ce4adc",
+        "length": 4,
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d7a208",
+        "length": 4,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d7a260",
+        "length": 4,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "01090054",
+        "length": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "01090030",
+        "length": 20,
+        "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00dfac40",
+        "length": 52,
+        "sha256": "fd05988dff36c154708f797c5cb33532b5e7e21eac32604368a27eb042fb0367"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00ce2210",
+        "length": 20,
+        "sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00df4ec4",
+        "length": 44,
+        "sha256": "9846b6a0127ed3e94511be890935e81dcf79f73d892b428ab0d7887abd92a0fd"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00e02d30",
+        "length": 32,
+        "sha256": "93db1610a4bbd4cdc5b2e1329b3e276dd13871fe33124383e77c1cf6382893be"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00e15590",
+        "length": 4,
+        "sha256": "ce27c3a226b06f760dc303582e2dd3ab690a1634fdced2e53b238a4e947cd75f"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d5e5ac",
+        "length": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d62064",
+        "length": 16,
+        "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d5e5dc",
+        "length": 4,
+        "sha256": "270557a3e5a0bbd6aa1e7ed474bb3feed52aa1634e304a75ff30303e06cfb607"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d5e5d4",
+        "length": 4,
+        "sha256": "9a20ff64fc0a50f3f9c0e2d3f0c816ce2d0533c5a1151e67f1d57ab42772e192"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00ceb130",
+        "length": 8,
+        "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00ce3818",
+        "length": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "0108fe8c",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "0109dbbc",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00d5e5e0",
+        "length": 4,
+        "sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8"
+      },
+      {
+        "packet": "native_render_command_owner_audit",
+        "address": "00ce9a38",
+        "length": 4,
+        "sha256": "9855cda098dcac49935c7cea75d9960ef8fd001b8fac4d21db934116f50e33c0"
+      },
+      {
+        "packet": "native_render_alias_checked_ops_audit",
+        "address": "004be820",
+        "length": 41,
+        "sha256": "5d497d265c7ca6c2474b9c1801eab82163d4244ad03df5b6d46dd7d650b6e8f9"
+      },
+      {
+        "packet": "native_render_alias_checked_ops_audit",
+        "address": "004becc0",
+        "length": 38,
+        "sha256": "bddcf9a515fd515f591d772dcf8ab8140d9ac561385c5c72a25bfe0618a51ef0"
+      },
+      {
+        "packet": "native_render_alias_checked_ops_audit",
+        "address": "004b9ff0",
+        "length": 40,
+        "sha256": "8276fbaefffa30abe86fdc50b43ea441e151b9fb4efa8a9473b6177b34ec2ce3"
+      },
+      {
+        "packet": "native_render_alias_checked_ops_audit",
+        "address": "004d0990",
+        "length": 123,
+        "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b1c630",
+        "length": 30,
+        "sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b1c830",
+        "length": 95,
+        "sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b1cd90",
+        "length": 189,
+        "sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b1e870",
+        "length": 178,
+        "sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b51d50",
+        "length": 113,
+        "sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b555e0",
+        "length": 155,
+        "sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00b55680",
+        "length": 30,
+        "sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00cc0310",
+        "length": 18,
+        "sha256": "6ea2e7514877b6136ad33c0524dd60121b7b4ce3e2fc25f87f2823871a2ec9ea"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00d5e5ac",
+        "length": 8,
+        "sha256": "6edd5d15cdafbead889736239418dca3760db6e6ef62b114896420e92315f997"
+      },
+      {
+        "packet": "native_render_batch_reference_audit",
+        "address": "00df8e48",
+        "length": 44,
+        "sha256": "d6adbeffd6a5b694c382f62056006261fcade8ed41c75a5acf59a44868395ea5"
+      }
+    ],
+    "source_artifacts": [
+      {
+        "path": "include/bsp/native_render_alias_checked_ops.hpp",
+        "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c",
+        "worker_commit": "31e7437846da41e8b6096d284ede0289f6921d97",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/native_render_alias_checked_ops.cpp",
+        "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872",
+        "worker_commit": "31e7437846da41e8b6096d284ede0289f6921d97",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/native_render_batch_reference.hpp",
+        "sha256": "718c0d01db56c184ea00e374eb4b3b8dfbf3c5c496028789354e4589603a0ec1",
+        "worker_commit": "fcd6ce768c75caab3fc50e0d255fd4dc9099c0b6",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/native_render_batch_reference.cpp",
+        "sha256": "68fa270b02d19929faad4ec55b92cdb83538e9967c57918e6054020515dbf176",
+        "worker_commit": "fcd6ce768c75caab3fc50e0d255fd4dc9099c0b6",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "d412d1f175e254dff214052717bf7079d10fd53aef845826af7654c833cd0fb2",
+        "comparison": "Primary full command and combined registration"
+      },
+      {
+        "path": "include/bsp/native_render_command_owner.hpp",
+        "sha256": "075aeabef5f471eb0ef50de21045a91ed8c7c7c0834dd729115ea4bbe64dba93",
+        "comparison": "Primary full command and combined registration"
+      },
+      {
+        "path": "src/native_render_command_owner.cpp",
+        "sha256": "160f1102b71bc4977eb85a8bc38aaddb4c9a0ce04271d99457c2552d69608767",
+        "comparison": "Primary full command and combined registration"
+      }
+    ],
+    "production_findings_resolved": [
+      "Batch terminal uses throwing current virtual0 profile and preserves failed post-destruction pool return"
+    ],
+    "remaining_production_findings": 0
+  },
+  "components": [
+    "reports/native_render_command_owner_audit.json",
+    "reports/native_render_alias_checked_ops_audit.json",
+    "reports/native_render_batch_reference_audit.json"
+  ],
+  "fixtures": [
+    {
+      "path": "local/native_command_owner_check.txt",
+      "sha256": "7d97a926615aed132657abd65a0bfe4829c6ce30f0b93493f49fd134cff544a4",
+      "passed": true
+    },
+    {
+      "path": "local/native_alias_checked_ops_primary_fixture.txt",
+      "sha256": "45e4f84008de239e8f60924d141f81e217f1dea21dd52097ef074f6191a0f95c",
+      "passed": true
+    },
+    {
+      "path": "local/native_batch_reference_primary_fixture.txt",
+      "sha256": "49abf9bec2ecbb6f64a99ab9bc1326426af12c0a99326e472eb3ea1a0e7e2a16",
+      "passed": true
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_command_alias_build.txt",
+    "sha256": "64539f047ca31ea05da6c11aeb783a9c445462c1454fc93ad03e593ab32a597d"
+  },
+  "definitions": [
+    "reports/native_command_owner_defined_functions.json",
+    "reports/native_alias_checked_ops_defined_functions.json"
+  ],
+  "original_body_repairs": 2,
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_command_eh_execution": false,
+  "full_command_execution": false,
+  "full_native_renderer": false,
+  "remaining": [
+    "B1D950 execution and actual queue/gather/preparation owners",
+    "Full legacy SBO string and 40-byte exception/error-factory dependencies",
+    "Texture/mesh owners, renderer initialization/reset and world startup/gameplay"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_command_alias_annotations.json",
+    "sha256": "4a89703d4b5b972e541145b08ff2d35a2944889a272cf6647dca374e7e3729b5",
+    "count": 10,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": {
+    "count": 10,
+    "functions": [
+      {
+        "address": "00b1f170",
+        "old_name": "FUN_00b1f170",
+        "name": "BSP_RenderCommand_Construct",
+        "path": "exports/bsp/functions/00b1f170/decompiled.c",
+        "sha256": "b852e5f338082cbf13f97ba0e27f84838a315b69eb4d195d4beda96a694d12c5"
+      },
+      {
+        "address": "00b1f1f0",
+        "old_name": "FUN_00b1f1f0",
+        "name": "BSP_RenderCommand_ConstructWithSeparateOwner",
+        "path": "exports/bsp/functions/00b1f1f0/decompiled.c",
+        "sha256": "158a367a1a2424569c808a66515e2a7fffbc46402bb1d78306b2b4f62c0874dc"
+      },
+      {
+        "address": "00b1edc0",
+        "old_name": "BSP_RenderCommand_InitializeContextAndBatches",
+        "name": "BSP_RenderCommand_InitializeContextAndBatches",
+        "path": "exports/bsp/functions/00b1edc0/decompiled.c",
+        "sha256": "2b584e468b2dcb248b1e0a3c46b1358310ab41bc413ee94413249b7a21201524"
+      },
+      {
+        "address": "00b1ddd0",
+        "old_name": "BSP_RenderCommand_Destroy",
+        "name": "BSP_RenderCommand_Destroy",
+        "path": "exports/bsp/functions/00b1ddd0/decompiled.c",
+        "sha256": "db77e48990dfedcae715d632f4dc6bfdfa1e870472b876e981ae1ad898d4345f"
+      },
+      {
+        "address": "00b1e6b0",
+        "old_name": "CG_scalar_deleting_dtor_00b1e6b0",
+        "name": "BSP_RenderCommand_ScalarDeletingDestructor",
+        "path": "exports/bsp/functions/00b1e6b0/decompiled.c",
+        "sha256": "125f0212e05484431809bd3fd3bb7b1848a1464f1bb1b25e6b32b1a2d5f0466a"
+      },
+      {
+        "address": "004be820",
+        "old_name": "STL_inst_004be820",
+        "name": "BSP_RenderAliasIterator_NotEqual",
+        "path": "exports/bsp/functions/004be820/decompiled.c",
+        "sha256": "b51ff899b2882fb508e6a0c7bc6d4315636f1ac31c98d4c5925015cb32e231d3"
+      },
+      {
+        "address": "004becc0",
+        "old_name": "STL_inst_004becc0",
+        "name": "BSP_RenderAliasIterator_Previous",
+        "path": "exports/bsp/functions/004becc0/decompiled.c",
+        "sha256": "e57947da5193286a5e99d9dc01ee867875d8930809b78df88306bd71897abcb6"
+      },
+      {
+        "address": "004b9ff0",
+        "old_name": "STL_inst_004b9ff0",
+        "name": "BSP_RenderAliasIterator_Next",
+        "path": "exports/bsp/functions/004b9ff0/decompiled.c",
+        "sha256": "a23b88d293e0e2f34a426b203090f617a429d9a20dee4017ef31f4f9e964443b"
+      },
+      {
+        "address": "004d0990",
+        "old_name": "FUN_004d0990",
+        "name": "BSP_RenderAliasList_EraseNode",
+        "path": "exports/bsp/functions/004d0990/decompiled.c",
+        "sha256": "77969ce86f898dff2c108715f3b79bfe5ff95eafa511ceec13d6108b4a8081a3"
+      },
+      {
+        "address": "00b55680",
+        "old_name": "BSP_PooledRenderBatch_RecycleZeroReference",
+        "name": "BSP_PooledRenderBatch_RecycleZeroReference",
+        "path": "exports/bsp/functions/00b55680/decompiled.c",
+        "sha256": "6b147faf935077f3fea1162333dbaa49970c3816717e2a932a2af13028bd970f"
+      }
+    ]
+  },
+  "snapshot": {
+    "internal_functions": 62481,
+    "total_functions": 62923,
+    "utc": "2026-09-10T21:55:30.972051+00:00",
+    "index_fresh": true
+  },
+  "closure_hash_recheck_utc": "2026-09-10T22:22:36.667025+00:00"
+}

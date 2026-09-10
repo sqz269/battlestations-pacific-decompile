@@ -1,0 +1,144 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b1e6b0",
+      "end_exclusive": "00b1e6ce",
+      "length": 30,
+      "sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2",
+      "function_before": "Function: CG_scalar_deleting_dtor_00b1e6b0 at 00b1e6b0\nSignature: undefined CG_scalar_deleting_dtor_00b1e6b0(void)\nEntry: 00b1e6b0\nBody: 00b1e6b0 - 00b1e6cd",
+      "documentation_before": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1e6b0",
+        "function_name": "CG_scalar_deleting_dtor_00b1e6b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b1e6c8"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "00b1e6c0"
+      ],
+      "function_after": "Function: CG_scalar_deleting_dtor_00b1e6b0 at 00b1e6b0\nSignature: undefined CG_scalar_deleting_dtor_00b1e6b0(void)\nEntry: 00b1e6b0\nBody: 00b1e6b0 - 00b1e6cd",
+      "documentation_after": {
+        "hash": "4a8d186092ee86c4f7ad3ceaa567be0aa64e70057f2968b51f413abd7447a706",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1e6b0",
+        "function_name": "CG_scalar_deleting_dtor_00b1e6b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b1e6c8"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1e6c5",
+        "end_address": "00b1e6ce"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1e6c5",
+        "end_address": "00b1e6cd",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1e6c0"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1e6c0 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1e6b0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1e6b0",
+        "deleted_function": "CG_scalar_deleting_dtor_00b1e6b0",
+        "body_size": 27,
+        "message": "Function 'CG_scalar_deleting_dtor_00b1e6b0' deleted at 00b1e6b0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1e6b0",
+        "name": "CG_scalar_deleting_dtor_00b1e6b0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1e6b0",
+        "function_name": "CG_scalar_deleting_dtor_00b1e6b0",
+        "entry_point": "00b1e6b0",
+        "body_size": 30,
+        "message": "Function created successfully at 00b1e6b0",
+        "warnings": [
+          "Function name 'CG_scalar_deleting_dtor_00b1e6b0' \u2014 main part 'CG_scalar_deleting_dtor_00b1e6b0' is not PascalCase. Expected: CgScalarDeletingDtor00b1e6b0",
+          "Function name 'CG_scalar_deleting_dtor_00b1e6b0' \u2014 main part 'CG_scalar_deleting_dtor_00b1e6b0' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Command scalar-delete body rebuilt with preserved comments and returning free continuation; project saved"
+}

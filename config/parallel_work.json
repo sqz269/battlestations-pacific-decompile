@@ -2526,22 +2526,111 @@
       "id": "native_render_command_owner_next",
       "packet": "native_render_command_owner_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_revalidating_complete44h_command_lifetime_initialization_with_actual_owner_dependencies",
+      "done": true,
+      "state": "discovery_integrated_and_following_implementation_closed",
       "code_ownership": [
         "docs/NATIVE_RENDER_COMMAND_OWNER_NEXT.md",
         "reports/native_render_command_owner_next.json"
-      ]
+      ],
+      "evidence": "reports/native_render_command_owner_next.json",
+      "integration_report": "reports/native_command_alias_integration_audit.json"
     },
     {
       "id": "native_render_alias_checked_ops_next",
       "packet": "native_render_alias_checked_ops_next",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_completing_checked_iterator_erase_and_actual_error_dependencies_discovery",
+      "done": true,
+      "state": "discovery_integrated_and_following_implementation_closed",
       "code_ownership": [
         "docs/NATIVE_RENDER_ALIAS_CHECKED_OPS_NEXT.md",
         "reports/native_render_alias_checked_ops_next.json"
+      ],
+      "evidence": "reports/native_render_alias_checked_ops_next.json",
+      "integration_report": "reports/native_command_alias_integration_audit.json"
+    },
+    {
+      "id": "native_render_command_owner",
+      "packet": "native_render_command_owner",
+      "worker": "primary_integration",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_original_command_alias_and_real_allocator_failure_fixtures_passed",
+      "worker_commit": null,
+      "function_addresses": [
+        "00b1f170",
+        "00b1f1f0",
+        "00b1edc0",
+        "00b1ddd0",
+        "00b1e6b0"
+      ],
+      "evidence": "reports/native_render_command_owner_audit.json",
+      "integration_report": "reports/native_command_alias_integration_audit.json"
+    },
+    {
+      "id": "native_render_alias_checked_ops",
+      "packet": "native_render_alias_checked_ops",
+      "worker": "particle_clock_lifetime",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_original_command_alias_and_real_allocator_failure_fixtures_passed",
+      "worker_commit": "31e7437846da41e8b6096d284ede0289f6921d97",
+      "function_addresses": [
+        "004be820",
+        "004becc0",
+        "004b9ff0",
+        "004d0990"
+      ],
+      "evidence": "reports/native_render_alias_checked_ops_audit.json",
+      "integration_report": "reports/native_command_alias_integration_audit.json"
+    },
+    {
+      "id": "native_render_batch_reference",
+      "packet": "native_render_batch_reference",
+      "worker": "system_fog_owner_discovery",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_original_command_alias_and_real_allocator_failure_fixtures_passed",
+      "worker_commit": "fcd6ce768c75caab3fc50e0d255fd4dc9099c0b6",
+      "function_addresses": [
+        "00b55680"
+      ],
+      "evidence": "reports/native_render_batch_reference_audit.json",
+      "integration_report": "reports/native_command_alias_integration_audit.json"
+    },
+    {
+      "id": "native_render_command_execution_next",
+      "packet": "native_render_command_execution_next",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_discovering_complete_execution_and_named_incomplete_dependencies",
+      "function_addresses": [
+        "00b1d950"
+      ]
+    },
+    {
+      "id": "native_legacy_sbo_string",
+      "packet": "native_legacy_sbo_string",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_reconstructing_complete_sbo_string_with_original_eh_continuation_evidence",
+      "function_addresses": [
+        "00408720",
+        "00408120",
+        "004072d0",
+        "004089e0",
+        "00408b60",
+        "004087f0"
+      ]
+    },
+    {
+      "id": "native_legacy_exception_owner",
+      "packet": "native_legacy_exception_owner",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_reconstructing_five_exception_owner_functions_on_actual_sbo_storage",
+      "function_addresses": [
+        "00411700",
+        "00411780",
+        "004117c0",
+        "004118d0",
+        "00411940"
       ]
     }
   ],
@@ -3309,42 +3398,81 @@
     {
       "packet": "native_render_command_owner_next",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_revalidating_complete44h_command_lifetime_initialization_with_actual_owner_dependencies",
-      "validation": null
+      "state": "discovery_integrated_and_following_implementation_closed",
+      "validation": "reports/native_render_command_owner_next.json"
     },
     {
       "packet": "native_render_alias_checked_ops_next",
       "worker": "particle_clock_lifetime",
-      "state": "worker_completing_checked_iterator_erase_and_actual_error_dependencies_discovery",
+      "state": "discovery_integrated_and_following_implementation_closed",
+      "validation": "reports/native_render_alias_checked_ops_next.json"
+    },
+    {
+      "packet": "native_render_command_owner",
+      "worker": "primary_integration",
+      "state": "integrated_reviewed_strict_win32_original_command_alias_and_real_allocator_failure_fixtures_passed",
+      "validation": "reports/native_render_command_owner_audit.json"
+    },
+    {
+      "packet": "native_render_alias_checked_ops",
+      "worker": "particle_clock_lifetime",
+      "state": "integrated_reviewed_strict_win32_original_command_alias_and_real_allocator_failure_fixtures_passed",
+      "validation": "reports/native_render_alias_checked_ops_audit.json"
+    },
+    {
+      "packet": "native_render_batch_reference",
+      "worker": "system_fog_owner_discovery",
+      "state": "integrated_reviewed_strict_win32_original_command_alias_and_real_allocator_failure_fixtures_passed",
+      "validation": "reports/native_render_batch_reference_audit.json"
+    },
+    {
+      "packet": "native_render_command_execution_next",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_discovering_complete_execution_and_named_incomplete_dependencies",
+      "validation": null
+    },
+    {
+      "packet": "native_legacy_sbo_string",
+      "worker": "material_effect_plane",
+      "state": "worker_reconstructing_complete_sbo_string_with_original_eh_continuation_evidence",
+      "validation": null
+    },
+    {
+      "packet": "native_legacy_exception_owner",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_reconstructing_five_exception_owner_functions_on_actual_sbo_storage",
       "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "packet": "native_render_command_owner_next",
+      "packet": "native_render_command_execution_next",
       "worker": "system_fog_owner_discovery",
       "function_addresses": [
-        "00b1f1f0",
-        "00b1edc0"
+        "00b1d950"
       ]
     },
     {
-      "packet": "native_render_alias_checked_ops_next",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": [
-        "004be820",
-        "004becc0",
-        "004b9ff0",
-        "004d0990"
-      ]
-    },
-    {
-      "packet": "native_render_alias_length_error_dependencies",
+      "packet": "native_legacy_sbo_string",
       "worker": "material_effect_plane",
       "function_addresses": [
-        "004ce780",
         "00408720",
-        "00411700"
+        "00408120",
+        "004072d0",
+        "004089e0",
+        "00408b60",
+        "004087f0"
+      ]
+    },
+    {
+      "packet": "native_legacy_exception_owner",
+      "worker": "particle_clock_lifetime",
+      "function_addresses": [
+        "00411700",
+        "00411780",
+        "004117c0",
+        "004118d0",
+        "00411940"
       ]
     }
   ],

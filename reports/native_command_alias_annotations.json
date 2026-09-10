@@ -1,0 +1,145 @@
+[
+  {
+    "address": "00b1f170",
+    "before": {
+      "address": "00b1f170",
+      "function_name": "FUN_00b1f170"
+    },
+    "after": {
+      "address": "00b1f170",
+      "old_name": "FUN_00b1f170",
+      "name": "BSP_RenderCommand_Construct",
+      "evidence": "Complete original[00b1f170,00b1f1f0); ECX actual44h command; three pointer arguments; EAX original command; RET0Ch. Three-argument placement constructor preserves08 and batch slots until acquisition; passes camera as both context owners; full initializer; only array/name EH cleanup. Evidence reports/native_render_command_owner_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f1f0",
+    "before": {
+      "address": "00b1f1f0",
+      "function_name": "FUN_00b1f1f0"
+    },
+    "after": {
+      "address": "00b1f1f0",
+      "old_name": "FUN_00b1f1f0",
+      "name": "BSP_RenderCommand_ConstructWithSeparateOwner",
+      "evidence": "Complete original[00b1f1f0,00b1f274); ECX actual44h command; four pointer arguments; EAX original command; RET10h. Four-argument placement constructor preserves08 and batch slots until acquisition; full initializer; only array/name EH cleanup. Evidence reports/native_render_command_owner_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1edc0",
+    "before": {
+      "address": "00b1edc0",
+      "function_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "comment": "[BSP reconstruction 00b1edc0]\nAllocates18h context vtable00d5e5c4 atcommand+28h, retains supplied references into context+8/+C/+14 andcommand+4, context+10 points back tocommand. Acquires two pooled batches into+C/+10h via00b1e870/00b1d5b0. Allocator and ownership teardown still unported.\n\n[BSP reconstruction 00b1edc0] update\n[BSP reconstruction] Allocate18-byte refcount1 context table00D5E5C4 at+28, retained assignment command+4 and context+8/C/14, set context+10 backpointer, acquire two native pooled batches+C/+10, initialize one-byte diagnostic. Typed fragment reconstructs context/ref assignments and consumes two explicitly acquired actual batch references; native pool acquisition and diagnostic initializer remain separate. Original ABI: ECX command; stack command scene,camera,context scene,target; RET10h. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b1edc0] update\nNative parent[00b1edc0,00b1ef57); Fragment B1EDD3..B1EDF2; EAX aligned18h storage, ECX0. Actual18h placement stores ONLY: CEB130/count1/D5E5C4 then08/0C/10/14 zero. No command allocation, full44h constructor, queue publication or batch acquisition claim. Prior18-byte wording corrected to18h=24bytes. Evidence docs/NATIVE_CAMERA_RENDER_PROBE.md; reports/native_camera_render_probe_audit.json; reports/native_render_context_audit.json; reports/native_renderer_parameters_audit.json. Original/host context343 observations and focused renderer callback comparison pass; actual native camera installed mesh256x256 output matches prior diagnostic image. Native EH execution, full commands/renderer and gameplay remain unvalidated; new C++ interfaces are not drop-in ABI."
+    },
+    "after": {
+      "address": "00b1edc0",
+      "old_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "evidence": "Complete original[00b1edc0,00b1ef57); ECX actual44h command; four pointer arguments; RET10h. Real context allocation, canonical association without retain, actual retained scene and context assignments with current context reloads; borrowed backpointer; current pool twice and real acquisitions; current pooled diagnostic X. No rollback. Evidence reports/native_render_command_owner_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1ddd0",
+    "before": {
+      "address": "00b1ddd0",
+      "function_name": "BSP_RenderCommand_Destroy",
+      "comment": "[BSP reconstruction 00b1ddd0]\n[BSP reconstruction] Release required batch refs+C then+10. Walk indexed owned groups+2C/count+30, destroy00B1D760/free then clear original cell; recompute end each iteration. Release/clear refs+4 and+28. Shrink/free borrowed ordered array+38, then indexed array+2C, return diagnostic storage+18 with length+14 plus1. Typed API uses actual intrusive owners, existing grouping ownership and allocator-backed diagnostic strings; exact global native allocator and EH/corrupt array paths remain outside. Original ABI: ECX command; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1ddd0",
+      "old_name": "BSP_RenderCommand_Destroy",
+      "name": "BSP_RenderCommand_Destroy",
+      "evidence": "Complete original[00b1ddd0,00b1dfed); ECX actual44h command; RET. Drop actual batch04 references in order, dispatch current virtual0 with throwing native pool return; walk current indexed end, complete group destruction and ordinary free then clear captured cell; release/clear scene and current context; ordered/indexed arrays then current name. Preserve stale array/name headers and08. Evidence reports/native_render_command_owner_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1e6b0",
+    "before": {
+      "address": "00b1e6b0",
+      "function_name": "CG_scalar_deleting_dtor_00b1e6b0"
+    },
+    "after": {
+      "address": "00b1e6b0",
+      "old_name": "CG_scalar_deleting_dtor_00b1e6b0",
+      "name": "BSP_RenderCommand_ScalarDeletingDestructor",
+      "evidence": "Complete original[00b1e6b0,00b1e6ce); ECX actual44h command; flags DWORD; EAX original command; RET4. Complete destructor then ordinary free iff flags&1, preserving original-address return. Actual returning-free continuation repaired with prior comments preserved. Evidence reports/native_render_command_owner_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004be820",
+    "before": {
+      "address": "004be820",
+      "function_name": "STL_inst_004be820"
+    },
+    "after": {
+      "address": "004be820",
+      "old_name": "STL_inst_004be820",
+      "name": "BSP_RenderAliasIterator_NotEqual",
+      "evidence": "Complete original[004be820,004be849); ECX left iterator address; stack right iterator address; AL boolean, upper EAX incidental; RET4. Capture both iterator addresses. Read left owner once; null or differing right owner calls BF6713. After return read current left/right node words and compare; do not revalidate owners. A returning handler can mutate either iterator node; both nodes are loaded after the callback. Evidence reports/native_render_alias_checked_ops_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004becc0",
+    "before": {
+      "address": "004becc0",
+      "function_name": "STL_inst_004becc0"
+    },
+    "after": {
+      "address": "004becc0",
+      "old_name": "STL_inst_004becc0",
+      "name": "BSP_RenderAliasIterator_Previous",
+      "evidence": "Complete original[004becc0,004bece6); ECX iterator address; EAX same address; RET0. Check owner null; after handler return reload node and its previous, capture current owner, publish previous, then compare captured previous with captured owner current sentinel. Handler on equality runs after publication; return original iterator address. First handler can repair current owner/node. Second handler observes already-published previous and its repairs remain; no post-handler overwrite. Evidence reports/native_render_alias_checked_ops_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004b9ff0",
+    "before": {
+      "address": "004b9ff0",
+      "function_name": "STL_inst_004b9ff0"
+    },
+    "after": {
+      "address": "004b9ff0",
+      "old_name": "STL_inst_004b9ff0",
+      "name": "BSP_RenderAliasIterator_Next",
+      "evidence": "Complete original[004b9ff0,004ba018); ECX iterator address; EAX same address; RET0. Check owner null; reload current owner/node for sentinel validation; after any returning handler reload current node and publish its next pointer. The final node reload follows the sentinel handler and retains repairs; do not cache node before validation. Evidence reports/native_render_alias_checked_ops_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d0990",
+    "before": {
+      "address": "004d0990",
+      "function_name": "FUN_004d0990"
+    },
+    "after": {
+      "address": "004d0990",
+      "old_name": "FUN_004d0990",
+      "name": "BSP_RenderAliasList_EraseNode",
+      "evidence": "Complete original[004d0990,004d0a0b); ECX destination owner; stack output iterator address, input owner pointer, input node pointer; EAX output address; RET0Ch. Capture destination and by-value input owner/node. Validate input owner nonnull and node not input sentinel. No owner equality check. Compare node with current destination sentinel and capture next even on suppressed branch. Otherwise unlink, release captured string, free captured node, decrement current destination count. Publish output node before input owner and return output address. Captured null input owner remains null after callback and is subsequently dereferenced; caller iterator repair does not change the captured value. Current destination sentinel and count are reloaded at their native points. Link writes reload node next/previous after first neighbor write. Evidence reports/native_render_alias_checked_ops_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b55680",
+    "before": {
+      "address": "00b55680",
+      "function_name": "BSP_PooledRenderBatch_RecycleZeroReference",
+      "comment": "[BSP reconstruction 00b55680]\nNative [00b55680,00b5569e); ECX batch; RET. Dispatch actual current virtual+4 with flags0, lookup current pool after destruction, append dead address; no decrement. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "after": {
+      "address": "00b55680",
+      "old_name": "BSP_PooledRenderBatch_RecycleZeroReference",
+      "name": "BSP_PooledRenderBatch_RecycleZeroReference",
+      "evidence": "Additional canonical NativeRenderBatchReference companion borrows actual04, resolves only zero, validates current virtual0 B55680 and deleting+4 B1C630, delegates existing full native pool return, retires after success or unreturned dead slot and rethrows allocation failure without native rollback. Separate throwing interface; no new original body claim. Evidence reports/native_render_batch_reference_audit.json; reports/native_command_alias_integration_audit.json. Actual allocation failure, lock unwind, same-domain success and companion self-deletion checked; new C++ ABI; no game validation."
+    },
+    "status": "applied"
+  }
+]
