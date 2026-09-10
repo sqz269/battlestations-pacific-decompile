@@ -1,0 +1,552 @@
+{
+  "task": "legacy_crt_math",
+  "utc": "2026-09-10T15:50:04.950418+00:00",
+  "status": "bounded_runtime_reconstructed_strict_win32_and_native_differential_passed_pending_integration",
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "function_count": 62848,
+    "verified_via": "bsp.py ghidra count before each live/export batch; wrappers validate project/program/language/base",
+    "worker_mutations": false
+  },
+  "pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "owned_files": [
+    "include/bsp/legacy_crt_math.hpp",
+    "src/legacy_crt_math.cpp",
+    "docs/LEGACY_CRT_MATH.md",
+    "reports/legacy_crt_math_audit.json"
+  ],
+  "original_abi": {
+    "00c27489": "cdecl void(int operation, CameraAxesCrtException*, uint16_t* savedCW); reads savedCW, changes live x87 CW; no saved-pointer write",
+    "00c13364": "cdecl int(uint32_t internalMask, double* result, uint32_t savedCW); EAX=whether all mask bits handled",
+    "00c13322": "cdecl void(FPIEEE_RECORD*, uint32_t* mutableCW, uint32_t internalMask, int operation, double* arg1, double* result); appends binary32Flag=0 to00C13048",
+    "00c13048": "cdecl void(FPIEEE_RECORD*, uint32_t* mutableCW, uint32_t internalMask, int operation, void* arg1, void* result, int binary32Flag); binary64 branch reconstructed",
+    "00c138a7": "cdecl int(uint32_t newCW,uint32_t mask); FSTCW old; FLDCW((old&~mask)|(new&mask)); EAX sign-extends old16bits",
+    "00c28545": "cdecl int(CameraAxesCrtException*); XOR EAX,EAX; RET; argument unused; installed default-matherr-compatible body",
+    "00c13545": "cdecl void(int matherrType); actual errno accessor00BFFB8B; type1 writes33, type2/3 writes34",
+    "00c13890": "cdecl int(void); FSTSW; EAX sign-extends status16bits",
+    "00c1389b": "cdecl int(void); FNSTSW; FNCLEX; EAX sign-extends previous status16bits",
+    "00c138ce": "cdecl void(uint32_t x87StatusMask); actual exception-generating x87 operations; stack scratch",
+    "00c12f99": "cdecl double(double value,int* exponent); ST0 fraction; EDX exponent internally preserved across00C12EB0 in subnormal route",
+    "00c12eb0": "cdecl double(double value,int exponent); ST0 result; binary64 input spill then exponent-field rewrite",
+    "00bffb8b": "cdecl int*(void); invokes00C051B7; returns per-thread data+8 or fallback00E159E8; borrowed actual runtime accessor boundary"
+  },
+  "production_interface": {
+    "binding": "bind_legacy_crt_math_runtime(const LegacyCrtMathRuntime&)",
+    "adapter": "legacy_crt_87except_00c27489; exact CameraAxes87Except argument layout",
+    "required_services": [
+      "actual00E16BD0 matherr bypass global",
+      "owning runtime actual per-thread errno accessor; host _errno in rebuilt process or00BFFB8B in original process",
+      "direct Win32 RaiseException and actual x87 environment"
+    ],
+    "binding_lifetime": "borrowed immutable binding object and borrowed global outlive all calls; atomic publication does not retire old objects",
+    "cookie": "new compiler/host runtime stack-cookie semantics; no original game cookie manufactured"
+  },
+  "global_evidence": [
+    {
+      "address": "00e16bd0",
+      "bytes": "94260000",
+      "meaning": "actual disk-backed matherr bypass word0x2694; volatile load when type!=8"
+    },
+    {
+      "address": "00e165a0",
+      "bytes": "000000000000f07f",
+      "meaning": "positive binary64 infinity"
+    },
+    {
+      "address": "00e165b0",
+      "bytes": "ffffffffffffef7f",
+      "meaning": "maximum finite positive binary64"
+    },
+    {
+      "address": "00e166b0",
+      "bytes": "00000000000000801044",
+      "meaning": "80-bit huge constant for actual invalid/overflow status generation"
+    },
+    {
+      "address": "00e166bc",
+      "bytes": "01000000000000800030",
+      "meaning": "80-bit tiny inexact constant for actual underflow status generation"
+    },
+    {
+      "address": "00d7a258",
+      "bytes": "0000000000000000",
+      "meaning": "positive binary64 zero used in extreme underflow sign-preserving multiplication"
+    },
+    {
+      "address": "00e15590",
+      "meaning": "original stack-cookie global only retained in original-byte reference execution; not copied into production adapter"
+    },
+    {
+      "address": "00ce2280",
+      "meaning": "RaiseException IAT; production directly calls host Windows implementation"
+    }
+  ],
+  "dispatch_type_to_mask": {
+    "1": 8,
+    "2": 4,
+    "3": 17,
+    "4": 18,
+    "5": 8,
+    "7": "rewrite type1, no initial handle/raise",
+    "8": 16
+  },
+  "native_quirks": [
+    "FPIEEE record112 bytes; operand values16/48/80 and flag words32/64/96",
+    "Only operations16/22/29 read argument2; sqrt operation5 leaves it unread",
+    "Continuing exception handler edits real result, enable, rounding and precision fields",
+    "Continuation enables clear corresponding saved mask bits only; zero enable does not set a mask",
+    "00C132A8 EDX=FFFFF3FF reused at00C132F2..00C13308: precision update clears rounding bits and ORs precision without clearing existing precision",
+    "savedCW pointer never written; local mutableCW loaded with raw FLDCW",
+    "00C28545 is exactly XOR EAX,EAX;RET; no indirect matherr callback"
+  ],
+  "native_reference": {
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_image_base": "00400000",
+    "test_image_base": "20000000",
+    "functions": [
+      {
+        "address": "00c27489",
+        "length": 252,
+        "disk_sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498",
+        "absolute_operand_relocations": [
+          {
+            "instruction": "00c27495",
+            "absolute_operand": "00e15590"
+          },
+          {
+            "instruction": "00c27554",
+            "absolute_operand": "00e16bd0"
+          }
+        ]
+      },
+      {
+        "address": "00c13364",
+        "length": 481,
+        "disk_sha256": "0ed90647eb3b74de20c933e32515482eeabf079d0e5689d556b4dbf5a5a442de",
+        "absolute_operand_relocations": [
+          {
+            "instruction": "00c133ed",
+            "absolute_operand": "00e165b0"
+          },
+          {
+            "instruction": "00c13408",
+            "absolute_operand": "00e165b0"
+          },
+          {
+            "instruction": "00c1341e",
+            "absolute_operand": "00e165b0"
+          },
+          {
+            "instruction": "00c13434",
+            "absolute_operand": "00e165a0"
+          },
+          {
+            "instruction": "00c1343c",
+            "absolute_operand": "00e165a0"
+          },
+          {
+            "instruction": "00c134a7",
+            "absolute_operand": "00d7a258"
+          }
+        ]
+      },
+      {
+        "address": "00c13322",
+        "length": 33,
+        "disk_sha256": "ccc6f70821dbda7623915d405509a1e138d8579251445e9a509b3cc0ad02ebf4",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c13048",
+        "length": 730,
+        "disk_sha256": "1e4bccdd859701f68469f4da0e34fab8061331bc6b7598e9830b08630649c052",
+        "absolute_operand_relocations": [
+          {
+            "instruction": "00c1326a",
+            "absolute_operand": "00ce2280"
+          }
+        ]
+      },
+      {
+        "address": "00c138a7",
+        "length": 39,
+        "disk_sha256": "778473908a8335c4091f62e6b0dfdb7cc2e6cc322e07237a64edf075d2adf26b",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c28545",
+        "length": 3,
+        "disk_sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c138ce",
+        "length": 86,
+        "disk_sha256": "102773fa887fb2cee8f5a79c9c17bb6191cb2b3da5e57b8783828b5dd573e581",
+        "absolute_operand_relocations": [
+          {
+            "instruction": "00c138d9",
+            "absolute_operand": "00e166b0"
+          },
+          {
+            "instruction": "00c138ec",
+            "absolute_operand": "00e166b0"
+          },
+          {
+            "instruction": "00c138fe",
+            "absolute_operand": "00e166bc"
+          }
+        ]
+      },
+      {
+        "address": "00c13890",
+        "length": 11,
+        "disk_sha256": "7746f12b2c5fa215b5c8ea8904977ee3ab2b654da402a436ab14fd9d464cff9c",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c1389b",
+        "length": 12,
+        "disk_sha256": "d58a0fcc03712194a6e1cf768445199f1fb4e27aa5d69112891cfd82b6303756",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c12f99",
+        "length": 175,
+        "disk_sha256": "7bbc5dbffc8a51ce9ede39533baefdefc32e58f0a5c229ec93b04b99fffbf4ff",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c12eb0",
+        "length": 42,
+        "disk_sha256": "a96bd4239072bf5565794cce8917077abafd7d0ed2db860514d23aeac84bec3f",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00c13545",
+        "length": 40,
+        "disk_sha256": "f3bb9d95acdc6618bae3d06dac8ee51a662c0841cc217fc19ff6398fc1a93aef",
+        "absolute_operand_relocations": []
+      },
+      {
+        "address": "00bfe120",
+        "length": 15,
+        "disk_sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+        "absolute_operand_relocations": [
+          {
+            "instruction": "00bfe120",
+            "absolute_operand": "00e15590"
+          }
+        ]
+      }
+    ]
+  },
+  "complete_body_live_disk_verification": [
+    {
+      "address": "00c27489",
+      "length": 252,
+      "ghidra_sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498",
+      "disk_matches": true
+    },
+    {
+      "address": "00c13364",
+      "length": 481,
+      "ghidra_sha256": "0ed90647eb3b74de20c933e32515482eeabf079d0e5689d556b4dbf5a5a442de",
+      "disk_matches": true
+    },
+    {
+      "address": "00c13322",
+      "length": 33,
+      "ghidra_sha256": "ccc6f70821dbda7623915d405509a1e138d8579251445e9a509b3cc0ad02ebf4",
+      "disk_matches": true
+    },
+    {
+      "address": "00c13048",
+      "length": 730,
+      "ghidra_sha256": "1e4bccdd859701f68469f4da0e34fab8061331bc6b7598e9830b08630649c052",
+      "disk_matches": true
+    },
+    {
+      "address": "00c138a7",
+      "length": 39,
+      "ghidra_sha256": "778473908a8335c4091f62e6b0dfdb7cc2e6cc322e07237a64edf075d2adf26b",
+      "disk_matches": true
+    },
+    {
+      "address": "00c28545",
+      "length": 3,
+      "ghidra_sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "disk_matches": true
+    },
+    {
+      "address": "00c138ce",
+      "length": 86,
+      "ghidra_sha256": "102773fa887fb2cee8f5a79c9c17bb6191cb2b3da5e57b8783828b5dd573e581",
+      "disk_matches": true
+    },
+    {
+      "address": "00c13890",
+      "length": 11,
+      "ghidra_sha256": "7746f12b2c5fa215b5c8ea8904977ee3ab2b654da402a436ab14fd9d464cff9c",
+      "disk_matches": true
+    },
+    {
+      "address": "00c1389b",
+      "length": 12,
+      "ghidra_sha256": "d58a0fcc03712194a6e1cf768445199f1fb4e27aa5d69112891cfd82b6303756",
+      "disk_matches": true
+    },
+    {
+      "address": "00c12f99",
+      "length": 175,
+      "ghidra_sha256": "7bbc5dbffc8a51ce9ede39533baefdefc32e58f0a5c229ec93b04b99fffbf4ff",
+      "disk_matches": true
+    },
+    {
+      "address": "00c12eb0",
+      "length": 42,
+      "ghidra_sha256": "a96bd4239072bf5565794cce8917077abafd7d0ed2db860514d23aeac84bec3f",
+      "disk_matches": true
+    },
+    {
+      "address": "00c13545",
+      "length": 40,
+      "ghidra_sha256": "f3bb9d95acdc6618bae3d06dac8ee51a662c0841cc217fc19ff6398fc1a93aef",
+      "disk_matches": true
+    },
+    {
+      "address": "00bfe120",
+      "length": 15,
+      "ghidra_sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+      "disk_matches": true
+    }
+  ],
+  "annotation_preimages_and_proposals": [
+    {
+      "address": "00c27489",
+      "before": {
+        "address": "00c27489",
+        "function_name": "__87except",
+        "comment": "Library Function - Single Match\n __87except\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__87except",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c27489] Reconstructed complete installed math exception entry: dispatch mask/type7 rewrite; masked x87 status; actual continuable Win32 RaiseException and record result/CW mutation; installed return-zero matherr body; errno. Saved CW pointer is read only. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c13364",
+      "before": {
+        "address": "00c13364",
+        "function_name": "__handle_exc",
+        "comment": "Library Function - Single Match\n __handle_exc\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__handle_exc",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c13364] Reconstructed masked exception handling, original x87 status-generating instructions, overflow signed infinity/max finite rounding choice, underflow1536 exponent unscale and significand shift/inexact handling. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c13322",
+      "before": {
+        "address": "00c13322",
+        "function_name": "__raise_exc",
+        "comment": "Library Function - Single Match\n __raise_exc\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__raise_exc",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c13322] Recovered cdecl forwarding wrapper to __raise_exc_ex with seventh argument0 (binary64); complete entry dependency. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c13048",
+      "before": {
+        "address": "00c13048",
+        "function_name": "__raise_exc_ex",
+        "comment": "Library Function - Single Match\n __raise_exc_ex\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__raise_exc_ex",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c13048] Recovered FPIEEE record112bytes, values at16/48/80, Cause/Enable/Status, actual RaiseException(code,0,1,&recordPointer), result continuation, clear-only enable mask edits. Native precision restore reuses EDX=FFFFF3FF and clears rounding bits; preserved. Binary64 route reconstructed; binary32 route documented only. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c138a7",
+      "before": {
+        "address": "00c138a7",
+        "function_name": "__ctrlfp",
+        "comment": "Library Function - Single Match\n __ctrlfp\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__ctrlfp",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c138a7] Raw x87 control helper: waiting FSTCW, masked low16bit replacement, FLDCW, sign-extended old control result. No modern controlfp or MXCSR substitution. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c28545",
+      "before": {
+        "address": "00c28545",
+        "function_name": "LIBCRT_unmatched_00c28545",
+        "comment": "[BSP inventory 00c28545] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c28545",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c28545] Installed matherr call target body is exactly33C0C3, return0 with no indirect callback or mutation; consistent with default _matherr. Symbol interpretation remains provisional. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c13545",
+      "before": {
+        "address": "00c13545",
+        "function_name": "__set_errno_from_matherr",
+        "comment": "Library Function - Single Match\n __set_errno_from_matherr\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__set_errno_from_matherr",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c13545] Type1 writes errno33; types2/3 write34; other types leave errno. Reconstruction binds actual owning CRT per-thread errno accessor. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c13890",
+      "before": {
+        "address": "00c13890",
+        "function_name": "__statfp",
+        "comment": "Library Function - Single Match\n __statfp\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__statfp",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c13890] Raw waiting FSTSW, sign-extended status return; reconstructed for IEEE status record. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c1389b",
+      "before": {
+        "address": "00c1389b",
+        "function_name": "__clrfp",
+        "comment": "Library Function - Single Match\n __clrfp\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__clrfp",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c1389b] FNSTSW followed by FNCLEX, sign-extended old status return; reconstructed status-clear effect before RaiseException. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c138ce",
+      "before": {
+        "address": "00c138ce",
+        "function_name": "LIBCRT_unmatched_00c138ce",
+        "comment": "[BSP inventory 00c138ce] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c138ce",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c138ce] Role: x87 status setter. Invalid via huge80bit FISTP; overflow/underflow via original80bit constants and binary64 store; dividezero via FDIVRP; inexact via FLDPI/binary64 store. Descriptive role provisional. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c12f99",
+      "before": {
+        "address": "00c12f99",
+        "function_name": "LIBCRT_unmatched_00c12f99",
+        "comment": "[BSP inventory 00c12f99] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c12f99",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c12f99] Role: CRT binary64 decomposition helper with signed-subnormal significand shift and exponent extraction, returns ST0 fraction. EDX is meaningful across __set_exp for the subnormal path. Descriptive role provisional. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00c12eb0",
+      "before": {
+        "address": "00c12eb0",
+        "function_name": "__set_exp",
+        "comment": "Library Function - Single Match\n __set_exp\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__set_exp",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c12eb0] Binary64 input spill, replace exponent field with(exponent+1022), reload ST0; preserved helper for CRT underflow handling. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    },
+    {
+      "address": "00bffb8b",
+      "before": {
+        "address": "00bffb8b",
+        "function_name": "LIBCRT_unmatched_00bffb8b",
+        "comment": "[BSP inventory 00bffb8b] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00bffb8b",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00bffb8b] Role: owning CRT errno location, returning per-thread data+8 or global fallback00E159E8. Explicit borrowed real-runtime service boundary; original TLS/startup not reconstructed here. Descriptive role provisional. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation."
+    }
+  ],
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "compiler": "MSVC19.51.36244 Win32",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/O2",
+        "/MD"
+      ],
+      "source_sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+      "header_sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "new_source_registered_in_worker_cmake": false,
+      "new_source_separately_strict_compiled": true
+    },
+    "native_differential": {
+      "passed": true,
+      "fixture": "local/legacy_crt_math_differential.cpp",
+      "fixture_sha256": "72930b67dc7968f21b365bda89e2f950760fe825b6081099f9baf4bb35a4e9b7",
+      "runner": "local/test_legacy_crt_math.ps1",
+      "runner_sha256": "07e41272acfd8689f30d4f9ae463f77594640047f7b187b564035fa99e31b531",
+      "reference_generator": "local/prepare_legacy_crt_math_reference.py",
+      "reference_generator_sha256": "9adb7814bb35f472884674afc99dceef3dfdf7c9a24c275af8b0881aeeec9a9b",
+      "masked_comparisons": 5376,
+      "unmasked_comparisons": 16128,
+      "actual_continued_windows_exceptions": 12096,
+      "failures": 0,
+      "isolated_processes": [
+        "masked",
+        "SEH"
+      ],
+      "coverage": [
+        "types1..8",
+        "14 result classes/values: signedzero, subnormal, finite, overflow-scaled finite, positive/negative infinity, qNaN/sNaN",
+        "all four rounding modes",
+        "24/53/64-bit precision",
+        "actual bypass0x2694 and0",
+        "operation5 unary and16 binary",
+        "unchanged IEEE controls and two handler edit policies",
+        "resultbits/type/errno/savedCW/liveCW/x87 exceptionflags/exceptioncode/documented FPIEEE fields"
+      ],
+      "original_runtime_service_boundary": "Native _errno entry redirected to actual host _errno; original TLS not initialized. Native RaiseException IAT bound to actual Windows service. Native security cookie and default matherr body preserved. All original absolute memory operand relocations enumerated in native_reference; internal relative calls unchanged."
+    },
+    "drop_in_binary_replacement": false,
+    "game_validated": false
+  },
+  "remaining_boundaries": [
+    "Integrator CMake registration, Ghidra annotation application/save/refresh and ledger metadata",
+    "Actual installed owner provides persistent runtime global and errno accessor binding",
+    "Original CRT TLS/startup initialization is borrowed service boundary; not reconstructed",
+    "Reserved FPIEEE stack bytes initialized tozero and reserved x87 precision encoding01 not contracted",
+    "Unused binary32 __raise_exc_ex variant not exposed",
+    "Native differential checks x87 exceptionflags, not complete instruction/data pointer or condition-code state",
+    "No gameplay validation"
+  ]
+}
