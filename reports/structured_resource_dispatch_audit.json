@@ -1,0 +1,287 @@
+{
+  "packet": "structured_resource_dispatch",
+  "utc": "2026-09-09T23:49:03.488950+00:00",
+  "status": "bounded_factory_dispatch_and_append_audit_complete_external_reader_and_item_ownership",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live CLI verifies bsp/program/language/image base; full listed code/data spans match installed PE. Missing function0071bb40 decoded from matched bytes through final RET4 then CC padding."
+  },
+  "functions": [
+    {
+      "address": "0071b870",
+      "inclusive_end": "0071b8ce",
+      "length": 95,
+      "role": "concrete_factory_create",
+      "matches_disk": true,
+      "sha256": "ab2a4333a1d4fed0015236c5456719da1179a1257d190f57a3bad82a872c2099",
+      "file_offset": 3258480,
+      "original_abi": "ECX factory unused; stack native-name wrapper; EAX allocated resource/null; RET4.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/0071b870"
+    },
+    {
+      "address": "00b7f430",
+      "inclusive_end": "00b7f5ab",
+      "length": 380,
+      "role": "root_resource_dispatch",
+      "matches_disk": true,
+      "sha256": "d7accc863ec42895fbfc4192218599ddb97eedee20721a52134b1b717373d843",
+      "file_offset": 7861296,
+      "original_abi": "ECX resource manager; stack pointer to parent reader handle; RET4.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/00b7f430"
+    },
+    {
+      "address": "0071b810",
+      "inclusive_end": "0071b869",
+      "length": 90,
+      "role": "concrete_resource_construct",
+      "matches_disk": true,
+      "sha256": "fb558cdc8fdb7a4b6cfc6dccf3d6d92b976160b5a200d4a9c5bb877c9e6ed6be",
+      "file_offset": 3258384,
+      "original_abi": "ECX allocated74h resource; stack native-name wrapper; EAX same object; RET4.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/0071b810"
+    },
+    {
+      "address": "00b7e970",
+      "inclusive_end": "00b7eadd",
+      "length": 366,
+      "role": "registered_resource_items_dispatch",
+      "matches_disk": true,
+      "sha256": "58afa219ee9071f633dc27b22438c1a53466966277f62731ef96d14f94b216eb",
+      "file_offset": 7858544,
+      "original_abi": "ECX resource manager; stack pointer to Resource child-reader handle; RET4.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/00b7e970"
+    },
+    {
+      "address": "00b88260",
+      "inclusive_end": "00b88318",
+      "length": 185,
+      "role": "base_resource_construct",
+      "matches_disk": true,
+      "sha256": "37d15ed24f220037f8c3b6995858adef6e36d5137fda761fa1e5202507bdf28c",
+      "file_offset": 7897696,
+      "original_abi": "ECX base object; stack native-name wrapper; EAX same object; RET4.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/00b88260"
+    },
+    {
+      "address": "00b86930",
+      "inclusive_end": "00b86945",
+      "length": 22,
+      "role": "unknown_resource_item_construct",
+      "matches_disk": true,
+      "sha256": "9f15be6a4d09f701b2ca12226f70f5f94310bfce0d45b7ecbad36b64a40d33c4",
+      "file_offset": 7891248,
+      "original_abi": "ECX allocated8-byte item; EAX same object; no stack arguments; RET.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/00b86930"
+    },
+    {
+      "address": "00b87aa0",
+      "inclusive_end": "00b87ada",
+      "length": 59,
+      "role": "base_raw_item_append",
+      "matches_disk": true,
+      "sha256": "06a57c4008e675f655884ebe8f67db6cfa6583df06c8f8a4e34b3831e008b4ce",
+      "file_offset": 7895712,
+      "original_abi": "ECX resource; stack item pointer; RET4. No AddRef; raw pointer append into+10/+14/+18 vector.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_structured_resource_dispatch/functions/00b87aa0"
+    },
+    {
+      "address": "0071bb40",
+      "inclusive_end": "0071bbf2",
+      "length": 179,
+      "role": "concrete_item_append_and_classify",
+      "matches_disk": true,
+      "sha256": "640802636e9915ff2aea9a92853a6059f1fd047c9a5340c9ca47455ca7d76a70",
+      "file_offset": 3259200,
+      "original_abi": "ECX concrete resource; stack item pointer; RET4. Preserves EBX/ESI and EDI on applicable branches.",
+      "function_definition_missing": true
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00cfd8cc",
+      "inclusive_end": "00cfd8df",
+      "length": 20,
+      "role": "concrete_resource_vtable",
+      "matches_disk": true,
+      "sha256": "1d4d209bf71db55141ac31d8b20bee0d25430896acce6ddf9a983293b8135043",
+      "file_offset": 9427148
+    },
+    {
+      "address": "00d63228",
+      "inclusive_end": "00d6323b",
+      "length": 20,
+      "role": "base_resource_vtable",
+      "matches_disk": true,
+      "sha256": "4c30c91fd469da1201fc2855ab6c9be14525310772ce8641ff49b51ecca09015",
+      "file_offset": 9843240
+    },
+    {
+      "address": "00d631c0",
+      "inclusive_end": "00d631cf",
+      "length": 16,
+      "role": "unknown_item_vtable_first_four_slots",
+      "matches_disk": true,
+      "sha256": "66ff6d2fa862ac8e0cfcd4bd26f5ed7a7ca4bbb8832f68be9aabcf2d3b95450d",
+      "file_offset": 9843136
+    },
+    {
+      "address": "00d630e4",
+      "inclusive_end": "00d63127",
+      "length": 68,
+      "role": "dispatch_tag_literals",
+      "matches_disk": true,
+      "sha256": "2986c2d8746e1c44b5c7f75b82dc2d7a09600ee457f90fafec8696581588f4fd",
+      "file_offset": 9842916
+    }
+  ],
+  "factory": {
+    "allocation_size": 116,
+    "initial_reference_count": 1,
+    "concrete_vtable": "00cfd8cc",
+    "base_vtable": "00d63228",
+    "name_fields": "+8 length/+Ch owned pointer copied from requested-name wrapper",
+    "zeroed_base_fields": "+10h through+40h DWORDs; includes raw item vector+10/+14/+18 and BoundingBox+28..3C",
+    "zeroed_derived_fields": [
+      "+48,+4C,+50",
+      "+58,+5C,+60",
+      "+68,+6C,+70"
+    ],
+    "constructor": "0071b870 allocates74h then calls0071b810, which calls00b88260 and installs concrete vtable. Null allocation returns null.",
+    "concrete_type": "Identified by size/vtables/factory, not a recovered source class name. Adjacent tag strings are not class-name evidence."
+  },
+  "root_dispatch": {
+    "bracket": "Unconditionally calls renderer global00f8d394 virtual+50 before reader traversal and virtual+54 after normal completion. Their semantics/lifetime are external.",
+    "traversal": "00be9a40(parentHandle), while00715bf0(parentHandle):00bea680(parentHandle,&childHandle), inspect child+14 tag, dispatch/skip,00be9ed0(&childHandle).",
+    "tags": [
+      {
+        "name": "Resource",
+        "comparison": "nonnull C-string and CRT stricmp==0",
+        "call": "00b7e970",
+        "arguments": "ECX manager; stack &childHandle"
+      },
+      {
+        "name": "Hierarchy",
+        "comparison": "nonnull C-string and CRT stricmp==0",
+        "call": "00b7f100",
+        "arguments": "ECX manager; stack &childHandle",
+        "owned_by": "loader_lifetime lane"
+      },
+      {
+        "name": "BoundingBox",
+        "comparison": "nonnull C-string and CRT stricmp==0",
+        "call": "00b93310",
+        "arguments": "ECX &childHandle; EDX six-float output; no stack args",
+        "output": "six MOVSS writes current resource+28,+2C,+30,+34,+38,+3C",
+        "owned_by": "loader_lifetime lane"
+      }
+    ],
+    "unknown": "Null/unknown tag invokes00be9c40(&childHandle), then same handle cleanup. No guessed parser or interpretation.",
+    "order": "Children processed in source order. Repeated Resource containers append; repeated BoundingBox writes replace previous six words. No blanket destination clearing in dispatcher."
+  },
+  "resource_dispatch": {
+    "traversal": "Read each child of Resource container with same remaining/read-child/cleanup helpers; manager+8 is registered parser map.",
+    "parser_lookup": "Child native string at child+10 length/+14 pointer is passed to00b7df40. Candidate sentinel and stricmp(query,candidate)<0 rejection implement exact-match gating under lookup-helper contract; full map lower_bound contract remains external.",
+    "registered": "Map-node+14 parser object virtual+8(&childHandle) returns item pointer in EAX.",
+    "unknown": "Allocate8-byte fallback,00b86930 installs vtable00d631c0 and refcount+4=1; skip child payload with00be9c40. Allocation-null returns null but still flows to append.",
+    "append": "Always call current resource(manager+24) virtual+Ch(item); concrete vtable target0071bb40. No local item release follows; only child-reader cleanup."
+  },
+  "append": {
+    "base": "00b87aa0 compares count+14 withcapacity+18; if full grows via00b872f0 to max(capacity+16,16), stores raw item pointer at data+10[count], increments count. No explicit AddRef.",
+    "concrete": "0071bb40 calls base append before null/type tests; for nonnull item calls item virtual+Ch(typeToken). First matching category appends pointer through helper to resource+64; else second category to+54; else third to+44. No explicit refcount operation in matched179bytes.",
+    "classification_tokens": [
+      "global00e19b64",
+      "return of006f9a80",
+      "return of00721c90"
+    ],
+    "typed_list_helpers": [
+      "0071b9b0",
+      "0071b940",
+      "0071b8d0"
+    ],
+    "ownership_limit": "Raw base append and no local release are established, but registered-parser returned ownership, typed-list helper behavior and resource/item destructors remain external. Do not claim fully verified ownership teardown or emit owning container implementation yet."
+  },
+  "implementation_boundary": {
+    "possible": "A bounded tag-dispatch projection could consume an already verified reader abstraction with explicit actual type parsers and native resource append callbacks. It would preserve unknown-child skip, fallback allocation and ordered updates.",
+    "not_ready": "Current include/src search found no established implementations of00bea680/00be9a40/00b7e970/00b93310. Actual serialized reader and concrete registered item parsers are required; no object/resource loader may be fabricated from raw bytes.",
+    "external": [
+      "reader-handle ownership, serialized format and skip/iteration helpers",
+      "registered parser-map initialization and concrete parser vtables",
+      "0071bb40 typed-list helper ownership",
+      "resource/item destructor release behavior",
+      "renderer virtual+50/+54 contracts",
+      "00b872f0 allocator and exception guarantees"
+    ]
+  },
+  "annotation_proposals": [
+    {
+      "address": "0071b870",
+      "name": "BSP_GameResourceFactory_Create",
+      "comment": "ECX factory unused; name wrapper stack, EAX74h object/null, RET4. Calls0071b810; base00b88260 establishes refcount1/name ownership. Concrete vtable00cfd8cc; descriptive type provisional."
+    },
+    {
+      "address": "0071b810",
+      "name": "BSP_GameResource_Construct",
+      "comment": "ECX74h object,name stack,RET4. Base00b88260 then vtable00cfd8cc; zeros three derived list triplets. Source class name not recovered."
+    },
+    {
+      "address": "00b7f430",
+      "name": "BSP_ResourceManager_DispatchRoot",
+      "comment": "ECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external."
+    },
+    {
+      "address": "00b7e970",
+      "name": "BSP_ResourceManager_DispatchItems",
+      "comment": "ECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external."
+    },
+    {
+      "address": "00b88260",
+      "name": "BSP_Resource_ConstructBase",
+      "comment": "ECX object; name wrapper stack;RET4. Refcount+4=1,owned name+8/+C,zero fields+10..40,vtable00d63228. Descriptive base name provisional."
+    },
+    {
+      "address": "00b86930",
+      "name": "BSP_UnknownResourceItem_Construct",
+      "comment": "ECX8-byte object;EAXsame;RET. Vtable00d631c0,refcount+4=1. Used by Resource dispatch when no registered child parser."
+    },
+    {
+      "address": "00b87aa0",
+      "name": "BSP_Resource_AppendRawItem",
+      "comment": "ECXresource;item pointer stack;RET4. Raw pointer append vector+10/+14/+18; no AddRef. Allocator/destructor semantics external."
+    },
+    {
+      "address": "0071bb40",
+      "name": "BSP_GameResource_AppendAndClassifyItem",
+      "comment": "Missing function definition; exact matched0071bb40-0071bbf2. ECXresource,item stack,RET4. Calls raw base append00b87aa0 then first matching type filter fills+64/+54/+44 derived list. Type names and list/destructor ownership external."
+    }
+  ],
+  "boundaries": {
+    "cpp_changed": false,
+    "shared_metadata_changed": false,
+    "ghidra_changed": false,
+    "new_tests": false,
+    "reconstructed": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "game_validated": false,
+    "other_lane_branches": [
+      "00b7f100",
+      "00b93310"
+    ]
+  },
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies."
+  }
+}

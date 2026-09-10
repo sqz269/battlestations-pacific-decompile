@@ -1,0 +1,184 @@
+{
+  "packet": "vfs_load_worker_dispatch",
+  "utc": "2026-09-09T23:40:33.042337+00:00",
+  "status": "bounded_assembly_audit_complete_dispatch_dependencies_unimplemented",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Each bsp.py ghidra command verifies project/program/language/image base. Complete listed code/data ranges matched installed PE and code decoded through final RET."
+  },
+  "functions": [
+    {
+      "address": "007188a0",
+      "inclusive_end": "007188bb",
+      "length": 28,
+      "role": "worker_resource_acquire_wrapper",
+      "matches_disk": true,
+      "sha256": "7d30e0392e2aec7290e2bca9dd78975e9a6f81b3820fa8f225d2baf3c11499a1",
+      "file_offset": 3246240,
+      "original_abi": "ECX native name wrapper; no stack args and no incoming EAX parameter; EAX resource pointer; RET. Preserves ESI/EDI.",
+      "exports": "exports/bsp/parallel_vfs_worker_dispatch/functions/007188a0"
+    },
+    {
+      "address": "007175d0",
+      "inclusive_end": "0071769d",
+      "length": 206,
+      "role": "concrete_resource_factory_singleton",
+      "matches_disk": true,
+      "sha256": "8c7a5e78a3d83072b606255109d25ee8747858ab0795842a07a4ada767214a51",
+      "file_offset": 3241424,
+      "original_abi": "No explicit inputs; EAX factory singleton pointer; RET. Incoming EAX overwritten by first instruction MOV EAX,FS:[0].",
+      "exports": "exports/bsp/parallel_vfs_worker_dispatch/functions/007175d0"
+    },
+    {
+      "address": "00b80720",
+      "inclusive_end": "00b80a4a",
+      "length": 811,
+      "role": "cached_resource_load_and_dispatch",
+      "matches_disk": true,
+      "sha256": "72ea3477979b9f5cbb675a52192ffb3c1fcf063130b57e0f1180780e3fb8a1ba",
+      "file_offset": 7866144,
+      "original_abi": "ECX resource manager; stack name-wrapper pointer, factory pointer; EAX resource pointer; RET8.",
+      "exports": "exports/bsp/parallel_vfs_worker_dispatch/functions/00b80720"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00cfd850",
+      "inclusive_end": "00cfd857",
+      "length": 8,
+      "role": "factory_primary_vtable",
+      "matches_disk": true,
+      "sha256": "197d54a489db1032665a07c0bd4f208b51df4fd348a2be2f6599132b94c7cd3d",
+      "file_offset": 9427024
+    },
+    {
+      "address": "00cfd84c",
+      "inclusive_end": "00cfd84f",
+      "length": 4,
+      "role": "factory_lifetime_subobject_vtable",
+      "matches_disk": true,
+      "sha256": "f72f3037e8dc8ed50c68638d8d58fcfbc21054b06a7a2626f79bac5c22a9ef5c",
+      "file_offset": 9427020
+    }
+  ],
+  "hidden_register_hypothesis": {
+    "verdict": "rejected",
+    "evidence": [
+      "007188a0-007188a4 saves ECX to ESI and calls007175d0 without reading incoming EAX.",
+      "007175d0 first instruction MOV EAX,FS:[0] overwrites incoming EAX before any read.",
+      "007188a9 copies factory return EAX into EDI;004c1400 return EAX becomes resource-manager ECX.",
+      "007188b0/b1 push factory and saved name;00b80720 returns resource in EAX; wrapper forwards it unchanged."
+    ]
+  },
+  "factory": {
+    "global_address": "00e19b90",
+    "size": 8,
+    "primary_vtable": "00cfd850",
+    "lifetime_vtable": "00cfd84c",
+    "create_slot_address": "0071b870",
+    "behavior": "Double-check lazy singleton under singleton-lifetime manager lock. Primary object at+0 and registered lifetime subobject at+4. Factory+4 takes requested name and returns concrete resource; factory allocation-null may propagate null."
+  },
+  "dispatch": {
+    "inputs": "007188a0 receives only name; factory selected by singleton007175d0, resource manager from004c1400.",
+    "manager_fields": {
+      "+14h": "name/resource associative cache object",
+      "+18h": "cache sentinel reference used by iterator comparison",
+      "+20h": "current factory pointer, assigned before lookup; cleared only on miss completion",
+      "+24h": "current/result resource pointer, assigned on both hit and miss"
+    },
+    "hit": "00b8075d lookup00b7e7b0 uses original requested-name wrapper. Hit resource at node+14h copied to manager+24h; InterlockedIncrement(resource+4) and return. No stream open or parse on hit. Factory remains in manager+20h on hit.",
+    "miss": [
+      "Read opaque global0109cefc virtual+4 metric and save DWORD.",
+      "Factory from manager+20h virtual+4(name) at00b807d6; save returned resource at manager+24h.",
+      "Copy original name, call mutable VFS resolve00bdf4c0 at00b80825; ignore AL.",
+      "Call VFS virtual+4(resolved_name,2) at00b8083c; no null check before later stream ref decrement.",
+      "Construct local reader00bea150 then attach stream00bf0430; copy resolved name into reader-associated string at local+68h.",
+      "Release acquired stream through InterlockedDecrement(stream+4), virtual+0 when zero.",
+      "Get root/reader result via00bea700 into local storage; call dispatch00b7f430(manager,&localRoot). Actual format/parser remains beyond audited scope.",
+      "Construct original-name/resource association with00b7f290; insert into manager+14h using00b803b0.",
+      "Clear manager+20h. Store firstMetric-secondMetric into resultResource+40h; metric meaning unknown.",
+      "Destroy root/reader temporaries with00be9ed0/00be9f10; return manager+24h."
+    ],
+    "identity": "Cache lookup/insertion use original requested name. Only miss I/O operates on mutable resolved-name copy. Comparator behavior requires00b7e7b0 audit; canonical alias deduplication is not established.",
+    "ownership": "Hit explicitly returns incremented resource reference. New-path ownership of factory result and cache insertion depends on0071b870/00b803b0; no additional explicit resource AddRef occurs in00b80720 miss body. Reader attachment lifetime before caller stream release remains00bf0430 contract.",
+    "failure": "No checked resolve result, stream-null test, factory-result-null test, parser status, or explicit terminal failure result in audited body. Do not fabricate graceful failure/format fallback.",
+    "concurrency": "Singleton factory initialization is guarded.00b80720 writes shared current-factory/current-resource fields; no enclosing lock is visible here. Reentrant/thread-safe manager behavior not established."
+  },
+  "next_dependencies": [
+    {
+      "address": "0071b870",
+      "reason": "Confirmed factory vtable00cfd850+4 target; creates concrete resource object. Looked up only; not exported/audited in this packet."
+    },
+    {
+      "address": "00b7f430",
+      "reason": "Direct parser dispatch at00b808c5. Indexed literal references Resource, Hierarchy, BoundingBox guide next packet but are not a recovered file-format specification."
+    },
+    {
+      "address": "00bf0430",
+      "reason": "Reader attachment and retention of opened stream before explicit release."
+    },
+    {
+      "address": "00bea700",
+      "reason": "Reader root result and serialized-format read contract."
+    },
+    {
+      "address": "004c1400",
+      "reason": "Resource-manager accessor/creation lifetime. Index indicates construction/registration calls; no full body audit."
+    },
+    {
+      "address": "00b7e7b0",
+      "reason": "Cache comparator and exact name equality."
+    },
+    {
+      "address": "00b803b0",
+      "reason": "Cache insertion ownership and duplicate behavior."
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "007188a0",
+      "name": "BSP_Resource_LoadWithGameFactory",
+      "comment": "ECX native resource-name wrapper, EAX resource result, no stack args, RET. Incoming EAX is not an argument:007175d0 overwrites it immediately. Gets factory007175d0 and manager004c1400, calls00b80720(name,factory). Descriptive resource-class interpretation provisional."
+    },
+    {
+      "address": "007175d0",
+      "name": "BSP_GameResourceFactory_GetSingleton",
+      "comment": "No explicit inputs; EAX8-byte factory singleton at00e19b90. Primary vtable00cfd850, lifetime subobject+4 vtable00cfd84c; create slot+4 target0071b870. First instruction destroys incoming EAX. Concrete format/class remains external."
+    },
+    {
+      "address": "00b80720",
+      "name": "BSP_ResourceManager_LoadAndCache",
+      "comment": "ECX manager; name/factory stack, EAX resource, RET8. Cache+14 uses original name; hit increments resource+4. Miss factory+4 creates resource, resolved-name VFS stream flags2 feeds reader00bf0430/root00bea700/dispatch00b7f430, original-name entry inserted. Current factory+20/current resource+24; unknown metric difference stored resource+40. Parser and new-result/cache ownership still external."
+    }
+  ],
+  "boundaries": {
+    "cpp_changed": false,
+    "shared_metadata_changed": false,
+    "ghidra_changed": false,
+    "source_implemented": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "game_validated": false,
+    "inspected_callees": [
+      "007175d0",
+      "00b80720"
+    ],
+    "caller_owned_elsewhere": [
+      "00501510",
+      "00be0a30"
+    ],
+    "stream_owned_elsewhere": [
+      "00bdf950",
+      "00be0980"
+    ]
+  },
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies."
+  }
+}

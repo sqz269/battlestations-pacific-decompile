@@ -9,7 +9,7 @@ from the snapshot, sharded ledgers, tags, call graph, partition, PE strings and 
   python tools/bsp.py show 00ab9fd0 [--asm] [--lines 80] [--start 0]   capped export excerpt
   python tools/bsp.py range 00ab0000 00ac0000 --only FUN_
   python tools/bsp.py callers|callees|docs-for 00ab9fd0 / segment 12 / find GuiManager
-  python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|comments|decompile|disasm|export ...
+  python tools/bsp.py ghidra count|proto|flow|xrefs|callers|callees|bytes|comments|decompile|disasm|export ...
   python tools/bsp.py snapshot [--force]         snapshot + index only if Ghidra's function count changed
   python tools/bsp.py index [--if-stale]
   python tools/bsp.py ledger add-name|add-function|add-fragment|migrate ...
@@ -408,6 +408,13 @@ def state(args):
                 print(f"  {ident:<28} {status_text[:40]:<40} {owner}")
             if len(packets) > args.limit:
                 print(f'  ... {len(packets) - args.limit} more in config/parallel_work.json')
+            ready = work.get('next_dispatch', [])
+            if ready:
+                print(f'next packets ({len(ready)}):')
+                for p in ready[:args.limit]:
+                    addresses = p.get('function_addresses', [])
+                    anchors = ','.join(addresses[:5]) + (' ...' if len(addresses) > 5 else '')
+                    print(f"  {p.get('packet', '?'):<28} {p.get('worker', ''):<18} {anchors}")
         except (ValueError, AttributeError):
             print('packets: config/parallel_work.json unreadable')
 
@@ -445,6 +452,25 @@ def ghidra_cmd(args):
             cap(as_text(c.get('get_function_signature', address=a)), args.lines)
         except RuntimeError as exc:
             print(f'(signature unavailable: {str(exc)[:120]})')
+    elif sub == 'flow':
+        # The installed bridge exposes the previous override in its dry-run
+        # result. dry_run MUST be a query parameter (never a JSON body field).
+        # This command cannot apply a repair.
+        from urllib.parse import urlencode
+        from urllib.request import Request, urlopen
+        rows = []
+        for value in args.addresses:
+            address = norm(value)
+            request = Request(c.config['ghidra_url'] + '/clear_instruction_flow_override?' +
+                urlencode({'program': c.config['program'], 'dry_run': 'true'}),
+                data=json.dumps({'address': address}).encode(),
+                headers={'Content-Type': 'application/json'}, method='POST')
+            with urlopen(request, timeout=90) as response:
+                result = json.loads(response.read())
+            if result.get('error') or result.get('dry_run') is not True:
+                sys.exit(f'Flow inspection did not return a confirmed dry run: {result}')
+            rows.append({'address': address, 'result': result})
+        cap(as_text(rows), args.lines)
     elif sub == 'comments':
         # Annotation readback often spans a batch. Persist complete records in
         # ignored local storage while keeping the interactive view bounded.
@@ -476,7 +502,8 @@ def ghidra_cmd(args):
             print(f'{int(a, 16) + off:08x}  {chunk.hex(" ")}  {"".join(chr(b) if 32 <= b < 127 else "." for b in chunk)}')
     elif sub in ('decompile', 'disasm'):
         a = norm(args.address)
-        result = c.get('decompile_function' if sub == 'decompile' else 'disassemble_function', address=a)
+        endpoint = ('force_decompile' if args.force else 'decompile_function') if sub == 'decompile' else 'disassemble_function'
+        result = c.get(endpoint, address=a)
         cap(as_text(result), args.lines, args.start)
     elif sub == 'export':
         addresses = [norm(x) for x in args.addresses]
@@ -546,12 +573,15 @@ def main():
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')
     q = gs.add_parser('proto'); q.add_argument('address'); q.add_argument('--lines', type=int, default=20)
+    q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--limit', type=int, default=25); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('bytes'); q.add_argument('address'); q.add_argument('--length', type=int, default=64)
     for name in ('decompile', 'disasm'):
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--lines', type=int, default=80); q.add_argument('--start', type=int, default=0)
+        if name == 'decompile':
+            q.add_argument('--force', action='store_true', help='flush Ghidra decompiler cache before reading')
     q = gs.add_parser('export'); q.add_argument('addresses', nargs='+'); q.add_argument('--force', action='store_true')
     p.set_defaults(func=ghidra_cmd)
     p = sub.add_parser('ledger'); ls = p.add_subparsers(dest='ledger_command', required=True)

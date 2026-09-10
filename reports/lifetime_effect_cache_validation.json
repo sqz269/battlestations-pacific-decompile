@@ -1,0 +1,112 @@
+{
+  "utc": "2026-09-10T00:02:12.768208+00:00",
+  "baseline_commit": "5b2c897996ade921ea43f29aec0d1bdf642ed99d",
+  "snapshot": {
+    "utc": "2026-09-10T00:00:40.588086+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62746,
+    "internal_function_count": 62304,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "scope": "Existing reconstructed/native math CTests; cache/stream behavior verified by separate existing D3D9 diagnostic."
+  },
+  "installed_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "empty_physical_retained_backing": true,
+    "font_cache": {
+      "compiler_loads_per_case": 1,
+      "aliases": 3,
+      "canonical": "shaderfx/gui/guifontbilinear.shfx",
+      "accounted_size": 0,
+      "caller_survives_clear": true,
+      "actual_owned_COM_shaders": true
+    },
+    "font_draws": [
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=A hr=0x00000000 visible=74 outside=0 bounds=64,70..73,82 expected=63,63..75,88 sampler_mask=1 restored=1 lit_lines=1 checked=1",
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=wrapped_A_space_A_LF_A hr=0x00000000 visible=900 outside=0 bounds=69,130..88,232 expected=68,116..90,244 sampler_mask=1 restored=1 lit_lines=3 checked=1"
+    ]
+  },
+  "review": {
+    "reviewer": "effect_cache",
+    "result": "No concrete regression; actual COM ownership and failure cleanup, alias/canonical routing, material bindings and draw-state restoration reviewed."
+  },
+  "native_evidence": "reports/lifetime_effect_cache_native_identity.json",
+  "annotations": "reports/lifetime_effect_cache_annotations.json",
+  "reviewed_names": 530,
+  "reconstructed_routines": 174,
+  "partial_fragments": 107,
+  "baseline_reconstruction_keys_preserved": 277,
+  "remaining_rename_tags_verified": 8774,
+  "tag_count": 10333,
+  "partition": {
+    "utc": "2026-09-10T00:01:30.626537+00:00",
+    "candidates": 23887,
+    "segments": 94,
+    "largest_strong_cycle_segments": 89,
+    "sha256": "bbdc300096f4836cf525af48cba59715750f55c2351376106375175a3a108bfc"
+  },
+  "source_hashes": {
+    "CMakeLists.txt": {
+      "built_file_sha256": "a700d3a570a28eaad1657efa3d1f71e17d538061dacf12491eccf571368b7713",
+      "git_lf_sha256": "a700d3a570a28eaad1657efa3d1f71e17d538061dacf12491eccf571368b7713"
+    },
+    "include/bsp/effect_cache.hpp": {
+      "built_file_sha256": "d12c368faee42775973791a92af8c04aa974cfc7f27898b4ff54cfc4e8ffee23",
+      "git_lf_sha256": "d12c368faee42775973791a92af8c04aa974cfc7f27898b4ff54cfc4e8ffee23"
+    },
+    "include/bsp/memory_stream.hpp": {
+      "built_file_sha256": "0dd992d602060f5b5a38e2f6138070ed0eb24558862583ca03b2e7e2e804c269",
+      "git_lf_sha256": "0dd992d602060f5b5a38e2f6138070ed0eb24558862583ca03b2e7e2e804c269"
+    },
+    "src/asset_stream_probe.hpp": {
+      "built_file_sha256": "841012243400e85674aa32021df0a623ef957beef45c51c47e9df90311830a71",
+      "git_lf_sha256": "841012243400e85674aa32021df0a623ef957beef45c51c47e9df90311830a71"
+    },
+    "src/d3d9_font_probe.cpp": {
+      "built_file_sha256": "05fe8767166709376c6a69facdcb48c7eba6b2f6a9e4afa4ed2cf299f3d27275",
+      "git_lf_sha256": "05fe8767166709376c6a69facdcb48c7eba6b2f6a9e4afa4ed2cf299f3d27275"
+    },
+    "src/d3d9_probe.cpp": {
+      "built_file_sha256": "0ebbde98ea959c88a1bdf0102db614d3ba9470ffc143a9dba50b55b0a4921fe1",
+      "git_lf_sha256": "0ebbde98ea959c88a1bdf0102db614d3ba9470ffc143a9dba50b55b0a4921fe1"
+    },
+    "src/effect_cache.cpp": {
+      "built_file_sha256": "987bfb8518b854ae9da4beaa3317adc571aa930d5d71e396b7ba839f57255979",
+      "git_lf_sha256": "987bfb8518b854ae9da4beaa3317adc571aa930d5d71e396b7ba839f57255979"
+    },
+    "src/memory_stream.cpp": {
+      "built_file_sha256": "c59ba8d4d42d4447d816a6a66a47294fe6fde5fca95c853284c76557f0156348",
+      "git_lf_sha256": "c59ba8d4d42d4447d816a6a66a47294fe6fde5fca95c853284c76557f0156348"
+    }
+  },
+  "artifact_sha256": "e55bba654d5c4086a5a00dba3fb90ca450a9ac1e73d708696953d0113ebdbd83",
+  "new_test_targets": 0,
+  "abi_compatible": false,
+  "game_rebuilt": false,
+  "goal_status": "active",
+  "limits": [
+    "Diagnostic font compiler; native loader fallback, guard, metadata, scene and renderer lifecycle remain.",
+    "Loader/FileBlock/structured resource packets are source and ABI audits, not complete C++ runtime paths.",
+    "No gameplay validation; native drop-in ABI not provided.",
+    "Cache rare paths such as recursive fallback are source-established, not exercised by the installed font probe."
+  ],
+  "report_sha256": {
+    "reports/lifetime_effect_cache_build.txt": "6223db89016397a03a627f7844f4adc20a72987001822d859b476fed6a5f0d1a",
+    "reports/lifetime_effect_cache_probe.txt": "086a15a4590757cb8e734fd3136caeac7fe7e0303e00cc0caf050f1c5eda8712",
+    "reports/lifetime_effect_cache_native_identity.json": "31acb730377f5beedaf2e99e6f209459caac376820c2b659b74cd412cfca716a",
+    "reports/lifetime_effect_cache_annotations.json": "865ebeb23295140974ecb37a5a062d2eb6eb2328592f3986adb59e05b457b444"
+  },
+  "tools_validation": {
+    "python_syntax": "bsp.py and ghidra_export.py py_compile passed",
+    "forced_exports": 57,
+    "dry_run_flow_readback": 13,
+    "state_ready_packets": 3
+  }
+}

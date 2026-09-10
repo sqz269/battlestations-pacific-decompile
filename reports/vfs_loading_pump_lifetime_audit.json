@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "packet": "vfs_loader_pump_lifetime",
+  "captured_utc": "2026-09-09T23:32:47.085504+00:00",
+  "status": "read_only_complete_span_audit_ready_for_parent_review",
+  "source_head": "5b2c897",
+  "scope": {
+    "primary_addresses": [
+      "00509190",
+      "005092e0",
+      "00737a50"
+    ],
+    "approved_additional_addresses": [
+      "00504850",
+      "00506bf0"
+    ],
+    "new_cpp": false,
+    "tests_added": false,
+    "tests_run": false,
+    "ghidra_mutated": false,
+    "boundary": "Native stop is unbounded and count-driven. No parser, timeout, cancellation, thread affinity, or complete-drain behavior is invented."
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every live byte command calls bsp.py client().verify() before reading.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {
+        "address": "00509190",
+        "length": 333,
+        "end_exclusive": "005092dd",
+        "sha256": "9477747f64bea79c866dacfe12add284bdf9cc5057b4f38374b3390691258614",
+        "matches_original_pe": true,
+        "disk_offset": 1085840,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_loading_pump/00509190.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_loading_pump/00509190.raw.asm.txt"
+      },
+      {
+        "address": "005092e0",
+        "length": 109,
+        "end_exclusive": "0050934d",
+        "sha256": "c0ead2dcfbefc720daf91a0a91f7b567c7362659520d8a6d705d0553ca5831da",
+        "matches_original_pe": true,
+        "disk_offset": 1086176,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_loading_pump/005092e0.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_loading_pump/005092e0.raw.asm.txt"
+      },
+      {
+        "address": "00737a50",
+        "length": 371,
+        "end_exclusive": "00737bc3",
+        "sha256": "9b0e757869a0173dff1c11813fa457b74edc848d71abe9d467929d6db752d994",
+        "matches_original_pe": true,
+        "disk_offset": 3373648,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_loading_pump/00737a50.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_loading_pump/00737a50.raw.asm.txt"
+      },
+      {
+        "address": "00504850",
+        "length": 19,
+        "end_exclusive": "00504863",
+        "sha256": "78313f12a61614220bc80c3c3eb43959a79039ca4ab99466bbc12521b2b089b2",
+        "matches_original_pe": true,
+        "disk_offset": 1067088,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_loading_pump/00504850.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_loading_pump/00504850.raw.asm.txt"
+      },
+      {
+        "address": "00506bf0",
+        "length": 131,
+        "end_exclusive": "00506c73",
+        "sha256": "7d71157d777118c1f98cb770ca44f0b6a9a1e15c044ce9e9da81c881dd9a3704",
+        "matches_original_pe": true,
+        "disk_offset": 1076208,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_loading_pump/00506bf0.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_loading_pump/00506bf0.raw.asm.txt"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "old_name": "FUN_00509190",
+      "proposed_name": "BSP_LoadingQueue_Update",
+      "original_abi": "ECX loader; no stack arguments; RET or tail call. Ghidra no-argument signature omits ECX.",
+      "evidence": "Entry00509191 stores ECX in EDI; state dispatch005091ca..005092d7; callback arguments00509285/005092bc; finalRET005092dc.",
+      "address": "00509190",
+      "descriptive_name_is_hypothesis": true,
+      "status": "read_only_complete_span_audit_no_implementation",
+      "proposed_plate_comment": "[BSP reconstruction 00509190] update\nComplete 333-byte loader update. Loader +10h is the front-pointer array, +14h its count. Initial stopped state 0/2 retires the front then reloads. State 0 submits FileStore name job +14h with callback 00504850; native true sets state 1 even for resident/pending duplicates. False sets the stop byte if VFS +78h is nonzero, else state 2. State 1 has no advancing branch. State 2 calls 00504790, sets state 3, calls 00501620. State 3 consults worker virtual +10h; normal/stopped result paths remain dependent on opaque helpers. No physical cancellation or termination guarantee.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim."
+    },
+    {
+      "old_name": "FUN_005092e0",
+      "proposed_name": "BSP_LoadingQueue_StopAndWait",
+      "original_abi": "ECX loader; no stack arguments; RET or tail jump to global00f8d394 virtual+1Ch.",
+      "evidence": "Count checks005092f0/0050930c/00509336; stopfront write00509308; Sleep10000509320; pump0050932a; update00509331.",
+      "address": "005092e0",
+      "descriptive_name_is_hypothesis": true,
+      "status": "read_only_complete_span_audit_no_implementation",
+      "proposed_plate_comment": "[BSP reconstruction 005092e0] update\nComplete 109-byte StopLoadingThread outer lifecycle, identified by the existing GIAchievements diagnostic. If loader +14h is nonzero, call global 00f8d394 virtual +18h; set current front +4; while count is nonzero Sleep(100), pump VFS 0109ceec, update 00509190; tail-call global virtual +1Ch. Loop condition is loader count, not FileStore keys or physical reads. No timeout, cancellation or pending-map clearing; state 1 can remain stuck without an external writer. Entry stop flag marks only the current front; later fronts can submit.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim."
+    },
+    {
+      "old_name": "BSP_Application_RunFrame",
+      "proposed_name": "BSP_Application_RunFrame",
+      "original_abi": "ECX application; no stack arguments; RET. Existing frame ABI preserved.",
+      "evidence": "Pump00737b7f; loaderaccessor00737b84; EAXtoECX00737b89; loaderupdate00737b8b.",
+      "address": "00737a50",
+      "descriptive_name_is_hypothesis": true,
+      "status": "read_only_complete_span_audit_no_implementation",
+      "proposed_plate_comment": "[BSP reconstruction 00737a50] update\nComplete 371-byte frame span freshly PE-matched. Additional loading-order evidence: after sticky exit propagation, 00737b79/7f pump VFS 0109ceec; 00737b84 obtains the loader through 004fde20; 00737b89/8b update via 00509190; then frame cleanup. Successful physical callback can make the current front ready before the same frame update; submission from that update needs a later physical pump. Preserve all existing frame evidence.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim."
+    },
+    {
+      "old_name": null,
+      "old_label": "LAB_00504850",
+      "proposed_name": "BSP_LoadingQueue_OnFileStoreReady",
+      "original_abi": "Two stack arguments, unused; RET8. Consistent with FileStore two-name callee-cleanup callback; no ECX origin input.",
+      "evidence": "Complete00504850..00504862:call004fde20;load[return+10h];loadfront;storefront.state=2;ret8. Callback DATA xrefs00509285/005092bc.",
+      "needs_function_definition": true,
+      "address": "00504850",
+      "descriptive_name_is_hypothesis": true,
+      "status": "read_only_complete_span_audit_no_implementation",
+      "proposed_plate_comment": "[BSP reconstruction 00504850] update\nMissing function definition: separate 19-byte callback entry, complete raw span PE-matched. Ignores both FileStore name arguments; calls 004fde20, takes the current loader +10h array front, stores state 2, RET 8. No origin capture, name matching, retain/release, count check or stop-flag check. The audited state 1 front is retained by ordinary update paths, but other writers/accessor replacement require separate lifetime proof.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim."
+    },
+    {
+      "old_name": "FUN_00506bf0",
+      "proposed_name": "BSP_LoadingQueue_RetireFront",
+      "original_abi": "ECX loader; no stack arguments; RET; valid nonempty pointer queue.",
+      "evidence": "Jobresource v+4 call00506c07; FileStore00be7130 call00506c23; dtor00506c33;free00506c39; rawcontinuation00506c3e..46;shift00506c54..6a;count--00506c6c.",
+      "callsite_analysis": {
+        "address": "00506c39",
+        "flow_override": "CALL_RETURN",
+        "provenance": "Integrator focused inspection and dry run, communicated during this audit.",
+        "thunk": "00bf65ac",
+        "target": "00bf9dc8",
+        "thunk_and_target_already_returning": true,
+        "proposed_repair": "Clear only this audited call-site flow override, recover the raw continuation, refresh exports."
+      },
+      "missing_decompiler_continuation": {
+        "start": "00506c3e",
+        "end_exclusive": "00506c47",
+        "instructions": [
+          "add esp,4",
+          "mov dword ptr [ebx],0"
+        ]
+      },
+      "address": "00506bf0",
+      "descriptive_name_is_hypothesis": true,
+      "status": "read_only_complete_span_audit_no_implementation",
+      "proposed_plate_comment": "[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim."
+    }
+  ],
+  "prior_ghidra_annotations": [
+    {
+      "address": "00509190",
+      "annotation": {
+        "address": "00509190",
+        "function_name": "FUN_00509190"
+      }
+    },
+    {
+      "address": "005092e0",
+      "annotation": {
+        "address": "005092e0",
+        "function_name": "FUN_005092e0",
+        "comment": "[BSP reconstruction 005092e0]\nECX caller object; no stack arguments; RET or tail dispatch to object virtual+1Ch Byte-checked GIAchievements::StopLoadingThread() string. While object+14h remains nonzero: Sleep100, pump VFS global0109ceec at0050932a, call00509190. Establishes pump during stop wait, not physical request cancellation. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      }
+    },
+    {
+      "address": "00737a50",
+      "annotation": {
+        "address": "00737a50",
+        "function_name": "BSP_Application_RunFrame",
+        "comment": "[BSP reconstruction 00737a50]\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      }
+    },
+    {
+      "address": "00506bf0",
+      "annotation": {
+        "address": "00506bf0",
+        "function_name": "FUN_00506bf0"
+      }
+    }
+  ],
+  "facts": [
+    {
+      "id": "frame_order",
+      "addresses": [
+        "00737b79",
+        "00737b7f",
+        "00737b84",
+        "00737b89",
+        "00737b8b"
+      ],
+      "statement": "Provider pump, loader accessor004fde20, then loader update00509190; frame cleanup follows."
+    },
+    {
+      "id": "stop_order",
+      "addresses": [
+        "005092f0",
+        "00509308",
+        "00509320",
+        "0050932a",
+        "00509331",
+        "00509336"
+      ],
+      "statement": "For nonzero count call global virtual+18h, flag current front, then repeat Sleep100/pump/update while loader+14h remains nonzero, then tail globalvirtual+1Ch."
+    },
+    {
+      "id": "stop_not_submission_gate",
+      "addresses": [
+        "00509308",
+        "005091b4",
+        "005091b9",
+        "00509272"
+      ],
+      "statement": "Entry flags only the current front. Initial retirement can expose an unflagged state0 job that submits later in the same update."
+    },
+    {
+      "id": "front_callback",
+      "addresses": [
+        "00504850",
+        "00504855",
+        "00504858",
+        "0050485a",
+        "00504860"
+      ],
+      "statement": "Two-name callback ignores both arguments; reobtains current loader and writes front state2. It owns no originating job."
+    },
+    {
+      "id": "front_stability_scope",
+      "addresses": [
+        "005091ca",
+        "005091cc",
+        "005091d5",
+        "005091da",
+        "005091dd"
+      ],
+      "statement": "State1 falls through with no retirement/advancement; initial stop cleanup only handles states0/2. Under these serialized paths front persists for its pending callback. No actual cross-thread race is demonstrated."
+    },
+    {
+      "id": "retire_count",
+      "addresses": [
+        "00506c39",
+        "00506c3e",
+        "00506c41",
+        "00506c54",
+        "00506c6c"
+      ],
+      "statement": "Raw continuation after _free clears the old front, shifts remaining pointers and decrements loader+14h; pseudocode early-return is false."
+    }
+  ],
+  "existing_integrated_contract": {
+    "source": "src/file_store_requests.cpp:55-98; include/bsp/file_store_requests.hpp; docs/VFS_PENDING_LIFETIME.md",
+    "fresh_byte_audit_in_this_packet": false,
+    "facts": [
+      "Resolve normalized copy before resident/pending lookup.",
+      "already_resident and already_pending mean native true and do not register another callback.",
+      "New pending entry keeps first callback only and submits flags2; resolved first name and original second name.",
+      "Completion erases pending key, inserts stream, then invokes stored two-name callback.",
+      "Terminal physical failure has no FileStore callback; pending key can outlive active OS read.",
+      "Stable current FileStore factory through physical drain; provider/controller lifetimes and serialized pump contract remain required."
+    ]
+  },
+  "state_transitions": [
+    {
+      "state": 0,
+      "trigger": "request true, including duplicates",
+      "effect": "state=1"
+    },
+    {
+      "state": 0,
+      "trigger": "request false and VFS+78h nonzero",
+      "effect": "stopbyte=1;state remains0"
+    },
+    {
+      "state": 0,
+      "trigger": "request false and VFS+78h zero",
+      "effect": "state=2"
+    },
+    {
+      "state": 1,
+      "trigger": "ordinary update, even with stopbyte",
+      "effect": "no progress"
+    },
+    {
+      "state": 2,
+      "trigger": "stopbyte zero",
+      "effect": "00504790(job);state=3;00501620(loader,job)"
+    },
+    {
+      "state": 3,
+      "trigger": "worker+10h returns true",
+      "effect": "return unchanged"
+    },
+    {
+      "state": 3,
+      "trigger": "worker+10h returns false and stopbyte zero",
+      "effect": "optional job+1Ch(result+0Ch,result+8);00501670(&job+8,0);job+0Ch nonzero =>00501620 else retirefront"
+    },
+    {
+      "state": 3,
+      "trigger": "worker+10h returns false and stopbyte nonzero",
+      "effect": "00483850(job+8 pointee+0Ch);retire all loader fronts"
+    },
+    {
+      "state": "0 or2",
+      "trigger": "initial update front stopbyte nonzero",
+      "effect": "retirefront;reload count andfront;possibly advance newly exposed front"
+    }
+  ],
+  "termination": {
+    "native_predicate": "loader+14h ==0",
+    "loader_count_is_physical_count": false,
+    "pending_key_count_is_physical_count": false,
+    "native_timeout": false,
+    "native_cancellation_established": false,
+    "conditional_stalls": [
+      "Resident true enters1 without a new callback.",
+      "Pending duplicate true enters1 but only prior stored callback exists.",
+      "Accepted physical read can fail terminally with no callback, leaving loader1 and pending key."
+    ],
+    "limitation": "These are consequences of the audited writers and integrated FileStore contract, not reproduced game hangs. Job creation, other writers, and external invariants were not audited."
+  },
+  "next_implementation": {
+    "recommendation": "Do not implement complete loading or native stop through fabricated parser results. Freeze audit and annotate evidence; next smallest body packet is00504790+00501620.",
+    "established_scheduling": "Outer frame pump then loader advance; native stop repeats Sleep100/pump/advance while loader count nonzero.",
+    "host_policy_boundary": "A separate bounded step may expose ordering/status but is not native StopLoadingThread completion. Preserve live owners on incomplete physical drain. No implicit timeout/cancellation/pending-key repair.",
+    "physical_counts": "Use unique owner active-read counts; VfsPendingPumpReport.remaining_observations can count a provider multiple times.",
+    "unresolved_dependencies": [
+      {
+        "address": "004fde20",
+        "reason": "current loader accessor construction/identity/lifetime"
+      },
+      {
+        "address": "00504790",
+        "reason": "state2 preparation; actual processing contract unknown"
+      },
+      {
+        "address": "00501620",
+        "reason": "worker submission/requeue; actual processing contract unknown"
+      },
+      {
+        "address": "00501670",
+        "reason": "intermediate result mutation/ownership"
+      },
+      {
+        "address": "00483850",
+        "reason": "stopped result cleanup"
+      },
+      {
+        "address": "005051a0",
+        "reason": "job destruction"
+      },
+      {
+        "address": "00be7130",
+        "reason": "FileStore RemoveFile; body and pending-map effects not audited"
+      },
+      {
+        "address": "loader+0Ch virtual+10h",
+        "reason": "worker readiness/busy semantics"
+      },
+      {
+        "address": "global00f8d394 virtual+18h/+1Ch",
+        "reason": "surrounding stop lifecycle operations"
+      }
+    ]
+  },
+  "validation": {
+    "exported_functions": 4,
+    "raw_only_missing_function": "00504850",
+    "complete_spans": 5,
+    "complete_bytes": 963,
+    "all_complete_spans_match_original_pe": true,
+    "no_cpp_build_needed": "No C++ changes in this packet.",
+    "runtime_verified": false,
+    "abi_compatible_replacement": false
+  },
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies."
+  }
+}

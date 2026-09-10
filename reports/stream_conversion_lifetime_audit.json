@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "packet": "stream_conversion_lifetime",
+  "audit_status": "complete_raw_body_and_ownership_audit_with_bounded_physical_zero_length_source_change",
+  "audited_utc": "2026-09-09T23:27:12.405176+00:00",
+  "baseline_commit": "5b2c897",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": {
+    "live_queries": "bsp.py ghidra bytes/proto/decompile/comments; Client.verify checked project, program path, language and image base before each query",
+    "byte_comparison": "All12 complete bodies plus3 vtable spans match configured installed PE; complete body hashes exclude verifiedCC padding and include finalRET operands.",
+    "raw_artifacts": "exports/bsp/parallel_stream_lifetime/",
+    "offline_reproduction": "python exports/bsp/parallel_stream_lifetime/verify_spans.py",
+    "original_comments_file": "exports/bsp/parallel_stream_lifetime/original_comments.json",
+    "original_comment_records": 12,
+    "original_game_files_modified": false,
+    "worker_modified_saved_ghidra": false,
+    "worker_build_or_runtime_checks_run": false,
+    "integration_note": "Primary integrator owns MSVCWin32 build and existing probe checks; fill integration result separately after execution."
+  },
+  "functions": [
+    {
+      "address": "008d43c0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "FUN_008d43c0",
+      "proposed_name": "BSP_MemoryBacking_Construct",
+      "keep_existing_name": false,
+      "abi": "ECX backing object; stack signed32 length; EAX object; RET4",
+      "ghidra_reported_body": "008d43c0 - 008d4436",
+      "raw_body": {
+        "address": "008d43c0",
+        "end_exclusive": "008d4437",
+        "length": 119,
+        "capture_length": 128,
+        "span_kind": "complete_body",
+        "sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/008d43c0_008d4437.bin",
+        "pe_match": true,
+        "returns": [
+          "008d4434: ret 4"
+        ]
+      },
+      "proposed_comment": "Count1 backing. Signedlength>0 stores/allocateslength; otherwise storedlength0 with allocation1. Adds original signed input to byte counter0109db9c and increments0109db98. Zero-length physical conversion safely projected; negative/truncated-size conversion remains excluded. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/008d43c0.proto.txt"
+    },
+    {
+      "address": "008d4470",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "CG_scalar_deleting_dtor_008d4470",
+      "proposed_name": "CG_scalar_deleting_dtor_008d4470",
+      "keep_existing_name": true,
+      "abi": "ECX backing; stack flags; EAX original object storage on both paths; RET4",
+      "ghidra_reported_body": "008d4470 - 008d4481",
+      "raw_body": {
+        "address": "008d4470",
+        "end_exclusive": "008d44b2",
+        "length": 66,
+        "capture_length": 80,
+        "span_kind": "complete_body",
+        "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/008d4470_008d44b2.bin",
+        "pe_match": true,
+        "returns": [
+          "008d44af: ret 4"
+        ]
+      },
+      "proposed_comment": "Preserve compiler-generated name. Complete66-byte body: free bytes, decrement0109db98, subtract storedlength from0109db9c, base cleanup, optional storagefree(flags bit0), EAX original object, RET4. Tail008d4482..008d44b1 exists after first free. Check per-instruction flow override before repair; callee no-return is not established. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/008d4470.proto.txt"
+    },
+    {
+      "address": "00bb8be0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "BSP_MPKG_OpenEntryStream",
+      "proposed_name": "BSP_MPKG_OpenEntryStream",
+      "keep_existing_name": true,
+      "abi": "ECX archive; stack entry,flags(unused); EAX stream; RET8",
+      "ghidra_reported_body": "00bb8be0 - 00bb8d51",
+      "raw_body": {
+        "address": "00bb8be0",
+        "end_exclusive": "00bb8d52",
+        "length": 370,
+        "capture_length": 384,
+        "span_kind": "complete_body",
+        "sha256": "eaf895523340f048952770a46a850d47573f4742b9f0896d9e84664e083aed7d",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bb8be0_00bb8d52.bin",
+        "pe_match": true,
+        "returns": [
+          "00bb8ca9: ret 8",
+          "00bb8ce4: ret 8",
+          "00bb8d38: ret 8",
+          "00bb8d4f: ret 8"
+        ]
+      },
+      "proposed_comment": "Compressed branch creates count1 inflater retaining archive source, converts through00bef750, then decrements inflater and invokes slot0 only at zero before returning independent count1 memory wrapper. Archive source cursor is mutated; no restore. Existing other-route contract retained. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bb8be0.proto.txt"
+    },
+    {
+      "address": "00bb8f90",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "CG_scalar_deleting_dtor_00bb8f90",
+      "proposed_name": "CG_scalar_deleting_dtor_00bb8f90",
+      "keep_existing_name": true,
+      "abi": "ECX memory wrapper; stack flags; EAX original object storage on both paths; RET4",
+      "ghidra_reported_body": "00bb8f90 - 00bb8fad",
+      "raw_body": {
+        "address": "00bb8f90",
+        "end_exclusive": "00bb8fae",
+        "length": 30,
+        "capture_length": 32,
+        "span_kind": "complete_body",
+        "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bb8f90_00bb8fae.bin",
+        "pe_match": true,
+        "returns": [
+          "00bb8fab: ret 4"
+        ]
+      },
+      "proposed_comment": "Preserve compiler-generated name. Call00bef9c0; free wrapper only when flags bit0 set; EAX original wrapper on both paths; RET4. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bb8f90.proto.txt"
+    },
+    {
+      "address": "00bbc1d0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "BSP_RawInflateStream_Construct",
+      "proposed_name": "BSP_RawInflateStream_Construct",
+      "keep_existing_name": true,
+      "abi": "ECX object; stack source,3-DWORD descriptor,2 unused capacity slots; EAX object; RET10h",
+      "ghidra_reported_body": "00bbc1d0 - 00bbc31d",
+      "raw_body": {
+        "address": "00bbc1d0",
+        "end_exclusive": "00bbc31e",
+        "length": 334,
+        "capture_length": 336,
+        "span_kind": "complete_body",
+        "sha256": "e452dcd3c3ea85998071d0b82885e92bec5e174c9ad732225e2215355f091e86",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bbc1d0_00bbc31e.bin",
+        "pe_match": true,
+        "returns": [
+          "00bbc31b: ret 0x10"
+        ]
+      },
+      "proposed_comment": "Retains same source wrapper at00bbc2e3 after decoder init; seeks source at00bbc2f7; no source clone. Count1 inflater, fixed16KiB/64KiB buffers,38h z_stream; unsupported allocation/init/seek failure behavior. Host shared_ptr adapter is not native ABI. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bbc1d0.proto.txt"
+    },
+    {
+      "address": "00bbc320",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "FUN_00bbc320",
+      "proposed_name": "BSP_RawInflateStream_Destroy",
+      "keep_existing_name": false,
+      "abi": "ECX inflater; no stack args; RET; no stable result contract",
+      "ghidra_reported_body": "00bbc320 - 00bbc380",
+      "raw_body": {
+        "address": "00bbc320",
+        "end_exclusive": "00bbc3da",
+        "length": 186,
+        "capture_length": 192,
+        "span_kind": "complete_body",
+        "sha256": "fa39ded96a5501adf264511a8f061a57ca12fd12a49edcfbff017c412dca459a",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bbc320_00bbc3da.bin",
+        "pe_match": true,
+        "returns": [
+          "00bbc3d9: ret"
+        ]
+      },
+      "proposed_comment": "Full body throughRET at00bbc3d9. Release source and clear field after callback, inflateEnd, free z_stream, input bytes/descriptor, output bytes/descriptor, stream/base cleanup. Saved Ghidra body incorrectly stops at00bbc380 after free. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bbc320.proto.txt"
+    },
+    {
+      "address": "00bbc3e0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "CG_scalar_deleting_dtor_00bbc3e0",
+      "proposed_name": "CG_scalar_deleting_dtor_00bbc3e0",
+      "keep_existing_name": true,
+      "abi": "ECX inflater; stack flags; EAX original object storage on both paths; RET4",
+      "ghidra_reported_body": "00bbc3e0 - 00bbc3fd",
+      "raw_body": {
+        "address": "00bbc3e0",
+        "end_exclusive": "00bbc3fe",
+        "length": 30,
+        "capture_length": 32,
+        "span_kind": "complete_body",
+        "sha256": "a944f499cfed74a9b4906bace1fb1c5f061a052c41b7a228c5d86f770c4bc41a",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bbc3e0_00bbc3fe.bin",
+        "pe_match": true,
+        "returns": [
+          "00bbc3fb: ret 4"
+        ]
+      },
+      "proposed_comment": "Preserve compiler-generated name. Call00bbc320, free object only for flags bit0, then restore original object storage intoEAX on both paths; RET4. Raw tail contradicts decompiler extraout_EAX. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bbc3e0.proto.txt"
+    },
+    {
+      "address": "00bd30e0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "FUN_00bd30e0",
+      "proposed_name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "keep_existing_name": false,
+      "abi": "ECX nullable object; no stack args; RET; invoke virtual+4 with flag1",
+      "ghidra_reported_body": "00bd30e0 - 00bd30ed",
+      "raw_body": {
+        "address": "00bd30e0",
+        "end_exclusive": "00bd30ee",
+        "length": 14,
+        "capture_length": 16,
+        "span_kind": "complete_body",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bd30e0_00bd30ee.bin",
+        "pe_match": true,
+        "returns": [
+          "00bd30ed: ret"
+        ]
+      },
+      "proposed_comment": "No reference-count decrement here: ifECX nonnull call virtual+4 with flag1; plainRET. Inflater, memory-wrapper and backing slot0 entries all point here. Callers decrement before dispatch. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bd30e0.proto.txt"
+    },
+    {
+      "address": "00bd30f0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "TRIV_body_00bd30f0",
+      "proposed_name": "BSP_RefCounted_DestroyBase",
+      "keep_existing_name": false,
+      "abi": "ECX base object; no stack args; RET; set base vtable00ceb130",
+      "ghidra_reported_body": "00bd30f0 - 00bd30f6",
+      "raw_body": {
+        "address": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "length": 7,
+        "capture_length": 16,
+        "span_kind": "complete_body",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bd30f0_00bd30f7.bin",
+        "pe_match": true,
+        "returns": [
+          "00bd30f6: ret"
+        ]
+      },
+      "proposed_comment": "ECX base object; store00ceb130 primary vtable; RET. Body7 bytes. Descriptive class name is a reconstruction hypothesis. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bd30f0.proto.txt"
+    },
+    {
+      "address": "00bef6d0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "BSP_MemoryStream_CreateFromBacking",
+      "proposed_name": "BSP_MemoryStream_CreateFromBacking",
+      "keep_existing_name": true,
+      "abi": "ECX backing; no stack args; EAX new memory wrapper; RET",
+      "ghidra_reported_body": "00bef6d0 - 00bef74b",
+      "raw_body": {
+        "address": "00bef6d0",
+        "end_exclusive": "00bef74c",
+        "length": 124,
+        "capture_length": 128,
+        "span_kind": "complete_body",
+        "sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bef6d0_00bef74c.bin",
+        "pe_match": true,
+        "returns": [
+          "00bef74b: ret"
+        ]
+      },
+      "proposed_comment": "Count1 new14h wrapper retains supplied backing at+8; cursor+10h=data, end+0Ch=data+length. Does not retain input wrapper. No recoverable allocation-failure null-return contract; native null dereference follows. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bef6d0.proto.txt"
+    },
+    {
+      "address": "00bef750",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "BSP_Stream_ConvertToMemory",
+      "proposed_name": "BSP_Stream_ConvertToMemory",
+      "keep_existing_name": true,
+      "abi": "ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET",
+      "ghidra_reported_body": "00bef750 - 00bef83f",
+      "raw_body": {
+        "address": "00bef750",
+        "end_exclusive": "00bef840",
+        "length": 240,
+        "capture_length": 240,
+        "span_kind": "complete_body",
+        "sha256": "696afedd7e769bad800086544926b2ea51da1cf17ed5606fc16497b8a90b80e5",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bef750_00bef840.bin",
+        "pe_match": true,
+        "returns": [
+          "00bef780: ret",
+          "00bef7ac: ret",
+          "00bef83f: ret"
+        ]
+      },
+      "proposed_comment": "Borrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bef750.proto.txt"
+    },
+    {
+      "address": "00bef9c0",
+      "evidence_kind": "complete_pe_matched_raw_body",
+      "old_name": "FUN_00bef9c0",
+      "proposed_name": "BSP_MemoryStream_Destroy",
+      "keep_existing_name": false,
+      "abi": "ECX memory wrapper; no stack args; RET; no stable result contract",
+      "ghidra_reported_body": "00bef9c0 - 00befa35",
+      "raw_body": {
+        "address": "00bef9c0",
+        "end_exclusive": "00befa36",
+        "length": 118,
+        "capture_length": 128,
+        "span_kind": "complete_body",
+        "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+        "raw_file": "exports/bsp/parallel_stream_lifetime/00bef9c0_00befa36.bin",
+        "pe_match": true,
+        "returns": [
+          "00befa35: ret"
+        ]
+      },
+      "proposed_comment": "Decrement backing+4; invoke slot0 only atzero; clear wrapper+8 only after callback. Then stream/base vtable cleanup. End/cursor fields not cleared. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim.",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_ledger_edits",
+      "name_uncertainty": "Descriptive names are reconstruction hypotheses; generated destructor names preserved.",
+      "original_metadata_file": "exports/bsp/parallel_stream_lifetime/00bef9c0.proto.txt"
+    }
+  ],
+  "primary_verified_flow_overrides": [
+    {
+      "function": "00bbc320",
+      "call_site": "00bbc37c",
+      "flow_override": "CALL_RETURN",
+      "complete_end_exclusive": "00bbc3da",
+      "status": "Primary integrator dry run confirmed; primary owns precise override repair and refreshed exports."
+    },
+    {
+      "function": "008d4470",
+      "call_site": "008d447d",
+      "flow_override": "CALL_RETURN",
+      "complete_end_exclusive": "008d44b2",
+      "status": "Primary integrator dry run confirmed; primary owns precise override repair and refreshed exports."
+    }
+  ],
+  "vtable_spans": [
+    {
+      "address": "00d15ad8",
+      "end_exclusive": "00d15ae0",
+      "length": 8,
+      "capture_length": 8,
+      "span_kind": "vtable_span",
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "raw_file": "exports/bsp/parallel_stream_lifetime/00d15ad8_00d15ae0.bin",
+      "pe_match": true,
+      "returns": []
+    },
+    {
+      "address": "00d642c0",
+      "end_exclusive": "00d642f8",
+      "length": 56,
+      "capture_length": 56,
+      "span_kind": "vtable_span",
+      "sha256": "19bc6e25d6f70fc4313cf9b27008c556c74bcaadbb64a9b3ee5da5290479e7be",
+      "raw_file": "exports/bsp/parallel_stream_lifetime/00d642c0_00d642f8.bin",
+      "pe_match": true,
+      "returns": []
+    },
+    {
+      "address": "00d64400",
+      "end_exclusive": "00d64438",
+      "length": 56,
+      "capture_length": 56,
+      "span_kind": "vtable_span",
+      "sha256": "6a4d66cb45c7dae78d0d63aecafbafb2fbb0d02fcdf364c2a22e00f443d99bd0",
+      "raw_file": "exports/bsp/parallel_stream_lifetime/00d64400_00d64438.bin",
+      "pe_match": true,
+      "returns": []
+    }
+  ],
+  "vtable_slots": [
+    {
+      "vtable": "00d64400",
+      "kind": "inflater",
+      "slot0": "00bd30e0",
+      "slot4": "00bbc3e0"
+    },
+    {
+      "vtable": "00d642c0",
+      "kind": "memory_wrapper",
+      "slot0": "00bd30e0",
+      "slot4": "00bb8f90"
+    },
+    {
+      "vtable": "00d15ad8",
+      "kind": "memory_backing",
+      "slot0": "00bd30e0",
+      "slot4": "008d4470"
+    }
+  ],
+  "contracts": {
+    "source_input": "00bef750 borrows source. Successful memory-type query shares source+8 backing without source-wrapper retention or cursor mutation; other branch seeks source0, reads once, leaves source cursor as advanced.",
+    "new_conversion_backing": "Construct backing count1; create wrapper count1 retaining backing to2; drop temporary backing to1; output owns backing independently of original source and inflater.",
+    "inflater_lifetime": "00bbc1d0 retains archive source at00bbc2e3, source seek00bbc2f7. 00bb8be0 converts at00bb8c78 then releases inflater at00bb8c83, dispatches slot0 at00bb8c93 only ifcount0.",
+    "inflater_destruction_order": [
+      "release source",
+      "clear source field after callback returns",
+      "inflateEnd",
+      "free z_stream",
+      "free input bytes",
+      "free input descriptor",
+      "free output bytes",
+      "free output descriptor",
+      "stream then base vtable cleanup",
+      "optional object free in scalar destructor"
+    ],
+    "backing_destruction_order": [
+      "free data",
+      "decrement object counter",
+      "subtract stored length from byte counter",
+      "base cleanup",
+      "optional backing-object free"
+    ],
+    "zero_length": "008d43c0 stores0 and allocates1 for signed length<=0. For exactzero,00bef750 requestsread0 and produces a nonnull backing wrapper with cursor=end=base. Negative values still pass originalDWORDread count and remain unsafe/unported.",
+    "reference_release_dispatch": "00bd30e0 does not decrement; callers decrement then dispatch slot0 atzero. It invokes virtual+4 with flag1.",
+    "complete_raw_tails": [
+      "00bbc381..00bbc3d9 follows firstfree despite saved body ending00bbc380",
+      "008d4482..008d44b1 follows firstfree despite truncated pseudocode",
+      "00bbc3f8/00bb8fa8/008d44ac restore original object toEAX after optionalfree"
+    ]
+  },
+  "implementation": {
+    "changed_files": [
+      "src/memory_stream.cpp",
+      "include/bsp/memory_stream.hpp",
+      "src/d3d9_probe.cpp"
+    ],
+    "smallest_enabled_change": "Accept exactzero physical source length; keep1 allocated byte with logical0; preserve seek0, single read, initialized-prefix tracking, and retained backing. No new API.",
+    "test_extension": "One existing probe_memory_texture scenario creates an empty file besidebuildexe, seeks physical cursor7, converts/resetsto0, verifies source stillopen thencloses, clones anddrops originalwrapper; checks nonnull retainedbacking, size/init/cursor0, endseek0, rejectedseek1 and EOFread sentinel unchanged.",
+    "probe_success_marker": "Empty physical conversion: retained_backing_cursor_and_read=1",
+    "retained_guards": [
+      "physical source lengths aboveINT32_MAX rejected",
+      "bytes-copy still requires1..INT32_MAX",
+      "MPKG materialization still requires1..INT32_MAX"
+    ],
+    "validation_status": "source_complete_waiting_primary_build_and_probe"
+  },
+  "uncertainties_and_exclusions": [
+    "Native intrusive allocator, object layouts and calling conventions are not host ABI replacements.",
+    "Native allocation/init/seek/read failure and exception unwinding are not projected as recoverable parity.",
+    "Native general conversion ignores short/error status; initialized-tail safeguards in host remain intentional.",
+    "Type-query implementation and its semantic class identifier remain outside the newly audited closure.",
+    "Negative/truncated lengths, bytes-copyzero and MPKGzero behavior remain excluded.",
+    "Host MPKG DecodedSource clones a cursor and materializes via vector; native mutates the same archive source wrapper and reads into final backing.",
+    "Cross-block backward seek excluded; stale-buffer reset already established and a clean rewind is a separate host policy.",
+    "No installed archive reads, native differential execution or gameplay validation occurred in this worker.",
+    "Original source/descriptor exceptional lifetimes and allocator accounting thread safety remain unverified."
+  ],
+  "document": "docs/STREAM_CONVERSION_LIFETIME.md",
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies.",
+    "flow_repair": "Initial CALL_RETURN observations retained; later analysis reinstated _free no-return. Primary corrected actual _free flag plus audited call-site overrides, rebuilt four truncated definitions, saved and refreshed exports. Final readback is authoritative."
+  }
+}

@@ -87,7 +87,7 @@ public:
     std::size_t cached_opens() const noexcept { return cached_opens_; }
     std::size_t physical_opens() const noexcept { return physical_opens_; }
     std::size_t cache_entries() const noexcept { return store_->size(); }
-private:
+    // Exposes the native mutable-name existence query without opening a stream.
     bool resolve(std::string& name, std::string& error) {
         if (!ready_ || !bsp::resolve_existing_resource_00bdf4c0_fragment(manager_->context(), registrations_, name)) {
             error = "Mounted providers could not resolve: " + name;
@@ -95,6 +95,7 @@ private:
         }
         return true;
     }
+private:
     bsp::VfsMount observe(bsp::VfsMount mount, bool cache) {
         auto open = std::move(mount.open_read_only);
         mount.open_read_only = [this, cache, open = std::move(open)](

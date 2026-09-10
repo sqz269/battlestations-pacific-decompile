@@ -1,0 +1,115 @@
+Raw inflater stream: decoded=150123 compressed=150138 short_source_reads=148 buffered_read_seek_EOF_and_retention=1
+Package scan entry: pass=1 name=./bad.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=failed error=MPKG end marker was not found in the native scan interval.
+Package scan entry: pass=1 name=./patch2.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=mounted error=
+Package scan entry: pass=1 name=.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=declined error=No provider factory accepted the package logical name.
+Package scan entry: pass=2 name=./inner.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=mounted error=
+Package scan entry: pass=2 name=./bad.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=failed error=MPKG end marker was not found in the native scan interval.
+Package scan entry: pass=2 name=./patch2.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=already_mounted error=
+Package scan entry: pass=2 name=.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=declined error=No provider factory accepted the package logical name.
+Synthetic package startup: outer_bytes=1523 inner_bytes=770 scans=2 lookups=7 mount_requests=6 first_entries=3 second_entries=4 shared_factory_and_system_identity=1 fresh_nested_scan_and_failure_continuation=1 error=
+Mounted MPKG: source_calls=5 live_alias_reopen_and_cursor=1 enumeration_alias_flag_and_first_spelling=1 recursive_source_rejected=1 expired_owner_error=1 error=
+Synthetic MPKG: bytes=263567 entries=4 directory=263073 central_size=443 eocd=263545 padding=249 prefix=29 final_block=17 phase=16 routes_opened=3 dynamic=637/159744 reopen=1 seeks=1 reads=1 requested=262181 actual=262181 encoded_source_and_owned_outputs=1 error=
+Camera native comparison: inverse=1 projection=1 multiply_and_exact_aliases=1 affine=1
+GUI native comparison: mode=0 differing_words=0 max_abs=0
+GUI native comparison: mode=1 differing_words=0 max_abs=0
+GUI native comparison: mode=2 differing_words=0 max_abs=0
+GUI native comparison: mode=3 differing_words=0 max_abs=0
+GUI native comparison: mode=4 differing_words=0 max_abs=0
+Font native prefix comparison: vertex_bytes_equal=1 indices_equal=1
+Recovered window creation: class_extra_style_geometry_hidden=1
+D3D9 device probe: hr=0x00000000 flags=0x44 size=640x480 windowed=1 format=21 depth=75 interval=0x0
+D3D9 defaults: render_calls=19 sampler_calls=140 zfunc=2 cull=3 min_filter=2 vertex_filter=2 balanced=1 checked=1
+Default surfaces: retained_color_depth_kind_zero_and_depth_bind_count=1
+D3D9 resources: hr=0x00000000 surface=640x480 vertex_bytes=16777216 index_bytes=1048576 checked=1
+Occlusion query reset: real_queries_fields_borrowed_removal_and_guard=1
+2D texture reset: existing_cached_mip_wrappers_reinitialized=1
+Dynamic buffer reset: readiness_lost_gates_metadata_and_guard=1
+Default surface reset: existing_owners_reinitialized_without_depth_bind=1
+D3D9 surface reset: hr=0x00000000 color_usage=1 depth_usage=2 checked=1
+Surface reset registry: swap_last_remove_without_surface_release=1
+D3D9 buffer uploads: hr=0x00000000 vertex_cursor=96 index_cursor=12 checked=1
+D3D9 vertex layout: hr=0x00000000 elements=3 stride=20
+Occlusion query draw: samples=1596 readback_covered_pixels=1596 polls=2 state=2 completed=1
+D3D9 draw readback: hr=0x00000000 inside=0xff00ff00 outside=0xff000000 checked=1
+D3D9 indexed readback: hr=0x00000000 inside=0xff00ff00 vertex_binds=1 index_binds=1 checked=1
+D3D9 buffer rewind: hr=0x00000000 reused_pixel=0xff0000ff checked=1
+D3D9 shader constants: hr=0x00000000 VS_PS_readback_and_zero_skip=1
+Installed Lua shaders: inputs=2 interpolators=1 debug_chunks=3 dummy_chunks=3
+Lua normal-mode combiner: dummy.shfx
+Lua descriptor scalar defaults/overrides: 1
+Installed Lua sampler: name_dimension_stage_source_order_and_declaration=1
+Lua debug render states: native_order_and_ids=1
+Parsed material sampler binding: texture_state_readback_and_null=1 usage_mask=1
+Installed alpha material draw: hr=0x00000000 center=0xffff0000 outside=0xff000000 checked=1 restored=1
+Pixel disassembly usage: COLOR0=15 filtered_fields=2 hr=0x00000000
+Camera local edit: callback_order_and_cache_refresh=1
+Camera world edit: two_notifications_derive_local_and_cache_refresh=1
+Reflected decode cVtxElemScale: c77 count=2 hr=0x00000000
+Reflected decode cVtxElemOffset: c79 count=2 hr=0x00000000
+Reflected visibility: c77 value=1 hr=0x00000000
+Native constant metadata: VS_end=81 PS_end=78 sampler_masks=0,0
+Generated debug shader draw: hr=0x00000000 center=0xff407fbf outside=0xff000000 checked=1 restored=1
+D3D9 shader bindings: hr=0x00000000 nonnull_identity_null_and_guard=1
+D3D9 material: hr=0x00000000 ordered_blocks_retention_and_packed_registers=1
+Empty physical conversion: retained_backing_cursor_and_read=1
+Physical asset read: bytes=524416 cached_position_matches_size=1 closed=1
+Initial texture load: D3DX_image_info_actual_metadata_and_source_retention=1
+Memory texture source: shared_backing_independent_cursor_retained_recreation=1
+D3D9 installed DDS: hr=0x00000000 size=1024x1024 managed_DXT1_bytes_match=1
+GUI atlas resolver: size=0.266666681,0.355555564 flip_fallback_reference_checked=1
+D3D9 atlas: hr=0x00000000 items=7 packed_quarter=16383 image_and_binding=1
+Installed physical pending reads: logical=71090 rounded=131072 callbacks=2 pumps=2 completed=2 succeeded=2 failed=0 transferred=142180 stable_callback_names=1 deferred_append_shutdown_and_owned_copy=1 initial_submit_error=0 append_error=0
+Mounted pending FileStore: callbacks=1 duplicate_callbacks=0 cache_declines=1 physical_submissions=1 pumps=2 no_op_visits=2 physical_visits=2 completed=1 failed=0 original_resolved_names_alias_bypass_and_cache_lifetime=1
+Installed startup package scans: passes=2 first_enumerated=1 first_entries=0 second_enumerated=1 second_entries=0
+Installed provider enumeration: names=34 cache_first=5 physical_additions=29 first_spelling_and_dedup=1
+Startup cached script: name=scripts/datatables/inputs.lua flags=0x32 bytes=71090 disk_bytes_equal=1
+Startup cached script: name=scripts/datatables/keyboardsetup.lua flags=0x32 bytes=26367 disk_bytes_equal=1
+Startup cached script: name=scripts/datatables/controllerinputnames.lua flags=0x32 bytes=12362 disk_bytes_equal=1
+Startup cached script: name=scripts/datatables/controlpresets.lua flags=0x32 bytes=12999 disk_bytes_equal=1
+Startup cached script: name=scripts/datatables/scoring.lua flags=0x32 bytes=17807 disk_bytes_equal=1
+Native startup script policy: completed=5 bytes=140625 physical_mode50_opens=5 cached_mode50_opens=5 checked=1
+Installed Lua font registry: entries=6 name_lookup_defaults_and_flags=1
+FileStore installed DAT: retained_wrapper_fresh_cursor_and_shared_backing_lifetime=1
+Installed font DAT: glyphs=207 scaled_height=23 signed_byte_acceptance=1 short_scalar=1 special_glyphs=1
+Installed font quad: normalized_positions_UVs_colors_and_indices=1
+Installed single-line font layout: glyphs=5 width=37.5 origin=41.25 fractional_alignment_controls_NUL_and_quads=1
+Mounted font lookup: Fonts/arial18.tga -> fonts/arial18.tga
+Mounted font lookup: Fonts/white.tga -> effects/white.dds
+Mounted font lookup: Fonts/arial18.dat -> fonts/arial18.dat
+Font resource owner: GFX_alpha_DAT_order_and_decoded_data=1 cache_opens=3 physical_opens=0 cache_entries=8
+Mounted font shader lookup: Scripts\fundamentals.lua -> scripts/fundamentals.lua
+Mounted font shader lookup: shaderfx/gui/guifontbilinear.shfx -> shaderfx/gui/guifontbilinear.shfx
+Mounted font shader lookup: shaderfx/dx9_lua.inc -> shaderfx/dx9_lua.inc
+Mounted font shader lookup: Scripts\fundamentals.lua -> scripts/fundamentals.lua
+Mounted font shader lookup: dummy.shfx -> shaderfx/lights/dummy.shfx
+Mounted font shader lookup: shaderfx/dx9_lua.inc -> shaderfx/dx9_lua.inc
+Installed font effect cache: loads=1 aliases=3 canonical=shaderfx/gui/guifontbilinear.shfx accounting=0 retained_after_clear=1
+Font VS constant cMatDiffColor: c88 count=1
+Font VS constant cViewProjMat: c15 count=4
+Font VS constant cVisibility: c87 count=1
+Font VS constant cVtxElemOffset: c84 count=3
+Font VS constant cVtxElemScale: c81 count=3
+Font VS constant cWorldMat: c77 count=4
+Installed font material bindings: VS=0 PS=5 registered=5 same_shader_clear=1 borrowed_alpha_update=1 retained_shader_owner=1
+Installed font owner: wrapped=0 bound_move=1 same_text=1 explicit_rebuild_fresh=1 empty_retains=1 empty_rebuild_skips=1 changed_fresh=1 main_shadow_shared=1 checked=1 error=
+Installed font owner cleanup: wrapped=0 detached=1
+Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=A hr=0x00000000 visible=74 outside=0 bounds=64,70..73,82 expected=63,63..75,88 sampler_mask=1 restored=1 lit_lines=1 checked=1
+Mounted font shader lookup: Scripts\fundamentals.lua -> scripts/fundamentals.lua
+Mounted font shader lookup: shaderfx/gui/guifontbilinear.shfx -> shaderfx/gui/guifontbilinear.shfx
+Mounted font shader lookup: shaderfx/dx9_lua.inc -> shaderfx/dx9_lua.inc
+Mounted font shader lookup: Scripts\fundamentals.lua -> scripts/fundamentals.lua
+Mounted font shader lookup: dummy.shfx -> shaderfx/lights/dummy.shfx
+Mounted font shader lookup: shaderfx/dx9_lua.inc -> shaderfx/dx9_lua.inc
+Installed font effect cache: loads=1 aliases=3 canonical=shaderfx/gui/guifontbilinear.shfx accounting=0 retained_after_clear=1
+Font VS constant cMatDiffColor: c88 count=1
+Font VS constant cViewProjMat: c15 count=4
+Font VS constant cVisibility: c87 count=1
+Font VS constant cVtxElemOffset: c84 count=3
+Font VS constant cVtxElemScale: c81 count=3
+Font VS constant cWorldMat: c77 count=4
+Installed font material bindings: VS=0 PS=5 registered=5 same_shader_clear=1 borrowed_alpha_update=1 retained_shader_owner=1
+Installed font owner: wrapped=1 bound_move=1 same_text=1 explicit_rebuild_fresh=1 empty_retains=1 empty_rebuild_skips=1 changed_fresh=1 main_shadow_shared=1 checked=1 error=
+Installed wrapped font layout: lines=3 glyphs=5 width=15 height=62.1000023 vertical_offset=0.163749993 x87=0x7f soft_wrap_LF_spacing_and_alignment=1 error=
+Installed font owner cleanup: wrapped=1 detached=1
+Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=wrapped_A_space_A_LF_A hr=0x00000000 visible=900 outside=0 bounds=69,130..88,232 expected=68,116..90,244 sampler_mask=1 restored=1 lit_lines=3 checked=1
+Installed font texture: hr=0x00000000 size=512x256 format=21 retained_recreation=1

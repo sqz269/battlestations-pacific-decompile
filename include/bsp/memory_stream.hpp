@@ -6,7 +6,8 @@ namespace bsp {
 struct MemoryStreamBacking;
 
 // Shared native-style backing with independent cursors; not the original ABI.
-// Supported backing lengths are 1..INT32_MAX. No allocator counters/pool.
+// Physical conversion supports backing lengths 0..INT32_MAX; bytes-copy still
+// requires a positive length. No allocator counters/pool.
 class MemoryStream {
 public:
     MemoryStream() noexcept = default;
@@ -49,6 +50,8 @@ private:
 // requested backing size independently of actual count. Short reads succeed.
 // Read failure returns false/error but still supplies backing and actual extent;
 // pre-read failures leave output unchanged. Does not close the source file.
+// Empty sources retain a one-byte allocation with logical length zero, matching
+// 008d43c0; conversion still performs the single zero-byte source read.
 bool memory_stream_from_physical_00bef750_fragment(PhysicalFile& source,
     MemoryStream& output, DWORD& error) noexcept;
 

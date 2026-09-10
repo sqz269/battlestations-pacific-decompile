@@ -7,8 +7,9 @@
 
 namespace bsp {
 struct MemoryStreamBacking {
+    // 008d43c0 keeps a data allocation even when the logical length is zero.
     explicit MemoryStreamBacking(std::uint32_t count)
-        : bytes(new std::uint8_t[count]), length(count) {}
+        : bytes(new std::uint8_t[count == 0 ? 1 : count]), length(count) {}
     std::unique_ptr<std::uint8_t[]> bytes;
     std::uint32_t length;
     std::uint32_t initialized{};
@@ -84,10 +85,6 @@ bool memory_stream_from_physical_00bef750_fragment(PhysicalFile& source,
     }
     if (!source.seek_00bf4f20(0, FILE_BEGIN, error)) return false;
     const std::uint64_t length = source.size_00bf4f90();
-    if (length == 0) {
-        error = ERROR_INVALID_DATA; // Native zero-length allocator path is unported.
-        return false;
-    }
     if (length >
         static_cast<std::uint64_t>((std::numeric_limits<std::int32_t>::max)())) {
         error = ERROR_FILE_TOO_LARGE; // Native truncated/negative size path is unported.

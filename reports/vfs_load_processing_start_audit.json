@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "packet": "vfs_load_processing_start",
+  "captured_utc": "2026-09-09T23:42:21.364788+00:00",
+  "source_head": "5b2c897",
+  "status": "read_only_complete_span_audit_ready_for_parent_review",
+  "scope": {
+    "initial_anchors": [
+      "00504790",
+      "00501620"
+    ],
+    "approved_immediate_callees": [
+      "00501510",
+      "00be0a30"
+    ],
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py byte command verifies the configured project/program before reading.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {
+        "address": "00504790",
+        "length": 188,
+        "kind": "code",
+        "end_exclusive": "0050484c",
+        "sha256": "1c5e11921a0ecb02e79e7a65b7d8ce210ea303e0aa468193a2b0e7f9298d7b4c",
+        "matches_original_pe": true,
+        "disk_offset": 1066896,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_processing_start/00504790.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_processing_start/00504790.raw.asm.txt"
+      },
+      {
+        "address": "00501620",
+        "length": 62,
+        "kind": "code",
+        "end_exclusive": "0050165e",
+        "sha256": "d8b19c496902525aa9c88d6dd6c4a2081a67194bb87608f75aceac9ccffdd1a0",
+        "matches_original_pe": true,
+        "disk_offset": 1054240,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_processing_start/00501620.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_processing_start/00501620.raw.asm.txt"
+      },
+      {
+        "address": "00501510",
+        "length": 262,
+        "kind": "code",
+        "end_exclusive": "00501616",
+        "sha256": "e655c4a3dd52593bb0f9572a2a4fd9ea33110bf32b5b5c81717f7343821eac75",
+        "matches_original_pe": true,
+        "disk_offset": 1053968,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_processing_start/00501510.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_processing_start/00501510.raw.asm.txt"
+      },
+      {
+        "address": "00be0a30",
+        "length": 171,
+        "kind": "code",
+        "end_exclusive": "00be0adb",
+        "sha256": "81ab91212b2b6a54b8bc5752481109b794e1b6927c60d1cb5d25165628a81155",
+        "matches_original_pe": true,
+        "disk_offset": 8260144,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_processing_start/00be0a30.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_vfs_processing_start/00be0a30.raw.asm.txt"
+      }
+    ],
+    "data_spans": [
+      {
+        "address": "00e18d78",
+        "length": 1,
+        "kind": "data",
+        "end_exclusive": "00e18d79",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "matches_original_pe": null,
+        "disk_offset": null,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_processing_start/00e18d78.bytes.txt",
+        "note": "Live zero byte lies in the PE virtual zero-fill tail; no original disk byte exists here.",
+        "matches_pe_virtual_zero_fill": true,
+        "hex": "00"
+      },
+      {
+        "address": "00d68494",
+        "length": 16,
+        "kind": "data",
+        "end_exclusive": "00d684a4",
+        "sha256": "17cff73f6bc8ffbe534f708fd57f529dbcdebb471e6c997dc06370e17ca48479",
+        "matches_original_pe": true,
+        "disk_offset": 9864340,
+        "raw_byte_capture": "exports/bsp/parallel_vfs_processing_start/00d68494.bytes.txt",
+        "hex": "e030bd00e0ebbd006346696c65537973",
+        "verified_vtable_slots": {
+          "+0": "00bd30e0",
+          "+4": "00bdebe0"
+        },
+        "note": "Only the first two dwords are vtable entries; the following bytes begin another string."
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00504790",
+      "old_name": "FUN_00504790",
+      "proposed_name": "BSP_LoadingJob_EnsureFileBlock",
+      "original_abi": "ECX job; no stack arguments; RET; no caller-tested success result.",
+      "evidence_addresses": [
+        "005047b2",
+        "005047bb",
+        "005047c7",
+        "005047df",
+        "005047ee",
+        "00504805",
+        "0050480d"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00504790] update\nComplete 188-byte job preparation. If job +20h is null and name length at +14h is nonzero, allocate 28 bytes; substring(name, start 13, requested length storedLength-18); construct 00be0a30(temporary,1); store at job +20h; destroy temporary name. Allocation-null stores null. Empty or missing FileBlock does not prevent caller 00509190 from setting state 3 and submitting work. No prefix/minimum-length validation is established; short-name unsigned behavior belongs to substring helper.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim."
+    },
+    {
+      "address": "00501620",
+      "old_name": "FUN_00501620",
+      "proposed_name": "BSP_LoadingQueue_StartWork",
+      "original_abi": "ECX loader; one job-pointer stack argument; RET 4.",
+      "evidence_addresses": [
+        "00501623",
+        "0050162d",
+        "00501631",
+        "0050163a",
+        "00501640",
+        "00501647",
+        "00501650",
+        "00501658"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00501620] update\nComplete 62-byte worker-start/publication body. If loader +1Ch is zero, CreateThread(NULL,0,00501510,loader+4,0,NULL), store returned handle. Then only if job +0Ch is nonzero, publish job at loader +8 and invoke loader +0Ch object virtual +4. Zero job field still permits thread creation but does not publish/signal, clear a prior job or report completion. No handle-validity check, reference acquisition, join or close here; actual synchronization and shutdown remain dependencies.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim."
+    },
+    {
+      "address": "00501510",
+      "old_name": "FUN_00501510",
+      "proposed_name": "BSP_LoadingQueue_WorkerMain",
+      "original_abi": "Thread entry: one stack pointer argument, RET 4, EAX 1 on normal stop exit. Argument points to loader+4.",
+      "evidence_addresses": [
+        "00501531",
+        "0050153c",
+        "00501540",
+        "00501548",
+        "00501582",
+        "00501599",
+        "005015a1",
+        "005015b2",
+        "005015b7",
+        "005015dc",
+        "005015e9",
+        "005015f3",
+        "005015f5",
+        "00501613"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00501510] update\nComplete 262-byte thread entry. Argument fields +0 stop word, +4 published job, +8 sync object correspond to loader +4/+8/+0Ch. Call sync virtual +8, check stop; while zero, copy C-string at job +8 work pointer +4 into owned temporary (strlen and length+1 copy), call 007188a0 with ECX local string and live EAX=&job+8, store result in captured work +0Ch, release temporary, call sync +0Ch then +8, recheck stop. EAX input significance needs callee assembly. Raw copy/cleanup branches exist despite decompiler unreachable warnings. Worker stop word differs from front-job stop byte; no retain, join or handle close is established.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim."
+    },
+    {
+      "address": "00be0a30",
+      "old_name": "FUN_00be0a30",
+      "proposed_name": "BSP_FileBlock_Construct",
+      "original_abi": "ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.",
+      "evidence_addresses": [
+        "00be0a56",
+        "00be0a63",
+        "00be0a69",
+        "00be0a8a",
+        "00be0a9f",
+        "00be0aae",
+        "00be0ab7",
+        "00be0abf",
+        "00be0ac9",
+        "00be0ad8"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim."
+    }
+  ],
+  "prior_ghidra_annotations": [
+    {
+      "address": "00504790",
+      "annotation": {
+        "address": "00504790",
+        "function_name": "FUN_00504790"
+      }
+    },
+    {
+      "address": "00501620",
+      "annotation": {
+        "address": "00501620",
+        "function_name": "FUN_00501620"
+      }
+    },
+    {
+      "address": "00501510",
+      "annotation": {
+        "address": "00501510",
+        "function_name": "FUN_00501510"
+      }
+    },
+    {
+      "address": "00be0a30",
+      "annotation": {
+        "address": "00be0a30",
+        "function_name": "FUN_00be0a30"
+      }
+    }
+  ],
+  "loader_state_connection": {
+    "source": "docs/VFS_LOADING_PUMP_LIFETIME.md",
+    "state2": [
+      "00504790(job)",
+      "job.state=3",
+      "00501620(loader,job)"
+    ],
+    "state3_normal": [
+      "query sync virtual+10h; only false proceeds",
+      "optional job+1Ch callback(work+0Ch result,work+8 user value)",
+      "00501670(&job+8,0)",
+      "job+0Ch nonzero => requeue through00501620; otherwise retirefront"
+    ],
+    "state3_stop": "Result cleanup and retire fronts; not worker stop or OS-thread join.",
+    "provisional": "job+0Ch likely work count and00501670 likely first-work removal; no new proof of that container contract."
+  },
+  "fileblock_preparation": {
+    "guard": "job+20h==0 and stored name length job+14h!=0",
+    "allocation_bytes": 28,
+    "substring": {
+      "start": 13,
+      "requested_length": "stored_length -18",
+      "prefix_validation": false,
+      "minimum_length_check": false,
+      "helper": "00469840 existing cached evidence; not freshly byte-audited here"
+    },
+    "construct": {
+      "address": "00be0a30",
+      "name": "temporary substring",
+      "flag": 1
+    },
+    "owner": "job+20h",
+    "null_allocation": "stores null; caller still advances state3",
+    "later_release": "00506bf0 invokes object virtual+4(1) then clears job+20h",
+    "destructor_target": "00bdebe0",
+    "destructor_callee": "00bdcb30",
+    "destructor_body_reviewed": false
+  },
+  "constructor_calls": [
+    {
+      "callsite": "00be0aae",
+      "target": "00bdf950",
+      "ecx": "new FileBlock object",
+      "stack": []
+    },
+    {
+      "callsite": "00be0abf",
+      "target": "00be0980",
+      "ecx": "global VFS pointer0109ceec",
+      "stack": [
+        "&FileBlock.name at+14h",
+        "supplied flag (1 from00504790)"
+      ]
+    }
+  ],
+  "independent_fileblock_contract": {
+    "document": "docs/FILE_BLOCK_SETUP.md",
+    "report": "reports/file_block_setup_audit.json",
+    "ownership": "Separate stream_lifetime agent packet; no duplicate function ownership.",
+    "effects": "Identifier transformation then VFS prior-gate stack, gate combination, optional observer, nesting-depth increment and name copy.",
+    "stream_open": false,
+    "paired_leave_body_reviewed": false
+  },
+  "start_contract": {
+    "thread_slot": "loader+1Ch",
+    "create_when": "stored slot is zero",
+    "create_arguments": [
+      "NULL",
+      "0",
+      "00501510",
+      "loader+4",
+      "0",
+      "NULL"
+    ],
+    "store_returned_handle": true,
+    "handle_validity_check": false,
+    "publish_when": "job+0Ch!=0",
+    "publish_target": "loader+8",
+    "notify": "sync object loader+0Ch virtual+4",
+    "zero_work_field": "Create thread if needed; leave current job slot unchanged; no notification; no completion signal.",
+    "retain_or_copy_job": false,
+    "joins": false,
+    "closes_handle": false
+  },
+  "worker_contract": {
+    "argument": "pointer into loader at+4",
+    "fields": [
+      {
+        "arg_offset": 0,
+        "loader_offset": 4,
+        "role": "stop word"
+      },
+      {
+        "arg_offset": 4,
+        "loader_offset": 8,
+        "role": "published current job"
+      },
+      {
+        "arg_offset": 8,
+        "loader_offset": 12,
+        "role": "synchronization object"
+      }
+    ],
+    "initial_call": "sync virtual+8 before first stop check",
+    "loop_predicate": "stop word==0 after sync call",
+    "name_source": "publishedJob+8 work pointer; character pointer at work+4; null uses00e18d78",
+    "copy": "Scan to NUL; allocate local wrapper through0041dd40; memcpy length+1 when allocated.",
+    "processing_call": {
+      "address": "007188a0",
+      "callsite": "005015b2",
+      "ecx": "&local owned string wrapper",
+      "eax_live": "&publishedJob+8",
+      "esi_preserved": "work pointer captured immediately before call",
+      "eax_is_argument": "Unresolved until callee assembly; do not invent a C++ signature."
+    },
+    "result_store": "returned EAX -> captured work+0Ch at005015b7",
+    "after_processing": [
+      "destroy local name if allocated",
+      "sync virtual+0Ch",
+      "sync virtual+8",
+      "check stop word"
+    ],
+    "normal_exit_value": 1,
+    "exit_value_means_job_success": false,
+    "local_copy_decompiler_warning": {
+      "raw_copy_branch": "0050158d..0050159e",
+      "raw_cleanup_branch": "005015c8..005015dc",
+      "problem": "Ghidra removes allocation-dependent blocks as unreachable; raw bytes retain them. String-helper effects need correct modeling."
+    },
+    "retains_owner": false,
+    "join_or_close": false
+  },
+  "lifetime_constraints": [
+    "Loader, embedded worker argument, sync object, published job and work record must remain live through access.",
+    "CreateThread precedes publication; actual initial sync virtual+8 must be preserved.",
+    "Worker stop loader+4 differs from front job stopbyte+4;005092e0 does not write worker stopword.",
+    "Worker reloads published job between name copy and processing; synchronization/publication discipline is required.",
+    "Result is stored through the work pointer captured before007188a0; callee replacement/ownership effects need review.",
+    "No atomics/lock/event semantics, OS thread affinity, cancellation, or complete shutdown policy inferred."
+  ],
+  "minimal_real_implementation": {
+    "recommendation": "Resolve007188a0 actual processing ABI and00501670 work advancement before writing an owned-name processing adapter. Preserve concrete synchronization before reconstructing native thread start.",
+    "insufficient": [
+      "Parser callback returning fabricated success",
+      "No-op synchronization methods",
+      "Treating job+0Ch==0 as completed while creating no native-equivalent worker state",
+      "Using front-job stop flag as worker shutdown",
+      "Calling FileBlock preparation a stream opener"
+    ],
+    "dependencies": [
+      {
+        "address": "007188a0",
+        "role": "real processing, potential register input, result and ownership"
+      },
+      {
+        "address": "00501670",
+        "role": "work-record advancement and destruction"
+      },
+      {
+        "address": "sync object virtual+4/+8/+0Ch/+10h",
+        "role": "publication, execution and completion handshake"
+      },
+      {
+        "address": "loader+4 writers / enclosing destructor",
+        "role": "worker stop, join and handle lifetime"
+      },
+      {
+        "address": "00bdcb30 via00bdebe0",
+        "role": "FileBlock destruction and paired VFS leave effects"
+      }
+    ]
+  },
+  "validation": {
+    "complete_function_spans": 4,
+    "complete_function_bytes": 683,
+    "all_code_matches_original_pe": true,
+    "vtable16_bytes_match_original_pe": true,
+    "empty_fallback": "Live zero in PE virtual zero-fill tail; no disk-byte identity claim.",
+    "new_implementation": false,
+    "build_run": false,
+    "tests_run": false,
+    "runtime_verified": false
+  },
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies.",
+    "eax_boundary": "Verified007175d0 overwrites incomingEAX beforeuse;007188a0 takesECXname only. Seevfs_load_worker_dispatch_audit.json."
+  }
+}

@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "packet": "file_block_lifetime",
+  "status": "complete_bounded_paired_normal_path_audit_with_explicit_exception_and_manager_lifetime_boundaries",
+  "audited_utc": "2026-09-09T23:48:45.296575+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": {
+    "live_queries": "bsp.py ghidra bytes/proto/decompile/comments; Client.verify checked project, program path, language and image base before each query.",
+    "complete_bodies": 4,
+    "data_spans": 2,
+    "all_bytes_match_configured_installed_pe": true,
+    "artifacts": "exports/bsp/parallel_file_block_lifetime/",
+    "original_comments_file": "exports/bsp/parallel_file_block_lifetime/original_comments.json",
+    "original_comment_records": 4,
+    "worker_modified_ghidra": false,
+    "original_game_files_modified": false,
+    "cpp_modified": false,
+    "build_or_runtime_tests_run": false
+  },
+  "functions": [
+    {
+      "address": "00bdaf40",
+      "old_name": "STL_inst_00bdaf40",
+      "proposed_name": "STL_list_EraseNode_00bdaf40",
+      "abi": "ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch",
+      "comment": "Preserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed.",
+      "raw_body": {
+        "address": "00bdaf40",
+        "end_exclusive": "00bdaf9e",
+        "length": 94,
+        "capture_length": 96,
+        "sha256": "87ebfe3ac176c4601e85078bbd7959f7eaa2087138eb74b5afc565de489279f0",
+        "raw_file": "exports/bsp/parallel_file_block_lifetime/00bdaf40_00bdaf9e.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00bdaf9b: ret 0xc"
+        ]
+      },
+      "ghidra_reported_body": "00bdaf40 - 00bdaf9d",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_LIFETIME.md"
+    },
+    {
+      "address": "00bdc9b0",
+      "old_name": "FUN_00bdc9b0",
+      "proposed_name": "BSP_VFS_LeaveFileBlock",
+      "abi": "ECX VFS manager; stack name-wrapper pointer; RET4; no stable result contract",
+      "comment": "Complete197-byte body. Observer+88h virtual+0Ch if+78h, explicit name unlessempty then manager currentname+0Ch; callback precedes mutations. Clear currentname, depth+14h--, diagnostic under currentgate+79h, restoregate from last list node+8, erase node via00bdaf40. Parent name is not restored. Empty-stack validation happens after name/depth mutations; matching live node required for normal path.",
+      "raw_body": {
+        "address": "00bdc9b0",
+        "end_exclusive": "00bdca75",
+        "length": 197,
+        "capture_length": 208,
+        "sha256": "5180222dc5039a2d96794a6446a84b5b8b88c34531c3ed5103128559eceb185e",
+        "raw_file": "exports/bsp/parallel_file_block_lifetime/00bdc9b0_00bdca75.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00bdca72: ret 4"
+        ]
+      },
+      "ghidra_reported_body": "00bdc9b0 - 00bdca74",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_LIFETIME.md"
+    },
+    {
+      "address": "00bdcb30",
+      "old_name": "FUN_00bdcb30",
+      "proposed_name": "BSP_FileBlock_Destroy",
+      "abi": "ECX FileBlock; no stack arguments; RET; no stable result contract",
+      "comment": "Install vtable00d68494; reload globalVFS[0109ceec], call00bdc9b0 with name at FileBlock+14h; only after leave returns destroy name allocation and base00bd30f0. Manager is read at destruction rather than captured from construction. Complete124-byte body. Constructor/unwind rollback not established; no stream range or ownership.",
+      "raw_body": {
+        "address": "00bdcb30",
+        "end_exclusive": "00bdcbac",
+        "length": 124,
+        "capture_length": 128,
+        "sha256": "92e7646b0a310b15c90134a788d6be6a178ba4468ae98ebf5127b158ecfe528a",
+        "raw_file": "exports/bsp/parallel_file_block_lifetime/00bdcb30_00bdcbac.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00bdcbab: ret"
+        ]
+      },
+      "ghidra_reported_body": "00bdcb30 - 00bdcbab",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_LIFETIME.md"
+    },
+    {
+      "address": "00bdebe0",
+      "old_name": "CG_scalar_deleting_dtor_00bdebe0",
+      "proposed_name": "CG_scalar_deleting_dtor_00bdebe0",
+      "abi": "ECX FileBlock; stack flags; EAX original object storage on both paths; RET4",
+      "comment": "Preserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode.",
+      "raw_body": {
+        "address": "00bdebe0",
+        "end_exclusive": "00bdebfe",
+        "length": 30,
+        "capture_length": 32,
+        "sha256": "1accffb7af988c5ca55165dcef27450014a2962a92708aa4d93aba33f95b41d9",
+        "raw_file": "exports/bsp/parallel_file_block_lifetime/00bdebe0_00bdebfe.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00bdebfb: ret 4"
+        ]
+      },
+      "ghidra_reported_body": "00bdebe0 - 00bdebfd",
+      "annotation_status": "proposal_only_primary_integrator_owns_ghidra_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_LIFETIME.md"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00d68484",
+      "end_exclusive": "00d68494",
+      "length": 16,
+      "capture_length": 16,
+      "sha256": "871d8a8b00118fd9ed624aed91784ce55357340621c37696ce7767efc7bfa2f3",
+      "raw_file": "exports/bsp/parallel_file_block_lifetime/00d68484_00d68494.bin",
+      "pe_match": true,
+      "span_kind": "data_span",
+      "returns": [],
+      "first_c_string": "-FileBlock %s"
+    },
+    {
+      "address": "00d68494",
+      "end_exclusive": "00d6849c",
+      "length": 8,
+      "capture_length": 8,
+      "sha256": "47ed2e5466dafd132438d0b38631b75028d165f40c20934d5939e3b4317c1af5",
+      "raw_file": "exports/bsp/parallel_file_block_lifetime/00d68494_00d6849c.bin",
+      "pe_match": true,
+      "span_kind": "data_span",
+      "returns": [],
+      "first_c_string": "\ufffd0\ufffd"
+    }
+  ],
+  "vtable": {
+    "address": "00d68494",
+    "slot0": "00bd30e0",
+    "slot4": "00bdebe0"
+  },
+  "paired_entry_evidence": {
+    "entry": "00be0980",
+    "document": "docs/FILE_BLOCK_SETUP.md",
+    "report": "reports/file_block_setup_audit.json",
+    "constructor": "00be0a30",
+    "constructor_document": "docs/VFS_LOAD_PROCESSING_START.md",
+    "provenance": "Prior independently owned and PE-matched entry/constructor packets; not re-exported in this closure."
+  },
+  "destruction": {
+    "order": [
+      "set FileBlock vtable",
+      "reload current global VFS manager",
+      "leave block with owned identifier",
+      "release identifier allocation",
+      "base destructor",
+      "optional FileBlock storage free in scalar deleting wrapper"
+    ],
+    "global_manager_load": "00bdcb54 reads[0109ceec]; manager is not captured from constructor.",
+    "owned_identifier": "FileBlock string at+14h/+18h survives through manager leave, then released.",
+    "refcount": "No decrement in audited destructor bodies; generic slot0 dispatch or direct virtual+4 reaches deleting wrapper.",
+    "stream_ownership": "No stream range/read/retain/release observed."
+  },
+  "paired_manager_state": {
+    "current_name": "+0Ch/+10h",
+    "depth": "+14h",
+    "observer_enabled": "+78h",
+    "gate": "+79h",
+    "list_object": "+7Ch",
+    "sentinel": "+80h",
+    "list_size": "+84h",
+    "observer": "+88h",
+    "enter_order": [
+      "save previousgate via node construction",
+      "grow/link node",
+      "gate AND input",
+      "observer virtual+8",
+      "depth++",
+      "copy new currentname"
+    ],
+    "leave_order": [
+      "observer virtual+0Ch",
+      "clear currentname",
+      "depth--",
+      "diagnostic using currentgate and explicitname",
+      "restoregate from last node+8",
+      "erase last node and decrement size"
+    ],
+    "observer_name_selection": "Leave input name when stored length!=0; otherwise manager current-name wrapper.",
+    "name_after_leave": "Empty; parent-name text is not restored.",
+    "normal_nested_result": "Previous gate and outer depth restored, last saved node removed, currentname empty.",
+    "underflow": "Empty saved-node list invokes unreviewed runtime helper00bf6713 only after observer/name/depth actions; no safe no-op guarantee."
+  },
+  "list_erase": {
+    "node_fields": {
+      "next": "+0",
+      "previous": "+4",
+      "saved_gate_read_by_leave": "+8"
+    },
+    "normal_owner": "Caller passes manager+7Ch as ECX receiver and stack iterator-owner.",
+    "mutation_order": [
+      "remember node.next",
+      "previous.next=node.next",
+      "next.previous=node.previous",
+      "free node",
+      "list.size--",
+      "output iterator={owner,remembered_next}"
+    ],
+    "tail": "00bdaf84..00bdaf9d afterfree includes count decrement and output return; captured pseudocode omits these on deleting branch."
+  },
+  "decompiler_inspection_sites": [
+    {
+      "call_site": "00bdaf7f",
+      "function": "00bdaf40",
+      "complete_end_exclusive": "00bdaf9e",
+      "issue": "Captured free branch omits size decrement/output iterator return; body already includes bytes.",
+      "action": "Inspect exact flow override; no blind library or body expansion change."
+    },
+    {
+      "call_site": "00bdebf0",
+      "function": "00bdebe0",
+      "complete_end_exclusive": "00bdebfe",
+      "issue": "Captured extraout_EAX conflicts with raw EAX=self at00bdebf8.",
+      "action": "Inspect precise call-site/callee analysis before correction."
+    }
+  ],
+  "exception_boundary": {
+    "constructor_audit": "Loader owner explicitly confirmed constructor unwind funclets not audited; normal body has name copy/prepare/global enter but no explicit catch/rollback.",
+    "entry_observer_throw": "At callback boundary saved node is linked and gate changed, while depth/name are still previous. Compensating leave has not been proved.",
+    "exit_observer_throw": "Callback precedes normal leave name/depth/gate/node mutations; these have not run if it throws there.",
+    "destructor_eh_states": "States1,0,-1 visible around leave, string and base cleanup; corresponding funclet actions were not audited.",
+    "allocation_or_size_failure": "Node construction/list growth exceptional cleanup remains outside normal path.",
+    "balanced_raii_claim": false
+  },
+  "implementation_boundary": {
+    "immediate_cpp_change": "None; primary integrates paired state contract before adding actual manager tracing fields and lifetime.",
+    "missing_dependencies": [
+      "manager trace-stack/observer initialization and shutdown",
+      "observer virtual+8/+0Ch implementation and retention rules",
+      "constructor/destructor unwind funclets for00be0a30/00bdcb30",
+      "runtime invalid-iterator helper00bf6713 if failure parity needed"
+    ],
+    "explicit_host_choices": [
+      "stable retained manager versus native global reload",
+      "callback reentrancy policy",
+      "failure/exception rollback beyond proven normal path"
+    ],
+    "must_preserve": "Exit clears name rather than restoring parentname; observer timing differs from post-restoration callbacks."
+  },
+  "document": "docs/FILE_BLOCK_LIFETIME.md",
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies.",
+    "flow_repair": "Initial CALL_RETURN observations retained; later analysis reinstated _free no-return. Primary corrected actual _free flag plus audited call-site overrides, rebuilt four truncated definitions, saved and refreshed exports. Final readback is authoritative."
+  }
+}

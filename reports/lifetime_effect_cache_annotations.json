@@ -1,0 +1,1635 @@
+{
+  "utc": "2026-09-10T00:02:12.646258+00:00",
+  "saved": true,
+  "annotations": [
+    {
+      "address": "00501510",
+      "before": {
+        "address": "00501510",
+        "function_name": "FUN_00501510"
+      },
+      "after": {
+        "address": "00501510",
+        "function_name": "BSP_LoadingQueue_WorkerMain",
+        "comment": "[BSP reconstruction 00501510]\n[BSP reconstruction 00501510] update\nComplete 262-byte thread entry. Argument fields +0 stop word, +4 published job, +8 sync object correspond to loader +4/+8/+0Ch. Call sync virtual +8, check stop; while zero, copy C-string at job +8 work pointer +4 into owned temporary (strlen and length+1 copy), call 007188a0 with ECX local string and live EAX=&job+8, store result in captured work +0Ch, release temporary, call sync +0Ch then +8, recheck stop. EAX input significance needs callee assembly. Raw copy/cleanup branches exist despite decompiler unreachable warnings. Worker stop word differs from front-job stop byte; no retain, join or handle close is established.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: Thread entry: one stack pointer argument, RET 4, EAX 1 on normal stop exit. Argument points to loader+4.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00501510] update\n[BSP reconstruction 00501510] update\nComplete 262-byte thread entry. Argument fields +0 stop word, +4 published job, +8 sync object correspond to loader +4/+8/+0Ch. Call sync virtual +8, check stop; while zero, copy C-string at job +8 work pointer +4 into owned temporary (strlen and length+1 copy), call 007188a0 with ECX local string and live EAX=&job+8, store result in captured work +0Ch, release temporary, call sync +0Ch then +8, recheck stop. EAX input significance needs callee assembly. Raw copy/cleanup branches exist despite decompiler unreachable warnings. Worker stop word differs from front-job stop byte; no retain, join or handle close is established.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: Thread entry: one stack pointer argument, RET 4, EAX 1 on normal stop exit. Argument points to loader+4.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. Follow-up assembly audit:007175d0 overwrites incomingEAX beforeuse;007188a0 takesECXname only. The EAX value visible at005015b2 is not an input parameter. docs/VFS_LOAD_WORKER_DISPATCH.md."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00501620",
+      "before": {
+        "address": "00501620",
+        "function_name": "FUN_00501620"
+      },
+      "after": {
+        "address": "00501620",
+        "function_name": "BSP_LoadingQueue_StartWork",
+        "comment": "[BSP reconstruction 00501620]\n[BSP reconstruction 00501620] update\nComplete 62-byte worker-start/publication body. If loader +1Ch is zero, CreateThread(NULL,0,00501510,loader+4,0,NULL), store returned handle. Then only if job +0Ch is nonzero, publish job at loader +8 and invoke loader +0Ch object virtual +4. Zero job field still permits thread creation but does not publish/signal, clear a prior job or report completion. No handle-validity check, reference acquisition, join or close here; actual synchronization and shutdown remain dependencies.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX loader; one job-pointer stack argument; RET 4.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00504790",
+      "before": {
+        "address": "00504790",
+        "function_name": "FUN_00504790"
+      },
+      "after": {
+        "address": "00504790",
+        "function_name": "BSP_LoadingJob_EnsureFileBlock",
+        "comment": "[BSP reconstruction 00504790]\n[BSP reconstruction 00504790] update\nComplete 188-byte job preparation. If job +20h is null and name length at +14h is nonzero, allocate 28 bytes; substring(name, start 13, requested length storedLength-18); construct 00be0a30(temporary,1); store at job +20h; destroy temporary name. Allocation-null stores null. Empty or missing FileBlock does not prevent caller 00509190 from setting state 3 and submitting work. No prefix/minimum-length validation is established; short-name unsigned behavior belongs to substring helper.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX job; no stack arguments; RET; no caller-tested success result.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00504850",
+      "before": {
+        "address": "00504850",
+        "function_name": "FUN_00504850"
+      },
+      "after": {
+        "address": "00504850",
+        "function_name": "BSP_LoadingQueue_OnFileStoreReady",
+        "comment": "[BSP reconstruction 00504850]\n[BSP reconstruction 00504850] update\nMissing function definition: separate 19-byte callback entry, complete raw span PE-matched. Ignores both FileStore name arguments; calls 004fde20, takes the current loader +10h array front, stores state 2, RET 8. No origin capture, name matching, retain/release, count check or stop-flag check. The audited state 1 front is retained by ordinary update paths, but other writers/accessor replacement require separate lifetime proof.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: Two stack arguments, unused; RET8. Consistent with FileStore two-name callee-cleanup callback; no ECX origin input.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00506bf0",
+      "before": {
+        "address": "00506bf0",
+        "function_name": "FUN_00506bf0"
+      },
+      "after": {
+        "address": "00506bf0",
+        "function_name": "BSP_LoadingQueue_RetireFront",
+        "comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00509190",
+      "before": {
+        "address": "00509190",
+        "function_name": "FUN_00509190"
+      },
+      "after": {
+        "address": "00509190",
+        "function_name": "BSP_LoadingQueue_Update",
+        "comment": "[BSP reconstruction 00509190]\n[BSP reconstruction 00509190] update\nComplete 333-byte loader update. Loader +10h is the front-pointer array, +14h its count. Initial stopped state 0/2 retires the front then reloads. State 0 submits FileStore name job +14h with callback 00504850; native true sets state 1 even for resident/pending duplicates. False sets the stop byte if VFS +78h is nonzero, else state 2. State 1 has no advancing branch. State 2 calls 00504790, sets state 3, calls 00501620. State 3 consults worker virtual +10h; normal/stopped result paths remain dependent on opaque helpers. No physical cancellation or termination guarantee.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET or tail call. Ghidra no-argument signature omits ECX.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "005092e0",
+      "before": {
+        "address": "005092e0",
+        "function_name": "FUN_005092e0",
+        "comment": "[BSP reconstruction 005092e0]\nECX caller object; no stack arguments; RET or tail dispatch to object virtual+1Ch Byte-checked GIAchievements::StopLoadingThread() string. While object+14h remains nonzero: Sleep100, pump VFS global0109ceec at0050932a, call00509190. Establishes pump during stop wait, not physical request cancellation. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "after": {
+        "address": "005092e0",
+        "function_name": "BSP_LoadingQueue_StopAndWait",
+        "comment": "[BSP reconstruction 005092e0]\nECX caller object; no stack arguments; RET or tail dispatch to object virtual+1Ch Byte-checked GIAchievements::StopLoadingThread() string. While object+14h remains nonzero: Sleep100, pump VFS global0109ceec at0050932a, call00509190. Establishes pump during stop wait, not physical request cancellation. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 005092e0] update\nECX caller object; no stack arguments; RET or tail dispatch to object virtual+1Ch Byte-checked GIAchievements::StopLoadingThread() string. While object+14h remains nonzero: Sleep100, pump VFS global0109ceec at0050932a, call00509190. Establishes pump during stop wait, not physical request cancellation. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 005092e0] update\nComplete 109-byte StopLoadingThread outer lifecycle, identified by the existing GIAchievements diagnostic. If loader +14h is nonzero, call global 00f8d394 virtual +18h; set current front +4; while count is nonzero Sleep(100), pump VFS 0109ceec, update 00509190; tail-call global virtual +1Ch. Loop condition is loader count, not FileStore keys or physical reads. No timeout, cancellation or pending-map clearing; state 1 can remain stuck without an external writer. Entry stop flag marks only the current front; later fronts can submit.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET or tail jump to global00f8d394 virtual+1Ch.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "007175d0",
+      "before": {
+        "address": "007175d0",
+        "function_name": "FUN_007175d0"
+      },
+      "after": {
+        "address": "007175d0",
+        "function_name": "BSP_GameResourceFactory_GetSingleton",
+        "comment": "[BSP reconstruction 007175d0]\nNo explicit inputs; EAX8-byte factory singleton at00e19b90. Primary vtable00cfd850, lifetime subobject+4 vtable00cfd84c; create slot+4 target0071b870. First instruction destroys incoming EAX. Concrete format/class remains external. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "007188a0",
+      "before": {
+        "address": "007188a0",
+        "function_name": "FUN_007188a0"
+      },
+      "after": {
+        "address": "007188a0",
+        "function_name": "BSP_Resource_LoadWithGameFactory",
+        "comment": "[BSP reconstruction 007188a0]\nECX native resource-name wrapper, EAX resource result, no stack args, RET. Incoming EAX is not an argument:007175d0 overwrites it immediately. Gets factory007175d0 and manager004c1400, calls00b80720(name,factory). Descriptive resource-class interpretation provisional. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "0071b810",
+      "before": {
+        "address": "0071b810",
+        "function_name": "FUN_0071b810"
+      },
+      "after": {
+        "address": "0071b810",
+        "function_name": "BSP_GameResource_Construct",
+        "comment": "[BSP reconstruction 0071b810]\nECX74h object,name stack,RET4. Base00b88260 then vtable00cfd8cc; zeros three derived list triplets. Source class name not recovered. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "0071b870",
+      "before": {
+        "address": "0071b870",
+        "function_name": "FUN_0071b870"
+      },
+      "after": {
+        "address": "0071b870",
+        "function_name": "BSP_GameResourceFactory_Create",
+        "comment": "[BSP reconstruction 0071b870]\nECX factory unused; name wrapper stack, EAX74h object/null, RET4. Calls0071b810; base00b88260 establishes refcount1/name ownership. Concrete vtable00cfd8cc; descriptive type provisional. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "0071bb40",
+      "before": {
+        "address": "0071bb40",
+        "function_name": "FUN_0071bb40"
+      },
+      "after": {
+        "address": "0071bb40",
+        "function_name": "BSP_GameResource_AppendAndClassifyItem",
+        "comment": "[BSP reconstruction 0071bb40]\nMissing function definition; exact matched0071bb40-0071bbf2. ECXresource,item stack,RET4. Calls raw base append00b87aa0 then first matching type filter fills+64/+54/+44 derived list. Type names and list/destructor ownership external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00737a50",
+      "before": {
+        "address": "00737a50",
+        "function_name": "BSP_Application_RunFrame",
+        "comment": "[BSP reconstruction 00737a50]\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "after": {
+        "address": "00737a50",
+        "function_name": "BSP_Application_RunFrame",
+        "comment": "[BSP reconstruction 00737a50]\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nComplete 371-byte frame span freshly PE-matched. Additional loading-order evidence: after sticky exit propagation, 00737b79/7f pump VFS 0109ceec; 00737b84 obtains the loader through 004fde20; 00737b89/8b update via 00509190; then frame cleanup. Successful physical callback can make the current front ready before the same frame update; submission from that update needs a later physical pump. Preserve all existing frame evidence.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX application; no stack arguments; RET. Existing frame ABI preserved.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "007fa3a0",
+      "before": {
+        "address": "007fa3a0",
+        "function_name": "STL_xlen_throw_007fa3a0"
+      },
+      "after": {
+        "address": "007fa3a0",
+        "function_name": "STL_list_GrowSizeChecked_007fa3a0",
+        "comment": "[BSP reconstruction 007fa3a0]\nPreserve standard-library identification; current throw-only heuristic omits returning path. Complete145-byte PE-matched body. ECX list, stack unsigneddelta, checkdelta<=UINT32_MAX-size+8; success stores/returns size+delta, RET4; overflow throws std::length_error. FileBlock caller passes1 after node construction and before linkage. Original ABI: ECX list object; stack unsigned increment; EAX updated list size on success; RET4. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "008d43c0",
+      "before": {
+        "address": "008d43c0",
+        "function_name": "FUN_008d43c0"
+      },
+      "after": {
+        "address": "008d43c0",
+        "function_name": "BSP_MemoryBacking_Construct",
+        "comment": "[BSP reconstruction 008d43c0]\nCount1 backing. Signedlength>0 stores/allocateslength; otherwise storedlength0 with allocation1. Adds original signed input to byte counter0109db9c and increments0109db98. Zero-length physical conversion safely projected; negative/truncated-size conversion remains excluded. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX backing object; stack signed32 length; EAX object; RET4. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "008d4470",
+      "before": {
+        "address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470"
+      },
+      "after": {
+        "address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470",
+        "comment": "[BSP reconstruction 008d4470]\nPreserve compiler-generated name. Complete66-byte body: free bytes, decrement0109db98, subtract storedlength from0109db9c, base cleanup, optional storagefree(flags bit0), EAX original object, RET4. Tail008d4482..008d44b1 exists after first free. Check per-instruction flow override before repair; callee no-return is not established. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX backing; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00a82250",
+      "before": {
+        "address": "00a82250",
+        "function_name": "FUN_00a82250"
+      },
+      "after": {
+        "address": "00a82250",
+        "function_name": "BSP_MaterialEffect_ZeroAccountedSize",
+        "comment": "[BSP reconstruction 00a82250]\nMissing function definition. Vtable00d61a00+Ch points here. Disk/Ghidra matched00a82250-00a82252 = XOR EAX,EAX;RET. Descriptive role name provisional; shared leaf may serve other classes. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b2e940",
+      "before": {
+        "address": "00b2e940",
+        "function_name": "FUN_00b2e940"
+      },
+      "after": {
+        "address": "00b2e940",
+        "function_name": "BSP_MaterialEffectRegistry_ResolveKey",
+        "comment": "[BSP reconstruction 00b2e940]\nHidden string result/request/unused context stack; RETCh. Rewrite every .mshd to .shfx; VFS-resolve rewritten first, else resolve original and return mutated original regardless failure. No extension-only guessing. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b2fa10",
+      "before": {
+        "address": "00b2fa10",
+        "function_name": "FUN_00b2fa10"
+      },
+      "after": {
+        "address": "00b2fa10",
+        "function_name": "BSP_MaterialEffectCacheEntry_DestroyStorage",
+        "comment": "[BSP reconstruction 00b2fa10]\nCorrect body through00b2fa87 RET; initial saved body truncated by erroneous CALL_RETURN override at call00b2fa44 to free00bf65ac. Alias/name storage only; no effect release. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b31090",
+      "before": {
+        "address": "00b31090",
+        "function_name": "FUN_00b31090"
+      },
+      "after": {
+        "address": "00b31090",
+        "function_name": "BSP_MaterialEffectCache_Acquire",
+        "comment": "[BSP reconstruction 00b31090]\nECX registry; request, opaque context, retain-on-new-load byte, allow-load byte; RET10h. Alias lookup, canonical resolver+4, create+8; hits always retain+Ch, misses retain only when flag3. Native null insertion and error.shfx recursive fallback assumptions remain. docs/FONT_EFFECT_CACHE_OWNERSHIP.md Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b31750",
+      "before": {
+        "address": "00b31750",
+        "function_name": "FUN_00b31750"
+      },
+      "after": {
+        "address": "00b31750",
+        "function_name": "BSP_MaterialEffectCache_Clear",
+        "comment": "[BSP reconstruction 00b31750]\nECX registry; RET. Reverse records: size virtual+Ch subtraction, registry+10 release, entry storage destroy. Effect pointer is dereferenced unconditionally; native null records unsafe. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b318b0",
+      "before": {
+        "address": "00b318b0",
+        "function_name": "BSP_D3D9Renderer_LoadMaterialEffect",
+        "comment": "[BSP reconstruction 00b318b0]\nRenderer+48h. Optional guard, copy/normalize resource name, invoke generic loader00b31090 onembeddedregistry+1A98h with0/1/1 flags. Concrete registry ctor vtable00d5f074."
+      },
+      "after": {
+        "address": "00b318b0",
+        "function_name": "BSP_D3D9Renderer_LoadMaterialEffect",
+        "comment": "[BSP reconstruction 00b318b0]\nRenderer+48h. Optional guard, copy/normalize resource name, invoke generic loader00b31090 onembeddedregistry+1A98h with0/1/1 flags. Concrete registry ctor vtable00d5f074.\n\n[BSP reconstruction 00b318b0] update\nRenderer+48h. Optional guard, copy/normalize resource name, invoke generic loader00b31090 onembeddedregistry+1A98h with0/1/1 flags. Concrete registry ctor vtable00d5f074.\n\nFixed0/1/1 owning cache projection now drives installedfont real COM shader compilation onmiss,canonical/aliasreuse,andretainedcaller afterclear. Renderer guards and full00b2ebb0 loader remain external. ECXrenderer,name stack,EAXeffect,RET4. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b31ff0",
+      "before": {
+        "address": "00b31ff0",
+        "function_name": "FUN_00b31ff0"
+      },
+      "after": {
+        "address": "00b31ff0",
+        "function_name": "BSP_MaterialEffectRegistry_Retain",
+        "comment": "[BSP reconstruction 00b31ff0]\nNonnull effect stack; RET4. InterlockedIncrement(effect+4), EAX same pointer. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b32010",
+      "before": {
+        "address": "00b32010",
+        "function_name": "FUN_00b32010"
+      },
+      "after": {
+        "address": "00b32010",
+        "function_name": "BSP_MaterialEffectRegistry_Release",
+        "comment": "[BSP reconstruction 00b32010]\nNonnull effect stack; RET4. InterlockedDecrement(effect+4); zero invokes effect virtual+0 with ECX effect, no stack argument. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b320f0",
+      "before": {
+        "address": "00b320f0",
+        "function_name": "FUN_00b320f0"
+      },
+      "after": {
+        "address": "00b320f0",
+        "function_name": "BSP_MaterialEffectCache_Destroy",
+        "comment": "[BSP reconstruction 00b320f0]\nCorrect body through00b3214e RET; initial saved body truncated by erroneous CALL_RETURN override at call00b32137 to free00bf6989. Base vtable retains same retain/release functions; clears and frees vector storage. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7d160",
+      "before": {
+        "address": "00b7d160",
+        "function_name": "FUN_00b7d160"
+      },
+      "after": {
+        "address": "00b7d160",
+        "function_name": "BSP_Sphere_ToAxisAlignedBounds",
+        "comment": "[BSP reconstruction 00b7d160]\n[BSP reconstruction 00b7d160] update\nComplete 191-byte geometry leaf. Sphere components are center X/Y/Z and radius. Outputs center-minus-radius XYZ then center-plus-radius XYZ, grounding minimum/maximum ordering for nonnegative radius. Uses x87 arithmetic and float stores; no radius clamp, min/max sorting or finite-value rejection. Negative radius can invert bounds; exceptional FP/control-word parity untested.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX six-float output; EDX four-float sphere; EAX output; no stack arguments; RET.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7d220",
+      "before": {
+        "address": "00b7d220",
+        "function_name": "FUN_00b7d220"
+      },
+      "after": {
+        "address": "00b7d220",
+        "function_name": "BSP_Bounds_SetFromSphere",
+        "comment": "[BSP reconstruction 00b7d220]\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7e970",
+      "before": {
+        "address": "00b7e970",
+        "function_name": "FUN_00b7e970"
+      },
+      "after": {
+        "address": "00b7e970",
+        "function_name": "BSP_ResourceManager_DispatchItems",
+        "comment": "[BSP reconstruction 00b7e970]\nECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7eb90",
+      "before": {
+        "address": "00b7eb90",
+        "function_name": "FUN_00b7eb90"
+      },
+      "after": {
+        "address": "00b7eb90",
+        "function_name": "BSP_StructuredResource_ParseHierarchyItem",
+        "comment": "[BSP reconstruction 00b7eb90]\n[BSP reconstruction 00b7eb90] update\nComplete 769-byte Item branch. Obtain 132-byte storage via 00b87a90; fields Parent +0, owned Name +4/+8, Matrix destination +0Ch, Resource dword vector +4Ch/+50h/+54h, Flags +58h, sphere +5Ch..+68h, box +6Ch..+80h. Defaults parent FFFFFFFF, zero name/vector/flags, sphere (0,0,0,1e10), box (-1e10 XYZ,+1e10 XYZ); matrix area has no initialization in this body. Resource tags append, other recognized fields overwrite. Sphere recomputes box; explicit box overwrites box only. End passes raw record to 00b87ae0 on current resource manager+24h; owning append/destruction remain unaudited. Do not conflate with resource-item append 00b87aa0.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; one reader-handle-wrapper pointer stack argument; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7f100",
+      "before": {
+        "address": "00b7f100",
+        "function_name": "FUN_00b7f100"
+      },
+      "after": {
+        "address": "00b7f100",
+        "function_name": "BSP_StructuredResource_ParseHierarchy",
+        "comment": "[BSP reconstruction 00b7f100]\n[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7f430",
+      "before": {
+        "address": "00b7f430",
+        "function_name": "FUN_00b7f430"
+      },
+      "after": {
+        "address": "00b7f430",
+        "function_name": "BSP_ResourceManager_DispatchRoot",
+        "comment": "[BSP reconstruction 00b7f430]\nECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b80720",
+      "before": {
+        "address": "00b80720",
+        "function_name": "FUN_00b80720"
+      },
+      "after": {
+        "address": "00b80720",
+        "function_name": "BSP_ResourceManager_LoadAndCache",
+        "comment": "[BSP reconstruction 00b80720]\nECX manager; name/factory stack, EAX resource, RET8. Cache+14 uses original name; hit increments resource+4. Miss factory+4 creates resource, resolved-name VFS stream flags2 feeds reader00bf0430/root00bea700/dispatch00b7f430, original-name entry inserted. Current factory+20/current resource+24; unknown metric difference stored resource+40. Parser and new-result/cache ownership still external. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b86930",
+      "before": {
+        "address": "00b86930",
+        "function_name": "FUN_00b86930"
+      },
+      "after": {
+        "address": "00b86930",
+        "function_name": "BSP_UnknownResourceItem_Construct",
+        "comment": "[BSP reconstruction 00b86930]\nECX8-byte object;EAXsame;RET. Vtable00d631c0,refcount+4=1. Used by Resource dispatch when no registered child parser. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b87aa0",
+      "before": {
+        "address": "00b87aa0",
+        "function_name": "FUN_00b87aa0"
+      },
+      "after": {
+        "address": "00b87aa0",
+        "function_name": "BSP_Resource_AppendRawItem",
+        "comment": "[BSP reconstruction 00b87aa0]\nECXresource;item pointer stack;RET4. Raw pointer append vector+10/+14/+18; no AddRef. Allocator/destructor semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b88260",
+      "before": {
+        "address": "00b88260",
+        "function_name": "FUN_00b88260"
+      },
+      "after": {
+        "address": "00b88260",
+        "function_name": "BSP_Resource_ConstructBase",
+        "comment": "[BSP reconstruction 00b88260]\nECX object; name wrapper stack;RET4. Refcount+4=1,owned name+8/+C,zero fields+10..40,vtable00d63228. Descriptive base name provisional. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93310",
+      "before": {
+        "address": "00b93310",
+        "function_name": "FUN_00b93310"
+      },
+      "after": {
+        "address": "00b93310",
+        "function_name": "BSP_StructuredReader_ReadBoundingBox",
+        "comment": "[BSP reconstruction 00b93310]\n[BSP reconstruction 00b93310] update\nComplete 66-byte box reader. Six sequential 00be99d0 calls and FSTP float stores at output +0/+4/+8/+0Ch/+10h/+14h. Schema order is minimum XYZ then maximum XYZ, grounded by the shared Item storage and sphere conversion 00b7d220/00b7d160. No count check, sort, clamp, transform, retry or early EOF exit.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX reader-handle wrapper; EDX six-float destination; no stack arguments; RET.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb8be0",
+      "before": {
+        "address": "00bb8be0",
+        "function_name": "BSP_MPKG_OpenEntryStream",
+        "comment": "[BSP reconstruction 00bb8be0]\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only.\n\n[BSP reconstruction 00bb8be0] update\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only. ECX state; stack entry/flags; RET8; EAX stream. Flags unused. Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed.\n\n[BSP reconstruction 00bb8be0] update\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only. ECX state; stack entry/flags; RET8; EAX stream. Flags unused. Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. ECX archive state; stack entry,flags(unused); EAX stream; RET8 Large stored branch rereads global manager, opens stored logical path flags2, adopts returned source; prior entry audit reverified. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bb8be0",
+        "function_name": "BSP_MPKG_OpenEntryStream",
+        "comment": "[BSP reconstruction 00bb8be0]\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only.\n\n[BSP reconstruction 00bb8be0] update\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only. ECX state; stack entry/flags; RET8; EAX stream. Flags unused. Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed.\n\n[BSP reconstruction 00bb8be0] update\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only. ECX state; stack entry/flags; RET8; EAX stream. Flags unused. Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. ECX archive state; stack entry,flags(unused); EAX stream; RET8 Large stored branch rereads global manager, opens stored logical path flags2, adopts returned source; prior entry audit reverified. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bb8be0] update\nEntryoffsethelper00bb8a90. Nonzeromethod+14 usescompressedwrapper00bbc1d0 thenmemoryconversion; method0,size+1C<=40000h slice00bef840; largerreopen source and00bf1130. Compression/reopened-versus-decoded-offset ownership unported; analysis-only. ECX state; stack entry/flags; RET8; EAX stream. Flags unused. Nonzero method=>raw inflate from transformed source then buffer. Method0 decodedsize<=40000h=>new memory copy00bef840. Larger=>reopen original logical path flags2 and transfer source to00bf1130. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed. ECX archive state; stack entry,flags(unused); EAX stream; RET8 Large stored branch rereads global manager, opens stored logical path flags2, adopts returned source; prior entry audit reverified. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\nCompressed branch creates count1 inflater retaining archive source, converts through00bef750, then decrements inflater and invokes slot0 only at zero before returning independent count1 memory wrapper. Archive source cursor is mutated; no restore. Existing other-route contract retained. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX archive; stack entry,flags(unused); EAX stream; RET8. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bb8f90",
+      "before": {
+        "address": "00bb8f90",
+        "function_name": "CG_scalar_deleting_dtor_00bb8f90"
+      },
+      "after": {
+        "address": "00bb8f90",
+        "function_name": "CG_scalar_deleting_dtor_00bb8f90",
+        "comment": "[BSP reconstruction 00bb8f90]\nPreserve compiler-generated name. Call00bef9c0; free wrapper only when flags bit0 set; EAX original wrapper on both paths; RET4. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX memory wrapper; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bbc1d0",
+      "before": {
+        "address": "00bbc1d0",
+        "function_name": "BSP_RawInflateStream_Construct",
+        "comment": "[BSP reconstruction 00bbc1d0]\nECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md.\n\n[BSP reconstruction 00bbc1d0] update\nECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md."
+      },
+      "after": {
+        "address": "00bbc1d0",
+        "function_name": "BSP_RawInflateStream_Construct",
+        "comment": "[BSP reconstruction 00bbc1d0]\nECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. Assembly contract only; C++ and native runtime parity not established. docs/INFLATE_STREAM_READ_SEEK.md.\n\n[BSP reconstruction 00bbc1d0] update\nECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md.\n\n[BSP reconstruction 00bbc1d0] update\nECX this; stack source/descriptor pointer/two unused slots; RET10h; EAX this. Copy descriptor offset/compressed/decoded DWORDs, allocate16KiB input/64KiB output and38h z_stream; initialize raw(-15), retain source, seek descriptor offset, position0 and remaining counters. Stack capacity values unused. Complete raw body matches installed PE. docs/INFLATE_STREAM_READ_SEEK.md. Bounded buffered C++ projection in src/inflate_stream.cpp uses retained source, fixed16KiB/64KiB buffers and stock raw zlib1.2.1. MSVC Win32 and one150123-byte stored-DEFLATE fixture pass, including148 positive short source reads, forward/in-block seek and EOF counts. Cross-block rewind rejected before mutation; explicit no-progress/error guards differ native behavior. No native ABI, compressed-Huffman or real archive fixture claim. docs/INFLATE_STREAM_IMPLEMENTATION.md.\n\nRetains same source wrapper at00bbc2e3 after decoder init; seeks source at00bbc2f7; no source clone. Count1 inflater, fixed16KiB/64KiB buffers,38h z_stream; unsupported allocation/init/seek failure behavior. Host shared_ptr adapter is not native ABI. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX object; stack source,3-DWORD descriptor,2 unused capacity slots; EAX object; RET10h. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bbc320",
+      "before": {
+        "address": "00bbc320",
+        "function_name": "FUN_00bbc320"
+      },
+      "after": {
+        "address": "00bbc320",
+        "function_name": "BSP_RawInflateStream_Destroy",
+        "comment": "[BSP reconstruction 00bbc320]\nFull body throughRET at00bbc3d9. Release source and clear field after callback, inflateEnd, free z_stream, input bytes/descriptor, output bytes/descriptor, stream/base cleanup. Saved Ghidra body incorrectly stops at00bbc380 after free. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX inflater; no stack args; RET; no stable result contract. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bbc3e0",
+      "before": {
+        "address": "00bbc3e0",
+        "function_name": "CG_scalar_deleting_dtor_00bbc3e0"
+      },
+      "after": {
+        "address": "00bbc3e0",
+        "function_name": "CG_scalar_deleting_dtor_00bbc3e0",
+        "comment": "[BSP reconstruction 00bbc3e0]\nPreserve compiler-generated name. Call00bbc320, free object only for flags bit0, then restore original object storage intoEAX on both paths; RET4. Raw tail contradicts decompiler extraout_EAX. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX inflater; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bd20a0",
+      "before": {
+        "address": "00bd20a0",
+        "function_name": "FUN_00bd20a0"
+      },
+      "after": {
+        "address": "00bd20a0",
+        "function_name": "BSP_String_SplitNonemptyOnByte",
+        "comment": "[BSP reconstruction 00bd20a0]\nComplete205-byte PE-matched body. ECX string, delimiterDL, destination container on stack, RET4. Skips leading/repeated/trailing delimiters; copies only nonempty spans via00469840 then inserts via004cdc20 and releases temporary string. FileBlock caller uses underscore. Container/string allocator ABI not reconstructed. Original ABI: ECX source native string; DL delimiter; stack destination token container; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bd30e0",
+      "before": {
+        "address": "00bd30e0",
+        "function_name": "FUN_00bd30e0",
+        "comment": "[BSP reconstruction 00bd30e0]\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "00bd30e0",
+        "function_name": "BSP_RefCounted_InvokeDeletingDestructor",
+        "comment": "[BSP reconstruction 00bd30e0]\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bd30e0] update\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\nNo reference-count decrement here: ifECX nonnull call virtual+4 with flag1; plainRET. Inflater, memory-wrapper and backing slot0 entries all point here. Callers decrement before dispatch. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX nullable object; no stack args; RET; invoke virtual+4 with flag1. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bd30f0",
+      "before": {
+        "address": "00bd30f0",
+        "function_name": "TRIV_body_00bd30f0"
+      },
+      "after": {
+        "address": "00bd30f0",
+        "function_name": "BSP_RefCounted_DestroyBase",
+        "comment": "[BSP reconstruction 00bd30f0]\nECX base object; store00ceb130 primary vtable; RET. Body7 bytes. Descriptive class name is a reconstruction hypothesis. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX base object; no stack args; RET; set base vtable00ceb130. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdaf40",
+      "before": {
+        "address": "00bdaf40",
+        "function_name": "STL_inst_00bdaf40"
+      },
+      "after": {
+        "address": "00bdaf40",
+        "function_name": "STL_list_EraseNode_00bdaf40",
+        "comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdc9b0",
+      "before": {
+        "address": "00bdc9b0",
+        "function_name": "FUN_00bdc9b0"
+      },
+      "after": {
+        "address": "00bdc9b0",
+        "function_name": "BSP_VFS_LeaveFileBlock",
+        "comment": "[BSP reconstruction 00bdc9b0]\nComplete197-byte body. Observer+88h virtual+0Ch if+78h, explicit name unlessempty then manager currentname+0Ch; callback precedes mutations. Clear currentname, depth+14h--, diagnostic under currentgate+79h, restoregate from last list node+8, erase node via00bdaf40. Parent name is not restored. Empty-stack validation happens after name/depth mutations; matching live node required for normal path. Original ABI: ECX VFS manager; stack name-wrapper pointer; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdcb30",
+      "before": {
+        "address": "00bdcb30",
+        "function_name": "FUN_00bdcb30"
+      },
+      "after": {
+        "address": "00bdcb30",
+        "function_name": "BSP_FileBlock_Destroy",
+        "comment": "[BSP reconstruction 00bdcb30]\nInstall vtable00d68494; reload globalVFS[0109ceec], call00bdc9b0 with name at FileBlock+14h; only after leave returns destroy name allocation and base00bd30f0. Manager is read at destruction rather than captured from construction. Complete124-byte body. Constructor/unwind rollback not established; no stream range or ownership. Original ABI: ECX FileBlock; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdebe0",
+      "before": {
+        "address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0"
+      },
+      "after": {
+        "address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0",
+        "comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bdf950",
+      "before": {
+        "address": "00bdf950",
+        "function_name": "FUN_00bdf950"
+      },
+      "after": {
+        "address": "00bdf950",
+        "function_name": "BSP_FileBlock_PrepareIdentifier",
+        "comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be0980",
+      "before": {
+        "address": "00be0980",
+        "function_name": "FUN_00be0980"
+      },
+      "after": {
+        "address": "00be0980",
+        "function_name": "BSP_VFS_EnterFileBlock",
+        "comment": "[BSP reconstruction 00be0980]\nComplete169-byte PE-matched body. Distinct receiver from00bdf950: ECX globalVFS manager. Order: node construction with address+79h; checked list+7Ch size growth; linkage; gateAND; optional manager+88h observer virtual+8(name) if+78h; depth+14h++; name copy+0Ch/+10h; diagnostic +FileBlock %s ifgate. No direct observer/input wrapper retain, stream range or reads. Paired leave remains unreviewed; descriptive name is provisional. Original ABI: ECX VFS manager; stack name-wrapper pointer, low gate byte; RET8; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be0a30",
+      "before": {
+        "address": "00be0a30",
+        "function_name": "FUN_00be0a30"
+      },
+      "after": {
+        "address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be99d0",
+      "before": {
+        "address": "00be99d0",
+        "function_name": "FUN_00be99d0"
+      },
+      "after": {
+        "address": "00be99d0",
+        "function_name": "BSP_StructuredReader_ReadFloat",
+        "comment": "[BSP reconstruction 00be99d0]\n[BSP reconstruction 00be99d0] update\nComplete 15-byte float adapter. Let node=*handle; pass ECX=[node+8] wrapper and stack &node+20h accounting dword to 00bf02c0. Actual underlying stream requires another dereference in that callee. No independent cursor, endian conversion, validation, ownership or error handling.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX reader-handle-wrapper pointer; no stack arguments; RET; result x87 ST0.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bef6d0",
+      "before": {
+        "address": "00bef6d0",
+        "function_name": "BSP_MemoryStream_CreateFromBacking",
+        "comment": "[BSP reconstruction 00bef6d0]\nECX backing,RET,EAX new14h wrapper. Retain backing, reset cursor tobase/endbase+length. Typedclone fragment shares backing and resets independentcursor; allocator/intrusiveABI omitted."
+      },
+      "after": {
+        "address": "00bef6d0",
+        "function_name": "BSP_MemoryStream_CreateFromBacking",
+        "comment": "[BSP reconstruction 00bef6d0]\nECX backing,RET,EAX new14h wrapper. Retain backing, reset cursor tobase/endbase+length. Typedclone fragment shares backing and resets independentcursor; allocator/intrusiveABI omitted.\n\n[BSP reconstruction 00bef6d0] update\nECX backing,RET,EAX new14h wrapper. Retain backing, reset cursor tobase/endbase+length. Typedclone fragment shares backing and resets independentcursor; allocator/intrusiveABI omitted.\n\nCount1 new14h wrapper retains supplied backing at+8; cursor+10h=data, end+0Ch=data+length. Does not retain input wrapper. No recoverable allocation-failure null-return contract; native null dereference follows. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX backing; no stack args; EAX new memory wrapper; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bef750",
+      "before": {
+        "address": "00bef750",
+        "function_name": "BSP_Stream_ConvertToMemory",
+        "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent."
+      },
+      "after": {
+        "address": "00bef750",
+        "function_name": "BSP_Stream_ConvertToMemory",
+        "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bef9c0",
+      "before": {
+        "address": "00bef9c0",
+        "function_name": "FUN_00bef9c0"
+      },
+      "after": {
+        "address": "00bef9c0",
+        "function_name": "BSP_MemoryStream_Destroy",
+        "comment": "[BSP reconstruction 00bef9c0]\nDecrement backing+4; invoke slot0 only atzero; clear wrapper+8 only after callback. Then stream/base vtable cleanup. End/cursor fields not cleared. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX memory wrapper; no stack args; RET; no stable result contract. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf02c0",
+      "before": {
+        "address": "00bf02c0",
+        "function_name": "FUN_00bf02c0"
+      },
+      "after": {
+        "address": "00bf02c0",
+        "function_name": "BSP_StreamWrapper_ReadFloatAndAccount",
+        "comment": "[BSP reconstruction 00bf02c0]\n[BSP reconstruction 00bf02c0] update\nComplete 39-byte numeric adapter. Dereference wrapper to actual stream; call virtual +44h with NONNULL local actual-count pointer; FSTP/FLD through float32; subtract reported actual count from caller accounting dword. No pre-read budget clamp, four-byte check, retry or underflow guard. Actual-count local is not initialized before virtual call. Known scalar target 00be4360 seeds reused read-buffer bytes with the nonnull pointer value on short read; existing null-count font adapter is not malformed-input parity.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX wrapper whose first dword points to stream; one accounting-dword pointer stack argument; RET 4; x87 ST0.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf9dc8",
+      "before": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery."
+      },
+      "after": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json."
+      },
+      "previous_comment_preserved": true
+    }
+  ],
+  "created_functions": [
+    {
+      "address": "00504850",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"success\":true,\"address\":\"00504850\",\"function_name\":\"FUN_00504850\",\"entry_point\":\"00504850\",\"body_size\":19,\"message\":\"Function created successfully at 00504850\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"success\":true,\"address\":\"00504850\",\"function_name\":\"FUN_00504850\",\"entry_point\":\"00504850\",\"body_size\":19,\"message\":\"Function created successfully at 00504850\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00a82250",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"success\":true,\"address\":\"00a82250\",\"function_name\":\"FUN_00a82250\",\"entry_point\":\"00a82250\",\"body_size\":3,\"message\":\"Function created successfully at 00a82250\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"success\":true,\"address\":\"00a82250\",\"function_name\":\"FUN_00a82250\",\"entry_point\":\"00a82250\",\"body_size\":3,\"message\":\"Function created successfully at 00a82250\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "0071bb40",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"success\":true,\"address\":\"0071bb40\",\"function_name\":\"FUN_0071bb40\",\"entry_point\":\"0071bb40\",\"body_size\":179,\"message\":\"Function created successfully at 0071bb40\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"success\":true,\"address\":\"0071bb40\",\"function_name\":\"FUN_0071bb40\",\"entry_point\":\"0071bb40\",\"body_size\":179,\"message\":\"Function created successfully at 0071bb40\"}"
+        },
+        "isError": false
+      }
+    }
+  ],
+  "body_rebuilds": [
+    {
+      "matched_span": {
+        "address": "00506bf0",
+        "end_exclusive": "00506c73",
+        "length": 131,
+        "sha256": "7d71157d777118c1f98cb770ca44f0b6a9a1e15c044ce9e9da81c881dd9a3704"
+      }
+    },
+    {
+      "matched_span": {
+        "address": "008d4470",
+        "end_exclusive": "008d44b2",
+        "length": 66,
+        "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a"
+      }
+    },
+    {
+      "matched_span": {
+        "address": "00bbc320",
+        "end_exclusive": "00bbc3da",
+        "length": 186,
+        "sha256": "fa39ded96a5501adf264511a8f061a57ca12fd12a49edcfbff017c412dca459a"
+      }
+    },
+    {
+      "matched_span": {
+        "address": "00b2fa10",
+        "end_exclusive": "00b2fa88",
+        "length": 120,
+        "sha256": "03051b56c87b9cc7b6774a82914d4a2253504e7386f6a4b920aaf6f511eac709"
+      }
+    },
+    {
+      "matched_span": {
+        "address": "00b320f0",
+        "end_exclusive": "00b3214f",
+        "length": 95,
+        "sha256": "b80ce87cdcb612f9e99a3efa85df6ea1f38f701c318646ddef5098605f19d82a"
+      }
+    },
+    {
+      "matched_span": {
+        "address": "00bdf950",
+        "end_exclusive": "00bdfd80",
+        "length": 1072,
+        "sha256": "23f1be0a8d018d432c5bdde27ff48c82a841097fce6cda0622fc2ae435651982"
+      }
+    },
+    {
+      "free_before": "Function: _free at 00bf9dc8\nSignature: void __cdecl _free(void * _Memory)\nEntry: 00bf9dc8\nBody: 00bf9dc8 - 00bf9e55"
+    },
+    {
+      "endpoint": "set_function_no_return",
+      "body": {
+        "function_address": "00bf9dc8",
+        "no_return": false
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Set function '_free' at 00bf9dc8 from returning to returning"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00506c39"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00506c39 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "008d447d"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d447d (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "008d44a4"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d44a4 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bbc37c"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc37c (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bbc38e"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc38e (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bbc394"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc394 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bbc3a6"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc3a6 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bbc3ac"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc3ac (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b2fa44"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b2fa44 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b32137"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b32137 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bdfd65"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bdfd65 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "function_before": "Function: CG_scalar_deleting_dtor_008d4470 at 008d4470\nSignature: undefined CG_scalar_deleting_dtor_008d4470(void)\nEntry: 008d4470\nBody: 008d4470 - 008d4481"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "008d4470"
+      },
+      "result": {
+        "success": true,
+        "address": "008d4470",
+        "deleted_function": "CG_scalar_deleting_dtor_008d4470",
+        "body_size": 18,
+        "message": "Function 'CG_scalar_deleting_dtor_008d4470' deleted at 008d4470"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "008d4470",
+        "name": "CG_scalar_deleting_dtor_008d4470",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470",
+        "entry_point": "008d4470",
+        "body_size": 66,
+        "message": "Function created successfully at 008d4470",
+        "warnings": [
+          "Function name 'CG_scalar_deleting_dtor_008d4470' \u2014 main part 'CG_scalar_deleting_dtor_008d4470' is not PascalCase. Expected: CgScalarDeletingDtor008d4470",
+          "Function name 'CG_scalar_deleting_dtor_008d4470' \u2014 main part 'CG_scalar_deleting_dtor_008d4470' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "function_before": "Function: FUN_00bbc320 at 00bbc320\nSignature: undefined FUN_00bbc320(void)\nEntry: 00bbc320\nBody: 00bbc320 - 00bbc3d9"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bbc320"
+      },
+      "result": {
+        "success": true,
+        "address": "00bbc320",
+        "deleted_function": "FUN_00bbc320",
+        "body_size": 168,
+        "message": "Function 'FUN_00bbc320' deleted at 00bbc320"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bbc320",
+        "name": "FUN_00bbc320",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bbc320",
+        "function_name": "FUN_00bbc320",
+        "entry_point": "00bbc320",
+        "body_size": 186,
+        "message": "Function created successfully at 00bbc320"
+      }
+    },
+    {
+      "function_before": "Function: FUN_00b2fa10 at 00b2fa10\nSignature: undefined FUN_00b2fa10(void)\nEntry: 00b2fa10\nBody: 00b2fa10 - 00b2fa48"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b2fa10"
+      },
+      "result": {
+        "success": true,
+        "address": "00b2fa10",
+        "deleted_function": "FUN_00b2fa10",
+        "body_size": 57,
+        "message": "Function 'FUN_00b2fa10' deleted at 00b2fa10"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b2fa10",
+        "name": "FUN_00b2fa10",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b2fa10",
+        "function_name": "FUN_00b2fa10",
+        "entry_point": "00b2fa10",
+        "body_size": 120,
+        "message": "Function created successfully at 00b2fa10"
+      }
+    },
+    {
+      "function_before": "Function: FUN_00b320f0 at 00b320f0\nSignature: undefined FUN_00b320f0(void)\nEntry: 00b320f0\nBody: 00b320f0 - 00b3213b"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b320f0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b320f0",
+        "deleted_function": "FUN_00b320f0",
+        "body_size": 76,
+        "message": "Function 'FUN_00b320f0' deleted at 00b320f0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b320f0",
+        "name": "FUN_00b320f0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b320f0",
+        "function_name": "FUN_00b320f0",
+        "entry_point": "00b320f0",
+        "body_size": 95,
+        "message": "Function created successfully at 00b320f0"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    }
+  ],
+  "body_original_documentation": [
+    {
+      "address": "008d4470",
+      "documentation": {
+        "hash": "66ad3ce5f8431bc7b545830131d7ecbaa599ecc4dfe64c219ef36a30f89debbd",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80
+      }
+    },
+    {
+      "address": "00bbc320",
+      "documentation": {
+        "hash": "7be59166ed07dd72233c2935b5e5a6efe7a13d076b196618a219a475309ba08e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bbc320",
+        "function_name": "FUN_00bbc320",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00bbc369"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00bbc370"
+          }
+        ],
+        "completeness_score": 50
+      }
+    },
+    {
+      "address": "00b2fa10",
+      "documentation": {
+        "hash": "e7ee210a823d45272169766627b38c5bd26eb52919c37f9dbac6b6953b0ca7c5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b2fa10",
+        "function_name": "FUN_00b2fa10",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50
+      }
+    },
+    {
+      "address": "00b320f0",
+      "documentation": {
+        "hash": "39019796f1c76e0521f51728d471a6dd17da5607cd0e33166bdabd173c861be0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b320f0",
+        "function_name": "FUN_00b320f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50
+      }
+    }
+  ],
+  "extra_flow_repairs": [
+    {
+      "address": "00bdaf7f",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bdaf7f (was: CALL_RETURN, now: NONE)\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bdaf7f (was: CALL_RETURN, now: NONE)\"}"
+        },
+        "isError": false
+      }
+    },
+    {
+      "address": "00bdebf0",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bdebf0 (was: CALL_RETURN, now: NONE)\"}"
+          }
+        ],
+        "structuredContent": {
+          "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bdebf0 (was: CALL_RETURN, now: NONE)\"}"
+        },
+        "isError": false
+      }
+    }
+  ],
+  "final_flow_readback": [
+    {
+      "address": "00506c39",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00506c39 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "008d447d",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d447d (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "008d44a4",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d44a4 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bbc37c",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc37c (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bbc38e",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc38e (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bbc394",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc394 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bbc3a6",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc3a6 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bbc3ac",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bbc3ac (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b2fa44",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b2fa44 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b32137",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b32137 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bdfd65",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bdfd65 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bdaf7f",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bdaf7f (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bdebf0",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bdebf0 (was: NONE, now: NONE)"
+      }
+    }
+  ],
+  "final_free_readback": "Function: _free at 00bf9dc8\nSignature: void __cdecl _free(void * _Memory)\nEntry: 00bf9dc8\nBody: 00bf9dc8 - 00bf9e55\n{\n... 41 more lines of 42 (use --start 1 or --lines)\n",
+  "initial_flow_before": {
+    "before": [
+      {
+        "status": "fulfilled",
+        "value": {
+          "address": "00506c39",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00506c39 (was: CALL_RETURN, now: NONE)\"}"
+              }
+            ],
+            "structuredContent": {
+              "result": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00506c39 (was: CALL_RETURN, now: NONE)\"}"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "address": "00b2fa44",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b2fa44 (was: CALL_RETURN, now: NONE)\"}"
+              }
+            ],
+            "structuredContent": {
+              "result": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b2fa44 (was: CALL_RETURN, now: NONE)\"}"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "address": "00b32137",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b32137 (was: CALL_RETURN, now: NONE)\"}"
+              }
+            ],
+            "structuredContent": {
+              "result": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b32137 (was: CALL_RETURN, now: NONE)\"}"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "address": "00bbc37c",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bbc37c (was: CALL_RETURN, now: NONE)\"}"
+              }
+            ],
+            "structuredContent": {
+              "result": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bbc37c (was: CALL_RETURN, now: NONE)\"}"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "address": "008d447d",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x008d447d (was: CALL_RETURN, now: NONE)\"}"
+              }
+            ],
+            "structuredContent": {
+              "result": "{\"dry_run\":true,\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x008d447d (was: CALL_RETURN, now: NONE)\"}"
+            },
+            "isError": false
+          }
+        }
+      }
+    ],
+    "applied": [
+      {
+        "address": "00506c39",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00506c39 (was: CALL_RETURN, now: NONE)\"}"
+            }
+          ],
+          "structuredContent": {
+            "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00506c39 (was: CALL_RETURN, now: NONE)\"}"
+          },
+          "isError": false
+        }
+      },
+      {
+        "address": "00b2fa44",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b2fa44 (was: CALL_RETURN, now: NONE)\"}"
+            }
+          ],
+          "structuredContent": {
+            "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b2fa44 (was: CALL_RETURN, now: NONE)\"}"
+          },
+          "isError": false
+        }
+      },
+      {
+        "address": "00b32137",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b32137 (was: CALL_RETURN, now: NONE)\"}"
+            }
+          ],
+          "structuredContent": {
+            "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00b32137 (was: CALL_RETURN, now: NONE)\"}"
+          },
+          "isError": false
+        }
+      },
+      {
+        "address": "00bbc37c",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bbc37c (was: CALL_RETURN, now: NONE)\"}"
+            }
+          ],
+          "structuredContent": {
+            "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x00bbc37c (was: CALL_RETURN, now: NONE)\"}"
+          },
+          "isError": false
+        }
+      },
+      {
+        "address": "008d447d",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x008d447d (was: CALL_RETURN, now: NONE)\"}"
+            }
+          ],
+          "structuredContent": {
+            "result": "{\"status\":\"success\",\"message\":\"Success: Cleared flow override at 0x008d447d (was: CALL_RETURN, now: NONE)\"}"
+          },
+          "isError": false
+        }
+      }
+    ]
+  },
+  "semantic_name_refinements": [
+    {
+      "address": "007fa3a0",
+      "before": {
+        "address": "007fa3a0",
+        "name": "STL_xlen_throw_007fa3a0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "after": {
+        "address": "007fa3a0",
+        "name": "",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "reason": "Preserve structural/library category; reviewed semantic name supersedes automatic name."
+    },
+    {
+      "address": "00bd30f0",
+      "before": {
+        "address": "00bd30f0",
+        "name": "TRIV_body_00bd30f0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00bd30f0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Preserve structural/library category; reviewed semantic name supersedes automatic name."
+    },
+    {
+      "address": "00bdaf40",
+      "before": {
+        "address": "00bdaf40",
+        "name": "STL_inst_00bdaf40",
+        "category": "stl_instantiation",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0028"
+      },
+      "after": {
+        "address": "00bdaf40",
+        "name": "",
+        "category": "stl_instantiation",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0028"
+      },
+      "reason": "Preserve structural/library category; reviewed semantic name supersedes automatic name."
+    }
+  ],
+  "remaining_rename_tags_verified": 8774,
+  "limits": "Normal returning CRT free corrected; thirteen audited call sites, not a blanket caller sweep. Audit annotations retain capture-time facts and append final repair outcome."
+}

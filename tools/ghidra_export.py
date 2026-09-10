@@ -173,7 +173,9 @@ def decompile(client, output, addresses, force=False):
             continue
         try:
             client.verify()  # Prevent cross-project evidence if the user switches projects.
-            code = client.get('decompile_function', address=address, timeout=60)
+            code = client.get('force_decompile' if force else 'decompile_function', address=address, timeout=60)
+            if force and isinstance(code, str) and code.startswith('Success: Forced redecompilation of '):
+                code = code.partition('\n\n')[2]
             assembly = client.get('disassemble_function', address=address)
             if not isinstance(code, str) or '{' not in code or not isinstance(assembly, str) or not assembly.strip():
                 raise RuntimeError('Empty or unsuccessful function export')

@@ -1,0 +1,646 @@
+{
+  "schema_version": 1,
+  "packet": "structured_resource_hierarchy_bounds",
+  "captured_utc": "2026-09-09T23:55:32.370375+00:00",
+  "source_head": "5b2c897",
+  "status": "read_only_complete_span_audit_ready_for_parent_review",
+  "scope": {
+    "initial_anchors": [
+      "00b7f100",
+      "00b93310"
+    ],
+    "approved_expansions": [
+      "00b7eb90",
+      "00be99d0",
+      "00bf02c0",
+      "00b7d220",
+      "00b7d160"
+    ],
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "All live exports and bsp.py byte reads verified configured bsp project and program before access.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {
+        "address": "00b7f100",
+        "length": 164,
+        "kind": "code",
+        "end_exclusive": "00b7f1a4",
+        "sha256": "0f5a60c33e9fdfa2348eda00bcf32c3f6169af6f83dab2cbf8800f51a9b73735",
+        "matches_original_pe": true,
+        "disk_offset": 7860480,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00b7f100.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00b7f100.raw.asm.txt"
+      },
+      {
+        "address": "00b93310",
+        "length": 66,
+        "kind": "code",
+        "end_exclusive": "00b93352",
+        "sha256": "d6ee194253a2a3773f321d062647c34d39f5c998f065bfc1c461a2661d0d439d",
+        "matches_original_pe": true,
+        "disk_offset": 7942928,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00b93310.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00b93310.raw.asm.txt"
+      },
+      {
+        "address": "00b7eb90",
+        "length": 769,
+        "kind": "code",
+        "end_exclusive": "00b7ee91",
+        "sha256": "3d29d9f744a2052f8886ff8e64278ee79670a6fa6faf90500b51c2165be3b5c4",
+        "matches_original_pe": true,
+        "disk_offset": 7859088,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00b7eb90.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00b7eb90.raw.asm.txt"
+      },
+      {
+        "address": "00be99d0",
+        "length": 15,
+        "kind": "code",
+        "end_exclusive": "00be99df",
+        "sha256": "e7b48483940ecbf97f92224ca7e2b88f4b3ab554b00b06967f5ce5d090b7b1e8",
+        "matches_original_pe": true,
+        "disk_offset": 8296912,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00be99d0.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00be99d0.raw.asm.txt"
+      },
+      {
+        "address": "00bf02c0",
+        "length": 39,
+        "kind": "code",
+        "end_exclusive": "00bf02e7",
+        "sha256": "841102549ac51ea3173dfc9dc71109922d1992fb05ea4ebd664b6a25e99fdfe3",
+        "matches_original_pe": true,
+        "disk_offset": 8323776,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00bf02c0.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00bf02c0.raw.asm.txt"
+      },
+      {
+        "address": "00b7d220",
+        "length": 62,
+        "kind": "code",
+        "end_exclusive": "00b7d25e",
+        "sha256": "c250552e52d29a0b6a50f3564cb639b5d6fb48c02e41cdf6faaa4fa3c43208fa",
+        "matches_original_pe": true,
+        "disk_offset": 7852576,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00b7d220.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00b7d220.raw.asm.txt"
+      },
+      {
+        "address": "00b7d160",
+        "length": 191,
+        "kind": "code",
+        "end_exclusive": "00b7d21f",
+        "sha256": "cc5b5986a4c42e229bed1ab3441fc5e2504daa515c324c14415eaae1628665e6",
+        "matches_original_pe": true,
+        "disk_offset": 7852384,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00b7d160.bytes.txt",
+        "raw_disassembly": "exports/bsp/parallel_structured_hierarchy_bounds/00b7d160.raw.asm.txt"
+      }
+    ],
+    "data_spans": [
+      {
+        "address": "00d630e4",
+        "length": 53,
+        "kind": "data",
+        "end_exclusive": "00d63119",
+        "sha256": "ca04306a4bd80f0b68c7ff3837f59fdfa43e933ad410f22b3672c31f4ed54c57",
+        "matches_original_pe": true,
+        "disk_offset": 9842916,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00d630e4.bytes.txt",
+        "hex": "426f756e64696e67426f7800426f756e64696e6753706865726500004d617472697800005265736f75726365000000004974656d00",
+        "nul_separated_ascii": [
+          "BoundingBox",
+          "BoundingSphere",
+          "Matrix",
+          "Resource",
+          "Item"
+        ]
+      },
+      {
+        "address": "00ce5644",
+        "length": 7,
+        "kind": "data",
+        "end_exclusive": "00ce564b",
+        "sha256": "d31a02c749c646ef45d2fe0da3985faec6054e11f9a4e25da183cf9a87ae6f9c",
+        "matches_original_pe": true,
+        "disk_offset": 9328196,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00ce5644.bytes.txt",
+        "hex": "506172656e7400",
+        "nul_separated_ascii": [
+          "Parent"
+        ]
+      },
+      {
+        "address": "00ce8ed0",
+        "length": 5,
+        "kind": "data",
+        "end_exclusive": "00ce8ed5",
+        "sha256": "5458f37977e6129640e9a702b17242e615bf4672eff3161fe49121846d47a085",
+        "matches_original_pe": true,
+        "disk_offset": 9342672,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00ce8ed0.bytes.txt",
+        "hex": "4e616d6500",
+        "nul_separated_ascii": [
+          "Name"
+        ]
+      },
+      {
+        "address": "00d09a68",
+        "length": 6,
+        "kind": "data",
+        "end_exclusive": "00d09a6e",
+        "sha256": "bd1abe3ecd2c9c209f4b5b5496a2169274942916a9277ce4b2338071e572cd07",
+        "matches_original_pe": true,
+        "disk_offset": 9476712,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00d09a68.bytes.txt",
+        "hex": "466c61677300",
+        "nul_separated_ascii": [
+          "Flags"
+        ]
+      },
+      {
+        "address": "00ce4adc",
+        "length": 4,
+        "kind": "data",
+        "end_exclusive": "00ce4ae0",
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+        "matches_original_pe": true,
+        "disk_offset": 9325276,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00ce4adc.bytes.txt",
+        "hex": "f90215d0",
+        "float32_value": -10000000000.0
+      },
+      {
+        "address": "00ce4970",
+        "length": 4,
+        "kind": "data",
+        "end_exclusive": "00ce4974",
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+        "matches_original_pe": true,
+        "disk_offset": 9324912,
+        "raw_byte_capture": "exports/bsp/parallel_structured_hierarchy_bounds/00ce4970.bytes.txt",
+        "hex": "f9021550",
+        "float32_value": 10000000000.0
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b7f100",
+      "old_name": "FUN_00b7f100",
+      "proposed_name": "BSP_StructuredResource_ParseHierarchy",
+      "original_abi": "ECX manager; stack pointer to reader-handle wrapper; RET 4.",
+      "evidence": [
+        "00b7f11f",
+        "00b7f12f",
+        "00b7f14d",
+        "00b7f165",
+        "00b7f170",
+        "00b7f181",
+        "00b7f188"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    },
+    {
+      "address": "00b93310",
+      "old_name": "FUN_00b93310",
+      "proposed_name": "BSP_StructuredReader_ReadBoundingBox",
+      "original_abi": "ECX reader-handle wrapper; EDX six-float destination; no stack arguments; RET.",
+      "evidence": [
+        "00b93316",
+        "00b9331b",
+        "00b93347",
+        "00b9334c"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00b93310] update\nComplete 66-byte box reader. Six sequential 00be99d0 calls and FSTP float stores at output +0/+4/+8/+0Ch/+10h/+14h. Schema order is minimum XYZ then maximum XYZ, grounded by the shared Item storage and sphere conversion 00b7d220/00b7d160. No count check, sort, clamp, transform, retry or early EOF exit.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    },
+    {
+      "address": "00b7eb90",
+      "old_name": "FUN_00b7eb90",
+      "proposed_name": "BSP_StructuredResource_ParseHierarchyItem",
+      "original_abi": "ECX manager; one reader-handle-wrapper pointer stack argument; RET 4.",
+      "evidence": [
+        "00b7ebb4",
+        "00b7ebca",
+        "00b7ec17",
+        "00b7ec76",
+        "00b7eca9",
+        "00b7eccb",
+        "00b7ecde",
+        "00b7ed10",
+        "00b7ed49",
+        "00b7ed63",
+        "00b7edc4",
+        "00b7edec",
+        "00b7edf6",
+        "00b7ee3f",
+        "00b7ee57",
+        "00b7ee78"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00b7eb90] update\nComplete 769-byte Item branch. Obtain 132-byte storage via 00b87a90; fields Parent +0, owned Name +4/+8, Matrix destination +0Ch, Resource dword vector +4Ch/+50h/+54h, Flags +58h, sphere +5Ch..+68h, box +6Ch..+80h. Defaults parent FFFFFFFF, zero name/vector/flags, sphere (0,0,0,1e10), box (-1e10 XYZ,+1e10 XYZ); matrix area has no initialization in this body. Resource tags append, other recognized fields overwrite. Sphere recomputes box; explicit box overwrites box only. End passes raw record to 00b87ae0 on current resource manager+24h; owning append/destruction remain unaudited. Do not conflate with resource-item append 00b87aa0.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    },
+    {
+      "address": "00be99d0",
+      "old_name": "FUN_00be99d0",
+      "proposed_name": "BSP_StructuredReader_ReadFloat",
+      "original_abi": "ECX reader-handle-wrapper pointer; no stack arguments; RET; result x87 ST0.",
+      "evidence": [
+        "00be99d0",
+        "00be99d2",
+        "00be99d6",
+        "00be99d9"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00be99d0] update\nComplete 15-byte float adapter. Let node=*handle; pass ECX=[node+8] wrapper and stack &node+20h accounting dword to 00bf02c0. Actual underlying stream requires another dereference in that callee. No independent cursor, endian conversion, validation, ownership or error handling.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    },
+    {
+      "address": "00bf02c0",
+      "old_name": "FUN_00bf02c0",
+      "proposed_name": "BSP_StreamWrapper_ReadFloatAndAccount",
+      "original_abi": "ECX wrapper whose first dword points to stream; one accounting-dword pointer stack argument; RET 4; x87 ST0.",
+      "evidence": [
+        "00bf02c3",
+        "00bf02c7",
+        "00bf02ca",
+        "00bf02ce",
+        "00bf02d0",
+        "00bf02d4",
+        "00bf02d8",
+        "00bf02dc",
+        "00bf02df",
+        "00bf02e4"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00bf02c0] update\nComplete 39-byte numeric adapter. Dereference wrapper to actual stream; call virtual +44h with NONNULL local actual-count pointer; FSTP/FLD through float32; subtract reported actual count from caller accounting dword. No pre-read budget clamp, four-byte check, retry or underflow guard. Actual-count local is not initialized before virtual call. Known scalar target 00be4360 seeds reused read-buffer bytes with the nonnull pointer value on short read; existing null-count font adapter is not malformed-input parity.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    },
+    {
+      "address": "00b7d220",
+      "old_name": "FUN_00b7d220",
+      "proposed_name": "BSP_Bounds_SetFromSphere",
+      "original_abi": "ECX output box; stack sphere pointer; EAX output; RET 4.",
+      "evidence": [
+        "00b7d220",
+        "00b7d22e",
+        "00b7d233",
+        "00b7d254",
+        "00b7d25b"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    },
+    {
+      "address": "00b7d160",
+      "old_name": "FUN_00b7d160",
+      "proposed_name": "BSP_Sphere_ToAxisAlignedBounds",
+      "original_abi": "ECX six-float output; EDX four-float sphere; EAX output; no stack arguments; RET.",
+      "evidence": [
+        "00b7d163",
+        "00b7d165",
+        "00b7d184",
+        "00b7d1a5",
+        "00b7d1b8",
+        "00b7d1d4",
+        "00b7d1dc",
+        "00b7d1e4",
+        "00b7d1f0",
+        "00b7d216"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "status": "complete_span_read_only_audit",
+      "proposed_plate_comment": "[BSP reconstruction 00b7d160] update\nComplete 191-byte geometry leaf. Sphere components are center X/Y/Z and radius. Outputs center-minus-radius XYZ then center-plus-radius XYZ, grounding minimum/maximum ordering for nonnegative radius. Uses x87 arithmetic and float stores; no radius clamp, min/max sorting or finite-value rejection. Negative radius can invert bounds; exceptional FP/control-word parity untested.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim."
+    }
+  ],
+  "prior_ghidra_annotations": [
+    {
+      "address": "00b7f100",
+      "annotation": {
+        "address": "00b7f100",
+        "function_name": "FUN_00b7f100"
+      }
+    },
+    {
+      "address": "00b93310",
+      "annotation": {
+        "address": "00b93310",
+        "function_name": "FUN_00b93310"
+      }
+    },
+    {
+      "address": "00b7eb90",
+      "annotation": {
+        "address": "00b7eb90",
+        "function_name": "FUN_00b7eb90"
+      }
+    },
+    {
+      "address": "00be99d0",
+      "annotation": {
+        "address": "00be99d0",
+        "function_name": "FUN_00be99d0"
+      }
+    },
+    {
+      "address": "00bf02c0",
+      "annotation": {
+        "address": "00bf02c0",
+        "function_name": "FUN_00bf02c0"
+      }
+    },
+    {
+      "address": "00b7d220",
+      "annotation": {
+        "address": "00b7d220",
+        "function_name": "FUN_00b7d220"
+      }
+    },
+    {
+      "address": "00b7d160",
+      "annotation": {
+        "address": "00b7d160",
+        "function_name": "FUN_00b7d160"
+      }
+    }
+  ],
+  "parent_packet": {
+    "document": "docs/STRUCTURED_RESOURCE_DISPATCH.md",
+    "report": "reports/structured_resource_dispatch_audit.json",
+    "addresses_owned_elsewhere": [
+      "0071b870",
+      "0071b810",
+      "00b7f430",
+      "00b7e970"
+    ],
+    "parent_call_evidence": {
+      "hierarchy": "00b7f4e3:ECX manager,stack &childHandle",
+      "boundingbox": "00b7f517:ECX &childHandle,EDX sixfloat local; copy into current resource+28h..3Ch"
+    },
+    "append_distinction": "Parent resource-item append00b87aa0 differs from this packet hierarchy-record append00b87ae0."
+  },
+  "hierarchy": {
+    "accepted_child_tag": "Item",
+    "nonnull_compare": "case-insensitive CRTstricmp",
+    "loop_predicate": "00715bf0(&parentHandle)->AL",
+    "child_acquire": "00bea680(&parentHandle,&childHandle)",
+    "match": "00b7eb90(manager,&childHandle)",
+    "unknown": "00be9c40(&childHandle)",
+    "normal_child_cleanup": "00be9ed0(&childHandle)",
+    "wrapper_lifetime": "Call sites established; helper bodies and unwind behavior are not newly audited.",
+    "builds_parent_pointer_tree": false,
+    "validates_parent_or_resource_indices": false
+  },
+  "item": {
+    "storage_request_bytes": 132,
+    "storage_helper": "00b87a90 (allocator role inferred from call; current static-destructor tag conflicts)",
+    "fields": [
+      {
+        "tag": "Parent",
+        "offsets": [
+          "00"
+        ],
+        "initial": "FFFFFFFF",
+        "reader": "00be9a00",
+        "effect": "overwrite raw dword; numeric graph meaning unproven"
+      },
+      {
+        "tag": "Name",
+        "offsets": [
+          "04",
+          "08"
+        ],
+        "initial": [
+          0,
+          0
+        ],
+        "reader": "00bea010",
+        "effect": "owned stored-length byte copy through0041dd40/memcpy; destroy temporary name"
+      },
+      {
+        "tag": "Matrix",
+        "offsets": [
+          "0c..4b"
+        ],
+        "initial": "No writes in this body; allocator default unknown",
+        "reader": "00b936e0",
+        "effect": "write through record+0Ch; matrix reader layout not audited"
+      },
+      {
+        "tag": "Resource",
+        "offsets": [
+          "4c",
+          "50",
+          "54"
+        ],
+        "initial": [
+          0,
+          0,
+          0
+        ],
+        "reader": "00be9a00",
+        "effect": "append dword, preserve order/duplicates; reserve max(capacity+4,8) via00b7d640"
+      },
+      {
+        "tag": "Flags",
+        "offsets": [
+          "58"
+        ],
+        "initial": 0,
+        "reader": "00be9a00",
+        "effect": "overwrite raw dword; individual bits unknown"
+      },
+      {
+        "tag": "BoundingSphere",
+        "offsets": [
+          "5c",
+          "60",
+          "64",
+          "68"
+        ],
+        "initial": [
+          0,
+          0,
+          0,
+          10000000000.0
+        ],
+        "reader": "00b932e0",
+        "effect": "fill sphere, then overwrite box with center-minus/plus-radius via00b7d220"
+      },
+      {
+        "tag": "BoundingBox",
+        "offsets": [
+          "6c",
+          "70",
+          "74",
+          "78",
+          "7c",
+          "80"
+        ],
+        "initial": [
+          -10000000000.0,
+          -10000000000.0,
+          -10000000000.0,
+          10000000000.0,
+          10000000000.0,
+          10000000000.0
+        ],
+        "reader": "00b93310",
+        "effect": "overwrite box only; first XYZ minima, second XYZ maxima"
+      }
+    ],
+    "tag_compare": "Direct CRTstricmp for first four; existing00425850 audited helper for Flags/Sphere/Box also delegates nonnull comparison tostricmp.",
+    "duplicate_policy": "Resource appends; Parent/Name/Flags overwrite; Matrix redispatches the helper at the same destination; Sphere invokes its reader then overwrites Box; explicit Box does not rewrite Sphere.",
+    "resource_array": {
+      "data": "4c",
+      "count": "50",
+      "capacity": "54",
+      "element_bytes": 4,
+      "reserve_when": "count==capacity",
+      "requested_capacity": "max(capacity+4,8)",
+      "reserve_helper": "00b7d640",
+      "pointer_lookup": false,
+      "element_retain": false,
+      "helper_failure_behavior_audited": false
+    },
+    "matrix_default": "No matrix-area writes in constructor sequence; do not invent identity.",
+    "sink": {
+      "callsite": "00b7ee78",
+      "target": "00b87ae0",
+      "ecx": "manager+24h current resource",
+      "stack": "same raw record pointer",
+      "local_record_free_after_call": false,
+      "owning_container_contract_proven": false
+    },
+    "null_allocation": "No graceful error return established; subsequent writes require valid storage.",
+    "final_name_array_record_destruction": "Unresolved append/destructor dependencies."
+  },
+  "bounds": {
+    "order": [
+      "min_x",
+      "min_y",
+      "min_z",
+      "max_x",
+      "max_y",
+      "max_z"
+    ],
+    "direct_reader_calls": 6,
+    "float_store_offsets": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20
+    ],
+    "minimum_maximum_proven_by": "00b7d160 center-minus/plus-radius and shared Item box destination",
+    "sphere_input": [
+      "center_x",
+      "center_y",
+      "center_z",
+      "radius"
+    ],
+    "formula": [
+      "x-r",
+      "y-r",
+      "z-r",
+      "x+r",
+      "y+r",
+      "z+r"
+    ],
+    "negative_radius": "No clamp; nominal minima/maxima can invert.",
+    "validates_finite": false,
+    "sorts_values": false,
+    "transforms_coordinates": false,
+    "exceptional_x87_behavior_tested": false
+  },
+  "float_reader": {
+    "adapter_chain": [
+      "00be99d0:node=*handle",
+      "wrapper=[node+8]",
+      "counter=&node+20h",
+      "00bf02c0:stream=*wrapper",
+      "stream.virtual+44h(&localActualCount)",
+      "round/reload float32",
+      "*counter-=localActualCount"
+    ],
+    "wrapper_abi": "ECX wrapper;stack accounting pointer;RET4/ST0",
+    "node_counter_role": "Decremented by actual bytes; remaining-budget interpretation consistent but surrounding reader lifecycle unaudited.",
+    "initial_actual_count": "Uninitialized in wrapper; delegated method must write it for valid behavior.",
+    "cursor": "Underlying stream read advances position; wrapper itself only adjusts passed accounting dword.",
+    "budget_precheck": false,
+    "complete_scalar_check": false,
+    "retry": false,
+    "error_branch": false,
+    "underflow_guard": false,
+    "known_stream_scalar_dependency": {
+      "document": "docs/STREAM_SCALAR_READERS.md",
+      "address": "00be4360",
+      "newly_exported_in_packet": false,
+      "known_vtable_slot": "+44h for existing memory/physical stream vtables",
+      "full_read": "One4-byte read, x86 little-endian float32 FLD; no byteswap.",
+      "short_read": "Nonnull actual-count pointer seeds reused argument-slot read buffer; unread bytes retain address bits.",
+      "current_host_null_count_adapter": "src/stream_scalars.cpp; not equivalent for this nonnull short-read path."
+    },
+    "arbitrary_other_stream_vtables": "Behavior remains virtual-target dependent."
+  },
+  "implementation_boundary": {
+    "supported": "Valid complete-input field schema and center/radius-to-box arithmetic; explicit host boundedness and ownership policies required.",
+    "host_rejections_are_additional": [
+      "Incomplete scalar bytes",
+      "Invalid output storage",
+      "Unbounded or invalid vector counts"
+    ],
+    "do_not_substitute": [
+      "Null-count font scalar zero-fill for nonnull structured short reads",
+      "Identity matrix default",
+      "Graph/index validation claimed as recovered",
+      "Unrelated resource-item append ownership"
+    ],
+    "unresolved_dependencies": [
+      "00b87ae0 hierarchy append and resource destruction",
+      "00b87a90 allocation",
+      "00b7d640 dword-array reserve",
+      "00715bf0/00bea680/00be9c40/00be9ed0 reader lifecycle",
+      "00be9a00 integer decoding",
+      "00bea010 string decoding",
+      "00b936e0 matrix reader",
+      "00b932e0 sphere reader",
+      "Parent/Resource numeric graph semantics",
+      "Flags bit meanings"
+    ]
+  },
+  "validation": {
+    "complete_code_spans": 7,
+    "complete_code_bytes": 1306,
+    "data_spans": 6,
+    "data_bytes": 79,
+    "all_fresh_spans_match_original_pe": true,
+    "new_implementation": false,
+    "build_run": false,
+    "tests_run": false,
+    "abi_compatible_replacement": false,
+    "runtime_or_render_validated": false
+  },
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies."
+  }
+}

@@ -286,6 +286,43 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
 // import adapter. VFS mount selection and full texture registration remain absent.
 // The optional input is the single-level DXT1 atlas identified in ASSET_ENTRY.md.
 static bool probe_memory_texture(IDirect3DDevice9& device, const char* path) {
+    // One temporary empty physical source beside this build's probe executable.
+    // Its retained zero-length backing must survive both source and first owner.
+    {
+        char module_path[MAX_PATH]{};
+        const DWORD module_length = GetModuleFileNameA(nullptr, module_path, MAX_PATH);
+        if (module_length == 0 || module_length >= MAX_PATH) return false;
+        const auto fixture_directory = std::filesystem::path(module_path).parent_path().string();
+        char fixture_path[MAX_PATH]{};
+        if (!GetTempFileNameA(fixture_directory.c_str(), "bsp", 0, fixture_path)) return false;
+        struct FixtureCleanup {
+            const char* path;
+            ~FixtureCleanup() { DeleteFileA(path); }
+        } cleanup{fixture_path};
+        bsp::PhysicalFile empty_file;
+        bsp::MemoryStream empty;
+        DWORD empty_error{};
+        if (!empty_file.open_read_only_00bf52a0_fragment(fixture_path, empty_error)
+            || empty_file.size_00bf4f90() != 0
+            || !empty_file.seek_00bf4f20(7, FILE_BEGIN, empty_error)
+            || !bsp::memory_stream_from_physical_00bef750_fragment(empty_file, empty, empty_error)
+            || !empty_file.valid_00bf5020() || empty_file.position() != 0
+            || !empty_file.close_00bf5090_fragment(empty_error)) return false;
+        const auto* backing = empty.data_00bef610();
+        auto retained = empty.clone_reset_00bef6d0();
+        empty = bsp::MemoryStream{};
+        std::uint8_t sentinel = 0xa5;
+        std::uint32_t actual = 1;
+        const bool empty_checked = backing && retained.has_backing()
+            && retained.data_00bef610() == backing && retained.fully_initialized()
+            && retained.size_00bef600() == 0 && retained.initialized_size() == 0
+            && retained.position_00bef580() == 0
+            && retained.seek_00bef540(0, 2) && !retained.seek_00bef540(1, 0)
+            && retained.read_00bef590(&sentinel, 1, &actual)
+            && actual == 0 && sentinel == 0xa5 && retained.position_00bef580() == 0;
+        std::printf("Empty physical conversion: retained_backing_cursor_and_read=%d\n", empty_checked);
+        if (!empty_checked) return false;
+    }
     bsp::PhysicalFile file;
     DWORD error{};
     if (!file.open_read_only_00bf52a0_fragment(path, error) || !file.valid_00bf5020()) return false;

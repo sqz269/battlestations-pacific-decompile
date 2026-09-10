@@ -1,0 +1,321 @@
+{
+  "packet": "font_effect_cache_ownership",
+  "utc": "2026-09-09T23:35:55.527181+00:00",
+  "status": "assembly_audited_owning_fragment_implemented_pending_integration_build",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live CLI verifies bsp project, program path, x86 language and image base before reading; full listed contiguous spans match installed disk."
+  },
+  "function_spans": [
+    {
+      "address": "00b31090",
+      "inclusive_end": "00b315d9",
+      "length": 1354,
+      "matches_disk": true,
+      "sha256": "799cc20085ffedbf1a432d830b0860d83ad8528a75911455bf7874bc7057c17f",
+      "file_offset": 7540880,
+      "role": "generic_cache_acquire",
+      "original_abi": "ECX registry; stack request wrapper, opaque context, retain-on-new-load byte, allow-load byte; EAX effect; RET10h.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b31090",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b31090_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b318b0",
+      "inclusive_end": "00b319ad",
+      "length": 254,
+      "matches_disk": true,
+      "sha256": "be8bf951fa2c9b4970ff7718afcf80b70e126193dea1427f12c367b1255bf236",
+      "file_offset": 7542960,
+      "role": "renderer_effect_acquire",
+      "original_abi": "ECX renderer; stack request wrapper; EAX owned effect; RET4.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b318b0",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b318b0_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b2ebb0",
+      "inclusive_end": "00b2eed2",
+      "length": 803,
+      "matches_disk": true,
+      "sha256": "37f556ad7a43d3d46354018093dd878008b10fba5f01e75bf803a2f09327a725",
+      "file_offset": 7531440,
+      "role": "concrete_effect_load",
+      "original_abi": "ECX registry unused; stack canonical wrapper, unused opaque context; EAX effect; RET8.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b2ebb0",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b2ebb0_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b2e940",
+      "inclusive_end": "00b2eba0",
+      "length": 609,
+      "matches_disk": true,
+      "sha256": "654a4518984d16eaf3075e24bfd7ae963a15f23989d96a38963d07428d7f4d2b",
+      "file_offset": 7530816,
+      "role": "concrete_key_resolution",
+      "original_abi": "ECX registry unused; stack hidden string-result pointer, request wrapper, unused opaque context; EAX result pointer; RETCh.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b2e940",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b2e940_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b31ff0",
+      "inclusive_end": "00b32004",
+      "length": 21,
+      "matches_disk": true,
+      "sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+      "file_offset": 7544816,
+      "role": "retain_effect",
+      "original_abi": "ECX registry unused; stack nonnull effect; EAX same effect; RET4.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b31ff0",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b31ff0_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b32010",
+      "inclusive_end": "00b3202e",
+      "length": 31,
+      "matches_disk": true,
+      "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "file_offset": 7544848,
+      "role": "release_effect",
+      "original_abi": "ECX registry unused; stack nonnull effect; RET4; zero-count effect virtual+0 uses ECX effect and no stack argument.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b32010",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b32010_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b301a0",
+      "inclusive_end": "00b3020e",
+      "length": 111,
+      "matches_disk": true,
+      "sha256": "c4c6b13193dcd3ae01c160f873950139b5a36f358649ae11304140fcbac21b6a",
+      "file_offset": 7537056,
+      "role": "append_cache_entry",
+      "original_abi": "ECX vector at registry+4; stack entry pointer; RET4.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b301a0",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b301a0_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b2fd10",
+      "inclusive_end": "00b2fdb1",
+      "length": 162,
+      "matches_disk": true,
+      "sha256": "d71365944f0c8ae4a794ebc08dbf3e6a5bab0e58f957f1148d2d2e10c0dc2a7d",
+      "file_offset": 7535888,
+      "role": "copy_cache_entry",
+      "original_abi": "ECX destination entry; stack source entry; EAX destination; RET4.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b2fd10",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b2fd10_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b2fa10",
+      "inclusive_end": "00b2fa87",
+      "length": 120,
+      "matches_disk": true,
+      "sha256": "03051b56c87b9cc7b6774a82914d4a2253504e7386f6a4b920aaf6f511eac709",
+      "file_offset": 7535120,
+      "role": "destroy_entry_storage",
+      "original_abi": "ECX entry; no stack args; RET. Full continuation after CALL00b2fa44 with erroneous per-call CALL_RETURN override; effect ownership is not released here.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b2fa10",
+      "ghidra_reported_inclusive_end": "00b2fa48",
+      "boundary_correction": "Initial saved Ghidra export stops after free call with erroneous per-instruction CALL_RETURN override, confirmed by primary integrator live readback. Full live/disk-matched continuation decoded with Capstone through RET. Shared free declarations are not the root cause.",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b2fa10_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b31750",
+      "inclusive_end": "00b317b9",
+      "length": 106,
+      "matches_disk": true,
+      "sha256": "6ef5f4f46fb07b7292bf2ddc37220293a2ca1f79c939fe98d176d6d3d87a79f4",
+      "file_offset": 7542608,
+      "role": "clear_cache",
+      "original_abi": "ECX registry; no stack args; RET; reverse release.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b31750",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b31750_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b320f0",
+      "inclusive_end": "00b3214e",
+      "length": 95,
+      "matches_disk": true,
+      "sha256": "b80ce87cdcb612f9e99a3efa85df6ea1f38f701c318646ddef5098605f19d82a",
+      "file_offset": 7545072,
+      "role": "destroy_registry",
+      "original_abi": "ECX registry; no stack args; RET. Full continuation after CALL00b32137 with erroneous per-call CALL_RETURN override; base registry vtable installed before virtual clear/release.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b320f0",
+      "ghidra_reported_inclusive_end": "00b3213b",
+      "boundary_correction": "Initial saved Ghidra export stops after free call with erroneous per-instruction CALL_RETURN override, confirmed by primary integrator live readback. Full live/disk-matched continuation decoded with Capstone through RET. Shared free declarations are not the root cause.",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b320f0_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00b32230",
+      "inclusive_end": "00b3224d",
+      "length": 30,
+      "matches_disk": true,
+      "sha256": "83bb4653a7b00f2a91239345b3376a12a63867a4fd72eaaad927bcf3a536e4c8",
+      "file_offset": 7545392,
+      "role": "scalar_delete_registry",
+      "original_abi": "ECX registry; stack delete flags; RET4.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00b32230",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00b32230_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00ab8ce0",
+      "inclusive_end": "00ab8e6c",
+      "length": 397,
+      "matches_disk": true,
+      "sha256": "89a579d6ec15997b98eff7d0abae2938496da6c534f3f26c71648d91e60a032d",
+      "file_offset": 7048416,
+      "role": "read_only_context_acquire",
+      "original_abi": "ECX text context; no stack args; AL attempted, not success; RET.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00ab8ce0",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00ab8ce0_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00ab8c30",
+      "inclusive_end": "00ab8cd4",
+      "length": 165,
+      "matches_disk": true,
+      "sha256": "d434b39aa4b1049e73f05217bd1fec64ed4e1e017db853441ea7b8e006f93e06",
+      "file_offset": 7048240,
+      "role": "read_only_context_invalidate",
+      "original_abi": "ECX text context; stack font-name wrapper; RET4.",
+      "exports": "exports/bsp/parallel_font_effect_cache/functions/00ab8c30",
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00ab8c30_disk_matched_disasm.txt"
+    },
+    {
+      "address": "00a82250",
+      "inclusive_end": "00a82252",
+      "length": 3,
+      "matches_disk": true,
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "file_offset": 6824528,
+      "role": "concrete_effect_size_zero_leaf",
+      "original_abi": "ECX effect unused; no stack args; XOR EAX,EAX; RET. No current Ghidra function definition at this vtable target.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_font_effect_cache/00a82250_disk_matched_disasm.txt"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00d5f074",
+      "inclusive_end": "00d5f093",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "f715c3f5ba04808807262574df3a3cfddac045cc067426daf00a31b69a8f689d",
+      "file_offset": 9826420
+    },
+    {
+      "address": "00d5efd0",
+      "inclusive_end": "00d5efff",
+      "length": 48,
+      "matches_disk": true,
+      "sha256": "9d00a01edb9fb61a517a9bc7c03433f4714de97f3004b3d5ad18b22b80310936",
+      "file_offset": 9826256
+    },
+    {
+      "address": "00d5f04c",
+      "inclusive_end": "00d5f073",
+      "length": 40,
+      "matches_disk": true,
+      "sha256": "6a9d3171c80056e4fff99cc70e5a133a2d998e4691b052f79ed39901598d19c2",
+      "file_offset": 9826380
+    },
+    {
+      "address": "00d61a00",
+      "inclusive_end": "00d61a1f",
+      "length": 32,
+      "matches_disk": true,
+      "sha256": "6b2179f01b309e030242b1110edec5bc722df4f0d6bff29d56224d398d2b07a7",
+      "file_offset": 9837056
+    }
+  ],
+  "contracts": {
+    "fixed_renderer_arguments": {
+      "opaque_context": 0,
+      "retain_on_new_load": 1,
+      "allow_load": 1
+    },
+    "opaque_context": "Forwarded to resolver+4 and create+8. Both concrete material registry callbacks ignore it.",
+    "generic_flags": "allow_load is consulted only after request/canonical misses; false returns null without insertion. Cache hits always retain, irrespective of retain_on_new_load. New loads retain for caller only if retain_on_new_load is nonzero.",
+    "identity": "Length plus CRT stricmp across normalized request aliases; normalization00bee690 lowercases ASCII, converts backslashes and trims ASCII spaces, without lexical dot/slash collapsing. Canonical lookup uses only first alias after resolver returns a name different from request.",
+    "key_resolution": "00b2e940 resolves all-substring .mshd-to-.shfx rewrite first. On failure resolves original and returns its mutated value regardless of second result; third stack opaque argument ignored.",
+    "new_entry": "2Ch stride: canonical native string+0, alias list+8 (sentinel+Ch), five opaque VFS metadata DWORDs+14h, effect+28h. Aliases begin canonical then request if different. Append copies storage and raw effect pointer; no retain in entry copy or release in entry storage destructor.",
+    "reference_transfer": "Create callback result is adopted by entry. Renderer adds one caller ref through registry+Ch. Hit path adds caller ref. Aliases do not add owner refs; separate entries may share a fallback effect and each own one ref.",
+    "refcount_abi": "00b31ff0 InterlockedIncrement(effect+4);00b32010 InterlockedDecrement(effect+4), virtual+0 no-stack call at zero. This is intrusive game refcount, not an ID3D COM vtable layout.",
+    "accounting": "Generic cache calls effect virtual+Ch on insertion and recomputes before removal; DWORD addition/subtraction. Actual material vtable00d61a00+Ch points00a82250, a 3-byte XOR EAX,EAX;RET leaf, so concrete material effects account zero.",
+    "failure": "00b2ebb0 resolves rewritten shader, allocates178h and invokes load variants/name setter. It does not inspect variant-loader EAX; fallback is not tied to compiler success. Missing VFS resource reaches debug output then recursively renderer+48(error.shfx). No in-progress insertion, self-fallback or depth guard; missing error.shfx can recurse indefinitely.",
+    "null_failure": "Generic00b31090 inserts null create results; teardown00b31750 dereferences each effect unconditionally. The host fragment explicitly rejects null before insertion and does not claim equivalence on this native-invalid state.",
+    "teardown": "Reverse records; subtract effect size, registry+10 release, destroy alias/name storage, decrement count, vector clear. Registry destructor installs base00d5f04c whose retain/release slots match concrete registry, then clears and frees vector storage.",
+    "font_context": "00ab8ce0 adopts renderer return into+1ECh without another increment; existing nonnull skips selection.00ab8c30 changed font name decrements and clears+1ECh. The cache reference keeps effect alive after text-context invalidation.",
+    "implementation": "EffectCache fixes actual renderer0/1/1 path with shared_ptr owner projection, actual mutable VFS resolver callback, external actual-effect loader, size callback and reverse clear. Caller token survives cache clear; no deduplication by object identity and no pending sentinel.",
+    "host_limits": "NUL-free ASCII<=INT32_MAX keys; complete callbacks required; null result rejected. std::shared_ptr lifetime abstraction is new and not native ABI. Serialized access. Size callback cannot throw or reenter. Allocation exceptions propagate.",
+    "remaining_external": [
+      "platform pump00beccd0 at every native acquire",
+      "optional renderer guard00b33ad0/00b33b00",
+      "actual descriptor/compiler00b46950 and effect-name setter00b18f70",
+      "VFS metadata query00bdd340 and native vector allocator/exception guarantees",
+      "renderer/scene lifetime and resource reload/eviction beyond clear"
+    ]
+  },
+  "annotation_proposals": [
+    {
+      "address": "00b31090",
+      "name": "BSP_MaterialEffectCache_Acquire",
+      "comment": "ECX registry; request, opaque context, retain-on-new-load byte, allow-load byte; RET10h. Alias lookup, canonical resolver+4, create+8; hits always retain+Ch, misses retain only when flag3. Native null insertion and error.shfx recursive fallback assumptions remain. docs/FONT_EFFECT_CACHE_OWNERSHIP.md"
+    },
+    {
+      "address": "00b2e940",
+      "name": "BSP_MaterialEffectRegistry_ResolveKey",
+      "comment": "Hidden string result/request/unused context stack; RETCh. Rewrite every .mshd to .shfx; VFS-resolve rewritten first, else resolve original and return mutated original regardless failure. No extension-only guessing."
+    },
+    {
+      "address": "00b31ff0",
+      "name": "BSP_MaterialEffectRegistry_Retain",
+      "comment": "Nonnull effect stack; RET4. InterlockedIncrement(effect+4), EAX same pointer."
+    },
+    {
+      "address": "00b32010",
+      "name": "BSP_MaterialEffectRegistry_Release",
+      "comment": "Nonnull effect stack; RET4. InterlockedDecrement(effect+4); zero invokes effect virtual+0 with ECX effect, no stack argument."
+    },
+    {
+      "address": "00b31750",
+      "name": "BSP_MaterialEffectCache_Clear",
+      "comment": "ECX registry; RET. Reverse records: size virtual+Ch subtraction, registry+10 release, entry storage destroy. Effect pointer is dereferenced unconditionally; native null records unsafe."
+    },
+    {
+      "address": "00a82250",
+      "name": "BSP_MaterialEffect_ZeroAccountedSize",
+      "comment": "Missing function definition. Vtable00d61a00+Ch points here. Disk/Ghidra matched00a82250-00a82252 = XOR EAX,EAX;RET. Descriptive role name provisional; shared leaf may serve other classes."
+    },
+    {
+      "address": "00b2fa10",
+      "name": "BSP_MaterialEffectCacheEntry_DestroyStorage",
+      "comment": "Correct body through00b2fa87 RET; initial saved body truncated by erroneous CALL_RETURN override at call00b2fa44 to free00bf65ac. Alias/name storage only; no effect release."
+    },
+    {
+      "address": "00b320f0",
+      "name": "BSP_MaterialEffectCache_Destroy",
+      "comment": "Correct body through00b3214e RET; initial saved body truncated by erroneous CALL_RETURN override at call00b32137 to free00bf6989. Base vtable retains same retain/release functions; clears and frees vector storage."
+    }
+  ],
+  "bounds": {
+    "shared_metadata_edited": false,
+    "ghidra_edited": false,
+    "native_abi_compatible": false,
+    "new_tests": false,
+    "game_validated": false,
+    "source": [
+      "include/bsp/effect_cache.hpp",
+      "src/effect_cache.cpp"
+    ],
+    "report": "docs/FONT_EFFECT_CACHE_OWNERSHIP.md"
+  },
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies.",
+    "flow_repair": "Initial CALL_RETURN observations retained; later analysis reinstated _free no-return. Primary corrected actual _free flag plus audited call-site overrides, rebuilt four truncated definitions, saved and refreshed exports. Final readback is authoritative."
+  }
+}

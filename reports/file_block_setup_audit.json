@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "packet": "file_block_setup",
+  "status": "complete_bounded_read_only_audit_no_isolated_cpp_change_justified",
+  "audited_utc": "2026-09-09T23:40:51.743075+00:00",
+  "baseline_commit": "5b2c897",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": {
+    "live_queries": "bsp.py ghidra bytes/proto/decompile/comments; Client.verify checked project, program path, language and image base before each query.",
+    "complete_bodies": 4,
+    "data_spans": 3,
+    "all_bytes_match_configured_installed_pe": true,
+    "artifacts": "exports/bsp/parallel_file_block_setup/",
+    "original_comments_file": "exports/bsp/parallel_file_block_setup/original_comments.json",
+    "original_comment_records": 4,
+    "worker_modified_ghidra": false,
+    "original_game_files_modified": false,
+    "cpp_modified": false,
+    "build_or_runtime_tests_run": false
+  },
+  "framing_correction": "These helpers prepare FileBlock identifiers and enter global VFS observation/tracing blocks. They do not establish stream ranges or stream retention.",
+  "caller_handoff": {
+    "source": "Independent loader_lifetime worker, owned00be0a30",
+    "document": "docs/VFS_LOAD_PROCESSING_START.md",
+    "receiver_for_00bdf950": "new28h FileBlock object; name+14h/+18h; CALL00bdf950 at00be0aae",
+    "receiver_for_00be0980": "global VFS pointer[0109ceec]; name-wrapper and caller secondargument; CALL00be0980 at00be0abf",
+    "observed_loader_gate_argument": 1,
+    "caller_body_independently_owned": true
+  },
+  "functions": [
+    {
+      "address": "007fa3a0",
+      "old_name": "STL_xlen_throw_007fa3a0",
+      "proposed_name": "STL_list_GrowSizeChecked_007fa3a0",
+      "abi": "ECX list object; stack unsigned increment; EAX updated list size on success; RET4",
+      "contract": "If increment>UINT32_MAX-list+8 size, construct/throw std::length_error with list<T> too long; otherwise increment list+8 and return updated size.",
+      "comment": "Preserve standard-library identification; current throw-only heuristic omits returning path. Complete145-byte PE-matched body. ECX list, stack unsigneddelta, checkdelta<=UINT32_MAX-size+8; success stores/returns size+delta, RET4; overflow throws std::length_error. FileBlock caller passes1 after node construction and before linkage.",
+      "raw_body": {
+        "address": "007fa3a0",
+        "end_exclusive": "007fa431",
+        "length": 145,
+        "capture_length": 160,
+        "sha256": "f52151d5752d51e293bec13a22e1018bb57f280ff22413929c2fcaf8a11a9145",
+        "raw_file": "exports/bsp/parallel_file_block_setup/007fa3a0_007fa431.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "007fa42e: ret 4"
+        ]
+      },
+      "ghidra_reported_body": "007fa3a0 - 007fa430",
+      "annotation_status": "proposal_only_primary_integrator_owns_annotation_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_SETUP.md"
+    },
+    {
+      "address": "00bd20a0",
+      "old_name": "FUN_00bd20a0",
+      "proposed_name": "BSP_String_SplitNonemptyOnByte",
+      "abi": "ECX source native string; DL delimiter; stack destination token container; RET4; no stable result contract",
+      "contract": "Skip repeated delimiter bytes; locate each nonempty span within stored length; substring-copy to temporary, insert into destination, release temporary; no stream ownership.",
+      "comment": "Complete205-byte PE-matched body. ECX string, delimiterDL, destination container on stack, RET4. Skips leading/repeated/trailing delimiters; copies only nonempty spans via00469840 then inserts via004cdc20 and releases temporary string. FileBlock caller uses underscore. Container/string allocator ABI not reconstructed.",
+      "raw_body": {
+        "address": "00bd20a0",
+        "end_exclusive": "00bd216d",
+        "length": 205,
+        "capture_length": 208,
+        "sha256": "22a2f5a63465655e7fc4e37c4c7c3acc452bc917a68880420c7bac296dd9c548",
+        "raw_file": "exports/bsp/parallel_file_block_setup/00bd20a0_00bd216d.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00bd216a: ret 4"
+        ]
+      },
+      "ghidra_reported_body": "00bd20a0 - 00bd216c",
+      "annotation_status": "proposal_only_primary_integrator_owns_annotation_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_SETUP.md"
+    },
+    {
+      "address": "00bdf950",
+      "old_name": "FUN_00bdf950",
+      "proposed_name": "BSP_FileBlock_PrepareIdentifier",
+      "abi": "ECX FileBlock object; no stack arguments; RET; no stable result contract",
+      "contract": "Prepare name string at FileBlock+14h/+18h: replace invalid characters, for length>32 split underscore skipping empty tokens, use numeric-token abbreviation for counts3..11 and the observed two-substring fallback otherwise. No stream ranges, reads or retain/release.",
+      "comment": "Complete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim.",
+      "raw_body": {
+        "address": "00bdf950",
+        "end_exclusive": "00bdfd80",
+        "length": 1072,
+        "capture_length": 1072,
+        "sha256": "23f1be0a8d018d432c5bdde27ff48c82a841097fce6cda0622fc2ae435651982",
+        "raw_file": "exports/bsp/parallel_file_block_setup/00bdf950_00bdfd80.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00bdfd7f: ret"
+        ]
+      },
+      "ghidra_reported_body": "00bdf950 - 00bdfd7f",
+      "annotation_status": "proposal_only_primary_integrator_owns_annotation_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_SETUP.md"
+    },
+    {
+      "address": "00be0980",
+      "old_name": "FUN_00be0980",
+      "proposed_name": "BSP_VFS_EnterFileBlock",
+      "abi": "ECX VFS manager; stack name-wrapper pointer, low gate byte; RET8; no stable result contract",
+      "contract": "Construct/link saved-gate list node, checked-increment list size, AND manager+79h with gate argument, optional observer virtual+8 if+78h, increment depth+14h, copy name to+0Ch/+10h, optionally call diagnostic helper. No file stream consumed or retained.",
+      "comment": "Complete169-byte PE-matched body. Distinct receiver from00bdf950: ECX globalVFS manager. Order: node construction with address+79h; checked list+7Ch size growth; linkage; gateAND; optional manager+88h observer virtual+8(name) if+78h; depth+14h++; name copy+0Ch/+10h; diagnostic +FileBlock %s ifgate. No direct observer/input wrapper retain, stream range or reads. Paired leave remains unreviewed; descriptive name is provisional.",
+      "raw_body": {
+        "address": "00be0980",
+        "end_exclusive": "00be0a29",
+        "length": 169,
+        "capture_length": 176,
+        "sha256": "e48a9ab2164469feefef20df977beed69de6e13ebebe2b2ea1915695e4d5fffe",
+        "raw_file": "exports/bsp/parallel_file_block_setup/00be0980_00be0a29.bin",
+        "pe_match": true,
+        "span_kind": "complete_body",
+        "returns": [
+          "00be0a26: ret 8"
+        ]
+      },
+      "ghidra_reported_body": "00be0980 - 00be0a28",
+      "annotation_status": "proposal_only_primary_integrator_owns_annotation_and_shared_ledgers",
+      "evidence_document": "docs/FILE_BLOCK_SETUP.md"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00ce3a0c",
+      "end_exclusive": "00ce3a10",
+      "length": 4,
+      "capture_length": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_file": "exports/bsp/parallel_file_block_setup/00ce3a0c_00ce3a10.bin",
+      "pe_match": true,
+      "span_kind": "data_span",
+      "returns": [],
+      "first_c_string": ""
+    },
+    {
+      "address": "00ce7890",
+      "end_exclusive": "00ce7898",
+      "length": 8,
+      "capture_length": 8,
+      "sha256": "81688104af7f4b5f9d1c26b79855cf9a27f8a8ad54349ff20c2dcc92d63da3a4",
+      "raw_file": "exports/bsp/parallel_file_block_setup/00ce7890_00ce7898.bin",
+      "pe_match": true,
+      "span_kind": "data_span",
+      "returns": [],
+      "first_c_string": "_"
+    },
+    {
+      "address": "00d68520",
+      "end_exclusive": "00d68550",
+      "length": 48,
+      "capture_length": 48,
+      "sha256": "a4a4814d599a7bc424300241e22423bdb7c55b3a74e9714d06b6fd48718008f6",
+      "raw_file": "exports/bsp/parallel_file_block_setup/00d68520_00d68550.bin",
+      "pe_match": true,
+      "span_kind": "data_span",
+      "returns": [],
+      "first_c_string": " <>=?:;\"*+,./\\|"
+    }
+  ],
+  "identifier": {
+    "native_fields": {
+      "length": "+14h",
+      "data": "+18h"
+    },
+    "invalid_characters": " <>=?:;\"*+,./\\|",
+    "replacement_byte": "_",
+    "embedded_nul_behavior": "For a valid allocated string, strcspn stopping atNUL before stored length leads to that byte being overwritten with underscore; inference directly from scan result/store instructions.",
+    "short_branch": "Stored length<=32 returns after replacement phase.",
+    "long_tokenization": "Delimiter underscore inDL; skip empty tokens. Usual valid token-count branch3..11 follows signedcount>=3 and3*count-1<=32.",
+    "abbreviation": "Native atol(token)!=0 preserves whole token; atol==0 preserves first byte. Join underscore. No final32-byte clamp.",
+    "fallback_raw": "00469840 first(start=-64,count64), second(start0,count64);004261a0 concatenates second plus first; assign result.",
+    "fallback_prior_helper_inference": "Cached00469840 negative start adds to count then clamps start0; first slice therefore empty and second is up-to64-byte prefix. Not a new PE audit of that helper."
+  },
+  "vfs_block_entry": {
+    "manager_offsets": {
+      "current_name": "+0Ch/+10h",
+      "nesting_depth": "+14h",
+      "observer_enabled": "+78h",
+      "current_gate": "+79h",
+      "list_object": "+7Ch",
+      "list_sentinel": "+80h",
+      "list_size": "+84h",
+      "observer_object": "+88h"
+    },
+    "order": [
+      "node construction receives oldgate address",
+      "checked list size increment1",
+      "link returned node",
+      "gate AND input low byte",
+      "optional observer virtual+8 withname",
+      "depth increment1",
+      "copy current name",
+      "conditional diagnostic call"
+    ],
+    "ownership": "Input name and observer are used without explicit retain/release; newly constructed node is linked into manager state and not removed here. Unknown observer internals may have separate effects.",
+    "reentrancy_boundary": "Observer sees updatedgate but prior depth/name because callback precedes their updates.",
+    "stream_ranges": "none observed"
+  },
+  "decompiler_boundary": {
+    "function": "00bdf950",
+    "call_site": "00bdfd65",
+    "callee": "00bf6989",
+    "observed": "Captured pseudocode marks finalfree nonreturning; raw00bdfd6a..00bdfd7f has cleanup/RET. Existing Ghidra body includes tail because short path targets shared epilogue.",
+    "repair": "Primary should inspect exact call-site flow override; no body expansion or blind library annotation change justified."
+  },
+  "existing_helper_evidence": [
+    {
+      "address": "00469840",
+      "source": "cached export through bsp.py show plus docs/TEXTURE_FILE_LOADING.md and docs/VFS_PRELOAD_BOUNDARY.md",
+      "used_for": "substring clamp/negative start semantics; explicitly prior evidence, not newly byte-audited"
+    },
+    {
+      "address": "004261a0",
+      "source": "existing docs/PROVIDER_ENUMERATION.md and docs/VFS_PRELOAD_BOUNDARY.md contracts plus direct caller operand sequence",
+      "used_for": "string concatenation composition; no new library reconstruction"
+    },
+    {
+      "addresses": [
+        "00531030",
+        "0054aa70"
+      ],
+      "source": "existing docs/TEXT_INPUT_FALLBACK.md and docs/PROVIDER_ENUMERATION.md plus direct caller byte operands",
+      "used_for": "first-byte string construction/append; helper bodies not added to this audit closure"
+    }
+  ],
+  "implementation_proposal": {
+    "immediate_change": "No disconnected C++ API. Existing VfsProviderManager has no trace-block stack/paired leave/observer contract.",
+    "next_coherent_unit": "Scoped VFS named block after paired exit and observer contracts are recovered; use exact identifier preparation semantics.",
+    "candidate_dependency": {
+      "address": "00bdcb30",
+      "via": "loader-owned metadata for FileBlock deleting destructor00bdebe0",
+      "status": "Unreviewed candidate exit dependency; not established as balanced leave implementation."
+    },
+    "bounded_fragment_available": "Identifier byte replacement for valid native strings oflength<=32; not a complete00bdf950 replacement."
+  },
+  "uncertainties": [
+    "No new ABI-compatible layouts, allocator internals or exception unwinding reconstruction.",
+    "Node constructor007f8390 and token insertion004cdc20 internals remain outside approved closure.",
+    "Observer object+88h and paired exit/destruction path remain unresolved.",
+    "Diagnostic helper actual external output not established.",
+    "Numeric overflow/locale details of native atol not newly audited.",
+    "Native malformed strings/null data with positive stored length are not a safe host precondition.",
+    "Fallback composition uses prior substring contract; no fresh substring span recorded.",
+    "No installed archive, stream fixture, native differential or gameplay execution occurred."
+  ],
+  "document": "docs/FILE_BLOCK_SETUP.md",
+  "primary_integration": {
+    "report": "reports/lifetime_effect_cache_validation.json",
+    "annotations": "reports/lifetime_effect_cache_annotations.json",
+    "runtime_scope": "Only supported empty-physical and installed-font cache fragments implemented; other packets are matched evidence and named dependencies.",
+    "flow_repair": "Initial CALL_RETURN observations retained; later analysis reinstated _free no-return. Primary corrected actual _free flag plus audited call-site overrides, rebuilt four truncated definitions, saved and refreshed exports. Final readback is authoritative."
+  }
+}

@@ -178,9 +178,9 @@
       ],
       "contract": "Whole encoded backing, ordered directory and named materialization with explicit original-source callback. Preserve native tail/prefix/source route quirks.",
       "integration_owner": "primary",
-      "validation": "reports/startup_manager_validation.json",
-      "annotation_status": "Reviewed evidence saved, old comments retained, selected exports refreshed.",
-      "next_work": "Provider manager and both startup scans integrated. Next: native stream/source lifetime and backward-seek ownership; real archives remain unvalidated."
+      "validation": "reports/lifetime_effect_cache_validation.json",
+      "annotation_status": "Reviewed lifetime/schema names and evidence saved; old comments retained; forced exports refreshed.",
+      "next_work": "Stream conversion ownership audited; empty physical conversion integrated. Real archives and excluded cross-block backward seek remain separate."
     },
     {
       "id": "font_wrapped_layout",
@@ -201,9 +201,9 @@
       ],
       "contract": "Supplied FontData/UTF16/scalars to wrapped placements and normalized vertical offset;00aba860 is an interior block.",
       "integration_owner": "primary",
-      "validation": "reports/startup_manager_validation.json",
-      "annotation_status": "Reviewed evidence saved, old comments retained, selected exports refreshed.",
-      "next_work": "Owned geometry and named parameter bindings integrated. Next: retained effect-cache ownership, then dynamic context/scene/reset."
+      "validation": "reports/lifetime_effect_cache_validation.json",
+      "annotation_status": "Reviewed lifetime/schema names and evidence saved; old comments retained; forced exports refreshed.",
+      "next_work": "Retained effect cache now supplies actual compiled font shaders. Full native effect loader, context/scene/reset and gameplay remain."
     },
     {
       "id": "vfs_pending_dispatch",
@@ -226,9 +226,9 @@
       ],
       "integration_owner": "primary",
       "contract": "Physical overlapped submit with deferred callback even on immediate success; explicit pump copies logical size and cleans I/O resources.",
-      "validation": "reports/startup_manager_validation.json",
-      "annotation_status": "Reviewed evidence saved, old comments retained, selected exports refreshed.",
-      "next_work": "Manager/FileStore pending submission, dedup/completion and explicit pump integrated. Next: loader/frame/stop-wait lifetime and termination."
+      "validation": "reports/lifetime_effect_cache_validation.json",
+      "annotation_status": "Reviewed lifetime/schema names and evidence saved; old comments retained; forced exports refreshed.",
+      "next_work": "Queue/frame/stop, worker dispatch, FileBlock and structured resource schema audited. Next: real reader, resource ownership and queue/synchronization implementation."
     }
   ],
   "snapshot_after_analysis": {
@@ -240,7 +240,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/startup_manager_validation.json",
+  "integration_report": "reports/lifetime_effect_cache_validation.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -251,11 +251,11 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-09T23:13:24.938218+00:00",
+    "utc": "2026-09-10T00:00:40.588086+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
-    "total_function_count": 62743,
-    "internal_function_count": 62301,
+    "total_function_count": 62746,
+    "internal_function_count": 62304,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
@@ -303,62 +303,118 @@
   ],
   "next_dispatch": [
     {
-      "worker": "inflate_read_seek",
-      "packet": "stream_conversion_lifetime",
-      "work": "Trace archive source retention through inflater construction/destruction, memory conversion/backing and returned wrapper; establish retains/releases, cursor effects and complete raw tails before extending APIs.",
+      "worker": "reader_worker",
+      "packet": "structured_reader",
+      "work": "Recover real serialized reader construction, root and child record boundaries, cursor/budget and source lifetime before implementing file parsing. Use full matched bytes and installed supported resources when available.",
       "function_addresses": [
-        "00bb8be0",
-        "00bbc1d0",
-        "00bbc320",
-        "00bbc3e0",
-        "00bef750",
-        "00bef6d0",
-        "00bd30e0",
-        "00bd30f0"
+        "00bf0430",
+        "00bea700",
+        "00bea680",
+        "00be9a40",
+        "00715bf0"
       ],
       "owned_files": [
-        "docs/STREAM_CONVERSION_LIFETIME.md",
-        "reports/stream_conversion_lifetime_audit.json"
+        "docs/STRUCTURED_READER.md",
+        "reports/structured_reader_audit.json"
       ],
-      "boundary": "Audit first; exact listed bodies and confirmed ownership callees only. Cross-block backward seek excluded: stale-buffer reset already established, clean rewind would be a separate host behavior decision. Existing synthetic inputs suffice; Ghidra/shared metadata edits stay with primary."
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b80720",
+          "status": "audited resource loader, not implemented"
+        },
+        {
+          "address": "00bf02c0",
+          "status": "audited nonnull-count scalar read, not implemented as reader"
+        },
+        {
+          "address": "00b7f430",
+          "status": "audited dispatch, not implemented"
+        }
+      ],
+      "boundary": "Exact listed functions and approved immediate callees only; own reader files. Do not replace native short-read/cursor semantics with the existing null-count scalar adapter. Primary owns shared metadata and API integration."
     },
     {
-      "worker": "font_layout_boundary",
-      "packet": "font_effect_cache_ownership",
-      "work": "Recover effect registry hit/miss, key identity, argument meaning, reference transfers and failed-load recursion; propose retained cache API.",
+      "worker": "ownership_worker",
+      "packet": "resource_item_ownership",
+      "work": "Establish growth/copy, hierarchy-item append and corresponding concrete resource/item destruction before assigning owning C++ containers.",
       "function_addresses": [
-        "00b31090",
-        "00b318b0",
-        "00b2ebb0"
+        "00b872f0",
+        "00b87ae0"
       ],
       "owned_files": [
-        "docs/FONT_EFFECT_CACHE_OWNERSHIP.md",
-        "reports/font_effect_cache_ownership_audit.json"
+        "docs/RESOURCE_ITEM_OWNERSHIP.md",
+        "reports/resource_item_ownership_audit.json"
       ],
-      "boundary": "Read-only00ab8ce0/00ab8c30 context callers. Confirm narrow lookup/insert/refcount spans before extending. Descriptor/compiler00b46950 and scene remain external; no stubs."
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b87aa0",
+          "status": "audited raw append, no AddRef"
+        },
+        {
+          "address": "0071bb40",
+          "status": "audited derived classifications, list ownership incomplete"
+        },
+        {
+          "address": "00b7eb90",
+          "status": "audited hierarchy Item parser, not implemented"
+        }
+      ],
+      "boundary": "Resolve destructor slots from verified vtables and request explicit address ownership before expansion. No speculative AddRef or automatic ownership transfer."
     },
     {
-      "worker": "partition_audit",
-      "packet": "vfs_loader_pump_lifetime",
-      "work": "Recover loader update/submission, stop condition and frame pump order, callback ownership and termination after active reads or stranded keys.",
+      "worker": "queue_worker",
+      "packet": "loading_queue_work_items",
+      "work": "Recover work-record removal, job destruction, concrete synchronization and thread shutdown. Preserve native stop flag distinctions and completion routing.",
       "function_addresses": [
-        "00509190",
-        "005092e0",
-        "00737a50"
+        "00501670",
+        "005051a0"
       ],
       "owned_files": [
-        "docs/VFS_LOADING_PUMP_LIFETIME.md",
-        "reports/vfs_loading_pump_lifetime_audit.json"
+        "docs/LOADING_QUEUE_WORK_ITEMS.md",
+        "reports/loading_queue_work_items_audit.json"
       ],
-      "boundary": "At most two confirmed callback/loader+14 writer callees beyond three anchors. Read-only evidence before C++; no cancellation or creator-thread assumptions."
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00509190",
+          "status": "audited queue state machine, not implemented"
+        },
+        {
+          "address": "00501620",
+          "status": "audited submission, synchronization external"
+        },
+        {
+          "address": "00501510",
+          "status": "audited worker, shutdown and resource load external"
+        },
+        {
+          "address": "007188a0",
+          "status": "audited resource acquire wrapper, not implemented"
+        }
+      ],
+      "boundary": "No synthetic completion, timeout or cancellation. Keep reader/resource files read-only; request exact synchronization/destructor ownership when targets are resolved."
     }
   ],
   "current_partition": {
-    "utc": "2026-09-09T23:14:26.357828+00:00",
-    "candidates": 23927,
-    "segments": 92,
-    "largest_strong_cycle_segments": 87,
-    "sha256": "a5d154fcb4ddd4e09e3439bc8e1e64d8ae9983d6b4fc2bd916bbf6c97562574f",
-    "note": "Saved snapshot and fresh direct-call sweep; partitions are hints, explicit addresses/files define ownership."
-  }
+    "utc": "2026-09-10T00:01:30.626537+00:00",
+    "candidates": 23887,
+    "segments": 94,
+    "largest_strong_cycle_segments": 89,
+    "sha256": "bbdc300096f4836cf525af48cba59715750f55c2351376106375175a3a108bfc"
+  },
+  "integration_history": [
+    {
+      "batch": "lifetime_effect_cache",
+      "state": "cache_and_empty_physical_fragments_build_and_installed_fixture_checked; native_loader_dependencies_audited",
+      "report": "reports/lifetime_effect_cache_validation.json",
+      "workers": [
+        "stream_lifetime",
+        "effect_cache",
+        "loader_lifetime"
+      ],
+      "concurrency_verified": {
+        "primary": 1,
+        "workers": 3
+      }
+    }
+  ]
 }
