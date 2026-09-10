@@ -1,0 +1,289 @@
+{
+  "schema": 1,
+  "utc": "2026-09-10T17:51:14.154113+00:00",
+  "packet": "light_scene_retention_review",
+  "review_worktree_base": "539a9aa",
+  "reviewed_source_checkout": "J:/PROG/battlestations-pacific-decompile current main working files, explicitly read rather than assuming review branch copies",
+  "conclusion": "no_actionable_defect_found_in_reviewed_valid_binding_scope",
+  "findings": [],
+  "source_snapshots": [
+    {
+      "path": "include/bsp/light_scene_retention.hpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/light_scene_retention.hpp",
+      "sha256": "79139691d3ff6de00b153817efef80853556d703a0ea76e510457c52b7654eff",
+      "byte_count": 1444,
+      "mtime_utc": "2026-09-10T17:42:20.068599+00:00"
+    },
+    {
+      "path": "src/light_scene_retention.cpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/src/light_scene_retention.cpp",
+      "sha256": "1969265622880f219ce93469f7eca81419560bb8cd925ab218ea784a184fe0db",
+      "byte_count": 3938,
+      "mtime_utc": "2026-09-10T17:43:30.490980+00:00"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/render_command_queue.hpp",
+      "sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec",
+      "byte_count": 10270,
+      "mtime_utc": "2026-09-10T17:37:24.868779+00:00"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "byte_count": 10448,
+      "mtime_utc": "2026-09-10T17:37:24.869422+00:00"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/scene_attachment.hpp",
+      "sha256": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6",
+      "byte_count": 7425,
+      "mtime_utc": "2026-09-10T17:44:52.183009+00:00"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/src/scene_attachment.cpp",
+      "sha256": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01",
+      "byte_count": 15650,
+      "mtime_utc": "2026-09-10T17:44:52.183539+00:00"
+    },
+    {
+      "path": "include/bsp/system_lighting_owners.hpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/system_lighting_owners.hpp",
+      "sha256": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd",
+      "byte_count": 5141,
+      "mtime_utc": "2026-09-10T16:55:14.423647+00:00"
+    },
+    {
+      "path": "src/system_lighting_owners.cpp",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/src/system_lighting_owners.cpp",
+      "sha256": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae",
+      "byte_count": 10604,
+      "mtime_utc": "2026-09-10T16:55:14.424172+00:00"
+    },
+    {
+      "path": "reports/light_scene_defined_functions.json",
+      "absolute_reviewed_path": "J:/PROG/battlestations-pacific-decompile/reports/light_scene_defined_functions.json",
+      "sha256": "61fb9fee8fc92197a339ed2ad56515277ef0eeff2ac2f8018e6060bfcc1876b2",
+      "byte_count": 1197,
+      "mtime_utc": "2026-09-10T17:39:48.817647+00:00"
+    }
+  ],
+  "source_hashes_rechecked_unchanged_before_report": true,
+  "evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live query uses bsp.py ghidra target verification before reading. Selected current live bytes match installed PE; no whole-image Ghidra equality claim.",
+    "ranges": [
+      {
+        "role": "light_attach",
+        "start": "00b7c020",
+        "end_exclusive": "00b7c0bf",
+        "byte_count": 159,
+        "disk_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+        "ghidra_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+        "matches_disk": true
+      },
+      {
+        "role": "light_remove",
+        "start": "00b7bd60",
+        "end_exclusive": "00b7bdea",
+        "byte_count": 138,
+        "disk_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+        "ghidra_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+        "matches_disk": true
+      },
+      {
+        "role": "raw_array_reserve",
+        "start": "00b7b390",
+        "end_exclusive": "00b7b3ef",
+        "byte_count": 95,
+        "disk_sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+        "ghidra_sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+        "matches_disk": true
+      },
+      {
+        "role": "raw_array_erase",
+        "start": "00b7b620",
+        "end_exclusive": "00b7b687",
+        "byte_count": 103,
+        "disk_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "ghidra_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "matches_disk": true
+      },
+      {
+        "role": "register_type_gate",
+        "start": "00b83d50",
+        "end_exclusive": "00b83d8e",
+        "byte_count": 62,
+        "disk_sha256": "22235637ca06a01993cf9c467cc9e94a53a5c5215511846c1596ac150f0b40c6",
+        "ghidra_sha256": "22235637ca06a01993cf9c467cc9e94a53a5c5215511846c1596ac150f0b40c6",
+        "matches_disk": true
+      },
+      {
+        "role": "unregister_type_gate",
+        "start": "00b83ec0",
+        "end_exclusive": "00b83ef3",
+        "byte_count": 51,
+        "disk_sha256": "22577f18aff4d96e27316d9bbeeb2045782c114341e41151b22ceb3186df5246",
+        "ghidra_sha256": "22577f18aff4d96e27316d9bbeeb2045782c114341e41151b22ceb3186df5246",
+        "matches_disk": true
+      },
+      {
+        "role": "unlink_root",
+        "start": "00b72220",
+        "end_exclusive": "00b7224c",
+        "byte_count": 44,
+        "disk_sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+        "ghidra_sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+        "matches_disk": true
+      }
+    ],
+    "new_remove_definition": "Current live00B7BD60 has complete138-byte body endingRET8 at00B7BDE7; root definition/save report independently inspected."
+  },
+  "behavior_review": [
+    {
+      "case": "append/register/retain",
+      "source": "src/light_scene_retention.cpp:26",
+      "native": [
+        "00b7c058",
+        "00b7c06f",
+        "00b7c074",
+        "00b7c082",
+        "00b7c089",
+        "00b7c092"
+      ],
+      "result": "matches",
+      "reason": "First missing scene causes wrapped signed capacity doubling/clamp, reserve when count==capacity, fresh pointer/count after allocator, guarded slot write, then count increment. Registry/type callback runs after array publication but BEFORE scene retain."
+    },
+    {
+      "case": "duplicate attach",
+      "native": [
+        "00b7c051",
+        "00b7c056",
+        "00b7c098"
+      ],
+      "result": "matches",
+      "reason": "Duplicate skips append/register/retain but still reaches recursion gate; no early return that suppresses children."
+    },
+    {
+      "case": "erase/unregister/release",
+      "source": "src/light_scene_retention.cpp:60",
+      "native": [
+        "00b7bd9e",
+        "00b7bda6",
+        "00b7bdaf",
+        "00b7bdbf"
+      ],
+      "result": "matches",
+      "reason": "Presence check then actual swap-last erase precede registry/type callback; requested scene pointer remains captured. Decrement follows unregister, with current destroy_on_zero dispatch only when prior count1. No premature retain/release or rollback."
+    },
+    {
+      "case": "absent remove",
+      "native": [
+        "00b7bd83",
+        "00b7bd90",
+        "00b7bd97",
+        "00b7bdc1"
+      ],
+      "result": "matches",
+      "reason": "Missing scene skips erase/unregister/release and still recurses when requested."
+    },
+    {
+      "case": "current child dispatch and fresh next",
+      "native": [
+        "00b7c09f",
+        "00b7c0a6",
+        "00b7c0b0",
+        "00b7c0b2",
+        "00b7bdc8",
+        "00b7bdd0",
+        "00b7bdda",
+        "00b7bddc"
+      ],
+      "result": "matches",
+      "reason": "First child is loaded after local callbacks. Each child binding is resolved, its actual current attach_scene/remove_scene callback is loaded and invoked with recurse=true, and child->next_sibling is read AFTER it returns. The code does not snapshot child lists or next links."
+    },
+    {
+      "case": "reentrant registry/type callbacks",
+      "source": "src/scene_attachment.cpp:306",
+      "native": [
+        "00b83d5a",
+        "00b83d69",
+        "00b83d80",
+        "00b83ec7",
+        "00b83ed6",
+        "00b83ee8"
+      ],
+      "result": "matches",
+      "reason": "Current type predicate is captured before the token getter, then registry mutation occurs after predicate returns. A nested attach/remove observes already-published/erased array state and the old pre-retain/pre-release reference count. Outer operations continue in native order even when nested work changes registry membership."
+    },
+    {
+      "case": "actual retained array lifetime",
+      "source": "include/bsp/light_scene_retention.hpp:8",
+      "result": "matches_borrowed_view_contract",
+      "reason": "LightSceneRetention holds SystemAmbientBacklinks& and SceneNodeAttachment& only. No second vector/array or implicit C++ lifetime action is introduced. Raw reserve/erase helpers move/free pointer storage without retaining/releasing scenes; the light operation performs the separate owning reference step. Native+178 array remains distinct from node.scene+170."
+    },
+    {
+      "case": "raw helper continuation",
+      "native": [
+        "00b7b390",
+        "00b7b620"
+      ],
+      "result": "matches_existing_helper_contract",
+      "reason": "Reserve copies live pointer/count storage after allocation, frees old storage then publishes pointer/capacity; verified returning bytes00B7B3E1..00B7B3E9 repair the listing gap. Erase swaps final entry into first matching slot, decrements count, and returns without freeing storage or changing scene references."
+    },
+    {
+      "case": "explicit context and dynamic callback fields",
+      "source": "include/bsp/scene_attachment.hpp:109",
+      "result": "matches_required_interface",
+      "reason": "Actual node world_changed/remove_scene function fields exist and are current mutable callbacks. Light adapters explicitly require node.context to identify stable LightSceneRetention whose node reference is this node; there is no inferred vtable phase or implicit alternate owner. Native base-destruction callback updates belong to the separate worker."
+    },
+    {
+      "case": "borrowed root list and actual scene slot",
+      "source": "include/bsp/render_command_queue.hpp:71",
+      "result": "matches",
+      "reason": "Borrowed constructor binds first and scene_resource_1c references directly without initializing either external field. Same scene_resource_1c can be passed by reference to existing SystemSceneResourceSlot, avoiding a second scene field. Native root unlink writes through actual root+0C and leaves removed node links/ownership unchanged."
+    },
+    {
+      "case": "root list value semantics",
+      "source": "src/render_command_queue.cpp:74",
+      "result": "matches_legacy_value_contract",
+      "reason": "Copy/move constructors explicitly initialize private owned values, rather than copying reference aliases. Assignment copies current values THROUGH the destination existing references and does not rebind them. Move leaves source values intact, consistent with prior pointer-value aggregate semantics; self-assignment is guarded. Borrowed views must be passed by reference when continued aliasing is intended."
+    }
+  ],
+  "reentry_observations_for_root_fixture": [
+    "Type predicate during append should see scene already in retained array but reference count not yet incremented.",
+    "Type predicate during remove should see entry erased but reference count not yet decremented.",
+    "Nested remove/reattach can make outer registry state differ from retained array; this is observable native ordering and should not be silently reconciled.",
+    "Duplicate attach and absent remove must still reach current child virtuals.",
+    "A child callback changing its next_sibling must affect the next iteration; changing later child callbacks must affect their later dispatch.",
+    "A zero-reference callback may reenter before the outer first_child load; supplied objects must remain valid for every subsequent native access."
+  ],
+  "validity_limits": [
+    "Review assumes valid Win32 count/capacity/storage with no pointer-range wrap; malformed giant/negative array states are not proven native fault equivalents.",
+    "Concurrency is unsupported; reentry must preserve each currently consumed object/child long enough for fresh next loads, as native code also requires.",
+    "The context check handles null or valid mismatched LightSceneRetention; it is not validation of arbitrary wrong-type void pointers.",
+    "The view API requires concrete caller binding to actual+178 storage. This change alone does not implement a complete derived-light constructor/destructor or prove an end-to-end gameplay lifetime.",
+    "Root-list copy construction intentionally creates independent value slots; callers needing the same native root must keep/use the borrowed original view.",
+    "Native node-base destruction switching callbacks is independently owned by another worker and was not reimplemented or retested here."
+  ],
+  "verification_boundary": {
+    "independent_source_and_native_review": true,
+    "build_or_test_run_by_this_reviewer": false,
+    "root_reported_strict_win32_and_existing_two_tests": "reported by parent; not independently rerun in this review",
+    "root_focused_reentrant_sequence": "parent-owned; no test outcome claimed here",
+    "game_validated": false,
+    "source_writes": false,
+    "ghidra_writes": false,
+    "ledger_writes": false,
+    "owned_report_only": "reports/light_scene_retention_review.json"
+  }
+}
