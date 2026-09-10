@@ -1,0 +1,2305 @@
+{
+  "packet": "app_initialize_map",
+  "owner": "agent/app-init-map",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-app-init-map",
+  "kind": "analysis-only",
+  "anchor": {
+    "address": "0073d410",
+    "name": "BSP_Application_Initialize",
+    "original_method": "cSkeletonAppMidway::Init",
+    "original_method_evidence": "String 'End of cSkeletonAppMidway::Init' at 00cff168, loaded into ECX at 0073e501 and passed to the memory checkpoint marker 004c9c90 at 0073e50d.",
+    "body": "0073d410-0073e52c",
+    "instructions": 1160,
+    "basic_blocks": 162,
+    "call_sites": 208,
+    "cyclomatic_complexity": 81,
+    "direct_callees": 84,
+    "abi": "__thiscall(int this, undefined4 cachedload); RET 0x8"
+  },
+  "checkpoints": [
+    {
+      "marker_call": "0073db3c",
+      "label_site": "0073db30",
+      "label": "After Archives and RenderWindow"
+    },
+    {
+      "marker_call": "0073e146",
+      "label_site": "0073e141",
+      "label": "After InitGui"
+    },
+    {
+      "marker_call": "0073e50d",
+      "label_site": "0073e501",
+      "label": "End of cSkeletonAppMidway::Init"
+    }
+  ],
+  "scope_labels": [
+    {
+      "address": "0073d74d",
+      "label": "persistent_data",
+      "use": "name of the priority-99 system mount"
+    },
+    {
+      "address": "0073d7f1",
+      "label": "filestore",
+      "use": "name of the priority-300 system mount"
+    },
+    {
+      "address": "0073d9fe",
+      "label": "Skel_Init",
+      "use": "+FileBlock %s profiling scope via BSP_FileBlock_Construct"
+    }
+  ],
+  "callees": [
+    {
+      "address": "00bd1780",
+      "name": "FUN_00bd1780",
+      "status": "untouched",
+      "subsystem": "memory",
+      "behaviour": "Allocator hook install (FUN_00bd1680 + FUN_00bd11f0); first call in the body.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bd17a0",
+      "name": "FUN_00bd17a0",
+      "status": "untouched",
+      "subsystem": "memory",
+      "behaviour": "Second allocator hook install (FUN_00bd1680 + FUN_00bd1620).",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00439040",
+      "name": "BSP_Application_CaptureModulePath",
+      "status": "untouched",
+      "subsystem": "app bootstrap",
+      "behaviour": "GetModuleFileNameA(NULL), __strlwr, _splitpath into DAT_00e176c8 and neighbours.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_Application_CaptureModulePath"
+    },
+    {
+      "address": "00be2900",
+      "name": "FUN_00be2900",
+      "status": "untouched",
+      "subsystem": "unknown",
+      "behaviour": "Small object, vtable PTR_FUN_00d685f4, field1 = 0x40000000.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bedfb0",
+      "name": "BSP_TimerService_Construct",
+      "status": "untouched",
+      "subsystem": "timing",
+      "behaviour": "Wraps BSP_FrameClock_Initialize; gate DAT_01090ab0 == 0.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_TimerService_Construct"
+    },
+    {
+      "address": "006ad0d0",
+      "name": "BSP_Application_InstallCrashHandler",
+      "status": "untouched",
+      "subsystem": "app bootstrap",
+      "behaviour": "FUN_00bd4fc0(&LAB_006ad0c0); registers a code pointer with a platform helper.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_Application_InstallCrashHandler"
+    },
+    {
+      "address": "0041e870",
+      "name": "BSP_NativeString_Assign",
+      "status": "named-only",
+      "subsystem": "strings",
+      "behaviour": "BSP_NativeString_Resize + _memcpy from a literal; 1230 callers.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_NativeString_Assign"
+    },
+    {
+      "address": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional",
+      "status": "named-only",
+      "subsystem": "memory",
+      "behaviour": "Sized pool lookup; 2857 callers.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional",
+      "status": "named-only",
+      "subsystem": "memory",
+      "behaviour": "Returns a block to the sized pool; 2851 callers.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "0041dd40",
+      "name": "BSP_NativeString_Resize",
+      "status": "named-only",
+      "subsystem": "strings",
+      "behaviour": "Grows the native string buffer; 2280 callers.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "0073c3b0",
+      "name": "BSP_SystemOptions_ProbeHardware",
+      "status": "untouched",
+      "subsystem": "app bootstrap",
+      "behaviour": "CPUSpeed, MemSize, GPUDeviceID, SoundDevice, options.txt.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_SystemOptions_ProbeHardware"
+    },
+    {
+      "address": "00beda60",
+      "name": "BSP_VFS_ProviderManager_Construct",
+      "status": "untouched",
+      "subsystem": "VFS",
+      "behaviour": "Builds DAT_0109ceec; registers a provider factory; path-normalisation test vectors.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_VFS_ProviderManager_Construct"
+    },
+    {
+      "address": "004fc150",
+      "name": "FUN_004fc150",
+      "status": "leased:app_shutdown",
+      "subsystem": "resources",
+      "behaviour": "Resource request builder used by every preload block. Not claimed.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00be0660",
+      "name": "BSP_VFS_RegisterProviderFactory",
+      "status": "named-only",
+      "subsystem": "VFS",
+      "behaviour": "List insert of a provider factory; called three times from Initialize.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00736a90",
+      "name": "FUN_00736a90",
+      "status": "untouched",
+      "subsystem": "VFS",
+      "behaviour": "Provider factory singleton A, vtable 00cfe9fc; registered immediately after.",
+      "confidence": "medium",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00be1890",
+      "name": "BSP_VFS_MountSystemPath",
+      "status": "reconstructed",
+      "subsystem": "VFS",
+      "behaviour": "Three mounts at priority 0, 99 (persistent_data) and 300 (filestore).",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "0073cb10",
+      "name": "BSP_Application_MountPackages",
+      "status": "reconstructed",
+      "subsystem": "packages",
+      "behaviour": "Two package scans back to back.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00738360",
+      "name": "BSP_Application_RegisterResourceSearchPaths",
+      "status": "reconstructed",
+      "subsystem": "packages",
+      "behaviour": "Search-path defaults; runs outside the first-time gate.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00737e20",
+      "name": "FUN_00737e20",
+      "status": "untouched",
+      "subsystem": "unknown",
+      "behaviour": "Gate DAT_0109cf00 == 0; base FUN_00736100 (leased to app_shutdown).",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bbcb40",
+      "name": "BSP_WaterRenderer_RegisterTextureSources",
+      "status": "untouched",
+      "subsystem": "renderer/water",
+      "behaviour": "CausticsTextureSource and ShoreWaveTextureSource0..2 via FUN_00bbc900.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_WaterRenderer_RegisterTextureSources"
+    },
+    {
+      "address": "00becda0",
+      "name": "BSP_Win32Platform_Construct",
+      "status": "named-only",
+      "subsystem": "platform/window",
+      "behaviour": "Window platform base plus text queue sentinel.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00beb2c0",
+      "name": "BSP_SaveStorage_Initialize",
+      "status": "untouched",
+      "subsystem": "save/profile",
+      "behaviour": "Path fragments \\Battlestations-Pacific and \\save.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_SaveStorage_Initialize"
+    },
+    {
+      "address": "00438e40",
+      "name": "BSP_NativeString_Duplicate",
+      "status": "untouched",
+      "subsystem": "strings",
+      "behaviour": "strlen, operator new, memcpy; result stored in DAT_00e1ae78, freed at 0073e466.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_NativeString_Duplicate"
+    },
+    {
+      "address": "0073ce20",
+      "name": "BSP_Application_ParseCommandLine",
+      "status": "untouched",
+      "subsystem": "app bootstrap",
+      "behaviour": "13 switch tokens: scenes, memlimit, nomemlimit, fixfps, freecam, nozip, debug:, connectport:, localport:, 1frame, filelog, cachedload, classes.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_Application_ParseCommandLine"
+    },
+    {
+      "address": "00736b60",
+      "name": "FUN_00736b60",
+      "status": "untouched",
+      "subsystem": "VFS",
+      "behaviour": "Provider factory singleton B, vtable 00cfea00; registered immediately after.",
+      "confidence": "medium",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00736c30",
+      "name": "FUN_00736c30",
+      "status": "untouched",
+      "subsystem": "unknown",
+      "behaviour": "Singleton over FUN_00bb4fb0, 0x1c bytes.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bd9230",
+      "name": "FUN_00bd9230",
+      "status": "untouched",
+      "subsystem": "memory",
+      "behaviour": "this+0x88 = argument.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bd9f90",
+      "name": "FUN_00bd9f90",
+      "status": "untouched",
+      "subsystem": "memory",
+      "behaviour": "this+0x78 = byte argument.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bb40b0",
+      "name": "FUN_00bb40b0",
+      "status": "untouched",
+      "subsystem": "threading",
+      "behaviour": "DAT_010904e0 = BSP_CriticalSection_Create().",
+      "confidence": "medium",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00737c40",
+      "name": "BSP_Application_CreateFileAccessLog",
+      "status": "untouched",
+      "subsystem": "telemetry",
+      "behaviour": "files.txt subject; gate DAT_00e1ae77 != 0 && DAT_0109cee8 == 0 (the filelog switch).",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_Application_CreateFileAccessLog"
+    },
+    {
+      "address": "00be0a30",
+      "name": "BSP_FileBlock_Construct",
+      "status": "named-only",
+      "subsystem": "telemetry",
+      "behaviour": "+FileBlock %s profiling scope; the label here is Skel_Init.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00b32410",
+      "name": "BSP_D3D9Renderer_Construct",
+      "status": "named-only",
+      "subsystem": "renderer/D3D9",
+      "behaviour": "Direct3DCreate9, render worker, shader state definitions, system-constant registry.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "005547d0",
+      "name": "BSP_InputSettings_GetSingleton",
+      "status": "untouched",
+      "subsystem": "input",
+      "behaviour": "0x540-byte singleton built by FUN_006ab6b0; reaches the input datatable keys.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_InputSettings_GetSingleton"
+    },
+    {
+      "address": "006a7be0",
+      "name": "BSP_InputSettings_LoadDataTables",
+      "status": "untouched",
+      "subsystem": "input",
+      "behaviour": "Inputs, KeyboardSetup, ControllerInputNames and ControlPresets Lua tables.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "008d8190",
+      "name": "BSP_GameSettings_LoadFromRegistry",
+      "status": "untouched",
+      "subsystem": "settings",
+      "behaviour": "SOFTWARE\\Eidos\\Battlestations Pacific plus 20 option keys and the language list.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_GameSettings_LoadFromRegistry"
+    },
+    {
+      "address": "00a88770",
+      "name": "BSP_SoundSystem_Initialize",
+      "status": "untouched",
+      "subsystem": "sound",
+      "behaviour": "Takes DAT_00f889a4 == 0 as a flag; carries 'Out of sounjd memory:'.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_SoundSystem_Initialize"
+    },
+    {
+      "address": "00a79230",
+      "name": "BSP_DialogStreamTable_Load",
+      "status": "untouched",
+      "subsystem": "sound",
+      "behaviour": "sound/streamed_dialogs.def.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_DialogStreamTable_Load"
+    },
+    {
+      "address": "004c9c90",
+      "name": "TRIV_body_004c9c90",
+      "status": "tagged",
+      "subsystem": "telemetry",
+      "behaviour": "Memory checkpoint marker; label passed in ECX.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "004c1400",
+      "name": "BSP_ResourceManager_GetSingleton",
+      "status": "named-only",
+      "subsystem": "resource manager",
+      "behaviour": "Lazy singleton; called twice, once per parser registration.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00736dd0",
+      "name": "BSP_AnimationChannelsParser_GetSingleton",
+      "status": "reconstructed",
+      "subsystem": "resource manager",
+      "behaviour": "Parser singleton, vtable 00cfea38.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00736ea0",
+      "name": "BSP_BoneParser_GetSingleton",
+      "status": "reconstructed",
+      "subsystem": "resource manager",
+      "behaviour": "Parser singleton, vtable 00cfea48.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00b80a50",
+      "name": "BSP_ResourceManager_RegisterTypeParser",
+      "status": "reconstructed",
+      "subsystem": "resource manager",
+      "behaviour": "Registers the animation-channel and bone parsers.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00a40df0",
+      "name": "BSP_XLiveSystem_Initialize",
+      "status": "untouched",
+      "subsystem": "network/XLive",
+      "behaviour": "XenonSystemManager Start Initialization / XLiveInitialized / XNotifyCreateListener SUCCEED.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_XLiveSystem_Initialize"
+    },
+    {
+      "address": "00a3d060",
+      "name": "CG_array_ctor_helper_00a3d060",
+      "status": "tagged",
+      "subsystem": "network/XLive",
+      "behaviour": "Array construction gated by DAT_00f8abdc == 0.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00a8fe30",
+      "name": "FUN_00a8fe30",
+      "status": "untouched",
+      "subsystem": "renderer/D3D9",
+      "behaviour": "Probes the device for FourCC 0x36314644 (DF16) with a 0x200 threshold.",
+      "confidence": "medium",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "0073bf80",
+      "name": "BSP_ShaderCache_PreloadFromScript",
+      "status": "untouched",
+      "subsystem": "renderer/shaders",
+      "behaviour": "shaderfx/shaderpreload.lua, FileNames, SHADER LOADING BEGIN/END.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_ShaderCache_PreloadFromScript"
+    },
+    {
+      "address": "0078c400",
+      "name": "CG_array_ctor_helper_0078c400",
+      "status": "tagged",
+      "subsystem": "unknown",
+      "behaviour": "Array construction gated by DAT_00f871b4 == 0.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "008d88e0",
+      "name": "TRIV_body_008d88e0",
+      "status": "tagged",
+      "subsystem": "unknown",
+      "behaviour": "Trivial body.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00a982d0",
+      "name": "BSP_DirectInput_CreateDevices",
+      "status": "untouched",
+      "subsystem": "input",
+      "behaviour": "DirectInput8Create plus FUN_00a904e0 and a device-slot array constructor.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_DirectInput_CreateDevices"
+    },
+    {
+      "address": "00a900f0",
+      "name": "BSP_InputDeviceTable_ResetSlots",
+      "status": "untouched",
+      "subsystem": "input",
+      "behaviour": "Walks a 3x8 pointer array at this+4, virtual slot 0x14 on each non-null entry.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_InputDeviceTable_ResetSlots"
+    },
+    {
+      "address": "007364a0",
+      "name": "FUN_007364a0",
+      "status": "leased:app_shutdown",
+      "subsystem": "unknown",
+      "behaviour": "7-slot object, vtable 00cfeae8. Not claimed.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00af0060",
+      "name": "BSP_TextureAtlas_Load",
+      "status": "untouched",
+      "subsystem": "renderer/textures",
+      "behaviour": "Loading atlas: %s; called with interface/textures/common.ats.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_TextureAtlas_Load"
+    },
+    {
+      "address": "00740840",
+      "name": "BSP_DecalSystem_LoadDefinitions",
+      "status": "untouched",
+      "subsystem": "decals",
+      "behaviour": "scripts/datatables/decals.lua with Radius, Texture, Shader, FadeOutTime, LifeTime, Maxnum.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_DecalSystem_LoadDefinitions"
+    },
+    {
+      "address": "00ad9ac0",
+      "name": "BSP_FoliageSystem_LoadTypes",
+      "status": "untouched",
+      "subsystem": "foliage",
+      "behaviour": "Effects\\foliage\\FoliageTypes.lua.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_FoliageSystem_LoadTypes"
+    },
+    {
+      "address": "00ad71c0",
+      "name": "FUN_00ad71c0",
+      "status": "untouched",
+      "subsystem": "foliage",
+      "behaviour": "Iterates this+0x58..this+0x5c and publishes DAT_00f8c20c.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00b14a10",
+      "name": "BSP_RenderResources_LoadDefaultTextures",
+      "status": "untouched",
+      "subsystem": "renderer/textures",
+      "behaviour": "noise.dds and black.tga fallbacks. Pseudocode truncated (unreachable block, unaff registers).",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_RenderResources_LoadDefaultTextures"
+    },
+    {
+      "address": "00b3c4c0",
+      "name": "FUN_00b3c4c0",
+      "status": "untouched",
+      "subsystem": "renderer",
+      "behaviour": "Vtable-only constructor over FUN_00b61c70.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00ad9f90",
+      "name": "FUN_00ad9f90",
+      "status": "untouched",
+      "subsystem": "renderer/terrain",
+      "behaviour": "Vtable-only constructor over FUN_00ad9d00.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00af1450",
+      "name": "BSP_ParticleSystem_LoadShaders",
+      "status": "untouched",
+      "subsystem": "particles",
+      "behaviour": "ParticleFloating and particleaxialsprite shader set plus Particles/Textures/atl_all.dds.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_ParticleSystem_LoadShaders"
+    },
+    {
+      "address": "007366b0",
+      "name": "FUN_007366b0",
+      "status": "leased:app_shutdown",
+      "subsystem": "movie",
+      "behaviour": "Built immediately before _BinkSetSoundSystem@8. Not claimed.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00a4d356",
+      "name": "_BinkSetSoundSystem@8",
+      "status": "tagged",
+      "subsystem": "movie",
+      "behaviour": "Binds Bink playback to the game sound system (&DAT_00a4d35c).",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "007367f0",
+      "name": "FUN_007367f0",
+      "status": "leased:app_shutdown",
+      "subsystem": "unknown",
+      "behaviour": "Object built at 0073dffa, vtable 00cfeac8. Not claimed.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00af0b10",
+      "name": "FUN_00af0b10",
+      "status": "untouched",
+      "subsystem": "unknown",
+      "behaviour": "Object with a critical section, seeded from DAT_00d7a24c.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "0073c960",
+      "name": "FUN_0073c960",
+      "status": "untouched",
+      "subsystem": "GUI",
+      "behaviour": "0x4040-byte object containing a 0x4000 zeroed table, over FUN_00736540.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "008d4870",
+      "name": "BSP_GameSettings_GetLanguageName",
+      "status": "untouched",
+      "subsystem": "settings",
+      "behaviour": "Indexes DAT_00f88974 by this+4 with stride 0x20; fallback &DAT_00f88a3c.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_GameSettings_GetLanguageName"
+    },
+    {
+      "address": "00aa09d0",
+      "name": "BSP_Localization_LoadTable",
+      "status": "untouched",
+      "subsystem": "localization",
+      "behaviour": "lockit/, Content file name for %s, <SRCH><.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_Localization_LoadTable"
+    },
+    {
+      "address": "00aa0d30",
+      "name": "CG_adjustor_thunk_00aa0d30",
+      "status": "tagged",
+      "subsystem": "localization",
+      "behaviour": "Called with the table name 'globals'.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00aa06d0",
+      "name": "FUN_00aa06d0",
+      "status": "untouched",
+      "subsystem": "localization",
+      "behaviour": "Second lockit/ consumer; takes a char flag.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "0073bae0",
+      "name": "BSP_FontSystem_LoadDefinitions",
+      "status": "untouched",
+      "subsystem": "GUI/fonts",
+      "behaviour": "Fonts\\ and Fonts/Fonts.lua; last call before the After InitGui checkpoint.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_FontSystem_LoadDefinitions"
+    },
+    {
+      "address": "004c14c0",
+      "name": "FUN_004c14c0",
+      "status": "untouched",
+      "subsystem": "GUI",
+      "behaviour": "4-byte singleton, vtable PTR_LAB_00ce752c, reached at the After InitGui mark.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "004ddb90",
+      "name": "CG_array_ctor_helper_004ddb90",
+      "status": "tagged",
+      "subsystem": "game logic",
+      "behaviour": "Constructs the 0x71a0-byte game object stored at this+0x14.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00be80b0",
+      "name": "BSP_FileStoreFactory_GetOrCreate",
+      "status": "reconstructed",
+      "subsystem": "file store",
+      "behaviour": "One call per datatable preload block.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00be7ab0",
+      "name": "BSP_FileStore_CacheFromVFS",
+      "status": "reconstructed",
+      "subsystem": "file store",
+      "behaviour": "One call per datatable preload block.",
+      "confidence": "high",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "004e5540",
+      "name": "BSP_Game_OnInit",
+      "status": "untouched",
+      "subsystem": "game logic",
+      "behaviour": "GGame::OnInit, OnInitOnce, OnInitTitle, Scripts\\global\\luaMW_init.lua.",
+      "confidence": "high",
+      "provisional_name_recorded": "BSP_Game_OnInit"
+    },
+    {
+      "address": "008d5b50",
+      "name": "BSP_PostEffectSystem_Initialize",
+      "status": "untouched",
+      "subsystem": "renderer/post",
+      "behaviour": "PostEffectSysCam/Obj, distort and adaptation shaders. Pseudocode drops four blocks.",
+      "confidence": "medium",
+      "provisional_name_recorded": "BSP_PostEffectSystem_Initialize"
+    },
+    {
+      "address": "00757fe0",
+      "name": "METRICS_wrapper_00757fe0",
+      "status": "tagged",
+      "subsystem": "telemetry",
+      "behaviour": "Block metrics over a 0x23c-byte object.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "007372a0",
+      "name": "FUN_007372a0",
+      "status": "untouched",
+      "subsystem": "unknown",
+      "behaviour": "Tail singleton registration, vtable 00cfea68.",
+      "confidence": "low",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf55be",
+      "name": "LIBCRT_unmatched_00bf681b",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "operator new wrapper.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "operator new wrapper; 25 allocation sites in Initialize.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf6989",
+      "name": "_free",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "Library. Ghidra treats it as no-return, breaking the flow at 0073e46b.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf7680",
+      "name": "_memcpy",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "Library.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf79f0",
+      "name": "_memset",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "Library.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf9440",
+      "name": "_strstr",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "Library; the four command-line debug switch tests.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    },
+    {
+      "address": "00bf97cb",
+      "name": "_strcat_s",
+      "status": "tagged",
+      "subsystem": "CRT",
+      "behaviour": "Library; appends the trailing backslash to the current directory.",
+      "confidence": "n/a",
+      "provisional_name_recorded": null
+    }
+  ],
+  "call_order": [
+    {
+      "site": "0073d43f",
+      "target": "00bd1780",
+      "name": "FUN_00bd1780"
+    },
+    {
+      "site": "0073d448",
+      "target": "00bd17a0",
+      "name": "FUN_00bd17a0"
+    },
+    {
+      "site": "0073d458",
+      "target": "00439040",
+      "name": "FUN_00439040"
+    },
+    {
+      "site": "0073d45f",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d478",
+      "target": "00be2900",
+      "name": "FUN_00be2900"
+    },
+    {
+      "site": "0073d494",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d4b1",
+      "target": "00bedfb0",
+      "name": "FUN_00bedfb0"
+    },
+    {
+      "site": "0073d4bd",
+      "target": "006ad0d0",
+      "name": "FUN_006ad0d0"
+    },
+    {
+      "site": "0073d4ce",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d4e1",
+      "target": "00bf9440",
+      "name": "_strstr"
+    },
+    {
+      "site": "0073d507",
+      "target": "00bf9440",
+      "name": "_strstr"
+    },
+    {
+      "site": "0073d533",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d53a",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d544",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d557",
+      "target": "00bf9440",
+      "name": "_strstr"
+    },
+    {
+      "site": "0073d57e",
+      "target": "00bf9440",
+      "name": "_strstr"
+    },
+    {
+      "site": "0073d5a9",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d5b0",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d5ba",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d5cd",
+      "target": "00bf9440",
+      "name": "_strstr"
+    },
+    {
+      "site": "0073d5f8",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d5ff",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d610",
+      "target": "0073c3b0",
+      "name": "FUN_0073c3b0"
+    },
+    {
+      "site": "0073d61a",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d637",
+      "target": "00beda60",
+      "name": "FUN_00beda60"
+    },
+    {
+      "site": "0073d66d",
+      "target": "004fc150",
+      "name": "FUN_004fc150"
+    },
+    {
+      "site": "0073d675",
+      "target": "00be0660",
+      "name": "BSP_VFS_RegisterProviderFactory"
+    },
+    {
+      "site": "0073d680",
+      "target": "00736a90",
+      "name": "FUN_00736a90"
+    },
+    {
+      "site": "0073d688",
+      "target": "00be0660",
+      "name": "BSP_VFS_RegisterProviderFactory"
+    },
+    {
+      "site": "0073d697",
+      "target": "indirect",
+      "name": "dword ptr [0x00ce2264]"
+    },
+    {
+      "site": "0073d6ac",
+      "target": "00bf97cb",
+      "name": "_strcat_s"
+    },
+    {
+      "site": "0073d6bd",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d6d7",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d6f9",
+      "target": "00be1890",
+      "name": "BSP_VFS_MountSystemPath"
+    },
+    {
+      "site": "0073d718",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d71f",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d741",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d748",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d756",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d770",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d792",
+      "target": "00be1890",
+      "name": "BSP_VFS_MountSystemPath"
+    },
+    {
+      "site": "0073d7b1",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d7b8",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d7d7",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d7de",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d7ec",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d805",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d829",
+      "target": "00be1890",
+      "name": "BSP_VFS_MountSystemPath"
+    },
+    {
+      "site": "0073d849",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d850",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d86f",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073d876",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073d881",
+      "target": "0073cb10",
+      "name": "BSP_Application_MountPackages"
+    },
+    {
+      "site": "0073d888",
+      "target": "0073cb10",
+      "name": "BSP_Application_MountPackages"
+    },
+    {
+      "site": "0073d894",
+      "target": "00738360",
+      "name": "BSP_Application_RegisterResourceSearchPaths"
+    },
+    {
+      "site": "0073d8a3",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d8c0",
+      "target": "00737e20",
+      "name": "FUN_00737e20"
+    },
+    {
+      "site": "0073d8cc",
+      "target": "00bbcb40",
+      "name": "FUN_00bbcb40"
+    },
+    {
+      "site": "0073d8d6",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d8f3",
+      "target": "00becda0",
+      "name": "BSP_Win32Platform_Construct"
+    },
+    {
+      "site": "0073d904",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d921",
+      "target": "00beb2c0",
+      "name": "FUN_00beb2c0"
+    },
+    {
+      "site": "0073d93c",
+      "target": "00438e40",
+      "name": "FUN_00438e40"
+    },
+    {
+      "site": "0073d94a",
+      "target": "0073ce20",
+      "name": "FUN_0073ce20"
+    },
+    {
+      "site": "0073d955",
+      "target": "00736b60",
+      "name": "FUN_00736b60"
+    },
+    {
+      "site": "0073d95d",
+      "target": "00be0660",
+      "name": "BSP_VFS_RegisterProviderFactory"
+    },
+    {
+      "site": "0073d968",
+      "target": "00736c30",
+      "name": "FUN_00736c30"
+    },
+    {
+      "site": "0073d970",
+      "target": "00bd9230",
+      "name": "FUN_00bd9230"
+    },
+    {
+      "site": "0073d983",
+      "target": "00bd9f90",
+      "name": "FUN_00bd9f90"
+    },
+    {
+      "site": "0073d988",
+      "target": "00bb40b0",
+      "name": "FUN_00bb40b0"
+    },
+    {
+      "site": "0073d9a0",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073d9cc",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073d9d3",
+      "target": "00737c40",
+      "name": "FUN_00737c40"
+    },
+    {
+      "site": "0073d9e1",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073da07",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073da25",
+      "target": "00be0a30",
+      "name": "BSP_FileBlock_Construct"
+    },
+    {
+      "site": "0073da5a",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073da61",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073da6b",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073da88",
+      "target": "00b32410",
+      "name": "BSP_D3D9Renderer_Construct"
+    },
+    {
+      "site": "0073da94",
+      "target": "005547d0",
+      "name": "FUN_005547d0"
+    },
+    {
+      "site": "0073da9b",
+      "target": "006a7be0",
+      "name": "FUN_006a7be0"
+    },
+    {
+      "site": "0073daa5",
+      "target": "008d8190",
+      "name": "FUN_008d8190"
+    },
+    {
+      "site": "0073dac0",
+      "target": "indirect",
+      "name": "EAX"
+    },
+    {
+      "site": "0073dad3",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dafd",
+      "target": "00a88770",
+      "name": "FUN_00a88770"
+    },
+    {
+      "site": "0073db0e",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073db2b",
+      "target": "00a79230",
+      "name": "FUN_00a79230"
+    },
+    {
+      "site": "0073db3c",
+      "target": "004c9c90",
+      "name": "TRIV_body_004c9c90"
+    },
+    {
+      "site": "0073db41",
+      "target": "004c1400",
+      "name": "BSP_ResourceManager_GetSingleton"
+    },
+    {
+      "site": "0073db48",
+      "target": "00736dd0",
+      "name": "BSP_AnimationChannelsParser_GetSingleton"
+    },
+    {
+      "site": "0073db50",
+      "target": "00b80a50",
+      "name": "BSP_ResourceManager_RegisterTypeParser"
+    },
+    {
+      "site": "0073db55",
+      "target": "004c1400",
+      "name": "BSP_ResourceManager_GetSingleton"
+    },
+    {
+      "site": "0073db5c",
+      "target": "00736ea0",
+      "name": "BSP_BoneParser_GetSingleton"
+    },
+    {
+      "site": "0073db64",
+      "target": "00b80a50",
+      "name": "BSP_ResourceManager_RegisterTypeParser"
+    },
+    {
+      "site": "0073dba4",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073dbbf",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073dc25",
+      "target": "indirect",
+      "name": "EAX"
+    },
+    {
+      "site": "0073dc44",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073dc4b",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073dc55",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dc7c",
+      "target": "00a40df0",
+      "name": "FUN_00a40df0"
+    },
+    {
+      "site": "0073dca2",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dcbf",
+      "target": "00a3d060",
+      "name": "CG_array_ctor_helper_00a3d060"
+    },
+    {
+      "site": "0073dce5",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dd04",
+      "target": "00a8fe30",
+      "name": "FUN_00a8fe30"
+    },
+    {
+      "site": "0073dd12",
+      "target": "0073bf80",
+      "name": "FUN_0073bf80"
+    },
+    {
+      "site": "0073dd2f",
+      "target": "indirect",
+      "name": "EDX"
+    },
+    {
+      "site": "0073dd3e",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dd5b",
+      "target": "0078c400",
+      "name": "CG_array_ctor_helper_0078c400"
+    },
+    {
+      "site": "0073dd67",
+      "target": "008d88e0",
+      "name": "TRIV_body_008d88e0"
+    },
+    {
+      "site": "0073dd71",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dd8e",
+      "target": "00a982d0",
+      "name": "FUN_00a982d0"
+    },
+    {
+      "site": "0073ddaf",
+      "target": "00a900f0",
+      "name": "FUN_00a900f0"
+    },
+    {
+      "site": "0073ddb6",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073ddd5",
+      "target": "007364a0",
+      "name": "FUN_007364a0"
+    },
+    {
+      "site": "0073de09",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073de24",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073de42",
+      "target": "00af0060",
+      "name": "FUN_00af0060"
+    },
+    {
+      "site": "0073de61",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073de68",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073de6f",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073de8c",
+      "target": "00740840",
+      "name": "FUN_00740840"
+    },
+    {
+      "site": "0073de9d",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073deba",
+      "target": "00ad9ac0",
+      "name": "FUN_00ad9ac0"
+    },
+    {
+      "site": "0073deda",
+      "target": "00ad71c0",
+      "name": "FUN_00ad71c0"
+    },
+    {
+      "site": "0073dee4",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073df01",
+      "target": "00b14a10",
+      "name": "FUN_00b14a10"
+    },
+    {
+      "site": "0073df0f",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073df2c",
+      "target": "00b3c4c0",
+      "name": "FUN_00b3c4c0"
+    },
+    {
+      "site": "0073df3a",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073df57",
+      "target": "00ad9f90",
+      "name": "FUN_00ad9f90"
+    },
+    {
+      "site": "0073df65",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073df82",
+      "target": "00af1450",
+      "name": "FUN_00af1450"
+    },
+    {
+      "site": "0073df99",
+      "target": "indirect",
+      "name": "EDX"
+    },
+    {
+      "site": "0073df9d",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dfbc",
+      "target": "007366b0",
+      "name": "FUN_007366b0"
+    },
+    {
+      "site": "0073dfcd",
+      "target": "00a4d356",
+      "name": "_BinkSetSoundSystem@8"
+    },
+    {
+      "site": "0073dfdb",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073dffa",
+      "target": "007367f0",
+      "name": "FUN_007367f0"
+    },
+    {
+      "site": "0073e00e",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073e02b",
+      "target": "00af0b10",
+      "name": "FUN_00af0b10"
+    },
+    {
+      "site": "0073e03c",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073e059",
+      "target": "0073c960",
+      "name": "FUN_0073c960"
+    },
+    {
+      "site": "0073e06a",
+      "target": "008d4870",
+      "name": "FUN_008d4870"
+    },
+    {
+      "site": "0073e074",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073e08f",
+      "target": "00aa09d0",
+      "name": "FUN_00aa09d0"
+    },
+    {
+      "site": "0073e0ae",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e0b5",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e0ca",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073e0e5",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073e103",
+      "target": "00aa0d30",
+      "name": "CG_adjustor_thunk_00aa0d30"
+    },
+    {
+      "site": "0073e122",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e129",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e135",
+      "target": "00aa06d0",
+      "name": "FUN_00aa06d0"
+    },
+    {
+      "site": "0073e13c",
+      "target": "0073bae0",
+      "name": "FUN_0073bae0"
+    },
+    {
+      "site": "0073e146",
+      "target": "004c9c90",
+      "name": "TRIV_body_004c9c90"
+    },
+    {
+      "site": "0073e14b",
+      "target": "004c14c0",
+      "name": "FUN_004c14c0"
+    },
+    {
+      "site": "0073e155",
+      "target": "00bf55be",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073e163",
+      "target": "00bf79f0",
+      "name": "_memset"
+    },
+    {
+      "site": "0073e188",
+      "target": "0041e870",
+      "name": "FUN_0041e870"
+    },
+    {
+      "site": "0073e1a1",
+      "target": "004ddb90",
+      "name": "CG_array_ctor_helper_004ddb90"
+    },
+    {
+      "site": "0073e1ce",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e1d5",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e1f6",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073e211",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073e224",
+      "target": "004fc150",
+      "name": "FUN_004fc150"
+    },
+    {
+      "site": "0073e232",
+      "target": "00be80b0",
+      "name": "BSP_FileStoreFactory_GetOrCreate"
+    },
+    {
+      "site": "0073e239",
+      "target": "00be7ab0",
+      "name": "BSP_FileStore_CacheFromVFS"
+    },
+    {
+      "site": "0073e258",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e25f",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e274",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073e28f",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073e2a2",
+      "target": "004fc150",
+      "name": "FUN_004fc150"
+    },
+    {
+      "site": "0073e2b0",
+      "target": "00be80b0",
+      "name": "BSP_FileStoreFactory_GetOrCreate"
+    },
+    {
+      "site": "0073e2b7",
+      "target": "00be7ab0",
+      "name": "BSP_FileStore_CacheFromVFS"
+    },
+    {
+      "site": "0073e2d6",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e2dd",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e2f2",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073e30d",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073e320",
+      "target": "004fc150",
+      "name": "FUN_004fc150"
+    },
+    {
+      "site": "0073e32e",
+      "target": "00be80b0",
+      "name": "BSP_FileStoreFactory_GetOrCreate"
+    },
+    {
+      "site": "0073e335",
+      "target": "00be7ab0",
+      "name": "BSP_FileStore_CacheFromVFS"
+    },
+    {
+      "site": "0073e354",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e35b",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e370",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073e38b",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073e39e",
+      "target": "004fc150",
+      "name": "FUN_004fc150"
+    },
+    {
+      "site": "0073e3ac",
+      "target": "00be80b0",
+      "name": "BSP_FileStoreFactory_GetOrCreate"
+    },
+    {
+      "site": "0073e3b3",
+      "target": "00be7ab0",
+      "name": "BSP_FileStore_CacheFromVFS"
+    },
+    {
+      "site": "0073e3d2",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e3d9",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e3ee",
+      "target": "0041dd40",
+      "name": "BSP_NativeString_Resize"
+    },
+    {
+      "site": "0073e409",
+      "target": "00bf7680",
+      "name": "_memcpy"
+    },
+    {
+      "site": "0073e41c",
+      "target": "004fc150",
+      "name": "FUN_004fc150"
+    },
+    {
+      "site": "0073e42a",
+      "target": "00be80b0",
+      "name": "BSP_FileStoreFactory_GetOrCreate"
+    },
+    {
+      "site": "0073e431",
+      "target": "00be7ab0",
+      "name": "BSP_FileStore_CacheFromVFS"
+    },
+    {
+      "site": "0073e450",
+      "target": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton_Provisional"
+    },
+    {
+      "site": "0073e457",
+      "target": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock_Provisional"
+    },
+    {
+      "site": "0073e466",
+      "target": "00bf6989",
+      "name": "_free"
+    },
+    {
+      "site": "0073e477",
+      "target": "004e5540",
+      "name": "FUN_004e5540"
+    },
+    {
+      "site": "0073e485",
+      "target": "008d5b50",
+      "name": "FUN_008d5b50"
+    },
+    {
+      "site": "0073e48f",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073e4ac",
+      "target": "00757fe0",
+      "name": "METRICS_wrapper_00757fe0"
+    },
+    {
+      "site": "0073e4c7",
+      "target": "indirect",
+      "name": "EDX"
+    },
+    {
+      "site": "0073e4cb",
+      "target": "00bf681b",
+      "name": "LIBCRT_unmatched_00bf681b"
+    },
+    {
+      "site": "0073e4ea",
+      "target": "007372a0",
+      "name": "FUN_007372a0"
+    },
+    {
+      "site": "0073e50d",
+      "target": "004c9c90",
+      "name": "TRIV_body_004c9c90"
+    }
+  ],
+  "gates": [
+    {
+      "condition": "allocation result non-null",
+      "site": "25 sites",
+      "skips": "Each operator new is followed by if (p) ctor(p); a null allocation silently skips construction and leaves the owning global null."
+    },
+    {
+      "condition": "DAT_01090ab0 == 0",
+      "site": "0073d4a5",
+      "skips": "Timer service construction (00bedfb0)."
+    },
+    {
+      "condition": "DAT_0109ceec == 0",
+      "site": "0073d604-0073d88d",
+      "skips": "The whole VFS block: provider manager, provider factories, three mounts, both package scans."
+    },
+    {
+      "condition": "DAT_0109cf00 == 0",
+      "site": "0073d8ac",
+      "skips": "The 00737e20 object."
+    },
+    {
+      "condition": "DAT_00e1ae77 != 0 && DAT_0109cee8 == 0",
+      "site": "0073d9b4",
+      "skips": "The files.txt access log (00737c40)."
+    },
+    {
+      "condition": "DAT_00e1ae81 != 0",
+      "site": "0073dab8",
+      "skips": "Indirect DAT_01090ab0 vtable +0x24 call."
+    },
+    {
+      "condition": "DAT_00f8abdc == 0",
+      "site": "0073dcb2",
+      "skips": "XLive array construction (00a3d060)."
+    },
+    {
+      "condition": "DAT_00f871b4 == 0",
+      "site": "0073dd4e",
+      "skips": "Array construction 0078c400."
+    },
+    {
+      "condition": "DAT_00e1ae78 != 0",
+      "site": "0073e463",
+      "skips": "Only the free of the duplicated string; the tail is NOT skipped."
+    },
+    {
+      "condition": "command line contains devrr",
+      "site": "0073d5cd",
+      "skips": "Forces devshaders and reloadresources on."
+    }
+  ],
+  "ordering_constraints": [
+    "BSP_VFS_ProviderManager_Construct (00beda60) precedes every BSP_VFS_MountSystemPath and both BSP_Application_MountPackages calls.",
+    "The three mounts precede BSP_Application_RegisterResourceSearchPaths and the five datatable preloads.",
+    "BSP_D3D9Renderer_Construct (00b32410) precedes the DF16 probe (00a8fe30), the shader preload (0073bf80), the default textures (00b14a10) and the particle shaders (00af1450).",
+    "BSP_GameSettings_LoadFromRegistry (008d8190) precedes the window-title call at 0073dc25 and BSP_GameSettings_GetLanguageName (008d4870).",
+    "BSP_Localization_LoadTable (00aa09d0) and BSP_FontSystem_LoadDefinitions (0073bae0) precede the After InitGui checkpoint.",
+    "Everything precedes BSP_Game_OnInit (004e5540)."
+  ],
+  "flow_breaks": [
+    {
+      "kind": "no_return_flow_break",
+      "address": "0073e46b-0073e473",
+      "detail": "_free (00bf6989) behaves as no-return: disassembly stops after CALL at 0073e466 and resumes at 0073e474. The nine undisassembled bytes are 83 c4 04 (ADD ESP,0x4) then 89 3d 78 ae e1 00 (MOV [0x00e1ae78],EDI, EDI == 0). The decompiler renders this as a spurious return; before FUN_004e5540, making BSP_Game_OnInit and the whole tail look unreachable. They are reachable.",
+      "action": "reported only, not fixed"
+    },
+    {
+      "kind": "decompiler_warning",
+      "address": "0073d410",
+      "detail": "WARNING: Globals starting with '_' overlap smaller symbols at the same address.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unreachable_block",
+      "address": "00737e20",
+      "detail": "Removing unreachable block at 00737e68.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unreachable_block",
+      "address": "00b14a10",
+      "detail": "Removing unreachable block at 00b14e69; body also shows unaff_EBX, unaff_ESI, unaff_EDI inputs.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unreachable_block",
+      "address": "008d5b50",
+      "detail": "Removing unreachable blocks at 008d5db2, 008d5cf8, 008d5d34, 008d5e64; body also shows an unaff_ESI input.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unresolved_indirect_call",
+      "address": "0073d697",
+      "detail": "CALL dword ptr [0x00ce2264], an import thunk.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unresolved_indirect_call",
+      "address": "0073dac0",
+      "detail": "CALL EAX through DAT_01090ab0 vtable +0x24, gated by DAT_00e1ae81.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unresolved_indirect_call",
+      "address": "0073dc25",
+      "detail": "CALL EAX: the window-title call through DAT_0109cf04 vtable slot 4, nine arguments. Highest-value indirect site.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unresolved_indirect_call",
+      "address": "0073dd2f",
+      "detail": "CALL EDX through DAT_00f8d394 vtable +0xf0, right after the shader preload.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unresolved_indirect_call",
+      "address": "0073df99",
+      "detail": "CALL EDX through DAT_00f8c218 vtable +0xc, after the particle shaders.",
+      "action": "reported only"
+    },
+    {
+      "kind": "unresolved_indirect_call",
+      "address": "0073e4c7",
+      "detail": "CALL EDX on local_134 vtable slot 4, in the tail.",
+      "action": "reported only"
+    }
+  ],
+  "excluded_because_leased": {
+    "app_shutdown": [
+      "004fc150",
+      "007364a0",
+      "007366b0",
+      "007367f0"
+    ]
+  },
+  "packets": [
+    {
+      "id": "app_init_alloc_string_helpers",
+      "addresses": [
+        "0041e870",
+        "00438e40",
+        "0041dd40",
+        "00419cc0",
+        "00bd1510",
+        "00bd1780",
+        "00bd17a0",
+        "00be0a30"
+      ],
+      "files": [
+        "docs/APP_INIT_ALLOC_STRINGS.md",
+        "reports/app_init_alloc_strings.json"
+      ],
+      "contract": "Recover the native-string and sized-pool helper layer, the two allocator hook installers and the FileBlock profiling scope, so every later packet has a stable string and allocation contract.",
+      "depends_on": []
+    },
+    {
+      "id": "app_init_bootstrap_options",
+      "addresses": [
+        "00439040",
+        "006ad0d0",
+        "0073ce20",
+        "0073c3b0",
+        "008d8190",
+        "00737c40"
+      ],
+      "files": [
+        "docs/APP_INIT_BOOTSTRAP.md",
+        "reports/app_init_bootstrap.json"
+      ],
+      "contract": "Recover module-path capture, the crash-handler install, the 13-token command line, the hardware probe and the registry-backed game settings; enumerate every global they set and which later gate reads it.",
+      "depends_on": [
+        "app_init_alloc_string_helpers"
+      ]
+    },
+    {
+      "id": "app_init_vfs_and_parsers",
+      "addresses": [
+        "00beda60",
+        "00be0660",
+        "00736a90",
+        "00736b60",
+        "00736c30",
+        "004c1400",
+        "00736dd0",
+        "00736ea0"
+      ],
+      "files": [
+        "docs/APP_INIT_VFS_SINGLETONS.md",
+        "reports/app_init_vfs_singletons.json"
+      ],
+      "contract": "Recover the VFS provider manager, the two provider-factory singletons and the registration path, and join them to the resource-manager singleton and the two model parsers it registers.",
+      "depends_on": [
+        "app_init_bootstrap_options"
+      ]
+    },
+    {
+      "id": "app_init_platform_window",
+      "addresses": [
+        "00becda0",
+        "00beb2c0",
+        "00bedfb0",
+        "00be2900",
+        "00bd9230",
+        "00bd9f90",
+        "00bb40b0",
+        "00737e20"
+      ],
+      "files": [
+        "docs/APP_INIT_PLATFORM.md",
+        "reports/app_init_platform.json"
+      ],
+      "contract": "Recover the Win32 platform and window object, the save-directory root, the timer service and the memory-manager and critical-section knobs set around them.",
+      "depends_on": [
+        "app_init_vfs_and_parsers"
+      ]
+    },
+    {
+      "id": "app_init_renderer_device",
+      "addresses": [
+        "00b32410",
+        "00a8fe30",
+        "0073bf80",
+        "00b14a10",
+        "00b3c4c0",
+        "00ad9f90"
+      ],
+      "files": [
+        "docs/APP_INIT_RENDERER.md",
+        "reports/app_init_renderer.json"
+      ],
+      "contract": "Recover D3D9 device and renderer construction, the DF16 depth-format probe, the shaderpreload.lua cache fill and the fallback textures; read the assembly for 00b14a10, whose pseudocode is truncated.",
+      "depends_on": [
+        "app_init_platform_window"
+      ]
+    },
+    {
+      "id": "app_init_input",
+      "addresses": [
+        "005547d0",
+        "006a7be0",
+        "00a982d0",
+        "00a900f0"
+      ],
+      "files": [
+        "docs/APP_INIT_INPUT.md",
+        "reports/app_init_input.json"
+      ],
+      "contract": "Recover the input settings singleton and its four Lua control tables, DirectInput device creation and the 3x8 device-slot reset.",
+      "depends_on": [
+        "app_init_bootstrap_options"
+      ]
+    },
+    {
+      "id": "app_init_audio_online",
+      "addresses": [
+        "00a88770",
+        "00a79230",
+        "00a40df0"
+      ],
+      "files": [
+        "docs/APP_INIT_AUDIO_ONLINE.md",
+        "reports/app_init_audio_online.json"
+      ],
+      "contract": "Recover sound-system startup, the streamed-dialog definition table and the XenonSystemManager/XLive bring-up including its notification listener.",
+      "depends_on": [
+        "app_init_platform_window"
+      ]
+    },
+    {
+      "id": "app_init_locale_gui",
+      "addresses": [
+        "008d4870",
+        "00aa09d0",
+        "00aa06d0",
+        "0073bae0",
+        "0073c960",
+        "004c14c0"
+      ],
+      "files": [
+        "docs/APP_INIT_LOCALE_GUI.md",
+        "reports/app_init_locale_gui.json"
+      ],
+      "contract": "Recover language selection, the two lockit table loads and the globals table, font definitions from Fonts.lua and the GUI singleton reached at the After InitGui checkpoint.",
+      "depends_on": [
+        "app_init_vfs_and_parsers",
+        "app_init_renderer_device"
+      ]
+    },
+    {
+      "id": "app_init_world_effects",
+      "addresses": [
+        "00af0060",
+        "00740840",
+        "00ad9ac0",
+        "00ad71c0",
+        "00af1450",
+        "00bbcb40",
+        "00af0b10"
+      ],
+      "files": [
+        "docs/APP_INIT_WORLD_EFFECTS.md",
+        "reports/app_init_world_effects.json"
+      ],
+      "contract": "Recover the atlas loader, decal and foliage definition tables, the particle shader and atlas set, and the water caustics and shore-wave texture sources.",
+      "depends_on": [
+        "app_init_renderer_device"
+      ]
+    },
+    {
+      "id": "app_init_game_entry",
+      "addresses": [
+        "004e5540",
+        "008d5b50",
+        "007372a0"
+      ],
+      "files": [
+        "docs/APP_INIT_GAME_ENTRY.md",
+        "reports/app_init_game_entry.json"
+      ],
+      "contract": "Recover GGame::OnInit and its OnInitOnce/OnInitTitle split, the post-effect system bring-up and the final lifetime registration that closes cSkeletonAppMidway::Init; read the assembly for 008d5b50, whose pseudocode drops four blocks.",
+      "depends_on": [
+        "app_init_input",
+        "app_init_audio_online",
+        "app_init_locale_gui",
+        "app_init_world_effects"
+      ]
+    }
+  ],
+  "names_recorded": [
+    {
+      "address": "00439040",
+      "name": "BSP_Application_CaptureModulePath"
+    },
+    {
+      "address": "00bedfb0",
+      "name": "BSP_TimerService_Construct"
+    },
+    {
+      "address": "006ad0d0",
+      "name": "BSP_Application_InstallCrashHandler"
+    },
+    {
+      "address": "0041e870",
+      "name": "BSP_NativeString_Assign"
+    },
+    {
+      "address": "0073c3b0",
+      "name": "BSP_SystemOptions_ProbeHardware"
+    },
+    {
+      "address": "00beda60",
+      "name": "BSP_VFS_ProviderManager_Construct"
+    },
+    {
+      "address": "00bbcb40",
+      "name": "BSP_WaterRenderer_RegisterTextureSources"
+    },
+    {
+      "address": "00beb2c0",
+      "name": "BSP_SaveStorage_Initialize"
+    },
+    {
+      "address": "00438e40",
+      "name": "BSP_NativeString_Duplicate"
+    },
+    {
+      "address": "0073ce20",
+      "name": "BSP_Application_ParseCommandLine"
+    },
+    {
+      "address": "00737c40",
+      "name": "BSP_Application_CreateFileAccessLog"
+    },
+    {
+      "address": "005547d0",
+      "name": "BSP_InputSettings_GetSingleton"
+    },
+    {
+      "address": "006a7be0",
+      "name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "008d8190",
+      "name": "BSP_GameSettings_LoadFromRegistry"
+    },
+    {
+      "address": "00a88770",
+      "name": "BSP_SoundSystem_Initialize"
+    },
+    {
+      "address": "00a79230",
+      "name": "BSP_DialogStreamTable_Load"
+    },
+    {
+      "address": "00a40df0",
+      "name": "BSP_XLiveSystem_Initialize"
+    },
+    {
+      "address": "0073bf80",
+      "name": "BSP_ShaderCache_PreloadFromScript"
+    },
+    {
+      "address": "00a982d0",
+      "name": "BSP_DirectInput_CreateDevices"
+    },
+    {
+      "address": "00a900f0",
+      "name": "BSP_InputDeviceTable_ResetSlots"
+    },
+    {
+      "address": "00af0060",
+      "name": "BSP_TextureAtlas_Load"
+    },
+    {
+      "address": "00740840",
+      "name": "BSP_DecalSystem_LoadDefinitions"
+    },
+    {
+      "address": "00ad9ac0",
+      "name": "BSP_FoliageSystem_LoadTypes"
+    },
+    {
+      "address": "00b14a10",
+      "name": "BSP_RenderResources_LoadDefaultTextures"
+    },
+    {
+      "address": "00af1450",
+      "name": "BSP_ParticleSystem_LoadShaders"
+    },
+    {
+      "address": "008d4870",
+      "name": "BSP_GameSettings_GetLanguageName"
+    },
+    {
+      "address": "00aa09d0",
+      "name": "BSP_Localization_LoadTable"
+    },
+    {
+      "address": "0073bae0",
+      "name": "BSP_FontSystem_LoadDefinitions"
+    },
+    {
+      "address": "004e5540",
+      "name": "BSP_Game_OnInit"
+    },
+    {
+      "address": "008d5b50",
+      "name": "BSP_PostEffectSystem_Initialize"
+    }
+  ],
+  "call_order_note": "Linear call-site order across the body 0073d410-0073e52c, not execution order across branches. 208 entries."
+}
