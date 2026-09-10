@@ -1,0 +1,208 @@
+{
+  "packet": "gui_text_widget",
+  "doc": "docs/GUI_TEXT_WIDGET.md",
+  "owner": "agent/gui-text-widget",
+  "program": "battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "subject": "The GUI Text widget class, id 3, instance size 1F4h, vtable 00D5C6C8",
+
+  "packet_correction": {
+    "proposed_addresses": ["00AC2090", "00AC2DE0"],
+    "finding": "Neither address belongs to the Text class. They are the describe/read pair of a different widget class whose only property is an integer-keyed 'Points' array of GuiValueTag 6 (vec2) entries held in a begin/end pointer pair at +F0h/+F4h. 00AC2090 walks the pair; 00AC2DE0 probes ascending integer keys through the visitor's +14h predicate until it fails. That is the Curve class.",
+    "source_of_the_error": "reports/gui_layout_loader.json followups[2] and the 'gui_text_properties' row in docs/GUI_LAYOUT_LOADER.md, which guessed the pair from the caller lists of 00AAA710 and 00AAAED0 without reading them.",
+    "how_the_real_class_was_reached": "Class table id 3 -> constructor stub 00AA1380 -> allocator 00AB79E0 -> constructor 00AB9650, which passes the literal 3 to the base constructor 00AA9390 and installs the vtable 00D5C6C8. Virtual +18h is the reader 00ABB630 and virtual +1Ch is the describer 00AB7B60; both appear in the 13-caller lists the layout-loader doc printed."
+  },
+
+  "vtable": {
+    "address": "00D5C6C8",
+    "slots": 32,
+    "established": {
+      "+00h": {"target": "00BD30E0", "role": "shared deleting destructor"},
+      "+18h": {"target": "00ABB630", "role": "read properties from the page table"},
+      "+1Ch": {"target": "00AB7B60", "role": "describe properties back out"},
+      "+4Ch": {"target": "00AB6AD0", "role": "set alpha; scales the shadow alpha"},
+      "+50h": {"target": "00AB6B50", "role": "set colour; scales the shadow alpha by the colour w lane"},
+      "+58h": {"target": "00ABBF30", "role": "set size, then force a text rebuild through 00ABB1D0"},
+      "+60h": {"target": "00AB87D0", "role": "forward a state to __Active_Left_Icon / __Active_Right_Icon (provisional)"},
+      "+64h": {"target": "00AB6D70", "role": "apply Align / VerticalAlign to a bounds rectangle"},
+      "+70h": {"target": "00AB7A40", "role": "push clip parameters into the main and shadow drawables, then recurse"},
+      "+74h": {"target": "00AB7700", "role": "post-load hook: placeholder mesh and a zeroed local bounds"}
+    },
+    "not_analysed": ["+04h", "+08h", "+0Ch", "+10h", "+14h", "+20h", "+24h", "+28h", "+2Ch", "+30h", "+34h", "+38h", "+3Ch", "+40h", "+44h", "+48h", "+54h", "+5Ch", "+68h", "+6Ch", "+78h", "+7Ch"]
+  },
+
+  "layout": {
+    "instance_size": "0x1F4",
+    "base_size": "0xEC (built by 00AA9390, the Group size)",
+    "string_shape": "NativeString is { size_t length; char* data; }, so one offset covers two dwords",
+    "fields": [
+      {"offset": "+ECh", "type": "NativeString(UTF-16)", "key": null, "default": "empty", "role": "current text", "evidence": "00ABA270+108 uses [+ECh]*4 as the vertex count; FONT_CONTEXT_OWNERSHIP.md"},
+      {"offset": "+F4h", "type": "NativeString(narrow)", "key": "DefaultText", "default": "empty", "role": "cached source key", "evidence": "00ABAED0 param_1+0x3d; describer emits *(+F8h)"},
+      {"offset": "+FCh", "type": "bool", "key": "Multiline", "default": "true", "role": "selects the wrapped builder", "evidence": "00AB9650 stores 1; reader tag 3; 00ABA8D0 builder choice"},
+      {"offset": "+100h", "type": "int32", "key": "Align", "default": "0 (Left)", "role": "horizontal alignment", "evidence": "reader stricmp chain; describer inverse"},
+      {"offset": "+104h", "type": "int32", "key": "VerticalAlign", "default": "0 (Top)", "role": "vertical alignment", "evidence": "reader; 00ABA270 vertical offset"},
+      {"offset": "+108h", "type": "FontDescriptor*", "key": null, "default": "null", "role": "borrowed font record", "evidence": "00AB8C30 stores the 00AC3570 result"},
+      {"offset": "+10Ch", "type": "float", "key": "DistanceBetweenLines", "default": "0", "role": "line advance term", "evidence": "reader tag 2; 00ABA6xx"},
+      {"offset": "+110h", "type": "int32", "key": null, "default": "0", "role": "line count from the last layout", "evidence": "00ABA270 increments per line"},
+      {"offset": "+114h", "type": "float", "key": null, "default": "0", "role": "measured width in font units", "evidence": "both builders; divide by 960 to normalise"},
+      {"offset": "+118h", "type": "bool", "key": "MISColors present", "default": "false", "role": "sub-table seen", "evidence": "reader stores 1 after the descend"},
+      {"offset": "+11Ch", "type": "float[4]", "key": "MISColors.Normal", "default": "(0.7,0.7,0.7,1)", "role": "state colour", "evidence": "00AB9650 with 00CE3E18 and 00D7A24C"},
+      {"offset": "+12Ch", "type": "float[4]", "key": "MISColors.Focus", "default": "(1,1,1,1)", "role": "state colour", "evidence": "00AB9650"},
+      {"offset": "+13Ch", "type": "float[4]", "key": "MISColors.Selected", "default": "(1,1,1,1)", "role": "state colour", "evidence": "00AB9650"},
+      {"offset": "+14Ch", "type": "float[4]", "key": "MISColors.Disabled", "default": "(0,0,0,0.5)", "role": "state colour", "evidence": "00AB9650 with 00CE3800"},
+      {"offset": "+15Ch", "type": "bool", "key": "Shadowed", "default": "false", "role": "shadow attachment gate", "evidence": "reader tag 3; 00AB72D0; FONT_CONTEXT_OWNERSHIP.md"},
+      {"offset": "+160h", "type": "int32", "key": "ShadowPos", "default": "0 (Behind)", "role": "1 exactly when the string matches Front", "evidence": "00ABBCFD then 00425850"},
+      {"offset": "+164h", "type": "float", "key": "ShadowOffset", "default": "0.05 (00D5C5C0)", "role": "shadow displacement", "evidence": "reader tag 2 default literal"},
+      {"offset": "+168h", "type": "float[4]", "key": "ShadowColor", "default": "(0,0,0,0.75) (00E12FD8)", "role": "shadow material colour", "evidence": "reader tag 8 default literal"},
+      {"offset": "+178h", "type": "float", "key": null, "default": "0", "role": "wrapped vertical extent", "evidence": "00ABA270"},
+      {"offset": "+17Ch", "type": "int32", "key": null, "default": "2", "role": "unidentified", "evidence": "00AB9650 only"},
+      {"offset": "+188h", "type": "node*", "key": null, "default": "null", "role": "shadow drawable", "evidence": "00AB6AD0, 00AB6B50, 00AB8530"},
+      {"offset": "+18Ch", "type": "ptr", "key": null, "default": "0", "role": "first emitted origin", "evidence": "FONT_LAYOUT_BOUNDARY.md"},
+      {"offset": "+1C0h", "type": "NativeString", "key": "ShaderName", "default": "empty", "role": "shader override", "evidence": "reader tag 0; describer guards on the length"},
+      {"offset": "+1C8h", "type": "NativeString", "key": "Font", "default": "empty", "role": "font name cache", "evidence": "00AB8C30 copies into it"},
+      {"offset": "+1D0h", "type": "int32", "key": "DefaultShadow", "default": "-1", "role": "shadow preset", "evidence": "reader tag 1; 00AB72D0"},
+      {"offset": "+1D4h", "type": "float", "key": null, "default": "1.0", "role": "alpha-texture scale copied from font +1Ch", "evidence": "00AB8C30"},
+      {"offset": "+1D8h", "type": "float", "key": "FontScale", "default": "1.0", "role": "extra horizontal layout scale", "evidence": "reader tag 2; FONT_LAYOUT_BOUNDARY.md"},
+      {"offset": "+1ECh", "type": "refcounted*", "key": null, "default": "null", "role": "cached font shader", "evidence": "00AB8C30 releases and clears it"},
+      {"offset": "+1F0h", "type": "bool", "key": null, "default": "true", "role": "unidentified", "evidence": "00AB9650 only"}
+    ],
+    "not_modelled": "+180h, +184h, +190h..+1BFh, +1DCh..+1EBh are zeroed by the constructor and belong to the geometry and material side documented in FONT_CONTEXT_OWNERSHIP.md and FONT_CONTEXT_MATERIAL_BINDINGS.md."
+  },
+
+  "value_tag_recovered": {
+    "tag": 1,
+    "meaning": "signed int32",
+    "evidence": "DefaultShadow: 00ABBBF0 pushes tag 1 with the default 0xFFFFFFFF into a dword temporary, and 00AB7F53 pushes tag 1 with the same default when describing +1D0h.",
+    "note": "include/bsp/gui_layout_loader.hpp lists tags 1, 4 and 7 as unrecovered by the base widget. Tags 4 and 7 remain open."
+  },
+
+  "routines": [
+    {"address": "00AB9650", "name": "BSP_GuiText_Construct", "convention": "__thiscall(this) -> this", "ret": "RET 0", "signature_source": "Ghidra __fastcall with no stack argument", "behaviour": "Calls 00AA9390 with the literal class id 3, installs the vtable 00D5C6C8 and writes every Text default listed in layout.fields, then calls 00AB8530 to ensure the draw sections."},
+    {"address": "00ABB630", "name": "BSP_GuiText_ReadProperties", "convention": "__thiscall(this, visitor*)", "ret": "RET 4", "signature_source": "Ghidra __thiscall with one stack argument", "behaviour": "00AAA710 for the base half, then Font (through 00AB8C30), FontScale, Multiline, DistanceBetweenLines, DefaultText (to a temporary), ShaderName, Align, VerticalAlign, the MISColors sub-table, DefaultShadow, and finally DefaultText through 00ABAED0 with the literal flag 1."},
+    {"address": "00AB7B60", "name": "BSP_GuiText_DescribeProperties", "convention": "__thiscall(this, visitor*)", "ret": "RET 4", "signature_source": "Ghidra __thiscall with one stack argument", "behaviour": "00AAAED0 for the base half, then each Text property, emitted only when 00BD5680 reports it differs from the same default. Align and VerticalAlign are always emitted."},
+    {"address": "00AB8C30", "name": "BSP_GuiText_SetFontByName", "convention": "__thiscall(this, const NativeString*)", "ret": "RET 4", "signature_source": "Ghidra __thiscall; existing reconstruction comment agrees", "behaviour": "Case-insensitive early-out against +1C8h. Otherwise caches the name, resolves it through BSP_FontSystem_GetRegistry and 00AC3570 into +108h, copies the record's +1Ch into +1D4h (1.0 on failure) and releases the cached shader at +1ECh. It does not re-run the layout."},
+    {"address": "00AB72D0", "name": "BSP_GuiText_ApplyShadowPreset", "convention": "__thiscall(this, int preset)", "ret": "RET 4", "signature_source": "Ghidra __thiscall with one stack argument", "behaviour": "Early-out when +1D0h already holds the preset. -1 clears Shadowed. Any other preset sets Shadowed, ShadowColor (0,0,0,0.75), ShadowPos 0 and ShadowOffset 0.05; preset 1 additionally overwrites the colour with (1,1,1,0.75) from 00CEE07C. Presets 0 and 2 are indistinguishable."},
+    {"address": "00ABAED0", "name": "BSP_GuiText_SetLocalisedSource", "convention": "__thiscall(this, const NativeString* source, bool localise)", "ret": "RET 8", "signature_source": "existing ledger record and export", "behaviour": "Case-insensitive early-out against the cached narrow source at +F4h. Otherwise caches it, widens with 004C5E60 when the flag is clear or resolves with 00A9FAD0 when it is set, hands the UTF-16 result to 00ABA8D0, frees the temporary, and calls virtual +50h with this+50h, which is the base widget's four-float Color property."},
+    {"address": "00AB6AD0", "name": "BSP_GuiText_SetAlpha", "convention": "__thiscall(this, float alpha)", "ret": "RET 4", "signature_source": "listing 00AB6AD0..00AB6B43", "behaviour": "Base setter 00AA6980, then, when the shadow drawable +188h exists, multiplies the shadow alpha +174h by the incoming alpha and writes the product into the shadow material parameter at +0Ch."},
+    {"address": "00AB6B50", "name": "BSP_GuiText_SetColor", "convention": "__thiscall(this, const float rgba[4])", "ret": "RET 4", "signature_source": "listing 00AB6B50..00AB6BC1", "behaviour": "Base setter 00AA6870, then the same shadow-alpha scaling using the incoming colour's w lane at [arg+0Ch]."},
+    {"address": "00AB6D70", "name": "BSP_GuiText_ApplyAlignToBounds", "convention": "__thiscall(this, float* left, float* top, float* right, float* bottom)", "ret": "RET 10h", "signature_source": "listing 00AB6D70..00AB6ED8", "behaviour": "Horizontal: w = +114h / 960 and p = the double at 00D5C5C8 (about 0.012). Mode 0 writes *right = *left + w + p; mode 2 writes *left = *right - w - p; mode 1 spreads w/2 + p around the midpoint of the pair; mode 3 leaves the rectangle alone because only 0, 1 and 2 are tested. Vertical: dispatches on +104h into 00AB6BD0."},
+    {"address": "00ABBF30", "name": "BSP_GuiText_SetSizeAndRebuild", "convention": "__thiscall(this, size)", "ret": "RET 4", "signature_source": "listing 00ABBF30..00ABBF45", "behaviour": "Base size setter 00AA7970, then 00ABB1D0, which blanks +ECh and re-submits the saved copy so the wrap is recomputed against the new width."},
+    {"address": "00AB7A40", "name": "BSP_GuiText_RegisterClipParameters", "convention": "__thiscall(this)", "ret": "RET 0", "signature_source": "Ghidra __fastcall with no stack argument", "behaviour": "For the main drawable +4Ch and the shadow drawable +188h, resolves the mesh through 00B74650 / 00B74640 / 00B732C0 and hands its +20h to BSP_UIContext_RegisterClipParameters, then walks the child list at +68h calling each child's virtual +70h."},
+    {"address": "00AB7700", "name": null, "convention": "not established", "ret": "not established", "signature_source": null, "behaviour": "Vtable +74h. Allocates a mesh object through BSP_MeshObject_AllocationContextEntry / BSP_MeshObject_Construct, installs it with BSP_GeneratedModel_SetGeometry, releases it, then calls BSP_GuiWidget_SetLocalPositionAndBounds with a zero vector. Why a Text widget needs a placeholder mesh at load time was not established, so no name was recorded."},
+    {"address": "00AB87D0", "name": "BSP_GuiText_PropagateStateToArrowIcons", "convention": "__thiscall(this, state)", "ret": "not established", "signature_source": null, "behaviour": "Vtable +60h. Builds the literals __Active_Left_Icon and __Active_Right_Icon, finds both through BSP_GuiWidget_FindChildByName, frees the temporaries, and, only when both exist, calls each child's virtual +34h with its own argument. Provisional."},
+    {"address": "00AB79E0", "name": "BSP_GuiText_AllocateInstance", "convention": "__thiscall/__fastcall(void)", "ret": "not established", "signature_source": null, "behaviour": "Single caller 00AA1380, which uses the returned pointer as the new Text object. Forwards to 00AB78A0, a fixed-size pooled allocator guarded by a critical section at +0Ch with a free list and 0x7E84-byte chunks. The Ghidra database tags this address cg_static_dtor_stub with high confidence; that tag is wrong."},
+    {"address": "00AC2090", "name": "BSP_GuiPoints_DescribeProperties", "convention": "__thiscall(this, visitor*)", "ret": "RET 4", "signature_source": "Ghidra __thiscall with one stack argument", "behaviour": "Not the Text class. 00AAAED0 for the base half, then, when the pointer pair at +F0h/+F4h is non-empty, opens a 'Points' sub-object and emits one GuiValueTag 6 entry per 8-byte element under ascending integer keys starting at 1."},
+    {"address": "00AC2DE0", "name": "BSP_GuiPoints_ReadProperties", "convention": "__thiscall(this, visitor*)", "ret": "RET 4", "signature_source": "Ghidra rendered it with the visitor as the only argument", "behaviour": "Not the Text class. 00AAA710 for the base half, then, when the visitor's +14h predicate reports 'Points' present, descends and reads GuiValueTag 6 entries under ascending integer keys until the predicate fails, appending each through 004222C0."}
+  ],
+
+  "no_ghidra_function": [
+    {"address": "00AB6AD0", "end": "00AB6B43", "role": "vtable +4Ch, set alpha and scale the shadow alpha; last instruction is RET 4"},
+    {"address": "00AB6B50", "end": "00AB6BC1", "role": "vtable +50h, set colour and scale the shadow alpha by the w lane; last instruction is RET 4"},
+    {"address": "00AB6D70", "end": "00AB6ED8", "role": "vtable +64h, apply Align and VerticalAlign to a bounds rectangle; last instruction is RET 10h"},
+    {"address": "00ABBF30", "end": "00ABBF45", "role": "vtable +58h, base size setter then 00ABB1D0; last instruction is RET 4"}
+  ],
+
+  "describer_defect": {
+    "address": "00AB8028",
+    "finding": "CMP dword ptr [EDI+160h], 1 is followed only by flag-preserving MOVs before the call at 00AB804E; no conditional consumes the flags. The describer always writes the literal Behind at 00D5C604, so a widget authored with ShadowPos = \"Front\" does not round-trip through describe. The reader is unaffected.",
+    "verified_from": "disk bytes 83 BF 60 01 00 00 01 89 18 C7 40 04 04 C6 D5 00 at 00AB8028"
+  },
+
+  "layout_contract": {
+    "builder_selection": "00ABA8D0 reads +FCh: zero selects the single-line builder 00AB9FD0, nonzero selects the wrapped builder 00ABA270. Because the constructor stores 1, Multiline is an opt-out of wrapping.",
+    "container": "Width is the base widget Size.x at +20h multiplied by the double 960 at 00CEC380 and truncated; height is Size.y at +24h.",
+    "scale": "+1D8h (FontScale) is an extra horizontal scale on top of the font's own DAT scaling.",
+    "single_line_alignment": "00ABA100..00ABA148: modes 0 and 3 start at x = 0, mode 2 subtracts the measured width from the container width, mode 1 halves that difference.",
+    "wrapped_alignment": "00ABA270 applies +100h per line, with mode 3 distributing the slack across the line's spaces and falling back to left on the last line and on LF. It accumulates the per-line maximum into +114h and counts lines into +110h.",
+    "vertical_alignment": "00ABA270 uses +104h against the extent it stores at +178h: mode 0 leaves the origin, mode 1 centres it in Size.y, mode 2 bottom-aligns it.",
+    "line_advance": "The pen advances by (+10Ch + k1 - k2) * lineHeight with the constants at 00D7A210 and 00CE6618. Both are read at ambiguous width by the decompiler and were not confirmed in the listing; the exact advance belongs to the font_wrapped_layout packet.",
+    "drawing": "Glyph quads, the shadow section copy, the material parameters and the shadow placement (byte +15Ch gates the attachment, +168h..+174h reach the shadow material, +164h is scaled by the double 720 and placed by +160h) are already recorded in FONT_CONTEXT_OWNERSHIP.md and FONT_CONTEXT_MATERIAL_BINDINGS.md and are not restated here."
+  },
+
+  "relayout_triggers": ["00ABAED0 (narrow source changed)", "00AB6AB0 (UTF-16 caller)", "00ABB000 (ellipsis path)", "virtual +58h -> 00ABBF30 -> 00ABB1D0 (size changed)"],
+
+  "localisation": {
+    "reader_flag": "00ABBD90 pushes the literal 1, so an authored DefaultText is always resolved through the localisation table.",
+    "split": "00A9FAD0 splits the source on '|' with _strcspn and resolves each piece with 00A9F4B0.",
+    "prefix": "00A9F4B0 strips one leading '^' before anything else and treats a leading '.' as a marker that suppresses the map lookup. What '^' means to the resolver is docs/APP_INIT_LOCALE.md open question 5 and was not settled here.",
+    "cache_key": "The comparison in 00ABAED0 is on the source key, not the resolved text, so a language change alone does not invalidate a widget."
+  },
+
+  "installed_file_check": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface",
+    "method": "Read-only regex scan of all 97 interface/*.lua files for [\"Key\"] = value forms. Values written as expressions or supplied by _common.lua helpers are not counted; those pages are the same ones the layout-loader's subset parser rejects.",
+    "files": 97,
+    "text_widget_keys": 416,
+    "files_with_text": 67,
+    "widgets_by_suffix": {"Icon": 701, "Text": 416, "Group": 211, "FrameBox": 123, "Listbox": 37, "Clipbox": 20, "Section": 19, "Movie": 5, "Model": 4, "Sound": 2},
+    "key_counts": {"Font": 394, "Align": 388, "VerticalAlign": 385, "DefaultShadow": 348, "DefaultText": 315, "Multiline": 141, "ShaderName": 68, "MISColors": 60, "Shadowed": 5, "ShadowPos": 5, "DistanceBetweenLines": 4, "FontScale": 2},
+    "default_text_with_caret_prefix": 0,
+    "values": {
+      "Font": {"Arial16": 184, "Arial15": 80, "Viper19": 72, "Arial18": 50, "Arial20": 8},
+      "Align": {"Left": 213, "Center": 101, "Right": 62, "Justified": 10, "left": 1, "right": 1},
+      "VerticalAlign": {"Center": 203, "Top": 155, "Bottom": 24, "top": 3},
+      "Multiline": {"false": 139, "true": 2},
+      "DefaultShadow": {"0": 345, "2": 2, "1": 1}
+    },
+    "consequences": [
+      "The lower-case left, right and top spellings prove the case-insensitive comparison is load-bearing: five widgets would lose their alignment under a case-sensitive reader.",
+      "Multiline is only ever authored to turn wrapping off, so 275 of the 416 Text widgets take the wrapped builder by default.",
+      "DefaultShadow is authored on 348 widgets and the explicit Shadowed key on 5, which matches the reader's mutual exclusion. Because presets 0 and 2 are identical, 347 get the black (0,0,0,0.75) shadow and one gets white.",
+      "Only five font names are referenced in total, all resolvable through the registry lookup find_font_00ac3570 already models.",
+      "docs/GUI_LAYOUT_LOADER.md reports 248 Text widgets; that figure counts only the 70 pages its subset parser accepts, so the two numbers agree in kind."
+    ]
+  },
+
+  "callers_and_callees": {
+    "00AB9650": {"callers": ["00AA1380", "00AB98F0"], "callees": ["00AA9390", "00AB8530"]},
+    "00ABB630": {"callers": ["00AAA710 through vtable +18h"], "callees": ["00AAA710", "00AB8C30", "00AB72D0", "00ABAED0", "__stricmp", "00425850", "00419CC0", "00BD1510"]},
+    "00AB7B60": {"callers": ["00AAAED0 through vtable +1Ch"], "callees": ["00AAAED0", "00BD5680", "visitor +4h/+8h/+0Ch"]},
+    "00AB8C30": {"callers": ["00ABB630", "font context code"], "callees": ["00435C40", "0041DD40", "_memcpy", "BSP_FontSystem_GetRegistry", "00AC3570", "InterlockedDecrement"]},
+    "00ABAED0": {"callers": "97, all screen code", "callees": ["00419CC0", "0041DD40", "00435C40", "004C5E60", "00A9FAD0", "00ABA8D0", "00BD1510", "_memcpy"]},
+    "00AB79E0": {"callers": ["00AA1380"], "callees": ["00AB78A0"]}
+  },
+
+  "uncertainties": [
+    "+17Ch (constructor value 2) and +1F0h (constructor value true) have no reader or writer in the routines examined.",
+    "Where MISColors is consumed is unknown. No routine in the Text class reads +11Ch..+158h; the four names and the 60 authored occurrences suggest a screen-side state selector.",
+    "The wrapped line advance constants at 00D7A210 and 00CE6618 are read at ambiguous width by the decompiler and were not confirmed in the listing.",
+    "Virtual +60h (00AB87D0) and virtual +74h (00AB7700) are analysed but their roles are provisional.",
+    "The '^' prefix rule in 00A9F4B0 remains the locale packet's open question; this packet only establishes that the reader always requests localisation and that no shipped page uses the prefix.",
+    "Whether 00AB8C30 failing to trigger a re-layout is observable: changing Font at runtime without changing the text leaves stale glyph geometry.",
+    "The FontDescriptor member matched to the native font record's +1Ch is alpha_texture_scale, chosen by name and by its use in cOverbrightAlphatex; the offset was not re-derived here."
+  ],
+
+  "followups": [
+    {"packet": "gui_text_mis_colors", "addresses": ["00AB7B60", "00ABB630"], "files": ["docs/GUI_TEXT_MIS_COLORS.md"], "contract": "Who selects among MISColors.Normal/Focus/Selected/Disabled at +11Ch..+158h and how the chosen colour reaches virtual +50h."},
+    {"packet": "gui_curve_widget", "addresses": ["00AC2090", "00AC2DE0"], "files": ["docs/GUI_CURVE_WIDGET.md", "include/bsp/gui_curve.hpp"], "contract": "The Points class mis-identified as Text: the GuiValueTag 6 point vector at +F0h/+F4h, the integer-key probe loop, and its instance size and class id."},
+    {"packet": "gui_text_active_arrows", "addresses": ["00AB87D0", "00AA8530"], "files": ["docs/GUI_TEXT_ACTIVE_ARROWS.md"], "contract": "Virtual +60h: what state the __Active_Left_Icon and __Active_Right_Icon children receive through their virtual +34h, and which screens author them."}
+  ],
+
+  "reconstruction": {
+    "header": "include/bsp/gui_text.hpp",
+    "source": "src/gui_text.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors, clean",
+    "tests": "ctest reconstructed_math passed; one focused case added to tests/math_tests.cpp covering the 00ABAED0 source cache and the 00A9F4B0 caret rule",
+    "scope": "Struct layout with documented offsets, the two alignment enums as data, the shadow preset expander, the builder selection, the container width, the single-line start offset, the bounds rewrite, the localisation split, the source cache rule, the font-by-name setter, the set-text routine and the property binder over an injected GuiTextHost. No font layout, glyph or render code is duplicated."
+  },
+
+  "state": {
+    "00AB9650": "analyzed, reconstructed, build-tested, installed-file-checked",
+    "00ABB630": "analyzed, reconstructed, build-tested, installed-file-checked",
+    "00AB7B60": "analyzed, reconstructed, build-tested",
+    "00AB8C30": "analyzed, reconstructed, build-tested",
+    "00AB72D0": "analyzed, reconstructed, build-tested",
+    "00ABAED0": "analyzed, reconstructed, build-tested, fixture-tested",
+    "00AB6AD0": "analyzed (listing only)",
+    "00AB6B50": "analyzed (listing only)",
+    "00AB6D70": "analyzed, reconstructed (horizontal case), build-tested; listing only in Ghidra",
+    "00ABBF30": "analyzed (listing only)",
+    "00AB7A40": "analyzed",
+    "00AB7700": "analyzed",
+    "00AB87D0": "analyzed (provisional)",
+    "00AB79E0": "analyzed",
+    "00AC2090": "analyzed (identified as a different class)",
+    "00AC2DE0": "analyzed (identified as a different class)"
+  }
+}
