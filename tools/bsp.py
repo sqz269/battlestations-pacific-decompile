@@ -411,6 +411,37 @@ def segment(args):
         print(f"  {f['hex']} {f['name']}")
 
 
+def disasm_raw(args):
+    """Local Capstone disassembly of the disk PE bytes; works for addresses Ghidra never defined."""
+    try:
+        import pefile
+        from capstone import CS_ARCH_X86, CS_MODE_32, Cs
+    except ImportError:
+        sys.exit('pefile and capstone are required')
+    config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
+    pe = pefile.PE(config['binary'], fast_load=True)
+    base = pe.OPTIONAL_HEADER.ImageBase
+    a = int(args.address, 16)
+    section = next((s for s in pe.sections if base + s.VirtualAddress <= a < base + s.VirtualAddress + s.Misc_VirtualSize), None)
+    if section is None:
+        sys.exit(f'{h(a)} is not inside a section')
+    data = section.get_data()
+    offset = a - (base + section.VirtualAddress)
+    md = Cs(CS_ARCH_X86, CS_MODE_32)
+    db = connect(required=False)
+    count = 0
+    for address, size, mnemonic, operands in md.disasm_lite(data[offset:offset + args.length], a):
+        line = f'{address:08x}: {mnemonic} {operands}'
+        if db:
+            line = annotate(db, line)
+        print(line)
+        count += 1
+        if count >= args.lines:
+            print(f'... capped at {args.lines} instructions (--lines); raise --length for more bytes')
+            break
+    print(f'(disk bytes, {section.Name.rstrip(b"\\0").decode()} section; Ghidra state not consulted)')
+
+
 def strings_query(args):
     """Functions whose bodies reference a string containing the text (from the Capstone data-reference sweep)."""
     db = connect()
@@ -812,6 +843,8 @@ def main():
     p = sub.add_parser('segment'); p.add_argument('id', type=int); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=segment)
     p = sub.add_parser('find'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=find)
     p = sub.add_parser('strings', help='functions referencing a string containing the text'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=strings_query)
+    p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes at an address, even where Ghidra has no function'); p.add_argument('address')
+    p.add_argument('--length', '--limit', dest='length', type=int, default=96, help='bytes to decode'); p.add_argument('--lines', type=int, default=40); p.set_defaults(func=disasm_raw)
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')
