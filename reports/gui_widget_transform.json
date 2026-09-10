@@ -1,0 +1,243 @@
+{
+  "packet": "gui_widget_transform",
+  "doc": "docs/GUI_WIDGET_TRANSFORM.md",
+  "owner": "agent/gui-widget-transform",
+  "addresses": ["00AA6740", "00AA6750", "00AA8240", "00AA70E0", "00AA7220",
+    "00AA6980", "00AA7970", "00AA78D0", "00AA78F0", "00AA7910", "00AA7930",
+    "00AA7950", "00AA7D00", "00AA7D40", "00AA7D80", "00AA7DC0", "00AA8710",
+    "00AA83A0", "00AAAED0", "00A9E110"],
+  "files": ["docs/GUI_WIDGET_TRANSFORM.md", "reports/gui_widget_transform.json",
+    "include/bsp/gui_widget.hpp", "src/gui_widget.cpp"],
+
+  "finding": {
+    "packet_premise": "docs/FRONTEND_SCREEN_ANIMATION.md proposed the five addresses as the GUI widget parent chain, 'the scale pair at +18h/+1Ch' and the vtable slots +4Ch and +58h the scroll block drives.",
+    "actual": "The five are the transform of the GUI widget base class built by 00AA9390. The pair at +18h/+1Ch is the Pivot, a fraction of the widget's own size; Scale is a separate pair at +28h/+2Ch that the parent chain never touches. The widget publishes into a scene node at +4Ch rather than drawing itself.",
+    "correction": {
+      "claim_corrected": "docs/FRONTEND_SCREEN_ANIMATION.md line 247: 'apply the parent's scale pair at +18h/+1Ch times its size pair at +20h/+24h'",
+      "evidence": [
+        "Descriptor table 00AAAED0 binds widget+18h to the literal Pivot at 00d5c228 (record 00AAAFAD, string push 00AAAFF3), widget+20h to Size at 00cff278 (00AAAF54 / 00AAAF9F) and widget+28h to Scale at 00ce60ac (00AAB006 / 00AAB034).",
+        "Base constructor 00AA9390 leaves +18h/+1Ch at zero (00AA93A6) and sets +28h/+2Ch to 1.0 from 00d7a24c (00AA93B4).",
+        "00AA7220 makes a translation matrix out of +18h/+1Ch times +20h/+24h and a diagonal scale matrix out of +28h/+2Ch."
+      ]
+    },
+    "vtable_confirmed": "Base vtable 00d5bbf8 holds 00AA7970 at +58h and 00AA6980 at +4Ch, confirming the size setter and alpha setter that docs/FRONTEND_SCREEN_ANIMATION.md named from use. 00d5bed0 is a sibling table with the same two slots."
+  },
+
+  "conventions": [
+    {"address": "00AA6740", "convention": "__thiscall(widget) -> float(*)[2]", "ret": "RET", "role": "LEA EAX,[ECX+20h]; RET, the address of the Size pair"},
+    {"address": "00AA6750", "convention": "__thiscall(widget, Vec3* out) -> out in EAX", "ret": "RET 4", "role": "resolved position through the parent chain, direct recursion at 00AA6778"},
+    {"address": "00AA8240", "convention": "__thiscall(widget, const Vec3*)", "ret": "RET 4", "role": "inverse of 00AA6750 into +0Ch..+14h, then 00AA7220 and 00AA70E0"},
+    {"address": "00AA7220", "convention": "__thiscall(widget)", "ret": "RET", "role": "compose the local matrix and hand it to the node at +4Ch through its vtable +38h"},
+    {"address": "00AA70E0", "convention": "__thiscall(widget)", "ret": "RET", "role": "publish half extents and a radius; whole body gated on the byte at +74h"},
+    {"address": "00AA6980", "convention": "__thiscall(widget, float alpha)", "ret": "RET 4", "role": "vtable +4Ch, writes +5Ch then the node material alpha"},
+    {"address": "00AA7970", "convention": "__thiscall(widget, const float pair[2])", "ret": "RET 4", "role": "vtable +58h, writes +20h/+24h then 00AA7220; no bounds refresh"},
+    {"address": "00AA78D0", "convention": "__thiscall(widget, float x)", "ret": "RET 4", "role": "write +0Ch, then 00AA7220"},
+    {"address": "00AA78F0", "convention": "__thiscall(widget, float y)", "ret": "RET 4", "role": "write +10h, then 00AA7220"},
+    {"address": "00AA7910", "convention": "__thiscall(widget, float z)", "ret": "RET 4", "role": "write +14h, then 00AA7220"},
+    {"address": "00AA7930", "convention": "__thiscall(widget, float radians)", "ret": "RET 4", "role": "write +48h Rotate, then 00AA7220"},
+    {"address": "00AA7950", "convention": "__thiscall(widget, const float pair[2])", "ret": "RET 4", "role": "write +28h/+2Ch Scale, then 00AA7220"},
+    {"address": "00AA7D00", "convention": "__thiscall(widget, float x, float y)", "ret": "RET 8", "role": "write +0Ch/+10h, then 00AA7220 and 00AA70E0"},
+    {"address": "00AA7D40", "convention": "__thiscall(widget, float z)", "ret": "RET 4", "role": "write +14h, then 00AA7220 and 00AA70E0"},
+    {"address": "00AA7D80", "convention": "__thiscall(widget, float x)", "ret": "RET 4", "role": "00AA7220 and 00AA70E0, then write the authored X at +8h"},
+    {"address": "00AA7DC0", "convention": "__thiscall(widget, const float xyz[3])", "ret": "RET 4", "role": "write +0Ch..+14h with SSE moves, then 00AA7220 and 00AA70E0"},
+    {"address": "00AA8710", "convention": "__thiscall(widget)", "ret": "RET (tail jump to vtable +24h)", "role": "recursive wide-screen layout pass over the child tree"},
+    {"address": "00AA83A0", "convention": "__thiscall(parent, child)", "ret": "RET 4", "role": "detach a child: unlink both scene nodes, erase from the list at +64h, clear child+70h"},
+    {"address": "00AAAED0", "convention": "__thiscall(widget, visitor)", "ret": "RET 4", "role": "reflection descriptor table of the base class"},
+    {"address": "00A9E110", "convention": "__thiscall(widget) -> int", "ret": "RET", "role": "vtable +5Ch, MOV EAX,[ECX+60h]; RET, returns the type tag"}
+  ],
+
+  "layout": {
+    "constructor": "00AA9390, __thiscall(this, int type_tag), RET 4",
+    "size": "100h bytes; derived classes 00A9DF40 and 00AB5C60 start at +100h",
+    "fields": [
+      {"offset": "+00h", "type": "vtable", "name": "vtable", "evidence": "00d5bbf8 and 00d5bed0, sibling tables, both slot0 = 00bd30e0 and both slot +58h = 00AA7970"},
+      {"offset": "+04h", "type": "int", "name": "refcount", "default": "1", "evidence": "00AA939C"},
+      {"offset": "+08h", "type": "float", "name": "authored_x", "default": "0", "evidence": "written only by 00AA7D80 at 00AA7DB3, read only by 00AA8710 at 00AA8761/00AA8771/00AA877C"},
+      {"offset": "+0Ch..+14h", "type": "float[3]", "name": "Pos", "default": "(0,0,0)", "evidence": "descriptor string 00cf168c; ctor 00AA93A0"},
+      {"offset": "+18h/+1Ch", "type": "float[2]", "name": "Pivot", "default": "(0,0)", "evidence": "descriptor string 00d5c228 at record 00AAAFAD; ctor leaves zero"},
+      {"offset": "+20h/+24h", "type": "float[2]", "name": "Size", "default": "(0,0)", "evidence": "descriptor string 00cff278; returned by 00AA6740, written by 00AA7970"},
+      {"offset": "+28h/+2Ch", "type": "float[2]", "name": "Scale", "default": "(1,1)", "evidence": "descriptor string 00ce60ac; ctor 00AA93B4 from 00d7a24c"},
+      {"offset": "+48h", "type": "float", "name": "Rotate", "default": "0", "evidence": "descriptor string 00d5c220; written by 00AA7930; negated at 00AA7250"},
+      {"offset": "+4Ch", "type": "ptr", "name": "scene_node", "default": "0", "evidence": "read at 00AA7455, 00AA70EC, 00AA6989"},
+      {"offset": "+50h..+5Ch", "type": "float[4]", "name": "Color", "default": "(1,1,1,1)", "evidence": "descriptor string 00ce93f8; ctor 00AA93D6; alpha lane +5Ch written by 00AA698C"},
+      {"offset": "+60h", "type": "int", "name": "type_tag", "default": "constructor argument", "evidence": "00AA93E4; returned by 00A9E110"},
+      {"offset": "+64h..+6Ch", "type": "std::list", "name": "children", "default": "empty", "evidence": "sentinel from 00A9B720 at +68h, count at +6Ch; iterated 00AA8325 and 00AA8714; erased at 00AA83DB"},
+      {"offset": "+70h", "type": "ptr", "name": "parent", "default": "0", "evidence": "tested 00AA6756 and 00AA8246; cleared 00AA83E3"},
+      {"offset": "+74h", "type": "bool", "name": "bounds_enabled", "default": "0", "evidence": "gate at 00AA70E6"},
+      {"offset": "+78h", "type": "bool", "name": "MouseHit", "default": "0", "evidence": "descriptor string 00d5c1cc at record 00AAB35D"},
+      {"offset": "+84h", "type": "bool", "name": "MouseBlock", "default": "0", "evidence": "descriptor string 00d5c1d8 at record 00AAB324"},
+      {"offset": "+A4h..+B0h", "type": "float[4]", "name": "LowColor", "default": "(0,0,0,1)", "evidence": "descriptor string 00d5c214"},
+      {"offset": "+B4h..+C0h", "type": "float[4]", "name": "HighColor", "default": "(1,1,1,1)", "evidence": "descriptor string 00d5c208"},
+      {"offset": "+C4h", "type": "float", "name": "BlendFactor", "default": "0", "evidence": "descriptor string 00d5c1fc"},
+      {"offset": "+DCh", "type": "ptr", "name": "layout_listener", "default": "0", "evidence": "00AA8782, virtual +1Ch when non-null"},
+      {"offset": "+E0h", "type": "int", "name": "WideScreenAlign", "default": "0", "evidence": "descriptor string 00d5c1ec with enumerators Left 00ce92e4 and Right 00ce92dc; tested 00AA874C"}
+    ]
+  },
+
+  "vtable": {
+    "base": "00d5bbf8",
+    "sibling": "00d5bed0",
+    "deduced_from": "the DATA reference to 00AA7970 at 00d5bc50 sits exactly 58h past 00d5bbf8, the slot the front-end scroll block drives with a two-float pair",
+    "rtti": "absent; the dword before either table is not a complete-object locator, so the class name is unrecovered",
+    "slots": [
+      {"slot": "+20h", "target": "00AA8320", "role": "walk the children calling each child's own +20h"},
+      {"slot": "+24h", "target": "per class", "role": "tail-jumped at the end of 00AA8710"},
+      {"slot": "+44h", "target": "00AA7930", "role": "set Rotate"},
+      {"slot": "+48h", "target": "00AA7950", "role": "set Scale"},
+      {"slot": "+4Ch", "target": "00AA6980", "role": "set alpha"},
+      {"slot": "+58h", "target": "00AA7970", "role": "set Size"},
+      {"slot": "+5Ch", "target": "00A9E110", "role": "return the type tag at +60h"},
+      {"slot": "+60h", "target": "00A9CD20", "role": "called by 00AA7170 before a bounds refresh"}
+    ]
+  },
+
+  "operation_order": {
+    "00AA6750_parent": [
+      "px = parent.size.x * parent.pivot.x  (00AA675F, 00AA6766)",
+      "py = parent.size.y * parent.pivot.y  (00AA676E, 00AA6771)",
+      "r = 00AA6750(parent)                 (00AA6778)",
+      "sx,sy,sz = r + own_pos stored to the frame (00AA677D..00AA679B)",
+      "out = (sx-px, sy-py, sz-0.0)         (00AA679F..00AA67BD)"
+    ],
+    "00AA6750_no_parent": ["out = own_pos (00AA67C6..00AA67D9)"],
+    "00AA8240_parent": [
+      "px, py as above (00AA8253..00AA8268)",
+      "r = 00AA6750(parent) (00AA826C)",
+      "d = world - r stored to the frame (00AA8275..00AA828F)",
+      "own_pos = d + (px, py, 0.0) (00AA8293..00AA82CB)",
+      "00AA7220 then 00AA70E0 (00AA82CE, 00AA82D5)"
+    ],
+    "00AA8240_no_parent": ["own_pos = world by MOVSS (00AA82E5..00AA82FD)", "00AA7220 then 00AA70E0 (00AA8302, 00AA8309)"],
+    "00AA7220": [
+      "A = pos.y * 0.75            (00AA7231..00AA724E, float 0.75 at 00e12fc4)",
+      "B = (-pivot.x) * size.x     (00AA7273..00AA7298)",
+      "C = ((-pivot.y) * size.y) * 0.75 (00AA72A5..00AA72E1)",
+      "angle = -0.0f - rotate      (00AA7246, 00AA7250, -0.0f at 00d7a208)",
+      "M1 = T(pos.x, A, pos.z) at ESP+98h",
+      "M2 = diag(scale.x, scale.y, 1, 1) at ESP+18h",
+      "M3 = T(B, C, 0) at ESP+58h",
+      "R  = RotZ(angle) from 00b64780, which reads only the first float at EDX",
+      "((M3*M2)*R)*M1 through 00413920 three times (00AA7442, 00AA7449, 00AA7450)",
+      "node->vtable[38h](result) (00AA7455..00AA745C)"
+    ],
+    "00AA70E0": [
+      "gate on byte +74h (00AA70E6)",
+      "[ESP+0Ch] = size.x * 0.5, [ESP+10h] = size.y * 0.5, [ESP+14h] = 0.0, [ESP+18h] = 0.5 * max(size.x, size.y)",
+      "the max keeps the height on a tie (00AA7132..00AA714E)",
+      "00b855b0 on the object from 00b74640(0,0) then 00b732c0 (00AA7161)"
+    ]
+  },
+
+  "constants": [
+    {"address": "00d7a258", "value": "0.0 (double)", "use": "the Z bias both accessors apply, so Z carries no pivot term"},
+    {"address": "00e12fc4", "value": "0.75 (float)", "use": "the Y aspect factor in 00AA7220, applied to the Y translation and the Y pivot term only"},
+    {"address": "00d7a208", "value": "-0.0 (float)", "use": "the minuend that negates the Rotate field at 00AA7250"},
+    {"address": "00d7a24c", "value": "1.0 (float)", "use": "the Scale and Color defaults and the matrix identity lanes"},
+    {"address": "00d7a280", "value": "0.5 (double)", "use": "the half extents and the radius in 00AA70E0"},
+    {"address": "00d5c118", "value": "0.14166605472564697265625 (double, bits 3FC2222240000000h)", "use": "the wide-screen X shift in 00AA8710; exactly representable as a float"}
+  ],
+
+  "matrix_multiply_chain": {
+    "helper": "00413920 BSP_Matrix_Multiply4x4, __thiscall(left, destination, right), RET 8, EAX = destination, row-major left*right",
+    "why_the_order_is_certain": "00b64780 ends in a bare RET and cleans nothing, so its two pushed arguments at 00AA740F and 00AA7417 survive and are reused as the third multiply's arguments. Seven pushes total 1Ch bytes and must be undone before POP EDI at 00AA745E; three multiplies cleaning 8 each plus a __thiscall virtual cleaning 4 is exactly 1Ch, and no other split of RET sizes closes the frame.",
+    "effective_order_on_row_vectors": "pivot, then scale, then rotate, then translate"
+  },
+
+  "callers": {
+    "00AA7220": ["00AA78D0", "00AA78F0", "00AA7910", "00AA7930", "00AA7950", "00AA7970",
+      "00AA7D00", "00AA7D40", "00AA7D80", "00AA7DC0", "00AA8240", "00AA8710", "00AAA710",
+      "00AAB4C0", "00AB1F60", "00AB3CB0", "00ACF1D0", "00AD0D80"],
+    "00AA70E0": ["00AA7170", "00AA7D00", "00AA7D40", "00AA7D80", "00AA7DC0", "00AA8240",
+      "00AA8710", "00AAB4C0"],
+    "00AA8710": ["00AA4EF0", "00AA8710"],
+    "00AA6740": "97 callers, almost all front-end screens",
+    "00AA6750": "92 callers",
+    "00AA8240": "78 callers"
+  },
+
+  "no_ghidra_function": [
+    {"address": "00A9E110", "end": "00A9E113", "role": "BSP_GuiWidget_GetTypeId, base vtable slot +5Ch: MOV EAX,[ECX+60h]; RET, followed by int3 padding"}
+  ],
+
+  "names_recorded": [
+    {"address": "00AA70E0", "name": "BSP_GuiWidget_RefreshLocalBounds", "action": "new"},
+    {"address": "00AA7220", "name": "BSP_GuiWidget_RecomposeLocalTransform", "action": "new"},
+    {"address": "00AA6980", "name": "BSP_GuiWidget_SetAlpha", "action": "new"},
+    {"address": "00AA7970", "name": "BSP_GuiWidget_SetSize", "action": "new"},
+    {"address": "00AA78D0", "name": "BSP_GuiWidget_SetLocalX", "action": "new"},
+    {"address": "00AA78F0", "name": "BSP_GuiWidget_SetLocalY", "action": "new"},
+    {"address": "00AA7910", "name": "BSP_GuiWidget_SetLocalZ", "action": "new"},
+    {"address": "00AA7930", "name": "BSP_GuiWidget_SetRotate", "action": "new"},
+    {"address": "00AA7950", "name": "BSP_GuiWidget_SetScale", "action": "new"},
+    {"address": "00AA7D00", "name": "BSP_GuiWidget_SetLocalXYAndBounds", "action": "new"},
+    {"address": "00AA7D40", "name": "BSP_GuiWidget_SetLocalZAndBounds", "action": "new"},
+    {"address": "00AA7D80", "name": "BSP_GuiWidget_SetAuthoredX", "action": "new"},
+    {"address": "00AA7DC0", "name": "BSP_GuiWidget_SetLocalPositionAndBounds", "action": "new"},
+    {"address": "00AA8710", "name": "BSP_GuiWidget_ApplyWideScreenLayout", "action": "new"},
+    {"address": "00AA83A0", "name": "BSP_GuiWidget_DetachChild", "action": "new"},
+    {"address": "00AAAED0", "name": "BSP_GuiWidget_DescribeProperties", "action": "new"},
+    {"address": "00A9E110", "name": "BSP_GuiWidget_GetTypeId", "action": "new, needs a Ghidra function first"},
+    {"address": "00AA6740", "name": "BSP_GuiWidget_GetSize", "action": "evidence appended"},
+    {"address": "00AA6750", "name": "BSP_GuiWidget_GetResolvedPosition", "action": "evidence appended, Pivot correction"},
+    {"address": "00AA8240", "name": "BSP_GuiWidget_SetResolvedPosition", "action": "evidence appended, Pivot correction"}
+  ],
+
+  "uncertainties": [
+    "Which WideScreenAlign literal, Left or Right, is 1 and which is 2. The descriptor record at 00AAB27D emits both names and the pairing was not read.",
+    "Where the Visible flag is stored. Virtual +5Ch returns the type tag, so the gate at 00AAB2E9 is a type test rather than a visibility read.",
+    "What the constant at 00d5c118 is a fraction of, and whether the 0.75 at 00e12fc4 is genuinely the 4:3 aspect ratio.",
+    "The class name; neither vtable has an MSVC complete-object locator.",
+    "The byte at +0Dh of 0109cf04 is read as 'wide screen is on' from this one use.",
+    "00AAB4C0, the remaining caller of both publishes, was read only to its first twenty instructions.",
+    "00AA7970 (vtable +58h) recomposes the transform but never refreshes the bounding volume, so a resize can leave the node's bounds stale. Whether that is a defect in hit testing was not tested."
+  ],
+
+  "what_remains": [
+    "The scene node class behind widget+4Ch and its virtual +38h, where the composed matrix becomes a draw.",
+    "00AAA710, the property reader that is the counterpart of 00AAAED0 and binds a widget's parent alongside BSP_Node_SetParent_Provisional.",
+    "The visibility and enable flags the descriptor table names but does not locate."
+  ],
+
+  "followups": [
+    {"packet": "gui_widget_property_reader", "addresses": ["00AAA710", "00AAA480", "00AA5A00", "00AA6560"],
+     "files": ["docs/GUI_WIDGET_PROPERTY_READER.md", "include/bsp/gui_widget_properties.hpp"],
+     "contract": "The reader half of the descriptor table at 00AAAED0: how a parsed layout value reaches a field, and where a widget's parent is bound alongside BSP_Node_SetParent_Provisional."},
+    {"packet": "gui_widget_node_binding", "addresses": ["00AA6560", "00AAB4C0", "00AA7170", "00A9CD20"],
+     "files": ["docs/GUI_WIDGET_NODE_BINDING.md"],
+     "contract": "How the scene node at widget+4Ch is created and attached, and what virtual +60h does before a bounds refresh."},
+    {"packet": "gui_widget_visibility", "addresses": ["00AA8320", "00A9CD20", "00AA6A30"],
+     "files": ["docs/GUI_WIDGET_VISIBILITY.md"],
+     "contract": "The visibility and enable flags the descriptor table names but does not locate, and the recursive vtable +20h walk."}
+  ],
+
+  "state": [
+    {"address": "00AA6740", "state": "reconstructed, build-tested"},
+    {"address": "00AA6750", "state": "reconstructed, build-tested, fixture-tested"},
+    {"address": "00AA8240", "state": "reconstructed, build-tested, fixture-tested"},
+    {"address": "00AA7220", "state": "reconstructed to the matrix inputs, build-tested, fixture-tested; the multiply chain is described, not ported"},
+    {"address": "00AA70E0", "state": "reconstructed, build-tested"},
+    {"address": "00AA8710", "state": "reconstructed, build-tested"},
+    {"address": "00AA6980", "state": "analyzed"},
+    {"address": "00AA7970", "state": "analyzed"},
+    {"address": "00AA78D0", "state": "analyzed"},
+    {"address": "00AA78F0", "state": "analyzed"},
+    {"address": "00AA7910", "state": "analyzed"},
+    {"address": "00AA7930", "state": "analyzed"},
+    {"address": "00AA7950", "state": "analyzed"},
+    {"address": "00AA7D00", "state": "analyzed"},
+    {"address": "00AA7D40", "state": "analyzed"},
+    {"address": "00AA7D80", "state": "analyzed"},
+    {"address": "00AA7DC0", "state": "analyzed"},
+    {"address": "00AA83A0", "state": "analyzed"},
+    {"address": "00AAAED0", "state": "analyzed"},
+    {"address": "00A9E110", "state": "analyzed, listing only"}
+  ],
+
+  "build": {
+    "registered": "cmake/startup.cmake appends src/gui_widget.cpp to bsp_core",
+    "result": "scripts/build.ps1 clean on Win32 with warnings as errors",
+    "tests": "one case added to tests/math_tests.cpp for the parent-chain composition order and the aspect factor; ctest reconstructed_math passed"
+  },
+
+  "not_binary_compatible": "bsp::GuiWidgetTransform is a projection. The original is a 100h-byte object with a vtable, an intrusive std::list of children and a scene node pointer; none of those are reproduced, and the matrix chain is left to the host."
+}
