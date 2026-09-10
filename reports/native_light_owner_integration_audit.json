@@ -1,0 +1,416 @@
+{
+  "packet": "native_light_owner_integration",
+  "utc": "2026-09-10T18:04:17.216170+00:00",
+  "status": {
+    "bounded_modules_integrated": true,
+    "strict_win32_build_passed": true,
+    "existing_ctest_passed": "2/2",
+    "selected_native_and_host_checks_passed": true,
+    "installed_fog_factory_probe_passed": true,
+    "whole_directional_owner_constructed": false,
+    "actual_process_startup_composed": false,
+    "binary_abi_compatible": false,
+    "game_validated": false,
+    "visual_parity_validated": false
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_binary": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "unchanged_hash_verified_utc": "2026-09-10T18:04:17.216170+00:00",
+    "game_installation_written": false
+  },
+  "components": [
+    "reports/directional_light_pool_audit.json",
+    "reports/native_node_construction_audit.json",
+    "reports/native_node_destruction_audit.json",
+    "reports/light_scene_retention_audit.json",
+    "reports/light_scene_retention_review.json",
+    "reports/system_fog_world_factory_audit.json"
+  ],
+  "validation": {
+    "build": {
+      "path": "reports/native_light_owner_integration_build.txt",
+      "bytes": 1547,
+      "sha256": "b934aa47daf6620d9852efa139081b119328ba0149c408667fbd11f8b91d35cb"
+    },
+    "probe": {
+      "path": "reports/native_light_owner_integration_probe.txt",
+      "bytes": 15698,
+      "sha256": "8f8255d813e1f8a4d328a69ed8e262654edcbd2550cef231e54d85aa117aa401"
+    },
+    "executed_probe_executable": {
+      "path": "build/win32/Release/bsp_d3d9_probe.exe",
+      "bytes": 894976,
+      "sha256": "9ecccaba46518079fdd6bb6d95940537f7734231bf20c427d12e2fef9db75ef3"
+    },
+    "image": {
+      "path": "local/native_light_render_20260910.bmp",
+      "bytes": 262198,
+      "sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51"
+    },
+    "image_identical_to_previous_owner_fixture": true,
+    "image_assessment": "Same bytes as the previously inspected very dark diagnostic image; no visual parity.",
+    "installed_probe_scope": "Actual fog factory with absent receiver/record and same diagnostic camera; packed00a5a3ab, environment apply, final camera release, retained77VSPS constants and existing draw.",
+    "pool_native": {
+      "sequences": 1,
+      "states": 136,
+      "compared_raw_slab_bytes": 3714020,
+      "actual_alloc_free_observations": 8
+    },
+    "node_constructor_native": {
+      "whole_slot_bytes": 496,
+      "empty_name_original_executed": true,
+      "constructor_source_unchanged": true,
+      "original_shared_header_snapshot_is_historical": true,
+      "subsequent_shared_changes": "Added optional actual40/54 dispatch and association-only forget; reference-backed transform/scene semantics unchanged. Current bindings exercised by host light sequence and native direct-destructor fixture."
+    },
+    "node_destructor_native": {
+      "whole_slots": 4,
+      "bytes_per_slot": 496,
+      "original_bodies": 13,
+      "shared_source_hashes_rechecked": true,
+      "normalization": "Only native/C++ pointer identities at30/34/3C/40/A4; root head checked separately.",
+      "nonempty_ownership_and_cpp_unwind": "Host fixture only; see component limits."
+    },
+    "fog_factory_native": {
+      "comparisons": 64,
+      "byte_range": "004df6d0-004df7a5",
+      "public_real_allocator_smoke": true,
+      "native_allocator_and_eh_prefix_executed": false
+    },
+    "light_scene_review_and_host_sequence": true,
+    "new_tracked_test_suites": 0
+  },
+  "source_artifacts": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 7486,
+      "sha256": "2732b333c35614e134a43775bd26542703799b9d4fcb36f11c80650fda2bb614"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 4125,
+      "sha256": "b8b1100f9c9ea6d93b8af2887bec506ccf2409ee780e85cf6384f9b9ff2b8d09"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "bytes": 7676,
+      "sha256": "3f149685e67bf9c6b3f40a695399af30cc90faba372e9ffb5f945f7fbc6e8ec9"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "bytes": 7425,
+      "sha256": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "bytes": 15650,
+      "sha256": "113de1be72aa8199c7033cd43cbf6c297847536de5b4a6d5c5283a7b5219fa01"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10270,
+      "sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "bytes": 10448,
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 3319,
+      "sha256": "5a481169233850684c0deb9042f5424f76cdf6a0a264725c8bbc633c721e4464"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 6173,
+      "sha256": "2834c10fdfbe3a752c3e6775fa9ef502d729d3426fa4f6a08c19f6a542f4d547"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 3688,
+      "sha256": "f46cd8d00aa92c7c2b4fb2a4ffcff8adfa9c70fec19461d75f0dab35cf180b8a"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "bytes": 10487,
+      "sha256": "ea0ef4205524f0f664bc9827632aaca678aa4c21046c830a8fae643fc6a062f4"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/directional_light_pool.hpp",
+      "bytes": 2942,
+      "sha256": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510"
+    },
+    {
+      "path": "src/directional_light_pool.cpp",
+      "bytes": 11361,
+      "sha256": "979f62fffe2df06c6528155031b42d15ae83808de8284a12ee9925d217a405e0"
+    },
+    {
+      "path": "include/bsp/light_scene_retention.hpp",
+      "bytes": 1444,
+      "sha256": "79139691d3ff6de00b153817efef80853556d703a0ea76e510457c52b7654eff"
+    },
+    {
+      "path": "src/light_scene_retention.cpp",
+      "bytes": 3938,
+      "sha256": "1969265622880f219ce93469f7eca81419560bb8cd925ab218ea784a184fe0db"
+    },
+    {
+      "path": "include/bsp/system_fog_world_factory.hpp",
+      "bytes": 2240,
+      "sha256": "475f9877c5e544a818346357ab61ad91678aa1c62dd872285c8eb7e51274d81c"
+    },
+    {
+      "path": "src/system_fog_world_factory.cpp",
+      "bytes": 3643,
+      "sha256": "f28a42cd3546264dd9f1de398e07be579553b8a277a6d0b44f4d63f670ca3270"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "bytes": 67064,
+      "sha256": "f42be08ebf917f6ad989a66127d3eb8af1c9bd47b2065057bd5df5aa236f6510"
+    },
+    {
+      "path": "include/bsp/system_lighting_constants.hpp",
+      "bytes": 7324,
+      "sha256": "a69f9c090f39ca93b19107a67b29ad370cfcee5fe4158784472355df45fd79a2"
+    },
+    {
+      "path": "src/system_lighting_constants.cpp",
+      "bytes": 6470,
+      "sha256": "b7bebb625aebb738f3583e51dfd11810020623265991193fc03eb6c975e8487f"
+    }
+  ],
+  "annotations_applied": true,
+  "remaining": [
+    "Complete directional owner and actual type/shadow bindings are separate active packets.",
+    "Pool static adapter requires one real process storage/head/domain and actual CRT startup/exit lifetime; no automatic startup was invented.",
+    "Nonnull reparenting, full outer scene/camera construction and native CRT/EH ABI remain incomplete.",
+    "The installed draw still uses explicit diagnostic directional lighting; native node/pool/light-scene checks are separate fixtures.",
+    "Game rebuild and gameplay/visual validation remain incomplete."
+  ],
+  "annotation_mutation_log": {
+    "path": "local/ghidra-annotations-20260910T180538Z.json",
+    "sha256": "823662bd95bafff2d0fb64383c355d7eaf1d68a6ceed8097f3b66d67823fac5c",
+    "applied_count": 27,
+    "old_comments_preserved": true,
+    "project_saved": true
+  },
+  "annotation_preimages": {
+    "path": "local/native_light_annotation_live_preimages.txt",
+    "sha256": "694c052fc1c0af2e613cb632154aa1d0ba4c0b6ec010c95a70735806d22d0ea7"
+  },
+  "refreshed_exports": {
+    "verified_utc": "2026-09-10T18:10:44.010717+00:00",
+    "count": 27,
+    "functions": [
+      {
+        "address": "00b7bd40",
+        "name": "BSP_DirectionalLightPool_AllocateStaticSlot",
+        "old_name": "CG_static_dtor_stub_00b7bd40",
+        "path": "exports/bsp/functions/00b7bd40/decompiled.c",
+        "sha256": "97e9214d1960b1622c6db23649005a64e6c6aac2690f0463efb5923232f75e86"
+      },
+      {
+        "address": "00b7b940",
+        "name": "BSP_DirectionalLightPool_Construct",
+        "old_name": "FUN_00b7b940",
+        "path": "exports/bsp/functions/00b7b940/decompiled.c",
+        "sha256": "73b6f708e4e6f040b8e4ad9af8b44c6c8afbd3d34e312d8138d2af845483fd4e"
+      },
+      {
+        "address": "00b7bac0",
+        "name": "BSP_DirectionalLightPool_AllocateSlot",
+        "old_name": "FUN_00b7bac0",
+        "path": "exports/bsp/functions/00b7bac0/decompiled.c",
+        "sha256": "129aa86062debdf7a78001d4fc30a04562932ac67980440c97fc532461c4dfed"
+      },
+      {
+        "address": "00b7b2f0",
+        "name": "BSP_DirectionalLightPool_ReturnSlot",
+        "old_name": "FUN_00b7b2f0",
+        "path": "exports/bsp/functions/00b7b2f0/decompiled.c",
+        "sha256": "98fce1e2d8611b314f75ec4c066c5ff223c298ba1ef3b20be04696d6f41560a5"
+      },
+      {
+        "address": "00b7ac90",
+        "name": "BSP_DirectionalLightSlab_Initialize",
+        "old_name": "FUN_00b7ac90",
+        "path": "exports/bsp/functions/00b7ac90/decompiled.c",
+        "sha256": "fecb3ced680e3e919b26b8e672f04edb297258884647c441f987b05244d8696a"
+      },
+      {
+        "address": "00b7b230",
+        "name": "BSP_DirectionalLightPool_Destroy",
+        "old_name": "FUN_00b7b230",
+        "path": "exports/bsp/functions/00b7b230/decompiled.c",
+        "sha256": "03b6788b424cb59e95cbe9f91e7a1d3103cbc680d12a10678bcc804d72eb13a6"
+      },
+      {
+        "address": "00b7ba20",
+        "name": "BSP_DirectionalLightPool_TrimEmptySlabs",
+        "old_name": "FUN_00b7ba20",
+        "path": "exports/bsp/functions/00b7ba20/decompiled.c",
+        "sha256": "6d5ecd404a18af2313ac47db8e6cf4504559f322f68487fe5806aa4518fd3344"
+      },
+      {
+        "address": "00b7b610",
+        "name": "BSP_DirectionalLightPool_ReturnStaticSlot",
+        "old_name": "FUN_00b7b610",
+        "path": "exports/bsp/functions/00b7b610/decompiled.c",
+        "sha256": "ca34e907c7571fdee7521a1ce81bf106bca6bb5873aae288434f226b93f4d008"
+      },
+      {
+        "address": "00b7adb0",
+        "name": "BSP_DirectionalLightPool_FreePointerTableUnwind",
+        "old_name": "FUN_00b7adb0",
+        "path": "exports/bsp/functions/00b7adb0/decompiled.c",
+        "sha256": "8c239be131ad4d2ca8cdb3069eabb5fc9250551fe69e209233df9b746ea2cb19"
+      },
+      {
+        "address": "00403970",
+        "name": "BSP_AllocatorListElement_UnlinkBase",
+        "old_name": "FUN_00403970",
+        "path": "exports/bsp/functions/00403970/decompiled.c",
+        "sha256": "07342782848f1432b2485e2c09060553093f180890e150faa8e9d32ebfdb5de4"
+      },
+      {
+        "address": "00402f70",
+        "name": "BSP_RecursiveCriticalSection_Destroy",
+        "old_name": "FUN_00402f70",
+        "path": "exports/bsp/functions/00402f70/decompiled.c",
+        "sha256": "3cecc016c4aadc5a795f039a48b9a5f298a1386cb94488d42162a40acb8cdf61"
+      },
+      {
+        "address": "004b46b0",
+        "name": "BSP_AllocatorList_TrimAll",
+        "old_name": "FUN_004b46b0",
+        "path": "exports/bsp/functions/004b46b0/decompiled.c",
+        "sha256": "cf2d3ad40e82f62480fe09ec7b2cba9faec08df3762ce0031d08ef85a451ac27"
+      },
+      {
+        "address": "00cd8080",
+        "name": "BSP_DirectionalLightPool_StaticInitialize",
+        "old_name": "FUN_00cd8080",
+        "path": "exports/bsp/functions/00cd8080/decompiled.c",
+        "sha256": "cc54cbf6bd09466a0f33cab3940acdebe8f51967e46a44e95bf5effb882e9fae"
+      },
+      {
+        "address": "00ce0eb0",
+        "name": "BSP_DirectionalLightPool_AtExitDestroy",
+        "old_name": "CG_static_init_00ce0eb0",
+        "path": "exports/bsp/functions/00ce0eb0/decompiled.c",
+        "sha256": "1641c4dba9b500d35835b6939d963c84190666c58e8abe167a17b9b45a02e860"
+      },
+      {
+        "address": "00b6f5a0",
+        "name": "BSP_Node_Construct",
+        "old_name": "FUN_00b6f5a0",
+        "path": "exports/bsp/functions/00b6f5a0/decompiled.c",
+        "sha256": "1937bc27b1b757c996326e8bbf505696739500500c8a85cca0029d0ef859f926"
+      },
+      {
+        "address": "004de610",
+        "name": "BSP_Game_ConstructWorld",
+        "old_name": "BSP_Game_ConstructWorld",
+        "path": "exports/bsp/functions/004de610/decompiled.c",
+        "sha256": "bc0ca200625f6181542b68719324284fbf3f074ca760f4ab4e0b56508986883d"
+      },
+      {
+        "address": "00b7c020",
+        "name": "BSP_Light_AttachRetainedScene",
+        "old_name": "FUN_00b7c020",
+        "path": "exports/bsp/functions/00b7c020/decompiled.c",
+        "sha256": "88b43f14abb49db0bda4123ea17b7b9e35ff90c202304b634d32351b9c242d29"
+      },
+      {
+        "address": "00b7bd60",
+        "name": "BSP_Light_RemoveRetainedScene",
+        "old_name": "FUN_00b7bd60",
+        "path": "exports/bsp/functions/00b7bd60/decompiled.c",
+        "sha256": "83525bbc9df028fb4ae6d40bc611eba97d595bda1231e80b9849718de6e078c5"
+      },
+      {
+        "address": "00b6f440",
+        "name": "BSP_Node_Destroy",
+        "old_name": "BSP_Node_Destroy",
+        "path": "exports/bsp/functions/00b6f440/decompiled.c",
+        "sha256": "83c4f7fc45d4cceb76641690476cf5862577a8dad06d305a9e528f72c09d98a1"
+      },
+      {
+        "address": "00b6e680",
+        "name": "BSP_Node_SetParent_Provisional",
+        "old_name": "BSP_Node_SetParent_Provisional",
+        "path": "exports/bsp/functions/00b6e680/decompiled.c",
+        "sha256": "ca3b0d44f11b45d495f8d91ae0bde86eb2254fe550e7652b66da4230612703ea"
+      },
+      {
+        "address": "00b6d940",
+        "name": "BSP_Node_UnlinkChild",
+        "old_name": "FUN_00b6d940",
+        "path": "exports/bsp/functions/00b6d940/decompiled.c",
+        "sha256": "43b4857f628fed77ce3e44237a601997a104bd684f88ab1576462a2105e3ae05"
+      },
+      {
+        "address": "00b6d850",
+        "name": "BSP_Node_UnregisterAttachmentsRecursive",
+        "old_name": "FUN_00b6d850",
+        "path": "exports/bsp/functions/00b6d850/decompiled.c",
+        "sha256": "645eb019de98053d3efc0804415356a0ba471f00c87cc1ea97e32dc918af3d4a"
+      },
+      {
+        "address": "00b6d890",
+        "name": "BSP_Node_PropagateRootRegistration",
+        "old_name": "FUN_00b6d890",
+        "path": "exports/bsp/functions/00b6d890/decompiled.c",
+        "sha256": "e43c09290c6f4174252468fad7bfca66f8025d05b8df868bfe480f5c1a8d09d5"
+      },
+      {
+        "address": "00b721f0",
+        "name": "BSP_NodeRootList_Prepend",
+        "old_name": "FUN_00b721f0",
+        "path": "exports/bsp/functions/00b721f0/decompiled.c",
+        "sha256": "83791f26ed3c6a9d9630456aee36225ea5c52f514b429f4b47d4ec4a1a06bfab"
+      },
+      {
+        "address": "00b6ee10",
+        "name": "BSP_Node_RemoveMatchingScene",
+        "old_name": "BSP_Node_RemoveMatchingScene",
+        "path": "exports/bsp/functions/00b6ee10/decompiled.c",
+        "sha256": "1fce190020b69fdb6a5381975c237edb1f4d8ec691493e10ebd560744044fd1b"
+      },
+      {
+        "address": "00b6dbe0",
+        "name": "BSP_Transform_NotifyWorldChanged",
+        "old_name": "BSP_Transform_NotifyWorldChanged",
+        "path": "exports/bsp/functions/00b6dbe0/decompiled.c",
+        "sha256": "831ef3a2f9a93c4ddcfd6fb7a47104e9f053b8d9651084c160f401a259396d64"
+      },
+      {
+        "address": "00b72110",
+        "name": "BSP_Scene_GetLightingOwner",
+        "old_name": "BSP_Scene_GetLightingOwner",
+        "path": "exports/bsp/functions/00b72110/decompiled.c",
+        "sha256": "ee2e4b8a21815914998646164778f94e03a668b11b0994f82ab4c28f993319c8"
+      }
+    ]
+  },
+  "closure_source_hashes_rechecked_utc": "2026-09-10T18:10:44.010717+00:00"
+}

@@ -41,6 +41,9 @@ target_sources(bsp_core PRIVATE src/system_camera_constants.cpp
   src/legacy_crt_math.cpp src/singleton_lifetime.cpp src/particle_clock_lifetime.cpp)
 target_sources(bsp_core PRIVATE src/system_fog_owner.cpp src/environment_fog_apply.cpp
   src/authored_fog_source.cpp src/system_lighting_owners.cpp)
+target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene_retention.cpp
+  src/system_fog_world_factory.cpp src/allocator_list.cpp src/directional_light_pool.cpp
+  src/native_node_destruction.cpp)
 target_sources(bsp_core PRIVATE src/material_sort_metadata.cpp src/render_command_queue.cpp src/render_command_execution.cpp)
 
 target_sources(bsp_core PRIVATE src/mesh_buffers.cpp src/mesh_fields.cpp src/mesh_resource.cpp src/vertex_format.cpp)

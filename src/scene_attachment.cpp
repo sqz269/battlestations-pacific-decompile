@@ -276,6 +276,9 @@ void SceneAttachmentRuntime::bind(SceneNodeAttachment& node) {
 }
 void SceneAttachmentRuntime::unbind(SceneNodeAttachment& node) {
     if (node.scene) throw std::logic_error("detach the scene node before unbinding it");
+    forget_destroyed_binding(node);
+}
+void SceneAttachmentRuntime::forget_destroyed_binding(SceneNodeAttachment& node) noexcept {
     bindings_.erase(std::remove(bindings_.begin(), bindings_.end(), &node), bindings_.end());
 }
 SceneNodeAttachment& SceneAttachmentRuntime::resolve(CameraTransform& transform) const {

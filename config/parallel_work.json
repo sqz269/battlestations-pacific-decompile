@@ -1560,8 +1560,8 @@
       "id": "directional_pool_storage",
       "packet": "directional_pool_storage",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
+      "done": true,
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
       "function_addresses": [
         "00b7b940",
         "00b7bac0",
@@ -1590,20 +1590,22 @@
         "globalstaticinitializer/atexit routing must bindcurrentstartup path",
         "otherallocatorlist elements requireactualvirtual0 dispatch; do notinventprivatehead"
       ],
-      "evidence": "reports/directional_light_owner_next.json",
+      "evidence": "reports/directional_light_pool_audit.json",
       "boundary": [
         "rawslotpreimage",
         "live1ECid afterswapcompaction",
         "sameglobalallocatorlist",
         "nativeallocationfailurelock/publicationsemantics"
-      ]
+      ],
+      "validation": "reports/native_light_owner_integration_audit.json",
+      "worker_commit": "b6003c4"
     },
     {
       "id": "native_node_construction",
       "packet": "native_node_construction",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
+      "done": true,
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
       "function_addresses": [
         "00b6f5a0"
       ],
@@ -1617,20 +1619,22 @@
         "directbase destructorclosure remains separate",
         "genericnativepointlightarray exactallocator projection remains sharedintegration work"
       ],
-      "evidence": "reports/directional_light_owner_next.json",
+      "evidence": "reports/native_node_construction_audit.json",
       "boundary": [
         "actualraw08..2F andpaddingpreimages",
         "threeidentitymatrixwriteorder",
         "canonicalsharedtransform/attachment",
         "unmodifiedpool1ECmetadata"
-      ]
+      ],
+      "validation": "reports/native_light_owner_integration_audit.json",
+      "worker_commit": "85e2da8"
     },
     {
       "id": "system_fog_world_factory_impl",
       "packet": "system_fog_world_factory_impl",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
+      "done": true,
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
       "address_ranges": [
         {
           "start": "004df6a3",
@@ -1643,8 +1647,127 @@
         "docs/SYSTEM_FOG_WORLD_FACTORY.md",
         "reports/system_fog_world_factory_audit.json"
       ],
-      "evidence": "reports/system_fog_world_factory_next.json",
-      "boundary": "Borrow actual D64518 receiver, same camera and live scene-record slots; preserve publication/release, raw preimage and packed temporary liveout. Whole outer owners remain incomplete."
+      "evidence": "reports/system_fog_world_factory_audit.json",
+      "boundary": "Borrow actual D64518 receiver, same camera and live scene-record slots; preserve publication/release, raw preimage and packed temporary liveout. Whole outer owners remain incomplete.",
+      "validation": "reports/native_light_owner_integration_audit.json",
+      "worker_commit": "56d8096"
+    },
+    {
+      "id": "native_node_direct_destructor",
+      "packet": "native_node_direct_destructor",
+      "done": true,
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
+      "evidence": "reports/native_node_destruction_audit.json",
+      "validation": "reports/native_light_owner_integration_audit.json",
+      "worker_commit": "3b34655"
+    },
+    {
+      "id": "light_scene_retention",
+      "packet": "light_scene_retention",
+      "done": true,
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
+      "evidence": "reports/light_scene_retention_audit.json",
+      "validation": "reports/native_light_owner_integration_audit.json"
+    },
+    {
+      "id": "light_scene_retention_review",
+      "packet": "light_scene_retention_review",
+      "done": true,
+      "state": "independent_source_native_byte_review_passed",
+      "evidence": "reports/light_scene_retention_review.json",
+      "validation": "reports/native_light_owner_integration_audit.json",
+      "worker_commit": "9cc023d"
+    },
+    {
+      "id": "native_light_owner_integration",
+      "packet": "native_light_owner_integration",
+      "done": true,
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
+      "evidence": "reports/native_light_owner_integration_audit.json",
+      "validation": "reports/native_light_owner_integration_audit.json"
+    },
+    {
+      "id": "light_type_bootstrap",
+      "packet": "light_type_bootstrap",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_complete_awaiting_primary_review_integration",
+      "worker_commit": "b72ff8c",
+      "function_addresses": [
+        "00cd80a0",
+        "00cd80f0",
+        "00b7c580",
+        "00b7c6d0",
+        "00b6f570",
+        "00b6f110",
+        "006fac20",
+        "00bea780",
+        "006fad40"
+      ],
+      "code_ownership": [
+        "include/bsp/light_type_bootstrap.hpp",
+        "src/light_type_bootstrap.cpp",
+        "docs/LIGHT_TYPE_BOOTSTRAP.md",
+        "reports/light_type_bootstrap_audit.json"
+      ],
+      "boundary": "Actual shared counter lifetime and borrowed guards/descriptors implemented by worker; root review/build, definitions/annotation and process startup composition remain."
+    },
+    {
+      "id": "directional_light_native_owner",
+      "packet": "directional_light_native_owner",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_implementing_with_frozen_shadow_resolver_contract",
+      "function_addresses": [
+        "00b7c4c0",
+        "00b7c6b0",
+        "00b7c5b0",
+        "00b7c820"
+      ],
+      "code_ownership": [
+        "include/bsp/directional_light_owner.hpp",
+        "src/directional_light_owner.cpp",
+        "docs/DIRECTIONAL_LIGHT_OWNER.md",
+        "reports/directional_light_owner_audit.json"
+      ],
+      "boundary": "Same raw pool slot/node/tail178 array and mutable words; actual current phase predicates and shadow lifetime bindings required. Root owns raw-shadow live resolver accessor."
+    },
+    {
+      "id": "lighting_configuration_apply",
+      "packet": "lighting_configuration_apply",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_implementing_with_shared_actual_field_and_global_contract",
+      "function_addresses": [
+        "004bacd0",
+        "004b4d80",
+        "004b62e0",
+        "00b7af20",
+        "00b7af40",
+        "00b7af60",
+        "00b7af90",
+        "00b7b010"
+      ],
+      "code_ownership": [
+        "include/bsp/lighting_configuration_apply.hpp",
+        "src/lighting_configuration_apply.cpp",
+        "docs/LIGHTING_CONFIGURATION_APPLY.md",
+        "reports/lighting_configuration_apply_audit.json"
+      ],
+      "boundary": "Borrow actual ambient/light/configuration words and shared fallback guards/globals; preserve x87 operations and null-only unwritten specular fields. No private fallback domain."
+    },
+    {
+      "id": "directional_shadow_owner_discovery",
+      "packet": "directional_shadow_owner_discovery",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_discovering_concrete_shadow_and_texture_lifetime",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md",
+        "reports/directional_shadow_owner_next.json"
+      ],
+      "boundary": "Read-only handoff for actual D5B5D8 shadow owner, constructor/update/lifetime and mutable texture metadata; no synthetic texture defaults."
     }
   ],
   "snapshot_after_analysis": {
@@ -1667,11 +1790,11 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-10T16:30:28.737424+00:00",
+    "utc": "2026-09-10T17:52:44.374669+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
-    "total_function_count": 62863,
-    "internal_function_count": 62421,
+    "total_function_count": 62897,
+    "internal_function_count": 62455,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
@@ -2041,7 +2164,7 @@
     {
       "packet": "directional_pool_storage",
       "worker": "material_effect_plane",
-      "state": "worker_implementing_in_isolated_worktree",
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
       "owned_files": [
         "include/bsp/directional_light_pool.hpp",
         "src/directional_light_pool.cpp",
@@ -2049,121 +2172,157 @@
         "reports/directional_light_pool_audit.json",
         "include/bsp/allocator_list.hpp",
         "src/allocator_list.cpp"
-      ]
+      ],
+      "validation": "reports/directional_light_pool_audit.json"
     },
     {
       "packet": "native_node_construction",
       "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_in_isolated_worktree",
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
       "owned_files": [
         "include/bsp/native_node_construction.hpp",
         "src/native_node_construction.cpp",
         "docs/NATIVE_NODE_CONSTRUCTION.md",
         "reports/native_node_construction_audit.json"
-      ]
+      ],
+      "validation": "reports/native_node_construction_audit.json"
     },
     {
       "packet": "system_fog_world_factory_impl",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_implementing_in_isolated_worktree",
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
       "owned_files": [
         "include/bsp/system_fog_world_factory.hpp",
         "src/system_fog_world_factory.cpp",
         "docs/SYSTEM_FOG_WORLD_FACTORY.md",
         "reports/system_fog_world_factory_audit.json"
+      ],
+      "validation": "reports/system_fog_world_factory_audit.json"
+    },
+    {
+      "packet": "native_node_direct_destructor",
+      "worker": "primary_integration",
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
+      "validation": "reports/native_node_destruction_audit.json"
+    },
+    {
+      "packet": "light_scene_retention",
+      "worker": "primary_integration",
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
+      "validation": "reports/light_scene_retention_audit.json"
+    },
+    {
+      "packet": "light_scene_retention_review",
+      "worker": "primary_integration",
+      "state": "independent_source_native_byte_review_passed",
+      "validation": "reports/light_scene_retention_review.json"
+    },
+    {
+      "packet": "native_light_owner_integration",
+      "worker": "primary_integration",
+      "state": "bounded_native_storage_and_lifetime_integrated_build_and_selected_fixtures_checked",
+      "validation": "reports/native_light_owner_integration_audit.json"
+    },
+    {
+      "packet": "light_type_bootstrap",
+      "worker": "material_effect_plane",
+      "state": "worker_complete_awaiting_primary_review_integration",
+      "owned_files": [
+        "include/bsp/light_type_bootstrap.hpp",
+        "src/light_type_bootstrap.cpp",
+        "docs/LIGHT_TYPE_BOOTSTRAP.md",
+        "reports/light_type_bootstrap_audit.json"
+      ]
+    },
+    {
+      "packet": "directional_light_native_owner",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_implementing_with_frozen_shadow_resolver_contract",
+      "owned_files": [
+        "include/bsp/directional_light_owner.hpp",
+        "src/directional_light_owner.cpp",
+        "docs/DIRECTIONAL_LIGHT_OWNER.md",
+        "reports/directional_light_owner_audit.json"
+      ]
+    },
+    {
+      "packet": "lighting_configuration_apply",
+      "worker": "material_effect_plane",
+      "state": "worker_implementing_with_shared_actual_field_and_global_contract",
+      "owned_files": [
+        "include/bsp/lighting_configuration_apply.hpp",
+        "src/lighting_configuration_apply.cpp",
+        "docs/LIGHTING_CONFIGURATION_APPLY.md",
+        "reports/lighting_configuration_apply_audit.json"
+      ]
+    },
+    {
+      "packet": "directional_shadow_owner_discovery",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_discovering_concrete_shadow_and_texture_lifetime",
+      "owned_files": [
+        "docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md",
+        "reports/directional_shadow_owner_next.json"
       ]
     }
   ],
   "next_dispatch": [
     {
-      "id": "directional_pool_storage",
-      "packet": "directional_pool_storage",
-      "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
-      "function_addresses": [
-        "00b7b940",
-        "00b7bac0",
-        "00b7b2f0",
-        "00b7ac90",
-        "00b7b230",
-        "00b7ba20",
-        "00b7bd40",
-        "00b7b610",
-        "00403970",
-        "00402f70",
-        "00b7adb0",
-        "00cd8080",
-        "00ce0eb0",
-        "004b46b0"
-      ],
-      "code_ownership": [
-        "include/bsp/directional_light_pool.hpp",
-        "src/directional_light_pool.cpp",
-        "docs/DIRECTIONAL_LIGHT_POOL.md",
-        "reports/directional_light_pool_audit.json",
-        "include/bsp/allocator_list.hpp",
-        "src/allocator_list.cpp"
-      ],
-      "named_but_incomplete_dependencies": [
-        "globalstaticinitializer/atexit routing must bindcurrentstartup path",
-        "otherallocatorlist elements requireactualvirtual0 dispatch; do notinventprivatehead"
-      ],
-      "evidence": "reports/directional_light_owner_next.json",
-      "boundary": [
-        "rawslotpreimage",
-        "live1ECid afterswapcompaction",
-        "sameglobalallocatorlist",
-        "nativeallocationfailurelock/publicationsemantics"
-      ]
-    },
-    {
-      "id": "native_node_construction",
-      "packet": "native_node_construction",
+      "id": "directional_light_native_owner",
+      "packet": "directional_light_native_owner",
       "worker": "particle_clock_lifetime",
       "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
+      "state": "worker_implementing_with_frozen_shadow_resolver_contract",
       "function_addresses": [
-        "00b6f5a0"
+        "00b7c4c0",
+        "00b7c6b0",
+        "00b7c5b0",
+        "00b7c820"
       ],
       "code_ownership": [
-        "include/bsp/native_node_construction.hpp",
-        "src/native_node_construction.cpp",
-        "docs/NATIVE_NODE_CONSTRUCTION.md",
-        "reports/native_node_construction_audit.json"
+        "include/bsp/directional_light_owner.hpp",
+        "src/directional_light_owner.cpp",
+        "docs/DIRECTIONAL_LIGHT_OWNER.md",
+        "reports/directional_light_owner_audit.json"
       ],
-      "named_but_incomplete_dependencies": [
-        "directbase destructorclosure remains separate",
-        "genericnativepointlightarray exactallocator projection remains sharedintegration work"
-      ],
-      "evidence": "reports/directional_light_owner_next.json",
-      "boundary": [
-        "actualraw08..2F andpaddingpreimages",
-        "threeidentitymatrixwriteorder",
-        "canonicalsharedtransform/attachment",
-        "unmodifiedpool1ECmetadata"
-      ]
+      "boundary": "Same raw pool slot/node/tail178 array and mutable words; actual current phase predicates and shadow lifetime bindings required. Root owns raw-shadow live resolver accessor."
     },
     {
-      "id": "system_fog_world_factory_impl",
-      "packet": "system_fog_world_factory_impl",
-      "worker": "system_fog_owner_discovery",
+      "id": "lighting_configuration_apply",
+      "packet": "lighting_configuration_apply",
+      "worker": "material_effect_plane",
       "done": false,
-      "state": "worker_implementing_in_isolated_worktree",
-      "address_ranges": [
-        {
-          "start": "004df6a3",
-          "end_exclusive": "004df7a5"
-        }
+      "state": "worker_implementing_with_shared_actual_field_and_global_contract",
+      "function_addresses": [
+        "004bacd0",
+        "004b4d80",
+        "004b62e0",
+        "00b7af20",
+        "00b7af40",
+        "00b7af60",
+        "00b7af90",
+        "00b7b010"
       ],
       "code_ownership": [
-        "include/bsp/system_fog_world_factory.hpp",
-        "src/system_fog_world_factory.cpp",
-        "docs/SYSTEM_FOG_WORLD_FACTORY.md",
-        "reports/system_fog_world_factory_audit.json"
+        "include/bsp/lighting_configuration_apply.hpp",
+        "src/lighting_configuration_apply.cpp",
+        "docs/LIGHTING_CONFIGURATION_APPLY.md",
+        "reports/lighting_configuration_apply_audit.json"
       ],
-      "evidence": "reports/system_fog_world_factory_next.json",
-      "boundary": "Borrow actual D64518 receiver, same camera and live scene-record slots; preserve publication/release, raw preimage and packed temporary liveout. Whole outer owners remain incomplete."
+      "boundary": "Borrow actual ambient/light/configuration words and shared fallback guards/globals; preserve x87 operations and null-only unwritten specular fields. No private fallback domain."
+    },
+    {
+      "id": "directional_shadow_owner_discovery",
+      "packet": "directional_shadow_owner_discovery",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_discovering_concrete_shadow_and_texture_lifetime",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md",
+        "reports/directional_shadow_owner_next.json"
+      ],
+      "boundary": "Read-only handoff for actual D5B5D8 shadow owner, constructor/update/lifetime and mutable texture metadata; no synthetic texture defaults."
     }
   ],
   "current_partition": {
@@ -2307,6 +2466,28 @@
         "directional_pool_storage",
         "native_node_construction",
         "system_fog_world_factory_impl"
+      ]
+    },
+    {
+      "packet": "native_light_owner_integration",
+      "utc": "2026-09-10T18:10:44.010717+00:00",
+      "report": "reports/native_light_owner_integration_audit.json",
+      "completed_packets": [
+        "directional_pool_storage",
+        "native_node_construction",
+        "system_fog_world_factory_impl",
+        "native_node_direct_destructor",
+        "light_scene_retention",
+        "light_scene_retention_review",
+        "native_light_owner_integration"
+      ],
+      "next_packets": [
+        "directional_light_native_owner",
+        "lighting_configuration_apply",
+        "directional_shadow_owner_discovery"
+      ],
+      "awaiting_primary_integration": [
+        "light_type_bootstrap"
       ]
     }
   ]

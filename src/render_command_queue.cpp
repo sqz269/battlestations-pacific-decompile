@@ -71,6 +71,28 @@ void RenderCommandDiagnosticString::return_storage() noexcept {
     }
 }
 
+RenderNodeRootList::RenderNodeRootList(CameraTransform* initial_first) noexcept
+    : owned_first_(initial_first), first(owned_first_), scene_resource_1c(owned_scene_resource_) {}
+RenderNodeRootList::RenderNodeRootList(CameraTransform*& actual_first_0c,
+    SceneResource*& actual_scene_1c) noexcept
+    : first(actual_first_0c), scene_resource_1c(actual_scene_1c) {}
+RenderNodeRootList::RenderNodeRootList(const RenderNodeRootList& other) noexcept
+    : RenderNodeRootList(other.first) {
+    scene_resource_1c = other.scene_resource_1c;
+}
+RenderNodeRootList::RenderNodeRootList(RenderNodeRootList&& other) noexcept
+    : RenderNodeRootList(static_cast<const RenderNodeRootList&>(other)) {}
+RenderNodeRootList& RenderNodeRootList::operator=(const RenderNodeRootList& other) noexcept {
+    if (this != &other) {
+        first = other.first;
+        scene_resource_1c = other.scene_resource_1c;
+    }
+    return *this;
+}
+RenderNodeRootList& RenderNodeRootList::operator=(RenderNodeRootList&& other) noexcept {
+    return *this = static_cast<const RenderNodeRootList&>(other);
+}
+
 void unlink_render_root_node_00b72220(RenderNodeRootList& root,
     CameraTransform& node) noexcept {
     if (node.next_sibling) node.next_sibling->previous_sibling = node.previous_sibling;

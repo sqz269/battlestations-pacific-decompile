@@ -29,6 +29,7 @@
 #include "bsp/system_time_constants.hpp"
 #include "bsp/system_lighting_constants.hpp"
 #include "bsp/environment_fog_apply.hpp"
+#include "bsp/system_fog_world_factory.hpp"
 #include "bsp/legacy_crt_math.hpp"
 #include "bsp/particle_clock_lifetime.hpp"
 #include <algorithm>
@@ -534,6 +535,7 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     unsigned material_constants_built = 0;
     unsigned system_constants_built = 0, particle_clocks_destroyed = 0;
     bool system_prefix_match = false, particle_lifetime_match = false, fog_lifetime_match = false;
+    bool fog_factory_match = false;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
@@ -806,9 +808,17 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         bsp::CameraFrameState camera_frame(camera_state);
         bsp::initialize_system_fog_camera_slot_00b71ae3(camera_frame.fog_184);
         MeshFogCameraShutdown fog_shutdown{camera_frame.fog_184};
-        auto* fog = bsp::allocate_system_fog_owner();
-        bsp::set_system_fog_camera_owner_00b71940(camera_frame.fog_184,fog);
-        bsp::release_system_fog_owner(*fog); // Drop creator ownership; camera retains one.
+        // Exercise the actual factory's optional-receiver/absent-record path
+        // with this same diagnostic camera. Outer game ownership stays outside
+        // this probe; the environment producer below supplies chosen draw values.
+        bsp::FogReceiverFields* fog_receiver = nullptr;
+        bsp::CameraFrameState* fog_camera_slot = &camera_frame;
+        const void* fog_scene_record = nullptr;
+        std::uint32_t fog_packed_color = 0;
+        const bsp::WorldFogFactoryGameFields fog_game{fog_receiver,fog_camera_slot,fog_scene_record};
+        bsp::initialize_world_fog_004df6a3(fog_game,fog_packed_color);
+        auto* fog = bsp::system_fog_owner_from_state(camera_frame.fog_184);
+        fog_factory_match = fog && fog->references_04 == 1 && fog_packed_color == 0x00a5a3ab;
         // Explicit diagnostic environment values use the recovered producer.
         // Native construction leaves directionals untouched until these writes.
         const std::array<float,11> fog_scalars{0,100,200,0,1,0,0,0,0,0,0};
@@ -967,14 +977,15 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         model_lifetimes.constructed, model_lifetimes.disposed, model_lifetimes.cleanup_matches, model_lifetime_match);
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
         && camera_frame_match && model_lifetime_match
-        && system_constants_built == 1 && system_prefix_match && particle_lifetime_match && fog_lifetime_match
+        && system_constants_built == 1 && system_prefix_match && particle_lifetime_match && fog_lifetime_match && fog_factory_match
         && material_constants_built == 2 && queued_bindings_checked == 2
         && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
     std::printf("Installed material builder: actual_stream_and_clone_owners_ordered_constants=%u checked=%d\n",
         material_constants_built, material_constants_built == 2 && constants_match);
     std::printf("Installed system builder: ordered_prefix=%u VS_PS_77_retained_after_material=%d particle_clocks_destroyed=%u lifetime_checked=%d\n",
         system_constants_built,system_prefix_match,particle_clocks_destroyed,particle_lifetime_match);
-    std::printf("Installed fog owner: native_constructor_environment_apply_counted_camera_clear=%d\n",fog_lifetime_match);
+    std::printf("Installed fog owner: native_constructor_environment_apply_counted_camera_clear=%d world_factory_publication_packed=%d\n",
+        fog_lifetime_match,fog_factory_match);
     std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,
         decoded.records_from_metadata,constants_match,layout_match,bindings_match,queued_bindings_checked,visible,colors.size(),restored,checked,error.c_str());

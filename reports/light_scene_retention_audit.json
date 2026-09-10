@@ -1,0 +1,178 @@
+{
+  "packet": "light_scene_retention",
+  "utc": "2026-09-10T18:04:17.216170+00:00",
+  "status": "typed_complete_methods_integrated_strict_build_independent_review_host_fixture_passed",
+  "owned_files": [
+    "include/bsp/light_scene_retention.hpp",
+    "src/light_scene_retention.cpp",
+    "docs/LIGHT_SCENE_RETENTION.md",
+    "reports/light_scene_retention_audit.json"
+  ],
+  "function_evidence": [
+    {
+      "role": "light_attach",
+      "start": "00b7c020",
+      "end_exclusive": "00b7c0bf",
+      "byte_count": 159,
+      "disk_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "ghidra_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "matches_disk": true,
+      "cxx_symbol": "attach_light_scene_00b7c020",
+      "native_abi": "ECX light; stack scene pointer and recursion byte; RET8",
+      "complete_function": true
+    },
+    {
+      "role": "light_remove",
+      "start": "00b7bd60",
+      "end_exclusive": "00b7bdea",
+      "byte_count": 138,
+      "disk_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+      "ghidra_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+      "matches_disk": true,
+      "cxx_symbol": "remove_light_scene_00b7bd60",
+      "native_abi": "ECX light; stack scene pointer and recursion byte; RET8",
+      "complete_function": true
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live query uses bsp.py ghidra target verification before reading. Selected current live bytes match installed PE; no whole-image Ghidra equality claim.",
+    "ranges": [
+      {
+        "role": "light_attach",
+        "start": "00b7c020",
+        "end_exclusive": "00b7c0bf",
+        "byte_count": 159,
+        "disk_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+        "ghidra_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+        "matches_disk": true
+      },
+      {
+        "role": "light_remove",
+        "start": "00b7bd60",
+        "end_exclusive": "00b7bdea",
+        "byte_count": 138,
+        "disk_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+        "ghidra_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+        "matches_disk": true
+      },
+      {
+        "role": "raw_array_reserve",
+        "start": "00b7b390",
+        "end_exclusive": "00b7b3ef",
+        "byte_count": 95,
+        "disk_sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+        "ghidra_sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+        "matches_disk": true
+      },
+      {
+        "role": "raw_array_erase",
+        "start": "00b7b620",
+        "end_exclusive": "00b7b687",
+        "byte_count": 103,
+        "disk_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "ghidra_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "matches_disk": true
+      },
+      {
+        "role": "register_type_gate",
+        "start": "00b83d50",
+        "end_exclusive": "00b83d8e",
+        "byte_count": 62,
+        "disk_sha256": "22235637ca06a01993cf9c467cc9e94a53a5c5215511846c1596ac150f0b40c6",
+        "ghidra_sha256": "22235637ca06a01993cf9c467cc9e94a53a5c5215511846c1596ac150f0b40c6",
+        "matches_disk": true
+      },
+      {
+        "role": "unregister_type_gate",
+        "start": "00b83ec0",
+        "end_exclusive": "00b83ef3",
+        "byte_count": 51,
+        "disk_sha256": "22577f18aff4d96e27316d9bbeeb2045782c114341e41151b22ceb3186df5246",
+        "ghidra_sha256": "22577f18aff4d96e27316d9bbeeb2045782c114341e41151b22ceb3186df5246",
+        "matches_disk": true
+      },
+      {
+        "role": "unlink_root",
+        "start": "00b72220",
+        "end_exclusive": "00b7224c",
+        "byte_count": 44,
+        "disk_sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+        "ghidra_sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+        "matches_disk": true
+      }
+    ],
+    "new_remove_definition": "Current live00B7BD60 has complete138-byte body endingRET8 at00B7BDE7; root definition/save report independently inspected."
+  },
+  "shared_contract": [
+    "Same SceneNodeAttachment and actual178 array; no170 substitute or duplicate registry.",
+    "Array helper publication precedes register and retain; swap erase precedes unregister and release.",
+    "Duplicate and absent paths recurse; current child callback and fresh next/head reads survive reentry.",
+    "Same SceneNodeAttachment current40/54 fields are explicitly unbound until actual owner binds them."
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctest": "2/2",
+    "review": "reports/light_scene_retention_review.json",
+    "review_source_hashes_match": true,
+    "host_fixture": {
+      "sequences": 1,
+      "result": "pass",
+      "source": {
+        "path": "local/light_scene_retention_fixture.cpp",
+        "bytes": 7062,
+        "sha256": "4ff639be323780511297ebe2fd1afba527d046b6aa384d4ca1c46f6780e00721"
+      },
+      "launcher": {
+        "path": "local/run_light_scene_fixture.cmd",
+        "bytes": 382,
+        "sha256": "a3e9b3c9cd8e34575797df62e928801160320bc187fc6f3ebaf46a4acc97d002"
+      },
+      "executable": {
+        "path": "local/light_scene_retention_fixture.exe",
+        "bytes": 53248,
+        "sha256": "ce701842f9e6b3b6c7e862727ff37a40e3fa2f559994d9645aa5283ea9d33448"
+      },
+      "output": {
+        "path": "local/light_scene_retention_fixture.txt",
+        "bytes": 245,
+        "sha256": "c5ad74c705098dcfa57806c4e7054a6dad01fb32f14a50a9c5379d91339d8908"
+      }
+    },
+    "original_light_methods_executed": false,
+    "binary_abi_compatible": false,
+    "game_validated": false,
+    "new_tracked_tests": 0
+  },
+  "source_artifacts": [
+    {
+      "path": "include/bsp/light_scene_retention.hpp",
+      "bytes": 1444,
+      "sha256": "79139691d3ff6de00b153817efef80853556d703a0ea76e510457c52b7654eff"
+    },
+    {
+      "path": "src/light_scene_retention.cpp",
+      "bytes": 3938,
+      "sha256": "1969265622880f219ce93469f7eca81419560bb8cd925ab218ea784a184fe0db"
+    }
+  ],
+  "remaining": [
+    "Valid live Win32 storage required; null attach, malformed arrays and concurrent mutation have no added native repair.",
+    "Whole light/type/shadow owner, actual startup, native exception ABI and gameplay remain separate."
+  ],
+  "primary_integration": {
+    "report": "reports/native_light_owner_integration_audit.json",
+    "utc": "2026-09-10T18:04:17.216170+00:00",
+    "root_source_registered_in_build": true,
+    "strict_win32_build_passed": true,
+    "existing_ctest": "2/2",
+    "game_validated": false,
+    "native_binary_abi_compatible": false
+  }
+}

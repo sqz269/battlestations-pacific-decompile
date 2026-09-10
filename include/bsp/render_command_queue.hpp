@@ -5,6 +5,7 @@
 
 namespace bsp {
 struct RenderCommand;
+struct SceneResource;
 
 // Host intrusive ownership, not a native vtable/layout overlay. A subclass owns
 // the actual camera/scene/target/batch object and implements its terminal release.
@@ -65,7 +66,22 @@ private:
     std::pmr::memory_resource* pool_{};
 };
 
-struct RenderNodeRootList { CameraTransform* first{}; }; // native root+0C
+// The root chain and lighting-owner slot belong to the same supplied outer
+// scene. A borrowed view does not retain or initialize either field.
+struct RenderNodeRootList {
+private:
+    CameraTransform* owned_first_{};
+    SceneResource* owned_scene_resource_{};
+public:
+    explicit RenderNodeRootList(CameraTransform* initial_first = nullptr) noexcept;
+    RenderNodeRootList(CameraTransform*& actual_first_0c, SceneResource*& actual_scene_1c) noexcept;
+    RenderNodeRootList(const RenderNodeRootList&) noexcept;
+    RenderNodeRootList(RenderNodeRootList&&) noexcept;
+    RenderNodeRootList& operator=(const RenderNodeRootList&) noexcept;
+    RenderNodeRootList& operator=(RenderNodeRootList&&) noexcept;
+    CameraTransform*& first; // native root+0C
+    SceneResource*& scene_resource_1c; // actual slot also consumed by SystemSceneResourceSlot
+};
 // Native ECX root, stack node, RET4. Relinks neighbours/root head only: does not
 // clear node sibling/root fields or release a reference.
 void unlink_render_root_node_00b72220(RenderNodeRootList&, CameraTransform&) noexcept;

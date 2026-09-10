@@ -83,6 +83,8 @@ struct SceneResource {
 
 using SceneTypePredicate = bool (*)(SceneAttachmentRuntime&, SceneNodeAttachment&, std::uint32_t);
 using SceneAttachOverride = void (*)(SceneAttachmentRuntime&, SceneNodeAttachment&, SceneResource*, bool);
+using SceneWorldChangedOverride = void (*)(SceneAttachmentRuntime&, SceneNodeAttachment&);
+using SceneRemoveOverride = SceneAttachOverride;
 
 struct SceneNodeAttachment {
 private:
@@ -101,6 +103,11 @@ public:
     SceneTypePredicate is_type;
     SceneAttachOverride attach_scene;
     void* context;
+    // Actual current virtual+40/+54 implementations. Null is explicitly
+    // unbound; any operation needing either must require a concrete binding.
+    // Destruction updates these on the same node when its native vtable changes.
+    SceneWorldChangedOverride world_changed{};
+    SceneRemoveOverride remove_scene{};
     // Explicit projection of this SAME native key when its concrete owner is a
     // directional light. Null is unbound and must not become a light fallback.
     SystemDirectionalLight* system_directional_light{};
@@ -118,6 +125,10 @@ public:
         std::array<std::uint32_t, 3> object_tokens);
     void bind(SceneNodeAttachment&);
     void unbind(SceneNodeAttachment&); // requires explicit prior detach
+    // After native cleanup has ended backing lifetime, remove this external
+    // association by identity only. Does not read fields, detach, release or
+    // erase native registry keys left by a destruction callback.
+    void forget_destroyed_binding(SceneNodeAttachment&) noexcept;
     SceneNodeAttachment& resolve(CameraTransform&) const;
     SystemDirectionalLight* resolve_light(std::uint32_t actual_key) override;
     std::uint32_t registry_type_token;
