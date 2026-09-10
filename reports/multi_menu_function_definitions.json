@@ -1,0 +1,266 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005e6e00",
+    "end_address": "005e6e06"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005e6e00",
+    "end_address": "005e6e05",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005e6e00",
+    "disassemble_first": false,
+    "name": "BSP_MultiMainMenuScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005e6e00",
+    "function_name": "BSP_MultiMainMenuScreen_GetScreenId",
+    "entry_point": "005e6e00",
+    "body_size": 6,
+    "message": "Function created successfully at 005e6e00",
+    "warnings": [
+     "Function name 'BSP_MultiMainMenuScreen_GetScreenId' \u2014 main part 'MultiMainMenuScreen_GetScreenId' is not PascalCase. Expected: MultimainmenuscreenGetscreenid",
+     "Function name 'BSP_MultiMainMenuScreen_GetScreenId' \u2014 main part 'MultiMainMenuScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MultiMainMenuScreen_GetScreenId' does not start with a recognized verb. First word 'Multi' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005e6e00",
+   "end": "005e6e06",
+   "name": "BSP_MultiMainMenuScreen_GetScreenId",
+   "after": "Function: BSP_MultiMainMenuScreen_GetScreenId at 005e6e00\nSignature: undefined BSP_MultiMainMenuScreen_GetScreenId(void)\nEntry: 005e6e00\nBody: 005e6e00 - 005e6e05"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005ea930",
+    "end_address": "005ea936"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005ea930",
+    "end_address": "005ea935",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005ea930",
+    "disassemble_first": false,
+    "name": "BSP_MultiModeSelectorScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005ea930",
+    "function_name": "BSP_MultiModeSelectorScreen_GetScreenId",
+    "entry_point": "005ea930",
+    "body_size": 6,
+    "message": "Function created successfully at 005ea930",
+    "warnings": [
+     "Function name 'BSP_MultiModeSelectorScreen_GetScreenId' \u2014 main part 'MultiModeSelectorScreen_GetScreenId' is not PascalCase. Expected: MultimodeselectorscreenGetscreenid",
+     "Function name 'BSP_MultiModeSelectorScreen_GetScreenId' \u2014 main part 'MultiModeSelectorScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MultiModeSelectorScreen_GetScreenId' does not start with a recognized verb. First word 'Multi' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005ea930",
+   "end": "005ea936",
+   "name": "BSP_MultiModeSelectorScreen_GetScreenId",
+   "after": "Function: BSP_MultiModeSelectorScreen_GetScreenId at 005ea930\nSignature: undefined BSP_MultiModeSelectorScreen_GetScreenId(void)\nEntry: 005ea930\nBody: 005ea930 - 005ea935"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005e10a0",
+    "end_address": "005e10a6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005e10a0",
+    "end_address": "005e10a5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005e10a0",
+    "disassemble_first": false,
+    "name": "BSP_MultiGameLobbyScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005e10a0",
+    "function_name": "BSP_MultiGameLobbyScreen_GetScreenId",
+    "entry_point": "005e10a0",
+    "body_size": 6,
+    "message": "Function created successfully at 005e10a0",
+    "warnings": [
+     "Function name 'BSP_MultiGameLobbyScreen_GetScreenId' \u2014 main part 'MultiGameLobbyScreen_GetScreenId' is not PascalCase. Expected: MultigamelobbyscreenGetscreenid",
+     "Function name 'BSP_MultiGameLobbyScreen_GetScreenId' \u2014 main part 'MultiGameLobbyScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MultiGameLobbyScreen_GetScreenId' does not start with a recognized verb. First word 'Multi' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005e10a0",
+   "end": "005e10a6",
+   "name": "BSP_MultiGameLobbyScreen_GetScreenId",
+   "after": "Function: BSP_MultiGameLobbyScreen_GetScreenId at 005e10a0\nSignature: undefined BSP_MultiGameLobbyScreen_GetScreenId(void)\nEntry: 005e10a0\nBody: 005e10a0 - 005e10a5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00573bb0",
+    "end_address": "00573bb6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00573bb0",
+    "end_address": "00573bb5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00573bb0",
+    "disassemble_first": false,
+    "name": "BSP_MultiSessionBrowserScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "00573bb0",
+    "function_name": "BSP_MultiSessionBrowserScreen_GetScreenId",
+    "entry_point": "00573bb0",
+    "body_size": 6,
+    "message": "Function created successfully at 00573bb0",
+    "warnings": [
+     "Function name 'BSP_MultiSessionBrowserScreen_GetScreenId' \u2014 main part 'MultiSessionBrowserScreen_GetScreenId' is not PascalCase. Expected: MultisessionbrowserscreenGetscreenid",
+     "Function name 'BSP_MultiSessionBrowserScreen_GetScreenId' \u2014 main part 'MultiSessionBrowserScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MultiSessionBrowserScreen_GetScreenId' does not start with a recognized verb. First word 'Multi' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00573bb0",
+   "end": "00573bb6",
+   "name": "BSP_MultiSessionBrowserScreen_GetScreenId",
+   "after": "Function: BSP_MultiSessionBrowserScreen_GetScreenId at 00573bb0\nSignature: undefined BSP_MultiSessionBrowserScreen_GetScreenId(void)\nEntry: 00573bb0\nBody: 00573bb0 - 00573bb5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005d2f40",
+    "end_address": "005d2f46"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005d2f40",
+    "end_address": "005d2f45",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005d2f40",
+    "disassemble_first": false,
+    "name": "BSP_MultiErrorScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005d2f40",
+    "function_name": "BSP_MultiErrorScreen_GetScreenId",
+    "entry_point": "005d2f40",
+    "body_size": 6,
+    "message": "Function created successfully at 005d2f40",
+    "warnings": [
+     "Function name 'BSP_MultiErrorScreen_GetScreenId' \u2014 main part 'MultiErrorScreen_GetScreenId' is not PascalCase. Expected: MultierrorscreenGetscreenid",
+     "Function name 'BSP_MultiErrorScreen_GetScreenId' \u2014 main part 'MultiErrorScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MultiErrorScreen_GetScreenId' does not start with a recognized verb. First word 'Multi' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005d2f40",
+   "end": "005d2f46",
+   "name": "BSP_MultiErrorScreen_GetScreenId",
+   "after": "Function: BSP_MultiErrorScreen_GetScreenId at 005d2f40\nSignature: undefined BSP_MultiErrorScreen_GetScreenId(void)\nEntry: 005d2f40\nBody: 005d2f40 - 005d2f45"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005cfe40",
+    "end_address": "005cfe46"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005cfe40",
+    "end_address": "005cfe45",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005cfe40",
+    "disassemble_first": false,
+    "name": "BSP_MultiChatScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005cfe40",
+    "function_name": "BSP_MultiChatScreen_GetScreenId",
+    "entry_point": "005cfe40",
+    "body_size": 6,
+    "message": "Function created successfully at 005cfe40",
+    "warnings": [
+     "Function name 'BSP_MultiChatScreen_GetScreenId' \u2014 main part 'MultiChatScreen_GetScreenId' is not PascalCase. Expected: MultichatscreenGetscreenid",
+     "Function name 'BSP_MultiChatScreen_GetScreenId' \u2014 main part 'MultiChatScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MultiChatScreen_GetScreenId' does not start with a recognized verb. First word 'Multi' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005cfe40",
+   "end": "005cfe46",
+   "name": "BSP_MultiChatScreen_GetScreenId",
+   "after": "Function: BSP_MultiChatScreen_GetScreenId at 005cfe40\nSignature: undefined BSP_MultiChatScreen_GetScreenId(void)\nEntry: 005cfe40\nBody: 005cfe40 - 005cfe45"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
