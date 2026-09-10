@@ -723,7 +723,11 @@ def worktree_cmd(args):
         run = subprocess.run(['git', 'worktree', 'remove', '--force', str(path)], cwd=main, capture_output=True, text=True)
         print((run.stdout + run.stderr).strip() or f'removed {path}')
         if args.delete_branch and run.returncode == 0:
-            print(git('branch', '-D', f'agent/{args.name}'))
+            # -d refuses an unmerged branch; the worktree is gone but the commits stay reachable.
+            deletion = subprocess.run(['git', 'branch', '-d', f'agent/{args.name}'], cwd=main, capture_output=True, text=True)
+            print((deletion.stdout + deletion.stderr).strip())
+            if deletion.returncode:
+                print(f'branch agent/{args.name} kept: merge it first, or delete it deliberately with git branch -D')
         return
     name = args.name
     branch = f'agent/{name}'
