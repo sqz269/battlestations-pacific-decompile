@@ -85,13 +85,19 @@ using SceneTypePredicate = bool (*)(SceneAttachmentRuntime&, SceneNodeAttachment
 using SceneAttachOverride = void (*)(SceneAttachmentRuntime&, SceneNodeAttachment&, SceneResource*, bool);
 
 struct SceneNodeAttachment {
+private:
+    SceneResource* owned_scene_{};
+public:
     SceneNodeAttachment(CameraTransform&, std::uint32_t pointer_key,
+        SceneTypePredicate virtual_0c, SceneAttachOverride virtual_50, void* context = nullptr);
+    // Bind the actual node+170 slot without reading or initializing it.
+    SceneNodeAttachment(CameraTransform&, std::uint32_t pointer_key, SceneResource*& actual_scene_170,
         SceneTypePredicate virtual_0c, SceneAttachOverride virtual_50, void* context = nullptr);
     SceneNodeAttachment(const SceneNodeAttachment&) = delete;
     SceneNodeAttachment& operator=(const SceneNodeAttachment&) = delete;
     CameraTransform& transform; // same native +34/+3C hierarchy as camera/bounds
     const std::uint32_t pointer_key;
-    SceneResource* scene{}; // native node+170, initially detached in this interface
+    SceneResource*& scene; // native node+170; legacy constructor owns a null slot
     SceneTypePredicate is_type;
     SceneAttachOverride attach_scene;
     void* context;

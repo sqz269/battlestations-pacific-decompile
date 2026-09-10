@@ -4,6 +4,48 @@
 #include "bsp/camera_multiply.hpp"
 
 namespace bsp {
+CameraTransform::CameraTransform() noexcept
+    : parent(owned_.parent), first_child(owned_.first_child), child_count(owned_.child_count),
+      next_sibling(owned_.next_sibling), previous_sibling(owned_.previous_sibling),
+      root_list(owned_.root_list), valid_flags(owned_.valid_flags),
+      auxiliary_flags(owned_.auxiliary_flags), notification_context(owned_.notification_context),
+      view(owned_.view), local(owned_.local), world(owned_.world) {}
+
+CameraTransform::CameraTransform(CameraTransformBacking backing,
+    void (*actual_notify_changed)(void*)) noexcept
+    : parent(backing.parent), first_child(backing.first_child), child_count(backing.child_count),
+      next_sibling(backing.next_sibling), previous_sibling(backing.previous_sibling),
+      root_list(backing.root_list), valid_flags(backing.valid_flags),
+      auxiliary_flags(backing.auxiliary_flags), notification_context(backing.notification_context),
+      notify_changed(actual_notify_changed), view(backing.view), local(backing.local), world(backing.world) {}
+
+CameraTransform::CameraTransform(const CameraTransform& other) noexcept : CameraTransform() {
+    *this = other;
+}
+CameraTransform::CameraTransform(CameraTransform&& other) noexcept
+    : CameraTransform(static_cast<const CameraTransform&>(other)) {}
+
+CameraTransform& CameraTransform::operator=(const CameraTransform& other) noexcept {
+    if (this == &other) return *this;
+    parent = other.parent;
+    first_child = other.first_child;
+    child_count = other.child_count;
+    next_sibling = other.next_sibling;
+    previous_sibling = other.previous_sibling;
+    root_list = other.root_list;
+    valid_flags = other.valid_flags;
+    auxiliary_flags = other.auxiliary_flags;
+    notification_context = other.notification_context;
+    notify_changed = other.notify_changed;
+    view = other.view;
+    local = other.local;
+    world = other.world;
+    return *this;
+}
+CameraTransform& CameraTransform::operator=(CameraTransform&& other) noexcept {
+    return *this = static_cast<const CameraTransform&>(other);
+}
+
 void derive_camera_local_from_world_00b6e7e0(CameraTransform& transform) {
     if (transform.parent) {
         const auto& parent_inverse = get_camera_view_00b6fcb0(*transform.parent);

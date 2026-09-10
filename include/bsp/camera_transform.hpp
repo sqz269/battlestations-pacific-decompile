@@ -3,22 +3,64 @@
 
 namespace bsp {
 struct RenderNodeRootList;
-// New storage/lifetime interface. Parents must remain alive and form an acyclic
-// hierarchy. Zero initialization is not the native constructor. Use recovered
-// setters for edits; parent changes/ancestor camera-cache callbacks remain open.
+struct CameraTransform;
+// References to one actual node's fields. Constructing the view does not read or
+// initialize them; the owner supplies storage and controls its lifetime.
+struct CameraTransformBacking {
+    CameraTransform*& parent;
+    CameraTransform*& first_child;
+    std::uint32_t& child_count;
+    CameraTransform*& next_sibling;
+    CameraTransform*& previous_sibling;
+    RenderNodeRootList*& root_list;
+    std::uint32_t& valid_flags;
+    std::uint32_t& auxiliary_flags;
+    void*& notification_context;
+    CameraMatrix& view;
+    CameraMatrix& local;
+    CameraMatrix& world;
+};
+// New C++ interface, not the native object ABI. Parents and borrowed backing must
+// remain alive and form an acyclic hierarchy. Default construction owns zeroed
+// diagnostic storage; it is not the native constructor. A bound transform uses
+// only its supplied fields, without copying them into the unused owned storage.
 struct CameraTransform {
-    CameraTransform* parent{}; // native+30
-    CameraTransform* first_child{}; // +34; caller supplies consistent sibling links
-    std::uint32_t child_count{}; // +38; maintained by recovered hierarchy operations
-    CameraTransform* next_sibling{}; // +3C
-    CameraTransform* previous_sibling{}; // +40
-    RenderNodeRootList* root_list{}; // +A4; borrowed root registration, distinct from parent
-    std::uint32_t valid_flags{}; // native+5C
-    std::uint32_t auxiliary_flags{}; // +138
+private:
+    struct OwnedStorage {
+        CameraTransform* parent{};
+        CameraTransform* first_child{};
+        std::uint32_t child_count{};
+        CameraTransform* next_sibling{};
+        CameraTransform* previous_sibling{};
+        RenderNodeRootList* root_list{};
+        std::uint32_t valid_flags{};
+        std::uint32_t auxiliary_flags{};
+        void* notification_context{};
+        CameraMatrix view{}, local{}, world{};
+    } owned_;
+public:
+    CameraTransform() noexcept;
+    CameraTransform(CameraTransformBacking, void (*actual_notify_changed)(void*)) noexcept;
+    // Value construction always owns a new copy; assignment preserves the
+    // target's backing and writes values into it. Moving does not detach links.
+    CameraTransform(const CameraTransform&) noexcept;
+    CameraTransform(CameraTransform&&) noexcept;
+    CameraTransform& operator=(const CameraTransform&) noexcept;
+    CameraTransform& operator=(CameraTransform&&) noexcept;
+    CameraTransform*& parent; // native+30
+    CameraTransform*& first_child; // +34; caller supplies consistent sibling links
+    std::uint32_t& child_count; // +38; maintained by recovered hierarchy operations
+    CameraTransform*& next_sibling; // +3C
+    CameraTransform*& previous_sibling; // +40
+    RenderNodeRootList*& root_list; // +A4; borrowed root registration, distinct from parent
+    std::uint32_t& valid_flags; // native+5C
+    std::uint32_t& auxiliary_flags; // +138
     // Explicit adapter for attached+A0 virtual+3C. Null invoke means no attachment.
-    void* notification_context{};
+    void*& notification_context;
     void (*notify_changed)(void*){};
-    CameraMatrix view{}, local{}, world{}; // native+60,+B0,+F0
+    CameraMatrix& view;
+    CameraMatrix& local;
+    CameraMatrix& world; // native+60,+B0,+F0
 };
 struct CameraState {
     CameraTransform transform;

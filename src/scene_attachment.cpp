@@ -250,7 +250,15 @@ SceneResource::SceneResource(std::int32_t initial_references,
 }
 SceneNodeAttachment::SceneNodeAttachment(CameraTransform& node_transform, std::uint32_t key,
     SceneTypePredicate virtual_0c, SceneAttachOverride virtual_50, void* node_context)
-    : transform(node_transform), pointer_key(key), is_type(virtual_0c),
+    : transform(node_transform), pointer_key(key), scene(owned_scene_), is_type(virtual_0c),
+      attach_scene(virtual_50), context(node_context) {
+    if (!virtual_0c || !virtual_50)
+        throw std::invalid_argument("scene node virtual+0C and virtual+50 are required");
+}
+SceneNodeAttachment::SceneNodeAttachment(CameraTransform& node_transform, std::uint32_t key,
+    SceneResource*& actual_scene_170, SceneTypePredicate virtual_0c,
+    SceneAttachOverride virtual_50, void* node_context)
+    : transform(node_transform), pointer_key(key), scene(actual_scene_170), is_type(virtual_0c),
       attach_scene(virtual_50), context(node_context) {
     if (!virtual_0c || !virtual_50)
         throw std::invalid_argument("scene node virtual+0C and virtual+50 are required");
