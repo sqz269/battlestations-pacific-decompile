@@ -1,0 +1,851 @@
+{
+  "schema_version": 1,
+  "packet": "native_legacy_sbo_string",
+  "captured_utc": "2026-09-10T22:22:08.142376+00:00",
+  "status": "six_complete_logical_string_functions_strict_build_and_focused_native_fixture_checked_with_explicit_host_crt_eh_boundaries",
+  "checkout": "J:\\PROG\\battlestations-pacific-decompile-native-legacy-sbo-string",
+  "parent_commit": "c689bedafac2979c306da13521e7a39d490d1638",
+  "owned_files": [
+    "include/bsp/native_legacy_sbo_string.hpp",
+    "src/native_legacy_sbo_string.cpp",
+    "docs/NATIVE_LEGACY_SBO_STRING.md",
+    "reports/native_legacy_sbo_string_audit.json"
+  ],
+  "ghidra_mutations": false,
+  "shared_ledger_writes": false,
+  "cmake_registration": "Primary integrator owns adding src/native_legacy_sbo_string.cpp; worker separately compiled and linked exact new source.",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every uncached byte read goes through the project/program-verified bsp CLI."
+  },
+  "functions": [
+    {
+      "address": "00408720",
+      "name": "BSP_CharacterString_AssignCounted",
+      "name_status": "descriptive_hypothesis_not_recovered_library_symbol",
+      "cpp_interface": "native_legacy_sbo_string_assign_counted_00408720",
+      "status": "complete_logical_reconstruction_with_concrete_host_crt_exception_boundaries_strict_and_focused_native_fixture_checked",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "original_abi": "ECX destination; stack const character pointer,unsigned count; EAX destination; RET8",
+      "contract": "Unsigned self-alias interval is checked before maximum count. Alias composes actual substring/erase; external assignment grows/copies and terminates, retaining returning CRT handler effects and current data reloads.",
+      "old_ghidra_annotation": {
+        "address": "00408720",
+        "function_name": "BSP_CharacterString_AssignCounted",
+        "comment": "[BSP reconstruction 00408720]\nObserved MSVC-style character-string assignment; exact library symbol unproven. ECXdest,stackcharptr/count,EAXdest,RET8. Buffer+4,size+14h,capacity+18h;inlineifcapacity<16. Externalalias00408120/reserve004089e0. Freshnonaliased path copies count bytes and terminatesNUL. Keep library identity provisional. Original ABI: ECX destination string; stack character pointer and unsigned count; EAX destination; RET8. Inline bytes+4, length+14h, capacity+18h; capacity>=16 uses heap pointer at+4. External alias-copy00408120 and reserve004089e0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "native_code": {
+        "address": "00408720",
+        "length": 193,
+        "end_exclusive": "004087e1",
+        "disk_offset": 34592,
+        "disk_sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34",
+        "live_sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34",
+        "role": "complete_owned_logical_function"
+      },
+      "evidence": [
+        "docs/NATIVE_LEGACY_SBO_STRING.md",
+        "reports/native_legacy_sbo_string_audit.json"
+      ],
+      "qualification": "Original-byte comparison uses recorded actual host CRT and EH services at boundaries. Not an original exception-object ABI replacement, exhaustive numeric/handler test, or game validation."
+    },
+    {
+      "address": "00408120",
+      "name": "BSP_LegacySboString_AssignSubstring",
+      "name_status": "descriptive_hypothesis_not_recovered_library_symbol",
+      "cpp_interface": "native_legacy_sbo_string_assign_substring_00408120",
+      "status": "complete_logical_reconstruction_with_concrete_host_crt_exception_boundaries_strict_and_focused_native_fixture_checked",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "original_abi": "ECX destination; stack source string, unsigned offset, unsigned count; EAX destination; RET0C",
+      "contract": "Checks source offset before clamping. Same-object path erases tail then prefix. Distinct-object path checks maximum, grows with captured preserved length, reloads source/destination views and continues after returning copy validation.",
+      "old_ghidra_annotation": {
+        "address": "00408120",
+        "function_name": "FUN_00408120"
+      },
+      "native_code": {
+        "address": "00408120",
+        "length": 217,
+        "end_exclusive": "004081f9",
+        "disk_offset": 33056,
+        "disk_sha256": "e4104d83c47c8751f42572271b41b74d8eeb30b93a83c688ea62144542019175",
+        "live_sha256": "e4104d83c47c8751f42572271b41b74d8eeb30b93a83c688ea62144542019175",
+        "role": "complete_owned_logical_function"
+      },
+      "evidence": [
+        "docs/NATIVE_LEGACY_SBO_STRING.md",
+        "reports/native_legacy_sbo_string_audit.json"
+      ],
+      "qualification": "Original-byte comparison uses recorded actual host CRT and EH services at boundaries. Not an original exception-object ABI replacement, exhaustive numeric/handler test, or game validation."
+    },
+    {
+      "address": "004072d0",
+      "name": "BSP_LegacySboString_Destroy",
+      "name_status": "descriptive_hypothesis_not_recovered_library_symbol",
+      "cpp_interface": "native_legacy_sbo_string_destroy_004072d0",
+      "status": "complete_logical_reconstruction_with_concrete_host_crt_exception_boundaries_strict_and_focused_native_fixture_checked",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "original_abi": "ECX string; RET; no semantic return value",
+      "contract": "Current heap free if capacity>=16; then capacity15, length0 and inline byte0 zero on both paths. Leading word and remaining union bytes are untouched.",
+      "old_ghidra_annotation": {
+        "address": "004072d0",
+        "function_name": "FUN_004072d0"
+      },
+      "native_code": {
+        "address": "004072d0",
+        "length": 38,
+        "end_exclusive": "004072f6",
+        "disk_offset": 29392,
+        "disk_sha256": "2f179ded49a9621df35befbde920bb2a9b2cb84c7600d74530e7e3c4c45ddce9",
+        "live_sha256": "2f179ded49a9621df35befbde920bb2a9b2cb84c7600d74530e7e3c4c45ddce9",
+        "role": "complete_owned_logical_function"
+      },
+      "evidence": [
+        "docs/NATIVE_LEGACY_SBO_STRING.md",
+        "reports/native_legacy_sbo_string_audit.json"
+      ],
+      "qualification": "Original-byte comparison uses recorded actual host CRT and EH services at boundaries. Not an original exception-object ABI replacement, exhaustive numeric/handler test, or game validation."
+    },
+    {
+      "address": "004089e0",
+      "name": "BSP_LegacySboString_GrowAllocation",
+      "name_status": "descriptive_hypothesis_not_recovered_library_symbol",
+      "cpp_interface": "native_legacy_sbo_string_grow_004089e0",
+      "status": "complete_logical_reconstruction_with_concrete_host_crt_exception_boundaries_strict_and_focused_native_fixture_checked",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "original_abi": "ECX string; stack requested capacity,preserve byte count; RET8; no semantic return value",
+      "contract": "Complete 304-byte logical body including both catches and dispatcher continuation. Rounded/1.5 growth, exact request retry for ordinary allocation failure, current old heap reset and second-exception rethrow on second allocation failure. Primary throwing copy retries replacement pointer bits; throwing fallback copy escapes without reset after catch context ends.",
+      "old_ghidra_annotation": {
+        "address": "004089e0",
+        "function_name": "FUN_004089e0"
+      },
+      "native_code": {
+        "address": "004089e0",
+        "length": 304,
+        "end_exclusive": "00408b10",
+        "disk_offset": 35296,
+        "disk_sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191",
+        "live_sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191",
+        "role": "complete_owned_logical_function"
+      },
+      "evidence": [
+        "docs/NATIVE_LEGACY_SBO_STRING.md",
+        "reports/native_legacy_sbo_string_audit.json"
+      ],
+      "qualification": "Original-byte comparison uses recorded actual host CRT and EH services at boundaries. Not an original exception-object ABI replacement, exhaustive numeric/handler test, or game validation."
+    },
+    {
+      "address": "00408b60",
+      "name": "BSP_LegacySboString_AllocateBytes",
+      "name_status": "descriptive_hypothesis_not_recovered_library_symbol",
+      "cpp_interface": "native_legacy_sbo_string_allocate_00408b60",
+      "status": "complete_logical_reconstruction_with_concrete_host_crt_exception_boundaries_strict_and_focused_native_fixture_checked",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "original_abi": "Stack unsigned byte count; ECX unused; EAX allocation; RET4",
+      "contract": "Actual shared CRT allocation service including zero. Native UINT_MAX/count quotient<1 guard cannot be taken for any nonzero uint32 one-byte element count; no invented allocation error stub.",
+      "old_ghidra_annotation": {
+        "address": "00408b60",
+        "function_name": "FUN_00408b60"
+      },
+      "native_code": {
+        "address": "00408b60",
+        "length": 85,
+        "end_exclusive": "00408bb5",
+        "disk_offset": 35680,
+        "disk_sha256": "0ae014e5db77545ed05d24a175da22eae05e7f7ad1a446364d703edef6ad83e2",
+        "live_sha256": "0ae014e5db77545ed05d24a175da22eae05e7f7ad1a446364d703edef6ad83e2",
+        "role": "complete_owned_logical_function"
+      },
+      "evidence": [
+        "docs/NATIVE_LEGACY_SBO_STRING.md",
+        "reports/native_legacy_sbo_string_audit.json"
+      ],
+      "qualification": "Original-byte comparison uses recorded actual host CRT and EH services at boundaries. Not an original exception-object ABI replacement, exhaustive numeric/handler test, or game validation."
+    },
+    {
+      "address": "004087f0",
+      "name": "BSP_LegacySboString_Erase",
+      "name_status": "descriptive_hypothesis_not_recovered_library_symbol",
+      "cpp_interface": "native_legacy_sbo_string_erase_004087f0",
+      "status": "complete_logical_reconstruction_with_concrete_host_crt_exception_boundaries_strict_and_focused_native_fixture_checked",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "original_abi": "ECX string; stack unsigned offset,count; EAX string; RET8",
+      "contract": "Offset error even for zero count, suffix clamp, actual memmove_s with capacity-offset and remaining-count. Nonzero erase rereads current length/data after returning validation; zero erase has no mutation.",
+      "old_ghidra_annotation": {
+        "address": "004087f0",
+        "function_name": "FUN_004087f0"
+      },
+      "native_code": {
+        "address": "004087f0",
+        "length": 130,
+        "end_exclusive": "00408872",
+        "disk_offset": 34800,
+        "disk_sha256": "c270a0c03767d54cc43e0dc5a4af4137f02f41b6525e0bdb340416e2dbc608c0",
+        "live_sha256": "c270a0c03767d54cc43e0dc5a4af4137f02f41b6525e0bdb340416e2dbc608c0",
+        "role": "complete_owned_logical_function"
+      },
+      "evidence": [
+        "docs/NATIVE_LEGACY_SBO_STRING.md",
+        "reports/native_legacy_sbo_string_audit.json"
+      ],
+      "qualification": "Original-byte comparison uses recorded actual host CRT and EH services at boundaries. Not an original exception-object ABI replacement, exhaustive numeric/handler test, or game validation."
+    }
+  ],
+  "storage": {
+    "type": "NativeLegacySboStringStorage",
+    "bytes": 28,
+    "fields": {
+      "00": "preserved uint32",
+      "04": "16-byte union inline bytes or heap pointer",
+      "14": "unsigned length",
+      "18": "unsigned capacity"
+    },
+    "selection": "capacity<16 selects inline; otherwise heap; leading word never changed",
+    "ownership": "Raw storage with explicit destroy; no automatic owning copy/destructor. Must not substitute eight-byte pooled NativeString."
+  },
+  "growth_eh": {
+    "logical_span": "004089e0..00408b10 exclusive",
+    "full_bytes": 304,
+    "entry_saved_end": "00408a4f",
+    "saved_split_entries": {
+      "00408a50": "Catch_All@00408a50",
+      "00408a78": "FUN_00408a78",
+      "00408ae0": "Catch_All@00408ae0"
+    },
+    "handler": "00cc8890",
+    "funcinfo": "00e049b8",
+    "magic": "19930522",
+    "max_state": 4,
+    "unwind_map": "00e04950",
+    "unwind_transitions": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": 0
+      },
+      {
+        "state": 1,
+        "previous": -1,
+        "action": 0
+      },
+      {
+        "state": 2,
+        "previous": 1,
+        "action": 0
+      },
+      {
+        "state": 3,
+        "previous": 1,
+        "action": 0
+      }
+    ],
+    "try_map": "00e04990",
+    "try_records": [
+      {
+        "low": 2,
+        "high": 2,
+        "catch_high": 3,
+        "handler_table": "00e04970",
+        "catch": "00408ae0",
+        "flags": "40"
+      },
+      {
+        "low": 0,
+        "high": 0,
+        "catch_high": 3,
+        "handler_table": "00e04980",
+        "catch": "00408a50",
+        "flags": "40"
+      }
+    ],
+    "first_failure": "Retry original request+1 if first allocation threw; slot already holds replacement pointer after first allocation succeeds, so a throwing copy handler instead retries pointer bits+1.",
+    "second_allocation_failure": "Free current old heap when selected, reset cap15/len0/inline0, CxxThrowException(0,0) rethrows second exception.",
+    "continuation_scope": "After first catch returns through dispatcher to 00408a72, raw state2 remains but nested catch context has ended. A subsequent copy-handler throw propagates with old string unchanged.",
+    "execution_observation": {
+      "native_invalid_handler_calls": 2,
+      "host_invalid_handler_calls": 2,
+      "native_new_handler_calls": 0,
+      "host_new_handler_calls": 0,
+      "old_length": 5,
+      "old_capacity": 16,
+      "old_heap_pointer": null
+    },
+    "replacement_cleanup": "Do not invent RAII freeing unpublished replacement buffers; observed native path can abandon them."
+  },
+  "runtime_boundaries": {
+    "allocation": {
+      "native": "00bf681b",
+      "implementation": "singleton_lifetime_allocate",
+      "behavior": "real malloc/_callnewh loop, return retry on nonzero handler, bad_alloc if exhausted; native size equals host bytes"
+    },
+    "free": {
+      "native": "00bf65ac",
+      "implementation": "singleton_lifetime_free",
+      "behavior": "real matching host free"
+    },
+    "copy": {
+      "native": "00bf672c",
+      "implementation": "memcpy_s",
+      "behavior": "zero count returns0; nonzero null destination EINVAL; null source or short capacity zero destination capacity bytes before EINVAL/ERANGE and real handler; status ignored by string caller"
+    },
+    "move": {
+      "native": "00bf67a7",
+      "implementation": "memmove_s",
+      "behavior": "zero count returns0; nonzero null operands EINVAL or short capacity ERANGE with real handler, without zeroing destination; caller continues on return"
+    },
+    "invalid_parameter": "Actual host CRT handler policy and default terminal action, not a reconstruction of encoded native global0109DD64/Watson ABI. Returning and throwing installed handlers are exercised.",
+    "length_error": {
+      "native": "00bf5695",
+      "message_address": "00d69274",
+      "message": "string too long",
+      "throw_info": "00d83f98",
+      "type_descriptor": "00e08000",
+      "host": "std::length_error"
+    },
+    "range_error": {
+      "native": "00bf56d4",
+      "message_address": "00d69284",
+      "message": "invalid string position",
+      "throw_info": "00d863a8",
+      "type_descriptor": "00e0817c",
+      "host": "std::out_of_range"
+    },
+    "exception_qualification": "Type/message/control-flow semantic adapter. Original 40-byte exception layout, message allocation/copy sequence and ThrowInfo ABI are not replaced; host exception-message allocation failure can differ."
+  },
+  "validation": {
+    "private_fixture": "local/native_legacy_sbo_string_check.cpp",
+    "comparison_words": 289,
+    "result": "PASS",
+    "native_body_count": 6,
+    "native_secure_crt_bodies": [
+      "00bf672c",
+      "00bf67a7"
+    ],
+    "build_flags": [
+      "MSVC Win32",
+      "/std:c++17",
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/W4",
+      "/WX"
+    ],
+    "fixture_link_flags": [
+      "/SAFESEH:NO",
+      "/BASE:0x30000000",
+      "/DYNAMICBASE:NO",
+      "/FIXED"
+    ],
+    "handler_bridge": {
+      "site": "004089e6",
+      "checked_original_target": "00cc8890",
+      "adaptation": "Equivalent fixture-image naked entry MOV EAX,native relocated FuncInfo; JMP actual host __CxxFrameHandler3. Windows dispatch rejected a private dynamic handler before this explicit fixture bridge.",
+      "native_eh_data_used": true,
+      "original_game_crt_dispatcher_executed": false
+    },
+    "external_hooks": [
+      "00bf5695",
+      "00bf56d4",
+      "00bf65ac",
+      "00bf66ef",
+      "00bf681b",
+      "00bf6885",
+      "00bf6b43",
+      "00bf7680",
+      "00bf79f0",
+      "00bf87e0",
+      "00bffb8b"
+    ],
+    "coverage": [
+      "inline and heap counted assignment",
+      "self alias before maximum count",
+      "same and distinct string substring",
+      "zero assignment and erase",
+      "growth rounding and capacity retention",
+      "destroy reset",
+      "typed length/range errors",
+      "returning invalid handler replaces current data",
+      "returning invalid handler changes current erase length",
+      "growth null-source copy validation",
+      "first bad_alloc exact retry",
+      "throwing new-handler exact retry",
+      "second allocation bad_alloc reset and rethrow",
+      "second allocation custom exception reset and rethrow",
+      "throwing first copy retries using replacement pointer bits",
+      "throwing fallback copy escapes without resetting old string",
+      "zero-byte allocation calls real allocator"
+    ],
+    "repository_build": "scripts/build.ps1 passed; initial1/1; verify-seeds enabled native fixture then final2/2 passed",
+    "seed_verification": "All eight installed PE/Ghidra seed spans matched; local/native_legacy_sbo_string_verify_seeds.log",
+    "qualified_claim": "Focused original-byte control flow using actual host CRT/EH bridge. Not exhaustive testing, whole original CRT execution, native exception object ABI compatibility, or gameplay proof.",
+    "diagnostic_trace": "local/native_legacy_sbo_string_eh_trace.log retained native frame state observations from the passing diagnostic run; final fixture removed diagnostic logging only."
+  },
+  "code_evidence": [
+    {
+      "address": "00408720",
+      "length": 193,
+      "end_exclusive": "004087e1",
+      "disk_offset": 34592,
+      "disk_sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34",
+      "live_sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34",
+      "role": "complete_owned_logical_function"
+    },
+    {
+      "address": "00408120",
+      "length": 217,
+      "end_exclusive": "004081f9",
+      "disk_offset": 33056,
+      "disk_sha256": "e4104d83c47c8751f42572271b41b74d8eeb30b93a83c688ea62144542019175",
+      "live_sha256": "e4104d83c47c8751f42572271b41b74d8eeb30b93a83c688ea62144542019175",
+      "role": "complete_owned_logical_function"
+    },
+    {
+      "address": "004072d0",
+      "length": 38,
+      "end_exclusive": "004072f6",
+      "disk_offset": 29392,
+      "disk_sha256": "2f179ded49a9621df35befbde920bb2a9b2cb84c7600d74530e7e3c4c45ddce9",
+      "live_sha256": "2f179ded49a9621df35befbde920bb2a9b2cb84c7600d74530e7e3c4c45ddce9",
+      "role": "complete_owned_logical_function"
+    },
+    {
+      "address": "004089e0",
+      "length": 304,
+      "end_exclusive": "00408b10",
+      "disk_offset": 35296,
+      "disk_sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191",
+      "live_sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191",
+      "role": "complete_owned_logical_function"
+    },
+    {
+      "address": "00408b60",
+      "length": 85,
+      "end_exclusive": "00408bb5",
+      "disk_offset": 35680,
+      "disk_sha256": "0ae014e5db77545ed05d24a175da22eae05e7f7ad1a446364d703edef6ad83e2",
+      "live_sha256": "0ae014e5db77545ed05d24a175da22eae05e7f7ad1a446364d703edef6ad83e2",
+      "role": "complete_owned_logical_function"
+    },
+    {
+      "address": "004087f0",
+      "length": 130,
+      "end_exclusive": "00408872",
+      "disk_offset": 34800,
+      "disk_sha256": "c270a0c03767d54cc43e0dc5a4af4137f02f41b6525e0bdb340416e2dbc608c0",
+      "live_sha256": "c270a0c03767d54cc43e0dc5a4af4137f02f41b6525e0bdb340416e2dbc608c0",
+      "role": "complete_owned_logical_function"
+    },
+    {
+      "address": "00cc8890",
+      "length": 10,
+      "end_exclusive": "00cc889a",
+      "disk_offset": 9210000,
+      "disk_sha256": "c6608f5116ef57a9aa53049332e750d8da79d6ace7e3aa65653e62a07b9978f8",
+      "live_sha256": "c6608f5116ef57a9aa53049332e750d8da79d6ace7e3aa65653e62a07b9978f8",
+      "role": "native_eh_entry_verified_equivalent_in_image_entry_used"
+    },
+    {
+      "address": "00bf672c",
+      "length": 123,
+      "end_exclusive": "00bf67a7",
+      "disk_offset": 8349484,
+      "disk_sha256": "296b664d129677ee3b3e5ea0df4f90adabc128c84b811d8a6f9f2d0197714e59",
+      "live_sha256": "296b664d129677ee3b3e5ea0df4f90adabc128c84b811d8a6f9f2d0197714e59",
+      "role": "original_crt_secure_operation_body_executed"
+    },
+    {
+      "address": "00bf67a7",
+      "length": 91,
+      "end_exclusive": "00bf6802",
+      "disk_offset": 8349607,
+      "disk_sha256": "c4830b17566680e561e647a6a2c9c105c69377e05e0cb10957814fa6cbf43885",
+      "live_sha256": "c4830b17566680e561e647a6a2c9c105c69377e05e0cb10957814fa6cbf43885",
+      "role": "original_crt_secure_operation_body_executed"
+    },
+    {
+      "address": "00bf681b",
+      "length": 5,
+      "end_exclusive": "00bf6820",
+      "disk_offset": 8349723,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "end_exclusive": "00bf65b1",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf5695",
+      "length": 5,
+      "end_exclusive": "00bf569a",
+      "disk_offset": 8345237,
+      "disk_sha256": "1968653218518b101f73dbda3cd947fb58e601daec0b93486fb03846b1824eca",
+      "live_sha256": "1968653218518b101f73dbda3cd947fb58e601daec0b93486fb03846b1824eca",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf56d4",
+      "length": 5,
+      "end_exclusive": "00bf56d9",
+      "disk_offset": 8345300,
+      "disk_sha256": "c73d15124e107ed395760c7890f82fce5b3da1fcc5035261bbff19532d389323",
+      "live_sha256": "c73d15124e107ed395760c7890f82fce5b3da1fcc5035261bbff19532d389323",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf6885",
+      "length": 5,
+      "end_exclusive": "00bf688a",
+      "disk_offset": 8349829,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf6b43",
+      "length": 5,
+      "end_exclusive": "00bf6b48",
+      "disk_offset": 8350531,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf66ef",
+      "length": 5,
+      "end_exclusive": "00bf66f4",
+      "disk_offset": 8349423,
+      "disk_sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+      "live_sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bffb8b",
+      "length": 5,
+      "end_exclusive": "00bffb90",
+      "disk_offset": 8387467,
+      "disk_sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+      "live_sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf7680",
+      "length": 5,
+      "end_exclusive": "00bf7685",
+      "disk_offset": 8353408,
+      "disk_sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "live_sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf79f0",
+      "length": 5,
+      "end_exclusive": "00bf79f5",
+      "disk_offset": 8354288,
+      "disk_sha256": "b61aef05f4fb871ed714f5402dc4f750975a6b1c7edc82412a3d3db4ceba7156",
+      "live_sha256": "b61aef05f4fb871ed714f5402dc4f750975a6b1c7edc82412a3d3db4ceba7156",
+      "role": "verified_external_service_hook_preimage_only"
+    },
+    {
+      "address": "00bf87e0",
+      "length": 5,
+      "end_exclusive": "00bf87e5",
+      "disk_offset": 8357856,
+      "disk_sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "live_sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "role": "verified_external_service_hook_preimage_only"
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00e04950",
+      "length": 140,
+      "end_exclusive": "00e049dc",
+      "disk_offset": 10504528,
+      "disk_sha256": "b58a878e108a61a4129aa31326a85cd6bddf0e129242a88b216b7ec438c20c95",
+      "live_sha256": "b58a878e108a61a4129aa31326a85cd6bddf0e129242a88b216b7ec438c20c95"
+    }
+  ],
+  "support_evidence": [
+    {
+      "address": "00bf5695",
+      "length": 62,
+      "end_exclusive": "00bf56d3",
+      "disk_offset": 8345237,
+      "disk_sha256": "4be0df66d47a31a635e077583c46173356749da5b54d4a5660c8643e4f25beee",
+      "live_sha256": "4be0df66d47a31a635e077583c46173356749da5b54d4a5660c8643e4f25beee"
+    },
+    {
+      "address": "00bf56d4",
+      "length": 62,
+      "end_exclusive": "00bf5712",
+      "disk_offset": 8345300,
+      "disk_sha256": "856eb0dad0a6a1d654ccd56e66dab5772a01e4bdc71d153672bd029a8726923f",
+      "live_sha256": "856eb0dad0a6a1d654ccd56e66dab5772a01e4bdc71d153672bd029a8726923f"
+    },
+    {
+      "address": "00bf681b",
+      "length": 105,
+      "end_exclusive": "00bf6884",
+      "disk_offset": 8349723,
+      "disk_sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "live_sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1"
+    },
+    {
+      "address": "00bf66ef",
+      "length": 36,
+      "end_exclusive": "00bf6713",
+      "disk_offset": 8349423,
+      "disk_sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "live_sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3"
+    },
+    {
+      "address": "00d69274",
+      "length": 40,
+      "end_exclusive": "00d6929c",
+      "disk_offset": 9867892,
+      "disk_sha256": "df2ca14e6fb7420d97635a8d7b9305be2ec8fdefb3c4cde9356d72bccffbba74",
+      "live_sha256": "df2ca14e6fb7420d97635a8d7b9305be2ec8fdefb3c4cde9356d72bccffbba74"
+    },
+    {
+      "address": "00d83f98",
+      "length": 16,
+      "end_exclusive": "00d83fa8",
+      "disk_offset": 9977752,
+      "disk_sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "live_sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6"
+    },
+    {
+      "address": "00d83fd4",
+      "length": 16,
+      "end_exclusive": "00d83fe4",
+      "disk_offset": 9977812,
+      "disk_sha256": "0a8b9d596c19d3c70400882f4ec012f7fcd1218ce95d18c044472052d5fed30f",
+      "live_sha256": "0a8b9d596c19d3c70400882f4ec012f7fcd1218ce95d18c044472052d5fed30f"
+    },
+    {
+      "address": "00d83fe4",
+      "length": 28,
+      "end_exclusive": "00d84000",
+      "disk_offset": 9977828,
+      "disk_sha256": "a77f6b92f949c470b312a60a8ca4dfdfbb81fc3516ee57f51339f22d7c6745ab",
+      "live_sha256": "a77f6b92f949c470b312a60a8ca4dfdfbb81fc3516ee57f51339f22d7c6745ab"
+    },
+    {
+      "address": "00d863a8",
+      "length": 16,
+      "end_exclusive": "00d863b8",
+      "disk_offset": 9986984,
+      "disk_sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "live_sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814"
+    },
+    {
+      "address": "00d863e4",
+      "length": 16,
+      "end_exclusive": "00d863f4",
+      "disk_offset": 9987044,
+      "disk_sha256": "ce36cf5003f6c6d94772206183c377abcd104fc63b285da06b0b8aa354073017",
+      "live_sha256": "ce36cf5003f6c6d94772206183c377abcd104fc63b285da06b0b8aa354073017"
+    },
+    {
+      "address": "00d863f4",
+      "length": 28,
+      "end_exclusive": "00d86410",
+      "disk_offset": 9987060,
+      "disk_sha256": "e1aebe4960e79465b8a8c1d8c2a99283f539f102dbadd4d46767c6dcf00d888f",
+      "live_sha256": "e1aebe4960e79465b8a8c1d8c2a99283f539f102dbadd4d46767c6dcf00d888f"
+    },
+    {
+      "address": "00e08000",
+      "length": 32,
+      "end_exclusive": "00e08020",
+      "disk_offset": 10518528,
+      "disk_sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481",
+      "live_sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481"
+    },
+    {
+      "address": "00e0817c",
+      "length": 32,
+      "end_exclusive": "00e0819c",
+      "disk_offset": 10518908,
+      "disk_sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76",
+      "live_sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76"
+    }
+  ],
+  "checked_rebases": [
+    {
+      "address": "004089e6",
+      "preimage": "00cc8890"
+    },
+    {
+      "address": "00408a6d",
+      "preimage": "00408a72"
+    },
+    {
+      "address": "00408b9f",
+      "preimage": "00e03cc0"
+    },
+    {
+      "address": "00408bac",
+      "preimage": "00d6923c"
+    },
+    {
+      "address": "00cc8891",
+      "preimage": "00e049b8"
+    },
+    {
+      "address": "00e0497c",
+      "preimage": "00408ae0"
+    },
+    {
+      "address": "00e0498c",
+      "preimage": "00408a50"
+    },
+    {
+      "address": "00e049a0",
+      "preimage": "00e04970"
+    },
+    {
+      "address": "00e049b4",
+      "preimage": "00e04980"
+    },
+    {
+      "address": "00e049c0",
+      "preimage": "00e04950"
+    },
+    {
+      "address": "00e049c8",
+      "preimage": "00e04990"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "sha256": "90da3e0f0f601077e4b3bd96de4f0b8b343b4b8a23c0a915f20241dc73f59895",
+      "bytes": 2019
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "bytes": 7772
+    },
+    {
+      "path": "docs/NATIVE_LEGACY_SBO_STRING.md",
+      "sha256": "b3f0ffb54bdd51bdd6c61344d2f84c6580b2e8d4aafd21d777518d3ded411a41",
+      "bytes": 11190
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "bytes": 3986
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "bytes": 10921
+    },
+    {
+      "path": "local/prepare_native_legacy_sbo_string.py",
+      "sha256": "74925529e5eeb691ef92d66430d785ff3c85abbb11c381e0e22b2a221b16861c",
+      "bytes": 4698
+    },
+    {
+      "path": "local/native_legacy_sbo_string_preparation.json",
+      "sha256": "293ab63d4ae6e4464e1008884e7e2a01080c49e028d41242a110807bb2dc7b0d",
+      "bytes": 12113
+    },
+    {
+      "path": "local/native_legacy_sbo_string_preparation.log",
+      "sha256": "f0890b0194897befc27ede41e2a702858dd7b3ed2063cd38fec7b0514b068191",
+      "bytes": 70
+    },
+    {
+      "path": "local/native_legacy_sbo_string_spans.hpp",
+      "sha256": "eb5dc08d4aef3f43b43aee8bf735786b82bc5b313bd6a63f8020698eaf499146",
+      "bytes": 1251
+    },
+    {
+      "path": "local/native_legacy_sbo_string_old_protos.txt",
+      "sha256": "c7c824dadb1e4a80838c311f25cad6d789b0e25fd382301190fa89f1a14976d7",
+      "bytes": 777
+    },
+    {
+      "path": "local/native_legacy_sbo_string_old_comments.json",
+      "sha256": "637dc6364cdef131b4f72df606c5a83d17ee70ead00422f8b7c8e0a096c91ce7",
+      "bytes": 1542
+    },
+    {
+      "path": "local/native_legacy_sbo_string_support_protos.txt",
+      "sha256": "a62584093c4a6572844a8a2f43730804304d60193e1cbca4882500038d9e3c5b",
+      "bytes": 746
+    },
+    {
+      "path": "local/native_legacy_sbo_string_check.cpp",
+      "sha256": "ad892b37b5e9f3b051f98db95da5ba657b9e5c3e05bdf7e28deb917a1e6ca513",
+      "bytes": 11797
+    },
+    {
+      "path": "local/build_native_legacy_sbo_string_check.ps1",
+      "sha256": "e5a07cda84477da96985c058bdc9b2ca8e1c6273635eaae21dbd323159183b3b",
+      "bytes": 1402
+    },
+    {
+      "path": "local/native_legacy_sbo_string_check.log",
+      "sha256": "c78e50589d06beb00caf354d67fd9a284eb3877126cb2f0227d5e9da267915ca",
+      "bytes": 324
+    },
+    {
+      "path": "local/native_legacy_sbo_string_eh_trace.log",
+      "sha256": "da81b0da253085678ee40f6d0e039c54a4121b991d658c5168e062a5168b3eb5",
+      "bytes": 11663
+    },
+    {
+      "path": "local/native_legacy_sbo_string_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "local/native_legacy_sbo_string_build.log",
+      "sha256": "3b474141a2f4df5efade343f70333f0c701d9a764b556f4e1a43ff31f1d88fa0",
+      "bytes": 9631
+    },
+    {
+      "path": "local/native_legacy_sbo_string_build_final.log",
+      "sha256": "36d212e6631efd06e08680947e158e639f77ba13b9acb1b6040b229c2f41356a",
+      "bytes": 2763
+    },
+    {
+      "path": "build/legacy-sbo-string-check/native_legacy_sbo_string_check.exe",
+      "sha256": "31dc59991b96429e7cac057cc52cb635919f66f305631c158f4f02880565bd1e",
+      "bytes": 37376
+    },
+    {
+      "path": "build/legacy-sbo-string-check/native_legacy_sbo_string.obj",
+      "sha256": "96a13dc251ff4d01ef0dac4ccbb3c43bf19ee6a3fdafaa7993d4a55ba1c292ff",
+      "bytes": 18674
+    }
+  ],
+  "limits": [
+    "Not a binary replacement: new C++ calling interfaces and actual host CRT exception services.",
+    "Original 40-byte exception owners and 004CE780 remain separate work.",
+    "Six complete logical functions counted; helper hook spans are not claimed as reconstructed full functions.",
+    "New source is independently compiled; root CMake and ledger/Ghidra integration are separate.",
+    "No promise for unmapped pointers, data races, arbitrary invalid overlapping memcpy operands, or every CRT handler policy.",
+    "No game runtime or visual validation; no Ghidra renames, saved-body edits, shared ledger edits or push in this worker."
+  ]
+}
