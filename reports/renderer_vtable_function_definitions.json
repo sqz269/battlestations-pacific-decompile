@@ -1,0 +1,177 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b1ff50",
+    "end_address": "00b1ff57"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b1ff50",
+    "end_address": "00b1ff56",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b1ff50",
+    "disassemble_first": false,
+    "name": "BSP_D3D9Renderer_GetCapabilityRecord"
+   },
+   "result": {
+    "success": true,
+    "address": "00b1ff50",
+    "function_name": "BSP_D3D9Renderer_GetCapabilityRecord",
+    "entry_point": "00b1ff50",
+    "body_size": 7,
+    "message": "Function created successfully at 00b1ff50",
+    "warnings": [
+     "Function name 'BSP_D3D9Renderer_GetCapabilityRecord' \u2014 main part 'D3D9Renderer_GetCapabilityRecord' is not PascalCase. Expected: D3d9rendererGetcapabilityrecord",
+     "Function name 'BSP_D3D9Renderer_GetCapabilityRecord' \u2014 main part 'D3D9Renderer_GetCapabilityRecord' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_D3D9Renderer_GetCapabilityRecord' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b1ff50",
+   "end": "00b1ff57",
+   "name": "BSP_D3D9Renderer_GetCapabilityRecord",
+   "after": "Function: BSP_D3D9Renderer_GetCapabilityRecord at 00b1ff50\nSignature: undefined BSP_D3D9Renderer_GetCapabilityRecord(void)\nEntry: 00b1ff50\nBody: 00b1ff50 - 00b1ff56"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b21ec0",
+    "end_address": "00b21f0b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b21ec0",
+    "end_address": "00b21f0a",
+    "bytes_disassembled": 75,
+    "message": "Successfully disassembled 75 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b21ec0",
+    "disassemble_first": false,
+    "name": "BSP_D3D9Renderer_CheckDeviceFormat"
+   },
+   "result": {
+    "success": true,
+    "address": "00b21ec0",
+    "function_name": "BSP_D3D9Renderer_CheckDeviceFormat",
+    "entry_point": "00b21ec0",
+    "body_size": 75,
+    "message": "Function created successfully at 00b21ec0",
+    "warnings": [
+     "Function name 'BSP_D3D9Renderer_CheckDeviceFormat' \u2014 main part 'D3D9Renderer_CheckDeviceFormat' is not PascalCase. Expected: D3d9rendererCheckdeviceformat",
+     "Function name 'BSP_D3D9Renderer_CheckDeviceFormat' \u2014 main part 'D3D9Renderer_CheckDeviceFormat' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_D3D9Renderer_CheckDeviceFormat' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b21ec0",
+   "end": "00b21f0b",
+   "name": "BSP_D3D9Renderer_CheckDeviceFormat",
+   "after": "Function: BSP_D3D9Renderer_CheckDeviceFormat at 00b21ec0\nSignature: undefined BSP_D3D9Renderer_CheckDeviceFormat(void)\nEntry: 00b21ec0\nBody: 00b21ec0 - 00b21f0a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b24dc0",
+    "end_address": "00b24dc9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b24dc0",
+    "end_address": "00b24dc8",
+    "bytes_disassembled": 9,
+    "message": "Successfully disassembled 9 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b24dc0",
+    "disassemble_first": false,
+    "name": "BSP_D3D9Renderer_GetField197C_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00b24dc0",
+    "function_name": "BSP_D3D9Renderer_GetField197C_Provisional",
+    "entry_point": "00b24dc0",
+    "body_size": 9,
+    "message": "Function created successfully at 00b24dc0",
+    "warnings": [
+     "Function name 'BSP_D3D9Renderer_GetField197C_Provisional' \u2014 main part 'D3D9Renderer_GetField197C_Provisional' is not PascalCase. Expected: D3d9rendererGetfield197cProvisional",
+     "Function name 'BSP_D3D9Renderer_GetField197C_Provisional' \u2014 main part 'D3D9Renderer_GetField197C_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_D3D9Renderer_GetField197C_Provisional' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b24dc0",
+   "end": "00b24dc9",
+   "name": "BSP_D3D9Renderer_GetField197C_Provisional",
+   "after": "Function: BSP_D3D9Renderer_GetField197C_Provisional at 00b24dc0\nSignature: undefined BSP_D3D9Renderer_GetField197C_Provisional(void)\nEntry: 00b24dc0\nBody: 00b24dc0 - 00b24dc8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b20090",
+    "end_address": "00b20097"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b20090",
+    "end_address": "00b20096",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b20090",
+    "disassemble_first": false,
+    "name": "BSP_D3D9Renderer_GetField198C_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00b20090",
+    "function_name": "BSP_D3D9Renderer_GetField198C_Provisional",
+    "entry_point": "00b20090",
+    "body_size": 7,
+    "message": "Function created successfully at 00b20090",
+    "warnings": [
+     "Function name 'BSP_D3D9Renderer_GetField198C_Provisional' \u2014 main part 'D3D9Renderer_GetField198C_Provisional' is not PascalCase. Expected: D3d9rendererGetfield198cProvisional",
+     "Function name 'BSP_D3D9Renderer_GetField198C_Provisional' \u2014 main part 'D3D9Renderer_GetField198C_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_D3D9Renderer_GetField198C_Provisional' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b20090",
+   "end": "00b20097",
+   "name": "BSP_D3D9Renderer_GetField198C_Provisional",
+   "after": "Function: BSP_D3D9Renderer_GetField198C_Provisional at 00b20090\nSignature: undefined BSP_D3D9Renderer_GetField198C_Provisional(void)\nEntry: 00b20090\nBody: 00b20090 - 00b20096"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

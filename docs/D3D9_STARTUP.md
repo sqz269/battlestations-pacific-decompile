@@ -74,3 +74,7 @@ singleton `0109cf04` and forwards object, HWND, message, WPARAM and LPARAM to
 platform vtable slot `+28h`, then returns with `RET 10h`. It now has a name and
 prototype in Ghidra. The full window handler still depends on input/audio/UI;
 the diagnostic HWND does not implement or replace it.
+
+## Correction from docs/APP_INIT_RENDERER.md
+
+The presentation sync choice comes from the `VSync` game setting passed as the fourth window-creation argument; the DF16 and D16 probes are `CheckDeviceFormat` depth-stencil texture queries (renderer virtual `+0xF8`, `00b21ec0`) against an X8R8G8B8 adapter format, and the shadow map is square, 4096 or 2048 by the `HiResShadow` setting.

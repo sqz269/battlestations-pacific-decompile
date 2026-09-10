@@ -403,3 +403,7 @@ No reconstruction reads a real registry or a real file.
 None of these is ABI-compatible or game-validated. The single fixture test in
 `tests/math_tests.cpp` covers the `auto` token-consumption behaviour, which is the one place
 where a plausible per-token reading of the switch table gives the wrong answer.
+
+### Correction from docs/APP_INIT_RENDERER.md
+
+`caps+0x28` behind renderer virtual `+0x104` (`00b1ff50`, an accessor for the capability record at renderer+1B18h) is `LOWORD(D3DCAPS9.PixelShaderVersion)`, so `caps+0x28 < 0x200` means pixel shader model below 2.0, which disables shadows.
