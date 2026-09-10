@@ -273,3 +273,7 @@ Nothing here is ABI-compatible and nothing is game-validated.
 - Open `DAT_00e198c8` and its virtual +8, which is the natural start of `game_frontend_states`.
 - Recover the base screen class at 00684e10/00684700/00683aa0 and the `DAT_00e19898` list, which
   would give the rest of the attract object's layout.
+
+## Correction from docs/GUI_LAYER_MANAGER.md
+
+The reader of `manager+48h` that was recorded as not found is at `00aa3a36`: it gates the entire pointer pass of the GUI manager update, and `00aa3910`'s interior is the pointer motion and clamp pass.
