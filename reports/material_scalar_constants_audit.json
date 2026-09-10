@@ -1,0 +1,260 @@
+{
+  "packet": "material_scalar_color_tail",
+  "audited_utc": "2026-09-10T05:45:02.787771+00:00",
+  "base_commit": "dd5fe80",
+  "status": "bounded_reconstruction_strict_compiled_native_fixture_checked",
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "parent_function": "00b42350",
+  "parent_abi": "ECX pass; stack render entry and override; RET8. EBX pass and EBP entry within both assigned byte spans.",
+  "assigned_ranges": [
+    {
+      "start": "00b42e4a",
+      "end_exclusive": "00b42ef9",
+      "length": 175
+    },
+    {
+      "start": "00b4305d",
+      "end_exclusive": "00b430cf",
+      "length": 114
+    }
+  ],
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project_file_exists": true,
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "cli_verification": "tools/bsp.py client() calls Client.verify before every Ghidra query",
+    "identities": [
+      {
+        "address": "00b42e4a",
+        "end_exclusive": "00b42ef9",
+        "length": 175,
+        "file_offset": 7614026,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "161aa6a8a1ff33b299278aed86e345e8b907174019f58dbc4059559132fecdeb",
+        "preimage_hex": "8b4b708a41333cff7423f30f104d180fb6c0c1e00405f4eb0801f30f1108f30f114004f30f114008f30f11400c8b53748a42333cff7423f30f104d180fb6c0c1e00405ecdb0801f30f1108f30f114004f30f114008f30f11400c8b43748a40343cff744bd945008b4d08d95c242083ec08d90538a2d7000fb6f0d95c2404d9442428d91c24e89c0803000f57c0d95c2434d9442434c1e60481c6ecdb0801d91ef30f114604f30f114608f30f11460c"
+      },
+      {
+        "address": "00b4305d",
+        "end_exclusive": "00b430cf",
+        "length": 114,
+        "file_offset": 7614557,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "04ba3939b64965961d550f09470d90a6e251dbaa30978144b73d45660ade4f14",
+        "preimage_hex": "8b53748a42373cff742f8b4d048b49206a000fb6f0e87949fdff8b10c1e60481c6ecdb080189168b4804894e048b50088956088b400c89460c8b4b708a41373cff742f8b55048b4a206a000fb6f0e84049fdff8b08c1e60481c6f4eb0801890e8b50048956048b4808894e088b500c89560c"
+      },
+      {
+        "address": "00b73770",
+        "end_exclusive": "00b737fb",
+        "length": 139,
+        "file_offset": 7812976,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "fdc084707cea40aba2b2da3f0a61755e0b36afb3c2db9635cea0cb3955123954",
+        "preimage_hex": "518b415085c0740bc1e004f30f10440804eb08f30f1005dc77ce00f30f110424d90424d9c0d84c240cd95c240cd9442408d944240cd9c0deebd9c9dee2d9e8d9c0def2d9cadec9dee9d95c240cd944240cd9eedff1ddd876110f57c0f30f1144240cd944240c59c20800f30f1044240cf30f100d4ca2d7000f2fc176dff30f114c240cd944240c59c20800"
+      },
+      {
+        "address": "00b179f0",
+        "end_exclusive": "00b179f6",
+        "length": 6,
+        "file_offset": 7436784,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+        "preimage_hex": "8d4138c20400"
+      },
+      {
+        "address": "00d7a238",
+        "end_exclusive": "00d7a23c",
+        "length": 4,
+        "file_offset": 9937464,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee",
+        "preimage_hex": "0ad7233c"
+      },
+      {
+        "address": "00ce77dc",
+        "end_exclusive": "00ce77e0",
+        "length": 4,
+        "file_offset": 9336796,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+        "preimage_hex": "52b87e3f"
+      },
+      {
+        "address": "00d7a24c",
+        "end_exclusive": "00d7a250",
+        "length": 4,
+        "file_offset": 9937484,
+        "ghidra_matches_installed_pe": true,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "preimage_hex": "0000803f"
+      }
+    ],
+    "annotation_preimages": [
+      {
+        "address": "00b42350",
+        "function_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nRequired backend for MaterialEntryDispatcher, NOT reconstructed in full. Patches actual shared VS0108EBF4/PS0108DBEC blocks and dynamic textures using selected pass/entry. Existing reflected parameter, matrix/decode and shadow fragments do not cover all model/camera/light/visibility/texture owner inputs. Never synthesize zero constant blocks to make downstream draw run. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      {
+        "address": "00b73770",
+        "function_name": "BSP_StreamParameters_ComputeThresholdFade",
+        "comment": "[BSP reconstruction 00b73770]\nProvisional semantic name. Thiscall2floatargs RET8 ST0. Object+50h index chooses threshold default0.995f or object+4+16*index. Width=float32(threshold*fraction); float32(1-(input-(threshold-width))*(1/width)), compare clamp0..1, NaN passes. Caller uses0.01f and writes onePSfloat4. Unported; input domain meaning unresolved.\n\n[BSP reconstruction 00b73770] update\nIndex+50 selects default3f7eb852 or float+4+16*index. Widthfloatstore then x87 final subtraction/reciprocal/product, finalfloatstore and ordered clamp0..1; NaN passes. Typed API takes the actual resolved threshold; grouping caller multiplies without interveningfloatstores. Original ABI: ECX stream parameters; stack floatinput,floatfraction; ST0; RET8. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      {
+        "address": "00b179f0",
+        "function_name": "BSP_Material_GetDiffuseColor",
+        "comment": "[BSP reconstruction 00b179f0]\nECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json.\n\n[BSP reconstruction 00b179f0] update\nReturn a live pointer alias to first four record floats (diffuse color). No copy, slot selection, or dirty-flag write. Existing cMatDiffColor consumer audit identifies quartet. Original ABI: ECX material; stack ignored slot; EAX material+38h; RET4. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      }
+    ]
+  },
+  "functions": [
+    {
+      "api": "write_material_visibility_lod_00b42e4a",
+      "source": "src/material_scalar_constants.cpp",
+      "execution_order": [
+        "VS registers[43] visibility",
+        "PS registers[43] visibility",
+        "PS registers[44] cLODValue"
+      ],
+      "metadata": "Each selected pass metadata register byte is read at its stage; VS pass+70, PS pass+74, register bytes at metadata+8+semantic. FF skips; counts ignored.",
+      "visibility": "Native MOVSS copies entry+18 bits verbatim to x; native zero XMM0 supplies positive-zero yzw. No visibility clamp or x87 conversion.",
+      "lod_call": {
+        "site": "00b42ecf",
+        "target": "00b73770",
+        "abi": "ECX actual stream parameters from entry+8; stack input and fraction; ST0 result; RET8.",
+        "host_abi": "Existing compute_stream_threshold_fade_00b73770 cdecl(input,fraction,actual threshold), called with raw stack argument copies.",
+        "source": "Object+50 DWORD index: actual zero selects float bits3f7eb852 at00ce77dc, nonzero selects object+4+16*index. The API requires an actual threshold pointer when selected; no fallback.",
+        "fraction": {
+          "address": "00d7a238",
+          "bits": "3c23d70a",
+          "value": 0.01
+        },
+        "x87": "Entry+0 FLD/FSTP to float local, reload/store to argument, existing helper arithmetic with native float width/final-result stores, ST0 spill to float, reload and store PS x. Positive-zero yzw.",
+        "comparison": "Helper clamps ordered values below0 or above1; unordered results pass. This is separate from raw visibility."
+      },
+      "invalid_host_inputs": "Missing selected threshold or short destination returns false, preserving earlier visibility writes."
+    },
+    {
+      "api": "write_material_diffuse_00b4305d",
+      "source": "src/material_scalar_constants.cpp",
+      "execution_order": [
+        "PS registers[47] diffuse",
+        "VS registers[47] diffuse"
+      ],
+      "owner": "Actual section material [[entry+4]+20], projected MaterialLighting. Required only when a stage selects semantic47.",
+      "getter": {
+        "sites": [
+          "00b43072",
+          "00b430ab"
+        ],
+        "target": "00b179f0",
+        "abi": "ECX material, unused stack slot0; EAX material+38; RET4.",
+        "behavior": "Called separately for each selected stage. Native DWORD read/write pairs preserve raw bits and forward overlap order; host copies through one uint32 temporary per word."
+      },
+      "invalid_host_inputs": "Missing selected lighting or short destination returns false; successful PS writes are retained if later VS destination fails."
+    }
+  ],
+  "composition_contract": [
+    "Run visibility/LOD, then the independent inverse-world00b42ef9..00b4305c fragment, then diffuse.",
+    "Use selected CompiledMaterialPass.vb/pb and actual shared MaterialEntryConstantState vertex_words/pixel_words; never build separate zero scratch banks.",
+    "All metadata-selected register overlaps remain legal and preserve ordered last-writer behavior. No row-count/shader-pointer gate.",
+    "The primary adapter must resolve actual live owner inputs at this native execution point. Threshold pointer remains unread until cLODValue work follows visibility writes.",
+    "Typed object/storage lifetimes must remain stable through each operation. Native allocation/layout and arbitrary invalid pointer behavior are outside the host contract."
+  ],
+  "upstream_dependencies": [
+    {
+      "address": "00b42350",
+      "state": "Shared integrator owns full orchestration and dynamic/bone/skin owner adapters; this worker owns only two ranges."
+    },
+    {
+      "address": "00b46a70",
+      "state": "Full scene/system prefix remains required."
+    },
+    {
+      "owner": "entry+8 stream parameters",
+      "state": "Host GeneratedInstanceGeometry has no native index/threshold overlay here; current owner adapter must provide the actual threshold."
+    },
+    {
+      "owner": "[[entry+4]+20] material",
+      "state": "Primary retains/resolves MaterialCloneState.lighting; no fabricated material accepted."
+    }
+  ],
+  "validation": {
+    "project_and_program_verified_before_every_ghidra_query": true,
+    "assigned_full_range_bytes_match_installed_pe": true,
+    "supporting_helpers_and_constants_match_installed_pe": true,
+    "ghidra_mutations": false,
+    "new_tracked_tests": 0,
+    "strict_compile": {
+      "target": "MSVC Win32",
+      "options": [
+        "/std:c++17",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "passed": true
+    },
+    "baseline": {
+      "command": "./scripts/build.ps1",
+      "after": "python tools/ghidra_export.py verify-seeds",
+      "passed": true,
+      "tests_passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "scope": "Existing repository baseline; primary owns CMake integration of this new source.",
+      "log": "local/material-scalar/seed-enabled-build.log"
+    },
+    "focused_native_fixture": {
+      "passed": true,
+      "leading_value_cases": [
+        "0.607f with actual threshold0.61f",
+        "signaling NaN bits7fa12345"
+      ],
+      "method": "Execute the assigned installed-PE/live-verified byte spans plus copied00b73770/00b179f0 helpers. Relocate absolute bank/constant references and relative helper calls; supply native layout records and XMM0 zero; append RET at each owned span end.",
+      "checks": [
+        "Exact every-word comparison of native and host VS/PS banks after scalar and diffuse separately",
+        "Visibility bits7fa54321 preserved; padding is positive zero",
+        "Diffuse signed zero, signaling NaN, infinity and finite payload copies",
+        "PS visibility and LOD register collision; diffuse collisions with earlier stage values",
+        "Intervening mutation between separate scalar/diffuse calls",
+        "Untouched words and first-register cursor",
+        "Host missing selected threshold preserves earlier visibility; all absent selections accept absent owners"
+      ],
+      "compile_options": [
+        "/O2",
+        "/MD",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "local_source": "local/material-scalar/native_fixture.cpp",
+      "local_log": "local/material-scalar/fixture-result.log",
+      "source_sha256": "f97a928ecda627554bca851dbaec675b08ae983d6fb3d1b5c82e05d60a572a49"
+    },
+    "full_builder_integration": false,
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "Function/API descriptive names are reconstruction hypotheses; Ghidra currently retains undefined prototypes despite assembly-established ABI.",
+    "Current live owner loading, native frame lifecycle and full renderer/game execution are not established by bounded buffer fixtures.",
+    "Host bounds/owner errors intentionally replace invalid native pointer/out-of-range memory behavior with failure.",
+    "Fixture covers masked default floating-point environment; it does not claim unmasked exception/trap-context equivalence."
+  ],
+  "annotation_policy": "Recorded existing annotation preimages; this worker did not rename, comment, save Ghidra or edit ledgers. Primary coordinates any shared annotations.",
+  "source_sha256": {
+    "include\\bsp\\material_scalar_constants.hpp": "f8358dafc5a32b884e581b509ffe9bf270e2495759610304a3f1d2bdc7bf792d",
+    "src\\material_scalar_constants.cpp": "466f7d4a41ba726d0c838bfd02750ed4cfbb1c681c0bec92c57983870cad3100",
+    "docs\\MATERIAL_SCALAR_CONSTANTS.md": "f70752777ab9552e5f8a444f8524182c70f830cd62af93e7280243c43417e7b5"
+  }
+}
