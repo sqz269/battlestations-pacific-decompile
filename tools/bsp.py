@@ -688,7 +688,9 @@ def ledger_write(args):
             sys.exit(f"{address} already has a reviewed name; pass --replace to supersede it or --append-evidence to extend it. Existing record:\n{json.dumps(existing)}")
         previous = ledger.upsert(ledger.NAMES_DIR, {'address': address, 'name': args.name, 'evidence': evidence})
         print(f"{address} -> {args.name}")
-        if previous:
+        if previous and args.append_evidence:
+            print(f"appended evidence (record keeps its earlier text; previous record: {json.dumps(previous)})")
+        elif previous:
             print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
     elif args.ledger_command in ('add-function', 'add-fragment'):
         record = json.loads(args.json)

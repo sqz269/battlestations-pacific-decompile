@@ -271,3 +271,7 @@ files it would own, its contract and its dependencies.
 
 Not packetized: 00b0d7b0 (belongs with the particle-system work already leased elsewhere) and
 00685c80 (needs `DAT_00e198ac` identified first, which packet 5 will settle).
+
+## Corrections from follow-up packets
+
+- docs/GAME_INPUT_TICK.md: the two containers at `game+0x5B0` and `game+0x5BC` are MSVC red-black trees (`std::_Tree` sets, `{iterator list, _Myhead, _Mysize}` at +0/+4/+8, so the sizes sit at `game+0x5B8` and `game+0x5C4`), not lists. `004b9f40` and `004bf830` are `_Tree::iterator::operator++`, and `004d11d0` is `_Tree::erase(iterator)` (hidden return-iterator pointer plus one checked iterator by value; its `invalid map/set<T> iterator` immediate is the MSVC debug message), not a length-error throw.
