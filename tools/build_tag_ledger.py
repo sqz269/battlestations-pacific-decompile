@@ -221,7 +221,9 @@ def main():
               'reports/library_inventory/templates_and_generated.json', action='bookmark')
 
     derived = {e['address'] for e in entries}
-    kept = [row for address, row in existing_tags.items() if address not in derived]
+    # Keep applied tags the reports no longer derive, but never for an address that has since
+    # received a reviewed name or a reconstruction record: the review supersedes the tag.
+    kept = [row for address, row in existing_tags.items() if address not in derived and address not in reviewed]
     entries.extend(kept)
     entries.sort(key=lambda e: int(e['address'], 16))
     shards, evidence_ids = write_tags(entries)
