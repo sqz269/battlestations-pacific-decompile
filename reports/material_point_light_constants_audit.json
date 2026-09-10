@@ -1,0 +1,218 @@
+{
+  "packet": "material_point_light_tail",
+  "date_utc": "2026-09-10",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "saved_project_verified_by": "Every bsp.py ghidra query invokes Client.verify()",
+  "original_abi": {
+    "parent": "00B42350: ECX pass; stack entry, override; RET8",
+    "fragment": "00B43160: EBX pass; EBP render entry; shared parent scratch stack. No independent callable ABI.",
+    "helper": "00B6DC50: ECX actual model; EAX borrowed array header model+164; RET"
+  },
+  "ranges": [
+    {
+      "address": "00b43160",
+      "end_exclusive": "00b43403",
+      "length": 675,
+      "sha256": "48fe0d13622446f418d935e4e317ec5687d06842b2cfd8e75f330415b35909ce",
+      "full_bytes": "8b4d0ce8e8aa02008b4b708a493580f9ff0f848c0200008b680483fd047c05bd040000008bd585d289542420db4424207d06d8057839ce000f57c0d95c2434d94424340fb6c9c1e10481c1f4eb0801f30f114104f30f114108d919f30f11410c8b4b700fb6713681feff0000000f843002000033d283fd040f8cb30100008bce8d7dfdc1e1048d5fff81c1fceb0801c1eb028d74de08897424208d9b000000008b308b3496f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f1141f8f30f1149fcf30f1111f30f1159048b9e840100008959088b9e8801000089590c8b9e8c01000089591081c6840100008b760c8971148b308b749604f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114118f30f11491cf30f115120f30f1159248b9e840100008959288b9e8801000089592c8b9e8c01000089593081c6840100008b760c8971348b308b749608f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114138f30f11493cf30f115140f30f1159448b9e840100008959488b9e8801000089594c8b9e8c01000081c6840100008959508b760c8971548b308b74960cf30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114158f30f11495cf30f115160f30f1159648b9e8401000081c6840100008959688b5e0489596c8b5e088959708b760c89717483c20481c1800000003bd70f8273feffff8b7424203bd5736ec1e60481c6fceb08018bce8b308b3496f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f1141f8f30f1149fcf30f1111f30f1159048bbe8401000081c6840100008979088b7e0489790c8b7e088979108b760c89711483c20183c1203bd5729d",
+      "installed_pe_offset": 7614816,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00b6dc50",
+      "end_exclusive": "00b6dc57",
+      "length": 7,
+      "sha256": "d8ce96a6373a2f955f031e90e9e04c3ff42d3ace920d7c0be0c50017e1650c9a",
+      "full_bytes": "8d8164010000c3",
+      "installed_pe_offset": 7789648,
+      "live_equals_installed_pe": true
+    }
+  ],
+  "ghidra_preimages": [
+    {
+      "address": "00b42350",
+      "annotation": {
+        "address": "00b42350",
+        "function_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nRequired backend for MaterialEntryDispatcher, NOT reconstructed in full. Patches actual shared VS0108EBF4/PS0108DBEC blocks and dynamic textures using selected pass/entry. Existing reflected parameter, matrix/decode and shadow fragments do not cover all model/camera/light/visibility/texture owner inputs. Never synthesize zero constant blocks to make downstream draw run. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b6dc50",
+      "annotation": {
+        "address": "00b6dc50",
+        "function_name": "BSP_Node_GetPointLights",
+        "comment": "[BSP reconstruction 00b6dc50]\nReturns ECX+164. Material builder callsite00B43163 and existing building-instance consumer read this same list. Analysis only; typed point-light identity/value/backlink companion is separate from native construction/type boot. Original ABI: ECX model; EAX borrowed array; RET. Evidence: reports/model_point_light_owner_review.json; docs/GENERATED_MODEL_LIFETIME.md."
+      }
+    }
+  ],
+  "ghidra_proposals": [
+    {
+      "address": "00b42350",
+      "preserve_name": "BSP_MaterialPass_BuildShaderConstants",
+      "append_comment": "Additional bounded point-light tail [00B43160,00B43403) reconstructed in src/material_point_light_constants.cpp. Actual model+164 ordered borrowed cPointLight list; VS metadata+35 count gate, late+36 data lookup, signed valid count capped4. Write count float4 then interleaved +1EC position/radius and +184 color; no PS writes, unused-tail clear or W replacement. Position4 loaded before stores, colors read/store per word, next light pointer reloaded. Overlapping data wins over count. Parent ECX pass; stack entry/override RET8; host interface is not native ABI/game proof. Evidence docs/MATERIAL_POINT_LIGHT_CONSTANTS.md; reports/material_point_light_constants_audit.json."
+    },
+    {
+      "address": "00b6dc50",
+      "preserve_name": "BSP_Node_GetPointLights",
+      "append_comment": "Typed borrowed_point_lights_00b6dc50 now returns the SAME GeneratedModelLifetime.point_lights_164 list; no ownership transfer or copied light domain. Complete native body remains LEA EAX,[ECX+164]; RET. Evidence docs/MATERIAL_POINT_LIGHT_CONSTANTS.md; reports/material_point_light_constants_audit.json."
+    }
+  ],
+  "ghidra_mutations": false,
+  "ledger_mutations": false,
+  "observations": [
+    {
+      "address": "00b43160",
+      "fact": "entry+0C actual model;00B6DC50 yields SAME borrowed model+164 ordered list. Existing GeneratedModelPointLightLinks values/identity/backlinks; geometry+180 is distinct."
+    },
+    {
+      "address": "00b43168",
+      "fact": "Only pass VS metadata+35 (semantic45) gates ALL work; absentFF means no count/list/output access after getter."
+    },
+    {
+      "address": "00b43177",
+      "fact": "Count loaded once, signed cap4, exact float conversion for valid0..INT_MAX container counts. Negative native DWORD paths explicitly excluded."
+    },
+    {
+      "address": "00b431af",
+      "fact": "Count float4 store order Y+0,Z+0,Xcount,W+0."
+    },
+    {
+      "address": "00b431c0",
+      "fact": "VS metadata pointer/data byte+36 semantic46 reloaded AFTER count writes. MissingFF preserves count but skips data. counts/end_register unused."
+    },
+    {
+      "address": "00b43200",
+      "fact": "Four-light unrolled path; next pointer fetched after previous record. Each position float4 fully read before stores; color DWORD read/write interleaved."
+    },
+    {
+      "address": "00b43391",
+      "fact": "Unsigned residual loop handles valid0..3; no writes for zero. data+2*i position_radius, data+2*i+1 color; no unused-tail zeroing or W replacement."
+    },
+    {
+      "address": "00b43403",
+      "fact": "Common parent epilogue outside ownership. Data writes run later than count and overwrite overlapping registers. No PS metadata/output references anywhere in assigned branch."
+    }
+  ],
+  "validation": {
+    "status": "bounded_reconstructed_strict_build_and_native_fixture_passed",
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": true
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests_passed": 2,
+      "tests_total": 2,
+      "limit": "Primary CMake not edited; new source compiled separately below."
+    },
+    "new_source_compile": {
+      "command": "./local/build_point_light_fixture.ps1",
+      "passed": true,
+      "target": "MSVC Win32 C++17",
+      "flags": [
+        "/O2",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "linked_existing_production_library": true
+    },
+    "native_fixture": {
+      "passed": true,
+      "native_comparisons": 9,
+      "counts": [
+        0,
+        1,
+        3,
+        4,
+        5
+      ],
+      "missing_registers": [
+        45,
+        46
+      ],
+      "count_data_overlaps": [
+        {
+          "count_register": 4,
+          "data_register": 4
+        },
+        {
+          "count_register": 7,
+          "data_register": 4
+        }
+      ],
+      "checks": [
+        "Full256-word VS buffers including untouched tails",
+        "Signaling-NaN color payloads bit exact",
+        "Negative-zero position W bits exact",
+        "Both light W values unchanged",
+        "Selected metadata register counts deliberately0 and ignored",
+        "Pixel canaries untouched; assembly has no PS references"
+      ],
+      "execution": "Verified675-byte branch and7-byte helper, helper CALL rel32 and3 absolute VS operands relocated; injected RET replaces parent epilogue outside range. No game process used.",
+      "new_host_check": "One late data-range failure retained complete count float4.",
+      "tracked_test_files_added": 0
+    },
+    "abi_compatible": false,
+    "complete_builder": false,
+    "live_device_upload": false,
+    "visual_parity": false,
+    "game_validated": false
+  },
+  "interfaces": {
+    "accessor": "borrowed_point_lights_00b6dc50(const GeneratedModelLifetime&) returns const reference to model.point_lights_164",
+    "writer": "write_material_point_light_constants_00b43160_fragment(const CompiledMaterialPass&, const vector<GeneratedModelPointLightLinks*>& actual_model_point_lights, vector<float>& vertex_words, string& error)",
+    "late_owner_resolution": "Primary must resolve actual model/list at native stage after previous callbacks/helpers.",
+    "failure_effects": "New host checks: count domain/range fail before writes; data range fails after count; null selected light fails after count and previous lights. Not native error paths."
+  },
+  "artifacts": {
+    "local/point_light_native_fixture.cpp": {
+      "sha256": "27e2ca488018023be244ee63759cf9208b2c13d2ec46a16732f6e4b34d2f0a42",
+      "tracked": false
+    },
+    "local/point_light_native_fixture.exe": {
+      "sha256": "7d8e0a0067c5f40f3ce23755a1063d951a266dc307ecccea2465891d7ef13d82",
+      "tracked": false
+    },
+    "local/point_light_native_fixture.log": {
+      "sha256": "e139a063fa40227a688174e8badb34f59d918e3e80412867da7d424bb53d2511",
+      "tracked": false
+    },
+    "local/point_light_baseline_build.log": {
+      "sha256": "aba5c6f394374d36a5e6b866c95d54396c9649d506798f3b436b3819f9b755e4",
+      "tracked": false
+    },
+    "local/point_light_seed_verify.log": {
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "tracked": false
+    },
+    "include/bsp/material_point_light_constants.hpp": {
+      "sha256": "167a38dc4e15f7ce644e0d5c2413e82e6e7b3a01ade03b2e639c256bf88281fe",
+      "tracked": true
+    },
+    "src/material_point_light_constants.cpp": {
+      "sha256": "389b0b705fa5bf628791cd44d291d4cd8b61bf73a628dcb6e12a8746a84dd612",
+      "tracked": true
+    }
+  },
+  "limitations": [
+    "New semantic C++ interfaces, not native object layout/ABI replacements.",
+    "Counts aboveINT_MAX and corrupt negative native DWORD count behavior excluded.",
+    "Metadata/list headers and source records retain valid C++ storage; no corrupt header aliases or concurrent mutation.",
+    "Whole parent00B42350 and upstream00B46A70 not reconstructed by this packet.",
+    "No Ghidra or shared ledger mutation; primary owns annotation application and CMake integration."
+  ]
+}
