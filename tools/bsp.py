@@ -755,9 +755,16 @@ def lease_cmd(args):
         if not rows:
             print('no leases')
     elif sub == 'check':
-        a = int(args.address, 16)
-        holders = coordination.holders(a)
-        print(f"{h(a)}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
+        active = coordination.active_leases()
+        for target in args.targets:
+            if re.fullmatch(r'(0x)?[0-9a-fA-F]{5,8}', target):
+                a = int(target, 16)
+                holders = coordination.holders(a)
+                print(f"{h(a)}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
+            else:
+                path = target.replace(chr(92), '/')
+                holders = [l for l in active if path in [f.replace(chr(92), '/') for f in l.get('files', [])]]
+                print(f"{path}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
     elif sub == 'lock-status':
         lock = coordination.lock_status()
         print(json.dumps(lock) if lock else 'ghidra lock free')
@@ -878,7 +885,7 @@ def main():
     q = lz.add_parser('release'); q.add_argument('id', nargs='?'); q.add_argument('--packet'); q.add_argument('--owner')
     q = lz.add_parser('list'); q.add_argument('--all', action='store_true'); q.add_argument('--verbose', '-v', action='store_true', help='also list each lease\'s addresses')
     q.add_argument('--limit', type=int, default=40, help='addresses shown per lease with --verbose')
-    q = lz.add_parser('check'); q.add_argument('address')
+    q = lz.add_parser('check', help='who holds each address or file path'); q.add_argument('targets', nargs='+', metavar='ADDRESS|FILE')
     lz.add_parser('lock-status')
     p.set_defaults(func=lease_cmd)
     p = sub.add_parser('packets', help='work packets from config/parallel_work.json with dependencies and leases'); pk = p.add_subparsers(dest='packets_command', required=True)

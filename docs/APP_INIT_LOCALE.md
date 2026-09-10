@@ -236,3 +236,7 @@ instead of overflowing a stack frame.
 5. The `#` substitution pass and the `^` prefix in `00a9f4b0`.
 6. The `Content file name for %s` and `<SRCH><` strings the earlier map noted as reachable
    from `00aa09d0` were not encountered on any path walked here.
+
+## Cross-reference
+
+The 0x4040-byte object constructed by `0073c960` (docs/APP_INIT_FONTS_GUI.md) is the manager that owns the string map described above: `DAT_00f8bc4c`, with the 0x1000-head bucket array that `00a9fc30`, `00a9ec70` and `0073c240` index.
