@@ -1,0 +1,268 @@
+{
+  "packet": "game_frame_control",
+  "owner": "agent/game-frame-control",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "anchor": "004e4a40 BSP_Game_OnMove control spine",
+  "doc": "docs/GAME_FRAME_CONTROL.md",
+  "sources": [
+    "include/bsp/game_frame_control.hpp",
+    "src/game_frame_control.cpp",
+    "tests/math_tests.cpp"
+  ],
+  "evidence_method": "disk .text bytes via tools/bsp.py disasm-raw; the stored Ghidra body for 004e4a40 is eight bytes so the OnMove listing is raw-decoded; field cross-references found by scanning .text for the modrm disp32 encodings of the game offsets",
+  "delta_scaling": {
+    "address": "004c6e30",
+    "abi": "__thiscall, ECX = game, one stack argument holding a float*, RET 4",
+    "rewrites_caller_slot": true,
+    "caller_slot_evidence": "004e4d38 lea eax,[esp+48h]; 004e4d45 call; 004e4d66 reloads the same slot for 004c6b20",
+    "outputs": {
+      "game+21ECh": "undilated step",
+      "game+64Ch": "accumulator, += step, undilated",
+      "game+21F0h": "scaled delta read by the simulation"
+    },
+    "mode_field": "game+1FE4h",
+    "paths": {
+      "0": "jumps to 004c6f3d; no mission filter and no 0.25 clamp",
+      "2": "split path unconditionally, 004c6e4c",
+      "other": "counts active local players, split when the count exceeds one"
+    },
+    "local_player_slots": {
+      "base": "game+18CCh",
+      "count": 8,
+      "loop": "004c6e50, two passes of four pointers with ecx += 10h",
+      "test": "pointer non-null, slot+8h nonzero, slot+9h zero",
+      "corroboration": "007713a0 indexes the same array with the selector at game+18ECh"
+    },
+    "mission_filter": {
+      "address": "007713a0",
+      "this": "game+1EF0h",
+      "gate": "game state 0Dh only",
+      "behaviour": "identity unless the mission object's mode word at +F4h is set; the replay and time-control modes were not analyzed"
+    },
+    "constants": {
+      "00ce3868": {"value": 0.25, "type": "float", "role": "coarse step clamp on non-zero modes"},
+      "00f876b0": {"role": "nonzero disables the coarse clamp; also gates the network tick at 004e5000"},
+      "00e0b6c8": {"value": 1.0, "type": "float", "role": "split-screen time scale, ships as identity"},
+      "00d7a270": {"value": "3FA99999A0000000h", "type": "double", "role": "single-view clamp threshold; it is the double promotion of the float 0.05f, not the nearest double to 0.05"},
+      "00ce7638": {"value": 0.05, "type": "float", "role": "single-view clamp replacement"},
+      "00ce3dc0": {"value": 10.0, "type": "double", "role": "held action 9 multiplier"},
+      "00ce7630": {"value": 30.0, "type": "double", "role": "held action 10 multiplier"},
+      "00ce3dc8": {"value": "3FD3333340000000h", "type": "double", "role": "held action 12 multiplier, the promotion of 0.3f"},
+      "00ce7628": {"value": "3D088889h", "type": "float", "role": "cinematic single-step, 1/30 s"}
+    },
+    "input_actions": {
+      "record_stride": "30h at input singleton instance+4h, per the 004c43c0 ledger record",
+      "held_test": "+28h nonzero and +24h greater than zero",
+      "pressed_test": "held plus (+20h zero or +1Ch not greater than zero)",
+      "9": "instance+4h+1B0h, x10 fast forward, held",
+      "10": "instance+4h+1E0h, x30, held",
+      "11": "instance+4h+210h, cinematic single step, pressed",
+      "12": "instance+4h+240h, x0.3 slow motion, held",
+      "8": "instance+4h+180h, drain tail mission step, pressed"
+    },
+    "split_path_note": "the three multipliers and the cinematic override are not reached on the split path",
+    "clock_split": "the frame clock at 01090ab0+4h accumulates the dilated delta (004e4d4a..004e4d63) while game+64Ch accumulates the undilated step, so a cinematic or slow-motion frame stops or slows one and not the other"
+  },
+  "state_request_queue": {
+    "base": "game+5D8h",
+    "container": "MSVC std::deque<int>, DEQUESIZ 4",
+    "block_bytes": 16,
+    "block_evidence": "004d3f13 push 10h then malloc; 004e4498 indexes map[off/4][off%4]",
+    "fields": {
+      "game+5D8h": "allocator slot, untouched by push_back and pop_front",
+      "game+5DCh": "block map int**, null slot means unallocated",
+      "game+5E0h": "block count",
+      "game+5E4h": "head offset in elements",
+      "game+5E8h": "element count"
+    },
+    "block_index_rule": "off / 4, minus the block count once when it is not smaller (004e4486, 004d3eff)",
+    "enqueue": {
+      "address": "004d3ed0",
+      "abi": "__thiscall, ECX = game+5D8h, RET 4",
+      "argument": "pointer to the int to copy, loaded at 004d3f35; call sites push the address of a stack slot, not a literal",
+      "grow_condition": "(head + count) % 4 == 0 and block count not greater than (count + 4) / 4",
+      "ledger_correction": "the existing 004d3ed0 record calls the element 10h bytes; 10h is the block size and the element is a 4-byte int. 004d3ed0 is outside this packet's lease so the record was not edited."
+    },
+    "grow": {
+      "address": "004d20d0",
+      "increment": "max(count, max(block_count / 2, 8))",
+      "rotation": "blocks are moved so the sequence starting at the head block stays contiguous and the new slots fall behind it; both native branches 004d216d and 004d21a7 produce the same modular rotation",
+      "head_offset_untouched": "004d2211 adds only to the block count, unlike the usual _Growmap"
+    },
+    "pop_front": {
+      "address": "004e44a4",
+      "rule": "head += 1; head = 0 when it reaches block_count * 4; count -= 1; head = 0 when the queue empties; blocks are never released"
+    },
+    "producers": [
+      {"site": "004d794b", "function": "004d7940", "request": "0Ah"},
+      {"site": "004d7ae0", "function": "004d7970", "request": "10h"},
+      {"site": "004d7f56", "function": "004d7ea0", "request": "0Fh"},
+      {"site": "004d8290", "function": "004d80d0", "request": "10h"},
+      {"site": "004d8514", "function": "004d80d0", "request": "10h"},
+      {"site": "004e23c8", "function": "004e2200", "request": "10h"},
+      {"site": "004e23fb", "function": "004e2200", "request": "12h"},
+      {"site": "004e242e", "function": "004e2200", "request": "13h"},
+      {"site": "004e270c", "function": "004e2200", "request": "0Ah"},
+      {"site": "004e3491", "function": "004e27e0", "request": "0Eh"},
+      {"site": "004e34a9", "function": "004e27e0", "request": "0Ah"},
+      {"site": "004e479b", "function": "004e4430", "request": "04h"},
+      {"site": "004e507b", "function": "004e4a40", "request": "04h"},
+      {"site": "004e5788", "function": "004e5540", "request": "register"},
+      {"site": "004cd192", "function": "004cd0f0", "request": "other container method"},
+      {"site": "004d2b3f", "function": "004d2b10", "request": "other container method"},
+      {"site": "004dd4ae", "function": "004dcf90", "request": "other container method"}
+    ]
+  },
+  "drain": {
+    "address": "004e4430",
+    "abi": "__thiscall, ECX = game, no arguments, RET",
+    "gate": "OnMove drains only when game+5ECh is zero, 004e4d02",
+    "ordering_rule": "first in first out; the count is re-read at 004e4866 after every handler, so a request a handler enqueues is serviced in the same pass behind everything already queued",
+    "loop_exits": {
+      "0Dh": "004e47ec jumps to the tail with the rest of the queue intact",
+      "13h": "004e48cd sets 00e1ae75 to 1 and returns without the tail",
+      "10h sub-path": "004e471c to 004e48d7 returns without the tail"
+    },
+    "dispatch": {
+      "13h": "00e1ae75 = 1, return; that byte is the application exit request modelled by bsp::ApplicationFrameHost::exit_requested",
+      "04h": "004e4000",
+      "05h": "no call",
+      "08h": "no call",
+      "15h": "no call",
+      "0Ch": "no call",
+      "06h": "00e198ac vtable +Ch",
+      "07h": "004bfc70",
+      "09h": "00e198b4 vtable +Ch",
+      "0Ah": "004dfb70",
+      "0Bh": "004dfb70",
+      "0Eh": "004c6b00",
+      "10h": "teardown arm 004e458a; leaves state 11h at 004e4778 and enqueues 04h at 004e47a7 when the queue is empty",
+      "0Dh": "stop the loop",
+      "12h": "game+5D4h = 0Dh then 004cd0f0(1,1,1) and a flag through 00e198c4+DCh",
+      "14h": "004bac20",
+      "16h": "00e198b8 vtable +Ch",
+      "0Fh": "004d7970(0)",
+      "02h": "004d8000"
+    },
+    "tail": {
+      "address": "004e4873",
+      "state_0Dh": "the full 004c43c0 edge test on action 8 runs 004d7970(0)",
+      "state_10h": "resolves to 8 when 00e198b4 exists and its +3Ch byte is set, otherwise 5",
+      "always": "00a95960 with the scaled delta at game+21F0h"
+    }
+  },
+  "drain_suspension": {
+    "field": "game+5ECh",
+    "writers": [
+      {"site": "004d7f69", "function": "004d7ea0", "effect": "set to 1 after enqueuing the debrief request"},
+      {"site": "004e4784", "function": "004e4430 teardown arm", "effect": "set to 1 alongside state 11h"},
+      {"site": "004e505b", "function": "004e4a40", "effect": "set to 1 on entry to the state 11h arm"},
+      {"site": "004e506d", "function": "004e4a40", "effect": "cleared unless game+7184h is set"},
+      {"site": "004c7f00", "function": "004c7ed0", "effect": "cleared to 0; outside this packet"},
+      {"site": "004ddca7", "function": "004ddb90", "effect": "written from bl; constructor-shaped, outside this packet"}
+    ],
+    "state_11h_arm": "004e504b; both stores are on the fall-through path, so the latch is raised on entry and lowered whenever game+7184h is clear, and only then with an empty queue does it enqueue 04h and set 00e198b0 to (game+1EE1h == 0)"
+  },
+  "callees": [
+    {
+      "address": "004e2200",
+      "name": "BSP_Game_RunConsoleCommandQueue",
+      "abi": "__thiscall, ECX = game, no arguments",
+      "position": "004e4a5e, first call of the frame",
+      "gate": "game+640h nonzero and game+5E8h zero, so a queued console command never races a pending state transition",
+      "container": "command list at game+638h with a node head at game+63Ch; front string via 004cecf0, compared with 004beb60",
+      "commands": {
+        "frames (00ce7f54)": "handled only in states 5, 0Dh, 8 or 15h, then popped",
+        "term (00ce7f4c)": "enqueue 10h",
+        "pause (00ce4ab0)": "enqueue 12h",
+        "quit (00ce7f44)": "enqueue 13h",
+        ".scn (00ce7888), scenes (00ce7f3c), universe/scenes/ (00ce7f28), command_line_mission (00ce7f10)": "scene-load branch, enqueue 0Ah"
+      },
+      "inference": "pause maps to 12h and 12h sets state 0Dh, so 12h is resume-into-mission; quit maps to 13h, corroborating 13h as the exit path",
+      "state": "analyzed"
+    },
+    {
+      "address": "004c6b20",
+      "name": "BSP_Game_UpdateCutscenePlayback",
+      "abi": "__thiscall, ECX = game, one float, RET 4",
+      "position": "004e4d6d, immediately after the frame clock accumulate, with the delta slot 004c6e30 rewrote",
+      "gate": "game+634h == 0 || game+635h != 0, the same condition as the simulation gate at 004e50b0",
+      "behaviour": "with an object at game+38h calls 00425d10(0) then 00530630; unless the object's +60h is 4 it either tears it down (004c43c0 action 3 pressed: 0045f600, 004bea40 on a stack copy, game+38h = 0) or advances it with the raw delta through 0045f970",
+      "state": "analyzed"
+    },
+    {
+      "address": "0053c510",
+      "name": "BSP_FrameStats_Accumulate",
+      "abi": "__thiscall, ECX = game+19C8h (the value, not the game object), no arguments",
+      "position": "004e4de8, unconditional",
+      "map_correction": "the OnMove map lists it under GUI/text; the call site loads game+19C8h into ECX so it is a separate object",
+      "behaviour": "reads profiler counter slots 0109d014, 0109db08, 0109db34 and 0109db14 out of the profiler array at instance+20h and accumulates into this+68h, +6Ch, +70h and +74h with a sample counter at +78h",
+      "state": "analyzed"
+    },
+    {
+      "address": "004c0170",
+      "name": "BSP_Game_UpdatePresenceContext",
+      "abi": "__thiscall, ECX = game, no arguments",
+      "position": "004e4def, unconditional",
+      "behaviour": "takes the wall clock from 01090ab0 vtable +20h (two int64s divided on the x87 stack, ticks over frequency), compares against 00e18b30, and does nothing until 3.0 s (00d7a2b0) have passed; past that it calls XUserSetContext and XUserSetContextEx (00a4d3f2, 00a4d41c) with context 8001h among others",
+      "significance": "second confirmation that 01090ab0 is the frame clock object",
+      "state": "analyzed"
+    },
+    {
+      "address": "004db920",
+      "name": "BSP_Game_UpdateDeviceWaitScreen",
+      "abi": "__thiscall, ECX = game, no arguments",
+      "position": "004e5046, state 0Ch only",
+      "behaviour": "with mode 0 or the scene flag at game+1EF0h+29Ch clear it polls the input backend 00f8bbf4 through 00a91020, latches at backend+DDh, and on a rising edge with the menu (00425d10 +25Ch) and GUI (00f8abe8 +3E8h) idle calls BSP_InputManager_Update(0.0f); in mode 1 it counts the game+18CCh slots with the +9h and +0Eh tests and, when fewer than two are active or game+624h is zero, builds a stack event through 0075b430 and dispatches it into the scene at game+1EF0h through 0076a9f0 and 007848f0; both branches end in 004da6c0",
+      "state": "analyzed"
+    },
+    {
+      "address": "004d7ea0",
+      "name": "BSP_Game_CheckMissionCompletion",
+      "abi": "__thiscall, ECX = game, no arguments, RET",
+      "position": "004e5386, inside the world tick",
+      "gate": "game+5E8h zero and game+7188h non-null",
+      "behaviour": "three zero-delta ticks of the world at game+19CCh through its vtable +Ch with 00903670 between them, then 004c3cb0(game) and the result GUI through 004f8a20 and 004f8970 on 00e18d48 using the float at result+8h and the record at result+14h; if result+21h is set it enqueues 0Fh and sets game+5ECh to 1; ends with 004cd610(game, 1) and a tail jump to 004cc510 with ECX = &game+7188h, a pointer to the slot rather than the object",
+      "state": "reconstructed"
+    }
+  ],
+  "reconstruction_status": {
+    "004c6e30": "reconstructed, build-tested",
+    "004e4430": "reconstructed, build-tested, one focused test",
+    "004d3ed0": "reconstructed, build-tested (outside the lease, read only)",
+    "004d20d0": "reconstructed, build-tested (outside the lease, read only)",
+    "004d7ea0": "reconstructed, build-tested",
+    "004e2200": "analyzed",
+    "004c6b20": "analyzed",
+    "0053c510": "analyzed",
+    "004c0170": "analyzed",
+    "004db920": "analyzed",
+    "007713a0": "identity when the mission mode at +F4h is zero; otherwise not analyzed"
+  },
+  "recorded_names": [
+    {"address": "004c6e30", "name": "BSP_Game_ScaleFrameDelta", "new": true},
+    {"address": "004e2200", "name": "BSP_Game_RunConsoleCommandQueue", "new": true},
+    {"address": "004c6b20", "name": "BSP_Game_UpdateCutscenePlayback", "new": true},
+    {"address": "0053c510", "name": "BSP_FrameStats_Accumulate", "new": true},
+    {"address": "004c0170", "name": "BSP_Game_UpdatePresenceContext", "new": true},
+    {"address": "004db920", "name": "BSP_Game_UpdateDeviceWaitScreen", "new": true},
+    {"address": "004e4430", "name": "BSP_Game_DrainStateRequestQueue", "new": false, "evidence_appended": true},
+    {"address": "004d7ea0", "name": "BSP_Game_CheckMissionCompletion", "new": false, "evidence_appended": true}
+  ],
+  "tests": {
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors, clean",
+    "ctest": "reconstructed_math passed",
+    "added": "one case in tests/math_tests.cpp covering the drain order: FIFO service, a handler-enqueued request serviced in the same pass, and request 0Dh stopping the drain with the rest queued"
+  },
+  "uncertainties": [
+    "the action indices 9, 10, 11 and 12 are not resolved to bindings; the input action table belongs to game_frame_input_tick",
+    "00e0b6c8 ships 1.0f and no writer was searched for outside this packet, so the split-screen scale is currently an identity",
+    "00f876b0 disables the 0.25f clamp and also gates the network tick; its writer is not identified",
+    "game+5ECh is also cleared by 004c7ed0 and written by 004ddb90, neither analyzed, so the drain-suspension lifecycle is not closed",
+    "the teardown arm 004e458a is summarised, not reconstructed; its early-return sub-path at 004e48d7 sets state 8 and touches 00e198ac, 00e198b4 and game+624h",
+    "game+1EE1h, game+624h, game+7184h and game+19C8h are carried as raw fields",
+    "the frames console command sub-dispatch at 004e22de..004e23a7 was not decoded past the state test and the pop"
+  ],
+  "not_abi_compatible": "the queue uses std::vector<std::unique_ptr<...>> where the native uses a raw block map, and the host interface replaces the native call sites; nothing here is game-validated"
+}
