@@ -306,3 +306,7 @@ before the ledger name can be applied there.
    `include/bsp/press_start_screen.hpp`, `src/press_start_screen.cpp`. Contract: recover the
    `FE_initial` screen, its per-frame update, the sign-in and storage-device flow behind
    `press_start_Text`, and the exit into state 4.
+
+## Correction from docs/PROFILE_UNLOCK_PREDICATE.md
+
+The profile block fields recorded above at `+74h`, `+80h` and `+8Ch` as three `std::list`s are the head fields of three case-insensitive `std::set<NativeString>` trees at `+70h` (the saved `Unlocks` set), `+7Ch` (unlocks granted this session) and `+88h`; the keyed `RANK` map is the named-counter map at `+A0h`. `BSP_Profile_IsUnlockSatisfied` (`007fc4c0`, Lua name `Scoring_IsUnlocked`) splits a requirement string on `" ,"` and, per token, tries the mission-completion map at `+64h`, then the two unlock sets, the counters (strictly `> 0`) and the owned content ids at `+D0h`, all case-insensitively; the first hit wins.
