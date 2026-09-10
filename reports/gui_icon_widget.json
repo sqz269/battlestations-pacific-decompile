@@ -1,0 +1,830 @@
+{
+  "packet": "gui_icon_widget",
+  "owner": "agent/gui-icon-widget",
+  "doc": "docs/GUI_ICON_WIDGET.md",
+  "program": "battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_writes": "none; read-only for this worker",
+  "class": {
+    "name_hypothesis": "GuiIcon",
+    "lua_key_suffix": "Icon",
+    "type_id": 6,
+    "block_size": "0x138",
+    "allocator_thunk": "00aa1410",
+    "allocator_caller": "00aa6560 BSP_GuiLayout_CreateWidgetOfType",
+    "vtable": "00d5c4c0",
+    "base_constructor": "00aa9390",
+    "base_size": "0xec"
+  },
+  "routines": [
+    {
+      "address": "00ab5c60",
+      "role": "constructor",
+      "abi": "__thiscall(this)",
+      "ret": 0,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab5d30",
+      "role": "copy constructor",
+      "abi": "__thiscall(this, const Icon*)",
+      "ret": 4,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab2b70",
+      "role": "property writer, vtable +1ch",
+      "abi": "__thiscall(this, visitor*)",
+      "ret": 4,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab3310",
+      "role": "property reader, vtable +18h",
+      "abi": "__thiscall(this, visitor*)",
+      "ret": 4,
+      "state": "reconstructed_build_tested"
+    },
+    {
+      "address": "00ab66c0",
+      "role": "add state, vtable +a4h",
+      "abi": "__thiscall(this, const NativeString* name, const float uv[4], const float2* pivot, const float2* size) -> int16 index",
+      "ret": 16,
+      "state": "reconstructed_build_tested"
+    },
+    {
+      "address": "00ab1710",
+      "role": "select state, vtable +88h",
+      "abi": "__thiscall(this, int16 index, int32 partial_type, float ratio)",
+      "ret": 12,
+      "state": "reconstructed_build_tested"
+    },
+    {
+      "address": "00ab1110",
+      "role": "select state then store +128h/+12ch, vtable +84h",
+      "abi": "__thiscall(this, int32 index, int16, float)",
+      "ret": 12,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab10f0",
+      "role": "recompose then select state 0, vtable +78h",
+      "abi": "__thiscall(this)",
+      "ret": 0,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab10d0",
+      "role": "re-select current state, vtable +8ch",
+      "abi": "__thiscall(this)",
+      "ret": 0,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab1680",
+      "role": "store atlas UV into record, apply authored flips",
+      "abi": "__thiscall(record, float l, float t, float r, float b)",
+      "ret": 16,
+      "state": "reconstructed_build_tested_fixture_tested"
+    },
+    {
+      "address": "00ab17b0",
+      "role": "native size from texture dimensions and UV extent",
+      "abi": "__fastcall(float2* out, texture* tex, const float uv[4]) -> float2*",
+      "ret": 4,
+      "state": "reconstructed_build_tested"
+    },
+    {
+      "address": "00ab24b0",
+      "role": "record differs from native extent",
+      "abi": "__thiscall(record) -> bool",
+      "ret": 4,
+      "state": "reconstructed_build_tested"
+    },
+    {
+      "address": "00ab2600",
+      "role": "bilinear vs point material choice",
+      "abi": "__thiscall(this) -> bool",
+      "ret": 0,
+      "state": "reconstructed_build_tested"
+    },
+    {
+      "address": "00ab3b30",
+      "role": "delayed-load placeholder texture on a record",
+      "abi": "__fastcall(record)",
+      "ret": 0,
+      "state": "analyzed"
+    },
+    {
+      "address": "00ab3cb0",
+      "role": "rebuild state geometry, vtable +80h",
+      "abi": "__thiscall(this, int16 index)",
+      "ret": 4,
+      "state": "analyzed_quad_setup_reconstructed",
+      "prior_doc": "docs/GUI_GEOMETRY_DISPATCH.md"
+    },
+    {
+      "address": "00ab1860",
+      "role": "cropped quad writer, vtable +7ch",
+      "abi": "__thiscall(this, 7 stack args)",
+      "ret": 28,
+      "state": "already_reconstructed_elsewhere",
+      "prior_doc": "docs/GUI_GEOMETRY_DISPATCH.md"
+    },
+    {
+      "address": "00acce20",
+      "role": "Model widget property reader, NOT Icon",
+      "abi": "__thiscall(this, visitor*)",
+      "ret": 4,
+      "state": "analyzed_only"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00ab66c0",
+      "end": "00ab6942",
+      "role": "add state, vtable +a4h, RET 10h"
+    },
+    {
+      "address": "00ab1710",
+      "end": "00ab17a7",
+      "role": "select state, vtable +88h, RET 0ch"
+    },
+    {
+      "address": "00ab1110",
+      "end": "00ab1147",
+      "role": "select state and store +128h/+12ch, vtable +84h, RET 0ch"
+    },
+    {
+      "address": "00ab10d0",
+      "end": "00ab10e2",
+      "role": "re-select current state, vtable +8ch, RET 0"
+    }
+  ],
+  "ghidra_flow_gaps": {
+    "00ab2b70": 0,
+    "00ab3310": 0,
+    "00ab3cb0": 0,
+    "00ab5c60": 0
+  },
+  "layout": {
+    "derived_fields": [
+      {
+        "offset": "0xec",
+        "type": "int16",
+        "name": "current_state",
+        "default": -1,
+        "evidence": "00ab5c82"
+      },
+      {
+        "offset": "0xf0",
+        "type": "pad",
+        "name": "states_allocator",
+        "evidence": "vector object base"
+      },
+      {
+        "offset": "0xf4",
+        "type": "ptr",
+        "name": "states_first",
+        "default": 0,
+        "evidence": "00ab5c88"
+      },
+      {
+        "offset": "0xf8",
+        "type": "ptr",
+        "name": "states_last",
+        "default": 0,
+        "evidence": "00ab5c88"
+      },
+      {
+        "offset": "0xfc",
+        "type": "ptr",
+        "name": "states_end",
+        "default": 0,
+        "evidence": "00ab5c88"
+      },
+      {
+        "offset": "0x100",
+        "type": "bool",
+        "name": "HasTexture",
+        "default": true,
+        "evidence": "00ab5ca5"
+      },
+      {
+        "offset": "0x101",
+        "type": "bool",
+        "name": "DelayedTextureLoad",
+        "default": false,
+        "evidence": "00ab5c9f"
+      },
+      {
+        "offset": "0x104",
+        "type": "uint32",
+        "name": "ShaderName.length",
+        "default": 0,
+        "evidence": "00ab5cab"
+      },
+      {
+        "offset": "0x108",
+        "type": "char*",
+        "name": "ShaderName.data",
+        "default": 0,
+        "evidence": "00ab5cab"
+      },
+      {
+        "offset": "0x10c",
+        "type": "bool",
+        "name": "DynamicVB",
+        "default": false,
+        "evidence": "00ab5cb7"
+      },
+      {
+        "offset": "0x110",
+        "type": "int32",
+        "name": "PartialDisplayType",
+        "default": 0,
+        "evidence": "00ab5cbd"
+      },
+      {
+        "offset": "0x114",
+        "type": "float",
+        "name": "PartialDisplayRatio",
+        "default": 1.0,
+        "evidence": "00ab5cc3"
+      },
+      {
+        "offset": "0x118",
+        "type": "float",
+        "name": "crop_left",
+        "default": 0.0,
+        "evidence": "00ab5cc9"
+      },
+      {
+        "offset": "0x11c",
+        "type": "float",
+        "name": "crop_top",
+        "default": 0.0,
+        "evidence": "00ab5cc9"
+      },
+      {
+        "offset": "0x120",
+        "type": "float",
+        "name": "crop_right",
+        "default": 1.0,
+        "evidence": "00ab5cc9"
+      },
+      {
+        "offset": "0x124",
+        "type": "float",
+        "name": "crop_bottom",
+        "default": 1.0,
+        "evidence": "00ab5cc9"
+      },
+      {
+        "offset": "0x128",
+        "type": "float",
+        "name": "unidentified",
+        "default": 0.0,
+        "evidence": "written by 00ab1110"
+      },
+      {
+        "offset": "0x12c",
+        "type": "int16",
+        "name": "unidentified",
+        "default": 0,
+        "evidence": "00ab5ce3"
+      },
+      {
+        "offset": "0x130",
+        "type": "float",
+        "name": "AutoRotate",
+        "default": 0.0,
+        "evidence": "00ab5cef"
+      },
+      {
+        "offset": "0x134",
+        "type": "bool",
+        "name": "cached_filter_choice",
+        "default": false,
+        "evidence": "00ab5ce9 and 00ab3d1f area"
+      }
+    ],
+    "state_record": {
+      "size": "0x40",
+      "stride_evidence": [
+        "00ab2b84 >> 6",
+        "00ab3d6b >> 6",
+        "00ab175b >> 6",
+        "00ab3d77 index*0x40"
+      ],
+      "fields": [
+        {
+          "offset": "0x00",
+          "type": "texture*",
+          "name": "texture",
+          "evidence": "00ab674b zeroed, 00ab6869 stored"
+        },
+        {
+          "offset": "0x04",
+          "type": "uint32",
+          "name": "texture_name.length",
+          "evidence": "00ab67d8"
+        },
+        {
+          "offset": "0x08",
+          "type": "char*",
+          "name": "texture_name.data",
+          "evidence": "00ab67ef memcpy destination"
+        },
+        {
+          "offset": "0x0c",
+          "type": "float",
+          "name": "resolved_u0",
+          "init": 0.0,
+          "evidence": "00ab6757, written by 00ab1680"
+        },
+        {
+          "offset": "0x10",
+          "type": "float",
+          "name": "resolved_v0",
+          "init": 0.0
+        },
+        {
+          "offset": "0x14",
+          "type": "float",
+          "name": "resolved_u1",
+          "init": 1.0
+        },
+        {
+          "offset": "0x18",
+          "type": "float",
+          "name": "resolved_v1",
+          "init": 1.0
+        },
+        {
+          "offset": "0x1c",
+          "type": "float",
+          "name": "authored_UV_LURB_left",
+          "init": 0.0,
+          "evidence": "00ab67b5, overwritten at 00ab680f"
+        },
+        {
+          "offset": "0x20",
+          "type": "float",
+          "name": "authored_UV_LURB_up",
+          "init": 0.0
+        },
+        {
+          "offset": "0x24",
+          "type": "float",
+          "name": "authored_UV_LURB_right",
+          "init": 1.0
+        },
+        {
+          "offset": "0x28",
+          "type": "float",
+          "name": "authored_UV_LURB_bottom",
+          "init": 1.0
+        },
+        {
+          "offset": "0x2c",
+          "type": "float",
+          "name": "pivot_x",
+          "evidence": "00ab6787 init, 00ab681d from argument 3"
+        },
+        {
+          "offset": "0x30",
+          "type": "float",
+          "name": "pivot_y"
+        },
+        {
+          "offset": "0x34",
+          "type": "float",
+          "name": "size_x",
+          "evidence": "00ab6793 init, 00ab68e8 from argument 4"
+        },
+        {
+          "offset": "0x38",
+          "type": "float",
+          "name": "size_y"
+        },
+        {
+          "offset": "0x3c",
+          "type": "bool",
+          "name": "load_pending",
+          "evidence": "00ab679f init, set by 00ab3b30"
+        },
+        {
+          "offset": "0x3d",
+          "type": "bool",
+          "name": "unidentified",
+          "evidence": "00ab67a3 init, cleared by 00ab3b30"
+        }
+      ]
+    }
+  },
+  "properties": {
+    "visitor_abi": {
+      "variant": "{int32 type, union value}, eight bytes, pushed on the stack",
+      "slot_04": "begin scope(variant), RET 8",
+      "slot_08": "end scope(), RET 0",
+      "slot_0c": "property(variant name, variant destination, variant default), RET 18h",
+      "slot_10": "indexed element(variant index, variant destination), RET 10h",
+      "slot_14": "key present(variant name) -> bool, RET 8",
+      "type_codes": {
+        "0": "string",
+        "1": "int32",
+        "2": "float",
+        "3": "bool",
+        "5": "float3",
+        "6": "float2"
+      }
+    },
+    "scalar_keys": [
+      {
+        "key": "DynamicVB",
+        "type": "bool",
+        "field": "0x10c",
+        "default": false
+      },
+      {
+        "key": "HasTexture",
+        "type": "bool",
+        "field": "0x100",
+        "default": true
+      },
+      {
+        "key": "ShaderName",
+        "type": "string",
+        "field": "0x104",
+        "default": ""
+      },
+      {
+        "key": "PartialDisplayType",
+        "type": "int32",
+        "field": "0x110",
+        "default": 0
+      },
+      {
+        "key": "PartialDisplayRatio",
+        "type": "float",
+        "field": "0x114",
+        "default": 1.0
+      },
+      {
+        "key": "DelayedTextureLoad",
+        "type": "bool",
+        "field": "0x101",
+        "default": false
+      },
+      {
+        "key": "AutoRotate",
+        "type": "float",
+        "field": "0x130",
+        "default": 0.0
+      }
+    ],
+    "states_array": {
+      "integer_keyed": true,
+      "walk": "presence test, begin scope, [1..n] until the first missing index",
+      "per_entry": [
+        {
+          "key": "Texture",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "Size",
+          "type": "float2",
+          "default": "widget +20h/+24h"
+        },
+        {
+          "key": "Pivot",
+          "type": "float2",
+          "default": "widget +18h/+1ch"
+        },
+        {
+          "key": "UV_LURB",
+          "type": "float[4] at indices 1..4",
+          "default": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "read_only_when_present": true
+        }
+      ],
+      "terminator": "this->vtable +a4h (00ab66c0), then the temporary string is returned to the pool"
+    },
+    "writer_quirk": "00ab2b8b..00ab2be7 zeroes the widget's own +20h/+24h across the base call when there is exactly one state, the index is 0 and the size matches, so the base does not emit a redundant Size"
+  },
+  "state_model": {
+    "index": "int16 at +ech, sign extended then compared unsigned against the count, so -1 never selects a record",
+    "record_address": "states_first + (int16)index * 0x40",
+    "range_check_failure": "__report_rangecheckfailure at 00ab3d5e and 00ab2b95",
+    "textured_path": "material texture slot 0 = record+0, UV = record+0ch..18h, record pivot/size copied into widget +18h..+24h (00ab3dbe..00ab3dd3)",
+    "untextured_path": "texture slot 0 null, UV (0,0,1,1), widget's own size, guifade.mshd",
+    "setters": [
+      {
+        "address": "00ab1710",
+        "role": "index + partial display type + ratio, decides whether to rebuild"
+      },
+      {
+        "address": "00ab1110",
+        "role": "index only, ratio 1, type 0, then stores +128h/+12ch"
+      },
+      {
+        "address": "00ab10f0",
+        "role": "recompose then index 0"
+      },
+      {
+        "address": "00ab10d0",
+        "role": "re-select the current index"
+      },
+      {
+        "address": "00ab44b0",
+        "role": "external: BSP_GUI_SetStateTexture, name based"
+      },
+      {
+        "address": "00ab2690",
+        "role": "external: BSP_GUI_SetStateTextureAndUV, texture based"
+      }
+    ]
+  },
+  "texture_and_atlas_contract": {
+    "resolver": "00aa2660 BSP_GUI_ResolveTextureAndAtlasUV, already reconstructed as bsp::resolve_gui_texture_00aa2660 in src/gui_texture.cpp",
+    "manager": "004c12b0 BSP_GuiManager_GetOrCreate supplies ECX",
+    "call": "resolve(name, uv = {0,0,1,1} in / atlas sub-rect out, size = authored in / native out when both zero, scale = 1.0)",
+    "authored_uv_effect": "00ab1680 applies only two exact patterns: authored (_,1,_,0) swaps the resolved v pair, authored (1,_,0,_) swaps the resolved u pair; any other authored rectangle is stored but not applied",
+    "fallback_size": "00ab17b0: |uv extent| * unsigned texture dimension / 960 (x) or 720 (y)",
+    "delayed": "00ab3b30 loads interface/textures/common/transparent.tga through the texture manager 00f8d394 virtual +64h and leaves the resolved UV at (0,0,1,1)"
+  },
+  "materials": {
+    "no_texture": "guifade.mshd",
+    "textured_bilinear": "guidefault.mshd",
+    "textured_point": "guidefault_point.mshd",
+    "override": "ShaderName at +104h, compared with __stricmp against the cached name",
+    "choice_rule": "00ab2600 returns 0 (point) only when textured, no ShaderName, the platform byte at 0109cf04+14h is set, rotate == 0, both scales == 1 and 00ab24b0 says the record matches its native extent",
+    "constants": {
+      "min_point_filter_width": {
+        "address": "00d5c3b8",
+        "value": 0.0364583321,
+        "note": "35 texels at 960"
+      },
+      "native_size_epsilon": {
+        "address": "00d7a268",
+        "value": 0.0001,
+        "type": "double"
+      },
+      "logical_page": {
+        "width": {
+          "address": "00cec380",
+          "value": 960.0
+        },
+        "height": {
+          "address": "00cef1b8",
+          "value": 720.0
+        }
+      }
+    },
+    "parameters": [
+      {
+        "name": "cOverbrightFactor",
+        "length": 17,
+        "source": "widget +94h",
+        "type": "float"
+      },
+      {
+        "name": "cLowColor",
+        "length": 9,
+        "source": "widget +a4h",
+        "type": "float4"
+      },
+      {
+        "name": "cHighColor",
+        "length": 10,
+        "source": "widget +b4h",
+        "type": "float4"
+      },
+      {
+        "name": "cBlendFactor",
+        "length": 12,
+        "source": "widget +c4h",
+        "type": "float"
+      }
+    ]
+  },
+  "geometry": {
+    "writer": "vtable +7ch = 00ab1860, already reconstructed as bsp::gui_write_cropped_quad_00ab1860",
+    "arguments": "stream, UV float4, crop left/top/right/bottom from widget +118h..+124h, size float2",
+    "gate": "skipped entirely when widget +74h is set",
+    "section": {
+      "primitive_type": 5,
+      "first_vertex": 0,
+      "vertex_count": 4,
+      "start_index": 0,
+      "primitive_count": 2
+    },
+    "vertex_stream": "SimpleColor.mvfm, renderer virtual +5ch with (4, 1, declaration), four-vertex lock through stream virtual +10h",
+    "colors": "white written to all four vertices, packed dword or float lanes depending on the declaration"
+  },
+  "installed_pages": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface",
+    "method": "read-only textual scan with a brace stack, local/icon_page_scan.py, not committed",
+    "files": 97,
+    "files_with_icon_tables": 66,
+    "icon_tables": 701,
+    "class_suffixed_tables_total": 1520,
+    "tables_by_class": {
+      "Icon": 701,
+      "Text": 417,
+      "Group": 204,
+      "FrameBox": 125,
+      "Listbox": 22,
+      "ClipBox": 20,
+      "Section": 19,
+      "Movie": 5,
+      "Model": 4,
+      "Sound": 2,
+      "AnimIcon": 1
+    },
+    "icon_states_keys": 698,
+    "icon_uv_lurb_keys": 33,
+    "icon_texture_assignments": 1399,
+    "icon_distinct_textures": 472,
+    "icon_texture_extensions": {
+      ".tga": 472
+    },
+    "icon_texture_top_dirs": {
+      "gui": 245,
+      "common": 138,
+      "fe": 80,
+      "bsj_textures": 6
+    },
+    "icon_shadername_assignments": 7,
+    "icon_distinct_shadernames": 4,
+    "icon_shadername_values": {
+      "guidefault_noalpha.mshd": 3,
+      "GuiFontBilinear.mshd": 2,
+      "guimultiply.mshd": 1,
+      "minimap_terrain.mshd": 1
+    }
+  },
+  "reconstruction": {
+    "header": "include/bsp/gui_icon.hpp",
+    "source": "src/gui_icon.cpp",
+    "cmake": "cmake/startup.cmake",
+    "test": "tests/math_tests.cpp, one case on the 00ab1680 flip patterns",
+    "reused": [
+      "bsp::GuiUvRect",
+      "bsp::GuiQuadParameters",
+      "bsp::gui_write_cropped_quad_00ab1860",
+      "bsp::GuiWidgetTransform",
+      "bsp::GuiWidgetSize",
+      "bsp::resolve_gui_texture_00aa2660"
+    ],
+    "build": "scripts/build.ps1 Win32 Release, warnings as errors: passed",
+    "tests": "ctest reconstructed_math: passed",
+    "not_claimed": [
+      "binary compatibility",
+      "bitwise float equality",
+      "game validation",
+      "atlas or render queue behaviour"
+    ]
+  },
+  "uncertainties": [
+    "+128h and +12ch are written by vtable +84h and read by nothing reached here",
+    "record +3dh is cleared in two places and read nowhere reached here",
+    "the consumers of AutoRotate (+130h) and DynamicVB (+10ch) are outside the class",
+    "the crop rectangle at +118h..+124h has no property; its writer was not found",
+    "the platform byte 0109cf04+14h that gates point filtering was not identified",
+    "who completes a DelayedTextureLoad state and clears record +3ch was not found",
+    "class-only vtable slots not analyzed: +3ch 00ab6120, +40h 00ab1150, +44h 00ab27f0, +48h 00ab2820, +6ch 00ab4ce0, +74h 00ab2540, +90h 00ab6430, +a0h 00ab10a0"
+  ],
+  "followups": [
+    {
+      "packet": "gui_icon_state_accessors",
+      "addresses": [
+        "00ab1150",
+        "00ab27f0",
+        "00ab2820",
+        "00ab2540",
+        "00ab6430"
+      ],
+      "files": [
+        "docs/GUI_ICON_STATE_ACCESSORS.md",
+        "include/bsp/gui_icon_accessors.hpp"
+      ],
+      "contract": "the remaining Icon-only vtable slots, closing +128h/+12ch and record +3dh"
+    },
+    {
+      "packet": "gui_model_widget",
+      "addresses": [
+        "00acce20",
+        "00acccf0",
+        "00aa16e0"
+      ],
+      "files": [
+        "docs/GUI_MODEL_WIDGET.md",
+        "include/bsp/gui_model.hpp"
+      ],
+      "contract": "the Model widget (type 9, 11ch bytes): ModelName, ModelTextureOverride, ScaleVector, RotationEuler"
+    },
+    {
+      "packet": "gui_delayed_texture_completion",
+      "addresses": [
+        "00ab3b30"
+      ],
+      "files": [
+        "docs/GUI_DELAYED_TEXTURE.md"
+      ],
+      "contract": "who finishes a DelayedTextureLoad state and clears record +3ch"
+    },
+    {
+      "packet": "gui_animicon_widget",
+      "addresses": [
+        "00aa2340",
+        "00ad3550",
+        "00ad3430"
+      ],
+      "files": [
+        "docs/GUI_ANIMICON_WIDGET.md",
+        "include/bsp/gui_animicon.hpp"
+      ],
+      "contract": "the AnimIcon derived class (type 12, 144h bytes) that extends this property set with Forward and PlaybyDefault; 00ac7b00/00ac7a90 are the same pair for Movie with DefaultValue"
+    }
+  ],
+  "names_recorded": [
+    {
+      "address": "00ab5c60",
+      "name": "BSP_GUIStatefulImage_Construct",
+      "action": "existing name kept, evidence appended"
+    },
+    {
+      "address": "00ab3cb0",
+      "name": "BSP_GUIStatefulImage_RebuildStateGeometry",
+      "action": "existing name kept unchanged"
+    },
+    {
+      "address": "00ab2b70",
+      "name": "BSP_GuiIcon_DescribeProperties"
+    },
+    {
+      "address": "00ab3310",
+      "name": "BSP_GuiIcon_ReadProperties"
+    },
+    {
+      "address": "00ab5d30",
+      "name": "BSP_GuiIcon_CopyConstruct"
+    },
+    {
+      "address": "00ab66c0",
+      "name": "BSP_GuiIcon_AddState",
+      "note": "listing only, define the function first"
+    },
+    {
+      "address": "00ab1710",
+      "name": "BSP_GuiIcon_SelectState",
+      "note": "listing only, define the function first"
+    },
+    {
+      "address": "00ab1110",
+      "name": "BSP_GuiIcon_SelectStateAndStorePair",
+      "note": "listing only, define the function first"
+    },
+    {
+      "address": "00ab10d0",
+      "name": "BSP_GuiIcon_RebuildCurrentState",
+      "note": "listing only, define the function first"
+    },
+    {
+      "address": "00ab10f0",
+      "name": "BSP_GuiIcon_ResetToFirstState"
+    },
+    {
+      "address": "00ab1680",
+      "name": "BSP_GuiIconState_SetResolvedUV"
+    },
+    {
+      "address": "00ab17b0",
+      "name": "BSP_GuiIcon_NativeSizeFromTexture"
+    },
+    {
+      "address": "00ab24b0",
+      "name": "BSP_GuiIconState_DiffersFromNativeSize"
+    },
+    {
+      "address": "00ab2600",
+      "name": "BSP_GuiIcon_PrefersBilinearFilter"
+    },
+    {
+      "address": "00ab3b30",
+      "name": "BSP_GuiIconState_SetDelayedPlaceholder"
+    },
+    {
+      "address": "00acce20",
+      "name": "BSP_GuiModel_ReadProperties"
+    }
+  ]
+}

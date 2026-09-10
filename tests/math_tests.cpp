@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/gui_icon.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
@@ -1029,6 +1030,31 @@ int main() {
         set_widget_visible(root, true, host);
         check(host.notified.size() == 3 && host.notified[2] == &leaf,
             "the recursing form carries the requested value to every descendant");
+    }
+
+    {
+        // 00AB1680 reacts to exactly two authored UV_LURB patterns: (_,1,_,0)
+        // swaps the resolved V pair and (1,_,0,_) swaps the U pair. Any other
+        // authored rectangle, including a partial crop, is stored but leaves
+        // the atlas rectangle alone. Getting either pattern backwards would
+        // silently mirror 33 authored icons in the shipped pages, and the two
+        // tests are independent, so the mixed case is the boundary.
+        const bsp::GuiUvRect atlas{0.25f, 0.5f, 0.75f, 1.0f};
+        bsp::GuiIconState flipped{};
+        flipped.authored_uv = bsp::GuiUvRect{1.0f, 1.0f, 0.0f, 0.0f};
+        bsp::gui_icon_set_resolved_uv_00ab1680(flipped, atlas);
+        bsp::GuiIconState cropped{};
+        cropped.authored_uv = bsp::GuiUvRect{0.0f, 0.25f, 1.0f, 0.75f};
+        bsp::gui_icon_set_resolved_uv_00ab1680(cropped, atlas);
+        check(flipped.resolved_uv.left == 0.75f
+              && flipped.resolved_uv.right == 0.25f
+              && flipped.resolved_uv.top == 1.0f
+              && flipped.resolved_uv.bottom == 0.5f
+              && cropped.resolved_uv.left == atlas.left
+              && cropped.resolved_uv.top == atlas.top
+              && cropped.resolved_uv.right == atlas.right
+              && cropped.resolved_uv.bottom == atlas.bottom,
+            "00AB1680 swaps only on the reversed UV_LURB patterns");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
