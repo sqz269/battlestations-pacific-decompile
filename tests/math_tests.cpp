@@ -47,6 +47,7 @@
 #include "bsp/world_effects_startup.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/ship_class_fields.hpp"
+#include "bsp/plane_class_fields.hpp"
 #include "bsp/vehicle_class_fields.hpp"
 #include <algorithm>
 #include <cmath>
@@ -1570,6 +1571,18 @@ int main() {
                   && !bsp::hud_root_timed_entry_active(4.0f, 4.0f),
             "the HUD root power-up column stacks rows by height plus 1/72, pins "
             "the circle clone to the anchor and keeps it in front of the icon");
+    }
+
+    {
+        // 007D3DA4 re-reads TurboStrength after all four turbo keys are stored
+        // and zeroes TurboTime unless the strength is strictly above 1.0f. The
+        // shipped default for TurboStrength is itself 1.0f, so a row that gives
+        // a TurboTime but no TurboStrength ends up with turbo disabled.
+        check(!bsp::plane_class_turbo_enabled_007d3da4(1.0f)
+                  && !bsp::plane_class_turbo_enabled_007d3da4(0.5f)
+                  && bsp::plane_class_turbo_enabled_007d3da4(1.5f),
+            "the plane turbo gate wants a TurboStrength strictly above 1.0f, so "
+            "the 1.0f default zeroes a shipped TurboTime");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -1,0 +1,1236 @@
+{
+ "packet": "plane_class_fields",
+ "owner": "agent/plane-fields",
+ "primary": "007D1F70",
+ "routines": [
+  {
+   "address": "007D1F70",
+   "name": "BSP_PlaneClass_ReadLuaFields",
+   "convention": "__thiscall(plane descriptor in ECX, LuaObject* row at [ESP+16Ch])",
+   "ret": "RET 4 at 007D3E4F",
+   "body": "007D1F70-007D3E51",
+   "role": "the plane family's override of descriptor vtable slot +8h; chains to 00960230 at 007D1F9F, then reads 70 key paths over 77 GetByName sites into +138h..+608h",
+   "state": "exported, analysed, reconstructed, build-tested, installed-file-checked"
+  },
+  {
+   "address": "0042E740",
+   "name": "BSP_GameTuning_GetSingleton",
+   "role": "returns the 6D0h-byte tuning singleton cached in DAT_00F87440 and built by 007E2A20 from Scripts\\global\\luaMW_init.lua; the plane reader reads +31Ch, +320h and +334h and writes +31Ch back",
+   "state": "exported, analysed for its role, name recorded"
+  },
+  {
+   "address": "006EA910",
+   "name": "BSP_BulletClass_GetOrCreate",
+   "role": "resolves an integer id against the Lua global Bullets table and hands back a refcounted class pointer; the KamikazeBulletClass target",
+   "state": "exported, analysed from its call site, name recorded"
+  },
+  {
+   "address": "004B3D20",
+   "name": "BSP_WreckClass_GetOrCreate",
+   "role": "resolves a name against the Lua global WreckClass table, allocating a 54h-byte record with the vtable at 00CE72CC on a miss; the Wreck target",
+   "state": "exported, analysed from its call site, name recorded"
+  },
+  {
+   "address": "007C3510",
+   "name": "BSP_PlaneEngineEffect_Construct",
+   "role": "builds the 44h-byte EngineEfxes record around a refcounted effect handle, seeding several float fields from DAT_00D7A24C = 1.0f",
+   "state": "exported, analysed from its call site, name recorded"
+  },
+  {
+   "address": "007CCCA0",
+   "name": "BSP_PlaneEngineEffectVector_PushBack",
+   "role": "appends one 44h-byte record to a {data, count, capacity} vector, doubling the capacity through 007C9170",
+   "state": "exported, analysed from its call site, name recorded"
+  },
+  {
+   "address": "007D1D30",
+   "name": "BSP_PlaneBowWaveVector_PushBack",
+   "role": "appends one 10h-byte record to a {begin, end, capacity} vector at +4h/+8h/+0Ch of the passed address, copying through 007CD2F0",
+   "state": "exported, analysed from its call site, name recorded"
+  },
+  {
+   "address": "00871BA0",
+   "name": "BSP_EffectHandle_AcquireByName",
+   "role": "thin wrapper over 004C1650 then 00871B50 that resolves an effect by name; the reader calls it once, with the LowPlaneAlt literal",
+   "state": "exported, analysed from its call site, name recorded"
+  }
+ ],
+ "callers": [
+  {
+   "address": "007D1E50",
+   "via": "00D05EAC",
+   "note": "installs the base plane vtable at 007D1E70"
+  },
+  {
+   "address": "007CFA30",
+   "via": "00D05EAC",
+   "note": "installs the same vtable at 007CFA4E"
+  },
+  {
+   "address": "00951AA0",
+   "name": "BSP_VehicleClass_ConstructReconPlane",
+   "via": "00D19BF4"
+  },
+  {
+   "address": "009536E0",
+   "name": "BSP_VehicleClass_ConstructSmallReconPlane",
+   "via": "00D1A5A8"
+  },
+  {
+   "address": "00953770",
+   "name": "BSP_VehicleClass_ConstructLargeReconPlane",
+   "via": "00D1A5EC"
+  },
+  {
+   "address": "00951AF0",
+   "name": "BSP_VehicleClass_ConstructFighter",
+   "via": "00D19C30"
+  },
+  {
+   "address": "00951B40",
+   "name": "BSP_VehicleClass_ConstructDiveBomber",
+   "via": "00D19C70"
+  },
+  {
+   "address": "00951C20",
+   "name": "BSP_VehicleClass_ConstructTorpedoBomber",
+   "via": "00D19F4C"
+  },
+  {
+   "address": "00951D00",
+   "name": "BSP_VehicleClass_ConstructKamikaze",
+   "via": "00D1A224"
+  },
+  {
+   "address": "00951DE0",
+   "name": "BSP_VehicleClass_ConstructLevelBomber",
+   "via": "00D1A4F8"
+  }
+ ],
+ "callees_game_side": [
+  "00960230",
+  "0042E740",
+  "006EA910",
+  "004B3D20",
+  "007C3510",
+  "007CCCA0",
+  "007D1D30",
+  "00870CD0",
+  "00871BA0",
+  "004D9C00",
+  "00419CC0",
+  "0041DD40",
+  "0041E870"
+ ],
+ "callees_library_read_only": [
+  "00B65FB0 IsNil",
+  "00B661B0 IsTable",
+  "00B66050 IsNumber",
+  "00B66250 GetBoolean",
+  "00B662F0 GetBooleanOrDefault",
+  "00B66270 GetNumber",
+  "00B66290 GetInteger",
+  "00B662B0 GetString",
+  "00B66330 GetFloatOrDefault",
+  "00B67700 ~LuaObject",
+  "00B67720 GetByIndex",
+  "00B677E0 GetByIndex",
+  "00B67800 GetByName",
+  "00B685C0 string helper",
+  "00BF7420 float-to-int",
+  "00BF7680 pool helper"
+ ],
+ "keys": [
+  {
+   "key": ".ShortName",
+   "lua_type": "string",
+   "conversion": "NativeString",
+   "slot": "+138h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D1FB0"
+   ],
+   "note": "00B685C0 then the descriptor's own string resize at 007D1FE9; {size,data} at +138h/+13Ch"
+  },
+  {
+   "key": ".NumEngines",
+   "lua_type": "number",
+   "conversion": "NumberToInt",
+   "slot": "+140h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D204D"
+   ],
+   "note": "00B66270 then the CRT float-to-int at 00BF7420"
+  },
+  {
+   "key": ".JetEngines",
+   "lua_type": "boolean",
+   "conversion": "BooleanOr",
+   "slot": "+144h",
+   "default": "false",
+   "plane_rows": 8,
+   "sites": [
+    "007D208B"
+   ],
+   "note": "00B662F0 with PUSH 0 at 007D2090; the slot is a byte"
+  },
+  {
+   "key": ".Accel",
+   "lua_type": "number",
+   "conversion": "NumberScaledBySettings",
+   "slot": "+164h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D20C6"
+   ],
+   "note": "007D20F3: when tuning+31Ch > 1.0f the slot becomes tuning+320h * tuning+31Ch * value; otherwise 007D213C writes 1.0f back into tuning+31Ch and the slot keeps the raw value"
+  },
+  {
+   "key": ".YDrag",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+170h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2150"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".XDrag",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+174h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2189"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".ExtRotAccel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+178h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D21C2"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".StallRotAccel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+17Ch",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D21FB"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".WaterRotAccel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+180h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2234"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".AirBrakeDrag",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1DCh",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D226D"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".WheelBrake",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1E0h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D22A6"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".BombControlLimit",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+15Ch",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D22DF"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".BombDelay",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1F4h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2318"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".StallSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+184h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2351"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".MaxSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+188h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D238A"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".TravelSpeed",
+   "lua_type": "number",
+   "conversion": "NumberAndSettingsProduct",
+   "slot": "+18Ch",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D23C3"
+   ],
+   "note": "007D2406 also writes +190h as tuning+334h times the value; no key names +190h"
+  },
+  {
+   "key": ".SwimHeight",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+194h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2413"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".MinWaterSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+198h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D244C"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".MaxWaterSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+19Ch",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2485"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".WaterDecel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1A0h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D24BE"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".WaterUnSpring",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1A4h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D24F7"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".RollSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1A8h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2530"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".PitchSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1ACh",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2569"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".YawSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1B0h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D25A2"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".TurnRollSpd",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1C8h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D25DB"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".YawLimitAngle",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1CCh",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2614"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".PitchLimitAngle",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1D0h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D264D"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".YawRollRatio",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1B4h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2686"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".SlideRatio",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1B8h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D26BF"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".RollAccel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1BCh",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D26F8"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".PitchAccel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1C0h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2731"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".YawAccel",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1C4h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D276A"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".KameraMogotte",
+   "lua_type": "number",
+   "conversion": "NumberOr",
+   "slot": "+168h",
+   "default": "0.0f",
+   "plane_rows": 72,
+   "sites": [
+    "007D27A3"
+   ],
+   "note": "default DAT_00CE38B8 = 10.0f, the same global the ship reader's CaptainCameraHeight falls back to"
+  },
+  {
+   "key": ".KameraFolotte",
+   "lua_type": "number",
+   "conversion": "NumberOr",
+   "slot": "+16Ch",
+   "default": "0.0f",
+   "plane_rows": 72,
+   "sites": [
+    "007D27E6"
+   ],
+   "note": "default DAT_00CF87C8 = 2.0f, the same constant the GearsPullTime default starts from"
+  },
+  {
+   "key": ".DragPitchRatio",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1D4h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2829"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".NegativePitchRatio",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1D8h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2862"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".TurnRoll",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+25Ch",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D289B"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".TurnRollLeader",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+260h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D28D4"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".RollMaxforceLimit",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+274h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D290D"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".PitchMaxforceLimit",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+278h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2946"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".TurnCircleRadius",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+268h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D297F"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".WheelHeight",
+   "lua_type": "number",
+   "conversion": "GroundGate/Number",
+   "slot": "+1F8h,+1FCh",
+   "default": "untouched",
+   "plane_rows": 51,
+   "sites": [
+    "007D29B8",
+    "007D2A65"
+   ],
+   "note": "probed at 007D29B8; converted at 007D2A65 only when WheelHeight and GroundPitch are both non-nil"
+  },
+  {
+   "key": ".GroundPitch",
+   "lua_type": "number",
+   "conversion": "GroundGate/Number",
+   "slot": "+1F8h,+200h",
+   "default": "untouched",
+   "plane_rows": 51,
+   "sites": [
+    "007D29E8",
+    "007D2A9E"
+   ],
+   "note": "probed at 007D29E8; the same gate sets the byte at +1F8h to 1 at 007D2A5E and writes nothing when it fails"
+  },
+  {
+   "key": ".WaterPitch",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+204h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2AD7"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".GlideRate",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+208h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2B10"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".CarrierBased",
+   "lua_type": "boolean",
+   "conversion": "BooleanOrFalse",
+   "slot": "+160h",
+   "default": "false",
+   "plane_rows": 42,
+   "sites": [
+    "007D2B4C"
+   ],
+   "note": "IsNil at 007D2B63 then 00B66250; the else branch at 007D2B80 clears the byte, unlike the effect keys"
+  },
+  {
+   "key": ".DropAngle",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+1F0h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2B93"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".KamikazeBulletClass",
+   "lua_type": "integer",
+   "conversion": "IntegerAndBulletClass",
+   "slot": "+20Ch,+210h",
+   "default": "-",
+   "plane_rows": 72,
+   "sites": [
+    "007D2BCA"
+   ],
+   "note": "the integer lands at +20Ch and 006EA910's refcounted class pointer at +210h"
+  },
+  {
+   "key": ".Wreck",
+   "lua_type": "string",
+   "conversion": "WreckClassOrNull",
+   "slot": "+21Ch",
+   "default": "0",
+   "plane_rows": 0,
+   "sites": [
+    "007D2C7A",
+    "007D2CB4"
+   ],
+   "note": "IsNil at 007D2C89, GetString, then 004B3D20 at 007D2CDF; an absent key stores 0"
+  },
+  {
+   "key": ".ExplosionEfx",
+   "lua_type": "integer",
+   "conversion": "EffectHandle",
+   "slot": "+214h",
+   "default": "untouched",
+   "plane_rows": 72,
+   "sites": [
+    "007D2D39",
+    "007D2D77"
+   ],
+   "note": "fetched twice: IsNil at 007D2D48, then GetInteger and 00870CD0. An absent key leaves the slot alone"
+  },
+  {
+   "key": ".ShellsEfx",
+   "lua_type": "integer",
+   "conversion": "EffectHandle",
+   "slot": "+234h",
+   "default": "untouched",
+   "plane_rows": 53,
+   "sites": [
+    "007D2E27",
+    "007D2E65"
+   ],
+   "note": "fetched twice, same shape as ExplosionEfx"
+  },
+  {
+   "key": ".EngineEfxes",
+   "lua_type": "table",
+   "conversion": "EngineEffectVector",
+   "slot": "+250h",
+   "default": "empty",
+   "plane_rows": 4,
+   "sites": [
+    "007D2F15"
+   ],
+   "note": "indexed walk that stops at the first element failing IsInteger; 007C3510 builds a 44h-byte record and 007CCCA0 appends it to the {data,count,capacity} vector at +250h"
+  },
+  {
+   "key": ".EngineFireEfx",
+   "lua_type": "integer",
+   "conversion": "EffectHandle",
+   "slot": "+220h",
+   "default": "untouched",
+   "plane_rows": 72,
+   "sites": [
+    "007D3068",
+    "007D30A6"
+   ],
+   "note": "fetched twice, same shape; the block is followed by the unconditional LowPlaneAlt lookup at 007D3191 into +218h"
+  },
+  {
+   "key": ".DamageSmokeEfx",
+   "lua_type": "table",
+   "conversion": "EffectHandleVector",
+   "slot": "+224h",
+   "default": "empty",
+   "plane_rows": 72,
+   "sites": [
+    "007D323E"
+   ],
+   "note": "indexed walk stopping at the first non-integer; 004D9C00 appends each handle to the vector at +224h"
+  },
+  {
+   "key": ".WingTipEfx",
+   "lua_type": "integer",
+   "conversion": "EffectHandle",
+   "slot": "+5A4h",
+   "default": "untouched",
+   "plane_rows": 53,
+   "sites": [
+    "007D3382",
+    "007D33C0"
+   ],
+   "note": "fetched twice, same shape as ExplosionEfx"
+  },
+  {
+   "key": ".BayDoor",
+   "lua_type": "table",
+   "conversion": "Table",
+   "slot": "-",
+   "default": "-",
+   "plane_rows": 17,
+   "sites": [
+    "007D3473"
+   ],
+   "note": "IsTable at 007D3487; a missing or non-table value writes all three defaults at 007D3550"
+  },
+  {
+   "key": ".BayDoor.OpenAngle",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+5A8h",
+   "default": "-0.6981317f",
+   "plane_rows": 17,
+   "sites": [
+    "007D34A5"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".BayDoor.ClosedAngle",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+5ACh",
+   "default": "0.6981317f",
+   "plane_rows": 17,
+   "sites": [
+    "007D34E1"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".BayDoor.TimeToOpen",
+   "lua_type": "number",
+   "conversion": "Number",
+   "slot": "+5B0h",
+   "default": "0.1f",
+   "plane_rows": 17,
+   "sites": [
+    "007D351D"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".BowWaves",
+   "lua_type": "table",
+   "conversion": "EffectRecordVector",
+   "slot": "+550h",
+   "default": "empty",
+   "plane_rows": 71,
+   "sites": [
+    "007D3589"
+   ],
+   "note": "indexed walk stopping at the first nil, not at the first non-integer; 007D1D30 appends a 10h-byte record whose first dword is the handle"
+  },
+  {
+   "key": ".ParaReload",
+   "lua_type": "number",
+   "conversion": "NumberReciprocalOrZero",
+   "slot": "+5B4h",
+   "default": "0.0f",
+   "plane_rows": 4,
+   "sites": [
+    "007D371A"
+   ],
+   "note": "IsNil at 007D372E then FLD1 / FDIVRP at 007D3743; an absent key stores 0.0f rather than an infinity, a shipped 0 stores an infinity"
+  },
+  {
+   "key": ".GearsPullTime",
+   "lua_type": "number",
+   "conversion": "NumberOrKindDefault",
+   "slot": "+5F8h",
+   "default": "2.0f / 4.0f",
+   "plane_rows": 0,
+   "sites": [
+    "007D37A4"
+   ],
+   "note": "007D375A seeds +5F8h with 2.0f, then the descriptor's own IsKindOf at 007D3773 (kind 10h, LevelBomber) and 007D3782 (kind 16h, LargeReconPlane) raise it to 4.0f; that value is then the GetFloatOrDefault fallback"
+  },
+  {
+   "key": ".PartAnims",
+   "lua_type": "table",
+   "conversion": "Table",
+   "slot": "-",
+   "default": "-",
+   "plane_rows": 60,
+   "sites": [
+    "007D37E8"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".PartAnims.Gears",
+   "lua_type": "table",
+   "conversion": "PartAnim",
+   "slot": "+5C8h",
+   "default": "untouched",
+   "plane_rows": 59,
+   "sites": [
+    "007D381A"
+   ],
+   "note": "elements [1] and [2] into +5C8h and +5CCh, |[1]-[2]| into +5D0h, a dword whose low byte is 1 into +5D4h; element [3], when IsNumber, replaces +5D0h"
+  },
+  {
+   "key": ".PartAnims.Wings",
+   "lua_type": "table",
+   "conversion": "PartAnim",
+   "slot": "+5D8h",
+   "default": "untouched",
+   "plane_rows": 10,
+   "sites": [
+    "007D3990"
+   ],
+   "note": "same shape at +5D8h..+5E4h"
+  },
+  {
+   "key": ".PartAnims.BayDoor",
+   "lua_type": "table",
+   "conversion": "PartAnim",
+   "slot": "+5E8h",
+   "default": "untouched",
+   "plane_rows": 16,
+   "sites": [
+    "007D3B06"
+   ],
+   "note": "same shape at +5E8h..+5F4h"
+  },
+  {
+   "key": ".TurboTime",
+   "lua_type": "number",
+   "conversion": "NumberOr",
+   "slot": "+5FCh",
+   "default": "0.0f",
+   "plane_rows": 40,
+   "sites": [
+    "007D3CB6"
+   ],
+   "note": "zeroed again at 007D3DB8 when TurboStrength is not strictly above 1.0f"
+  },
+  {
+   "key": ".TurboRechargingTime",
+   "lua_type": "number",
+   "conversion": "NumberOr",
+   "slot": "+600h",
+   "default": "0.0f",
+   "plane_rows": 38,
+   "sites": [
+    "007D3CF6"
+   ],
+   "note": ""
+  },
+  {
+   "key": ".TurboStrength",
+   "lua_type": "number",
+   "conversion": "NumberOr",
+   "slot": "+604h",
+   "default": "1.0f",
+   "plane_rows": 40,
+   "sites": [
+    "007D3D36"
+   ],
+   "note": "the 1.0f default alone disables turbo, because the gate at 007D3DA4 wants strictly above 1.0f"
+  },
+  {
+   "key": ".TurboControlLimit",
+   "lua_type": "number",
+   "conversion": "NumberOr",
+   "slot": "+608h",
+   "default": "1.0f",
+   "plane_rows": 40,
+   "sites": [
+    "007D3D73"
+   ],
+   "note": ""
+  }
+ ],
+ "element_paths": {
+  ".EngineEfxes[]": 4,
+  ".DamageSmokeEfx[]": 72,
+  ".BowWaves[]": 71,
+  ".PartAnims.Gears[]": 59,
+  ".PartAnims.Wings[]": 10,
+  ".PartAnims.BayDoor[]": 16
+ },
+ "descriptor_offsets": {
+  "size": "60Ch for every plane leaf",
+  "base_end": "+134h, written by 00960230",
+  "+138h": "ShortName size",
+  "+13Ch": "ShortName data",
+  "+140h": "NumEngines",
+  "+144h": "JetEngines (byte)",
+  "+15Ch": "BombControlLimit",
+  "+160h": "CarrierBased (byte)",
+  "+164h": "Accel",
+  "+168h": "KameraMogotte",
+  "+16Ch": "KameraFolotte",
+  "+170h": "YDrag",
+  "+174h": "XDrag",
+  "+178h": "ExtRotAccel",
+  "+17Ch": "StallRotAccel",
+  "+180h": "WaterRotAccel",
+  "+184h": "StallSpd",
+  "+188h": "MaxSpd",
+  "+18Ch": "TravelSpeed",
+  "+190h": "TravelSpeed * tuning+334h (derived, no key)",
+  "+194h": "SwimHeight",
+  "+198h": "MinWaterSpd",
+  "+19Ch": "MaxWaterSpd",
+  "+1A0h": "WaterDecel",
+  "+1A4h": "WaterUnSpring",
+  "+1A8h": "RollSpd",
+  "+1ACh": "PitchSpd",
+  "+1B0h": "YawSpd",
+  "+1B4h": "YawRollRatio",
+  "+1B8h": "SlideRatio",
+  "+1BCh": "RollAccel",
+  "+1C0h": "PitchAccel",
+  "+1C4h": "YawAccel",
+  "+1C8h": "TurnRollSpd",
+  "+1CCh": "YawLimitAngle",
+  "+1D0h": "PitchLimitAngle",
+  "+1D4h": "DragPitchRatio",
+  "+1D8h": "NegativePitchRatio",
+  "+1DCh": "AirBrakeDrag",
+  "+1E0h": "WheelBrake",
+  "+1F0h": "DropAngle",
+  "+1F4h": "BombDelay",
+  "+1F8h": "ground data present (byte, 1 only when the gate passes)",
+  "+1FCh": "WheelHeight",
+  "+200h": "GroundPitch",
+  "+204h": "WaterPitch",
+  "+208h": "GlideRate",
+  "+20Ch": "KamikazeBulletClass id",
+  "+210h": "KamikazeBulletClass pointer",
+  "+214h": "ExplosionEfx handle",
+  "+218h": "LowPlaneAlt handle (literal, no key)",
+  "+21Ch": "Wreck class pointer",
+  "+220h": "EngineFireEfx handle",
+  "+224h": "DamageSmokeEfx handle vector {begin,end,capacity}",
+  "+234h": "ShellsEfx handle",
+  "+250h": "EngineEfxes record vector {data,count,capacity}, 44h-byte records",
+  "+25Ch": "TurnRoll",
+  "+260h": "TurnRollLeader",
+  "+268h": "TurnCircleRadius",
+  "+274h": "RollMaxforceLimit",
+  "+278h": "PitchMaxforceLimit",
+  "+550h": "BowWaves record vector; begin/end/capacity at +554h/+558h/+55Ch, 10h-byte records",
+  "+5A4h": "WingTipEfx handle",
+  "+5A8h": "BayDoor.OpenAngle",
+  "+5ACh": "BayDoor.ClosedAngle",
+  "+5B0h": "BayDoor.TimeToOpen",
+  "+5B4h": "1.0f / ParaReload",
+  "+5C8h": "PartAnims.Gears record (10h bytes)",
+  "+5D8h": "PartAnims.Wings record (10h bytes)",
+  "+5E8h": "PartAnims.BayDoor record (10h bytes)",
+  "+5F8h": "GearsPullTime",
+  "+5FCh": "TurboTime",
+  "+600h": "TurboRechargingTime",
+  "+604h": "TurboStrength",
+  "+608h": "TurboControlLimit"
+ },
+ "nested_layouts": {
+  "PartAnims record": {
+   "stride": "10h",
+   "+0h": "element [1]",
+   "+4h": "element [2]",
+   "+8h": "|[1] - [2]|, or element [3] when it is a number",
+   "+Ch": "a dword written from a stack slot whose low byte is set to 1",
+   "evidence": "007D3838-007D3968 for Gears; the same block repeats at 007D39AE and 007D3B24"
+  },
+  "EngineEfxes record": {
+   "stride": "44h",
+   "constructor": "007C3510, which takes the refcounted handle and seeds several floats from 1.0f",
+   "vector": "{data, count, capacity} at +250h; 007CCCA0 doubles the capacity through 007C9170",
+   "note": "the record's field meanings were not decoded"
+  },
+  "BowWaves record": {
+   "stride": "10h",
+   "+0h": "the refcounted effect handle",
+   "+4h..+Fh": "copied by 007CD2F0 from the stack slot the reader never initialises",
+   "evidence": "007D3608 zeroes only the first dword; 007D3677 passes +550h to 007D1D30"
+  },
+  "DamageSmokeEfx vector": {
+   "base": "+224h",
+   "append": "004D9C00, the same refcounted-pointer append the ship reader uses"
+  }
+ },
+ "constants": {
+  "DAT_00D7A24C": "1.0f, the Accel tuning threshold and the turbo gate threshold",
+  "DAT_00D7A208": "-0.0f, the negation the PartAnims duration uses",
+  "DAT_00CE7D1C": "-0.6981317f (-40 degrees), BayDoor.OpenAngle default",
+  "DAT_00CE7D20": "0.6981317f (40 degrees), BayDoor.ClosedAngle default",
+  "DAT_00D7A2F0": "0.1f, BayDoor.TimeToOpen default",
+  "DAT_00CF87C8": "2.0f, the KameraFolotte default and the GearsPullTime seed",
+  "DAT_00CE3D34": "4.0f, the GearsPullTime default for kind 10h or 16h",
+  "DAT_00CE38B8": "10.0f, the KameraMogotte default and the ship reader's CaptainCameraHeight fallback"
+ },
+ "no_ghidra_function": [
+  {
+   "address": "009536B0",
+   "end": "009536D2",
+   "role": "the ReconPlane leaf's IsKindOf, vtable slot +18h from 00D19BF4; accepts kinds 14h, 0Fh, 5 and 4, so neither GearsPullTime test passes for a ReconPlane",
+   "proposed_name": "BSP_ReconPlaneClass_IsKindOf",
+   "note": "read only, outside this packet's lease; last instruction RET 4 at 009536D2, int3 padding from 009536D5"
+  }
+ ],
+ "flow": "bsp.py ghidra flow 007D1F70 reports 1853 listed instructions and 0 gaps",
+ "installed_file_check": {
+  "file": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/datatables/autoload/vehicleclasses.lua",
+  "bytes": 3158242,
+  "note": "3,349,364 bytes in this install; docs/VEHICLE_CLASS_FIELDS.md recorded 3,158,242 for the same path, so the two packets read different copies. The row count (633) is identical, so the discrepancy is trailing content rather than different data.",
+  "rows": 633,
+  "plane_rows": 72,
+  "plane_rows_by_type": {
+   "DiveBomber": 9,
+   "Fighter": 28,
+   "Kamikaze": 6,
+   "LargeReconPlane": 4,
+   "LevelBomber": 11,
+   "SmallReconPlane": 5,
+   "TorpedoBomber": 9
+  },
+  "distinct_plane_key_paths": 165,
+  "reader_key_paths": 70,
+  "reader_get_by_name_sites": 77,
+  "reader_expects_no_plane_row_provides": [
+   ".Wreck",
+   ".GearsPullTime"
+  ],
+  "shipped_no_reader_consumes": {
+   ".ArmorIndexes": 72,
+   ".ArmorIndexes[]": 72,
+   ".DogFightAimDistance": 70,
+   ".DogFightShootDistance": 70,
+   ".HP_Realistic": 36,
+   ".PlatformDirections": 22,
+   ".PlatformDirections.AFT": 22,
+   ".PlatformDirections.AFT[]": 16,
+   ".PlatformDirections.FORWARD": 22,
+   ".PlatformDirections.FORWARD[]": 11,
+   ".PlatformDirections.LEFT": 22,
+   ".PlatformDirections.LEFT[]": 16,
+   ".PlatformDirections.RIGHT": 22,
+   ".PlatformDirections.RIGHT[]": 16,
+   ".Race": 72,
+   ".StrafeAttackDistance": 70,
+   ".StrafeAttackHeight": 70,
+   ".StrafeGoawayDistance": 70,
+   ".TurnRollLowLimit": 72,
+   ".Type": 72,
+   ".UE_DLC": 3,
+   ".UnitlibViewDistance": 65,
+   ".Unlock": 27,
+   ".UnlockID": 17
+  }
+ },
+ "uncertainties": [
+  "The 44h-byte EngineEfxes record 007C3510 builds was not decoded; only that it wraps one effect handle.",
+  "The 10h-byte BowWaves record's trailing 12 bytes are copied from a stack slot the reader never writes, so their value is whatever the frame held.",
+  "The tuning object 0042E740 returns is 6D0h bytes loaded from luaMW_init.lua; +31Ch, +320h and +334h are read here but their names are not established.",
+  "The reader writes 1.0f back into tuning+31Ch when the Accel factor is not above 1.0f. Whether that is a guard or a bug was not established; it mutates shared state from a per-class read.",
+  "+218h holds an effect resolved from the LowPlaneAlt literal, not from any key, so no data file controls it.",
+  "The plane-row rule for the installed-file check comes from the Type strings; it matches the per-leaf row counts in docs/VEHICLE_CLASS_DESCRIPTORS.md exactly (72), which is a stronger check than the ship packet had, but it is still not the factory's dispatch.",
+  "PlatformDirections, the five DogFight and Strafe distances and TurnRollLowLimit are shipped on nearly every plane row and no reader in this family names them."
+ ],
+ "follow_up_packets": [
+  {
+   "packet": "plane_engine_effect_record",
+   "addresses": [
+    "007c3510",
+    "007ccca0",
+    "007c9170",
+    "007c34b0"
+   ],
+   "files": [
+    "docs/PLANE_ENGINE_EFFECT_RECORD.md"
+   ],
+   "contract": "Decode the 44h-byte EngineEfxes record and find which subsystem walks the vector at plane descriptor +250h"
+  },
+  {
+   "packet": "plane_bow_wave_record",
+   "addresses": [
+    "007d1d30",
+    "007cd2f0",
+    "007d1b50"
+   ],
+   "files": [
+    "docs/PLANE_BOW_WAVE_RECORD.md"
+   ],
+   "contract": "Decode the 10h-byte BowWaves record, say what its three trailing dwords mean and where +550h is read"
+  },
+  {
+   "packet": "game_tuning_singleton",
+   "addresses": [
+    "0042e740",
+    "007e2a20"
+   ],
+   "files": [
+    "docs/GAME_TUNING_SINGLETON.md"
+   ],
+   "contract": "Decode the 6D0h-byte luaMW_init tuning object, name the 141 call sites' offsets and settle whether the +31Ch write-back is a guard"
+  },
+  {
+   "packet": "plane_strafe_dogfight_keys",
+   "addresses": [
+    "007d1f70"
+   ],
+   "files": [
+    "docs/PLANE_AI_DISTANCE_KEYS.md"
+   ],
+   "contract": "Find the reader that consumes DogFightAimDistance, DogFightShootDistance, the three Strafe distances and TurnRollLowLimit, which 70 of 72 plane rows ship and no descriptor field reader names"
+  }
+ ],
+ "state": {
+  "007D1F70": "exported, analysed, reconstructed, build-tested, installed-file-checked",
+  "0042E740, 006EA910, 004B3D20, 00871BA0": "exported, analysed for their role, name recorded",
+  "007C3510, 007CCCA0, 007D1D30": "exported, analysed from their call sites, name recorded",
+  "009536B0": "read only, no Ghidra function; reported for definition",
+  "00870CD0, 004D9C00, 00960230, 007E2A20, 007CD2F0": "read only, not renamed by this packet"
+ }
+}
