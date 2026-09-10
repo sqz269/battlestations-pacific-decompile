@@ -539,5 +539,247 @@
       "size": 127,
       "sha256": "86f8809f4ac2461f10d1d1fe32aa5a064a0ec55ddf13550387f802886c40aaeb"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "integrated_primary_review_strict_win32_original_assignment_caller_fixture_passed",
+    "worker_commit": "a7f004dea7fcda74f7872861c38e40772dfc187c",
+    "worker_code_unchanged": true,
+    "verified_spans": [
+      {
+        "address": "00b30510",
+        "length": 162,
+        "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+        "live_matches_installed": true
+      },
+      {
+        "address": "0041dd40",
+        "length": 5,
+        "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+        "live_matches_installed": true
+      },
+      {
+        "address": "004d05e0",
+        "length": 5,
+        "sha256": "cea9374907334869234a8799085b710d0a547ab0093c6130530b7625b0390572",
+        "live_matches_installed": true
+      },
+      {
+        "address": "004d26a0",
+        "length": 5,
+        "sha256": "19bad2162e08fd3b256f0af4024c51343feb7827eb43fd73dcfea11a662668d8",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf7680",
+        "length": 5,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+        "live_matches_installed": true
+      }
+    ],
+    "verified_artifacts": [
+      {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\include\\bsp\\native_render_resource_record.hpp",
+        "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+      },
+      {
+        "path": "src/native_render_resource_record.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\src\\native_render_resource_record.cpp",
+        "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\docs\\NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md",
+        "sha256": "51d5cbec68a715a855e8ec47a5d65fa6977985f5965bd63b361fedfebcae5e7a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\include\\bsp\\native_string.hpp",
+        "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\src\\native_string.cpp",
+        "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+      },
+      {
+        "path": "include/bsp/native_alias_count_growth.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\include\\bsp\\native_alias_count_growth.hpp",
+        "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+      },
+      {
+        "path": "src/native_alias_count_growth.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\src\\native_alias_count_growth.cpp",
+        "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+      },
+      {
+        "path": "include/bsp/native_render_alias_checked_ops.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\include\\bsp\\native_render_alias_checked_ops.hpp",
+        "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c"
+      },
+      {
+        "path": "src/native_render_alias_checked_ops.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\src\\native_render_alias_checked_ops.cpp",
+        "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872"
+      },
+      {
+        "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\include\\bsp\\native_render_resource_alias_nodes.hpp",
+        "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee"
+      },
+      {
+        "path": "src/native_render_resource_alias_nodes.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\src\\native_render_resource_alias_nodes.cpp",
+        "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\include\\bsp\\storage_pool.hpp",
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "src/storage_pool.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\src\\storage_pool.cpp",
+        "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+      },
+      {
+        "path": "local/support/include/bsp/native_render_alias_insertion.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\support\\include\\bsp\\native_render_alias_insertion.hpp",
+        "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+      },
+      {
+        "path": "local/support/native_render_alias_insertion.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\support\\native_render_alias_insertion.cpp",
+        "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+      },
+      {
+        "path": "local/prepare_native_render_resource_record_assignment.py",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\prepare_native_render_resource_record_assignment.py",
+        "sha256": "df452b5bd27b562e6648ffab86cc7d68e32d9e187b573ced92984730bba84006"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_check.cpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_check.cpp",
+        "sha256": "3f2b5fad96eea1f5416aa921108a5027ab7a45d437bc0c3dd9effeb0b9fe2f43"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_spans.hpp",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_spans.hpp",
+        "sha256": "1bbe6f100253c4520b47954af560f65dfd91df3fd87a44b558a28e9274d2ad88"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_preparation.json",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_preparation.json",
+        "sha256": "e91edf1f297d155472143b7711938378a169b587187a323d681c22be451ec187"
+      },
+      {
+        "path": "local/build_native_render_resource_record_assignment.ps1",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\build_native_render_resource_record_assignment.ps1",
+        "sha256": "106d63b0766bd96c8efc3cc055c725a273017d7763575a13b3ecfa812fdc4a4b"
+      },
+      {
+        "path": "local/build_native_render_resource_record_assignment_check.ps1",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\build_native_render_resource_record_assignment_check.ps1",
+        "sha256": "a3f1d7e222cfd3bfbca22d081482088a10c4df55ba84af1d66dd36b28eddc3f9"
+      },
+      {
+        "path": "local/record_assignment_sources.cmake",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\record_assignment_sources.cmake",
+        "sha256": "358f3190cfbf22a1fbc5b490ba04a5ebd5048cad4240568719e19f666a71fab5"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_check.txt",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_check.txt",
+        "sha256": "a66263e4b618e0a968154a02a185ae67a7fa96033131d119f2cb595e595fe8aa"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_build.txt",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_build.txt",
+        "sha256": "7b24bf3701bb5c76a158f7b74e667da1982a2c4f2532c87527feeb04ee827801"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_build_final.txt",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_build_final.txt",
+        "sha256": "bf7e987ccc86042b26f9925ad9f280802d298d7219a50665519bd0c6f6c9ce5f"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_seed_check.txt",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_seed_check.txt",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_assembly.txt",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_assembly.txt",
+        "sha256": "63496fb283b7a88623ef16cda5faa56411e2bfd39ab94d5b5cfb9c3aa8cbe6d1"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_old_proto.txt",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_old_proto.txt",
+        "sha256": "a2d905b2c799fcd7ba33011196535bf6994fdf5f2686550c09a6cd7fd971e210"
+      },
+      {
+        "path": "local/native_render_resource_record_assignment_old_comments.json",
+        "verified_location": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-assignment-20260910\\local\\native_render_resource_record_assignment_old_comments.json",
+        "sha256": "86f8809f4ac2461f10d1d1fe32aa5a064a0ec55ddf13550387f802886c40aaeb"
+      }
+    ],
+    "source_artifacts": [
+      {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+      },
+      {
+        "path": "src/native_render_resource_record.cpp",
+        "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+      },
+      {
+        "path": "include/bsp/native_render_alias_insertion.hpp",
+        "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+      },
+      {
+        "path": "src/native_render_alias_insertion.cpp",
+        "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+      }
+    ],
+    "fixture": {
+      "passed": true,
+      "words": 116,
+      "native_original_assignment": true,
+      "concrete_compiled_helpers": true,
+      "artifacts": {
+        "local/native_render_resource_record_assignment_check.cpp": "3f2b5fad96eea1f5416aa921108a5027ab7a45d437bc0c3dd9effeb0b9fe2f43",
+        "local/native_render_resource_record_assignment_spans.hpp": "1bbe6f100253c4520b47954af560f65dfd91df3fd87a44b558a28e9274d2ad88",
+        "local/build_native_render_resource_record_assignment_check.ps1": "10d67e218d66aee8ae4443b848bbe872f577a4decaeafe7f795f1b480370d416",
+        "local/native_resource_assignment_primary_fixture.txt": "a66263e4b618e0a968154a02a185ae67a7fa96033131d119f2cb595e595fe8aa"
+      },
+      "build_script_difference": "Removed snapshot include directory; current primary headers/source and integrated bsp_core used."
+    },
+    "build": {
+      "passed": true,
+      "tests": 2,
+      "log": "reports/native_resource_assignment_build.txt",
+      "sha256": "64dd01e917f60b7ebbf3fdd53e67a5e9682e4f7182a793888ab1663ae6d96a24"
+    },
+    "abi_compatible": false,
+    "game_validated": false,
+    "annotations_saved": {
+      "path": "reports/native_resource_assignment_annotations.json",
+      "sha256": "a2e494fd7220ef4d60b92873095caee70046806150841ccc758145d82ee632a1",
+      "old_name_and_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_export": {
+      "path": "exports/bsp/functions/00b30510/decompiled.c",
+      "sha256": "ce56fbfe7125385afe930721099d4b93e2b43ad3761fd9f39250a77fcc2a9638"
+    },
+    "closure_utc": "2026-09-10T23:20:40.546770+00:00"
+  }
 }

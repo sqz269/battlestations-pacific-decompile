@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b30510",
+    "before": {
+      "address": "00b30510",
+      "function_name": "FUN_00b30510"
+    },
+    "after": {
+      "address": "00b30510",
+      "old_name": "FUN_00b30510",
+      "name": "BSP_NativeRenderResourceRecord_Assign",
+      "evidence": "Complete original[00b30510,00b305b2),162bytes. ECX actual destination; one stack source-record pointer; EAX destination; RET4; no local EH. Actual2Ch destination/source; name current fields after full actual resize; source sentinel/first captured before destination clear; current destination sentinel/first after clear; full alias range; six sequential current-source tail stores even exact identity; no resource retain/release or assignment rollback. Evidence reports/native_render_resource_record_assignment_audit.json; primary116-word original caller fixture through actual resize/clear/range helpers and strictMSVCWin32+2CTest passed. Supplied pool/handler,host memcpy zero-count omission and host exception ABI remain; no gameplay claim."
+    },
+    "status": "applied"
+  }
+]

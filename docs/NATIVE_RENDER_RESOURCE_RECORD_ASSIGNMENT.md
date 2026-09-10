@@ -1,5 +1,11 @@
 # Native render-resource record assignment (`00B30510`)
 
+Primary integration rechecked all five native spans and 29 evidence artifacts,
+retained the worker's source unchanged, and reran the 116-word original caller
+fixture against the integrated library. The strict Win32 build and both existing
+CTests passed. The assignment annotation is saved with its previous values,
+and its export is refreshed; see this packet's audit `primary_integration`.
+
 `assign_native_render_resource_record_00b30510` reconstructs the complete
 162-byte assignment body on the actual `NativeRenderResourceRecord` storage.
 It returns the destination reference and accepts the existing string pool and
