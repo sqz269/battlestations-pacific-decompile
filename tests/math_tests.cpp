@@ -4,6 +4,7 @@
 #include "bsp/math.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/input_settings.hpp"
+#include "bsp/input_tick.hpp"
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -245,6 +246,20 @@ int main() {
             "clear ready flag",
         };
         check(host.transcript == expected, "the GUI resource list runs in native order");
+    }
+
+    {
+        // The timed set at game+5BCh decides an edge purely by which of the two
+        // injectors runs: 00a92aa0 clears the previous half and 00a919f0 does not.
+        // Getting that backwards would make every injected action fire 004c43c0
+        // on every frame it is queued, so it is the one rule worth pinning.
+        InputActionRecord record{};
+        InputActionListener listener{};
+        const InputEffectParam none{};
+        start_action_00a92aa0(record, 0.25f, none, &listener);
+        check(action_pressed_this_frame_004c43c0(record), "a started injection is an edge");
+        continue_action_00a919f0(record, 0.25f);
+        check(!action_pressed_this_frame_004c43c0(record), "a continued injection is not an edge");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
