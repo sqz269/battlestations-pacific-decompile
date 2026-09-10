@@ -171,7 +171,10 @@ def decompile(client, output, addresses, force=False):
             # Ghidra has a function there now, and note the provenance in the metadata
             info = str(client.get('get_function_by_address', address=address))
             if 'No function' in info or 'error' in info.lower():
-                raise ValueError(f'{address} is not a function in this snapshot or in Ghidra')
+                # skip rather than abort the batch: the caller sees it in the failure list
+                failures.append({'address': address, 'error': 'not a function in this snapshot or in Ghidra'})
+                print(f'{address}: skipped, not a function in this snapshot or in Ghidra', flush=True)
+                continue
             name = info.splitlines()[0].split('Function:', 1)[-1].split(' at ')[0].strip() or f'FUN_{address}'
             inventory[address] = {'address': address, 'name': name, 'snapshot': 'live (defined after the last snapshot)'}
         folder = output / 'functions' / address

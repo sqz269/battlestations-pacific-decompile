@@ -1,0 +1,355 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005f5bd0",
+    "end_address": "005f5e55"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005f5bd0",
+    "end_address": "005f5e54",
+    "bytes_disassembled": 645,
+    "message": "Successfully disassembled 645 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005f5bd0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "005f5bd0",
+    "function_name": "FUN_005f5bd0",
+    "entry_point": "005f5bd0",
+    "body_size": 645,
+    "message": "Function created successfully at 005f5bd0"
+   }
+  },
+  {
+   "defined": "005f5bd0",
+   "end": "005f5e55",
+   "name": null,
+   "after": "Function: FUN_005f5bd0 at 005f5bd0\nSignature: undefined FUN_005f5bd0(void)\nEntry: 005f5bd0\nBody: 005f5bd0 - 005f5e54"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005f7020",
+    "end_address": "005f7046"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005f7020",
+    "end_address": "005f7045",
+    "bytes_disassembled": 38,
+    "message": "Successfully disassembled 38 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005f7020",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "005f7020",
+    "function_name": "FUN_005f7020",
+    "entry_point": "005f7020",
+    "body_size": 38,
+    "message": "Function created successfully at 005f7020"
+   }
+  },
+  {
+   "defined": "005f7020",
+   "end": "005f7046",
+   "name": null,
+   "after": "Function: FUN_005f7020 at 005f7020\nSignature: undefined FUN_005f7020(void)\nEntry: 005f7020\nBody: 005f7020 - 005f7045"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00528920",
+    "end_address": "005289a2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00528920",
+    "end_address": "005289a1",
+    "bytes_disassembled": 130,
+    "message": "Successfully disassembled 130 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00528920",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00528920",
+    "function_name": "FUN_00528920",
+    "entry_point": "00528920",
+    "body_size": 130,
+    "message": "Function created successfully at 00528920"
+   }
+  },
+  {
+   "defined": "00528920",
+   "end": "005289a2",
+   "name": null,
+   "after": "Function: FUN_00528920 at 00528920\nSignature: undefined FUN_00528920(void)\nEntry: 00528920\nBody: 00528920 - 005289a1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005289b0",
+    "end_address": "005289d3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005289b0",
+    "end_address": "005289d2",
+    "bytes_disassembled": 35,
+    "message": "Successfully disassembled 35 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005289b0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "005289b0",
+    "function_name": "FUN_005289b0",
+    "entry_point": "005289b0",
+    "body_size": 35,
+    "message": "Function created successfully at 005289b0"
+   }
+  },
+  {
+   "defined": "005289b0",
+   "end": "005289d3",
+   "name": null,
+   "after": "Function: FUN_005289b0 at 005289b0\nSignature: undefined FUN_005289b0(void)\nEntry: 005289b0\nBody: 005289b0 - 005289d2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0055fa80",
+    "end_address": "0055fc9a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0055fa80",
+    "end_address": "0055fc99",
+    "bytes_disassembled": 538,
+    "message": "Successfully disassembled 538 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0055fa80",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0055fa80",
+    "function_name": "FUN_0055fa80",
+    "entry_point": "0055fa80",
+    "body_size": 538,
+    "message": "Function created successfully at 0055fa80"
+   }
+  },
+  {
+   "defined": "0055fa80",
+   "end": "0055fc9a",
+   "name": null,
+   "after": "Function: FUN_0055fa80 at 0055fa80\nSignature: undefined FUN_0055fa80(void)\nEntry: 0055fa80\nBody: 0055fa80 - 0055fc99"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00551b90",
+    "end_address": "00551b91"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00551b90",
+    "end_address": "00551b90",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00551b90",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00551b90",
+    "function_name": "FUN_00551b90",
+    "entry_point": "00551b90",
+    "body_size": 1,
+    "message": "Function created successfully at 00551b90"
+   }
+  },
+  {
+   "defined": "00551b90",
+   "end": "00551b91",
+   "name": null,
+   "after": "Function: FUN_00551b90 at 00551b90\nSignature: undefined FUN_00551b90(void)\nEntry: 00551b90\nBody: 00551b90 - 00551b90"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00527d30",
+    "end_address": "00527d36"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00527d30",
+    "end_address": "00527d35",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00527d30",
+    "disassemble_first": false,
+    "name": "BSP_ControlLayoutScreen_ScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "00527d30",
+    "function_name": "BSP_ControlLayoutScreen_ScreenId",
+    "entry_point": "00527d30",
+    "body_size": 6,
+    "message": "Function created successfully at 00527d30",
+    "warnings": [
+     "Function name 'BSP_ControlLayoutScreen_ScreenId' \u2014 main part 'ControlLayoutScreen_ScreenId' is not PascalCase. Expected: ControllayoutscreenScreenid",
+     "Function name 'BSP_ControlLayoutScreen_ScreenId' \u2014 main part 'ControlLayoutScreen_ScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ControlLayoutScreen_ScreenId' does not start with a recognized verb. First word 'Control' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00527d30",
+   "end": "00527d36",
+   "name": "BSP_ControlLayoutScreen_ScreenId",
+   "after": "Function: BSP_ControlLayoutScreen_ScreenId at 00527d30\nSignature: undefined BSP_ControlLayoutScreen_ScreenId(void)\nEntry: 00527d30\nBody: 00527d30 - 00527d35"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00555800",
+    "end_address": "00555806"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00555800",
+    "end_address": "00555805",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00555800",
+    "disassemble_first": false,
+    "name": "BSP_ControlBindingScreen_ScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "00555800",
+    "function_name": "BSP_ControlBindingScreen_ScreenId",
+    "entry_point": "00555800",
+    "body_size": 6,
+    "message": "Function created successfully at 00555800",
+    "warnings": [
+     "Function name 'BSP_ControlBindingScreen_ScreenId' \u2014 main part 'ControlBindingScreen_ScreenId' is not PascalCase. Expected: ControlbindingscreenScreenid",
+     "Function name 'BSP_ControlBindingScreen_ScreenId' \u2014 main part 'ControlBindingScreen_ScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ControlBindingScreen_ScreenId' does not start with a recognized verb. First word 'Control' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00555800",
+   "end": "00555806",
+   "name": "BSP_ControlBindingScreen_ScreenId",
+   "after": "Function: BSP_ControlBindingScreen_ScreenId at 00555800\nSignature: undefined BSP_ControlBindingScreen_ScreenId(void)\nEntry: 00555800\nBody: 00555800 - 00555805"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005f1ca0",
+    "end_address": "005f1ca6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005f1ca0",
+    "end_address": "005f1ca5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005f1ca0",
+    "disassemble_first": false,
+    "name": "BSP_OptionsScreen_ScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005f1ca0",
+    "function_name": "BSP_OptionsScreen_ScreenId",
+    "entry_point": "005f1ca0",
+    "body_size": 6,
+    "message": "Function created successfully at 005f1ca0",
+    "warnings": [
+     "Function name 'BSP_OptionsScreen_ScreenId' \u2014 main part 'OptionsScreen_ScreenId' is not PascalCase. Expected: OptionsscreenScreenid",
+     "Function name 'BSP_OptionsScreen_ScreenId' \u2014 main part 'OptionsScreen_ScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_OptionsScreen_ScreenId' does not start with a recognized verb. First word 'Options' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005f1ca0",
+   "end": "005f1ca6",
+   "name": "BSP_OptionsScreen_ScreenId",
+   "after": "Function: BSP_OptionsScreen_ScreenId at 005f1ca0\nSignature: undefined BSP_OptionsScreen_ScreenId(void)\nEntry: 005f1ca0\nBody: 005f1ca0 - 005f1ca5"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
