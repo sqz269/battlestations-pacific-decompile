@@ -1,0 +1,275 @@
+{
+  "packet": "game_frame_input_tick",
+  "owner": "agent/game-input-tick",
+  "date": "2026-09-09",
+  "kind": "analysis_and_reconstruction",
+  "anchor": {
+    "address": "004e4a40",
+    "name": "BSP_Game_OnMove",
+    "phases_covered": ["3 input poll 004e4a63..004e4a77", "15 effect sets 004e4e6c..004e4fe4"],
+    "note": "Anchor was read only; it is owned by docs/GAME_ON_MOVE_MAP.md."
+  },
+  "headline_corrections": [
+    {
+      "claim": "game+5B0h and game+5BCh are std::list walks",
+      "source": "docs/GAME_ON_MOVE_MAP.md phase 15",
+      "correction": "Both are MSVC std::_Tree (set) instantiations.",
+      "evidence": "004b9f40 and 004bf830 are _Tree::iterator::operator++: right-subtree minimum else climb while the node is the right child, reading _Left +0h, _Parent +4h, _Right +8h and _Isnil at +11h / +25h. begin() is _Myhead->_Left at 004e4e72 and 004e4ef9. 004d41a0 is the matching erase(first,last) whose whole-range fast path resets _Myhead->_Left/_Parent/_Right to _Myhead and _Mysize to 0 at 004d41f2..004d4204."
+    },
+    {
+      "claim": "004d11d0 is an STL length-error throw site (tag stl_throw_site)",
+      "source": "config/tags",
+      "correction": "004d11d0 is std::_Tree::erase(iterator) for the N28 instantiation.",
+      "evidence": "Three arguments are the hidden return-iterator pointer plus one checked iterator by value (_Mycont, _Ptr), matching push edi; push ebx; lea edx,[esp+38h]; push edx at 004e4fd2. It calls 004bf830 to build the successor it returns. The string immediate at 00ce44e0 is 'invalid map/set<T> iterator', the MSVC debug message for a bad erase iterator."
+    }
+  ],
+  "containers": [
+    {
+      "address": "game+5B0h",
+      "type": "std::set<int>",
+      "layout": {"iterator_list": "+0h", "_Myhead": "+4h (game+5B4h)", "_Mysize": "+8h (game+5B8h)"},
+      "node": {"size": "14h", "_Left": "+0h", "_Parent": "+4h", "_Right": "+8h", "value": "+0Ch int", "_Color": "+10h", "_Isnil": "+11h"},
+      "meaning": "action indices reset (suppressed) every frame they are present",
+      "increment": "004b9f40"
+    },
+    {
+      "address": "game+5BCh",
+      "type": "std::set<TimedInputEntry>",
+      "layout": {"iterator_list": "+0h", "_Myhead": "+4h (game+5C0h)", "_Mysize": "+8h (game+5C4h)"},
+      "node": {"size": "28h", "_Left": "+0h", "_Parent": "+4h", "_Right": "+8h", "value": "+0Ch 18h bytes", "_Color": "+24h", "_Isnil": "+25h"},
+      "meaning": "timed injected actions",
+      "increment": "004bf830",
+      "erase": "004d11d0"
+    }
+  ],
+  "structs": [
+    {
+      "name": "input singleton",
+      "size": "24h",
+      "constructor": "00a93da0",
+      "fields": [
+        {"offset": "+0h", "value": "vtable 00d5b630", "evidence": "00a93da4"},
+        {"offset": "+4h", "type": "InputActionRecord*", "evidence": "00a92c79, 004e4ebf"},
+        {"offset": "+8h", "type": "int count", "evidence": "00a92c7c computes end = base + count*30h; not an end pointer"},
+        {"offset": "+1Ch", "value": "byte 1 at construction", "evidence": "00a93dc1"},
+        {"offset": "+20h", "value": "dword 1 at construction", "evidence": "00a93dc4"}
+      ]
+    },
+    {
+      "name": "InputActionRecord",
+      "size": "30h",
+      "fields": [
+        {"offset": "+01h", "type": "byte", "meaning": "enable gate", "evidence": "00a92c88"},
+        {"offset": "+10h", "type": "ptr", "meaning": "binding array base, stride 34h", "evidence": "00a92398, 00a9239b"},
+        {"offset": "+14h", "type": "int", "meaning": "binding count", "evidence": "00a92395"},
+        {"offset": "+1Ch", "type": "float", "meaning": "previous-frame hold time", "evidence": "00a92381"},
+        {"offset": "+20h", "type": "byte", "meaning": "previous-frame down latch", "evidence": "00a92384"},
+        {"offset": "+24h", "type": "float", "meaning": "current-frame hold time", "evidence": "00a92387"},
+        {"offset": "+28h", "type": "byte", "meaning": "current-frame down latch", "evidence": "00a9238c"},
+        {"offset": "+2Ch", "type": "ptr", "meaning": "listener, may be null", "evidence": "00a92c95, null test obfuscated as neg/sbb/test 0F8BC00h at 00a92c9a"}
+      ]
+    },
+    {
+      "name": "InputActionListener",
+      "extent": "+8h..+23h",
+      "evidence": "00a91e20 clears bytes +8h..+13h and floats +14h, +18h, +1Ch, +20h at 00a91e46..00a91e79",
+      "fields": [
+        {"offset": "+08h", "type": "byte", "meaning": "pressed", "evidence": "00a91b00"},
+        {"offset": "+09h", "type": "byte", "meaning": "+08h && +0Ah", "evidence": "00a91b99"},
+        {"offset": "+0Ah", "type": "byte", "meaning": "press aux", "evidence": "00a91af1"},
+        {"offset": "+0Bh", "type": "byte", "meaning": "fastRelease", "evidence": "00a92717 after __stricmp against 00d5b624"},
+        {"offset": "+0Ch", "type": "byte", "meaning": "+0Bh && +0Dh", "evidence": "00a91bac"},
+        {"offset": "+0Dh", "type": "byte", "meaning": "release aux", "evidence": "00a91b71"},
+        {"offset": "+0Eh", "type": "byte", "meaning": "hold repeat fired", "evidence": "00a91b24"},
+        {"offset": "+0Fh", "type": "byte", "meaning": "held", "evidence": "00a91b45"},
+        {"offset": "+10h", "type": "byte", "meaning": "holdPress", "evidence": "00a9272f after the 00425850 query with 00d5b618"},
+        {"offset": "+11h", "type": "byte", "meaning": "internal state A", "evidence": "00a91aa5, 00a91b03"},
+        {"offset": "+12h", "type": "byte", "meaning": "internal state B", "evidence": "00a91aaa, 00a91b83"},
+        {"offset": "+13h", "type": "byte", "meaning": "internal state C", "evidence": "00a91aec, 00a91b4d"},
+        {"offset": "+14h", "type": "float", "meaning": "time since press, zeroed on the release branch", "evidence": "00a91a7c, 00a91b86"},
+        {"offset": "+18h", "type": "float", "meaning": "time since release, zeroed on the press branch", "evidence": "00a91a8c, 00a91b09"},
+        {"offset": "+1Ch", "type": "float", "meaning": "held time", "evidence": "00a91ad0"},
+        {"offset": "+20h", "type": "float", "meaning": "held time with 00e12f28 subtracted on a repeat", "evidence": "00a91ae2, 00a91b27"}
+      ]
+    },
+    {
+      "name": "TimedInputEntry",
+      "size": "18h",
+      "location": "node+0Ch of the game+5BCh tree",
+      "fields": [
+        {"offset": "+00h", "type": "int", "meaning": "action index", "evidence": "004e4f66, scaled by 30h at 004e4f8b"},
+        {"offset": "+04h", "type": "float", "meaning": "hold time forced into the record", "evidence": "004e4f74"},
+        {"offset": "+08h", "type": "float", "meaning": "expiry threshold", "evidence": "004e4fbf"},
+        {"offset": "+0Ch", "type": "InputEffectParam", "meaning": "8-byte parameter block: object +0h, name +4h", "evidence": "004e4f86, 00a92abf, 00a926f6"},
+        {"offset": "+14h", "type": "byte", "meaning": "started latch", "evidence": "004e4f70 tests it, 004e4f9d sets it"}
+      ]
+    }
+  ],
+  "routines": [
+    {
+      "address": "004bec00",
+      "name": "BSP_InputManager_GetSingleton",
+      "abi": "__cdecl(void) -> singleton*, RET",
+      "state": "analysed",
+      "note": "already reviewed by game_on_move_map; re-read only for the 24h layout"
+    },
+    {
+      "address": "00a92c40",
+      "name": "BSP_InputManager_Update",
+      "abi": "__thiscall(this = singleton, float seconds), RET 4",
+      "state": "reconstructed, build-tested",
+      "steps": [
+        "00a92c57 backend 00f8bbf4 vtable+4h with the delta, ECX = backend",
+        "00a92c5e..00a92c6d read and clear backend+D4h; when set, 00a922a0 rebinds every record",
+        "00a92c88 skip records whose +01h is clear",
+        "00a92c90 00a92370 on the record",
+        "00a92ca6..00a92ce0 compute previous and current down as latch != 0 && hold > 0.0f",
+        "00a92cea 00a91a50 with ECX = record+2Ch and (delta, previous, current), only when +2Ch is non-null",
+        "00a92cef..00a92cfe reload base and count from the singleton each iteration",
+        "00a92d02 optional plain function pointer 00f8bbfc with no arguments"
+      ]
+    },
+    {
+      "address": "00a92370",
+      "name": "BSP_InputAction_PollBindings",
+      "abi": "__thiscall(this = record), RET",
+      "state": "prologue reconstructed and build-tested; binding evaluation analysed only",
+      "prologue": "00a9237a..00a9238c copies +24h to +1Ch and +28h to +20h, then zeroes +24h and +28h",
+      "body": "walks the record's 34h-stride binding array from +10h with count +14h, calling device vtable+20h probes and vtable+24h for analogue values"
+    },
+    {
+      "address": "004c43c0",
+      "name": "BSP_InputAction_WasPressedThisFrame",
+      "abi": "__cdecl(int action) -> bool",
+      "state": "analysed; edge rule reconstructed and build-tested here",
+      "rule": "+28h != 0 && +24h > 0 && (+20h == 0 || +1Ch <= 0), i.e. down now and not down last frame"
+    },
+    {
+      "address": "00a91e20",
+      "name": "BSP_InputAction_Reset",
+      "abi": "__thiscall(this = record), RET",
+      "state": "reconstructed, build-tested",
+      "effect": "zero +1Ch/+20h/+24h/+28h; when +2Ch is non-null, clear the listener's twelve flag bytes and four float accumulators"
+    },
+    {
+      "address": "00a919f0",
+      "name": "BSP_InputAction_ForceHeld",
+      "abi": "__thiscall(this = record, float amount), RET 4",
+      "state": "reconstructed, build-tested",
+      "effect": "+20h = +28h = 1 and +1Ch = +24h = amount, so no edge is produced"
+    },
+    {
+      "address": "00a92aa0",
+      "name": "BSP_InputAction_ForcePressed",
+      "abi": "__thiscall(this = record, float amount, void* param), RET 8",
+      "state": "reconstructed, build-tested",
+      "effect": "+1Ch = 0, +20h = 0, +28h = 1, +24h = amount; then when *param != 0, 00a926f0 with ECX = record+2Ch",
+      "note": "leaving the previous half clear is what makes 004c43c0 report an edge on the start frame"
+    },
+    {
+      "address": "00a926f0",
+      "name": "BSP_InputAction_ApplyModifierName",
+      "abi": "__thiscall(this = listener, void* param), RET 4",
+      "state": "reconstructed, build-tested; the 00425850 branch is approximated by the name string",
+      "effect": "param+4h equal to 'fastRelease' under __stricmp 00bf7fbf sets listener+0Bh and returns; otherwise the block is queried about 'holdPress' through 00425850 and listener+10h is set on success",
+      "strings": {"00d5b618": "holdPress", "00d5b624": "fastRelease"}
+    },
+    {
+      "address": "00a91a50",
+      "name": "BSP_InputAction_UpdateListenerState",
+      "abi": "__thiscall(this = listener, float seconds, int previous_down, int current_down), RET 0Ch",
+      "state": "analysed",
+      "thresholds": ["00e12f20 press/release/hold gate", "00e12f24 repeat threshold", "00e12f28 repeat subtraction"],
+      "note": "branch structure juggles three live x87 values across the flag stores; not reconstructed"
+    },
+    {
+      "address": "00a922a0",
+      "name": "BSP_InputManager_RebindAllActions",
+      "abi": "__thiscall(this = singleton), RET",
+      "state": "analysed",
+      "effect": "00a91e80 on every record; 00a91e80 was not read"
+    },
+    {
+      "address": "004b9f40",
+      "name": "STL_Tree_Inc_IntKey_N14_004b9f40",
+      "abi": "__thiscall(this = checked iterator {_Mycont, _Ptr}), RET",
+      "state": "analysed"
+    },
+    {
+      "address": "004bf830",
+      "name": "STL_Tree_Inc_IntKey_N28_004bf830",
+      "abi": "__thiscall(this = checked iterator {_Mycont, _Ptr}), RET",
+      "state": "analysed"
+    },
+    {
+      "address": "004d11d0",
+      "name": "STL_Tree_EraseIter_IntKey_N28_004d11d0",
+      "abi": "__thiscall(this = tree, iterator* result, iterator by value {_Mycont, _Ptr}), RET 0Ch",
+      "state": "analysed",
+      "note": "supersedes the stl_throw_site tag STL_xlen_throw_004d11d0"
+    },
+    {
+      "address": "00874640",
+      "name": null,
+      "state": "analysed only",
+      "effect": "00f876a4 = float argument, 00f876a8 = the same, 00f876b0 = (int)(argument / 0.05) via the double at 00d7a270 and ftol 00bf7420"
+    }
+  ],
+  "onmove_phase_15": {
+    "range": "004e4e6c..004e4fe4",
+    "guards": ["game+5D4h == 0Dh", "game+634h == 0"],
+    "steps": [
+      "walk game+5B0h; for each int value call 00a91e20 on records + id*30h, advancing with 004b9f40",
+      "004e4eda: when game+5C4h is non-zero reset one more record; the literal 30h at 004e4eeb makes it action index 1",
+      "walk game+5BCh; the iterator is advanced at 004e4f4b before the node is used, so the erase at 004e4fdf cannot invalidate it",
+      "per node: +20h clear -> 00a92aa0(node+10h, node+18h) then latch +20h; otherwise 00a919f0(node+10h)",
+      "004e4fbf..004e4fcc: keep while 00f876a4 < node+14h, erase through 004d11d0 otherwise"
+    ]
+  },
+  "uncertainties": [
+    "What 00f876a4 measures is not settled. Its only writer is 00874640 at 0087464c, and all five call sites read (004e0194, 007714e7, 00771fdc, 006b5a85, 004da780) pass 0.0f. Other readers add it as a bias (008e9dbc, 008e9e3c, 008e9f1a). With only those writes the erase rule reduces to 'erase unless the threshold is positive'.",
+    "The comparator for either tree was not read, so the visit order of both sets is unknown; the reconstruction preserves insertion order.",
+    "No insertion site for the game+5BCh tree was found, so the parameter block's object at +0h and the fixed guard index 1 stay unexplained.",
+    "00a91a50's branch structure is only partly recovered.",
+    "00425850, the holdPress query on the parameter block, is outside this packet; the reconstruction decides it from the block's name string.",
+    "Record fields +0h, +02h..+0Fh and +18h..+1Bh were not read."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/input_tick.hpp",
+    "source": "src/input_tick.cpp",
+    "cmake": "cmake/startup.cmake",
+    "entry_points": [
+      "bsp::update_input_manager_00a92c40",
+      "bsp::run_input_effect_lists_004e4e6c",
+      "bsp::run_game_input_tick"
+    ],
+    "host": "bsp::InputTickHost, one virtual per native call the packet cannot reconstruct: backend_update, take_backend_bindings_dirty, rebind_all_actions, poll_action_bindings, listener_classify, post_update_hook",
+    "not_abi_compatible": "listeners are owned by index and the two trees are std::vector; this is a semantic reconstruction, not a drop-in replacement",
+    "build": "scripts/build.ps1 Win32 Release, warnings as errors, clean",
+    "tests": "ctest reconstructed_math 1/1 passed; one case added to tests/math_tests.cpp for the 00a92aa0 vs 00a919f0 edge asymmetry"
+  },
+  "recorded_names": [
+    {"address": "00a92370", "name": "BSP_InputAction_PollBindings", "kind": "new"},
+    {"address": "00a91e20", "name": "BSP_InputAction_Reset", "kind": "new"},
+    {"address": "00a919f0", "name": "BSP_InputAction_ForceHeld", "kind": "new"},
+    {"address": "00a92aa0", "name": "BSP_InputAction_ForcePressed", "kind": "new"},
+    {"address": "00a926f0", "name": "BSP_InputAction_ApplyModifierName", "kind": "new"},
+    {"address": "00a91a50", "name": "BSP_InputAction_UpdateListenerState", "kind": "new"},
+    {"address": "00a922a0", "name": "BSP_InputManager_RebindAllActions", "kind": "new"},
+    {"address": "004b9f40", "name": "STL_Tree_Inc_IntKey_N14_004b9f40", "kind": "new"},
+    {"address": "004bf830", "name": "STL_Tree_Inc_IntKey_N28_004bf830", "kind": "new"},
+    {"address": "004d11d0", "name": "STL_Tree_EraseIter_IntKey_N28_004d11d0", "kind": "replace", "supersedes": "STL_xlen_throw_004d11d0"},
+    {"address": "00a92c40", "name": "BSP_InputManager_Update", "kind": "append_evidence"},
+    {"address": "004bec00", "name": "BSP_InputManager_GetSingleton", "kind": "append_evidence"}
+  ],
+  "downstream_corrections_needed": [
+    "docs/GAME_ON_MOVE_MAP.md phase 15 describes game+5B0h and game+5BCh as std::list walks; they are std::set trees.",
+    "docs/GAME_ON_MOVE_MAP.md flow break 4 marks 004d11d0 as a mis-tagged throw site; it is _Tree::erase(iterator) and the tag stl_throw_site should be dropped.",
+    "docs/GAME_ON_MOVE_MAP.md phase 15 says the node float timer 'reaches zero'; the test is against the global 00f876a4, not zero."
+  ],
+  "leases": {
+    "packet": "game_frame_input_tick",
+    "addresses": ["004bec00", "00a92c40", "00a91e20", "00a919f0", "00a92aa0", "004b9f40", "004bf830", "004d11d0", "00a92370", "00a922a0", "00a91a50", "00a926f0"],
+    "files": ["docs/GAME_INPUT_TICK.md", "reports/game_input_tick.json", "include/bsp/input_tick.hpp", "src/input_tick.cpp"]
+  }
+}
