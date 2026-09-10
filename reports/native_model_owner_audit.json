@@ -1,0 +1,1205 @@
+{
+  "schema_version": 1,
+  "packet": "native_model_owner",
+  "captured_utc": "2026-09-10T21:50:39.527218+00:00",
+  "status": "complete_reconstruction_strict_build_and_focused_native_fixture_checked",
+  "checkout": "J:\\PROG\\battlestations-pacific-decompile-native-model-owner",
+  "parent_commit": "1cb7fc09a01a594c73d25d02a021e53d0af90fca",
+  "prerequisites": [
+    {
+      "original_commit": "4ff70e2",
+      "local_cherry": "b71dce0",
+      "purpose": "actual174h node prefix guard and integrated model pool/storage CMake"
+    },
+    {
+      "original_commit": "a56b4a56b42d8b04580d9a7d9491b91ea6054119",
+      "local_cherry": "1cb7fc0",
+      "purpose": "live native ModelTypeBootstrap"
+    }
+  ],
+  "owned_files": [
+    "include/bsp/native_model_owner.hpp",
+    "src/native_model_owner.cpp",
+    "docs/NATIVE_MODEL_OWNER.md",
+    "reports/native_model_owner_audit.json"
+  ],
+  "ghidra_mutations": false,
+  "shared_ledger_writes": false,
+  "cmake_registration": "primary integration responsibility; strict private fixture explicitly compiles new owner and type source",
+  "target": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Every uncached byte read goes through the project/program-verified bsp CLI."
+  },
+  "functions": [
+    {
+      "address": "00b75030",
+      "name": "BSP_GeneratedModel_Construct",
+      "cpp_interface": "construct_native_model_00b75030",
+      "status": "complete_reconstruction_strict_build_and_focused_native_fixture_checked",
+      "source": "src/native_model_owner.cpp",
+      "header": "include/bsp/native_model_owner.hpp",
+      "original_abi": "ECX actual model; stack NativeString pointer; EAX same model; RET4",
+      "contract": "Full B6F5A0 then exact model vtable/tail/pose initialization in actual184h object within188h pool slot. Preserve preimages and pool index184; negative-zero pose18/1C/20, positive-zero remaining pose words. No model-level physical return on constructor failure.",
+      "old_ghidra_annotation": {
+        "address": "00b75030",
+        "function_name": "BSP_GeneratedModel_Construct",
+        "comment": "[BSP reconstruction 00b75030]\nConstruct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported. Original ABI: ECX destination; stack model-constructor argument; EAX destination; RET4. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "evidence": [
+        "docs/NATIVE_MODEL_OWNER.md",
+        "reports/native_model_owner_audit.json"
+      ],
+      "native_code": {
+        "address": "00b75030",
+        "length": 132,
+        "end_exclusive": "00b750b4",
+        "disk_offset": 7819312,
+        "disk_sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+        "live_sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0"
+      },
+      "qualification": "All five original bodies execute in one focused trajectory; this does not establish exhaustive branch or native exception-handler coverage."
+    },
+    {
+      "address": "00b750c0",
+      "name": "BSP_Model_Destroy",
+      "cpp_interface": "destroy_native_model_00b750c0",
+      "status": "complete_reconstruction_strict_build_and_focused_native_fixture_checked",
+      "source": "src/native_model_owner.cpp",
+      "header": "include/bsp/native_model_owner.hpp",
+      "original_abi": "ECX actual model; no stack arguments; RET",
+      "contract": "Complete general direct destructor. PublishD62DE8; release/clear current174, reload/release/clear180 then full native node base. State1 unwind releases current180 viaB74F20 then base; state0 base only; no failing-field retry or physical pool return on exception.",
+      "old_ghidra_annotation": {
+        "address": "00b750c0",
+        "function_name": "BSP_Model_Destroy",
+        "comment": "[BSP reconstruction 00b750c0]\n[BSP reconstruction] Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry. Original ABI: ECX model; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      "evidence": [
+        "docs/NATIVE_MODEL_OWNER.md",
+        "reports/native_model_owner_audit.json"
+      ],
+      "native_code": {
+        "address": "00b750c0",
+        "length": 165,
+        "end_exclusive": "00b75165",
+        "disk_offset": 7819456,
+        "disk_sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+        "live_sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56"
+      },
+      "qualification": "All five original bodies execute in one focused trajectory; this does not establish exhaustive branch or native exception-handler coverage."
+    },
+    {
+      "address": "00b75290",
+      "name": "BSP_Model_DeletingDestructor",
+      "cpp_interface": "delete_native_model_00b75290",
+      "status": "complete_reconstruction_strict_build_and_focused_native_fixture_checked",
+      "source": "src/native_model_owner.cpp",
+      "header": "include/bsp/native_model_owner.hpp",
+      "original_abi": "ECX actual model; stack flags; EAX original address even after pool return; RET4",
+      "contract": "Call complete direct destructor then return raw188h slot via canonical01090054/B74750 iff flags&1. No own reference decrement, logical-release gate, heap free or pool return after destructor failure.",
+      "old_ghidra_annotation": {
+        "address": "00b75290",
+        "function_name": "BSP_Model_DeletingDestructor",
+        "comment": "[BSP reconstruction 00b75290]\n[BSP reconstruction] Call00B750C0; if flags&1 return model storage via pool00B74750 with ECX global01090054; return original this. Generated vtable00D62DE8+4 points here; virtual0 uses already-reviewed00BD30E0 to invoke this entry with flag1. Native physical pool is the remaining explicit host storage-owner boundary. Original ABI: ECX model; stack delete flags; EAX original this; RET4.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      "evidence": [
+        "docs/NATIVE_MODEL_OWNER.md",
+        "reports/native_model_owner_audit.json"
+      ],
+      "native_code": {
+        "address": "00b75290",
+        "length": 32,
+        "end_exclusive": "00b752b0",
+        "disk_offset": 7819920,
+        "disk_sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+        "live_sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64"
+      },
+      "qualification": "All five original bodies execute in one focused trajectory; this does not establish exhaustive branch or native exception-handler coverage."
+    },
+    {
+      "address": "00b74f20",
+      "name": "BSP_ModelGeometryMember_Destroy",
+      "cpp_interface": "destroy_native_model_geometry_member_00b74f20",
+      "status": "complete_reconstruction_strict_build_and_focused_native_fixture_checked",
+      "source": "src/native_model_owner.cpp",
+      "header": "include/bsp/native_model_owner.hpp",
+      "original_abi": "ECX model+178 geometry member; no stack arguments; RET",
+      "contract": "Complete member cleanup: release current raw member+8 (model180) through actual04/current virtual0 on zero, then clear; preserve two member scalars. New C++ API receives containing16-byte model tail plus actual owner resolver.",
+      "old_ghidra_annotation": {
+        "address": "00b74f20",
+        "function_name": "FUN_00b74f20"
+      },
+      "evidence": [
+        "docs/NATIVE_MODEL_OWNER.md",
+        "reports/native_model_owner_audit.json"
+      ],
+      "native_code": {
+        "address": "00b74f20",
+        "length": 43,
+        "end_exclusive": "00b74f4b",
+        "disk_offset": 7819040,
+        "disk_sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f",
+        "live_sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f"
+      },
+      "qualification": "All five original bodies execute in one focused trajectory; this does not establish exhaustive branch or native exception-handler coverage."
+    },
+    {
+      "address": "00b75170",
+      "name": "BSP_GeneratedModel_SetGeometry",
+      "cpp_interface": "set_native_model_geometry_00b75170",
+      "status": "complete_reconstruction_strict_build_and_focused_native_fixture_checked",
+      "source": "src/native_model_owner.cpp",
+      "header": "include/bsp/native_model_owner.hpp",
+      "original_abi": "ECX actual model; stack unread DWORD, raw geometry, float178, float17C; RET10h",
+      "contract": "Capture old180; unequal identities publish incoming then retain actual incoming04 and release captured old/current terminal. After callbacks capture sentinelD7A260 once and reproduce UCOMISS/LAHF/TEST44 unordered-or-unequal writes. No retained assignment rollback on throw.",
+      "old_ghidra_annotation": {
+        "address": "00b75170",
+        "function_name": "BSP_GeneratedModel_SetGeometry",
+        "comment": "[BSP reconstruction 00b75170]\nRetain mesh at+180, replace+178/+17C only for arguments other than-1.0f; exact argument1 meaning unresolved. Original ABI: ECX model; stack unused word,mesh,float,float; RET10h. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "evidence": [
+        "docs/NATIVE_MODEL_OWNER.md",
+        "reports/native_model_owner_audit.json"
+      ],
+      "native_code": {
+        "address": "00b75170",
+        "length": 123,
+        "end_exclusive": "00b751eb",
+        "disk_offset": 7819632,
+        "disk_sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4",
+        "live_sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4"
+      },
+      "qualification": "All five original bodies execute in one focused trajectory; this does not establish exhaustive branch or native exception-handler coverage."
+    }
+  ],
+  "storage": {
+    "object_bytes": 388,
+    "pool_slot_bytes": 392,
+    "node_prefix_bytes": 372,
+    "model_tail_bytes": 16,
+    "pool_slab_index_offset": 388,
+    "pool_slab_index_preserved": true,
+    "native_fields": {
+      "04": "borrowed existing atomic32",
+      "174": "raw opaque retained owner",
+      "178": "float",
+      "17c": "float",
+      "180": "raw retained geometry owner"
+    },
+    "no_second_native_state": [
+      "reference count",
+      "transform",
+      "scene pointer",
+      "hierarchy",
+      "point-light array",
+      "name"
+    ],
+    "constructor_constants": {
+      "00ce4adc": "d01502f9",
+      "00ce4970": "501502f9",
+      "00d7a208": "80000000"
+    },
+    "pose_negative_zero_offsets": [
+      "18",
+      "1c",
+      "20"
+    ],
+    "pose_positive_zero_write_order": [
+      "24",
+      "28",
+      "2c",
+      "08",
+      "0c",
+      "10",
+      "14"
+    ],
+    "prepared_lifetime": "preserve184h object preimage while establishing prefix/tail C++ lifetimes; never touch pool184 word",
+    "raw_identity_expression": "&reference.model_owner().storage.node"
+  },
+  "reference_companion": {
+    "cpp_type": "NativeModelReference",
+    "actual_atomic_binding": true,
+    "extra_native_retain_on_bind": false,
+    "lifetime_registry": "same GeneratedModelLifetimeRuntime used by actual node hierarchy",
+    "model_profile": "00d62de8",
+    "node_base_profile": "00d62c88",
+    "required_slots": {
+      "00": "00bd30e0",
+      "04": "00b75290",
+      "18": "00b6f310",
+      "54": "00b6ee10"
+    },
+    "actual_type_predicate": "current006ef860 via live ModelTypeBootstrap; current node-baseB6F570 via existing node runtime",
+    "scene_dispatch": "current40/50/54 validated before shared world/attach/remove operations",
+    "retirement_order": [
+      "full actual model/node destruction",
+      "actual canonical model-pool return",
+      "unbind host node lifetime identity",
+      "explicit caller retirement callback"
+    ],
+    "unknown_profile_fallback": false,
+    "post_retirement_callback_access": false,
+    "external_owner_map": "Caller supplies NativeRenderActualOwners and removes any raw-identity mapping in explicit retirement callback."
+  },
+  "actual_retained_owners": {
+    "resolver": "NativeRenderActualOwners",
+    "release_helper": "release_native_render_actual_owner",
+    "count_offset": 4,
+    "lookup_only_on_zero": true,
+    "companion_actual_atomic_validated": true,
+    "terminal_requires_current_real_profile": true,
+    "terminal_interface_noexcept": true,
+    "geometry_construction_required_for_generic_release": false,
+    "geometry_zero_terminal_binding_required": true,
+    "shared_ptr_geometry_as_raw_storage": false,
+    "fixture_owners": "Real native render contexts with their actual04, full current native/host context destructor/deleter and shared scalar free; generic retained reference protocol only, not mesh identity."
+  },
+  "direct_destructor_eh": {
+    "handler": "00cc1c66",
+    "func_info": "00dfac50",
+    "unwind_map": "00dfac40",
+    "max_state": 2,
+    "states": [
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00cc1c58",
+        "action": "B74F20(saved_model+178): release CURRENT model180"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cc1c50",
+        "action": "complete B6F440(saved_model)"
+      }
+    ],
+    "normal_state_minus1_before_node_base": true,
+    "failed_field_not_retried": true,
+    "physical_return_after_failure": false,
+    "cleanup_throw_during_unwind": "terminate",
+    "native_eh_executed_in_fixture": false,
+    "host_state_sequence_checks": 2,
+    "host_tests": "Throw canonical actual-owner lookup after actual04 reaches zero, once in174 and once in180. Observe current geometry/base cleanup, uncleared failing field, exactly one release attempt and no pool return; explicitly complete real zero owner cleanup afterward."
+  },
+  "validation": {
+    "strict_new_source_compile": {
+      "result": "PASS",
+      "compiler": "MSVC x86",
+      "language": "C++17",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/fp:strict",
+        "/O2",
+        "/Oy-",
+        "/MD",
+        "/Gy",
+        "/Gw"
+      ]
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "result": "PASS",
+      "tests_passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "seed_checks_matching": 8,
+      "qualification": "New model source/type compiled explicitly by private native fixture; their CMake registration remains primary work."
+    },
+    "native_ownership_fixture": {
+      "result": "PASS",
+      "trajectories": 1,
+      "normalized_observations": 2367,
+      "models_constructed_per_native_or_host_trajectory": 2,
+      "actual_terminal_contexts_per_trajectory": 7,
+      "host_only_direct_unwind_checks": 2,
+      "fixture": "local/native_model_owner_check.cpp",
+      "build_script": "local/build_native_model_owner_check.ps1",
+      "binary": "build/model-owner-check/native_model_owner_check.exe",
+      "covered": [
+        "complete188h preparation preimage and constructor result",
+        "signed-zero pose and preserved pool184 word",
+        "same actual04 reference companion without initialization/retain",
+        "live descriptor predicate update",
+        "geometry equal-identity count skip",
+        "qNaN and signed-zero scalar stores",
+        "sentinel load after actual old-owner terminal callback",
+        "standalone member cleanup nonzero retained path",
+        "current180 replacement during174 terminal callback",
+        "discarded174 replacement and displaced180 remain independently live",
+        "logical release with two extra holds",
+        "repeated byte44 gate",
+        "queue release through same atomic",
+        "canonical raw model zero lookup and current terminal dispatch",
+        "original context terminal/deleter/shared free",
+        "original actual model-pool return",
+        "flags2 complete destruction preserves count and physical allocation"
+      ],
+      "uncovered": [
+        "native EH execution",
+        "throwing native terminals",
+        "nonnull model names",
+        "populated model child/light/scene paths",
+        "native mesh/geometry construction",
+        "model cloning or rendering"
+      ],
+      "fixture_corrections": [
+        "Win32 Interlocked imports resolved with GetProcAddress to avoid overloaded-function pointer cast",
+        "Added complete41DD40 because empty names still execute its equal-size branch",
+        "Normalize relocated vtable words only on native path; sparse mapping can overlap canonical literal address range"
+      ],
+      "production_algorithm_changes_for_fixture_parity": false
+    },
+    "original_byte_verification": {
+      "code_or_boundary_spans": 25,
+      "data_spans": 12,
+      "total_verified_bytes": 3321,
+      "five_owned_function_bytes": 495,
+      "checked_absolute_rebases": 85,
+      "external_hook_addresses": [
+        "00bf65ac",
+        "00bf6989"
+      ],
+      "hook_behavior": "Both CRT free boundaries call same actual singleton_lifetime_free, then observe completed context retirement by identity only.",
+      "unused_code": "uncommitted pages PAGE_NOACCESS; unused bytes in committed span pages INT3",
+      "native_game_entrypoint_loaded": false
+    }
+  },
+  "code_evidence": [
+    {
+      "address": "00b75030",
+      "length": 132,
+      "end_exclusive": "00b750b4",
+      "disk_offset": 7819312,
+      "disk_sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+      "live_sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0"
+    },
+    {
+      "address": "00b750c0",
+      "length": 165,
+      "end_exclusive": "00b75165",
+      "disk_offset": 7819456,
+      "disk_sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+      "live_sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56"
+    },
+    {
+      "address": "00b75290",
+      "length": 32,
+      "end_exclusive": "00b752b0",
+      "disk_offset": 7819920,
+      "disk_sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+      "live_sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64"
+    },
+    {
+      "address": "00b74f20",
+      "length": 43,
+      "end_exclusive": "00b74f4b",
+      "disk_offset": 7819040,
+      "disk_sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f",
+      "live_sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f"
+    },
+    {
+      "address": "00b75170",
+      "length": 123,
+      "end_exclusive": "00b751eb",
+      "disk_offset": 7819632,
+      "disk_sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4",
+      "live_sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4"
+    },
+    {
+      "address": "00b6f5a0",
+      "length": 814,
+      "end_exclusive": "00b6f8ce",
+      "disk_offset": 7796128,
+      "disk_sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "live_sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b"
+    },
+    {
+      "address": "0041dd40",
+      "length": 164,
+      "end_exclusive": "0041dde4",
+      "disk_offset": 122176,
+      "disk_sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "live_sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+    },
+    {
+      "address": "004134f0",
+      "length": 103,
+      "end_exclusive": "00413557",
+      "disk_offset": 79088,
+      "disk_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "live_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "address": "00b6f440",
+      "length": 297,
+      "end_exclusive": "00b6f569",
+      "disk_offset": 7795776,
+      "disk_sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8"
+    },
+    {
+      "address": "00b6e680",
+      "length": 204,
+      "end_exclusive": "00b6e74c",
+      "disk_offset": 7792256,
+      "disk_sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "live_sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1"
+    },
+    {
+      "address": "00b6ee10",
+      "length": 110,
+      "end_exclusive": "00b6ee7e",
+      "disk_offset": 7794192,
+      "disk_sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03",
+      "live_sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03"
+    },
+    {
+      "address": "00b6ec70",
+      "length": 80,
+      "end_exclusive": "00b6ecc0",
+      "disk_offset": 7793776,
+      "disk_sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174",
+      "live_sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174"
+    },
+    {
+      "address": "00bd30f0",
+      "length": 7,
+      "end_exclusive": "00bd30f7",
+      "disk_offset": 8204528,
+      "disk_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+    },
+    {
+      "address": "00b6f310",
+      "length": 176,
+      "end_exclusive": "00b6f3c0",
+      "disk_offset": 7795472,
+      "disk_sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+      "live_sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af"
+    },
+    {
+      "address": "00b6dfa0",
+      "length": 105,
+      "end_exclusive": "00b6e009",
+      "disk_offset": 7790496,
+      "disk_sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277",
+      "live_sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277"
+    },
+    {
+      "address": "00bd30e0",
+      "length": 14,
+      "end_exclusive": "00bd30ee",
+      "disk_offset": 8204512,
+      "disk_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+    },
+    {
+      "address": "00b74750",
+      "length": 104,
+      "end_exclusive": "00b747b8",
+      "disk_offset": 7817040,
+      "disk_sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627",
+      "live_sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627"
+    },
+    {
+      "address": "00b1d120",
+      "length": 168,
+      "end_exclusive": "00b1d1c8",
+      "disk_offset": 7459104,
+      "disk_sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+      "live_sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e"
+    },
+    {
+      "address": "00b1d570",
+      "length": 30,
+      "end_exclusive": "00b1d58e",
+      "disk_offset": 7460208,
+      "disk_sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09",
+      "live_sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09"
+    },
+    {
+      "address": "00b74330",
+      "length": 6,
+      "end_exclusive": "00b74336",
+      "disk_offset": 7815984,
+      "disk_sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7",
+      "live_sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7"
+    },
+    {
+      "address": "00b74340",
+      "length": 6,
+      "end_exclusive": "00b74346",
+      "disk_offset": 7816000,
+      "disk_sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff",
+      "live_sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff"
+    },
+    {
+      "address": "006ef860",
+      "length": 40,
+      "end_exclusive": "006ef888",
+      "disk_offset": 3078240,
+      "disk_sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd",
+      "live_sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd"
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "end_exclusive": "00bf65b1",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "end_exclusive": "00bf698e",
+      "disk_offset": 8350089,
+      "disk_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+    },
+    {
+      "address": "00cc1c50",
+      "length": 32,
+      "end_exclusive": "00cc1c70",
+      "disk_offset": 9182288,
+      "disk_sha256": "17e80cf410ddee38444a3dd0ea146bfc74c858fc6a7b6231835755d40396014f",
+      "live_sha256": "17e80cf410ddee38444a3dd0ea146bfc74c858fc6a7b6231835755d40396014f"
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d62de8",
+      "length": 92,
+      "end_exclusive": "00d62e44",
+      "disk_offset": 9842152,
+      "disk_sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed",
+      "live_sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed"
+    },
+    {
+      "address": "00d62c88",
+      "length": 88,
+      "end_exclusive": "00d62ce0",
+      "disk_offset": 9841800,
+      "disk_sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+    },
+    {
+      "address": "00d5e5c4",
+      "length": 8,
+      "end_exclusive": "00d5e5cc",
+      "disk_offset": 9823684,
+      "disk_sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "live_sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f"
+    },
+    {
+      "address": "00ce4970",
+      "length": 4,
+      "end_exclusive": "00ce4974",
+      "disk_offset": 9324912,
+      "disk_sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+    },
+    {
+      "address": "00ce4adc",
+      "length": 4,
+      "end_exclusive": "00ce4ae0",
+      "disk_offset": 9325276,
+      "disk_sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "end_exclusive": "00d7a250",
+      "disk_offset": 9937484,
+      "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    {
+      "address": "00d7a208",
+      "length": 4,
+      "end_exclusive": "00d7a20c",
+      "disk_offset": 9937416,
+      "disk_sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+    },
+    {
+      "address": "00d7a260",
+      "length": 4,
+      "end_exclusive": "00d7a264",
+      "disk_offset": 9937504,
+      "disk_sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "live_sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+    },
+    {
+      "address": "01090054",
+      "length": 56,
+      "end_exclusive": "0109008c",
+      "disk_offset": null,
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+    },
+    {
+      "address": "01090030",
+      "length": 20,
+      "end_exclusive": "01090044",
+      "disk_offset": null,
+      "disk_sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+      "live_sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+    },
+    {
+      "address": "00dfac40",
+      "length": 52,
+      "end_exclusive": "00dfac74",
+      "disk_offset": 10464320,
+      "disk_sha256": "fd05988dff36c154708f797c5cb33532b5e7e21eac32604368a27eb042fb0367",
+      "live_sha256": "fd05988dff36c154708f797c5cb33532b5e7e21eac32604368a27eb042fb0367"
+    },
+    {
+      "address": "00ce2210",
+      "length": 20,
+      "end_exclusive": "00ce2224",
+      "disk_offset": 9314832,
+      "disk_sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9",
+      "live_sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9"
+    }
+  ],
+  "checked_rebases": [
+    {
+      "address": "006ef865",
+      "preimage": "01090034"
+    },
+    {
+      "address": "006ef878",
+      "preimage": "01090040"
+    },
+    {
+      "address": "00b1d123",
+      "preimage": "00cbc9c8"
+    },
+    {
+      "address": "00b1d142",
+      "preimage": "00d5e5c4"
+    },
+    {
+      "address": "00b1d14b",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b6ee47",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b6f3a9",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b6f443",
+      "preimage": "00cc1a01"
+    },
+    {
+      "address": "00b6f461",
+      "preimage": "00d62c88"
+    },
+    {
+      "address": "00b6f4d7",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b6f54e",
+      "preimage": "00d5c104"
+    },
+    {
+      "address": "00b6f5a3",
+      "preimage": "00cc1a31"
+    },
+    {
+      "address": "00b6f5c2",
+      "preimage": "00ceb130"
+    },
+    {
+      "address": "00b6f5d9",
+      "preimage": "00ce4970"
+    },
+    {
+      "address": "00b6f5e4",
+      "preimage": "00d62c88"
+    },
+    {
+      "address": "00b6f67a",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "00b6f705",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "00b6f78f",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "00b6f83a",
+      "preimage": "00ce4adc"
+    },
+    {
+      "address": "00b6f864",
+      "preimage": "00ce4970"
+    },
+    {
+      "address": "00b74331",
+      "preimage": "01090034"
+    },
+    {
+      "address": "00b74341",
+      "preimage": "01090040"
+    },
+    {
+      "address": "00b7475b",
+      "preimage": "00ce2218"
+    },
+    {
+      "address": "00b747ae",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00b74f31",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b75041",
+      "preimage": "00ce4adc"
+    },
+    {
+      "address": "00b75047",
+      "preimage": "00d62de8"
+    },
+    {
+      "address": "00b7505f",
+      "preimage": "00ce4970"
+    },
+    {
+      "address": "00b7506f",
+      "preimage": "00d7a208"
+    },
+    {
+      "address": "00b750c3",
+      "preimage": "00cc1c66"
+    },
+    {
+      "address": "00b750e1",
+      "preimage": "00d62de8"
+    },
+    {
+      "address": "00b750ef",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b75192",
+      "preimage": "00ce221c"
+    },
+    {
+      "address": "00b751a0",
+      "preimage": "00ce2220"
+    },
+    {
+      "address": "00b751ba",
+      "preimage": "00d7a260"
+    },
+    {
+      "address": "00b752a1",
+      "preimage": "01090054"
+    },
+    {
+      "address": "00bd30f2",
+      "preimage": "00ceb130"
+    },
+    {
+      "address": "00cc1c67",
+      "preimage": "00dfac50"
+    },
+    {
+      "address": "00d5e5c4",
+      "preimage": "00bd30e0"
+    },
+    {
+      "address": "00d5e5c8",
+      "preimage": "00b1d570"
+    },
+    {
+      "address": "00d62c88",
+      "preimage": "00bd30e0"
+    },
+    {
+      "address": "00d62c8c",
+      "preimage": "00b6f8d0"
+    },
+    {
+      "address": "00d62c90",
+      "preimage": "00b6d790"
+    },
+    {
+      "address": "00d62c94",
+      "preimage": "00b6f570"
+    },
+    {
+      "address": "00d62c98",
+      "preimage": "00b6f8f0"
+    },
+    {
+      "address": "00d62c9c",
+      "preimage": "00b6d7a0"
+    },
+    {
+      "address": "00d62ca0",
+      "preimage": "00b6f310"
+    },
+    {
+      "address": "00d62ca4",
+      "preimage": "00b6d7b0"
+    },
+    {
+      "address": "00d62ca8",
+      "preimage": "00b6d990"
+    },
+    {
+      "address": "00d62cac",
+      "preimage": "00b6e150"
+    },
+    {
+      "address": "00d62cb0",
+      "preimage": "00b6d820"
+    },
+    {
+      "address": "00d62cb4",
+      "preimage": "00b6dab0"
+    },
+    {
+      "address": "00d62cb8",
+      "preimage": "00b6dae0"
+    },
+    {
+      "address": "00d62cbc",
+      "preimage": "00b6e870"
+    },
+    {
+      "address": "00d62cc0",
+      "preimage": "00b6db10"
+    },
+    {
+      "address": "00d62cc4",
+      "preimage": "00b6dbc0"
+    },
+    {
+      "address": "00d62cc8",
+      "preimage": "00b6dbe0"
+    },
+    {
+      "address": "00d62ccc",
+      "preimage": "00b6dc00"
+    },
+    {
+      "address": "00d62cd0",
+      "preimage": "00b6e8c0"
+    },
+    {
+      "address": "00d62cd4",
+      "preimage": "00b6dc20"
+    },
+    {
+      "address": "00d62cd8",
+      "preimage": "00b6ed80"
+    },
+    {
+      "address": "00d62cdc",
+      "preimage": "00b6ee10"
+    },
+    {
+      "address": "00d62de8",
+      "preimage": "00bd30e0"
+    },
+    {
+      "address": "00d62dec",
+      "preimage": "00b75290"
+    },
+    {
+      "address": "00d62df0",
+      "preimage": "00b74330"
+    },
+    {
+      "address": "00d62df4",
+      "preimage": "006ef860"
+    },
+    {
+      "address": "00d62df8",
+      "preimage": "00b752b0"
+    },
+    {
+      "address": "00d62dfc",
+      "preimage": "00b74340"
+    },
+    {
+      "address": "00d62e00",
+      "preimage": "00b6f310"
+    },
+    {
+      "address": "00d62e04",
+      "preimage": "00b6d7b0"
+    },
+    {
+      "address": "00d62e08",
+      "preimage": "00b748e0"
+    },
+    {
+      "address": "00d62e0c",
+      "preimage": "00b6e150"
+    },
+    {
+      "address": "00d62e10",
+      "preimage": "00b6d820"
+    },
+    {
+      "address": "00d62e14",
+      "preimage": "00b6dab0"
+    },
+    {
+      "address": "00d62e18",
+      "preimage": "00b6dae0"
+    },
+    {
+      "address": "00d62e1c",
+      "preimage": "00b6e870"
+    },
+    {
+      "address": "00d62e20",
+      "preimage": "00b6db10"
+    },
+    {
+      "address": "00d62e24",
+      "preimage": "00b6dbc0"
+    },
+    {
+      "address": "00d62e28",
+      "preimage": "00b6dbe0"
+    },
+    {
+      "address": "00d62e2c",
+      "preimage": "00b6dc00"
+    },
+    {
+      "address": "00d62e30",
+      "preimage": "00b6e8c0"
+    },
+    {
+      "address": "00d62e34",
+      "preimage": "00b6dc20"
+    },
+    {
+      "address": "00d62e38",
+      "preimage": "00b6ed80"
+    },
+    {
+      "address": "00d62e3c",
+      "preimage": "00b6ee10"
+    },
+    {
+      "address": "00d62e40",
+      "preimage": "006ef890"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "bytes": 5760,
+      "sha256": "91e3ffcad188574407078603c1958ae59f4d608d9b98184cd3005d921a313041",
+      "tracked": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "bytes": 13903,
+      "sha256": "0e5940c1a068bf808bef3c8881e41f4c13830ed42af49b0fa8ec8dd793c474f3",
+      "tracked": true
+    },
+    {
+      "path": "docs/NATIVE_MODEL_OWNER.md",
+      "bytes": 11149,
+      "sha256": "c9515dd595204d5c410a3d4934d8c983d7f04176a2aa49f46fa64a22c0076adf",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "bytes": 3166,
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "tracked": true
+    },
+    {
+      "path": "src/native_model_pool.cpp",
+      "bytes": 11199,
+      "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/model_type_bootstrap.hpp",
+      "bytes": 1537,
+      "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "tracked": true
+    },
+    {
+      "path": "src/model_type_bootstrap.cpp",
+      "bytes": 2635,
+      "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 3972,
+      "sha256": "c0969bee8243db45e0be9e69b1f44f70c97c93c0c59445cff708529fc2e41fa8",
+      "tracked": true
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 6654,
+      "sha256": "5cd03607b953df5436b299318879a3f7c44c25fcee4f5a057d9bd22e830571c2",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 4009,
+      "sha256": "9bf84bfbfed71bf90d5ab6626c3fc008665ac2b0aa9eb596d8dc6878a15db63d",
+      "tracked": true
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "bytes": 10577,
+      "sha256": "8fb01ea54062b84b15dad6a15743e4512f29241563639e733a35d9579c79761a",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "tracked": true
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 3884,
+      "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "bytes": 9235,
+      "sha256": "5c8a9a848628aac1f206caf77d5892206193bf79933d7b923c0052aab8d94518",
+      "tracked": true
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "bytes": 10758,
+      "sha256": "83f8da8545b63a699189af79ee39fcf6a9c7dd8e5aefebc957de0f7a40015be9",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "bytes": 7425,
+      "sha256": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6",
+      "tracked": true
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "bytes": 15328,
+      "sha256": "4c60e1702bc071399a546520228f18772ffededb2eed0bbb6439bb3c836a0177",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "bytes": 3183,
+      "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34",
+      "tracked": true
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "bytes": 6499,
+      "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9",
+      "tracked": true
+    },
+    {
+      "path": "local/prepare_native_model_owner.py",
+      "bytes": 4897,
+      "sha256": "b4f2b37e9a25bfe99459fd05d1e4bd95ab99d2495fc41a3077509779dc08be1c",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_preparation.json",
+      "bytes": 18423,
+      "sha256": "ec422efecdee1742430266d559d5dd9f5e047be4e861596a72e49b7f2b434496",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_spans.hpp",
+      "bytes": 4314,
+      "sha256": "8dff62644b03a0e65f14da2924577d08e7995ddabbdfcc1ffc16b4ec83f7a6c0",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_check.cpp",
+      "bytes": 19910,
+      "sha256": "7f4503c365db9fdc840638b17c2a6dbf2f2088c5cfe952aa8b0cf1da3727eaaf",
+      "tracked": false
+    },
+    {
+      "path": "local/build_native_model_owner_check.ps1",
+      "bytes": 1443,
+      "sha256": "6365b76332023be54802833e1d96a97ae6eedf3af09da48717bec1c6ef308201",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_check.log",
+      "bytes": 381,
+      "sha256": "57d0f2b531ffead0db066f43e4ba6187e920d20ff79f23ceedd1a3162de5975a",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_repository_build.log",
+      "bytes": 2649,
+      "sha256": "edf1d3bc9cc5dffebb74c8a5135990576d30d8f7f6b235f6e37bf59601f73586",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_protos.txt",
+      "bytes": 5219,
+      "sha256": "9ae1ef0caaa90c821e2cc972f1b99d999b8c8d97b5d44a5cbdc3dd5399f7bd5f",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_comments.json",
+      "bytes": 2798,
+      "sha256": "61b54eab04e4a2c34860f09337fa5f07742cd51918f5d578c45d4ca3cbf873bd",
+      "tracked": false
+    },
+    {
+      "path": "build/model-owner-check/native_model_owner_check.exe",
+      "bytes": 82944,
+      "sha256": "e46c26fcc22e96df2680b5169b43348fbd084a6aa3a1a95fa066bcf2c0bab417",
+      "tracked": false
+    }
+  ],
+  "limits": [
+    "Reconstructed C++ interfaces are not original ABI exports or drop-in binary replacements.",
+    "No game/runtime rendering validation; this is executable isolated ownership validation.",
+    "Existing broader node/scene/attachment algorithms are reused; this fixture uses empty model child/light/scene/name inputs.",
+    "Opaque174 meaning, full native mesh/material/stream construction, B752B0 clone, B748E0 render and unknown derived profiles remain separate.",
+    "Actual retained profiles must be bound for zero release; missing bindings fail after the actual count decrement.",
+    "Model objects must come from their environment canonical model pool and satisfy live aligned atomic/storage preconditions; concurrent/malformed native storage is unsupported."
+  ]
+}
