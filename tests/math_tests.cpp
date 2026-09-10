@@ -27,6 +27,7 @@
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
+#include "bsp/unit_controller.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
@@ -1467,6 +1468,20 @@ int main() {
                   && bsp::unit_step_fade_009569f8(0.5f, 0.5f, 1.0f) == 0.5f,
             "the unit rate limiter steps on an exactly equal step and the fade clamps "
             "to its target on both directions");
+    }
+
+
+    {
+        // 009329C0 clamps a hull element's submersion before it ever scales a force:
+        // cap the height above water at the element's span, floor it at zero, then
+        // subtract from the span (00932D90..00932E42). A point far above the surface
+        // is therefore fully dry rather than negatively buoyant, and a point far below
+        // saturates at the span instead of growing without bound.
+        const bsp::UnitHullBuoyancyElement element{1.0f, 0.0f, 3.0f, 0.0f, {}};
+        check(bsp::unit_hull_submersion_009329c0(element, 10.0f).submerged == 0.0f
+                  && bsp::unit_hull_submersion_009329c0(element, -10.0f).submerged == 3.0f
+                  && bsp::unit_hull_submersion_009329c0(element, 1.0f).submerged == 2.0f,
+            "the hull submersion clamp saturates dry at zero and wet at the element span");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

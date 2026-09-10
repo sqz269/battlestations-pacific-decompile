@@ -1,0 +1,281 @@
+{
+  "packet": "unit_controller_update",
+  "owner": "agent/unit-controller",
+  "doc": "docs/UNIT_CONTROLLER_UPDATE.md",
+  "files": [
+    "docs/UNIT_CONTROLLER_UPDATE.md",
+    "reports/unit_controller_update.json",
+    "include/bsp/unit_controller.hpp",
+    "src/unit_controller.cpp"
+  ],
+  "premise_correction": {
+    "claim": "docs/UNIT_INSTANCE_UPDATE.md step 6 calls 0092BE80 on the controller, assumed to be a forwarder to the controller's real update.",
+    "finding": "0092BE80 is a single RET 4 instruction at 0092BE80..0092BE82. It is called directly (non-virtually) from 008259DF and 00826B6A, so no override can intercept it. The unit's per-frame call into the controller does nothing; position, heading and speed are integrated by the physics library, and the controller contributes only through a force callback the library invokes."
+  },
+  "routines": [
+    {
+      "address": "0092be80",
+      "name": "BSP_UnitController_UpdateStub",
+      "signature": "void __thiscall(controller, float delta)",
+      "ret": 4,
+      "body": "0092be80-0092be82",
+      "role": "Empty. The step-6 sub-update of 008255B0.",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "0080dec0",
+      "name": "BSP_UnitInstance_CreateMotionController",
+      "signature": "void __thiscall(unit)",
+      "ret": 0,
+      "body": "0080dec0-0080df17",
+      "seh": "00c90a4b",
+      "role": "operator new(0x390), base ctor 00939cb0, store at unit+1018h. A failed allocation stores null and nothing null-checks +1018h afterwards.",
+      "vtable_slots": ["00cf92e0", "00cfa9a8", "00cfb968", "00cfc600", "00d01860", "00d098a8"],
+      "state": "analysed"
+    },
+    {
+      "address": "00939cb0",
+      "name": "BSP_UnitController_Construct",
+      "signature": "controller* __thiscall(this, unit)",
+      "ret": 4,
+      "body": "00939cb0-00939e43",
+      "seh": "00ca7834",
+      "role": "Base constructor. Installs vptr 00d19630, the contact-listener subobject at +20h (vptr 00d1961c, mask 0x7ff9, back pointer), nulls the body at +2Ch, runs eh_vector_constructor_iterator(this+8Ch, 0x20, 0x14, 009318d0, 0092fd50), zeroes the two accumulators at +378h/+384h from 00f87574/78/7c, then calls 00937c90.",
+      "state": "analysed"
+    },
+    {
+      "address": "00939e50",
+      "name": "BSP_UnitController_ConstructVariantB",
+      "signature": "controller* __thiscall(this, unit)",
+      "role": "Calls 00939cb0 then overwrites the vptr with 00d196ec, whose one slot is 00936dc0. Creator 00852210.",
+      "state": "analysed"
+    },
+    {
+      "address": "00939f20",
+      "name": "BSP_UnitController_ConstructVariantC",
+      "signature": "controller* __thiscall(this, unit)",
+      "role": "Calls 00939cb0 then installs vptr 00d196f0, slot 00937440. Creator 00857c20.",
+      "state": "analysed"
+    },
+    {
+      "address": "00939f40",
+      "name": "BSP_UnitController_ConstructVariantD",
+      "signature": "controller* __thiscall(this, unit)",
+      "role": "Calls 00939cb0 then installs vptr 00d196f4, slot 00937630. Creator 00749790, in the segment whose keywords are landvehicle/landingship/landfort.",
+      "state": "analysed"
+    },
+    {
+      "address": "00852210",
+      "name": "BSP_UnitInstance_CreateMotionControllerVariantB",
+      "role": "operator new(0x390) plus 00939e50, store at unit+1018h.",
+      "state": "analysed"
+    },
+    {
+      "address": "00857c20",
+      "name": "BSP_UnitInstance_CreateMotionControllerVariantC",
+      "role": "operator new(0x390) plus 00939f20, store at unit+1018h.",
+      "state": "analysed"
+    },
+    {
+      "address": "00749790",
+      "name": "BSP_UnitInstance_CreateMotionControllerVariantD",
+      "role": "operator new(0x390) plus 00939f40, store at unit+1018h.",
+      "state": "analysed"
+    },
+    {
+      "address": "009329c0",
+      "name": "BSP_UnitController_ApplyHydroForces",
+      "signature": "void __thiscall(controller, float dt)",
+      "ret": 4,
+      "body": "009329c0-00933ba9",
+      "role": "Slot 0 of the controller vtable, invoked by the physics library. Disabled early-out, settings-row selection, effective mass, the per-element buoyancy and drag loop over descriptor+52Ch, the drain of the unit's external force list, AddForce/AddTorque and the accumulator reset.",
+      "state": "partially reconstructed, build-tested; the drag core is analysed only"
+    },
+    {
+      "address": "009377e0",
+      "name": "BSP_UnitController_OnCollisionContact",
+      "signature": "void __thiscall(listener = controller+20h, contact)",
+      "body": "009377e0-00937b6f",
+      "role": "Slot 0 of the vtable at 00d1961c. Latches unit+1010h when the contact kind is 8, otherwise gates and computes the relative contact speed of both bodies and calls 008145b0.",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "009373c0",
+      "name": "BSP_UnitController_ClearShapeCollisionBits",
+      "signature": "__thiscall",
+      "body": "009373c0-00937438",
+      "role": "Called from the contact callback when contact flag bit 1 is set; reaches 00c47fc0 on the shape chain.",
+      "state": "exported only"
+    }
+  ],
+  "layout": {
+    "size": "0x390",
+    "fields": [
+      {"offset": "+00h", "type": "vptr", "meaning": "force-model vtable, one slot", "evidence": "00939cce"},
+      {"offset": "+14h", "type": "byte", "meaning": "disable gate; zeroes both velocities and freezes the body", "evidence": "009329c9"},
+      {"offset": "+1Ch", "type": "ptr", "meaning": "owning unit instance", "evidence": "00939ce9, 00932a27"},
+      {"offset": "+20h", "type": "vptr", "meaning": "contact-listener vtable 00d1961c -> 009377e0", "evidence": "00939ce2"},
+      {"offset": "+24h", "type": "u32", "meaning": "collision mask 0x7ff9", "evidence": "00939cd5"},
+      {"offset": "+28h", "type": "ptr", "meaning": "back pointer to the controller", "evidence": "00939cdb"},
+      {"offset": "+2Ch", "type": "ptr", "meaning": "the physics body", "evidence": "009329d2, 0092d730"},
+      {"offset": "+60h", "type": "byte", "meaning": "0 in ctor", "evidence": "00939cb0"},
+      {"offset": "+64h", "type": "byte", "meaning": "1 in ctor", "evidence": "00939cb0"},
+      {"offset": "+68h..+73h", "type": "float[3]", "meaning": "force staging for the step in progress", "evidence": "00933a7a"},
+      {"offset": "+74h..+7Fh", "type": "float[3]", "meaning": "torque staging for the step in progress", "evidence": "00933aa7"},
+      {"offset": "+88h", "type": "byte", "meaning": "one-shot latch set by step 8 of 008255b0; never written by the constructor", "evidence": "docs/UNIT_INSTANCE_UPDATE.md"},
+      {"offset": "+8Ch..+30Bh", "type": "record[20]", "meaning": "0x20-byte records, ctor 009318d0, dtor 0092fd50", "evidence": "00939cb0"},
+      {"offset": "+310h..+36Ch", "type": "dword", "meaning": "selected dwords zeroed in the ctor", "evidence": "00939cb0"},
+      {"offset": "+378h..+383h", "type": "float[3]", "meaning": "accumulated force, flushed with 00c35360 then zeroed", "evidence": "00933adf, 00933b48"},
+      {"offset": "+384h..+38Fh", "type": "float[3]", "meaning": "accumulated torque, flushed with 00c35330 then zeroed", "evidence": "00933b11, 00933b78"}
+    ]
+  },
+  "physics_boundary": {
+    "identity": "Not middleware. No Havok, PhysX/NovodeX, ODE, Bullet, Meqon, Tokamak or Newton string exists in the referenced-string index, the entry points carry no strings, source paths or RTTI, and the surrounding diagnostics are Hungarian (fizika, utkozo, roncs). Treated as an in-house statically linked rigid-body library and not ported.",
+    "body_layout": {
+      "+04h": "ptr to the motion state M",
+      "+08h..+37h": "3x4 affine transform, rows at +08h/+14h/+20h, translation at +2Ch",
+      "+38h..+43h": "vec3, one corner of the world bounds",
+      "+44h..+4Fh": "vec3, the other corner",
+      "+50h": "u32 flags: bit0 static, bit1 tested by the contact callback, bit2 freeze, bits 0x12 cleared by every mutator",
+      "+6Ch": "owner pointer",
+      "+70h": "first collision shape; shapes link through shape+208h, mask at shape+30h, group at shape+2Ch"
+    },
+    "motion_state_layout": {
+      "+00h": "vec3 linear velocity",
+      "+0Ch": "vec3 angular velocity",
+      "+38h": "vec3 accumulated force",
+      "+44h": "vec3 accumulated torque",
+      "+50h": "float mass"
+    },
+    "api": [
+      {"address": "00c31f40", "signature": "vec3* __thiscall(body, vec3* out) RET 4", "meaning": "get linear velocity"},
+      {"address": "00c31f20", "signature": "vec3* __thiscall(body, vec3* out) RET 4", "meaning": "get angular velocity"},
+      {"address": "00c37e50", "signature": "void __thiscall(body, const vec3*) RET 4", "meaning": "set linear velocity, clears flag bits 0x12"},
+      {"address": "00c37e20", "signature": "void __thiscall(body, const vec3*) RET 4", "meaning": "set angular velocity, clears flag bits 0x12"},
+      {"address": "00c35360", "signature": "void __thiscall(body, const vec3*) RET 4", "meaning": "add force at M+38h"},
+      {"address": "00c35330", "signature": "void __thiscall(body, const vec3*) RET 4", "meaning": "add torque at M+44h"},
+      {"address": "00c32000", "signature": "float* __thiscall(body) RET 0", "meaning": "&body+08h, the 3x4 transform"},
+      {"address": "00c35300", "signature": "vec3* __thiscall(body) RET 0", "meaning": "&body+2Ch, the world position"},
+      {"address": "00c33650", "signature": "void __thiscall(const float* m34, float* out4x4) RET 4", "meaning": "expand 3x4 to 4x4, w lanes 0,0,0,1"},
+      {"address": "00c336c0", "signature": "void __thiscall(float* m34, const float* m4x4) RET 4", "meaning": "compact 4x4 to 3x4"},
+      {"address": "00c31f90", "signature": "void __thiscall(body, vec3* a, vec3* b) RET 8", "meaning": "copy body+38h and body+44h"},
+      {"address": "00c31fc0", "signature": "float __thiscall(body) RET 0", "meaning": "inverse mass, 0 when flags bit0 is set"},
+      {"address": "00c31ea0", "signature": "void* __thiscall(body) RET 0", "meaning": "body+6Ch, the owner"},
+      {"address": "00c31dc0", "signature": "void* __thiscall(body) RET 0", "meaning": "body+70h, the first shape"},
+      {"address": "00c48020", "signature": "void __thiscall(shape, u32) RET 4", "meaning": "set shape+30h then notify through [00ce2218] with 0109ecd8"},
+      {"address": "00c48050", "signature": "void __thiscall(shape, u32) RET 4", "meaning": "set shape+2Ch, same notify"},
+      {"address": "00c47f60", "signature": "void __thiscall(shape, u32) RET 4", "meaning": "clear bits in shape+30h, same notify"},
+      {"address": "00c32450", "signature": "int __thiscall(contact) RET 0", "meaning": "contact+2Ch"},
+      {"address": "00c32490", "signature": "int __thiscall(contact) RET 0", "meaning": "contact+04h"}
+    ]
+  },
+  "force_model": {
+    "row_selection": "variant = 2 when the unit's vtable +5Ch answers IsKindOf(8); otherwise 1 when descriptor->f_B0h < 100.0 (the double at 00d7a220), else 0. Row base 00424c40()+4E0h, stride 0x38.",
+    "row_fields": ["+4E0h", "+4E4h", "+4E8h", "+4ECh", "+4F0h", "+4F4h", "+4F8h", "+50Ch"],
+    "curve_override": "Row 1 replaces the +50Ch curve with the literal 2.0f at 00ce3958.",
+    "effective_mass": "max(descriptor->f_B0h + unit->f_10FCh, 1.0f). 1.0f is 00d7a24c.",
+    "element_vector": "descriptor+52Ch..+530h, stride 0x24, count recomputed on every iteration; an empty vector traps through 00bf6713.",
+    "element_fields": {"+00h": "force scale", "+04h": "upper height", "+08h": "lower height", "+0Ch": "reference height", "+18h..+20h": "attachment point in hull space"},
+    "submersion": "above = worldPoint.y - 0078cf20(ocean, x, z); span = e[+08h]-e[+0Ch]; cap above at span, floor at 0, submerged = span - above.",
+    "curve": "ratio = submerged/span; 1.0f linear, 2.0f squared, 0.5f square root; any other constant leaves the previous element's ratio in place.",
+    "scale": "(descriptor->f_B0h / count) * ratio * 10.0, count converted as unsigned via the 2^32 fixup at 00ce3978, 10.0 the double at 00ce3dc0.",
+    "reverse_guard": "per axis, F/v is floored at -1.0/count (00d7a250 is the double -1.0).",
+    "dead_code": "EBP starts at zero (00932c1f), so every i<0 branch is unreachable: the 3.0f default span (00ce3854), the zero default range, and the whole-hull drag fallback min(settings->f_5B8h * hull_mass, settings->f_5B0h).",
+    "flush_order": [
+      "this->f_70h = this->f_7Ch (unexplained)",
+      "this->f_6Ch -= unit->f_10FCh * 10.0",
+      "tmp = 0074f2e0(unit+10D4h)",
+      "this->f_74h..f_7Ch += tmp",
+      "this->+378h..+380h += this->+68h..+70h",
+      "this->+384h..+38Ch += this->+74h..+7Ch",
+      "00c35360(body, this->+378h)",
+      "00c35330(body, this->+384h)",
+      "this->+378h..+38Fh = 0"
+    ]
+  },
+  "command_source": {
+    "throttle_or_rudder_fields": "none",
+    "finding": "The controller has no throttle, rudder, target speed or target heading field, and 009329c0 reads no command. Commanded force reaches the body only as an entry in the list on unit+10D4h that 0074f2e0 sums; that routine lives in the segment whose keywords include sumforces and sumleaks.",
+    "player_vs_ai": "Indistinguishable at this level. The only player test in the unit update is step 7's this == DAT_00e188d8 comparison, which scales an intensity, not a command. The AI helmsman layer above the force list is named by 00818340's diagnostics (helmsmanControl, navigatorParams, thrust, thrustMod, maxSpeed, steeringJam) and was not analysed."
+  },
+  "unit_fields_touched": {
+    "+538h": "descriptor",
+    "+1010h": "byte, set to 1 by the contact callback when the contact kind is 8; step 3 of 008255b0 rotates it into +1011h",
+    "+1018h": "the controller",
+    "+10D4h": "the external force list drained by 0074f2e0",
+    "+10FCh": "float, extra mass added to the hull mass and used again at the flush",
+    "+6B8h": "int, tested >= 0 in the contact damage gate",
+    "vtable +5Ch": "IsKindOf(int); kinds 6 and 8 are used"
+  },
+  "callers": {
+    "0092be80": ["008255b0", "00825f20"],
+    "009329c0": ["00936dc0", "00937440", "00937630"],
+    "009377e0": ["the physics library, through the vtable at 00d1961c"],
+    "0080dec0": ["unit vtables only"]
+  },
+  "external_contracts": [
+    "the whole DYN_physics block",
+    "0078cf20 (ocean sampler)",
+    "004142e0, 004f9b30, 00413920, 004134f0 (math)",
+    "00424c40 (settings singleton)",
+    "00937c90 (hull body construction)",
+    "0074f2e0, 0074f930 (the unit+10D4h force list)",
+    "008145b0 (collision damage)",
+    "0092ce70, 00779ad0",
+    "009318d0, 0092fd50 (controller+8Ch record ctor/dtor)"
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00936dc0",
+      "end": "009373b0",
+      "role": "The force callback of the variant whose vptr is 00d196ec. __thiscall(controller, float dt), RET 4; reads controller+2Ch and calls 00c31f40, 00c31f20 then 009329c0 at 00936df8. The body runs to the RET 4 at 009373b0 with int3 padding from 009373b5; Ghidra currently ends 00935d30 at 00936dbe and defines nothing after it."
+    }
+  ],
+  "uncertainties": [
+    "The per-axis drag coefficient assignment inside the element loop is provisional.",
+    "this->f_70h = this->f_7Ch at 00933a2b is unexplained.",
+    "unit+10FCh is treated as an additive mass because it is added to the hull mass; its producer was not found.",
+    "The 20 records at controller+8Ch were not decoded.",
+    "The physics library is not positively identified, only shown not to be common middleware of the era.",
+    "Curve constants other than 1.0f, 2.0f and 0.5f fall through to a stale ratio; whether any shipped settings row uses one is unknown.",
+    "Which vehicle families map to the three derived force models was not established.",
+    "The operand order handed to 004f9b30 at 00932d8b was not resolved; 009377e0 settles the sign convention as v + omega x r."
+  ],
+  "what_remains": [
+    "00937c90, the hull physics construction and the fizika_%02d node convention",
+    "0074f2e0 and the unit+10D4h force list producers",
+    "00936dc0, 00937440, 00937630, the three derived force models",
+    "the controller+8Ch array of 20 records"
+  ],
+  "follow_up_packets": [
+    {
+      "id": "unit_force_list",
+      "addresses": ["0074f2e0", "0074f930"],
+      "files": ["docs/UNIT_FORCE_LIST.md", "reports/unit_force_list.json", "include/bsp/unit_force_list.hpp", "src/unit_force_list.cpp"],
+      "contract": "The sumforces list on unit+10D4h: record layout, who appends engine thrust, damage and flooding entries, and how 0074f2e0 transforms and sums them."
+    },
+    {
+      "id": "unit_hull_physics_build",
+      "addresses": ["00937c90", "009318d0", "0092fd50"],
+      "files": ["docs/UNIT_HULL_PHYSICS_BUILD.md", "reports/unit_hull_physics_build.json"],
+      "contract": "How 00937c90 walks the model's fizika_%02d nodes into bodies and shapes, and what the 20 records at controller+8Ch hold."
+    },
+    {
+      "id": "unit_force_model_variants",
+      "addresses": ["00936dc0", "00937440", "00937630"],
+      "files": ["docs/UNIT_FORCE_MODEL_VARIANTS.md", "reports/unit_force_model_variants.json"],
+      "contract": "The three derived force callbacks and which unit families install them."
+    },
+    {
+      "id": "ship_helmsman_control",
+      "addresses": ["00818340", "0081f980", "008362a0"],
+      "files": ["docs/SHIP_HELMSMAN_CONTROL.md", "reports/ship_helmsman_control.json"],
+      "contract": "The AI navigator and helmsman layer above the force list: helmsmanControl, navigatorParams, thrustMod, steeringJam."
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "succeeded, Win32 Release, warnings as errors",
+    "tests": "reconstructed_math 1/1 passed, with one added case for the hull submersion clamp"
+  }
+}
