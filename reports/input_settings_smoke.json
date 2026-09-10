@@ -1,0 +1,113 @@
+{
+  "packet": "smoke_input_settings",
+  "owner": "agent/smoke-test",
+  "doc": "docs/INPUT_SETTINGS_SMOKE.md",
+  "segment": {
+    "index": 31,
+    "range": ["00696470", "006be980"],
+    "keywords": ["savedata", "scoring", "sensitivitysettings", "inputsettings", "devicetype", "deviceidx", "slider", "entities"]
+  },
+  "ghidra_mutations": "none (read-only packet)",
+  "shared_layout": {
+    "tree_object": {"0x00": "allocator/comparator", "0x04": "_Myhead", "0x08": "_Mysize"},
+    "node": {"0x00": "_Left", "0x04": "_Parent", "0x08": "_Right", "0x0c": "_Myval"},
+    "iterator": ["_Mycont", "_Ptr"],
+    "evidence": "006a1230 resets head->_Parent, size, head->_Left and head->_Right after the erase call; 006a1aa0 compares an iterator's first word against the tree pointer before use."
+  },
+  "functions": [
+    {
+      "address": "006a01f0",
+      "current_symbol": "FUN_006a01f0",
+      "provisional_name": "STL_Tree_InsertUnique_IntKey_006a01f0",
+      "name_evidence": "Descends the tree comparing *param_3 against the signed int at node+0x0c, returns the existing node with a false flag on an equal key, and otherwise delegates to the node-insert helper and returns true.",
+      "confidence": "high for the role, unknown for the element types",
+      "ghidra_prototype": "undefined FUN_006a01f0(void) (no committed prototype)",
+      "calling_convention": {
+        "observed": "__thiscall with hidden struct return",
+        "this_register": "ECX",
+        "stack_cleanup": "RET 0x8 at 006a026d (callee-cleaned, 2 stack arguments)",
+        "return": "pair<iterator,bool>, 12 bytes, written through the caller-supplied slot; the bool byte is set by MOV byte ptr [EAX+0x8],0x1 at 006a0265"
+      },
+      "arguments": [
+        {"name": "this", "location": "ECX", "meaning": "tree object"},
+        {"name": "result", "location": "stack 0", "meaning": "return slot for pair<iterator,bool>"},
+        {"name": "value", "location": "stack 1", "meaning": "pointer to the value; first dword is the int key"}
+      ],
+      "reads": [
+        "tree+0x04 (_Myhead), then _Myhead->_Parent as the root and _Myhead->_Left as the leftmost node",
+        "per node: _Left (+0), _Right (+8), int key (+0x0c), _Isnil (+0x15)"
+      ],
+      "writes": [
+        "duplicate-key path: fills the caller's slot with {tree, node} and a zero flag; the tree is untouched",
+        "insert path: all mutation is inside 0069f400; this function copies the returned iterator out and sets the flag to 1"
+      ],
+      "callees": [
+        {"address": "0069b190", "role": "iterator decrement, tagged stl_probable"},
+        {"address": "0069f400", "role": "node-insert helper; called __thiscall with a scratch iterator slot, an add-left flag, the parent node and the value pointer, returning an iterator pointer in EAX"}
+      ],
+      "callers": [
+        {"address": "006a0e90", "call_site": "006a102d", "role": "hint-taking insert overload; validates a hint then falls back here and copies only the first 8 bytes of the returned pair, discarding the flag"}
+      ],
+      "node_payload_bytes": 8
+    },
+    {
+      "address": "006a0770",
+      "current_symbol": "FUN_006a0770",
+      "provisional_name": "STL_Tree_EraseSubtree_PooledPayload_006a0770",
+      "name_evidence": "Recurses on _Right, steps to _Left and frees each node with its pooled buffer without rebalancing; its caller at 006a1230 follows the call by resetting head, size and both extremes, which is clear().",
+      "confidence": "high for the role, unknown for the element type",
+      "ghidra_prototype": "undefined FUN_006a0770(void) (no committed prototype)",
+      "calling_convention": {
+        "observed": "__thiscall",
+        "this_register": "ECX, saved to EBX at 006a077b and restored for the recursive call at 006a0785; used only to pass the allocator down",
+        "stack_cleanup": "RET 0x4 (callee-cleaned, 1 stack argument)",
+        "return": "void"
+      },
+      "arguments": [
+        {"name": "this", "location": "ECX", "meaning": "tree object"},
+        {"name": "node", "location": "stack 0", "meaning": "subtree root to destroy"}
+      ],
+      "reads": [
+        "node+0x29 (_Isnil), node+0x08 (_Right), node+0x00 (_Left)",
+        "payload pair at node+0x0c (element count) and node+0x10 (buffer pointer)"
+      ],
+      "writes": [
+        "no tree links are updated",
+        "releases the payload buffer of count+1 bytes to the sized storage pool",
+        "frees the node itself through the free thunk at 00bf65ac"
+      ],
+      "callees": [
+        {"address": "006a0770", "role": "itself, on the right subtree"},
+        {"address": "00419cc0", "role": "BSP_SizedStoragePool_GetSingleton_Provisional; takes no arguments, returns the pool in EAX"},
+        {"address": "00bd1510", "role": "BSP_SizedStoragePool_ReturnBlock_Provisional; __thiscall on that pool, RET 0x0C, consumes the three caller-pushed arguments (buffer, count+1, 1)"},
+        {"address": "00bf65ac", "role": "_free thunk"}
+      ],
+      "callers": [
+        {"address": "006a1230", "call_site": "006a123c", "role": "clear()"},
+        {"address": "006a1aa0", "call_site": "006a1aea", "role": "range erase; inlines the same clear sequence when the range covers the whole tree"},
+        {"address": "006a0770", "call_site": "006a0787", "role": "self-recursion"}
+      ],
+      "node_payload_bytes": 28,
+      "pseudocode_defect": {
+        "symptom": "The exported C frees a node and returns, with no left-subtree recursion, which would leak every left subtree.",
+        "cause": "Ghidra stops disassembling after the free call at 006a07ac, so 006a07b1..006a07bb stay undefined data and never reach the decompiler. This is the no-return-annotation case AGENTS.md warns about.",
+        "recovered_bytes": "83 c4 04 80 7e 29 00 8b fe 74 c5",
+        "recovered_instructions": [
+          "006a07b1 ADD ESP,0x4",
+          "006a07b4 CMP byte ptr [ESI+0x29],0x0",
+          "006a07b8 MOV EDI,ESI",
+          "006a07ba JZ 0x006a0781"
+        ],
+        "corrected_shape": "for (node = arg; !_Isnil(node); ) { _Erase(_Right(node)); next = _Left(node); release payload; free(node); node = next; }"
+      }
+    }
+  ],
+  "findings_outside_packet": [
+    {
+      "address": "0069f400",
+      "current_name": "STL_xlen_throw_0069f400",
+      "current_tag": "stl_throw_site",
+      "observation": "Both call sites (006a024e and two in 006a0e90) use it as the tree's node-insert helper returning an iterator, not as a length-error throw site. Not renamed: the address is outside this lease."
+    }
+  ]
+}
