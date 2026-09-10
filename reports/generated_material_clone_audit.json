@@ -1,0 +1,161 @@
+{
+  "packet": "generated_material_clone",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "image_base": "00400000",
+  "query_verification": "Verified configured project/program through bsp.py ghidra count/export/bytes/comments; refreshed00b18b60 pseudocode and assembly exports.",
+  "functions": [
+    {
+      "address": "00b18b60",
+      "original_name": "FUN_00b18b60",
+      "suggested_name": "BSP_Material_CloneConstruct",
+      "original_abi": "ECX fresh110h-byte destination; stack source material; EAX destination; RET4.",
+      "status": "typed_field_and_ownership_clone_implemented_build_pending",
+      "source": "src/material_clone.cpp",
+      "confidence": "high for every listed initialization,copy and retain; offset-named field meanings and full native layout remain unresolved",
+      "byte_evidence": {
+        "address": "00b18b60",
+        "length": 401,
+        "end_inclusive": "00b18cf0",
+        "raw_capture": "local/generated_material_clone/00b18b60.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "06200809c976f2b86146280c20861c7c649bc19c3ddfa3458bfbe9ad1beb568e"
+      },
+      "annotation_before": {
+        "address": "00b18b60",
+        "function_name": "FUN_00b18b60"
+      },
+      "evidence": "Constructor initializes reference1/vtable00d5e520; copies08,conditional borrowed-or-retained0C,exact10D,counted texture pointers10..30,17DWORD38..78,retained effect7C,104/108. Forces10C=1 and resets100=0. Full span PE-verified; no deep resource copies.",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation."
+    }
+  ],
+  "fields": [
+    {
+      "offset": "08",
+      "type": "DWORD",
+      "operation": "copy source",
+      "host": "word08",
+      "evidence": "00b18be1..00b18be4"
+    },
+    {
+      "offset": "0C",
+      "type": "pointer",
+      "operation": "copy identity; retain only if copied byte10D!=0 and pointer!=null",
+      "host": "pointer0c plus generic owner0c",
+      "evidence": "00b18be7..00b18c07"
+    },
+    {
+      "offset": "10..30",
+      "type": "nine retained pointers",
+      "operation": "copy every counted slot including nulls; shared logical texture identity",
+      "host": "MaterialTextureSlots textures",
+      "evidence": "00b18c0d..00b18c77"
+    },
+    {
+      "offset": "34",
+      "type": "signed WORD",
+      "operation": "initialize0, then update high-water count before pointer-identity comparison",
+      "host": "textures.count()",
+      "evidence": "00b18b9b;00b18c20..00b18c31"
+    },
+    {
+      "offset": "38..78",
+      "type": "17 DWORD record",
+      "operation": "exact bit copy via REP MOVSD",
+      "host": "MaterialLighting lighting",
+      "evidence": "00b18c80..00b18c8b"
+    },
+    {
+      "offset": "7C",
+      "type": "retained effect pointer",
+      "operation": "copy and retain identity if nonnull",
+      "host": "EffectOwner effect",
+      "evidence": "00b18c8d..00b18cc1"
+    },
+    {
+      "offset": "100",
+      "type": "DWORD",
+      "operation": "initialize0; source ignored",
+      "host": "word100",
+      "evidence": "00b18bcd"
+    },
+    {
+      "offset": "104",
+      "type": "DWORD",
+      "operation": "copy source",
+      "host": "word104",
+      "evidence": "00b18cc3..00b18cc9"
+    },
+    {
+      "offset": "108",
+      "type": "DWORD",
+      "operation": "copy source",
+      "host": "word108",
+      "evidence": "00b18ccf..00b18cd5"
+    },
+    {
+      "offset": "10C",
+      "type": "byte",
+      "operation": "initialize0, then force1 before lighting copy; source flag ignored",
+      "host": "lighting.flag_10c()",
+      "evidence": "00b18bda;00b18c79"
+    },
+    {
+      "offset": "10D",
+      "type": "byte",
+      "operation": "copy exact source byte; branch on zero/nonzero",
+      "host": "byte10d",
+      "evidence": "00b18bed..00b18bf5"
+    }
+  ],
+  "source_contract": {
+    "type": "MaterialCloneState",
+    "source_count_domain": "Existing MaterialTextureSlots admits high-water counts0..9; malformed signed native counts outside this representation.",
+    "pointer0c_owner": "std::shared_ptr<const void> generic owner, deliberately not labeled effect. When byte10D!=0 and pointer0c!=null, owner.get() must match identity and use_count must be nonzero.",
+    "effect_owner": "Existing EffectOwner alias std::shared_ptr<const void>, retaining actual effect identity at native+7C.",
+    "null_branch": "Nonzero10D with null0C is copied without dereference or retention.",
+    "borrowed_branch": "Zero10D copies0C but leaves destination owner0c empty, regardless of any source owner.",
+    "unwritten_region": "Native+80..FC is not written here and is not synthesized by the typed clone."
+  },
+  "implementation": {
+    "function": "clone_material_00b18b60(const MaterialCloneState&,std::shared_ptr<MaterialCloneState>&)",
+    "return": "HRESULT S_OK,E_INVALIDARG,E_OUTOFMEMORY; output preserved on failure as new host policy.",
+    "existing_texture_contract": "set_material_texture_00b189f0, default empty MaterialTextureSlots, one call per counted slot including null.",
+    "existing_lighting_contract": "MaterialLighting::set_lighting_record_00b179d0 sets flag then memcpy17float DWORDs without floating-point conversion.",
+    "reference_behavior": "Distinct material object with retained same texture/effect identities; conditional0C ownership is copied only on the native retain branch.",
+    "allocation_behavior": "shared_ptr/vector allocations replace native CPU allocation; no native SEH/slab/destructor ABI claim."
+  },
+  "assembly_review": {
+    "register_inputs": "ECX destination savedEBP; source read from stack00b18bc6; EAX destination00b18ce0;RET4 at00b18cee.",
+    "x87": false,
+    "overlapping_globals": false,
+    "crt_free_or_call_return_tail": false,
+    "lighting_copy": "REP MOVSD with ECX17 at00b18c8b",
+    "mutations_applied": false
+  },
+  "validation": {
+    "complete_function_bytes_match_installed_pe": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "new_tests_added": 0,
+    "build_and_installed_draw_owner": "primary integrator after merge"
+  },
+  "owned_files": [
+    "include/bsp/material_clone.hpp",
+    "src/material_clone.cpp",
+    "docs/GENERATED_MATERIAL_CLONE.md",
+    "reports/generated_material_clone_audit.json"
+  ],
+  "uncertainty": [
+    "Unknown meanings retained in offset-based names for08,0C,100,104,108,10D.",
+    "Full native110h object ABI,virtual dispatch,unwritten cache consumers,destructor order and CPU allocator remain separate.",
+    "Borrowed0C and LogicalTexture COM pointers require external lifetimes.",
+    "Malformed count,OOM,SEH and intrusive reference-count timing are not reproduced."
+  ]
+}
