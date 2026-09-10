@@ -45,6 +45,7 @@
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
 #include "bsp/vehicle_class.hpp"
+#include "bsp/ship_class_fields.hpp"
 #include "bsp/vehicle_class_fields.hpp"
 #include <algorithm>
 #include <cmath>
@@ -1523,6 +1524,25 @@ int main() {
                   && bsp::unit_hull_submersion_009329c0(element, -10.0f).submerged == 3.0f
                   && bsp::unit_hull_submersion_009329c0(element, 1.0f).submerged == 2.0f,
             "the hull submersion clamp saturates dry at zero and wet at the element span");
+    }
+
+    {
+        // 00831E60..00831FEC chains the ship camera defaults in body order:
+        // CameraDistanceFront falls back to the base Length, both Side and
+        // Vertical to Front rather than to each other, and CameraMinHeight to
+        // CaptainCameraHeight. Only Front is present here, so the chain has to
+        // carry it into both of the others.
+        bsp::ShipClassCameraInputs in;
+        in.base_length = 250.0f;
+        in.captain_camera_global = 12.0f;
+        in.has_distance_front = true;
+        in.distance_front = 40.0f;
+        const bsp::ShipClassCameraFields camera = bsp::ship_class_camera_00831e0d(in);
+        check(camera.distance_front == 40.0f && camera.distance_side == 40.0f
+                  && camera.distance_vertical == 40.0f
+                  && camera.captain_camera_height == 12.0f && camera.min_height == 12.0f,
+            "the ship camera defaults chain from CameraDistanceFront and "
+            "CaptainCameraHeight, not from the neighbouring slot");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
