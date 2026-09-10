@@ -442,3 +442,7 @@ damage), `0092CE70`, `00779AD0`, `009318D0` / `0092FD50` (the `+8Ch` array eleme
 | `00852210`, `00857C20`, `00749790` | analysed |
 
 Nothing here is ABI-compatible or game-validated.
+
+## Corrections from docs/UNIT_FORCE_COMMANDS.md
+
+The object at unit+10D4h is not an external force list but the leak (flooding) model: `0074f930` accumulates water per leak point and `0074f2e0` turns those weights into a heeling torque; the `_ship` diagnostic dump at `00818340` labels it `leakManager`, and its total water at leak+28h is the `unit+10FCh` term (settling uncertainty 3 above). Commanded motion is mostly kinematic: `AddForce` `00c35360` has exactly one caller (`009329c0`); the ship path computes `target = ((maxSpeed * gameplayScale) * throttle) * engineGate` in `00825f20`'s tail, `0092d300` rewrites the body's linear velocity toward it under an acceleration limit and `0092e8c0` rewrites the angular velocity; the one genuine command force is the rudder torque `00937440` adds. The writers of unit+980h/+984h, +9A0h/+9A4h and +102Ch..+1038h use a shifted base register and were not found by displacement scans; the ship AI's output stage is the proposed follow-up.
