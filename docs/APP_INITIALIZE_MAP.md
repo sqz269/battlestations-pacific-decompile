@@ -343,3 +343,10 @@ earliest. Each is analysis-plus-reconstruction sized for one worker turn.
 Excluded from all ten because another worker holds them: 004fc150, 007364a0, 007366b0, 007367f0
 (`app_shutdown`). Packet 3 and the five preload blocks in phase 11 both touch 004fc150; whoever
 picks up packet 3 should coordinate rather than claim it.
+
+## Corrections from follow-up packets
+
+- `00bd1780`/`00bd17a0` are GameAlloc and GameFree (docs/APP_INIT_ALLOC_STRINGS.md).
+- `006ad0d0` installs three object-handle resolver callbacks through `00bd4fc0`, not a crash handler; `008d8190` loads the options file and consults the Eidos registry key only for `language` when the file cannot be opened; the hardware probe also reads `HKLM\SOFTWARE\Eidos\BSM_HWD` (docs/APP_INIT_BOOTSTRAP.md).
+- The switch parser runs at `0073d94a`, after the whole VFS block, so none of its flags reach the mounts or package scans; the early flags come from a separate inline scan in Init. `cachedload` is not a guard, it is pushed into the VFS provider manager (docs/APP_INIT_BOOTSTRAP.md).
+- `DAT_00e1ae7c` is WinMain's HINSTANCE and `DAT_00e1ae76` the cachedload flag; `00bd9230`/`00bd9f90` set file-manager policy on `DAT_0109ceec`; `00bedfb0` constructs the already-reconstructed frame clock; the indirect call at `0073dc25` is the whole window creation (`00becee0`, eleven stack arguments), not a title call (docs/APP_INIT_PLATFORM.md).
