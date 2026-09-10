@@ -1,9 +1,9 @@
 {
   "packet": "material_builder_parameter_review",
-  "reviewed_utc": "2026-09-10T05:58:55.257959+00:00",
+  "reviewed_utc": "2026-09-10T06:16:16.858018+00:00",
   "status": "focused_native_parameter_differential_and_host_clone_checks_passed",
   "scope": "Read-only review and one local native fixture; no shared source/CMake/ledger/Ghidra changes by this worker.",
-  "main_head_at_review": "9da323a62468f39460f45dc4b7d20f4d2bb507a0",
+  "main_head_at_review": "80eacd1fef76b68a17ec39212e38e14a31e2fc55",
   "native_evidence": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
     "project_file_exists": true,
@@ -184,7 +184,12 @@
       "Later mode5 metadata addition becomes available to clone registration.",
       "A later mode3 register edit is observed when clone re-registers its record.",
       "Source record remains independent until explicitly re-registered, then sees the same metadata edit.",
-      "Shared metadata edits retain both effect and registration owner identities."
+      "Shared metadata edits retain both effect and registration owner identities.",
+      "Effect constructor starts actual parameter_dirty_b4 at zero.",
+      "Assigning the same retained effect clears parameter records and marks actual effect+B4 as one.",
+      "Same-effect assignment preserves shared metadata for a subsequent fresh registration.",
+      "Null assignment clears effect, parameter records and registration owner; subsequent registration returns no_match.",
+      "Null assignment leaves the source material record table unchanged."
     ],
     "passed": true,
     "compile_options": [
@@ -198,18 +203,37 @@
       "/fp:strict"
     ],
     "linked_library": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
-    "linked_library_sha256": "60704531fa9596b39973fa4b26a87db562eceec8f677df99f538a0d3ce33f313",
-    "library_mtime_utc": "2026-09-10T05:52:43.589997+00:00",
+    "linked_library_sha256": "7f0634a6bbfb2df9d47c338fd36936fd3646cfed591d17e78a72225c6786694e",
+    "compile_and_run_input_snapshot": {
+      "captured_utc": "2026-09-10T06:16:07.978599+00:00",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\material_constant_builder.hpp": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271",
+        "J:\\PROG\\battlestations-pacific-decompile\\src\\material_constant_builder.cpp": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4",
+        "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\material_parameter_bindings.hpp": "e7c44b00cbc0f32b104b0ca3ef7dcb6bd752ce02eaaf80a2624fd8014c15c96c",
+        "J:\\PROG\\battlestations-pacific-decompile\\src\\material_parameter_bindings.cpp": "ddd305b5bddc1f9f78d7468332924d4ce837b65208712e6019241a1729192a53",
+        "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\material_clone.hpp": "3e760a26b5ebda0766efd778eac76855ce2f26b65c9bf8e3f803eb9208e1dcbd",
+        "J:\\PROG\\battlestations-pacific-decompile\\src\\material_clone.cpp": "3442983e1590e378a0b55c0c8ae93b609774f25ffea445e10ee674d200cb28d1",
+        "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\compiled_material.hpp": "0001f9e528e8d59116d16df38a80f0a13cfe06150156436ef269b027e2627aa0",
+        "J:\\PROG\\battlestations-pacific-decompile\\src\\compiled_material.cpp": "4e3afb34fa336efb28976b0deeec108f58320d842f38e3b91e7f3564fa3e5f23",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "7f0634a6bbfb2df9d47c338fd36936fd3646cfed591d17e78a72225c6786694e",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "ff2e0c270228fb9523ac779552c767903a871bd7d191fa9077975b3bdd44a2c6",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "J:\\PROG\\battlestations-pacific-decompile-material-scalar-20260910\\local\\material_builder_parameter_fixture.cpp": "f56a27a8b7df25692de26bc2082b16b268332fdf4a2da0c13eddaca4b3a2c0b3",
+        "J:\\PROG\\battlestations-pacific-decompile-material-scalar-20260910\\local\\material_builder_parameter_reference.hpp": "8975b8eaaab2ead270e177e4e751618e576061f58405b0c1a47999e816b04fcd"
+      }
+    },
+    "compile_and_run_inputs_unchanged": true,
+    "library_mtime_utc": "2026-09-10T06:13:36.976801+00:00",
     "fixture_worktree": "J:\\PROG\\battlestations-pacific-decompile-material-scalar-20260910",
     "source": "local/material_builder_parameter_fixture.cpp",
-    "source_sha256": "fd1bef5f4221cdce85d8f6b68e0c289c3f1d410a63c48d87cecfa1127fc9b80b",
+    "source_sha256": "f56a27a8b7df25692de26bc2082b16b268332fdf4a2da0c13eddaca4b3a2c0b3",
     "native_reference": "local/material_builder_parameter_reference.hpp",
     "native_reference_sha256": "8975b8eaaab2ead270e177e4e751618e576061f58405b0c1a47999e816b04fcd",
     "native_evidence_generator": "local/material_builder_parameter_evidence.py",
     "native_evidence_generator_sha256": "e1ab6d08c57d71796c6a867702d7564ad6d3f10517d45ec67c3ca9a038f18b97",
     "compile_log": "local/material_builder_parameter_compile.log",
     "result_log": "local/material_builder_parameter_result.log",
-    "result": "PASS: one native parameter fragment, six ordered records, exact384-bank-word comparison; backward/forward overlap, self-copy, VS2/3/4 and PS4, live PS rereads, last RegisterCount; clone empty records and shared metadata registration. Native copy table relocations=46"
+    "result": "PASS: one native parameter fragment, six ordered records, exact384-bank-word comparison; backward/forward overlap, self-copy, VS2/3/4 and PS4, live PS rereads, last RegisterCount; clone empty records and shared metadata registration; same-effect clear/dirty and null-effect clear. Native copy table relocations=46"
   },
   "boundaries": [
     "No new tracked test suite; fixture and generated native header remain local.",
