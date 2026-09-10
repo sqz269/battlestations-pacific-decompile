@@ -1,0 +1,259 @@
+{
+  "packet": "game_title_init",
+  "owner": "agent/game-title-init",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/GAME_TITLE_INIT.md",
+  "header": "include/bsp/title_init.hpp",
+  "source": "src/title_init.cpp",
+  "anchor": {
+    "function": "BSP_Game_OnInitTitle",
+    "address": "004c9a70",
+    "range": ["004c9a70", "004c9c8f"],
+    "convention": "__thiscall, ECX = the GGame object mirrored at 00E188A8, no stack arguments, RET with no stack cleanup, void",
+    "seh_handler": "00C6546E",
+    "note": "Ghidra is read-only for this packet. Pseudocode was cross-checked against the listing at every call site; three readings in the pseudocode are wrong and are corrected here."
+  },
+  "headline": "The logo sequence has no timed advance. It advances from the end-of-movie trampoline 00685060, installed on the movie player 00E18D48 by BSP_LogoSequence_AdvanceOrFinish before each entry starts. The float at logo+78h is the minimum age before a manual skip is accepted, not a timeout. This resolves the open question in docs/GAME_FRONTEND_STATES.md.",
+  "on_init_title_sequence": [
+    {"address": "004c9a9f", "what": "pooled native string GGame::OnInitTitle (00CE7680, 0x12 bytes)"},
+    {"address": "004c9ad1", "what": "BSP_FileBlock_Construct (00be0a30) opens the named scope"},
+    {"address": "004c9afa", "what": "LEA ECX,[ESI+650h]; CALL 007fdb20 - the player-profile reset, __thiscall on game+650h"},
+    {"address": "004c9b0d", "what": "MOV dword ptr [ESI+5D4h],2 - the title state"},
+    {"address": "004c9b52", "what": "BSP_TextureAtlas_Load(interface/textures/allbutingame.ats) with ECX = [00F8C26C]"},
+    {"address": "004c9b7b", "what": "00518250(004c1ac0(), 0, 1) - select front-end frame layout set 0, committing"},
+    {"address": "004c9b8a", "what": "when 00E198BC is null: new(4Ch), BSP_AttractScreen_Construct 00689d90, virtual +4h"},
+    {"address": "004c9bcf", "what": "when 00E198CC set: BSP_TitleScreen_Skip 0068d8a0, which enqueues state 4"},
+    {"address": "004c9bde", "what": "otherwise when 00E198C8 is null: new(44h), BSP_TitleScreen_Construct 0068d760, virtual +4h = 0068d8d0"},
+    {"address": "004c9c13", "what": "when *(00E188A8+21A0h) is non-null: 00916980 with that object in ECX"},
+    {"address": "004c9c2b", "what": "00E198B0 = 0, unconditional"},
+    {"address": "004c9c31", "what": "when 0067c8f0() is false: 00a40020 (ECX = [00F8ABE8]) then 0067c970"},
+    {"address": "004c9c4a", "what": "close the movie screen 00E18D48: virtual +1Ch when byte +5h set, clear +4h and +5h, then 004f83b0. This is close_front_end_screen 004b6e50 inlined."},
+    {"address": "004c9c79", "what": "BSP_FileBlock_Destroy (00bdcb30) closes the named scope"}
+  ],
+  "pseudocode_corrections": [
+    {
+      "claim": "007fdb20 is __thiscall on game+650h, not a no-argument call",
+      "evidence": "004c9afa LEA ECX,[ESI+650h] immediately before CALL 007fdb20; ESI holds the game from 004c9a8d."
+    },
+    {
+      "claim": "The pushes at 004c9b7b/004c9b7d are the arguments of 00518250, not of 004c1ac0",
+      "evidence": "004c1ac0 reads no stack slot and returns DAT_00E18D80 in EAX; 004c9b83 MOV ECX,EAX then CALL 00518250 consumes the two pushes with no caller-side ADD ESP. MSVC hoisted the argument pushes above the this evaluation."
+    },
+    {
+      "claim": "00916980 is __thiscall on *(00E188A8+21A0h)",
+      "evidence": "004c9c20 MOV ECX,[EAX+21A0h] before CALL 00916980."
+    },
+    {
+      "claim": "The return statements the pseudocode emits after free inside 007fdb20 and 00916980 are artifacts of a no-return annotation on free (00BF65AC)",
+      "evidence": "bsp.py disasm-raw shows ADD ESP,4 and a fall-through at 007fdc0b and 007fde49; the first replaces the object at profile+64h, the second is a list-node free loop."
+    }
+  ],
+  "conventions": {
+    "004c9a70": {"convention": "__thiscall, ECX = game", "stack_args": "none", "ret": "RET"},
+    "007fdb20": {"convention": "__thiscall, ECX = game+650h", "stack_args": "none", "ret": "RET"},
+    "004c1ac0": {"convention": "no arguments, singleton in EAX", "stack_args": "none", "ret": "RET"},
+    "00518250": {"convention": "__thiscall, ECX = the 164h singleton at 00E18D80", "stack_args": "int set, char commit", "ret": "RET 8 (inferred from the call site, not read from the epilogue)"},
+    "0067c8f0": {"convention": "no arguments, result in AL", "stack_args": "none", "ret": "RET"},
+    "0067c970": {"convention": "no arguments, void", "stack_args": "none", "ret": "RET"},
+    "00916980": {"convention": "__thiscall, ECX = game+21A0h", "stack_args": "none", "ret": "RET"},
+    "004f83b0": {"convention": "__thiscall, ECX = a front-end screen", "stack_args": "none", "ret": "RET"},
+    "00685070": {"convention": "__thiscall, ECX = the logo object at 00E198A4", "stack_args": "none", "ret": "RET"},
+    "00685170": {"convention": "__thiscall, ECX = the logo object", "stack_args": "none", "ret": "RET, tail JMP 00685070"},
+    "00685060": {"convention": "static trampoline, no arguments", "stack_args": "none", "ret": "RET or tail JMP 00685070"},
+    "0068d8d0": {"convention": "__thiscall, ECX = the title screen at 00E198C8", "stack_args": "none", "ret": "RET"}
+  },
+  "front_end_frame_layout_sets": {
+    "singleton": "00E18D80, 0x164 bytes, getter 004c1ac0, constructor 00517d10",
+    "constructor": "00517d10 chains BSP_FrontEndScreen_Construct 004f7180, stores vptr 00CEC39C at +0h and a second vptr 00CEC398 at +8h; the screen-id virtual at 00517d30 returns 0x0C. It writes nothing between +0Ch and +160h.",
+    "selector": "00518250(this, set, commit)",
+    "arrays": {
+      "backdrop": {"handles": "this+0Ch, set stride 0x34", "names": "00E08500", "slots": 13},
+      "panel": {"handles": "this+110h, set stride 8", "names": "00E08604", "slots": 2},
+      "title": {"handles": "this+138h, set stride 8", "names": "00E0862C", "slots": 2}
+    },
+    "current_set": "this+160h; the body returns at once when set equals it and only a committing call writes it",
+    "release_rule": "when *(layout+4h) == 1: BSP_GuiManager_GetOrCreate() then 00aa31f0(layout); otherwise InterlockedDecrement(layout+4h) and, at zero, the layout's virtual +0h",
+    "load_rule": "only a null handle is filled; BSP_GuiManager_GetOrCreate() then 00aa5840(&name, 1, 1)",
+    "tables": {
+      "0": {"backdrop": [], "panel": ["FE_frame"], "title": ["FE_frame_title"]},
+      "1": {"backdrop": [], "panel": ["FE_frame"], "title": ["FE_frame_title"]},
+      "2": {"backdrop": [{"slot": 6, "name": "FE_options_bg"}, {"slot": 12, "name": "FE_main"}], "panel": ["FE_frame"], "title": ["FE_frame_title"]},
+      "3": {"backdrop": [], "panel": ["GUI_pause"], "title": ["GUI_pause_title"]},
+      "4": {"backdrop": [], "panel": [], "title": []}
+    },
+    "callers": ["004c9a70", "004c9ca0", "004dfb70", "0057cb60"]
+  },
+  "resources_loaded_by_the_title_bring_up": {
+    "atlas": ["interface/textures/allbutingame.ats"],
+    "gui_layouts": [
+      {"name": "FE_frame", "via": "00518250 set 0 panel slot 0"},
+      {"name": "FE_frame_title", "via": "00518250 set 0 title slot 0"},
+      {"name": "FE_attract", "via": "BSP_AttractScreen_Construct 00689d90"},
+      {"name": "FE_initial", "via": "0068d8d0 -> 0067c840 -> vtable +10h 0067ca80"}
+    ],
+    "movies": [],
+    "sounds": [],
+    "lua_scripts": [],
+    "note": "OnInitTitle itself loads no movie, sound bank or Lua script. The attract screen plays movies/PacificTheme.bik only when its idle countdown expires."
+  },
+  "profile_reset_007fdb20": {
+    "this": "game+650h",
+    "callers": ["004c9a70", "00590e60", "0067cc60", "007fee20", "007ff100"],
+    "identification": "0067cc60, the sign-in handler behind the FE_initial press-start element, runs 007fdb20 first, then reads the XUID through 00a3eb00 into game+698h, formats it with sprintf(%llx) as the save name and ends in BSP_TitleScreen_Skip.",
+    "writes": [
+      {"offset": "+34h/+38h", "value": "the empty string through 00436710", "address": "007fdb42"},
+      {"offset": "+3Ch/+40h", "value": "globals.newplayer", "address": "007fdbac"},
+      {"offset": "+50h/+54h", "value": "the empty string 00CE3A0C", "address": "007fdbd0"},
+      {"offset": "+59h", "value": "1", "address": "007fdbee"},
+      {"offset": "+5Ch, +60h", "value": "1, 1", "address": "007fdbf1"},
+      {"offset": "+64h", "value": "destroyed with 007fd780 + free, replaced by new(24h) + 00920e10", "address": "007fdbf7"},
+      {"offset": "+68h/+6Ch", "value": "the empty string", "address": "007fdc44"},
+      {"offset": "+74h, +80h, +8Ch", "value": "three lists cleared through 004cec60", "address": "007fdc6d"},
+      {"offset": "+98h", "value": "a list cleared through 007fa880", "address": "007fdd56"},
+      {"offset": "+A4h", "value": "a list cleared through 0058b520, twice", "address": "007fdceb and 007fdd89"},
+      {"offset": "+ACh..+B4h", "value": "a range erased through 004954f0", "address": "007fdd3f"},
+      {"offset": "+E0h, +E4h", "value": "1, 1", "address": "007fdd94"},
+      {"offset": "a keyed map", "value": "map[\"RANK\"] = 1 through 005070c0", "address": "007fdde3"},
+      {"offset": "+20h..+2Ch", "value": "0, 0, 0, 9", "address": "007fde19"},
+      {"offset": "+18h", "value": "a list rebuilt with 9 entries, each carrying the byte index < 5", "address": "007fde60"},
+      {"offset": "+30h", "value": "-1", "address": "007fdeaf"},
+      {"offset": "+ECh, +F0h", "value": "0, 0", "address": "007fdeb6"},
+      {"offset": "+D8h, +DCh", "value": "0, 0", "address": "007fdecc"},
+      {"offset": "00F88980", "value": "008d4820 then 008d41c0 reset its flag block", "address": "007fded8"}
+    ],
+    "keyword_support": "segment 49 keywords include unlocks, selectedmissionid, selecteddifficulty, seenunlocks, savedlobbyfilters"
+  },
+  "logo_sequence": {
+    "object": "00E198A4, 0x80 bytes, constructor 006851e0, vtable 00CF76E4",
+    "vtable": ["006852E0 deleting destructor", "00685300 BSP_LogoSequence_LoadTable", "00684700 base activate", "00683AA0 base deactivate", "00684600"],
+    "no_per_frame_virtual": "The vtable is five slots and none of them is an update, so nothing in the screen registry can tick this object.",
+    "fields": {
+      "+44h/+48h": "entry vector, 8-byte records (pooled strings)",
+      "+54h/+58h": "delay vector, one float per entry",
+      "+60h": "index of the entry to play next",
+      "+68h..+77h": "16-byte timestamp latched when the current entry started",
+      "+78h": "delay of the current entry"
+    },
+    "advance_00685070": [
+      {"address": "0068508d", "what": "unsigned compare of +60h against the entry count"},
+      {"address": "00685091", "what": "exhausted: virtual +0h with 1, then BSP_Game_OnInitOnce(game, 0), which re-runs OnInitTitle and leaves game+5D4h = 2"},
+      {"address": "006850b1", "what": "+60h = index + 1"},
+      {"address": "006850ba", "what": "004f8970([00E18D48], 00685060) installs the end-of-movie callback"},
+      {"address": "006850f4", "what": "004f8a20([00E18D48], &entries[index], 1, 0.0f, 0) starts the movie"},
+      {"address": "00685101", "what": "movie-screen bytes +4h and +5h = 1, then 004f83b0, then its virtual +18h"},
+      {"address": "00685117", "what": "clock [01090AB0] virtual +20h; all four dwords of the timestamp copied to +68h"},
+      {"address": "0068515c", "what": "+78h = delays[index]"}
+    ],
+    "completion_trampoline_00685060": {
+      "bytes": "MOV ECX,[00E198A4]; TEST ECX,ECX; JE 0068506F; JMP 00685070",
+      "ghidra_function": false,
+      "note": "Ghidra has no function at 00685060; the body was decoded from disk bytes with bsp.py disasm-raw. The integrator must define 00685060-0068506F before applying a name there.",
+      "significance": "This is the automatic advance docs/GAME_FRONTEND_STATES.md could not locate. The sequence is driven by movie completion, not by a timer."
+    },
+    "skip_poll_00685170": {
+      "rule": "elapsed > entry_delay AND 004d92b0(game, 4Ah)",
+      "strictness": "FCOMIP at 006851aa followed by JBE at 006851ae, so the time term is strictly greater and a NaN elapsed takes the JBE",
+      "elapsed": "00530890(now, this+68h) reduced by FILD [EAX] / FILD [EAX+8]",
+      "input_query": "004d92b0, 26 callers, reaches BSP_InputManager_GetSingleton and BSP_SoundRequestQueue_GetSingleton; action 0x4A is not identified",
+      "exit": "tail JMP 00685070"
+    },
+    "supersedes": "The Uncertain paragraph under 'State 1 to state 2' in docs/GAME_FRONTEND_STATES.md. That document's reading of 00685170 is correct; the missing advance is 00685060."
+  },
+  "title_screen_first_interactive_state": {
+    "title_object": "00E198C8, 0x44 bytes, constructor 0068d760, vtable 00CF7A98",
+    "vtable": ["0068D880", "0068D8D0", "0068D7B0", "00683AA0", "00684600"],
+    "slot_plus_4": "0068d8d0, the routine OnInitTitle calls right after constructing",
+    "0068d8d0": {
+      "skip_title_arm": "0068d8e6 tests 00E198CC; when set it repeats BSP_TitleScreen_Skip: 00bd3450([0109CECC]), then when game+5E8h == 0 request state 4 through BSP_Game_RequestState 004d7920 and clear game+5ECh",
+      "normal_arm": "0068d92f: new(18h), 0067c840, store in title+40h, its virtual +10h, bytes +4h and +5h = 1, 004f83b0, its virtual +18h",
+      "reachability_from_on_init_title": "only the normal arm, because OnInitTitle constructs the title screen only when 00E198CC is clear",
+      "name_note": "The existing reviewed name BSP_TitleScreen_Advance describes only the skipTitle arm. Suggested supersession BSP_TitleScreen_Activate; not applied, the name belongs to packet game_frontend_states."
+    },
+    "screen": {
+      "constructor": "0067c840, chains BSP_FrontEndScreen_Construct 004f7180, vtable 00CF6D90, 0x18 bytes",
+      "init_slot_plus_10h": "0067ca80: BSP_FrontEndScreen_Register then the GUI layout FE_initial into screen+8h",
+      "rdata_literals_after_the_vtable": ["FE_initial", "press_start_Text", "globals.saving_xbox", "L\"Session\"", "FE.unitlib_toggledesc"],
+      "answer": "the FE_initial press-start screen",
+      "exit": "0067cc60 resets the profile, reads the XUID and calls BSP_TitleScreen_Skip, which requests state 4"
+    }
+  },
+  "sign_in_and_input": {
+    "0067c8f0": "true only when 00E19880 is non-zero, 00a3e510 reports a signed-in user, and BSP_XenonSystemManager_FindSlotForInvitee equals BSP_XenonSystemManager_GetActiveUserSlot",
+    "0067c970": "takes the first element of the checked vector at [00F8BBF4]+B8h, passes it to 00a90ee0 when non-null, then 00a917e0(2, 1, 0) and 00E1987C = 1"
+  },
+  "mission_player_records_00916980": {
+    "this": "game+21A0h, written by BSP_Game_OnInit at 004e3e9f, cleared by 004cccc0 and BSP_Game_OnDestroy",
+    "body": "00915760 over eight records at this+4h with stride 0x284, byte this+1484h = 0, then the red-black tree at this+1488h/+148Ch emptied with 0063ad70 per value",
+    "uncertainty": "What the eight 0x284-byte records hold. 00915760 lives in segment 59 whose keywords are bot AI (pilotbot, torpedobot, thinktimeleft); its other caller is 008bc540."
+  },
+  "screen_commit_004f83b0": {
+    "body": "virtual +24h fills a stack vector of child pointers; every non-null child receives its virtual +34h with the byte at screen+5h; the vector is freed",
+    "corroboration": "docs/GAME_FRONTEND_STATES.md already models slot +24h as 'fills the list 004f83b0 walks'; docs/APP_INIT_FONTS_GUI.md has +34h as the visibility setter",
+    "role": "the tail jump of close_front_end_screen 004b6e50 and the commit step of every enter and exit in this packet"
+  },
+  "uncertainties": [
+    "00517d10 leaves +0Ch..+160h of the 0x164 singleton uninitialised and 00518250 reads +160h before writing it. Either 00BF681B zeroes or the first select call depends on heap contents. 00BF681B was not read.",
+    "00518250's RET 8 is inferred from the call site, not read from its epilogue.",
+    "The contents of the eight 0x284-byte records inside game+21A0h.",
+    "The last two arguments of 004f8a20: 0.0f and 0 for logos, 1.0f and 1 for the attract movie. Volume and loop is a hypothesis; a fade time fits equally well.",
+    "Input action 0x4A.",
+    "Whether the 9-entry list 007fdb20 rebuilds at profile+18h is the campaign mission list."
+  ],
+  "state": {
+    "004c9a70": "reconstructed, build-tested (bsp::run_title_init)",
+    "00518250": "reconstructed, build-tested (bsp::select_front_end_frame_set)",
+    "00685070": "reconstructed, build-tested (bsp::logo_advance_or_finish)",
+    "00685170": "reconstructed, build-tested (bsp::logo_poll_skip, bsp::logo_skip_allowed)",
+    "00685060": "analysed from raw disk bytes; no Ghidra function exists at this address",
+    "007fdb20": "analysed, full field map, not reconstructed",
+    "004c1ac0": "analysed, not reconstructed",
+    "0067c8f0": "analysed, not reconstructed",
+    "0067c970": "analysed, not reconstructed",
+    "00916980": "analysed, not reconstructed",
+    "004f83b0": "analysed, not reconstructed",
+    "0067c840": "analysed as evidence",
+    "0067ca80": "analysed as evidence",
+    "0068d8d0": "analysed as evidence",
+    "00517d10": "analysed as evidence"
+  },
+  "names_recorded": [
+    {"address": "007fdb20", "name": "BSP_PlayerProfile_ResetToDefaults"},
+    {"address": "004c1ac0", "name": "BSP_FrontEndFrame_GetOrCreate"},
+    {"address": "00518250", "name": "BSP_FrontEndFrame_SelectLayoutSet"},
+    {"address": "0067c8f0", "name": "BSP_Game_IsSignInStateValid"},
+    {"address": "0067c970", "name": "BSP_Game_RebindPrimaryInput"},
+    {"address": "00916980", "name": "BSP_MissionPlayerRecords_Reset"},
+    {"address": "004f83b0", "name": "BSP_FrontEndScreen_CommitVisibility"},
+    {"address": "00685060", "name": "BSP_LogoSequence_OnMovieComplete"},
+    {"address": "0067c840", "name": "BSP_PressStartScreen_Construct"},
+    {"address": "0067ca80", "name": "BSP_PressStartScreen_LoadLayout"}
+  ],
+  "build": {"command": "./scripts/build.ps1", "result": "clean, Win32 Release, warnings as errors"},
+  "tests": {"suite": "reconstructed_math", "result": "passed", "added": "one case in tests/math_tests.cpp pinning logo_skip_allowed as a strict conjunction"},
+  "follow_up_packets": [
+    {
+      "id": "game_profile_reset",
+      "addresses": ["007fdb20", "007fee20", "007ff100", "00590e60", "0067cc60", "00920e10", "007fd780", "005070c0"],
+      "files": ["docs/GAME_PROFILE_RESET.md", "reports/game_profile_reset.json", "include/bsp/profile_reset.hpp", "src/profile_reset.cpp"],
+      "contract": "Recover the layout of the profile block at game+650h from its reset, its save path and its Lua bindings, and name the fields the segment keywords already advertise."
+    },
+    {
+      "id": "game_movie_player",
+      "addresses": ["004f8af0", "004f8970", "004f89d0", "004f8a20", "004f8ac0", "004f83b0"],
+      "files": ["docs/GAME_MOVIE_PLAYER.md", "reports/game_movie_player.json", "include/bsp/movie_player.hpp", "src/movie_player.cpp"],
+      "contract": "Recover the 0x34 movie screen at 00E18D48, the meaning of 004f8a20's trailing float and int, the two sinks at +24h and +28h, and the completion-callback contract that 00685060 rides on."
+    },
+    {
+      "id": "game_press_start_screen",
+      "addresses": ["0067c840", "0067ca80", "0067cb40", "0067cc60", "0067cfb0", "0067d860"],
+      "files": ["docs/GAME_PRESS_START_SCREEN.md", "reports/game_press_start_screen.json", "include/bsp/press_start_screen.hpp", "src/press_start_screen.cpp"],
+      "contract": "Recover the FE_initial screen behind vtable 00CF6D90, its per-frame update, the sign-in and storage-device flow behind press_start_Text, and the exit into state 4."
+    }
+  ],
+  "integrator_actions": [
+    "Define a Ghidra function at 00685060-0068506F before applying the name BSP_LogoSequence_OnMovieComplete.",
+    "Consider superseding BSP_TitleScreen_Advance (0068d8d0) with BSP_TitleScreen_Activate; the name belongs to packet game_frontend_states and was not rewritten here.",
+    "docs/GAME_FRONTEND_STATES.md's Uncertain paragraph under 'State 1 to state 2' is now answered by 00685060."
+  ]
+}

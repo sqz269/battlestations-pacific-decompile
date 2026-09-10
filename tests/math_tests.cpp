@@ -8,6 +8,7 @@
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
+#include "bsp/title_init.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/input_settings.hpp"
@@ -727,6 +728,17 @@ int main() {
             "an unchanged clock sample yields -0.0f, not +0.0f");
         check(bsp::worker_tick_delta_seconds(1040.0f, 1000.0f) == 0.04f,
             "a 40 ms tick is one 25 Hz period in seconds");
+    }
+
+    {
+        // 006851aa compares elapsed against the entry delay with FCOMIP/JBE and
+        // only then queries input action 4Ah, so both terms are required and the
+        // time term is strict. docs/GAME_FRONTEND_STATES.md read this as a timed
+        // advance; the sequence actually advances from the movie-end callback
+        // 00685060, and a disjunctive or non-strict rule here would hide that.
+        check(bsp::logo_skip_allowed(3.0F, 2.0F, true), "a late skip with the button fires");
+        check(!bsp::logo_skip_allowed(3.0F, 2.0F, false), "elapsed time alone never skips");
+        check(!bsp::logo_skip_allowed(2.0F, 2.0F, true), "the delay comparison is strict");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
