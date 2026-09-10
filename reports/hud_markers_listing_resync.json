@@ -1,0 +1,35 @@
+{
+ "function": "006435d0",
+ "span": "00643c0c-00643c18",
+ "events": [
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "00643c09"
+   },
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 00643c09 (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00643c0c",
+    "end_address": "00643c18"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00643c0c",
+    "end_address": "00643c17",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  }
+ ],
+ "after": [
+  "00643c09: MOV EAX,dword ptr [EBX + 0x20] ",
+  "00643c0d: TEST AL,0xd4 ",
+  "00643c18: MOV dword ptr [ESP + 0x34],EAX "
+ ]
+}
