@@ -95,6 +95,12 @@ void resize_native_render_command_pointers_00b1cc80(
     resize_pointers(array, requested);
 }
 
+void destroy_native_render_command_pointers_00b1d590(NativeRenderPointerArrayStorage& array) {
+    resize_native_render_command_pointers_00b1cc80(array, 0);
+    const volatile auto& actual = array;
+    singleton_lifetime_free(actual.data_00);
+}
+
 void append_native_render_group_pointer_00b1cbe0(
     NativeRenderPointerArrayStorage& array, const void* source_pointer_cell) {
     if (array.count_04 == array.capacity_08) {

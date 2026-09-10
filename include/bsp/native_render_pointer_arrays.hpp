@@ -43,6 +43,11 @@ void reserve_native_render_command_pointers_00b1c6c0(
 void resize_native_render_command_pointers_00b1cc80(
     NativeRenderPointerArrayStorage&, std::int32_t count);
 
+// Full B1D590: resize the actual command-pointer array to zero, then ordinary
+// free its current data pointer. Preserve the resulting pointer/capacity and
+// any changes made during free; do not destroy the borrowed command objects.
+void destroy_native_render_command_pointers_00b1d590(NativeRenderPointerArrayStorage&);
+
 // Original ECX=actual group-pointer header; stack=address of a four-byte pointer
 // cell; RET4. Read that cell only AFTER any reserve; then publish the new slot
 // and increment count. This raw byte address also permits an alias of data_00

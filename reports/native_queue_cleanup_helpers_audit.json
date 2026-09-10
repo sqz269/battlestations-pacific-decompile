@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "packet": "native_queue_cleanup_helpers",
+  "status": "integrated_complete_assembly_reviewed_strict_win32_build_checked",
+  "new_complete_functions": 2,
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00b1d590",
+      "name": "destroy_native_render_command_pointers_00b1d590",
+      "cpp_symbol": "destroy_native_render_command_pointers_00b1d590",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1d5a7",
+      "original_abi": "ECX actual0Ch command pointer-array header; RET; no semantic return",
+      "evidence": "reports/native_queue_cleanup_helpers_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Call fullB1CC80 resize0 then reload current data and ordinary-free; preserve post-free fields; no pointed-command destruction.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1c3c0",
+      "name": "destroy_native_render_queue_base_00b1c3c0",
+      "cpp_symbol": "destroy_native_render_queue_base_00b1c3c0",
+      "source": "src/native_render_queue_access.cpp",
+      "native_end_exclusive": "00b1c3d1",
+      "original_abi": "ECX actual base; RET; no semantic return",
+      "evidence": "reports/native_queue_cleanup_helpers_audit.json",
+      "status": "actual_storage_complete_assembly_reviewed_strict_win32_build_checked",
+      "current_integration_scope": "Unconditional actualF8D440 publication clear then base00=CE3818; no identity check, unregister, member destruction, command execution or free.",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_render_pointer_arrays.hpp",
+      "sha256": "ed0b4fc0199da2c822464dc6a98b6d6e918cb6c9811b920f7246524d37f90d0c"
+    },
+    {
+      "path": "src/native_render_pointer_arrays.cpp",
+      "sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c"
+    },
+    {
+      "path": "include/bsp/native_render_queue_access.hpp",
+      "sha256": "16fe7dbc5c783b733902b421a5f07b703c2192f47417100ec15f674e250fdadb"
+    },
+    {
+      "path": "src/native_render_queue_access.cpp",
+      "sha256": "373b3206776e8e0c201a96c37a9c3f7e8d6009570227f7efcf32e0e960b86722"
+    }
+  ],
+  "verified_spans": [
+    {
+      "address": "00b1d590",
+      "end_exclusive": "00b1d5a7",
+      "length": 23,
+      "sha256": "47f473001b977717cb10f6b9a310e2e7cb87a6cffb85c5d41e558c263fb40eb5",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1c3c0",
+      "end_exclusive": "00b1c3d1",
+      "length": 17,
+      "sha256": "25d3c5e2dd710b019dff95befa4edffbf9b6f37782113b2259721e5d29656be6",
+      "live_matches_installed": true
+    }
+  ],
+  "definitions": "reports/native_queue_cleanup_defined_functions.json",
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_queue_cleanup_build.txt",
+    "sha256": "71eebf3d2e3872c25ae0df639abc47e9fc6fc377b1650dd4decfd10be6a65c24"
+  },
+  "native_differential_fixture": false,
+  "new_tests": 0,
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Full queue destructionB1F330 executes commands throughB1EBE0 before member disposal; not implemented by these helpers",
+    "Rows have separate string/array lifetime",
+    "Valid native storage and existing shared lifetime allocator policies required"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_queue_cleanup_annotations.json",
+    "sha256": "8c00601b2898397d6e36bb6bf4929cb376b3273ee107e71261910f26c81b404e",
+    "old_names_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b1d590",
+      "path": "exports/bsp/functions/00b1d590/decompiled.c",
+      "sha256": "c3047ae86204c201e751014f54723b2d16a76299289e8900940657027034920d"
+    },
+    {
+      "address": "00b1c3c0",
+      "path": "exports/bsp/functions/00b1c3c0/decompiled.c",
+      "sha256": "2b79c94a1e7f76ac5b7eff3fcd5e94eaee1d7e31a60e47e86ec5fd7af7abed70"
+    }
+  ],
+  "closure_utc": "2026-09-10T23:24:11.782176+00:00"
+}

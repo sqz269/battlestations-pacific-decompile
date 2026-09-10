@@ -50,4 +50,11 @@ std::uint32_t read_native_render_batch_sort_configuration_00b1cb30(
 void set_native_last_render_command_metadata_00b1cb50(
     const NativeRenderCommandQueueStorage&, const void* three_source_words) noexcept;
 
+// Full B1C3C0: unconditionally clear actual publication F8D440, then write the
+// base table word CE3818 at the supplied base. No identity guard, command
+// execution, member destruction, unregister or free. This is only base cleanup,
+// not the complete queue destructor. Original ECX=base, RET, no semantic result.
+void destroy_native_render_queue_base_00b1c3c0(void* actual_base,
+    NativeRenderCommandQueueStorage* volatile& global_00f8d440) noexcept;
+
 } // namespace bsp

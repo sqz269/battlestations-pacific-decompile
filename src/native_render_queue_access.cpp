@@ -8,6 +8,12 @@
 
 namespace bsp {
 
+void destroy_native_render_queue_base_00b1c3c0(void* actual_base,
+    NativeRenderCommandQueueStorage* volatile& global_00f8d440) noexcept {
+    global_00f8d440 = nullptr;
+    *static_cast<volatile std::uint32_t*>(actual_base) = 0x00ce3818u;
+}
+
 std::uint32_t read_native_render_batch_sort_configuration_00b1cb30(
     const NativeRenderCommandQueueStorage& queue, std::uint32_t index,
     volatile std::uint8_t& byte_output, volatile std::uint32_t& word_output) noexcept {
