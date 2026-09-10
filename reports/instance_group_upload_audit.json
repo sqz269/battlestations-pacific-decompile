@@ -1,0 +1,186 @@
+{
+  "packet": "instance_group_upload",
+  "evidence_date_utc": "2026-09-10",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "verification": "Each live CLI batch verifies project, program path, language and image base. Full specified byte ranges compare equal to installed PE; this is source evidence, not game validation.",
+  "ranges": [
+    {
+      "address": "00b1e990",
+      "length": 494,
+      "matches_installed_pe": true,
+      "sha256": "d5d8e9a03a337bf27e502abc0a34711a584e72fc20c30c7fde36ebcb350d590f",
+      "bytes_hex": "83ec108b41388b513c568bf08d14963bc2894c2404894424100f84ca0100005355578b3033ffeb088da4240000000090837cbe0c000f84830100008b44be1c8b188b49046a0083c350e8323705008b4cbe1c8b1350ffd285ff74278d447f098b4c86048b14868d04868b008d148a8bca2bc8c1f90268b01ab500518bc8e8cef2ffff8b4cbe1c6a016a00e8215c05008bc8e83a4805008b4cbe0c8b108b52106a006a00518bc8ffd2894424148d447f098b1c868b4c86048d2c868bd38d048a3bd874388b0e8b4424148b490c8b118b5208508b0350ffd28b068b480ce83f6c03008b88cc000000014c24148b55048b450083c3048d0c903bd975c88b4cbe1c6a016a00e8a85b05008bc8e8c14705008b108bc88b4214ffd08b4cbe1c6a00e88d5b05008be86a008bcde8024805008b4cbe0c8bd8518bcbe8c46a060085ff740af30f10050038ce00eb08f30f10054ca2d700d9ee8b5424108b42288b48088b54be1c685505000083ec08d9542404f30f11442424d9442424d91c2451525553518b4cbe14d91c24e8042f030085ff740e8b44be148b4c24108b491050eb178b53208b4a7ce8c787ffff8b4e148b542410518b4c820ce8663103008b4c241083c70183ff020f8266feffff8b44241c8b513c8b713883c0048d14963bc28944241c0f853cfeffff5f5d5b5e83c410c3"
+    },
+    {
+      "address": "00b85590",
+      "length": 10,
+      "matches_installed_pe": true,
+      "sha256": "eeccf6337909677489e16f4719bd017f6de247d05525e3dd9397e8acf32bd661",
+      "bytes_hex": "8b44240489411cc20400"
+    },
+    {
+      "address": "00b51a20",
+      "length": 139,
+      "matches_installed_pe": true,
+      "sha256": "5ce74d7321e2e3d53e30af406bd9b6f858339c774109a0aa88d2586215c17cb6",
+      "bytes_hex": "f30f104424048b44240c8b54242083ec0c538b5c2418568bf18b4c2428f30f1106f30f1044242c578b7c2428f30f114618f30f104424340f2f0518a2d700895e04894608897e0c894e1089561c760e5ff30f1146145e5b83c40cc22000e82ee201008b17508d442410508b42488bcfffd08bc8e848288cffd94334d84424145fd95e145e5b83c40cc22000"
+    },
+    {
+      "address": "00b51cb0",
+      "length": 60,
+      "matches_installed_pe": true,
+      "sha256": "7934397a2c8d680f6e37355b0119c240f614c4734aa70ae3d375705fc261d24e",
+      "bytes_hex": "8b4114394110568d710c751603c03d000100007f05b800010000508bcee87efeffff8b46048b0e8d048185c074068b5424088910834604015ec20400"
+    },
+    {
+      "address": "00b51b50",
+      "length": 98,
+      "matches_installed_pe": true,
+      "sha256": "5d1747b4e013a9bd91c70c441b3115fadfa5273e0e7a103c4a3ae143b73a9b83",
+      "bytes_hex": "56578b7c240c81ff000100008bf17d05bf00010000397e087d438d04bd000000005350e8463a0a008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8e54d0a0083c404891e897e085b5f5ec20400"
+    },
+    {
+      "address": "004142e0",
+      "length": 132,
+      "matches_installed_pe": true,
+      "sha256": "918c584a4b36931271d55da548684ecad60b7e02dd1fe7548aff6601a7364004",
+      "bytes_hex": "83ec0cd941048b442410d91c24d901d95c2404d941088b4c2414d95c2408d94110d90424d9c0decad901d9442404d9c0decad9cbdec1d94120d9442408d9c0decad9cadec1d84130d918d94104d8cbd94114d8cbdec1d94124d8cadec1d84134d95804d94108decbd94118decad9cadec1d94128decadec1d84138d9580883c40cc20800"
+    },
+    {
+      "address": "00b1d420",
+      "length": 150,
+      "matches_installed_pe": true,
+      "sha256": "929943dae9485fc9fc14a4c1b641bfef1c9f52784ffef4df2e0c98c4ed3ccd88",
+      "bytes_hex": "83ec08578bf93bfa89542408897c2404747d568d77043bf2747453558d6e04908b178b0e8b5c241cffd384c074183bfe744e3bf5744a6a006a00558bd68bcfe8acedffffeb3a8b55f88b0e8d7df8ffd384c074288b57fc8b0e8bdf83ef04ff54241c84c075ee3bde74123bf5740e6a006a00558bd68bcbe874edffff8b7c241083c60483c5043b74241475945d5b5e5f83c408c20400"
+    },
+    {
+      "address": "00b1c210",
+      "length": 145,
+      "matches_installed_pe": true,
+      "sha256": "80d27cb2032a3e6c5297579b5f7414164d18e4f1dd31ae41c7a2e9ce5ec6cf1f",
+      "bytes_hex": "5155568b7424102bd1c1fa022bf18beac1fe0285ed578bc68bfd740f8d64240099f7ff8bc785d28bfa75f53bc67d5b85c07e57538d1c818b138d34ab3b7424188bfb8954241075028bf13bf3742b8bff8b1689178b5424182bd6c1fa023bea8bfe7d0b8d14ad0000000003f2eb078bf52bf28d34b13bf375d78b54241083e80183eb0485c089177fae5b5f5e5d59c20c00"
+    },
+    {
+      "address": "00b1dce0",
+      "length": 235,
+      "matches_installed_pe": true,
+      "sha256": "df3b6a3ed0dd92fca4028745fe2cae1ea65c42c54a2d2c0d615b8db6d8b4a1c6",
+      "bytes_hex": "83ec08535556578bfa8bd98bc72bc3c1f80283f8207e7c8b74241ceb038d490085f60f8e880000008b44242050578bd38d4c2418e867f5ffff8b6c24148bc6992bc2d1f88bf0992bc28b542410d1f803f08bcf8bc22bcd2bc383e1fc83e0fc3bc17d118b4c242051568bcbe890ffffff8bddeb138b54242052568bd78bcde87dffffff8b7c24108bc72bc3c1f80283f8207f8d83f8017e0e8b442420508bd78bcbe89af6ffff5f5e5d5b83c408c2080083f8207ede8bc72bc383e0fc83f8047e128b4c24206a006a00518bd78bcbe86df2ffff8b542420528bd78bcbe8dff8ffff5f5e5d5b83c408c20800"
+    },
+    {
+      "address": "00d7a218",
+      "length": 4,
+      "matches_installed_pe": true,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "bytes_hex": "00000000"
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "matches_installed_pe": true,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "bytes_hex": "0000803f"
+    },
+    {
+      "address": "00ce3800",
+      "length": 4,
+      "matches_installed_pe": true,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "bytes_hex": "0000003f"
+    }
+  ],
+  "status": {
+    "reconstructed": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "standalone_msvc_win32_compiled": true
+  },
+  "annotation_proposals": [
+    {
+      "address": "00b1e990",
+      "old_name": "FUN_00b1e990",
+      "old_comments": [],
+      "proposed_name": "BSP_InstanceGroups_UploadAndQueue",
+      "applied": false,
+      "proposed_comment": "Group-order/category0-then1 upload: attach(scene,false), category1 signed-material/depth sort, geometry0 stream1 lock(count,0,0), generator v+8 writes and declaration+CC advances, unlock, section0+1C count, retained entry initialize, borrowed pointer queue append. Checked typed success domain; exact insertion<=32, larger finite distinct keys only. See docs/INSTANCE_GROUP_UPLOAD.md and reports/instance_group_upload_audit.json."
+    },
+    {
+      "address": "00b85590",
+      "old_name": "FUN_00b85590",
+      "old_comments": [],
+      "proposed_name": "BSP_DrawSection_SetInstanceCount",
+      "applied": false,
+      "proposed_comment": "ECX section, stack count, RET4; unconditional DWORD store to+1C. Typed GeneratedInstanceSection instance_count setter, no native layout ABI claim. See docs/INSTANCE_GROUP_UPLOAD.md."
+    },
+    {
+      "address": "00b51a20",
+      "old_name": "FUN_00b51a20",
+      "old_comments": [],
+      "proposed_name": "BSP_RenderEntry_Initialize",
+      "applied": false,
+      "proposed_comment": "ECX entry,8 stack words,RET20h. Stores leading/section/geometry/model/camera/visibility/flags, preserves+20/+24 key. Positive depth override direct; otherwise camera view then v+48 actual world sphere center,004142e0 transform Z plussection+34. Callback and x87 value projection, no native object ownership ABI. See docs/INSTANCE_GROUP_UPLOAD.md."
+    },
+    {
+      "address": "00b51cb0",
+      "old_name": "FUN_00b51cb0",
+      "old_comments": [],
+      "proposed_name": "BSP_RenderBatch_AppendEntry",
+      "applied": false,
+      "proposed_comment": "ECX batch,stack borrowed entry,RET4. Grow queue pointer capacity max256 or double when full via00b51b50, then store pointer/increment count; no retain or clone. Full allocator tail verified despite no-return free annotation. New owning pointer-array interface with borrowed entries. See docs/INSTANCE_GROUP_UPLOAD.md."
+    }
+  ],
+  "validation": {
+    "compiler_flags": "/std:c++17 /W4 /WX /EHsc /fp:strict",
+    "standalone_object": "local/instance_upload.obj",
+    "headers": "Owned upload header plus geometry worker instance_geometry.hpp",
+    "full_build": "Primary integration pending",
+    "new_tests_added": false,
+    "native_execution": "Not performed by this worker",
+    "game_execution": "Not performed by this worker"
+  },
+  "source_files": [
+    "include/bsp/instance_upload.hpp",
+    "src/instance_upload.cpp",
+    "docs/INSTANCE_GROUP_UPLOAD.md"
+  ],
+  "original_abi": {
+    "00b1e990": "ECX=context; no stack args; RET. Model attach v+50 consumes scene and recurse=false because getter00b72110 is zero-arg RET.",
+    "00b85590": "ECX=section; stack DWORD count; RET4; stores+1C.",
+    "00b51a20": "ECX=entry; 8 stack words: float leading,section,geometry,model,camera,float visibility,float depth_override,DWORD flags; RET20h. Model sphere getter v+48 takes no stack args.",
+    "00b51cb0": "ECX=batch; stack borrowed entry pointer; RET4.",
+    "00b51b50": "ECX=array descriptor; stack requested capacity; RET4; full98B includes hidden tail after free.",
+    "004142e0": "ECX=source XYZ; stack destination XYZ,matrix; RET8; EAX=destination.",
+    "00b1d420": "ECX=first; EDX=last; stack comparator; RET4.",
+    "00b1c210": "ECX=first; EDX=middle; stack last and2unused words; RET0Ch.",
+    "00b1dce0": "ECX=first; EDX=last; stack ideal budget,comparator; RET8."
+  },
+  "no_return_tail": {
+    "function": "00b51b50",
+    "call_site": "00b51b9f",
+    "callee": "00bf6989",
+    "missing_tail_first": "00b51ba4",
+    "full_last_byte": "00b51bb1",
+    "ret_site": "00b51baf",
+    "decoded_tail": "ADD ESP,4; MOV [ESI],EBX; MOV [ESI+8],EDI; POP EBX; POP EDI; POP ESI; RET4",
+    "ghidra_mutated_by_worker": false
+  },
+  "limits": [
+    "New host types do not reproduce native object layouts or intrusive lifetimes.",
+    "Callbacks must bind actual borrowed model scene attachment, world sphere and generator operations; no default callbacks exist.",
+    "Generated geometry/material clone/scene producer contracts remain owned by their separate reconstruction packets.",
+    "Category1 supports finite depths; <=32 preserves native stable insertion permutation; larger inputs require comparator-distinct keys. Native large-list partition/heapsort tie order is unported.",
+    "Source count must equal active instance count; declarations, lists and bound identities must remain stable during callbacks.",
+    "Native malformed-container, overflow and ignored failure behavior are replaced by explicit host errors.",
+    "Queue owns pointer storage only; caller-owned entries/models/cameras/geometry must outlive consumption.",
+    "Previous category effects persist after failure; successful stream locks are unlocked during failure unwinding.",
+    "x87 kernel operation/spill order is retained; no surrounding native FP exception or NaN payload claim."
+  ]
+}
