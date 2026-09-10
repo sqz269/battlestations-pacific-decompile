@@ -25,6 +25,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import coordination  # noqa: E402
 import ledger  # noqa: E402
 
 ROOT = ledger.ROOT
@@ -380,6 +381,16 @@ def state(args):
     legacy = [p.name for p in (ledger.LEGACY_NAMES, ledger.LEGACY_RECON, ledger.LEGACY_TAGS) if p.exists()]
     if legacy:
         print(f"legacy ledger files present {legacy}: run python tools/bsp.py ledger migrate before committing")
+    owner = coordination.owner_name()
+    leases = coordination.active_leases()
+    mine = [l for l in leases if l['owner'] == owner]
+    lock = coordination.lock_status()
+    print(f"agent: owner={owner}  worktree={ROOT}  registry={coordination.coordination_dir()}"
+          + (f"  ghidra-lock={lock['owner']}{' (expired)' if lock.get('expired') else ''}" if lock else ''))
+    print(f"leases: {len(leases)} active" + ('' if mine else f"  (none for {owner}: python tools/bsp.py lease claim --packet <id> --from-packet)"))
+    for l in leases[:args.limit]:
+        print(f"  {l['owner']:<18} {l['packet']:<28} {len(l.get('addresses', [])):3d} addrs {len(l.get('ranges', [])):2d} ranges "
+              f"{len(l.get('files', [])):2d} files  until {l['expires'][:16]}")
     db = connect(required=False)
     if db:
         fun = db.execute("SELECT COUNT(*) FROM functions WHERE name LIKE 'FUN_%' AND thunk=0").fetchone()[0]
@@ -540,9 +551,17 @@ def snapshot(args):
 # ---------------------------------------------------------------- ledger
 
 def ledger_cmd(args):
+    try:
+        ledger_write(args)
+    except coordination.LeaseConflict as exc:
+        sys.exit(f'lease conflict: {exc}')
+
+
+def ledger_write(args):
     if args.ledger_command == 'migrate':
         print(ledger.migrate(prune=not args.keep_legacy))
     elif args.ledger_command == 'add-name':
+        coordination.check_writable([ledger.norm(args.address)], force=args.force)
         previous = ledger.upsert(ledger.NAMES_DIR, {'address': args.address, 'name': args.name, 'evidence': args.evidence})
         print(f"{ledger.norm(args.address)} -> {args.name}" + (f" (replaced {previous['name']})" if previous else ''))
     elif args.ledger_command in ('add-function', 'add-fragment'):
@@ -550,9 +569,119 @@ def ledger_cmd(args):
         for key in ('address', 'name', 'source', 'status'):
             if key not in record:
                 sys.exit(f'missing field {key}')
+        coordination.check_writable([ledger.norm(record['address'])], force=args.force)
         record['kind'] = 'function' if args.ledger_command == 'add-function' else 'fragment'
         previous = ledger.upsert(ledger.RECON_DIR, record, key=ledger.RECON_KEY)
         print(f"{ledger.norm(record['address'])} {record['kind']} {record['name']}" + (' (replaced)' if previous else ''))
+
+
+# ---------------------------------------------------------------- coordination
+
+def load_packets():
+    path = ROOT / 'config/parallel_work.json'
+    return (json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}), path
+
+
+def packet_done(packet):
+    text = str(packet.get('state') or packet.get('status') or '')
+    return bool(packet.get('done')) or 'integrated' in text or text in ('done', 'complete', 'completed')
+
+
+def lease_cmd(args):
+    sub = args.lease_command
+    if sub == 'claim':
+        addresses, ranges, files = list(args.addresses or []), list(args.ranges or []), list(args.files or [])
+        if args.from_packet:
+            work, _ = load_packets()
+            packet = next((p for p in work.get('packets', []) if p.get('id') == args.packet), None)
+            if packet is None:
+                sys.exit(f'no packet {args.packet} in config/parallel_work.json')
+            addresses += [a for a in packet.get('function_addresses', [])]
+            ranges += [r for r in packet.get('code_ranges', []) if isinstance(r, (str, dict))]
+            files += [f for f in packet.get('output_files', []) if isinstance(f, str)]
+        if not (addresses or ranges or files):
+            sys.exit('a lease needs --addresses, --ranges lo-hi, --files, or --from-packet')
+        try:
+            lease = coordination.claim(args.packet, addresses, ranges, files, ttl_hours=args.ttl, owner=args.owner, note=args.note or '')
+        except coordination.LeaseConflict as exc:
+            sys.exit(f'lease refused: {exc}')
+        print(f"leased {lease['id']}: {len(lease['addresses'])} addresses, {len(lease['ranges'])} ranges, "
+              f"{len(lease['files'])} files until {lease['expires']}")
+    elif sub == 'release':
+        released = coordination.release(args.id, packet=args.packet, owner=args.owner)
+        print(f"released {[r['id'] for r in released]}" if released else 'nothing active to release')
+    elif sub == 'list':
+        rows = coordination.active_leases() if not args.all else coordination.load_leases()
+        for l in rows:
+            print(f"{l['id']:<40} {l.get('status', ''):<9} until {l['expires'][:16]}  {len(l.get('addresses', []))} addrs "
+                  f"{l.get('ranges', [])} files={l.get('files', [])} worktree={l.get('worktree', '')}")
+        if not rows:
+            print('no leases')
+    elif sub == 'check':
+        a = int(args.address, 16)
+        holders = coordination.holders(a)
+        print(f"{h(a)}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
+    elif sub == 'lock-status':
+        lock = coordination.lock_status()
+        print(json.dumps(lock) if lock else 'ghidra lock free')
+
+
+def packets_cmd(args):
+    work, path = load_packets()
+    packets = work.get('packets', [])
+    by_id = {p.get('id'): p for p in packets}
+    leases = coordination.active_leases()
+    leased = {l['packet']: l['owner'] for l in leases}
+    if args.packets_command in ('list', 'ready'):
+        for p in packets:
+            pid = p.get('id')
+            deps = p.get('depends_on', [])
+            missing = [d for d in deps if not (d in by_id and packet_done(by_id[d]))]
+            done = packet_done(p)
+            ready = not done and not missing and pid not in leased
+            if args.packets_command == 'ready' and not ready:
+                continue
+            flag = 'done' if done else ('leased:' + leased[pid] if pid in leased else ('blocked:' + ','.join(missing) if missing else 'ready'))
+            print(f"{pid:<28} {flag:<34} {len(p.get('function_addresses', [])):3d} addrs  {str(p.get('state') or '')[:50]}")
+        # Packets the integrator has proposed but not yet promoted into `packets`.
+        for nd in work.get('next_dispatch', []) or []:
+            pid = nd.get('packet') or nd.get('id') or '?'
+            if pid in by_id:
+                continue
+            flag = 'leased:' + leased[pid] if pid in leased else 'proposed'
+            if args.packets_command == 'ready' and pid in leased:
+                continue
+            print(f"{pid:<28} {flag:<34} {len(nd.get('function_addresses', [])):3d} addrs  worker={nd.get('worker', '')}  {str(nd.get('work') or '')[:40]}")
+    elif args.packets_command == 'done':
+        p = by_id.get(args.id) or sys.exit(f'no packet {args.id}')
+        p['done'] = True
+        path.write_text(json.dumps(work, indent=1) + '\n', encoding='utf-8', newline='\n')
+        print(f'{args.id} marked done')
+    elif args.packets_command == 'depend':
+        p = by_id.get(args.id) or sys.exit(f'no packet {args.id}')
+        p['depends_on'] = sorted(set(p.get('depends_on', [])) | set(args.on))
+        path.write_text(json.dumps(work, indent=1) + '\n', encoding='utf-8', newline='\n')
+        print(f"{args.id} depends_on {p['depends_on']}")
+
+
+def worktree_cmd(args):
+    if args.worktree_command == 'list':
+        print(git('worktree', 'list'))
+        return
+    name = args.name
+    branch = f'agent/{name}'
+    path = (ROOT.parent / f'{ROOT.name}-{name}').resolve()
+    if path.exists():
+        sys.exit(f'{path} already exists')
+    run = subprocess.run(['git', 'worktree', 'add', str(path), '-b', branch, args.base], cwd=ROOT, capture_output=True, text=True)
+    if run.returncode:
+        sys.exit((run.stdout + run.stderr).strip())
+    exports_link = path / 'exports'
+    link = subprocess.run(['cmd', '/c', 'mklink', '/J', str(exports_link), str(ROOT / 'exports')], capture_output=True, text=True)
+    print(f"worktree {path} on branch {branch}")
+    print('exports junction -> shared exports' if link.returncode == 0 else f'exports junction failed: {(link.stdout + link.stderr).strip()}')
+    print(f"next: cd {path}; python tools/bsp.py index; python tools/bsp.py lease claim --packet <id> --from-packet"
+          + (f" (suggested packet: {args.packet})" if args.packet else ''))
 
 
 def main():
@@ -584,11 +713,29 @@ def main():
             q.add_argument('--force', action='store_true', help='flush Ghidra decompiler cache before reading')
     q = gs.add_parser('export'); q.add_argument('addresses', nargs='+'); q.add_argument('--force', action='store_true')
     p.set_defaults(func=ghidra_cmd)
+    p = sub.add_parser('lease', help='address/file leases shared across worktrees and harnesses'); lz = p.add_subparsers(dest='lease_command', required=True)
+    q = lz.add_parser('claim'); q.add_argument('--packet', required=True); q.add_argument('--owner'); q.add_argument('--addresses', nargs='*')
+    q.add_argument('--ranges', nargs='*', help='lo-hi hex pairs'); q.add_argument('--files', nargs='*'); q.add_argument('--from-packet', action='store_true')
+    q.add_argument('--ttl', type=float, default=8.0, help='hours'); q.add_argument('--note')
+    q = lz.add_parser('release'); q.add_argument('id', nargs='?'); q.add_argument('--packet'); q.add_argument('--owner')
+    q = lz.add_parser('list'); q.add_argument('--all', action='store_true')
+    q = lz.add_parser('check'); q.add_argument('address')
+    lz.add_parser('lock-status')
+    p.set_defaults(func=lease_cmd)
+    p = sub.add_parser('packets', help='work packets from config/parallel_work.json with dependencies and leases'); pk = p.add_subparsers(dest='packets_command', required=True)
+    pk.add_parser('list'); pk.add_parser('ready')
+    q = pk.add_parser('done'); q.add_argument('id')
+    q = pk.add_parser('depend'); q.add_argument('id'); q.add_argument('--on', nargs='+', required=True)
+    p.set_defaults(func=packets_cmd)
+    p = sub.add_parser('worktree', help='one git worktree per harness agent, sharing exports'); wt = p.add_subparsers(dest='worktree_command', required=True)
+    q = wt.add_parser('add'); q.add_argument('name'); q.add_argument('--base', default='main'); q.add_argument('--packet')
+    wt.add_parser('list')
+    p.set_defaults(func=worktree_cmd)
     p = sub.add_parser('ledger'); ls = p.add_subparsers(dest='ledger_command', required=True)
     q = ls.add_parser('migrate'); q.add_argument('--keep-legacy', action='store_true')
-    q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True)
-    q = ls.add_parser('add-function'); q.add_argument('--json', required=True)
-    q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True)
+    q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True); q.add_argument('--force', action='store_true')
+    q = ls.add_parser('add-function'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true')
+    q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true')
     p.set_defaults(func=ledger_cmd)
     args = parser.parse_args()
     args.func(args)

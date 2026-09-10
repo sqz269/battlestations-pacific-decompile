@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+from coordination import check_writable, ghidra_lock
 from ghidra_export import Client, ROOT, write
 from ledger import load_names
 
@@ -26,6 +27,8 @@ def main():
     if not args.apply:
         print(json.dumps(entries, indent=2))
         return
+    check_writable([row['address'] for row in entries])  # refuse addresses leased to another agent
+    lock = ghidra_lock(purpose='ghidra_annotate --apply').__enter__()
     changes = []
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     log = ROOT / 'local' / f'ghidra-annotations-{stamp}.json'
@@ -57,6 +60,7 @@ def main():
         write(log, changes)
         print(f"{address} -> {entry['name']}", flush=True)
     post('save_program')
+    lock.__exit__(None, None, None)
     print(f'Saved project; prior annotations recorded in {log}')
 
 

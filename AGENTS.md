@@ -50,6 +50,14 @@
   - Workers: size a packet to fill a whole turn, start it with `state` plus the packet, and wait for
     completion notices rather than polling `wait_agent`. Prefer a fresh thread with a short handoff
     over working near the context window limit.
+- Multi-harness coordination (see `docs/COORDINATION.md`): each separate harness agent works in its
+  own git worktree (`python tools/bsp.py worktree add <name>`, branch `agent/<name>`); the integrator
+  stays on `main` and merges. Before touching addresses or output files, claim a lease
+  (`python tools/bsp.py lease claim --packet <id> --from-packet`) and release it when done; pick work
+  from `python tools/bsp.py packets ready`. Ledger commands and `ghidra_annotate.py --apply` refuse
+  addresses leased to another owner. Every Ghidra mutation goes through the write lock (taken by the
+  annotate/tag tools, or `coordination.ghidra_lock` around any other write); never write to Ghidra
+  from inline scripts without it. Never `git add -A` in a shared checkout; stage only owned files.
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
 - Write as few new test cases as possible. Default to adding no tests for routine changes;

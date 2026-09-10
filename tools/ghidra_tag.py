@@ -18,6 +18,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 from build_tag_ledger import PLATE_CATEGORIES
+from coordination import ghidra_lock
 from ghidra_export import Client, ROOT, write
 from ledger import load_tags
 
@@ -174,7 +175,8 @@ def main():
         return
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     log = ROOT / 'local' / f'ghidra-tags-{stamp}.json'
-    changes = apply(client, post, entries, log, not args.no_save)
+    with ghidra_lock(ttl_seconds=7200, purpose='ghidra_tag --apply'):
+        changes = apply(client, post, entries, log, not args.no_save)
     summary = {}
     for r in changes:
         summary[r['status']] = summary.get(r['status'], 0) + 1

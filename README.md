@@ -120,6 +120,11 @@ queries; `snapshot` refreshes only when Ghidra's function count changed. `python
 add-name|add-function|add-fragment` appends records; `ledger migrate` folds any legacy monolithic
 `config/*.json` ledger into shards. See [ledger and index](docs/LEDGER_INDEX.md).
 
+Several harness agents can work at once: one git worktree per agent (`python tools/bsp.py worktree add
+<name>`), address/file leases in a registry outside the worktrees (`bsp.py lease claim|release|list|check`),
+a dependency-aware packet queue (`bsp.py packets ready|done|depend`), and a machine-global Ghidra write
+lock taken by the annotate and tag tools. See [coordination](docs/COORDINATION.md).
+
 The completed import has been [reviewed](reports/library_inventory/REVIEW.md).
 The [roadmap](docs/ROADMAP.md) now separates stock-source reuse, compiler machinery
 and game-specific contracts. Provisional tags and in-house Dyn code remain in
