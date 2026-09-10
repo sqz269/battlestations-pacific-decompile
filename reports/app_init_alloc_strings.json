@@ -1,0 +1,339 @@
+{
+  "packet": "app_init_alloc_string_helpers",
+  "owner": "agent/init-alloc-strings",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-init-alloc-strings",
+  "kind": "analysis-and-reconstruction",
+  "doc": "docs/APP_INIT_ALLOC_STRINGS.md",
+  "evidence_basis": "Assembly listings for every routine. Pseudocode is misleading here: the singleton getters consume no stack, so Ghidra attributes the caller's pushes for the following __thiscall to them at 0041dd64, 0041ddc9, 00bd1780 and 00bd17a0.",
+  "ghidra_writes": "none; read-only packet, ledger names recorded for the integrator to apply",
+  "pools": [
+    {
+      "role": "string pool",
+      "getter": "00419cc0",
+      "singleton_global": "01090aa8",
+      "constructor": "00bd1480",
+      "ring_constructor": "00bd0f50",
+      "allocate": "00bd1120",
+      "release": "00bd1510",
+      "object_size": "0x8ad4a0",
+      "class_count": 150,
+      "threshold": "0x96",
+      "region_stride": "0xda7",
+      "arena_offset": "0x8",
+      "arena_bytes": 7000000,
+      "bump_offset_field": "0x6acfc8",
+      "bump_alignment": 1,
+      "ring_offset": "0x6acfcc",
+      "lock_offset": "0x8ad484",
+      "vtable": "00d68200",
+      "large_block_backend": {
+        "allocate": "00bf9f1a _malloc",
+        "release": "00bf9dc8 _free"
+      }
+    },
+    {
+      "role": "game pool",
+      "getter": "00bd1680",
+      "singleton_global": "01090aac",
+      "constructor": "00bd1570",
+      "ring_constructor": "00bd1000",
+      "allocate": "00bd11f0",
+      "release": "00bd1620",
+      "object_size": "0xb89ab4",
+      "class_count": 129,
+      "threshold": "0x81",
+      "region_stride": "0xfe0",
+      "arena_offset": "0x200414",
+      "arena_bytes": 10000000,
+      "bump_offset_field": "0xb89a94",
+      "bump_alignment": 4,
+      "ring_offset": "0x4",
+      "lock_offset": "0xb89a98",
+      "vtable": "00d68204",
+      "large_block_backend": {
+        "allocate": "00bf9f1a _malloc",
+        "release": "00bf9dc8 _free"
+      }
+    }
+  ],
+  "free_ring": {
+    "push": "00bd12a0",
+    "slots": 524288,
+    "index_mask": "0x7ffff",
+    "layout": {
+      "slots": "+0x0, 0x80000 pointers",
+      "head": "+0x200000, one dword per size class",
+      "tail": "+0x200000 + 4*class_count (0x200258 for 150 classes, 0x200204 for 129)",
+      "live_count": "immediately after tail (0x2004b0 / 0x200408)",
+      "high_water": "live_count + 4 (0x2004b4 / 0x20040c)"
+    },
+    "initial_state": "head[i] = i * stride; tail[i] = (head[i] - 1) & mask; entry 0's tail is written explicitly as 0x7ffff",
+    "empty_test": "((tail[i] + 1) & 0x7ffff) == head[i]",
+    "push_algorithm": "Advance tail[class]. While the advanced tail equals head[next], rotate class next forward one slot: if that class is non-empty, swap the carried block into ring[head[next]] and carry the displaced element; then head[next] and tail[next] both advance; walk to the class after it modulo class_count and stop when it wraps to the starting class. Finally ring[tail[last]] = carried block, live_count += 1, high_water = max(high_water, live_count).",
+    "pop_algorithm": "block = ring[tail[class]]; tail[class] = (tail[class] - 1) & mask; live_count -= 1; high_water untouched.",
+    "unused_slots": {
+      "150_classes": 38,
+      "129_classes": 32
+    }
+  },
+  "calling_conventions": [
+    {
+      "address": "0041dd40",
+      "name": "BSP_NativeString_Resize",
+      "convention": "__thiscall",
+      "this": "ECX, 8-byte string",
+      "stack_args": ["uint length", "char preserve"],
+      "ret": "RET 8",
+      "returns": "void"
+    },
+    {
+      "address": "0041e870",
+      "name": "BSP_NativeString_Assign",
+      "convention": "__thiscall",
+      "this": "ECX, 8-byte string",
+      "stack_args": ["const char* text"],
+      "ret": "RET 4",
+      "returns": "EAX = this"
+    },
+    {
+      "address": "00438e40",
+      "name": "BSP_NativeString_Duplicate",
+      "convention": "__fastcall",
+      "this": "ECX = const char* text",
+      "stack_args": [],
+      "ret": "RET",
+      "returns": "EAX = CRT copy or null"
+    },
+    {
+      "address": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton",
+      "convention": "no arguments",
+      "this": null,
+      "stack_args": [],
+      "ret": "RET",
+      "returns": "EAX = pool",
+      "note": "Caller pushes for the FOLLOWING thiscall before this call; SEH frame; lock and unlock through 00ce2218 and 00ce2210."
+    },
+    {
+      "address": "00bd1120",
+      "name": "BSP_SizedStoragePool_AllocateBlock",
+      "convention": "__thiscall",
+      "this": "ECX, pool",
+      "stack_args": ["uint size", "uint unused"],
+      "ret": "RET 8",
+      "returns": "EAX = block",
+      "note": "Second argument never read."
+    },
+    {
+      "address": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock",
+      "convention": "__thiscall",
+      "this": "ECX, pool",
+      "stack_args": ["void* block", "uint size", "uint unused"],
+      "ret": "RET 0xC",
+      "returns": "void",
+      "note": "Third argument never read; size selects the free list."
+    },
+    {
+      "address": "00bd12a0",
+      "name": "BSP_SizedStoragePool_ReturnSmallBlock",
+      "convention": "__thiscall",
+      "this": "ECX, ring subobject",
+      "stack_args": ["void** block", "uint size_class"],
+      "ret": "RET 8",
+      "returns": "void",
+      "note": "Block read through the pointer, never written back."
+    },
+    {
+      "address": "00bd1780",
+      "name": "BSP_GameAllocator_Allocate",
+      "convention": "__cdecl",
+      "this": null,
+      "stack_args": ["uint size"],
+      "ret": "RET, caller cleans 4",
+      "returns": "EAX = block"
+    },
+    {
+      "address": "00bd17a0",
+      "name": "BSP_GameAllocator_Release",
+      "convention": "__cdecl",
+      "this": null,
+      "stack_args": ["void* block", "uint size"],
+      "ret": "RET, caller cleans 8",
+      "returns": "void"
+    },
+    {
+      "address": "00bd11f0",
+      "name": "BSP_GameAllocator_AllocateBlock",
+      "convention": "__thiscall",
+      "this": "ECX, game pool",
+      "stack_args": ["uint size"],
+      "ret": "RET 4",
+      "returns": "EAX = block"
+    },
+    {
+      "address": "00bd1620",
+      "name": "BSP_GameAllocator_ReturnBlock",
+      "convention": "__thiscall",
+      "this": "ECX, game pool",
+      "stack_args": ["void* block", "uint size"],
+      "ret": "RET 8",
+      "returns": "void"
+    },
+    {
+      "address": "00be0a30",
+      "name": "BSP_FileBlock_Construct",
+      "convention": "__thiscall",
+      "this": "ECX, 28-byte object",
+      "stack_args": ["const NativeString* name", "uint flag"],
+      "ret": "RET 8",
+      "returns": "EAX = this",
+      "note": "SEH frame, handler 00cc6753."
+    }
+  ],
+  "native_string": {
+    "size": 8,
+    "fields": [
+      {"offset": "0x0", "type": "unsigned", "name": "length"},
+      {"offset": "0x4", "type": "char*", "name": "data", "note": "null until the string first holds a non-empty value"}
+    ],
+    "capacity_policy": "block is always length + 1 bytes; capacity is not stored and is never larger than needed",
+    "growth_policy": "exact, no geometric growth; a shrink reallocates exactly like a grow",
+    "terminator": "written by resize at data[length]",
+    "ownership": "single owner, no sharing and no reference counting in this layer; no destructor, owners resize to 0",
+    "aliasing": "resize allocates the new block before releasing the old one, so a grow never reads freed storage",
+    "release_size_contract": "every release repeats old_length + 1, because that number picks the pool free list",
+    "resize_quirks": [
+      "A request for the length already held returns immediately even when data is null, so resizing a zeroed string to 0 leaves data null.",
+      "preserve copies min(old_length, new_length) bytes.",
+      "With preserve set on an empty string the native calls memcpy with a null source and a zero count."
+    ],
+    "assign_is_a_constructor": "0041e87a zeroes length and data before resizing, so calling assign on a live string abandons that buffer; it copies length + 1 bytes and rewrites the terminator resize placed."
+  },
+  "file_block_00be0a30": {
+    "object_size": 28,
+    "fields": [
+      {"offset": "0x0", "name": "vtable", "note": "written twice: base 00ceb130, then 00d68494"},
+      {"offset": "0x4", "name": "refcount", "value": 1},
+      {"offset": "0x8", "name": "zeroed dword"},
+      {"offset": "0xc", "name": "zeroed dword"},
+      {"offset": "0x10", "name": "zeroed dword"},
+      {"offset": "0x14", "name": "embedded NativeString length"},
+      {"offset": "0x18", "name": "embedded NativeString data"}
+    ],
+    "copy_idiom": "reject self-copy by comparing this+0x14 against the source, resize to source length with preserve set, memcpy exactly length bytes",
+    "then_calls": [
+      "00bdf950 BSP_FileBlock_PrepareIdentifier",
+      "00be0980 BSP_VFS_EnterFileBlock on the singleton at 0109ceec"
+    ],
+    "note": "Object and VFS behaviour stay as docs/VFS_LOAD_PROCESSING_START.md established; this packet adds only the embedded-string evidence."
+  },
+  "corrections": [
+    {
+      "document": "docs/APP_INITIALIZE_MAP.md",
+      "claim": "Phase 0 lists 00bd1780 and 00bd17a0 as two allocator hook installers.",
+      "correction": "They are GameAlloc and GameFree. 0073d431-0073d44d allocates 0x10 bytes and immediately frees them, a warm-up that forces the lazy game pool singleton, its 10 MB arena and 2 MB ring, into existence before the rest of initialization runs.",
+      "evidence": "PUSH 0x10 / PUSH 0x10 / CALL 00bd1780 / ADD ESP,4 / PUSH EAX / CALL 00bd17a0 / ADD ESP,8 at 0073d431."
+    }
+  ],
+  "callers": {
+    "0041dd40": 2280,
+    "0041e870": 1230,
+    "00438e40": 29,
+    "00419cc0": 2857,
+    "00bd1510": 2851,
+    "00bd1120": 63,
+    "00bd1780": 2,
+    "00bd17a0": 2,
+    "00bd11f0": 1,
+    "00bd1620": 1,
+    "00be0a30": 17
+  },
+  "notable_callers": [
+    {
+      "address": "00a6a1d0",
+      "name": "l_alloc",
+      "note": "Lua 5.1.1 allocator, modified to route through GameAlloc and GameFree; it passes osize to the free, which is the proof that the release is sized."
+    },
+    {
+      "address": "0073d410",
+      "name": "BSP_Application_Initialize",
+      "note": "the 0x10-byte allocator warm-up at 0073d431 and the BSP_NativeString_Duplicate copy parked in DAT_00e1ae78, freed at 0073e466."
+    }
+  ],
+  "globals": [
+    {"address": "01090aa8", "meaning": "string pool singleton"},
+    {"address": "01090aac", "meaning": "game pool singleton"},
+    {"address": "01090aa4", "meaning": "when non-zero, small blocks are dropped instead of returned to the ring; read only on the release path of both pools"},
+    {"address": "00ce2218", "meaning": "EnterCriticalSection import"},
+    {"address": "00ce2210", "meaning": "LeaveCriticalSection import"},
+    {"address": "00ce220c", "meaning": "InitializeCriticalSection import"}
+  ],
+  "reconstruction": {
+    "files": [
+      "include/bsp/storage_pool.hpp",
+      "src/storage_pool.cpp",
+      "include/bsp/native_string.hpp",
+      "src/native_string.cpp"
+    ],
+    "registered_in": "cmake/startup.cmake",
+    "injection": "the system allocator is injected into the pool; the string takes its storage as an explicit argument on every call, so the object stays exactly 8 bytes and reads no global",
+    "static_assert": "sizeof(NativeString) == 8",
+    "deviations": [
+      "The arena carve throws std::bad_alloc where the native has no bounds check at all and would run past the arena.",
+      "allocate never returns null; the CRT-backed allocators throw.",
+      "memcpy with a zero count and a null source is skipped rather than called.",
+      "NativeString has no destructor, matching the native, but is move-only; owners must call release_to."
+    ],
+    "not_claimed": ["ABI compatibility", "binary equivalence", "game validation"]
+  },
+  "verification": {
+    "build": "scripts/build.ps1, MSVC Win32, /W4 /WX, clean",
+    "tests": "ctest reconstructed_math passed (1/1)",
+    "added_test": "one case in tests/math_tests.cpp covering the length + 1 allocation size, the min(old, new) preserve copy, the terminator, and that every release repeats the allocated size",
+    "throwaway_check": "the ring pop order, the exact bump, the sticky high-water mark, the 0x96 threshold and a forced cascade across four size classes were verified with a temporary probe in the same test and then removed"
+  },
+  "state_reached": {
+    "0041dd40": "reconstructed, build-tested, fixture-tested",
+    "0041e870": "reconstructed, build-tested, fixture-tested",
+    "00438e40": "reconstructed, build-tested",
+    "00419cc0": "analyzed",
+    "00bd1510": "reconstructed, build-tested",
+    "00bd1120": "reconstructed, build-tested",
+    "00bd12a0": "reconstructed, build-tested",
+    "00bd1780": "reconstructed, build-tested",
+    "00bd17a0": "reconstructed, build-tested",
+    "00bd1680": "analyzed",
+    "00bd11f0": "analyzed, geometry reconstructed as a configuration",
+    "00bd1620": "analyzed, geometry reconstructed as a configuration",
+    "00be0a30": "analyzed, string fragment reconstructed"
+  },
+  "names_recorded": [
+    {"address": "0041dd40", "name": "BSP_NativeString_Resize", "replaced": "BSP_NativeString_Resize"},
+    {"address": "0041e870", "name": "BSP_NativeString_Assign", "replaced": "BSP_NativeString_Assign", "note": "kept for cross-packet continuity; BSP_NativeString_ConstructFromCString would be accurate"},
+    {"address": "00438e40", "name": "BSP_NativeString_Duplicate", "replaced": "BSP_NativeString_Duplicate"},
+    {"address": "00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "replaced": "BSP_SizedStoragePool_GetSingleton_Provisional"},
+    {"address": "00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "replaced": "BSP_SizedStoragePool_ReturnBlock_Provisional"},
+    {"address": "00bd12a0", "name": "BSP_SizedStoragePool_ReturnSmallBlock", "replaced": "BSP_SizedStoragePool_ReturnSmallBlock_Provisional"},
+    {"address": "00bd1120", "name": "BSP_SizedStoragePool_AllocateBlock", "replaced": null},
+    {"address": "00bd1680", "name": "BSP_GameAllocator_GetSingleton", "replaced": null},
+    {"address": "00bd11f0", "name": "BSP_GameAllocator_AllocateBlock", "replaced": null},
+    {"address": "00bd1620", "name": "BSP_GameAllocator_ReturnBlock", "replaced": null},
+    {"address": "00bd1780", "name": "BSP_GameAllocator_Allocate", "replaced": null},
+    {"address": "00bd17a0", "name": "BSP_GameAllocator_Release", "replaced": null},
+    {"address": "00be0a30", "name": "BSP_FileBlock_Construct", "replaced": "BSP_FileBlock_Construct"}
+  ],
+  "uncertainties": [
+    "Nothing establishes who writes 01090aa4 or when; it turns small-block returns into silent drops.",
+    "String pool word +0x4 is never written by the constructor and never read by the four routines examined.",
+    "2851 release callers against 63 direct allocate callers: most allocation sites reach the arena through a path this packet did not chase.",
+    "No teardown examined; 00bd0c30 registers something at construction and neither pool is freed by anything read here.",
+    "Whether the ring cascade can lose a block when every class region is full is not established; the loop stops when the walk wraps and then stores into tail[last], which may be a slot another class still owns. The reconstruction reproduces that rather than guarding it.",
+    "The 38 (150-class) and 32 (129-class) ring slots past the last region are never addressed by the constructor and are reachable only through the cascade."
+  ],
+  "tool_problems": [
+    "python tools/bsp.py ghidra count takes no arguments despite the AGENTS.md line listing 'ghidra count|proto|xrefs|...'; caller counts came from bsp.py callers instead.",
+    "bsp.py show truncates the head of a function when the header lines are long; bsp.py ghidra disasm <addr> --limit N was needed to read the first instructions of 00bd12a0 and 00438e40.",
+    "Ghidra leaves 00bd163a-00bd1641 and 00bd12d8-00bd12df undisassembled. Both are benign: the first is the ADD ESP,4 / POP EDI / POP EBX / RET 8 epilogue, the second is LEA ESP,[ESP+0] plus a NOP."
+  ]
+}
