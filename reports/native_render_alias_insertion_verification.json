@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "packet": "native_alias_insertion_verification",
+  "captured_utc": "2026-09-10T23:13:48.426135+00:00",
+  "status": "independent_static_review_and_one_original_native_partial_rollback_fixture_passed",
+  "base_main_commit": "3502565",
+  "count_dependency_commit": "4ef92c38054a0cab2d69cdaab77a9811d7b11f75",
+  "local_base_commit": "3985577d32860513f9a9305db47895c24bd89725",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-alias-insertion-verification-20260910",
+  "owned_committed_files": [
+    "reports/native_render_alias_insertion_verification.json"
+  ],
+  "root_owned_source_was_not_edited": true,
+  "source_snapshots": [
+    {
+      "root_path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_render_alias_insertion.hpp",
+      "local_snapshot": "local/support/include/bsp/native_render_alias_insertion.hpp",
+      "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+    },
+    {
+      "root_path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_render_alias_insertion.cpp",
+      "local_snapshot": "local/support/native_render_alias_insertion.cpp",
+      "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+    }
+  ],
+  "findings": [],
+  "static_review": {
+    "004d2660": {
+      "span": "004d2660..004d2692, 50 bytes",
+      "original_abi": "ECX actual destination owner; stack source8-byte string-header pointer; RET4; no semantic return",
+      "observed_order": [
+        "capture current destination sentinel and its previous pointer",
+        "allocate real node and string at004CE6F0",
+        "grow actual count at004CE780",
+        "publish captured sentinel.previous",
+        "reload inserted.previous and publish previous.next"
+      ],
+      "source_result": "Draft matches complete observed order.",
+      "count_failure": "Static evidence: successful node/string ownership transfers before count growth, with no local SEH/cleanup; count failure leaves the successful unlinked node allocated. Draft preserves this. No new runtime count-failure case added."
+    },
+    "004d26a0": {
+      "span": "004d26a0..004d27b4, 276 bytes including catch004D2746 and RET1C",
+      "original_abi": "ECX actual destination; seven stack DWORDs: position owner/node, source owner/node, end owner/node, one unread DWORD. RET1C; no semantic return.",
+      "eh_arming": "004D26D3 arms state0 after destination, initial source owner/node and frame stack captures.",
+      "normal_captures": "Source owner/node held in ESI/EDI; fixed insertion node in EBX.004D2727 captures current source.owner before either link publication.004D273C reads captured current-node.next,004D273E reloads source.owner,004D2741 publishes source.node.",
+      "catch_captures": "004D274D first compares initial/current source iterators. Only after a true result,004D2759/275C capture current position.node/owner. Each rollback restores these working position words, decrements position, erases into end-iterator scratch, advances initial source and compares again.",
+      "rollback": "Number of removed predecessors is driven by successfully advanced source iterations, not by number of linked nodes. Newest insertion can be linked before its source iterator advances.",
+      "rethrow": "004D2798/279A push zero,zero;004D279C calls original00BF6885 rethrow.",
+      "source_result": "Draft matches instruction captures, mutable argument words, helper call ordering and partial rollback. No source fix requested."
+    }
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_eh_metadata": {
+    "verified_contiguous_span": "00D8EAFC..00D8EB54, 88 bytes",
+    "handler_record": {
+      "address": "00d8eafc",
+      "adjectives": 64,
+      "type_descriptor": 0,
+      "catch_object_offset": 0,
+      "handler": "004d2746"
+    },
+    "unwind_map": {
+      "address": "00d8eb0c",
+      "entries": [
+        {
+          "to_state": -1,
+          "action": 0
+        },
+        {
+          "to_state": -1,
+          "action": 0
+        }
+      ]
+    },
+    "try_block": {
+      "address": "00d8eb1c",
+      "try_low": 0,
+      "try_high": 0,
+      "catch_high": 1,
+      "catch_count": 1,
+      "handler_array": "00d8eafc"
+    },
+    "func_info": {
+      "address": "00d8eb30",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00d8eb0c",
+      "try_count": 1,
+      "try_block_map": "00d8eb1c",
+      "eh_flags": 1
+    },
+    "original_frame_handler": {
+      "address": "00c65eb0",
+      "length": 10,
+      "contract": "MOV EAX,D8EB30; JMP BF6B43"
+    },
+    "pointer_relocations": [
+      {
+        "address": "00d8eb08",
+        "expected": "004d2746"
+      },
+      {
+        "address": "00d8eb2c",
+        "expected": "00d8eafc"
+      },
+      {
+        "address": "00d8eb38",
+        "expected": "00d8eb0c"
+      },
+      {
+        "address": "00d8eb40",
+        "expected": "00d8eb1c"
+      }
+    ],
+    "registration_relocation": {
+      "address": "004d26a6",
+      "expected": "00c65eb0",
+      "replacement": "compiled naked range_handler loads mapped originalD8EB30 into EAX then jumps actual host__CxxFrameHandler3"
+    }
+  },
+  "native_byte_verification": {
+    "complete_code_spans": 4,
+    "boundary_preimages": 9,
+    "data_spans": 1,
+    "eight_seed_ranges_verified_before_execution": true,
+    "spans": [
+      {
+        "address": "004d2660",
+        "end_exclusive": "004d2692",
+        "length": 50,
+        "kind": "code",
+        "disk_offset": 861792,
+        "sha256": "856582d68c3098e61a09e7d1693771f0a01f15174ea9325d55a0cf140ccb8896",
+        "original_hex": "8b4424045356578bf18b7e048b4f045051578bcee877c0ffff6a018bce8bd8e8fcc0ffff895f048b53045f5e891a5bc20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004d26a0",
+        "end_exclusive": "004d27b4",
+        "length": 276,
+        "kind": "code",
+        "disk_offset": 861856,
+        "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+        "original_hex": "558bec6aff68b05ec60064a100000000506489250000000083ec10538b5d0c568b7510578b7d148965f0894dec8975e4897de8c745fc000000008d9b0000000085f674053b75187405e8254072003b7d1c0f84aa00000085f67505e8134072003b7e047505e8094072008b4dec8d4708508b43045053e8d5bfffff8b4dec6a018bf0e859c0ffff8b55108973048b4e0489313b7a047505e8d73f72008b3f8b7510897d14eb9a8d4510508d4de4e8cec0feff84c074428b75ec8b7d0c8b5d08908d4d08895d08897d0ce852c5feff8b48048b1051528d4518508bcee810e2ffff8d4de4e86878feff8d4d10518d4de4e88cc0feff84c075c86a006a00e8e44072008b4df45f5e64890d000000005b8be55dc21c00",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c65eb0",
+        "end_exclusive": "00c65eba",
+        "length": 10,
+        "kind": "code",
+        "disk_offset": 8806064,
+        "sha256": "881eecfbee792d2caef6ccc058da7f98a78a99eb4dd5a468a5babc9ee4664dd2",
+        "original_hex": "b830ebd800e9890cf9ff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6713",
+        "end_exclusive": "00bf6723",
+        "length": 16,
+        "kind": "code",
+        "disk_offset": 8349459,
+        "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+        "original_hex": "33c05050505050e8d0ffffff83c414c3",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004ce6f0",
+        "end_exclusive": "004ce6f5",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 845552,
+        "sha256": "19bad2162e08fd3b256f0af4024c51343feb7827eb43fd73dcfea11a662668d8",
+        "original_hex": "558bec6aff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004ce780",
+        "end_exclusive": "004ce785",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 845696,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "original_hex": "64a1000000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004be820",
+        "end_exclusive": "004be825",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 780320,
+        "sha256": "fa3192adf40f89354e250813b0e007a48b6a02eb23648b0b9339524d0ef74756",
+        "original_hex": "568bf18b06",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004becc0",
+        "end_exclusive": "004becc5",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 781504,
+        "sha256": "67bea2fc4556161283e100acd2774fbfb6bf977c432e5d08a27a082ab53baf8a",
+        "original_hex": "568bf1833e",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004b9ff0",
+        "end_exclusive": "004b9ff5",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 761840,
+        "sha256": "67bea2fc4556161283e100acd2774fbfb6bf977c432e5d08a27a082ab53baf8a",
+        "original_hex": "568bf1833e",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004d0990",
+        "end_exclusive": "004d0995",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 854416,
+        "sha256": "80c25d02f7678e346e9ca217fc8da1006fca09aeb21c6c1d875c5df162bb72ef",
+        "original_hex": "83ec08538b",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf66ef",
+        "end_exclusive": "00bf66f4",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8349423,
+        "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+        "original_hex": "558becff35",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6885",
+        "end_exclusive": "00bf688a",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8349829,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "original_hex": "558bec83ec",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6b43",
+        "end_exclusive": "00bf6b48",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8350531,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "original_hex": "558bec83ec",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d8eafc",
+        "end_exclusive": "00d8eb54",
+        "length": 88,
+        "kind": "data",
+        "disk_offset": 10021628,
+        "sha256": "a64790c96dc50eab4ca53f081db4e255bc0c1af46fb96549ac1cadf20bcd7f7f",
+        "original_hex": "40000000000000000000000046274d00ffffffff00000000ffffffff0000000000000000000000000100000001000000fcead80022059319020000000cebd800010000001cebd80000000000000000000000000001000000",
+        "live_ghidra_matches_disk": true
+      }
+    ],
+    "native_transfers": [
+      {
+        "address": "004d2674",
+        "mnemonic": "call",
+        "target": "004ce6f0"
+      },
+      {
+        "address": "004d267f",
+        "mnemonic": "call",
+        "target": "004ce780"
+      },
+      {
+        "address": "004d26e9",
+        "mnemonic": "call",
+        "target": "00bf6713"
+      },
+      {
+        "address": "004d26fb",
+        "mnemonic": "call",
+        "target": "00bf6713"
+      },
+      {
+        "address": "004d2705",
+        "mnemonic": "call",
+        "target": "00bf6713"
+      },
+      {
+        "address": "004d2716",
+        "mnemonic": "call",
+        "target": "004ce6f0"
+      },
+      {
+        "address": "004d2722",
+        "mnemonic": "call",
+        "target": "004ce780"
+      },
+      {
+        "address": "004d2737",
+        "mnemonic": "call",
+        "target": "00bf6713"
+      },
+      {
+        "address": "004d2744",
+        "mnemonic": "jmp",
+        "target": "004d26e0"
+      },
+      {
+        "address": "004d274d",
+        "mnemonic": "call",
+        "target": "004be820"
+      },
+      {
+        "address": "004d2769",
+        "mnemonic": "call",
+        "target": "004becc0"
+      },
+      {
+        "address": "004d277b",
+        "mnemonic": "call",
+        "target": "004d0990"
+      },
+      {
+        "address": "004d2783",
+        "mnemonic": "call",
+        "target": "004b9ff0"
+      },
+      {
+        "address": "004d278f",
+        "mnemonic": "call",
+        "target": "004be820"
+      },
+      {
+        "address": "004d279c",
+        "mnemonic": "call",
+        "target": "00bf6885"
+      },
+      {
+        "address": "00c65eb5",
+        "mnemonic": "jmp",
+        "target": "00bf6b43"
+      },
+      {
+        "address": "00bf671a",
+        "mnemonic": "call",
+        "target": "00bf66ef"
+      }
+    ]
+  },
+  "focused_fixture": {
+    "path": "local/native_alias_insertion_check.cpp",
+    "matching_trace_words": 257,
+    "trace_sha256": "a04665c578835ab0c53870bfc7975fccdbb727dc823b3f11be92dd4ff2360af1",
+    "sequence": "One original/native versus compiled-draft sequence, using full single append and range insertion with the original range catch body and metadata.",
+    "actual_storage": "Separate actual12-byte source/destination list headers, each with actual16-byte heap sentinel. Source has two actual node/string allocations. Destination preexisting alias is added through original004D2660 or the compiled draft respectively.",
+    "strings": "Preexisting156 bytes, first source160 bytes, second source172 bytes. Shared pool uses actual00419CC0 configuration; all three string sizes take its real large-block CRT allocator path.",
+    "fault_trigger": "The actual malloc observer sees the second range-node16-byte allocation while destination.count is2 and changes actual source.sentinel to the second source node. It returns real allocated storage normally.",
+    "throw_point": "After native/source code finishes second node/string construction, increments count to3 and publishes both links, the source-sentinel check invokes the actual registered CRT invalid-parameter handler. Handler verifies complete links, copied strings and count3 before throwing Marker27182718.",
+    "rollback_observation": "Original catch and source catch remove the newest copied string and node, while the saved initial source cursor advances only once. Preexisting alias and earliest copied alias remain linked, destination.count becomes2, source.sentinel repair remains in place, and the same marker is rethrown.",
+    "allocation_observation": "Twelve actual allocations: two sentinels, five payload nodes and five independent large pooled strings. No fabricated container, allocation-success stub or fake ownership callback.",
+    "free_order_observation": "During rollback string and node free callbacks both observe count3 after the node is already unlinked. Count decrements to2 after node free returns. Exactly one string and one node are released by rollback.",
+    "cleanup": "Only for fixture cleanup, restore original source sentinel; use concrete clear helpers to free remaining four node/string pairs, then actual free for both sentinels. All12 allocations are verified no longer live.",
+    "trace_contents": "Actual allocation IDs/sizes/count, mutation event, owner prefix/sentinel/count, circular destination link/string-header snapshots at checkpoints and both rollback frees, final ownership cleanup. Addresses normalized only to allocation IDs.",
+    "argument_evidence": "Native call explicitly pushes all seven DWORDs, including unread13579BDF. RET1C is byte-verified. This focused range invocation throws; normal range return is not separately executed.",
+    "runtime_boundaries": {
+      "004ce6f0": "__stdcall bridge to concrete allocate_native_render_alias_node_004ce6f0(next,previous,source,actual_pool)",
+      "004ce780": "ECX/stack bridge to concrete grow_native_alias_list_count_004ce780(actual_owner,increment)",
+      "004be820": "ECX/stack bridge to concrete checked iterator comparison with shared callback domain",
+      "004becc0": "ECX bridge to concrete previous iterator helper",
+      "004b9ff0": "ECX bridge to concrete next iterator helper",
+      "004d0990": "ECX/three-stack-DWORD bridge to concrete erase with actual pool and callbacks",
+      "00bf6713": "Original full16-byte invalid wrapper executes and supplies five zero arguments toBF66EF",
+      "00bf66ef": "Verify original five-zero call then invoke actual host_invalid_parameter_noinfo and registered handler",
+      "00bf6885": "Require original catch object/info arguments both zero, then forward unchanged to saved actual CRT_CxxThrowException; actual native catch/rethrow metadata governs control flow",
+      "00bf6b43": "Actual host__CxxFrameHandler3; registered entry is compiled naked adapter for SafeSEH compatibility",
+      "allocation": "Temporarily observe only isolated executable malloc/free import slots, forwarding to saved actual CRT pointers and restoring both slots after sequence; restore invalid handler too"
+    },
+    "sparse_image": "Reserve original image-size span, commit only verified code/data pages, compare installed bytes before loading, relocate only recorded metadata/handler addresses and declared concrete boundaries, protect/flush before execution.",
+    "native_game_exception_abi_claim": false,
+    "game_validated": false
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release, /W4 /WX /fp:strict",
+    "local_only_registration": "local/insertion_sources.cmake adds count source and exact ignored draft snapshot to bsp_core; ignored snapshot include directory precedes repository include.",
+    "existing_ctests": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "fixture_build": "local/build_native_alias_insertion_check.ps1; /O2 /Oy- /EHsc /MD /W4 /WX /SAFESEH:NO /BASE:30000000 /FIXED",
+    "new_tracked_tests": 0
+  },
+  "dependency_source_sha256": {
+    "include/bsp/native_render_alias_checked_ops.hpp": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c",
+    "src/native_render_alias_checked_ops.cpp": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872",
+    "include/bsp/native_render_resource_alias_nodes.hpp": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee",
+    "src/native_render_resource_alias_nodes.cpp": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617",
+    "include/bsp/native_alias_count_growth.hpp": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3",
+    "src/native_alias_count_growth.cpp": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_exception_owner.cpp": "1738ea975779ec203f1ff639ea7407754462b174b783141ffb523174d6e34452",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+    "include/bsp/singleton_lifetime.hpp": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+    "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+    "include/bsp/native_render_resource_record.hpp": "07b8a07854f9ebda05b6460704685a6d779c1e897a6b1efb4572ecb59fb266a7",
+    "src/native_render_resource_record.cpp": "debbbfa128022b4cc8f50657fdd9e46ed9ea782c615e522bdb734fe52c6bdbb6"
+  },
+  "artifact_sha256": {
+    "local/native_alias_insertion_check.cpp": "58954738d427bea52aed13a37e2da22214bb49b8ffa3fe24a8279fa8359735c0",
+    "local/native_alias_insertion_spans.hpp": "059241d462ebc3d26f2b3a5ee7df41651c5203c35ab73614728b9eca4bc95273",
+    "local/build_native_alias_insertion_check.ps1": "08b9af5807aed60918884778107a0e97931f599e4f83382f90affdf10cc5a7ae",
+    "local/audit_insertion_bytes.py": "0df16c202acefee75816cd6e10cab1627b9c89e73ec86fb0a3ce01252afada4f",
+    "local/verified_insertion_spans.json": "b74d8f1b266dcef53b8424410fb7be5b678052a24022ec43521f85c4d9d2c410",
+    "local/insertion_sources.cmake": "955a62c6bcf483d9c58ad1369c2d6a6186b2d107b7b11b372052a7ca7a05fb70",
+    "local/insertion_source_snapshots.json": "fbbd31aae6e2230f01633b80eea85cd45ef39ccb65ee169f646426dc7eb0e283",
+    "local/support/native_render_alias_insertion.cpp": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771",
+    "local/support/include/bsp/native_render_alias_insertion.hpp": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4",
+    "local/verified-seeds/seed_byte_comparison.json": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+    "local/seed_reference.hpp": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+    "local/build.log": "4e713597b7bdbb04569dffe6e65d75e4d639c6cb6d7726d21f8a836a90c88898",
+    "local/native-check.log": "58852bdfb947eecd9286bcbd5663f8a5305300b20130da9216039254b357b327",
+    "build/alias-insertion-check/native_alias_insertion_check.exe": "22ae741144fcb080ff4d9e263e01d616b1201090d10821061e2ef2d9e859bb69",
+    "build/alias-insertion-check/native_alias_insertion_trace.txt": "a04665c578835ab0c53870bfc7975fccdbb727dc823b3f11be92dd4ff2360af1",
+    "build/win32/Release/bsp_core.lib": "d7093bc369661a45f8b4b7c96a83da0c347bd7a083e3694795d7462bfbb379e8"
+  },
+  "evidence_limits": [
+    "This packet commits only the verification report. Original insertion source belongs to primary and was read/copied, never edited.",
+    "Dependent node/string/pool/count/checked-iterator/erase bodies run their actual compiled reconstructions; this is original insertion control-flow/EH verification against declared concrete boundaries, not original execution of every dependency.",
+    "The draft and dependency hashes fix the tested snapshot; later integration changes require deciding whether affected focused verification must be rerun.",
+    "Only this partial-progress rollback case is run for range insertion. Arbitrary corrupted graphs, returning-handler repairs of argument words, rollback-secondary exceptions and normal range completion remain static-review coverage.",
+    "Native count-failure unlinked-node behavior is static-reviewed here, not an additional runtime case.",
+    "The host uses its own C++ exception ABI and actual CRT dispatch. No original game install was modified and no game validation is claimed.",
+    "Count dependency worker documentation miscounted the factory literal; primary identified and is correcting it. Correct literal is16 visible bytes excluding the terminating NUL; source assign_counted(...,16) is correct. Count-error branch is not exercised in this insertion fixture."
+  ]
+}
