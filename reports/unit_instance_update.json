@@ -1,0 +1,247 @@
+{
+  "packet": "unit_instance_update",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-unit-update",
+  "branch": "agent/unit-update",
+  "document": "docs/UNIT_INSTANCE_UPDATE.md",
+  "reconstruction": ["include/bsp/unit_instance.hpp", "src/unit_instance.cpp"],
+  "ghidra": "read-only; no renames, comments, prototypes, functions or saves",
+  "disclaimer": "Every name is a hypothesis, not a recovered symbol. MDestroyer is the one recovered class name and comes from data after 00D1AD28.",
+  "dispatch_chain": [
+    {"address": "004e4a40", "role": "BSP_Game_OnMove phase 18"},
+    {"address": "004c40a0", "role": "BSP_Game_UpdateInMissionSubsystems, ECX = game, loads the scaled delta from game+21F0h"},
+    {"address": "00904bf0", "role": "world->vtable[0Ch](scaledDelta); walks the world child chain"},
+    {"address": "008255b0", "role": "unit->vtable[0DCh](scaledDelta); the per-frame unit update"}
+  ],
+  "routines": [
+    {
+      "address": "006fe460",
+      "name": "BSP_UnitInstance_Construct",
+      "convention": "__thiscall(this, int flag)",
+      "ret": 4,
+      "body": ["006fe460", "006fe4c2"],
+      "returns": "this in EAX",
+      "callers": ["006fe590"],
+      "callees": ["0081ed40"],
+      "state": "exported, analyzed, reconstructed, compiled",
+      "behavior": "Calls the base constructor 0081ED40(this, flag), installs eight vptrs and sets the class id at +0C4h to 7."
+    },
+    {
+      "address": "008255b0",
+      "name": "BSP_UnitInstance_Update",
+      "convention": "__thiscall(this, float scaledDelta)",
+      "ret": 4,
+      "body": ["008255b0", "00825dd4"],
+      "instruction_count": 521,
+      "basic_blocks": 88,
+      "flow_gaps": 0,
+      "seh_handler": "00c91888",
+      "vtable_slot": "0dch",
+      "state": "exported, analyzed, reconstructed, compiled",
+      "steps": [
+        {"n": 1, "at": "008255cd", "role": "release effect slots whose anchor sank below -0.5"},
+        {"n": 2, "at": "0082568f", "role": "underwater bubble timer at +bc8h, reload from 00bd2f10"},
+        {"n": 3, "at": "00825824", "role": "rotate the one-frame latch +1010h -> +1011h"},
+        {"n": 4, "at": "0082583e", "role": "00815aa0(this, controllerTime >= 0 ? 1.0f : 0.0f)"},
+        {"n": 5, "at": "00825870", "role": "bow and stern water anchors, ocean-snapped when above -5.0"},
+        {"n": 6, "at": "008259ce", "role": "0092be80(controller, delta) then 0081c050(this)"},
+        {"n": 7, "at": "008259eb", "role": "+10a4h = localScale * (this == DAT_00e188d8 ? 0.5 : 1.0), then 008227e0"},
+        {"n": 8, "at": "00825a59", "role": "wake spawn when both hull points are below -5.0"},
+        {"n": 9, "at": "00825bd4", "role": "prop wash stop through +1170h"},
+        {"n": 10, "at": "00825c11", "role": "five attachment anchors at +b54h / +b68h"},
+        {"n": 11, "at": "00825d4d", "role": "008252c0(delta), 00956600(delta), 00834e90(delta)"},
+        {"n": 12, "at": "00825d83", "role": "tick every part in the vector at +a14h / +a18h with 006ff270(this)"}
+      ]
+    },
+    {
+      "address": "00904bf0",
+      "name": "BSP_World_UpdateEntities",
+      "convention": "__thiscall(this, float scaledDelta)",
+      "ret": 4,
+      "body": ["00904bf0", "00904c34"],
+      "state": "exported, analyzed, reconstructed, compiled",
+      "behavior": "for (e = [world+4]; e; e = [e+38h]) if (e->byte_5Ch) e->vtable[0DCh](delta); then 00904600(delta)."
+    },
+    {
+      "address": "006fe530",
+      "name": "BSP_UnitInstance_IsKindOf",
+      "convention": "__thiscall(this, int classId) -> bool in AL",
+      "ret": 4,
+      "body": ["006fe530", "006fe568"],
+      "state": "analyzed, reconstructed, compiled",
+      "behavior": "true for classId in {0,1,2,4,5,6,7} or classId == [this+0C4h]. Id 3 is deliberately absent."
+    },
+    {
+      "address": "006fe670",
+      "name": "BSP_UnitInstance_DetachFromWorldLists",
+      "convention": "__thiscall(this)",
+      "ret": 0,
+      "body": ["006fe670", "006fe69a"],
+      "callees": ["006dffc0", "004837d0"],
+      "state": "exported, analyzed, reconstructed, compiled",
+      "behavior": "Calls 006DFFC0 (which unlinks +54h and +60h after 006D3620) and then unlinks the parent list at +6Ch."
+    },
+    {
+      "address": "006ff270",
+      "name": "BSP_UnitInstance_GetIntensityScale",
+      "convention": "float __thiscall(this), returned on the x87 stack",
+      "ret": 0,
+      "body": ["006ff270", "006ff2a6"],
+      "state": "analyzed, reconstructed, compiled",
+      "behavior": "return (DAT_00F87152 || this->byte_2F0h) ? 1.0f : this->f_2F4h. The same expression is inlined at 008259FD.",
+      "uncertainty": "The meaning of the scalar is not established."
+    },
+    {
+      "address": "004c0890",
+      "name": "BSP_Game_SetControlledUnit",
+      "convention": "__thiscall(unit)",
+      "ret": 0,
+      "body": ["004c0890", "004c0924"],
+      "callers": ["00645600", "007f3a60", "00959450"],
+      "state": "analyzed, reconstructed, compiled",
+      "behavior": "DAT_00E188D8 = unit; resolves the driven object through IsKindOf(5) or IsKindOf(18h)+[unit+3D0h]; publishes DAT_00E188DC = target->vtable[18h]() into DAT_00F8D39C+1C0h through 00B0D7B0.",
+      "inlined_copy": "004e4a80..004e4b02 inside 004e4a40"
+    },
+    {
+      "address": "00487270",
+      "name": "BSP_EntityList_UpdateAll",
+      "convention": "__thiscall(this, float delta)",
+      "ret": 4,
+      "body": ["00487270", "004872c8"],
+      "state": "analyzed only",
+      "behavior": "std::list walk over the list at this+0Ch calling value->vtable[4](delta). Reached from 00481640 through [entityManager+8]->vtable[1]. Not the unit path."
+    },
+    {
+      "address": "00904600",
+      "name": null,
+      "state": "read, not analyzed",
+      "behavior": "Timed pass over the world's std::list at +4B0h with DAT_00F876A4 deadlines. External contract."
+    }
+  ],
+  "no_ghidra_function": [
+    {"address": "006fe530", "end": "006fe568", "role": "BSP_UnitInstance_IsKindOf, RET 4, followed by INT3 padding"},
+    {"address": "00487270", "end": "004872c8", "role": "BSP_EntityList_UpdateAll, RET 4, followed by INT3 padding"},
+    {"address": "00904390", "end": "00904393", "role": "world vtable slot 1 thunk: MOV ECX,[ECX+4]; JMP 009041A0"}
+  ],
+  "vtable": {
+    "address": "00cfc3d0",
+    "class": "MDestroyer unit instance",
+    "primary_span": "000h..23Ch",
+    "primary_span_note": "Bytes run to a null dword at 00CFC694, but 240h/258h/2A8h/2ACh are JMP 006FEBE0 thunks and 248h (006FEC00) adjusts this by -3E4h, so 240h onward are the secondary vftables of the class whose primary is 00CFC698.",
+    "slots": [
+      {"slot": "000h", "target": "006fe570", "role": "scalar deleting destructor, RET 4", "overridden": true},
+      {"slot": "004h", "target": "0042b970", "role": "MOV EAX,ECX; RET - this accessor, RET 0"},
+      {"slot": "008h", "target": "00923030", "role": "RET 4, empty one-argument virtual"},
+      {"slot": "018h", "target": "006d1e80", "role": "queried by 004C0890; produces DAT_00E188DC"},
+      {"slot": "05ch", "target": "006fe530", "role": "bool IsKindOf(int classId)", "overridden": true},
+      {"slot": "098h", "target": "006dfe40", "role": "JMP 00928860, scene SetParent"},
+      {"slot": "0dch", "target": "008255b0", "role": "per-frame update(float scaledDelta)"},
+      {"slot": "130h", "target": "006fe620", "role": "attach to the world node category lists", "overridden": true},
+      {"slot": "134h", "target": "006fe670", "role": "detach from them", "overridden": true},
+      {"slot": "184h", "target": "004f17e0", "role": "not established", "overridden": true}
+    ],
+    "secondary_vftables": [
+      {"vptr_offset": "010h", "vftable": "00cfc3b8", "slots": 6},
+      {"vptr_offset": "024h", "vftable": "00cfc3b0", "slots": 2, "note": "slot 0 is BSP_RefCounted_InvokeDeletingDestructor 00BD30E0"},
+      {"vptr_offset": "170h", "vftable": "00cfc3ac", "slots": 1},
+      {"vptr_offset": "1e4h", "vftable": "00cfc3a4", "slots": 2},
+      {"vptr_offset": "310h", "vftable": "00cfc38c", "slots": 6},
+      {"vptr_offset": "38ch", "vftable": "00cfc388", "slots": 1},
+      {"vptr_offset": "72ch", "vftable": "00cfc384", "slots": 1}
+    ]
+  },
+  "layout": {
+    "size": "0x1188",
+    "fields": [
+      {"offset": "030h", "role": "parent scene node = [game+19CCh]", "evidence": "006fe628"},
+      {"offset": "034h/038h", "role": "previous/next sibling in the parent child chain", "evidence": "00904c1a"},
+      {"offset": "05ch", "role": "byte, world tick activation gate", "evidence": "00904c00"},
+      {"offset": "05dh", "role": "byte, simulate gate for steps 2 and 8", "evidence": "0082568f"},
+      {"offset": "05eh", "role": "byte, dead flag", "evidence": "00904ca4"},
+      {"offset": "061h", "role": "byte, selects +fdch over +984h", "evidence": "00834ebe"},
+      {"offset": "0c4h", "role": "int class id, 7 for MDestroyer", "evidence": "006fe4b3, 006fe556"},
+      {"offset": "0c8h", "role": "byte, pose block valid", "evidence": "00825a64"},
+      {"offset": "0cch", "role": "pose block; +24h within it is +0f0h", "evidence": "00825a91"},
+      {"offset": "0f0h/100h", "role": "pose scalars combined by the wake test", "evidence": "00825ab4"},
+      {"offset": "154h/158h", "role": "native string, entity name", "evidence": "docs/SCENE_UNIT_CREATORS.md"},
+      {"offset": "2f0h/2f4h", "role": "intensity override byte and scalar", "evidence": "006ff27a"},
+      {"offset": "354h", "role": "vehicle-class descriptor, non-owning", "evidence": "006fe590, 00956696"},
+      {"offset": "3d0h", "role": "driven sub-unit for the controlled-unit resolve", "evidence": "004c08c8"},
+      {"offset": "4a4h", "role": "scene node; world 4x4 at +0f0h, world Y at +124h, dirty bit 1 of +5ch", "evidence": "008255fa"},
+      {"offset": "524h", "role": "float age accumulator", "evidence": "00956626"},
+      {"offset": "538h", "role": "second class pointer; +0a0h, +0f0h, +5b0h, +5f0h, +6a8h", "evidence": "00825728"},
+      {"offset": "6d8h", "role": "float firing countdown", "evidence": "0095666f"},
+      {"offset": "728h", "role": "float clamped countdown", "evidence": "0095662c"},
+      {"offset": "74ch", "role": "array of 0x0c-byte local offsets", "evidence": "00825613"},
+      {"offset": "758h/75ch", "role": "ref-counted effect handle array and count", "evidence": "008255cd"},
+      {"offset": "980h/984h", "role": "scalars read by 008252c0 and 00834e90", "evidence": "00825331"},
+      {"offset": "9c4h", "role": "byte gate at the head of 008252c0", "evidence": "008252ca"},
+      {"offset": "9f0h/9f4h", "role": "bow and stern anchor receivers", "evidence": "00825870"},
+      {"offset": "a14h/a18h", "role": "part vector begin and count, stride 4", "evidence": "00825d83"},
+      {"offset": "b54h", "role": "five attachment slots, stride 4", "evidence": "00825c2d"},
+      {"offset": "b68h", "role": "five local anchor points, stride 0x0c", "evidence": "00825c33"},
+      {"offset": "bc4h", "role": "smoothed value driven by 0042ac60", "evidence": "00825319"},
+      {"offset": "bc8h", "role": "underwater bubble timer", "evidence": "008256d3"},
+      {"offset": "fdch", "role": "alternate of +984h", "evidence": "00834ec5"},
+      {"offset": "1010h/1011h", "role": "one-frame edge latch, current and previous", "evidence": "00825824"},
+      {"offset": "1018h", "role": "controller subobject; +2ch its physics body, +88h a one-shot", "evidence": "00825832"},
+      {"offset": "10a0h/10a4h", "role": "smoothing state and the intensity product", "evidence": "00825a3e"},
+      {"offset": "1170h", "role": "prop-wash emitter", "evidence": "00825bd4"}
+    ]
+  },
+  "constants": {
+    "00d7a24c": "1.0f",
+    "00ce3800": "0.5f, the controlled-unit intensity factor",
+    "00cfbc84": "-5.0f, the water threshold",
+    "00cec9e0": "-0.5 double, the submerged effect cull depth",
+    "00d7a280": "0.5 double, the anchor surface lift and the wake half-width scale",
+    "00cedcd0": "pi/4 double, used by 00834e90",
+    "00d7a250": "-1.0 double, used by 00834e90"
+  },
+  "globals": {
+    "00e188d8": "the player-controlled unit instance",
+    "00e188dc": "the anchor object it publishes",
+    "00f8d39c": "the object that receives the anchor at +1c0h through 00b0d7b0",
+    "00f87152": "global intensity override byte",
+    "00f876a4": "mission clock"
+  },
+  "world_registration": {
+    "attach": "006fe620 (read only): 00928560 pushes onto parent list +24h, then +30h, +48h, +54h, +60h, +6ch through 00484540",
+    "detach": "006fe670 -> 006dffc0 -> 006d3620; +6ch, then +54h and +60h",
+    "list_layout": "list {count, head, tail}; node {prev, next, value}",
+    "world_array": "the parent's 61h-element array of 0ch-byte lists at +18h, so the six offsets are elements 1, 2, 4, 5, 6 and 7"
+  },
+  "corrections": [
+    {
+      "document": "docs/GAME_WORLD_ENTITIES.md",
+      "claim": "00481640 forwards the per-entity update",
+      "correction": "It dispatches [entityManager+8]->vtable[1] = 00487270, a std::list walk calling value->vtable[4](delta). In the unit vtable slot 4 is 0042B970 (MOV EAX,ECX; RET 0), so a unit instance is not on that list."
+    },
+    {
+      "document": "docs/GAME_ON_MOVE_MAP.md",
+      "claim": "step 5 is a one-shot device bind over DAT_00E188DC / DAT_00E188D8",
+      "correction": "004e4a80..004e4b02 is an inlined copy of 004C0890, the controlled-unit setter. DAT_00E188D8 is the player-controlled unit and the vtable+5Ch probes (5, 18h, 0Fh) are IsKindOf calls."
+    }
+  ],
+  "build": {
+    "translation_unit": "src/unit_instance.cpp compiles clean, build/win32/bsp_core.dir/Release/unit_instance.obj",
+    "link": "blocked",
+    "tests": "not run",
+    "blocking_failure": "src/render_tail.cpp(15,37) and (25,58) error C2039: 'owned_records': is not a member of 'bsp::ParticleClock'; C2737 and C3536 follow. Pre-existing, from another packet's in-flight header change, names none of this packet's files.",
+    "new_tests": 0
+  },
+  "uncertainties": [
+    "The primary vtable's exact end. 000h..184h is proven in use, 240h onward belongs to another class, 188h..23Ch is unresolved.",
+    "The meaning of +2f4h and 006ff270.",
+    "+538h is a second class-level pointer distinct from the descriptor at +354h; its identity is not established.",
+    "00904600 was read only at its head.",
+    "The eight base subobjects are counted from vftable spacing, not from constructor bodies.",
+    "No damage entry point was found; it is not a slot the world tick reaches."
+  ],
+  "follow_up_packets": [
+    {"packet": "unit_pose_refresh", "addresses": ["00414db0"], "files": ["docs/UNIT_POSE_REFRESH.md"], "contract": "The lazy pose block at +0cch behind the +0c8h byte: which fields are position, heading and speed."},
+    {"packet": "unit_timers", "addresses": ["00956600", "008252c0", "00834e90"], "files": ["docs/UNIT_TIMERS.md"], "contract": "The three timed sub-updates of 008255B0 in full, with the descriptor fields each reads."},
+    {"packet": "unit_controller", "addresses": ["0092d730", "0092be80", "00815aa0"], "files": ["docs/UNIT_CONTROLLER.md"], "contract": "The controller subobject at +1018h, how input records reach it, and its physics body at +2ch."},
+    {"packet": "unit_base_vtable_tail", "addresses": ["00cfc558"], "files": ["docs/UNIT_BASE_VTABLE.md"], "contract": "Resolve slots 188h..23ch of 00CFC3D0 and locate the damage entry point."},
+    {"packet": "world_timed_attachments", "addresses": ["00904600"], "files": ["docs/WORLD_TIMED_ATTACHMENTS.md"], "contract": "The world deadline list at +4b0h walked after every entity update."}
+  ]
+}
