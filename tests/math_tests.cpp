@@ -5,6 +5,7 @@
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/gui_icon.hpp"
+#include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_render_order.hpp"
 #include "bsp/gui_lua_reader.hpp"
@@ -1270,6 +1271,48 @@ int main() {
                   && !bsp::widget_name_less_00aa2c80("", "")
                   && bsp::widget_name_less_00aa2c80("Alpha", "beta"),
             "empty widget names sort first and the rest fold case");
+    }
+
+    {
+        // 00AA8BD0 resolves the pointer to the widget with the SMALLEST
+        // size.x * scale.x among those containing it, not to the deepest, the
+        // nearest in Z or the last in the child list. A parent that also
+        // contains the pointer therefore loses to its own smaller child, and a
+        // twin keeps the first candidate (the compare at 00AA8E0C is strict).
+        bsp::GuiHitNode page{};
+        page.visible = true;
+        page.mouse_hit = true;
+        page.size[0] = 0.5f;
+        page.box = {0.0f, 1.0f, 0.0f, 1.0f};
+
+        bsp::GuiHitNode inner{};
+        inner.visible = true;
+        inner.mouse_hit = true;
+        inner.size[0] = 0.05f;
+        inner.box = {0.4f, 0.6f, 0.4f, 0.6f};
+
+        bsp::GuiHitNode twin{};
+        twin.visible = true;
+        twin.mouse_hit = true;
+        twin.size[0] = 0.05f;
+        twin.box = {0.4f, 0.6f, 0.4f, 0.6f};
+
+        page.children.push_back(inner);
+        page.children.push_back(twin);
+
+        const float origin[3] = {0.0f, 0.0f, 0.0f};
+        bsp::GuiHitResult result{};
+        bsp::hit_test_widget_00aa8bd0(page, origin, 0.5f, 0.5f, result);
+        const bool child_beats_parent = result.widget == &page.children[0];
+
+        bsp::GuiHitNode hidden_child = page;
+        hidden_child.children[0].visible = false;
+        bsp::GuiHitResult skipped{};
+        bsp::hit_test_widget_00aa8bd0(hidden_child, origin, 0.5f, 0.5f, skipped);
+        const bool hidden_skipped = skipped.widget == &hidden_child.children[1];
+
+        check(child_beats_parent && hidden_skipped,
+            "the smallest half-width containing the pointer wins, ties keep the first");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
