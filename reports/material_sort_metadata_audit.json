@@ -1,0 +1,613 @@
+{
+  "packet": "material_sort_metadata",
+  "evidence_date_utc": "2026-09-10",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "ranges": [
+    {
+      "address": "00b18d60",
+      "length": 304,
+      "kind": "function",
+      "sha256": "b7aa3f1e6a7a8f18575d4901439ba841e54aa873fb6a2b236dcc8ee7335ebebc",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "6aff6899c5cb0064a100000000506489250000000083ec0c53568bf1c70630b1ce00578974240cc746040100000033db6a2c8d460c53c70634e5d50050895c242c6689582ce846ec0d0083c40c6820dd410068705241006a0b6a088d7e3c57e80def0d006a58535766895f58e81fec0d0083c40c899ea8000000899eb8000000899ebc0000006a016a098d4c2418c644242802895c2418895c241ce8404f90ff8b4424143bc374168b4c241083c101516828e5d50050e865e80d0083c40c8b0d94d3f8008b118b5264538d44241450c644242803ffd28986980000008b4424143bc3c64424200274178b4c24106a0183c1015150e8670e90ff8bc8e8b0860b00a1a8d3f8008b4c24188986c000000083c001885e08889eb4000000a3a8d3f8005f8bc65e5b64890d0000000083c418c3"
+    },
+    {
+      "address": "00b407a0",
+      "length": 122,
+      "kind": "function",
+      "sha256": "0ea607c152952b26bda56dedd2848a6b7f48985e49bd194935b576bdcd25ce12",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "568bf1e8b885fdff33c08986c400000089863801000088863c010000c706001ad60089864001000089864401000089864801000089864c01000089865001000089865401000089865801000089865c01000089866001000089866401000089866801000089866c0100008986700100008986740100008bc65ec3"
+    },
+    {
+      "address": "00b45ee0",
+      "length": 2600,
+      "kind": "function",
+      "sha256": "c46c126bf29625ae991038cddfc9f3bdb1b64668bc572687a2cc62863ead96fb",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "558bec83e4f86aff683cf6cb0064a100000000506489250000000083ec6053565733db395d108bf9897c242474098a450c88442410eb0d8b0df0bbf8008a510e885424106810010000e8ed080b0083c4048944242c3bc3895c247474098bc8e8bcd7ffffeb0233c08b75086a03568bc8c744247cffffffff8987c4000000e89ddbffff8b87c40000008b4808898fb00000008b50048d4424383bc68997ac000000895c2438895c243c74288b066a01508d4c2440e8a77d8dff391e74168b4c24388b56048b44243c515250e8d0160b0083c40c68ffffff7f68703ace008d4c2440c744247c01000000e8b26b97ff83f8ff746950538d4c2450518d4c2444e85d3892ff8bf08d5424383bd6c64424740274268b066a01508bcae8427d8dff391e74168b4424388b4e048b54243c505152e86b160b0083c40c8b4c244c3bcbc64424740174178b4424486a0183c0015051e88b3c8dff8bc8e8d4b408008d87c8000000895c241c894424148d9b000000008b7424248b86c40000008b7c241c83c048833cf8000f84220300006810010000e8a6070b0083c4048944242c85c0c644247403740f8bc8e874d6ffff8bd88944242ceb0633db895c242c8b86c400000083c0488d34f833c089442440894424448d4424403bc6c64424740174298b066a01508d4c2448e8757c8dff833e0074168b4c24408b56048b442444515250e89d150b0083c40c8d4c2440518b0decce0901c644247804e8c59309006a038d542444528bcbe8f7d9ffff8b74243833c06a0189bb0c010000568d4c2438894424388944243ce8177c8dff85f674178b4424308b4c243c8b542434505152e83f150b0083c40c578d4c245cc644247805e81db2bcff508d442454508d4c2438c644247c06e839008eff8bf08d4c24303bcec64424740774258b066a0150e8c07b8dff833e0074168b5424308b46048b4c2434525051e8e8140b0083c40c8b4c245433f63bcec64424740674178b4424506a0183c0015051e8063b8dff8bc8e84fb308008b4c245c3bcec64424740574178b4424586a0183c0015051e8e23a8dff8bc8e82bb30800807c241000b8841cd6007505b804adcf0089442428897424488974244c8d50018a0883c00184c975f72bc26a01508d4c2450e8247b8dff8b74244c85f68b7c244874128b4424288d5701525056e849140b0083c40c85ffc644247408742c8b4424308d0c076a01518d4c243889442430e8e67a8dff8b5424348b4424285703d05652e814140b0083c40c85f6c64424740574136a0183c7015756e83c3a8dff8bc8e885b208006a038d4c2464e8dab0bcff8bf88b3785f6c644247409742d8b4424308d0c066a01518d4c24388bd8e8887a8dff8b57048b442434565203c350e8b7130b008b5c243883c40c8b4c246485c9c64424740574178b4424606a0183c0015051e8d3398dff8bc8e81cb208008b7424248b4c24108b96c40000006a03510fb64a448d442438508b8308010000510fb64b455051538bcee87d60ffff85c00f84120100008b542414568bc88902e8770ffdff8b038b106a018bcbffd28b44243485c0c64424740474178b4c24306a0183c1015150e860398dff8bc8e8a9b108008b4c244485c9c64424740174238b4424406a0183c0015051e83c398dff8bc8e885b10800eb0a8b442414c700000000008b44241c834424140483c00183f80e8944241c0f82a0fcffff8b7c24248bcfe845faffff8db700010000bb0e0000008b4ec885c974078b118b420cffd08b0e85c974078b118b420cffd083c60483eb0175dd8b87c800000085c07408508bcfe8d519fdff8b8fc4000000807914000f84c00400006810010000e806040b0083c4048944242c33db3bc3c64424740a0f84a10000008bc8e8ced2ffff8bf089442428e9950000008b138b026a018bcbffd08b44243485c0c64424740474178b4c24306a0183c1015150e85c388dff8bc8e8a5b008008b4c244485c9c64424740174178b4424406a0183c0015051e838388dff8bc8e881b008008b44243c85c0c7442474ffffffff74178b4c24386a0183c1015150e811388dff8bc8e85ab0080032c08b4c246c64890d000000005f5e5b8be55dc20c0033f6897424286a016a168d4c2450c644247c01895c2450895c2454e854788dff8b44244c3bc374168b54244883c20152686c1cd60050e879110b0083c40c8b0decce09018d44244850c64424780be8a18f09006a038d4c244c518bcee8d3d5ffffc7860c010000020000008bb7c400000081c6000100008d5424143bd6895c2414895c241874268b066a01508bcae8e1778dff391e74168b4424148b4e048b542418505152e80a110b0083c40c8b0decce09018d44241450c64424780ce8328f09006810010000e883020b0083c4048944242c3bc3c64424740d740b8bc8e851d1ffff8bf0eb0233f66a038d4c2418518bcec644247c0ce838d5ffff8b4620c7860c010000020000008b97c400000089422433c06a016a038d4c2448894424488944244ce84b778dff8b5c244485db74168b4c244083c1015168681cd60053e870100b0083c40c8d542440528d442420508d4c2440c644247c0ee875fb8dff85dbc64424741074178b4424406a0183c0015053e87c368dff8bc8e8c5ae0800807c241000b8841cd6007505b804adcf0033c98944242c894c2440894c24448d50018d49008a0883c00184c975f72bc26a01508d4c2448e8b9768dff8b5c244485db74168b4c24408b54242c83c101515253e8de0f0b0083c40c837c244000c64424741174338b44241c8b4c24408944242c03c16a01508d4c2424e875768dff8b5424408b4424208b4c242c5203c15350e89f0f0b0083c40c85dbc64424741074178b4424406a0183c0015053e8c3358dff8bc8e80cae08006a038d4c2464e861acbcff8944242c8b1885dbc64424741274338b44241c6a018d1403528d4c24248944242ce80b768dff8b44242c8b48048b5424208b442424535103d052e8320f0b0083c40c8b4c246485c9c64424741074178b4424606a0183c0015051e852358dff8bc8e89bad08008b4c24108b5c24288b83080100006a03518d542424526a00506a01538bd68bcfe8065cffff85c089873801000075768b138b026a018bcbffd08b168b026a018bceffd08b44242085c0c64424740c74178b4c241c6a0183c1015150e8eb348dff8bc8e834ad08008b4c241885c9c64424740b74178b4424146a0183c0015051e8c7348dff8bc8e810ad08008b4c244c85c9c6442474010f847efcffff8b442448e962fcffff8b108bc88b420cffd08b8f3801000057e8810afdff8b8f38010000898fd00000008bbf3801000083c70457ff151c22ce008b138b026a018bcbffd08b168b026a018bceffd08b44242085c0c64424740c74178b4c241c6a0183c1015150e844348dff8bc8e88dac08008b4c241885c9c64424740b74178b4424146a0183c0015051e820348dff8bc8e869ac08008b4c244c85c9c64424740174178b4424486a0183c0015051e8fc338dff8bc8e845ac08008b44243c85c0c7442474ffffffff74178b4c24386a0183c1015150e8d5338dff8bc8e81eac08008b4c246c5f5eb00164890d000000005b8be55dc20c00"
+    },
+    {
+      "address": "00b3f930",
+      "length": 337,
+      "kind": "function",
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "6aff686befcb0064a100000000506489250000000083ec308b442450538b5c24445556578b7c245450578bf1538974241ce8ca48ffff33edc7064819d600896e24896e3c896c2448896e40896e44896e488b4610896e4c8b088b513450c644244c01ffd23bfd8946148b44246089461c74108b0f8b510457ffd28b078b480857ffd18b178b4a448d442420505557ffd18b5424388b44243c89562889462c8b0f8b510457ffd28b078b480857ffd18b5424588b44245c8b4c2420895634897c241433ff8d5424183bd3894638896e30894e18896c2418897c241c74268b036a01508bcae828e38dff392b8b7c241c74128b4424188b4b04505157e8517c0b0083c40cc644244802e8f4ecffff3bfdc64424480174178b5424186a0183c2015257e86ba28dff8bc8e8b41a0900f6442460108bc674078305f8da0801018b4c24405f5e5d5b64890d0000000083c43cc21400"
+    },
+    {
+      "address": "00b34120",
+      "length": 176,
+      "kind": "function",
+      "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "6aff68c3e0cb0064a10000000050648925000000005155568bf1c70630b1ce00578974240cc74604010000008d7e08c706f4f1d500c744241800000000c70700000000c74704000000008b6c24203bfdc64424180174268b45006a01508bcfe8bc9b8eff837d000074138b0f8b55048b4704515250e8e6340c0083c40c8b4c24248b542428894e108b4c241089561ca1e8d608018946208305e8d60801015f8bc65e5d64890d0000000083c410c20c00"
+    },
+    {
+      "address": "00b34230",
+      "length": 37,
+      "kind": "function",
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "8b44240c8b542404568bf18b4c240c5051528bcee8d7feffffc70628f2d5008bc65ec20c00"
+    },
+    {
+      "address": "00b34280",
+      "length": 37,
+      "kind": "function",
+      "sha256": "ff6cfccfebde0b4b60c801832313b450d4a47be165381542a7d0f685090dfbe6",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "8b44240c8b542404568bf18b4c240c5051528bcee887feffffc70680f2d5008bc65ec20c00"
+    },
+    {
+      "address": "00b342d0",
+      "length": 37,
+      "kind": "function",
+      "sha256": "709a8e3835d9d09a5c53bf43f0c7cabd6853dc6f3838c24bd399bb55e769c283",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "8b44240c8b542404568bf18b4c240c5051528bcee837feffffc706c0f2d5008bc65ec20c00"
+    },
+    {
+      "address": "00b33fc0",
+      "length": 71,
+      "kind": "function",
+      "sha256": "cbd07a687e43aa3105e7256d6195396fbafca4da73dbcca80092da34509fff79",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70028f2d500c20800"
+    },
+    {
+      "address": "00b34020",
+      "length": 71,
+      "kind": "function",
+      "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70080f2d500c20800"
+    },
+    {
+      "address": "00b340a0",
+      "length": 71,
+      "kind": "function",
+      "sha256": "681682a8c5329560dd50d974e96e62870cafac07c44bb275eb444ed1eb807a47",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c700c0f2d500c20800"
+    },
+    {
+      "address": "00b18eb0",
+      "length": 188,
+      "kind": "function",
+      "sha256": "7d32856743d67267dd100d2bf744b5f226ace335660d11e8cac9badd0df58666",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "6aff68d1c5cb0064a100000000506489250000000051568bf15789742408c70634e5d5008bbe9800000085ffc74424140200000074208d470450ff152022ce0085c075088b178b028bcfffd0c78698000000000000008bcee893f8ffff8b86bc00000085c0c64424140174198b8eb80000006a0183c1015150e8920d90ff8bc8e8db850b006820dd41006a0b8d463c6a0850c644242400e822ed0d008bcec7442414ffffffffe895a10b008b4c240c5f5e64890d0000000083c410c3"
+    },
+    {
+      "address": "00b192d0",
+      "length": 30,
+      "kind": "function",
+      "sha256": "51c35760c333aa610de25329f15f1d4dec564036e376eddc049bbca037e1e6fd",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "568bf1e8d8fbfffff644240801740956e8c7d20d0083c4048bc65ec20400"
+    },
+    {
+      "address": "00b46950",
+      "length": 78,
+      "kind": "support_function",
+      "sha256": "d75cce99921eb31a204e48565800d1574647d8c3a372fb325509069549f15f57",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "803df0d6080100568bf17430578b7c240c6a036a0057e875f5ffff8bcee89eb1ffff8bcee8271efdff6a036a01578bcee85bf5ffff5fb0015ec204008b4424086a006a0050e846f5ffff5ec20400"
+    },
+    {
+      "address": "00b43b8f",
+      "length": 110,
+      "kind": "descriptor_scalar_fragment",
+      "sha256": "e41e22bd1dab7193850d68822ed3c16bbdb7afacc6ee17bebf1ea6266bdabf50",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "68e01bd6008d442420508d4c2438e85e3c02006a008bc8c684242c05000004e8cd2702008d4c241c894604889c2428050000e83a3b02006800cbd5008d4c2420518d4c2438e8273c02006a008bc8c684242c05000005e8962702008d4c241c894608889c2428050000e8033b0200"
+    },
+    {
+      "address": "00b2ed1e",
+      "length": 65,
+      "kind": "effect_allocation_fragment",
+      "sha256": "8434bea8a3b6ecfec062ddcd348962ceab4ce5fd89e27340ba3dfa67a51530a7",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "e89d070b0084c074486878010000e8ea7a0c0083c4048944241085c0c644244404740b8bc8e8581a01008bf0eb0233f68d4c2418518bcec644244801e8f17b0100"
+    },
+    {
+      "address": "00b2c5d4",
+      "length": 62,
+      "kind": "texture_allocation_fragment",
+      "sha256": "c37a5f15ff9962e140661265389effaf92c962ffdbcfbd97562a702866c96415",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "837c241400746db950000000e8cb2c01008944242485c0c644246c0274248b5424288b4c242c6a00528b54241c518b8c248000000052518bc8e81e330100"
+    },
+    {
+      "address": "00d61be0",
+      "length": 7,
+      "kind": "literal",
+      "sha256": "1b8785f03a81dae3045f685fda5fc79afed0609abef26ae1bc8b6c131f033e46",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "50697065494400"
+    },
+    {
+      "address": "00d5cb00",
+      "length": 9,
+      "kind": "literal",
+      "sha256": "ca9d150dc57e4ae974202a86ea9f58d1056f4f0f39124ce892ebeb93e7c19ca7",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "5072696f7269747900"
+    },
+    {
+      "address": "00d5e528",
+      "length": 10,
+      "kind": "literal",
+      "sha256": "211d4ec6d0d40fe8c029228eeef46084bc2aa783bc36c2f47201722bab783497",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "6572726f722e74676100"
+    },
+    {
+      "address": "00d5e534",
+      "length": 24,
+      "kind": "vtable_prefix",
+      "sha256": "30c623069681842b3d3d2936e0289a6062b9cfec1cd84f27fff40e066a0d6eed",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "e030bd00d092b100f0fabe005022a800908eb1008e69bf00"
+    },
+    {
+      "address": "00d5f10c",
+      "length": 4,
+      "kind": "renderer_virtual64",
+      "sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": false,
+      "bytes_hex": "b019b300"
+    },
+    {
+      "address": "00f8d3a8",
+      "length": 4,
+      "kind": "effect_counter",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": true,
+      "bytes_hex": "00000000"
+    },
+    {
+      "address": "0108d6e8",
+      "length": 4,
+      "kind": "texture_counter",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "matches_installed_pe_initial_image": true,
+      "zero_fill": true,
+      "bytes_hex": "00000000"
+    }
+  ],
+  "verification": "Each live bsp.py ghidra batch verifies project/program/language/image base.14 complete code functions,3 bounded code fragments, literals/vtables and2 zero-fill globals match installed PE initial image. Image-zero values are not running-game counter measurements.",
+  "implementation": {
+    "header": "include/bsp/material_sort_metadata.hpp",
+    "source": "src/material_sort_metadata.cpp",
+    "functions": [
+      "construct_material_effect_sort_metadata_00b18d60",
+      "construct_logical_texture_sort_metadata_00b34120",
+      "apply_material_effect_sort_descriptor_00b45ee0"
+    ],
+    "scope": "Three numeric metadata steps; no full native constructor/loader/registry port.",
+    "explicit_counter_seeds": true,
+    "counter_increment": "unsigned32 postincrement modulo2^32",
+    "effect_fields": {
+      "construction_serial_c0": "uint32 old global00f8d3a8; key low8",
+      "priority_b0": "signed32 root descriptor+8 Priority; invalid until descriptor assignment",
+      "pipe_id_ac": "signed32 root descriptor+4 PipeID bits; invalid until descriptor assignment"
+    },
+    "texture_fields": {
+      "construction_serial20": "uint32 old shared global0108d6e8; key low12"
+    },
+    "descriptor_default": "Reader00b43b00 passes default0 for PipeID and Priority, but effect constructors leave+B0/+AC uninitialized until loader stores parsed values."
+  },
+  "counters": [
+    {
+      "address": "00f8d3a8",
+      "initial_process_image_value": 0,
+      "storage": "PE.data zero-fill",
+      "direct_writers": [
+        "00b18d60"
+      ],
+      "static_xrefs": [
+        "From 00b18e60 in CG_array_ctor_helper_00b18d60 [READ]",
+        "From 00b18e7b in CG_array_ctor_helper_00b18d60 [WRITE]"
+      ]
+    },
+    {
+      "address": "0108d6e8",
+      "initial_process_image_value": 0,
+      "storage": "PE.data zero-fill",
+      "direct_writers": [
+        "00b33fc0",
+        "00b34020",
+        "00b340a0",
+        "00b34120"
+      ],
+      "static_xrefs": [
+        "From 00b33fef in FUN_00b33fc0 [READ]",
+        "From 00b33ff8 in FUN_00b33fc0 [READ_WRITE]",
+        "From 00b3404f in FUN_00b34020 [READ]",
+        "From 00b34058 in FUN_00b34020 [READ_WRITE]",
+        "From 00b340cf in FUN_00b340a0 [READ]",
+        "From 00b340d8 in FUN_00b340a0 [READ_WRITE]",
+        "From 00b341af in FUN_00b34120 [READ]",
+        "From 00b341b7 in FUN_00b34120 [READ_WRITE]"
+      ]
+    }
+  ],
+  "owner_boundaries": {
+    "effect": "Registry00b2ebb0 allocates one0x178 effect and calls00b407a0; loader00b45ee0 owns14modeprogramslots and sets their common effect owner through00b172b0. Share one metadata owner across mode passes.",
+    "effect_reload": "00b46950 can call00b45ee0 twice on same effect without new serial.",
+    "fallback": {
+      "name": "error.tga",
+      "effect_field": "00b18e36 stores acquired texture at+98",
+      "acquire": "Renderer virtual+64 at00b18e34, flags0; primaryvtable slot00d5f10c points00b319b0, which routes to00b30b40 on renderer+1A74.",
+      "lifetime": "Owned acquired reference; no extraAddRef at store.00b18eb0 InterlockedDecrements(texture+4), virtual0 on zero, clears+98.",
+      "timing": "Acquire and native temp-string cleanup precede effect serial step.",
+      "cache": "Existing logical fallback identity must be reused on cache hit; complete manager/cache implementation is outside packet."
+    },
+    "texture": "00b2c5d4 nonnull D3DX output and00b2c5e9 wrapper allocation guard precede00b2c60d->00b3f930->00b34230->00b34120. Count only when base reaches serial step; later failures do not rewind. Existing-wrapper recreation/retention does not count. Include other unnamed/named variants."
+  },
+  "tests": {
+    "standalone_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /W4 /WX /EHsc /fp:strict",
+      "command": "cmd /c local\\compile_sort_metadata.cmd"
+    },
+    "existing_build": {
+      "passed": true,
+      "command": "./scripts/build.ps1",
+      "target": "Win32 Release",
+      "ctest_passed": 1,
+      "new_source_in_cmake": false,
+      "note": "Primary owns CMake integration. Standalone compile directly checks new source."
+    },
+    "new_test_cases": 0,
+    "native_execution": false,
+    "note": "Small scalar operations verified by complete instruction/data evidence and strict compile; no implementation-mirroring or broad new corpus."
+  },
+  "annotation_preimages": [
+    {
+      "address": "00b18d60",
+      "annotation": {
+        "address": "00b18d60",
+        "function_name": "CG_array_ctor_helper_00b18d60"
+      }
+    },
+    {
+      "address": "00b407a0",
+      "annotation": {
+        "address": "00b407a0",
+        "function_name": "BSP_MaterialEffect_Construct",
+        "comment": "[BSP reconstruction 00b407a0]\nCalls base00b18d60; installsvtable00d61a00; initializes effect/pass storage. Registry allocates178h. This vtable+14h resolves00b45360."
+      }
+    },
+    {
+      "address": "00b45ee0",
+      "annotation": {
+        "address": "00b45ee0",
+        "function_name": "FUN_00b45ee0"
+      }
+    },
+    {
+      "address": "00b3f930",
+      "annotation": {
+        "address": "00b3f930",
+        "function_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+        "comment": "[BSP reconstruction 00b3f930]\nECX wrapper, five stack arguments, RET14h. Actual GetLevelDesc(0) Width/Height/Format stored at +28/+2C/+18; saved policy dimensions are separate +34/+38. Loader subsequently sets +3C to requested mips. Typed initializer now captures actual metadata for retained recreation; native allocator/base/registry/diagnostic reference pairs remain outside projection. Complete337 bytes verified; docs/TEXTURE_IMAGE_LOADING.md."
+      }
+    },
+    {
+      "address": "00b34120",
+      "annotation": {
+        "address": "00b34120",
+        "function_name": "FUN_00b34120"
+      }
+    },
+    {
+      "address": "00b34230",
+      "annotation": {
+        "address": "00b34230",
+        "function_name": "FUN_00b34230"
+      }
+    },
+    {
+      "address": "00b34280",
+      "annotation": {
+        "address": "00b34280",
+        "function_name": "FUN_00b34280"
+      }
+    },
+    {
+      "address": "00b342d0",
+      "annotation": {
+        "address": "00b342d0",
+        "function_name": "FUN_00b342d0"
+      }
+    },
+    {
+      "address": "00b33fc0",
+      "annotation": {
+        "address": "00b33fc0",
+        "function_name": "FUN_00b33fc0"
+      }
+    },
+    {
+      "address": "00b34020",
+      "annotation": {
+        "address": "00b34020",
+        "function_name": "FUN_00b34020"
+      }
+    },
+    {
+      "address": "00b340a0",
+      "annotation": {
+        "address": "00b340a0",
+        "function_name": "FUN_00b340a0"
+      }
+    },
+    {
+      "address": "00b18eb0",
+      "annotation": {
+        "address": "00b18eb0",
+        "function_name": "CG_vector_deleting_dtor_00b18eb0"
+      }
+    },
+    {
+      "address": "00b192d0",
+      "annotation": {
+        "address": "00b192d0",
+        "function_name": "CG_scalar_deleting_dtor_00b192d0"
+      }
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00b18d60",
+      "old_name": "CG_array_ctor_helper_00b18d60",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_MaterialEffectBase_Construct",
+      "original_abi": "ECX object; RET; EAX object.",
+      "proposed_comment": "Refcounted effect-base constructor. After renderer virtual+64 acquires error.tga and stores owned result at+98, clean temporary string then 00b18e60 reads DWORD global00f8d3a8;00b18e69 stores full DWORD at+C0; 00b18e7b stores incremented counter modulo2^32. Batch uses lowBYTE of+C0. Does not initialize+B0 or+AC. Existing CG_array_ctor_helper classification is an inventory hypothesis, replaced with behavior-based name. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b407a0",
+      "old_name": "BSP_MaterialEffect_Construct",
+      "old_comment": "[BSP reconstruction 00b407a0]\nCalls base00b18d60; installsvtable00d61a00; initializes effect/pass storage. Registry allocates178h. This vtable+14h resolves00b45360.",
+      "old_comments": [
+        "[BSP reconstruction 00b407a0]\nCalls base00b18d60; installsvtable00d61a00; initializes effect/pass storage. Registry allocates178h. This vtable+14h resolves00b45360."
+      ],
+      "proposed_name": "BSP_MaterialEffect_Construct",
+      "original_abi": "ECX object; RET; EAX object.",
+      "proposed_comment": "Calls00b18d60 once, installs00d61a00, initializes descriptor/pass storage. One native effect allocation owns all14modepasses; serial+C0 belongs to shared effect owner, not each mode compilation. Does not initialize+B0/+AC. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b45ee0",
+      "old_name": "FUN_00b45ee0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_MaterialEffect_LoadDescriptorAndModePrograms",
+      "original_abi": "ECX effect; stack name, byte policy, override flag; RET0Ch; AL result.",
+      "proposed_comment": "Numeric assignment fragment00b45f63..00b45f7b: after root descriptor reader00b43b00 at effect+C4, copy descriptor+8 Priority to effect+B0, then descriptor+4 PipeID to effect+AC. Applies before later program failures; per-mode descriptors do not supply these effect fields. Loop over14slots beginning+C8 creates programs and assigns same effect owner via00b172b0. Repeated loader calls preserve construction serial+C0. Full shader/program/fallback loader is outside this metadata fragment. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b3f930",
+      "old_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "old_comment": "[BSP reconstruction 00b3f930]\nECX wrapper, five stack arguments, RET14h. Actual GetLevelDesc(0) Width/Height/Format stored at +28/+2C/+18; saved policy dimensions are separate +34/+38. Loader subsequently sets +3C to requested mips. Typed initializer now captures actual metadata for retained recreation; native allocator/base/registry/diagnostic reference pairs remain outside projection. Complete337 bytes verified; docs/TEXTURE_IMAGE_LOADING.md.",
+      "old_comments": [
+        "[BSP reconstruction 00b3f930]\nECX wrapper, five stack arguments, RET14h. Actual GetLevelDesc(0) Width/Height/Format stored at +28/+2C/+18; saved policy dimensions are separate +34/+38. Loader subsequently sets +3C to requested mips. Typed initializer now captures actual metadata for retained recreation; native allocator/base/registry/diagnostic reference pairs remain outside projection. Complete337 bytes verified; docs/TEXTURE_IMAGE_LOADING.md."
+      ],
+      "proposed_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "original_abi": "ECX wrapper; five stack values; RET14h; EAX wrapper.",
+      "proposed_comment": "Calls named base00b34230->00b34120 before COM metadata queries. Base assigns full DWORD texture+20 from shared global0108d6e8 then increments. File caller00b2c5d4 checks nonnull D3DX output and00b2c5e9 checks wrapper allocation before00b2c60d invokes this constructor. Earlier failures consume no serial; later failures after counter step keep it consumed. Retaining/recreating existing wrapper does not allocate another serial. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b34120",
+      "old_name": "FUN_00b34120",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructNamed",
+      "original_abi": "ECX object; stack native name, native texture, policy; RET0Ch; EAX object.",
+      "proposed_comment": "After native name copy and texture/policy stores,00b341af reads global0108d6e8,00b341b4 copies old DWORD to object+20,00b341b7 increments modulo2^32. Shared counter also used by unnamed00b33fc0/00b34020/00b340a0. Named wrappers00b34230/280/2d0 replace vtable without consuming again. Typed helper ports only numeric metadata step, not name/COM/lifetime work. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b34230",
+      "old_name": "FUN_00b34230",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructNamed_D5F228",
+      "original_abi": "ECX object; three stack values; RET0Ch; EAX object.",
+      "proposed_comment": "Calls00b34120 to copy name/base fields and consume shared texture serial0108d6e8 once, then installs vtable00d5f228. No second serial. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b34280",
+      "old_name": "FUN_00b34280",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructNamed_D5F280",
+      "original_abi": "ECX object; three stack values; RET0Ch; EAX object.",
+      "proposed_comment": "Calls00b34120 to copy name/base fields and consume shared texture serial0108d6e8 once, then installs vtable00d5f280. No second serial. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b342d0",
+      "old_name": "FUN_00b342d0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructNamed_D5F2C0",
+      "original_abi": "ECX object; three stack values; RET0Ch; EAX object.",
+      "proposed_comment": "Calls00b34120 to copy name/base fields and consume shared texture serial0108d6e8 once, then installs vtable00d5f2c0. No second serial. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b33fc0",
+      "old_name": "FUN_00b33fc0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F228",
+      "original_abi": "ECX object; two stack values; RET8; EAX object.",
+      "proposed_comment": "Initializes unnamed refcounted base fields, copies old shared global 0108d6e8 to object+20 at00b33ff5, increments at00b33ff8, then installs vtable00d5f228. Counter is shared with00b34120 and other unnamed variants; numeric step uses same typed producer. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b34020",
+      "old_name": "FUN_00b34020",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280",
+      "original_abi": "ECX object; two stack values; RET8; EAX object.",
+      "proposed_comment": "Initializes unnamed refcounted base fields, copies old shared global 0108d6e8 to object+20 at00b34055, increments at00b34058, then installs vtable00d5f280. Counter is shared with00b34120 and other unnamed variants; numeric step uses same typed producer. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b340a0",
+      "old_name": "FUN_00b340a0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F2C0",
+      "original_abi": "ECX object; two stack values; RET8; EAX object.",
+      "proposed_comment": "Initializes unnamed refcounted base fields, copies old shared global 0108d6e8 to object+20 at00b340d5, increments at00b340d8, then installs vtable00d5f2c0. Counter is shared with00b34120 and other unnamed variants; numeric step uses same typed producer. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b18eb0",
+      "old_name": "CG_vector_deleting_dtor_00b18eb0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_MaterialEffectBase_Destroy",
+      "original_abi": "ECX effect base; RET.",
+      "proposed_comment": "Destructor installs base vtable and releases owned fallback at effect+98: 00b18ed4 reads pointer,00b18eea InterlockedDecrement(texture+4), virtual0 when count becomes0,00b18efc clears+98. Continues base/member cleanup; does not free this allocation. No counter rollback observed. Existing CG_vector_deleting_dtor classification is an inventory hypothesis. Destructor is evidence-only here, not implemented by metadata helper. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    },
+    {
+      "address": "00b192d0",
+      "old_name": "CG_scalar_deleting_dtor_00b192d0",
+      "old_comment": null,
+      "old_comments": [],
+      "proposed_name": "BSP_MaterialEffectBase_ScalarDeletingDestroy",
+      "original_abi": "ECX effect base; stack deletion flags; RET4.",
+      "proposed_comment": "Calls00b18eb0; low flag bit requests_free. Saved listing omits 00b192e5..e7 after existing no-return annotation; verified bytes83c404 are ADD ESP,4 before common return. Evidence-only lifetime closure; no destructor, flow override or allocator port in this packet. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation.",
+      "preserve_prior_comment": true,
+      "applied": false
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/compile_sort_metadata.cmd",
+      "size": 256,
+      "sha256": "13ce48a85f95a19876a0d25811db13f26704efcbfbdf83e4cb10bd9efcff5582"
+    },
+    {
+      "path": "local/material_sort_metadata_compile.txt",
+      "size": 28,
+      "sha256": "49aa3ee0ecb5277e432de13638b1bccbb71292373b7ccce9858b02c820d1ebb1"
+    },
+    {
+      "path": "local/material_sort_metadata.obj",
+      "size": 2962,
+      "sha256": "8c776db7e0d52de8c663f3ec1774f4d53b76c89a61703c750872faa1f3be718c"
+    },
+    {
+      "path": "local/material_sort_metadata_build.txt",
+      "size": 6092,
+      "sha256": "591c4bab7ef0a9ce5ff4ecb0389c318fc035d139c583f099a9cf2f8e19705061"
+    },
+    {
+      "path": "local/effect_counter_xrefs.txt",
+      "size": 111,
+      "sha256": "0070a529893ca6aa096d7ebe05d7ea9fe9f59adfae4051574c7ad5015f2b40ab"
+    },
+    {
+      "path": "local/texture_counter_xrefs.txt",
+      "size": 328,
+      "sha256": "1a7301bd374d127b68590099a8331e727f52e82f8d0ee93c0806e7b28d58a0c7"
+    }
+  ],
+  "status": {
+    "exported": true,
+    "reconstructed_fragments": true,
+    "source_compile_tested": true,
+    "existing_build_tested": true,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "full_constructor_behavior": false,
+    "full_registry_history": false,
+    "game_validated": false
+  },
+  "remaining_closure": [
+    "Primary wires optional/shared metadata into actual retained CompiledMaterialPass effect owner and LogicalTexture identities.",
+    "Actual next counter values and construction order across all native texture paths are required to compare IDs with a running native frame.",
+    "Native manager/cache00b30b40 and fallback identity reuse/lifetime remain outside this numeric packet; no per-name/COM-hash substitute.",
+    "Native allocation, name-copy failures, fallback acquisition and later initialization failure timing must align with metadata consumption.",
+    "No Ghidra or ledger mutations; primary receives preserved preimages/proposals."
+  ]
+}
