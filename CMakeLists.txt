@@ -53,9 +53,9 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_render_context.cpp
   src/native_renderer_parameters.cpp
   src/d3d9_texture2d_pool.cpp src/native_render_pointer_arrays.cpp
-  src/native_render_group_storage.cpp
-  src/native_render_resource_record.cpp
-  src/native_model_pool.cpp
+  src/native_render_group_storage.cpp src/native_render_group_lifetime.cpp
+  src/native_render_resource_record.cpp src/native_render_resource_alias_nodes.cpp
+  src/native_model_pool.cpp src/model_type_bootstrap.cpp src/native_model_owner.cpp
   src/native_render_batch_lifetime.cpp
   src/native_surface_owner.cpp
   src/camera_clip_planes.cpp src/camera_configuration.cpp)

@@ -1,0 +1,1140 @@
+{
+  "schema_version": 1,
+  "packet": "native_model_group_integration",
+  "status": "integrated_reviewed_strict_win32_build_and_original_native_model_group_alias_fixtures_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00b74330",
+      "name": "ModelTypeBootstrap::type_id_00b74330",
+      "cpp_symbol": "ModelTypeBootstrap::type_id_00b74330",
+      "source": "src/model_type_bootstrap.cpp",
+      "native_end_exclusive": "00b74336",
+      "original_abi": "ECX ignored; no stack arguments; EAX live DWORD01090034; RET",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Six-byte leaf. Never initializes descriptor; actual model vtable+08. Currently no Ghidra function at this address.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b74340",
+      "name": "ModelTypeBootstrap::type_name_address_00b74340",
+      "cpp_symbol": "ModelTypeBootstrap::type_name_address_00b74340",
+      "source": "src/model_type_bootstrap.cpp",
+      "native_end_exclusive": "00b74346",
+      "original_abi": "ECX ignored; no stack arguments; EAX live DWORD01090040; RET",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Six-byte leaf. Returns the live native name-address word, not a host string pointer and not a predicate. Actual model vtable+14. Currently no Ghidra function at this address.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "006ef860",
+      "name": "ModelTypeBootstrap::is_type_006ef860",
+      "cpp_symbol": "ModelTypeBootstrap::is_type_006ef860",
+      "source": "src/model_type_bootstrap.cpp",
+      "native_end_exclusive": "006ef888",
+      "original_abi": "ECX ignored; stack uint32 token; AL boolean, upper EAX unspecified; RET4",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Read current01090034,01090038,0109003C sequentially until match. No initialization or fallback. Current SceneAttachmentRuntime copied token array is not authoritative native descriptor storage.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00cd7e60",
+      "name": "ModelTypeBootstrap::initialize_static_00cd7e60",
+      "cpp_symbol": "ModelTypeBootstrap::initialize_static_00cd7e60",
+      "source": "src/model_type_bootstrap.cpp",
+      "native_end_exclusive": "00cd7eaf",
+      "original_abi": "No arguments; guarded static initializer; RET",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "If guard01090030 zero, publish1, native nameD62DD4, initialize shared node descriptor, load both parent IDs before either store, get shared counter, increment counter+04 before publishing captured object ID. No guard rollback.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b74f90",
+      "name": "ModelTypeBootstrap::initialize_00b74f90",
+      "cpp_symbol": "ModelTypeBootstrap::initialize_00b74f90",
+      "source": "src/model_type_bootstrap.cpp",
+      "native_end_exclusive": "00b74fd7",
+      "original_abi": "ECX target four-word descriptor; no stack arguments; RET; no defined result",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Same process guard01090030 but ECX may target another descriptor. Set name before node initializer; interleave node load/target+04 store then root load/target+08 store. Shared counter increment precedes target own-ID publication.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "0044bcb0",
+      "name": "construct_native_render_alias_string_0044bcb0",
+      "cpp_symbol": "construct_native_render_alias_string_0044bcb0",
+      "source": "src/native_render_resource_alias_nodes.cpp",
+      "native_end_exclusive": "0044bd26",
+      "original_abi": "ECX actual8-byte destination header; EDX source header; RET0; no semantic return value.",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Complete118-byte string copy constructor. Null destination skips all source reads. Compare identity, zero actual length/data, then self exit; distinct source resizes through0041DD40(preserve1), rereads source length/data and actual destination length/data after allocation, copies destination-length bytes. EH leafC5FFB0 calls original RET-only placement delete00401130; no buffer cleanup or rollback. Host accesses same actual header fields using shared SizedStoragePool, not a second NativeString.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004ce6f0",
+      "name": "allocate_native_render_alias_node_004ce6f0",
+      "cpp_symbol": "allocate_native_render_alias_node_004ce6f0",
+      "source": "src/native_render_resource_alias_nodes.cpp",
+      "native_end_exclusive": "004ce75c",
+      "original_abi": "ECX/EDX not inputs; stack next,previous,source-header; EAX actual10h node; RET0C.",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Allocate actual10h node viaBF681B before catch activation; store next/previous, copy actual embedded string+8 via0044BCB0, return same allocation. Parent catch004CE75C..004CE770 ordinary-frees captured raw node and rethrows throughBF6885(NULL,NULL). No neighbor-link/count writes and no cleanup of later004CE780 count errors. Uses existing exact NativeRenderResourceAliasNode plus shared native CRT/string pool domains.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b75030",
+      "name": "construct_native_model_00b75030",
+      "cpp_symbol": "construct_native_model_00b75030",
+      "source": "src/native_model_owner.cpp",
+      "native_end_exclusive": "00b750b4",
+      "original_abi": "ECX actual188h slot; stack NativeString*; EAX same slot; RET4",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Complete node constructor over actual174h prefix, current model type/profile, exact174..183 tail and signed-zero pose stores; preserve184h pool ID. Shared model pool/node/type/runtime, no copied descriptor tokens.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b750c0",
+      "name": "destroy_native_model_00b750c0",
+      "cpp_symbol": "destroy_native_model_00b750c0",
+      "source": "src/native_model_owner.cpp",
+      "native_end_exclusive": "00b75165",
+      "original_abi": "ECX actualmodel; RET",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Publish model table, release/clear174 then reload/release/clear180 through sameactual04/currentvirtual0; complete node destruction. State1 unwind current180 then base; state0 base only; no physical free.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b75290",
+      "name": "delete_native_model_00b75290",
+      "cpp_symbol": "delete_native_model_00b75290",
+      "source": "src/native_model_owner.cpp",
+      "native_end_exclusive": "00b752b0",
+      "original_abi": "ECX actualmodel; stackflags; EAX originaladdress; RET4",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Complete model destructor then return actual188h slot to shared pool01090054 iff flags&1; return originaladdress. NativeModelReference borrows same actual04 and shared hierarchy, logical gate and current profile; unbind and retire companion only after actual return.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b74f20",
+      "name": "destroy_native_model_geometry_member_00b74f20",
+      "cpp_symbol": "destroy_native_model_geometry_member_00b74f20",
+      "source": "src/native_model_owner.cpp",
+      "native_end_exclusive": "00b74f4b",
+      "original_abi": "ECX model+178; RET",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Release actual current180 through actual04/currentvirtual0, then clear; preserve174/178/17C. Actual member cleanup used by model destructor state1 unwind.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b75170",
+      "name": "set_native_model_geometry_00b75170",
+      "cpp_symbol": "set_native_model_geometry_00b75170",
+      "source": "src/native_model_owner.cpp",
+      "native_end_exclusive": "00b751eb",
+      "original_abi": "ECX actualmodel; stackunusedDWORD,rawgeometry,float178,float17C; RET10h",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Captureold180; publish/retainincoming actual04 before oldzero callback; sameidentityskip. Read current D7A260 sentinel once after callbacks; exact SSE unordered comparison writes NaN and signedzero bitpatterns, no rollback.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1d760",
+      "name": "destroy_native_render_group_00b1d760",
+      "cpp_symbol": "destroy_native_render_group_00b1d760",
+      "source": "src/native_render_group_lifetime.cpp",
+      "native_end_exclusive": "00b1d81b",
+      "original_abi": "ECX actual4Ch group; RET",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Release captured actual binding00 then clear; reload actualmodel1C then20, canonical shared model unlink/logical release, clear each after call; real reverse sourcearrays30/24, reload currentname08 and pool-return len04+1 without clearing. Preserve3C..4B. EH state1 arrays then name, state0 name only; unvisited owners not released.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1d8e0",
+      "name": "delete_native_render_group_00b1d8e0",
+      "cpp_symbol": "delete_native_render_group_00b1d8e0",
+      "source": "src/native_render_group_lifetime.cpp",
+      "native_end_exclusive": "00b1d8fe",
+      "original_abi": "ECX actualgroup; stackflags; EAX originaladdress; RET4",
+      "evidence": "reports/native_model_group_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Full actual populated group destruction, ordinary free iff flags&1 and only after successful destructor; original pointer return. Correct returning-free continuation reconstructed and Ghidra repaired with prior annotations preserved.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "primary_review": {
+    "utc": "2026-09-10T21:52:59.285977+00:00",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "00b74330",
+        "length": 6,
+        "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "00b74340",
+        "length": 6,
+        "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "006ef860",
+        "length": 40,
+        "sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "00cd7e60",
+        "length": 79,
+        "sha256": "e0a5d5b6d445f843ab1176a9f82b23b636f9b4d625c25f0f3883169665122db9"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "00b74f90",
+        "length": 71,
+        "sha256": "b808d68ff9599f5aa299694d9cdede605c46b9631143bb1316a10c2d8c582ec7"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "00b6f110",
+        "length": 62,
+        "sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "006fac20",
+        "length": 181,
+        "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "0109db7c",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "0108ff54",
+        "length": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "0108ff8c",
+        "length": 20,
+        "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "01090030",
+        "length": 20,
+        "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+      },
+      {
+        "packet": "model_type_bootstrap_audit",
+        "address": "00d62dd4",
+        "length": 10,
+        "sha256": "105cc69c4f8d8620029ca358e22d868e8971586ee4629ce072ddfeba853f077a"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b75030",
+        "length": 132,
+        "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b750c0",
+        "length": 165,
+        "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b75290",
+        "length": 32,
+        "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b74f20",
+        "length": 43,
+        "sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b75170",
+        "length": 123,
+        "sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6f5a0",
+        "length": 814,
+        "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "004134f0",
+        "length": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6f440",
+        "length": 297,
+        "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6e680",
+        "length": 204,
+        "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6ee10",
+        "length": 110,
+        "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6ec70",
+        "length": 80,
+        "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00bd30f0",
+        "length": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6f310",
+        "length": 176,
+        "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b6dfa0",
+        "length": 105,
+        "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b74750",
+        "length": 104,
+        "sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b1d120",
+        "length": 168,
+        "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b1d570",
+        "length": 30,
+        "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b74330",
+        "length": 6,
+        "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00b74340",
+        "length": 6,
+        "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "006ef860",
+        "length": 40,
+        "sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00bf6989",
+        "length": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00cc1c50",
+        "length": 32,
+        "sha256": "17e80cf410ddee38444a3dd0ea146bfc74c858fc6a7b6231835755d40396014f"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00d62de8",
+        "length": 92,
+        "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00d62c88",
+        "length": 88,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00d5e5c4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00ce4970",
+        "length": 4,
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00ce4adc",
+        "length": 4,
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00d7a208",
+        "length": 4,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00d7a260",
+        "length": 4,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "01090054",
+        "length": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "01090030",
+        "length": 20,
+        "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00dfac40",
+        "length": 52,
+        "sha256": "fd05988dff36c154708f797c5cb33532b5e7e21eac32604368a27eb042fb0367"
+      },
+      {
+        "packet": "native_model_owner_audit",
+        "address": "00ce2210",
+        "length": 20,
+        "sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "0044bcb0",
+        "length": 118,
+        "sha256": "19e95f36a47ba139e7914057677fb7e5f46c16600abb39fd565196a09daeebef"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "004ce6f0",
+        "length": 108,
+        "sha256": "a98d5b9f021b980dbdae7f7288f45918818b9c979e81898488d130ee28eeca21"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "004ce75c",
+        "length": 21,
+        "sha256": "ed475c06fb5df27f7cec406abe8554aa3dca0995b3d74ec0d3a4e430abafc625"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00c5ffb0",
+        "length": 27,
+        "sha256": "446b8d83a6c80392a545ea7e82c00e26ee84fb8d805df02a343cf3d88d704e33"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00c65a70",
+        "length": 10,
+        "sha256": "7a40140ccd3aae31358f75d9a7db6d7d1e6d12bbcbfd421ebd3148b00738d565"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00401130",
+        "length": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00419cc0",
+        "length": 5,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00bd1120",
+        "length": 5,
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00bd1510",
+        "length": 5,
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00bf681b",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00bf7680",
+        "length": 5,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00bf6885",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00d86d94",
+        "length": 44,
+        "sha256": "1d758ae86458572409fae44b4d79505ad42f44c8dd20390175b5304adefe7094"
+      },
+      {
+        "packet": "native_render_resource_alias_nodes_audit",
+        "address": "00d8e370",
+        "length": 88,
+        "sha256": "c3c0179aebc30271432bbb5f504e3161ceb2ee2228c521720ecc23c40a26c470"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b75030",
+        "length": 132,
+        "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b750c0",
+        "length": 165,
+        "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b75290",
+        "length": 32,
+        "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b74f20",
+        "length": 43,
+        "sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b75170",
+        "length": 123,
+        "sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6f5a0",
+        "length": 814,
+        "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "004134f0",
+        "length": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6f440",
+        "length": 297,
+        "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6e680",
+        "length": 204,
+        "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6ee10",
+        "length": 110,
+        "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6ec70",
+        "length": 80,
+        "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bd30f0",
+        "length": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6f310",
+        "length": 176,
+        "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b6dfa0",
+        "length": 105,
+        "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b74750",
+        "length": 104,
+        "sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1d120",
+        "length": 168,
+        "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1d570",
+        "length": 30,
+        "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b74330",
+        "length": 6,
+        "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b74340",
+        "length": 6,
+        "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "006ef860",
+        "length": 40,
+        "sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bf6989",
+        "length": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00cc1c50",
+        "length": 32,
+        "sha256": "17e80cf410ddee38444a3dd0ea146bfc74c858fc6a7b6231835755d40396014f"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1d760",
+        "length": 187,
+        "sha256": "30eca5db1f1352c6bd29b9d7e3b7a83b2587d96178b2e3fef6ee09a70c3d8afb"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1d8e0",
+        "length": 30,
+        "sha256": "398413c19c25fd132de85c48daae9bafd07c5829418ba02a8f6a483725e8a553"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1d1d0",
+        "length": 23,
+        "sha256": "6a6d9d35f7ff392dbe07eab7b41dd03eb2a468fa46f085f929ceac45a3f3685b"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1c770",
+        "length": 80,
+        "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00b1c500",
+        "length": 95,
+        "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bf7c6e",
+        "length": 75,
+        "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bf7cb9",
+        "length": 24,
+        "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00c07c00",
+        "length": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00c07c45",
+        "length": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00cbca30",
+        "length": 43,
+        "sha256": "0cae28063a9a4c0c6c69585c6a543bf76a46116914219c5d6b7b7574676dfeaf"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00419cc0",
+        "length": 5,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bd1510",
+        "length": 5,
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00bf55be",
+        "length": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00d62de8",
+        "length": 92,
+        "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00d62c88",
+        "length": 88,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00d5e5c4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00ce4970",
+        "length": 4,
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00ce4adc",
+        "length": 4,
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00d7a208",
+        "length": 4,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00d7a260",
+        "length": 4,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "01090054",
+        "length": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "01090030",
+        "length": 20,
+        "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00dfac40",
+        "length": 52,
+        "sha256": "fd05988dff36c154708f797c5cb33532b5e7e21eac32604368a27eb042fb0367"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00ce2210",
+        "length": 20,
+        "sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00df4ec4",
+        "length": 44,
+        "sha256": "9846b6a0127ed3e94511be890935e81dcf79f73d892b428ab0d7887abd92a0fd"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00e02d30",
+        "length": 32,
+        "sha256": "93db1610a4bbd4cdc5b2e1329b3e276dd13871fe33124383e77c1cf6382893be"
+      },
+      {
+        "packet": "native_group_lifetime_preparation",
+        "address": "00e15590",
+        "length": 4,
+        "sha256": "ce27c3a226b06f760dc303582e2dd3ab690a1634fdced2e53b238a4e947cd75f"
+      }
+    ],
+    "source_artifacts": [
+      {
+        "path": "include/bsp/model_type_bootstrap.hpp",
+        "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+        "worker_commit": "a56b4a56b42d8b04580d9a7d9491b91ea6054119",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/model_type_bootstrap.cpp",
+        "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+        "worker_commit": "a56b4a56b42d8b04580d9a7d9491b91ea6054119",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+        "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee",
+        "worker_commit": "2e834c67fa15dd6247236536e4998f8722afa4bf",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/native_render_resource_alias_nodes.cpp",
+        "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617",
+        "worker_commit": "2e834c67fa15dd6247236536e4998f8722afa4bf",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "sha256": "91e3ffcad188574407078603c1958ae59f4d608d9b98184cd3005d921a313041",
+        "worker_commit": "6108b16",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "sha256": "0e5940c1a068bf808bef3c8881e41f4c13830ed42af49b0fa8ec8dd793c474f3",
+        "worker_commit": "6108b16",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "c1a14a82c38ef2516fbcacf73bca80ea14411b03a35ed8a5d6705e0de1fa0953",
+        "comparison": "Primary group lifetime and combined registration"
+      },
+      {
+        "path": "include/bsp/native_render_group_lifetime.hpp",
+        "sha256": "6fabacd6032d7bd188ace6eebc7d3a21f4173f3996ccb56d1d7f461d476c583d",
+        "comparison": "Primary group lifetime and combined registration"
+      },
+      {
+        "path": "src/native_render_group_lifetime.cpp",
+        "sha256": "b07b7d4f06702fca77490bd2a810f10a25773e577e43edb6f228b9c3fe3ad0a8",
+        "comparison": "Primary group lifetime and combined registration"
+      }
+    ],
+    "production_findings": 0
+  },
+  "components": [
+    "reports/model_type_bootstrap_audit.json",
+    "reports/native_model_owner_audit.json",
+    "reports/native_render_resource_alias_nodes_audit.json",
+    "reports/native_render_group_lifetime_audit.json"
+  ],
+  "fixtures": [
+    {
+      "path": "local/model_type_primary_fixture.txt",
+      "sha256": "462ca2378b7e2d3ae51518157f0d8b8cc1126672c960b5e59f8289c319f2912a",
+      "passed": true
+    },
+    {
+      "path": "local/native_model_owner_primary_fixture.txt",
+      "sha256": "57d0f2b531ffead0db066f43e4ba6187e920d20ff79f23ceedd1a3162de5975a",
+      "passed": true
+    },
+    {
+      "path": "local/native_alias_nodes_primary_fixture.txt",
+      "sha256": "c521d6c50066b354599ddb59b5316b424944c9c289b803ef1f6f8588e8eb9cc3",
+      "passed": true
+    },
+    {
+      "path": "local/native_group_lifetime_check.txt",
+      "sha256": "f9f5cd2d8a10ebc3ab808a9087f7c2f275d50417871d921044d6d10446571578",
+      "passed": true
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_model_group_build.txt",
+    "sha256": "aee2ff66394f640d52de54c0fd71cac9b9667766408a85033658bec266bdf2f3"
+  },
+  "definitions": "reports/native_model_group_defined_functions.json",
+  "original_body_repairs": 1,
+  "new_function_definitions": 2,
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_eh_execution": false,
+  "full_native_command": false,
+  "full_native_renderer": false,
+  "remaining": [
+    "Actual44h command storage/lifetime/initialization and canonical shared queue/job owners",
+    "Checked alias iteration/erase and length-error SBO string/exception dependencies",
+    "Texture/mesh owners, renderer initialization/reset and worldstartup/gameplay"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_model_group_annotations.json",
+    "sha256": "a6b8e12ac3862d5ae7aebbfaeaa417c21c22b62168cdfeffec1a3c2083254246",
+    "count": 14,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": {
+    "count": 14,
+    "functions": [
+      {
+        "address": "00b74330",
+        "old_name": null,
+        "name": "BSP_Object_GetRuntimeTypeToken",
+        "path": "exports/bsp/functions/00b74330/decompiled.c",
+        "sha256": "36e397bcea5bb48df35aeee922d29267be500ea79695efed8b7eb035b0666727"
+      },
+      {
+        "address": "00b74340",
+        "old_name": null,
+        "name": "BSP_Object_GetRuntimeTypeNameAddress",
+        "path": "exports/bsp/functions/00b74340/decompiled.c",
+        "sha256": "046dab26423c5cae0cf359f0dfa59272b8178326b3648f93f1b5f2f54a8669fc"
+      },
+      {
+        "address": "006ef860",
+        "old_name": "BSP_Object_AcceptsRuntimeTypeToken",
+        "name": "BSP_Object_AcceptsRuntimeTypeToken",
+        "path": "exports/bsp/functions/006ef860/decompiled.c",
+        "sha256": "fcd879614176499f90e2195a22e6cdd2ff5dc50ddb4236c0d6870d1631a231b6"
+      },
+      {
+        "address": "00cd7e60",
+        "old_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+        "name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+        "path": "exports/bsp/functions/00cd7e60/decompiled.c",
+        "sha256": "350719ccbe2e2adc3c66f4b40d363148bcf0e2a69a5038a541f29eaee51544a5"
+      },
+      {
+        "address": "00b74f90",
+        "old_name": "FUN_00b74f90",
+        "name": "BSP_TypeInfo_Initialize3dObject",
+        "path": "exports/bsp/functions/00b74f90/decompiled.c",
+        "sha256": "1be5903b1162575b51fa8a4b08a213542b3ab916e797fdbeea9014c030799dae"
+      },
+      {
+        "address": "0044bcb0",
+        "old_name": "FUN_0044bcb0",
+        "name": "BSP_NativeString_ConstructCopy",
+        "path": "exports/bsp/functions/0044bcb0/decompiled.c",
+        "sha256": "89b52efa4bcdd7e488d16077090932e869b27a825a455ed2893f03332a8aa7b3"
+      },
+      {
+        "address": "004ce6f0",
+        "old_name": "FUN_004ce6f0",
+        "name": "BSP_NativeRenderResourceAliasNode_AllocateCopy",
+        "path": "exports/bsp/functions/004ce6f0/decompiled.c",
+        "sha256": "d632982893d3fed101b63db5de597b52f4e3f7d8f450555a30f67cc535086d78"
+      },
+      {
+        "address": "00b75030",
+        "old_name": "BSP_GeneratedModel_Construct",
+        "name": "BSP_GeneratedModel_Construct",
+        "path": "exports/bsp/functions/00b75030/decompiled.c",
+        "sha256": "820ed193447a6046b1c704f1f10a8362cb26025393ea66f0673cd39d3c9ff79e"
+      },
+      {
+        "address": "00b750c0",
+        "old_name": "BSP_Model_Destroy",
+        "name": "BSP_Model_Destroy",
+        "path": "exports/bsp/functions/00b750c0/decompiled.c",
+        "sha256": "0c9e61108b3fc2d8689486dd3b26a5b53519908803b5fa343e5c48687cc1251d"
+      },
+      {
+        "address": "00b75290",
+        "old_name": "BSP_Model_DeletingDestructor",
+        "name": "BSP_Model_DeletingDestructor",
+        "path": "exports/bsp/functions/00b75290/decompiled.c",
+        "sha256": "c729a5f077df4017733f8e9bd50cb8510c6acacf6c32cf74a15b2be01ad3d97c"
+      },
+      {
+        "address": "00b74f20",
+        "old_name": "FUN_00b74f20",
+        "name": "BSP_ModelGeometryMember_Destroy",
+        "path": "exports/bsp/functions/00b74f20/decompiled.c",
+        "sha256": "1b3126453a446c8c16b2fc10e578b37b6ae1b1299cdca0d26778ecfeb21cc249"
+      },
+      {
+        "address": "00b75170",
+        "old_name": "BSP_GeneratedModel_SetGeometry",
+        "name": "BSP_GeneratedModel_SetGeometry",
+        "path": "exports/bsp/functions/00b75170/decompiled.c",
+        "sha256": "47e416a5ce95b78908f21e549afc9b4ed686c7bd8a410210dbdbefd73e1da4f3"
+      },
+      {
+        "address": "00b1d760",
+        "old_name": "BSP_InstanceGroup_Destroy",
+        "name": "BSP_InstanceGroup_Destroy",
+        "path": "exports/bsp/functions/00b1d760/decompiled.c",
+        "sha256": "a19152d6f3ab74814a11338d7abc51ff34cb9bef0098ad2fcd296ee11cd2ca6c"
+      },
+      {
+        "address": "00b1d8e0",
+        "old_name": "CG_scalar_deleting_dtor_00b1d8e0",
+        "name": "BSP_InstanceGroup_ScalarDeletingDestructor",
+        "path": "exports/bsp/functions/00b1d8e0/decompiled.c",
+        "sha256": "04847b395fa725f6ae3768642e0ceba10e892bec7e90a49da7169aada7a44137"
+      }
+    ]
+  },
+  "snapshot": {
+    "internal_functions": 62481,
+    "total_functions": 62923,
+    "utc": "2026-09-10T21:55:30.972051+00:00",
+    "index_fresh": true
+  },
+  "closure_hash_recheck_utc": "2026-09-10T21:56:11.845816+00:00"
+}

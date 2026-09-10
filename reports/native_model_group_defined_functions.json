@@ -1,0 +1,238 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b1d8e0",
+      "end_exclusive": "00b1d8fe",
+      "length": 30,
+      "sha256": "398413c19c25fd132de85c48daae9bafd07c5829418ba02a8f6a483725e8a553",
+      "function_before": "Function: CG_scalar_deleting_dtor_00b1d8e0 at 00b1d8e0\nSignature: undefined CG_scalar_deleting_dtor_00b1d8e0(void)\nEntry: 00b1d8e0\nBody: 00b1d8e0 - 00b1d8fd",
+      "documentation_before": {
+        "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1d8e0",
+        "function_name": "CG_scalar_deleting_dtor_00b1d8e0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b1d8f8"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "00b1d8f0"
+      ],
+      "function_after": "Function: CG_scalar_deleting_dtor_00b1d8e0 at 00b1d8e0\nSignature: undefined CG_scalar_deleting_dtor_00b1d8e0(void)\nEntry: 00b1d8e0\nBody: 00b1d8e0 - 00b1d8fd",
+      "documentation_after": {
+        "hash": "4a8d186092ee86c4f7ad3ceaa567be0aa64e70057f2968b51f413abd7447a706",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1d8e0",
+        "function_name": "CG_scalar_deleting_dtor_00b1d8e0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b1d8f8"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00b74330",
+      "end_exclusive": "00b74336",
+      "length": 6,
+      "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7",
+      "missing_before": true,
+      "function_before": "No function found for 00b74330",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_Object_GetRuntimeTypeToken at 00b74330\nSignature: undefined BSP_Object_GetRuntimeTypeToken(void)\nEntry: 00b74330\nBody: 00b74330 - 00b74335"
+    },
+    {
+      "address": "00b74340",
+      "end_exclusive": "00b74346",
+      "length": 6,
+      "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff",
+      "missing_before": true,
+      "function_before": "No function found for 00b74340",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_Object_GetRuntimeTypeNameAddress at 00b74340\nSignature: undefined BSP_Object_GetRuntimeTypeNameAddress(void)\nEntry: 00b74340\nBody: 00b74340 - 00b74345"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1d8f5",
+        "end_address": "00b1d8fe"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1d8f5",
+        "end_address": "00b1d8fd",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1d8f0"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1d8f0 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1d8e0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1d8e0",
+        "deleted_function": "CG_scalar_deleting_dtor_00b1d8e0",
+        "body_size": 27,
+        "message": "Function 'CG_scalar_deleting_dtor_00b1d8e0' deleted at 00b1d8e0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1d8e0",
+        "name": "CG_scalar_deleting_dtor_00b1d8e0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1d8e0",
+        "function_name": "CG_scalar_deleting_dtor_00b1d8e0",
+        "entry_point": "00b1d8e0",
+        "body_size": 30,
+        "message": "Function created successfully at 00b1d8e0",
+        "warnings": [
+          "Function name 'CG_scalar_deleting_dtor_00b1d8e0' \u2014 main part 'CG_scalar_deleting_dtor_00b1d8e0' is not PascalCase. Expected: CgScalarDeletingDtor00b1d8e0",
+          "Function name 'CG_scalar_deleting_dtor_00b1d8e0' \u2014 main part 'CG_scalar_deleting_dtor_00b1d8e0' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b74330",
+        "end_address": "00b74336"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b74330",
+        "end_address": "00b74335",
+        "bytes_disassembled": 6,
+        "message": "Successfully disassembled 6 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b74330",
+        "name": "BSP_Object_GetRuntimeTypeToken",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b74330",
+        "function_name": "BSP_Object_GetRuntimeTypeToken",
+        "entry_point": "00b74330",
+        "body_size": 6,
+        "message": "Function created successfully at 00b74330",
+        "warnings": [
+          "Function name 'BSP_Object_GetRuntimeTypeToken' \u2014 main part 'Object_GetRuntimeTypeToken' is not PascalCase. Expected: ObjectGetruntimetypetoken",
+          "Function name 'BSP_Object_GetRuntimeTypeToken' \u2014 main part 'Object_GetRuntimeTypeToken' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_Object_GetRuntimeTypeToken' does not start with a recognized verb. First word 'Object_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b74340",
+        "end_address": "00b74346"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b74340",
+        "end_address": "00b74345",
+        "bytes_disassembled": 6,
+        "message": "Successfully disassembled 6 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b74340",
+        "name": "BSP_Object_GetRuntimeTypeNameAddress",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b74340",
+        "function_name": "BSP_Object_GetRuntimeTypeNameAddress",
+        "entry_point": "00b74340",
+        "body_size": 6,
+        "message": "Function created successfully at 00b74340",
+        "warnings": [
+          "Function name 'BSP_Object_GetRuntimeTypeNameAddress' \u2014 main part 'Object_GetRuntimeTypeNameAddress' is not PascalCase. Expected: ObjectGetruntimetypenameaddress",
+          "Function name 'BSP_Object_GetRuntimeTypeNameAddress' \u2014 main part 'Object_GetRuntimeTypeNameAddress' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_Object_GetRuntimeTypeNameAddress' does not start with a recognized verb. First word 'Object_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "One group scalar-delete body rebuilt with preserved comments and returning free continuation; two exact model type leaves created; project saved"
+}

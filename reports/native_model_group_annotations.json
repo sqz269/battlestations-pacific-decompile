@@ -1,0 +1,205 @@
+[
+  {
+    "address": "00b74330",
+    "before": {
+      "address": "00b74330",
+      "function_name": "BSP_Object_GetRuntimeTypeToken"
+    },
+    "after": {
+      "address": "00b74330",
+      "old_name": null,
+      "name": "BSP_Object_GetRuntimeTypeToken",
+      "evidence": "Complete original[00b74330,00b74336); ECX ignored; no stack arguments; EAX live DWORD01090034; RET. Six-byte leaf. Never initializes descriptor; actual model vtable+08. Currently no Ghidra function at this address. Evidence reports/model_type_bootstrap_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b74340",
+    "before": {
+      "address": "00b74340",
+      "function_name": "BSP_Object_GetRuntimeTypeNameAddress"
+    },
+    "after": {
+      "address": "00b74340",
+      "old_name": null,
+      "name": "BSP_Object_GetRuntimeTypeNameAddress",
+      "evidence": "Complete original[00b74340,00b74346); ECX ignored; no stack arguments; EAX live DWORD01090040; RET. Six-byte leaf. Returns the live native name-address word, not a host string pointer and not a predicate. Actual model vtable+14. Currently no Ghidra function at this address. Evidence reports/model_type_bootstrap_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "006ef860",
+    "before": {
+      "address": "006ef860",
+      "function_name": "BSP_Object_AcceptsRuntimeTypeToken",
+      "comment": "[BSP reconstruction 006ef860]\n40-byte RET4 leaf: AL true iff stack token equals one of c3dObject/c3dNode/cRoot IDs01090034/38/3C. It rejects cLight ID0109018C after valid one-time type initialization, so ordinary generated object scene attachment does not insert a light registry entry. Original ABI: stack uint32 token; AL boolean; RET 4; ECX unused Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "006ef860",
+      "old_name": "BSP_Object_AcceptsRuntimeTypeToken",
+      "name": "BSP_Object_AcceptsRuntimeTypeToken",
+      "evidence": "Complete original[006ef860,006ef888); ECX ignored; stack uint32 token; AL boolean, upper EAX unspecified; RET4. Read current01090034,01090038,0109003C sequentially until match. No initialization or fallback. Current SceneAttachmentRuntime copied token array is not authoritative native descriptor storage. Evidence reports/model_type_bootstrap_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cd7e60",
+    "before": {
+      "address": "00cd7e60",
+      "function_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+      "comment": "[BSP reconstruction 00cd7e60]\nGuarded native type initializer for c3dObject; descriptor 01090034 consumes shared monotonic type counter and retains recovered parent/type-name identities. Analysis only; production type bootstrap not implemented. Original ABI: no arguments; guarded type initializer; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00cd7e60",
+      "old_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+      "name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+      "evidence": "Complete original[00cd7e60,00cd7eaf); No arguments; guarded static initializer; RET. If guard01090030 zero, publish1, native nameD62DD4, initialize shared node descriptor, load both parent IDs before either store, get shared counter, increment counter+04 before publishing captured object ID. No guard rollback. Evidence reports/model_type_bootstrap_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b74f90",
+    "before": {
+      "address": "00b74f90",
+      "function_name": "FUN_00b74f90"
+    },
+    "after": {
+      "address": "00b74f90",
+      "old_name": "FUN_00b74f90",
+      "name": "BSP_TypeInfo_Initialize3dObject",
+      "evidence": "Complete original[00b74f90,00b74fd7); ECX target four-word descriptor; no stack arguments; RET; no defined result. Same process guard01090030 but ECX may target another descriptor. Set name before node initializer; interleave node load/target+04 store then root load/target+08 store. Shared counter increment precedes target own-ID publication. Evidence reports/model_type_bootstrap_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0044bcb0",
+    "before": {
+      "address": "0044bcb0",
+      "function_name": "FUN_0044bcb0"
+    },
+    "after": {
+      "address": "0044bcb0",
+      "old_name": "FUN_0044bcb0",
+      "name": "BSP_NativeString_ConstructCopy",
+      "evidence": "Complete original[0044bcb0,0044bd26); ECX actual8-byte destination header; EDX source header; RET0; no semantic return value.. Complete118-byte string copy constructor. Null destination skips all source reads. Compare identity, zero actual length/data, then self exit; distinct source resizes through0041DD40(preserve1), rereads source length/data and actual destination length/data after allocation, copies destination-length bytes. EH leafC5FFB0 calls original RET-only placement delete00401130; no buffer cleanup or rollback. Host accesses same actual header fields using shared SizedStoragePool, not a second NativeString. Evidence reports/native_render_resource_alias_nodes_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004ce6f0",
+    "before": {
+      "address": "004ce6f0",
+      "function_name": "FUN_004ce6f0"
+    },
+    "after": {
+      "address": "004ce6f0",
+      "old_name": "FUN_004ce6f0",
+      "name": "BSP_NativeRenderResourceAliasNode_AllocateCopy",
+      "evidence": "Complete original[004ce6f0,004ce75c); ECX/EDX not inputs; stack next,previous,source-header; EAX actual10h node; RET0C.. Allocate actual10h node viaBF681B before catch activation; store next/previous, copy actual embedded string+8 via0044BCB0, return same allocation. Parent catch004CE75C..004CE770 ordinary-frees captured raw node and rethrows throughBF6885(NULL,NULL). No neighbor-link/count writes and no cleanup of later004CE780 count errors. Uses existing exact NativeRenderResourceAliasNode plus shared native CRT/string pool domains. Evidence reports/native_render_resource_alias_nodes_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b75030",
+    "before": {
+      "address": "00b75030",
+      "function_name": "BSP_GeneratedModel_Construct",
+      "comment": "[BSP reconstruction 00b75030]\nConstruct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported. Original ABI: ECX destination; stack model-constructor argument; EAX destination; RET4. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+    },
+    "after": {
+      "address": "00b75030",
+      "old_name": "BSP_GeneratedModel_Construct",
+      "name": "BSP_GeneratedModel_Construct",
+      "evidence": "Complete original[00b75030,00b750b4); ECX actual188h slot; stack NativeString*; EAX same slot; RET4. Complete node constructor over actual174h prefix, current model type/profile, exact174..183 tail and signed-zero pose stores; preserve184h pool ID. Shared model pool/node/type/runtime, no copied descriptor tokens. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b750c0",
+    "before": {
+      "address": "00b750c0",
+      "function_name": "BSP_Model_Destroy",
+      "comment": "[BSP reconstruction 00b750c0]\n[BSP reconstruction] Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry. Original ABI: ECX model; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b750c0",
+      "old_name": "BSP_Model_Destroy",
+      "name": "BSP_Model_Destroy",
+      "evidence": "Complete original[00b750c0,00b75165); ECX actualmodel; RET. Publish model table, release/clear174 then reload/release/clear180 through sameactual04/currentvirtual0; complete node destruction. State1 unwind current180 then base; state0 base only; no physical free. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b75290",
+    "before": {
+      "address": "00b75290",
+      "function_name": "BSP_Model_DeletingDestructor",
+      "comment": "[BSP reconstruction 00b75290]\n[BSP reconstruction] Call00B750C0; if flags&1 return model storage via pool00B74750 with ECX global01090054; return original this. Generated vtable00D62DE8+4 points here; virtual0 uses already-reviewed00BD30E0 to invoke this entry with flag1. Native physical pool is the remaining explicit host storage-owner boundary. Original ABI: ECX model; stack delete flags; EAX original this; RET4.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b75290",
+      "old_name": "BSP_Model_DeletingDestructor",
+      "name": "BSP_Model_DeletingDestructor",
+      "evidence": "Complete original[00b75290,00b752b0); ECX actualmodel; stackflags; EAX originaladdress; RET4. Complete model destructor then return actual188h slot to shared pool01090054 iff flags&1; return originaladdress. NativeModelReference borrows same actual04 and shared hierarchy, logical gate and current profile; unbind and retire companion only after actual return. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b74f20",
+    "before": {
+      "address": "00b74f20",
+      "function_name": "FUN_00b74f20"
+    },
+    "after": {
+      "address": "00b74f20",
+      "old_name": "FUN_00b74f20",
+      "name": "BSP_ModelGeometryMember_Destroy",
+      "evidence": "Complete original[00b74f20,00b74f4b); ECX model+178; RET. Release actual current180 through actual04/currentvirtual0, then clear; preserve174/178/17C. Actual member cleanup used by model destructor state1 unwind. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b75170",
+    "before": {
+      "address": "00b75170",
+      "function_name": "BSP_GeneratedModel_SetGeometry",
+      "comment": "[BSP reconstruction 00b75170]\nRetain mesh at+180, replace+178/+17C only for arguments other than-1.0f; exact argument1 meaning unresolved. Original ABI: ECX model; stack unused word,mesh,float,float; RET10h. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+    },
+    "after": {
+      "address": "00b75170",
+      "old_name": "BSP_GeneratedModel_SetGeometry",
+      "name": "BSP_GeneratedModel_SetGeometry",
+      "evidence": "Complete original[00b75170,00b751eb); ECX actualmodel; stackunusedDWORD,rawgeometry,float178,float17C; RET10h. Captureold180; publish/retainincoming actual04 before oldzero callback; sameidentityskip. Read current D7A260 sentinel once after callbacks; exact SSE unordered comparison writes NaN and signedzero bitpatterns, no rollback. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1d760",
+    "before": {
+      "address": "00b1d760",
+      "function_name": "BSP_InstanceGroup_Destroy",
+      "comment": "[BSP reconstruction 00b1d760]\n[BSP reconstruction] Release/clear binding+0; call00B6DFA0 for model+1C then+20 and clear each; reverse-destroy two12-byte borrowed-pointer arrays+24/+30 through00B1D1D0; return pooled name storage+8 with length+4 plus1. This is a group destructor, not a vector-deleting destructor. Typed existing shared_ptr binding observability is limited during terminal deleter; actual model virtual18 operation remains required after concrete unlink. Original ABI: ECX group; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1d760",
+      "old_name": "BSP_InstanceGroup_Destroy",
+      "name": "BSP_InstanceGroup_Destroy",
+      "evidence": "Complete original[00b1d760,00b1d81b); ECX actual4Ch group; RET. Release captured actual binding00 then clear; reload actualmodel1C then20, canonical shared model unlink/logical release, clear each after call; real reverse sourcearrays30/24, reload currentname08 and pool-return len04+1 without clearing. Preserve3C..4B. EH state1 arrays then name, state0 name only; unvisited owners not released. Evidence reports/native_render_group_lifetime_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1d8e0",
+    "before": {
+      "address": "00b1d8e0",
+      "function_name": "CG_scalar_deleting_dtor_00b1d8e0"
+    },
+    "after": {
+      "address": "00b1d8e0",
+      "old_name": "CG_scalar_deleting_dtor_00b1d8e0",
+      "name": "BSP_InstanceGroup_ScalarDeletingDestructor",
+      "evidence": "Complete original[00b1d8e0,00b1d8fe); ECX actualgroup; stackflags; EAX originaladdress; RET4. Full actual populated group destruction, ordinary free iff flags&1 and only after successful destructor; original pointer return. Correct returning-free continuation reconstructed and Ghidra repaired with prior annotations preserved. Evidence reports/native_render_group_lifetime_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "status": "applied"
+  }
+]

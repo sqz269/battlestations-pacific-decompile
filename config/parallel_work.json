@@ -2428,8 +2428,8 @@
       "id": "native_render_group_lifetime",
       "packet": "native_render_group_lifetime",
       "worker": "primary_integration",
-      "done": false,
-      "state": "next_actual4Ch_group_destructor_scalar_delete_with_complete_model_reference_and_rawbinding_terminal",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
       "dependencies": [
         "native_group_storage_construction",
         "native_model_owner",
@@ -2439,14 +2439,17 @@
         "00b1d760",
         "00b1d8e0"
       ],
-      "boundary": "Actual populated model group, reverse sourcearrays and current pooledname; generic required rawbinding zero owners; no emptygroup/fullnativecommand shortcut."
+      "boundary": "Actual populated model group, reverse sourcearrays and current pooledname; generic required rawbinding zero owners; no emptygroup/fullnativecommand shortcut.",
+      "worker_commit": null,
+      "evidence": "reports/native_render_group_lifetime_audit.json",
+      "integration_report": "reports/native_model_group_integration_audit.json"
     },
     {
       "id": "native_model_owner",
       "packet": "native_model_owner",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_actual184h_model_owner_reference_and_complete_geometry_setter",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
       "dependencies": [
         "native_model_pool",
         "native_model_type_bootstrap",
@@ -2464,14 +2467,17 @@
         "src/native_model_owner.cpp",
         "docs/NATIVE_MODEL_OWNER.md",
         "reports/native_model_owner_audit.json"
-      ]
+      ],
+      "worker_commit": "6108b16",
+      "evidence": "reports/native_model_owner_audit.json",
+      "integration_report": "reports/native_model_group_integration_audit.json"
     },
     {
       "id": "native_model_type_bootstrap",
       "packet": "native_model_type_bootstrap",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_live_c3dObject_descriptor_sharedcounter_static_and_lazy_initialization",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
       "dependencies": [
         "native_model_owner_type_next"
       ],
@@ -2487,14 +2493,17 @@
         "src/model_type_bootstrap.cpp",
         "docs/MODEL_TYPE_BOOTSTRAP.md",
         "reports/model_type_bootstrap_audit.json"
-      ]
+      ],
+      "worker_commit": "a56b4a56",
+      "evidence": "reports/model_type_bootstrap_audit.json",
+      "integration_report": "reports/native_model_group_integration_audit.json"
     },
     {
       "id": "native_render_resource_alias_nodes",
       "packet": "native_render_resource_alias_nodes",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_implementing_actual_aliasnode_and_native_string_copy_before_rangeinsertion_assignment",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
       "dependencies": [
         "native_render_resource_record_storage",
         "native_render_resource_removal_next"
@@ -2508,6 +2517,31 @@
         "src/native_render_resource_alias_nodes.cpp",
         "docs/NATIVE_RENDER_RESOURCE_ALIAS_NODES.md",
         "reports/native_render_resource_alias_nodes_audit.json"
+      ],
+      "worker_commit": "2e834c67",
+      "evidence": "reports/native_render_resource_alias_nodes_audit.json",
+      "integration_report": "reports/native_model_group_integration_audit.json"
+    },
+    {
+      "id": "native_render_command_owner_next",
+      "packet": "native_render_command_owner_next",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_revalidating_complete44h_command_lifetime_initialization_with_actual_owner_dependencies",
+      "code_ownership": [
+        "docs/NATIVE_RENDER_COMMAND_OWNER_NEXT.md",
+        "reports/native_render_command_owner_next.json"
+      ]
+    },
+    {
+      "id": "native_render_alias_checked_ops_next",
+      "packet": "native_render_alias_checked_ops_next",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_completing_checked_iterator_erase_and_actual_error_dependencies_discovery",
+      "code_ownership": [
+        "docs/NATIVE_RENDER_ALIAS_CHECKED_OPS_NEXT.md",
+        "reports/native_render_alias_checked_ops_next.json"
       ]
     }
   ],
@@ -3251,113 +3285,66 @@
     {
       "packet": "native_render_group_lifetime",
       "worker": "primary_integration",
-      "state": "next_actual4Ch_group_destructor_scalar_delete_with_complete_model_reference_and_rawbinding_terminal",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
+      "validation": "reports/native_render_group_lifetime_audit.json"
     },
     {
       "packet": "native_model_owner",
       "worker": "material_effect_plane",
-      "state": "worker_implementing_actual184h_model_owner_reference_and_complete_geometry_setter",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
+      "validation": "reports/native_model_owner_audit.json"
     },
     {
       "packet": "native_model_type_bootstrap",
       "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_live_c3dObject_descriptor_sharedcounter_static_and_lazy_initialization",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
+      "validation": "reports/model_type_bootstrap_audit.json"
     },
     {
       "packet": "native_render_resource_alias_nodes",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_implementing_actual_aliasnode_and_native_string_copy_before_rangeinsertion_assignment",
+      "state": "integrated_reviewed_strict_win32_and_original_native_model_group_alias_fixtures_passed",
+      "validation": "reports/native_render_resource_alias_nodes_audit.json"
+    },
+    {
+      "packet": "native_render_command_owner_next",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_revalidating_complete44h_command_lifetime_initialization_with_actual_owner_dependencies",
+      "validation": null
+    },
+    {
+      "packet": "native_render_alias_checked_ops_next",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_completing_checked_iterator_erase_and_actual_error_dependencies_discovery",
       "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "id": "native_render_group_lifetime",
-      "packet": "native_render_group_lifetime",
-      "worker": "primary_integration",
-      "done": false,
-      "state": "next_actual4Ch_group_destructor_scalar_delete_with_complete_model_reference_and_rawbinding_terminal",
-      "dependencies": [
-        "native_group_storage_construction",
-        "native_model_owner",
-        "native_model_type_bootstrap"
-      ],
-      "function_addresses": [
-        "00b1d760",
-        "00b1d8e0"
-      ],
-      "boundary": "Actual populated model group, reverse sourcearrays and current pooledname; generic required rawbinding zero owners; no emptygroup/fullnativecommand shortcut."
-    },
-    {
-      "id": "native_model_owner",
-      "packet": "native_model_owner",
-      "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_actual184h_model_owner_reference_and_complete_geometry_setter",
-      "dependencies": [
-        "native_model_pool",
-        "native_model_type_bootstrap",
-        "native_group_storage_construction"
-      ],
-      "function_addresses": [
-        "00b75030",
-        "00b750c0",
-        "00b75290",
-        "00b74f20",
-        "00b75170"
-      ],
-      "code_ownership": [
-        "include/bsp/native_model_owner.hpp",
-        "src/native_model_owner.cpp",
-        "docs/NATIVE_MODEL_OWNER.md",
-        "reports/native_model_owner_audit.json"
-      ]
-    },
-    {
-      "id": "native_model_type_bootstrap",
-      "packet": "native_model_type_bootstrap",
-      "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_live_c3dObject_descriptor_sharedcounter_static_and_lazy_initialization",
-      "dependencies": [
-        "native_model_owner_type_next"
-      ],
-      "function_addresses": [
-        "00b74330",
-        "00b74340",
-        "006ef860",
-        "00cd7e60",
-        "00b74f90"
-      ],
-      "code_ownership": [
-        "include/bsp/model_type_bootstrap.hpp",
-        "src/model_type_bootstrap.cpp",
-        "docs/MODEL_TYPE_BOOTSTRAP.md",
-        "reports/model_type_bootstrap_audit.json"
-      ]
-    },
-    {
-      "id": "native_render_resource_alias_nodes",
-      "packet": "native_render_resource_alias_nodes",
+      "packet": "native_render_command_owner_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_implementing_actual_aliasnode_and_native_string_copy_before_rangeinsertion_assignment",
-      "dependencies": [
-        "native_render_resource_record_storage",
-        "native_render_resource_removal_next"
-      ],
       "function_addresses": [
-        "0044bcb0",
-        "004ce6f0"
-      ],
-      "code_ownership": [
-        "include/bsp/native_render_resource_alias_nodes.hpp",
-        "src/native_render_resource_alias_nodes.cpp",
-        "docs/NATIVE_RENDER_RESOURCE_ALIAS_NODES.md",
-        "reports/native_render_resource_alias_nodes_audit.json"
+        "00b1f1f0",
+        "00b1edc0"
+      ]
+    },
+    {
+      "packet": "native_render_alias_checked_ops_next",
+      "worker": "particle_clock_lifetime",
+      "function_addresses": [
+        "004be820",
+        "004becc0",
+        "004b9ff0",
+        "004d0990"
+      ]
+    },
+    {
+      "packet": "native_render_alias_length_error_dependencies",
+      "worker": "material_effect_plane",
+      "function_addresses": [
+        "004ce780",
+        "00408720",
+        "00411700"
       ]
     }
   ],
