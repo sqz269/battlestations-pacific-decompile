@@ -296,3 +296,7 @@ and is proposed as a follow-up below.
 binary-compatible replacement and reproduces neither the refcount traffic nor the pooled string
 storage. One focused case was added to `tests/math_tests.cpp` for the `SpecRole` comparison
 asymmetry.
+
+## Corrections from docs/SHIP_CLASS_FIELDS.md
+
+`Idle` is a row-level sibling of `Traffic`, not nested under it (the receiver is reloaded from the row argument at `00832fb5`). `Traffic` is a vector at +6DCh of 50h-byte records (`pathID - 1` at +4Ch); `Idle` a vector at +6FCh of 1Ch-byte records with two weight maps and `posID - 1` at +18h; `HoD` is 20 records of 30h bytes at +138h with per-record `Flag`, `Smoke` and `Idle` lists; `Camos` is an integer-keyed array at +710h with `TextureRemaps` and `GunColor` nested per camo; `LSReload` is stored at +788h as its reciprocal and +78Ch is `LandingShip`, a resolved class pointer; `InnerExplosionEfx` and `StructuralDamageEfx` are row-level; `CapturePower` is a float defaulting to 10. The ship reader fills +138h..+804h from 67 key paths; 160 of the 633 installed rows are ships with 211 distinct ship key paths.
