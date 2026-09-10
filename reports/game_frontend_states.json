@@ -1,0 +1,321 @@
+{
+  "packet": "game_frontend_states",
+  "owner": "agent/game-frontend-states",
+  "date": "2026-09-09",
+  "kind": "reconstruction",
+  "doc": "docs/GAME_FRONTEND_STATES.md",
+  "anchor": {
+    "function": "BSP_Game_OnMove",
+    "address": "004e4a40",
+    "range": [
+      "004e4b9d",
+      "004e4d2c"
+    ],
+    "note": "Read only. The stored Ghidra body is eight bytes, so every listing quoted here came from bsp.py disasm-raw over the disk bytes."
+  },
+  "game_states": {
+    "1": {
+      "name": "LogoSequence",
+      "evidence": "docs/APP_INIT_GAME_ENTRY.md; written as an immediate at 004e57c1.",
+      "on_move_update": "00685170 with ECX = 00E198A4"
+    },
+    "2": {
+      "name": "TitleScreen",
+      "evidence": "docs/APP_INIT_GAME_ENTRY.md; written at 004c9b0d in GGame::OnInitTitle and at 004e5819.",
+      "on_move_update": "0068d850 with ECX = 00E198C8, plus the GUI and menu-command branch"
+    },
+    "4": {
+      "name": "FrontEndShell",
+      "evidence": "No instruction in .text writes the immediate 4 into game+5D4h. The value only arrives through BSP_Game_DrainStateRequestQueue, which stores the dequeued request at 004e449e and dispatches the case for 4 at 004e44f3 to 004e4000. That routine destroys the title singleton at 00E198C8 and loads the front-end resource sets under GILoading::SLM_LOAD_FRONTEND (00CE8254) or GILoading::SLM_LOAD_FRONTEND_RETURN (00CE8274), selected by game+719Ch, with the profiler labels 'Textures before mainmenu' (00CE82C8), 'Sounds before mainmenu' (00CE82B0) and 'Effects before mainmenu' (00CE8298).",
+      "on_move_update": "none; 004e4bfb falls straight to the shared tail"
+    }
+  },
+  "dispatch": [
+    {
+      "range": [
+        "004e4ba3",
+        "004e4baf"
+      ],
+      "what": "state test against 1, 2 and 4; anything else jumps to the fallback at 004e4cdd"
+    },
+    {
+      "range": [
+        "004e4bb5",
+        "004e4bdb"
+      ],
+      "what": "render-queue open guarded by game+34h == 0. 004c11f0 then 00b1bf90; a nonzero retention control jumps to 004e4ccb and skips the per-state update as well as the render. Otherwise 00F8D394 vtable +0Ch, game+34h = 1."
+    },
+    {
+      "range": [
+        "004e4bde",
+        "004e4be6"
+      ],
+      "what": "game+5D4h is re-read after the renderer virtual"
+    },
+    {
+      "range": [
+        "004e4be8",
+        "004e4bf3"
+      ],
+      "what": "state 1: 00685170 with ECX = 00E198A4"
+    },
+    {
+      "range": [
+        "004e4c01",
+        "004e4c27"
+      ],
+      "what": "state 2: lazy 004db220 for 00E198C8 (tail jump to GGame::OnInitTitle), then 0068d850 with the raw delta"
+    },
+    {
+      "range": [
+        "004e4c29",
+        "004e4c52"
+      ],
+      "what": "GUI branch, *(00F8ABE8)+3E8h nonzero: 00aa0e50(gui, 0) then 00aa0e00(gui, 0)"
+    },
+    {
+      "range": [
+        "004e4c54",
+        "004e4c96"
+      ],
+      "what": "GUI branch, byte zero: 00aa0e00(gui, 1), then the 00425d10 singleton: +5h zero does nothing, +4h set runs 004f71f0 with the SCALED delta game+21F0h, +4h clear runs 004b6e50"
+    },
+    {
+      "range": [
+        "004e4c9b",
+        "004e4cc9"
+      ],
+      "what": "shared tail: 004f8830(rawDelta), 004c12b0 then 00aa4f80(rawDelta, 0), 004ca440, 004ca1f0"
+    },
+    {
+      "range": [
+        "004e4ccb",
+        "004e4cd7"
+      ],
+      "what": "pending-request check through *(00E188A8)+5E8h; zero returns"
+    },
+    {
+      "range": [
+        "004e4cdd",
+        "004e4d0d"
+      ],
+      "what": "fallback render-queue open with the retention result discarded, then 004e4430 unless game+5ECh is set"
+    },
+    {
+      "range": [
+        "004e4d12",
+        "004e4d2c"
+      ],
+      "what": "three compares against 1, 2 and 4 sharing one epilogue; a non front-end state falls into the timing block at 004e4d32 in the same call"
+    }
+  ],
+  "argument_attribution": {
+    "claim": "The pushes at 004e4c38, 004e4c45 and 004e4c54 are arguments to 00aa0e50 and 00aa0e00, not to BSP_GuiManager_GetOrCreate.",
+    "evidence": "004e4ca8 calls the same accessor with no push at all, and the independent site 004c6da5 pushes a computed boolean in the same shape.",
+    "supersedes": "docs/GAME_ON_MOVE_MAP.md reads these as BSP_GuiManager_GetOrCreate(1)."
+  },
+  "gui_suppression_flag": {
+    "expression": "*(char *)(*(00F8ABE8) + 0x3E8)",
+    "read_sites": {
+      "004e4c2f": "state 2 clears the GUI screens and disables the GUI",
+      "004c6d96": "forces the computed GUI-enable argument to false",
+      "004ca327": "BSP_Game_ProcessWindowCloseRequest drops the request"
+    },
+    "object": "00F8ABE8 is filled at 00a3f586 inside 00a3f530, online / system-manager segment 71; BSP_Game_RequestReturnToTitle tail jumps to 00A3E6A0 with it in ECX.",
+    "uncertainty": "A full .text scan for 'mov byte ptr [reg+3E8h], imm8' found one writer, 009e04b0, which clears +3E8h/+3E9h/+3EAh together but has no established link to this object. The flag's owner and writer are unresolved; only the three read sites are established."
+  },
+  "screen_hierarchy": {
+    "base_constructor": "004f7180",
+    "base_destructor": "004f71a0",
+    "register": "004f71d0",
+    "vtable": "00CEAE54",
+    "fields": {
+      "+4h": "wanted",
+      "+5h": "active"
+    },
+    "vtable_slots": {
+      "+00h": "__purecall, returns the screen id used as the registry index",
+      "+10h": "004f71d0 register",
+      "+18h": "enter",
+      "+1Ch": "exit",
+      "+20h": "update(float)",
+      "+24h": "fills the list 004f83b0 walks"
+    },
+    "registry": {
+      "range": [
+        "00E18B60",
+        "00E18CDB"
+      ],
+      "slot_count": 95,
+      "sentinel_byte": "00E18CDC, cleared at 004f8881 and again at 004e544c and 004e5481"
+    }
+  },
+  "screen_pump_004f8830": {
+    "abi": "__stdcall(float raw_delta), RET 4, no ECX",
+    "guard": "The 00425d10 singleton's byte +25Ch (modal dialog) narrows the body to that one screen's virtual +20h and returns unless game+1FE4h and 00E198C4 are both set.",
+    "passes": [
+      "004f8890 exit: wanted == 0 and active != 0 -> virtual +1Ch; then if still active, clear active and run 004f83b0",
+      "004f88d0 enter: wanted != 0 and active == 0 -> set active, run 004f83b0, then virtual +18h (the commit runs before the virtual here, the opposite of the exit pass)",
+      "004f8906 update: both set -> virtual +20h with the raw delta"
+    ]
+  },
+  "shared_tail_vs_blocking_screen": [
+    "The blocking path reaches the renderer through BSP_Game_TryBeginRenderFrame (004c6c30) at 004e4b4e; the front-end path open-codes the same test against 00F8D394 and sets game+34h itself.",
+    "On a retained queue the blocking path skips only the render; the front-end path skips the per-state update too and lands on the pending-request check.",
+    "The front-end path runs 004f8830 before the GUI update; the blocking path never touches the screen registry.",
+    "The blocking path returns unconditionally at 004e4b8c; the front-end path returns only when the request ring is empty or the drain kept a front-end state."
+  ],
+  "transitions": {
+    "1_to_2": "00685170 requires BOTH elapsed > this+78h (BSP_Timestamp_Subtract on this+68h, reduced by fild[eax]/fild[eax+8]) AND the edge-triggered 004d92b0(game, 0x4A) before tail-jumping to 00685070. 00685070 advances this+60h through the 8-byte-element vector at this+44h..+48h; when exhausted it runs the object's virtual +0h with 1 and then BSP_Game_OnInitOnce(game, 0), which re-runs GGame::OnInitTitle and writes game+5D4h = 2 directly, not through the ring.",
+    "1_to_2_uncertainty": "Because the two conditions are ANDed, 00685170 cannot advance on time alone. The automatic advance is not in this body and its location is unresolved.",
+    "2_to_4": "BSP_Game_RequestState (004d7920) has 28 call sites; exactly two push 4, at 0068d8bc in BSP_TitleScreen_Skip and 0068d90e in BSP_TitleScreen_Advance (title vtable 00CF7A98 slot +4h). Both are guarded by game+5E8h == 0 and both then clear game+5ECh. GGame::OnInitTitle calls the virtual normally and BSP_TitleScreen_Skip when skipTitle is set.",
+    "mission_to_4": "OnMove's state 0x11 branch enqueues 4 at 004e5074, guarded by game+7184h == 0 and an empty ring, so state 17 hands off to the front-end shell, which picks the _RETURN loading label because game+719Ch is already set. The drain holds a second copy of the same block at 004e478b, but it is NOT reached from the state-17 store at 004e4778, which sets game+5ECh = 1 and jumps past it to 004e47bd; the predecessor of 004e478b was not identified.",
+    "out_of_4": "004db311 in BSP_Game_PollPlatformSessionEvents is the only compare against 4 outside OnMove: state 4 takes BSP_Game_RequestReturnToTitle, every other state takes the inline GGame::OnInitTitle path."
+  },
+  "address_0054e440": {
+    "verdict": "Not on the front-end path.",
+    "call_site": "004e522d, inside the in-mission pause branch of the simulation gate, with ECX = *(00E198C4 + 0xA8), guarded by that object's byte +8h.",
+    "behavior": "Clears its own +8h/+9h, calls this+20h virtual +34h with 0, 004d94f0(game, 0), zeroes the float at +54h, stops the input feedback effects at slots +2FD0h and +0DE0h, then reads the hint id from the award tracker (004e1ca0 then 0068e5b0) and advances it one step: BASICPLANE -> BASICPLANE2 via strcmp 00BF7FBF, then via the native-string comparison 00425850 BASICPLANE2 -> BASICPLANE3, BASICSHIP -> BASICSHIP2, BASICSUB -> BASICSUB2. Hands the result to 00690fd0, whose body holds hints.missionhint and the HintSystem Lua strings.",
+    "supersedes": "docs/GAME_ON_MOVE_MAP.md files it as 'front-end button segment' and 'BSP_PauseMenu_BuildUnitList'."
+  },
+  "abi": {
+    "00685170": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "00E198A4"
+    },
+    "0068d850": {
+      "convention": "__thiscall",
+      "stack_args": [
+        "float raw_delta"
+      ],
+      "ret": 4,
+      "ecx": "00E198C8"
+    },
+    "004f8830": {
+      "convention": "__stdcall",
+      "stack_args": [
+        "float raw_delta"
+      ],
+      "ret": 4,
+      "ecx": null
+    },
+    "004f71f0": {
+      "convention": "__thiscall",
+      "stack_args": [
+        "float seconds"
+      ],
+      "ret": 4,
+      "ecx": "any front-end screen"
+    },
+    "004b6e50": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "any front-end screen"
+    },
+    "00425d10": {
+      "convention": "__cdecl",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": null
+    },
+    "0054e440": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "*(00E198C4 + 0xA8)"
+    },
+    "004e4000": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "game"
+    },
+    "004d7920": {
+      "convention": "__thiscall",
+      "stack_args": [
+        "int state"
+      ],
+      "ret": 4,
+      "ecx": "game"
+    },
+    "0068d8d0": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "00E198C8"
+    }
+  },
+  "reconstruction": {
+    "header": "include/bsp/frontend_states.hpp",
+    "source": "src/frontend_states.cpp",
+    "cmake": "cmake/startup.cmake",
+    "entry_points": [
+      "run_front_end_state_frame",
+      "run_front_end_screen_pump",
+      "close_front_end_screen",
+      "close_menu_command_screen"
+    ],
+    "reused": "is_front_end_game_state from include/bsp/app_frame.hpp",
+    "tests": "none added; existing reconstructed_math suite passes",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors, clean"
+  },
+  "status": {
+    "004e4b9d..004e4d2c": "analyzed, reconstructed, build-tested",
+    "004f8830": "analyzed, reconstructed, build-tested",
+    "004b6e50": "analyzed, reconstructed, build-tested",
+    "004f71f0": "analyzed",
+    "00425d10": "analyzed",
+    "00685170": "analyzed",
+    "0068d850": "analyzed",
+    "0054e440": "analyzed",
+    "004f7180": "analyzed",
+    "004f71a0": "analyzed",
+    "004f71d0": "analyzed",
+    "004e4000": "partially analyzed",
+    "004d7920": "analyzed",
+    "0068d8a0": "analyzed",
+    "0068d8d0": "analyzed",
+    "00685070": "analyzed",
+    "00685300": "partially analyzed",
+    "004d7f90": "analyzed",
+    "0068d760": "analyzed"
+  },
+  "recorded_names": {
+    "00685170": "BSP_LogoSequence_PollSkip",
+    "0068d850": "BSP_TitleScreen_Update",
+    "004f8830": "BSP_FrontEndScreens_Pump",
+    "004f71f0": "BSP_FrontEndScreen_Update",
+    "004b6e50": "BSP_FrontEndScreen_Close",
+    "00425d10": "BSP_MenuCommandScreen_GetSingleton",
+    "0054e440": "BSP_TutorialHint_AdvanceBasicStep",
+    "004f7180": "BSP_FrontEndScreen_Construct",
+    "004f71a0": "BSP_FrontEndScreen_Destruct",
+    "004f71d0": "BSP_FrontEndScreen_Register",
+    "004e4000": "BSP_Game_EnterFrontEndShell",
+    "004d7920": "BSP_Game_RequestState",
+    "0068d8a0": "BSP_TitleScreen_Skip",
+    "0068d8d0": "BSP_TitleScreen_Advance",
+    "00685070": "BSP_LogoSequence_AdvanceOrFinish",
+    "00685300": "BSP_LogoSequence_LoadTable",
+    "004d7f90": "BSP_Game_RequestReturnToTitle",
+    "0068d760": "BSP_TitleScreen_Construct"
+  },
+  "open_questions": [
+    "Where the logo sequence advances on time; 00685170 requires a button press as well.",
+    "What calls BSP_LogoSequence_LoadTable; the index records no callers for 00685300.",
+    "The owner and the writer of *(00F8ABE8) + 3E8h.",
+    "The identity of 00F8BBF4, updated by 0068d850 through vtable +4h; built at 00a908f6.",
+    "The screen ids: the registry is indexed by a per-leaf virtual, so no id-to-screen table was recovered and the 95 slots are unnamed.",
+    "The body of 004e4000 past 004e4130, where the front-end shell's screens are created."
+  ],
+  "external_contracts": {
+    "00aa0e00": "BSP_GuiManager_SetEnabled candidate, owned by game_blocking_screen",
+    "00aa0e50": "BSP_GuiManager_ClearScreens candidate, owned by game_blocking_screen",
+    "004e4430": "BSP_Game_DrainStateRequestQueue, owned by game_frame_control; read only",
+    "004db290": "BSP_Game_PollPlatformSessionEvents, owned by game_session_polls; read only"
+  },
+  "ghidra": "read only; no renames, comments, prototypes or saves"
+}
