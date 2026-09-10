@@ -18,6 +18,7 @@
 #include "bsp/title_init.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
+#include "bsp/scene_file.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
 #include "bsp/main_menu_screen.hpp"
@@ -1029,6 +1030,34 @@ int main() {
         set_widget_visible(root, true, host);
         check(host.notified.size() == 3 && host.notified[2] == &leaf,
             "the recursing form carries the requested value to every descendant");
+    }
+
+    {
+        // The three .scn tokenizer and recovery boundaries that decide whether
+        // the shipped scene files load at all: the comma is whitespace rather
+        // than a delimiter, sscanf("%f") accepts the prefix of "1.-", and a
+        // property key followed by neither '=' nor '{' is dropped so that a
+        // "--" prefixed line is applied rather than commented out (008f66b9).
+        const std::string scene_text =
+            "entity \"A\" (Landscape) {\n"
+            "  localframe 1,0,0,0, 0,1,0,0, 0,0,1.-,0, 1,2,3,1 ;\n"
+            "  properties (Common, Landscape) {\n"
+            "    -- Skill = E SkillLevels : Stun ;\n"
+            "    FilePath = S \"islands/a\" ;\n"
+            "  }\n"
+            "}\n";
+        const SceneDocument doc = parse_scene_document(scene_text);
+        check(doc.errors.empty() && doc.entities.size() == 1,
+            "the scene grammar accepts comma separators without a recovered error");
+        if (doc.entities.size() == 1) {
+            const SceneEntity& ent = doc.entities[0];
+            check(ent.frame[10] == 1.0f, "sscanf float semantics accept the prefix of \"1.-\"");
+            check(ent.groups.size() == 2 && ent.groups[1] == "Landscape",
+                "commas in the property group list are whitespace, not group names");
+            check(ent.properties.find("Skill") != nullptr
+                    && ent.properties.find("--") == nullptr,
+                "a \"--\" prefix drops only the junk key, leaving the property applied");
+        }
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

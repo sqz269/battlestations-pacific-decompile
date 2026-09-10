@@ -1,0 +1,237 @@
+{
+  "packet": "scene_file_reader",
+  "worktree": "agent/scn-reader",
+  "doc": "docs/SCENE_FILE_READER.md",
+  "ghidra": "read-only for this packet; no renames, comments, prototypes or saves were applied",
+  "format": {
+    "kind": "text",
+    "not": ["lua", "binary"],
+    "evidence": [
+      "0046df00 constructs the tokenizer 008d9cf0 with the delimiter literal 00ce4f40 \";{}=:(,)\"",
+      "top-level dispatch on the literals header/entity/traffic/groups/SceneBrowserGroups",
+      "all 259 installed .scn files parse under the recovered grammar"
+    ],
+    "whitespace": " \\t\\r\\n,",
+    "whitespace_source": "PTR_s___00e0c940 -> 00d15f2c",
+    "delimiters": ";{}=:(,)",
+    "delimiter_source": "default \";\" at 00ce5698 concatenated with 00ce4f40",
+    "comments": ["// to end of line", "/* */ block"],
+    "not_a_comment": "--",
+    "quoted_strings": "\" delimited, no escape processing, quoted flag in tokenizer +4h",
+    "grammar": [
+      "file := ( header | entity | traffic | groups | scenebrowsergroups | <ignored token> )*",
+      "header := \"header\" \"{\" ( \"uniqueID\" INT \";\" | \"NextUID\" INT \";\" | \"properties\" propsection | \"precache\" propsection | <ignored> )* \"}\"",
+      "entity := \"entity\" NAME \"(\" CLASS \")\" \"{\" \"localframe\" FLOAT x16 \";\" [ \"template\" TOKEN \";\" ] [ \"uid\" INT \";\" ] \"properties\" propsection entity* \"}\"",
+      "propsection := [ \"(\" TOKEN* \")\" ] \"{\" propbody \"}\"",
+      "propbody := ( KEY \"{\" propbody | KEY \"=\" LETTER TOKEN* \";\" | KEY )* \"}\"",
+      "groups := \"groups\" \"{\" ( \"group\" \"{\" \"GroupName\" \"=\" TOKEN \"Index\" \"=\" INT \"}\" )* \"}\""
+    ],
+    "value_letters_observed": ["S", "F", "I", "E", "B", "R", "V3", "RPath", "RFort", "RPlnShp", "IA", "LUA_S"],
+    "value_letter_role": "validated against the type the property descriptor already declares (008f5a00, type codes 0..0Bh); not a dispatch key"
+  },
+  "tokenizer": {
+    "address": "008d9cf0",
+    "size_bytes": 2104,
+    "fields": {
+      "+0h": "vtable 00d15fe4",
+      "+4h": "current token was quoted",
+      "+5h": "current token text, 0x400 bytes",
+      "+405h": "previously consumed token text, 0x400 bytes",
+      "+805h": "lookahead cache valid",
+      "+806h": "current character",
+      "+807h": "lookahead character",
+      "+808h": "lookahead character valid",
+      "+809h": "end of buffer",
+      "+80Ah": "end of buffer at token start",
+      "+818h": "delimiter set pointer",
+      "+81Ch": "1-based line counter",
+      "+820h/+824h": "file name, native {length, pointer}",
+      "+828h": "VFS stream from [0109ceec] vtable +4h, mode 0x32",
+      "+82Ch": "whole-file buffer",
+      "+830h": "buffer size, stream vtable +30h",
+      "+834h": "read cursor"
+    }
+  },
+  "passes": [
+    {
+      "name": "header",
+      "instantiate_arg3": 0,
+      "registration_arg6": 0,
+      "caller": "004dfb70",
+      "reads": "weather descriptor plus the header block only; the entity loop is skipped at 0046e9d5"
+    },
+    {
+      "name": "registration",
+      "instantiate_arg3": 0,
+      "registration_arg6": 1,
+      "caller": "004d4df0 first call",
+      "reads": "header, then entities with the registration flag; stops at the first traffic/groups/SceneBrowserGroups keyword"
+    },
+    {
+      "name": "instantiate",
+      "instantiate_arg3": 1,
+      "registration_arg6": 0,
+      "caller": "004d4df0 second call",
+      "reads": "header, entities fully constructed, all four tail blocks, then 0046aab0"
+    }
+  ],
+  "record_fields": {
+    "argument": "argument 4 of 0046df00, the mission scene record of docs/MISSION_SCENE_LOAD.md",
+    "written": {
+      "+905h": "set to 1 by a header precache block (00469bf0)",
+      "+1098h": "the header uniqueID integer (00469bf0); the mission id 004e183d publishes to [00f8a2fc]+48h"
+    },
+    "read": {
+      "+90Ch/+910h": "the scene path, passed in as argument 1; never written by the reader"
+    }
+  },
+  "scene_database_fields": {
+    "this": "[00e18680]",
+    "+4h": "non-zero enables the Hidden property test in 0046cf40",
+    "+13Ch/+140h": "scene path, native string pair",
+    "+144h/+148h": "scene path with the last extension removed; the %s of %s_LS_%i.trn",
+    "+14Ch": "pending deferred-reference list {count, head, tail}, emptied by 0046a9f0",
+    "+150h": "deferred-reference list walked by 0046aab0"
+  },
+  "top_level_keys": [
+    {"keyword": "header", "literal": "00ce5994", "handler": "00469bf0"},
+    {"keyword": "entity", "literal": "00ce5818", "handler": "0046cf40"},
+    {"keyword": "traffic", "literal": "00ce5890", "handler": "009514b0 (instantiate) / 0095ca10 (registration, then stop)"},
+    {"keyword": "groups", "literal": "00ce55e4", "handler": "00467e10"},
+    {"keyword": "SceneBrowserGroups", "literal": "00ce56a4", "handler": "00469e40"}
+  ],
+  "header_keys": [
+    {"keyword": "uniqueID", "literal": "00ce5664", "effect": "int -> scene record +1098h"},
+    {"keyword": "NextUID", "literal": "00ce569c", "effect": "int, read and discarded"},
+    {"keyword": "properties", "literal": "00ce568c", "effect": "property bag published as SceneRootProps (00469b60)"},
+    {"keyword": "precache", "literal": "00ce5670", "effect": "property bag; sets scene record +905h"}
+  ],
+  "entity_keys": [
+    {"keyword": "localframe", "literal": "00ce5840", "optional": false, "effect": "16 floats through 008d9b40, then ';'; the 3x3 basis is renormalised"},
+    {"keyword": "template", "literal": "00ce5834", "optional": true, "effect": "one token then ';'"},
+    {"keyword": "uid", "literal": "00ce5830", "optional": true, "effect": "one int then ';'"},
+    {"keyword": "properties", "literal": "00ce568c", "optional": false, "effect": "optional ( group list ) interned by 00469b60, then { body } parsed by 008f5a00 into a 0x114-byte bag"}
+  ],
+  "entity_synthetic_property": {
+    "key": "__EXTDATAPATH",
+    "key_literal": "00ce5820",
+    "format": "%s_LS_%i.trn",
+    "format_literal": "00ce55d4",
+    "condition": "uid != 0 and scene stem at this+144h non-empty and class descriptor id == 0x44",
+    "otherwise": "empty string (00ce3a0c)"
+  },
+  "entity_properties_read_back": [
+    {"key": "Hidden", "literal": "00ce5708", "use": "skips the normal instantiation and takes the hidden branch"},
+    {"key": "Type", "literal": "00ce4780", "use": "read on the registration pass after a successful instantiation"},
+    {"key": "Party", "literal": "00ce5804", "use": "read on the hidden branch into a 0x5C-byte record with the entity name"}
+  ],
+  "terrain_keys": [
+    {"source": "g_StaticShadowTexture", "source_literal": "00ce597c", "target": "g_Terrain.g_StaticShadowTexture", "target_literal": "00ce595c", "written": "string via 008f3370"},
+    {"source": "ga_StaticShadowShotOffsetX", "source_literal": "00ce5940", "target": "g_Terrain.ga_StaticShadowShotOffsetX", "target_literal": "00ce5918", "written": "float at +0Ch"},
+    {"source": "ga_StaticShadowShotOffsetZ", "source_literal": "00ce58fc", "target": "g_Terrain.ga_StaticShadowShotOffsetZ", "target_literal": "00ce58d4", "written": "float at +0Ch"},
+    {"source": "ga_StaticShadowShotSize", "source_literal": "00ce58bc", "target": "g_Terrain.ga_StaticShadowShotSize", "target_literal": "00ce5898", "written": "float at +0Ch"}
+  ],
+  "terrain_key_condition": "written only when the override name argument is null or empty; there is no Y offset variable and no terrain key inside the .scn file itself",
+  "entity_instantiation_contract": {
+    "call": "0046c550(classFactory, name, a3, worldFrame[16], propertyBag)",
+    "factory_lookup": "00468fb0 resolves the class token to a descriptor; 00468660 maps the descriptor id to the factory",
+    "child_frames": "00413920 BSP_Matrix_Multiply4x4 composes a child localframe with the parent world frame before recursing",
+    "registration_pass_class_ids": ["0x47", "0x19", "0x1b", "0x1c", "0x34", "0x4d"],
+    "landscape_class_id": "0x44",
+    "note": "treated as a contract; not reimplemented in this packet"
+  },
+  "error_handling": {
+    "model": "no failure path; 008d9930/008d9ad0/008d9b40 report through 008d8f70 and leave the offending token unconsumed, so the next grammar step usually recovers",
+    "unknown_header_key": "consumed and ignored (00469bf0)",
+    "unknown_top_level_keyword": "consumed and ignored (0046df00)",
+    "property_key_without_equals_or_brace": "dropped at 008f66b9; the scan resumes at the next token, so a line prefixed with -- is NOT commented out",
+    "missing_file": "008d9cf0 leaves the buffer empty when the VFS provider returns no stream; every loop terminates on the end-of-buffer flag"
+  },
+  "routines": [
+    {"address": "0046df00", "name": "BSP_SceneDatabase_LoadSceneFile", "abi": "__thiscall", "ret": "RET 0x18", "stack_args": 6, "signature": "(this=[00e18680], const char* scenePath, void* a2, char instantiate, void* sceneRecord, const char* overrideName, char registration)", "state": "analyzed, reconstructed, build-tested, installed-file-checked"},
+    {"address": "0046cf40", "name": "BSP_SceneFile_ReadEntityBlock", "abi": "__thiscall", "ret": "RET 0x58", "stack_args": "tokenizer, a2=0, a3, overrideName, float frame[16] by value, a6=1, registration", "state": "analyzed, reconstructed (parse only), installed-file-checked"},
+    {"address": "00469bf0", "name": "BSP_SceneFile_ReadHeaderBlock", "abi": "__thiscall", "ret": "RET 0x10", "stack_args": 4, "signature": "(this, Tokenizer*, void* sceneRecord, void* a3, void* a4)", "state": "analyzed, reconstructed, installed-file-checked"},
+    {"address": "00467e10", "name": "BSP_SceneFile_ReadGroupsBlock", "abi": "__thiscall", "ret": "RET 0x4", "stack_args": 1, "state": "analyzed, reconstructed, installed-file-checked"},
+    {"address": "00469e40", "name": "BSP_SceneFile_ReadBrowserGroupsBlock", "abi": "__thiscall", "ret": "RET 0x4", "stack_args": 1, "state": "analyzed (entry loop only; 004694f0 not decoded)"},
+    {"address": "0046a9f0", "name": "BSP_SceneDatabase_ClearPendingReferences", "abi": "__thiscall", "ret": "RET", "stack_args": 0, "state": "analyzed from the listing past the Ghidra fall-through gaps"},
+    {"address": "0046aab0", "name": "BSP_SceneDatabase_ResolveDeferredReferences", "abi": "__thiscall", "ret": "tail JMP 0046a9f0, effective RET 0", "stack_args": 0, "state": "analyzed (shape and inputs)"},
+    {"address": "008d9cf0", "name": "BSP_SceneTokenizer_Construct", "abi": "__thiscall", "ret": "RET 0xc", "stack_args": "NativeString fileName by value, const char* extraDelimiters", "state": "analyzed"},
+    {"address": "008d8a70", "name": "BSP_SceneTokenizer_PeekToken", "abi": "__fastcall/__thiscall", "ret": "RET", "stack_args": 0, "state": "analyzed, reconstructed, installed-file-checked"},
+    {"address": "008d8960", "name": "BSP_SceneTokenizer_ConsumeToken", "abi": "__fastcall/__thiscall", "ret": "RET", "stack_args": 0, "state": "analyzed, reconstructed"},
+    {"address": "008d9930", "name": "BSP_SceneTokenizer_ExpectToken", "abi": "__thiscall", "ret": "RET 0x4", "stack_args": 1, "state": "analyzed, reconstructed"},
+    {"address": "008d9980", "name": "BSP_SceneTokenizer_ReadToken", "abi": "__thiscall", "ret": "RET", "stack_args": 0, "state": "analyzed, reconstructed"},
+    {"address": "008d9ad0", "name": "BSP_SceneTokenizer_ReadInt", "abi": "__thiscall", "ret": "RET 0x4", "stack_args": 1, "state": "analyzed, reconstructed"},
+    {"address": "008d9b40", "name": "BSP_SceneTokenizer_ReadFloat", "abi": "__thiscall", "ret": "RET 0x4", "stack_args": 1, "state": "analyzed from call sites and RET size"}
+  ],
+  "no_ghidra_function": [],
+  "callers": {
+    "0046df00": ["004d4df0 BSP_Game_LoadSceneContents", "004dfb70 BSP_Game_LoadMissionScene", "004e1d70"],
+    "0046cf40": ["0046df00", "0046cf40 (recursive, nested entity)"],
+    "00469bf0": ["0046df00"],
+    "00467e10": ["0046df00"],
+    "00469e40": ["0046df00"],
+    "0046a9f0": ["0046df00", "0046aab0"],
+    "0046aab0": ["0046df00"]
+  },
+  "ghidra_flow_gaps": [
+    {"function": "0046a9f0", "after_call": "00bf65ac", "gap": "0046aa17..0046aa21", "bytes": 10, "decoded": "add esp,4 ; mov dword [esi+8],0", "material": false},
+    {"function": "0046a9f0", "after_call": "00bf65ac", "gap": "0046aa52..0046aa5c", "bytes": 10, "decoded": "add esp,4 ; cmp dword [edi],0 ; jne 0x46aa00", "material": true, "note": "hides the loop back edge; Ghidra therefore shows a single-node pop instead of a full clear"},
+    {"function": "0046cf40", "after_call": "00bf6989", "gap": "0046d8e0..0046d8e3", "bytes": 3, "material": false}
+  ],
+  "installed_game_validation": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "reference": "local/scn_ref.py, an independent Python implementation of the recovered tokenizer, grammar and recovery rules",
+    "files_total": 259,
+    "files_parsed_to_end": 259,
+    "files_with_no_recovered_error": 250,
+    "files_needing_recovery_rules": 9,
+    "entities_total_including_nested": 133655,
+    "entities_per_file_min": 0,
+    "entities_per_file_median": 329,
+    "entities_per_file_max": 2720,
+    "max_entity_nesting_depth": 4,
+    "distinct_entity_classes": 23,
+    "distinct_property_keys": 172,
+    "unknown_top_level_keywords": 0,
+    "unknown_header_keys": 0,
+    "top_level_keyword_counts": {"header": 259, "entity": 30727, "traffic": 251, "groups": 259, "SceneBrowserGroups": 249},
+    "files_with_precache": ["universe/scenes/missions/COTP-IJN/ijn_02_force_z.scn"],
+    "entity_class_counts": {"LandFort": 71388, "Path": 24886, "DestroyerGen": 9634, "Cloud": 7078, "LandingPoint": 3542, "NavPoint": 3457, "Stationary": 2233, "PlaneSquadronGen": 2091, "SpawnPoint": 1654, "MotherShipGen": 1059, "WaterMine": 1013, "Landscape": 744, "TBoatGen": 650, "CommandBuilding": 646, "LandingShipGen": 390, "SubmarineGen": 326, "AirField": 253, "Shipyard": 238, "MovieCamPos": 77, "MovieCamLookat": 77, "LandConvoy": 31, "SimpleEffect": 11, "Landfort": 3},
+    "nonconforming_files": [
+      {"file": "universe/scenes/missions/COTP-USN/PRCPUS/usn_09_leyte.scn", "errors": 3, "first": "line 11954: template line missing its ';'"},
+      {"file": "universe/scenes/missions/ijn/ESMP/05_philippine_sea.scn", "errors": 4, "first": "line 23435: entity block unclosed before traffic"},
+      {"file": "universe/scenes/missions/ijn/ijn_11_operation_to.scn", "errors": 1, "first": "line 9711: template line missing its ';'"},
+      {"file": "universe/scenes/missions/ijn/ijn_8_north_sol.scn", "errors": 1, "first": "line 42933: entity body opening on a float, not localframe"},
+      {"file": "universe/scenes/missions/multi/scene12.scn", "errors": 1, "first": "line 46101: template line missing its ';'"},
+      {"file": "universe/scenes/missions/multi/scene175.scn", "errors": 4, "first": "line 28775: entity block unclosed before traffic"},
+      {"file": "universe/scenes/missions/multi/scene901.scn", "errors": 1, "first": "line 3872: localframe line missing its ';'"},
+      {"file": "universe/scenes/missions/multi/scene906.scn", "errors": 2, "first": "line 37099: entity body opening on a float"},
+      {"file": "universe/scenes/missions/multi/scene907.scn", "errors": 4, "first": "line 30703: entity block unclosed before traffic"}
+    ],
+    "conclusion": "no installed file contains a construct the recovered grammar does not cover; all nine deviations are handled by the native's own consume-only-on-success recovery"
+  },
+  "reconstruction": {
+    "header": "include/bsp/scene_file.hpp",
+    "source": "src/scene_file.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "build": "scripts/build.ps1, Win32 Release, /W4 /WX, clean",
+    "tests": "ctest reconstructed_math passed",
+    "divergence": "the reconstruction stops after 256 recovered errors where the native keeps reporting; the worst shipped file has 4"
+  },
+  "uncertainties": [
+    "the Weathers/SubScenes walk at 0046df00+0x100..+0x5a0 was read for literals and control flow only; which string the entry name is matched against was not settled",
+    "008f5a00's per-type-code value grammar was not read; the reconstruction reads a value as tokens up to ';', which does not model V3, IA, FA or LUA_S structure",
+    "0046c550, 00468660, 00468fb0 and 00469690 are contracts; the class ids 0x44, 0x47, 0x19, 0x1b, 0x1c, 0x34 and 0x4d are recorded but not named",
+    "the SceneBrowserGroups entry layout (004694f0) and the traffic body (009514b0) were not decoded",
+    "the hidden-entity record allocated at 0046d68a is 0x5C bytes; only its name and Party fields were identified",
+    "the pass-2 registration tail at 0046ed14..0046ef62 is the least certain region: the LandVehicle/LandFort/VehicleClass literals sit in a comparison block whose subject was not fully established"
+  ],
+  "follow_up_packets": [
+    {"packet": "scene_property_bag", "addresses": ["008f5a00", "008f2260", "008f38a0", "008f54f0", "008f41a0", "008f3370"], "files": ["docs/SCENE_PROPERTY_BAG.md", "include/bsp/scene_properties.hpp"], "contract": "the 0x114-byte property bag: twelve type codes, their letters, the per-type value grammar and the descriptor lookup"},
+    {"packet": "scene_entity_factory", "addresses": ["0046c550", "00468660", "00468fb0", "00469690", "0046bf70"], "files": ["docs/SCENE_ENTITY_FACTORY.md"], "contract": "class name to descriptor to instance: the class-id table, the two-stage 0046c550 construction and the Hidden/Party record"},
+    {"packet": "scene_browser_groups", "addresses": ["004694f0", "00469e40", "00469a20", "00469fc0"], "files": ["docs/SCENE_BROWSER_GROUPS.md"], "contract": "one SceneBrowserGroups entry, and the group/index tables 00467e10 feeds"},
+    {"packet": "scene_weather_descriptor", "addresses": ["0046df00", "00b69d40", "00b6a020", "00b65fb0", "00b662b0"], "files": ["docs/SCENE_WEATHER_DESCRIPTOR.md"], "contract": "the Weathers / SubScenes / sceneFile / ID / Descriptor walk of SCRIPTS\\datatables\\Weather.lua and which name it matches"},
+    {"packet": "scene_traffic_block", "addresses": ["009514b0", "0095ca10", "0095c640", "00925f20"], "files": ["docs/SCENE_TRAFFIC_BLOCK.md"], "contract": "the traffic body, and why pass 2 stops at it"},
+    {"packet": "scene_deferred_refs", "addresses": ["0046aab0", "00925a90", "00414db0"], "files": ["docs/SCENE_DEFERRED_REFS.md"], "contract": "this+150h, the 00e19a70 name list, and how R/RPath/RFort values resolve to objects"}
+  ]
+}
