@@ -442,6 +442,45 @@ def disasm_raw(args):
     print(f'(disk bytes, {section.Name.rstrip(b"\x00").decode()} section; Ghidra state not consulted)')
 
 
+def scan_bytes(args):
+    """Search the disk PE image for a byte pattern with ?? wildcards; no Ghidra state involved."""
+    try:
+        import pefile
+    except ImportError:
+        sys.exit('pefile is required')
+    tokens = args.pattern.replace(',', ' ').split()
+    if not tokens or any(not (t == '??' or re.fullmatch(r'[0-9a-fA-F]{2}', t)) for t in tokens):
+        sys.exit('pattern: space-separated hex bytes, ?? for a wildcard, e.g. "55 8b ec ?? ?? e8"')
+    regex = re.compile(b''.join(b'.' if t == '??' else re.escape(bytes.fromhex(t)) for t in tokens), re.S)
+    config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
+    pe = pefile.PE(config['binary'], fast_load=True)
+    base = pe.OPTIONAL_HEADER.ImageBase
+    db = connect(required=False)
+    shown = 0
+    total = 0
+    for section in pe.sections:
+        name = section.Name.rstrip(b'\x00').decode(errors='replace')
+        if args.section and name != args.section:
+            continue
+        data = section.get_data()
+        start = base + section.VirtualAddress
+        for m in regex.finditer(data):
+            total += 1
+            if shown < args.limit:
+                a = start + m.start()
+                where = ''
+                if db:
+                    row = db.execute('SELECT address, name FROM functions WHERE address <= ? ORDER BY address DESC LIMIT 1', (a,)).fetchone()
+                    if row:
+                        where = f"  in {row['address']:08x} {row['name']}" if isinstance(row['address'], int) else f"  in {row['address']} {row['name']}"
+                print(f'{a:08x}  {name:<8} {m.group(0).hex(" ")}{where}')
+                shown += 1
+    if total > shown:
+        print(f'... {total - shown} more matches (raise --limit or narrow with --section)')
+    if not total:
+        print('no matches')
+
+
 def strings_query(args):
     """Functions whose bodies reference a string containing the text (from the Capstone data-reference sweep)."""
     db = connect()
@@ -871,8 +910,10 @@ def main():
     p = sub.add_parser('segment'); p.add_argument('id', type=int); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=segment)
     p = sub.add_parser('find'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=find)
     p = sub.add_parser('strings', help='functions referencing a string containing the text'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=strings_query)
-    p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes at an address, even where Ghidra has no function'); p.add_argument('address')
+    p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes from an address (must be an instruction start), even where Ghidra has no function'); p.add_argument('address')
     p.add_argument('--length', '--limit', dest='length', type=int, default=96, help='bytes to decode (bounds the output)'); p.add_argument('--lines', type=int, default=0, help='optional instruction cap'); p.set_defaults(func=disasm_raw)
+    p = sub.add_parser('scan-bytes', help='find a byte pattern (?? wildcards) in the disk image, with the enclosing function'); p.add_argument('pattern')
+    p.add_argument('--limit', type=int, default=20); p.add_argument('--section', help='restrict to one section, e.g. .text'); p.set_defaults(func=scan_bytes)
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')

@@ -52,6 +52,9 @@ moves them into shards and removes them; run it before committing if a legacy fi
 - `python tools/bsp.py disasm-raw <address> [--length N]` decodes the disk bytes locally with
   Capstone, for vtable targets and thunks Ghidra never defined and for functions whose stored body
   is truncated (`show --asm` only lists the body Ghidra records). It never touches Ghidra state.
+- `python tools/bsp.py scan-bytes "<hex bytes with ?? wildcards>" [--section .text] [--limit N]` finds a byte
+  pattern in the disk image and names the enclosing function, for vtable slots, immediates and
+  instruction sequences that the index cannot answer. It never touches Ghidra state.
 - `python tools/bsp.py snapshot` takes a snapshot and rebuilds the index only when Ghidra's
   function count changed; `python tools/bsp.py index --if-stale` rebuilds after ledger, sweep,
   partition or doc changes (a digest of the inputs decides; nothing is authored in the index).
