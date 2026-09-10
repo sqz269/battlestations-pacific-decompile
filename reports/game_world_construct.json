@@ -1,0 +1,266 @@
+{
+  "packet": "game_world_construct",
+  "worktree": "agent/world-construct",
+  "doc": "docs/GAME_WORLD_CONSTRUCT.md",
+  "reconstruction": ["include/bsp/world_construct.hpp", "src/world_construct.cpp"],
+  "ghidra_access": "read-only",
+  "addresses": ["004de610", "004cb030", "004cb0b0", "006deca0", "006dedc0", "004d2bb0"],
+  "evidence_source": "raw listing (disasm-raw 004DE610 --length 5400, 1370 instructions to the RET at 004DFAFC); pseudocode used only for the two constructors",
+
+  "functions": [
+    {
+      "address": "004de610",
+      "name": "BSP_Game_ConstructWorld",
+      "convention": "__fastcall",
+      "signature": "void (GGame* this)",
+      "body": ["004de610", "004dfafc"],
+      "ret": "RET (0 bytes of stack cleanup)",
+      "callers": [{"address": "004dfb70", "site": "004e01de", "name": "BSP_Game_LoadMissionScene"}],
+      "state": "analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "004cb030",
+      "name": "BSP_World_Construct",
+      "convention": "__fastcall",
+      "signature": "World* (World* this)",
+      "body": ["004cb030", "004cb0ad"],
+      "ret": "RET (0), returns this in EAX",
+      "state": "analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "004cb0b0",
+      "name": "BSP_World_ScalarDeletingDestructor",
+      "convention": "__thiscall",
+      "signature": "void* (World* this, int flags)",
+      "reachable_only_via": "vtable 00ce7784 slot 0",
+      "state": "analyzed (vtable slot and call site only)"
+    },
+    {
+      "address": "006deca0",
+      "name": "BSP_MarkerManager_Construct",
+      "convention": "__fastcall",
+      "signature": "MarkerManager* (MarkerManager* this)",
+      "ret": "RET (0), returns this in EAX",
+      "state": "analyzed, reconstructed, build-tested"
+    },
+    {
+      "address": "006dedc0",
+      "name": "BSP_MarkerManager_ScalarDeletingDestructor",
+      "convention": "__thiscall",
+      "signature": "void* (MarkerManager* this, int flags)",
+      "body": ["006dedc0", "006deddb"],
+      "ret": "RET 4",
+      "calls": ["006deac0 (real destructor)", "00bf65ac (free, when flags bit 0 is set)"],
+      "reachable_only_via": "vtable 00cf8ff8 slot 0",
+      "state": "analyzed"
+    },
+    {
+      "address": "004d2bb0",
+      "name": "BSP_Game_DestroyWorld",
+      "convention": "__thiscall",
+      "signature": "void (GGame* this)",
+      "body": ["004d2bb0", "004d303f"],
+      "ret": "RET (0)",
+      "callers": [{"address": "004da780"}],
+      "state": "analyzed for the teardown pairing only, not reconstructed"
+    }
+  ],
+
+  "no_ghidra_function": [],
+
+  "ocean_initialization_failed": {
+    "literal_address": "00ce7d3c",
+    "text": "Ocean initialization failed",
+    "length": 27,
+    "is_a_failure_report": false,
+    "site": ["004df829", "004df867"],
+    "guard": "game+5FCh != 0 (the scene record exists), tested at 004df810",
+    "behaviour": "0041dd40 sizes a pooled buffer to 1Bh, 00bf7680 memcpy's the literal into it, 00419cc0 + 00bd1510 return the block. No log call, no store, no branch on the result, no reader.",
+    "note": "Same shape as the 'Scene initialization failed' literal at 004e014d recorded in docs/MISSION_SCENE_LOAD.md and the compiled-out decal loop in docs/GAME_WORLD_ENTITIES.md.",
+    "ocean_has_no_error_branch": true,
+    "observable_failure": "a null game+19E8h, which the per-frame reader already gates on (docs/GAME_WORLD_OCEAN.md)"
+  },
+
+  "allocators": {
+    "00bf55be": "used once, for the 4BCh world object (004de651); the block is memset to 0 at 004de664",
+    "00bf681b": "cdecl operator new used for every other heap object",
+    "00b71930": "scene-node class allocator, size in ECX (458h at 004de73f)"
+  },
+
+  "construction_order": [
+    {"step": 0, "site": "004de63c", "action": "if game+719Dh then [00F8D394]+18h = 0x20000000"},
+    {"step": 1, "site": "004de651", "slot": "game+19CCh", "size": "0x4BC", "allocator": "00bf55be", "memset": true, "constructor": "004cb030"},
+    {"step": 2, "site": "004de69c", "action": "009037f0(world, 1, 1)"},
+    {"step": 3, "site": "004de6a1", "slot": "game+19ECh", "size": "0x24", "constructor": "00b724e0", "name_literal": {"address": "00ce7e10", "text": "World"}},
+    {"step": 4, "site": "004de72a", "action": "[00F8BBF0]->vtable[1](byte [00F88A04])"},
+    {"step": 5, "site": "004de73f", "slot": "game+19FCh", "size": "0x458", "allocator": "00b71930", "constructor": "00b71a80", "name_literal": {"address": "00ce7e04", "text": "Operator"}},
+    {"step": 6, "site": "004de7c3", "action": "DAT_00E188B0 = node; 00b6fbf0(node, [00CE380C])"},
+    {"step": 7, "site": "004de7e4", "slot": "game+1A00h", "size": "0x34", "constructor": "00b1f850", "handover": "00b71990(node, child)", "then": "InterlockedDecrement release at 004de825"},
+    {"step": 8, "site": "004de843", "action": "node->vtable[0x30](&{0.0f, [00CE3D08], 0.0f})"},
+    {"step": 9, "site": "004de872", "action": "00b6fe50(node, 0x0000506E) built byte by byte at esp+18h"},
+    {"step": 10, "site": "004de896", "action": "00b1ffb0([00F8D394], 2 - [00F889E8]); then vtable[0xF0]([00F889E4])"},
+    {"step": 11, "site": "004de8c7", "action": "node+4Ch = {[00CE3800],[00CE3E18],[00D7A24C]}[[00F889D4]]; overridden with [00CE3804] when [00F8899C] != 0"},
+    {"step": 12, "site": "004de923", "action": "00ad71c0([00F8C210], byte [00F88A06]) foliage enable"},
+    {"step": 13, "site": "004de936", "action": "004dcdf0(game)"},
+    {"step": 14, "site": "004de93f", "action": "004c9ec0(game) -- creates the directional light at game+19F8h (004ca031); strings TestDirectionalLight, AllLights"},
+    {"step": 15, "site": "004de944", "action": "branch on the scene record game+5FCh; record path 004de952-004def42, default path 004def47, converging at 004df372"},
+    {"step": 16, "site": "004df421", "slot": "game+19E8h", "size": "0x40", "constructor": "00bbdff0"},
+    {"step": 17, "site": "004df6a3", "slot": null, "size": "0x94", "constructor": "00b84e50", "handover": "00bbdf20(owner, obj) when owner != 0, then 00b71940(operatorNode, obj)", "then": "InterlockedDecrement release at 004df6f3"},
+    {"step": 18, "site": "004df7b5", "slot": "game+19F0h", "size": "0xB8", "constructor": "0078daa0", "args": "(sceneRoot, record+C20h byte or 0)"},
+    {"step": 19, "site": "004df829", "action": "the dead Ocean initialization failed literal"},
+    {"step": 20, "site": "004df911", "slots": "game+21A4h..+21C0h", "count": 8, "size": "0x30", "constructor": "008df900(i)", "follow_up": "008da160"},
+    {"step": 21, "site": "004df95b", "action": "0091c560(game+21A0h)"},
+    {"step": 22, "site": "004df966", "slot": "game+21C8h", "size": "0x10", "constructor": "008e2b90", "follow_up": "008e25f0"},
+    {"step": 23, "site": "004df9a2", "slot": "game+21CCh", "size": "0x10", "constructor": "009221e0", "follow_up": "00920ec0"},
+    {"step": 24, "site": "004df9de", "slot": "game+21D4h", "size": "0x50", "constructor": "006deca0", "follow_up": "006d6200"},
+    {"step": 25, "site": "004dfa1a", "slot": "game+21DCh", "size": "0x70", "constructor": "00707480", "follow_up": "007018c0"},
+    {"step": 26, "site": "004dfa56", "slot": "game+21E8h", "size": "0x58", "constructor": "00735030", "follow_up": "00733030"},
+    {"step": 27, "site": "004dfa92", "slot": "DAT_00F89B3C", "size": "0x10", "constructor": "00945820", "follow_up": "00941310"},
+    {"step": 28, "site": "004dfacd", "action": "008d5b50(00F88980)"},
+    {"step": 29, "site": "004dfad7", "action": "004bec00(0x1D, 1) then 00a933f0 -- enables the world input context"}
+  ],
+
+  "world_object_layout": {
+    "slot": "game+19CCh",
+    "size": "0x4BC",
+    "constructor": "004cb030",
+    "vtable": "00ce7784",
+    "scalar_deleting_destructor": "004cb0b0",
+    "zero_initialised_before_constructor": true,
+    "fields": [
+      {"offset": "0x00", "value": "vtable 00ce7784", "site": "004cb04c"},
+      {"offset": "0x04", "value": "0 from the memset; activation-chain head read by 00903670", "site": "memset only"},
+      {"offset": "0x08", "value": "0 from the memset", "site": "memset only"},
+      {"offset": "0x0C", "value": "0", "site": "004cb057"},
+      {"offset": "0x10", "value": "0", "site": "004cb05a"},
+      {"offset": "0x14", "value": "0", "site": "004cb05d"},
+      {"offset": "0x18", "value": "array of 0x61 elements, stride 0x0C, element ctor 004c2d30, element dtor 004b7ec0; ends at 0x4A4", "site": "004cb076"},
+      {"offset": "0x4AC", "value": "byte 1", "site": "004cb098"},
+      {"offset": "0x4B0", "value": "std::list _Myfirstiter, not written", "site": "-"},
+      {"offset": "0x4B4", "value": "_Myhead = 004c3080() on this+4B0h", "site": "004cb088, 004cb091"},
+      {"offset": "0x4B8", "value": "_Mysize = 0", "site": "004cb094"}
+    ],
+    "size_accounted_for": "0x18 + 0x61*0x0C = 0x4A4; 0x4B8 + 4 = 0x4BC"
+  },
+
+  "marker_manager_layout": {
+    "slot": "game+21D4h",
+    "size": "0x50",
+    "constructor": "006deca0",
+    "vtable": "00cf8ff8",
+    "scalar_deleting_destructor": "006dedc0",
+    "fields": [
+      {"offset": "0x00", "value": "vtable 00cf8ff8"},
+      {"offset": "0x04", "value": "0"},
+      {"offset": "0x08", "value": "0"},
+      {"offset": "0x0C", "value": "0"},
+      {"offset": "0x10", "value": "byte 0"},
+      {"offset": "0x14", "value": "std::list, head allocator 006d8590, sentinel node byte +1Dh = 1"},
+      {"offset": "0x20", "value": "std::list, head allocator 006d85e0, sentinel node byte +25h = 1"},
+      {"offset": "0x2C", "value": "std::list, head allocator 006d8660, sentinel node byte +11h = 1"},
+      {"offset": "0x38", "value": "std::list, head allocator 006d8660, sentinel node byte +11h = 1"},
+      {"offset": "0x44", "value": "std::list, head allocator 006d8660, sentinel node byte +11h = 1"}
+    ],
+    "list_shape": "{_Myfirstiter at +0 (never written), _Myhead at +4 (self-linked through node+0/+4/+8), _Mysize at +8 (0)}",
+    "size_accounted_for": "0x44 + 0x0C = 0x50",
+    "cross_reference": "the five offsets are the five walks of the per-frame update 006dc1a0 in docs/GAME_WORLD_ENTITIES.md"
+  },
+
+  "scene_record_fields": {
+    "record": "game+5FCh, filled by 0046df00 on the pass before 004de610",
+    "read": [
+      {"offset": "0x990", "kind": "struct", "consumer": "cloud description, 0078c9b0 and 00865900", "sites": ["004df878", "004df88f"]},
+      {"offset": "0xA20", "kind": "4 x 0x10", "consumer": "atmosphere layers 00b84fa0(record+A20h+i*10h, i), i = 0..3", "sites": ["004df781", "004df79d"]},
+      {"offset": "0xA78", "kind": "float", "consumer": "operatorNode+178h", "sites": ["004de952"]},
+      {"offset": "0xA84", "kind": "float", "consumer": "[00b7aab0(light)]+8h", "sites": ["004df3fd"]},
+      {"offset": "0xA88", "kind": "float", "consumer": "00ad56f0", "sites": ["004de96e"]},
+      {"offset": "0xA8C", "kind": "float", "consumer": "00ad5710", "sites": ["004de989"]},
+      {"offset": "0xA90", "kind": "byte", "consumer": "00ad5750", "sites": ["004de9a4"]},
+      {"offset": "0xAB8", "kind": "float", "consumer": "caustics object vtable[0x20]", "sites": ["004def1f"]},
+      {"offset": "0xABC", "kind": "struct", "consumer": "caustics object vtable[0x24]", "sites": ["004def3b"]},
+      {"offset": "0xACC", "kind": "struct", "consumer": "value of CausticsTextureSource", "sites": ["004decb9", "004deee0"]},
+      {"offset": "0xC18", "kind": "dword", "consumer": "0078dba0(sky, sceneRoot, value)", "sites": ["004df8a2"]},
+      {"offset": "0xC1C", "kind": "dword", "consumer": "0078dcf0(sky, sceneRoot, value)", "sites": ["004df8c1"]},
+      {"offset": "0xC20", "kind": "byte", "consumer": "sky constructor 0078daa0 flag", "sites": ["004df7e1"]},
+      {"offset": "0xC44", "kind": "struct", "consumer": "value of WaterTracerColor", "sites": ["004df59b"]},
+      {"offset": "0xC54", "kind": "struct", "consumer": "ocean owner constructor 00bbdff0 argument 1", "sites": ["004df457"]},
+      {"offset": "0xC5C", "kind": "float", "consumer": "00bbf1a0", "sites": ["004df549"]},
+      {"offset": "0xC60", "kind": "float", "consumer": "00bbf200", "sites": ["004df56b"]},
+      {"offset": "0x100C", "kind": "float", "consumer": "terrain extent through 004b4d80 and the double at 00ce4c08", "sites": ["004dea22"]},
+      {"offset": "0x1010", "kind": "float", "consumer": "terrain extent, same call", "sites": ["004dea33"]},
+      {"offset": "0x1014", "kind": "0x10", "consumer": "00bbcd90", "sites": ["004df495"]},
+      {"offset": "0x1024", "kind": "0x10", "consumer": "00bbcde0", "sites": ["004df4d1"]},
+      {"offset": "0x1034", "kind": "0x10", "consumer": "00bbcd50", "sites": ["004df50d"]},
+      {"offset": "0x1044", "kind": "handle", "consumer": "00871ba0 then 00440580 into game+19D4h", "sites": ["004de9c4"]},
+      {"offset": "0x104C", "kind": "handle", "consumer": "00871ba0 then 00440580 into game+19DCh", "sites": ["004deafd"]}
+    ]
+  },
+
+  "literals": [
+    {"address": "00ce7e10", "text": "World", "use": "scene root name, 004de6c0"},
+    {"address": "00ce7e04", "text": "Operator", "use": "Operator node name, 004de75e"},
+    {"address": "00ce7ab0", "text": "sky_001", "use": "ocean owner name on the no-record branch, 004df608"},
+    {"address": "00ce7d64", "text": "WaterTracerColor", "use": "parameter key with record+C44h, 004df587"},
+    {"address": "00ce7dec", "text": "CausticsTextureSource", "use": "parameter key, 004deca5 / 004deeba / 004df05d / 004df2a1"},
+    {"address": "00ce77c4", "text": "CausticsDayLight", "use": "value of CausticsTextureSource on the no-record branch, 004df042"},
+    {"address": "00ce7dc8", "text": "ShoreWaveTextureSource0", "use": "parameter key, 004ded14 and 004df0f1"},
+    {"address": "00ce7de0", "text": "ShoreWaves0", "use": "value, 004ded01 and 004df0de"},
+    {"address": "00ce7da4", "text": "ShoreWaveTextureSource1", "use": "parameter key, 004deda3 and 004df182"},
+    {"address": "00ce7dbc", "text": "ShoreWaves1", "use": "value, 004ded95 and 004df16f"},
+    {"address": "00ce7d80", "text": "ShoreWaveTextureSource2", "use": "parameter key, 004dee39 and 004df20e"},
+    {"address": "00ce7d98", "text": "ShoreWaves2", "use": "value, 004dee26 and 004df200"},
+    {"address": "00ce7d3c", "text": "Ocean initialization failed", "use": "built and released unread, 004df84e"}
+  ],
+
+  "teardown": {
+    "routine": "004d2bb0",
+    "name": "BSP_Game_DestroyWorld",
+    "caller": "004da780",
+    "mechanism": "p->vtable[0](1) then the slot is nulled",
+    "pairing_evidence": "004de610 ends with 004bec00(0x1D, 1) then 00a933f0; 004d2bb0 opens with 004bec00(0x1D, 0) then 00a933f0",
+    "release_order": ["game+19E8h", "game+21D0h", "game+21D4h", "game+21A4h", "game+21A8h", "game+21ACh", "game+21C4h", "game+21C8h", "game+21CCh", "game+21DCh", "game+21E0h", "game+21E4h", "game+21E8h", "game+19CCh", "game+19D8h", "game+19E4h", "game+19F0h", "game+19F4h", "game+19F8h", "game+19ECh"],
+    "asymmetries": [
+      {"issue": "the loop at 004d2c95 runs 3 iterations (mov ebp,3 at 004d2c9f), covering game+21A4h..+21ACh, while 004df911 fills 8 slots at game+21A4h..+21C0h", "unresolved": "whether 008da160 transfers ownership of the other five"},
+      {"issue": "game+19FCh, the Operator node, is never released by 004d2bb0", "note": "game+1A00h needs no release because 004de610 dropped its own reference after 00b71990"}
+    ]
+  },
+
+  "ghidra_artefacts": [
+    "allocation sizes are aliased into stack slots (piStack_ac, local_88); every size comes from the listing",
+    "004df846 is reported as an unreachable block; it is the memcpy of the Ocean initialization failed literal and is reached normally in the listing",
+    "push-before-accessor: 'push X; call getter; mov ecx,eax; call setter' decompiles as getter(X); every ocean and cloud setter in 004de610 uses it",
+    "ghidra flow 004de610: 1370 instructions, 0 gaps",
+    "ghidra flow 004d2bb0: 1 gap, 004d2d7b..004d2d84 (9 bytes) after CALL 0x00bf65ac at 004d2d76 -- reported, not repaired",
+    "004cb030 still carries the tag cg_array_ctor_helper and the name CG_array_ctor_helper_004cb030; it is the world constructor, not an array helper",
+    "00b71930 carries the name CG_static_dtor_stub_00b71930; it is the scene-node class allocator, size in ECX (not claimed by this packet)"
+  ],
+
+  "uncertainties": [
+    "whether the five undestroyed objects at game+21B0h..+21C0h are owned by whatever 008da160 registers them with, or leaked; 008da160 and 008df900 were not read",
+    "the meaning of 00b6fe50(node, 0x0000506E) at 004de886 and of the second call at 004df7a9 with the accumulated dword from the atmosphere block",
+    "game+19F4h is released by the teardown but never written by 004de610; its producer was not traced (004dcdf0 and 004c9ec0 are the candidates)",
+    "what [00F8D394]+18h = 0x20000000 under game+719Dh selects",
+    "whether game+19FCh surviving 004d2bb0 is deliberate or a leak",
+    "the range of the index [00F889D4] used at 004de8cf to select one of three floats into node+4Ch"
+  ],
+
+  "follow_up_packets": [
+    {"packet": "game_world_destroy", "addresses": ["004d2bb0", "004da780", "008da160", "008df900"], "files": ["docs/GAME_WORLD_DESTROY.md", "include/bsp/world_destroy.hpp"], "contract": "The mission teardown in full, and whether the five channel objects 004df911 creates and 004d2bb0 skips are owned elsewhere; includes the 004d2d7b flow gap"},
+    {"packet": "game_scene_lighting_setup", "addresses": ["004c9ec0", "004dcdf0", "00a8fd30", "00b7bdf0", "00b7aab0"], "files": ["docs/GAME_SCENE_LIGHTING_SETUP.md"], "contract": "The directional light at game+19F8h: what TestDirectionalLight and AllLights name, and who writes game+19F4h"},
+    {"packet": "world_shore_handles", "addresses": ["00871ba0", "00870cd0", "00440580", "004845d0", "008685e0", "00868420"], "files": ["docs/WORLD_SHORE_HANDLES.md"], "contract": "The five embedded handles at game+19D4h..+19E4h: the two assign helpers, the request builders and the terrain extent scaling through 004b4d80"},
+    {"packet": "world_parameter_table", "addresses": ["00b1b830", "00b1b890", "00b1b400", "004de4b0"], "files": ["docs/WORLD_PARAMETER_TABLE.md"], "contract": "The parameter singleton 00F8D434: the key/value setter, the record-valued variant and the object 00b1b400 returns"},
+    {"packet": "scene_node_allocator", "addresses": ["00b71930", "00b724e0", "00b71a80", "00b71990", "00b71940"], "files": ["docs/SCENE_NODE_ALLOCATOR.md"], "contract": "The node class allocator that takes its size in ECX, and the four node constructors and attach points 004de610 uses"}
+  ],
+
+  "names_recorded": [
+    {"address": "004de610", "name": "BSP_Game_ConstructWorld", "mode": "append-evidence"},
+    {"address": "004cb030", "name": "BSP_World_Construct", "mode": "new"},
+    {"address": "004cb0b0", "name": "BSP_World_ScalarDeletingDestructor", "mode": "new"},
+    {"address": "006deca0", "name": "BSP_MarkerManager_Construct", "mode": "new"},
+    {"address": "006dedc0", "name": "BSP_MarkerManager_ScalarDeletingDestructor", "mode": "new"},
+    {"address": "004d2bb0", "name": "BSP_Game_DestroyWorld", "mode": "new"}
+  ],
+
+  "build": {"script": "./scripts/build.ps1", "target": "MSVC Win32, warnings as errors", "result": "clean"},
+  "tests": {"suite": "reconstructed_math", "result": "1/1 passed", "added": "one case in tests/math_tests.cpp covering the ocean branch and the dead literal"}
+}
