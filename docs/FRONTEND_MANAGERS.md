@@ -358,3 +358,7 @@ Nothing here is ABI-compatible or game-validated.
 - `front_end_manager_registry`: 00684C40, 00684EF0, 00683D10, 00683C80, 00684990, files
   `docs/FRONT_END_MANAGER_REGISTRY.md`. Contract: the `std::map` at 00E19898 keyed by manager
   pointer, its node layout, and whether anything other than 00684700 iterates it.
+
+## Correction from docs/FRONTEND_SCREEN_SETS.md
+
+The two varargs calls every Activate and +10h override makes are not screen sets that touch screens. `004f8710` replaces level 4 of a five-level layered stack (`004f8530`/`004f85d0`/`004f8670`/`004f8710`/`004f87b0` for levels 1 to 5 at `00e18cf8`..`00e18d38`) and calls the recompute `004f7620`, which re-derives the requested byte `screen+4h` for all 95 registry slots against the occlusion floor at `00e08310`; an empty list clears its level. `004d8c00` carries a different id space, input-context indices 1..19h fed to the input manager by `004c4300`. The jump table at `006873ec` gives the interface-id-to-screen-id map for ids 3..1Fh; slots 0Ch and 15h are mapped by no manager.

@@ -126,7 +126,10 @@ struct FrontEndScreenSetHost {
     virtual ~FrontEndScreenSetHost() = default;
     // 004F8710. An empty list hides everything, which is what deactivate does.
     virtual void set_gui_interface_set(const int* ids, std::size_t count) = 0;
-    // 004D8C00, ECX-free, first argument DAT_00E188A8, then the same shape.
+    // 004D8C00, ECX-free, first argument DAT_00E188A8, then the same shape. Its ids are
+    // input-context indices 1..19h handed to the input manager through 004C4300, not
+    // screen registry slots (docs/FRONTEND_SCREEN_SETS.md); it is 004D6410 inlined for
+    // level 4 of the layered stack.
     virtual void set_game_interface_set(const int* ids, std::size_t count) = 0;
 };
 
