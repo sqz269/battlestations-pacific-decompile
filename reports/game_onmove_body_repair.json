@@ -1,0 +1,132 @@
+{
+ "project": "bsp",
+ "program": "battlestationspacific.exe",
+ "function": "004e4a40",
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e4a48",
+    "end_address": "004e4a4d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e4a48",
+    "end_address": "004e4a4c",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "004e4a40"
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "deleted_function": "BSP_Game_OnMove",
+    "body_size": 8,
+    "message": "Function 'BSP_Game_OnMove' deleted at 004e4a40"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e4a40",
+    "name": "BSP_Game_OnMove",
+    "disassemble_first": true
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "function_name": "BSP_Game_OnMove",
+    "entry_point": "004e4a40",
+    "body_size": 8,
+    "message": "Function created successfully at 004e4a40",
+    "warnings": [
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' is not PascalCase. Expected: GameOnmove",
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Game_OnMove' does not start with a recognized verb. First word 'Game_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e4a48",
+    "end_address": "004e5540"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e4a48",
+    "end_address": "004e553f",
+    "bytes_disassembled": 2808,
+    "message": "Successfully disassembled 2808 byte(s)"
+   },
+   "phase": "pass2"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "004e4a40"
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "deleted_function": "BSP_Game_OnMove",
+    "body_size": 8,
+    "message": "Function 'BSP_Game_OnMove' deleted at 004e4a40"
+   },
+   "phase": "pass2"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e4a40",
+    "name": "BSP_Game_OnMove",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "function_name": "BSP_Game_OnMove",
+    "entry_point": "004e4a40",
+    "body_size": 8,
+    "message": "Function created successfully at 004e4a40",
+    "warnings": [
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' is not PascalCase. Expected: GameOnmove",
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Game_OnMove' does not start with a recognized verb. First word 'Game_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "pass2"
+  }
+ ],
+ "before": "Function: BSP_Game_OnMove at 004e4a40\nSignature: undefined BSP_Game_OnMove(void)\nEntry: 004e4a40\nBody: 004e4a40 - 004e4a47",
+ "name": "BSP_Game_OnMove",
+ "plate_before": "[BSP reconstruction 004e4a40]\nName supported by GGame::OnMove and GGame::OnMove::game profiler strings. ECX game, float stack delta, calls close policy004ca2f0 before state-dependent simulation/render work. Bounded Capstone CFG audit against original bytes reaches745 instructions/152 call sites/two RETs; calls assumed to return. Stored Ghidra body remains only8 bytes despite recreate/disassembly; decompiler traverses more code. Not reconstructed; game state+5D4h and frame phase+34h distinct.",
+ "blocking_ref_source": {
+  "address": "00d18780",
+  "bytes_read": 16,
+  "hex_dump": "49 4A 4E 00 40 D3 90 00 C0 8E BD 00 30 7A BD 00",
+  "ascii_repr": "IJN\\0@..\\0...\\00z.\\0",
+  "printable_count": 6,
+  "printable_ratio": 0.38,
+  "null_terminator_at": 3,
+  "max_consecutive_printable": 3,
+  "is_likely_string": false,
+  "string_length": 0
+ },
+ "xrefs_to_operand_before": "From 00d18780 [DATA]",
+ "disassemble_blocked": "Successfully disassembled 5 byte(s)",
+ "pass2_disassemble": {
+  "success": true,
+  "start_address": "004e4a48",
+  "end_address": "004e553f",
+  "bytes_disassembled": 2808,
+  "message": "Successfully disassembled 2808 byte(s)"
+ },
+ "applied": false,
+ "outcome": "Body stays 004e4a40-004e4a47 after both passes (the other integrator recorded the same in the plate comment). The decompiler traverses the full routine (391 lines, 745 instructions per its Capstone audit), so the pseudocode export is complete; only the body-based listing is short. Use `bsp.py disasm-raw 004e4a40 --length 4352` for the listing. Root cause not established; the bogus pointer from the \"IJN\" string at 00d18780 into 004e4a49 is the only anomaly found."
+}
