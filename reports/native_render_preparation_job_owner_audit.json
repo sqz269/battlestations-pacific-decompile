@@ -1,0 +1,440 @@
+{
+  "packet": "native_render_preparation_job_owner",
+  "status": "implemented_build_and_original_code_lifetime_fixture_checked",
+  "generated_utc": "2026-09-10T23:02:11.111739+00:00",
+  "base_commit": "52012c43c92c41f8205785d92261f9f893183782",
+  "owned_files": [
+    "include/bsp/native_render_preparation_job_owner.hpp",
+    "src/native_render_preparation_job_owner.cpp",
+    "docs/NATIVE_RENDER_PREPARATION_JOB_OWNER.md",
+    "reports/native_render_preparation_job_owner_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00b0ffb0",
+      "end_exclusive": "00b1007e",
+      "native_bytes": 206,
+      "scope": "complete_bounded_native_body_in_new_cpp_interface",
+      "status": "implemented_build_and_focused_original_code_fixture_checked",
+      "original_abi": "No input; EAX current actual8h singleton; RET",
+      "behavior": "Actual8h allocation/table transitions, captured manager section, recheck/publication, capture secondary before second manager lookup, real registration, release then final reload",
+      "cpp_symbol": "bsp::NativeRenderPreparationJobLifetime::get_singleton_00b0ffb0",
+      "source": "src/native_render_preparation_job_owner.cpp",
+      "source_line": 50,
+      "header": "include/bsp/native_render_preparation_job_owner.hpp",
+      "old_ghidra_name": "BSP_RenderBatchPreparationJob_GetSingleton_Provisional",
+      "ghidra_function_creation_required": false,
+      "suggested_ghidra_name": "BSP_RenderBatchPreparationJob_GetSingleton",
+      "uncertainty": "Descriptive name is a hypothesis; valid-owner typed API, not drop-in native calling convention/SEH ABI."
+    },
+    {
+      "address": "00b0f1d0",
+      "end_exclusive": "00b0f1ea",
+      "native_bytes": 26,
+      "scope": "complete_bounded_native_body_in_new_cpp_interface",
+      "status": "implemented_build_and_focused_original_code_fixture_checked",
+      "original_abi": "ECX actual primary owner; RET; no meaningful return",
+      "behavior": "Unconditional F8D444 clear then only secondary04=CE3818; no unregister/free/primary reset",
+      "cpp_symbol": "bsp::NativeRenderPreparationJobLifetime::destroy_body_00b0f1d0",
+      "source": "src/native_render_preparation_job_owner.cpp",
+      "source_line": 77,
+      "header": "include/bsp/native_render_preparation_job_owner.hpp",
+      "old_ghidra_name": null,
+      "ghidra_function_creation_required": true,
+      "suggested_ghidra_name": "BSP_RenderBatchPreparationJob_DestroyBody",
+      "uncertainty": "Descriptive name is a hypothesis; valid-owner typed API, not drop-in native calling convention/SEH ABI."
+    },
+    {
+      "address": "00b0f210",
+      "end_exclusive": "00b0f244",
+      "native_bytes": 52,
+      "scope": "complete_bounded_native_body_in_new_cpp_interface",
+      "status": "implemented_build_and_focused_original_code_fixture_checked",
+      "original_abi": "ECX primary; stack DWORD flags; RET4; EAX original primary",
+      "behavior": "Unconditional clear/secondary reset, free original primary iff flags&1, return original address including free continuation",
+      "cpp_symbol": "bsp::NativeRenderPreparationJobLifetime::delete_primary_00b0f210",
+      "source": "src/native_render_preparation_job_owner.cpp",
+      "source_line": 84,
+      "header": "include/bsp/native_render_preparation_job_owner.hpp",
+      "old_ghidra_name": "CG_scalar_deleting_dtor_00b0f210",
+      "ghidra_function_creation_required": false,
+      "suggested_ghidra_name": "BSP_RenderBatchPreparationJob_ScalarDeletingDestructor",
+      "uncertainty": "Descriptive name is a hypothesis; valid-owner typed API, not drop-in native calling convention/SEH ABI."
+    },
+    {
+      "address": "00b0f1c0",
+      "end_exclusive": "00b0f1c8",
+      "native_bytes": 8,
+      "scope": "complete_bounded_native_body_in_new_cpp_interface",
+      "status": "implemented_build_and_focused_original_code_fixture_checked",
+      "original_abi": "ECX secondary; subtract4; tailcall B0F210 with original flags/RET4; EAX primary",
+      "behavior": "Actual pointer-minus4 dispatch to reconstructed primary deletion",
+      "cpp_symbol": "bsp::NativeRenderPreparationJobLifetime::delete_secondary_00b0f1c0",
+      "source": "src/native_render_preparation_job_owner.cpp",
+      "source_line": 92,
+      "header": "include/bsp/native_render_preparation_job_owner.hpp",
+      "old_ghidra_name": null,
+      "ghidra_function_creation_required": true,
+      "suggested_ghidra_name": "BSP_RenderBatchPreparationJob_SecondaryDeletingThunk",
+      "uncertainty": "Descriptive name is a hypothesis; valid-owner typed API, not drop-in native calling convention/SEH ABI."
+    },
+    {
+      "address": "00b0d930",
+      "end_exclusive": "00b0d959",
+      "native_bytes": 41,
+      "scope": "complete_bounded_native_body_in_new_cpp_interface",
+      "status": "implemented_build_and_focused_original_code_fixture_checked",
+      "original_abi": "ECX construction-base pointer; stack DWORD flags; RET4; EAX same base",
+      "behavior": "Unconditional F8D444 clear, reset CE3818 at supplied base, free same base iff flags&1; distinct from final secondary adjustment",
+      "cpp_symbol": "bsp::NativeRenderPreparationJobLifetime::delete_construction_base_00b0d930",
+      "source": "src/native_render_preparation_job_owner.cpp",
+      "source_line": 100,
+      "header": "include/bsp/native_render_preparation_job_owner.hpp",
+      "old_ghidra_name": null,
+      "ghidra_function_creation_required": true,
+      "suggested_ghidra_name": "BSP_RenderBatchPreparationJobBase_ScalarDeletingDestructor",
+      "uncertainty": "Descriptive name is a hypothesis; valid-owner typed API, not drop-in native calling convention/SEH ABI."
+    }
+  ],
+  "native_storage": {
+    "type": "NativeRenderPreparationJobStorage",
+    "bytes": 8,
+    "alignment": 4,
+    "fields": [
+      {
+        "offset": "00",
+        "type": "volatile uint32",
+        "meaning": "primary native table"
+      },
+      {
+        "offset": "04",
+        "type": "NativeRenderPreparationJobSecondary,4 bytes",
+        "meaning": "actual manager-registered secondary table"
+      }
+    ],
+    "compile_time_size_offset_assertions": true,
+    "construction_stores": [
+      "owner04=D5E154",
+      "owner00=D5E160",
+      "owner04=D5E15C"
+    ],
+    "profiles": {
+      "00d5e154": {
+        "00": "00b0d930"
+      },
+      "00d5e15c": {
+        "00": "00b0f1c0"
+      },
+      "00d5e160": {
+        "00": "00b1bf70,execution remains separate"
+      },
+      "00ce3818": {
+        "00": "00412440,base profile outside packet"
+      }
+    },
+    "host_state": "Companion borrows shared domain, actual volatile F8D444 slot and actual final-secondary table; none is stored inside native8h allocation."
+  },
+  "lifetime_contract": {
+    "global": "00f8d444",
+    "manager_global_domain": "01090aa0",
+    "fast_path": "Return first nonnull captured publication without manager/table/section access",
+    "capture_order": [
+      "First real415350 manager -> capture its section10",
+      "Enter captured section, increment actual section18, only then arm cleanup",
+      "Recheck publication under captured section",
+      "Allocate8 and apply three table stores, publish pointer or null",
+      "Reload publication and capture secondary+4 or null BEFORE second415350",
+      "Call realBD0C30 registration on second manager with captured pointer, including null",
+      "Decrement captured section18 before real LeaveCriticalSection",
+      "Reload publication after guard destruction for return"
+    ],
+    "exception_cleanup": "Captured section only; no job rollback/unpublish/unregister on allocation/registration failure; initial enter failure has no armed leave",
+    "destruction": "Unconditional publication clear, reset only specified secondary/base word, ordinary free iff flags low bit; no unregister or identity guard",
+    "secondary_return_and_free": "Both use original primary after subtract4",
+    "null_domain": "Native primary-null branches write address zero; require valid nonnull owners, do not claim host access-violation emulation"
+  },
+  "manager_integration": {
+    "shared_api_extension_required": false,
+    "registration": "Existing real ConcreteSingletonLifetimeManager::register_object stores actual secondary void* unchanged",
+    "drain": "Existing manager removes retained slot then invokes real callback with exact secondary and flags1",
+    "concrete_callback": "try_delete_registered reads current D5E15C identity and supplied entry0=B0F1C0, then actually calls secondary->primary deletion",
+    "unsupported_profile": "False leaves object untouched for other concrete dispatcher/error path; never successful disposal",
+    "consumer_step": "Include this concrete route in the shared SingletonLifetimeCallbacks::destroy_registered aggregator when instantiating this owner",
+    "no_duplicate_manager": true,
+    "no_registration_stub": true,
+    "no_deletion_stub": true,
+    "no_implicit_companion_cleanup": true
+  },
+  "eh_evidence": {
+    "handler": "00cbbc48",
+    "info": "00df3eb8",
+    "unwind_map": "00df3eb0",
+    "max_state": 1,
+    "unwind_action": "00cbbc40",
+    "guard_destructor": "00411ee0",
+    "guard_reset_table": "00ce37fc",
+    "observable_action": "decrement captured section18 then leave",
+    "typed_cpp_guard": true,
+    "native_seh_abi_reproduced": false
+  },
+  "primary_integration_support": {
+    "function_creation_addresses": [
+      "00b0f1d0",
+      "00b0f1c0",
+      "00b0d930"
+    ],
+    "preserve_old_names_and_comments": true,
+    "do_not_rename_enclosing_candidates": true,
+    "flow_gaps": [
+      {
+        "address": "00b0f23b",
+        "end_exclusive": "00b0f23e",
+        "bytes": "83 c4 04",
+        "instruction": "ADD ESP,4",
+        "evidence": "Existing B0F210 listing omits continuation after B0F236 CALL BF65AC; full native bytes include MOV EAX,ESI;POP ESI;RET4 afterwards"
+      },
+      {
+        "address": "00b0d950",
+        "end_exclusive": "00b0d953",
+        "bytes": "83 c4 04",
+        "instruction": "ADD ESP,4",
+        "evidence": "B0D930 is currently undefined; preserve this free continuation when creating it after B0D94B CALL BF65AC"
+      }
+    ],
+    "thunk_bytes": {
+      "address": "00b0f1c0",
+      "bytes": "83 e9 04 e9 48 00 00 00",
+      "target": "00b0f210"
+    },
+    "free_support": {
+      "address": "00bf65ac",
+      "bytes": "e9 17 38 00 00",
+      "target": "00bf9dc8 ordinary free"
+    },
+    "unrelated_neighbor": "D5E158->B0F1F0 belongs to another service; do not import unregister behavior",
+    "cmake_integration": "Add src/native_render_preparation_job_owner.cpp to bsp_core; worker uses ignored local top-level CMake include only",
+    "worker_ghidra_mutations": false,
+    "worker_metadata_mutations": false
+  },
+  "evidence": {
+    "verified_utc": "2026-09-10T22:49:08.412606+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "bsp.py ghidra bytes invokes Client.verify for every span",
+    "ranges": [
+      {
+        "id": "getter",
+        "address": "00b0ffb0",
+        "end_exclusive": "00b1007e",
+        "bytes": 206,
+        "sha256": "eb340826f27e52a681052714fcf74879c3f703844b1ce095e220922ceedf08c2",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "body",
+        "address": "00b0f1d0",
+        "end_exclusive": "00b0f1ea",
+        "bytes": 26,
+        "sha256": "5cd6c7045a05cf438fbc7240014a1b0f8d33d6145b32804bf0fc11bac262c7b5",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "primary",
+        "address": "00b0f210",
+        "end_exclusive": "00b0f244",
+        "bytes": 52,
+        "sha256": "3e32a6448ed0a1124d44d55c6bbfac48a23ba89270f25b117a4b0e288f4349c2",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "secondary",
+        "address": "00b0f1c0",
+        "end_exclusive": "00b0f1c8",
+        "bytes": 8,
+        "sha256": "8a9a0e18ceb0afe4b5c25d13ce74f72d5f2df5104f944174cb5e3c8cc1e7f10a",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "base",
+        "address": "00b0d930",
+        "end_exclusive": "00b0d959",
+        "bytes": 41,
+        "sha256": "8ffb8e115f1c181f1d4ed483cd97bec7ebfe1f3b0c9adb36119258a46d026f36",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "guard",
+        "address": "00411ee0",
+        "end_exclusive": "00411ef9",
+        "bytes": 25,
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "unwind",
+        "address": "00cbbc40",
+        "end_exclusive": "00cbbc48",
+        "bytes": 8,
+        "sha256": "de2c27caced7fec10965b23ae3d608bca1fbc4fc58e2f46476242aafe180eba2",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "handler",
+        "address": "00cbbc48",
+        "end_exclusive": "00cbbc52",
+        "bytes": 10,
+        "sha256": "c685c25b63b7502011e95d91d84d4d640d053cb678151d9e57b67ac2b4eb3249",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "unwind_map",
+        "address": "00df3eb0",
+        "end_exclusive": "00df3eb8",
+        "bytes": 8,
+        "sha256": "ef8b635e6c44b18c107d5a32943ab0da12515be7a27bb93727f72ae46b3f04a3",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "eh_info",
+        "address": "00df3eb8",
+        "end_exclusive": "00df3edc",
+        "bytes": 36,
+        "sha256": "a5ee52d385c1e164dd4488d757fd0b6470527f4dce95543b2b1c830b33c6ee5a",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "construction_profile",
+        "address": "00d5e154",
+        "end_exclusive": "00d5e158",
+        "bytes": 4,
+        "sha256": "4b03eae9b798413e1d5e8dd97dfe88d1fa92567d336a4ae209efa1d4578b75b8",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "secondary_profile",
+        "address": "00d5e15c",
+        "end_exclusive": "00d5e160",
+        "bytes": 4,
+        "sha256": "d7c87f198344636b4b71aca6405045e8d9d2b49ee9ca24a4efaead12c9357f08",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "primary_profile",
+        "address": "00d5e160",
+        "end_exclusive": "00d5e164",
+        "bytes": 4,
+        "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "base_profile",
+        "address": "00ce3818",
+        "end_exclusive": "00ce381c",
+        "bytes": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "installed_disk_equal": true
+      },
+      {
+        "id": "ordinary_free_thunk",
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "installed_disk_equal": true
+      }
+    ]
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "configuration": "Release",
+      "platform": "MSVC Win32",
+      "compiler": "MSVC19.51.36244.0",
+      "new_source_compiled": true,
+      "log": "local/preparation_job_build.log",
+      "log_sha256": "028d128787bc913d659200f7e4005b55d1b1c606304705c274e0f3aaa12e803b"
+    },
+    "existing_tests": {
+      "status": "passed",
+      "count": 1,
+      "names": [
+        "reconstructed_math"
+      ]
+    },
+    "focused_fixture": {
+      "count": 1,
+      "name": "bsp_preparation_job_lifetime_fixture",
+      "status": "passed",
+      "command": "./build/win32/Release/bsp_preparation_job_lifetime_fixture.exe",
+      "original_and_reconstructed": true,
+      "checks": [
+        "Actual8h table layout and final table identities",
+        "Capture actual secondary before second manager getter replaces publication",
+        "Return publication replaced after real section unlock",
+        "Real manager holds exactly allocated owner+4 and recursion is zero on return",
+        "Real manager drain runs original and reconstructed secondary-minus4 deletion/free",
+        "Body/base reset clears unrelated current publication and preserves primary word"
+      ],
+      "method": "Copied installed entry bytes with relocated globals/callouts. Real shared manager allocation/registration/drain, real Win32 critical sections; local boundary observation hooks call real manager and OS operation.",
+      "original_eh": "Metadata/actions relocated for copied getter; no thrown-exception fixture coverage",
+      "source": "local/preparation_job_lifetime_fixture.cpp",
+      "source_sha256": "540535f7bcd984d301418d6d6de35ce53231276ab46244cbdd26dd950f213c1c",
+      "reference": "local/preparation_job_reference.hpp",
+      "reference_sha256": "a6d2da676f161fb0c230f42059c4a85dc1b0929538dbdc430b41c5cddd59fb6c",
+      "log": "local/preparation_job_lifetime_fixture.log",
+      "log_sha256": "797a07a4cdac0c80f86f37606449f1fee84967d12863a34b6694fe15a52ba83e",
+      "output": [
+        "original: captured secondary registration, after-unlock return, real manager drain, primary free, body/base reset passed",
+        "reconstructed: captured secondary registration, after-unlock return, real manager drain, primary free, body/base reset passed",
+        "PASS one original-code preparation-job lifetime fixture; no scheduler or native exception claim"
+      ]
+    },
+    "shared_cmake_and_manager_files_unchanged": true,
+    "native_abi_replacement_tested": false,
+    "native_exception_unwind_tested": false,
+    "allocation_failure_runtime_tested": false,
+    "native_null_fault_tested": false,
+    "game_validated": false,
+    "rendering_validated": false
+  },
+  "remaining_boundaries": [
+    "B1BF70 primary execute target; table identity is stored, execution is not implemented here",
+    "Native B51DF0 preparation and actual render queue/configuration owner",
+    "Frame-job scheduler allocation, enqueue, worker execution, wait and shutdown",
+    "Full B1D950 command/material/renderer/diagnostic execution",
+    "Application shared callback aggregator must install concrete preparation-job secondary dispatch",
+    "Existing native allocation/runtime, actual publication/profile binding and valid-owner/lock domains",
+    "New C++ calling convention and guard layout remain distinct from original native ABI/SEH"
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_render_preparation_job_owner.hpp",
+      "sha256": "fce48f95671b87933f49d5045b56a2e55d1c3de0b9c6282132971239676fcb46"
+    },
+    {
+      "path": "src/native_render_preparation_job_owner.cpp",
+      "sha256": "b726ef28a77f8c5fd58231e17bfb556cdc06ab1da6a2106c7c9b0150d1d5ad02"
+    }
+  ],
+  "reused_dependency_hashes": [
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    }
+  ]
+}
