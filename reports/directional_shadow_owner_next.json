@@ -1,0 +1,1142 @@
+{
+  "schema_version": 1,
+  "packet": "directional_shadow_owner",
+  "status": "discovery_complete_native_bytes_verified_no_implementation",
+  "base_commit": "c314dfc",
+  "scope": {
+    "owned_files": [
+      "docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md",
+      "reports/directional_shadow_owner_next.json"
+    ],
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "source_mutations": false,
+    "build_run": false,
+    "tests_run": false,
+    "game_validated": false
+  },
+  "verification": {
+    "utc": "2026-09-10T18:07:47.898984+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_check": "Every bsp.py ghidra query verifies configured project, program path, x86 language and image base before reading. Installed PE bytes independently compared for every recorded range.",
+    "live_function_count_observed": 62897,
+    "native_ranges_verified": 59,
+    "source_snapshot": {
+      "commit": "c314dfc",
+      "sha256": {
+        "include/bsp/system_lighting_constants.hpp": "a69f9c090f39ca93b19107a67b29ad370cfcee5fe4158784472355df45fd79a2",
+        "src/system_lighting_constants.cpp": "b7bebb625aebb738f3583e51dfd11810020623265991193fc03eb6c975e8487f",
+        "include/bsp/d3d9_states.hpp": "2d1c59399dbf9caddd3839b1166b0b8e05524952b3652610135553d23fe6e92d",
+        "include/bsp/d3d9_resources.hpp": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176",
+        "include/bsp/d3d9_texture.hpp": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+        "include/bsp/d3d9_reset_texture.hpp": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d",
+        "src/d3d9_texture.cpp": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+        "src/d3d9_reset_texture.cpp": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611",
+        "src/d3d9_resources.cpp": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+        "include/bsp/camera_frame_state.hpp": "3e5e1c2c439a940126986f9160d78993c993479fdc09b7219df8aa6aee40479a"
+      }
+    }
+  },
+  "conclusions": [
+    "The actual nonnull light+174 owner is a 0x508 ordinary allocation, final vtable 00d5b5d8, with intrusive count at +04.",
+    "The light stores its replacement before retaining it and before releasing the captured old shadow owner. Zero count invokes the current virtual 00.",
+    "Shadow virtual 08 returns global target+18 only when the same captured target has both +0c and +0d nonzero; otherwise it returns the actual retained white.tga wrapper at shadow+384.",
+    "Shadow virtual 0c uses the same decision but returns global target+10 on success. Neither getter retains or creates a texture.",
+    "Concrete D3D9 texture virtual 3c/40 read mutable wrapper fields +28/+2c. Initial GetLevelDesc values can later be replaced by the global shadow toggle without any COM resize.",
+    "Existing D3D9 classes provide useful COM, metadata, binding and reset pieces but no complete native texture/cached-surface/target-group lifetime or owning shadow factory.",
+    "The constructors do not initialize shader matrices +144,+184,+1c4,+204. They are first initialized by the shadow update path, which remains a separate rendering dependency.",
+    "Ready work is exact dispatch and shared mutable dimension access. A complete allocating shadow owner still depends on named but incomplete cameras, viewports, target groups, texture/surface pools and EH cleanup."
+  ],
+  "native_abi": [
+    {
+      "address": "00b7bdf0",
+      "inputs": "ECX light; stack replacement shadow pointer",
+      "output": "void",
+      "return": "RET 4",
+      "extent": "00b7bdf0..00b7be31"
+    },
+    {
+      "address": "00a8fd30",
+      "inputs": "ECX borrowed light pointer; no stack arguments; DL ignored",
+      "output": "EAX newly allocated owner or native null branch",
+      "return": "RET",
+      "extent": "00a8fd30..00a8fd90"
+    },
+    {
+      "address": "00a8e2e0",
+      "inputs": "ECX storage; stack borrowed light pointer",
+      "output": "EAX this",
+      "return": "RET 4",
+      "extent": "00a8e2e0..00a8e860"
+    },
+    {
+      "address": "00a8fa30",
+      "inputs": "ECX storage; stack borrowed light pointer",
+      "output": "EAX this",
+      "return": "RET 4",
+      "extent": "00a8fa30..00a8fcb1"
+    },
+    {
+      "address": "00a8dec0",
+      "inputs": "ECX complete shadow owner",
+      "output": "void",
+      "return": "RET",
+      "extent": "00a8dec0..00a8e087"
+    },
+    {
+      "addresses": [
+        "00a8e160",
+        "00a8fcd0"
+      ],
+      "inputs": "ECX owner; stack flag byte in DWORD slot, bit 0 frees",
+      "output": "EAX original this including after free",
+      "return": "RET 4",
+      "complete_lengths": [
+        30,
+        30
+      ]
+    },
+    {
+      "addresses": [
+        "00a8fcf0",
+        "00a8fd10"
+      ],
+      "inputs": "ECX shadow owner",
+      "output": "EAX borrowed texture wrapper",
+      "return": "RET or tailcall to RET getter",
+      "complete_lengths": [
+        31,
+        31
+      ]
+    },
+    {
+      "addresses": [
+        "00a8fd90",
+        "00a8fda0",
+        "00a8fdb0",
+        "00a8fdc0"
+      ],
+      "inputs": "ECX global target",
+      "output": "EAX borrowed +10,+14,+18,+1c respectively",
+      "return": "RET",
+      "complete_lengths": [
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "address": "00a8fdd0",
+      "inputs": "ECX global target; stack enable byte",
+      "output": "void",
+      "return": "RET 4",
+      "extent": "00a8fdd0..00a8fe24"
+    },
+    {
+      "address": "00a8fe30",
+      "inputs": "ECX storage; stack width,height",
+      "output": "EAX this",
+      "return": "RET 8",
+      "extent": "00a8fe30..00a8ff2d"
+    },
+    {
+      "address": "00a8ff30",
+      "inputs": "ECX global target; stack enable byte",
+      "output": "void",
+      "return": "RET 4",
+      "extent": "00a8ff30..00a8ffe3"
+    },
+    {
+      "address": "00a8fff0",
+      "inputs": "ECX global target",
+      "output": "void",
+      "return": "RET",
+      "extent": "00a8fff0..00a900b4"
+    },
+    {
+      "address": "00a900c0",
+      "inputs": "ECX global target; stack deleting flag",
+      "output": "EAX this",
+      "return": "RET 4",
+      "extent": "00a900c0..00a900de"
+    },
+    {
+      "addresses": [
+        "00b3ce50",
+        "00b3ce60"
+      ],
+      "inputs": "ECX D3D9 2D texture wrapper",
+      "output": "EAX unsigned DWORD reported width/height",
+      "return": "RET",
+      "complete_lengths": [
+        4,
+        4
+      ]
+    },
+    {
+      "address": "00b3ceb0",
+      "inputs": "ECX texture wrapper; stack width,height",
+      "output": "void",
+      "return": "RET 8",
+      "extent": "00b3ceb0..00b3cec1"
+    },
+    {
+      "address": "00b2a070",
+      "inputs": "ECX renderer; stack width,height,mip levels,format,flags",
+      "output": "EAX texture wrapper",
+      "return": "RET 14h",
+      "extent": "00b2a070..00b2a361"
+    },
+    {
+      "address": "00b3f7b0",
+      "inputs": "ECX wrapper; stack COM texture,width,height,flags",
+      "output": "EAX this",
+      "return": "RET 10h",
+      "extent": "00b3f7b0..00b3f92f"
+    },
+    {
+      "address": "00b3fd80",
+      "inputs": "ECX texture wrapper; stack level plus second DWORD unused on the inspected 2D path",
+      "output": "EAX retained surface wrapper",
+      "return": "RET 8",
+      "extent": "00b3fd80..00b3fe88"
+    },
+    {
+      "address": "00b1fbb0",
+      "inputs": "ECX 40h storage",
+      "output": "EAX this (decompiler void is incomplete)",
+      "return": "RET",
+      "extent": "00b1fbb0..00b1fbf2"
+    },
+    {
+      "address": "00b1fab0",
+      "inputs": "ECX target group; stack color slot, surface wrapper",
+      "output": "void",
+      "return": "RET 8",
+      "extent": "00b1fab0..00b1faf1"
+    },
+    {
+      "address": "00b1fb00",
+      "inputs": "ECX target group; stack depth surface wrapper",
+      "output": "void",
+      "return": "RET 4",
+      "extent": "00b1fb00..00b1fb3b"
+    }
+  ],
+  "profiles": {
+    "per_light_shadow": {
+      "size_hex": "508",
+      "allocation": "00a8fd30 -> 00bf681b",
+      "base_vtable": "00d5b574",
+      "final_vtable": "00d5b5d8",
+      "final_slots": {
+        "00": "00bd30e0",
+        "04": "00a8fcd0",
+        "08": "00a8fcf0",
+        "0c": "00a8fd10"
+      },
+      "reference_count": "+04 starts at 1; actual InterlockedIncrement/Decrement",
+      "borrowed_fields": {
+        "+0c": "passed light pointer, no retain",
+        "+34": "copied light+A4 raw word, no proven semantic name"
+      },
+      "owned_fields": {
+        "+10..1c": "four viewport references",
+        "+20..2c": "four camera references",
+        "+384": "loaded white.tga texture reference",
+        "+4f0..4fc": "four target-group references",
+        "+500": "fifth target group",
+        "+504": "fifth viewport"
+      },
+      "transient_field": {
+        "+30": "render-camera reference retained and cleared by normal 00a8f3b0 update; destructor does not release it"
+      },
+      "copied_global_dimensions": [
+        "+388",
+        "+38c"
+      ],
+      "initialized_words": {
+        "+08": "46ea6000 from 00ce77fc",
+        "+38,+3c,+40": [
+          "00000000",
+          "3f800000",
+          "00000000"
+        ],
+        "+390..39c": "four zero DWORDs"
+      },
+      "constructor_matrix_outputs": [
+        "+244",
+        "+284",
+        "+2c4",
+        "+304"
+      ],
+      "shader_matrices_not_initialized_by_constructor": [
+        "+144",
+        "+184",
+        "+1c4",
+        "+204"
+      ]
+    },
+    "global_shadow_target": {
+      "size_hex": "2c",
+      "global_pointer": "00f8bbf0",
+      "vtable": "00d5b5e8",
+      "intrusive": false,
+      "slots": {
+        "00": "00a900c0",
+        "04": "00a8ff30",
+        "08": "00a8fdd0"
+      },
+      "fields": {
+        "+04,+08": "configured extents",
+        "+0c": "requested enable byte",
+        "+0d": "texture-creation success/capability byte",
+        "+0e": "D16 fallback indicator",
+        "+10": "color texture",
+        "+14": "color level-zero surface",
+        "+18": "depth texture",
+        "+1c": "depth level-zero surface",
+        "+20": "creation attempted guard",
+        "+24": "color format 17h after supported depth format selection",
+        "+28": "DF16 or D16 depth format"
+      }
+    },
+    "texture_2d": {
+      "vtable": "00d61948",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "00b3f590",
+        "30": "00b3fd80",
+        "3c": "00b3ce50",
+        "40": "00b3ce60"
+      },
+      "destroy": "00b3f2e0",
+      "pool": "0108db38",
+      "pool_return": "00b3d8d0",
+      "pool_allocate_thunk": "00b3f2b0 -> 00b3ef60",
+      "fields": {
+        "+10": "owned COM texture",
+        "+28,+2c": "mutable reported dimensions",
+        "+34,+38": "constructor requested dimensions",
+        "+40,+44,+48": "cached surface record data/count/capacity",
+        "+4c": "optional retained source"
+      }
+    },
+    "surface": {
+      "size_hex": "34",
+      "vtable": "00d619a0",
+      "constructor": "00b3f630",
+      "deleting_destructor": "00b3f5b0",
+      "complete_lifetime_reconstructed": false
+    },
+    "viewport": {
+      "size_hex": "34",
+      "vtable": "00d5e5f8",
+      "constructor": "00b1f850",
+      "deleting_destructor": "00b1f8f0",
+      "complete_lifetime_reconstructed": false
+    },
+    "target_group": {
+      "size_hex": "40",
+      "vtable": "00d5e600",
+      "constructor": "00b1fbb0",
+      "destructor": "00b1fc00",
+      "deleting_destructor": "00b1fcf0",
+      "fields": {
+        "+08..14": "retained color surface wrappers",
+        "+18": "retained depth surface wrapper",
+        "+1c,+20,+24": "auxiliary record array",
+        "+28..34": "cached color COM references",
+        "+38": "cached depth COM reference",
+        "+3c": "sRGB-write byte initialized zero"
+      }
+    }
+  },
+  "publication_evidence": {
+    "world_create_publish_release": "004df3c0..004df3f3: ECX game+19f8 -> factory, B7BDF0 retain, creator decrement and virtual0 on zero",
+    "world_authored_override": "004df3f3..004df421: if scene+5fc nonnull, copy scene+a84 to returned shadow+08",
+    "factory_direct_callers": [
+      "004de610",
+      "00504130",
+      "005ab190",
+      "0067f080"
+    ],
+    "light_setter_other_copy_callsite": "00ba1ef7 in 00ba1400",
+    "light_setter_sequence": [
+      "capture old",
+      "identity skip",
+      "publish replacement",
+      "retain new if nonnull",
+      "release captured old if nonnull",
+      "current old virtual0 on zero"
+    ],
+    "light_destructor_sequence": [
+      "capture +174",
+      "decrement captured +04",
+      "current virtual0 on zero",
+      "clear light+174 after callback"
+    ]
+  },
+  "destructor_evidence": {
+    "shadow_release_order": [
+      "viewport +504",
+      "viewport +10",
+      "viewport +14",
+      "viewport +18",
+      "viewport +1c",
+      "camera +20: unconditionally clear viewport via B71990; reload, B6DFA0 if nonnull, clear camera field",
+      "camera +24: same",
+      "camera +28: same",
+      "camera +2c: same",
+      "fallback texture +384",
+      "target group +4f0",
+      "target group +4f4",
+      "target group +4f8",
+      "target group +4fc",
+      "target group +500",
+      "BD30F0 base"
+    ],
+    "reentrancy": "Retained-field zero callback uses captured owner but current virtual0; native field clear follows callback. Camera field is freshly loaded after viewport replacement.",
+    "global_target_release_order": [
+      "color surface +14",
+      "color texture +10",
+      "depth surface +1c",
+      "depth texture +18",
+      "base unpublish A8A9D0"
+    ],
+    "target_group_order": "For each color: release wrapper +08+4i then cached COM +28+4i; then depth wrapper +18 and depth COM +38; array resize/free; BD30F0.",
+    "texture_order": "Retained source +4c; renderer notifications/registry; owned COM +10; cached surface wrapper references; tracking counter; cached array resize/free; B33F50 base.",
+    "returning_free_tails": [
+      {
+        "address": "00a8fce5",
+        "end_exclusive": "00a8fcee",
+        "behavior": "ADD ESP,4; EAX=this; POP ESI; RET4 after ordinary free"
+      },
+      {
+        "address": "00a8e175",
+        "end_exclusive": "00a8e17e",
+        "behavior": "same base-table scalar deleting tail"
+      },
+      {
+        "address": "00a900d5",
+        "end_exclusive": "00a900de",
+        "behavior": "same global-target scalar deleting tail"
+      },
+      {
+        "address": "00b1fd05",
+        "end_exclusive": "00b1fd0e",
+        "behavior": "same target-group scalar deleting tail"
+      },
+      {
+        "address": "00b3f3e9",
+        "end_exclusive": "00b3f40e",
+        "behavior": "return from free cached array; reset EH state; B33F50; restore FS/registers; RET"
+      },
+      {
+        "address": "00b1fcca",
+        "end_exclusive": "00b1fcef",
+        "behavior": "return from free group array; reset EH state; BD30F0; restore FS/registers; RET"
+      }
+    ]
+  },
+  "eh_evidence": {
+    "factory": {
+      "handler": "00cb658b",
+      "funcinfo": "00dec800",
+      "unwind_map": "00dec7f8",
+      "max_state_count": 1,
+      "raw_free": "00cb6580..00cb658b",
+      "returning_free_tail": "POP ECX; RET"
+    },
+    "derived_constructor": {
+      "handler": "00cb656e",
+      "funcinfo": "00dec7d4",
+      "unwind_map": "00dec7bc",
+      "max_state_count": 3,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cb6550 -> 00a8dec0"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cb6558 frees current loop target allocation, then POP ECX; RET"
+        },
+        {
+          "state": 2,
+          "next": 0,
+          "action": "00cb6563 frees fifth target allocation, then POP ECX; RET"
+        }
+      ]
+    },
+    "base_constructor": {
+      "handler": "00cb64db",
+      "funcinfo": "00dec674",
+      "unwind_map": "00dec698",
+      "max_state_count": 19,
+      "state_zero": "00cb6410 -> 00bd30f0 only; not full shadow destructor",
+      "rest": "Distinct string, raw viewport and camera allocation/constructor states, recorded preimage; complete failure-path port is future work"
+    }
+  },
+  "dispatch_contract": {
+    "depth_texture": "Capture actual global target; if target.c && target.d return target.texture18 else shadow.fallback384.",
+    "color_texture": "Same independent decision; true returns target.texture10.",
+    "dimension_contract": "Read actual mutable texture+28/+2c; do not query COM instead; preserve two separate owner getter calls.",
+    "fallback": "Native renderer virtual64 loads actual white.tga flags0 and returns a retained reference adopted at +384; no synthetic fallback.",
+    "toggle": "A8FDD0 publishes byte+c; if +d, B3CEB0 overwrites both texture wrappers dimensions to configured size or 8x8; no COM resize.",
+    "global_create": "A8FF30 one-attempt guard +20, capability>=0x200 and format24; creates color flags0x10 then depth flags0x100 through B2A070; adopts retained GetSurfaceLevel wrappers.",
+    "borrowed_lifetime": "Actual global target, selected texture wrapper and owner field bindings must remain alive through each callback. Native getters provide no lifetime extension or null guard."
+  },
+  "existing_code_reuse": [
+    {
+      "file": "include/bsp/system_lighting_constants.hpp",
+      "usable": "Same matrices/direction/limits field references and required texture/dimension methods",
+      "missing": "Concrete dispatch and all ownership"
+    },
+    {
+      "file": "include/bsp/d3d9_texture.hpp",
+      "usable": "Retained file source and real COM texture creation/recreation for fallback",
+      "missing": "Mutable reported metadata, registry, cached surfaces, native pool/refcount/destructor"
+    },
+    {
+      "file": "include/bsp/d3d9_reset_texture.hpp",
+      "usable": "Actual COM texture, mutable metadata, cached-level reset helpers",
+      "missing": "Surface wrappers are borrowed; complete native creation/cache retention/destruction omitted"
+    },
+    {
+      "file": "include/bsp/d3d9_resources.hpp",
+      "usable": "Actual surface COM initialization and release",
+      "missing": "Complete intrusive surface wrapper and pool lifetime"
+    },
+    {
+      "file": "include/bsp/d3d9_states.hpp",
+      "usable": "Actual surface owners for D3D9FrameTargets and real device bindings",
+      "missing": "Native target-group cached COM references/array/destructor; LogicalTexture COM pointer is borrowed"
+    },
+    {
+      "file": "include/bsp/camera_frame_state.hpp",
+      "usable": "Actual camera fields and viewport/device access",
+      "missing": "Complete camera/viewport construction, retention and shadow update"
+    }
+  ],
+  "next_packets": [
+    {
+      "id": "directional_shadow_texture_dispatch",
+      "readiness": "ready_with_actual_existing_owner_bindings",
+      "addresses": [
+        "00a8fcf0",
+        "00a8fd10",
+        "00a8fd90",
+        "00a8fdb0",
+        "00b3ce50",
+        "00b3ce60"
+      ],
+      "requirements": [
+        "Define missing native functions and annotate through normal lock/ledger workflow",
+        "Borrow actual global target and actual fallback pointer",
+        "Bind live mutable texture dimension fields",
+        "Keep separate texture callback calls and return lifetime",
+        "No owning factory or defaults claim"
+      ],
+      "optional_follow_on": [
+        "00a8fdd0",
+        "00b3ceb0"
+      ]
+    },
+    {
+      "id": "light_shadow_reference_slot",
+      "readiness": "depends_on_actual_reference_counted_shadow_owner",
+      "addresses": [
+        "00b7bdf0"
+      ],
+      "requirements": [
+        "One actual +174 field",
+        "Retain new after publish; release captured old",
+        "Real zero-count virtual cleanup; no empty callback"
+      ]
+    },
+    {
+      "id": "directional_shadow_owner_factory",
+      "readiness": "not_ready_for_complete_implementation",
+      "addresses": [
+        "00a8fd30",
+        "00a8e2e0",
+        "00a8fa30",
+        "00a8dec0",
+        "00a8fcd0"
+      ],
+      "dependencies": [
+        "00b71a80 cameras",
+        "00b71990 viewport retention",
+        "00b1f850 viewport lifetime",
+        "00b1fbb0/00b1fc00 target-group lifetime",
+        "00a8fe30/00a8ff30/00a8fdd0/00a8fff0 global target",
+        "00b2a070 texture factory",
+        "00b3f7b0 unnamed texture constructor",
+        "00b3fd80 cached surface retention",
+        "texture and surface pools",
+        "native constructor EH states"
+      ],
+      "render_ready_dependencies": [
+        "00a8f3b0 shadow view update",
+        "00a8ea20 cascade/update body"
+      ]
+    }
+  ],
+  "uncertainty_and_limits": [
+    "No recovered RTTI class name asserted; concrete profiles are identified by allocation, constructor and vtable addresses.",
+    "Static constructor/callsite evidence identifies dynamic dispatch profiles, not an observed live gameplay object.",
+    "Current Ghidra omissions in small functions and returning-free tails were read without modifying analysis.",
+    "Malformed storage, allocation failure details, reentry during active shadow update and exception semantics of unported dependencies are not covered by a complete implementation.",
+    "Only the successful 2D fallback loader profile is identified; no blanket claim that every possible renderer-load result has the same layout.",
+    "Source hashes describe this isolated c314dfc base, not uncommitted primary-agent changes.",
+    "Byte matching is not fixture, ABI compatibility, runtime or visual proof."
+  ],
+  "native_ranges": [
+    {
+      "label": "light_shadow_setter",
+      "start": "00b7bdf0",
+      "end_exclusive": "00b7be31",
+      "length": 65,
+      "sha256": "487ef62dcfdc3741edc8e55d6b622c86dc79ecf884bd61ef6fee82bb52f090fb",
+      "raw_preimage_hex": "8b442404568bb1740100003bf0742e85c0898174010000740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "light_shadow_destructor_release",
+      "start": "00b7c644",
+      "end_exclusive": "00b7c66a",
+      "length": 38,
+      "sha256": "63224f76a51a19378fcb516689546f19928798f3f3993af8e5b35e53962142fc",
+      "raw_preimage_hex": "8bbe7401000085ff741c8d4f0451ffd585c075088b178b028bcfffd0c7867401000000000000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "world_shadow_create_publish_release",
+      "start": "004df3c0",
+      "end_exclusive": "004df3f3",
+      "length": 51,
+      "sha256": "b3c2d5ecd3443792863224eef120a681e9906c183b71d0ad8ba96430f6dedefc",
+      "raw_preimage_hex": "8b8ef819000032d2e863095b008b8ef81900008bf857e815ca69008b1d2022ce008d570452ffd385c075088b078b108bcfffd2",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "world_authored_shadow_word",
+      "start": "004df3f3",
+      "end_exclusive": "004df421",
+      "length": 46,
+      "sha256": "8d85598c7046b6e9f943197a7c81809c41e601981d67337dfc4d7a0e514b9e37",
+      "raw_preimage_hex": "8b86fc05000085c07424f30f1080840a00008b8ef8190000f30f11442424e89ab66900f30f10442424f30f114008",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_allocate",
+      "start": "00a8fd30",
+      "end_exclusive": "00a8fd90",
+      "length": 96,
+      "sha256": "b0f13e7a09c0ba24673b83b345da028efa8789ddb8564f77bbdf48179f47b6e8",
+      "raw_preimage_hex": "6aff688b65cb0064a1000000005064892500000000515668080500008bf1e8c86a160083c4048944240485c0c7442410000000007418568bc8e8c2fcffff5e8b4c240464890d0000000083c410c38b4c240833c05e64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_base_construct",
+      "start": "00a8e2e0",
+      "end_exclusive": "00a8e860",
+      "length": 1408,
+      "sha256": "39a4b3adac8668151352b64903aa5346d6acf9cff8d3b0043dba3a05fa82879c",
+      "raw_preimage_hex": "6aff68db64cb0064a100000000506489250000000083ec3853568bf133db895c2408c70630b1ce005789742410c7460401000000895e34c70674b5d500895e30899ef0040000899ef4040000899ef8040000899efc040000899e00050000895e10895e14895e18895e1c895e20895e24895e28895e2c899e04050000a1f0bbf8008b40048986880300008b0df0bbf8008b410889868c0300008b44245489460c8b90a40000006a018956348b3d94d3f8006a098d4c241c895c2454895c241c895c2420e898f998ff8b4424183bc374168b4c241483c1015168a477ce0050e8bd92160083c40c8b178b5264538d442418508bcfc644245401ffd28986840300008b4424183bc3885c244c74178b4c24146a0183c1015150e8c4b898ff8bc8e80d3114006a34e81184160083c404894424543bc3c644244c0274098bc8e82f140900eb0233c0b958040000885c244c898604050000e8f7340e008bf8897c24543bfbc644244c03742968bcb5d5008d4c2420e81a0499ff8d44241c508bcfc644245004c744241001000000e811360e00eb0233c0f644240c01894620895c244c74248b4c24208364240cfe3bcb74178b44241c6a0183c0015051e822b898ff8bc8e86b301400b958040000e881340e008bf8897c24543bfbc644244c06742668a8b5d5008d4c2428e8a40399ff834c240c028d4c2424518bcfc644245007e89e350e00eb0233c0f644240c02894624895c244c74248b4c24288364240cfd3bcb74178b4424246a0183c0015051e8afb798ff8bc8e8f82f1400b958040000e80e340e008bf8897c24543bfbc644244c0974266894b5d5008d4c2430e8310399ff834c240c048d54242c528bcfc64424500ae82b350e00eb0233c0f644240c04894628895c244c74248b4c24308364240cfb3bcb74178b44242c6a0183c0015051e83cb798ff8bc8e8852f1400b958040000e89b330e008bf8897c24543bfbc644244c0c74266880b5d5008d4c2438e8be0299ff834c240c088d442434508bcfc64424500de8b8340e00eb0233c0f644240c0889462c895c244c741f8b4c24383bcb74178b4424346a0183c0015051e8ceb698ff8bc8e8172f14008b4e206a02e8ed170e008b4e246a02e8e3170e008b4e286a02e8d9170e008b4e2c6a02e8cf170e008b4e206a02e8e5170e008b4e246a02e8db170e008b4e286a02e8d1170e008b4e2c6a02e8c7170e008b4e2083c8ff50e8fb170e008b4e2483c8ff50e8ef170e008b4e2883c8ff50e8e3170e008b4e2c83c8ff50e8d7170e006a34e89b81160083c404894424543bc3c644244c0f74098bc8e8b9110900eb0233c06a34885c2450894610e87281160083c404894424543bc3c644244c1074098bc8e890110900eb0233c06a34885c2450894614e84981160083c404894424543bc3c644244c1174098bc8e867110900eb0233c06a34885c2450894618e82081160083c404894424543bc3c644244c1274098bc8e83e110900eb0233c08b4e10518b4e20885c245089461ce867320e008b56148b4e2452e85b320e008b46188b4e2850e84f320e008b4e1c518b4e2ce843320e00d9ee51d91c248b4e10e8f50f0900d9ee51d91c248b4e14e8e70f0900d9ee51d91c248b4e18e8d90f0900d9ee51d91c248b4e1ce8cb0f0900d9e851d91c248b4e10e8cd0f0900d9e851d91c248b4e14e8bf0f0900d9e851d91c248b4e18e8b10f0900d9e851d91c248b4e1ce8a30f0900d9ee51d91c248b8e04050000e8820f0900d9e851d91c248b8e04050000e8810f09008b96880300008b868c0300008d4c243c518b8e040500008954244089442444e83d1109000f57c0f30f100d4ca2d700f30f114638f30f114e3cf30f1146408b4c2444f30f118690030000f30f118694030000f30f118698030000f30f11869c030000f30f1005fc77ce005ff30f1146088bc65e5b64890d0000000083c444c20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_derived_construct",
+      "start": "00a8fa30",
+      "end_exclusive": "00a8fcb1",
+      "length": 641,
+      "sha256": "ff4f370202840315d08ef22f9ec9becb9f9b2d2b75c7425931dbb1ecfd551af3",
+      "raw_preimage_hex": "6aff686e65cb0064a100000000506489250000000083ec4c8b44245c535556578bf15089742414e884e8ffff8d4c241433db518b4e10895c2468c706d8b5d500895c2418895c241ce8a3fe08008b868c0300008b96880300008b4e10d1e8894424188d442414d1ea5089542418e89efe08008b4e10518d542420528bcee8eeafffff508d8e44020000e8323a98ff8b86880300008d4c2414d1e8518b4e1489442418895c241ce845fe08008b868c0300008b96880300008b4e14d1e8894424188d442414d1ea5089542418e840fe08008b4e14518d542420528bcee890afffff508d8e84020000e8d43998ff8b868c0300008b4e18d1e8894424188d44241450895c2418e8e7fd08008b868c0300008b8e88030000d1e8d1e98d542414894c241489442418528b4e18e8e2fd08008b4618508d4c2420518bcee832afffff508d8ec4020000e8763998ff8b868c0300008b96880300008b4e1cd1e8894424188d442414d1ea5089542418e881fd08008b8e880300008b868c030000d1e98d542414d1e8894c24148b4e1c528944241ce87cfd08008b461c508d4c2420518bcee8ccaeffff508d8e04030000e8103998ff8b0df0bbf800e8b50100008be88dbef0040000c744246c04000000eb038d49006a40e8146c160083c404894424143bc3c64424640174098bc8e892ff0800eb0233c055538bc8885c246c8907e87ffe08008b0df0bbf800e8840100008b0f50e8bcfe080083c704836c246c0175b26a40e8c66b160083c4048944246c3bc3c64424640274098bc8e844ff0800eb0233c055538bc8885c246c898600050000e82dfe08008b0df0bbf800e8320100008b8e0005000050e866fe08008b4c245c5f8bc65e5d5b64890d0000000083c458c20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_destroy",
+      "start": "00a8dec0",
+      "end_exclusive": "00a8e087",
+      "length": 455,
+      "sha256": "b449ab693f8fa225a4c85d4b65dc996e7f46f8b0b085b7c959bb6eed56bb8550",
+      "raw_preimage_hex": "6aff68d863cb0064a1000000005064892500000000515355568bf15789742410c70674b5d5008bbe040500008b2d2022ce0033db3bfb895c241c74188d470450ffd585c075088b178b028bcfffd0899e040500008b7e103bfb74158d4f0451ffd585c075088b178b028bcfffd0895e108b7e143bfb74158d4f0451ffd585c075088b178b028bcfffd0895e148b7e183bfb74158d4f0451ffd585c075088b178b028bcfffd0895e188b7e1c3bfb74158d4f0451ffd585c075088b178b028bcfffd0895e1c8b4e2053e8033a0e008b4e203bcb7408e807000e00895e208b4e2453e8eb390e008b4e243bcb7408e8efff0d00895e248b4e2853e8d3390e008b4e283bcb7408e8d7ff0d00895e288b4e2c53e8bb390e008b4e2c3bcb7408e8bfff0d00895e2c8bbe840300003bfb74188d4f0451ffd585c075088b178b028bcfffd0899e840300008d9ef0040000bd040000008b3b85ff741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c30483ed0175d68bbe0005000085ff74208d4f0451ff152022ce0085c075088b178b028bcfffd0c78600050000000000008bcec744241cffffffffe87c5014008b4c24145f5e5d5b64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_delete_base",
+      "start": "00a8e160",
+      "end_exclusive": "00a8e17e",
+      "length": 30,
+      "sha256": "d5afdf935492e6d411307a853b722ee9dbe2d9197f1aeba604ef2eddf3045f39",
+      "raw_preimage_hex": "568bf1e858fdfffff644240801740956e83784160083c4048bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_delete_derived",
+      "start": "00a8fcd0",
+      "end_exclusive": "00a8fcee",
+      "length": 30,
+      "sha256": "6681dcd6540bf390c3d5a85a339cbc5dbcb137c39e9c6f608cfcb142622097bf",
+      "raw_preimage_hex": "568bf1e8e8e1fffff644240801740956e8c768160083c4048bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_depth_texture_dispatch",
+      "start": "00a8fcf0",
+      "end_exclusive": "00a8fd0f",
+      "length": 31,
+      "sha256": "8db6438215b0fbf846958ff81821f76eaa1728c9406c9902d6155bd2d5786433",
+      "raw_preimage_hex": "a1f0bbf80080780c00740d80780d0074078bc8e9a80000008b8184030000c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_color_texture_dispatch",
+      "start": "00a8fd10",
+      "end_exclusive": "00a8fd2f",
+      "length": 31,
+      "sha256": "8e91715e18fc4e2694811b48eea1e06fcc7537ef8bf286b0cb90ee9a5eed6442",
+      "raw_preimage_hex": "a1f0bbf80080780c00740d80780d0074078bc8e9680000008b8184030000c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_color_texture_getter",
+      "start": "00a8fd90",
+      "end_exclusive": "00a8fd94",
+      "length": 4,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "raw_preimage_hex": "8b4110c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_color_surface_getter",
+      "start": "00a8fda0",
+      "end_exclusive": "00a8fda4",
+      "length": 4,
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "raw_preimage_hex": "8b4114c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_depth_texture_getter",
+      "start": "00a8fdb0",
+      "end_exclusive": "00a8fdb4",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "raw_preimage_hex": "8b4118c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_depth_surface_getter",
+      "start": "00a8fdc0",
+      "end_exclusive": "00a8fdc4",
+      "length": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "raw_preimage_hex": "8b411cc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_toggle",
+      "start": "00a8fdd0",
+      "end_exclusive": "00a8fe24",
+      "length": 84,
+      "sha256": "66ef04efc5b852e1e108c11f541a4e5b5b12c2e37deb62fa1fd2b1336d356357",
+      "raw_preimage_hex": "8a442404568bf1807e0d0088460c744084c074248b46088b4e0450518b4e10e8bcd00a008b56088b46048b4e185250e8acd00a005ec204008b4e106a086a08e89cd00a008b4e186a086a08e890d00a005ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_construct",
+      "start": "00a8fe30",
+      "end_exclusive": "00a8ff2d",
+      "length": 253,
+      "sha256": "1b7c7a888562e8e00fcf804fc7078305424a6f70f8a6a73a188f49492e6a8b1e",
+      "raw_preimage_hex": "6aff68a865cb0064a1000000005064892500000000518b44241853568bf18b4c241c50518bce89742410e821abffff33dbc706e8b5d500895e10895e14895e18895e1c885e20885e0c885e0d895e24895e288b0d94d3f8008b118b8204010000895c2414ffd08178280002000072338b0d94d3f8008b118b82f800000068444631366a0368000100006a16ffd084c07426c7462417000000c7462844463136885e0e8bc65e5b8b4c240464890d0000000083c410c208008b0d94d3f8008b118b82f80000006a506a0368000100006a16ffd084c08bc674cc8b4c240cc7462417000000c7462850000000c6460e015e5b64890d0000000083c410c20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_create_textures",
+      "start": "00a8ff30",
+      "end_exclusive": "00a8ffe3",
+      "length": 179,
+      "sha256": "4ce882f7f22d09a63a278f61b8c0c36719b5510fed97a059c2fdbc7da0468764",
+      "raw_preimage_hex": "568bf1807e20000f85a20000008a44240884c0558b6e08578b7e0488460c7507bf080000008befc6460d008b0d94d3f8008b018b9004010000ffd28178280002000072658b462485c0745e8b0d94d3f8008b116a10508b82880000006a015557ffd08946108b106a008bc88b42306a00ffd08946148b46288b0d94d3f8008b118b92880000006800010000506a015557ffd28946188b106a008bc88b42306a00ffd089461cc6460d015fc64620015d5ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_destroy",
+      "start": "00a8fff0",
+      "end_exclusive": "00a900b4",
+      "length": 196,
+      "sha256": "ef96f8492b1b37f9b3c035261dfa83b55af0e35ca72902108653fce129054b56",
+      "raw_preimage_hex": "6aff68c865cb0064a1000000005064892500000000515355568bf15789742410c706e8b5d5008b7e148b2d2022ce0033db3bfb895c241c74158d470450ffd585c075088b178b028bcfffd0895e148b7e103bfb74158d4f0451ffd585c075088b178b028bcfffd0895e108b7e1c3bfb74158d4f0451ffd585c075088b178b028bcfffd0895e1c8b7e183bfb74158d4f0451ffd585c075088b178b028bcfffd0895e188bcec744241cffffffffe82fa9ffff8b4c24145f5e5d5b64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_delete",
+      "start": "00a900c0",
+      "end_exclusive": "00a900de",
+      "length": 30,
+      "sha256": "d720bf97642538a4d260cd096e5cc0263e0e7ec929757d6968994bf7e202f4c8",
+      "raw_preimage_hex": "568bf1e828fffffff644240801740956e8d764160083c4048bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_reported_width",
+      "start": "00b3ce50",
+      "end_exclusive": "00b3ce54",
+      "length": 4,
+      "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "raw_preimage_hex": "8b4128c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_reported_height",
+      "start": "00b3ce60",
+      "end_exclusive": "00b3ce64",
+      "length": 4,
+      "sha256": "4d8bbabf4078fb522f1b7e5fa9e993af5e9c941d53117c673ecfde3a5feca5c7",
+      "raw_preimage_hex": "8b412cc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_set_reported_dimensions",
+      "start": "00b3ceb0",
+      "end_exclusive": "00b3cec1",
+      "length": 17,
+      "sha256": "f5f3196e69b6bb6d899d32dce9df2fca4e2dd9541dfacaceb498f175fa48be1b",
+      "raw_preimage_hex": "8b4424048b54240889412889512cc20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_factory",
+      "start": "00b2a070",
+      "end_exclusive": "00b2a361",
+      "length": 753,
+      "sha256": "7d84773acacd3f2cf3e8f60461b5c80ad1ab07e6bb0e6b1793a495e5c3ce64d8",
+      "raw_preimage_hex": "6aff6870d3cb0064a100000000506489250000000083ec1c803ddcd6080100535556578bf9897c2418740d897c2428e82c9a0000884424248b4c244c8bc133d283e00f33f683f803895424347729ff248564a3b20089542414eb1cc744241401000000eb12c744241402000000eb08c7442414030000008bc183e0108944241c7405be010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81ce00400000eb2683ce02eb2183ce40eb1c3d00040000740f3d00050000750e81ce80000000eb0681ce000100008bc12500f000003d00100000750681ce0002000081e1000000ff81f900000001750681ce000400008b87101a00008b6c24448b5c24408b7c243c52895424148b088d542414528b54241c528b5424545256555357508b415cffd08b4c241085c9754685c074423d7c017688743b3d0e00078074348b4c2418e8b0f4ffff8b4c24188b81101a00008b108b525c6a008d4c2414518b4c241c518b4c2454515655535750ffd28b4c241085c98bf174108b01518b4804ffd18b168b420856ffd0b950000000e8a55001008944244485c0c64424340174178b4c244c8b542410515357528bc8e8855501008be8eb0233ed837c241c00c6442434000f84890000008b4c2448e8c66fffff85c0750b0f57c0f30f11442448eb19c1e80385c089442448db4424487d06d8057839ce00d95c24480faffb85ff897c244cdb44244c7d06d8057839ce00a1bcd40801d84c244885c0db05bcd408017d06dc05a07dd500d97c24480fb7442448dec10d000c00008944244cd96c244cdf7c241c8b4c241c890dbcd40801d96c24488b7424188b86081b000081c6001b0000394604751403c083f8017f05b801000000508bcee8fdbcc0ff8b56048b068d049085c0740289288b4424108346040185c08bf074148b088b510450ffd28b068b480856ffd18b4424108b10508b4208ffd0803ddcd6080100c7442434ffffffff740e8b4c2424518b4c242ce8b69700008b4c242c5f5e8bc55d5b64890d0000000083c428c21400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_construct_unnamed",
+      "start": "00b3f7b0",
+      "end_exclusive": "00b3f92f",
+      "length": 383,
+      "sha256": "73d5891625159872d48116a5b922d4b02095894b71240e01a20cbe31d6b5b661",
+      "raw_preimage_hex": "6aff6843efcb0064a100000000506489250000000083ec38538b5c2458558b6c24505657538bf15589742418e8df47ffff33ffc7064819d600897e24897e3c897c2450897e40897e44897e488b4610897e4c8b088b510450c644245401ffd28b46108b088b513450ffd28d4c242851894614895e1c8b45008b50445755ffd28b4c24448b4424408b542428894e2c8b4c24608946288b44245c6a01894e386a108d4c241c895618894634897e30897c241c897c2420e8d6e48dff8b5c24183bdf74168b54241483c2015268e419d60053e8fb7d0b0083c40c896c241c8b6c24146a01558d4c2428c644245802897c2428897c242ce897e48dff3bef8b6c2424740f8b442420505355e8c37d0b0083c40cc644245003e866eeffff3befc64424500274178b4424206a0183c0015055e8dda38dff8bc8e8261c09003bdfc64424500174178b4c24146a0183c1015153e8bda38dff8bc8e8061c0900f6442464108bc674078305f8da0801018b4c24485f5e5d5b64890d0000000083c444c21000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_get_cached_surface",
+      "start": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d",
+      "raw_preimage_hex": "6aff68a8efcb0064a100000000506489250000000051538b5c2418558b2d1c22ce00568bf18b4e4433c085c9577e278b7e408bd7391a740c83c00183c2083bc17cf2eb128b7cc7048d470450ffd585ff0f859b0000008b46108b088d5424245253508b4148ffd0b900db0801e84fefffff8944241033ff3bc7897c241c741e8b561c8bcac1e90881e101ffffff51528b54242c528bc8e815f8ffff8bf88b4424248b088b510850c7442420ffffffffffd2f6461c01753a8d470450ffd58b464883c640394604751403c083f8017f05b801000000508bcee854dbffff8b4e048b168d04ca85c074058918897804834604018b4c24148bc75f5e5d5b64890d0000000083c410c20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_destroy_complete_free_tail",
+      "start": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "raw_preimage_hex": "6aff68a3eecb0064a1000000005064892500000000515355568bf15789742410c7064819d6008b7e4c33ed3bfdc744241c0100000074198d470450ff152022ce0085c075088b178b028bcfffd0896e4c8b1d94d3f8008b3b8bce83c76ce8fe4affff8b17508bcbffd28b0d94d3f80056e8eb89feff8b7e103bfd74108b078b480457ffd18b178b420857ffd0e8bff3ffff8b46103bc5740b8b088b510850ffd2896e10396e447e3beb068d9b000000008b46408b7ce80485ff8d5ce804741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c5013b6e447ccdf6461c107407832df8da0801018d7e406a008bcfc644242000e83fe6ffff8b3f57e8a0750b0083c4048bcec744241cffffffffe8554bffff8b4c24145f5e5d5b64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_pool_deleting_destructor",
+      "start": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "length": 32,
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "raw_preimage_hex": "568bf1e848fdfffff644240801740b56b938db0801e826e3ffff8bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_pool_allocate_thunk",
+      "start": "00b3f2b0",
+      "end_exclusive": "00b3f2ba",
+      "length": 10,
+      "sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e",
+      "raw_preimage_hex": "b938db0801e9a6fcffff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_group_construct",
+      "start": "00b1fbb0",
+      "end_exclusive": "00b1fbf2",
+      "length": 66,
+      "sha256": "37475c5525bd39ede8ac9ea8883767cb0cf900abb14c6a0f39e1863d3708bd0a",
+      "raw_preimage_hex": "8bc133c9c70030b1ce00c7400401000000c70000e6d50089481889481c89482089482489483888483c89480889482889480c89482c894810894830894814894834c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_group_assign_color",
+      "start": "00b1fab0",
+      "end_exclusive": "00b1faf1",
+      "length": 65,
+      "sha256": "2cafc7914b74198e7829503188d196549ffd1630462a850f2353eebff15be5af",
+      "raw_preimage_hex": "8b5424048b442408568b7491083bf0742c85c089449108740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_group_assign_depth",
+      "start": "00b1fb00",
+      "end_exclusive": "00b1fb3b",
+      "length": 59,
+      "sha256": "c79728eed9b19cff226a057760ae14063e4d2ff4c1be835b693e2ef12e8c9de3",
+      "raw_preimage_hex": "8b442404568b71183bf0742b85c0894118740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_group_destroy_complete_free_tail",
+      "start": "00b1fc00",
+      "end_exclusive": "00b1fcef",
+      "length": 239,
+      "sha256": "64be080eac78cd962e9480b0f1200cc99dd00ea5086d644596c6903af753d168",
+      "raw_preimage_hex": "6aff68e3cccb0064a10000000050648925000000005153558be95657896c2410c7450000e6d500c744241c010000008d7528bb040000008b7ee085ff741d8d470450ff152022ce0085c075088b178b028bcfffd0c746e0000000008b0685c0740e8b088b510850ffd2c7060000000083c60483eb0175c08b751885f6741d8d460450ff152022ce0085c075088b168b028bceffd0c74518000000008b453885c0740f8b088b510850ffd2c74538000000008d751c6a008bcec644242000e82efdffff8b3656e8bf6c0d0083c4048bcdc744241cffffffffe814340b008b4c24145f5e5d5b64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_group_delete",
+      "start": "00b1fcf0",
+      "end_exclusive": "00b1fd0e",
+      "length": 30,
+      "sha256": "4e7470a32ffbfe8ddbf79d518924119d75acc1d13a6b987d9da1401f0bd70c0b",
+      "raw_preimage_hex": "568bf1e808fffffff644240801740956e8a7680d0083c4048bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "invoke_virtual_deleting_destructor",
+      "start": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "raw_preimage_hex": "85c974098b018b50046a01ffd2c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "reference_base_destroy",
+      "start": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "raw_preimage_hex": "c70130b1ce00c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_matrix_initialize_prefix",
+      "start": "00a8f3b0",
+      "end_exclusive": "00a8f791",
+      "length": 993,
+      "sha256": "e70089704a65a7c91e94baa824707623bfe114e1159dc8a0394c8a65f92be950",
+      "raw_preimage_hex": "81ecb40000000f57c0f30f100d4ca2d700535556578bf18d442410508d4e44f30f114c2414f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e8bc4098ff0f57c0f30f100d4ca2d7008d4c2410518d8e84000000f30f114c2414f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e8414098ff0f57c0f30f100d4ca2d7008d542410528d8ec4000000f30f114c2414f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e8c63f98ff0f57c0f30f100d4ca2d700f30f114c2410f30f11442414f30f11442418f30f1144241cf30f11442420f30f114c2424f30f11442428f30f1144242c8d442410508d8e04010000f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e84b3f98ff0f57c0f30f100d4ca2d7008d4c2410518d8e44010000f30f114c2414f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e8d03e98ff0f57c0f30f100d4ca2d7008d542410528d8e84010000f30f114c2414f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e8553e98ff0f57c0f30f100d4ca2d7008d442410508d8ec4010000f30f114c2414f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e8da3d98fff30f100d4ca2d7000f57c0f30f114c24108d4c2410518d8e04020000f30f11442418f30f1144241cf30f11442420f30f11442424f30f114c2428f30f1144242cf30f11442430f30f11442434f30f11442438f30f114c243cf30f11442440f30f11442444f30f11442448f30f1144244cf30f114c2450e85f3d98ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_update_camera_release",
+      "start": "00a8f9cf",
+      "end_exclusive": "00a8f9fc",
+      "length": 45,
+      "sha256": "2694caa670b36f41ceeffc9073dedb8371958aabe115172a371f49efdc6c3997",
+      "raw_preimage_hex": "8b7e3085ff74198d4f0451ffd585c075088b178b028bcfffd0c74630000000005f5e5d5b81c4b4000000c20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_base_profile",
+      "start": "00d5b574",
+      "end_exclusive": "00d5b580",
+      "length": 12,
+      "sha256": "735942289e93bc2fac9e79a4ffdc423e93727569e6154d72c151c773a99209f8",
+      "raw_preimage_hex": "e030bd0060e1a8008e69bf00",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_derived_profile",
+      "start": "00d5b5d8",
+      "end_exclusive": "00d5b5e8",
+      "length": 16,
+      "sha256": "87cb026e4c5693545ab92482f4031aea360414a7799f39830c129252fad9f45a",
+      "raw_preimage_hex": "e030bd00d0fca800f0fca80010fda800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_profile",
+      "start": "00d5b5e8",
+      "end_exclusive": "00d5b5f4",
+      "length": 12,
+      "sha256": "e267c014ad7b7099fa5c74b2d7c2543ee7c9f81de966b95fc753f7081f90efc1",
+      "raw_preimage_hex": "c000a90030ffa800d0fda800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_profile",
+      "start": "00d61948",
+      "end_exclusive": "00d619a0",
+      "length": 88,
+      "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad",
+      "raw_preimage_hex": "e030bd0090f5b30090fab30030ceb30040ceb300803eb300903eb300a0ceb30030ddb30090ddb300b0d7b30090e1b30080fdb30090d5b300c0d5b30050ceb30060ceb30090ceb30070ceb30080ceb30010dfb30040d6b300",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_profile_prefix",
+      "start": "00d619a0",
+      "end_exclusive": "00d619a8",
+      "length": 8,
+      "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+      "raw_preimage_hex": "e030bd00b0f5b300",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "viewport_profile",
+      "start": "00d5e5f8",
+      "end_exclusive": "00d5e600",
+      "length": 8,
+      "sha256": "7dec5b14114e377e30c7980a2cd07194263999b54a17e0ead5b1084fb373f9e9",
+      "raw_preimage_hex": "e030bd00f0f8b100",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "target_group_profile",
+      "start": "00d5e600",
+      "end_exclusive": "00d5e608",
+      "length": 8,
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "raw_preimage_hex": "e030bd00f0fcb100",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_texture_factory_slot",
+      "start": "00d5f130",
+      "end_exclusive": "00d5f134",
+      "length": 4,
+      "sha256": "6a0c146a1d71c9dd984dcb15e621263afcfadd8168eb4d8544955b9cac0e6145",
+      "raw_preimage_hex": "70a0b200",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_default_scalar_word",
+      "start": "00ce77fc",
+      "end_exclusive": "00ce7800",
+      "length": 4,
+      "sha256": "c36c2606ae26dfb7a6c61b3b7dd29931582302a8d695f198455710a61847fcb5",
+      "raw_preimage_hex": "0060ea46",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "constant_one",
+      "start": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "raw_preimage_hex": "0000803f",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "fallback_texture_name",
+      "start": "00ce77a4",
+      "end_exclusive": "00ce77ae",
+      "length": 10,
+      "sha256": "53aa3f7487d39522ef125316fe165fc20a9b3a1a906c2f182379509bb59a2008",
+      "raw_preimage_hex": "77686974652e74676100",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "factory_eh_handler",
+      "start": "00cb658b",
+      "end_exclusive": "00cb6595",
+      "length": 10,
+      "sha256": "47a33c395c0b1fe05a1154468625a6b6b92e489b8f8816e18c44a572adee72b4",
+      "raw_preimage_hex": "b800c8de00e9ae05f4ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "factory_funcinfo_and_unwind",
+      "start": "00dec7f8",
+      "end_exclusive": "00dec824",
+      "length": 44,
+      "sha256": "ee69c3a7dae613d27c2c7c70afb7fa94fd3ebf69122bd0fe55e841a93d790911",
+      "raw_preimage_hex": "ffffffff8065cb002205931901000000f8c7de00000000000000000000000000000000000000000001000000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "factory_raw_allocation_free",
+      "start": "00cb6580",
+      "end_exclusive": "00cb658b",
+      "length": 11,
+      "sha256": "da837d9f2e210d86d12c3aa095fe4a291ef08a99d475c33206b8e5f3f21e2ffd",
+      "raw_preimage_hex": "8b45f050e82300f4ff59c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "derived_eh_handler",
+      "start": "00cb656e",
+      "end_exclusive": "00cb6578",
+      "length": 10,
+      "sha256": "6b7ccb23e4fbc1d2b77b33cdcd734f99de733fd603ed2d84bea3cbe194ac5a13",
+      "raw_preimage_hex": "b8d4c7de00e9cb05f4ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "derived_funcinfo_and_unwind",
+      "start": "00dec7bc",
+      "end_exclusive": "00dec7f8",
+      "length": 60,
+      "sha256": "aaabf800119419d57d5130dc87c84a40d68f633af8384939cf2e089decba116c",
+      "raw_preimage_hex": "ffffffff5065cb00000000005865cb00000000006365cb002205931903000000bcc7de00000000000000000000000000000000000000000001000000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "derived_unwind_complete_free_tails",
+      "start": "00cb6550",
+      "end_exclusive": "00cb656e",
+      "length": 30,
+      "sha256": "8444b96580ce974f84759903740f8dd142192fb0f548a5ffa2569cd19f1ea755",
+      "raw_preimage_hex": "8b4da8e96879ddff8b45ac50e84b00f4ff59c38b450450e84000f4ff59c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "base_eh_handler",
+      "start": "00cb64db",
+      "end_exclusive": "00cb64e5",
+      "length": 10,
+      "sha256": "ea5446d700343d35536eb52ddaa9e33aaeec8c303553b250de56a473d4be81f8",
+      "raw_preimage_hex": "b874c6de00e95e06f4ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "base_funcinfo_and_unwind",
+      "start": "00dec674",
+      "end_exclusive": "00dec730",
+      "length": 188,
+      "sha256": "76c59c7fccb4ee5e72235f617ea7eca81bc58ecfadcb4d180f1a5bf11008420a",
+      "raw_preimage_hex": "220593191300000098c6de00000000000000000000000000000000000000000001000000ffffffff1064cb00000000001864cb00000000002064cb00000000002b64cb00030000003364cb00000000003364cb00000000004c64cb00060000005464cb00000000005464cb00000000006d64cb00090000007564cb00000000007564cb00000000008e64cb000c0000009664cb00000000009664cb0000000000af64cb0000000000ba64cb0000000000c564cb0000000000d064cb00",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "base_unwind_reference_destructor",
+      "start": "00cb6410",
+      "end_exclusive": "00cb6418",
+      "length": 8,
+      "sha256": "1b253adbf24a7c6400da64c126f50bdc1aaea6925de21e7e221e891a58e5851f",
+      "raw_preimage_hex": "8b4dc0e9d8ccf1ff",
+      "ghidra_matches_installed_pe": true
+    }
+  ]
+}
