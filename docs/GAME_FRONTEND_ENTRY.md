@@ -320,3 +320,7 @@ function; none needed defining.
 - `00a41030` and `00a40d60` are not grant entry points: they are the compiler-emitted `std::vector<int>::push_back` and `insert` that `00a410a0` uses to append an achievement id to the queue at `manager+360h`, drained by `00a3fa70`, the only caller of `XUserWriteAchievements` in the image.
 - `0090c5d0`'s ECX is recorded above as `*(00e188a8)+21A0h`; it is a double dereference, and the body never reads ECX (it probes `<CSIDL_PERSONAL>/Battlestations-Midway/save` and is true only on `ERROR_ALREADY_EXISTS`).
 - The award name-to-id map has no names in the executable: `006b9450` parses `Scripts/datatables/Achievements.lua` (52 rows in range, ids 27 to 78; the 1..99 check drops the 22 local-only badges at the -1 default and the `RANK` row at 0).
+
+## Correction from docs/MAIN_MENU_SCREENS.md
+
+`005884a0` does not act on the screen at `00e198ac+58h`: the shell loads ECX with it at `004e4271` but the body never reads ECX; the only object it touches is the manager, and it starts the title music, resolving the `+50h` handle the managers doc left provisional. The seven objects at `+58h..+70h` are leaf classes of the `004f7180` screen hierarchy whose vtable slot +00h returns the id that is both the registry index and the interface id (1 MAINMENU, 2 MISSIONTREE, 4 REWARDS, 3 BRIEFING, 8 CREDITS, 0Ah LEADERBOARDS, 0Bh ACHIEVEMENTS).

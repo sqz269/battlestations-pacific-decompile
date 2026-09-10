@@ -1,0 +1,386 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005905e0",
+    "end_address": "005905f3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005905e0",
+    "end_address": "005905f2",
+    "bytes_disassembled": 19,
+    "message": "Successfully disassembled 19 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005905e0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "005905e0",
+    "function_name": "FUN_005905e0",
+    "entry_point": "005905e0",
+    "body_size": 19,
+    "message": "Function created successfully at 005905e0"
+   }
+  },
+  {
+   "defined": "005905e0",
+   "end": "005905f3",
+   "name": null,
+   "after": "Function: FUN_005905e0 at 005905e0\nSignature: undefined FUN_005905e0(void)\nEntry: 005905e0\nBody: 005905e0 - 005905f2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00509d60",
+    "end_address": "00509d66"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00509d60",
+    "end_address": "00509d65",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00509d60",
+    "disassemble_first": false,
+    "name": "BSP_TacticalLibraryScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "00509d60",
+    "function_name": "BSP_TacticalLibraryScreen_GetScreenId",
+    "entry_point": "00509d60",
+    "body_size": 6,
+    "message": "Function created successfully at 00509d60",
+    "warnings": [
+     "Function name 'BSP_TacticalLibraryScreen_GetScreenId' \u2014 main part 'TacticalLibraryScreen_GetScreenId' is not PascalCase. Expected: TacticallibraryscreenGetscreenid",
+     "Function name 'BSP_TacticalLibraryScreen_GetScreenId' \u2014 main part 'TacticalLibraryScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_TacticalLibraryScreen_GetScreenId' does not start with a recognized verb. First word 'Tactical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00509d60",
+   "end": "00509d66",
+   "name": "BSP_TacticalLibraryScreen_GetScreenId",
+   "after": "Function: BSP_TacticalLibraryScreen_GetScreenId at 00509d60\nSignature: undefined BSP_TacticalLibraryScreen_GetScreenId(void)\nEntry: 00509d60\nBody: 00509d60 - 00509d65"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0051e250",
+    "end_address": "0051e256"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0051e250",
+    "end_address": "0051e255",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0051e250",
+    "disassemble_first": false,
+    "name": "BSP_BriefingScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "0051e250",
+    "function_name": "BSP_BriefingScreen_GetScreenId",
+    "entry_point": "0051e250",
+    "body_size": 6,
+    "message": "Function created successfully at 0051e250",
+    "warnings": [
+     "Function name 'BSP_BriefingScreen_GetScreenId' \u2014 main part 'BriefingScreen_GetScreenId' is not PascalCase. Expected: BriefingscreenGetscreenid",
+     "Function name 'BSP_BriefingScreen_GetScreenId' \u2014 main part 'BriefingScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_BriefingScreen_GetScreenId' does not start with a recognized verb. First word 'Briefing' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0051e250",
+   "end": "0051e256",
+   "name": "BSP_BriefingScreen_GetScreenId",
+   "after": "Function: BSP_BriefingScreen_GetScreenId at 0051e250\nSignature: undefined BSP_BriefingScreen_GetScreenId(void)\nEntry: 0051e250\nBody: 0051e250 - 0051e255"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0052fd60",
+    "end_address": "0052fd66"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0052fd60",
+    "end_address": "0052fd65",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0052fd60",
+    "disassemble_first": false,
+    "name": "BSP_CreditsScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "0052fd60",
+    "function_name": "BSP_CreditsScreen_GetScreenId",
+    "entry_point": "0052fd60",
+    "body_size": 6,
+    "message": "Function created successfully at 0052fd60",
+    "warnings": [
+     "Function name 'BSP_CreditsScreen_GetScreenId' \u2014 main part 'CreditsScreen_GetScreenId' is not PascalCase. Expected: CreditsscreenGetscreenid",
+     "Function name 'BSP_CreditsScreen_GetScreenId' \u2014 main part 'CreditsScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CreditsScreen_GetScreenId' does not start with a recognized verb. First word 'Credits' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0052fd60",
+   "end": "0052fd66",
+   "name": "BSP_CreditsScreen_GetScreenId",
+   "after": "Function: BSP_CreditsScreen_GetScreenId at 0052fd60\nSignature: undefined BSP_CreditsScreen_GetScreenId(void)\nEntry: 0052fd60\nBody: 0052fd60 - 0052fd65"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005633f0",
+    "end_address": "005633f6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005633f0",
+    "end_address": "005633f5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005633f0",
+    "disassemble_first": false,
+    "name": "BSP_LeaderboardsScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005633f0",
+    "function_name": "BSP_LeaderboardsScreen_GetScreenId",
+    "entry_point": "005633f0",
+    "body_size": 6,
+    "message": "Function created successfully at 005633f0",
+    "warnings": [
+     "Function name 'BSP_LeaderboardsScreen_GetScreenId' \u2014 main part 'LeaderboardsScreen_GetScreenId' is not PascalCase. Expected: LeaderboardsscreenGetscreenid",
+     "Function name 'BSP_LeaderboardsScreen_GetScreenId' \u2014 main part 'LeaderboardsScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LeaderboardsScreen_GetScreenId' does not start with a recognized verb. First word 'Leaderboards' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005633f0",
+   "end": "005633f6",
+   "name": "BSP_LeaderboardsScreen_GetScreenId",
+   "after": "Function: BSP_LeaderboardsScreen_GetScreenId at 005633f0\nSignature: undefined BSP_LeaderboardsScreen_GetScreenId(void)\nEntry: 005633f0\nBody: 005633f0 - 005633f5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00590570",
+    "end_address": "00590576"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00590570",
+    "end_address": "00590575",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00590570",
+    "disassemble_first": false,
+    "name": "BSP_MainMenuScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "00590570",
+    "function_name": "BSP_MainMenuScreen_GetScreenId",
+    "entry_point": "00590570",
+    "body_size": 6,
+    "message": "Function created successfully at 00590570",
+    "warnings": [
+     "Function name 'BSP_MainMenuScreen_GetScreenId' \u2014 main part 'MainMenuScreen_GetScreenId' is not PascalCase. Expected: MainmenuscreenGetscreenid",
+     "Function name 'BSP_MainMenuScreen_GetScreenId' \u2014 main part 'MainMenuScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MainMenuScreen_GetScreenId' does not start with a recognized verb. First word 'Main' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00590570",
+   "end": "00590576",
+   "name": "BSP_MainMenuScreen_GetScreenId",
+   "after": "Function: BSP_MainMenuScreen_GetScreenId at 00590570\nSignature: undefined BSP_MainMenuScreen_GetScreenId(void)\nEntry: 00590570\nBody: 00590570 - 00590575"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005ca8e0",
+    "end_address": "005ca8e6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005ca8e0",
+    "end_address": "005ca8e5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005ca8e0",
+    "disassemble_first": false,
+    "name": "BSP_MissionTreeScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "005ca8e0",
+    "function_name": "BSP_MissionTreeScreen_GetScreenId",
+    "entry_point": "005ca8e0",
+    "body_size": 6,
+    "message": "Function created successfully at 005ca8e0",
+    "warnings": [
+     "Function name 'BSP_MissionTreeScreen_GetScreenId' \u2014 main part 'MissionTreeScreen_GetScreenId' is not PascalCase. Expected: MissiontreescreenGetscreenid",
+     "Function name 'BSP_MissionTreeScreen_GetScreenId' \u2014 main part 'MissionTreeScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MissionTreeScreen_GetScreenId' does not start with a recognized verb. First word 'Mission' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005ca8e0",
+   "end": "005ca8e6",
+   "name": "BSP_MissionTreeScreen_GetScreenId",
+   "after": "Function: BSP_MissionTreeScreen_GetScreenId at 005ca8e0\nSignature: undefined BSP_MissionTreeScreen_GetScreenId(void)\nEntry: 005ca8e0\nBody: 005ca8e0 - 005ca8e5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00626710",
+    "end_address": "00626716"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00626710",
+    "end_address": "00626715",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00626710",
+    "disassemble_first": false,
+    "name": "BSP_RewardsScreen_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "00626710",
+    "function_name": "BSP_RewardsScreen_GetScreenId",
+    "entry_point": "00626710",
+    "body_size": 6,
+    "message": "Function created successfully at 00626710",
+    "warnings": [
+     "Function name 'BSP_RewardsScreen_GetScreenId' \u2014 main part 'RewardsScreen_GetScreenId' is not PascalCase. Expected: RewardsscreenGetscreenid",
+     "Function name 'BSP_RewardsScreen_GetScreenId' \u2014 main part 'RewardsScreen_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_RewardsScreen_GetScreenId' does not start with a recognized verb. First word 'Rewards' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00626710",
+   "end": "00626716",
+   "name": "BSP_RewardsScreen_GetScreenId",
+   "after": "Function: BSP_RewardsScreen_GetScreenId at 00626710\nSignature: undefined BSP_RewardsScreen_GetScreenId(void)\nEntry: 00626710\nBody: 00626710 - 00626715"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00599db0",
+    "end_address": "0059a6e3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00599db0",
+    "end_address": "0059a6e2",
+    "bytes_disassembled": 2355,
+    "message": "Successfully disassembled 2355 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00599db0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00599db0",
+    "function_name": "FUN_00599db0",
+    "entry_point": "00599db0",
+    "body_size": 2336,
+    "message": "Function created successfully at 00599db0"
+   }
+  },
+  {
+   "defined": "00599db0",
+   "end": "0059a6e3",
+   "name": null,
+   "after": "Function: FUN_00599db0 at 00599db0\nSignature: undefined FUN_00599db0(void)\nEntry: 00599db0\nBody: 00599db0 - 0059a6e2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

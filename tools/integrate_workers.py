@@ -185,6 +185,21 @@ for a in list(addresses):
         print(f'deferring {a}: {str(exc)[:110]}')
 if deferred:
     print(f"apply later: python tools/ghidra_annotate.py --apply --addresses {' '.join(deferred)}")
+# a name for an address Ghidra never defined as a function (a worker read it from the raw listing)
+# would fail the plate-comment read; define those first, then apply
+if addresses:
+    undefined = []
+    sys.path.insert(0, str(MAIN / 'tools'))
+    from ghidra_export import Client  # noqa: E402
+    client = Client(json.loads((MAIN / 'config/target.json').read_text(encoding='utf-8')))
+    for a in list(addresses):
+        info = str(client.get('get_function_by_address', address=a))
+        if 'No function' in info or 'error' in info.lower():
+            undefined.append(a)
+            addresses.remove(a)
+    if undefined:
+        print(f"no Ghidra function at {' '.join(undefined)}: define them with tools/ghidra_define_function.py, then "
+              f"python tools/ghidra_annotate.py --apply --addresses {' '.join(undefined)}")
 if addresses:
     ann = run([sys.executable, str(MAIN / 'tools/ghidra_annotate.py'), '--apply', '--addresses', *addresses], MAIN, check=False)
     print((ann.stdout + ann.stderr).strip().splitlines()[-1])
