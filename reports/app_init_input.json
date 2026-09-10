@@ -1,0 +1,253 @@
+{
+  "packet": "app_init_input",
+  "doc": "docs/APP_INIT_INPUT.md",
+  "owner": "agent/init-input",
+  "ghidra": "read-only; no rename, comment, prototype or save was applied",
+  "disclaimer": "Every name is a hypothesis, not a recovered symbol.",
+  "call_sites_in_0073d410": [
+    {"address": "0073da94", "callee": "005547d0", "phase": "5, after the D3D9 renderer"},
+    {"address": "0073da9b", "callee": "006a7be0", "phase": "5"},
+    {"address": "0073dd8e", "callee": "00a982d0", "phase": "8"},
+    {"address": "0073ddaf", "callee": "00a900f0", "phase": "8, after *(DAT_00f8bbf4+0xd8) = &DAT_004b4630"}
+  ],
+  "functions": [
+    {
+      "address": "005547d0",
+      "name": "BSP_InputSettings_GetSingleton",
+      "convention": "__cdecl",
+      "ret": "RET",
+      "returns": "singleton pointer in EAX",
+      "state": "analyzed",
+      "behavior": "Lazy singleton over DAT_00e198e8. Takes the critical section at BSP_SingletonLifetime_GetManager()+0x10, re-tests under the lock, allocates 0x540 through LIBCRT_unmatched_00bf681b, constructs with FUN_006ab6b0, registers with BSP_SingletonLifetime_Register. A failed allocation stores null and still registers.",
+      "callers": ["0073d410"],
+      "callees": ["00415350", "006ab6b0", "00bd0c30", "00bf6713", "00bf681b"]
+    },
+    {
+      "address": "006ab6b0",
+      "name": "BSP_InputSettings_Construct",
+      "convention": "__fastcall (ECX = this)",
+      "ret": "RET",
+      "returns": "this",
+      "state": "analyzed",
+      "behavior": "Sets vtable 00cf81cc, builds five tree heads and three checked vectors, constructs the persistent Lua script wrapper at +0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. The data-table load therefore runs inside construction.",
+      "size": "0x540"
+    },
+    {
+      "address": "006a7be0",
+      "name": "BSP_InputSettings_LoadDataTables",
+      "convention": "__fastcall (ECX = this)",
+      "ret": "RET",
+      "returns": "void",
+      "state": "analyzed for the native containers, reconstructed for the Lua schema",
+      "guard": "byte at this+0x04, set before any work",
+      "scripts": [
+        {"path": "Scripts/datatables/ControlPresets.lua", "state": "this+0x78, persistent, library mask 1", "consumed_here": false},
+        {"path": "Scripts\\datatables\\KeyboardSetup.lua", "state": "stack-local wrapper, library mask 1", "consumed_here": true},
+        {"path": "Scripts\\datatables\\ControllerInputNames.lua", "state": "the same stack-local wrapper", "consumed_here": true}
+      ],
+      "reset_before_load": ["this+0x08 device map via 006a7540", "this+0x14 name vector via 004954f0"],
+      "not_reset": ["this+0x24", "this+0x30", "this+0x40", "this+0x60"]
+    },
+    {
+      "address": "00a982d0",
+      "name": "BSP_InputDeviceManager_Construct",
+      "convention": "__fastcall (ECX = this)",
+      "ret": "RET",
+      "returns": "this",
+      "state": "analyzed",
+      "behavior": "Constructor. Calls the base helper 00a91570, stamps vtable 00d5b72c, zeroes +0xe0/+0xe8/+0xec/+0xf0/+0xf4, calls DirectInput8Create, AddRef, EnumDevices, then allocates and attaches four 0x240-byte pad devices with a requested slot of -1.",
+      "unchecked": [
+        "the DirectInput8Create HRESULT is discarded and the pointer is dereferenced on the next instruction",
+        "a failed 0x240 allocation is passed to 00a904e0 as null and dereferenced there"
+      ]
+    },
+    {
+      "address": "00a900f0",
+      "name": "BSP_InputDeviceTable_ResetSlots",
+      "convention": "__fastcall (ECX = this)",
+      "ret": "RET",
+      "returns": "void",
+      "state": "analyzed and reconstructed",
+      "behavior": "Walks this+0x04 as Device*[3][8] in class-major order and invokes vtable slot index 5 (offset +0x14) with ECX only on every non-null entry.",
+      "note": "Ghidra reports a 3-byte gap at 00a900fd; it is alignment padding between the JMP at 00a900fb and the loop head at 00a90100."
+    },
+    {
+      "address": "00a904e0",
+      "name": "BSP_InputDeviceTable_AttachDevice",
+      "convention": "__thiscall",
+      "ret": "RET 8",
+      "state": "analyzed and reconstructed",
+      "behavior": "Reads the device class from vtable+0x08, resolves a requested slot of -1 to the first free column of that class row, stores the column into the device at +0x08 and writes the pointer to this+4+(slot+class*8)*4. A full row leaves the counter at 8 and stores past the row."
+    },
+    {
+      "address": "00a982b0",
+      "name": "BSP_DirectInput_EnumDevicesThunk",
+      "convention": "__stdcall",
+      "ret": "RET 8",
+      "state": "analyzed from bytes; Ghidra has no function object here",
+      "behavior": "DIEnumDevicesCallbackA thunk forwarding to 00a98030(pvRef, lpddi) and returning its result, always DIENUM_CONTINUE."
+    },
+    {
+      "address": "00a98030",
+      "name": "BSP_DirectInput_OnDeviceEnumerated",
+      "state": "analyzed",
+      "behavior": "Switches on the low byte of lpddi->dwDevType at +0x24 and reads tszProductName at +0x12c, so the ANSI interface is in use. Keyboard 0x13 and mouse 0x12 are created once each into class 0 and class 1 slot 0; joysticks 0x14 and gamepads 0x15 go to class 2 at the first free column, skipping instance GUIDs already in the 16-byte-stride vector at this+0xe8. Sets this+0xf4 when a product name matches Xbox and 360."
+    }
+  ],
+  "direct_input": {
+    "interfaces": ["IDirectInput8A", "IDirectInputDevice8A"],
+    "iid": {"address": "00d78d8c", "guid": "{BF798030-483A-4DA2-AA99-5D64ED369700}", "name": "IID_IDirectInput8A"},
+    "version": "0x0800",
+    "instance_handle": "GetModuleHandleA(nullptr)",
+    "enum_devices": {"dwDevType": 0, "meaning": "DI8DEVCLASS_ALL", "dwFlags": 1, "flag_meaning": "DIEDFL_ATTACHEDONLY"},
+    "window_handle_source": "00bec230, __thiscall on the global platform object at 0109cf04, no arguments",
+    "devices": [
+      {
+        "kind": "keyboard",
+        "constructor": "00a9a3e0",
+        "allocation": "0x310",
+        "device_guid": {"address": "00d78efc", "guid": "{6F1D2B61-D5A0-11CF-BFC7-444553540000}", "name": "GUID_SysKeyboard"},
+        "data_format": "00d79804",
+        "cooperative_level": {"value": 6, "meaning": "DISCL_FOREGROUND | DISCL_NONEXCLUSIVE"},
+        "interface_member": "device+0x30c"
+      },
+      {
+        "kind": "mouse",
+        "constructor": "00a9a290",
+        "allocation": "0x23c",
+        "device_guid": {"address": "00d78eec", "guid": "{6F1D2B60-D5A0-11CF-BFC7-444553540000}", "name": "GUID_SysMouse"},
+        "data_format": "00d795fc",
+        "cooperative_level": null,
+        "interface_member": "device+0x20c",
+        "extra": [
+          "two 256-byte state buffers zeroed at +0x0c and +0x10c",
+          "GetSystemMetrics(SM_MOUSEWHEELPRESENT) stored at +0x235",
+          "GetDoubleClickTime()/1000.0 stored as float at +0x238"
+        ]
+      },
+      {
+        "kind": "joystick or gamepad",
+        "constructor": "00a99940",
+        "allocation": "0xb48",
+        "device_guid": "DIDEVICEINSTANCE.guidInstance from the enumeration",
+        "data_format": "built at device+0x274 from an EnumObjects walk with the callback 00a99920",
+        "cooperative_level": {"value": 5, "meaning": "DISCL_EXCLUSIVE | DISCL_FOREGROUND"},
+        "properties": [
+          {"call": "GetProperty", "property": "DIPROP_RANGE", "dwSize": "0x18", "dwHeaderSize": "0x10", "dwHow": "DIPH_BYOFFSET", "stored_at": "device+0x290 + axis*0x1c as flag, min, max, max-min"},
+          {"call": "SetProperty", "property": "DIPROP_AUTOCENTER", "dwSize": "0x14", "dwHeaderSize": "0x10", "dwHow": "DIPH_DEVICE", "dwData": 0, "guard": "device+0xb18 non-zero"}
+        ]
+      }
+    ],
+    "buffer_size": "no device calls SetProperty(DIPROP_BUFFERSIZE) and no device calls SetEventNotification; all input is immediate rather than buffered",
+    "device_vtable": {
+      "address": "00d5bb48",
+      "slots": {
+        "+0x08": "00a95bd0, MOV EAX,2; RET, the device class",
+        "+0x14": "00a93e80, bare RET, the slot reset the base does not implement",
+        "+0x18": "00a93e90, RET 8",
+        "+0x1c": "00a93ea0, XOR EAX,EAX; RET 4"
+      }
+    },
+    "slot_array": {"base": "manager+0x04", "shape": "Device*[3][8]", "rows": ["keyboard", "mouse", "joystick or gamepad"]}
+  },
+  "settings_layout": {
+    "size": "0x540",
+    "members": [
+      {"offset": "+0x00", "member": "vtable 00cf81cc"},
+      {"offset": "+0x04", "member": "loaded flag"},
+      {"offset": "+0x05", "member": "second flag, never read in this packet"},
+      {"offset": "+0x08", "member": "map<PooledString, DeviceRecord, CaseInsensitiveLess>", "head": "+0x0c", "isnil": "+0x99", "value_size": "0x8c", "record_size": "0x84"},
+      {"offset": "+0x14", "member": "checked vector<PooledString>, device names in KeyboardSetup order"},
+      {"offset": "+0x24", "member": "map<PooledString, InputNameRecord, CaseInsensitiveLess>", "head": "+0x28", "isnil": "+0x29", "tag": "N2C"},
+      {"offset": "+0x30", "member": "checked vector, Conflicts.Groups"},
+      {"offset": "+0x40", "member": "checked vector, Conflicts.Pairs"},
+      {"offset": "+0x50", "member": "DEVINPUTS boolean"},
+      {"offset": "+0x54", "member": "map<int, T4>, isnil +0x15, not written by 006a7be0"},
+      {"offset": "+0x60", "member": "map<PooledString, map<int, PooledString>, CaseInsensitiveLess>", "head": "+0x64", "isnil": "+0x21", "tag": "N24"},
+      {"offset": "+0x6c", "member": "second DeviceRecord-shaped map, not written by 006a7be0"},
+      {"offset": "+0x78", "member": "Lua script wrapper holding the ControlPresets state"}
+    ],
+    "device_record_offsets_touched": ["+0x0c", "+0x18", "+0x24", "+0x30", "+0x5c", "+0x6c"]
+  },
+  "lua_schema": {
+    "KeyboardSetup": {
+      "form": "one-based array of device tables, stops at the first nil",
+      "fields": {
+        "Name": "string",
+        "Inputs": "array; each element is either a string, or a table with [1] name and [2] an array of integers",
+        "Sensitivities": "array of {[1] string, [2] integer, [3] array of integers}",
+        "BaseSensitivities": "next-walked table of next-walked tables, number values; zero becomes 1e-8f",
+        "AxisPairs": "array of {[1] string, [2] string}",
+        "Min1SensHacks": "optional array of integers, inserted into a set"
+      }
+    },
+    "InputNames": "next-walked map from string to {[1] integer, [2] integer}; written to value+0x00 and value+0x0c",
+    "Conflicts": {
+      "Groups": "array of arrays of {[1] string, [2] string}",
+      "Pairs": "array of {[1] integer, [2] integer}; both stored one lower than written"
+    },
+    "DEVINPUTS": "boolean; a non-boolean yields false",
+    "ControllerInputNames": "next-walked map from device name to a next-walked map from integer to string",
+    "ControlPresets": "executed and left resident in the wrapper at settings+0x78; not consumed by 006a7be0"
+  },
+  "lua_wrapper_api": {
+    "00b66bd0": "construct the script wrapper",
+    "00b6a020": "initialise with a library mask",
+    "00b69d40": "execute a file",
+    "00b669a0": "destroy the wrapper",
+    "00b67980": "globals reference",
+    "00b67800": "string-key index",
+    "00b67720": "integer-key index",
+    "00b67700": "release a reference",
+    "00b67690": "move-assign a reference into an existing variable",
+    "00b67080": "begin a next walk",
+    "00b67190": "advance a next walk",
+    "00b66420": "next-walk end test",
+    "00b65fb0": "exact nil test",
+    "00b660a0": "exact string test",
+    "00b66000": "boolean type test",
+    "00b66250": "boolean read",
+    "00b662b0": "lua_tolstring",
+    "00b66290": "lua_tonumber spilled to float32 then truncated to a signed int",
+    "00b66270": "lua_tonumber spilled to float32"
+  },
+  "constants": [
+    {"address": "00cf7fe8", "bytes": "77 cc 2b 32", "value": "1e-8f", "use": "substituted for a zero base sensitivity at 006a8616"},
+    {"address": "00d7a24c", "bytes": "00 00 80 3f", "value": "1.0f", "use": "default written through 00444be0(devRec+0x24) at 006a8448"}
+  ],
+  "reconstruction": {
+    "header": "include/bsp/input_settings.hpp",
+    "source": "src/input_settings.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "test": "tests/math_tests.cpp, one case covering the 00a904e0 slot scan and the 00a900f0 walk",
+    "build": "scripts/build.ps1, Win32 Release, /W4 /WX, clean",
+    "tests": "ctest reconstructed_math passed",
+    "state": "reconstructed and build-tested; not ABI-compatible and not game-validated",
+    "entry_points": [
+      "bsp::load_keyboard_setup",
+      "bsp::load_controller_input_names",
+      "bsp::InputDeviceTable::attach",
+      "bsp::InputDeviceTable::reset_all",
+      "bsp::create_direct_input_devices",
+      "bsp::keyboard_device_profile",
+      "bsp::mouse_device_profile",
+      "bsp::joystick_device_profile"
+    ]
+  },
+  "uncertainties": [
+    "The meaning of both InputNameRecord fields and of the three dwords the load leaves default.",
+    "The device record helpers 006a44b0, 006a45c0, 0055a9a0, 00444be0, 006a4ca0 and 006a0db0 were not opened, so devRec+0x0c, +0x18, +0x24 and +0x6c are known only by what is written into them.",
+    "Settings members +0x54 and +0x6c are constructed and never written by this load.",
+    "ControlPresets.lua is executed but not consumed here; its consumer is unidentified.",
+    "The flag byte at settings+0x05.",
+    "Device vtable +0x14 is a no-op in the base, so the semantics of the slot reset live in an override this packet did not locate; the name 'reset' comes from the call site.",
+    "*(DAT_00f8bbf4 + 0xd8) = &DAT_004b4630 between the manager constructor and the slot reset is unexplained.",
+    "Whether Sensitivities[s][2] is an index, a scale or a mode is not established."
+  ],
+  "remaining": [
+    "Open the six device-record helpers to finish the 0x84-byte record.",
+    "Find the consumer of the resident ControlPresets state.",
+    "Locate the device subclass that overrides vtable +0x14 and name the reset.",
+    "Establish what DAT_004b4630 is and why it is installed at manager+0xd8."
+  ]
+}
