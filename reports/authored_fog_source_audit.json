@@ -1,0 +1,369 @@
+{
+  "schema": 1,
+  "date_utc": "2026-09-10T17:06:18.168980+00:00",
+  "packet": "system_fog_authored_source",
+  "status": "bounded_fragment_reconstructed_directly_compiled_native_fixture_passed",
+  "base_commit": "b8e27e6",
+  "evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Each bsp.py ghidra bytes query verifies the configured project/program/language/image base before reading. Selected current live bytes equal installed PE bytes; no whole-image Ghidra equality claim.",
+    "ranges": [
+      {
+        "role": "implemented_authored_copy",
+        "start": "0078caa4",
+        "end_exclusive": "0078cce0",
+        "byte_count": 572,
+        "disk_sha256": "86fb635ee95011d7db9d40ccf5c7c4f3f631a60e97a9ef5c2f7beb64c9fe3e9e",
+        "ghidra_sha256": "86fb635ee95011d7db9d40ccf5c7c4f3f631a60e97a9ef5c2f7beb64c9fe3e9e",
+        "matches_disk": true
+      },
+      {
+        "role": "evidence_only_environment_private_owner_construction",
+        "start": "0078db40",
+        "end_exclusive": "0078db6d",
+        "byte_count": 45,
+        "disk_sha256": "7a151eeee70bd72c1f917ca9dc271ce970a0318b94a84169d46a4556f699f4bb",
+        "ghidra_sha256": "7a151eeee70bd72c1f917ca9dc271ce970a0318b94a84169d46a4556f699f4bb",
+        "matches_disk": true
+      },
+      {
+        "role": "evidence_only_environment_private_owner_release",
+        "start": "0078d5f5",
+        "end_exclusive": "0078d621",
+        "byte_count": 44,
+        "disk_sha256": "413cb60c5db5c2e6df2525a93c1a0c68cd7d2c59f9c4368f9ea3babfa3630923",
+        "ghidra_sha256": "413cb60c5db5c2e6df2525a93c1a0c68cd7d2c59f9c4368f9ea3babfa3630923",
+        "matches_disk": true
+      }
+    ],
+    "supporting_reports": [
+      "reports/system_fog_owner_next.json",
+      "reports/system_fog_owner_audit.json",
+      "reports/environment_fog_apply_audit.json"
+    ],
+    "assembly_required_for": [
+      "live ESI/EDI interior inputs",
+      "forward overlapping integer copies",
+      "x87 FLD/FSTP effects",
+      "early B4 capture versus later reloads"
+    ]
+  },
+  "fragment": {
+    "parent": "0078c9b0",
+    "start": "0078caa4",
+    "end_exclusive": "0078cce0",
+    "entry_registers": {
+      "ESI": "actual authored block",
+      "EDI": "actual environment"
+    },
+    "original_enclosing_abi": "thiscall ECX environment, stack authored pointer, RET4; fragment has no RET",
+    "host_api": "copy_authored_fog_0078caa4(const void*, size_t, const MutableEnvironmentFogFields&, const SystemFogState* const& actual_environment_private_b4, std::string&)",
+    "minimum_readable_authored_bytes": 296,
+    "raw_forward_copy_groups": [
+      {
+        "authored": "80..8f",
+        "environment": "34..43",
+        "words": 4
+      },
+      {
+        "authored": "118..127",
+        "environment": "84..93",
+        "words": 4
+      },
+      {
+        "authored": "90..cf",
+        "environment": "44..83",
+        "words": 16
+      }
+    ],
+    "scalar_copy_order": [
+      {
+        "authored": "d0",
+        "environment": "08",
+        "owner": "68",
+        "setter": "00b84d00",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "d4",
+        "environment": "0c",
+        "owner": "6c",
+        "setter": "00b84d10",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "d8",
+        "environment": "10",
+        "owner": "70",
+        "setter": "00b84d20",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "dc",
+        "environment": "14",
+        "owner": "78",
+        "setter": "00b84d40",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "e0",
+        "environment": "18",
+        "owner": "74",
+        "setter": "00b84d30",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "e4",
+        "environment": "1c",
+        "owner": "7c",
+        "setter": "00b84d50",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "104",
+        "environment": "2c",
+        "owner": "80",
+        "setter": "00b84d60",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "108",
+        "environment": "30",
+        "owner": "84",
+        "setter": "00b84d80",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "10c",
+        "environment": "20",
+        "owner": "88",
+        "setter": "00b84dc0",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "110",
+        "environment": "28",
+        "owner": "8c",
+        "setter": "00b84de0",
+        "copy": "FLD m32; FSTP m32"
+      },
+      {
+        "authored": "114",
+        "environment": "24",
+        "owner": "90",
+        "setter": "00b84e00",
+        "copy": "FLD m32; FSTP m32"
+      }
+    ],
+    "first_owner_capture": {
+      "address": "0078cb9a",
+      "after": "authored+d0 -> environment+08",
+      "before": "authored+d4 -> environment+0c and remaining nine scalar copies",
+      "consumed_at": "0078cbfb",
+      "setter": "00b84c40",
+      "null_check": "deferred until consumption after all eleven scalar copies"
+    },
+    "directional_setters": {
+      "callsite": "0078cc0a",
+      "target": "00b84fa0",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "owner_reload": "0078cc02 every iteration"
+    },
+    "scalar_setter_environment_offset_order": [
+      "18",
+      "14",
+      "08",
+      "0c",
+      "10",
+      "1c",
+      "2c",
+      "30",
+      "20",
+      "28",
+      "24"
+    ],
+    "scalar_setter_sequence": "FLD actual environment source -> reload actual B4 owner -> FSTP argument DWORD -> raw setter",
+    "owner_captures": 16,
+    "private_underwater_setter_present": false,
+    "retain_release_allocate_calls_in_fragment": 0
+  },
+  "binding_contract": {
+    "storage": "Four mutable reference regions of actual environment, read_only() references the exact same regions as EnvironmentFogFields",
+    "private_slot": "Actual environment+B4 host projection slot by reference; each nonnull value is the same live SystemFogOwner::fields_08, mapped back by established core API",
+    "source": "Actual live authored block; not substituted defaults or a copied snapshot",
+    "aliasing": "Reads remain live in original order; raw word forward propagation preserved",
+    "host_errors": [
+      "null/short source before writes",
+      "null owner at actual consumption after preceding writes and x87 effects"
+    ],
+    "excluded": [
+      "new fog state/domain",
+      "allocation/retains/releases",
+      "standalone diagnostic SystemFogState owner",
+      "whole environment constructor/destructor",
+      "native fault ABI"
+    ]
+  },
+  "evidence_only_lifetime": {
+    "allocation": {
+      "callsite": "0078db45",
+      "target": "00bf681b",
+      "requested_bytes": "94h"
+    },
+    "initializer": {
+      "callsite": "0078db5c",
+      "target": "00b84e50"
+    },
+    "publication": {
+      "address": "0078db67",
+      "slot": "environment+b4",
+      "extra_retain": false,
+      "reference_source": "concrete initializer references_04 = 1"
+    },
+    "environment_vtable": {
+      "address": "00d04390",
+      "slots": [
+        "00bd30e0",
+        "0078d6a0"
+      ],
+      "deleting_wrapper_calls": "0078d5d0"
+    },
+    "release": {
+      "read": "0078d5f5",
+      "decrement_call": "0078d609",
+      "decrement_iat": "00ce2220",
+      "zero_destructor_call": "0078d619",
+      "clear_after_release": "0078d61b"
+    },
+    "not_implemented_in_this_packet": true
+  },
+  "source_provenance": [
+    {
+      "callsite": "004df87f",
+      "caller": "004de610",
+      "source": "[world+5fc]+990h",
+      "guard": [
+        "004df810",
+        "004df823"
+      ],
+      "environment": "[world+19f0]"
+    },
+    {
+      "callsite": "0067f55c",
+      "caller": "0067f4d0",
+      "source": "same stack object initialized through 004cb420 at 0067f541 and destroyed through 004c6520 at 0067f56c",
+      "environment": "[owner+e0]"
+    },
+    {
+      "callsite": "00503050",
+      "caller": "00502480",
+      "detail": "callsite recorded; full source producer outside packet"
+    }
+  ],
+  "named_but_incomplete_dependencies": [
+    "0078c9b0 surrounding authored loader",
+    "0078daa0 whole environment constructor",
+    "0078d5d0 whole environment destructor",
+    "004cb420 authored stack initializer",
+    "004c6520 authored stack destructor"
+  ],
+  "proposed_annotation_only": {
+    "address": "0078caa4",
+    "name": "Environment_CopyAuthoredFogFieldsAndUpdatePrivateOwner_Provisional",
+    "comment": "Bounded [0078CAA4,0078CCE0): ESI actual authored block, EDI environment. Forward raw color 80->34, underwater118->84, directionals90->44; x87 scalar copies D0,D4,D8,DC,E0,E4,104,108,10C,110,114 -> 08,0C,10,14,18,1C,2C,30,20,28,24. Capture B4 at CB9A after first scalar store, consume for color at CBFB after remaining scalar copies; reload for 4 directionals and 11 scalar setters. No private underwater setter or retain/release here. New host source fragment in authored_fog_source.cpp; not enclosing-method/native ABI replacement."
+  },
+  "validation": {
+    "seed_verification": "python tools/ghidra_export.py verify-seeds: all eight seeds match installed PE",
+    "build": "./scripts/build.ps1 passed on b8e27e6; 2/2 existing CTest checks passed",
+    "registration_boundary": "New source not in owned CMake scope; separately compiled below; integrator registration still required",
+    "focused_command": "./local/build_authored_fog_check.ps1",
+    "focused_compiler": "MSVC 19.51 Win32 /std:c++17 /EHsc /O2 /Oy- /MT /Gy /Gw /W4",
+    "linked_actual_sources": [
+      "src/authored_fog_source.cpp",
+      "src/system_fog_owner.cpp",
+      "src/singleton_lifetime.cpp"
+    ],
+    "fixture": "One local native differential fixture, 2 layouts x 8 x87 control words; all 16 comparisons pass",
+    "layouts": [
+      "disjoint",
+      "actual authored source = actual environment - 74h with forward propagation across live groups"
+    ],
+    "x87_control_words": [
+      "007f",
+      "037f",
+      "047f",
+      "077f",
+      "087f",
+      "0b7f",
+      "0c7f",
+      "0f7f"
+    ],
+    "x87_status_mask": "387fh: exception flags, stack fault, TOP; unrelated condition codes excluded",
+    "patterns": [
+      "signed zero",
+      "positive/negative infinity",
+      "qNaN",
+      "positive/negative sNaN",
+      "smallest/largest subnormal",
+      "finite values"
+    ],
+    "compared": [
+      "all owner bytes",
+      "all source/environment arena bytes except normalized B4 ABI representation",
+      "x87 exception and stack status",
+      "private underwater unchanged",
+      "owner refcount unchanged",
+      "identical mutable/read_only region addresses",
+      "null owner after scalar x87 effects",
+      "short/null source before mutations"
+    ],
+    "mapped_image_mutations": [
+      {
+        "address": "0078cce0",
+        "before": "d9",
+        "after": "c3",
+        "reason": "explicit return at unowned continuation; owned 572 bytes and real native setter bodies unchanged"
+      }
+    ],
+    "native_absolute_relocations": 0,
+    "native_import_hooks": 0,
+    "limitations": [
+      "early B4 capture order checked against assembly; no exception-handler-driven slot mutation fixture",
+      "masked x87 fixture only",
+      "new host ABI, not native ABI replacement",
+      "no game/render validation"
+    ],
+    "local_artifacts": {
+      "local/build_authored_fog_check.ps1": "2d270bb35cb98c0804c4074a9ff074c6f8c2cbe0b713d23a73a52a92137be54d",
+      "local/authored_fog_native_check.cpp": "2e8c722de02c64958efe0fbca75960780fdc0ba7ff59e6df53fc4a38df1b750d",
+      "local/authored_fog_native_check.log": "80f6e3c931164db2dc6ce9dbc2f4253afd8da2fd686329d83c61c7071a7acc27",
+      "build/authored-fog-check/authored_fog_native_check.exe": "37271b7c46755ecb1e67b464c3992c138322b098820d9df0fdf01f38804857b9"
+    },
+    "source_sha256": {
+      "include/bsp/authored_fog_source.hpp": "68b97073d86e4173e58d9d34014209ccb82d22342f7ef81296e534471971dab1",
+      "src/authored_fog_source.cpp": "f93b506755df71a8e672341af95b21d4266769ddac4fc60c96b5f83c54ce6c17"
+    }
+  },
+  "writes": {
+    "ghidra": false,
+    "ledgers": false,
+    "shared_cmake": false,
+    "owned_files": [
+      "include/bsp/authored_fog_source.hpp",
+      "src/authored_fog_source.cpp",
+      "docs/AUTHORED_FOG_SOURCE.md",
+      "reports/authored_fog_source_audit.json"
+    ]
+  }
+}
