@@ -1,0 +1,348 @@
+{
+  "task": "system_camera_matrix_prefix",
+  "created_utc": "2026-09-10T06:41:53.189538+00:00",
+  "status": "bounded_cpp_reconstructed_strict_win32_compile_and_native_fragment_fixture_verified",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "project_file_exists": true,
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "verification": "Every live query ran through tools/bsp.py ghidra, whose client verifies project/program/language/base before reading. No imports, Ghidra writes, shared-ledger edits, CMake edits, or original-file changes.",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_files": [
+    {
+      "path": "include/bsp/system_camera_constants.hpp",
+      "sha256": "e206fd056955abd05f328a42b3cb3cd596d390f49d33c65f1447fcb45c26b550"
+    },
+    {
+      "path": "src/system_camera_constants.cpp",
+      "sha256": "74dc9ae75eef5ad6abff0d28f4e1f7a7e0df9fb10b4d76695575888d5f642ec5"
+    }
+  ],
+  "original_parent_abi": {
+    "entry": "00b46a70",
+    "ecx": "optional scene, retained in EBP",
+    "edx": "camera, retained in EDI",
+    "stack_arguments": 0,
+    "return": "plain RET"
+  },
+  "native_interior": {
+    "start": "00b46a84",
+    "end_exclusive": "00b46c50",
+    "length": 460,
+    "prefix_base": "post-prologue ESP+14",
+    "incoming_ecx": "service captured from00F8D39C at00B46A7B",
+    "scaffolding_not_ported_as_cpp_effect": [
+      "00B46A84 saves EBP scene to ESP+10",
+      "00B46C45 restores ECX=EDI for following axis call"
+    ],
+    "original_function_boundary": false,
+    "new_cpp_abi": true
+  },
+  "helper": {
+    "address": "00b0d100",
+    "original_name": "TRIV_body_00b0d100",
+    "original_decompiler_signature": "undefined TRIV_body_00b0d100(void)",
+    "assembly": [
+      "LEA EAX,[ECX+1D8]",
+      "RET"
+    ],
+    "original_abi": "ECX borrowed service; no stack arguments; EAX service+1D8; plain RET",
+    "cpp_symbol": "get_system_camera_service_matrix_00b0d100",
+    "behavior": "Return actual borrowed field identity; no load, matrix copy, allocation or default service.",
+    "naming_uncertainty": "Service role and matrix semantics are descriptive hypotheses; exact +1D8 field identity is established."
+  },
+  "ordered_outputs": [
+    {
+      "native": "00B46A88..00B46A92",
+      "destination": "c0..3",
+      "source": "captured service+1D8",
+      "copy": "sequential destination-order x87 transpose"
+    },
+    {
+      "native": "00B46A99..00B46ACB",
+      "destination": "c6.xyz",
+      "source": "actual camera world+30/+34/+38 after bit2 refresh",
+      "copy": "three raw MOVSS loads before three stores"
+    },
+    {
+      "native": "00B46AD1..00B46ADE",
+      "destination": "c7..10",
+      "source": "get_camera_view_00b6fcb0(actual transform)",
+      "copy": "x87 transpose"
+    },
+    {
+      "native": "00B46AE3..00B46AFD",
+      "destination": "c11..14",
+      "source": "actual world after second bit2 check/refresh",
+      "copy": "x87 transpose"
+    },
+    {
+      "native": "00B46B04..00B46B11",
+      "destination": "c15..18",
+      "source": "get_camera_view_projection_00b70490(actual camera)",
+      "copy": "x87 transpose"
+    },
+    {
+      "native": "00B46B18..00B46B25",
+      "destination": "c23..26",
+      "source": "get_camera_projection_00b6fcf0(actual projection)",
+      "copy": "x87 transpose"
+    },
+    {
+      "native": "00B46B2C..00B46B39",
+      "destination": "c19..22",
+      "source": "get_camera_inverse_view_projection_00b70510(actual frame)",
+      "copy": "x87 transpose"
+    },
+    {
+      "native": "00B46B3E..00B46C47",
+      "destination": "c27..30",
+      "source": "live words0108FC30..0108FC6C",
+      "copy": "sixteen sequential raw MOVSS load/store pairs"
+    }
+  ],
+  "input_contract": {
+    "camera": "Actual existing CameraFrameState and its referenced CameraState; no second cache.",
+    "service": "SystemCameraMatrixService borrows actual matrix+1D8 of already captured service; has no default owner or owned matrix.",
+    "globals": "const float* to sixteen live words; no entry snapshot or inferred values.",
+    "output": "Caller-initialized float* with word_count capacity, no clear/resize; capacity124 suffices.",
+    "aliasing": "Output must not overlap any camera, service or global input storage; borrowed lifetimes and synchronization remain caller responsibilities.",
+    "bounds": "Check complete matrix/eye group after preceding getter/refresh; check each global word at its store. New host failure retains prior stores/cache effects and leaves rejected group untouched.",
+    "padding": "Only c0..3,c6.xyz,c7..30 are written. All other words retain preimage, including c4..5 and c6.w."
+  },
+  "ranges": [
+    {
+      "start": "00b46a84",
+      "end_exclusive": "00b46c50",
+      "length": 460,
+      "sha256": "6b083167f0c8bdcd2018887cc2e221752f23fe26a32605bd9156b5e9c3c0ac28",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b0d100",
+      "end_exclusive": "00b0d107",
+      "length": 7,
+      "sha256": "45dc3f81365e4dc2eb9766813ca582d55ec0da1d95961f6250ab1f11a6da8520",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b404a0",
+      "end_exclusive": "00b40505",
+      "length": 101,
+      "sha256": "6b9c5862e0bd255777adc773d325a5dbbe575adc8548b8e40f583f5bf6fd5e30",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b6db70",
+      "end_exclusive": "00b6dbc0",
+      "length": 80,
+      "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b6fcb0",
+      "end_exclusive": "00b6fcea",
+      "length": 58,
+      "sha256": "8b4b0f0440ec1d808154d06308255ecb4c34e8ee4f9784b0d0c7f67315c29e4b",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b70490",
+      "end_exclusive": "00b70504",
+      "length": 116,
+      "sha256": "7281e7396c3c21b3f621fe16160cd7e58b671a8320d0158c2a12e4d05dcbd20b",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b6fcf0",
+      "end_exclusive": "00b6fd60",
+      "length": 112,
+      "sha256": "6345b27bd12e2844a965ac9257a87aa63f7da309d591da429866c0f2e0eea62f",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b70510",
+      "end_exclusive": "00b7054d",
+      "length": 61,
+      "sha256": "17ffebc0e45274aaea899ae6264f8d11bc8e31bc7037348e2d0d6dcd63f3026f",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "004134f0",
+      "end_exclusive": "00413557",
+      "length": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b632d0",
+      "end_exclusive": "00b63b28",
+      "length": 2136,
+      "sha256": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b63b30",
+      "end_exclusive": "00b63d43",
+      "length": 531,
+      "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00413920",
+      "end_exclusive": "00413c8a",
+      "length": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00b642f0",
+      "end_exclusive": "00b643a0",
+      "length": 176,
+      "sha256": "434aa71d29dc916a29e4b8723c612f341b54ab7a7c0c922ab0afee503c2e6bf3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00412e20",
+      "end_exclusive": "00412e33",
+      "length": 19,
+      "sha256": "6282a7c6801acc042953893b813184c14e395f5215fa6bd1981b9d159d363ee0",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "length": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "start": "00d7a280",
+      "end_exclusive": "00d7a288",
+      "length": 8,
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "ghidra_matches_installed_pe": true
+    }
+  ],
+  "verified_range_count": 17,
+  "verified_byte_count": 4850,
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "architecture": "MSVC Win32 / machine014c",
+      "options": [
+        "/std:c++17",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Gy"
+      ],
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File local/build_system_camera.ps1",
+      "scope": "New source compiled independently; fixture linked existing main-checkout bsp_core.lib. No complete integrated build claimed."
+    },
+    "seed_verification": {
+      "passed": true,
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "scope": "Existing seed ranges only; packet/executed helper ranges independently verified above."
+    },
+    "native_fragment": {
+      "passed": true,
+      "tracked_new_tests": 0,
+      "focused_local_probe_count": 1,
+      "setup": "Map installed PE in private fixture memory; do not execute entry point or resolve imports. Relocate only absolute operands in audited executed helpers; preserve relative calls. Patch local00B46C50 continuation byte to RET. Provide native-layout test camera/service and initialized308-word output.",
+      "inputs": [
+        {
+          "state": "cached",
+          "description": "All caches valid with distinct matrices, signaling NaNs, signed zeros, infinities and denormal raw global words. Native x87 exception bits=0001; rebuilt=0001."
+        },
+        {
+          "state": "cold_parentless_camera",
+          "description": "Invalid caches, affine local transform and finite fov1.1/aspect1.7/near0.13/far713. Native x87 exception bits=0020; rebuilt=0020."
+        }
+      ],
+      "compared": [
+        "all308 prefix words bit-for-bit, including unwritten preimages",
+        "camera view,world,original projection,view-projection,inverse view-projection,cached projection matrices",
+        "transform and projection flag fields",
+        "x87 exception bits0..5"
+      ],
+      "host_failure_check": "Capacity92 rejects c23 before inverse-VP getter; retains c0..3 writes, keeps inverse flag clear, leaves inverse cache and c19 output preimage untouched. Passed in both input states.",
+      "stdout": [
+        "native_fragment cold=0 words308=1 caches=1 x87_exceptions=1 native_sw=0001 rebuilt_sw=0001",
+        "short_capacity projection_before_inverse=1",
+        "native_fragment cold=1 words308=1 caches=1 x87_exceptions=1 native_sw=0020 rebuilt_sw=0020",
+        "short_capacity projection_before_inverse=1"
+      ],
+      "fixture_artifacts": [
+        {
+          "path": "local/verify_system_camera.py",
+          "sha256": "3ef51a61cc1d370257c0bd1e0f83167b93e5c938bd9c34a086afa13bf2fa16e6"
+        },
+        {
+          "path": "local/system_camera_fragment_probe.cpp",
+          "sha256": "99b4a489bf759e355b36eaf24e63a0b07b6807c5a31133e7885064094262d1fc"
+        },
+        {
+          "path": "local/system_camera_native_patches.hpp",
+          "sha256": "9a58a7ae8c41ce0cac51e06c23371bd2fb22b6501f12154f56069433d584e9c1"
+        },
+        {
+          "path": "local/build_system_camera.ps1",
+          "sha256": "075379cf2a5ac1835ccee4dcaf9525310041e1a6a2e44e4fb47d2a4744ad5336"
+        },
+        {
+          "path": "build/system_camera/system_camera_fragment_probe.exe",
+          "sha256": "fbed7468f427e06fa29833f66b06096375cedc1f414e9756807001f5007333d4"
+        }
+      ],
+      "limitations": "Focused parentless fixture only; no game/service lifecycle, live-global initialization, concurrent ownership, native-ABI compatibility, full gather/upload, or gameplay validation."
+    },
+    "integrated_build": "parent integrator pending",
+    "game_validated": false
+  },
+  "annotation_proposals": [
+    {
+      "address": "00b0d100",
+      "applied": false,
+      "preimage": {
+        "address": "00b0d100",
+        "function_name": "TRIV_body_00b0d100"
+      },
+      "proposed_name": "BSP_RenderService_GetSystemMatrix1D8",
+      "proposed_comment": "[BSP reconstruction 00b0d100]\nExact LEA EAX,[ECX+1D8]; RET. ECX borrowed service, no stack arguments, EAX address of embedded matrix field. No matrix load/copy or owner initialization. Caller00B46A88 receives service captured from00F8D39C at00B46A7B and passes returned field to x87 transpose00B404A0 for c0..3. Service/matrix semantic names provisional; native lifetime/layout adapter unresolved. C++ borrowed-field companion in src/system_camera_constants.cpp; evidence docs/SYSTEM_CAMERA_CONSTANTS.md and reports/system_camera_constants_audit.json."
+    },
+    {
+      "address": "00b46a70",
+      "applied": false,
+      "preimage": {
+        "function_name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+        "comment": "[BSP reconstruction 00b46a70]\nECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis."
+      },
+      "mutation_policy": "Preserve existing name/comment and append only after integrator review; this worker does not own the complete parent.",
+      "proposed_append": "[BSP bounded camera prefix]\nInterior00B46A84..00B46C4F reconstructed in src/system_camera_constants.cpp. Ordered outputs: service+1D8 transpose c0..3; world xyz raw snapshot c6.xyz; view c7..10; second world-valid test and world c11..14; view-projection c15..18; projection c23..26 BEFORE inverse view-projection c19..22; live raw globals0108FC30..6C to c27..30. Matrix copies preserve00B404A0 x87 schedule; globals/eye are raw MOVSS. c4..5 and c6.w untouched. Uses existing CameraFrameState/cache and explicit captured service/global references. Strict Win32 compile and one focused original-fragment differential passed for cached exceptional and cold finite states; no full parent/ABI/game validation. See docs/SYSTEM_CAMERA_CONSTANTS.md."
+    }
+  ],
+  "remaining_owner_boundaries": [
+    "Primary parent prelude/captured service loading and native stack/register continuation",
+    "Real service construction/lifetime and +1D8 native field adapter",
+    "Actual live0108FC30 global storage binding/initialization",
+    "Existing CameraFrameState companion is not native camera construction/lifecycle",
+    "Axes, timers, fog, scene lighting, shadows, final VS/PS uploads and whole-builder composition"
+  ],
+  "full_system_builder_complete": false,
+  "abi_compatible": false,
+  "game_validated": false
+}
