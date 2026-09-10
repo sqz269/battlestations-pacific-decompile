@@ -1,0 +1,1026 @@
+{
+  "schema_version": 1,
+  "packet": "native_alias_count_growth",
+  "captured_utc": "2026-09-10T23:01:29.740304+00:00",
+  "base_commit": "58fb6034a58120b28b3c99d655e11b2ec23756d9",
+  "base_main_commit": "f46f236",
+  "dependency_commit": "46e75826b585b0f5d27103804db8d3a55040b2ba",
+  "status": "complete_count_and_owning_error_factory_reconstructed_build_and_native_fixture_tested",
+  "owned_files": [
+    "include/bsp/native_alias_count_growth.hpp",
+    "src/native_alias_count_growth.cpp",
+    "docs/NATIVE_ALIAS_COUNT_GROWTH.md",
+    "reports/native_alias_count_growth_audit.json"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "004ce780",
+      "symbol": "grow_native_alias_list_count_004ce780",
+      "proposed_ghidra_name": "BSP_NativeAliasList_GrowCount",
+      "old_ghidra_annotation": {
+        "function_name": "STL_xlen_throw_004ce780"
+      },
+      "original_abi": "ECX actual owner; stack DWORD increment; RET4; no semantic return",
+      "complete_span": {
+        "address": "004ce780",
+        "end_exclusive": "004ce813",
+        "length": 147,
+        "kind": "code",
+        "disk_offset": 845696,
+        "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+        "original_hex": "64a1000000008b5424046aff68885ac60050648925000000008b410883ec4456beffffff1f2bf03bf25e73516a1068f838ce008d4c2408c74424200f000000c744241c00000000c644240c00e84f9ff3ff8d0424508d4c2420c744245000000000e81a2ff4ff68983fd8008d4c242051c74424246092d600e88880720003c28941088b4c244464890d0000000083c450c20400",
+        "live_ghidra_matches_disk": true
+      },
+      "normal_contract": "Read owner+8 once. Compare increment against unsigned 1FFFFFFF minus captured count. On pass write captured count plus increment with DWORD wrap; touch no other owner field.",
+      "error_contract": "Raw temporary cap15 then length0 then first NUL; counted assign CE38F8,16; arm state0 after assignment; construct raw40 logic error411700; publish length vtableD69260; throw original object through native ThrowInfoD83F98. No count store.",
+      "new_host_transport": "Direct prvalue throw NativeAliasListLengthError{temporary}; sole raw40 owner member; concrete original-derived ctor/copy/dtor implementations; new RTTI and exception ABI.",
+      "native_dependencies": [
+        "00408720",
+        "00411700",
+        "00bf6885",
+        "00c65a80",
+        "004072d0"
+      ],
+      "status": "complete_reconstruction_build_and_focused_native_fixture_tested"
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00c65a80",
+      "proposed_ghidra_name": "BSP_NativeAliasList_GrowCount_TemporaryStringUnwind",
+      "old_ghidra_annotation": {
+        "function_name": "Unwind@00c65a80"
+      },
+      "complete_span": {
+        "address": "00c65a80",
+        "end_exclusive": "00c65a88",
+        "length": 8,
+        "kind": "code",
+        "disk_offset": 8804992,
+        "sha256": "81b837021dd2c92d6456c8455401ad56f84800149e7f5d19e1c16ec103b4183b",
+        "original_hex": "8d4db0e948187aff",
+        "live_ghidra_matches_disk": true
+      },
+      "contract": "LEA ECX,[EBP-50h]; JMP4072D0; destroy completed temporary SBO in factory state0 only.",
+      "adjacent_frame_handler": {
+        "address": "00c65a88",
+        "end_exclusive": "00c65a92",
+        "length": 10,
+        "kind": "code",
+        "disk_offset": 8805000,
+        "sha256": "e4b0f6d558206bfc0ce82e2c1b67aaf3c194a2e79b31ec7b000c8f01b46b5b0e",
+        "original_hex": "b8d0e3d800e9b110f9ff",
+        "live_ghidra_matches_disk": true
+      }
+    }
+  ],
+  "host_owner": {
+    "type": "bsp::NativeAliasListLengthError",
+    "size": 40,
+    "sole_member": "NativeLegacyExceptionStorage storage_",
+    "constructor": "construct_native_legacy_logic_error_00411700 then literal native_vtable_00=D69260",
+    "copy_constructor": "copy_native_legacy_length_error_00411940",
+    "destructor": "destroy_native_legacy_logic_error_00411780, noexcept",
+    "copy_assignment": "deleted; no shallow pointer assignment",
+    "data_access": "const native_storage() returns a const reference to the owned raw storage",
+    "initialization": "raw storage default-initialized with no value-initialization or DMI writes",
+    "native_binary_exception_abi": false,
+    "host_standard_exception_substitution": false,
+    "additional_named_throw_temporary": false
+  },
+  "native_throw_metadata": {
+    "throw_info": "00d83f98",
+    "attributes": 0,
+    "destructor": "00411780",
+    "forward_compatibility": 0,
+    "catchable_type_array": "00d83fd4",
+    "entries": [
+      {
+        "catchable": "00d83fe4",
+        "type_descriptor": "00e08000",
+        "decorated_name": ".?AVlength_error@std@@",
+        "size": 40,
+        "copy": "00411940",
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "catchable": "00d84000",
+        "type_descriptor": "00e08020",
+        "decorated_name": ".?AVlogic_error@std@@",
+        "size": 40,
+        "copy": "004118d0",
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "catchable": "00e03c7c",
+        "type_descriptor": "00e174f0",
+        "decorated_name": ".?AVexception@std@@",
+        "size": 12,
+        "copy": "00bf63a6",
+        "pmd": [
+          0,
+          -1,
+          0
+        ]
+      }
+    ],
+    "factory_func_info": "00d8e3d0",
+    "factory_unwind_map": "00d8e3c8",
+    "factory_state0": {
+      "next_state": -1,
+      "cleanup": "00c65a80",
+      "armed_at": "004ce7d9",
+      "after_call": "004ce7cc"
+    },
+    "literal": {
+      "address": "00ce38f8",
+      "visible_text": "list<T> too long",
+      "counted_bytes": 16,
+      "includes_literal_terminating_nul": true,
+      "result_length": 16,
+      "result_capacity": 31,
+      "allocated_bytes": 32
+    }
+  },
+  "verification": {
+    "verified_spans": [
+      {
+        "address": "004ce780",
+        "end_exclusive": "004ce813",
+        "length": 147,
+        "kind": "code",
+        "disk_offset": 845696,
+        "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+        "original_hex": "64a1000000008b5424046aff68885ac60050648925000000008b410883ec4456beffffff1f2bf03bf25e73516a1068f838ce008d4c2408c74424200f000000c744241c00000000c644240c00e84f9ff3ff8d0424508d4c2420c744245000000000e81a2ff4ff68983fd8008d4c242051c74424246092d600e88880720003c28941088b4c244464890d0000000083c450c20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c65a80",
+        "end_exclusive": "00c65a88",
+        "length": 8,
+        "kind": "code",
+        "disk_offset": 8804992,
+        "sha256": "81b837021dd2c92d6456c8455401ad56f84800149e7f5d19e1c16ec103b4183b",
+        "original_hex": "8d4db0e948187aff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c65a88",
+        "end_exclusive": "00c65a92",
+        "length": 10,
+        "kind": "code",
+        "disk_offset": 8805000,
+        "sha256": "e4b0f6d558206bfc0ce82e2c1b67aaf3c194a2e79b31ec7b000c8f01b46b5b0e",
+        "original_hex": "b8d0e3d800e9b110f9ff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00411700",
+        "end_exclusive": "0041175f",
+        "length": 95,
+        "kind": "code",
+        "disk_offset": 71424,
+        "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+        "original_hex": "6aff6818e0c50064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00411780",
+        "end_exclusive": "004117b2",
+        "length": 50,
+        "kind": "code",
+        "disk_offset": 71552,
+        "sha256": "8490cd3c81f5f5b9fe0419d9b86450f6cfcfcff186fb0de91b56c7b36fc199f5",
+        "original_hex": "568bf1c7064892d600837e2410720c8b461050e8144e7e0083c40433c0c746240f0000008946208846108bce5ee9a24c7e00",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004117c0",
+        "end_exclusive": "00411807",
+        "length": 71,
+        "kind": "code",
+        "disk_offset": 71616,
+        "sha256": "d5a155f5fe810a4f2b09601226aa838a8647524489e416bc6878a89bbbd618f5",
+        "original_hex": "568bf1c7064892d600837e2410720c8b461050e8d44d7e0083c40433c0c746240f0000008946208bce884610e8634c7e00f644240801740956e8ae4d7e0083c4048bc65ec20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004118d0",
+        "end_exclusive": "00411935",
+        "length": 101,
+        "kind": "code",
+        "disk_offset": 71888,
+        "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+        "original_hex": "6aff6858e0c50064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00411940",
+        "end_exclusive": "00411959",
+        "length": 25,
+        "kind": "code",
+        "disk_offset": 72000,
+        "sha256": "70437509a99231553565df048ed07fdfa6e166270e55daaeb8bd8b82fc1eb1ca",
+        "original_hex": "8b44240456508bf1e883ffffffc7066092d6008bc65ec20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf632f",
+        "end_exclusive": "00bf6340",
+        "length": 17,
+        "kind": "code",
+        "disk_offset": 8348463,
+        "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+        "original_hex": "8bc18360040083600800c7007093d600c3",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf63a6",
+        "end_exclusive": "00bf63fe",
+        "length": 88,
+        "kind": "code",
+        "disk_offset": 8348582,
+        "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+        "original_hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6454",
+        "end_exclusive": "00bf646a",
+        "length": 22,
+        "kind": "code",
+        "disk_offset": 8348756,
+        "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+        "original_hex": "83790800c7017093d6007409ff7104e86039000059c3",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf93a4",
+        "end_exclusive": "00bf9409",
+        "length": 101,
+        "kind": "code",
+        "disk_offset": 8360868,
+        "sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+        "original_hex": "8b4c24045333db3bcb565774088b7c24143bfb771be8cd6700006a165e89305353535353e822d3ffff83c4148bc6eb318b7424183bf375048819ebd98bd18a06880242463ac374034f75f33bfb75108819e8916700006a225989088bf1ebc033c05f5e5bc3",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c5e010",
+        "end_exclusive": "00c5e018",
+        "length": 8,
+        "kind": "code",
+        "disk_offset": 8773648,
+        "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+        "original_hex": "8b4df0e93c84f9ff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c5e018",
+        "end_exclusive": "00c5e022",
+        "length": 10,
+        "kind": "code",
+        "disk_offset": 8773656,
+        "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15",
+        "original_hex": "b8743fd800e9218bf9ff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c5e050",
+        "end_exclusive": "00c5e058",
+        "length": 8,
+        "kind": "code",
+        "disk_offset": 8773712,
+        "sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+        "original_hex": "8b4df0e9fc83f9ff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c5e058",
+        "end_exclusive": "00c5e062",
+        "length": 10,
+        "kind": "code",
+        "disk_offset": 8773720,
+        "sha256": "7a72ae46a76082c602940eb6fef1fbb68b68b07feb036c6548fcaf85d2e84d5c",
+        "original_hex": "b82440d800e9e18af9ff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00408720",
+        "end_exclusive": "00408725",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 34592,
+        "sha256": "d2f427c4948de1a7dfd12b9851267537e99bd6b1b33b57b7fd07e98d10c79de7",
+        "original_hex": "5355568bf1",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "004072d0",
+        "end_exclusive": "004072d5",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 29392,
+        "sha256": "729ece47e21499657cd967d9aa375929e5f5c6ce6ea4e5b538612f5b7412c40d",
+        "original_hex": "568bf1837e",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6885",
+        "end_exclusive": "00bf688a",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8349829,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "original_hex": "558bec83ec",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00408120",
+        "end_exclusive": "00408125",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 33056,
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+        "original_hex": "538b5c2408",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8349100,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "original_hex": "e917380000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf9f1a",
+        "end_exclusive": "00bf9f1f",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8363802,
+        "sha256": "5cda66d596638726fa3617fb7f791797871e45ad0ae221a318eafa8d5334a495",
+        "original_hex": "558b6c2408",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf9dc8",
+        "end_exclusive": "00bf9dcd",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8363464,
+        "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280",
+        "original_hex": "6a0c68f02d",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00c03de0",
+        "end_exclusive": "00c03de5",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8404448,
+        "sha256": "5f85ab0b310f40a69b5b6d3c69c1add39029bf41ce264cbd9e71975b31366573",
+        "original_hex": "8b4c2404f7",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf66ef",
+        "end_exclusive": "00bf66f4",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8349423,
+        "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+        "original_hex": "558becff35",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bffb8b",
+        "end_exclusive": "00bffb90",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8387467,
+        "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+        "original_hex": "e827560000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6b43",
+        "end_exclusive": "00bf6b48",
+        "length": 5,
+        "kind": "hook",
+        "disk_offset": 8350531,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "original_hex": "558bec83ec",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d8e3c8",
+        "end_exclusive": "00d8e3f4",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 10019784,
+        "sha256": "567b09522eed3498454461707dc097f34480b546162ccd45a231806b51f47cc0",
+        "original_hex": "ffffffff805ac6002205931901000000c8e3d800000000000000000000000000000000000000000001000000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d83f98",
+        "end_exclusive": "00d83fa8",
+        "length": 16,
+        "kind": "data",
+        "disk_offset": 9977752,
+        "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+        "original_hex": "000000008017410000000000d43fd800",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d83fd4",
+        "end_exclusive": "00d8401c",
+        "length": 72,
+        "kind": "data",
+        "disk_offset": 9977812,
+        "sha256": "0a1de79f19047d416a59f59ce1b157aad0e0f193a3adfe5306a3da7961eccbcb",
+        "original_hex": "03000000e43fd8000040d8007c3ce000000000000080e00000000000ffffffff000000002800000040194100000000002080e00000000000ffffffff0000000028000000d0184100",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00e03c7c",
+        "end_exclusive": "00e03c98",
+        "length": 28,
+        "kind": "data",
+        "disk_offset": 10501244,
+        "sha256": "9fa41aa7ae4c2be7d89eea68c3e5b98ae3b6fb7822f78c013edb988305f079f4",
+        "original_hex": "00000000f074e10000000000ffffffff000000000c000000a663bf00",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00e08000",
+        "end_exclusive": "00e08020",
+        "length": 32,
+        "kind": "data",
+        "disk_offset": 10518528,
+        "sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481",
+        "original_hex": "d493d600000000002e3f41566c656e6774685f6572726f724073746440400000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00e08020",
+        "end_exclusive": "00e08040",
+        "length": 32,
+        "kind": "data",
+        "disk_offset": 10518560,
+        "sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a",
+        "original_hex": "d493d600000000002e3f41566c6f6769635f6572726f72407374644040000000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00e174f0",
+        "end_exclusive": "00e17510",
+        "length": 32,
+        "kind": "data",
+        "disk_offset": 10581232,
+        "sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+        "original_hex": "d493d600000000002e3f4156657863657074696f6e40737464404000ffffffff",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00ce38f8",
+        "end_exclusive": "00ce3908",
+        "length": 16,
+        "kind": "data",
+        "disk_offset": 9320696,
+        "sha256": "750c956e3fb0f9dec0d3ffdc4371b2412282f67bc88f6a3cba6ef1969ee97ec3",
+        "original_hex": "6c6973743c543e20746f6f206c6f6e67",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d83f6c",
+        "end_exclusive": "00d83f98",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 9977708,
+        "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794",
+        "original_hex": "ffffffff10e0c50022059319010000006c3fd800000000000000000000000000000000000000000001000000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d8401c",
+        "end_exclusive": "00d84048",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 9977884,
+        "sha256": "a75d91d18050b85fd79822428ad231ae53eaa9f3690f53b95d52425b02ebffff",
+        "original_hex": "ffffffff50e0c50022059319010000001c40d800000000000000000000000000000000000000000001000000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d69248",
+        "end_exclusive": "00d69250",
+        "length": 8,
+        "kind": "data",
+        "disk_offset": 9867848,
+        "sha256": "e10ccae2b5dcc6bbcbded9a4c3e85418befaf2d85536a9f7af2eb291d2ddcb11",
+        "original_hex": "6015410050154100",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d69260",
+        "end_exclusive": "00d69268",
+        "length": 8,
+        "kind": "data",
+        "disk_offset": 9867872,
+        "sha256": "aa94ce6bb47734f38297a04c9d0479503ab7496c94be6fe058f44399a2c9f84f",
+        "original_hex": "c017410050154100",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d69370",
+        "end_exclusive": "00d69378",
+        "length": 8,
+        "kind": "data",
+        "disk_offset": 9868144,
+        "sha256": "14a5be654af6b77fdcd1c4e78d6b3893cf6f16f8cfa23ccdda2da15058142f19",
+        "original_hex": "2a65bf006a64bf00",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf6885",
+        "end_exclusive": "00bf68cf",
+        "length": 74,
+        "kind": "support",
+        "disk_offset": 8349829,
+        "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05",
+        "original_hex": "558bec83ec208b450856576a0859beb093d6008d7de0f3a58945f88b450c85c05f8945fc5e740cf600087407c745f4004099018d45f450ff75f0ff75e4ff75e0ff158022ce00c9c20800",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf5695",
+        "end_exclusive": "00bf56d3",
+        "length": 62,
+        "kind": "support",
+        "disk_offset": 8345237,
+        "sha256": "4be0df66d47a31a635e077583c46173356749da5b54d4a5660c8643e4f25beee",
+        "original_hex": "6a44b84a7dcc00e8cae70000687492d6008d4dd8e8e21b81ff8365fc008d45d8508d4db0e842c081ff68983fd8008d45b050c745b06092d600e8b2110000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00bf56d4",
+        "end_exclusive": "00bf5712",
+        "length": 62,
+        "kind": "support",
+        "disk_offset": 8345300,
+        "sha256": "856eb0dad0a6a1d654ccd56e66dab5772a01e4bdc71d153672bd029a8726923f",
+        "original_hex": "6a44b86d7dcc00e88be70000688492d6008d4dd8e8a31b81ff8365fc008d45d8508d4db0e803c081ff68a863d8008d45b050c745b06c92d600e873110000",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d863a8",
+        "end_exclusive": "00d863b8",
+        "length": 16,
+        "kind": "support",
+        "disk_offset": 9986984,
+        "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+        "original_hex": "00000000b012440000000000e463d800",
+        "live_ghidra_matches_disk": true
+      },
+      {
+        "address": "00d69274",
+        "end_exclusive": "00d6929c",
+        "length": 40,
+        "kind": "support",
+        "disk_offset": 9867892,
+        "sha256": "df2ca14e6fb7420d97635a8d7b9305be2ec8fdefb3c4cde9356d72bccffbba74",
+        "original_hex": "737472696e6720746f6f206c6f6e6700696e76616c696420737472696e6720706f736974696f6e00",
+        "live_ghidra_matches_disk": true
+      }
+    ],
+    "counts": {
+      "complete_code": 16,
+      "hook_preimages": 11,
+      "data": 13,
+      "contextual_support": 5,
+      "total": 45
+    },
+    "eight_native_seeds_verified_before_execution": true,
+    "strict_build": "./scripts/build.ps1, Release MSVC Win32 /W4 /WX /fp:strict; two existing CTests passed",
+    "registration": "local/alias_count_sources.cmake through CMAKE_PROJECT_TOP_LEVEL_INCLUDES; dependency and owned source only",
+    "tracked_new_tests": 0,
+    "fixture": {
+      "path": "local/native_alias_count_check.cpp",
+      "matching_trace_words": 127,
+      "trace_sha256": "d28fbe83b8dcdc990064049faaef45cd215ef8a8c519867bfebce9bb8b845c46",
+      "executes": "Original full004CE780, original411700/411780/base/strcpy support, original C65A80 and owner base EH funclets; mapped original ThrowInfo and catchable records; actual host CRT throw/catch and native ThrowInfo destructor.",
+      "sbo_bindings": "Original408720/408120/4072D0 entry points bind their previously native-verified concrete shared implementations.",
+      "throw_boundary": "Observer forwards original object pointer and mapped native ThrowInfo unchanged to saved actual CRT _CxxThrowException. Native payload caught with catch(...); no modern std exception methods invoked.",
+      "copy_evidence": "Native copy thunk addresses and layouts mapped/verified. This catch(...) sequence does not invoke a catch-by-value thunk. Prior dependency fixture verifies original copies; an additional scoped check confirms host class deep-copy ownership.",
+      "malloc_free_observation": "Only isolated executable IAT slots temporarily replaced; real allocator/free used except controlled nullable failure results. All slots and registered new-handler restored.",
+      "failure_mechanism": "Actual CRT registered new-handler throws Marker on deliberately null malloc; shared growth performs its real two-attempt fallback/rethrow behavior.",
+      "normal_cases": [
+        [
+          5,
+          3,
+          8
+        ],
+        [
+          536870911,
+          0,
+          536870911
+        ],
+        [
+          536870910,
+          1,
+          536870911
+        ],
+        [
+          536870912,
+          1,
+          536870913
+        ],
+        [
+          4294967295,
+          1,
+          0
+        ]
+      ],
+      "error_phases": [
+        {
+          "phase": 6,
+          "meaning": "native length-error ownership",
+          "allocations": 2,
+          "frees": 2,
+          "native_crt_throw_calls": 1,
+          "host_crt_throw_calls": 1,
+          "count": 536870911
+        },
+        {
+          "phase": 7,
+          "meaning": "allocation callback repairs actual count",
+          "allocations": 2,
+          "frees": 2,
+          "native_crt_throw_calls": 1,
+          "host_crt_throw_calls": 1,
+          "count": 85
+        },
+        {
+          "phase": 8,
+          "meaning": "initial counted assignment fails before factory state0",
+          "allocation_attempts": 2,
+          "frees": 0,
+          "native_crt_throw_calls": 3,
+          "host_crt_throw_calls": 3,
+          "count": 536870911
+        },
+        {
+          "phase": 9,
+          "meaning": "owner construction fails after temporary state0",
+          "allocation_attempts": 3,
+          "frees": 1,
+          "native_crt_throw_calls": 3,
+          "host_crt_throw_calls": 4,
+          "count": 536870911
+        }
+      ],
+      "transport_difference": "Phase9 host source owner catch/rethrow emits one additional _CxxThrowException rethrow compared with original unwind-table cleanup. Recorded independently; not included in the127-word semantic trace. Count, allocations, payload and disposal match.",
+      "all_actual_heap_owners_disposed_after_each_error_case": true
+    },
+    "native_eh_and_throw_pointer_relocations": [
+      {
+        "address": "00d83f70",
+        "expected": "00c5e010"
+      },
+      {
+        "address": "00d83f7c",
+        "expected": "00d83f6c"
+      },
+      {
+        "address": "00d84020",
+        "expected": "00c5e050"
+      },
+      {
+        "address": "00d8402c",
+        "expected": "00d8401c"
+      },
+      {
+        "address": "00d8e3cc",
+        "expected": "00c65a80"
+      },
+      {
+        "address": "00d8e3d8",
+        "expected": "00d8e3c8"
+      },
+      {
+        "address": "00d83f9c",
+        "expected": "00411780"
+      },
+      {
+        "address": "00d83fa4",
+        "expected": "00d83fd4"
+      },
+      {
+        "address": "00d83fd8",
+        "expected": "00d83fe4"
+      },
+      {
+        "address": "00d83fdc",
+        "expected": "00d84000"
+      },
+      {
+        "address": "00d83fe0",
+        "expected": "00e03c7c"
+      },
+      {
+        "address": "00d83fe8",
+        "expected": "00e08000"
+      },
+      {
+        "address": "00d83ffc",
+        "expected": "00411940"
+      },
+      {
+        "address": "00d84004",
+        "expected": "00e08020"
+      },
+      {
+        "address": "00d84018",
+        "expected": "004118d0"
+      },
+      {
+        "address": "00e03c80",
+        "expected": "00e174f0"
+      },
+      {
+        "address": "00e03c94",
+        "expected": "00bf63a6"
+      }
+    ],
+    "instruction_immediate_relocations": [
+      {
+        "address": "004ce78d",
+        "expected": "00c65a88",
+        "replacement": "compiled count_handler loads mapped originalD8E3D0 then jumps actual__CxxFrameHandler3"
+      },
+      {
+        "address": "004ce7af",
+        "expected": "00ce38f8",
+        "replacement": "mapped original literal"
+      },
+      {
+        "address": "004ce7e7",
+        "expected": "00d83f98",
+        "replacement": "mapped original ThrowInfo"
+      },
+      {
+        "address": "00411703",
+        "expected": "00c5e018",
+        "replacement": "compiled constructor_handler loads mapped originalD83F74"
+      },
+      {
+        "address": "004118d3",
+        "expected": "00c5e058",
+        "replacement": "compiled copy_handler loads mapped originalD84024"
+      }
+    ],
+    "native_transfers": [
+      {
+        "address": "004ce7cc",
+        "mnemonic": "call",
+        "target": "00408720"
+      },
+      {
+        "address": "004ce7e1",
+        "mnemonic": "call",
+        "target": "00411700"
+      },
+      {
+        "address": "004ce7f8",
+        "mnemonic": "call",
+        "target": "00bf6885"
+      },
+      {
+        "address": "00c65a83",
+        "mnemonic": "jmp",
+        "target": "004072d0"
+      },
+      {
+        "address": "00c65a8d",
+        "mnemonic": "jmp",
+        "target": "00bf6b43"
+      },
+      {
+        "address": "0041171d",
+        "mnemonic": "call",
+        "target": "00bf632f"
+      },
+      {
+        "address": "00411746",
+        "mnemonic": "call",
+        "target": "00408120"
+      },
+      {
+        "address": "00411793",
+        "mnemonic": "call",
+        "target": "00bf65ac"
+      },
+      {
+        "address": "004117ad",
+        "mnemonic": "jmp",
+        "target": "00bf6454"
+      },
+      {
+        "address": "004117d3",
+        "mnemonic": "call",
+        "target": "00bf65ac"
+      },
+      {
+        "address": "004117ec",
+        "mnemonic": "call",
+        "target": "00bf6454"
+      },
+      {
+        "address": "004117f9",
+        "mnemonic": "call",
+        "target": "00bf65ac"
+      },
+      {
+        "address": "004118f3",
+        "mnemonic": "call",
+        "target": "00bf63a6"
+      },
+      {
+        "address": "0041191b",
+        "mnemonic": "call",
+        "target": "00408120"
+      },
+      {
+        "address": "00411948",
+        "mnemonic": "call",
+        "target": "004118d0"
+      },
+      {
+        "address": "00bf63c7",
+        "mnemonic": "call",
+        "target": "00c03de0"
+      },
+      {
+        "address": "00bf63d0",
+        "mnemonic": "call",
+        "target": "00bf9f1a"
+      },
+      {
+        "address": "00bf63e3",
+        "mnemonic": "call",
+        "target": "00bf93a4"
+      },
+      {
+        "address": "00bf63eb",
+        "mnemonic": "jmp",
+        "target": "00bf63f6"
+      },
+      {
+        "address": "00bf63f1",
+        "mnemonic": "jmp",
+        "target": "00bf63f6"
+      },
+      {
+        "address": "00bf6463",
+        "mnemonic": "call",
+        "target": "00bf9dc8"
+      },
+      {
+        "address": "00bf93b9",
+        "mnemonic": "call",
+        "target": "00bffb8b"
+      },
+      {
+        "address": "00bf93c8",
+        "mnemonic": "call",
+        "target": "00bf66ef"
+      },
+      {
+        "address": "00bf93d2",
+        "mnemonic": "jmp",
+        "target": "00bf9405"
+      },
+      {
+        "address": "00bf93de",
+        "mnemonic": "jmp",
+        "target": "00bf93b9"
+      },
+      {
+        "address": "00bf93f5",
+        "mnemonic": "call",
+        "target": "00bffb8b"
+      },
+      {
+        "address": "00bf9401",
+        "mnemonic": "jmp",
+        "target": "00bf93c3"
+      },
+      {
+        "address": "00c5e013",
+        "mnemonic": "jmp",
+        "target": "00bf6454"
+      },
+      {
+        "address": "00c5e01d",
+        "mnemonic": "jmp",
+        "target": "00bf6b43"
+      },
+      {
+        "address": "00c5e053",
+        "mnemonic": "jmp",
+        "target": "00bf6454"
+      },
+      {
+        "address": "00c5e05d",
+        "mnemonic": "jmp",
+        "target": "00bf6b43"
+      },
+      {
+        "address": "00bf569c",
+        "mnemonic": "call",
+        "target": "00c03e6b"
+      },
+      {
+        "address": "00bf56a9",
+        "mnemonic": "call",
+        "target": "00407290"
+      },
+      {
+        "address": "00bf56b9",
+        "mnemonic": "call",
+        "target": "00411700"
+      },
+      {
+        "address": "00bf56ce",
+        "mnemonic": "call",
+        "target": "00bf6885"
+      },
+      {
+        "address": "00bf56db",
+        "mnemonic": "call",
+        "target": "00c03e6b"
+      },
+      {
+        "address": "00bf56e8",
+        "mnemonic": "call",
+        "target": "00407290"
+      },
+      {
+        "address": "00bf56f8",
+        "mnemonic": "call",
+        "target": "00411700"
+      },
+      {
+        "address": "00bf570d",
+        "mnemonic": "call",
+        "target": "00bf6885"
+      }
+    ],
+    "artifact_sha256": {
+      "include/bsp/native_alias_count_growth.hpp": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3",
+      "src/native_alias_count_growth.cpp": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b",
+      "docs/NATIVE_ALIAS_COUNT_GROWTH.md": "b1d19f05fadd57bb109f03de2306fcbeb0a8de061f0e8cef6e3aba757dd3e47c",
+      "local/audit_alias_count_bytes.py": "2abbadeda0c4abd89c783c006612e1a3962b6e52f0685b9e4047744f18cd07a9",
+      "local/verified_alias_count_spans.json": "aa27d5206b788fc6423866a9755dbe3b9c2b6527d72047965621068b8dd767ba",
+      "local/alias_count_spans.hpp": "b52ff2fed49616b9e4f053cd9e8943eb4ff26bc6a405d17a7b55daae695c694a",
+      "local/verified-seeds/seed_byte_comparison.json": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+      "local/seed_reference.hpp": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "local/alias_count_sources.cmake": "cfa39d723e8f74267b4bd9ec4690773b96724dc530acebee9d754a6d24897ad2",
+      "local/native_alias_count_check.cpp": "35984f414addd5456d00e16bb60b7e52c52ea4d884c22b067bda1dbcfefef557",
+      "local/build_native_alias_count_check.ps1": "d55f2ba45a9926b9cd2c4e48b16bb7cdf5543e9dfe072cca4b1626fcb670f8cd",
+      "local/build-with-seeds.log": "9f20763a33220df55e367828a003fb9fa495130206de61bacfef5daf1fe85bd4",
+      "local/native-check.log": "c91a6a62102b69aebe4233b0d80e4f9207f258e869f4ca8c64163989aeefb087",
+      "build/alias-count-check/native_alias_count_check.exe": "afb1f505e1fc9542ac8fc5a74e6d90221f58d3ee38e1cde49ea048ecc60701f6",
+      "build/alias-count-check/native_alias_count_trace.txt": "d28fbe83b8dcdc990064049faaef45cd215ef8a8c519867bfebce9bb8b845c46",
+      "build/win32/Release/bsp_core.lib": "58741c55ffc07d3f0e5c76d5150aedafb5fe0227ec8981c830e3d8ff1ce5bd3e"
+    }
+  },
+  "integration_remaining": [
+    "Register src/native_alias_count_growth.cpp in primary CMake",
+    "Review and apply count/cleanup Ghidra evidence comments and names, preserving old annotations",
+    "Refresh affected exports and ledger/index; save project"
+  ],
+  "limits": [
+    "New C++ interface and host owning catch type; no drop-in native exception ABI",
+    "Original native CRT internal dispatcher is forwarded to actual host CRT, not reconstructed",
+    "SBO boundary uses independently native-verified shared source; not full original-SBO execution in this factory fixture",
+    "No catch-by-value native runtime copy invocation in this sequence",
+    "No installed game modification or game validation"
+  ]
+}
