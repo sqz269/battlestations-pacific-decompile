@@ -13,10 +13,10 @@
 //            00963380 (ship base), 00437F50 (registry singleton), 00437BD0
 //            (cache resize), 0095BA60 (party bitmap write), 0095BAB0 (party
 //            bitmap read), 004E27E0/00506550/00592640 (index-map writers) and
-//            the 22 leaf constructors listed in kVehicleClassKindTable.
+//            the 22 leaf constructors listed in kVehicleClassDescriptorTable.
 //
 // Evidence: docs/VEHICLE_CLASS_DESCRIPTORS.md. Every descriptive C++ name here
-// is a hypothesis; the class-name literals in kVehicleClassKindTable are not.
+// is a hypothesis; the class-name literals in kVehicleClassDescriptorTable are not.
 // They are read out of the image, returned by the descriptor's own vtable slot
 // +0Ch, which is pure virtual in the base (00BF698E __purecall).
 namespace bsp {
@@ -58,7 +58,9 @@ enum class VehicleClassKind : int {
 // argument in 00964790; instance_size is the operator new argument inside the
 // descriptor's vtable slot +28h, and is zero for the one class that inherits the
 // base's `xor eax, eax; ret 4` and allocates nothing.
-struct VehicleClassKindRow {
+// The creator-side row (type name, size, constructor, SEH state) lives in
+// scene_unit_creators.hpp as VehicleClassKindRow; this is the descriptor-side row.
+struct VehicleClassDescriptorRow {
     const char* lua_type;        // the VehicleClass.Type literal, compared with 00425850
     const char* class_name;      // recovered: the vtable +0Ch string literal
     std::uint32_t descriptor_size;
@@ -71,18 +73,18 @@ struct VehicleClassKindRow {
     std::uint8_t eh_state;       // the SEH state 00964790 records for the branch
 };
 
-inline constexpr int kVehicleClassKindCount = 22;
+inline constexpr int kVehicleClassDescriptorCount = 22;
 // In the factory's comparison order, which is the order the branches are tested.
-extern const VehicleClassKindRow kVehicleClassKindTable[kVehicleClassKindCount];
+extern const VehicleClassDescriptorRow kVehicleClassDescriptorTable[kVehicleClassDescriptorCount];
 
 // The chain at 009648EC..00964EEC: 00425850 against each literal in turn, which
 // is a case-insensitive compare (it delegates to _stricmp). Returns the index
-// into kVehicleClassKindTable, or kVehicleClassKindUnknown when no branch takes,
+// into kVehicleClassDescriptorTable, or kVehicleClassKindUnknown when no branch takes,
 // which is the path that returns a null descriptor without caching anything.
 inline constexpr int kVehicleClassKindUnknown = -1;
 int vehicle_class_kind_index(const char* lua_type) noexcept;
-const VehicleClassKindRow* vehicle_class_kind_row(const char* lua_type) noexcept;
-const VehicleClassKindRow* vehicle_class_kind_row_for(VehicleClassKind kind) noexcept;
+const VehicleClassDescriptorRow* vehicle_class_kind_row(const char* lua_type) noexcept;
+const VehicleClassDescriptorRow* vehicle_class_kind_row_for(VehicleClassKind kind) noexcept;
 
 // ---------------------------------------------------------------------------
 // Registry singleton 00437F50
@@ -124,7 +126,7 @@ struct VehicleClassIndexMap {
 // doing anything when party is neither 0 nor 1. 0095BAB0 reads the same byte for
 // the local player's party. The third byte of every row is never written by
 // either; its reader is not identified.
-inline constexpr int kVehicleClassPartyStride = 3;
+inline constexpr int kVehicleClassDescriptorPartyStride = 3;
 bool vehicle_class_party_valid_0095ba60(int party) noexcept;
 std::size_t vehicle_class_party_slot_0095ba60(int class_index, int party) noexcept;
 

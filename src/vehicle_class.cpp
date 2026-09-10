@@ -32,7 +32,7 @@ bool index_in_range(std::int32_t index) noexcept {
 // argument inside the vtable slot +28h the row names. shipped_rows counts the
 // rows of the installed Scripts/datatables/autoload/vehicleclasses.lua whose
 // Type is this literal, which is 633 rows in total.
-const VehicleClassKindRow kVehicleClassKindTable[kVehicleClassKindCount] = {
+const VehicleClassDescriptorRow kVehicleClassDescriptorTable[kVehicleClassDescriptorCount] = {
     {"Destroyer", "MDestroyer", 0x808, 0x1188, VehicleClassKind::Destroyer,
      0x00000000, 0x00D1ACF8, 0x006FE590, 31, 0x0A},
     {"Cruiser", "MCruiser", 0x80C, 0x1188, VehicleClassKind::Cruiser,
@@ -83,21 +83,21 @@ const VehicleClassKindRow kVehicleClassKindTable[kVehicleClassKindCount] = {
 
 int vehicle_class_kind_index(const char* lua_type) noexcept {
     if (lua_type == nullptr) return kVehicleClassKindUnknown;
-    for (int index = 0; index < kVehicleClassKindCount; ++index) {
-        if (equals_ignoring_case_00425850(lua_type, kVehicleClassKindTable[index].lua_type)) {
+    for (int index = 0; index < kVehicleClassDescriptorCount; ++index) {
+        if (equals_ignoring_case_00425850(lua_type, kVehicleClassDescriptorTable[index].lua_type)) {
             return index;
         }
     }
     return kVehicleClassKindUnknown;
 }
 
-const VehicleClassKindRow* vehicle_class_kind_row(const char* lua_type) noexcept {
+const VehicleClassDescriptorRow* vehicle_class_kind_row(const char* lua_type) noexcept {
     const int index = vehicle_class_kind_index(lua_type);
-    return index == kVehicleClassKindUnknown ? nullptr : &kVehicleClassKindTable[index];
+    return index == kVehicleClassKindUnknown ? nullptr : &kVehicleClassDescriptorTable[index];
 }
 
-const VehicleClassKindRow* vehicle_class_kind_row_for(VehicleClassKind kind) noexcept {
-    for (const VehicleClassKindRow& row : kVehicleClassKindTable) {
+const VehicleClassDescriptorRow* vehicle_class_kind_row_for(VehicleClassKind kind) noexcept {
+    for (const VehicleClassDescriptorRow& row : kVehicleClassDescriptorTable) {
         if (row.kind == kind) return &row;
     }
     return nullptr;
@@ -129,7 +129,7 @@ bool vehicle_class_party_valid_0095ba60(int party) noexcept {
 }
 
 std::size_t vehicle_class_party_slot_0095ba60(int class_index, int party) noexcept {
-    return static_cast<std::size_t>(class_index) * kVehicleClassPartyStride
+    return static_cast<std::size_t>(class_index) * kVehicleClassDescriptorPartyStride
         + static_cast<std::size_t>(party);
 }
 
@@ -196,7 +196,7 @@ VehicleClassResolveResult resolve_vehicle_class_00964790(VehicleClassHost& host,
         return result;
     }
 
-    const VehicleClassKindRow& kind = kVehicleClassKindTable[kind_index];
+    const VehicleClassDescriptorRow& kind = kVehicleClassDescriptorTable[kind_index];
     VehicleClassDescriptor* descriptor = host.construct_descriptor(kind_index, kind.descriptor_size);
     if (descriptor == nullptr) {
         // 00964EE8. The native carries a null descriptor into the tail and
