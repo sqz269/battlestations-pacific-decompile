@@ -8,6 +8,7 @@
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
+#include "bsp/title_init.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/input_settings.hpp"
@@ -713,6 +714,17 @@ int main() {
         check(drained.size() == 2 && drained[0] == bsp::GameRenderJob::kCameraUpdate004b4820
                 && drained[1] == bsp::GameRenderJob::kWorldView004bbd00,
             "the frame job pool drains last in first out");
+    }
+
+    {
+        // 006851aa compares elapsed against the entry delay with FCOMIP/JBE and
+        // only then queries input action 4Ah, so both terms are required and the
+        // time term is strict. docs/GAME_FRONTEND_STATES.md read this as a timed
+        // advance; the sequence actually advances from the movie-end callback
+        // 00685060, and a disjunctive or non-strict rule here would hide that.
+        check(bsp::logo_skip_allowed(3.0F, 2.0F, true), "a late skip with the button fires");
+        check(!bsp::logo_skip_allowed(3.0F, 2.0F, false), "elapsed time alone never skips");
+        check(!bsp::logo_skip_allowed(2.0F, 2.0F, true), "the delay comparison is strict");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
