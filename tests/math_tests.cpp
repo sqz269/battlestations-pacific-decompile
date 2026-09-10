@@ -1,4 +1,5 @@
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/game_entry.hpp"
 #include "bsp/math.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/input_settings.hpp"
@@ -32,6 +33,33 @@ public:
     }
     std::vector<std::uint32_t> allocated;
     std::vector<std::uint32_t> released;
+};
+
+// 004e5540 scans seven switches in a fixed order and the later ones undo the
+// earlier ones, so the selected state is the part worth pinning: noskipLogos
+// has to cancel skipLogos, and .scn has to win over both.
+class StartupSystems final : public bsp::GameStartupSystems {
+public:
+    explicit StartupSystems(const char* line) : line_(line) {}
+    void install_startup_callback() override {}
+    void create_startup_controller() override {}
+    void register_startup_handler() override {}
+    bool logo_sequence_forced() override { return false; }
+    const char* command_line() override { return line_; }
+    void on_init_once(bool first_time) override { once_first_time = first_time; }
+    void on_init_title() override {}
+    void notify_title_ready() override {}
+    void on_init_mission() override { mission_initialized = true; }
+    void drain_state_requests() override {}
+    void enqueue_state_request(bsp::GameStartupState state) override { queued = state; }
+    void create_logo_sequence() override { logo_built = true; }
+    bool once_first_time{false};
+    bool mission_initialized{false};
+    bool logo_built{false};
+    bsp::GameStartupState queued{};
+
+private:
+    const char* line_;
 };
 }
 
@@ -111,6 +139,27 @@ int main() {
         Slotted extra{1};
         check(!table.attach(&extra, -1, error), "a full row reports no free slot");
     }
+    {
+        GameStartupFlags flags{};
+        StartupSystems plain("game.exe");
+        check(game_on_init(plain, flags) == GameStartupState::kLogoSequence
+                && plain.logo_built && !plain.once_first_time,
+            "the default boot stops at the logo sequence");
+
+        flags = GameStartupFlags{};
+        StartupSystems cancelled("game.exe -skipLogos -noskipLogos");
+        check(game_on_init(cancelled, flags) == GameStartupState::kLogoSequence
+                && !flags.skip_logos,
+            "noskipLogos cancels an earlier skipLogos");
+
+        flags = GameStartupFlags{};
+        StartupSystems scenario("game.exe -noskipLogos missions/a.scn");
+        check(game_on_init(scenario, flags) == GameStartupState::kScenarioLoad
+                && scenario.mission_initialized && flags.skip_title && flags.skip_logos
+                && scenario.queued == GameStartupState::kScenarioLoad,
+            "a .scn path overrides noskipLogos and reaches the mission state");
+    }
+
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }
