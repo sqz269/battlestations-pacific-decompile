@@ -1,4 +1,5 @@
 #include "bsp/d3d9_startup.hpp"
+#include "bsp/native_renderer_parameters.hpp"
 #include <cstddef>
 
 namespace bsp {
@@ -8,6 +9,7 @@ static_assert(offsetof(D3DCAPS9, VertexShaderVersion) == 0xc4);
 
 HRESULT d3d9_create_device_prefix_00b2aeb0(
     IDirect3D9& api, const D3D9StartupOptions& options,
+    NativeRendererParametersOwner& renderer_parameters,
     D3DPRESENT_PARAMETERS& stored_parameters, DWORD& behavior_flags,
     IDirect3DDevice9*& device) {
     if (device != nullptr) return D3DERR_INVALIDCALL;
@@ -27,6 +29,11 @@ HRESULT d3d9_create_device_prefix_00b2aeb0(
     parameters.Flags = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
     parameters.FullScreen_RefreshRateInHz = options.fullscreen_refresh_rate;
     parameters.PresentationInterval = ~(options.presentation_sync << 31) & 0x80000000u;
+
+    // 00B2AF9E/00B2AFA4: original arguments go to renderer+1A20/+1A24,
+    // before GetDeviceCaps and CreateDevice can observe or mutate the owner.
+    renderer_parameters.width_0c = options.width;
+    renderer_parameters.height_10 = options.height;
 
     D3DCAPS9 caps{};
     behavior_flags = 0;

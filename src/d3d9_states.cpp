@@ -4,6 +4,14 @@
 #include <cstdlib>
 
 namespace bsp {
+void D3D9StateCache::bind_native_renderer_parameters(NativeRendererParameterDispatch* dispatch) noexcept {
+    native_renderer_parameters_dispatch_ = dispatch;
+}
+
+NativeRendererParameterDispatch* D3D9StateCache::native_renderer_parameters_dispatch() const noexcept {
+    return native_renderer_parameters_dispatch_;
+}
+
 void set_renderer_synchronization_00b33aa0(RendererSynchronization& state, bool enabled) {
     state.enabled = enabled;
     state.observed_enabled = enabled;

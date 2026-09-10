@@ -23,11 +23,16 @@ struct D3D9StartupOptions {
     UINT fullscreen_refresh_rate{};
 };
 
+struct NativeRendererParametersOwner;
+
 // Partial reconstruction: stops before timeBeginPeriod and renderer resource setup.
 // Caller owns the returned COM reference. It must supply an empty output pointer.
 // Unlike native code, returns API failures rather than dereferencing a failed device.
+// Writes the supplied actual parameter region before either device callback;
+// presentation mutations never recopy dimensions into that region afterward.
 HRESULT d3d9_create_device_prefix_00b2aeb0(
     IDirect3D9& api, const D3D9StartupOptions& options,
+    NativeRendererParametersOwner& renderer_parameters,
     D3DPRESENT_PARAMETERS& stored_parameters, DWORD& behavior_flags,
     IDirect3DDevice9*& device);
 }

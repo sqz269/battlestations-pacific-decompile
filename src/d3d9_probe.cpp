@@ -1,5 +1,6 @@
 // Diagnostic host window only; this is not the reconstructed game window handler.
 #include "bsp/d3d9_startup.hpp"
+#include "bsp/native_renderer_parameters.hpp"
 #include "bsp/d3d9_states.hpp"
 #include "bsp/d3d9_resources.hpp"
 #include "bsp/d3d9_buffers.hpp"
@@ -36,13 +37,14 @@ bool probe_mpkg_archive();
 bool probe_physical_pending_reads(const std::string& physical_path);
 bool probe_startup_script_preloads(AssetStreamProbe&, const std::filesystem::path&);
 bool probe_structured_resource(AssetStreamProbe&);
-bool probe_installed_mesh(IDirect3DDevice9&, AssetStreamProbe&);
+bool probe_installed_mesh(IDirect3DDevice9&, bsp::NativeRendererParametersOwner&, AssetStreamProbe&);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 bool probe_font_material(IDirect3DDevice9&, const std::shared_ptr<const bsp::FontResources>&,
     const char*, const std::string&, bool wrapped = false);
 
-static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_path) {
+static bool probe_installed_font(IDirect3DDevice9& device,
+    bsp::NativeRendererParametersOwner& renderer_parameters, const char* atlas_path) {
     const auto game_root = std::filesystem::path(atlas_path).parent_path().parent_path().parent_path();
     bsp::PhysicalDirectory physical(game_root.string() + "\\");
     std::string pending_path;
@@ -51,7 +53,7 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     AssetStreamProbe assets(game_root.string() + "\\");
     if (!probe_startup_script_preloads(assets, game_root)) return false;
     if (!probe_structured_resource(assets)) return false;
-    if (!probe_installed_mesh(device, assets)) return false;
+    if (!probe_installed_mesh(device, renderer_parameters, assets)) return false;
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
         std::string& bytes, std::string& message) {
         std::shared_ptr<bsp::MemoryStream> memory;
@@ -724,6 +726,8 @@ int main(int argc, char** argv) {
         DestroyWindow(window); UnregisterClassA(name, instance); return 1;
     }
     // SDK 32 matches Direct3DCreate9(20h) in renderer constructor 00b32410.
+    bsp::NativeRendererParametersOwner renderer_parameters;
+    bsp::initialize_native_renderer_parameters_00b32410_fragment(renderer_parameters);
     IDirect3D9* api = Direct3DCreate9(D3D_SDK_VERSION);
     IDirect3DDevice9* device = nullptr;
     IDirect3DSwapChain9* swap_chain = nullptr;
@@ -736,7 +740,7 @@ int main(int argc, char** argv) {
         options.width = 640;
         options.height = 480;
         result = bsp::d3d9_create_device_prefix_00b2aeb0(
-            *api, options, stored, flags, device);
+            *api, options, renderer_parameters, stored, flags, device);
         if (SUCCEEDED(result)) result = device->GetSwapChain(0, &swap_chain);
         if (SUCCEEDED(result)) result = swap_chain->GetPresentParameters(&actual);
     }
@@ -1045,7 +1049,7 @@ int main(int argc, char** argv) {
     else if (matched) std::puts("Shader asset probe skipped: supply installed atlas DDS path to locate game scripts.");
     if (matched) matched = probe_material_states_and_constants(*device);
     if (matched && argc > 1) matched = probe_memory_texture(*device, argv[1]);
-    if (matched && argc > 1) matched = probe_installed_font(*device, argv[1]);
+    if (matched && argc > 1) matched = probe_installed_font(*device, renderer_parameters, argv[1]);
     if (device) device->Release();
     if (api) api->Release();
     DestroyWindow(window);

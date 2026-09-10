@@ -16,6 +16,7 @@
 #include "bsp/instance_geometry.hpp"
 #include "bsp/material_clone.hpp"
 #include "bsp/d3d9_resources.hpp"
+#include "bsp/native_renderer_parameters.hpp"
 #include "bsp/model_bounds.hpp"
 #include "bsp/scene_attachment.hpp"
 #include "bsp/generated_model_lifetime.hpp"
@@ -595,7 +596,8 @@ private:
     bsp::GeneratedInstanceGeometryGenerator generator_;
 };
 
-bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
+bool draw_mesh(IDirect3DDevice9& device, bsp::NativeRendererParametersOwner& renderer_parameters,
+    MeshTextureDomain& textures,
     const InstalledModelProbe& model, const std::shared_ptr<bsp::CompiledMaterialPass>& material_pass, std::string& error) {
     const auto& shaders = *material_pass;
     if (shaders.base.options.instance_generator != "building" || !model.hierarchy.matrix
@@ -678,6 +680,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
+        bsp::NativeD3D9RendererParameterDispatch parameter_dispatch(states, renderer_parameters);
+        states.bind_native_renderer_parameters(&parameter_dispatch);
         bsp::D3D9StateCache* current_renderer = &states;
         bsp::D3D9CameraFrameAccess camera_access(states);
         std::shared_ptr<bsp::LogicalVertexStream> vertices;
@@ -1142,7 +1146,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
 }
 }
 
-bool probe_installed_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets) {
+bool probe_installed_mesh(IDirect3DDevice9& device,
+    bsp::NativeRendererParametersOwner& renderer_parameters, AssetStreamProbe& assets) {
     InstalledModelProbe model;
     if (!probe_model_metadata(assets, &model)) return false;
     std::string descriptor, error;
@@ -1177,5 +1182,5 @@ bool probe_installed_mesh(IDirect3DDevice9& device, AssetStreamProbe& assets) {
     std::printf("Installed mesh compiled: descriptor=%s combiner=%s samplers=%u/%u usage=%u instance=%s\n",
         descriptor.c_str(), shaders->base.combiners[0].c_str(), shaders->sampler_counts.pixel,
         shaders->sampler_counts.vertex, shaders->pb.sampler_mask, shaders->base.options.instance_generator.c_str());
-    return draw_mesh(device, textures, model, shaders, error);
+    return draw_mesh(device, renderer_parameters, textures, model, shaders, error);
 }

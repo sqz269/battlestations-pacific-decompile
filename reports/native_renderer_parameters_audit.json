@@ -1,0 +1,123 @@
+{
+  "packet": "native_renderer_parameters_owner",
+  "date": "2026-09-10",
+  "base_commit": "2bc2a97",
+  "status": "reconstructed_build_and_focused_native_fixture_checked",
+  "image": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "hash_rechecked": true,
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "project_program_verified_by_bsp_ghidra_queries": true
+  },
+  "evidence": [
+    {
+      "address": "00b32512", "end_exclusive": "00b32534",
+      "parent": "00b32410", "parent_end_exclusive": "00b328f8",
+      "native_abi": "in-function fragment: ESI renderer; EBX zero",
+      "hex": "88 9e 14 1a 00 00 c7 86 18 1a 00 00 03 00 00 00 88 9e 1c 1a 00 00 89 9e 20 1a 00 00 89 9e 24 1a 00 00",
+      "implementation": "initialize_native_renderer_parameters_00b32410_fragment",
+      "source": "src/native_renderer_parameters.cpp",
+      "scope": "five stores only; all six preserved bytes remain untouched"
+    },
+    {
+      "address": "00b1ff60", "end_exclusive": "00b1ff67",
+      "native_abi": "ECX renderer; EAX renderer+1A14; RET",
+      "hex": "8d 81 14 1a 00 00 c3",
+      "vtable_slot": "00d5f0a8+30 = 00d5f0d8",
+      "implementation": "NativeD3D9RendererParameterDispatch::parameters_00b1ff60",
+      "source": "src/native_renderer_parameters.cpp",
+      "scope": "new C++ interface returning actual region+0C/+10 references"
+    },
+    {
+      "address": "00b2af9e", "end_exclusive": "00b2afaa",
+      "parent": "00b2aeb0", "parent_end_exclusive": "00b2b1f2",
+      "native_abi": "ECX renderer at function entry; ten stack args; RET28h; fragment width EBP and height ECX",
+      "hex": "89 ae 20 1a 00 00 89 8e 24 1a 00 00",
+      "implementation": "d3d9_create_device_prefix_00b2aeb0",
+      "source": "src/d3d9_startup.cpp",
+      "scope": "same supplied region width/height stores before GetDeviceCaps and CreateDevice"
+    }
+  ],
+  "storage": {
+    "type": "NativeRendererParametersOwner",
+    "size_hex": "14", "alignment": 4, "native_renderer_offset_hex": "1A14",
+    "fields": [
+      {"offset": "00", "bytes": 1, "initializer": 0},
+      {"offset": "01", "bytes": 3, "initializer": "preserved"},
+      {"offset": "04", "bytes": 4, "initializer": 3},
+      {"offset": "08", "bytes": 1, "initializer": 0},
+      {"offset": "09", "bytes": 3, "initializer": "preserved"},
+      {"offset": "0C", "bytes": 4, "initializer": 0, "meaning": "width"},
+      {"offset": "10", "bytes": 4, "initializer": 0, "meaning": "height"}
+    ],
+    "distinct_present_block": "renderer+1A28,38h bytes",
+    "full_renderer_constructed": false
+  },
+  "binding": {
+    "state": "D3D9StateCache",
+    "initial_dispatch": null,
+    "constructor_changed": false,
+    "explicit_bind_method": "bind_native_renderer_parameters",
+    "concrete_dispatch": "NativeD3D9RendererParameterDispatch",
+    "access_adapter": "D3D9ViewportRendererAccess",
+    "current_dispatch_resolved_each_call": true,
+    "captured_renderer_identity_checked": true,
+    "returned_values": "borrowed references to actual owner.width_0c and owner.height_10",
+    "global_recapture_in_adapter": false,
+    "unbound_or_mismatched_behavior": "std::logic_error",
+    "dimension_snapshot_or_device_fallback": false,
+    "native_renderer_abi_claimed": false
+  },
+  "dataflow": [
+    "main initializes parameter owner with five native constructor stores",
+    "startup writes the same owner before caps/create callbacks",
+    "main -> probe_installed_font -> probe_installed_mesh -> draw_mesh passes same owner reference",
+    "draw_mesh explicitly installs concrete dispatch on actual captured D3D9StateCache"
+  ],
+  "validation": {
+    "build": "./local/build_renderer_parameters_worker.ps1, which configures an ignored top-level CMake include then runs ./scripts/build.ps1",
+    "new_source_explicitly_compiled_and_linked": true,
+    "build_log": "local/renderer_parameters_worker_build.txt",
+    "existing_ctest_passed": "1/1",
+    "focused_fixture": "./local/build_native_renderer_parameters_check.ps1",
+    "focused_fixture_source": "local/native_renderer_parameters_check.cpp",
+    "focused_fixture_log": "local/native_renderer_parameters_check.txt",
+    "focused_fixture_passed": true,
+    "native_prefix_run": ["00b2aeb0", "00b2b01a"],
+    "native_epilogue_appended": ["00b2b1d7", "00b2b1f2"],
+    "native_prefix_patch": "redirect 00b2aedc relative call to host CRT memset",
+    "native_exception_unwind_exercised": false,
+    "compared": [
+      "five constructor stores and six preserved padding bytes",
+      "native getter result equals actual renderer+1A14",
+      "two callback snapshots: full14h region, full38h presentation and behavior flags",
+      "original zero width and height480 stored before first callback",
+      "callback mutations persist: region803x904, presentation777x555",
+      "same-owner borrowed references remain live after field mutation",
+      "current dispatch replacement observed on same captured state despite publication change",
+      "unbound and mismatched bindings fail explicitly"
+    ],
+    "installed_probe": "./build/win32/Release/bsp_d3d9_probe.exe I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds",
+    "installed_probe_exit": 0,
+    "installed_probe_log": "local/renderer_parameters_installed_probe.txt",
+    "installed_device": "640x480,behavior44h",
+    "installed_camera_replaced": false,
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "integration_remaining": [
+    "primary registers src/native_renderer_parameters.cpp in CMake",
+    "primary updates shared metadata and Ghidra annotations/exports",
+    "primary replaces diagnostic mesh camera using existing publication and D3D9ViewportRendererAccess"
+  ],
+  "uncertainty_and_limits": [
+    "Non-dimension field meanings remain provisional.",
+    "No complete renderer construction, singleton publication/lifetime or factory implementation.",
+    "Existing startup HRESULT failure adaptation is retained; native failure dereferences are not emulated.",
+    "Later mode/recreation/reset and aspect-flag tail writes remain unreconstructed in this packet.",
+    "Installed probe confirms integration compatibility, not consumption by a newly installed native camera.",
+    "No original binary ABI compatibility or game-runtime claim."
+  ]
+}

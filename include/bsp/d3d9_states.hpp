@@ -15,6 +15,7 @@ struct D3D9SurfaceBinding;
 struct D3D9DefaultSurfaces;
 struct D3D9OcclusionQuery;
 class D3D9QueryRegistry;
+class NativeRendererParameterDispatch;
 // Semantic equivalents of globals 0108d6dc/dd/e0. The original counter is
 // non-atomic. Configure locking before workers start; live mode changes unverified.
 struct RendererSynchronization {
@@ -101,6 +102,11 @@ class D3D9StateCache {
 public:
     D3D9StateCache(IDirect3DDevice9& device, RendererSynchronization& synchronization,
         TrackedCriticalSection* lock) : device_(device), synchronization_(synchronization), lock_(lock) {}
+    // Borrowed current native parameter dispatch; initially unbound. Install
+    // explicitly after region construction/startup. No COM or region ownership.
+    // The binding must outlive its use; null explicitly unbinds it.
+    void bind_native_renderer_parameters(NativeRendererParameterDispatch*) noexcept;
+    NativeRendererParameterDispatch* native_renderer_parameters_dispatch() const noexcept;
     void set_render_state_00b24460(D3DRENDERSTATETYPE state, DWORD value);
     void set_sampler_state_00b24610(UINT sampler, D3DSAMPLERSTATETYPE state, DWORD value);
     // Uncached, optional guard; non-null wrapper increments native+1BCCh even
@@ -210,6 +216,7 @@ private:
     IDirect3DDevice9& device_;
     RendererSynchronization& synchronization_;
     TrackedCriticalSection* lock_;
+    NativeRendererParameterDispatch* native_renderer_parameters_dispatch_{};
     // Native render-valid area +40h..113h; sampler states 0..13 in twenty banks.
     std::array<Entry, 212> render_{};
     std::array<std::array<Entry, 14>, 20> samplers_{};
