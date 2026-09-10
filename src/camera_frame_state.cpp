@@ -1145,9 +1145,9 @@ void D3D9CameraFrameAccess::prepare_camera_00b285a0(CameraFrameState& frame) {
         }
         restore_pending_planes_00b25080();
     }
-    if (frame.ambient_rgba)
+    if (frame.fog_184)
         cache_.set_render_state_00b24460(D3DRS_AMBIENT,
-            convert_camera_ambient_004fb850(*frame.ambient_rgba, sse2_color_truncation));
+            convert_camera_ambient_004fb850(frame.fog_184->color_08, sse2_color_truncation));
 }
 void D3D9CameraFrameAccess::execute_camera_command_00b71360(CameraFrameState& frame) {
     if (!frame.enabled) return;

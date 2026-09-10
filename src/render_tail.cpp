@@ -2,6 +2,20 @@
 #include "bsp/particle_clock_lifetime.hpp"
 
 namespace bsp {
+namespace {
+void forward_particle_time(ParticleTimeSink& sink, const float& time_ms) {
+    float forwarded;
+    const auto* source = &time_ms;
+    //00B19A33/00B19A3D: raw clock storage precedes this per-call x87
+    // load/spill. Signaling NaNs quiet here and update the x87 status.
+    __asm {
+        mov eax, source
+        fld dword ptr [eax]
+        fstp forwarded
+    }
+    sink.set_time(forwarded);
+}
+}
 
 float particle_clock_time_004e538e(float global_time) noexcept
 {
@@ -13,7 +27,14 @@ float particle_clock_time_004e538e(float global_time) noexcept
 void set_particle_clock_time_00b19a10(ParticleClock& clock, float time_ms)
 {
     auto* const owned_begin = clock.owned_records;
-    clock.shader_time = time_ms;
+    const auto* input = &time_ms;
+    auto* output = &clock.shader_time;
+    __asm {
+        mov eax, input
+        mov edx, output
+        movss xmm0, dword ptr [eax]
+        movss dword ptr [edx], xmm0
+    }
     if (owned_begin != nullptr) {
         // ESI advances independently; only the end is recomputed from the
         // reloaded native +8/+C after each virtual call. Reallocation during a
@@ -21,7 +42,7 @@ void set_particle_clock_time_00b19a10(ParticleClock& clock, float time_ms)
         auto cursor = reinterpret_cast<std::uintptr_t>(owned_begin);
         auto end = cursor + clock.sink_count * kParticleClockRecordStride;
         while (cursor != end) {
-            reinterpret_cast<ParticleClockOwnedRecord*>(cursor)->sink_28->set_time(time_ms);
+            forward_particle_time(*reinterpret_cast<ParticleClockOwnedRecord*>(cursor)->sink_28,time_ms);
             end = reinterpret_cast<std::uintptr_t>(clock.owned_records)
                 + clock.sink_count * kParticleClockRecordStride;
             cursor += kParticleClockRecordStride;
@@ -35,7 +56,7 @@ void set_particle_clock_time_00b19a10(ParticleClock& clock, float time_ms)
     for (std::uint32_t index = 0; index < clock.sink_count; ++index) {
         ParticleTimeSink* sink = clock.sinks[index];
         if (sink != nullptr) {
-            sink->set_time(time_ms);
+            forward_particle_time(*sink,time_ms);
         }
     }
 }

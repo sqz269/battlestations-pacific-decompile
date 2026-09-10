@@ -23,7 +23,16 @@
 #include "bsp/camera_multiply.hpp"
 #include "bsp/material_constants.hpp"
 #include "bsp/material_constant_builder.hpp"
+#include "bsp/material_entry_dispatch.hpp"
+#include "bsp/system_constant_builder.hpp"
+#include "bsp/system_camera_axes.hpp"
+#include "bsp/system_time_constants.hpp"
+#include "bsp/system_lighting_constants.hpp"
+#include "bsp/legacy_crt_math.hpp"
+#include "bsp/particle_clock_lifetime.hpp"
 #include <algorithm>
+#include <cerrno>
+#include <cstdlib>
 #include <cstring>
 #include <set>
 #include <cstdio>
@@ -102,42 +111,100 @@ private:
     std::unordered_map<std::string, Image> images_;
 };
 
-bool scene_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
-    std::vector<float>& words, bool vertex, const bsp::CameraMatrix& view_projection, std::string& error) {
-    // Deliberate host scene: fixed orthographic camera, uniform ambient cube,
-    // one directional light, no fog/time effect. These are explicit scene
-    // inputs, not guessed native initialization of the world or renderer.
-    const float screen_texture[]{.5f,0,0,0, 0,-.5f,0,0, 0,0,1,0, .5f,.5f,0,1};
-    for (const auto& constant : reflection) {
-        if (constant.register_set == 3) continue;
-        if (constant.register_set != 2 || constant.parameter_type != 3
-            || constant.register_index + constant.register_count > words.size()/4) return false;
-        auto* value = words.data() + 4 * constant.register_index;
-        std::fill(value, value + constant.register_count * 4, 0.0f);
-        const auto& name = constant.name;
-        if (name == "cVtxElemScale" || name == "cVtxElemOffset") continue; // Recovered binder below.
-        if (vertex && (name == "cViewProjMat" || name == "cScreenToTextureMat")) {
-            if (constant.rows != 4 || constant.columns != 4 || constant.register_count != 4) return false;
-            bsp::write_system_matrix_00b404a0(value,
-                name == "cViewProjMat" ? view_projection.data() : screen_texture);
-        } else if (vertex && name == "cAmbientCube" && constant.register_count == 6) {
-            for (unsigned i = 0; i < 6; ++i) {
-                value[i*4] = value[i*4+1] = value[i*4+2] = .35f; value[i*4+3] = 1;
-            }
-        } else if (vertex && name == "cDirLightDiffuseColor") {
-            value[0] = value[1] = value[2] = .65f; value[3] = 1;
-        } else if (vertex && name == "cDirLightWorldSpaceDir") {
-            value[0] = value[1] = value[2] = .577350269f;
-        } else if (vertex && name == "cWorldSpaceEyePos") {
-            value[0] = value[1] = value[2] = 8;
-        } else if (vertex && name == "cFogParams") {
-            value[0] = 100; value[1] = 200;
-        } else if (vertex && name == "cFogHeightParams") value[0] = 1;
-        else if ((vertex && (name == "cFogColor" || name == "cFogDirColor4" || name == "cPointLightsData"))
-            || (!vertex && name == "cElapsedTime")) {}
-        else { error = "Unresolved installed mesh scene constant: " + name; return false; }
+struct MeshParticleLifetimeCallbacks {
+    bsp::ConcreteParticleClockLifetimeAccess* access{};
+    unsigned& destroyed;
+    static void destroy(void* context, void* owner, std::uint32_t flags) noexcept {
+        auto& self = *static_cast<MeshParticleLifetimeCallbacks*>(context);
+        self.access->deleting_destructor_004de340(static_cast<bsp::ParticleClock*>(owner),flags);
+        ++self.destroyed;
     }
-    return true;
+    static void invalid_parameter(void*) { _invalid_parameter_noinfo(); }
+};
+struct MeshSingletonShutdown {
+    bsp::SingletonLifetimeDomain& domain;
+    ~MeshSingletonShutdown() { domain.shutdown(); }
+};
+
+bool gpu_system_prefix_matches(IDirect3DDevice9& device,
+    const bsp::SystemConstantPrefix& prefix) {
+    bsp::SystemConstantPrefix vertex{}, pixel{};
+    return SUCCEEDED(device.GetVertexShaderConstantF(0,vertex.data(),77))
+        && SUCCEEDED(device.GetPixelShaderConstantF(0,pixel.data(),77))
+        && std::memcmp(vertex.data(),prefix.data(),sizeof(prefix)) == 0
+        && std::memcmp(pixel.data(),prefix.data(),sizeof(prefix)) == 0;
+}
+
+bool build_mesh_system_constants(bsp::CameraFrameState& camera,
+    bsp::D3D9StateCache* const volatile& renderer,
+    bsp::ParticleClock* volatile& particle_slot, bsp::ParticleClockLifetimeAccess& lifetime,
+    bsp::SystemConstantPrefix& prefix, HRESULT& result, std::string& error) {
+    // Explicit isolated-scene owners. Native factories/world initialization
+    // are not implied by these chosen values or by the zero scratch preimage.
+    bsp::FrameClock frame;
+    if (!bsp::initialize_frame_clock_00bedbd0(frame)
+        || !bsp::update_frame_clock_00bedc30(frame)) {
+        error = "Installed mesh system clock could not sample QPC"; return false;
+    }
+    auto* frame_slot = &frame;
+    auto* particle = bsp::particle_clock_singleton_004de4b0(particle_slot, lifetime);
+    if (!particle) { error = "Installed mesh particle clock allocation failed"; return false; }
+    // This recovered updater establishes +18h before the shader reads it.
+    bsp::set_particle_clock_time_00b19a10(*particle, 0.0f);
+    bsp::FoliageGroupManager foliage_manager;
+    foliage_manager.shader_time = 0.0f; // Explicit scene value for native +2Ch.
+    auto* manager_slot = &foliage_manager;
+    const float foliage_time = 0, render_time = 0;
+    const std::uint8_t foliage_flag = 0, render_flag = 0;
+    bsp::SystemFoliageTimeOwner foliage{foliage_time, foliage_flag};
+    auto* foliage_slot = &foliage;
+    const bsp::CameraMatrix screen_texture{.5f,0,0,0, 0,-.5f,0,0, 0,0,1,0, .5f,.5f,0,1};
+    bsp::SystemRenderTimeOwner service{{render_flag, render_time}, screen_texture};
+    auto* service_slot = &service;
+    bsp::ConcreteSystemTimeTimerVirtuals timer_virtuals;
+    bsp::SystemTimeBindings time{frame_slot, particle_slot, manager_slot,
+        foliage_slot, service_slot, lifetime, timer_virtuals};
+
+    const auto words4 = [](std::array<float,4> values) {
+        bsp::SystemLightingWords4 words;
+        std::memcpy(words.data(),values.data(),sizeof(words)); return words;
+    };
+    const auto ambient = words4({.35f,.35f,.35f,1});
+    const auto diffuse = words4({.65f,.65f,.65f,1});
+    const auto specular = words4({0,0,0,0});
+    std::array<bsp::SystemLightingWords4,6> cube; cube.fill(ambient);
+    bsp::SystemLightingWords3 direction;
+    const std::array<float,3> direction_values{.577350269f,.577350269f,.577350269f};
+    std::memcpy(direction.data(),direction_values.data(),sizeof(direction));
+    bsp::SystemShadowMapOwner* shadow_owner = nullptr;
+    bsp::SystemDirectionalLight light{shadow_owner,diffuse,specular,diffuse,direction};
+    bsp::SystemLightEnvironment lighting_environment{ambient,ambient,cube};
+    auto* environment_slot = &lighting_environment;
+    bsp::SystemLightListNode* sentinel_next = nullptr;
+    bsp::SystemLightListNode* first_next = nullptr;
+    bsp::SystemDirectionalLight* sentinel_light = nullptr;
+    auto* first_light = &light;
+    bsp::SystemLightListNode sentinel{sentinel_next,sentinel_light};
+    bsp::SystemLightListNode first{first_next,first_light};
+    sentinel_next = &first; first_next = &sentinel;
+    auto* sentinel_slot = &sentinel;
+    bsp::SystemSceneLighting lighting{environment_slot,sentinel_slot};
+    auto* lighting_slot = &lighting;
+    bsp::SystemLightingScene scene{lighting_slot};
+
+    // Diagnostic runtime words use verified PE preimages, including zero fill.
+    // Binding persists safely after this draw; actual native startup may alter it.
+    static const std::uint32_t axes_bypass = 0, matherr_bypass = 0x2694;
+    static const bsp::LegacyCrtMathRuntime crt{&matherr_bypass, &_errno};
+    bsp::bind_legacy_crt_math_runtime(crt);
+    const bsp::CameraAxesCrtAccess axes{&axes_bypass,&bsp::legacy_crt_87except_00c27489};
+    const std::array<float,16> parameters{};
+    const volatile std::uint32_t register_count = 77;
+    const std::uint32_t exponent = 0x43000000;
+    bsp::SystemConstantBuilderEnvironment bindings{time,axes,parameters.data(),
+        renderer,register_count,exponent,nullptr};
+    return bsp::build_and_upload_system_constants_00b46a70(&scene,camera,prefix,
+        bindings,result,error);
 }
 
 bool write_bitmap(const D3DLOCKED_RECT& locked, UINT width, UINT height) {
@@ -417,14 +484,14 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     bsp::CameraMatrix projection;
     bsp::set_camera_local_matrix_00b71430(camera_state, camera_world);
     bsp::multiply_camera_matrices_00413920(projection, camera_world, desired_view_projection);
+    camera_state.projection.fov = 1; // Explicit host scalar; time prefix uses its reciprocal.
     bsp::set_camera_projection_00b6fd60(camera_state.projection, projection);
     auto& camera = camera_state.transform;
-    const auto& view_projection = bsp::get_camera_view_projection_00b70490(camera_state);
     std::vector<float> vertex_words(256 * 4), pixel_words(224 * 4);
+    std::uint32_t first_constant_register = 77, vertex_header = 0, pixel_header = 0;
+    bsp::MaterialEntryConstantState material_constants{first_constant_register, vertex_words, pixel_words};
     bsp::MeshDecodeBindingStats decoded;
-    if (!scene_constants(shaders.vr, vertex_words, true, view_projection, error)
-        || !scene_constants(shaders.pr, pixel_words, false, view_projection, error)
-        || !bsp::pack_mesh_vertex_decode_constants_00b428c0(ordered_streams, shaders.vb,
+    if (!bsp::pack_mesh_vertex_decode_constants_00b428c0(ordered_streams, shaders.vb,
             {static_cast<std::uint32_t>(shaders.base.options.compressed_element_count), {}},
             0, vertex_words, decoded, error)
         || decoded.records_from_metadata != 3 || decoded.records_written != 3) return false;
@@ -459,9 +526,12 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     MeshModelLifetimeEvidence model_lifetimes;
     unsigned queued_bindings_checked = 0;
     unsigned material_constants_built = 0;
+    unsigned system_constants_built = 0, particle_clocks_destroyed = 0;
+    bool system_prefix_match = false, particle_lifetime_match = false;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
+        bsp::D3D9StateCache* current_renderer = &states;
         bsp::D3D9CameraFrameAccess camera_access(states);
         std::shared_ptr<bsp::LogicalVertexStream> vertices;
         std::shared_ptr<bsp::LogicalIndexStream> indices;
@@ -710,8 +780,10 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             hr = bsp::bind_material_textures_00b43470(states, shaders.pass, slots.textures(), shaders.pb.sampler_mask);
         }
         if (SUCCEEDED(hr)) hr = bsp::bind_material_shadow_samplers_00b430cf_fragment(states, shaders.shadow_samplers, {shadow,false,false,{}});
-        if (SUCCEEDED(hr)) hr = states.set_vertex_shader_constants_f_00b21820(0,vertex_words.data(),shaders.vb.end_register);
-        if (SUCCEEDED(hr)) hr = states.set_pixel_shader_constants_f_00b218c0(0,pixel_words.data(),shaders.pb.end_register);
+        std::int32_t uploaded_vertex_registers = 0, uploaded_pixel_registers = 0;
+        if (SUCCEEDED(hr) && !bsp::upload_material_entry_constants_00b43541(shaders,
+            material_constants,current_renderer,hr,uploaded_vertex_registers,
+            uploaded_pixel_registers,error)) hr = E_FAIL;
         if (SUCCEEDED(hr)) {
             std::array<float,24> values{};
             hr = device.GetVertexShaderConstantF(shaders.vb.registers[24],values.data(),6);
@@ -725,9 +797,13 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         }
         if (SUCCEEDED(hr) && !(buffers_match && constants_match && layout_match && bindings_match && groups_match)) hr = E_FAIL;
         const bsp::CameraViewport viewport{0,0,256,256,0,{0,0,256,256}};
-        const bsp::CameraPlane ambient{.35f,.35f,.35f,1};
+        // Explicit host-scene fog inputs. Camera ambient and system constants
+        // borrow this same owner; these values are not native factory defaults.
+        bsp::SystemFogState fog{};
+        fog.color_08 = {.35f,.35f,.35f,1};
+        fog.scalar_6c = 100; fog.scalar_70 = 200; fog.scalar_74 = 1;
         bsp::CameraFrameState camera_frame(camera_state);
-        camera_frame.enabled = 1; camera_frame.viewport = &viewport; camera_frame.ambient_rgba = &ambient;
+        camera_frame.enabled = 1; camera_frame.viewport = &viewport; camera_frame.fog_184 = &fog;
         camera_frame.clear_flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER;
         camera_frame.clear_color = 0xff000000; camera_frame.clear_depth = 1;
         camera_frame.render_mode = 0; // The actual compiled NORMAL program used below.
@@ -751,11 +827,26 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             std::printf("Installed camera frame: shared_camera_cache_viewport_clear_ambient_frustum=1 checked=%d\n", camera_frame_match);
             if (!camera_frame_match && SUCCEEDED(hr)) hr = E_FAIL;
         }
+        // These actual allocation/lock/destruction adapters share one lifetime
+        // domain and one particle slot for this isolated scene.
+        bsp::SizedStoragePool particle_strings(bsp::string_pool_config_00419cc0());
+        bsp::ParticleClock* particle_slot = nullptr;
+        MeshParticleLifetimeCallbacks lifetime_callbacks{nullptr,particle_clocks_destroyed};
+        bsp::SingletonLifetimeDomain lifetime({&lifetime_callbacks,
+            &MeshParticleLifetimeCallbacks::destroy,&MeshParticleLifetimeCallbacks::invalid_parameter});
+        bsp::ConcreteParticleClockLifetimeAccess particle_lifetime(lifetime,particle_slot,particle_strings);
+        lifetime_callbacks.access = &particle_lifetime;
+        MeshSingletonShutdown lifetime_shutdown{lifetime};
+        bsp::SystemConstantPrefix system_prefix{}; // Explicit initialized host preimage.
+        if (SUCCEEDED(hr) && !build_mesh_system_constants(camera_frame,current_renderer,
+            particle_slot,particle_lifetime,system_prefix,hr,error)) hr = E_FAIL;
+        if (SUCCEEDED(hr)) {
+            ++system_constants_built;
+            system_prefix_match = gpu_system_prefix_matches(device,system_prefix);
+            if (!system_prefix_match) hr = E_FAIL;
+        }
         if (SUCCEEDED(hr)) hr = device.BeginScene();
         MeshMaterialConstantOwners material_owners(camera_frame, shadow);
-        bsp::D3D9StateCache* current_renderer = &states;
-        std::uint32_t first_constant_register = 0, vertex_header = 0, pixel_header = 0;
-        bsp::MaterialEntryConstantState material_constants{first_constant_register, vertex_words, pixel_words};
         bsp::MaterialConstantBuilderEnvironment material_environment{current_renderer, nullptr,
             vertex_header, pixel_header, material_owners};
         if (SUCCEEDED(hr)) {
@@ -784,10 +875,14 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
                     if (!constants_match) hr = E_FAIL;
                     else ++material_constants_built;
                 }
-                if (SUCCEEDED(hr)) hr = states.set_vertex_shader_constants_f_00b21820(0,
-                    vertex_words.data(), shaders.vb.end_register);
-                if (SUCCEEDED(hr)) hr = states.set_pixel_shader_constants_f_00b218c0(0,
-                    pixel_words.data(), shaders.pb.end_register);
+                if (SUCCEEDED(hr) && !bsp::upload_material_entry_constants_00b43541(shaders,
+                    material_constants,current_renderer,hr,uploaded_vertex_registers,
+                    uploaded_pixel_registers,error)) hr = E_FAIL;
+                if (SUCCEEDED(hr)) {
+                    system_prefix_match = system_prefix_match
+                        && gpu_system_prefix_matches(device,system_prefix);
+                    if (!system_prefix_match) hr = E_FAIL;
+                }
                 OwnedCom<IDirect3DVertexBuffer9> actual_mesh, actual_instances;
                 OwnedCom<IDirect3DIndexBuffer9> actual_indices;
                 OwnedCom<IDirect3DVertexDeclaration9> actual_layout;
@@ -831,6 +926,9 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             const auto unlocked = readback.p->UnlockRect(); unlock.surface = nullptr;
             if (SUCCEEDED(hr)) hr = unlocked;
         }
+        lifetime.shutdown();
+        particle_lifetime_match = particle_slot == nullptr && particle_clocks_destroyed == 1
+            && lifetime.published_manager() == nullptr;
         states.bind_vertex_shader_00b21d10(nullptr); states.bind_pixel_shader_00b21c20(nullptr);
         states.bind_texture_00b24710(0,{}); states.bind_texture_00b24710(1,{});
         states.bind_vertex_stream_00b24840(0,{}); states.bind_vertex_stream_00b24840(1,{});
@@ -852,10 +950,13 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         model_lifetimes.constructed, model_lifetimes.disposed, model_lifetimes.cleanup_matches, model_lifetime_match);
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
         && camera_frame_match && model_lifetime_match
+        && system_constants_built == 1 && system_prefix_match && particle_lifetime_match
         && material_constants_built == 2 && queued_bindings_checked == 2
         && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
     std::printf("Installed material builder: actual_stream_and_clone_owners_ordered_constants=%u checked=%d\n",
         material_constants_built, material_constants_built == 2 && constants_match);
+    std::printf("Installed system builder: ordered_prefix=%u VS_PS_77_retained_after_material=%d particle_clocks_destroyed=%u lifetime_checked=%d\n",
+        system_constants_built,system_prefix_match,particle_clocks_destroyed,particle_lifetime_match);
     std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,
         decoded.records_from_metadata,constants_match,layout_match,bindings_match,queued_bindings_checked,visible,colors.size(),restored,checked,error.c_str());

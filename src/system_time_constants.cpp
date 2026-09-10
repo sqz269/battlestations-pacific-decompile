@@ -44,6 +44,7 @@ ParticleClock* particle_clock_singleton_004de4b0(
                 volatile auto* initialized = allocated;
                 initialized->secondary_vtable_04 = 0x00ce7d08u;
                 initialized->sinks = nullptr;
+                initialized->owned_records = nullptr; // same native +8h, owned projection
                 initialized->sink_count = 0;
                 initialized->native_capacity_10 = 0;
                 initialized->native_extra_14 = 0;

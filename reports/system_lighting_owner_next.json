@@ -1,0 +1,869 @@
+{
+  "packet": "system_lighting_owner_discovery",
+  "base_commit": "6363a09",
+  "date": "2026-09-10",
+  "status": "read_only_discovery_and_bounded_implementation_handoff",
+  "target": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every live query uses bsp.py ghidra or show --live, both call Client.verify before querying.",
+    "installation_written": false,
+    "ghidra_mutated": false,
+    "ledger_mutated": false,
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owners": {
+    "outer_scene": {
+      "constructor": "00b724e0",
+      "native_allocation_size": 36,
+      "allocation_evidence": "0093ccc0 allocates0x24 and calls00b724e0 with name Simple3dSceneHandler",
+      "vtable": "00d62d48",
+      "vtable_zero": "00bd30e0",
+      "vtable_deleting_destructor": "00b72580",
+      "destroy_body": "00b72430",
+      "lighting_slot_offset": 28,
+      "lighting_slot_constructor_value": 0,
+      "setter": "00b723f0",
+      "setter_order": "capture old; compare pointers; publish new+1C; retain new+4; release old+4; on zero dispatch old virtual+0",
+      "constructor_base_dependency": "00925490 creates a real weak-handle owner through00924480/009242f0; not merely a refcount initializer",
+      "destruction": "release/clear+1C, unlink/release roots from+0C, release name+10/+14, call00925540",
+      "do_not_claim": "A new outer-scene factory is not concrete until the weak-handle domain and base lifecycle are supplied."
+    },
+    "scene_resource": {
+      "constructor": "00b83c50",
+      "native_allocation_size": 60,
+      "vtable": "00d63168",
+      "vtable_zero": "00bd30e0",
+      "vtable_deleting_destructor": "00b83410",
+      "destroy_body": "00b82ed0",
+      "reference_count_initial": 1,
+      "name_offsets": [
+        8,
+        12
+      ],
+      "environment_slot_offset": 16,
+      "environment_constructor_path": "write null; allocate0x98; construct00b7c290; set00b825d0; decrement creator reference",
+      "environment_setter": "00b825d0",
+      "environment_setter_order": "remove this scene from existing environment backlink vector before pointer comparison; if changed publish/retain/release; append this scene to current environment backlink vector even after a same-pointer assignment",
+      "environment_backlinks_are_borrowed": true,
+      "registry_offset": 20,
+      "registry_constructor": "00b83600",
+      "registry_sentinel_offset": 28,
+      "registry_count_offset": 32,
+      "registry_bucket_vector_offsets": [
+        40,
+        44,
+        48
+      ],
+      "registry_mask_and_active_buckets_offsets": [
+        52,
+        56
+      ],
+      "registry_initial_state": "self-linked12-byte sentinel, zero entries,9 iterator pairs of8 bytes initialized to the same(list owner,sentinel), mask1, active buckets1",
+      "sentinel_factory": "00b82390",
+      "sentinel_written_offsets": [
+        0,
+        4
+      ],
+      "sentinel_untouched_payload_offset": 8,
+      "empty_list_continuation": "first==sentinel triggers00BF6713 in the prefix. The handler can return, after which sentinel+8 is read. Constructor does not initialize that payload; do not replace it with host head_.key{} or null.",
+      "registry_ownership": "registry owns nodes and bucket storage, borrows light pointers; reuse the existing SceneNodeRegistry order and identities for live entries",
+      "destruction": "release/clear environment; free bucket vector and clear its three words; clear/free all list nodes and sentinel without releasing borrowed light pointers; release name; root base destructor"
+    },
+    "ambient_environment": {
+      "native_type_name": "cAmbientLight",
+      "type_evidence": "00CD8010 writes descriptor name00D62F04 and token01090110; vtableD62F3C+8 points00B7AA00 which returns that token",
+      "constructor": "00b7c290",
+      "native_allocation_size": 152,
+      "vtable": "00d62f3c",
+      "vtable_zero": "00bd30e0",
+      "vtable_deleting_destructor": "00b7c7e0",
+      "destroy_body": "00b7c450",
+      "initialized": {
+        "04": "reference count1",
+        "08_10": "empty scene-backlink vector pointer/count/capacity",
+        "14": "3f800000 (1.0), purpose not renamed here",
+        "18_27": [
+          "00000000",
+          "00000000",
+          "00000000",
+          "3f800000"
+        ],
+        "38_97": "six float4 faces, each00000000,00000000,00000000,3f800000"
+      },
+      "untouched": [
+        "28_37 mode3 ambient"
+      ],
+      "destruction": "resize backlink vector to0 and free allocation; installD5C104 then00BD30F0; scalar flags bit0 controls CRT owner free",
+      "setters": {
+        "ambient": "00b7af20",
+        "mode3": "00b7af40",
+        "cube_face": "00b7af60"
+      }
+    },
+    "directional_light": {
+      "native_type_name": "cDirectionalLight",
+      "constructor": "00b7c6b0",
+      "base_constructor": "00b7c4c0",
+      "node_base_constructor": "00b6f5a0",
+      "vtable": "00d62fb0",
+      "base_vtable": "00d62f58",
+      "vtable_zero": "00bd30e0",
+      "vtable_deleting_destructor": "00b7c820",
+      "destroy_body": "00b7c5b0",
+      "constructor_only_subtype_write": "vtableD62FB0 after base constructor; no directional-vector initialization",
+      "actual_virtual_50": "00b7c020",
+      "actual_virtual_54": "00b7bd60",
+      "actual_virtual_54_behavior": "erase-first/swap-last retained scene;00B83EC0 unregister; release scene; optional recursive child virtual+54; no Ghidra function at inspected entry",
+      "actual_virtual_50_behavior": "append distinct scene to+178/+17C/+180; invoke00B83D50; retain scene; optionally recurse child virtual+50; does not use node+170 scene assignment",
+      "initialized_by_light_base": {
+        "174": "null shadow owner",
+        "178_183": "empty retained-scene vector pointer/count/capacity",
+        "184_193": [
+          "3f800000",
+          "3f800000",
+          "3f800000",
+          "3f800000"
+        ],
+        "1a4_1b3": [
+          "3f800000",
+          "3f800000",
+          "3f800000",
+          "3f800000"
+        ],
+        "1c4_1d3": [
+          "00000000",
+          "00000000",
+          "00000000",
+          "3f800000"
+        ],
+        "1d4": "42800000 (64.0)",
+        "1d8": "3f800000 (1.0)"
+      },
+      "untouched_by_full_constructor_chain": [
+        "194_1a3 effective specular",
+        "1b4_1c3 mode3 diffuse",
+        "1dc_1df specular scale",
+        "1e0_1eb direction"
+      ],
+      "node_base_boundary": "00B6F5A0 writes only through+170; its three64-byte matrix destinations are+B0,+F0,+60, so it does not initialize the listed derived fields",
+      "allocation": {
+        "entry": "00b7bd40",
+        "current_incorrect_name": "CG_static_dtor_stub_00b7bd40",
+        "actual_entry_behavior": "MOV ECX,01090154; JMP00B7BAC0",
+        "pool_owner": "01090154",
+        "pool_constructor": "00b7b940",
+        "pool_static_initializer": "00cd8080",
+        "pool_static_destructor_entry": "00ce0eb0",
+        "pool_destroy": "00b7b230",
+        "allocate": "00b7bac0",
+        "return_block": "00b7b2f0",
+        "slab_constructor": "00b7ac90",
+        "slab_bytes": 15940,
+        "slot_bytes": 496,
+        "slots_per_slab": 32,
+        "slot_allocator_index_offset": 492,
+        "preimage": "slab constructor writes only each slot+1EC slab index and slab free-index metadata; object bodies retain malloc or prior-use bytes",
+        "delete_behavior": "flags bit0 returns slot to the same pool; no CRT free of the directional object"
+      },
+      "destruction": "walk retained scenes from back, unregister this light then release scene reference; release/clear shadow; free scene vector; call00B6F440 node destructor; optional same-pool return"
+    }
+  },
+  "later_configuration": {
+    "address": "004bacd0",
+    "native_abi": "ECX ambient owner, EDX directional light, stack optional configuration owner; RET4",
+    "null_configuration": "lazy fallback ambient/cube/mode3 and mode3 diffuse(.5,.5,.5,1); base diffuse(1,1,1,1) copied/scaled via004B62E0; direction copied from liveF8758C/F87590/F87594; base specular(0,0,0,1)",
+    "null_configuration_does_not_write": [
+      "effective specular+194..1A3",
+      "specular scale+1DC"
+    ],
+    "null_configuration_caveat": "fallback globals have guarded one-time initialization; subsequent calls reuse their current words rather than always rewriting constants",
+    "nonnull_configuration": "reads fieldsF48..1008, writes mode3 colors and direction, then calls00B7AF90 and00B7B010 to compute effective diffuse and specular",
+    "dependencies": [
+      "004b4d80 direction-from-angles helper",
+      "004b62e0 base diffuse setter/scaler",
+      "00b7af20",
+      "00b7af40",
+      "00b7af60",
+      "00b7af90",
+      "00b7b010"
+    ],
+    "numeric_boundary": "x87 multiply/spill sequences and mutable globalF88A0C are significant; do not replace with arbitrary zero defaults or generic float math"
+  },
+  "recommended_next_packet": {
+    "id": "system_ambient_and_scene_resource_owners",
+    "output_files": [
+      "include/bsp/system_lighting_owners.hpp",
+      "src/system_lighting_owners.cpp",
+      "docs/SYSTEM_LIGHTING_OWNERS.md",
+      "reports/system_lighting_owners_audit.json"
+    ],
+    "primary_addresses": [
+      "00b7c290",
+      "00b7c450",
+      "00b7c7e0",
+      "00b83c50",
+      "00b825d0",
+      "00b82ed0",
+      "00b83410",
+      "00b723f0"
+    ],
+    "bounded_helper_addresses": [
+      "00b7b390",
+      "00b7b620",
+      "00b7bc70",
+      "00b7bd50",
+      "00b7bf90",
+      "00b83600",
+      "00b82390",
+      "00b83220",
+      "00b81b90",
+      "00b82570",
+      "00b829d0"
+    ],
+    "existing_reuse": [
+      "NativeString and sized string pool",
+      "shared raw allocation/free boundary",
+      "SceneResource and SceneNodeRegistry existing unique linear-hash membership/order",
+      "00BD30E0/00BD30F0 refcounted dispatch/base semantics"
+    ],
+    "integration_requirement": "Extend or bind the same SceneResource/SceneNodeRegistry objects used by SceneAttachmentRuntime. Expose stable sentinel and first-light views, retaining native sentinel payload preimage. Do not build a second independently ordered light list.",
+    "ready_boundary": "Concrete ambient and scene-resource ownership, plus retain/release assignment to an already supplied actual outer owner slot. It is not yet a complete cold outer-scene or directional-light factory.",
+    "preserve_preimages": [
+      "ambient+28..37",
+      "sentinel+8",
+      "unwritten allocator bytes"
+    ],
+    "independent_followups": [
+      {
+        "id": "scene_outer_weak_handle_base",
+        "primary_addresses": [
+          "00b724e0",
+          "00b72430",
+          "00b72580",
+          "00925490",
+          "00925540"
+        ],
+        "named_but_incomplete_dependencies": [
+          "00924480 weak-handle domain getter/lock",
+          "009242f0 weak-handle pool allocator",
+          "actual weak-handle virtual destruction",
+          "00B6DFA0 node-root unlink/release"
+        ]
+      },
+      {
+        "id": "directional_light_native_owner",
+        "primary_addresses": [
+          "00b7c4c0",
+          "00b7c6b0",
+          "00b7c5b0",
+          "00b7c820",
+          "00b7bd40"
+        ],
+        "named_but_incomplete_dependencies": [
+          "00B6F5A0 full node constructor and00B6F440 actual node destructor",
+          "01090154 pool lifecycle00B7B940/00B7BAC0/00B7B2F0/00B7AC90/00B7B230",
+          "runtime type boot and actual directional virtual+50 attachment",
+          "actual shadow virtual destruction when+174 is nonnull"
+        ]
+      },
+      {
+        "id": "lighting_configuration_apply",
+        "primary_addresses": [
+          "004bacd0",
+          "004b62e0",
+          "00b7af20",
+          "00b7af40",
+          "00b7af60",
+          "00b7af90",
+          "00b7b010"
+        ],
+        "named_but_incomplete_dependencies": [
+          "004B4D80 direction helper",
+          "actual configuration owner fieldsF48..1008",
+          "live direction and lazy fallback global slots",
+          "exact x87 argument/spill behavior"
+        ]
+      }
+    ],
+    "explicitly_outside": [
+      "fog00B84E50 and camera+184 setter",
+      "material effect-plane fragment",
+      "whole world construction",
+      "full shadow map generation or texture classes",
+      "replacing actual texture virtual+3C/+40 with nominal metadata"
+    ]
+  },
+  "function_evidence": [
+    {
+      "address": "00b7bd60",
+      "end_exclusive": "00b7bdea",
+      "ghidra_function_exists": false,
+      "role": "actual light virtual+54 detach dependency",
+      "abi": "ECX light; stack scene pointer and recurse byte in DWORD; RET8",
+      "length": 138,
+      "live_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+      "disk_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b81b90",
+      "end_exclusive": "00b81be5",
+      "role": "iterator-pair allocation with overflow check",
+      "abi": "ECX unsigned pair count; EAX allocation; RET0; throws bad_alloc on overflow",
+      "length": 85,
+      "live_sha256": "432c3549227a354be518c01a9b30e2035df562f9b6ce0187fcecff46acf82f17",
+      "disk_sha256": "432c3549227a354be518c01a9b30e2035df562f9b6ce0187fcecff46acf82f17",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b82570",
+      "end_exclusive": "00b8259c",
+      "role": "iterator-pair fill",
+      "abi": "ECX destination; EDX count; first stack word source pair pointer, three other stack words ignored; RET16",
+      "length": 44,
+      "live_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "disk_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c020",
+      "end_exclusive": "00b7c0bf",
+      "role": "actual light virtual+50 attachment dependency",
+      "abi": "ECX light; stack scene pointer and recurse byte in DWORD; RET8",
+      "length": 159,
+      "live_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "disk_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c290",
+      "end_exclusive": "00b7c419",
+      "role": "ambient constructor",
+      "abi": "ECX allocation; EAX same owner; RET0",
+      "length": 393,
+      "live_sha256": "760245ab8ef27c6289a59605c81505c40f9b39a6cc31328a9b1e665ad73d6020",
+      "disk_sha256": "760245ab8ef27c6289a59605c81505c40f9b39a6cc31328a9b1e665ad73d6020",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c450",
+      "end_exclusive": "00b7c4b3",
+      "ghidra_end_exclusive": "00b7c48a",
+      "role": "ambient destructor including post-free continuation",
+      "abi": "ECX owner; RET0",
+      "length": 99,
+      "live_sha256": "26ff80c903ed4292f4e2e6c5b4a023e7d11e4aa7ac07503236389b48834f4883",
+      "disk_sha256": "26ff80c903ed4292f4e2e6c5b4a023e7d11e4aa7ac07503236389b48834f4883",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c7e0",
+      "end_exclusive": "00b7c7fe",
+      "role": "ambient scalar deleting destructor",
+      "abi": "ECX owner; stack flags; EAX original owner; RET4",
+      "length": 30,
+      "live_sha256": "9830cb764a01ecbef9a68adad7da99271d01295db7a1105baf5c495b3637ddf5",
+      "disk_sha256": "9830cb764a01ecbef9a68adad7da99271d01295db7a1105baf5c495b3637ddf5",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b83c50",
+      "end_exclusive": "00b83d4d",
+      "role": "scene-resource constructor",
+      "abi": "ECX owner; stack NativeString reference; EAX owner; RET4",
+      "length": 253,
+      "live_sha256": "4661fc466acf4810bf15a5858393ae1dd1936118287bcd12c0958fbce554a68a",
+      "disk_sha256": "4661fc466acf4810bf15a5858393ae1dd1936118287bcd12c0958fbce554a68a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b825d0",
+      "end_exclusive": "00b82629",
+      "role": "scene-resource environment assignment",
+      "abi": "ECX resource; stack ambient pointer; RET4",
+      "length": 89,
+      "live_sha256": "9463f139285d5f263b98792b17382a7e567c6ee7273ff6ca13757849d4a56227",
+      "disk_sha256": "9463f139285d5f263b98792b17382a7e567c6ee7273ff6ca13757849d4a56227",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b82ed0",
+      "end_exclusive": "00b82f82",
+      "role": "scene-resource destructor",
+      "abi": "ECX resource; RET0",
+      "length": 178,
+      "live_sha256": "82a61a76bd2f29b21eb7a5d47f2da1eaa036fa37d7bfea3ee9d7ecbb6e8a133a",
+      "disk_sha256": "82a61a76bd2f29b21eb7a5d47f2da1eaa036fa37d7bfea3ee9d7ecbb6e8a133a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b83410",
+      "end_exclusive": "00b8342e",
+      "role": "scene-resource scalar deleting destructor",
+      "abi": "ECX resource; stack flags; EAX original owner; RET4",
+      "length": 30,
+      "live_sha256": "336583832fedbe4e9393003302c30f8a9e4e1a1d907b0c7eca60fe1a9080f3a7",
+      "disk_sha256": "336583832fedbe4e9393003302c30f8a9e4e1a1d907b0c7eca60fe1a9080f3a7",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b723f0",
+      "end_exclusive": "00b7242b",
+      "role": "outer lighting-owner assignment",
+      "abi": "ECX outer scene; stack resource pointer; RET4",
+      "length": 59,
+      "live_sha256": "5249a5da5eedbe3d779ac27354a588a94d926ab061cc14a88ca626a2ecb9af2b",
+      "disk_sha256": "5249a5da5eedbe3d779ac27354a588a94d926ab061cc14a88ca626a2ecb9af2b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b724e0",
+      "end_exclusive": "00b72576",
+      "role": "outer constructor dependency",
+      "abi": "ECX owner; stack NativeString reference; EAX owner; RET4",
+      "length": 150,
+      "live_sha256": "33b5c181c44dc6490fe80b44a02003bfeffe05a7d7684b9b71007e090e912427",
+      "disk_sha256": "33b5c181c44dc6490fe80b44a02003bfeffe05a7d7684b9b71007e090e912427",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b72430",
+      "end_exclusive": "00b724d6",
+      "role": "outer destructor dependency",
+      "abi": "ECX owner; RET0",
+      "length": 166,
+      "live_sha256": "aac37afaa374e093fd9af0d2e6e86af80a426c106d856fcab6ec244ba862c657",
+      "disk_sha256": "aac37afaa374e093fd9af0d2e6e86af80a426c106d856fcab6ec244ba862c657",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b72580",
+      "end_exclusive": "00b7259e",
+      "role": "outer scalar destructor dependency",
+      "abi": "ECX owner; stack flags; EAX original owner; RET4",
+      "length": 30,
+      "live_sha256": "1510921a2036e5137f6d1244f6ad3917495670385637c489854378fe8e10b462",
+      "disk_sha256": "1510921a2036e5137f6d1244f6ad3917495670385637c489854378fe8e10b462",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b83600",
+      "end_exclusive": "00b83678",
+      "role": "registry constructor",
+      "abi": "ECX registry; two stack allocator-byte pointers, second unused; EAX registry; RET8",
+      "length": 120,
+      "live_sha256": "f4efd75bf52ae1a92a78027ee9625496e7fde3dd3b4317f0ddc2c21fdcec2086",
+      "disk_sha256": "f4efd75bf52ae1a92a78027ee9625496e7fde3dd3b4317f0ddc2c21fdcec2086",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b82390",
+      "end_exclusive": "00b823aa",
+      "role": "sentinel allocation",
+      "abi": "no consumed inputs; EAX12-byte allocation; RET0",
+      "length": 26,
+      "live_sha256": "7883b91a95e6269894058ac80c1e9d433b0ea6c6e5f555b2d3500d9a6c6aee3b",
+      "disk_sha256": "7883b91a95e6269894058ac80c1e9d433b0ea6c6e5f555b2d3500d9a6c6aee3b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b83220",
+      "end_exclusive": "00b832b6",
+      "role": "iterator-pair vector constructor",
+      "abi": "ECX vector; stack count and iterator-pair source; RET8; fill helper receives ECX destination/EDX count and cleans16 stack bytes",
+      "length": 150,
+      "live_sha256": "64df24a8b86ed4b2acfc7551554c837341828a3ff6947c76e2b4d26cd30222af",
+      "disk_sha256": "64df24a8b86ed4b2acfc7551554c837341828a3ff6947c76e2b4d26cd30222af",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b829d0",
+      "end_exclusive": "00b82a18",
+      "ghidra_end_exclusive": "00b82a0c",
+      "role": "list destruction including post-free loop and clear",
+      "abi": "ECX embedded list; RET0",
+      "length": 72,
+      "live_sha256": "72925adbe60b5350e4e0eb18145c24cbc96dd4fea0399f5b10b1094bb57fbd93",
+      "disk_sha256": "72925adbe60b5350e4e0eb18145c24cbc96dd4fea0399f5b10b1094bb57fbd93",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b390",
+      "end_exclusive": "00b7b3ef",
+      "role": "backlink pointer-array reserve",
+      "abi": "ECX raw array; stack signed minimum capacity; RET4",
+      "length": 95,
+      "live_sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+      "disk_sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b620",
+      "end_exclusive": "00b7b687",
+      "role": "backlink erase-first/swap-last",
+      "abi": "ECX raw array; stack pointer-to-key; AL found; RET4",
+      "length": 103,
+      "live_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "disk_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7bc70",
+      "end_exclusive": "00b7bcc0",
+      "role": "pointer-array resize",
+      "abi": "ECX raw array; stack signed count; RET4",
+      "length": 80,
+      "live_sha256": "0913e64047831192604a6566eedf25024b09bc5b09abb6a7b8b4adfef2e2e500",
+      "disk_sha256": "0913e64047831192604a6566eedf25024b09bc5b09abb6a7b8b4adfef2e2e500",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7bd50",
+      "end_exclusive": "00b7bd60",
+      "role": "ambient backlink removal",
+      "abi": "ECX ambient; stack scene pointer; AL erase result retained; RET4",
+      "length": 16,
+      "live_sha256": "14a9ef1cd2d6b3f1a1d0d3503873886891a63200c9881b1cca356675c46ede77",
+      "disk_sha256": "14a9ef1cd2d6b3f1a1d0d3503873886891a63200c9881b1cca356675c46ede77",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7bf90",
+      "end_exclusive": "00b7bfca",
+      "role": "ambient backlink append",
+      "abi": "ECX ambient; stack borrowed scene pointer; RET4",
+      "length": 58,
+      "live_sha256": "f0c64755e57966f9999c0f6d639e86ea4c9bb32c630d58249a5edfdfc964beab",
+      "disk_sha256": "f0c64755e57966f9999c0f6d639e86ea4c9bb32c630d58249a5edfdfc964beab",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c4c0",
+      "end_exclusive": "00b7c576",
+      "role": "light base constructor",
+      "abi": "ECX owner; stack NativeString reference; EAX owner; RET4",
+      "length": 182,
+      "live_sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a",
+      "disk_sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c6b0",
+      "end_exclusive": "00b7c6c9",
+      "role": "directional constructor",
+      "abi": "ECX owner; stack NativeString reference; EAX owner; RET4",
+      "length": 25,
+      "live_sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0",
+      "disk_sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c5b0",
+      "end_exclusive": "00b7c6aa",
+      "ghidra_end_exclusive": "00b7c686",
+      "role": "light destructor including node-base continuation",
+      "abi": "ECX light; RET0",
+      "length": 250,
+      "live_sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+      "disk_sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7c820",
+      "end_exclusive": "00b7c846",
+      "role": "directional pooled deleting destructor",
+      "abi": "ECX owner; stack flags; EAX owner; RET4",
+      "length": 38,
+      "live_sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+      "disk_sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7bd40",
+      "end_exclusive": "00b7bd4a",
+      "role": "directional pool allocation entry, currently misnamed static destructor",
+      "abi": "no consumed inputs; tail jump with ECX01090154; EAX slot; RET0 downstream",
+      "length": 10,
+      "live_sha256": "bbf940b60cf4e1d5a8b8bd5d9376ea8ed89d75f0026bc8460458067352aceefe",
+      "disk_sha256": "bbf940b60cf4e1d5a8b8bd5d9376ea8ed89d75f0026bc8460458067352aceefe",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7bac0",
+      "end_exclusive": "00b7bbfc",
+      "role": "directional pool acquire",
+      "abi": "ECX pool; EAX0x1F0 slot; RET0",
+      "length": 316,
+      "live_sha256": "5d8dcba00c7e0a86dffa49c713defd47442b5d448685aff2e64960eb3aed43aa",
+      "disk_sha256": "5d8dcba00c7e0a86dffa49c713defd47442b5d448685aff2e64960eb3aed43aa",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b2f0",
+      "end_exclusive": "00b7b35c",
+      "role": "directional pool return",
+      "abi": "ECX pool; stack slot pointer; RET4",
+      "length": 108,
+      "live_sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "disk_sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7ac90",
+      "end_exclusive": "00b7acd3",
+      "role": "directional slab constructor",
+      "abi": "ECX slab; stack slab index; EAX slab; RET4",
+      "length": 67,
+      "live_sha256": "30eab734223d239ce1e431151f09e8d835d69da6163a0ac1d17e58e222127fbb",
+      "disk_sha256": "30eab734223d239ce1e431151f09e8d835d69da6163a0ac1d17e58e222127fbb",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b940",
+      "end_exclusive": "00b7ba13",
+      "role": "directional pool constructor dependency",
+      "abi": "ECX pool; EAX pool; RET0; includes allocator-list global and Win32 critical section",
+      "length": 211,
+      "live_sha256": "eee427476942bfe5586d59b5bb746de3291db7b13f70bc4df167ee4df47af6cb",
+      "disk_sha256": "eee427476942bfe5586d59b5bb746de3291db7b13f70bc4df167ee4df47af6cb",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b230",
+      "end_exclusive": "00b7b2ba",
+      "role": "directional pool destructor dependency",
+      "abi": "ECX pool; RET0; post-free branches need instruction review before implementation",
+      "length": 138,
+      "live_sha256": "96ac570a811c68853d20e8044d7f872c632b33356ebbff743276111b75761a4d",
+      "disk_sha256": "96ac570a811c68853d20e8044d7f872c632b33356ebbff743276111b75761a4d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b6f5a0",
+      "end_exclusive": "00b6f8ce",
+      "role": "named-but-incomplete node base constructor",
+      "abi": "ECX node; stack NativeString reference; EAX node; RET4",
+      "length": 814,
+      "live_sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "disk_sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00925490",
+      "end_exclusive": "0092553d",
+      "role": "named-but-incomplete weak-handle base constructor",
+      "abi": "ECX owner; EAX owner; RET0",
+      "length": 173,
+      "live_sha256": "9ea17813e7d0d771258a553efffc4c88933e3db5ec389639e2546cebfa399d43",
+      "disk_sha256": "9ea17813e7d0d771258a553efffc4c88933e3db5ec389639e2546cebfa399d43",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00925540",
+      "end_exclusive": "009255e6",
+      "role": "named-but-incomplete weak-handle base destructor",
+      "abi": "ECX owner; RET0",
+      "length": 166,
+      "live_sha256": "58459f67d0e7f13d81dade6797168b9fbb29446e980cf314cfcbb8d442782e21",
+      "disk_sha256": "58459f67d0e7f13d81dade6797168b9fbb29446e980cf314cfcbb8d442782e21",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004bacd0",
+      "end_exclusive": "004bb155",
+      "role": "later lighting configuration apply",
+      "abi": "ECX ambient; EDX directional; stack optional config; RET4",
+      "length": 1157,
+      "live_sha256": "e1a3c02845906ef9959947f7684ba1137ed3256b6600d1a9b8acf109fd64760a",
+      "disk_sha256": "e1a3c02845906ef9959947f7684ba1137ed3256b6600d1a9b8acf109fd64760a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004b62e0",
+      "end_exclusive": "004b6369",
+      "role": "diffuse base color store and scale",
+      "abi": "ECX light; stack float4 pointer; RET4",
+      "length": 137,
+      "live_sha256": "ee974dc03e08f036f8d9f35c5af7df5b89dd947b90f61e2d18281e96fa83979b",
+      "disk_sha256": "ee974dc03e08f036f8d9f35c5af7df5b89dd947b90f61e2d18281e96fa83979b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7af20",
+      "end_exclusive": "00b7af3e",
+      "role": "ambient setter",
+      "abi": "ECX ambient; stack float4 pointer; RET4",
+      "length": 30,
+      "live_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+      "disk_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7af40",
+      "end_exclusive": "00b7af5e",
+      "role": "mode3 ambient setter",
+      "abi": "ECX ambient; stack float4 pointer; RET4",
+      "length": 30,
+      "live_sha256": "75502b2addb208fbee66927128d2250d95a6e3c3deab84f2b9297424640b4e1e",
+      "disk_sha256": "75502b2addb208fbee66927128d2250d95a6e3c3deab84f2b9297424640b4e1e",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7af60",
+      "end_exclusive": "00b7af88",
+      "role": "cube-face setter",
+      "abi": "ECX ambient; stack float4 pointer and index; RET8",
+      "length": 40,
+      "live_sha256": "23c0eec7591a8cd90ec31087f5871f2d908d0cf37026e8eaac04f5a7c15ca5da",
+      "disk_sha256": "23c0eec7591a8cd90ec31087f5871f2d908d0cf37026e8eaac04f5a7c15ca5da",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7af90",
+      "end_exclusive": "00b7b003",
+      "role": "effective diffuse scale update",
+      "abi": "ECX light; stack float scale; RET4; exact x87 spills pending",
+      "length": 115,
+      "live_sha256": "9e2f20c00353a702d872fe9dd30cd4b587bba2f1bf477c1999b170084e6edc25",
+      "disk_sha256": "9e2f20c00353a702d872fe9dd30cd4b587bba2f1bf477c1999b170084e6edc25",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b7b010",
+      "end_exclusive": "00b7b083",
+      "role": "effective specular scale update",
+      "abi": "ECX light; stack float scale; RET4; exact x87 spills pending",
+      "length": 115,
+      "live_sha256": "681fab4b038b0ff1a06113c4dd3ac70c3a32ee67592466dc6e636517427f6178",
+      "disk_sha256": "681fab4b038b0ff1a06113c4dd3ac70c3a32ee67592466dc6e636517427f6178",
+      "live_matches_disk": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d62f3c",
+      "end_exclusive": "00d62f58",
+      "role": "ambient vtable",
+      "length": 28,
+      "live_sha256": "440d1c5d3c18f16b1ca3053df600defcd62afae47deb9a5e90ac5e261f6b92f0",
+      "disk_sha256": "440d1c5d3c18f16b1ca3053df600defcd62afae47deb9a5e90ac5e261f6b92f0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62f58",
+      "end_exclusive": "00d62fb0",
+      "role": "light base vtable",
+      "length": 88,
+      "live_sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+      "disk_sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62fb0",
+      "end_exclusive": "00d63008",
+      "role": "directional vtable",
+      "length": 88,
+      "live_sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "disk_sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d63168",
+      "end_exclusive": "00d63170",
+      "role": "scene-resource vtable",
+      "length": 8,
+      "live_sha256": "bbf868c50c81705355ed275450894c1d4ee613489ed14e2b65f1250dbcf95ace",
+      "disk_sha256": "bbf868c50c81705355ed275450894c1d4ee613489ed14e2b65f1250dbcf95ace",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62d48",
+      "end_exclusive": "00d62d54",
+      "role": "outer-scene vtable",
+      "length": 12,
+      "live_sha256": "59cc0721ab0bd870079b80edf675931ceaeb1e95c93ae862b7be6d94ea4af970",
+      "disk_sha256": "59cc0721ab0bd870079b80edf675931ceaeb1e95c93ae862b7be6d94ea4af970",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62f04",
+      "end_exclusive": "00d62f14",
+      "role": "cAmbientLight name",
+      "length": 16,
+      "live_sha256": "a16e7a7d41b0b84310ca806d3625f7843fe64310845a9d83fa07620c04c171e4",
+      "disk_sha256": "a16e7a7d41b0b84310ca806d3625f7843fe64310845a9d83fa07620c04c171e4",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cd8010",
+      "end_exclusive": "00cd8053",
+      "role": "ambient static type initialization",
+      "length": 67,
+      "live_sha256": "d7690e451f673f53afc68e34c166ff37f61db7421be73f7bfe5c8cbfdc5e3bd2",
+      "disk_sha256": "d7690e451f673f53afc68e34c166ff37f61db7421be73f7bfe5c8cbfdc5e3bd2",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cd8080",
+      "end_exclusive": "00cd8096",
+      "role": "directional pool static initialization",
+      "length": 22,
+      "live_sha256": "881f692c688407f960736bddab4dac72580e1bea1b5f830c742537d694c2d6f9",
+      "disk_sha256": "881f692c688407f960736bddab4dac72580e1bea1b5f830c742537d694c2d6f9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce0eb0",
+      "end_exclusive": "00ce0eba",
+      "role": "directional pool static destructor thunk",
+      "length": 10,
+      "live_sha256": "86e55e32bbe10cadb46859ee747df07977704385f51fcd8a36b08951e64d8deb",
+      "disk_sha256": "86e55e32bbe10cadb46859ee747df07977704385f51fcd8a36b08951e64d8deb",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "role": "immutable1.0 word",
+      "length": 4,
+      "live_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce7820",
+      "end_exclusive": "00ce7824",
+      "role": "immutable64.0 word",
+      "length": 4,
+      "live_sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537",
+      "disk_sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce3800",
+      "end_exclusive": "00ce3804",
+      "role": "immutable0.5 word",
+      "length": 4,
+      "live_sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "disk_sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "live_matches_disk": true
+    }
+  ],
+  "evidence_limits": [
+    "No new C++ reconstruction, test, native differential execution, rendering or game validation was performed in this read-only packet.",
+    "Live Ghidra byte hashes establish parity with the current disk spans, not running-game field values.",
+    "Current Ghidra prototypes frequently say undefined(void); the ABI strings above are instruction/caller interpretations and descriptive names remain provisional.",
+    "Several free wrappers are wrongly marked no-return, hiding essential continuation stores, loops and base destructors; corrected full byte spans are recorded separately where needed.",
+    "General texture width/height and shadow virtual+8 remain separate owner dependencies."
+  ],
+  "byte_audit": {
+    "spans": 56,
+    "all_live_match_disk": true,
+    "total_bytes": 7096,
+    "method": "bsp.py ghidra bytes per explicit extent; offline PE section mapping and SHA256"
+  }
+}

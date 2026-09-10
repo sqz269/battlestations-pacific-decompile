@@ -4,8 +4,11 @@
 state/draw sequence at `00B44750` / `00B43410` around explicit required native
 operations. It derives `RenderBatchMaterialDispatch`, so the recovered batch
 executor can call it directly. This is a bounded orchestration fragment: the
-large `00B42350` constant builder, effect clip-plane construction, dynamic model
-operation, callback owner and diagnostic registry are still required inputs.
+effect clip-plane construction, dynamic model operation, callback owner and
+diagnostic registry are still required inputs. The ordered `00B42350` constant
+builder is now reconstructed in [its integration](MATERIAL_CONSTANT_BUILDER.md).
+The required plane operation can use the recovered
+[effect-plane helper](MATERIAL_EFFECT_PLANE.md) with actual owner mappings.
 It is not a runnable complete native material pipeline or a binary replacement.
 
 ## Evidence and original ABI
@@ -90,7 +93,7 @@ index stream with the first stream's signed base-vertex bit pattern, and choose
 indexed drawing only for a nonnull index stream and nonzero section+58.
 Then the apply body performs, in order:
 
-1. Bind render block and sampler block; set `D3DRS_ALPHAREF` only when signed
+1. Bind render block and sampler block; set `D3DRS_STENCILREF` only when signed
    material+104 is nonnegative; bind the retained logical VS/PS wrappers.
 2. Process texture references in source order. Pixel usage tests bit
    `(reference ordinal & 31)`; unused pixel references still advance the pixel

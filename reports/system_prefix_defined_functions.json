@@ -1,0 +1,104 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bee070",
+    "end_address": "00bee074"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bee070",
+    "end_address": "00bee073",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bee070",
+    "disassemble_first": false,
+    "name": "BSP_FrameClock_GetInterval"
+   },
+   "result": {
+    "success": true,
+    "address": "00bee070",
+    "function_name": "BSP_FrameClock_GetInterval",
+    "entry_point": "00bee070",
+    "body_size": 4,
+    "message": "Function created successfully at 00bee070",
+    "warnings": [
+     "Function name 'BSP_FrameClock_GetInterval' \u2014 main part 'FrameClock_GetInterval' is not PascalCase. Expected: FrameclockGetinterval",
+     "Function name 'BSP_FrameClock_GetInterval' \u2014 main part 'FrameClock_GetInterval' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrameClock_GetInterval' does not start with a recognized verb. First word 'Frame' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bee070",
+   "end": "00bee074",
+   "name": "BSP_FrameClock_GetInterval",
+   "after": "Function: BSP_FrameClock_GetInterval at 00bee070\nSignature: undefined BSP_FrameClock_GetInterval(void)\nEntry: 00bee070\nBody: 00bee070 - 00bee073"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004de360",
+    "end_address": "004de368"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004de360",
+    "end_address": "004de367",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004de360",
+    "disassemble_first": false,
+    "name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "004de360",
+    "function_name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk",
+    "entry_point": "004de360",
+    "body_size": 8,
+    "message": "Function created successfully at 004de360",
+    "warnings": [
+     "Function name 'BSP_ParticleClock_SecondaryDeletingDestructorThunk' \u2014 main part 'ParticleClock_SecondaryDeletingDestructorThunk' is not PascalCase. Expected: ParticleclockSecondarydeletingdestructorthunk",
+     "Function name 'BSP_ParticleClock_SecondaryDeletingDestructorThunk' \u2014 main part 'ParticleClock_SecondaryDeletingDestructorThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ParticleClock_SecondaryDeletingDestructorThunk' does not start with a recognized verb. First word 'Particle' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004de360",
+   "end": "004de368",
+   "name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk",
+   "after": "Function: BSP_ParticleClock_SecondaryDeletingDestructorThunk at 004de360\nSignature: undefined BSP_ParticleClock_SecondaryDeletingDestructorThunk(void)\nEntry: 004de360\nBody: 004de360 - 004de367"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -95,6 +95,7 @@ name suggests depth scaling, but the field's higher-level producer is untraced.
 The function never initializes these components in any path:
 
 - c4..5 in full: nominal cCloudShadowMat records, with no identified writer.
+- c6.w, c31.w, c32.w, c35.w and c36.w from the camera/axes/fog stages.
 - c42.yzw, c52.w, c69.w, c72.zw, c73.w and c75.zw.
 
 Additional conditional unwritten spans are:
@@ -113,9 +114,11 @@ There is no memset, zeroing loop or whole-block constructor in this body.
 A typed reconstruction should expose a selective write contract over supplied
 storage and make deterministic defaults an explicit caller choice. Emulating
 arbitrary stale stack contents would not give a useful or stable interface.
-The immediate bounded next implementation is the lighting/shadow field-packing
-fragment with projected optional owners and separately supplied dimensions.
-It does not need to invent runtime ownership, list traversal or shader effects.
+The complete ordered typed prefix now implements this selective write contract;
+see `SYSTEM_CONSTANT_BUILDER.md` and `SYSTEM_LIGHTING_CONSTANTS.md`. Its supplied
+owner bindings and installed-asset probe do not establish native scene/world
+construction or gameplay. The empty-list handler may return; the exact retained
+sentinel and subsequent field reads are covered by `SYSTEM_EMPTY_LIGHT_HANDLER.md`.
 
 ## Byte evidence
 

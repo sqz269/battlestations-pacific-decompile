@@ -29,11 +29,20 @@
   },
   "ownership": {
     "record_stride": 44,
-    "record_string": [0, 4],
-    "record_list_sentinel_count": [12, 16],
+    "record_string": [
+      0,
+      4
+    ],
+    "record_list_sentinel_count": [
+      12,
+      16
+    ],
     "record_sink": 40,
     "node_stride": 16,
-    "node_string": [8, 12],
+    "node_string": [
+      8,
+      12
+    ],
     "release_order": "backmost sink reference; reload base/count; backmost record linked strings/nodes, sentinel then record string; decrement count; repeat; array free; unconditional global clear; base identity; optional owner free",
     "sink_zero_reference_dispatch": "InterlockedDecrement native+4, virtual+0 only when zero, no stack flags",
     "manager_unregister": false,
@@ -43,21 +52,93 @@
     "base_identity_after_destroy": "00ce3818"
   },
   "raw_continuation_evidence": [
-    {"address": "004de355", "bytes": "83c4048bc65ec20400", "meaning": "free returns, restore original owner in EAX, RET4"},
-    {"address": "004de360", "bytes": "83e904e9d8ffffff", "meaning": "secondary this adjustment, tail jump primary scalar destructor"},
-    {"address": "004d0625", "bytes": "83c4043b5f048bf375d15b", "meaning": "continue linked list walk after freeing current node"},
-    {"address": "004d45d9", "bytes": "c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8c056f4ff8bc8e809cf6f008b4c240c5f5e64890d0000000083c410c3", "meaning": "clear sentinel pointer then sized-release record string; restore exception chain and return"}
+    {
+      "address": "004de355",
+      "bytes": "83c4048bc65ec20400",
+      "meaning": "free returns, restore original owner in EAX, RET4"
+    },
+    {
+      "address": "004de360",
+      "bytes": "83e904e9d8ffffff",
+      "meaning": "secondary this adjustment, tail jump primary scalar destructor"
+    },
+    {
+      "address": "004d0625",
+      "bytes": "83c4043b5f048bf375d15b",
+      "meaning": "continue linked list walk after freeing current node"
+    },
+    {
+      "address": "004d45d9",
+      "bytes": "c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8c056f4ff8bc8e809cf6f008b4c240c5f5e64890d0000000083c410c3",
+      "meaning": "clear sentinel pointer then sized-release record string; restore exception chain and return"
+    }
   ],
   "proposed_annotations_only": [
-    {"address": "004de340", "old_name": "CG_scalar_deleting_dtor_004de340", "old_plate_comment": null, "proposed_name": "BSP_ParticleClock_ScalarDeletingDestructor", "abi": "ECX complete clock; stack flags; RET4; original owner EAX even after free"},
-    {"address": "004de360", "old_name": null, "old_plate_comment": null, "function_existed": false, "proposed_name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk", "abi": "ECX secondary subobject; subtract4; tail jump004de340"},
-    {"address": "00b1b680", "old_name": "FUN_00b1b680", "old_plate_comment": null, "proposed_name": "BSP_ParticleClock_Destroy", "abi": "ECX clock; RET0"},
-    {"address": "004de290", "old_name": "FUN_004de290", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordContainer_Destroy", "abi": "ECX secondary container; RET0"},
-    {"address": "004dda40", "old_name": "FUN_004dda40", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordContainer_ReleaseAll", "abi": "ECX secondary container; RET0"},
-    {"address": "004dc410", "old_name": "FUN_004dc410", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordArray_Resize", "abi": "ECX raw array; stack signed count; RET4", "implemented_scope": "zero path after drain only"},
-    {"address": "004d45a0", "old_name": "FUN_004d45a0", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecord_Destroy", "abi": "ECX record; RET0"},
-    {"address": "004ddb40", "old_name": "FUN_004ddb40", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordContainer_ReleaseSink", "abi": "ECX container unused; stack sink; RET4; zero virtual takes no stack args"},
-    {"address": "004d05e0", "old_name": "FUN_004d05e0", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordStringList_Clear", "abi": "ECX embedded list; RET0"}
+    {
+      "address": "004de340",
+      "old_name": "CG_scalar_deleting_dtor_004de340",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleClock_ScalarDeletingDestructor",
+      "abi": "ECX complete clock; stack flags; RET4; original owner EAX even after free"
+    },
+    {
+      "address": "004de360",
+      "old_name": null,
+      "old_plate_comment": null,
+      "function_existed": false,
+      "proposed_name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk",
+      "abi": "ECX secondary subobject; subtract4; tail jump004de340"
+    },
+    {
+      "address": "00b1b680",
+      "old_name": "FUN_00b1b680",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleClock_Destroy",
+      "abi": "ECX clock; RET0"
+    },
+    {
+      "address": "004de290",
+      "old_name": "FUN_004de290",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleRecordContainer_Destroy",
+      "abi": "ECX secondary container; RET0"
+    },
+    {
+      "address": "004dda40",
+      "old_name": "FUN_004dda40",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleRecordContainer_ReleaseAll",
+      "abi": "ECX secondary container; RET0"
+    },
+    {
+      "address": "004dc410",
+      "old_name": "FUN_004dc410",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleRecordArray_Resize",
+      "abi": "ECX raw array; stack signed count; RET4",
+      "implemented_scope": "zero path after drain only"
+    },
+    {
+      "address": "004d45a0",
+      "old_name": "FUN_004d45a0",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleRecord_Destroy",
+      "abi": "ECX record; RET0"
+    },
+    {
+      "address": "004ddb40",
+      "old_name": "FUN_004ddb40",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleRecordContainer_ReleaseSink",
+      "abi": "ECX container unused; stack sink; RET4; zero virtual takes no stack args"
+    },
+    {
+      "address": "004d05e0",
+      "old_name": "FUN_004d05e0",
+      "old_plate_comment": null,
+      "proposed_name": "BSP_ParticleRecordStringList_Clear",
+      "abi": "ECX embedded list; RET0"
+    }
   ],
   "validation": {
     "full_build_command": "scripts/build.ps1",
@@ -69,7 +150,16 @@
     "shared_singleton_commit": "e66cba056a423dadfa340a4eed12ba9dcbb0c31a",
     "recycled_signaling_nan_preimage": "7f800123 verified unchanged on first passing fixture run with allocator_reused=1",
     "final_run": "allocator_reused=1; raw_preimage=7f800123; getter_preimage=003b006e; references=0; zero_calls=1; pooled_returns=6; shutdown_dispatches=1",
-    "checks": ["raw and lazy shader preimages", "secondary flags2 no-free path", "unconditional singleton slot clear", "no invented unregister", "owned record time updates", "back-to-front shared reference release", "all linked nodes and record strings returned", "real domain shutdown dispatch"]
+    "checks": [
+      "raw and lazy shader preimages",
+      "secondary flags2 no-free path",
+      "unconditional singleton slot clear",
+      "no invented unregister",
+      "owned record time updates",
+      "back-to-front shared reference release",
+      "all linked nodes and record strings returned",
+      "real domain shutdown dispatch"
+    ]
   },
   "uncertainty": [
     "Actual particle-system sink virtual+0 owner bodies are not reconstructed; nonempty owners must supply their real implementation.",
@@ -77,5 +167,100 @@
     "Array growth and general004dc410 resize behavior are outside this destructor packet.",
     "Host projections are not original vtable or object ABI layouts; exact0x2c and0x10 assertions apply to records and nodes.",
     "Raw allocation contents are allocator observations, not a native initialized default or deterministic shader-time value."
-  ]
+  ],
+  "primary_integration": {
+    "normal_flow_range_evidence": [
+      {
+        "address": "004de340",
+        "end_exclusive": "004de35e",
+        "length": 30,
+        "sha256": "a436f22b03ad7062c5b18fb2d81c6573184fa30c2b6ad2a4ec134ed0eb4a607a",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004de360",
+        "end_exclusive": "004de368",
+        "length": 8,
+        "sha256": "ce521d978bd6fe4b54d56addf5f39ef6640d949531ed61e3d6aaac638ad9b314",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "00b1b680",
+        "end_exclusive": "00b1b6d9",
+        "length": 89,
+        "sha256": "dcd2d39096ce43bf8160c2071bd316991bf064577a3caa7afb3f7634ebbd9a3d",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004de290",
+        "end_exclusive": "004de2ef",
+        "length": 95,
+        "sha256": "8bf7b0c241edb4b0336c26465cb29ae74067453c5b865df3d566a9357210be56",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004dda40",
+        "end_exclusive": "004dda94",
+        "length": 84,
+        "sha256": "6a968969ae7b08b6a38a49c8e4cf5e232866381e31408b5d5028830696d1e5f1",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004dc410",
+        "end_exclusive": "004dc4dc",
+        "length": 204,
+        "sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004d45a0",
+        "end_exclusive": "004d4618",
+        "length": 120,
+        "sha256": "1d548f139c5b4533bd2bc5dfe69092afc226c1b043a672fd7b0617f471458660",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004ddb40",
+        "end_exclusive": "004ddb5f",
+        "length": 31,
+        "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "004d05e0",
+        "end_exclusive": "004d0633",
+        "length": 83,
+        "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      },
+      {
+        "address": "00bf6989",
+        "end_exclusive": "00bf698e",
+        "length": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "live_matches_pe_image_preimage": true,
+        "verification_kind": "file_backed_PE_bytes"
+      }
+    ],
+    "normal_flow_extent_corrections": [
+      "004D45A0 complete tail ends004D4618; Ghidra body currently stops004D45D9 at a bad free no-return flow.",
+      "004DE290 complete tail ends004DE2EF; Ghidra body currently stops004DE2DC at array-delete/free.",
+      "00BF6989 is a5byte tail jump to00BF65AC; preserve correct _free library name.",
+      "004DC410 body captured for context; implementation covers only zero size after drain."
+    ],
+    "shared_header_and_time_getter_owned_records_projection": true,
+    "per_sink_x87_forwarding_native_checked": true,
+    "installed_prefix_clock_lifetime_checked": true,
+    "evidence": "reports/system_constant_builder_audit.json; reports/system_constant_builder_probe.txt",
+    "native_destructor_differential_claimed": false
+  }
 }
