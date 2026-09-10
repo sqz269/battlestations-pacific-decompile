@@ -1,0 +1,537 @@
+{
+  "packet": "hud_central_updates",
+  "binary": "battlestationspacific.exe",
+  "doc": "docs/HUD_CENTRAL_UPDATES.md",
+  "summary": "The per-frame update virtuals (+20h) of the three central in-mission HUD screens, read end to end from the listing. All three are __thiscall(this, float) and RET 4. The HUD root and the markers screen are reconstructed in full; the minimap's animation block and unit-icon pass are reconstructed and the rest is analyzed.",
+  "globals": {
+    "00E188A8": "the game object",
+    "00E188D8": "the controlled unit; 00644230 is the whole accessor",
+    "00E198C4": "the in-mission interface manager",
+    "00F876A4": "the mission clock, seconds (docs/UNIT_INSTANCE_UPDATE.md)",
+    "00F88C30": "the power-up manager 008E9AF0 and 008E62A0 read",
+    "00F88A00": "float gating the reinforcement sweep against 0.03; not identified",
+    "0109CF04": "the platform singleton; byte +0Dh insets the HUD root's first row",
+    "00E197C4..00E197D8": "six floats the markers update publishes as the marker clip rectangle"
+  },
+  "routines": [
+    {
+      "address": "00649860",
+      "name": "BSP_InGameHudRootScreen_Update",
+      "screen": "registry slot 44h, the HUD root at manager +40h",
+      "convention": "__thiscall(this, float seconds)",
+      "ret": "ret 4 at 0064A24A",
+      "body": "00649860-0064A24C",
+      "end_inclusive": "0064A24A",
+      "ghidra_function": true,
+      "state": "reconstructed and build-tested",
+      "reads_float_argument": true,
+      "gate": {
+        "suppression_bytes": [
+          "00E188A8+61Fh",
+          "00E188A8+620h"
+        ],
+        "cadence_field": "+F4h",
+        "cadence": "decremented every call; body runs when the result is not greater than zero, then +F4h is reloaded with 2 at 006498A0",
+        "evidence": "00649863..00649898, CMP dword [EBX+F4h],0 / JG",
+        "note": "the tail from 00649FB3 runs on every call regardless of the gate"
+      },
+      "clone_templates": [
+        {
+          "field": "+FCh",
+          "widget": "puptemplate_Icon",
+          "name_string": "00CF5A60",
+          "bound_at": "006464C9",
+          "hidden_at_bind": "virtual +34h(0)"
+        },
+        {
+          "field": "+100h",
+          "widget": "circletemplate_Section",
+          "name_string": "00CF5A48",
+          "bound_at": "0064654D",
+          "hidden_at_bind": "virtual +34h(0)"
+        }
+      ],
+      "clone_vectors": [
+        {
+          "base": "+104h",
+          "first": "+108h",
+          "last": "+10Ch",
+          "end": "+110h",
+          "holds": "icon clones",
+          "erase": "005A0B20"
+        },
+        {
+          "base": "+114h",
+          "first": "+118h",
+          "last": "+11Ch",
+          "end": "+120h",
+          "holds": "circle clones",
+          "erase": "inline memmove_s at 006499A1"
+        }
+      ],
+      "entry_source": {
+        "call": "008E9AF0",
+        "this": "[00F88C30], the power-up manager",
+        "arguments": [
+          "this+164h",
+          "this+124h",
+          "this+134h",
+          "this+144h",
+          "this+154h",
+          "0",
+          "1"
+        ],
+        "used": {
+          "+164h": "untimed entries",
+          "+124h": "timed entries",
+          "+154h": "timed deadlines, floats"
+        },
+        "unused_here": [
+          "+134h",
+          "+144h"
+        ],
+        "evidence": "00649A09..00649A36"
+      },
+      "per_entry_filter": {
+        "call": "008E62A0(entry, [00E188D8])",
+        "body": "008E62A0-008E6367",
+        "behaviour": "descriptor type at [[entry+4]+8]: type 3 compares the scope byte at [[entry+4]+84h] (4 means same unit+180h, 5 means same unit+54h); type 2 scans sixteen 0Ch-byte list heads at [00F88C30+84h+i*0Ch] for an entry whose +8h is this power-up and that passes 008E4680"
+      },
+      "placement": {
+        "row_accumulator": "a stack slot, not a register; the pseudocode aliases it to the loop counter",
+        "first_row_y": "00CF5C08 (17/120) when [0109CF04+0Dh] is set, else 0",
+        "row_step": "accumulator += BSP_GuiWidget_GetSize(+FCh).height + 00CEBDD0 (1/72)",
+        "icon_position": "{00CE8190 + 00CF5C00, accumulator, 00CE65D8} = {1.195, y, -100}",
+        "circle_position": "{00CE8190 + 00CF5C00, 00CE8190 - 00CF0DE8, 00CF5BFC} = {1.195, 0.2516667, -99}; the circle ignores the accumulator",
+        "setter": "BSP_GuiWidget_SetResolvedPosition 00AA8240",
+        "evidence": [
+          "00649B1C-00649B58",
+          "00649D51-00649D95",
+          "00649ED9-00649F08"
+        ]
+      },
+      "widget_writes": [
+        {
+          "setter": "00AB64C0",
+          "signature": "__thiscall(icon, texture, const float uv[4])",
+          "body": "00AB64C0-00AB66B8",
+          "behaviour": "appends a 40h-byte Icon state (texture reference plus UV rectangle, with the u and v pairs swapped when the icon's flip fields equal 00D7A24C and 00D7A218) to the state vector at +F4h/+F8h/+FCh and returns ((+F8h - +F4h) >> 6) - 1, the new state index",
+          "arguments": "texture = [[entry+4]+30h+id*38h], uv = [entry+4]+34h+id*38h, id = [[00E188A8+18CCh+[00E188A8+18ECh]*4]+28h]"
+        },
+        {
+          "setter": "clone virtual +88h(1, 0, 1.0f)",
+          "behaviour": "the state select that follows every 00AB64C0 add"
+        },
+        {
+          "setter": "00ABE6E0",
+          "signature": "__thiscall(widget, float, float, float, float)",
+          "body": "00ABE6E0-00ABE771",
+          "behaviour": "compares then writes +F4h, +F8h, +100h and +104h and re-emits through virtual +7Ch; called as (fill, 0, 0, 1) on the circle clone",
+          "arguments": "fill = (deadline - 00F876A4) / [[entry+4]+7Ch]",
+          "uncertainty": "the owning widget class and the meaning of the four components were not established"
+        },
+        {
+          "setter": "clone virtual +34h(1)",
+          "behaviour": "every clone is shown immediately after CloneSubtree"
+        }
+      ],
+      "constants": {
+        "00CE8190": {
+          "value": 0.26,
+          "type": "float",
+          "role": "column anchor"
+        },
+        "00CF5C00": {
+          "value": 0.935,
+          "type": "double",
+          "role": "column x offset"
+        },
+        "00CF5C08": {
+          "value": 0.14166668,
+          "type": "float",
+          "role": "first row inset, 17/120"
+        },
+        "00CEBDD0": {
+          "value": 0.013888889,
+          "type": "double",
+          "role": "row gap, 1/72"
+        },
+        "00CF0DE8": {
+          "value": 0.008333333,
+          "type": "double",
+          "role": "circle y offset, 1/120"
+        },
+        "00CE65D8": {
+          "value": -100.0,
+          "type": "float",
+          "role": "icon depth"
+        },
+        "00CF5BFC": {
+          "value": -99.0,
+          "type": "float",
+          "role": "circle depth"
+        },
+        "00CF5BF8": {
+          "value": 7.0,
+          "type": "float",
+          "role": "ticker reload at +BCh"
+        }
+      },
+      "unconditional_tail": [
+        {
+          "address": "00649FB3",
+          "role": "message ticker: +BCh -= delta while positive; on expiry with a non-empty queue at +B0h..+B4h (stride 10h), 00648060 runs and +BCh reloads 7"
+        },
+        {
+          "address": "0064A00E",
+          "role": "the pending unit handle at +78h, resolved through the handle table 00F89A10/00F89A0C/00F89A54 and 00F89A60/00F89AA8, filtered on +5Ch set with +5Dh, +60h, +5Eh clear"
+        },
+        {
+          "address": "0064A08F",
+          "role": "00645060 with the unit in ECX, the local team index in EDX and a literal 1 on the stack; the EDX load at 0064A085 is invisible in the pseudocode, so this is not __thiscall(this, 1)"
+        },
+        {
+          "address": "0064A0BF",
+          "role": "interface request 34h (INTF_LIMBO) with payload 0 when there is no controlled unit and the manager is idle ([00E198C4+4h]==[+20h] and [+1Ch]==[+38h])"
+        },
+        {
+          "address": "0064A0FA",
+          "role": "interface request 20h (INTF_SCENE3D) with the unit's virtual +140h as payload, after 0059DA80 and 005251C0"
+        },
+        {
+          "address": "0064A108",
+          "role": "this->[40h] virtual +34h(1), the selector widget"
+        },
+        {
+          "address": "0064A114",
+          "role": "00644CC0(&out, unit); when the word at out+2h is FFFFh the value comes from 00644C20 instead; stored unaligned at this+C2h"
+        },
+        {
+          "address": "0064A149",
+          "role": "00644DB0(this, delta) then 00648C20(this)"
+        },
+        {
+          "address": "0064A165",
+          "role": "closed-HUD toggle: needs a controlled unit, [00E188A8+19C4h] clear and the unit failing kind probes 9, 45h and 46h; input action DFh through 004C43C0; a kind-18h unit with +379h set uses this->[1Ch] instead; 00647080 toggles"
+        },
+        {
+          "address": "0064A20B",
+          "role": "group change: this->[20h] set, [00E188A8+1FE4h] non-null, unit team at +188h below 8 and different from [00E188A8+18ECh]; 006485A0 runs and +20h clears"
+        }
+      ],
+      "localisation_keys": []
+    },
+    {
+      "address": "006435D0",
+      "name": "BSP_HudMarkersScreen_Update",
+      "screen": "registry slot 4Dh, the world markers screen at manager +48h",
+      "convention": "__thiscall(this, float seconds)",
+      "ret": "ret 4 at 00643D94",
+      "body": "006435D0-00643D94",
+      "end_inclusive": "00643D94",
+      "ghidra_function": true,
+      "state": "reconstructed and build-tested",
+      "reads_float_argument": false,
+      "gate": {
+        "team_index": "[00E188A8+18ECh] must be in 0..7",
+        "suppression_bytes": [
+          "00E188A8+61Fh",
+          "00E188A8+620h"
+        ],
+        "cadence": "none; the whole body runs every frame",
+        "secondary": "this->[28h] skips the marker passes only, after the clip rectangle and the pool reset have run",
+        "evidence": "006435D8..0064360C and 006436D1"
+      },
+      "clip_rectangle": {
+        "source": "00AA1FE0(&extent), two floats",
+        "scale": "00CF5990 = 0.4925 (double)",
+        "centre": "00D7A280 = 0.5 (double)",
+        "stores": {
+          "00E197D0": "0.5 - width*0.4925",
+          "00E197D8": "0.5 - width*0.4925",
+          "00E197CC": "0.5 + width*0.4925",
+          "00E197D4": "0.5 + width*0.4925",
+          "00E197C8": "0.5 - height*0.4925",
+          "00E197C4": "0.5 + height*0.4925"
+        },
+        "evidence": "0064361B..0064367F, read from the x87 listing",
+        "uncertainty": "each x bound is stored twice, so this is probably two rectangles sharing their x bounds; no reader was traced"
+      },
+      "frame_order": [
+        "this->[A0h] = 0",
+        "this->[24h] = 004B4B00(), the camera unit",
+        "00640620(this), the marker pool reset",
+        "0063BCD0(this+34h), clearing the marker set (vector: first +38h, last +3Ch)",
+        "this->[1Ch] = [00E188D8] ? 00927880([00E188D8]) : 0",
+        "006394B0(this) then 0063B5E0(this+A4h)",
+        "006430C0(this->[1Ch], 0, 0, 2), the self marker",
+        "the interface target [[00E198C4+CCh]+4Ch] gets 006430C0(target, 1, 0, 0)",
+        "the squad list at [[00E188A8+19CCh]+16Ch], radius-tested per member",
+        "the screen-centre world pick at 0043A290",
+        "the objective sweep over [00E188A8+team*4+21A4h]",
+        "the command-unit sweep over [[00E188A8+19CCh]+58h]",
+        "the target group at [target+9D4h]",
+        "the reinforcement sweep behind the 00F88A00 > 0.03 gate",
+        "00640D70(this), 00640620(this), then the marker set is erased"
+      ],
+      "squad_radius_test": {
+        "position_offsets": {
+          "x": "+FCh",
+          "y": "+100h",
+          "z": "+104h"
+        },
+        "pose_refresh": "00414DB0(unit) when unit+C8h is clear",
+        "radius": "(float)(int)mate[7C4h], converted with FILD",
+        "expression": "r*r > (dx*dx + dy*dy) + dz*dz",
+        "strictness": "FCOMIP then JBE drops the member on equality",
+        "evidence": "006437DD..00643853"
+      },
+      "crosshair_pick": {
+        "call": "0043A290(this->[44h]*width, this->[48h]*height, 0.0f, &out)",
+        "fractions": "+44h and +48h are both 0.5, written by the enter virtual 00639480",
+        "viewport": "00B6FDE0([00E188A8+19FCh]); width at +10h, height at +14h",
+        "publish": "[00E198C4+F0h..+F8h] = the picked float3, [00E198C4+FCh] = 1; on failure +FCh = 0",
+        "evidence": "00643886..0064392A"
+      },
+      "marker_kinds": {
+        "controlled unit and squad mates": "006430C0(unit, 0, 0, 2)",
+        "the interface target": "006430C0(target, 1, 0, 0)",
+        "target group members": "006434E0(member, 1)",
+        "the target itself": "006434E0(target, 0)"
+      },
+      "group_layout": {
+        "count": "+3CCh",
+        "members": "+3D0h",
+        "member_limit": 5,
+        "note": "index 5 and above reads as null (CMP EDI,4 / JA)",
+        "evidence": "00643C28 and 00643D00"
+      },
+      "target_filters": [
+        "[unit+54h] equals the local team record id [[00E188A8+18CCh+team*4]+28h]",
+        "00804350(unit, 5)",
+        "005220C0([[00E198C4]+CCh], unit)",
+        "the four byte filters +5Ch set with +5Dh, +60h and +5Eh clear",
+        "kind probe 8 with a 00CF1430 (-4.0) height test against unit+100h",
+        "[unit+1ACh] != 8 and !00927F10(unit, [unit+1ACh])",
+        "kind probe 0Fh with a [[unit+9D4h]+3D0h] == unit leader test"
+      ],
+      "localisation_keys": []
+    },
+    {
+      "address": "005C0F20",
+      "name": "BSP_HudMinimapScreen_Update",
+      "screen": "registry slot 35h, the in-mission map at manager +58h",
+      "convention": "__thiscall(this, float seconds)",
+      "ret": "ret 4 at 005C27DB",
+      "body": "005C0F20-005C27DB",
+      "end_inclusive": "005C27DB",
+      "ghidra_function": true,
+      "state": "partly reconstructed and build-tested; the animation block and the unit-icon pass are C++, the rest is analyzed",
+      "reads_float_argument": true,
+      "seh": "handler 00C729CC pushed at 005C0F28, unwound at 005C27CE; the only one of the three with an SEH frame",
+      "gate": {
+        "unconditional_head": "005BD420(this)",
+        "branch_a": "this->[F4h] non-null (005C0F59): +169h cleared, this->[60h] shown through virtual +34h(1), +16Ch += delta, this->[54h] virtual +88h([[+F4h]+7ACh], 0, 1.0f)",
+        "branch_b": "this->[F4h] null (005C1289): this->[60h] virtual +38h() decides whether anything animates; on the first such frame +16Ch resets to 0 and +169h is set",
+        "unit_pass_gate": "[00E188A8+18ECh] in 0..7 and a non-null camera unit (005C154E)",
+        "cadence": "none"
+      },
+      "animation": {
+        "pulse": "sinf(00F876A4 * 00D7A328) with 00D7A328 = 4.0; FSIN on the raw clock, no range reduction",
+        "alpha": "00D7A280*pulse + 00D7A280 = 0.5*pulse + 0.5",
+        "colour": "this->[54h] virtual +50h({1, 1, 1, alpha}); the 1 is 00D7A24C",
+        "ramp": "min(this->[16Ch] * 4.0, 1.0), FCOMIP against FLD1",
+        "scale": "ramp * (pulse * 00D7A3A0 + 00D7A210) = ramp * (0.1*pulse + 1.0)",
+        "ring": "006F1F90(this->[F4h]), applied to this->[58h] and this->[5Ch] through virtual +48h",
+        "marker": "this->[1ACh] virtual +34h(1)",
+        "evidence": "005C0F9E..005C10DB and 005C12C6..005C1546"
+      },
+      "unit_icons": {
+        "camera_unit": "004B4B00()",
+        "map_extents": "00432650(); +6Ch and +70h are the half-extents, squared at 005C15A0",
+        "team_list": "[[[00E188A8+team*4+18CCh]+30h]+E0Ch], next at +4h, payload at [node+8h]+4h",
+        "filters": "+5Ch set with +5Dh, +60h and +5Eh clear; not the camera unit; virtual +5Ch(5) and virtual +B8h",
+        "cull": "00427EB0(unit) gives an icon-space float3; the differences against the camera position go through 00427E30 and the icon is dropped when the squared half-extent is smaller (005C16D3, JC)",
+        "icon_map": "this+F8h; 005BE110 looks up, a miss allocates 0Ch bytes, 005BD590 constructs, 005C0700 inserts, 00694A60(unit, this+8h) attaches",
+        "self_unit": "00927880([00E188D8])",
+        "evidence": "005C154E..005C1783"
+      },
+      "icon_placement": {
+        "sites": [
+          "005C1C99",
+          "005C2269",
+          "005C25ED"
+        ],
+        "setter": "BSP_GuiWidget_SetLocalPositionAndBounds 00AA7DC0",
+        "x": "world_dx * 00CEDAE8 (1/1024)",
+        "y": "-world_dz / 00CE42B0 (768)",
+        "note": "the two axes do not share a divisor: a 1024x768 authoring space",
+        "depths": {
+          "00D7A260": {
+            "value": -1.0,
+            "role": "default icon"
+          },
+          "00CF1430": {
+            "value": -4.0,
+            "role": "the controlled unit's icon"
+          },
+          "00CE7D7C": {
+            "value": -2.0,
+            "role": "a highlighted icon"
+          },
+          "00CE3CC8": {
+            "value": -8.0,
+            "role": "the capture icons"
+          },
+          "00CE6848": {
+            "value": -10.0,
+            "role": "the marker icons"
+          }
+        },
+        "rotation": "00CE3830 - heading = pi/2 - heading (FSUBR at 005C1CBC)",
+        "heading_source": "[00E188A8+19FCh]; bit 1 of +5Ch gates a refresh through 00B6DB70, then +110h and +118h go through the CRT x87 helper 00BF701A and the result is divided into 00CF1440 (80.0) for the compass at this->[4Ch]"
+      },
+      "coverage": "roughly 40% of the 6332 bytes were read instruction by instruction; the three tail sections at 005C1F90, 005C239E and 005C2523 were read only far enough to identify their placement calls and depth literals",
+      "localisation_keys": []
+    }
+  ],
+  "no_ghidra_function": [],
+  "ghidra_problems": [
+    {
+      "address": "00643C0C",
+      "kind": "disassembly desync",
+      "listing": "TEST AL,0xD4 / OR dword [EAX],EAX / ADD byte [ECX],BH / MOV EBP,0x3CC",
+      "bytes": "8B A8 D4 09 00 00 39 BD CC 03 00 00",
+      "correct": "MOV EBP,[EAX+9D4h] at 00643C0C then CMP [EBP+3CCh],EDI at 00643C12",
+      "resync": "00643C18",
+      "note": "the doc uses the byte decode; a re-disassembly of 00643C09..00643C1E would fix the listing"
+    }
+  ],
+  "flow_gaps": [],
+  "names_recorded": [
+    {
+      "address": "00649860",
+      "name": "BSP_InGameHudRootScreen_Update",
+      "action": "evidence appended"
+    },
+    {
+      "address": "006435D0",
+      "name": "BSP_HudMarkersScreen_Update",
+      "action": "evidence appended"
+    },
+    {
+      "address": "005C0F20",
+      "name": "BSP_HudMinimapScreen_Update",
+      "action": "evidence appended"
+    },
+    {
+      "address": "00AB64C0",
+      "name": "BSP_GuiIcon_AddState",
+      "action": "new record"
+    },
+    {
+      "address": "00ABE6E0",
+      "name": "BSP_GuiWidget_SetQuadFloats",
+      "action": "new record"
+    },
+    {
+      "address": "008E62A0",
+      "name": "BSP_PowerUp_AppliesToUnit",
+      "action": "new record"
+    },
+    {
+      "address": "008E9AF0",
+      "name": "BSP_PowerUpManager_CollectActive",
+      "action": "new record"
+    }
+  ],
+  "uncertainties": [
+    "00ABE6E0's owning widget class and the meaning of its four float components; the call site passes (fill, 0, 0, 1)",
+    "00E197C4..00E197D8 is written as two overlapping rectangles; no reader was traced",
+    "00F88A00, the float gating the reinforcement sweep against 0.03, was not identified",
+    "008E9AF0's five output vectors are established by position; the roles of +134h and +144h are unknown because 00649860 does not read them",
+    "no localisation key is resolved by any of the three routines"
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "hud_marker_pool_icons",
+      "addresses": [
+        "006430C0",
+        "006434E0",
+        "00640620",
+        "00640D70",
+        "00643360",
+        "00642C20"
+      ],
+      "files": [
+        "docs/HUD_MARKER_POOL_ICONS.md",
+        "reports/hud_marker_pool_icons.json",
+        "include/bsp/hud_marker_pool.hpp",
+        "src/hud_marker_pool.cpp"
+      ],
+      "contract": "Which icon each marker kind gets, how the pool recycles entries and how a marker is projected into the clip rectangle at 00E197C4"
+    },
+    {
+      "packet": "hud_root_unit_rows",
+      "addresses": [
+        "00644DB0",
+        "00644CC0",
+        "00644C20",
+        "00648C20",
+        "00647080"
+      ],
+      "files": [
+        "docs/HUD_ROOT_UNIT_ROWS.md",
+        "reports/hud_root_unit_rows.json",
+        "include/bsp/hud_root_rows.hpp",
+        "src/hud_root_rows.cpp"
+      ],
+      "contract": "The unit_name_Text, unit_HP_*_Icon, Medal_Icon, Medal_Text and WeaponInfo_Text writers, and the closed-HUD toggle"
+    },
+    {
+      "packet": "hud_minimap_icon_entries",
+      "addresses": [
+        "005BE110",
+        "005BD590",
+        "005C0700",
+        "005BCF70",
+        "005C0450",
+        "005C0930",
+        "005C0BD0"
+      ],
+      "files": [
+        "docs/HUD_MINIMAP_ICON_ENTRIES.md",
+        "reports/hud_minimap_icon_entries.json",
+        "include/bsp/hud_minimap_entries.hpp",
+        "src/hud_minimap_entries.cpp"
+      ],
+      "contract": "The 0Ch-byte per-unit icon entry, the map at screen+F8h and the six team groups the layout virtual binds"
+    },
+    {
+      "packet": "hud_powerup_manager",
+      "addresses": [
+        "008E9AF0",
+        "008E62A0",
+        "008E4680",
+        "008E3680",
+        "00F88C30"
+      ],
+      "files": [
+        "docs/HUD_POWERUP_MANAGER.md",
+        "reports/hud_powerup_manager.json",
+        "include/bsp/powerup_manager.hpp",
+        "src/powerup_manager.cpp"
+      ],
+      "contract": "The power-up manager at 00F88C30: the 38h-byte per-team records, the sixteen scope lists at +84h and the five vectors 008E9AF0 fills"
+    }
+  ],
+  "files": {
+    "doc": "docs/HUD_CENTRAL_UPDATES.md",
+    "report": "reports/hud_central_updates.json",
+    "header": "include/bsp/hud_updates.hpp",
+    "source": "src/hud_updates.cpp",
+    "cmake": "cmake/startup.cmake",
+    "test": "tests/math_tests.cpp"
+  },
+  "build": "scripts/build.ps1 clean (Win32, warnings as errors); ctest 1/1 passed"
+}
