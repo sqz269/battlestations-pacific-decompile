@@ -4,6 +4,10 @@
 #include <stdexcept>
 
 namespace bsp {
+void shrink_native_node_point_lights_to_zero_00b6ec70(NativeNodePointLightArray& array) noexcept {
+    while (array.count > 0) --array.count;
+    array.count = 0;
+}
 namespace {
 void unregister_current_attachment(NativeNodeDestructionRuntime& runtime,
     CameraTransform& node) {
@@ -14,8 +18,7 @@ void unregister_current_attachment(NativeNodeDestructionRuntime& runtime,
     }
 }
 void destroy_point_light_array(NativeNodeStorage& node) noexcept {
-    while (node.point_lights_164.count > 0) --node.point_lights_164.count;
-    node.point_lights_164.count = 0; // B6EC70(0), no pointed-owner releases
+    shrink_native_node_point_lights_to_zero_00b6ec70(node.point_lights_164);
     singleton_lifetime_free(node.point_lights_164.begin);
     // Native leaves the freed pointer and capacity words unchanged.
 }

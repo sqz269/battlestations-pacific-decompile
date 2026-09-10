@@ -49,6 +49,9 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/camera_look_at.cpp src/camera_type_bootstrap.cpp src/d3d9_surface_pool.cpp
   src/camera_pose.cpp src/camera_plane_initialization.cpp src/native_camera_owner.cpp
   src/native_resource_support.cpp
+  src/native_camera_reference.cpp
+  src/native_render_batch_lifetime.cpp
+  src/native_surface_owner.cpp
   src/camera_clip_planes.cpp src/camera_configuration.cpp)
 target_sources(bsp_core PRIVATE src/material_sort_metadata.cpp src/render_command_queue.cpp src/render_command_execution.cpp)
 

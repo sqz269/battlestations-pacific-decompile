@@ -1,0 +1,24 @@
+native_camera_owner_check.cpp
+PASS native cw027f liveone0 states13 raw_camera_bytes14508 events9
+PASS host cw027f liveone0 states13 raw_camera_bytes14508 events9
+PASS native cw027f liveone1 states13 raw_camera_bytes14508 events9
+PASS host cw027f liveone1 states13 raw_camera_bytes14508 events9
+PASS native cw067f liveone0 states13 raw_camera_bytes14508 events9
+PASS host cw067f liveone0 states13 raw_camera_bytes14508 events9
+PASS native cw067f liveone1 states13 raw_camera_bytes14508 events9
+PASS host cw067f liveone1 states13 raw_camera_bytes14508 events9
+PASS native cw0a7f liveone0 states13 raw_camera_bytes14508 events9
+PASS host cw0a7f liveone0 states13 raw_camera_bytes14508 events9
+PASS native cw0a7f liveone1 states13 raw_camera_bytes14508 events9
+PASS host cw0a7f liveone1 states13 raw_camera_bytes14508 events9
+PASS native cw0e7f liveone0 states13 raw_camera_bytes14508 events9
+PASS host cw0e7f liveone0 states13 raw_camera_bytes14508 events9
+PASS native cw0e7f liveone1 states13 raw_camera_bytes14508 events9
+PASS host cw0e7f liveone1 states13 raw_camera_bytes14508 events9
+PASS retained camera queue2/logical1/repeated1/final0; viewport cleared, one native pool return and stable companion retirement
+PASS native cw027f liveone0 states17 raw_camera_bytes18972 events9
+PASS retained camera queue2/logical1/repeated1/final0; viewport cleared, one native pool return and stable companion retirement
+PASS host cw027f liveone0 states17 raw_camera_bytes18972 events9
+PASS host constructor failure at renderer call1: exact raw/published viewport boundary and node cleanup
+PASS host constructor failure at renderer call3: exact raw/published viewport boundary and node cleanup
+PASS original complete camera constructor/viewport setters/deleting destructor with actual pose, planes, node cleanup and camera pool return

@@ -1,0 +1,448 @@
+[
+  {
+    "address": "00b51d20",
+    "before": {
+      "address": "00b51d20",
+      "function_name": "FUN_00b51d20"
+    },
+    "after": {
+      "address": "00b51d20",
+      "old_name": "FUN_00b51d20",
+      "name": "BSP_RenderBatch_Construct",
+      "evidence": "Native [00b51d20,00b51d41); ECX raw batch; EAX same; RET. Initialize reference/base table phases, actual +04 count1 and pointer/count/capacity zeros; preserve +08. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51b50",
+    "before": {
+      "address": "00b51b50",
+      "function_name": "BSP_RenderBatch_ReserveEntryPointers",
+      "comment": "[BSP reconstruction 00b51b50]\nGrow-only pointerarray storage, clampcapacity>=256, allocate/copy/free then publishdata/capacity; full98B continuation restored and saved. Original ABI: ECX=array descriptor; stack requested capacity; RET4; full98B includes hidden tail after free. Evidence: docs/INSTANCE_GROUP_UPLOAD.md; reports/instance_group_upload_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+    },
+    "after": {
+      "address": "00b51b50",
+      "old_name": "BSP_RenderBatch_ReserveEntryPointers",
+      "name": "BSP_RenderBatch_ReserveEntryPointers",
+      "evidence": "Native [00b51b50,00b51bb2); ECX actual entry descriptor at batch+0C; stack signed requested capacity; RET4. Raw native-storage form of existing named reserve: minimum256, grow only, allocate/copy/free/publish. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51c60",
+    "before": {
+      "address": "00b51c60",
+      "function_name": "FUN_00b51c60"
+    },
+    "after": {
+      "address": "00b51c60",
+      "old_name": "FUN_00b51c60",
+      "name": "BSP_RenderBatch_ResizeEntryPointers",
+      "evidence": "Native [00b51c60,00b51cb0); ECX actual entry descriptor; stack signed count; RET4. Reserve if needed, zero new borrowed cells, decrement count when shrinking, final requested count. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51d00",
+    "before": {
+      "address": "00b51d00",
+      "function_name": "FUN_00b51d00"
+    },
+    "after": {
+      "address": "00b51d00",
+      "old_name": "FUN_00b51d00",
+      "name": "BSP_RenderBatch_DestroyEntryPointers",
+      "evidence": "Native [00b51d00,00b51d17); ECX actual entry descriptor; RET. Clear count0, array-free; leave pointer/capacity native bytes. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51d50",
+    "before": {
+      "address": "00b51d50",
+      "function_name": "FUN_00b51d50"
+    },
+    "after": {
+      "address": "00b51d50",
+      "old_name": "FUN_00b51d50",
+      "name": "BSP_RenderBatch_Destruct",
+      "evidence": "Native [00b51d50,00b51dc1); ECX batch; RET. D62064 phase, clear entry count twice, free pointer array, CEB130 phase; no entry-object release. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1c630",
+    "before": {
+      "address": "00b1c630",
+      "function_name": "CG_scalar_deleting_dtor_00b1c630"
+    },
+    "after": {
+      "address": "00b1c630",
+      "old_name": "CG_scalar_deleting_dtor_00b1c630",
+      "name": "BSP_PooledRenderBatch_DeletingDestructor",
+      "evidence": "Native [00b1c630,00b1c64e); ECX batch; stack flags; EAX original address even after free; RET4. Destruct batch, scalar-free only flags bit0. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b55680",
+    "before": {
+      "address": "00b55680",
+      "function_name": "FUN_00b55680"
+    },
+    "after": {
+      "address": "00b55680",
+      "old_name": "FUN_00b55680",
+      "name": "BSP_PooledRenderBatch_RecycleZeroReference",
+      "evidence": "Native [00b55680,00b5569e); ECX batch; RET. Dispatch actual current virtual+4 with flags0, lookup current pool after destruction, append dead address; no decrement. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1d5b0",
+    "before": {
+      "address": "00b1d5b0",
+      "function_name": "FUN_00b1d5b0"
+    },
+    "after": {
+      "address": "00b1d5b0",
+      "old_name": "FUN_00b1d5b0",
+      "name": "BSP_RenderBatchPool_Acquire",
+      "evidence": "Native [00b1d5b0,00b1d679); ECX actual pool+4 list; EAX batch; RET. Get current lock, capture actual section, pop LIFO or allocate18h, reconstruct preserving mode, pooled table phase. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b555e0",
+    "before": {
+      "address": "00b555e0",
+      "function_name": "FUN_00b555e0"
+    },
+    "after": {
+      "address": "00b555e0",
+      "old_name": "FUN_00b555e0",
+      "name": "BSP_RenderBatchPool_AppendDeadSlot",
+      "evidence": "Native [00b555e0,00b5567b); ECX actual pool+4 list; stack dead-slot address; RET4. Current lock, double capacity when full with minimum1, publish raw address, increment count. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1c830",
+    "before": {
+      "address": "00b1c830",
+      "function_name": "FUN_00b1c830"
+    },
+    "after": {
+      "address": "00b1c830",
+      "old_name": "FUN_00b1c830",
+      "name": "BSP_RenderBatchPool_ReserveSlots",
+      "evidence": "Native [00b1c830,00b1c88f); ECX free-list descriptor; stack signed capacity; RET4. Minimum1 grow-only pointer reserve, including hidden post-free publication tail. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1ce50",
+    "before": {
+      "address": "00b1ce50",
+      "function_name": "FUN_00b1ce50"
+    },
+    "after": {
+      "address": "00b1ce50",
+      "old_name": "FUN_00b1ce50",
+      "name": "BSP_RenderBatchPool_ResizeSlots",
+      "evidence": "Native [00b1ce50,00b1cea0); ECX free-list descriptor; stack signed count; RET4. Reserve if needed, zero new raw cells, shrink count; never retain/release slots. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1d8a0",
+    "before": {
+      "address": "00b1d8a0",
+      "function_name": "FUN_00b1d8a0"
+    },
+    "after": {
+      "address": "00b1d8a0",
+      "old_name": "FUN_00b1d8a0",
+      "name": "BSP_RenderBatchPool_DestroySlots",
+      "evidence": "Native [00b1d8a0,00b1d8dd); ECX free-list descriptor; RET. Ascending scalar-free of already-dead slots, live count reload, resize0, array-free; full post-free continuation. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1e870",
+    "before": {
+      "address": "00b1e870",
+      "function_name": "FUN_00b1e870"
+    },
+    "after": {
+      "address": "00b1e870",
+      "old_name": "FUN_00b1e870",
+      "name": "BSP_RenderBatchPool_GetSingleton",
+      "evidence": "Native [00b1e870,00b1e922); No native inputs; EAX pool; RET. Shared manager captured lock/double check; allocate10h, publish, second manager lookup, current publication registration, unlock then reload. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1e930",
+    "before": {
+      "address": "00b1e930",
+      "function_name": "CG_scalar_deleting_dtor_00b1e930"
+    },
+    "after": {
+      "address": "00b1e930",
+      "old_name": "CG_scalar_deleting_dtor_00b1e930",
+      "name": "BSP_RenderBatchPool_DeletingDestructor",
+      "evidence": "Native [00b1e930,00b1e961); ECX pool; stack flags; EAX original address; RET4. Clear 0108FE8C first, simple-owner phase, destroy dead slots, optional scalar-free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1cd90",
+    "before": {
+      "address": "00b1cd90",
+      "function_name": "FUN_00b1cd90"
+    },
+    "after": {
+      "address": "00b1cd90",
+      "old_name": "FUN_00b1cd90",
+      "name": "BSP_RenderBatchLock_GetSingleton",
+      "evidence": "Native [00b1cd90,00b1ce4d); No native inputs; EAX lock owner; RET. Shared manager captured lock/double check; allocate8h/construct, publish, second lookup/register current publication, unlock then reload. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1c9d0",
+    "before": {
+      "address": "00b1c9d0",
+      "function_name": "FUN_00b1c9d0"
+    },
+    "after": {
+      "address": "00b1c9d0",
+      "old_name": "FUN_00b1c9d0",
+      "name": "BSP_RenderBatchLock_Construct",
+      "evidence": "Native [00b1c9d0,00b1ca15); ECX raw lock owner; EAX same; RET. D5E5D4 phase, existing actual tracked-section creation, publish +04; constructor unwind separate from allocation free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1c3a0",
+    "before": {
+      "address": "00b1c3a0",
+      "function_name": "FUN_00b1c3a0"
+    },
+    "after": {
+      "address": "00b1c3a0",
+      "old_name": "FUN_00b1c3a0",
+      "name": "BSP_RenderBatchLock_UnwindBase",
+      "evidence": "Native [00b1c3a0,00b1c3b1); ECX lock owner; RET. Clear 0109DBBC, install CE3818; no invented section free before publication. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1d530",
+    "before": {
+      "address": "00b1d530",
+      "function_name": "CG_scalar_deleting_dtor_00b1d530"
+    },
+    "after": {
+      "address": "00b1d530",
+      "old_name": "CG_scalar_deleting_dtor_00b1d530",
+      "name": "BSP_RenderBatchLock_DeletingDestructor",
+      "evidence": "Native [00b1d530,00b1d567); ECX lock owner; stack flags; EAX original address; RET4. Concrete phase, existing actual owned-section destroy/drain, clear global, base phase, optional free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f630",
+    "before": {
+      "address": "00b3f630",
+      "function_name": "BSP_D3D9Surface_Construct",
+      "comment": "[BSP reconstruction 00b3f630]\n34h wrapper with intrusive count +4h=1, vtable 00d619a0; calls surface initialize helper 00b3cc80, diagnostic singleton 00b3e730 and adjusts tracking global when flags 10h/100h set. Full constructor not ported."
+    },
+    "after": {
+      "address": "00b3f630",
+      "old_name": "BSP_D3D9Surface_Construct",
+      "name": "BSP_D3D9Surface_Construct",
+      "evidence": "Native [00b3f630,00b3f7ae); ECX actual raw pool slot; stack COM pointer, DWORD flags, DWORD whose low byte is kind; EAX actual owner; RET 0Ch.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3cc80",
+    "before": {
+      "address": "00b3cc80",
+      "function_name": "BSP_D3D9Surface_InitializeBinding",
+      "comment": "[BSP reconstruction 00b3cc80]\nthiscall RET 4h. Stores surface at +2ch without releasing prior pointer, AddRefs nonnull input, GetDesc copies Format to +18h, Width/Height to +1ch/+20h and MultiSampleType to +24h; leaves +28h unchanged. Null clears +18h..28h. Assembly resolves corrupt pseudocode stack locals. Constructor-use helper, not replacement assignment."
+    },
+    "after": {
+      "address": "00b3cc80",
+      "old_name": "BSP_D3D9Surface_InitializeBinding",
+      "name": "BSP_D3D9Surface_InitializeBinding",
+      "evidence": "Native [00b3cc80,00b3cce4); ECX owner; stack COM pointer; RET 4. GetDesc HRESULT is ignored; there is no declared meaningful native return.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f4e0",
+    "before": {
+      "address": "00b3f4e0",
+      "function_name": "FUN_00b3f4e0"
+    },
+    "after": {
+      "address": "00b3f4e0",
+      "old_name": "FUN_00b3f4e0",
+      "name": "BSP_NativeSurfaceOwner_Destroy",
+      "evidence": "Native [00b3f4e0,00b3f588); ECX owner; RET. Pool return belongs to the outer scalar deleting destructor.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f5b0",
+    "before": {
+      "address": "00b3f5b0",
+      "function_name": "FUN_00b3f5b0"
+    },
+    "after": {
+      "address": "00b3f5b0",
+      "old_name": "FUN_00b3f5b0",
+      "name": "BSP_NativeSurfaceOwner_ScalarDeletingDestructor",
+      "evidence": "Native [00b3f5b0,00b3f5d0); ECX owner; stack flags; EAX original owner address even after pool return; RET 4.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d510",
+    "before": {
+      "address": "00b3d510",
+      "function_name": "BSP_D3D9Surface_ReleaseForReset",
+      "comment": "[BSP reconstruction 00b3d510]\nSurface vtable +3ch. Balanced AddRef/Release pair then releases and nulls +2ch, preserving dimensions/format/multisample and depth flag for recreation."
+    },
+    "after": {
+      "address": "00b3d510",
+      "old_name": "BSP_D3D9Surface_ReleaseForReset",
+      "name": "BSP_D3D9Surface_ReleaseForReset",
+      "evidence": "Native [00b3d510,00b3d544); ECX owner; RET. Captured COM AddRef/Release pair followed by reloaded owner COM Release.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d550",
+    "before": {
+      "address": "00b3d550",
+      "function_name": "BSP_D3D9Surface_RecreateAfterReset",
+      "comment": "[BSP reconstruction 00b3d550]\nRecovered missing vtable +40h target; thiscall RET 4h. Flag +30h selects CreateDepthStencilSurface(discard=true) vs CreateRenderTarget(lockable=false). Uses saved width/height/format/multisample, quality0, null shared handle, output+2ch. Original ignores HRESULT."
+    },
+    "after": {
+      "address": "00b3d550",
+      "old_name": "BSP_D3D9Surface_RecreateAfterReset",
+      "name": "BSP_D3D9Surface_RecreateAfterReset",
+      "evidence": "Native [00b3d550,00b3d588); ECX owner; stack actual device; EAX COM HRESULT preserved; RET 4.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b25630",
+    "before": {
+      "address": "00b25630",
+      "function_name": "BSP_SurfacePointerArray_RemoveFirst",
+      "comment": "[BSP reconstruction 00b25630]\nECX array{data,count,capacity}, stack pointer-to-target-pointer, AL found,RET4. Search first equal pointer; replace with finalentry unlessalreadyfinal; decrementcount without releasing object. Missing entry leaves unchanged. Valid-state typed borrowedregistry port and realdevice owner-preservation probe."
+    },
+    "after": {
+      "address": "00b25630",
+      "old_name": "BSP_SurfacePointerArray_RemoveFirst",
+      "name": "BSP_SurfacePointerArray_RemoveFirst",
+      "evidence": "Native [00b25630,00b25697); ECX raw pointer-array header; stack pointer to target pointer; EAX zero or one; RET 4.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b27d60",
+    "before": {
+      "address": "00b27d60",
+      "function_name": "BSP_D3D9Renderer_UnregisterSurface",
+      "comment": "[BSP reconstruction 00b27d60]\nECX renderer, surfacepointer stack,RET4. Forward address of pointer argument to00b25630 withrenderer+1B0C. Borrowed list removal; surface destructor invokes before COM release. No AddRef/Release in removal."
+    },
+    "after": {
+      "address": "00b27d60",
+      "old_name": "BSP_D3D9Renderer_UnregisterSurface",
+      "name": "BSP_D3D9Renderer_UnregisterSurface",
+      "evidence": "Native [00b27d60,00b27d73); ECX actual renderer identity; stack target owner; EAX underlying array result; RET 4.. Complete native owner behavior and boundary order in component audit. Same34h owner in38h slot, actual04 atomic, live D7A24C captured once for08/0C, exact COM capture/reloads/HRESULT ignorance, shared strings/resource singleton and actual renderer list. Native differential29events/8slots; real SizedStoragePool ABI bridge, not original pool instruction comparison. Component: reports/native_surface_owner_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6f310",
+    "before": {
+      "address": "00b6f310",
+      "function_name": "BSP_Node_ReleasePointLightsChildrenAndSelf",
+      "comment": "[BSP reconstruction 00b6f310]\n[BSP reconstruction] Remove each point-light+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain. Original ABI: ECX node; no stack args; RET or tail virtual0 when self references become zero.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b6f310",
+      "old_name": "BSP_Node_ReleasePointLightsChildrenAndSelf",
+      "name": "BSP_Node_ReleasePointLightsChildrenAndSelf",
+      "evidence": "Native [00b6f310,00b6f3c0); ECX node; RET or tail current virtual0 at final zero. Shared borrowed state for existing generated model and native camera: live point-light count/element, shrink0, live child-head reload, then byte44 gate. CaptureA0 before hierarchy clears, set44, unregister, decrement actual self once. No child-count reset; repeated calls still process lights/children. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6ec70",
+    "before": {
+      "address": "00b6ec70",
+      "function_name": "BSP_PointLightPointers_ResizeCleared",
+      "comment": "[BSP reconstruction 00b6ec70]\n[BSP reconstruction] Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed light owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior. Original ABI: ECX pointer array; stack signed count; RET4.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b6ec70",
+      "old_name": "BSP_PointLightPointers_ResizeCleared",
+      "name": "BSP_PointLightPointers_ResizeCleared",
+      "evidence": "Native [00b6ec70,00b6ecc0); ECX pointer array; stack requested signed count; RET4. Existing vector implementation retained. Extracted existing native raw requested-zero path as shrink_native_node_point_lights_to_zero_00b6ec70 in src/native_node_destruction.cpp; actual164/168/16C count loop only, pointer/capacity/elements survive until separate final free. Raw positive growth not added. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6dfa0",
+    "before": {
+      "address": "00b6dfa0",
+      "function_name": "BSP_Node_UnlinkAndRelease",
+      "comment": "[BSP reconstruction 00b6dfa0]\nECX drawable; no stack args; tail jump virtual+18. Unlink parent/list or registration then invoke drawable virtual+18. Complete virtual target destruction remains unresolved; no COM lifetime sequence inferred. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00b6dfa0] update\n[BSP reconstruction] If parent+30 exists, clear parent, patch previous+40/next+3C siblings, replace parent first+34 if needed, decrement parent count+38, clear parent again. Otherwise unlink root-list+A4 with00B72220 and clear root-list. Tail virtual18 resolves00B6F310 for generated model table00D62DE8. Typed implementation updates shared CameraTransform hierarchy before required actual virtual operation. Original ABI: ECX node; no stack args; tail jump node virtual+18. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b6dfa0",
+      "old_name": "BSP_Node_UnlinkAndRelease",
+      "name": "BSP_Node_UnlinkAndRelease",
+      "evidence": "Native [00b6dfa0,00b6e009); ECX node; tail current virtual18; no stack arguments. Existing hierarchy unlink reused unchanged through canonical NativeCameraReference node interface. Original empty-hierarchy camera path followed by full shared B6F310 matched native fixture; no fabricated InstanceUploadModel. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd30e0",
+    "before": {
+      "address": "00bd30e0",
+      "function_name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "comment": "[BSP reconstruction 00bd30e0]\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bd30e0] update\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\nNo reference-count decrement here: ifECX nonnull call virtual+4 with flag1; plainRET. Inflater, memory-wrapper and backing slot0 entries all point here. Callers decrement before dispatch. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX nullable object; no stack args; RET; invoke virtual+4 with flag1. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bd30e0] update\nECX object; no stack arguments; plain RET. Existing recovered name preserved: if object nonnull call vtable+4 with flag1; no reference count decrement. Matched complete body00bd30e0-00bd30ed to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX object; no stack arguments; plain RET. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    "after": {
+      "address": "00bd30e0",
+      "old_name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "evidence": "Native [00bd30e0,00bd30ee); ECX nullable owner; plain RET; nonnull calls current deleting virtual4 with flag1. Existing generic name/body evidence preserved. NativeCameraReference supplies the NONNULL D62CF0 camera path only: validate current0 BD30E0 and current4 B71FE0, no count decrement or44 gate; then existing camera scalar delete1. Foreign/base profiles are unsupported. Shared queue terminal interface requires nonthrowing dependencies. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71fe0",
+    "before": {
+      "address": "00b71fe0",
+      "function_name": "BSP_Camera_ScalarDeletingDestructor",
+      "comment": "[BSP reconstruction 00b71fe0]\nNative [00b71fe0,00b72000); ECX camera; stack flags; EAX original slot; RET4. Complete ordinary destructor then SAME canonical108FFB0 pool return B711E0 only flags&1. No ordinary free or extra count decrement. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim."
+    },
+    "after": {
+      "address": "00b71fe0",
+      "old_name": "BSP_Camera_ScalarDeletingDestructor",
+      "name": "BSP_Camera_ScalarDeletingDestructor",
+      "evidence": "Native [00b71fe0,00b72000); ECX camera; stack flags; EAX original slot; RET4. Existing complete destructor/pool implementation unchanged. New stable canonical queue/lifetime adapter binds actual04 and retires only after full B71FE0(1) plus pointer-only lifetime unbind; camera destructor already removes scene binding. Native retained trajectory matches counts2/1/1/0 and one actual pool return; no post-return native field read. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+    },
+    "status": "applied"
+  }
+]

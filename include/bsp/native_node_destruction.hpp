@@ -4,6 +4,11 @@
 
 namespace bsp {
 
+// The existing B6EC70(0) path over actual +164/+168/+16C storage. Decrement
+// count to zero without touching elements, pointer, capacity or light owners.
+// Final array free belongs to node destruction, after logical release.
+void shrink_native_node_point_lights_to_zero_00b6ec70(NativeNodePointLightArray&) noexcept;
+
 // Association with the actual object stored at node+130. The count is a view
 // of that object's native +04 word, not another host reference count. Its real
 // virtual+00 may destroy the binding and reenter node/scene operations.

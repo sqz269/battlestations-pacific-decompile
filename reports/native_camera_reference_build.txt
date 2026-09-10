@@ -1,0 +1,28 @@
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26200.
+-- Configuring done (1.5s)
+-- Generating done (0.2s)
+-- Build files have been written to: J:/PROG/battlestations-pacific-decompile/build/win32
+MSBuild version 18.6.3+84d3e95b4 for .NET Framework
+
+  bsp_zlib121.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_zlib121.lib
+  bsp_lua511.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_lua511.lib
+  native_render_batch_lifetime.cpp
+  native_surface_owner.cpp
+  unit_forces.cpp
+  Generating Code...
+  bsp_core.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_core.lib
+  math_tests.cpp
+  bsp_native_math_tests.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_native_math_tests.exe
+  bsp_startup_probe.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_startup_probe.exe
+  bsp_platform_probe.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_platform_probe.exe
+  bsp_d3d9_probe.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_d3d9_probe.exe
+  bsp_math_tests.vcxproj -> J:\PROG\battlestations-pacific-decompile\build\win32\Release\bsp_math_tests.exe
+Test project J:/PROG/battlestations-pacific-decompile/build/win32
+    Start 1: reconstructed_math
+1/2 Test #1: reconstructed_math ...............   Passed    0.03 sec
+    Start 2: native_math_differential
+2/2 Test #2: native_math_differential .........   Passed    0.03 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.11 sec
