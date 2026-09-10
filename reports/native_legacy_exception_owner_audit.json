@@ -1,0 +1,1053 @@
+{
+  "schema_version": 1,
+  "packet": "native_legacy_exception_owner",
+  "captured_utc": "2026-09-10T22:44:23.979682+00:00",
+  "base_commit": "b03e27385ff69211e80f30fe685e797c4457354d",
+  "baseline_tree_matches_main_commit": "52012c4",
+  "status": "five_complete_native_owners_reconstructed_build_and_focused_native_fixture_tested",
+  "owned_files": [
+    "include/bsp/native_legacy_exception_owner.hpp",
+    "src/native_legacy_exception_owner.cpp",
+    "docs/NATIVE_LEGACY_EXCEPTION_OWNER.md",
+    "reports/native_legacy_exception_owner_audit.json"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00411700",
+      "symbol": "construct_native_legacy_logic_error_00411700",
+      "proposed_ghidra_name": "BSP_NativeLegacyLogicError_Construct",
+      "original_abi": "ECX actual destination; stack source NativeLegacySboStringStorage address; RET4; EAX destination",
+      "contract": "Default base: clear message and ownership, publish D69370. Publish D69248. Set member length0 then capacity15, arm state0 before first NUL store, then assign source substring offset0/countFFFFFFFF. Failed member copy cleans base only.",
+      "native_dependencies": [
+        "00bf632f",
+        "00408120",
+        "00bf6454"
+      ],
+      "complete_span": {
+        "address": "00411700",
+        "end_exclusive": "0041175f",
+        "length": 95,
+        "kind": "code",
+        "disk_offset": 71424,
+        "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+        "original_hex": "6aff6818e0c50064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+        "live_ghidra_matches_disk": true
+      },
+      "old_ghidra_annotation": {
+        "address": "00411700",
+        "function_name": "FUN_00411700"
+      },
+      "status": "complete_reconstruction_build_and_focused_native_fixture_tested",
+      "uncertainty": "Descriptive C++ name is a hypothesis. Raw table words are data only; this is not native throw/ABI compatibility or game validation."
+    },
+    {
+      "address": "00411780",
+      "symbol": "destroy_native_legacy_logic_error_00411780",
+      "proposed_ghidra_name": "BSP_NativeLegacyLogicError_Destroy",
+      "original_abi": "ECX actual owner; RET0; no semantic result",
+      "contract": "Publish D69248. Free member heap at capacity>=16; after return reset capacity15/length0/firstNUL, then destroy current base. Preserve base message/ownership fields and do not free owner.",
+      "native_dependencies": [
+        "00bf65ac",
+        "00bf6454"
+      ],
+      "complete_span": {
+        "address": "00411780",
+        "end_exclusive": "004117b2",
+        "length": 50,
+        "kind": "code",
+        "disk_offset": 71552,
+        "sha256": "8490cd3c81f5f5b9fe0419d9b86450f6cfcfcff186fb0de91b56c7b36fc199f5",
+        "original_hex": "568bf1c7064892d600837e2410720c8b461050e8144e7e0083c40433c0c746240f0000008946208846108bce5ee9a24c7e00",
+        "live_ghidra_matches_disk": true
+      },
+      "old_ghidra_annotation": {
+        "address": "00411780",
+        "function_name": "FUN_00411780"
+      },
+      "status": "complete_reconstruction_build_and_focused_native_fixture_tested",
+      "uncertainty": "Descriptive C++ name is a hypothesis. Raw table words are data only; this is not native throw/ABI compatibility or game validation."
+    },
+    {
+      "address": "004117c0",
+      "symbol": "scalar_delete_native_legacy_logic_error_004117c0",
+      "proposed_ghidra_name": "BSP_NativeLegacyLogicError_ScalarDelete",
+      "original_abi": "ECX actual owner; stack flags; RET4; EAX original owner even when freed",
+      "contract": "Perform full ordinary destruction, then flags bit0 optionally frees actual owner. Preserve both returning-free continuations and return original address.",
+      "native_dependencies": [
+        "00bf65ac",
+        "00bf6454"
+      ],
+      "complete_span": {
+        "address": "004117c0",
+        "end_exclusive": "00411807",
+        "length": 71,
+        "kind": "code",
+        "disk_offset": 71616,
+        "sha256": "d5a155f5fe810a4f2b09601226aa838a8647524489e416bc6878a89bbbd618f5",
+        "original_hex": "568bf1c7064892d600837e2410720c8b461050e8d44d7e0083c40433c0c746240f0000008946208bce884610e8634c7e00f644240801740956e8ae4d7e0083c4048bc65ec20400",
+        "live_ghidra_matches_disk": true
+      },
+      "old_ghidra_annotation": {
+        "address": "004117c0",
+        "function_name": "CG_scalar_deleting_dtor_004117c0"
+      },
+      "status": "complete_reconstruction_build_and_focused_native_fixture_tested",
+      "uncertainty": "Descriptive C++ name is a hypothesis. Raw table words are data only; this is not native throw/ABI compatibility or game validation."
+    },
+    {
+      "address": "004118d0",
+      "symbol": "copy_native_legacy_logic_error_004118d0",
+      "proposed_ghidra_name": "BSP_NativeLegacyLogicError_Copy",
+      "original_abi": "ECX actual destination; stack source owner address; RET4; EAX destination",
+      "contract": "Copy base while owner state is -1. Publish D69248; set member capacity15 then length0, arm state0 before first NUL store, and copy full member substring. Member failure destroys base only; base-copy failure has no owner cleanup.",
+      "native_dependencies": [
+        "00bf63a6",
+        "00408120",
+        "00bf6454"
+      ],
+      "complete_span": {
+        "address": "004118d0",
+        "end_exclusive": "00411935",
+        "length": 101,
+        "kind": "code",
+        "disk_offset": 71888,
+        "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+        "original_hex": "6aff6858e0c50064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+        "live_ghidra_matches_disk": true
+      },
+      "old_ghidra_annotation": {
+        "address": "004118d0",
+        "function_name": "FUN_004118d0"
+      },
+      "status": "complete_reconstruction_build_and_focused_native_fixture_tested",
+      "uncertainty": "Descriptive C++ name is a hypothesis. Raw table words are data only; this is not native throw/ABI compatibility or game validation."
+    },
+    {
+      "address": "00411940",
+      "symbol": "copy_native_legacy_length_error_00411940",
+      "proposed_ghidra_name": "BSP_NativeLegacyLengthError_Copy",
+      "original_abi": "ECX actual destination; stack source owner address; RET4; EAX destination",
+      "contract": "Call full logic-error copy; publish D69260 only after successful return.",
+      "native_dependencies": [
+        "004118d0"
+      ],
+      "complete_span": {
+        "address": "00411940",
+        "end_exclusive": "00411959",
+        "length": 25,
+        "kind": "code",
+        "disk_offset": 72000,
+        "sha256": "70437509a99231553565df048ed07fdfa6e166270e55daaeb8bd8b82fc1eb1ca",
+        "original_hex": "8b44240456508bf1e883ffffffc7066092d6008bc65ec20400",
+        "live_ghidra_matches_disk": true
+      },
+      "old_ghidra_annotation": {
+        "function_name": null,
+        "note": "No Ghidra function exists at entry; exact 25-byte installed body is verified separately."
+      },
+      "status": "complete_reconstruction_build_and_focused_native_fixture_tested",
+      "uncertainty": "Descriptive C++ name is a hypothesis. Raw table words are data only; this is not native throw/ABI compatibility or game validation."
+    }
+  ],
+  "storage": {
+    "native_size": 40,
+    "native_size_hex": "28",
+    "pointer_width": 4,
+    "fields": {
+      "00": "native vtable address DWORD",
+      "04": "base char* message",
+      "08": "base ownership DWORD, any nonzero value owns",
+      "0c": "existing NativeLegacySboStringStorage, 28 bytes",
+      "10": "member inline buffer / heap pointer",
+      "20": "member string length",
+      "24": "member string capacity"
+    },
+    "static_asserts": [
+      "sizeof owner 0x28",
+      "base message offset4",
+      "base ownership offset8",
+      "member offset0C",
+      "trivially default constructible",
+      "trivially copyable"
+    ],
+    "raw_lifetime": "Default initialize NativeLegacyExceptionStorage without parentheses; no field initialization. Functions then perform only observed native writes, preserving member leading DWORD and unused inline bytes.",
+    "raw_dependency_correction": "Main 52012c4 removes four SBO convenience member defaults and asserts trivial default construction. No copied second string implementation or snapshot restoration.",
+    "native_vtable_words": {
+      "base": "00d69370",
+      "logic_error": "00d69248",
+      "length_error": "00d69260"
+    },
+    "vtable_limit": "Verified native address data only, not callable host C++ tables or host std::exception type."
+  },
+  "base_library_contracts": [
+    {
+      "address": "00bf632f",
+      "existing_library_identity": "std::exception default constructor",
+      "complete_span": {
+        "address": "00bf632f",
+        "end_exclusive": "00bf6340",
+        "length": 17,
+        "kind": "code",
+        "disk_offset": 8348463,
+        "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+        "original_hex": "8bc18360040083600800c7007093d600c3",
+        "live_ghidra_matches_disk": true
+      },
+      "behavior": "Clear +4, clear +8, publish D69370."
+    },
+    {
+      "address": "00bf63a6",
+      "existing_library_identity": "std::exception copy constructor",
+      "complete_span": {
+        "address": "00bf63a6",
+        "end_exclusive": "00bf63fe",
+        "length": 88,
+        "kind": "code",
+        "disk_offset": 8348582,
+        "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+        "original_hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+        "live_ghidra_matches_disk": true
+      },
+      "behavior": "Publish base table; capture/copy source ownership, capture source message; borrowed pointer shares, owned null stores null. Owned nonnull: captured strlen+1, nullable malloc, publish returned pointer even on null, then reload source.message and strcpy_s into captured allocation with captured byte count. Ignore secure-copy return. Preserve source/destination callback repairs.",
+      "concrete_libraries": [
+        "std::strlen",
+        "std::malloc",
+        "strcpy_s"
+      ],
+      "allocator_limit": "Nullable CRT allocation boundary, not throwing singleton allocation; native heap internals/new-mode configuration are not reconstructed."
+    },
+    {
+      "address": "00bf6454",
+      "existing_library_identity": "std::exception destructor",
+      "complete_span": {
+        "address": "00bf6454",
+        "end_exclusive": "00bf646a",
+        "length": 22,
+        "kind": "code",
+        "disk_offset": 8348756,
+        "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+        "original_hex": "83790800c7017093d6007409ff7104e86039000059c3",
+        "live_ghidra_matches_disk": true
+      },
+      "behavior": "Capture/test ownership before publishing D69370; for nonzero ownership free current message, including null; no later message/flag reset.",
+      "concrete_libraries": [
+        "std::free"
+      ]
+    }
+  ],
+  "exception_scopes": [
+    {
+      "owner": "00411700",
+      "native_handler": "00c5e018",
+      "func_info": "00d83f74",
+      "unwind_map": "00d83f6c",
+      "state": 0,
+      "unwind_target": "00c5e010",
+      "cleanup": "Only 00BF6454 on captured owner; no member destructor.",
+      "armed_before": "0041173e first NUL store",
+      "before_scope": "Default base construction, logic table, member length0/capacity15."
+    },
+    {
+      "owner": "004118d0",
+      "native_handler": "00c5e058",
+      "func_info": "00d84024",
+      "unwind_map": "00d8401c",
+      "state": 0,
+      "unwind_target": "00c5e050",
+      "cleanup": "Only 00BF6454 on captured owner; no member destructor.",
+      "armed_before": "00411918 first NUL store",
+      "before_scope": "Entire base copy (state -1), logic table, member capacity15/length0.",
+      "base_failure": "A throwing base strcpy_s handler does not run owner cleanup and member initialization has not occurred."
+    }
+  ],
+  "shared_dependencies": [
+    {
+      "native_address": "00408120",
+      "symbol": "native_legacy_sbo_string_assign_substring_00408120",
+      "role": "Actual existing full member-string copy at offset0/countFFFFFFFF, with its own retained failure behavior."
+    },
+    {
+      "native_address": "004072d0",
+      "symbol": "native_legacy_sbo_string_destroy_004072d0",
+      "role": "Existing actual member heap release/reset equivalent to the native owner-inlined sequence."
+    },
+    {
+      "native_address": "00bf65ac",
+      "symbol": "singleton_lifetime_free",
+      "role": "Existing real CRT free boundary for member/owner disposal."
+    }
+  ],
+  "body_corrections": [
+    {
+      "address": "00411798",
+      "correction": "ADD ESP,4 continuation after member free, followed by complete member reset and base tail jump."
+    },
+    {
+      "address": "004117d8",
+      "correction": "ADD ESP,4 continuation after member free, followed by complete member reset/base destructor."
+    },
+    {
+      "address": "004117fe",
+      "correction": "ADD ESP,4 continuation after optional owner free, followed by original-owner EAX result and RET4."
+    },
+    {
+      "address": "00411940",
+      "correction": "No Ghidra function existed when queried; complete original 25-byte copy wrapper verified independently. Primary may define the exact entry/extent before annotation."
+    }
+  ],
+  "verification": {
+    "project_guard": "Every byte query uses bsp.py ghidra bytes, verifying C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe before the read.",
+    "byte_spans": {
+      "complete_code": 13,
+      "hook_entry_preimages": 8,
+      "data": 5,
+      "remaining_support": 8,
+      "all_match_current_ghidra_and_installed_binary": true
+    },
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": 8,
+      "total": 8
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "passed": true,
+      "ctest_passed": 2,
+      "ctest_total": 2,
+      "registration": "Only new owner source is registered through ignored local/exception_owner_sources.cmake. All dependencies are committed in the isolated worktree; baseline tree equals main52012c4."
+    },
+    "native_fixture": {
+      "case_count": 1,
+      "command": "./local/build_native_exception_owner_check.ps1",
+      "pass_line": "PASS: one native five-owner sequence; 463 matching words; raw40-byte preimages, actual copies/free, nullable malloc, reentrant fields, scalar flags, native state0/base-only unwind and pre-state0 throw.",
+      "trace_words": 463,
+      "trace_file": "build/exception-owner-check/native_exception_owner_trace.txt",
+      "trace_sha256": "fd9374c3fc7cbe3a30507c8fb59f0e97a2cb36ac7463cc540b84c84133f94e40",
+      "trace_last_snapshot": [
+        "b0000002",
+        "0000000b",
+        "00000004",
+        "00000009",
+        "00000001",
+        "0000000b",
+        "00d69370",
+        "a0000001",
+        "00000000",
+        "afafafaf",
+        "726f6800",
+        "afaf0074",
+        "afafafaf",
+        "afafafaf",
+        "00000000",
+        "0000000f"
+      ],
+      "complete_original_bodies_executed": [
+        "00411700",
+        "00411780",
+        "004117c0",
+        "004118d0",
+        "00411940",
+        "00bf632f",
+        "00bf63a6",
+        "00bf6454",
+        "00bf93a4",
+        "00c5e010",
+        "00c5e050"
+      ],
+      "shared_string_boundary": "Both original and compiled owner paths call the same production NativeLegacySboStringStorage substring helper, independently native-tested by its owner. No duplicate string implementation.",
+      "native_eh_boundary": "Original two FuncInfo maps and cleanup funclets retained; four map pointers relocated. Two native handler registration immediates select fixture-image handler entries that dispatch real host __CxxFrameHandler3. Host-thrown Marker exceptions prove selected native cleanup scopes; full native throw ABI is not claimed.",
+      "allocation_boundary": "Temporarily intercept only the isolated executable malloc/free IAT slots, plus original native dependency entry bridges. Call saved real CRT allocation/free functions, except one explicitly injected null malloc result. Scope observations to tested operations and suppress observer trace allocation recursion. Restore IAT slots and invalid handler afterward.",
+      "native_address_data": "Native vtable DWORD immediates remain literal, unrelocated address data and are compared directly.",
+      "pointer_trace_canonicalization": "Normalize actual allocation addresses in base-message/member-pointer words and their retained upper bytes after first-NUL reset; preserve every other raw owner DWORD and validate copied string contents directly.",
+      "observations": [
+        "raw 40-byte placement default initialization writes nothing",
+        "inline and heap member construction preserve raw prefix and unused bytes",
+        "borrowed base-message pointer shared without ownership",
+        "owned base message uses real deep copy",
+        "source ownership7 captured while malloc callback changes source ownership0",
+        "source message reloaded after malloc callback, using captured original strlen+1 capacity",
+        "injected nullable base malloc publishes null and member construction continues",
+        "owned null base invokes actual free(nullptr)",
+        "returning member free sees old member fields and changes current base state",
+        "post-free member reset precedes current-base destruction",
+        "base free repairs remain after ordinary destructor returns",
+        "scalar flag2 retains owner; flags3 frees actual owner after member/base disposal",
+        "length copy publishes D69260 only after successful logic copy",
+        "member-copy exception selects original base-only state0 cleanup",
+        "length-copy member exception does not publish derived table",
+        "base-copy strcpy_s throw occurs before state0 and leaves member preimage untouched",
+        "returning strcpy_s handler repairs base fields and member copy continues"
+      ],
+      "invalid_handler_calls": 4,
+      "observed_free_calls": 9,
+      "observed_null_frees": 1,
+      "tracked_test_files_added": 0
+    },
+    "ghidra_mutations": 0,
+    "ledger_mutations": 0,
+    "manual_shared_metadata_edits": 0,
+    "game_execution": false,
+    "binary_abi_compatible": false
+  },
+  "fixture_relocations": {
+    "eh_data": [
+      {
+        "address": "00d83f70",
+        "expected": "00c5e010"
+      },
+      {
+        "address": "00d83f7c",
+        "expected": "00d83f6c"
+      },
+      {
+        "address": "00d84020",
+        "expected": "00c5e050"
+      },
+      {
+        "address": "00d8402c",
+        "expected": "00d8401c"
+      }
+    ],
+    "handler_immediates": [
+      {
+        "address": "00411703",
+        "expected": "00c5e018",
+        "target": "fixture constructor_handler -> actual host __CxxFrameHandler3 with relocated D83F74"
+      },
+      {
+        "address": "004118d3",
+        "expected": "00c5e058",
+        "target": "fixture copy_handler -> actual host __CxxFrameHandler3 with relocated D84024"
+      }
+    ],
+    "hook_entries": [
+      "00408120",
+      "00bf65ac",
+      "00bf9f1a",
+      "00bf9dc8",
+      "00c03de0",
+      "00bf66ef",
+      "00bffb8b",
+      "00bf6b43"
+    ]
+  },
+  "remaining_factories": [
+    {
+      "address": "004ce780",
+      "status": "inspected_not_implemented",
+      "contract": "Unsigned (1FFFFFFF-current_count) comparison against increment. Error constructs counted16 list<T> too long, then40byte logic owner, changes table to length-error, and passes D83F98 to BF6885. Temporary-string state0 arms only after counted assignment.",
+      "dependencies_now_concrete": [
+        "00408720",
+        "00411700",
+        "00411780",
+        "004118d0",
+        "00411940"
+      ],
+      "remaining": "Factory orchestration/unwind and true native throw/metadata machinery; do not strengthen arithmetic for corrupt counts."
+    },
+    {
+      "address": "00bf5695",
+      "status": "inspected_not_implemented",
+      "remaining": "00407290 C-string constructor, factory unwind, true D83F98 length-error throw machinery."
+    },
+    {
+      "address": "00bf56d4",
+      "status": "inspected_not_implemented",
+      "remaining": "00407290 C-string constructor, factory unwind, out-of-range table D6926C / ThrowInfo D863A8 and its derived operations."
+    },
+    {
+      "address": "00bf6885",
+      "status": "existing_library_entry_not_reimplemented",
+      "remaining": "Native throw dispatcher and binary exception object/type/catchable metadata behavior; no fake throw bridge introduced."
+    }
+  ],
+  "exact_spans": [
+    {
+      "address": "00411700",
+      "end_exclusive": "0041175f",
+      "length": 95,
+      "kind": "code",
+      "disk_offset": 71424,
+      "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+      "original_hex": "6aff6818e0c50064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00411780",
+      "end_exclusive": "004117b2",
+      "length": 50,
+      "kind": "code",
+      "disk_offset": 71552,
+      "sha256": "8490cd3c81f5f5b9fe0419d9b86450f6cfcfcff186fb0de91b56c7b36fc199f5",
+      "original_hex": "568bf1c7064892d600837e2410720c8b461050e8144e7e0083c40433c0c746240f0000008946208846108bce5ee9a24c7e00",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "004117c0",
+      "end_exclusive": "00411807",
+      "length": 71,
+      "kind": "code",
+      "disk_offset": 71616,
+      "sha256": "d5a155f5fe810a4f2b09601226aa838a8647524489e416bc6878a89bbbd618f5",
+      "original_hex": "568bf1c7064892d600837e2410720c8b461050e8d44d7e0083c40433c0c746240f0000008946208bce884610e8634c7e00f644240801740956e8ae4d7e0083c4048bc65ec20400",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "004118d0",
+      "end_exclusive": "00411935",
+      "length": 101,
+      "kind": "code",
+      "disk_offset": 71888,
+      "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+      "original_hex": "6aff6858e0c50064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00411940",
+      "end_exclusive": "00411959",
+      "length": 25,
+      "kind": "code",
+      "disk_offset": 72000,
+      "sha256": "70437509a99231553565df048ed07fdfa6e166270e55daaeb8bd8b82fc1eb1ca",
+      "original_hex": "8b44240456508bf1e883ffffffc7066092d6008bc65ec20400",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf632f",
+      "end_exclusive": "00bf6340",
+      "length": 17,
+      "kind": "code",
+      "disk_offset": 8348463,
+      "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+      "original_hex": "8bc18360040083600800c7007093d600c3",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf63a6",
+      "end_exclusive": "00bf63fe",
+      "length": 88,
+      "kind": "code",
+      "disk_offset": 8348582,
+      "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+      "original_hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf6454",
+      "end_exclusive": "00bf646a",
+      "length": 22,
+      "kind": "code",
+      "disk_offset": 8348756,
+      "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+      "original_hex": "83790800c7017093d6007409ff7104e86039000059c3",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf93a4",
+      "end_exclusive": "00bf9409",
+      "length": 101,
+      "kind": "code",
+      "disk_offset": 8360868,
+      "sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+      "original_hex": "8b4c24045333db3bcb565774088b7c24143bfb771be8cd6700006a165e89305353535353e822d3ffff83c4148bc6eb318b7424183bf375048819ebd98bd18a06880242463ac374034f75f33bfb75108819e8916700006a225989088bf1ebc033c05f5e5bc3",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00c5e010",
+      "end_exclusive": "00c5e018",
+      "length": 8,
+      "kind": "code",
+      "disk_offset": 8773648,
+      "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+      "original_hex": "8b4df0e93c84f9ff",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00c5e018",
+      "end_exclusive": "00c5e022",
+      "length": 10,
+      "kind": "code",
+      "disk_offset": 8773656,
+      "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15",
+      "original_hex": "b8743fd800e9218bf9ff",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00c5e050",
+      "end_exclusive": "00c5e058",
+      "length": 8,
+      "kind": "code",
+      "disk_offset": 8773712,
+      "sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+      "original_hex": "8b4df0e9fc83f9ff",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00c5e058",
+      "end_exclusive": "00c5e062",
+      "length": 10,
+      "kind": "code",
+      "disk_offset": 8773720,
+      "sha256": "7a72ae46a76082c602940eb6fef1fbb68b68b07feb036c6548fcaf85d2e84d5c",
+      "original_hex": "b82440d800e9e18af9ff",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00408120",
+      "end_exclusive": "00408125",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 33056,
+      "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+      "original_hex": "538b5c2408",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "original_hex": "e917380000",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf9f1a",
+      "end_exclusive": "00bf9f1f",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8363802,
+      "sha256": "5cda66d596638726fa3617fb7f791797871e45ad0ae221a318eafa8d5334a495",
+      "original_hex": "558b6c2408",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf9dc8",
+      "end_exclusive": "00bf9dcd",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8363464,
+      "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280",
+      "original_hex": "6a0c68f02d",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00c03de0",
+      "end_exclusive": "00c03de5",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8404448,
+      "sha256": "5f85ab0b310f40a69b5b6d3c69c1add39029bf41ce264cbd9e71975b31366573",
+      "original_hex": "8b4c2404f7",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf66ef",
+      "end_exclusive": "00bf66f4",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8349423,
+      "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+      "original_hex": "558becff35",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bffb8b",
+      "end_exclusive": "00bffb90",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8387467,
+      "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+      "original_hex": "e827560000",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf6b43",
+      "end_exclusive": "00bf6b48",
+      "length": 5,
+      "kind": "hook",
+      "disk_offset": 8350531,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "original_hex": "558bec83ec",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d83f6c",
+      "end_exclusive": "00d83f98",
+      "length": 44,
+      "kind": "data",
+      "disk_offset": 9977708,
+      "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794",
+      "original_hex": "ffffffff10e0c50022059319010000006c3fd800000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d8401c",
+      "end_exclusive": "00d84048",
+      "length": 44,
+      "kind": "data",
+      "disk_offset": 9977884,
+      "sha256": "a75d91d18050b85fd79822428ad231ae53eaa9f3690f53b95d52425b02ebffff",
+      "original_hex": "ffffffff50e0c50022059319010000001c40d800000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d69248",
+      "end_exclusive": "00d69250",
+      "length": 8,
+      "kind": "data",
+      "disk_offset": 9867848,
+      "sha256": "e10ccae2b5dcc6bbcbded9a4c3e85418befaf2d85536a9f7af2eb291d2ddcb11",
+      "original_hex": "6015410050154100",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d69260",
+      "end_exclusive": "00d69268",
+      "length": 8,
+      "kind": "data",
+      "disk_offset": 9867872,
+      "sha256": "aa94ce6bb47734f38297a04c9d0479503ab7496c94be6fe058f44399a2c9f84f",
+      "original_hex": "c017410050154100",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d69370",
+      "end_exclusive": "00d69378",
+      "length": 8,
+      "kind": "data",
+      "disk_offset": 9868144,
+      "sha256": "14a5be654af6b77fdcd1c4e78d6b3893cf6f16f8cfa23ccdda2da15058142f19",
+      "original_hex": "2a65bf006a64bf00",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "004ce780",
+      "end_exclusive": "004ce813",
+      "length": 147,
+      "kind": "support",
+      "disk_offset": 845696,
+      "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+      "original_hex": "64a1000000008b5424046aff68885ac60050648925000000008b410883ec4456beffffff1f2bf03bf25e73516a1068f838ce008d4c2408c74424200f000000c744241c00000000c644240c00e84f9ff3ff8d0424508d4c2420c744245000000000e81a2ff4ff68983fd8008d4c242051c74424246092d600e88880720003c28941088b4c244464890d0000000083c450c20400",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf5695",
+      "end_exclusive": "00bf56d3",
+      "length": 62,
+      "kind": "support",
+      "disk_offset": 8345237,
+      "sha256": "4be0df66d47a31a635e077583c46173356749da5b54d4a5660c8643e4f25beee",
+      "original_hex": "6a44b84a7dcc00e8cae70000687492d6008d4dd8e8e21b81ff8365fc008d45d8508d4db0e842c081ff68983fd8008d45b050c745b06092d600e8b2110000",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf56d4",
+      "end_exclusive": "00bf5712",
+      "length": 62,
+      "kind": "support",
+      "disk_offset": 8345300,
+      "sha256": "856eb0dad0a6a1d654ccd56e66dab5772a01e4bdc71d153672bd029a8726923f",
+      "original_hex": "6a44b86d7dcc00e88be70000688492d6008d4dd8e8a31b81ff8365fc008d45d8508d4db0e803c081ff68a863d8008d45b050c745b06c92d600e873110000",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00bf6885",
+      "end_exclusive": "00bf68cf",
+      "length": 74,
+      "kind": "support",
+      "disk_offset": 8349829,
+      "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05",
+      "original_hex": "558bec83ec208b450856576a0859beb093d6008d7de0f3a58945f88b450c85c05f8945fc5e740cf600087407c745f4004099018d45f450ff75f0ff75e4ff75e0ff158022ce00c9c20800",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d83f98",
+      "end_exclusive": "00d83fa8",
+      "length": 16,
+      "kind": "support",
+      "disk_offset": 9977752,
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "original_hex": "000000008017410000000000d43fd800",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d83fd4",
+      "end_exclusive": "00d8401c",
+      "length": 72,
+      "kind": "support",
+      "disk_offset": 9977812,
+      "sha256": "0a1de79f19047d416a59f59ce1b157aad0e0f193a3adfe5306a3da7961eccbcb",
+      "original_hex": "03000000e43fd8000040d8007c3ce000000000000080e00000000000ffffffff000000002800000040194100000000002080e00000000000ffffffff0000000028000000d0184100",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d863a8",
+      "end_exclusive": "00d863b8",
+      "length": 16,
+      "kind": "support",
+      "disk_offset": 9986984,
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "original_hex": "00000000b012440000000000e463d800",
+      "live_ghidra_matches_disk": true
+    },
+    {
+      "address": "00d69274",
+      "end_exclusive": "00d6929c",
+      "length": 40,
+      "kind": "support",
+      "disk_offset": 9867892,
+      "sha256": "df2ca14e6fb7420d97635a8d7b9305be2ec8fdefb3c4cde9356d72bccffbba74",
+      "original_hex": "737472696e6720746f6f206c6f6e6700696e76616c696420737472696e6720706f736974696f6e00",
+      "live_ghidra_matches_disk": true
+    }
+  ],
+  "native_transfers": [
+    {
+      "address": "0041171d",
+      "mnemonic": "call",
+      "target": "00bf632f"
+    },
+    {
+      "address": "00411746",
+      "mnemonic": "call",
+      "target": "00408120"
+    },
+    {
+      "address": "00411793",
+      "mnemonic": "call",
+      "target": "00bf65ac"
+    },
+    {
+      "address": "004117ad",
+      "mnemonic": "jmp",
+      "target": "00bf6454"
+    },
+    {
+      "address": "004117d3",
+      "mnemonic": "call",
+      "target": "00bf65ac"
+    },
+    {
+      "address": "004117ec",
+      "mnemonic": "call",
+      "target": "00bf6454"
+    },
+    {
+      "address": "004117f9",
+      "mnemonic": "call",
+      "target": "00bf65ac"
+    },
+    {
+      "address": "004118f3",
+      "mnemonic": "call",
+      "target": "00bf63a6"
+    },
+    {
+      "address": "0041191b",
+      "mnemonic": "call",
+      "target": "00408120"
+    },
+    {
+      "address": "00411948",
+      "mnemonic": "call",
+      "target": "004118d0"
+    },
+    {
+      "address": "00bf63c7",
+      "mnemonic": "call",
+      "target": "00c03de0"
+    },
+    {
+      "address": "00bf63d0",
+      "mnemonic": "call",
+      "target": "00bf9f1a"
+    },
+    {
+      "address": "00bf63e3",
+      "mnemonic": "call",
+      "target": "00bf93a4"
+    },
+    {
+      "address": "00bf63eb",
+      "mnemonic": "jmp",
+      "target": "00bf63f6"
+    },
+    {
+      "address": "00bf63f1",
+      "mnemonic": "jmp",
+      "target": "00bf63f6"
+    },
+    {
+      "address": "00bf6463",
+      "mnemonic": "call",
+      "target": "00bf9dc8"
+    },
+    {
+      "address": "00bf93b9",
+      "mnemonic": "call",
+      "target": "00bffb8b"
+    },
+    {
+      "address": "00bf93c8",
+      "mnemonic": "call",
+      "target": "00bf66ef"
+    },
+    {
+      "address": "00bf93d2",
+      "mnemonic": "jmp",
+      "target": "00bf9405"
+    },
+    {
+      "address": "00bf93de",
+      "mnemonic": "jmp",
+      "target": "00bf93b9"
+    },
+    {
+      "address": "00bf93f5",
+      "mnemonic": "call",
+      "target": "00bffb8b"
+    },
+    {
+      "address": "00bf9401",
+      "mnemonic": "jmp",
+      "target": "00bf93c3"
+    },
+    {
+      "address": "00c5e013",
+      "mnemonic": "jmp",
+      "target": "00bf6454"
+    },
+    {
+      "address": "00c5e01d",
+      "mnemonic": "jmp",
+      "target": "00bf6b43"
+    },
+    {
+      "address": "00c5e053",
+      "mnemonic": "jmp",
+      "target": "00bf6454"
+    },
+    {
+      "address": "00c5e05d",
+      "mnemonic": "jmp",
+      "target": "00bf6b43"
+    },
+    {
+      "address": "004ce7cc",
+      "mnemonic": "call",
+      "target": "00408720"
+    },
+    {
+      "address": "004ce7e1",
+      "mnemonic": "call",
+      "target": "00411700"
+    },
+    {
+      "address": "004ce7f8",
+      "mnemonic": "call",
+      "target": "00bf6885"
+    },
+    {
+      "address": "00bf569c",
+      "mnemonic": "call",
+      "target": "00c03e6b"
+    },
+    {
+      "address": "00bf56a9",
+      "mnemonic": "call",
+      "target": "00407290"
+    },
+    {
+      "address": "00bf56b9",
+      "mnemonic": "call",
+      "target": "00411700"
+    },
+    {
+      "address": "00bf56ce",
+      "mnemonic": "call",
+      "target": "00bf6885"
+    },
+    {
+      "address": "00bf56db",
+      "mnemonic": "call",
+      "target": "00c03e6b"
+    },
+    {
+      "address": "00bf56e8",
+      "mnemonic": "call",
+      "target": "00407290"
+    },
+    {
+      "address": "00bf56f8",
+      "mnemonic": "call",
+      "target": "00411700"
+    },
+    {
+      "address": "00bf570d",
+      "mnemonic": "call",
+      "target": "00bf6885"
+    }
+  ],
+  "integration": {
+    "primary_owns": [
+      "register src/native_legacy_exception_owner.cpp",
+      "define missing 00411940 exact function",
+      "repair listed false-free continuations",
+      "Ghidra names/comments/export refresh/save",
+      "name/reconstruction/tag ledgers and packet metadata"
+    ],
+    "public_api_frozen": true,
+    "retained_library_names": [
+      "std::exception base constructor/copy/destructor",
+      "_malloc",
+      "_free",
+      "_strlen",
+      "_strcpy_s",
+      "__CxxThrowException",
+      "__CxxFrameHandler3"
+    ]
+  },
+  "artifact_hashes": {
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_exception_owner.cpp": "1738ea975779ec203f1ff639ea7407754462b174b783141ffb523174d6e34452",
+    "docs/NATIVE_LEGACY_EXCEPTION_OWNER.md": "89f590e0a071948f4f22e9f94cb31f66009c0a87c9ee8683d3fcdf9c0bfdd8ec",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+    "local/audit_exception_owner_bytes.py": "b5c275bfd66539ce082a8df42ab4ed06a362159be49d15bcad0d60d8d67a0020",
+    "local/verified_exception_owner_spans.json": "679ace23fafc9ee0852ca9126bc8cceb297ea8442c91cd50b7290574234cabbc",
+    "local/exception_owner_old_annotations.json": "75fbd731b82ea518eb1342213ac7074c07c31f8cc436b6900079293dfdcf7bdb",
+    "local/exception_owner_spans.hpp": "1e7da21d2d01b1adcf1578bbed20477ac610605a6d5137e692c1530821de30bf",
+    "local/native_exception_owner_check.cpp": "ec05cc99f9750937b643c0bdbda5039f26c3a3bee59a8e29e2fe8ba9603670d7",
+    "local/build_native_exception_owner_check.ps1": "8d0597f8b9126af377db1b3bb4a311c4234612aa2b8a531ebb8c667b8cad54b1",
+    "local/exception_owner_sources.cmake": "d8086e7644116cf58003537d8f241e515d2de1f2e00e2fb9ead05996ed158c2e",
+    "local/verify_seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/build.log": "16939655686d18ad8bc0432ed245deee23f856236da9683e63c1e0895f802535",
+    "local/native_fixture.log": "08ae321b126bf9dff7b6a8a7b979434d351dfe532dbb19f3c51a1a4837d9eb70",
+    "build/exception-owner-check/native_exception_owner_trace.txt": "fd9374c3fc7cbe3a30507c8fb59f0e97a2cb36ac7463cc540b84c84133f94e40",
+    "build/exception-owner-check/native_exception_owner_check.exe": "947adabd3ff1ae381382860d9d8650fd187cef4aaae594565c97e95633667a6d"
+  },
+  "limits": [
+    "Raw storage and typed C++ interfaces only, not register/stack/native throw ABI replacements.",
+    "Host exception handler bridge uses original native owner cleanup data; no native thrown object/catchable-type interoperability claim.",
+    "Native malloc internals/new-mode configuration and actual OOM are not reproduced; null is an explicit fixture injection.",
+    "Shared SBO helper retains its documented semantic std::length_error/out_of_range boundaries; no native error-factory throw bridge added here.",
+    "No exhaustive malformed pointer/alias graph or concurrent-access validation.",
+    "Some partial allocations intentionally remain after native pre-state0 or returning-handler behavior; fixture separately reclaims its retained allocations.",
+    "No game, vtable dispatch, what(), or rendering validation."
+  ]
+}
