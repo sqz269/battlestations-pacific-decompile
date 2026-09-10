@@ -366,3 +366,7 @@ There is no ocean failure path: the `Ocean initialization failed` literal at `00
 ## Correction from docs/SCENE_ENTITY_FACTORY.md
 
 `004f2800` is the scene class-table registration (26 classes through `004ee250`), superseding the earlier `BSP_Scene_ResolveNamedObjects` reading.
+
+## Correction from docs/MISSION_LUA_HOST.md
+
+`008860b0` is `__thiscall`, settling the provisional convention above. The mission Lua state opens seven standard libraries (no `package`, so no `require`), installs 560 bindings as plain globals, and a failing script file leaves nothing behind (errfunc 0, the error string allocated and released unread); the `game+644h` guard is a signed unclamped depth raised by `004dfb70` around the mission-script block and read only by the `Loading_Start` and `Loading_Finish` bindings. The Lua 5.1.1 build uses the register convention (`lua_State*` in ECX, first integer argument in EDX), which the rebuild must match to link the matched library.
