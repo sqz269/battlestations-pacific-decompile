@@ -638,6 +638,8 @@ def ghidra_cmd(args):
             hits = [i for i, line in enumerate(lines) if line.lower().startswith(a + ':')]
             if hits and hits[0]:
                 text = chr(10).join(lines[hits[0]:])
+            elif not hits and lines and not lines[0].lower().startswith(a + ':'):
+                print(f'({a} is not an instruction start in the stored listing; showing the enclosing function from its head)')
         cap(text, args.lines, args.start)
     elif sub == 'export':
         addresses = [norm(x) for x in args.addresses]

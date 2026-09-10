@@ -39,6 +39,12 @@ and pushes. It stops before touching `main` on any semantic conflict or build fa
 commits take their trailer lines from `local/commit-trailer.txt`. Afterwards retire the branch
 with `python tools/bsp.py worktree remove <name> --delete-branch`.
 
+When a worker names a routine it read from the raw listing (no Ghidra function), the integrator
+defines it first with `python tools/ghidra_define_function.py <start> <end_exclusive> [--record reports/<x>.json]`,
+which verifies the bytes against the disk image, disassembles the range explicitly and creates the function
+without re-running flow discovery, under the write lock; then it re-runs the annotate step. The write lock
+is reclaimed automatically when its holder process is gone.
+
 ## Leases
 
 A lease says who is working on which addresses, ranges and output files. The registry lives

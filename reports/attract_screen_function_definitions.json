@@ -1,0 +1,52 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00689c00",
+    "end_address": "00689c5c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00689c00",
+    "end_address": "00689c5b",
+    "bytes_disassembled": 92,
+    "message": "Successfully disassembled 92 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00689c00",
+    "disassemble_first": false,
+    "name": "BSP_AttractScreen_Deactivate"
+   },
+   "result": {
+    "success": true,
+    "address": "00689c00",
+    "function_name": "BSP_AttractScreen_Deactivate",
+    "entry_point": "00689c00",
+    "body_size": 92,
+    "message": "Function created successfully at 00689c00",
+    "warnings": [
+     "Function name 'BSP_AttractScreen_Deactivate' \u2014 main part 'AttractScreen_Deactivate' is not PascalCase. Expected: AttractscreenDeactivate",
+     "Function name 'BSP_AttractScreen_Deactivate' \u2014 main part 'AttractScreen_Deactivate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_AttractScreen_Deactivate' does not start with a recognized verb. First word 'Attract' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00689c00",
+   "end": "00689c5c",
+   "name": "BSP_AttractScreen_Deactivate",
+   "after": "Function: BSP_AttractScreen_Deactivate at 00689c00\nSignature: undefined BSP_AttractScreen_Deactivate(void)\nEntry: 00689c00\nBody: 00689c00 - 00689c5b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  }
+ ]
+}

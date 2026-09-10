@@ -235,7 +235,7 @@ class ghidra_lock:
                     current = json.loads(self.path.read_text(encoding='utf-8'))
                 except (OSError, ValueError):
                     current = {}
-                stale = not current or parse(current['expires']) < now()
+                stale = not current or parse(current['expires']) < now() or not pid_alive(current.get('pid'))
                 mine = current.get('owner') == self.owner and current.get('pid') == os.getpid()
                 if stale or mine:
                     try:
@@ -256,6 +256,32 @@ class ghidra_lock:
         except (OSError, ValueError):
             pass
         return False
+
+
+def pid_alive(pid):
+    """True when the process exists (or cannot be inspected); a lock whose holder died is stale."""
+    if not isinstance(pid, int) or pid <= 0:
+        return False
+    if os.name == 'nt':
+        import ctypes
+        kernel32 = ctypes.windll.kernel32
+        handle = kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return ctypes.get_last_error() == 5  # access denied: exists, owned by someone else
+        try:
+            code = ctypes.c_ulong()
+            if kernel32.GetExitCodeProcess(handle, ctypes.byref(code)):
+                return code.value == 259  # STILL_ACTIVE
+            return True
+        finally:
+            kernel32.CloseHandle(handle)
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
 
 
 def lock_status():
