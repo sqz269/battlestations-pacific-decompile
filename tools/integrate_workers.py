@@ -141,6 +141,27 @@ for branch in branches:
     print(f'merged {branch} ({ahead} commits)')
 if not merged:
     sys.exit('nothing merged')
+
+
+def duplicate_definitions(tree):
+    """Top-level struct/class/enum names and inline constexpr constants declared in more than one
+    header under include/bsp: two packets that branched apart can declare the same name and only
+    collide once a translation unit includes both (MissionGroup, VehicleClassKindRow)."""
+    import re
+    where = {}
+    pattern = re.compile(r'^(?:struct|class|enum class|enum|union)\s+(\w+)\s*(?::|\{)|^inline\s+constexpr\s+[\w:<>]+\s+(k\w+)\b', re.M)
+    for header in sorted((tree / 'include/bsp').glob('*.hpp')):
+        text = header.read_text(encoding='utf-8', errors='replace')
+        for m in pattern.finditer(text):
+            name = m.group(1) or m.group(2)
+            where.setdefault(name, set()).add(header.name)
+    return {name: sorted(files) for name, files in where.items() if len(files) > 1}
+
+
+dupes = duplicate_definitions(INTEGRATE)
+if dupes:
+    sys.exit('duplicate top-level definitions across headers (rename in the integrate worktree, commit there, rerun):\n'
+             + '\n'.join(f'  {name}: {files}' for name, files in sorted(dupes.items())))
 if not skip_build:
     print('building in the integrate worktree ...')
     build = run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(INTEGRATE / 'scripts/build.ps1')], INTEGRATE, check=False)
