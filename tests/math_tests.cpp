@@ -7,6 +7,7 @@
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
+#include "bsp/gui_widget_scene.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
@@ -959,6 +960,75 @@ int main() {
               && bsp::gui_widget_type_for_key_00aa2490("States")
                   == GuiWidgetType::None,
             "00AA2490 takes the suffix after the last underscore, folded");
+    }
+
+    {
+        // 00AA8450's fifth argument: a descendant takes the requested value only
+        // while the widget the change started at recurses (widget+75h). Without
+        // it a child that is hidden on its own node stays hidden when an
+        // ancestor is shown, which is the rule the walk exists to enforce.
+        struct TestHost final : GuiWidgetSceneHost {
+            std::vector<GuiWidgetTransform*> widgets{};
+            std::vector<GuiWidgetSceneFlags> state{};
+            std::vector<float> factor{};
+            std::vector<GuiWidgetTransform*> notified{};
+
+            std::size_t index(GuiWidgetTransform& w) {
+                for (std::size_t i = 0; i < widgets.size(); ++i) {
+                    if (widgets[i] == &w) return i;
+                }
+                return 0;
+            }
+            GuiWidgetSceneFlags& flags(GuiWidgetTransform& w) override {
+                return state[index(w)];
+            }
+            bool is_visible(GuiWidgetTransform& w) override {
+                return widget_is_visible(flags(w), factor[index(w)]);
+            }
+            void on_effective_visibility_changed(
+                GuiWidgetTransform& w, bool) override { notified.push_back(&w); }
+            void set_node_visibility_factor(void*, float, bool) override {}
+            void* create_scene_node(const char*) override { return nullptr; }
+            void* clone_scene_node(void*, std::int32_t) override { return nullptr; }
+            void set_node_parent(void*, void*) override {}
+            void unlink_and_release_node(void*) override {}
+            bool is_kind_of_glyph_owner(GuiWidgetTransform&) override { return false; }
+            void release_secondary_node(GuiWidgetTransform&) override {}
+            void set_active(GuiWidgetTransform&, bool) override {}
+            void refresh_local_bounds(GuiWidgetTransform&) override {}
+            void recompose_local_transform(GuiWidgetTransform&) override {}
+            GuiWidgetTransform* create_widget_of_type(
+                std::int32_t, GuiWidgetTransform&) override { return nullptr; }
+            void link_child(GuiWidgetTransform&, GuiWidgetTransform&) override {}
+        };
+
+        GuiWidgetTransform root{};
+        GuiWidgetTransform middle{};
+        GuiWidgetTransform leaf{};
+        root.children.push_back(&middle);
+        middle.parent = &root;
+        middle.children.push_back(&leaf);
+        leaf.parent = &middle;
+
+        int marker = 0;
+        TestHost host{};
+        host.widgets = {&root, &middle, &leaf};
+        host.state.assign(3, GuiWidgetSceneFlags{});
+        for (GuiWidgetSceneFlags& f : host.state) f.scene_node = &marker;
+        // The root is hidden, the middle is visible, the leaf is hidden on its
+        // own node.
+        host.factor = {0.0f, 1.0f, 0.0f};
+
+        set_widget_visible(root, true, host);
+        check(host.notified.size() == 2 && host.notified[0] == &root
+                && host.notified[1] == &middle,
+            "showing a non-recursing widget leaves a leaf hidden on its own node");
+
+        host.notified.clear();
+        host.state[0].visibility_recurses = true;
+        set_widget_visible(root, true, host);
+        check(host.notified.size() == 3 && host.notified[2] == &leaf,
+            "the recursing form carries the requested value to every descendant");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
