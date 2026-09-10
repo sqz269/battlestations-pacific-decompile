@@ -1,0 +1,622 @@
+{
+  "schema_version": 1,
+  "packet": "model_scene_attachment",
+  "captured_utc": "2026-09-10T03:56:34.414764+00:00",
+  "source": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "verification": "Every live query invokes Client.verify for project, program, language and image base",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00b6ed80",
+      "current_annotation": {
+        "address": "00b6ed80",
+        "function_name": "FUN_00b6ed80"
+      },
+      "current_prototype": "Signature: undefined FUN_00b6ed80(void)",
+      "body_end": "00b6ee0b",
+      "byte_length": 140,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "017e7433a6d5d7d2deafe5a855fa99a1981665f3c5da173eac53379f46413bf0",
+      "native_abi": "__thiscall void(node ECX, scene*, recursion byte); RET 8",
+      "proposed_name": "BSP_SceneNode_SetScene",
+      "proposed_comment": "Assign node+170 scene reference. Detach old scene, reload after type callback, publish requested pointer before InterlockedIncrement(+4), decrement reloaded old reference and virtual+0 on zero, reload and register current scene. Recursive virtual+50 child dispatch uses original request; reload child+3C after callback. No transform cache writes. Scene+14 is cLight registry; ordinary c3dObject can attach without registration.",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b83d50",
+      "current_annotation": {
+        "address": "00b83d50",
+        "function_name": "FUN_00b83d50"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83d50(void)",
+      "body_end": "00b83d8d",
+      "byte_length": 62,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "22235637ca06a01993cf9c467cc9e94a53a5c5215511846c1596ac150f0b40c6",
+      "native_abi": "__thiscall void(scene ECX, node*); RET 4",
+      "proposed_name": "BSP_Scene_RegisterLightNodeIfType",
+      "proposed_comment": "ECX scene, stack node. Get cLight runtime ID0109018C via00B7AA70 and call node virtual+0C; on true insert borrowed node pointer into scene+14 using unique list/linear-hash registry00B83700. c3dObject predicate006EF860 rejects this light ID after valid type initialization.",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b83ec0",
+      "current_annotation": {
+        "address": "00b83ec0",
+        "function_name": "FUN_00b83ec0"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83ec0(void)",
+      "body_end": "00b83ef2",
+      "byte_length": 51,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "22577f18aff4d96e27316d9bbeeb2045782c114341e41151b22ceb3186df5246",
+      "native_abi": "__thiscall void(scene ECX, node*); RET 4",
+      "proposed_name": "BSP_Scene_UnregisterLightNodeIfType",
+      "proposed_comment": "ECX scene, stack node. Gate node virtual+0C with cLight ID0109018C, then erase borrowed node pointer from scene+14 via00B83E50. No reference-count change in registry removal.",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b7aa70",
+      "current_annotation": {
+        "address": "00b7aa70",
+        "function_name": "TRIV_body_00b7aa70"
+      },
+      "current_prototype": "Signature: undefined TRIV_body_00b7aa70(void)",
+      "body_end": "00b7aa75",
+      "byte_length": 6,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "c4ba79732e951d238c97e9f695553228d33bdb4095d6e6f561135eb76e512514",
+      "native_abi": "EAX=global0109018C, no arguments; RET",
+      "proposed_name": "BSP_Light_GetRuntimeTypeToken",
+      "proposed_comment": "Return runtime ID0109018C for cLight, established by static initializer00CD80A0 and descriptor-name pointer00D62F14. Value is an allocated type ID, not a pointer or the c3dObject ID.",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b83700",
+      "current_annotation": {
+        "address": "00b83700",
+        "function_name": "FUN_00b83700"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83700(void)",
+      "body_end": "00b83bde",
+      "byte_length": 1247,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "1b26071679a7e57d754a31d4be8f688b14953c155cba5f1d6e3c75d981ae4db3",
+      "native_abi": "__thiscall iterator_bool*(registry ECX, output*, key*); RET 8",
+      "proposed_name": "BSP_SceneRegistry_InsertUnique",
+      "proposed_comment": "Unique unsigned-pointer-key insertion into sorted circular list partitioned by linear-hash boundaries. Split when active_count <= size/4 before duplicate check. Hash uses signed div at00C03DBE on key XOR DEADBEEF, wrapping remainder*41A7-quotient*B14 and negative correction. Allocate raw12-byte {next,prev,key}; no pointed-object retain. Returns iterator plus inserted byte through output.",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b83e50",
+      "current_annotation": {
+        "address": "00b83e50",
+        "function_name": "FUN_00b83e50"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83e50(void)",
+      "body_end": "00b83eb9",
+      "byte_length": 106,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "20bf883be6c0971198548fdc6e190b7d12813b66b4b1f1b5136b17514b992bf2",
+      "native_abi": "__thiscall uint32(registry ECX, key*); RET 4",
+      "proposed_name": "BSP_SceneRegistry_EraseKey",
+      "proposed_comment": "Equal-range00B82650, count00B820B0, erase-range00B83D90; return erased count. Unique container makes count0 or1. List entries borrow light-node pointers.",
+      "status": "reconstructed_new_cpp_interface"
+    },
+    {
+      "address": "00b823b0",
+      "current_annotation": {
+        "address": "00b823b0",
+        "function_name": "FUN_00b823b0"
+      },
+      "current_prototype": "Signature: undefined FUN_00b823b0(void)",
+      "body_end": "00b823e2",
+      "byte_length": 51,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "5181d9bcd37ed6c4336012414e7725bb5bba8dc156eda7bf3ef43b7b15bc2109",
+      "native_abi": "EAX=node*, stack next/previous/key*; RET 12",
+      "proposed_name": "BSP_SceneRegistry_AllocateListNode",
+      "proposed_comment": "Allocate12 bytes and initialize next+0,previous+4,copied uint32 pointer key+8. Return allocation in EAX, RET12. No node-value constructor/Interlocked retain.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b83d90",
+      "current_annotation": {
+        "address": "00b83d90",
+        "function_name": "FUN_00b83d90"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83d90(void)",
+      "body_end": "00b83e41",
+      "byte_length": 178,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "6bd698c2a1312267fd60fa1a7d50bf407091b9fd6fc3dad80fe639f65508906f",
+      "native_abi": "__thiscall iterator*(registry ECX, output*, first iterator pair, last iterator pair); RET 20",
+      "proposed_name": "BSP_SceneRegistry_EraseRange",
+      "proposed_comment": "Erase iterator range, using clear/reset00B83BE0 when range covers complete list, otherwise erase-list-entry00B827C0. Returns following iterator through output; RET20.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b82d30",
+      "current_annotation": {
+        "address": "00b82d30",
+        "function_name": "STL_xlen_throw_00b82d30"
+      },
+      "current_prototype": "Signature: undefined STL_xlen_throw_00b82d30(void)",
+      "body_end": "00b82dc2",
+      "byte_length": 147,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "204e3842172dc112536c0e6016162a6427d62f70ebcc1173c198ca02263439b1",
+      "native_abi": "__thiscall void(list ECX, increment); RET 4",
+      "proposed_name": "BSP_SceneRegistry_GrowListSizeChecked",
+      "proposed_comment": "Returns normally after adding increment to list+8 size. Throws length_error only if 3FFFFFFF-current_size < increment. Existing throw-site classification is not an always-noreturn contract.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b83490",
+      "current_annotation": {
+        "address": "00b83490",
+        "function_name": "FUN_00b83490"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83490(void)",
+      "body_end": "00b83539",
+      "byte_length": 170,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "134008a558bbdd897dac7f097c081790ca3c23b58fdf4818811abf65fc0372ba",
+      "native_abi": "__thiscall void(vector ECX, size, fill iterator pair); RET 12",
+      "proposed_name": "BSP_SceneRegistry_ResizeBucketBoundaries",
+      "proposed_comment": "Resize vector of8-byte debug iterator pairs to requested count; append fill iterator or erase tail. Application-specific use by linear-hash registry; allocator/capacity internals remain library dependencies.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b82650",
+      "current_annotation": {
+        "address": "00b82650",
+        "function_name": "FUN_00b82650"
+      },
+      "current_prototype": "Signature: undefined FUN_00b82650(void)",
+      "body_end": "00b827b8",
+      "byte_length": 361,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "b5a017170ce42f30a14baabf65e7d4b31a63d65e9ff9216625a8f553a4e2202b",
+      "native_abi": "__thiscall iterator_pair*(registry ECX, output*, key*); RET 8",
+      "proposed_name": "BSP_SceneRegistry_EqualRange",
+      "proposed_comment": "Hash pointer key into active linear-hash bucket; forward scan sorted unsigned keys to equal range. Return sentinel pair for absence. Iterator pairs contain list-owner pointer and raw node pointer.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b820b0",
+      "current_annotation": {
+        "address": "00b820b0",
+        "function_name": "STL_inst_00b820b0"
+      },
+      "current_prototype": "Signature: undefined STL_inst_00b820b0(void)",
+      "body_end": "00b820f5",
+      "byte_length": 70,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "e3ba2c2283f690a25f58f1a7f731280483244cb8983ac8aef5cac2a4e12893cd",
+      "native_abi": "cdecl void(first iterator pair, last iterator pair, count*, unused tag)",
+      "proposed_name": "BSP_SceneRegistry_CountIteratorRange",
+      "proposed_comment": "Increment caller count for each linked-list iterator before last; debug owner/sentinel checks. cdecl caller supplies four iterator words,count pointer,unused zero tag; plain RET.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00c03dbe",
+      "current_annotation": {
+        "address": "00c03dbe",
+        "function_name": "LIBCRT_unmatched_00c03dbe",
+        "comment": "[BSP inventory 00c03dbe] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "current_prototype": "Signature: undefined LIBCRT_unmatched_00c03dbe(void)",
+      "body_end": "00c03dd7",
+      "byte_length": 26,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "df118cb443457c43b726d48a154e976a2f74a99615211a703e2cc5b1932dfbfe",
+      "native_abi": "cdecl signed div(int dividend, int divisor); EAX quotient / EDX remainder; RET",
+      "proposed_name": null,
+      "proposed_comment": "CRT signed div-compatible routine: stack dividend/divisor, EAX quotient and EDX remainder; IDIV and correction preserve C signed remainder semantics. Called by pointer hash; retain existing library identity pending CRT symbol verification.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b827c0",
+      "current_annotation": {
+        "address": "00b827c0",
+        "function_name": "FUN_00b827c0"
+      },
+      "current_prototype": "Signature: undefined FUN_00b827c0(void)",
+      "body_end": "00b828f3",
+      "byte_length": 308,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "9f96ded1953c1e6bda8f837e56c16621d3b611604c3a560f0921f119fd1e4c49",
+      "native_abi": "__thiscall iterator*(registry ECX, output*, iterator pair); RET 12",
+      "proposed_name": "BSP_SceneRegistry_EraseListEntry",
+      "proposed_comment": "Repair continuation00B828DD=83C40483460CFF after _free00BF65AC: restore argument cleanup and size decrement at registry+0C. Update backward equal boundaries, unlink raw list entry, free only entry, return next iterator. Full body ends00B828F3; no light-node release.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b83be0",
+      "current_annotation": {
+        "address": "00b83be0",
+        "function_name": "FUN_00b83be0"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83be0(void)",
+      "body_end": "00b83c41",
+      "byte_length": 98,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "c448e825b5160d8b895c02f12b8c91a175027eb093205b644412e388337bb321",
+      "native_abi": "__thiscall void(registry ECX); RET",
+      "proposed_name": "BSP_SceneRegistry_ClearAndReset",
+      "proposed_comment": "Repair continuation00B83C0C=83C4043B5E048BC375EE5B after _free00BF65AC: continue freeing every raw list entry. Reset sentinel links and size0, assign nine sentinel iterator boundaries, mask1 and active_count1. Full body ends00B83C41; no light-node release.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    },
+    {
+      "address": "00b83560",
+      "current_annotation": {
+        "address": "00b83560",
+        "function_name": "FUN_00b83560"
+      },
+      "current_prototype": "Signature: undefined FUN_00b83560(void)",
+      "body_end": "00b835cb",
+      "byte_length": 108,
+      "bytes_match_installed_pe": true,
+      "range_sha256": "1748d0a1dc8b3ea9f32732f9c6bd2808e0da3ef1fc6c7b08803da34de41c7409",
+      "native_abi": "__thiscall void(vector ECX, count, iterator*); RET 8",
+      "proposed_name": "BSP_SceneRegistry_AssignBucketBoundaries",
+      "proposed_comment": "Replace boundary iterator-vector contents with count copies of supplied owner/node pair. Clear/reset caller supplies count9 and sentinel iterator.",
+      "status": "analyzed_dependency_behavior_used_by_cpp_container"
+    }
+  ],
+  "missing_leaf": {
+    "address": "006ef860",
+    "body_end": "006ef887",
+    "byte_length": 40,
+    "bytes_match_installed_pe": true,
+    "hex": "8b4c2404b8340009018da424000000003908740f83c0043d4000090175f232c0c20400b001c20400",
+    "range_sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd",
+    "current_preimage": "No function at address; no function plate comment available before definition",
+    "proposed_name": "BSP_Object_AcceptsRuntimeTypeToken",
+    "native_abi": "stack uint32 token; AL boolean; RET 4; ECX unused",
+    "behavior": "Compare stack token to values at 01090034,01090038,0109003C; return true on any match",
+    "proposed_comment": "40-byte RET4 leaf: AL true iff stack token equals one of c3dObject/c3dNode/cRoot IDs01090034/38/3C. It rejects cLight ID0109018C after valid one-time type initialization, so ordinary generated object scene attachment does not insert a light registry entry."
+  },
+  "free_continuations": [
+    {
+      "function": "00b827c0",
+      "call_site": "00b828d8",
+      "callee": "00bf65ac",
+      "preserve_callee_name": "_free",
+      "continuation": "00b828dd",
+      "continuation_hex": "83c40483460cff",
+      "decoded": "ADD ESP,4; ADD dword ptr [ESI+0C],-1",
+      "full_body_end": "00b828f3",
+      "comment": "Restore size decrement and join iterator-output epilogue at00b828e4; no node-value destruction"
+    },
+    {
+      "function": "00b83be0",
+      "call_site": "00b83c07",
+      "callee": "00bf65ac",
+      "preserve_callee_name": "_free",
+      "continuation": "00b83c0c",
+      "continuation_hex": "83c4043b5e048bc375ee5b",
+      "decoded": "ADD ESP,4; CMP EBX,[ESI+4]; MOV EAX,EBX; JNZ00b83c04; POP EBX",
+      "full_body_end": "00b83c41",
+      "comment": "Restore complete raw-list-node free loop before nine-boundary reset, mask1 and bucket_count1"
+    }
+  ],
+  "type_initialization_helpers": [
+    {
+      "address": "00b6f110",
+      "body_end": "00b6f14d",
+      "byte_length": 62,
+      "range_sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84",
+      "bytes_match_installed_pe": true,
+      "current_annotation": {
+        "address": "00b6f110",
+        "function_name": "FUN_00b6f110"
+      },
+      "current_prototype": "Signature: undefined FUN_00b6f110(void)",
+      "native_abi": "ECX=descriptor; no stack arguments; RET",
+      "proposed_name": "BSP_TypeInfo_Initialize3dNode",
+      "status": "analyzed_dependency_no_cpp_reconstruction",
+      "proposed_comment": "Guarded c3dNode type descriptor initializer: initialize cRoot, copy root ID, consume shared counter at singleton+4 for own ID and store name c3dNode."
+    },
+    {
+      "address": "006fac20",
+      "body_end": "006facd4",
+      "byte_length": 181,
+      "range_sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "bytes_match_installed_pe": true,
+      "current_annotation": {
+        "address": "006fac20",
+        "function_name": "FUN_006fac20"
+      },
+      "current_prototype": "Signature: undefined FUN_006fac20(void)",
+      "native_abi": "no arguments; EAX=shared counter owner; RET",
+      "proposed_name": "BSP_TypeId_GetCounterSingleton",
+      "status": "analyzed_dependency_no_cpp_reconstruction",
+      "proposed_comment": "Return shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter."
+    },
+    {
+      "address": "00bea780",
+      "body_end": "00bea7ab",
+      "byte_length": 44,
+      "range_sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac",
+      "bytes_match_installed_pe": true,
+      "current_annotation": {
+        "address": "00bea780",
+        "function_name": "FUN_00bea780"
+      },
+      "current_prototype": "Signature: undefined FUN_00bea780(void)",
+      "native_abi": "ECX=descriptor; no stack arguments; RET",
+      "proposed_name": "BSP_TypeInfo_InitializeRoot",
+      "status": "analyzed_dependency_no_cpp_reconstruction",
+      "proposed_comment": "Guarded cRoot descriptor initializer: consume shared singleton counter+4 and increment it, store own ID and name cRoot. Guard0109DB80."
+    }
+  ],
+  "type_initializers": [
+    {
+      "address": "00cd7d30",
+      "body_end": "00cd7d72",
+      "byte_length": 67,
+      "hex": "803d54ff0801007539b984db0901c60554ff080101c70598ff08017c2cd600e82c2af1ffa184db0901a394ff0801e8bd2ea2ff8b48048d5101895004890d90ff0801c3",
+      "range_sha256": "ad9661b51f59b26eac1d0e372855595bb4ff648261202ce2dbf67af8ec5b559a",
+      "bytes_match_installed_pe": true,
+      "current_function_preimage": [
+        "No function found for 00cd7d30",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00cd7d30'})"
+      ],
+      "type_name": "c3dNode",
+      "type_name_address": "00d62c7c",
+      "descriptor": "0108ff90",
+      "type_name_bytes_match_installed_pe": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_c3dNode",
+      "native_abi": "no arguments; guarded type initializer; RET",
+      "status": "analyzed_code_fragment_no_cpp_reconstruction",
+      "decoded_instructions": [
+        "00cd7d30: cmp byte ptr [0x108ff54], 0",
+        "00cd7d37: jne 0xcd7d72",
+        "00cd7d39: mov ecx, 0x109db84",
+        "00cd7d3e: mov byte ptr [0x108ff54], 1",
+        "00cd7d45: mov dword ptr [0x108ff98], 0xd62c7c",
+        "00cd7d4f: call 0xbea780",
+        "00cd7d54: mov eax, dword ptr [0x109db84]",
+        "00cd7d59: mov dword ptr [0x108ff94], eax",
+        "00cd7d5e: call 0x6fac20",
+        "00cd7d63: mov ecx, dword ptr [eax + 4]",
+        "00cd7d66: lea edx, [ecx + 1]",
+        "00cd7d69: mov dword ptr [eax + 4], edx",
+        "00cd7d6c: mov dword ptr [0x108ff90], ecx",
+        "00cd7d72: ret "
+      ]
+    },
+    {
+      "address": "00cd7e60",
+      "body_end": "00cd7eae",
+      "byte_length": 79,
+      "hex": "803d30000901007545b990ff0801c6053000090101c70540000901d42dd600e88c72e9ffa190ff08018b0d94ff0801a338000901890d3c000901e8812da2ff8b48048d5101895004890d34000901c3",
+      "range_sha256": "e0a5d5b6d445f843ab1176a9f82b23b636f9b4d625c25f0f3883169665122db9",
+      "bytes_match_installed_pe": true,
+      "current_function_preimage": [
+        "No function found for 00cd7e60",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00cd7e60'})"
+      ],
+      "type_name": "c3dObject",
+      "type_name_address": "00d62dd4",
+      "descriptor": "01090034",
+      "type_name_bytes_match_installed_pe": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+      "native_abi": "no arguments; guarded type initializer; RET",
+      "status": "analyzed_code_fragment_no_cpp_reconstruction",
+      "decoded_instructions": [
+        "00cd7e60: cmp byte ptr [0x1090030], 0",
+        "00cd7e67: jne 0xcd7eae",
+        "00cd7e69: mov ecx, 0x108ff90",
+        "00cd7e6e: mov byte ptr [0x1090030], 1",
+        "00cd7e75: mov dword ptr [0x1090040], 0xd62dd4",
+        "00cd7e7f: call 0xb6f110",
+        "00cd7e84: mov eax, dword ptr [0x108ff90]",
+        "00cd7e89: mov ecx, dword ptr [0x108ff94]",
+        "00cd7e8f: mov dword ptr [0x1090038], eax",
+        "00cd7e94: mov dword ptr [0x109003c], ecx",
+        "00cd7e9a: call 0x6fac20",
+        "00cd7e9f: mov ecx, dword ptr [eax + 4]",
+        "00cd7ea2: lea edx, [ecx + 1]",
+        "00cd7ea5: mov dword ptr [eax + 4], edx",
+        "00cd7ea8: mov dword ptr [0x1090034], ecx",
+        "00cd7eae: ret "
+      ]
+    },
+    {
+      "address": "00cd80a0",
+      "body_end": "00cd80ee",
+      "byte_length": 79,
+      "hex": "803d0d010901007545b990ff0801c6050d01090101c70598010901142fd600e84c70e9ffa190ff08018b0d94ff0801a390010901890d94010901e8412ba2ff8b48048d5101895004890d8c010901c3",
+      "range_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "bytes_match_installed_pe": true,
+      "current_function_preimage": [
+        "No function found for 00cd80a0",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00cd80a0'})"
+      ],
+      "type_name": "cLight",
+      "type_name_address": "00d62f14",
+      "descriptor": "0109018c",
+      "type_name_bytes_match_installed_pe": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_cLight",
+      "native_abi": "no arguments; guarded type initializer; RET",
+      "status": "analyzed_code_fragment_no_cpp_reconstruction",
+      "decoded_instructions": [
+        "00cd80a0: cmp byte ptr [0x109010d], 0",
+        "00cd80a7: jne 0xcd80ee",
+        "00cd80a9: mov ecx, 0x108ff90",
+        "00cd80ae: mov byte ptr [0x109010d], 1",
+        "00cd80b5: mov dword ptr [0x1090198], 0xd62f14",
+        "00cd80bf: call 0xb6f110",
+        "00cd80c4: mov eax, dword ptr [0x108ff90]",
+        "00cd80c9: mov ecx, dword ptr [0x108ff94]",
+        "00cd80cf: mov dword ptr [0x1090190], eax",
+        "00cd80d4: mov dword ptr [0x1090194], ecx",
+        "00cd80da: call 0x6fac20",
+        "00cd80df: mov ecx, dword ptr [eax + 4]",
+        "00cd80e2: lea edx, [ecx + 1]",
+        "00cd80e5: mov dword ptr [eax + 4], edx",
+        "00cd80e8: mov dword ptr [0x109018c], ecx",
+        "00cd80ee: ret "
+      ]
+    },
+    {
+      "address": "00cd80f0",
+      "body_end": "00cd8190",
+      "byte_length": 161,
+      "hex": "803d0e010901000f8593000000803d0d01090100b001a20e010901c705ac0109011c2fd6007543b990ff0801a20d010901c70598010901142fd600e8e06fe9ffa190ff08018b0d94ff0801a390010901890d94010901e8d52aa2ff8b48048d5101895004890d8c010901a18c0109018b0d900109018b1594010901a3a0010901890da40109018915a8010901e89f2aa2ff8b48048d5101895004890d9c010901c3",
+      "range_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "bytes_match_installed_pe": true,
+      "current_function_preimage": [
+        "No function found for 00cd80f0",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00cd80f0'})"
+      ],
+      "type_name": "cDirectionalLight",
+      "type_name_address": "00d62f1c",
+      "descriptor": "0109019c",
+      "type_name_bytes_match_installed_pe": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_cDirectionalLight",
+      "native_abi": "no arguments; guarded type initializer; RET",
+      "status": "analyzed_code_fragment_no_cpp_reconstruction",
+      "decoded_instructions": [
+        "00cd80f0: cmp byte ptr [0x109010e], 0",
+        "00cd80f7: jne 0xcd8190",
+        "00cd80fd: cmp byte ptr [0x109010d], 0",
+        "00cd8104: mov al, 1",
+        "00cd8106: mov byte ptr [0x109010e], al",
+        "00cd810b: mov dword ptr [0x10901ac], 0xd62f1c",
+        "00cd8115: jne 0xcd815a",
+        "00cd8117: mov ecx, 0x108ff90",
+        "00cd811c: mov byte ptr [0x109010d], al",
+        "00cd8121: mov dword ptr [0x1090198], 0xd62f14",
+        "00cd812b: call 0xb6f110",
+        "00cd8130: mov eax, dword ptr [0x108ff90]",
+        "00cd8135: mov ecx, dword ptr [0x108ff94]",
+        "00cd813b: mov dword ptr [0x1090190], eax",
+        "00cd8140: mov dword ptr [0x1090194], ecx",
+        "00cd8146: call 0x6fac20",
+        "00cd814b: mov ecx, dword ptr [eax + 4]",
+        "00cd814e: lea edx, [ecx + 1]",
+        "00cd8151: mov dword ptr [eax + 4], edx",
+        "00cd8154: mov dword ptr [0x109018c], ecx",
+        "00cd815a: mov eax, dword ptr [0x109018c]",
+        "00cd815f: mov ecx, dword ptr [0x1090190]",
+        "00cd8165: mov edx, dword ptr [0x1090194]",
+        "00cd816b: mov dword ptr [0x10901a0], eax",
+        "00cd8170: mov dword ptr [0x10901a4], ecx",
+        "00cd8176: mov dword ptr [0x10901a8], edx",
+        "00cd817c: call 0x6fac20",
+        "00cd8181: mov ecx, dword ptr [eax + 4]",
+        "00cd8184: lea edx, [ecx + 1]",
+        "00cd8187: mov dword ptr [eax + 4], edx",
+        "00cd818a: mov dword ptr [0x109019c], ecx",
+        "00cd8190: ret "
+      ]
+    },
+    {
+      "address": "00cd81a0",
+      "body_end": "00cd8240",
+      "byte_length": 161,
+      "hex": "803d0f010901000f8593000000803d0d01090100b001a20f010901c705c0010901302fd6007543b990ff0801a20d010901c70598010901142fd600e8306fe9ffa190ff08018b0d94ff0801a390010901890d94010901e8252aa2ff8b48048d5101895004890d8c010901a18c0109018b0d900109018b1594010901a3b4010901890db80109018915bc010901e8ef29a2ff8b48048d5101895004890db0010901c3",
+      "range_sha256": "06707603beaaa18a05655c4868e2691263c83ad4ce124ba7e106e6dde800f83c",
+      "bytes_match_installed_pe": true,
+      "current_function_preimage": [
+        "No function found for 00cd81a0",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00cd81a0'})"
+      ],
+      "type_name": "cPointLight",
+      "type_name_address": "00d62f30",
+      "descriptor": "010901b0",
+      "type_name_bytes_match_installed_pe": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_cPointLight",
+      "native_abi": "no arguments; guarded type initializer; RET",
+      "status": "analyzed_code_fragment_no_cpp_reconstruction",
+      "decoded_instructions": [
+        "00cd81a0: cmp byte ptr [0x109010f], 0",
+        "00cd81a7: jne 0xcd8240",
+        "00cd81ad: cmp byte ptr [0x109010d], 0",
+        "00cd81b4: mov al, 1",
+        "00cd81b6: mov byte ptr [0x109010f], al",
+        "00cd81bb: mov dword ptr [0x10901c0], 0xd62f30",
+        "00cd81c5: jne 0xcd820a",
+        "00cd81c7: mov ecx, 0x108ff90",
+        "00cd81cc: mov byte ptr [0x109010d], al",
+        "00cd81d1: mov dword ptr [0x1090198], 0xd62f14",
+        "00cd81db: call 0xb6f110",
+        "00cd81e0: mov eax, dword ptr [0x108ff90]",
+        "00cd81e5: mov ecx, dword ptr [0x108ff94]",
+        "00cd81eb: mov dword ptr [0x1090190], eax",
+        "00cd81f0: mov dword ptr [0x1090194], ecx",
+        "00cd81f6: call 0x6fac20",
+        "00cd81fb: mov ecx, dword ptr [eax + 4]",
+        "00cd81fe: lea edx, [ecx + 1]",
+        "00cd8201: mov dword ptr [eax + 4], edx",
+        "00cd8204: mov dword ptr [0x109018c], ecx",
+        "00cd820a: mov eax, dword ptr [0x109018c]",
+        "00cd820f: mov ecx, dword ptr [0x1090190]",
+        "00cd8215: mov edx, dword ptr [0x1090194]",
+        "00cd821b: mov dword ptr [0x10901b4], eax",
+        "00cd8220: mov dword ptr [0x10901b8], ecx",
+        "00cd8226: mov dword ptr [0x10901bc], edx",
+        "00cd822c: call 0x6fac20",
+        "00cd8231: mov ecx, dword ptr [eax + 4]",
+        "00cd8234: lea edx, [ecx + 1]",
+        "00cd8237: mov dword ptr [eax + 4], edx",
+        "00cd823a: mov dword ptr [0x10901b0], ecx",
+        "00cd8240: ret "
+      ]
+    }
+  ],
+  "type_identity_conclusion": {
+    "scene_plus_14_registry_type": "cLight and subtypes whose virtual+0C accepts cLight",
+    "leaf_006ef860_accepts": [
+      "c3dObject",
+      "c3dNode",
+      "cRoot"
+    ],
+    "leaf_rejects_initialized_light_id": true,
+    "basis": "c3dObject and cLight each copy same node/root ancestry but consume different own IDs from one monotonic counter; own IDs cannot equal inherited earlier IDs under valid initialization",
+    "assumptions": [
+      "one-time guarded initialization follows native contract",
+      "no uint32 counter wrap or global corruption"
+    ],
+    "numeric_type_ids": "not recovered or hardcoded",
+    "generated_object_behavior": "publish/retain scene reference and recurse; no insertion into scene light registry"
+  },
+  "ownership": {
+    "scene_pointer": "owning, Interlocked +4 counter, virtual+0 at zero",
+    "registry_node_pointer": "borrowed; list allocator copies raw key; erase/clear only free list entry",
+    "automatic_node_destructor_detach": "unresolved and not implemented",
+    "runtime_binding_lifetime": "explicit bind, detach while objects alive, remove traversable links, then unbind"
+  },
+  "validation": {
+    "native_ranges_match_installed_pe": true,
+    "native_seed_verification": "passed",
+    "repository_build": "scripts/build.ps1 passed;2/2 existing tests",
+    "new_source_compile": "MSVC Win32 /std:c++17 /W4 /WX /fp:strict /Od /RTC1 passed",
+    "focused_check": "PASS scene registry growth/erase, borrowed pointers, release reentry, type gate, child sibling reload",
+    "focused_check_scope": "single local scenario:40 borrowed entries, expansion past8 buckets, growth before duplicate, erase/reset, release reentry, c3dObject rejecting light ID, sibling reload",
+    "fixture_type_ids": "surrogate light7/object8/node9/root10 preserve proven unequal identity; positive branch uses separate test light virtual predicate",
+    "build_integration_boundary": "Worker CMake unchanged; new source compiled/exercised directly; primary owns CMake integration",
+    "abi_compatible": false,
+    "native_scene_differential_executed": false,
+    "game_validated": false
+  },
+  "remaining_dependencies": [
+    "native scene and node destructor policies beyond virtual+0 boundary",
+    "native light subtype virtual+0C implementations beyond established type descriptors",
+    "native debug-iterator/allocator low-memory diagnostic ABI",
+    "production runtime numeric type-ID binding"
+  ],
+  "source_sha256": {
+    "include/bsp/scene_attachment.hpp": "4e681a55a97a1631938b2281bc774a1c585004ebbcb0537a02d4df456c2d7dc1",
+    "src/scene_attachment.cpp": "2bae16b43b6a99a508d2c9e8e6a90c3ca116bd01741dc2f2ab5f7c6c1119bd94",
+    "docs/SCENE_NODE_ATTACHMENT.md": "fc17562eb837010a548eae61089b79ea45ca01589605aea6b60a3cf11994a928"
+  }
+}
