@@ -1,0 +1,565 @@
+{
+  "packet": "native_render_queue_rows",
+  "status": "full_actual_header_implementation_native_byte_differential_checked",
+  "document": "docs/NATIVE_RENDER_QUEUE_ROWS.md",
+  "base_commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+  "owned_files": [
+    "include/bsp/native_render_queue_rows.hpp",
+    "src/native_render_queue_rows.cpp",
+    "docs/NATIVE_RENDER_QUEUE_ROWS.md",
+    "reports/native_render_queue_rows_audit.json"
+  ],
+  "integration_boundary": {
+    "shared_metadata_changed": false,
+    "ghidra_changed": false,
+    "cmake_changed": false,
+    "tracked_tests_added": false,
+    "next_primary_actions": [
+      "Register src/native_render_queue_rows.cpp in normal build",
+      "Preserve captured previous names/comments while annotating the three complete entries",
+      "Repair specified free-call continuations under the Ghidra write lock; refresh exports",
+      "Add three function records and names to sharded ledgers, then reindex"
+    ]
+  },
+  "actual_layout": {
+    "header_input": "void* actual_header points to existing queue+24h bytes; no typed-header overlay or temporary owner",
+    "header_bytes": 12,
+    "header_fields": {
+      "00": "data pointer",
+      "04": "signed count",
+      "08": "signed capacity"
+    },
+    "queue_storage": "NativeRenderCommandQueueStorage",
+    "row_bytes": 20,
+    "row_fields": {
+      "00": "uint32 string length",
+      "04": "char* data",
+      "08": "float word0",
+      "0c": "float word1",
+      "10": "float word2"
+    },
+    "raw_row_declaration": "NativeRenderQueueRowStorage is trivial; no default initialization or destructor",
+    "address_arithmetic": "Win32 unsigned DWORD addition/multiplication, including wrap and computed-null branches",
+    "not_implemented": [
+      "Queue lifetime/getter",
+      "renderer/worker",
+      "scheduling",
+      "command execution"
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b1db30",
+      "proposed_name": "BSP_RenderQueueRows_Reserve",
+      "interface": "reserve_native_render_queue_rows_00b1db30(void*, NativeStringStorage&, int32_t)",
+      "source": "src/native_render_queue_rows.cpp",
+      "coverage": "complete body including native no-op unwind semantics",
+      "native_abi": "ECX existing header; stack signed capacity; RET4; EAX incidental",
+      "span": {
+        "start": "00b1db30",
+        "end_exclusive": "00b1dc66",
+        "bytes": 310
+      },
+      "contract": [
+        "Clamp request min1; return if current capacity sufficient; raw allocation(request*20) before publication.",
+        "Compare each iteration against current signed count; capture current source row for each nonnull computed destination.",
+        "Clear destination first8 bytes; skip string copying on equal row addresses.",
+        "Call actual0041DD40 with source length/preserve true; then reread captured source length, current destination length/source data/destination data.",
+        "Three ordered x87 FLD32/FSTP32 pairs at8,C,10; caller control word untouched.",
+        "Forward old-string releases reread current header data/count; capture nonnull data and current length+1; do not clear rows.",
+        "Reload current data for array free; publish replacement data then requested capacity after return; leave count unchanged."
+      ],
+      "exception_semantics": "Native CBCA80 computes current/end pointers and calls00401130, whose whole body is RET. No replacement allocation or completed-string rollback is added."
+    },
+    {
+      "address": "00b1e7f0",
+      "proposed_name": "BSP_RenderQueueRows_Resize",
+      "interface": "resize_native_render_queue_rows_00b1e7f0(void*, NativeStringStorage&, int32_t)",
+      "source": "src/native_render_queue_rows.cpp",
+      "coverage": "complete body",
+      "native_abi": "ECX existing header; stack signed count; RET4; EAX incidental",
+      "span": {
+        "start": "00b1e7f0",
+        "end_exclusive": "00b1e86d",
+        "bytes": 125
+      },
+      "contract": [
+        "Reserve if request exceeds capacity, then reload old count.",
+        "Growth rereads data for each computed nonnull row; zero only first8 bytes, preserve floats, do not increment header count during growth.",
+        "Shrink decrements actual count before reloading count/data and capturing tail string; release current length+1, retaining row words.",
+        "Reread count after release callback; final count=requested."
+      ]
+    },
+    {
+      "address": "00b1f150",
+      "proposed_name": "BSP_RenderQueueRows_Destroy",
+      "interface": "destroy_native_render_queue_rows_00b1f150(void*, NativeStringStorage&)",
+      "source": "src/native_render_queue_rows.cpp",
+      "coverage": "complete body including omitted epilogue",
+      "native_abi": "ECX existing header; RET; EAX incidental",
+      "span": {
+        "start": "00b1f150",
+        "end_exclusive": "00b1f167",
+        "bytes": 23
+      },
+      "contract": [
+        "Resize0",
+        "Reload actual data",
+        "Array-free it",
+        "Retain dangling data and capacity; no added reset"
+      ]
+    }
+  ],
+  "names_are_descriptive_hypotheses": true,
+  "existing_service_boundaries": [
+    {
+      "native": "0041dd40",
+      "host": "resize_native_string_header_0041dd40",
+      "binding": "Base e36b33d checked-in implementation; actual destination row header. No later uncommitted primary helpers copied."
+    },
+    {
+      "native": "00419cc0/00bd1120/00bd1510",
+      "host": "supplied NativeStringStorage",
+      "limits": [
+        "Repeated native pool-singleton lookup/first-use effects replaced by supplied storage",
+        "Native allocate/release flag1 is implicit in host interface",
+        "Host release is noexcept",
+        "Existing host pool/allocator bounds unchanged",
+        "Existing actual resize zero-byte native memcpy omission retained"
+      ]
+    },
+    {
+      "native": "00bf55be/00bf6989",
+      "host": "singleton_lifetime_allocate/free",
+      "binding": "Matching native_bytes/host_bytes with wrapped uint32 request*20; existing pointer_slots category; no new allocator owner"
+    }
+  ],
+  "evidence": {
+    "utc": "2026-09-10T23:32:56.995567+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Each bsp.py ghidra query verifies project/program/language/image base.",
+    "spans": [
+      {
+        "address": "00b1db30",
+        "end_exclusive": "00b1dc66",
+        "length": 310,
+        "raw_offset": 7461680,
+        "role": "full_reserve_with_return_continuation",
+        "sha256": "be1f4a4894392e502a965e6d43816b11a1fc5adff775f58688b17b465876e230",
+        "bytes_hex": "64a1000000006aff6897cacb00506489250000000083ec0c53568b74242483fe018bd97d0cc7442424010000008b7424243973080f8de90000008d04b65503c003c05750e8457a0d0033ed83c404396b048bf8897c2410896c24147e7b8d49008d44ad0003c003c08d34388974241833c93bf1894c242474478b3b03f83bf7890e894e0474248b076a01508bcee87e0190ff833f0074138b068b4f048b5604505152e8a99a0d0083c40cd94708d95e08d9470cd95e0cd947108b7c2410d95e1083c5013b6b04c7442424ffffffff896c24147c8c8b74242c33ed396b047e3233f68b038b4c300403c685c974158b006a0183c0015051e895c08fff8bc8e8de380b0083c50183c6143b6b047cd48b74242c8b0350e8408d0d0083c404893b5f8973085d8b4c24145e5b64890d0000000083c418c20400",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00b1e7f0",
+        "end_exclusive": "00b1e86d",
+        "length": 125,
+        "raw_offset": 7464944,
+        "role": "full_resize",
+        "sha256": "0ee983652c78280516f480e717ed9755550a73f7205c306baa701b55c10a4c3d",
+        "bytes_hex": "56578b7c240c8bf13b7e087e0657e82df3ffff8b46043bc77d268d0c8003c98bd703c92bd08b0603c1740dc70000000000c740040000000083c11483ea0175e53b7e047d30834604ff8b46048b0e8d04808d04818b480485c974158b006a0183c0015051e867b48fff8bc8e8b02c0b003b7e047cd0897e045f5ec20400",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00b1f150",
+        "end_exclusive": "00b1f167",
+        "length": 23,
+        "raw_offset": 7467344,
+        "role": "full_destructor_with_return_continuation",
+        "sha256": "2405bb0b0d58547b098a7dede6333c5467c9670c0672a95926ffd2d08a36c0aa",
+        "bytes_hex": "566a008bf1e896f6ffff8b0650e827780d0083c4045ec3",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "0041dd40",
+        "end_exclusive": "0041dde4",
+        "length": 164,
+        "raw_offset": 122176,
+        "role": "full_actual_string_resize",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "bytes_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00cbca80",
+        "end_exclusive": "00cbcaa1",
+        "length": 33,
+        "raw_offset": 9161344,
+        "role": "reserve_eh_action_and_handler",
+        "sha256": "1e2b6c1579c3aa750e16f8d98b57dd036e5bd4903928e4f969a988071340d587",
+        "bytes_hex": "8b45ec6bc0140345e8508b4df051e89d4674ff83c408c3b81c4fdf00e9a2a0f3ff",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00df4f14",
+        "end_exclusive": "00df4f40",
+        "length": 44,
+        "raw_offset": 10440468,
+        "role": "reserve_eh_map_and_info",
+        "sha256": "2d36b8a685e09868df7b62fb5618bceff3525948fb7f43ed2a859089d539947a",
+        "bytes_hex": "ffffffff80cacb002205931901000000144fdf00000000000000000000000000000000000000000001000000",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00401130",
+        "end_exclusive": "00401131",
+        "length": 1,
+        "raw_offset": 4400,
+        "role": "exact_ret_unwind_helper",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "bytes_hex": "c3",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00bf55be",
+        "end_exclusive": "00bf55c3",
+        "length": 5,
+        "raw_offset": 8345022,
+        "role": "array_allocate_boundary",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "bytes_hex": "e958120000",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00bf6989",
+        "end_exclusive": "00bf698e",
+        "length": 5,
+        "raw_offset": 8350089,
+        "role": "array_free_boundary",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "bytes_hex": "e91efcffff",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00419cc0",
+        "end_exclusive": "00419cc5",
+        "length": 5,
+        "raw_offset": 105664,
+        "role": "storage_getter_boundary",
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "bytes_hex": "64a1000000",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00bd1120",
+        "end_exclusive": "00bd1125",
+        "length": 5,
+        "raw_offset": 8196384,
+        "role": "string_allocate_boundary",
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+        "bytes_hex": "538b5c2408",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00bd1510",
+        "end_exclusive": "00bd1515",
+        "length": 5,
+        "raw_offset": 8197392,
+        "role": "string_release_boundary",
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+        "bytes_hex": "538b5c240c",
+        "live_ghidra_matches_installed_disk": true
+      },
+      {
+        "address": "00bf7680",
+        "end_exclusive": "00bf7685",
+        "length": 5,
+        "raw_offset": 8353408,
+        "role": "memcpy_boundary",
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+        "bytes_hex": "558bec5756",
+        "live_ghidra_matches_installed_disk": true
+      }
+    ],
+    "annotation_before": [
+      {
+        "address": "00b1db30",
+        "annotation": {
+          "address": "00b1db30",
+          "function_name": "FUN_00b1db30"
+        }
+      },
+      {
+        "address": "00b1e7f0",
+        "annotation": {
+          "address": "00b1e7f0",
+          "function_name": "FUN_00b1e7f0"
+        }
+      },
+      {
+        "address": "00b1f150",
+        "annotation": {
+          "address": "00b1f150",
+          "function_name": "FUN_00b1f150"
+        }
+      },
+      {
+        "address": "00401130",
+        "annotation": {
+          "address": "00401130",
+          "function_name": "TRIV_body_00401130"
+        }
+      }
+    ],
+    "prototype_before": [
+      "00b1db30 FUN_00b1db30  undefined FUN_00b1db30(void)  body 00b1db30 - 00b1dc65",
+      "00b1e7f0 FUN_00b1e7f0  undefined FUN_00b1e7f0(void)  body 00b1e7f0 - 00b1e86c",
+      "00b1f150 FUN_00b1f150  undefined FUN_00b1f150(void)  body 00b1f150 - 00b1f161",
+      "00401130 TRIV_body_00401130  undefined TRIV_body_00401130(void)  body 00401130 - 00401130"
+    ],
+    "base_sources": [
+      {
+        "path": "include/bsp/native_string.hpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 5278,
+        "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 5042,
+        "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 3986,
+        "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 10921,
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "path": "include/bsp/native_render_queue_access.hpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 2893,
+        "sha256": "16fe7dbc5c783b733902b421a5f07b703c2192f47417100ec15f674e250fdadb"
+      },
+      {
+        "path": "src/native_render_queue_access.cpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 1850,
+        "sha256": "373b3206776e8e0c201a96c37a9c3f7e8d6009570227f7efcf32e0e960b86722"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 8862,
+        "sha256": "2d94fd9e73b69651956aae6cd92b921cbf46da0a250738d7b6dea78f0eda67dd"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 8809,
+        "sha256": "56b052a4774bbca89be63ea96522e077677d4c6fc865aa3054a243bcfe36ef78"
+      }
+    ]
+  },
+  "implementation_artifacts": [
+    {
+      "path": "include/bsp/native_render_queue_rows.hpp",
+      "bytes": 2183,
+      "sha256": "46ef7ebe73c1360fb37c6a4781b4c14285bca36802202598bd2c32842c76871a"
+    },
+    {
+      "path": "src/native_render_queue_rows.cpp",
+      "bytes": 4769,
+      "sha256": "dd493cb7d82a3e8c450e171e759e1e5144f5efcc5bfd5eec8cd2d8e8dce39714"
+    }
+  ],
+  "native_fixture": {
+    "tracked": false,
+    "kind": "One focused original-byte differential fixture, strict MSVC Win32",
+    "native_body_bytes_unchanged_except": [
+      "Absolute EH handler address relocation in B1DB30"
+    ],
+    "native_callees_executed": [
+      "Full0041DD40",
+      "B1DB30 from resize",
+      "B1E7F0 from destructor",
+      "CBCA80 unwind action",
+      "00401130 exactRET"
+    ],
+    "hook_preimages": [
+      "00bf55be:5",
+      "00bf6989:5",
+      "00419cc0:5",
+      "00bd1120:5",
+      "00bd1510:5",
+      "00bf7680:5"
+    ],
+    "hooks": [
+      "raw array allocate",
+      "raw array free",
+      "pool getter",
+      "string allocate",
+      "string release",
+      "memcpy"
+    ],
+    "eh_plumbing": [
+      "B1DB39 handler absolute pointer -> image-resident registration thunk -> checked relocated native CBCA97 handler",
+      "CBCA98 info pointer -> relocated DF4F1C",
+      "DF4F18 unwind action pointer -> relocated CBCA80",
+      "DF4F24 unwind map pointer -> relocated DF4F14",
+      "CBCA9C original CRT jump -> observation bridge preserving general registers/flags -> host __CxxFrameHandler3",
+      "Direct registration of the sparse-memory handler was not dispatched on this host; the image-resident thunk fixes fixture dispatch. Precise mitigation identity not established."
+    ],
+    "eh_counts": {
+      "search": 1,
+      "unwind": 1,
+      "state": 0,
+      "info_magic": "19930522"
+    },
+    "actual_header_test": "Existing NativeRenderCommandQueueStorage+24; all surrounding queue words retained in transcript",
+    "scenario_count": 9,
+    "scenarios": [
+      "Reserve with array allocation changing data/count, first string allocation changing captured source and current header, forward release changing data/count, free changing header before publication; signalingNaN and denormal x87 status",
+      "Second string allocation throws: original EH runs, first new string remains, second header stays zero, second floats retain preimage, no row array/string rollback",
+      "Backward shrink mutates current header and count; subsequent destructor reloads data after final string release and retains dangling header",
+      "Growth within capacity zeroes only string words and preserves signaling-NaN float preimages",
+      "Self-address reserve clears strings then skips copy while preserving native x87 float operations",
+      "Computed-null destination in reserve skips copy but retains old release/publication behavior",
+      "Computed-null growth slot skips stores but still changes count",
+      "Negative reserve request clamps to1; subsequent zero request takes no-grow path",
+      "Positive40000001 capacity wraps request*20 to20 bytes without added overflow rejection"
+    ],
+    "comparison": [
+      "Normalized pointer roles",
+      "Ordered allocation/free/release events and sizes",
+      "Actual queue/header and all row words",
+      "String buffer bytes",
+      "x87 status word"
+    ],
+    "result": {
+      "passed": true,
+      "normalized_words": 11890,
+      "pool_getter_boundaries": 11,
+      "zero_copy_omissions": 3
+    },
+    "limits": [
+      "Fixture replaces original pool/CRT array services with recording storage",
+      "Native exception personality uses host CRT and explicit relocation/thunk plumbing",
+      "Masked invalid/denormal x87 behavior tested; unmasked exception handling not validated",
+      "Deliberately unreturned storage remains in fixture buffers for inspection"
+    ]
+  },
+  "validation": {
+    "live_spans": 13,
+    "live_bytes": 730,
+    "all_live_equal_installed_disk": true,
+    "new_source_compile": {
+      "passed": true,
+      "toolchain": "MSVC Win32",
+      "options": [
+        "/std:c++17",
+        "/O2",
+        "/EHsc",
+        "/fp:strict",
+        "/W4",
+        "/WX"
+      ]
+    },
+    "existing_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "ctest_passed": 2,
+      "ctest_total": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "scope": "Existing registered sources. New source compiled/linked by private fixture driver; CMake not changed."
+    },
+    "seed_check": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "all_eight_matched": true,
+      "observation": "Tool result before build; not rerun solely to create a log"
+    },
+    "game_runtime": "not run",
+    "drop_in_binary_abi": "not claimed",
+    "concurrency": "not validated",
+    "git_diff_check": "passed for exactly four owned files"
+  },
+  "primary_flow_repairs": [
+    {
+      "function": "00b1db30",
+      "omitted_range_exclusive": "00b1dc49..00b1dc53",
+      "complete_final_byte": "00b1dc65",
+      "behavior": "ADD ESP4; publish data; POP EDI; publish capacity; POP EBP after misannotated no-return BF6989"
+    },
+    {
+      "function": "00b1f150",
+      "current_final_byte": "00b1f161",
+      "omitted_range_exclusive": "00b1f162..00b1f167",
+      "complete_final_byte": "00b1f166",
+      "behavior": "ADD ESP4; POP ESI; RET after BF6989"
+    }
+  ],
+  "private_validation_artifacts": [
+    {
+      "path": "local/prepare_native_render_queue_rows.py",
+      "bytes": 4204,
+      "sha256": "11faad4860c35a55450146d90c64ac095b1971c4aea5644ddc91b1f9d12742e1"
+    },
+    {
+      "path": "local/native_render_queue_rows_spans.hpp",
+      "bytes": 4993,
+      "sha256": "0166edb9334a5e72c81fdcdffaf75da4550af0b3963e35ea48237ca8ed1216b4"
+    },
+    {
+      "path": "local/native_render_queue_rows_preparation.json",
+      "bytes": 9203,
+      "sha256": "70e5853468af7a925ff3912953a53e85256359829c49a6807bbc7c9148969bbf"
+    },
+    {
+      "path": "local/native_render_queue_rows_check.cpp",
+      "bytes": 15986,
+      "sha256": "def4a8e80ac57c9d9efa1705d5bda5e24f1384de676d6bb5acf445ea47facbdd"
+    },
+    {
+      "path": "local/build_native_render_queue_rows_check.ps1",
+      "bytes": 1426,
+      "sha256": "7ae81d9fa0b79ce8ee1425f3adc4bc4a26af38ffab5703d5a137481e4a9bbc55"
+    },
+    {
+      "path": "local/native_render_queue_rows_build.txt",
+      "bytes": 10686,
+      "sha256": "24d8584e79768c8560e52f64e65421ba70b9cb136e435c985fa2a5dd4b3c07f1"
+    },
+    {
+      "path": "local/native_render_queue_rows_fixture.txt",
+      "bytes": 292,
+      "sha256": "d4b0170607a58b0a237a35b2d0e768241bef6919172a58575f78acb7c786a5a2"
+    },
+    {
+      "path": "build/native-render-queue-rows-check/native_render_queue_rows.obj",
+      "bytes": 4804,
+      "sha256": "a7b94b615e149acd8d3dad0533414f132ca46bad19be16d9ca5999bc27a59e2c"
+    },
+    {
+      "path": "build/native-render-queue-rows-check/native_string.obj",
+      "bytes": 13979,
+      "sha256": "9b2eee14996cf66a1d306e6405a50d8472443626b8330eef4f710de1df0e1580"
+    },
+    {
+      "path": "build/native-render-queue-rows-check/native_render_queue_rows_check.exe",
+      "bytes": 37376,
+      "sha256": "5643d41c3eade8ef7f5262d03b0d7252069233be302edda2cf4a4468681fc65b"
+    }
+  ]
+}
