@@ -1,0 +1,276 @@
+{
+  "packet": "app_init_platform_window",
+  "parent": "0073d410",
+  "parent_name": "BSP_Application_Initialize",
+  "scope": "Platform phase of cSkeletonAppMidway::Init, 0073d899-0073d988, plus the window configuration reached through platform vtable +4 at 0073dc25. Stops before renderer device creation.",
+  "doc": "docs/APP_INIT_PLATFORM.md",
+  "sources": ["include/bsp/platform_window.hpp", "src/platform_window.cpp"],
+  "naming_disclaimer": "Every descriptive name is a hypothesis, not a recovered symbol. Field roles are inferred from call sites and readers, not from a recovered class layout.",
+
+  "call_order": [
+    {"site": "0073d478", "allocation_bytes": 12, "callee": "00be2900", "gate": "allocation non-null"},
+    {"site": "0073d4b1", "allocation_bytes": 128, "callee": "00bedfb0", "gate": "DAT_01090ab0 == 0"},
+    {"site": "0073d8c0", "allocation_bytes": 4, "callee": "00737e20", "gate": "DAT_0109cf00 == 0"},
+    {"site": "0073d8cc", "allocation_bytes": null, "callee": "00bbcb40", "gate": "none, other packet"},
+    {"site": "0073d8f3", "allocation_bytes": 388, "callee": "00becda0", "gate": "allocation non-null"},
+    {"site": "0073d921", "allocation_bytes": 1344, "callee": "00beb2c0", "gate": "allocation non-null"},
+    {"site": "0073d970", "allocation_bytes": null, "callee": "00bd9230", "gate": "none", "receiver": "DAT_0109ceec"},
+    {"site": "0073d983", "allocation_bytes": null, "callee": "00bd9f90", "gate": "none", "receiver": "DAT_0109ceec"},
+    {"site": "0073d988", "allocation_bytes": null, "callee": "00bb40b0", "gate": "none"}
+  ],
+
+  "resolved_indirect_calls": [
+    {
+      "site": "0073dc25",
+      "resolution": "00becee0",
+      "how": "0073dbee EAX=[0x0109cf04] platform singleton; 0073dbfa ECX=[EAX] vtable 00d68cc4; 0073dc22 EAX=[ECX+4]",
+      "convention": "__cdecl, eleven stack arguments, platform pointer pushed last so first in argument order; caller ADD ESP,0x2c at 0073dc2b; callee RET",
+      "map_correction": "The map calls this the window-title call. The title is only argument 2; the call is the whole window creation.",
+      "arguments": [
+        {"index": 1, "source": "[0x0109cf04]", "meaning": "platform object"},
+        {"index": 2, "source": "LEA [ESP+0x34]", "meaning": "temporary cNativeString \"Battlestations Pacific\", built at 0073db96 with BSP_NativeString_Resize(0x16,1) and a memcpy from 0x00cff1b8, released at 0073dc39"},
+        {"index": 3, "source": "movzx [0x00f8899e]", "meaning": "fullscreen"},
+        {"index": 4, "source": "[0x00f889e0] != 0", "meaning": "colour-depth selector"},
+        {"index": 5, "source": "[0x00e1ae88]", "meaning": "window x; global has no writer in the image"},
+        {"index": 6, "source": "[0x00e1ae8c]", "meaning": "window y; global has no writer in the image"},
+        {"index": 7, "source": "[0x00f88994]", "meaning": "width, from the settings block at 0x00f88980"},
+        {"index": 8, "source": "[0x00f88998]", "meaning": "height, from the settings block at 0x00f88980"},
+        {"index": 9, "source": "[0x00f889d8]", "meaning": "renderer option, forwarded unchanged"},
+        {"index": 10, "source": "EBP", "meaning": "the application object"},
+        {"index": 11, "source": "[0x00e1ae7c]", "meaning": "HINSTANCE"}
+      ]
+    },
+    {
+      "site": "0073dac0",
+      "resolution": "00bedb20",
+      "how": "vtable 00d68d50 on DAT_01090ab0, slot +0x24, literal argument 0x32",
+      "meaning": "enable_fixed_clock_00bedb20 with a 50 ms fixed step, gated on DAT_00e1ae81",
+      "note": "Bonus resolution. include/bsp/frame_clock.hpp already stated that startup supplies 50 but had no call site attached."
+    }
+  ],
+
+  "map_corrections": [
+    {
+      "claim": "DAT_00e1ae7c is the cachedload argument from WinMain",
+      "correct": "DAT_00e1ae7c is the WinMain HINSTANCE",
+      "evidence": "Written once at 0073d92d from Init's second parameter, read once at 0073dbc7 as argument 11 of 00becee0, where it is WNDCLASSA::hInstance and the hInstance of CreateWindowExA. The cachedload switch is DAT_00e1ae76."
+    },
+    {
+      "claim": "00bd9230 and 00bd9f90 are memory-manager knobs",
+      "correct": "Both are file-manager methods on DAT_0109ceec",
+      "evidence": "ECX at 0073d970 and 0073d983 is DAT_0109ceec, the file/VFS manager from phase 2. The memory knob in this phase is 00be2900."
+    },
+    {
+      "claim": "00bedfb0 is a separate timer service",
+      "correct": "00bedfb0 constructs the frame clock already reconstructed in include/bsp/frame_clock.hpp",
+      "evidence": "Base 00bede00 publishes it into DAT_01090ab0; every field written lands on a FrameClock member at the same offset; the tail call is 00bedbd0."
+    }
+  ],
+
+  "prior_work_corrections": [
+    {
+      "target": "src/win32_window.cpp, docs/WINDOW_CREATION.md, docs/PLATFORM_LOOP.md",
+      "claim": "The window class registers CS_GLOBALCLASS",
+      "correct": "The class style is 0x2000, CS_BYTEALIGNWINDOW; CS_GLOBALCLASS is 0x4000",
+      "evidence": "00becf36 MOV dword ptr [ESP+0x38],0x2000 writes the style member of the WNDCLASSA whose address 00becf83 passes to RegisterClassA.",
+      "action": "Not changed. Those files are outside this packet's ownership. src/platform_window.cpp uses 0x2000."
+    }
+  ],
+
+  "functions": [
+    {
+      "address": "00becda0",
+      "name": "BSP_Win32Platform_Construct",
+      "convention": "__fastcall(ECX=this), returns this, RET",
+      "object_bytes": 388,
+      "chain": ["00becda0", "00be2ac0", "00be2960"],
+      "singleton": "DAT_0109cf04",
+      "vtable": "00d68cc4",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00becee0",
+      "name": "BSP_Win32Platform_CreateWindowAndDevice",
+      "convention": "__cdecl, eleven stack arguments, RET",
+      "state": "reconstructed, build-tested",
+      "note": "Creation core already ported as create_platform_window_00becee0_fragment. This packet adds the surrounding sequence and corrects the class style."
+    },
+    {
+      "address": "00beb2c0",
+      "name": "BSP_SaveStorage_Initialize",
+      "convention": "__fastcall(ECX=this), returns this, RET",
+      "object_bytes": 1344,
+      "base": "00bd47b0",
+      "vtable": "00d68c10",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00bedfb0",
+      "name": "BSP_FrameClock_Construct",
+      "convention": "__fastcall(ECX=this), returns this, RET",
+      "object_bytes": 128,
+      "base": "00bede00",
+      "singleton": "DAT_01090ab0",
+      "vtable": "00d68d50",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00be2900",
+      "name": "BSP_AllocationStats_Construct",
+      "convention": "__fastcall(ECX=this), returns this, RET",
+      "object_bytes": 12,
+      "base": "00be2750",
+      "singleton": "DAT_0109cefc",
+      "vtable": "00d685f4",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00bd9230",
+      "name": "BSP_FileManager_SetProviderPolicy",
+      "convention": "__thiscall(ECX=this, one stack argument), RET 4",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00bd9f90",
+      "name": "BSP_FileManager_SetCachedLoad",
+      "convention": "__thiscall(ECX=this, one stack byte), RET 4",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00bb40b0",
+      "name": "BSP_Threading_CreateGlobalLock",
+      "convention": "__cdecl void(void), RET",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00737e20",
+      "name": "BSP_Application_ConstructLifetimeSingleton",
+      "convention": "__fastcall(ECX=this), returns this, RET",
+      "object_bytes": 4,
+      "base": "00736100",
+      "singleton": "DAT_0109cf00",
+      "vtable": "00cfeae4",
+      "state": "analyzed, assembly read, deliberately not reconstructed"
+    }
+  ],
+
+  "layouts": {
+    "win32_platform_00becda0": {
+      "size": "0x184",
+      "fields": [
+        {"offset": "+00", "field": "vtable 00d68cc4", "evidence": "00becda0"},
+        {"offset": "+04,+08", "field": "cNativeString, class name and title", "evidence": "00bed08b treats this+4 as the string"},
+        {"offset": "+0c", "field": "fullscreen", "evidence": "00bed0f8"},
+        {"offset": "+0d", "field": "widescreen, active aspect strictly greater than 4:3", "evidence": "00bed146"},
+        {"offset": "+10", "field": "active aspect, float", "evidence": "00bed126"},
+        {"offset": "+14", "field": "requested size is exactly 1280x720", "evidence": "00bed162"},
+        {"offset": "+18", "field": "colour depth or selector, encoding inconsistent", "evidence": "00bed169 windowed, 00bed18e fullscreen"},
+        {"offset": "+1c,+20", "field": "window x and y, zero in fullscreen", "evidence": "00bed16c, 00bed19f"},
+        {"offset": "+24,+28", "field": "present size", "evidence": "00bed0f2"},
+        {"offset": "+30", "field": "HWND", "evidence": "00becda0 zeroes it, 00bed01f stores it"},
+        {"offset": "+34,+38", "field": "requested size", "evidence": "00becf14"},
+        {"offset": "+3c", "field": "desktop aspect, float", "evidence": "00bed103"},
+        {"offset": "+40,+41,+44", "field": "zeroed, role unrecovered", "evidence": "00becda0"},
+        {"offset": "+42", "field": "frames enabled", "evidence": "00bed1a7, read by 00bec1a0"},
+        {"offset": "+43", "field": "loop finished", "evidence": "00bec1a0"},
+        {"offset": "+48", "field": "the application object", "evidence": "00becf1a"},
+        {"offset": "+4c", "field": "active power scheme id", "evidence": "00bed21b"},
+        {"offset": "+50..+df", "field": "original POWER_POLICY", "evidence": "ReadPwrScheme output"},
+        {"offset": "+e0..+16f", "field": "modified copy, +118 and +11c zeroed", "evidence": "00bed24c, 0x24-dword copy loop"},
+        {"offset": "+170", "field": "zeroed, role unrecovered", "evidence": "00becda0"},
+        {"offset": "+178,+17c", "field": "text queue sentinel from 00bec710, tail", "evidence": "00becda0"},
+        {"offset": "+180", "field": "close requested, set by WM_CLOSE", "evidence": "00bed3b0"},
+        {"offset": "+181", "field": "loop exit", "evidence": "00bec1a0"}
+      ],
+      "size_confirmation": "+180 and +181 are the last two bytes of the 0x184 allocation at 0073d8d1."
+    },
+    "save_storage_00beb2c0": {
+      "size": "0x540",
+      "recovered_fields": [
+        {"offset": "+530", "value": "<CSIDL_PERSONAL>\\Battlestations-Pacific\\save"},
+        {"offset": "+538", "value": "the same path plus \\*, an enumeration pattern"}
+      ],
+      "derivation": "SHGetSpecialFolderPathA(nullptr, buffer, 5, TRUE) with folder 5 = CSIDL_PERSONAL; concatenate \"\\Battlestations-Pacific\" (23 chars from 0x00d15af0); CreateDirectoryA; append \"\\save\" (5 chars from 0x00d68c5c) in place; CreateDirectoryA; store to +530; concatenate \"\\*\" (2 chars from 0x00d68c58) onto +530 and store to +538.",
+      "concat_helper": "004261a0 takes the left operand in ECX, the result slot as first stack argument, the right operand as second, returns the result slot in EAX. At 00beb3bf ECX is the special-folder string; at 00beb538 ECX is LEA ESI,[EBP+0x530] set at 00beb4bf.",
+      "notes": "Both CreateDirectoryA results are ignored. A null string data pointer falls back to DAT_0109db8c."
+    },
+    "frame_clock_00bedfb0": {
+      "size": "0x80",
+      "note": "Same object as include/bsp/frame_clock.hpp FrameClock. Five ClockTimestamp pairs at +10, +20, +30, +40, +50, each frequency word set to 1 and tick word zeroed; +04 accumulated, +08 update count, +68 and +69 cleared.",
+      "untouched_by_constructor": ["+70 fixed-step increment", "+78 synthetic counter"],
+      "vtable_slots": {"+04": "00bedbd0", "+08": "00bedc30", "+0c": "00bedae0", "+10": "00beddc0", "+24": "00bedb20", "+28": "00bedb60"}
+    },
+    "allocation_stats_00be2900": {
+      "size": "0xc",
+      "fields": [
+        {"offset": "+04", "value": "0x40000000", "reading": "1 GiB as a byte count; likely but unproven, no reader of +04 traced"},
+        {"offset": "+08", "value": "0", "reader": "00be3fd0 prints it shifted right by 10 as \"Alloc at startup:%8dK\""}
+      ]
+    },
+    "file_manager_knobs": {
+      "receiver": "DAT_0109ceec",
+      "fields": [
+        {"offset": "+78", "setter": "00bd9f90", "value": "DAT_00e1ae76, the -cachedload switch, set to 1 at 0073cf5d when a 10-character token compares equal to \"cachedload\""},
+        {"offset": "+88", "setter": "00bd9230", "value": "the 0x1c-byte singleton from 00736c30 in DAT_010904d8, payload constructor 00bb4fb0: reference count 1 at +04, vtables 00d64190 and 00d6418c, literal 100 at +0c, three zeroed words"}
+      ]
+    },
+    "shared_lock_00bb40b0": {
+      "global": "DAT_010904e0",
+      "factory": "00bd1860",
+      "block": "0x1c bytes, CRITICAL_SECTION plus a recursion depth at +18",
+      "null_handling": "00bd1860 returns null on allocation failure; 00bb40b0 stores it without checking",
+      "readers": ["00bb82f0", "00bb83a0"],
+      "reader_note": "A case-insensitive name registry in the mpak and texture-source module. Which registry was not established."
+    }
+  },
+
+  "x87": {
+    "site": "00becee0 aspect arithmetic",
+    "instructions": ["00bed0d9 FILD desktop width", "00bed0e7 FIDIV desktop height", "00bed0fb FSTP float", "00bed0ff FLD float", "00bed103 FST +3c", "00bed10a FILD requested width", "00bed111 FIDIV requested height", "00bed118 FSTP float", "00bed11f FLD float", "00bed126 FST +10", "00bed129 FLD DAT_00d5bd98", "00bed12f FXCH", "00bed131 FCOMIP", "00bed135 JBE"],
+    "threshold_constant": {"address": "00d5bd98", "bytes": "ab aa aa 3f", "value": 1.3333334, "meaning": "4:3"},
+    "semantics": "The quotient is computed at the x87 intermediate precision and rounded to float once before being stored and once more, from the same float, before being compared. Reproduced with a double intermediate, matching the default 53-bit control word.",
+    "residual_risk": "Under a 64-bit precision control word the double rounding could differ in the last bit. No such change was found on this path and it cannot bite at realistic screen dimensions."
+  },
+
+  "unreachable_block": {
+    "function": "00737e20",
+    "warning": "Removing unreachable block (ram,0x00737e68)",
+    "assembly_read": true,
+    "explanation": "00737e5b constructs a stack cNativeString with BSP_NativeString_Resize(0,1); 00737e60 loads its data pointer and 00737e66 jumps over the block when null. The removed block 00737e68-00737e8d is a memcpy from 0x00ce3a0c, four zero bytes, an empty string literal, followed by the pooled release pair. It is the destructor of an empty temporary that is never read.",
+    "behaviour_lost": false
+  },
+
+  "open_questions": [
+    "Field +18 on the platform object holds a real BITSPIXEL count windowed and a 0/1 selector fullscreen. No reader traced.",
+    "Platform object bytes +40, +41, +44 and +170 are zeroed at construction with no reader traced.",
+    "The first 0x530 bytes of the save-storage object and its base 00bd47b0.",
+    "00bec870 and 00bec3e0 at the end of 00becee0, and the 0x14-byte object the former builds.",
+    "Which registry DAT_010904e0 guards, and what the literal 100 in 00bb4fb0 means.",
+    "What the empty singleton at DAT_0109cf00 represents. Its only distinguishing feature is its position in the sequence."
+  ],
+
+  "not_ported": [
+    "The 0x14-byte allocation at 00bed1e2 through 00bec870",
+    "00bec3e0(10000)",
+    "GetActivePwrScheme, ReadPwrScheme and SetActivePwrScheme power-scheme override",
+    "SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, 0, nullptr, 0)",
+    "The renderer singleton call at 00bed1b8, DAT_00f8d394 virtual +4; arguments are recorded in RendererInitRequest, not issued"
+  ],
+
+  "validation": {
+    "build": "./scripts/build.ps1 succeeds in worktree agent/init-platform-window, Win32 Release, warnings as errors",
+    "ctest": "reconstructed_math passes",
+    "tests_added": 0,
+    "tests_rationale": "Project rule is to add none for routine work, and tests/ holds only the two math targets, which are the wrong home for a Win32 state-derivation case.",
+    "external_harness": {
+      "location": "throwaway, outside the repository, not committed",
+      "flags": "/W4 /WX",
+      "sources": ["src/platform_window.cpp", "src/frame_clock.cpp"],
+      "checks": 24,
+      "result": "all pass",
+      "covers": "class style 0x2000 and 24 extra bytes, platform pointer as lpParam, adjusted outer size to CreateWindowExA, windowed SetWindowPos using the outer size and fullscreen using the unadjusted requested size, both style pairs, HWND_TOPMOST only in fullscreen, stop-virtual only when an HWND exists, colour-depth split, both aspect values, 720p and widescreen flags, title copy, recorded renderer constants, and the constructors",
+      "proves": "recovered control flow and field derivation, not binary equivalence"
+    },
+    "ghidra": "read-only for this packet: no renames, comments, prototypes, function creation or saves"
+  }
+}
