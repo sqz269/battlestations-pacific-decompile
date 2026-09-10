@@ -1,0 +1,958 @@
+{
+  "packet": "native_render_batch_lifetime",
+  "base_commit": "ac933252dba66a7c0a28b93aecfd778fbaf71cb1",
+  "worker_branch": "agent/native-render-batch-lifetime-20260910",
+  "status": "reconstructed_new_cpp_abi_strict_build_and_focused_installed_code_lifecycle_checked",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": {
+    "files": [
+      "include/bsp/native_render_batch_lifetime.hpp",
+      "src/native_render_batch_lifetime.cpp",
+      "docs/NATIVE_RENDER_BATCH_LIFETIME.md",
+      "reports/native_render_batch_lifetime_audit.json"
+    ],
+    "ghidra_mutations": false,
+    "shared_ledger_edits": false,
+    "cmake_edits": false,
+    "tracked_tests_added": 0,
+    "original_installation_modified": false
+  },
+  "functions": [
+    {
+      "address": "00b51d20",
+      "end_exclusive": "00b51d41",
+      "length": 33,
+      "proposed_name": "BSP_RenderBatch_Construct",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "initialize_native_render_batch_00b51d20",
+      "native_abi": "ECX raw batch; EAX same; RET",
+      "behavior": "Initialize reference/base table phases, actual +04 count1 and pointer/count/capacity zeros; preserve +08.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "0ae99641aa55ecde50cd3585749e863633c5dcf14ac3995fae697767181aafe8"
+    },
+    {
+      "address": "00b51b50",
+      "end_exclusive": "00b51bb2",
+      "length": 98,
+      "proposed_name": "BSP_RenderBatch_ReserveEntryPointers",
+      "name_policy": "preserve existing reviewed name",
+      "cpp": "reserve_native_render_batch_entries_00b51b50",
+      "native_abi": "ECX actual entry descriptor at batch+0C; stack signed requested capacity; RET4",
+      "behavior": "Raw native-storage form of existing named reserve: minimum256, grow only, allocate/copy/free/publish.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "5d1747b4e013a9bd91c70c441b3115fadfa5273e0e7a103c4a3ae143b73a9b83"
+    },
+    {
+      "address": "00b51c60",
+      "end_exclusive": "00b51cb0",
+      "length": 80,
+      "proposed_name": "BSP_RenderBatch_ResizeEntryPointers",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "resize_native_render_batch_entries_00b51c60",
+      "native_abi": "ECX actual entry descriptor; stack signed count; RET4",
+      "behavior": "Reserve if needed, zero new borrowed cells, decrement count when shrinking, final requested count.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "d3cd812fc78a4b9ba8dc2178e1b62942a0ea3da7e9458de05837ac6f30d905aa"
+    },
+    {
+      "address": "00b51d00",
+      "end_exclusive": "00b51d17",
+      "length": 23,
+      "proposed_name": "BSP_RenderBatch_DestroyEntryPointers",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "destroy_native_render_batch_entries_00b51d00",
+      "native_abi": "ECX actual entry descriptor; RET",
+      "behavior": "Clear count0, array-free; leave pointer/capacity native bytes.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "68a48a82052cefb52864a9cd2163de59010f0fbb658fcc045450ec7626e1f106"
+    },
+    {
+      "address": "00b51d50",
+      "end_exclusive": "00b51dc1",
+      "length": 113,
+      "proposed_name": "BSP_RenderBatch_Destruct",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "destroy_native_render_batch_00b51d50",
+      "native_abi": "ECX batch; RET",
+      "behavior": "D62064 phase, clear entry count twice, free pointer array, CEB130 phase; no entry-object release.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e"
+    },
+    {
+      "address": "00b1c630",
+      "end_exclusive": "00b1c64e",
+      "length": 30,
+      "proposed_name": "BSP_PooledRenderBatch_DeletingDestructor",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "delete_native_render_batch_00b1c630",
+      "native_abi": "ECX batch; stack flags; EAX original address even after free; RET4",
+      "behavior": "Destruct batch, scalar-free only flags bit0.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d"
+    },
+    {
+      "address": "00b55680",
+      "end_exclusive": "00b5569e",
+      "length": 30,
+      "proposed_name": "BSP_PooledRenderBatch_RecycleZeroReference",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::recycle_zero_reference_00b55680",
+      "native_abi": "ECX batch; RET",
+      "behavior": "Dispatch actual current virtual+4 with flags0, lookup current pool after destruction, append dead address; no decrement.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363"
+    },
+    {
+      "address": "00b1d5b0",
+      "end_exclusive": "00b1d679",
+      "length": 201,
+      "proposed_name": "BSP_RenderBatchPool_Acquire",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::acquire_00b1d5b0",
+      "native_abi": "ECX actual pool+4 list; EAX batch; RET",
+      "behavior": "Get current lock, capture actual section, pop LIFO or allocate18h, reconstruct preserving mode, pooled table phase.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "c26165615886bf3f6f105641f3feba592b22862a6812a6c7fbc338efce618d32"
+    },
+    {
+      "address": "00b555e0",
+      "end_exclusive": "00b5567b",
+      "length": 155,
+      "proposed_name": "BSP_RenderBatchPool_AppendDeadSlot",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::append_dead_slot_00b555e0",
+      "native_abi": "ECX actual pool+4 list; stack dead-slot address; RET4",
+      "behavior": "Current lock, double capacity when full with minimum1, publish raw address, increment count.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446"
+    },
+    {
+      "address": "00b1c830",
+      "end_exclusive": "00b1c88f",
+      "length": 95,
+      "proposed_name": "BSP_RenderBatchPool_ReserveSlots",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "reserve_native_render_batch_free_slots_00b1c830",
+      "native_abi": "ECX free-list descriptor; stack signed capacity; RET4",
+      "behavior": "Minimum1 grow-only pointer reserve, including hidden post-free publication tail.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a"
+    },
+    {
+      "address": "00b1ce50",
+      "end_exclusive": "00b1cea0",
+      "length": 80,
+      "proposed_name": "BSP_RenderBatchPool_ResizeSlots",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "resize_native_render_batch_free_slots_00b1ce50",
+      "native_abi": "ECX free-list descriptor; stack signed count; RET4",
+      "behavior": "Reserve if needed, zero new raw cells, shrink count; never retain/release slots.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "28ecb559e82ba96893279a9c4ce80a9eae1933f4630b0bc5acb8ada99cde7668"
+    },
+    {
+      "address": "00b1d8a0",
+      "end_exclusive": "00b1d8dd",
+      "length": 61,
+      "proposed_name": "BSP_RenderBatchPool_DestroySlots",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "destroy_native_render_batch_free_slots_00b1d8a0",
+      "native_abi": "ECX free-list descriptor; RET",
+      "behavior": "Ascending scalar-free of already-dead slots, live count reload, resize0, array-free; full post-free continuation.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "112013b2a023a38a297f124d35986bf4b231a5e0c41333ccae8855b4f021ce0a"
+    },
+    {
+      "address": "00b1e870",
+      "end_exclusive": "00b1e922",
+      "length": 178,
+      "proposed_name": "BSP_RenderBatchPool_GetSingleton",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::pool_00b1e870",
+      "native_abi": "No native inputs; EAX pool; RET",
+      "behavior": "Shared manager captured lock/double check; allocate10h, publish, second manager lookup, current publication registration, unlock then reload.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6"
+    },
+    {
+      "address": "00b1e930",
+      "end_exclusive": "00b1e961",
+      "length": 49,
+      "proposed_name": "BSP_RenderBatchPool_DeletingDestructor",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::delete_pool_00b1e930",
+      "native_abi": "ECX pool; stack flags; EAX original address; RET4",
+      "behavior": "Clear 0108FE8C first, simple-owner phase, destroy dead slots, optional scalar-free.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3"
+    },
+    {
+      "address": "00b1cd90",
+      "end_exclusive": "00b1ce4d",
+      "length": 189,
+      "proposed_name": "BSP_RenderBatchLock_GetSingleton",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::lock_owner_00b1cd90",
+      "native_abi": "No native inputs; EAX lock owner; RET",
+      "behavior": "Shared manager captured lock/double check; allocate8h/construct, publish, second lookup/register current publication, unlock then reload.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c"
+    },
+    {
+      "address": "00b1c9d0",
+      "end_exclusive": "00b1ca15",
+      "length": 69,
+      "proposed_name": "BSP_RenderBatchLock_Construct",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::initialize_lock_owner_00b1c9d0",
+      "native_abi": "ECX raw lock owner; EAX same; RET",
+      "behavior": "D5E5D4 phase, existing actual tracked-section creation, publish +04; constructor unwind separate from allocation free.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "eb639f2a4d7cc39b5d61bd6fd7fc145497f47e0e266560752403744b48b1f8a4"
+    },
+    {
+      "address": "00b1c3a0",
+      "end_exclusive": "00b1c3b1",
+      "length": 17,
+      "proposed_name": "BSP_RenderBatchLock_UnwindBase",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::unwind_lock_owner_00b1c3a0",
+      "native_abi": "ECX lock owner; RET",
+      "behavior": "Clear 0109DBBC, install CE3818; no invented section free before publication.",
+      "native_runtime_exercised": false,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "9b31fb0a8534bbfb257e561296dcbba205de6ef4c5c05f949778a6dab53f2db8"
+    },
+    {
+      "address": "00b1d530",
+      "end_exclusive": "00b1d567",
+      "length": 55,
+      "proposed_name": "BSP_RenderBatchLock_DeletingDestructor",
+      "name_policy": "descriptive hypothesis; primary owns Ghidra edit",
+      "cpp": "NativeRenderBatchLifetime::delete_lock_owner_00b1d530",
+      "native_abi": "ECX lock owner; stack flags; EAX original address; RET4",
+      "behavior": "Concrete phase, existing actual owned-section destroy/drain, clear global, base phase, optional free.",
+      "native_runtime_exercised": true,
+      "source": "src/native_render_batch_lifetime.cpp",
+      "evidence_sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1"
+    }
+  ],
+  "storage": {
+    "batch_bytes": 24,
+    "actual_fields": {
+      "00": "volatile native vtable identity",
+      "04": "actual std::atomic<int32_t>, always lock-free, no duplicate count",
+      "08": "preserved uint32 mode preimage",
+      "0c": "actual InstanceRenderEntry** borrowed array",
+      "10": "actual signed count",
+      "14": "actual signed capacity"
+    },
+    "pool_bytes": 16,
+    "pool_fields": "vtable00 + actual dead-slot pointer04/count08/capacity0C",
+    "lock_owner_bytes": 8,
+    "lock_owner_fields": "vtable00 + actual TrackedCriticalSection*04",
+    "tracked_section_bytes": 28,
+    "lifetime_domain": "one caller-supplied actual SingletonLifetimeDomain",
+    "publications": [
+      "live reference 0108FE8C",
+      "live reference 0109DBBC"
+    ],
+    "runtime_binding": "actual immutable D5E5AC >=4-word profile; read owner current table then current slot1; require B1C630 before destructive dispatch"
+  },
+  "eh": {
+    "source": "reports/native_camera_command_next.json, preceding committed byte-verified discovery; same installed binary digest revalidated this packet",
+    "maps": [
+      {
+        "function": "00b1d5b0",
+        "handler": "00cbca04",
+        "func_info": "00df4e64",
+        "unwind_map": "00df4e4c",
+        "states": [
+          {
+            "state": 2,
+            "next": 0,
+            "action": "00cbc9f9",
+            "effect": "free fresh batch allocation"
+          },
+          {
+            "state": 1,
+            "next": 0,
+            "action": "00cbc9e8",
+            "effect": "call actual placement-delete401130 with two pointers; verified RET no operation"
+          },
+          {
+            "state": 0,
+            "next": -1,
+            "action": "00cbc9e0",
+            "effect": "captured lock guard unwind"
+          }
+        ]
+      },
+      {
+        "function": "00b1e870",
+        "handler": "00cbcb58",
+        "func_info": "00df4ffc",
+        "unwind_map": "00df4ff4",
+        "states": [
+          {
+            "state": 0,
+            "next": -1,
+            "action": "00cbcb50",
+            "effect": "captured manager lock guard unwind"
+          }
+        ]
+      },
+      {
+        "function": "00b1cd90",
+        "handler": "00cbc9b3",
+        "func_info": "00df4dfc",
+        "unwind_map": "00df4dec",
+        "states": [
+          {
+            "state": 1,
+            "next": 0,
+            "action": "00cbc9a8",
+            "effect": "free in-progress8h lock owner"
+          },
+          {
+            "state": 0,
+            "next": -1,
+            "action": "00cbc9a0",
+            "effect": "captured manager lock guard unwind"
+          }
+        ]
+      },
+      {
+        "function": "00b1c9d0",
+        "handler": "00cbc948",
+        "func_info": "00df4d68",
+        "unwind_map": "00df4d60",
+        "states": [
+          {
+            "state": 0,
+            "next": -1,
+            "action": "00cbc940",
+            "effect": "B1C3A0 clears publication0109DBBC and installsCE3818"
+          }
+        ]
+      },
+      {
+        "function": "00b51d50",
+        "handler": "00cbff23",
+        "func_info": "00df8a70",
+        "unwind_map": "00df8a60",
+        "states": [
+          {
+            "state": 1,
+            "next": 0,
+            "action": "00cbff18",
+            "effect": "B51D00 destroys actual+0C entry array"
+          },
+          {
+            "state": 0,
+            "next": -1,
+            "action": "00cbff10",
+            "effect": "BD30F0 base phase"
+          }
+        ]
+      },
+      {
+        "function": "00b555e0",
+        "handler": "00cc0318",
+        "func_info": "00df8e50",
+        "unwind_map": "00df8e48",
+        "states": [
+          {
+            "state": 0,
+            "next": -1,
+            "action": "00cc0310",
+            "effect": "captured batch lock guard unwind"
+          }
+        ]
+      }
+    ],
+    "runtime_exception_dispatch_tested": false,
+    "construction_domain": "Batch placement construction is nonthrowing stores on valid typed storage; native fresh/reused constructor-failure paths are unreachable through it. Allocation failure still unwinds captured guard.",
+    "registration_failure_policy": "Keep published owner; unwind only captured manager guard. Lock constructor clears publication/base; its getter separately frees in-progress8h allocation."
+  },
+  "dependencies": {
+    "existing_implementations": [
+      "singleton_lifetime_allocate/free (shared raw CRT boundary)",
+      "SingletonLifetimeDomain/ConcreteSingletonLifetimeManager (same actual domain and manager)",
+      "singleton_enter/leave_critical_section (OS operations only; actual recursion updated by this packet)",
+      "critical_section_create_00bd1860",
+      "critical_section_destroy_owned_0041cc80 (actual owned section, drains positive depth)"
+    ],
+    "inspected_small_base": "00BD30F0..00BD30F7, seven-byte CEB130 store/RET",
+    "not_reused": "Existing B51B50 vector-backed host queue is not the actual raw batch array; this packet provides the same function over actual fields.",
+    "remaining_frontier": [
+      "Concrete native command/context storage and initialization",
+      "Borrowed RenderCommandReference adapter to same actual batch +04 and raw +0C/+10/+14",
+      "Native queue allocation/constructor/preimage-dependent renderer callback",
+      "Actual native collection/preparation asynchronous job services and queue execution"
+    ],
+    "integration_caution": "Zero-recycle may allocate/get singletons/grow the free list and is intentionally not noexcept. A later noexcept reference adapter must make its termination policy explicit."
+  },
+  "verification": {
+    "target_verification": "Each CLI ghidra bytes call verifies the project/program before reading; this packet uses a new private evidence cache.",
+    "span_count": 37,
+    "verified_bytes": 1671,
+    "mapped_complete_code_spans": 19,
+    "mapped_data_spans": 10,
+    "explicit_external_hook_entries": 8,
+    "absolute_relocations": 58,
+    "fixture": "one original-vs-host lifecycle; 14 pool phases + 3 placement/entry-array phases; 288 normalized observation words matched",
+    "fixture_coverage": [
+      "actual raw constructor preimage, mode08 preserved",
+      "actual count04 reset to1 on same address reuse",
+      "entry minimum256, grow-only reserve, copied borrowed pointers, shrink leaves stale cells",
+      "entry destruction retains native dangling pointer/capacity bytes",
+      "dead-slot minimum1 then doubled growth",
+      "LIFO same-address reuse and stale pop cell",
+      "free-list zero new cell/shrink",
+      "same actual manager owns/registers pool and lock",
+      "actual captured manager section held during registration",
+      "real Win32 batch section depth including one owned recursion at shutdown",
+      "flags1 registered lock-then-pool destruction, current globals cleared, EAX original freed identities"
+    ],
+    "fixture_dependencies": [
+      "BF681B/BF55BE explicit hooks call shared real allocation",
+      "BF65AC/BF6989 explicit hooks call shared real free",
+      "415350/BD0C30 explicit ABI bridges to SAME real host lifetime domain and manager; native prefix projection borrows actual section",
+      "BD1860/41CC80 explicit hooks call existing actual tracked-section helpers",
+      "native IAT cells CE2218/CE2210 invoke actual Win32 Enter/LeaveCriticalSection"
+    ],
+    "fixture_isolation": "Exact original-relative sparse code/data spans; other pages NOACCESS, unused committed bytes INT3; no full PE, entrypoint, broad import initialization or fake entry/object callback",
+    "normalization": "Pointer-presence, batch identities and native vtable relocations normalized; not absolute-address byte equality",
+    "strict_build": "MSVC x86 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; actual new source explicitly compiled with built bsp_core",
+    "seed_check": "8/8 ghidra_export.py verify-seeds matched installed bytes",
+    "repository_build": "scripts/build.ps1 passed; CTest reconstructed_math + native_math_differential 2/2 passed",
+    "cmake_boundary": "Worker did not register new source in CMake; primary must integrate. Existing repository build plus explicit new-source fixture compilation recorded separately.",
+    "initial_fixture_correction": "Only fixture canonicalization needed correction when sparse image range overlapped original absolute table IDs. Native and host table words are now normalized separately. Production source matched after that correction.",
+    "not_claimed": [
+      "Original calling-convention binary compatibility",
+      "Original manager/CRT/critical helper bodies executed by this packet fixture",
+      "B1C3A0 or original exception-dispatch runtime execution",
+      "Allocation-failure/new-handler or exception injection",
+      "Malformed storage, native allocation overflow or access-violation semantics",
+      "Multithread race/concurrency stress",
+      "Native command/reference/queue/job closure",
+      "Game or visual validation"
+    ]
+  },
+  "evidence": [
+    {
+      "address": "00b51d20",
+      "end_exclusive": "00b51d41",
+      "kind": "code",
+      "length": 33,
+      "disk_offset": 7675168,
+      "sha256": "0ae99641aa55ecde50cd3585749e863633c5dcf14ac3995fae697767181aafe8",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 9
+    },
+    {
+      "address": "00b51d50",
+      "end_exclusive": "00b51dc1",
+      "kind": "code",
+      "length": 113,
+      "disk_offset": 7675216,
+      "sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 33
+    },
+    {
+      "address": "00b1c630",
+      "end_exclusive": "00b1c64e",
+      "kind": "code",
+      "length": 30,
+      "disk_offset": 7456304,
+      "sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 11
+    },
+    {
+      "address": "00b55680",
+      "end_exclusive": "00b5569e",
+      "kind": "code",
+      "length": 30,
+      "disk_offset": 7689856,
+      "sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 13
+    },
+    {
+      "address": "00b1d5b0",
+      "end_exclusive": "00b1d679",
+      "kind": "code",
+      "length": 201,
+      "disk_offset": 7460272,
+      "sha256": "c26165615886bf3f6f105641f3feba592b22862a6812a6c7fbc338efce618d32",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 62
+    },
+    {
+      "address": "00b555e0",
+      "end_exclusive": "00b5567b",
+      "kind": "code",
+      "length": 155,
+      "disk_offset": 7689696,
+      "sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 48
+    },
+    {
+      "address": "00b1c830",
+      "end_exclusive": "00b1c88f",
+      "kind": "code",
+      "length": 95,
+      "disk_offset": 7456816,
+      "sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 38
+    },
+    {
+      "address": "00b1ce50",
+      "end_exclusive": "00b1cea0",
+      "kind": "code",
+      "length": 80,
+      "disk_offset": 7458384,
+      "sha256": "28ecb559e82ba96893279a9c4ce80a9eae1933f4630b0bc5acb8ada99cde7668",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 31
+    },
+    {
+      "address": "00b1d8a0",
+      "end_exclusive": "00b1d8dd",
+      "kind": "code",
+      "length": 61,
+      "disk_offset": 7461024,
+      "sha256": "112013b2a023a38a297f124d35986bf4b231a5e0c41333ccae8855b4f021ce0a",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 26
+    },
+    {
+      "address": "00b1e870",
+      "end_exclusive": "00b1e922",
+      "kind": "code",
+      "length": 178,
+      "disk_offset": 7465072,
+      "sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 53
+    },
+    {
+      "address": "00b1e930",
+      "end_exclusive": "00b1e961",
+      "kind": "code",
+      "length": 49,
+      "disk_offset": 7465264,
+      "sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 14
+    },
+    {
+      "address": "00b1cd90",
+      "end_exclusive": "00b1ce4d",
+      "kind": "code",
+      "length": 189,
+      "disk_offset": 7458192,
+      "sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 51
+    },
+    {
+      "address": "00b1c9d0",
+      "end_exclusive": "00b1ca15",
+      "kind": "code",
+      "length": 69,
+      "disk_offset": 7457232,
+      "sha256": "eb639f2a4d7cc39b5d61bd6fd7fc145497f47e0e266560752403744b48b1f8a4",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 19
+    },
+    {
+      "address": "00b1d530",
+      "end_exclusive": "00b1d567",
+      "kind": "code",
+      "length": 55,
+      "disk_offset": 7460144,
+      "sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 15
+    },
+    {
+      "address": "00b1c3a0",
+      "end_exclusive": "00b1c3b1",
+      "kind": "code",
+      "length": 17,
+      "disk_offset": 7455648,
+      "sha256": "9b31fb0a8534bbfb257e561296dcbba205de6ef4c5c05f949778a6dab53f2db8",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3
+    },
+    {
+      "address": "00b51c60",
+      "end_exclusive": "00b51cb0",
+      "kind": "code",
+      "length": 80,
+      "disk_offset": 7674976,
+      "sha256": "d3cd812fc78a4b9ba8dc2178e1b62942a0ea3da7e9458de05837ac6f30d905aa",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 31
+    },
+    {
+      "address": "00b51d00",
+      "end_exclusive": "00b51d17",
+      "kind": "code",
+      "length": 23,
+      "disk_offset": 7675136,
+      "sha256": "68a48a82052cefb52864a9cd2163de59010f0fbb658fcc045450ec7626e1f106",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 10
+    },
+    {
+      "address": "00b51b50",
+      "end_exclusive": "00b51bb2",
+      "kind": "code",
+      "length": 98,
+      "disk_offset": 7674704,
+      "sha256": "5d1747b4e013a9bd91c70c441b3115fadfa5273e0e7a103c4a3ae143b73a9b83",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 38
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "kind": "code",
+      "length": 7,
+      "disk_offset": 8204528,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2
+    },
+    {
+      "address": "00d5e5ac",
+      "end_exclusive": "00d5e5bc",
+      "kind": "data",
+      "length": 16,
+      "disk_offset": 9823660,
+      "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62064",
+      "end_exclusive": "00d62074",
+      "kind": "data",
+      "length": 16,
+      "disk_offset": 9838692,
+      "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5dc",
+      "end_exclusive": "00d5e5e0",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9823708,
+      "sha256": "270557a3e5a0bbd6aa1e7ed474bb3feed52aa1634e304a75ff30303e06cfb607",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5d4",
+      "end_exclusive": "00d5e5d8",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9823700,
+      "sha256": "9a20ff64fc0a50f3f9c0e2d3f0c816ce2d0533c5a1151e67f1d57ab42772e192",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ceb130",
+      "end_exclusive": "00ceb138",
+      "kind": "data",
+      "length": 8,
+      "disk_offset": 9351472,
+      "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce3818",
+      "end_exclusive": "00ce381c",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9320472,
+      "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108fe8c",
+      "end_exclusive": "0108fe90",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109dbbc",
+      "end_exclusive": "0109dbc0",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2210",
+      "end_exclusive": "00ce2214",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9314832,
+      "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2218",
+      "end_exclusive": "00ce221c",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9314840,
+      "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 8349723,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 8345022,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 8350089,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00415350",
+      "end_exclusive": "00415355",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 86864,
+      "sha256": "6426f859eacc9c3112aace060019e686ae1d0c42b0eccc7077c9c9274f746a91",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00bd0c30",
+      "end_exclusive": "00bd0c35",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 8195120,
+      "sha256": "07c12b9d69520518eca87f5215f83fcffc895ddd38b6bc3366600ab9211abfe6",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00bd1860",
+      "end_exclusive": "00bd1865",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 8198240,
+      "sha256": "a2cd0d3e28b75cfa585e46f92d1eddbb2279680724ee0e689b438220ae6e90f9",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0041cc80",
+      "end_exclusive": "0041cc85",
+      "kind": "hook_entry",
+      "length": 5,
+      "disk_offset": 117888,
+      "sha256": "0afb3f87d8e4f214964f0a65ed010aa6ed98ebc59e667aee06b5fe9ad6fdf3ee",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "absolute_operand_rebases": [
+    "00b1c3a2",
+    "00b1c3ac",
+    "00b1c9d3",
+    "00b1c9f7",
+    "00b1cd99",
+    "00b1cda6",
+    "00b1cdc4",
+    "00b1cdd1",
+    "00b1cde3",
+    "00b1ce12",
+    "00b1ce1d",
+    "00b1ce34",
+    "00b1ce39",
+    "00b1d538",
+    "00b1d548",
+    "00b1d552",
+    "00b1d5b3",
+    "00b1d5db",
+    "00b1d5e8",
+    "00b1d626",
+    "00b1d64e",
+    "00b1d661",
+    "00b1e879",
+    "00b1e886",
+    "00b1e8a3",
+    "00b1e8b0",
+    "00b1e8be",
+    "00b1e8dd",
+    "00b1e8e6",
+    "00b1e8f1",
+    "00b1e908",
+    "00b1e90d",
+    "00b1e935",
+    "00b1e942",
+    "00b51d24",
+    "00b51d33",
+    "00b51d53",
+    "00b51d70",
+    "00b555e3",
+    "00b5560a",
+    "00b55617",
+    "00b55664",
+    "00bd30f2",
+    "00ce2210",
+    "00ce2218",
+    "00ce3818",
+    "00ceb130",
+    "00ceb134",
+    "00d5e5ac",
+    "00d5e5b0",
+    "00d5e5b4",
+    "00d5e5b8",
+    "00d5e5d4",
+    "00d5e5dc",
+    "00d62064",
+    "00d62068",
+    "00d6206c",
+    "00d62070"
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_render_batch_lifetime.hpp",
+      "bytes": 5775,
+      "sha256": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead"
+    },
+    {
+      "path": "src/native_render_batch_lifetime.cpp",
+      "bytes": 10883,
+      "sha256": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc"
+    },
+    {
+      "path": "docs/NATIVE_RENDER_BATCH_LIFETIME.md",
+      "bytes": 11153,
+      "sha256": "b21cd33ecf7b883a8e24156350cd65cd71b7b031829337f4c08798aa2ec9c8d4"
+    },
+    {
+      "path": "local/prepare_native_render_batch.py",
+      "bytes": 4735,
+      "sha256": "38be4bdbd9a5c074e719b671cbfeb563d535a1c71e41b8f12acd1ffe1ac4abad"
+    },
+    {
+      "path": "local/native_render_batch_preparation.json",
+      "bytes": 12705,
+      "sha256": "054dab56534188bb67e1a4598ebda1cf432d94d8631f21b621b79012e8d0c474"
+    },
+    {
+      "path": "local/native_render_batch_spans.hpp",
+      "bytes": 1928,
+      "sha256": "16fcf26f34a21486c390604b9c8eee886b3e2bf254d92e497b3065a789fdfb39"
+    },
+    {
+      "path": "local/native_render_batch_check.cpp",
+      "bytes": 15961,
+      "sha256": "45b4d1abe607406ba8e38ab069ad69c748d690b71276b5c263150ab3f70a9340"
+    },
+    {
+      "path": "local/build_native_render_batch_check.ps1",
+      "bytes": 1399,
+      "sha256": "58da8c0c343ca49a8d02a5b2aac97b9c4f774bd683c3862518d98de61510ae3b"
+    },
+    {
+      "path": "local/native_render_batch_check.log",
+      "bytes": 256,
+      "sha256": "845513d5884b73653c850a90be4473fd99adfed0c3aae2bea12b30057c0dac75"
+    },
+    {
+      "path": "local/native_render_batch_repository_build.log",
+      "bytes": 1896,
+      "sha256": "c36e242f79085a1fe05802fd10fde212e9b0c5a4f57eb9d31a7645f109453903"
+    },
+    {
+      "path": "build/batch-check/native_render_batch_check.exe",
+      "bytes": 40960,
+      "sha256": "d639acbdad41cac47cc5187bc6028fd85be0ce8293aa772a669ef69faad05726"
+    },
+    {
+      "path": "reports/native_camera_command_next.json",
+      "bytes": 65731,
+      "sha256": "dcb44793c98896e4a84e8264b1c2ea931058a4a914b4246ecbac1f15ca8358ce"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "src/random_threads.cpp",
+      "bytes": 2902,
+      "sha256": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d"
+    }
+  ]
+}
