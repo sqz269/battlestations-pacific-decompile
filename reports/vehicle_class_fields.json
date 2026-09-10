@@ -1,0 +1,3235 @@
+{
+ "packet": "vehicle_class_field_reader",
+ "doc": "docs/VEHICLE_CLASS_FIELDS.md",
+ "summary": "00960230, the vehicle class descriptor base's Lua field reader, decoded key by key from its listing, together with the shared pre-reader 0087CA80 and the six slot +8h overrides that call it. Names are hypotheses, not recovered symbols.",
+ "routines": [
+  {
+   "address": "00960230",
+   "proposed_name": "BSP_VehicleClass_ReadLuaFields",
+   "role": "the descriptor base's vtable slot +8h Lua field reader",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": "00963232",
+   "state": "analysed"
+  },
+  {
+   "address": "0087CA80",
+   "proposed_name": "BSP_DamageableClass_ReadLuaFields",
+   "role": "the shared pre-reader 00960230 calls first",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": "0087D723",
+   "state": "analysed"
+  },
+  {
+   "address": "00831840",
+   "proposed_name": "BSP_ShipClass_ReadLuaFields",
+   "role": "the ship family's slot +8h override",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": null,
+   "state": "analysed"
+  },
+  {
+   "address": "007D1F70",
+   "proposed_name": "BSP_PlaneClass_ReadLuaFields",
+   "role": "the plane family's slot +8h override",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": null,
+   "state": "analysed"
+  },
+  {
+   "address": "00749210",
+   "proposed_name": "BSP_StructureClass_ReadLuaFields",
+   "role": "the structure/fort family's slot +8h override",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": null,
+   "state": "analysed"
+  },
+  {
+   "address": "0074D4A0",
+   "proposed_name": "BSP_WreckableClass_ReadLuaFields",
+   "role": "a slot +8h override adding ExplosionEfx, Wreck and Smoke",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": null,
+   "state": "analysed"
+  },
+  {
+   "address": "00700E40",
+   "proposed_name": "BSP_DoorClass_ReadLuaFields",
+   "role": "a slot +8h override adding ExplosionEfx, OpenTime and SlowingFactor",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": null,
+   "state": "analysed"
+  },
+  {
+   "address": "006D0B80",
+   "proposed_name": "BSP_RunwayClass_ReadLuaFields",
+   "role": "a slot +8h override adding RunwayWidth and RunwayLength",
+   "calling_convention": "__thiscall(descriptor, LuaObject* row)",
+   "ret": "RET 4",
+   "end": null,
+   "state": "analysed"
+  }
+ ],
+ "keys": [
+  {
+   "site": "0096027B",
+   "key": "SMIcon",
+   "ops": "IsNil@0096028e GetString@0096029e StrAssign@009602a8 0x004c12b0@009602b5 0x00aa2b30@009602c1 PoolGet@009602e6 PoolFree@009602ed StrAssign@009602fd 0x004c12b0@0096030c 0x00aa2b30@00960314 PoolGet@0096033a PoolFree@00960341",
+   "routine": "00960230",
+   "offset": "0xD4",
+   "float": false
+  },
+  {
+   "site": "00960354",
+   "key": "Width",
+   "ops": "GetNumber@00960363 ~Lua@0096037a",
+   "routine": "00960230",
+   "offset": "0xA4",
+   "float": true
+  },
+  {
+   "site": "0096038B",
+   "key": "Length",
+   "ops": "GetNumber@0096039a ~Lua@009603b1",
+   "routine": "00960230",
+   "offset": "0xA0",
+   "float": true
+  },
+  {
+   "site": "009603C2",
+   "key": "Height",
+   "ops": "GetNumber@009603d1 ~Lua@009603e8",
+   "routine": "00960230",
+   "offset": "0xA8",
+   "float": true
+  },
+  {
+   "site": "009603F9",
+   "key": "TotalHeight",
+   "ops": "GetFloatOrDef@00960412 ~Lua@00960429",
+   "routine": "00960230",
+   "offset": "0xAC",
+   "float": true
+  },
+  {
+   "site": "0096043A",
+   "key": "Mass",
+   "ops": "GetFloatOrDef@0096044f ~Lua@00960466",
+   "routine": "00960230",
+   "offset": "0xB0",
+   "float": true
+  },
+  {
+   "site": "0096047A",
+   "key": "Catapult",
+   "ops": "IsTable@0096048e",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009604AC",
+   "key": "LaunchedClass",
+   "ops": "GetIntOrDef@009604bd ~Lua@009604d4",
+   "routine": "00960230",
+   "offset": "0xC0",
+   "float": false
+  },
+  {
+   "site": "009604EA",
+   "key": "LaunchStock",
+   "ops": "GetIntOrDef@009604fa ~Lua@00960511",
+   "routine": "00960230",
+   "offset": "0xC8",
+   "float": false
+  },
+  {
+   "site": "00960527",
+   "key": "MaxLaunchedPlanes",
+   "ops": "GetIntOrDef@00960537 ~Lua@0096054e",
+   "routine": "00960230",
+   "offset": "0xCC",
+   "float": false
+  },
+  {
+   "site": "00960564",
+   "key": "Equipment",
+   "ops": "GetIntOrDef@00960574 ~Lua@0096058b",
+   "routine": "00960230",
+   "offset": "0xC4",
+   "float": false
+  },
+  {
+   "site": "009605B7",
+   "key": "CockpitMesh",
+   "ops": "0x00b685c0@009605d3 ~Lua@009605e7 StrAssign@0096060a 0x007188a0@0096061b PoolGet@00960641 PoolFree@00960648",
+   "routine": "00960230",
+   "offset": "0x80",
+   "float": false
+  },
+  {
+   "site": "00960659",
+   "key": "CockpitCameraPos",
+   "ops": "0x00b680a0@00960672 ~Lua@0096069d",
+   "routine": "00960230",
+   "offset": "0x84",
+   "float": true
+  },
+  {
+   "site": "009606B7",
+   "key": "SpecRole",
+   "ops": "0x00b685c0@009606d3 ~Lua@009606e7 0x00bf7fbf@009606fd 0x00425850@00960722",
+   "routine": "00960230",
+   "offset": "0x90",
+   "float": false
+  },
+  {
+   "site": "00960741",
+   "key": "SoundEfx",
+   "ops": "IsNil@00960752",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096076D",
+   "key": "EngineSoundEfx",
+   "ops": "IsInteger@0096077c ~Lua@0096078f",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009607AA",
+   "key": "EngineSoundEfx",
+   "ops": "GetInteger@009607bc 0x00870cd0@009607c7 0x00440580@009607db dword ptr [0x00ce2220]@009607f5 EAX@00960805 ~Lua@0096081b",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096082E",
+   "key": "ContFireEfx",
+   "ops": "IsInteger@0096083d ~Lua@00960850",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096086B",
+   "key": "ContFireEfx",
+   "ops": "GetInteger@0096087d 0x00870cd0@00960888 0x00440580@0096089c dword ptr [0x00ce2220]@009608b6 EDX@009608c6 ~Lua@009608dc",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009608EF",
+   "key": "DeadMeatEfx",
+   "ops": "IsInteger@009608fe ~Lua@00960911",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096092C",
+   "key": "DeadMeatEfx",
+   "ops": "GetInteger@0096093e 0x00870cd0@00960949 dword ptr [0x00ce221c]@00960970 dword ptr [0x00ce2220]@0096097e EDX@0096098e dword ptr [0x00ce2220]@009609a5 EDX@009609b5 ~Lua@009609cb",
+   "routine": "00960230",
+   "offset": "0xF0",
+   "float": false
+  },
+  {
+   "site": "009609DE",
+   "key": "WindEfx",
+   "ops": "IsInteger@009609ed ~Lua@00960a00",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960A1B",
+   "key": "WindEfx",
+   "ops": "GetInteger@00960a2d 0x00870cd0@00960a38 dword ptr [0x00ce221c]@00960a5f dword ptr [0x00ce2220]@00960a6d EDX@00960a7d dword ptr [0x00ce2220]@00960a94 EDX@00960aa4 ~Lua@00960aba",
+   "routine": "00960230",
+   "offset": "0xF4",
+   "float": false
+  },
+  {
+   "site": "00960ACD",
+   "key": "TooFastEfx",
+   "ops": "IsInteger@00960adc ~Lua@00960aef",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960B0A",
+   "key": "TooFastEfx",
+   "ops": "GetInteger@00960b1c 0x00870cd0@00960b27 dword ptr [0x00ce221c]@00960b4e dword ptr [0x00ce2220]@00960b5c EDX@00960b6c dword ptr [0x00ce2220]@00960b83 EDX@00960b93 ~Lua@00960ba9",
+   "routine": "00960230",
+   "offset": "0xF8",
+   "float": false
+  },
+  {
+   "site": "00960BBC",
+   "key": "HajoCsavarEfx",
+   "ops": "IsInteger@00960bcb ~Lua@00960bde",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960BF9",
+   "key": "HajoCsavarEfx",
+   "ops": "GetInteger@00960c0b 0x00870cd0@00960c16 dword ptr [0x00ce221c]@00960c3d dword ptr [0x00ce2220]@00960c4b EDX@00960c5b dword ptr [0x00ce2220]@00960c72 EDX@00960c82 ~Lua@00960c98",
+   "routine": "00960230",
+   "offset": "0xFC",
+   "float": false
+  },
+  {
+   "site": "00960CAB",
+   "key": "OrrHullamEfx",
+   "ops": "IsInteger@00960cba ~Lua@00960ccd",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960CE8",
+   "key": "OrrHullamEfx",
+   "ops": "GetInteger@00960cfa 0x00870cd0@00960d05 dword ptr [0x00ce221c]@00960d2c dword ptr [0x00ce2220]@00960d3a EDX@00960d4a dword ptr [0x00ce2220]@00960d61 EDX@00960d71 ~Lua@00960d87",
+   "routine": "00960230",
+   "offset": "0x100",
+   "float": false
+  },
+  {
+   "site": "00960D9A",
+   "key": "ElevatorEfx",
+   "ops": "IsInteger@00960da9 ~Lua@00960dbc",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960DD7",
+   "key": "ElevatorEfx",
+   "ops": "GetInteger@00960de9 0x00870cd0@00960df4 dword ptr [0x00ce221c]@00960e1b dword ptr [0x00ce2220]@00960e29 EDX@00960e39 dword ptr [0x00ce2220]@00960e50 EDX@00960e60 ~Lua@00960e76",
+   "routine": "00960230",
+   "offset": "0x104",
+   "float": false
+  },
+  {
+   "site": "00960E89",
+   "key": "SonarPing",
+   "ops": "IsInteger@00960e98 ~Lua@00960eab",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960EC6",
+   "key": "SonarPing",
+   "ops": "GetInteger@00960ed8 0x00870cd0@00960ee3 dword ptr [0x00ce221c]@00960f0a dword ptr [0x00ce2220]@00960f18 EDX@00960f28 dword ptr [0x00ce2220]@00960f3f EDX@00960f4f ~Lua@00960f65",
+   "routine": "00960230",
+   "offset": "0x108",
+   "float": false
+  },
+  {
+   "site": "00960F78",
+   "key": "Ambient",
+   "ops": "0x00b660a0@00960f87 ~Lua@00960f9a",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00960FB5",
+   "key": "Ambient",
+   "ops": "GetString@00960fc4 StrAssign@00960fce 0x00a83fd0@00960fec dword ptr [0x00ce221c]@00961013 dword ptr [0x00ce2220]@00961021 EAX@00961031 dword ptr [0x00ce2220]@00961048 EAX@00961058 PoolGet@0096107d PoolFree@00961084 ~Lua@00961095 ~Lua@009610a6",
+   "routine": "00960230",
+   "offset": "0x10C",
+   "float": false
+  },
+  {
+   "site": "009610BA",
+   "key": "Cost",
+   "ops": "GetIntOrDef@009610cb ~Lua@009610e2",
+   "routine": "00960230",
+   "offset": "0x124",
+   "float": false
+  },
+  {
+   "site": "009610F6",
+   "key": "Platforms",
+   "ops": "IsNil@0096110a LuaCtor@0096111b LuaCtor@0096112f IterFirst@00961150 IsUnbound@00961161 0x00bf681b@00961175 0x007f7110@0096118f GetInteger@009611b2",
+   "routine": "00960230",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "009611CB",
+   "key": "PilotFires",
+   "ops": "IsNil@009611dc GetBoolean@009611ef",
+   "routine": "00960230",
+   "offset": "0xC",
+   "float": false
+  },
+  {
+   "site": "00961211",
+   "key": "ForwardAim",
+   "ops": "GetNumber@00961220 ~Lua@00961237",
+   "routine": "00960230",
+   "offset": "0x48",
+   "float": true
+  },
+  {
+   "site": "00961250",
+   "key": "UseBayDoor",
+   "ops": "IsNil@00961264 GetBoolean@0096127a",
+   "routine": "00960230",
+   "offset": "0xD",
+   "float": false
+  },
+  {
+   "site": "00961296",
+   "key": "MainPlatform",
+   "ops": "IsNil@009612aa GetBoolean@009612c0",
+   "routine": "00960230",
+   "offset": "0xE",
+   "float": false
+  },
+  {
+   "site": "009612D9",
+   "key": "Name",
+   "ops": "IsNil@009612ea GetString@009612f7 StrDup@00961305 ~Lua@0096131c",
+   "routine": "00960230",
+   "offset": "0x8C",
+   "float": false
+  },
+  {
+   "site": "00961335",
+   "key": "Gun",
+   "ops": "IsNil@00961349 LuaCtor@0096135d LuaCtor@0096136e IterFirst@0096138f IsUnbound@009613a3 GetInteger@009613b4 0x004857f0@009613d3 0x0048fc80@009613df IterNext@00961400 IsUnbound@00961414 ~Lua@00961429 ~Lua@0096143d ~Lua@00961451",
+   "routine": "00960230",
+   "offset": "0x4",
+   "float": false
+  },
+  {
+   "site": "0096146A",
+   "key": "DefaultGun",
+   "ops": "IsNil@0096147e 0x00bf6713@00961496 GetInteger@009614b2 0x00bf6713@009614d4 0x00bf6713@009614eb 0x00443090@009614f9 0x00958e90@00961520 0x0095a5e0@0096152b dword ptr [0x00ce2220]@0096154f EAX@0096155f 0x00bf6713@00961571 0x00443090@00961591 0x00958e90@009615b8 0x0095a5e0@009615c3 dword ptr [0x00ce2220]@009615e7 EAX@009615f7",
+   "routine": "00960230",
+   "offset": "0x38",
+   "float": false
+  },
+  {
+   "site": "0096160D",
+   "key": "Windows",
+   "ops": "LuaCtor@0096161e LuaCtor@00961632 IsNil@00961646 IterFirst@00961667 IsUnbound@00961678",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009616AC",
+   "key": "Nofire",
+   "ops": "IsNil@009616c0 GetBoolean@009616d0",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009616F5",
+   "key": "MinHorzAngle",
+   "ops": "GetNumber@00961704 ~Lua@0096171c",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00961735",
+   "key": "MaxHorzAngle",
+   "ops": "GetNumber@00961744 ~Lua@0096175c",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00961775",
+   "key": "MinVertAngle",
+   "ops": "GetNumber@00961784 ~Lua@0096179c",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009617B5",
+   "key": "MaxVertAngle",
+   "ops": "GetNumber@009617c4 ~Lua@009617dc 0x007f6b10@0096185e ~Lua@00961872 IterNext@0096188b IsUnbound@0096189c ~Lua@009618be ~Lua@009618cf ~Lua@009618e3",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009618FC",
+   "key": "DirectorFollowPlatforms",
+   "ops": "IsNil@00961910 LuaCtor@00961921 LuaCtor@00961935 IterFirst@00961956 IsUnbound@00961967 GetInteger@00961987 0x00bf6713@009619ca 0x00441f30@009619e0 IterNext@009619f9 IsUnbound@00961a0a ~Lua@00961a26 ~Lua@00961a37",
+   "routine": "00960230",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "00961A68",
+   "key": "RestAngles",
+   "ops": "IsNil@00961a79 LuaCtor@00961a8d GetByIndex@00961aa8 LuaAssign@00961abd ~Lua@00961ace GetNumber@00961ada GetByIndex@00961af3 LuaAssign@00961b08 ~Lua@00961b19 IsNil@00961b25 GetNumber@00961b35 ~Lua@00961b4f ~Lua@00961b60 0x005471b0@00961b7d dword ptr [0x00ce221c]@00961b93 dword ptr [0x00ce2220]@00961ba1 EDX@00961bb1 ~Lua@00961bc2 ~Lua@00961bd6 ~Lua@00961bea ~Lua@00961bfe ~Lua@00961c0f dword ptr [0x00ce2220]@00961c20 EAX@00961c30 IterNext@00961c46 IsUnbound@00961c57 ~Lua@00961c73 ~Lua@00961c84",
+   "routine": "00960230",
+   "offset": "0x94",
+   "float": true
+  },
+  {
+   "site": "00961C9C",
+   "key": "GunDelayGroups",
+   "ops": "IsNil@00961cad LuaCtor@00961cc1 LuaCtor@00961cd5 IterFirst@00961cf6 IsUnbound@00961d07 0x006a4710@00961d4d 0x00bf6713@00961d7a LuaCtor@00961d89 LuaCtor@00961d9d IterFirst@00961dbe IsUnbound@00961dcf GetInteger@00961de3 0x00bf6713@00961e26 0x00441f30@00961e3c IterNext@00961e55 IsUnbound@00961e66 ~Lua@00961e86 ~Lua@00961e97 IterNext@00961eb0 IsUnbound@00961ec1 ~Lua@00961edd ~Lua@00961ef1 ~Lua@00961f05",
+   "routine": "00960230",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "00961F16",
+   "key": "DefaultEquipment",
+   "ops": "IsNil@00961f27 GetInteger@00961f40",
+   "routine": "00960230",
+   "offset": "0x134",
+   "float": false
+  },
+  {
+   "site": "00961F57",
+   "key": "Equipments",
+   "ops": "IsNil@00961f68 GetByIndex@00961f8e IsNil@00961fa2 0x00bf681b@00961fb3 LuaCtor@00961fd7 LuaCtor@00961feb IterFirst@0096200b IsUnbound@0096201c GetInteger@00962034 0x00b66050@00962057 GetInteger@00962067 GetByIndex@00962084 IsNil@00962093 ~Lua@009620a7",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009620C8",
+   "key": "Platform",
+   "ops": "GetInteger@009620d7 ~Lua@009620e9",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00962102",
+   "key": "Ammo",
+   "ops": "GetInteger@00962111 ~Lua@00962123",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096213C",
+   "key": "ReloadTime",
+   "ops": "GetByIndex@0096214e GetInteger@0096215d ~Lua@0096216f GetByIndex@00962185 GetInteger@00962194 ~Lua@009621a6 GetByIndex@009621bc GetFloatOrDef@009621d5 ~Lua@009621e9 0x00bf681b@009621f0 0x00bf681b@0096221f IterNext@0096226f IsUnbound@00962280 0x00bf681b@0096228f ~Lua@009622f4 ~Lua@00962305 ~Lua@00962319 GetByIndex@0096233c IsNil@00962350 ~Lua@0096236c ~Lua@00962384 ~Lua@00962395",
+   "routine": "00960230",
+   "offset": "0x4",
+   "float": false
+  },
+  {
+   "site": "009623A9",
+   "key": "ReconModifier",
+   "ops": "GetFloatOrDef@009623be ~Lua@009623df",
+   "routine": "00960230",
+   "offset": "0xB8",
+   "float": true
+  },
+  {
+   "site": "009623F0",
+   "key": "ReconClass",
+   "ops": "IsNil@00962401 GetInteger@0096240e 0x00808f90@00962419 dword ptr [0x00ce221c]@00962440 dword ptr [0x00ce2220]@0096244e EDX@0096245e dword ptr [0x00ce2220]@00962476 EDX@00962486 ~Lua@00962494",
+   "routine": "00960230",
+   "offset": "0xB4",
+   "float": false
+  },
+  {
+   "site": "009624A8",
+   "key": "MovieCameraPositions",
+   "ops": "IsTable@009624bc 0x00bf681b@009624cb 0x00955be0@009624f4",
+   "routine": "00960230",
+   "offset": "0x0",
+   "float": false
+  },
+  {
+   "site": "0096253D",
+   "key": "Positions",
+   "ops": "LuaCtor@0096254e LuaCtor@00962562 IterFirst@00962580 IsUnbound@0096258e GetInteger@009625a4 0x0078e230@009625cb",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009625EC",
+   "key": "PureSnitt",
+   "ops": "GetBoolOrDef@009625fc ~Lua@00962614",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096263B",
+   "key": "Name",
+   "ops": "0x00b685c0@00962654 StrResize@0096267a 0x00bf7680@00962697 PoolGet@009626ba PoolFree@009626c1 ~Lua@009626d2",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "009626EB",
+   "key": "MinHorzAngle",
+   "ops": "",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0096270C",
+   "key": "MaxHorzAngle",
+   "ops": "IsNil@00962720 IsNil@00962730 GetNumber@00962740 GetNumber@00962753",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00962773",
+   "key": "MinVertAngle",
+   "ops": "",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00962791",
+   "key": "MaxVertAngle",
+   "ops": "IsNil@009627a5 IsNil@009627b2 GetNumber@009627c2 GetNumber@009627d2 ~Lua@009627ea ~Lua@009627fe ~Lua@00962812 ~Lua@00962826 0x005cd640@00962840 StrResize@00962861 0x00bf7680@0096287e PoolGet@009629b9 PoolFree@009629c0 IterNext@009629d6 IsUnbound@009629e4 ~Lua@00962a00 ~Lua@00962a11 ~Lua@00962a22",
+   "routine": "00960230",
+   "offset": "0x8",
+   "float": true
+  },
+  {
+   "site": "00962A3B",
+   "key": "SnittPositions",
+   "ops": "LuaCtor@00962a4f LuaCtor@00962a63 IterFirst@00962a87 IsUnbound@00962a9b GetString@00962ab7 StrResize@00962ae2 0x00bf7680@00962af9 LuaCtor@00962b1b LuaCtor@00962b2c IterFirst@00962b4a IsUnbound@00962b5b GetInteger@00962b74 0x004674f0@00962b90 GetInteger@00962bd1 IterNext@00962bf1 IsUnbound@00962c02 0x007a4590@00962c21 0x00799350@00962c2d ~Lua@00962c3e ~Lua@00962c4f 0x00bf55be@00962c6b 0x00bf6989@00962c97 0x00bf6989@00962cea ~Lua@00962d60 ~Lua@00962d74 ~Lua@00962d88 ~Lua@00962dab",
+   "routine": "00960230",
+   "offset": "0xBC",
+   "float": false
+  },
+  {
+   "site": "00962DBC",
+   "key": "Repair",
+   "ops": "IsNil@00962dcf",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00962DEB",
+   "key": "Repair",
+   "ops": "GetBoolean@00962e05 ~Lua@00962e29 ~Lua@00962e3a",
+   "routine": "00960230",
+   "offset": "0xD0",
+   "float": false
+  },
+  {
+   "site": "00962E4E",
+   "key": "Flags",
+   "ops": "IsTable@00962e62 LuaCtor@00962e76 LuaCtor@00962e87 IterFirst@00962ea8 IsUnbound@00962ebc GetInteger@00962ee7 0x0095d850@00962f3f 0x00bf6713@00962f65",
+   "routine": "00960230",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00962F86",
+   "key": "SizeHorizontal",
+   "ops": "GetFloatOrDef@00962f9f ~Lua@00962fb2",
+   "routine": "00960230",
+   "offset": "0x0",
+   "float": true
+  },
+  {
+   "site": "00962FC8",
+   "key": "SizeVertical",
+   "ops": "GetFloatOrDef@00962fe1 ~Lua@00962ff5",
+   "routine": "00960230",
+   "offset": "0x4",
+   "float": true
+  },
+  {
+   "site": "0096300B",
+   "key": "ForcedTexture",
+   "ops": "0x00b685c0@00963027 StrResize@00963044 0x00bf7680@00963059 PoolGet@00963082 PoolFree@00963089 ~Lua@0096309a StrAssign@009630a8 0x00bf7fbf@009630d3 PoolGet@009630f1 PoolFree@009630f8 EAX@00963112 IterNext@0096312b IsUnbound@0096313f ~Lua@00963158 ~Lua@0096316c ~Lua@00963180 ~Lua@00963194 PoolGet@009631ba PoolFree@009631c1 PoolGet@009631e7 PoolFree@009631ee ~Lua@00963202 ~Lua@00963219",
+   "routine": "00960230",
+   "offset": "0x10",
+   "float": false
+  },
+  {
+   "site": "0087CAB8",
+   "key": "Name",
+   "ops": "GetString@0087caca StrDup@0087cad1 ~Lua@0087cae8",
+   "routine": "0087CA80",
+   "offset": "0x54",
+   "float": false
+  },
+  {
+   "site": "0087CAFC",
+   "key": "Unique",
+   "ops": "0x00b66000@0087cb13 GetBoolean@0087cb23",
+   "routine": "0087CA80",
+   "offset": "0x34",
+   "float": false
+  },
+  {
+   "site": "0087CB44",
+   "key": "Mesh",
+   "ops": "0x00b685c0@0087cb5d StrResize@0087cb7a 0x00bf7680@0087cb8f PoolGet@0087cbb2 PoolFree@0087cbb9 ~Lua@0087cbca",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087CBDB",
+   "key": "Comment",
+   "ops": "0x00b685c0@0087cbf4 StrResize@0087cc11 0x00bf7680@0087cc26 PoolGet@0087cc49 PoolFree@0087cc50 ~Lua@0087cc61",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087CC72",
+   "key": "HP",
+   "ops": "GetFloatOrDef@0087cc8b ~Lua@0087cca3",
+   "routine": "0087CA80",
+   "offset": "0x48",
+   "float": true
+  },
+  {
+   "site": "0087CCB4",
+   "key": "Armour",
+   "ops": "GetFloatOrDef@0087ccc9 ~Lua@0087ccdd",
+   "routine": "0087CA80",
+   "offset": "0x4C",
+   "float": true
+  },
+  {
+   "site": "0087CCEE",
+   "key": "ExplosionType",
+   "ops": "IsInteger@0087ccfd ~Lua@0087cd10",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087CD25",
+   "key": "ExplosionType",
+   "ops": "GetInteger@0087cd34 ~Lua@0087cd48",
+   "routine": "0087CA80",
+   "offset": "0x40",
+   "float": false
+  },
+  {
+   "site": "0087CD59",
+   "key": "Damage",
+   "ops": "IsTable@0087cd6a",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087CD88",
+   "key": "Sections",
+   "ops": "IsTable@0087cd9c LuaCtor@0087cdad LuaCtor@0087cdbe IterFirst@0087cddc IsUnbound@0087cded 0x00bf79f0@0087ce0d 0x0087c870@0087ce48 dword ptr [0x00ce2220]@0087ce6f EAX@0087ce7f 0x00bf6713@0087ce90 0x00bf6713@0087cea9 0x00bf6713@0087ceb6",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087CECC",
+   "key": "MshCategory",
+   "ops": "GetString@0087cedb StrResize@0087cf02 0x00bf7680@0087cf19 ~Lua@0087cf30",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087CF43",
+   "key": "Index",
+   "ops": "GetNumber@0087cf52 0x00bf7420@0087cf57 ~Lua@0087cf6b 0x007149d0@0087cf7b",
+   "routine": "0087CA80",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "0087CF91",
+   "key": "FireEfx",
+   "ops": "GetIntOrDef@0087cfa4 0x00870cd0@0087cfaf dword ptr [0x00ce221c]@0087cfd0 dword ptr [0x00ce2220]@0087cfde EDX@0087cfee dword ptr [0x00ce2220]@0087d006 EDX@0087d016 ~Lua@0087d02c StrAssign@0087d04c 0x00871ba0@0087d063 dword ptr [0x00ce221c]@0087d084 dword ptr [0x00ce2220]@0087d092 EAX@0087d0a2 dword ptr [0x00ce2220]@0087d0ba EAX@0087d0ca PoolGet@0087d0ef PoolFree@0087d0f6",
+   "routine": "0087CA80",
+   "offset": "0x24",
+   "float": false
+  },
+  {
+   "site": "0087D109",
+   "key": "FailureChance",
+   "ops": "GetFloatOrDef@0087d122 ~Lua@0087d13c",
+   "routine": "0087CA80",
+   "offset": "0x28",
+   "float": true
+  },
+  {
+   "site": "0087D14F",
+   "key": "FailureDamageThreshold",
+   "ops": "GetFloatOrDef@0087d168 ~Lua@0087d17c PoolGet@0087d194 PoolFree@0087d19b IterNext@0087d1b1 IsUnbound@0087d1c2 ~Lua@0087d1db ~Lua@0087d1ec ~Lua@0087d207 ~Lua@0087d218",
+   "routine": "0087CA80",
+   "offset": "0x2C",
+   "float": true
+  },
+  {
+   "site": "0087D229",
+   "key": "FakeExplosionEffects",
+   "ops": "IsTable@0087d23a LuaCtor@0087d24b 0x00bf7a6a@0087d26c",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087D282",
+   "key": "%d",
+   "ops": "LuaAssign@0087d294 ~Lua@0087d2a5 IsTable@0087d2ae 0x0087c920@0087d2fe GetByIndex@0087d30e 0x00bf6713@0087d332 GetNumber@0087d345 ~Lua@0087d359 GetByIndex@0087d369 0x00bf6713@0087d38d GetInteger@0087d39b ~Lua@0087d3af GetByIndex@0087d3bf 0x00bf6713@0087d3e3 GetInteger@0087d3f1 ~Lua@0087d405 GetByIndex@0087d415 GetInteger@0087d426 0x00870cd0@0087d431 0x00bf6713@0087d453 dword ptr [0x00ce221c]@0087d472 dword ptr [0x00ce2220]@0087d480 EAX@0087d490 dword ptr [0x00ce2220]@0087d4a8 EAX@0087d4b8 ~Lua@0087d4ce 0x00bf7a6a@0087d4e9",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087D4FF",
+   "key": "%d",
+   "ops": "LuaAssign@0087d511 ~Lua@0087d522 IsTable@0087d52b ~Lua@0087d544 ~Lua@0087d55c",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0087D56D",
+   "key": "Emberkek",
+   "ops": "IsTable@0087d57e LuaCtor@0087d592 LuaCtor@0087d5a3 IterFirst@0087d5c1 IsUnbound@0087d5d2 GetString@0087d5f4 StrResize@0087d618 0x00bf7680@0087d62f GetInteger@0087d645 0x004b1400@0087d652 0x0087b750@0087d660 PoolGet@0087d683 PoolFree@0087d68a IterNext@0087d6a0 IsUnbound@0087d6b1 ~Lua@0087d6ca ~Lua@0087d6de ~Lua@0087d6ef ~Lua@0087d706",
+   "routine": "0087CA80",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00831882",
+   "key": "MaxRotAngle",
+   "ops": "GetNumber@00831894 ~Lua@008318b0",
+   "routine": "00831840",
+   "offset": "0x4F8",
+   "float": true
+  },
+  {
+   "site": "008318C4",
+   "key": "MaxRotAngleChangeRatio",
+   "ops": "GetNumber@008318d6 ~Lua@008318ef",
+   "routine": "00831840",
+   "offset": "0x4FC",
+   "float": true
+  },
+  {
+   "site": "00831903",
+   "key": "MaxSpeed",
+   "ops": "GetNumber@00831915 ~Lua@0083192e",
+   "routine": "00831840",
+   "offset": "0x500",
+   "float": true
+  },
+  {
+   "site": "00831942",
+   "key": "MaxAccel",
+   "ops": "GetNumber@00831954 ~Lua@0083196d",
+   "routine": "00831840",
+   "offset": "0x504",
+   "float": true
+  },
+  {
+   "site": "00831981",
+   "key": "Retardation",
+   "ops": "GetNumber@00831993 ~Lua@008319ac",
+   "routine": "00831840",
+   "offset": "0x508",
+   "float": true
+  },
+  {
+   "site": "008319C0",
+   "key": "CollisionMaxSpeedDamage",
+   "ops": "GetFloatOrDef@008319d8 ~Lua@008319f1",
+   "routine": "00831840",
+   "offset": "0x50C",
+   "float": true
+  },
+  {
+   "site": "00831A05",
+   "key": "KamikazeDamage",
+   "ops": "GetFloatOrDef@00831a1d ~Lua@00831a36",
+   "routine": "00831840",
+   "offset": "0x510",
+   "float": true
+  },
+  {
+   "site": "00831A4A",
+   "key": "KamikazeBlastDamage",
+   "ops": "GetFloatOrDef@00831a62 ~Lua@00831a7b",
+   "routine": "00831840",
+   "offset": "0x514",
+   "float": true
+  },
+  {
+   "site": "00831A8F",
+   "key": "KamikazeBlastRange",
+   "ops": "GetFloatOrDef@00831aa7 ~Lua@00831ac0",
+   "routine": "00831840",
+   "offset": "0x518",
+   "float": true
+  },
+  {
+   "site": "00831AD4",
+   "key": "RotorSpdTurnDiff",
+   "ops": "GetFloatOrDef@00831aec ~Lua@00831b05",
+   "routine": "00831840",
+   "offset": "0x69C",
+   "float": true
+  },
+  {
+   "site": "00831B19",
+   "key": "RotorSpd",
+   "ops": "GetFloatOrDef@00831b35 ~Lua@00831b4e",
+   "routine": "00831840",
+   "offset": "0x6A0",
+   "float": true
+  },
+  {
+   "site": "00831B62",
+   "key": "DeathEfx",
+   "ops": "IsInteger@00831b74 ~Lua@00831b8d",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00831BA9",
+   "key": "DeathEfx",
+   "ops": "GetIntOrDef@00831bbf 0x00870cd0@00831bcd dword ptr [0x00ce221c]@00831bf4 dword ptr [0x00ce2220]@00831c02 EAX@00831c12 dword ptr [0x00ce2220]@00831c2d EAX@00831c3d ~Lua@00831c5c",
+   "routine": "00831840",
+   "offset": "0x55C",
+   "float": false
+  },
+  {
+   "site": "00831C70",
+   "key": "ExplosionEfx",
+   "ops": "IsInteger@00831c82 ~Lua@00831c9b",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00831CB7",
+   "key": "ExplosionEfx",
+   "ops": "GetInteger@00831ccb 0x00870cd0@00831cd9 dword ptr [0x00ce221c]@00831d00 dword ptr [0x00ce2220]@00831d0e EAX@00831d1e dword ptr [0x00ce2220]@00831d39 EAX@00831d49 ~Lua@00831d68",
+   "routine": "00831840",
+   "offset": "0x51C",
+   "float": false
+  },
+  {
+   "site": "00831D7C",
+   "key": "UnderwaterArmour",
+   "ops": "GetFloatOrDef@00831d94 ~Lua@00831db0",
+   "routine": "00831840",
+   "offset": "0x6B4",
+   "float": true
+  },
+  {
+   "site": "00831DC4",
+   "key": "DamageThreshold",
+   "ops": "GetFloatOrDef@00831de0 ~Lua@00831df9",
+   "routine": "00831840",
+   "offset": "0x6B8",
+   "float": true
+  },
+  {
+   "site": "00831E0D",
+   "key": "CaptainCameraHeight",
+   "ops": "IsNil@00831e24 GetNumber@00831e34",
+   "routine": "00831840",
+   "offset": "0x538",
+   "float": true
+  },
+  {
+   "site": "00831E60",
+   "key": "CameraDistanceFront",
+   "ops": "LuaAssign@00831e75 ~Lua@00831e89 IsNil@00831e95 GetNumber@00831ea5",
+   "routine": "00831840",
+   "offset": "0x53C",
+   "float": true
+  },
+  {
+   "site": "00831EC7",
+   "key": "CameraDistanceSide",
+   "ops": "LuaAssign@00831edc ~Lua@00831ef0 IsNil@00831efc GetNumber@00831f0c",
+   "routine": "00831840",
+   "offset": "0x540",
+   "float": true
+  },
+  {
+   "site": "00831F2E",
+   "key": "CameraDistanceVertical",
+   "ops": "LuaAssign@00831f43 ~Lua@00831f57 IsNil@00831f63 GetNumber@00831f73",
+   "routine": "00831840",
+   "offset": "0x544",
+   "float": true
+  },
+  {
+   "site": "00831F95",
+   "key": "CameraMinHeight",
+   "ops": "LuaAssign@00831faa ~Lua@00831fbe IsNil@00831fca GetNumber@00831fda",
+   "routine": "00831840",
+   "offset": "0x548",
+   "float": true
+  },
+  {
+   "site": "00831FFC",
+   "key": "DamageToDeath",
+   "ops": "GetFloatOrDef@00832015 ~Lua@0083202f",
+   "routine": "00831840",
+   "offset": "0x54C",
+   "float": true
+  },
+  {
+   "site": "00832043",
+   "key": "TimeToDeath",
+   "ops": "GetFloatOrDef@0083205c ~Lua@00832076",
+   "routine": "00831840",
+   "offset": "0x550",
+   "float": true
+  },
+  {
+   "site": "0083208A",
+   "key": "PumpTimeToEmpty",
+   "ops": "GetFloatOrDef@008320a3 ~Lua@008320bd",
+   "routine": "00831840",
+   "offset": "0x554",
+   "float": true
+  },
+  {
+   "site": "008320D1",
+   "key": "WaterForceMultiplier",
+   "ops": "GetFloatOrDef@008320e6 ~Lua@00832100",
+   "routine": "00831840",
+   "offset": "0x558",
+   "float": true
+  },
+  {
+   "site": "00832114",
+   "key": "BowParticle",
+   "ops": "IsInteger@00832128 GetInteger@0083213e 0x00870cd0@0083214c dword ptr [0x00ce221c]@00832173 dword ptr [0x00ce2220]@00832181 EAX@00832191 dword ptr [0x00ce2220]@008321ac EAX@008321bc",
+   "routine": "00831840",
+   "offset": "0x5AC",
+   "float": false
+  },
+  {
+   "site": "008321D8",
+   "key": "BowWave",
+   "ops": "IsInteger@008321ec GetInteger@00832202 0x00870cd0@00832210 dword ptr [0x00ce221c]@00832237 dword ptr [0x00ce2220]@00832245 EDX@00832255 dword ptr [0x00ce2220]@00832270 EDX@00832280",
+   "routine": "00831840",
+   "offset": "0x630",
+   "float": false
+  },
+  {
+   "site": "0083229C",
+   "key": "WaveStern",
+   "ops": "IsInteger@008322b0 GetInteger@008322c6 0x00870cd0@008322d4 dword ptr [0x00ce221c]@008322fb dword ptr [0x00ce2220]@00832309 EAX@00832319 dword ptr [0x00ce2220]@00832334 EAX@00832344",
+   "routine": "00831840",
+   "offset": "0x634",
+   "float": false
+  },
+  {
+   "site": "00832360",
+   "key": "RotorParticle",
+   "ops": "LuaAssign@00832375 ~Lua@00832389 IsInteger@00832395 GetInteger@008323ab 0x00870cd0@008323b9 dword ptr [0x00ce221c]@008323e0 dword ptr [0x00ce2220]@008323ee EDX@008323fe dword ptr [0x00ce2220]@00832419 EDX@00832429",
+   "routine": "00831840",
+   "offset": "0x65C",
+   "float": false
+  },
+  {
+   "site": "00832445",
+   "key": "DamageSmoke",
+   "ops": "IsTable@00832459",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0083247A",
+   "key": "MaxNumber",
+   "ops": "GetInteger@00832489 ~Lua@008324a3",
+   "routine": "00831840",
+   "offset": "0x660",
+   "float": false
+  },
+  {
+   "site": "008324C1",
+   "key": "Effect",
+   "ops": "GetByIndex@008324de IsInteger@008324ed ~Lua@00832505 GetByIndex@00832525 GetIntOrDef@00832538 0x00870cd0@00832543 ~Lua@00832557 0x004d9c00@00832577 dword ptr [0x00ce2220]@00832597 EDX@008325a9 GetByIndex@008325c3 IsInteger@008325d2 ~Lua@008325ea ~Lua@00832609 0x00bf6713@0083262c 0x00bf6713@0083263d 0x004d17c0@00832658",
+   "routine": "00831840",
+   "offset": "0x660",
+   "float": false
+  },
+  {
+   "site": "0083266C",
+   "key": "HoD",
+   "ops": "IsTable@00832680 GetByIndex@008326b4 IsTable@008326c8 LuaCtor@008326dc LuaCtor@008326ed",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0083270E",
+   "key": "Flag",
+   "ops": "IsTable@00832722 IterFirst@00832743 IsUnbound@00832754 GetInteger@00832764 0x00442190@0083277a IterNext@00832793 IsUnbound@008327a4 ~Lua@008327bc",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "008327D5",
+   "key": "Smoke",
+   "ops": "IsTable@008327e9 IterFirst@0083280a IsUnbound@0083281b GetInteger@00832834 0x00bf6713@00832886 0x00441f30@0083289f IterNext@008328b8 IsUnbound@008328c9 ~Lua@008328e5",
+   "routine": "00831840",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "008328FE",
+   "key": "Idle",
+   "ops": "IsTable@00832912 IterFirst@00832933 IsUnbound@00832944 GetInteger@00832958 0x00bf6713@008329a9 0x00441f30@008329c2 IterNext@008329db IsUnbound@008329ec ~Lua@00832a08 ~Lua@00832a19 ~Lua@00832a2d ~Lua@00832a48",
+   "routine": "00831840",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "00832A73",
+   "key": "ExplosionTypes",
+   "ops": "IsTable@00832a87 GetByIndex@00832ab4 IsInteger@00832ac3 ~Lua@00832ad9 GetByIndex@00832af6 GetInteger@00832b05 0x004674f0@00832b29 ~Lua@00832b4f",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00832B7A",
+   "key": "Smoke",
+   "ops": "GetIntOrDef@00832b8d 0x00870cd0@00832b9b dword ptr [0x00ce221c]@00832bc2 dword ptr [0x00ce2220]@00832bd0 EAX@00832be0 dword ptr [0x00ce2220]@00832bfb EAX@00832c0b ~Lua@00832c27 0x00870cd0@00832c3a dword ptr [0x00ce221c]@00832c61 dword ptr [0x00ce2220]@00832c6f EAX@00832c7f dword ptr [0x00ce2220]@00832c9a EAX@00832caa 0x00870cd0@00832cc5 dword ptr [0x00ce221c]@00832cec dword ptr [0x00ce2220]@00832cfa EAX@00832d0a dword ptr [0x00ce2220]@00832d25 EAX@00832d35",
+   "routine": "00831840",
+   "offset": "0x674",
+   "float": false
+  },
+  {
+   "site": "00832D51",
+   "key": "Hull",
+   "ops": "IsTable@00832d65",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00832D86",
+   "key": "WaterLineRatio",
+   "ops": "GetNumber@00832d95 ~Lua@00832daf",
+   "routine": "00831840",
+   "offset": "0x71C",
+   "float": true
+  },
+  {
+   "site": "00832DC8",
+   "key": "Segments",
+   "ops": "GetNumber@00832dd7 0x00bf7420@00832ddc ~Lua@00832df6",
+   "routine": "00831840",
+   "offset": "0x720",
+   "float": false
+  },
+  {
+   "site": "00832E0A",
+   "key": "Traffic",
+   "ops": "IsNil@00832e1e GetByIndex@00832e40 IsNil@00832e4f ~Lua@00832e68 GetByIndex@00832ea4 0x0049f9b0@00832ebc 0x0082fd20@00832ecb 0x00bf6713@00832ed8 0x00bf6713@00832ef2 0x00bf6713@00832f03",
+   "routine": "00831840",
+   "offset": "0x4C",
+   "float": false
+  },
+  {
+   "site": "00832F1C",
+   "key": "pathID",
+   "ops": "GetInteger@00832f2b ~Lua@00832f45 0x0049d4c0@00832f54 ~Lua@00832f68 GetByIndex@00832f80 IsNil@00832f8f ~Lua@00832fa8",
+   "routine": "00831840",
+   "offset": "0x4C",
+   "float": false
+  },
+  {
+   "site": "00832FC7",
+   "key": "Idle",
+   "ops": "IsNil@00832fdb GetByIndex@00832ff9 IsNil@00833008 ~Lua@00833021 GetByIndex@00833054 0x0082e1f0@0083306a 0x0082f8e0@0083307c 0x00bf6713@00833089 0x00bf6713@0083309f 0x00bf6713@008330ac",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "008330C5",
+   "key": "posID",
+   "ops": "GetInteger@008330d4 ~Lua@008330ee",
+   "routine": "00831840",
+   "offset": "0x18",
+   "float": false
+  },
+  {
+   "site": "00833107",
+   "key": "templates",
+   "ops": "LuaCtor@0083311b LuaCtor@0083312f IterFirst@00833153 IsUnbound@00833167 GetString@00833187 StrResize@008331b2 0x00bf7680@008331c9 0x0048e960@008331f2 0x0048e8d0@008331f9 0x0048e960@00833220 0x0048e840@00833227 0x004b1400@00833237 0x0048e960@00833253 0x0048e840@0083325a 0x00964790@0083326a 0x00499030@00833279 GetNumber@00833287 PoolGet@008332a9 PoolFree@008332b0 IterNext@008332cc IsUnbound@008332e0",
+   "routine": "00831840",
+   "offset": "0x0",
+   "float": true
+  },
+  {
+   "site": "00833301",
+   "key": "anims",
+   "ops": "LuaAssign@00833316 ~Lua@0083332a IterFirst@00833346 IsUnbound@0083335a GetString@00833379 StrResize@008333a6 0x00bf7680@008333c3 0x00444be0@008333df GetNumber@008333ed PoolGet@00833407 PoolFree@0083340e IterNext@0083342a IsUnbound@0083343e ~Lua@00833465 ~Lua@00833479 ~Lua@0083348d ~Lua@008334a1 GetByIndex@008334b6 IsNil@008334c5 ~Lua@008334de",
+   "routine": "00831840",
+   "offset": "0x0",
+   "float": true
+  },
+  {
+   "site": "00833501",
+   "key": "Camos",
+   "ops": "IsTable@00833515 LuaCtor@00833529 LuaCtor@0083353d IterFirst@00833561 IsUnbound@00833575 GetInteger@00833597 0x0082d7f0@008335b6 0x00bf681b@008335bd 0x00bf6713@0083360a dword ptr [0x00ce2220]@0083362e EAX@0083363e 0x00bf6713@00833661",
+   "routine": "00831840",
+   "offset": "0x0",
+   "float": false
+  },
+  {
+   "site": "0083368B",
+   "key": "TextureRemaps",
+   "ops": "IsNil@0083369f LuaCtor@008336b3 GetByIndex@008336d1 IsTable@008336e0 ~Lua@008336f8 GetByIndex@00833721 GetByIndex@0083373f GetString@0083374e StrResize@00833774 0x00bf7680@0083378b GetByIndex@008337ac GetString@008337bb StrResize@008337e2 0x00bf7680@008337f9 0x0082b170@0083381a 0x0082e160@0083382f 0x0082ad20@00833843 PoolGet@0083385b PoolFree@00833862 ~Lua@00833876 PoolGet@00833896 PoolFree@0083389d ~Lua@008338b1 ~Lua@008338c5 GetByIndex@008338e5 IsTable@008338f4 ~Lua@0083390a ~Lua@00833931",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0083394A",
+   "key": "GunColor",
+   "ops": "IsNil@0083395e 0x00b67c40@00833980 ~Lua@008339ab ~Lua@008339bf IterNext@008339db IsUnbound@008339ef ~Lua@00833a12 ~Lua@00833a26",
+   "routine": "00831840",
+   "offset": "0x18",
+   "float": false
+  },
+  {
+   "site": "00833A3A",
+   "key": "LSClassId",
+   "ops": "IsNil@00833a4e GetInteger@00833a62",
+   "routine": "00831840",
+   "offset": "0x724",
+   "float": false
+  },
+  {
+   "site": "00833A7C",
+   "key": "LSPoints",
+   "ops": "0x00b677e0@00833aa5 0x00b67a80@00833abc ~Lua@00833adf",
+   "routine": "00831840",
+   "offset": "0x0",
+   "float": true
+  },
+  {
+   "site": "00833AFE",
+   "key": "LSReload",
+   "ops": "GetNumber@00833b12 ~Lua@00833b33 ~Lua@00833b47",
+   "routine": "00831840",
+   "offset": "0x78C",
+   "float": false
+  },
+  {
+   "site": "00833B6C",
+   "key": "LandingShip",
+   "ops": "GetIntOrDef@00833b7d ~Lua@00833b93 0x00964790@00833ba0 EAX@00833bb0",
+   "routine": "00831840",
+   "offset": "0x78C",
+   "float": false
+  },
+  {
+   "site": "00833BCB",
+   "key": "LandingShipAmount",
+   "ops": "GetIntOrDef@00833bdc ~Lua@00833bf6",
+   "routine": "00831840",
+   "offset": "0x790",
+   "float": false
+  },
+  {
+   "site": "00833C0A",
+   "key": "LandingShipCoolDown",
+   "ops": "GetIntOrDef@00833c1b ~Lua@00833c35",
+   "routine": "00831840",
+   "offset": "0x794",
+   "float": false
+  },
+  {
+   "site": "00833C49",
+   "key": "Fire",
+   "ops": "0x00424c40@00833c56 IsNil@00833c64",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00833C81",
+   "key": "FireDamagePerFireTick",
+   "ops": "0x00b66050@00833c95 GetNumber@00833ca5 ~Lua@00833cc7",
+   "routine": "00831840",
+   "offset": "0x574",
+   "float": true
+  },
+  {
+   "site": "00833CE6",
+   "key": "MaxTorpedoStock",
+   "ops": "IsNil@00833cf7 GetInteger@00833d10",
+   "routine": "00831840",
+   "offset": "0x7A0",
+   "float": false
+  },
+  {
+   "site": "00833D2A",
+   "key": "DamagedGFXRemove",
+   "ops": "LuaAssign@00833d3c ~Lua@00833d50 IsNil@00833d59",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00833D74",
+   "key": "Slots",
+   "ops": "LuaCtor@00833d88 LuaCtor@00833d9c IsNil@00833dae IterFirst@00833dcf IsUnbound@00833de0 GetInteger@00833e07 0x00bf6713@00833e4a 0x00441f30@00833e63 IterNext@00833e7c IsUnbound@00833e8d",
+   "routine": "00831840",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "00833EAB",
+   "key": "Funnels",
+   "ops": "LuaAssign@00833ebd ~Lua@00833ed0 IsNil@00833ed9 IterFirst@00833efa IsUnbound@00833f0b GetInteger@00833f29 0x00bf6713@00833f6f 0x00441f30@00833f88 IterNext@00833fa1 IsUnbound@00833fb2",
+   "routine": "00831840",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "00833FD0",
+   "key": "Flags",
+   "ops": "LuaAssign@00833fe2 ~Lua@00833ff5 IsNil@00833ffe IterFirst@0083401f IsUnbound@00834030 GetInteger@00834057 0x00bf6713@0083409d 0x00441f30@008340b6 IterNext@008340cf IsUnbound@008340e0 ~Lua@008340fc ~Lua@00834110 ~Lua@00834121",
+   "routine": "00831840",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "0083413C",
+   "key": "InnerExplosionEfx",
+   "ops": "LuaAssign@0083414e ~Lua@00834162 IsNil@0083416b LuaCtor@0083417f LuaCtor@00834193 IterFirst@008341b4 IsUnbound@008341c5 GetInteger@008341e9 0x00bf6713@00834229 0x00441f30@0083423f GetInteger@0083424d 0x00870cd0@00834258 0x004d9c00@00834268 dword ptr [0x00ce2220]@00834283 EAX@00834293 IterNext@008342b1 IsUnbound@008342c2 ~Lua@008342de ~Lua@008342f2",
+   "routine": "00831840",
+   "offset": "0x8",
+   "float": false
+  },
+  {
+   "site": "0083430D",
+   "key": "StructuralDamageEfx",
+   "ops": "LuaAssign@0083431f ~Lua@00834333 IsNil@0083433c LuaCtor@00834350 LuaCtor@00834364 IterFirst@00834385 IsUnbound@00834396 GetInteger@008343b9 0x00870cd0@008343c4 0x004d9c00@008343d4 dword ptr [0x00ce2220]@008343f1 EAX@00834403 IterNext@00834421 IsUnbound@00834432 ~Lua@0083444e ~Lua@00834462",
+   "routine": "00831840",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00834476",
+   "key": "HackShipRotationAdd",
+   "ops": "LuaAssign@00834488 ~Lua@0083449c 0x00424c40@008344a1 GetFloatOrDef@008344b4",
+   "routine": "00831840",
+   "offset": "0x798",
+   "float": true
+  },
+  {
+   "site": "008344CE",
+   "key": "HackShipHeightAdd",
+   "ops": "LuaAssign@008344e0 ~Lua@008344f4 0x00424c40@008344f9 GetFloatOrDef@0083450c",
+   "routine": "00831840",
+   "offset": "0x79C",
+   "float": true
+  },
+  {
+   "site": "00834526",
+   "key": "CapturePower",
+   "ops": "GetIntOrDef@00834537 ~Lua@00834557 ~Lua@00834568 ~Lua@0083457c ~Lua@00834590 ~Lua@008345a4 ~Lua@008345b8 ~Lua@008345cc ~Lua@008345e0 ~Lua@008345f4 ~Lua@00834608 ~Lua@0083461c ~Lua@00834630 ~Lua@00834644 ~Lua@00834658 ~Lua@0083466f",
+   "routine": "00831840",
+   "offset": "0x804",
+   "float": true
+  },
+  {
+   "site": "007D1FB0",
+   "key": "ShortName",
+   "ops": "0x00b685c0@007d1fc8 StrResize@007d1fe9 0x00bf7680@007d1fff PoolGet@007d2022 PoolFree@007d2029 ~Lua@007d203c",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D204D",
+   "key": "NumEngines",
+   "ops": "GetNumber@007d205f 0x00bf7420@007d2064 ~Lua@007d207a",
+   "routine": "007D1F70",
+   "offset": "0x140",
+   "float": false
+  },
+  {
+   "site": "007D208B",
+   "key": "JetEngines",
+   "ops": "GetBoolOrDef@007d209f ~Lua@007d20b5",
+   "routine": "007D1F70",
+   "offset": "0x144",
+   "float": false
+  },
+  {
+   "site": "007D20C6",
+   "key": "Accel",
+   "ops": "GetNumber@007d20d8 ~Lua@007d20ee 0x0042e740@007d20f3 0x0042e740@007d2109 0x0042e740@007d2110 0x0042e740@007d212f",
+   "routine": "007D1F70",
+   "offset": "0x164",
+   "float": true
+  },
+  {
+   "site": "007D2150",
+   "key": "YDrag",
+   "ops": "GetNumber@007d2162 ~Lua@007d2178",
+   "routine": "007D1F70",
+   "offset": "0x170",
+   "float": true
+  },
+  {
+   "site": "007D2189",
+   "key": "XDrag",
+   "ops": "GetNumber@007d219b ~Lua@007d21b1",
+   "routine": "007D1F70",
+   "offset": "0x174",
+   "float": true
+  },
+  {
+   "site": "007D21C2",
+   "key": "ExtRotAccel",
+   "ops": "GetNumber@007d21d4 ~Lua@007d21ea",
+   "routine": "007D1F70",
+   "offset": "0x178",
+   "float": true
+  },
+  {
+   "site": "007D21FB",
+   "key": "StallRotAccel",
+   "ops": "GetNumber@007d220d ~Lua@007d2223",
+   "routine": "007D1F70",
+   "offset": "0x17C",
+   "float": true
+  },
+  {
+   "site": "007D2234",
+   "key": "WaterRotAccel",
+   "ops": "GetNumber@007d2246 ~Lua@007d225c",
+   "routine": "007D1F70",
+   "offset": "0x180",
+   "float": true
+  },
+  {
+   "site": "007D226D",
+   "key": "AirBrakeDrag",
+   "ops": "GetNumber@007d227f ~Lua@007d2295",
+   "routine": "007D1F70",
+   "offset": "0x1DC",
+   "float": true
+  },
+  {
+   "site": "007D22A6",
+   "key": "WheelBrake",
+   "ops": "GetNumber@007d22b8 ~Lua@007d22ce",
+   "routine": "007D1F70",
+   "offset": "0x1E0",
+   "float": true
+  },
+  {
+   "site": "007D22DF",
+   "key": "BombControlLimit",
+   "ops": "GetNumber@007d22f1 ~Lua@007d2307",
+   "routine": "007D1F70",
+   "offset": "0x15C",
+   "float": true
+  },
+  {
+   "site": "007D2318",
+   "key": "BombDelay",
+   "ops": "GetNumber@007d232a ~Lua@007d2340",
+   "routine": "007D1F70",
+   "offset": "0x1F4",
+   "float": true
+  },
+  {
+   "site": "007D2351",
+   "key": "StallSpd",
+   "ops": "GetNumber@007d2363 ~Lua@007d2379",
+   "routine": "007D1F70",
+   "offset": "0x184",
+   "float": true
+  },
+  {
+   "site": "007D238A",
+   "key": "MaxSpd",
+   "ops": "GetNumber@007d239c ~Lua@007d23b2",
+   "routine": "007D1F70",
+   "offset": "0x188",
+   "float": true
+  },
+  {
+   "site": "007D23C3",
+   "key": "TravelSpeed",
+   "ops": "GetNumber@007d23d5 ~Lua@007d23eb 0x0042e740@007d23f0",
+   "routine": "007D1F70",
+   "offset": "0x18C",
+   "float": true
+  },
+  {
+   "site": "007D2413",
+   "key": "SwimHeight",
+   "ops": "GetNumber@007d2425 ~Lua@007d243b",
+   "routine": "007D1F70",
+   "offset": "0x194",
+   "float": true
+  },
+  {
+   "site": "007D244C",
+   "key": "MinWaterSpd",
+   "ops": "GetNumber@007d245e ~Lua@007d2474",
+   "routine": "007D1F70",
+   "offset": "0x198",
+   "float": true
+  },
+  {
+   "site": "007D2485",
+   "key": "MaxWaterSpd",
+   "ops": "GetNumber@007d2497 ~Lua@007d24ad",
+   "routine": "007D1F70",
+   "offset": "0x19C",
+   "float": true
+  },
+  {
+   "site": "007D24BE",
+   "key": "WaterDecel",
+   "ops": "GetNumber@007d24d0 ~Lua@007d24e6",
+   "routine": "007D1F70",
+   "offset": "0x1A0",
+   "float": true
+  },
+  {
+   "site": "007D24F7",
+   "key": "WaterUnSpring",
+   "ops": "GetNumber@007d2509 ~Lua@007d251f",
+   "routine": "007D1F70",
+   "offset": "0x1A4",
+   "float": true
+  },
+  {
+   "site": "007D2530",
+   "key": "RollSpd",
+   "ops": "GetNumber@007d2542 ~Lua@007d2558",
+   "routine": "007D1F70",
+   "offset": "0x1A8",
+   "float": true
+  },
+  {
+   "site": "007D2569",
+   "key": "PitchSpd",
+   "ops": "GetNumber@007d257b ~Lua@007d2591",
+   "routine": "007D1F70",
+   "offset": "0x1AC",
+   "float": true
+  },
+  {
+   "site": "007D25A2",
+   "key": "YawSpd",
+   "ops": "GetNumber@007d25b4 ~Lua@007d25ca",
+   "routine": "007D1F70",
+   "offset": "0x1B0",
+   "float": true
+  },
+  {
+   "site": "007D25DB",
+   "key": "TurnRollSpd",
+   "ops": "GetNumber@007d25ed ~Lua@007d2603",
+   "routine": "007D1F70",
+   "offset": "0x1C8",
+   "float": true
+  },
+  {
+   "site": "007D2614",
+   "key": "YawLimitAngle",
+   "ops": "GetNumber@007d2626 ~Lua@007d263c",
+   "routine": "007D1F70",
+   "offset": "0x1CC",
+   "float": true
+  },
+  {
+   "site": "007D264D",
+   "key": "PitchLimitAngle",
+   "ops": "GetNumber@007d265f ~Lua@007d2675",
+   "routine": "007D1F70",
+   "offset": "0x1D0",
+   "float": true
+  },
+  {
+   "site": "007D2686",
+   "key": "YawRollRatio",
+   "ops": "GetNumber@007d2698 ~Lua@007d26ae",
+   "routine": "007D1F70",
+   "offset": "0x1B4",
+   "float": true
+  },
+  {
+   "site": "007D26BF",
+   "key": "SlideRatio",
+   "ops": "GetNumber@007d26d1 ~Lua@007d26e7",
+   "routine": "007D1F70",
+   "offset": "0x1B8",
+   "float": true
+  },
+  {
+   "site": "007D26F8",
+   "key": "RollAccel",
+   "ops": "GetNumber@007d270a ~Lua@007d2720",
+   "routine": "007D1F70",
+   "offset": "0x1BC",
+   "float": true
+  },
+  {
+   "site": "007D2731",
+   "key": "PitchAccel",
+   "ops": "GetNumber@007d2743 ~Lua@007d2759",
+   "routine": "007D1F70",
+   "offset": "0x1C0",
+   "float": true
+  },
+  {
+   "site": "007D276A",
+   "key": "YawAccel",
+   "ops": "GetNumber@007d277c ~Lua@007d2792",
+   "routine": "007D1F70",
+   "offset": "0x1C4",
+   "float": true
+  },
+  {
+   "site": "007D27A3",
+   "key": "KameraMogotte",
+   "ops": "GetFloatOrDef@007d27bf ~Lua@007d27d5",
+   "routine": "007D1F70",
+   "offset": "0x168",
+   "float": true
+  },
+  {
+   "site": "007D27E6",
+   "key": "KameraFolotte",
+   "ops": "GetFloatOrDef@007d2802 ~Lua@007d2818",
+   "routine": "007D1F70",
+   "offset": "0x16C",
+   "float": true
+  },
+  {
+   "site": "007D2829",
+   "key": "DragPitchRatio",
+   "ops": "GetNumber@007d283b ~Lua@007d2851",
+   "routine": "007D1F70",
+   "offset": "0x1D4",
+   "float": true
+  },
+  {
+   "site": "007D2862",
+   "key": "NegativePitchRatio",
+   "ops": "GetNumber@007d2874 ~Lua@007d288a",
+   "routine": "007D1F70",
+   "offset": "0x1D8",
+   "float": true
+  },
+  {
+   "site": "007D289B",
+   "key": "TurnRoll",
+   "ops": "GetNumber@007d28ad ~Lua@007d28c3",
+   "routine": "007D1F70",
+   "offset": "0x25C",
+   "float": true
+  },
+  {
+   "site": "007D28D4",
+   "key": "TurnRollLeader",
+   "ops": "GetNumber@007d28e6 ~Lua@007d28fc",
+   "routine": "007D1F70",
+   "offset": "0x260",
+   "float": true
+  },
+  {
+   "site": "007D290D",
+   "key": "RollMaxforceLimit",
+   "ops": "GetNumber@007d291f ~Lua@007d2935",
+   "routine": "007D1F70",
+   "offset": "0x274",
+   "float": true
+  },
+  {
+   "site": "007D2946",
+   "key": "PitchMaxforceLimit",
+   "ops": "GetNumber@007d2958 ~Lua@007d296e",
+   "routine": "007D1F70",
+   "offset": "0x278",
+   "float": true
+  },
+  {
+   "site": "007D297F",
+   "key": "TurnCircleRadius",
+   "ops": "GetNumber@007d2991 ~Lua@007d29a7",
+   "routine": "007D1F70",
+   "offset": "0x268",
+   "float": true
+  },
+  {
+   "site": "007D29B8",
+   "key": "WheelHeight",
+   "ops": "IsNil@007d29d3",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D29E8",
+   "key": "GroundPitch",
+   "ops": "IsNil@007d2a03 ~Lua@007d2a31 ~Lua@007d2a46",
+   "routine": "007D1F70",
+   "offset": "0x1F8",
+   "float": false
+  },
+  {
+   "site": "007D2A65",
+   "key": "WheelHeight",
+   "ops": "GetNumber@007d2a77 ~Lua@007d2a8d",
+   "routine": "007D1F70",
+   "offset": "0x1FC",
+   "float": true
+  },
+  {
+   "site": "007D2A9E",
+   "key": "GroundPitch",
+   "ops": "GetNumber@007d2ab0 ~Lua@007d2ac6",
+   "routine": "007D1F70",
+   "offset": "0x200",
+   "float": true
+  },
+  {
+   "site": "007D2AD7",
+   "key": "WaterPitch",
+   "ops": "GetNumber@007d2ae9 ~Lua@007d2aff",
+   "routine": "007D1F70",
+   "offset": "0x204",
+   "float": true
+  },
+  {
+   "site": "007D2B10",
+   "key": "GlideRate",
+   "ops": "GetNumber@007d2b22 ~Lua@007d2b38",
+   "routine": "007D1F70",
+   "offset": "0x208",
+   "float": true
+  },
+  {
+   "site": "007D2B4C",
+   "key": "CarrierBased",
+   "ops": "IsNil@007d2b63 GetBoolean@007d2b73",
+   "routine": "007D1F70",
+   "offset": "0x160",
+   "float": false
+  },
+  {
+   "site": "007D2B93",
+   "key": "DropAngle",
+   "ops": "GetNumber@007d2ba2 ~Lua@007d2bb9",
+   "routine": "007D1F70",
+   "offset": "0x1F0",
+   "float": true
+  },
+  {
+   "site": "007D2BCA",
+   "key": "KamikazeBulletClass",
+   "ops": "GetInteger@007d2bd9 ~Lua@007d2bf0 0x006ea910@007d2bff dword ptr [0x00ce221c]@007d2c26 dword ptr [0x00ce2220]@007d2c34 EDX@007d2c44 dword ptr [0x00ce2220]@007d2c5c EDX@007d2c6c",
+   "routine": "007D1F70",
+   "offset": "0x20C",
+   "float": false
+  },
+  {
+   "site": "007D2C7A",
+   "key": "Wreck",
+   "ops": "IsNil@007d2c89 ~Lua@007d2c9f",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D2CB4",
+   "key": "Wreck",
+   "ops": "GetString@007d2cc4 StrAssign@007d2cce 0x004b3d20@007d2cdf PoolGet@007d2d04 PoolFree@007d2d0b ~Lua@007d2d1c",
+   "routine": "007D1F70",
+   "offset": "0x21C",
+   "float": false
+  },
+  {
+   "site": "007D2D39",
+   "key": "ExplosionEfx",
+   "ops": "IsNil@007d2d48 ~Lua@007d2d5e",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D2D77",
+   "key": "ExplosionEfx",
+   "ops": "GetInteger@007d2d88 0x00870cd0@007d2d93 dword ptr [0x00ce221c]@007d2dba dword ptr [0x00ce2220]@007d2dc8 EAX@007d2dd8 dword ptr [0x00ce2220]@007d2df0 EAX@007d2e00 ~Lua@007d2e16",
+   "routine": "007D1F70",
+   "offset": "0x214",
+   "float": false
+  },
+  {
+   "site": "007D2E27",
+   "key": "ShellsEfx",
+   "ops": "IsNil@007d2e36 ~Lua@007d2e4c",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D2E65",
+   "key": "ShellsEfx",
+   "ops": "GetInteger@007d2e76 0x00870cd0@007d2e81 dword ptr [0x00ce221c]@007d2ea8 dword ptr [0x00ce2220]@007d2eb6 EAX@007d2ec6 dword ptr [0x00ce2220]@007d2ede EAX@007d2eee ~Lua@007d2f04",
+   "routine": "007D1F70",
+   "offset": "0x234",
+   "float": false
+  },
+  {
+   "site": "007D2F15",
+   "key": "EngineEfxes",
+   "ops": "IsTable@007d2f26 GetByIndex@007d2f42 IsInteger@007d2f51 ~Lua@007d2f66 GetByIndex@007d2f80 GetInteger@007d2f8f ~Lua@007d2fa4 0x00870cd0@007d2fb6 0x007c3510@007d2fc2 0x007ccca0@007d2fd6 dword ptr [0x00ce2220]@007d2ff6 EAX@007d3008 GetByIndex@007d3017 IsInteger@007d3026 ~Lua@007d303b ~Lua@007d3057",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D3068",
+   "key": "EngineFireEfx",
+   "ops": "IsNil@007d3077 ~Lua@007d308d",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D30A6",
+   "key": "EngineFireEfx",
+   "ops": "GetInteger@007d30b7 0x00870cd0@007d30c2 dword ptr [0x00ce221c]@007d30e9 dword ptr [0x00ce2220]@007d30f7 EAX@007d3107 dword ptr [0x00ce2220]@007d311f EAX@007d312f ~Lua@007d3145 StrResize@007d315c 0x00bf7680@007d3177 0x00871ba0@007d3191 dword ptr [0x00ce221c]@007d31b8 dword ptr [0x00ce2220]@007d31c6 EDX@007d31d6 dword ptr [0x00ce2220]@007d31ee EDX@007d31fe PoolGet@007d3223 PoolFree@007d322a",
+   "routine": "007D1F70",
+   "offset": "0x220",
+   "float": false
+  },
+  {
+   "site": "007D323E",
+   "key": "DamageSmokeEfx",
+   "ops": "IsTable@007d3252 GetByIndex@007d3271 IsInteger@007d3280 ~Lua@007d3295 GetByIndex@007d32b2 GetInteger@007d32c1 ~Lua@007d32d6 0x00870cd0@007d32e5 0x004d9c00@007d32f9 dword ptr [0x00ce2220]@007d3316 EDX@007d3328 GetByIndex@007d3342 IsInteger@007d3351 ~Lua@007d3366",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D3382",
+   "key": "WingTipEfx",
+   "ops": "IsNil@007d3391 ~Lua@007d33a7",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D33C0",
+   "key": "WingTipEfx",
+   "ops": "GetInteger@007d33d1 0x00870cd0@007d33dc dword ptr [0x00ce221c]@007d3403 dword ptr [0x00ce2220]@007d3411 EAX@007d3421 dword ptr [0x00ce2220]@007d3439 EAX@007d3449 ~Lua@007d345f",
+   "routine": "007D1F70",
+   "offset": "0x5A4",
+   "float": false
+  },
+  {
+   "site": "007D3473",
+   "key": "BayDoor",
+   "ops": "IsTable@007d3487",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D34A5",
+   "key": "OpenAngle",
+   "ops": "GetNumber@007d34b4 ~Lua@007d34cb",
+   "routine": "007D1F70",
+   "offset": "0x5A8",
+   "float": true
+  },
+  {
+   "site": "007D34E1",
+   "key": "ClosedAngle",
+   "ops": "GetNumber@007d34f0 ~Lua@007d3507",
+   "routine": "007D1F70",
+   "offset": "0x5AC",
+   "float": true
+  },
+  {
+   "site": "007D351D",
+   "key": "TimeToOpen",
+   "ops": "GetNumber@007d352c ~Lua@007d3543",
+   "routine": "007D1F70",
+   "offset": "0x5B0",
+   "float": true
+  },
+  {
+   "site": "007D3589",
+   "key": "BowWaves",
+   "ops": "IsTable@007d359d GetByIndex@007d35b8 IsNil@007d35c7 ~Lua@007d35dd GetByIndex@007d3603 GetInteger@007d361e 0x00870cd0@007d3629 dword ptr [0x00ce221c]@007d363c dword ptr [0x00ce2220]@007d3658 EDX@007d3668 0x007d1d30@007d367d dword ptr [0x00ce2220]@007d3696 EAX@007d36a6 ~Lua@007d36bc GetByIndex@007d36d9 IsNil@007d36e8 ~Lua@007d36fe",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D371A",
+   "key": "ParaReload",
+   "ops": "IsNil@007d372e GetNumber@007d373e EDX@007d3773 EDX@007d3782",
+   "routine": "007D1F70",
+   "offset": "0x5B4",
+   "float": true
+  },
+  {
+   "site": "007D37A4",
+   "key": "GearsPullTime",
+   "ops": "GetFloatOrDef@007d37bd ~Lua@007d37d4",
+   "routine": "007D1F70",
+   "offset": "0x5F8",
+   "float": true
+  },
+  {
+   "site": "007D37E8",
+   "key": "PartAnims",
+   "ops": "IsTable@007d37fc",
+   "routine": "007D1F70",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007D381A",
+   "key": "Gears",
+   "ops": "IsTable@007d382b 0x00b677e0@007d3843 0x00b677e0@007d3860 GetNumber@007d386f GetNumber@007d387a ~Lua@007d38fd ~Lua@007d390e 0x00b677e0@007d391e 0x00b66050@007d392d ~Lua@007d3940 0x00b677e0@007d3954 GetNumber@007d3963 ~Lua@007d397a",
+   "routine": "007D1F70",
+   "offset": "0x5C8",
+   "float": false
+  },
+  {
+   "site": "007D3990",
+   "key": "Wings",
+   "ops": "IsTable@007d39a1 0x00b677e0@007d39bc 0x00b677e0@007d39d6 GetNumber@007d39e5 GetNumber@007d39f0 ~Lua@007d3a70 ~Lua@007d3a84 0x00b677e0@007d3a94 0x00b66050@007d3aa3 ~Lua@007d3ab6 0x00b677e0@007d3aca GetNumber@007d3ad9 ~Lua@007d3af0",
+   "routine": "007D1F70",
+   "offset": "0x5D8",
+   "float": false
+  },
+  {
+   "site": "007D3B06",
+   "key": "BayDoor",
+   "ops": "IsTable@007d3b17 0x00b677e0@007d3b35 0x00b677e0@007d3b52 GetNumber@007d3b61 GetNumber@007d3b6c ~Lua@007d3bec ~Lua@007d3c00 0x00b677e0@007d3c13 0x00b66050@007d3c22 ~Lua@007d3c35 0x00b677e0@007d3c4c GetNumber@007d3c5b ~Lua@007d3c72 ~Lua@007d3c83 ~Lua@007d3c94 ~Lua@007d3ca5",
+   "routine": "007D1F70",
+   "offset": "0x5E8",
+   "float": false
+  },
+  {
+   "site": "007D3CB6",
+   "key": "TurboTime",
+   "ops": "GetFloatOrDef@007d3ccb ~Lua@007d3ce2",
+   "routine": "007D1F70",
+   "offset": "0x5FC",
+   "float": true
+  },
+  {
+   "site": "007D3CF6",
+   "key": "TurboRechargingTime",
+   "ops": "GetFloatOrDef@007d3d0b ~Lua@007d3d25",
+   "routine": "007D1F70",
+   "offset": "0x600",
+   "float": true
+  },
+  {
+   "site": "007D3D36",
+   "key": "TurboStrength",
+   "ops": "GetFloatOrDef@007d3d4b ~Lua@007d3d62",
+   "routine": "007D1F70",
+   "offset": "0x604",
+   "float": true
+  },
+  {
+   "site": "007D3D73",
+   "key": "TurboControlLimit",
+   "ops": "GetFloatOrDef@007d3d88 ~Lua@007d3d9f ~Lua@007d3dcf ~Lua@007d3de3 ~Lua@007d3df7 ~Lua@007d3e0b ~Lua@007d3e1f ~Lua@007d3e32",
+   "routine": "007D1F70",
+   "offset": "0x608",
+   "float": true
+  },
+  {
+   "site": "00749247",
+   "key": "ExplosionEfx",
+   "ops": "GetInteger@00749259 0x00870cd0@00749267 dword ptr [0x00ce221c]@0074928b dword ptr [0x00ce2220]@00749299 EAX@007492a9 dword ptr [0x00ce2220]@007492c1 EAX@007492d1 ~Lua@007492e6",
+   "routine": "00749210",
+   "offset": "0x13C",
+   "float": false
+  },
+  {
+   "site": "007492F7",
+   "key": "SmokeFireEfx",
+   "ops": "LuaCtor@00749308 LuaCtor@00749316 IterFirst@00749332 IsUnbound@00749340 GetInteger@00749353 0x00870cd0@00749361 dword ptr [0x00ce221c]@00749385 dword ptr [0x00ce2220]@00749393 EDX@007493a4 dword ptr [0x00ce2220]@007493bb EDX@007493cc",
+   "routine": "00749210",
+   "offset": "0x160",
+   "float": false
+  },
+  {
+   "site": "007493DA",
+   "key": "DamageSmokeEfx",
+   "ops": "IsInteger@007493e6 ~Lua@007493fa",
+   "routine": "00749210",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "00749419",
+   "key": "DamageSmokeEfx",
+   "ops": "GetInteger@0074942a 0x00870cd0@00749438 0x004d9c00@0074944c dword ptr [0x00ce2220]@00749467 EAX@00749478 ~Lua@0074948d 0x004d9c00@007494a1",
+   "routine": "00749210",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "007494B2",
+   "key": "SmokeFireChanceMul",
+   "ops": "GetNumber@007494be ~Lua@007494d1",
+   "routine": "00749210",
+   "offset": "0x164",
+   "float": true
+  },
+  {
+   "site": "007494E2",
+   "key": "SmokeFireDurationMin",
+   "ops": "GetNumber@007494ee ~Lua@00749501",
+   "routine": "00749210",
+   "offset": "0x168",
+   "float": true
+  },
+  {
+   "site": "00749512",
+   "key": "SmokeFireDurationMax",
+   "ops": "GetNumber@0074951e ~Lua@00749531",
+   "routine": "00749210",
+   "offset": "0x16C",
+   "float": true
+  },
+  {
+   "site": "00749542",
+   "key": "CapturePost",
+   "ops": "GetBoolOrDef@00749553 ~Lua@00749566",
+   "routine": "00749210",
+   "offset": "0x174",
+   "float": false
+  },
+  {
+   "site": "00749577",
+   "key": "SecondaryExplosionEfx",
+   "ops": "LuaAssign@00749589 ~Lua@00749596 IterFirst@007495a9 IsUnbound@007495b7 GetInteger@007495d6 0x00870cd0@007495e4 0x004d9c00@007495f4 0x0041de40@00749604 IterNext@00749617 IsUnbound@00749625",
+   "routine": "00749210",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0074963A",
+   "key": "SecondaryExplosionChanceMul",
+   "ops": "GetNumber@00749646 ~Lua@00749659",
+   "routine": "00749210",
+   "offset": "0x170",
+   "float": true
+  },
+  {
+   "site": "0074966A",
+   "key": "FakedType",
+   "ops": "0x00746b90@0074967b ~Lua@0074968e",
+   "routine": "00749210",
+   "offset": "0x178",
+   "float": false
+  },
+  {
+   "site": "0074969F",
+   "key": "MapIcon",
+   "ops": "GetIntOrDef@007496b0 ~Lua@007496c3",
+   "routine": "00749210",
+   "offset": "0x17C",
+   "float": false
+  },
+  {
+   "site": "007496D4",
+   "key": "Fortress",
+   "ops": "GetBoolOrDef@007496e5 ~Lua@007496f8",
+   "routine": "00749210",
+   "offset": "0x175",
+   "float": false
+  },
+  {
+   "site": "00749709",
+   "key": "DamageModelChangeDelay",
+   "ops": "GetFloatOrDef@0074971e ~Lua@00749731 ~Lua@0074973f ~Lua@0074974d ~Lua@0074975e",
+   "routine": "00749210",
+   "offset": "0x138",
+   "float": true
+  },
+  {
+   "site": "0074D4D4",
+   "key": "ExplosionEfx",
+   "ops": "GetInteger@0074d4e3 0x00870cd0@0074d4ee dword ptr [0x00ce221c]@0074d512 dword ptr [0x00ce2220]@0074d520 EAX@0074d531 dword ptr [0x00ce2220]@0074d546 EAX@0074d557 ~Lua@0074d568",
+   "routine": "0074D4A0",
+   "offset": "0x138",
+   "float": false
+  },
+  {
+   "site": "0074D579",
+   "key": "Wreck",
+   "ops": "IsNil@0074d588 ~Lua@0074d59a",
+   "routine": "0074D4A0",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0074D5AF",
+   "key": "Wreck",
+   "ops": "GetString@0074d5bf StrAssign@0074d5c9 0x004b3f10@0074d5d7 PoolGet@0074d5f9 PoolFree@0074d600 ~Lua@0074d60d",
+   "routine": "0074D4A0",
+   "offset": "0x13C",
+   "float": false
+  },
+  {
+   "site": "0074D62A",
+   "key": "Smoke",
+   "ops": "IsInteger@0074d639 ~Lua@0074d648",
+   "routine": "0074D4A0",
+   "offset": null,
+   "float": false
+  },
+  {
+   "site": "0074D661",
+   "key": "Smoke",
+   "ops": "GetInteger@0074d673 0x00870cd0@0074d67e dword ptr [0x00ce221c]@0074d6a2 dword ptr [0x00ce2220]@0074d6b0 EDX@0074d6c0 dword ptr [0x00ce2220]@0074d6d4 EDX@0074d6e4 ~Lua@0074d6f6",
+   "routine": "0074D4A0",
+   "offset": "0x14C",
+   "float": false
+  },
+  {
+   "site": "00700E74",
+   "key": "ExplosionEfx",
+   "ops": "GetInteger@00700e83 0x00870cd0@00700e8e dword ptr [0x00ce221c]@00700eb2 dword ptr [0x00ce2220]@00700ec0 EAX@00700ed1 dword ptr [0x00ce2220]@00700ee5 EAX@00700ef6 ~Lua@00700f08 0x00b66fa0@00700f22 0x00700330@00700f2b 0x00b66fa0@00700f45 0x007003b0@00700f4e",
+   "routine": "00700E40",
+   "offset": "0x140",
+   "float": false
+  },
+  {
+   "site": "006D0BB2",
+   "key": "RunwayWidth",
+   "ops": "GetNumber@006d0bc1 ~Lua@006d0bd8",
+   "routine": "006D0B80",
+   "offset": "0x138",
+   "float": true
+  },
+  {
+   "site": "006D0BE9",
+   "key": "RunwayLength",
+   "ops": "GetNumber@006d0bf8 ~Lua@006d0c0f",
+   "routine": "006D0B80",
+   "offset": "0x13C",
+   "float": true
+  }
+ ],
+ "installed_file_check": {
+  "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua",
+  "method": "read-only parse by an independent Lua-subset parser (local/luaparse.py in the worktree), block comments treated as nesting",
+  "rows": 633,
+  "distinct_top_level_keys": 198,
+  "distinct_key_paths": 342,
+  "reader_key_paths": 231,
+  "keys_reader_expects_no_row_provides": [
+   ".CockpitMesh",
+   ".Damage.Sections[].FailureChance",
+   ".Damage.Sections[].FailureDamageThreshold",
+   ".DamageToDeath",
+   ".Emberkek",
+   ".ExplosionType",
+   ".FakedType",
+   ".Fire",
+   ".Fire.FireDamagePerFireTick",
+   ".GearsPullTime",
+   ".LSClassId",
+   ".LSPoints",
+   ".LSReload",
+   ".Platforms[].DirectorFollowPlatforms",
+   ".RotorSpd",
+   ".RotorSpdTurnDiff",
+   ".Unique"
+  ],
+  "keys_shipped_no_reader_consumes": {
+   ".AirFieldRepairTime": {
+    "rows": 3,
+    "types": [
+     "int"
+    ]
+   },
+   ".AirReloadTime": {
+    "rows": 9,
+    "types": [
+     "int"
+    ]
+   },
+   ".AirRunOutTime": {
+    "rows": 9,
+    "types": [
+     "int"
+    ]
+   },
+   ".ArmorIndexes": {
+    "rows": 550,
+    "types": [
+     "table"
+    ]
+   },
+   ".AssaultedFortNum": {
+    "rows": 6,
+    "types": [
+     "int"
+    ]
+   },
+   ".Battlecruiser": {
+    "rows": 7,
+    "types": [
+     "bool"
+    ]
+   },
+   ".BigLandingShip": {
+    "rows": 4,
+    "types": [
+     "bool"
+    ]
+   },
+   ".CameraDistance": {
+    "rows": 7,
+    "types": [
+     "int"
+    ]
+   },
+   ".Camo": {
+    "rows": 4,
+    "types": [
+     "table"
+    ]
+   },
+   ".Camo[].TextureRemaps": {
+    "rows": 12,
+    "types": [
+     "table"
+    ]
+   },
+   ".CarrierEscort": {
+    "rows": 5,
+    "types": [
+     "bool"
+    ]
+   },
+   ".Damage.Sections[].HPBlack": {
+    "rows": 1382,
+    "types": [
+     "int"
+    ]
+   },
+   ".DamageScript": {
+    "rows": 7,
+    "types": [
+     "string"
+    ]
+   },
+   ".DeckCamera": {
+    "rows": 25,
+    "types": [
+     "table"
+    ]
+   },
+   ".DeckCamera.HorzAngle": {
+    "rows": 25,
+    "types": [
+     "number"
+    ]
+   },
+   ".DeckCamera.Position": {
+    "rows": 25,
+    "types": [
+     "table"
+    ]
+   },
+   ".DeckCamera.VertAngle": {
+    "rows": 25,
+    "types": [
+     "number"
+    ]
+   },
+   ".DogFightAimDistance": {
+    "rows": 70,
+    "types": [
+     "int"
+    ]
+   },
+   ".DogFightShootDistance": {
+    "rows": 70,
+    "types": [
+     "int"
+    ]
+   },
+   ".DownSpeed": {
+    "rows": 9,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".FakeFireEfx": {
+    "rows": 1,
+    "types": [
+     "int"
+    ]
+   },
+   ".HP_Realistic": {
+    "rows": 595,
+    "types": [
+     "int"
+    ]
+   },
+   ".HeavyCruiser": {
+    "rows": 25,
+    "types": [
+     "bool"
+    ]
+   },
+   ".HoD[].smoke": {
+    "rows": 1,
+    "types": [
+     "table"
+    ]
+   },
+   ".Idle[].anims.JP_officer_idle": {
+    "rows": 37,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.JP_officer_use_binocular": {
+    "rows": 208,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.US_officer_idle": {
+    "rows": 80,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.US_officer_use_binocular": {
+    "rows": 180,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".Idle[].anims.jp_marine_idle_gun": {
+    "rows": 23,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.jp_officer_idle": {
+    "rows": 5,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.stand_idle_matroz": {
+    "rows": 583,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".Idle[].anims.stand_idle_matroz_2": {
+    "rows": 361,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".Idle[].anims.us_marine_idle_gun": {
+    "rows": 14,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.us_officer_idle": {
+    "rows": 6,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].anims.us_officer_use_binocular": {
+    "rows": 8,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].templates.JPMarine_shiptraffic": {
+    "rows": 23,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].templates.JPMatroz_shiptraffic": {
+    "rows": 343,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].templates.JPOfficer_shiptraffic": {
+    "rows": 257,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].templates.USMarine_shiptraffic": {
+    "rows": 14,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].templates.USMatroz_shiptraffic": {
+    "rows": 291,
+    "types": [
+     "int"
+    ]
+   },
+   ".Idle[].templates.USOfficer_shiptraffic": {
+    "rows": 274,
+    "types": [
+     "int"
+    ]
+   },
+   ".InferiorRepairTime": {
+    "rows": 7,
+    "types": [
+     "int"
+    ]
+   },
+   ".InferiorRepairTimeSingle": {
+    "rows": 1,
+    "types": [
+     "int"
+    ]
+   },
+   ".LandedCapturePower": {
+    "rows": 5,
+    "types": [
+     "int"
+    ]
+   },
+   ".LandedDamage": {
+    "rows": 5,
+    "types": [
+     "int"
+    ]
+   },
+   ".LandingTroopType": {
+    "rows": 6,
+    "types": [
+     "int"
+    ]
+   },
+   ".MaxCameraAngle": {
+    "rows": 7,
+    "types": [
+     "int"
+    ]
+   },
+   ".MaxSpeed_Realistic": {
+    "rows": 154,
+    "types": [
+     "int",
+     "number",
+     "table"
+    ]
+   },
+   ".MaxTorpedoStock_Realistic": {
+    "rows": 71,
+    "types": [
+     "int"
+    ]
+   },
+   ".MinCameraAngle": {
+    "rows": 7,
+    "types": [
+     "int"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.IncomingAttack": {
+    "rows": 209,
+    "types": [
+     "table"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.Landing1": {
+    "rows": 7,
+    "types": [
+     "table"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.Landing2": {
+    "rows": 7,
+    "types": [
+     "table"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.Landing4": {
+    "rows": 3,
+    "types": [
+     "table"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.Takeoff1": {
+    "rows": 7,
+    "types": [
+     "table"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.Takeoff2": {
+    "rows": 7,
+    "types": [
+     "table"
+    ]
+   },
+   ".MovieCameraPositions.SnittPositions.Takeoff4": {
+    "rows": 7,
+    "types": [
+     "table"
+    ]
+   },
+   ".NoRepairGUI": {
+    "rows": 3,
+    "types": [
+     "bool"
+    ]
+   },
+   ".PeriscopeDepth": {
+    "rows": 8,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".PeriscopeMoveRange": {
+    "rows": 8,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".PeriscopeWave": {
+    "rows": 7,
+    "types": [
+     "int"
+    ]
+   },
+   ".PlatformDirections": {
+    "rows": 139,
+    "types": [
+     "table"
+    ]
+   },
+   ".PlatformDirections.AFT": {
+    "rows": 139,
+    "types": [
+     "table"
+    ]
+   },
+   ".PlatformDirections.FORWARD": {
+    "rows": 139,
+    "types": [
+     "table"
+    ]
+   },
+   ".PlatformDirections.LEFT": {
+    "rows": 139,
+    "types": [
+     "table"
+    ]
+   },
+   ".PlatformDirections.RIGHT": {
+    "rows": 139,
+    "types": [
+     "table"
+    ]
+   },
+   ".Race": {
+    "rows": 232,
+    "types": [
+     "int"
+    ]
+   },
+   ".RepairTime": {
+    "rows": 7,
+    "types": [
+     "int"
+    ]
+   },
+   ".Rocketer": {
+    "rows": 1,
+    "types": [
+     "bool"
+    ]
+   },
+   ".ShipYardRepairTime": {
+    "rows": 3,
+    "types": [
+     "int"
+    ]
+   },
+   ".SmokeScreen": {
+    "rows": 47,
+    "types": [
+     "bool"
+    ]
+   },
+   ".SmokeScreenCooldown": {
+    "rows": 47,
+    "types": [
+     "int"
+    ]
+   },
+   ".SmokeScreenDuration": {
+    "rows": 47,
+    "types": [
+     "int"
+    ]
+   },
+   ".SmokeScreenRadius": {
+    "rows": 47,
+    "types": [
+     "int"
+    ]
+   },
+   ".SmokeScreenSpawnTime": {
+    "rows": 47,
+    "types": [
+     "int"
+    ]
+   },
+   ".StrafeAttackDistance": {
+    "rows": 70,
+    "types": [
+     "int"
+    ]
+   },
+   ".StrafeAttackHeight": {
+    "rows": 70,
+    "types": [
+     "int"
+    ]
+   },
+   ".StrafeGoawayDistance": {
+    "rows": 70,
+    "types": [
+     "int"
+    ]
+   },
+   ".SubType": {
+    "rows": 16,
+    "types": [
+     "string"
+    ]
+   },
+   ".Traffic[].anims": {
+    "rows": 43,
+    "types": [
+     "table"
+    ]
+   },
+   ".Traffic[].anims.JP_officer_walk": {
+    "rows": 3,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].anims.run_unarmed_matroz": {
+    "rows": 12,
+    "types": [
+     "number"
+    ]
+   },
+   ".Traffic[].anims.us_officer_walk": {
+    "rows": 6,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].anims.walk_unarmed_matroz": {
+    "rows": 34,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".Traffic[].columnDev": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].columnGap": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].columns": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].cyclic": {
+    "rows": 43,
+    "types": [
+     "bool"
+    ]
+   },
+   ".Traffic[].endPt": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].randomFactor": {
+    "rows": 43,
+    "types": [
+     "int",
+     "number"
+    ]
+   },
+   ".Traffic[].rowCount": {
+    "rows": 29,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].rowDev": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].rowGap": {
+    "rows": 14,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].smoothFactor": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].speed": {
+    "rows": 43,
+    "types": [
+     "number"
+    ]
+   },
+   ".Traffic[].startPt": {
+    "rows": 43,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].templates": {
+    "rows": 43,
+    "types": [
+     "table"
+    ]
+   },
+   ".Traffic[].templates.JPMatroz_shiptraffic": {
+    "rows": 19,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].templates.JPOfficer_shiptraffic": {
+    "rows": 3,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].templates.USMatroz_shiptraffic": {
+    "rows": 15,
+    "types": [
+     "int"
+    ]
+   },
+   ".Traffic[].templates.USOfficer_shiptraffic": {
+    "rows": 6,
+    "types": [
+     "int"
+    ]
+   },
+   ".TurnRollLowLimit": {
+    "rows": 72,
+    "types": [
+     "number"
+    ]
+   },
+   ".Type": {
+    "rows": 633,
+    "types": [
+     "string"
+    ]
+   },
+   ".UE_DLC": {
+    "rows": 13,
+    "types": [
+     "string"
+    ]
+   },
+   ".UnitlibViewDistance": {
+    "rows": 133,
+    "types": [
+     "int"
+    ]
+   },
+   ".Unlock": {
+    "rows": 101,
+    "types": [
+     "bool",
+     "table"
+    ]
+   },
+   ".UnlockID": {
+    "rows": 63,
+    "types": [
+     "string"
+    ]
+   },
+   ".UpSpeed": {
+    "rows": 9,
+    "types": [
+     "int",
+     "number"
+    ]
+   }
+  },
+  "per_key_row_counts": {
+   ".Accel": 72,
+   ".AirBrakeDrag": 72,
+   ".AirFieldRepairTime": 3,
+   ".AirReloadTime": 9,
+   ".AirRunOutTime": 9,
+   ".ArmorIndexes": 550,
+   ".Armour": 633,
+   ".AssaultedFortNum": 6,
+   ".Battlecruiser": 7,
+   ".BayDoor": 17,
+   ".BayDoor.ClosedAngle": 17,
+   ".BayDoor.OpenAngle": 17,
+   ".BayDoor.TimeToOpen": 17,
+   ".BigLandingShip": 4,
+   ".BombControlLimit": 72,
+   ".BombDelay": 72,
+   ".BowParticle": 159,
+   ".BowWave": 159,
+   ".BowWaves": 71,
+   ".CameraDistance": 7,
+   ".CameraDistanceFront": 160,
+   ".CameraDistanceSide": 160,
+   ".CameraDistanceVertical": 160,
+   ".CameraMinHeight": 151,
+   ".Camo": 4,
+   ".Camo[].TextureRemaps": 12,
+   ".Camos": 160,
+   ".Camos[].GunColor": 246,
+   ".Camos[].TextureRemaps": 28,
+   ".CaptainCameraHeight": 11,
+   ".CapturePost": 1,
+   ".CapturePower": 168,
+   ".CarrierBased": 42,
+   ".CarrierEscort": 5,
+   ".Catapult": 57,
+   ".Catapult.Equipment": 57,
+   ".Catapult.LaunchStock": 57,
+   ".Catapult.LaunchedClass": 57,
+   ".Catapult.MaxLaunchedPlanes": 57,
+   ".CockpitCameraPos": 13,
+   ".CollisionMaxSpeedDamage": 160,
+   ".Comment": 633,
+   ".Cost": 232,
+   ".Damage": 552,
+   ".Damage.Sections": 552,
+   ".Damage.Sections[].FireEfx": 421,
+   ".Damage.Sections[].HPBlack": 1382,
+   ".Damage.Sections[].Index": 1382,
+   ".Damage.Sections[].MshCategory": 1382,
+   ".DamageModelChangeDelay": 368,
+   ".DamageScript": 7,
+   ".DamageSmoke": 153,
+   ".DamageSmoke.Effect": 153,
+   ".DamageSmoke.MaxNumber": 153,
+   ".DamageSmokeEfx": 440,
+   ".DamageThreshold": 146,
+   ".DamagedGFXRemove": 134,
+   ".DamagedGFXRemove.Flags": 134,
+   ".DamagedGFXRemove.Funnels": 115,
+   ".DamagedGFXRemove.Slots": 114,
+   ".DeathEfx": 160,
+   ".DeckCamera": 25,
+   ".DeckCamera.HorzAngle": 25,
+   ".DeckCamera.Position": 25,
+   ".DeckCamera.VertAngle": 25,
+   ".DefaultEquipment": 69,
+   ".DogFightAimDistance": 70,
+   ".DogFightShootDistance": 70,
+   ".DownSpeed": 9,
+   ".DragPitchRatio": 72,
+   ".DropAngle": 72,
+   ".EngineEfxes": 4,
+   ".EngineFireEfx": 72,
+   ".Equipments": 70,
+   ".Equipments[][].Ammo": 177,
+   ".Equipments[][].Platform": 177,
+   ".Equipments[][].ReloadTime": 177,
+   ".ExplosionEfx": 481,
+   ".ExplosionTypes": 137,
+   ".ExtRotAccel": 72,
+   ".FakeExplosionEffects": 9,
+   ".FakeFireEfx": 1,
+   ".Flags": 21,
+   ".Flags[].ForcedTexture": 35,
+   ".Flags[].SizeHorizontal": 42,
+   ".Flags[].SizeVertical": 42,
+   ".Fortress": 15,
+   ".GlideRate": 72,
+   ".GroundPitch": 51,
+   ".GunDelayGroups": 48,
+   ".HP": 633,
+   ".HP_Realistic": 595,
+   ".HackShipHeightAdd": 99,
+   ".HackShipRotationAdd": 112,
+   ".HeavyCruiser": 25,
+   ".Height": 633,
+   ".HoD": 141,
+   ".HoD[].Flag": 191,
+   ".HoD[].Idle": 291,
+   ".HoD[].Smoke": 203,
+   ".HoD[].smoke": 1,
+   ".Hull": 160,
+   ".Hull.Segments": 160,
+   ".Hull.WaterLineRatio": 160,
+   ".Idle": 142,
+   ".Idle[].anims": 1202,
+   ".Idle[].anims.JP_officer_idle": 37,
+   ".Idle[].anims.JP_officer_use_binocular": 208,
+   ".Idle[].anims.US_officer_idle": 80,
+   ".Idle[].anims.US_officer_use_binocular": 180,
+   ".Idle[].anims.jp_marine_idle_gun": 23,
+   ".Idle[].anims.jp_officer_idle": 5,
+   ".Idle[].anims.stand_idle_matroz": 583,
+   ".Idle[].anims.stand_idle_matroz_2": 361,
+   ".Idle[].anims.us_marine_idle_gun": 14,
+   ".Idle[].anims.us_officer_idle": 6,
+   ".Idle[].anims.us_officer_use_binocular": 8,
+   ".Idle[].posID": 1202,
+   ".Idle[].templates": 1202,
+   ".Idle[].templates.JPMarine_shiptraffic": 23,
+   ".Idle[].templates.JPMatroz_shiptraffic": 343,
+   ".Idle[].templates.JPOfficer_shiptraffic": 257,
+   ".Idle[].templates.USMarine_shiptraffic": 14,
+   ".Idle[].templates.USMatroz_shiptraffic": 291,
+   ".Idle[].templates.USOfficer_shiptraffic": 274,
+   ".InferiorRepairTime": 7,
+   ".InferiorRepairTimeSingle": 1,
+   ".InnerExplosionEfx": 147,
+   ".JetEngines": 8,
+   ".KameraFolotte": 72,
+   ".KameraMogotte": 72,
+   ".KamikazeBlastDamage": 2,
+   ".KamikazeBlastRange": 2,
+   ".KamikazeBulletClass": 72,
+   ".KamikazeDamage": 2,
+   ".LandedCapturePower": 5,
+   ".LandedDamage": 5,
+   ".LandingShip": 2,
+   ".LandingShipAmount": 2,
+   ".LandingShipCoolDown": 2,
+   ".LandingTroopType": 6,
+   ".Length": 633,
+   ".MapIcon": 50,
+   ".Mass": 232,
+   ".MaxAccel": 160,
+   ".MaxCameraAngle": 7,
+   ".MaxRotAngle": 160,
+   ".MaxRotAngleChangeRatio": 160,
+   ".MaxSpd": 72,
+   ".MaxSpeed": 160,
+   ".MaxSpeed.__call__": 7,
+   ".MaxSpeed.args": 7,
+   ".MaxSpeed_Realistic": 154,
+   ".MaxSpeed_Realistic.__call__": 6,
+   ".MaxSpeed_Realistic.args": 6,
+   ".MaxTorpedoStock": 74,
+   ".MaxTorpedoStock_Realistic": 71,
+   ".MaxWaterSpd": 72,
+   ".Mesh": 633,
+   ".Mesh.__call__": 596,
+   ".Mesh.args": 596,
+   ".MinCameraAngle": 7,
+   ".MinWaterSpd": 72,
+   ".MovieCameraPositions": 216,
+   ".MovieCameraPositions.Positions": 216,
+   ".MovieCameraPositions.Positions[].MaxHorzAngle": 110,
+   ".MovieCameraPositions.Positions[].MaxVertAngle": 110,
+   ".MovieCameraPositions.Positions[].MinHorzAngle": 110,
+   ".MovieCameraPositions.Positions[].MinVertAngle": 110,
+   ".MovieCameraPositions.Positions[].Name": 1007,
+   ".MovieCameraPositions.Positions[].PureSnitt": 9,
+   ".MovieCameraPositions.SnittPositions": 216,
+   ".MovieCameraPositions.SnittPositions.IncomingAttack": 209,
+   ".MovieCameraPositions.SnittPositions.Landing1": 7,
+   ".MovieCameraPositions.SnittPositions.Landing2": 7,
+   ".MovieCameraPositions.SnittPositions.Landing4": 3,
+   ".MovieCameraPositions.SnittPositions.Takeoff1": 7,
+   ".MovieCameraPositions.SnittPositions.Takeoff2": 7,
+   ".MovieCameraPositions.SnittPositions.Takeoff4": 7,
+   ".Name": 633,
+   ".NegativePitchRatio": 72,
+   ".NoRepairGUI": 3,
+   ".NumEngines": 72,
+   ".OpenTime": 1,
+   ".ParaReload": 4,
+   ".PartAnims": 60,
+   ".PartAnims.BayDoor": 16,
+   ".PartAnims.Gears": 59,
+   ".PartAnims.Wings": 10,
+   ".PeriscopeDepth": 8,
+   ".PeriscopeMoveRange": 8,
+   ".PeriscopeWave": 7,
+   ".PitchAccel": 72,
+   ".PitchLimitAngle": 72,
+   ".PitchMaxforceLimit": 72,
+   ".PitchSpd": 72,
+   ".PlatformDirections": 139,
+   ".PlatformDirections.AFT": 139,
+   ".PlatformDirections.FORWARD": 139,
+   ".PlatformDirections.LEFT": 139,
+   ".PlatformDirections.RIGHT": 139,
+   ".Platforms": 307,
+   ".Platforms[].DefaultGun": 167,
+   ".Platforms[].ForwardAim": 193,
+   ".Platforms[].Gun": 4159,
+   ".Platforms[].Gun[].__call__": 227,
+   ".Platforms[].Gun[].args": 227,
+   ".Platforms[].MainPlatform": 666,
+   ".Platforms[].Name": 4177,
+   ".Platforms[].PilotFires": 243,
+   ".Platforms[].RestAngles": 3553,
+   ".Platforms[].RestAngles[].__call__": 4728,
+   ".Platforms[].RestAngles[].args": 4728,
+   ".Platforms[].UseBayDoor": 282,
+   ".Platforms[].Windows": 4198,
+   ".Platforms[].Windows[].MaxHorzAngle": 5616,
+   ".Platforms[].Windows[].MaxHorzAngle.__call__": 3103,
+   ".Platforms[].Windows[].MaxHorzAngle.args": 3103,
+   ".Platforms[].Windows[].MaxVertAngle": 5616,
+   ".Platforms[].Windows[].MaxVertAngle.__call__": 3102,
+   ".Platforms[].Windows[].MaxVertAngle.args": 3102,
+   ".Platforms[].Windows[].MinHorzAngle": 5616,
+   ".Platforms[].Windows[].MinHorzAngle.__call__": 3102,
+   ".Platforms[].Windows[].MinHorzAngle.args": 3102,
+   ".Platforms[].Windows[].MinVertAngle": 5616,
+   ".Platforms[].Windows[].MinVertAngle.__call__": 3102,
+   ".Platforms[].Windows[].MinVertAngle.args": 3102,
+   ".Platforms[].Windows[].Nofire": 324,
+   ".PumpTimeToEmpty": 38,
+   ".Race": 232,
+   ".ReconClass": 633,
+   ".ReconModifier": 14,
+   ".Repair": 31,
+   ".RepairTime": 7,
+   ".Retardation": 160,
+   ".Rocketer": 1,
+   ".RollAccel": 72,
+   ".RollMaxforceLimit": 72,
+   ".RollSpd": 72,
+   ".RotorParticle": 159,
+   ".RunwayLength": 20,
+   ".RunwayWidth": 20,
+   ".SMIcon": 224,
+   ".SecondaryExplosionChanceMul": 375,
+   ".SecondaryExplosionEfx": 375,
+   ".ShellsEfx": 53,
+   ".ShipYardRepairTime": 3,
+   ".ShortName": 72,
+   ".SlideRatio": 72,
+   ".SlowingFactor": 1,
+   ".Smoke": 143,
+   ".SmokeFireChanceMul": 375,
+   ".SmokeFireDurationMax": 375,
+   ".SmokeFireDurationMin": 375,
+   ".SmokeFireEfx": 375,
+   ".SmokeScreen": 47,
+   ".SmokeScreenCooldown": 47,
+   ".SmokeScreenDuration": 47,
+   ".SmokeScreenRadius": 47,
+   ".SmokeScreenSpawnTime": 47,
+   ".SoundEfx": 251,
+   ".SoundEfx.Ambient": 137,
+   ".SoundEfx.ContFireEfx": 56,
+   ".SoundEfx.DeadMeatEfx": 231,
+   ".SoundEfx.ElevatorEfx": 18,
+   ".SoundEfx.EngineSoundEfx": 247,
+   ".SoundEfx.HajoCsavarEfx": 155,
+   ".SoundEfx.OrrHullamEfx": 160,
+   ".SoundEfx.SonarPing": 31,
+   ".SoundEfx.TooFastEfx": 72,
+   ".SoundEfx.WindEfx": 72,
+   ".SpecRole": 33,
+   ".StallRotAccel": 72,
+   ".StallSpd": 72,
+   ".StrafeAttackDistance": 70,
+   ".StrafeAttackHeight": 70,
+   ".StrafeGoawayDistance": 70,
+   ".StructuralDamageEfx": 147,
+   ".SubType": 16,
+   ".SwimHeight": 72,
+   ".TimeToDeath": 73,
+   ".TotalHeight": 135,
+   ".Traffic": 134,
+   ".Traffic[].anims": 43,
+   ".Traffic[].anims.JP_officer_walk": 3,
+   ".Traffic[].anims.run_unarmed_matroz": 12,
+   ".Traffic[].anims.us_officer_walk": 6,
+   ".Traffic[].anims.walk_unarmed_matroz": 34,
+   ".Traffic[].columnDev": 43,
+   ".Traffic[].columnGap": 43,
+   ".Traffic[].columns": 43,
+   ".Traffic[].cyclic": 43,
+   ".Traffic[].endPt": 43,
+   ".Traffic[].pathID": 43,
+   ".Traffic[].randomFactor": 43,
+   ".Traffic[].rowCount": 29,
+   ".Traffic[].rowDev": 43,
+   ".Traffic[].rowGap": 14,
+   ".Traffic[].smoothFactor": 43,
+   ".Traffic[].speed": 43,
+   ".Traffic[].startPt": 43,
+   ".Traffic[].templates": 43,
+   ".Traffic[].templates.JPMatroz_shiptraffic": 19,
+   ".Traffic[].templates.JPOfficer_shiptraffic": 3,
+   ".Traffic[].templates.USMatroz_shiptraffic": 15,
+   ".Traffic[].templates.USOfficer_shiptraffic": 6,
+   ".TravelSpeed": 72,
+   ".TurboControlLimit": 40,
+   ".TurboRechargingTime": 41,
+   ".TurboStrength": 43,
+   ".TurboTime": 43,
+   ".TurnCircleRadius": 72,
+   ".TurnRoll": 72,
+   ".TurnRollLeader": 72,
+   ".TurnRollLowLimit": 72,
+   ".TurnRollSpd": 72,
+   ".Type": 633,
+   ".UE_DLC": 13,
+   ".UnderwaterArmour": 149,
+   ".UnitlibViewDistance": 133,
+   ".Unlock": 101,
+   ".Unlock.__call__": 3,
+   ".Unlock.args": 3,
+   ".UnlockID": 63,
+   ".UpSpeed": 9,
+   ".WaterDecel": 72,
+   ".WaterForceMultiplier": 14,
+   ".WaterPitch": 72,
+   ".WaterRotAccel": 72,
+   ".WaterUnSpring": 72,
+   ".WaveStern": 160,
+   ".WheelBrake": 72,
+   ".WheelHeight": 51,
+   ".Width": 633,
+   ".WingTipEfx": 53,
+   ".Wreck": 19,
+   ".XDrag": 72,
+   ".YDrag": 72,
+   ".YawAccel": 72,
+   ".YawLimitAngle": 72,
+   ".YawRollRatio": 72,
+   ".YawSpd": 72
+  }
+ },
+ "no_ghidra_function": [],
+ "flow_gaps": [
+  {
+   "routine": "00960230",
+   "after_call": "00BF6989",
+   "at": "00962C97",
+   "range": "00962C9C..00962CAB",
+   "bytes": 15,
+   "note": "inside the SnittPositions block; reported, not repaired"
+  },
+  {
+   "routine": "00960230",
+   "after_call": "00BF6989",
+   "at": "00962CEA",
+   "range": "00962CEF..00962D51",
+   "bytes": 98,
+   "note": "inside the SnittPositions block; 98 unlisted bytes, so the SnittPositions walk is decoded only up to its first two entries"
+  }
+ ],
+ "uncertainties": [
+  "00831840's Traffic/Idle nesting: the reader reads Traffic[i].pathID and Idle[i].posID, templates and anims, but whether Idle is the row's own Idle table or one nested under Traffic was not settled from the listing.",
+  "The shipped vehicleclasses.lua only balances if --[[ block comments nest, which Lua 5.1.1 does not do; the game may load a preprocessed or precompiled chunk. The five commented-out records at the end of the file were excluded from the counts.",
+  "0087CA80's Emberkek and FakeExplosionEffects blocks were tabulated by key but their element layouts were not decoded.",
+  "The Equipments outer/inner nesting is taken from the listing's two iterators and confirmed by the shipped data's Equipments[i][j] shape, not from a decoded container."
+ ]
+}
