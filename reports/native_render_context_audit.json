@@ -1,0 +1,421 @@
+{
+  "packet": "native_render_context",
+  "written_utc": "2026-09-10T20:35:21.685276+00:00",
+  "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-context",
+  "prerequisite_commit": "d7d291f",
+  "prerequisite_local_cherry_pick": "b0155f8",
+  "scope": "Actual18h context storage, destructor, scalar deleter, placement initialization fragment and canonical same-count context companion; no command/queue or synthetic retained owners.",
+  "functions": [
+    {
+      "address": "00b1d120",
+      "end_exclusive": "00b1d1c8",
+      "name": "BSP_RenderCommandContext_Destroy",
+      "reconstructed_symbol": "destroy_native_render_context_00b1d120",
+      "coverage": "complete normal function body plus structurally preserved base-only EH cleanup",
+      "original_abi": "ECX=actual18h(24byte) context; RET; return register not a typed value",
+      "contract": "Write D5E5C4; capture camera08, decrement captured actual04, dispatch current virtual0 only at zero, clear08 after callback; reload/repeat current0C then14; base CEB130 on normal return or state0 unwind; preserve actual04/borrowed10.",
+      "evidence": [
+        "00b1d140 table publication",
+        "00b1d146 captured camera",
+        "00b1d15d IAT decrement",
+        "00b1d163..00b1d169 current virtual0 from captured identity",
+        "00b1d16b clear after callback",
+        "00b1d16e current second-owner reload",
+        "00b1d18a current target reload",
+        "00b1d1b0 base call"
+      ],
+      "annotation_before": {
+        "address": "00b1d120",
+        "function_name": "BSP_RenderCommandContext_Destroy",
+        "comment": "[BSP reconstruction 00b1d120]\n[BSP reconstruction] Release then clear retained camera+8, scene+C, target+14 in order, reloading each after previous terminal callbacks. Borrowed command backpointer+10 untouched. Then refcount base destructor. Original ABI: ECX18-byte native context; RET. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "suggested_comment_append": "[BSP reconstruction native context] Write D5E5C4; capture camera08, decrement captured actual04, dispatch current virtual0 only at zero, clear08 after callback; reload/repeat current0C then14; base CEB130 on normal return or state0 unwind; preserve actual04/borrowed10. Actual context size is18h=24bytes; prior18-byte wording was incorrect. Evidence docs/NATIVE_RENDER_CONTEXT.md and reports/native_render_context_audit.json. Actual Win32 layout, new host interfaces; no game/visual or drop-in ABI claim."
+    },
+    {
+      "address": "00b1d570",
+      "end_exclusive": "00b1d58e",
+      "name": "BSP_RenderCommandContext_DeletingDestructor",
+      "reconstructed_symbol": "delete_native_render_context_00b1d570",
+      "coverage": "complete function body",
+      "original_abi": "ECX=actual context; stack flags; EAX=original context identity including after free; RET4",
+      "contract": "Destroy first; scalar-free through BF65AC iff flags bit0; no free if destructor throws; return captured original identity.",
+      "evidence": [
+        "00b1d573 destructor call",
+        "00b1d578 byte flags&1",
+        "00b1d580 free call",
+        "00b1d585 ADD ESP,4 continuation",
+        "00b1d588 MOV EAX,ESI",
+        "00b1d58b RET4"
+      ],
+      "annotation_before": {
+        "address": "00b1d570",
+        "function_name": "BSP_RenderCommandContext_DeletingDestructor",
+        "comment": "[BSP reconstruction 00b1d570]\n[BSP reconstruction] Call00B1D120, free context when flags&1, return original this. Free continuation00B1D585 cleans4 stack bytes. Original ABI: ECX context; stack delete flags; EAX context; RET4. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "suggested_comment_append": "[BSP reconstruction native context] Destroy first; scalar-free through BF65AC iff flags bit0; no free if destructor throws; return captured original identity. Actual context size is18h=24bytes; prior18-byte wording was incorrect. Evidence docs/NATIVE_RENDER_CONTEXT.md and reports/native_render_context_audit.json. Actual Win32 layout, new host interfaces; no game/visual or drop-in ABI claim."
+    }
+  ],
+  "fragments": [
+    {
+      "parent_address": "00b1edc0",
+      "start": "00b1edd3",
+      "end_exclusive": "00b1edf2",
+      "original_register_preconditions": "EAX=nonnull aligned18h allocation; ECX=zero",
+      "reconstructed_symbol": "initialize_native_render_context_00b1edc0_fragment",
+      "store_order": [
+        "vtable00=00ceb130",
+        "references04=1",
+        "vtable00=00d5e5c4",
+        "camera08=0",
+        "second_owner0c=0",
+        "borrowed_command10=0",
+        "target14=0"
+      ],
+      "excluded": [
+        "allocator BF681B and null path",
+        "command+28 publication",
+        "retained assignments",
+        "borrowed command assignment",
+        "two pooled batch acquisitions",
+        "diagnostic setup",
+        "full44h command allocation/construction"
+      ],
+      "not_a_complete_function": true
+    }
+  ],
+  "layout": {
+    "bytes": 24,
+    "native_hex_bytes": "18",
+    "architecture": "MSVC Win32",
+    "offsets": {
+      "native_vtable": "00",
+      "actual_atomic_references": "04",
+      "raw_camera": "08",
+      "raw_second_owner": "0c",
+      "borrowed_raw_command": "10",
+      "raw_target": "14"
+    },
+    "extra_live_count": false,
+    "new_command_or_queue_storage": false
+  },
+  "binding": {
+    "required_resolver": "NativeRenderActualOwners::resolve_actual(raw_identity)",
+    "resolver_timing": "After captured actual04 decrements to zero only; pure identity lookup without ownership/lifecycle effects.",
+    "identity_check": "&resolved.reference_count must equal captured raw_identity+04 exactly.",
+    "terminal_requirement": "Canonical companion reads current native profile and performs real terminal destruction/recycle; never all-owner no-op.",
+    "concrete_camera_path": "&NativeCameraOwner::storage -> existing canonical NativeCameraReference borrowing node.references04",
+    "concrete_context_path": "NativeRenderContextReference borrows storage.references04; checks currentD5E5C4 slotsBD30E0/B1D570; scalarflags1 then explicit companion retirement.",
+    "unsupported_context_profiles": [
+      "00ceb130 base phase",
+      "unverified derived profiles"
+    ],
+    "ownership": "No implicit retain/initialization at binding; caller provides exactly one stable canonical companion and keeps dependencies alive through final reference."
+  },
+  "eh": {
+    "function": "00b1d120",
+    "handler": "00cbc9c8",
+    "func_info": "00df4e28",
+    "magic": "19930522",
+    "max_state_count": 1,
+    "unwind_map": "00df4e20",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cbc9c0",
+        "effect": "MOV ECX,[EBP-10h]; JMP00BD30F0; baseprofileCEB130 only"
+      }
+    ],
+    "remaining_member_release_cleanup": false,
+    "native_exception_dispatch_executed": false,
+    "host_boundary": "Direct lookup exceptions propagate after RAII base cleanup; no clear of interrupted slot, later-member sweep, or scalar free. Companion terminal dependencies must be nonthrowing."
+  },
+  "native_verification": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each CLI ghidra bytes call verifies the project/program before reading; this packet uses a new private evidence cache.",
+    "spans": [
+      {
+        "address": "00b1d120",
+        "end_exclusive": "00b1d1c8",
+        "kind": "code",
+        "length": 168,
+        "disk_offset": 7459104,
+        "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 66
+      },
+      {
+        "address": "00b1d570",
+        "end_exclusive": "00b1d58e",
+        "kind": "code",
+        "length": 30,
+        "disk_offset": 7460208,
+        "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 11
+      },
+      {
+        "address": "00b1edd3",
+        "end_exclusive": "00b1edf2",
+        "kind": "code",
+        "length": 31,
+        "disk_offset": 7466451,
+        "sha256": "b7a65827772c3e6f220fa07ebb6a746ce1c4f9dc37ea7b94ccfeaf44bf2dc8cf",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 7
+      },
+      {
+        "address": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "kind": "code",
+        "length": 7,
+        "disk_offset": 8204528,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2
+      },
+      {
+        "address": "00bd30e0",
+        "end_exclusive": "00bd30ee",
+        "kind": "code",
+        "length": 14,
+        "disk_offset": 8204512,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 7
+      },
+      {
+        "address": "00cbc9c0",
+        "end_exclusive": "00cbc9c8",
+        "kind": "code",
+        "length": 8,
+        "disk_offset": 9161152,
+        "sha256": "e24a70bf7cc69996fd498a30dbcfe0f4c301a746ef03d95859fef81929ec9554",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2
+      },
+      {
+        "address": "00cbc9c8",
+        "end_exclusive": "00cbc9d2",
+        "kind": "code",
+        "length": 10,
+        "disk_offset": 9161160,
+        "sha256": "d3bb101ab5cdbc3fe5978a36007d6d1d894e6f23c8ae85349d47ea806988a969",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2
+      },
+      {
+        "address": "00d5e5c4",
+        "end_exclusive": "00d5e5cc",
+        "kind": "data",
+        "length": 8,
+        "disk_offset": 9823684,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+        "live_matches_disk_or_zero_fill": true
+      },
+      {
+        "address": "00ceb130",
+        "end_exclusive": "00ceb138",
+        "kind": "data",
+        "length": 8,
+        "disk_offset": 9351472,
+        "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d",
+        "live_matches_disk_or_zero_fill": true
+      },
+      {
+        "address": "00ce2220",
+        "end_exclusive": "00ce2224",
+        "kind": "data",
+        "length": 4,
+        "disk_offset": 9314848,
+        "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+        "live_matches_disk_or_zero_fill": true
+      },
+      {
+        "address": "00df4e20",
+        "end_exclusive": "00df4e28",
+        "kind": "data",
+        "length": 8,
+        "disk_offset": 10440224,
+        "sha256": "c97f3a723bbf754fe346fb609fbc447e6983b171cd624109bfd1b83e792e6954",
+        "live_matches_disk_or_zero_fill": true
+      },
+      {
+        "address": "00df4e28",
+        "end_exclusive": "00df4e4c",
+        "kind": "data",
+        "length": 36,
+        "disk_offset": 10440232,
+        "sha256": "3061863d26748c81d21b13f09843780ab6682ddd9efd309e72b7ec30f6d0cc6d",
+        "live_matches_disk_or_zero_fill": true
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "kind": "hook_entry",
+        "length": 5,
+        "disk_offset": 8349100,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "live_matches_disk_or_zero_fill": true
+      }
+    ],
+    "absolute_relocations": [
+      "00b1d123",
+      "00b1d142",
+      "00b1d14b",
+      "00b1edd5",
+      "00b1ede2",
+      "00bd30f2",
+      "00cbc9c9",
+      "00ce2220",
+      "00ceb130",
+      "00ceb134",
+      "00d5e5c4",
+      "00d5e5c8",
+      "00df4e24",
+      "00df4e30"
+    ]
+  },
+  "differential": {
+    "status": "PASS",
+    "sequence_count": 1,
+    "actual_context_count": 6,
+    "matched_normalized_words": 343,
+    "real_bodies_executed": [
+      "00b1d120",
+      "00b1d570",
+      "00bd30e0",
+      "00bd30f0"
+    ],
+    "exact_inline_stores_executed": "00b1edd3..00b1edf2 exclusive",
+    "fixture_exit": "RET inserted at excluded00B1EDF2 after seven original stores, not claimed original full initializer.",
+    "external_entry_hooks": [
+      {
+        "address": "00bf65ac",
+        "bytes": 5,
+        "action": "Jump to same singleton_lifetime_free then retirement observer; no freed-storage read."
+      }
+    ],
+    "iat_bindings": [
+      {
+        "address": "00ce2220",
+        "action": "Actual kernel32 InterlockedDecrement export"
+      }
+    ],
+    "sparse_boundary": "Only13 exact spans; fourteen absolute rebases; other pagesNOACCESS and unused committed bytesINT3. No fullPE loader or game entrypoint.",
+    "retained_owners": "Actual nested native contexts, each using original context virtual0/deleter/destructor in native run; actual NativeRenderContextReference in host run.",
+    "observer": "Post-free retirement observation and same parent-slot replacement side effects on both sides; no stub owner destructor. Host callback compares companion/raw identities only after free.",
+    "observations": [
+      "placement fromA5 preimage",
+      "actual04=1",
+      "canonical binding no retain/second count",
+      "camera captured then clears replacement",
+      "next second-owner field reloaded after callback",
+      "target reloaded after second-owner callback",
+      "retained nonzero releases make no resolver call",
+      "context owncount7 and borrowed12345678 remain",
+      "baseCEB130 publication",
+      "flags2 no free and flags3 free with original return identity",
+      "queue helper retain/release uses same actual04",
+      "all six actual allocations freed"
+    ],
+    "normalization": "Raw identity indices and native vtable address rebasing; surviving fields/counts exact. No reads after free or absolute allocation-address comparison.",
+    "native_exceptions_forced": false,
+    "production_fix_after_differential": false,
+    "fixture_compile_adjustment": "Disambiguated overloaded Windows decrement by obtaining real kernel32 export; no behavioral source change."
+  },
+  "build": {
+    "new_source": "MSVC Win32 C++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX focused fixture PASS",
+    "repository": "scripts/build.ps1 PASS; reconstructed_math and native_math_differential2/2",
+    "verify_seeds": "8/8 liveGhidra/installed byte matches before native fixture",
+    "worker_changed_cmake": false,
+    "tracked_tests_added": 0
+  },
+  "remaining_limits": [
+    "Required second-owner/target subclass terminal implementations remain external",
+    "Native camera terminal verified by separate packet, not this context graph",
+    "Full44h command construction/allocation, native queues, groups, jobs not reconstructed here",
+    "Arbitrary concurrent slot/lifetime mutation unsupported",
+    "No forced allocation failure or native SEH/C++ exception execution",
+    "Actual layout assertions and typed behavior are not drop-in ABI compatibility",
+    "No gameplay or visual validation"
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "tracked_artifact": true
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 3884,
+      "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+      "tracked_artifact": true
+    },
+    {
+      "path": "docs/NATIVE_RENDER_CONTEXT.md",
+      "bytes": 8374,
+      "sha256": "22d344d742731f70235b858b04322825ab6d5555f3b904220285c6b034a9bfee",
+      "tracked_artifact": true
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "tracked_artifact": true
+    },
+    {
+      "path": "local/prepare_native_render_context.py",
+      "bytes": 4400,
+      "sha256": "0a5107746885c6188ecc992e45d4eb7288ea5da2890b8faa998a563ad60ccb5a",
+      "tracked_artifact": false
+    },
+    {
+      "path": "local/native_render_context_preparation.json",
+      "bytes": 4658,
+      "sha256": "08377aa8f8511dd5aa65b68df543d8c19b3ffa91f79699b491a51df64f68533a",
+      "tracked_artifact": false
+    },
+    {
+      "path": "local/native_render_context_spans.hpp",
+      "bytes": 765,
+      "sha256": "687b4140a41eacab451e94365951bc15ef0fa7b686c92022462283424051a1e7",
+      "tracked_artifact": false
+    },
+    {
+      "path": "local/native_render_context_check.cpp",
+      "bytes": 11669,
+      "sha256": "5afc9068716cf1fdd9081043a7ce453bc441198db408af76e91eb4b1c68bdf34",
+      "tracked_artifact": false
+    },
+    {
+      "path": "local/build_native_render_context_check.ps1",
+      "bytes": 1400,
+      "sha256": "ccf787e4926c3bdc0a5542c0c7ad0c71c4aa616a1f1bf0e0ab767f9eb52ba700",
+      "tracked_artifact": false
+    },
+    {
+      "path": "local/native_render_context_check.log",
+      "bytes": 322,
+      "sha256": "fab502417af607fa16daa367a6f94161ec306aa3d9d9e0050b24c4cdd34893ef",
+      "tracked_artifact": false
+    },
+    {
+      "path": "local/native_context_repository_build.log",
+      "bytes": 2706,
+      "sha256": "ffba0c19325449ff4708b4aef08d5e132365c74fd3f58f3e8a90000fb8a69677",
+      "tracked_artifact": false
+    },
+    {
+      "path": "build/context-check/native_render_context_check.exe",
+      "bytes": 32768,
+      "sha256": "1cc668067787dfdaa495a1a7eee6d5ec71eb1c94576855b6fbd9ee05d9bed201",
+      "tracked_artifact": false
+    }
+  ],
+  "shared_integration": "Primary owns Ghidra annotation/ledger/CMake integration; this worker changed only four packet files."
+}
