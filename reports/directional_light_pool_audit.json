@@ -1,0 +1,1024 @@
+{
+  "schema_version": 1,
+  "packet": "directional_pool_storage",
+  "status": "implemented_strict_compile_and_focused_native_fixture_passed_pending_primary_integration",
+  "completed_utc": "2026-09-10T17:44:30.356681+00:00",
+  "base_commit": "d3243ed8f6a77c5e737f0872c17180341b0c9c5d",
+  "owned_addresses": [
+    "00b7b940",
+    "00b7bac0",
+    "00b7b2f0",
+    "00b7ac90",
+    "00b7b230",
+    "00b7ba20",
+    "00b7bd40",
+    "00b7b610",
+    "00403970",
+    "00402f70",
+    "00b7adb0",
+    "00cd8080",
+    "00ce0eb0",
+    "004b46b0"
+  ],
+  "owned_files": [
+    "include/bsp/allocator_list.hpp",
+    "src/allocator_list.cpp",
+    "include/bsp/directional_light_pool.hpp",
+    "src/directional_light_pool.cpp",
+    "docs/DIRECTIONAL_LIGHT_POOL.md",
+    "reports/directional_light_pool_audit.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Repository CLI verifies project/program for every Ghidra read; whole code/data spans below match installed disk bytes or explicit PE zero fill.",
+    "state_boundary": "Saved-image globals are initializer preimages, not running-game state."
+  },
+  "source_files": [
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/directional_light_pool.hpp",
+      "sha256": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510"
+    },
+    {
+      "path": "src/directional_light_pool.cpp",
+      "sha256": "979f62fffe2df06c6528155031b42d15ae83808de8284a12ee9925d217a405e0"
+    },
+    {
+      "path": "docs/DIRECTIONAL_LIGHT_POOL.md",
+      "sha256": "ab1529581e1dca438e74e72ca5a2a12e26a09940f6d8050ed731fea74784d7a3"
+    }
+  ],
+  "implemented_contract": {
+    "shared_allocator_list": "One caller-supplied AllocatorListElement*& head and one domain. Canonical element contains native vtable/previous/next only (12 bytes Win32); external binding map has no links or private head.",
+    "concrete_virtual0": "DirectionalLightPool registers actual vtable 00d62f00/function 00b7ba20/context/invoke. Domain verifies expected current vtable and calls the bound implementation. Unknown or mismatched foreign profiles throw explicit binding failure; traversal reloads current.next after dispatch.",
+    "canonical_pool_storage": "Caller-supplied 0x38-byte Win32 owner: element+00, actual critical section+0c, explicit recursion+24, table+28, count+2c, capacity+30, first-free+34. Companion has references only and no automatic native destructor.",
+    "slab": "Actual allocation 0x3e44: 32 raw 0x1f0 slots, free indices+3e00, free count+3e40, two untouched tail bytes. Constructor initializes only free stack/count and each live slab ID at slot+1ec.",
+    "return_and_compaction": "Return reads actual current +1ec and signed exact slot index. Trim frees empty slabs, swaps last pointer into hole, decrements count, rewrites all 32 moved IDs, retries the same index, then recomputes first available slab; no internal lock or immediate trim on return.",
+    "allocation_and_newhandler": "Table allocation 00bf55be jumps to 00bf681b; table free 00bf6989 jumps to 00bf65ac. Reuse actual singleton_lifetime_allocate/free and its CRT new-handler loop; unused table entries and raw slot preimages are not zeroed.",
+    "allocation_failure": "No allocation-path catch/finally/RAII. Published first-free index, published grown capacity and held critical-section recursion survive an allocation throw. A new slab allocated before a failed table growth is not appended or automatically freed.",
+    "constructor_unwind": "Constructor-only MSVC finally: state0 allocator unlink, state1 critical cleanup then unlink, state2 table free then critical cleanup then unlink. Table/free and unlink leaves preserve stale native words.",
+    "destroy": "Install pool vtable; free slabs without light virtual destruction; free table; drain positive explicit recursion through actual LeaveCriticalSection; DeleteCriticalSection; install base vtable 00d7a0c0; unlink same shared element. Do not zero stale table/count/capacity/link words.",
+    "static_startup": "Explicit bind_static_directional_light_pool_01090154 required; initialize 00cd8080 constructs that actual owner then registers actual destroy 00ce0eb0 with std::atexit by default or the supplied CRT registration function. Return registration status; no rollback on registration failure. Storage/domain/companion outlive registered callback.",
+    "string_pool": "Existing SizedStoragePool remains for names; it is not registered in 00e188b4. Singleton lifetime manager list is also a separate domain."
+  },
+  "function_evidence": [
+    {
+      "address": "00b7bd40",
+      "end_exclusive": "00b7bd4a",
+      "length": 10,
+      "role": "directional pool allocation stub",
+      "native_abi": "No inputs; replace ECX with 01090154 and tail-call 00b7bac0; EAX is raw slot; RET with no stack arguments.",
+      "ghidra_body_end_inclusive": "00b7bd49",
+      "live_sha256": "bbf940b60cf4e1d5a8b8bd5d9376ea8ed89d75f0026bc8460458067352aceefe",
+      "disk_sha256": "bbf940b60cf4e1d5a8b8bd5d9376ea8ed89d75f0026bc8460458067352aceefe",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7847232,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "allocate_directional_light_slot_00b7bd40",
+      "cxx_line": 241,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7b940",
+      "end_exclusive": "00b7ba13",
+      "length": 211,
+      "role": "directional pool constructor",
+      "native_abi": "ECX is pool owner; EAX returns owner; RET with no stack arguments.",
+      "ghidra_body_end_inclusive": "00b7ba12",
+      "live_sha256": "eee427476942bfe5586d59b5bb746de3291db7b13f70bc4df167ee4df47af6cb",
+      "disk_sha256": "eee427476942bfe5586d59b5bb746de3291db7b13f70bc4df167ee4df47af6cb",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7846208,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::initialize_00b7b940",
+      "cxx_line": 72,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7bac0",
+      "end_exclusive": "00b7bbfc",
+      "length": 316,
+      "role": "directional slot allocation",
+      "native_abi": "ECX is pool owner; EAX returns raw slot; no stack arguments or local EH cleanup.",
+      "ghidra_body_end_inclusive": "00b7bbfb",
+      "live_sha256": "5d8dcba00c7e0a86dffa49c713defd47442b5d448685aff2e64960eb3aed43aa",
+      "disk_sha256": "5d8dcba00c7e0a86dffa49c713defd47442b5d448685aff2e64960eb3aed43aa",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7846592,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::allocate_raw_slot_00b7bac0",
+      "cxx_line": 105,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7b2f0",
+      "end_exclusive": "00b7b35c",
+      "length": 108,
+      "role": "directional slot return",
+      "native_abi": "ECX is pool owner; one stack slot pointer; RET4.",
+      "ghidra_body_end_inclusive": "00b7b35b",
+      "live_sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "disk_sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7844592,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::return_raw_slot_00b7b2f0",
+      "cxx_line": 148,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7ac90",
+      "end_exclusive": "00b7acd3",
+      "length": 67,
+      "role": "directional slab constructor",
+      "native_abi": "ECX is raw slab; one stack slab-table index; EAX returns slab; RET4.",
+      "ghidra_body_end_inclusive": "00b7acd2",
+      "live_sha256": "30eab734223d239ce1e431151f09e8d835d69da6163a0ac1d17e58e222127fbb",
+      "disk_sha256": "30eab734223d239ce1e431151f09e8d835d69da6163a0ac1d17e58e222127fbb",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7842960,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "initialize_slab_00b7ac90",
+      "cxx_line": 41,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7b230",
+      "end_exclusive": "00b7b2ba",
+      "length": 138,
+      "role": "directional pool destructor",
+      "native_abi": "ECX is pool owner; RET with no stack arguments; all post-free continuations included.",
+      "ghidra_body_end_inclusive": "00b7b2b9",
+      "live_sha256": "96ac570a811c68853d20e8044d7f872c632b33356ebbff743276111b75761a4d",
+      "disk_sha256": "96ac570a811c68853d20e8044d7f872c632b33356ebbff743276111b75761a4d",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7844400,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::destroy_00b7b230",
+      "cxx_line": 216,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7ba20",
+      "end_exclusive": "00b7bac0",
+      "length": 160,
+      "role": "pool virtual0 trim empty slabs",
+      "native_abi": "ECX is pool owner; RET with no stack arguments; no internal lock.",
+      "ghidra_body_end_inclusive": "00b7babf",
+      "live_sha256": "c6f0c705ea2bfa03c426bdc4e4566df974ca84239bf3c062591a4df02945e118",
+      "disk_sha256": "c6f0c705ea2bfa03c426bdc4e4566df974ca84239bf3c062591a4df02945e118",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7846432,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::trim_empty_slabs_00b7ba20",
+      "cxx_line": 171,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7b610",
+      "end_exclusive": "00b7b61c",
+      "length": 12,
+      "role": "slot-return register adapter",
+      "native_abi": "ECX is slot; push slot and use ECX=01090154 for 00b7b2f0; RET with no incoming stack arguments.",
+      "ghidra_body_end_inclusive": "00b7b61b",
+      "live_sha256": "4cb0face09b2303ed8d44f6ecef01397470c7c81f2ae966ee8e9193087552880",
+      "disk_sha256": "4cb0face09b2303ed8d44f6ecef01397470c7c81f2ae966ee8e9193087552880",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7845392,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "return_directional_light_slot_00b7b610",
+      "cxx_line": 244,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00b7adb0",
+      "end_exclusive": "00b7adbe",
+      "length": 14,
+      "role": "pool pointer-array unwind free",
+      "native_abi": "ECX points to the slab-table pointer field (pool+28); RET with no stack arguments; frees nonnull table without clearing fields.",
+      "ghidra_body_end_inclusive": "00b7adbd",
+      "live_sha256": "6e92ec75f09e868f162b1bca5911f9a6d68e5d05f0559ed9ce2a3151212ede58",
+      "disk_sha256": "6e92ec75f09e868f162b1bca5911f9a6d68e5d05f0559ed9ce2a3151212ede58",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 7843248,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::free_table_unwind_00b7adb0",
+      "cxx_line": 211,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "role": "allocator-list base unlink",
+      "native_abi": "ECX is allocator element; RET with no stack arguments; installs 00d7a0c0 and relinks shared 00e188b4 list.",
+      "ghidra_body_end_inclusive": "0040399a",
+      "live_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "disk_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 14704,
+      "cxx_file": "src/allocator_list.cpp",
+      "cxx_symbol": "AllocatorListDomain::unlink_base_element_00403970",
+      "cxx_line": 40,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "role": "critical-section unwind destroy",
+      "native_abi": "ECX is actual critical section; drain positive explicit recursion at section+18, then DeleteCriticalSection; RET with no stack arguments.",
+      "ghidra_body_end_inclusive": "00402f96",
+      "live_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "disk_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 12144,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "DirectionalLightPool::destroy_critical_section_00402f70",
+      "cxx_line": 203,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "role": "global allocator-list trim traversal",
+      "native_abi": "No arguments; call actual element virtual0 and reload next+8 after each call; RET.",
+      "ghidra_body_end_inclusive": "004b46d0",
+      "live_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "disk_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 738992,
+      "cxx_file": "src/allocator_list.cpp",
+      "cxx_symbol": "AllocatorListDomain::trim_all_004b46b0",
+      "cxx_line": 48,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00cd8080",
+      "end_exclusive": "00cd8096",
+      "length": 22,
+      "role": "static directional pool initialize",
+      "native_abi": "No arguments; construct 01090154, call CRT atexit with 00ce0eb0, and return registration result in EAX.",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "881f692c688407f960736bddab4dac72580e1bea1b5f830c742537d694c2d6f9",
+      "disk_sha256": "881f692c688407f960736bddab4dac72580e1bea1b5f830c742537d694c2d6f9",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 9273472,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "initialize_static_directional_light_pool_00cd8080",
+      "cxx_line": 231,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    },
+    {
+      "address": "00ce0eb0",
+      "end_exclusive": "00ce0eba",
+      "length": 10,
+      "role": "static directional pool finalize",
+      "native_abi": "No arguments; set ECX=01090154 and tail-call 00b7b230.",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "86e55e32bbe10cadb46859ee747df07977704385f51fcd8a36b08951e64d8deb",
+      "disk_sha256": "86e55e32bbe10cadb46859ee747df07977704385f51fcd8a36b08951e64d8deb",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes",
+      "disk_offset": 9309872,
+      "cxx_file": "src/directional_light_pool.cpp",
+      "cxx_symbol": "destroy_static_directional_light_pool_00ce0eb0",
+      "cxx_line": 238,
+      "status": "reconstructed_new_cpp_interface",
+      "name_provenance": "descriptive hypothesis; original ABI is retained separately in this record"
+    }
+  ],
+  "additional_crt_evidence": [
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8345022,
+      "disk_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8349723,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8350089,
+      "disk_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d62f00",
+      "length": 4,
+      "disk_offset": 9842432,
+      "disk_hex": "20bab700",
+      "live_hex": "20bab700",
+      "disk_sha256": "c5b9f6e397bc701a7b5384930e688fbe029c98ac5cfad0c49fe9dcb06fc90ecc",
+      "live_sha256": "c5b9f6e397bc701a7b5384930e688fbe029c98ac5cfad0c49fe9dcb06fc90ecc",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "disk_offset": null,
+      "disk_hex": "00000000",
+      "live_hex": "00000000",
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "01090154",
+      "length": 56,
+      "disk_offset": null,
+      "disk_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 4,
+      "disk_offset": 9314828,
+      "disk_hex": "6c56a000",
+      "live_hex": "6c56a000",
+      "disk_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2210",
+      "length": 4,
+      "disk_offset": 9314832,
+      "disk_hex": "8856a000",
+      "live_hex": "8856a000",
+      "disk_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2214",
+      "length": 4,
+      "disk_offset": 9314836,
+      "disk_hex": "a056a000",
+      "live_hex": "a056a000",
+      "disk_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2218",
+      "length": 4,
+      "disk_offset": 9314840,
+      "disk_hex": "b856a000",
+      "live_hex": "b856a000",
+      "disk_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "free_continuations": [
+    {
+      "address": "00b7b24d",
+      "length": 11,
+      "hex": "83c60183c4043b772c72e9",
+      "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8",
+      "meaning": "Advance slab index, clean stack, compare against count and loop after free.",
+      "evidence": "Contained within the complete saved/disk-equal parent function span."
+    },
+    {
+      "address": "00b7b265",
+      "length": 3,
+      "hex": "83c404",
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d",
+      "meaning": "Clean stack after table free; continue into recursion drain.",
+      "evidence": "Contained within the complete saved/disk-equal parent function span."
+    },
+    {
+      "address": "00b7b9f9",
+      "length": 3,
+      "hex": "83c404",
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d",
+      "meaning": "Clean stack after old table free; publish replacement pointer.",
+      "evidence": "Contained within the complete saved/disk-equal parent function span."
+    },
+    {
+      "address": "00b7ba46",
+      "length": 58,
+      "hex": "8b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c731c8b56288b04ba05ec010000b920000000893805f001000083e90175f483ef01",
+      "sha256": "e4a2868af7dc269062b1f98604f1a302c49cebc52b21e4799337952d398afae0",
+      "meaning": "Copy last table entry into the removed hole, decrement count, rewrite all 32 moved slot IDs, and retry the same index.",
+      "evidence": "Contained within the complete saved/disk-equal parent function span."
+    },
+    {
+      "address": "00b7bb56",
+      "length": 3,
+      "hex": "83c404",
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d",
+      "meaning": "Clean stack after old table free; publish replacement, append new slab and continue allocation.",
+      "evidence": "Contained within the complete saved/disk-equal parent function span."
+    },
+    {
+      "address": "00b7adbc",
+      "length": 1,
+      "hex": "59",
+      "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552",
+      "meaning": "POP ECX after table free before RET; no table/count/capacity clearing.",
+      "evidence": "Contained within the complete saved/disk-equal parent function span."
+    }
+  ],
+  "byte_audit": {
+    "owned_function_spans": 14,
+    "owned_function_bytes": 1183,
+    "crt_spans": 4,
+    "crt_bytes": 20,
+    "data_spans": 7,
+    "data_bytes": 80,
+    "all_match": true
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/O2",
+        "/MT",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "new_source_errors": 0,
+      "new_source_warnings": 0
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "existing_test": "reconstructed_math",
+      "tests_passed": 1,
+      "tests_total": 1,
+      "scope": "Baseline checkout CMake build; new modules are separately compiled and linked by the focused fixture until primary adds build registration."
+    },
+    "focused_native_fixture": {
+      "passed": true,
+      "cases": 1,
+      "states_per_path": 136,
+      "explicit_allocation_free_events_per_path": 8,
+      "real_allocations_per_path": 4,
+      "real_frees_per_path": 4,
+      "raw_slab_bytes_compared": 3714020,
+      "sequence": [
+        "Construct bound pool with real critical section and initial 32-entry table.",
+        "Allocate 65 raw slots through static adapters; check initial slot order, allocation preimages and authoritative IDs; write caller markers outside+1ec.",
+        "Return first 32 slots and last slot, leaving two empty slabs around a live middle slab.",
+        "Dispatch global allocator-list virtual0; remove an empty replacement at the same index, move the live middle slab, rewrite every moved slot ID.",
+        "Return through the moved slot live ID and allocate that exact slot again; retain its caller payload.",
+        "Return remaining 32 slots, trim all empty slabs and retain pointer table/capacity.",
+        "Provide an actually entered recursive critical section with explicit/actual depth 2; destroy, free table before draining depth, delete section and unlink head."
+      ],
+      "all_moved_ids": "All 32 IDs checked for every active slab at every state and for every slab immediately before free, including a moved empty replacement before its second removal.",
+      "raw_preimage": "Interception uses real malloc and fills each block before native/host construction with repeating DWORD 0x6f452000+allocation_id. Full active slab bytes compare exactly; untouched tail bytes are asserted.",
+      "recursion": "Explicit counter and actual CRITICAL_SECTION RecursionCount/LockCount compare at every state. Table-free observation sees both recursion values 2 before destructor drains them.",
+      "event_field_order": [
+        "operation",
+        "kind0allocate1free",
+        "allocation_id",
+        "bytes",
+        "slab_count",
+        "table_capacity",
+        "first_free",
+        "explicit_recursion",
+        "actual_critical_recursion"
+      ],
+      "events": [
+        [
+          0,
+          0,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2,
+          15940,
+          0,
+          32,
+          0,
+          1,
+          1
+        ],
+        [
+          33,
+          0,
+          3,
+          15940,
+          1,
+          32,
+          1,
+          1,
+          1
+        ],
+        [
+          65,
+          0,
+          4,
+          15940,
+          2,
+          32,
+          2,
+          1,
+          1
+        ],
+        [
+          99,
+          1,
+          2,
+          15940,
+          3,
+          32,
+          0,
+          0,
+          0
+        ],
+        [
+          99,
+          1,
+          4,
+          15940,
+          2,
+          32,
+          0,
+          0,
+          0
+        ],
+        [
+          134,
+          1,
+          3,
+          15940,
+          1,
+          32,
+          0,
+          0,
+          0
+        ],
+        [
+          136,
+          1,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          2,
+          2
+        ]
+      ],
+      "selected_states": [
+        {
+          "operation": 0,
+          "checkpoint": "constructor",
+          "count": 0,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 0
+        },
+        {
+          "operation": 32,
+          "checkpoint": "allocate",
+          "count": 1,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 15940
+        },
+        {
+          "operation": 33,
+          "checkpoint": "allocate",
+          "count": 2,
+          "cap": 32,
+          "first": 1,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 31880
+        },
+        {
+          "operation": 64,
+          "checkpoint": "allocate",
+          "count": 2,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 31880
+        },
+        {
+          "operation": 65,
+          "checkpoint": "allocate",
+          "count": 3,
+          "cap": 32,
+          "first": 2,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 47820
+        },
+        {
+          "operation": 98,
+          "checkpoint": "return_last",
+          "count": 3,
+          "cap": 32,
+          "first": 0,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 47820
+        },
+        {
+          "operation": 99,
+          "checkpoint": "compact_retry_and_rewrite",
+          "count": 1,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 15940
+        },
+        {
+          "operation": 100,
+          "checkpoint": "return_moved_slot",
+          "count": 1,
+          "cap": 32,
+          "first": 0,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 15940
+        },
+        {
+          "operation": 101,
+          "checkpoint": "reuse_preserves_payload",
+          "count": 1,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 15940
+        },
+        {
+          "operation": 133,
+          "checkpoint": "return_remaining",
+          "count": 1,
+          "cap": 32,
+          "first": 0,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 15940
+        },
+        {
+          "operation": 134,
+          "checkpoint": "trim_all_empty",
+          "count": 0,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 0,
+          "actual": 0,
+          "bytes": 0
+        },
+        {
+          "operation": 135,
+          "checkpoint": "nested_lock_input",
+          "count": 0,
+          "cap": 32,
+          "first": 4294967295,
+          "explicit": 2,
+          "actual": 2,
+          "bytes": 0
+        }
+      ],
+      "source_of_native_code": "18 bounded function/hook spans plus 7 exact data ranges sparsely copied at relative PE offsets. Unprovided committed bytes are INT3 guards; remaining pages no-access. No game entrypoint/full image import initialization/unresolved-call stubs.",
+      "actual_win32_imports": [
+        {
+          "actual_api": "InitializeCriticalSection",
+          "native_iat_address": "00ce220c",
+          "preimage": "00a0566c",
+          "replacement": "779d3420"
+        },
+        {
+          "actual_api": "LeaveCriticalSection",
+          "native_iat_address": "00ce2210",
+          "preimage": "00a05688",
+          "replacement": "779c3460"
+        },
+        {
+          "actual_api": "DeleteCriticalSection",
+          "native_iat_address": "00ce2214",
+          "preimage": "00a056a0",
+          "replacement": "779d56b0"
+        },
+        {
+          "actual_api": "EnterCriticalSection",
+          "native_iat_address": "00ce2218",
+          "preimage": "00a056b8",
+          "replacement": "779c43e0"
+        }
+      ],
+      "absolute_word_patches": [
+        {
+          "native_address": "00402f7c",
+          "preimage": "00ce2210",
+          "replacement": "011d2210"
+        },
+        {
+          "native_address": "00402f91",
+          "preimage": "00ce2214",
+          "replacement": "011d2214"
+        },
+        {
+          "native_address": "00403977",
+          "preimage": "00d7a0c0",
+          "replacement": "0126a0c0"
+        },
+        {
+          "native_address": "00403989",
+          "preimage": "00e188b4",
+          "replacement": "013088b4"
+        },
+        {
+          "native_address": "004b46b3",
+          "preimage": "00e188b4",
+          "replacement": "013088b4"
+        },
+        {
+          "native_address": "00b7b23b",
+          "preimage": "00d62f00",
+          "replacement": "01252f00"
+        },
+        {
+          "native_address": "00b7b274",
+          "preimage": "00ce2210",
+          "replacement": "011d2210"
+        },
+        {
+          "native_address": "00b7b289",
+          "preimage": "00ce2214",
+          "replacement": "011d2214"
+        },
+        {
+          "native_address": "00b7b294",
+          "preimage": "00d7a0c0",
+          "replacement": "0126a0c0"
+        },
+        {
+          "native_address": "00b7b2a6",
+          "preimage": "00e188b4",
+          "replacement": "013088b4"
+        },
+        {
+          "native_address": "00b7b2fc",
+          "preimage": "00ce2218",
+          "replacement": "011d2218"
+        },
+        {
+          "native_address": "00b7b351",
+          "preimage": "00ce2210",
+          "replacement": "011d2210"
+        },
+        {
+          "native_address": "00b7b612",
+          "preimage": "01090154",
+          "replacement": "01580154"
+        },
+        {
+          "native_address": "00b7b943",
+          "preimage": "00cc1e9e",
+          "replacement": "011b1e9e"
+        },
+        {
+          "native_address": "00b7b95e",
+          "preimage": "00d7a0c0",
+          "replacement": "0126a0c0"
+        },
+        {
+          "native_address": "00b7b966",
+          "preimage": "00e188b4",
+          "replacement": "013088b4"
+        },
+        {
+          "native_address": "00b7b96e",
+          "preimage": "00e188b4",
+          "replacement": "013088b4"
+        },
+        {
+          "native_address": "00b7b980",
+          "preimage": "00e188b4",
+          "replacement": "013088b4"
+        },
+        {
+          "native_address": "00b7b98e",
+          "preimage": "00d62f00",
+          "replacement": "01252f00"
+        },
+        {
+          "native_address": "00b7b994",
+          "preimage": "00ce220c",
+          "replacement": "011d220c"
+        },
+        {
+          "native_address": "00b7bacc",
+          "preimage": "00ce2218",
+          "replacement": "011d2218"
+        },
+        {
+          "native_address": "00b7bbdd",
+          "preimage": "00ce2210",
+          "replacement": "011d2210"
+        },
+        {
+          "native_address": "00b7bbf1",
+          "preimage": "00ce2210",
+          "replacement": "011d2210"
+        },
+        {
+          "native_address": "00b7bd41",
+          "preimage": "01090154",
+          "replacement": "01580154"
+        },
+        {
+          "native_address": "00cd8081",
+          "preimage": "01090154",
+          "replacement": "01580154"
+        },
+        {
+          "native_address": "00cd808b",
+          "preimage": "00ce0eb0",
+          "replacement": "011d0eb0"
+        },
+        {
+          "native_address": "00ce0eb1",
+          "preimage": "01090154",
+          "replacement": "01580154"
+        },
+        {
+          "native_address": "00d62f00",
+          "preimage": "00b7ba20",
+          "replacement": "0106ba20"
+        }
+      ],
+      "byte_patches": [
+        {
+          "role": "native_new",
+          "process_address": "010e681b",
+          "preimage_hex": "558bec83ec",
+          "replacement_hex": "e9f0f7f12e"
+        },
+        {
+          "role": "native_free",
+          "process_address": "010e65ac",
+          "preimage_hex": "e917380000",
+          "replacement_hex": "e96ffaf12e"
+        },
+        {
+          "role": "host_allocate",
+          "process_address": "30002450",
+          "preimage_hex": "558bec83ec",
+          "replacement_hex": "e93b350000"
+        },
+        {
+          "role": "host_free",
+          "process_address": "300024b0",
+          "preimage_hex": "e92ba60000",
+          "replacement_hex": "e96b3b0000"
+        }
+      ]
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "primary_integration_required": [
+    "Add src/allocator_list.cpp and src/directional_light_pool.cpp to CMake.",
+    "Wire one actual shared allocator-list head/domain and caller-owned 01090154 storage/companion into startup; explicit static binding plus CRTatexit registration, with required lifetimes.",
+    "Keep directional light companions outside raw 0x1f0 slots and preserve live+1ec during owner construction/destruction.",
+    "Define the currently absent Ghidra function00cd8080..00cd8095, then annotate/save/refresh affected exports and add source/name ledger records under primary ownership.",
+    "Review known foreign allocator profiles and bind their actual virtual0 implementations before invoking global trim through a list that contains them."
+  ],
+  "uncertainty_and_limits": [
+    "Descriptive C++ names are hypotheses. This is a new interface, not a drop-in ABI replacement despite verified Win32 element/pool storage dimensions.",
+    "The one native fixture does not exercise table growth beyond 32 slabs, allocation failure, exception unwinding, foreign allocator virtual0 profiles, or real CRT startup/exit sequencing. Those paths are grounded in assembly/source and explicit bindings rather than claimed runtime coverage.",
+    "Host association-map allocations and other CRT/OS allocation traffic are outside the observed explicit raw-allocation boundary. The fixture preserves supplied preimages; it does not claim whole-process allocator identity.",
+    "Malformed slots, double returns, capacity arithmetic overflow, and invalid external lifecycle order receive no invented native repair behavior.",
+    "No Ghidra, ledger, CMake, original game, or shared existing source file was modified by this worker."
+  ],
+  "artifacts": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-directional-light-pool-20260910",
+    "ignored_local_files": [
+      {
+        "path": "local/prepare_directional_pool_native.py",
+        "sha256": "59824fa465b13cf1c8e01cf88619a1883ccff169dd339610cc645b627fa6b8ec"
+      },
+      {
+        "path": "local/directional_pool_native_preparation.json",
+        "sha256": "b00f5cfe3a5c8d266eddabd15544fe7c3c7a688120351f9ff6bfc3e8bab33343"
+      },
+      {
+        "path": "local/directional_pool_native_spans.hpp",
+        "sha256": "ff78346adb160e1678dc154cdab8759c7bd0b609f23e466f711c98484655e035"
+      },
+      {
+        "path": "local/directional_pool_native_check.cpp",
+        "sha256": "ee3e70586bac6dad80f39b63f78100f0b64c488b0d05f3f17a37bf5f8f856b83"
+      },
+      {
+        "path": "local/build_directional_pool_native_check.ps1",
+        "sha256": "b8974aaa93fd10572708be0b4f48d5c8e0344d111dc6a23f1a820a10f22580f4"
+      },
+      {
+        "path": "local/directional_pool_native_check.log",
+        "sha256": "23b7464516863fd2a1c7365d26539921dd4678a7c20e384f34379801da79b0af"
+      },
+      {
+        "path": "build/directional-pool-check/directional_pool_native_check.exe",
+        "sha256": "75233a8dfd78cc3c217ef6eeac24ea982775076dadd2ffee284581577cabf0d1"
+      },
+      {
+        "path": "local/pool_repository_build.log",
+        "sha256": "918e2cb2ab18a80bc50f43892e250965f1fe8c189628061e558eed15242a8e3d"
+      }
+    ]
+  }
+}
