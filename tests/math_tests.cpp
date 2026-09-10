@@ -18,6 +18,7 @@
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/hud_screens.hpp"
+#include "bsp/hud_updates.hpp"
 #include "bsp/ingame_interface.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/math.hpp"
@@ -1508,6 +1509,32 @@ int main() {
                   && !bsp::hud_screen_slot_raised_by_interface(0x4D, bsp::kInterfaceLimbo),
             "every HUD screen layout names a slot the manager owns and pages the "
             "page table carries, and slot 4Dh rises with 26h but not 34h");
+    }
+
+    {
+        // The HUD root power-up column: the row accumulator adds the template
+        // height and 1/72 before the row is placed, the circle clone ignores
+        // the accumulator and sits one 1/120 above the shared column anchor,
+        // and the two clones sit on different depth layers. Losing any of that
+        // stacks every icon on the first row or hides the circle behind the
+        // icon, and none of it is visible in the pseudocode, which aliases the
+        // accumulator to the loop counter. docs/HUD_CENTRAL_UPDATES.md.
+        auto close_to = [](float a, float b) { return std::fabs(a - b) < 1.0e-5f; };
+        const float first = bsp::hud_root_advance_row_y(
+            bsp::hud_root_first_row_y(false), 0.05f);
+        const float second = bsp::hud_root_advance_row_y(first, 0.05f);
+        const bsp::HudGuiPoint icon = bsp::hud_root_icon_position(second);
+        const bsp::HudGuiPoint circle = bsp::hud_root_circle_position();
+        check(close_to(first, 0.05f + 1.0f / 72.0f)
+                  && close_to(second, 2.0f * (0.05f + 1.0f / 72.0f))
+                  && close_to(bsp::hud_root_first_row_y(true), 17.0f / 120.0f)
+                  && close_to(icon.x, circle.x)
+                  && close_to(circle.y, bsp::kHudRootColumnAnchor - 1.0f / 120.0f)
+                  && icon.z < circle.z
+                  && close_to(bsp::hud_root_circle_fill(12.0f, 4.0f, 16.0f), 0.5f)
+                  && !bsp::hud_root_timed_entry_active(4.0f, 4.0f),
+            "the HUD root power-up column stacks rows by height plus 1/72, pins "
+            "the circle clone to the anchor and keeps it in front of the icon");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
