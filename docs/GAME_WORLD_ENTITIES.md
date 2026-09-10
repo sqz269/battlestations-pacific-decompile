@@ -270,3 +270,7 @@ anything first.
   initialisers, and 00e19970's writer is unknown.
 - 008eb110's `009789a0(slot, node, &"pup_ready")` and 008e8c30 were not read; the ready list at
   `this+0x20` is only observed through its `_Mysize` gate and its `_Prev` element.
+
+## Correction from docs/UNIT_INSTANCE_UPDATE.md
+
+Unit instances do not go through `00481640`: it dispatches `00487270`, a `std::list` walk calling vtable slot 4, and in a unit vtable that slot is `0042b970`, a this-returning accessor with `RET 0`, so no unit is on that list. Units are updated by `BSP_Game_UpdateInMissionSubsystems` (`004c40a0`) through `world->vtable[0Ch]` = `00904bf0` `BSP_World_UpdateEntities`, which walks the world node's child chain from `[world+4]` through `entity+38h`, gates on the byte at `entity+5Ch`, and calls `vtable[0DCh](scaledDelta)`; for `MDestroyer` (vtable `00cfc3d0`) that slot is the vehicle base update `008255b0`.
