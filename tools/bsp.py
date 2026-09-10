@@ -563,7 +563,13 @@ def ghidra_cmd(args):
     elif sub == 'proto':
         for value in args.addresses:
             a = norm(value)
-            cap(as_text(c.get('get_function_by_address', address=a)), 6)
+            info = as_text(c.get('get_function_by_address', address=a))
+            if args.brief:
+                # one line per address: name, signature and body span
+                fields = {k.strip(): v.strip() for k, v in (line.split(':', 1) for line in info.splitlines() if ':' in line)}
+                print(f"{a} {fields.get('Function', '?').split(' at ')[0]}  {fields.get('Signature', '?')}  body {fields.get('Body', '?')}")
+                continue
+            cap(info, 6)
             try:
                 cap(as_text(c.get('get_function_signature', address=a)), args.lines)
             except RuntimeError as exc:
@@ -868,7 +874,7 @@ def main():
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')
-    q = gs.add_parser('proto'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20)
+    q = gs.add_parser('proto'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20); q.add_argument('--brief', action='store_true', help='one line per address: name, signature, body span')
     q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
     q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
