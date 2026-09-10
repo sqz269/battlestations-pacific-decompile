@@ -1,0 +1,497 @@
+{
+  "task": "material_constants_builder_next",
+  "date_utc": "2026-09-10",
+  "source_revision": "main32ca17d plus current integration edits; recheck current state before claiming leases",
+  "parent": {
+    "address": "00b42350",
+    "abi": "ECX pass; stack entry,override;RET8; override has no direct read in inspected complete body",
+    "end_exclusive": "00b43410",
+    "length": 4288
+  },
+  "outputs": {
+    "vertex_float_base": "0108ebf4",
+    "pixel_float_base": "0108dbec",
+    "dynamic_callback_headers": [
+      "0108ebf0",
+      "0108dbe8"
+    ],
+    "upload_boundary": "00B43410 uploads positive tails from global00E13078 after this complete builder"
+  },
+  "segments": [
+    {
+      "id": "dynamic_texture_callbacks",
+      "start": "00b42350",
+      "end_exclusive": "00b423c5",
+      "status": "owner virtual implementations unresolved",
+      "input_owners": [
+        "pass inline pointers+5C with unsigned count+6C; each record samplerDWORD+0, dynamic owner+4",
+        "actual renderer00F8D394 and selected pass metadata+70/+74"
+      ],
+      "writes": [
+        "device textures",
+        "callback may patch either shared block/header and entry/model state"
+      ],
+      "calls": [
+        {
+          "site": "00b42380",
+          "target": "owner virtual+2C",
+          "abi": "ECX dynamic owner, no stack args, EAX texture"
+        },
+        {
+          "site": "00b42392",
+          "target": "renderer virtual+130 /00B24710",
+          "abi": "ECX renderer; stack sampler, logical texture"
+        },
+        {
+          "site": "00b423b8",
+          "target": "owner virtual+30",
+          "abi": "ECX owner; stack entry,VS metadata,PS metadata,0108EBF0,0108DBE8; exact implementation/RET unresolved"
+        }
+      ],
+      "notes": [
+        "Final two pointers precede float buffers by4 bytes; retain real header/object contract.",
+        "Count and current record are reloaded around callbacks; no snapshots before callbacks, default no-ops or zero constants."
+      ]
+    },
+    {
+      "id": "registered_parameters",
+      "start": "00b423c5",
+      "end_exclusive": "00b42694",
+      "status": "implemented bounded helper; actual material-table binding still required",
+      "input_owners": [
+        "entry.section+20 material;00B17390 returns inline material+80 table, count at material+100",
+        "live camera+198 selector; borrowed parameter sources; reflected stage metadata"
+      ],
+      "writes": [
+        "VS and PS selected parameter spans"
+      ],
+      "calls": [
+        {
+          "site": "00b423d2",
+          "target": "00b17390",
+          "abi": "ECX material, RET,EAX material+80"
+        },
+        {
+          "sites": [
+            "00b42437",
+            "00b42442"
+          ],
+          "targets": [
+            "00b5b870",
+            "00b5b880"
+          ],
+          "abi": "ECX reflected record; RET; DWORD+0 register /+4 register count"
+        },
+        {
+          "sites": [
+            "00b425c7",
+            "00b42665"
+          ],
+          "target": "00bf7680 memcpy",
+          "abi": "cdecl destination,source,byte count"
+        }
+      ],
+      "notes": [
+        "Reuse MaterialParameterBindings::pack_00b423c5 and pack_material_parameter_constants_00b423c5. Last matching VS shape wins; matrix VS2/3/4 only, PS always4.",
+        "Existing host helper snapshots borrowed sources and disallows source/output overlap; this is a bounded valid-owner domain."
+      ]
+    },
+    {
+      "id": "bone_palette",
+      "start": "00b42694",
+      "end_exclusive": "00b42765",
+      "status": "bounded new writer possible after owner shape is resolved",
+      "input_owners": [
+        "entry.model; getter00B8FF00 reads+188 count;00B90620 reads [model+184]+index*4",
+        "selected bone CameraTransform world+F0 and valid bit2",
+        "VS register byte+30, semantic40 cBoneMatrices"
+      ],
+      "writes": [
+        "3 transposed world rows per bone, VS only"
+      ],
+      "calls": [
+        {
+          "site": "00b426a8",
+          "target": "00b8ff00",
+          "abi": "ECX model, RET,EAX DWORD+188"
+        },
+        {
+          "site": "00b426d5",
+          "target": "00b90620",
+          "abi": "ECX model,stack index,RET4,EAX pointer"
+        },
+        {
+          "site": "00b426e4",
+          "target": "00b6db70",
+          "abi": "ECX bone transform,RET"
+        }
+      ],
+      "notes": [
+        "Counts[] do not clamp. Count captured once; no zero-fill of unused palette.",
+        "Do not conflate this pointer-array+184 with skin branch60-byte record stride without recovering applicable model type/union."
+      ]
+    },
+    {
+      "id": "skin_palette",
+      "start": "00b42765",
+      "end_exclusive": "00b428c0",
+      "status": "not ready as whole: animation/type owner unresolved",
+      "input_owners": [
+        "entry.model+130 optional animation owner; global010900FC from00B75E50",
+        "fast source model+190 and [animation+34]+8 count",
+        "fallback model+184 records stride60, transform pointer+0 and matrix+20; model+188 count",
+        "VS byte+32 semantic42 cSkinMatrices"
+      ],
+      "writes": [
+        "VS3 rows per selected skin record"
+      ],
+      "calls": [
+        {
+          "site": "00b42794",
+          "target": "00b75e50",
+          "abi": "no object input,RET,EAX global010900FC"
+        },
+        {
+          "site": "00b427a7",
+          "target": "animation virtual+C",
+          "abi": "ECX animation;stack type token; AL predicate"
+        },
+        {
+          "site": "00b427d3",
+          "target": "memcpy",
+          "abi": "cdecl dst,model190,48*animation_count"
+        },
+        {
+          "site": "00b42825",
+          "target": "00b6db70",
+          "abi": "ECX record transform"
+        },
+        {
+          "site": "00b4283a",
+          "target": "00b6e0d0",
+          "abi": "ECX entry.model;RET,EAX inverse-world cache+60"
+        },
+        {
+          "sites": [
+            "00b4285c",
+            "00b42863"
+          ],
+          "target": "00413920",
+          "abi": "ECX left matrix;stack destination,right;RET8; EAX destination"
+        }
+      ],
+      "notes": [
+        "Correct actual multiply address is00413920. Sequence (record matrix+20 * bone world) * model inverse world, then3-row transpose.",
+        "Fast accepted-owner branch with null model190 skips fallback and writes nothing. Do not normalize this to missing-data fallback."
+      ]
+    },
+    {
+      "id": "vertex_decode",
+      "start": "00b428c0",
+      "end_exclusive": "00b42a7c",
+      "status": "implemented bounded helper",
+      "input_owners": [
+        "actual ordered section streams+3C/+4C",
+        "VS semantic24/25 scale/offset bytes+20/+21; root primary/shadow descriptor+20/+24; live camera mode"
+      ],
+      "writes": [
+        "VS scale/offset float4 pairs"
+      ],
+      "calls": [
+        {
+          "site": "00b42966",
+          "target": "stream virtual+24",
+          "abi": "ECX stream,RET,EAX declaration"
+        },
+        {
+          "site": "00b4296a",
+          "target": "00b47900",
+          "abi": "ECX declaration,RET,EAX element count"
+        },
+        {
+          "site": "00b429cf",
+          "target": "00b61e10",
+          "abi": "ECX stream,stack element index,RET4,EAX decode record"
+        }
+      ],
+      "notes": [
+        "Reuse pack_mesh_vertex_decode_constants_00b428c0. Only scaleFF gates, limits/cursors preserve native wrapped order."
+      ]
+    },
+    {
+      "id": "world_matrices",
+      "start": "00b42a7c",
+      "end_exclusive": "00b42e4a",
+      "status": "ready independent value/cache fragment",
+      "input_owners": [
+        "entry.model CameraTransform",
+        "VS/PS registers[0] (metadata+8); BOTH stages use VS counts[0] (metadata+3E)"
+      ],
+      "writes": [
+        "VS then PS transposed world rows2/3/4"
+      ],
+      "calls": [
+        {
+          "sites": [
+            "00b42a9f",
+            "00b42c84"
+          ],
+          "target": "00b6db70",
+          "abi": "ECX entry.model,RET"
+        }
+      ],
+      "notes": [
+        "PS register is PS metadata, but PS row count is VS metadata. Preserve this asymmetry.",
+        "Reuse world refresh; skip absent stage, unsupported row counts and unrelated registers; preserve mixed native MOVSS/x87 copy domain."
+      ]
+    },
+    {
+      "id": "visibility_and_lod",
+      "start": "00b42e4a",
+      "end_exclusive": "00b42ef9",
+      "status": "ready independent scalar fragment",
+      "input_owners": [
+        "entry.visibility+18 bits; VS/PS registers[43]",
+        "entry.leading_value+0; actual geometry/stream-parameters entry+8 index+50 -> threshold+4+16*index, default0.995 only if actual index0",
+        "PS registers[44]; fraction constant00D7A238=0.01"
+      ],
+      "writes": [
+        "visibility scalar float4 VS thenPS; threshold result scalar float4 PS"
+      ],
+      "calls": [
+        {
+          "site": "00b42ecf",
+          "target": "00b73770",
+          "abi": "ECX entry+8 actual parameters;stack leading_value,0.01;RET8; ST0 result"
+        }
+      ],
+      "notes": [
+        "Reuse compute_stream_threshold_fade_00b73770 with actual resolved threshold; no invented defaults.",
+        "Positive-zero padding has dominating XORPS00B428C7 (and resets after calls). Registry calls semantic44 cLODValue; older prose cLODFade is not the exact registry spelling."
+      ]
+    },
+    {
+      "id": "inverse_world",
+      "start": "00b42ef9",
+      "end_exclusive": "00b4305d",
+      "status": "ready independent value/cache fragment",
+      "input_owners": [
+        "entry.model CameraTransform; VS registers[1], counts[1]"
+      ],
+      "writes": [
+        "VS inverse-world rows2/3/4"
+      ],
+      "calls": [
+        {
+          "site": "00b42f13",
+          "target": "00b6e0d0",
+          "abi": "ECX model,RET,EAX model+60 cache"
+        }
+      ],
+      "notes": [
+        "Fresh00B6E0D0 assembly has same cache/math schedule as existing get_camera_view_00b6fcb0: validbit8; ensureworld bit2;00B63B30(temp,world);004134F0(view,temp);setbit8.",
+        "Reuse existing affine inverse/cache semantics; do not substitute new general inverse00B632D0."
+      ]
+    },
+    {
+      "id": "material_diffuse",
+      "start": "00b4305d",
+      "end_exclusive": "00b430cf",
+      "status": "ready independent scalar/color fragment",
+      "input_owners": [
+        "entry.section+20 MaterialCloneState.lighting; stage registers[47]"
+      ],
+      "writes": [
+        "PS then VS exact diffuse float4"
+      ],
+      "calls": [
+        {
+          "sites": [
+            "00b43072",
+            "00b430ab"
+          ],
+          "target": "00b179f0",
+          "abi": "ECX material;stack slot0;RET4;EAX material diffuse pointer"
+        }
+      ],
+      "notes": [
+        "Reuse MaterialLighting.diffuse_color_00b179f0; read each selected stage in native order."
+      ]
+    },
+    {
+      "id": "shadow_samplers",
+      "start": "00b430cf",
+      "end_exclusive": "00b43160",
+      "status": "implemented bounded binder; real shadow owners still required",
+      "input_owners": [
+        "pass+7C ShadowTexture, +78 ShadowMap, +84 fallback",
+        "global00F8D39C->3C holder; first scene light from [entry.model+170]+1C sentinel",
+        "first light+174 optional shadow owner virtual+8"
+      ],
+      "writes": [
+        "device ShadowTexture thenShadowMap bindings"
+      ],
+      "calls": [
+        {
+          "site": "00b430e3",
+          "target": "00b0d130",
+          "abi": "ECX global diagnostic/service; noargs; nested holder+8 texture"
+        },
+        {
+          "site": "00b4311a",
+          "target": "00b7aab0",
+          "abi": "ECX first scene light,RET,EAX light+174"
+        },
+        {
+          "site": "00b43132",
+          "target": "shadow owner virtual+8",
+          "abi": "ECX shadow owner, noargs,EAX texture"
+        }
+      ],
+      "notes": [
+        "Reuse bind_material_shadow_samplers_00b430cf_fragment. Scene first-light list+170 is distinct from model ordered POINT-light array+164."
+      ]
+    },
+    {
+      "id": "point_light_constants",
+      "start": "00b43160",
+      "end_exclusive": "00b43403",
+      "status": "ready independent value fragment after current owner correction",
+      "input_owners": [
+        "SAME GeneratedModelLifetime.point_lights_164 as unlink/building upload; actual GeneratedModelPointLightLinks identities/values",
+        "VS registers[45] count and[46] data"
+      ],
+      "writes": [
+        "count scalar float4 then up to4 light position_radius/color pairs; no unused-tail clear"
+      ],
+      "calls": [
+        {
+          "site": "00b43163",
+          "target": "00b6dc50",
+          "abi": "ECX entry.model,RET,EAX model+164 array header"
+        }
+      ],
+      "notes": [
+        "CountFF gates BOTH count/data; DataFF skips data only. Signed count>=4 clamps4, then unsigned conversion/loop behavior for negative corrupt counts is outside valid-container domain.",
+        "Use existing BuildingInstancePointLight fields; do not use building-instance output (that path takes3 lights and overwrites W lanes)."
+      ]
+    },
+    {
+      "id": "epilogue",
+      "start": "00b43403",
+      "end_exclusive": "00b43410",
+      "status": "no new implementation",
+      "input_owners": [
+        "saved registers/stack"
+      ],
+      "writes": [],
+      "calls": [],
+      "notes": [
+        "RET8 confirms entry and unused override stack arguments."
+      ]
+    }
+  ],
+  "ready_packets": [
+    {
+      "id": "material_transform_tail",
+      "ready": true,
+      "files": [
+        "include/bsp/material_transform_constants.hpp",
+        "src/material_transform_constants.cpp",
+        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
+        "reports/material_transform_constants_audit.json"
+      ],
+      "ranges": [
+        [
+          "00b42a7c",
+          "00b42e4a"
+        ],
+        [
+          "00b42ef9",
+          "00b4305d"
+        ]
+      ],
+      "helper_addresses": [
+        "00b6e0d0"
+      ],
+      "reuse": [
+        "get_camera_view_00b6fcb0",
+        "refresh_camera_world_00b6db70",
+        "invert_camera_affine_00b63b30",
+        "copy_camera_matrix_004134f0"
+      ],
+      "contract": "Actual CameraTransform reference, existing reflected metadata and shared output spans. Implement matrix/cache value fragment only; no owner lookup defaults.",
+      "risk": "PS world matrix uses VS row count; snapshotting whole builder or general inverse changes behavior."
+    },
+    {
+      "id": "material_scalar_color_tail",
+      "ready": true,
+      "files": [
+        "include/bsp/material_scalar_constants.hpp",
+        "src/material_scalar_constants.cpp",
+        "docs/MATERIAL_SCALAR_CONSTANTS.md",
+        "reports/material_scalar_constants_audit.json"
+      ],
+      "ranges": [
+        [
+          "00b42e4a",
+          "00b42ef9"
+        ],
+        [
+          "00b4305d",
+          "00b430cf"
+        ]
+      ],
+      "helper_addresses": [],
+      "reuse": [
+        "compute_stream_threshold_fade_00b73770",
+        "MaterialLighting.diffuse_color_00b179f0"
+      ],
+      "contract": "Expose visibility/LOD and diffuse as separate ordered functions because inverse-world fragment executes between them. Require actual threshold when LOD selected.",
+      "risk": "No clamping visibility, no fake threshold source, preserve bitwise scalar/color copies and x87 helper schedule."
+    },
+    {
+      "id": "material_point_light_tail",
+      "ready": true,
+      "files": [
+        "include/bsp/material_point_light_constants.hpp",
+        "src/material_point_light_constants.cpp",
+        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
+        "reports/material_point_light_constants_audit.json"
+      ],
+      "ranges": [
+        [
+          "00b43160",
+          "00b43403"
+        ]
+      ],
+      "helper_addresses": [
+        "00b6dc50"
+      ],
+      "reuse": [
+        "GeneratedModelPointLightLinks",
+        "GeneratedModelLifetime.point_lights_164",
+        "BuildingInstancePointLight"
+      ],
+      "contract": "Use corrected SAME actual ordered model point-light list. Primitive value writer may borrow these records but must not create a second ownership/list domain.",
+      "risk": "4-light material packing differs from3-light instance packing. No broad zero fill; skip data if count metadata absent."
+    }
+  ],
+  "shared_state_rules": [
+    "Packets are independent implementation ownership, NOT runtime parallelism: all selected writes execute in exact native order on the same buffers. Metadata can place ranges over each other; later writes win.",
+    "Primary owns builder orchestration, MaterialEntryOperations.build_constants_00b42350 adapter, effect/material/model lookup contracts, CMake and shared ledgers. Workers own only listed disjoint new files/ranges; do not lease entire00B42350 three times.",
+    "Dynamic callbacks execute first and can mutate actual entry/model/material/metadata/output state. Resolve live inputs at original stages; no precomputed whole-entry snapshot or dummy callback.",
+    "Model transform world/view caches and point-light ownership lists are shared with camera/lifetime/instance paths. Reuse existing identities and helpers.",
+    "Existing parameter/decode/shadow helpers are bounded projections with stronger validation; compose only within those declared domains, not as proof of whole native behavior.",
+    "00B46A70 system-prefix gatherer is separate, still required upstream; do not duplicate prefix values or blanket-clear its retained/shared tails.",
+    "General bone/skin model+184 unions, animation/type-owner and dynamic texture header/virtual implementations remain unresolved and prevent full-builder completion."
+  ],
+  "point_light_owner_correction": {
+    "status": "fresh native evidence confirmed; parent applied current main correction",
+    "artifact": "J:/PROG/battlestations-pacific-decompile-material-dispatch-20260910/local/model_point_light_owner_review.json",
+    "fact": "model+164 ordered cPointLight owners; reciprocal light+1E0 model list; geometry+180 separate",
+    "must_keep": "Current GeneratedModelPointLightLinks identity+BuildingInstancePointLight values and model.point_lights_164"
+  },
+  "validation_plan": "Each worker: exact native range/ABI evidence, strict Win32 compilation, smallest focused existing/isolated check for concrete matrix asymmetry, bitwise scalar preservation or light count/tail order. No full renderer/game claim from numeric checks.",
+  "mutations": "Only this requested local planning artifact and local point-light review; no C++/ledger/Ghidra implementation writes."
+}

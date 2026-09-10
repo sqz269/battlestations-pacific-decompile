@@ -29,8 +29,10 @@ Batch execution `00B55550` checks frame activity again, clears the cached effect
 owner identity at global `0108FBF4`, then dispatches material/effect virtual `+14`. The count and
 list are reloaded after callbacks. Its two stack arguments are unused; batch
 category does not select a material pass. The typed interface requires an
-actual material dispatcher. `00B45360`/`00B44750` and their remaining constant
-builder dependencies are separate reconstruction work.
+actual material dispatcher. `MaterialEntryDispatcher` now reconstructs
+`00B45360`/`00B44750`/`00B43410` around the required constant builder and other
+actual owner operations; see `MATERIAL_ENTRY_DISPATCH.md`. The complete builder
+`00B42350` remains open.
 
 On scope exit `00B13510` reloads the optional singleton and assigns the literal
 **"X"**, whose original bytes are at `00CE9A38`. It does not clear the string to

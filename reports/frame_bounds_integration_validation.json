@@ -1,0 +1,140 @@
+{
+  "utc": "2026-09-10T05:27:49.863022+00:00",
+  "status": "bounded_modules_integrated_build_and_installed_diagnostic_checked",
+  "game_rebuild_complete": false,
+  "gameplay_validated": false,
+  "native_abi_compatible": false,
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "snapshot": {
+    "utc": "2026-09-10T05:18:32.763562+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62782,
+    "internal_function_count": 62340,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "original_executable": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "existing_ctest_passed": 2,
+    "new_tracked_tests": 0,
+    "log": "reports/frame_bounds_integration_build.txt"
+  },
+  "installed_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds\"",
+    "exit_code": 0,
+    "log": "reports/frame_bounds_integration_probe.txt",
+    "groups": 1,
+    "categories": 2,
+    "records": 2,
+    "queued_entries": 2,
+    "queued_gpu_bindings_checked": 2,
+    "visible_pixels": 2499,
+    "colors": 54,
+    "prior_device_state_restored": true,
+    "actual_models_constructed": 3,
+    "actual_models_disposed": 3,
+    "recovered_group_model_cleanup": true,
+    "camera_frame_state_readback": true,
+    "frame_target_state_readback": true,
+    "texture_effect_constructions": [
+      3,
+      1
+    ],
+    "fallback_cache_reuse": true,
+    "native_point_light_list": "same actual list consumed by upload and teardown; empty in controlled scene",
+    "readback_bitmap": {
+      "path": "local/installed_mesh/render.bmp",
+      "sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+      "visual_inspection": "Very dark diagnostic silhouette. No original-game or final-display visual parity claim."
+    },
+    "coverage_limit": "Controlled explicit camera, ambient/directional light, no point lights and white shadow texture. Full command/material pipeline is not substituted by fake constants backend."
+  },
+  "focused_evidence": {
+    "camera_native_comparisons": 38,
+    "camera_control_words": [
+      "007f",
+      "027f"
+    ],
+    "camera_signaling_nan_copy_boundaries": 3,
+    "material_selector_cases": 21,
+    "selected_program_override_identities": 24,
+    "material_camera_modes": 14,
+    "model_point_light_fixture": "corrected actual light identity/value/backlink plus separate retained geometry180 fixture passed",
+    "reviews": [
+      "reports/frame_bounds_integration_review.json",
+      "reports/frame_command_metadata_review.json",
+      "reports/camera_frame_independent_review.json",
+      "reports/model_point_light_lifetime_review.json",
+      "reports/model_point_light_owner_review.json"
+    ],
+    "limits": "Local native/synthetic cases cover documented values and callback boundaries; they are not whole native scene/job/game execution."
+  },
+  "native_identity": {
+    "report": "reports/frame_bounds_integration_native_identity.json",
+    "primary_pe_verified_unique_ranges": 175,
+    "refreshed_exports": 131
+  },
+  "annotations": "reports/frame_bounds_integration_annotations.json",
+  "module_audits": [
+    "reports/model_world_bounds_audit.json",
+    "reports/scene_node_attachment_audit.json",
+    "reports/render_batch_preparation_audit.json",
+    "reports/render_command_queue_audit.json",
+    "reports/material_sort_metadata_audit.json",
+    "reports/d3d9_frame_targets_audit.json",
+    "reports/render_command_execution_audit.json",
+    "reports/generated_model_lifetime_audit.json",
+    "reports/camera_frame_state_audit.json",
+    "reports/material_entry_dispatch_audit.json"
+  ],
+  "source_sha256_lf": {
+    "CMakeLists.txt": "e11bc9b3909331db25bf30580029e7c8151745b387fd9509061851ef5ff510e3",
+    "src/d3d9_mesh_probe.cpp": "8506c1db720fbe30e55b683cae1876fba9a3baf0a2ca00c59a5915497285717e",
+    "src/d3d9_probe.cpp": "113eda2c396862767ab0728dc017d5dff64cd5b459f13a0546e01eef8598e28a",
+    "src/camera_affine.cpp": "dc83d91929e3f52aaa8a310918830396c7bee5b74e27a6e9af83cdef88d8abfd",
+    "include/bsp/camera_affine.hpp": "fb6ba92f9d2409946714f0ee378ede994bce207849bb567a7d387ac7a8e5f570",
+    "src/instance_upload.cpp": "194d00d2130eb1b433e8b6433bbb0951c7f0becc8ad3c25403bf0d25ae1e97b0",
+    "src/instance_sort.cpp": "845cc7172422040b563bc3c75b1a635f0dba571ee685aa2cf02ec83ba579fcc9",
+    "src/model_bounds.cpp": "a0e675372dd300c737ad87a941caaac472ab8adde64db1fede4e4fce67e1e853",
+    "src/scene_attachment.cpp": "2bae16b43b6a99a508d2c9e8e6a90c3ca116bd01741dc2f2ab5f7c6c1119bd94",
+    "src/compiled_material.cpp": "d2958ba0b7f6efd507107459b536d7d8d38ff3912283ec71b4e3a3ec77adf752",
+    "src/d3d9_texture.cpp": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+    "src/d3d9_states.cpp": "5ee9a5d020282406eac0b3d4a5c08d634b511265042f793c0f47f48d16fad9d2",
+    "src/material_sort_metadata.cpp": "3fa67876fe50117cfa47a2461c7f289cd02d0f5c6833817451cc8f1343982be2",
+    "src/render_command_queue.cpp": "2e7e2f862e9db0e069b3f906305bf3ce680a775fe51e1ac97e342954a526572c",
+    "src/render_command_execution.cpp": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5",
+    "src/generated_model_lifetime.cpp": "7dfa01c9483f7bcd98389b5a3930056b8e97dafb11c76330eb6c5e913aba99ec",
+    "src/camera_frame_state.cpp": "319379fad93209c94ed630d9d640f72ef40d43da0f8620d3eb4fddf0595958e1",
+    "src/material_entry_dispatch.cpp": "2e4b4e53ab62392cf2d909b8a38a8a6ff53d324fc969905a01f2362d2f0f248f",
+    "include/bsp/generated_model_lifetime.hpp": "03c4904ddcbfa9b60fd6c328f921e6e855efd1b9400b85a65b2d1f8e292b67cf",
+    "include/bsp/camera_frame_state.hpp": "26abed358f7986da728ab0fa679e127ca5c688a8a92db6a5df47d8f0b9be7a24",
+    "include/bsp/material_entry_dispatch.hpp": "461a6086228b4f76728c0249510ef0c8cffef415b952b307e4bdb91cc11037d7"
+  },
+  "artifact_sha256": {
+    "build/win32/Release/bsp_core.lib": "2e5ef1ce320ec206cc582401ea951d1c24bbdbfd05e08e3678063941fa65f32f",
+    "build/win32/Release/bsp_d3d9_probe.exe": "2746e0177ec4d39e41f0e6f974073bbcb6e58e3da0589fe6fdb721bdd1f029bd"
+  },
+  "required_remaining": [
+    "00b46a70 complete scene/system prefix gatherer",
+    "00b42350 complete material constants with actual dynamic/bone/skin owners",
+    "Actual effect-plane construction, material callback and diagnostic owner",
+    "Native jobs, caches, type initialization and allocation policy",
+    "Full startup/world loop integration and runnable game/gameplay validation"
+  ],
+  "next_packet_map": "reports/material_constants_builder_next.json",
+  "source_revision_observed_at_validation": "423bc04b96432d5d7dde4fb6d157b71df14f2b21"
+}

@@ -1,0 +1,133 @@
+{
+  "captured_utc": "2026-09-10T04:57:16.538829+00:00",
+  "main_head": "32ca17d Reconstruct material entry selector and draw orchestration",
+  "reviewer": "agent/camera-frame-20260910",
+  "files_sha256_normalized_lf": {
+    "include/bsp/render_command_execution.hpp": "8fff16c9fa9fa22e086f82db7b79d9e4dcf82e394610cad5c2b976ef7e62d08d",
+    "src/render_command_execution.cpp": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5",
+    "include/bsp/compiled_material.hpp": "b6db99d1d7fd750f5f46710fd850a8a97c882000cf2b0a0cda33bf66f2df2200",
+    "src/compiled_material.cpp": "d2958ba0b7f6efd507107459b536d7d8d38ff3912283ec71b4e3a3ec77adf752",
+    "include/bsp/d3d9_texture.hpp": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+    "src/d3d9_texture.cpp": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+    "include/bsp/material_sort_metadata.hpp": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+    "src/material_sort_metadata.cpp": "3fa67876fe50117cfa47a2461c7f289cd02d0f5c6833817451cc8f1343982be2"
+  },
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "native_fragments": [
+    {
+      "address": "00b1d97e",
+      "length": 49,
+      "sha256": "6ad080b82828d830e0ea765ad8174e9c40e2dc92e5030313d9000e319282f9a9",
+      "matches_installed_pe": true,
+      "meaning": "Camera captured from context+08 before target call; scene reloaded later."
+    },
+    {
+      "address": "00b1d9f1",
+      "length": 172,
+      "sha256": "0b760b292cc028f7fd9f25c6f11ff6251d1e838260386ec6997e218ef287e880",
+      "matches_installed_pe": true,
+      "meaning": "Sync gate, both signed counts>50, per-batch mode writes, enqueue/wait1, serial calls, reloaded execution pointers."
+    },
+    {
+      "address": "00b1bf70",
+      "length": 18,
+      "sha256": "e7e02ce675d5d6606f1282bdeae9c7b8161022789ca7d9052614d413fff6a113",
+      "matches_installed_pe": true,
+      "meaning": "Actual job callback reads batch+08 at execution and tail-calls batch virtual+0C."
+    },
+    {
+      "address": "00b13528",
+      "length": 46,
+      "sha256": "d344bd5d953aac83f3b93213c52415895392caae32479e026dc657e99808518e",
+      "matches_installed_pe": true,
+      "meaning": "Diagnostic reset tests current singleton and builds literal at00CE9A38, then reloads singleton."
+    },
+    {
+      "address": "00ce9a38",
+      "length": 2,
+      "sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+      "matches_installed_pe": true,
+      "meaning": "Literal58 00 is X plus terminator."
+    },
+    {
+      "address": "00b18e1e",
+      "length": 98,
+      "sha256": "f404951ffcbcc3c6c64c25c5264c51225460276b3765c5be5089e6fa43d9b853",
+      "matches_installed_pe": true,
+      "meaning": "Fallback acquired/stored+98 and temporary cleanup before effect serial+C0 consumption."
+    },
+    {
+      "address": "00b3419d",
+      "length": 33,
+      "sha256": "1c3dd11af03b89e30fda0a4cac2e9b6f4d2f5fdc7d1d40fc57b34a5fb9747890",
+      "matches_installed_pe": true,
+      "meaning": "Texture COM stored+10 before global0108D6E8 old value copied+20 and incremented."
+    },
+    {
+      "address": "00b34230",
+      "length": 37,
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+      "matches_installed_pe": true,
+      "meaning": "Derived texture base calls00B34120."
+    },
+    {
+      "address": "00b3f95d",
+      "length": 101,
+      "sha256": "39d33017ee67909e31ac8e2ca822c934cb4a870cae2977c8cf1f14efce67b7b9",
+      "matches_installed_pe": true,
+      "meaning": "Loaded texture calls base before GetLevelDesc at00B3F9BE."
+    },
+    {
+      "address": "00b2c5cf",
+      "length": 67,
+      "sha256": "ceecaf89ada23d2cbd0668623a33760ff4489b533f244e1410c96f1c22079468",
+      "matches_installed_pe": true,
+      "meaning": "2D creation followed by nonnull COM gate before wrapper constructor00B3F930."
+    },
+    {
+      "address": "00b3e190",
+      "length": 93,
+      "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5",
+      "matches_installed_pe": true,
+      "meaning": "Recreation issues D3DX call without wrapper constructor or metadata counter."
+    },
+    {
+      "address": "00b172b0",
+      "length": 10,
+      "sha256": "5940df69b60defd9e87bf6c4f1f44706b7d3bc501eab25edf30198be533ee258",
+      "matches_installed_pe": true,
+      "meaning": "Material pass+14 stores supplied full-effect identity."
+    },
+    {
+      "address": "00b46323",
+      "length": 22,
+      "sha256": "a08ff5631a90d556ec6894e2413d4fcb7dc273ae7a04d0ad577e7218efd0f14b",
+      "matches_installed_pe": true,
+      "meaning": "Mode program passed same owning effect at00B46334."
+    },
+    {
+      "address": "00b45f63",
+      "length": 30,
+      "sha256": "a06d0020348c5b083fb5c799a5eab75a066cc3b5eda8e8890d04dc5058ce34f8",
+      "matches_installed_pe": true,
+      "meaning": "Root descriptor fields+08 and+04 assigned effect+B0 and+AC."
+    }
+  ],
+  "actionable_findings": [],
+  "checked_conclusions": [
+    "Captured camera remains stable across target callbacks; scene and batches are reloaded where the concrete native path does so.",
+    "Job branch requires sync disabled and both actual counts>50; no serial substitution for missing job backend. Callback uses stored batch mode at execution, and all queued stack job records are waited before leaving.",
+    "Diagnostic cleanup reloads current singleton and assigns X. Scope begins after diagnostic installation, matching native cleanup lifetime; host backend failures before that point stop explicitly.",
+    "Pure-virtual scene and material operations remain required and explicitly incomplete; real target COM errors continue through later stages and are reported after completed orchestration.",
+    "One shared CompiledMaterialEffect carries full identity/metadata/fallback across passes. Root descriptor fields update before later compilation failure; metadata reads fail when absent.",
+    "Installed mesh glue acquires cached lowercase error.tga before consuming the effect serial, and clone/pass owners retain the same wrapper. LogicalTexture still borrows its underlying COM, so physical owner must outlive use.",
+    "Nonnull COM triggers texture serial consumption before GetLevelDesc; later host description failure does not roll back counter. Existing wrapper recreation never consumes another serial."
+  ],
+  "limits": [
+    "Read-only source and instruction/byte review; no new functional tests or live-game execution performed.",
+    "Native allocator/SEH/global-renderer replacement and arbitrary virtual overrides remain outside the typed orchestration fragment.",
+    "Fallback wrapper identity is retained; full native texture-cache and COM ownership are not inferred from shared_ptr<LogicalTexture>.",
+    "Existing primary Win32 build and installed-mesh probe results were provided by integrator, not rerun in this review."
+  ]
+}

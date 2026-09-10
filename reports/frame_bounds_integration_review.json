@@ -1,0 +1,72 @@
+{
+  "reviewer": "agent/scene-20260910",
+  "captured_utc": "2026-09-10T04:20:31.491062+00:00",
+  "scope": "Independent read-only source/native review; main files were never edited by reviewer",
+  "source_sha256": {
+    "include/bsp/model_bounds.hpp": "dd1c46b006225f5ccbd53706073c7092e51e1c934e902591ce6a696d81f12210",
+    "src/model_bounds.cpp": "a0e675372dd300c737ad87a941caaac472ab8adde64db1fede4e4fce67e1e853",
+    "include/bsp/instance_sort.hpp": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+    "src/instance_sort.cpp": "845cc7172422040b563bc3c75b1a635f0dba571ee685aa2cf02ec83ba579fcc9",
+    "include/bsp/d3d9_states.hpp": "8a87e2b307161f33cb5e72da11667934753f39445448f9f0af5dd9a0fdd98309",
+    "src/d3d9_states.cpp": "5cd94fa04d677b97055cb75c86f9b5952e9a40228e238a0b4c0ffd51e34f0f08",
+    "src/d3d9_mesh_probe.cpp": "a600e360f3f96711c2d426b82ad8a6cf087be7d5576f975ca0a2ad0f7a3985a8"
+  },
+  "findings": [
+    {
+      "severity": "documentation_contract",
+      "status": "fixed_by_primary_and_reread",
+      "file": "include/bsp/d3d9_states.hpp",
+      "line": 107,
+      "implementation_file": "src/d3d9_states.cpp",
+      "implementation_line": 74,
+      "native_address": "00b24f36",
+      "finding": "Original declaration promised first COM failure, but sRGB render-state setter intentionally discards SetRenderState HRESULT; only surface-binding failures are returned.",
+      "evidence": "Local fake device returned E_FAIL only from SetRenderState while all color/depth calls succeeded; bind_frame_targets returned S_OK, matching native ignored state HRESULT. Primary narrowed header to first surface-binding failure."
+    }
+  ],
+  "unresolved_correctness_findings": [],
+  "checked": {
+    "bounds": [
+      "007BB620 exact x87 row-squared instruction/store order and carry-based unordered selection",
+      "007C1180 float scale store, signed radius multiply before affine center call and FLD/FSTP copies",
+      "00B6E8C0 either-bit0x30 cache hit, world bit2 refresh on miss, final OR0x30",
+      "00BF7030/00BF704D/00C083A5/00C0843B/00C08347 finite masked nearest CW007F/027F numerical scope; excluded environment/status behavior stays explicit"
+    ],
+    "sorting": [
+      "00B51DF0 original-index mode selection despite configuration DWORD output overwriting stack slot",
+      "Signed16 material count gate, effectB0 low6, texture20 low12, effectC0 unsigned byte; 64-bit prefix shift37",
+      "00BF7456 masked binary32 result low32 conversion, zero for integer-indefinite/large exact multiples",
+      "00B51AB0 signed material ascending plus depth descending;00B51B00 unsigned64 comparator",
+      "00B1CF80 threshold42/count8 step;00B1C210 rotation cycle start;00B1DCE0 ideal shrink and smaller-side/right-on-tie recursion"
+    ],
+    "frame_targets": [
+      "00B24E70 guard before identity check; publish/retain new before old release; continue using requested receiver after old destruction; null changes no device bindings",
+      "Optional byte194 sRGB state, clear colors1..3 then bind colors0..3 then depth, continuing after COM failures",
+      "00B23D80 null slot0 default fallback, null other slots unbind; non-null wrapper increments even on failure or null COM pointer",
+      "00B21690 null unbind and non-null wrapper count semantics",
+      "00B1F6D0/00B1F6E0/00B1F710 are direct field getters without hidden reference operations",
+      "Probe captures old color0..3/depth plus stateblock and restores depth-null, colors1..3-null, color0, colors1..3, depth, stateblock"
+    ],
+    "mesh_integration": [
+      "One stable MeshInstanceModel owns shared CameraTransform, ModelBounds and SceneNodeAttachment binding",
+      "Generated models call recovered world-sphere and scene-reference paths; host IDs keep cLight distinct from object/node/root",
+      "Scene references3 and empty light registry assertion matches two attached ordinary objects plus owner reference",
+      "Diagnostic model destruction detaches/unbinds while runtime and scenes remain alive; not claimed as native model destructor reconstruction"
+    ]
+  },
+  "local_check": {
+    "source": "local/frame_targets_review_check.cpp",
+    "command": "./local/check_frame_targets_review.ps1",
+    "output": "PASS native target order, publication before release, continue after surface failure, identity skip, null preserves; confirmed sRGB HRESULT omission",
+    "compiler": "MSVC Win32 /std:c++17 /W4 /WX /MD /Od /RTC1",
+    "device": "synthetic COM ABI fixture; no real device or native functions executed",
+    "permanent_test_added": false
+  },
+  "residual_limits": [
+    "No new native scene/bounds/sort differential corpus was executed in this independent review; worker audit results were treated as prior evidence.",
+    "Full x87 status/FIP/FDP and excluded control-word/domain paths remain outside declared numerical scope.",
+    "Fake-device review proves host call order, ownership publication and error policy, not GPU rendering or real COM failure causes.",
+    "Native model allocation/destructor and actual runtime numeric type IDs remain explicitly separated from diagnostic host adapters.",
+    "No Ghidra, shared source, metadata or installed PE mutations; only ignored worker local files were created."
+  ]
+}

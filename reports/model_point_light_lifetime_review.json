@@ -1,0 +1,46 @@
+{
+  "utc": "2026-09-10T05:08:55.982237+00:00",
+  "scope": "Minimal adaptation of the existing ignored generated-model lifetime fixture to the corrected model+164 borrowed cPointLight list. Compiled and ran against current main header/source. No shared source, docs, metadata, Ghidra or ledger edits.",
+  "correction": {
+    "native_type": "model+164 list contains borrowed cPointLight owners; light+1E0 stores borrowed model reverse links",
+    "basis": "Primary reported fresh constructor00B7C710/vtable00D63008 and inverse00B7C160->00B6F3C0 evidence, consistent with existing BuildingInstanceData. This task verifies the corrected typed lifecycle fixture and does not independently re-run that native identification.",
+    "typed_api": "GeneratedModelPointLightLinks { const void* identity; BuildingInstancePointLight values; vector<CameraTransform*> models; }; lifetime.point_lights_164",
+    "independent_owned_geometry": "GeneratedModelGeometryReference at+180 continues to retain and destroy the actual GeneratedInstanceGeometry; no geometry identity is put into the point-light list."
+  },
+  "compiled_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\generated_model_lifetime.hpp",
+      "sha256": "03c4904ddcbfa9b60fd6c328f921e6e855efd1b9400b85a65b2d1f8e292b67cf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\generated_model_lifetime.cpp",
+      "sha256": "7dfa01c9483f7bcd98389b5a3930056b8e97dafb11c76330eb6c5e913aba99ec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-model-lifetime-20260910\\local\\generated_model_lifetime_check.cpp",
+      "sha256": "61dd5aadc4ab68d72e0c7aa0ff4602e00c307fe1aae301ebb2531b1a18d99eeb"
+    }
+  ],
+  "fixture_adaptation": "Renamed list fields/type, supplied a separate stable BuildingInstancePointLight owner identity and position/color values, and checked those values survive backlink removal. Original scene, geometry180, reference gate, recursive child disposal and storage-order assertions retained.",
+  "validation": {
+    "result": "passed",
+    "compiler": "MSVC19.51 Win32 x86 C++17 /O2 /MD /W4 /WX /fp:strict",
+    "link": "Current main lifetime object plus previously built bsp_core.lib; no full repository rebuild was required for this fixture-only task.",
+    "command": "./local/compile_generated_model_lifetime.ps1",
+    "log": "local/model_point_light_lifetime_review.log",
+    "checked": [
+      "Borrowed point-light reverse links for parent and child are removed by first-match swap-last; unrelated node remains.",
+      "Point-light identity, position/radius and color values remain unchanged after model releases.",
+      "Recursive child terminal destruction occurs, while native stale parent child_count remains1.",
+      "Parent point-light list shrinks to0 while retaining capacity until final storage cleanup.",
+      "Parent initial references2 become1 after virtual18; actual geometry180 and scene remain alive.",
+      "Repeated virtual18 does not drop another self reference after byte44 is set.",
+      "Final self reference destroys actual geometry180 and scene, returns exact pooled name storage, and deletes actual model allocation.",
+      "Terminal event order remains child_storage,174,geometry180,130,scene,name,parent_storage.",
+      "Scene callback observes null publication before zero-reference disposal; scene associations can be rebound after cleanup."
+    ],
+    "native_lifecycle_differential": false,
+    "game_validated": false
+  },
+  "installed_probe_boundary": "Primary stated the installed probe uses its actual empty point-light list and its writer consumes the same typed values. This nonempty fixture exercises the corrected borrowed-link teardown and does not claim installed-probe or gameplay validation."
+}

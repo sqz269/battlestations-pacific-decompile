@@ -455,28 +455,25 @@
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "004142e0",
-          "status": "Exact point kernel is private in instance_upload.cpp; primary must expose/reuse it in shared affine code."
+          "address": "00b46a70",
+          "status": "Full actual scene/system gatherer remains required."
         },
         {
-          "address": "00b6db70",
-          "status": "World refresh exists in CameraTransform; use existing valid_flags/auxiliary_flags, do not duplicate them."
-        },
-        {
-          "address": "00bf7030",
-          "status": "CRT sqrt wrapper normal FSQRT path established; control-word/exception helpers00c083a5/00c083bc/00c08347 andreturntails remain unaudited."
+          "address": "00b42350",
+          "status": "Concrete selector and orchestration implemented; full dynamic/bone/skin/material constants backend still required."
         }
       ],
       "boundary": "Cache hits when EITHER auxiliary bit0x30 is set. Local sphere population remains an explicit producer contract; wire mesh sphere handlers consume/discard. Primary owns shared affine kernel promotion and probe integration.",
       "id": "model_world_bounds",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
+      "done": true,
+      "state": "bounded_implementation_integrated_reviewed_and_installed_checked",
       "output_files": [
         "include/bsp/model_bounds.hpp",
         "src/model_bounds.cpp",
         "docs/MODEL_WORLD_BOUNDS.md",
         "reports/model_world_bounds_audit.json"
-      ]
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
     },
     {
       "worker": "scene_attachment_worker",
@@ -503,48 +500,25 @@
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "006ef860",
-          "status": "Missing40B RET4 leaf checks token against runtimeIDs01090034/38/3C. RuntimeID initialization and subset meanings unresolved; do not hardcode eligibility."
+          "address": "00b46a70",
+          "status": "Full actual scene/system gatherer remains required."
         },
         {
-          "address": "00b823b0",
-          "status": "Node allocation/value construction; pointer-key registry ownership not yet proved."
-        },
-        {
-          "address": "00b83d90",
-          "status": "Range erase/destruction; subordinate node lifetime must be closed."
-        },
-        {
-          "address": "00b82d30",
-          "status": "List size/length-limit update has library-like name; review actual behavior."
-        },
-        {
-          "address": "00b83490",
-          "status": "Bucket iterator-pair storage growth."
-        },
-        {
-          "address": "00b82650",
-          "status": "Key equal-range lookup."
-        },
-        {
-          "address": "00b820b0",
-          "status": "Iterator-range count, currently library-classified."
-        },
-        {
-          "address": "00c03dbe",
-          "status": "Native hash division helper."
+          "address": "00b42350",
+          "status": "Concrete selector and orchestration implemented; full dynamic/bone/skin/material constants backend still required."
         }
       ],
       "boundary": "Registry is unique pointer-key linear hashing with linked list/bucket intervals, not a tree. Gate token is runtime0109018C. Core has no direct world/cache flag writes. Request exact helper leases; primary owns CameraTransform/probe/shared metadata.",
       "id": "model_scene_attachment",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
+      "done": true,
+      "state": "bounded_implementation_integrated_reviewed_and_installed_checked",
       "output_files": [
         "include/bsp/scene_attachment.hpp",
         "src/scene_attachment.cpp",
         "docs/SCENE_NODE_ATTACHMENT.md",
         "reports/scene_node_attachment_audit.json"
-      ]
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
     },
     {
       "worker": "batch_preparation_worker",
@@ -566,39 +540,303 @@
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00bf7456",
-          "status": "ST0 depth conversion to EAX; rounding/overflow/nonfinite behavior unresolved."
+          "address": "00b46a70",
+          "status": "Full actual scene/system gatherer remains required."
         },
         {
-          "address": "00b1dce0",
-          "status": "Complete finite-depth pointer permutation implemented; primary delegates these sort files exclusively to this packet."
-        },
-        {
-          "address": "00b51b00",
-          "status": "Existing unsigned64 key predicate; mode0 needs key packing and comparator-parametric reuse."
-        },
-        {
-          "address": "00b1ebe0",
-          "status": "Command execution has current-context ownership/iteration/cleanup still unported."
-        },
-        {
-          "address": "00b1d950",
-          "status": "Renderer setup, camera/system constants, profiling and job-service dependencies remain."
-        },
-        {
-          "address": "00b45360",
-          "status": "Concrete material virtual14 dispatcher and downstream00b44750 are unimplemented; fixedNORMALprobe is not fullpassdispatch."
+          "address": "00b42350",
+          "status": "Concrete selector and orchestration implemented; full dynamic/bone/skin/material constants backend still required."
         }
       ],
       "boundary": "Mode0 prefix uses effectB0 low6bits, optional firsttexture20 low12bits and effectC0 byte, shifts by37 then adds zeroextended EAX. Textureword only when signedmaterialcount34>0 andslot0nonnull. Other modes use material/depth predicate. No other worker may edit current sort files.",
       "id": "batch_preparation",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
+      "done": true,
+      "state": "bounded_implementation_integrated_reviewed_and_installed_checked",
       "output_files": [
         "include/bsp/instance_sort.hpp",
         "src/instance_sort.cpp",
         "docs/RENDER_BATCH_PREPARATION.md",
         "reports/render_batch_preparation_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "render_command_queue",
+      "packet": "render_command_queue",
+      "worker": "primary_integration",
+      "function_addresses": [
+        "00b1ebe0",
+        "00b1ddd0",
+        "00b1d760",
+        "00b1d120",
+        "00b6dfa0"
+      ],
+      "done": true,
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/render_command_queue.hpp",
+        "src/render_command_queue.cpp",
+        "reports/render_command_queue_audit.json"
+      ],
+      "boundary": "queue/group ownership fixture and installed group teardown",
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "generated_model_lifetime",
+      "packet": "generated_model_lifetime",
+      "worker": "primary_integration",
+      "function_addresses": [
+        "00b6f310",
+        "00b750c0",
+        "00b6f440",
+        "00b6ee10",
+        "00b7c1a0"
+      ],
+      "done": true,
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/generated_model_lifetime.hpp",
+        "src/generated_model_lifetime.cpp",
+        "reports/generated_model_lifetime_audit.json"
+      ],
+      "boundary": "corrected point-light owner fixture and installed three-model disposal",
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "camera_frame_state",
+      "packet": "camera_frame_state",
+      "worker": "primary_integration",
+      "function_addresses": [
+        "00b71360",
+        "00b285a0",
+        "00b26770",
+        "00b21430",
+        "00b70510",
+        "00b70710"
+      ],
+      "done": true,
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/camera_frame_state.hpp",
+        "src/camera_frame_state.cpp",
+        "reports/camera_frame_state_audit.json"
+      ],
+      "boundary": "native arithmetic/copy fixtures and installed camera GPU state",
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "material_sort_metadata",
+      "packet": "material_sort_metadata",
+      "worker": "primary_integration",
+      "function_addresses": [
+        "00b18d60",
+        "00b34120",
+        "00b45ee0"
+      ],
+      "done": true,
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/material_sort_metadata.hpp",
+        "src/material_sort_metadata.cpp",
+        "reports/material_sort_metadata_audit.json"
+      ],
+      "boundary": "actual installed shared effect/texture metadata producers",
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "render_command_execution",
+      "packet": "render_command_execution",
+      "worker": "primary_integration",
+      "function_addresses": [
+        "00b1d950",
+        "00b55550",
+        "00b1bf70"
+      ],
+      "done": true,
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/render_command_execution.hpp",
+        "src/render_command_execution.cpp",
+        "reports/render_command_execution_audit.json"
+      ],
+      "boundary": "native orchestration review; full required backends remain open",
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "material_entry_dispatch",
+      "packet": "material_entry_dispatch",
+      "worker": "primary_integration",
+      "function_addresses": [
+        "00b45360",
+        "00b44750",
+        "00b43410"
+      ],
+      "done": true,
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/material_entry_dispatch.hpp",
+        "src/material_entry_dispatch.cpp",
+        "reports/material_entry_dispatch_audit.json"
+      ],
+      "boundary": "native selector fixture; full builder remains required",
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "id": "material_transform_tail",
+      "packet": "material_transform_tail",
+      "worker": "material_transform_tail_worker",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "work": "Actual CameraTransform reference, existing reflected metadata and shared output spans. Implement matrix/cache value fragment only; no owner lookup defaults.",
+      "boundary": "PS world matrix uses VS row count; snapshotting whole builder or general inverse changes behavior.",
+      "function_addresses": [
+        "00b6e0d0"
+      ],
+      "shared_function": "00b42350",
+      "address_ranges": [
+        {
+          "start": "00b42a7c",
+          "end_exclusive": "00b42e4a"
+        },
+        {
+          "start": "00b42ef9",
+          "end_exclusive": "00b4305d"
+        }
+      ],
+      "owned_files": [
+        "include/bsp/material_transform_constants.hpp",
+        "src/material_transform_constants.cpp",
+        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
+        "reports/material_transform_constants_audit.json"
+      ],
+      "output_files": [
+        "include/bsp/material_transform_constants.hpp",
+        "src/material_transform_constants.cpp",
+        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
+        "reports/material_transform_constants_audit.json"
+      ],
+      "depends_on": [
+        "material_entry_dispatch",
+        "camera_frame_state",
+        "generated_model_lifetime"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b42350",
+          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
+        },
+        {
+          "address": "00b46a70",
+          "status": "Full upstream scene/system prefix remains required."
+        }
+      ],
+      "handoff": "reports/material_constants_builder_next.json",
+      "code_ranges": [
+        "00b42a7c-00b42e49",
+        "00b42ef9-00b4305c"
+      ]
+    },
+    {
+      "id": "material_scalar_color_tail",
+      "packet": "material_scalar_color_tail",
+      "worker": "material_scalar_color_tail_worker",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "work": "Expose visibility/LOD and diffuse as separate ordered functions because inverse-world fragment executes between them. Require actual threshold when LOD selected.",
+      "boundary": "No clamping visibility, no fake threshold source, preserve bitwise scalar/color copies and x87 helper schedule.",
+      "function_addresses": [],
+      "shared_function": "00b42350",
+      "address_ranges": [
+        {
+          "start": "00b42e4a",
+          "end_exclusive": "00b42ef9"
+        },
+        {
+          "start": "00b4305d",
+          "end_exclusive": "00b430cf"
+        }
+      ],
+      "owned_files": [
+        "include/bsp/material_scalar_constants.hpp",
+        "src/material_scalar_constants.cpp",
+        "docs/MATERIAL_SCALAR_CONSTANTS.md",
+        "reports/material_scalar_constants_audit.json"
+      ],
+      "output_files": [
+        "include/bsp/material_scalar_constants.hpp",
+        "src/material_scalar_constants.cpp",
+        "docs/MATERIAL_SCALAR_CONSTANTS.md",
+        "reports/material_scalar_constants_audit.json"
+      ],
+      "depends_on": [
+        "material_entry_dispatch",
+        "camera_frame_state",
+        "generated_model_lifetime"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b42350",
+          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
+        },
+        {
+          "address": "00b46a70",
+          "status": "Full upstream scene/system prefix remains required."
+        }
+      ],
+      "handoff": "reports/material_constants_builder_next.json",
+      "code_ranges": [
+        "00b42e4a-00b42ef8",
+        "00b4305d-00b430ce"
+      ]
+    },
+    {
+      "id": "material_point_light_tail",
+      "packet": "material_point_light_tail",
+      "worker": "material_point_light_tail_worker",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "work": "Use corrected SAME actual ordered model point-light list. Primitive value writer may borrow these records but must not create a second ownership/list domain.",
+      "boundary": "4-light material packing differs from3-light instance packing. No broad zero fill; skip data if count metadata absent.",
+      "function_addresses": [
+        "00b6dc50"
+      ],
+      "shared_function": "00b42350",
+      "address_ranges": [
+        {
+          "start": "00b43160",
+          "end_exclusive": "00b43403"
+        }
+      ],
+      "owned_files": [
+        "include/bsp/material_point_light_constants.hpp",
+        "src/material_point_light_constants.cpp",
+        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
+        "reports/material_point_light_constants_audit.json"
+      ],
+      "output_files": [
+        "include/bsp/material_point_light_constants.hpp",
+        "src/material_point_light_constants.cpp",
+        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
+        "reports/material_point_light_constants_audit.json"
+      ],
+      "depends_on": [
+        "material_entry_dispatch",
+        "camera_frame_state",
+        "generated_model_lifetime"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b42350",
+          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
+        },
+        {
+          "address": "00b46a70",
+          "status": "Full upstream scene/system prefix remains required."
+        }
+      ],
+      "handoff": "reports/material_constants_builder_next.json",
+      "code_ranges": [
+        "00b43160-00b43402"
       ]
     }
   ],
@@ -611,7 +849,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/instance_integration_validation.json",
+  "integration_report": "reports/frame_bounds_integration_validation.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -622,11 +860,11 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-10T03:22:56.096372+00:00",
+    "utc": "2026-09-10T05:18:32.763562+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
-    "total_function_count": 62765,
-    "internal_function_count": 62323,
+    "total_function_count": 62782,
+    "internal_function_count": 62340,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
@@ -844,174 +1082,267 @@
         "reports/instance_grouping_audit.json"
       ],
       "validation": "reports/instance_integration_validation.json"
+    },
+    {
+      "packet": "model_world_bounds",
+      "worker": "model_world_bounds_worker",
+      "state": "bounded_implementation_integrated_reviewed_and_installed_checked",
+      "owned_files": [
+        "include/bsp/model_bounds.hpp",
+        "src/model_bounds.cpp",
+        "docs/MODEL_WORLD_BOUNDS.md",
+        "reports/model_world_bounds_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "model_scene_attachment",
+      "worker": "scene_attachment_worker",
+      "state": "bounded_implementation_integrated_reviewed_and_installed_checked",
+      "owned_files": [
+        "include/bsp/scene_attachment.hpp",
+        "src/scene_attachment.cpp",
+        "docs/SCENE_NODE_ATTACHMENT.md",
+        "reports/scene_node_attachment_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "batch_preparation",
+      "worker": "batch_preparation_worker",
+      "state": "bounded_implementation_integrated_reviewed_and_installed_checked",
+      "owned_files": [
+        "include/bsp/instance_sort.hpp",
+        "src/instance_sort.cpp",
+        "docs/RENDER_BATCH_PREPARATION.md",
+        "reports/render_batch_preparation_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "render_command_queue",
+      "worker": "primary_integration",
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/render_command_queue.hpp",
+        "src/render_command_queue.cpp",
+        "reports/render_command_queue_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "generated_model_lifetime",
+      "worker": "primary_integration",
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/generated_model_lifetime.hpp",
+        "src/generated_model_lifetime.cpp",
+        "reports/generated_model_lifetime_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "camera_frame_state",
+      "worker": "primary_integration",
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/camera_frame_state.hpp",
+        "src/camera_frame_state.cpp",
+        "reports/camera_frame_state_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "material_sort_metadata",
+      "worker": "primary_integration",
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/material_sort_metadata.hpp",
+        "src/material_sort_metadata.cpp",
+        "reports/material_sort_metadata_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "render_command_execution",
+      "worker": "primary_integration",
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/render_command_execution.hpp",
+        "src/render_command_execution.cpp",
+        "reports/render_command_execution_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
+    },
+    {
+      "packet": "material_entry_dispatch",
+      "worker": "primary_integration",
+      "state": "bounded_implementation_integrated_with_explicit_remaining_dependencies",
+      "owned_files": [
+        "include/bsp/material_entry_dispatch.hpp",
+        "src/material_entry_dispatch.cpp",
+        "reports/material_entry_dispatch_audit.json"
+      ],
+      "validation": "reports/frame_bounds_integration_validation.json"
     }
   ],
   "next_dispatch": [
     {
-      "worker": "model_world_bounds_worker",
-      "packet": "model_world_bounds",
+      "id": "material_transform_tail",
+      "packet": "material_transform_tail",
+      "worker": "material_transform_tail_worker",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "work": "Actual CameraTransform reference, existing reflected metadata and shared output spans. Implement matrix/cache value fragment only; no owner lookup defaults.",
+      "boundary": "PS world matrix uses VS row count; snapshotting whole builder or general inverse changes behavior.",
       "function_addresses": [
-        "00b6e8c0",
-        "007c1180",
-        "007bb620"
+        "00b6e0d0"
       ],
-      "work": "Recover native world-sphere cache and max-basis scale, reuse CameraTransform flags/world refresh and the existing affine point kernel. Preserve x87 stores and radius multiplication; establish explicit finite/CRT environment limits.",
+      "shared_function": "00b42350",
+      "address_ranges": [
+        {
+          "start": "00b42a7c",
+          "end_exclusive": "00b42e4a"
+        },
+        {
+          "start": "00b42ef9",
+          "end_exclusive": "00b4305d"
+        }
+      ],
       "owned_files": [
-        "include/bsp/model_bounds.hpp",
-        "src/model_bounds.cpp",
-        "docs/MODEL_WORLD_BOUNDS.md",
-        "reports/model_world_bounds_audit.json"
+        "include/bsp/material_transform_constants.hpp",
+        "src/material_transform_constants.cpp",
+        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
+        "reports/material_transform_constants_audit.json"
+      ],
+      "output_files": [
+        "include/bsp/material_transform_constants.hpp",
+        "src/material_transform_constants.cpp",
+        "docs/MATERIAL_TRANSFORM_CONSTANTS.md",
+        "reports/material_transform_constants_audit.json"
       ],
       "depends_on": [
-        "instance_group_upload",
-        "registered_root_resource"
+        "material_entry_dispatch",
+        "camera_frame_state",
+        "generated_model_lifetime"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "004142e0",
-          "status": "Exact point kernel is private in instance_upload.cpp; primary must expose/reuse it in shared affine code."
+          "address": "00b42350",
+          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
         },
         {
-          "address": "00b6db70",
-          "status": "World refresh exists in CameraTransform; use existing valid_flags/auxiliary_flags, do not duplicate them."
-        },
-        {
-          "address": "00bf7030",
-          "status": "CRT sqrt wrapper normal FSQRT path established; control-word/exception helpers00c083a5/00c083bc/00c08347 andreturntails remain unaudited."
+          "address": "00b46a70",
+          "status": "Full upstream scene/system prefix remains required."
         }
       ],
-      "boundary": "Cache hits when EITHER auxiliary bit0x30 is set. Local sphere population remains an explicit producer contract; wire mesh sphere handlers consume/discard. Primary owns shared affine kernel promotion and probe integration.",
-      "id": "model_world_bounds",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
-      "output_files": [
-        "include/bsp/model_bounds.hpp",
-        "src/model_bounds.cpp",
-        "docs/MODEL_WORLD_BOUNDS.md",
-        "reports/model_world_bounds_audit.json"
+      "handoff": "reports/material_constants_builder_next.json",
+      "code_ranges": [
+        "00b42a7c-00b42e49",
+        "00b42ef9-00b4305c"
       ]
     },
     {
-      "worker": "scene_attachment_worker",
-      "packet": "model_scene_attachment",
-      "function_addresses": [
-        "00b6ed80",
-        "00b83d50",
-        "00b83ec0",
-        "00b7aa70",
-        "006ef860",
-        "00b83700",
-        "00b83e50"
+      "id": "material_scalar_color_tail",
+      "packet": "material_scalar_color_tail",
+      "worker": "material_scalar_color_tail_worker",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "work": "Expose visibility/LOD and diffuse as separate ordered functions because inverse-world fragment executes between them. Require actual threshold when LOD selected.",
+      "boundary": "No clamping visibility, no fake threshold source, preserve bitwise scalar/color copies and x87 helper schedule.",
+      "function_addresses": [],
+      "shared_function": "00b42350",
+      "address_ranges": [
+        {
+          "start": "00b42e4a",
+          "end_exclusive": "00b42ef9"
+        },
+        {
+          "start": "00b4305d",
+          "end_exclusive": "00b430cf"
+        }
       ],
-      "work": "Implement actual scene reference attachment, type-gated pointer registry and recursive child traversal. Close registry node lifetimes before assigning ownership; preserve detach/reload/publish/retain/release/reload/add order and post-callback sibling reload.",
       "owned_files": [
-        "include/bsp/scene_attachment.hpp",
-        "src/scene_attachment.cpp",
-        "docs/SCENE_NODE_ATTACHMENT.md",
-        "reports/scene_node_attachment_audit.json"
+        "include/bsp/material_scalar_constants.hpp",
+        "src/material_scalar_constants.cpp",
+        "docs/MATERIAL_SCALAR_CONSTANTS.md",
+        "reports/material_scalar_constants_audit.json"
+      ],
+      "output_files": [
+        "include/bsp/material_scalar_constants.hpp",
+        "src/material_scalar_constants.cpp",
+        "docs/MATERIAL_SCALAR_CONSTANTS.md",
+        "reports/material_scalar_constants_audit.json"
       ],
       "depends_on": [
-        "generated_instance_geometry",
-        "instance_group_upload"
+        "material_entry_dispatch",
+        "camera_frame_state",
+        "generated_model_lifetime"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "006ef860",
-          "status": "Missing40B RET4 leaf checks token against runtimeIDs01090034/38/3C. RuntimeID initialization and subset meanings unresolved; do not hardcode eligibility."
+          "address": "00b42350",
+          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
         },
         {
-          "address": "00b823b0",
-          "status": "Node allocation/value construction; pointer-key registry ownership not yet proved."
-        },
-        {
-          "address": "00b83d90",
-          "status": "Range erase/destruction; subordinate node lifetime must be closed."
-        },
-        {
-          "address": "00b82d30",
-          "status": "List size/length-limit update has library-like name; review actual behavior."
-        },
-        {
-          "address": "00b83490",
-          "status": "Bucket iterator-pair storage growth."
-        },
-        {
-          "address": "00b82650",
-          "status": "Key equal-range lookup."
-        },
-        {
-          "address": "00b820b0",
-          "status": "Iterator-range count, currently library-classified."
-        },
-        {
-          "address": "00c03dbe",
-          "status": "Native hash division helper."
+          "address": "00b46a70",
+          "status": "Full upstream scene/system prefix remains required."
         }
       ],
-      "boundary": "Registry is unique pointer-key linear hashing with linked list/bucket intervals, not a tree. Gate token is runtime0109018C. Core has no direct world/cache flag writes. Request exact helper leases; primary owns CameraTransform/probe/shared metadata.",
-      "id": "model_scene_attachment",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
-      "output_files": [
-        "include/bsp/scene_attachment.hpp",
-        "src/scene_attachment.cpp",
-        "docs/SCENE_NODE_ATTACHMENT.md",
-        "reports/scene_node_attachment_audit.json"
+      "handoff": "reports/material_constants_builder_next.json",
+      "code_ranges": [
+        "00b42e4a-00b42ef8",
+        "00b4305d-00b430ce"
       ]
     },
     {
-      "worker": "batch_preparation_worker",
-      "packet": "batch_preparation",
+      "id": "material_point_light_tail",
+      "packet": "material_point_light_tail",
+      "worker": "material_point_light_tail_worker",
+      "done": false,
+      "state": "ready_bounded_native_reconstruction",
+      "work": "Use corrected SAME actual ordered model point-light list. Primitive value writer may borrow these records but must not create a second ownership/list domain.",
+      "boundary": "4-light material packing differs from3-light instance packing. No broad zero fill; skip data if count metadata absent.",
       "function_addresses": [
-        "00b51df0",
-        "00b1cb30",
-        "00bf7456"
+        "00b6dc50"
       ],
-      "work": "Recover batch sort enable and unsigned64 material/texture/depth key, then generalize existing exact sort to accept either native comparator while retaining category1 API. Establish x87 depth-conversion semantics before any C++ cast.",
+      "shared_function": "00b42350",
+      "address_ranges": [
+        {
+          "start": "00b43160",
+          "end_exclusive": "00b43403"
+        }
+      ],
       "owned_files": [
-        "include/bsp/instance_sort.hpp",
-        "src/instance_sort.cpp",
-        "docs/RENDER_BATCH_PREPARATION.md",
-        "reports/render_batch_preparation_audit.json"
+        "include/bsp/material_point_light_constants.hpp",
+        "src/material_point_light_constants.cpp",
+        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
+        "reports/material_point_light_constants_audit.json"
+      ],
+      "output_files": [
+        "include/bsp/material_point_light_constants.hpp",
+        "src/material_point_light_constants.cpp",
+        "docs/MATERIAL_POINT_LIGHT_CONSTANTS.md",
+        "reports/material_point_light_constants_audit.json"
       ],
       "depends_on": [
-        "instance_category_sort"
+        "material_entry_dispatch",
+        "camera_frame_state",
+        "generated_model_lifetime"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00bf7456",
-          "status": "ST0 depth conversion to EAX; rounding/overflow/nonfinite behavior unresolved."
+          "address": "00b42350",
+          "status": "Worker owns only listed subranges; primary owns shared orchestration and live dynamic/bone/skin owner adapters."
         },
         {
-          "address": "00b1dce0",
-          "status": "Complete finite-depth pointer permutation implemented; primary delegates these sort files exclusively to this packet."
-        },
-        {
-          "address": "00b51b00",
-          "status": "Existing unsigned64 key predicate; mode0 needs key packing and comparator-parametric reuse."
-        },
-        {
-          "address": "00b1ebe0",
-          "status": "Command execution has current-context ownership/iteration/cleanup still unported."
-        },
-        {
-          "address": "00b1d950",
-          "status": "Renderer setup, camera/system constants, profiling and job-service dependencies remain."
-        },
-        {
-          "address": "00b45360",
-          "status": "Concrete material virtual14 dispatcher and downstream00b44750 are unimplemented; fixedNORMALprobe is not fullpassdispatch."
+          "address": "00b46a70",
+          "status": "Full upstream scene/system prefix remains required."
         }
       ],
-      "boundary": "Mode0 prefix uses effectB0 low6bits, optional firsttexture20 low12bits and effectC0 byte, shifts by37 then adds zeroextended EAX. Textureword only when signedmaterialcount34>0 andslot0nonnull. Other modes use material/depth predicate. No other worker may edit current sort files.",
-      "id": "batch_preparation",
-      "done": false,
-      "state": "ready_bounded_native_reconstruction",
-      "output_files": [
-        "include/bsp/instance_sort.hpp",
-        "src/instance_sort.cpp",
-        "docs/RENDER_BATCH_PREPARATION.md",
-        "reports/render_batch_preparation_audit.json"
+      "handoff": "reports/material_constants_builder_next.json",
+      "code_ranges": [
+        "00b43160-00b43402"
       ]
     }
   ],
@@ -1093,6 +1424,11 @@
         "workers": 3
       },
       "coordination": "Isolated worker worktrees, exact address/file leases, primary shared integration and machineglobal Ghidra write lock."
+    },
+    {
+      "utc": "2026-09-10T05:21:44.918099+00:00",
+      "report": "reports/frame_bounds_integration_validation.json",
+      "state": "bounded_modules_integrated_build_and_installed_diagnostic_checked"
     }
   ]
 }

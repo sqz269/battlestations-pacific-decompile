@@ -1,0 +1,116 @@
+{
+  "utc": "2026-09-10T05:04:33.078062+00:00",
+  "reviewer": "world_bounds",
+  "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\camera_frame_state.cpp",
+  "source_sha256": "319379fad93209c94ed630d9d640f72ef40d43da0f8620d3eb4fddf0595958e1",
+  "scope": "Independent bounded review requested by primary. Only camera audit report edited in shared checkout; source fixes performed by primary. Test and report-generation artifacts stay in reviewer ignored local/. No Ghidra or ledger writes.",
+  "findings": [
+    {
+      "address": "00b23e50",
+      "native_evidence": [
+        "00b23e89 FLD source0",
+        "00b23e97 FSTP cache0",
+        "00b23e9a/9e,00b23ea9/ac,00b23eaf/b2 repeat for remaining components",
+        "00b23e99 pushes original source pointer for COM"
+      ],
+      "before": "memcpy preserved signaling NaN cache bits and omitted native x87 invalid.",
+      "fix": "Primary replaced memcpy with four explicit x87 FLD/FSTP coefficient pairs; original source pointer still passed to device.",
+      "focused_result": {
+        "passed": true,
+        "source_bits": "7f812345",
+        "cached_bits": "7fc12345",
+        "device_bits": "7f812345",
+        "device_pointer_identity_preserved": true,
+        "x87_invalid": true,
+        "failed_com_preserves_cache_update": true
+      }
+    },
+    {
+      "address": "00b250b0",
+      "native_evidence": [
+        "00b250d0..00b251ef copy eight records per loop as four FLD/FSTP and MOV flags",
+        "00b250c1 sets loopcount2",
+        "00b285dd/e3 copies count separately"
+      ],
+      "before": "prepare_camera memcpy bypassed x87 conversion for all16 records, including unused records.",
+      "fix": "Primary copies each of16 coefficient float4s through x87, copies uint32 flags separately, then count.",
+      "focused_result": {
+        "passed": true,
+        "active_count": 0,
+        "checked_record_index": 15,
+        "source_bits": "7f812345",
+        "cached_bits": "7fc12345",
+        "flags_before_after": "abcdef12",
+        "x87_invalid": true
+      }
+    },
+    {
+      "address": "00b71360",
+      "native_evidence": [
+        "00b71394 FLD camera depth+18C",
+        "00b713ad FSTP Clear by-value argument before helper call",
+        "00b2144e/52 Clear helper tests zero flags before its own x87 copy/guard"
+      ],
+      "before": "Compiled /O2 replacement used MOVSS before flags test and skipped all x87 copies when clear_flags==0.",
+      "fix": "Primary added unconditional x87 command depth spill after viewport bind and before clear helper; retained helper own flags-gated x87 spill.",
+      "focused_result": {
+        "passed": true,
+        "enabled": true,
+        "clear_flags": 0,
+        "direct_zero_flags_clear_x87_invalid": false,
+        "command_x87_invalid": true,
+        "source_depth_bits": "7f812345",
+        "clear_calls": 0,
+        "viewport_calls": 1,
+        "final_guard_nesting": 0
+      }
+    }
+  ],
+  "other_checked_behavior": [
+    "projection flag20 set after inverse VP copy; flag4 before nested VP lookup",
+    "six frustum planes/flags7 with count and later camera records preserved",
+    "inverseProjection*inverseView followed by transpose and compact eligible plane upload order",
+    "pending/active counts reload around actual callbacks and use native low32 shift mask",
+    "existing shared cache guard nesting, attempted viewport/Clear counters, borrowed viewport identity and exact scissor byte reread",
+    "ambient signed conversion/clamp and RGBA packing follow actual SSE2 or x87 runtime mode"
+  ],
+  "fresh_pe_live_comparisons": [
+    {
+      "address": "00b285a0",
+      "length": 544,
+      "sha256": "27a20b51491a9f478eaabd0354c1663f3a2266a46c1ed3c502e10b8e962e72d3"
+    },
+    {
+      "address": "00b26770",
+      "length": 290,
+      "sha256": "e809c00b233f28a473d8d0fd03aaf7b2cfb8753ba482227a09bde9e46a2308d9"
+    },
+    {
+      "address": "00b21430",
+      "length": 171,
+      "sha256": "feb08653e3f8a8dae18d4a332315ae9038d351afcd32837cf0fe113c5ef859cf"
+    },
+    {
+      "address": "00b71360",
+      "length": 102,
+      "sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f"
+    }
+  ],
+  "validation": {
+    "current_main_source_strict_win32_compile": "passed MSVC19.51 /O2 /MD /W4 /WX /fp:strict",
+    "existing_fake_com_device_check": "passed unchanged",
+    "focused_signaling_nan_extension": "passed all3 copy boundaries with x87 exceptions masked",
+    "fixture": "local/camera_frame_review_check.cpp",
+    "command": "./local/check_camera_frame_review.ps1",
+    "log": "local/camera_frame_review_validation.log",
+    "initial_fixture_compile_note": "Renamed unused original main required a scoped C4716 diagnostic suppression; production source retained full /W4 /WX. No original worker files changed.",
+    "prior_38_numerical_comparisons": "Inspected original fixture and passing log; not repeated in this extension.",
+    "game_validated": false,
+    "native_layout_abi_compatible": false
+  },
+  "limits": [
+    "Three focused floating-point copy boundaries, not a broad new suite.",
+    "Finite nonnegative CRT sqrt core remains the documented numerical boundary; exceptional CRT diagnostics, constructors, native object layout and full frame/system constants remain open.",
+    "Native evidence plus local fake-COM behavior is not running-game validation."
+  ]
+}

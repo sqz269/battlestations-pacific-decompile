@@ -1,0 +1,159 @@
+{
+  "review": "model_point_light_owner_identity",
+  "date_utc": "2026-09-10",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "conclusion": "Model+164 is the ordered borrowed cPointLight list. It does not hold GeneratedInstanceGeometry. Point-light+1E0 is the reciprocal borrowed model list. Model+180 geometry ownership is separate.",
+  "certainty": "Confirmed by native type descriptor/vtable, bidirectional removal callers and both material/building constant consumers.",
+  "evidence_chain": [
+    {
+      "address": "00b7c710",
+      "fact": "Calls base00B7C4C0, installs vtable00D63008, initializes its own +1E0/+1E4/+1E8 pointer/count/capacity."
+    },
+    {
+      "address": "00d63008",
+      "fact": "Slot+08 ->00B7AB40; slot+0C ->00B7C740. Getter returns DWORD010901B0; predicate compares010901B0/B4/B8/BC."
+    },
+    {
+      "address": "00cd81a0",
+      "fact": "Literal cPointLight assigned to010901C0; inherited cLight/c3dNode/cRoot tokens to010901B4/B8/BC; new unique cPointLight token to010901B0 at00CD823A."
+    },
+    {
+      "address": "00b7c160",
+      "fact": "Loads each model from this point-light+1E0, passes this light to00B6F3C0; clears own list after loop."
+    },
+    {
+      "address": "00b6f3c0",
+      "fact": "ECX model; stack point-light pointer; adds164 toECX and calls swap-last erase00B6F090."
+    },
+    {
+      "address": "00b6f310",
+      "fact": "Loads each point light from model+164, passes model to00B7C1A0, then clears model list."
+    },
+    {
+      "address": "00b7c1a0",
+      "fact": "ECX point light; stack model; adds1E0 toECX and calls swap-last erase00B7BED0."
+    },
+    {
+      "address": "00b6dc50",
+      "fact": "Returns ECX+164. Material builder callsite00B43163 and existing building-instance consumer read this same list."
+    },
+    {
+      "address": "00b43160",
+      "fact": "VS semantic45 cPointLightCount,46 cPointLightsData; up to4 ordered light records from position_radius+1EC..1F8 and color+184..190."
+    },
+    {
+      "address": "00b55780",
+      "fact": "Existing verified building-instance value port uses same ordered list, first3 lights. include/bsp/building_instance.hpp and docs/BUILDING_INSTANCE_DATA.md already record this owner meaning."
+    }
+  ],
+  "required_correction": [
+    "Replace false GeneratedGeometryModelLinks geometry-reference constraint with actual borrowed point-light owner identity, existing BuildingInstancePointLight values and reciprocal borrowed model list.",
+    "Use one model+164 list for lifetime unlink, building-instance writes and final material point-light constants.",
+    "Controlled scene has no point lights: keep+164 empty; do not fabricate a geometry backlink.",
+    "Retain the actual shared GeneratedInstanceGeometry separately at model+180."
+  ],
+  "ranges": [
+    {
+      "address": "00d63008",
+      "length": 64,
+      "scope": "first16 vtable slots",
+      "sha256": "33d834ff46790f6065b2e0c76173d9a31bdaab3e21835eb83ae12f61dbd5fb7d",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_vtable_bytes.txt"
+    },
+    {
+      "address": "00b7ab40",
+      "length": 6,
+      "scope": "complete getter; no current Ghidra function definition",
+      "sha256": "b281d8da183c9985f4df9a59065d2fafdf3e61063eb284807b3fae85b5c02b51",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_type_getter_bytes.txt"
+    },
+    {
+      "address": "00b7c740",
+      "length": 40,
+      "scope": "complete type predicate; no current Ghidra function definition",
+      "sha256": "a27bfae52eef95163ac14451364c9567b3c7aeb2e492a245cdeee322f5ffb14e",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_type_test_bytes.txt"
+    },
+    {
+      "address": "00b7c1a0",
+      "length": 19,
+      "scope": "complete remove one model backlink",
+      "sha256": "4a1f806053bfedc310d08d270a56f9383c21b9baf5bef5dfb0228be678c60086",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_remove_backlink_bytes.txt"
+    },
+    {
+      "address": "00b7c160",
+      "length": 58,
+      "scope": "complete detach all models",
+      "sha256": "2abd7c1a49a382aedd0ada85fdf0c20022c12c44e2e3b882fb1b2e1a839c92dc",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_detach_all_bytes.txt"
+    },
+    {
+      "address": "00b6f3c0",
+      "length": 19,
+      "scope": "complete remove one point light",
+      "sha256": "70ea5b7925fccd82a2da3c5428892b68a7e555b4a9fc2bc4f3adf2ddff7af267",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/model_remove_point_light_bytes.txt"
+    },
+    {
+      "address": "00b6dc50",
+      "length": 7,
+      "scope": "complete getter",
+      "sha256": "d8ce96a6373a2f955f031e90e9e04c3ff42d3ace920d7c0be0c50017e1650c9a",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/model_point_light_list_getter_bytes.txt"
+    },
+    {
+      "address": "00b43160",
+      "length": 675,
+      "scope": "complete final point-light constant branch before epilogue",
+      "sha256": "48fe0d13622446f418d935e4e317ec5687d06842b2cfd8e75f330415b35909ce",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/material_point_lights_bytes.txt"
+    },
+    {
+      "address": "00b7c710",
+      "length": 45,
+      "scope": "complete constructor",
+      "sha256": "797372ea5fa34bf91b5279f05dff37736fb9a4059623afe077970cd811a82080",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_constructor_bytes.txt"
+    },
+    {
+      "address": "00cd81a0",
+      "length": 161,
+      "scope": "complete cPointLight guarded type initializer",
+      "sha256": "06707603beaaa18a05655c4868e2691263c83ad4ce124ba7e106e6dde800f83c",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/point_light_type_initializer_bytes.txt"
+    },
+    {
+      "address": "00b6f310",
+      "length": 176,
+      "scope": "complete model virtual18 release",
+      "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+      "live_equals_installed_pe": true,
+      "local_dump": "local/model_release_point_lights_bytes.txt"
+    }
+  ],
+  "shared_edits": false,
+  "ghidra_mutations": false,
+  "native_lifecycle_differential": false
+}
