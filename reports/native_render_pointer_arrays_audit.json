@@ -1,0 +1,483 @@
+{
+  "packet": "native_render_pointer_arrays",
+  "written_utc": "2026-09-10T21:09:38.671936+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-arrays",
+  "base_commit": "c0432fd",
+  "shared_prerequisite_commit": "48ebd1a",
+  "local_prerequisite_cherry_pick": "29c72e4",
+  "owned_files": [
+    "include/bsp/native_render_pointer_arrays.hpp",
+    "src/native_render_pointer_arrays.cpp",
+    "docs/NATIVE_RENDER_POINTER_ARRAYS.md",
+    "reports/native_render_pointer_arrays_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00b1c660",
+      "end_exclusive": "00b1c6bf",
+      "length": 95,
+      "kind": "code",
+      "disk_offset": 7456352,
+      "sha256": "bbef96f1a2d08755ee1eeb55e920111010dd72249c49005d6f47a92945a05b65",
+      "live_matches_disk": true,
+      "instruction_count": 38,
+      "last_instruction": "00b1c6bc: ret 4",
+      "proposed_name": "BSP_InstanceGroupPointers_Reserve",
+      "reconstructed_symbol": "reserve_native_render_group_pointers_00b1c660",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte group-pointer header; stack signed capacity; RET4",
+      "contract": "Clamp request to minimum 1; grow only; shared pointer allocation of 4*capacity bytes; copy current live prefix in ascending order with count/data reloads; free old storage before publishing new data then capacity; preserve count and unwritten excess.",
+      "annotation_before": {
+        "address": "00b1c660",
+        "function_name": "BSP_InstanceGroupPointers_Reserve",
+        "comment": "[BSP reconstruction 00b1c660]\nSame4-byte borrowedpointer grow/copy/free/publishalgorithm as instanceentryarray. Verified returning continuation restored after misclassified free call. Caller uses it for indexedgroupstorage and orderedgrouptraversal. Original ABI: ECX pointerarray {data,count,capacity}, stack requestedcapacity; RET4. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] Clamp request to minimum 1; grow only; shared pointer allocation of 4*capacity bytes; copy current live prefix in ascending order with count/data reloads; free old storage before publishing new data then capacity; preserve count and unwritten excess. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    },
+    {
+      "address": "00b1c7c0",
+      "end_exclusive": "00b1c810",
+      "length": 80,
+      "kind": "code",
+      "disk_offset": 7456704,
+      "sha256": "eaa0a54de99c18d84f790db994ecc7d5445472a7b9db25293995f648f8b2ef9b",
+      "live_matches_disk": true,
+      "instruction_count": 31,
+      "last_instruction": "00b1c80d: ret 4",
+      "proposed_name": "BSP_InstanceGroupPointers_ResizeCleared",
+      "reconstructed_symbol": "resize_native_render_group_pointers_00b1c7c0",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte group-pointer header; stack signed count; RET4",
+      "contract": "Reserve exact requested count only if needed; null newly exposed cells; shrink actual count then publish requested count; no pointed-object destruction; stale cells retained.",
+      "annotation_before": {
+        "address": "00b1c7c0",
+        "function_name": "BSP_InstanceGroupPointers_ResizeCleared",
+        "comment": "[BSP reconstruction 00b1c7c0]\nReserveexactnewcount if needed; initialize every newlyexposed pointer to zero; shrink count without freeing pointedobjects; assignnewcount. Typed grouping by-binding vector mirrors validnonnegative index semantics. Original ABI: ECX pointerarray, stack signednewcount; RET4. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] Reserve exact requested count only if needed; null newly exposed cells; shrink actual count then publish requested count; no pointed-object destruction; stale cells retained. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    },
+    {
+      "address": "00b1cbe0",
+      "end_exclusive": "00b1cc19",
+      "length": 57,
+      "kind": "code",
+      "disk_offset": 7457760,
+      "sha256": "968235b211b630c8dedb28b9852ef37c5f22ac5d68de4279c12c96a86c167dc9",
+      "live_matches_disk": true,
+      "instruction_count": 22,
+      "last_instruction": "00b1cc16: ret 4",
+      "proposed_name": "BSP_InstanceGroupPointers_Append",
+      "reconstructed_symbol": "append_native_render_group_pointer_00b1cbe0",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte group-pointer header; stack address of 4-byte pointer cell; RET4",
+      "contract": "If full, grow to max(1,2*capacity); after reserve load current destination then read input pointer cell; publish cell before count increment. Input alias of header.data sees new buffer; no preallocation value capture.",
+      "annotation_before": {
+        "address": "00b1cbe0",
+        "function_name": "FUN_00b1cbe0"
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] If full, grow to max(1,2*capacity); after reserve load current destination then read input pointer cell; publish cell before count increment. Input alias of header.data sees new buffer; no preallocation value capture. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    },
+    {
+      "address": "00b1d1f0",
+      "end_exclusive": "00b1d207",
+      "length": 23,
+      "kind": "code",
+      "disk_offset": 7459312,
+      "sha256": "532a8afb9d5e3de877a34d9fb94c9fc8cddd1fd862d34e80aa6575b0f5e70d37",
+      "live_matches_disk": true,
+      "instruction_count": 10,
+      "last_instruction": "00b1d206: ret",
+      "proposed_name": "BSP_OrderedInstanceGroupPointers_Destroy",
+      "reconstructed_symbol": "destroy_native_ordered_group_pointers_00b1d1f0",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte ordered group-pointer header; RET",
+      "contract": "Call group resize(0); free array data through shared allocator; return through B1D202 ADD ESP,4 / POP ESI / RET; retain dangling data/capacity with count 0.",
+      "annotation_before": {
+        "address": "00b1d1f0",
+        "function_name": "FUN_00b1d1f0"
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] Call group resize(0); free array data through shared allocator; return through B1D202 ADD ESP,4 / POP ESI / RET; retain dangling data/capacity with count 0. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    },
+    {
+      "address": "00b1d260",
+      "end_exclusive": "00b1d277",
+      "length": 23,
+      "kind": "code",
+      "disk_offset": 7459424,
+      "sha256": "fd27855b15976d2a5c10410dc626c1dac3e15b4f1994e3755714401d196a7c34",
+      "live_matches_disk": true,
+      "instruction_count": 10,
+      "last_instruction": "00b1d276: ret",
+      "proposed_name": "BSP_IndexedInstanceGroupPointers_Destroy",
+      "reconstructed_symbol": "destroy_native_indexed_group_pointers_00b1d260",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte indexed group-pointer header; RET",
+      "contract": "Call group resize(0); free array data through shared allocator; return through B1D272 ADD ESP,4 / POP ESI / RET; retain dangling data/capacity with count 0.",
+      "annotation_before": {
+        "address": "00b1d260",
+        "function_name": "FUN_00b1d260"
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] Call group resize(0); free array data through shared allocator; return through B1D272 ADD ESP,4 / POP ESI / RET; retain dangling data/capacity with count 0. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    },
+    {
+      "address": "00b1c6c0",
+      "end_exclusive": "00b1c71f",
+      "length": 95,
+      "kind": "code",
+      "disk_offset": 7456448,
+      "sha256": "9d502ec64f63189c98b80c47a88cac16192ece06d4ebbe1ae2dd05047c63ed4c",
+      "live_matches_disk": true,
+      "instruction_count": 38,
+      "last_instruction": "00b1c71c: ret 4",
+      "proposed_name": "BSP_RenderCommandPointers_Reserve",
+      "reconstructed_symbol": "reserve_native_render_command_pointers_00b1c6c0",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte command-pointer header; stack signed capacity; RET4",
+      "contract": "Same minimum 1, grow-only, current live prefix copy, free, publish data then capacity algorithm; no retained command ownership.",
+      "annotation_before": {
+        "address": "00b1c6c0",
+        "function_name": "BSP_RenderCommandPointers_Reserve",
+        "comment": "[BSP reconstruction 00b1c6c0]\n[BSP reconstruction] Clamp requested capacity minimum1; grow only; allocate4*capacity, copy existing borrowed pointers in order, free old buffer, publish new data then capacity. Missing raw continuation at00B1C711 is ADD ESP4; MOV[ESI],EBX; MOV[ESI+8],EDI; POP EBX. Host rejects byte overflow/allocation failure instead of native corruption. Original ABI: ECX pointer-array {data,count,capacity}; stack signed requested capacity; RET4. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] Same minimum 1, grow-only, current live prefix copy, free, publish data then capacity algorithm; no retained command ownership. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    },
+    {
+      "address": "00b1cc80",
+      "end_exclusive": "00b1ccd0",
+      "length": 80,
+      "kind": "code",
+      "disk_offset": 7457920,
+      "sha256": "d3898f872314baf70929152426d739361659c985ba0abd338d5247a7cdef5101",
+      "live_matches_disk": true,
+      "instruction_count": 31,
+      "last_instruction": "00b1cccd: ret 4",
+      "proposed_name": "BSP_RenderCommandPointers_ResizeCleared",
+      "reconstructed_symbol": "resize_native_render_command_pointers_00b1cc80",
+      "coverage": "complete normal function in stated valid native storage domain",
+      "original_abi": "ECX=actual 12-byte command-pointer header; stack signed count; RET4",
+      "contract": "Reserve exact requested count if needed; null new cells; decrement count while shrinking; publish requested count; no pointed-command destructor.",
+      "annotation_before": {
+        "address": "00b1cc80",
+        "function_name": "BSP_RenderCommandPointers_ResizeCleared",
+        "comment": "[BSP reconstruction 00b1cc80]\n[BSP reconstruction] Reserve exact requested count via00B1C6C0 when greater than capacity; null newly exposed pointers; decrement count while shrinking then assign requested count. Shrink retains capacity and pointed commands. Original ABI: ECX pointer-array {data,count,capacity}; stack signed new count; RET4. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "proposed_comment_append": "[BSP native pointer-array reconstruction] Reserve exact requested count if needed; null new cells; decrement count while shrinking; publish requested count; no pointed-command destructor. Same actual 12-byte header, no second vector/count. Source src/native_render_pointer_arrays.cpp; evidence docs/NATIVE_RENDER_POINTER_ARRAYS.md and reports/native_render_pointer_arrays_audit.json. Names provisional; new C++ ABI; no game validation."
+    }
+  ],
+  "actual_storage": {
+    "bytes": 12,
+    "pointer_cell_bytes": 4,
+    "offsets": {
+      "raw_data": "00",
+      "signed_count": "04",
+      "signed_capacity": "08"
+    },
+    "implicit_initialization": false,
+    "implicit_destruction": false,
+    "second_vector_or_count": false,
+    "native_owners": "Calleractualembeddedheaders; pointedgroup/command identities remainborrowed."
+  },
+  "allocator": {
+    "native_allocate": "00bf55be",
+    "native_free": "00bf6989",
+    "reconstructed_allocate": "singleton_lifetime_allocate({pointer_slots,requested*4,requested*sizeof(void*)})",
+    "reconstructed_free": "singleton_lifetime_free",
+    "stored_per_owner_allocator": false,
+    "reserve_minimum": 1,
+    "batch_entry_minimum256_not_used": true
+  },
+  "input_alias_contract": {
+    "entry": "00b1cbe0",
+    "input": "Rawaddress of4bytepointercell",
+    "native_input_argument_load": "00b1cc09",
+    "native_pointer_value_load": "00b1cc0d",
+    "reserve_call": "00b1cbf8",
+    "reconstructed_read": "memcpy onlyafterreserve andcurrentdestinationload",
+    "supported_alias": "address of actualheader.data_00, whosepointervaluechanges duringreserve",
+    "unsupported_alias": "Sourcecellinsidefreedoldbuffer; nativealso hasdanglinginput inthatcase"
+  },
+  "valid_domain": {
+    "header": "count/capacitynonnegative,count<=capacity,validliveallocatedspans",
+    "reserve_request": "Any signedrequestthroughminimum1; resultingallocationproduct mustfitsigned32",
+    "resize_request": "Nonnegative andfourbyteproductfitsigned32",
+    "append_growth": "Capacitydoubling andresultingfourbyteproduct fitsigned32",
+    "mutation": "Addressedstorage andinputcells surviveallocatorcallbacks; noarbitraryconcurrentmutation",
+    "after_destructor": "Headerbytesremainobservable butbufferdead; no reuse/repeatedfree withoutfreshstorage"
+  },
+  "exceptions": {
+    "shared_allocation_may_throw": true,
+    "local_native_eh_frames": false,
+    "valid_domain_failure_effect": "Allocationexception beforeoperationpublishesreplacement orchangescount; externalnewhandler sideeffects notrolledback.",
+    "after_successful_allocation": "Validrawcopies andsharednonthrowingfree require no invented cleanup/rollback.",
+    "valid_destructor_allocates": false,
+    "forced_allocation_failure_tested": false,
+    "native_seh_or_cpp_exception_dispatch_executed": false,
+    "malformed_capacity_negative_native_paths": "Outsidevalidheaderdomain, not reclassified as supported failure semantics."
+  },
+  "ghidra_prototypes_before": [
+    "00b1c660 BSP_InstanceGroupPointers_Reserve  undefined BSP_InstanceGroupPointers_Reserve(void)  body 00b1c660 - 00b1c6be",
+    "00b1c7c0 BSP_InstanceGroupPointers_ResizeCleared  undefined BSP_InstanceGroupPointers_ResizeCleared(void)  body 00b1c7c0 - 00b1c80f",
+    "00b1cbe0 FUN_00b1cbe0  undefined FUN_00b1cbe0(void)  body 00b1cbe0 - 00b1cc18",
+    "00b1d1f0 FUN_00b1d1f0  undefined FUN_00b1d1f0(void)  body 00b1d1f0 - 00b1d201",
+    "00b1d260 FUN_00b1d260  undefined FUN_00b1d260(void)  body 00b1d260 - 00b1d271",
+    "00b1c6c0 BSP_RenderCommandPointers_Reserve  undefined BSP_RenderCommandPointers_Reserve(void)  body 00b1c6c0 - 00b1c71e",
+    "00b1cc80 BSP_RenderCommandPointers_ResizeCleared  undefined BSP_RenderCommandPointers_ResizeCleared(void)  body 00b1cc80 - 00b1cccf"
+  ],
+  "hidden_continuations": [
+    {
+      "function": "00b1d1f0",
+      "start": "00b1d202",
+      "end_exclusive": "00b1d207",
+      "effect": "ADDESP4;POPESI;RET"
+    },
+    {
+      "function": "00b1d260",
+      "start": "00b1d272",
+      "end_exclusive": "00b1d277",
+      "effect": "ADDESP4;POPESI;RET"
+    }
+  ],
+  "raw_verification": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each uncached CLI byte read verifies project/program before analysis; new packet-private cache.",
+    "spans": [
+      {
+        "address": "00b1c660",
+        "end_exclusive": "00b1c6bf",
+        "length": 95,
+        "kind": "code",
+        "disk_offset": 7456352,
+        "sha256": "bbef96f1a2d08755ee1eeb55e920111010dd72249c49005d6f47a92945a05b65",
+        "live_matches_disk": true,
+        "instruction_count": 38,
+        "last_instruction": "00b1c6bc: ret 4"
+      },
+      {
+        "address": "00b1c7c0",
+        "end_exclusive": "00b1c810",
+        "length": 80,
+        "kind": "code",
+        "disk_offset": 7456704,
+        "sha256": "eaa0a54de99c18d84f790db994ecc7d5445472a7b9db25293995f648f8b2ef9b",
+        "live_matches_disk": true,
+        "instruction_count": 31,
+        "last_instruction": "00b1c80d: ret 4"
+      },
+      {
+        "address": "00b1cbe0",
+        "end_exclusive": "00b1cc19",
+        "length": 57,
+        "kind": "code",
+        "disk_offset": 7457760,
+        "sha256": "968235b211b630c8dedb28b9852ef37c5f22ac5d68de4279c12c96a86c167dc9",
+        "live_matches_disk": true,
+        "instruction_count": 22,
+        "last_instruction": "00b1cc16: ret 4"
+      },
+      {
+        "address": "00b1d1f0",
+        "end_exclusive": "00b1d207",
+        "length": 23,
+        "kind": "code",
+        "disk_offset": 7459312,
+        "sha256": "532a8afb9d5e3de877a34d9fb94c9fc8cddd1fd862d34e80aa6575b0f5e70d37",
+        "live_matches_disk": true,
+        "instruction_count": 10,
+        "last_instruction": "00b1d206: ret"
+      },
+      {
+        "address": "00b1d260",
+        "end_exclusive": "00b1d277",
+        "length": 23,
+        "kind": "code",
+        "disk_offset": 7459424,
+        "sha256": "fd27855b15976d2a5c10410dc626c1dac3e15b4f1994e3755714401d196a7c34",
+        "live_matches_disk": true,
+        "instruction_count": 10,
+        "last_instruction": "00b1d276: ret"
+      },
+      {
+        "address": "00b1c6c0",
+        "end_exclusive": "00b1c71f",
+        "length": 95,
+        "kind": "code",
+        "disk_offset": 7456448,
+        "sha256": "9d502ec64f63189c98b80c47a88cac16192ece06d4ebbe1ae2dd05047c63ed4c",
+        "live_matches_disk": true,
+        "instruction_count": 38,
+        "last_instruction": "00b1c71c: ret 4"
+      },
+      {
+        "address": "00b1cc80",
+        "end_exclusive": "00b1ccd0",
+        "length": 80,
+        "kind": "code",
+        "disk_offset": 7457920,
+        "sha256": "d3898f872314baf70929152426d739361659c985ba0abd338d5247a7cdef5101",
+        "live_matches_disk": true,
+        "instruction_count": 31,
+        "last_instruction": "00b1cccd: ret 4"
+      },
+      {
+        "address": "00bf55be",
+        "end_exclusive": "00bf55c3",
+        "length": 5,
+        "kind": "hook_entry",
+        "disk_offset": 8345022,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf6989",
+        "end_exclusive": "00bf698e",
+        "length": 5,
+        "kind": "hook_entry",
+        "disk_offset": 8350089,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "live_matches_disk": true
+      }
+    ],
+    "absolute_relocations": []
+  },
+  "differential": {
+    "status": "PASS",
+    "sequence_count": 1,
+    "phases": 15,
+    "normalized_words_matched": 98,
+    "all_seven_original_functions_executed": true,
+    "sparse_image": "Only7completecodespans and2fivebyteexternalentries; otherpagesNOACCESS unusedcommittedbytesINT3; nocompletePEload/entrypoint.",
+    "external_hooks": [
+      {
+        "address": "00bf55be",
+        "length": 5,
+        "effect": "Sameactualsingleton_lifetime_allocate pointer_slots"
+      },
+      {
+        "address": "00bf6989",
+        "length": 5,
+        "effect": "Sameactualsingleton_lifetime_free"
+      }
+    ],
+    "coverage": [
+      "negative reserve minimum1",
+      "reservewithoutgrowth preservesignoredcells",
+      "ordinaryappend",
+      "fullappendaliasofheader.data readsnewbuffer afterreserve",
+      "shrinkretainsstalecell includingcurrentbufferidentity",
+      "growcopiesliveprefix",
+      "resizezeroesonlynewcells andleavesignoredcapacity",
+      "orderedarraydtor retainsdeadheader",
+      "commandresizegrows exactcount",
+      "commandreservelowerrequest nochange/stalecellsretained",
+      "indexedarraydtor retainsdeadheader"
+    ],
+    "uninitialized_excess": "No deterministic comparison ofnewallocatorbytes; fixtureseedsunusedcells afterallocation tochecksubsequentpreservation.",
+    "normalization": "Borrowedmarkeridentity andself-buffer pointer; allocateddatapresence/count/capacity; no absolutepointerequalitybetweenruns.",
+    "after_free": "Checks survivingheader only; nofreedbufferreads.",
+    "trace_vector": "Observationstorage only; productionarray isactual12byteheader.",
+    "source_fixed_after_differential": false
+  },
+  "build": {
+    "new_source": "MSVCWin32C++17 /W4/WX/EHsc/fp:strict/O2 focusedcompilePASS",
+    "verify_seeds": "8/8liveGhidra/installedbytecomparisonsPASS",
+    "repository": "scripts/build.ps1PASS; reconstructed_math andnative_math_differential2/2",
+    "initial_failure": "Baselinec0432fd probe linker missingrendererparameter implementationregistration; resolved byshared48ebd1a beforefinalchecks.",
+    "worker_changed_cmake": false,
+    "tracked_tests_added": 0
+  },
+  "artifact_hashes": [
+    {
+      "path": "include/bsp/native_render_pointer_arrays.hpp",
+      "bytes": 2929,
+      "sha256": "9d18a0b39bc9c31f877dfdea254dce0871df7a75966f64ffe8ac7e4cb869f7cd"
+    },
+    {
+      "path": "src/native_render_pointer_arrays.cpp",
+      "bytes": 2713,
+      "sha256": "ff413858ec7139110b03ceb2c86620d8e93e061be0a8e37e1305f4990545a7dd"
+    },
+    {
+      "path": "docs/NATIVE_RENDER_POINTER_ARRAYS.md",
+      "bytes": 7074,
+      "sha256": "018b673bf5becf41662daba6c8ca804e16a6064f4629ee0e378059bed7495ea7"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "local/prepare_native_render_pointer_arrays.py",
+      "bytes": 3004,
+      "sha256": "0df527be0375eb8f4e83c67e99c309607ef9e343a70079b2e24708a0eb59f647"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_preparation.json",
+      "bytes": 3460,
+      "sha256": "5e8bbcd906930c1d7fc1836678d085d7893c722d30288fbc7b90e0c5f1972801"
+    },
+    {
+      "path": "local/native_render_pointer_array_spans.hpp",
+      "bytes": 428,
+      "sha256": "d6bf3a5569ca2b4e6abada6e640249f00d5d7759b78bc3a58739dca1ffd8e9f0"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_check.cpp",
+      "bytes": 9536,
+      "sha256": "52307d527234f05a671b7af907ece24742347b702f3d8c640cbf26ae42d2d3a3"
+    },
+    {
+      "path": "local/build_native_render_pointer_arrays_check.ps1",
+      "bytes": 1451,
+      "sha256": "69971f6019fedff6faa5071489b6b9302574c0d7d6d475820effbf2d386540b8"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_check.log",
+      "bytes": 293,
+      "sha256": "7bfba40e7f6bd22f405005cb18143455891c4b9718c786c00bd6cf83d61f9d57"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_repository_build.log",
+      "bytes": 2971,
+      "sha256": "44c335a559d3933220eb804d572551de427fd1691826194f64a45acdc448ee3e"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_annotations_before.json",
+      "bytes": 3171,
+      "sha256": "44babeb330ef8afc7a00ee0ebc4292450dea59528fd0643021057f55c84336c4"
+    },
+    {
+      "path": "local/native_render_pointer_arrays_protos.txt",
+      "bytes": 745,
+      "sha256": "04a7cb6ec78aaf6adedadd0591040335d427f13838612b3e9b3b1d60ddaa5316"
+    },
+    {
+      "path": "build/pointer-array-check/native_render_pointer_arrays_check.exe",
+      "bytes": 28160,
+      "sha256": "36d22e7e84eaf1a6443913c8fee204d3f0389967778d0a2a710e2eff07c8a6ed"
+    }
+  ],
+  "remaining_boundaries": [
+    "OriginalABIentrypointreplacement",
+    "Full44hcommandconstruction/destruction",
+    "Actual4Chgroup/model/scene/targetownership",
+    "Actual34hqueueandrendererpublication",
+    "Corrupt/overflow/concurrentmutation domains",
+    "Forcedallocation/nativeexceptionexecution",
+    "Gameplayorvisualvalidation"
+  ],
+  "shared_metadata": "Primary owns Ghidra annotation, exportrefresh, shardedledgers andCMake. Worker collectedbeforevalues/proposals withoutmutation."
+}
