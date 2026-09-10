@@ -13,3 +13,4 @@
 #
 # The integrator folds entries into CMakeLists.txt when the owning packet closes.
 cmake_minimum_required(VERSION 3.19)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/platform_window.cpp)
