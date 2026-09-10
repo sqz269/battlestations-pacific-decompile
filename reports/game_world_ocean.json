@@ -1,0 +1,237 @@
+{
+ "packet": "game_world_ocean_effects",
+ "owner": "agent/game-world-ocean",
+ "date": "2026-09-09",
+ "kind": "analysis_and_reconstruction",
+ "doc": "docs/GAME_WORLD_OCEAN.md",
+ "ghidra": "read-only for this packet; names recorded in the ledger only",
+ "headline": "The ocean, rain and effect-manager slice of BSP_Game_OnMove. game+19E8h is an owner whose +3Ch is the ocean object; its tick re-orthogonalises a basis against the reference node's matrix row at +110h and spends the frame delta only inside the shore-wave layers, where each layer accumulates scroll += direction * delta * speed * 30.0f. game+19FCh is a scene transform, not an effect list: it is the reference node both the ocean and the effect manager read. The one-shot at game+1EE7h does not arm anything ocean-related; 004B6260 tests the network session at game+1EF0h and 004BCAA0 bumps two mission counters at game+740h/+73Ch.",
+ "source_of_truth": "BSP_Game_OnMove at 004e4a40 has an eight-byte Ghidra body; every OnMove listing quoted came from `python tools/bsp.py disasm-raw 004e4a40 --length 2808`. Callee facts involving x87, register inputs or conditional-move idioms came from `bsp.py ghidra disasm`, not from pseudocode.",
+
+ "map_corrections": [
+  {
+   "claim": "docs/GAME_ON_MOVE_MAP.md line 75 records `004d1100(scaledDelta, game+0x19FC)`.",
+   "correction": "004D1100 takes no arguments. It is a locked lazy singleton getter caching into 00F8765C via BSP_SingletonLifetime_GetManager, operator new(0x28), 004CF700 and BSP_SingletonLifetime_Register. The two pushes at 004e536b/004e536c belong to 00867EE0, which consumes them with RET 8; that is why no `add esp` appears between the calls."
+  },
+  {
+   "claim": "docs/GAME_ON_MOVE_MAP.md line 70 records the one-shot as `004b6260()`.",
+   "correction": "004B6260 is __thiscall with ECX = game+1EF0h (the network session subobject, the same one the network tick 00778560 and the drain loop 00776230 use), while 004BCAA0 runs with ECX = the game object."
+  },
+  {
+   "claim": "The packet contract calls game+1EE7h the one-shot that arms the ocean and effect updates.",
+   "correction": "Neither routine touches game+19E8h, game+19FCh, the ocean or any effect. The latch is a once-per-mission session statistic that shares the state-0Dh block. The ocean and effect updates are gated only by game+19E8h != 0 and by the simulation gate."
+  }
+ ],
+
+ "call_sites": {
+  "one_shot": {
+   "range": "004e4e00-004e4e2a",
+   "outer_gate": "game+5D4h == 0Dh at 004e4df4",
+   "sequence": [
+    "004e4e00 skip when game+1EE7h is already set",
+    "004e4e09 ECX = game+1EF0h; 004e4e0f call 004B6260",
+    "004e4e14 AL == 0 -> skip the count but still latch",
+    "004e4e18 game+624h != 0 -> skip the count but still latch",
+    "004e4e21 push 1; 004e4e23 ECX = game; 004e4e25 call 004BCAA0",
+    "004e4e2a game+1EE7h = 1 on every path that reaches it"
+   ]
+  },
+  "ocean_and_rain": {
+   "range": "004e52f9-004e5325",
+   "gate": "game+19E8h != 0",
+   "sequence": [
+    "004e5302 call 00865CF0 with no receiver set",
+    "004e5307 mov ecx,eax; 004e5309 call 00865AB0, no stack arguments",
+    "004e530e-004e531e push game+19FCh then the scaled delta from game+21F0h",
+    "004e531f ECX = game+19E8h; 004e5325 call 00BBDDD0"
+   ],
+   "argument_order": "arg0 = game+19FCh, arg1 = the scaled delta; confirmed at 00bbd337 where MOV EBX,[ESP+0x3c] executes after PUSH EBX and so reads [entry+4]."
+  },
+  "effect_manager": {
+   "range": "004e535f-004e5377",
+   "gate": "none beyond the simulation gate",
+   "sequence": [
+    "004e536b push game+19FCh; 004e536c reserve; 004e536d store the scaled delta",
+    "004e5370 call 004D1100 (consumes nothing)",
+    "004e5375 mov ecx,eax; 004e5377 call 00867EE0 (RET 8 consumes both pushes)"
+   ]
+  },
+  "interleaved_and_owned_elsewhere": [
+   "004e532a 00740E10 cDecalManager::Update",
+   "004e534f 0094C8F0",
+   "004e535a 008EB110"
+  ]
+ },
+
+ "conventions": [
+  {"address": "00865cf0", "convention": "__cdecl", "receiver": "none", "stack_args": [], "ret": "RET", "returns": "&DAT_00F875C0", "state": "reconstructed"},
+  {"address": "00865ab0", "convention": "__thiscall", "receiver": "the 00F875C0 descriptor", "stack_args": [], "ret": "RET", "state": "reconstructed"},
+  {"address": "00bbddd0", "convention": "__thiscall", "receiver": "game+19E8h", "stack_args": ["void* node", "float delta"], "ret": "RET 8", "state": "reconstructed"},
+  {"address": "00bbd310", "convention": "__thiscall", "receiver": "owner+3Ch", "stack_args": ["void* node", "float delta"], "ret": "RET 8", "state": "reconstructed"},
+  {"address": "00867ee0", "convention": "__thiscall", "receiver": "the 004D1100 singleton", "stack_args": ["float delta", "void* node"], "ret": "RET 8", "state": "reconstructed"},
+  {"address": "004d1100", "convention": "__cdecl", "receiver": "none", "stack_args": [], "ret": "RET", "returns": "DAT_00F8765C", "state": "reconstructed"},
+  {"address": "004b6260", "convention": "__thiscall", "receiver": "game+1EF0h", "stack_args": [], "ret": "RET", "returns": "bool in AL", "state": "reconstructed"},
+  {"address": "004bcaa0", "convention": "__thiscall", "receiver": "the game object", "stack_args": ["char add"], "ret": "RET 4", "state": "reconstructed"},
+  {"address": "00bbe8b0", "convention": "__thiscall", "receiver": "one shore-wave layer", "stack_args": ["void* node", "vec3* p", "float layerScale", "float 1.0f", "float delta"], "ret": "RET 14h", "state": "analyzed"},
+  {"address": "00801400", "convention": "__thiscall", "receiver": "descriptor+38h", "stack_args": ["float delta", "vec3* worldPos", "float* axis"], "ret": "RET 0Ch", "state": "analyzed"},
+  {"address": "004f9b30", "convention": "__fastcall(out=ECX, a=EDX, b=stack)", "receiver": "out", "stack_args": ["float* b"], "ret": "RET 4", "state": "reconstructed"},
+  {"address": "00419510", "convention": "__fastcall(out=ECX, v=EDX)", "receiver": "out", "stack_args": [], "ret": "RET", "state": "reconstructed"},
+  {"address": "00419440", "convention": "__thiscall", "receiver": "the vector", "stack_args": [], "ret": "RET", "returns": "float in ST0", "state": "reconstructed"}
+ ],
+ "ghidra_bodies": "All seven packet addresses have real Ghidra function bodies (proto --brief confirms 00865cf0-00865d49, 00865ab0-00865b46, 00bbddd0-00bbddeb, 00867ee0-00867fc6, 004d1100-004d11bc, 004b6260-004b627a, 004bcaa0-004bcb09). None needs defining before names are applied.",
+
+ "objects": {
+  "game+0x19FC": {
+   "role": "reference scene transform read by the ocean, the rain step and the effect manager",
+   "layout": {
+    "+0x5C": "dirty byte; bit 1 clear triggers BSP_Transform_RefreshWorldMatrix (00B6DB70)",
+    "+0x110": "matrix row used as the ocean's reference axis",
+    "+0x120": "matrix row holding the world position"
+   },
+   "uncertainty": "class not identified; the layout is what the three consumers read. Also the first argument of 00AF0C50 in the post-simulation step, and docs/APP_INIT_GAME_ENTRY.md records BSP_Settings_ApplyAll pushing settings+54h into it."
+  },
+  "game+0x19E8": {
+   "role": "owner; 00BBDDD0 loads +3Ch, returns when null, forwards both arguments unchanged with ECX = that pointer",
+   "segment_keywords": ["oceanheightmap", "shorewavetexturesource0", "shorewavetexturesource1", "shorewavetexturesource2"]
+  },
+  "ocean_object_at_owner+0x3C": {
+   "+0x18": "shore-wave layer array (T**); MOV ECX,[ESI+0x18] then [ECX+EDI*4] at 00bbd434",
+   "+0x1C": "layer count; loop bound at 00bbd414 and 00bbd457",
+   "+0x30": "scene node hidden on the disabled path; MOV ECX,[ESI+0x30] at 00bbd327",
+   "+0x34": "float passed to each layer as its third argument; 00bbd447",
+   "+0x38": "vec3 passed to each layer as its second argument; LEA EBP,[ESI+0x38] at 00bbd425",
+   "+0x44": "right axis; written 00bbd3c8-00bbd3d6",
+   "+0x50": "up axis; written 00bbd39f-00bbd3b3",
+   "+0x5C": "float rewritten to 1.0f every tick; 00bbd417",
+   "+0x90": "int cleared every tick; 00bbd41c",
+   "+0x98": "enabled flag; CMP byte ptr [ESI+0x98],0 at 00bbd316"
+  },
+  "DAT_00F875C0": {
+   "role": "rain descriptor; magic-static behind bit 0 of 00F875FC, constructed by 00865B80, _atexit destructor registered",
+   "+0x00": "vtable 00D0D3AC",
+   "+0x04/+0x08": "native string holding \"raindrop.tga\"",
+   "+0x0C..+0x2C": "float parameters copied from .rdata",
+   "+0x34": "colour 0x80D0D0FF",
+   "+0x38": "live emitter instance, zero at construction; 00865AB0 returns immediately when it is null"
+  },
+  "effect_manager_singleton": {
+   "size": "0x28",
+   "constructor": "004CF700; vtable 00CE789C, +0x08 from 004C3200, +0x0C..+0x24 zeroed",
+   "+0x08": "std::list head node; 008671A0 walks **(this+8) against *(this+8)",
+   "+0x0C": "list size",
+   "+0x10": "effect array data (T**)",
+   "+0x14": "effect count, not an end pointer (LEA EBX,[EDX+EAX*4] at 00867ef4)",
+   "+0x18": "array capacity (inferred from the object size, not observed)",
+   "+0x1C": "second array data; 00866C60's loop",
+   "+0x20": "second array count",
+   "+0x24": "second array capacity (inferred)",
+   "note": "the arrays are {T* data; int size; int capacity}, not the MSVC three-pointer std::vector"
+  }
+ },
+
+ "behavior": {
+  "00865ab0": "Returns unless descriptor+38h holds an emitter. Reads game+19FCh twice from DAT_00E188A8, refreshes the world matrix on each read when node+5Ch bit 1 is clear, copies node+120h..128h into a local, and calls 00801400 with ECX = descriptor+38h and (game+21F0h, &worldPosition, node+110h). The delta is fetched from the global game object by this routine, not passed down from OnMove.",
+  "00801400": "Gates on delta * DAT_00D04368 * (DAT_00F87470 * DAT_00D7A220) < 00BD2F10(), then refreshes the same node and requires node+124h > 0.0 (world Y above zero) before calling 004845D0, 00867B10 and 008687C0. Reads as the ambient rain emitter; 00BD2F10's range decides whether the comparison is a probability gate or its inverse.",
+  "00bbd310_disabled": "ocean+98h == 0 runs 00B6DA70(ECX = ocean+30h, 0.0f, 0), which writes the float into node+ACh and does not recurse because the second argument is zero. No frame field is touched.",
+  "00bbd310_enabled": [
+   "refresh the reference node's world matrix when node+5Ch bit 1 is clear",
+   "V = node[110h..118h]",
+   "t1 = cross(V, up); t2 = cross(t1, V); up = normalize(t2)  (Gram-Schmidt against V)",
+   "t3 = cross(V, up); right = normalize(t3)",
+   "if (length(up) < 0.5f) reset up = (0,1,0) and right = (1,0,0); the tested value is a normalize result so it is exactly 1.0f or 0.0f",
+   "ocean+5Ch = 1.0f; ocean+90h = 0",
+   "for i in [0, ocean+1Ch): 00BBE8B0(ECX = layers[i], node, ocean+38h, ocean+34h, 1.0f, delta)"
+  ],
+  "00bbd310_delta": "The frame step does not consume the delta. The delta reaches only the layers.",
+  "00bbe8b0_scroll": {
+   "range": "00bbec06-00bbeca7",
+   "rule": "scroll(layer+1B8h..1C0h) += direction * delta * speed * 30.0f, then the node is placed at worldPosition(layer+120h) + scroll through virtual +30h",
+   "direction_source": "00BBDD60 on the layer's wave source",
+   "speed_source": "00BBDD70 on the same object, returned in ST0",
+   "constant": "double 30.0 at 00CE7630, loaded as a double and stored as a float, which rounds once; a float multiply by 30.0f is equivalent",
+   "delta_slot": "[EBP+0x18], the fifth stack argument",
+   "precondition": "the block runs only when the distance fade leaves 1 - t != 0"
+  },
+  "00bbe8b0_fade": "Distance between the layer's world position and the reference node's world position, minus a radius from 00BC3010, clamped as (distance - _DAT_00CF0DD8) / _DAT_00D20198 into [0,1], drives 00B6DA70(layer+1C4h * (1 - t), 0).",
+  "00867ee0": [
+   "phase 1: for every non-null entry of the array at +10h/+14h, 00867D00(ECX = entry, delta, node)",
+   "phase 2: 00866C60(ECX = this, delta, node)",
+   "phase 3: for every entry, 00867790(ECX = entry, delta, node) then the retire test",
+   "phase 4: 008671A0(ECX = this)"
+  ],
+  "null_guard_idiom": "NEG/SBB turns the pointer into 0 or -1 and TEST reg, 0xE186EC (0xE19AB0 in 00867790's inner loop) uses a global's address as an always-non-zero mask, so the test reduces to a null check. The decompiler renders it as (-(uint)(p != 0) & 0xe186ec) != 0.",
+  "00867ee0_retire": "entry+09h != 0 and entry+1Ch <= 0 and entry+0Ah == 0 and every pointer in entry+0Ch/+10h is null, then 0081B010(ECX = this+10h, &iterator) erases the entry. The iterator is not advanced after an erase and the loop reloads data and size from +10h/+14h every pass.",
+  "00867d00": [
+   "instance+80h += delta unconditionally (the effect age)",
+   "if instance+8Ch holds an attachment: attachment+44h == 0 refreshes its world matrix and pushes Matrix_Multiply4x4(local, attachment+F0h) through virtual +34h of instance+110h; attachment+44h set means it died, so 0042D9A0(0), 00867B10 and instance+09h = 1",
+   "if instance+28h or +2Ch is set: t = instance+48h + delta; when instance+4Ch < t, shift +3Ch..+44h into +30h..+38h, latch the new world position from instance+110h's row +120h, and when instance+88h > 1 and delta > 0 write velocity = (current - previous) / t into +5Ch..+64h if +28h is set and displacement = current - previous into +68h..+70h if +2Ch is set; then reset instance+48h to zero. Otherwise store t."
+  ],
+  "00866c60": "Publishes the arguments into _DAT_00F87608 (delta) and DAT_00F8760C (node), walks the second array at +1Ch/+20h and dispatches each entry through 004C1130()'s +04h object, virtual +04h, then one virtual +08h with argument 1. Reads as per-frame draw or queue submission; not analysed further because 004C1130's object is render-side.",
+  "00867790": "Walks entry+0Ch/+10h, calls virtual +28h with (delta, node) on every non-null child whose child+18h is neither 1 nor 4, then releases children that report themselves finished: virtual +08h returning non-zero, or child+0Ch clear, leads to virtual +30h, 00867320 and an InterlockedDecrement on child+04h.",
+  "008671a0": "Drains the deferred-destroy std::list at +08h: per node, call the stored object's virtual +04h with argument 1 (the MSVC scalar deleting destructor), clear the slot, unlink and free the node.",
+  "004b6260": "Returns session+F4h != 0 && session+29Ch == 0.",
+  "004bcaa0": "Returns immediately when DAT_00F8A2FC is null or its virtual +198h predicate is false. add true writes active+1 and total+1; add false writes active-1 floored at zero through an unsigned compare against 1 at 004bcad6 and leaves the total alone. Both stores go through ECX = game+650h at +F0h and +ECh, landing on game+740h and game+73Ch. Then 007FA1B0(ECX = game+650h, 0, 0x00BD53C0); 0x00BD53C0 points into .text, so it is a code pointer, not a string."
+ },
+
+ "constants": {
+  "DAT_00D7A24C": "1.0f",
+  "DAT_00CE3800": "0.5f, the ocean frame degeneracy threshold",
+  "DAT_00D7A218": "0.0f",
+  "DAT_00CE7630": "double 30.0, the shore-wave scroll scale"
+ },
+
+ "reconstruction": {
+  "header": "include/bsp/world_ocean.hpp",
+  "source": "src/world_ocean.cpp",
+  "registered_in": "cmake/startup.cmake",
+  "pure_functions": [
+   "cross_004f9b30",
+   "length_00419440",
+   "normalize_00419510",
+   "ocean_orthonormalize_00bbd310",
+   "shore_wave_scroll_step_00bbec06",
+   "advance_shore_wave_scroll_00bbec06",
+   "advance_effect_sample_00867d00",
+   "session_counts_mission_004b6260",
+   "adjust_mission_counters_004bcaa0"
+  ],
+  "sequence_routines": ["arm_mission_start_latch_004e4e00", "run_ocean_and_effects_tick"],
+  "host": "WorldOceanHost, one method per native call site in this slice; updates_between_ocean_and_effects exists only so a host preserves the native order of 00740E10, 0094C8F0 and 008EB110, which belong to other packets",
+  "rounding_note": "length_00419440 rounds each square to a float, keeps xx + yy unrounded as the listing does, and takes the square root of the stored float."
+ },
+
+ "status": {
+  "exported": ["00865cf0", "00865ab0", "00bbddd0", "00867ee0", "004d1100", "004b6260", "004bcaa0", "00bbd310", "00bbe8b0", "00801400", "00865b80", "004cf700", "00866c60", "008671a0", "00867790", "00867d00", "004f9b30", "00419510", "00b6da70"],
+  "analyzed": ["00bbe8b0", "00801400", "00866c60", "00867790", "008671a0", "00865b80", "004cf700"],
+  "reconstructed": ["00865cf0", "00865ab0", "00bbddd0", "00bbd310", "00867ee0", "004d1100", "004b6260", "004bcaa0", "00867d00", "004f9b30", "00419510", "00419440"],
+  "build_tested": ["src/world_ocean.cpp"],
+  "fixture_tested": [],
+  "abi_compatible": [],
+  "game_validated": []
+ },
+
+ "tests": "One focused case appended to tests/math_tests.cpp covering the ocean frame degeneracy reset and the pass-through of an already orthogonal axis. Build is Win32 MSVC with warnings as errors; ctest reconstructed_math passes.",
+
+ "uncertainties": [
+  "The class of game+19FCh is not recovered; \"world reference node\" describes its use, not a symbol.",
+  "The rain reading of 00F875C0 rests on the \"raindrop.tga\" literal in 00865B80 and the above-water test in 00801400; the three spawn callees were not opened.",
+  "00BD2F10's range decides the direction of 00801400's stochastic gate.",
+  "_DAT_00CF0DD8, _DAT_00D20198 and _DAT_00CED0E0 in the layer fade have no recovered role names.",
+  "007FA1B0 and the code pointer 0x00BD53C0 were not analysed.",
+  "+0x18 and +0x24 as array capacities are inferred from the 0x28 object size, not observed."
+ ],
+
+ "remaining": [
+  "00BBE8B0's material and texture half, which needs the renderer owner's types (cScale, cAlpha, cCloudDiffuseColor, BSP_Material_RegisterFloatParameter, BSP_ShadowTextureOwner_GetTexture)",
+  "00866C60's dispatch through 004C1130",
+  "00867790's child virtuals +08h, +28h, +30h and the refcount protocol at child+04h",
+  "0081B010, treated here as a shift-down array erase from its use",
+  "The identity of game+650h, game+624h and session+F4h/+29Ch"
+ ],
+
+ "leases": {
+  "claimed": ["00865cf0", "00865ab0", "00bbddd0", "00867ee0", "004d1100", "004b6260", "004bcaa0", "00bbd310", "00801400", "00865b80", "004cf700", "00866c60", "008671a0", "00867790", "00867d00", "00bbe8b0", "004f9b30", "00419510", "00b6da70"],
+  "refused": [],
+  "treated_as_external": ["004e4a40", "00740e10", "0094c8f0", "008eb110", "004c1130", "0081b010", "00bc3010", "00bbdd60", "00bbdd70", "00b6db70"]
+ }
+}

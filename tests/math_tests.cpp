@@ -11,6 +11,7 @@
 #include "bsp/input_tick.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_entities.hpp"
+#include "bsp/world_ocean.hpp"
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -552,6 +553,34 @@ int main() {
             "retiring an event abandons the selection instead of applying it");
         check(state.mission_events.events.size() == 2,
             "exactly one event leaves the queue per frame");
+    }
+
+
+    {
+        // 00BBD310 re-orthogonalises the ocean frame against the reference axis
+        // every tick. When the previous up axis is parallel to that reference,
+        // both cross products collapse, 00419510 returns the zero vector and the
+        // length test at 00BBD3D9 falls below 00CE3800, so the frame resets to
+        // the canonical axes instead of keeping a zero basis.
+        bsp::OceanState ocean{};
+        ocean.enabled = true;
+        ocean.frame.up = bsp::OceanVec3{0.0f, 0.0f, 1.0f};
+        check(bsp::ocean_orthonormalize_00bbd310(ocean, bsp::OceanVec3{0.0f, 0.0f, 1.0f}),
+            "an enabled ocean runs the frame path");
+        check(ocean.frame.up.x == 0.0f && ocean.frame.up.y == 1.0f && ocean.frame.up.z == 0.0f,
+            "a degenerate ocean frame resets its up axis to +Y");
+        check(ocean.frame.right.x == 1.0f && ocean.frame.right.y == 0.0f
+                && ocean.frame.right.z == 0.0f,
+            "a degenerate ocean frame resets its right axis to +X");
+
+        // A perpendicular reference axis keeps the up axis and rebuilds right.
+        ocean.frame.up = bsp::OceanVec3{0.0f, 0.0f, 1.0f};
+        check(bsp::ocean_orthonormalize_00bbd310(ocean, bsp::OceanVec3{0.0f, 1.0f, 0.0f}),
+            "an enabled ocean runs the frame path for a perpendicular axis");
+        check(ocean.frame.up.z == 1.0f && ocean.frame.up.x == 0.0f && ocean.frame.up.y == 0.0f,
+            "an already orthogonal up axis survives the Gram-Schmidt step");
+        check(ocean.frame.scale == 1.0f && ocean.frame.visible_layer_count == 0,
+            "the ocean tick rewrites the scale and clears the visible layer count");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
