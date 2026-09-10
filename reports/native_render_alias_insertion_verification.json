@@ -445,5 +445,13 @@
     "Native count-failure unlinked-node behavior is static-reviewed here, not an additional runtime case.",
     "The host uses its own C++ exception ABI and actual CRT dispatch. No original game install was modified and no game validation is claimed.",
     "Count dependency worker documentation miscounted the factory literal; primary identified and is correcting it. Correct literal is16 visible bytes excluding the terminating NUL; source assign_counted(...,16) is correct. Count-error branch is not exercised in this insertion fixture."
-  ]
+  ],
+  "primary_integration": {
+    "report": "reports/native_render_alias_insertion_audit.json",
+    "root_header_source_unchanged": true,
+    "current_dependency_hashes_verified": 16,
+    "primary_257_word_fixture_passed": true,
+    "strict_win32_build": true,
+    "ctests_passed": 2
+  }
 }

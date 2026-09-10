@@ -1,0 +1,44 @@
+[
+  {
+    "address": "004d2660",
+    "before": {
+      "address": "004d2660",
+      "function_name": "FUN_004d2660"
+    },
+    "after": {
+      "address": "004d2660",
+      "old_name": "FUN_004d2660",
+      "name": "BSP_RenderAliasList_AppendCopiedString",
+      "evidence": "Complete native[004d2660,004d2692); ECX actual owner; one stack source8h header pointer; RET4; no semantic return. Capture sentinel/previous; allocate/copy; grow count; publish sentinel.prev then current newnode.prev.next. No cleanup of successful unlinked node on count failure. Evidence reports/native_render_alias_insertion_audit.json; reports/native_render_alias_insertion_verification.json. Independent review and257-word original single/range/catch partial-rollback fixture passed with concrete shared helper/host CRT-EH boundaries; primary strict Win32 build2/2. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d26a0",
+    "before": {
+      "address": "004d26a0",
+      "function_name": "FUN_004d26a0"
+    },
+    "after": {
+      "address": "004d26a0",
+      "old_name": "FUN_004d26a0",
+      "name": "BSP_RenderAliasList_InsertRange",
+      "evidence": "Complete native[004d26a0,004d27b4); ECX actual destination; seven stack DWORDs; RET1Ch; three by-value iterator pairs plus unread word. Complete normal and parent-catch body; retain captures/current argument words, allocate-before-count-before-links, source owner captured before links, rollback bounded by source advances. Evidence reports/native_render_alias_insertion_audit.json; reports/native_render_alias_insertion_verification.json. Independent review and257-word original single/range/catch partial-rollback fixture passed with concrete shared helper/host CRT-EH boundaries; primary strict Win32 build2/2. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d2746",
+    "before": {
+      "address": "004d2746",
+      "function_name": "Catch_All@004d2746"
+    },
+    "after": {
+      "address": "004d2746",
+      "old_name": "Catch_All@004d2746",
+      "name": "Catch_All@004d2746",
+      "evidence": "Complete native[004d2746,004d27a1); Parent EBP/current iterator argument words; not independently callable. Compare initial/current source; capture current insertion arguments; previous/erase into end scratch/advance saved source loop; same exception rethrow; secondary failures supersede. Evidence reports/native_render_alias_insertion_audit.json; reports/native_render_alias_insertion_verification.json. Independent review and257-word original single/range/catch partial-rollback fixture passed with concrete shared helper/host CRT-EH boundaries; primary strict Win32 build2/2. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  }
+]

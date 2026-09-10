@@ -2759,8 +2759,8 @@
     {
       "id": "native_render_alias_insertion",
       "worker": "main",
-      "done": false,
-      "state": "source_reviewed_waiting_focused_original_partial_rollback_fixture",
+      "done": true,
+      "state": "integrated_independent_review_primary_strict_win32_original_range_catch_fixture_passed",
       "function_addresses": [
         "004d2660",
         "004d26a0",
@@ -2772,18 +2772,20 @@
         "docs/NATIVE_RENDER_ALIAS_INSERTION.md",
         "reports/native_render_alias_insertion_audit.json"
       ],
-      "packet": "native_render_alias_insertion"
+      "packet": "native_render_alias_insertion",
+      "evidence": "reports/native_render_alias_insertion_audit.json"
     },
     {
       "id": "native_alias_insertion_verification",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "independent_original_code_partial_rollback_verification_in_progress",
+      "done": true,
+      "state": "integrated_independent_review_primary_strict_win32_original_range_catch_fixture_passed",
       "function_addresses": [],
       "code_ownership": [
         "reports/native_render_alias_insertion_verification.json"
       ],
-      "packet": "native_alias_insertion_verification"
+      "packet": "native_alias_insertion_verification",
+      "evidence": "reports/native_render_alias_insertion_audit.json"
     },
     {
       "id": "native_render_resource_record_assignment",
@@ -2816,6 +2818,21 @@
         "reports/native_render_queue_owner_next.json"
       ],
       "packet": "native_render_queue_owner_next"
+    },
+    {
+      "id": "native_render_batch_preparation_next",
+      "packet": "native_render_batch_preparation_next",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "read_only_actual_batch_key_preparation_and_sort_closure_discovery",
+      "function_addresses": [
+        "00b51df0",
+        "00b1dce0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDER_BATCH_PREPARATION_NEXT.md",
+        "reports/native_render_batch_preparation_next.json"
+      ]
     }
   ],
   "snapshot_after_analysis": {
@@ -3666,14 +3683,14 @@
     {
       "packet": "native_render_alias_insertion",
       "worker": "main",
-      "state": "source_reviewed_waiting_focused_original_partial_rollback_fixture",
-      "validation": null
+      "state": "integrated_independent_review_primary_strict_win32_original_range_catch_fixture_passed",
+      "validation": "reports/native_render_alias_insertion_audit.json"
     },
     {
       "packet": "native_alias_insertion_verification",
       "worker": "particle_clock_lifetime",
-      "state": "independent_original_code_partial_rollback_verification_in_progress",
-      "validation": null
+      "state": "integrated_independent_review_primary_strict_win32_original_range_catch_fixture_passed",
+      "validation": "reports/native_render_alias_insertion_audit.json"
     },
     {
       "packet": "native_render_resource_record_assignment",
@@ -3686,23 +3703,15 @@
       "worker": "system_fog_owner_discovery",
       "state": "read_only_queue_owner_and_row_storage_dependency_discovery",
       "validation": null
+    },
+    {
+      "packet": "native_render_batch_preparation_next",
+      "worker": "particle_clock_lifetime",
+      "state": "read_only_actual_batch_key_preparation_and_sort_closure_discovery",
+      "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_render_alias_insertion",
-      "worker": "main",
-      "function_addresses": [
-        "004d2660",
-        "004d26a0",
-        "004d2746"
-      ]
-    },
-    {
-      "packet": "native_alias_insertion_verification",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": []
-    },
     {
       "packet": "native_render_resource_record_assignment",
       "worker": "material_effect_plane",
@@ -3717,6 +3726,14 @@
         "004c11f0",
         "00b1f280",
         "00b1f6b0"
+      ]
+    },
+    {
+      "packet": "native_render_batch_preparation_next",
+      "worker": "particle_clock_lifetime",
+      "function_addresses": [
+        "00b51df0",
+        "00b1dce0"
       ]
     }
   ],

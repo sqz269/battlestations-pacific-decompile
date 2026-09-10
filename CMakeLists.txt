@@ -56,6 +56,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_render_group_storage.cpp src/native_render_group_lifetime.cpp
   src/native_render_resource_record.cpp src/native_render_resource_alias_nodes.cpp
   src/native_render_alias_checked_ops.cpp
+  src/native_render_alias_insertion.cpp
   src/native_model_pool.cpp src/model_type_bootstrap.cpp src/native_model_owner.cpp
   src/native_render_batch_lifetime.cpp src/native_render_batch_reference.cpp
   src/native_render_command_owner.cpp
