@@ -1,0 +1,661 @@
+{
+  "packet": "app_init_fonts_gui",
+  "owner": "agent/init-fonts-gui",
+  "doc": "docs/APP_INIT_FONTS_GUI.md",
+  "program": "battlestationspacific.exe",
+  "project": "bsp",
+  "note": "Every name is a hypothesis, not a recovered symbol. Ghidra was read-only for this packet: no rename, comment, prototype or save applied.",
+  "addresses": [
+    "0073bae0",
+    "007371d0",
+    "0073c960",
+    "004c14c0",
+    "004c12b0",
+    "0053bc00",
+    "00aa5e20",
+    "00aa5d70",
+    "00be9620",
+    "00be9760"
+  ],
+  "call_sequence_in_0073d410": [
+    {
+      "address": "0073e030",
+      "call": "00bf681b(0x4040)",
+      "meaning": "CRT allocation of the locale-table manager"
+    },
+    {
+      "address": "0073e057",
+      "call": "0073c960",
+      "meaning": "its constructor, ECX = the block, skipped when the allocation returned null"
+    },
+    {
+      "address": "0073e06a-0073e135",
+      "call": "008d4870, 00aa09d0, 00aa0d30, 00aa06d0",
+      "meaning": "the locale half, docs/APP_INIT_LOCALE.md"
+    },
+    {
+      "address": "0073e13c",
+      "call": "0073bae0",
+      "meaning": "the whole fonts + GUI bring-up"
+    },
+    {
+      "address": "0073e141/0073e146",
+      "call": "004c9c90 with ECX = 00cff1a8",
+      "meaning": "the After InitGui memory checkpoint label"
+    },
+    {
+      "address": "0073e14b",
+      "call": "004c14c0",
+      "meaning": "diagnostic sink getter, result discarded"
+    },
+    {
+      "address": "0073e150",
+      "call": "push 0x71a0",
+      "meaning": "phase 11 begins"
+    }
+  ],
+  "sequencing_finding": "The GUI manager is created inside 0073bae0, before the After InitGui checkpoint, not after it. The only work at the checkpoint itself is the label push and one stripped diagnostic call.",
+  "decompiler_correction": {
+    "site": "0073bb7e-0073bb99",
+    "wrong": "Ghidra shows FUN_007371d0(a,b,c) and BSP_FontRegistry_LoadLuaDescriptors(a,b,c).",
+    "right": "007371d0 ends in a plain RET at 0073728c and takes no arguments. The three pushed string addresses belong to 00ac3910, which is __thiscall with ECX = the registry and RET 0xc at 00ac3edc. Callee argument order is (root 'Fonts\\', descriptor 'Fonts/Fonts.lua', language font path)."
+  },
+  "functions": [
+    {
+      "address": "0073bae0",
+      "name": "BSP_FontSystem_LoadDefinitions",
+      "convention": "__cdecl, no arguments",
+      "ret": "RET",
+      "body": "0073bae0-0073bc33",
+      "state": "exported, analyzed, reconstructed as a host sequence, build-tested",
+      "behavior": "Builds three native strings in an SEH frame (handler 00c867f8): the language font path from 008d4890 with ECX = the settings object 00f88980, 'Fonts/Fonts.lua' (00cff088, 0xf) and 'Fonts\\' (00cfefa8, 6). Calls 007371d0 for the font registry, then 00ac3910 with that registry in ECX and the three strings on the stack. Frees the strings through 00419cc0/00bd1510. Then 0053bc00 followed by 00be9620 with the result discarded, and 004c12b0 followed by 00aa5e20 with the GUI manager in ECX.",
+      "callers": [
+        "0073d410 BSP_Application_Initialize at 0073e13c"
+      ],
+      "callees": [
+        "008d4890",
+        "0041e870",
+        "0041dd40",
+        "00bf7680",
+        "007371d0",
+        "00ac3910",
+        "00419cc0",
+        "00bd1510",
+        "0053bc00",
+        "00be9620",
+        "004c12b0",
+        "00aa5e20"
+      ]
+    },
+    {
+      "address": "007371d0",
+      "name": "BSP_FontSystem_GetRegistry",
+      "convention": "__cdecl, no arguments",
+      "ret": "RET",
+      "body": "007371d0-0073728c",
+      "state": "exported, analyzed",
+      "behavior": "Double-checked lazy singleton over DAT_00f8bf44 under the lifetime manager's optional critical section at BSP_SingletonLifetime_GetManager()+0x10. Allocates 0x10 bytes with 00bf681b, constructs with 00ac3690 (list sentinel at +8, count at +0xc per docs/FONT_GLYPH_SOURCE.md) and registers with 00bd0c30.",
+      "callers": [
+        "0073bae0",
+        "008d5b50 BSP_Settings_ApplyAll",
+        "00ab8c30"
+      ],
+      "callees": [
+        "00415350",
+        "00bf681b",
+        "00ac3690",
+        "00bd0c30"
+      ]
+    },
+    {
+      "address": "0073c960",
+      "name": "BSP_LocaleTableManager_Construct",
+      "convention": "__fastcall, ECX = the object, returns it",
+      "ret": "RET",
+      "body": "0073c960-0073c9ec",
+      "state": "exported, analyzed, layout reconstructed, build-tested",
+      "behavior": "Calls 00736540 first with the same ECX, which stores the singleton base vtable 00cfea5c and publishes the object in DAT_00f8bc4c under the lifetime manager's lock. Then overwrites *this with the derived vtable 00cff140 (CG_scalar_deleting_dtor_0073caf0), zeroes the three name-vector pointers at +8/+0xc/+0x10, memsets 0x4000 bytes at +0x14, and zeroes +0x4014, +0x4018, +0x401c, +0x4024, +0x4028, +0x402c, +0x4034, +0x4038 and +0x403c. It never writes +4, +0x4020 or +0x4030.",
+      "callers": [
+        "0073d410 BSP_Application_Initialize at 0073e059"
+      ],
+      "callees": [
+        "00736540",
+        "00bf79f0 _memset"
+      ]
+    },
+    {
+      "address": "004c14c0",
+      "name": "BSP_DiagnosticSink_GetOrCreate",
+      "convention": "__cdecl, no arguments",
+      "ret": "RET",
+      "body": "004c14c0-004c1569",
+      "state": "exported, analyzed, reconstructed as lazy construction only, build-tested",
+      "behavior": "Double-checked lazy singleton over DAT_0109cf14. The constructor is inlined and is one store: 00bf681b(4) then *p = &PTR_LAB_00ce752c. The object has no state beyond the vtable pointer. Registers with 00bd0c30.",
+      "callers": [
+        "0073d410",
+        "004ca440 BSP_Game_Render",
+        "004c7070",
+        "004c70c0",
+        "0093ff10",
+        "00a869b0",
+        "00b151e0",
+        "00b1ef60",
+        "00b4b850 BSP_D3D9IndexBuffer_Lock",
+        "00b4ba00 BSP_D3D9VertexBuffer_Lock",
+        "00b51000",
+        "00be3bf0"
+      ],
+      "callees": [
+        "00415350",
+        "00bf681b",
+        "00bd0c30"
+      ]
+    },
+    {
+      "address": "004c12b0",
+      "name": "BSP_GuiManager_GetOrCreate",
+      "convention": "__cdecl, no arguments",
+      "ret": "RET",
+      "body": "004c12b0-004c136f",
+      "state": "exported, analyzed; reviewed name predates this packet",
+      "behavior": "Double-checked lazy singleton over DAT_00f8bc5c: 00bf681b(0x88), construct with 00aa5d70, register with 00bd0c30. First created during startup by 0073bae0 at 0073bc19.",
+      "callers": [
+        "0073bae0",
+        "BSP_Application_Shutdown and ten others"
+      ],
+      "callees": [
+        "00415350",
+        "00bf681b",
+        "00aa5d70",
+        "00bd0c30"
+      ]
+    },
+    {
+      "address": "00aa5d70",
+      "name": "BSP_GuiManager_Construct",
+      "convention": "__fastcall, ECX = the object, returns it",
+      "ret": "RET",
+      "body": "00aa5d70-00aa5e18",
+      "state": "exported, analyzed",
+      "behavior": "Vtable 00d5bfcc. Stores a node from 00aa2920 at +0xc, sets its byte +0x15 to 1 and self-links its pointers +0/+4/+8 as a sentinel. Zeroes +0x10 and +0x18..+0x30, stores 00aa2820's result at +0x38, zeroes +0x3c, +0x40, byte +0x48 and +0x6c, copies the float DAT_00ce3800 into +0x5c and +0x60. Leaves +0x4c, +0x50, +0x54, +0x58 and +0x74..+0x84 uninitialised; those are exactly the fields 00aa5e20 fills.",
+      "callers": [
+        "004c12b0"
+      ],
+      "callees": [
+        "00aa2920",
+        "00aa2820"
+      ]
+    },
+    {
+      "address": "00aa5e20",
+      "name": "BSP_GuiManager_LoadResources",
+      "convention": "__fastcall, ECX = the manager",
+      "ret": "RET",
+      "body": "00aa5e20-00aa633e",
+      "state": "exported, analyzed, resource list reconstructed, build-tested",
+      "behavior": "Loads the fixed resource list. 00aa5840 always takes the manager in ECX and creates a group; 00aa7e00 always takes a group in ECX and creates a child of it. Six blocks are reported unreachable by the decompiler and several literals are dropped from the pseudocode; the list was read from the listing. Byte +0x84 is cleared last at 00aa6305.",
+      "callers": [
+        "0073bae0"
+      ],
+      "callees": [
+        "0041dd40",
+        "00bf7680",
+        "00bdf4c0 BSP_VFS_ResolveExistingName",
+        "00aa5840",
+        "00aa7e00",
+        "00419cc0",
+        "00bd1510"
+      ]
+    },
+    {
+      "address": "0053bc00",
+      "name": "BSP_FallbackGlyphTable_GetSingleton",
+      "convention": "__cdecl, no arguments",
+      "ret": "RET",
+      "body": "0053bc00-0053bcbf",
+      "state": "exported, analyzed",
+      "behavior": "Double-checked lazy singleton over DAT_0109db78: 00bf681b(0x204), construct with 00be9760, register with 00bd0c30.",
+      "callers": [
+        "0073bae0"
+      ],
+      "callees": [
+        "00415350",
+        "00bf681b",
+        "00be9760",
+        "00bd0c30"
+      ]
+    },
+    {
+      "address": "00be9760",
+      "name": "BSP_FallbackGlyphTable_Construct",
+      "convention": "__fastcall, ECX = the object, returns it",
+      "ret": "RET",
+      "body": "00be9760-00be988b",
+      "state": "exported, analyzed",
+      "behavior": "Vtable 00d68bb0. Builds the 0x11-byte name 'fonts/arial19.dat', opens it through the file manager *(DAT_0109ceec) vtable +4 with mode 2 and requires the length from virtual +0x30 to be exactly 0x200. On a match reads 0x200 bytes into this+4 through virtual +0x24 and post-processes with 00be9630(this+4, 00e15120); on a mismatch releases the stream and zeroes the first byte at this+4.",
+      "callers": [
+        "0053bc00"
+      ],
+      "callees": [
+        "0041dd40",
+        "00bf7680",
+        "00be9630",
+        "00419cc0",
+        "00bd1510"
+      ]
+    },
+    {
+      "address": "00be9620",
+      "name": "BSP_FallbackGlyphTable_GetData",
+      "convention": "__fastcall, ECX = the object",
+      "ret": "RET",
+      "body": "00be9620-00be9623",
+      "state": "exported, analyzed",
+      "behavior": "return this + 4. A base/interface pointer adjustment onto the 0x200-byte table. Its result at the 0073bae0 call site is discarded, so the pair is a preload.",
+      "callers": [
+        "0073bae0"
+      ],
+      "callees": []
+    }
+  ],
+  "locale_table_manager_layout": {
+    "global": "DAT_00f8bc4c",
+    "size": "0x4040",
+    "identity": "the localisation manager of docs/APP_INIT_LOCALE.md, not a GUI structure",
+    "fields": [
+      {
+        "offset": "+0x0000",
+        "size": 4,
+        "field": "vtable 00cff140",
+        "written_by_0073c960": true,
+        "evidence": "MOV [ESI],0xcff140 at 0073c982"
+      },
+      {
+        "offset": "+0x0004",
+        "size": 4,
+        "field": "vector allocator/pool word of the registered table names",
+        "written_by_0073c960": false,
+        "evidence": "00450540 treats manager+4 as the vector object and reads +4/+8/+0xc of it"
+      },
+      {
+        "offset": "+0x0008",
+        "size": 4,
+        "field": "registered table names, first",
+        "written_by_0073c960": true,
+        "evidence": "0073c988"
+      },
+      {
+        "offset": "+0x000c",
+        "size": 4,
+        "field": "registered table names, last",
+        "written_by_0073c960": true,
+        "evidence": "0073c98b"
+      },
+      {
+        "offset": "+0x0010",
+        "size": 4,
+        "field": "registered table names, capacity end",
+        "written_by_0073c960": true,
+        "evidence": "0073c98e"
+      },
+      {
+        "offset": "+0x0014",
+        "size": 16384,
+        "field": "0x1000 hash bucket heads of 4 bytes each",
+        "written_by_0073c960": true,
+        "evidence": "memset at 0073c991-0073c99b; bucket index is hash & 0xfff in 00a9fc30 and 00a9ec70; 0073c240 loops 0x1000 chains then memsets 0x4000"
+      },
+      {
+        "offset": "+0x4014",
+        "size": 4,
+        "field": "live entry count",
+        "written_by_0073c960": true,
+        "evidence": "0073c9a3 writes [EBX+0x4000] with EBX = this+0x14"
+      },
+      {
+        "offset": "+0x4018",
+        "size": 4,
+        "field": "current language name, size",
+        "written_by_0073c960": true,
+        "evidence": "0073c9a9"
+      },
+      {
+        "offset": "+0x401c",
+        "size": 4,
+        "field": "current language name, data",
+        "written_by_0073c960": true,
+        "evidence": "0073c9af"
+      },
+      {
+        "offset": "+0x4020",
+        "size": 4,
+        "field": ".lanx vector A, allocator word",
+        "written_by_0073c960": false,
+        "evidence": "not written"
+      },
+      {
+        "offset": "+0x4024",
+        "size": 4,
+        "field": ".lanx vector A, first",
+        "written_by_0073c960": true,
+        "evidence": "0073c9b5"
+      },
+      {
+        "offset": "+0x4028",
+        "size": 4,
+        "field": ".lanx vector A, last",
+        "written_by_0073c960": true,
+        "evidence": "0073c9bb"
+      },
+      {
+        "offset": "+0x402c",
+        "size": 4,
+        "field": ".lanx vector A, capacity end",
+        "written_by_0073c960": true,
+        "evidence": "0073c9c1"
+      },
+      {
+        "offset": "+0x4030",
+        "size": 4,
+        "field": ".lanx vector B, allocator word",
+        "written_by_0073c960": false,
+        "evidence": "not written"
+      },
+      {
+        "offset": "+0x4034",
+        "size": 4,
+        "field": ".lanx vector B, first",
+        "written_by_0073c960": true,
+        "evidence": "0073c9cb"
+      },
+      {
+        "offset": "+0x4038",
+        "size": 4,
+        "field": ".lanx vector B, last",
+        "written_by_0073c960": true,
+        "evidence": "0073c9d1"
+      },
+      {
+        "offset": "+0x403c",
+        "size": 4,
+        "field": ".lanx vector B, capacity end",
+        "written_by_0073c960": true,
+        "evidence": "0073c9d7"
+      }
+    ],
+    "table": {
+      "element_size": 4,
+      "element_count": 4096,
+      "total_bytes": 16384,
+      "node_size": "0x1c",
+      "readers_and_writers": [
+        "00aa09d0",
+        "00aa06d0",
+        "00aa0d30",
+        "00a9fad0",
+        "00a9ec70",
+        "00a9fc30",
+        "0073c240",
+        "00aba911 BSP_TextContext_UpdateUtf16Geometry",
+        "00ab8f84 BSP_TextContext_EllipsizeUtf16ToWidth",
+        "00abaed0",
+        "00abb000",
+        "008d5d8e BSP_Settings_ApplyAll",
+        "008d5030",
+        "00690fd0",
+        "005d0050",
+        "00a40510",
+        "006003a0",
+        "00510c20",
+        "00438020",
+        "0057c360"
+      ]
+    },
+    "lifetime": {
+      "register": "00736540 BSP_Singleton_Register_00f8bc4c",
+      "unregister": "007365e0 BSP_Singleton_Unregister_00f8bc4c",
+      "destroy": "class destructor 0073caf0 through vtable slot 0 at 00cff140",
+      "shutdown": "docs/APP_SHUTDOWN.md rows 13 and 17: released in the step-13 chain, then re-tested, unregistered, destroyed and nulled at 007382df-00738304"
+    },
+    "refines": "docs/APP_INIT_LOCALE.md lists the two .lanx vectors as +0x4020..+0x402f and +0x4030..+0x403f without separating the leading allocator word from the three pointers."
+  },
+  "gui_manager_resource_list": {
+    "manager_size": "0x88",
+    "group_factory": "00aa5840(&name, 1, 0), ECX = manager",
+    "child_factory": "00aa7e00(&name, 1), ECX = the enclosing group",
+    "entries": [
+      {
+        "order": 1,
+        "name": "data/interface/textures/whiteGui.tga",
+        "string": "00d5c084",
+        "length": 36,
+        "kind": "texture",
+        "loader": "renderer *(00f8d394) virtual +0x64",
+        "stored_at": [
+          "+0x28"
+        ],
+        "gate": "BSP_VFS_ResolveExistingName 00bdf4c0 at 00aa5e88"
+      },
+      {
+        "order": 2,
+        "name": "interface/textures/common/transparent.tga",
+        "string": "00d5c058",
+        "length": 41,
+        "kind": "texture",
+        "loader": "renderer *(00f8d394) virtual +0x64",
+        "stored_at": [
+          "+0x2c"
+        ],
+        "note": "previous value released through InterlockedDecrement on +4, vtable +0 at zero"
+      },
+      {
+        "order": 3,
+        "name": "_Mouse",
+        "string": "00d5c050",
+        "length": 6,
+        "kind": "group",
+        "stored_at": [
+          "+0x4c"
+        ],
+        "visibility": {
+          "value": true,
+          "at": "00aa5faf"
+        }
+      },
+      {
+        "order": 4,
+        "name": "MousePtrFE_Icon",
+        "string": "00d5c040",
+        "length": 15,
+        "kind": "child",
+        "parent": "[+0x4c]",
+        "stored_at": [
+          "+0x54",
+          "+0x50"
+        ],
+        "visibility": {
+          "value": false,
+          "at": "00aa60a3",
+          "note": "issued after entry 5's"
+        }
+      },
+      {
+        "order": 5,
+        "name": "MousePtrGUI_Icon",
+        "string": "00d5c02c",
+        "length": 16,
+        "kind": "child",
+        "parent": "[+0x4c]",
+        "stored_at": [
+          "+0x58"
+        ],
+        "visibility": {
+          "value": false,
+          "at": "00aa6098"
+        }
+      },
+      {
+        "order": 6,
+        "name": "_Highlight",
+        "string": "00d5c020",
+        "length": 10,
+        "kind": "group",
+        "stored_at": [],
+        "visibility": {
+          "value": true,
+          "at": "00aa6117"
+        },
+        "note": "kept only in EDI, never stored on the manager"
+      },
+      {
+        "order": 7,
+        "name": "hl_FrameBox",
+        "string": "00d5c014",
+        "length": 11,
+        "kind": "child",
+        "parent": "EDI",
+        "stored_at": [
+          "+0x74"
+        ],
+        "visibility": {
+          "value": false
+        }
+      },
+      {
+        "order": 8,
+        "name": "hlCircle_FrameBox",
+        "string": "00d5c000",
+        "length": 17,
+        "kind": "child",
+        "parent": "EDI",
+        "stored_at": [
+          "+0x78"
+        ],
+        "visibility": {
+          "value": false
+        }
+      },
+      {
+        "order": 9,
+        "name": "safezone_43_FrameBox",
+        "string": "00d5bfe8",
+        "length": 20,
+        "kind": "child",
+        "parent": "EDI",
+        "stored_at": [
+          "+0x7c"
+        ],
+        "visibility": {
+          "value": false
+        }
+      },
+      {
+        "order": 10,
+        "name": "safezone_169_FrameBox",
+        "string": "00d5bfd0",
+        "length": 21,
+        "kind": "child",
+        "parent": "EDI",
+        "stored_at": [
+          "+0x80"
+        ],
+        "visibility": {
+          "value": false
+        }
+      }
+    ],
+    "ready_flag": {
+      "offset": "+0x84",
+      "value": 0,
+      "at": "00aa6305"
+    }
+  },
+  "diagnostic_singleton_004c14c0": {
+    "global": "DAT_0109cf14",
+    "size": 4,
+    "vtable": "00ce752c",
+    "vtable_slots": [
+      {
+        "index": 0,
+        "target": "004bbca0",
+        "role": "scalar deleting destructor: mov [0x109cf14],0; mov [esi],0xce3818; conditional free; ret 4"
+      }
+    ],
+    "vtable_length": "one slot; 00ce7530 is zero and 00ce7534 is the float 0x40a77000, unrelated data",
+    "rtti": "none; the dword before the vtable is 0x64, part of the adjacent literal 'Cloud'",
+    "construction": "allocation, vtable store and BSP_SingletonLifetime_Register only. No file, device or other object.",
+    "call_sites": "all 20 discard the return value",
+    "call_site_shapes": [
+      {
+        "site": "004c70ac in FUN_004c7070",
+        "shape": "_vsprintf_s(buf,0xff,fmt,va) then FUN_004b8410(out,'%s\\n',buf) then the call; the formatted text is dropped"
+      },
+      {
+        "site": "004c7103 in FUN_004c70c0",
+        "shape": "the same helper with a 0x1ff8-byte frame"
+      },
+      {
+        "site": "00be3e46 in FUN_00be3bf0",
+        "shape": "sprintf(buf, '%s %.2f ms count:%d', ...), the profiler report line; PERF_APP_UPDATE and PERF_GAME_ONMOVE are in the same literal block"
+      },
+      {
+        "site": "00b4b863, 00b4b89f in BSP_D3D9IndexBuffer_Lock",
+        "shape": "on capacity < cursor + offset and on a non-zero offset in the dynamic path"
+      },
+      {
+        "site": "00b4ba13, 00b4ba4f in BSP_D3D9VertexBuffer_Lock",
+        "shape": "the same two preconditions"
+      },
+      {
+        "site": "009406d4-0094071a in FUN_0093ff10",
+        "shape": "eight back-to-back calls, five of them consecutive with nothing between"
+      },
+      {
+        "site": "0073e14b",
+        "shape": "immediately after the After InitGui checkpoint"
+      }
+    ],
+    "reading": "A diagnostic sink whose reporting method the shipped build compiled away, leaving only the non-deletable lazy getter. The class name is a hypothesis; the shape (no state, one virtual destructor, result always discarded) is fact. docs/D3D9_BUFFER_UPLOAD.md called it the unresolved diagnostic singleton; this packet resolves its layout and lifetime but not its output path."
+  },
+  "reconstruction": {
+    "header": "include/bsp/gui_startup.hpp",
+    "source": "src/gui_startup.cpp",
+    "cmake": "cmake/startup.cmake",
+    "entry_points": [
+      "bsp::run_gui_startup(GuiStartupHost&)",
+      "bsp::construct_locale_table_manager_0073c960(LocaleTableManagerImage&)",
+      "bsp::diagnostic_sink_get_or_create_004c14c0(DiagnosticSinkSingleton&)"
+    ],
+    "reuse": [
+      "bsp::FontRegistry and load_font_registry_lua from include/bsp/font_registry.hpp for 00ac3910",
+      "bsp::LocaleStringMap from include/bsp/locale_tables.hpp for the bucket array"
+    ],
+    "not_binary_compatible": "native strings, the pooled allocator and the vtables are not reproduced; the SEH unwind path of 0073bae0 is not modelled",
+    "test": "one case in tests/math_tests.cpp pins the GUI resource call transcript, including the deferred MousePtrFE_Icon visibility call and its double store"
+  },
+  "uncertainties": [
+    "The class names for the font registry, the fallback glyph table and the diagnostic sink are hypotheses. Only cGuiManager has direct string support, from the segment-76 literal.",
+    "The 512 bytes of fonts/arial19.dat are read but their meaning was not established, and 00be9630's transform over them was not analysed.",
+    "00aa5840 and 00aa7e00 were not analysed; the virtual +0x34(bool) that follows them is presumably a visibility or enable flag, which is a guess.",
+    "The leading word of the three 16-byte vectors at +0x04, +0x4020 and +0x4030 is never written by the constructor chain; who initialises it is open.",
+    "Six blocks of 00aa5e20 are reported unreachable by the decompiler; the branches they belong to were not reconstructed.",
+    "004c14c0's output path is not recoverable from this image.",
+    "Ghidra still shows 007371d0 with three parameters at the 0073bae0 call site; the prototype fix needs a writer."
+  ],
+  "byte_evidence": {
+    "source": "installed battlestationspacific.exe, not modified",
+    "sha256": {
+      "0073bae0..0073bc33": "5eb4b4a6dd1899633b1b7c8fc26433a6d1de66ff57c3aab409a038894c8d7353",
+      "007371d0..0073728c": "ac9c01a13763b515635c492b50258cfec95c5a5c62644a0368ba92a828b434f9",
+      "0073c960..0073c9ec": "f59f7defb9cd1b9c99c31a701fd67bd1d4a9e24d9505fa069188a18c4dcae908",
+      "004c14c0..004c1569": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+      "004c12b0..004c136f": "7d2554e9a125d67a8f18cc6a652e6914189ce00982f3c08f2f1dc9b72a892a6a",
+      "0053bc00..0053bcbf": "6d6ae656c58e0bbba18c3b04cf1f15972ec5b7966322392d6d1005f524dc904c",
+      "00aa5e20..00aa633e": "cd4758165b406c38cc63c0560fb8e44ae8b1c6ed15b2cfd89a71afcecbf1ffdd",
+      "00aa5d70..00aa5e18": "5343e5b7be77fa95c33c97a324bf886dcdc1563604656dd2949c5deb574ef2ff",
+      "00be9620..00be9623": "4181cb1fec090d6487f323c8ce84a17ff37429613d7843b4f5f40f5eae266b77",
+      "00be9760..00be988b": "37b54d0f17122a891ebe14f1092c42f0962a049cf6e82772d5631e5ddd8e1dc8",
+      "00736540..007365d5": "3d7f1bf492d1ea9a2384ec4ecfacab2ec3b29aa57d113ad77578d99d95bf7630"
+    }
+  }
+}
