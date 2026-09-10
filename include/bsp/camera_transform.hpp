@@ -63,10 +63,30 @@ public:
     CameraMatrix& world; // native+60,+B0,+F0
 };
 struct CameraState {
-    CameraTransform transform;
-    CameraProjection projection;
-    CameraMatrix view_projection{}; // native+220; valid bit10 in projection flags
-    std::array<float, 3> direction{}, target{}; // native+1AC,+1A0; semantic names provisional
+private:
+    struct OwnedStorage {
+        CameraTransform transform;
+        CameraProjection projection;
+        CameraMatrix view_projection{};
+        std::array<float, 3> direction{}, target{};
+    } owned_;
+public:
+    // Default storage is for diagnostics. Binding uses the existing transform
+    // and projection views and actual tail fields without reading or initializing
+    // them. All supplied views/storage must outlive this state.
+    CameraState() noexcept;
+    CameraState(CameraTransform&, CameraProjection&, CameraMatrix& view_projection,
+        std::array<float, 3>& direction, std::array<float, 3>& target) noexcept;
+    // Value construction owns copies; assignment preserves target bindings.
+    CameraState(const CameraState&) noexcept;
+    CameraState(CameraState&&) noexcept;
+    CameraState& operator=(const CameraState&) noexcept;
+    CameraState& operator=(CameraState&&) noexcept;
+    CameraTransform& transform;
+    CameraProjection& projection;
+    CameraMatrix& view_projection; // native+220; valid bit10 in projection flags
+    std::array<float, 3>& direction;
+    std::array<float, 3>& target; // native+1AC,+1A0; semantic names provisional
 };
 // Native thiscall, no stack arguments. Refresh always recomputes this world;
 // only parent refresh is skipped when its world-valid bit2 is already set.

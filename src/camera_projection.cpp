@@ -1,9 +1,35 @@
 #include "bsp/camera_projection.hpp"
-#include <cstddef>
 
 namespace bsp {
-static_assert(offsetof(CameraProjection, aspect) == 4
-    && offsetof(CameraProjection, near_plane) == 8 && offsetof(CameraProjection, far_plane) == 12);
+CameraProjection::CameraProjection() noexcept
+    : fov(owned_.fov), aspect(owned_.aspect), near_plane(owned_.near_plane),
+      far_plane(owned_.far_plane), original(owned_.original), cached(owned_.cached),
+      valid_flags(owned_.valid_flags) {}
+
+CameraProjection::CameraProjection(CameraProjectionBacking backing) noexcept
+    : fov(backing.fov), aspect(backing.aspect), near_plane(backing.near_plane),
+      far_plane(backing.far_plane), original(backing.original), cached(backing.cached),
+      valid_flags(backing.valid_flags) {}
+
+CameraProjection::CameraProjection(const CameraProjection& other) noexcept
+    : CameraProjection() { *this = other; }
+CameraProjection::CameraProjection(CameraProjection&& other) noexcept
+    : CameraProjection(static_cast<const CameraProjection&>(other)) {}
+
+CameraProjection& CameraProjection::operator=(const CameraProjection& other) noexcept {
+    if (this == &other) return *this;
+    fov = other.fov;
+    aspect = other.aspect;
+    near_plane = other.near_plane;
+    far_plane = other.far_plane;
+    original = other.original;
+    cached = other.cached;
+    valid_flags = other.valid_flags;
+    return *this;
+}
+CameraProjection& CameraProjection::operator=(CameraProjection&& other) noexcept {
+    return *this = static_cast<const CameraProjection&>(other);
+}
 //004134f0 copy semantics; caller retains both native matrix copies.
 void copy_camera_matrix_004134f0(CameraMatrix& output, const CameraMatrix& input) {
     for (unsigned i = 0; i < 16; ++i) {
@@ -89,15 +115,21 @@ const CameraMatrix& get_camera_projection_00b6fcf0(CameraProjection& camera) {
         CameraMatrix temporary;
         // Native getter spills each scalar through x87 while preparing stack args.
         float fov, aspect, near_plane, far_plane;
-        const float* inputs = &camera.fov;
+        const float* far_input = &camera.far_plane;
+        const float* near_input = &camera.near_plane;
+        const float* aspect_input = &camera.aspect;
+        const float* fov_input = &camera.fov;
         __asm {
-            mov eax, inputs
-            fld dword ptr [eax + 12]
+            mov eax, far_input
+            fld dword ptr [eax]
             fstp far_plane
-            fld dword ptr [eax + 8]
+            mov eax, near_input
+            fld dword ptr [eax]
             fstp near_plane
-            fld dword ptr [eax + 4]
+            mov eax, aspect_input
+            fld dword ptr [eax]
             fstp aspect
+            mov eax, fov_input
             fld dword ptr [eax]
             fstp fov
         }

@@ -4,6 +4,30 @@
 #include "bsp/camera_multiply.hpp"
 
 namespace bsp {
+CameraState::CameraState() noexcept
+    : transform(owned_.transform), projection(owned_.projection),
+      view_projection(owned_.view_projection), direction(owned_.direction), target(owned_.target) {}
+CameraState::CameraState(CameraTransform& actual_transform, CameraProjection& actual_projection,
+    CameraMatrix& actual_view_projection, std::array<float, 3>& actual_direction,
+    std::array<float, 3>& actual_target) noexcept
+    : transform(actual_transform), projection(actual_projection),
+      view_projection(actual_view_projection), direction(actual_direction), target(actual_target) {}
+CameraState::CameraState(const CameraState& other) noexcept : CameraState() { *this = other; }
+CameraState::CameraState(CameraState&& other) noexcept
+    : CameraState(static_cast<const CameraState&>(other)) {}
+CameraState& CameraState::operator=(const CameraState& other) noexcept {
+    if (this == &other) return *this;
+    transform = other.transform;
+    projection = other.projection;
+    view_projection = other.view_projection;
+    direction = other.direction;
+    target = other.target;
+    return *this;
+}
+CameraState& CameraState::operator=(CameraState&& other) noexcept {
+    return *this = static_cast<const CameraState&>(other);
+}
+
 CameraTransform::CameraTransform() noexcept
     : parent(owned_.parent), first_child(owned_.first_child), child_count(owned_.child_count),
       next_sibling(owned_.next_sibling), previous_sibling(owned_.previous_sibling),

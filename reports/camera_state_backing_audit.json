@@ -1,0 +1,344 @@
+{
+  "packet": "camera_projection_state_backing",
+  "baseline": "c358db1",
+  "layout_discovery_commit": "7aacfa0",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_each_cli_batch": true,
+    "mutated": false
+  },
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": {
+    "exported": true,
+    "existing_reconstruction_updated": true,
+    "borrowed_cpp_interfaces_added": true,
+    "build_tested": true,
+    "focused_native_fixture_tested": true,
+    "native_object_abi_compatible": false,
+    "game_validated": false
+  },
+  "owned_native_function": {
+    "address": "00b6fcf0",
+    "name": "BSP_Camera_GetProjectionMatrix",
+    "end_exclusive": "00b6fd60",
+    "bytes": 112,
+    "original_abi": "ECX=actual camera; no stack arguments; EAX=camera+2A0; RET",
+    "source": "src/camera_projection.cpp:113",
+    "change": "Use independent borrowed far, near, aspect, FOV pointers while preserving each native FLD/FSTP32 and its order.",
+    "assembly_evidence": [
+      {
+        "at": "00b6fcf6",
+        "behavior": "TEST byte [ESI+2F0],8; set bit returns existing cache without scalar loads"
+      },
+      {
+        "at": "00b6fcff",
+        "behavior": "FLD [ESI+1D8], FSTP32 argument far"
+      },
+      {
+        "at": "00b6fd11",
+        "behavior": "FLD [ESI+1D4], FSTP32 argument near"
+      },
+      {
+        "at": "00b6fd21",
+        "behavior": "FLD [ESI+1C8], FSTP32 argument aspect"
+      },
+      {
+        "at": "00b6fd2b",
+        "behavior": "FLD [ESI+1C4], FSTP32 argument FOV"
+      },
+      {
+        "at": "00b6fd34",
+        "behavior": "Build temporary, x87-copy to 1E0 then 2A0, OR flags bit8, return actual 2A0"
+      }
+    ]
+  },
+  "backing": {
+    "projection_api": "explicit CameraProjection(CameraProjectionBacking) noexcept",
+    "projection_fields": [
+      {
+        "name": "fov",
+        "offset": "1c4",
+        "bytes": 4
+      },
+      {
+        "name": "aspect",
+        "offset": "1c8",
+        "bytes": 4
+      },
+      {
+        "name": "near_plane",
+        "offset": "1d4",
+        "bytes": 4
+      },
+      {
+        "name": "far_plane",
+        "offset": "1d8",
+        "bytes": 4
+      },
+      {
+        "name": "original",
+        "offset": "1e0",
+        "bytes": 64
+      },
+      {
+        "name": "cached",
+        "offset": "2a0",
+        "bytes": 64
+      },
+      {
+        "name": "valid_flags",
+        "offset": "2f0",
+        "bytes": 4
+      }
+    ],
+    "state_api": "CameraState(CameraTransform&, CameraProjection&, CameraMatrix& view_projection, std::array<float,3>& direction, std::array<float,3>& target) noexcept",
+    "state_fields": [
+      {
+        "name": "transform",
+        "binding": "existing caller-owned CameraTransform view"
+      },
+      {
+        "name": "projection",
+        "binding": "existing caller-owned CameraProjection view"
+      },
+      {
+        "name": "view_projection",
+        "offset": "220",
+        "bytes": 64
+      },
+      {
+        "name": "direction",
+        "offset": "1ac",
+        "bytes": 12
+      },
+      {
+        "name": "target",
+        "offset": "1a0",
+        "bytes": 12
+      }
+    ],
+    "construct_binding": "No reads or writes of actual owner fields; no raw owner construction; caller lifetime/coherent-owner contract.",
+    "default": "Own zeroed diagnostic values; not native constructor defaults.",
+    "copy_move_construction": "Own independent values; source bindings remain intact.",
+    "copy_move_assignment": "Write through existing destination backing; never rebind.",
+    "native_unrelated_gap": "1cc/1d0 not read, written, projected, or copied into another backing field."
+  },
+  "code_evidence": [
+    {
+      "address": "00b6fcf0",
+      "end_exclusive": "00b6fd60",
+      "length": 112,
+      "disk_offset": 7798000,
+      "disk_sha256": "6345b27bd12e2844a965ac9257a87aa63f7da309d591da429866c0f2e0eea62f",
+      "live_sha256": "6345b27bd12e2844a965ac9257a87aa63f7da309d591da429866c0f2e0eea62f",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00b642f0",
+      "end_exclusive": "00b643a0",
+      "length": 176,
+      "disk_offset": 7750384,
+      "disk_sha256": "434aa71d29dc916a29e4b8723c612f341b54ab7a7c0c922ab0afee503c2e6bf3",
+      "live_sha256": "434aa71d29dc916a29e4b8723c612f341b54ab7a7c0c922ab0afee503c2e6bf3",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00412e20",
+      "end_exclusive": "00412e33",
+      "length": 19,
+      "disk_offset": 77344,
+      "disk_sha256": "6282a7c6801acc042953893b813184c14e395f5215fa6bd1981b9d159d363ee0",
+      "live_sha256": "6282a7c6801acc042953893b813184c14e395f5215fa6bd1981b9d159d363ee0",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "004134f0",
+      "end_exclusive": "00413557",
+      "length": 103,
+      "disk_offset": 79088,
+      "disk_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "live_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "disk_offset": 9937484,
+      "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d7a280",
+      "end_exclusive": "00d7a288",
+      "length": 8,
+      "disk_offset": 9937536,
+      "disk_sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "live_sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "evidence_bytes": 422,
+  "focused_fixture": {
+    "source": "local/camera_backing_native_check.cpp",
+    "build_script": "local/build_camera_backing_native_check.ps1",
+    "executable": "build/camera_backing-check/camera_backing_native_check.exe",
+    "log": "local/camera_backing_native_check.log",
+    "native_loaded_functions": [
+      "00b6fcf0",
+      "00b642f0",
+      "00412e20",
+      "004134f0"
+    ],
+    "native_loaded_data": [
+      "00d7a24c",
+      "00d7a280"
+    ],
+    "absolute_relocations": [
+      {
+        "address": "00b642f7",
+        "preimage": "00d7a280"
+      },
+      {
+        "address": "00b64388",
+        "preimage": "00d7a24c"
+      }
+    ],
+    "image": "Preserve original relative addresses; reserve inaccessible pages; commit only evidence pages and initialize unused bytes to INT3.",
+    "hooks": [],
+    "unresolved_stubs": [],
+    "native_imports_loaded": false,
+    "pe_entrypoint_executed": false,
+    "scenario": "Dirty projection using noncontiguous owner fields; cache hit after live scalar change; dirty near signaling NaN.",
+    "owner_bytes_per_state": 756,
+    "states_per_rounding_mode": 3,
+    "rounding_modes": [
+      "027f",
+      "067f",
+      "0a7f",
+      "0e7f"
+    ],
+    "states": 12,
+    "compared_bytes": 9072,
+    "all_owner_bytes_equal": true,
+    "actual_returned_cache_address_checked": true,
+    "control_word_preserved": true,
+    "status_mask": "47ff",
+    "status_each_mode": [
+      "0020",
+      "0000",
+      "0021"
+    ],
+    "gap_preimages": [
+      "7fa12345",
+      "ffa54321"
+    ],
+    "gap_preimages_retained_and_unread": true,
+    "cpp_binding_checks": [
+      "Every public field reference identifies caller actual field/view",
+      "Binding leaves complete actual owner preimage unchanged",
+      "Existing direction refresh writes actual direction and target",
+      "Cached view-projection returns actual field reference",
+      "Copy and move construction own separate values",
+      "Copy and move assignment write through original target backing",
+      "Moved-from borrowed source stays bound",
+      "Default diagnostic fields remain zero"
+    ],
+    "compiler": "MSVC x86 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MT /Gy /Gw /W4 /WX",
+    "result": "pass",
+    "fixture_iteration": "One fixture-only unsigned-to-unsigned-short warning fixed using explicitly typed control-word array; production source unchanged."
+  },
+  "existing_validation": [
+    {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "result": "pass",
+      "native_spans": 8
+    },
+    {
+      "command": "./scripts/build.ps1",
+      "log": "local/camera_backing_repository_build.log",
+      "result": "pass",
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "passed": 2,
+      "failed": 0
+    }
+  ],
+  "uncertainty_and_limits": [
+    "CameraProjection, CameraState and CameraTransform are host companions, not native object ABIs.",
+    "Binding lifetime and coherent owner identity are caller obligations.",
+    "Native camera construction/destruction and frame/fog integration belong to primary integration.",
+    "Copy/move/default behavior is explicit host API behavior, not claimed recovered native copy semantics.",
+    "Native transform hierarchy, unmasked x87 traps, concurrent mutation and arbitrary overlapping bindings were not executed by this fixture.",
+    "No game or visual/rendering proof."
+  ],
+  "artifact_hashes": [
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "src/camera_projection.cpp",
+      "bytes": 5226,
+      "sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 5063,
+      "sha256": "5ee72dd1f62be59041025658fdd8568102839add061e1312a89ae21c039d2bcd"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "bytes": 8920,
+      "sha256": "e4c628ffc42a9df306312d438a806a2e9785682e14155d9f427b0908cec2c96d"
+    },
+    {
+      "path": "docs/CAMERA_STATE_BACKING.md",
+      "bytes": 6020,
+      "sha256": "ff6ae3b7dc3fd2ed426a233f16ae8f548a124e67b10f795dc72fc696707dc19b"
+    },
+    {
+      "path": "local/prepare_camera_backing_native.py",
+      "bytes": 3948,
+      "sha256": "fc08edf62f49e984a3ba1ca40ac1917ca1e94871b1c9de5b69c995bcaeae2c9c"
+    },
+    {
+      "path": "local/camera_backing_native_spans.hpp",
+      "bytes": 553,
+      "sha256": "1541bfbb4f011ff7810aa4cf9adb92209fbc348b6664ee87406656018869d4b6"
+    },
+    {
+      "path": "local/camera_backing_native_check.cpp",
+      "bytes": 10778,
+      "sha256": "12dde67417465546e33b53e8871197731d52f734c579e1253266d1c45a3c5aef"
+    },
+    {
+      "path": "local/build_camera_backing_native_check.ps1",
+      "bytes": 1694,
+      "sha256": "cde5ec2cb5959079e6ea2f955f8a9085d2e23b7cefb37823c7989ad1416ce258"
+    },
+    {
+      "path": "local/camera_backing_native_check.log",
+      "bytes": 822,
+      "sha256": "d52d38647c75a15f4d20858f1a96c147e02718344964f19e78d6ed7593959607"
+    },
+    {
+      "path": "local/camera_backing_repository_build.log",
+      "bytes": 9310,
+      "sha256": "6cc38267fc84e9a0cfe6527104edb192958541afa0c269e57dd21112b9269e41"
+    },
+    {
+      "path": "build/camera_backing-check/camera_backing_native_check.exe",
+      "bytes": 217088,
+      "sha256": "c1da7e45c1abbdab89a77c9ca65141fdc482271fc64ab8108033e04420e2d12c"
+    }
+  ]
+}
