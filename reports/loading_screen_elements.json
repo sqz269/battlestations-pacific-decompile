@@ -1,0 +1,239 @@
+{
+  "packet": "loading_screen_elements",
+  "owner": "agent/loading-screen",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/LOADING_SCREEN_ELEMENTS.md",
+  "ghidra": "read-only; no renames, comments, prototypes or saves applied",
+  "addresses": ["0057c560", "0057c990", "0057c4c0", "0057c360", "0057ca00", "00abaed0"],
+  "leased": ["0057ca00", "0057c990", "0057c4c0", "00abaed0", "0057c560", "0057c360"],
+  "headline": {
+    "claim": "The mp.loading_NN strings are localisation keys for a rotating hint line, not background images, and the vtable +10h initialiser is 0057C560 rather than 0057C4C0.",
+    "evidence": [
+      "vtable 00CEF264 slot +10h holds 0057C560; 0057CCBB reads MOV EDX,[EAX+0x10] and 0057CCC2 calls it.",
+      "0057C422 passes keys[cursor] to BSP_Localization_ResolveKeyList (00A9FAD0) with ECX = 00F8BC4C.",
+      "0057C46A MOV ECX,[ESI+0x18] then 0057C473 CALL 0x00ABAED0 with (&keys[cursor], 1): the key goes to the hint_Text widget as localised text.",
+      "00ABAED0 has no image path at all: it caches the string at +F4h, builds UTF-16 through 004C5E60 or 00A9FAD0, calls 00ABA8D0 and then vtable +50h."
+    ],
+    "consequences": [
+      "docs/GAME_FRONTEND_ENTRY.md's largest open question is closed: mode 0 does consume the list 004E4000 publishes, through 0057C990's rotation rather than through the mode block.",
+      "A mode 1 caller is still unidentified, but the published list is no longer evidence that one must exist."
+    ]
+  },
+  "corrections_to_prior_packet": [
+    "The vtable +10h initialiser is 0057C560, not 0057C4C0; 0057C4C0 is the rotation tick.",
+    "Eight named GUI objects are bound, not four: the page at +0Ch, six widgets at +10h..+28h, and one discarded lookup.",
+    "00AA4040's ECX is the GUI manager (004C12B0 at 0057CEC0, MOV ECX,EAX at 0057CED4), and its arguments are the values of screen+0Ch and screen+10h, not their addresses.",
+    "screen+38h..+47h is one ClockTimestamp{ticks, frequency}, which is why 0057C1C0 zeroes +38h/+3Ch/+44h and writes 1 at +40h."
+  ],
+  "object_layout": {
+    "address": "00e194b4",
+    "size": "0x58",
+    "fields": [
+      {"offset": "+0h", "what": "vtable 00CEF264; slot +0h (0057C230) is MOV EAX,59h; RET", "evidence": "0057c303"},
+      {"offset": "+4h/+5h", "what": "FrontEndScreen wanted/active bytes", "evidence": "0057ce96, 0057ce99"},
+      {"offset": "+8h", "what": "lifetime-hook sub-object; vtable slot +28h (0057C240) is SUB ECX,8; JMP 0057C540", "evidence": "0057c309, 0057c240"},
+      {"offset": "+0Ch", "what": "GUI page handle for FE_loading; the render worker's descriptor", "evidence": "0057c5d5, 0057cec8"},
+      {"offset": "+10h", "what": "widget radar_Group; the worker callback's ECX context", "evidence": "0057cec5"},
+      {"offset": "+14h", "what": "widget wave_Icon; no reader found", "evidence": "0057c560 only"},
+      {"offset": "+18h", "what": "widget hint_Text; the rotating localised hint", "evidence": "0057c648, 0057c46a"},
+      {"offset": "+1Ch", "what": "widget frameFlag_Icon; the background image element", "evidence": "0057cd2b, 0057cd82"},
+      {"offset": "+20h", "what": "widget titleLogo_Icon; visible in mode 0 only", "evidence": "0057cd46, 0057cdac"},
+      {"offset": "+24h", "what": "widget title_Text; the mode 1 caption", "evidence": "0057cdbe, 0057cdd2"},
+      {"offset": "+28h", "what": "widget loadingLogo_FrameBox; the caption plate", "evidence": "0057ce79, 0057ce2d"},
+      {"offset": "+2Ch", "what": "int last tick; -1 on reset", "evidence": "0057c99f"},
+      {"offset": "+30h", "what": "float monotonic maximum progress; 0.0f on reset", "evidence": "0057c99a"},
+      {"offset": "+34h", "what": "not observed", "evidence": null},
+      {"offset": "+38h..+47h", "what": "ClockTimestamp of the current hint's appearance", "evidence": "0057c393..0057c3a9"},
+      {"offset": "+48h", "what": "float minimum time on screen for the current hint", "evidence": "0057c43f"},
+      {"offset": "+4Ch", "what": "float progress each hint is worth", "evidence": "0057c9db"},
+      {"offset": "+50h", "what": "float progress at the last advance", "evidence": "0057c9a2, 0057c51b"},
+      {"offset": "+54h", "what": "not observed", "evidence": null}
+    ]
+  },
+  "element_bindings": {
+    "site": "0057c560",
+    "page": {"name": "FE_loading", "factory": "00aa5840(&name, 0, 0)", "manager": "004c12b0", "field": "+0Ch"},
+    "lookup": "00aa7e00(&name, 1) with ECX = *(this+0Ch) reloaded each time (0057c631); recursive, __stricmp",
+    "order": [
+      {"index": 1, "name": "hint_Text", "field": "+18h"},
+      {"index": 2, "name": "radar_Group", "field": "+10h"},
+      {"index": 3, "name": "wave_Icon", "field": "+14h"},
+      {"index": 4, "name": "bg_Group", "field": "discarded at 0057c609"},
+      {"index": 5, "name": "titleLogo_Icon", "field": "+20h"},
+      {"index": 6, "name": "frameFlag_Icon", "field": "+1Ch"},
+      {"index": 7, "name": "title_Text", "field": "+24h"},
+      {"index": 8, "name": "loadingLogo_FrameBox", "field": "+28h"}
+    ],
+    "note": "No null checks and no layout constants: FE_loading is a data-driven GUI page, so position and size live in the page asset. No font or localisation key is named in this function."
+  },
+  "worker_callback": {
+    "address": "0057ca00",
+    "thread": "the render worker thread 00B33C20 at priority -2; 00B33CFC loads the stored context into ECX before calling",
+    "start_site": "0057ced6 CALL 00aa4040 with ECX = the GUI manager, arg1 = *(screen+0Ch), arg2 = 0057ca00, arg3 = *(screen+10h), arg4 = 0x19",
+    "rate": {"constant": "0x19", "value": 25, "gate": "the worker runs the callback only when its elapsed milliseconds exceed 1000/rate, so 40 ms; otherwise SwitchToThread"},
+    "locks": "none taken by the callback; the worker's 00B20220 Sleep-10 poll and its begin/end frame surround it",
+    "render_calls": "none; the queue was set to mode 2 by 00aa4040 before the worker started and the page at +0Ch is what the worker draws",
+    "body": [
+      "0057ca1b MOV ESI,ECX: the single parameter, no stack arguments",
+      "0057ca33..0057ca67 build the pooled string \"wave_Icon\" (00CEF2DC) and call 00aa7e00(ECX = context, &name, 1)",
+      "0057caa5 clock 01090AB0 vtable +20h with one destination pointer; RET 4, EAX = destination",
+      "0057caa7..0057cac1 t = (float)((float)(ticks/frequency) * 1000.0) with the double at 00CE47A0",
+      "0057cacb d = t - 00E194BC",
+      "0057cad5..0057caf1 mag = (d > 0.0f) ? d : (-0.0f - d), the -0.0f coming from 00D7A208",
+      "0057cafd..0057cb14 widget vtable +40h(mag / 1000.0), RET 4",
+      "0057cb16..0057cb35 00E194BC = t, recomputed from the same buffered sample",
+      "0057cb1e..0057cb3d if (00E194B4) 0057c4c0(ECX = 00E194B4)",
+      "0057cb42..0057cb48 00e188a8 -> BSP_OnlineStats_UpdateWrite 004caa90"
+    ],
+    "progress_read": "indirect: 0057C4C0 reads screen+30h, the monotonic maximum BSP_LoadingScreen_ReportProgress (0057bec0) raises",
+    "observation": "the callback re-resolves wave_Icon by name 25 times a second even though 0057c560 cached the same widget at +14h, which has no reader"
+  },
+  "hint_rotation": {
+    "reset": {
+      "address": "0057c990",
+      "role": "LoadingScreenHost::prepare_extra_elements of include/bsp/frontend_entry.hpp; called at 0057ce83 for every mode",
+      "body": "+30h = 0.0f; +2Ch = -1; +50h = 0.0f; +4Ch = (empty list) ? 200.0 : 1.0f/(float)(unsigned)N; 00E0877C = -1; 0057c360(this); JMP 0057c4c0",
+      "note": "0057c9f1 is a tail jump, so the reset ends inside the tick"
+    },
+    "advance": {
+      "address": "0057c360",
+      "guard": "0057c37e signed CMP: returns when (int)00E0877C >= N - 1, so an empty list is -1 >= -1 and nothing is sampled",
+      "body": "++00E0877C; clock vtable +20h copied to +38h..+44h; +48h = (float)((float)(unsigned)utf16_length * 0.0625); 00abaed0(ECX = *(this+18h), &keys[cursor], 1)",
+      "bounds": "the cursor is range-checked twice against the vector and traps through the CRT invalid-argument helper 00bf6713"
+    },
+    "tick": {
+      "address": "0057c4c0",
+      "gates": [
+        "0057c4d5 JBE: requires +30h - +50h > +4Ch, the difference formed in x87 extended precision and compared without narrowing",
+        "0057c50f JBE: requires (float)(elapsed.ticks/elapsed.frequency) > +48h"
+      ],
+      "then": "0057c360(this); +50h = +30h",
+      "call_split": "the three pushes before the vtable +20h call serve two callees: the clock method takes only the destination (RET 4, EAX = destination) and the remaining two are BSP_Timestamp_Subtract's stack arguments (RET 8). 0057c360's one-push call of the same slot fixes the split; the decompiler double-counts."
+    }
+  },
+  "text_setter": {
+    "address": "00abaed0",
+    "convention": "__thiscall(NativeString* key, char localise), RET 8",
+    "behaviour": "returns early when the key equals the cached string at +F4h; otherwise copies it, builds UTF-16 through 004c5e60 (localise 0) or 00a9fad0 (localise 1), calls 00aba8d0, releases the buffer and calls this->vtable[50h]",
+    "call_sites": [
+      {"site": "0057cdc7", "ecx": "*(screen+24h) title_Text", "key": "00e08790, the published picked key", "localise": 1},
+      {"site": "0057c473", "ecx": "*(screen+18h) hint_Text", "key": "keys[cursor]", "localise": 1}
+    ],
+    "prior_record": "a ledger record already existed under the placeholder name FUN_00ABAED0 from packet font_context_ownership_audit"
+  },
+  "mode_block": {
+    "site": "0057cccc..0057ce83",
+    "already_reconstructed_in": "src/frontend_entry.cpp",
+    "modes": [
+      {"mode": 0, "what": "load interface/textures/menu.ats (00CEF30C); 004c1ac0(2,1) then 00518250(2,1); frameFlag_Icon vtable +88h(2, 0, 1.0f); titleLogo_Icon visible; title_Text and loadingLogo_FrameBox hidden"},
+      {"mode": 1, "what": "004c1ac0(1,1) then 00518250(1,1); frameFlag_Icon vtable +88h(00E08798 != 0, 0, 1.0f) via SETNE at 0057cd9c; titleLogo_Icon hidden; title_Text set from the picked key; loadingLogo_FrameBox sized; both visible"},
+      {"mode": "other", "what": "0057ccc6 jumps to 0057ce83; only the rotation reset runs"}
+    ],
+    "plate_arithmetic": {
+      "site": "0057cdd2..0057ce60",
+      "formula": "r = (float)(title_Text->+114h / 960.0); size.y = *(loadingLogo_FrameBox + 24h); size.x = (r > 4/15) ? (float)(r + 4/15) : 0.5333333611488342f; loadingLogo_FrameBox->vtable[58h](&size)",
+      "meaning": "max(r, 4/15) + 4/15: the caption's width plus one padding unit, with the caption floored at one padding unit, keeping the plate's own height",
+      "size_accessor": "00aa6740 is LEA EAX,[ECX+0x20]; RET, so it returns the widget's own size pair and only .y is used"
+    }
+  },
+  "constants": [
+    {"address": "00ce47a0", "type": "double", "value": 1000.0, "use": "milliseconds per second, worker clock"},
+    {"address": "00d7a208", "type": "float", "value": -0.0, "use": "the negation the delta's non-positive arm uses"},
+    {"address": "00ce4d70", "type": "double", "value": 200.0, "use": "the hint step when the key list is empty"},
+    {"address": "00ce3978", "type": "float", "value": 4294967296.0, "use": "the signed-FILD-to-unsigned fixup"},
+    {"address": "00cef290", "type": "double", "value": 0.0625, "use": "seconds per character of hint hold time"},
+    {"address": "00cec380", "type": "double", "value": 960.0, "use": "the caption plate's reference width"},
+    {"address": "00cec3e8", "type": "double", "value": 0.26666666666666666, "use": "plate padding, the double nearest 4/15"},
+    {"address": "00cec3e4", "type": "float", "value": 0.5333333611488342, "use": "minimum plate width, the float nearest 8/15"},
+    {"address": "00cef2dc", "type": "string", "value": "wave_Icon", "use": "the per-tick lookup name"},
+    {"address": "00cef30c", "type": "string", "value": "interface/textures/menu.ats", "use": "the mode 0 atlas"}
+  ],
+  "globals": [
+    {"address": "00e194b4", "what": "the screen singleton pointer"},
+    {"address": "00e194bc", "what": "float, the worker callback's last clock sample in milliseconds"},
+    {"address": "00e0877c", "what": "int, the hint cursor; -1 before the first advance"},
+    {"address": "00e08784", "what": "the key vector of LoadingScreenConfig::images"},
+    {"address": "00e08790", "what": "the picked key, mode 1's caption"},
+    {"address": "00e08798", "what": "the published visibility byte, mode 1's image index"},
+    {"address": "00f8bc4c", "what": "the localisation manager, ECX of 00a9fad0"},
+    {"address": "01090ab0", "what": "the clock singleton; vtable +20h samples it"}
+  ],
+  "conventions": [
+    {"address": "0057c560", "convention": "__fastcall(this)", "ret": 0, "note": "vtable +10h"},
+    {"address": "0057c990", "convention": "__fastcall(this)", "ret": 0, "note": "tail-jumps into 0057c4c0"},
+    {"address": "0057c4c0", "convention": "__fastcall(this)", "ret": 0},
+    {"address": "0057c360", "convention": "__fastcall(this)", "ret": 0},
+    {"address": "0057ca00", "convention": "__fastcall(context)", "ret": 0, "note": "context is radar_Group, not the screen"},
+    {"address": "00abaed0", "convention": "__thiscall(key, localise)", "ret": 8},
+    {"address": "0057c230", "convention": "__fastcall(this)", "ret": 0, "note": "vtable +0h, returns 0x59"},
+    {"address": "clock vtable +20h", "convention": "__thiscall(destination)", "ret": 4, "note": "EAX = destination; matches sample_frame_clock_00bee080"},
+    {"address": "widget vtable +40h", "convention": "__thiscall(float)", "ret": 4},
+    {"address": "widget vtable +58h", "convention": "__thiscall(const size*)", "ret": 4},
+    {"address": "widget vtable +88h", "convention": "__thiscall(int, int, float)", "ret": 12}
+  ],
+  "callers_callees": {
+    "0057c560": {"callers": [], "reached_by": "vtable 00CEF264 +10h at 0057ccbb", "callees": ["004f71d0", "004c12b0", "00aa5840", "00aa7e00", "0041dd40", "00419cc0", "00bd1510", "00bf7680"]},
+    "0057c990": {"callers": ["0057cb60"], "callees": ["0057c360", "0057c4c0"]},
+    "0057c4c0": {"callers": ["0057c990", "0057ca00"], "callees": ["01090ab0 vtable +20h", "00530890", "0057c360"]},
+    "0057c360": {"callers": ["0057c990", "0057c4c0"], "callees": ["01090ab0 vtable +20h", "00a9fad0", "00abaed0", "00419cc0", "00bd1510", "00bf6713"]},
+    "0057ca00": {"callers": [], "reached_by": "the callback pointer pushed at 0057cece", "callees": ["00aa7e00", "01090ab0 vtable +20h", "widget vtable +40h", "0057c4c0", "004caa90", "0041dd40", "00419cc0", "00bd1510", "00bf7680"]},
+    "00abaed0": {"callers": ["0057cb60", "0057c360"], "callees": ["00435c40", "0041dd40", "004c5e60", "00a9fad0", "00aba8d0", "00419cc0", "00bd1510", "00bf7680"]}
+  },
+  "ghidra_function_definitions": "all six routines have Ghidra functions with correct starts; none needed defining. 0057cb60's stored body is truncated past 0057cca0, so its tail was read from disk bytes with bsp.py disasm-raw",
+  "names_recorded": [
+    {"address": "0057c560", "name": "BSP_LoadingScreen_BindElements"},
+    {"address": "0057c990", "name": "BSP_LoadingScreen_ResetHints"},
+    {"address": "0057c4c0", "name": "BSP_LoadingScreen_TickHint"},
+    {"address": "0057c360", "name": "BSP_LoadingScreen_AdvanceHint"},
+    {"address": "0057ca00", "name": "BSP_LoadingScreen_WorkerTick"},
+    {"address": "00abaed0", "name": "BSP_GuiText_SetLocalisedSource"}
+  ],
+  "state": [
+    {"address": "0057c560", "state": "reconstructed, build-tested"},
+    {"address": "0057c990", "state": "reconstructed, build-tested"},
+    {"address": "0057c4c0", "state": "reconstructed, build-tested"},
+    {"address": "0057c360", "state": "reconstructed, build-tested"},
+    {"address": "0057ca00", "state": "reconstructed, build-tested"},
+    {"address": "00abaed0", "state": "analysed; kept behind the host, not reimplemented"}
+  ],
+  "files": [
+    "docs/LOADING_SCREEN_ELEMENTS.md",
+    "reports/loading_screen_elements.json",
+    "include/bsp/loading_screen_elements.hpp",
+    "src/loading_screen_elements.cpp",
+    "cmake/startup.cmake",
+    "tests/math_tests.cpp"
+  ],
+  "build": "scripts/build.ps1 Win32 Release clean, warnings as errors; ctest reconstructed_math passed",
+  "tests_added": "one case in tests/math_tests.cpp for the -0.0f negation idiom of 0057cae9, which a refactor to fabs would silently change",
+  "uncertainties": [
+    "+114h on the caption class is argued from the divide by 960.0, not from a store. docs/GUI_GEOMETRY_DISPATCH.md records +114h as PartialDisplayRatio clamped to [0,1] on the stateful texture class (00ab5c60, vtable 00d5c4c0), which keeps a vector at +F4h where the text class keeps a native string, so the classes differ and the field is reused. A ratio in [0,1] divided by 960 could never exceed 4/15, which would make the long arm dead.",
+    "The middle argument of widget vtable +88h is 0 at both call sites; unknown.",
+    "The (2,1)/(1,1) pair of 004c1ac0 and 00518250 is still unrecovered, as in the earlier packet.",
+    "Widget vtable +40h is read as a per-tick update from its float argument and its position; the slot was not cross-checked against another class.",
+    "Screen +34h and +54h were never seen read or written.",
+    "+14h (wave_Icon) has no reader among 0057c1c0, 0057c230, 0057c240, 0057c250, 0057c360, 0057c4c0, 0057c540, 0057c560, 0057c990, 0057ca00, 0057cb60 and 0057cf10.",
+    "The rotation runs in every mode, but only 004e4000 (mode 0) was found publishing keys; a mode 1 caller is still unidentified."
+  ],
+  "follow_up_packets": [
+    {
+      "id": "gui_widget_named_lookup",
+      "addresses": ["00aa7e00", "00aa5840", "00aa6740"],
+      "files": ["docs/GUI_WIDGET_LOOKUP.md", "include/bsp/gui_widget_lookup.hpp"],
+      "contract": "The page factory's two zero arguments, the recursive name search and the widget size pair at +20h, which four packets now reach through a host method."
+    },
+    {
+      "id": "gui_text_element",
+      "addresses": ["00abaed0", "00aba8d0", "00a9fad0"],
+      "files": ["docs/GUI_TEXT_ELEMENT.md", "include/bsp/gui_text_element.hpp"],
+      "contract": "The cached string at +F4h, what +114h holds on this class and what the geometry rebuild produces; this is what would settle the one provisional field reading above."
+    },
+    {
+      "id": "render_worker_callback_set",
+      "addresses": ["0060d6e0"],
+      "files": ["docs/RENDER_WORKER_CALLBACKS.md"],
+      "contract": "The other callbacks 00aa4040's callers install, and whether every callback repeats the worker's own delta computation with a private accumulator."
+    }
+  ]
+}
