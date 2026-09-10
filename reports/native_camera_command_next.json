@@ -1,0 +1,1825 @@
+{
+  "packet": "native_camera_command_discovery",
+  "base_commit": "dd0b2e3",
+  "worker_branch": "agent/native-camera-command-discovery-20260910",
+  "status": "bounded_static_discovery_complete; native batch lifecycle follow-up ready",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "actions": {
+    "ghidra_mutations": false,
+    "cpp_changes": false,
+    "shared_metadata_changes": false,
+    "ledger_changes": false,
+    "native_runtime_execution": false,
+    "game_validation": false
+  },
+  "main_findings": [
+    "B1F1F0 is44h placement construction, not allocation",
+    "Command is not refcounted; sole execute vtable and queue direct destructor/free",
+    "Context independently retains actual render camera, secondary owner and target; source camera occupies secondary+0C in shadow path",
+    "Native batch pool holds destroyed storage addresses, not retained live batches",
+    "B51D20 reconstructs count1/empty entries and preserves mode08",
+    "B55680 invokes current deleting slot with flags0 then reloads actual current pool and appends dead slot",
+    "Batch pool drain raw-frees every dead slot once",
+    "Saved free noreturn annotations hide important loops/publication/return tails",
+    "Shadow queue append(false), gather job wait0, and later batch-preparation wait1 are distinct"
+  ],
+  "functions": [
+    {
+      "address": "00b1f1f0",
+      "proposed_name": "BSP_RenderCommand_Construct",
+      "original_abi": "ECX=44h storage; stack=scene,camera,secondary owner,target; EAX=storage; RET16",
+      "length": 132,
+      "end_exclusive": "00b1f274"
+    },
+    {
+      "address": "00b1edc0",
+      "proposed_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "original_abi": "ECX=command; same four stack references; RET16",
+      "length": 407,
+      "end_exclusive": "00b1ef57"
+    },
+    {
+      "address": "00b1f3c0",
+      "proposed_name": "BSP_RenderCommandQueue_CreateAndGather",
+      "original_abi": "ECX=queue; four owner pointers and by-value8h label; RET24",
+      "length": 268,
+      "end_exclusive": "00b1f4cc"
+    },
+    {
+      "address": "00b1bf50",
+      "proposed_name": "BSP_RenderCommand_SetMetadata",
+      "original_abi": "ECX=command; stack=12 readable source bytes; RET4; integer forward copies",
+      "length": 24,
+      "end_exclusive": "00b1bf68"
+    },
+    {
+      "address": "00b1d910",
+      "proposed_name": "BSP_RenderCommand_SetDiagnosticLabel",
+      "original_abi": "ECX=command; stack=NativeString pointer; RET4",
+      "length": 54,
+      "end_exclusive": "00b1d946"
+    },
+    {
+      "address": "00b1eb80",
+      "proposed_name": "BSP_RenderCommandQueue_Append",
+      "original_abi": "ECX=queue; stack=command,gather byte; RET8",
+      "length": 86,
+      "end_exclusive": "00b1ebd6"
+    },
+    {
+      "address": "00b51d20",
+      "proposed_name": "BSP_RenderBatch_Construct",
+      "original_abi": "ECX=batch; EAX=same batch; RET; mode+08 untouched",
+      "length": 33,
+      "end_exclusive": "00b51d41"
+    },
+    {
+      "address": "00b51d50",
+      "proposed_name": "BSP_RenderBatch_Destroy",
+      "original_abi": "ECX=batch; RET; borrowed entries not destroyed",
+      "length": 113,
+      "end_exclusive": "00b51dc1"
+    },
+    {
+      "address": "00b1c630",
+      "proposed_name": "BSP_RenderBatch_DeletingDestructor",
+      "original_abi": "ECX=batch; stack=flags; EAX=original address even after free; RET4",
+      "length": 30,
+      "end_exclusive": "00b1c64e"
+    },
+    {
+      "address": "00b55680",
+      "proposed_name": "BSP_RenderBatch_ReturnOnZero",
+      "original_abi": "ECX=batch with actual references04 zero; RET",
+      "length": 30,
+      "end_exclusive": "00b5569e"
+    },
+    {
+      "address": "00b1d5b0",
+      "proposed_name": "BSP_RenderBatchPool_Acquire",
+      "original_abi": "ECX=actual free-list subobject at pool+04; EAX=batch; RET",
+      "length": 201,
+      "end_exclusive": "00b1d679"
+    },
+    {
+      "address": "00b555e0",
+      "proposed_name": "BSP_RenderBatchPool_ReturnSlot",
+      "original_abi": "ECX=actual free-list subobject; stack=dead raw slot; RET4",
+      "length": 155,
+      "end_exclusive": "00b5567b"
+    },
+    {
+      "address": "00b1c830",
+      "proposed_name": "BSP_RenderBatchPool_ReserveSlots",
+      "original_abi": "ECX=actual free-list subobject; stack=signed capacity; RET4",
+      "length": 95,
+      "end_exclusive": "00b1c88f"
+    },
+    {
+      "address": "00b1ce50",
+      "proposed_name": "BSP_RenderBatchPool_ResizeSlots",
+      "original_abi": "ECX=actual free-list subobject; stack=signed count; RET4",
+      "length": 80,
+      "end_exclusive": "00b1cea0"
+    },
+    {
+      "address": "00b1d8a0",
+      "proposed_name": "BSP_RenderBatchPool_DestroyFreeList",
+      "original_abi": "ECX=actual free-list subobject; RET",
+      "length": 61,
+      "end_exclusive": "00b1d8dd"
+    },
+    {
+      "address": "00b1e870",
+      "proposed_name": "BSP_RenderBatchPool_GetSingleton",
+      "original_abi": "No inputs; EAX=actual current pool0108FE8C; RET",
+      "length": 178,
+      "end_exclusive": "00b1e922"
+    },
+    {
+      "address": "00b1e930",
+      "proposed_name": "BSP_RenderBatchPool_DeletingDestructor",
+      "original_abi": "ECX=pool; stack=flags; EAX=original address even after free; RET4",
+      "length": 49,
+      "end_exclusive": "00b1e961"
+    },
+    {
+      "address": "00b1cd90",
+      "proposed_name": "BSP_RenderBatchPoolLock_GetSingleton",
+      "original_abi": "No inputs; EAX=actual current lock owner0109DBBC; RET",
+      "length": 189,
+      "end_exclusive": "00b1ce4d"
+    },
+    {
+      "address": "00b1c9d0",
+      "proposed_name": "BSP_RenderBatchPoolLock_Construct",
+      "original_abi": "ECX=8h owner; EAX=same owner; RET",
+      "length": 69,
+      "end_exclusive": "00b1ca15"
+    },
+    {
+      "address": "00b1d530",
+      "proposed_name": "BSP_RenderBatchPoolLock_DeletingDestructor",
+      "original_abi": "ECX=lock owner; stack=flags; EAX=original address even after free; RET4",
+      "length": 55,
+      "end_exclusive": "00b1d567"
+    },
+    {
+      "address": "00b1c3a0",
+      "proposed_name": "BSP_RenderBatchPoolLock_DestroyBase",
+      "original_abi": "ECX=lock owner; clear actual global0109DBBC and installCE3818; RET",
+      "length": 17,
+      "end_exclusive": "00b1c3b1"
+    },
+    {
+      "address": "00b51c60",
+      "proposed_name": "BSP_RenderBatch_ResizeEntries",
+      "original_abi": "ECX=actual entry pointer/count/capacity subobject at batch+0C; stack=signed count; RET4",
+      "length": 80,
+      "end_exclusive": "00b51cb0"
+    },
+    {
+      "address": "00b51d00",
+      "proposed_name": "BSP_RenderBatch_DestroyEntryArray",
+      "original_abi": "ECX=actual entry pointer/count/capacity subobject; RET",
+      "length": 23,
+      "end_exclusive": "00b51d17"
+    },
+    {
+      "address": "00a8e090",
+      "proposed_name": "BSP_ShadowGatherJob_GetSingleton",
+      "original_abi": "No inputs; EAX=8h primary owner; RET; register secondary owner+04",
+      "length": 206,
+      "end_exclusive": "00a8e15e"
+    },
+    {
+      "address": "00a8ae50",
+      "proposed_name": "BSP_ShadowGatherJob_Execute",
+      "original_abi": "ECX=job primary interface unused; stack=command; RET4",
+      "length": 38,
+      "end_exclusive": "00a8ae76"
+    }
+  ],
+  "storage": {
+    "command44": {
+      "00": "vtableD5E5E0[0]=B1D950",
+      "04": "retained scene/root",
+      "08": "untouched preimage",
+      "0c": "batch0",
+      "10": "batch1",
+      "14": "diagnostic length",
+      "18": "diagnostic data",
+      "1c_20_24": "three DWORD metadata",
+      "28": "retained context",
+      "2c_30_34": "indexed group data/count/capacity",
+      "38_3c_40": "ordered group data/count/capacity"
+    },
+    "context18": {
+      "vtable": "D5E5C4[BD30E0,B1D570]",
+      "04": "actual reference count1",
+      "08": "render camera",
+      "0c": "second retained owner; active source camera in shadow caller",
+      "10": "borrowed command backpointer",
+      "14": "retained target"
+    },
+    "batch18": {
+      "vtable": "D5E5AC[B55680,B1C630,B55550,B51DF0]",
+      "base_vtable": "D62064",
+      "04": "actual reference count",
+      "08": "mode, constructor-unwritten",
+      "0c_10_14": "actual borrowed entry data/count/capacity"
+    },
+    "pool10": {
+      "publication": "0108FE8C",
+      "vtable": "D5E5DC[B1E930]",
+      "04_08_0c": "actual dead-slot free list data/count/capacity"
+    },
+    "lock08": {
+      "publication": "0109DBBC",
+      "vtable": "D5E5D4[B1D530]",
+      "04": "actual owned TrackedCriticalSection pointer; section1C includes actual depth18"
+    },
+    "queue34": {
+      "publication": "00F8D440",
+      "vtable": "D5E5F4[B1F6B0]",
+      "14_18_1c": "actual command data/count/capacity",
+      "20": "control, constructor reads preimage before reset",
+      "30": "actual retained current context"
+    },
+    "shadow_job08": {
+      "publication": "00E18AD4",
+      "00": "primary tableD5B570[A8AE50]",
+      "04": "secondary tableD5B56C[A8DDB0]",
+      "registered_pointer": "owner+04",
+      "delete": "A8DDB0 subtracts4 then A8DDE0 clears publication, writes base table at owner+04, optionally frees original owner"
+    }
+  },
+  "eh": [
+    {
+      "function": "00b1f1f0",
+      "handler": "00cbcbe1",
+      "func_info": "00df50a8",
+      "unwind_map": "00df5090",
+      "states": [
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cbcbd6",
+          "effect": "actual+38 array viaB1D1F0"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbcbcb",
+          "effect": "actual+2C array viaB1D260"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbcbc0",
+          "effect": "actual+14 string via41DD20"
+        }
+      ],
+      "absent_cleanup": "No scene/context/batch release in this constructor unwind map"
+    },
+    {
+      "function": "00b1d5b0",
+      "handler": "00cbca04",
+      "func_info": "00df4e64",
+      "unwind_map": "00df4e4c",
+      "states": [
+        {
+          "state": 2,
+          "next": 0,
+          "action": "00cbc9f9",
+          "effect": "free fresh batch allocation"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbc9e8",
+          "effect": "call actual placement-delete401130 with two pointers; verified RET no operation"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbc9e0",
+          "effect": "captured lock guard unwind"
+        }
+      ]
+    },
+    {
+      "function": "00b1e870",
+      "handler": "00cbcb58",
+      "func_info": "00df4ffc",
+      "unwind_map": "00df4ff4",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbcb50",
+          "effect": "captured manager lock guard unwind"
+        }
+      ]
+    },
+    {
+      "function": "00b1cd90",
+      "handler": "00cbc9b3",
+      "func_info": "00df4dfc",
+      "unwind_map": "00df4dec",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbc9a8",
+          "effect": "free in-progress8h lock owner"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbc9a0",
+          "effect": "captured manager lock guard unwind"
+        }
+      ]
+    },
+    {
+      "function": "00b1c9d0",
+      "handler": "00cbc948",
+      "func_info": "00df4d68",
+      "unwind_map": "00df4d60",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbc940",
+          "effect": "B1C3A0 clears publication0109DBBC and installsCE3818"
+        }
+      ]
+    },
+    {
+      "function": "00b51d50",
+      "handler": "00cbff23",
+      "func_info": "00df8a70",
+      "unwind_map": "00df8a60",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbff18",
+          "effect": "B51D00 destroys actual+0C entry array"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbff10",
+          "effect": "BD30F0 base phase"
+        }
+      ]
+    },
+    {
+      "function": "00b555e0",
+      "handler": "00cc0318",
+      "func_info": "00df8e50",
+      "unwind_map": "00df8e48",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc0310",
+          "effect": "captured batch lock guard unwind"
+        }
+      ]
+    },
+    {
+      "function": "00b1f3c0",
+      "handler": "00cbcc63",
+      "func_info": "00df5154",
+      "unwind_map": "00df5144",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbcc58",
+          "effect": "free in-progress44h command allocation"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbcc50",
+          "effect": "41DD20 returns by-value label storage"
+        }
+      ],
+      "absent_cleanup": "After constructor success state0 does not blanket-destroy command on later failure"
+    }
+  ],
+  "missing_native_continuations": [
+    {
+      "address": "00b1d8bb",
+      "effect": "increment index, pop free argument, compare reloaded count, loop; then clear/free pointer array and RET"
+    },
+    {
+      "address": "00b1c881",
+      "effect": "pop free argument; publish replacement data and requested capacity; restore registers and RET4"
+    },
+    {
+      "address": "00b51d9e",
+      "effect": "pop free argument; state-1; BD30F0; restore SEH and RET"
+    },
+    {
+      "addresses": [
+        "00b1c645",
+        "00b1e958",
+        "00b1d55e"
+      ],
+      "effect": "cleanup after returning free, return original owner address with RET4"
+    }
+  ],
+  "shadow_path": {
+    "caller_fragment": "00a8eb7c..00a8ec8d",
+    "iterations": 4,
+    "ctor_arguments": [
+      "shadow+34 scene/root association copied from light+A4",
+      "shadow+20+4*i cascade camera",
+      "shadow+30 active source camera",
+      "shadow+4F0+4*i target group"
+    ],
+    "metadata": [
+      0,
+      98,
+      30
+    ],
+    "label": "SHBU",
+    "queue": "004C11F0 then B1EB80(command,false)",
+    "gather_job": "004C1130 owner+04 interface virtual04(A8E090(),command)",
+    "gather_wait": "same actual job interface virtual08(mode0) after four submits",
+    "gather_execute": "A8AE50 -> B1BF30(context) and B1BF20(scene) -> B72190 -> B1E990",
+    "execution_jobs": "B1D950 requires separate actual batch preparation job00B0FFB0 and wait1 when sync disabled and both counts>50"
+  },
+  "ready_follow_up": {
+    "name": "native_render_batch_lifetime",
+    "files": [
+      "include/bsp/native_render_batch_lifetime.hpp",
+      "src/native_render_batch_lifetime.cpp",
+      "docs/NATIVE_RENDER_BATCH_LIFETIME.md",
+      "reports/native_render_batch_lifetime_audit.json"
+    ],
+    "addresses": [
+      "00b51d20",
+      "00b51d50",
+      "00b1c630",
+      "00b55680",
+      "00b1d5b0",
+      "00b555e0",
+      "00b1c830",
+      "00b1ce50",
+      "00b1d8a0",
+      "00b1e870",
+      "00b1e930",
+      "00b1cd90",
+      "00b1c9d0",
+      "00b1d530",
+      "00b1c3a0",
+      "00b51c60",
+      "00b51d00"
+    ],
+    "interface": "Exact native18h batch,10h pool,8h lock storage; external companion binds actual live publications0108FE8C/0109DBBC and same SingletonLifetimeDomain; get pool/lock, acquire, return-on-zero, batch/pool/lock delete",
+    "reuse": [
+      "TrackedCriticalSection and critical_section_create_00bd1860/destroy_owned_0041cc80 from random_threads.hpp",
+      "SingletonLifetimeDomain, actual manager lock/publication/registration and allocation boundary",
+      "Actual batch04 atomic count and actual pointer/count/capacity fields"
+    ],
+    "exclude": [
+      "Existing host command/context/batch structs",
+      "Camera/context/target ownership adapters",
+      "Queue singleton or fake queue",
+      "Job singleton or fake scheduler",
+      "Material preparation and draw execution"
+    ],
+    "verification_proposal": "One native/host lifecycle: acquire empty, populate borrowed entries, final actual count release, entry buffer freed before pool append, reacquire same raw address preserving mode08, pool drain raw-free once."
+  },
+  "remaining_dependencies": [
+    {
+      "boundary": "Complete44h command owner",
+      "addresses": [
+        "00b1f1f0",
+        "00b1edc0",
+        "00b1ddd0"
+      ],
+      "missing": "Same actual storage backing across command, context, groups, diagnostic and batch entries; native staged unwind, not existing independent host counts/collections"
+    },
+    {
+      "boundary": "Actual retained inputs",
+      "addresses": [
+        "00b1edc0",
+        "00b1d120"
+      ],
+      "missing": "Actual raw owner identities/reference04 and current virtual0 dispatch for scene/root, cascade/source cameras and targets; no unconditional camera destruction"
+    },
+    {
+      "boundary": "Scene gather",
+      "addresses": [
+        "00b72190",
+        "00b1e990"
+      ],
+      "missing": "Actual root chain, mask fields, node virtual20 and real existing grouping/upload bindings"
+    },
+    {
+      "boundary": "Queue owner",
+      "addresses": [
+        "004c11f0",
+        "00b1f280",
+        "00b1f6b0",
+        "00b1eb80",
+        "00b1ebe0"
+      ],
+      "missing": "Actual34h queue publication/storage/lifecycle. Constructor preimage20==2 calls live renderer virtual11C before zero; shared host queue is not a raw owner"
+    },
+    {
+      "boundary": "Shadow gather jobs",
+      "addresses": [
+        "004c1130",
+        "00a8e090",
+        "00a8ae50",
+        "00a8ddb0",
+        "00a8dde0"
+      ],
+      "missing": "Actual job service interface, registered secondary pointer and lifetime, borrowed command validity through wait0"
+    },
+    {
+      "boundary": "Later render execution",
+      "addresses": [
+        "00b1d950",
+        "00b0ffb0",
+        "00b71360",
+        "00b46a70",
+        "00b51df0",
+        "00b55550"
+      ],
+      "missing": "Existing orchestration/frame/math fragments need same actual owners; preserve separate preparation jobs and wait1 branch"
+    }
+  ],
+  "verification": {
+    "kind": "Static assembly, exact byte comparison and evidence consistency only",
+    "complete_code_spans": 75,
+    "code_bytes": 4907,
+    "caller_fragments": 1,
+    "caller_bytes": 274,
+    "data_spans": 27,
+    "data_bytes": 675,
+    "total_bytes": 5856,
+    "all_live_matches_disk_or_zero_fill": true,
+    "native_tests_added": 0,
+    "build_run": false,
+    "reason_no_build": "Only discovery docs/report changed; no C++ implementation in this packet",
+    "limits": [
+      "No native exception execution",
+      "No runtime lease/allocator/thread scheduling test",
+      "No native ABI-compatible C++ claim",
+      "No game/shadow rendering validation"
+    ]
+  },
+  "evidence": [
+    {
+      "address": "00b1f1f0",
+      "end_exclusive": "00b1f274",
+      "kind": "complete_code",
+      "length": 132,
+      "disk_offset": 7467504,
+      "disk_sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2",
+      "live_sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 42,
+      "last_instruction": "00b1f271: ret 0x10"
+    },
+    {
+      "address": "00b1edc0",
+      "end_exclusive": "00b1ef57",
+      "kind": "complete_code",
+      "length": 407,
+      "disk_offset": 7466432,
+      "disk_sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef",
+      "live_sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 162,
+      "last_instruction": "00b1ef54: ret 0x10"
+    },
+    {
+      "address": "00b1d120",
+      "end_exclusive": "00b1d1c8",
+      "kind": "complete_code",
+      "length": 168,
+      "disk_offset": 7459104,
+      "disk_sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+      "live_sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 66,
+      "last_instruction": "00b1d1c7: ret"
+    },
+    {
+      "address": "00b1d570",
+      "end_exclusive": "00b1d58e",
+      "kind": "complete_code",
+      "length": 30,
+      "disk_offset": 7460208,
+      "disk_sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09",
+      "live_sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 11,
+      "last_instruction": "00b1d58b: ret 4"
+    },
+    {
+      "address": "00b1ddd0",
+      "end_exclusive": "00b1dfed",
+      "kind": "complete_code",
+      "length": 541,
+      "disk_offset": 7462352,
+      "disk_sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6",
+      "live_sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 198,
+      "last_instruction": "00b1dfec: ret"
+    },
+    {
+      "address": "00b1e6b0",
+      "end_exclusive": "00b1e6ce",
+      "kind": "complete_code",
+      "length": 30,
+      "disk_offset": 7464624,
+      "disk_sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2",
+      "live_sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 11,
+      "last_instruction": "00b1e6cb: ret 4"
+    },
+    {
+      "address": "00b1ebe0",
+      "end_exclusive": "00b1ec9b",
+      "kind": "complete_code",
+      "length": 187,
+      "disk_offset": 7465952,
+      "disk_sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+      "live_sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 71,
+      "last_instruction": "00b1ec9a: ret"
+    },
+    {
+      "address": "00b1d950",
+      "end_exclusive": "00b1dac1",
+      "kind": "complete_code",
+      "length": 369,
+      "disk_offset": 7461200,
+      "disk_sha256": "f8344c0414061b024861c969979e423f999eff4d35e6b3ca0dbd1b283771625f",
+      "live_sha256": "f8344c0414061b024861c969979e423f999eff4d35e6b3ca0dbd1b283771625f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 122,
+      "last_instruction": "00b1dac0: ret"
+    },
+    {
+      "address": "00b1d5b0",
+      "end_exclusive": "00b1d679",
+      "kind": "complete_code",
+      "length": 201,
+      "disk_offset": 7460272,
+      "disk_sha256": "c26165615886bf3f6f105641f3feba592b22862a6812a6c7fbc338efce618d32",
+      "live_sha256": "c26165615886bf3f6f105641f3feba592b22862a6812a6c7fbc338efce618d32",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 62,
+      "last_instruction": "00b1d678: ret"
+    },
+    {
+      "address": "00b1e870",
+      "end_exclusive": "00b1e922",
+      "kind": "complete_code",
+      "length": 178,
+      "disk_offset": 7465072,
+      "disk_sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6",
+      "live_sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 53,
+      "last_instruction": "00b1e921: ret"
+    },
+    {
+      "address": "00b51d20",
+      "end_exclusive": "00b51d41",
+      "kind": "complete_code",
+      "length": 33,
+      "disk_offset": 7675168,
+      "disk_sha256": "0ae99641aa55ecde50cd3585749e863633c5dcf14ac3995fae697767181aafe8",
+      "live_sha256": "0ae99641aa55ecde50cd3585749e863633c5dcf14ac3995fae697767181aafe8",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 9,
+      "last_instruction": "00b51d40: ret"
+    },
+    {
+      "address": "00b51d50",
+      "end_exclusive": "00b51dc1",
+      "kind": "complete_code",
+      "length": 113,
+      "disk_offset": 7675216,
+      "disk_sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e",
+      "live_sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 33,
+      "last_instruction": "00b51dc0: ret"
+    },
+    {
+      "address": "00b1c630",
+      "end_exclusive": "00b1c64e",
+      "kind": "complete_code",
+      "length": 30,
+      "disk_offset": 7456304,
+      "disk_sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d",
+      "live_sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 11,
+      "last_instruction": "00b1c64b: ret 4"
+    },
+    {
+      "address": "00b55680",
+      "end_exclusive": "00b5569e",
+      "kind": "complete_code",
+      "length": 30,
+      "disk_offset": 7689856,
+      "disk_sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363",
+      "live_sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 13,
+      "last_instruction": "00b5569d: ret"
+    },
+    {
+      "address": "00b555e0",
+      "end_exclusive": "00b5567b",
+      "kind": "complete_code",
+      "length": 155,
+      "disk_offset": 7689696,
+      "disk_sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446",
+      "live_sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 48,
+      "last_instruction": "00b55678: ret 4"
+    },
+    {
+      "address": "00b1c830",
+      "end_exclusive": "00b1c88f",
+      "kind": "complete_code",
+      "length": 95,
+      "disk_offset": 7456816,
+      "disk_sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a",
+      "live_sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 38,
+      "last_instruction": "00b1c88c: ret 4"
+    },
+    {
+      "address": "00b1ce50",
+      "end_exclusive": "00b1cea0",
+      "kind": "complete_code",
+      "length": 80,
+      "disk_offset": 7458384,
+      "disk_sha256": "28ecb559e82ba96893279a9c4ce80a9eae1933f4630b0bc5acb8ada99cde7668",
+      "live_sha256": "28ecb559e82ba96893279a9c4ce80a9eae1933f4630b0bc5acb8ada99cde7668",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 31,
+      "last_instruction": "00b1ce9d: ret 4"
+    },
+    {
+      "address": "00b51c60",
+      "end_exclusive": "00b51cb0",
+      "kind": "complete_code",
+      "length": 80,
+      "disk_offset": 7674976,
+      "disk_sha256": "d3cd812fc78a4b9ba8dc2178e1b62942a0ea3da7e9458de05837ac6f30d905aa",
+      "live_sha256": "d3cd812fc78a4b9ba8dc2178e1b62942a0ea3da7e9458de05837ac6f30d905aa",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 31,
+      "last_instruction": "00b51cad: ret 4"
+    },
+    {
+      "address": "00b1d8a0",
+      "end_exclusive": "00b1d8dd",
+      "kind": "complete_code",
+      "length": 61,
+      "disk_offset": 7461024,
+      "disk_sha256": "112013b2a023a38a297f124d35986bf4b231a5e0c41333ccae8855b4f021ce0a",
+      "live_sha256": "112013b2a023a38a297f124d35986bf4b231a5e0c41333ccae8855b4f021ce0a",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 26,
+      "last_instruction": "00b1d8dc: ret"
+    },
+    {
+      "address": "00b1e930",
+      "end_exclusive": "00b1e961",
+      "kind": "complete_code",
+      "length": 49,
+      "disk_offset": 7465264,
+      "disk_sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3",
+      "live_sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 14,
+      "last_instruction": "00b1e95e: ret 4"
+    },
+    {
+      "address": "00b1cd90",
+      "end_exclusive": "00b1ce4d",
+      "kind": "complete_code",
+      "length": 189,
+      "disk_offset": 7458192,
+      "disk_sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c",
+      "live_sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 51,
+      "last_instruction": "00b1ce4c: ret"
+    },
+    {
+      "address": "00b1c9d0",
+      "end_exclusive": "00b1ca15",
+      "kind": "complete_code",
+      "length": 69,
+      "disk_offset": 7457232,
+      "disk_sha256": "eb639f2a4d7cc39b5d61bd6fd7fc145497f47e0e266560752403744b48b1f8a4",
+      "live_sha256": "eb639f2a4d7cc39b5d61bd6fd7fc145497f47e0e266560752403744b48b1f8a4",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 19,
+      "last_instruction": "00b1ca14: ret"
+    },
+    {
+      "address": "00b1d530",
+      "end_exclusive": "00b1d567",
+      "kind": "complete_code",
+      "length": 55,
+      "disk_offset": 7460144,
+      "disk_sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1",
+      "live_sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 15,
+      "last_instruction": "00b1d564: ret 4"
+    },
+    {
+      "address": "00b1f3c0",
+      "end_exclusive": "00b1f4cc",
+      "kind": "complete_code",
+      "length": 268,
+      "disk_offset": 7467968,
+      "disk_sha256": "6ba5988706ca665629cd821275e9fe96bbd5fb3a621bd20cb7ec18c843290915",
+      "live_sha256": "6ba5988706ca665629cd821275e9fe96bbd5fb3a621bd20cb7ec18c843290915",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 94,
+      "last_instruction": "00b1f4c9: ret 0x18"
+    },
+    {
+      "address": "00b1eb80",
+      "end_exclusive": "00b1ebd6",
+      "kind": "complete_code",
+      "length": 86,
+      "disk_offset": 7465856,
+      "disk_sha256": "a8a1d877daf1073bdb59261209410257e71aa5556394e626f6aac17874c1a198",
+      "live_sha256": "a8a1d877daf1073bdb59261209410257e71aa5556394e626f6aac17874c1a198",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 32,
+      "last_instruction": "00b1ebd3: ret 8"
+    },
+    {
+      "address": "00b1bf50",
+      "end_exclusive": "00b1bf68",
+      "kind": "complete_code",
+      "length": 24,
+      "disk_offset": 7454544,
+      "disk_sha256": "cf390856fca8f1387ad9b719d4db36a09ee56230b1bdde6ee6473d792641c683",
+      "live_sha256": "cf390856fca8f1387ad9b719d4db36a09ee56230b1bdde6ee6473d792641c683",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 8,
+      "last_instruction": "00b1bf65: ret 4"
+    },
+    {
+      "address": "00b1d910",
+      "end_exclusive": "00b1d946",
+      "kind": "complete_code",
+      "length": 54,
+      "disk_offset": 7461136,
+      "disk_sha256": "c1f090a8c6ab43a9286b8477f5d8f3a51210c3114b7c98e2e270e3e0b0f7c178",
+      "live_sha256": "c1f090a8c6ab43a9286b8477f5d8f3a51210c3114b7c98e2e270e3e0b0f7c178",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 24,
+      "last_instruction": "00b1d943: ret 4"
+    },
+    {
+      "address": "00b1f280",
+      "end_exclusive": "00b1f321",
+      "kind": "complete_code",
+      "length": 161,
+      "disk_offset": 7467648,
+      "disk_sha256": "4c293ee684ba469cfb24f208b4d722f1fb8bf5eb11f57c2f021df7c3f9fd6e6f",
+      "live_sha256": "4c293ee684ba469cfb24f208b4d722f1fb8bf5eb11f57c2f021df7c3f9fd6e6f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 51,
+      "last_instruction": "00b1f320: ret"
+    },
+    {
+      "address": "004c11f0",
+      "end_exclusive": "004c12ad",
+      "kind": "complete_code",
+      "length": 189,
+      "disk_offset": 791024,
+      "disk_sha256": "e5a79fe265e15ba3285d2a4b6944100bd038fb08567592f2c72f6f3f05c597a5",
+      "live_sha256": "e5a79fe265e15ba3285d2a4b6944100bd038fb08567592f2c72f6f3f05c597a5",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 51,
+      "last_instruction": "004c12ac: ret"
+    },
+    {
+      "address": "00a8e090",
+      "end_exclusive": "00a8e15e",
+      "kind": "complete_code",
+      "length": 206,
+      "disk_offset": 6873232,
+      "disk_sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+      "live_sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 54,
+      "last_instruction": "00a8e15d: ret"
+    },
+    {
+      "address": "00a8ae50",
+      "end_exclusive": "00a8ae76",
+      "kind": "complete_code",
+      "length": 38,
+      "disk_offset": 6860368,
+      "disk_sha256": "2ccaa820c0c29fc8deb005fc7f4aae43b7483004461054ca42cce22dc8e6e67c",
+      "live_sha256": "2ccaa820c0c29fc8deb005fc7f4aae43b7483004461054ca42cce22dc8e6e67c",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 13,
+      "last_instruction": "00a8ae73: ret 4"
+    },
+    {
+      "address": "00a8ddb0",
+      "end_exclusive": "00a8ddb8",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 6872496,
+      "disk_sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+      "live_sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00a8ddb3: jmp 0xa8dde0"
+    },
+    {
+      "address": "00a8dde0",
+      "end_exclusive": "00a8de14",
+      "kind": "complete_code",
+      "length": 52,
+      "disk_offset": 6872544,
+      "disk_sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+      "live_sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 17,
+      "last_instruction": "00a8de11: ret 4"
+    },
+    {
+      "address": "00b72190",
+      "end_exclusive": "00b721e4",
+      "kind": "complete_code",
+      "length": 84,
+      "disk_offset": 7807376,
+      "disk_sha256": "4a8ec54f7dbd7d3284e01fdf8c96dbeaedfaac075d7f0bdf64d49ae3752e1371",
+      "live_sha256": "4a8ec54f7dbd7d3284e01fdf8c96dbeaedfaac075d7f0bdf64d49ae3752e1371",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 32,
+      "last_instruction": "00b721e1: ret 4"
+    },
+    {
+      "address": "00b1d1f0",
+      "end_exclusive": "00b1d207",
+      "kind": "complete_code",
+      "length": 23,
+      "disk_offset": 7459312,
+      "disk_sha256": "532a8afb9d5e3de877a34d9fb94c9fc8cddd1fd862d34e80aa6575b0f5e70d37",
+      "live_sha256": "532a8afb9d5e3de877a34d9fb94c9fc8cddd1fd862d34e80aa6575b0f5e70d37",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 10,
+      "last_instruction": "00b1d206: ret"
+    },
+    {
+      "address": "00b1d260",
+      "end_exclusive": "00b1d277",
+      "kind": "complete_code",
+      "length": 23,
+      "disk_offset": 7459424,
+      "disk_sha256": "fd27855b15976d2a5c10410dc626c1dac3e15b4f1994e3755714401d196a7c34",
+      "live_sha256": "fd27855b15976d2a5c10410dc626c1dac3e15b4f1994e3755714401d196a7c34",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 10,
+      "last_instruction": "00b1d276: ret"
+    },
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "kind": "complete_code",
+      "length": 29,
+      "disk_offset": 122144,
+      "disk_sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 12,
+      "last_instruction": "0041dd3c: ret"
+    },
+    {
+      "address": "00401130",
+      "end_exclusive": "00401131",
+      "kind": "complete_code",
+      "length": 1,
+      "disk_offset": 4400,
+      "disk_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 1,
+      "last_instruction": "00401130: ret"
+    },
+    {
+      "address": "00cbcbc0",
+      "end_exclusive": "00cbcbcb",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161664,
+      "disk_sha256": "70a9ebea5a37ae8d32b6c7b4521b4c60e2cbffae887a664d0fbe4453e95fe0a3",
+      "live_sha256": "70a9ebea5a37ae8d32b6c7b4521b4c60e2cbffae887a664d0fbe4453e95fe0a3",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcbc6: jmp 0x41dd20"
+    },
+    {
+      "address": "00cbcbcb",
+      "end_exclusive": "00cbcbd6",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161675,
+      "disk_sha256": "a8d79db396aec12a8b28d8b97a5fb9b42e3caaafc0b4778d4163b4454c936fd9",
+      "live_sha256": "a8d79db396aec12a8b28d8b97a5fb9b42e3caaafc0b4778d4163b4454c936fd9",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcbd1: jmp 0xb1d260"
+    },
+    {
+      "address": "00cbcbd6",
+      "end_exclusive": "00cbcbe1",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161686,
+      "disk_sha256": "6a1194692a9eb4ac5cf321337f050f12b37ae1e238c8ad8f3ff75dc24175cfc8",
+      "live_sha256": "6a1194692a9eb4ac5cf321337f050f12b37ae1e238c8ad8f3ff75dc24175cfc8",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcbdc: jmp 0xb1d1f0"
+    },
+    {
+      "address": "00cbcbe1",
+      "end_exclusive": "00cbcbeb",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161697,
+      "disk_sha256": "e558c72d0c3e1627610bee5d61e912198678bd7fc615526fb44958c4fe86a2d2",
+      "live_sha256": "e558c72d0c3e1627610bee5d61e912198678bd7fc615526fb44958c4fe86a2d2",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcbe6: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbcc50",
+      "end_exclusive": "00cbcc58",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161808,
+      "disk_sha256": "11892314b0069ad24e19d5c44530f307a6edf64d7dc2a8c2d7422e89292557f8",
+      "live_sha256": "11892314b0069ad24e19d5c44530f307a6edf64d7dc2a8c2d7422e89292557f8",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcc53: jmp 0x41dd20"
+    },
+    {
+      "address": "00cbcc58",
+      "end_exclusive": "00cbcc63",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161816,
+      "disk_sha256": "a41ecd38308766b0e5e4a150a156e4a3088fca4b8916a41cfc38aabc22caec80",
+      "live_sha256": "a41ecd38308766b0e5e4a150a156e4a3088fca4b8916a41cfc38aabc22caec80",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 5,
+      "last_instruction": "00cbcc62: ret"
+    },
+    {
+      "address": "00cbcc63",
+      "end_exclusive": "00cbcc6d",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161827,
+      "disk_sha256": "3bea57ef52e4f42ecd0470839ee746b16788ce8fccd7388bdc1af742bba6b222",
+      "live_sha256": "3bea57ef52e4f42ecd0470839ee746b16788ce8fccd7388bdc1af742bba6b222",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcc68: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbc9e0",
+      "end_exclusive": "00cbc9e8",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161184,
+      "disk_sha256": "2635988440a23b129663bc058475d35228f656c09bdf0d72e3c73f594384c274",
+      "live_sha256": "2635988440a23b129663bc058475d35228f656c09bdf0d72e3c73f594384c274",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc9e3: jmp 0x411ee0"
+    },
+    {
+      "address": "00cbc9e8",
+      "end_exclusive": "00cbc9f9",
+      "kind": "complete_code",
+      "length": 17,
+      "disk_offset": 9161192,
+      "disk_sha256": "a78831c2ceb55ad077fd4c053708a271cb9a19cfa2703d07b6e92e7eb75133d9",
+      "live_sha256": "a78831c2ceb55ad077fd4c053708a271cb9a19cfa2703d07b6e92e7eb75133d9",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 7,
+      "last_instruction": "00cbc9f8: ret"
+    },
+    {
+      "address": "00cbc9f9",
+      "end_exclusive": "00cbca04",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161209,
+      "disk_sha256": "98af2b3b2f8ee948782c260f3bed4023241ea998955d8ada67cc316c3d7c505f",
+      "live_sha256": "98af2b3b2f8ee948782c260f3bed4023241ea998955d8ada67cc316c3d7c505f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 5,
+      "last_instruction": "00cbca03: ret"
+    },
+    {
+      "address": "00cbca04",
+      "end_exclusive": "00cbca0e",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161220,
+      "disk_sha256": "e044f383d4c05ffbc3131e103921206c5b658ed65545122fc0d905da39e4596d",
+      "live_sha256": "e044f383d4c05ffbc3131e103921206c5b658ed65545122fc0d905da39e4596d",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbca09: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbcb50",
+      "end_exclusive": "00cbcb58",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161552,
+      "disk_sha256": "77fc01c30849916e9858199490282600cc413430256e04a99a126d26bb32161f",
+      "live_sha256": "77fc01c30849916e9858199490282600cc413430256e04a99a126d26bb32161f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcb53: jmp 0x411ee0"
+    },
+    {
+      "address": "00cbcb58",
+      "end_exclusive": "00cbcb62",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161560,
+      "disk_sha256": "af2ce551a52b1af49eaee5d32cc2fc3572de9a5ed49bcac9e39bcddcaa917aff",
+      "live_sha256": "af2ce551a52b1af49eaee5d32cc2fc3572de9a5ed49bcac9e39bcddcaa917aff",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcb5d: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbc9a0",
+      "end_exclusive": "00cbc9a8",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161120,
+      "disk_sha256": "8c7a8459a32cb0072d5f5f14e541bf4fa2e77bcb72b4b83d39e9285961bd30bc",
+      "live_sha256": "8c7a8459a32cb0072d5f5f14e541bf4fa2e77bcb72b4b83d39e9285961bd30bc",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc9a3: jmp 0x411ee0"
+    },
+    {
+      "address": "00cbc9a8",
+      "end_exclusive": "00cbc9b3",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161128,
+      "disk_sha256": "14e1be1dbab41e7b31d5989d414da52d78eb53741816f3e27b6aa44afc7ba827",
+      "live_sha256": "14e1be1dbab41e7b31d5989d414da52d78eb53741816f3e27b6aa44afc7ba827",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 5,
+      "last_instruction": "00cbc9b2: ret"
+    },
+    {
+      "address": "00cbc9b3",
+      "end_exclusive": "00cbc9bd",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161139,
+      "disk_sha256": "fc38661de3e8c1cb3c9021d2d8cdd24e8bdc371288f1c738d44f2e7fa1d40c91",
+      "live_sha256": "fc38661de3e8c1cb3c9021d2d8cdd24e8bdc371288f1c738d44f2e7fa1d40c91",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc9b8: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbff10",
+      "end_exclusive": "00cbff18",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9174800,
+      "disk_sha256": "610c84e5d9f7a3776902acd070d3b612a9911d583c6fa76db987a047216856c0",
+      "live_sha256": "610c84e5d9f7a3776902acd070d3b612a9911d583c6fa76db987a047216856c0",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbff13: jmp 0xbd30f0"
+    },
+    {
+      "address": "00cbff18",
+      "end_exclusive": "00cbff23",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9174808,
+      "disk_sha256": "f3d21627529c0ff32ac474074d4630782e92c0797d163cb1dcc7574825f0e843",
+      "live_sha256": "f3d21627529c0ff32ac474074d4630782e92c0797d163cb1dcc7574825f0e843",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbff1e: jmp 0xb51d00"
+    },
+    {
+      "address": "00cbff23",
+      "end_exclusive": "00cbff2d",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9174819,
+      "disk_sha256": "762b74023e12565b5d247d2ca4e9f2a120571a1c85324898de084c5c17152c55",
+      "live_sha256": "762b74023e12565b5d247d2ca4e9f2a120571a1c85324898de084c5c17152c55",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbff28: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cc0310",
+      "end_exclusive": "00cc0318",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9175824,
+      "disk_sha256": "c67b0b2c40d6f6158946a7a859faa9170a070caaa49215975e179cde8afe2edb",
+      "live_sha256": "c67b0b2c40d6f6158946a7a859faa9170a070caaa49215975e179cde8afe2edb",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cc0313: jmp 0x411ee0"
+    },
+    {
+      "address": "00cc0318",
+      "end_exclusive": "00cc0322",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9175832,
+      "disk_sha256": "442a17fb904aeb74776e90c15511159ea33b6ebb429ea3ffb69b5c97cca40fbc",
+      "live_sha256": "442a17fb904aeb74776e90c15511159ea33b6ebb429ea3ffb69b5c97cca40fbc",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cc031d: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbc940",
+      "end_exclusive": "00cbc948",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161024,
+      "disk_sha256": "306ac972bf651e92c845c828fac40c8edf4f66ae463a88653be5c16af49bace7",
+      "live_sha256": "306ac972bf651e92c845c828fac40c8edf4f66ae463a88653be5c16af49bace7",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc943: jmp 0xb1c3a0"
+    },
+    {
+      "address": "00cbc948",
+      "end_exclusive": "00cbc952",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161032,
+      "disk_sha256": "17bd1be410264cad3f10b42a23a71e166011e8512d9b45c7f38d02883c61bf87",
+      "live_sha256": "17bd1be410264cad3f10b42a23a71e166011e8512d9b45c7f38d02883c61bf87",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc94d: jmp 0xbf6b43"
+    },
+    {
+      "address": "00b51d00",
+      "end_exclusive": "00b51d17",
+      "kind": "complete_code",
+      "length": 23,
+      "disk_offset": 7675136,
+      "disk_sha256": "68a48a82052cefb52864a9cd2163de59010f0fbb658fcc045450ec7626e1f106",
+      "live_sha256": "68a48a82052cefb52864a9cd2163de59010f0fbb658fcc045450ec7626e1f106",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 10,
+      "last_instruction": "00b51d16: ret"
+    },
+    {
+      "address": "00b1bf20",
+      "end_exclusive": "00b1bf24",
+      "kind": "complete_code",
+      "length": 4,
+      "disk_offset": 7454496,
+      "disk_sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "live_sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00b1bf23: ret"
+    },
+    {
+      "address": "00b1bf30",
+      "end_exclusive": "00b1bf34",
+      "kind": "complete_code",
+      "length": 4,
+      "disk_offset": 7454512,
+      "disk_sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "live_sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00b1bf33: ret"
+    },
+    {
+      "address": "00b1c3a0",
+      "end_exclusive": "00b1c3b1",
+      "kind": "complete_code",
+      "length": 17,
+      "disk_offset": 7455648,
+      "disk_sha256": "9b31fb0a8534bbfb257e561296dcbba205de6ef4c5c05f949778a6dab53f2db8",
+      "live_sha256": "9b31fb0a8534bbfb257e561296dcbba205de6ef4c5c05f949778a6dab53f2db8",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00b1c3b0: ret"
+    },
+    {
+      "address": "00cbc9c0",
+      "end_exclusive": "00cbc9c8",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161152,
+      "disk_sha256": "e24a70bf7cc69996fd498a30dbcfe0f4c301a746ef03d95859fef81929ec9554",
+      "live_sha256": "e24a70bf7cc69996fd498a30dbcfe0f4c301a746ef03d95859fef81929ec9554",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc9c3: jmp 0xbd30f0"
+    },
+    {
+      "address": "00cbc9c8",
+      "end_exclusive": "00cbc9d2",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161160,
+      "disk_sha256": "d3bb101ab5cdbc3fe5978a36007d6d1d894e6f23c8ae85349d47ea806988a969",
+      "live_sha256": "d3bb101ab5cdbc3fe5978a36007d6d1d894e6f23c8ae85349d47ea806988a969",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbc9cd: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbcab0",
+      "end_exclusive": "00cbcabb",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161392,
+      "disk_sha256": "ad1284a0c2c89be3d2f6c34906a03d0a2997928b1402796ddd31fdf520e224a6",
+      "live_sha256": "ad1284a0c2c89be3d2f6c34906a03d0a2997928b1402796ddd31fdf520e224a6",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcab6: jmp 0x41dd20"
+    },
+    {
+      "address": "00cbcabb",
+      "end_exclusive": "00cbcac6",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161403,
+      "disk_sha256": "28f951be7c6aab7717e297d67839714c5c81ac334974edc3a3329675ca6aff8a",
+      "live_sha256": "28f951be7c6aab7717e297d67839714c5c81ac334974edc3a3329675ca6aff8a",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcac1: jmp 0xb1d260"
+    },
+    {
+      "address": "00cbcac6",
+      "end_exclusive": "00cbcad1",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161414,
+      "disk_sha256": "b2acb160632b9a9a0df04343bc0c5d3348db50d1d4694be4ece763f63991e9da",
+      "live_sha256": "b2acb160632b9a9a0df04343bc0c5d3348db50d1d4694be4ece763f63991e9da",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcacc: jmp 0xb1d1f0"
+    },
+    {
+      "address": "00cbcad1",
+      "end_exclusive": "00cbcadb",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161425,
+      "disk_sha256": "49a075a46ffe5698b597fab3aeb8a5f6f6261ba485b9428074a1a738ead3805a",
+      "live_sha256": "49a075a46ffe5698b597fab3aeb8a5f6f6261ba485b9428074a1a738ead3805a",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcad6: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cbcbf0",
+      "end_exclusive": "00cbcbf8",
+      "kind": "complete_code",
+      "length": 8,
+      "disk_offset": 9161712,
+      "disk_sha256": "81be2c2601619a350c399c62a60004985075bd472d30f5479a4ea702d377af14",
+      "live_sha256": "81be2c2601619a350c399c62a60004985075bd472d30f5479a4ea702d377af14",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcbf3: jmp 0xb1c3c0"
+    },
+    {
+      "address": "00cbcbf8",
+      "end_exclusive": "00cbcc03",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161720,
+      "disk_sha256": "808380c6a3212f741b50446cd3c854a41cd028f043ada7cad4389ea42a2b9602",
+      "live_sha256": "808380c6a3212f741b50446cd3c854a41cd028f043ada7cad4389ea42a2b9602",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcbfe: jmp 0xb1d590"
+    },
+    {
+      "address": "00cbcc03",
+      "end_exclusive": "00cbcc0e",
+      "kind": "complete_code",
+      "length": 11,
+      "disk_offset": 9161731,
+      "disk_sha256": "76d6e71648b4ade2ed630f10c77aff6bca424c3fb1a1d436829af55b14b8d39c",
+      "live_sha256": "76d6e71648b4ade2ed630f10c77aff6bca424c3fb1a1d436829af55b14b8d39c",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00cbcc09: jmp 0xb1f150"
+    },
+    {
+      "address": "00cbcc0e",
+      "end_exclusive": "00cbcc18",
+      "kind": "complete_code",
+      "length": 10,
+      "disk_offset": 9161742,
+      "disk_sha256": "d5060cab26101d8eef2fd17e42eb2675e48c286eebdf6c9d8abedcaf9df523de",
+      "live_sha256": "d5060cab26101d8eef2fd17e42eb2675e48c286eebdf6c9d8abedcaf9df523de",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00cbcc13: jmp 0xbf6b43"
+    },
+    {
+      "address": "00a8eb7c",
+      "end_exclusive": "00a8ec8e",
+      "kind": "caller_fragment",
+      "length": 274,
+      "disk_offset": 6876028,
+      "disk_sha256": "ac2cca75ec3549819025ee704ecd6146994010bd359bb087efa7d53865e77e32",
+      "live_sha256": "ac2cca75ec3549819025ee704ecd6146994010bd359bb087efa7d53865e77e32",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 85,
+      "last_instruction": "00a8ec8c: call eax"
+    },
+    {
+      "address": "00d5e5e0",
+      "end_exclusive": "00d5e5e4",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9823712,
+      "disk_sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8",
+      "live_sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5c4",
+      "end_exclusive": "00d5e5cc",
+      "kind": "data",
+      "length": 8,
+      "disk_offset": 9823684,
+      "disk_sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "live_sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5ac",
+      "end_exclusive": "00d5e5bc",
+      "kind": "data",
+      "length": 16,
+      "disk_offset": 9823660,
+      "disk_sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+      "live_sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62064",
+      "end_exclusive": "00d62074",
+      "kind": "data",
+      "length": 16,
+      "disk_offset": 9838692,
+      "disk_sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+      "live_sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5dc",
+      "end_exclusive": "00d5e5e0",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9823708,
+      "disk_sha256": "270557a3e5a0bbd6aa1e7ed474bb3feed52aa1634e304a75ff30303e06cfb607",
+      "live_sha256": "270557a3e5a0bbd6aa1e7ed474bb3feed52aa1634e304a75ff30303e06cfb607",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5d4",
+      "end_exclusive": "00d5e5d8",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9823700,
+      "disk_sha256": "9a20ff64fc0a50f3f9c0e2d3f0c816ce2d0533c5a1151e67f1d57ab42772e192",
+      "live_sha256": "9a20ff64fc0a50f3f9c0e2d3f0c816ce2d0533c5a1151e67f1d57ab42772e192",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ceb130",
+      "end_exclusive": "00ceb138",
+      "kind": "data",
+      "length": 8,
+      "disk_offset": 9351472,
+      "disk_sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d",
+      "live_sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce3818",
+      "end_exclusive": "00ce381c",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9320472,
+      "disk_sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "live_sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108fe8c",
+      "end_exclusive": "0108fe90",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109dbbc",
+      "end_exclusive": "0109dbc0",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00f8d440",
+      "end_exclusive": "00f8d444",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00e18ad4",
+      "end_exclusive": "00e18ad8",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5b568",
+      "end_exclusive": "00d5b574",
+      "kind": "data",
+      "length": 12,
+      "disk_offset": 9811304,
+      "disk_sha256": "c5cfa417ccb8d8e64b3022a83c9b6b5000e336a9dd263ba190e76520c10ca59d",
+      "live_sha256": "c5cfa417ccb8d8e64b3022a83c9b6b5000e336a9dd263ba190e76520c10ca59d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5e5f4",
+      "end_exclusive": "00d5e5f8",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9823732,
+      "disk_sha256": "530cc4ac2e45865034adc766d6a5009de12166fb8a51c34b0d9ed2ab8550bdcc",
+      "live_sha256": "530cc4ac2e45865034adc766d6a5009de12166fb8a51c34b0d9ed2ab8550bdcc",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce9a38",
+      "end_exclusive": "00ce9a3a",
+      "kind": "data",
+      "length": 2,
+      "disk_offset": 9345592,
+      "disk_sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+      "live_sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d5b5d0",
+      "end_exclusive": "00d5b5d5",
+      "kind": "data",
+      "length": 5,
+      "disk_offset": 9811408,
+      "disk_sha256": "30224929360dfaa2c8e36b5f324a8b850062a9601dfa61da2955517832f16a28",
+      "live_sha256": "30224929360dfaa2c8e36b5f324a8b850062a9601dfa61da2955517832f16a28",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df5090",
+      "end_exclusive": "00df50cc",
+      "kind": "data",
+      "length": 60,
+      "disk_offset": 10440848,
+      "disk_sha256": "c555d13d8bd3ab5a59f16e8f94eb42ac9a0029c5f341957de530f17cdba6b52a",
+      "live_sha256": "c555d13d8bd3ab5a59f16e8f94eb42ac9a0029c5f341957de530f17cdba6b52a",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df4e4c",
+      "end_exclusive": "00df4e88",
+      "kind": "data",
+      "length": 60,
+      "disk_offset": 10440268,
+      "disk_sha256": "ba185027efdad680e9bbc7bdc5195fd8681b524203a57a4871e0b7dbe9a435f4",
+      "live_sha256": "ba185027efdad680e9bbc7bdc5195fd8681b524203a57a4871e0b7dbe9a435f4",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df4ff4",
+      "end_exclusive": "00df5020",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 10440692,
+      "disk_sha256": "94e206f3b61c434d1a5d70fd6c79c5fcfd59625d8e1ce6cb3b8ea32fd47d6fac",
+      "live_sha256": "94e206f3b61c434d1a5d70fd6c79c5fcfd59625d8e1ce6cb3b8ea32fd47d6fac",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df4dec",
+      "end_exclusive": "00df4e20",
+      "kind": "data",
+      "length": 52,
+      "disk_offset": 10440172,
+      "disk_sha256": "5147b3130d1f28028243809bfad21e3e1b7e4ceb01df68e5c7742eb5d2e5e49b",
+      "live_sha256": "5147b3130d1f28028243809bfad21e3e1b7e4ceb01df68e5c7742eb5d2e5e49b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df8a60",
+      "end_exclusive": "00df8a94",
+      "kind": "data",
+      "length": 52,
+      "disk_offset": 10455648,
+      "disk_sha256": "1ace32e2d6c1ed7e7a2c66938d7a120d4158f6f958a33b73e2612f28db297534",
+      "live_sha256": "1ace32e2d6c1ed7e7a2c66938d7a120d4158f6f958a33b73e2612f28db297534",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df8e48",
+      "end_exclusive": "00df8e74",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 10456648,
+      "disk_sha256": "d6adbeffd6a5b694c382f62056006261fcade8ed41c75a5acf59a44868395ea5",
+      "live_sha256": "d6adbeffd6a5b694c382f62056006261fcade8ed41c75a5acf59a44868395ea5",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df5144",
+      "end_exclusive": "00df5178",
+      "kind": "data",
+      "length": 52,
+      "disk_offset": 10441028,
+      "disk_sha256": "f7e45343664ed9d8ff96c8730ad9094d215fda42463b57451bb20a80069db35c",
+      "live_sha256": "f7e45343664ed9d8ff96c8730ad9094d215fda42463b57451bb20a80069db35c",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df4d60",
+      "end_exclusive": "00df4d8c",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 10440032,
+      "disk_sha256": "ae28daa5b275e7308200582be7bd3f89018abfd6d4a5fd89c06bd2c39b16a516",
+      "live_sha256": "ae28daa5b275e7308200582be7bd3f89018abfd6d4a5fd89c06bd2c39b16a516",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df4e20",
+      "end_exclusive": "00df4e4c",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 10440224,
+      "disk_sha256": "bf432f7ea09342b55b0b3e773c82cc2c9b54ebaa111a1b57df748ca32f620ab9",
+      "live_sha256": "bf432f7ea09342b55b0b3e773c82cc2c9b54ebaa111a1b57df748ca32f620ab9",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df4f40",
+      "end_exclusive": "00df4f7c",
+      "kind": "data",
+      "length": 60,
+      "disk_offset": 10440512,
+      "disk_sha256": "f13aa88e36be4342c8e2f4a19ea19f55ee4d8f4077c038bef426c23cc0118af2",
+      "live_sha256": "f13aa88e36be4342c8e2f4a19ea19f55ee4d8f4077c038bef426c23cc0118af2",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df50cc",
+      "end_exclusive": "00df5108",
+      "kind": "data",
+      "length": 60,
+      "disk_offset": 10440908,
+      "disk_sha256": "d314b12ec4fbf2ce7406dc1a2a14d0e956becc68c141224fe9578989ffb0e5a6",
+      "live_sha256": "d314b12ec4fbf2ce7406dc1a2a14d0e956becc68c141224fe9578989ffb0e5a6",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/NATIVE_CAMERA_COMMAND_NEXT.md",
+      "bytes": 14585,
+      "sha256": "012e45ca2198b66ba3fdbe73ee9bc4491d0dde6239a156e9d2112da3d21305a9"
+    },
+    {
+      "path": "local/prepare_camera_command_evidence.py",
+      "bytes": 4909,
+      "sha256": "37a3b20a8877a0824d4b427892578bf4273d1d950ecd6d2a1d49d9af56e21095"
+    },
+    {
+      "path": "local/camera_command_native_evidence.json",
+      "bytes": 46508,
+      "sha256": "a3879215d59ce1babfc30e1894a5326a90dbb1442ffdb3b448e02e66913d07de"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10270,
+      "sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "bytes": 10448,
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/render_command_execution.hpp",
+      "bytes": 4939,
+      "sha256": "8fff16c9fa9fa22e086f82db7b79d9e4dcf82e394610cad5c2b976ef7e62d08d"
+    },
+    {
+      "path": "src/render_command_execution.cpp",
+      "bytes": 5745,
+      "sha256": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "src/random_threads.cpp",
+      "bytes": 2902,
+      "sha256": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 4426,
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079"
+    }
+  ]
+}
