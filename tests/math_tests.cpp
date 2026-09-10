@@ -14,6 +14,7 @@
 #include "bsp/session_polls.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/world_ocean.hpp"
+#include "bsp/world_effects_startup.hpp"
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -677,6 +678,27 @@ int main() {
             "the shell settles on state 5, never on the 4 the drain dispatched");
         check(aborted.end_loading_calls == 1 && ready.end_loading_calls == 1,
             "0057c250 runs on both exits, so the loading screen never leaks");
+    }
+
+    {
+        // 00AEF3C0 decides which .ats files a single atlas request pulls in.
+        // The prefix span is len(request)-3, taken from the request rather than
+        // the candidate, so an off-by-one here silently loads the wrong split
+        // parts. The installed interface/textures directory has no common.ats
+        // and exactly four common_* parts, which is what this rule must accept.
+        const std::string request = "interface/textures/common.ats";
+        check(bsp::atlas_split_name_matches_00aef3c0(request,
+                  "interface/textures/common_dxt5_1.ats"),
+            "a split atlas part matches its logical request");
+        check(bsp::atlas_split_name_matches_00aef3c0(request,
+                  "interface\\textures\\common.ats"),
+            "separator normalisation makes the exact path match");
+        check(!bsp::atlas_split_name_matches_00aef3c0(request,
+                  "interface/textures/commonx_dxt1.ats"),
+            "the underscore is required, so a longer stem is rejected");
+        check(!bsp::atlas_split_name_matches_00aef3c0(request,
+                  "interface/textures/fe/common_dxt1.ats"),
+            "a candidate in a deeper directory is rejected");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

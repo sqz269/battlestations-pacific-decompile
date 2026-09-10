@@ -1,0 +1,465 @@
+{
+  "packet": "app_init_world_effects",
+  "owner": "agent/init-world-effects",
+  "program": "/battlestationspacific.exe",
+  "project": "bsp",
+  "image_base": "0x00400000",
+  "source_doc": "docs/APP_INIT_WORLD_EFFECTS.md",
+  "ghidra_mutations": "none; read-only packet, ledger names only",
+  "addresses": [
+    "00af0060",
+    "00740840",
+    "00ad9ac0",
+    "00ad71c0",
+    "00af1450",
+    "00bbcb40",
+    "00af0b10"
+  ],
+  "init_order": [
+    {
+      "call_site": "0073d8cc",
+      "address": "00bbcb40",
+      "phase": 3,
+      "note": "platform phase, before the window object"
+    },
+    {
+      "call_site": "0073de42",
+      "address": "00af0060",
+      "phase": 9
+    },
+    {
+      "call_site": "0073de8c",
+      "address": "00740840",
+      "phase": 9
+    },
+    {
+      "call_site": "0073deba",
+      "address": "00ad9ac0",
+      "phase": 9
+    },
+    {
+      "call_site": "0073deda",
+      "address": "00ad71c0",
+      "phase": 9
+    },
+    {
+      "call_site": "0073df82",
+      "address": "00af1450",
+      "phase": 9
+    },
+    {
+      "call_site": "0073e02b",
+      "address": "00af0b10",
+      "phase": 10
+    }
+  ],
+  "external_between": [
+    "00b14a10",
+    "00b3c4c0",
+    "00ad9f90",
+    "indirect 00f8c218 vtable+0xc at 0073df87"
+  ],
+  "functions": [
+    {
+      "address": "00af0060",
+      "proposed_name": "BSP_TextureAtlas_Load",
+      "abi": "__thiscall, ECX = atlas manager 00f8c26c, one stack native-string argument, RET 4, void",
+      "behavior": "Logs 'Loading atlas: %s' (004254b0). Rejects a path whose lowercased last four bytes are not '.ats' (__stricmp vs 00d5d23c). Directory prefix = max(rfind('\\\\'), rfind('/')) then substring(0, i+1), fallback './' (00d5d7d0). Enumerates that directory with extension 'ats' (00d5d7cc) through 00886280 on the file system singleton 0109ceec. For each name, 00aef3c0 decides whether it belongs to the request; on acceptance and when the manager's texture array holds no matching entry, 00aef280 registers it. The name array is freed with free at 00af0396.",
+      "globals": {
+        "00f8c26c": "atlas manager singleton (ECX)",
+        "0109ceec": "file system singleton, receives 00886280",
+        "00f8c270": "empty-string sentinel used when the path data pointer is null",
+        "00ce7894": "\\\\",
+        "00ce7898": "/",
+        "00d5d7cc": "ats",
+        "00d5d7d0": "./",
+        "00d5d23c": ".ats",
+        "00d5d7d4": "Loading atlas: %s"
+      },
+      "container": "manager texture array base+0x10, count+0x14, element name string at +8 via 00b33e40 (LEA EAX,[ECX+8]; RET)",
+      "callers": [
+        "004c9a70",
+        "004e3aa0",
+        "0057cb60",
+        "0068cc70",
+        "0073d410",
+        "00873eb0",
+        "00ad60d0"
+      ],
+      "quirk": "The dedupe loop at 00af02f0 compares registered texture paths against the REQUESTED path (MOV ECX,[EDI] at 00af0305), not against the candidate. Texture paths come from the atlas header and are .dds, so the guard cannot fire for a .ats request.",
+      "state": "reconstructed, build-tested, installed-file-checked"
+    },
+    {
+      "address": "00aef3c0",
+      "proposed_name": "BSP_TextureAtlas_SplitNameMatches",
+      "abi": "__fastcall, ECX = requested descriptor string, EDX = candidate string, AL result",
+      "behavior": "Lowercases both sides and replaces '\\\\' with '/' (004cad40). Returns true on exact case-insensitive equality. Returns false when the candidate is shorter than the request. Requires rfind('/') to return the same index on both sides and the directory text before it to match. Requires both names to end in '.ats'. Otherwise returns equals_ci(stem(request) + '_', candidate.substr(0, len(request) - 3)); both spans are measured from the request.",
+      "globals": {
+        "00ce7890": "_",
+        "00ce7894": "\\\\",
+        "00ce7898": "/",
+        "00d5d23c": ".ats"
+      },
+      "effect": "One logical atlas request loads every '<stem>_*.ats' sibling.",
+      "state": "reconstructed, build-tested, installed-file-checked"
+    },
+    {
+      "address": "00aef280",
+      "proposed_name": "BSP_TextureAtlas_RegisterDescriptor",
+      "abi": "__thiscall, ECX = atlas manager, one stack native-string argument",
+      "behavior": "Allocates a 0x1c text-buffer object (00af5600), copies the name, resolves it with BSP_VFS_ResolveExistingName (00bdf4c0), logs 'Atlas file not found: %s' on failure, otherwise reads the file with 00af5850 and parses it with BSP_TextureAtlas_ParseBuffer (00aeeaf0).",
+      "reuses": "docs/ATLAS_PARSER.md and src/texture_atlas.cpp already cover the .ats grammar; not duplicated.",
+      "state": "analyzed"
+    },
+    {
+      "address": "00740840",
+      "proposed_name": "BSP_DecalSystem_LoadDefinitions",
+      "abi": "__thiscall, ECX = freshly allocated 0x1c object, no stack arguments, RET, EAX = this",
+      "behavior": "Constructor. Base ctor 0073fa70 publishes the instance at 00e1aea0 and registers a singleton lifetime. Zeroes +0x04..+0x18, builds a Lua state (00b66bd0, 00b6a020(1)), loads scripts/datatables/decals.lua (length 0x1d) via 00b69d40, pushes the global table 'Decals' and iterates it. Each table-valued element allocates 0x28 bytes constructed by 00740410 and is appended to a doubling vector.",
+      "record_size": 40,
+      "record_layout": [
+        {
+          "offset": "+0x00",
+          "field": "name.size",
+          "source": "iterator key"
+        },
+        {
+          "offset": "+0x04",
+          "field": "name.data",
+          "source": "iterator key"
+        },
+        {
+          "offset": "+0x08",
+          "field": "Maxnum",
+          "type": "int32",
+          "accessor": "00b66290"
+        },
+        {
+          "offset": "+0x0c",
+          "field": "Size",
+          "type": "float",
+          "accessor": "00b66270",
+          "key_constant": "00cff278"
+        },
+        {
+          "offset": "+0x10",
+          "field": "Radius",
+          "type": "float",
+          "accessor": "00b66270"
+        },
+        {
+          "offset": "+0x14",
+          "field": "vertex format decal.mvfm",
+          "source": "00740410 via renderer 00f8d394 vtable +0x34"
+        },
+        {
+          "offset": "+0x18",
+          "field": "Texture",
+          "source": "renderer 00f8d394 vtable +0x64 with (name, 0)"
+        },
+        {
+          "offset": "+0x1c",
+          "field": "Shader",
+          "source": "renderer 00f8d394 vtable +0x48 with (name)"
+        },
+        {
+          "offset": "+0x20",
+          "field": "LifeTime",
+          "type": "float",
+          "accessor": "00b66270"
+        },
+        {
+          "offset": "+0x24",
+          "field": "FadeOutTime",
+          "type": "float",
+          "accessor": "00b66270"
+        }
+      ],
+      "container": "system object base+0x10, count+0x14, capacity+0x18, growth 0073e9a0 with max(1, capacity*2)",
+      "installed_file_check": {
+        "path": "scripts/datatables/decals.lua",
+        "entries": 3,
+        "entry_names": [
+          "machine_gun_decal",
+          "explosion_hole",
+          "landscape_hole"
+        ],
+        "keys_per_entry": [
+          "Size",
+          "Radius",
+          "Maxnum",
+          "Texture",
+          "Shader",
+          "LifeTime",
+          "FadeOutTime"
+        ],
+        "texture_values": [
+          "white.tga"
+        ],
+        "shader_values": [
+          "decal.mshd"
+        ],
+        "related_assets_present": [
+          "shaderfx/common/decal.shfx"
+        ],
+        "related_assets_absent": [
+          "decal.mvfm (no loose file anywhere in the installation)"
+        ]
+      },
+      "state": "analyzed; record layout reconstructed; installed-file-checked"
+    },
+    {
+      "address": "00ad9ac0",
+      "proposed_name": "BSP_FoliageSystem_LoadTypes",
+      "abi": "__thiscall, ECX = freshly allocated 0xa8 object, no stack arguments, RET, EAX = this",
+      "behavior": "Constructor only. Base ctor 00ad6950 publishes the instance at 00f8c210. Zeroes most fields, sets byte +0x05 to 0 and byte +0x06 to 1, allocates a nested 0x14 object constructed by 00ad6810 (published at 00f8c264, vtable 00d5d274), calls 00ae84e0 to parse the table, then clears +0x9c..+0xa4 and byte +0x04.",
+      "state": "analyzed"
+    },
+    {
+      "address": "00ae84e0",
+      "proposed_name": "BSP_FoliageSystem_ParseTypeTable",
+      "abi": "__fastcall, ECX = foliage system, no stack arguments",
+      "behavior": "Builds a Lua state and loads Effects\\\\foliage\\\\FoliageTypes.lua, pushes the global 'Foliages' and iterates it. Each element has a 'name' field plus indexed sub-entries: a one-based counter (initialised at 00ae87f8) is appended by 004caca0 to eight stems built at 00ae8899..00ae8be4 in the order model, modeltype, percent, uptexture, sidetexture, scale, height, topheight. Per sub-index it takes the model branch when model<N> exists (model, modeltype, percent), the impostor branch when uptexture<N> exists (uptexture, sidetexture, scale, height, topheight, percent), otherwise logs the Hungarian diagnostic and stops.",
+      "diagnostic": "Foliage '%s' se modell, se uptexture nincs megadva!",
+      "installed_file_check": {
+        "path": "effects/foliage/foliagetypes.lua",
+        "lines": 532,
+        "entries": 24,
+        "modeltype_domain": {
+          "0": "TREE",
+          "1": "CORAL",
+          "2": "SEAWEED"
+        },
+        "model_branch_example": "3D Korall, four model variants at 25 percent each",
+        "impostor_branch_example": "Mix - Lombos, uptexture/sidetexture pairs over effects/foliage/Baobab*.tga"
+      },
+      "state": "analyzed; key set and branch structure recovered; installed-file-checked"
+    },
+    {
+      "address": "00ad71c0",
+      "proposed_name": "BSP_FoliageSystem_SetEnabled",
+      "abi": "__thiscall, ECX = foliage system 00f8c210, one stack byte, RET 4, void",
+      "behavior": "First instruction is MOV AL, byte ptr [ESP+4] (bytes 8a 44 24 04). Writes AL to 00f8c20c, then walks two pointer vectors on the system: this+0x54 over [+0x58, +0x5c) calling 00ae0710(ECX = element, flag) and this+0x64 over [+0x68, +0x6c) calling 00ae2c80(ECX = element, flag). Both loops reload 00f8c20c per element. Calls to 00bf6713 are STL checked-iterator bound assertions.",
+      "gate": {
+        "call_site": "0073debf",
+        "test": "CMP byte ptr [00f88a06], 0; push 1 when non-zero else 0",
+        "setting": "Foliage, settings object 00f88980 +0x86, key constant 00d15ecc",
+        "reference": "docs/APP_INIT_BOOTSTRAP.md line 195",
+        "writer": "none; 00f88a06 has no writing cross-reference in the image"
+      },
+      "globals": {
+        "00f8c20c": "foliage enable latch; four xrefs total, the write and two reads in 00ad71c0 and one read in 00ad92c0"
+      },
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00af1450",
+      "proposed_name": "BSP_ParticleSystem_LoadShaders",
+      "abi": "__thiscall, ECX = freshly allocated 0x30 object, no stack arguments, RET, EAX = this",
+      "behavior": "Constructor. Base ctor 00af1140 publishes the instance at 00f8c280. Creates the index buffer, fills the quad index pattern, loads the shared atlas texture, then the sprite and floating vertex formats, declarations and materials.",
+      "index_buffer": {
+        "index_count": 60000,
+        "vertex_limit": 40000,
+        "quads": 10000,
+        "pattern": "per quad base v: v, v+1, v+2, v+2, v+1, v+3",
+        "factory": "renderer 00f8d394 vtable +0x60, then its virtual +0x0c to create and +0x10 to unlock",
+        "note": "32-bit counter stored as 16-bit; the base wraps the signed short boundary at v = 32768 and continues as unsigned 16-bit"
+      },
+      "record_layout": [
+        {
+          "offset": "+0x00",
+          "field": "vtable PTR_CG_scalar_deleting_dtor_00af1430_00d5d844"
+        },
+        {
+          "offset": "+0x04",
+          "field": "index buffer, 60000 indices"
+        },
+        {
+          "offset": "+0x08",
+          "field": "material particleaxialsprite_n0s0.mshd"
+        },
+        {
+          "offset": "+0x0c",
+          "field": "material particleaxialsprite_n0s1.mshd"
+        },
+        {
+          "offset": "+0x10",
+          "field": "material particleaxialsprite_n1s0.mshd"
+        },
+        {
+          "offset": "+0x14",
+          "field": "material particleaxialsprite_n1s1.mshd"
+        },
+        {
+          "offset": "+0x18",
+          "field": "material particleaxialsprite_dist.mshd"
+        },
+        {
+          "offset": "+0x1c",
+          "field": "vertex format particleaxialsprite.mvfm, renderer vtable +0x38"
+        },
+        {
+          "offset": "+0x20",
+          "field": "vertex declaration from +0x1c, renderer vtable +0x40"
+        },
+        {
+          "offset": "+0x24",
+          "field": "material ParticleFloating.mshd"
+        },
+        {
+          "offset": "+0x28",
+          "field": "vertex format ParticleFloating.mvfm, renderer vtable +0x38"
+        },
+        {
+          "offset": "+0x2c",
+          "field": "vertex declaration from +0x28"
+        }
+      ],
+      "texture": {
+        "name": "Particles/Textures/atl_all.dds",
+        "loader": "renderer 00f8d394 vtable +0x64",
+        "slot": "texture slot 0 on every material via 00b189f0",
+        "release": "InterlockedDecrement at 00af1957 then the object's virtual +0 at zero"
+      },
+      "material_factory": "00535320 BSP_Material_CreateForEffectName",
+      "installed_file_check": {
+        "particles/textures/atl_all.dds": {
+          "present": true,
+          "bytes": 2785408
+        },
+        "shaderfx/common": [
+          "particleaxialsprite_n0s0.shfx",
+          "particleaxialsprite_n0s1.shfx",
+          "particleaxialsprite_n1s0.shfx",
+          "particleaxialsprite_n1s1.shfx",
+          "particleaxialsprite_dist.shfx",
+          "particlefloating.shfx"
+        ],
+        "mvfm_files_found": 0,
+        "loose_mpkg_found": 0
+      },
+      "state": "reconstructed, build-tested, installed-file-checked"
+    },
+    {
+      "address": "00bbcb40",
+      "proposed_name": "BSP_WaterRenderer_RegisterTextureSources",
+      "abi": "__cdecl, no arguments, RET, void",
+      "behavior": "Allocates 0x10 bytes, constructs them with 00bbc900 and stores the result in 01090900; stores 0 on allocation failure. Runs at 0073d8cc, before the D3D9 device exists, so the four objects can only be name registrations.",
+      "slots": [
+        {
+          "offset": "+0x00",
+          "name": "CausticsTextureSource",
+          "ctor": "00bbc5f0",
+          "vtable": "PTR_LAB_00d644e8"
+        },
+        {
+          "offset": "+0x04",
+          "name": "ShoreWaveTextureSource0",
+          "ctor": "00bbc740",
+          "vtable": "PTR_LAB_00d644f0"
+        },
+        {
+          "offset": "+0x08",
+          "name": "ShoreWaveTextureSource1",
+          "ctor": "00bbc740",
+          "vtable": "PTR_LAB_00d644f0"
+        },
+        {
+          "offset": "+0x0c",
+          "name": "ShoreWaveTextureSource2",
+          "ctor": "00bbc740",
+          "vtable": "PTR_LAB_00d644f0"
+        }
+      ],
+      "base_registration": "00b1b730, a lazy singleton over 00f8d41c; the name is the registry key",
+      "consumer": "docs/GAME_WORLD_OCEAN.md line 123 records shorewavetexturesource0..2 and oceanheightmap as ocean renderer keys",
+      "globals": {
+        "01090900": "the 0x10 table; other references are BSP_GlobalObject_Destroy_01090900 (00bbc5d0) and a data reference at 00bbe2fe"
+      },
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00af0b10",
+      "proposed_name": "BSP_FoliageGroupManager_Ctor",
+      "abi": "__thiscall, ECX = freshly allocated 0x34 object, no stack arguments, RET, EAX = this",
+      "behavior": "Base ctor 00af06a0 writes the instance to 00f8c274 at 00af06f6 and registers its lifetime. Sets the derived vtable, zeroes +0x04..+0x18 and +0x24..+0x28, copies 00d7a24c into +0x2c and stores BSP_CriticalSection_Create (00bd1860) at +0x30.",
+      "seed": {
+        "global": "00d7a24c",
+        "bytes": "00 00 80 3f",
+        "value": 1.0
+      },
+      "identification": "00f8c274 is the foliage group manager of docs/GAME_RENDER_TAIL.md; its +0x2c setter 00af0450 and getter 00af0460 feed component z of shader constant c33 Time at 00b46cdb",
+      "state": "reconstructed, build-tested"
+    }
+  ],
+  "singleton_publication": [
+    {
+      "ctor": "00740840",
+      "base": "0073fa70",
+      "global": "00e1aea0"
+    },
+    {
+      "ctor": "00ad9ac0",
+      "base": "00ad6950",
+      "global": "00f8c210"
+    },
+    {
+      "ctor": "00ad9ac0 nested 0x14 object",
+      "base": "00ad6810",
+      "global": "00f8c264"
+    },
+    {
+      "ctor": "00af1450",
+      "base": "00af1140",
+      "global": "00f8c280"
+    },
+    {
+      "ctor": "00af0b10",
+      "base": "00af06a0",
+      "global": "00f8c274"
+    }
+  ],
+  "renderer_vtable_slots_used": {
+    "00f8d394+0x34": "vertex format, used for decal.mvfm by 00740410",
+    "00f8d394+0x38": "vertex format, used for the two particle .mvfm requests",
+    "00f8d394+0x40": "vertex declaration from a vertex format",
+    "00f8d394+0x48": "shader, used for the decal Shader key",
+    "00f8d394+0x60": "index buffer factory",
+    "00f8d394+0x64": "texture, with (path, 0)"
+  },
+  "doc_corrections": [
+    "docs/APP_INITIALIZE_MAP.md line 143: 00ad71c0 iterates TWO ranges, [+0x58,+0x5c) via 00ae0710 and [+0x68,+0x6c) via 00ae2c80; 00f8c20c is written before both loops, not published after them; the argument is the Foliage setting byte 00f88a06.",
+    "docs/APP_INITIALIZE_MAP.md item 56: 00af0b10 is the foliage group manager singleton 00f8c274 of docs/GAME_RENDER_TAIL.md; the 00d7a24c seed is 1.0f into the +0x2c shader-time scalar.",
+    "docs/APP_INITIALIZE_MAP.md item 47: interface/textures/common.ats does not exist in the installation; the call loads the four common_*.ats split parts through the 00aef3c0 prefix rule.",
+    "docs/GAME_RENDER_TAIL.md line 258: this packet does not close the open question about what registers records into the particle clock's +0x8/+0xc. 00af1450 builds the shader and atlas set at 00f8c280 and never touches the clock singleton 00f8d420."
+  ],
+  "uncertainties": [
+    "The 00af0060 dedupe guard compares registered texture paths against the requested .ats path and cannot match; whether that is a defect or an unseen caller passing a .dds path is unsettled. Not all seven callers were traced.",
+    "00ae84e0 was read for its key set, branches and file name, not line by line. The foliage record layout and container, and most of the 0xa8 object's fields, are not recovered.",
+    "The nested 0x14 object at 00f8c264 is unidentified beyond its vtable 00d5d274.",
+    "Renderer vtable +0x34 and +0x38 both yield vertex formats; why the decal record uses the earlier slot is not established.",
+    "No .mvfm file exists in the installation and no loose .mpkg, so the vertex-format request path is unverified against real data.",
+    "00f88a06 has no writing cross-reference, so what sets the Foliage setting is unresolved, matching what docs/APP_INIT_AUDIO_ONLINE.md records for 00f889a4."
+  ],
+  "remaining": [
+    "Trace 00ae84e0 to the foliage record layout and its container.",
+    "Identify 00f8c264 and the 00ad9f90 / 00b3c4c0 constructors Init runs between the foliage and particle steps (renderer-device packet).",
+    "Resolve the .mvfm request path and the renderer vtable +0x34 / +0x38 split.",
+    "Confirm the consumer side: 00ad92c0 reads 00f8c20c; 00ae0710 and 00ae2c80 take the flag."
+  ],
+  "ghidra_function_coverage": "All seven leased addresses and every indirect helper read here (00aef3c0, 00aef280, 00ae84e0, 00bbc900, 00740410, 00af5850) already have Ghidra functions with complete bodies. No function definition is needed before the orchestrator applies ledger names.",
+  "tool_problems": [
+    "python tools/bsp.py ghidra disasm <addr> omits the function's first instruction. For 00ad71c0 the listing begins at 00ad71c4 and drops MOV AL, byte ptr [ESP+4] at 00ad71c0, which changes how the parameter appears to arrive. bsp.py disasm-raw shows it correctly.",
+    "python tools/bsp.py ghidra disasm <addr> --start <hex> rejected addresses inside the function body with 'is not an instruction start', even for real instruction boundaries such as 00af0250 inside 00af0060; paging had to be done by piping the full listing through sed.",
+    "The export path printed by ghidra export is relative to the main checkout, so inside a worktree the exports/bsp/functions/<addr>/decompiled.c path only resolves from the main checkout root."
+  ],
+  "artifacts": {
+    "header": "include/bsp/world_effects_startup.hpp",
+    "source": "src/world_effects_startup.cpp",
+    "cmake": "cmake/startup.cmake, one appended line",
+    "test": "tests/math_tests.cpp, one focused case on the 00aef3c0 prefix boundary",
+    "build": "scripts/build.ps1 Win32 Release, warnings as errors, clean",
+    "tests_run": "ctest reconstructed_math, 1/1 passed"
+  },
+  "not_binary_equivalent": true
+}
