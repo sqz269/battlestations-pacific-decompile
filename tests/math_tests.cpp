@@ -1,5 +1,6 @@
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/game_entry.hpp"
+#include "bsp/game_frame_control.hpp"
 #include "bsp/math.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/input_settings.hpp"
@@ -158,6 +159,70 @@ int main() {
                 && scenario.mission_initialized && flags.skip_title && flags.skip_logos
                 && scenario.queued == GameStartupState::kScenarioLoad,
             "a .scn path overrides noskipLogos and reaches the mission state");
+    }
+
+    {
+        // 004e4430 servicing order: first in first out, a request enqueued by a
+        // handler is serviced in the same pass, and request Dh stops the drain
+        // with the rest still queued for the next frame.
+        struct OrderHost : bsp::GameFrameControlHost {
+            std::vector<std::uint32_t> serviced;
+            bsp::GameStateRequestQueue* queue = nullptr;
+            void copy_local_player_slots(bsp::LocalPlayerSlot (&)[8]) override {}
+            float mission_time_filter_007713a0(float delta) override { return delta; }
+            bool max_step_clamp_disabled() override { return false; }
+            bool input_action_held(int) override { return false; }
+            bool input_action_pressed(int) override { return false; }
+            void request_02_004d8000() override { serviced.push_back(0x02u); }
+            void request_04_004e4000() override { serviced.push_back(0x04u); }
+            void request_06_notify_00e198ac() override { serviced.push_back(0x06u); }
+            void request_07_004bfc70() override {
+                serviced.push_back(0x07u);
+                bsp::enqueue_state_request_004d3ed0(*queue, 0x06u);
+            }
+            void request_09_notify_00e198b4() override { serviced.push_back(0x09u); }
+            void request_0a_0b_004dfb70() override { serviced.push_back(0x0Au); }
+            void request_0e_004c6b00() override { serviced.push_back(0x0Eu); }
+            void request_0f_004d7970() override { serviced.push_back(0x0Fu); }
+            bool request_10_teardown_004e458a(bsp::GameFrameControlState&) override {
+                serviced.push_back(0x10u);
+                return false;
+            }
+            void request_12_resume_004cd0f0() override { serviced.push_back(0x12u); }
+            void request_14_004bac20() override { serviced.push_back(0x14u); }
+            void request_16_notify_00e198b8() override { serviced.push_back(0x16u); }
+            bool network_session_active() override { return false; }
+            void post_drain_00a95960(float) override {}
+            void update_cutscene_playback_004c6b20(float) override {}
+            void mission_hud_update(float) override {}
+            void accumulate_frame_statistics_0053c510() override {}
+            void update_presence_context_004c0170() override {}
+            void update_device_wait_screen_004db920() override {}
+            void set_front_end_pending_flag(bool) override {}
+            void pre_tick_console_commands() override {}
+            bsp::MissionResult mission_result() override { return bsp::MissionResult{}; }
+            void world_final_tick(float) override {}
+            void world_post_tick() override {}
+            void show_mission_result_gui(float) override {}
+            void close_mission_result() override {}
+        };
+
+        bsp::GameFrameControlState state{};
+        OrderHost host;
+        host.queue = &state.requests;
+        for (std::uint32_t request : {0x07u, 0x14u, 0x0Du, 0x02u, 0x04u}) {
+            bsp::enqueue_state_request_004d3ed0(state.requests, request);
+        }
+        bsp::drain_state_requests_004e4430(state, host);
+
+        const std::vector<std::uint32_t> expected{0x07u, 0x14u};
+        check(host.serviced == expected,
+            "the drain services requests in order and stops on the in-mission request");
+        check(state.state == 0x0Du, "the stopping request stays in the state field");
+        check(state.requests.count == 3,
+            "requests behind the stop and the one a handler added survive the pass");
+        check(bsp::front_state_request(state.requests) == 0x02u,
+            "the next frame resumes at the request that followed the stop");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
