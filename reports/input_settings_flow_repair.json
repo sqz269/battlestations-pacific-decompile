@@ -1,0 +1,2551 @@
+{
+ "project": "bsp",
+ "program": "battlestationspacific.exe",
+ "source": "reports/input_settings_tree_cluster.json flow_breaks",
+ "cause": "CALL_RETURN flow override on the call to _free at each site; _free itself returns",
+ "spans": [
+  {
+   "function": "0069d3f0",
+   "site": "0069d40f",
+   "gap_start": "0069d414",
+   "end_exclusive": "0069d41f",
+   "length": 11,
+   "sha256": "3851d9df4d89af8d24b0f35953aba0fea18aaee56ad8937cb9206fee68d508bd",
+   "method": "_Erase(_Nodeptr)",
+   "function_before": "Function: STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0 at 0069d3f0\nSignature: undefined STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0(void)\nEntry: 0069d3f0\nBody: 0069d3f0 - 0069d424",
+   "name_before": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+   "flow_before": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)",
+   "plate_before": "[BSP reconstruction 0069d3f0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a whole subtree without rebalancing, recursing on _Right, walking _Left and freeing each node; called by clear 0069dc70 and range erase 0069fe70; RET 0x4. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.",
+   "function_after": "Function: STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0 at 0069d3f0\nSignature: undefined STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0(void)\nEntry: 0069d3f0\nBody: 0069d3f0 - 0069d424",
+   "plate_after": "[BSP reconstruction 0069d3f0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a whole subtree without rebalancing, recursing on _Right, walking _Left and freeing each node; called by clear 0069dc70 and range erase 0069fe70; RET 0x4. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.",
+   "flow_after": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)",
+   "attempts_finish": 3,
+   "clear_final": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)",
+   "disasm_final": "Successfully disassembled 11 byte(s)",
+   "decompile_lines_after": 25,
+   "decompile_has_return_value": true,
+   "decompile_mentions_free_terminates": false
+  },
+  {
+   "function": "006a0770",
+   "site": "006a07ac",
+   "gap_start": "006a07b1",
+   "end_exclusive": "006a07bc",
+   "length": 11,
+   "sha256": "e51377ba61e61663c72da270c14b91fcf3e2c25286c3dc9520f591c0b491564b",
+   "method": "_Erase(_Nodeptr)",
+   "function_before": "Function: STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770 at 006a0770\nSignature: undefined STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770(void)\nEntry: 006a0770\nBody: 006a0770 - 006a07c1",
+   "name_before": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+   "flow_before": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)",
+   "plate_before": "[BSP reconstruction 006a0770]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled key buffer at +0x10 with length +0x0c plus one before freeing the node; RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.",
+   "function_after": "Function: STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770 at 006a0770\nSignature: undefined STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770(void)\nEntry: 006a0770\nBody: 006a0770 - 006a07c1",
+   "plate_after": "[BSP reconstruction 006a0770]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled key buffer at +0x10 with length +0x0c plus one before freeing the node; RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.",
+   "flow_after": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)",
+   "attempts_finish": 3,
+   "clear_final": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)",
+   "disasm_final": "Successfully disassembled 11 byte(s)",
+   "decompile_lines_after": 36,
+   "decompile_has_return_value": true,
+   "decompile_mentions_free_terminates": false
+  },
+  {
+   "function": "006a0aa0",
+   "site": "006a0adc",
+   "gap_start": "006a0ae1",
+   "end_exclusive": "006a0aec",
+   "length": 11,
+   "sha256": "e42a50ba1e90951f0dea82c7b8abc1b87ecf966650c76d2a067aafee5b574839",
+   "method": "_Erase(_Nodeptr)",
+   "function_before": "Function: STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0 at 006a0aa0\nSignature: undefined STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0(void)\nEntry: 006a0aa0\nBody: 006a0aa0 - 006a0af1",
+   "name_before": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+   "flow_before": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)",
+   "plate_before": "[BSP reconstruction 006a0aa0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled string buffer at +0x14 with length +0x10 plus one before freeing the node; RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.",
+   "function_after": "Function: STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0 at 006a0aa0\nSignature: undefined STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0(void)\nEntry: 006a0aa0\nBody: 006a0aa0 - 006a0af1",
+   "plate_after": "[BSP reconstruction 006a0aa0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled string buffer at +0x14 with length +0x10 plus one before freeing the node; RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.",
+   "flow_after": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)",
+   "attempts_finish": 3,
+   "clear_final": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)",
+   "disasm_final": "Successfully disassembled 11 byte(s)",
+   "decompile_lines_after": 35,
+   "decompile_has_return_value": true,
+   "decompile_mentions_free_terminates": false
+  },
+  {
+   "function": "0069f690",
+   "site": "0069f8fc",
+   "gap_start": "0069f901",
+   "end_exclusive": "0069f937",
+   "length": 54,
+   "sha256": "f37ac0f1d55d7507b318a5ae18ca039da83fa326d17022674a36b958ee7dfb49",
+   "method": "erase(const_iterator)",
+   "function_before": "Function: STL_Tree_EraseIter_IntKey_N18B_0069f690 at 0069f690\nSignature: undefined STL_Tree_EraseIter_IntKey_N18B_0069f690(void)\nEntry: 0069f690\nBody: 0069f690 - 0069f900",
+   "name_before": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+   "flow_before": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)",
+   "plate_before": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.",
+   "function_after": "Function: STL_Tree_EraseIter_IntKey_N18B_0069f690 at 0069f690\nSignature: undefined STL_Tree_EraseIter_IntKey_N18B_0069f690(void)\nEntry: 0069f690\nBody: 0069f690 - 0069f900",
+   "plate_after": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.",
+   "flow_after": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)",
+   "clear_final": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)",
+   "disasm_final": "Successfully disassembled 54 byte(s)",
+   "decompile_lines_after": 168,
+   "decompile_has_return_value": true,
+   "decompile_mentions_free_terminates": false
+  },
+  {
+   "function": "006a04a0",
+   "site": "006a072d",
+   "gap_start": "006a0732",
+   "end_exclusive": "006a076c",
+   "length": 58,
+   "sha256": "89d22cd7d8f77f3803c39105473942b0e1241b0a7c9f2e4de42d164d3b9fe45c",
+   "method": "erase(const_iterator)",
+   "function_before": "Function: STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0 at 006a04a0\nSignature: undefined STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void)\nEntry: 006a04a0\nBody: 006a04a0 - 006a0731",
+   "name_before": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+   "flow_before": "Success: Cleared flow override at 006a072d (was: CALL_RETURN, now: NONE)",
+   "plate_before": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.",
+   "function_after": "Function: STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0 at 006a04a0\nSignature: undefined STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void)\nEntry: 006a04a0\nBody: 006a04a0 - 006a0731",
+   "plate_after": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.",
+   "clear_final": "Success: Cleared flow override at 006a072d (was: CALL_RETURN, now: NONE)",
+   "disasm_final": "Successfully disassembled 58 byte(s)",
+   "decompile_lines_after": 177,
+   "decompile_has_return_value": true,
+   "decompile_mentions_free_terminates": false
+  },
+  {
+   "function": "006a07d0",
+   "site": "006a0a5d",
+   "gap_start": "006a0a62",
+   "end_exclusive": "006a0a9c",
+   "length": 58,
+   "sha256": "89d22cd7d8f77f3803c39105473942b0e1241b0a7c9f2e4de42d164d3b9fe45c",
+   "method": "erase(const_iterator)",
+   "function_before": "Function: STL_Tree_EraseIter_IntKey_N1C_006a07d0 at 006a07d0\nSignature: undefined STL_Tree_EraseIter_IntKey_N1C_006a07d0(void)\nEntry: 006a07d0\nBody: 006a07d0 - 006a0a61",
+   "name_before": "STL_Tree_EraseIter_IntKey_N1C_006a07d0",
+   "flow_before": "Success: Cleared flow override at 006a0a5d (was: CALL_RETURN, now: NONE)",
+   "plate_before": "[BSP reconstruction 006a07d0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, red-black delete fixup over _Color +0x18, releases the node's pooled string at +0x10/+0x14 then frees the node and decrements _Mysize; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0a62. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.",
+   "clear_final": "Success: Cleared flow override at 006a0a5d (was: CALL_RETURN, now: NONE)",
+   "disasm_final": "Successfully disassembled 58 byte(s)",
+   "decompile_lines_after": 176,
+   "decompile_has_return_value": true,
+   "decompile_mentions_free_terminates": false,
+   "function_after": "Function: STL_Tree_EraseIter_IntKey_N1C_006a07d0 at 006a07d0\nSignature: undefined STL_Tree_EraseIter_IntKey_N1C_006a07d0(void)\nEntry: 006a07d0\nBody: 006a07d0 - 006a0a61",
+   "plate_after": "[BSP reconstruction 006a07d0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, red-black delete fixup over _Color +0x18, releases the node's pooled string at +0x10/+0x14 then frees the node and decrements _Mysize; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0a62. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+  }
+ ],
+ "events": [
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a072d"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a072d (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0a5d"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0a5d (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069d414",
+    "end_address": "0069d41f"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069d414",
+    "end_address": "0069d41e",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a07b1",
+    "end_address": "006a07bc"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a07b1",
+    "end_address": "006a07bb",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0ae1",
+    "end_address": "006a0aec"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0ae1",
+    "end_address": "006a0aeb",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069f901",
+    "end_address": "0069f937"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069f901",
+    "end_address": "0069f936",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0732",
+    "end_address": "006a076c"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0732",
+    "end_address": "006a076b",
+    "bytes_disassembled": 58,
+    "message": "Successfully disassembled 58 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a072d"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a072d (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0a62",
+    "end_address": "006a0a9c"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0a62",
+    "end_address": "006a0a9b",
+    "bytes_disassembled": 58,
+    "message": "Successfully disassembled 58 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0a5d"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0a5d (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069d3f0"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069d3f0",
+    "deleted_function": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+    "body_size": 42,
+    "message": "Function 'STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0' deleted at 0069d3f0"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069d3f0",
+    "name": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069d3f0",
+    "function_name": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+    "entry_point": "0069d3f0",
+    "body_size": 53,
+    "message": "Function created successfully at 0069d3f0",
+    "warnings": [
+     "Function name 'STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0' \u2014 main part 'Tree_EraseSubtree_IntKey_N18B_0069d3f0' is not PascalCase. Expected: TreeErasesubtreeIntkeyN18b0069d3f0",
+     "Function name 'STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0' \u2014 main part 'Tree_EraseSubtree_IntKey_N18B_0069d3f0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006a0770"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "006a0770",
+    "deleted_function": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+    "body_size": 71,
+    "message": "Function 'STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770' deleted at 006a0770"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006a0770",
+    "name": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "006a0770",
+    "function_name": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+    "entry_point": "006a0770",
+    "body_size": 82,
+    "message": "Function created successfully at 006a0770",
+    "warnings": [
+     "Function name 'STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770' \u2014 main part 'Tree_EraseSubtree_StrKeyCI_N2C_006a0770' is not PascalCase. Expected: TreeErasesubtreeStrkeyciN2c006a0770",
+     "Function name 'STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770' \u2014 main part 'Tree_EraseSubtree_StrKeyCI_N2C_006a0770' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006a0aa0"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "006a0aa0",
+    "deleted_function": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+    "body_size": 71,
+    "message": "Function 'STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0' deleted at 006a0aa0"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006a0aa0",
+    "name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "006a0aa0",
+    "function_name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+    "entry_point": "006a0aa0",
+    "body_size": 82,
+    "message": "Function created successfully at 006a0aa0",
+    "warnings": [
+     "Function name 'STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0' \u2014 main part 'Tree_EraseSubtree_IntKey_N1C_006a0aa0' is not PascalCase. Expected: TreeErasesubtreeIntkeyN1c006a0aa0",
+     "Function name 'STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0' \u2014 main part 'Tree_EraseSubtree_IntKey_N1C_006a0aa0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 679,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006a04a0"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "006a04a0",
+    "deleted_function": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+    "body_size": 658,
+    "message": "Function 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' deleted at 006a04a0"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006a04a0",
+    "name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "006a04a0",
+    "function_name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+    "entry_point": "006a04a0",
+    "body_size": 658,
+    "message": "Function created successfully at 006a04a0",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' \u2014 main part 'Tree_EraseIter_StrKeyCI_N2C_006a04a0' is not PascalCase. Expected: TreeEraseiterStrkeyciN2c006a04a0",
+     "Function name 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' \u2014 main part 'Tree_EraseIter_StrKeyCI_N2C_006a04a0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a072d"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a072d (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "set_function_no_return",
+   "body": {
+    "function_address": "00bf65ac",
+    "no_return": false
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Set function '_free' at 00bf65ac from returning to returning"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 625,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 625,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 625,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 625,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 625,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 625,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069f901",
+    "end_address": "0069f937"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069f901",
+    "end_address": "0069f936",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 679,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069f901",
+    "end_address": "0069f937"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069f901",
+    "end_address": "0069f936",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 679,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069f901",
+    "end_address": "0069f937"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069f901",
+    "end_address": "0069f936",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0069f690"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "deleted_function": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "body_size": 625,
+    "message": "Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0069f690",
+    "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "disassemble_first": false
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "address": "0069f690",
+    "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+    "entry_point": "0069f690",
+    "body_size": 679,
+    "message": "Function created successfully at 0069f690",
+    "warnings": [
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": true,
+   "result": {
+    "dry_run": true,
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "finish"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069d414",
+    "end_address": "0069d41f"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069d414",
+    "end_address": "0069d41e",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a07b1",
+    "end_address": "006a07bc"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a07b1",
+    "end_address": "006a07bb",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0ae1",
+    "end_address": "006a0aec"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0ae1",
+    "end_address": "006a0aeb",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069f901",
+    "end_address": "0069f937"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069f901",
+    "end_address": "0069f936",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069d40f"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069d40f (was: NONE, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069d414",
+    "end_address": "0069d41f"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069d414",
+    "end_address": "0069d41e",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a07ac"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a07ac (was: NONE, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a07b1",
+    "end_address": "006a07bc"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a07b1",
+    "end_address": "006a07bb",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0adc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0adc (was: NONE, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0ae1",
+    "end_address": "006a0aec"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0ae1",
+    "end_address": "006a0aeb",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0069f8fc"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0069f901",
+    "end_address": "0069f937"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "0069f901",
+    "end_address": "0069f936",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a072d"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a072d (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0732",
+    "end_address": "006a076c"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0732",
+    "end_address": "006a076b",
+    "bytes_disassembled": 58,
+    "message": "Successfully disassembled 58 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "006a0a5d"
+   },
+   "dry_run": false,
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 006a0a5d (was: CALL_RETURN, now: NONE)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006a0a62",
+    "end_address": "006a0a9c"
+   },
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "start_address": "006a0a62",
+    "end_address": "006a0a9b",
+    "bytes_disassembled": 58,
+    "message": "Successfully disassembled 58 byte(s)"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "dry_run": false,
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   },
+   "phase": "final"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "dry_run": false,
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   },
+   "phase": "final-save"
+  }
+ ],
+ "free_no_return_reset": {
+  "status": "success",
+  "message": "Success: Set function '_free' at 00bf65ac from returning to returning"
+ },
+ "free_signature_before": "Signature: void __cdecl _free(void * _Memory)",
+ "applied": true,
+ "note": "Overrides cleared and gaps disassembled; bodies were not re-created because create_function triggers non-returning discovery that re-marks the sites while thousands of other _free call sites still have undefined fall-through bytes. The decompiler follows the restored fall-through; listings of the three erase(const_iterator) bodies may still end at the old body end."
+}
