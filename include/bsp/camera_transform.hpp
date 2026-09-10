@@ -2,13 +2,17 @@
 #include "bsp/camera_projection.hpp"
 
 namespace bsp {
+struct RenderNodeRootList;
 // New storage/lifetime interface. Parents must remain alive and form an acyclic
 // hierarchy. Zero initialization is not the native constructor. Use recovered
 // setters for edits; parent changes/ancestor camera-cache callbacks remain open.
 struct CameraTransform {
     CameraTransform* parent{}; // native+30
     CameraTransform* first_child{}; // +34; caller supplies consistent sibling links
+    std::uint32_t child_count{}; // +38; maintained by recovered hierarchy operations
     CameraTransform* next_sibling{}; // +3C
+    CameraTransform* previous_sibling{}; // +40
+    RenderNodeRootList* root_list{}; // +A4; borrowed root registration, distinct from parent
     std::uint32_t valid_flags{}; // native+5C
     std::uint32_t auxiliary_flags{}; // +138
     // Explicit adapter for attached+A0 virtual+3C. Null invoke means no attachment.
