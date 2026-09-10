@@ -1,0 +1,311 @@
+{
+  "packet": "app_init_bootstrap_options",
+  "owner": "agent/init-bootstrap",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-init-bootstrap",
+  "kind": "analysis and reconstruction",
+  "parent": {
+    "doc": "docs/APP_INITIALIZE_MAP.md",
+    "report": "reports/app_initialize_map.json",
+    "anchor": "0073d410 BSP_Application_Initialize"
+  },
+  "addresses": ["00439040", "006ad0d0", "0073ce20", "0073c3b0", "008d8190", "00737c40"],
+  "corrections_to_parent_map": [
+    {
+      "address": "006ad0d0",
+      "was": "BSP_Application_InstallCrashHandler",
+      "now": "BSP_Application_InstallObjectHandleResolvers",
+      "why": "The body registers three code pointers through 00bd4fc0 into DAT_0109ced4/ced8/cedc; the consumers are the debug-inspection readers 00bd63b0, 00bd7180 and 00bd7f50. No exception filter, signal handler or crash path is involved."
+    },
+    {
+      "address": "008d8190",
+      "was": "BSP_GameSettings_LoadFromRegistry",
+      "now": "BSP_GameSettings_Load",
+      "why": "The primary source is the options text file opened by 008d5150 plus fopen(path, 'rt'). The registry key SOFTWARE\\Eidos\\Battlestations Pacific is read only on the fopen-failure path and yields exactly one value, 'language'."
+    },
+    {
+      "address": "0073c3b0",
+      "was": "references CPUSpeed/MemSize/GPUDeviceID/SoundDevice",
+      "now": "reads them from a second registry key HKLM\\SOFTWARE\\Eidos\\BSM_HWD through 0098d4e0",
+      "why": "The parent map did not name the key. Types are REG_QWORD for the three numbers and REG_SZ for SoundDevice."
+    }
+  ],
+  "functions": [
+    {
+      "address": "00439040",
+      "name": "BSP_Application_CaptureModulePath",
+      "abi": "__cdecl void f(void)",
+      "ret": 0,
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "behaviour": "GetModuleFileNameA(NULL, buf, 0x104); __strlwr; _splitpath(buf, drive, dir, fname, ext); inline strcpy(DAT_00e176c8, drive) at 0043907e then inline strcat(.., dir) at 004390b0 with a rep movsd tail. fname and ext are discarded.",
+      "globals_written": ["00e176c8"],
+      "callees": ["GetModuleFileNameA", "00bf8f6e __strlwr", "00bf8d35 _splitpath"],
+      "notes": ["Ghidra types the stack buffers as wchar_t; they are used as char throughout."]
+    },
+    {
+      "address": "006ad0d0",
+      "name": "BSP_Application_InstallObjectHandleResolvers",
+      "abi": "__cdecl void f(void)",
+      "ret": 0,
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "behaviour": "Five instructions: PUSH 0x6ad0c0; MOV EDX,0x888aa0; MOV ECX,0x6ad080; CALL 0x00bd4fc0. 00bd4fc0 is __fastcall(ECX, EDX, [stack]) and performs three unconditional stores.",
+      "globals_written": ["0109ced4", "0109ced8", "0109cedc"],
+      "callbacks": [
+        {
+          "slot": "0109ced4",
+          "target": "006ad080",
+          "role": "16-bit handle to object pointer; compares the id against [00f89a10] and indexes [00f89a54] or [00f89aa8] with stride 0x10, returning +0xc"
+        },
+        {
+          "slot": "0109ced8",
+          "target": "00888aa0",
+          "role": "enters a scripting scope with DAT_00cfad08 = 'Ptr' and returns FUN_00b662d0()"
+        },
+        {
+          "slot": "0109cedc",
+          "target": "006ad0c0",
+          "role": "object pointer to 16-bit handle at object+0x174, 0 for null; a bare label, decoded from 85 c9 74 08 0f b7 81 74 01 00 00 c3 33 c0 c3"
+        }
+      ],
+      "consumers": ["00bd63b0 at 00bd64b3 and 00bd64e2", "00bd7180 at 00bd747e", "00bd7f50 at 00bd82ef"]
+    },
+    {
+      "address": "0073ce20",
+      "name": "BSP_Application_ParseCommandLine",
+      "abi": "__thiscall void f(cSkeletonAppMidway* this)",
+      "ret": 0,
+      "state": "exported, analyzed, reconstructed, build-tested, fixture-tested",
+      "behaviour": "Reads the duplicated command line from DAT_00e1ae78 (assigned by Init at 0073d945), builds a std::string with 00408720, splits it with 0094ec70 on the delimiter set ' \\n\\r' (00cff164) into a vector of 0x1c-byte std::string, and walks it with a checked iterator held at ESP+0x10.",
+      "tokenizer": {
+        "address": "0094ec70",
+        "delimiters": " \\n\\r",
+        "empty_fields": "suppressed",
+        "quotes": "a double quote toggles an in-quotes state that disables delimiters; the quote characters stay inside the token"
+      },
+      "comparison_helpers": {
+        "004b3fc0": "counted memcmp, paired with an explicit length equality",
+        "004beb60": "std::string::compare(0, size, lit, n)",
+        "004c2df0": "operator==(const string&, const char*)",
+        "004cdbe0": "substr(0, n), used by the four prefix switches"
+      },
+      "globals_written": ["00e1ae76", "00e0a538", "00e1ae81", "00e1ae75", "00e1ae77", "00e1ae80", "00f1af38", "00f1af30", "00f1af34", "app+0x1a"]
+    },
+    {
+      "address": "0073c3b0",
+      "name": "BSP_SystemOptions_ProbeHardware",
+      "abi": "__cdecl void f(void)",
+      "ret": 0,
+      "state": "exported, analyzed, partially reconstructed, build-tested",
+      "behaviour": "Reads four values from HKLM\\SOFTWARE\\Eidos\\BSM_HWD; the gate at 0073c44d sums the four success booleans and requires exactly 4, so one missing or mistyped value makes the routine a silent no-op. With all four present it assembles up to four localized message fragments, formats them with the wide format at 00cff128 ('%s%s%s%s\\n%s') and calls MessageBoxW(NULL, text, caption, 0x34 = MB_YESNO | MB_ICONEXCLAMATION). On IDYES (6) it calls 0098f430('options.txt'), which is a fopen(path, 'wb') writer.",
+      "globals_written": [],
+      "localization": "00996060 indexes PTR_u_Battlestations__Pacific_already_r_00d1e918 as [lang + index*6], six languages per message; available before the VFS exists"
+    },
+    {
+      "address": "008d8190",
+      "name": "BSP_GameSettings_Load",
+      "abi": "__fastcall void f(cGameSettings* this)",
+      "ret": 0,
+      "this": "the static object at 00f88980, loaded as MOV ECX,0xf88980 at 0073daa0",
+      "state": "exported, analyzed, reconstructed except the renderer-caps tail, build-tested",
+      "behaviour": "008d7bc0 resets the object; 008d4ea0(TRIV_body_00b1fff0()) seeds a renderer value; this+0x88 = TRIV_body_00b200b0(). 008d5150 builds the path from SHGetSpecialFolderPathA(NULL, buf, CSIDL_PERSONAL, TRUE); an empty result falls back to the global buffer at 00f88a3c. fopen(path, 'rt') selects between the token path and the registry path.",
+      "globals_written": ["00f88980 object fields"]
+    },
+    {
+      "address": "00737c40",
+      "name": "BSP_Application_CreateFileAccessLog",
+      "abi": "__thiscall void* f(void* this, native_string subject_by_value)",
+      "ret": 8,
+      "state": "exported, analyzed; ABI and construction shape recorded, no reconstruction",
+      "behaviour": "FUN_007374a0(this, subject) then *this = &PTR_..._00cfeae0; the epilogue releases the by-value string's pool block. Init allocates the object with operator new(4) at 0073d99e, keeps it in a stack slot only, and never frees it; registration happens inside 007374a0. The subject is 'files.txt' from PTR_s__files__txt_00e0a534, assigned by 0041e870 at 0073d9cc.",
+      "globals_written": []
+    }
+  ],
+  "command_line_tokens": [
+    { "token": "cachedload", "literal": "00ce8168", "match": "exact", "effect": "DAT_00e1ae76 = 1", "site": "0073cf5d" },
+    { "token": "nozip", "literal": "00ce80f0", "match": "exact", "effect": "DAT_00e0a538 = 0", "site": "0073cfab" },
+    { "token": "fixfps", "literal": "00ce80e0", "match": "exact", "effect": "DAT_00e1ae81 = 1", "site": "0073cfca" },
+    { "token": "1frame", "literal": "00ce8158", "match": "exact", "effect": "DAT_00e1ae75 = 1", "site": "0073cfee" },
+    { "token": "filelog", "literal": "00ce8160", "match": "exact", "effect": "DAT_00e1ae77 = 1", "site": "0073d012" },
+    { "token": "freecam", "literal": "00ce80e8", "match": "exact", "effect": "DAT_00e1ae80 = 1", "site": "0073d030" },
+    { "token": "ip:", "literal": "00ce811c", "match": "prefix 3", "effect": "inline strcpy(&DAT_00f1af38, token + 3), unbounded", "site": "0073d08a" },
+    { "token": "localport:", "literal": "00ce8110", "match": "prefix 10", "effect": "DAT_00f1af30 = _atol(token + 10)", "site": "0073d0f9" },
+    { "token": "connectport:", "literal": "00ce8100", "match": "prefix 12", "effect": "_DAT_00f1af34 = _atol(token + 12)", "site": "0073d15a" },
+    { "token": "debug:", "literal": "00ce80f8", "match": "prefix 6", "effect": "none; 0073d19f jumps to the loop tail", "site": "0073d19f" },
+    { "token": "auto", "literal": "00ce80b4", "match": "exact", "effect": "consumes one or two following tokens from the same iterator", "site": "0073d1a5" },
+    { "token": "memlimit", "literal": "00ce80bc", "match": "exact", "effect": "this+0x1a = 1", "site": "0073d3a1" },
+    { "token": "nomemlimit", "literal": "00ce80c8", "match": "exact", "effect": "this+0x1a = 0", "site": "0073d3bd" }
+  ],
+  "command_line_auto_group": [
+    {
+      "form": "auto mpak classes",
+      "effect": "DAT_00e1ae77 = 1 at 0073d231, before the third token is read, then FUN_00425560 on the singleton from FUN_004c1e90",
+      "literals": ["00cfec0c mpak", "00cff15c classes"]
+    },
+    { "form": "auto mpak scenes", "effect": "same flag, then FUN_00425570", "literals": ["00cfec0c mpak", "00ce7f3c scenes"] },
+    { "form": "auto test <name>", "effect": "BSP_NativeString_Assign(name) then FUN_004278a0", "literals": ["00cff154 test"] },
+    { "note": "ESI is reloaded from the iterator at 0073d364 before the outer increment, so consumed follower tokens are never re-examined by the switch table. Every form stops early if the group runs off the end of the token list." }
+  ],
+  "hardware_probe_registry_key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Eidos\\BSM_HWD",
+  "hardware_probe_values": [
+    { "value": "MemSize", "literal": "00cfe9d4", "wrapper": "0098d5c0", "expected_type": "0xb REG_QWORD", "kept": "low dword of an 8-byte buffer" },
+    { "value": "CPUSpeed", "literal": "00cf3aa8", "wrapper": "0098d5c0", "expected_type": "0xb REG_QWORD", "kept": "low dword" },
+    { "value": "GPUDeviceID", "literal": "00cfe9dc", "wrapper": "0098d5c0", "expected_type": "0xb REG_QWORD", "kept": "low dword" },
+    { "value": "SoundDevice", "literal": "00cfe9e8", "wrapper": "0098d5f0", "expected_type": "0x1 REG_SZ", "kept": "0x400-byte buffer" }
+  ],
+  "settings_registry": {
+    "key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Eidos\\Battlestations Pacific",
+    "access": "0x20019 KEY_READ",
+    "value": "language",
+    "required_type": "4 REG_DWORD",
+    "buffer": "0x400 bytes",
+    "used_only_when": "fopen(options path, 'rt') failed",
+    "switch_site": "008d8236",
+    "lcid_map": { "0x407": "german", "0x40a": "spanish", "0x40c": "french", "0x410": "italian", "default": "english" }
+  },
+  "settings_tokens": [
+    { "token": "Language", "literal": "00d15f1c", "reader": "008d99f0 string", "field": "via 008d56c0" },
+    { "token": "Fullscreen", "literal": "00d15f10", "reader": "008d9ad0 int", "field": "+0x1e", "note": "stored as value != 0" },
+    { "token": "HiResShadow", "literal": "00d15f04", "reader": "008d9ad0 int", "field": "+0x1d", "note": "stored as value != 0" },
+    { "token": "NoLOD", "literal": "00d15efc", "reader": "008d9ad0 int", "field": "+0x1c", "note": "stored as value != 0" },
+    {
+      "token": "Resolution",
+      "literal": "00cf3a78",
+      "reader": "008d9ad0 twice",
+      "field": "+0x14 and +0x18",
+      "note": "validated by 008d46c0; -1 falls back to 0x280 x 0x1e0 at 008d841f; the index into +0x78 comes from the stride-8 table DAT_00f8895c, count DAT_00f88960, scanned without a break so the last match wins"
+    },
+    { "token": "VSync", "literal": "00d15ef4", "reader": "008d9a80 byte", "field": "+0x60" },
+    { "token": "ShaderModel", "literal": "00d15ee8", "reader": "008d9ad0 int", "field": "+0x88" },
+    { "token": "Antialias", "literal": "00d15edc", "reader": "008d9ad0 int", "field": "+0x5c = 0 then +0x58" },
+    { "token": "Clouds", "literal": "00d15ed4", "reader": "008d9a80 byte", "field": "+0x74" },
+    { "token": "Foliage", "literal": "00d15ecc", "reader": "008d9a80 byte", "field": "+0x86" },
+    { "token": "Shadow", "literal": "00d15ec4", "reader": "008d9a80 byte", "field": "+0x84 and +0x85 from one value" },
+    { "token": "Reflection", "literal": "00d15eb8", "reader": "008d9a80 byte", "field": "+0x6c" },
+    { "token": "TextureDetail", "literal": "00d15ea8", "reader": "008d9ad0 int", "field": "+0x68" },
+    { "token": "ObjectDetail", "literal": "00d15e98", "reader": "008d9ad0 int", "field": "+0x54" },
+    {
+      "token": "SoundEnabled",
+      "literal": "00d15e88",
+      "reader": "none",
+      "field": "none",
+      "note": "recognised then discarded; 008d85d9 JNZ 0x008d82a0 returns to the loop head with no store"
+    },
+    { "token": "Firewall", "literal": "00d15e7c", "reader": "008d9a80 byte", "field": "+0x94" },
+    { "token": "<unrecognised>", "literal": "00d15e60", "reader": "none", "field": "none", "note": "'Options: unknown token %s'" }
+  ],
+  "settings_decompiler_note": "The pseudocode else-chain for the second token group is shifted by one because SoundEnabled has no handler. The field offsets above are read from the listing at 008d846b-008d85ff, not from the pseudocode.",
+  "settings_no_file_path": {
+    "steps": [
+      "this+0x1e = 1",
+      "GetDesktopWindow plus GetWindowRect fill +0x14 and +0x18",
+      "log 'Destop size=%d %d', the original's own misspelling",
+      "scan DAT_00f8895c for +0x78, this time WITH a break so the first match wins",
+      "RegOpenKeyExA and RegQueryValueExA for language",
+      "FUN_008d6170 derives the remaining settings from detected hardware"
+    ]
+  },
+  "settings_tail": {
+    "steps": [
+      "+0x88 re-seeded from TRIV_body_00b200b0() when below 1, then clamped to it, then pushed back with TRIV_body_00b200c0",
+      "(*DAT_00f8d394)->vtbl+0x104 is queried; when caps+0x28 < 0x200 the pair +0x84/+0x85 and +0x90 are forced to zero",
+      "FUN_00b295c0(0x15 or 0x71 depending on +0x8c)",
+      "+0x58 snapped onto the stride-4 table DAT_00f88968, count DAT_00f8896c; the scan does not break, +0x5c is clamped to count-1, then +0x58 is rewritten from the table"
+    ]
+  },
+  "globals": [
+    { "global": "00e176c8", "written": ["00439093", "004390d6"], "read": [], "meaning": "lower-cased module directory" },
+    { "global": "0109ced4", "written": ["00bd4fc4"], "read": ["00bd64b3"], "meaning": "handle to object resolver" },
+    { "global": "0109ced8", "written": ["00bd4fca"], "read": ["00bd64e2"], "meaning": "scripting-context value getter" },
+    { "global": "0109cedc", "written": ["00bd4fd0"], "read": ["00bd747e", "00bd82ef"], "meaning": "object to handle accessor" },
+    {
+      "global": "00e1ae76",
+      "written": ["0073cf5d"],
+      "read": ["0073d975"],
+      "meaning": "cachedload; pushed into FUN_00bd9f90 on the VFS provider manager, which stores it at provider-manager+0x78"
+    },
+    { "global": "00e0a538", "written": ["0073cfab"], "read": [], "meaning": "nozip; the image initialises the byte to 1" },
+    { "global": "00e1ae81", "written": ["0073cfca"], "read": ["0073daaa"], "meaning": "fixfps" },
+    {
+      "global": "00e1ae75",
+      "written": ["0073cfee", "004ca349", "004bbc61", "008c833a", "004e48cd"],
+      "read": ["00737b4e", "00737b65", "0042592e"],
+      "meaning": "shared quit-requested flag, also raised by BSP_Game_ProcessWindowCloseRequest and BSP_Game_OnQuitConfirmation; 1frame asks to quit before the first frame is drawn"
+    },
+    { "global": "00e1ae77", "written": ["0073d012", "0073d231"], "read": ["0073d98d"], "meaning": "filelog, also raised by auto mpak" },
+    { "global": "00e1ae80", "written": ["0073d030"], "read": ["0068c3e7"], "meaning": "freecam" },
+    { "global": "00f1af38", "written": ["0073d08a"], "read": [], "meaning": "ip: value" },
+    { "global": "00f1af30", "written": ["0073d0f9"], "read": ["0076fbd2", "0076fd27"], "meaning": "localport: value" },
+    { "global": "00f1af34", "written": ["0073d15a"], "read": [], "meaning": "connectport: value" },
+    { "global": "app+0x1a", "written": ["0073d39d", "0073d3b9"], "read": ["0073e1dd"], "meaning": "memory limit, copied late in Init to game+0x719d" }
+  ],
+  "dead_globals_note": "00e176c8, 00e0a538 and 00f1af34 are written and never read; 00f1af38 has only the write-side data reference. Ghidra covers the whole image, so this is strong but not conclusive: a computed or aliased access would not appear as a cross reference.",
+  "gates": [
+    { "guard": "DAT_00e1ae77 != 0 && DAT_0109cee8 == 0", "site": "0073d98d", "skips": "the files.txt access log", "source": "filelog, or auto mpak" },
+    { "guard": "DAT_00e1ae81 != 0", "site": "0073daaa", "skips": "the DAT_01090ab0 vtable+0x24 call", "source": "fixfps" },
+    { "guard": "DAT_00e1ae78 != 0", "site": "0073e45c", "skips": "the free of the duplicated command line", "source": "Init itself" },
+    { "guard": "DAT_0109ceec == 0", "site": "0073d604", "skips": "the whole VFS block, and with it the hardware probe", "source": "not a bootstrap flag" },
+    { "guard": "DAT_01090ab0 == 0", "site": "0073d4a5", "skips": "timer service construction", "source": "not a bootstrap flag" },
+    { "guard": "DAT_0109cf00 == 0", "site": "0073d8ac", "skips": "the 00737e20 object", "source": "not a bootstrap flag" },
+    { "guard": "DAT_00f8abdc == 0", "site": "0073dcb2", "skips": "XLive array construction", "source": "not a bootstrap flag" },
+    { "guard": "DAT_00f871b4 == 0", "site": "0073dd4e", "skips": "the 0078c400 array", "source": "not a bootstrap flag" },
+    { "guard": "allocation result non-null, 25 sites", "site": "throughout", "skips": "the matching constructor", "source": "not a bootstrap flag" },
+    { "guard": "command line contains devrr", "site": "0073d4ce-0073d610", "skips": "forces devshaders and reloadresources on", "source": "an inline _strstr scan in Init, not 0073ce20" }
+  ],
+  "ordering_finding": "BSP_Application_ParseCommandLine runs at 0073d94a, after the whole VFS block (0073d604-0073d88d). Every flag it sets is invisible to provider-manager construction, the three mounts and both package scans. The early flags (devrr, genshaders, devshaders, hiresmode, reloadresources) come from a separate inline _strstr scan at 0073d4ce-0073d610, which is why two parsing paths exist. nozip having no reader is consistent with this: by the time the switch is parsed, the archive providers are already registered.",
+  "reconstruction": {
+    "header": "include/bsp/app_bootstrap.hpp",
+    "source": "src/app_bootstrap.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "naming": "The contract's bsp::parse_command_line and bsp::load_game_settings are spelled parse_command_line_0073ce20 and load_game_settings_008d8190 to match the address-suffixed convention used elsewhere in include/bsp.",
+    "reconstructed": [
+      "capture_module_directory_00439040",
+      "install_object_handle_resolvers_006ad0d0",
+      "split_command_line_0094ec70",
+      "parse_command_line_0073ce20",
+      "probe_hardware_0073c3b0",
+      "language_name_for_lcid_008d8190",
+      "load_game_settings_008d8190",
+      "run_bootstrap_0073d410"
+    ],
+    "injected": [
+      "HardwareProbeHost: the four registry reads, the requirement comparison, the message box and the options writer",
+      "GameSettingsHost: the options file, the registry language value, the desktop size, the two lookup tables, the renderer shader-model maximum and FUN_008d6170"
+    ],
+    "no_real_io": "No reconstruction reads a real registry key or a real file.",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math: 1/1 passed, including one added fixture case for the auto token group"
+  },
+  "uncertainties": [
+    "The four requirement comparisons inside 0073c3b0 (0073c493-0073c7ff) are not recovered; which fragment maps to CPU, memory, GPU or sound is unresolved and no threshold was read out.",
+    "The options-file token separator is modelled as space, tab, CR, LF and comma, from the literal at 00d15f2c that sits immediately after the 'rt' fopen mode at 00d15f28. The tokenizer 008d9f20/008d8a70 was not opened. Provisional.",
+    "FUN_008d9a80, the byte value reader, is modelled as atoi(token) != 0; its exact acceptance set is unrecovered.",
+    "this+0x1a has no initialiser in Init, which sets only this+0x18 = 1 and this+0x19 = 0. Whether the constructor zeroes it was not checked; the reconstruction uses std::optional<bool> so an absent switch stays distinct from a negative one.",
+    "FUN_00425560, FUN_00425570, FUN_004278a0 and the singleton getter FUN_004c1e90 were not opened; the auto mode names are read off the literals.",
+    "FUN_008d56c0 (apply language) and FUN_008d46c0 (validate resolution) were not opened.",
+    "+0x8c, +0x90 and the FUN_00b295c0(0x15 or 0x71) selection in the settings tail are named but not explained."
+  ],
+  "remaining": [
+    "Open the four requirement comparisons in 0073c3b0 and recover the thresholds.",
+    "Open 008d9f20, 008d8a70 and 008d8960 and settle the options tokenizer contract.",
+    "Open 00425560, 00425570 and 004278a0 to establish what the auto modes run.",
+    "Confirm whether 00e0a538, 00f1af34, 00f1af38 and 00e176c8 are truly dead, for example with a byte-pattern search for their addresses as immediates.",
+    "Map the remaining fields of the 00f88980 settings object; only the ones this routine writes are covered here."
+  ],
+  "names_recorded": [
+    { "address": "00439040", "name": "BSP_Application_CaptureModulePath" },
+    { "address": "006ad0d0", "name": "BSP_Application_InstallObjectHandleResolvers" },
+    { "address": "0073ce20", "name": "BSP_Application_ParseCommandLine" },
+    { "address": "0073c3b0", "name": "BSP_SystemOptions_ProbeHardware" },
+    { "address": "008d8190", "name": "BSP_GameSettings_Load" },
+    { "address": "00737c40", "name": "BSP_Application_CreateFileAccessLog" }
+  ],
+  "state_reached": [
+    { "address": "00439040", "state": "exported, analyzed, reconstructed, build-tested" },
+    { "address": "006ad0d0", "state": "exported, analyzed, reconstructed, build-tested" },
+    { "address": "0073ce20", "state": "exported, analyzed, reconstructed, build-tested, fixture-tested" },
+    { "address": "0073c3b0", "state": "exported, analyzed, partially reconstructed, build-tested" },
+    { "address": "008d8190", "state": "exported, analyzed, reconstructed except the renderer-caps tail, build-tested" },
+    { "address": "00737c40", "state": "exported, analyzed; ABI and construction shape recorded, no reconstruction" }
+  ],
+  "not_abi_compatible": true,
+  "not_game_validated": true
+}

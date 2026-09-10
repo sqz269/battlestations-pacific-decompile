@@ -1,3 +1,4 @@
+#include "bsp/app_bootstrap.hpp"
 #include "bsp/math.hpp"
 #include <cmath>
 #include <iostream>
@@ -35,6 +36,16 @@ int main() {
     check(equal(out, {-2, -4, -6}), "in-place scaling");
     check(length_squared_00401cf0({3, 4, 12}) == 169, "squared length fixture");
     check(length_squared_00401cf0({0, 0, 0}) == 0, "zero squared length");
+    // 0073ce20: "auto" advances the token iterator itself, so the two tokens
+    // that follow it are consumed and must not be classified on their own.
+    const CommandLineOptions parsed =
+        parse_command_line_0073ce20("nozip auto mpak classes memlimit");
+    check(!parsed.zip_enabled, "nozip clears the zip flag");
+    check(parsed.auto_task == AutoTask::package_classes, "auto mpak classes");
+    check(parsed.file_access_log, "auto mpak also raises the file access log");
+    check(parsed.memory_limit.has_value() && *parsed.memory_limit,
+        "the token after the auto group is still parsed");
+    check(parsed.unrecognized.empty(), "auto follower tokens are not left over");
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }
