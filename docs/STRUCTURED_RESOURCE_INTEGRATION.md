@@ -83,3 +83,12 @@ at bounded call sites, and seven truncated function definitions were recovered.
 Fifteen missing function definitions were added from matched code. Final saved
 readback, refreshed exports, source hashes and packet states are recorded in
 `reports/structured_resource_validation.json` and its linked evidence reports.
+
+## Registered parser and material follow-up
+
+The selected model's Resource children now dispatch through the recovered
+nonowning parser registry using actual Mesh, Note and GroupParams implementations.
+The Mesh feeds a checked installed-material D3D9 draw with native compiler flags,
+decode constants, building instance values and textures. Native root resource
+object ownership, automatic scene/shadow updates and full game execution remain
+separate. See `MESH_MATERIAL_INTEGRATION.md` and the mesh_material reports.

@@ -12,7 +12,9 @@ struct MaterialSamplerCounters { std::uint32_t references{}, vertex{}, pixel{}; 
 void append_material_texture_00b5f100(MaterialSamplerPass&, std::int32_t index, bool vertex_stage);
 void set_material_sampler_state_00b5ed60(MaterialSamplerPass&, const SamplerStateValue&);
 void remove_material_sampler_slot_00b5eff0(MaterialSamplerPass&, std::uint32_t slot);
-// Source0 projection of00b3b280; counters are shared across base/effect calls.
+// Source0 and source2 projection of00b3b280; counters shared across base/effect.
+// Source2 adds only sampler states and advances the stage counter. Its special
+// texture binding is recovered separately in material_shadow_samplers.hpp.
 // Unsupported source/index/slot fails before mutation; no texture loader stubs.
 bool append_material_samplers_00b3b280(const std::vector<ShaderLuaSampler>&,
     MaterialSamplerPass&, MaterialSamplerCounters&);

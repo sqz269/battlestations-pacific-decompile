@@ -9,7 +9,7 @@
 #include "bsp/shader_reflection.hpp"
 #include "bsp/resource_path.hpp"
 #include "asset_stream_probe.hpp"
-#include <d3dcompiler.h>
+#include "bsp/compiled_material.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -28,22 +28,7 @@ template<class T> struct OwnedCom {
     OwnedCom(const OwnedCom&) = delete;
     OwnedCom& operator=(const OwnedCom&) = delete;
 };
-struct CompilerModule {
-    HMODULE value = LoadLibraryExW(L"d3dcompiler_47.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
-    ~CompilerModule() { if (value) FreeLibrary(value); }
-};
-struct FontShaderOwner {
-    IDirect3DVertexShader9* vertex{};
-    IDirect3DPixelShader9* pixel{};
-    std::vector<bsp::ReflectedShaderConstant> vr, pr;
-    bsp::ShaderConstantBindings vb, pb;
-    bsp::MaterialSamplerPass pass;
-    std::shared_ptr<bsp::RenderStateBlock> states = std::make_shared<bsp::RenderStateBlock>();
-    FontShaderOwner() = default;
-    ~FontShaderOwner() { if (pixel) pixel->Release(); if (vertex) vertex->Release(); }
-    FontShaderOwner(const FontShaderOwner&) = delete;
-    FontShaderOwner& operator=(const FontShaderOwner&) = delete;
-};
+using FontShaderOwner = bsp::CompiledMaterialPass;
 
 bool font_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
     const bsp::ShaderConstantBindings& bindings, std::vector<float>& words, bool vertex) {
@@ -146,82 +131,22 @@ bool font_material_constants(const bsp::EffectOwner& shaders,
     return true;
 }
 
-// Existing supported installed-font compiler, invoked only on a cache miss.
-// Full00b2ebb0 renderer guards and recursive error.shfx loading remain unported.
+// Installed-font constraints around the shared material pass compiler.
 std::shared_ptr<FontShaderOwner> load_font_effect(AssetStreamProbe& assets, IDirect3DDevice9& device,
     const std::string& canonical_name, std::string& error) {
-    const bsp::ShaderScriptResolver resolver = [&](const std::string& requested, std::string& bytes, std::string& error) {
+    const bsp::ShaderScriptResolver resolver = [&](const std::string& requested, std::string& bytes, std::string& message) {
         std::shared_ptr<bsp::MemoryStream> stream;
         std::string logical;
-        if (!assets.read(requested, stream, error, &logical)) return false;
+        if (!assets.read(requested, stream, message, &logical)) return false;
         std::printf("Mounted font shader lookup: %s -> %s\n", requested.c_str(), logical.c_str());
         bytes.assign(reinterpret_cast<const char*>(stream->data_00bef610()),
             static_cast<std::size_t>(stream->size_00bef600()));
         return true;
     };
-    bsp::ShaderLuaCode base, effect;
-    // Installed dx9_lua.inc defines RM_NORMAL=0.
-    if (!bsp::load_shader_lua_code(resolver, canonical_name, false, {}, base, error)
-        || base.combiners[0] != "dummy.shfx"
-        || !bsp::load_shader_lua_code(resolver, base.combiners[0], false, {}, effect, error)) {
-        std::fprintf(stderr, "Font Lua: %s\n", error.c_str()); return {};
-    }
-    bsp::ShaderVertexProgram vp;
-    bsp::ShaderPixelProgram pp;
-    if (bsp::assemble_shader_programs(base, effect, 0, 3, false, vp, pp) != bsp::ShaderSourceStatus::complete) return {};
-    std::string vs_source, ps_source;
-    if (bsp::generate_pixel_source_00b39880(pp, ps_source) != bsp::ShaderSourceStatus::complete) return {};
-    CompilerModule module;
-    if (!module.value) return {};
-    pD3DCompile compile{};
-    decltype(&D3DDisassemble) disassemble{};
-    const FARPROC compile_address = GetProcAddress(module.value, "D3DCompile");
-    const FARPROC disassemble_address = GetProcAddress(module.value, "D3DDisassemble");
-    std::memcpy(&compile, &compile_address, sizeof(compile));
-    std::memcpy(&disassemble, &disassemble_address, sizeof(disassemble));
-    if (!compile || !disassemble) return {};
-    const auto profiles = bsp::select_shader_profiles_00b43b00(3, base.vertex_profile, base.pixel_profile);
-    const auto compile_source = [&](const std::string& source, const std::string& profile, ID3DBlob** output) {
-        OwnedCom<ID3DBlob> errors;
-        const HRESULT hr = compile(source.data(), source.size(), "installed guifontbilinear",
-            nullptr, nullptr, "main", profile.c_str(), 0, 0, output, &errors.p);
-        if (FAILED(hr) && errors.p) std::fwrite(errors.p->GetBufferPointer(), 1, errors.p->GetBufferSize(), stderr);
-        return hr;
-    };
-    OwnedCom<ID3DBlob> ps, vs, assembly;
-    if (FAILED(compile_source(ps_source, profiles.pixel, &ps.p))
-        || FAILED(disassemble(ps.p->GetBufferPointer(), ps.p->GetBufferSize(), 0, nullptr, &assembly.p))) return {};
-    std::vector<std::uint32_t> used_uv(10), used_color(2);
-    std::vector<bsp::ShaderField> selected;
-    if (bsp::parse_pixel_usage_00b61280(static_cast<const char*>(assembly.p->GetBufferPointer()), used_uv, used_color)
-            != bsp::ShaderSourceStatus::complete
-        || bsp::append_selected_interpolators_00b36800(base.interpolators, effect.interpolators,
-            &used_uv, &used_color, selected) != bsp::ShaderSourceStatus::complete) return {};
-    // ShaderCode still writes the complete descriptor OUT (including UV1).
-    // Pixel liveness filters only PackInterpolators and its mapping, not the
-    // sVertexOut declaration/zero initialization supplied by the assembler.
-    vp.packing_fields = selected; vp.interpolators = {};
-    bsp::append_interpolator_mapping_00b34aa0(selected, vp.interpolators);
-    if (bsp::generate_vertex_source_00b39110(vp, vs_source) != bsp::ShaderSourceStatus::complete
-        || FAILED(compile_source(vs_source, profiles.vertex, &vs.p))) return {};
-    auto owner = std::make_shared<FontShaderOwner>();
-    auto& vr = owner->vr; auto& pr = owner->pr;
-    auto& vb = owner->vb; auto& pb = owner->pb;
-    const auto registry = bsp::make_system_constant_registry_00b5bf70();
-    if (!bsp::reflect_shader_constants_00b3aea0(static_cast<const std::uint32_t*>(vs.p->GetBufferPointer()), vr, error)
-        || !bsp::reflect_shader_constants_00b3aea0(static_cast<const std::uint32_t*>(ps.p->GetBufferPointer()), pr, error)
-        || !bsp::map_shader_constants_00b3aea0(vr, registry, vb)
-        || !bsp::map_shader_constants_00b3aea0(pr, registry, pb)) return {};
-    auto& pass = owner->pass;
-    bsp::MaterialSamplerCounters counters;
-    if (!bsp::append_material_samplers_00b3b280(base.samplers, pass, counters)
-        || !bsp::append_material_samplers_00b3b280(effect.samplers, pass, counters)
-        || counters.pixel != 2 || counters.vertex != 0 || pb.sampler_mask != 1) return {};
-    bsp::prune_material_sampler_states(pass, pb.sampler_mask);
-    for (const auto* script : {&base, &effect}) for (const auto& setting : script->render_states)
-        owner->states->states.push_back({static_cast<D3DRENDERSTATETYPE>(setting.state), setting.value});
-    if (FAILED(device.CreateVertexShader(static_cast<const DWORD*>(vs.p->GetBufferPointer()), &owner->vertex))
-        || FAILED(device.CreatePixelShader(static_cast<const DWORD*>(ps.p->GetBufferPointer()), &owner->pixel))) return {};
+    std::shared_ptr<FontShaderOwner> owner;
+    if (!bsp::compile_material_pass(device, resolver, canonical_name, {0,3,false,false}, owner, error)
+        || owner->base.combiners[0] != "dummy.shfx" || owner->sampler_counts.pixel != 2
+        || owner->sampler_counts.vertex != 0 || owner->pb.sampler_mask != 1) return {};
     return owner;
 }
 

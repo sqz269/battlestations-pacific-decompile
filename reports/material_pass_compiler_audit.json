@@ -1,0 +1,482 @@
+{
+  "schema_version": 1,
+  "packet": "material_pass_compiler",
+  "generated_utc": "2026-09-10T02:09:33.553444+00:00",
+  "status": "native_compile_contract_audit_complete_primary_shared_integration",
+  "scope": {
+    "owned_functions": [
+      "00b60f60",
+      "00b61280"
+    ],
+    "approved_bounded_helpers": [
+      "00711370",
+      "004bcb80",
+      "00469840"
+    ],
+    "documentation": "docs/MATERIAL_PASS_COMPILER.md",
+    "no_worker_shared_source_header_or_ghidra_mutation": true,
+    "no_installed_source_changes": true,
+    "no_new_test_targets": true
+  },
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr"
+    },
+    "imports": [
+      {
+        "dll": "d3dx9_40.dll",
+        "address": "00ce23ec",
+        "symbol": "D3DXCompileShader"
+      },
+      {
+        "dll": "d3dx9_40.dll",
+        "address": "00ce23f0",
+        "symbol": "D3DXDisassembleShader"
+      }
+    ],
+    "ranges": [
+      {
+        "address": "00469840",
+        "length": 272,
+        "end_exclusive": "00469950",
+        "sha256": "3d195be7698a4a68e668efb2b4de53eb59f861783950be94acddd6ca3a9cd09f",
+        "disk_offset": 432192,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00469840.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00469840.decoded.asm.txt",
+        "return_instructions": [
+          "0046991d: ret 0xc",
+          "0046994d: ret 0xc"
+        ]
+      },
+      {
+        "address": "004bcb80",
+        "length": 120,
+        "end_exclusive": "004bcbf8",
+        "sha256": "67a509a06f321bdd3896ea560fb586f490904711b06c890f219bf30f80b098c4",
+        "disk_offset": 772992,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/004bcb80.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/004bcb80.decoded.asm.txt",
+        "return_instructions": [
+          "004bcba4: ret 8",
+          "004bcbec: ret 8",
+          "004bcbf5: ret 8"
+        ]
+      },
+      {
+        "address": "00711370",
+        "length": 229,
+        "end_exclusive": "00711455",
+        "sha256": "16929cf21ca8ab9db69667821281efa78c14eea9ee53c382807cf286df839c25",
+        "disk_offset": 3216240,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00711370.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00711370.decoded.asm.txt",
+        "return_instructions": [
+          "00711452: ret 4"
+        ]
+      },
+      {
+        "address": "00b3b3fb",
+        "length": 6,
+        "end_exclusive": "00b3b401",
+        "sha256": "5b914ead636b9ba9be7840beb27c33448cebfebcffed88249bf18b733bdafbaf",
+        "disk_offset": 7582715,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b3b3fb.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b3b3fb.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b3b681",
+        "length": 69,
+        "end_exclusive": "00b3b6c6",
+        "sha256": "d7093a1a930fb516edae515da7d0372ae5e52d1c7bfba8648a1f607ec2c3b3af",
+        "disk_offset": 7583361,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b3b681.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b3b681.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b3baca",
+        "length": 36,
+        "end_exclusive": "00b3baee",
+        "sha256": "ce4e4129d4c0b508f1d0f6ba23425b2f1b731bea2b7a9ff9f48388201b4d49e3",
+        "disk_offset": 7584458,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b3baca.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b3baca.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b3be1e",
+        "length": 23,
+        "end_exclusive": "00b3be35",
+        "sha256": "9e0f2b6f7436fe49f5f23d6de97f538f2a70d1deeb28afd3b19620bd2e16bd3c",
+        "disk_offset": 7585310,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b3be1e.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b3be1e.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b3c3cb",
+        "length": 79,
+        "end_exclusive": "00b3c41a",
+        "sha256": "bdabc2616d76442f298c656ffebc1e307a43db5d2fcbba0c4904094d2bb16035",
+        "disk_offset": 7586763,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b3c3cb.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b3c3cb.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b45fb3",
+        "length": 137,
+        "end_exclusive": "00b4603c",
+        "sha256": "9477c52ce5890d8ca0b66bb815676a439e0d11be9d114d90dfdb635aec6b9ae0",
+        "disk_offset": 7626675,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b45fb3.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b45fb3.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b46109",
+        "length": 538,
+        "end_exclusive": "00b46323",
+        "sha256": "da2785e40c119a61757fed3a7e1dadf9515c6d43eee20560432a83073228b908",
+        "disk_offset": 7627017,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b46109.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b46109.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b60f60",
+        "length": 604,
+        "end_exclusive": "00b611bc",
+        "sha256": "e63a9273b3513f86036092e16674f849dde8d9e26af6b35e94e8323d3542cb6f",
+        "disk_offset": 7737184,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b60f60.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b60f60.decoded.asm.txt",
+        "return_instructions": [
+          "00b611b9: ret 8"
+        ]
+      },
+      {
+        "address": "00b61280",
+        "length": 2183,
+        "end_exclusive": "00b61b07",
+        "sha256": "297918958ccceeb67c13fb7757c46b5e2a6d5a67cfaa57dae08dca2ceae3d537",
+        "disk_offset": 7737984,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00b61280.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00b61280.decoded.asm.txt",
+        "return_instructions": [
+          "00b61b04: ret 0x10"
+        ]
+      },
+      {
+        "address": "00c2e00a",
+        "length": 6,
+        "end_exclusive": "00c2e010",
+        "sha256": "e0d0216a78cf039b2aceb49111ccd5bbdf3bdc851dc30c79ae5ed5f8a352e669",
+        "disk_offset": 8577034,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00c2e00a.bytes.txt",
+        "decoded_disassembly": "local/material_pass_compiler/00c2e00a.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00ce3a70",
+        "length": 2,
+        "end_exclusive": "00ce3a72",
+        "sha256": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce",
+        "disk_offset": 9321072,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00ce3a70.bytes.txt"
+      },
+      {
+        "address": "00ce7898",
+        "length": 2,
+        "end_exclusive": "00ce789a",
+        "sha256": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+        "disk_offset": 9336984,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00ce7898.bytes.txt"
+      },
+      {
+        "address": "00cf393c",
+        "length": 3,
+        "end_exclusive": "00cf393f",
+        "sha256": "08de224b25f03e58891d3bb901715b147f0f3cef885186f33c9604a4c5fe1617",
+        "disk_offset": 9386300,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00cf393c.bytes.txt"
+      },
+      {
+        "address": "00cfad04",
+        "length": 2,
+        "end_exclusive": "00cfad06",
+        "sha256": "b88d3bf2366367bc11900a0183ff040bb3a26d46e5bd80b336b92d6c033e9eec",
+        "disk_offset": 9415940,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00cfad04.bytes.txt"
+      },
+      {
+        "address": "00d582a0",
+        "length": 5,
+        "end_exclusive": "00d582a5",
+        "sha256": "2498c4cd987b16bdca8edb572c79e077433c77ea77b844557d156e7e324496f6",
+        "disk_offset": 9798304,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00d582a0.bytes.txt"
+      },
+      {
+        "address": "00d61c84",
+        "length": 2,
+        "end_exclusive": "00d61c86",
+        "sha256": "766caa663e1025b9accd7ededd24fbc8193180e028eedae2f41d6bb0b1d36468",
+        "disk_offset": 9837700,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00d61c84.bytes.txt"
+      },
+      {
+        "address": "00d62b44",
+        "length": 6,
+        "end_exclusive": "00d62b4a",
+        "sha256": "67d6a4b7204058a6d0ae69b26c936de785b30000347d33a2ab7a26cb712693ed",
+        "disk_offset": 9841476,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/material_pass_compiler/00d62b44.bytes.txt"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b60f60",
+      "suggested_name": "BSP_VertexShader_CompileWithDiagnostics",
+      "original_abi": "Fastcall ECX engine-name native string, EDX profile C string; stack source and IDirect3DVertexShader9**; EAX HRESULT; RET8.",
+      "contract": "D3DX9_40 compile borrowed generated source, strlen excludesNUL, main entry, caller profile, flags1200(backwardscompatibility|avoidflowcontrol), null macros/include/constanttableout. If bytecode exists: disassemble(FALSE,null), native .vsa diagnostic, release disassembly, CreateVertexShader, release compiled/messages buffers. Code-null path returns compile HRESULT without retry and bypasses buffer cleanup. Typed host compiler may use RAII/error checks; full diagnostic/cache/native ABI not ported.",
+      "original_annotation": {
+        "address": "00b60f60",
+        "function_name": "FUN_00b60f60"
+      },
+      "suggested_additive_plate_comment": "D3DX9_40 compile borrowed generated source, strlen excludesNUL, main entry, caller profile, flags1200(backwardscompatibility|avoidflowcontrol), null macros/include/constanttableout. If bytecode exists: disassemble(FALSE,null), native .vsa diagnostic, release disassembly, CreateVertexShader, release compiled/messages buffers. Code-null path returns compile HRESULT without retry and bypasses buffer cleanup. Typed host compiler may use RAII/error checks; full diagnostic/cache/native ABI not ported. Original ABI: Fastcall ECX engine-name native string, EDX profile C string; stack source and IDirect3DVertexShader9**; EAX HRESULT; RET8. Complete native body matches original installed PE. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis; no native ABI/game claim."
+    },
+    {
+      "address": "00b61280",
+      "suggested_name": "BSP_PixelShader_CompileAndCollectInputUsage",
+      "original_abi": "Fastcall ECX engine-name native string, EDX profile; stack source/outShader/texcoordMasks/colorMasks; RET10h.",
+      "contract": "D3DX9_40 compile flags1400(backwardscompatibility|preferflowcontrol), except case-sensitive strstr(engineName.data,shore) uses0. Borrowed source strlen excludesNUL, main, null macros/include/constanttableout. CreatePixelShader when bytecode exists. Both mask pointers enable disassembly(FALSE,null); sentineltexcoord[0]=500 selects.psa2 and skips existingusageparser; ordinary.psa1 path parses. DisassemblyHRESULT overwrites creationHRESULT when invoked. Successful path releases code/messages/disassembly; nullcode returns compileHRESULT without fallback. Preserve existing inputusage reconstruction.",
+      "original_annotation": {
+        "address": "00b61280",
+        "function_name": "BSP_PixelShader_CompileAndCollectInputUsage",
+        "comment": "[BSP reconstruction 00b61280]\nFastcall ECX engine name string, EDX profile, stack source/outShader/texcoordMasks/colorMasks, RET10h. D3DX compile then CreatePixelShader and optional disassembly. Both mask pointers required; texcoord[0]==500 skips parsing. Parser00b61613..00b61aa8 searches dcl_texcoord/dcl_color substrings, one-character indices at+12/+9, body+14/+11 until LF; x/y/z/w OR1/2/4/8, no letters OR15. Caller00b3b3c0 supplies TEXCOORD[10],COLOR[2] and feeds00b36800. Typed parser fragment in shader_source.cpp; adapter draw verified, full native wrapper unported. See docs/SHADER_REFLECTION_ANALYSIS.md and reports/shader_pixel_usage.json."
+      },
+      "suggested_additive_plate_comment": "D3DX9_40 compile flags1400(backwardscompatibility|preferflowcontrol), except case-sensitive strstr(engineName.data,shore) uses0. Borrowed source strlen excludesNUL, main, null macros/include/constanttableout. CreatePixelShader when bytecode exists. Both mask pointers enable disassembly(FALSE,null); sentineltexcoord[0]=500 selects.psa2 and skips existingusageparser; ordinary.psa1 path parses. DisassemblyHRESULT overwrites creationHRESULT when invoked. Successful path releases code/messages/disassembly; nullcode returns compileHRESULT without fallback. Preserve existing inputusage reconstruction. Original ABI: Fastcall ECX engine-name native string, EDX profile; stack source/outShader/texcoordMasks/colorMasks; RET10h. Complete native body matches original installed PE. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis; no native ABI/game claim."
+    }
+  ],
+  "bounded_helper_audits": [
+    {
+      "address": "00711370",
+      "original_abi": "ECX native output string; stack unsignedDWORD; EAX output; RET4.",
+      "contract": "sprintf(%u,DWORD) into local buffer, copy to native string. Decimal digits only; no case transformation.",
+      "length": 229,
+      "original_annotation": {
+        "address": "00711370",
+        "function_name": "FUN_00711370"
+      }
+    },
+    {
+      "address": "004bcb80",
+      "original_abi": "ECX candidate native string; stack C-string byte set and signed start index; EAX match index orFFFFFFFF; RET8.",
+      "contract": "Reverse case-sensitive byte-set search; bounded normal name call uses dot and INT_MAX. Existing generic-helper name/comment preserved.",
+      "length": 120,
+      "original_annotation": {
+        "address": "004bcb80",
+        "function_name": "FUN_004bcb80",
+        "comment": "[BSP reconstruction 004bcb80]\nECX candidate native string; stack C-string byte set,start index; EAX index/FFFFFFFF; RET8 Reverse byte-set search; called with slash and INT32MAX. Preserve string-helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      }
+    },
+    {
+      "address": "00469840",
+      "original_abi": "ECX source native string; stack output string,start,count; EAX output; RET0C.",
+      "contract": "Substring copy; normal name call uses start0,count=final dot index. No case transformation. General malformed/overflow semantics not reimplemented.",
+      "length": 272,
+      "original_annotation": {
+        "address": "00469840",
+        "function_name": "FUN_00469840"
+      }
+    }
+  ],
+  "compiler_api": {
+    "import_dll": "d3dx9_40.dll",
+    "import_symbol": "D3DXCompileShader",
+    "iat": "00ce23ec",
+    "thunk": "00c2e00a",
+    "official_header": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9shader.h",
+    "flag_definition_lines": [
+      88,
+      89,
+      90
+    ],
+    "compile_signature_lines": [
+      634,
+      645
+    ],
+    "disassembly_signature_lines": [
+      666,
+      671
+    ],
+    "arguments": {
+      "source": "caller-owned NUL-terminated generated source; no mutation/free/ownership transfer",
+      "length": "strlen(source), excludesNUL; embeddedNUL truncates",
+      "defines": null,
+      "include": null,
+      "entry": "main",
+      "entry_literal": "00d582a0",
+      "profile": "caller EDX unchanged; normal caller takes primary descriptor profile-data+38/+40",
+      "shader_output": "separate local ID3DXBuffer*, initializednull",
+      "messages_output": "separate local ID3DXBuffer*, initializednull",
+      "constant_table_output": null
+    },
+    "flags": {
+      "vertex": {
+        "value": 4608,
+        "callsite_push": "00b60fb6",
+        "symbols": [
+          "D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY",
+          "D3DXSHADER_AVOID_FLOW_CONTROL"
+        ]
+      },
+      "pixel_default": {
+        "value": 5120,
+        "callsite_push": "00b61318",
+        "symbols": [
+          "D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY",
+          "D3DXSHADER_PREFER_FLOW_CONTROL"
+        ]
+      },
+      "pixel_shore": {
+        "value": 0,
+        "callsite_push": "00b612f6",
+        "gate": "case-sensitive CRT strstr(engineName.data,shore), nonnull name data; no lowercasing"
+      }
+    },
+    "no_legacy_d3dx9_31_flag": true
+  },
+  "program_name": {
+    "actual_input": "native string at builder+9C; data at+A0; complete constructed path",
+    "normal_formula": "base filename before final dot + unsigned decimal mode + T/F selected variant byte + literal3",
+    "mode_range": [
+      0,
+      13
+    ],
+    "extension_removal": "00b45fb3..00b4603b: reverse dot byte search atINT_MAX, substring start0,count=index; whole filename including directories",
+    "mode_append": "00b46144..00b46162 uses00711370(%u) then existingconcat",
+    "variant_append": "00b461e5..00b46267 appendsT for nonzero selected byte elseF; external byte semantic role remains explicit",
+    "generation_append": "00b4628b..00b462c4 formats and appends literal3",
+    "builder_copy": "00b3c3cb..00b3c419 initializes temporarybuilder+9C from constructed name",
+    "full_name_compiler_calls": [
+      "00b3b6c1",
+      "00b3bae9",
+      "00b3be30"
+    ],
+    "slash_trimmed_local_does_not_replace_builder_name": true,
+    "combiner_name_not_appended": true,
+    "case_transformation_in_audited_chain": false,
+    "canonical_shfx_equivalence": "For ordinary originalbase*.shfx names, case-sensitive shore search of that original base path is equivalent; removing.shfx/addingdigitsT/F cannot change shore presence.",
+    "general_api_boundary": "Use explicit engineName for unusual names; earlier VFS canonicalization, arbitrary extensions and embeddedNULs are not inferred."
+  },
+  "success_cleanup_and_return": {
+    "branch_gate": "nonnull compiledbytecode pointer, not FAILED(HRESULT)",
+    "vertex": "Disassemble+native diagnostic then CreateVertexShader; release assembly, bytecode/messages; return CreateVertexShader HRESULT.",
+    "pixel": "CreatePixelShader first; both masks enable disassembly/usage; optional disassembly HRESULT overwrites creation HRESULT in savedreturn slot+20; release assembly,bytecode/messages.",
+    "code_null_failure": "Return compileHRESULT directly; no retry/substitute/API fallback; native cleanup bypass can leak errorbuffer.",
+    "host_raii_boundary": "Always releasing returned COMbuffers is a host cleanup improvement; preserve actual error status rather than reproducing native leaks."
+  },
+  "diagnostics": {
+    "disassemble_color_coding": false,
+    "disassemble_comments": null,
+    "vertex_callsite": "00b60fec",
+    "pixel_callsite": "00b6139e",
+    "native_vertex_path": "shaderfx/debug/<engineName>.vsa",
+    "native_pixel_paths": [
+      "shaderfx/debug/<engineName>.psa1",
+      "shaderfx/debug/<engineName>.psa2"
+    ],
+    "pixel_sentinel": "texcoord[0]==500 selects.psa2 and skipsparser; bothmaskpointers mustbenonnull",
+    "host_boundary": "Keep diagnostics in repository-local storage; native VFS diagnostic side effects are not required by typed compiler integration.",
+    "no_native_compiler_or_shader_fallback_in_wrappers": true
+  },
+  "verification": {
+    "configured_bsp_project_program_verified_before_queries": true,
+    "live_function_count": 62762,
+    "original_pe_untouched": true,
+    "pe_live_spans": 20,
+    "matched_byte_count": 4324,
+    "complete_vertex_and_pixel_bodies_matched": true,
+    "official_header_flag_names_and_api_signatures_checked": true,
+    "no_runtime_compile_test_by_worker": true,
+    "x3025_resolution_requires_primary_unchanged_installed_shader_recompile": true,
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "primary_integration": {
+    "validation": "reports/mesh_material_validation.json",
+    "annotations": "reports/mesh_material_annotations.json",
+    "scope": "Installed model wire payload -> managed mesh buffers, native shader decode records and building instance writer, material lighting, compiled NORMAL pass and actual texture binding/draw. Host scene/instance backing and white ShadowTexture inputs remain explicit; native frame allocator, scene shadow generation, resource object ownership and full game remain unported."
+  }
+}

@@ -27,14 +27,21 @@ bool append_material_samplers_00b3b280(const std::vector<ShaderLuaSampler>& samp
     MaterialSamplerPass& pass, MaterialSamplerCounters& counters) {
     auto next = counters;
     for (const auto& sampler : samplers) {
-        if (sampler.texture_source != 0 || sampler.index < 0) return false;
+        if (sampler.texture_source != 0 && sampler.texture_source != 2) return false;
+        if (sampler.texture_source == 0 && sampler.index < 0) return false;
         auto& stage = sampler.declaration.vertex_stage ? next.vertex : next.pixel;
-        if (stage >= (sampler.declaration.vertex_stage ? 4u : 16u) || next.references == UINT32_MAX) return false;
-        ++stage; ++next.references;
+        if (stage >= (sampler.declaration.vertex_stage ? 4u : 16u)) return false;
+        ++stage;
+        if (sampler.texture_source == 0) {
+            if (next.references == UINT32_MAX) return false;
+            ++next.references;
+        }
     }
     for (const auto& sampler : samplers) {
-        append_material_texture_00b5f100(pass, sampler.index, sampler.declaration.vertex_stage);
-        ++counters.references;
+        if (sampler.texture_source == 0) {
+            append_material_texture_00b5f100(pass, sampler.index, sampler.declaration.vertex_stage);
+            ++counters.references;
+        }
         auto& stage = sampler.declaration.vertex_stage ? counters.vertex : counters.pixel;
         const auto slot = stage + (sampler.declaration.vertex_stage ? 16 : 0);
         for (const auto& state : sampler.sampler_states)

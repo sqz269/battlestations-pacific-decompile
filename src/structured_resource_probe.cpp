@@ -5,11 +5,13 @@
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/mesh_resource.hpp"
 #include "bsp/vertex_format.hpp"
+#include "bsp/structured_resource_registry.hpp"
+#include "installed_model_probe.hpp"
 #include <array>
 #include <cstdio>
 #include <cstring>
 
-static bool probe_model_metadata(AssetStreamProbe& assets) {
+bool probe_model_metadata(AssetStreamProbe& assets, InstalledModelProbe* output) {
     constexpr const char* name = "models/misc/repulogepdarabok_004.mmod";
     std::shared_ptr<bsp::MemoryStream> source;
     std::string error;
@@ -24,32 +26,29 @@ static bool probe_model_metadata(AssetStreamProbe& assets) {
     float group_params = 0;
     std::size_t note_count = 0, skipped_items = 0, hierarchy_count = 0;
     std::size_t mesh_count = 0, group_count = 0;
+    bsp::MeshStructuredResourceParser mesh_parser(bsp::resolve_mesh_vertex_format_layout_00b2dbd0);
+    bsp::NoteStructuredResourceParser note_parser;
+    bsp::GroupParamsStructuredResourceParser group_parser;
+    bsp::StructuredResourceRegistry registry;
+    if (!registry.register_parser(mesh_parser) || !registry.register_parser(note_parser)
+        || !registry.register_parser(group_parser) || registry.register_parser(mesh_parser)
+        || registry.size() != 3 || registry.find_parser("mEsH") != &mesh_parser) return false;
     while (root->has_remaining_00715bf0()) {
         auto container = root->read_child_00bea680();
         if (!container) return false;
         if (container->tag() == "Resource") {
-            while (container->has_remaining_00715bf0()) {
-                auto item = container->read_child_00bea680();
-                if (!item) return false;
-                if (item->tag() == "Note") {
-                    if (!bsp::read_note_text_00718f50_fragment(*item, note)
-                        || !item->close()) return false;
-                    ++note_count;
-                } else if (item->tag() == "Mesh") {
-                    if (!bsp::parse_mesh_resource_00b944e0(*item,
-                        bsp::resolve_mesh_vertex_format_layout_00b2dbd0,
-                        mesh, error) || !item->close()) {
-                        std::printf("Mesh reader: %s\n", error.c_str());
-                        return false;
-                    }
-                    ++mesh_count;
-                } else if (item->tag() == "GroupParams") {
-                    if (!bsp::read_group_params_00b8e580_fragment(*item,
-                        group_params) || !item->close()) return false;
-                    ++group_count;
-                } else {
-                    if (!item->skip_00be9c40()) return false;
-                    ++skipped_items;
+            std::vector<bsp::DecodedStructuredResource> items;
+            if (!registry.dispatch_items_00b7e970(*container, items, error)) {
+                std::printf("Resource dispatch: %s\n", error.c_str()); return false;
+            }
+            for (auto& item : items) {
+                if (!item.payload) ++skipped_items;
+                else if (auto* value = std::get_if<bsp::NoteResourcePayload>(&*item.payload)) {
+                    note = std::move(value->text); ++note_count;
+                } else if (auto* mesh_value = std::get_if<bsp::MeshResourcePayload>(&*item.payload)) {
+                    mesh = std::move(*mesh_value); ++mesh_count;
+                } else if (auto* group_value = std::get_if<bsp::GroupParamsResourcePayload>(&*item.payload)) {
+                    group_params = group_value->value; ++group_count;
                 }
             }
         } else if (container->tag() == "Hierarchy") {
@@ -151,6 +150,10 @@ static bool probe_model_metadata(AssetStreamProbe& assets) {
         indices.count, indices.index_width, vertex_bytes, compressed_bytes,
         index_bytes, mesh.subsets.size(), subset_matches, lod_matches,
         group_checked, mesh.field_order.size() == 7, mesh_checked && group_checked);
+    registry.clear();
+    if (registry.size() != 0 || registry.find_parser("Mesh")) return false;
+    std::printf("Installed resource registry: parsers=3 duplicate_rejected=1 case_insensitive_lookup=1 ordered_dispatch=1 clear=1\n");
+    if (checked && output) *output = {std::move(mesh), std::move(hierarchy)};
     return checked;
 }
 

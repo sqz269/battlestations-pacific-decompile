@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-09-10T02:07:45.063172+00:00",
+  "scope": "Read-only integration peer review of seven worker modules; no source edits or new tests.",
+  "status": "complete_no_concrete_blocking_findings",
+  "reviewed_files": [
+    {
+      "path": "include/bsp/resource_parser_map.hpp",
+      "lines": 44,
+      "sha256": "ba045fa28ae4f00040015698214c0b0944bbe22cba85291b677635a3a2872d4f"
+    },
+    {
+      "path": "src/resource_parser_map.cpp",
+      "lines": 39,
+      "sha256": "8946f20d6a5457854bef3ba560e87ceb41625feb747fc1813dc2b2e3744fef4d"
+    },
+    {
+      "path": "include/bsp/structured_resource_registry.hpp",
+      "lines": 84,
+      "sha256": "ebd22f6577773929c1673b695ab586c819d55b10dc2433f26d6d4516aed83dcd"
+    },
+    {
+      "path": "src/structured_resource_registry.cpp",
+      "lines": 114,
+      "sha256": "2307f22badb0d296dac91b1e550ee3e7001e66038ea83230be77390ac73b6380"
+    },
+    {
+      "path": "include/bsp/mesh_gpu_streams.hpp",
+      "lines": 25,
+      "sha256": "4a48c3b2910f1443e7cf73b1d1f1bfa5711c120945aee5f4a58e58dd13f3ec8b"
+    },
+    {
+      "path": "src/mesh_gpu_streams.cpp",
+      "lines": 95,
+      "sha256": "00a4b67e6bfb2fd4b2b2a1642ef081b1add31b0dfa216398f2ddbec30fb6ebab"
+    },
+    {
+      "path": "include/bsp/mesh_decode_bindings.hpp",
+      "lines": 67,
+      "sha256": "c6367edb686c97a2d618f556c862be74c224899f56d7b33ecfe173d07c1e23cc"
+    },
+    {
+      "path": "src/mesh_decode_bindings.cpp",
+      "lines": 124,
+      "sha256": "2f70723caa5861c72eb4649c48e5163fcf009e8069ffedd0d8cc18869e0c6584"
+    },
+    {
+      "path": "include/bsp/building_instance.hpp",
+      "lines": 46,
+      "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+    },
+    {
+      "path": "src/building_instance.cpp",
+      "lines": 46,
+      "sha256": "66962cbe8aef10739fc83c7d8b188a2c5af0d8a804608b44bc0626c059986a7f"
+    },
+    {
+      "path": "include/bsp/material_lighting.hpp",
+      "lines": 35,
+      "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+    },
+    {
+      "path": "src/material_lighting.cpp",
+      "lines": 31,
+      "sha256": "128631c09e7f830ed2d9bef108347b7d7cf9893311b39e13846f9f71cebee5e0"
+    },
+    {
+      "path": "include/bsp/material_shadow_samplers.hpp",
+      "lines": 46,
+      "sha256": "aa8f427f24ee14159ac62486a3889cd21d4a5ae827e9de5c764199873cacf441"
+    },
+    {
+      "path": "src/material_shadow_samplers.cpp",
+      "lines": 78,
+      "sha256": "fd888a5601bfa98378bcf61f0b15e7a1e6a6dc021c67ee09ca5926a7469277c4"
+    }
+  ],
+  "excluded_mutable_integration_files": [
+    "src/compiled_material.cpp",
+    "include/bsp/compiled_material.hpp",
+    "src/d3d9_mesh_probe.cpp"
+  ],
+  "findings": [],
+  "unresolved_findings": [],
+  "checks": [
+    {
+      "topic": "Parser key and ownership",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/resource_parser_map.cpp:7-41",
+        "reports/resource_parser_map_storage_audit.json code spans00b7fd30/00b7f730/00b7f790"
+      ],
+      "conclusion": "Counted-empty gates then CRT comparison, full owned key copy, first equivalent pointer wins, node/keys only destruction; raw parser pointers remain borrowed."
+    },
+    {
+      "topic": "Registry ordering and unsupported path",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/structured_resource_registry.cpp:53-116",
+        "reports/resource_parser_map_storage_audit.json code spans00b80a50/00b7e970"
+      ],
+      "conclusion": "Two getter calls only after miss, second collision still returns true, encounter-order append before close, explicit unknown skip/nullopt, GroupParams detach and no implicit Mesh/Note tail skip."
+    },
+    {
+      "topic": "Private GPU creation and ownership",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/mesh_gpu_streams.cpp:9-95",
+        "include/bsp/d3d9_buffers.hpp:13-30",
+        "src/d3d9_buffers.cpp:23-31",
+        "src/d3d9_states.cpp:282-330",
+        "reports/mesh_registered_buffer_backing_audit.json implemented_fragments/host_differences"
+      ],
+      "conclusion": "Checked capacities protect width/count multiplication; physical COM reference has one owner, declaration and logical owner remain stable, output publishes only on success. Static private buffers do not enter raw dynamic registries; INDEX32 bypasses the shared INDEX16 recreation route."
+    },
+    {
+      "topic": "Decode constant wrap and overlap",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/mesh_decode_bindings.cpp:62-133",
+        "local/mesh_vertex_decode_binding/00b428c0.decoded.asm.txt:26-117",
+        "reports/mesh_vertex_decode_binding_audit.json fragment"
+      ],
+      "conclusion": "Scale FF alone gates; selector2 requires shadow count. Signed per-stream count uses invariant cursor difference, remaining DWORD counters wrap and stop only at stream boundaries; source index resets and scale/offset writes replay in order. Native ECX increment is initialized to1 once before loopback00b429c5, consistent with host unit increments."
+    },
+    {
+      "topic": "Building instance value order",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/building_instance.cpp:10-43",
+        "local/building_instance/00b55780.decoded.asm.txt",
+        "reports/building_instance_data_audit.json writer_layout"
+      ],
+      "conclusion": "World affine transposition, first three ordered lights, absent zero fill and final visibility/count/diffuse-alpha overwrites match record offsets. Staged output avoids host alias overwrite."
+    },
+    {
+      "topic": "Lighting defaults and live alias",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/material_lighting.cpp:5-32",
+        "reports/material_lighting_audit.json lighting_record/code_spans/data_spans"
+      ],
+      "conclusion": "Four ones/twelve zeros/ten; bit copy with ignored slot, flag before copy, mutable first-quartet alias without dirty write; source self-alias handled."
+    },
+    {
+      "topic": "Special shadow sampler state and binding",
+      "status": "resolved_as_consistent",
+      "evidence": [
+        "src/material_shadow_samplers.cpp:8-89",
+        "src/material_samplers.cpp:7-15",
+        "src/d3d9_states.cpp:196-207",
+        "reports/material_shadow_samplers_audit.json fragments/integration_order/uncertainties"
+      ],
+      "conclusion": "Effect overall ordinal plus base pixel count, ordered post-prune map state overrides, retained fallback, ShadowTexture before ShadowMap, missing first light versus absent shadow owner versus existing null texture distinguished. No pixel-mask gating added."
+    }
+  ],
+  "remaining_documented_boundaries": [
+    "Existing void Unlock APIs do not report GPU upload Unlock failure; already explicit in GPU backing report.",
+    "Parser pointers, material diffuse aliases, and LogicalTexture borrowed COM backing require their documented stable owner lifetimes; moved/destroyed callers must not reuse old aliases.",
+    "Bounds/invalid-input error policies and x87 NaN conversion exclusions are explicit host differences, not native ABI claims.",
+    "Mutable root integration files were excluded; caller ordering, lifetime placement and draw/probe correctness require primary verification after freeze."
+  ],
+  "validation": "Static source/header/dependency review and bounded native evidence inspection only; no build, tests, or runtime performed by reviewer.",
+  "root_integration_review": {
+    "captured_utc": "2026-09-10T02:13:09.342926+00:00",
+    "status": "complete_two_findings_fixed_no_remaining_blocker",
+    "files": [
+      {
+        "path": "include/bsp/compiled_material.hpp",
+        "sha256": "fede1cdbd7419e9caeff65221e245b5ece2599801fcd397864db81897b6bbe95"
+      },
+      {
+        "path": "src/compiled_material.cpp",
+        "sha256": "2309d9cc957fbfe2512311885825c7d226496fc8df6e575a1c647a9658cfd5cf"
+      },
+      {
+        "path": "src/d3d9_mesh_probe.cpp",
+        "sha256": "cb216581d444f73c4c09564b64e5791620bb4bd2828129a6b98415880b04be49"
+      },
+      {
+        "path": "src/d3d9_font_probe.cpp",
+        "sha256": "88794da45a965ee7e90ff72e9687d49b5bde72a2d54cfb49940e46ee1d19c713"
+      },
+      {
+        "path": "src/structured_resource_probe.cpp",
+        "sha256": "75cd7499426c62547774736f84ea9240527a5f2e36f9976bd8c5d6b801af33f6"
+      },
+      {
+        "path": "src/installed_model_probe.hpp",
+        "sha256": "4c5f82a553a7fcacfff84aade443c50d9e5479f9a7902302cee54949fb3799bf"
+      }
+    ],
+    "findings": [
+      {
+        "id": "shadow_filter_input",
+        "status": "resolved_source_verified",
+        "before": "Compiler passed false to shadow sampler configuration, silently fixing ShadowMap filtering to POINT.",
+        "fix": "MaterialPassCompileSettings.linear_shadow_map is passed to the configure helper; caller explicitly supplies settings.",
+        "evidence": [
+          "include/bsp/compiled_material.hpp MaterialPassCompileSettings",
+          "src/compiled_material.cpp configure_material_shadow_samplers call"
+        ]
+      },
+      {
+        "id": "readback_exception_unlock",
+        "status": "resolved_source_verified",
+        "before": "colors.insert/write_bitmap could throw while readback surface was locked, bypassing UnlockRect.",
+        "fix": "Local UnlockSurface guard now unlocks on exception; successful explicit unlock clears guard pointer.",
+        "evidence": [
+          "src/d3d9_mesh_probe.cpp:283-293"
+        ]
+      }
+    ],
+    "ownership_checks": [
+      "CompiledMaterialPass owns shader COM references; temporary bytecode/messages/disassembly buffers die before CompilerModule unload; no retained pointer into compiler buffers.",
+      "Mesh retained texture owners and shader owner outlive inner D3D9StateCache and logical wrappers; state restoration occurs after inner scope on HRESULT or caught exception exits.",
+      "FontGeometryOwner is destroyed before its borrowed state cache; its Impl destructor unbinds and releases owned shader references. Shared compiled shader owner remains alive across cache.clear and entire draw.",
+      "StructuredResourceRegistry is declared after concrete parsers and cleared before payload publication; moved output records own strings/vectors and do not borrow the reader or parser objects."
+    ],
+    "constant_and_scope_checks": [
+      "Mesh diagnostic uses explicit camera/ambient/directional/fog/shadow inputs; it does not claim native world, shadow generation, or game postprocess.",
+      "Compiler now uses D3DX9_40, native VS1200/PS1400 flag choices, exact engine stem/mode/T-or-F/3 name for case-sensitive shore exception, and rejects embedded-NUL source outside the stated strlen-equivalent domain.",
+      "Mesh readback validates created buffer bytes, reflected decode constants, instance layout, texture identities/frequencies and nonempty varied pixels. These checks support a controlled host draw, not original-game visual parity.",
+      "Existing font wrapper preserves cached owner retention and font descriptor constraints while delegating compilation."
+    ],
+    "unresolved_findings": [],
+    "validation_boundary": "Static review only. Primary owns compilation and rerunning existing probes after the latest fixes; reported earlier build/draw success was not independently rerun by reviewer."
+  }
+}

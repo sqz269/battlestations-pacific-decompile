@@ -1,0 +1,522 @@
+{
+  "utc": "2026-09-10T01:53:15.406179+00:00",
+  "packet": "mesh_registered_buffer_backing",
+  "baseline_commit": "5a011e0",
+  "status": "gpu_adapter_sources_written_native_pe_audited_primary_build_and_integration_pending",
+  "corrected_packet_contract": "CPU object slabs and pointer arrays are separate from actual private managed mesh GPU backing; flags1 vertex/index creation plus unchanged-byte upload reconstructed.",
+  "project_verification": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "functions": [
+    {
+      "address": "00b4b370",
+      "original_name": "CG_static_dtor_stub_00b4b370",
+      "suggested_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
+      "original_abi": "No stack arguments; incoming ECX discarded; EAX CPU object slot; tail jump into ECX pool helper.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "MOV ECX,0108fe18; JMP00b4ae80. Allocates a logical stream CPU slot, not a static destructor or GPU backing buffer.",
+      "byte_evidence": {
+        "address": "00b4b370",
+        "length": 10,
+        "end_inclusive": "00b4b379",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4b370.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "63ef3af6d5ba3ec51d458f342eada7ecf539f0d158171b1fbb51b321c0e1eb64"
+      },
+      "annotation_before": {
+        "address": "00b4b370",
+        "function_name": "CG_static_dtor_stub_00b4b370"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: MOV ECX,0108fe18; JMP00b4ae80. Allocates a logical stream CPU slot, not a static destructor or GPU backing buffer. ABI: No stack arguments; incoming ECX discarded; EAX CPU object slot; tail jump into ECX pool helper. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b22d10",
+      "original_name": "FUN_00b22d10",
+      "suggested_name": "BSP_PointerArray_Reserve_00b22d10",
+      "original_abi": "ECX array{data,count,capacity}; stack signed requested capacity; RET4; no stable result.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Clamp requested capacity to at least1; when growing allocate capacity*4, copy count DWORDs, free old data, store pointer and capacity. Count unchanged; no pointee AddRef. Returning free tail hidden by CALL_RETURN at00b22d5c.",
+      "byte_evidence": {
+        "address": "00b22d10",
+        "length": 95,
+        "end_inclusive": "00b22d6e",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b22d10.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6"
+      },
+      "annotation_before": {
+        "address": "00b22d10",
+        "function_name": "FUN_00b22d10"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Clamp requested capacity to at least1; when growing allocate capacity*4, copy count DWORDs, free old data, store pointer and capacity. Count unchanged; no pointee AddRef. Returning free tail hidden by CALL_RETURN at00b22d5c. ABI: ECX array{data,count,capacity}; stack signed requested capacity; RET4; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b4ae80",
+      "original_name": "FUN_00b4ae80",
+      "suggested_name": "BSP_VertexStreamSlabPool_Allocate",
+      "original_abi": "ECX CPU slab pool; no stack arguments; EAX CPU slot; plainRET.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Tracked lock pool+Ch; F44h-byte slabs of32x78h slots; pop WORD index from+F00h using decremented count+F40h; return slab+index*78h. Pool slab array grows2*capacity+2; current usable slab+34h. Returning free call00b4af11 retains stale CALL_RETURN.",
+      "byte_evidence": {
+        "address": "00b4ae80",
+        "length": 316,
+        "end_inclusive": "00b4afbb",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4ae80.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "02ad24dfb9a6525749c16ae065febc94d47a0004c1d13b2a35e4ca8ec50d6130"
+      },
+      "annotation_before": {
+        "address": "00b4ae80",
+        "function_name": "FUN_00b4ae80"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Tracked lock pool+Ch; F44h-byte slabs of32x78h slots; pop WORD index from+F00h using decremented count+F40h; return slab+index*78h. Pool slab array grows2*capacity+2; current usable slab+34h. Returning free call00b4af11 retains stale CALL_RETURN. ABI: ECX CPU slab pool; no stack arguments; EAX CPU slot; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b48eb0",
+      "original_name": "FUN_00b48eb0",
+      "suggested_name": "BSP_VertexStreamSlab_Initialize",
+      "original_abi": "ECX slab; stack slab index; EAX this; RET4.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Set free WORD count+F40h=32, indices+F00h to31..0, and write slab index at each of32 slots+74h with78h stride.",
+      "byte_evidence": {
+        "address": "00b48eb0",
+        "length": 64,
+        "end_inclusive": "00b48eef",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b48eb0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "78b7056628e42c0e2c1ee98497777a6a854713e054d61961bf2216681dc63460"
+      },
+      "annotation_before": {
+        "address": "00b48eb0",
+        "function_name": "FUN_00b48eb0"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Set free WORD count+F40h=32, indices+F00h to31..0, and write slab index at each of32 slots+74h with78h stride. ABI: ECX slab; stack slab index; EAX this; RET4. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b4bc00",
+      "original_name": "BSP_D3D9LogicalVertexStream_Construct",
+      "suggested_name": "BSP_D3D9LogicalVertexStream_Construct",
+      "original_abi": "ECX logical stream; stack count,declaration,flags; EAX this; RETCh.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only.",
+      "byte_evidence": {
+        "address": "00b4bc00",
+        "length": 758,
+        "end_inclusive": "00b4bef5",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4bc00.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9"
+      },
+      "annotation_before": {
+        "address": "00b4bc00",
+        "function_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bc00]\nFactory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported."
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only. ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b1feb0",
+      "original_name": "TRIV_body_00b1feb0",
+      "suggested_name": "BSP_D3D9Renderer_GetSharedVertexBuffer",
+      "original_abi": "ECX renderer; no stack arguments; EAX borrowed physical wrapper; plainRET.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Return renderer+1974h; getter itself does not AddRef. Dynamic logical vertex constructor increments wrapper+4h.",
+      "byte_evidence": {
+        "address": "00b1feb0",
+        "length": 7,
+        "end_inclusive": "00b1feb6",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b1feb0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "ed07ef49143025d13fb0b147b03936835e41a97cbad3417fc5971923fc1b0c53"
+      },
+      "annotation_before": {
+        "address": "00b1feb0",
+        "function_name": "TRIV_body_00b1feb0"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return renderer+1974h; getter itself does not AddRef. Dynamic logical vertex constructor increments wrapper+4h. ABI: ECX renderer; no stack arguments; EAX borrowed physical wrapper; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b1fef0",
+      "original_name": "TRIV_body_00b1fef0",
+      "suggested_name": "BSP_D3D9Renderer_GetDevice",
+      "original_abi": "ECX renderer; no stack arguments; EAX borrowed D3D device; plainRET.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Return renderer+1A10h; getter itself does not AddRef.",
+      "byte_evidence": {
+        "address": "00b1fef0",
+        "length": 7,
+        "end_inclusive": "00b1fef6",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b1fef0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6"
+      },
+      "annotation_before": {
+        "address": "00b1fef0",
+        "function_name": "TRIV_body_00b1fef0"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return renderer+1A10h; getter itself does not AddRef. ABI: ECX renderer; no stack arguments; EAX borrowed D3D device; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b288b0",
+      "original_name": "FUN_00b288b0",
+      "suggested_name": "BSP_Renderer_CreateRegisteredIndexStream",
+      "original_abi": "ECX renderer; stack count,flags,format; EAX logical stream or null; RETCh.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Allocate CPU object through00b4b380, call00b4bf30(count,format,flags); append raw pointer atrenderer+1AB8h and optionally+19C4h when virtual+58h returnsAL1. Separate reserve helper00b22d70; no AddRef during either append. Table DWORD00d5f108 establishes factory+60h.",
+      "byte_evidence": {
+        "address": "00b288b0",
+        "length": 234,
+        "end_inclusive": "00b28999",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b288b0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "cb8ae9af84e2e819aa65162ed199cb05a379f0a91f250909156e387298d62f07"
+      },
+      "annotation_before": {
+        "address": "00b288b0",
+        "function_name": "FUN_00b288b0"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Allocate CPU object through00b4b380, call00b4bf30(count,format,flags); append raw pointer atrenderer+1AB8h and optionally+19C4h when virtual+58h returnsAL1. Separate reserve helper00b22d70; no AddRef during either append. Table DWORD00d5f108 establishes factory+60h. ABI: ECX renderer; stack count,flags,format; EAX logical stream or null; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b4bf30",
+      "original_name": "BSP_D3D9LogicalIndexStream_Construct",
+      "suggested_name": "BSP_D3D9LogicalIndexStream_Construct",
+      "original_abi": "ECX logical stream; stack count,format,flags; EAX this; RETCh.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Always private CreateIndexBuffer count*width, exact format65h/66h,derived usage/pool; wrap via00d61e10 and00b4c250 then release temporary COM owner. Logical offset0,count+14h,format+18h,flags+10h; base index0. Meshflags1 MANAGED usage0; host success path only.",
+      "byte_evidence": {
+        "address": "00b4bf30",
+        "length": 678,
+        "end_inclusive": "00b4c1d5",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4bf30.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "b154a86c91c9b2d89735cb29bf232573062aff1b09c9940a059d9032c0ee56c9"
+      },
+      "annotation_before": {
+        "address": "00b4bf30",
+        "function_name": "BSP_D3D9LogicalIndexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bf30]\nFactory00b288b0 allocates logical index stream, installs vtable00d61de0. Physical buffer wrapper at+8h. Flags choose pool/usage, input format chooses 16/32-bit element size. Full constructor unported."
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Always private CreateIndexBuffer count*width, exact format65h/66h,derived usage/pool; wrap via00d61e10 and00b4c250 then release temporary COM owner. Logical offset0,count+14h,format+18h,flags+10h; base index0. Meshflags1 MANAGED usage0; host success path only. ABI: ECX logical stream; stack count,format,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b4c370",
+      "original_name": "BSP_D3D9VertexBuffer_Attach",
+      "suggested_name": "BSP_D3D9VertexBuffer_Attach",
+      "original_abi": "ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter.",
+      "byte_evidence": {
+        "address": "00b4c370",
+        "length": 282,
+        "end_inclusive": "00b4c489",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4c370.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "98fae14d6c49618ca13da379fbc6d713d24fc59c0af72e7dafad38468aaf1386"
+      },
+      "annotation_before": {
+        "error": "No function at address: 00b49b30"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter. ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b4c250",
+      "original_name": "BSP_D3D9IndexBuffer_Attach",
+      "suggested_name": "BSP_D3D9IndexBuffer_Attach",
+      "original_abi": "ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter.",
+      "byte_evidence": {
+        "address": "00b4c250",
+        "length": 282,
+        "end_inclusive": "00b4c369",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4c250.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "e93b2019eac98896b4a38ba0ae0f0b55924e59fd47cf3262ee54a8f9341efd4e"
+      },
+      "annotation_before": {
+        "address": "00b4c250",
+        "function_name": "BSP_D3D9IndexBuffer_Attach",
+        "comment": "[BSP reconstruction 00b4c250]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter. ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    },
+    {
+      "address": "00b49b30",
+      "original_name": null,
+      "suggested_name": "BSP_LogicalStream_PostUploadNoOp",
+      "original_abi": "ECX logical stream unused; no stack arguments; singleRET; no stable return value.",
+      "status": "native_contract_audited_primary_annotation_pending",
+      "confidence": "high for listed operations; descriptive symbol remains a hypothesis",
+      "evidence": "Single C3 at00b49b30 followed by15CC padding. Data refs00d61d5c and00d61e0c; latter is index vtable00d61de0+2Ch called after parser upload. No function existed in Ghidra before audit.",
+      "byte_evidence": {
+        "address": "00b49b30",
+        "length": 1,
+        "end_inclusive": "00b49b30",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b49b30.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+      },
+      "annotation_before": {
+        "error": "No function at address: 00b49b30"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Single C3 at00b49b30 followed by15CC padding. Data refs00d61d5c and00d61e0c; latter is index vtable00d61de0+2Ch called after parser upload. No function existed in Ghidra before audit. ABI: ECX logical stream unused; no stack arguments; singleRET; no stable return value. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation."
+    }
+  ],
+  "implemented_fragments": [
+    {
+      "address": "00b4bc00",
+      "fragment_id": "mesh_private_vertex_gpu_creation_upload",
+      "source": "src/mesh_gpu_streams.cpp",
+      "header": "include/bsp/mesh_gpu_streams.hpp",
+      "api": "create_mesh_vertex_stream_00b4bc00_fragment",
+      "original_ranges": [
+        "00b4bd8e..00b4bec4",
+        "00b93ee5..00b93f22"
+      ],
+      "scope": "Flags1 private managed creation and upload; uses actual VertexDeclaration stride/element count and existing logical stream lock/unlock; default tag40000000h; serialized bytes unchanged."
+    },
+    {
+      "address": "00b4bf30",
+      "fragment_id": "mesh_private_index_gpu_creation_upload",
+      "source": "src/mesh_gpu_streams.cpp",
+      "header": "include/bsp/mesh_gpu_streams.hpp",
+      "api": "create_mesh_index_stream_00b4bf30_fragment",
+      "original_ranges": [
+        "00b4c05c..00b4c1a2",
+        "00b93acb..00b93b11"
+      ],
+      "scope": "Flags1 private managed INDEX16/INDEX32 creation and upload; never routesINDEX32 through sharedINDEX16 recreation. Post-upload callback00b49b30 is no-op."
+    }
+  ],
+  "flow_repairs": [
+    {
+      "address": "00b22d5c",
+      "function": "00b22d10",
+      "previous": "CALL_RETURN",
+      "proposed": "NONE",
+      "reason": "Returning CRT free; bytes00b22d61..69 restore stack then install data/capacity and pop EBX.",
+      "tail_instructions": [
+        "00b22d61 ADD ESP,4",
+        "00b22d64 MOV [ESI],EBX",
+        "00b22d66 MOV [ESI+8],EDI",
+        "00b22d69 POP EBX"
+      ],
+      "byte_evidence": {
+        "address": "00b22d10",
+        "length": 95,
+        "end_inclusive": "00b22d6e",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b22d10.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6"
+      }
+    },
+    {
+      "address": "00b4af11",
+      "function": "00b4ae80",
+      "previous": "CALL_RETURN",
+      "proposed": "NONE",
+      "reason": "Returning CRT free; bytes00b4af16 restore stack before pointer install00b4af19 and remaining allocation.",
+      "tail_instructions": [
+        "00b4af16 ADD ESP,4",
+        "00b4af19 MOV [ESI+28h],EDI"
+      ],
+      "byte_evidence": {
+        "address": "00b4ae80",
+        "length": 316,
+        "end_inclusive": "00b4afbb",
+        "raw_capture": "local/mesh_registered_buffer_backing/00b4ae80.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "02ad24dfb9a6525749c16ae065febc94d47a0004c1d13b2a35e4ca8ec50d6130"
+      }
+    }
+  ],
+  "before_state": {
+    "flow_capture": "local/mesh_registered_buffer_backing/flow_before.json",
+    "comments": [
+      "local/mesh_registered_buffer_backing/comments_before.json",
+      "local/mesh_registered_buffer_backing/allocator_comment_before.json",
+      "local/mesh_registered_buffer_backing/index_comments_before.json",
+      "local/mesh_registered_buffer_backing/slab_comment_before.json"
+    ],
+    "noop_function_absent": true,
+    "noop_absence_evidence": "bsp.py lookup00b49b30 found no function start; ghidra proto returned No function found; comments endpoint returned No function at address:00b49b30.",
+    "native_prototypes": "All queried current Ghidra function signatures were undefined name(void), so original ABI recovered from instructions, not trusted prototypes."
+  },
+  "byte_ranges": [
+    {
+      "address": "00b4b370",
+      "length": 10,
+      "end_inclusive": "00b4b379",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b4b370.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "63ef3af6d5ba3ec51d458f342eada7ecf539f0d158171b1fbb51b321c0e1eb64"
+    },
+    {
+      "address": "00b22d10",
+      "length": 95,
+      "end_inclusive": "00b22d6e",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b22d10.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6"
+    },
+    {
+      "address": "00b4ae80",
+      "length": 316,
+      "end_inclusive": "00b4afbb",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b4ae80.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "02ad24dfb9a6525749c16ae065febc94d47a0004c1d13b2a35e4ca8ec50d6130"
+    },
+    {
+      "address": "00b4bc00",
+      "length": 758,
+      "end_inclusive": "00b4bef5",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b4bc00.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9"
+    },
+    {
+      "address": "00b1feb0",
+      "length": 7,
+      "end_inclusive": "00b1feb6",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b1feb0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "ed07ef49143025d13fb0b147b03936835e41a97cbad3417fc5971923fc1b0c53"
+    },
+    {
+      "address": "00b1fef0",
+      "length": 7,
+      "end_inclusive": "00b1fef6",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b1fef0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6"
+    },
+    {
+      "address": "00b4c370",
+      "length": 282,
+      "end_inclusive": "00b4c489",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b4c370.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "98fae14d6c49618ca13da379fbc6d713d24fc59c0af72e7dafad38468aaf1386"
+    },
+    {
+      "address": "00d61e34",
+      "length": 28,
+      "end_inclusive": "00d61e4f",
+      "raw_capture": "local/mesh_registered_buffer_backing/00d61e34.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "b09e09a375fe12a1d0dd5287da5ac7001e570034703d52dbbe685ade66e8e1d0"
+    },
+    {
+      "address": "00b288b0",
+      "length": 234,
+      "end_inclusive": "00b28999",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b288b0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "cb8ae9af84e2e819aa65162ed199cb05a379f0a91f250909156e387298d62f07"
+    },
+    {
+      "address": "00b4bf30",
+      "length": 678,
+      "end_inclusive": "00b4c1d5",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b4bf30.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "b154a86c91c9b2d89735cb29bf232573062aff1b09c9940a059d9032c0ee56c9"
+    },
+    {
+      "address": "00b4c250",
+      "length": 282,
+      "end_inclusive": "00b4c369",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b4c250.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "e93b2019eac98896b4a38ba0ae0f0b55924e59fd47cf3262ee54a8f9341efd4e"
+    },
+    {
+      "address": "00b49b30",
+      "length": 1,
+      "end_inclusive": "00b49b30",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b49b30.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+    },
+    {
+      "address": "00d61de0",
+      "length": 80,
+      "end_inclusive": "00d61e2f",
+      "raw_capture": "local/mesh_registered_buffer_backing/00d61de0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "e5271e9ed31641d775c83d0541580f8aae242c2b478afdfb93e4df6f85e56a09"
+    },
+    {
+      "address": "00b48eb0",
+      "length": 64,
+      "end_inclusive": "00b48eef",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b48eb0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "78b7056628e42c0e2c1ee98497777a6a854713e054d61961bf2216681dc63460"
+    },
+    {
+      "address": "00b61ea6",
+      "length": 7,
+      "end_inclusive": "00b61eac",
+      "raw_capture": "local/mesh_registered_buffer_backing/00b61ea6.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "4838bd4edd30978280c92718c83749b90ec661f8162aa48756f9e8adf97bec27"
+    },
+    {
+      "address": "00d5f104",
+      "length": 8,
+      "end_inclusive": "00d5f10b",
+      "raw_capture": "local/mesh_registered_buffer_backing/00d5f104.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "007f39cb25b0cb2c89be5eb2a5eb9376fdc9e070d15ab08704649f35d582cbd7"
+    }
+  ],
+  "validation": {
+    "live_pe_ranges": 16,
+    "live_pe_bytes": 2857,
+    "all_ranges_match_installed_pe": true,
+    "project_program_verification": "Each live query passes bsp.py client().verify() against config/target.json.",
+    "new_tests_added": false,
+    "build": "primary owns integrated scripts/build.ps1 execution",
+    "real_device": "pending primary existing-probe integration",
+    "game_validated": false
+  },
+  "host_differences": [
+    "Expose HRESULT and publish output only after successful upload; reject zero-sized buffers, overflow, inconsistent layout/length and unsupported formats.",
+    "Retain stable C++ shared owners; native intrusive refcounts and raw renderer registries are not ABI-portable.",
+    "No static physical registration: native only registers dynamic vertex streams in that list.",
+    "Omit native creation retry/device recreation and assume no game global singleton/diagnostic state.",
+    "Default constructor CPU slab ID/semantic caches are not projected; existing needed tag40000000h is retained.",
+    "Use existing void-returning unlock projection, which does not report native Unlock HRESULT."
+  ],
+  "unresolved_dependencies": [
+    "CPU object slab return/free and pool shutdown; no allocator stub port was added.",
+    "Index CPU object allocator00b4b380 and raw pointer reserve00b22d70 remain unported.",
+    "Renderer registry removal/destruction and full device failure retry remain outside this success-path adapter.",
+    "Dynamic vertex constructor/full base constructor not reconstructed; known shared backing behavior documented only.",
+    "Compressed metadata shader constants and actual material/instancing routes belong to independent integration work."
+  ],
+  "proposed_next_packet": "Integrate installed mesh private managed vertex/index owners with verified material/declaration/constant routes; existing real-device probe validates exact buffer bytes/descriptions and cleanup.",
+  "primary_integration": {
+    "validation": "reports/mesh_material_validation.json",
+    "annotations": "reports/mesh_material_annotations.json",
+    "scope": "Installed model wire payload -> managed mesh buffers, native shader decode records and building instance writer, material lighting, compiled NORMAL pass and actual texture binding/draw. Host scene/instance backing and white ShadowTexture inputs remain explicit; native frame allocator, scene shadow generation, resource object ownership and full game remain unported."
+  }
+}

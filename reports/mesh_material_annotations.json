@@ -1,0 +1,2237 @@
+{
+  "utc": "2026-09-10T02:23:25.221330+00:00",
+  "saved": true,
+  "annotations": [
+    {
+      "address": "00469840",
+      "before": {
+        "address": "00469840",
+        "function_name": "FUN_00469840"
+      },
+      "after": {
+        "address": "00469840",
+        "function_name": "BSP_NativeString_Substring",
+        "comment": "[BSP reconstruction 00469840]\nSubstring copy; normal name call uses start0,count=final dot index. No case transformation. General malformed/overflow semantics not reimplemented. Original ABI: ECX source native string; stack output string,start,count; EAX output; RET0C. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "004bcb80",
+      "before": {
+        "address": "004bcb80",
+        "function_name": "FUN_004bcb80",
+        "comment": "[BSP reconstruction 004bcb80]\nECX candidate native string; stack C-string byte set,start index; EAX index/FFFFFFFF; RET8 Reverse byte-set search; called with slash and INT32MAX. Preserve string-helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "004bcb80",
+        "function_name": "FUN_004bcb80",
+        "comment": "[BSP reconstruction 004bcb80]\nECX candidate native string; stack C-string byte set,start index; EAX index/FFFFFFFF; RET8 Reverse byte-set search; called with slash and INT32MAX. Preserve string-helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 004bcb80] update\nReverse case-sensitive byte-set search; bounded normal name call uses dot and INT_MAX. Existing generic-helper name/comment preserved. Original ABI: ECX candidate native string; stack C-string byte set and signed start index; EAX match index orFFFFFFFF; RET8. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00711370",
+      "before": {
+        "address": "00711370",
+        "function_name": "FUN_00711370"
+      },
+      "after": {
+        "address": "00711370",
+        "function_name": "BSP_NativeString_FromUnsigned",
+        "comment": "[BSP reconstruction 00711370]\nsprintf(%u,DWORD) into local buffer, copy to native string. Decimal digits only; no case transformation. Original ABI: ECX native output string; stack unsignedDWORD; EAX output; RET4. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b0d130",
+      "before": {
+        "address": "00b0d130",
+        "function_name": "CG_adjustor_thunk_00b0d130"
+      },
+      "after": {
+        "address": "00b0d130",
+        "function_name": "BSP_ShadowTextureOwner_GetTexture",
+        "comment": "[BSP reconstruction 00b0d130]\nBSP reconstruction hypothesis: MOV ECX,[ECX+3Ch]; JMP00b4cb10. Material fragment supplies global00f8d39c; this is a nested pointer getter, not an adjustor thunk. ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b172b0",
+      "before": {
+        "address": "00b172b0",
+        "function_name": "FUN_00b172b0"
+      },
+      "after": {
+        "address": "00b172b0",
+        "function_name": "BSP_MaterialPass_SetEffectOwner",
+        "comment": "[BSP reconstruction 00b172b0]\nStore the stack effect-owner pointer into pass+14. ABI ECX pass; one stack DWORD; RET4; no AddRef/release in this complete10-byte body. Caller00b46334 passes the effect whose+C4 is the primary Shader descriptor. This closes material decode limit owner mapping; full ownership/lifetime remains unestablished. Descriptive name is a hypothesis. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b17840",
+      "before": {
+        "address": "00b17840",
+        "function_name": "BSP_LightingRecord_Initialize",
+        "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b17840",
+        "function_name": "BSP_LightingRecord_Initialize",
+        "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b17840] update\nStore four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b179d0",
+      "before": {
+        "address": "00b179d0",
+        "function_name": "BSP_Material_SetLightingRecord",
+        "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b179d0",
+        "function_name": "BSP_Material_SetLightingRecord",
+        "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b179d0] update\nSet material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b179f0",
+      "before": {
+        "address": "00b179f0",
+        "function_name": "BSP_Material_GetDiffuseColor",
+        "comment": "[BSP reconstruction 00b179f0]\nECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      },
+      "after": {
+        "address": "00b179f0",
+        "function_name": "BSP_Material_GetDiffuseColor",
+        "comment": "[BSP reconstruction 00b179f0]\nECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json.\n\n[BSP reconstruction 00b179f0] update\nReturn a live pointer alias to first four record floats (diffuse color). No copy, slot selection, or dirty-flag write. Existing cMatDiffColor consumer audit identifies quartet. Original ABI: ECX material; stack ignored slot; EAX material+38h; RET4. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b18900",
+      "before": {
+        "address": "00b18900",
+        "function_name": "BSP_Material_ConstructWithEffect",
+        "comment": "[BSP reconstruction 00b18900]\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n\n[BSP reconstruction 00b18900] update\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits."
+      },
+      "after": {
+        "address": "00b18900",
+        "function_name": "BSP_Material_ConstructWithEffect",
+        "comment": "[BSP reconstruction 00b18900]\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n\n[BSP reconstruction 00b18900] update\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits.\n\n[BSP reconstruction 00b18900] update\nLighting-only host fragment: initialize embedded68-byte record at material+38h through00b17840, then initialize byte+10Ch to0. Complete PE body also zeroes textures/other fields, installs vtables and retains effect; those ownership operations are not reconstructed by MaterialLighting. Original ABI: ECX material; stack effect pointer; EAX material; RET4; x86 SEH. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b1feb0",
+      "before": {
+        "address": "00b1feb0",
+        "function_name": "TRIV_body_00b1feb0"
+      },
+      "after": {
+        "address": "00b1feb0",
+        "function_name": "BSP_D3D9Renderer_GetSharedVertexBuffer",
+        "comment": "[BSP reconstruction 00b1feb0]\nBSP reconstruction hypothesis: Return renderer+1974h; getter itself does not AddRef. Dynamic logical vertex constructor increments wrapper+4h. ABI: ECX renderer; no stack arguments; EAX borrowed physical wrapper; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX renderer; no stack arguments; EAX borrowed physical wrapper; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b1fef0",
+      "before": {
+        "address": "00b1fef0",
+        "function_name": "TRIV_body_00b1fef0"
+      },
+      "after": {
+        "address": "00b1fef0",
+        "function_name": "BSP_D3D9Renderer_GetDevice",
+        "comment": "[BSP reconstruction 00b1fef0]\nBSP reconstruction hypothesis: Return renderer+1A10h; getter itself does not AddRef. ABI: ECX renderer; no stack arguments; EAX borrowed D3D device; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX renderer; no stack arguments; EAX borrowed D3D device; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b22d10",
+      "before": {
+        "address": "00b22d10",
+        "function_name": "FUN_00b22d10"
+      },
+      "after": {
+        "address": "00b22d10",
+        "function_name": "BSP_PointerArray_Reserve_00b22d10",
+        "comment": "[BSP reconstruction 00b22d10]\nBSP reconstruction hypothesis: Clamp requested capacity to at least1; when growing allocate capacity*4, copy count DWORDs, free old data, store pointer and capacity. Count unchanged; no pointee AddRef. Returning free tail hidden by CALL_RETURN at00b22d5c. ABI: ECX array{data,count,capacity}; stack signed requested capacity; RET4; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX array{data,count,capacity}; stack signed requested capacity; RET4; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b288b0",
+      "before": {
+        "address": "00b288b0",
+        "function_name": "FUN_00b288b0"
+      },
+      "after": {
+        "address": "00b288b0",
+        "function_name": "BSP_Renderer_CreateRegisteredIndexStream",
+        "comment": "[BSP reconstruction 00b288b0]\nBSP reconstruction hypothesis: Allocate CPU object through00b4b380, call00b4bf30(count,format,flags); append raw pointer atrenderer+1AB8h and optionally+19C4h when virtual+58h returnsAL1. Separate reserve helper00b22d70; no AddRef during either append. Table DWORD00d5f108 establishes factory+60h. ABI: ECX renderer; stack count,flags,format; EAX logical stream or null; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX renderer; stack count,flags,format; EAX logical stream or null; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b347e0",
+      "before": {
+        "address": "00b347e0",
+        "function_name": "FUN_00b347e0"
+      },
+      "after": {
+        "address": "00b347e0",
+        "function_name": "BSP_ShaderDescriptor_FindSamplerByName",
+        "comment": "[BSP reconstruction 00b347e0]\nBSP reconstruction hypothesis: Linear first-match scan descriptor+C4h for+C8h entries; require equal stored lengths then __stricmp. Return overall ordinal without stage/source/dimension filtering. ABI: ECX descriptor; stack counted-string pointer; EAX overall ordinal orFFFFFFFFh; RET4. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX descriptor; stack counted-string pointer; EAX overall ordinal orFFFFFFFFh; RET4. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b3b280",
+      "before": {
+        "address": "00b3b280",
+        "function_name": "BSP_ShaderBuilder_AddDescriptorSamplers",
+        "comment": "[BSP reconstruction 00b3b280]\nECX builder, stack pass/descriptor RET8. Source0 index/stage append; distinct pixel/vertex sampler-state counters shared across base/effect. Source0 typed partial port now in material_samplers.cpp; other source lifecycle unported. See docs/SHADER_SAMPLER_BINDING_ROUTE.md."
+      },
+      "after": {
+        "address": "00b3b280",
+        "function_name": "BSP_ShaderBuilder_AddDescriptorSamplers",
+        "comment": "[BSP reconstruction 00b3b280]\nECX builder, stack pass/descriptor RET8. Source0 index/stage append; distinct pixel/vertex sampler-state counters shared across base/effect. Source0 typed partial port now in material_samplers.cpp; other source lifecycle unported. See docs/SHADER_SAMPLER_BINDING_ROUTE.md.\n\n[BSP reconstruction 00b3b280] update\nExtended typed sampler append to source2: no static texture record or reference-counter increment; still emit states and advance stage counter. Source0 semantics preserved. Actual textured/per_vertex_shadow NORMAL pair binds material slot0 then special ShadowTexture slot1. Evidence: docs/MESH_MATERIAL_INTEGRATION.md; reports/mesh_material_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b3b3c0",
+      "before": {
+        "address": "00b3b3c0",
+        "function_name": "FUN_00b3b3c0"
+      },
+      "after": {
+        "address": "00b3b3c0",
+        "function_name": "BSP_ShaderBuilder_CompileMaterialPass",
+        "comment": "[BSP reconstruction 00b3b3c0]\nBSP bounded fragment 00b3c0b2..00b3c349: Effect-only first name match ShadowMap/ShadowTexture; add base pixel count to effect overall ordinal; writepass+78/+7C. After priorPSstatepruning override ShadowMap MAG/MIN point/linear bybuilder+AA, MIPnone, CLAMPU/V inthatorder. ABI: Parent ECX builder; stack owner,base descriptor,effect descriptor; EAX material pass; RETCh. Fragment EDI builder; pass loaded from SP+14h. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX builder; stack owner,base descriptor,effect descriptor; EAX material pass; RETCh. Fragment EDI builder; pass loaded from SP+14h. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b41780",
+      "before": {
+        "address": "00b41780",
+        "function_name": "FUN_00b41780"
+      },
+      "after": {
+        "address": "00b41780",
+        "function_name": "BSP_InstanceGeneratorBinding_SetGenerator",
+        "comment": "[BSP reconstruction 00b41780]\nRetained pointer replacement at binding+C. Identical pointer skips. Store new pointer; InterlockedIncrement(new+4) if nonnull; InterlockedDecrement(old+4) if nonnull; call old virtual+0 on zero. Called by00b451d0 on created generator binding. Original ABI: ECX binding; stack generator pointer; RET4. Full59-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation. Original ABI: ECX binding; stack generator pointer; RET4. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b417e0",
+      "before": {
+        "address": "00b417e0",
+        "function_name": "FUN_00b417e0"
+      },
+      "after": {
+        "address": "00b417e0",
+        "function_name": "BSP_DrawSection_SetInstanceGeneratorBinding",
+        "comment": "[BSP reconstruction 00b417e0]\nRetained pointer replacement at draw section+5C. Identical pointer skips. Store new pointer; InterlockedIncrement(new+4) if nonnull; InterlockedDecrement(old+4) if nonnull; call old virtual+0 on zero.00b451d0 subsequently releases the local binding reference. Original ABI: ECX draw section; stack binding pointer; RET4. Full59-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation. Original ABI: ECX draw section; stack binding pointer; RET4. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b42350",
+      "before": {
+        "address": "00b42350",
+        "function_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported."
+      },
+      "after": {
+        "address": "00b42350",
+        "function_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported.\n\n[BSP reconstruction 00b42350] update\nAdditional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\nBSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b44b10",
+      "before": {
+        "address": "00b44b10",
+        "function_name": "FUN_00b44b10"
+      },
+      "after": {
+        "address": "00b44b10",
+        "function_name": "BSP_MaterialPass_Construct",
+        "comment": "[BSP reconstruction 00b44b10]\nBSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b450d0",
+      "before": {
+        "address": "00b450d0",
+        "function_name": "FUN_00b450d0"
+      },
+      "after": {
+        "address": "00b450d0",
+        "function_name": "BSP_BuildingInstanceGenerator_Construct",
+        "comment": "[BSP reconstruction 00b450d0]\nSupplies exact uf44uf44uf44uf44uf44uf44uf44uf44uf44.mvfm string to00b55b20, then sets vtable00d61c1c; vtable+8 points to00b55780. Exact ninefloat4 instance stream144bytes. Native constructor/lifetime not host-realized by value writer. Original ABI: ECX generator; stack draw section and forwarded opaque argument; EAX generator; RET8. Full182-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation. Original ABI: ECX generator; stack draw section and forwarded opaque argument; EAX generator; RET8. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b451d0",
+      "before": {
+        "address": "00b451d0",
+        "function_name": "FUN_00b451d0"
+      },
+      "after": {
+        "address": "00b451d0",
+        "function_name": "BSP_MaterialEffect_AttachInstanceGenerator",
+        "comment": "[BSP reconstruction 00b451d0]\nRead effect+C4 primary descriptor InstanceGenerator string+28. building selects1Ch constructor00b450d0; generic selects00b44fd0. Empty/unrecognized leaves binding unchanged. Wrap created generator in10h binding(vtable00d619f8), retain at binding+C via00b41780, attach binding to section+5C via00b417e0, release both local refs afterward. Generic implementation and native class lifecycle not reconstructed here. Original ABI: ECX material effect; stack draw section and forwarded opaque argument; RET8. Full339-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation. Original ABI: ECX material effect; stack draw section and forwarded opaque argument; RET8. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b454e0",
+      "before": {
+        "address": "00b454e0",
+        "function_name": "FUN_00b454e0"
+      },
+      "after": {
+        "address": "00b454e0",
+        "function_name": "BSP_MaterialPass_Destroy",
+        "comment": "[BSP reconstruction 00b454e0]\nBSP bounded fragment 00b4553d..00b45564: Releasepass+84 byInterlockedDecrement(texture+4), virtualdestructionatzero,clear+84. Confirmsfallbackreturnedreferenceisowned. Hostsharedptrprovidessemanticowner,notnativeABI. ABI: ECX pass; no stack arguments; plainRET; parentdestructorhasno stable result. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; plainRET; parentdestructorhasno stable result. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b48eb0",
+      "before": {
+        "address": "00b48eb0",
+        "function_name": "FUN_00b48eb0"
+      },
+      "after": {
+        "address": "00b48eb0",
+        "function_name": "BSP_VertexStreamSlab_Initialize",
+        "comment": "[BSP reconstruction 00b48eb0]\nBSP reconstruction hypothesis: Set free WORD count+F40h=32, indices+F00h to31..0, and write slab index at each of32 slots+74h with78h stride. ABI: ECX slab; stack slab index; EAX this; RET4. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX slab; stack slab index; EAX this; RET4. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b49b30",
+      "before": {
+        "address": "00b49b30",
+        "function_name": "BSP_LogicalStream_PostUploadNoOp"
+      },
+      "after": {
+        "address": "00b49b30",
+        "function_name": "BSP_LogicalStream_PostUploadNoOp",
+        "comment": "[BSP reconstruction 00b49b30]\nBSP reconstruction hypothesis: Single C3 at00b49b30 followed by15CC padding. Data refs00d61d5c and00d61e0c; latter is index vtable00d61de0+2Ch called after parser upload. No function existed in Ghidra before audit. ABI: ECX logical stream unused; no stack arguments; singleRET; no stable return value. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream unused; no stack arguments; singleRET; no stable return value. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4ae80",
+      "before": {
+        "address": "00b4ae80",
+        "function_name": "FUN_00b4ae80"
+      },
+      "after": {
+        "address": "00b4ae80",
+        "function_name": "BSP_VertexStreamSlabPool_Allocate",
+        "comment": "[BSP reconstruction 00b4ae80]\nBSP reconstruction hypothesis: Tracked lock pool+Ch; F44h-byte slabs of32x78h slots; pop WORD index from+F00h using decremented count+F40h; return slab+index*78h. Pool slab array grows2*capacity+2; current usable slab+34h. Returning free call00b4af11 retains stale CALL_RETURN. ABI: ECX CPU slab pool; no stack arguments; EAX CPU slot; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX CPU slab pool; no stack arguments; EAX CPU slot; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4b370",
+      "before": {
+        "address": "00b4b370",
+        "function_name": "CG_static_dtor_stub_00b4b370"
+      },
+      "after": {
+        "address": "00b4b370",
+        "function_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
+        "comment": "[BSP reconstruction 00b4b370]\nBSP reconstruction hypothesis: MOV ECX,0108fe18; JMP00b4ae80. Allocates a logical stream CPU slot, not a static destructor or GPU backing buffer. ABI: No stack arguments; incoming ECX discarded; EAX CPU object slot; tail jump into ECX pool helper. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: No stack arguments; incoming ECX discarded; EAX CPU object slot; tail jump into ECX pool helper. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4bc00",
+      "before": {
+        "address": "00b4bc00",
+        "function_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bc00]\nFactory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported."
+      },
+      "after": {
+        "address": "00b4bc00",
+        "function_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bc00]\nFactory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported.\n\n[BSP reconstruction 00b4bc00] update\nBSP reconstruction hypothesis: Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only. ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4bf30",
+      "before": {
+        "address": "00b4bf30",
+        "function_name": "BSP_D3D9LogicalIndexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bf30]\nFactory00b288b0 allocates logical index stream, installs vtable00d61de0. Physical buffer wrapper at+8h. Flags choose pool/usage, input format chooses 16/32-bit element size. Full constructor unported."
+      },
+      "after": {
+        "address": "00b4bf30",
+        "function_name": "BSP_D3D9LogicalIndexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bf30]\nFactory00b288b0 allocates logical index stream, installs vtable00d61de0. Physical buffer wrapper at+8h. Flags choose pool/usage, input format chooses 16/32-bit element size. Full constructor unported.\n\n[BSP reconstruction 00b4bf30] update\nBSP reconstruction hypothesis: Always private CreateIndexBuffer count*width, exact format65h/66h,derived usage/pool; wrap via00d61e10 and00b4c250 then release temporary COM owner. Logical offset0,count+14h,format+18h,flags+10h; base index0. Meshflags1 MANAGED usage0; host success path only. ABI: ECX logical stream; stack count,format,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream; stack count,format,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4c250",
+      "before": {
+        "address": "00b4c250",
+        "function_name": "BSP_D3D9IndexBuffer_Attach",
+        "comment": "[BSP reconstruction 00b4c250]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+      },
+      "after": {
+        "address": "00b4c250",
+        "function_name": "BSP_D3D9IndexBuffer_Attach",
+        "comment": "[BSP reconstruction 00b4c250]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported.\n\n[BSP reconstruction 00b4c250] update\nBSP reconstruction hypothesis: Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter. ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4c370",
+      "before": {
+        "address": "00b4c370",
+        "function_name": "BSP_D3D9VertexBuffer_Attach",
+        "comment": "[BSP reconstruction 00b4c370]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+      },
+      "after": {
+        "address": "00b4c370",
+        "function_name": "BSP_D3D9VertexBuffer_Attach",
+        "comment": "[BSP reconstruction 00b4c370]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported.\n\n[BSP reconstruction 00b4c370] update\nBSP reconstruction hypothesis: Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter. ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b4cb10",
+      "before": {
+        "address": "00b4cb10",
+        "function_name": "TRIV_body_00b4cb10"
+      },
+      "after": {
+        "address": "00b4cb10",
+        "function_name": "BSP_ShadowTextureHolder_GetTexture",
+        "comment": "[BSP reconstruction 00b4cb10]\nBSP reconstruction hypothesis: Return holder+8h without AddRef or null guard. ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b55780",
+      "before": {
+        "address": "00b55780",
+        "function_name": "FUN_00b55780"
+      },
+      "after": {
+        "address": "00b55780",
+        "function_name": "BSP_BuildingInstanceGenerator_WriteRecord",
+        "comment": "[BSP reconstruction 00b55780]\nRefresh entry+0C transform world when valid bit2 is clear; copy twelve transposed world words from+F0; first<=3 ordered transform+164 list lights supply position/radius+1EC and color+184; absent slots zero. Then overwrite output+6C visibility(entry+18),+7C count asfloat,+8C materialdiffusealpha(entry+4 section+20 ->00b179f0(0)+C). Host accepts explicit refreshed CameraMatrix and valid nonnegative vector-count domain; no native object/ABI or x87 exception-state claim. Original ABI: Two stack arguments: render entry and144-byte output; RET8. ECX unused in complete body; function is building generator vtable+8. Full919-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation. Original ABI: Two stack arguments: render entry and144-byte output; RET8. ECX unused in complete body; function is building generator vtable+8. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b55b20",
+      "before": {
+        "address": "00b55b20",
+        "function_name": "FUN_00b55b20"
+      },
+      "after": {
+        "address": "00b55b20",
+        "function_name": "BSP_InstanceGenerator_ConstructDeclarations",
+        "comment": "[BSP reconstruction 00b55b20]\nInitialize refcount+4=1, clear+8/+C/+10/+14/+18, resolve instance declaration via renderer virtual+38 into+10; obtain [section+3C] first stream declaration via virtual+24; combine section-first declaration then instance declaration via renderer virtual+40 into+14. Native renderer/class ownership remains outside typed record API. Original ABI: ECX generator; stack draw section, forwarded opaque argument(no read), instance declaration-name reference; EAX generator; RET0C. Full189-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation. Original ABI: ECX generator; stack draw section, forwarded opaque argument(no read), instance declaration-name reference; EAX generator; RET0C. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b60f60",
+      "before": {
+        "address": "00b60f60",
+        "function_name": "FUN_00b60f60"
+      },
+      "after": {
+        "address": "00b60f60",
+        "function_name": "BSP_VertexShader_CompileWithDiagnostics",
+        "comment": "[BSP reconstruction 00b60f60]\nD3DX9_40 compile borrowed generated source, strlen excludesNUL, main entry, caller profile, flags1200(backwardscompatibility|avoidflowcontrol), null macros/include/constanttableout. If bytecode exists: disassemble(FALSE,null), native .vsa diagnostic, release disassembly, CreateVertexShader, release compiled/messages buffers. Code-null path returns compile HRESULT without retry and bypasses buffer cleanup. Typed host compiler may use RAII/error checks; full diagnostic/cache/native ABI not ported. Original ABI: Fastcall ECX engine-name native string, EDX profile C string; stack source and IDirect3DVertexShader9**; EAX HRESULT; RET8. Complete native body matches original installed PE. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis; no native ABI/game claim. Original ABI: Fastcall ECX engine-name native string, EDX profile C string; stack source and IDirect3DVertexShader9**; EAX HRESULT; RET8. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b61280",
+      "before": {
+        "address": "00b61280",
+        "function_name": "BSP_PixelShader_CompileAndCollectInputUsage",
+        "comment": "[BSP reconstruction 00b61280]\nFastcall ECX engine name string, EDX profile, stack source/outShader/texcoordMasks/colorMasks, RET10h. D3DX compile then CreatePixelShader and optional disassembly. Both mask pointers required; texcoord[0]==500 skips parsing. Parser00b61613..00b61aa8 searches dcl_texcoord/dcl_color substrings, one-character indices at+12/+9, body+14/+11 until LF; x/y/z/w OR1/2/4/8, no letters OR15. Caller00b3b3c0 supplies TEXCOORD[10],COLOR[2] and feeds00b36800. Typed parser fragment in shader_source.cpp; adapter draw verified, full native wrapper unported. See docs/SHADER_REFLECTION_ANALYSIS.md and reports/shader_pixel_usage.json."
+      },
+      "after": {
+        "address": "00b61280",
+        "function_name": "BSP_PixelShader_CompileAndCollectInputUsage",
+        "comment": "[BSP reconstruction 00b61280]\nFastcall ECX engine name string, EDX profile, stack source/outShader/texcoordMasks/colorMasks, RET10h. D3DX compile then CreatePixelShader and optional disassembly. Both mask pointers required; texcoord[0]==500 skips parsing. Parser00b61613..00b61aa8 searches dcl_texcoord/dcl_color substrings, one-character indices at+12/+9, body+14/+11 until LF; x/y/z/w OR1/2/4/8, no letters OR15. Caller00b3b3c0 supplies TEXCOORD[10],COLOR[2] and feeds00b36800. Typed parser fragment in shader_source.cpp; adapter draw verified, full native wrapper unported. See docs/SHADER_REFLECTION_ANALYSIS.md and reports/shader_pixel_usage.json.\n\n[BSP reconstruction 00b61280] update\nD3DX9_40 compile flags1400(backwardscompatibility|preferflowcontrol), except case-sensitive strstr(engineName.data,shore) uses0. Borrowed source strlen excludesNUL, main, null macros/include/constanttableout. CreatePixelShader when bytecode exists. Both mask pointers enable disassembly(FALSE,null); sentineltexcoord[0]=500 selects.psa2 and skips existingusageparser; ordinary.psa1 path parses. DisassemblyHRESULT overwrites creationHRESULT when invoked. Successful path releases code/messages/disassembly; nullcode returns compileHRESULT without fallback. Preserve existing inputusage reconstruction. Original ABI: Fastcall ECX engine-name native string, EDX profile; stack source/outShader/texcoordMasks/colorMasks; RET10h. Complete native body matches original installed PE. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis; no native ABI/game claim. Original ABI: Fastcall ECX engine-name native string, EDX profile; stack source/outShader/texcoordMasks/colorMasks; RET10h. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b61e10",
+      "before": {
+        "address": "00b61e10",
+        "function_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "comment": "[BSP reconstruction 00b61e10]\nReturn compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. Original ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b61e10",
+        "function_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "comment": "[BSP reconstruction 00b61e10]\nReturn compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. Original ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b61e10] update\nChecked value projection in src/mesh_decode_bindings.cpp reads the actual parsed 32-byte element record as float4 scale then float4 offset. Native getter remains unchecked EAX=[ECX+50]+stack_index*20h, RET4. Complete 13-byte body matches original PE. Caller fragment00b428c0..00b42a7b now projected into the existing reflected VS word vector; new host bounds errors are atomic. No CPU vertex decompression, native ABI or gameplay claim. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Original ABI: See cited audit. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7aab0",
+      "before": {
+        "address": "00b7aab0",
+        "function_name": "TRIV_body_00b7aab0"
+      },
+      "after": {
+        "address": "00b7aab0",
+        "function_name": "BSP_Light_GetShadowMapOwner",
+        "comment": "[BSP reconstruction 00b7aab0]\nBSP reconstruction hypothesis: Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null. ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7ca20",
+      "before": {
+        "address": "00b7ca20",
+        "function_name": "FUN_00b7ca20"
+      },
+      "after": {
+        "address": "00b7ca20",
+        "function_name": "STL_ResourceParserMap_Maximum",
+        "comment": "[BSP reconstruction 00b7ca20]\nFollow normal right children until sentinel. Assembly retains last normal node in EAX, unlike old void pseudocode. Original ABI: ECX subtree root; EAX maximum node; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7ca40",
+      "before": {
+        "address": "00b7ca40",
+        "function_name": "FUN_00b7ca40"
+      },
+      "after": {
+        "address": "00b7ca40",
+        "function_name": "STL_ResourceParserMap_Minimum",
+        "comment": "[BSP reconstruction 00b7ca40]\nFollow normal left children until sentinel. Assembly retains last normal node in EAX, unlike old void pseudocode. Original ABI: ECX subtree root; EAX minimum node; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7ca80",
+      "before": {
+        "address": "00b7ca80",
+        "function_name": "FUN_00b7ca80"
+      },
+      "after": {
+        "address": "00b7ca80",
+        "function_name": "STL_ResourceParserMap_RotateRight",
+        "comment": "[BSP reconstruction 00b7ca80]\nRotate right, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7cf80",
+      "before": {
+        "address": "00b7cf80",
+        "function_name": "FUN_00b7cf80"
+      },
+      "after": {
+        "address": "00b7cf80",
+        "function_name": "STL_ResourceParserMap_IteratorIncrement",
+        "comment": "[BSP reconstruction 00b7cf80]\nAdvance to right-subtree minimum or ascend from right children. Null container/sentinel input enters invalid-iterator diagnostics. Caller stack iterator changes must be respected. Original ABI: ECX iterator tree/node pair; modifies node in place; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7d590",
+      "before": {
+        "address": "00b7d590",
+        "function_name": "FUN_00b7d590"
+      },
+      "after": {
+        "address": "00b7d590",
+        "function_name": "STL_ResourceParserMap_RotateLeft",
+        "comment": "[BSP reconstruction 00b7d590]\nRotate left, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7e000",
+      "before": {
+        "address": "00b7e000",
+        "function_name": "FUN_00b7e000"
+      },
+      "after": {
+        "address": "00b7e000",
+        "function_name": "STL_ResourceParserMap_AllocateSentinel",
+        "comment": "[BSP reconstruction 00b7e000]\nAllocate1Ch bytes, zero links, set black color and normal flag.00b81040 turns this into self-linked sentinel. Key/value slots are not constructed by this helper. Original ABI: No consumed input; EAX head allocation; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7e970",
+      "before": {
+        "address": "00b7e970",
+        "function_name": "BSP_ResourceManager_DispatchItems",
+        "comment": "[BSP reconstruction 00b7e970]\nECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "after": {
+        "address": "00b7e970",
+        "function_name": "BSP_ResourceManager_DispatchItems",
+        "comment": "[BSP reconstruction 00b7e970]\nECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7e970] update\nVisit Resource children in encounter order; compare counted tag through case-insensitive parser map. Call parser virtual+8 with child handle; unknown allocates8-byte fallback and explicitly skips. Append result through current-resource virtual+Ch before releasing child handle. Host registered Mesh/Note/GroupParams decode actual owning wire payloads and unknown nullopt records explicitly mean skipped, not native fallback objects. Original ABI: ECX manager; stack Resource child-handle pointer; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7f1b0",
+      "before": {
+        "address": "00b7f1b0",
+        "function_name": "FUN_00b7f1b0"
+      },
+      "after": {
+        "address": "00b7f1b0",
+        "function_name": "STL_ResourceParserMap_ConstructNode",
+        "comment": "[BSP reconstruction 00b7f1b0]\nConstruct links, zero key, resize/copy all counted bytes through0041dd40, copy raw parser pair+8 to node+14h, set color and non-sentinel flag. No AddRef. Original ABI: ECX node; stack left, parent, right, source pair, color; EAX node; RET14h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7f610",
+      "before": {
+        "address": "00b7f610",
+        "function_name": "FUN_00b7f610"
+      },
+      "after": {
+        "address": "00b7f610",
+        "function_name": "STL_ResourceParserMap_AllocateNode",
+        "comment": "[BSP reconstruction 00b7f610]\nAllocate1Ch-byte parser-map node and invoke00b7f1b0. Normal allocation/constructor path audited; SEH allocation-failure cleanup not reconstructed. Original ABI: Five stack arguments left, parent, right, source pair, color; EAX allocated node; RET14h; ECX not consumed. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7f730",
+      "before": {
+        "address": "00b7f730",
+        "function_name": "FUN_00b7f730"
+      },
+      "after": {
+        "address": "00b7f730",
+        "function_name": "STL_ResourceParserMap_DestroySubtree",
+        "comment": "[BSP reconstruction 00b7f730]\nDestroy right subtree recursively, save left, return owned key data with length+1/flag1, free node, then iterate left. Sentinel+19h terminates. Never reads parser slot+14h; stale CALL_RETURN00b7f76c hid left loop. Original ABI: ECX tree carried through recursion; stack subtree node; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7f790",
+      "before": {
+        "address": "00b7f790",
+        "function_name": "STL_xlen_throw_00b7f790"
+      },
+      "after": {
+        "address": "00b7f790",
+        "function_name": "STL_ResourceParserMap_EraseNode",
+        "comment": "[BSP reconstruction 00b7f790]\nReject sentinel; compute successor, splice/transplant node, update extrema and rebalance, return owned key storage and free removed node. Decrement nonzero count and return successor iterator. No parser release. Full end00b7fa5c; stale CALL_RETURN00b7fa1d hid tail. Original ABI: ECX tree; stack output iterator, input tree/node; EAX output; RETCh. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b7fd30",
+      "before": {
+        "address": "00b7fd30",
+        "function_name": "STL_xlen_throw_00b7fd30"
+      },
+      "after": {
+        "address": "00b7fd30",
+        "function_name": "STL_ResourceParserMap_InsertNode",
+        "comment": "[BSP reconstruction 00b7fd30]\nReject count>=15555554h; allocate copied-key/raw-parser red node, increment count, link and update head extrema, rebalance red-black tree, force root black. No parser lifetime operation. Original ABI: ECX tree; stack output iterator, side byte, parent, source pair; EAX output; RET10h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b80500",
+      "before": {
+        "address": "00b80500",
+        "function_name": "FUN_00b80500"
+      },
+      "after": {
+        "address": "00b80500",
+        "function_name": "STL_ResourceParserMap_EraseRange",
+        "comment": "[BSP reconstruction 00b80500]\nErase iterator range; full-range path destroys root subtree and resets sentinel links/count. Partial range advances before erasing each old node. Keeps sentinel allocation and never releases parsers. Original ABI: ECX tree; stack output iterator, first tree/node, last tree/node; EAX output; RET14h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b80a50",
+      "before": {
+        "address": "00b80a50",
+        "function_name": "BSP_ResourceManager_RegisterTypeParser",
+        "comment": "[BSP reconstruction 00b80a50]\nObtain parser virtual+4 type name and findcase-insensitively in map+8. Duplicate returnsfalse unchanged. New name is obtainedagain and copied with raw parser into unique map; no AddRef/release on parser. Original ABI: ECX manager; parser pointer stack; boolean AL; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b80a50",
+        "function_name": "BSP_ResourceManager_RegisterTypeParser",
+        "comment": "[BSP reconstruction 00b80a50]\nObtain parser virtual+4 type name and findcase-insensitively in map+8. Duplicate returnsfalse unchanged. New name is obtainedagain and copied with raw parser into unique map; no AddRef/release on parser. Original ABI: ECX manager; parser pointer stack; boolean AL; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf9dc8",
+      "before": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "after": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect returning CRT free remains named _free. Five verified continuations and definitions repaired at00b22d10,00b4ae80,00b7f730,00b7f790,00b454e0; all five CALL_RETURN overrides cleared after restoring bytes; source game binary unchanged. Evidence: docs/MESH_MATERIAL_INTEGRATION.md; reports/mesh_material_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "previous_comment_preserved": true
+    }
+  ],
+  "name_ledger_before": [
+    {
+      "address": "00b4b370",
+      "absent": true
+    },
+    {
+      "address": "00b22d10",
+      "absent": true
+    },
+    {
+      "address": "00b4ae80",
+      "absent": true
+    },
+    {
+      "address": "00b48eb0",
+      "absent": true
+    },
+    {
+      "address": "00b4bc00",
+      "name": "BSP_D3D9LogicalVertexStream_Construct",
+      "evidence": "Factory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported."
+    },
+    {
+      "address": "00b1feb0",
+      "absent": true
+    },
+    {
+      "address": "00b1fef0",
+      "absent": true
+    },
+    {
+      "address": "00b288b0",
+      "absent": true
+    },
+    {
+      "address": "00b4bf30",
+      "name": "BSP_D3D9LogicalIndexStream_Construct",
+      "evidence": "Factory00b288b0 allocates logical index stream, installs vtable00d61de0. Physical buffer wrapper at+8h. Flags choose pool/usage, input format chooses 16/32-bit element size. Full constructor unported."
+    },
+    {
+      "address": "00b4c370",
+      "name": "BSP_D3D9VertexBuffer_Attach",
+      "evidence": "thiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+    },
+    {
+      "address": "00b4c250",
+      "name": "BSP_D3D9IndexBuffer_Attach",
+      "evidence": "thiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported."
+    },
+    {
+      "address": "00b49b30",
+      "absent": true
+    },
+    {
+      "address": "00b61e10",
+      "name": "BSP_LogicalVertexStream_GetDecodeRecord",
+      "evidence": "Return compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. Original ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+    },
+    {
+      "address": "00b42350",
+      "name": "BSP_MaterialPass_BuildShaderConstants",
+      "evidence": "ECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported."
+    },
+    {
+      "address": "00b172b0",
+      "absent": true
+    },
+    {
+      "address": "00b55780",
+      "absent": true
+    },
+    {
+      "address": "00b450d0",
+      "absent": true
+    },
+    {
+      "address": "00b55b20",
+      "absent": true
+    },
+    {
+      "address": "00b451d0",
+      "absent": true
+    },
+    {
+      "address": "00b41780",
+      "absent": true
+    },
+    {
+      "address": "00b417e0",
+      "absent": true
+    },
+    {
+      "address": "00b7fd30",
+      "absent": true
+    },
+    {
+      "address": "00b80500",
+      "absent": true
+    },
+    {
+      "address": "00b7f610",
+      "absent": true
+    },
+    {
+      "address": "00b7f730",
+      "absent": true
+    },
+    {
+      "address": "00b7ca80",
+      "absent": true
+    },
+    {
+      "address": "00b7d590",
+      "absent": true
+    },
+    {
+      "address": "00b7cf80",
+      "absent": true
+    },
+    {
+      "address": "00b7f790",
+      "absent": true
+    },
+    {
+      "address": "00b7f1b0",
+      "absent": true
+    },
+    {
+      "address": "00b7e000",
+      "absent": true
+    },
+    {
+      "address": "00b7ca20",
+      "absent": true
+    },
+    {
+      "address": "00b7ca40",
+      "absent": true
+    },
+    {
+      "address": "00b7e970",
+      "name": "BSP_ResourceManager_DispatchItems",
+      "evidence": "ECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+    },
+    {
+      "address": "00b80a50",
+      "name": "BSP_ResourceManager_RegisterTypeParser",
+      "evidence": "Obtain parser virtual+4 type name and findcase-insensitively in map+8. Duplicate returnsfalse unchanged. New name is obtainedagain and copied with raw parser into unique map; no AddRef/release on parser. Original ABI: ECX manager; parser pointer stack; boolean AL; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "00b179d0",
+      "name": "BSP_Material_SetLightingRecord",
+      "evidence": "Set material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+    },
+    {
+      "address": "00b179f0",
+      "name": "BSP_Material_GetDiffuseColor",
+      "evidence": "ECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+    },
+    {
+      "address": "00b17840",
+      "name": "BSP_LightingRecord_Initialize",
+      "evidence": "First4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+    },
+    {
+      "address": "00b18900",
+      "name": "BSP_Material_ConstructWithEffect",
+      "evidence": "Material wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits."
+    },
+    {
+      "address": "00b347e0",
+      "absent": true
+    },
+    {
+      "address": "00b0d130",
+      "absent": true
+    },
+    {
+      "address": "00b4cb10",
+      "absent": true
+    },
+    {
+      "address": "00b7aab0",
+      "absent": true
+    },
+    {
+      "address": "00b3b3c0",
+      "absent": true
+    },
+    {
+      "address": "00b44b10",
+      "absent": true
+    },
+    {
+      "address": "00b454e0",
+      "absent": true
+    },
+    {
+      "address": "00b60f60",
+      "absent": true
+    },
+    {
+      "address": "00b61280",
+      "name": "BSP_PixelShader_CompileAndCollectInputUsage",
+      "evidence": "Fastcall ECX engine name string, EDX profile, stack source/outShader/texcoordMasks/colorMasks, RET10h. D3DX compile then CreatePixelShader and optional disassembly. Both mask pointers required; texcoord[0]==500 skips parsing. Parser00b61613..00b61aa8 searches dcl_texcoord/dcl_color substrings, one-character indices at+12/+9, body+14/+11 until LF; x/y/z/w OR1/2/4/8, no letters OR15. Caller00b3b3c0 supplies TEXCOORD[10],COLOR[2] and feeds00b36800. Typed parser fragment in shader_source.cpp; adapter draw verified, full native wrapper unported. See docs/SHADER_REFLECTION_ANALYSIS.md and reports/shader_pixel_usage.json."
+    },
+    {
+      "address": "00711370",
+      "absent": true
+    },
+    {
+      "address": "004bcb80",
+      "name": "FUN_004bcb80",
+      "evidence": "ECX candidate native string; stack C-string byte set,start index; EAX index/FFFFFFFF; RET8 Reverse byte-set search; called with slash and INT32MAX. Preserve string-helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+    },
+    {
+      "address": "00469840",
+      "absent": true
+    },
+    {
+      "address": "00b3b280",
+      "name": "BSP_ShaderBuilder_AddDescriptorSamplers",
+      "evidence": "ECX builder, stack pass/descriptor RET8. Source0 index/stage append; distinct pixel/vertex sampler-state counters shared across base/effect. Source0 typed partial port now in material_samplers.cpp; other source lifecycle unported. See docs/SHADER_SAMPLER_BINDING_ROUTE.md."
+    },
+    {
+      "address": "00bf9dc8",
+      "name": "_free",
+      "evidence": "Correct CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation."
+    }
+  ],
+  "flow_repair": {
+    "spans": [
+      {
+        "address": "00b22d10",
+        "end_exclusive": "00b22d6f",
+        "length": 95,
+        "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+        "documentation_before": {
+          "hash": "247933803670655498059e9bf3a9da1926ded142b2f2d9e622726e958e75ae0e",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b22d10",
+          "function_name": "FUN_00b22d10",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b22d22"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b22d43"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b22d4e"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b22d59"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b22d6a"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b22d10 at 00b22d10\nSignature: undefined FUN_00b22d10(void)\nEntry: 00b22d10\nBody: 00b22d10 - 00b22d6e",
+        "sites": [
+          "00b22d5c"
+        ],
+        "function_after": "Function: FUN_00b22d10 at 00b22d10\nSignature: undefined FUN_00b22d10(void)\nEntry: 00b22d10\nBody: 00b22d10 - 00b22d6e"
+      },
+      {
+        "address": "00b4ae80",
+        "end_exclusive": "00b4afbc",
+        "length": 316,
+        "sha256": "02ad24dfb9a6525749c16ae065febc94d47a0004c1d13b2a35e4ca8ec50d6130",
+        "documentation_before": {
+          "hash": "4410282bbbbefe9f48e0bb56ba788bf4928c7a49c3c2aad2d6abc9e3d2dda973",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b4ae80",
+          "function_name": "FUN_00b4ae80",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "piVar7",
+              "type": "int *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "uVar5",
+              "type": "uint",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar4",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar6",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "extraout_EAX",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(unique, 0x17200, 4)"
+            },
+            {
+              "name": "lpCriticalSection",
+              "type": "LPCRITICAL_SECTION",
+              "storage": "(unique, 0x6600, 4)"
+            },
+            {
+              "name": "uVar3",
+              "type": "undefined4",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 70,
+              "name": "LAB_00b4aec6"
+            },
+            {
+              "relative_offset": 72,
+              "name": "LAB_00b4aec8"
+            },
+            {
+              "relative_offset": 114,
+              "name": "LAB_00b4aef2"
+            },
+            {
+              "relative_offset": 126,
+              "name": "LAB_00b4aefe"
+            },
+            {
+              "relative_offset": 137,
+              "name": "LAB_00b4af09"
+            },
+            {
+              "relative_offset": 153,
+              "name": "LAB_00b4af19"
+            },
+            {
+              "relative_offset": 156,
+              "name": "LAB_00b4af1c"
+            },
+            {
+              "relative_offset": 171,
+              "name": "LAB_00b4af2b"
+            },
+            {
+              "relative_offset": 178,
+              "name": "LAB_00b4af32"
+            },
+            {
+              "relative_offset": 256,
+              "name": "LAB_00b4af80"
+            },
+            {
+              "relative_offset": 296,
+              "name": "LAB_00b4afa8"
+            },
+            {
+              "relative_offset": 299,
+              "name": "LAB_00b4afab"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b4ae80 at 00b4ae80\nSignature: undefined FUN_00b4ae80(void)\nEntry: 00b4ae80\nBody: 00b4ae80 - 00b4afbb",
+        "sites": [
+          "00b4af11"
+        ],
+        "function_after": "Function: FUN_00b4ae80 at 00b4ae80\nSignature: undefined FUN_00b4ae80(void)\nEntry: 00b4ae80\nBody: 00b4ae80 - 00b4afbb"
+      },
+      {
+        "address": "00b7f730",
+        "end_exclusive": "00b7f782",
+        "length": 82,
+        "sha256": "12c94197a5bebe3d448c20ca8b256d6efa446dfef6e44cd0a4c996d9257c6dde",
+        "documentation_before": {
+          "hash": "7755a08a8cdc438db7359c409c26b422858562fde74a6c77facd4885fdf2c7ab",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b7f730",
+          "function_name": "FUN_00b7f730",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffe8, 4)"
+            },
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "uVar3",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffff0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 59,
+              "name": "LAB_00b7f76b"
+            },
+            {
+              "relative_offset": 76,
+              "name": "LAB_00b7f77c"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b7f730 at 00b7f730\nSignature: undefined FUN_00b7f730(void)\nEntry: 00b7f730\nBody: 00b7f730 - 00b7f781",
+        "sites": [
+          "00b7f76c"
+        ],
+        "function_after": "Function: FUN_00b7f730 at 00b7f730\nSignature: undefined FUN_00b7f730(void)\nEntry: 00b7f730\nBody: 00b7f730 - 00b7f781"
+      },
+      {
+        "address": "00b7f790",
+        "end_exclusive": "00b7fa5c",
+        "length": 716,
+        "sha256": "c821f5bab4fc7064477ddcd2a091c1bd7c1835c29c50b291f171607a69d26b11",
+        "documentation_before": {
+          "hash": "3456f4bc49eef0605b7142963ea41e47bfe423655e26dece0654a6473549a998",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b7f790",
+          "function_name": "STL_xlen_throw_00b7f790",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "pvStack_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "local_50",
+              "type": "undefined1[4]"
+            },
+            {
+              "name": "piVar2",
+              "type": "int *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(unique, 0x17200, 4)"
+            },
+            {
+              "name": "iVar4",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "local_3c",
+              "type": "undefined4",
+              "storage": "(stack, 0xffffffffffffffc4, 4)"
+            },
+            {
+              "name": "local_4c",
+              "type": "undefined1",
+              "storage": "(stack, 0xffffffffffffffb4, 1)"
+            },
+            {
+              "name": "piVar3",
+              "type": "int *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar6",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffff90, 4)"
+            },
+            {
+              "name": "local_34",
+              "type": "undefined * *[10]",
+              "storage": "(stack, 0xffffffffffffffcc, 4)"
+            },
+            {
+              "name": "local_38",
+              "type": "undefined4",
+              "storage": "(stack, 0xffffffffffffffc8, 4)"
+            },
+            {
+              "name": "piVar5",
+              "type": "int *",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            },
+            {
+              "name": "uVar7",
+              "type": "undefined4",
+              "storage": "(stack, 0xffffffffffffff98, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 118,
+              "name": "LAB_00b7f806"
+            },
+            {
+              "relative_offset": 145,
+              "name": "LAB_00b7f821"
+            },
+            {
+              "relative_offset": 158,
+              "name": "LAB_00b7f82e"
+            },
+            {
+              "relative_offset": 169,
+              "name": "LAB_00b7f839"
+            },
+            {
+              "relative_offset": 181,
+              "name": "LAB_00b7f845"
+            },
+            {
+              "relative_offset": 194,
+              "name": "LAB_00b7f852"
+            },
+            {
+              "relative_offset": 202,
+              "name": "LAB_00b7f85a"
+            },
+            {
+              "relative_offset": 205,
+              "name": "LAB_00b7f85d"
+            },
+            {
+              "relative_offset": 222,
+              "name": "LAB_00b7f86e"
+            },
+            {
+              "relative_offset": 229,
+              "name": "LAB_00b7f875"
+            },
+            {
+              "relative_offset": 231,
+              "name": "LAB_00b7f877"
+            },
+            {
+              "relative_offset": 256,
+              "name": "LAB_00b7f890"
+            },
+            {
+              "relative_offset": 268,
+              "name": "LAB_00b7f89c"
+            },
+            {
+              "relative_offset": 285,
+              "name": "LAB_00b7f8ad"
+            },
+            {
+              "relative_offset": 297,
+              "name": "LAB_00b7f8b9"
+            },
+            {
+              "relative_offset": 311,
+              "name": "LAB_00b7f8c7"
+            },
+            {
+              "relative_offset": 324,
+              "name": "LAB_00b7f8d4"
+            },
+            {
+              "relative_offset": 335,
+              "name": "LAB_00b7f8df"
+            },
+            {
+              "relative_offset": 338,
+              "name": "LAB_00b7f8e2"
+            },
+            {
+              "relative_offset": 356,
+              "name": "LAB_00b7f8f4"
+            },
+            {
+              "relative_offset": 386,
+              "name": "LAB_00b7f912"
+            },
+            {
+              "relative_offset": 430,
+              "name": "LAB_00b7f93e"
+            },
+            {
+              "relative_offset": 451,
+              "name": "LAB_00b7f953"
+            },
+            {
+              "relative_offset": 481,
+              "name": "LAB_00b7f971"
+            },
+            {
+              "relative_offset": 504,
+              "name": "LAB_00b7f988"
+            },
+            {
+              "relative_offset": 529,
+              "name": "LAB_00b7f9a1"
+            },
+            {
+              "relative_offset": 550,
+              "name": "LAB_00b7f9b6"
+            },
+            {
+              "relative_offset": 554,
+              "name": "LAB_00b7f9ba"
+            },
+            {
+              "relative_offset": 573,
+              "name": "LAB_00b7f9cd"
+            },
+            {
+              "relative_offset": 602,
+              "name": "LAB_00b7f9ea"
+            },
+            {
+              "relative_offset": 622,
+              "name": "LAB_00b7f9fe"
+            },
+            {
+              "relative_offset": 625,
+              "name": "LAB_00b7fa01"
+            },
+            {
+              "relative_offset": 652,
+              "name": "LAB_00b7fa1c"
+            }
+          ],
+          "completeness_score": 80.0
+        },
+        "function_before": "Function: STL_xlen_throw_00b7f790 at 00b7f790\nSignature: undefined STL_xlen_throw_00b7f790(void)\nEntry: 00b7f790\nBody: 00b7f790 - 00b7fa21",
+        "sites": [
+          "00b7fa1d"
+        ],
+        "function_after": "Function: STL_xlen_throw_00b7f790 at 00b7f790\nSignature: undefined STL_xlen_throw_00b7f790(void)\nEntry: 00b7f790\nBody: 00b7f790 - 00b7fa5b"
+      },
+      {
+        "address": "00b454e0",
+        "end_exclusive": "00b455bf",
+        "length": 223,
+        "sha256": "14bc5b6052fb2b12bcee08dbdae38f116fad42284412628049c4c7e00f26b383",
+        "documentation_before": {
+          "hash": "c28cad7fb646d1b9236707db308edccfc5f2caf92f2cfea1ba4832c994f2a9ce",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b454e0",
+          "function_name": "FUN_00b454e0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "pvStack_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            },
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "uVar2",
+              "type": "uint",
+              "storage": "(register, 0x14, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "_Memory",
+              "type": "void *",
+              "storage": "(unique, 0x17200, 4)"
+            },
+            {
+              "name": "LVar1",
+              "type": "LONG",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 52,
+              "name": "LAB_00b45514"
+            },
+            {
+              "relative_offset": 80,
+              "name": "LAB_00b45530"
+            },
+            {
+              "relative_offset": 93,
+              "name": "LAB_00b4553d"
+            },
+            {
+              "relative_offset": 127,
+              "name": "LAB_00b4555f"
+            },
+            {
+              "relative_offset": 133,
+              "name": "LAB_00b45565"
+            },
+            {
+              "relative_offset": 158,
+              "name": "LAB_00b4557e"
+            },
+            {
+              "relative_offset": 161,
+              "name": "LAB_00b45581"
+            },
+            {
+              "relative_offset": 186,
+              "name": "LAB_00b4559a"
+            },
+            {
+              "relative_offset": 189,
+              "name": "LAB_00b4559d"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b454e0 at 00b454e0\nSignature: undefined FUN_00b454e0(void)\nEntry: 00b454e0\nBody: 00b454e0 - 00b455be",
+        "sites": [
+          "00b45522"
+        ],
+        "function_after": "Function: FUN_00b454e0 at 00b454e0\nSignature: undefined FUN_00b454e0(void)\nEntry: 00b454e0\nBody: 00b454e0 - 00b455be"
+      }
+    ],
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b22d61",
+          "end_address": "00b22d6f"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b22d61",
+          "end_address": "00b22d6e",
+          "bytes_disassembled": 14,
+          "message": "Successfully disassembled 14 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b4af16",
+          "end_address": "00b4afbc"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b4af16",
+          "end_address": "00b4afbb",
+          "bytes_disassembled": 166,
+          "message": "Successfully disassembled 166 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b7f771",
+          "end_address": "00b7f782"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b7f771",
+          "end_address": "00b7f781",
+          "bytes_disassembled": 17,
+          "message": "Successfully disassembled 17 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b7fa22",
+          "end_address": "00b7fa5c"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b7fa22",
+          "end_address": "00b7fa5b",
+          "bytes_disassembled": 58,
+          "message": "Successfully disassembled 58 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b45527",
+          "end_address": "00b455bf"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b45527",
+          "end_address": "00b455be",
+          "bytes_disassembled": 152,
+          "message": "Successfully disassembled 152 byte(s)"
+        }
+      },
+      {
+        "endpoint": "set_function_no_return",
+        "body": {
+          "function_address": "00bf9dc8",
+          "no_return": false
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Set function '_free' at 00bf9dc8 from returning to returning"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b22d5c"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b22d5c (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b4af11"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b4af11 (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b7f76c"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b7f76c (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b7fa1d"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b7fa1d (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b45522"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b45522 (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b22d10"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b22d10",
+          "deleted_function": "FUN_00b22d10",
+          "body_size": 86,
+          "message": "Function 'FUN_00b22d10' deleted at 00b22d10"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b22d10",
+          "name": "FUN_00b22d10",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b22d10",
+          "function_name": "FUN_00b22d10",
+          "entry_point": "00b22d10",
+          "body_size": 95,
+          "message": "Function created successfully at 00b22d10"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b4ae80"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b4ae80",
+          "deleted_function": "FUN_00b4ae80",
+          "body_size": 313,
+          "message": "Function 'FUN_00b4ae80' deleted at 00b4ae80"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b4ae80",
+          "name": "FUN_00b4ae80",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b4ae80",
+          "function_name": "FUN_00b4ae80",
+          "entry_point": "00b4ae80",
+          "body_size": 316,
+          "message": "Function created successfully at 00b4ae80"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b7f730"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b7f730",
+          "deleted_function": "FUN_00b7f730",
+          "body_size": 71,
+          "message": "Function 'FUN_00b7f730' deleted at 00b7f730"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b7f730",
+          "name": "FUN_00b7f730",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b7f730",
+          "function_name": "FUN_00b7f730",
+          "entry_point": "00b7f730",
+          "body_size": 82,
+          "message": "Function created successfully at 00b7f730"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b7f790"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b7f790",
+          "deleted_function": "STL_xlen_throw_00b7f790",
+          "body_size": 658,
+          "message": "Function 'STL_xlen_throw_00b7f790' deleted at 00b7f790"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b7f790",
+          "name": "STL_xlen_throw_00b7f790",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b7f790",
+          "function_name": "STL_xlen_throw_00b7f790",
+          "entry_point": "00b7f790",
+          "body_size": 716,
+          "message": "Function created successfully at 00b7f790",
+          "warnings": [
+            "Function name 'STL_xlen_throw_00b7f790' \u2014 main part 'STL_xlen_throw_00b7f790' is not PascalCase. Expected: StlXlenThrow00b7f790",
+            "Function name 'STL_xlen_throw_00b7f790' \u2014 main part 'STL_xlen_throw_00b7f790' contains underscores. Use PascalCase after the module prefix."
+          ]
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b454e0"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b454e0",
+          "deleted_function": "FUN_00b454e0",
+          "body_size": 214,
+          "message": "Function 'FUN_00b454e0' deleted at 00b454e0"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b454e0",
+          "name": "FUN_00b454e0",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b454e0",
+          "function_name": "FUN_00b454e0",
+          "entry_point": "00b454e0",
+          "body_size": 223,
+          "message": "Function created successfully at 00b454e0"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b49b30",
+          "end_address": "00b49b31"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b49b30",
+          "end_address": "00b49b30",
+          "bytes_disassembled": 1,
+          "message": "Successfully disassembled 1 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b49b30",
+          "name": "BSP_LogicalStream_PostUploadNoOp",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b49b30",
+          "function_name": "BSP_LogicalStream_PostUploadNoOp",
+          "entry_point": "00b49b30",
+          "body_size": 1,
+          "message": "Function created successfully at 00b49b30",
+          "warnings": [
+            "Function name 'BSP_LogicalStream_PostUploadNoOp' \u2014 main part 'LogicalStream_PostUploadNoOp' is not PascalCase. Expected: LogicalstreamPostuploadnoop",
+            "Function name 'BSP_LogicalStream_PostUploadNoOp' \u2014 main part 'LogicalStream_PostUploadNoOp' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_LogicalStream_PostUploadNoOp' does not start with a recognized verb. First word 'Logical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b22d5c"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b22d5c (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b4af11"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b4af11 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b7f76c"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b7f76c (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b7fa1d"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b7fa1d (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b45522"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b45522 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ],
+    "free_before": "Function: _free at 00bf9dc8\nSignature: void __cdecl _free(void * _Memory)\nEntry: 00bf9dc8\nBody: 00bf9dc8 - 00bf9e55",
+    "noop_before": "No function found for 00b49b30",
+    "noop_byte": {
+      "address": "00b49b30",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+    },
+    "noop_after": "Function: BSP_LogicalStream_PostUploadNoOp at 00b49b30\nSignature: undefined BSP_LogicalStream_PostUploadNoOp(void)\nEntry: 00b49b30\nBody: 00b49b30 - 00b49b30",
+    "final_flow": [
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b22d5c (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b4af11 (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b7f76c (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b7fa1d (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b45522 (was: NONE, now: NONE)"
+      }
+    ],
+    "applied": true
+  },
+  "final_flow_readback": [
+    {
+      "address": "00b22d5c",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b22d5c (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b4af11",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b4af11 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b7f76c",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b7f76c (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b7fa1d",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b7fa1d (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b45522",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b45522 (was: NONE, now: NONE)"
+      }
+    }
+  ],
+  "semantic_name_tag_refinements": [
+    {
+      "address": "00b0d130",
+      "before": {
+        "address": "00b0d130",
+        "name": "CG_adjustor_thunk_00b0d130",
+        "category": "cg_adjustor_thunk",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0032"
+      },
+      "after": {
+        "address": "00b0d130",
+        "name": "",
+        "category": "cg_adjustor_thunk",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0032"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b1feb0",
+      "before": {
+        "address": "00b1feb0",
+        "name": "TRIV_body_00b1feb0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b1feb0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b1fef0",
+      "before": {
+        "address": "00b1fef0",
+        "name": "TRIV_body_00b1fef0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b1fef0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b4b370",
+      "before": {
+        "address": "00b4b370",
+        "name": "CG_static_dtor_stub_00b4b370",
+        "category": "cg_static_dtor_stub",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0033"
+      },
+      "after": {
+        "address": "00b4b370",
+        "name": "",
+        "category": "cg_static_dtor_stub",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0033"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b4cb10",
+      "before": {
+        "address": "00b4cb10",
+        "name": "TRIV_body_00b4cb10",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b4cb10",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b7aab0",
+      "before": {
+        "address": "00b7aab0",
+        "name": "TRIV_body_00b7aab0",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b7aab0",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b7f790",
+      "before": {
+        "address": "00b7f790",
+        "name": "STL_xlen_throw_00b7f790",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "after": {
+        "address": "00b7f790",
+        "name": "",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    },
+    {
+      "address": "00b7fd30",
+      "before": {
+        "address": "00b7fd30",
+        "name": "STL_xlen_throw_00b7fd30",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "after": {
+        "address": "00b7fd30",
+        "name": "",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "reason": "Reviewed native behavior supersedes generated name; preserve classification."
+    }
+  ],
+  "forced_exports": [
+    "00b4b370",
+    "00b22d10",
+    "00b4ae80",
+    "00b48eb0",
+    "00b4bc00",
+    "00b1feb0",
+    "00b1fef0",
+    "00b288b0",
+    "00b4bf30",
+    "00b4c370",
+    "00b4c250",
+    "00b49b30",
+    "00b61e10",
+    "00b42350",
+    "00b172b0",
+    "00b55780",
+    "00b450d0",
+    "00b55b20",
+    "00b451d0",
+    "00b41780",
+    "00b417e0",
+    "00b7fd30",
+    "00b80500",
+    "00b7f610",
+    "00b7f730",
+    "00b7ca80",
+    "00b7d590",
+    "00b7cf80",
+    "00b7f790",
+    "00b7f1b0",
+    "00b7e000",
+    "00b7ca20",
+    "00b7ca40",
+    "00b7e970",
+    "00b80a50",
+    "00b179d0",
+    "00b179f0",
+    "00b17840",
+    "00b18900",
+    "00b347e0",
+    "00b0d130",
+    "00b4cb10",
+    "00b7aab0",
+    "00b3b3c0",
+    "00b44b10",
+    "00b454e0",
+    "00b60f60",
+    "00b61280",
+    "00711370",
+    "004bcb80",
+    "00469840",
+    "00b3b280",
+    "00bf9dc8"
+  ],
+  "new_function": "00b49b30",
+  "limits": "Matched-byte instruction/function repairs preserve original game files and previous comments; no native ABI or runtime substitution."
+}

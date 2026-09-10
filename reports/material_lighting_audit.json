@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "packet": "material_lighting",
+  "captured_utc": "2026-09-10T02:02:17.466052+00:00",
+  "source_head": "5a011e0",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live query uses tools/bsp.py ghidra, verifying project/program/language/image base.",
+  "code_spans": [
+    {
+      "address": "00b179d0",
+      "length": 28,
+      "end_exclusive": "00b179ec",
+      "sha256": "df29af8a76d4556c2ce9b7c1f96720fe5bdcdb0cae942320731a887f16de4fd7",
+      "matches_original_pe": true,
+      "function_before": "Function: BSP_Material_SetLightingRecord at 00b179d0\nSignature: undefined BSP_Material_SetLightingRecord(void)\nEntry: 00b179d0\nBody: 00b179d0 - 00b179eb\n{\n \"function_name\": \"BSP_Material_SetLightingRecord\",\n \"address\": \"00b179d0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  17,\n  8\n ],\n \"basic_block_hashes\": [\n  \"901678cd1ab63f2bd7f44ec5792f56a35221448a5040170fc6899b785967b8bc\"\n ]\n}\n",
+      "documentation_before": {
+        "plate_annotation": {
+          "address": "00b179d0",
+          "function_name": "BSP_Material_SetLightingRecord",
+          "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+        },
+        "export_metadata": {
+          "address": "00b179d0",
+          "name": "BSP_Material_SetLightingRecord",
+          "isThunk": false,
+          "isExternal": false,
+          "project": "bsp",
+          "program_path": "/battlestationspacific.exe",
+          "utc": "2026-09-10T02:02:13.781838+00:00"
+        },
+        "decompiled_before": "\n/* [BSP reconstruction 00b179d0]\n   Set material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read.\n   Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence:\n   docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is\n   a hypothesis. Host projection is not native ABI or gameplay validation. */\n\nvoid __thiscall BSP_Material_SetLightingRecord(int param_1,undefined4 param_2,undefined4 *param_3)\n\n{\n  int iVar1;\n  undefined4 *puVar2;\n  \n  *(undefined1 *)(param_1 + 0x10c) = 1;\n  puVar2 = (undefined4 *)(param_1 + 0x38);\n  for (iVar1 = 0x11; iVar1 != 0; iVar1 = iVar1 + -1) {\n    *puVar2 = *param_3;\n    param_3 = param_3 + 1;\n    puVar2 = puVar2 + 1;\n  }\n  return;\n}\n\n",
+        "assembly_before": "00b179d0: PUSH ESI \n00b179d1: MOV ESI,dword ptr [ESP + 0xc] \n00b179d5: PUSH EDI \n00b179d6: MOV byte ptr [ECX + 0x10c],0x1 \n00b179dd: LEA EDI,[ECX + 0x38] \n00b179e0: MOV ECX,0x11 \n00b179e5: MOVSD.REP ES:EDI,ESI \n00b179e7: POP EDI \n00b179e8: POP ESI \n00b179e9: RET 0x8 \n"
+      },
+      "suggested_name": "BSP_Material_SetLightingRecord",
+      "create_missing_function": false,
+      "original_abi": "ECX material; stack ignored slot, source68-byte record; RET8.",
+      "behavior": "Set material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion.",
+      "reconstruction_scope": "complete_value_operation",
+      "evidence_comment": "Set material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Existing descriptive name retained. Host representation is a new ABI; no native ABI or gameplay validation.",
+      "decoded_assembly": [
+        "00b179d0: push esi",
+        "00b179d1: mov esi, dword ptr [esp + 0xc]",
+        "00b179d5: push edi",
+        "00b179d6: mov byte ptr [ecx + 0x10c], 1",
+        "00b179dd: lea edi, [ecx + 0x38]",
+        "00b179e0: mov ecx, 0x11",
+        "00b179e5: rep movsd dword ptr es:[edi], dword ptr [esi]",
+        "00b179e7: pop edi",
+        "00b179e8: pop esi",
+        "00b179e9: ret 8"
+      ],
+      "return_instructions": [
+        "00b179e9: ret 8"
+      ]
+    },
+    {
+      "address": "00b179f0",
+      "length": 6,
+      "end_exclusive": "00b179f6",
+      "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+      "matches_original_pe": true,
+      "function_before": "Function: BSP_Material_GetDiffuseColor at 00b179f0\nSignature: undefined BSP_Material_GetDiffuseColor(void)\nEntry: 00b179f0\nBody: 00b179f0 - 00b179f5\n{\n \"function_name\": \"BSP_Material_GetDiffuseColor\",\n \"address\": \"00b179f0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  4\n ],\n \"basic_block_hashes\": [\n  \"3a0d742a9d9bc88d46188e3e0b29b305496738f72e94d3b4707da7ea65fbae95\"\n ]\n}\n",
+      "documentation_before": {
+        "plate_annotation": {
+          "address": "00b179f0",
+          "function_name": "BSP_Material_GetDiffuseColor",
+          "comment": "[BSP reconstruction 00b179f0]\nECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+        },
+        "export_metadata": {
+          "address": "00b179f0",
+          "name": "BSP_Material_GetDiffuseColor",
+          "isThunk": false,
+          "isExternal": false,
+          "project": "bsp",
+          "program_path": "/battlestationspacific.exe",
+          "utc": "2026-09-10T02:02:14.072084+00:00"
+        },
+        "decompiled_before": "\n/* [BSP reconstruction 00b179f0]\n   ECX material, unused stack index RET4; EAX material+38. Font shadow update writes\n   context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each\n   present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md;\n   reports/font_context_material_bindings_audit.json. */\n\nint __fastcall BSP_Material_GetDiffuseColor(int param_1)\n\n{\n  return param_1 + 0x38;\n}\n\n",
+        "assembly_before": "00b179f0: LEA EAX,[ECX + 0x38] \n00b179f3: RET 0x4 \n"
+      },
+      "suggested_name": "BSP_Material_GetDiffuseColor",
+      "create_missing_function": false,
+      "original_abi": "ECX material; stack ignored slot; EAX material+38h; RET4.",
+      "behavior": "Return a live pointer alias to first four record floats (diffuse color). No copy, slot selection, or dirty-flag write. Existing cMatDiffColor consumer audit identifies quartet.",
+      "reconstruction_scope": "complete_value_operation",
+      "evidence_comment": "Return a live pointer alias to first four record floats (diffuse color). No copy, slot selection, or dirty-flag write. Existing cMatDiffColor consumer audit identifies quartet. Original ABI: ECX material; stack ignored slot; EAX material+38h; RET4. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Existing descriptive name retained. Host representation is a new ABI; no native ABI or gameplay validation.",
+      "decoded_assembly": [
+        "00b179f0: lea eax, [ecx + 0x38]",
+        "00b179f3: ret 4"
+      ],
+      "return_instructions": [
+        "00b179f3: ret 4"
+      ]
+    },
+    {
+      "address": "00b17840",
+      "length": 232,
+      "end_exclusive": "00b17928",
+      "sha256": "b0f05cff30ab3322bf80279bab569619cb517b886cb6e8ad136cd39f98509a72",
+      "matches_original_pe": true,
+      "function_before": "Function: BSP_LightingRecord_Initialize at 00b17840\nSignature: undefined BSP_LightingRecord_Initialize(void)\nEntry: 00b17840\nBody: 00b17840 - 00b17927\n{\n \"function_name\": \"BSP_LightingRecord_Initialize\",\n \"address\": \"00b17840\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 56,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  16\n ],\n \"basic_block_hashes\": [\n  \"d4e583c5de69c93e1bfa828e4d53373ca7274845d78e5b03a9548203e08455f7\"\n ]\n}\n",
+      "documentation_before": {
+        "plate_annotation": {
+          "address": "00b17840",
+          "function_name": "BSP_LightingRecord_Initialize",
+          "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+        },
+        "export_metadata": {
+          "address": "00b17840",
+          "name": "BSP_LightingRecord_Initialize",
+          "isThunk": false,
+          "isExternal": false,
+          "project": "bsp",
+          "program_path": "/battlestationspacific.exe",
+          "utc": "2026-09-10T02:02:14.370731+00:00"
+        },
+        "decompiled_before": "\n/* [BSP reconstruction 00b17840]\n   First4float components1; next12components0; final component10. All overwritten by full reads.\n   Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md;\n   reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is\n   not native ABI or gameplay validation. */\n\nvoid __fastcall BSP_LightingRecord_Initialize(undefined4 *param_1)\n\n{\n  undefined4 uVar1;\n  \n  uVar1 = DAT_00d7a24c;\n  *param_1 = DAT_00d7a24c;\n  param_1[1] = uVar1;\n  param_1[2] = uVar1;\n  param_1[3] = uVar1;\n  param_1[4] = 0;\n  param_1[5] = 0;\n  param_1[6] = 0;\n  param_1[7] = 0;\n  param_1[8] = 0;\n  param_1[9] = 0;\n  param_1[10] = 0;\n  param_1[0xb] = 0;\n  param_1[0xc] = 0;\n  param_1[0xd] = 0;\n  uVar1 = DAT_00ce38b8;\n  param_1[0xe] = 0;\n  param_1[0xf] = 0;\n  param_1[0x10] = uVar1;\n  return;\n}\n\n",
+        "assembly_before": "00b17840: SUB ESP,0x10 \n00b17843: MOVSS XMM0,dword ptr [0x00d7a24c] \n00b1784b: MOV EAX,ECX \n00b1784d: MOVSS dword ptr [ESP],XMM0 \n00b17852: MOV ECX,dword ptr [ESP] \n00b17855: MOV dword ptr [EAX],ECX \n00b17857: MOVSS dword ptr [ESP + 0x4],XMM0 \n00b1785d: MOV EDX,dword ptr [ESP + 0x4] \n00b17861: MOV dword ptr [EAX + 0x4],EDX \n00b17864: MOVSS dword ptr [ESP + 0x8],XMM0 \n00b1786a: MOV ECX,dword ptr [ESP + 0x8] \n00b1786e: MOV dword ptr [EAX + 0x8],ECX \n00b17871: MOVSS dword ptr [ESP + 0xc],XMM0 \n00b17877: XORPS XMM0,XMM0 \n00b1787a: MOV EDX,dword ptr [ESP + 0xc] \n00b1787e: MOV dword ptr [EAX + 0xc],EDX \n00b17881: MOVSS dword ptr [ESP],XMM0 \n00b17886: MOV ECX,dword ptr [ESP] \n00b17889: MOV dword ptr [EAX + 0x10],ECX \n00b1788c: MOVSS dword ptr [ESP + 0x4],XMM0 \n00b17892: MOV EDX,dword ptr [ESP + 0x4] \n00b17896: MOV dword ptr [EAX + 0x14],EDX \n00b17899: MOVSS dword ptr [ESP + 0x8],XMM0 \n00b1789f: MOV ECX,dword ptr [ESP + 0x8] \n00b178a3: MOVSS dword ptr [ESP + 0xc],XMM0 \n00b178a9: MOV EDX,dword ptr [ESP + 0xc] \n00b178ad: MOV dword ptr [EAX + 0x18],ECX \n00b178b0: MOV dword ptr [EAX + 0x1c],EDX \n00b178b3: MOVSS dword ptr [ESP],XMM0 \n00b178b8: MOV ECX,dword ptr [ESP] \n00b178bb: MOV dword ptr [EAX + 0x20],ECX \n00b178be: MOVSS dword ptr [ESP + 0x4],XMM0 \n00b178c4: MOV EDX,dword ptr [ESP + 0x4] \n00b178c8: MOV dword ptr [EAX + 0x24],EDX \n00b178cb: MOVSS dword ptr [ESP + 0x8],XMM0 \n00b178d1: MOV ECX,dword ptr [ESP + 0x8] \n00b178d5: MOVSS dword ptr [ESP + 0xc],XMM0 \n00b178db: MOV EDX,dword ptr [ESP + 0xc] \n00b178df: MOV dword ptr [EAX + 0x28],ECX \n00b178e2: MOVSS dword ptr [ESP],XMM0 \n00b178e7: MOV ECX,dword ptr [ESP] \n00b178ea: MOV dword ptr [EAX + 0x2c],EDX \n00b178ed: MOVSS dword ptr [ESP + 0x4],XMM0 \n00b178f3: MOV EDX,dword ptr [ESP + 0x4] \n00b178f7: MOV dword ptr [EAX + 0x30],ECX \n00b178fa: MOVSS dword ptr [ESP + 0x8],XMM0 \n00b17900: MOV ECX,dword ptr [ESP + 0x8] \n00b17904: MOV dword ptr [EAX + 0x34],EDX \n00b17907: MOVSS dword ptr [ESP + 0xc],XMM0 \n00b1790d: MOV EDX,dword ptr [ESP + 0xc] \n00b17911: MOVSS XMM0,dword ptr [0x00ce38b8] \n00b17919: MOV dword ptr [EAX + 0x38],ECX \n00b1791c: MOV dword ptr [EAX + 0x3c],EDX \n00b1791f: MOVSS dword ptr [EAX + 0x40],XMM0 \n00b17924: ADD ESP,0x10 \n00b17927: RET \n"
+      },
+      "suggested_name": "BSP_LightingRecord_Initialize",
+      "create_missing_function": false,
+      "original_abi": "ECX68-byte output; EAX output; plain RET.",
+      "behavior": "Store four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16.",
+      "reconstruction_scope": "complete_value_operation",
+      "evidence_comment": "Store four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Existing descriptive name retained. Host representation is a new ABI; no native ABI or gameplay validation.",
+      "decoded_assembly": [
+        "00b17840: sub esp, 0x10",
+        "00b17843: movss xmm0, dword ptr [0xd7a24c]",
+        "00b1784b: mov eax, ecx",
+        "00b1784d: movss dword ptr [esp], xmm0",
+        "00b17852: mov ecx, dword ptr [esp]",
+        "00b17855: mov dword ptr [eax], ecx",
+        "00b17857: movss dword ptr [esp + 4], xmm0",
+        "00b1785d: mov edx, dword ptr [esp + 4]",
+        "00b17861: mov dword ptr [eax + 4], edx",
+        "00b17864: movss dword ptr [esp + 8], xmm0",
+        "00b1786a: mov ecx, dword ptr [esp + 8]",
+        "00b1786e: mov dword ptr [eax + 8], ecx",
+        "00b17871: movss dword ptr [esp + 0xc], xmm0",
+        "00b17877: xorps xmm0, xmm0",
+        "00b1787a: mov edx, dword ptr [esp + 0xc]",
+        "00b1787e: mov dword ptr [eax + 0xc], edx",
+        "00b17881: movss dword ptr [esp], xmm0",
+        "00b17886: mov ecx, dword ptr [esp]",
+        "00b17889: mov dword ptr [eax + 0x10], ecx",
+        "00b1788c: movss dword ptr [esp + 4], xmm0",
+        "00b17892: mov edx, dword ptr [esp + 4]",
+        "00b17896: mov dword ptr [eax + 0x14], edx",
+        "00b17899: movss dword ptr [esp + 8], xmm0",
+        "00b1789f: mov ecx, dword ptr [esp + 8]",
+        "00b178a3: movss dword ptr [esp + 0xc], xmm0",
+        "00b178a9: mov edx, dword ptr [esp + 0xc]",
+        "00b178ad: mov dword ptr [eax + 0x18], ecx",
+        "00b178b0: mov dword ptr [eax + 0x1c], edx",
+        "00b178b3: movss dword ptr [esp], xmm0",
+        "00b178b8: mov ecx, dword ptr [esp]",
+        "00b178bb: mov dword ptr [eax + 0x20], ecx",
+        "00b178be: movss dword ptr [esp + 4], xmm0",
+        "00b178c4: mov edx, dword ptr [esp + 4]",
+        "00b178c8: mov dword ptr [eax + 0x24], edx",
+        "00b178cb: movss dword ptr [esp + 8], xmm0",
+        "00b178d1: mov ecx, dword ptr [esp + 8]",
+        "00b178d5: movss dword ptr [esp + 0xc], xmm0",
+        "00b178db: mov edx, dword ptr [esp + 0xc]",
+        "00b178df: mov dword ptr [eax + 0x28], ecx",
+        "00b178e2: movss dword ptr [esp], xmm0",
+        "00b178e7: mov ecx, dword ptr [esp]",
+        "00b178ea: mov dword ptr [eax + 0x2c], edx",
+        "00b178ed: movss dword ptr [esp + 4], xmm0",
+        "00b178f3: mov edx, dword ptr [esp + 4]",
+        "00b178f7: mov dword ptr [eax + 0x30], ecx",
+        "00b178fa: movss dword ptr [esp + 8], xmm0",
+        "00b17900: mov ecx, dword ptr [esp + 8]",
+        "00b17904: mov dword ptr [eax + 0x34], edx",
+        "00b17907: movss dword ptr [esp + 0xc], xmm0",
+        "00b1790d: mov edx, dword ptr [esp + 0xc]",
+        "00b17911: movss xmm0, dword ptr [0xce38b8]",
+        "00b17919: mov dword ptr [eax + 0x38], ecx",
+        "00b1791c: mov dword ptr [eax + 0x3c], edx",
+        "00b1791f: movss dword ptr [eax + 0x40], xmm0",
+        "00b17924: add esp, 0x10",
+        "00b17927: ret"
+      ],
+      "return_instructions": [
+        "00b17927: ret"
+      ]
+    },
+    {
+      "address": "00b18900",
+      "length": 229,
+      "end_exclusive": "00b189e5",
+      "sha256": "6768407d2713726def1fc414fc244ec076fa5369c1289686bed59a2821b722b0",
+      "matches_original_pe": true,
+      "function_before": "Function: BSP_Material_ConstructWithEffect at 00b18900\nSignature: undefined BSP_Material_ConstructWithEffect(void)\nEntry: 00b18900\nBody: 00b18900 - 00b189e4\n{\n \"function_name\": \"BSP_Material_ConstructWithEffect\",\n \"address\": \"00b18900\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 71,\n \"basic_block_count\": 9,\n \"edge_count\": 13,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 6,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_LightingRecord_Initialize\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  16,\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"32e1363d60947082e5986d010b883c320fe88edd1fb1725479351b41e9342c1a\",\n  \"43285b52012c8ee10658a3d23e21cfa294486910d09800b992ba630daaa72b57\",\n  \"0e8f0067b8cdfb98ce681083633dce48a3b0dc67f1aae063d9e69e2832d7fa36\",\n  \"fd7fda6592dfa4c4886acadd44427a55c490dd3b34c1a746422c0ef5af8c3606\",\n  \"f63837ddb695990bdbefe8b100414f560be81eff5b9d74ffd3ada3776b26ef8b\",\n  \"eceb747bdbee0f7b84b4b753d35d79c2714b0f1f3b4e49ce5659d7a620722d19\",\n  \"c1afd5c725496d2d7bfef21a3b719104032d17828664a9aa08e8316b88373240\",\n  \"52be2e3edbb7d24e500579651ccd7fbbf375b7760aaae0b38e9d49bed9cb5d97\",\n  \"ef6f2820b1852766ad0005f7ebd439a1c3f2657079ae9d6e8f1ee878d6fe3a22\"\n ]\n}\n",
+      "documentation_before": {
+        "plate_annotation": {
+          "address": "00b18900",
+          "function_name": "BSP_Material_ConstructWithEffect",
+          "comment": "[BSP reconstruction 00b18900]\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n\n[BSP reconstruction 00b18900] update\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits."
+        },
+        "export_metadata": {
+          "address": "00b18900",
+          "name": "BSP_Material_ConstructWithEffect",
+          "isThunk": false,
+          "isExternal": false,
+          "project": "bsp",
+          "program_path": "/battlestationspacific.exe",
+          "utc": "2026-09-10T02:02:14.691051+00:00"
+        },
+        "decompiled_before": "\n/* [BSP reconstruction 00b18900]\n   Material wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h\n   byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n   \n   [BSP reconstruction 00b18900] update\n   Material wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h\n   byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n   Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed\n   MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits. */\n\nundefined4 * __thiscall BSP_Material_ConstructWithEffect(undefined4 *param_1,undefined4 *param_2)\n\n{\n  undefined4 *puVar1;\n  LONG LVar2;\n  void *local_c;\n  undefined1 *puStack_8;\n  undefined4 local_4;\n  \n  puStack_8 = &LAB_00cbc538;\n  local_c = ExceptionList;\n  ExceptionList = &local_c;\n  *param_1 = &PTR_BSP_RefCounted_InvokeDeletingDestructor_00ceb130;\n  param_1[1] = 1;\n  *param_1 = &PTR_BSP_RefCounted_InvokeDeletingDestructor_00d5e520;\n  param_1[2] = 0;\n  param_1[3] = 0;\n  *(undefined2 *)(param_1 + 0xd) = 0;\n  param_1[4] = 0;\n  param_1[5] = 0;\n  param_1[6] = 0;\n  param_1[7] = 0;\n  param_1[8] = 0;\n  param_1[9] = 0;\n  param_1[10] = 0;\n  param_1[0xb] = 0;\n  local_4 = 0;\n  param_1[0xc] = 0;\n  BSP_LightingRecord_Initialize();\n  param_1[0x1f] = 0;\n  param_1[0x40] = 0;\n  param_1[0x41] = 0xffffffff;\n  param_1[0x42] = 0xffffffff;\n  *(undefined1 *)(param_1 + 0x43) = 0;\n  *(undefined1 *)((int)param_1 + 0x10d) = 0;\n  puVar1 = (undefined4 *)param_1[0x1f];\n  if (puVar1 != param_2) {\n    param_1[0x1f] = param_2;\n    if (param_2 != (undefined4 *)0x0) {\n      InterlockedIncrement(param_2 + 1);\n    }\n    if (puVar1 != (undefined4 *)0x0) {\n      LVar2 = InterlockedDecrement(puVar1 + 1);\n      if (LVar2 == 0) {\n        (**(code **)*puVar1)();\n      }\n    }\n  }\n  if (param_1[0x1f] != 0) {\n    *(undefined1 *)(param_1[0x1f] + 0xb4) = 1;\n  }\n  ExceptionList = local_c;\n  return param_1;\n}\n\n",
+        "assembly_before": "00b18900: PUSH -0x1 \n00b18902: PUSH 0xcbc538 \n00b18907: MOV EAX,FS:[0x0] \n00b1890d: PUSH EAX \n00b1890e: MOV dword ptr FS:[0x0],ESP \n00b18915: PUSH ECX \n00b18916: PUSH EBX \n00b18917: PUSH ESI \n00b18918: MOV ESI,ECX \n00b1891a: MOV dword ptr [ESI],0xceb130 \n00b18920: PUSH EDI \n00b18921: MOV dword ptr [ESP + 0xc],ESI \n00b18925: MOV dword ptr [ESI + 0x4],0x1 \n00b1892c: MOV dword ptr [ESI],0xd5e520 \n00b18932: XOR EAX,EAX \n00b18934: XOR EBX,EBX \n00b18936: MOV dword ptr [ESI + 0x8],EBX \n00b18939: MOV dword ptr [ESI + 0xc],EBX \n00b1893c: MOV word ptr [ESI + 0x34],BX \n00b18940: MOV dword ptr [ESI + 0x10],EAX \n00b18943: MOV dword ptr [ESI + 0x14],EAX \n00b18946: MOV dword ptr [ESI + 0x18],EAX \n00b18949: MOV dword ptr [ESI + 0x1c],EAX \n00b1894c: MOV dword ptr [ESI + 0x20],EAX \n00b1894f: MOV dword ptr [ESI + 0x24],EAX \n00b18952: MOV dword ptr [ESI + 0x28],EAX \n00b18955: MOV dword ptr [ESI + 0x2c],EAX \n00b18958: LEA ECX,[ESI + 0x38] \n00b1895b: MOV dword ptr [ESP + 0x18],EBX \n00b1895f: MOV dword ptr [ESI + 0x30],EAX \n00b18962: CALL 0x00b17840 \n00b18967: OR EAX,0xffffffff \n00b1896a: MOV dword ptr [ESI + 0x7c],EBX \n00b1896d: MOV dword ptr [ESI + 0x100],EBX \n00b18973: MOV dword ptr [ESI + 0x104],EAX \n00b18979: MOV dword ptr [ESI + 0x108],EAX \n00b1897f: MOV EAX,dword ptr [ESP + 0x20] \n00b18983: MOV byte ptr [ESI + 0x10c],BL \n00b18989: MOV byte ptr [ESI + 0x10d],BL \n00b1898f: MOV EDI,dword ptr [ESI + 0x7c] \n00b18992: CMP EDI,EAX \n00b18994: JZ 0x00b189c1 \n00b18996: CMP EAX,EBX \n00b18998: MOV dword ptr [ESI + 0x7c],EAX \n00b1899b: JZ 0x00b189a7 \n00b1899d: ADD EAX,0x4 \n00b189a0: PUSH EAX \n00b189a1: CALL dword ptr [0x00ce221c] \n00b189a7: CMP EDI,EBX \n00b189a9: JZ 0x00b189c1 \n00b189ab: LEA EAX,[EDI + 0x4] \n00b189ae: PUSH EAX \n00b189af: CALL dword ptr [0x00ce2220] \n00b189b5: TEST EAX,EAX \n00b189b7: JNZ 0x00b189c1 \n00b189b9: MOV EDX,dword ptr [EDI] \n00b189bb: MOV EAX,dword ptr [EDX] \n00b189bd: MOV ECX,EDI \n00b189bf: CALL EAX \n00b189c1: MOV EAX,dword ptr [ESI + 0x7c] \n00b189c4: CMP EAX,EBX \n00b189c6: JZ 0x00b189cf \n00b189c8: MOV byte ptr [EAX + 0xb4],0x1 \n00b189cf: MOV ECX,dword ptr [ESP + 0x10] \n00b189d3: POP EDI \n00b189d4: MOV EAX,ESI \n00b189d6: POP ESI \n00b189d7: POP EBX \n00b189d8: MOV dword ptr FS:[0x0],ECX \n00b189df: ADD ESP,0x10 \n00b189e2: RET 0x4 \n"
+      },
+      "suggested_name": "BSP_Material_ConstructWithEffect",
+      "create_missing_function": false,
+      "original_abi": "ECX material; stack effect pointer; EAX material; RET4; x86 SEH.",
+      "behavior": "Lighting-only host fragment: initialize embedded68-byte record at material+38h through00b17840, then initialize byte+10Ch to0. Complete PE body also zeroes textures/other fields, installs vtables and retains effect; those ownership operations are not reconstructed by MaterialLighting.",
+      "reconstruction_scope": "lighting_field_initialization_fragment",
+      "evidence_comment": "Lighting-only host fragment: initialize embedded68-byte record at material+38h through00b17840, then initialize byte+10Ch to0. Complete PE body also zeroes textures/other fields, installs vtables and retains effect; those ownership operations are not reconstructed by MaterialLighting. Original ABI: ECX material; stack effect pointer; EAX material; RET4; x86 SEH. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Existing descriptive name retained. Host representation is a new ABI; no native ABI or gameplay validation.",
+      "decoded_assembly": [
+        "00b18900: push -1",
+        "00b18902: push 0xcbc538",
+        "00b18907: mov eax, dword ptr fs:[0]",
+        "00b1890d: push eax",
+        "00b1890e: mov dword ptr fs:[0], esp",
+        "00b18915: push ecx",
+        "00b18916: push ebx",
+        "00b18917: push esi",
+        "00b18918: mov esi, ecx",
+        "00b1891a: mov dword ptr [esi], 0xceb130",
+        "00b18920: push edi",
+        "00b18921: mov dword ptr [esp + 0xc], esi",
+        "00b18925: mov dword ptr [esi + 4], 1",
+        "00b1892c: mov dword ptr [esi], 0xd5e520",
+        "00b18932: xor eax, eax",
+        "00b18934: xor ebx, ebx",
+        "00b18936: mov dword ptr [esi + 8], ebx",
+        "00b18939: mov dword ptr [esi + 0xc], ebx",
+        "00b1893c: mov word ptr [esi + 0x34], bx",
+        "00b18940: mov dword ptr [esi + 0x10], eax",
+        "00b18943: mov dword ptr [esi + 0x14], eax",
+        "00b18946: mov dword ptr [esi + 0x18], eax",
+        "00b18949: mov dword ptr [esi + 0x1c], eax",
+        "00b1894c: mov dword ptr [esi + 0x20], eax",
+        "00b1894f: mov dword ptr [esi + 0x24], eax",
+        "00b18952: mov dword ptr [esi + 0x28], eax",
+        "00b18955: mov dword ptr [esi + 0x2c], eax",
+        "00b18958: lea ecx, [esi + 0x38]",
+        "00b1895b: mov dword ptr [esp + 0x18], ebx",
+        "00b1895f: mov dword ptr [esi + 0x30], eax",
+        "00b18962: call 0xb17840",
+        "00b18967: or eax, 0xffffffff",
+        "00b1896a: mov dword ptr [esi + 0x7c], ebx",
+        "00b1896d: mov dword ptr [esi + 0x100], ebx",
+        "00b18973: mov dword ptr [esi + 0x104], eax",
+        "00b18979: mov dword ptr [esi + 0x108], eax",
+        "00b1897f: mov eax, dword ptr [esp + 0x20]",
+        "00b18983: mov byte ptr [esi + 0x10c], bl",
+        "00b18989: mov byte ptr [esi + 0x10d], bl",
+        "00b1898f: mov edi, dword ptr [esi + 0x7c]",
+        "00b18992: cmp edi, eax",
+        "00b18994: je 0xb189c1",
+        "00b18996: cmp eax, ebx",
+        "00b18998: mov dword ptr [esi + 0x7c], eax",
+        "00b1899b: je 0xb189a7",
+        "00b1899d: add eax, 4",
+        "00b189a0: push eax",
+        "00b189a1: call dword ptr [0xce221c]",
+        "00b189a7: cmp edi, ebx",
+        "00b189a9: je 0xb189c1",
+        "00b189ab: lea eax, [edi + 4]",
+        "00b189ae: push eax",
+        "00b189af: call dword ptr [0xce2220]",
+        "00b189b5: test eax, eax",
+        "00b189b7: jne 0xb189c1",
+        "00b189b9: mov edx, dword ptr [edi]",
+        "00b189bb: mov eax, dword ptr [edx]",
+        "00b189bd: mov ecx, edi",
+        "00b189bf: call eax",
+        "00b189c1: mov eax, dword ptr [esi + 0x7c]",
+        "00b189c4: cmp eax, ebx",
+        "00b189c6: je 0xb189cf",
+        "00b189c8: mov byte ptr [eax + 0xb4], 1",
+        "00b189cf: mov ecx, dword ptr [esp + 0x10]",
+        "00b189d3: pop edi",
+        "00b189d4: mov eax, esi",
+        "00b189d6: pop esi",
+        "00b189d7: pop ebx",
+        "00b189d8: mov dword ptr fs:[0], ecx",
+        "00b189df: add esp, 0x10",
+        "00b189e2: ret 4"
+      ],
+      "return_instructions": [
+        "00b189e2: ret 4"
+      ]
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "matches_original_pe": true,
+      "float32_value": 1.0
+    },
+    {
+      "address": "00ce38b8",
+      "length": 4,
+      "hex": "00002041",
+      "sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593",
+      "matches_original_pe": true,
+      "float32_value": 10.0
+    }
+  ],
+  "no_native_abi_validation": true,
+  "no_game_validation": true,
+  "lighting_record": {
+    "byte_count": 68,
+    "component_count": 17,
+    "material_offset": 56,
+    "component_order": [
+      {
+        "indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "material_offsets": [
+          56,
+          60,
+          64,
+          68
+        ],
+        "meaning": "diffuse RGBA",
+        "default": 1.0
+      },
+      {
+        "indices": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "material_offsets": [
+          72,
+          76,
+          80,
+          84,
+          88,
+          92,
+          96,
+          100,
+          104,
+          108,
+          112,
+          116
+        ],
+        "meaning": "unclassified components in serialized order",
+        "default": 0.0
+      },
+      {
+        "indices": [
+          16
+        ],
+        "material_offsets": [
+          120
+        ],
+        "meaning": "unclassified final component",
+        "default": 10.0
+      }
+    ],
+    "flag_10c": {
+      "constructor": 0,
+      "setter": 1,
+      "getter": "unchanged"
+    },
+    "slot_behavior": "setter/getter consume but ignore slot; there is one record.",
+    "copy": "17DWORD bit copy, preserving signed zero and NaN payloads; no float arithmetic."
+  },
+  "constructor_field_stores_observed_not_all_projected": [
+    {
+      "offsets": [
+        0
+      ],
+      "value": "initial00ceb130, then00d5e520 vtable"
+    },
+    {
+      "offsets": [
+        4
+      ],
+      "value": 1
+    },
+    {
+      "offsets": [
+        8,
+        12
+      ],
+      "value": 0
+    },
+    {
+      "offsets": [
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48
+      ],
+      "value": 0,
+      "meaning": "nine separately modeled texture slots"
+    },
+    {
+      "offsets": [
+        52
+      ],
+      "width": 2,
+      "value": 0,
+      "meaning": "texture count"
+    },
+    {
+      "offsets": [
+        56
+      ],
+      "width": 68,
+      "value": "00b17840 defaults"
+    },
+    {
+      "offsets": [
+        124
+      ],
+      "value": "initial0, then effect argument with native reference management"
+    },
+    {
+      "offsets": [
+        256
+      ],
+      "value": 0,
+      "meaning": "unclassified here"
+    },
+    {
+      "offsets": [
+        260,
+        264
+      ],
+      "value": "ffffffff",
+      "meaning": "unclassified here"
+    },
+    {
+      "offsets": [
+        268,
+        269
+      ],
+      "width": 1,
+      "value": 0
+    }
+  ],
+  "host_implementation": {
+    "files": [
+      "include/bsp/material_lighting.hpp",
+      "src/material_lighting.cpp"
+    ],
+    "existing_wire_event": "MeshLightingRecord retains ignored_slot and std::array<float,17> values; reuse those values without re-parsing.",
+    "api": "initialize_lighting_record_00b17840; MaterialLighting constructor, set_lighting_record_00b179d0, diffuse_color_00b179f0 mutable/const alias, values, flag_10c.",
+    "integration": "Replay lighting events in encounter order; feed resulting diffuse[3] to building instance alpha and first quartet to cMatDiffColor binding.",
+    "validation": "Source whitespace checks passed. CMake/build/installed-probe integration delegated to primary; no new tests."
+  },
+  "boundaries": [
+    "Components4..16 have no recovered ambient/specular/emissive/power labels in these four functions.",
+    "Only record/flag fields of00b18900 are reconstructed; effect retention, textures, other flags/indices and destruction remain separate.",
+    "The host aliases its own stable array, not an original material object; no native ABI or game validation."
+  ],
+  "status": "four_complete_pe_live_spans_two_constants_matched_lighting_value_fragment_implemented",
+  "primary_integration": {
+    "validation": "reports/mesh_material_validation.json",
+    "annotations": "reports/mesh_material_annotations.json",
+    "scope": "Installed model wire payload -> managed mesh buffers, native shader decode records and building instance writer, material lighting, compiled NORMAL pass and actual texture binding/draw. Host scene/instance backing and white ShadowTexture inputs remain explicit; native frame allocator, scene shadow generation, resource object ownership and full game remain unported."
+  }
+}

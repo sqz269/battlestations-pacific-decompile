@@ -10,6 +10,8 @@ add_library(bsp_core STATIC src/math.cpp src/render_sort.cpp src/random.cpp src/
 target_include_directories(bsp_core PUBLIC include)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
 target_sources(bsp_core PRIVATE src/material_samplers.cpp)
+target_sources(bsp_core PRIVATE src/material_shadow_samplers.cpp)
+target_sources(bsp_core PRIVATE src/material_lighting.cpp)
 target_sources(bsp_core PRIVATE src/resource_path.cpp)
 target_sources(bsp_core PRIVATE src/vfs_mounts.cpp src/vfs_candidates.cpp
   src/physical_directory.cpp src/vfs_search_defaults.cpp src/resource_lookup.cpp)
@@ -26,6 +28,8 @@ target_sources(bsp_core PRIVATE src/text_input.cpp)
 target_sources(bsp_core PRIVATE src/physical_file.cpp)
 target_sources(bsp_core PRIVATE src/memory_stream.cpp)
 target_sources(bsp_core PRIVATE src/structured_reader.cpp src/structured_resource.cpp src/structured_hierarchy.cpp)
+target_sources(bsp_core PRIVATE src/compiled_material.cpp src/mesh_decode_bindings.cpp src/mesh_gpu_streams.cpp src/building_instance.cpp src/resource_parser_map.cpp src/structured_resource_registry.cpp)
+
 target_sources(bsp_core PRIVATE src/mesh_buffers.cpp src/mesh_fields.cpp src/mesh_resource.cpp src/vertex_format.cpp)
 target_sources(bsp_core PRIVATE src/stream_scalars.cpp src/font_data.cpp src/d3d9_reset_texture.cpp)
 target_sources(bsp_core PRIVATE src/font_registry.cpp src/texture_load_policy.cpp)
@@ -41,6 +45,7 @@ target_link_libraries(bsp_core PUBLIC user32 d3d9 PRIVATE bsp_lua511 bsp_d3dx_he
 add_executable(bsp_d3d9_probe src/d3d9_probe.cpp src/d3d9_shader_probe.cpp src/d3d9_atlas_probe.cpp src/d3d9_material_probe.cpp)
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_alpha_probe.cpp)
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_font_probe.cpp)
+target_sources(bsp_d3d9_probe PRIVATE src/d3d9_mesh_probe.cpp)
 
 target_sources(bsp_d3d9_probe PRIVATE src/inflate_stream_probe.cpp src/mpkg_archive_probe.cpp
   src/resource_preload_probe.cpp src/physical_pending_reads_probe.cpp src/structured_resource_probe.cpp)

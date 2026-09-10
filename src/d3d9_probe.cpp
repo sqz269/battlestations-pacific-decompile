@@ -36,6 +36,7 @@ bool probe_mpkg_archive();
 bool probe_physical_pending_reads(const std::string& physical_path);
 bool probe_startup_script_preloads(AssetStreamProbe&, const std::filesystem::path&);
 bool probe_structured_resource(AssetStreamProbe&);
+bool probe_installed_mesh(IDirect3DDevice9&, AssetStreamProbe&);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 bool probe_font_material(IDirect3DDevice9&, const std::shared_ptr<const bsp::FontResources>&,
@@ -50,6 +51,7 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
     AssetStreamProbe assets(game_root.string() + "\\");
     if (!probe_startup_script_preloads(assets, game_root)) return false;
     if (!probe_structured_resource(assets)) return false;
+    if (!probe_installed_mesh(device, assets)) return false;
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
         std::string& bytes, std::string& message) {
         std::shared_ptr<bsp::MemoryStream> memory;

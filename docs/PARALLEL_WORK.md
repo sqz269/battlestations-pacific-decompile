@@ -15,7 +15,7 @@ policy while the other two continued archive-stream and font-layout work.
 No throughput multiplier or completion date has been measured.
 
 After the latest saved function definitions/names, the refreshed graph groups
-23,756 candidates into 94 segments. Current graph details are recorded
+23,728 candidates into 99 segments. Current graph details are recorded
 in `config/parallel_work.json`; historical figures above describe the method-review
 baseline. Packet function addresses and file ownership remain the scheduling contract.
 
@@ -136,3 +136,15 @@ See `docs/MESH_RESOURCE_INTEGRATION.md` and `reports/mesh_resource_validation.js
 Next assignments are exact shader-constant fragments, registered buffer backing,
 and resource parser-map storage; shared renderer/manager integration stays with
 the primary. Candidate partitions do not establish independence.
+
+## Installed mesh material batch
+
+Three workers closed decode/instance values, private GPU backing/shadow samplers,
+and parser registration/material lighting. The primary integrated their source
+with the installed model and shared native material compiler. The normal model
+draw and existing font draws pass; exact limits are in
+`docs/MESH_MATERIAL_INTEGRATION.md` and `reports/mesh_material_validation.json`.
+The next three bounded packets are generated instance geometry00b4c8d0,
+instance upload/count00b1e990/00b85590, and root resource00b7f430/00b7f100.
+The primary coordinates shared types and the larger00b1dff0 grouping/fade path.
+Use `config/parallel_work.json` for disjoint ownership and incomplete dependencies.

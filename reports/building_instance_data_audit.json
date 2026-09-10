@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "packet": "building_instance_record",
+  "generated_utc": "2026-09-10T01:58:44.136249+00:00",
+  "status": "typed_writer_and_complete_native_route_audit_ready_primary_build_and_probe_pending",
+  "scope": {
+    "owned_functions": [
+      "00b55780",
+      "00b450d0",
+      "00b55b20",
+      "00b451d0",
+      "00b41780",
+      "00b417e0"
+    ],
+    "source": "src/building_instance.cpp",
+    "header": "include/bsp/building_instance.hpp",
+    "documentation": "docs/BUILDING_INSTANCE_DATA.md",
+    "primary_owns_shared_material_declaration_buffer_and_probe_integration": true,
+    "no_native_scene_stub": true,
+    "no_altered_or_fallback_shader": true,
+    "no_new_test_targets": true,
+    "no_worker_ghidra_or_shared_ledger_mutation": true
+  },
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr"
+    },
+    "ranges": [
+      {
+        "address": "00b179f0",
+        "length": 6,
+        "end_exclusive": "00b179f6",
+        "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+        "disk_offset": 7436784,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b179f0.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b179f0.decoded.asm.txt",
+        "return_instructions": [
+          "00b179f3: ret 4"
+        ]
+      },
+      {
+        "address": "00b41780",
+        "length": 59,
+        "end_exclusive": "00b417bb",
+        "sha256": "a7e0b117b72d75c1ff2f358abf708a5aef0f404a5b54a7d02f8afa83be47d206",
+        "disk_offset": 7608192,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b41780.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b41780.decoded.asm.txt",
+        "return_instructions": [
+          "00b417b8: ret 4"
+        ]
+      },
+      {
+        "address": "00b417e0",
+        "length": 59,
+        "end_exclusive": "00b4181b",
+        "sha256": "128370894f3ef682a01ce94ddcab4ada704cb7de3e2597e5b4263523f82e91a5",
+        "disk_offset": 7608288,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b417e0.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b417e0.decoded.asm.txt",
+        "return_instructions": [
+          "00b41818: ret 4"
+        ]
+      },
+      {
+        "address": "00b450d0",
+        "length": 182,
+        "end_exclusive": "00b45186",
+        "sha256": "81dda7fa77013e0325604bfbdaf03f810873a1d3f28feccd89b5d12b80fceaf2",
+        "disk_offset": 7622864,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b450d0.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b450d0.decoded.asm.txt",
+        "return_instructions": [
+          "00b45183: ret 8"
+        ]
+      },
+      {
+        "address": "00b451d0",
+        "length": 339,
+        "end_exclusive": "00b45323",
+        "sha256": "1240dde08c61e7fb0a4cbbb2d43b90b370fec93f3ed04c929353060d4e8481f9",
+        "disk_offset": 7623120,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b451d0.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b451d0.decoded.asm.txt",
+        "return_instructions": [
+          "00b45320: ret 8"
+        ]
+      },
+      {
+        "address": "00b55780",
+        "length": 919,
+        "end_exclusive": "00b55b17",
+        "sha256": "f96cf2d7b82ed950b475f03ce0bae4ad136296742604cf421a410650b9278929",
+        "disk_offset": 7690112,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b55780.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b55780.decoded.asm.txt",
+        "return_instructions": [
+          "00b55b14: ret 8"
+        ]
+      },
+      {
+        "address": "00b55b20",
+        "length": 189,
+        "end_exclusive": "00b55bdd",
+        "sha256": "2cd06dc41ae21cf8abb4cfc8258c2a0bd11bb8b0200ae09ec674a2495d10d046",
+        "disk_offset": 7691040,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b55b20.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b55b20.decoded.asm.txt",
+        "return_instructions": [
+          "00b55bda: ret 0xc"
+        ]
+      },
+      {
+        "address": "00b6dc50",
+        "length": 7,
+        "end_exclusive": "00b6dc57",
+        "sha256": "d8ce96a6373a2f955f031e90e9e04c3ff42d3ace920d7c0be0c50017e1650c9a",
+        "disk_offset": 7789648,
+        "matches_original_pe": true,
+        "kind": "code",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00b6dc50.bytes.txt",
+        "decoded_disassembly": "local/building_instance/00b6dc50.decoded.asm.txt",
+        "return_instructions": [
+          "00b6dc56: ret "
+        ]
+      },
+      {
+        "address": "00ce3978",
+        "length": 4,
+        "end_exclusive": "00ce397c",
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "disk_offset": 9320824,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00ce3978.bytes.txt"
+      },
+      {
+        "address": "00d61c1c",
+        "length": 12,
+        "end_exclusive": "00d61c28",
+        "sha256": "70b2b3c7139ac6fbe6658fdf4968526026e4c7285ff817f7494ed2a2e8060a98",
+        "disk_offset": 9837596,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00d61c1c.bytes.txt"
+      },
+      {
+        "address": "00d61c28",
+        "length": 42,
+        "end_exclusive": "00d61c52",
+        "sha256": "d5a1242eea28ed28e80b96fbc24a990dbdee68f64434a30ead820e45f7982da8",
+        "disk_offset": 9837608,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00d61c28.bytes.txt"
+      },
+      {
+        "address": "00d61c5c",
+        "length": 9,
+        "end_exclusive": "00d61c65",
+        "sha256": "bd27d8a8ccb084b58685bbda6b54a150feb3e459195714a20c2a5feced0c76c7",
+        "disk_offset": 9837660,
+        "matches_original_pe": true,
+        "kind": "data",
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/building_instance/00d61c5c.bytes.txt"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b55780",
+      "length": 919,
+      "suggested_name": "BSP_BuildingInstanceGenerator_WriteRecord",
+      "original_abi": "Two stack arguments: render entry and144-byte output; RET8. ECX unused in complete body; function is building generator vtable+8.",
+      "reconstruction": "complete_value_writer_with_explicit_host_scene_inputs",
+      "source": "src/building_instance.cpp",
+      "contract": "Refresh entry+0C transform world when valid bit2 is clear; copy twelve transposed world words from+F0; first<=3 ordered transform+164 list lights supply position/radius+1EC and color+184; absent slots zero. Then overwrite output+6C visibility(entry+18),+7C count asfloat,+8C materialdiffusealpha(entry+4 section+20 ->00b179f0(0)+C). Host accepts explicit refreshed CameraMatrix and valid nonnegative vector-count domain; no native object/ABI or x87 exception-state claim.",
+      "original_annotation": {
+        "address": "00b55780",
+        "function_name": "FUN_00b55780"
+      },
+      "suggested_additive_plate_comment": "Refresh entry+0C transform world when valid bit2 is clear; copy twelve transposed world words from+F0; first<=3 ordered transform+164 list lights supply position/radius+1EC and color+184; absent slots zero. Then overwrite output+6C visibility(entry+18),+7C count asfloat,+8C materialdiffusealpha(entry+4 section+20 ->00b179f0(0)+C). Host accepts explicit refreshed CameraMatrix and valid nonnegative vector-count domain; no native object/ABI or x87 exception-state claim. Original ABI: Two stack arguments: render entry and144-byte output; RET8. ECX unused in complete body; function is building generator vtable+8. Full919-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation."
+    },
+    {
+      "address": "00b450d0",
+      "length": 182,
+      "suggested_name": "BSP_BuildingInstanceGenerator_Construct",
+      "original_abi": "ECX generator; stack draw section and forwarded opaque argument; EAX generator; RET8.",
+      "reconstruction": "native_audit_only",
+      "contract": "Supplies exact uf44uf44uf44uf44uf44uf44uf44uf44uf44.mvfm string to00b55b20, then sets vtable00d61c1c; vtable+8 points to00b55780. Exact ninefloat4 instance stream144bytes. Native constructor/lifetime not host-realized by value writer.",
+      "original_annotation": {
+        "address": "00b450d0",
+        "function_name": "FUN_00b450d0"
+      },
+      "suggested_additive_plate_comment": "Supplies exact uf44uf44uf44uf44uf44uf44uf44uf44uf44.mvfm string to00b55b20, then sets vtable00d61c1c; vtable+8 points to00b55780. Exact ninefloat4 instance stream144bytes. Native constructor/lifetime not host-realized by value writer. Original ABI: ECX generator; stack draw section and forwarded opaque argument; EAX generator; RET8. Full182-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation."
+    },
+    {
+      "address": "00b55b20",
+      "length": 189,
+      "suggested_name": "BSP_InstanceGenerator_ConstructDeclarations",
+      "original_abi": "ECX generator; stack draw section, forwarded opaque argument(no read), instance declaration-name reference; EAX generator; RET0C.",
+      "reconstruction": "native_audit_only",
+      "contract": "Initialize refcount+4=1, clear+8/+C/+10/+14/+18, resolve instance declaration via renderer virtual+38 into+10; obtain [section+3C] first stream declaration via virtual+24; combine section-first declaration then instance declaration via renderer virtual+40 into+14. Native renderer/class ownership remains outside typed record API.",
+      "original_annotation": {
+        "address": "00b55b20",
+        "function_name": "FUN_00b55b20"
+      },
+      "suggested_additive_plate_comment": "Initialize refcount+4=1, clear+8/+C/+10/+14/+18, resolve instance declaration via renderer virtual+38 into+10; obtain [section+3C] first stream declaration via virtual+24; combine section-first declaration then instance declaration via renderer virtual+40 into+14. Native renderer/class ownership remains outside typed record API. Original ABI: ECX generator; stack draw section, forwarded opaque argument(no read), instance declaration-name reference; EAX generator; RET0C. Full189-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation."
+    },
+    {
+      "address": "00b451d0",
+      "length": 339,
+      "suggested_name": "BSP_MaterialEffect_AttachInstanceGenerator",
+      "original_abi": "ECX material effect; stack draw section and forwarded opaque argument; RET8.",
+      "reconstruction": "native_audit_only",
+      "contract": "Read effect+C4 primary descriptor InstanceGenerator string+28. building selects1Ch constructor00b450d0; generic selects00b44fd0. Empty/unrecognized leaves binding unchanged. Wrap created generator in10h binding(vtable00d619f8), retain at binding+C via00b41780, attach binding to section+5C via00b417e0, release both local refs afterward. Generic implementation and native class lifecycle not reconstructed here.",
+      "original_annotation": {
+        "address": "00b451d0",
+        "function_name": "FUN_00b451d0"
+      },
+      "suggested_additive_plate_comment": "Read effect+C4 primary descriptor InstanceGenerator string+28. building selects1Ch constructor00b450d0; generic selects00b44fd0. Empty/unrecognized leaves binding unchanged. Wrap created generator in10h binding(vtable00d619f8), retain at binding+C via00b41780, attach binding to section+5C via00b417e0, release both local refs afterward. Generic implementation and native class lifecycle not reconstructed here. Original ABI: ECX material effect; stack draw section and forwarded opaque argument; RET8. Full339-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation."
+    },
+    {
+      "address": "00b41780",
+      "length": 59,
+      "suggested_name": "BSP_InstanceGeneratorBinding_SetGenerator",
+      "original_abi": "ECX binding; stack generator pointer; RET4.",
+      "reconstruction": "native_audit_only",
+      "contract": "Retained pointer replacement at binding+C. Identical pointer skips. Store new pointer; InterlockedIncrement(new+4) if nonnull; InterlockedDecrement(old+4) if nonnull; call old virtual+0 on zero. Called by00b451d0 on created generator binding.",
+      "original_annotation": {
+        "address": "00b41780",
+        "function_name": "FUN_00b41780"
+      },
+      "suggested_additive_plate_comment": "Retained pointer replacement at binding+C. Identical pointer skips. Store new pointer; InterlockedIncrement(new+4) if nonnull; InterlockedDecrement(old+4) if nonnull; call old virtual+0 on zero. Called by00b451d0 on created generator binding. Original ABI: ECX binding; stack generator pointer; RET4. Full59-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation."
+    },
+    {
+      "address": "00b417e0",
+      "length": 59,
+      "suggested_name": "BSP_DrawSection_SetInstanceGeneratorBinding",
+      "original_abi": "ECX draw section; stack binding pointer; RET4.",
+      "reconstruction": "native_audit_only",
+      "contract": "Retained pointer replacement at draw section+5C. Identical pointer skips. Store new pointer; InterlockedIncrement(new+4) if nonnull; InterlockedDecrement(old+4) if nonnull; call old virtual+0 on zero.00b451d0 subsequently releases the local binding reference.",
+      "original_annotation": {
+        "address": "00b417e0",
+        "function_name": "FUN_00b417e0"
+      },
+      "suggested_additive_plate_comment": "Retained pointer replacement at draw section+5C. Identical pointer skips. Store new pointer; InterlockedIncrement(new+4) if nonnull; InterlockedDecrement(old+4) if nonnull; call old virtual+0 on zero.00b451d0 subsequently releases the local binding reference. Original ABI: ECX draw section; stack binding pointer; RET4. Full59-byte body matches original installed PE. Evidence: docs/BUILDING_INSTANCE_DATA.md; reports/building_instance_data_audit.json. Descriptive symbol is a hypothesis. No native ABI/game validation."
+    }
+  ],
+  "existing_named_dependencies": [
+    {
+      "address": "00b6db70",
+      "name": "BSP_Transform_RefreshWorldMatrix",
+      "contract": "Existing world matrix refresh, called natively only when transform bit2 clear. Typed writer takes refreshed input explicitly."
+    },
+    {
+      "address": "00b6dc50",
+      "name": "TRIV_body_00b6dc50",
+      "contract": "ECX transform; EAX=transform+164; RET. List+0 pointer array,+4 count. Complete7-byte getter PE/live checked; existing name preserved."
+    },
+    {
+      "address": "00b179f0",
+      "name": "BSP_Material_GetDiffuseColor",
+      "contract": "ECX material; unused stack index; EAX=material+38; RET4. Complete6-byte getter PE/live checked; existing name preserved."
+    }
+  ],
+  "declaration": {
+    "name": "uf44uf44uf44uf44uf44uf44uf44uf44uf44.mvfm",
+    "literal_address": "00d61c28",
+    "literal_bytes_including_nul": 42,
+    "float4_count": 9,
+    "float_word_count": 36,
+    "stride_bytes": 144,
+    "generator_vtable": "00d61c1c",
+    "writer_vtable_slot": 8,
+    "combined_order": "selected section first stream declaration, then building instance declaration"
+  },
+  "writer_layout": {
+    "world_rows": [
+      [
+        0,
+        4,
+        8,
+        12
+      ],
+      [
+        1,
+        5,
+        9,
+        13
+      ],
+      [
+        2,
+        6,
+        10,
+        14
+      ]
+    ],
+    "world_source": "entry+0C ->transform+F0",
+    "light_list_source": "entry+0C ->00b6dc50 ->transform+164; list+0 pointer array,+4 count",
+    "ordered_position_radius_word_offsets": [
+      12,
+      16,
+      20
+    ],
+    "ordered_color_word_offsets": [
+      24,
+      28,
+      32
+    ],
+    "light_position_radius_native_offset": "1ec",
+    "light_color_native_offset": "184",
+    "absent_light_position_and_color": "positive-zero float4s",
+    "final_overwrites_in_order": [
+      {
+        "word": 27,
+        "value": "entry+18 visibility"
+      },
+      {
+        "word": 31,
+        "value": "clamped light count converted tofloat"
+      },
+      {
+        "word": 35,
+        "value": "entry+4 section+20 material ->00b179f0(0)+C diffuse alpha"
+      }
+    ],
+    "native_count_domain_note": "Signed compare clamps count>=3. Corrupt DWORDs with highbit set bypass signed clamp then follow unsigned presence tests; FILD+2^32 gives unsigned conversion. Host vector domain explicitly rejects sizes>INT_MAX.",
+    "native_x87_operations": "Twelve world word FLD/FSTP pairs; final visibility FLD/FSTP; FILD count with optional +4294967296.0; final materialalpha FLD/FSTP.",
+    "native_bit_copies": "Position MOVSS plus integer stores and color integer copies; typed memcpy preserves those word bits."
+  },
+  "host_interface": {
+    "name": "write_building_instance_data_00b55780",
+    "inputs": [
+      "refreshed CameraMatrix",
+      "ordered vector<BuildingInstancePointLight>",
+      "visibility",
+      "material diffuse alpha"
+    ],
+    "output": "BuildingInstanceData std::array<float,36>",
+    "first_three_lights_in_native_order": true,
+    "source_words_not_normalized_or_transformed": true,
+    "whole_record_initialized": true,
+    "staged_output_commits_on_success": true,
+    "bounds_failures_are_new_host_behavior": true
+  },
+  "validation": {
+    "configured_live_project_program_verified_before_queries": true,
+    "live_function_count": 62762,
+    "all12_spans_match_original_pe": true,
+    "matched_byte_count": 1827,
+    "six_owned_complete_function_bytes": 1747,
+    "all_code_captures_decode_to_their_complete_length": true,
+    "vtable_slot_points_to_writer": true,
+    "literal_name_building_and_unsigned_float_constant_checked": true,
+    "git_diff_check": "passed for owned implementation/header/doc/report files",
+    "build_tested": false,
+    "fixture_tested": false,
+    "d3d9_instance_buffer_readback_tested": false,
+    "d3d9_instanced_mesh_draw_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "pending_primary_validation": "Add source to existing target; supply controlled real scene inputs through the actual building declaration/stream and installed shader material draw; compare record/readback and rendered result."
+  },
+  "uncertainties": [
+    "The record writer is implemented; generator constructors, selection and retained setters are complete native audits, not fake host object lifecycle implementations.",
+    "World/visibility/materialalpha x87 exceptional NaN conversions and FP exception state remain outside the portable float value projection.",
+    "Native malformed negative-count and arbitrary source/output alias behavior are outside the checked valid-container host interface.",
+    "Light selection, radius meaning beyond raw field copying, original renderer ownership and full game scene behavior are not reconstructed by this writer.",
+    "Build/byte checks alone do not prove instanced rendering or original game behavior."
+  ],
+  "primary_integration": {
+    "validation": "reports/mesh_material_validation.json",
+    "annotations": "reports/mesh_material_annotations.json",
+    "scope": "Installed model wire payload -> managed mesh buffers, native shader decode records and building instance writer, material lighting, compiled NORMAL pass and actual texture binding/draw. Host scene/instance backing and white ShadowTexture inputs remain explicit; native frame allocator, scene shadow generation, resource object ownership and full game remain unported."
+  }
+}

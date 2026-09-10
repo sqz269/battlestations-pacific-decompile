@@ -240,7 +240,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/structured_resource_validation.json",
+  "integration_report": "reports/mesh_material_validation.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -251,11 +251,11 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-10T01:30:03.141953+00:00",
+    "utc": "2026-09-10T02:16:51.516335+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
-    "total_function_count": 62762,
-    "internal_function_count": 62320,
+    "total_function_count": 62763,
+    "internal_function_count": 62321,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
@@ -347,100 +347,167 @@
       "worker": "mesh_lifetime",
       "state": "native_shader_consumer_audited_for_next_integration",
       "validation": "reports/mesh_resource_validation.json"
+    },
+    {
+      "packet": "mesh_vertex_decode_constant_binding",
+      "worker": "mesh_decode_bindings",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "building_instance_data",
+      "worker": "mesh_decode_bindings",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "mesh_registered_buffer_backing",
+      "worker": "mesh_buffer_backing",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "material_shadow_samplers",
+      "worker": "mesh_buffer_backing",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "resource_parser_map_storage",
+      "worker": "resource_parser_storage",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "registered_resource_item_dispatch",
+      "worker": "resource_parser_storage",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "material_lighting",
+      "worker": "resource_parser_storage",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "material_pass_compiler",
+      "worker": "mesh_decode_bindings",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
+    },
+    {
+      "packet": "installed_mesh_material",
+      "worker": "primary",
+      "state": "integrated_native_audit_build_and_installed_material_checked_with_explicit_scope",
+      "validation": "reports/mesh_material_validation.json"
     }
   ],
   "next_dispatch": [
     {
-      "worker": "mesh_decode_worker",
-      "packet": "mesh_vertex_decode_constant_binding",
+      "worker": "instance_geometry_worker",
+      "packet": "generated_instance_geometry",
       "function_addresses": [
-        "00b61e10"
+        "00b4c8d0"
       ],
-      "owned_fragments": [
-        {
-          "owner": "00b42350",
-          "start": "00b428c0",
-          "end_inclusive": "00b42a7b"
-        }
-      ],
-      "work": "Connect actual parsed stream scale/offset records to reflected material-pass VS constants. Preserve stream/element order, absent-data identity and native stream-boundary limits. Exercise a real nonidentity record through the existing focused D3D diagnostic.",
+      "work": "Recover native generated-geometry allocation, stream1 backing/flags/tag and ownership used twice by00b1dff0. Replace explicit host instance storage only after the native contract is closed.",
       "owned_files": [
-        "include/bsp/mesh_decode_bindings.hpp",
-        "src/mesh_decode_bindings.cpp",
-        "docs/MESH_VERTEX_DECODE_BINDING.md",
-        "reports/mesh_vertex_decode_binding_audit.json"
+        "include/bsp/instance_geometry.hpp",
+        "src/instance_geometry.cpp",
+        "docs/GENERATED_INSTANCE_GEOMETRY.md",
+        "reports/generated_instance_geometry_audit.json"
       ],
       "named_but_incomplete_dependencies": [
-        {
-          "address": "00b3aea0",
-          "status": "compiled reflection exists; real metadata register bytes required"
-        },
-        {
-          "address": "00b43410",
-          "status": "material execution/upload exists; primary owns shared integration"
-        },
-        {
-          "address": "00b35820",
-          "status": "shader decode expression already reconstructed"
-        }
-      ],
-      "boundary": "No CPU decompression. Coordinate shared constants/compiler/material APIs with primary; exact fragment ownership only."
-    },
-    {
-      "worker": "mesh_buffer_backing_worker",
-      "packet": "mesh_registered_buffer_backing",
-      "function_addresses": [
-        "00b4b370",
-        "00b22d10"
-      ],
-      "work": "Recover actual backing-buffer allocation/selection used by registered logical vertex streams and connect only established contracts to existing D3D9 buffer wrappers. Establish flags, capacity and ownership before installed mesh GPU realization.",
-      "owned_files": [
-        "docs/MESH_REGISTERED_BUFFER_BACKING.md",
-        "reports/mesh_registered_buffer_backing_audit.json"
-      ],
-      "named_but_incomplete_dependencies": [
-        {
-          "address": "00b287c0",
-          "status": "renderer factory fully audited this batch; native allocation/registry not host-realized"
-        },
         {
           "address": "00b4bc00",
-          "status": "logical stream constructor/upload route audited; retained lifetime remains native"
+          "status": "mesh private flags1 path implemented; native instance allocation flags/registry may differ"
+        },
+        {
+          "address": "00b450d0",
+          "status": "building144-byte declaration and combined layout audited; generator object lifetime not ported"
+        },
+        {
+          "address": "00b1dff0",
+          "status": "group producer calls00b4c8d0 for two categories; primary owns larger visibility/grouping integration"
         }
       ],
-      "boundary": "Listed allocation/selection functions only; request helper ownership before expansion. Primary owns d3d9_buffers headers/source and CMake."
+      "boundary": "Exact allocator function ownership; request helper expansion. Primary owns shared buffer/state classes and mesh probe. Coordinate typed generated-geometry contract with upload worker."
     },
     {
-      "worker": "resource_parser_map_worker",
-      "packet": "resource_parser_map_storage",
+      "worker": "instance_upload_worker",
+      "packet": "instance_group_upload",
       "function_addresses": [
-        "00b7fd30",
-        "00b80500"
+        "00b1e990",
+        "00b85590"
       ],
-      "work": "Close actual parser-map insertion and destruction under existing nonowning parser registration contracts, enabling primary resource-manager integration. Recover key storage, unique insertion/balance and destruction ownership.",
+      "work": "Recover two-category group loop: actual stream1 lock, generator writer dispatch per entry, declaration-stride advance, unlock, section instance count, entry construction and queue append. Preserve ordering and category1 sort.",
       "owned_files": [
-        "docs/RESOURCE_PARSER_MAP_STORAGE.md",
-        "reports/resource_parser_map_storage_audit.json"
+        "include/bsp/instance_upload.hpp",
+        "src/instance_upload.cpp",
+        "docs/INSTANCE_GROUP_UPLOAD.md",
+        "reports/instance_group_upload_audit.json"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00b80290",
-          "status": "unique insertion dispatcher audited; node allocation/link/balance remains native"
+          "address": "00b55780",
+          "status": "building writer implemented and installedmesh exercised with host backing"
         },
         {
-          "address": "00b80a50",
-          "status": "parser registration audited nonowning values; native manager not realized"
+          "address": "00b4c8d0",
+          "status": "allocator worker owns new geometry contract; do not infer backing/tag"
+        },
+        {
+          "address": "00b51cb0",
+          "status": "render-entry queue append requires bounded ownership review before full native upload/queue realization"
+        },
+        {
+          "address": "00b1dff0",
+          "status": "group producer and x87 fade remain primary-owned next integration"
         }
       ],
-      "boundary": "Disjoint resource-tree functions; no edits to generic shared string helpers or ledger. Do not introduce AddRef/release for raw parser values."
+      "boundary": "Upload/count functions only. Coordinate interfaces, do not edit allocator/shared renderer/queue files or substitute an invented per-frame allocator."
+    },
+    {
+      "worker": "root_resource_worker",
+      "packet": "registered_root_resource",
+      "function_addresses": [
+        "00b7f430",
+        "00b7f100"
+      ],
+      "work": "Move actual root control/Resource/Hierarchy/BoundingBox encounter-order dispatch into the registered resource path. Establish renderer begin/end hooks and current-resource writes; preserve repeated containers and explicit unknown skips.",
+      "owned_files": [
+        "include/bsp/structured_model.hpp",
+        "src/structured_model.cpp",
+        "docs/REGISTERED_ROOT_RESOURCE.md",
+        "reports/registered_root_resource_audit.json"
+      ],
+      "named_but_incomplete_dependencies": [
+        {
+          "address": "00b7e970",
+          "status": "registered wire dispatch implemented; native item objects/currentresource virtualappend separate"
+        },
+        {
+          "address": "00b88260",
+          "status": "native base resource constructor and ownership audited; host model must not impersonate native object ABI"
+        },
+        {
+          "address": "0071bb40",
+          "status": "typed classification and primary owning item array audited; integrate actual payload ownership only"
+        },
+        {
+          "address": "00b7eb90",
+          "status": "hierarchy item wire parser exists; containing branch/root lifecycle requires integration"
+        }
+      ],
+      "boundary": "Disjoint structured-root functions; request exact renderer-hook helper ownership before expansion. Primary owns registry interfaces, existing probe, shared metadata and CMake."
     }
   ],
   "current_partition": {
-    "utc": "2026-09-10T01:30:42.195464+00:00",
-    "candidates": 23756,
-    "segments": 94,
+    "utc": "2026-09-10T02:19:04.316903+00:00",
+    "candidates": 23728,
+    "segments": 99,
     "strong": 8,
-    "scope": "Candidate graph hints only; exact function/fragment ownership and named incomplete dependencies above are mandatory."
+    "scope": "Candidate graph hints only; exact function/fragment ownership and named incomplete dependencies remain mandatory."
   },
   "integration_history": [
     {
@@ -479,6 +546,20 @@
         "mesh_buffers",
         "mesh_fields",
         "mesh_lifetime"
+      ],
+      "concurrency_verified": {
+        "primary": 1,
+        "workers": 3
+      }
+    },
+    {
+      "batch": "mesh_material",
+      "state": "installed_model_material_draw_checked; native_instance_allocator_and_scene_pipeline_remaining",
+      "report": "reports/mesh_material_validation.json",
+      "workers": [
+        "mesh_decode_bindings",
+        "mesh_buffer_backing",
+        "resource_parser_storage"
       ],
       "concurrency_verified": {
         "primary": 1,

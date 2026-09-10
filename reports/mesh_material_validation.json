@@ -1,0 +1,160 @@
+{
+  "utc": "2026-09-10T02:23:25.913821+00:00",
+  "baseline_commit": "5a011e0d16c5c68c7c7c5a3ccfea6e9df20471b3",
+  "snapshot": {
+    "utc": "2026-09-10T02:16:51.516335+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62763,
+    "internal_function_count": 62321,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "new_test_targets": 0
+  },
+  "reader_probe": {
+    "exit_code": 0,
+    "registered_parsers": [
+      "Mesh",
+      "Note",
+      "GroupParams"
+    ],
+    "duplicate_rejected": true,
+    "case_insensitive_lookup": true,
+    "ordered_dispatch": true,
+    "clear": true,
+    "cursor": 1303,
+    "skipped_model_resources": 0
+  },
+  "full_probe": {
+    "exit_code": 0,
+    "model": "models/misc/repulogepdarabok_004.mmod",
+    "model_shader": "textured.shfx",
+    "combiner": "per_vertex_shadow.shfx",
+    "engine_program_name": "textured0F3",
+    "vertex_count": 12,
+    "primitive_count": 8,
+    "index_format": 101,
+    "vertex_stride": 16,
+    "decode_records": 3,
+    "vertex_scale_register": 85,
+    "vertex_offset_register": 88,
+    "instance_stride": 144,
+    "instance_float4s": 9,
+    "instance_count": 1,
+    "combined_stride": 160,
+    "stream_frequencies": [
+      "40000001",
+      "80000001"
+    ],
+    "gpu_buffer_bytes_match": true,
+    "constant_register_readback": true,
+    "texture_paths": [
+      "models/textures/repulodestroyed.dds",
+      "effects/white.dds"
+    ],
+    "texture_identity_readback": true,
+    "mesh_result": "Installed mesh draw: hr=0x00000000 vertices=12 primitives=8 GPU_bytes=1 decode_records=3 constant_readback=1 instance_layout=1 textures_frequencies=1 visible=2499 colors=54 restored=1 checked=1 error=",
+    "font_results": [
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=A hr=0x00000000 visible=74 outside=0 bounds=64,70..73,82 expected=63,63..75,88 sampler_mask=1 restored=1 lit_lines=1 checked=1",
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=wrapped_A_space_A_LF_A hr=0x00000000 visible=900 outside=0 bounds=69,130..88,232 expected=68,116..90,244 sampler_mask=1 restored=1 lit_lines=3 checked=1"
+    ]
+  },
+  "raw_readback": {
+    "path": "reports/mesh_material_readback.bmp",
+    "sha256": "65f432356ae54fb234bbbe8a04fdbebc6b0320920d7b56f687c36804f23ba375",
+    "size": [
+      256,
+      256
+    ],
+    "visible_pixels": 2499,
+    "distinct_nonblack_colors": 54,
+    "maximum_rgb": [
+      3,
+      7,
+      9
+    ],
+    "vision_inspected": true,
+    "interpretation": "Dark raw linear output of actual shader/texture under explicit host scene inputs. No original-game tone mapping or visual parity claim."
+  },
+  "native_compiler": {
+    "path": "C:\\Windows\\SysWOW64\\d3dx9_40.dll",
+    "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+    "vertex_flags": "1200",
+    "pixel_flags": "1400",
+    "shore_pixel_flags": "0",
+    "generated_vertex_sha256": "116d0c2711d4c43118094eb7924e73d44606c349811754dfe94c561ed74c5bd3",
+    "generated_pixel_sha256": "046b4499dac741101c949c7f96a111b67b0ad9af9e472411f1d6338d27fb7265"
+  },
+  "counts": {
+    "named": 730,
+    "reconstructed_functions": 174,
+    "reconstructed_fragments": 152,
+    "new_reconstruction_keys": 17,
+    "baseline_reconstruction_keys_retained": 309,
+    "remaining_rename_tags_verified": 8752,
+    "tags": 10333,
+    "call_edges": 143153,
+    "data_refs": 36213
+  },
+  "partition": {
+    "utc": "2026-09-10T02:19:04.316903+00:00",
+    "candidates": 23728,
+    "segments": 99,
+    "strong": 8,
+    "scope": "Candidate graph hints only; exact function/fragment ownership and named incomplete dependencies remain mandatory."
+  },
+  "source_sha256": {
+    "CMakeLists.txt": "8368e5d0a119aee2389bc7f9409f3cd648749197530a0a4765a164a31aa57a51",
+    "src/d3d9_probe.cpp": "f258dfff51759f7523623bef0ac6e2a7ed1a44e95f39ae5b276345e610927406",
+    "src/d3d9_font_probe.cpp": "88794da45a965ee7e90ff72e9687d49b5bde72a2d54cfb49940e46ee1d19c713",
+    "src/structured_resource_probe.cpp": "75cd7499426c62547774736f84ea9240527a5f2e36f9976bd8c5d6b801af33f6",
+    "src/d3d9_mesh_probe.cpp": "cb216581d444f73c4c09564b64e5791620bb4bd2828129a6b98415880b04be49",
+    "src/installed_model_probe.hpp": "4c5f82a553a7fcacfff84aade443c50d9e5479f9a7902302cee54949fb3799bf",
+    "include/bsp/compiled_material.hpp": "fede1cdbd7419e9caeff65221e245b5ece2599801fcd397864db81897b6bbe95",
+    "src/compiled_material.cpp": "2309d9cc957fbfe2512311885825c7d226496fc8df6e575a1c647a9658cfd5cf",
+    "include/bsp/mesh_decode_bindings.hpp": "c6367edb686c97a2d618f556c862be74c224899f56d7b33ecfe173d07c1e23cc",
+    "src/mesh_decode_bindings.cpp": "2f70723caa5861c72eb4649c48e5163fcf009e8069ffedd0d8cc18869e0c6584",
+    "include/bsp/mesh_gpu_streams.hpp": "4a48c3b2910f1443e7cf73b1d1f1bfa5711c120945aee5f4a58e58dd13f3ec8b",
+    "src/mesh_gpu_streams.cpp": "00a4b67e6bfb2fd4b2b2a1642ef081b1add31b0dfa216398f2ddbec30fb6ebab",
+    "include/bsp/building_instance.hpp": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e",
+    "src/building_instance.cpp": "66962cbe8aef10739fc83c7d8b188a2c5af0d8a804608b44bc0626c059986a7f",
+    "include/bsp/resource_parser_map.hpp": "ba045fa28ae4f00040015698214c0b0944bbe22cba85291b677635a3a2872d4f",
+    "src/resource_parser_map.cpp": "8946f20d6a5457854bef3ba560e87ceb41625feb747fc1813dc2b2e3744fef4d",
+    "include/bsp/structured_resource_registry.hpp": "ebd22f6577773929c1673b695ab586c819d55b10dc2433f26d6d4516aed83dcd",
+    "src/structured_resource_registry.cpp": "2307f22badb0d296dac91b1e550ee3e7001e66038ea83230be77390ac73b6380",
+    "include/bsp/material_lighting.hpp": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8",
+    "src/material_lighting.cpp": "128631c09e7f830ed2d9bef108347b7d7cf9893311b39e13846f9f71cebee5e0",
+    "include/bsp/material_shadow_samplers.hpp": "aa8f427f24ee14159ac62486a3889cd21d4a5ae827e9de5c764199873cacf441",
+    "src/material_shadow_samplers.cpp": "fd888a5601bfa98378bcf61f0b15e7a1e6a6dc021c67ee09ca5926a7469277c4",
+    "include/bsp/material_samplers.hpp": "9461a9139389650a50a44c95b8e3c887705905a39e01f1a575dc354f6c3f9717",
+    "src/material_samplers.cpp": "2a21cdc5b7bca52ce7e2d520aaffe1662df4a896992b3885f6ae2bd5dccc5168"
+  },
+  "artifact_sha256": "b55aecc3145001b49eb4b3218a1075e4edd022a93ab127b02949f1ea6e463ae0",
+  "native_evidence": "reports/mesh_material_native_identity.json",
+  "annotations": "reports/mesh_material_annotations.json",
+  "peer_review": "reports/mesh_material_peer_review.json",
+  "abi_compatible": false,
+  "game_rebuilt": false,
+  "goal_status": "active",
+  "limits": [
+    "Native frame instance allocation/batching is not ported; fixture supplies host backing for recovered144-byte writer output.",
+    "Camera, ambient/directional lighting, fog/time and white ShadowTexture are explicit scene inputs. Native automatic scene updates, shadow generation and final display processing remain open.",
+    "Mesh/Note/GroupParams are owning decoded wire values, not complete native resource objects, allocator/refcount/cache ABI or full root resource loader.",
+    "One primary pass, stream, subset, INDEX16 mesh and no point lights are fixture-exercised. Multi-stream overlaps/limits, ShadowMap/fallback,INDEX32 and point-light variants rely on assembly/source/build checks.",
+    "Successful native compiler flags/API/source/usage/reflection are integrated; diagnostic files, unusual failure HRESULT/leak behavior and full fallback/cache lifecycle are not replicated.",
+    "No complete game startup, original-game visual parity, or required gameplay validation."
+  ],
+  "report_sha256": {
+    "reports/mesh_material_build.txt": "fc9441e66d20360c3e9501942327f3642c3a7a87057f3e43505b301a9c5c4925",
+    "reports/mesh_material_reader_probe.txt": "22e258f37b4789c10b02a72721602414ce92e5ddf6f77d6f2fea7ddbaf693403",
+    "reports/mesh_material_full_probe.txt": "71dfd96b55adb156a0080cae74ad2d190bf77ce2c8247e04d1d454af780a1dcd",
+    "reports/mesh_material_native_identity.json": "8353aba0e84f8f0a724161e91965b48af435ae836d95e898b85ed08c44670fb3",
+    "reports/mesh_material_annotations.json": "624fd25456a998e229c2a86dc97b8b962cd3c4941e63e01939bcc39c1a7714ed",
+    "reports/mesh_material_peer_review.json": "f134d6b3c1095f36847b9ac1664c09c7f2bee2fdf0423533fd90d6c86ebca488"
+  }
+}

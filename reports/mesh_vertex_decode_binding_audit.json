@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "packet": "mesh_vertex_decode_constant_binding",
+  "generated_utc": "2026-09-10T01:51:18.000560+00:00",
+  "scope": {
+    "function_addresses": [
+      "00b61e10"
+    ],
+    "owned_fragment": {
+      "owner": "00b42350",
+      "start": "00b428c0",
+      "end_inclusive": "00b42a7b"
+    },
+    "additional_approved_audit_helper": "00b172b0",
+    "existing_descriptor_mapping_reads": [
+      "00b43b00",
+      "00b45ee0",
+      "00b3c3a0",
+      "00b3b3c0"
+    ],
+    "source": "src/mesh_decode_bindings.cpp",
+    "header": "include/bsp/mesh_decode_bindings.hpp",
+    "documentation": "docs/MESH_VERTEX_DECODE_BINDING.md",
+    "shared_integration_owner": "primary",
+    "no_cpu_decompression": true,
+    "no_ghidra_or_ledger_mutation_by_worker": true,
+    "no_new_test_targets": true
+  },
+  "status": "bounded_cpp_and_native_byte_audit_complete_primary_build_and_probe_pending",
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr"
+    },
+    "ranges": [
+      {
+        "address": "00b172b0",
+        "length": 10,
+        "end_exclusive": "00b172ba",
+        "sha256": "5940df69b60defd9e87bf6c4f1f44706b7d3bc501eab25edf30198be533ee258",
+        "disk_offset": 7434928,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b172b0.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b172b0.decoded.asm.txt"
+      },
+      {
+        "address": "00b428c0",
+        "length": 444,
+        "end_exclusive": "00b42a7c",
+        "sha256": "166aecc12b9e5fddc233eb109cff881737f46764ddc07f21fff3b725efa547da",
+        "disk_offset": 7612608,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b428c0.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b428c0.decoded.asm.txt"
+      },
+      {
+        "address": "00b43f36",
+        "length": 46,
+        "end_exclusive": "00b43f64",
+        "sha256": "4666ff36a3cab3e1c3408d76e75fa85a32bd9a644329d539798a24a38cfe8c8b",
+        "disk_offset": 7618358,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b43f36.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b43f36.decoded.asm.txt"
+      },
+      {
+        "address": "00b45f48",
+        "length": 27,
+        "end_exclusive": "00b45f63",
+        "sha256": "2219a7c429de68857902b53c9337bd1a62d407871002fa2c9ddebb6060edbd05",
+        "disk_offset": 7626568,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b45f48.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b45f48.decoded.asm.txt"
+      },
+      {
+        "address": "00b4632b",
+        "length": 14,
+        "end_exclusive": "00b46339",
+        "sha256": "91dea7b81076c27665666e2069eee985aa38357146477104aa56e6d4bb60cb5f",
+        "disk_offset": 7627563,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b4632b.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b4632b.decoded.asm.txt"
+      },
+      {
+        "address": "00b46537",
+        "length": 167,
+        "end_exclusive": "00b465de",
+        "sha256": "9d70f0311a6f7f0cfa94bcc7563b5fdae347fe5523d02edac0079c9c15a7307e",
+        "disk_offset": 7628087,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b46537.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b46537.decoded.asm.txt"
+      },
+      {
+        "address": "00b61e10",
+        "length": 13,
+        "end_exclusive": "00b61e1d",
+        "sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+        "disk_offset": 7740944,
+        "matches_original_pe": true,
+        "captured_live_via": "python tools/bsp.py ghidra bytes (verified configured project/program before query)",
+        "raw_byte_capture": "local/mesh_vertex_decode_binding/00b61e10.bytes.txt",
+        "decoded_disassembly": "local/mesh_vertex_decode_binding/00b61e10.decoded.asm.txt"
+      }
+    ]
+  },
+  "verification": {
+    "configured_project_program_verified_by_bsp_ghidra_before_queries": true,
+    "live_function_count": 62762,
+    "original_pe_untouched": true,
+    "all_seven_spans_match_live_and_original_pe": true,
+    "matched_byte_count": 721,
+    "git_diff_check": "passed for owned C++ and documentation files",
+    "build_tested": false,
+    "fixture_tested": false,
+    "d3d9_register_readback_tested": false,
+    "d3d9_rendered_result_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "pending_primary_validation": "Add owned source to existing target; integrate actual selected parsed mesh streams, real reflection and material VS vector; exercise nonidentity parsed record with existing focused D3D9 draw/readback."
+  },
+  "getter": {
+    "address": "00b61e10",
+    "original_abi": "ECX logical vertex stream; stack element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4.",
+    "record_size": 32,
+    "scale_byte_offset": 0,
+    "offset_byte_offset": 16,
+    "host_api": "read_mesh_vertex_decode_record_00b61e10",
+    "new_host_safeguards": "Reject absent metadata, index outside declaration, or incomplete record; output unchanged on failure."
+  },
+  "fragment": {
+    "owner": "00b42350",
+    "start": "00b428c0",
+    "end_inclusive": "00b42a7b",
+    "original_abi": "Fragment inside ECX-pass, stack entry/override RET8 owner; no standalone original ABI.",
+    "host_api": "pack_mesh_vertex_decode_constants_00b428c0",
+    "stream_order": "Caller-selected draw-section+3C pointers, +4C count; repeated/reordered streams allowed; record index restarts at0 per stream.",
+    "reflected_scale": "ShaderConstantBindings.registers[24]; native byte[[pass+70]+20]",
+    "reflected_offset": "ShaderConstantBindings.registers[25]; native byte[[pass+70]+21]",
+    "skip_gate": "Scale registerFF only; offsetFF is not a second gate.",
+    "iteration": "Signed min(declaration DWORD interpreted as signed32,current offset cursor-current scale cursor); positive counts only. Cursors advance equally; separate remaining gap and descriptor DWORD limit subtract per element modulo2^32 and stop only on equality with0 at subsequent stream boundaries.",
+    "absent_data": {
+      "scale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "offset": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "reflection_counts_ignored_as_native": true,
+    "no_wide_clear_or_resize": true,
+    "overlap_behavior": "Stage all source values for atomic bounds checks, then replay each complete scale float4 followed by offset float4 in native stream/element order, preserving overlapping destination overwrites.",
+    "host_safeguards": "Only visited streams/source records/destination float4s checked. Missing selector2 shadow limit and null visited streams are explicit errors. VS words and stats unchanged on error.",
+    "concrete_nonclamp_examples": [
+      {
+        "gap": 3,
+        "limit": 1,
+        "stream_elements": [
+          3
+        ],
+        "records_written": 3,
+        "final_limit": "fffffffe"
+      },
+      {
+        "gap": 3,
+        "limit": 999,
+        "stream_elements": [
+          2,
+          2
+        ],
+        "records_written": 4,
+        "final_remaining_gap": "ffffffff",
+        "overlap": "fourth scale overwrites first offset"
+      }
+    ]
+  },
+  "descriptor_owner_mapping": {
+    "effect_primary_descriptor_store": "00b45f58: [effect+C4]=new primary descriptor;00b45f5e reads Shader table into it.",
+    "pass_effect_owner_call": "00b4632b..00b46338, ECX returned program pass, stack ESI effect ->00b172b0.",
+    "pass_effect_owner_setter": "00b172b0: [ECX+14]=stack DWORD; RET4; no retain/release in body.",
+    "primary_limit20": "00b43f36..00b43f63 reads CompressedElemCount(default999) ->descriptor+20.",
+    "shadow_descriptor_name": "Primary descriptor+100/+104 is ShadowShader; copied/resolved by00b46537..00b46589.",
+    "shadow_limit24": "00b465c3 reads the configured ShadowShader descriptor;00b465c8 reads its+20;00b465db copies to primary descriptor+24.",
+    "distinct_from_shadow_passtrough_descriptor": "Earlier descriptor read00b46528 is shadow_passtrough.shfx; its count is not the observed source for primary+24.",
+    "selection": "00b428ec tests [entry+10]+198==2; equal selects descriptor+24, other selectors+20.",
+    "host_input": "MeshDecodeDescriptorLimits.element_limit20 from evaluated primary ShaderLuaCode.options.compressed_element_count; optional element_limit24 from evaluated configured ShadowShader count."
+  },
+  "uncertainties": [
+    "Typed APIs do not reproduce native class layouts, native calling conventions, effect/shadow construction or retained object lifecycle.",
+    "x87 exceptional NaN payload conversions and floating-point exception state are not reproduced by portable float value decoding/copy.",
+    "Host atomic bounds failures are new interface behavior; native fragment does not have these checks.",
+    "A successful generated-shader probe is narrower than complete original game rendering or gameplay."
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00b61e10",
+      "original_annotation": {
+        "address": "00b61e10",
+        "function_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "comment": "[BSP reconstruction 00b61e10]\nReturn compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. Original ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "suggested_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+      "suggested_additive_plate_comment": "Checked value projection in src/mesh_decode_bindings.cpp reads the actual parsed 32-byte element record as float4 scale then float4 offset. Native getter remains unchecked EAX=[ECX+50]+stack_index*20h, RET4. Complete 13-byte body matches original PE. Caller fragment00b428c0..00b42a7b now projected into the existing reflected VS word vector; new host bounds errors are atomic. No CPU vertex decompression, native ABI or gameplay claim. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json."
+    },
+    {
+      "address": "00b42350",
+      "original_annotation": {
+        "address": "00b42350",
+        "function_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported."
+      },
+      "suggested_name": "BSP_MaterialPass_BuildShaderConstants",
+      "suggested_additive_plate_comment": "Additional bounded projection00b428c0..00b42a7b in src/mesh_decode_bindings.cpp: ordered draw-section streams, per-stream element-index restart, reflected cVtxElemScale/Offset metadata bytes+20/+21, scaleFF-only gate, absent-data identity, no wide clear. Signed per-stream min(elementcount,cursorGap); separate DWORD remainingGap/limit wrap and zero checks occur only at stream boundaries. Descriptor effect+C4 +20 is primary CompressedElemCount; +24 is configured ShadowShader count copied at00b465db and selected for entry selector2. Checked host bounds do not replace the native iteration clamp. Owner ABI ECX pass, stack entry/override, RET8; full builder and native lifecycle unported. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json."
+    },
+    {
+      "address": "00b172b0",
+      "original_annotation": {
+        "address": "00b172b0",
+        "function_name": "FUN_00b172b0"
+      },
+      "suggested_name": "BSP_MaterialPass_SetEffectOwner",
+      "suggested_additive_plate_comment": "Store the stack effect-owner pointer into pass+14. ABI ECX pass; one stack DWORD; RET4; no AddRef/release in this complete10-byte body. Caller00b46334 passes the effect whose+C4 is the primary Shader descriptor. This closes material decode limit owner mapping; full ownership/lifetime remains unestablished. Descriptive name is a hypothesis. Evidence: docs/MESH_VERTEX_DECODE_BINDING.md; reports/mesh_vertex_decode_binding_audit.json."
+    }
+  ],
+  "primary_integration": {
+    "validation": "reports/mesh_material_validation.json",
+    "annotations": "reports/mesh_material_annotations.json",
+    "scope": "Installed model wire payload -> managed mesh buffers, native shader decode records and building instance writer, material lighting, compiled NORMAL pass and actual texture binding/draw. Host scene/instance backing and white ShadowTexture inputs remain explicit; native frame allocator, scene shadow generation, resource object ownership and full game remain unported."
+  }
+}

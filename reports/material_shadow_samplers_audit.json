@@ -1,0 +1,460 @@
+{
+  "utc": "2026-09-10T02:04:24.683399+00:00",
+  "packet": "material_shadow_samplers",
+  "baseline_commit": "5a011e0",
+  "status": "sources_and_native_audit_ready_primary_build_and_probe_pending",
+  "project_verification": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "installed_shader_files": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/dx9_lua.inc",
+      "size": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+      "evidence": "TEXSRC_SHADOWBUFFER=2 at line23; MATERIAL0,TEXANIMATOR1,FILE3."
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/common/textured.shfx",
+      "size": 3645,
+      "sha256": "22470ebc6df0e4d94b175b4317d6283acaa0944a90bd0001d0676f0722253e94",
+      "evidence": "RM_NORMAL combiner per_vertex_shadow.shfx; one base pixel sampler MyTexture with Index0."
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/lights/per_vertex_shadow.shfx",
+      "size": 2470,
+      "sha256": "7b927284a27dab401aff3d1481df390256f4807ae6ec6924fb57bf2c0215ff4e",
+      "evidence": "One pixel sampler ShadowTexture, TextureSource=TEXSRC_SHADOWBUFFER, CLAMP U/V; PS samples red for direct-light multiplier."
+    }
+  ],
+  "actual_normal_pair": {
+    "base": "shaderfx/common/textured.shfx",
+    "effect": "shaderfx/lights/per_vertex_shadow.shfx",
+    "texture_source_constant": 2,
+    "base_pixel_sampler_count": 1,
+    "effect_shadow_texture_ordinal": 0,
+    "shadow_texture_slot": 1,
+    "shadow_map_slot": -1,
+    "reflection_requirement": "Specialslotisdescriptorordinalbased; compiledPSusagepruningprecedesconfiguration. Primarycompilerownsactualreflectedshaderverification."
+  },
+  "functions": [
+    {
+      "address": "00b347e0",
+      "original_name": "FUN_00b347e0",
+      "suggested_name": "BSP_ShaderDescriptor_FindSamplerByName",
+      "original_abi": "ECX descriptor; stack counted-string pointer; EAX overall ordinal orFFFFFFFFh; RET4.",
+      "confidence": "high for operations; descriptive names are hypotheses",
+      "evidence": "Linear first-match scan descriptor+C4h for+C8h entries; require equal stored lengths then __stricmp. Return overall ordinal without stage/source/dimension filtering.",
+      "annotation_before": {
+        "address": "00b347e0",
+        "function_name": "FUN_00b347e0"
+      },
+      "byte_evidence": {
+        "address": "00b347e0",
+        "length": 114,
+        "end_inclusive": "00b34851",
+        "raw_capture": "local/material_shadow_samplers/00b347e0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "79ac7e391ec6065b8e43b951458acb83eaf9534347505648c80d10582183f4dd"
+      },
+      "source": "src/material_shadow_samplers.cpp",
+      "status": "typed_lookup_source_written",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Linear first-match scan descriptor+C4h for+C8h entries; require equal stored lengths then __stricmp. Return overall ordinal without stage/source/dimension filtering. ABI: ECX descriptor; stack counted-string pointer; EAX overall ordinal orFFFFFFFFh; RET4. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim."
+    },
+    {
+      "address": "00b0d130",
+      "original_name": "CG_adjustor_thunk_00b0d130",
+      "suggested_name": "BSP_ShadowTextureOwner_GetTexture",
+      "original_abi": "ECX owner; no stack arguments; EAX borrowed logical texture through tailcall.",
+      "confidence": "high for operations; descriptive names are hypotheses",
+      "evidence": "MOV ECX,[ECX+3Ch]; JMP00b4cb10. Material fragment supplies global00f8d39c; this is a nested pointer getter, not an adjustor thunk.",
+      "annotation_before": {
+        "address": "00b0d130",
+        "function_name": "CG_adjustor_thunk_00b0d130"
+      },
+      "byte_evidence": {
+        "address": "00b0d130",
+        "length": 8,
+        "end_inclusive": "00b0d137",
+        "raw_capture": "local/material_shadow_samplers/00b0d130.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "82da3903d5fa0bc5719f3bdb47ac7ba8a53ba92f30ec9d9b9375a00f237e00ed"
+      },
+      "source": null,
+      "status": "native_getter_audited_explicit_host_inputs",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: MOV ECX,[ECX+3Ch]; JMP00b4cb10. Material fragment supplies global00f8d39c; this is a nested pointer getter, not an adjustor thunk. ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim."
+    },
+    {
+      "address": "00b4cb10",
+      "original_name": "TRIV_body_00b4cb10",
+      "suggested_name": "BSP_ShadowTextureHolder_GetTexture",
+      "original_abi": "ECX holder; no stack arguments; EAX borrowed logical texture; plainRET.",
+      "confidence": "high for operations; descriptive names are hypotheses",
+      "evidence": "Return holder+8h without AddRef or null guard.",
+      "annotation_before": {
+        "address": "00b4cb10",
+        "function_name": "TRIV_body_00b4cb10"
+      },
+      "byte_evidence": {
+        "address": "00b4cb10",
+        "length": 4,
+        "end_inclusive": "00b4cb13",
+        "raw_capture": "local/material_shadow_samplers/00b4cb10.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689"
+      },
+      "source": null,
+      "status": "native_getter_audited_explicit_host_inputs",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return holder+8h without AddRef or null guard. ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim."
+    },
+    {
+      "address": "00b7aab0",
+      "original_name": "TRIV_body_00b7aab0",
+      "suggested_name": "BSP_Light_GetShadowMapOwner",
+      "original_abi": "ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET.",
+      "confidence": "high for operations; descriptive names are hypotheses",
+      "evidence": "Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null.",
+      "annotation_before": {
+        "address": "00b7aab0",
+        "function_name": "TRIV_body_00b7aab0"
+      },
+      "byte_evidence": {
+        "address": "00b7aab0",
+        "length": 7,
+        "end_inclusive": "00b7aab6",
+        "raw_capture": "local/material_shadow_samplers/00b7aab0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "c9b009cece926c8eb8e7682d20c7fdd9188da262bdb2e3340da5111892a1350b"
+      },
+      "source": null,
+      "status": "native_getter_audited_explicit_host_inputs",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return light+174h. Late material binder falls back only if this owner is null, not if owner virtual+8h later returns null. ABI: ECX first light; no stack arguments; EAX borrowed shadow-map owner; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim."
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00b3b3c0",
+      "fragment_id": "special_shadow_sampler_selection",
+      "start": "00b3c0b2",
+      "end_inclusive": "00b3c349",
+      "source": "src/material_shadow_samplers.cpp",
+      "api": "configure_material_shadow_samplers_00b3c0b2_fragment",
+      "original_abi": "Parent ECX builder; stack owner,base descriptor,effect descriptor; EAX material pass; RETCh. Fragment EDI builder; pass loaded from SP+14h.",
+      "evidence": "Effect-only first name match ShadowMap/ShadowTexture; add base pixel count to effect overall ordinal; writepass+78/+7C. After priorPSstatepruning override ShadowMap MAG/MIN point/linear bybuilder+AA, MIPnone, CLAMPU/V inthatorder.",
+      "byte_evidence": {
+        "address": "00b3c0b2",
+        "length": 664,
+        "end_inclusive": "00b3c349",
+        "raw_capture": "local/material_shadow_samplers/00b3c0b2.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "f9916c708699d25b81626628dfa3a76b1b1959ffe53cb78a76aa43db29b3a21b"
+      },
+      "annotation_before": {
+        "address": "00b3b3c0",
+        "function_name": "FUN_00b3b3c0"
+      },
+      "status": "host_fragment_source_written",
+      "suggested_plate_comment": "BSP bounded fragment 00b3c0b2..00b3c349: Effect-only first name match ShadowMap/ShadowTexture; add base pixel count to effect overall ordinal; writepass+78/+7C. After priorPSstatepruning override ShadowMap MAG/MIN point/linear bybuilder+AA, MIPnone, CLAMPU/V inthatorder. ABI: Parent ECX builder; stack owner,base descriptor,effect descriptor; EAX material pass; RETCh. Fragment EDI builder; pass loaded from SP+14h. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction."
+    },
+    {
+      "address": "00b42350",
+      "fragment_id": "special_shadow_sampler_binding",
+      "start": "00b430cf",
+      "end_inclusive": "00b4315f",
+      "source": "src/material_shadow_samplers.cpp",
+      "api": "bind_material_shadow_samplers_00b430cf_fragment",
+      "original_abi": "Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI.",
+      "evidence": "Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710.",
+      "byte_evidence": {
+        "address": "00b430cf",
+        "length": 145,
+        "end_inclusive": "00b4315f",
+        "raw_capture": "local/material_shadow_samplers/00b430cf.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "c10e3fa5dfad8c57673445f671f1c13ab1296af15d2bc9884399db21dfa1d425"
+      },
+      "annotation_before": {
+        "address": "00b42350",
+        "function_name": "BSP_MaterialPass_BuildShaderConstants",
+        "comment": "[BSP reconstruction 00b42350]\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md.\n\n[BSP reconstruction 00b42350] update\nECX pass, stack entry/override RET8; override has no direct read in audited body. Dynamic texture callbacks; parameter copies/transposed matrices into shared VS0108ebf4/PS0108dbec registers; selective updates, not full clear. Full builder unported; docs/MATERIAL_CONSTANTS.md. Parameter packing fragment00b423c5..00b42693 implemented: VS lastmatching2/3/4rows, PS4rows, transpose, nonmatrix rawwordcopy; realdevice register fixture checked. Full builder unported."
+      },
+      "status": "host_fragment_source_written",
+      "suggested_plate_comment": "BSP bounded fragment 00b430cf..00b4315f: Bind ShadowTexture+7C first throughglobal00f8d39c getter; thenShadowMap+78 fromfirstlight shadowowner virtual+8, orpass+84 ifownerabsent. Emptyfirstlightlist invokesnativefailure; presentowner/nulltexture bindsnull. Allcallsrenderer+130h=00b24710. ABI: Parent ECX pass; stack render-entry,override; RET8. Fragment EBX pass, EBP render-entry; no local return ABI. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction."
+    },
+    {
+      "address": "00b44b10",
+      "fragment_id": "shadow_sampler_defaults_and_fallback",
+      "start": "00b44b35",
+      "end_inclusive": "00b44bb5",
+      "source": null,
+      "original_abi": "ECX pass; no stack arguments; EAX this; plainRET.",
+      "evidence": "Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease.",
+      "byte_evidence": {
+        "address": "00b44b10",
+        "length": 214,
+        "end_inclusive": "00b44be5",
+        "raw_capture": "local/material_shadow_samplers/00b44b10.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3"
+      },
+      "annotation_before": {
+        "address": "00b44b10",
+        "function_name": "FUN_00b44b10"
+      },
+      "status": "native_ownership_fragment_audited",
+      "suggested_plate_comment": "BSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction."
+    },
+    {
+      "address": "00b454e0",
+      "fragment_id": "shadow_sampler_fallback_release",
+      "start": "00b4553d",
+      "end_inclusive": "00b45564",
+      "source": null,
+      "original_abi": "ECX pass; no stack arguments; plainRET; parentdestructorhasno stable result.",
+      "evidence": "Releasepass+84 byInterlockedDecrement(texture+4), virtualdestructionatzero,clear+84. Confirmsfallbackreturnedreferenceisowned. Hostsharedptrprovidessemanticowner,notnativeABI.",
+      "byte_evidence": {
+        "address": "00b454e0",
+        "length": 223,
+        "end_inclusive": "00b455be",
+        "raw_capture": "local/material_shadow_samplers/00b454e0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "14bc5b6052fb2b12bcee08dbdae38f116fad42284412628049c4c7e00f26b383"
+      },
+      "annotation_before": {
+        "address": "00b454e0",
+        "function_name": "FUN_00b454e0"
+      },
+      "status": "native_ownership_fragment_audited",
+      "suggested_plate_comment": "BSP bounded fragment 00b4553d..00b45564: Releasepass+84 byInterlockedDecrement(texture+4), virtualdestructionatzero,clear+84. Confirmsfallbackreturnedreferenceisowned. Hostsharedptrprovidessemanticowner,notnativeABI. ABI: ECX pass; no stack arguments; plainRET; parentdestructorhasno stable result. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction."
+    }
+  ],
+  "reused_or_readonly_evidence": [
+    {
+      "address": "00b3b280",
+      "scope": "Fullbodybyteverified andsource2jump/state-onlycountercontractchecked; primaryownsmaterial_samplers extension.",
+      "source2_jump": "00b3b303 CMP EAX,3; 00b3b306 JNZ00b3b334",
+      "source2_result": "No texture record or+8C increment; samplerstatesprocess; stagecounter+90/+94 advancesonce.",
+      "byte_evidence": {
+        "address": "00b3b280",
+        "length": 304,
+        "end_inclusive": "00b3b3af",
+        "raw_capture": "local/material_shadow_samplers/00b3b280.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "65be4d2538f5b28052bd3ab3a97dfa800b5e07ee58a73479f4f356aaa296b375"
+      },
+      "annotation_before": {
+        "address": "00b3b280",
+        "function_name": "BSP_ShaderBuilder_AddDescriptorSamplers",
+        "comment": "[BSP reconstruction 00b3b280]\nECX builder, stack pass/descriptor RET8. Source0 index/stage append; distinct pixel/vertex sampler-state counters shared across base/effect. Source0 typed partial port now in material_samplers.cpp; other source lifecycle unported. See docs/SHADER_SAMPLER_BINDING_ROUTE.md."
+      }
+    },
+    {
+      "address": "00b46910",
+      "scope": "DeletingwrapperABI ECXpass,stackflags,RET4,EAXthis; calls00b454e0 thenpoolreturnifbit0.",
+      "byte_evidence": {
+        "address": "00b46910",
+        "length": 32,
+        "end_inclusive": "00b4692f",
+        "raw_capture": "local/material_shadow_samplers/00b46910.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "0cf571219f3dfde677f4fd2113a72115c198edf54ea78d3db621421fb5e258cc"
+      },
+      "annotation_before": {
+        "address": "00b46910",
+        "function_name": "FUN_00b46910"
+      }
+    },
+    {
+      "address": "00b24710",
+      "scope": "Existingrenderertexturebinder target at00d5f1d8=rendererprimarytable+130h; typedlogicalslots0..19 mapthroughcache."
+    },
+    {
+      "address": "00b319b0",
+      "scope": "Existingrenderertextureloader target at00d5f10c=rendererprimarytable+64h; namedwhite.tga fallbackloadflags0."
+    }
+  ],
+  "byte_ranges": [
+    {
+      "address": "00b3c0b2",
+      "length": 664,
+      "end_inclusive": "00b3c349",
+      "raw_capture": "local/material_shadow_samplers/00b3c0b2.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "f9916c708699d25b81626628dfa3a76b1b1959ffe53cb78a76aa43db29b3a21b"
+    },
+    {
+      "address": "00b430cf",
+      "length": 145,
+      "end_inclusive": "00b4315f",
+      "raw_capture": "local/material_shadow_samplers/00b430cf.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "c10e3fa5dfad8c57673445f671f1c13ab1296af15d2bc9884399db21dfa1d425"
+    },
+    {
+      "address": "00b347e0",
+      "length": 114,
+      "end_inclusive": "00b34851",
+      "raw_capture": "local/material_shadow_samplers/00b347e0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "79ac7e391ec6065b8e43b951458acb83eaf9534347505648c80d10582183f4dd"
+    },
+    {
+      "address": "00b0d130",
+      "length": 8,
+      "end_inclusive": "00b0d137",
+      "raw_capture": "local/material_shadow_samplers/00b0d130.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "82da3903d5fa0bc5719f3bdb47ac7ba8a53ba92f30ec9d9b9375a00f237e00ed"
+    },
+    {
+      "address": "00b4cb10",
+      "length": 4,
+      "end_inclusive": "00b4cb13",
+      "raw_capture": "local/material_shadow_samplers/00b4cb10.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689"
+    },
+    {
+      "address": "00b7aab0",
+      "length": 7,
+      "end_inclusive": "00b7aab6",
+      "raw_capture": "local/material_shadow_samplers/00b7aab0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "c9b009cece926c8eb8e7682d20c7fdd9188da262bdb2e3340da5111892a1350b"
+    },
+    {
+      "address": "00b44b10",
+      "length": 214,
+      "end_inclusive": "00b44be5",
+      "raw_capture": "local/material_shadow_samplers/00b44b10.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3"
+    },
+    {
+      "address": "00b46910",
+      "length": 32,
+      "end_inclusive": "00b4692f",
+      "raw_capture": "local/material_shadow_samplers/00b46910.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "0cf571219f3dfde677f4fd2113a72115c198edf54ea78d3db621421fb5e258cc"
+    },
+    {
+      "address": "00b454e0",
+      "length": 223,
+      "end_inclusive": "00b455be",
+      "raw_capture": "local/material_shadow_samplers/00b454e0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "14bc5b6052fb2b12bcee08dbdae38f116fad42284412628049c4c7e00f26b383"
+    },
+    {
+      "address": "00b3b280",
+      "length": 304,
+      "end_inclusive": "00b3b3af",
+      "raw_capture": "local/material_shadow_samplers/00b3b280.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "65be4d2538f5b28052bd3ab3a97dfa800b5e07ee58a73479f4f356aaa296b375"
+    },
+    {
+      "address": "00d5f1d8",
+      "length": 4,
+      "end_inclusive": "00d5f1db",
+      "raw_capture": "local/material_shadow_samplers/00d5f1d8.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "052b98a55783ba43bf0ad2c4649ae37521476795e27c7d0c760c409156cc6348"
+    },
+    {
+      "address": "00d5f10c",
+      "length": 4,
+      "end_inclusive": "00d5f10f",
+      "raw_capture": "local/material_shadow_samplers/00d5f10c.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5"
+    },
+    {
+      "address": "00d61be8",
+      "length": 8,
+      "end_inclusive": "00d61bef",
+      "raw_capture": "local/material_shadow_samplers/00d61be8.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "1b857044eff5a625cb2eecfec4b424e4c2ce78db5d585216f8470e839b32a139"
+    },
+    {
+      "address": "00d61818",
+      "length": 26,
+      "end_inclusive": "00d61831",
+      "raw_capture": "local/material_shadow_samplers/00d61818.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "c814b879e4e747436f730ceb2699a8ebbe75a0fc7ad68b75a7bab9e7bc7835b2"
+    },
+    {
+      "address": "00ce77a4",
+      "length": 10,
+      "end_inclusive": "00ce77ad",
+      "raw_capture": "local/material_shadow_samplers/00ce77a4.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "53aa3f7487d39522ef125316fe165fc20a9b3a1a906c2f182379509bb59a2008"
+    }
+  ],
+  "flow_repairs": [
+    {
+      "address": "00b45522",
+      "function": "00b454e0",
+      "old": "CALL_RETURN",
+      "proposed": "NONE",
+      "evidence": "Returningfreethunk00bf65ac; hidden00b45527 ADD ESP,4;00b4552a MOV[EDI],0 beforecontinuingrecordloop.",
+      "byte_evidence": {
+        "address": "00b454e0",
+        "length": 223,
+        "end_inclusive": "00b455be",
+        "raw_capture": "local/material_shadow_samplers/00b454e0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "14bc5b6052fb2b12bcee08dbdae38f116fad42284412628049c4c7e00f26b383"
+      },
+      "before_capture": "local/material_shadow_samplers/flow_before.json"
+    }
+  ],
+  "annotations_before": "local/material_shadow_samplers/comments_before.json",
+  "integration_order": [
+    "append base descriptor samplerstates/references",
+    "append effect descriptor samplerstates/references",
+    "prune unusedPSslots0..15",
+    "configure specialnames andShadowMapoverrides",
+    "bind ordinarymaterialtextures through existing apply fragment",
+    "bind lateShadowTexturethenShadowMap throughnewfragment"
+  ],
+  "host_interface": {
+    "pass_type": "MaterialShadowSamplerPass",
+    "inputs": "MaterialShadowSamplerInputs",
+    "output_guards": "Configurepreservesbothoutputsforselectedslotsoutside0..19/oversizeddescriptors/allocationfailure; no nonnative source/stage guards.",
+    "lookup": "find_shadow_sampler_00b347e0",
+    "configure": "configure_material_shadow_samplers_00b3c0b2_fragment",
+    "bind": "bind_material_shadow_samplers_00b430cf_fragment",
+    "fallback_owner": "Caller supplies retainedLogicalTexture; underlyingCOM remainsborrowed as established.",
+    "control": "Explicitstabletexture/firstlight observations; no engineglobals orgeneratedgame shadowmap."
+  },
+  "validation": {
+    "byte_ranges": 15,
+    "matched_bytes": 1767,
+    "all_live_bytes_match_installed_pe": true,
+    "project_program": "EveryghidraCLIquery verifiesconfigtarget project/program.",
+    "build": "primaryintegratesandrunsscripts/build.ps1",
+    "real_device": "primaryexistingprobeintegrationpending",
+    "new_tests": false,
+    "game_validated": false
+  },
+  "uncertainties": [
+    "Producer ofbuilder+AA linearfilterselector remainsoutsidepacket.",
+    "Concretefirstlight shadowowner virtual+8 implementation and native shadowmapgeneration not reconstructed; caller provides its observedtexture.",
+    "Fullpassbaseconstructor/destructor, loadercacheandfile search, poolreturn remainseparate.",
+    "Hostbinding reportsHRESULT andstopsfirstfailure; native code ignoresrendererreturns.",
+    "EmptyrequiredlightlistbecomesINVALIDCALLafterearlierShadowTexturebinding ratherthan invokingnativefailure."
+  ],
+  "primary_integration": {
+    "validation": "reports/mesh_material_validation.json",
+    "annotations": "reports/mesh_material_annotations.json",
+    "scope": "Installed model wire payload -> managed mesh buffers, native shader decode records and building instance writer, material lighting, compiled NORMAL pass and actual texture binding/draw. Host scene/instance backing and white ShadowTexture inputs remain explicit; native frame allocator, scene shadow generation, resource object ownership and full game remain unported."
+  }
+}
