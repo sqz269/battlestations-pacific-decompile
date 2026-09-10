@@ -686,7 +686,7 @@ def ghidra_cmd(args):
                 want = norm(start) + ':'
                 pos = [i for i, line in enumerate(lines) if line.lower().startswith(want)]
                 if not pos:
-                    sys.exit(f'{norm(start)} is not an instruction start inside {a}')
+                    sys.exit(f'{norm(start)} is not an instruction start inside the stored body of {a}; for a truncated body use disasm-raw {norm(start)}')
                 text = chr(10).join(lines[pos[0]:])
                 start = 0
             hits = [i for i, line in enumerate(lines) if line.lower().startswith(a + ':')]
