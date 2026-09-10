@@ -436,10 +436,10 @@ def disasm_raw(args):
             line = annotate(db, line)
         print(line)
         count += 1
-        if count >= args.lines:
-            print(f'... capped at {args.lines} instructions (--lines); raise --length for more bytes')
+        if args.lines and count >= args.lines:
+            print(f'... capped at {args.lines} instructions (--lines); the byte window is --length {args.length}')
             break
-    print(f'(disk bytes, {section.Name.rstrip(b"\\0").decode()} section; Ghidra state not consulted)')
+    print(f'(disk bytes, {section.Name.rstrip(b"\x00").decode()} section; Ghidra state not consulted)')
 
 
 def strings_query(args):
@@ -749,6 +749,9 @@ def lease_cmd(args):
         for l in rows:
             print(f"{l['id']:<40} {l.get('status', ''):<9} until {l['expires'][:16]}  {len(l.get('addresses', []))} addrs "
                   f"{l.get('ranges', [])} files={l.get('files', [])} worktree={l.get('worktree', '')}")
+            if args.verbose:
+                addrs = l.get('addresses', [])
+                print(f"    addresses: {' '.join(addrs[:args.limit])}" + (f' ... {len(addrs) - args.limit} more' if len(addrs) > args.limit else ''))
         if not rows:
             print('no leases')
     elif sub == 'check':
@@ -852,7 +855,7 @@ def main():
     p = sub.add_parser('find'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=find)
     p = sub.add_parser('strings', help='functions referencing a string containing the text'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=strings_query)
     p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes at an address, even where Ghidra has no function'); p.add_argument('address')
-    p.add_argument('--length', '--limit', dest='length', type=int, default=96, help='bytes to decode'); p.add_argument('--lines', type=int, default=40); p.set_defaults(func=disasm_raw)
+    p.add_argument('--length', '--limit', dest='length', type=int, default=96, help='bytes to decode (bounds the output)'); p.add_argument('--lines', type=int, default=0, help='optional instruction cap'); p.set_defaults(func=disasm_raw)
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')
@@ -873,7 +876,8 @@ def main():
     q.add_argument('--ranges', nargs='*', help='lo-hi hex pairs'); q.add_argument('--files', nargs='*'); q.add_argument('--from-packet', action='store_true')
     q.add_argument('--ttl', type=float, default=8.0, help='hours'); q.add_argument('--note')
     q = lz.add_parser('release'); q.add_argument('id', nargs='?'); q.add_argument('--packet'); q.add_argument('--owner')
-    q = lz.add_parser('list'); q.add_argument('--all', action='store_true')
+    q = lz.add_parser('list'); q.add_argument('--all', action='store_true'); q.add_argument('--verbose', '-v', action='store_true', help='also list each lease\'s addresses')
+    q.add_argument('--limit', type=int, default=40, help='addresses shown per lease with --verbose')
     q = lz.add_parser('check'); q.add_argument('address')
     lz.add_parser('lock-status')
     p.set_defaults(func=lease_cmd)

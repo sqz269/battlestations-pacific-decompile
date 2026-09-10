@@ -48,7 +48,7 @@ so all checkouts see the same state immediately, without waiting for a merge.
 ```powershell
 python tools/bsp.py lease claim --packet <id> --from-packet            # addresses, ranges, files from parallel_work.json
 python tools/bsp.py lease claim --packet ad_hoc --addresses 00bea680 00bf0430 --files src/x.cpp --ttl 4
-python tools/bsp.py lease list | check <address> | release [--packet <id>] | lock-status
+python tools/bsp.py lease list [-v] | check <address> | release [--packet <id>] | lock-status   # -v lists each lease's addresses
 ```
 
 - A claim is refused when it overlaps another owner's active lease (addresses, ranges or

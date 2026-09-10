@@ -117,6 +117,23 @@ def covers(lease, address):
     return any(int(lo, 16) <= address <= int(hi, 16) for lo, hi in lease.get('ranges', []))
 
 
+def overlap_detail(a, b):
+    """Human-readable description of what two leases share, or '' when they do not overlap."""
+    parts = []
+    files = sorted(set(a.get('files', [])) & set(b.get('files', [])))
+    if files:
+        parts.append('files ' + ' '.join(files[:6]) + (' ...' if len(files) > 6 else ''))
+    addrs = sorted({addr for addr in a.get('addresses', []) if covers(b, int(addr, 16))}
+                   | {addr for addr in b.get('addresses', []) if covers(a, int(addr, 16))})
+    if addrs:
+        parts.append('addresses ' + ' '.join(addrs[:8]) + (' ...' if len(addrs) > 8 else ''))
+    ranges = [f'{lo}-{hi}' for lo, hi in a.get('ranges', []) for lo2, hi2 in b.get('ranges', [])
+              if int(lo, 16) <= int(hi2, 16) and int(lo2, 16) <= int(hi, 16)]
+    if ranges:
+        parts.append('ranges ' + ' '.join(ranges[:4]) + (' ...' if len(ranges) > 4 else ''))
+    return '; '.join(parts)
+
+
 def overlaps(a, b):
     if set(a.get('files', [])) & set(b.get('files', [])):
         return True
@@ -151,7 +168,8 @@ def claim(packet, addresses=(), ranges=(), files=(), ttl_hours=8.0, owner=None, 
             wanted['claimed'] = row['claimed']
             continue
         if row['owner'] != owner and overlaps(wanted, row):
-            raise LeaseConflict(f"overlaps active lease {row['id']} (until {row['expires']}, worktree {row.get('worktree', '?')})")
+            raise LeaseConflict(f"overlaps active lease {row['id']} on {overlap_detail(wanted, row)} "
+                                f"(until {row['expires']}, worktree {row.get('worktree', '?')}); drop those from the claim or treat them as external")
     rows = [r for r in rows if r['id'] != wanted['id']]
     rows.append(wanted)
     save_leases(rows)
