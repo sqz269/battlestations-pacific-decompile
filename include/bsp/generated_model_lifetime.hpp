@@ -2,14 +2,18 @@
 #include "bsp/instance_geometry.hpp"
 #include "bsp/render_command_queue.hpp"
 #include "bsp/scene_attachment.hpp"
+#include "bsp/building_instance.hpp"
 
 namespace bsp {
 class GeneratedModelLifetime;
 
-// Native geometry+1E0 is a borrowed reverse-link array, not a mesh reference
-// counter. The geometry identity is the actual GeneratedInstanceGeometry owner.
-struct GeneratedGeometryModelLinks {
-    GeneratedInstanceGeometry& geometry;
+// Native point-light+1E0 is a borrowed reverse-link array. The same model+164
+// light list supplies +1EC position/radius and +184 color to00B55780/00B42350.
+// identity is the actual borrowed light owner; it and this companion must
+// outlive linked models. This is separate from owned geometry+180.
+struct GeneratedModelPointLightLinks {
+    const void* identity;
+    BuildingInstancePointLight values;
     std::vector<CameraTransform*> models;
 };
 // Native attached object+178 is another borrowed node array. identity is the
@@ -66,7 +70,7 @@ public:
 
 // Explicit observed construction state. No native constructor values are
 // inferred from zero-initialized host storage. The pointer fields transfer one
-// already-acquired reference each, and geometry_links transfer borrowed array
+// already-acquired reference each, and point_lights transfer borrowed array
 // storage. An absent diagnostic owner means the actual native string is empty.
 struct GeneratedModelConstructionState {
     std::int32_t references;
@@ -74,7 +78,7 @@ struct GeneratedModelConstructionState {
     RenderCommandReference* retained_174;
     GeneratedModelGeometryReference* geometry_180;
     RenderCommandReference* retained_130;
-    std::vector<GeneratedGeometryModelLinks*> geometry_links_164;
+    std::vector<GeneratedModelPointLightLinks*> point_lights_164;
     std::unique_ptr<RenderCommandDiagnosticString> name_54_58;
 };
 
@@ -96,7 +100,7 @@ public:
     RenderCommandReference* retained_174;
     GeneratedModelGeometryReference* geometry_180;
     RenderCommandReference* retained_130;
-    std::vector<GeneratedGeometryModelLinks*> geometry_links_164;
+    std::vector<GeneratedModelPointLightLinks*> point_lights_164;
     std::unique_ptr<RenderCommandDiagnosticString> name_54_58;
 };
 
@@ -105,18 +109,18 @@ public:
 // count. Does not release/delete nodes, preserve order, or reduce capacity.
 bool erase_generated_model_pointer_00b7bed0(std::vector<CameraTransform*>&,
     CameraTransform*) noexcept;
-// Native ECX geometry, stack model, RET4: applies erase to geometry+1E0.
-void remove_geometry_model_link_00b7c1a0(GeneratedGeometryModelLinks&,
+// Native ECX point-light, stack model, RET4: applies erase to point-light+1E0.
+void remove_point_light_model_link_00b7c1a0(GeneratedModelPointLightLinks&,
     CameraTransform&) noexcept;
 // Native ECX attached object, stack model, RET4. Only matching model+A0 removes
 // the backlink and clears+A0. Clears the host notification callback alongside
 // its context so the shared transform correctly projects no attached object.
 void unregister_generated_model_attachment_00b8f4c0(GeneratedModelAttachmentLinks&,
     CameraTransform&) noexcept;
-void reserve_generated_model_geometry_links_00b6e500(
-    std::vector<GeneratedGeometryModelLinks*>&, std::int32_t capacity);
-void resize_generated_model_geometry_links_00b6ec70(
-    std::vector<GeneratedGeometryModelLinks*>&, std::int32_t count);
+void reserve_generated_model_point_lights_00b6e500(
+    std::vector<GeneratedModelPointLightLinks*>&, std::int32_t capacity);
+void resize_generated_model_point_lights_00b6ec70(
+    std::vector<GeneratedModelPointLightLinks*>&, std::int32_t count);
 
 // Native ECX node, stack scene/recurse, RET8. Identity-conditional remove;
 // reload scene after registry callback, publish null BEFORE releasing current

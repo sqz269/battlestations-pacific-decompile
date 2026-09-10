@@ -2,7 +2,7 @@
 
 `generated_model_lifetime.hpp/.cpp` closes the model virtual `+18` operation
 required by the existing render-command/group teardown. It performs the actual
-geometry backlink removal, recursive child release, attached-owner unregister,
+point-light backlink removal, recursive child release, attached-owner unregister,
 self reference release and terminal scene/resource cleanup. It uses the same
 `CameraTransform`, `SceneNodeAttachment` and `GeneratedInstanceGeometry` objects
 as the render/scene pipeline.
@@ -26,10 +26,10 @@ audit is in ignored `local/generated_model_raw_<address>.txt`.
 
 | Address | Established behavior | Original ABI |
 | --- | --- | --- |
-| `00B6F310` | Remove geometry backlinks and child owners; byte `+44` gates self release | ECX node, RET or tail virtual `+0` |
-| `00B7C1A0` | Remove node from geometry `+1E0` borrowed array | ECX geometry, stack node, RET 4 |
+| `00B6F310` | Remove point-light backlinks and child owners; byte `+44` gates self release | ECX node, RET or tail virtual `+0` |
+| `00B7C1A0` | Remove node from point-light `+1E0` borrowed array | ECX point-light, stack node, RET 4 |
 | `00B7BED0` | Erase first equal pointer by swapping in last | ECX array, stack address of pointer, AL result, RET 4 |
-| `00B6EC70` | Resize borrowed geometry array, null new slots, retain capacity when shrinking | ECX array, stack count, RET 4 |
+| `00B6EC70` | Resize borrowed point-light array, null new slots, retain capacity when shrinking | ECX array, stack count, RET 4 |
 | `00B6E500` | Reserve minimum-one exact requested native capacity | ECX array, stack capacity, RET 4 |
 | `00B8F4C0` | Unregister matching attached owner and clear node `+A0` | ECX owner, stack node, RET 4 |
 | `00B750C0` | Release/clear `+174`, then geometry `+180`, then node base destructor | ECX model, RET |
@@ -58,7 +58,7 @@ integrator owns annotation/ledger changes, export refresh and any body repair.
 ## Two release phases
 
 `release_generated_model_00b6f310` first removes this node from every linked
-geometry's borrowed reverse-link array and shrinks its own `+164` list to zero.
+point-light's borrowed reverse-link array and shrinks its own `+164` list to zero.
 It then repeatedly removes the current first child from the shared hierarchy
 and invokes that child's actual virtual `+18`. The new head's previous sibling
 is cleared, and the detached child's parent and next sibling are cleared before
@@ -74,7 +74,7 @@ does not drop another self reference.
 
 When the last reference reaches zero, the recovered terminal order is retained
 owner `+174`, geometry owner `+180`, attached-owner cleanup, retained owner
-`+130`, current scene, geometry-link array storage, pooled name storage, then
+`+130`, current scene, point-light array storage, pooled name storage, then
 physical model storage. Each retained field is released before the field is
 cleared; later fields are loaded after prior terminal callbacks.
 
@@ -135,7 +135,7 @@ is not claimed.
 
 Invalid/negative arrays, overflow, allocation-failure behavior, Win32 exception
 unwinding, general reparent/animation systems and original object layout are
-outside the contract. Valid geometry backlink entries must be nonnull. Host
+outside the contract. Valid point-light backlink entries must be nonnull. Host
 containers preserve the relevant ownership and capacity behavior without
 claiming native allocator layout or failure semantics.
 
@@ -151,10 +151,22 @@ claiming native allocator layout or failure semantics.
   callback observed the null scene publication; actual geometry/model
   allocations were deleted and pooled name extent was checked. Detached scene
   bindings could be rebound after terminal cleanup.
-- `scripts/build.ps1` passed both existing CTests on shared baseline `6262831`.
-  The new owned source was compiled separately; the primary integrates CMake
-  and the actual probe/storage-owner adapter.
+- `scripts/build.ps1` now builds the integrated source and passes both existing
+  CTests. The installed mesh probe exercises actual command/group teardown and
+  three physical model disposals through the shared control adapter. The
+  corrected point-light fixture also passes against the integrated source; see
+  `reports/frame_bounds_integration_validation.json`.
 
 The new lifecycle is source/evidence reviewed and fixture/build tested. It has
 not been native differential tested as a lifecycle, linked as a binary
 replacement, or validated in the running game.
+
+The model `+164` list contains point lights, as established by the shared
+`00B6DC50` getter and both `00B55780` and `00B42350`: light `+1EC` supplies
+position/radius, `+184` supplies color, and `+1E0` holds model backlinks.
+`GeneratedModelPointLightLinks` therefore shares borrowed light identity, values
+and backlinks; it does not bind a generated mesh to this list. Geometry `+180`
+is a separate retained owner. The installed diagnostic scene supplies no point
+lights, and its upload writer reads this same empty list. This corrects the
+initial geometry interpretation; earlier pointer-order fixture results alone
+did not establish the object type.

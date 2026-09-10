@@ -25,7 +25,7 @@ reconstruction names.
 | `00B285A0` | ECX renderer; stack camera; RET4 | Disable clip mask, refresh inverse VP and frustum caches, copy plane records/count, reset active/pending counts, optionally transform selected user planes, restore pending mask, then optional ambient state. No outer guard. |
 | `00B26770` | ECX renderer; stack viewport; RET4 | Optional guard; SetViewport, increment attempted-call counter, publish borrowed wrapper, cached scissor state, re-read scissor byte and optionally SetScissorRect. |
 | `00B21430` | ECX renderer; six stack arguments; RET18h | Zero flags skip guard, color dereference, COM call and counter. Otherwise guarded Clear with count/rectangles/flags, dereferenced color, x87-copied depth and stencil; increment attempted-call counter. |
-| `00B23E50` | ECX renderer; stack index/float4; RET8 | Optional guard; cache four raw words at `+190C + index*16` before SetClipPlane, including on API failure. |
+| `00B23E50` | ECX renderer; stack index/float4; RET8 | Optional guard; cache four coefficients through x87 FLD/FSTP at `+190C + index*16`, then pass the original pointer to SetClipPlane, including on API failure. |
 | `00B25040` | ECX renderer; stack float4; RET4 | Set plane at active count, increment active count, set low-bit clip mask. Pending count is unchanged. |
 | `00B25080` | ECX renderer; RET | Set mask from pending count, then copy pending count to active count. |
 | `00B70510` | ECX camera; EAX matrix pointer; RET | On missing projection flag20h, invert current VP, copy through x87 into `+260`, set flag20h. |
@@ -54,7 +54,9 @@ inline records occupy `140h` bytes and a separate count follows. Frustum
 refresh writes the first six records with x87 copies and flags7, preserving
 later records and count. Zero initialization is not evidence of the native
 constructor: callers must supply the established count and any additional
-planes. The renderer copies all `140h` record bytes and then the count.
+planes. The renderer copies all sixteen records, each with four x87 coefficient
+copies and one integer flags copy, then copies the count. Unused records are
+copied too. Masked signaling NaNs quiet in the destination and set x87 invalid.
 
 Preparation first sets D3DRS_CLIPPLANEENABLE(152) to zero and resets renderer
 active `+19EC` and pending `+19F0`. If support byte `+1B51` is set, records with
@@ -139,3 +141,11 @@ integrator, with its existing library name preserved.
 These are export, byte-identity, compile and isolated numerical/device-call
 checks. No live game, graphics device, rendered frame or native object ABI was
 validated.
+
+Independent integration review also verified that the camera command spills
+its depth through x87 before the Clear helper, even when clear flags are zero.
+The helper itself still skips its own guard and depth/color access when flags
+are zero. A focused signaling-NaN case covers this distinction, cached clip
+coefficients versus original COM input, and the unused sixteenth plane record.
+The installed GPU probe now exercises this camera companion on the shared
+renderer/device; see reports/frame_bounds_integration_validation.json.

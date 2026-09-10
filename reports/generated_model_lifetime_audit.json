@@ -9,9 +9,9 @@
   "functions": [
     {
       "address": "00b6f310",
-      "suggested_name": "BSP_Node_ReleaseGeometryChildrenAndSelf",
+      "suggested_name": "BSP_Node_ReleasePointLightsChildrenAndSelf",
       "original_abi": "ECX node; no stack args; RET or tail virtual0 when self references become zero.",
-      "contract": "Remove each geometry+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain.",
+      "contract": "Remove each point-light+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain.",
       "coverage": "complete normal release body with required actual dispatch associations",
       "code_identity": {
         "length": 176,
@@ -24,15 +24,15 @@
         "address": "00b6f310",
         "function_name": "FUN_00b6f310"
       },
-      "proposed_plate_comment": "[BSP reconstruction] Remove each geometry+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain.",
+      "proposed_plate_comment": "[BSP reconstruction] Remove each point-light+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain.",
       "false_noreturn_free_continuations": [],
       "full_raw_disassembly": "local/generated_model_raw_00b6f310.txt"
     },
     {
       "address": "00b7c1a0",
-      "suggested_name": "BSP_Geometry_RemoveModelBacklink",
-      "original_abi": "ECX geometry; stack model pointer; RET4.",
-      "contract": "Pass address of model pointer to00B7BED0 with ECX=geometry+1E0. Removes only one borrowed reverse link, without retaining, releasing, deleting or rebinding mesh/model ownership.",
+      "suggested_name": "BSP_PointLight_RemoveModelBacklink",
+      "original_abi": "ECX point-light; stack model pointer; RET4.",
+      "contract": "Pass address of model pointer to00B7BED0 with ECX=point-light+1E0. Removes only one borrowed reverse link, without retaining, releasing, deleting or rebinding mesh/model ownership.",
       "coverage": "complete borrowed reverse-link wrapper",
       "code_identity": {
         "length": 19,
@@ -45,7 +45,7 @@
         "address": "00b7c1a0",
         "function_name": "FUN_00b7c1a0"
       },
-      "proposed_plate_comment": "[BSP reconstruction] Pass address of model pointer to00B7BED0 with ECX=geometry+1E0. Removes only one borrowed reverse link, without retaining, releasing, deleting or rebinding mesh/model ownership.",
+      "proposed_plate_comment": "[BSP reconstruction] Pass address of model pointer to00B7BED0 with ECX=point-light+1E0. Removes only one borrowed reverse link, without retaining, releasing, deleting or rebinding mesh/model ownership.",
       "false_noreturn_free_continuations": [],
       "full_raw_disassembly": "local/generated_model_raw_00b7c1a0.txt"
     },
@@ -72,9 +72,9 @@
     },
     {
       "address": "00b6ec70",
-      "suggested_name": "BSP_GeometryPointers_ResizeCleared",
+      "suggested_name": "BSP_PointLightPointers_ResizeCleared",
       "original_abi": "ECX pointer array; stack signed count; RET4.",
-      "contract": "Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed geometry owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior.",
+      "contract": "Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed light owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior.",
       "coverage": "complete valid-count body",
       "code_identity": {
         "length": 80,
@@ -87,13 +87,13 @@
         "address": "00b6ec70",
         "function_name": "FUN_00b6ec70"
       },
-      "proposed_plate_comment": "[BSP reconstruction] Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed geometry owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior.",
+      "proposed_plate_comment": "[BSP reconstruction] Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed light owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior.",
       "false_noreturn_free_continuations": [],
       "full_raw_disassembly": "local/generated_model_raw_00b6ec70.txt"
     },
     {
       "address": "00b6e500",
-      "suggested_name": "BSP_GeometryPointers_Reserve",
+      "suggested_name": "BSP_PointLightPointers_Reserve",
       "original_abi": "ECX pointer array; stack signed capacity; RET4.",
       "contract": "Clamp requested capacity minimum1; grow only, allocate4*capacity, copy count pointers, free old buffer, publish new data/capacity. Raw00B6E551 continuation after false-no-return free is addesp4,mov[esi]ebx,mov[esi+8]edi,pop ebx. Host uses real vector allocation and excludes native allocation failure/corrupt extents.",
       "coverage": "complete valid-capacity body",
@@ -214,7 +214,7 @@
       "address": "00b6f440",
       "suggested_name": "BSP_Node_Destroy",
       "original_abi": "ECX node; no stack args; RET.",
-      "contract": "UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free geometry-link array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568.",
+      "contract": "UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free point-light array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568.",
       "coverage": "bounded post-virtual18 terminal path; general direct destruction excluded",
       "code_identity": {
         "length": 297,
@@ -227,7 +227,7 @@
         "address": "00b6f440",
         "function_name": "FUN_00b6f440"
       },
-      "proposed_plate_comment": "[BSP reconstruction] UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free geometry-link array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568.",
+      "proposed_plate_comment": "[BSP reconstruction] UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free point-light array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568.",
       "false_noreturn_free_continuations": [
         {
           "callsite": "00b6f519",
@@ -333,5 +333,11 @@
     "Native physical model pool layout/critical section and diagnostic size-class allocator remain outside; required real storage owner and supplied memory_resource perform actual host storage disposal.",
     "No claim for corrupt/negative arrays, byte overflow, allocation failure or Win32 exception unwinding."
   ],
-  "primary_integration": "Primary adds CMake, actual probe/model construction and storage-owner adapter, ledger/name/comment updates and false-free disassembly repairs. Worker files are restricted to module header/source, focused documentation and this audit."
+  "primary_integration": "Primary adds CMake, actual probe/model construction and storage-owner adapter, ledger/name/comment updates and false-free disassembly repairs. Worker files are restricted to module header/source, focused documentation and this audit.",
+  "owner_type_correction": {
+    "finding": "Model+164 is the ordered point-light list shared with00B6DC50,00B55780 and00B42350. Prior generated-geometry backlink interpretation was incorrect.",
+    "evidence": "docs/BUILDING_INSTANCE_DATA.md; docs/MATERIAL_CONSTANTS.md; native point-light+1EC position/radius,+184 color,+1E0 reverse model links.",
+    "implementation": "GeneratedModelPointLightLinks shares actual borrowed light identity/values/backlinks. Owned geometry+180 stays separate. Installed diagnostic scene has no point lights; no artificial mesh backlink is inserted.",
+    "fixture_limit": "Earlier lifetime fixture establishes pointer deletion/order but used the superseded owner type. Adapted existing fixture and shared installed upload verification are recorded in frame_bounds_integration_validation.json."
+  }
 }

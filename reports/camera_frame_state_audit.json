@@ -35,8 +35,8 @@
       ],
       "proposed_name": "BSP_Camera_ExecuteFrameCommand",
       "original_abi": "ECX camera; RET",
-      "evidence": "Camera enabled byte+17C gates renderer vtable+A0 prepare,+A4 borrowed viewport,+08 Clear in that order. Clear receives0,null,flags+188,&color+190,depth+18C,stencil+194.",
-      "proposed_plate_comment": "[BSP reconstruction] Camera enabled byte+17C gates renderer vtable+A0 prepare,+A4 borrowed viewport,+08 Clear in that order. Clear receives0,null,flags+188,&color+190,depth+18C,stencil+194. Original ABI: ECX camera; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+      "evidence": "Camera enabled byte+17C gates renderer vtable+A0 prepare,+A4 borrowed viewport,+08 Clear in that order. Clear receives0,null,flags+188,&color+190,depth+18C,stencil+194. Before invoking Clear, always FLD camera depth+18C and FSTP the by-value argument, including clear_flags==0; the Clear helper independently skips its own guard/call when flags are zero.",
+      "proposed_plate_comment": "[BSP reconstruction] Camera enabled byte+17C gates renderer vtable+A0 prepare,+A4 borrowed viewport,+08 Clear in that order. Clear receives0,null,flags+188,&color+190,depth+18C,stencil+194. Before invoking Clear, always FLD camera depth+18C and FSTP the by-value argument, including clear_flags==0; the Clear helper independently skips its own guard/call when flags are zero. Original ABI: ECX camera; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
     },
     {
       "address": "00b285a0",
@@ -55,8 +55,8 @@
       },
       "proposed_name": "BSP_Renderer_PrepareCamera",
       "original_abi": "ECX renderer; stack camera; RET4",
-      "evidence": "No outer guard. Set state152=0; refresh inverseVP/frustum; copy140h record bytes then count. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34.",
-      "proposed_plate_comment": "[BSP reconstruction] No outer guard. Set state152=0; refresh inverseVP/frustum; copy140h record bytes then count. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34. Original ABI: ECX renderer; stack camera; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+      "evidence": "No outer guard. Set state152=0; refresh inverseVP/frustum; copy all16 inline records via00B250B0 (four FLD/FSTP coefficient pairs and MOV flags per record), then separately copy count+140. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34.",
+      "proposed_plate_comment": "[BSP reconstruction] No outer guard. Set state152=0; refresh inverseVP/frustum; copy all16 inline records via00B250B0 (four FLD/FSTP coefficient pairs and MOV flags per record), then separately copy count+140. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34. Original ABI: ECX renderer; stack camera; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
     },
     {
       "address": "00b26770",
@@ -175,9 +175,9 @@
         }
       ],
       "proposed_name": "BSP_PlaneSet_CopyInlineRecords",
-      "original_abi": "ECX destination; stack source; RET4; copies exactly140h bytes",
-      "evidence": "Copies exactly320 inline bytes from source to destination; caller00b285a0 separately copies count at+140.",
-      "proposed_plate_comment": "[BSP reconstruction] Copies exactly320 inline bytes from source to destination; caller00b285a0 separately copies count at+140. Original ABI: ECX destination; stack source; RET4; copies exactly140h bytes. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+      "original_abi": "ECX destination; stack source; RET4; writes16 inline20-byte records (140h extent), excluding count",
+      "evidence": "Copies all16 inline20-byte records regardless of active count: each coefficient uses FLD/FSTP, then the flags word uses MOV. Masked signaling NaNs quiet in destination and raise x87 invalid; source bits remain unchanged. The written record extent is140h; caller00B285A0 separately copies count+140.",
+      "proposed_plate_comment": "[BSP reconstruction] Copies all16 inline20-byte records regardless of active count: each coefficient uses FLD/FSTP, then the flags word uses MOV. Masked signaling NaNs quiet in destination and raise x87 invalid; source bits remain unchanged. The written record extent is140h; caller00B285A0 separately copies count+140. Original ABI: ECX destination; stack source; RET4; writes16 inline20-byte records (140h extent), excluding count. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
     },
     {
       "address": "00b65080",
@@ -311,8 +311,8 @@
       ],
       "proposed_name": "BSP_Renderer_SetClipPlane",
       "original_abi": "ECX renderer; stack index,float4; RET8",
-      "evidence": "Optional shared renderer guard. Copies four raw words into renderer+190C+index*16 before device SetClipPlane(vtable+DC). HRESULT ignored.",
-      "proposed_plate_comment": "[BSP reconstruction] Optional shared renderer guard. Copies four raw words into renderer+190C+index*16 before device SetClipPlane(vtable+DC). HRESULT ignored. Original ABI: ECX renderer; stack index,float4; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+      "evidence": "Optional shared renderer guard. Four FLD/FSTP coefficient pairs copy into renderer+190C+index*16 before device SetClipPlane(vtable+DC). Masked signaling NaNs quiet in cached coefficients and raise x87 invalid; SetClipPlane receives the original input pointer and original coefficient bits. HRESULT ignored.",
+      "proposed_plate_comment": "[BSP reconstruction] Optional shared renderer guard. Four FLD/FSTP coefficient pairs copy into renderer+190C+index*16 before device SetClipPlane(vtable+DC). Masked signaling NaNs quiet in cached coefficients and raise x87 invalid; SetClipPlane receives the original input pointer and original coefficient bits. HRESULT ignored. Original ABI: ECX renderer; stack index,float4; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
     },
     {
       "address": "00b632d0",
@@ -789,7 +789,13 @@
     "repository_build": "scripts/build.ps1 after ghidra_export.py verify-seeds passed reconstructed_math and native_math_differential (2/2); primary owns new source CMake registration, so scoped compile is the new-source proof.",
     "validation_log": "local/camera_scoped_validation.log (ignored focused probe)",
     "game_validated": false,
-    "native_layout_abi_compatible": false
+    "native_layout_abi_compatible": false,
+    "independent_review": {
+      "result": "Three x87-copy omissions identified, fixed by primary, and focused fixture passed against current main source.",
+      "review_artifact": "J:/PROG/battlestations-pacific-decompile-model-lifetime-20260910/local/camera_frame_review.json",
+      "focused_scope": "Masked signaling-NaN clip cache quieting with original COM pointer/bits; unused16th plane record quieting with zero active count and integer flags preserved; enabled zero-flags command depth invalid-status observation while Clear/counter remain skipped. Existing fake-COM device_check passed unchanged.",
+      "compile": "MSVC19.51 x86 C++17 /O2 /MD /W4 /WX /fp:strict for current main camera source; local fixture /Od /RTC1; linked existing bsp_core baseline library."
+    }
   },
   "limitations": [
     "New typed interfaces are not native object layouts or drop-in ABI replacements.",

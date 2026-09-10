@@ -174,7 +174,6 @@ struct MeshInstanceModel {
     bsp::ModelBounds bounds;
     bsp::SceneAttachmentRuntime& runtime;
     bsp::SceneNodeAttachment attachment;
-    bsp::GeneratedGeometryModelLinks geometry_links;
     bsp::GeneratedModelLifetime lifetime;
     unsigned attachments{};
     MeshInstanceModel(bsp::GeneratedModelLifetimeRuntime& models,
@@ -183,8 +182,7 @@ struct MeshInstanceModel {
         : runtime(models.scenes), attachment(transform,
             static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(this)),
             bsp::object_accepts_scene_type_006ef860, bsp::set_node_scene_00b6ed80),
-          geometry_links{*geometry.geometry, {&transform}},
-          lifetime(models, attachment, {1, 0, nullptr, &geometry, nullptr, {&geometry_links}, {}}, owner) {
+          lifetime(models, attachment, {1, 0, nullptr, &geometry, nullptr, {}, {}}, owner) {
         bsp::set_transform_local_matrix_00b6db10(transform, local);
         bounds.local_sphere = local_sphere;
         runtime.bind(attachment);
@@ -202,8 +200,7 @@ void MeshModelControl::dispose_model_storage(bsp::GeneratedModelLifetime& value)
     if (!disposed || &disposed->lifetime != &value) std::terminate();
     evidence.cleanup_matches = evidence.cleanup_matches && value.released_byte_44 == 1
         && !value.retained_174 && !value.geometry_180 && !value.retained_130
-        && !disposed->attachment.scene && disposed->geometry_links.models.empty()
-        && value.geometry_links_164.empty();
+        && !disposed->attachment.scene && value.point_lights_164.empty();
     model = nullptr;
     ++evidence.disposed;
     delete disposed;
@@ -273,7 +270,9 @@ bool write_mesh_instance(void* opaque, const bsp::InstanceRenderEntry& entry,
     const auto& model = *static_cast<const MeshInstanceModel*>(entry.model->context);
     const auto material = std::static_pointer_cast<bsp::MaterialCloneState>(entry.section->material_clone_owner);
     bsp::BuildingInstanceData record;
-    if (!bsp::write_building_instance_data_00b55780(model.transform.world, {}, entry.visibility,
+    std::vector<bsp::BuildingInstancePointLight> point_lights;
+    for (const auto* light : model.lifetime.point_lights_164) point_lights.push_back(light->values);
+    if (!bsp::write_building_instance_data_00b55780(model.transform.world, point_lights, entry.visibility,
         material->lighting.diffuse_color_00b179f0(0)[3], record, error)) return false;
     std::memcpy(output, record.data(), sizeof(record));
     auto& evidence = *static_cast<InstanceWriteEvidence*>(opaque);

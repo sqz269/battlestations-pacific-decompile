@@ -282,9 +282,9 @@
     },
     {
       "address": "00b6f310",
-      "suggested_name": "BSP_Node_ReleaseGeometryChildrenAndSelf_Provisional",
+      "suggested_name": "BSP_Node_ReleasePointLightsChildrenAndSelf",
       "original_abi": "ECX node; no stack args; RET or tail virtual0 at final zero reference.",
-      "contract": "Resolved generated-model virtual18 boundary, not fully reimplemented by this packet: remove node from each linked geometry via00B7C1A0; resize+164 array0 via00B6EC70; detach/release children virtual18; on first+44 disposal clear root/hierarchy links and set flag, unregister+A0 through00B8F4C0, atomic release self and virtual0 at zero. Required typed model operation must perform actual equivalent owner teardown, not no-op.",
+      "contract": "Resolved generated-model virtual18 boundary, not fully reimplemented by this packet: remove node from each linked point light via00B7C1A0; resize+164 array0 via00B6EC70; detach/release children virtual18; on first+44 disposal clear root/hierarchy links and set flag, unregister+A0 through00B8F4C0, atomic release self and virtual0 at zero. Required typed model operation must perform actual equivalent owner teardown, not no-op.",
       "code_identity": {
         "length": 176,
         "end_exclusive": "00b6f3c0",
@@ -296,7 +296,7 @@
         "address": "00b6f310",
         "function_name": "FUN_00b6f310"
       },
-      "proposed_plate_comment": "[BSP reconstruction] Resolved generated-model virtual18 boundary, not fully reimplemented by this packet: remove node from each linked geometry via00B7C1A0; resize+164 array0 via00B6EC70; detach/release children virtual18; on first+44 disposal clear root/hierarchy links and set flag, unregister+A0 through00B8F4C0, atomic release self and virtual0 at zero. Required typed model operation must perform actual equivalent owner teardown, not no-op.",
+      "proposed_plate_comment": "[BSP reconstruction] Resolved generated-model virtual18 boundary, not fully reimplemented by this packet: remove node from each linked point light via00B7C1A0; resize+164 array0 via00B6EC70; detach/release children virtual18; on first+44 disposal clear root/hierarchy links and set flag, unregister+A0 through00B8F4C0, atomic release self and virtual0 at zero. Required typed model operation must perform actual equivalent owner teardown, not no-op.",
       "false_noreturn_free_continuations": [],
       "full_raw_disassembly": "local/render_command_raw_00b6f310.txt"
     },
@@ -399,7 +399,7 @@
   },
   "limits": [
     "New typed lifetime/storage interface, not native object or intrusive vtable ABI.",
-    "Concrete00B6DFA0 hierarchy/root unlink precedes required actual model virtual18 operation; downstream00B6F310 geometry/children/self teardown is a resolved explicit operation boundary.",
+    "Concrete00B6DFA0 hierarchy/root unlink precedes required actual model virtual18 operation; downstream00B6F310 point-light/children/self teardown is a resolved explicit operation boundary.",
     "Command/context refs preserve queue callback ordering; callbacks must leave indexed command slots valid. Native mode changes after deletion can retain stale list pointers; owner must keep subsequent list use valid.",
     "Existing OwnedInstanceGroup uses shared_ptr/unique_ptr host ownership; group-array structural mutation and inspecting a shared_ptr during its terminal deleter are excluded during command destruction.",
     "Diagnostic bytes return to actual supplied std::pmr::memory_resource with exact length+1/alignment1; native global pool layout/class selection, Win32 EH and corrupt/negative arrays/allocation failure remain outside."

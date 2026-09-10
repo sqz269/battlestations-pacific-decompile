@@ -71,7 +71,7 @@ struct RenderNodeRootList { CameraTransform* first{}; }; // native root+0C
 void unlink_render_root_node_00b72220(RenderNodeRootList&, CameraTransform&) noexcept;
 
 // Required actual model virtual+18 operation, resolved to00B6F310 for generated
-// model vtable00D62DE8. It releases geometry links/children and the model owner;
+// model vtable00D62DE8. It releases point-light links/children and the model owner;
 // it is not replaceable with a no-op. The caller supplies the real typed model
 // owner implementation; this interface does not invent its native layout.
 class RenderCommandModelLifetime {

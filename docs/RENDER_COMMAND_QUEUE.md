@@ -124,7 +124,7 @@ node's fields. There is no duplicate hierarchy in this packet.
 
 Only after that unlink does `00B6DFA0` tail-dispatch model virtual `+18`.
 Generated model table `00D62DE8` resolves this slot to `00B6F310`. That body
-removes the node from its linked geometries through `00B7C1A0`, clears that
+removes the node from its linked point lights through `00B7C1A0`, clears that
 pointer array with `00B6EC70`, detaches and recursively releases children, and
 on first disposal clears root/hierarchy links and sets byte `+44`. It unregisters
 attachment `+A0` through `00B8F4C0`, releases the model's reference and calls its
@@ -136,6 +136,9 @@ for every live generated model; a no-op implementation would not satisfy the
 interface's contract. The model operation and its owner must use the real scene,
 geometry and child lifetimes. This packet does not invent a native model layout
 or silently substitute scene detachment for all of `00B6F310`.
+`GeneratedModelLifetime` now supplies this concrete operation with the same
+scene, hierarchy, point-light list and retained geometry; see
+`GENERATED_MODEL_LIFETIME.md` and `FRAME_BOUNDS_INTEGRATION.md`.
 
 ## Pointer and diagnostic storage
 

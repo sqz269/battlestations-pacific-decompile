@@ -75,7 +75,7 @@ GeneratedModelLifetime::GeneratedModelLifetime(GeneratedModelLifetimeRuntime& li
     : runtime(lifetime_runtime), attachment_state(attachment), storage_owner(owner),
       released_byte_44(initial.released_byte_44), retained_174(initial.retained_174),
       geometry_180(initial.geometry_180), retained_130(initial.retained_130),
-      geometry_links_164(std::move(initial.geometry_links_164)), name_54_58(std::move(initial.name_54_58)) {
+      point_lights_164(std::move(initial.point_lights_164)), name_54_58(std::move(initial.name_54_58)) {
     if (initial.references <= 0)
         throw std::invalid_argument("Generated model construction requires an actual positive reference count");
     reference_count.store(initial.references, std::memory_order_relaxed);
@@ -99,9 +99,9 @@ bool erase_generated_model_pointer_00b7bed0(std::vector<CameraTransform*>& model
     }
     return false;
 }
-void remove_geometry_model_link_00b7c1a0(GeneratedGeometryModelLinks& geometry,
+void remove_point_light_model_link_00b7c1a0(GeneratedModelPointLightLinks& light,
     CameraTransform& node) noexcept {
-    erase_generated_model_pointer_00b7bed0(geometry.models, &node);
+    erase_generated_model_pointer_00b7bed0(light.models, &node);
 }
 void unregister_generated_model_attachment_00b8f4c0(GeneratedModelAttachmentLinks& owner,
     CameraTransform& node) noexcept {
@@ -111,19 +111,19 @@ void unregister_generated_model_attachment_00b8f4c0(GeneratedModelAttachmentLink
         node.notify_changed = nullptr;
     }
 }
-void reserve_generated_model_geometry_links_00b6e500(
-    std::vector<GeneratedGeometryModelLinks*>& links, std::int32_t capacity) {
+void reserve_generated_model_point_lights_00b6e500(
+    std::vector<GeneratedModelPointLightLinks*>& links, std::int32_t capacity) {
     if (capacity < 1) capacity = 1;
     if (static_cast<std::uint32_t>(capacity) >
-        (std::numeric_limits<std::uint32_t>::max)() / sizeof(GeneratedGeometryModelLinks*))
-        throw std::length_error("Generated model geometry link byte extent overflows");
+        (std::numeric_limits<std::uint32_t>::max)() / sizeof(GeneratedModelPointLightLinks*))
+        throw std::length_error("Generated model point-light link byte extent overflows");
     if (static_cast<std::size_t>(capacity) > links.capacity()) links.reserve(capacity);
 }
-void resize_generated_model_geometry_links_00b6ec70(
-    std::vector<GeneratedGeometryModelLinks*>& links, std::int32_t count) {
-    if (count < 0) throw std::invalid_argument("Negative generated model geometry link count");
+void resize_generated_model_point_lights_00b6ec70(
+    std::vector<GeneratedModelPointLightLinks*>& links, std::int32_t count) {
+    if (count < 0) throw std::invalid_argument("Negative generated model point-light link count");
     if (static_cast<std::size_t>(count) > links.capacity())
-        reserve_generated_model_geometry_links_00b6e500(links, count);
+        reserve_generated_model_point_lights_00b6e500(links, count);
     links.resize(static_cast<std::size_t>(count), nullptr);
 }
 
@@ -150,11 +150,11 @@ void remove_generated_model_scene_00b6ee10(GeneratedModelLifetimeRuntime& runtim
 
 void release_generated_model_00b6f310(GeneratedModelLifetime& model) noexcept {
     std::size_t index = 0;
-    while (index < model.geometry_links_164.size()) {
-        remove_geometry_model_link_00b7c1a0(*model.geometry_links_164[index], model.transform());
+    while (index < model.point_lights_164.size()) {
+        remove_point_light_model_link_00b7c1a0(*model.point_lights_164[index], model.transform());
         ++index;
     }
-    resize_generated_model_geometry_links_00b6ec70(model.geometry_links_164, 0);
+    resize_generated_model_point_lights_00b6ec70(model.point_lights_164, 0);
     CameraTransform& node = model.transform();
     while (CameraTransform* child = node.first_child) {
         node.first_child = child->next_sibling;
@@ -189,8 +189,8 @@ void destroy_generated_model_after_release_00b750c0(GeneratedModelLifetime& mode
     model.retained_130 = nullptr; // second native store before scene detach
     remove_generated_model_scene_00b6ee10(model.runtime, model,
         model.attachment_state.scene, true);
-    resize_generated_model_geometry_links_00b6ec70(model.geometry_links_164, 0);
-    std::vector<GeneratedGeometryModelLinks*>().swap(model.geometry_links_164);
+    resize_generated_model_point_lights_00b6ec70(model.point_lights_164, 0);
+    std::vector<GeneratedModelPointLightLinks*>().swap(model.point_lights_164);
     if (model.name_54_58) model.name_54_58->return_storage();
     // Host association teardown happens after recovered observable cleanup.
     model.runtime.scenes.unbind(model.attachment_state);
