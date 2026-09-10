@@ -1,0 +1,302 @@
+{
+  "packet": "app_init_locale",
+  "owner": "agent/init-locale",
+  "doc": "docs/APP_INIT_LOCALE.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "note": "Every name is a hypothesis, not a recovered symbol. Ghidra was read-only for this packet; the orchestrator applies ledger names after merge.",
+  "scope_correction": {
+    "address": "0073bae0",
+    "claim_in_brief": "the globals table",
+    "finding": "0073bae0 is the font definition loader for Fonts/Fonts.lua. The 'globals' table name is pushed by 00aa0d30 at 0073e103. 0073bae0 is documented here only for its single locale input, the language entry fontpath from 008d4890."
+  },
+  "call_sequence_in_0073d410": [
+    {"address": "0073e06a", "callee": "008d4870", "ecx": "00f88980", "stack_args": []},
+    {"address": "0073e08f", "callee": "00aa09d0", "ecx": "[00f8bc4c]", "stack_args": ["native string with the name returned by 008d4870"]},
+    {"address": "0073e103", "callee": "00aa0d30", "ecx": "[00f8bc4c]", "stack_args": ["native string \"globals\" built from the 7-byte literal at 00cf7774"]},
+    {"address": "0073e135", "callee": "00aa06d0", "ecx": "[00f8bc4c]", "stack_args": ["force = 0"]},
+    {"address": "0073e13c", "callee": "0073bae0", "ecx": "EBP", "stack_args": []}
+  ],
+  "sequencing_finding": "00aa09d0 gates its file load on the registered-name vector being non-empty, and globals is pushed only after it returns, so on this path the table is actually read by the 00aa06d0 call at 0073e135, which runs because the entry count at +0x4014 is still zero. 008d5030 uses the same pair with force = 1 at 008d5133.",
+  "functions": [
+    {
+      "address": "008d4870",
+      "name": "BSP_GameSettings_GetLanguageName",
+      "convention": "__thiscall, ECX = settings object, no stack argument",
+      "ret": "RET",
+      "state": "reconstructed, build-tested, installed-file-checked",
+      "behavior": "index = [ECX+4]; entry = [00f88974] + index*0x20; return [entry+4] or 0xf88a3c when null. 00f88a3c is zeroed in the image, so the fallback is the empty string.",
+      "callers": ["0043bc30", "004dfb70", "00706760", "0073d410"],
+      "callees": []
+    },
+    {
+      "address": "008d4890",
+      "name": "BSP_GameSettings_GetLanguageFontPath",
+      "convention": "__thiscall, ECX = settings object, no stack argument",
+      "ret": "RET",
+      "state": "reconstructed, build-tested",
+      "behavior": "Same shape for entry +0x18/+0x1c. Returns the empty string 00ce3a0c when entry+0x18 is zero.",
+      "callers": ["0073bae0"],
+      "callees": []
+    },
+    {
+      "address": "008d7bc0",
+      "name": "BSP_GameSettings_BuildLanguageTable",
+      "convention": "cdecl, no arguments",
+      "ret": "RET",
+      "state": "analyzed; the descriptor parse is reconstructed and installed-file-checked; the enumeration and the five skip tests at 00553c80 are not reconstructed",
+      "behavior": "Gated on 00f88978. Seeds \"lockit\" (00d15e08) and \".lng\" (00d15e10) and fills the 0x20-byte entries behind 00f88974 from four case-insensitive keys.",
+      "hardcoded_descriptor_names": {
+        "00d15d88": "lockit/englishauthentic.lng",
+        "00d15da4": "lockit/spanish.lng",
+        "00d15db8": "lockit/german.lng",
+        "00d15dcc": "lockit/italian.lng",
+        "00d15de0": "lockit/french.lng",
+        "00d15df4": "lockit/english.lng"
+      },
+      "callers": [],
+      "callees": ["00438e10", "0041e870", "00886280", "00553c80", "008d47f0"]
+    },
+    {
+      "address": "00aa09d0",
+      "name": "BSP_Localization_LoadTable",
+      "convention": "__thiscall, ECX = manager 00f8bc4c, one native-string pointer",
+      "ret": "RET 4 at 00aa0cbe",
+      "state": "reconstructed, build-tested, installed-file-checked; the GUI refresh tail is excluded",
+      "behavior": "00435c40 equality check against +0x4018 returns early; otherwise store the name, clear the map with 0073c240 on manager+0x14, and load only when the vector at +8/+0xc is non-empty and the count at +0x4014 is zero. Tail calls 004c12b0 and 00aa4650.",
+      "callers": ["0073d410", "008d5b50"],
+      "callees": ["00435c40", "0073c240", "0041e870", "0041dd40", "004260b0", "004261a0", "00bdf4c0", "00aa0020", "004c12b0", "00aa4650"]
+    },
+    {
+      "address": "00aa06d0",
+      "name": "BSP_Localization_ReloadTables",
+      "convention": "__thiscall, ECX = manager, one char stack argument (force)",
+      "ret": "RET 4",
+      "state": "reconstructed, build-tested, installed-file-checked",
+      "behavior": "Loads when the count at +0x4014 is zero or force is nonzero, using the name at +0x4018. No registered-name gate and no GUI refresh.",
+      "callers": ["004dfb70", "00686380", "0073d410", "008c5230", "008d5030", "008d5b50"],
+      "callees": ["0041e870", "0041dd40", "004260b0", "004261a0", "00bdf4c0", "00aa0020"]
+    },
+    {
+      "address": "00aa0020",
+      "name": "BSP_Localization_ParseTableFile",
+      "convention": "__thiscall, ECX = manager, plus an 8-byte native string by value and two ints on the stack",
+      "ret": "callee-cleaned 0x10 bytes of stack arguments",
+      "state": "reconstructed, build-tested, installed-file-checked; mount collection left to the injected reader",
+      "behavior": "00bdef90 collects every mount holding the name; each stream is parsed with the three-state scanner. Phase two runs when the second int argument is zero.",
+      "callers": ["00aa06d0", "00aa09d0"],
+      "callees": ["00bdef90", "004cdc20", "00bef750", "00a9fc30", "004c53e0", "00a9ff20", "00427110"]
+    },
+    {
+      "address": "00aa0d30",
+      "name": "BSP_Localization_RegisterTableName",
+      "convention": "adjustor thunk: ADD ECX,4; JMP 00450540",
+      "ret": "tail call",
+      "state": "reconstructed, build-tested",
+      "behavior": "push_back onto the vector of 8-byte native strings at manager +8/+0xc/+0x10. Duplicates are not filtered.",
+      "callers": ["0073d410", "008d5030"],
+      "callees": ["00450540"]
+    },
+    {
+      "address": "00a9fc30",
+      "name": "BSP_StringMap_InsertOrGet",
+      "convention": "__thiscall, ECX = bucket array, one native-string key pointer",
+      "ret": "returns node+8, the value slot",
+      "state": "reconstructed, build-tested, installed-file-checked",
+      "behavior": "Returns the existing node when the key matches, so a repeated key overwrites. New nodes are pushed at the chain head and increment the count at +0x4000.",
+      "callers": ["00aa0020"],
+      "callees": ["00a9f0b0", "00a9f460", "__stricmp"]
+    },
+    {
+      "address": "00a9ec70",
+      "name": "BSP_StringMap_Find",
+      "convention": "__thiscall, ECX = bucket array, one native-string key pointer",
+      "ret": "node pointer or null",
+      "state": "reconstructed, build-tested, installed-file-checked",
+      "behavior": "Const counterpart of 00a9fc30, identical hash and chain walk.",
+      "callers": ["00a9f4b0"],
+      "callees": ["__stricmp"]
+    },
+    {
+      "address": "0073c240",
+      "name": "BSP_StringMap_Clear",
+      "convention": "__fastcall, one argument: the bucket array",
+      "ret": "RET",
+      "state": "reconstructed, build-tested; the pooled allocator is not reproduced",
+      "behavior": "Walks 0x1000 chains following node+0x14, returns each 0x1c-byte node to the pool under the critical section at 00e17698, then memsets 0x4000 bytes and zeroes the count at +0x4000.",
+      "callers": ["00aa09d0"],
+      "callees": ["00737ce0", "_memset"]
+    },
+    {
+      "address": "00a9fad0",
+      "name": "BSP_Localization_ResolveKeyList",
+      "convention": "two arguments: the out wide string and the key",
+      "ret": "RET",
+      "state": "analyzed; only the '|' split is reconstructed",
+      "behavior": "_strcspn over the delimiter set \"|\", one 00a9f4b0 call per piece.",
+      "callers": ["00438020", "00510c20", "0057c360", "005d0050", "006003a0", "00690fd0", "00776930", "00a40510", "00a9f4b0", "00abaed0"],
+      "callees": ["00a9f4b0", "_strcspn"]
+    },
+    {
+      "address": "00a9f4b0",
+      "name": "BSP_Localization_ResolveKey",
+      "convention": "two arguments: the out wide string and the key",
+      "ret": "RET",
+      "state": "analyzed, provisional",
+      "behavior": "Strips a leading '^', treats a leading '.' as a marker that suppresses the map lookup, resolves the rest with 00a9ec70, falls back to 00f8bc54, then scans for the '#' marker at 00cf828c and substitutes in a loop.",
+      "callers": ["00a9fad0"],
+      "callees": ["00a9ec70", "005cf090", "00a9ef60", "_wcscspn"]
+    },
+    {
+      "address": "004260b0",
+      "name": "BSP_NativeString_FromInt",
+      "convention": "__thiscall, ECX = out native string, one int stack argument",
+      "ret": "returns the out string",
+      "state": "analyzed; behavior reproduced inline",
+      "behavior": "_sprintf(buf, \"%d\", value) into a 52-byte stack buffer, then assign.",
+      "callers": ["00aa06d0", "00aa09d0"],
+      "callees": ["_sprintf", "0041dd40"]
+    },
+    {
+      "address": "00435c40",
+      "name": "BSP_NativeString_EqualsInsensitive",
+      "convention": "__thiscall over two native strings",
+      "ret": "bool in AL",
+      "state": "analyzed; behavior reproduced inline",
+      "behavior": "Length equality, null-size special cases, then __stricmp on the data.",
+      "callers": ["00aa09d0"],
+      "callees": ["__stricmp"]
+    },
+    {
+      "address": "0073bae0",
+      "name": "BSP_FontSystem_LoadDefinitions",
+      "convention": "__thiscall",
+      "ret": "RET",
+      "state": "analyzed for its locale input only; exported",
+      "behavior": "First call is 008d4890, the language entry fontpath; passes it with the constants \"Fonts\\\\\" and \"Fonts/Fonts.lua\" to 007371d0 and 00ac3910. The installed English descriptor has no fontpath key, so that argument is empty for the shipped build.",
+      "callers": ["0073d410"],
+      "callees": ["008d4890", "007371d0", "00ac3910", "0053bc00", "00be9620", "004c12b0", "00aa5e20"]
+    }
+  ],
+  "language_entry_layout": {
+    "stride": "0x20",
+    "table_pointer_global": "00f88974",
+    "built_once_flag": "00f88978",
+    "fields": [
+      {"offset": "+0x00/+0x04", "key": "lanfile", "key_literal": "00d15d80", "accessor": "008d4870"},
+      {"offset": "+0x08/+0x0c", "key": "lockit_id", "key_literal": "00d15d74", "accessor": null},
+      {"offset": "+0x10/+0x14", "key": "voice_dir", "key_literal": "00d15d68", "accessor": null},
+      {"offset": "+0x18/+0x1c", "key": "fontpath", "key_literal": "00d15d5c", "accessor": "008d4890"}
+    ]
+  },
+  "manager_layout": {
+    "singleton_global": "00f8bc4c",
+    "fields": [
+      {"offset": "+0x04..+0x10", "field": "vector<NativeString> registered table names, base +8, end +0xc, cap +0x10"},
+      {"offset": "+0x14..+0x4013", "field": "0x1000 hash bucket heads"},
+      {"offset": "+0x4014", "field": "live entry count"},
+      {"offset": "+0x4018/+0x401c", "field": "current language name"},
+      {"offset": "+0x4020..+0x402f", "field": "vector<uint16> first sidecar column"},
+      {"offset": "+0x4030..+0x403f", "field": "vector<uint16> second sidecar column"}
+    ],
+    "node_size": "0x1c",
+    "node_fields": [
+      {"offset": "+0x00/+0x04", "field": "key native string {size, pointer}"},
+      {"offset": "+0x08/+0x0c", "field": "value wide string {size, pointer}"},
+      {"offset": "+0x10", "field": "previous link"},
+      {"offset": "+0x14", "field": "next link"},
+      {"offset": "+0x18", "field": "pool block index"}
+    ]
+  },
+  "hash": {
+    "buckets": 4096,
+    "mask": "0xfff",
+    "multiplier": "0x83",
+    "fold": "only 'A'..'Z' via (unsigned char)(c + 0xbf) < 0x1a, then c += 0x20",
+    "accumulate": "h = h * 0x83 + (signed char)c",
+    "compare": "length equality then __stricmp"
+  },
+  "file_formats": {
+    "lng": {
+      "path": "lockit/<name>.lng",
+      "encoding": "ASCII, whitespace-separated key value pairs",
+      "keys": ["lanfile", "lockit_id", "voice_dir", "fontpath"],
+      "unknown_keys": "ignored"
+    },
+    "lan": {
+      "path": "lockit/<language>.lan, plus lockit/<language>.lan0 .. .lan98",
+      "path_literals": {"prefix": "00d5bcd0 \"lockit/\"", "extension": "00d5bcc8 \".lan\""},
+      "record": "category ' ' name ' ' utf16le-text 00 0A 00 0D",
+      "key": "category '.' name, separator literal 00ce3a70",
+      "key_encoding": "ASCII bytes, case-insensitive",
+      "text_encoding": "UTF-16LE code units, no terminator stored",
+      "header": "none, no BOM",
+      "native_key_buffer_bytes": 152,
+      "native_text_buffer_bytes": 19994,
+      "duplicate_key_rule": "last record in file order wins"
+    },
+    "lanx": {
+      "path": "the .lan path with 'x' appended, literal 00ceb488",
+      "content": "flat array of 16-bit pairs read to end of stream",
+      "destination": "first of each pair to manager +0x4020, second to +0x4030",
+      "installed_size_bytes": 0,
+      "meaning": "not established"
+    }
+  },
+  "installed_file_check": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "modified": false,
+    "englishauthentic_lng": {
+      "size_bytes": 80,
+      "lanfile": "englishauthentic",
+      "lockit_id": "FE.opt_englishauthentic",
+      "voice_dir": "authentic",
+      "fontpath": null
+    },
+    "englishauthentic_lan": {
+      "size_bytes": 999674,
+      "records_parsed": 6864,
+      "whole_file_consumed": true,
+      "terminator_00_0A_00_0D_occurrences": 6864,
+      "crlf_0D_0A_occurrences": 0,
+      "distinct_keys_after_insert": 6856,
+      "duplicate_keys": 8,
+      "occupied_buckets_of_4096": 3356,
+      "longest_chain": 10,
+      "longest_text_units": 1448,
+      "longest_category_token_bytes": 14,
+      "longest_name_token_bytes": 53,
+      "top_categories": {"FE": 1545, "ingame": 1102, "globals": 509, "hints": 240, "FE_pc": 170},
+      "case_insensitive_lookup": "FE.briefing and fe.BRIEFING both resolve to the 8 units \"Briefing\"",
+      "duplicate_last_wins_confirmed": true
+    },
+    "englishauthentic_lanx": {"size_bytes": 0, "pairs": 0},
+    "future_japanese_lan": {
+      "size_bytes": 858765,
+      "conforms": false,
+      "separator_00_0D_0A_00_0D_occurrences": 5923,
+      "note": "Under lockit/future/, outside the path either loader builds, written by a different tool, with at least one value stored as 8-bit '?' placeholders. The recovered parser rejects it."
+    }
+  },
+  "reconstruction": {
+    "header": "include/bsp/locale_tables.hpp",
+    "source": "src/locale_tables.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "build": "scripts/build.ps1, Win32 MSVC, warnings as errors: clean",
+    "tests": "existing ctest suite reconstructed_math passes; no new test added",
+    "injected_interface": "LocaleTables::FileReader, std::function<bool(const std::string&, std::vector<uint8_t>&)>; no file code duplicated from the VFS or physical-file layers",
+    "deviations": [
+      "Records whose composed key would exceed 152 bytes or whose text would exceed 19994 bytes are rejected with an error instead of overflowing the native stack frame.",
+      "The GUI refresh tail of 00aa09d0 (004c12b0, 00aa4650) is not reproduced.",
+      "0073c240's pooled allocator and critical section are replaced by owning storage."
+    ]
+  },
+  "open_questions": [
+    "How the language name from 008f7db0 becomes the integer index at settings +4.",
+    "What the .lanx 16-bit pairs mean; the shipped sidecar is empty.",
+    "What consumes the registered table names at manager +8; only emptiness is read by these loaders.",
+    "Whether the numbered probes lockit/<lang>.lan0.. are a patch mechanism; none ship.",
+    "The '#' substitution pass and the '^' prefix in 00a9f4b0.",
+    "The strings 'Content file name for %s' and '<SRCH><', noted by the earlier map as reachable from 00aa09d0, were not encountered on any path walked here."
+  ]
+}
