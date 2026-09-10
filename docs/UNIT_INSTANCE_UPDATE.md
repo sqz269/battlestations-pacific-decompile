@@ -422,3 +422,7 @@ of the last instruction.
 | `unit_controller` | 0092D730, 0092BE80, 00815AA0, +1018h ctor | docs/UNIT_CONTROLLER.md | The controller subobject at `+1018h`: its layout, how the input records of `docs/GAME_INPUT_TICK.md` reach it, and its physics body at `+2Ch` |
 | `unit_base_vtable_tail` | 00CFC3D0+188h..23Ch | docs/UNIT_BASE_VTABLE.md | Resolve the unresolved slot span and locate the damage entry point |
 | `world_timed_attachments` | 00904600, 004CB030 `+4B0h` list | docs/WORLD_TIMED_ATTACHMENTS.md | The world's deadline list walked after every entity update |
+
+## Correction from docs/UNIT_TIMED_SUBUPDATES.md
+
+The position integration is not in step 11: none of the three timed sub-updates writes a position, heading or speed, and none samples the ocean or terrain. `008252c0` is the engine-audio parameter update, `00956600` advances the age and two countdowns (the +6D8h countdown is a 0.2 s damage-threshold scan over the descriptor's 16-byte records, not a reload) and runs the animation chain and the +2F4h fade that becomes the scene node's visibility factor, and `00834e90` drives three steering nodes and four propeller nodes. The transform is owned by the controller at unit+1018h and its physics body (`0092d730` dots the body's linear velocity with a row of the block `00c32000` returns), so the integration lives behind step 6 (`0092be80`) or inside the physics library.
