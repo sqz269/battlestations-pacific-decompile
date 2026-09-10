@@ -1,0 +1,762 @@
+{
+ "packet": "scene_entity_factory",
+ "worktree": "agent/entity-factory",
+ "ghidra": "read-only",
+ "names_are_hypotheses": true,
+ "supersedes": {
+  "doc": "docs/SCENE_FILE_READER.md",
+  "claim": "0046C550 is the single instantiation call, reached as 0046C550(classFactory, name, a3, frame[16], propertyBag) after 00468660 maps the class id to its factory",
+  "correction": "0046C550 constructs nothing; it is the generation predicate. 00468660 maps a class id to its class NAME. The construction is descriptor[1]/descriptor[2] called by 0046CF40 after 0046C550 returns non-zero."
+ },
+ "scene_database": {
+  "global": "00e18680",
+  "size": "0x170",
+  "ctor": "0046f160",
+  "publisher": "0046f350",
+  "published_from": "004e3aa0 BSP_Game_OnInit at 004e3e60",
+  "class_map_offset": "0x34",
+  "buckets": 64,
+  "bucket_array_offset": "0x3c",
+  "map_node": {
+   "+0": "key length",
+   "+4": "char* class name",
+   "+8": "void* descriptor",
+   "+0xc": "next"
+  },
+  "descriptor": {
+   "size": "0x0c",
+   "+0": "int class id",
+   "+4": "create (instantiate pass)",
+   "+8": "register (registration pass)"
+  },
+  "exempt_set_offset": "0x164",
+  "deferred_record_list_offset": "0x24"
+ },
+ "routines": [
+  {
+   "address": "0046c550",
+   "name": "BSP_SceneEntity_ShouldGenerate",
+   "abi": "__thiscall(SceneDatabase*), RET 0x5c, 23 stack dwords",
+   "state": "exported/analyzed/reconstructed/build-tested/installed-file-checked",
+   "args": [
+    "a1 const char* className",
+    "a2 const char* entityName",
+    "a3 Entity* parent",
+    "a4 const float localFrame[16]",
+    "a5 PropertyBag* properties",
+    "a6 unused on every path read",
+    "a7..a22 float parentFrame[16] by value",
+    "a23 void*& outDeferredRecord (caller passes 0)"
+   ],
+   "returns": "AL non-zero: the caller may construct the entity"
+  },
+  {
+   "address": "004f2800",
+   "name": "BSP_SceneDatabase_RegisterEntityClasses",
+   "abi": "void(), 26 calls to 004ee250",
+   "state": "analyzed/reconstructed-as-data",
+   "note": "previously named BSP_Scene_ResolveNamedObjects; that name is superseded"
+  },
+  {
+   "address": "004ee250",
+   "name": "BSP_SceneClassMap_RegisterClass",
+   "abi": "__thiscall(map), 4 stack args, RET 0x10",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "004ee1a0",
+   "name": "BSP_SceneClassMap_Insert",
+   "abi": "__thiscall(map, key, value)",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "00468fb0",
+   "name": "BSP_SceneClassMap_FindNode",
+   "abi": "__thiscall(map, key, int* outHash)",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "00468660",
+   "name": "BSP_SceneDatabase_ClassIdToName",
+   "abi": "__thiscall(SceneDatabase*, int id), RET 4",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "00469690",
+   "name": "BSP_SceneDatabase_ClassNameToId",
+   "abi": "__thiscall(SceneDatabase*, const char*), RET 4",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "0046bf70",
+   "name": "BSP_SceneEntity_RegisterMultiplayerStock",
+   "abi": "__thiscall",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "0046be90",
+   "name": "BSP_SceneEntity_RegisterHiddenStockUnit",
+   "abi": "unit-class id argument, rejects 0x2ac",
+   "state": "exported/analyzed"
+  },
+  {
+   "address": "0046bf20",
+   "name": null,
+   "state": "analyzed as a call site only"
+  },
+  {
+   "address": "0046c450",
+   "name": null,
+   "state": "analyzed as a call site only (append to this+0x24)"
+  },
+  {
+   "address": "004693c0",
+   "name": null,
+   "state": "analyzed as a call site only (0x5c record constructor)"
+  }
+ ],
+ "class_table": [
+  {
+   "class_id": "0x07",
+   "class_id_dec": 7,
+   "name": "DestroyerGen",
+   "name_string": "00cea7a0",
+   "create": "004f0520",
+   "register": "004e98e0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 9778,
+   "scn_entities_with_multitype": 9123
+  },
+  {
+   "class_id": "0x08",
+   "class_id_dec": 8,
+   "name": "SubmarineGen",
+   "name_string": "00cea790",
+   "create": "004f05f0",
+   "register": "004e98e0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 330,
+   "scn_entities_with_multitype": 302
+  },
+  {
+   "class_id": "0x09",
+   "class_id_dec": 9,
+   "name": "MotherShipGen",
+   "name_string": "00ce5728",
+   "create": "004f0860",
+   "register": "004e98f0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 1089,
+   "scn_entities_with_multitype": 1060
+  },
+  {
+   "class_id": "0x0c",
+   "class_id_dec": 12,
+   "name": "LandingShipGen",
+   "name_string": "00cea774",
+   "create": "004f0790",
+   "register": "004e98e0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 390,
+   "scn_entities_with_multitype": 289
+  },
+  {
+   "class_id": "0x0e",
+   "class_id_dec": 14,
+   "name": "TBoatGen",
+   "name_string": "00cea784",
+   "create": "004f06c0",
+   "register": "004e98e0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 652,
+   "scn_entities_with_multitype": 626
+  },
+  {
+   "class_id": "0x18",
+   "class_id_dec": 24,
+   "name": "PlaneSquadronGen",
+   "name_string": "00cea760",
+   "create": "004f0ad0",
+   "register": "004e6bc0",
+   "instance_size": "0x414",
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 2131,
+   "scn_entities_with_multitype": 1846
+  },
+  {
+   "class_id": "0x1a",
+   "class_id_dec": 26,
+   "name": "LandConvoy",
+   "name_string": "00cea700",
+   "create": "004f2700",
+   "register": "004ee300",
+   "instance_size": "0x3cc",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 31,
+   "scn_entities_with_multitype": 31
+  },
+  {
+   "class_id": "0x1b",
+   "class_id_dec": 27,
+   "name": "LandFort",
+   "name_string": "00ce5864",
+   "create": "004f0fb0",
+   "register": "004e5ba0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Stationary",
+   "vtable_observed": null,
+   "scn_entities": 72615,
+   "scn_entities_with_multitype": 72455
+  },
+  {
+   "class_id": "0x1c",
+   "class_id_dec": 28,
+   "name": "CommandBuilding",
+   "name_string": "00ce5870",
+   "create": "004f10b0",
+   "register": "004e5ba0",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 649,
+   "scn_entities_with_multitype": 649
+  },
+  {
+   "class_id": "0x1d",
+   "class_id_dec": 29,
+   "name": "LandingPoint",
+   "name_string": "00ce9238",
+   "create": "004e9d40",
+   "register": "004e5b00",
+   "instance_size": "0x224",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 3582,
+   "scn_entities_with_multitype": 3582
+  },
+  {
+   "class_id": "0x34",
+   "class_id_dec": 52,
+   "name": "WaterMine",
+   "name_string": "00cea74c",
+   "create": "004e9f80",
+   "register": "004e5b00",
+   "instance_size": null,
+   "creator_kind": "typed",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 1013,
+   "scn_entities_with_multitype": 1013
+  },
+  {
+   "class_id": "0x36",
+   "class_id_dec": 54,
+   "name": "Stationary",
+   "name_string": "00cea044",
+   "create": "004f0be0",
+   "register": "004e5b00",
+   "instance_size": null,
+   "creator_kind": "typed",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 2233,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x3b",
+   "class_id_dec": 59,
+   "name": "Wreck",
+   "name_string": "00cea758",
+   "create": "004f0cc0",
+   "register": "004e5b00",
+   "instance_size": null,
+   "creator_kind": "typed",
+   "type_key": "WreckType",
+   "vtable_observed": null,
+   "scn_entities": 0,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x3d",
+   "class_id_dec": 61,
+   "name": "Cloud",
+   "name_string": "00ce7524",
+   "create": "004e9e40",
+   "register": "004e9920",
+   "instance_size": null,
+   "creator_kind": "typed",
+   "type_key": "CloudType",
+   "vtable_observed": null,
+   "scn_entities": 7231,
+   "scn_entities_with_multitype": 7231
+  },
+  {
+   "class_id": "0x41",
+   "class_id_dec": 65,
+   "name": "NavPoint",
+   "name_string": "00ce86a8",
+   "create": "004e99b0",
+   "register": "004e5b00",
+   "instance_size": "0x1e4",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": "00ce8550",
+   "scn_entities": 3515,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x42",
+   "class_id_dec": 66,
+   "name": "MovieCamPos",
+   "name_string": "00ce8830",
+   "create": "004e9ae0",
+   "register": "004e5b00",
+   "instance_size": "0x1e4",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": "00ce86d8",
+   "scn_entities": 78,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x43",
+   "class_id_dec": 67,
+   "name": "MovieCamLookat",
+   "name_string": "00ce89b8",
+   "create": "004e9c10",
+   "register": "004e5b00",
+   "instance_size": "0x1e4",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": "00ce8860",
+   "scn_entities": 78,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x44",
+   "class_id_dec": 68,
+   "name": "Landscape",
+   "name_string": "00cea740",
+   "create": "004f1460",
+   "register": "004e5b00",
+   "instance_size": "0x430",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 763,
+   "scn_entities_with_multitype": 749
+  },
+  {
+   "class_id": "0x45",
+   "class_id_dec": 69,
+   "name": "AirField",
+   "name_string": "00ce5738",
+   "create": "004f0930",
+   "register": "004e9900",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 256,
+   "scn_entities_with_multitype": 245
+  },
+  {
+   "class_id": "0x46",
+   "class_id_dec": 70,
+   "name": "Shipyard",
+   "name_string": "00ce56e8",
+   "create": "004f0a00",
+   "register": "004e9910",
+   "instance_size": null,
+   "creator_kind": "unit",
+   "type_key": "Type",
+   "vtable_observed": null,
+   "scn_entities": 243,
+   "scn_entities_with_multitype": 236
+  },
+  {
+   "class_id": "0x47",
+   "class_id_dec": 71,
+   "name": "Path",
+   "name_string": "00cea738",
+   "create": "004ea650",
+   "register": "004e5b00",
+   "instance_size": "0x210",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 25292,
+   "scn_entities_with_multitype": 24964
+  },
+  {
+   "class_id": "0x4a",
+   "class_id_dec": 74,
+   "name": "CameraPath",
+   "name_string": "00ce851c",
+   "create": "004ea760",
+   "register": "004e5b00",
+   "instance_size": "0x210",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 0,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x4d",
+   "class_id_dec": 77,
+   "name": "SpawnPoint",
+   "name_string": "00ce56b8",
+   "create": "004f1a60",
+   "register": "004ea080",
+   "instance_size": "0x348",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 1704,
+   "scn_entities_with_multitype": 1697
+  },
+  {
+   "class_id": "0x5b",
+   "class_id_dec": 91,
+   "name": "SimpleEffect",
+   "name_string": "00cea71c",
+   "create": "004f0db0",
+   "register": "004e5b00",
+   "instance_size": "0x1ec",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 11,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x5c",
+   "class_id_dec": 92,
+   "name": "PeriodicEffect",
+   "name_string": "00cea70c",
+   "create": "004f0eb0",
+   "register": "004e5b00",
+   "instance_size": "0x228",
+   "creator_kind": "new",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 0,
+   "scn_entities_with_multitype": 0
+  },
+  {
+   "class_id": "0x5d",
+   "class_id_dec": 93,
+   "name": "FreeCamPos",
+   "name_string": "00cea72c",
+   "create": "004e5bb0",
+   "register": "004e5b00",
+   "instance_size": null,
+   "creator_kind": "typed",
+   "type_key": null,
+   "vtable_observed": null,
+   "scn_entities": 0,
+   "scn_entities_with_multitype": 0
+  }
+ ],
+ "unidentified_ids_resolved": {
+  "0x44": "Landscape",
+  "0x47": "Path",
+  "0x19": "not a registered class id; the CMP at 0046d492 can never match",
+  "0x1b": "LandFort",
+  "0x1c": "CommandBuilding",
+  "0x34": "WaterMine",
+  "0x4d": "SpawnPoint"
+ },
+ "registration_pass_class_ids": [
+  "0x47",
+  "0x19",
+  "0x1b",
+  "0x1c",
+  "0x34",
+  "0x4d"
+ ],
+ "registration_pass_fallback_ids": [
+  "0x4d",
+  "0x44"
+ ],
+ "creator_abi": {
+  "call_site": "0046d59d",
+  "ecx": "class id",
+  "edx": "pointer to the frame block",
+  "stack_arg1": "property bag",
+  "stack_args": 4,
+  "note": "not __thiscall; ECX carries data"
+ },
+ "game_mode_gate": {
+  "mode_source": "004bca50 with ECX=*(00e188a8)",
+  "jump_table": "0046cce4",
+  "cases": 11,
+  "area_array": {
+   "base": "*(00e188a8)+0x705c",
+   "stride": "0x18",
+   "floats_per_row": 6,
+   "test": "bounds[0] < X < bounds[3] and bounds[5] < Z < bounds[2], all strict (FCOMIP/JBE)",
+   "unused_floats": [
+    1,
+    4
+   ]
+  },
+  "mode_rows": [
+   {
+    "mode": 0,
+    "case": "0046c95e",
+    "slot": 0,
+    "row": "+0x705c",
+    "key": "MultiIslandCapture1v1"
+   },
+   {
+    "mode": 1,
+    "case": "0046c9d5",
+    "slot": 1,
+    "row": "+0x7074",
+    "key": "MultiIslandCapture2v2"
+   },
+   {
+    "mode": 2,
+    "case": "0046ca4c",
+    "slot": 2,
+    "row": "+0x708c",
+    "key": "MultiIslandCapture3v3"
+   },
+   {
+    "mode": 3,
+    "case": "0046cac3",
+    "slot": 3,
+    "row": "+0x70a4",
+    "key": "MultiIslandCapture4v4"
+   },
+   {
+    "mode": 4,
+    "case": "0046c870",
+    "slot": 6,
+    "row": "+0x70ec",
+    "key": "MultiDuel"
+   },
+   {
+    "mode": 5,
+    "case": "0046c8e7",
+    "slot": 7,
+    "row": "+0x7104",
+    "key": "MultiEscort"
+   },
+   {
+    "mode": 6,
+    "case": "0046c782",
+    "slot": 4,
+    "row": "+0x70bc",
+    "key": "MultiSiege"
+   },
+   {
+    "mode": 7,
+    "case": "0046c7f9",
+    "slot": 5,
+    "row": "+0x70d4",
+    "key": "MultiCompetitive"
+   },
+   {
+    "mode": 8,
+    "case": "0046cc5b",
+    "slot": null,
+    "row": null,
+    "key": "GenerateInGame",
+    "behaviour": "stock registration then return 1, else 0"
+   },
+   {
+    "mode": 9,
+    "case": "0046cb43",
+    "slot": null,
+    "row": null,
+    "key": "GenerateInGame",
+    "behaviour": "deferred record + stock then return 1, else GenerateInEngineMovie"
+   },
+   {
+    "mode": 10,
+    "case": "0046ccca",
+    "slot": null,
+    "row": null,
+    "key": null,
+    "behaviour": "return 1 unconditionally"
+   }
+  ],
+  "default": "modes above 10 return 0",
+  "sub_bag": "the per-mode keys are read out of the MultiType sub-bag; Party, GenerateInGame and GenerateInEngineMovie stay entity-level"
+ },
+ "unknown_class_behaviour": "0046cf40 reads *(node+8) with no null check, so an unregistered class token dereferences address 8 and faults. No skip, no default class, no diagnostic.",
+ "installed_game_validation": {
+  "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+  "method": "lexical scan of all 259 .scn files, local/scn_scan2.py",
+  "files": 259,
+  "entity_headers": 133664,
+  "distinct_class_tokens": 23,
+  "entities_with_multitype": 126098,
+  "files_with_multitype": 253,
+  "class_counts": {
+   "DestroyerGen": 9778,
+   "Path": 25292,
+   "TBoatGen": 652,
+   "NavPoint": 3515,
+   "LandingShipGen": 390,
+   "PlaneSquadronGen": 2131,
+   "Landscape": 763,
+   "AirField": 256,
+   "LandFort": 72612,
+   "MovieCamPos": 78,
+   "MovieCamLookat": 78,
+   "SubmarineGen": 330,
+   "Cloud": 7231,
+   "SpawnPoint": 1704,
+   "MotherShipGen": 1089,
+   "CommandBuilding": 649,
+   "LandConvoy": 31,
+   "Shipyard": 243,
+   "LandingPoint": 3582,
+   "WaterMine": 1013,
+   "SimpleEffect": 11,
+   "Stationary": 2233,
+   "Landfort": 3
+  },
+  "class_counts_with_multitype": {
+   "DestroyerGen": 9123,
+   "Path": 24964,
+   "TBoatGen": 626,
+   "LandingShipGen": 289,
+   "PlaneSquadronGen": 1846,
+   "Landscape": 749,
+   "AirField": 245,
+   "LandFort": 72455,
+   "SubmarineGen": 302,
+   "Cloud": 7231,
+   "SpawnPoint": 1697,
+   "MotherShipGen": 1060,
+   "CommandBuilding": 649,
+   "LandConvoy": 31,
+   "Shipyard": 236,
+   "LandingPoint": 3582,
+   "WaterMine": 1013
+  },
+  "registered_but_unused": [
+   "Wreck",
+   "CameraPath",
+   "PeriodicEffect",
+   "FreeCamPos"
+  ],
+  "delta_vs_scene_file_reader_report": "2183 above its per-class totals (133655 total, 131481 across classes); this scan also counts entity headers inside the regions its recovering parser bailed out of in the nine non-conforming files. The entity-header totals agree to within nine."
+ },
+ "no_ghidra_function": [],
+ "ghidra_flow_gaps": [],
+ "uncertainties": [
+  "nothing was found that inserts into the std::set at scene database +0x164, so the exemption list is unknown",
+  "argument a6 of 0046c550 is not referenced on any path read; it may be dead",
+  "floats 1 and 4 of a play-area row are never read; the field names are a guess and the Z pair is stored high first",
+  "the 0x5c deferred record layout was not decoded beyond its five inputs",
+  "only three class vtables were read directly (NavPoint, MovieCamPos, MovieCamLookat)",
+  "EDI at 0046d467 was inferred to be *(00e18680) from the identical ADD ECX,0x34 in both helpers and five of six constants matching registered ids; provisional",
+  "0046c550 has three more call sites (0046d655, 0046db27, 0046de75) whose argument setup was not read"
+ ],
+ "follow_up_packets": [
+  {
+   "packet": "scene_class_exempt_set",
+   "addresses": [
+    "0046c550",
+    "00468db0",
+    "004682b0",
+    "0046f160"
+   ],
+   "files": [
+    "docs/SCENE_CLASS_EXEMPT_SET.md"
+   ],
+   "contract": "what inserts into the std::set at scene database +0x164 and the sibling containers at +0x18 and +0x158"
+  },
+  {
+   "packet": "scene_unit_class_factory",
+   "addresses": [
+    "00964790",
+    "004f0520",
+    "004f0860",
+    "004f0fb0"
+   ],
+   "files": [
+    "docs/SCENE_UNIT_CLASS_FACTORY.md"
+   ],
+   "contract": "the Type value to unit-class path the nine data-driven scene classes share, and the virtual at +0x28"
+  },
+  {
+   "packet": "scene_fixed_entity_classes",
+   "addresses": [
+    "004e99b0",
+    "004ea650",
+    "004f1a60",
+    "004f1460"
+   ],
+   "files": [
+    "docs/SCENE_FIXED_ENTITY_CLASSES.md"
+   ],
+   "contract": "the 12 fixed-size creators: constructor, vtable, and which localframe and property fields each stores"
+  },
+  {
+   "packet": "scene_multiplayer_stock",
+   "addresses": [
+    "0046bf20",
+    "0046bf70",
+    "0046be90",
+    "0095c4d0",
+    "0095c640"
+   ],
+   "files": [
+    "docs/SCENE_MULTIPLAYER_STOCK.md"
+   ],
+   "contract": "PlaneStock %d / Slot %d / Stock %d / AlliedList / JapanList and the 0x2ac unit-class id"
+  },
+  {
+   "packet": "scene_deferred_entity_record",
+   "addresses": [
+    "008f41f0",
+    "004693c0",
+    "0046c450",
+    "0046a9f0"
+   ],
+   "files": [
+    "docs/SCENE_DEFERRED_ENTITY_RECORD.md"
+   ],
+   "contract": "the 0x5c record layout and how the list at scene database +0x24 is drained"
+  }
+ ],
+ "reconstruction": {
+  "header": "include/bsp/scene_entity_factory.hpp",
+  "source": "src/scene_entity_factory.cpp",
+  "build": "scripts/build.ps1, Win32, /W4 /WX, passed",
+  "tests": "tests/math_tests.cpp, one case added, reconstructed_math passed",
+  "reuses": [
+   "bsp::ScenePropertyBlock",
+   "bsp::SceneProperty from include/bsp/scene_file.hpp"
+  ]
+ }
+}
