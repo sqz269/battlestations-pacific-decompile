@@ -1,0 +1,1097 @@
+{
+  "schema_version": 1,
+  "packet": "native_camera_owner_discovery",
+  "status": "read_only_discovery_installed_bytes_checked_no_implementation_or_runtime_claim",
+  "base_commit": "230a5dceec1388312780fad755061b621ad8fa1b",
+  "owned_files": [
+    "docs/NATIVE_CAMERA_OWNER_NEXT.md",
+    "reports/native_camera_owner_next.json"
+  ],
+  "owned_addresses": [
+    "00b71a80",
+    "00b71990",
+    "00b71ce0",
+    "00b71f10",
+    "00b71fe0"
+  ],
+  "evidence": {
+    "verified_utc": "2026-09-10T18:35:13.338136+00:00",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Each bsp.py ghidra bytes command verifies the configured Ghidra project/program before reading; every captured span compared to the installed PE, including section zero fill.",
+    "spans": [
+      {
+        "start": "00b71a80",
+        "end_exclusive": "00b71cdc",
+        "bytes": 604,
+        "sha256": "3172b0daf4b067f4e778c300acaba758da790ecfe290f9733150baf87fcd533a",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71990",
+        "end_exclusive": "00b719d1",
+        "bytes": 65,
+        "sha256": "a153dd5f763f368f06d486a14f99d54aa19f0674a76abab011ca986c75544902",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71f10",
+        "end_exclusive": "00b71fd2",
+        "bytes": 194,
+        "sha256": "17450a1b3bfa1dc52765061735a39fbf4bc16496f259c9c0fa395df8498b4874",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71fe0",
+        "end_exclusive": "00b72000",
+        "bytes": 32,
+        "sha256": "f862f9588b405436a7509dd1ce903c63b420c4bebd7c1fd8c42d38858eeeabca",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71ce0",
+        "end_exclusive": "00b71d08",
+        "bytes": 40,
+        "sha256": "32f16481e38ac30b49e87f53b99a0ab4b6a803176f45c2046e4f313bfd62a286",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6fb60",
+        "end_exclusive": "00b6fb66",
+        "bytes": 6,
+        "sha256": "d50fcd704703372ec7e98ce8c936b1ddaf099c02733ba476dc636749fb0d5b1e",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00cd7d80",
+        "end_exclusive": "00cd7dcf",
+        "bytes": 79,
+        "sha256": "e109289d61de152d58e58e4ad0d6827bced7ddc4382d7d5755e3967f8db2f0ee",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b719e0",
+        "end_exclusive": "00b71a27",
+        "bytes": 71,
+        "sha256": "a6a2a9ce1b052bb76ca42e5e06dd5430993b77fbcfc5b378ac1d6c0c826d92ae",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71a30",
+        "end_exclusive": "00b71a79",
+        "bytes": 73,
+        "sha256": "7394cf533c398b6ae7efb7ec18e78571da87ebc15f19f90cfb2ddfa7bb09c5f2",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b700e0",
+        "end_exclusive": "00b701f5",
+        "bytes": 277,
+        "sha256": "db1361afdc313b0991b980485e2a7e14fed1e7bae802fdebcc937b635c59a546",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b63f10",
+        "end_exclusive": "00b642e2",
+        "bytes": 978,
+        "sha256": "b3478ab1c0937f2e031b29a18b1388ce57de8ee788214297217e510d1b173617",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71400",
+        "end_exclusive": "00b71422",
+        "bytes": 34,
+        "sha256": "9d6c251d4719dc2a48c42b5d5d1906bd235bcfbe361b7db279fa352bbea6319c",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6dae0",
+        "end_exclusive": "00b6db0f",
+        "bytes": 47,
+        "sha256": "96278bc5b63b825371bebe833a96d710582f3964baec7ce888ddcbd944aa29b3",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b652d0",
+        "end_exclusive": "00b65314",
+        "bytes": 68,
+        "sha256": "bfd146eed932da949f3cf2e8afa3a1a4ad4ad9417743dc2c7ce22274a5348b7e",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b659d0",
+        "end_exclusive": "00b65a75",
+        "bytes": 165,
+        "sha256": "ceb95d5a12137cd77b33e4c94874af527b83547531a6c716dba0367d8919c983",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6fcf0",
+        "end_exclusive": "00b6fd60",
+        "bytes": 112,
+        "sha256": "6345b27bd12e2844a965ac9257a87aa63f7da309d591da429866c0f2e0eea62f",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6feb0",
+        "end_exclusive": "00b6feb7",
+        "bytes": 7,
+        "sha256": "bcb9ef1af03bd38b51846cb2f711d9a0dedc8fd16f37cde47fda517fea20b1de",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6fec0",
+        "end_exclusive": "00b6fecd",
+        "bytes": 13,
+        "sha256": "8dd8498c272e8d20bb7193609ccae5d68b7f36075e12d4d047ff22ce909c0d07",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6fdf0",
+        "end_exclusive": "00b6fe10",
+        "bytes": 32,
+        "sha256": "8c45c13e1716be4c2a648541e786f79c6a1c7296e36d73e29ce4f90575d2e5e7",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6fe10",
+        "end_exclusive": "00b6fe20",
+        "bytes": 16,
+        "sha256": "63aa2e45715408fdd5e64e5c30ce09bb843e2fa86bdb2671d5d7f3d796c24534",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b715f0",
+        "end_exclusive": "00b716c3",
+        "bytes": 211,
+        "sha256": "5fb1a7f24ded5de2e16dd6c3e1f7cbc55168d15f60955a6437ae792e44412bf7",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71120",
+        "end_exclusive": "00b711aa",
+        "bytes": 138,
+        "sha256": "b1239c3f0497c7902bafdaba8a777f873cbd778a32a1eac04b4a94f63d931434",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71770",
+        "end_exclusive": "00b718ac",
+        "bytes": 316,
+        "sha256": "1edc235487190a94bae6c1fae7339872d7675503e8adc943be2696de639632e5",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b716d0",
+        "end_exclusive": "00b71770",
+        "bytes": 160,
+        "sha256": "bf13063286a1682a2a572c0eed7e81d0445554b9f1feeb1acf2513d796a725f6",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b711e0",
+        "end_exclusive": "00b71248",
+        "bytes": 104,
+        "sha256": "0154ab9ebb31b9fac109314da8b5d2ce814db88f41cee7c66e36d3467e6d20c2",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6fed0",
+        "end_exclusive": "00b6ff13",
+        "bytes": 67,
+        "sha256": "c24e09c0eb90d6a40a4d3c4e24a5ee6bf990c7f33180a91bade2cd22ea723eb2",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71930",
+        "end_exclusive": "00b7193a",
+        "bytes": 10,
+        "sha256": "579fb4d717566de847759cadad5962f4a20a962e609e0257fa3c0185bf415d5c",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b71350",
+        "end_exclusive": "00b7135a",
+        "bytes": 10,
+        "sha256": "f560b7d953d06bc3c83acfe507717b1103719fda9abf6158d89745770ad2f633",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00cd7dd0",
+        "end_exclusive": "00cd7de6",
+        "bytes": 22,
+        "sha256": "8b239e6c676da532d0eb78d2d4e707a572d89a487d67516df1ea2c324051ec50",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00ce0e30",
+        "end_exclusive": "00ce0e3a",
+        "bytes": 10,
+        "sha256": "499585eb09b0c9fac9f3791f0a7b636d22951e374684276bcb9aa719bbfdaf90",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00b6ffc0",
+        "end_exclusive": "00b6ffce",
+        "bytes": 14,
+        "sha256": "24ae4aca525e8e2aced5d9907022516d8371ab1d456f3cfbad315c51372437e1",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00605fd0",
+        "end_exclusive": "00605ff9",
+        "bytes": 41,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00cc1ad0",
+        "end_exclusive": "00cc1afb",
+        "bytes": 43,
+        "sha256": "b8e0a0cc105566549d8cad1c564af1fa6e78b16ec203873e80d13e389e92bfd9",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00dfaa20",
+        "end_exclusive": "00dfaa5c",
+        "bytes": 60,
+        "sha256": "fd0299827ac19b7b5b35e00f18f3f6c60e45e46715d059b69c80da09a3e73957",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00cc1b20",
+        "end_exclusive": "00cc1b40",
+        "bytes": 32,
+        "sha256": "e9c83c4deaf4f87015a3c8242cea4d6828fc1dd2ab9e30b004b24b1fd57a4f61",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00dfaa90",
+        "end_exclusive": "00dfaac4",
+        "bytes": 52,
+        "sha256": "4d6fdcbc27ad762baf966a8dbbd0f96fcbdb6259b31c5c5c73ccaa1f82668ccb",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00cc1aa0",
+        "end_exclusive": "00cc1ac8",
+        "bytes": 40,
+        "sha256": "8b6157234eef986af83fec47ea2418ffd2696a318040d02553cb7ff3e1f68130",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00dfa9e4",
+        "end_exclusive": "00dfaa20",
+        "bytes": 60,
+        "sha256": "0aba4b45e449825cfe10d3b418cd624d80d0b33c2ca62da5f6aec2c1c3ba4e52",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00d62ce0",
+        "end_exclusive": "00d62ce8",
+        "bytes": 8,
+        "sha256": "19d13d659127fd9d0f7bf9227927d823931a9ee4533130dfa5e3d8b506ae6553",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00d62ce4",
+        "end_exclusive": "00d62cec",
+        "bytes": 8,
+        "sha256": "44d71b7787536d5ede0914397d4699cb696d5982780a3deed4b987bac5d7e9e4",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00d62cf0",
+        "end_exclusive": "00d62d48",
+        "bytes": 88,
+        "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00ce3d08",
+        "end_exclusive": "00ce3d0c",
+        "bytes": 4,
+        "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00ce7d20",
+        "end_exclusive": "00ce7d24",
+        "bytes": 4,
+        "sha256": "c5bc52f5111b4a95d57edccb121dec6b28befe5580e5fe479e04910e0a344dd3",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00d5bd98",
+        "end_exclusive": "00d5bd9c",
+        "bytes": 4,
+        "sha256": "6f4cd532e8c154c45c348ae70bd34e9a5dffdb04411785cb9aa4d5f2ff1ce765",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00d0c5f8",
+        "end_exclusive": "00d0c5fc",
+        "bytes": 4,
+        "sha256": "52066a26a37a31badc03cd3a0c8daffc3fe522911c050c84957aecc2e49543ea",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00ce77fc",
+        "end_exclusive": "00ce7800",
+        "bytes": 4,
+        "sha256": "c36c2606ae26dfb7a6c61b3b7dd29931582302a8d695f198455710a61847fcb5",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00ce3c88",
+        "end_exclusive": "00ce3c8c",
+        "bytes": 4,
+        "sha256": "03a88c8867b3fbcfeefc3270af46afbeb74a27e12cad758e188154cb4aa923dc",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00d7a24c",
+        "end_exclusive": "00d7a250",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "0108ff9c",
+        "end_exclusive": "0108ffa0",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_installed": true,
+        "source": "PE section virtual zero fill"
+      },
+      {
+        "start": "0108ffa0",
+        "end_exclusive": "0108ffb0",
+        "bytes": 16,
+        "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "live_matches_installed": true,
+        "source": "PE section virtual zero fill"
+      },
+      {
+        "start": "00a8e2e0",
+        "end_exclusive": "00a8e860",
+        "bytes": 1408,
+        "sha256": "39a4b3adac8668151352b64903aa5346d6acf9cff8d3b0043dba3a05fa82879c",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      {
+        "start": "00a8ea20",
+        "end_exclusive": "00a8eca1",
+        "bytes": 641,
+        "sha256": "e0a8218874c89cc51fafb924d11db541a4770e1da7c12fafdeb2b32bc7b68288",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      }
+    ],
+    "verified_span_count": 52,
+    "verified_byte_count": 6504,
+    "source_files": [
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "sha256": "e71838d09ae63f602fd3f7d2e178de2795810fc52a13761dc2c93290c83ba708"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "sha256": "b8b1100f9c9ea6d93b8af2887bec506ccf2409ee780e85cf6384f9b9ff2b8d09"
+      },
+      {
+        "path": "include/bsp/camera_frame_state.hpp",
+        "sha256": "3e5e1c2c439a940126986f9160d78993c993479fdc09b7219df8aa6aee40479a"
+      },
+      {
+        "path": "src/camera_projection.cpp",
+        "sha256": "cc4c4536d10891b28ca9daaf56dda8499deac5be085d09a6db373aa1da49a894"
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "sha256": "5a481169233850684c0deb9042f5424f76cdf6a0a264725c8bbc633c721e4464"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "sha256": "f46cd8d00aa92c7c2b4fb2a4ffcff8adfa9c70fec19461d75f0dab35cf180b8a"
+      },
+      {
+        "path": "include/bsp/system_fog_owner.hpp",
+        "sha256": "fd355c272546d20118eea4c808ede51955356e819e0cac30ef7eabee336baf88"
+      },
+      {
+        "path": "src/system_fog_owner.cpp",
+        "sha256": "60ab597fbe906866c2d0f990ad12ab56c0322d462a4626020c3651e1c77847a1"
+      },
+      {
+        "path": "src/camera_frame_state.cpp",
+        "sha256": "76439d4467ed53f30bb8e020fc3f5180c19ee31a04d76664724e36f8465cb369"
+      },
+      {
+        "path": "src/system_time_constants.cpp",
+        "sha256": "9e82137f33b9012a13879cd9c0237fb9245ab9b42daa3e6fbd395f7131a08886"
+      },
+      {
+        "path": "src/system_fog_constants.cpp",
+        "sha256": "3d61e4eeea46e4d36128e38651e798e6442bce5f888e7820aacaf8543c929c6c"
+      },
+      {
+        "path": "src/environment_fog_apply.cpp",
+        "sha256": "25645e5143d345ff6a58cd2dcde8eff88c3f39c00d63c27b4ee473d375d89991"
+      },
+      {
+        "path": "src/system_fog_world_factory.cpp",
+        "sha256": "f28a42cd3546264dd9f1de398e07be579553b8a277a6d0b44f4d63f670ca3270"
+      },
+      {
+        "path": "src/system_constant_builder.cpp",
+        "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+      },
+      {
+        "path": "docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md",
+        "sha256": "152eecde399a79bf7165d005363cee5106514fd516e18f27a72cca863167ac9a"
+      }
+    ],
+    "native_execution": false,
+    "new_tests": false
+  },
+  "native_layout": {
+    "slot_bytes": 1116,
+    "node_prefix_bytes": 372,
+    "camera_tail_end_exclusive": 1112,
+    "pool_slab_id_offset": 1112,
+    "vtable": "00d62cf0",
+    "type_name_literal": "00d62ce4",
+    "owner_fields": {
+      "0180": "retained raw viewport owner",
+      "0184": "retained raw fog owner",
+      "0438": "retained intrusive owner, pointee producer/type incomplete"
+    },
+    "borrowed_fields": {
+      "043c": "float4 pointer; no destructor release"
+    },
+    "untouched_camera_ranges": [
+      [
+        "0175",
+        "0178"
+      ],
+      [
+        "017d",
+        "0180"
+      ],
+      [
+        "01e0",
+        "02f0"
+      ]
+    ],
+    "pool_metadata_preserved_range": [
+      "0458",
+      "045c"
+    ],
+    "untouched_node_ranges": "Inherited exact NativeNodeStorage constructor preservation; do not reinitialize this prefix.",
+    "fields": [
+      {
+        "offset": "0174",
+        "size": 1,
+        "value_bits": "01"
+      },
+      {
+        "offset": "0178",
+        "size": 4,
+        "value_bits": "46ea6000",
+        "source": "00ce77fc"
+      },
+      {
+        "offset": "017c",
+        "size": 1,
+        "value_bits": "01"
+      },
+      {
+        "offset": "0180",
+        "size": 4,
+        "value": "new actual 34h viewport owner, count1 without extra retain"
+      },
+      {
+        "offset": "0184",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "0188",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "018c",
+        "size": 4,
+        "value_bits": "3f800000"
+      },
+      {
+        "offset": "0190",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "0194",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "0198",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "019c",
+        "size": 4,
+        "value_bits": "00000001"
+      },
+      {
+        "offset": "01a0",
+        "size": 12,
+        "value": "computed target through look-at/world matrix closure"
+      },
+      {
+        "offset": "01ac",
+        "size": 12,
+        "value": "computed direction through look-at/world matrix closure"
+      },
+      {
+        "offset": "01b8",
+        "size": 12,
+        "value_bits": [
+          "00000000",
+          "00000000",
+          "00000000"
+        ]
+      },
+      {
+        "offset": "01c4",
+        "size": 4,
+        "value_bits": "3f32b8c3",
+        "source": "00ce7d20"
+      },
+      {
+        "offset": "01c8",
+        "size": 4,
+        "value_bits": "3faaaaab",
+        "source": "00d5bd98"
+      },
+      {
+        "offset": "01cc",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "01d0",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "01d4",
+        "size": 4,
+        "value_bits": "3f800000"
+      },
+      {
+        "offset": "01d8",
+        "size": 4,
+        "value_bits": "47435000",
+        "source": "00d0c5f8"
+      },
+      {
+        "offset": "01dc",
+        "size": 4,
+        "value_bits": "44000000",
+        "source": "00ce3c88"
+      },
+      {
+        "offset": "02f0",
+        "size": 4,
+        "value_bits": "00000001",
+        "caution": "Read/AND earlier by look-at wrappers before final constructor assignment."
+      },
+      {
+        "offset": "02f4",
+        "size": 320,
+        "value": "16 planes from B652D0 then first6 overwritten by identity extraction with flags7"
+      },
+      {
+        "offset": "0434",
+        "size": 4,
+        "value_bits": "00000006"
+      },
+      {
+        "offset": "0438",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "043c",
+        "size": 4,
+        "value_bits": "00000000"
+      },
+      {
+        "offset": "0440",
+        "size": 12,
+        "value_bits": [
+          "00000000",
+          "3f800000",
+          "00000000"
+        ]
+      },
+      {
+        "offset": "044c",
+        "size": 12,
+        "value_bits": [
+          "3f800000",
+          "00000000",
+          "00000000"
+        ]
+      }
+    ]
+  },
+  "original_abis": {
+    "00b71a80": {
+      "range": [
+        "00b71a80",
+        "00b71cdc"
+      ],
+      "inputs": "ECX owner; stack native-string pointer",
+      "return": "EAX same owner; RET4"
+    },
+    "00b71990": {
+      "range": [
+        "00b71990",
+        "00b719d1"
+      ],
+      "inputs": "ECX camera; stack raw viewport owner",
+      "return": "RET4"
+    },
+    "00b71f10": {
+      "range": [
+        "00b71f10",
+        "00b71fd2"
+      ],
+      "inputs": "ECX camera; no stack arguments",
+      "return": "RET"
+    },
+    "00b71fe0": {
+      "range": [
+        "00b71fe0",
+        "00b72000"
+      ],
+      "inputs": "ECX camera; stack flags low byte",
+      "return": "EAX original slot; RET4"
+    },
+    "00b71ce0": {
+      "range": [
+        "00b71ce0",
+        "00b71d08"
+      ],
+      "inputs": "stack runtime token; original ECX owner unused",
+      "return": "AL bool; RET4"
+    },
+    "00b700e0": {
+      "range": [
+        "00b700e0",
+        "00b701f5"
+      ],
+      "inputs": "ECX camera; stack eye pointer then target pointer",
+      "return": "RET8; pseudocode drops the second argument"
+    },
+    "00b63f10": {
+      "range": [
+        "00b63f10",
+        "00b642e2"
+      ],
+      "inputs": "ECX matrix destination; EDX eye; stack target pointer and three up-vector float words",
+      "return": "EAX destination; RET10h"
+    }
+  },
+  "lifetime": {
+    "viewport_setter_order": [
+      "identity guard",
+      "publish actual+180",
+      "retain actual new+4",
+      "release captured old+4 and actual current virtual0 on zero"
+    ],
+    "destructor_order": [
+      "install camera phase D62CF0",
+      "capture/release/clear180",
+      "reload/release/clear184",
+      "reload/release/clear438",
+      "call actual direct node destructor B6F440"
+    ],
+    "deleting_wrapper": "direct camera destruction; flags&1 returns exact original slot through B711E0 on actual pool108FFB0; EAX original pointer",
+    "callback_rule": "Clear after a nonnull captured release returns. Reload each subsequent field. Do not release callback-installed replacement after the clear.",
+    "shadow_release": "B71990(camera,null) followed by existing B6DFA0 hierarchy unlink/current virtual18 release; retained commands can delay actual destruction.",
+    "constructor_eh": {
+      "handler": "00cc1af1",
+      "descriptor": "00dfaa38",
+      "map": "00dfaa20",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc1ad0",
+          "action": "B6F440 actual camera"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cc1ad8",
+          "action": "BF65AC in-progress viewport allocation; actual POP ECX; RET continuation"
+        },
+        {
+          "state": 2,
+          "next": 0,
+          "funclet": "00cc1ae3",
+          "action": "605FD0 on actual camera+438"
+        }
+      ],
+      "no_blanket_cleanup": "Published viewport180 and fog184 are not separate map entries."
+    },
+    "destructor_eh": {
+      "handler": "00cc1b36",
+      "descriptor": "00dfaaa0",
+      "map": "00dfaa90",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc1b20",
+          "action": "B6F440 actual camera"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cc1b28",
+          "action": "605FD0 on actual camera+438"
+        }
+      ],
+      "state_before_explicit_438_release": 0
+    }
+  },
+  "type_descriptor": {
+    "guard": "0108ff9c",
+    "descriptor": "0108ffa0",
+    "token_count": 3,
+    "name": "cCamera",
+    "name_literal": "00d62ce4",
+    "getter": "00b6fb60",
+    "predicate": "00b71ce0",
+    "static_init": "00cd7d80",
+    "lazy_entries": [
+      "00b719e0",
+      "00b71a30"
+    ],
+    "actual_shared_counter_entry": "006fac20",
+    "node_bootstrap": "00b6f110",
+    "ancestry_sources": [
+      "0108ff90",
+      "0108ff94"
+    ],
+    "constraints": [
+      "Use actual initialized shared state; BSS zero fill is not a token value.",
+      "Constructor itself does not initialize the descriptor.",
+      "Guarded lazy descriptor calls must receive the intended actual descriptor, not a disposable copy."
+    ]
+  },
+  "pool": {
+    "identity": "0108ffb0",
+    "vtable": "00d62ce0",
+    "allocator_list_head": "00e188b4",
+    "slab_bytes": 35780,
+    "slots_per_slab": 32,
+    "slot_stride": 1116,
+    "slot_id_offset": 1112,
+    "free_index_offset": 35712,
+    "free_count_offset": 35776,
+    "untouched_slab_padding_offset": 35778,
+    "constructor": "00b715f0",
+    "destructor": "00b71120",
+    "allocate": "00b71770",
+    "return_slot": "00b711e0",
+    "trim": "00b716d0",
+    "slab_constructor": "00b6fed0",
+    "pointer_array_unwind": "00b6ffc0",
+    "allocate_entry": "00b71930",
+    "return_entry": "00b71350",
+    "static_init": "00cd7dd0",
+    "static_exit": "00ce0e30",
+    "constructor_eh": {
+      "descriptor": "00dfa9fc",
+      "map": "00dfa9e4",
+      "state2": "B6FFC0 pointer-array free",
+      "state1": "00402F70 actual section cleanup",
+      "state0": "00403970 actual allocator-list unlink"
+    },
+    "free_continuations_verified": [
+      "00b7113d",
+      "00b71155",
+      "00b716a9",
+      "00b716f6",
+      "00b71806",
+      "00b6ffcc"
+    ],
+    "constraints": [
+      "Distinct pool storage; do not reuse directional1F0 slots.",
+      "Trim rewrites all32 moved slot IDs and has no internal lock.",
+      "B71770 allocation has no EH rollback/unlock.",
+      "Destructor frees storage without invoking camera destructors; caller must complete ownership first."
+    ]
+  },
+  "shared_api_changes": [
+    {
+      "files": [
+        "include/bsp/camera_projection.hpp",
+        "src/camera_projection.cpp"
+      ],
+      "change": "Reference actual projection fields; remove contiguous scalar assumption.",
+      "native_sequence": "B6FCFF far1D8 FLD/FSTP; B6FD11 near1D4; B6FD21 aspect1C8; B6FD2B fov1C4."
+    },
+    {
+      "files": [
+        "include/bsp/camera_transform.hpp"
+      ],
+      "change": "CameraState binds existing NativeNodeBinding.transform and actual220/1AC/1A0, no duplicate transform."
+    },
+    {
+      "files": [
+        "include/bsp/camera_frame_state.hpp",
+        "src/camera_frame_state.cpp"
+      ],
+      "change": "Actual scalar/cache refs, raw viewport180/fog184 slots plus stable owner-to-view accessors; preserve legacy diagnostics."
+    },
+    {
+      "files": [
+        "include/bsp/system_fog_owner.hpp",
+        "src/system_fog_owner.cpp"
+      ],
+      "change": "Raw camera owner slot setter/constructor/destructor overloads without mirroring typed view pointers."
+    },
+    {
+      "files": [
+        "src/system_fog_world_factory.cpp"
+      ],
+      "change": "Publish through actual reloaded bound frame rawfog setter."
+    },
+    {
+      "files": [
+        "src/environment_fog_apply.cpp"
+      ],
+      "change": "Actual raw slot variants; repeated reloads.",
+      "native_sequence": "Scalar helper FLD source -> MOV ECX actualowner -> FSTP argument bits; resolve fields only after capture."
+    },
+    {
+      "files": [
+        "src/system_time_constants.cpp"
+      ],
+      "change": "Capture actual raw owner before final conversion/store.",
+      "native_sequence": "B46D79 MOV ESI,[camera+184] before CVTSI2SS and c75.y MOVSS."
+    },
+    {
+      "files": [
+        "src/system_fog_constants.cpp"
+      ],
+      "change": "Captured and current raw-owner views are distinct accesses.",
+      "native_sequence": "B46E69 currentowner for c37; B46E91 read color.w -> B46E94 reload rawcamera184 -> B46E9A storecolor.w; then resolve captured underwaterowner."
+    },
+    {
+      "files": [
+        "src/system_constant_builder.cpp"
+      ],
+      "change": "Route raw bound fog accessors; existing43C getter keeps actual slot reloads."
+    },
+    {
+      "files": [
+        "src/system_camera_axes.cpp",
+        "include/bsp/system_camera_axes.hpp"
+      ],
+      "change": "Expose/reuse current private length/cross kernels and actual CRT access for look-at, no duplicate math implementation."
+    }
+  ],
+  "proposed_packets": [
+    {
+      "id": "native_camera_pool_storage",
+      "readiness": "ready_independent_of_viewport_and_camera_backing",
+      "addresses": [
+        "00b6fed0",
+        "00b6ffc0",
+        "00b71120",
+        "00b711e0",
+        "00b71350",
+        "00b715f0",
+        "00b716d0",
+        "00b71770",
+        "00b71930",
+        "00cd7dd0",
+        "00ce0e30"
+      ],
+      "files": [
+        "include/bsp/native_camera_pool.hpp",
+        "src/native_camera_pool.cpp",
+        "docs/NATIVE_CAMERA_POOL.md",
+        "reports/native_camera_pool_audit.json"
+      ],
+      "dependencies": [
+        "actual existing AllocatorListDomain",
+        "actual Win32 critical-section architecture",
+        "shared CRT allocation/free"
+      ],
+      "provisional_rename": "00B71930 currently BSP_SceneNode_AllocateInstance_Provisional should become camera-pool allocation entry."
+    },
+    {
+      "id": "native_camera_type_extension",
+      "readiness": "ready_primary_shared_extension",
+      "addresses": [
+        "00b6fb60",
+        "00b71ce0",
+        "00b719e0",
+        "00b71a30",
+        "00cd7d80"
+      ],
+      "dependencies": [
+        "existing actual node/ref bootstrap",
+        "006FAC20 shared counter"
+      ]
+    },
+    {
+      "id": "camera_plane_set_construction",
+      "readiness": "ready_bounded_math_wrappers",
+      "addresses": [
+        "00b652d0",
+        "00b659d0"
+      ],
+      "dependencies": [
+        "existing frustum extraction and six-plane assignment"
+      ]
+    },
+    {
+      "id": "native_camera_look_at",
+      "readiness": "requires_shared_vector_entrypoints_and_camera_backing",
+      "addresses": [
+        "00b6dae0",
+        "00b71400",
+        "00b700e0",
+        "00b63f10"
+      ],
+      "dependencies": [
+        "same CameraState backing",
+        "existing vector length/cross and actual CRT access",
+        "existing camera world setter/inverse"
+      ]
+    },
+    {
+      "id": "native_camera_owner",
+      "readiness": "after_pool_viewport_math_and_shared_backing",
+      "addresses": [
+        "00b71a80",
+        "00b71990",
+        "00b71f10",
+        "00b71fe0"
+      ],
+      "dependencies": [
+        "native_camera_pool_storage",
+        "native_viewport_owner",
+        "camera_plane_set_construction",
+        "native_camera_look_at",
+        "shared raw-owner camera/fog adapters",
+        "actual node lifetime",
+        "real nonnull438 count/zero callback"
+      ]
+    }
+  ],
+  "named_incomplete_dependencies": {
+    "ordinary_owner": [
+      "00B71D10 copy constructor",
+      "nonnull camera438 pointee producer/type",
+      "camera RenderCommandReference and virtual18 lifetime composition"
+    ],
+    "shadow_factory": [
+      "00A8E2E0 complete constructor/EH",
+      "authored camera names and visibility",
+      "00B6FDF0 mode2",
+      "00B6FE10 clearflags2",
+      "actual five viewport and target lifetimes",
+      "texture/global-target dependencies in DIRECTIONAL_SHADOW_OWNER_NEXT.md"
+    ],
+    "active_shadow_update": [
+      "00A8F3B0",
+      "00A8EA20",
+      "00A8BD20 cascade math",
+      "00B6FC30 derivedFOV",
+      "00B6FEC0 context pointer setter",
+      "00B70410/00B70470 extra clip-plane operations",
+      "00B65070/00B65990 plane count/append",
+      "00B1F1F0 render-command owner",
+      "queue/scene/tag/frame-job ownership"
+    ],
+    "survey_limit": "Large A8BD20 was surveyed for dependencies only; no full behavior/FP/renderer equivalence claim."
+  },
+  "validation": {
+    "installed_byte_comparison": "PASS",
+    "source_hashes": "recorded at base commit",
+    "cpp_changes": false,
+    "build_required": false,
+    "new_tests": false,
+    "native_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "visual_validated": false,
+    "ghidra_mutations": false,
+    "ledger_mutations": false
+  },
+  "document_sha256": "fe3afa3cc323bec9ec747228589b5c9249af1c0544ce2e3344aa6fdf35c416c0"
+}
