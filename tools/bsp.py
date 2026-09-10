@@ -624,24 +624,11 @@ def ghidra_cmd(args):
             except RuntimeError as exc:
                 print(f'(signature unavailable: {str(exc)[:120]})')
     elif sub == 'flow':
-        # The installed bridge exposes the previous override in its dry-run
-        # result. dry_run MUST be a query parameter (never a JSON body field).
-        # This command cannot apply a repair.
-        from urllib.parse import urlencode
-        from urllib.request import Request, urlopen
-        rows = []
-        for value in args.addresses:
-            address = norm(value)
-            request = Request(c.config['ghidra_url'] + '/clear_instruction_flow_override?' +
-                urlencode({'program': c.config['program'], 'dry_run': 'true'}),
-                data=json.dumps({'address': address}).encode(),
-                headers={'Content-Type': 'application/json'}, method='POST')
-            with urlopen(request, timeout=90) as response:
-                result = json.loads(response.read())
-            if result.get('error') or result.get('dry_run') is not True:
-                sys.exit(f'Flow inspection did not return a confirmed dry run: {result}')
-            rows.append({'address': address, 'result': result})
-        cap(as_text(rows), args.lines)
+        # Read-only: the bridge's clear_instruction_flow_override dry run actually clears, so
+        # the gap report comes from comparing Ghidra's listing with the disk bytes instead.
+        cmd = [sys.executable, str(ROOT / 'tools/ghidra_flow_repair.py'), *[norm(v) for v in args.addresses]]
+        run = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding='utf-8', errors='replace')
+        cap((run.stdout + run.stderr).strip(), args.lines)
     elif sub == 'comments':
         # Annotation readback often spans a batch. Persist complete records in
         # ignored local storage while keeping the interactive view bounded.

@@ -45,6 +45,14 @@ which verifies the bytes against the disk image, disassembles the range explicit
 without re-running flow discovery, under the write lock; then it re-runs the annotate step. The write lock
 is reclaimed automatically when its holder process is gone.
 
+Ghidra's non-returning discovery marks calls to the CRT free helpers as CALL_RETURN, so the bytes after
+such a call stay undisassembled and the decompiler drops the reachable block. `python tools/bsp.py ghidra flow
+<function>` reports those gaps read-only (comparing the stored listing with the disk bytes; the bridge's
+dry-run clear is not a query, it clears), and `python tools/ghidra_flow_repair.py <function> --apply
+[--record reports/<x>.json]` clears the call-site overrides and disassembles the gaps under the write lock,
+never touching the callee's own flag. Run it on a function whose pseudocode shows a spurious return after
+`_free` before a worker reads it.
+
 ## Leases
 
 A lease says who is working on which addresses, ranges and output files. The registry lives
