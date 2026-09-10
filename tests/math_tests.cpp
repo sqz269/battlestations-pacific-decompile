@@ -40,6 +40,7 @@
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
+#include "bsp/vehicle_class.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -1409,6 +1410,20 @@ int main() {
                   && with.screen.difficulty == bsp::kMissionDifficultyFromPlayer,
             "a missing MultiPlayMapSizes is the +/-15000 box while a present one "
             "defaults each absent corner to the origin");
+    }
+
+    {
+        // The vehicle-class index map is two 800h-entry arrays reset to the
+        // identity (00592652), with a single pair rewritten (00592667). The
+        // identity default is what lets 0095BA60 map an already-resolved class
+        // index a second time without changing it.
+        bsp::VehicleClassIndexMap map;
+        map.reset_identity_00592652();
+        map.remap_00592667(261, 121);
+        check(map.to_class_index(1) == 1 && map.to_type_id(1) == 1
+                  && map.to_class_index(261) == 121 && map.to_type_id(121) == 261
+                  && map.to_class_index(bsp::kVehicleClassIndexMapSize) == -1,
+            "the class index map is the identity apart from one remapped pair");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -1,0 +1,300 @@
+{
+  "packet": "vehicle_class_descriptors",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-vehicle-classes",
+  "branch": "agent/vehicle-classes",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": "none; read-only for this packet"
+  },
+  "names_are_hypotheses": true,
+  "recovered_symbols": {
+    "note": "The 22 class-name literals below are read out of the image, not invented. Vtable slot +0Ch is GetClassName() -> const char*, pure virtual in the base (00BF698E __purecall) and a one-instruction constant load in every leaf.",
+    "evidence": "00963B60 = 'mov eax, 0D1AD28h ; ret'; 00D1AD28 is the ASCII 'MDestroyer'"
+  },
+  "supersedes": {
+    "doc": "docs/SCENE_UNIT_CREATORS.md",
+    "corrections": [
+      "singleton+10h is NOT one 4096-entry table. It is two 2048-entry arrays: +10h forward (Type -> class index) and +2010h inverse (class index -> Type). 2010h-10h and 4010h-2010h are each 2000h bytes = 800h ints.",
+      "Both arrays are reset to the identity by the loop at 00592652 / 0050657C and then exactly one pair is rewritten (00592667/0059266E). That is why 0095BA60 can map an already-resolved class index a second time without changing it.",
+      "MDestroyer is not the only recovered class name; all 22 are recovered.",
+      "00964790 also WRITES back into the Lua row: row.ID = classIndex (00CE59B4) and row.Got = true (00CE452C). Neither key is authored in the shipped file."
+    ]
+  },
+  "factory_00964790": {
+    "abi": "__fastcall(int typeId /* ECX */, bool readRace /* DL */), RET 0, result in EAX",
+    "frame": "PUSH EBP; MOV EBP,ESP; AND ESP,0FFFFFFF8h; SEH handler 00CAA1BF; EBX/EBP/ESI/EDI saved, so body stack offsets are +10h from the prologue's",
+    "cache_probe": {
+      "address": "009647ED",
+      "encoding": "MOV EAX,[EBX+EDX]; NEG EAX; SBB EAX,EAX; TEST EAX,0F8A0BDh; JNZ 00965226",
+      "meaning": "cached != 0 with a dead immediate; there is no second condition"
+    },
+    "steps": [
+      "classIndex = singleton[10h + typeId*4], read twice through two separate 00437F50 calls (009647BB, 009647C8)",
+      "grow the cache to classIndex+1 when classIndex >= singleton[8] (00437BD0)",
+      "cache hit returns cache[classIndex] via 00965226, which re-grows first",
+      "globals 00B67980 on (*00E188A8)+1A0Ch; VehicleClass 00CE5880; row by index 00B67720; Type 00CE4780 as a string (00B662B0) copied by 0041E870",
+      "LandingShip 00CEB7BC via 00B66380 default 0; non-zero recurses into 00964790 with DL=1 at 009648E3",
+      "write back row.ID = classIndex (00B67460) and row.Got = true (00B673A0)",
+      "22-way 00425850 comparison chain, case-insensitive (_stricmp); no match returns 0 and caches nothing (00964EA6)",
+      "with readRace: Race 00CE8EE0 default 0, party = (race==1 || race==4) ? 1 : 0 at 00964F31, then 0095BA60(classIndex, party)",
+      "descriptor+70h = classIndex; descriptor+74h receives the Type string (resize 0041DD40 then memcpy 00BF7680)",
+      "NumEngines 00D0651C: nil (00B65FB0) -> 0, else 00B66290 -> descriptor+7Ch",
+      "'Class_' 00D1A95C, plus 'enemy_' 00D1A954 or 'own_' 00D1A94C when vtable[18h](0Fh); consumed by 004CACA0(name, classIndex)",
+      "guarded by 00F8A098==0 and !vtable[18h](19h) and !vtable[18h](1Bh): operator new(1Ch) and 00BE0A30(obj, &name, 00E0CFC0) -- NOT decoded",
+      "++00F8A098; vtable[8h](&outString); re-grow; release old cache slot (InterlockedDecrement +4h then vtable[0]); store; vtable[10h](0); vtable[14h](); --00F8A098",
+      "vtable[18h](6) and descriptor+0C0h != -1: clear 00E0CFC0, recurse with DL=1, restore. The store already happened, so a self-referencing row terminates."
+    ],
+    "recursion_guard": "00F8A098 is a plain nesting counter, not a lock; only the outermost resolve builds the 1Ch object"
+  },
+  "registry_singleton_00437f50": {
+    "abi": "__fastcall, no arguments, singleton in EAX, built once behind a null test on 00F8A0B8",
+    "layout": {
+      "+4h": "descriptor cache data pointer",
+      "+8h": "descriptor cache size",
+      "+0Ch": "descriptor cache capacity",
+      "+10h": "forward index map, 800h ints, keyed by Type",
+      "+2010h": "inverse index map, 800h ints, keyed by class index",
+      "+4010h": "party-requires-class bitmap data pointer, stride 3",
+      "+4014h": "bitmap size, grown by 004359E0"
+    },
+    "resize_00437bd0": "__thiscall(int* vector = singleton+4, int size), RET 4; grows through 00436530, null-fills new slots, releases dropped descriptors with InterlockedDecrement(+4h) then vtable[0] at zero",
+    "identity_initialisers": ["00592640", "00506550"],
+    "pair_writers": ["00592640", "00506550", "004E27E0"],
+    "inverse_readers": ["0095B9C0", "008CC4B0"],
+    "reset_to_empty": "0095BA30"
+  },
+  "descriptor_base": {
+    "constructor": "00749050",
+    "abi": "__fastcall(void* this), returns this, SEH handler 00C874BB",
+    "size": "0x138",
+    "parent_call": "0087C640 (not read)",
+    "vptr_pair": {"primary": "00CFF7CC", "secondary": "00CFF7C8", "rule": "secondary is always primary - 4"},
+    "zeroed_dword_indices": ["1Dh", "1Eh", "20h", "25h", "26h", "27h", "2Dh", "37h..47h", "4Ah", "4Bh", "4Ch"],
+    "zeroed_byte_index": "48h",
+    "fields": {
+      "+0h": "primary vptr",
+      "+4h": "reference count (InterlockedDecrement in 00437BD0 and 0096511B)",
+      "+54h": "char* name; 00438020 falls back to \"globals.unknown\" when the descriptor is null",
+      "+6Ch": "secondary vptr",
+      "+70h": "class index (00964F5C)",
+      "+74h/+78h": "NativeString of the row's Type (00964F53..00964F80)",
+      "+7Ch": "NumEngines, 0 when the key is nil",
+      "+0C0h": "linked class index, tested against -1 at 00965182; no constructor writes it, it is zero out of the memset until the vtable[8h] load fills it"
+    }
+  },
+  "descriptor_vtable": {
+    "slot_count": {"base": 11, "ship_family": 12},
+    "slots": [
+      {"offset": "+0h", "base": "00BD30E0", "role": "deleting-destructor trampoline of the refcounted base"},
+      {"offset": "+4h", "base": "00749160", "role": "scalar deleting destructor"},
+      {"offset": "+8h", "base": "00960230", "role": "load from the Lua row; takes a native string out-parameter"},
+      {"offset": "+0Ch", "base": "00BF698E __purecall", "role": "GetClassName() -> const char*; RECOVERED per leaf"},
+      {"offset": "+10h", "base": "009598D0", "role": "activate; walks the pointer vector at +94h/+98h when the byte at +44h is clear"},
+      {"offset": "+14h", "base": "00951F20", "role": "finalize; the base returns a global bool"},
+      {"offset": "+18h", "base": "00749010", "role": "IsKindOf(int kind), RET 4; the base accepts 4 and 5"},
+      {"offset": "+1Ch", "base": "00749140", "role": "GetKind() -> int, RET 0; the base returns 5"},
+      {"offset": "+20h", "base": "0095F500", "role": "not established"},
+      {"offset": "+24h", "base": "004407A0", "role": "float getter; Destroyer's 009635D0 is 'fld [ecx+6B4h]; ret'"},
+      {"offset": "+28h", "base": "00749150", "role": "allocate instance, __thiscall(this, int flag), RET 4; the base is 'xor eax,eax; ret 4'"},
+      {"offset": "+2Ch", "base": "absent", "role": "added by the ship base; 00827FB0 on every ship leaf"}
+    ],
+    "secondary_vtable": {"slots": 1, "base": "004E63F0", "destroyer": "00963B50 ('mov eax,1; ret')", "role": "not established"}
+  },
+  "ship_base_00963380": {
+    "abi": "__fastcall(void* this), SEH handler 00CA9D9D",
+    "size": "0x804",
+    "calls": "00749050",
+    "vptr_pair": {"primary": "00D1ACC4", "secondary": "00D1ACC0"},
+    "array": "_eh_vector_constructor_iterator_(this+138h, 30h, 14h, 0095B920, 009560F0): 20 sub-objects of 0x30 bytes starting exactly where the 0x138 base ends",
+    "ghidra_label_wrong": "Ghidra names it CG_array_ctor_helper_00963380; it is an ordinary constructor"
+  },
+  "other_bases": {
+    "007D1E50": "plane base; all eight plane leaves are 0x60C",
+    "00749180": "LandFort base, 0x180; 00951E30 (CommandBuilding, 0x1AC) calls it, so CommandBuilding derives from LandFort"
+  },
+  "kind_lattice": {
+    "abstract_kinds": {"4": "grandparent (0087C640's class)", "5": "00749050's class", "6": "00963380 ships", "0Fh": "007D1E50 planes"},
+    "evidence": "00749010 accepts 4 and 5; 00963B70 accepts 4, 5, 6 and 7",
+    "factory_queries": {"0Fh": "plane debug-name path", "19h": "LandVehicle, skips the 1Ch object", "1Bh": "LandFort, skips the 1Ch object", "6": "ship, drives the tail recursion"}
+  },
+  "vehicle_class_kinds": [
+    {"type": "Destroyer", "class_name": "MDestroyer", "descriptor_size": "0x808", "instance_size": "0x1188", "kind": 7, "constructor": "inline + 00963380", "vtable": "00D1ACF8", "allocate_instance": "006FE590", "rows": 31, "eh_state": "0Ah"},
+    {"type": "Cruiser", "class_name": "MCruiser", "descriptor_size": "0x80C", "instance_size": "0x1188", "kind": 10, "constructor": "inline + 00963380", "vtable": "00D1AD38", "allocate_instance": "006FB430", "rows": 41, "eh_state": "0Bh"},
+    {"type": "LandingShip", "class_name": "MLandingShip", "descriptor_size": "0x81C", "instance_size": "0x122C", "kind": 12, "constructor": "00963C20", "vtable": "00D1AD78", "allocate_instance": "0074BE00", "rows": 6, "eh_state": "0Ch"},
+    {"type": "Cargo", "class_name": "MCargo", "descriptor_size": "0x80C", "instance_size": "0x118C", "kind": 11, "constructor": "00963CB0", "vtable": "00D1ADBC", "allocate_instance": "006EB290", "rows": 13, "eh_state": "0Dh"},
+    {"type": "BattleShip", "class_name": "MBattleship", "descriptor_size": "0x80C", "instance_size": "0x118C", "kind": 13, "constructor": "00963D30", "vtable": "00D1ADF8", "allocate_instance": "006DFEF0", "rows": 39, "eh_state": "0Eh"},
+    {"type": "Submarine", "class_name": "MSubmarine", "descriptor_size": "0x840", "instance_size": "0x1288", "kind": 8, "constructor": "00963DB0", "vtable": "00D1AE38", "allocate_instance": "008531A0", "rows": 9, "eh_state": "0Fh"},
+    {"type": "TorpedoBoat", "class_name": "MTorpedoBoat", "descriptor_size": "0x814", "instance_size": "0x1190", "kind": 14, "constructor": "00963E40", "vtable": "00D1AE78", "allocate_instance": "00857E20", "rows": 3, "eh_state": "10h"},
+    {"type": "MotherShip", "class_name": "MMothership", "descriptor_size": "0x870", "instance_size": "0x12C8", "kind": 9, "constructor": "00963EC0", "vtable": "00D1AEBC", "allocate_instance": "00758D30", "rows": 18, "eh_state": "11h"},
+    {"type": "ReconPlane", "class_name": "MReconPlane", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 20, "constructor": "00951AA0", "vtable": "00D19BF4", "allocate_instance": "008091D0", "rows": 0, "eh_state": "12h"},
+    {"type": "SmallReconPlane", "class_name": "MSmallReconPlane", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 21, "constructor": "009536E0", "vtable": "00D1A5A8", "allocate_instance": "0084CA50", "rows": 5, "eh_state": "13h"},
+    {"type": "LargeReconPlane", "class_name": "MLargeReconPlane", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 22, "constructor": "00953770", "vtable": "00D1A5EC", "allocate_instance": "0074E540", "rows": 4, "eh_state": "14h"},
+    {"type": "Fighter", "class_name": "MPlaneFighter", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 19, "constructor": "00951AF0", "vtable": "00D19C30", "allocate_instance": "007DDAE0", "rows": 28, "eh_state": "15h"},
+    {"type": "DiveBomber", "class_name": "MPlaneDiveBomber", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 18, "constructor": "00951B40", "vtable": "00D19C70", "allocate_instance": "00956390", "rows": 9, "eh_state": "16h"},
+    {"type": "TorpedoBomber", "class_name": "MPlaneTorpedoBomber", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 17, "constructor": "00951C20", "vtable": "00D19F4C", "allocate_instance": "009564E0", "rows": 9, "eh_state": "17h"},
+    {"type": "Kamikaze", "class_name": "MPlaneKamikaze", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 23, "constructor": "00951D00", "vtable": "00D1A224", "allocate_instance": "00956240", "rows": 6, "eh_state": "18h"},
+    {"type": "LevelBomber", "class_name": "MPlaneBomber", "descriptor_size": "0x60C", "instance_size": "0xE94", "kind": 16, "constructor": "00951DE0", "vtable": "00D1A4F8", "allocate_instance": "007D7850", "rows": 11, "eh_state": "19h"},
+    {"type": "AirField", "class_name": "MAirfield", "descriptor_size": "0x140", "instance_size": "0x8E4", "kind": 69, "constructor": "0095FEE0", "vtable": "00D1A9A0", "allocate_instance": "006D3110", "rows": 2, "eh_state": "1Ah"},
+    {"type": "Shipyard", "class_name": "MShipyard", "descriptor_size": "0x138", "instance_size": "0x7A4", "kind": 70, "constructor": "0095FF50", "vtable": "00D1A9DC", "allocate_instance": "00848380", "rows": 2, "eh_state": "1Bh"},
+    {"type": "LandVehicle", "class_name": "MLandVehicle", "descriptor_size": "0x150", "instance_size": "0x740", "kind": 25, "constructor": "0095FFC0", "vtable": "00D1AA18", "allocate_instance": "0074DF10", "rows": 21, "eh_state": "1Ch"},
+    {"type": "LandFort", "class_name": "MLandFort", "descriptor_size": "0x180", "instance_size": "0x758", "kind": 27, "constructor": "00749180", "vtable": "00CFF790", "allocate_instance": "00747000", "rows": 368, "eh_state": "1Dh"},
+    {"type": "CommandBuilding", "class_name": "MCommandBuilding", "descriptor_size": "0x1AC", "instance_size": "0x7E8", "kind": 28, "constructor": "00951E30", "vtable": "00D1A538", "allocate_instance": "006F5C10", "rows": 7, "eh_state": "1Eh"},
+    {"type": "DummyTargetVehicle", "class_name": "MDummyTarget", "descriptor_size": "0x144", "instance_size": null, "kind": 53, "constructor": "00960050", "vtable": "00D1AA58", "allocate_instance": "00749150 (the base's null allocator, inherited)", "rows": 1, "eh_state": "1Fh"}
+  ],
+  "constructor_divergences": {
+    "note": "19 of the 20 named constructors are a base call plus the vptr pair and nothing else",
+    "0095FFC0": "LandVehicle over 00749050; zeroes dwords 4Eh, 50h..53h",
+    "00960050": "DummyTargetVehicle over 00749050; zeroes dword 50h",
+    "00749180": "LandFort over 00749050; zeroes dwords 4Fh, 51h..53h, 55h..58h",
+    "00963DB0": "Submarine over 00963380; zeroes dword 203h (+80Ch)",
+    "00951E30": "CommandBuilding over 00749180, not over 00749050",
+    "unwritten_tails": "LandingShip, Cargo, BattleShip, TorpedoBoat and MotherShip are allocated larger than 00963380's 0x804 and leave the extra bytes at the memset's zero"
+  },
+  "mdestroyer": {
+    "constructor_body_in_image": "00964997..009649D6: operator new(808h) 00BF55BE, memset 0 00BF79F0, 00963380(p), *p = 0D1ACF8h, *(p+6Ch) = 0D1ACF4h",
+    "overrides": {"+4h": "009652B0", "+8h": "006FE6A0", "+0Ch": "00963B60 -> \"MDestroyer\"", "+14h": "00828F20", "+18h": "00963B70 (kinds 4,5,6,7)", "+1Ch": "00963B40 -> 7", "+20h": "0082FE30", "+24h": "009635D0 (fld [ecx+6B4h])", "+28h": "006FE590", "+2Ch": "00827FB0"},
+    "instance": "006FE590, __thiscall(desc, int flag), RET 4, operator new(1188h)"
+  },
+  "party_bitmap": {
+    "0095BA60": "__fastcall(int typeId, int party), RET 0; returns unless party is 0 or 1; classIndex = forward[typeId]; grows singleton+4010h through 004359E0; byte[base + classIndex*3 + party] = 1",
+    "0095BAB0": "__fastcall(int classIndex); returns byte[base + classIndex*3 + localParty] == 0, i.e. true means the local party has NOT registered a need for the class, which is the enemy case; localParty is *(*(00E188A8+18CCh + *(00E188A8+18ECh)*4) + 28h) and the whole thing short-circuits unless *(00E188A8+18ECh) is in [0,8)",
+    "third_byte": "never written by either routine; its reader is still unknown"
+  },
+  "lua_keys": {
+    "table": {"name": "VehicleClass", "address": "00CE5880"},
+    "read": {"Type": "00CE4780", "LandingShip": "00CEB7BC", "Race": "00CE8EE0", "NumEngines": "00D0651C"},
+    "written": {"ID": "00CE59B4", "Got": "00CE452C"},
+    "literals": {"Class_": "00D1A95C", "own_": "00D1A94C", "enemy_": "00D1A954"}
+  },
+  "installed_file_check": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/datatables/autoload/vehicleclasses.lua",
+    "access": "read-only",
+    "script": "local/vc_scan.py (worktree-local, not committed)",
+    "lines": 191122,
+    "bytes": 3158242,
+    "rows": 633,
+    "index_range": [1, 999],
+    "unused_indices_in_span": 366,
+    "distinct_keys": 305,
+    "keys_on_every_row": ["Type", "Name", "Width", "Length", "Mesh", "Armour", "Comment", "HP", "Height", "ReconClass"],
+    "distinct_types_present": 21,
+    "type_absent_from_file": "ReconPlane (has a factory branch, no shipped row)",
+    "race_value_histogram": {"0": 9, "1": 124, "2": 93, "3": 7, "4": 2, "5": 1},
+    "rows_with_race": 232,
+    "rows_with_num_engines": 72,
+    "rows_with_launched_class": 58,
+    "rows_with_landing_ship": 2,
+    "landing_ship_values": [{"line": 61063, "value": 90}, {"line": 62199, "value": 40}],
+    "rows_with_ID_or_Got": 0,
+    "conclusion": "ID and Got are runtime write-backs, not authored data; index array capacity 800h comfortably covers the 999 maximum row index"
+  },
+  "callers": {
+    "00964790": ["the ten scene unit creators (docs/SCENE_UNIT_CREATORS.md)", "itself (LandingShip pre-resolve and the ship tail)", "00438020", "00964020"]
+  },
+  "callees_read_only": ["00B67980", "00B67800", "00B67720", "00B662B0", "00B66290", "00B66380", "00B65FB0", "00B67460", "00B673A0", "00B67700", "0041E870", "0041DD40", "00BF7680", "00419CC0", "00BF55BE", "00BF79F0", "00470B80", "00BE0A30"],
+  "no_ghidra_function": [
+    {"address": "00749010", "end": "00749028", "role": "descriptor vtable +18h, IsKindOf; the base accepts 4 and 5"},
+    {"address": "00749140", "end": "00749145", "role": "descriptor vtable +1Ch, GetKind; the base returns 5"},
+    {"address": "00749150", "end": "00749152", "role": "descriptor vtable +28h, allocate instance; the base is 'xor eax,eax; ret 4'"},
+    {"address": "00963B40", "end": "00963B45", "role": "Destroyer vtable +1Ch, GetKind -> 7"},
+    {"address": "00963B50", "end": "00963B55", "role": "Destroyer secondary vtable slot 0 -> 1"},
+    {"address": "00963B60", "end": "00963B65", "role": "Destroyer vtable +0Ch, GetClassName -> 00D1AD28 'MDestroyer'"},
+    {"address": "009635D0", "end": "009635D6", "role": "Destroyer vtable +24h, float getter 'fld [ecx+6B4h]'"},
+    {"address": "00951C10", "end": "00951C15", "role": "DiveBomber vtable +0Ch, GetClassName -> 00D19F34 'MPlaneDiveBomber'"},
+    {"address": "00951CF0", "end": "00951CF5", "role": "TorpedoBomber vtable +0Ch, GetClassName -> 00D1A20C 'MPlaneTorpedoBomber'"},
+    {"address": "00951DD0", "end": "00951DD5", "role": "Kamikaze vtable +0Ch, GetClassName -> 00D1A4E4 'MPlaneKamikaze'"},
+    {"address": "00960090", "end": "00960095", "role": "DummyTargetVehicle vtable +0Ch, GetClassName -> 00CFA5F4 'MDummyTarget'"}
+  ],
+  "ghidra_flow_gaps": [],
+  "tooling_problems": [
+    "bsp.py ghidra export refuses addresses with no Ghidra function and exits 1 for the whole batch, but still exports the rest; the failure line names only the count, so the missing address has to be found by diffing the request against the output.",
+    "Git Bash heredocs mangled a Python patch script's backslash escapes, so the test edit had to be written to local/ and run by path, as AGENTS.md warns.",
+    "The pseudocode of 00964790 renames the same stack slot differently in different regions (the 'Restarted to delay deadcode elimination' warning), so class index vs Type id could only be settled from the listing."
+  ],
+  "uncertainties": [
+    "The 1Ch-byte object at 00965095 and its 00BE0A30 construction are undecoded, as is 00E0CFC0, the byte the ship recursion clears and restores.",
+    "Vtable slots +20h (0095F500) and +24h (004407A0) have no established role.",
+    "The secondary vtable's single slot (004E63F0 base, 00963B50 Destroyer) is unidentified.",
+    "00960230, the base's Lua load at slot +8h, was not decoded, so which Lua key fills which descriptor offset beyond +70h, +74h and +7Ch is unknown. This is the main remaining gap.",
+    "00438020 was read only to its loop head; 004359E0 and 004CACA0 were not read at all.",
+    "Why 00964790 reads the forward map twice through two 00437F50 calls is unexplained.",
+    "Which caller of 00592640 / 00506550 / 004E27E0 decides the one remapped pair, and what it means, is not established.",
+    "0087C640, the parent-most descriptor base, was not read, so +0h..+6Bh is unattributed except for the refcount at +4h and the name pointer at +54h."
+  ],
+  "follow_up_packets": [
+    {"packet": "vehicle_class_lua_load", "addresses": ["00960230", "006fe6a0", "00831840", "00837de0", "0087c640"], "files": ["docs/VEHICLE_CLASS_LUA_LOAD.md"], "contract": "The base's slot +8h field reader: which vehicleclasses.lua key fills which descriptor offset, and the MDestroyer override that writes +560h..+570h"},
+    {"packet": "vehicle_class_index_remap", "addresses": ["00592640", "00506550", "004e27e0", "008cc4b0", "0095b9c0"], "files": ["docs/VEHICLE_CLASS_INDEX_REMAP.md"], "contract": "Who chooses the single remapped Type/class pair, what the inverse map is read for, and the third byte of each +4010h party row"},
+    {"packet": "vehicle_class_enumeration", "addresses": ["00438020", "00964020", "004caca0", "004359e0"], "files": ["docs/VEHICLE_CLASS_ENUMERATION.md"], "contract": "The two whole-table passes: the localisation-name build and the lua_next resolve-all, and what 004CACA0 does with 'Class_own_'"},
+    {"packet": "vehicle_class_kind_lattice", "addresses": ["00749010", "00749140", "00963b70", "007d1e50", "0095f500", "004407a0"], "files": ["docs/VEHICLE_CLASS_KIND_LATTICE.md"], "contract": "The is-kind predicate on all 22 vtables, the plane base 007D1E50, and slots +20h/+24h"}
+  ],
+  "reconstruction": {
+    "header": "include/bsp/vehicle_class.hpp",
+    "source": "src/vehicle_class.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "reuses": ["bsp::NativeString and bsp::NativeStringStorage from include/bsp/native_string.hpp", "bsp::GuiLuaRef from include/bsp/gui_lua_reader.hpp"],
+    "entities": [
+      "kVehicleClassKindTable: the 22 kinds as data in the factory's comparison order",
+      "VehicleClassIndexMap: the two 800h-entry arrays with reset_identity_00592652 and remap_00592667",
+      "vehicle_class_kind_index / vehicle_class_kind_row / vehicle_class_kind_row_for",
+      "vehicle_class_party_from_race_00964f31, vehicle_class_party_valid_0095ba60, vehicle_class_party_slot_0095ba60",
+      "vehicle_class_debug_name_00964fbf",
+      "VehicleClassHost: one virtual per native call site of 00964790, in body order, no defaults",
+      "resolve_vehicle_class_00964790 over that host"
+    ],
+    "deliberate_divergence": "On a null allocation the native carries the null descriptor into the tail and dereferences it; the reconstruction stops and reports AllocationFailed.",
+    "not_binary_compatible": true
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "failed, with all four errors in src/render_tail.cpp (bsp::ParticleClock::owned_records missing), which is the Codex integrator's in-flight header change announced at dispatch. No error mentions any file in this packet.",
+    "isolated_check": "src/vehicle_class.cpp compiles clean under cl /W4 /WX /permissive- /std:c++17 for Win32, and the added test case plus a kind-table probe were compiled and run against src/native_string.cpp and src/storage_pool.cpp: both pass.",
+    "ctest": "not reached; the test binary links bsp_core"
+  },
+  "tests": {
+    "added": 1,
+    "file": "tests/math_tests.cpp",
+    "case": "the class index map is the identity apart from one remapped pair",
+    "reason": "the identity default is the correction to the predecessor doc and the reason 0095BA60's double mapping is harmless"
+  },
+  "state_per_address": {
+    "00964790": "exported, analyzed, reconstructed, build-tested, installed-file-checked",
+    "00749050": "exported, analyzed, reconstructed (layout only)",
+    "00963380": "exported, analyzed",
+    "00437F50": "analyzed (listing for the body, layout from callers)",
+    "00437BD0": "exported, analyzed",
+    "0095BAB0": "exported, analyzed, reconstructed",
+    "0095BA60": "exported, analyzed, reconstructed",
+    "0095B9C0": "exported, analyzed",
+    "0095B9E0": "exported, analyzed",
+    "0095BA30": "exported, analyzed",
+    "00963C20": "exported, analyzed, reconstructed as data",
+    "00963CB0": "exported, analyzed, reconstructed as data",
+    "00963D30": "exported, analyzed, reconstructed as data",
+    "00963DB0": "exported, analyzed, reconstructed as data",
+    "00963E40": "exported, analyzed, reconstructed as data",
+    "00963EC0": "exported, analyzed, reconstructed as data",
+    "00951AA0": "exported, analyzed, reconstructed as data",
+    "00951AF0": "exported, analyzed, reconstructed as data",
+    "00951B40": "exported, analyzed, reconstructed as data",
+    "00951C20": "exported, analyzed, reconstructed as data",
+    "00951D00": "exported, analyzed, reconstructed as data",
+    "00951DE0": "exported, analyzed, reconstructed as data",
+    "009536E0": "exported, analyzed, reconstructed as data",
+    "00953770": "exported, analyzed, reconstructed as data",
+    "0095FEE0": "exported, analyzed, reconstructed as data",
+    "0095FF50": "exported, analyzed, reconstructed as data",
+    "0095FFC0": "exported, analyzed, reconstructed as data",
+    "00749180": "exported, analyzed, reconstructed as data",
+    "00951E30": "exported, analyzed, reconstructed as data",
+    "00960050": "exported, analyzed, reconstructed as data",
+    "00592640": "exported, analyzed (identity loop and pair write only)",
+    "00506550": "exported, analyzed (identity loop and pair write only)",
+    "004E27E0": "exported, analyzed (pair write only)",
+    "00438020": "exported, not analyzed",
+    "00964020": "exported, not analyzed",
+    "004CACA0": "exported, not analyzed",
+    "004359E0": "not read",
+    "00425850": "read only; an existing reconstruction record already covers it"
+  }
+}
