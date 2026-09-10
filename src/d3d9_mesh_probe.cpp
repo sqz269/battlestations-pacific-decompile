@@ -9,7 +9,6 @@
 #include "bsp/mesh_decode_bindings.hpp"
 #include "bsp/building_instance.hpp"
 #include "bsp/material_lighting.hpp"
-#include "bsp/material_constants.hpp"
 #include "bsp/material_textures.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/texture_load_policy.hpp"
@@ -19,6 +18,10 @@
 #include "bsp/d3d9_resources.hpp"
 #include "bsp/model_bounds.hpp"
 #include "bsp/scene_attachment.hpp"
+#include "bsp/generated_model_lifetime.hpp"
+#include "bsp/camera_frame_state.hpp"
+#include "bsp/camera_multiply.hpp"
+#include "bsp/material_constants.hpp"
 #include <algorithm>
 #include <cstring>
 #include <set>
@@ -99,12 +102,10 @@ private:
 };
 
 bool scene_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection,
-    std::vector<float>& words, bool vertex, std::string& error) {
+    std::vector<float>& words, bool vertex, const bsp::CameraMatrix& view_projection, std::string& error) {
     // Deliberate host scene: fixed orthographic camera, uniform ambient cube,
     // one directional light, no fog/time effect. These are explicit scene
     // inputs, not guessed native initialization of the world or renderer.
-    const float view_projection[]{.24f,-.14f,-.1f,0, 0,.28f,-.1f,0,
-        -.24f,-.14f,-.1f,0, 0,0,.5f,1};
     const float screen_texture[]{.5f,0,0,0, 0,-.5f,0,0, 0,0,1,0, .5f,.5f,0,1};
     for (const auto& constant : reflection) {
         if (constant.register_set == 3) continue;
@@ -117,7 +118,7 @@ bool scene_constants(const std::vector<bsp::ReflectedShaderConstant>& reflection
         if (vertex && (name == "cViewProjMat" || name == "cScreenToTextureMat")) {
             if (constant.rows != 4 || constant.columns != 4 || constant.register_count != 4) return false;
             bsp::write_system_matrix_00b404a0(value,
-                name == "cViewProjMat" ? view_projection : screen_texture);
+                name == "cViewProjMat" ? view_projection.data() : screen_texture);
         } else if (vertex && name == "cAmbientCube" && constant.register_count == 6) {
             for (unsigned i = 0; i < 6; ++i) {
                 value[i*4] = value[i*4+1] = value[i*4+2] = .35f; value[i*4+3] = 1;
@@ -154,30 +155,84 @@ bool write_bitmap(const D3DLOCKED_RECT& locked, UINT width, UINT height) {
     return static_cast<bool>(output);
 }
 
-// Owned diagnostic model. Transform, bounds and scene attachment share one
-// stable identity and use the recovered operations. Construction is a host
-// adapter; native model allocation and virtual destruction remain separate.
+struct MeshModelLifetimeEvidence {
+    unsigned constructed{}, disposed{};
+    bool cleanup_matches{true};
+};
+struct MeshInstanceModel;
+struct MeshModelControl final : bsp::GeneratedModelStorageOwner {
+    MeshInstanceModel* model{};
+    MeshModelLifetimeEvidence& evidence;
+    explicit MeshModelControl(MeshModelLifetimeEvidence& value) : evidence(value) {}
+    ~MeshModelControl();
+    void dispose_model_storage(bsp::GeneratedModelLifetime&) noexcept override;
+};
+// Shared host control owns the physical allocation. Native virtual18/terminal
+// cleanup can dispose it first; the control then retains only a null pointer.
 struct MeshInstanceModel {
     bsp::CameraTransform transform;
     bsp::ModelBounds bounds;
     bsp::SceneAttachmentRuntime& runtime;
     bsp::SceneNodeAttachment attachment;
+    bsp::GeneratedGeometryModelLinks geometry_links;
+    bsp::GeneratedModelLifetime lifetime;
     unsigned attachments{};
-    MeshInstanceModel(bsp::SceneAttachmentRuntime& scene_runtime,
-        const bsp::CameraMatrix& local, const std::array<float, 4>& local_sphere)
-        : runtime(scene_runtime), attachment(transform,
+    MeshInstanceModel(bsp::GeneratedModelLifetimeRuntime& models,
+        const bsp::CameraMatrix& local, const std::array<float, 4>& local_sphere,
+        bsp::GeneratedModelGeometryReference& geometry, MeshModelControl& owner)
+        : runtime(models.scenes), attachment(transform,
             static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(this)),
-            bsp::object_accepts_scene_type_006ef860, bsp::set_node_scene_00b6ed80) {
+            bsp::object_accepts_scene_type_006ef860, bsp::set_node_scene_00b6ed80),
+          geometry_links{*geometry.geometry, {&transform}},
+          lifetime(models, attachment, {1, 0, nullptr, &geometry, nullptr, {&geometry_links}, {}}, owner) {
         bsp::set_transform_local_matrix_00b6db10(transform, local);
         bounds.local_sphere = local_sphere;
         runtime.bind(attachment);
-    }
-    ~MeshInstanceModel() {
-        bsp::set_node_scene_00b6ed80(runtime, attachment, nullptr, false);
-        runtime.unbind(attachment);
+        try { models.bind(lifetime); }
+        catch (...) { runtime.unbind(attachment); throw; }
     }
     MeshInstanceModel(const MeshInstanceModel&) = delete;
     MeshInstanceModel& operator=(const MeshInstanceModel&) = delete;
+};
+MeshModelControl::~MeshModelControl() {
+    if (model) bsp::unlink_and_release_render_model_00b6dfa0(model->lifetime);
+}
+void MeshModelControl::dispose_model_storage(bsp::GeneratedModelLifetime& value) noexcept {
+    auto* disposed = model;
+    if (!disposed || &disposed->lifetime != &value) std::terminate();
+    evidence.cleanup_matches = evidence.cleanup_matches && value.released_byte_44 == 1
+        && !value.retained_174 && !value.geometry_180 && !value.retained_130
+        && !disposed->attachment.scene && disposed->geometry_links.models.empty()
+        && value.geometry_links_164.empty();
+    model = nullptr;
+    ++evidence.disposed;
+    delete disposed;
+}
+std::shared_ptr<MeshModelControl> create_mesh_model(bsp::GeneratedModelLifetimeRuntime& runtime,
+    const bsp::CameraMatrix& local, const std::array<float, 4>& sphere,
+    const std::shared_ptr<bsp::GeneratedInstanceGeometry>& geometry, MeshModelLifetimeEvidence& evidence) {
+    auto control = std::make_shared<MeshModelControl>(evidence);
+    auto retained = std::make_unique<bsp::GeneratedModelGeometryReference>(geometry);
+    control->model = new MeshInstanceModel(runtime, local, sphere, *retained, *control);
+    retained.release();
+    ++evidence.constructed;
+    return control;
+}
+struct MeshModelLifetimes final : bsp::RenderCommandModelLifetimes {
+    bsp::RenderCommandModelLifetime& for_model(bsp::InstanceUploadModel& model) noexcept override {
+        return static_cast<MeshInstanceModel*>(model.context)->lifetime;
+    }
+};
+struct MeshRenderCommand {
+    MeshModelLifetimes models;
+    bsp::RenderCommand command{models};
+    MeshRenderCommand() {
+        auto first = std::make_unique<bsp::RenderCommandBatch>();
+        auto second = std::make_unique<bsp::RenderCommandBatch>();
+        first->preparation_mode = 0; second->preparation_mode = 1;
+        command.batches = {first.release(), second.release()};
+    }
+    ~MeshRenderCommand() { bsp::destroy_render_command_00b1ddd0(command); }
 };
 struct ReleaseMeshScene {
     void operator()(bsp::SceneResource* scene) const {
@@ -246,9 +301,10 @@ public:
         if (FAILED(hr)) { error = "Generated mesh/material creation failed"; return false; }
         std::memcpy(material->lighting.diffuse_color_00b179f0(0), tint.data(), sizeof(tint));
         const auto& original = *static_cast<const MeshInstanceModel*>(entry.model->context);
-        auto context = std::make_shared<MeshInstanceModel>(original.runtime,
-            original.transform.local, original.bounds.local_sphere);
-        model.geometry = geometry.get(); model.context = context.get(); model.context_owner = context;
+        auto& control = static_cast<MeshModelControl&>(original.lifetime.storage_owner);
+        auto context = create_mesh_model(original.lifetime.runtime,
+            original.transform.local, original.bounds.local_sphere, geometry, control.evidence);
+        model.geometry = geometry.get(); model.context = context->model; model.context_owner = context;
         model.attach_scene = attach_mesh_scene; model.world_sphere_center = mesh_world_sphere;
         return true;
     }
@@ -286,10 +342,20 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     // Native shadow generation/global ownership is a separate remaining task.
     const auto shadow = textures.acquire("white.tga", error);
     if (!shadow) return false;
+    bsp::CameraState camera_state;
+    bsp::CameraMatrix camera_world{1,0,0,0, 0,1,0,0, 0,0,1,0, 8,8,8,1};
+    const bsp::CameraMatrix desired_view_projection{.24f,-.14f,-.1f,0, 0,.28f,-.1f,0,
+        -.24f,-.14f,-.1f,0, 0,0,.5f,1};
+    bsp::CameraMatrix projection;
+    bsp::set_camera_local_matrix_00b71430(camera_state, camera_world);
+    bsp::multiply_camera_matrices_00413920(projection, camera_world, desired_view_projection);
+    bsp::set_camera_projection_00b6fd60(camera_state.projection, projection);
+    auto& camera = camera_state.transform;
+    const auto& view_projection = bsp::get_camera_view_projection_00b70490(camera_state);
     std::vector<float> vertex_words(256 * 4), pixel_words(224 * 4);
     bsp::MeshDecodeBindingStats decoded;
-    if (!scene_constants(shaders.vr, vertex_words, true, error)
-        || !scene_constants(shaders.pr, pixel_words, false, error)
+    if (!scene_constants(shaders.vr, vertex_words, true, view_projection, error)
+        || !scene_constants(shaders.pr, pixel_words, false, view_projection, error)
         || !bsp::pack_mesh_vertex_decode_constants_00b428c0(ordered_streams, shaders.vb,
             {static_cast<std::uint32_t>(shaders.base.options.compressed_element_count), {}},
             0, vertex_words, decoded, error)
@@ -318,11 +384,13 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
     if (FAILED(hr)) return false;
     unsigned visible = 0; std::set<DWORD> colors;
     bool buffers_match = false, constants_match = false, layout_match = false, bindings_match = false;
-    bool groups_match = false, capacity_guard = false, frame_targets_match = false;
+    bool groups_match = false, capacity_guard = false, frame_targets_match = false, camera_frame_match = false;
+    MeshModelLifetimeEvidence model_lifetimes;
     unsigned queued_bindings_checked = 0;
     try {
         bsp::RendererSynchronization sync;
         bsp::D3D9StateCache states(device, sync, nullptr);
+        bsp::D3D9CameraFrameAccess camera_access(states);
         std::shared_ptr<bsp::LogicalVertexStream> vertices;
         std::shared_ptr<bsp::LogicalIndexStream> indices;
         hr = bsp::create_mesh_vertex_stream_00b4bc00_fragment(device, states,
@@ -345,7 +413,8 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         // Ordinary constructor00b18900 initializes both offset-named words
         // toFFFFFFFF; clone00b18b60 then copies them without interpretation.
         source_material->word104 = source_material->word108 = 0xffffffffu;
-        bsp::GeneratedInstanceGeometry source_geometry;
+        auto source_geometry_owner = std::make_shared<bsp::GeneratedInstanceGeometry>();
+        auto& source_geometry = *source_geometry_owner;
         source_geometry.mesh_stream = vertices; source_geometry.indices = indices;
         source_geometry.section.primitive = subset.native_primitive;
         source_geometry.section.range_words = subset.range_words;
@@ -357,16 +426,15 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         // Explicit distinct host type identities exercise the recovered equality
         // predicates. These are not claimed to be the native runtime ID values.
         bsp::SceneAttachmentRuntime scene_runtime(4, {1, 2, 3});
+        bsp::GeneratedModelLifetimeRuntime model_runtime(scene_runtime);
         std::unique_ptr<bsp::SceneResource, ReleaseMeshScene> scene(new bsp::SceneResource(1,
             [](bsp::SceneResource& value) { delete &value; }));
-        auto source_model_state = std::make_shared<MeshInstanceModel>(scene_runtime,
-            *model.hierarchy.matrix, model.hierarchy.sphere);
+        auto source_model_state = create_mesh_model(model_runtime,
+            *model.hierarchy.matrix, model.hierarchy.sphere, source_geometry_owner, model_lifetimes);
         bsp::InstanceUploadModel source_model;
-        source_model.geometry = &source_geometry; source_model.context = source_model_state.get();
+        source_model.geometry = &source_geometry; source_model.context = source_model_state->model;
         source_model.context_owner = source_model_state; source_model.attach_scene = attach_mesh_scene;
         source_model.world_sphere_center = mesh_world_sphere;
-        bsp::CameraTransform camera;
-        bsp::set_transform_local_matrix_00b6db10(camera, *model.hierarchy.matrix);
         std::array<bsp::InstanceRenderEntry, 2> source_entries;
         for (std::uint32_t i=0; i<2 && SUCCEEDED(hr); ++i)
             if (!bsp::initialize_instance_render_entry_00b51a20(source_entries[i],0,
@@ -377,8 +445,10 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         generator->write_record = write_mesh_instance;
         auto binding = std::make_shared<bsp::InstanceGroupingBinding>();
         binding->id = 0; binding->generator = generator;
-        bsp::InstanceGroupingState groups;
-        bsp::InstanceRenderQueue opaque_queue, faded_queue;
+        MeshRenderCommand render_command;
+        auto& groups = render_command.command.grouping;
+        auto& opaque_queue = render_command.command.batches[0]->entries;
+        auto& faded_queue = render_command.command.batches[1]->entries;
         const std::vector<bsp::InstanceRenderQueue*> queues{&opaque_queue,&faded_queue};
         MeshInstanceFactory factory(states,shared_vertices,{vertices,indices,subset.native_primitive,subset.range_words},
             {instance_declaration,layout});
@@ -544,8 +614,6 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
             std::printf("Installed frame targets: retained_surfaces_default_color_identity_skip_null_preserves_and_slots=1 checked=%d\n", frame_targets_match);
             if (!frame_targets_match && SUCCEEDED(hr)) hr = E_FAIL;
         }
-        const D3DVIEWPORT9 viewport{0,0,256,256,0,1};
-        if (SUCCEEDED(hr)) hr = device.SetViewport(&viewport);
         for (const auto& setting : {std::pair<D3DRENDERSTATETYPE,DWORD>{D3DRS_CULLMODE,D3DCULL_NONE},
             {D3DRS_ZENABLE,TRUE},{D3DRS_ZWRITEENABLE,TRUE},{D3DRS_ZFUNC,D3DCMP_LESSEQUAL},
             {D3DRS_ALPHATESTENABLE,FALSE},{D3DRS_ALPHABLENDENABLE,FALSE},{D3DRS_SCISSORTESTENABLE,FALSE},
@@ -583,7 +651,32 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
                 && t0.p == slots.textures()[0]->texture && t1.p == shadow->texture;
         }
         if (SUCCEEDED(hr) && !(buffers_match && constants_match && layout_match && bindings_match && groups_match)) hr = E_FAIL;
-        if (SUCCEEDED(hr)) hr = device.Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0);
+        const bsp::CameraViewport viewport{0,0,256,256,0,{0,0,256,256}};
+        const bsp::CameraPlane ambient{.35f,.35f,.35f,1};
+        bsp::CameraFrameState camera_frame(camera_state);
+        camera_frame.enabled = 1; camera_frame.viewport = &viewport; camera_frame.ambient_rgba = &ambient;
+        camera_frame.clear_flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER;
+        camera_frame.clear_color = 0xff000000; camera_frame.clear_depth = 1;
+        camera_frame.render_mode = 3; camera_frame.frustum.count = 6;
+        camera_access.user_clip_planes_supported = true;
+        camera_access.sse2_color_truncation = true; // Explicit host mode, not native startup recovery.
+        if (SUCCEEDED(hr)) {
+            camera_access.execute_camera_command_00b71360(camera_frame);
+            D3DVIEWPORT9 actual{}; DWORD actual_ambient = 0, clip_mask = ~DWORD{}, scissor = ~DWORD{};
+            hr = device.GetViewport(&actual);
+            if (SUCCEEDED(hr)) hr = device.GetRenderState(D3DRS_AMBIENT, &actual_ambient);
+            if (SUCCEEDED(hr)) hr = device.GetRenderState(D3DRS_CLIPPLANEENABLE, &clip_mask);
+            if (SUCCEEDED(hr)) hr = device.GetRenderState(D3DRS_SCISSORTESTENABLE, &scissor);
+            camera_frame_match = SUCCEEDED(hr) && actual.X == 0 && actual.Y == 0
+                && actual.Width == 256 && actual.Height == 256 && actual.MinZ == 0 && actual.MaxZ == 1
+                && actual_ambient == 0xff595959 && clip_mask == 0 && scissor == 0
+                && camera_access.viewport() == &viewport && camera_access.viewport_calls() == 1
+                && camera_access.clear_calls() == 1 && camera_access.plane_set().count == 6
+                && camera_access.pending_plane_count() == 0 && camera_access.active_plane_count() == 0
+                && (camera_state.projection.valid_flags & 0x24u) == 0x24u;
+            std::printf("Installed camera frame: shared_camera_cache_viewport_clear_ambient_frustum=1 checked=%d\n", camera_frame_match);
+            if (!camera_frame_match && SUCCEEDED(hr)) hr = E_FAIL;
+        }
         if (SUCCEEDED(hr)) hr = device.BeginScene();
         if (SUCCEEDED(hr)) {
             for (const auto* queue : queues) for (const auto* entry : queue->entries()) {
@@ -654,7 +747,12 @@ bool draw_mesh(IDirect3DDevice9& device, MeshTextureDomain& textures,
         restored = SUCCEEDED(device.SetRenderTarget(slot,old_extra_targets[slot - 1].p)) && restored;
     restored = SUCCEEDED(device.SetDepthStencilSurface(old_depth.p)) && restored;
     restored = SUCCEEDED(saved.p->Apply()) && restored;
+    const bool model_lifetime_match = model_lifetimes.constructed == 3 && model_lifetimes.disposed == 3
+        && model_lifetimes.cleanup_matches;
+    std::printf("Installed model lifetime: constructed=%u disposed=%u recovered_group_and_virtual18_cleanup=%d checked=%d\n",
+        model_lifetimes.constructed, model_lifetimes.disposed, model_lifetimes.cleanup_matches, model_lifetime_match);
     const bool checked = SUCCEEDED(hr) && buffers_match && constants_match && layout_match && bindings_match && groups_match && frame_targets_match
+        && camera_frame_match && model_lifetime_match
         && queued_bindings_checked == 2 && visible > 32 && visible < 16384 && colors.size() > 10 && restored;
     std::printf("Installed mesh draw: hr=0x%08lx vertices=%u primitives=%u GPU_bytes=%d decode_records=%zu constant_readback=%d instance_layout=%d textures_frequencies=%d queued_bindings=%u visible=%u colors=%zu restored=%d checked=%d error=%s\n",
         static_cast<unsigned long>(hr),ordered_streams[0]->count,subset.range_words[3],buffers_match,

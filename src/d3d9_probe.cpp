@@ -715,7 +715,7 @@ int main(int argc, char** argv) {
         && outer.right - outer.left == expected.right - expected.left
         && outer.bottom - outer.top == expected.bottom - expected.top
         && GetClassLongA(window, GCL_CBWNDEXTRA) == 24
-        && (GetClassLongA(window, GCL_STYLE) & CS_GLOBALCLASS) != 0
+        && GetClassLongA(window, GCL_STYLE) == CS_BYTEALIGNWINDOW
         && (GetWindowLongA(window, GWL_STYLE) & WS_CAPTION) == WS_CAPTION
         && (GetWindowLongA(window, GWL_EXSTYLE) & 0x300) == 0x300
         && !IsWindowVisible(window);
