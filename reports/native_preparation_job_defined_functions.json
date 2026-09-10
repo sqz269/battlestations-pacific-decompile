@@ -1,0 +1,321 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b0f210",
+      "end_exclusive": "00b0f244",
+      "length": 52,
+      "sha256": "3e32a6448ed0a1124d44d55c6bbfac48a23ba89270f25b117a4b0e288f4349c2",
+      "function_before": "Function: CG_scalar_deleting_dtor_00b0f210 at 00b0f210\nSignature: undefined CG_scalar_deleting_dtor_00b0f210(void)\nEntry: 00b0f210\nBody: 00b0f210 - 00b0f243",
+      "documentation_before": {
+        "hash": "dfaaa44e931f07a5ecd4e1541fa62ae346705b38a0aaa3bf298eb059405fafac",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0f210",
+        "function_name": "CG_scalar_deleting_dtor_00b0f210",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b0f21c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b0f21e"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b0f23e"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "00b0f236"
+      ],
+      "function_after": "Function: CG_scalar_deleting_dtor_00b0f210 at 00b0f210\nSignature: undefined CG_scalar_deleting_dtor_00b0f210(void)\nEntry: 00b0f210\nBody: 00b0f210 - 00b0f243",
+      "documentation_after": {
+        "hash": "383be0795e7805e3bb6120a9be3f358a2f16e7ecd2bf7a64219059b2cd8bc1e5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0f210",
+        "function_name": "CG_scalar_deleting_dtor_00b0f210",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b0f21c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b0f21e"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b0f23e"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00b0f1d0",
+      "end_exclusive": "00b0f1ea",
+      "length": 26,
+      "sha256": "5cd6c7045a05cf438fbc7240014a1b0f8d33d6145b32804bf0fc11bac262c7b5",
+      "missing_before": true,
+      "function_before": "No function found for 00b0f1d0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: FUN_00b0f1d0 at 00b0f1d0\nSignature: undefined FUN_00b0f1d0(void)\nEntry: 00b0f1d0\nBody: 00b0f1d0 - 00b0f1e9"
+    },
+    {
+      "address": "00b0f1c0",
+      "end_exclusive": "00b0f1c8",
+      "length": 8,
+      "sha256": "8a9a0e18ceb0afe4b5c25d13ce74f72d5f2df5104f944174cb5e3c8cc1e7f10a",
+      "missing_before": true,
+      "function_before": "No function found for 00b0f1c0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: FUN_00b0f1c0 at 00b0f1c0\nSignature: undefined FUN_00b0f1c0(void)\nEntry: 00b0f1c0\nBody: 00b0f1c0 - 00b0f1c7"
+    },
+    {
+      "address": "00b0d930",
+      "end_exclusive": "00b0d959",
+      "length": 41,
+      "sha256": "8ffb8e115f1c181f1d4ed483cd97bec7ebfe1f3b0c9adb36119258a46d026f36",
+      "missing_before": true,
+      "function_before": "No function found for 00b0d930",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: FUN_00b0d930 at 00b0d930\nSignature: undefined FUN_00b0d930(void)\nEntry: 00b0d930\nBody: 00b0d930 - 00b0d958"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b0f23b",
+        "end_address": "00b0f244"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b0f23b",
+        "end_address": "00b0f243",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b0f236"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b0f236 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b0f210"
+      },
+      "result": {
+        "success": true,
+        "address": "00b0f210",
+        "deleted_function": "CG_scalar_deleting_dtor_00b0f210",
+        "body_size": 49,
+        "message": "Function 'CG_scalar_deleting_dtor_00b0f210' deleted at 00b0f210"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b0f210",
+        "name": "CG_scalar_deleting_dtor_00b0f210",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b0f210",
+        "function_name": "CG_scalar_deleting_dtor_00b0f210",
+        "entry_point": "00b0f210",
+        "body_size": 52,
+        "message": "Function created successfully at 00b0f210",
+        "warnings": [
+          "Function name 'CG_scalar_deleting_dtor_00b0f210' \u2014 main part 'CG_scalar_deleting_dtor_00b0f210' is not PascalCase. Expected: CgScalarDeletingDtor00b0f210",
+          "Function name 'CG_scalar_deleting_dtor_00b0f210' \u2014 main part 'CG_scalar_deleting_dtor_00b0f210' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b0f1d0",
+        "end_address": "00b0f1ea"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b0f1d0",
+        "end_address": "00b0f1e9",
+        "bytes_disassembled": 26,
+        "message": "Successfully disassembled 26 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b0f1d0",
+        "name": "FUN_00b0f1d0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b0f1d0",
+        "function_name": "FUN_00b0f1d0",
+        "entry_point": "00b0f1d0",
+        "body_size": 26,
+        "message": "Function created successfully at 00b0f1d0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b0f1c0",
+        "end_address": "00b0f1c8"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b0f1c0",
+        "end_address": "00b0f1c7",
+        "bytes_disassembled": 8,
+        "message": "Successfully disassembled 8 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b0f1c0",
+        "name": "FUN_00b0f1c0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b0f1c0",
+        "function_name": "FUN_00b0f1c0",
+        "entry_point": "00b0f1c0",
+        "body_size": 8,
+        "message": "Function created successfully at 00b0f1c0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b0d930",
+        "end_address": "00b0d959"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b0d930",
+        "end_address": "00b0d958",
+        "bytes_disassembled": 41,
+        "message": "Successfully disassembled 41 byte(s)"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b0d950",
+        "end_address": "00b0d959"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b0d950",
+        "end_address": "00b0d958",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b0d94b"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b0d94b (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b0d930",
+        "name": "FUN_00b0d930",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b0d930",
+        "function_name": "FUN_00b0d930",
+        "entry_point": "00b0d930",
+        "body_size": 41,
+        "message": "Function created successfully at 00b0d930"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "One job destructor body rebuilt with preserved comments and three missing owner entries defined, both free continuations restored; project saved"
+}

@@ -150,10 +150,12 @@
       "address": "00ce38f8",
       "visible_text": "list<T> too long",
       "counted_bytes": 16,
-      "includes_literal_terminating_nul": true,
+      "includes_literal_terminating_nul": false,
       "result_length": 16,
       "result_capacity": 31,
-      "allocated_bytes": 32
+      "allocated_bytes": 32,
+      "payload_bytes": 16,
+      "literal_terminating_nul_address": "00ce3908"
     }
   },
   "verification": {
@@ -1022,5 +1024,15 @@
     "SBO boundary uses independently native-verified shared source; not full original-SBO execution in this factory fixture",
     "No catch-by-value native runtime copy invocation in this sequence",
     "No installed game modification or game validation"
-  ]
+  ],
+  "primary_literal_correction": "Current live CE38F8..CE3908 verifies 16 payload bytes plus NUL; source counted16 was already correct. Worker artifact hashes retained for original committed report provenance.",
+  "primary_integration": {
+    "report": "reports/native_job_string_count_integration_audit.json",
+    "source_header_unchanged": true,
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "original_code_fixture_passed": true,
+    "annotations_saved": true,
+    "exports_refreshed": true
+  }
 }

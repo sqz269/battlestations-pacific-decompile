@@ -1,0 +1,116 @@
+[
+  {
+    "address": "00b0ffb0",
+    "before": {
+      "address": "00b0ffb0",
+      "function_name": "BSP_RenderBatchPreparationJob_GetSingleton_Provisional",
+      "comment": "[BSP reconstruction 00b0ffb0]\nLazily obtains8-byte singleton global00F8D444 with lifetime-manager synchronization/registration. Its primary vtable00D5E160+0 is00B1BF70. Allocation/registration implementation remains unported; typed execution requires actual job scheduling and wait, not a singleton stub. Original ABI: No stack arguments; EAX job singleton; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No stack arguments; EAX job singleton; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b0ffb0",
+      "old_name": "BSP_RenderBatchPreparationJob_GetSingleton_Provisional",
+      "name": "BSP_RenderBatchPreparationJob_GetSingleton",
+      "evidence": "Complete native[00b0ffb0,00b1007e); No input; EAX current actual8h singleton; RET. Actual8h allocation/table transitions, captured manager section, recheck/publication, capture secondary before second manager lookup, real registration, release then final reload Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b0f1d0",
+    "before": {
+      "address": "00b0f1d0",
+      "function_name": "FUN_00b0f1d0"
+    },
+    "after": {
+      "address": "00b0f1d0",
+      "old_name": "FUN_00b0f1d0",
+      "name": "BSP_RenderBatchPreparationJob_DestroyBody",
+      "evidence": "Complete native[00b0f1d0,00b0f1ea); ECX actual primary owner; RET; no meaningful return. Unconditional F8D444 clear then only secondary04=CE3818; no unregister/free/primary reset Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b0f210",
+    "before": {
+      "address": "00b0f210",
+      "function_name": "CG_scalar_deleting_dtor_00b0f210"
+    },
+    "after": {
+      "address": "00b0f210",
+      "old_name": "CG_scalar_deleting_dtor_00b0f210",
+      "name": "BSP_RenderBatchPreparationJob_ScalarDeletingDestructor",
+      "evidence": "Complete native[00b0f210,00b0f244); ECX primary; stack DWORD flags; RET4; EAX original primary. Unconditional clear/secondary reset, free original primary iff flags&1, return original address including free continuation Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b0f1c0",
+    "before": {
+      "address": "00b0f1c0",
+      "function_name": "FUN_00b0f1c0"
+    },
+    "after": {
+      "address": "00b0f1c0",
+      "old_name": "FUN_00b0f1c0",
+      "name": "BSP_RenderBatchPreparationJob_SecondaryDeletingThunk",
+      "evidence": "Complete native[00b0f1c0,00b0f1c8); ECX secondary; subtract4; tailcall B0F210 with original flags/RET4; EAX primary. Actual pointer-minus4 dispatch to reconstructed primary deletion Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b0d930",
+    "before": {
+      "address": "00b0d930",
+      "function_name": "FUN_00b0d930"
+    },
+    "after": {
+      "address": "00b0d930",
+      "old_name": "FUN_00b0d930",
+      "name": "BSP_RenderBatchPreparationJobBase_ScalarDeletingDestructor",
+      "evidence": "Complete native[00b0d930,00b0d959); ECX construction-base pointer; stack DWORD flags; RET4; EAX same base. Unconditional F8D444 clear, reset CE3818 at supplied base, free same base iff flags&1; distinct from final secondary adjustment Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0041dd40",
+    "before": {
+      "address": "0041dd40",
+      "function_name": "BSP_NativeString_Resize",
+      "comment": "[BSP reconstruction 0041dd40]\nIf desired length unchanged do nothing; zero desired length releases old data through00419cc0/00bd1510 and clears both fields. Nonzero new length allocates length+1 through00419cc0/00bd1120, optionally copies min(old,new), returns old storage if nonnull, writes newlength/data and trailing zero byte. Resolver invokes from zeroed fresh output so old storage is absent. Original ABI: ECX8-byte string; stack desired unsigned length and preserve flag (low byte); RET8. Evidence: docs/VERTEX_FORMAT_RESOLUTION.md; reports/mesh_declaration_resolver_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 0041dd40] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX 8-byte string {uint length +0, char* data +4}, stack (uint length, char preserve), RET 8. No capacity field, no small-buffer area: the block is always length+1 bytes, so a shrink reallocates. A request for the length already held returns immediately even when data is null (0041dd4a). Length 0 releases data with old_length+1 and clears both fields. Otherwise it allocates length+1 from the string pool (00419cc0 then 00bd1120) BEFORE releasing the old block, optionally copies min(old,new) bytes, releases the old block with old_length+1, then stores data/length and writes the terminator at data[length]. 2280 callers. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+    },
+    "after": {
+      "address": "0041dd40",
+      "old_name": "BSP_NativeString_Resize",
+      "name": "BSP_NativeString_Resize",
+      "evidence": "Complete native[0041dd40,0041dde4); ECX actual8h string header; stack length and preserve byte; RET8. Actual header; capture initial length for equality/zero path; fresh length/data after allocation; publish pointer/length/terminator after release; existing host storage and zero-copy limits remain. Evidence reports/native_job_string_count_integration_audit.json; reports/native_pooled_string_actual_resize_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004ce780",
+    "before": {
+      "address": "004ce780",
+      "function_name": "STL_xlen_throw_004ce780"
+    },
+    "after": {
+      "address": "004ce780",
+      "old_name": "STL_xlen_throw_004ce780",
+      "name": "BSP_NativeAliasList_GrowCount",
+      "evidence": "Complete native[004ce780,004ce813); ECX actual owner; stack DWORD increment; RET4; no semantic return. Read owner+8 once. Compare increment against unsigned 1FFFFFFF minus captured count. On pass write captured count plus increment with DWORD wrap; touch no other owner field. Raw temporary cap15 then length0 then first NUL; counted assign CE38F8,16; arm state0 after assignment; construct raw40 logic error411700; publish length vtableD69260; throw original object through native ThrowInfoD83F98. No count store. Evidence reports/native_job_string_count_integration_audit.json; reports/native_alias_count_growth_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c65a80",
+    "before": {
+      "address": "00c65a80",
+      "function_name": "Unwind@00c65a80"
+    },
+    "after": {
+      "address": "00c65a80",
+      "old_name": "Unwind@00c65a80",
+      "name": "Unwind@00c65a80",
+      "evidence": "Complete native[00c65a80,00c65a88); Parent EBP; LEA ECX,[EBP-50h]; tailcall4072D0. Destroy completed temporary only after factory state0 is armed; compiler-generated host guard corresponds to native unwind action. Evidence reports/native_job_string_count_integration_audit.json; reports/native_alias_count_growth_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "status": "applied"
+  }
+]

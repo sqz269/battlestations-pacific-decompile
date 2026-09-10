@@ -17,9 +17,9 @@ this behavior rather than strengthening the predicate.
 
 On the failing branch, the original prepares a raw 1Ch SBO temporary in this
 order: capacity=15, length=0, then the first inline byte=NUL. It calls
-`00408720` with literal `00CE38F8` and count **16**. The text has fifteen visible
-characters, `list<T> too long`; the counted copy includes its terminating NUL,
-then the string helper appends another NUL. The resulting string has length16
+`00408720` with literal `00CE38F8` and count **16**. The text has sixteen visible
+characters, `list<T> too long`; the counted copy excludes its terminating NUL
+at `00CE3908`, and the string helper appends a NUL. The resulting string has length16
 and capacity31, with a real 32-byte heap allocation.
 
 Only after counted assignment returns does `004CE7D9` arm factory unwind
