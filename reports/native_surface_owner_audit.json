@@ -1,0 +1,1910 @@
+{
+  "schema_version": 1,
+  "packet": "native_surface_owner",
+  "status": "Reconstructed, strict Win32 compiled, focused native differential case and baseline repository test passed; primary integration pending.",
+  "utc": "2026-09-10T20:23:56.103195+00:00",
+  "base_commit": "bee0f4e7fdeb170d6e1b1e36a45d383ae994c696",
+  "scope": "Eight native surface owner and actual borrowed renderer-array entries. Four owned files only; no CMake, Ghidra, ledger or original-installation mutations.",
+  "owned_addresses": [
+    "00b3f630",
+    "00b3cc80",
+    "00b3f4e0",
+    "00b3f5b0",
+    "00b3d510",
+    "00b3d550",
+    "00b25630",
+    "00b27d60"
+  ],
+  "owned_files": [
+    "include/bsp/native_surface_owner.hpp",
+    "src/native_surface_owner.cpp",
+    "docs/NATIVE_SURFACE_OWNER.md",
+    "reports/native_surface_owner_audit.json"
+  ],
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "method": "tools/bsp.py ghidra bytes verifies project/program before each of the 87 queries.",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all_live_bytes_match_installed_pe": true
+  },
+  "functions": [
+    {
+      "address": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "length": 382,
+      "proposed_name": "BSP_NativeSurfaceOwner_Construct",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX actual raw pool slot; stack COM pointer, DWORD flags, DWORD whose low byte is kind; EAX actual owner; RET 0Ch.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "f59553f64d394a4b3609c84d5d504377bcb3de224a47ef97914c50e39e4a5023"
+    },
+    {
+      "address": "00b3cc80",
+      "end_exclusive": "00b3cce4",
+      "length": 100,
+      "proposed_name": "BSP_NativeSurfaceOwner_InitializeBinding",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX owner; stack COM pointer; RET 4. GetDesc HRESULT is ignored; there is no declared meaningful native return.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "7d2bef323672d2420e9cda960ed51638f509c57af2d35f388fb5e2ecdeadbef1"
+    },
+    {
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "proposed_name": "BSP_NativeSurfaceOwner_Destroy",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX owner; RET. Pool return belongs to the outer scalar deleting destructor.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28"
+    },
+    {
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "proposed_name": "BSP_NativeSurfaceOwner_ScalarDeletingDestructor",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX owner; stack flags; EAX original owner address even after pool return; RET 4.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782"
+    },
+    {
+      "address": "00b3d510",
+      "end_exclusive": "00b3d544",
+      "length": 52,
+      "proposed_name": "BSP_NativeSurfaceOwner_ReleaseForReset",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX owner; RET. Captured COM AddRef/Release pair followed by reloaded owner COM Release.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c"
+    },
+    {
+      "address": "00b3d550",
+      "end_exclusive": "00b3d588",
+      "length": 56,
+      "proposed_name": "BSP_NativeSurfaceOwner_Recreate",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX owner; stack actual device; EAX COM HRESULT preserved; RET 4.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "3b4e38423d828c61398db47c581fb0409879cc4d635917ef65daf6f9b4f3eecc"
+    },
+    {
+      "address": "00b25630",
+      "end_exclusive": "00b25697",
+      "length": 103,
+      "proposed_name": "BSP_NativeSurfacePointerArray_RemoveFirst",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX raw pointer-array header; stack pointer to target pointer; EAX zero or one; RET 4.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+    },
+    {
+      "address": "00b27d60",
+      "end_exclusive": "00b27d73",
+      "length": 19,
+      "proposed_name": "BSP_Renderer_UnregisterNativeSurface",
+      "name_confidence": "Descriptive hypothesis from the instruction and ownership evidence.",
+      "native_abi": "ECX actual renderer identity; stack target owner; EAX underlying array result; RET 4.",
+      "source": "src/native_surface_owner.cpp",
+      "status": "Reconstructed and compiled; original-instruction differential lifecycle case passed.",
+      "native_byte_sha256": "9077346ff1ae7fd162137608cb8fd9977361825dde7a9820c82cbf299c88f692"
+    }
+  ],
+  "storage": {
+    "native_owner_bytes": 52,
+    "actual_pool_slot_bytes": 56,
+    "profile": "00d619a0",
+    "base_profile": "00ceb130",
+    "fields": [
+      {
+        "offset": "00",
+        "bytes": 4,
+        "meaning": "Native profile word, no host vptr."
+      },
+      {
+        "offset": "04",
+        "bytes": 4,
+        "meaning": "Actual std::atomic<int32_t> count; constructor MOV-equivalent initial value one, no companion count."
+      },
+      {
+        "offset": "08",
+        "bytes": 8,
+        "meaning": "Two copies of one captured live DWORD from 00D7A24C, including arbitrary bit patterns."
+      },
+      {
+        "offset": "10",
+        "bytes": 8,
+        "meaning": "Actual NativeString length and pointer, explicitly pooled."
+      },
+      {
+        "offset": "18",
+        "bytes": 16,
+        "meaning": "Format, width, height, multisample DWORDs populated by binder."
+      },
+      {
+        "offset": "28",
+        "bytes": 4,
+        "meaning": "Flags; shared tracking condition is flags & 0x110."
+      },
+      {
+        "offset": "2c",
+        "bytes": 4,
+        "meaning": "Owned COM surface pointer."
+      },
+      {
+        "offset": "30",
+        "bytes": 1,
+        "meaning": "Exact recreation-kind low byte, any nonzero chooses depth."
+      }
+    ],
+    "constructor_written_ranges": [
+      {
+        "start": "00",
+        "end_exclusive": "31",
+        "meaning": "All bytes initialized; descriptor fields through the native binder."
+      }
+    ],
+    "constructor_preserved_ranges": [
+      {
+        "start": "31",
+        "end_exclusive": "34",
+        "meaning": "Unwritten owner padding."
+      },
+      {
+        "start": "34",
+        "end_exclusive": "38",
+        "meaning": "Actual pool trailing slab ID; outside owner storage."
+      }
+    ],
+    "initialization_order_note": "The host NativeString default construction writes its two zero words during placement construction before the explicit native-order writes. No external call occurs in that interval; no concurrent construction-observer or SEH equivalence claim."
+  },
+  "actual_shared_context": {
+    "renderer_publication": "00f8d394",
+    "renderer_array_offset": "1b0c",
+    "surface_pool": "0108db00",
+    "string_pool_getter": "00419cc0",
+    "lifetime_manager": "01090aa0",
+    "resource_support_publication": "0108fedc",
+    "tracking_counter": "0108dafc",
+    "scalar_word": "00d7a24c",
+    "live_scalar_api": "const volatile std::uint32_t& actual_one_00d7a24c; captured once before placement construction.",
+    "independent_registry": false,
+    "independent_reference_count": false,
+    "callback_composition": "The primary binds actual resource support deleting dispatch into the existing real SingletonLifetimeDomain callback; this module introduces no no-op lifecycle adapter."
+  },
+  "behavior": {
+    "constructor": [
+      "Capture scalar source once, construct real owner fields and preserve bytes 31h through 37h.",
+      "Captured input AddRef/Release pair, binder call, then another pair on the same captured input.",
+      "Allocate real temporary Surface string and diagnostic deep copy, call actual support getter, return record name then temporary string, reload owner flags and conditionally increment actual counter.",
+      "Constructor exception cleanup returns active diagnostic strings and current owner name, installs base, but neither COM-releases nor returns raw slot."
+    ],
+    "binding": [
+      "Overwrite +2C before captured AddRef, then reload +2C for GetDesc.",
+      "Raw uninitialized D3DSURFACE_DESC; ignore HRESULT; copy format, width, height, multisample.",
+      "Null branch clears format, width, height, flags and multisample; leaves exact kind unchanged.",
+      "No release of a previous owner COM binding."
+    ],
+    "destructor": [
+      "Install surface profile, capture canonical renderer once, remove borrowed owner pointer from its actual +1B0C header, call actual support singleton.",
+      "Reload current +2C; Release and clear after callback. Reload current flags for counter decrement, then current name pointer/length for sized pool return.",
+      "Leave name words stale and install refcounted base profile.",
+      "Scalar deleting wrapper returns canonical pool slot only for flags bit zero and only after successful destructor."
+    ],
+    "reset": [
+      "Captured current COM AddRef/Release pair, fresh current field for final Release, clear after callback.",
+      "Recreate with stack-passed actual device, width/height/format/multisample, quality zero, null shared handle, direct output to actual +2C.",
+      "Kind zero: CreateRenderTarget lockable FALSE. Any nonzero byte: CreateDepthStencilSurface discard TRUE. Preserve returned HRESULT, no rollback or old-slot check."
+    ],
+    "raw_array": [
+      "Capture native data/count and unsigned end pointer. Return empty before reading the target-pointer storage.",
+      "Capture target once, use retained raw cursor to find first match, signed SAR-2 index, swap captured last pointer into hole when needed.",
+      "Decrement live count; preserve capacity and stale final entry. No retain, release, private collection or snapshot."
+    ]
+  },
+  "exception_handling": {
+    "maps": [
+      {
+        "owner": "surface_ctor",
+        "handler": "00cbef13",
+        "unwind_map": "00df779c",
+        "funcinfo": "00df77bc",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbeef0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbeef8"
+          },
+          {
+            "state": 2,
+            "next_state": 1,
+            "leaf": "00cbef03"
+          },
+          {
+            "state": 3,
+            "next_state": 2,
+            "leaf": "00cbef0b"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbeef0",
+            "text": "mov ecx, dword ptr [ebp - 0x24]"
+          },
+          {
+            "address": "00cbeef3",
+            "text": "jmp 0xb3d4f0"
+          },
+          {
+            "address": "00cbeef8",
+            "text": "mov ecx, dword ptr [ebp - 0x24]"
+          },
+          {
+            "address": "00cbeefb",
+            "text": "add ecx, 0x10"
+          },
+          {
+            "address": "00cbeefe",
+            "text": "jmp 0x41dd20"
+          },
+          {
+            "address": "00cbef03",
+            "text": "lea ecx, [ebp - 0x20]"
+          },
+          {
+            "address": "00cbef06",
+            "text": "jmp 0x41dd20"
+          },
+          {
+            "address": "00cbef0b",
+            "text": "lea ecx, [ebp - 0x18]"
+          },
+          {
+            "address": "00cbef0e",
+            "text": "jmp 0xb3f4c0"
+          },
+          {
+            "address": "00cbef13",
+            "text": "mov eax, 0xdf77bc"
+          },
+          {
+            "address": "00cbef18",
+            "text": "jmp 0xbf6b43"
+          }
+        ],
+        "validation": "Unwind states, complete leaf code, handler and FuncInfo match current live Ghidra and installed PE; no native exception injection."
+      },
+      {
+        "owner": "surface_dtor",
+        "handler": "00cbeee3",
+        "unwind_map": "00df7768",
+        "funcinfo": "00df7778",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbeed0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbeed8"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbeed0",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cbeed3",
+            "text": "jmp 0xb3d4f0"
+          },
+          {
+            "address": "00cbeed8",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cbeedb",
+            "text": "add ecx, 0x10"
+          },
+          {
+            "address": "00cbeede",
+            "text": "jmp 0x41dd20"
+          },
+          {
+            "address": "00cbeee3",
+            "text": "mov eax, 0xdf7778"
+          },
+          {
+            "address": "00cbeee8",
+            "text": "jmp 0xbf6b43"
+          }
+        ],
+        "validation": "Unwind states, complete leaf code, handler and FuncInfo match current live Ghidra and installed PE; no native exception injection."
+      }
+    ],
+    "constructor_cleanup_order": [
+      "diagnostic record NativeString",
+      "temporary NativeString",
+      "owner name",
+      "base profile"
+    ],
+    "destructor_cleanup_order": [
+      "owner name",
+      "base profile"
+    ],
+    "native_execution": false,
+    "host_exception_injection": false,
+    "source_policy": "C++ exception guards/catch under /EHsc encode inspected cleanup boundaries. Access violations/SEH and original CRT exception dispatcher are not implemented or runtime-proven."
+  },
+  "validation": {
+    "strict_module_build": {
+      "passed": true,
+      "architecture": "MSVC Win32",
+      "flags": [
+        "/std:c++17",
+        "/permissive-",
+        "/EHsc",
+        "/O2",
+        "/Oy-",
+        "/fp:strict",
+        "/MT",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "actual_sources": [
+        "native_surface_owner.cpp",
+        "native_resource_support.cpp",
+        "d3d9_surface_pool.cpp",
+        "allocator_list.cpp",
+        "storage_pool.cpp",
+        "native_string.cpp",
+        "singleton_lifetime.cpp"
+      ]
+    },
+    "repository_build": {
+      "passed": true,
+      "command": "./scripts/build.ps1",
+      "tests_passed": 1,
+      "tests_total": 1,
+      "limitation": "Baseline CMake does not include this new module until primary integration; the strict fixture build compiles it explicitly."
+    },
+    "differential_fixture": {
+      "passed": true,
+      "cases": 1,
+      "original_owned_entries_executed": [
+        "00b3f630",
+        "00b3cc80",
+        "00b3f4e0",
+        "00b3f5b0",
+        "00b3d510",
+        "00b3d550",
+        "00b25630",
+        "00b27d60"
+      ],
+      "events_per_path": 29,
+      "complete_slot_snapshots_per_path": 8,
+      "slot_bytes_per_snapshot": 56,
+      "string_arena_used_per_path": 25,
+      "string_free_blocks_per_path": 3,
+      "original_dependencies": "Original native surface pool construction/allocation/return/destruction, resource support owner/getter, real lifetime-manager cold registration/shutdown, native string resize and base destructor are executed.",
+      "loader": {
+        "isolated_sparse_original_pe_copy": true,
+        "verified_span_count": 87,
+        "guarded_relocation_count": 87,
+        "unmapped_reserve": "PAGE_NOACCESS",
+        "committed_unverified_gaps": "0xCC traps",
+        "native_exception_dispatcher": "Explicit unexpected-path trap; not executed."
+      },
+      "boundaries": [
+        "Native ordinary/array allocation and free plus the corresponding reconstructed allocation seam use real CRT malloc/free with deterministic A5 preimages.",
+        "Actual Win32 Initialize/Enter/Leave/DeleteCriticalSection APIs; no fake lock.",
+        "Native 00419CC0 getter and 00BD1120/00BD1510 allocation/return ABI boundaries bridge into the same real SizedStoragePool body used by the reconstructed path. The native trailing flag is checked as one.",
+        "Native memcpy and memmove_s boundaries use real copying; zero-length memcpy returns without inspecting a null source.",
+        "ABI-correct deterministic COM vtables model AddRef, Release, GetDesc and the two device create calls. GetDesc writes every descriptor field even while returning E_FAIL."
+      ],
+      "original_string_pool_instructions_compared": false,
+      "live_gpu": false,
+      "sequence": [
+        "Construct into a real native 38h pool slot; binder AddRef callback replaces the current field with another COM object; GetDesc sees replacement, while both balanced constructor pairs use captured input.",
+        "Reset AddRef callback replaces COM again; pair uses captured object and final release uses fresh owner field.",
+        "RT and noncanonical nonzero-kind depth recreation return E_FAIL while writing direct outputs; outputs and failure codes survive.",
+        "COM destruction callback sees actual array already changed, mutates current flags and name; destructor reloads both after callback.",
+        "Odd delete flags return actual slot; native/source free stacks reuse the same address. Reused null construction sees changed live scalar word 7FC01234 and preserves exact bits at both scalar offsets.",
+        "Null binding clears metadata/flags, preserves exact A5 kind byte. Even delete flags leave the slot allocated for explicit fixture cleanup.",
+        "Empty array returns without reading an invalid target-pointer storage. Actual manager shuts down support owner; actual surface pool unlinks shared allocator head."
+      ],
+      "normalizations": [
+        "Subtract relocated native image base delta from profile word.",
+        "Convert name-buffer address to null/non-null token; compare length, returned-buffer contents and actual sized-pool state separately.",
+        "Map COM pointers to stable fixture object IDs. Other 38h slot words remain byte-exact."
+      ]
+    },
+    "game_validated": false,
+    "binary_drop_in_compatible": false
+  },
+  "native_ranges": [
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "label": "existing critical-section cleanup",
+      "kind": "code",
+      "disk_offset": 12144,
+      "bytes_hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+      "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "label": "existing allocator-list base unlink",
+      "kind": "code",
+      "disk_offset": 14704,
+      "bytes_hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+      "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00411ee0",
+      "end_exclusive": "00411ef9",
+      "length": 25,
+      "label": "guard_cleanup",
+      "kind": "code",
+      "disk_offset": 73440,
+      "bytes_hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+      "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00415350",
+      "end_exclusive": "004153b9",
+      "length": 105,
+      "label": "getter",
+      "kind": "code",
+      "disk_offset": 86864,
+      "bytes_hex": "6aff68dbe0c50064a100000000506489250000000051a1a00a090185c0753b6a14e8a5147e0083c40489042485c0c744240c00000000741b8bc8e8d1b57b00a3a00a09018b4c240464890d0000000083c410c333c0a3a00a09018b4c240464890d0000000083c410c3",
+      "sha256": "f960f1a64ba2027c9dd3473717cdfc58270ffd4b2efe37c550fa0112399e6aa6",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00419cc0",
+      "end_exclusive": "00419cc5",
+      "length": 5,
+      "label": "string_pool_get_bridge",
+      "kind": "hook",
+      "disk_offset": 105664,
+      "bytes_hex": "64a1000000",
+      "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0041cc80",
+      "end_exclusive": "0041ccc0",
+      "length": 64,
+      "label": "destroy_lock",
+      "kind": "code",
+      "disk_offset": 117888,
+      "bytes_hex": "558be9568b750085f67432837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce0056e8f9987d0083c404c74500000000005e5dc3",
+      "sha256": "cdd78177fa870d850e479da6fd7f0e031f1c85d94e0f7800a71411b3e091bda1",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "label": "native_string_destroy",
+      "kind": "code",
+      "disk_offset": 122144,
+      "bytes_hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0041dd40",
+      "end_exclusive": "0041dde4",
+      "length": 164,
+      "label": "native_string_resize",
+      "kind": "code",
+      "disk_offset": 122176,
+      "bytes_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "live_matches_installed": true
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "label": "existing shared allocator-list traversal",
+      "kind": "code",
+      "disk_offset": 738992,
+      "bytes_hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b25630",
+      "end_exclusive": "00b25697",
+      "length": 103,
+      "label": "renderer_surface_array_remove_first",
+      "kind": "code",
+      "disk_offset": 7493168,
+      "bytes_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b27d60",
+      "end_exclusive": "00b27d73",
+      "length": 19,
+      "label": "renderer_remove_surface_adapter",
+      "kind": "code",
+      "disk_offset": 7503200,
+      "bytes_hex": "8d4424045081c10c1b0000e8c0d8ffffc20400",
+      "sha256": "9077346ff1ae7fd162137608cb8fd9977361825dde7a9820c82cbf299c88f692",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3cc80",
+      "end_exclusive": "00b3cce4",
+      "length": 100,
+      "label": "surface_initialize_binding",
+      "kind": "code",
+      "disk_offset": 7588992,
+      "bytes_hex": "8b44240483ec20568bf133c93bc189462c743b8b088b510450ffd28b462c8b088d54240452508b4130ffd08b4c24048b54241c8b442420894e188b4c241489561c894620894e245e83c420c20400894e18894e1c894e20894e28894e245e83c420c20400",
+      "sha256": "7d2bef323672d2420e9cda960ed51638f509c57af2d35f388fb5e2ecdeadbef1",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3d120",
+      "end_exclusive": "00b3d160",
+      "length": 64,
+      "label": "surface_pool_slab_construct",
+      "kind": "code",
+      "disk_offset": 7590176,
+      "bytes_hex": "538b5c2408568bc15766c78040070000200033d28d78348db0000700008d4900b91f0000002bca66890e891f83c20183c60283c73883fa207ce65f5e5bc20400",
+      "sha256": "b9d5ee8e38f4c213396fdcfcb28053b9f2ee220e68b8cba3f2b80ece2717d266",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3d370",
+      "end_exclusive": "00b3d37e",
+      "length": 14,
+      "label": "surface_pool_unwind_free_table",
+      "kind": "code",
+      "disk_offset": 7590768,
+      "bytes_hex": "8b0185c0740750e80d960b0059c3",
+      "sha256": "b0ccf42f41eb28e73ef97530368ee191b3079d4fe4d733c8aecba5d536b18588",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3d4f0",
+      "end_exclusive": "00b3d4f5",
+      "length": 5,
+      "label": "surface_eh_base_thunk",
+      "kind": "code",
+      "disk_offset": 7591152,
+      "bytes_hex": "e9fb5b0900",
+      "sha256": "1b0ae27346073fbdcff345440cdb9b0b3b05aab2c3bc5a05f574198714f46849",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3d510",
+      "end_exclusive": "00b3d544",
+      "length": 52,
+      "label": "surface_release_for_reset",
+      "kind": "code",
+      "disk_offset": 7591184,
+      "bytes_hex": "568bf1578b7e2c85ff74108b078b480457ffd18b178b420857ffd08b462c85c0740f8b088b510850ffd2c7462c000000005f5ec3",
+      "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3d550",
+      "end_exclusive": "00b3d588",
+      "length": 56,
+      "label": "surface_recreate",
+      "kind": "code",
+      "disk_offset": 7591248,
+      "bytes_hex": "807930008b4424048b10568d712c6a00568b712474078b52746a01eb058b52706a006a00568b7118568b71208b491c565150ffd25ec20400",
+      "sha256": "3b4e38423d828c61398db47c581fb0409879cc4d635917ef65daf6f9b4f3eecc",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3d860",
+      "end_exclusive": "00b3d8c9",
+      "length": 105,
+      "label": "surface_pool_slot_return",
+      "kind": "code",
+      "disk_offset": 7592032,
+      "bytes_hex": "535556578bf18d7e0c57ff151822ce00834718018b4424148b58348b4e288b0c992bc18be8b893244992f7ed03d5c1fa058bc2c1e81f03c20fb79140070000668984510007000066838140070000013b5e347303895e34834718ff57ff151022ce005f5e5d5bc20400",
+      "sha256": "8d80f84dc90c96d606e64f3db1cbe685bcad7063cc5026a9f6af93037f5db23c",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3dcc0",
+      "end_exclusive": "00b3dccc",
+      "length": 12,
+      "label": "surface_pool_return_thunk",
+      "kind": "code",
+      "disk_offset": 7593152,
+      "bytes_hex": "51b900db0801e895fbffffc3",
+      "sha256": "067d0d53497f03c8ac81b7821de785f2be1c0cd477d718092b4ab77c19b2c113",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3e2b0",
+      "end_exclusive": "00b3e33a",
+      "length": 138,
+      "label": "surface_pool_destroy_with_free_continuations",
+      "kind": "code",
+      "disk_offset": 7594672,
+      "bytes_hex": "56578bf933f639772cc7073c19d60076178b47288b0cb051e8df820b0083c60183c4043b772c72e98b472885c0740950e8a4860b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "sha256": "1776923567ac203aee55f16bc225217109a88e5e820c496298d114318c6b7908",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3e390",
+      "end_exclusive": "00b3e430",
+      "length": 160,
+      "label": "surface_pool_trim_with_free_continuation",
+      "kind": "code",
+      "disk_offset": 7594896,
+      "bytes_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84007000020753d50e8f6810b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c034b92000000090893883c03883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4007000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "sha256": "fd4fbd9577cb5c22c38a8f3a3ba6322e105516f68865218ba42f8daa34c078cc",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3e730",
+      "end_exclusive": "00b3e7ed",
+      "length": 189,
+      "label": "resource_get",
+      "kind": "code",
+      "disk_offset": 7595824,
+      "bytes_hex": "64a1000000006aff68b3edcb005064892500000000a1dcfe080183ec0c85c00f858900000056e8f56b8dff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833ddcfe080100753f6a08e88a800b0083c4048944240485c0c64424180174098bc8e8a8350200eb0233c0c644241800a3dcfe0801e8956b8dff8b0ddcfe0801518bc8e86724090085f6740b834618ff56ff151022ce00a1dcfe08015e8b4c240c64890d0000000083c418c3",
+      "sha256": "7b9c8865a04b8c98121a241786a0d3703768772cb806f8f557b00270e77c81d9",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3ec60",
+      "end_exclusive": "00b3ed33",
+      "length": 211,
+      "label": "surface_pool_construct",
+      "kind": "code",
+      "disk_offset": 7597152,
+      "bytes_hex": "6aff681eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7063c19d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8d7680b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8707c0b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "sha256": "2a969324269efba1bd41402b96dde3f7b65547861e1168d277f6a063313fbeb4",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3ed40",
+      "end_exclusive": "00b3ee7c",
+      "length": 316,
+      "label": "surface_pool_allocator_with_free_continuation",
+      "kind": "code",
+      "disk_offset": 7597376,
+      "bytes_hex": "5355568bf1578d5e0c53ff151822ce008343180183cdff396e340f85920000008b462c6844070000894634e8ab7a0b0083c40485c0740f8b4e34518bc8e89ee3ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e81a680b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e8b37b0b0083c404897e288b462c8b4e288d048185c07402892883462c0183cdff8b56348b46288b049066818040070000ffff0fb788400700000fb7d10fb79450000700008d3cd5000000002bfa6685c98d3cf875448b463483c0013b462c896e3473368b4e288d0c81eb038d49008b116683ba4007000000751c83c00183c1043b462c72e9016b1853ff151022ce008bc75f5e5d5bc3894634016b1853ff151022ce008bc75f5e5d5bc3",
+      "sha256": "38ae02876198dabeeeede2eb945c1ce47d8ddb5dc642a4e313065cfdc18669e4",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3f2a0",
+      "end_exclusive": "00b3f2aa",
+      "length": 10,
+      "label": "surface_pool_allocation_thunk",
+      "kind": "code",
+      "disk_offset": 7598752,
+      "bytes_hex": "b900db0801e996faffff",
+      "sha256": "05d840519b2b51aa7a10ce3948c060c5eba2f01fd09ee92dafe2b8bc16b93ff8",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3f4c0",
+      "end_exclusive": "00b3f4de",
+      "length": 30,
+      "label": "diagnostic_record_string_destroy",
+      "kind": "code",
+      "disk_offset": 7599296,
+      "bytes_hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+      "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "label": "surface_destroy",
+      "kind": "code",
+      "disk_offset": 7599328,
+      "bytes_hex": "6aff68e3eecb0064a100000000506489250000000051568bf189742404c706a019d6008b0d94d3f80056c744241401000000e84988feffe814f2ffff8b462c85c0740f8b088b510850ffd2c7462c000000008b4628a8107507a9000100007407832dfcda0801018b461485c0c64424100074168b4e106a0183c1015150e85ea78dff8bc8e8a71f09008bcec7442410ffffffffe8783b09008b4c24085e64890d0000000083c410c3",
+      "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "label": "surface_scalar_delete",
+      "kind": "code",
+      "disk_offset": 7599536,
+      "bytes_hex": "568bf1e828fffffff644240801740b56b900db0801e896e2ffff8bc65ec20400",
+      "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "length": 382,
+      "label": "surface_construct",
+      "kind": "code",
+      "disk_offset": 7599664,
+      "bytes_hex": "6aff6813efcb0064a100000000506489250000000083ec18f30f10054ca2d7005355568bf1c70630b1ce00c74604010000005789742410f30f114608f30f11460c33edc706a019d600896c2430896e10896e148b7c24383bfd8a4424408b4c243cc644243001896e2c884630894e2874108b178b420457ffd08b0f8b510857ffd2578bcee8c7d5ffff3bfd74108b078b480457ffd18b178b420857ffd06a016a078d4c241c896c241c896c2420e85ee68dff8b4424183bc58b5c241474128d4b0151689054ce0050e8837f0b0083c40c6a01538d4c2428c644243802897c2424896c2428896c242ce823e68dff3bdd8b7c242474138b5424208b442418525057e84b7f0b0083c40cc644243003e8eeefffff3bfdc64424300274178b4424206a0183c0015057e865a58dff8bc8e8ae1d09008b4424183bc5c64424300174136a0183c3015350e845a58dff8bc8e88e1d09008b4628a8107507a90001000074078305fcda0801018b4c24285f8bc65e5d5b64890d0000000083c424c20c00",
+      "sha256": "f59553f64d394a4b3609c84d5d504377bcb3de224a47ef97914c50e39e4a5023",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b61d50",
+      "end_exclusive": "00b61d59",
+      "length": 9,
+      "label": "resource_construct",
+      "kind": "code",
+      "disk_offset": 7740752,
+      "bytes_hex": "8bc1c700642bd600c3",
+      "sha256": "6c0ec936e146005bb724c1e96a0a3844a76634ccfea694f9567a58828f37f039",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b61d60",
+      "end_exclusive": "00b61d89",
+      "length": 41,
+      "label": "resource_delete",
+      "kind": "code",
+      "disk_offset": 7740768,
+      "bytes_hex": "f644240401568bf1c705dcfe080100000000c7061838ce00740956e82c48090083c4048bc65ec20400",
+      "sha256": "2ef739c60e79ada0fd96d7f40a8491598626c692a9bfa6f325257b17d3c76854",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bcf910",
+      "end_exclusive": "00bcf923",
+      "length": 19,
+      "label": "count",
+      "kind": "code",
+      "disk_offset": 8190224,
+      "bytes_hex": "8b510485d2750333c0c38b41082bc2c1f802c3",
+      "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bcfca0",
+      "end_exclusive": "00bcfd13",
+      "length": 115,
+      "label": "unregister",
+      "kind": "code",
+      "disk_offset": 8191136,
+      "bytes_hex": "538b5c240885db568bf174625733ffe85cfcffff85c076558b4e0485c9740c8b46082bc1c1f8023bf87205e8436a02008b4604391cb874148bce83c701e82efcffff3bf872d25f5e5bc204008bc885c9740c8b46082bc1c1f8023bf87205e8106a02008b4e04c704b9000000005f5e5bc20400",
+      "sha256": "7d6aa4f0c51391f3d2cfe4c0b35f7833a16fce5613b92eaa615bb1f54003f473",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bcfeb0",
+      "end_exclusive": "00bcff05",
+      "length": 85,
+      "label": "allocate_slots",
+      "kind": "code",
+      "disk_offset": 8191664,
+      "bytes_hex": "83ec1085c9771633c98d148d0000000052e85569020083c40483c410c383c8ff33d2f7f183f80473e08d0424508d4c2408c744240400000000e85264020068c03ce0008d4c240851c744240c3c92d600e880690200",
+      "sha256": "c598c145591727617fb54eefaa1c217f671e94b5006c05b21bc6dcd600075603",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0400",
+      "end_exclusive": "00bd04c5",
+      "length": 197,
+      "label": "destroy",
+      "kind": "code",
+      "disk_offset": 8193024,
+      "bytes_hex": "6aff685854cc0064a100000000506489250000000083ec0c53568bf18974240833db895c241ce8e5f4ffff85c07464578b7e08397e047605e8d66202008d47fc3b4608897c241477053b46047305e8c062020083c7fc3b7e087205e8b36202008b46043bc38b0f74128b56088bfa2bf8c1ff02740683c2fc8956083bcb74088b018b106a01ffd28bcee882f4ffff85c0759e5f8d4e10e8e5c784ff8b46043bc3740950e80461020083c4048b4c2414895e04895e08895e0c5e5b64890d0000000083c418c3",
+      "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0500",
+      "end_exclusive": "00bd0530",
+      "length": 48,
+      "label": "copy_slots",
+      "kind": "code",
+      "disk_offset": 8193280,
+      "bytes_hex": "8b4424088b4c24048b54240c2bc1c1f8028d048500000000568d3410740c50515052e88062020083c4108bc65ec20c00",
+      "sha256": "aaf6ebf1932295279fc1abd2df5897017f0ca40663e737300063d062019c057e",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0560",
+      "end_exclusive": "00bd058e",
+      "length": 46,
+      "label": "fill_slots",
+      "kind": "code",
+      "disk_offset": 8193376,
+      "bytes_hex": "568b74240c85f6578b7c240c8bc68bcf76148b542414538b1a891983e80183c10485c077f25b8d04b75f5ec20c00",
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0590",
+      "end_exclusive": "00bd0595",
+      "length": 5,
+      "label": "range_fail_hook",
+      "kind": "hook",
+      "disk_offset": 8193424,
+      "bytes_hex": "6aff687854",
+      "sha256": "de63422fd0808871723de3ec314b07d81df92f01b9db30afd9efaec732eecaea",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0600",
+      "end_exclusive": "00bd06a5",
+      "length": 165,
+      "label": "reserve",
+      "kind": "code",
+      "disk_offset": 8193536,
+      "bytes_hex": "568bf18b4c240881f9ffffff3f7605e87cffffff8b560485d2750433c0eb088b460c2bc2c1f8023bc17376535733d2e87cf8ffff8b7e08397e048bd87605e8d0600200558b6e043b6e087605e8c26002002bfdc1ff0274138d04bd0000000050555053e83f61020083c4108b460485c05d750433ffeb088b7e082bf8c1ff0285c0740950e8235f020083c4048b4424108d14bb8d0c835f895e04894e0c8956085b5ec20400",
+      "sha256": "642b340a24e6fa34c9f79eb024504513ac4f9c838b28a58ceb9cce3ca5c8e234",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0700",
+      "end_exclusive": "00bd08b4",
+      "length": 436,
+      "label": "insert",
+      "kind": "code",
+      "disk_offset": 8193792,
+      "bytes_hex": "8b44241053568bf18b08894c24188b4e0485c957750433ffeb088b7e0c2bf9c1ff028b5c241885db0f848001000085c9750433c0eb088b46082bc1c1f802baffffff3f2bd03bd37305e842feffff85c9750433c0eb088b46082bc1c1f80203c33bf8550f83b30000008bc7d1e8baffffff3f2bd03bd7730433ffeb0203f885c9750433c0eb088b46082bc1c1f80203c33bf8731385c9750433c0eb088b46082bc1c1f8028d3c1833d28bcfe800f7ffff8b4e048be88b4424185550518bcee83dfdffff8d5424205253508bcee88ffdffff8b4c2418508b460850518bcee81efdffff8b460485c0750433c9eb088b4e082bc8c1f90203d985c0740950e8ab5d020083c4048d54bd008d449d00896e045d5f89560c8946085e5bc210008b6e088b7c24188bcd2bcfc1f9028d049d000000003bcb8944241c8bce734603c7505557e8bbfcffff8b46088bc82bcfc1f9028d542420522bd953508bcee801fdffff8b44241c0146088b76088d542420522bf05657e8e9f8ffff83c40c5d5f5e5bc21000558bdd2bd85553e873fcffff555357894608e8e8f8ffff8b4c24288d44242c5003cf5157e8b6f8ffff83c4185d5f5e5bc21000",
+      "sha256": "ce4e00c505c0a5ba1eac1a43c6a95c395e75e8484b94ecef5d114da75275ccfa",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd08d0",
+      "end_exclusive": "00bd0959",
+      "length": 137,
+      "label": "insert_one",
+      "kind": "code",
+      "disk_offset": 8194256,
+      "bytes_hex": "5153558b6c2414568bf1578b7e0485ff740c8b46088bc82bcfc1f902750433dbeb1f3bf87605e8185e020085ed74043bee7405e80b5e02008b5c24202bdfc1fb028b5424248b442420526a0150558bcee8dbfdffff8b7e043b7e087605e8e15d0200897c24208d3c9f3b7e0877053b7e047305e8cb5d02008b4424188978045f89305e5d5b59c21000",
+      "sha256": "5fccfe9a8a8943194b628bf68f54086167e11bed3e8d6d45d4f62df026bba238",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0960",
+      "end_exclusive": "00bd09b0",
+      "length": 80,
+      "label": "construct",
+      "kind": "code",
+      "disk_offset": 8194400,
+      "bytes_hex": "6aff689854cc0064a10000000050648925000000005133c0568bf18974240489460489460889460c680001000089442414e86afcffffe8c50e00008b4c24088946108bc65e64890d0000000083c410c3",
+      "sha256": "a327dd6728cd67142f5b53513e6662c18fd9b6a4ad5fcbc157bf1f0e38aba60d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0bc0",
+      "end_exclusive": "00bd0c29",
+      "length": 105,
+      "label": "append",
+      "kind": "code",
+      "disk_offset": 8195008,
+      "bytes_hex": "83ec08568bf18b560485d2750433c9eb088b4e082bcac1f90285d274248b460c2bc2c1f8023bc873188b46088b4c24108b11891083c0048946085e83c408c20400578b7e083bd77605e8055b02008b4424145057568d4c2414518bcee8affcffff5f5e83c408c20400",
+      "sha256": "f37263ed8274b5056237b3a1ea6941496d03ffd7883c24c6915bd4c1a3efc08f",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd0c30",
+      "end_exclusive": "00bd0c57",
+      "length": 39,
+      "label": "register",
+      "kind": "code",
+      "disk_offset": 8195120,
+      "bytes_hex": "568bf18b46083946047605e8d35a0200837c240800740c8d442408508bcee86dffffff5ec20400",
+      "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd1120",
+      "end_exclusive": "00bd1125",
+      "length": 5,
+      "label": "string_pool_allocate_bridge",
+      "kind": "hook",
+      "disk_offset": 8196384,
+      "bytes_hex": "538b5c2408",
+      "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd1510",
+      "end_exclusive": "00bd1515",
+      "length": 5,
+      "label": "string_pool_release_bridge",
+      "kind": "hook",
+      "disk_offset": 8197392,
+      "bytes_hex": "538b5c240c",
+      "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd1860",
+      "end_exclusive": "00bd1887",
+      "length": 39,
+      "label": "create_lock",
+      "kind": "code",
+      "disk_offset": 8198240,
+      "bytes_hex": "566a1ce8b34f02008bf083c40485f6741256ff150c22ce00c74618000000008bc65ec333c05ec3",
+      "sha256": "84ae6492318402d85664cc3e4a42dddb89477a2aafbe4e09a1eb62b9e43a5b4f",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "label": "intrusive_virtual0_dispatch",
+      "kind": "code",
+      "disk_offset": 8204512,
+      "bytes_hex": "85c974098b018b50046a01ffd2c3",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "label": "intrusive_base_destroy",
+      "kind": "code",
+      "disk_offset": 8204528,
+      "bytes_hex": "c70130b1ce00c3",
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "label": "existing CRT allocation/free boundary",
+      "kind": "hook",
+      "disk_offset": 8345022,
+      "bytes_hex": "e958120000",
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf6340",
+      "end_exclusive": "00bf6345",
+      "length": 5,
+      "label": "throw_fail_hook",
+      "kind": "hook",
+      "disk_offset": 8348480,
+      "bytes_hex": "538b5c2408",
+      "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "label": "free_hook",
+      "kind": "hook",
+      "disk_offset": 8349100,
+      "bytes_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf6713",
+      "end_exclusive": "00bf6718",
+      "length": 5,
+      "label": "invalid_hook",
+      "kind": "hook",
+      "disk_offset": 8349459,
+      "bytes_hex": "33c0505050",
+      "sha256": "bf7abaf0a5a5d2cf97a914496699a6fb6fa69363f847ce5ff7fb24cd350a9164",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf67a7",
+      "end_exclusive": "00bf67ac",
+      "length": 5,
+      "label": "memmove_hook",
+      "kind": "hook",
+      "disk_offset": 8349607,
+      "bytes_hex": "558bec8b45",
+      "sha256": "c5ddb618703dba011e598a5c2eb3147a30d34359c7f18dd2d6fc00e1e1f44808",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "label": "new_hook",
+      "kind": "hook",
+      "disk_offset": 8349723,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf6885",
+      "end_exclusive": "00bf688a",
+      "length": 5,
+      "label": "oom_fail_hook",
+      "kind": "hook",
+      "disk_offset": 8349829,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "label": "existing CRT allocation/free boundary",
+      "kind": "hook",
+      "disk_offset": 8350089,
+      "bytes_hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf6b43",
+      "end_exclusive": "00bf6b48",
+      "length": 5,
+      "label": "native_exception_trap",
+      "kind": "hook",
+      "disk_offset": 8350531,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00bf7680",
+      "end_exclusive": "00bf7685",
+      "length": 5,
+      "label": "memcpy_boundary",
+      "kind": "hook",
+      "disk_offset": 8353408,
+      "bytes_hex": "558bec5756",
+      "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cbeda0",
+      "end_exclusive": "00cbedbd",
+      "length": 29,
+      "label": "resource_eh",
+      "kind": "code",
+      "disk_offset": 9170336,
+      "bytes_hex": "8d4dece9383175ff8b45e850e8fb77f3ff59c3b8d075df00e9867df3ff",
+      "sha256": "8b65adfdec54a926a59eedd1e6753bc1eae572e2786b145175599e8de47d808a",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cbee00",
+      "end_exclusive": "00cbee28",
+      "length": 40,
+      "label": "constructor EH leaves and frame handler; evidence only",
+      "kind": "code",
+      "disk_offset": 9170432,
+      "bytes_hex": "8b4df0e9684b74ff8b4df083c10ce95d4174ff8b4df083c128e952e5e7ffb86476df00e91b7df3ff",
+      "sha256": "e94bf9f14024b998a976a3c1e4266be3e5d2a977baee432c68f0cd8db0b48eec",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cbeed0",
+      "end_exclusive": "00cbeeed",
+      "length": 29,
+      "label": "surface_dtor_eh_leaves_handler",
+      "kind": "code",
+      "disk_offset": 9170640,
+      "bytes_hex": "8b4df0e918e6e7ff8b4df083c110e93dee75ffb87877df00e9567cf3ff",
+      "sha256": "4f84a30706bb3022ed2262fd76e572c41d88682fe4a5f828115fda79eefdf806",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cbeef0",
+      "end_exclusive": "00cbef1d",
+      "length": 45,
+      "label": "surface_ctor_eh_leaves_handler",
+      "kind": "code",
+      "disk_offset": 9170672,
+      "bytes_hex": "8b4ddce9f8e5e7ff8b4ddc83c110e91dee75ff8d4de0e915ee75ff8d4de8e9ad05e8ffb8bc77df00e9267cf3ff",
+      "sha256": "ad18c5ce2315f8f1b8a120e04d79e2aeb8e278cb019cb5a0f215ffdfffeec3f8",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cd7b40",
+      "end_exclusive": "00cd7b56",
+      "length": 22,
+      "label": "surface_pool_static_initialize",
+      "kind": "code",
+      "disk_offset": 9272128,
+      "bytes_hex": "b900db0801e81671e6ff68900cce00e8a1f4f1ff59c3",
+      "sha256": "6c669e0738bc3ed1e2ea83aa30ec16e1866b152f1e07588c3d707d53842b867a",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce0c90",
+      "end_exclusive": "00ce0c9a",
+      "length": 10,
+      "label": "surface_pool_static_destroy",
+      "kind": "code",
+      "disk_offset": 9309328,
+      "bytes_hex": "b900db0801e916d6e5ff",
+      "sha256": "9d051d1b376bc7abcb46a3d81c97df3ec6a01bf9e277f203403cad80a2055729",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce220c",
+      "end_exclusive": "00ce2210",
+      "length": 4,
+      "label": "initialize_iat",
+      "kind": "data",
+      "disk_offset": 9314828,
+      "bytes_hex": "6c56a000",
+      "sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce2210",
+      "end_exclusive": "00ce2214",
+      "length": 4,
+      "label": "leave_iat",
+      "kind": "data",
+      "disk_offset": 9314832,
+      "bytes_hex": "8856a000",
+      "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce2214",
+      "end_exclusive": "00ce2218",
+      "length": 4,
+      "label": "delete_iat",
+      "kind": "data",
+      "disk_offset": 9314836,
+      "bytes_hex": "a056a000",
+      "sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce2218",
+      "end_exclusive": "00ce221c",
+      "length": 4,
+      "label": "enter_iat",
+      "kind": "data",
+      "disk_offset": 9314840,
+      "bytes_hex": "b856a000",
+      "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce37fc",
+      "end_exclusive": "00ce3800",
+      "length": 4,
+      "label": "captured_section_guard_profile",
+      "kind": "data",
+      "disk_offset": 9320444,
+      "bytes_hex": "001f4100",
+      "sha256": "8b12438c84805d12f163f8d7b8976a71222f4b4cc6a4be870696607611839f82",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce3818",
+      "end_exclusive": "00ce381c",
+      "length": 4,
+      "label": "base_profile",
+      "kind": "data",
+      "disk_offset": 9320472,
+      "bytes_hex": "40244100",
+      "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce5490",
+      "end_exclusive": "00ce5498",
+      "length": 8,
+      "label": "surface_diagnostic_literal",
+      "kind": "data",
+      "disk_offset": 9327760,
+      "bytes_hex": "5375726661636500",
+      "sha256": "2bd2101ce45476b03b3efbe0e5b6a71519be19bb285483741f373ad83bfd7423",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ceb130",
+      "end_exclusive": "00ceb140",
+      "length": 16,
+      "label": "intrusive_base_profile_prefix",
+      "kind": "data",
+      "disk_offset": 9351472,
+      "bytes_hex": "e030bd00409f4f0080a34f0000a34f00",
+      "sha256": "cae284b88ca3be06bd9c1354779febaf27236bc4b27869f04207f660c610ba0a",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d6193c",
+      "end_exclusive": "00d61940",
+      "length": 4,
+      "label": "pool_data_00d6193c",
+      "kind": "data",
+      "disk_offset": 9836860,
+      "bytes_hex": "90e3b300",
+      "sha256": "eefb0c0af6b0ca1d405a78df177c8e91d90e9a732a24a8e1b5caffbc90eb41df",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d619a0",
+      "end_exclusive": "00d619e4",
+      "length": 68,
+      "label": "surface_profile_17_entries",
+      "kind": "data",
+      "disk_offset": 9836960,
+      "bytes_hex": "e030bd00b0f5b300f0fabe005022a800f0ccb30080ccb30000cdb30010cdb30020cdb30030cdb30000d5b30040cdb30060cdb30000ddb30070cdb30010d5b30050d5b300",
+      "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d62b64",
+      "end_exclusive": "00d62b68",
+      "length": 4,
+      "label": "owner_profile",
+      "kind": "data",
+      "disk_offset": 9841508,
+      "bytes_hex": "601db600",
+      "sha256": "6efc1f922772919e4b34bf722e638f563f25ef4b3b22161306f0a16d467a762c",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "label": "surface_scalar_initial_value",
+      "kind": "data",
+      "disk_offset": 9937484,
+      "bytes_hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00df75c0",
+      "end_exclusive": "00df75f4",
+      "length": 52,
+      "label": "eh_map",
+      "kind": "data",
+      "disk_offset": 10450368,
+      "bytes_hex": "ffffffffa0edcb0000000000a8edcb002205931902000000c075df00000000000000000000000000000000000000000001000000",
+      "sha256": "093d96cb1dc9ecb83d5080631b7775c14201c66e904be8676dfb221c9937d906",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00df764c",
+      "end_exclusive": "00df7688",
+      "length": 60,
+      "label": "pool_data_00df764c",
+      "kind": "data",
+      "disk_offset": 10450508,
+      "bytes_hex": "ffffffff00eecb000000000008eecb000100000013eecb0022059319030000004c76df00000000000000000000000000000000000000000001000000",
+      "sha256": "9828a3c45edcbc7031b9c67ba730dae2a3a672e214ba92d83b028cc6d7a3bd60",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00df7768",
+      "end_exclusive": "00df779c",
+      "length": 52,
+      "label": "surface_dtor_unwind_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10450792,
+      "bytes_hex": "ffffffffd0eecb0000000000d8eecb0022059319020000006877df00000000000000000000000000000000000000000001000000",
+      "sha256": "dd15d6d69b351aabba1a99b103afd0dc73a8eb616c6544d15c2d9aea1678af58",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00df779c",
+      "end_exclusive": "00df77e0",
+      "length": 68,
+      "label": "surface_ctor_unwind_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10450844,
+      "bytes_hex": "fffffffff0eecb0000000000f8eecb000100000003efcb00020000000befcb0022059319040000009c77df00000000000000000000000000000000000000000001000000",
+      "sha256": "c7db8c1063e9fbd4f4c6d9940e28f95874bfe60bb26888bfe7c7f5e0c31c15a9",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00e188b4",
+      "end_exclusive": "00e188b8",
+      "length": 4,
+      "label": "pool_data_00e188b4",
+      "kind": "data",
+      "disk_offset": null,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "label": "renderer_canonical_pointer",
+      "kind": "data",
+      "disk_offset": null,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0108dafc",
+      "end_exclusive": "0108db00",
+      "length": 4,
+      "label": "surface_tracking_counter",
+      "kind": "data",
+      "disk_offset": null,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0108db00",
+      "end_exclusive": "0108db38",
+      "length": 56,
+      "label": "pool_data_0108db00",
+      "kind": "data",
+      "disk_offset": null,
+      "bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0108fedc",
+      "end_exclusive": "0108fee0",
+      "length": 4,
+      "label": "owner_slot",
+      "kind": "data",
+      "disk_offset": null,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_installed": true
+    },
+    {
+      "address": "01090aa0",
+      "end_exclusive": "01090aa4",
+      "length": 4,
+      "label": "manager_slot",
+      "kind": "data",
+      "disk_offset": null,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_installed": true
+    }
+  ],
+  "guarded_relocations": [
+    {
+      "address": "00402f7c",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00402f91",
+      "preimage": "00ce2214"
+    },
+    {
+      "address": "00403977",
+      "preimage": "00d7a0c0"
+    },
+    {
+      "address": "00403989",
+      "preimage": "00e188b4"
+    },
+    {
+      "address": "00411ee7",
+      "preimage": "00ce37fc"
+    },
+    {
+      "address": "00411ef4",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00415353",
+      "preimage": "00c5e0db"
+    },
+    {
+      "address": "00415367",
+      "preimage": "01090aa0"
+    },
+    {
+      "address": "00415390",
+      "preimage": "01090aa0"
+    },
+    {
+      "address": "004153a6",
+      "preimage": "01090aa0"
+    },
+    {
+      "address": "0041cc94",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "0041cca9",
+      "preimage": "00ce2214"
+    },
+    {
+      "address": "004b46b3",
+      "preimage": "00e188b4"
+    },
+    {
+      "address": "00b3d86c",
+      "preimage": "00ce2218"
+    },
+    {
+      "address": "00b3d8be",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00b3dcc2",
+      "preimage": "0108db00"
+    },
+    {
+      "address": "00b3e2bb",
+      "preimage": "00d6193c"
+    },
+    {
+      "address": "00b3e2f4",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00b3e309",
+      "preimage": "00ce2214"
+    },
+    {
+      "address": "00b3e314",
+      "preimage": "00d7a0c0"
+    },
+    {
+      "address": "00b3e326",
+      "preimage": "00e188b4"
+    },
+    {
+      "address": "00b3e739",
+      "preimage": "00cbedb3"
+    },
+    {
+      "address": "00b3e746",
+      "preimage": "0108fedc"
+    },
+    {
+      "address": "00b3e764",
+      "preimage": "00ce37fc"
+    },
+    {
+      "address": "00b3e771",
+      "preimage": "00ce2218"
+    },
+    {
+      "address": "00b3e783",
+      "preimage": "0108fedc"
+    },
+    {
+      "address": "00b3e7b2",
+      "preimage": "0108fedc"
+    },
+    {
+      "address": "00b3e7bd",
+      "preimage": "0108fedc"
+    },
+    {
+      "address": "00b3e7d4",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00b3e7d9",
+      "preimage": "0108fedc"
+    },
+    {
+      "address": "00b3ec63",
+      "preimage": "00cbee1e"
+    },
+    {
+      "address": "00b3ec7e",
+      "preimage": "00d7a0c0"
+    },
+    {
+      "address": "00b3ec86",
+      "preimage": "00e188b4"
+    },
+    {
+      "address": "00b3ec8e",
+      "preimage": "00e188b4"
+    },
+    {
+      "address": "00b3eca0",
+      "preimage": "00e188b4"
+    },
+    {
+      "address": "00b3ecae",
+      "preimage": "00d6193c"
+    },
+    {
+      "address": "00b3ecb4",
+      "preimage": "00ce220c"
+    },
+    {
+      "address": "00b3ed4c",
+      "preimage": "00ce2218"
+    },
+    {
+      "address": "00b3ee5d",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00b3ee71",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "00b3f2a1",
+      "preimage": "0108db00"
+    },
+    {
+      "address": "00b3f4e3",
+      "preimage": "00cbeee3"
+    },
+    {
+      "address": "00b3f4ff",
+      "preimage": "00d619a0"
+    },
+    {
+      "address": "00b3f505",
+      "preimage": "00f8d394"
+    },
+    {
+      "address": "00b3f542",
+      "preimage": "0108dafc"
+    },
+    {
+      "address": "00b3f5c1",
+      "preimage": "0108db00"
+    },
+    {
+      "address": "00b3f633",
+      "preimage": "00cbef13"
+    },
+    {
+      "address": "00b3f64c",
+      "preimage": "00d7a24c"
+    },
+    {
+      "address": "00b3f657",
+      "preimage": "00ceb130"
+    },
+    {
+      "address": "00b3f675",
+      "preimage": "00d619a0"
+    },
+    {
+      "address": "00b3f6f3",
+      "preimage": "00ce5490"
+    },
+    {
+      "address": "00b3f792",
+      "preimage": "0108dafc"
+    },
+    {
+      "address": "00b61d54",
+      "preimage": "00d62b64"
+    },
+    {
+      "address": "00b61d6a",
+      "preimage": "0108fedc"
+    },
+    {
+      "address": "00b61d74",
+      "preimage": "00ce3818"
+    },
+    {
+      "address": "00bcfeef",
+      "preimage": "00e03cc0"
+    },
+    {
+      "address": "00bcfefc",
+      "preimage": "00d6923c"
+    },
+    {
+      "address": "00bd0403",
+      "preimage": "00cc5458"
+    },
+    {
+      "address": "00bd0963",
+      "preimage": "00cc5498"
+    },
+    {
+      "address": "00bd1874",
+      "preimage": "00ce220c"
+    },
+    {
+      "address": "00bd30f2",
+      "preimage": "00ceb130"
+    },
+    {
+      "address": "00cbedb4",
+      "preimage": "00df75d0"
+    },
+    {
+      "address": "00cbee1f",
+      "preimage": "00df7664"
+    },
+    {
+      "address": "00cbeee4",
+      "preimage": "00df7778"
+    },
+    {
+      "address": "00cbef14",
+      "preimage": "00df77bc"
+    },
+    {
+      "address": "00cd7b41",
+      "preimage": "0108db00"
+    },
+    {
+      "address": "00cd7b4b",
+      "preimage": "00ce0c90"
+    },
+    {
+      "address": "00ce0c91",
+      "preimage": "0108db00"
+    },
+    {
+      "address": "00d6193c",
+      "preimage": "00b3e390"
+    },
+    {
+      "address": "00d619a0",
+      "preimage": "00bd30e0"
+    },
+    {
+      "address": "00d619a4",
+      "preimage": "00b3f5b0"
+    },
+    {
+      "address": "00d619a8",
+      "preimage": "00befaf0"
+    },
+    {
+      "address": "00d619ac",
+      "preimage": "00a82250"
+    },
+    {
+      "address": "00d619b0",
+      "preimage": "00b3ccf0"
+    },
+    {
+      "address": "00d619b4",
+      "preimage": "00b3cc80"
+    },
+    {
+      "address": "00d619b8",
+      "preimage": "00b3cd00"
+    },
+    {
+      "address": "00d619bc",
+      "preimage": "00b3cd10"
+    },
+    {
+      "address": "00d619c0",
+      "preimage": "00b3cd20"
+    },
+    {
+      "address": "00d619c4",
+      "preimage": "00b3cd30"
+    },
+    {
+      "address": "00d619c8",
+      "preimage": "00b3d500"
+    },
+    {
+      "address": "00d619cc",
+      "preimage": "00b3cd40"
+    },
+    {
+      "address": "00d619d0",
+      "preimage": "00b3cd60"
+    },
+    {
+      "address": "00d619d4",
+      "preimage": "00b3dd00"
+    },
+    {
+      "address": "00d619d8",
+      "preimage": "00b3cd70"
+    },
+    {
+      "address": "00d619dc",
+      "preimage": "00b3d510"
+    },
+    {
+      "address": "00d619e0",
+      "preimage": "00b3d550"
+    },
+    {
+      "address": "00d62b64",
+      "preimage": "00b61d60"
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38",
+      "bytes": 4221
+    },
+    {
+      "path": "src/native_surface_owner.cpp",
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd",
+      "bytes": 8402
+    },
+    {
+      "path": "docs/NATIVE_SURFACE_OWNER.md",
+      "sha256": "24baf726c03ffbc07f904d516351433c173f3cbda49cee0990fff40ef0ce956e",
+      "bytes": 9154
+    },
+    {
+      "path": "include/bsp/d3d9_surface_pool.hpp",
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "bytes": 3168
+    },
+    {
+      "path": "src/d3d9_surface_pool.cpp",
+      "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3",
+      "bytes": 11194
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "bytes": 1781
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "bytes": 2682
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf",
+      "bytes": 1488
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8",
+      "bytes": 3238
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "bytes": 3986
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "bytes": 10921
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079",
+      "bytes": 4426
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6",
+      "bytes": 3655
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "bytes": 5571
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+      "bytes": 6169
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/prepare_surface_native.py",
+      "sha256": "2f9eef4de9de3aa76b825ba7096f65beb3f5db7fd961ea3b945f0c0fecc68a14",
+      "bytes": 4789
+    },
+    {
+      "path": "local/surface_native_preparation.json",
+      "sha256": "52a4d8fa1dd6fe1d1a89ceda6b1e3ee2fcb44d0b5812a30ad8387c539462caef",
+      "bytes": 46466
+    },
+    {
+      "path": "local/surface_native_preparation.log",
+      "sha256": "a4179a48c108fbf4b0a335366f8048ae37bd791875653c3560864f2c13bac7d1",
+      "bytes": 63
+    },
+    {
+      "path": "local/surface_native_spans.hpp",
+      "sha256": "69933034cc19e639d5dc2aa54847382e15e3d36845a88302b907360ae62abd37",
+      "bytes": 5152
+    },
+    {
+      "path": "local/surface_native_check.cpp",
+      "sha256": "46088eab3b4aaa7b9693c7ae42e97b9583abd9611d467765373ab4739d810659",
+      "bytes": 19709
+    },
+    {
+      "path": "local/build_surface_native_check.ps1",
+      "sha256": "e6e3ded7cf224412066bf27839fe85f02b3bda0ac763bcad1c6c6692e3613f7a",
+      "bytes": 1579
+    },
+    {
+      "path": "local/surface_native_check.log",
+      "sha256": "20d5c4b820df689428bb0f4499c1d0ad238af9267e114bd516220651da38e88b",
+      "bytes": 6690
+    },
+    {
+      "path": "local/surface_repository_build.log",
+      "sha256": "5670a7f2521b9293385e0e27bcdbe5aeb3a0dedf62e12e958d9ec37fe83a474b",
+      "bytes": 2461
+    },
+    {
+      "path": "build/surface-native-check/surface_native_check.exe",
+      "sha256": "6e5c9a1cb68e17ef29de42ee4ee30aee1cbee8dfa4342bdd8befefec2ae6f06c",
+      "bytes": 233984
+    }
+  ],
+  "integration": {
+    "add_to_cmake": "src/native_surface_owner.cpp",
+    "new_public_header": "include/bsp/native_surface_owner.hpp",
+    "ghidra_names": "Proposals are recorded per function; primary retains Ghidra mutation and ledger ownership.",
+    "render_reference_dispatch": "Native count and owner are concrete; texture factories/caches and actual virtual-zero dispatch bindings remain for subsequent integration packets."
+  },
+  "uncertainty": [
+    "Descriptive C++ names are hypotheses, not recovered symbols.",
+    "The borrowed diagnostic record is represented by an actual second pooled NativeString and a borrowed local COM word; no externally exposed native stack-record ABI is claimed.",
+    "Surface metadata follows whatever GetDesc writes, including failed HRESULT output. Incomplete failed output leaves native uninitialized-stack behavior; the fixture intentionally provides complete output.",
+    "The context supplies already established actual shared string-pool ownership; lazy native string-pool startup is outside this module.",
+    "No native exception injection, allocation exhaustion, original CRT startup/exit, live D3D/game execution or binary replacement compatibility was tested.",
+    "Other vtable entries, intrusive zero dispatch, textures, render-target groups and renderer-wide reset traversal remain outside these eight entry points."
+  ]
+}
