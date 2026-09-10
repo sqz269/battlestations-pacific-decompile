@@ -1,0 +1,699 @@
+{
+  "schema_version": 1,
+  "packet": "resource_mesh_parser_boundary",
+  "captured_utc": "2026-09-10T00:40:48.504184+00:00",
+  "source_head": "c3d1a4f",
+  "status": "complete_native_boundary_audit_ready_for_primary_review",
+  "scope": {
+    "initial_anchors": [
+      "00b947a0"
+    ],
+    "approved_expansions": [
+      "00b94710",
+      "00b944e0",
+      "00b73d70",
+      "00b73b60",
+      "00b72b40",
+      "00be99f0"
+    ],
+    "reused_constructor": "00b868b0 from reports/resource_note_parser_audit.json",
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "All live CLI queries call bsp.py client verification of configured bsp project and target program before access.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {
+        "address": "00b947a0",
+        "length": 169,
+        "end_exclusive": "00b94849",
+        "kind": "code",
+        "sha256": "85c378ad242a531f08f3190f9e1b1c73fc23684d2e22cc88b98c288f2a7736bd",
+        "matches_original_pe": true,
+        "disk_offset": 7948192,
+        "raw_byte_capture": "local/resource_mesh_parser/00b947a0.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00b947a0.decoded.asm.txt",
+        "return_instructions": [
+          "00b94846: ret 4"
+        ]
+      },
+      {
+        "address": "00b94710",
+        "length": 131,
+        "end_exclusive": "00b94793",
+        "kind": "code",
+        "sha256": "1efd2398836d833c26215ec718dfaddc4d697c8ec9d9dbfb5f9eb6f8a3cb1828",
+        "matches_original_pe": true,
+        "disk_offset": 7948048,
+        "raw_byte_capture": "local/resource_mesh_parser/00b94710.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00b94710.decoded.asm.txt",
+        "return_instructions": [
+          "00b94790: ret 4"
+        ]
+      },
+      {
+        "address": "00b944e0",
+        "length": 557,
+        "end_exclusive": "00b9470d",
+        "kind": "code",
+        "sha256": "900226964a8c38f3540ddc21acd4e5a27042a12314f5638d39761f307c025cc2",
+        "matches_original_pe": true,
+        "disk_offset": 7947488,
+        "raw_byte_capture": "local/resource_mesh_parser/00b944e0.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00b944e0.decoded.asm.txt",
+        "return_instructions": [
+          "00b9470a: ret 4"
+        ]
+      },
+      {
+        "address": "00b73d70",
+        "length": 179,
+        "end_exclusive": "00b73e23",
+        "kind": "code",
+        "sha256": "dce74ec9776f6191260146be11d3cdca34fd71bb9c7c6fbf75b1be705efde977",
+        "matches_original_pe": true,
+        "disk_offset": 7814512,
+        "raw_byte_capture": "local/resource_mesh_parser/00b73d70.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00b73d70.decoded.asm.txt",
+        "return_instructions": [
+          "00b73e22: ret "
+        ]
+      },
+      {
+        "address": "00b73b60",
+        "length": 10,
+        "end_exclusive": "00b73b6a",
+        "kind": "code",
+        "sha256": "5335b00fb639ebd563221cca93458c27eedd4ef5b72bffb13acf3a297cd8bc36",
+        "matches_original_pe": true,
+        "disk_offset": 7813984,
+        "raw_byte_capture": "local/resource_mesh_parser/00b73b60.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00b73b60.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b72b40",
+        "length": 4,
+        "end_exclusive": "00b72b44",
+        "kind": "code",
+        "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8",
+        "matches_original_pe": true,
+        "disk_offset": 7809856,
+        "raw_byte_capture": "local/resource_mesh_parser/00b72b40.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00b72b40.decoded.asm.txt",
+        "return_instructions": [
+          "00b72b43: ret "
+        ]
+      },
+      {
+        "address": "00be99f0",
+        "length": 15,
+        "end_exclusive": "00be99ff",
+        "kind": "code",
+        "sha256": "6d4ba81509a545e71f9fe3c689bd8d3a88c2c21063a789a39468a817fa7e48e8",
+        "matches_original_pe": true,
+        "disk_offset": 8296944,
+        "raw_byte_capture": "local/resource_mesh_parser/00be99f0.bytes.txt",
+        "decoded_disassembly": "local/resource_mesh_parser/00be99f0.decoded.asm.txt",
+        "return_instructions": [
+          "00be99fe: ret "
+        ]
+      }
+    ],
+    "data_spans": [
+      {
+        "address": "00d63098",
+        "length": 12,
+        "end_exclusive": "00d630a4",
+        "kind": "data",
+        "sha256": "5de578d652f8e10368133c1665d1fa927e3b860b3980c7be083e258460b444fb",
+        "matches_original_pe": true,
+        "disk_offset": 9842840,
+        "raw_byte_capture": "local/resource_mesh_parser/00d63098.bytes.txt"
+      },
+      {
+        "address": "00d63738",
+        "length": 24,
+        "end_exclusive": "00d63750",
+        "kind": "data",
+        "sha256": "aa1e5aaaa228a9e9c4ea59bcb5d4a0d3ed9f0733d99c216ed066b54a198c894b",
+        "matches_original_pe": true,
+        "disk_offset": 9844536,
+        "raw_byte_capture": "local/resource_mesh_parser/00d63738.bytes.txt"
+      },
+      {
+        "address": "00d62d60",
+        "length": 12,
+        "end_exclusive": "00d62d6c",
+        "kind": "data",
+        "sha256": "406f75633620ad9475ea4f184bd989a1494b3348ebbf13811003b03732f05ec4",
+        "matches_original_pe": true,
+        "disk_offset": 9842016,
+        "raw_byte_capture": "local/resource_mesh_parser/00d62d60.bytes.txt"
+      },
+      {
+        "address": "00d63860",
+        "length": 100,
+        "end_exclusive": "00d638c4",
+        "kind": "data",
+        "sha256": "eb707ab3687f30d75a04f531a52f424da121ef858a5fd0aae63d98c6c40ca96e",
+        "matches_original_pe": true,
+        "disk_offset": 9844832,
+        "raw_byte_capture": "local/resource_mesh_parser/00d63860.bytes.txt"
+      },
+      {
+        "address": "00d630e4",
+        "length": 27,
+        "end_exclusive": "00d630ff",
+        "kind": "data",
+        "sha256": "b86cff9c72f54379416048f84bd1fcf30e9c6bac81f2dad10eeda7ddbabbda3d",
+        "matches_original_pe": true,
+        "disk_offset": 9842916,
+        "raw_byte_capture": "local/resource_mesh_parser/00d630e4.bytes.txt"
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "end_exclusive": "00d7a250",
+        "kind": "data",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "matches_original_pe": true,
+        "disk_offset": 9937484,
+        "raw_byte_capture": "local/resource_mesh_parser/00d7a24c.bytes.txt"
+      },
+      {
+        "address": "00ce4adc",
+        "length": 4,
+        "end_exclusive": "00ce4ae0",
+        "kind": "data",
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+        "matches_original_pe": true,
+        "disk_offset": 9325276,
+        "raw_byte_capture": "local/resource_mesh_parser/00ce4adc.bytes.txt"
+      },
+      {
+        "address": "00ce4970",
+        "length": 4,
+        "end_exclusive": "00ce4974",
+        "kind": "data",
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+        "matches_original_pe": true,
+        "disk_offset": 9324912,
+        "raw_byte_capture": "local/resource_mesh_parser/00ce4970.bytes.txt"
+      }
+    ]
+  },
+  "before": [
+    {
+      "address": "00b947a0",
+      "annotation": {
+        "address": "00b947a0",
+        "function_name": "FUN_00b947a0"
+      }
+    },
+    {
+      "address": "00b94710",
+      "annotation": {
+        "address": "00b94710",
+        "function_name": "FUN_00b94710"
+      }
+    },
+    {
+      "address": "00b944e0",
+      "annotation": {
+        "address": "00b944e0",
+        "function_name": "FUN_00b944e0"
+      }
+    },
+    {
+      "address": "00b73d70",
+      "annotation": {
+        "address": "00b73d70",
+        "function_name": "FUN_00b73d70"
+      }
+    },
+    {
+      "address": "00b73b60",
+      "annotation": {
+        "address": "00b73b60",
+        "function_name": "CG_static_dtor_stub_00b73b60"
+      }
+    },
+    {
+      "address": "00b72b40",
+      "annotation": {
+        "address": "00b72b40",
+        "function_name": "TRIV_body_00b72b40"
+      }
+    },
+    {
+      "address": "00be99f0",
+      "annotation": {
+        "address": "00be99f0",
+        "function_name": "FUN_00be99f0"
+      }
+    }
+  ],
+  "verified_literals": [
+    {
+      "address": "00d63860",
+      "value": "WeightMapNames",
+      "length_with_nul": 15
+    },
+    {
+      "address": "00d63870",
+      "value": "CompressedVertexFormatData",
+      "length_with_nul": 27
+    },
+    {
+      "address": "00d6388c",
+      "value": "VertexStream",
+      "length_with_nul": 13
+    },
+    {
+      "address": "00d6389c",
+      "value": "Indices",
+      "length_with_nul": 8
+    },
+    {
+      "address": "00d638a4",
+      "value": "Subset",
+      "length_with_nul": 7
+    },
+    {
+      "address": "00d638ac",
+      "value": "LODPhases",
+      "length_with_nul": 10
+    },
+    {
+      "address": "00d638b8",
+      "value": "LODValue",
+      "length_with_nul": 9
+    },
+    {
+      "address": "00d630e4",
+      "value": "BoundingBox",
+      "length_with_nul": 12
+    },
+    {
+      "address": "00d630f0",
+      "value": "BoundingSphere",
+      "length_with_nul": 15
+    }
+  ],
+  "verified_tables": [
+    {
+      "address": "00d63098",
+      "entries": [
+        "00b7dd40",
+        "00b7eb60",
+        "00b947a0"
+      ]
+    },
+    {
+      "address": "00d63738",
+      "entries": [
+        "00bd30e0",
+        "00b93b40",
+        "00b93000",
+        "00b936b0",
+        "006f9d20",
+        "00b93010"
+      ]
+    },
+    {
+      "address": "00d62d60",
+      "entries": [
+        "00bd30e0",
+        "00b74280",
+        "00b72630"
+      ]
+    }
+  ],
+  "verified_constants": [
+    {
+      "address": "00d7a24c",
+      "bits": "3f800000",
+      "float_value": 1.0
+    },
+    {
+      "address": "00ce4adc",
+      "bits": "d01502f9",
+      "float_value": -10000000000.0
+    },
+    {
+      "address": "00ce4970",
+      "bits": "501502f9",
+      "float_value": 10000000000.0
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b947a0",
+      "original_name": "FUN_00b947a0",
+      "suggested_name": "BSP_ResourceMeshParser_Parse",
+      "original_abi": "Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4.",
+      "contract": "Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object.",
+      "complete_span_length": 169,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object. ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    },
+    {
+      "address": "00b94710",
+      "original_name": "FUN_00b94710",
+      "suggested_name": "BSP_MeshHandle_ConstructFromStructuredNode",
+      "original_abi": "ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4.",
+      "contract": "Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action.",
+      "complete_span_length": 131,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action. ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    },
+    {
+      "address": "00b944e0",
+      "original_name": "FUN_00b944e0",
+      "suggested_name": "BSP_MeshHandle_ReadStructuredFields",
+      "original_abi": "ECX output pair; stack input node-wrapper pointer; RET4.",
+      "contract": "Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch.",
+      "complete_span_length": 557,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    },
+    {
+      "address": "00b73d70",
+      "original_name": "FUN_00b73d70",
+      "suggested_name": "BSP_MeshObject_Construct",
+      "original_abi": "ECX object storage; EAX same object; plain RET.",
+      "contract": "Set ref1 and final vtable00d62d60, initialize observed partial DWORD/float/byte defaults through offset+B8. Requires at leastBC bytes but leaves unspecified gaps; complete object type/renderer layout not established.",
+      "complete_span_length": 179,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Set ref1 and final vtable00d62d60, initialize observed partial DWORD/float/byte defaults through offset+B8. Requires at leastBC bytes but leaves unspecified gaps; complete object type/renderer layout not established. ABI: ECX object storage; EAX same object; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    },
+    {
+      "address": "00b73b60",
+      "original_name": "CG_static_dtor_stub_00b73b60",
+      "suggested_name": "BSP_MeshObject_AllocationContextEntry",
+      "original_abi": "Incoming ECX ignored; overwrite ECX with0108fff8 and tail-jump00b73a10; return behavior inherited from deferred target.",
+      "contract": "Ten-byte context entry used as allocation route. Does not forward callerBC size. ExistingCG_static_dtor_stub name misclassifies it; target allocation/failure semantics unexamined.",
+      "complete_span_length": 10,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Ten-byte context entry used as allocation route. Does not forward callerBC size. ExistingCG_static_dtor_stub name misclassifies it; target allocation/failure semantics unexamined. ABI: Incoming ECX ignored; overwrite ECX with0108fff8 and tail-jump00b73a10; return behavior inherited from deferred target. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    },
+    {
+      "address": "00b72b40",
+      "original_name": "TRIV_body_00b72b40",
+      "suggested_name": "BSP_MeshObject_GetCount58",
+      "original_abi": "ECX object; EAX DWORD from object+58; plain RET.",
+      "contract": "Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown.",
+      "complete_span_length": 4,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    },
+    {
+      "address": "00be99f0",
+      "original_name": "FUN_00be99f0",
+      "suggested_name": "BSP_StructuredNode_ReadDwordSlot38",
+      "original_abi": "ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET.",
+      "contract": "Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation.",
+      "complete_span_length": 15,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation. ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json."
+    }
+  ],
+  "serialized_fields": [
+    {
+      "tag": "LODValue",
+      "literal_address": "00d638b8",
+      "target": "00b72710",
+      "callsite": "00b94567",
+      "status": "one_float32_read_then_deferred_setter",
+      "callsite_inputs": "ECX mesh object; one float stack argument"
+    },
+    {
+      "tag": "LODPhases",
+      "literal_address": "00d638ac",
+      "target": "00b93710",
+      "callsite": "00b9459d",
+      "status": "delegated_schema_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "Subset",
+      "literal_address": "00d638a4",
+      "target": "00b941d0",
+      "callsite": "00b945d3",
+      "status": "delegated_schema_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "Indices",
+      "literal_address": "00d6389c",
+      "target": "00b93aa0",
+      "callsite": "00b94609",
+      "status": "delegated_schema_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "VertexStream",
+      "literal_address": "00d6388c",
+      "target": "00b93e60",
+      "callsite": "00b94632",
+      "status": "delegated_schema_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "CompressedVertexFormatData",
+      "literal_address": "00d63870",
+      "target": "00b93800",
+      "callsite": "00b9465b",
+      "status": "delegated_schema_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "BoundingSphere",
+      "literal_address": "00d630f0",
+      "target": "00b93590",
+      "callsite": "00b94681",
+      "status": "mesh_specific_wrapper_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "BoundingBox",
+      "literal_address": "00d630e4",
+      "target": "00b935c0",
+      "callsite": "00b946a7",
+      "status": "mesh_specific_wrapper_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    },
+    {
+      "tag": "WeightMapNames",
+      "literal_address": "00d63860",
+      "target": "00b93f90",
+      "callsite": "00b946cd",
+      "status": "delegated_schema_unexamined",
+      "callsite_inputs": "ECX output-pair address; stack first mesh object, second child-wrapper pointer"
+    }
+  ],
+  "prefix": {
+    "read_callsite": "00b94500",
+    "store_callsite": "00b94507",
+    "reader": "00be99f0",
+    "adapter_dependency": "00bf02a0",
+    "full_transfer_bytes": 4,
+    "format": "little-endian rawDWORD",
+    "meaning": "unknown",
+    "stored_at": "output pair+4, then resource item+C"
+  },
+  "item_layout": {
+    "size_hex": "10",
+    "vtable": "00d63738",
+    "initial_reference_count": 1,
+    "mesh_object_hex": "08 retained",
+    "prefix_hex": "0C rawDWORD"
+  },
+  "underlying_object": {
+    "minimum_required_storage_hex": "BC",
+    "allocation_context_entry": "00b73b60",
+    "deferred_allocator_target": "00b73a10",
+    "context_address": "0108fff8",
+    "caller_size_register_overwritten": true,
+    "constructor": "00b73d70",
+    "vtable": "00d62d60",
+    "initial_reference_count": 1,
+    "zero_dword_offsets_hex": [
+      "08",
+      "50",
+      "54",
+      "58",
+      "5C",
+      "60",
+      "7C",
+      "B0",
+      "B4",
+      "B8"
+    ],
+    "zero_float_offsets_hex": [
+      "84",
+      "88",
+      "8C",
+      "90"
+    ],
+    "zero_byte_offsets_hex": [
+      "80",
+      "94"
+    ],
+    "minus_1e10_offsets_hex": [
+      "10",
+      "20",
+      "30",
+      "40"
+    ],
+    "plus_1e10_offsets_hex": [
+      "14",
+      "24",
+      "34",
+      "44"
+    ],
+    "one_float_offset_hex": "0C",
+    "unwritten_bytes": "Unspecified; this is not whole-object initialization or proven renderer layout."
+  },
+  "normal_ownership": [
+    "Underlying constructor creates ref1.",
+    "Wrapper constructor creates item ref1.",
+    "Wrapper retains underlying object toref2 and stores pointer+8.",
+    "Local underlying reference released toref1 before returneditem.",
+    "Wrapper allocation failure releases temporary underlying reference and returnsnull.",
+    "Item/object teardown and per-field buffers remain unexamined.",
+    "No input node/source retain appears in outer wrappers; per-field lifetime contracts remain external."
+  ],
+  "dependency_frontier": [
+    {
+      "address": "00b72710",
+      "role": "LODValue",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b94567"
+    },
+    {
+      "address": "00b93710",
+      "role": "LODPhases",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b9459d"
+    },
+    {
+      "address": "00b941d0",
+      "role": "Subset",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b945d3"
+    },
+    {
+      "address": "00b93aa0",
+      "role": "Indices",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b94609"
+    },
+    {
+      "address": "00b93e60",
+      "role": "VertexStream",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b94632"
+    },
+    {
+      "address": "00b93800",
+      "role": "CompressedVertexFormatData",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b9465b"
+    },
+    {
+      "address": "00b93590",
+      "role": "BoundingSphere",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b94681"
+    },
+    {
+      "address": "00b935c0",
+      "role": "BoundingBox",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b946a7"
+    },
+    {
+      "address": "00b93f90",
+      "role": "WeightMapNames",
+      "status": "direct_field_target_unexamined",
+      "observed_callsite": "00b946cd"
+    },
+    {
+      "address": "00b73a10",
+      "role": "allocation_context_target",
+      "status": "unexamined"
+    },
+    {
+      "address": "00b93b40",
+      "role": "mesh_resource_item_deleting_destructor",
+      "status": "vtable_target_unexamined"
+    },
+    {
+      "address": "00b74280",
+      "role": "underlying_mesh_object_deleting_destructor",
+      "status": "vtable_target_unexamined"
+    }
+  ],
+  "reused_dependencies": [
+    {
+      "address": "00b868b0",
+      "evidence": "reports/resource_note_parser_audit.json",
+      "contract": "Fresh prior22-byte audited item-base constructor ref1, final basevtable00d631a0."
+    },
+    {
+      "address": "00bf02a0",
+      "evidence": "reports/structured_reader_audit.json",
+      "contract": "Nonnull-count virtual+38 DWORD read, actual budget debit; full-transfer little endian."
+    },
+    {
+      "address": "00be99d0",
+      "evidence": "reports/structured_resource_hierarchy_bounds_audit.json",
+      "contract": "Node float read with actualcount and x87 round/store behavior."
+    },
+    {
+      "address": "00425850",
+      "evidence": "docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md",
+      "contract": "Nonnull native-string case-insensitive comparison used by five later tags."
+    },
+    {
+      "address": "00be9ed0",
+      "evidence": "reports/structured_reader_audit.json",
+      "contract": "Release node; destruction does not implicitly seek unread payload."
+    },
+    {
+      "address": "00be9c40",
+      "evidence": "reports/structured_reader_audit.json",
+      "contract": "Explicit unknown-field skip advances by unread payload and detaches once."
+    }
+  ],
+  "key_uncertainties": [
+    "PrefixDWORD meaning unknown.",
+    "Eight delegated field schemas, collection counts, index widths, vertex strides and compression remain unexamined.",
+    "LODValue setter effect and duplicate-tag semantics are not established.",
+    "MinimumBC storage extent does not prove allocatorblocksize; allocation context target deferred.",
+    "Partial constructor defaults do not identify omitted fields or complete bounds.",
+    "No D3D allocation, materialbinding or drawsubmission established.",
+    "Wrapper creation-time retention does not complete per-field/object teardown ownership.",
+    "No graceful allocation, malformed input or null-object recovery inferred."
+  ],
+  "validation_boundaries": {
+    "native_bytes": true,
+    "complete_functions": 7,
+    "code_bytes": 1065,
+    "data_bytes": 187,
+    "source_compilation": false,
+    "fixture_tests": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "mesh_loaded_or_drawable": false,
+    "live_annotations_applied_by_worker": false
+  },
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}

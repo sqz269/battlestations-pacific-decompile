@@ -1,0 +1,330 @@
+{
+  "packet": "resource_note_parser",
+  "utc": "2026-09-10T00:32:51.979004+00:00",
+  "status": "Note_payload_parser_string_wrappers_and_native_destruction_audited",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live bsp.py CLI verifies project/program/language/image base. Complete listed code/data spans match installed PE. Seven code bodies decode through RET; base cleanup decodes through its final tail JMP."
+  },
+  "functions": [
+    {
+      "address": "00719000",
+      "inclusive_end": "0071907d",
+      "length": 126,
+      "role": "parse_Note_resource_item",
+      "matches_disk": true,
+      "sha256": "f06757cce2449c6f5543f0e13e2ba7cf574e7b5cd3a584fc0f4348c24d783d37",
+      "file_offset": 3248128,
+      "original_abi": "ECX parser unused; stack node-handle pointer; EAX item pointer; RET4. Allocates28h bytes, initializes refcount1 and string, fills item+8 via00718f50. Allocation-null path still invokes helper with destination8.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00719000",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00719000_matched_disassembly.txt"
+    },
+    {
+      "address": "00718f50",
+      "inclusive_end": "00718fe2",
+      "length": 147,
+      "role": "read_node_string_into_counted_character_string",
+      "matches_disk": true,
+      "sha256": "bdc562c3db2259ca261af6147827bf29ecf7993ddfa5cabe5ffe313c3370b82f",
+      "file_offset": 3247952,
+      "original_abi": "ECX node-handle pointer; EDX destination character-string object; EAX original handle; RET. Calls00bea010, strlen of returned data or empty fallback,00408720 assignment, then temporary native-string destruction.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00718f50",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00718f50_matched_disassembly.txt"
+    },
+    {
+      "address": "00b868b0",
+      "inclusive_end": "00b868c5",
+      "length": 22,
+      "role": "construct_resource_item_reference_base",
+      "matches_disk": true,
+      "sha256": "5f9b49f61cd35e004d0586edab26b309b09361e6b41b95cd4b8d322f9cba57a6",
+      "file_offset": 7891120,
+      "original_abi": "ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00b868b0",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00b868b0_matched_disassembly.txt"
+    },
+    {
+      "address": "00bea010",
+      "inclusive_end": "00bea02c",
+      "length": 29,
+      "role": "read_string_from_node_handle",
+      "matches_disk": true,
+      "sha256": "e94e1797acf589f1cfe10b34cc421909e62e8b678f327ec371521ec72d4deafd",
+      "file_offset": 8298512,
+      "original_abi": "ECX one-pointer node handle; stack hidden output native-string pointer; EAX same output; RET4. Dereferences handle into ECX and calls00be9fe0.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00bea010",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00bea010_matched_disassembly.txt"
+    },
+    {
+      "address": "00be9fe0",
+      "inclusive_end": "00bea001",
+      "length": 34,
+      "role": "read_string_from_node",
+      "matches_disk": true,
+      "sha256": "62903d557e1e0173df28da81b7016c37ff9d2533f520d715643a6a28b24a9cef",
+      "file_offset": 8298464,
+      "original_abi": "ECX node; stack hidden output native-string pointer; EAX same output; RET4. Calls00bf0510 with ECX=node+8 reader, stack output and address of remaining DWORD at node+20h.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00be9fe0",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00be9fe0_matched_disassembly.txt"
+    },
+    {
+      "address": "00408720",
+      "inclusive_end": "004087e0",
+      "length": 193,
+      "role": "assign_counted_characters_to_string",
+      "matches_disk": true,
+      "sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34",
+      "file_offset": 34592,
+      "original_abi": "ECX destination string; stack character pointer and unsigned count; EAX destination; RET8. Inline bytes+4, length+14h, capacity+18h; capacity>=16 uses heap pointer at+4. External alias-copy00408120 and reserve004089e0.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00408720",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00408720_matched_disassembly.txt"
+    },
+    {
+      "address": "00718710",
+      "inclusive_end": "00718750",
+      "length": 65,
+      "role": "scalar_delete_Note_resource_item",
+      "matches_disk": true,
+      "sha256": "3332cab4ca9b82f12a63e9c4ef92bf18d5e54466a28dd9a16774ee96e94a48e1",
+      "file_offset": 3245840,
+      "original_abi": "ECX Note item; stack deletion flags byte; EAX original item; RET4. Frees heap string only when capacity+20h>=16, resets capacity/length/first inline byte, calls00b86890, frees item only for flags bit0.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00718710",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00718710_matched_disassembly.txt"
+    },
+    {
+      "address": "00b86890",
+      "inclusive_end": "00b8689a",
+      "length": 11,
+      "role": "destroy_resource_item_reference_base",
+      "matches_disk": true,
+      "sha256": "64f1d4dddbc5ef7051658d3c70adf2333573f1b90d43bf3eed1f8404c35eaadc",
+      "file_offset": 7891088,
+      "original_abi": "ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writes00ceb130 and RET. No pointer adjustment in this body.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00b86890",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00b86890_matched_disassembly.txt"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00cfd860",
+      "inclusive_end": "00cfd86f",
+      "length": 16,
+      "role": "Note_resource_item_first_four_vtable_slots",
+      "matches_disk": true,
+      "sha256": "e3dfc41f77402e61dda280a074d29105f8b0c982a5386c77d24d318a91cc9b7a",
+      "file_offset": 9427040
+    }
+  ],
+  "item_layout": {
+    "allocation_bytes": 40,
+    "+0": "Note item vtable00cfd860",
+    "+4": "intrusive reference count initially1",
+    "+8": "character-string object prefix, no explicit initializer store in00719000",
+    "+0Ch..+1Bh": "16-byte inline character storage, first byte initiallyNUL; first DWORD is heap pointer when capacity>=16",
+    "+1Ch": "logical character count initially0",
+    "+20h": "capacity initially15",
+    "+24h..+27h": "allocated tail not initialized or interpreted by audited parser/destructor"
+  },
+  "parsing": {
+    "sequence": [
+      "Allocate40-byte item and initialize base reference count1.",
+      "Set Note vtable, capacity15, length0, first inline byteNUL.",
+      "Read native counted string using node handle00bea010 -> node00be9fe0 -> reader adapter00bf0510.",
+      "Measure returned data to firstNUL (fallback address00e19b94 for null data), assign that prefix to item+8 via00408720.",
+      "Destroy temporary native counted string and return item without another retain."
+    ],
+    "budget": "00be9fe0 passes node+20h remaining DWORD to00bf0510. Reused fresh structured_reader audit proves subtraction of actual length-prefix and raw character bytes reported by stream+48h. The declared string length is not substituted for actual transfer count.",
+    "format": "For audited stream vtables, +48h=00be4620: DWORD character count via stream+38h, native allocation, space-fill all logical bytes, then one raw stream+24h read for declared count. Zero count yields empty native string. Short character reads preserve spaces in unfilled suffix; stored count remains declared count.",
+    "embedded_nul": "00718f50 uses strlen rather than native stored count. An embedded NUL truncates final Note text while read budget still charges the bytes actually transferred for the complete serialized counted string.",
+    "short_prefix": "Concrete DWORD short reads with nonnull actual-count pointer can retain pointer-address bits in missing prefix bytes; bounded portable projection must reject incomplete DWORD prefixes rather than invent a deterministic length.",
+    "no_implicit_skip": "Parser and its helper perform no explicit unread-node skip. Outer dispatcher cleanup and shared-cursor accounting remain the established reader/dispatcher contracts.",
+    "valid_domain": "Non-null attached handle, live reader/stream, successful native allocations, available NUL terminator, and representable bounded string size. Original parser allocation failure still calls destination8; this is not a graceful null return contract."
+  },
+  "assignment": {
+    "fields": "String relative+4 inline/heap buffer, +14h size, +18h capacity. Capacity below16 selects inline; otherwise dereference buffer pointer.",
+    "behavior": "For fresh non-aliased destination, reserve if count exceeds capacity; nonzero copy uses memcpy_s, sets count and trailingNUL. Count0 sets size0 and NUL. UINT_MAX routes to length-error helper. Source inside existing logical buffer uses external00408120 alias assignment.",
+    "limits": "External allocator/reserve, CRT failure/exception, alias-copy and SSO ABI are not reconstructed. Host std::string payload ownership must not be represented as layout-compatible native storage."
+  },
+  "destruction": {
+    "vtable_slots": {
+      "+0": "00bd30e0 established deleting-destructor dispatch (no reference decrement)",
+      "+4": "00718710 scalar deleting destructor",
+      "+8": "00713750 unaudited",
+      "+C": "00717ca0 unaudited"
+    },
+    "sequence": "If capacity item+20h>=16, free heap pointer item+Ch; reset capacity15, length0, first inline byteNUL. Call00b86890, which sets an intermediate vtable and tail-calls established00bd30f0. If deletion flags bit0 is set, free item; return original pointer.",
+    "ownership": "Native destruction establishes that Note owns its stored characters and outer storage can be independently selected for deletion. Parser returns an item initialized with intrusive reference count1. A host Note DTO with std::string can preserve payload ownership while using a new interface; native reference-count/layout equivalence is not claimed."
+  },
+  "reused_contracts": [
+    {
+      "doc": "docs/STRUCTURED_READER.md",
+      "report": "reports/structured_reader_audit.json",
+      "addresses": [
+        "00bf0510",
+        "00be4620"
+      ],
+      "used": "Same-session full-span audit and decoded assembly for actual-count string reader, space-prefill, zero length and shared-node budgeting."
+    },
+    {
+      "doc": "docs/STREAM_CONVERSION_LIFETIME.md",
+      "addresses": [
+        "00bd30f0"
+      ],
+      "used": "Existing seven-byte reference base destructor writes vtable00ceb130 and returns."
+    },
+    {
+      "doc": "docs/MPKG_MOUNT_INTEGRATION.md",
+      "addresses": [
+        "00bd30e0"
+      ],
+      "used": "Existing nonnull wrapper invokes virtual+4(1), without a reference decrement."
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00719000",
+      "annotation": {
+        "address": "00719000",
+        "function_name": "FUN_00719000"
+      }
+    },
+    {
+      "address": "00718f50",
+      "annotation": {
+        "address": "00718f50",
+        "function_name": "FUN_00718f50"
+      }
+    },
+    {
+      "address": "00b868b0",
+      "annotation": {
+        "address": "00b868b0",
+        "function_name": "FUN_00b868b0"
+      }
+    },
+    {
+      "address": "00bea010",
+      "annotation": {
+        "address": "00bea010",
+        "function_name": "FUN_00bea010"
+      }
+    },
+    {
+      "address": "00be9fe0",
+      "annotation": {
+        "address": "00be9fe0",
+        "function_name": "FUN_00be9fe0"
+      }
+    },
+    {
+      "address": "00408720",
+      "annotation": {
+        "address": "00408720",
+        "function_name": "FUN_00408720"
+      }
+    },
+    {
+      "address": "00718710",
+      "annotation": {
+        "address": "00718710",
+        "function_name": "CG_scalar_deleting_dtor_00718710"
+      }
+    },
+    {
+      "address": "00b86890",
+      "annotation": {
+        "address": "00b86890",
+        "function_name": "CG_adjustor_thunk_00b86890"
+      }
+    }
+  ],
+  "required_flow_repairs": [
+    {
+      "call_address": "0071871d",
+      "callee": "00bf65ac",
+      "function": "00718710",
+      "evidence": "Actual returning continuation00718722 ADD ESP,4 precedes reset/cleanup. Initial Ghidra listing omits this instruction and decompiler reports a false early return."
+    },
+    {
+      "call_address": "00718743",
+      "callee": "00bf65ac",
+      "function": "00718710",
+      "evidence": "Actual returning continuation00718748 ADD ESP,4 precedes EAX restore and RET4. Clear per-call CALL_RETURN only after primary confirmation; do not globally alter CRT declarations."
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00719000",
+      "name": "BSP_NoteResourceParser_Parse",
+      "comment": "ECX parser unused; stack nodehandle;EAX new28h-byte Note item,RET4. Base00b868b0 setsref1;vtable00cfd860; stringitem+8 capacity15,size0,firstinlinebyteNUL.00718f50 reads native counted string then strlen-prefix assignment. Allocation-null branch still passesdestination8; successful-allocation domain."
+    },
+    {
+      "address": "00718f50",
+      "name": "BSP_StructuredNode_ReadCharacterString",
+      "comment": "ECX nodehandle,EDX destination string;EAX originalhandle,RET.00bea010 reads counted native string; strlen(data or00e19b94) then00408720 copies prefix;destroys temporary. EmbeddedNUL truncates text after full counted read. No recursion in matched fullbody."
+    },
+    {
+      "address": "00b868b0",
+      "name": "BSP_ResourceItem_ConstructReferenceBase",
+      "comment": "ECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860."
+    },
+    {
+      "address": "00bea010",
+      "name": "BSP_StructuredNodeHandle_ReadString",
+      "comment": "ECX nodehandle;stack hidden native-string output;EAX output,RET4. Dereferencehandle andcall00be9fe0."
+    },
+    {
+      "address": "00be9fe0",
+      "name": "BSP_StructuredNode_ReadString",
+      "comment": "ECX node;stack hidden native-string output;EAX output,RET4. Reader=node+8;passesoutput and&remaining(node+20h) to00bf0510. Actual-count budget string read, no precheck against remaining."
+    },
+    {
+      "address": "00408720",
+      "name": "BSP_CharacterString_AssignCounted",
+      "provisional_library_identity": true,
+      "comment": "Observed MSVC-style character-string assignment; exact library symbol unproven. ECXdest,stackcharptr/count,EAXdest,RET8. Buffer+4,size+14h,capacity+18h;inlineifcapacity<16. Externalalias00408120/reserve004089e0. Freshnonaliased path copies count bytes and terminatesNUL. Keep library identity provisional."
+    },
+    {
+      "address": "00718710",
+      "name": "CG_scalar_deleting_dtor_00718710",
+      "retain_existing_name": true,
+      "comment": "Noteitem ECX,stackdeletionflags,EAXoriginal,RET4. Full00718710-00718750. Ifcapacity+20h>=16 freeheap+Ch;resetcapacity15/size0/NUL;00b86890 basecleanup;freeitemifbit0. Per-call freeflow repairs0071871d/00718743 restoreADD ESP,4 at00718722/00718748."
+    },
+    {
+      "address": "00b86890",
+      "name": "BSP_ResourceItem_DestroyReferenceBase",
+      "old_classification_inaccurate": true,
+      "comment": "ECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment."
+    }
+  ],
+  "boundaries": {
+    "cpp_changed": false,
+    "tests_added": false,
+    "build_run": false,
+    "shared_metadata_changed": false,
+    "ghidra_changed": false,
+    "snapshots": false,
+    "commits": false,
+    "reconstructed": false,
+    "native_abi_compatible": false,
+    "fixture_tested": false,
+    "game_validated": false
+  },
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}

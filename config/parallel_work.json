@@ -226,9 +226,9 @@
       ],
       "integration_owner": "primary",
       "contract": "Physical overlapped submit with deferred callback even on immediate success; explicit pump copies logical size and cleans I/O resources.",
-      "validation": "reports/lifetime_effect_cache_validation.json",
-      "annotation_status": "Reviewed lifetime/schema names and evidence saved; old comments retained; forced exports refreshed.",
-      "next_work": "Queue/frame/stop, worker dispatch, FileBlock and structured resource schema audited. Next: real reader, resource ownership and queue/synchronization implementation."
+      "validation": "reports/structured_resource_validation.json",
+      "annotation_status": "123 reviewed annotations saved;15 missing definitions recovered;7 truncated bodies restored;27 flow sites read back NONE;forced exports refreshed.",
+      "next_work": "Actual structured reader, hierarchy metadata and Note payload integrated; queue work-item and resource/cache ownership audited. Next connect concrete mesh parsers and audited manager ownership before real async resource completion."
     }
   ],
   "snapshot_after_analysis": {
@@ -240,7 +240,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/lifetime_effect_cache_validation.json",
+  "integration_report": "reports/structured_resource_validation.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -251,11 +251,11 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-10T00:00:40.588086+00:00",
+    "utc": "2026-09-10T00:54:33.398012+00:00",
     "project": "bsp",
     "program": "/battlestationspacific.exe",
-    "total_function_count": 62746,
-    "internal_function_count": 62304,
+    "total_function_count": 62761,
+    "internal_function_count": 62319,
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
@@ -299,107 +299,124 @@
         "reports/vfs_pending_manager_integration_audit.json"
       ],
       "validation": "reports/startup_manager_validation.json"
+    },
+    {
+      "worker": "structured_reader",
+      "packet": "structured_reader",
+      "state": "completed_audited_and_integrated_in_structured_resource_batch",
+      "validation": "reports/structured_resource_validation.json"
+    },
+    {
+      "worker": "resource_item_ownership",
+      "packet": "resource_item_ownership",
+      "state": "completed_audited_and_integrated_in_structured_resource_batch",
+      "validation": "reports/structured_resource_validation.json"
+    },
+    {
+      "worker": "effect_cache",
+      "packet": "loading_queue_work_items",
+      "state": "completed_audited_and_integrated_in_structured_resource_batch",
+      "validation": "reports/structured_resource_validation.json"
     }
   ],
   "next_dispatch": [
     {
-      "worker": "reader_worker",
-      "packet": "structured_reader",
-      "work": "Recover real serialized reader construction, root and child record boundaries, cursor/budget and source lifetime before implementing file parsing. Use full matched bytes and installed supported resources when available.",
+      "worker": "mesh_buffers_worker",
+      "packet": "mesh_vertex_index_payloads",
+      "work": "Recover real Indices, VertexStream and CompressedVertexFormatData schemas, storage and draw-facing formats. Build on the installed reader; implement only proven payload contracts and validate against installed mesh bytes.",
       "function_addresses": [
-        "00bf0430",
-        "00bea700",
-        "00bea680",
-        "00be9a40",
-        "00715bf0"
+        "00b93aa0",
+        "00b93e60",
+        "00b93800"
       ],
       "owned_files": [
-        "docs/STRUCTURED_READER.md",
-        "reports/structured_reader_audit.json"
+        "docs/MESH_VERTEX_INDEX_PAYLOADS.md",
+        "reports/mesh_vertex_index_payloads_audit.json"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00b80720",
-          "status": "audited resource loader, not implemented"
+          "address": "00b944e0",
+          "status": "audited Mesh field dispatcher; host metadata probe currently skips Mesh"
         },
         {
-          "address": "00bf02c0",
-          "status": "audited nonnull-count scalar read, not implemented as reader"
-        },
-        {
-          "address": "00b7f430",
-          "status": "audited dispatch, not implemented"
+          "address": "00bf02a0",
+          "status": "native scalar accounting audited; host full-read domain implemented"
         }
       ],
-      "boundary": "Exact listed functions and approved immediate callees only; own reader files. Do not replace native short-read/cursor semantics with the existing null-count scalar adapter. Primary owns shared metadata and API integration."
+      "boundary": "Only listed functions and explicitly approved immediate callees. Coordinate shared reader APIs through primary; do not guess vertex formats, D3D declarations or unsupported compressed data."
     },
     {
-      "worker": "ownership_worker",
-      "packet": "resource_item_ownership",
-      "work": "Establish growth/copy, hierarchy-item append and corresponding concrete resource/item destruction before assigning owning C++ containers.",
+      "worker": "mesh_fields_worker",
+      "packet": "mesh_subset_lod_fields",
+      "work": "Recover Subset, LODPhases, LODValue, mesh bounds wrappers and WeightMapNames with exact serialized order and ownership. Independent from vertex/index handlers; report helper overlaps before expansion.",
       "function_addresses": [
-        "00b872f0",
-        "00b87ae0"
+        "00b941d0",
+        "00b93710",
+        "00b72710",
+        "00b93590",
+        "00b935c0",
+        "00b93f90"
       ],
       "owned_files": [
-        "docs/RESOURCE_ITEM_OWNERSHIP.md",
-        "reports/resource_item_ownership_audit.json"
+        "docs/MESH_SUBSET_LOD_FIELDS.md",
+        "reports/mesh_subset_lod_fields_audit.json"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00b87aa0",
-          "status": "audited raw append, no AddRef"
+          "address": "00b94710",
+          "status": "audited mesh handle constructor; field parser still external"
         },
         {
-          "address": "0071bb40",
-          "status": "audited derived classifications, list ownership incomplete"
+          "address": "00b932e0",
+          "status": "full-read sphere primitive implemented"
         },
         {
-          "address": "00b7eb90",
-          "status": "audited hierarchy Item parser, not implemented"
+          "address": "00b93310",
+          "status": "full-read box primitive implemented"
         }
       ],
-      "boundary": "Resolve destructor slots from verified vtables and request explicit address ownership before expansion. No speculative AddRef or automatic ownership transfer."
+      "boundary": "Do not edit reader/hierarchy files or infer mesh-specific wrappers from generic bounds. No fabricated material/subset defaults."
     },
     {
-      "worker": "queue_worker",
-      "packet": "loading_queue_work_items",
-      "work": "Recover work-record removal, job destruction, concrete synchronization and thread shutdown. Preserve native stop flag distinctions and completion routing.",
+      "worker": "mesh_lifetime_worker",
+      "packet": "mesh_object_lifetime",
+      "work": "Establish native Mesh resource wrapper and underlying object teardown, allocation context/block size, retained buffer/material dependencies and ownership before primary builds an owning resource runtime.",
       "function_addresses": [
-        "00501670",
-        "005051a0"
+        "00b93b40",
+        "00b74280",
+        "00b73a10"
       ],
       "owned_files": [
-        "docs/LOADING_QUEUE_WORK_ITEMS.md",
-        "reports/loading_queue_work_items_audit.json"
+        "docs/MESH_OBJECT_LIFETIME.md",
+        "reports/mesh_object_lifetime_audit.json"
       ],
       "named_but_incomplete_dependencies": [
         {
-          "address": "00509190",
-          "status": "audited queue state machine, not implemented"
+          "address": "00b947a0",
+          "status": "audited16-byte wrapper retains mesh+8 and prefix+C; teardown unimplemented"
         },
         {
-          "address": "00501620",
-          "status": "audited submission, synchronization external"
+          "address": "00b73b60",
+          "status": "allocation entry ignores incomingBC and selects global0108fff8 context"
         },
         {
-          "address": "00501510",
-          "status": "audited worker, shutdown and resource load external"
+          "address": "00b73d70",
+          "status": "partial defaults require at leastBC bytes; actual block size unproven"
         },
         {
-          "address": "007188a0",
-          "status": "audited resource acquire wrapper, not implemented"
+          "address": "00b88430",
+          "status": "primary resource ownership/destruction audited, host resource owner not implemented"
         }
       ],
-      "boundary": "No synthetic completion, timeout or cancellation. Keep reader/resource files read-only; request exact synchronization/destructor ownership when targets are resolved."
+      "boundary": "Specific listed destructor/allocator ownership only. Request exact helper ranges before expansion; no assumptions that raw classification/cache pointers retain resources."
     }
   ],
   "current_partition": {
-    "utc": "2026-09-10T00:01:30.626537+00:00",
-    "candidates": 23887,
-    "segments": 94,
-    "largest_strong_cycle_segments": 89,
-    "sha256": "bbdc300096f4836cf525af48cba59715750f55c2351376106375175a3a108bfc"
+    "utc": "2026-09-10T00:56:18.638632+00:00",
+    "candidates": 23796,
+    "segments": 92,
+    "largest_strong_cycle_segments": 81,
+    "sha256": "68c0aff4be3d742f9d149b6c5d61765f7fdb6cf94ffe2b4fe4b7944e232188f1"
   },
   "integration_history": [
     {
@@ -410,6 +427,20 @@
         "stream_lifetime",
         "effect_cache",
         "loader_lifetime"
+      ],
+      "concurrency_verified": {
+        "primary": 1,
+        "workers": 3
+      }
+    },
+    {
+      "batch": "structured_resource",
+      "state": "reader_hierarchy_note_fragments_build_and_installed_fixture_checked; manager_cache_queue_and_mesh_boundary_audited",
+      "report": "reports/structured_resource_validation.json",
+      "workers": [
+        "structured_reader",
+        "resource_item_ownership",
+        "effect_cache"
       ],
       "concurrency_verified": {
         "primary": 1,

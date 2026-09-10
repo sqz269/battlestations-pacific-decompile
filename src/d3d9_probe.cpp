@@ -35,6 +35,7 @@ bool probe_inflate_stream();
 bool probe_mpkg_archive();
 bool probe_physical_pending_reads(const std::string& physical_path);
 bool probe_startup_script_preloads(AssetStreamProbe&, const std::filesystem::path&);
+bool probe_structured_resource(AssetStreamProbe&);
 bool probe_material_states_and_constants(IDirect3DDevice9&);
 bool probe_texture_atlas(IDirect3DDevice9&, IDirect3DTexture9&, const char*);
 bool probe_font_material(IDirect3DDevice9&, const std::shared_ptr<const bsp::FontResources>&,
@@ -48,6 +49,7 @@ static bool probe_installed_font(IDirect3DDevice9& device, const char* atlas_pat
         || !probe_physical_pending_reads(pending_path)) return false;
     AssetStreamProbe assets(game_root.string() + "\\");
     if (!probe_startup_script_preloads(assets, game_root)) return false;
+    if (!probe_structured_resource(assets)) return false;
     const bsp::FontScriptResolver resolve = [&](const std::string& name,
         std::string& bytes, std::string& message) {
         std::shared_ptr<bsp::MemoryStream> memory;
@@ -679,6 +681,10 @@ bool probe_font_geometry_reference();
 bool probe_camera_reference();
 #endif
 int main(int argc, char** argv) {
+    if (argc == 3 && std::strcmp(argv[1], "--structured-resource") == 0) {
+        AssetStreamProbe assets(std::string(argv[2]) + "\\");
+        return probe_structured_resource(assets) ? 0 : 1;
+    }
     if (!probe_inflate_stream()) return 1;
     if (!probe_mpkg_archive()) return 1;
 #ifdef BSP_HAS_CAMERA_REFERENCE
@@ -738,6 +744,17 @@ int main(int argc, char** argv) {
         actual.BackBufferHeight, actual.Windowed,
         static_cast<unsigned>(actual.BackBufferFormat),
         static_cast<unsigned>(actual.AutoDepthStencilFormat), actual.PresentationInterval);
+    if (FAILED(result) && api) {
+        D3DCAPS9 current_caps{};
+        D3DDISPLAYMODE display{};
+        const HRESULT caps_result = api->GetDeviceCaps(D3DADAPTER_DEFAULT,
+            D3DDEVTYPE_HAL, &current_caps);
+        const HRESULT display_result = api->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &display);
+        std::printf("D3D9 failure details: adapters=%u caps_hr=0x%08lx display_hr=0x%08lx display=%ux%u stored=%ux%u stored_windowed=%d\n",
+            api->GetAdapterCount(), static_cast<unsigned long>(caps_result),
+            static_cast<unsigned long>(display_result), display.Width, display.Height,
+            stored.BackBufferWidth, stored.BackBufferHeight, stored.Windowed);
+    }
     bool matched = SUCCEEDED(result) && actual.BackBufferWidth == 640
         && actual.BackBufferHeight == 480 && actual.Windowed
         && actual.BackBufferFormat == D3DFMT_A8R8G8B8

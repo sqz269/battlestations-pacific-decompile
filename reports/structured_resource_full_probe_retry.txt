@@ -1,0 +1,20 @@
+Raw inflater stream: decoded=150123 compressed=150138 short_source_reads=148 buffered_read_seek_EOF_and_retention=1
+Package scan entry: pass=1 name=./bad.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=failed error=MPKG end marker was not found in the native scan interval.
+Package scan entry: pass=1 name=./patch2.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=mounted error=
+Package scan entry: pass=1 name=.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=declined error=No provider factory accepted the package logical name.
+Package scan entry: pass=2 name=./inner.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=mounted error=
+Package scan entry: pass=2 name=./bad.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=failed error=MPKG end marker was not found in the native scan interval.
+Package scan entry: pass=2 name=./patch2.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=already_mounted error=
+Package scan entry: pass=2 name=.mpkg prefix=. priority=1000 ownership=0 device=-1 outcome=declined error=No provider factory accepted the package logical name.
+Synthetic package startup: outer_bytes=1523 inner_bytes=770 scans=2 lookups=7 mount_requests=6 first_entries=3 second_entries=4 shared_factory_and_system_identity=1 fresh_nested_scan_and_failure_continuation=1 error=
+Mounted MPKG: source_calls=5 live_alias_reopen_and_cursor=1 enumeration_alias_flag_and_first_spelling=1 recursive_source_rejected=1 expired_owner_error=1 error=
+Synthetic MPKG: bytes=263567 entries=4 directory=263073 central_size=443 eocd=263545 padding=249 prefix=29 final_block=17 phase=16 routes_opened=3 dynamic=637/159744 reopen=1 seeks=1 reads=1 requested=262181 actual=262181 encoded_source_and_owned_outputs=1 error=
+Camera native comparison: inverse=1 projection=1 multiply_and_exact_aliases=1 affine=1
+GUI native comparison: mode=0 differing_words=0 max_abs=0
+GUI native comparison: mode=1 differing_words=0 max_abs=0
+GUI native comparison: mode=2 differing_words=0 max_abs=0
+GUI native comparison: mode=3 differing_words=0 max_abs=0
+GUI native comparison: mode=4 differing_words=0 max_abs=0
+Font native prefix comparison: vertex_bytes_equal=1 indices_equal=1
+Recovered window creation: class_extra_style_geometry_hidden=1
+D3D9 device probe: hr=0x8876086c flags=0x0 size=0x0 windowed=0 format=0 depth=0 interval=0x0

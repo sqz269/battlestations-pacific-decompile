@@ -1,0 +1,374 @@
+{
+  "packet": "game_resource_parser_registration",
+  "utc": "2026-09-10T00:27:25.991239+00:00",
+  "status": "five_game_parser_registrations_and_exact_names_audited",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live bsp.py CLI verifies project/program/language/image base. Complete listed code/data spans match installed PE; all listed code decoded through RET."
+  },
+  "functions": [
+    {
+      "address": "00717e80",
+      "inclusive_end": "00717ee6",
+      "length": 103,
+      "role": "register_five_game_resource_parsers",
+      "matches_disk": true,
+      "sha256": "b276cd4d667edb114f32d54982771ed4fb3c765f6256dd85096825de31149ddd",
+      "file_offset": 3243648,
+      "original_abi": "No explicit input; preserves ESI; RET. For each parser, obtain manager 004c1400, obtain singleton, call 00b80a50 with ECX manager and parser stack argument.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00717e80",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00717e80_matched_disassembly.txt"
+    },
+    {
+      "address": "00717320",
+      "inclusive_end": "007173ed",
+      "length": 206,
+      "role": "Aux_parser_singleton",
+      "matches_disk": true,
+      "sha256": "683afa816e9bf5cedc946b02c98ba6ab2b826654a2e95ebc8febe5225f539884",
+      "file_offset": 3240736,
+      "original_abi": "No explicit input; EAX singleton pointer; RET. Initial MOV EAX,FS:[0] kills incoming EAX. Double-check global under singleton lifetime-manager lock; allocate 8 bytes, install primary vtable +0 and lifetime-interface vtable +4; register adjusted +4 interface.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00717320",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00717320_matched_disassembly.txt"
+    },
+    {
+      "address": "00718760",
+      "inclusive_end": "00718780",
+      "length": 33,
+      "role": "Aux_parser_name",
+      "matches_disk": true,
+      "sha256": "23eadcab9aa7ed20814f5333631b0cce0aad9646f3ae8e798a508ad6732c65e0",
+      "file_offset": 3245920,
+      "original_abi": "ECX parser is unused; one stack hidden-result native-string pointer. Calls 0041e870 with ECX output and literal stack argument, returns same output pointer in EAX, RET4.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00718760_matched_disassembly.txt"
+    },
+    {
+      "address": "00717250",
+      "inclusive_end": "0071731d",
+      "length": 206,
+      "role": "ZoneDesc_parser_singleton",
+      "matches_disk": true,
+      "sha256": "4602ef6d53e44622b385421807ed129c2ea86a64bffab8d33a81eb8a7d5de082",
+      "file_offset": 3240528,
+      "original_abi": "No explicit input; EAX singleton pointer; RET. Initial MOV EAX,FS:[0] kills incoming EAX. Double-check global under singleton lifetime-manager lock; allocate 8 bytes, install primary vtable +0 and lifetime-interface vtable +4; register adjusted +4 interface.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00717250",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00717250_matched_disassembly.txt"
+    },
+    {
+      "address": "007187e0",
+      "inclusive_end": "00718800",
+      "length": 33,
+      "role": "ZoneDesc_parser_name",
+      "matches_disk": true,
+      "sha256": "3230e282a1f2a5fca3a4438ebfbe9ff9f345c6b1398066858ed7764cc7e125eb",
+      "file_offset": 3246048,
+      "original_abi": "ECX parser is unused; one stack hidden-result native-string pointer. Calls 0041e870 with ECX output and literal stack argument, returns same output pointer in EAX, RET4.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/007187e0_matched_disassembly.txt"
+    },
+    {
+      "address": "00717180",
+      "inclusive_end": "0071724d",
+      "length": 206,
+      "role": "Note_parser_singleton",
+      "matches_disk": true,
+      "sha256": "d7d4619fb40707a37aaa2fd07e3f351b3adb79277b7dd94ac3bb05c66f101f84",
+      "file_offset": 3240320,
+      "original_abi": "No explicit input; EAX singleton pointer; RET. Initial MOV EAX,FS:[0] kills incoming EAX. Double-check global under singleton lifetime-manager lock; allocate 8 bytes, install primary vtable +0 and lifetime-interface vtable +4; register adjusted +4 interface.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00717180",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00717180_matched_disassembly.txt"
+    },
+    {
+      "address": "007186e0",
+      "inclusive_end": "00718700",
+      "length": 33,
+      "role": "Note_parser_name",
+      "matches_disk": true,
+      "sha256": "a57849f4e167c26f1fcc64aa1fda5fb03f46e20b126caca3d1af494ec60fc07d",
+      "file_offset": 3245792,
+      "original_abi": "ECX parser is unused; one stack hidden-result native-string pointer. Calls 0041e870 with ECX output and literal stack argument, returns same output pointer in EAX, RET4.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/007186e0_matched_disassembly.txt"
+    },
+    {
+      "address": "00716fe0",
+      "inclusive_end": "007170ad",
+      "length": 206,
+      "role": "GeomMesh_parser_singleton",
+      "matches_disk": true,
+      "sha256": "65dd1282d8504cf255869c302339db35da5bdc7825058afc2f0165098d88b3b2",
+      "file_offset": 3239904,
+      "original_abi": "No explicit input; EAX singleton pointer; RET. Initial MOV EAX,FS:[0] kills incoming EAX. Double-check global under singleton lifetime-manager lock; allocate 8 bytes, install primary vtable +0 and lifetime-interface vtable +4; register adjusted +4 interface.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/00716fe0",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/00716fe0_matched_disassembly.txt"
+    },
+    {
+      "address": "007258f0",
+      "inclusive_end": "00725910",
+      "length": 33,
+      "role": "GeomMesh_parser_name",
+      "matches_disk": true,
+      "sha256": "ddb7105039b644b10b981ee7f3205043da24d5da7bcdec0a87cf44c7a715d7c4",
+      "file_offset": 3299568,
+      "original_abi": "ECX parser is unused; one stack hidden-result native-string pointer. Calls 0041e870 with ECX output and literal stack argument, returns same output pointer in EAX, RET4.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/007258f0_matched_disassembly.txt"
+    },
+    {
+      "address": "007170b0",
+      "inclusive_end": "0071717d",
+      "length": 206,
+      "role": "ConvexObject_parser_singleton",
+      "matches_disk": true,
+      "sha256": "baea0bf95f5a1e56b0c2542b9f6e584b6fa184285ae33dec2a8ba1511b076038",
+      "file_offset": 3240112,
+      "original_abi": "No explicit input; EAX singleton pointer; RET. Initial MOV EAX,FS:[0] kills incoming EAX. Double-check global under singleton lifetime-manager lock; allocate 8 bytes, install primary vtable +0 and lifetime-interface vtable +4; register adjusted +4 interface.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_game_resource_parser_registration/functions/007170b0",
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/007170b0_matched_disassembly.txt"
+    },
+    {
+      "address": "006fb000",
+      "inclusive_end": "006fb020",
+      "length": 33,
+      "role": "ConvexObject_parser_name",
+      "matches_disk": true,
+      "sha256": "bba997e75af38341cdd78a609bfbef240a61ee36bfbb4540ea52814c2df9edbe",
+      "file_offset": 3125248,
+      "original_abi": "ECX parser is unused; one stack hidden-result native-string pointer. Calls 0041e870 with ECX output and literal stack argument, returns same output pointer in EAX, RET4.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_game_resource_parser_registration/006fb000_matched_disassembly.txt"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00cfd7fc",
+      "inclusive_end": "00cfd84b",
+      "length": 80,
+      "role": "five_parser_lifetime_and_primary_vtables",
+      "matches_disk": true,
+      "sha256": "69464eb1d9abf4ab7bd287e2d533c1c82a583c4ffeb715fa121b31ebf1c16abf",
+      "file_offset": 9426940
+    },
+    {
+      "address": "00cfd8b4",
+      "inclusive_end": "00cfd8cb",
+      "length": 24,
+      "role": "Note_Aux_ZoneDesc_name_literals",
+      "matches_disk": true,
+      "sha256": "6745c05ea712d002ff8c7c902f6e264c68eaab654157eda1ca23e1c85244d255",
+      "file_offset": 9427124
+    },
+    {
+      "address": "00cfdbcc",
+      "inclusive_end": "00cfdbeb",
+      "length": 32,
+      "role": "GeomMesh_name_literal",
+      "matches_disk": true,
+      "sha256": "c9123b53972f83542158784f299c16f51c410e91780d8a065a27ffff2ad17e5c",
+      "file_offset": 9427916
+    },
+    {
+      "address": "00cfb6d8",
+      "inclusive_end": "00cfb6f7",
+      "length": 32,
+      "role": "ConvexObject_name_literal",
+      "matches_disk": true,
+      "sha256": "473d2792511f07f0544e959c95c4ebdbb751ad7dcbbc4742d1603db8a20d162c",
+      "file_offset": 9418456
+    }
+  ],
+  "parsers_in_registration_order": [
+    {
+      "name": "Aux",
+      "singleton": "00717320",
+      "singleton_global": "00e19b88",
+      "primary_vtable": "00cfd840",
+      "lifetime_interface_vtable": "00cfd83c",
+      "name_getter": "00718760",
+      "name_literal": "00cfd8bc",
+      "parse_slot": "0071b5c0"
+    },
+    {
+      "name": "ZoneDesc",
+      "singleton": "00717250",
+      "singleton_global": "00e19b8c",
+      "primary_vtable": "00cfd830",
+      "lifetime_interface_vtable": "00cfd82c",
+      "name_getter": "007187e0",
+      "name_literal": "00cfd8c0",
+      "parse_slot": "00719240"
+    },
+    {
+      "name": "Note",
+      "singleton": "00717180",
+      "singleton_global": "00e19b84",
+      "primary_vtable": "00cfd820",
+      "lifetime_interface_vtable": "00cfd81c",
+      "name_getter": "007186e0",
+      "name_literal": "00cfd8b4",
+      "parse_slot": "00719000"
+    },
+    {
+      "name": "GeomMesh",
+      "singleton": "00716fe0",
+      "singleton_global": "00e19bd0",
+      "primary_vtable": "00cfd800",
+      "lifetime_interface_vtable": "00cfd7fc",
+      "name_getter": "007258f0",
+      "name_literal": "00cfdbcc",
+      "parse_slot": "00727a90"
+    },
+    {
+      "name": "ConvexObject",
+      "singleton": "007170b0",
+      "singleton_global": "00e19a90",
+      "primary_vtable": "00cfd810",
+      "lifetime_interface_vtable": "00cfd80c",
+      "name_getter": "006fb000",
+      "name_literal": "00cfb6d8",
+      "parse_slot": "006faf00"
+    }
+  ],
+  "registry_contract": "00717e80 registers exactly five game parsers. Manager construction/default registration and 00b80a50 map insertion are separate primary-agent ownership; no conclusions here about all global registration sites.",
+  "singleton_contract": "Each singleton is 8 bytes: primary parser interface +0; singleton-lifetime interface +4. Lazy allocation uses 00415350 lifetime manager lock and 00bd0c30 registration. Allocation-null behavior is preserved as observed, without claiming safe parser registration on allocation failure.",
+  "name_contract": "Primary vtable +4 getters construct a native returned string from the exact case-sensitive literals shown. Matching/canonicalization semantics belong to manager registration and dispatch, not these getters.",
+  "parse_boundaries": "Primary vtable +8 identifies parse entry only. Aux, ZoneDesc, GeomMesh and ConvexObject parser bodies are not audited or reconstructed in this packet. Note 00719000 has a separate RESOURCE_NOTE_PARSER packet. No CloudSystem registration is present in this five-registration function; global absence is not claimed here.",
+  "prior_annotations": [
+    {
+      "address": "00717e80",
+      "annotation": {
+        "address": "00717e80",
+        "function_name": "FUN_00717e80"
+      }
+    },
+    {
+      "address": "00717320",
+      "annotation": {
+        "address": "00717320",
+        "function_name": "FUN_00717320"
+      }
+    },
+    {
+      "address": "00717250",
+      "annotation": {
+        "address": "00717250",
+        "function_name": "FUN_00717250"
+      }
+    },
+    {
+      "address": "00717180",
+      "annotation": {
+        "address": "00717180",
+        "function_name": "FUN_00717180"
+      }
+    },
+    {
+      "address": "00716fe0",
+      "annotation": {
+        "address": "00716fe0",
+        "function_name": "FUN_00716fe0"
+      }
+    },
+    {
+      "address": "007170b0",
+      "annotation": {
+        "address": "007170b0",
+        "function_name": "FUN_007170b0"
+      }
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00717e80",
+      "name": "BSP_GameResourceParsers_Register",
+      "comment": "No explicit input; RET. Calls resource manager 004c1400 and registration 00b80a50 for Aux, ZoneDesc, Note, GeomMesh, ConvexObject in that order. Names proven through primary-vtable +4 literal getters; +8 parse slots listed in GAME_RESOURCE_PARSER_REGISTRATION.md."
+    },
+    {
+      "address": "00717320",
+      "name": "BSP_AuxResourceParser_GetSingleton",
+      "comment": "No explicit input; EAX 8-byte parser singleton; RET. Global 00e19b88; primary vtable 00cfd840, lifetime subobject +4 vtable 00cfd83c; manager-lock guarded lazy allocation then register +4. Name getter 00718760 returns literal Aux; primary +8 parse slot 0071b5c0."
+    },
+    {
+      "address": "00718760",
+      "name": "BSP_AuxResourceParser_GetName",
+      "create_function": true,
+      "inclusive_end": "00718780",
+      "comment": "Previously missing function; exact 00718760-00718780. ECX parser unused; stack hidden native-string output; EAX same output, RET4. Constructs output through 0041e870 from literal 00cfd8bc (Aux)."
+    },
+    {
+      "address": "00717250",
+      "name": "BSP_ZoneDescResourceParser_GetSingleton",
+      "comment": "No explicit input; EAX 8-byte parser singleton; RET. Global 00e19b8c; primary vtable 00cfd830, lifetime subobject +4 vtable 00cfd82c; manager-lock guarded lazy allocation then register +4. Name getter 007187e0 returns literal ZoneDesc; primary +8 parse slot 00719240."
+    },
+    {
+      "address": "007187e0",
+      "name": "BSP_ZoneDescResourceParser_GetName",
+      "create_function": true,
+      "inclusive_end": "00718800",
+      "comment": "Previously missing function; exact 007187e0-00718800. ECX parser unused; stack hidden native-string output; EAX same output, RET4. Constructs output through 0041e870 from literal 00cfd8c0 (ZoneDesc)."
+    },
+    {
+      "address": "00717180",
+      "name": "BSP_NoteResourceParser_GetSingleton",
+      "comment": "No explicit input; EAX 8-byte parser singleton; RET. Global 00e19b84; primary vtable 00cfd820, lifetime subobject +4 vtable 00cfd81c; manager-lock guarded lazy allocation then register +4. Name getter 007186e0 returns literal Note; primary +8 parse slot 00719000."
+    },
+    {
+      "address": "007186e0",
+      "name": "BSP_NoteResourceParser_GetName",
+      "create_function": true,
+      "inclusive_end": "00718700",
+      "comment": "Previously missing function; exact 007186e0-00718700. ECX parser unused; stack hidden native-string output; EAX same output, RET4. Constructs output through 0041e870 from literal 00cfd8b4 (Note)."
+    },
+    {
+      "address": "00716fe0",
+      "name": "BSP_GeomMeshResourceParser_GetSingleton",
+      "comment": "No explicit input; EAX 8-byte parser singleton; RET. Global 00e19bd0; primary vtable 00cfd800, lifetime subobject +4 vtable 00cfd7fc; manager-lock guarded lazy allocation then register +4. Name getter 007258f0 returns literal GeomMesh; primary +8 parse slot 00727a90."
+    },
+    {
+      "address": "007258f0",
+      "name": "BSP_GeomMeshResourceParser_GetName",
+      "create_function": true,
+      "inclusive_end": "00725910",
+      "comment": "Previously missing function; exact 007258f0-00725910. ECX parser unused; stack hidden native-string output; EAX same output, RET4. Constructs output through 0041e870 from literal 00cfdbcc (GeomMesh)."
+    },
+    {
+      "address": "007170b0",
+      "name": "BSP_ConvexObjectResourceParser_GetSingleton",
+      "comment": "No explicit input; EAX 8-byte parser singleton; RET. Global 00e19a90; primary vtable 00cfd810, lifetime subobject +4 vtable 00cfd80c; manager-lock guarded lazy allocation then register +4. Name getter 006fb000 returns literal ConvexObject; primary +8 parse slot 006faf00."
+    },
+    {
+      "address": "006fb000",
+      "name": "BSP_ConvexObjectResourceParser_GetName",
+      "create_function": true,
+      "inclusive_end": "006fb020",
+      "comment": "Previously missing function; exact 006fb000-006fb020. ECX parser unused; stack hidden native-string output; EAX same output, RET4. Constructs output through 0041e870 from literal 00cfb6d8 (ConvexObject)."
+    }
+  ],
+  "boundaries": {
+    "cpp_changed": false,
+    "tests_added": false,
+    "build_run": false,
+    "shared_metadata_changed": false,
+    "ghidra_changed": false,
+    "snapshots": false,
+    "commits": false,
+    "reconstructed": false,
+    "game_validated": false
+  },
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}

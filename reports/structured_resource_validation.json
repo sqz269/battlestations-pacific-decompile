@@ -1,0 +1,140 @@
+{
+  "utc": "2026-09-10T00:59:20.094399+00:00",
+  "baseline_commit": "c3d1a4f7ccfb895d4ac0eaa34476a47e49819ba9",
+  "snapshot": {
+    "utc": "2026-09-10T00:54:33.398012+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62761,
+    "internal_function_count": 62319,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "scope": "Existing reconstructed/native math tests; new metadata behavior exercised by existing diagnostic target."
+  },
+  "reader_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe --structured-resource 'I:/SteamLibrary/steamapps/common/Battlestations Pacific'",
+    "exit_code": 0,
+    "assets": [
+      {
+        "name": "models/clouds/cloud_10.mmod",
+        "size": 265,
+        "sha256": "a9f9bd2ebec8d72d208b816273d84073fb464e61b5ca0c1b5f04d7ec2fd4cadf"
+      },
+      {
+        "name": "models/misc/repulogepdarabok_004.mmod",
+        "size": 1303,
+        "sha256": "5fab0cfe63220f84693cae4140fc98689670316585993dae71bd4f503bc7a7e6"
+      }
+    ],
+    "source_retention_and_release": true,
+    "partial_child_release_without_seek": true,
+    "hierarchy_matrix_and_box_exact_words": true,
+    "note_text": "visp100-visp1.5",
+    "unsupported_resource_parsers_skipped": [
+      "CloudSystem",
+      "Mesh",
+      "GroupParams"
+    ]
+  },
+  "full_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "includes_installed_reader_probe": true,
+    "font_draws": [
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=A hr=0x00000000 visible=74 outside=0 bounds=64,70..73,82 expected=63,63..75,88 sampler_mask=1 restored=1 lit_lines=1 checked=1",
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=wrapped_A_space_A_LF_A hr=0x00000000 visible=900 outside=0 bounds=69,130..88,232 expected=68,116..90,244 sampler_mask=1 restored=1 lit_lines=3 checked=1"
+    ],
+    "earlier_failure": {
+      "device_hr": "0x8876086c",
+      "adapter_count": 0,
+      "caps_hr": "0x8876086c",
+      "display_hr": "0x8876086c",
+      "cause": "Not established; final unmodified graphics route succeeded. No graphics workaround introduced.",
+      "log": "reports/structured_resource_full_probe_retry.txt"
+    }
+  },
+  "review": {
+    "code_reviewer": "effect_cache",
+    "ownership_annotation_reviewer": "resource_item_ownership",
+    "result": "Reader/source lifetime, counted Note and hierarchy values independently reviewed; source-expiration output corrected; ABI/evidence wording reconciled before final saved annotations."
+  },
+  "native_evidence": "reports/structured_resource_native_identity.json",
+  "annotations": "reports/structured_resource_annotations.json",
+  "reviewed_names": 648,
+  "new_names": 118,
+  "annotations_this_batch": 123,
+  "reconstructed_routines": 174,
+  "partial_fragments": 119,
+  "new_fragments": 12,
+  "baseline_reconstruction_keys_preserved": 281,
+  "remaining_rename_tags_verified": 8764,
+  "tag_count": 10333,
+  "partition": {
+    "utc": "2026-09-10T00:56:18.638632+00:00",
+    "candidates": 23796,
+    "segments": 92,
+    "largest_strong_cycle_segments": 81,
+    "sha256": "68c0aff4be3d742f9d149b6c5d61765f7fdb6cf94ffe2b4fe4b7944e232188f1"
+  },
+  "source_hashes": {
+    "CMakeLists.txt": {
+      "built_file_sha256": "fe18bfafb2bd03059cbdbd30f8c49a1d5fa5b19bf4816d0c44a9880a59933e9a",
+      "git_lf_sha256": "fe18bfafb2bd03059cbdbd30f8c49a1d5fa5b19bf4816d0c44a9880a59933e9a"
+    },
+    "include/bsp/structured_hierarchy.hpp": {
+      "built_file_sha256": "d19a625f381233c54fca061fa03a3c3412314c263b4357b16d32a1187c3c863c",
+      "git_lf_sha256": "d19a625f381233c54fca061fa03a3c3412314c263b4357b16d32a1187c3c863c"
+    },
+    "include/bsp/structured_reader.hpp": {
+      "built_file_sha256": "6c1d1ff32f551a0b51bfe0e8ab5600db358392963277d79d7ff01853535ab4fb",
+      "git_lf_sha256": "6c1d1ff32f551a0b51bfe0e8ab5600db358392963277d79d7ff01853535ab4fb"
+    },
+    "include/bsp/structured_resource.hpp": {
+      "built_file_sha256": "a67cb0f5cc06369adb971dbd0427586c7c7e07386272bc0bd82eab39daa8457b",
+      "git_lf_sha256": "a67cb0f5cc06369adb971dbd0427586c7c7e07386272bc0bd82eab39daa8457b"
+    },
+    "src/d3d9_probe.cpp": {
+      "built_file_sha256": "b5b630bffe646b4907d7ee1d20801e8032bd4e0f33c0683c71eb1543a238e642",
+      "git_lf_sha256": "b5b630bffe646b4907d7ee1d20801e8032bd4e0f33c0683c71eb1543a238e642"
+    },
+    "src/structured_hierarchy.cpp": {
+      "built_file_sha256": "91fbe13d6db9c4c04852761d1233ea59a3026dcf3774cad169b29a004b0f1018",
+      "git_lf_sha256": "91fbe13d6db9c4c04852761d1233ea59a3026dcf3774cad169b29a004b0f1018"
+    },
+    "src/structured_reader.cpp": {
+      "built_file_sha256": "390790f3060fae204860603f4bc7de1bb3de06d61e3581bc8ec2835b429694ab",
+      "git_lf_sha256": "390790f3060fae204860603f4bc7de1bb3de06d61e3581bc8ec2835b429694ab"
+    },
+    "src/structured_resource.cpp": {
+      "built_file_sha256": "03cb9f94e0acd79b2a01bfa2fae79826f9a592cbfb7db6cd946a468de1efaaf5",
+      "git_lf_sha256": "03cb9f94e0acd79b2a01bfa2fae79826f9a592cbfb7db6cd946a468de1efaaf5"
+    },
+    "src/structured_resource_probe.cpp": {
+      "built_file_sha256": "799e364bd95374cca9200015d3ee63fe9a5c3adbe91f4cbaf841628b0bf16b8e",
+      "git_lf_sha256": "799e364bd95374cca9200015d3ee63fe9a5c3adbe91f4cbaf841628b0bf16b8e"
+    }
+  },
+  "artifact_sha256": "97987c8d97bc389c76bd97f2fdfba3000318d977733d5219d1ad4fd048f30541",
+  "new_test_targets": 0,
+  "abi_compatible": false,
+  "game_rebuilt": false,
+  "goal_status": "active",
+  "limits": [
+    "Host full-read and valid-lifetime domain; native unchecked short-read values and original ABI are not implemented.",
+    "Metadata parser does not instantiate complete resource objects or render an installed mesh.",
+    "Manager/cache/queue/thread ownership and Mesh field packets are evidence boundaries awaiting runtime integration.",
+    "Diagnostic graphics pass is not a runnable game or gameplay validation."
+  ],
+  "report_sha256": {
+    "reports/structured_resource_build.txt": "11f56f0fd408806f5aa5d8be820bbf064529e494b85c51e062e9564deecda5de",
+    "reports/structured_resource_reader_probe.txt": "da7101981b70aceea7809b72c1f31c4c18c89a81f6431b712b23428030b0a00b",
+    "reports/structured_resource_full_probe.txt": "ab496737d3c6ae69b89252bed07fdf9de9874ccace65c136440432eae3fa9962",
+    "reports/structured_resource_native_identity.json": "30c943d964541462086c22a7de2e1685d15931bc1f449ca298fa429865fb7f4d",
+    "reports/structured_resource_annotations.json": "f43cbdb8818b5f1e26eeb91e7d1b6af8f2ec8c4b03bb9afa1985c6bad8995002"
+  }
+}

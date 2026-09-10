@@ -1,0 +1,818 @@
+{
+  "schema_version": 1,
+  "packet": "structured_reader",
+  "captured_utc": "2026-09-10T00:14:25.449194+00:00",
+  "source_head": "c3d1a4f",
+  "status": "complete_native_audit_ready_for_primary_review",
+  "scope": {
+    "initial_anchors": [
+      "00bf0430",
+      "00bea700",
+      "00bea680",
+      "00be9a40",
+      "00715bf0"
+    ],
+    "approved_expansions": [
+      "00bea380",
+      "00bea250",
+      "00bf02a0",
+      "00bf0510",
+      "00bf0280",
+      "00be9c40",
+      "00be9ed0",
+      "00bea150",
+      "00be9f10",
+      "00be9fc0",
+      "00bf09a0",
+      "00bf09b0",
+      "00bf03e0",
+      "00be4620",
+      "00be9df0",
+      "00be42e0"
+    ],
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true,
+    "scope_note": "These flags describe the native evidence audit. Separately authorized typed implementation is outside this frozen audit."
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every live proto and byte-read command calls bsp.py client(), which verifies bsp project and configured program before access.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "binary_size": 12223752,
+    "code_spans": [
+      {
+        "address": "00bf0430",
+        "length": 57,
+        "end_exclusive": "00bf0469",
+        "kind": "code",
+        "sha256": "ed862bb9f36184e7b431951a72e753c3872da117d86073c6edced85eac13140c",
+        "matches_original_pe": true,
+        "disk_offset": 8324144,
+        "raw_byte_capture": "local/structured_reader/00bf0430.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf0430.decoded.asm.txt",
+        "return_instructions": [
+          "00bf0466: ret 4"
+        ]
+      },
+      {
+        "address": "00bea700",
+        "length": 119,
+        "end_exclusive": "00bea777",
+        "kind": "code",
+        "sha256": "5657fc441f1a1faf8ed2c29547717c8e8132464d869eb8095562db04a8b19ada",
+        "matches_original_pe": true,
+        "disk_offset": 8300288,
+        "raw_byte_capture": "local/structured_reader/00bea700.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bea700.decoded.asm.txt",
+        "return_instructions": [
+          "00bea75a: ret 4",
+          "00bea774: ret 4"
+        ]
+      },
+      {
+        "address": "00bea680",
+        "length": 121,
+        "end_exclusive": "00bea6f9",
+        "kind": "code",
+        "sha256": "1dc0418af50d88ea359db99b30860404c181309730951f789d2d3f8cb9f24174",
+        "matches_original_pe": true,
+        "disk_offset": 8300160,
+        "raw_byte_capture": "local/structured_reader/00bea680.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bea680.decoded.asm.txt",
+        "return_instructions": [
+          "00bea6dc: ret 4",
+          "00bea6f6: ret 4"
+        ]
+      },
+      {
+        "address": "00be9a40",
+        "length": 22,
+        "end_exclusive": "00be9a56",
+        "kind": "code",
+        "sha256": "16c5d52d20e8bf2638dd8aaffb99064327f9aca545f9ad3a461ff5dee2738c82",
+        "matches_original_pe": true,
+        "disk_offset": 8297024,
+        "raw_byte_capture": "local/structured_reader/00be9a40.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be9a40.decoded.asm.txt",
+        "return_instructions": [
+          "00be9a55: ret "
+        ]
+      },
+      {
+        "address": "00715bf0",
+        "length": 21,
+        "end_exclusive": "00715c05",
+        "kind": "code",
+        "sha256": "e2c4563a684fe923d920d08c6e8f037df0ad838f959eac124a5decce01e5c145",
+        "matches_original_pe": true,
+        "disk_offset": 3234800,
+        "raw_byte_capture": "local/structured_reader/00715bf0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00715bf0.decoded.asm.txt",
+        "return_instructions": [
+          "00715c01: ret ",
+          "00715c04: ret "
+        ]
+      },
+      {
+        "address": "00bea380",
+        "length": 295,
+        "end_exclusive": "00bea4a7",
+        "kind": "code",
+        "sha256": "d3b027a53aacd665fe80e3bdfcd004c7980e1142a12f0c8d4812f859fc8fc7e8",
+        "matches_original_pe": true,
+        "disk_offset": 8299392,
+        "raw_byte_capture": "local/structured_reader/00bea380.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bea380.decoded.asm.txt",
+        "return_instructions": [
+          "00bea4a4: ret 4"
+        ]
+      },
+      {
+        "address": "00bea250",
+        "length": 300,
+        "end_exclusive": "00bea37c",
+        "kind": "code",
+        "sha256": "3f484b4d8a0f68e979402a7c1c134cb3bc3aee77f1387fd317fbc48370a0e85d",
+        "matches_original_pe": true,
+        "disk_offset": 8299088,
+        "raw_byte_capture": "local/structured_reader/00bea250.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bea250.decoded.asm.txt",
+        "return_instructions": [
+          "00bea379: ret 4"
+        ]
+      },
+      {
+        "address": "00bf02a0",
+        "length": 27,
+        "end_exclusive": "00bf02bb",
+        "kind": "code",
+        "sha256": "7f878c3b4be18757aa3e6b5001fcd96b0b922498683166eefe8cffae98899a04",
+        "matches_original_pe": true,
+        "disk_offset": 8323744,
+        "raw_byte_capture": "local/structured_reader/00bf02a0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf02a0.decoded.asm.txt",
+        "return_instructions": [
+          "00bf02b8: ret 4"
+        ]
+      },
+      {
+        "address": "00bf0510",
+        "length": 46,
+        "end_exclusive": "00bf053e",
+        "kind": "code",
+        "sha256": "1a3baa1951f75fb576928cfc363bf17716cc3aa5523d0b160152762a14cb2c18",
+        "matches_original_pe": true,
+        "disk_offset": 8324368,
+        "raw_byte_capture": "local/structured_reader/00bf0510.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf0510.decoded.asm.txt",
+        "return_instructions": [
+          "00bf053b: ret 8"
+        ]
+      },
+      {
+        "address": "00bf0280",
+        "length": 27,
+        "end_exclusive": "00bf029b",
+        "kind": "code",
+        "sha256": "5bbc7a22b6469e5ad59fab8dbe0948c18aaafb8d0a3a031bf36941273553bc16",
+        "matches_original_pe": true,
+        "disk_offset": 8323712,
+        "raw_byte_capture": "local/structured_reader/00bf0280.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf0280.decoded.asm.txt",
+        "return_instructions": [
+          "00bf0298: ret 4"
+        ]
+      },
+      {
+        "address": "00be9c40",
+        "length": 70,
+        "end_exclusive": "00be9c86",
+        "kind": "code",
+        "sha256": "9359e2b2658bd938fcd03693c267ce661ee2c01a93673211ccc450111059892b",
+        "matches_original_pe": true,
+        "disk_offset": 8297536,
+        "raw_byte_capture": "local/structured_reader/00be9c40.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be9c40.decoded.asm.txt",
+        "return_instructions": [
+          "00be9c85: ret "
+        ]
+      },
+      {
+        "address": "00be9ed0",
+        "length": 41,
+        "end_exclusive": "00be9ef9",
+        "kind": "code",
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "matches_original_pe": true,
+        "disk_offset": 8298192,
+        "raw_byte_capture": "local/structured_reader/00be9ed0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be9ed0.decoded.asm.txt",
+        "return_instructions": [
+          "00be9ef8: ret "
+        ]
+      },
+      {
+        "address": "00bea150",
+        "length": 101,
+        "end_exclusive": "00bea1b5",
+        "kind": "code",
+        "sha256": "38a6f86d62fec93cac7f5882414e14abea2588877887336d1ab96acd2d64a0a8",
+        "matches_original_pe": true,
+        "disk_offset": 8298832,
+        "raw_byte_capture": "local/structured_reader/00bea150.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bea150.decoded.asm.txt",
+        "return_instructions": [
+          "00bea1b4: ret "
+        ]
+      },
+      {
+        "address": "00be9f10",
+        "length": 120,
+        "end_exclusive": "00be9f88",
+        "kind": "code",
+        "sha256": "dda7c3627d8b59ce3bb47a0503bbab43366d5cbd0b867145f88e9c73a10defe8",
+        "matches_original_pe": true,
+        "disk_offset": 8298256,
+        "raw_byte_capture": "local/structured_reader/00be9f10.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be9f10.decoded.asm.txt",
+        "return_instructions": [
+          "00be9f87: ret "
+        ]
+      },
+      {
+        "address": "00be9fc0",
+        "length": 30,
+        "end_exclusive": "00be9fde",
+        "kind": "code",
+        "sha256": "7e3c25b160b6c6f5ed8d4ebb7889a0a594093e833387f50053e29a3907907690",
+        "matches_original_pe": true,
+        "disk_offset": 8298432,
+        "raw_byte_capture": "local/structured_reader/00be9fc0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be9fc0.decoded.asm.txt",
+        "return_instructions": [
+          "00be9fdb: ret 4"
+        ]
+      },
+      {
+        "address": "00bf09a0",
+        "length": 16,
+        "end_exclusive": "00bf09b0",
+        "kind": "code",
+        "sha256": "585eb39d0eb0963eb6c38bed4169fd672f7a11cb3c682b0f69e817c5bda8416b",
+        "matches_original_pe": true,
+        "disk_offset": 8325536,
+        "raw_byte_capture": "local/structured_reader/00bf09a0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf09a0.decoded.asm.txt",
+        "return_instructions": [
+          "00bf09af: ret "
+        ]
+      },
+      {
+        "address": "00bf09b0",
+        "length": 120,
+        "end_exclusive": "00bf0a28",
+        "kind": "code",
+        "sha256": "16d87d896d4c0617d3bc7741929e43c10d51e8c1236d70063b23212dc4fd0da1",
+        "matches_original_pe": true,
+        "disk_offset": 8325552,
+        "raw_byte_capture": "local/structured_reader/00bf09b0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf09b0.decoded.asm.txt",
+        "return_instructions": [
+          "00bf0a27: ret "
+        ]
+      },
+      {
+        "address": "00bf03e0",
+        "length": 21,
+        "end_exclusive": "00bf03f5",
+        "kind": "code",
+        "sha256": "994d8687d30b77f52335a8bb8c33b65a5da5db7c7f45397de269c0bc7278e99c",
+        "matches_original_pe": true,
+        "disk_offset": 8324064,
+        "raw_byte_capture": "local/structured_reader/00bf03e0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00bf03e0.decoded.asm.txt",
+        "return_instructions": [
+          "00bf03f2: ret 8"
+        ]
+      },
+      {
+        "address": "00be4620",
+        "length": 327,
+        "end_exclusive": "00be4767",
+        "kind": "code",
+        "sha256": "5eb26b9caea8adcdf56cb7686c2579ce42e8e397d3e27e47bbb63939f1c1393f",
+        "matches_original_pe": true,
+        "disk_offset": 8275488,
+        "raw_byte_capture": "local/structured_reader/00be4620.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be4620.decoded.asm.txt",
+        "return_instructions": [
+          "00be4764: ret 8"
+        ]
+      },
+      {
+        "address": "00be9df0",
+        "length": 134,
+        "end_exclusive": "00be9e76",
+        "kind": "code",
+        "sha256": "6de4000972ec69f9e54335f6c602dc0f0f051babc8833ccb57c8ab95ca09a1b3",
+        "matches_original_pe": true,
+        "disk_offset": 8297968,
+        "raw_byte_capture": "local/structured_reader/00be9df0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be9df0.decoded.asm.txt",
+        "return_instructions": [
+          "00be9e75: ret "
+        ]
+      },
+      {
+        "address": "00be42e0",
+        "length": 26,
+        "end_exclusive": "00be42fa",
+        "kind": "code",
+        "sha256": "c7a6ad72a87a8ebe2d36e3aeb3f8bac796457b74b3d9ee5c5bf4e38c92b196bd",
+        "matches_original_pe": true,
+        "disk_offset": 8274656,
+        "raw_byte_capture": "local/structured_reader/00be42e0.bytes.txt",
+        "decoded_disassembly": "local/structured_reader/00be42e0.decoded.asm.txt",
+        "return_instructions": [
+          "00be42f7: ret 4"
+        ]
+      }
+    ],
+    "data_spans": [
+      {
+        "address": "00d68bb4",
+        "length": 8,
+        "end_exclusive": "00d68bbc",
+        "kind": "data",
+        "sha256": "1028a59e72a69971e65213f34a8a7ec0829d9b8f373d6d5c5ab672b85e8ff4ce",
+        "matches_original_pe": true,
+        "disk_offset": 9866164,
+        "raw_byte_capture": "local/structured_reader/00d68bb4.bytes.txt"
+      },
+      {
+        "address": "00d642f4",
+        "length": 24,
+        "end_exclusive": "00d6430c",
+        "kind": "data",
+        "sha256": "08069fb24ae278eec5b39cb79697f9d0811400843fb4e5f3df7fb4b75eb2e222",
+        "matches_original_pe": true,
+        "disk_offset": 9847540,
+        "raw_byte_capture": "local/structured_reader/00d642f4.bytes.txt"
+      },
+      {
+        "address": "00d691e4",
+        "length": 24,
+        "end_exclusive": "00d691fc",
+        "kind": "data",
+        "sha256": "08069fb24ae278eec5b39cb79697f9d0811400843fb4e5f3df7fb4b75eb2e222",
+        "matches_original_pe": true,
+        "disk_offset": 9867748,
+        "raw_byte_capture": "local/structured_reader/00d691e4.bytes.txt"
+      }
+    ]
+  },
+  "before": [
+    {
+      "address": "00bf0430",
+      "annotation": {
+        "address": "00bf0430",
+        "function_name": "FUN_00bf0430"
+      }
+    },
+    {
+      "address": "00bea700",
+      "annotation": {
+        "address": "00bea700",
+        "function_name": "FUN_00bea700"
+      }
+    },
+    {
+      "address": "00bea680",
+      "annotation": {
+        "address": "00bea680",
+        "function_name": "FUN_00bea680"
+      }
+    },
+    {
+      "address": "00be9a40",
+      "annotation": {
+        "address": "00be9a40",
+        "function_name": "FUN_00be9a40"
+      }
+    },
+    {
+      "address": "00715bf0",
+      "annotation": {
+        "address": "00715bf0",
+        "function_name": "FUN_00715bf0"
+      }
+    },
+    {
+      "address": "00bea380",
+      "annotation": {
+        "address": "00bea380",
+        "function_name": "FUN_00bea380"
+      }
+    },
+    {
+      "address": "00bea250",
+      "annotation": {
+        "address": "00bea250",
+        "function_name": "FUN_00bea250"
+      }
+    },
+    {
+      "address": "00bf02a0",
+      "annotation": {
+        "address": "00bf02a0",
+        "function_name": "FUN_00bf02a0"
+      }
+    },
+    {
+      "address": "00bf0510",
+      "annotation": {
+        "address": "00bf0510",
+        "function_name": "FUN_00bf0510"
+      }
+    },
+    {
+      "address": "00bf0280",
+      "annotation": {
+        "address": "00bf0280",
+        "function_name": "FUN_00bf0280"
+      }
+    },
+    {
+      "address": "00be9c40",
+      "annotation": {
+        "address": "00be9c40",
+        "function_name": "FUN_00be9c40"
+      }
+    },
+    {
+      "address": "00be9ed0",
+      "annotation": {
+        "address": "00be9ed0",
+        "function_name": "FUN_00be9ed0"
+      }
+    },
+    {
+      "address": "00bea150",
+      "annotation": {
+        "address": "00bea150",
+        "function_name": "FUN_00bea150"
+      }
+    },
+    {
+      "address": "00be9f10",
+      "annotation": {
+        "address": "00be9f10",
+        "function_name": "FUN_00be9f10"
+      }
+    },
+    {
+      "address": "00be9fc0",
+      "annotation": {
+        "address": "00be9fc0",
+        "function_name": "FUN_00be9fc0"
+      }
+    },
+    {
+      "address": "00bf09a0",
+      "annotation": {
+        "address": "00bf09a0",
+        "function_name": "FUN_00bf09a0"
+      }
+    },
+    {
+      "address": "00bf09b0",
+      "annotation": {
+        "address": "00bf09b0",
+        "function_name": "FUN_00bf09b0"
+      }
+    },
+    {
+      "address": "00bf03e0",
+      "annotation": {
+        "address": "00bf03e0",
+        "function_name": "FUN_00bf03e0"
+      }
+    },
+    {
+      "address": "00be4620",
+      "annotation": {
+        "address": "00be4620",
+        "function_name": "FUN_00be4620"
+      }
+    },
+    {
+      "address": "00be9df0",
+      "annotation": {
+        "address": "00be9df0",
+        "function_name": "FUN_00be9df0"
+      }
+    }
+  ],
+  "flow_repairs_requested": [
+    {
+      "function": "00bf09b0",
+      "instruction": "00bf0a0f",
+      "observed_override": "CALL_RETURN",
+      "actual_continuation": "00bf0a14",
+      "actual_last_byte": "00bf0a27",
+      "requested": "Clear stale flow override and extend function through plain RET; primary owns mutation."
+    }
+  ],
+  "missing_function_definitions": [
+    {
+      "address": "00be42e0",
+      "length": 26,
+      "end_exclusive": "00be42fa",
+      "original_name": null,
+      "original_comment": null,
+      "reason": "Stream vtable slot+34; no function existed at live audit start."
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bf0430",
+      "suggested_name": "BSP_StreamReader_AssignStream",
+      "original_abi": "ECX reader; stack stream pointer; RET4",
+      "contract": "When pointers differ, store new stream, atomically retain new+4 before releasing old+4 and call old virtual+0 at zero. Same-pointer assignment is a no-op.",
+      "complete_span_length": 57,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: When pointers differ, store new stream, atomically retain new+4 before releasing old+4 and call old virtual+0 at zero. Same-pointer assignment is a no-op. ABI: ECX reader; stack stream pointer; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bea700",
+      "suggested_name": "BSP_StructuredReader_CreateRoot",
+      "original_abi": "ECX reader; stack output wrapper; EAX output wrapper; RET4",
+      "contract": "Allocate24h and call00bea380 with reader; write null output on null allocation.",
+      "complete_span_length": 119,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Allocate24h and call00bea380 with reader; write null output on null allocation. ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bea680",
+      "suggested_name": "BSP_StructuredNode_CreateChild",
+      "original_abi": "ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4",
+      "contract": "Allocate24h and call00bea250 with dereferenced parent; write null output on null allocation. No parent or remaining check.",
+      "complete_span_length": 121,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Allocate24h and call00bea250 with dereferenced parent; write null output on null allocation. No parent or remaining check. ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be9a40",
+      "suggested_name": "BSP_StructuredNode_ReadControlWord",
+      "original_abi": "ECX node wrapper; no stack arguments; plain RET",
+      "contract": "Read DWORD via reader00bf02a0 against node+20 budget and store reader+64. No control value validation.",
+      "complete_span_length": 22,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Read DWORD via reader00bf02a0 against node+20 budget and store reader+64. No control value validation. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00715bf0",
+      "suggested_name": "BSP_StructuredNode_HasRemaining",
+      "original_abi": "ECX wrapper; EAX boolean0/1; plain RET",
+      "contract": "True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check.",
+      "complete_span_length": 21,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bea380",
+      "suggested_name": "BSP_StructuredNode_ConstructRoot",
+      "original_abi": "ECX new node; stack reader; EAX node; RET4",
+      "contract": "Initialize ref1, raw reader, null parent, depth0; parse tag and DWORD payload length using local budget1000; declared and remaining equal payload; copy tag into reader path and increment path index without capacity guard.",
+      "complete_span_length": 295,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Initialize ref1, raw reader, null parent, depth0; parse tag and DWORD payload length using local budget1000; declared and remaining equal payload; copy tag into reader path and increment path index without capacity guard. ABI: ECX new node; stack reader; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bea250",
+      "suggested_name": "BSP_StructuredNode_ConstructChild",
+      "original_abi": "ECX new node; stack parent node; EAX node; RET4",
+      "contract": "Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard.",
+      "complete_span_length": 300,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bf02a0",
+      "suggested_name": "BSP_StreamReader_ReadDwordAndDebit",
+      "original_abi": "ECX reader; stack budget pointer; EAX scalar; RET4",
+      "contract": "Call stream virtual+38 with nonnull actual-count local then subtract actual from budget. Count local initially contains reader pointer. No count or budget validation.",
+      "complete_span_length": 27,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call stream virtual+38 with nonnull actual-count local then subtract actual from budget. Count local initially contains reader pointer. No count or budget validation. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bf0510",
+      "suggested_name": "BSP_StreamReader_ReadStringAndDebit",
+      "original_abi": "ECX reader; stack output string and budget pointer; EAX output string; RET8",
+      "contract": "Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp.",
+      "complete_span_length": 46,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bf0280",
+      "suggested_name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+      "original_abi": "ECX reader; stack budget pointer; EAX scalar; RET4",
+      "contract": "Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads.",
+      "complete_span_length": 27,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be9c40",
+      "suggested_name": "BSP_StructuredNode_SkipAndDetach",
+      "original_abi": "ECX node wrapper; no stack arguments; plain RET",
+      "contract": "Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check.",
+      "complete_span_length": 70,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be9ed0",
+      "suggested_name": "BSP_StructuredNodeHandle_Release",
+      "original_abi": "ECX node wrapper; no stack arguments; plain RET",
+      "contract": "If nonnull decrement intrusive reference, invoke virtual+0 at zero, and clear wrapper. Does not independently seek.",
+      "complete_span_length": 41,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: If nonnull decrement intrusive reference, invoke virtual+0 at zero, and clear wrapper. Does not independently seek. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bea150",
+      "suggested_name": "BSP_StructuredReader_Construct",
+      "original_abi": "ECX reader; EAX reader; plain RET",
+      "contract": "Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero.",
+      "complete_span_length": 101,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be9f10",
+      "suggested_name": "BSP_StructuredReader_Destroy",
+      "original_abi": "ECX reader; no stack arguments; plain RET",
+      "contract": "Destroy separate name string, ten path strings, then base reader00bf09b0.",
+      "complete_span_length": 120,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Destroy separate name string, ten path strings, then base reader00bf09b0. ABI: ECX reader; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be9fc0",
+      "suggested_name": "BSP_StructuredNode_DeletingDestructor",
+      "original_abi": "ECX node; stack flags; EAX original node storage; RET4",
+      "contract": "Call00be9df0; free node if flags bit0 set; return original storage.",
+      "complete_span_length": 30,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call00be9df0; free node if flags bit0 set; return original storage. ABI: ECX node; stack flags; EAX original node storage; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bf09a0",
+      "suggested_name": "BSP_StreamReader_Construct",
+      "original_abi": "ECX reader base; no stack arguments; plain RET",
+      "contract": "Zero first four DWORDs; this includes attached stream and optional buffer triplet.",
+      "complete_span_length": 16,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Zero first four DWORDs; this includes attached stream and optional buffer triplet. ABI: ECX reader base; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bf09b0",
+      "suggested_name": "BSP_StreamReader_Destroy",
+      "original_abi": "ECX reader base; no stack arguments; plain RET at00bf0a27",
+      "contract": "Release attached stream reference and null pointer, call00bf0700 on base+4 with zero, free remaining buffer pointer. Optional buffer internals deferred. Stale CALL_RETURN at00bf0a0f truncated saved function; full120-byte body verified.",
+      "complete_span_length": 120,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Release attached stream reference and null pointer, call00bf0700 on base+4 with zero, free remaining buffer pointer. Optional buffer internals deferred. Stale CALL_RETURN at00bf0a0f truncated saved function; full120-byte body verified. ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00bf03e0",
+      "suggested_name": "BSP_StreamReader_SkipRelative",
+      "original_abi": "ECX reader; stack low offset and ignored pointer; RET8",
+      "contract": "Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation.",
+      "complete_span_length": 21,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be4620",
+      "suggested_name": "BSP_Stream_ReadLengthPrefixedString",
+      "original_abi": "ECX stream; stack output native string and optional actual pointer; EAX output; RET8",
+      "contract": "Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read.",
+      "complete_span_length": 327,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be9df0",
+      "suggested_name": "BSP_StructuredNode_Destroy",
+      "original_abi": "ECX node; no stack arguments; plain RET",
+      "contract": "If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit.",
+      "complete_span_length": 134,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    },
+    {
+      "address": "00be42e0",
+      "suggested_name": "BSP_Stream_ReadDwordSlot34",
+      "original_abi": "ECX stream; stack optional actual pointer; EAX DWORD; RET4",
+      "contract": "Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start.",
+      "complete_span_length": 26,
+      "evidence": "docs/STRUCTURED_READER.md; reports/structured_reader_audit.json",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json."
+    }
+  ],
+  "reader_layout": {
+    "size_hex": "70",
+    "stream_hex": "00",
+    "base_optional_buffer_hex": "04/08/0C",
+    "path_strings_hex": "10..5F",
+    "path_slots": 10,
+    "path_count_hex": "60",
+    "control_word_hex": "64",
+    "name_string_hex": "68/6C"
+  },
+  "node_layout": {
+    "size_hex": "24",
+    "vtable": "00d68bb4",
+    "initial_reference_count": 1,
+    "reader_hex": "08 borrowed",
+    "parent_hex": "0C borrowed",
+    "tag_string_hex": "10/14",
+    "depth_hex": "18",
+    "declared_payload_hex": "1C",
+    "remaining_payload_hex": "20"
+  },
+  "record_wire": [
+    "little-endian u32 tag byte count",
+    "tag bytes, no terminator consumed",
+    "little-endian u32 payload byte count",
+    "payload bytes"
+  ],
+  "key_constraints": [
+    "Root initial header budget1000 is not enforced.",
+    "Child headers debit parent by actual bytes; child detach debits parent by full declared payload.",
+    "Node destruction never seeks unread bytes; explicit skip does.",
+    "No node retains its parent or reader; only reader owns stream reference.",
+    "Native remaining predicate checks nonzero DWORD only.",
+    "Native fixed path has10 slots without guard.",
+    "Nonnull-count scalar short reads preserve pointer-seed bits; null-count font adapter is not equivalent.",
+    "Control word meaning unknown; loader dispatch reads it without validation.",
+    "No payload fit, underflow, recursion, allocator, source validity or stream success checks in audited wrappers."
+  ],
+  "validation_boundaries": {
+    "native_bytes": true,
+    "complete_functions": 21,
+    "code_bytes": 2041,
+    "data_bytes": 56,
+    "source_compilation": false,
+    "fixture_tests": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "live_annotations_applied_by_worker": false
+  },
+  "dependencies": [
+    {
+      "address": "00b80720",
+      "state": "named_but_incomplete_loader",
+      "note": "Existing loader consumer attaches stream, creates root, dispatches and releases."
+    },
+    {
+      "address": "00b7f430",
+      "state": "named_but_incomplete_dispatch",
+      "note": "Calls control read then depth-first child traversal; missing concrete type parsers remain separate."
+    },
+    {
+      "address": "00bf0700",
+      "state": "deferred_optional_base_buffer_cleanup",
+      "note": "Initial ordinary reader path zeroes buffer triplet."
+    },
+    {
+      "address": "0041dd40",
+      "state": "native_string_allocation_dependency",
+      "note": "Allocation internals/failure behavior not newly audited."
+    },
+    {
+      "address": "00be4300",
+      "state": "previously_audited_stream_scalar",
+      "note": "Slot+38 DWORD source; evidence STREAM_SCALAR_READERS.md."
+    },
+    {
+      "address": "00bf02c0",
+      "state": "previously_audited_float_budget_adapter",
+      "note": "Full-read actual-count and x87 semantics established in STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md."
+    }
+  ],
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}

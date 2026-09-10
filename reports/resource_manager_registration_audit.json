@@ -1,0 +1,2673 @@
+{
+  "schema_version": 1,
+  "packet": "resource_manager_registration",
+  "captured_utc": "2026-09-10T00:33:35.722610+00:00",
+  "source_head": "c3d1a4f",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "code_spans": [
+    {
+      "address": "004c1400",
+      "length": 189,
+      "end_exclusive": "004c14bd",
+      "sha256": "edf7aec8f00a16e7a83ac7008d26836b7aea88e3e3bace2fe23d0380e357fa01",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_004c1400 at 004c1400\nSignature: undefined FUN_004c1400(void)\nEntry: 004c1400\nBody: 004c1400 - 004c14bc",
+      "documentation_before": {
+        "hash": "fc9d10c63c13029c7400b78b35c614f1e7152a02e1f84235d274da77841623ff",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004c1400",
+        "function_name": "FUN_004c1400",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_004c1449"
+          },
+          {
+            "relative_offset": 122,
+            "name": "LAB_004c147a"
+          },
+          {
+            "relative_offset": 124,
+            "name": "LAB_004c147c"
+          },
+          {
+            "relative_offset": 153,
+            "name": "LAB_004c1499"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_004c14a8"
+          },
+          {
+            "relative_offset": 174,
+            "name": "LAB_004c14ae"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_ResourceManager_GetSingleton",
+      "decoded_assembly": [
+        "004c1400: mov eax, dword ptr fs:[0]",
+        "004c1406: push -1",
+        "004c1408: push 0xc64f53",
+        "004c140d: push eax",
+        "004c140e: mov dword ptr fs:[0], esp",
+        "004c1415: mov eax, dword ptr [0x10901c4]",
+        "004c141a: sub esp, 0xc",
+        "004c141d: test eax, eax",
+        "004c141f: jne 0x4c14ae",
+        "004c1425: push esi",
+        "004c1426: call 0x415350",
+        "004c142b: mov esi, dword ptr [eax + 0x10]",
+        "004c142e: test esi, esi",
+        "004c1430: mov dword ptr [esp + 8], 0xce37fc",
+        "004c1438: mov dword ptr [esp + 0xc], esi",
+        "004c143c: je 0x4c1449",
+        "004c143e: push esi",
+        "004c143f: call dword ptr [0xce2218]",
+        "004c1445: add dword ptr [esi + 0x18], 1",
+        "004c1449: mov dword ptr [esp + 0x18], 0",
+        "004c1451: cmp dword ptr [0x10901c4], 0",
+        "004c1458: jne 0x4c1499",
+        "004c145a: push 0x28",
+        "004c145c: call 0xbf681b",
+        "004c1461: add esp, 4",
+        "004c1464: mov dword ptr [esp + 4], eax",
+        "004c1468: test eax, eax",
+        "004c146a: mov byte ptr [esp + 0x18], 1",
+        "004c146f: je 0x4c147a",
+        "004c1471: mov ecx, eax",
+        "004c1473: call 0xb81040",
+        "004c1478: jmp 0x4c147c",
+        "004c147a: xor eax, eax",
+        "004c147c: mov byte ptr [esp + 0x18], 0",
+        "004c1481: mov dword ptr [0x10901c4], eax",
+        "004c1486: call 0x415350",
+        "004c148b: mov ecx, dword ptr [0x10901c4]",
+        "004c1491: push ecx",
+        "004c1492: mov ecx, eax",
+        "004c1494: call 0xbd0c30",
+        "004c1499: test esi, esi",
+        "004c149b: je 0x4c14a8",
+        "004c149d: add dword ptr [esi + 0x18], -1",
+        "004c14a1: push esi",
+        "004c14a2: call dword ptr [0xce2210]",
+        "004c14a8: mov eax, dword ptr [0x10901c4]",
+        "004c14ad: pop esi",
+        "004c14ae: mov ecx, dword ptr [esp + 0xc]",
+        "004c14b2: mov dword ptr fs:[0], ecx",
+        "004c14b9: add esp, 0x18",
+        "004c14bc: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b81040",
+      "length": 260,
+      "end_exclusive": "00b81144",
+      "sha256": "55ae3b87c6ed210939b75d06b7c6365b8bd78a0ac72159b33f8c73b945f7e7f5",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b81040 at 00b81040\nSignature: undefined FUN_00b81040(void)\nEntry: 00b81040\nBody: 00b81040 - 00b81143",
+      "documentation_before": {
+        "hash": "8a5551492c3e5cefd7a9595aecd4c8819660bc5ecf6bc6a233af2d787a69eb33",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b81040",
+        "function_name": "FUN_00b81040",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 66,
+            "name": "LAB_00b81082"
+          },
+          {
+            "relative_offset": 68,
+            "name": "LAB_00b81084"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_ResourceManager_Construct",
+      "decoded_assembly": [
+        "00b81040: push -1",
+        "00b81042: push 0xcc224e",
+        "00b81047: mov eax, dword ptr fs:[0]",
+        "00b8104d: push eax",
+        "00b8104e: mov dword ptr fs:[0], esp",
+        "00b81055: push ecx",
+        "00b81056: push esi",
+        "00b81057: mov esi, ecx",
+        "00b81059: push edi",
+        "00b8105a: mov dword ptr [esp + 8], esi",
+        "00b8105e: push 4",
+        "00b81060: mov dword ptr [esp + 0x18], 0",
+        "00b81068: mov dword ptr [esi], 0xd63128",
+        "00b8106e: call 0xbf681b",
+        "00b81073: add esp, 4",
+        "00b81076: test eax, eax",
+        "00b81078: je 0xb81082",
+        "00b8107a: mov dword ptr [eax], 0xd63060",
+        "00b81080: jmp 0xb81084",
+        "00b81082: xor eax, eax",
+        "00b81084: lea edi, [esi + 8]",
+        "00b81087: mov ecx, edi",
+        "00b81089: mov dword ptr [esi + 4], eax",
+        "00b8108c: call 0xb7e000",
+        "00b81091: mov dword ptr [edi + 4], eax",
+        "00b81094: mov byte ptr [eax + 0x19], 1",
+        "00b81098: mov eax, dword ptr [edi + 4]",
+        "00b8109b: mov dword ptr [eax + 4], eax",
+        "00b8109e: mov eax, dword ptr [edi + 4]",
+        "00b810a1: mov dword ptr [eax], eax",
+        "00b810a3: mov eax, dword ptr [edi + 4]",
+        "00b810a6: mov dword ptr [eax + 8], eax",
+        "00b810a9: mov dword ptr [edi + 8], 0",
+        "00b810b0: lea edi, [esi + 0x14]",
+        "00b810b3: mov ecx, edi",
+        "00b810b5: mov byte ptr [esp + 0x14], 1",
+        "00b810ba: call 0xb7e050",
+        "00b810bf: mov dword ptr [edi + 4], eax",
+        "00b810c2: mov byte ptr [eax + 0x19], 1",
+        "00b810c6: mov eax, dword ptr [edi + 4]",
+        "00b810c9: mov dword ptr [eax + 4], eax",
+        "00b810cc: mov eax, dword ptr [edi + 4]",
+        "00b810cf: mov dword ptr [eax], eax",
+        "00b810d1: mov eax, dword ptr [edi + 4]",
+        "00b810d4: mov dword ptr [eax + 8], eax",
+        "00b810d7: mov dword ptr [edi + 8], 0",
+        "00b810de: mov byte ptr [esp + 0x14], 2",
+        "00b810e3: call 0xb7e1d0",
+        "00b810e8: push eax",
+        "00b810e9: mov ecx, esi",
+        "00b810eb: call 0xb80a50",
+        "00b810f0: call 0xb7e2a0",
+        "00b810f5: push eax",
+        "00b810f6: mov ecx, esi",
+        "00b810f8: call 0xb80a50",
+        "00b810fd: call 0xb7e530",
+        "00b81102: push eax",
+        "00b81103: mov ecx, esi",
+        "00b81105: call 0xb80a50",
+        "00b8110a: call 0xb7e370",
+        "00b8110f: push eax",
+        "00b81110: mov ecx, esi",
+        "00b81112: call 0xb80a50",
+        "00b81117: call 0xb7e460",
+        "00b8111c: push eax",
+        "00b8111d: mov ecx, esi",
+        "00b8111f: call 0xb80a50",
+        "00b81124: call 0xb7e100",
+        "00b81129: push eax",
+        "00b8112a: mov ecx, esi",
+        "00b8112c: call 0xb80a50",
+        "00b81131: mov ecx, dword ptr [esp + 0xc]",
+        "00b81135: pop edi",
+        "00b81136: mov eax, esi",
+        "00b81138: pop esi",
+        "00b81139: mov dword ptr fs:[0], ecx",
+        "00b81140: add esp, 0x10",
+        "00b81143: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b80a50",
+      "length": 367,
+      "end_exclusive": "00b80bbf",
+      "sha256": "def8ebf9e07d9a76d188e825b55cee9c51756838cf8bf9142ea5051bfb2a2944",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b80a50 at 00b80a50\nSignature: undefined FUN_00b80a50(void)\nEntry: 00b80a50\nBody: 00b80a50 - 00b80bbe",
+      "documentation_before": {
+        "hash": "e7d7b77e4f2499c614cb289c08ec5846b88287e49e346dd1713f84573cfd777f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80a50",
+        "function_name": "FUN_00b80a50",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_30",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "psVar3",
+            "type": "size_t *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar6",
+            "type": "undefined1 *"
+          },
+          {
+            "name": "pvStack_28",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "sStack_2c",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "iStack_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "sStack_24",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "pvStack_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "iStack_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pvStack_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 79,
+            "name": "LAB_00b80a9f"
+          },
+          {
+            "relative_offset": 84,
+            "name": "LAB_00b80aa4"
+          },
+          {
+            "relative_offset": 121,
+            "name": "LAB_00b80ac9"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00b80ae4"
+          },
+          {
+            "relative_offset": 244,
+            "name": "LAB_00b80b44"
+          },
+          {
+            "relative_offset": 305,
+            "name": "LAB_00b80b81"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00b80ba8"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_ResourceManager_RegisterTypeParser",
+      "decoded_assembly": [
+        "00b80a50: push -1",
+        "00b80a52: mov eax, dword ptr fs:[0]",
+        "00b80a58: push 0xcc21c0",
+        "00b80a5d: push eax",
+        "00b80a5e: mov dword ptr fs:[0], esp",
+        "00b80a65: sub esp, 0x24",
+        "00b80a68: push ebx",
+        "00b80a69: push ebp",
+        "00b80a6a: push esi",
+        "00b80a6b: mov esi, dword ptr [esp + 0x40]",
+        "00b80a6f: mov eax, dword ptr [esi]",
+        "00b80a71: mov edx, dword ptr [eax + 4]",
+        "00b80a74: push edi",
+        "00b80a75: mov edi, ecx",
+        "00b80a77: lea ecx, [esp + 0x10]",
+        "00b80a7b: push ecx",
+        "00b80a7c: mov ecx, esi",
+        "00b80a7e: call edx",
+        "00b80a80: mov ebx, dword ptr [edi + 0xc]",
+        "00b80a83: push eax",
+        "00b80a84: lea ebp, [edi + 8]",
+        "00b80a87: lea eax, [esp + 0x20]",
+        "00b80a8b: push eax",
+        "00b80a8c: mov ecx, ebp",
+        "00b80a8e: call 0xb7e740",
+        "00b80a93: mov edi, eax",
+        "00b80a95: mov eax, dword ptr [edi]",
+        "00b80a97: test eax, eax",
+        "00b80a99: je 0xb80a9f",
+        "00b80a9b: cmp eax, ebp",
+        "00b80a9d: je 0xb80aa4",
+        "00b80a9f: call 0xbf6713",
+        "00b80aa4: cmp dword ptr [edi + 4], ebx",
+        "00b80aa7: mov eax, dword ptr [esp + 0x14]",
+        "00b80aab: setne bl",
+        "00b80aae: test eax, eax",
+        "00b80ab0: je 0xb80ac9",
+        "00b80ab2: mov ecx, dword ptr [esp + 0x10]",
+        "00b80ab6: push 1",
+        "00b80ab8: add ecx, 1",
+        "00b80abb: push ecx",
+        "00b80abc: push eax",
+        "00b80abd: call 0x419cc0",
+        "00b80ac2: mov ecx, eax",
+        "00b80ac4: call 0xbd1510",
+        "00b80ac9: test bl, bl",
+        "00b80acb: je 0xb80ae4",
+        "00b80acd: xor al, al",
+        "00b80acf: mov ecx, dword ptr [esp + 0x34]",
+        "00b80ad3: mov dword ptr fs:[0], ecx",
+        "00b80ada: pop edi",
+        "00b80adb: pop esi",
+        "00b80adc: pop ebp",
+        "00b80add: pop ebx",
+        "00b80ade: add esp, 0x30",
+        "00b80ae1: ret 4",
+        "00b80ae4: mov edx, dword ptr [esi]",
+        "00b80ae6: mov edx, dword ptr [edx + 4]",
+        "00b80ae9: sub esp, 8",
+        "00b80aec: mov eax, esp",
+        "00b80aee: mov dword ptr [esp + 0x4c], esp",
+        "00b80af2: push eax",
+        "00b80af3: mov ecx, esi",
+        "00b80af5: call edx",
+        "00b80af7: mov edx, esi",
+        "00b80af9: lea ecx, [esp + 0x30]",
+        "00b80afd: call 0xb7f340",
+        "00b80b02: mov esi, eax",
+        "00b80b04: xor ebx, ebx",
+        "00b80b06: xor edi, edi",
+        "00b80b08: lea eax, [esp + 0x1c]",
+        "00b80b0c: cmp eax, esi",
+        "00b80b0e: mov dword ptr [esp + 0x3c], ebx",
+        "00b80b12: mov dword ptr [esp + 0x1c], ebx",
+        "00b80b16: mov dword ptr [esp + 0x20], edi",
+        "00b80b1a: je 0xb80b44",
+        "00b80b1c: mov eax, dword ptr [esi]",
+        "00b80b1e: push 1",
+        "00b80b20: push eax",
+        "00b80b21: lea ecx, [esp + 0x24]",
+        "00b80b25: call 0x41dd40",
+        "00b80b2a: cmp dword ptr [esi], ebx",
+        "00b80b2c: mov edi, dword ptr [esp + 0x20]",
+        "00b80b30: je 0xb80b44",
+        "00b80b32: mov ecx, dword ptr [esp + 0x1c]",
+        "00b80b36: mov edx, dword ptr [esi + 4]",
+        "00b80b39: push ecx",
+        "00b80b3a: push edx",
+        "00b80b3b: push edi",
+        "00b80b3c: call 0xbf7680",
+        "00b80b41: add esp, 0xc",
+        "00b80b44: mov eax, dword ptr [esi + 8]",
+        "00b80b47: mov dword ptr [esp + 0x24], eax",
+        "00b80b4b: lea ecx, [esp + 0x1c]",
+        "00b80b4f: push ecx",
+        "00b80b50: lea edx, [esp + 0x14]",
+        "00b80b54: push edx",
+        "00b80b55: mov ecx, ebp",
+        "00b80b57: mov byte ptr [esp + 0x44], 1",
+        "00b80b5c: call 0xb80290",
+        "00b80b61: cmp edi, ebx",
+        "00b80b63: mov byte ptr [esp + 0x3c], 0",
+        "00b80b68: je 0xb80b81",
+        "00b80b6a: mov eax, dword ptr [esp + 0x1c]",
+        "00b80b6e: push 1",
+        "00b80b70: add eax, 1",
+        "00b80b73: push eax",
+        "00b80b74: push edi",
+        "00b80b75: call 0x419cc0",
+        "00b80b7a: mov ecx, eax",
+        "00b80b7c: call 0xbd1510",
+        "00b80b81: mov ecx, dword ptr [esp + 0x2c]",
+        "00b80b85: cmp ecx, ebx",
+        "00b80b87: mov dword ptr [esp + 0x3c], 0xffffffff",
+        "00b80b8f: je 0xb80ba8",
+        "00b80b91: mov eax, dword ptr [esp + 0x28]",
+        "00b80b95: push 1",
+        "00b80b97: add eax, 1",
+        "00b80b9a: push eax",
+        "00b80b9b: push ecx",
+        "00b80b9c: call 0x419cc0",
+        "00b80ba1: mov ecx, eax",
+        "00b80ba3: call 0xbd1510",
+        "00b80ba8: mov ecx, dword ptr [esp + 0x34]",
+        "00b80bac: pop edi",
+        "00b80bad: pop esi",
+        "00b80bae: pop ebp",
+        "00b80baf: mov al, 1",
+        "00b80bb1: mov dword ptr fs:[0], ecx",
+        "00b80bb8: pop ebx",
+        "00b80bb9: add esp, 0x30",
+        "00b80bbc: ret 4"
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b7f340",
+      "length": 161,
+      "end_exclusive": "00b7f3e1",
+      "sha256": "bab3273b719931ab07d76df6d7951727cf1cde36403fe1e0068d74b6e459b31f",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7f340 at 00b7f340\nSignature: undefined FUN_00b7f340(void)\nEntry: 00b7f340\nBody: 00b7f340 - 00b7f3e0",
+      "documentation_before": {
+        "hash": "e2a8c276b977d325673847337aa7447e3e4cc02684308a2ed9f7f95abd688b42",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7f340",
+        "function_name": "FUN_00b7f340",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "sVar1",
+            "type": "size_t",
+            "storage": "(unique, 0x1000009a, 4)"
+          },
+          {
+            "name": "_Src",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 99,
+            "name": "LAB_00b7f3a3"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00b7f3ca"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_ResourceParserEntry_Construct",
+      "decoded_assembly": [
+        "00b7f340: push -1",
+        "00b7f342: push 0xcc2081",
+        "00b7f347: mov eax, dword ptr fs:[0]",
+        "00b7f34d: push eax",
+        "00b7f34e: mov dword ptr fs:[0], esp",
+        "00b7f355: sub esp, 8",
+        "00b7f358: push ebx",
+        "00b7f359: push ebp",
+        "00b7f35a: push esi",
+        "00b7f35b: mov esi, ecx",
+        "00b7f35d: xor eax, eax",
+        "00b7f35f: push edi",
+        "00b7f360: mov ebx, edx",
+        "00b7f362: mov dword ptr [esp + 0x14], esi",
+        "00b7f366: mov dword ptr [esp + 0x10], eax",
+        "00b7f36a: mov edi, dword ptr [esp + 0x2c]",
+        "00b7f36e: mov ebp, dword ptr [esp + 0x28]",
+        "00b7f372: mov dword ptr [esi], eax",
+        "00b7f374: mov dword ptr [esi + 4], eax",
+        "00b7f377: lea eax, [esp + 0x28]",
+        "00b7f37b: cmp esi, eax",
+        "00b7f37d: mov dword ptr [esp + 0x20], 1",
+        "00b7f385: je 0xb7f3a3",
+        "00b7f387: push 1",
+        "00b7f389: push ebp",
+        "00b7f38a: call 0x41dd40",
+        "00b7f38f: test ebp, ebp",
+        "00b7f391: je 0xb7f3a3",
+        "00b7f393: mov eax, dword ptr [esi]",
+        "00b7f395: mov ecx, dword ptr [esi + 4]",
+        "00b7f398: push eax",
+        "00b7f399: push edi",
+        "00b7f39a: push ecx",
+        "00b7f39b: call 0xbf7680",
+        "00b7f3a0: add esp, 0xc",
+        "00b7f3a3: mov dword ptr [esi + 8], ebx",
+        "00b7f3a6: test edi, edi",
+        "00b7f3a8: mov dword ptr [esp + 0x10], 1",
+        "00b7f3b0: mov byte ptr [esp + 0x20], 0",
+        "00b7f3b5: je 0xb7f3ca",
+        "00b7f3b7: push 1",
+        "00b7f3b9: add ebp, 1",
+        "00b7f3bc: push ebp",
+        "00b7f3bd: push edi",
+        "00b7f3be: call 0x419cc0",
+        "00b7f3c3: mov ecx, eax",
+        "00b7f3c5: call 0xbd1510",
+        "00b7f3ca: mov ecx, dword ptr [esp + 0x18]",
+        "00b7f3ce: pop edi",
+        "00b7f3cf: mov eax, esi",
+        "00b7f3d1: pop esi",
+        "00b7f3d2: pop ebp",
+        "00b7f3d3: pop ebx",
+        "00b7f3d4: mov dword ptr fs:[0], ecx",
+        "00b7f3db: add esp, 0x14",
+        "00b7f3de: ret 8"
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b7e740",
+      "length": 102,
+      "end_exclusive": "00b7e7a6",
+      "sha256": "b30a12fefc924181a86255528c7880ff8465f707a29e8e0b1a41811da71cf565",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e740 at 00b7e740\nSignature: undefined FUN_00b7e740(void)\nEntry: 00b7e740\nBody: 00b7e740 - 00b7e7a5",
+      "documentation_before": {
+        "hash": "e32f985f3daf63d57955da361d86b98d3942931645dae9ae0934699548d3a31d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e740",
+        "function_name": "FUN_00b7e740",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b7e761"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00b7e780"
+          },
+          {
+            "relative_offset": 79,
+            "name": "LAB_00b7e78f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_ResourceParserMap_Find",
+      "decoded_assembly": [
+        "00b7e740: sub esp, 0x10",
+        "00b7e743: push ebx",
+        "00b7e744: mov ebx, dword ptr [esp + 0x1c]",
+        "00b7e748: push esi",
+        "00b7e749: push edi",
+        "00b7e74a: push ebx",
+        "00b7e74b: mov esi, ecx",
+        "00b7e74d: call 0xb7df40",
+        "00b7e752: test esi, esi",
+        "00b7e754: mov edi, eax",
+        "00b7e756: mov dword ptr [esp + 0x10], edi",
+        "00b7e75a: jne 0xb7e761",
+        "00b7e75c: call 0xbf6713",
+        "00b7e761: cmp edi, dword ptr [esi + 4]",
+        "00b7e764: mov dword ptr [esp + 0xc], esi",
+        "00b7e768: je 0xb7e780",
+        "00b7e76a: add edi, 0xc",
+        "00b7e76d: push edi",
+        "00b7e76e: push ebx",
+        "00b7e76f: mov ecx, esi",
+        "00b7e771: call 0x443d00",
+        "00b7e776: test al, al",
+        "00b7e778: jne 0xb7e780",
+        "00b7e77a: lea ecx, [esp + 0xc]",
+        "00b7e77e: jmp 0xb7e78f",
+        "00b7e780: mov eax, dword ptr [esi + 4]",
+        "00b7e783: mov dword ptr [esp + 0x18], eax",
+        "00b7e787: mov dword ptr [esp + 0x14], esi",
+        "00b7e78b: lea ecx, [esp + 0x14]",
+        "00b7e78f: mov edx, dword ptr [ecx]",
+        "00b7e791: mov eax, dword ptr [esp + 0x20]",
+        "00b7e795: mov ecx, dword ptr [ecx + 4]",
+        "00b7e798: pop edi",
+        "00b7e799: pop esi",
+        "00b7e79a: mov dword ptr [eax], edx",
+        "00b7e79c: mov dword ptr [eax + 4], ecx",
+        "00b7e79f: pop ebx",
+        "00b7e7a0: add esp, 0x10",
+        "00b7e7a3: ret 8"
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b80290",
+      "length": 276,
+      "end_exclusive": "00b803a4",
+      "sha256": "561d03ffa4f3a3ef869c7a73f4fc7f77bc42d04e35738ae67d74043329c5adc6",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b80290 at 00b80290\nSignature: undefined FUN_00b80290(void)\nEntry: 00b80290\nBody: 00b80290 - 00b803a3",
+      "documentation_before": {
+        "hash": "a6129e8c6a302503bd9fc8b06a4c9a37db7016a5b6afaeb5e857818d3e006f67",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80290",
+        "function_name": "FUN_00b80290",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x100000a3, 4)"
+          },
+          {
+            "name": "cVar3",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x1000009f, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "bVar7",
+            "type": "bool",
+            "storage": "(register, 0x207, 1)"
+          },
+          {
+            "name": "puVar6",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b802b1"
+          },
+          {
+            "relative_offset": 49,
+            "name": "LAB_00b802c1"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_00b802ce"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_00b802de"
+          },
+          {
+            "relative_offset": 95,
+            "name": "LAB_00b802ef"
+          },
+          {
+            "relative_offset": 98,
+            "name": "LAB_00b802f2"
+          },
+          {
+            "relative_offset": 104,
+            "name": "LAB_00b802f8"
+          },
+          {
+            "relative_offset": 171,
+            "name": "LAB_00b8033b"
+          },
+          {
+            "relative_offset": 184,
+            "name": "LAB_00b80348"
+          },
+          {
+            "relative_offset": 249,
+            "name": "LAB_00b80389"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "STL_ResourceParserMap_InsertUnique",
+      "decoded_assembly": [
+        "00b80290: sub esp, 0xc",
+        "00b80293: push ebx",
+        "00b80294: mov ebx, dword ptr [esp + 0x18]",
+        "00b80298: push ebp",
+        "00b80299: push esi",
+        "00b8029a: push edi",
+        "00b8029b: mov edi, ecx",
+        "00b8029d: mov eax, dword ptr [edi + 4]",
+        "00b802a0: mov esi, dword ptr [eax + 4]",
+        "00b802a3: cmp byte ptr [esi + 0x19], 0",
+        "00b802a7: mov ebp, eax",
+        "00b802a9: mov al, 1",
+        "00b802ab: mov byte ptr [esp + 0x10], al",
+        "00b802af: jne 0xb802f8",
+        "00b802b1: cmp dword ptr [ebx], 0",
+        "00b802b4: mov ebp, esi",
+        "00b802b6: jne 0xb802c1",
+        "00b802b8: mov eax, dword ptr [esi + 0xc]",
+        "00b802bb: neg eax",
+        "00b802bd: sbb eax, eax",
+        "00b802bf: jmp 0xb802de",
+        "00b802c1: cmp dword ptr [esi + 0xc], 0",
+        "00b802c5: jne 0xb802ce",
+        "00b802c7: mov eax, 1",
+        "00b802cc: jmp 0xb802de",
+        "00b802ce: mov eax, dword ptr [esi + 0x10]",
+        "00b802d1: mov ecx, dword ptr [ebx + 4]",
+        "00b802d4: push eax",
+        "00b802d5: push ecx",
+        "00b802d6: call 0xbf7fbf",
+        "00b802db: add esp, 8",
+        "00b802de: test eax, eax",
+        "00b802e0: setl al",
+        "00b802e3: test al, al",
+        "00b802e5: mov byte ptr [esp + 0x10], al",
+        "00b802e9: je 0xb802ef",
+        "00b802eb: mov esi, dword ptr [esi]",
+        "00b802ed: jmp 0xb802f2",
+        "00b802ef: mov esi, dword ptr [esi + 8]",
+        "00b802f2: cmp byte ptr [esi + 0x19], 0",
+        "00b802f6: je 0xb802b1",
+        "00b802f8: test al, al",
+        "00b802fa: mov esi, ebp",
+        "00b802fc: mov dword ptr [esp + 0x18], esi",
+        "00b80300: mov dword ptr [esp + 0x14], edi",
+        "00b80304: je 0xb80348",
+        "00b80306: mov edx, dword ptr [edi + 4]",
+        "00b80309: cmp ebp, dword ptr [edx]",
+        "00b8030b: jne 0xb8033b",
+        "00b8030d: push ebx",
+        "00b8030e: push ebp",
+        "00b8030f: push 1",
+        "00b80311: lea eax, [esp + 0x20]",
+        "00b80315: push eax",
+        "00b80316: mov ecx, edi",
+        "00b80318: call 0xb7fd30",
+        "00b8031d: pop edi",
+        "00b8031e: mov ecx, eax",
+        "00b80320: mov edx, dword ptr [ecx]",
+        "00b80322: mov eax, dword ptr [esp + 0x1c]",
+        "00b80326: mov ecx, dword ptr [ecx + 4]",
+        "00b80329: pop esi",
+        "00b8032a: pop ebp",
+        "00b8032b: mov dword ptr [eax + 4], ecx",
+        "00b8032e: mov byte ptr [eax + 8], 1",
+        "00b80332: mov dword ptr [eax], edx",
+        "00b80334: pop ebx",
+        "00b80335: add esp, 0xc",
+        "00b80338: ret 8",
+        "00b8033b: lea ecx, [esp + 0x14]",
+        "00b8033f: call 0xb7cef0",
+        "00b80344: mov esi, dword ptr [esp + 0x18]",
+        "00b80348: push ebx",
+        "00b80349: lea edx, [esi + 0xc]",
+        "00b8034c: push edx",
+        "00b8034d: mov ecx, edi",
+        "00b8034f: call 0x443d00",
+        "00b80354: test al, al",
+        "00b80356: je 0xb80389",
+        "00b80358: mov eax, dword ptr [esp + 0x10]",
+        "00b8035c: push ebx",
+        "00b8035d: push ebp",
+        "00b8035e: push eax",
+        "00b8035f: lea ecx, [esp + 0x20]",
+        "00b80363: push ecx",
+        "00b80364: mov ecx, edi",
+        "00b80366: call 0xb7fd30",
+        "00b8036b: pop edi",
+        "00b8036c: mov ecx, eax",
+        "00b8036e: mov edx, dword ptr [ecx]",
+        "00b80370: mov eax, dword ptr [esp + 0x1c]",
+        "00b80374: mov ecx, dword ptr [ecx + 4]",
+        "00b80377: pop esi",
+        "00b80378: pop ebp",
+        "00b80379: mov dword ptr [eax + 4], ecx",
+        "00b8037c: mov byte ptr [eax + 8], 1",
+        "00b80380: mov dword ptr [eax], edx",
+        "00b80382: pop ebx",
+        "00b80383: add esp, 0xc",
+        "00b80386: ret 8",
+        "00b80389: mov eax, dword ptr [esp + 0x20]",
+        "00b8038d: mov edx, dword ptr [esp + 0x14]",
+        "00b80391: pop edi",
+        "00b80392: mov dword ptr [eax + 4], esi",
+        "00b80395: pop esi",
+        "00b80396: pop ebp",
+        "00b80397: mov byte ptr [eax + 8], 0",
+        "00b8039b: mov dword ptr [eax], edx",
+        "00b8039d: pop ebx",
+        "00b8039e: add esp, 0xc",
+        "00b803a1: ret 8"
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b7df40",
+      "length": 83,
+      "end_exclusive": "00b7df93",
+      "sha256": "2e525ce6a0cfebab1269f492d144099ef24fa8c51b958ddcbbb0155679cce24e",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7df40 at 00b7df40\nSignature: undefined FUN_00b7df40(void)\nEntry: 00b7df40\nBody: 00b7df40 - 00b7df92",
+      "documentation_before": {
+        "hash": "27ac941d27fb18ee25fe42c0bde0c82ed299ef112fb2cb9dfc4d9c842e24d022",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7df40",
+        "function_name": "FUN_00b7df40",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar5",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "undefined4 *",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x10000050, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00b7df55"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b7df63"
+          },
+          {
+            "relative_offset": 56,
+            "name": "LAB_00b7df78"
+          },
+          {
+            "relative_offset": 65,
+            "name": "LAB_00b7df81"
+          },
+          {
+            "relative_offset": 69,
+            "name": "LAB_00b7df85"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_00b7df8e"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_ResourceParserMap_LowerBound",
+      "decoded_assembly": [
+        "00b7df40: mov eax, dword ptr [ecx + 4]",
+        "00b7df43: push ebx",
+        "00b7df44: push esi",
+        "00b7df45: mov esi, dword ptr [eax + 4]",
+        "00b7df48: cmp byte ptr [esi + 0x19], 0",
+        "00b7df4c: mov ebx, eax",
+        "00b7df4e: jne 0xb7df8e",
+        "00b7df50: push edi",
+        "00b7df51: mov edi, dword ptr [esp + 0x10]",
+        "00b7df55: cmp dword ptr [esi + 0xc], 0",
+        "00b7df59: jne 0xb7df63",
+        "00b7df5b: mov eax, dword ptr [edi]",
+        "00b7df5d: neg eax",
+        "00b7df5f: sbb eax, eax",
+        "00b7df61: jmp 0xb7df78",
+        "00b7df63: cmp dword ptr [edi], 0",
+        "00b7df66: je 0xb7df81",
+        "00b7df68: mov eax, dword ptr [edi + 4]",
+        "00b7df6b: mov ecx, dword ptr [esi + 0x10]",
+        "00b7df6e: push eax",
+        "00b7df6f: push ecx",
+        "00b7df70: call 0xbf7fbf",
+        "00b7df75: add esp, 8",
+        "00b7df78: test eax, eax",
+        "00b7df7a: jge 0xb7df81",
+        "00b7df7c: mov esi, dword ptr [esi + 8]",
+        "00b7df7f: jmp 0xb7df85",
+        "00b7df81: mov ebx, esi",
+        "00b7df83: mov esi, dword ptr [esi]",
+        "00b7df85: cmp byte ptr [esi + 0x19], 0",
+        "00b7df89: je 0xb7df55",
+        "00b7df8b: mov eax, ebx",
+        "00b7df8d: pop edi",
+        "00b7df8e: pop esi",
+        "00b7df8f: pop ebx",
+        "00b7df90: ret 4"
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b7e1d0",
+      "length": 206,
+      "end_exclusive": "00b7e29e",
+      "sha256": "09d4d21638458f8a1289b83b3b2b6baed9adf2f67abe9d65d2f00b6f18a0165f",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e1d0 at 00b7e1d0\nSignature: undefined FUN_00b7e1d0(void)\nEntry: 00b7e1d0\nBody: 00b7e1d0 - 00b7e29d",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e1d0",
+        "function_name": "FUN_00b7e1d0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00b7e219"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00b7e253"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00b7e25d"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b7e26b"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b7e26d"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7e27a"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00b7e289"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00b7e28f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_MeshParser_GetSingleton",
+      "decoded_assembly": [
+        "00b7e1d0: mov eax, dword ptr fs:[0]",
+        "00b7e1d6: push -1",
+        "00b7e1d8: push 0xcc1f38",
+        "00b7e1dd: push eax",
+        "00b7e1de: mov dword ptr fs:[0], esp",
+        "00b7e1e5: mov eax, dword ptr [0x109047c]",
+        "00b7e1ea: sub esp, 8",
+        "00b7e1ed: test eax, eax",
+        "00b7e1ef: jne 0xb7e28f",
+        "00b7e1f5: push esi",
+        "00b7e1f6: call 0x415350",
+        "00b7e1fb: mov esi, dword ptr [eax + 0x10]",
+        "00b7e1fe: test esi, esi",
+        "00b7e200: mov dword ptr [esp + 4], 0xce37fc",
+        "00b7e208: mov dword ptr [esp + 8], esi",
+        "00b7e20c: je 0xb7e219",
+        "00b7e20e: push esi",
+        "00b7e20f: call dword ptr [0xce2218]",
+        "00b7e215: add dword ptr [esi + 0x18], 1",
+        "00b7e219: mov dword ptr [esp + 0x14], 0",
+        "00b7e221: cmp dword ptr [0x109047c], 0",
+        "00b7e228: jne 0xb7e27a",
+        "00b7e22a: push 8",
+        "00b7e22c: call 0xbf681b",
+        "00b7e231: add esp, 4",
+        "00b7e234: test eax, eax",
+        "00b7e236: je 0xb7e253",
+        "00b7e238: mov dword ptr [eax + 4], 0xd63070",
+        "00b7e23f: mov dword ptr [eax], 0xd63098",
+        "00b7e245: mov dword ptr [eax + 4], 0xd63094",
+        "00b7e24c: mov dword ptr [0x109047c], eax",
+        "00b7e251: jmp 0xb7e25d",
+        "00b7e253: mov dword ptr [0x109047c], 0",
+        "00b7e25d: mov eax, dword ptr [0x109047c]",
+        "00b7e262: test eax, eax",
+        "00b7e264: je 0xb7e26b",
+        "00b7e266: add eax, 4",
+        "00b7e269: jmp 0xb7e26d",
+        "00b7e26b: xor eax, eax",
+        "00b7e26d: push eax",
+        "00b7e26e: call 0x415350",
+        "00b7e273: mov ecx, eax",
+        "00b7e275: call 0xbd0c30",
+        "00b7e27a: test esi, esi",
+        "00b7e27c: je 0xb7e289",
+        "00b7e27e: add dword ptr [esi + 0x18], -1",
+        "00b7e282: push esi",
+        "00b7e283: call dword ptr [0xce2210]",
+        "00b7e289: mov eax, dword ptr [0x109047c]",
+        "00b7e28e: pop esi",
+        "00b7e28f: mov ecx, dword ptr [esp + 8]",
+        "00b7e293: mov dword ptr fs:[0], ecx",
+        "00b7e29a: add esp, 0x14",
+        "00b7e29d: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b7eb60",
+      "length": 33,
+      "end_exclusive": "00b7eb81",
+      "sha256": "158f5cc4cd2e65ff7d2bc126eaa5a95f59e6feb19a19b5746a0f4d0e51754272",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_MeshParser_GetTypeName",
+      "decoded_assembly": [
+        "00b7eb60: push ecx",
+        "00b7eb61: push esi",
+        "00b7eb62: mov esi, dword ptr [esp + 0xc]",
+        "00b7eb66: push 0xce5fd0",
+        "00b7eb6b: mov ecx, esi",
+        "00b7eb6d: mov dword ptr [esp + 8], 0",
+        "00b7eb75: call 0x41e870",
+        "00b7eb7a: mov eax, esi",
+        "00b7eb7c: pop esi",
+        "00b7eb7d: pop ecx",
+        "00b7eb7e: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00b7e2a0",
+      "length": 206,
+      "end_exclusive": "00b7e36e",
+      "sha256": "deaddb697f452630cd5493b50dc925e9e52f491aa538ca82253f61b68166c374",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e2a0 at 00b7e2a0\nSignature: undefined FUN_00b7e2a0(void)\nEntry: 00b7e2a0\nBody: 00b7e2a0 - 00b7e36d",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e2a0",
+        "function_name": "FUN_00b7e2a0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00b7e2e9"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00b7e323"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00b7e32d"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b7e33b"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b7e33d"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7e34a"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00b7e359"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00b7e35f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_SkinedMeshParser_GetSingleton",
+      "decoded_assembly": [
+        "00b7e2a0: mov eax, dword ptr fs:[0]",
+        "00b7e2a6: push -1",
+        "00b7e2a8: push 0xcc1f58",
+        "00b7e2ad: push eax",
+        "00b7e2ae: mov dword ptr fs:[0], esp",
+        "00b7e2b5: mov eax, dword ptr [0x1090480]",
+        "00b7e2ba: sub esp, 8",
+        "00b7e2bd: test eax, eax",
+        "00b7e2bf: jne 0xb7e35f",
+        "00b7e2c5: push esi",
+        "00b7e2c6: call 0x415350",
+        "00b7e2cb: mov esi, dword ptr [eax + 0x10]",
+        "00b7e2ce: test esi, esi",
+        "00b7e2d0: mov dword ptr [esp + 4], 0xce37fc",
+        "00b7e2d8: mov dword ptr [esp + 8], esi",
+        "00b7e2dc: je 0xb7e2e9",
+        "00b7e2de: push esi",
+        "00b7e2df: call dword ptr [0xce2218]",
+        "00b7e2e5: add dword ptr [esi + 0x18], 1",
+        "00b7e2e9: mov dword ptr [esp + 0x14], 0",
+        "00b7e2f1: cmp dword ptr [0x1090480], 0",
+        "00b7e2f8: jne 0xb7e34a",
+        "00b7e2fa: push 8",
+        "00b7e2fc: call 0xbf681b",
+        "00b7e301: add esp, 4",
+        "00b7e304: test eax, eax",
+        "00b7e306: je 0xb7e323",
+        "00b7e308: mov dword ptr [eax + 4], 0xd63074",
+        "00b7e30f: mov dword ptr [eax], 0xd630a8",
+        "00b7e315: mov dword ptr [eax + 4], 0xd630a4",
+        "00b7e31c: mov dword ptr [0x1090480], eax",
+        "00b7e321: jmp 0xb7e32d",
+        "00b7e323: mov dword ptr [0x1090480], 0",
+        "00b7e32d: mov eax, dword ptr [0x1090480]",
+        "00b7e332: test eax, eax",
+        "00b7e334: je 0xb7e33b",
+        "00b7e336: add eax, 4",
+        "00b7e339: jmp 0xb7e33d",
+        "00b7e33b: xor eax, eax",
+        "00b7e33d: push eax",
+        "00b7e33e: call 0x415350",
+        "00b7e343: mov ecx, eax",
+        "00b7e345: call 0xbd0c30",
+        "00b7e34a: test esi, esi",
+        "00b7e34c: je 0xb7e359",
+        "00b7e34e: add dword ptr [esi + 0x18], -1",
+        "00b7e352: push esi",
+        "00b7e353: call dword ptr [0xce2210]",
+        "00b7e359: mov eax, dword ptr [0x1090480]",
+        "00b7e35e: pop esi",
+        "00b7e35f: mov ecx, dword ptr [esp + 8]",
+        "00b7e363: mov dword ptr fs:[0], ecx",
+        "00b7e36a: add esp, 0x14",
+        "00b7e36d: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b94170",
+      "length": 33,
+      "end_exclusive": "00b94191",
+      "sha256": "6589e31385c67464c0b1620ebd7350060896b822c6b241ad5c97f422d256097d",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_SkinedMeshParser_GetTypeName",
+      "decoded_assembly": [
+        "00b94170: push ecx",
+        "00b94171: push esi",
+        "00b94172: mov esi, dword ptr [esp + 0xc]",
+        "00b94176: push 0xd637f8",
+        "00b9417b: mov ecx, esi",
+        "00b9417d: mov dword ptr [esp + 8], 0",
+        "00b94185: call 0x41e870",
+        "00b9418a: mov eax, esi",
+        "00b9418c: pop esi",
+        "00b9418d: pop ecx",
+        "00b9418e: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00b7e530",
+      "length": 206,
+      "end_exclusive": "00b7e5fe",
+      "sha256": "2e3663f33dc6279b11a30c5a52b36e05f0c07dc7e1b7dd69a11daad6d47e2728",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e530 at 00b7e530\nSignature: undefined FUN_00b7e530(void)\nEntry: 00b7e530\nBody: 00b7e530 - 00b7e5fd",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e530",
+        "function_name": "FUN_00b7e530",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00b7e579"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00b7e5b3"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00b7e5bd"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b7e5cb"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b7e5cd"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7e5da"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00b7e5e9"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00b7e5ef"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_SkinedMeshAnimationParser_GetSingleton",
+      "decoded_assembly": [
+        "00b7e530: mov eax, dword ptr fs:[0]",
+        "00b7e536: push -1",
+        "00b7e538: push 0xcc1fb8",
+        "00b7e53d: push eax",
+        "00b7e53e: mov dword ptr fs:[0], esp",
+        "00b7e545: mov eax, dword ptr [0x109043c]",
+        "00b7e54a: sub esp, 8",
+        "00b7e54d: test eax, eax",
+        "00b7e54f: jne 0xb7e5ef",
+        "00b7e555: push esi",
+        "00b7e556: call 0x415350",
+        "00b7e55b: mov esi, dword ptr [eax + 0x10]",
+        "00b7e55e: test esi, esi",
+        "00b7e560: mov dword ptr [esp + 4], 0xce37fc",
+        "00b7e568: mov dword ptr [esp + 8], esi",
+        "00b7e56c: je 0xb7e579",
+        "00b7e56e: push esi",
+        "00b7e56f: call dword ptr [0xce2218]",
+        "00b7e575: add dword ptr [esi + 0x18], 1",
+        "00b7e579: mov dword ptr [esp + 0x14], 0",
+        "00b7e581: cmp dword ptr [0x109043c], 0",
+        "00b7e588: jne 0xb7e5da",
+        "00b7e58a: push 8",
+        "00b7e58c: call 0xbf681b",
+        "00b7e591: add esp, 4",
+        "00b7e594: test eax, eax",
+        "00b7e596: je 0xb7e5b3",
+        "00b7e598: mov dword ptr [eax + 4], 0xd63080",
+        "00b7e59f: mov dword ptr [eax], 0xd630d8",
+        "00b7e5a5: mov dword ptr [eax + 4], 0xd630d4",
+        "00b7e5ac: mov dword ptr [0x109043c], eax",
+        "00b7e5b1: jmp 0xb7e5bd",
+        "00b7e5b3: mov dword ptr [0x109043c], 0",
+        "00b7e5bd: mov eax, dword ptr [0x109043c]",
+        "00b7e5c2: test eax, eax",
+        "00b7e5c4: je 0xb7e5cb",
+        "00b7e5c6: add eax, 4",
+        "00b7e5c9: jmp 0xb7e5cd",
+        "00b7e5cb: xor eax, eax",
+        "00b7e5cd: push eax",
+        "00b7e5ce: call 0x415350",
+        "00b7e5d3: mov ecx, eax",
+        "00b7e5d5: call 0xbd0c30",
+        "00b7e5da: test esi, esi",
+        "00b7e5dc: je 0xb7e5e9",
+        "00b7e5de: add dword ptr [esi + 0x18], -1",
+        "00b7e5e2: push esi",
+        "00b7e5e3: call dword ptr [0xce2210]",
+        "00b7e5e9: mov eax, dword ptr [0x109043c]",
+        "00b7e5ee: pop esi",
+        "00b7e5ef: mov ecx, dword ptr [esp + 8]",
+        "00b7e5f3: mov dword ptr fs:[0], ecx",
+        "00b7e5fa: add esp, 0x14",
+        "00b7e5fd: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b92a20",
+      "length": 33,
+      "end_exclusive": "00b92a41",
+      "sha256": "5548c4b34a7fafefd36c703548b171abb37cc5cda9bef853d2ddcb7f3ac0d50c",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_SkinedMeshAnimationParser_GetTypeName",
+      "decoded_assembly": [
+        "00b92a20: push ecx",
+        "00b92a21: push esi",
+        "00b92a22: mov esi, dword ptr [esp + 0xc]",
+        "00b92a26: push 0xd636ec",
+        "00b92a2b: mov ecx, esi",
+        "00b92a2d: mov dword ptr [esp + 8], 0",
+        "00b92a35: call 0x41e870",
+        "00b92a3a: mov eax, esi",
+        "00b92a3c: pop esi",
+        "00b92a3d: pop ecx",
+        "00b92a3e: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00b7e370",
+      "length": 206,
+      "end_exclusive": "00b7e43e",
+      "sha256": "e4f4ecb232a5b063664b13a61c5b83250f769feef487dd67f8728e8cb1f19726",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e370 at 00b7e370\nSignature: undefined FUN_00b7e370(void)\nEntry: 00b7e370\nBody: 00b7e370 - 00b7e43d",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e370",
+        "function_name": "FUN_00b7e370",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00b7e3b9"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00b7e3f3"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00b7e3fd"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b7e40b"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b7e40d"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7e41a"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00b7e429"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00b7e42f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_MatrixIndexedMeshParser_GetSingleton",
+      "decoded_assembly": [
+        "00b7e370: mov eax, dword ptr fs:[0]",
+        "00b7e376: push -1",
+        "00b7e378: push 0xcc1f78",
+        "00b7e37d: push eax",
+        "00b7e37e: mov dword ptr fs:[0], esp",
+        "00b7e385: mov eax, dword ptr [0x1090484]",
+        "00b7e38a: sub esp, 8",
+        "00b7e38d: test eax, eax",
+        "00b7e38f: jne 0xb7e42f",
+        "00b7e395: push esi",
+        "00b7e396: call 0x415350",
+        "00b7e39b: mov esi, dword ptr [eax + 0x10]",
+        "00b7e39e: test esi, esi",
+        "00b7e3a0: mov dword ptr [esp + 4], 0xce37fc",
+        "00b7e3a8: mov dword ptr [esp + 8], esi",
+        "00b7e3ac: je 0xb7e3b9",
+        "00b7e3ae: push esi",
+        "00b7e3af: call dword ptr [0xce2218]",
+        "00b7e3b5: add dword ptr [esi + 0x18], 1",
+        "00b7e3b9: mov dword ptr [esp + 0x14], 0",
+        "00b7e3c1: cmp dword ptr [0x1090484], 0",
+        "00b7e3c8: jne 0xb7e41a",
+        "00b7e3ca: push 8",
+        "00b7e3cc: call 0xbf681b",
+        "00b7e3d1: add esp, 4",
+        "00b7e3d4: test eax, eax",
+        "00b7e3d6: je 0xb7e3f3",
+        "00b7e3d8: mov dword ptr [eax + 4], 0xd63078",
+        "00b7e3df: mov dword ptr [eax], 0xd630b8",
+        "00b7e3e5: mov dword ptr [eax + 4], 0xd630b4",
+        "00b7e3ec: mov dword ptr [0x1090484], eax",
+        "00b7e3f1: jmp 0xb7e3fd",
+        "00b7e3f3: mov dword ptr [0x1090484], 0",
+        "00b7e3fd: mov eax, dword ptr [0x1090484]",
+        "00b7e402: test eax, eax",
+        "00b7e404: je 0xb7e40b",
+        "00b7e406: add eax, 4",
+        "00b7e409: jmp 0xb7e40d",
+        "00b7e40b: xor eax, eax",
+        "00b7e40d: push eax",
+        "00b7e40e: call 0x415350",
+        "00b7e413: mov ecx, eax",
+        "00b7e415: call 0xbd0c30",
+        "00b7e41a: test esi, esi",
+        "00b7e41c: je 0xb7e429",
+        "00b7e41e: add dword ptr [esi + 0x18], -1",
+        "00b7e422: push esi",
+        "00b7e423: call dword ptr [0xce2210]",
+        "00b7e429: mov eax, dword ptr [0x1090484]",
+        "00b7e42e: pop esi",
+        "00b7e42f: mov ecx, dword ptr [esp + 8]",
+        "00b7e433: mov dword ptr fs:[0], ecx",
+        "00b7e43a: add esp, 0x14",
+        "00b7e43d: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b941a0",
+      "length": 33,
+      "end_exclusive": "00b941c1",
+      "sha256": "bcbf99dbda99fcd531b56ed4541a12fed4a803912a0a7ce9c79551e2082ffd6c",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_MatrixIndexedMeshParser_GetTypeName",
+      "decoded_assembly": [
+        "00b941a0: push ecx",
+        "00b941a1: push esi",
+        "00b941a2: mov esi, dword ptr [esp + 0xc]",
+        "00b941a6: push 0xd63804",
+        "00b941ab: mov ecx, esi",
+        "00b941ad: mov dword ptr [esp + 8], 0",
+        "00b941b5: call 0x41e870",
+        "00b941ba: mov eax, esi",
+        "00b941bc: pop esi",
+        "00b941bd: pop ecx",
+        "00b941be: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00b7e460",
+      "length": 206,
+      "end_exclusive": "00b7e52e",
+      "sha256": "c69e240677e61ec439f372d3716db8966f01320067312635fa8edd00c2ae7748",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e460 at 00b7e460\nSignature: undefined FUN_00b7e460(void)\nEntry: 00b7e460\nBody: 00b7e460 - 00b7e52d",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e460",
+        "function_name": "FUN_00b7e460",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00b7e4a9"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00b7e4e3"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00b7e4ed"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b7e4fb"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b7e4fd"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7e50a"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00b7e519"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00b7e51f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_CameraParser_GetSingleton",
+      "decoded_assembly": [
+        "00b7e460: mov eax, dword ptr fs:[0]",
+        "00b7e466: push -1",
+        "00b7e468: push 0xcc1f98",
+        "00b7e46d: push eax",
+        "00b7e46e: mov dword ptr fs:[0], esp",
+        "00b7e475: mov eax, dword ptr [0x10902a0]",
+        "00b7e47a: sub esp, 8",
+        "00b7e47d: test eax, eax",
+        "00b7e47f: jne 0xb7e51f",
+        "00b7e485: push esi",
+        "00b7e486: call 0x415350",
+        "00b7e48b: mov esi, dword ptr [eax + 0x10]",
+        "00b7e48e: test esi, esi",
+        "00b7e490: mov dword ptr [esp + 4], 0xce37fc",
+        "00b7e498: mov dword ptr [esp + 8], esi",
+        "00b7e49c: je 0xb7e4a9",
+        "00b7e49e: push esi",
+        "00b7e49f: call dword ptr [0xce2218]",
+        "00b7e4a5: add dword ptr [esi + 0x18], 1",
+        "00b7e4a9: mov dword ptr [esp + 0x14], 0",
+        "00b7e4b1: cmp dword ptr [0x10902a0], 0",
+        "00b7e4b8: jne 0xb7e50a",
+        "00b7e4ba: push 8",
+        "00b7e4bc: call 0xbf681b",
+        "00b7e4c1: add esp, 4",
+        "00b7e4c4: test eax, eax",
+        "00b7e4c6: je 0xb7e4e3",
+        "00b7e4c8: mov dword ptr [eax + 4], 0xd6307c",
+        "00b7e4cf: mov dword ptr [eax], 0xd630c8",
+        "00b7e4d5: mov dword ptr [eax + 4], 0xd630c4",
+        "00b7e4dc: mov dword ptr [0x10902a0], eax",
+        "00b7e4e1: jmp 0xb7e4ed",
+        "00b7e4e3: mov dword ptr [0x10902a0], 0",
+        "00b7e4ed: mov eax, dword ptr [0x10902a0]",
+        "00b7e4f2: test eax, eax",
+        "00b7e4f4: je 0xb7e4fb",
+        "00b7e4f6: add eax, 4",
+        "00b7e4f9: jmp 0xb7e4fd",
+        "00b7e4fb: xor eax, eax",
+        "00b7e4fd: push eax",
+        "00b7e4fe: call 0x415350",
+        "00b7e503: mov ecx, eax",
+        "00b7e505: call 0xbd0c30",
+        "00b7e50a: test esi, esi",
+        "00b7e50c: je 0xb7e519",
+        "00b7e50e: add dword ptr [esi + 0x18], -1",
+        "00b7e512: push esi",
+        "00b7e513: call dword ptr [0xce2210]",
+        "00b7e519: mov eax, dword ptr [0x10902a0]",
+        "00b7e51e: pop esi",
+        "00b7e51f: mov ecx, dword ptr [esp + 8]",
+        "00b7e523: mov dword ptr fs:[0], ecx",
+        "00b7e52a: add esp, 0x14",
+        "00b7e52d: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b8b210",
+      "length": 33,
+      "end_exclusive": "00b8b231",
+      "sha256": "dfabb5232a56fbc723be5f2f1dd59450e1ea3c5ad84ebd1888fe9913390ad743",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_CameraParser_GetTypeName",
+      "decoded_assembly": [
+        "00b8b210: push ecx",
+        "00b8b211: push esi",
+        "00b8b212: mov esi, dword ptr [esp + 0xc]",
+        "00b8b216: push 0xd633d4",
+        "00b8b21b: mov ecx, esi",
+        "00b8b21d: mov dword ptr [esp + 8], 0",
+        "00b8b225: call 0x41e870",
+        "00b8b22a: mov eax, esi",
+        "00b8b22c: pop esi",
+        "00b8b22d: pop ecx",
+        "00b8b22e: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00b7e100",
+      "length": 206,
+      "end_exclusive": "00b7e1ce",
+      "sha256": "02a5b27d91334086787e6e01c2d8b1bf0dd747b9d90fb3bb586796f51c3ef008",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00b7e100 at 00b7e100\nSignature: undefined FUN_00b7e100(void)\nEntry: 00b7e100\nBody: 00b7e100 - 00b7e1cd",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e100",
+        "function_name": "FUN_00b7e100",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00b7e149"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00b7e183"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00b7e18d"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b7e19b"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b7e19d"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7e1aa"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00b7e1b9"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00b7e1bf"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_GroupParamsParser_GetSingleton",
+      "decoded_assembly": [
+        "00b7e100: mov eax, dword ptr fs:[0]",
+        "00b7e106: push -1",
+        "00b7e108: push 0xcc1f18",
+        "00b7e10d: push eax",
+        "00b7e10e: mov dword ptr fs:[0], esp",
+        "00b7e115: mov eax, dword ptr [0x109033c]",
+        "00b7e11a: sub esp, 8",
+        "00b7e11d: test eax, eax",
+        "00b7e11f: jne 0xb7e1bf",
+        "00b7e125: push esi",
+        "00b7e126: call 0x415350",
+        "00b7e12b: mov esi, dword ptr [eax + 0x10]",
+        "00b7e12e: test esi, esi",
+        "00b7e130: mov dword ptr [esp + 4], 0xce37fc",
+        "00b7e138: mov dword ptr [esp + 8], esi",
+        "00b7e13c: je 0xb7e149",
+        "00b7e13e: push esi",
+        "00b7e13f: call dword ptr [0xce2218]",
+        "00b7e145: add dword ptr [esi + 0x18], 1",
+        "00b7e149: mov dword ptr [esp + 0x14], 0",
+        "00b7e151: cmp dword ptr [0x109033c], 0",
+        "00b7e158: jne 0xb7e1aa",
+        "00b7e15a: push 8",
+        "00b7e15c: call 0xbf681b",
+        "00b7e161: add esp, 4",
+        "00b7e164: test eax, eax",
+        "00b7e166: je 0xb7e183",
+        "00b7e168: mov dword ptr [eax + 4], 0xd6306c",
+        "00b7e16f: mov dword ptr [eax], 0xd63088",
+        "00b7e175: mov dword ptr [eax + 4], 0xd63084",
+        "00b7e17c: mov dword ptr [0x109033c], eax",
+        "00b7e181: jmp 0xb7e18d",
+        "00b7e183: mov dword ptr [0x109033c], 0",
+        "00b7e18d: mov eax, dword ptr [0x109033c]",
+        "00b7e192: test eax, eax",
+        "00b7e194: je 0xb7e19b",
+        "00b7e196: add eax, 4",
+        "00b7e199: jmp 0xb7e19d",
+        "00b7e19b: xor eax, eax",
+        "00b7e19d: push eax",
+        "00b7e19e: call 0x415350",
+        "00b7e1a3: mov ecx, eax",
+        "00b7e1a5: call 0xbd0c30",
+        "00b7e1aa: test esi, esi",
+        "00b7e1ac: je 0xb7e1b9",
+        "00b7e1ae: add dword ptr [esi + 0x18], -1",
+        "00b7e1b2: push esi",
+        "00b7e1b3: call dword ptr [0xce2210]",
+        "00b7e1b9: mov eax, dword ptr [0x109033c]",
+        "00b7e1be: pop esi",
+        "00b7e1bf: mov ecx, dword ptr [esp + 8]",
+        "00b7e1c3: mov dword ptr fs:[0], ecx",
+        "00b7e1ca: add esp, 0x14",
+        "00b7e1cd: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b8f8e0",
+      "length": 33,
+      "end_exclusive": "00b8f901",
+      "sha256": "7a5dbd531b47752906032a6549a9919861f0de23de0c77150cc8e0aab2d20cca",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_GroupParamsParser_GetTypeName",
+      "decoded_assembly": [
+        "00b8f8e0: push ecx",
+        "00b8f8e1: push esi",
+        "00b8f8e2: mov esi, dword ptr [esp + 0xc]",
+        "00b8f8e6: push 0xd63550",
+        "00b8f8eb: mov ecx, esi",
+        "00b8f8ed: mov dword ptr [esp + 8], 0",
+        "00b8f8f5: call 0x41e870",
+        "00b8f8fa: mov eax, esi",
+        "00b8f8fc: pop esi",
+        "00b8f8fd: pop ecx",
+        "00b8f8fe: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00736dd0",
+      "length": 206,
+      "end_exclusive": "00736e9e",
+      "sha256": "64202d93db95aaf5d0ecc0e93bea58937c58b309f51a7d1942a5d3fd34f402db",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00736dd0 at 00736dd0\nSignature: undefined FUN_00736dd0(void)\nEntry: 00736dd0\nBody: 00736dd0 - 00736e9d",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00736dd0",
+        "function_name": "FUN_00736dd0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00736e19"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00736e53"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00736e5d"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00736e6b"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00736e6d"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00736e7a"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00736e89"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00736e8f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_AnimationChannelsParser_GetSingleton",
+      "decoded_assembly": [
+        "00736dd0: mov eax, dword ptr fs:[0]",
+        "00736dd6: push -1",
+        "00736dd8: push 0xc860c8",
+        "00736ddd: push eax",
+        "00736dde: mov dword ptr fs:[0], esp",
+        "00736de5: mov eax, dword ptr [0x1090298]",
+        "00736dea: sub esp, 8",
+        "00736ded: test eax, eax",
+        "00736def: jne 0x736e8f",
+        "00736df5: push esi",
+        "00736df6: call 0x415350",
+        "00736dfb: mov esi, dword ptr [eax + 0x10]",
+        "00736dfe: test esi, esi",
+        "00736e00: mov dword ptr [esp + 4], 0xce37fc",
+        "00736e08: mov dword ptr [esp + 8], esi",
+        "00736e0c: je 0x736e19",
+        "00736e0e: push esi",
+        "00736e0f: call dword ptr [0xce2218]",
+        "00736e15: add dword ptr [esi + 0x18], 1",
+        "00736e19: mov dword ptr [esp + 0x14], 0",
+        "00736e21: cmp dword ptr [0x1090298], 0",
+        "00736e28: jne 0x736e7a",
+        "00736e2a: push 8",
+        "00736e2c: call 0xbf681b",
+        "00736e31: add esp, 4",
+        "00736e34: test eax, eax",
+        "00736e36: je 0x736e53",
+        "00736e38: mov dword ptr [eax + 4], 0xcfea08",
+        "00736e3f: mov dword ptr [eax], 0xcfea38",
+        "00736e45: mov dword ptr [eax + 4], 0xcfea34",
+        "00736e4c: mov dword ptr [0x1090298], eax",
+        "00736e51: jmp 0x736e5d",
+        "00736e53: mov dword ptr [0x1090298], 0",
+        "00736e5d: mov eax, dword ptr [0x1090298]",
+        "00736e62: test eax, eax",
+        "00736e64: je 0x736e6b",
+        "00736e66: add eax, 4",
+        "00736e69: jmp 0x736e6d",
+        "00736e6b: xor eax, eax",
+        "00736e6d: push eax",
+        "00736e6e: call 0x415350",
+        "00736e73: mov ecx, eax",
+        "00736e75: call 0xbd0c30",
+        "00736e7a: test esi, esi",
+        "00736e7c: je 0x736e89",
+        "00736e7e: add dword ptr [esi + 0x18], -1",
+        "00736e82: push esi",
+        "00736e83: call dword ptr [0xce2210]",
+        "00736e89: mov eax, dword ptr [0x1090298]",
+        "00736e8e: pop esi",
+        "00736e8f: mov ecx, dword ptr [esp + 8]",
+        "00736e93: mov dword ptr fs:[0], ecx",
+        "00736e9a: add esp, 0x14",
+        "00736e9d: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b8b050",
+      "length": 33,
+      "end_exclusive": "00b8b071",
+      "sha256": "cc383dfa28b3bb0bacdd7917da425c7f2563fb2cd25218289448aa6ced5638b8",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_AnimationChannelsParser_GetTypeName",
+      "decoded_assembly": [
+        "00b8b050: push ecx",
+        "00b8b051: push esi",
+        "00b8b052: mov esi, dword ptr [esp + 0xc]",
+        "00b8b056: push 0xd633ac",
+        "00b8b05b: mov ecx, esi",
+        "00b8b05d: mov dword ptr [esp + 8], 0",
+        "00b8b065: call 0x41e870",
+        "00b8b06a: mov eax, esi",
+        "00b8b06c: pop esi",
+        "00b8b06d: pop ecx",
+        "00b8b06e: ret 4"
+      ],
+      "create_missing_function": true
+    },
+    {
+      "address": "00736ea0",
+      "length": 206,
+      "end_exclusive": "00736f6e",
+      "sha256": "228fe9c17fb6104867fc94b070755c73549364d15adb372c94f27242b8cdbc81",
+      "matches_original_pe": true,
+      "function_before": "Function: FUN_00736ea0 at 00736ea0\nSignature: undefined FUN_00736ea0(void)\nEntry: 00736ea0\nBody: 00736ea0 - 00736f6d",
+      "documentation_before": {
+        "hash": "e9288a484b1cb3b1b2722f72c43f97e36965104acdedccbb334d7925634a7d5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00736ea0",
+        "function_name": "FUN_00736ea0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lpCriticalSection",
+            "type": "LPCRITICAL_SECTION",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 73,
+            "name": "LAB_00736ee9"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00736f23"
+          },
+          {
+            "relative_offset": 141,
+            "name": "LAB_00736f2d"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00736f3b"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00736f3d"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00736f4a"
+          },
+          {
+            "relative_offset": 185,
+            "name": "LAB_00736f59"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00736f5f"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "suggested_name": "BSP_BoneParser_GetSingleton",
+      "decoded_assembly": [
+        "00736ea0: mov eax, dword ptr fs:[0]",
+        "00736ea6: push -1",
+        "00736ea8: push 0xc860e8",
+        "00736ead: push eax",
+        "00736eae: mov dword ptr fs:[0], esp",
+        "00736eb5: mov eax, dword ptr [0x109029c]",
+        "00736eba: sub esp, 8",
+        "00736ebd: test eax, eax",
+        "00736ebf: jne 0x736f5f",
+        "00736ec5: push esi",
+        "00736ec6: call 0x415350",
+        "00736ecb: mov esi, dword ptr [eax + 0x10]",
+        "00736ece: test esi, esi",
+        "00736ed0: mov dword ptr [esp + 4], 0xce37fc",
+        "00736ed8: mov dword ptr [esp + 8], esi",
+        "00736edc: je 0x736ee9",
+        "00736ede: push esi",
+        "00736edf: call dword ptr [0xce2218]",
+        "00736ee5: add dword ptr [esi + 0x18], 1",
+        "00736ee9: mov dword ptr [esp + 0x14], 0",
+        "00736ef1: cmp dword ptr [0x109029c], 0",
+        "00736ef8: jne 0x736f4a",
+        "00736efa: push 8",
+        "00736efc: call 0xbf681b",
+        "00736f01: add esp, 4",
+        "00736f04: test eax, eax",
+        "00736f06: je 0x736f23",
+        "00736f08: mov dword ptr [eax + 4], 0xcfea0c",
+        "00736f0f: mov dword ptr [eax], 0xcfea48",
+        "00736f15: mov dword ptr [eax + 4], 0xcfea44",
+        "00736f1c: mov dword ptr [0x109029c], eax",
+        "00736f21: jmp 0x736f2d",
+        "00736f23: mov dword ptr [0x109029c], 0",
+        "00736f2d: mov eax, dword ptr [0x109029c]",
+        "00736f32: test eax, eax",
+        "00736f34: je 0x736f3b",
+        "00736f36: add eax, 4",
+        "00736f39: jmp 0x736f3d",
+        "00736f3b: xor eax, eax",
+        "00736f3d: push eax",
+        "00736f3e: call 0x415350",
+        "00736f43: mov ecx, eax",
+        "00736f45: call 0xbd0c30",
+        "00736f4a: test esi, esi",
+        "00736f4c: je 0x736f59",
+        "00736f4e: add dword ptr [esi + 0x18], -1",
+        "00736f52: push esi",
+        "00736f53: call dword ptr [0xce2210]",
+        "00736f59: mov eax, dword ptr [0x109029c]",
+        "00736f5e: pop esi",
+        "00736f5f: mov ecx, dword ptr [esp + 8]",
+        "00736f63: mov dword ptr fs:[0], ecx",
+        "00736f6a: add esp, 0x14",
+        "00736f6d: ret "
+      ],
+      "create_missing_function": false
+    },
+    {
+      "address": "00b8b080",
+      "length": 33,
+      "end_exclusive": "00b8b0a1",
+      "sha256": "9cca04c86688cdf828048829b4a195c93d1e2d371d2db0714aa6efd270ea6595",
+      "matches_original_pe": true,
+      "function_before": null,
+      "documentation_before": null,
+      "suggested_name": "BSP_BoneParser_GetTypeName",
+      "decoded_assembly": [
+        "00b8b080: push ecx",
+        "00b8b081: push esi",
+        "00b8b082: mov esi, dword ptr [esp + 0xc]",
+        "00b8b086: push 0xd633c0",
+        "00b8b08b: mov ecx, esi",
+        "00b8b08d: mov dword ptr [esp + 8], 0",
+        "00b8b095: call 0x41e870",
+        "00b8b09a: mov eax, esi",
+        "00b8b09c: pop esi",
+        "00b8b09d: pop ecx",
+        "00b8b09e: ret 4"
+      ],
+      "create_missing_function": true
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00d63098",
+      "length": 12,
+      "hex": "40ddb70060ebb700a047b900",
+      "sha256": "5de578d652f8e10368133c1665d1fa927e3b860b3980c7be083e258460b444fb",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00ce5fd0",
+      "length": 5,
+      "hex": "4d65736800",
+      "sha256": "fb483d856cdea34559567666faceb686621669c6c8ecf5e730ad40e3ce84656d",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d630a8",
+      "length": 12,
+      "hex": "80ddb7007041b9005048b900",
+      "sha256": "bb7a0460ab5ebff77b973bb18a0993f1b47d00a117f78cee16c2b2f82a681c40",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d637f8",
+      "length": 11,
+      "hex": "536b696e65644d65736800",
+      "sha256": "8f77d2d088e68861f259b810b2e996e179c72d308bf47ab4288a9100bbbe4293",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d630d8",
+      "length": 12,
+      "hex": "40deb700202ab900202fb900",
+      "sha256": "2bf3c826d40881280007ea8517a180338ed16de8ecb646ccb480430b854ce816",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d636ec",
+      "length": 20,
+      "hex": "536b696e65644d657368416e696d6174696f6e00",
+      "sha256": "728a75c2313ec160f56b88284e0cee74b6cdde88cec777097832d2738bf05a58",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d630b8",
+      "length": 12,
+      "hex": "c0ddb700a041b9000049b900",
+      "sha256": "6ca04472e9b551b87bf3efce3a9d0ab44cb66c852f56d90b9b197453185c4cee",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d63804",
+      "length": 18,
+      "hex": "4d6174726978496e64657865644d65736800",
+      "sha256": "e380ab174903ce8cef225565b5de0d5b667519a6548d67ea03302e815ad84bfa",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d630c8",
+      "length": 12,
+      "hex": "00deb70010b2b80040b2b800",
+      "sha256": "8be7a293e01671c5678d3e42c0cc6f8be99a51c75555559e0076c3364140a810",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d633d4",
+      "length": 7,
+      "hex": "43616d65726100",
+      "sha256": "2eef5d5fe171635b8003327369037276cadf2d62ee4388a2cad6dfd13f6f66f7",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d63088",
+      "length": 12,
+      "hex": "00ddb700e0f8b80050ebb800",
+      "sha256": "2adb4c2b8152f4df9aa3dd416df976eda41db199003f11608c2c08df10552b79",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d63550",
+      "length": 12,
+      "hex": "47726f7570506172616d7300",
+      "sha256": "4a776e0a4358c6bc44c6d4e9f8a4998de7e3fed87d7aaa2af0132b0ef59e0fae",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00cfea38",
+      "length": 12,
+      "hex": "5071730050b0b80010a9b800",
+      "sha256": "0f232c954503836d521fc993d92defa6cd37d3b79e2948e4ff8b6ccaf20f0a4e",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d633ac",
+      "length": 18,
+      "hex": "416e696d6174696f6e4368616e6e656c7300",
+      "sha256": "a3b19e058554d0f1a9406c882788878493d31988527ed9cd7d29f51a1a3dcc34",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00cfea48",
+      "length": 12,
+      "hex": "9071730080b0b80090a9b800",
+      "sha256": "2d56f30f1eb97b25696995e8f0f2a6d3e54d8b1142df0d0ce91a13f4ef3f9484",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00d633c0",
+      "length": 5,
+      "hex": "426f6e6500",
+      "sha256": "a68b3c95e146890fb128182ab133837fc7d43b0120002bad8164758de6f401d8",
+      "matches_original_pe": true
+    }
+  ],
+  "registrations": [
+    {
+      "phase": "constructor",
+      "type": "Mesh",
+      "singleton": "00b7e1d0",
+      "primary_vtable": "00d63098",
+      "type_name_getter": "00b7eb60",
+      "literal": "00ce5fd0",
+      "parser": "00b947a0",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "constructor",
+      "type": "SkinedMesh",
+      "singleton": "00b7e2a0",
+      "primary_vtable": "00d630a8",
+      "type_name_getter": "00b94170",
+      "literal": "00d637f8",
+      "parser": "00b94850",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "constructor",
+      "type": "SkinedMeshAnimation",
+      "singleton": "00b7e530",
+      "primary_vtable": "00d630d8",
+      "type_name_getter": "00b92a20",
+      "literal": "00d636ec",
+      "parser": "00b92f20",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "constructor",
+      "type": "MatrixIndexedMesh",
+      "singleton": "00b7e370",
+      "primary_vtable": "00d630b8",
+      "type_name_getter": "00b941a0",
+      "literal": "00d63804",
+      "parser": "00b94900",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "constructor",
+      "type": "Camera",
+      "singleton": "00b7e460",
+      "primary_vtable": "00d630c8",
+      "type_name_getter": "00b8b210",
+      "literal": "00d633d4",
+      "parser": "00b8b240",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "constructor",
+      "type": "GroupParams",
+      "singleton": "00b7e100",
+      "primary_vtable": "00d63088",
+      "type_name_getter": "00b8f8e0",
+      "literal": "00d63550",
+      "parser": "00b8eb50",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "application_startup",
+      "type": "AnimationChannels",
+      "singleton": "00736dd0",
+      "primary_vtable": "00cfea38",
+      "type_name_getter": "00b8b050",
+      "literal": "00d633ac",
+      "parser": "00b8a910",
+      "parser_implementation": "external"
+    },
+    {
+      "phase": "application_startup",
+      "type": "Bone",
+      "singleton": "00736ea0",
+      "primary_vtable": "00cfea48",
+      "type_name_getter": "00b8b080",
+      "literal": "00d633c0",
+      "parser": "00b8a990",
+      "parser_implementation": "external"
+    }
+  ],
+  "no_cpp": true,
+  "no_game_validation": true,
+  "status": "full_code_and_vtable_literal_bytes_matched_native_contract_audited",
+  "uncertainties": [
+    "Concrete parser implementations remain external.",
+    "Tree allocation/balancing and resource-manager teardown are outside this packet.",
+    "Eight known registrations do not establish the absence of later or indirect registrations.",
+    "No native ABI or gameplay validation."
+  ],
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}

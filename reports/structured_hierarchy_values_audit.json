@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "packet": "structured_hierarchy_values",
+  "captured_utc": "2026-09-10T00:28:26.494577+00:00",
+  "source_head": "c3d1a4f",
+  "status": "complete_native_audit_ready_for_primary_review",
+  "scope": {
+    "initial_anchors": [
+      "00b936e0",
+      "00b932e0",
+      "00be9a00"
+    ],
+    "approved_expansions": [],
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every live decompile/disasm/proto/comments/bytes batch used bsp.py client verification of configured bsp project and program.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {
+        "address": "00b936e0",
+        "length": 48,
+        "end_exclusive": "00b93710",
+        "sha256": "b41f381e7e593e020a7666aac14ed14b284f7ee001b964ce63c89b4857636ffc",
+        "matches_original_pe": true,
+        "disk_offset": 7943904,
+        "raw_byte_capture": "local/structured_hierarchy_values/00b936e0.bytes.txt",
+        "decoded_disassembly": "local/structured_hierarchy_values/00b936e0.decoded.asm.txt",
+        "return_instructions": [
+          "00b9370f: ret "
+        ]
+      },
+      {
+        "address": "00b932e0",
+        "length": 46,
+        "end_exclusive": "00b9330e",
+        "sha256": "759f81f4b2664f52d571372b976e0024517497d918e0fd521e4300a03350b888",
+        "matches_original_pe": true,
+        "disk_offset": 7942880,
+        "raw_byte_capture": "local/structured_hierarchy_values/00b932e0.bytes.txt",
+        "decoded_disassembly": "local/structured_hierarchy_values/00b932e0.decoded.asm.txt",
+        "return_instructions": [
+          "00b9330d: ret "
+        ]
+      },
+      {
+        "address": "00be9a00",
+        "length": 15,
+        "end_exclusive": "00be9a0f",
+        "sha256": "f2ef76861953da7e389ad59ee18ef593f8f71f2b8df154d27250ee73d2aaa937",
+        "matches_original_pe": true,
+        "disk_offset": 8296960,
+        "raw_byte_capture": "local/structured_hierarchy_values/00be9a00.bytes.txt",
+        "decoded_disassembly": "local/structured_hierarchy_values/00be9a00.decoded.asm.txt",
+        "return_instructions": [
+          "00be9a0e: ret "
+        ]
+      }
+    ],
+    "data_spans": []
+  },
+  "before": [
+    {
+      "address": "00b936e0",
+      "annotation": {
+        "address": "00b936e0",
+        "function_name": "FUN_00b936e0"
+      }
+    },
+    {
+      "address": "00b932e0",
+      "annotation": {
+        "address": "00b932e0",
+        "function_name": "FUN_00b932e0"
+      }
+    },
+    {
+      "address": "00be9a00",
+      "annotation": {
+        "address": "00be9a00",
+        "function_name": "FUN_00be9a00"
+      }
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b936e0",
+      "suggested_name": "BSP_StructuredResource_ReadMatrix4x4",
+      "original_abi": "ECX node wrapper, EDX float destination; no stack arguments; plain RET.",
+      "contract": "Exactly16 calls to00be99d0 in a4-by4 loop, each result stored by FSTP float32 at the next contiguous destination slot. Sequential64-byte field; no expansion, transpose, math or default identity.",
+      "evidence_addresses": [
+        "00b936e4 ECX retained",
+        "00b936e6 EDX retained",
+        "00b936e8 outer count4",
+        "00b936f0 inner count4",
+        "00b936f7 scalar read",
+        "00b936fc FSTP32",
+        "00b936fe destination+=4",
+        "00b9370f RET"
+      ],
+      "wire_float_count": 16,
+      "full_transfer_bytes": 64,
+      "destination_offsets_hex": [
+        "00",
+        "04",
+        "08",
+        "0C",
+        "10",
+        "14",
+        "18",
+        "1C",
+        "20",
+        "24",
+        "28",
+        "2C",
+        "30",
+        "34",
+        "38",
+        "3C"
+      ],
+      "uncertainty": "Mathematical row/column convention and transform space are not established by this copier.",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Exactly16 calls to00be99d0 in a4-by4 loop, each result stored by FSTP float32 at the next contiguous destination slot. Sequential64-byte field; no expansion, transpose, math or default identity. ABI: ECX node wrapper, EDX float destination; no stack arguments; plain RET. Evidence: docs/STRUCTURED_HIERARCHY_VALUES.md; reports/structured_hierarchy_values_audit.json. Full native span matches installed PE; not a native ABI replacement."
+    },
+    {
+      "address": "00b932e0",
+      "suggested_name": "BSP_StructuredResource_ReadSphere",
+      "original_abi": "ECX node wrapper, EDX float destination; no stack arguments; plain RET.",
+      "contract": "Exactly4 calls to00be99d0 with FSTP float32 to offsets0,4,8,C. Existing downstream00b7d220 interprets these as center X/Y/Z and radius. No radius validation or normalization.",
+      "evidence_addresses": [
+        "00b932e2 EDX retained",
+        "00b932e4 ECX retained",
+        "00b932eb store0",
+        "00b932f4 store4",
+        "00b932fe store8",
+        "00b93308 storeC",
+        "00b9330d RET"
+      ],
+      "wire_float_count": 4,
+      "full_transfer_bytes": 16,
+      "destination_offsets_hex": [
+        "00",
+        "04",
+        "08",
+        "0C"
+      ],
+      "uncertainty": "Sphere semantics derive from previously audited downstream consumer; this new body is a sequential field reader.",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Exactly4 calls to00be99d0 with FSTP float32 to offsets0,4,8,C. Existing downstream00b7d220 interprets these as center X/Y/Z and radius. No radius validation or normalization. ABI: ECX node wrapper, EDX float destination; no stack arguments; plain RET. Evidence: docs/STRUCTURED_HIERARCHY_VALUES.md; reports/structured_hierarchy_values_audit.json. Full native span matches installed PE; not a native ABI replacement."
+    },
+    {
+      "address": "00be9a00",
+      "suggested_name": "BSP_StructuredNode_ReadU32",
+      "original_abi": "ECX node wrapper; EAX raw DWORD result; no stack arguments; plain RET.",
+      "contract": "Dereference wrapper; pass node+20 budget to00bf0280 with ECX=node+8 reader. Preserve callee EAX unchanged. Underlying slot+34 reads4 bytes and debits actual count. No signedness conversion or validation.",
+      "evidence_addresses": [
+        "00be9a00 load node",
+        "00be9a02 address remaining",
+        "00be9a06 load reader",
+        "00be9a09 call00bf0280",
+        "00be9a0e RET"
+      ],
+      "wire_word_count": 1,
+      "full_transfer_bytes": 4,
+      "uncertainty": "Signed Parent semantics, flags meanings and resource-index lookup are outside this raw-word reader; decompiler void return is incorrect.",
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Dereference wrapper; pass node+20 budget to00bf0280 with ECX=node+8 reader. Preserve callee EAX unchanged. Underlying slot+34 reads4 bytes and debits actual count. No signedness conversion or validation. ABI: ECX node wrapper; EAX raw DWORD result; no stack arguments; plain RET. Evidence: docs/STRUCTURED_HIERARCHY_VALUES.md; reports/structured_hierarchy_values_audit.json. Full native span matches installed PE; not a native ABI replacement."
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00be99d0",
+      "evidence": "docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md",
+      "contract": "Node float wrapper forwards through00bf02c0 with node+20 budget."
+    },
+    {
+      "address": "00bf02c0",
+      "evidence": "docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md",
+      "contract": "Nonnull actual-count slot+44 scalar read, FSTP32/FLD32 round trip, debit actual bytes. Pointer-seeded short reads not interchangeable with font null-count adapter."
+    },
+    {
+      "address": "00bf0280",
+      "evidence": "docs/STRUCTURED_READER.md",
+      "contract": "Slot+34 DWORD read with nonnull actual count; debit actual bytes; complete-transfer little endian."
+    },
+    {
+      "address": "00b7d220",
+      "evidence": "docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md",
+      "contract": "Previously audited sphere consumer establishes centerXYZ/radius mapping."
+    },
+    {
+      "address": "00b7eb90",
+      "evidence": "docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md",
+      "contract": "Hierarchy record allocation has no matrix initialization before field parsing; do not synthesize identity when Matrix absent."
+    }
+  ],
+  "validation_boundaries": {
+    "native_bytes": true,
+    "complete_functions": 3,
+    "code_bytes": 109,
+    "source_compilation": false,
+    "fixture_tests": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "live_annotations_applied_by_worker": false
+  },
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}

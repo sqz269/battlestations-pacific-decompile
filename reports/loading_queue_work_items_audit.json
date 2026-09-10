@@ -1,0 +1,332 @@
+{
+  "packet": "loading_queue_work_items",
+  "utc": "2026-09-10T00:17:21.599842+00:00",
+  "status": "bounded_work_record_job_storage_and_concrete_event_audit_complete_thread_shutdown_external",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live bsp.py CLI verifies project/program/language/image base. Complete listed code/data spans match installed PE; full code decoded through RET."
+  },
+  "functions": [
+    {
+      "address": "00501670",
+      "inclusive_end": "00501715",
+      "length": 166,
+      "role": "erase_work_record",
+      "matches_disk": true,
+      "sha256": "b9528caf2a1653d56afc94a55d3af5faa48f60f876b1f411aa0c344db4d5b3bc",
+      "file_offset": 1054320,
+      "original_abi": "ECX work vector (job+8); stack signed index; RET4. Vector+0 data,+4 count,+8 capacity;16-byte records.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_loading_queue_work_items/functions/00501670",
+      "initial_ghidra_signature": "undefined FUN_00501670(void)",
+      "initial_ghidra_inclusive_end": "00501715",
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/00501670_matched_disassembly.txt"
+    },
+    {
+      "address": "005051a0",
+      "inclusive_end": "00505210",
+      "length": 113,
+      "role": "destroy_loading_job_storage",
+      "matches_disk": true,
+      "sha256": "a501f968d120503fac610950af697b81d06966f89175da99bb07e59dfdf3d6b3",
+      "file_offset": 1069472,
+      "original_abi": "ECX job; no stack arguments; RET. Frees job name then shrinks work vector to0 and frees storage. Does not free job object.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_loading_queue_work_items/functions/005051a0",
+      "initial_ghidra_signature": "undefined FUN_005051a0(void)",
+      "initial_ghidra_inclusive_end": "005051fd",
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/005051a0_matched_disassembly.txt"
+    },
+    {
+      "address": "005019d0",
+      "inclusive_end": "00501a49",
+      "length": 122,
+      "role": "resize_work_records",
+      "matches_disk": true,
+      "sha256": "e19e44e49996eea35d8f391061ae60c2d93a50e3f5f2ef787a21e05a266f3bcd",
+      "file_offset": 1055184,
+      "original_abi": "ECX work vector; stack signed target count; RET4. Growth zeros four DWORDs per record; shrink destroys names only.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_loading_queue_work_items/functions/005019d0",
+      "initial_ghidra_signature": "undefined FUN_005019d0(void)",
+      "initial_ghidra_inclusive_end": "00501a49",
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/005019d0_matched_disassembly.txt"
+    },
+    {
+      "address": "004fdba0",
+      "inclusive_end": "004fdbf8",
+      "length": 89,
+      "role": "construct_loading_queue",
+      "matches_disk": true,
+      "sha256": "d793f9eb7b5998be6333c6a9c52c1381004bc110f1d5cc694f5929873e61f170",
+      "file_offset": 1039264,
+      "original_abi": "ECX loading queue with observed20h-byte prefix; no stack args; EAX same queue; RET. Creates initially-unsignaled manual-reset event via CL1.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_loading_queue_work_items/functions/004fdba0",
+      "initial_ghidra_signature": "undefined FUN_004fdba0(void)",
+      "initial_ghidra_inclusive_end": "004fdbf8",
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/004fdba0_matched_disassembly.txt"
+    },
+    {
+      "address": "00509fd0",
+      "inclusive_end": "0050a052",
+      "length": 131,
+      "role": "destroy_loading_queue",
+      "matches_disk": true,
+      "sha256": "1cd7601ab5b28ec7e8ebd3d836c86e897c154b0205b3b163f3a41ab5a095fa15",
+      "file_offset": 1089488,
+      "original_abi": "ECX loading queue; no stack args; RET. StopAndWait drains jobs, frees queue array, destroys event; no worker stop/join/handle close.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_loading_queue_work_items/functions/00509fd0",
+      "initial_ghidra_signature": "undefined FUN_00509fd0(void)",
+      "initial_ghidra_inclusive_end": "0050a01b",
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/00509fd0_matched_disassembly.txt"
+    },
+    {
+      "address": "0050ace0",
+      "inclusive_end": "0050acfd",
+      "length": 30,
+      "role": "scalar_delete_loading_queue",
+      "matches_disk": true,
+      "sha256": "88256eb09a9968ab96d8467a4b26810d9f7e016ac1b8c0ff51ed89155c2e7867",
+      "file_offset": 1092832,
+      "original_abi": "ECX loading queue; stack deletion flags byte; EAX original pointer; RET4. Calls00509fd0 then frees object only if bit0.",
+      "function_definition_missing": false,
+      "exports": "exports/bsp/parallel_loading_queue_work_items/functions/0050ace0",
+      "initial_ghidra_signature": "undefined CG_scalar_deleting_dtor_0050ace0(void)",
+      "initial_ghidra_inclusive_end": "0050acfd",
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/0050ace0_matched_disassembly.txt"
+    },
+    {
+      "address": "00bd1920",
+      "inclusive_end": "00bd1951",
+      "length": 50,
+      "role": "query_event_signal_state",
+      "matches_disk": true,
+      "sha256": "c29ec792958f4b95eaa0fc84c30bf85fe7bb071a5c57559df467433030ea1718",
+      "file_offset": 8198432,
+      "original_abi": "ECX native event wrapper with HANDLE+4; no stack args; AL Boolean for documented Win32 results; RET. Unexpected result codes retain low EAX byte.",
+      "function_definition_missing": true,
+      "complete_matched_disassembly": "exports/bsp/parallel_loading_queue_work_items/00bd1920_matched_disassembly.txt"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00ceb198",
+      "inclusive_end": "00ceb19b",
+      "length": 4,
+      "role": "loading_queue_vtable_destructor_slot",
+      "matches_disk": true,
+      "sha256": "6509dd690c6f4f39a3c64e7a91a27e5c9cb1edf0f38c007e71dfa47ae1c6c8d0",
+      "file_offset": 9351576
+    },
+    {
+      "address": "00d6821c",
+      "inclusive_end": "00d6822f",
+      "length": 20,
+      "role": "event_vtable_five_slots",
+      "matches_disk": true,
+      "sha256": "94cea7a486ef65c7e8c86e9845299faf4d8b8e19a3e11ec1142bd25be4581a5b",
+      "file_offset": 9863708
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00501670",
+      "annotation": {
+        "address": "00501670",
+        "function_name": "FUN_00501670"
+      }
+    },
+    {
+      "address": "005051a0",
+      "annotation": {
+        "address": "005051a0",
+        "function_name": "FUN_005051a0"
+      }
+    },
+    {
+      "address": "005019d0",
+      "annotation": {
+        "address": "005019d0",
+        "function_name": "FUN_005019d0"
+      }
+    },
+    {
+      "address": "004fdba0",
+      "annotation": {
+        "address": "004fdba0",
+        "function_name": "FUN_004fdba0"
+      }
+    },
+    {
+      "address": "00509fd0",
+      "annotation": {
+        "address": "00509fd0",
+        "function_name": "FUN_00509fd0"
+      }
+    },
+    {
+      "address": "0050ace0",
+      "annotation": {
+        "address": "0050ace0",
+        "function_name": "CG_scalar_deleting_dtor_0050ace0"
+      }
+    }
+  ],
+  "work_record": {
+    "stride": 16,
+    "fields": {
+      "+0": "owned native name length",
+      "+4": "owned native name pointer",
+      "+8": "opaque callback context DWORD",
+      "+Ch": "processed resource/result pointer DWORD"
+    },
+    "vector_fields": {
+      "job+8": "record storage pointer",
+      "job+Ch": "record count",
+      "job+10h": "record capacity"
+    },
+    "erase": "00501670 shifts records left using string assignment/copy for+0/+4 and raw copies for+8/+C, destroys final active record name, decrements count once. It never releases either raw DWORD pointee.",
+    "erase_preconditions": "Native has no count/index guard. For valid erasure require count>0 and0<=index<count. Index>=count-1 bypasses shifting but still removes last record; zero count or negative index may access outside storage.",
+    "resize": "005019d0 reserves through005018a0 when target exceeds capacity; new records are four zero DWORDs. Shrink walks backwards destroying only names, then stores target count. No result/context release; target/count validity and growth allocation are external.",
+    "job_destructor": "005051a0 releases job-name+14/+18, calls005019d0(job+8,0), frees work storage. No worker join, callback invocation, raw result/context release, job+20 FileBlock release, or job-object free here. Front retirement owns FileBlock handling and object free.",
+    "state3": "Prior audited00509190 invokes optional job+1C callback with first record result/context, then erases index0 and requeues if job+Ch still nonzero. This packet confirms that +Ch is work count and erase0 advances the first record."
+  },
+  "synchronization": {
+    "construction": "004fdba0 sets vtable00ceb198, loader+4 stop word0,+8 published job0,+10/+14/+18 queue vector0,+1C thread handle0; CL1 to00bd1970 creates manual-reset, initially unsignaled event at+0C.",
+    "event_layout": "Existing native event allocation is8bytes: vtable00d6821c at+0,HANDLE at+4. Existing Win32Event implementation owns actual HANDLE; that wrapper is not native ABI.",
+    "virtual_slots": {
+      "+0": "00bd19b0 deleting event destructor",
+      "+4": "00bd1910 SetEvent",
+      "+8": "00bd17c0 WaitForSingleObject(handle,INFINITE)",
+      "+C": "00bd1960 ResetEvent",
+      "+10": "00bd1920 WaitForSingleObject(handle,0) query"
+    },
+    "query": "WAIT_OBJECT_0=>AL1;WAIT_TIMEOUT orWAIT_ABANDONED=>AL0;WAIT_FAILED callsGetLastError thenAL0. Other numeric returns retain AL low byte; no catch-all false branch.",
+    "protocol": "Prior audited00501620 publishes job then SetEvent. Worker00501510 waits indefinitely, checks loader+4 stop word, processes captured first record, writes result, ResetEvent, waits again.00509190 state3 queries event+10; signaled means return without advancement. Manual reset preserves signal for both waiter and caller query until worker resets it.",
+    "flag_distinction": "loader+4 is worker stop word; front job+4 is loading stop/retire byte.005092e0 only sets front job stop byte and waits queue-count zero. They must not be conflated."
+  },
+  "destruction": {
+    "routing": "Constructor vtable00ceb198+0=>0050ace0=>00509fd0.",
+    "sequence": [
+      "Install loader vtable00ceb198.",
+      "Call005092e0 StopAndWait to drain queued jobs.",
+      "Call004fb4b0(loader+10,0), then free loader+10 queue storage.",
+      "If event+0C nonnull, call event virtual+0(1) and clear pointer.",
+      "Clear global00e18d4c, install lifetime-base vtable00ce3818, restore SEH and return.",
+      "Scalar wrapper frees outer loader object only when deletion flags bit0 is set."
+    ],
+    "absent_in_full_body": [
+      "write to worker stop word loader+4",
+      "signal event for worker exit",
+      "WaitForSingleObject(thread handle)",
+      "CloseHandle(loader+1C)"
+    ],
+    "limit": "The full destructor does not establish safe shutdown of a persistent worker already waiting on the event. A prior external worker-exit/handle-lifetime protocol is not recovered. Do not add synthetic timeout/cancellation or pretend queue-count drain is a thread join.",
+    "metadata_search": "Bounded accessor-caller/neighbor metadata lookup found no proven extra worker-shutdown target. No speculative body expansion was made."
+  },
+  "required_flow_repairs": [
+    {
+      "call_address": "005051f9",
+      "callee": "00bf6989",
+      "function": "005051a0",
+      "old_body_end": "005051fd",
+      "full_body_end": "00505210",
+      "evidence": "Returning continuation005051fe..00505210 includes stack cleanup/SEH restoration/RET. Initial Ghidra export stops after free; primary must confirm and clear per-call CALL_RETURN, not modify shared _free declarations."
+    },
+    {
+      "call_address": "0050a017",
+      "callee": "00bf6989",
+      "function": "00509fd0",
+      "old_body_end": "0050a01b",
+      "full_body_end": "0050a052",
+      "evidence": "Returning continuation0050a01c..0050a052 performs event destruction/global clear/SEH restoration/RET."
+    },
+    {
+      "call_address": "0050acf0",
+      "callee": "00bf65ac",
+      "function": "0050ace0",
+      "full_body_end": "0050acfd",
+      "evidence": "0050acf5 ADD ESP,4 is present in full bytes but omitted by initial exported listing after free. Existing alternate branch reaches RET4; keep complete original body range."
+    }
+  ],
+  "reused_contracts": [
+    {
+      "doc": "docs/RENDER_WORKER.md",
+      "source": [
+        "include/bsp/win32_event.hpp",
+        "src/win32_event.cpp"
+      ],
+      "used": "Existing00bd1970 factory and event signal/infinitewait/reset/delete contracts; this packet freshly verifies actual loader CL1 and routingvtable. Existing renderworker CL0 must not be copied."
+    },
+    {
+      "doc": "docs/VFS_LOAD_PROCESSING_START.md",
+      "used": "00501620 publication and00501510 actual worker order."
+    },
+    {
+      "doc": "docs/VFS_LOADING_PUMP_LIFETIME.md",
+      "used": "00509190 state3 removal,005092e0 queue drain, current-global-front completion00504850,00506bf0 outer retirement."
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00501670",
+      "name": "BSP_LoadingWorkItems_Erase",
+      "comment": "ECX job+8 workvector; signed index stack;RET4.16-byte record=owned name+0/+4,raw context+8,raw result+C. Left shift copies name/raw words, destroys lastname,decrements count; no raw pointee release or bounds guard.00509190 usesindex0."
+    },
+    {
+      "address": "005051a0",
+      "name": "BSP_LoadingJob_DestroyStorage",
+      "comment": "ECX job;RET. Full body005051a0-00505210,initialexporttruncatedatfreecall005051f9. Frees jobname+14/+18,shrinks workvector(job+8) to0 via005019d0,frees storage. No result release,FileBlock release,thread shutdown or object free."
+    },
+    {
+      "address": "005019d0",
+      "name": "BSP_LoadingWorkItems_Resize",
+      "comment": "ECX workvector;target countstack;RET4.16-byte records;grow zeroes fourDWORDs,shrink backwards destroys ownednames only. Rawcontext/result pointees untouched. Allocation helper005018a0 external."
+    },
+    {
+      "address": "004fdba0",
+      "name": "BSP_LoadingQueue_Construct",
+      "comment": "ECXqueue observed20h-byteprefix,EAXsame,RET. Vtable00ceb198;workerstop+4=0,publishedjob+8=0,queuearray+10/count+14/cap+18=0,thread+1C=0. Creates initiallyunsignaled MANUAL-reset event+0C viaBSP_Event_Create CL1."
+    },
+    {
+      "address": "00509fd0",
+      "name": "BSP_LoadingQueue_Destroy",
+      "comment": "ECXqueue;fullRET0050a052 after initiallytruncatedfreecall0050a017. StopAndWait drains jobs,clears/frees queuearray,destroys event+0C,clearsglobal00e18d4c. No workerstop+4 write,signal,threadwait orCloseHandle(+1C). Prior threadshutdown remains external."
+    },
+    {
+      "address": "0050ace0",
+      "name": "CG_scalar_deleting_dtor_0050ace0",
+      "retain_existing_name": true,
+      "comment": "ECXqueue,deletionflagsstack,EAXoriginal,RET4. Calls00509fd0 thenfreeifbit0. Restore missingreturnflow atfreecall0050acf0;0050acf5 ADD ESP,4 confirmed."
+    },
+    {
+      "address": "00bd1920",
+      "name": "BSP_Event_IsSignaled",
+      "create_function": true,
+      "comment": "Missingfunction exact00bd1920-00bd1951;ECXevent,HANDLE+4,RET,AL result. WaitForSingleObject(handle,0):OBJECT0 true,TIMEOUT/ABANDONED false,FAILED GetLastError thenfalse; unexpectedcodes preserveAL. LoadingQueue manualevent+10 uses this asworkbusy query."
+    }
+  ],
+  "boundaries": {
+    "cpp_changed": false,
+    "tests_added": false,
+    "build_run": false,
+    "shared_metadata_changed": false,
+    "ghidra_changed": false,
+    "snapshots": false,
+    "commits": false,
+    "reconstructed": false,
+    "game_validated": false,
+    "completion_routing_preserved": "No changes to current-global-front callback00504850. No synthetic completion, timeout, cancellation, captured-job replacement or worker/job flag merge."
+  },
+  "primary_integration": {
+    "validation": "reports/structured_resource_validation.json",
+    "annotations": "reports/structured_resource_annotations.json",
+    "scope": "Typed full-read reader, Note payload, hierarchy values and Item metadata implemented. Concrete mesh/other item parsers, resource cache/manager and async loader remain native evidence only. Capture-time audit facts above are preserved."
+  }
+}
