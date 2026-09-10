@@ -4,6 +4,7 @@
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/math.hpp"
+#include "bsp/simulation_gate.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/input_tick.hpp"
@@ -448,6 +449,32 @@ int main() {
             "00e18cdc is cleared after the first poll and after every re-poll");
         check(host.menus.channels[2].current_a == 0,
             "a null channel global is skipped even when its indices differ");
+    }
+
+    {
+        // The 4Bh chain at 004E5180 falls through into the same pause test its
+        // failures jump to, so it reads like a second way to reach the pause
+        // menu when it is in fact the only way to skip that test. Pin the
+        // inversion: the chain holding suppresses pause, and the chain failing
+        // leaves an ordinary press of action 1 able to open the menu.
+        bsp::PauseDecisionInputs inputs{};
+        inputs.pause_pressed = true;
+        inputs.alternate_pause_pressed = true;
+        inputs.top_populated_level = 2;
+        check(bsp::decide_simulation_gate_branch(inputs)
+                == bsp::SimulationGateBranch::kInterfaceOnly,
+            "the alternate-pause chain suppresses the pause menu");
+
+        inputs.multiplayer_spectator_active = true;
+        check(bsp::decide_simulation_gate_branch(inputs)
+                == bsp::SimulationGateBranch::kPauseMenuOpened,
+            "a spectator breaks the suppression and the pause test decides");
+
+        inputs.alternate_pause_pressed = false;
+        inputs.multiplayer_spectator_active = false;
+        check(bsp::decide_simulation_gate_branch(inputs)
+                == bsp::SimulationGateBranch::kPauseMenuOpened,
+            "without the alternate action a press of action 1 opens the menu");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

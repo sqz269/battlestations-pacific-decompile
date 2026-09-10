@@ -1,0 +1,367 @@
+{
+ "packet": "game_simulation_gate",
+ "owner": "agent/game-simulation-gate",
+ "date": "2026-09-09",
+ "kind": "analysis_and_reconstruction",
+ "doc": "docs/GAME_SIMULATION_GATE.md",
+ "ghidra": "read-only for this packet; names recorded in the ledger only",
+ "headline": "Phase 18 of BSP_Game_OnMove, 004e50b0-004e525e plus the 004e53b4 fallback. The block runs only when (game+634h == 0 || game+635h != 0), the state is 0Dh and game+7184h is clear; 004cd0f0 is the sole writer of both cinematic flags and sets +635h to +634h AND its allow-simulation argument, so pausing stops the simulation by hiding the HUD with that argument clear. The 4Bh action chain does not open the pause menu: it falls through into the same action-1 test its failures jump to, and its only effect is an early exit to the interface-only branch when 004bfe50 reports no spectator.",
+ "source_of_truth": "BSP_Game_OnMove at 004e4a40 has an eight-byte Ghidra body; every OnMove listing quoted came from `python tools/bsp.py disasm-raw 004e4a40 --length 2808`.",
+ "entry_predicate": {
+  "sites": [
+   "004e50b0",
+   "004e50b9",
+   "004e5118",
+   "004e5124"
+  ],
+  "condition": "(game+634h == 0 || game+635h != 0) && game+5D4h == 0Dh && game+7184h == 0",
+  "constants": {
+   "0Dh": "EBX, loaded at 004e4ffb and not rewritten before 004e5118",
+   "1": "EDI, loaded at 004e4ff0, used as the 004f7740 comparand and the action-1 argument"
+  },
+  "failure_target": "004e53b4, which calls the interface-only update 004c40f0"
+ },
+ "game_states": {
+  "0Dh": "in mission; the drain stores each popped request into game+5D4h, so state ids and request ids share one numbering. Request 12h (console `pause`) sets 0Dh and calls 004cd0f0(1,1,1), so 12h is resume-into-mission with the HUD hidden.",
+  "10h": "mission teardown; 004cd0f0 keeps the effect layer groups hidden while the state is 10h or the front of the request queue is 10h (004cd142-004cd165).",
+  "11h": "mission end wait; handled at 004e504b-004e509d, immediately before this gate."
+ },
+ "cinematic_flags": {
+  "game+634h": "HUD hidden. Sole writer 004cd0f0. Read by the gate at 004e50b0 and again at 004e5213, by OnMove phases 6 and 15, by 004db030 and by 004c6b20.",
+  "game+635h": "-(game+634h != 0) & p3 at 004cd26c, a mask AND, so it can only be raised while +634h is. It is what allows the simulation to run behind a hidden HUD.",
+  "consequence": "004db030 passes allow_simulation = 0, so the pause toggle closes the gate on the following frame without any separate paused flag."
+ },
+ "interface_ids": {
+  "table": "00e08cd8, indexed by menu+20h; 006881f0 and 00689030 print the names",
+  "values": {
+   "00h": "INTF_NONE",
+   "17h": "INTF_MULTIINGAME",
+   "29h": "INTF_FREECAMERA",
+   "2Dh": "INTF_ENGINEMOVIE",
+   "31h": "INTF_SHIPYARD",
+   "32h": "INTF_AIRBASE"
+  }
+ },
+ "pause_gate": {
+  "eliminated_player_arm": {
+   "sites": [
+    "004e5153",
+    "004e515c",
+    "004e5162",
+    "004e5175"
+   ],
+   "condition": "game+1FE4h != 0 && slot != 0 && (int16)(slot+10h) <= 0",
+   "slot_array": "game+18CCh, eight pointers; selector game+18ECh",
+   "effect": "jumps to 004e525e, past both branches; the award trackers and the world tick still run",
+   "uncertain": "slot+10h has no second reader found in this packet"
+  },
+  "alternate_chain": {
+   "terms": [
+    "004e5180 pressed(4Bh)",
+    "004e518d game+634h == 0",
+    "004e5196 004f7740() > 1 || 0068a140([00e198c4])",
+    "004e51b4 [00e188a8]+19C4h == 0 || 006529e0([[00e198c4]+BCh])",
+    "004e51d2 004bfe50()"
+   ],
+   "topology": "every failure jumps to 004e51dd, and a complete pass falls through to 004e51dd as well; only 004bfe50 returning false jumps to 004e5242",
+   "reading": "a suppression of the pause test, not a second route into the pause menu"
+  },
+  "shared_pause_test": {
+   "sites": [
+    "004e51dd",
+    "004e51e9",
+    "004e51f7",
+    "004e5205"
+   ],
+   "condition": "pressed(1) && !(00425d10()+25Ch) && !(00425d10()+188h) && !(00425d10()+218h)",
+   "note": "00425d10 is called three times, the object re-fetched between calls; action index 1 is the record OnMove phase 15 resets while the timed-action set is non-empty"
+  }
+ },
+ "branches": {
+  "pause_menu": {
+   "sites": [
+    "004e5213",
+    "004e522d",
+    "004e5234",
+    "004e5239"
+   ],
+   "body": [
+    "if (game+634h != 0 && [[00e198c4]+A8h]+8h != 0) { 0054e440(); 004db030(game); }",
+    "004db030(game)"
+   ],
+   "note": "game+634h is read a second time here; the double 004db030 leaves the HUD flag where it started, which is how the free camera is left and the pause menu opened in one frame. 0054e440 is owned by agent/game-frontend-states."
+  },
+  "interface_only": {
+   "sites": [
+    "004e5242",
+    "004e5252",
+    "004e5257"
+   ],
+   "body": [
+    "ECX = [00e198c4]; if (ECX != 0 && ECX+3Ch != 0) 0068c1f0(ECX)",
+    "004c40f0(game)"
+   ],
+   "note": "004c40f0 is owned by agent/game-session-polls and is the same callee the failed-gate fallback at 004e53b4 runs"
+  }
+ },
+ "functions": [
+  {
+   "address": "004c40a0",
+   "name": "BSP_Game_UpdateInMissionSubsystems",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(Game *this /*ECX*/)",
+   "ret": "ret",
+   "recovered_from": "listing 004c40a0-004c40e3",
+   "decompiler_defects": [
+    "the ECX of 00447b80 is game+30h, loaded at 004c40d7 and dropped by the decompiler"
+   ],
+   "body": [
+    "00875bb0(game+21F0h) with ECX = game",
+    "004c3cb0() with ECX = game, no float argument",
+    "[[game+19CCh]]->vtable[+0Ch](game+21F0h)",
+    "00447b80(game+21F0h) with ECX = game+30h"
+   ],
+   "notes": [
+    "tests nothing; a fixed four-call sequence on the scaled delta"
+   ],
+   "state": "exported, analysed"
+  },
+  {
+   "address": "004cce50",
+   "name": "BSP_Game_BeginEngineMovie",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(Game *this /*ECX*/)",
+   "ret": "ret (004cd0e6)",
+   "recovered_from": "decompiler plus listing for the epilogue",
+   "body": [
+    "game+38h = ctor 00460b80 over malloc(0x74)",
+    "path = [game+5FCh]+90Ch truncated at its first '.' (00ce3a70), then '.ema' (00ce7838) appended, handed to 004602c0",
+    "if ([game+38h]+60h == 5) { 00b72030(); walk DAT_00e188b4 calling node->vtable[0]; 0045d930(); free(game+38h) /* the field is not cleared */ }",
+    "else { 0045db40(); 004cc460(2Dh, 0) /* INTF_ENGINEMOVIE */ }"
+   ],
+   "notes": [
+    "reached only while game+1EE0h is set, and the gate clears it at 004e514c",
+    "game+38h is the same object 004c6b20 advances in the timing block"
+   ],
+   "state": "exported, analysed"
+  },
+  {
+   "address": "004f7740",
+   "name": "BSP_PriorityLists_GetTopPopulatedLevel",
+   "name_state": "new reviewed name",
+   "abi": "int __cdecl f(void)",
+   "ret": "ret",
+   "recovered_from": "decompiler",
+   "body": [
+    "five checked vectors at 00e18cfc, 00e18d0c, 00e18d1c, 00e18d2c, 00e18d3c",
+    "walk from the last with a counter of 5, step back 10h, return the counter at the first non-empty vector, else 0"
+   ],
+   "notes": [
+    "004f7620 walks the same five with the same 1..5 numbering and resolves elements through &DAT_00e18b60, which fixes the base and the direction",
+    "what the levels rank is not established"
+   ],
+   "state": "exported, analysed, reconstructed, build-tested"
+  },
+  {
+   "address": "0068a140",
+   "name": "BSP_InGameInterface_IsBaseScreenActive",
+   "name_state": "new reviewed name",
+   "abi": "bool __thiscall f(InGameInterface *this /*ECX = DAT_00e198c4*/)",
+   "ret": "ret",
+   "recovered_from": "decompiler",
+   "body": [
+    "return this+20h == 32h || this+20h == 31h"
+   ],
+   "notes": [
+    "+20h is the interface id of the 00e08cd8 table: INTF_AIRBASE or INTF_SHIPYARD"
+   ],
+   "state": "exported, analysed, reconstructed, build-tested"
+  },
+  {
+   "address": "004bfe50",
+   "name": "BSP_Game_IsMultiplayerSpectatorActive",
+   "name_state": "new reviewed name",
+   "abi": "bool __cdecl f(void)",
+   "ret": "ret (004bfec1)",
+   "recovered_from": "decompiler plus listing 004bfe50-004bfec1",
+   "body": [
+    "mode = 004bca50 inlined over DAT_00e188a8",
+    "return mode in {4,5,6,7} && 006529e0([[00e198c4]+BCh]) && 006529f0([[00e198c4]+BCh])"
+   ],
+   "notes": [
+    "the call site sets ECX = game and the callee ignores it, reading DAT_00e188a8",
+    "006529e0 is byte +4h, 006529f0 is int +5Ch == 1"
+   ],
+   "state": "exported, analysed, reconstructed, build-tested"
+  },
+  {
+   "address": "004bca50",
+   "name": "BSP_Game_GetEffectiveGameMode",
+   "name_state": "new reviewed name",
+   "abi": "int __thiscall f(Game *this /*ECX*/)",
+   "ret": "ret",
+   "recovered_from": "decompiler",
+   "body": [
+    "mode = this+614h",
+    "if (this+61Ch == 0 && this+1FE4h == 0 && mode != 9 && mode != 8) mode = 8",
+    "return mode"
+   ],
+   "notes": [
+    "0068c1f0 opens with the same four-way compare on this value, so 4..7 is one mode set, not two",
+    "which real game type each of 4..7 names is not established"
+   ],
+   "state": "exported, analysed, reconstructed, build-tested"
+  },
+  {
+   "address": "004db030",
+   "name": "BSP_Game_TogglePauseMenu",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(Game *this /*ECX*/)",
+   "ret": "ret (004db0a0, 004db0b0, 004db148, 004db183)",
+   "recovered_from": "listing 004db030-004db183",
+   "decompiler_defects": [
+    "the FLDZ-sourced 0.0f argument of 00a92c40 is rendered as an integer uVar1",
+    "the ECX of 005fd440, 005ff0d0, 006882a0, 00689030 is dropped"
+   ],
+   "body": [
+    "BSP_InputManager_GetSingleton(); BSP_InputManager_Update(0.0f) - the input tick is re-run with a zero delta so no hold timer advances across the transition",
+    "single player (this+1FE4h == 0): 004cd0f0(this, this+634h == 0, 0, 1), then 005fd440([00e198c4]+D8h) with 004d95f0(this,0), or 005ff0d0([00e198c4]+D8h) with 004d95f0(this,1), selected by this+634h, this+635h and [[00e198c4]+A8h]+8h/+9h",
+    "multiplayer: 004cd0f0 only when this+218Ch is set; then 00689030(DAT_00e198b4) with 004d95f0(this,1) when [00e198b4]+3Ch is clear, else 006882a0(DAT_00e198b4) with 004d95f0(this,0)"
+   ],
+   "state": "exported, analysed"
+  },
+  {
+   "address": "0068c1f0",
+   "name": "BSP_InGameInterface_Update",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(InGameInterface *this /*ECX = DAT_00e198c4*/)",
+   "ret": "ret (0068cc68)",
+   "recovered_from": "decompiler plus listing for the epilogue",
+   "body": [
+    "guarded by 004bca50(game) in {4,5,6,7}: the spectator/free-camera block over the unit list at [[game+19CCh]+58h], matching slot+28h and driving byte +8h of [00e198c4]+BCh",
+    "DAT_00e1ae80 or action 5Ah: 004cc460(29h,0) into INTF_FREECAMERA, 004cc460(20h,..) back",
+    "rising-edge tests on actions 89h, 8Ah, C1h, D6h, FBh, FCh, 108h and 4Bh",
+    "tail 0068cb79-0068cc55: pick one audio environment name and pass it to 00a7b710, then 004c1e90(0Ch) and 00427190(0Ch)"
+   ],
+   "audio_environment": {
+    "Cockpit": "[this+6Ch]+4h set and 00604f30() == 1, or [this+84h]+4h set and [this+84h]+74h == 2",
+    "Air": "the pointer at 00ce9b1c; chosen when the camera at game+19FCh is strictly above 0078cf20([cam+120h],[cam+124h]) and the device flag at 0068cc0a is clear",
+    "Underwater": "every other combination; the two terms are combined with a byte AND, not a short circuit"
+   },
+   "notes": [
+    "naming it after the audio environment understates it: that is only the tail"
+   ],
+   "state": "exported, analysed; the audio tail reconstructed and build-tested"
+  },
+  {
+   "address": "004cd0f0",
+   "name": "BSP_Game_SetCinematicMode",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(Game *this /*ECX*/, char hide, byte allow_simulation, char p4)",
+   "ret": "ret 0Ch (004cd37e)",
+   "recovered_from": "decompiler plus listing for the epilogue",
+   "body": [
+    "004cd117: refuse to hide while this+1FE4h != 0 && this+218Ch == 0 && DAT_00e198c4 != 0 && this+608h == 0",
+    "004cd12f: if 00425d10()+25Ch then only 00425d10()+261h = hide, return",
+    "on a change: this+634h = hide, then 00a7acf0/00a7f890 over 3DEffect, InGameGUI, Warnings, Sonar; InGameGUI receives this+634h itself, so the byte means hidden",
+    "the other three share one value, cleared only when un-hiding outside state 10h with no pending 10h request (004cd142-004cd165)",
+    "004cd23a: on the hidden path with p4 set, 00a77760(1) and this+21F0h = 0",
+    "004cd26c: this+635h = -(this+634h != 0) & allow_simulation"
+   ],
+   "state": "exported, analysed; the flag pair and the layer decision reconstructed, build-tested"
+  },
+  {
+   "address": "00689030",
+   "name": "BSP_MultiMenu_OpenPauseInterface",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(MultiMenu *this /*ECX = DAT_00e198b4*/)",
+   "ret": "ret",
+   "recovered_from": "decompiler",
+   "body": [
+    "0068ab80(0,0); [00e198c4]->vtable[+0Ch]()",
+    "BSP_GuiManager_GetOrCreate(1); BSP_GuiManager_SetEnabled(1)",
+    "trace 'GVMultiMenu::PushRequestInterface() req:%s set:%s' with this+20h and INTF_MULTIINGAME",
+    "00688830(&this+20h); 004cc460(17h, 0); this->vtable[+8h]()"
+   ],
+   "state": "exported, analysed"
+  },
+  {
+   "address": "006882a0",
+   "name": "BSP_MultiMenu_ClosePauseInterface",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(MultiMenu *this /*ECX = DAT_00e198b4*/)",
+   "ret": "ret",
+   "recovered_from": "decompiler",
+   "body": [
+    "BSP_GuiManager_GetOrCreate(0); BSP_GuiManager_SetEnabled(0)",
+    "006881f0(this); this->vtable[+0Ch](); [00e198c4]->vtable[+8h]()"
+   ],
+   "state": "exported, analysed"
+  },
+  {
+   "address": "006881f0",
+   "name": "BSP_MultiMenu_PopRequestInterface",
+   "name_state": "new reviewed name",
+   "abi": "void __thiscall f(MultiMenu *this /*ECX*/)",
+   "ret": "ret",
+   "recovered_from": "decompiler",
+   "body": [
+    "trace 'GVMultiMenu::PopRequestInterface() req:%s' with the id under the top of the stack at this+5Ch/+60h",
+    "004cc460(that id, 0); pop the stack by four bytes when it is non-empty"
+   ],
+   "state": "exported, analysed"
+  }
+ ],
+ "field_writers": {
+  "game+634h": "004cd0f0 only",
+  "game+635h": "004cd0f0 only",
+  "game+21F0h": "zeroed by 004cd0f0 on the hidden path with p4 set; read by every simulation callee of OnMove phases 19-21",
+  "game+1EE0h": "cleared by the gate at 004e514c",
+  "game+38h": "written by 004cce50, advanced by 004c6b20",
+  "[[00e198c4]+DCh]+4h": "004db030 on both paths; request 12h in the drain also writes it",
+  "[[00e198c4]+A8h]+9h": "004db030",
+  "game+7184h": "read at 004e5124 and 004e5054; no writer found in this packet"
+ },
+ "uncertainties": [
+  "slot+10h, the signed word at 004e5175 that skips both branches, has no second reader in this packet, so 'eliminated player' is a reading of the comparison, not of the field",
+  "what the five priority levels at 00e18cfc rank; the producer that fills the vectors was not found",
+  "which real game type each of modes 4..7 is, and what mode 9 is; game+614h and game+61Ch have no writer in this packet",
+  "game+7184h, the suspend byte, is read twice and written nowhere this packet saw",
+  "004d95f0, the shared 'set paused' call of both 004db030 paths, is unanalysed, as are 005fd440, 005ff0d0 and 0068c0b0",
+  "the 4Bh action's binding; both this gate and 0068c1f0 read it under different guards"
+ ],
+ "remaining": [
+  "identify slot+10h from a writer outside this packet",
+  "identify the producer of the five level vectors at 00e18cfc",
+  "analyse 004d95f0 and the four GUI screen helpers of 004db030",
+  "the orchestrator must create Ghidra functions for nothing here: every address named has a Ghidra function already"
+ ],
+ "reconstruction": {
+  "header": "include/bsp/simulation_gate.hpp",
+  "source": "src/simulation_gate.cpp",
+  "cmake": "cmake/startup.cmake, one deferred target_sources line into bsp_core",
+  "entry_points": [
+   "bsp::run_simulation_gate",
+   "bsp::simulation_gate_open",
+   "bsp::decide_simulation_gate_branch",
+   "bsp::hud_layer_visibility_004cd0f0",
+   "bsp::cinematic_flags_004cd0f0",
+   "bsp::effective_game_mode_004bca50",
+   "bsp::multiplayer_spectator_active_004bfe50",
+   "bsp::top_populated_level_004f7740",
+   "bsp::is_base_interface_0068a140",
+   "bsp::audio_environment_0068c1f0"
+  ],
+  "style": "one host method per native call site, as in bsp::run_application_frame; the host is queried lazily so the call counts match the native short circuits, including the two reads of game+634h and the three 00425d10 fetches",
+  "reused": "GameStateId from include/bsp/game_frame_control.hpp",
+  "build": "Win32, /W4 /WX, clean; ctest reconstructed_math passes",
+  "compatibility": "not ABI-compatible, not game-validated; no invented globals, no stubbed calls",
+  "tests_added": 1,
+  "test_rationale": "the 4Bh chain's fall-through inverts its apparent meaning, so one case in tests/math_tests.cpp pins that the chain suppresses the pause menu and that a plain action-1 press still opens it"
+ },
+ "tooling_problems": [
+  "`bsp.py strings <addr>` takes a search string, not an address, and there is no address-to-referenced-strings query; string evidence had to come from `ghidra bytes` on the literal",
+  "Ghidra dropped the ECX of 004c40dd (game+30h) and rendered the FLDZ-sourced 0.0f argument of 004db030 as an integer, so both call sites needed the listing",
+  "every function in this packet still has an `undefined FUN_xxxx(void)` prototype, so `ghidra proto` gives the body range but not the convention; the RET operands were read with disasm-raw at the body ends"
+ ]
+}
