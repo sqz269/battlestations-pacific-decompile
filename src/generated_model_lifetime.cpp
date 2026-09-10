@@ -25,6 +25,17 @@ void unregister_current_attachment(GeneratedModelLifetime& model) noexcept {
 bool cleared_terminal_hierarchy(const CameraTransform& node) noexcept {
     return !node.parent && !node.root_list && !node.first_child;
 }
+using DiagnosticPointLights = std::vector<GeneratedModelPointLightLinks*>;
+std::uint32_t diagnostic_light_count(void* context) noexcept {
+    return static_cast<std::uint32_t>(static_cast<DiagnosticPointLights*>(context)->size());
+}
+GeneratedModelPointLightLinks& diagnostic_light_element(void* context,
+    std::uint32_t index) noexcept {
+    return *(*static_cast<DiagnosticPointLights*>(context))[index];
+}
+void shrink_diagnostic_lights_to_zero(void* context) noexcept {
+    resize_generated_model_point_lights_00b6ec70(*static_cast<DiagnosticPointLights*>(context), 0);
+}
 }
 
 void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {
@@ -148,31 +159,43 @@ void remove_generated_model_scene_00b6ee10(GeneratedModelLifetimeRuntime& runtim
     }
 }
 
-void release_generated_model_00b6f310(GeneratedModelLifetime& model) noexcept {
-    std::size_t index = 0;
-    while (index < model.point_lights_164.size()) {
-        remove_point_light_model_link_00b7c1a0(*model.point_lights_164[index], model.transform());
+void release_node_logical_00b6f310(NodeLogicalReleaseState state) noexcept {
+    CameraTransform& node = state.transform;
+    std::uint32_t index = 0;
+    while (index < state.point_lights.live_count(state.point_lights.context)) {
+        auto& light = state.point_lights.live_element(state.point_lights.context, index);
+        remove_point_light_model_link_00b7c1a0(light, node);
         ++index;
     }
-    resize_generated_model_point_lights_00b6ec70(model.point_lights_164, 0);
-    CameraTransform& node = model.transform();
+    state.point_lights.shrink_to_zero(state.point_lights.context);
     while (CameraTransform* child = node.first_child) {
         node.first_child = child->next_sibling;
         if (node.first_child) node.first_child->previous_sibling = nullptr;
         child->parent = nullptr;
         child->next_sibling = nullptr;
-        model.runtime.resolve(*child).release_model_virtual18_00b6f310();
+        state.runtime.resolve(*child).release_model_virtual18_00b6f310();
     }
-    if (model.released_byte_44 == 0) {
+    if (state.released_byte_44 == 0) {
+        void* attached = node.notification_context; // native F377, before link stores
         node.root_list = nullptr;
         node.parent = nullptr;
         node.first_child = nullptr;
         node.previous_sibling = nullptr;
         node.next_sibling = nullptr;
-        model.released_byte_44 = 1;
-        unregister_current_attachment(model);
-        release_render_command_reference(model); // may dispose model storage
+        state.released_byte_44 = 1;
+        if (attached) {
+            unregister_generated_model_attachment_00b8f4c0(state.runtime.attachment(attached), node);
+            node.notification_context = nullptr;
+            node.notify_changed = nullptr;
+        }
+        release_render_command_reference(state.self); // may end backing/companion lifetimes
     }
+}
+
+void release_generated_model_00b6f310(GeneratedModelLifetime& model) noexcept {
+    release_node_logical_00b6f310({model.runtime, model.transform(), model.released_byte_44,
+        model, {&model.point_lights_164, diagnostic_light_count, diagnostic_light_element,
+            shrink_diagnostic_lights_to_zero}});
 }
 
 void destroy_generated_model_after_release_00b750c0(GeneratedModelLifetime& model) noexcept {

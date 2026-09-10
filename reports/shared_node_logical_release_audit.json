@@ -1,0 +1,222 @@
+{
+  "packet": "shared_node_logical_release",
+  "status": "reconstructed_storage_refactor_build_and_host_sequence_checked",
+  "recorded_utc": "2026-09-10T20:16:15.652757+00:00",
+  "base_commit": "d2fdbc19692dc934ce47393513a71dca1503ec0c",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-shared-node-logical-release-20260910",
+  "branch": "agent/shared-node-logical-release-20260910",
+  "owned_address": "00b6f310",
+  "owned_files": [
+    "include/bsp/generated_model_lifetime.hpp",
+    "src/generated_model_lifetime.cpp",
+    "docs/SHARED_NODE_LOGICAL_RELEASE.md",
+    "reports/shared_node_logical_release_audit.json"
+  ],
+  "native_evidence": {
+    "verified_utc": "2026-09-10T20:11:20.003574+00:00",
+    "verification": "bsp.py ghidra bytes verifies configured project and program before query",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "00b6f310",
+    "end_exclusive": "00b6f3c0",
+    "length": 176,
+    "file_offset": 7795472,
+    "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+    "bytes_match": true,
+    "native_execution": false
+  },
+  "abi": {
+    "native": "ECX node; no stack arguments; RET0 or tail current virtual +00 on transition to zero",
+    "cpp": "void release_node_logical_00b6f310(NodeLogicalReleaseState) noexcept",
+    "drop_in_binary_replacement": false,
+    "name_status": "descriptive reconstruction names"
+  },
+  "api": {
+    "NodePointLightReleaseView": [
+      "void* context",
+      "uint32_t (*live_count)(void*) noexcept",
+      "GeneratedModelPointLightLinks& (*live_element)(void*, uint32_t) noexcept",
+      "void (*shrink_to_zero)(void*) noexcept"
+    ],
+    "NodeLogicalReleaseState": [
+      "GeneratedModelLifetimeRuntime& runtime",
+      "CameraTransform& transform",
+      "uint8_t& released_byte_44",
+      "RenderCommandReference& self",
+      "NodePointLightReleaseView point_lights"
+    ],
+    "ownership": "All fields and callback contexts borrow the same actual node; no acquired reference or copied list. Terminal callback may end backing and host-companion lifetimes.",
+    "array_domain": "Native unsigned uint32 loop comparisons; adapter validates actual nonnegative descriptor and valid extent; no shared clamping; shrink retains storage/capacity and releases no light owner."
+  },
+  "preserved_native_order": [
+    {
+      "addresses": "00b6f319-00b6f339",
+      "behavior": "Read live count for every unsigned comparison and current begin/element for each borrowed backlink removal."
+    },
+    {
+      "addresses": "00b6f33b-00b6f342",
+      "behavior": "Shrink list to zero through B6EC70(0); retain allocation/capacity, do not free raw array."
+    },
+    {
+      "addresses": "00b6f347-00b6f370",
+      "behavior": "Publish detached child next as head, clear new-head previous and detached-child parent/next, dispatch actual virtual18, reload live first child. Preserve child_count+38."
+    },
+    {
+      "addresses": "00b6f372-00b6f375",
+      "behavior": "Released byte gates only following work; repeat calls still traverse lights/children."
+    },
+    {
+      "addresses": "00b6f377-00b6f391",
+      "behavior": "Capture attached A0 before rootA4/parent30/first34/previous40/next3C clears; store byte44=1."
+    },
+    {
+      "addresses": "00b6f395-00b6f39d",
+      "behavior": "Use captured attachment with existing B8F4C0 helper, repeat A0 null store and clear host notify projection."
+    },
+    {
+      "addresses": "00b6f3a3-00b6f3bf",
+      "behavior": "Release one self reference via existing helper; terminal dispatch may dispose storage; no later state read."
+    }
+  ],
+  "integration_notes": [
+    "GeneratedModelLifetime wrapper delegates to one shared traversal using its existing vector and diagnostic owned state.",
+    "Generated-model construction, geometry/resource/scene terminal path and diagnostic physical owner are unchanged.",
+    "A0 capture moved before clear stores to make native schedule explicit; previous separate-field model domain had no intervening callback.",
+    "GeneratedModelLifetimeRuntime::unbind is unchanged and erases companion pointer identity without calling transform or reading native backing.",
+    "No RenderCommandReference or native_node files changed. Native camera borrowed count and raw shrink helper are primary-owned subsequent integration."
+  ],
+  "validation": {
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "result": "PASS",
+      "target": "MSVC Win32",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "existing_ctest": "1/1 passed"
+    },
+    "focused_sequence": {
+      "command": "./local/build_shared_node_check.ps1",
+      "result": "PASS on first execution",
+      "kind": "one ignored host regression sequence; no original function execution",
+      "target": "MSVC Win32 C++20 /O2 /MD /W4 /WX /fp:strict",
+      "checks": [
+        "Diagnostic vector and borrowed actual NativeNodePointLightArray variants share one body; backlinks removed and allocation/capacity retained.",
+        "Child callback inserts new first child: release order 1,3,2; detached links verified during callbacks; child count17 preserved.",
+        "Repeated call byte0x7F releases repopulated light/child links but keeps root/attachment and count1 unchanged.",
+        "Raw view observed count-query counts3 then5 total, element counts2 then3, and shrink counts1 then2.",
+        "Cold terminal path makes actual NativeNodeStorage PAGE_NOACCESS before identity-only runtime.unbind and returns through shared body/wrapper without backing access."
+      ]
+    },
+    "tracked_test_changes": false,
+    "game_validated": false,
+    "native_differential_for_this_refactor": false
+  },
+  "limitations": [
+    "No concrete native camera reference adapter in this packet.",
+    "Focused sequence uses existing diagnostic atomic, not subsequent borrowed native+04 counter.",
+    "No camera pool-return execution in this packet; protected backing only establishes no post-terminal backing access for this interface.",
+    "No general native EH or concurrent mutation; callbacks required nonthrowing and associations/array extents valid."
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "sha256": "5c8a9a848628aac1f206caf77d5892206193bf79933d7b923c0052aab8d94518"
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "sha256": "83f8da8545b63a699189af79ee39fcf6a9c7dd8e5aefebc957de0f7a40015be9"
+    },
+    {
+      "path": "docs/SHARED_NODE_LOGICAL_RELEASE.md",
+      "sha256": "bcecff97bc63a2f6f33fa6523ed0a3a51f8a69ffda669914a776f52654afed22"
+    }
+  ],
+  "unchanged_dependency_hashes": [
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "5a481169233850684c0deb9042f5424f76cdf6a0a264725c8bbc633c721e4464"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "2834c10fdfbe3a752c3e6775fa9ef502d729d3426fa4f6a08c19f6a542f4d547"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "sha256": "f46cd8d00aa92c7c2b4fb2a4ffcff8adfa9c70fec19461d75f0dab35cf180b8a"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "sha256": "ea0ef4205524f0f664bc9827632aaca678aa4c21046c830a8fae643fc6a062f4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "5ee72dd1f62be59041025658fdd8568102839add061e1312a89ae21c039d2bcd"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "sha256": "e4c628ffc42a9df306312d438a806a2e9785682e14155d9f427b0908cec2c96d"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "sha256": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "sha256": "4c60e1702bc071399a546520228f18772ffededb2eed0bbb6439bb3c836a0177"
+    }
+  ],
+  "ignored_validation_artifacts": [
+    {
+      "path": "local/shared_node_logical_release_check.cpp",
+      "sha256": "6dd8b39c9034c4f76f4ae97b36893bd633a795a3ecd0114a9808d6d807ce9e7c"
+    },
+    {
+      "path": "local/build_shared_node_check.ps1",
+      "sha256": "c23254526e3d897c5423a9a2dd72943e05ee950900931f6466cb654b089bf66c"
+    },
+    {
+      "path": "local/shared_node_native_bytes.txt",
+      "sha256": "d6a9a7726089222d801c4cf42b7150441289c8bf9328bacb120fa5fdfb5d859f"
+    },
+    {
+      "path": "local/shared_node_native_evidence.json",
+      "sha256": "04902a860df1a27cebbc5b68dead71aadfd0f29a261a4d31521fd539cb09db7f"
+    },
+    {
+      "path": "local/shared_node_repository_build.log",
+      "sha256": "6428ac2bc59f877c16cf57e8dca81bb72121341f450b32840df3a63f7ce290ee"
+    },
+    {
+      "path": "local/shared_node_check_build.log",
+      "sha256": "ed30d6c1a9b1a57fc16cf898d3ccb091cdd731b83ba25baced4688df0224a85a"
+    },
+    {
+      "path": "local/shared_node_check_run.log",
+      "sha256": "f691ed2e47f55f1c27e34033852d766cec0ff537ab35d4caa9f58f44ff7a22f3"
+    },
+    {
+      "path": "build/shared-node-check/shared_node_check.exe",
+      "sha256": "410e0d53ae8c017f189c6b556bf14c4bae5dc664ab0f07edad9f7d3782a360f4"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "861239d8cbf47af6eebc710f8578d9d60ed6874122ed3ce86171eb1ffb6096c1"
+    }
+  ],
+  "ghidra_mutations": false,
+  "ledger_mutations": false,
+  "cmake_changes": false
+}

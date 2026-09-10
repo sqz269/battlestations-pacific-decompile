@@ -48,6 +48,38 @@ private:
     std::vector<GeneratedModelAttachmentLinks*> attachments_;
 };
 
+// Borrowed access to the SAME native +164/+168/+16C list or diagnostic vector.
+// All callbacks are required and nonthrowing. Each query reads the current
+// count or current begin/element; it must not cache a copied list. Counts use
+// the native unsigned comparison domain, with an actual valid array extent.
+// Native signed descriptors must be validated nonnegative by their adapter.
+// shrink_to_zero implements B6EC70(0), retaining backing pointer/capacity and
+// releasing no pointed light owner. It must not perform the final array free.
+struct NodePointLightReleaseView {
+    void* context;
+    std::uint32_t (*live_count)(void*) noexcept;
+    GeneratedModelPointLightLinks& (*live_element)(void*, std::uint32_t) noexcept;
+    void (*shrink_to_zero)(void*) noexcept;
+};
+
+// Every reference describes one actual node. Construction only binds fields;
+// it does not copy/reset the released byte, acquire a self reference, or own
+// list storage. The runtime, dispatch bindings and backing must remain live
+// through callbacks. Terminal self release may end all of those lifetimes.
+struct NodeLogicalReleaseState {
+    GeneratedModelLifetimeRuntime& runtime;
+    CameraTransform& transform;
+    std::uint8_t& released_byte_44;
+    RenderCommandReference& self;
+    NodePointLightReleaseView point_lights;
+};
+
+// Native ECX node, RET0 or tail current virtual+00 after decrement to zero.
+// Shared B6F310 body for borrowed native state and the diagnostic model owner.
+// Traversal precedes the released-byte gate on EVERY call. Child count +38 is
+// unchanged. This operation does not read state after terminal self release.
+void release_node_logical_00b6f310(NodeLogicalReleaseState) noexcept;
+
 // A real retained geometry owner with the existing stream/material lifetime.
 // Native field+180 points to a refcounted geometry; this typed adapter retains
 // the supplied shared object without pretending its C++ layout is intrusive.
@@ -129,7 +161,8 @@ void resize_generated_model_point_lights_00b6ec70(
 void remove_generated_model_scene_00b6ee10(GeneratedModelLifetimeRuntime&,
     GeneratedModelNodeLifetime&, SceneResource* expected_scene, bool recurse) noexcept;
 
-// Native generated-model virtual18 at00B6F310. Reverse-link removals and child
+// Generated-model adapter for the shared native virtual18 at00B6F310.
+// Reverse-link removals and child
 // releases precede the byte44 gate even on repeated calls. First release clears
 // hierarchy/root links, sets byte44, unregisters+A0, then releases one self ref.
 // Scene/geometry ownership may remain live when that reference is not the last.
