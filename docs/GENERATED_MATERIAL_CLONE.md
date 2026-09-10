@@ -38,7 +38,7 @@ visible in assembly and is represented by shared ownership in the host.
 | `+34h` | Starts zero; grows to copied high-water count | `textures.count()` |
 | `+38h..+78h` | Copy all 17 DWORDs | `lighting.values()` |
 | `+7Ch` | Copy and retain source effect, if non-null | `effect` |
-| `+100h` | Initialize zero; do not copy source | `word100` |
+| `+100h` | Initialize zero; do not copy source records | `parameters.size()` |
 | `+104h` | Copy source DWORD | `word104` |
 | `+108h` | Copy source DWORD | `word108` |
 | `+10Ch` | Force byte to one before copying lighting | `lighting.flag_10c()` |
@@ -70,8 +70,11 @@ At `00b18c79`, the clone marks the lighting flag regardless of the source
 flag. The existing lighting setter performs the same flag write followed by
 the bit-preserving copy. It does not recompute colors, normalize values or
 retain a reference to the source lighting array. The effect remains the same
-retained owner, while `word100` is always reset and `word104/word108` are
-copied.
+retained owner, while the parameter table is always emptied and `word104/word108`
+are copied. Its shared effect metadata remains available for new registrations;
+later compiled modes remain visible to both materials. The older audit's
+`word100` field describes the previous projection. Current ownership and native
+packing checks are in `reports/material_builder_parameter_review.json`.
 
 ## Ownership and validation boundary
 

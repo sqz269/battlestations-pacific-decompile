@@ -256,3 +256,7 @@ None of this is ABI-compatible or game-validated.
   are actually created.
 - `00aa0e00` and `00aa0e50` are external contracts owned by `game_blocking_screen`; only their
   argument attribution was settled here.
+
+## Correction from docs/GAME_FRONTEND_ENTRY.md
+
+Game state 4 never survives `BSP_Game_EnterFrontEndShell`: `GGame::OnInit` stores `game+5D4h = 3` at `004e3ac2`, the gate at `004e4151` compares against that 3, and `004e4279` writes 5. So 4 is a drain request value only and the main-menu shell rests at state 5 (listed as "no call" in the drain table); the gate fails only when the platform session poll moved the state off 3, the sign-out abort path.

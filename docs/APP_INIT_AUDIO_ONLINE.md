@@ -323,3 +323,7 @@ routine degrades gracefully.
 - The vector growth policy is left to `std::vector` instead of 00a78dc0.
 - The two sub-object allocations in 00a88770 and the follow-on call to 00a7ff80 are not modelled.
 - FMOD, XLive and the tokenizer are injected interfaces, so nothing is initialised for real.
+
+### Correction from docs/GAME_FRONTEND_ENTRY.md
+
+`00a7a460` only samples FMOD memory statistics into discarded locals; it is renamed `BSP_SoundSystem_SampleFmodMemoryStats` (formerly `BSP_SoundSystem_ReportFmodMemoryFailure`).
