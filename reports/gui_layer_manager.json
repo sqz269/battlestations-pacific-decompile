@@ -1,0 +1,303 @@
+{
+  "packet": "gui_layer_manager",
+  "doc": "docs/GUI_LAYER_MANAGER.md",
+  "owner": "agent/gui-layers",
+  "addresses": ["00AA3840", "00AA38B0", "00AA38E0", "00AA38F0", "00AA3BD0", "00AC5480", "00AC6600", "00AC4C50", "00AC4D30", "00AC4450", "00AC3F80", "00AC3F90", "00AC3FA0", "00AC3FB0", "00AC57E0", "00AC51A0", "00AC4C40", "00AC4E50", "00AA4B30", "00AA3910", "00AA2F10", "00AA8BD0", "00AA87B0"],
+  "files": ["docs/GUI_LAYER_MANAGER.md", "reports/gui_layer_manager.json", "include/bsp/gui_layer.hpp", "src/gui_layer.cpp"],
+  "finding": {
+    "headline": "cGuiLayer IS the page class. The object BSP_GuiManager_LoadPage allocates (00AC6600, 124h bytes, vtable 00D5BE38) and the object the render-order doc calls cGuiLayer are the same class: type id 1 of BSP_GuiLayout_CreateWidgetOfType, the element type of the std::vector<GuiScreen*> at manager+14h.",
+    "consequence": "there is no separate layer container. Priority at +FCh orders the manager's page vector (update and hit test); RenderOrder at +11Ch is the key of the camera-store multimap at manager+8h (draw). A layer reaches the draw map only through the camera store it acquires or shares.",
+    "no_update_override": "vtable +40h is 00AA87B0, the same target the sibling widget vtable at 00D5BECC carries, so the manager's per-page update and a widget's per-child update are one routine."
+  },
+  "conventions": {
+    "00AA3840": {"convention": "__fastcall(ECX = block)", "ret": "RET", "role": "default constructor; returns the block in EAX"},
+    "00AC6600": {"convention": "__thiscall(ECX = block, const NativeString *name, int share_scene, char unused)", "ret": "RET 0Ch", "role": "script-backed constructor; runs _Common.lua and the page script, then calls vtable +18h"},
+    "00AA3BD0": {"convention": "__fastcall(ECX = source layer or 0)", "ret": "RET", "role": "allocate through 00AC51A0, then default- or copy-construct"},
+    "00AC51A0": {"convention": "__fastcall()", "ret": "tail JMP", "role": "MOV ECX,0F8BF50h; JMP 00AC4E50 -- the class pool acquire"},
+    "00AC4E50": {"convention": "__fastcall(ECX = pool)", "ret": "RET", "role": "fixed-block pool acquire, critical section at pool+0Ch, chunks of 0x2544 through 00AC4070"},
+    "00AC4C40": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "PUSH ECX; MOV ECX,0F8BF50h; CALL 00AC47F0 -- pool release"},
+    "00AA38F0": {"convention": "__thiscall(ECX = layer, byte flags)", "ret": "RET 4", "role": "scalar deleting destructor; pool free when bit 0 is set"},
+    "00AC5480": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "destructor"},
+    "00AC4C50": {"convention": "__thiscall(ECX = layer, visitor)", "ret": "RET 4", "role": "property reader, vtable +18h"},
+    "00AC4D30": {"convention": "__thiscall(ECX = layer, visitor)", "ret": "RET 4", "role": "property describer, vtable +1Ch"},
+    "00AC4450": {"convention": "__thiscall(ECX = layer, bool visible)", "ret": "RET 4", "role": "SetVisible, vtable +34h"},
+    "00AA38E0": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "IsVisible, vtable +38h; MOV AL,[ECX+0F5h]"},
+    "00AA38B0": {"convention": "__thiscall(ECX = layer, type id)", "ret": "RET 4", "role": "IsKindOf, vtable +0Ch; scans [00F8BF88, 00F8BF94)"},
+    "00AC3F80": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "type-chain begin, vtable +08h; MOV EAX,[00F8BF88]"},
+    "00AC3F90": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "own type id, vtable +14h; MOV EAX,[00F8BF94]"},
+    "00AC3FA0": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "GetName, vtable +7Ch; LEA EAX,[ECX+100h]"},
+    "00AC3FB0": {"convention": "__fastcall(ECX = layer)", "ret": "RET", "role": "empty virtual, vtable +80h"},
+    "00AC57E0": {"convention": "__thiscall(ECX = layer, const NativeString *name)", "ret": "RET 4", "role": "SetName, vtable +2Ch; resize + memcpy into +100h"},
+    "00AA87B0": {"convention": "__thiscall(ECX = widget, float seconds)", "ret": "RET 4", "role": "the update, vtable +40h, shared with every widget"},
+    "00AA4B30": {"convention": "__thiscall(ECX = manager, cGuiCameraStore *store)", "ret": "RET 4", "role": "remove the map node and free the store"},
+    "00AA3910": {"convention": "__fastcall(ECX = manager)", "ret": "RET", "role": "pointer motion, scale, clamp, cursor state"},
+    "00AA2F10": {"convention": "__fastcall(ECX = manager)", "ret": "RET", "role": "hit test over the page vector"},
+    "00AA8BD0": {"convention": "__thiscall(ECX = widget, const float origin[3])", "ret": "RET 4", "role": "recursive widget hit test"}
+  },
+  "layout": {
+    "size": "0x124",
+    "size_evidence": "every allocation site loads 124h into ECX before CALL 00AC51A0 (00AA3BE9, 00AA5924); 00AC51A0 overwrites ECX with its pool pointer immediately, so the immediate is a dead operator new(sizeof) leftover. The constructor's highest write is the byte at +121h.",
+    "vtable": "00D5BE38, 33 slots +00h..+80h",
+    "fields": [
+      {"offset": "+4Ch", "field": "scene node", "owner": "widget base", "note": "read by 00AC4450 and 00AC4C50"},
+      {"offset": "+75h", "field": "propagate flag", "owner": "widget base", "note": "fourth stack argument of 00AA8450 at 00AC4474"},
+      {"offset": "+FCh", "field": "applied Priority", "owner": "widget base", "note": "the key 00AA52A0 sorts the page vector on"},
+      {"offset": "+0ECh", "field": "scene", "type": "ptr", "init": 0, "site": "00AC662D"},
+      {"offset": "+0F0h", "field": "camera store", "type": "ptr", "init": 0, "site": "00AC6634"},
+      {"offset": "+0F4h", "field": "owns the store and scene", "type": "byte", "init": "set by 00AC59A0", "site": "00AC59BE / 00AC59D9"},
+      {"offset": "+0F5h", "field": "visible", "type": "byte", "init": 0, "site": "00AC663B"},
+      {"offset": "+100h", "field": "name length", "type": "size_t", "init": 0, "site": "00AC6653"},
+      {"offset": "+104h", "field": "name data", "type": "char*", "init": 0, "site": "00AC665A"},
+      {"offset": "+108h", "field": "scene flags", "type": "int", "init": 0},
+      {"offset": "+10Ch", "field": "near plane", "type": "float", "init": "0.1f (00D7A2F0)"},
+      {"offset": "+110h", "field": "far plane", "type": "float", "init": "1000.0f (00CE3804)"},
+      {"offset": "+114h", "field": "scale", "type": "float", "init": "1.0f (00D7A24C)"},
+      {"offset": "+118h", "field": "authored Priority", "type": "int", "init": 0},
+      {"offset": "+11Ch", "field": "RenderOrder", "type": "float", "init": "+0.0f"},
+      {"offset": "+120h", "field": "share-scene flag", "type": "byte", "init": "the constructor argument", "site": "00AC66F1"},
+      {"offset": "+121h", "field": "unknown", "type": "byte", "init": 0, "site": "00AC66F7", "note": "no reader found"}
+    ],
+    "descriptor_is_a_slice": "+108h..+11Ch is exactly the 18h-byte camera-store descriptor of docs/GUI_RENDER_ORDER.md; it is not a separate object"
+  },
+  "vtable_00D5BE38": [
+    {"slot": "+00h", "target": "00BD30E0", "overridden": false, "role": "ref-counted deleting-destructor thunk"},
+    {"slot": "+04h", "target": "00AA38F0", "overridden": true, "role": "scalar deleting destructor"},
+    {"slot": "+08h", "target": "00AC3F80", "overridden": true, "role": "type-chain begin"},
+    {"slot": "+0Ch", "target": "00AA38B0", "overridden": true, "role": "IsKindOf"},
+    {"slot": "+14h", "target": "00AC3F90", "overridden": true, "role": "own type id"},
+    {"slot": "+18h", "target": "00AC4C50", "overridden": true, "role": "ReadProperties"},
+    {"slot": "+1Ch", "target": "00AC4D30", "overridden": true, "role": "DescribeProperties"},
+    {"slot": "+2Ch", "target": "00AC57E0", "overridden": true, "role": "SetName"},
+    {"slot": "+34h", "target": "00AC4450", "overridden": true, "role": "SetVisible"},
+    {"slot": "+38h", "target": "00AA38E0", "overridden": true, "role": "IsVisible"},
+    {"slot": "+40h", "target": "00AA87B0", "overridden": false, "role": "Update(float)"},
+    {"slot": "+78h", "target": "00AC59A0", "overridden": true, "role": "acquire the camera store"},
+    {"slot": "+7Ch", "target": "00AC3FA0", "overridden": true, "role": "GetName"},
+    {"slot": "+80h", "target": "00AC3FB0", "overridden": true, "role": "empty"}
+  ],
+  "create_sequence": [
+    "00AA5862: 00AA3140 scans the page vector by name; a hit returns the existing layer, so pages are singletons by name",
+    "00AA5924: 00AC51A0 takes a 124h block from the pool at 00F8BF50",
+    "00AC6600: field block, Lua state (00B66BD0), interface/_Common.lua then interface/<name>.lua through 00AC5600 and 00B69D40, the global table GuiScreen at 00AC6806, the visitor at 004425C0",
+    "00AC6814: this->vtable[+18h](visitor) = 00AC4C50 -- Priority to both +FCh and +118h, RenderOrder to +11Ch",
+    "00AC4C9E: this->vtable[+78h]() = 00AC59A0 -- share or create the camera store, scene, GuiCam_<name> camera, GuiLights and GuiDirectionalLight; scene flags = +108h | 6",
+    "00AC5EFE: when +FCh differs from +118h, +FCh takes the authored value and 00AA52A0 re-registers the page",
+    "00AA5957: 00AA52A0 inserts before the first page whose +FCh is strictly greater, keeping the vector sorted by Priority ascending with insertion order on ties",
+    "the layer starts invisible (+0F5h = 0) and the store count starts at 0, so a freshly loaded page draws nothing until a screen calls SetVisible"
+  ],
+  "share_scene_flag": {
+    "field": "+120h",
+    "written_by": "00AC66F1 from the second stack argument of BSP_GuiManager_LoadPage",
+    "read_by": "00AC59CB",
+    "rule": "the reuse branch of 00AC59A0 requires BOTH a descriptor match from 00AA3280 AND this byte set; otherwise the layer creates its own scene, camera, lights and store and sets +0F4h to 1",
+    "call_sites": "screens pass 1, the loading screen passes 0, so the loading screen always gets its own scene",
+    "supersedes": "docs/GUI_LAYOUT_LOADER.md records this argument as carried through without interpretation"
+  },
+  "set_visible_00AC4450": {
+    "store_count": "adjusted by +1/-1 only on a real edge (00AC4458 CMP / JZ); the store pointer at +0F0h is dereferenced without a null check inside that branch",
+    "propagate": "BSP_GuiWidget_PropagateVisibility called unconditionally, ECX = this, five stack arguments low to high: 1, 1, visible, byte +75h, 1 (00AC4478..00AC4480)",
+    "scene_bind": "only when the node at +4Ch exists; 00B6D890 with the scene at +0ECh on show and with 0 on hide (00AC4485..00AC449B)",
+    "hook": "00F8BF4C, on a real edge only: __fastcall(ECX = this->vtable[+7Ch](), DL = visible). Installed by 009870A0, cleared by 00989A80; 00AC4450 is its only reader",
+    "flag_written_last": "00AC44C4, so the hook sees the old flag",
+    "draw_gate": "the store's +20h count is the sole gate 00AA45A0 applies at 00AA45FA"
+  },
+  "describer_00AC4D30": {
+    "body": "00AC4D30..00AC4D64, RET 4, listing only",
+    "describes": ["Priority"],
+    "source_field": "+FCh, the applied copy, not the authored copy at +118h",
+    "omits": "RenderOrder is read by 00AC4C50 but never described, so a describe/read round trip drops it and resets the pass to +0.0f",
+    "chain": "00AC4AD0 for the int block, then 00AAAED0 BSP_GuiWidget_DescribeProperties"
+  },
+  "update": {
+    "manager_gate": "00AA4FFB/00AA500C: page->vtable[+38h]() || BSP_GuiScreen_HasLiveEntries(page), then vtable[+40h](seconds)",
+    "layer_predicate": "vtable +38h is 00AA38E0, two instructions returning byte +0F5h",
+    "widget_update_00AA87B0": [
+      "00AA87BE: widget->elapsed_80 += seconds, before the child walk and regardless of the widget's own visibility",
+      "walks the child list at +68h (count at +6Ch) in list order, applying the identical gate per child and calling the child's vtable +40h with the same delta",
+      "then steps its own +88h/+8Ch entry array through 00AD39A0, growing it through 00AA6F30"
+    ],
+    "consequence": "an invisible layer whose entry array still holds something keeps ticking, and its whole subtree ticks with it"
+  },
+  "pointer": {
+    "entry": "BSP_GuiManager_Update calls 00AA3910 first and only when its own flag argument is 0 (00AA4FA8); both shipped call sites pass 0",
+    "device": "element 0 of the vector at DAT_00F8BBF4+94h; X from its vtable +3Ch and Y from +40h, both signed ints",
+    "latch": "00F8BC64/00F8BC68, primed on the first call under bit 0 of DAT_00F8BC6C, so the first frame contributes no motion",
+    "enabled_gate": {"site": "00AA3A36", "field": "manager +48h", "note": "this is the reader docs/GAME_BLOCKING_SCREEN.md records as not found; SetEnabled(0) freezes the pointer, the hit test and the cursor state"},
+    "scale": {"first": "double 0.0010416667209938169 at 00D5BEC8 (the float 1/960 promoted)", "second": "double 2.0 at 00D7A308", "net": "1/480 per device unit, each step rounded back to float"},
+    "accumulate": "scaled delta to manager +64h/+68h, accumulated into +5Ch/+60h which the constructor seeds with 0.5f (00CE3800)",
+    "wake": "if the FE icon reports hidden (vtable +38h) and the delta length from 00419210 exceeds 0.01f, show it through vtable +34h",
+    "clamp": {
+      "routine": "004155B0, __fastcall(ECX = &value, EDX = &lo, [ESP] = &hi), result in ST0",
+      "x_normal": [0.009999999776482582, 0.9900000095367432],
+      "x_widescreen": [-0.15666666626930237, 1.15666663646698],
+      "y_always": [0.009999999776482582, 0.9900000095367432],
+      "widescreen_flag": "byte [0109CF04+0Dh]",
+      "y_high_compare": "00AA3B41 FLD double [00CED5D0], the same 0.99f promoted"
+    },
+    "then": "BSP_GuiWidget_SetLocalXYAndBounds on the FE icon at manager+50h, then 00AA2F10"
+  },
+  "hit_test": {
+    "globals": {"00F8BC74": "pointer x", "00F8BC78": "pointer y", "00F8BC70": "the hit widget", "00F8BC7C": "the score, seeded 1e10f from 00CE4970"},
+    "page_walk": "the vector at manager+18h..+1Ch, ascending Priority; a page is descended into only when its vtable +38h reports visible",
+    "exclusive_page": {"field": "manager +6Ch", "rule": "when non-null only that page is hit tested", "writers": "none found; the name comes from the single use in 00AA2F10"},
+    "click": "after the walk: if the hit widget exists and its byte +84h is clear and the cursor device's vtable +28h returns true, call the hit widget's vtable +68h(0)",
+    "widget_recursion": [
+      "half extents = size.x*scale.x (+18h * +20h) and size.y*scale.y (+1Ch * +24h)",
+      "absolute position = pos (+0Ch..+14h) + origin",
+      "child origin = absolute minus the half extents in X and Y; Z subtracts the double at 00D7A258, which is +0.0",
+      "children first, in list order, visible ones only; then the widget itself",
+      "the self-test needs byte +78h set and byte +77h clear, then four limit fields at +38h..+44h each disabled by an exact +0.0f compare, then box containment"
+    ],
+    "winner_rule": {
+      "site": "00AA8E0C",
+      "rule": "half_extent_x < score, strict",
+      "meaning": "the smallest horizontal half extent among the widgets containing the pointer wins. Not the deepest, not the nearest in Z, not the last in the list. A parent that contains the pointer loses to any smaller child that contains it, and a tie keeps the first candidate. Z is not read anywhere in 00AA8BD0."
+    },
+    "cursor_state": "00AA3B83..00AA3BB4: the FE icon's vtable +88h(state, 0, 1.0f) where state is 1 when a widget was hit and its byte +84h is clear, else 0"
+  },
+  "overlays": {
+    "+4Ch": "the _Mouse page (interface/_mouse.lua, Priority -1000)",
+    "+50h and +54h": "MousePtrFE_Icon, three authored States under common/mouse/",
+    "+58h": "MousePtrGUI_Icon; never touched by the pointer pass read here",
+    "+74h": "hl_FrameBox from _highlight.lua (Priority -1000, RenderOrder 0)",
+    "+78h": "hlCircle_FrameBox from the same page",
+    "reset": "BSP_GuiManager_ResetScreens (00AA0F70) moves both highlight boxes to (-1,-1,0) and hides them at the top of every update, so a highlight is a one-frame effect a screen must re-issue"
+  },
+  "teardown": {
+    "00AA38F0": "destructor, then 00AC4C40 (pool release) when bit 0 of the flags byte is set; returns the layer in EAX",
+    "00AC5480_shared": "+0F4h == 0: InterlockedDecrement on scene+4h, the scene's vtable slot 0 at zero, +0ECh nulled",
+    "00AC5480_owned": "+0F4h != 0: 00AA4B30 on the manager with the store at +0F0h, then 00B72250 for the scene",
+    "00AC5480_tail": "the name buffer is returned to the sized pool, then the widget destructor 00AA9730",
+    "no_unregister": "nothing removes the layer from the page vector at manager+14h; no un-register routine and no release of the page+4h reference count were found"
+  },
+  "flow_gaps": {
+    "00AA4B30": {
+      "gaps": 1,
+      "after": "CALL 00BF65AC (_free) at 00AA4BF6",
+      "range": "00AA4BFB..00AA4C05, 10 bytes",
+      "hidden_code": "add esp,4; mov [esi+10h],0; then push esi/push edi/lea ecx,[esp+20h]/push ecx/mov ecx,ebx/call 00AA46B0 (std::_Tree::erase)",
+      "effect": "the decompiler shows 'if (store == 0) erase(); else free(store)'; the real order is free the store, null the node payload, then erase the node",
+      "repaired": false
+    },
+    "00AC5480": 0, "00AC6600": 0, "00AA3910": 0, "00AA2F10": 0, "00AA3840": 0, "00AA3BD0": 0, "00AC4450": 0, "00AC4C50": 0
+  },
+  "no_ghidra_function": [
+    {"address": "00AA38B0", "end": "00AA38D5", "role": "IsKindOf, vtable +0Ch; linear scan of [00F8BF88, 00F8BF94)"},
+    {"address": "00AA38E0", "end": "00AA38E6", "role": "IsVisible, vtable +38h; MOV AL,[ECX+0F5h]; RET"},
+    {"address": "00AC3F80", "end": "00AC3F85", "role": "type-chain begin, vtable +08h; MOV EAX,[00F8BF88]; RET"},
+    {"address": "00AC3F90", "end": "00AC3F95", "role": "own type id, vtable +14h; MOV EAX,[00F8BF94]; RET"},
+    {"address": "00AC3FA0", "end": "00AC3FA6", "role": "GetName, vtable +7Ch; LEA EAX,[ECX+100h]; RET"},
+    {"address": "00AC3FB0", "end": "00AC3FB0", "role": "empty virtual, vtable +80h; bare RET"},
+    {"address": "00AC4D30", "end": "00AC4D64", "role": "DescribeProperties, vtable +1Ch; describes Priority only, then chains to 00AAAED0"}
+  ],
+  "callers": {
+    "00AA3840": ["00AA3BD0"],
+    "00AA3BD0": ["00AA6560"],
+    "00AC6600": ["00AA5840"],
+    "00AC5480": ["00AA38F0"],
+    "00AA38F0": ["vtable 00D5BE38 slot +04h"],
+    "00AA4B30": ["00AC5480"],
+    "00AA3910": ["00AA4F80"],
+    "00AA2F10": ["00AA3910"],
+    "00AA8BD0": ["00AA2F10", "00AA8BD0"],
+    "00AC4C50": ["vtable 00D5BE38 slot +18h, reached from 00AC6814"],
+    "00AC4450": ["vtable 00D5BE38 slot +34h, reached from 00AA5FAF, 00AA6117, 00AA0E1B"]
+  },
+  "installed_files": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface",
+    "script_count": 97,
+    "pages_with_guiscreen": 96,
+    "file_without_guiscreen": "_common.lua",
+    "pages_setting_priority": 37,
+    "distinct_priority_values": 25,
+    "priority_values": [-100000, -10000, -1000, -200, -100, -50, -1, 0, 10, 20, 30, 60, 80, 90, 100, 141, 160, 169, 170, 193, 200, 265, 289, 302, 1000],
+    "pages_setting_renderorder": 2,
+    "renderorder_values": {"_debugtexts.lua": 4, "_highlight.lua": 0},
+    "distinct_renderorder_values": 2,
+    "consequence": "the draw map holds at most two keys on this installation, 0.0f and 4.0f, so the whole GUI draws in at most two orthographic passes with the debug text overlay last. The remaining descriptor fields have no Lua key at all, so every page keeping the constructor defaults shares one store, one camera and one scene.",
+    "other_top_level_keys": ["Pos", "geOrder", "WideScreenAlign", "Size", "Editable", "ClearProps"]
+  },
+  "corrections": [
+    {"doc": "docs/GUI_LAYOUT_LOADER.md", "claim": "the second LoadPage argument lands at screen +120h and what it selects was not recovered", "correction": "it gates the camera-store scene reuse at 00AC59CB: a layer may adopt an existing store's scene only when the byte is set"},
+    {"doc": "docs/GUI_LAYOUT_LOADER.md", "claim": "that vector is the only page list found; there is no separate layer container", "correction": "confirmed from the other side: the page class and cGuiLayer are one class, sharing vtable 00D5BE38 and size 124h"},
+    {"doc": "docs/GAME_BLOCKING_SCREEN.md", "claim": "manager+48h is a byte the constructor zeroes; its readers were not found", "correction": "read at 00AA3A36, where it gates the entire pointer pass"},
+    {"doc": "docs/GAME_BLOCKING_SCREEN.md", "claim": "00AA3910's interior was not opened", "correction": "it is the pointer motion, scale, clamp and cursor-state pass documented here"},
+    {"doc": "docs/GUI_RENDER_ORDER.md", "claim": "the layer name at layer+100h", "correction": "the NativeString object starts at +100h: length at +100h, data pointer at +104h. 00AC3FA0 returning ECX+100h is the evidence"}
+  ],
+  "names_recorded": [
+    {"address": "00aa3840", "name": "BSP_GuiLayer_Construct"},
+    {"address": "00aa38b0", "name": "BSP_GuiLayer_IsKindOf"},
+    {"address": "00aa38e0", "name": "BSP_GuiLayer_IsVisible"},
+    {"address": "00aa38f0", "name": "BSP_GuiLayer_ScalarDeletingDestructor"},
+    {"address": "00aa3bd0", "name": "BSP_GuiLayer_CreateInstance"},
+    {"address": "00ac5480", "name": "BSP_GuiLayer_Destruct"},
+    {"address": "00ac6600", "name": "BSP_GuiLayer_ConstructFromScript"},
+    {"address": "00ac4d30", "name": "BSP_GuiLayer_DescribeProperties"},
+    {"address": "00ac3f80", "name": "BSP_GuiLayer_GetTypeChain"},
+    {"address": "00ac3f90", "name": "BSP_GuiLayer_GetTypeId"},
+    {"address": "00ac3fa0", "name": "BSP_GuiLayer_GetName"},
+    {"address": "00ac3fb0", "name": "BSP_GuiLayer_OnAttachedNoOp"},
+    {"address": "00ac57e0", "name": "BSP_GuiLayer_SetName"},
+    {"address": "00ac51a0", "name": "BSP_GuiLayer_AllocateInstance"},
+    {"address": "00ac4c40", "name": "BSP_GuiLayer_FreeInstance"},
+    {"address": "00ac4e50", "name": "BSP_GuiObjectPool_Acquire"},
+    {"address": "00aa4b30", "name": "BSP_GuiManager_RemoveCameraStore"},
+    {"address": "00aa3910", "name": "BSP_GuiManager_UpdatePointer"},
+    {"address": "00aa2f10", "name": "BSP_GuiManager_HitTestPointer"},
+    {"address": "00aa8bd0", "name": "BSP_GuiWidget_HitTestRecursive"},
+    {"address": "00aa87b0", "name": "BSP_GuiWidget_Update"}
+  ],
+  "uncertainties": [
+    "manager +6Ch has no writer in anything read here; 'exclusive page' is named from its single use in 00AA2F10",
+    "the four limit fields at widget +38h..+44h are transcribed comparison by comparison, but the four floats the vtable +64h call rewrites in place reach the comparisons through registers Ghidra lost, so which edge each limit is measured against is provisional; the reconstruction takes the box as an input rather than deriving it",
+    "the cursor icon's vtable +88h argument triple (state, 0, 1.0f) is recorded from the listing; the mapping from state index to authored States entry was not established",
+    "the tail of 00AC59A0 calls 00BF7030 and 00BF7420 and feeds the result to 00B8E6C0 when the base byte at +74h is clear; not followed",
+    "00AC4AD0, the int describe helper 00AC4D30 calls, was read only at its call site",
+    "whether a page is ever unloaded is open: no un-register and no reference release were found",
+    "the byte at layer +121h has no reader in anything read here"
+  ],
+  "what_remains": [
+    "00AA8450 BSP_GuiWidget_PropagateVisibility takes five stack arguments from 00AC4450; only the two the layer supplies are established here",
+    "the pool's own block size and chunk layout (0x2544 per chunk through 00AC4070) were not worked out; only the fact that the size immediate at each call site is dead",
+    "00AC57E0 SetName has no caller in the shipped path that was found"
+  ],
+  "followups": [
+    {"packet": "gui_widget_hit_rect", "addresses": ["00AA8BD0 vtable +64h targets", "00AAABA0"], "files": ["docs/GUI_WIDGET_HIT_RECT.md", "include/bsp/gui_hit_rect.hpp"], "contract": "recover the four floats vtable +64h rewrites and settle which edge each +38h..+44h limit bounds"},
+    {"packet": "gui_page_lifetime", "addresses": ["00AA5840 callers", "00AA31F0"], "files": ["docs/GUI_PAGE_LIFETIME.md"], "contract": "establish whether a page is ever released and what lowers the reference count 00AA5840 raises at page+4h"},
+    {"packet": "gui_cursor_states", "addresses": ["the vtable +88h target of the icon at manager+50h", "00AA0E50"], "files": ["docs/GUI_CURSOR.md"], "contract": "the cursor device contract (+28h, +3Ch, +40h) and the state index the icon takes"},
+    {"packet": "gui_manager_exclusive_page", "addresses": ["writers of manager +6Ch"], "files": ["docs/GUI_MODAL_PAGE.md"], "contract": "find the setter of the exclusive-page filter and the screens that use it"}
+  ],
+  "state": {
+    "00AA3840": "exported, analyzed, reconstructed, build-tested",
+    "00AC6600": "exported, analyzed, reconstructed, build-tested",
+    "00AA3BD0": "exported, analyzed, reconstructed, build-tested",
+    "00AC5480": "exported, analyzed, reconstructed, build-tested",
+    "00AA38F0": "analyzed from the listing, reconstructed, build-tested",
+    "00AC4450": "exported, analyzed, reconstructed, build-tested",
+    "00AC4C50": "exported, analyzed, reconstructed, build-tested",
+    "00AA3910": "exported, analyzed, reconstructed, build-tested",
+    "00AA2F10": "exported, analyzed, reconstructed, build-tested",
+    "00AA8BD0": "exported, analyzed, reconstructed, build-tested",
+    "00AA87B0": "exported, analyzed, reconstructed (the gate and the accumulator), build-tested",
+    "00AA4B30": "exported, analyzed (flow gap reported, not repaired), reconstructed as a host call",
+    "00AC4D30": "analyzed from the listing (no Ghidra function), reconstructed, build-tested",
+    "00AA38E0": "analyzed from the listing (no Ghidra function), reconstructed, build-tested",
+    "00AA38B0": "analyzed from the listing (no Ghidra function)",
+    "00AC3F80": "analyzed from the listing (no Ghidra function)",
+    "00AC3F90": "analyzed from the listing (no Ghidra function)",
+    "00AC3FA0": "analyzed from the listing (no Ghidra function), reconstructed as the name accessor",
+    "00AC3FB0": "analyzed from the listing (no Ghidra function)",
+    "00AC57E0": "analyzed from the listing",
+    "00AC51A0": "analyzed at the call sites",
+    "00AC4C40": "analyzed at the call sites",
+    "00AC4E50": "analyzed at the call sites",
+    "interface/*.lua": "installed-file-checked, 97 files"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass, Win32 Release, warnings as errors",
+    "tests": "ctest reconstructed_math 1/1 passed",
+    "new_tests": "one case in tests/math_tests.cpp covering the 00AA8BD0 winner rule: a parent loses to its smaller child, an invisible child is skipped, a tie keeps the first candidate"
+  },
+  "not_binary_compatible": "the native layer is a 124h-byte pool block whose base half belongs to the widget class; GuiLayerImage models the layer half plus the four base fields the layer's own routines touch, and the scene, camera, store and Lua state are engine objects this packet only names."
+}
