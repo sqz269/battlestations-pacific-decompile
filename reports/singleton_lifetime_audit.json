@@ -1,44 +1,548 @@
-[
-  {
-    "address": "00415350",
-    "length": 105,
-    "sha256": "f960f1a64ba2027c9dd3473717cdfc58270ffd4b2efe37c550fa0112399e6aa6",
-    "disk_matches_ghidra": true
+{
+  "packet": "singleton_lifetime_concrete",
+  "status": "typed_reconstruction_strict_win32_build_and_focused_native_lifecycle_passed",
+  "created_utc": "2026-09-10T15:54:51.407826+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-singleton-lifetime-20260910",
+  "branch": "agent/singleton-lifetime-20260910",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "project_file_exists": true,
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "verification": "Every live query used bsp.py ghidra, which verifies project/program/language/image base before access. No Ghidra mutations.",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00415350",
+      "proposed_name": "BSP_SingletonLifetime_GetManager",
+      "cpp": "SingletonLifetimeDomain::get_manager_00415350",
+      "native_abi": "No input consumed; EAX manager; RET.",
+      "reconstruction_scope": "typed_function",
+      "evidence": "One captured global01090AA0 read on fastpath; allocate14h, construct, publish captured result; no publication lock."
+    },
+    {
+      "address": "00bd0960",
+      "proposed_name": "BSP_SingletonLifetime_Construct",
+      "cpp": "ConcreteSingletonLifetimeManager::ConcreteSingletonLifetimeManager",
+      "native_abi": "ECX manager; EAX same manager; RET.",
+      "reconstruction_scope": "typed_function",
+      "evidence": "Native+0 untouched, +4/+8/+C zeroed; reserve256 before create section; +10 section pointer. Host type adapts layout explicitly."
+    },
+    {
+      "address": "00bd0c30",
+      "proposed_name": "BSP_SingletonLifetime_Register",
+      "cpp": "ConcreteSingletonLifetimeManager::register_object",
+      "native_abi": "ECX manager; stack owner; RET4.",
+      "reconstruction_scope": "typed_function",
+      "evidence": "Unsigned end>=begin validation before null test; callback may return; nonnull append with no internal lock, AddRef or duplicate filtering."
+    },
+    {
+      "address": "00bd0bc0",
+      "proposed_name": "BSP_PointerVector_Append",
+      "cpp": "ConcreteSingletonLifetimeManager::append_pointer_00bd0bc0",
+      "native_abi": "ECX vector; stack pointer-to-owner; RET4.",
+      "reconstruction_scope": "typed_function",
+      "evidence": "Fast store and end+4; otherwise checked same-owner insert. Captured value retained across allocation/free."
+    },
+    {
+      "address": "00bd0400",
+      "proposed_name": "BSP_SingletonLifetime_Destroy",
+      "cpp": "ConcreteSingletonLifetimeManager::destroy_00bd0400",
+      "native_abi": "ECX manager; RET.",
+      "reconstruction_scope": "typed_normal_flow_function",
+      "evidence": "Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported."
+    },
+    {
+      "address": "0041cc80",
+      "proposed_name": "BSP_CriticalSection_DestroyOwned",
+      "cpp": "ConcreteSingletonLifetimeManager::destroy_owned_section_0041cc80",
+      "native_abi": "ECX address of section pointer; RET.",
+      "reconstruction_scope": "typed_function_win32_services",
+      "evidence": "While signed depth>0 decrement then LeaveCriticalSection; DeleteCriticalSection; free; clear owner pointer after free per raw0041CCB3..BC."
+    },
+    {
+      "address": "00bd1860",
+      "proposed_name": "BSP_CriticalSection_Create",
+      "cpp": "ConcreteSingletonLifetimeManager constructor / OwnedCriticalSection",
+      "native_abi": "No inputs; EAX section; RET.",
+      "reconstruction_scope": "typed_function_inlined",
+      "evidence": "Allocate native1Ch mapped to host lock plus metadata; actual Win32 section first18h, InitializeCriticalSection then zero counter18h."
+    },
+    {
+      "address": "00bcf910",
+      "proposed_name": "BSP_PointerVector_Count",
+      "cpp": "ConcreteSingletonLifetimeManager::count_00bcf910",
+      "native_abi": "ECX vector; EAX count; RET.",
+      "reconstruction_scope": "typed_function",
+      "evidence": "Null begin returns0; raw32-bit subtraction then signed SAR2."
+    },
+    {
+      "address": "00bcfca0",
+      "proposed_name": "BSP_SingletonLifetime_Unregister",
+      "cpp": "ConcreteSingletonLifetimeManager::unregister_object",
+      "native_abi": "ECX manager; stack owner; RET4.",
+      "reconstruction_scope": "typed_function",
+      "evidence": "Ignore null; linear scan; zero first matching slot; retain holes/length; subsequent duplicates remain."
+    },
+    {
+      "address": "00bd0600",
+      "proposed_name": "BSP_PointerVector_Reserve",
+      "cpp": "ConcreteSingletonLifetimeManager constructor / allocate_slots",
+      "native_abi": "ECX vector; stack capacity; RET4.",
+      "reconstruction_scope": "constructor_empty_vector_fragment_only",
+      "evidence": "Only constructor empty reserve256 is implemented as its caller requires; generic populated reserve is not exposed or claimed reconstructed."
+    },
+    {
+      "address": "00bd0700",
+      "proposed_name": "BSP_PointerVector_InsertCopies",
+      "cpp": "ConcreteSingletonLifetimeManager::append_pointer_00bd0bc0",
+      "native_abi": "ECX vector; stack iterator-owner,position,count,pointer-to-value; RET10h.",
+      "reconstruction_scope": "append_specialization_only",
+      "evidence": "Same-owner count1 append; capture value; max3FFFFFFFh; capacity max(size+1,capacity+capacity/2), zero growth candidate on limit overflow; copy prefix/value/tail then free old storage and publish fields. No generic middle-insert interface."
+    },
+    {
+      "address": "00bd08d0",
+      "proposed_name": "BSP_PointerVector_InsertOneChecked",
+      "cpp": "ConcreteSingletonLifetimeManager::append_pointer_00bd0bc0",
+      "native_abi": "ECX vector; stack result-iterator,iterator-owner,position,pointer-to-value; RET10h.",
+      "reconstruction_scope": "same_owner_append_fragment_only",
+      "evidence": "Preserve offset and returning pointer validations; foreign-iterator-owner branch unreachable for native append caller and omitted from typed public API."
+    },
+    {
+      "address": "00bcfeb0",
+      "proposed_name": "BSP_PointerVector_AllocateSlots",
+      "cpp": "allocate_slots",
+      "native_abi": "ECX count; callers zero EDX; EAX raw pointer; RET.",
+      "reconstruction_scope": "typed_allocator_helper",
+      "evidence": "Unsigned count*4 overflow throws bad_alloc, else explicit native/host pointer-size allocation boundary."
+    },
+    {
+      "address": "00bd0500",
+      "proposed_name": "BSP_PointerVector_CopyRange",
+      "cpp": "copy_slots / append pointer arithmetic",
+      "native_abi": "Three stack pointers first,last,destination; EAX destination end; RETCh.",
+      "reconstruction_scope": "typed_copy_helper",
+      "evidence": "SUB/SAR2 bytecount; call memmove_s only for nonempty range. End arithmetic applied by append caller."
+    },
+    {
+      "address": "00bd0560",
+      "proposed_name": "BSP_PointerVector_FillRange",
+      "cpp": "ConcreteSingletonLifetimeManager::append_pointer_00bd0bc0",
+      "native_abi": "Three stack arguments destination,count,pointer-to-value; EAX end; RETCh.",
+      "reconstruction_scope": "count_one_append_fragment_only",
+      "evidence": "Native repeated store reduced to its single insertion store; general repeated fill not separately exposed."
+    },
+    {
+      "address": "00bf681b",
+      "proposed_name": "operator_new",
+      "cpp": "singleton_lifetime_allocate",
+      "native_abi": "cdecl size on stack; EAX raw pointer; RET; throws on exhausted allocation.",
+      "reconstruction_scope": "host_crt_service_boundary",
+      "evidence": "malloc then __callnewh(size) retry loop verified in assembly; host std::malloc/_callnewh/std::bad_alloc implement allocator service with host_bytes. CRT exception/vtable/global handler identity not replaced. Proposed library-role name remains descriptive."
+    },
+    {
+      "address": "00bf65ac",
+      "proposed_name": "_free",
+      "cpp": "singleton_lifetime_free",
+      "native_abi": "cdecl pointer on stack; JMP CRT free body.",
+      "reconstruction_scope": "host_crt_service_boundary",
+      "evidence": "Retain correct library name; actual matching host std::free service, not a no-op."
+    }
+  ],
+  "native_evidence": [
+    {
+      "address": "00415350",
+      "end_exclusive": "004153b9",
+      "label": "getter",
+      "bytes_hex": "6aff68dbe0c50064a100000000506489250000000051a1a00a090185c0753b6a14e8a5147e0083c40489042485c0c744240c00000000741b8bc8e8d1b57b00a3a00a09018b4c240464890d0000000083c410c333c0a3a00a09018b4c240464890d0000000083c410c3",
+      "sha256": "f960f1a64ba2027c9dd3473717cdfc58270ffd4b2efe37c550fa0112399e6aa6",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "0041cc80",
+      "end_exclusive": "0041ccc0",
+      "label": "destroy_lock",
+      "bytes_hex": "558be9568b750085f67432837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce0056e8f9987d0083c404c74500000000005e5dc3",
+      "sha256": "cdd78177fa870d850e479da6fd7f0e031f1c85d94e0f7800a71411b3e091bda1",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bcf910",
+      "end_exclusive": "00bcf923",
+      "label": "count",
+      "bytes_hex": "8b510485d2750333c0c38b41082bc2c1f802c3",
+      "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bcfca0",
+      "end_exclusive": "00bcfd13",
+      "label": "unregister",
+      "bytes_hex": "538b5c240885db568bf174625733ffe85cfcffff85c076558b4e0485c9740c8b46082bc1c1f8023bf87205e8436a02008b4604391cb874148bce83c701e82efcffff3bf872d25f5e5bc204008bc885c9740c8b46082bc1c1f8023bf87205e8106a02008b4e04c704b9000000005f5e5bc20400",
+      "sha256": "7d6aa4f0c51391f3d2cfe4c0b35f7833a16fce5613b92eaa615bb1f54003f473",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bcfeb0",
+      "end_exclusive": "00bcff05",
+      "label": "allocate_slots",
+      "bytes_hex": "83ec1085c9771633c98d148d0000000052e85569020083c40483c410c383c8ff33d2f7f183f80473e08d0424508d4c2408c744240400000000e85264020068c03ce0008d4c240851c744240c3c92d600e880690200",
+      "sha256": "c598c145591727617fb54eefaa1c217f671e94b5006c05b21bc6dcd600075603",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0400",
+      "end_exclusive": "00bd04c5",
+      "label": "destroy",
+      "bytes_hex": "6aff685854cc0064a100000000506489250000000083ec0c53568bf18974240833db895c241ce8e5f4ffff85c07464578b7e08397e047605e8d66202008d47fc3b4608897c241477053b46047305e8c062020083c7fc3b7e087205e8b36202008b46043bc38b0f74128b56088bfa2bf8c1ff02740683c2fc8956083bcb74088b018b106a01ffd28bcee882f4ffff85c0759e5f8d4e10e8e5c784ff8b46043bc3740950e80461020083c4048b4c2414895e04895e08895e0c5e5b64890d0000000083c418c3",
+      "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0500",
+      "end_exclusive": "00bd0530",
+      "label": "copy_slots",
+      "bytes_hex": "8b4424088b4c24048b54240c2bc1c1f8028d048500000000568d3410740c50515052e88062020083c4108bc65ec20c00",
+      "sha256": "aaf6ebf1932295279fc1abd2df5897017f0ca40663e737300063d062019c057e",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0560",
+      "end_exclusive": "00bd058e",
+      "label": "fill_slots",
+      "bytes_hex": "568b74240c85f6578b7c240c8bc68bcf76148b542414538b1a891983e80183c10485c077f25b8d04b75f5ec20c00",
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0600",
+      "end_exclusive": "00bd06a5",
+      "label": "reserve",
+      "bytes_hex": "568bf18b4c240881f9ffffff3f7605e87cffffff8b560485d2750433c0eb088b460c2bc2c1f8023bc17376535733d2e87cf8ffff8b7e08397e048bd87605e8d0600200558b6e043b6e087605e8c26002002bfdc1ff0274138d04bd0000000050555053e83f61020083c4108b460485c05d750433ffeb088b7e082bf8c1ff0285c0740950e8235f020083c4048b4424108d14bb8d0c835f895e04894e0c8956085b5ec20400",
+      "sha256": "642b340a24e6fa34c9f79eb024504513ac4f9c838b28a58ceb9cce3ca5c8e234",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0700",
+      "end_exclusive": "00bd08b4",
+      "label": "insert",
+      "bytes_hex": "8b44241053568bf18b08894c24188b4e0485c957750433ffeb088b7e0c2bf9c1ff028b5c241885db0f848001000085c9750433c0eb088b46082bc1c1f802baffffff3f2bd03bd37305e842feffff85c9750433c0eb088b46082bc1c1f80203c33bf8550f83b30000008bc7d1e8baffffff3f2bd03bd7730433ffeb0203f885c9750433c0eb088b46082bc1c1f80203c33bf8731385c9750433c0eb088b46082bc1c1f8028d3c1833d28bcfe800f7ffff8b4e048be88b4424185550518bcee83dfdffff8d5424205253508bcee88ffdffff8b4c2418508b460850518bcee81efdffff8b460485c0750433c9eb088b4e082bc8c1f90203d985c0740950e8ab5d020083c4048d54bd008d449d00896e045d5f89560c8946085e5bc210008b6e088b7c24188bcd2bcfc1f9028d049d000000003bcb8944241c8bce734603c7505557e8bbfcffff8b46088bc82bcfc1f9028d542420522bd953508bcee801fdffff8b44241c0146088b76088d542420522bf05657e8e9f8ffff83c40c5d5f5e5bc21000558bdd2bd85553e873fcffff555357894608e8e8f8ffff8b4c24288d44242c5003cf5157e8b6f8ffff83c4185d5f5e5bc21000",
+      "sha256": "ce4e00c505c0a5ba1eac1a43c6a95c395e75e8484b94ecef5d114da75275ccfa",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd08d0",
+      "end_exclusive": "00bd0959",
+      "label": "insert_one",
+      "bytes_hex": "5153558b6c2414568bf1578b7e0485ff740c8b46088bc82bcfc1f902750433dbeb1f3bf87605e8185e020085ed74043bee7405e80b5e02008b5c24202bdfc1fb028b5424248b442420526a0150558bcee8dbfdffff8b7e043b7e087605e8e15d0200897c24208d3c9f3b7e0877053b7e047305e8cb5d02008b4424188978045f89305e5d5b59c21000",
+      "sha256": "5fccfe9a8a8943194b628bf68f54086167e11bed3e8d6d45d4f62df026bba238",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0960",
+      "end_exclusive": "00bd09b0",
+      "label": "construct",
+      "bytes_hex": "6aff689854cc0064a10000000050648925000000005133c0568bf18974240489460489460889460c680001000089442414e86afcffffe8c50e00008b4c24088946108bc65e64890d0000000083c410c3",
+      "sha256": "a327dd6728cd67142f5b53513e6662c18fd9b6a4ad5fcbc157bf1f0e38aba60d",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0bc0",
+      "end_exclusive": "00bd0c29",
+      "label": "append",
+      "bytes_hex": "83ec08568bf18b560485d2750433c9eb088b4e082bcac1f90285d274248b460c2bc2c1f8023bc873188b46088b4c24108b11891083c0048946085e83c408c20400578b7e083bd77605e8055b02008b4424145057568d4c2414518bcee8affcffff5f5e83c408c20400",
+      "sha256": "f37263ed8274b5056237b3a1ea6941496d03ffd7883c24c6915bd4c1a3efc08f",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd0c30",
+      "end_exclusive": "00bd0c57",
+      "label": "register",
+      "bytes_hex": "568bf18b46083946047605e8d35a0200837c240800740c8d442408508bcee86dffffff5ec20400",
+      "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bd1860",
+      "end_exclusive": "00bd1887",
+      "label": "create_lock",
+      "bytes_hex": "566a1ce8b34f02008bf083c40485f6741256ff150c22ce00c74618000000008bc65ec333c05ec3",
+      "sha256": "84ae6492318402d85664cc3e4a42dddb89477a2aafbe4e09a1eb62b9e43a5b4f",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6884",
+      "label": "allocator_service_boundary",
+      "bytes_hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "label": "free_service_boundary",
+      "bytes_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "008f8449",
+      "end_exclusive": "008f846d",
+      "label": "winmain_shutdown_sequence",
+      "bytes_hex": "8b0da00a090185c9741a8bf9e8a67f2d0057e84ce12f0083c404c705a00a090100000000",
+      "sha256": "4de3ef4fd1b00a85ac99d497a01100db1865d12c9077a0c8db86c2f57c0e52fc",
+      "ghidra_matches_installed_pe": true
+    }
+  ],
+  "ghidra_preimages": [
+    {
+      "address": "00415350",
+      "annotation": {
+        "address": "00415350",
+        "function_name": "BSP_SingletonLifetime_GetManager",
+        "comment": "[BSP reconstruction 00415350]\nNo input consumed; EAX manager, RET. Lazily allocate20 bytes, construct00bd0960, publish01090aa0. Getter has no explicit lock. Native allocation failure leaves null; unported lifetime dependency."
+      }
+    },
+    {
+      "address": "00bd0960",
+      "annotation": {
+        "address": "00bd0960",
+        "function_name": "BSP_SingletonLifetime_Construct",
+        "comment": "[BSP reconstruction 00bd0960]\nECX object, EAX sameobject, RET. Zero vector begin/end/capacity+4/+8/+C, reserve256pointer slots via00bd0600, create trackedcriticalsection00bd1860 at+10. Offset0 not initialized here."
+      }
+    },
+    {
+      "address": "00bd0c30",
+      "annotation": {
+        "address": "00bd0c30",
+        "function_name": "BSP_SingletonLifetime_Register",
+        "comment": "[BSP reconstruction 00bd0c30]\nECX manager, oneobjectpointer stack,RET4. Validate end>=begin, ignore null, append nonnull via00bd0bc0. No AddRef, duplicate filtering or internal lock. Manager deletes registeredobjects LIFO atshutdown."
+      }
+    },
+    {
+      "address": "00bd0bc0",
+      "annotation": {
+        "address": "00bd0bc0",
+        "function_name": "BSP_PointerVector_Append",
+        "comment": "[BSP reconstruction 00bd0bc0]\nECX vector owner, pointer-to-value stack,RET4. Write at end and advance4 if capacity available; otherwise checked iterator and00bd08d0 insertion/growth. Pointer vector helper, allocator/debug ABI unported."
+      }
+    },
+    {
+      "address": "00bd0400",
+      "annotation": {
+        "address": "00bd0400",
+        "function_name": "BSP_SingletonLifetime_Destroy",
+        "comment": "[BSP reconstruction 00bd0400]\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463."
+      }
+    },
+    {
+      "address": "0041cc80",
+      "annotation": {
+        "address": "0041cc80",
+        "function_name": "BSP_CriticalSection_DestroyOwned",
+        "comment": "[BSP reconstruction 0041cc80]\nECX points to lock pointer. Drains positive depth at +18h via LeaveCriticalSection; DeleteCriticalSection then free. Shutdown requires owning/quiescent thread.\nRecovered fallthrough bytes 0041ccb3..0041ccbc: ADD ESP,4; MOV dword ptr [EBP],0. Clears the owner's lock pointer after free. These instructions were undefined under the old noreturn annotation; restored disassembly, but decompiler function-body recovery remains incomplete."
+      }
+    },
+    {
+      "address": "00bd1860",
+      "annotation": {
+        "address": "00bd1860",
+        "function_name": "BSP_CriticalSection_Create",
+        "comment": "[BSP reconstruction 00bd1860]\nAllocates 1ch bytes: x86 CRITICAL_SECTION at +0 and signed recursion depth at +18h. Initializes OS lock and depth=0."
+      }
+    },
+    {
+      "address": "00bd0600",
+      "annotation": {
+        "address": "00bd0600",
+        "function_name": "FUN_00bd0600"
+      }
+    },
+    {
+      "address": "00bd0700",
+      "annotation": {
+        "address": "00bd0700",
+        "function_name": "FUN_00bd0700"
+      }
+    },
+    {
+      "address": "00bd08d0",
+      "annotation": {
+        "address": "00bd08d0",
+        "function_name": "FUN_00bd08d0"
+      }
+    },
+    {
+      "address": "00bcfeb0",
+      "annotation": {
+        "address": "00bcfeb0",
+        "function_name": "FUN_00bcfeb0"
+      }
+    },
+    {
+      "address": "00bcfca0",
+      "annotation": {
+        "address": "00bcfca0",
+        "function_name": "BSP_SingletonLifetime_Unregister",
+        "comment": "[BSP reconstruction 00bcfca0]\nHypothesis, not a recovered symbol. void __thiscall f(manager, object): ignores a null object, then linearly scans the manager pointer vector (begin manager+4, end manager+8, count through BSP_PointerVector_Count) and writes 0 into the matching slot without erasing it, so the vector keeps its length and later walks contain holes. Every singleton destroy and unregister helper calls it with the manager from BSP_SingletonLifetime_GetManager in ECX."
+      }
+    },
+    {
+      "address": "00bcf910",
+      "annotation": {
+        "address": "00bcf910",
+        "function_name": "BSP_PointerVector_Count",
+        "comment": "[BSP reconstruction 00bcf910]\nECX vector owner, EAX count,RET. Nullbegin+4 returns0; otherwise subtract begin fromend+8 and arithmeticshift right2. Assembly is19bytes; descriptive genericpointervector role."
+      }
+    },
+    {
+      "address": "00bd0500",
+      "annotation": {
+        "address": "00bd0500",
+        "function_name": "FUN_00bd0500"
+      }
+    },
+    {
+      "address": "00bd0560",
+      "annotation": {
+        "address": "00bd0560",
+        "function_name": "FUN_00bd0560"
+      }
+    },
+    {
+      "address": "00bf681b",
+      "annotation": {
+        "address": "00bf681b",
+        "function_name": "LIBCRT_unmatched_00bf681b",
+        "comment": "[BSP inventory 00bf681b] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    },
+    {
+      "address": "00bf65ac",
+      "annotation": {
+        "address": "00bf65ac",
+        "function_name": "_free"
+      }
+    }
+  ],
+  "prior_audit_preserved_and_reverified": [
+    {
+      "address": "00415350",
+      "length": 105,
+      "sha256": "f960f1a64ba2027c9dd3473717cdfc58270ffd4b2efe37c550fa0112399e6aa6",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00bd0960",
+      "length": 80,
+      "sha256": "a327dd6728cd67142f5b53513e6662c18fd9b6a4ad5fcbc157bf1f0e38aba60d",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00bd0c30",
+      "length": 39,
+      "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00bd0bc0",
+      "length": 105,
+      "sha256": "f37263ed8274b5056237b3a1ea6941496d03ffd7883c24c6915bd4c1a3efc08f",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00bd0400",
+      "length": 197,
+      "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "00bcf910",
+      "length": 19,
+      "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+      "disk_matches_ghidra": true
+    },
+    {
+      "address": "008f8449",
+      "length": 36,
+      "sha256": "4de3ef4fd1b00a85ac99d497a01100db1865d12c9077a0c8db86c2f57c0e52fc",
+      "disk_matches_ghidra": true
+    }
+  ],
+  "annotation_integration": "Integrator owns Ghidra names/comments, exports, reconstruction/name ledgers and CMake; proposals are hypotheses, and existing comments/library names must be preserved.",
+  "api": {
+    "domain": "SingletonLifetimeDomain with mandatory actual-owner deleting callback and returning invalid-parameter callback",
+    "manager": "ConcreteSingletonLifetimeManager implements existing SingletonLifetimeManager",
+    "publication": "Domain retains one volatile pointer; getter returns captured pointer, no publication lock; shutdown clears only after destroy/free.",
+    "projected_owner": "system_owner().native_owner is the concrete manager; section_10 refers to its same real owned Win32 critical-section projection.",
+    "projected_counter": "Counter is actual owned lock+18h storage; manager lock/unlock adjusts it; free section helper functions do OS calls only for particle adapter.",
+    "allocation": "singleton_lifetime_allocate({kind,native_bytes,host_bytes}) returns raw malloc(host_bytes) storage; actual _callnewh retry; matching free; no zeroing or alternate heap.",
+    "registered_destruction": "Mandatory noexcept callback(context,exact registered owner,flags1); manager pop precedes callback; owner decides its actual unregister/free behavior."
   },
-  {
-    "address": "00bd0960",
-    "length": 80,
-    "sha256": "a327dd6728cd67142f5b53513e6662c18fd9b6a4ad5fcbc157bf1f0e38aba60d",
-    "disk_matches_ghidra": true
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /fp:strict /O2",
+      "source_sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "header_sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    "existing_build": {
+      "passed": true,
+      "command": "./scripts/build.ps1",
+      "tests": "reconstructed_math and native_math_differential:2/2 passed",
+      "log_sha256": "3dab9d0e5482fef3d431d0479041bcc31d513d5cded9940a0af7021b85ac8dd5",
+      "boundary": "New source separately compiled/linked; CMake integration belongs to primary."
+    },
+    "verify_seeds": {
+      "passed": true,
+      "count": 8,
+      "all_match_disk": true
+    },
+    "native_lifecycle": {
+      "passed": true,
+      "fixture_cases": 1,
+      "original_code_ranges": 15,
+      "real_deleting_callbacks": 260,
+      "checks": [
+        "stable lazy publication",
+        "initial reserve256 before native lock allocation",
+        "native offset0 untouched",
+        "growth256to384",
+        "duplicate registered without AddRef/filtering",
+        "unregister first-match null hole",
+        "null registration validates then returns after returning handler",
+        "pop counts/owner IDs/flags1/depth2 differential",
+        "reentrant append during deleting destructor",
+        "same manager and projected Win32 critical section/counter",
+        "native section positive depth drained before deletion",
+        "native growth/lock/vector/manager free order and post-free clears",
+        "typed publication cleared only after callback drain/free"
+      ],
+      "local_source": "local/singleton_native_lifecycle.cpp",
+      "local_source_sha256": "f509d5cf192b6b80f4f054265c7e8047da4acc499b61b49ad2cdaa08d2ff2d4e",
+      "local_native_header_sha256": "daa9f8cd11fd16f7bcaca81aef9b8ca0c1a895bf24b8425337594ef8571b388e",
+      "executable_sha256": "519d57743056882b7f2c8ac78a38c3ab944aa5897398248e1fbfe7eb08267045",
+      "log_sha256": "c89efb14f5de14edbda5b2d28e3a225e9cd7719821ff35a0d40dbaa5043191b3",
+      "technique": "Original byte ranges copied into isolated executable memory; relative calls preserved; Capstone-derived absolute operands relocated; only known host allocator/free/memmove/validation/Win32 boundaries patched. No tracked test suite. Native owner callback actually unregisters/deletes its registered fixture owner."
+    }
   },
-  {
-    "address": "00bd0c30",
-    "length": 39,
-    "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
-    "disk_matches_ghidra": true
-  },
-  {
-    "address": "00bd0bc0",
-    "length": 105,
-    "sha256": "f37263ed8274b5056237b3a1ea6941496d03ffd7883c24c6915bd4c1a3efc08f",
-    "disk_matches_ghidra": true
-  },
-  {
-    "address": "00bd0400",
-    "length": 197,
-    "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
-    "disk_matches_ghidra": true
-  },
-  {
-    "address": "00bcf910",
-    "length": 19,
-    "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
-    "disk_matches_ghidra": true
-  },
-  {
-    "address": "008f8449",
-    "length": 36,
-    "sha256": "4de3ef4fd1b00a85ac99d497a01100db1865d12c9077a0c8db86c2f57c0e52fc",
-    "disk_matches_ghidra": true
-  }
-]
+  "concrete_external_dependencies": [
+    "Particle-clock and startup adapters must retain this same domain/owner/section identity and route the real registered-owner deleting destructor.",
+    "invalid_parameter callback must bind actual returning-capable00BF6713 implementation; root owns that handler.",
+    "Host CRT malloc/free/_callnewh/bad_alloc and Win32 Initialize/Enter/Leave/DeleteCriticalSection are real OS/runtime service boundaries.",
+    "Native CRT allocation exhaustion uses old exception objects/handler globals; typed host service does not port their ABI identity."
+  ],
+  "excluded": [
+    "native ABI/layout compatibility",
+    "native SEH exceptional cleanup identity",
+    "throwing registered deleting destructors",
+    "game runtime validation",
+    "concurrent C++ publication",
+    "recursive domain shutdown",
+    "arbitrary malformed iterator continuations",
+    "general populated reserve and generic middle/multiple-copy insertion",
+    "new-handler exhaustion fixture"
+  ]
+}
