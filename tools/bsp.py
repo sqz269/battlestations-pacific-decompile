@@ -670,16 +670,25 @@ def ghidra_cmd(args):
             _, lines = header_lines(db, int(a, 16)) if db else (None, [])
             sys.exit(f"{sub}: Ghidra has no function starting at {a} ({str(exc)[:80]}). " + (lines[0] if lines else ''))
         text = as_text(result)
+        start = args.start
         if sub == 'disasm':
             # disassemble_function lists the whole enclosing function; when the address is
             # mid-function, start the excerpt at that instruction instead of the head.
+            # --start also accepts a hex address (an instruction start) instead of a line count.
             lines = text.splitlines()
+            if isinstance(start, str) and re.fullmatch(r'(0x)?[0-9a-fA-F]{5,8}', start):
+                want = norm(start) + ':'
+                pos = [i for i, line in enumerate(lines) if line.lower().startswith(want)]
+                if not pos:
+                    sys.exit(f'{norm(start)} is not an instruction start inside {a}')
+                text = chr(10).join(lines[pos[0]:])
+                start = 0
             hits = [i for i, line in enumerate(lines) if line.lower().startswith(a + ':')]
             if hits and hits[0]:
                 text = chr(10).join(lines[hits[0]:])
             elif not hits and lines and not lines[0].lower().startswith(a + ':'):
                 print(f'({a} is not an instruction start in the stored listing; showing the enclosing function from its head)')
-        cap(text, args.lines, args.start)
+        cap(text, args.lines, int(start))
     elif sub == 'export':
         addresses = [norm(x) for x in args.addresses]
         cmd = [sys.executable, str(ROOT / 'tools/ghidra_export.py'), 'decompile', '--addresses', *addresses]
@@ -924,7 +933,8 @@ def main():
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--limit', type=int, default=25); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('bytes'); q.add_argument('address'); q.add_argument('--length', '--limit', dest='length', type=int, default=64)
     for name in ('decompile', 'disasm'):
-        q = gs.add_parser(name, help='decompile: whole function; disasm: listing from the given address to the function end'); q.add_argument('address'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80); q.add_argument('--start', type=int, default=0)
+        q = gs.add_parser(name, help='decompile: whole function; disasm: listing from the given address to the function end'); q.add_argument('address'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80)
+        q.add_argument('--start', default='0', help='lines to skip, or for disasm a hex instruction address to start at')
         if name == 'decompile':
             q.add_argument('--force', action='store_true', help='flush Ghidra decompiler cache before reading')
     q = gs.add_parser('export'); q.add_argument('addresses', nargs='+'); q.add_argument('--force', action='store_true')
