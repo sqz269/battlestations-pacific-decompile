@@ -31,6 +31,25 @@ void destroy_group_pointers(NativeRenderPointerArrayStorage& array) {
 }
 } // namespace
 
+NativeRenderPointerArrayStorage* initialize_native_instance_entry_pointers_00b1c4f0(
+    NativeRenderPointerArrayStorage& array) noexcept {
+    array.data_00 = nullptr;
+    array.count_04 = 0;
+    array.capacity_08 = 0;
+    return &array;
+}
+void reserve_native_instance_entry_pointers_00b1c500(
+    NativeRenderPointerArrayStorage& array, std::int32_t requested) {
+    reserve_pointers(array, requested);
+}
+void resize_native_instance_entry_pointers_00b1c770(
+    NativeRenderPointerArrayStorage& array, std::int32_t requested) {
+    resize_pointers(array, requested);
+}
+void destroy_native_instance_entry_pointers_00b1d1d0(NativeRenderPointerArrayStorage& array) {
+    destroy_group_pointers(array);
+}
+
 void reserve_native_render_group_pointers_00b1c660(
     NativeRenderPointerArrayStorage& array, std::int32_t requested) {
     reserve_pointers(array, requested);

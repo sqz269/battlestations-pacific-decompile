@@ -60,7 +60,9 @@ struct NativeNodeStorage {
 
 // ECX native raw owner, stack NativeString*, EAX same owner, RET4. This new
 // C++ interface receives the actual slot and existing string pool explicitly.
-// slot_bytes must cover a 0x1F0 pool slot; nothing at +174..1EF is written.
+// slot_bytes must cover the 0x174 prefix; the concrete owner supplies its actual
+// allocation extent (e.g. node1F0h, model188h, camera45Ch). No byte at +174 or
+// beyond is written, including derived data and a pool's trailing slot ID.
 // The caller owns physical storage, including returning it after an exception.
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     std::size_t slot_bytes, const NativeString& name, SizedStoragePool& strings);

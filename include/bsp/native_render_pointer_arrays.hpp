@@ -19,6 +19,16 @@ static_assert(offsetof(NativeRenderPointerArrayStorage, data_00) == 0);
 static_assert(offsetof(NativeRenderPointerArrayStorage, count_04) == 4);
 static_assert(offsetof(NativeRenderPointerArrayStorage, capacity_08) == 8);
 
+// The distinct source-entry specialization embedded twice in a native group.
+// B1C4F0: ECX=header, EAX=same header, RET; write the three words in order.
+NativeRenderPointerArrayStorage* initialize_native_instance_entry_pointers_00b1c4f0(
+    NativeRenderPointerArrayStorage&) noexcept;
+void reserve_native_instance_entry_pointers_00b1c500(
+    NativeRenderPointerArrayStorage&, std::int32_t capacity);
+void resize_native_instance_entry_pointers_00b1c770(
+    NativeRenderPointerArrayStorage&, std::int32_t count);
+void destroy_native_instance_entry_pointers_00b1d1d0(NativeRenderPointerArrayStorage&);
+
 // Original ECX=actual header; signed capacity/count on stack; RET4. Reserve
 // clamps capacity to at least1 and grows only, leaving excess cells unwritten.
 // Resize zeroes newly exposed cells and preserves old cells on shrink. Neither

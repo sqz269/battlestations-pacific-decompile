@@ -56,9 +56,9 @@ CameraTransformBacking transform_backing(NativeNodeStorage& node) noexcept {
 
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     std::size_t slot_bytes, const NativeString& name, SizedStoragePool& strings) {
-    if (!actual_slot || slot_bytes < 0x1f0 ||
+    if (!actual_slot || slot_bytes < sizeof(NativeNodeStorage) ||
         (reinterpret_cast<std::uintptr_t>(actual_slot) % alignof(NativeNodeStorage)) != 0)
-        throw std::invalid_argument("native node construction requires an aligned actual 0x1F0 pool slot");
+        throw std::invalid_argument("native node construction requires an aligned actual 0x174-byte prefix");
 
     // No parentheses: value-initialization would overwrite the slot preimage.
     auto& node = *::new (actual_slot) NativeNodeStorage;

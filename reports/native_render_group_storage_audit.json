@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "packet": "native_group_storage_construction",
+  "status": "complete_actual_storage_functions_strict_win32_and_bounded_native_fixture_passed",
+  "fixture_artifacts": {
+    "local/native_group_storage_check.cpp": "5ef7a5dc09ea55996b903c7eaea77db6f183d42ccf79e915fc3a86dbcd04599a",
+    "local/native_group_storage_spans.hpp": "a4d3a9870200ec82efb663815727805edadc2eb0365b3a4a601edb657a6e9766",
+    "local/build_native_group_storage_check.ps1": "8a15d10e6ccc32fdfc389c8fd33dbe1078edbe96e62206a027c126dbe2764d62",
+    "local/native_model_prefix_check.cpp": "4eccfb128e97a2c540162a4b17c6d89e752705f67219417210b477c65f8f64c3",
+    "local/node_reference_bytes.hpp": "64dd29243db9124df2debc78911350dce5feb77bd314b300cad7beb2b81e783c",
+    "local/build_native_model_prefix_check.ps1": "674c319bd4d88fffc6d813def614f327f11a056d6945a6804347f39a448e9cce"
+  },
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00b1c4f0",
+      "name": "initialize_native_instance_entry_pointers_00b1c4f0",
+      "cpp_symbol": "initialize_native_instance_entry_pointers_00b1c4f0",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1c4fd",
+      "original_abi": "ECX actual12byte sourceentry header; RET; EAX sameheader",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Complete13byte array constructor: actualdata/count/capacity zero in order, return same header; newly recognized entry.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1c500",
+      "name": "reserve_native_instance_entry_pointers_00b1c500",
+      "cpp_symbol": "reserve_native_instance_entry_pointers_00b1c500",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1c55f",
+      "original_abi": "ECX actual12byte sourceentry header; stack signed count/capacity; RET4",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Distinct sourceentry specialization: min1/growonly, copyliveprefix, freeold thenpublishdata/capacity; no pointed owner release.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1c770",
+      "name": "resize_native_instance_entry_pointers_00b1c770",
+      "cpp_symbol": "resize_native_instance_entry_pointers_00b1c770",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1c7c0",
+      "original_abi": "ECX actual12byte sourceentry header; stack signed count/capacity; RET4",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Distinct sourceentry specialization: reserve ifneeded, nullnewcells, shrinkcountwithoutclearing stale entries; no pointed owner release.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1d1d0",
+      "name": "destroy_native_instance_entry_pointers_00b1d1d0",
+      "cpp_symbol": "destroy_native_instance_entry_pointers_00b1d1d0",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "native_end_exclusive": "00b1d1e7",
+      "original_abi": "ECX actual12byte sourceentry header; RET",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Complete sourceentry array destructor: resize0 thenfree actualdata; retain stale pointer/capacity; no pointed owner release.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1d6f0",
+      "name": "construct_native_render_group_00b1d6f0",
+      "cpp_symbol": "construct_native_render_group_00b1d6f0",
+      "source": "src/native_render_group_storage.cpp",
+      "native_end_exclusive": "00b1d758",
+      "original_abi": "ECX alignedactual4Ch group; EAX samegroup; RET",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Actual4Ch storage, clearbinding/name, initialize two actualsourcearrayheaders24/30, then20/1C/10/0C/18/14 zero. Preserve entire10h tail3C..4B. No group destructor or fullnativecommand claim.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1ca50",
+      "name": "assign_native_instance_binding_00b1ca50",
+      "cpp_symbol": "assign_native_instance_binding_00b1ca50",
+      "source": "src/native_render_group_storage.cpp",
+      "native_end_exclusive": "00b1ca8b",
+      "original_abi": "ECX destinationpointercell, EDX sourcepointercell; EAX destinationcell; RET",
+      "evidence": "docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "current_integration_scope": "Capture sourcepointercell andold; sameidentityskip; publishincoming, retain actualincoming04 beforecapturedold04 decrement/currentzero; purecanonicalresolveronlyatzero withactualcountidentitycheck. No second count/sharedptr/nativegeometry substitution.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b6f5a0",
+      "name": "construct_native_node_00b6f5a0",
+      "source": "src/native_node_construction.cpp",
+      "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+      "original_abi": "ECX actualnodeprefix; stacknative name; EAX sameprefix; RET4",
+      "native_end_exclusive": "00b6f8ce",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/NATIVE_LIGHT_OWNER_INTEGRATION.md; reports/native_light_owner_integration_audit.json; docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json",
+      "remaining": "New C++ companion ABI; physical slot owner, complete directional construction and gameplay remain separate.",
+      "kind": "function",
+      "cpp_symbol": "construct_native_node_00b6f5a0",
+      "current_integration_scope": "Existing complete174h prefix constructor unchanged; corrected hostextent guard fromnode-specific1F0h tosizeofprefix174h, permitting original188h modelcaller. Full392byte native/host modelslotcomparison including derivedtail/184poolID passed; nodepoolitselfremains1F0h."
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_render_pointer_arrays.hpp",
+      "sha256": "2f122af76e1c66cd2f6cdee70c54560025359908e45f081e4df45308366057d1",
+      "worker_commit": "08d8f80",
+      "comparison": "Primary added sourceentry wrappers; seven worker routines and shared helper unchanged"
+    },
+    {
+      "path": "src/native_render_pointer_arrays.cpp",
+      "sha256": "710fbb433443dc6033c12ce13b7fe600c203bd8f47a31ea9aa798080edeb2497",
+      "worker_commit": "08d8f80",
+      "comparison": "Primary added sourceentry wrappers; seven worker routines and shared helper unchanged"
+    },
+    {
+      "path": "include/bsp/native_render_group_storage.hpp",
+      "sha256": "4018e3eed8139fc5ddb7597342c098446b4a2c338144709720115d5c4ed4d99a",
+      "comparison": "Primary bounded group storage or reusableprefix guard integration"
+    },
+    {
+      "path": "src/native_render_group_storage.cpp",
+      "sha256": "52c40287f557144147aafc7f23e6e3f1b3c29031eb7179e66b25242b6b7baf30",
+      "comparison": "Primary bounded group storage or reusableprefix guard integration"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "c0969bee8243db45e0be9e69b1f44f70c97c93c0c59445cff708529fc2e41fa8",
+      "comparison": "Primary bounded group storage or reusableprefix guard integration"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "5cd03607b953df5436b299318879a3f7c44c25fcee4f5a057d9bd22e830571c2",
+      "comparison": "Primary bounded group storage or reusableprefix guard integration"
+    }
+  ],
+  "native_fixture": {
+    "spans": {
+      "spans": [
+        {
+          "address": "00b1d120",
+          "length": 168,
+          "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+          "live_matches": true
+        },
+        {
+          "address": "00b1d570",
+          "length": 30,
+          "sha256": "c8921115dc6cd04a04523c612dba39a87e3f4de0eadf863e3c909bf8a8bb7c09",
+          "live_matches": true
+        },
+        {
+          "address": "00b1edd3",
+          "length": 31,
+          "sha256": "b7a65827772c3e6f220fa07ebb6a746ce1c4f9dc37ea7b94ccfeaf44bf2dc8cf",
+          "live_matches": true
+        },
+        {
+          "address": "00bd30f0",
+          "length": 7,
+          "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+          "live_matches": true
+        },
+        {
+          "address": "00bd30e0",
+          "length": 14,
+          "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+          "live_matches": true
+        },
+        {
+          "address": "00cbc9c0",
+          "length": 8,
+          "sha256": "e24a70bf7cc69996fd498a30dbcfe0f4c301a746ef03d95859fef81929ec9554",
+          "live_matches": true
+        },
+        {
+          "address": "00cbc9c8",
+          "length": 10,
+          "sha256": "d3bb101ab5cdbc3fe5978a36007d6d1d894e6f23c8ae85349d47ea806988a969",
+          "live_matches": true
+        },
+        {
+          "address": "00d5e5c4",
+          "length": 8,
+          "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+          "live_matches": true
+        },
+        {
+          "address": "00ceb130",
+          "length": 8,
+          "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d",
+          "live_matches": true
+        },
+        {
+          "address": "00ce2220",
+          "length": 4,
+          "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+          "live_matches": true
+        },
+        {
+          "address": "00df4e20",
+          "length": 8,
+          "sha256": "c97f3a723bbf754fe346fb609fbc447e6983b171cd624109bfd1b83e792e6954",
+          "live_matches": true
+        },
+        {
+          "address": "00df4e28",
+          "length": 36,
+          "sha256": "3061863d26748c81d21b13f09843780ab6682ddd9efd309e72b7ec30f6d0cc6d",
+          "live_matches": true
+        },
+        {
+          "address": "00bf65ac",
+          "length": 5,
+          "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+          "live_matches": true
+        },
+        {
+          "address": "00b1c4f0",
+          "length": 13,
+          "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+          "live_matches": true
+        },
+        {
+          "address": "00b1c500",
+          "length": 95,
+          "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485",
+          "live_matches": true
+        },
+        {
+          "address": "00b1c770",
+          "length": 80,
+          "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94",
+          "live_matches": true
+        },
+        {
+          "address": "00b1d1d0",
+          "length": 23,
+          "sha256": "6a6d9d35f7ff392dbe07eab7b41dd03eb2a468fa46f085f929ceac45a3f3685b",
+          "live_matches": true
+        },
+        {
+          "address": "00b1d6f0",
+          "length": 104,
+          "sha256": "7660926333bb58da5ca7f6fd9bfec64ff039e6a568587a796bbf4de6dedff602",
+          "live_matches": true
+        },
+        {
+          "address": "00b1ca50",
+          "length": 59,
+          "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+          "live_matches": true
+        },
+        {
+          "address": "00bf7cd1",
+          "length": 77,
+          "sha256": "df3c3d7d942712d00f42e5566f4329673df0a12a6e6893d6cb06a4ddb766f5fc",
+          "live_matches": true
+        },
+        {
+          "address": "00bf7d1e",
+          "length": 24,
+          "sha256": "e56ad8fee3c15f6af4a20a74b9ef9fa92929fbc75edcfba0bdd6667aff5cd97e",
+          "live_matches": true
+        },
+        {
+          "address": "00c07c00",
+          "length": 69,
+          "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+          "live_matches": true
+        },
+        {
+          "address": "00c07c45",
+          "length": 20,
+          "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+          "live_matches": true
+        },
+        {
+          "address": "00cbca10",
+          "length": 21,
+          "sha256": "5b89e36e0dcc6daecdb7a942602a3ecee2a70049aeb9d4c4a6b50d7d4e4d284c",
+          "live_matches": true
+        },
+        {
+          "address": "00df4e88",
+          "length": 44,
+          "sha256": "c80d19257f4b4c43dbcb54382a20f18218130b8686c382e30ad0cc00f88b76eb",
+          "live_matches": true
+        },
+        {
+          "address": "00e02d50",
+          "length": 40,
+          "sha256": "22f35c346c66f8260bfe94aa1434938894d2586caf358f5f802395f31ef99f0b",
+          "live_matches": true
+        },
+        {
+          "address": "00e15590",
+          "length": 4,
+          "sha256": "ce27c3a226b06f760dc303582e2dd3ab690a1634fdced2e53b238a4e947cd75f",
+          "live_matches": true
+        },
+        {
+          "address": "00ce221c",
+          "length": 4,
+          "sha256": "1dd5f9d7c8651bec3c86f5d6bd80b95d5822e70e3e21d07076a378beaaac9327",
+          "live_matches": true
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+          "live_matches": true
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+          "live_matches": true
+        }
+      ],
+      "relocations": [
+        11651688,
+        11651702,
+        11653411,
+        11653442,
+        11653451,
+        11654899,
+        11654937,
+        11654942,
+        11660757,
+        11660770,
+        12398834,
+        12549332,
+        12614657,
+        12614686,
+        13355465,
+        13355548,
+        13509148,
+        13509152,
+        13545776,
+        13545780,
+        14017988,
+        14017992,
+        14634532,
+        14634544,
+        14634636,
+        14634648,
+        14691688
+      ]
+    },
+    "normalized_words": 549,
+    "same_real_terminal_context_owners": true,
+    "full_generator_geometry_or_model_composition": false,
+    "log": "local/native_group_storage_check.txt",
+    "log_sha256": "b03a82e59935c85d455289c7121f143a79ff5f737b68df2483870613b73e7424"
+  },
+  "model_slot_prefix": {
+    "spans": [
+      {
+        "symbol": "node_ctor_bytes",
+        "address": "00b6f5a0",
+        "length": 814,
+        "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+        "live_matches": true
+      },
+      {
+        "symbol": "matrix_copy_bytes",
+        "address": "004134f0",
+        "length": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "live_matches": true
+      },
+      {
+        "symbol": "string_resize_bytes",
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "live_matches": true
+      }
+    ],
+    "compared_bytes": 392,
+    "source": "Existing nodefixture at original188h modelslot;174hprefix and14h preservedtail including184hpoolID"
+  },
+  "game_validated": false,
+  "abi_compatible": false,
+  "native_eh_execution": false
+}

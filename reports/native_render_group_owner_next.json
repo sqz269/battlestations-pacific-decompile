@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_group_owner_next",
+  "status": "read_only_complete_storage_and_terminal_dependency_discovery",
+  "utc": "2026-09-10T21:11:29.224113+00:00",
+  "base_commit": "3eac4ee894e359c08ac2d509043ffc8c5a84ff4f",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "verification": "Every live span uses bsp.py ghidra bytes, which verifies the configured project and program before reading. No Ghidra mutation.",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00b1c500",
+      "end_exclusive": "00b1c55f",
+      "length": 95,
+      "purpose": "group",
+      "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1c770",
+      "end_exclusive": "00b1c7c0",
+      "length": 80,
+      "purpose": "group",
+      "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1d1d0",
+      "end_exclusive": "00b1d1e7",
+      "length": 23,
+      "purpose": "group",
+      "sha256": "6a6d9d35f7ff392dbe07eab7b41dd03eb2a468fa46f085f929ceac45a3f3685b",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1ca50",
+      "end_exclusive": "00b1ca8b",
+      "length": 59,
+      "purpose": "group",
+      "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1d6f0",
+      "end_exclusive": "00b1d758",
+      "length": 104,
+      "purpose": "group",
+      "sha256": "7660926333bb58da5ca7f6fd9bfec64ff039e6a568587a796bbf4de6dedff602",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1d760",
+      "end_exclusive": "00b1d81b",
+      "length": 187,
+      "purpose": "group",
+      "sha256": "30eca5db1f1352c6bd29b9d7e3b7a83b2587d96178b2e3fef6ee09a70c3d8afb",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1d8e0",
+      "end_exclusive": "00b1d8fe",
+      "length": 30,
+      "purpose": "group",
+      "sha256": "398413c19c25fd132de85c48daae9bafd07c5829418ba02a8f6a483725e8a553",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74450",
+      "end_exclusive": "00b74493",
+      "length": 67,
+      "purpose": "model_pool",
+      "sha256": "befc5be331463762210385a4206f953f73af692814f8fc1db60efb5edb9456cb",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74530",
+      "end_exclusive": "00b7453e",
+      "length": 14,
+      "purpose": "model_pool",
+      "sha256": "9ea468855ba5598c68b70dca639cbddb6a5cc28d38f9a2dd126bc2d90bc254e7",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74690",
+      "end_exclusive": "00b7471a",
+      "length": 138,
+      "purpose": "model_pool",
+      "sha256": "33612028b3c07f591c480e9f46fac067b225187c304601a7c9cbbc6e9b1942a1",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74750",
+      "end_exclusive": "00b747b8",
+      "length": 104,
+      "purpose": "model_pool",
+      "sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b748c0",
+      "end_exclusive": "00b748cc",
+      "length": 12,
+      "purpose": "model_pool",
+      "sha256": "39b8c53b27a69883b8e98f36c6b2eba59747d29886f9c6be65b276df2eac462d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74b80",
+      "end_exclusive": "00b74c53",
+      "length": 211,
+      "purpose": "model_pool",
+      "sha256": "95c058abd2c9aee27cec87ac5cf1a7d762b754592b09a4159c6e184ba72c30c2",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74c60",
+      "end_exclusive": "00b74d00",
+      "length": 160,
+      "purpose": "model_pool",
+      "sha256": "9810542f28f08223cfc70eb93e676e6387d7fe1eae98d15ac2a007eca937d068",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74d00",
+      "end_exclusive": "00b74e3c",
+      "length": 316,
+      "purpose": "model_pool",
+      "sha256": "e9626b642ce82a07ae8d4a53d9083c2a167a237fbdb67d8636ef6c66b15943a4",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b74eb0",
+      "end_exclusive": "00b74eba",
+      "length": 10,
+      "purpose": "model_pool",
+      "sha256": "369941539baefd0e0a7060a7ef69aa8f2cdb28ebad41de19783d0b68d8e25001",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce0e50",
+      "end_exclusive": "00ce0e5a",
+      "length": 10,
+      "purpose": "model_pool",
+      "sha256": "66ec77e286312616e37c804f6df59d96a2ab9dbceb803727890c8f562177ea2d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b75030",
+      "end_exclusive": "00b750b4",
+      "length": 132,
+      "purpose": "model_owner",
+      "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b750c0",
+      "end_exclusive": "00b75165",
+      "length": 165,
+      "purpose": "model_owner",
+      "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b75290",
+      "end_exclusive": "00b752b0",
+      "length": 32,
+      "purpose": "model_owner",
+      "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b1c4f0",
+      "end_exclusive": "00b1c4fd",
+      "length": 13,
+      "purpose": "missing_group_array_constructor",
+      "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cd7f00",
+      "end_exclusive": "00cd7f16",
+      "length": 22,
+      "purpose": "missing_model_pool_initializer",
+      "sha256": "6710dc7f7e04675e307a41b3f5ff461b0dba625dda2639fb30e221d6879c4b58",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d62de8",
+      "end_exclusive": "00d62e40",
+      "length": 88,
+      "purpose": "model_vtable",
+      "sha256": "5a15f1e4c58a0e26a8881d89cbcba631ed5990e32ffe7f2f5d8357891ed631bc",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d62dd0",
+      "end_exclusive": "00d62dd4",
+      "length": 4,
+      "purpose": "model_pool_vtable",
+      "sha256": "a3719fc3a08969ad3161ff964fa4ca280479f3e2b5ea47ea22b58299313cfbe8",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00df4e88",
+      "end_exclusive": "00df4eb4",
+      "length": 44,
+      "purpose": "group_constructor_eh",
+      "sha256": "c80d19257f4b4c43dbcb54382a20f18218130b8686c382e30ad0cc00f88b76eb",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00df4eb4",
+      "end_exclusive": "00df4ee4",
+      "length": 48,
+      "purpose": "group_destructor_eh",
+      "sha256": "a20d52c57d1391c37d512702f85e29cf114e81c1f32a2774c6f1ba92e8de0a4b",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cbca10",
+      "end_exclusive": "00cbca25",
+      "length": 21,
+      "purpose": "group_constructor_unwind",
+      "sha256": "5b89e36e0dcc6daecdb7a942602a3ecee2a70049aeb9d4c4a6b50d7d4e4d284c",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00cbca30",
+      "end_exclusive": "00cbca5b",
+      "length": 43,
+      "purpose": "group_destructor_unwind",
+      "sha256": "0cae28063a9a4c0c6c69585c6a543bf76a46116914219c5d6b7b7574676dfeaf",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce4adc",
+      "end_exclusive": "00ce4ae0",
+      "length": 4,
+      "purpose": "model_constructor_constant",
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00ce4970",
+      "end_exclusive": "00ce4974",
+      "length": 4,
+      "purpose": "model_constructor_constant",
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_matches_installed": true
+    },
+    {
+      "address": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "length": 4,
+      "purpose": "model_constructor_constant",
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_matches_installed": true
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "984883fc2e8b526b509de6469a7eb4044f379e22fda6b34c83b8f3a67a267df5"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "61aa582e146533fbd64daeaf86565387472bddc24bb34671ca296308c254da94"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "sha256": "9bf84bfbfed71bf90d5ab6626c3fc008665ac2b0aa9eb596d8dc6878a15db63d"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "sha256": "8fb01ea54062b84b15dad6a15743e4512f29241563639e733a35d9579c79761a"
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "sha256": "5c8a9a848628aac1f206caf77d5892206193bf79933d7b923c0052aab8d94518"
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "sha256": "83f8da8545b63a699189af79ee39fcf6a9c7dd8e5aefebc957de0f7a40015be9"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "include/bsp/instance_grouping.hpp",
+      "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+    },
+    {
+      "path": "src/instance_grouping.cpp",
+      "sha256": "06c4328b8c7cd75af5c3d8e9f41e41efc151508145dc2b8b17324e8177b67aa9"
+    }
+  ],
+  "group_storage": {
+    "allocated_bytes": 76,
+    "constructor_initialized_prefix_bytes": 60,
+    "fields": {
+      "00": "actual intrusive binding pointer",
+      "04": "pooled name length",
+      "08": "pooled name data",
+      "0c/10": "two counts",
+      "14/18": "two borrowed output entries",
+      "1c/20": "two actual model node pointers",
+      "24/30": "two three-DWORD borrowed entry-pointer arrays",
+      "3c..4b": "untouched unknown allocation tail"
+    },
+    "constructor": "B1D6F0 zeroes binding/name, calls two actual B1C4F0 array constructors, then20/1C/10/0C/18/14; leaves3C..4B unchanged.",
+    "destructor": "B1D760 release/clear binding; reload/release/clear model1C then20 through B6DFA0/current18; reverse destroy source arrays; reload and return pooled name; no group storage free.",
+    "scalar_deleter": "B1D8E0 calls destructor then ordinary free iff flags&1, returns original address in EAX, RET4; false free-noreturn pseudocode hides tail.",
+    "abi": "B1D6F0 ECX actual4Ch storage -> EAX same, RET; B1D760 ECX actual4Ch storage, RET; B1CA50 ECX destination pointer cell, EDX source pointer cell -> EAX destination, RET."
+  },
+  "group_exception_boundary": {
+    "constructor": "DF4E90 state0 -> CBCA10 pooled name destruction; array iterator owns completed-element unwinding.",
+    "destructor": "DF4EC4 state1 -> CBCA3B reverse array destruction -> state0 CBCA30 pooled name; later state-1 before normal name release. Binding/model release failures do not release remaining binding/models.",
+    "runtime_parity": false
+  },
+  "ready_packets": [
+    {
+      "id": "native_group_entry_arrays",
+      "addresses": [
+        "00b1c4f0",
+        "00b1c500",
+        "00b1c770",
+        "00b1d1d0"
+      ],
+      "contract": "Actual12-byte pointer/count/capacity, constructor0, min1 grow-only reserve, resize exposed cells0, destructor resize0 then free actual data without clearing header or releasing entries.",
+      "ownership": "Primary can extend the integrated native_render_pointer_arrays storage API after its worker commit. B1C4F0 is currently a missing function."
+    },
+    {
+      "id": "native_model_pool",
+      "addresses": [
+        "00b74450",
+        "00b74530",
+        "00b74690",
+        "00b74750",
+        "00b748c0",
+        "00b74b80",
+        "00b74c60",
+        "00b74d00",
+        "00b74eb0",
+        "00ce0e50",
+        "00cd7f00"
+      ],
+      "contract": "Actual38h canonical01090054 with profileD62DD0/currentvirtual0B74C60, shared allocator list;188h slots/184h ID;3144h slab,3100h WORD stack,3140h WORD count;32 slots.",
+      "status": "Dispatched independently to system_fog_owner_discovery from3eac4ee; only native_model_pool header/source/doc/report."
+    }
+  ],
+  "remaining_dependencies": [
+    "Native generated-model owner constructor/destructor/scalar/reference with actual184h storage and current D62DE8 virtual dispatch, not the existing typed shared_ptr model projection.",
+    "Native model virtual0C/type bootstrap contracts; model profile08/0C/14/50 must not inherit camera/light dispatch or default node behavior without evidence.",
+    "Concrete current binding terminal release for group00 and geometry180 when populated; actual counts and terminal current vtable identity must be preserved.",
+    "Complete native group owner adapter and native44h command before replacing typed command queue; nonempty actual generated models required for final composition."
+  ],
+  "model_owner_findings": {
+    "object_bytes": 388,
+    "pool_slot_bytes": 392,
+    "pool_id_offset": 388,
+    "table": "00d62de8",
+    "terminal": "BD30E0 -> current+04 B75290(1) -> B750C0 -> B6F440 -> global01090054/B74750",
+    "logical_release": "current+18 B6F310 through shared actual node lifetime path; +54 B6EE10",
+    "constructor": "B75030 calls actual B6F5A0, sets D62DE8/174=0/178=CE4ADC/17C=CE4970/180=0; stores D7A208 into18/1C/20 then positive-zero24/28/2C/08/0C/10/14. +184 pool ID untouched.",
+    "base_precondition_issue": "Current construct_native_node_00b6f5a0 incorrectly requires1F0h storage for every caller, despite exact174h writes and original model188h slot. Root must lower the host guard to sizeof(NativeNodeStorage), preserve alignment checks, and update original node-pool wording without changing the native1F0h node pool."
+  },
+  "validation": {
+    "exported_and_static_evidence_checked": true,
+    "new_cpp_reconstruction": false,
+    "new_build": false,
+    "native_differential_fixture": false,
+    "game_validated": false
+  }
+}
