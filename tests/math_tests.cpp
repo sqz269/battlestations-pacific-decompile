@@ -3,6 +3,7 @@
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
+#include "bsp/game_settings.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
@@ -23,6 +24,7 @@
 #include "bsp/world_entities.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
+#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -858,6 +860,35 @@ int main() {
             "the branch just below that boundary agrees with it");
         check(!empty.scrollable && empty.thumb_height == 52.0f && empty.thumb_travel == 0.0f,
             "a zero range fills the track with the thumb and reports not scrollable");
+    }
+
+    {
+        // 008D64A0 guards most rows with the equality test at 00BD5680, so a
+        // field that still holds its default is never written and the reader
+        // has to reconstruct it. The four control bytes are the risk: the
+        // control reset 008D4820 writes invertCameraY = 0 while the serializer
+        // omits that key at 1, so a fresh reset must persist both invert bytes.
+        bsp::GameSettingsBlock settings;
+        bsp::reset_control_defaults_008d4820(settings, false, false);
+        struct Recorder : bsp::SettingsWriter {
+            std::vector<std::string> keys;
+            void begin_section(const char*) override {}
+            void end_section() override {}
+            void write_field(const char* key, const bsp::SettingsValue&) override
+            {
+                keys.emplace_back(key);
+            }
+            void write_keyboard_setup() override {}
+        } recorder;
+        bsp::write_settings_008d64a0(settings, recorder);
+        const auto has = [&recorder](const char* key) {
+            return std::find(recorder.keys.begin(), recorder.keys.end(), std::string(key))
+                != recorder.keys.end();
+        };
+        check(has("invertCameraY") && has("invertPlaneY"),
+            "the control reset leaves both invert bytes different from the omitted default");
+        check(!has("imperial") && !has("cameraShake"),
+            "rows still holding the serializer default are dropped");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
