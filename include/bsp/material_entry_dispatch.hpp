@@ -56,6 +56,15 @@ struct MaterialEntryConstantState {
     std::vector<float>& vertex_words; // actual shared0108EBF4 contents
     std::vector<float>& pixel_words; // actual shared0108DBEC contents
 };
+//00B43541..00B4359F: actual pass metadata and shared constant storage, with
+// independent renderer captures for VS and PS. Counts retain the original
+// signed differences for diagnostics; PS reloads its gate/start after VS but
+// uploads the original pixel_count. COM failure does not suppress PS.
+// renderer is the SAME live global00F8D394 slot, never a snapshot or fallback.
+bool upload_material_entry_constants_00b43541(const CompiledMaterialPass& pass,
+    MaterialEntryConstantState& constants, D3D9StateCache* const volatile& renderer,
+    HRESULT& first_failure, std::int32_t& vertex_count, std::int32_t& pixel_count,
+    std::string& error);
 struct MaterialEntryDrawStatistics {
     std::uint32_t mode{}, primitives{}, vertices{};
     std::int32_t vertex_registers{}, pixel_registers{};
@@ -78,10 +87,11 @@ public:
     virtual bool update_model_and_renderer(InstanceRenderEntry&, std::string&) = 0;
     virtual bool resolve_geometry(InstanceRenderEntry&, MaterialEntryGeometry&,
         std::string&) = 0;
-    // Use the actual camera frame companion on the same D3D9StateCache.
-    virtual bool restore_pending_planes_00b25080(std::string&) = 0;
-    // Remaining00B4488D..00B44A45 math/owner chain, then00B25040.
-    virtual bool construct_and_append_effect_plane(MaterialEntryEffect&,
+    // Use the actual camera frame companion on this captured renderer. Native
+    // saves global00F8D394 at00B4485A before the remaining plane owner/math calls.
+    virtual bool restore_pending_planes_00b25080(D3D9StateCache&, std::string&) = 0;
+    // Remaining00B4488D..00B44A45 math/owner chain, then00B25040 on the capture.
+    virtual bool construct_and_append_effect_plane(D3D9StateCache&, MaterialEntryEffect&,
         InstanceRenderEntry&, float distance, std::string&) = 0;
     virtual bool effect_texture_00b17d90(MaterialEntryEffect&, std::uint32_t,
         std::shared_ptr<LogicalTexture>&, std::string&) = 0;
@@ -104,7 +114,9 @@ public:
         const MaterialEntryDrawStatistics&, std::string&) = 0;
 };
 struct MaterialEntryEnvironment {
-    D3D9StateCache& renderer;
+    // Actual shared global00F8D394 slot; keep the slot and any captured renderer
+    // alive across callbacks. A replacement takes effect at native reloads.
+    D3D9StateCache* const volatile& renderer;
     const D3D9DrawState& draw;
     const void*& material_effect_owner; // SAME global0108FBF4 as batch reset
     const std::uint32_t& override_context; // actual global0109019C

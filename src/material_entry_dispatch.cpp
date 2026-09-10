@@ -31,6 +31,44 @@ bool upload_span(const std::vector<float>& words, std::uint32_t first,
     }
     return true;
 }
+bool capture_renderer(D3D9StateCache* const volatile& slot,
+    D3D9StateCache*& renderer, std::string& error) {
+    renderer = slot;
+    if (!renderer) {
+        error = "Actual live material renderer slot is unbound";
+        return false;
+    }
+    return true;
+}
+}
+
+bool upload_material_entry_constants_00b43541(const CompiledMaterialPass& pass,
+    MaterialEntryConstantState& constants, D3D9StateCache* const volatile& renderer,
+    HRESULT& first_failure, std::int32_t& vertex_count, std::int32_t& pixel_count,
+    std::string& error) {
+    const auto vertex_end = static_cast<std::uint32_t>(pass.vb.end_register);
+    std::uint32_t first = constants.first_register;
+    vertex_count = signed_word(vertex_end - first);
+    pixel_count = signed_word(static_cast<std::uint32_t>(pass.pb.end_register) - first);
+    D3D9StateCache* captured = nullptr;
+    if (vertex_count > 0) {
+        //00B4355C, independent of the state/shader bind capture.
+        if (!capture_renderer(renderer, captured, error)) return false;
+        const auto count = static_cast<std::uint32_t>(vertex_count);
+        if (!upload_span(constants.vertex_words, first, count, error)) return false;
+        remember_failure(captured->set_vertex_shader_constants_f_00b21820(first,
+            constants.vertex_words.data() + static_cast<std::size_t>(first) * 4, count), first_failure);
+        first = constants.first_register; //00B43575, including after COM failure
+    }
+    //00B4357A reloads PS end for the gate;00B4358C pushes OLD pixel_count.
+    if (signed_word(static_cast<std::uint32_t>(pass.pb.end_register) - first) > 0) {
+        const auto count = static_cast<std::uint32_t>(pixel_count);
+        if (!upload_span(constants.pixel_words, first, count, error)) return false;
+        if (!capture_renderer(renderer, captured, error)) return false; //00B43594
+        remember_failure(captured->set_pixel_shader_constants_f_00b218c0(first,
+            constants.pixel_words.data() + static_cast<std::size_t>(first) * 4, count), first_failure);
+    }
+    return true;
 }
 
 MaterialEntryProgram::MaterialEntryProgram(std::shared_ptr<CompiledMaterialPass> value)
@@ -122,7 +160,7 @@ bool MaterialEntryDispatcher::bind_and_draw(MaterialEntryEffect& effect,
     MaterialEntryProgram& program, InstanceRenderEntry& entry,
     MaterialEntryOverride* override_value, HRESULT& first_failure, std::string& error) {
     auto& operations = environment_.operations;
-    auto& renderer = environment_.renderer;
+    auto& renderer_slot = environment_.renderer;
     MaterialEntryGeometry geometry;
     if (!operations.resolve_geometry(entry, geometry, error)) return false;
     if (geometry.streams.empty()) return true;
@@ -143,23 +181,32 @@ bool MaterialEntryDispatcher::bind_and_draw(MaterialEntryEffect& effect,
         return false;
     }
     const bool instanced = geometry.section->instance_count != 0;
+    D3D9StateCache* captured = nullptr;
     for (UINT i = 0; i < geometry.streams.size(); ++i) {
         const auto& stream = geometry.streams[i];
         if (!stream || !stream->physical || !stream->declaration) {
             error = "Material entry has an incomplete active vertex stream owner";
             return false;
         }
-        renderer.bind_vertex_stream_00b24840(i, stream);
+        //00B447A2/00B44810 reload for every stream.
+        if (!capture_renderer(renderer_slot, captured, error)) return false;
+        captured->bind_vertex_stream_00b24840(i, stream);
         if (instanced) {
+            //00B447C4/00B447DD: capture before the projected instance-count read.
+            if (!capture_renderer(renderer_slot, captured, error)) return false;
             const DWORD frequency = stream->tag == 0x80000000u ? stream->tag | 1u
                 : stream->tag | geometry.section->instance_count;
-            renderer.set_stream_frequency_00b24a40(i, frequency);
+            captured->set_stream_frequency_00b24a40(i, frequency);
         }
     }
     if (!instanced) {
-        renderer.set_stream_frequency_00b24a40(0, 1);
-        renderer.set_stream_frequency_00b24a40(1, 1);
+        if (!capture_renderer(renderer_slot, captured, error)) return false; //00B4482F
+        captured->set_stream_frequency_00b24a40(0, 1);
+        if (!capture_renderer(renderer_slot, captured, error)) return false; //00B4483E
+        captured->set_stream_frequency_00b24a40(1, 1);
     }
+    //00B4485A saves the plane owner through all required plane callbacks.
+    if (!capture_renderer(renderer_slot, captured, error)) return false;
     if (environment_.material_effect_owner != effect.owner.get()) {
         // Native publishes effect identity BEFORE the clip operation.
         environment_.material_effect_owner = effect.owner.get();
@@ -167,25 +214,32 @@ bool MaterialEntryDispatcher::bind_and_draw(MaterialEntryEffect& effect,
         if (!mode(entry, current_mode, error)) return false;
         const float distance = effect.clip_distance[current_mode];
         if (!effect.extra_clip_plane || !(distance > 0.0f)) {
-            if (!operations.restore_pending_planes_00b25080(error)) return false;
-        } else if (!operations.construct_and_append_effect_plane(effect, entry, distance, error)) {
+            if (!operations.restore_pending_planes_00b25080(*captured, error)) return false;
+        } else if (!operations.construct_and_append_effect_plane(*captured, effect, entry, distance, error)) {
             return false;
         }
     }
-    remember_failure(renderer.bind_vertex_layout_00b23f20(geometry.layout), first_failure);
+    if (!capture_renderer(renderer_slot, captured, error)) return false; //00B44A62
+    remember_failure(captured->bind_vertex_layout_00b23f20(geometry.layout), first_failure);
     const std::uint32_t index_base = geometry.indices ? geometry.indices->base_index : 0;
-    renderer.bind_index_stream_00b24b00(geometry.indices,
+    if (!capture_renderer(renderer_slot, captured, error)) return false; //00B44A96
+    captured->bind_index_stream_00b24b00(geometry.indices,
         signed_word(geometry.streams.front()->base_vertex));
     const bool indexed = geometry.indices && geometry.indexed;
     const std::uint32_t vertex_base = geometry.streams.front()->base_vertex;
 
     //00B43410: states, shader objects and ordered static texture references.
-    renderer.bind_render_state_block_00b27a80(pass.states);
-    renderer.bind_sampler_state_block_00b27b90(program.sampler_states);
-    if (signed_word(geometry.material->word104) >= 0)
-        renderer.set_render_state_00b24460(D3DRS_ALPHAREF, geometry.material->word104);
-    remember_failure(renderer.bind_vertex_shader_00b21d10(&program.vertex), first_failure);
-    remember_failure(renderer.bind_pixel_shader_00b21c20(&program.pixel), first_failure);
+    if (!capture_renderer(renderer_slot, captured, error)) return false; //00B43414
+    auto& state_renderer = *captured; // EBX survives all four block/shader binds.
+    state_renderer.bind_render_state_block_00b27a80(pass.states);
+    state_renderer.bind_sampler_state_block_00b27b90(program.sampler_states);
+    if (signed_word(geometry.material->word104) >= 0) {
+        if (!capture_renderer(renderer_slot, captured, error)) return false; //00B4344C
+        //00B43453 pushes0x39;00B24460 forwards it without remapping.
+        captured->set_render_state_00b24460(D3DRS_STENCILREF, geometry.material->word104);
+    }
+    remember_failure(state_renderer.bind_vertex_shader_00b21d10(&program.vertex), first_failure);
+    remember_failure(state_renderer.bind_pixel_shader_00b21c20(&program.pixel), first_failure);
     UINT pixel_sampler = 0, vertex_sampler = 16;
     const std::uint32_t usage = pass.pb.sampler_mask;
     for (std::size_t i = 0; i < pass.pass.textures.size(); ++i) {
@@ -206,40 +260,27 @@ bool MaterialEntryDispatcher::bind_and_draw(MaterialEntryEffect& effect,
             error = "Material texture reference exceeds the native renderer sampler banks";
             return false;
         }
-        remember_failure(renderer.bind_texture_00b24710(sampler++, std::move(texture)), first_failure);
+        if (!capture_renderer(renderer_slot, captured, error)) return false; //00B434F8
+        remember_failure(captured->bind_texture_00b24710(sampler++, std::move(texture)), first_failure);
     }
     HRESULT constant_failure = S_OK;
     if (!operations.build_constants_00b42350(program, entry, override_value,
         environment_.constants, constant_failure, error)) return false;
     remember_failure(constant_failure, first_failure);
-    auto& constants = environment_.constants;
-    std::uint32_t first = constants.first_register;
-    const std::int32_t vertex_count = signed_word(static_cast<std::uint32_t>(pass.vb.end_register) - first);
-    const std::int32_t pixel_count = signed_word(static_cast<std::uint32_t>(pass.pb.end_register) - first);
-    if (vertex_count > 0) {
-        const auto count = static_cast<std::uint32_t>(vertex_count);
-        if (!upload_span(constants.vertex_words, first, count, error)) return false;
-        remember_failure(renderer.set_vertex_shader_constants_f_00b21820(first,
-            constants.vertex_words.data() + static_cast<std::size_t>(first) * 4, count), first_failure);
-        first = constants.first_register;
-    }
-    // Native reloads the start and PS end for the gate but pushes the OLD PS count.
-    if (signed_word(static_cast<std::uint32_t>(pass.pb.end_register) - first) > 0) {
-        const auto count = static_cast<std::uint32_t>(pixel_count);
-        if (!upload_span(constants.pixel_words, first, count, error)) return false;
-        remember_failure(renderer.set_pixel_shader_constants_f_00b218c0(first,
-            constants.pixel_words.data() + static_cast<std::size_t>(first) * 4, count), first_failure);
-    }
+    std::int32_t vertex_count, pixel_count;
+    if (!upload_material_entry_constants_00b43541(pass, environment_.constants,
+        renderer_slot, first_failure, vertex_count, pixel_count, error)) return false;
     if (geometry.material->word08 &&
         !operations.material_callback(*geometry.material, entry, error)) return false;
+    if (!capture_renderer(renderer_slot, captured, error)) return false; //00B435B8
     auto& section = *geometry.section;
     const auto primitive = static_cast<D3DPRIMITIVETYPE>(section.primitive);
     if (indexed) {
-        remember_failure(renderer.draw_indexed_00b24010(environment_.draw, primitive,
+        remember_failure(captured->draw_indexed_00b24010(environment_.draw, primitive,
             section.range_words[0], section.range_words[1], section.range_words[2] + index_base,
             section.range_words[3]), first_failure);
     } else {
-        remember_failure(renderer.draw_primitive_00b21b40(environment_.draw, primitive,
+        remember_failure(captured->draw_primitive_00b21b40(environment_.draw, primitive,
             section.range_words[0] + vertex_base, section.range_words[3]), first_failure);
     }
     MaterialEntryDrawStatistics statistics;

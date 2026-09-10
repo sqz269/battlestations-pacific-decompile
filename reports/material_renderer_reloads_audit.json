@@ -1,0 +1,405 @@
+{
+  "packet": "material_renderer_reloads",
+  "created_utc": "2026-09-10T15:39:15.676035+00:00",
+  "owned_addresses": [
+    "00B44750",
+    "00B43410"
+  ],
+  "owned_files": [
+    "include/bsp/material_entry_dispatch.hpp",
+    "src/material_entry_dispatch.cpp",
+    "docs/MATERIAL_RENDERER_RELOADS.md",
+    "reports/material_renderer_reloads_audit.json"
+  ],
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verified_via": "tools/bsp.py ghidra client.verify before every live batch"
+  },
+  "native_preimages": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions": [
+      {
+        "address": "00B44750",
+        "bytes": 948,
+        "sha256": "f7eb5a9057acf5af9e2b25b4a707e2f1824ef829a72469b0c794913103b750bd",
+        "live_ghidra_equals_installed_preimage": true
+      },
+      {
+        "address": "00B43410",
+        "bytes": 624,
+        "sha256": "3f1edf73bae253283b78ade89d921230f400941c3d0b4fd855a1ab9227b7f477",
+        "live_ghidra_equals_installed_preimage": true
+      }
+    ]
+  },
+  "original_abi": {
+    "00B44750": "ECX selected pass; stack entry/override; RET8",
+    "00B43410": "ECX pass; six stack arguments; RET18h",
+    "00B43541..00B4359F": "in-function fragment: ESI retained pass; EBX original VS count; EBP original PS count; EAX captured/reloaded first; no independent native ABI"
+  },
+  "renderer_global": "00F8D394",
+  "renderer_slot_api": "D3D9StateCache* const volatile&; caller supplies SAME live slot; captured owners remain alive; missing required owner errors explicitly",
+  "capture_schedule": [
+    {
+      "load": "00B447A2/00B44810",
+      "consumer": "each vertex stream",
+      "lifetime": "reload per stream"
+    },
+    {
+      "load": "00B447C4",
+      "consumer": "tagged instanced stream frequency",
+      "lifetime": "reload before call"
+    },
+    {
+      "load": "00B447DD",
+      "consumer": "other instanced stream frequency",
+      "lifetime": "capture before00B855A0; saved EBP used00B447EE"
+    },
+    {
+      "load": "00B4482F",
+      "consumer": "noninstanced stream0 frequency",
+      "lifetime": "independent reload"
+    },
+    {
+      "load": "00B4483E",
+      "consumer": "noninstanced stream1 frequency",
+      "lifetime": "independent reload"
+    },
+    {
+      "load": "00B4485A",
+      "consumer": "plane operation",
+      "lifetime": "save stack+20 through required plane math;00B44A4A reads saved owner for append"
+    },
+    {
+      "load": "00B44A62",
+      "consumer": "vertex layout",
+      "lifetime": "reload after plane operation"
+    },
+    {
+      "load": "00B44A96",
+      "consumer": "index binding",
+      "lifetime": "capture after index base and before vertex base getter; saved EBX"
+    },
+    {
+      "load": "00B43414",
+      "consumer": "render block/sampler block/VS shader/PS shader",
+      "lifetime": "one saved EBX owner across all four calls"
+    },
+    {
+      "load": "00B4344C",
+      "consumer": "material104 state override",
+      "lifetime": "independent reload; exact state57 STENCILREF"
+    },
+    {
+      "load": "00B434F8",
+      "consumer": "selected static/effect texture",
+      "lifetime": "reload after effect texture callback each turn"
+    },
+    {
+      "load": "00B4355C",
+      "consumer": "VS float upload",
+      "lifetime": "reload after constant builder"
+    },
+    {
+      "load": "00B43594",
+      "consumer": "PS float upload",
+      "lifetime": "reload independently after attempted VS"
+    },
+    {
+      "load": "00B435B8",
+      "consumer": "indexed or nonindexed draw",
+      "lifetime": "reload after optional material callback"
+    }
+  ],
+  "public_helper": {
+    "name": "upload_material_entry_constants_00b43541",
+    "signature": "bool upload_material_entry_constants_00b43541(const CompiledMaterialPass& pass, MaterialEntryConstantState& constants, D3D9StateCache* const volatile& renderer, HRESULT& first_failure, std::int32_t& vertex_count, std::int32_t& pixel_count, std::string& error)",
+    "metadata": "same retained CompiledMaterialPass vb/pb; no metadata copies",
+    "storage": "same MaterialEntryConstantState first_register global00E13078 and VS0108EBF4 / PS0108DBEC blocks",
+    "counts": "signed wrapping32-bit end minus original first; output original VS/PS counts for diagnostics",
+    "late_reload": "after attempted VS reload first00B43575; PS end reload00B4357A controls gate but old EBP PS count pushed00B4358C",
+    "hresult": "first failing HRESULT accumulated; failed VS does not suppress PS/callback/draw/statistics",
+    "binding_errors": "null required renderer or upload span outside actual block returns false without fallback",
+    "prefix_scope": "helper neither constructs system prefix nor overrides actual first_register; parent may call with actual tail start>=77"
+  },
+  "plane_api_changes": [
+    "restore_pending_planes_00b25080(D3D9StateCache& captured_renderer, std::string&)",
+    "construct_and_append_effect_plane(D3D9StateCache& captured_renderer, MaterialEntryEffect&, InstanceRenderEntry&, float, std::string&)"
+  ],
+  "word104_correction": {
+    "getter_address": "00B17320",
+    "verified_current_name": "BSP_Material_GetAlphaReferenceWord",
+    "getter_assembly": [
+      "00B17320 MOV EAX,dword ptr [ECX+104h]",
+      "00B17326 RET"
+    ],
+    "consumer_assembly": [
+      "00B43447 CMP EAX,-1",
+      "00B4344A JLE00B4345A",
+      "00B4344C MOV ECX,[00F8D394]",
+      "00B43452 PUSH EAX",
+      "00B43453 PUSH39h",
+      "00B43455 CALL00B24460"
+    ],
+    "state_forwarding": "00B24460 passes unmodified state to device virtual+E4 (SetRenderState); no enum remapping",
+    "old_cpp_state": "D3DRS_ALPHAREF=24",
+    "correct_cpp_state": "D3DRS_STENCILREF=57",
+    "retained_field_name": "MaterialCloneState::word104",
+    "proposed_name": "BSP_Material_GetWord104",
+    "proposed_comment": "Getter returns material+104 DWORD (ECX material; EAX word; RET).00B43410 signed-compares against-1 and forwards nonnegative values using state0x39 at00B43453 through00B24460 directly to SetRenderState: D3DRS_STENCILREF, not D3DRS_ALPHAREF. Broader property meaning unestablished. Prior AlphaReferenceWord interpretation is superseded. Evidence docs/MATERIAL_RENDERER_RELOADS.md and reports/material_renderer_reloads_audit.json.",
+    "older_evidence_to_amend": [
+      "docs/MATERIAL_ENTRY_DISPATCH.md:93",
+      "reports/material_entry_dispatch_audit.json:239",
+      "reports/material_entry_dispatch_audit.json:327-329",
+      "Ghidra00B43410 plate comment",
+      "Ghidra00B17320 name and plate comment",
+      "corresponding sharded name/reconstruction ledgers via integrator"
+    ],
+    "shared_updates_applied": false
+  },
+  "annotation_preimages": [
+    {
+      "address": "00b44750",
+      "annotation": {
+        "address": "00b44750",
+        "function_name": "BSP_MaterialPass_BindGeometryAndDraw",
+        "comment": "[BSP reconstruction 00b44750]\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\n\n[BSP reconstruction 00b44750] update\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\nRecovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX selected pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b43410",
+      "annotation": {
+        "address": "00b43410",
+        "function_name": "BSP_MaterialPass_ApplyStateAndDraw",
+        "comment": "[BSP reconstruction 00b43410]\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\n\n[BSP reconstruction 00b43410] update\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\nRecovered apply sequence around REQUIRED00B42350: render/sampler blocks; signed material104>=0 ALPHAREF; logical shaders; ordinal-bit static sampler loop including negative effect texture slots via00B17D90. Compute signed byte-end minus shared00E13078 upload counts; reread first and PS end after VS for PS gate but push old PS count. Material08 CALL EAX optional with ECX entry/no explicit args. Draw indexed/nonindexed with wrapping bases, then diagnostic00B16F80 even for skipped/failed draw. Constant builder, raw callback, effect texture and diagnostic owners remain actual required operations. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override, indexed flag, index stream, index base, vertex base; RET18. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b17320",
+      "annotation": {
+        "address": "00b17320",
+        "function_name": "BSP_Material_GetAlphaReferenceWord",
+        "comment": "[BSP reconstruction 00b17320]\nComplete getter returns material+104 DWORD.00B43410 signed-compares greater than-1 and sets D3DRS_ALPHAREF57 when selected. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX material; RET; EAX DWORD. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      }
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "passed": true,
+      "existing_ctest": "reconstructed_math 1/1 passed",
+      "log": "local/material_renderer_reloads_build.log"
+    },
+    "fixture_compile": {
+      "command": "cmd /c local\\material_builder_entry_review.cmd",
+      "flags": [
+        "/std:c++17",
+        "/MD",
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/O2",
+        "/fp:strict"
+      ],
+      "passed": true,
+      "linked_core": "build/win32/Release/bsp_core.lib"
+    },
+    "existing_selector": {
+      "cases": 21,
+      "selected_program_override_identities": 24,
+      "passed": true
+    },
+    "existing_com_continuation": {
+      "passed": true,
+      "VS_and_PS_uploads": true,
+      "material_callback_and_statistics": true
+    },
+    "new_scenarios": 1,
+    "native_renderer_replacement": {
+      "passed": true,
+      "native_entry": "00B44750 ->00B43410",
+      "ordered_events": 19,
+      "path": "noninstanced, nonindexed, positive extra clip plane, one negative effect texture reference, material104=23, material08 callback enabled",
+      "synthetic_dependency_patch": "redirect native required callees;00B448A3 invokes synthetic plane-build callback then00B448A8 JMP00B44A4A preserves original saved-owner append",
+      "concrete_vs_effect": "renderer B at start77/count3 returns E_FAIL, switches live renderer to C, writes first78 and PS end79",
+      "ps_result": "renderer C start78/count4 (original81-77), despite late gate79-78=1 and VS HRESULT failure",
+      "draw_result": "material callback switches C to A; draw on A; diagnostics original VS/PS counts3/4",
+      "event_legend": [
+        "Stream",
+        "Frequency",
+        "PlaneBuild",
+        "PlaneAppend",
+        "RenderState",
+        "SamplerState",
+        "VertexShader",
+        "PixelShader",
+        "EffectTexture",
+        "Texture",
+        "Build",
+        "VertexUpload",
+        "PixelUpload",
+        "Callback",
+        "Draw",
+        "Statistics"
+      ],
+      "event_fields": [
+        "operation",
+        "owner_0A_1B_2C",
+        "first_or_key",
+        "count_or_value"
+      ],
+      "events": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          1
+        ],
+        [
+          1,
+          2,
+          1,
+          1
+        ],
+        [
+          2,
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          2,
+          0,
+          0
+        ],
+        [
+          4,
+          1,
+          7,
+          1
+        ],
+        [
+          5,
+          1,
+          0,
+          2
+        ],
+        [
+          4,
+          2,
+          57,
+          23
+        ],
+        [
+          6,
+          1,
+          0,
+          0
+        ],
+        [
+          7,
+          1,
+          0,
+          0
+        ],
+        [
+          8,
+          2,
+          0,
+          0
+        ],
+        [
+          9,
+          0,
+          0,
+          0
+        ],
+        [
+          10,
+          0,
+          0,
+          0
+        ],
+        [
+          11,
+          1,
+          77,
+          3
+        ],
+        [
+          12,
+          2,
+          78,
+          4
+        ],
+        [
+          13,
+          2,
+          0,
+          0
+        ],
+        [
+          14,
+          0,
+          6,
+          1
+        ],
+        [
+          15,
+          0,
+          3,
+          4
+        ]
+      ]
+    },
+    "fixture_log": "local/material_renderer_reloads_fixture.log",
+    "fixture_log_sha256": "ecd313735437095efeececd253c78362fa5bfb714a18074c7a36eb323bdf150d",
+    "fixture_sources": [
+      "local/material_builder_entry_review.cpp",
+      "local/renderer_reload_fixture.hpp",
+      "local/renderer_reload_reference.hpp",
+      "local/prepare_renderer_reload_fixture.py"
+    ],
+    "diff_check_passed": true
+  },
+  "evidence_status": {
+    "exported": true,
+    "bounded_reconstructed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "original_abi_compatible": false,
+    "gpu_validated": false,
+    "game_validated": false,
+    "complete_material_pipeline": false
+  },
+  "limitations": [
+    "All fixture device/owner/geometry dependencies are synthetic.",
+    "Plane math remains a required operation; the fixture tests capture across the dependency, not math correctness.",
+    "Instanced/indexed capture branches are assembly-reviewed; new differential scenario covers noninstanced/nonindexed path only.",
+    "Lifetime and side-effect-free owner/getter contracts remain host responsibilities.",
+    "No Ghidra, shared ledgers, shared CMake, or installed probe changes in this packet."
+  ]
+}
