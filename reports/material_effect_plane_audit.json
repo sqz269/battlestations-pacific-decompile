@@ -1,0 +1,286 @@
+{
+  "packet": "material_effect_plane",
+  "created_utc": "2026-09-10T16:12:44.780299+00:00",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-material-effect-plane-20260910",
+  "source": [
+    "include/bsp/material_effect_plane.hpp",
+    "src/material_effect_plane.cpp"
+  ],
+  "reconstruction_status": "bounded_selected_branch_and_two_helpers_reconstructed_strict_build_and_native_fixture_checked",
+  "claimed_range": [
+    "00B4488D",
+    "00B44A61"
+  ],
+  "implemented_branch": [
+    "00B448A3",
+    "00B44A53"
+  ],
+  "parent": "00B44750",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra client invokes Client.verify before reading."
+  },
+  "preimages": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions": [
+      {
+        "name": "branch",
+        "address": "00B4488D",
+        "length": 469,
+        "sha256": "048bf5fd4d2ef243870fcd61660f55baea3adba7801a7fd142e52460755630e2",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "direction",
+        "address": "0042D0D0",
+        "length": 187,
+        "sha256": "b15282939ead3cf84c443e3092841998741ebf62b02f712287eed22fa32f767a",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "transpose",
+        "address": "00B23360",
+        "length": 114,
+        "sha256": "d97a8b10701c3d49df0d821d0fdff50e5afe28439a9c0a38cae736c7d6279d66",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "context",
+        "address": "00B1BFA0",
+        "length": 4,
+        "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "inverse_affine",
+        "address": "00B63B30",
+        "length": 531,
+        "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "inverse_general",
+        "address": "00B632D0",
+        "length": 2136,
+        "sha256": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "multiply",
+        "address": "00413920",
+        "length": 874,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "plane_transform",
+        "address": "00B65BA0",
+        "length": 129,
+        "sha256": "0ec82737b38f39af0df1f24136c01ceaf60356656df01fe37b6e84d2330d4363",
+        "live_ghidra_equals_installed": true
+      },
+      {
+        "name": "vector4",
+        "address": "00B62D10",
+        "length": 184,
+        "sha256": "bff9fed3d6c782b47de1bef6a6f44cdfd676bc2636fefd1f5e715b352b70cf5d",
+        "live_ghidra_equals_installed": true
+      }
+    ]
+  },
+  "original_abi": [
+    {
+      "address": "00B44750",
+      "abi": "thiscall ECX selected pass; stack entry,override; RET8; interior relies on saved EBX camera, EDI effect, stack+20 renderer"
+    },
+    {
+      "address": "00B1BFA0",
+      "abi": "ECX queue; EAX borrowed context at+30; RET"
+    },
+    {
+      "address": "0042D0D0",
+      "abi": "ECX destination, EDX vector; stack matrix,normalization byte in DWORD slot; EAX destination; RET8",
+      "coverage": "normalize=false only"
+    },
+    {
+      "address": "00B23360",
+      "abi": "ECX destination, EDX source; EAX destination; RET",
+      "coverage": "complete body"
+    }
+  ],
+  "owners": [
+    {
+      "point": "00B4487E",
+      "identity": "captured entry+10 camera"
+    },
+    {
+      "point": "00B448A3",
+      "identity": "actual shared004C11F0 queue singleton service"
+    },
+    {
+      "point": "00B448AA",
+      "identity": "queue+30 current RenderCommandContext, borrowed"
+    },
+    {
+      "point": "00B448AF",
+      "identity": "context+0C scene owner, mapped to same CameraTransform"
+    },
+    {
+      "point": "00B448F6",
+      "identity": "captured camera+198 mode reloaded after queue/world operations"
+    },
+    {
+      "point": "00B448FC",
+      "identity": "effect+140+4*reloadedMode distance through x87 FLD/FSTP"
+    },
+    {
+      "point": "00B44A4A",
+      "identity": "renderer previously captured00B4485A; actual D3D9CameraFrameAccess cache identity verified"
+    }
+  ],
+  "native_virtual_bindings": [
+    {
+      "callee": "00B23E50",
+      "owner": "captured renderer+1A10 actual D3D9 device",
+      "vtable_offset": "00DC",
+      "operation": "SetClipPlane",
+      "source": "src/camera_frame_state.cpp existing recovered companion"
+    },
+    {
+      "callee": "00B24460",
+      "owner": "same captured renderer device",
+      "vtable_offset": "00E4",
+      "operation": "SetRenderState CLIPPLANEENABLE152",
+      "source": "src/d3d9_states.cpp existing recovered cache"
+    }
+  ],
+  "literal_words": {
+    "00D7A208": "80000000 negative zero",
+    "00D7A218": "00000000 gate zero (existing dispatcher)",
+    "00D7A24C": "3F800000 one"
+  },
+  "original_annotations": [
+    {
+      "address": "00b44750",
+      "annotation": {
+        "address": "00b44750",
+        "function_name": "BSP_MaterialPass_BindGeometryAndDraw",
+        "comment": "[BSP reconstruction 00b44750]\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\n\n[BSP reconstruction 00b44750] update\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\nRecovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX selected pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b1bfa0",
+      "annotation": {
+        "address": "00b1bfa0",
+        "function_name": "TRIV_body_00b1bfa0"
+      }
+    },
+    {
+      "address": "0042d0d0",
+      "annotation": {
+        "address": "0042d0d0",
+        "function_name": "FUN_0042d0d0"
+      }
+    },
+    {
+      "address": "00b23360",
+      "annotation": {
+        "address": "00b23360",
+        "function_name": "FUN_00b23360"
+      }
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00B1BFA0",
+      "proposed_name": "BSP_RenderCommandQueue_GetCurrentContext",
+      "comment_append": "ECX queue; EAX=[ECX+30]; RET. Returns borrowed current context without retain. Caller00B44750 at00B448AF reads context+0C scene transform, not context+08 camera. Typed getter uses existing RenderCommandQueue.current_context. Evidence docs/MATERIAL_EFFECT_PLANE.md; no native layout or ABI replacement.",
+      "old_name": "TRIV_body_00b1bfa0",
+      "status": "proposed_not_applied_by_worker"
+    },
+    {
+      "address": "0042D0D0",
+      "proposed_name": "BSP_Vector3f_TransformDirectionOptionalNormalize",
+      "comment_append": "Provisional descriptive name. ECX destination, EDX source vector, stack matrix and normalize byte in DWORD slot; EAX destination; RET8. Full x87 3x3 direction multiplication without translation; native float32 spills and final MOVSS copies. Only normalize=false path reconstructed by material_effect_plane.cpp; nonzero branch calls00419510 and is excluded from this packet.00B448ED passes source(0,0,1), scene world matrix, normalize0. Evidence docs/MATERIAL_EFFECT_PLANE.md.",
+      "old_name": "FUN_0042d0d0",
+      "status": "proposed_not_applied_by_worker"
+    },
+    {
+      "address": "00B23360",
+      "proposed_name": "BSP_Matrix4f_CopyTransposeMixedFloat",
+      "comment_append": "Provisional descriptive name. ECX destination, EDX source, EAX destination, RET. Forward REP MOVSD16 raw words then six swaps(1,4),(2,8),(3,12),(6,9),(7,13),(11,14). Lower-to-upper FLD/FSTP may quiet signaling NaNs; upper-to-lower MOVSS preserves raw bits. Nativealias same source/destination permitted.00B44A36 transforms inverseProjection*inverseView before clip-plane transform. Evidence docs/MATERIAL_EFFECT_PLANE.md.",
+      "old_name": "FUN_00b23360",
+      "status": "proposed_not_applied_by_worker"
+    },
+    {
+      "address": "00B44750",
+      "proposed_name": "BSP_MaterialPass_BindGeometryAndDraw",
+      "comment_append": "Selected clip-plane branch00B448A3..00B44A53 reconstructed: queue singleton004C11F0 -> current context00B1BFA0 -> context+0C scene transform; scene world basis(0,0,1) through0042D0D0 normalize0. Captured entry+10 camera supplies reloaded+198 mode/effect+140 distance at00B448FC after world refresh, then view/projection. Normal is negativeZero00D7A208 minus direction; x87 offset dot spills before FCHS. InverseProjection*inverseView, mixed raw/x87 transpose00B23360, plane transform00B65BA0, append00B25040 on renderer saved00B4485A. Same CameraFrameState/D3D9CameraFrameAccess owners required; no replacement globals or camera domain. Native math differential passes finite/refresh/signedzero/NaN selected cases and COM-failure continuation with synthetic service adapters. Evidence docs/MATERIAL_EFFECT_PLANE.md and reports/material_effect_plane_audit.json; no whole pipeline, native ABI or game validation.",
+      "old_name": "BSP_MaterialPass_BindGeometryAndDraw",
+      "status": "proposed_not_applied_by_worker"
+    }
+  ],
+  "verification": {
+    "source_compile": "MSVC Win32 /std:c++17 /W4 /WX /O2 /fp:strict, separately compiled and linked into ignored native fixture",
+    "repository_build": "scripts/build.ps1 passed; only unstaged shared cache() accessor overlay; new source registration remains primary-owned",
+    "existing_tests": [
+      "reconstructed_math passed",
+      "native_math_differential passed after verify-seeds"
+    ],
+    "focused_fixture": {
+      "status": "passed",
+      "selected_native_branch_cases": 4,
+      "direct_helper_comparisons": 3,
+      "comparison": [
+        "plane raw float4 bits",
+        "x87 status",
+        "MXCSR exception flags",
+        "singleton acquisition count",
+        "clip mask despite COM E_FAIL"
+      ],
+      "case_features": [
+        "nonuniform scene transform and distinct view/projection",
+        "late camera-mode/distance reload plus entry.camera replacement during singleton",
+        "conditional world refresh",
+        "signed zero",
+        "signaling NaN",
+        "transpose alias and asymmetric NaN quieting"
+      ],
+      "native_math": [
+        "0042D0D0 normalize=false",
+        "00B63B30",
+        "00B632D0",
+        "00413920",
+        "00B23360",
+        "00B65BA0",
+        "00B62D10"
+      ],
+      "redirected_dependencies": [
+        "004C11F0 queue service",
+        "00B6DB70 scene refresh adapter",
+        "00B6FCB0 view getter adapter",
+        "00B6FCF0 projection getter adapter",
+        "00B25040 append adapter to existing companion"
+      ],
+      "fixture_file": "local/material_effect_plane_review.cpp (ignored, uncommitted)",
+      "result": "local/material_effect_plane_review.log (ignored, uncommitted)"
+    }
+  },
+  "integration": [
+    "Primary registers src/material_effect_plane.cpp in bsp_core",
+    "Primary supplies shared D3D9CameraFrameAccess::cache() accessor",
+    "Delegate existing MaterialEntryOperations plane methods to new concrete helpers with actual owner bindings",
+    "Primary reviews/applies annotations under lock, preserves original comments, updates ledger/index, saves Ghidra and refreshes exports"
+  ],
+  "limits": [
+    "New C++ semantic API, not original ABI or native layouts",
+    "Queue singleton service and identity mappings remain actual host dependencies; no substitute owners",
+    "Only normalize=false direction branch included",
+    "Preceding material gates and following draw are outside this native fixture",
+    "No loaded game owner graph, original native singleton allocation, GPU, gameplay or whole-pipeline validation",
+    "No Ghidra mutations or shared ledger edits by worker; lease held for primary review"
+  ]
+}
