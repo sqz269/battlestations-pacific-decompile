@@ -7,6 +7,7 @@
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_startup.hpp"
+#include "bsp/gui_text.hpp"
 #include "bsp/gui_widget.hpp"
 #include "bsp/gui_widget_scene.hpp"
 #include "bsp/game_frame_control.hpp"
@@ -1055,6 +1056,28 @@ int main() {
               && cropped.resolved_uv.right == atlas.right
               && cropped.resolved_uv.bottom == atlas.bottom,
             "00AB1680 swaps only on the reversed UV_LURB patterns");
+    }
+
+    {
+        // 00ABAED0 caches the narrow source and compares it case-insensitively,
+        // so a widget whose key differs only in case is never re-resolved, while
+        // 00A9F4B0 strips one leading '^' before the lookup and reports a
+        // leading '.' as the marker that suppresses it. Both rules decide
+        // whether a shipped DefaultText reaches the localisation table at all.
+        bsp::GuiTextWidget widget;
+        widget.source = "MENU_START";
+        check(!bsp::source_text_changed_00abaed0(widget, "menu_start")
+              && bsp::source_text_changed_00abaed0(widget, "MENU_STARTS"),
+            "00ABAED0 caches the source key case-insensitively");
+        const auto plain = bsp::split_localisation_key_00a9f4b0("MENU_START");
+        const auto caret = bsp::split_localisation_key_00a9f4b0("^MENU_START");
+        const auto marked = bsp::split_localisation_key_00a9f4b0("^.RAW");
+        check(!plain.had_caret && plain.key == "MENU_START"
+              && caret.had_caret && caret.key == "MENU_START"
+              && !caret.suppresses_lookup
+              && marked.had_caret && marked.suppresses_lookup
+              && marked.key == ".RAW",
+            "00A9F4B0 strips one caret before testing the lookup marker");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
