@@ -1,0 +1,1087 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_target_group_owner",
+  "status": "discovery_complete_group_contract_ready_production_surface_lifetime_gap",
+  "scope": "Read-only native/source discovery; only this report and docs/NATIVE_RENDER_TARGET_GROUP_NEXT.md are authored outputs.",
+  "base_commit": "f9f9cd9",
+  "main_commit_at_verification": "083a82d3954b085e65c9e9ad2ca78d8b9efc9866",
+  "utc": "2026-09-10T18:55:25.727308+00:00",
+  "target_verification": {
+    "target_config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "imagebase": "00400000",
+    "language": "x86:LE:32:default",
+    "method": "Every tools/bsp.py ghidra query verifies configured project/program before analysis. Complete byte preimages read from live Ghidra matched installed PE sections.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false,
+    "saved_analysis_modified": false
+  },
+  "validation": {
+    "native_byte_ranges_compared": 50,
+    "all_ranges_match_installed_pe": true,
+    "source_snapshots": 16,
+    "all_current_main_normalized_lines_match": true,
+    "line_ending_differences": [
+      "src/d3d9_states.cpp",
+      "docs/SURFACE_REGISTRATION_AUDIT.md"
+    ],
+    "native_or_host_fixture_run": false,
+    "build_run": false,
+    "tests_added": false,
+    "abi_compatible_replacement": false,
+    "game_validated": false,
+    "notes": "Raw disassembly supplied returning instructions omitted after free calls; no C++ source or CMake edit occurred."
+  },
+  "owned_addresses": [
+    "00b1fbb0",
+    "00b1fc00",
+    "00b1fcf0",
+    "00b1fab0",
+    "00b1fb00",
+    "00b1f6d0",
+    "00b1f6e0",
+    "00b1f6f0",
+    "00b1f700",
+    "00b1f710",
+    "00b1f970",
+    "00b1f9f0",
+    "00b1fa50",
+    "00b1fb40",
+    "00b1fb90"
+  ],
+  "group": {
+    "native_bytes": 64,
+    "allocation": "00A8FA30 uses 00BF681B ordinary allocation of 40h; group constructor itself allocates nothing.",
+    "vtable": "00d5e600",
+    "established_virtual_slots": {
+      "00": "00bd30e0",
+      "04": "00b1fcf0"
+    },
+    "vtable_boundary_limit": "Only the two established entries are claimed; following words are not invented group virtuals.",
+    "fields": [
+      {
+        "offset": "00",
+        "bytes": 4,
+        "kind": "native vtable",
+        "construct": "00CEB130 then 00D5E600"
+      },
+      {
+        "offset": "04",
+        "bytes": 4,
+        "kind": "intrusive signed LONG count",
+        "construct": 1
+      },
+      {
+        "offsets": [
+          "08",
+          "0c",
+          "10",
+          "14"
+        ],
+        "bytes_each": 4,
+        "kind": "retained actual surface-wrapper identities",
+        "construct": "null"
+      },
+      {
+        "offset": "18",
+        "bytes": 4,
+        "kind": "retained actual depth surface-wrapper identity",
+        "construct": "null"
+      },
+      {
+        "offsets": [
+          "1c",
+          "20",
+          "24"
+        ],
+        "bytes_each": 4,
+        "kind": "raw 16-byte record pointer, signed count, signed capacity",
+        "construct": 0
+      },
+      {
+        "offsets": [
+          "28",
+          "2c",
+          "30",
+          "34"
+        ],
+        "bytes_each": 4,
+        "kind": "independent retained COM references for color attachments",
+        "construct": "null"
+      },
+      {
+        "offset": "38",
+        "bytes": 4,
+        "kind": "independent retained COM depth reference",
+        "construct": "null"
+      },
+      {
+        "offset": "3c",
+        "bytes": 1,
+        "kind": "exact sRGB-write byte",
+        "construct": 0
+      },
+      {
+        "offset": "3d",
+        "bytes": 3,
+        "kind": "unwritten allocation preimage",
+        "construct": "preserve"
+      }
+    ],
+    "constructor_write_order": [
+      "base table",
+      "count one",
+      "group table",
+      "depth wrapper",
+      "record pointer",
+      "record count",
+      "record capacity",
+      "depth COM",
+      "sRGB byte",
+      "color0 wrapper/COM",
+      "color1 wrapper/COM",
+      "color2 wrapper/COM",
+      "color3 wrapper/COM"
+    ],
+    "constructor_eh": "No EH frame or call sites; preserves final three allocation bytes.",
+    "destructor_post_state": "Reference-base table installed. Wrapper and COM fields cleared only for their nonnull captures; record count zero, freed pointer/capacity preserved; count and sRGB not reset."
+  },
+  "functions": [
+    {
+      "address": "00b1fbb0",
+      "proposed_name": "BSP_FrameTargets_Construct",
+      "original_abi": "ECX=raw 40h storage; EAX=this; RET",
+      "contract": "data-only constructor; preserve +3D..3F",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fc00",
+      "proposed_name": "BSP_FrameTargets_Destroy",
+      "original_abi": "ECX=group; RET; EAX unspecified",
+      "contract": "complete wrapper/COM/record-array/base teardown including returning free tail",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fcf0",
+      "proposed_name": "BSP_FrameTargets_ScalarDeletingDestructor",
+      "original_abi": "ECX=group; stack flags; EAX=original this; RET4",
+      "contract": "call complete destructor; bit0 ordinary free; returning tail",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fab0",
+      "proposed_name": "BSP_FrameTargets_AssignColorSurface",
+      "original_abi": "ECX=group; stack index,wrapper; RET8",
+      "contract": "publish, retain new, release captured old; no COM cache refresh",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fb00",
+      "proposed_name": "BSP_FrameTargets_AssignDepthSurface",
+      "original_abi": "ECX=group; stack wrapper; RET4",
+      "contract": "same ownership order at actual +18",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f6d0",
+      "proposed_name": "BSP_FrameTargets_GetColorSurface",
+      "original_abi": "ECX=group; stack index; EAX=borrowed wrapper; RET4",
+      "contract": "retain existing correct descriptive name",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f6e0",
+      "proposed_name": "BSP_FrameTargets_GetDepthSurface",
+      "original_abi": "ECX=group; EAX=borrowed wrapper; RET",
+      "contract": "retain existing correct descriptive name",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f6f0",
+      "proposed_name": "BSP_FrameTargets_GetRecordArray",
+      "original_abi": "ECX=group; EAX=address of actual +1C header; RET",
+      "contract": "currently undefined function; record meaning provisional",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f700",
+      "proposed_name": "BSP_FrameTargets_SetSrgbWriteByte",
+      "original_abi": "ECX=group; stack value low byte; RET4",
+      "contract": "exact byte write, no boolean normalization",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f710",
+      "proposed_name": "BSP_FrameTargets_GetSrgbWriteByte",
+      "original_abi": "ECX=group; AL=byte; RET; upper EAX unspecified",
+      "contract": "retain existing correct descriptive name",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f970",
+      "proposed_name": "BSP_FrameTargetRecords_Reserve",
+      "original_abi": "ECX=array; stack signed requested capacity; RET4",
+      "contract": "include old-free continuation publishing pointer/capacity",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1f9f0",
+      "proposed_name": "BSP_FrameTargetRecords_Resize",
+      "original_abi": "ECX=array; stack signed requested count; RET4",
+      "contract": "zero new 16-byte records; shrinking has no element destruction",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fa50",
+      "proposed_name": "BSP_FrameTargetRecords_Append",
+      "original_abi": "ECX=array; stack record pointer; RET4",
+      "contract": "grow if count==capacity; ordered four-DWORD copy; increment count",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fb40",
+      "proposed_name": "BSP_FrameTargets_AppendRecord",
+      "original_abi": "ECX=group; stack record pointer; RET4",
+      "contract": "currently undefined; inlined append using actual group+1C",
+      "naming_status": "proposed_only_no_ghidra_write"
+    },
+    {
+      "address": "00b1fb90",
+      "proposed_name": "BSP_FrameTargetRecords_DestroyStorage",
+      "original_abi": "ECX=array; RET",
+      "contract": "resize zero; free current pointer; preserve dangling pointer/capacity",
+      "naming_status": "proposed_only_no_ghidra_write"
+    }
+  ],
+  "ordering_contracts": {
+    "assignment": [
+      "Capture old identity and incoming pointer before mutation.",
+      "Identity comparison skips all ownership operations.",
+      "Publish new field.",
+      "InterlockedIncrement new actual count if nonnull.",
+      "InterlockedDecrement captured old actual count if nonnull.",
+      "If result is zero, load CURRENT old vtable+00 and invoke; virtual-zero trampoline loads current +04 and passes flag1.",
+      "No field write after terminal callback; reentrant reassignment survives."
+    ],
+    "destructor": [
+      "Install group table.",
+      "For color0..3: capture wrapper, decrement, current virtual-zero on zero; clear field after callback.",
+      "Freshly load paired cached COM AFTER wrapper callback; invoke current COM virtual+08 if nonnull; clear after callback.",
+      "Reload each later color/depth field only after earlier callbacks; depth wrapper then depth COM.",
+      "Resize actual record array to zero.",
+      "Reload and free current record pointer.",
+      "Install reference-base table through 00BD30F0; restore EH and return."
+    ],
+    "forbidden_inferences": [
+      "Do not refresh cached COM in wrapper setters.",
+      "Do not derive cached COM from wrapper+2C during destruction.",
+      "Do not replace actual engine reference count with an unrelated shared_ptr count.",
+      "Do not flatten attachment destruction into a pre-captured list.",
+      "Do not normalize +3C to bool.",
+      "Do not zero whole constructor storage or reset freed array pointer/capacity absent a separately documented host boundary.",
+      "Do not add element destruction to raw record resizing."
+    ],
+    "com_returns": "Group only calls COM Release; returned ULONG is ignored and later cleanup continues. Setters have no COM calls/HRESULT. Existing renderer color/depth binding separately ignores native HRESULT.",
+    "reentry_limit": "Callbacks must preserve still-used group/storage lifetimes. Native clearing after callback can overwrite a reentrant same-field replacement; this is documented, not reconciled."
+  },
+  "exception_handling": {
+    "group_handler": "00cbcce3",
+    "group_funcinfo": "00df5214",
+    "group_unwind_map": "00df5204",
+    "group_states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "funclet": "00cbccd0",
+        "action": "load group from EBP-10 and tailcall 00BD30F0"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "funclet": "00cbccd8",
+        "action": "load group from EBP-10, add1C, tailcall 00B1FB90"
+      }
+    ],
+    "normal_transitions": "1 before attachment release; 0 before record array destruction; -1 before base destruction.",
+    "callback_throw_boundary": "On unwind the map destroys array/base; it does not resume remaining attachment releases. A nonthrowing host terminal-release domain must be explicit.",
+    "scalar_delete": "00B1FCF0 calls destructor, tests stack flag bit0, uses ordinary 00BF65AC if requested, includes ADD ESP,4, returns original this and RET4.",
+    "shadow_derived_unwind": "00CB6550 invokes completed shadow destructor. States1/2 through 00CB6558/00CB6563 free the current raw group before state0. Their post-free POP ECX/RET tails are included."
+  },
+  "raw_record_array": {
+    "record_bytes": 16,
+    "semantic_fields": "unknown four raw DWORDs; no inferred rectangle/material/texture ownership",
+    "reserve": "Signed requested minimum1; if greater than capacity allocate wrapped requested<<4. Copy records as ordered DWORD operations with live input pointer/count after allocator, free old storage, then publish pointer/capacity.",
+    "resize": "Reserve only as needed; initialize new records as four zero DWORD stores; shrinking only repeatedly decrements count; store requested count at end.",
+    "append": "At equality grow with signed wrapped doubling and minimum1. Resolve destination after reserve. Copy input DWORDs in order if destination nonzero, then count++. Input must remain valid across any reserve.",
+    "destruction": "Resize zero and free current storage. No element destructors and no reset of pointer/capacity.",
+    "valid_host_domain": "nonnegative count<=capacity; readable/writable records; Win32 allocation and pointer arithmetic without wrap; source pointer not invalidated by reserve"
+  },
+  "returning_tails": [
+    {
+      "address": "00b1f9e1",
+      "until_exclusive": "00b1f9eb",
+      "meaning": "ADD ESP,4; POP EDI; publish pointer and capacity; POP EBP after record reserve free"
+    },
+    {
+      "address": "00b1fba2",
+      "until_exclusive": "00b1fba7",
+      "meaning": "ADD ESP,4; POP ESI; RET after array destructor free"
+    },
+    {
+      "address": "00b1fcca",
+      "until_exclusive": "00b1fcef",
+      "meaning": "stack adjustment, base destructor and full EH/callee-save return after group free"
+    },
+    {
+      "address": "00b1fd05",
+      "until_exclusive": "00b1fd0e",
+      "meaning": "ADD ESP,4; return original this; RET4 after scalar deletion free"
+    },
+    {
+      "address": "00b3edd6",
+      "until_exclusive": "00b3eddc",
+      "meaning": "ADD ESP,4; publish new slab table after old table free; allocator continues"
+    },
+    {
+      "address": "00b3e2cd",
+      "until_exclusive": "00b3e2d8",
+      "meaning": "increment slab index, adjust stack, continue destructor slab-free loop"
+    },
+    {
+      "address": "00b3e2e5",
+      "until_exclusive": "00b3e2e8",
+      "meaning": "ADD ESP,4 after pool table free; recursion drain and list unlink follow"
+    },
+    {
+      "address": "00b3e3b6",
+      "until_exclusive": "00b3e3ed",
+      "meaning": "swap last slab, decrement count, rewrite all32 moved slot IDs, revisit index after empty-slab free"
+    },
+    {
+      "address": "00b3d37c",
+      "until_exclusive": "00b3d37e",
+      "meaning": "POP ECX; RET after EH table free"
+    }
+  ],
+  "shadow_group_composition": {
+    "fragment": "00a8fbe0..00a8fc9a",
+    "fields": [
+      "4f0",
+      "4f4",
+      "4f8",
+      "4fc",
+      "500"
+    ],
+    "color_source": "Capture current global target once, call actual +14 getter 00A8FDA0, preserve its result across all five groups.",
+    "depth_source": "Reload global target for each 00A8FDC0 +1C getter, then reload the current group field before assigning depth.",
+    "ownership": "Each group count starts1 and that creator reference is published as shadow ownership. Set color0 then depth retains actual surface wrappers; no post-publication creator release.",
+    "caches": "No cached COM field writes in this composition beyond constructor zeroing."
+  },
+  "existing_code_boundaries": [
+    {
+      "source": "include/bsp/render_command_queue.hpp",
+      "reuse": "Real host intrusive count, current terminal callback, retain/release helpers.",
+      "gap": "An attachment needs its actual complete lifetime owner; this interface does not create native surface lifecycle."
+    },
+    {
+      "source": "include/bsp/d3d9_states.hpp",
+      "reuse": "D3D9FrameTargets already retains real surface bindings for renderer operation; current binding dispatch reads wrapper+2C.",
+      "gap": "Shared_ptr projection lacks raw native record array, independent COM caches, count/phase and complete group destructor."
+    },
+    {
+      "source": "include/bsp/d3d9_resources.hpp",
+      "reuse": "Real COM init/reset/recreate helpers and borrowed surface callback-list removal.",
+      "gap": "No complete native wrapper constructor, current virtual-zero destruction or 0108DB00 slot return. surface_release is explicitly new owner cleanup."
+    },
+    {
+      "source": "include/bsp/d3d9_reset_texture.hpp",
+      "reuse": "Real COM texture/reset behavior, cached level binding metadata.",
+      "gap": "Cached wrappers are borrowed; no native retained cached-surface creation/return or full texture lifetime."
+    },
+    {
+      "source": "include/bsp/d3d9_texture.hpp",
+      "reuse": "Actual retained input/COM texture owner.",
+      "gap": "Not a complete native surface/texture allocation-pool/cached-wrapper owner."
+    },
+    {
+      "source": "include/bsp/allocator_list.hpp",
+      "reuse": "Actual shared E188B4 node/head and per-profile real virtual-zero binding.",
+      "gap": "No new pool should create another list/head."
+    },
+    {
+      "source": "include/bsp/directional_light_pool.hpp",
+      "reuse": "Existing canonical pool API, real critical section and raw slab model supply a checked pattern.",
+      "gap": "Light slot1F0/index1EC/slab3E44 cannot be used unchanged for surface38/index34/slab744."
+    },
+    {
+      "source": "include/bsp/singleton_lifetime.hpp",
+      "reuse": "Actual shared singleton-lifetime domain/manager.",
+      "gap": "Resource-support singleton B3E730/B61D50/B61D60 adapter absent; cannot replace with fake surface registry."
+    }
+  ],
+  "surface_dependency": {
+    "native_profile": "00d619a0",
+    "object_bytes": 52,
+    "pool_slot_bytes": 56,
+    "reference_count_offset": "04",
+    "construct": "00B3F630 full 382-byte body; establishes count/table/metadata and real COM ownership, temporary strings, resource-support singleton and tracking update. Constructor does not append renderer reset array.",
+    "zero_dispatch": "00BD30E0 -> current virtual04 (00B3F5B0 for D619A0), stack flag1.",
+    "destructor": "00B3F4E0 (168 bytes): table; actual current renderer unregister via B27D60/B25630; support singleton; freshly loaded COM2C Release then clear; current flags28 tracking decrement; diagnostic string return; base.",
+    "deleting_destructor": "00B3F5B0 (32 bytes), complete destructor followed by B3D860 using canonical 0108DB00 when flag bit0; EAX=this, RET4. No ordinary object free.",
+    "cached_surface_accessor": "00B3FD80 (264 bytes): retain cached hit; else COM GetSurfaceLevel, actual pool allocation and surface construct, release temporary COM, optionally retain+append cache when texture flagbit0 clear, return caller-owned reference.",
+    "native_failure_limit": "HRESULT from GetSurfaceLevel is ignored; failure output may be uninitialized. Do not invent a substitute/null surface or certify unsupported native error behavior.",
+    "support_singleton": "B3E730 lazily creates eight-byte B61D50 owner and registers singleton lifetime; ctor writes only vtable. It neither receives nor registers a surface. This remains real lifecycle work.",
+    "production_readiness": "Not yet complete in C++; target groups must not use a no-op or COM-only terminal surface adapter."
+  },
+  "next_packet": {
+    "id": "native_d3d9_surface_pool",
+    "status": "approved_for_next_independent_implementation_after_this_discovery_commit",
+    "files": [
+      "include/bsp/d3d9_surface_pool.hpp",
+      "src/d3d9_surface_pool.cpp",
+      "docs/D3D9_SURFACE_POOL.md",
+      "reports/d3d9_surface_pool_audit.json"
+    ],
+    "owned_function_addresses": [
+      "00b3ec60",
+      "00b3ed40",
+      "00b3d120",
+      "00b3d860",
+      "00b3e390",
+      "00b3e2b0",
+      "00b3d370",
+      "00b3f2a0",
+      "00b3dcc0",
+      "00cd7b40",
+      "00ce0c90"
+    ],
+    "eh_evidence_only": [
+      "00cbee00..00cbee28",
+      "00df764c..00df7688"
+    ],
+    "canonical_global": "0108db00",
+    "native_pool_profile": "00d6193c",
+    "virtual0": "00b3e390",
+    "shared_domain": "Same actual AllocatorListDomain/head 00E188B4 as directional-light pool; actual CRT/Win32 critical section; no private replacement registry.",
+    "geometry": {
+      "pool_bytes": 56,
+      "slot_bytes": 56,
+      "surface_bytes": 52,
+      "slot_slab_id_offset": 52,
+      "slab_bytes": 1860,
+      "slots_per_slab": 32,
+      "free_indices_offset": 1792,
+      "free_count_offset": 1856,
+      "initial_table_capacity": 32
+    },
+    "fields": {
+      "00..08": "actual allocator list node",
+      "0c..23": "real critical section",
+      "24": "recursion count",
+      "28": "slab table",
+      "2c": "slab count",
+      "30": "table capacity",
+      "34": "first-free slab index"
+    },
+    "slab_constructor": "B3D120 initializes freecount32, free indices31..0 and actual slot+34 IDs; preserves other slot/preimage bytes.",
+    "allocation": "B3ED40 locks/increments recursion; creates744h slab if first-free sentinel; grows table using count*2+2; returns slot38h; scans next nonempty slab as needed; decrements/unlocks. All post-free tails return normally.",
+    "return": "B3D860 ECX=pool, stack slot, RET4; read actual slot+34; compute slot index from actual pointer difference/38h; append ushort free-index; increment freecount; lower firstfree if appropriate; unlock.",
+    "trim": "B3E390 no internal lock: free empty slab, move last table entry, decrementcount, rewrite all32 slot IDs if moved, revisit index, recompute firstfree. Does not destroy any surface.",
+    "destroy": "B3E2B0 frees every raw slab then table, drains positive recursion with actual LeaveCriticalSection, deletes CS and unlinks actual allocator list. Does not destroy surface objects or reset every field.",
+    "constructor_eh": {
+      "funcinfo": "00df7664",
+      "unwind_map": "00df764c",
+      "states": {
+        "0": "CBEE00 -> existing allocator-list unlink00403970",
+        "1": "CBEE08 -> critical-section destruction00402F70",
+        "2": "CBEE13 -> B3D370 table-free then1"
+      }
+    },
+    "thunks": {
+      "00b3f2a0": "ECX=0108DB00; tail B3ED40",
+      "00b3dcc0": "incoming ECX=slot; PUSH ECX; ECX=0108DB00; call B3D860; RET",
+      "00cd7b40": "initialize canonical pool, register CE0C90 with atexit, RET",
+      "00ce0c90": "ECX=0108DB00; tail B3E2B0"
+    },
+    "validation_requested": "One focused native differential pool fixture: real38h stride/34h slot ID/744h slab, moved all32 IDs, slot return and EH/free tails; Win32 strict build. Root owns CMake/Ghidra/ledger integration.",
+    "excluded": [
+      "surface wrapper ctor/dtor",
+      "COM calls",
+      "texture construction/cache ownership",
+      "reset traversal",
+      "target-group C++",
+      "independent allocator registry"
+    ]
+  },
+  "source_hashes": {
+    "include/bsp/d3d9_states.hpp": {
+      "sha256": "2d1c59399dbf9caddd3839b1166b0b8e05524952b3652610135553d23fe6e92d",
+      "current_main_sha256": "2d1c59399dbf9caddd3839b1166b0b8e05524952b3652610135553d23fe6e92d",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "src/d3d9_states.cpp": {
+      "sha256": "5ee9a5d020282406eac0b3d4a5c08d634b511265042f793c0f47f48d16fad9d2",
+      "current_main_sha256": "5cd94fa04d677b97055cb75c86f9b5952e9a40228e238a0b4c0ffd51e34f0f08",
+      "matches_current_main": false,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/d3d9_resources.hpp": {
+      "sha256": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176",
+      "current_main_sha256": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "src/d3d9_resources.cpp": {
+      "sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+      "current_main_sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/d3d9_reset_texture.hpp": {
+      "sha256": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d",
+      "current_main_sha256": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "src/d3d9_reset_texture.cpp": {
+      "sha256": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611",
+      "current_main_sha256": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/d3d9_texture.hpp": {
+      "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+      "current_main_sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "src/d3d9_texture.cpp": {
+      "sha256": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+      "current_main_sha256": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/render_command_queue.hpp": {
+      "sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec",
+      "current_main_sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "src/render_command_queue.cpp": {
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "current_main_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "docs/SURFACE_REGISTRATION_AUDIT.md": {
+      "sha256": "a5fe8479afa6ebb8f62304a5a712de8d1e67be4cfa84e000624db8a2983c1bcd",
+      "current_main_sha256": "cb0a2f438dc2cfbed18c1bf1abe955ff55cd547e16ae2d33d30446faf8184bf0",
+      "matches_current_main": false,
+      "normalized_lines_match_current_main": true
+    },
+    "docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md": {
+      "sha256": "152eecde399a79bf7165d005363cee5106514fd516e18f27a72cca863167ac9a",
+      "current_main_sha256": "152eecde399a79bf7165d005363cee5106514fd516e18f27a72cca863167ac9a",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/directional_light_pool.hpp": {
+      "sha256": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510",
+      "current_main_sha256": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/storage_pool.hpp": {
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "current_main_sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "current_main_sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    },
+    "include/bsp/allocator_list.hpp": {
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "current_main_sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "matches_current_main": true,
+      "normalized_lines_match_current_main": true
+    }
+  },
+  "native_ranges": [
+    {
+      "label": "group_construct",
+      "start": "00b1fbb0",
+      "end_exclusive": "00b1fbf2",
+      "length": 66,
+      "sha256": "37475c5525bd39ede8ac9ea8883767cb0cf900abb14c6a0f39e1863d3708bd0a",
+      "raw_preimage_hex": "8bc133c9c70030b1ce00c7400401000000c70000e6d50089481889481c89482089482489483888483c89480889482889480c89482c894810894830894814894834c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_destroy_including_return_after_free",
+      "start": "00b1fc00",
+      "end_exclusive": "00b1fcef",
+      "length": 239,
+      "sha256": "64be080eac78cd962e9480b0f1200cc99dd00ea5086d644596c6903af753d168",
+      "raw_preimage_hex": "6aff68e3cccb0064a10000000050648925000000005153558be95657896c2410c7450000e6d500c744241c010000008d7528bb040000008b7ee085ff741d8d470450ff152022ce0085c075088b178b028bcfffd0c746e0000000008b0685c0740e8b088b510850ffd2c7060000000083c60483eb0175c08b751885f6741d8d460450ff152022ce0085c075088b168b028bceffd0c74518000000008b453885c0740f8b088b510850ffd2c74538000000008d751c6a008bcec644242000e82efdffff8b3656e8bf6c0d0083c4048bcdc744241cffffffffe814340b008b4c24145f5e5d5b64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_scalar_delete",
+      "start": "00b1fcf0",
+      "end_exclusive": "00b1fd0e",
+      "length": 30,
+      "sha256": "4e7470a32ffbfe8ddbf79d518924119d75acc1d13a6b987d9da1401f0bd70c0b",
+      "raw_preimage_hex": "568bf1e808fffffff644240801740956e8a7680d0083c4048bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_assign_color",
+      "start": "00b1fab0",
+      "end_exclusive": "00b1faf1",
+      "length": 65,
+      "sha256": "2cafc7914b74198e7829503188d196549ffd1630462a850f2353eebff15be5af",
+      "raw_preimage_hex": "8b5424048b442408568b7491083bf0742c85c089449108740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_assign_depth",
+      "start": "00b1fb00",
+      "end_exclusive": "00b1fb3b",
+      "length": 59,
+      "sha256": "c79728eed9b19cff226a057760ae14063e4d2ff4c1be835b693e2ef12e8c9de3",
+      "raw_preimage_hex": "8b442404568b71183bf0742b85c0894118740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_get_color",
+      "start": "00b1f6d0",
+      "end_exclusive": "00b1f6db",
+      "length": 11,
+      "sha256": "b14a7b09c3199f06b3507c37d04715f477b72ec61c3f4e8a40a213ac6413f7bd",
+      "raw_preimage_hex": "8b4424048b448108c20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_get_depth",
+      "start": "00b1f6e0",
+      "end_exclusive": "00b1f6e4",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "raw_preimage_hex": "8b4118c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_get_record_array",
+      "start": "00b1f6f0",
+      "end_exclusive": "00b1f6f4",
+      "length": 4,
+      "sha256": "39037bd522bd24697e9aa9c37a7994cf406a3a03a890d4ba43d9496dd6c9e8c5",
+      "raw_preimage_hex": "8d411cc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_set_srgb_byte",
+      "start": "00b1f700",
+      "end_exclusive": "00b1f70a",
+      "length": 10,
+      "sha256": "20951c5094a9e446c6a42f84a79a19e1baa8545bf677dd8584a8ca368daa3801",
+      "raw_preimage_hex": "8a44240488413cc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_get_srgb_byte",
+      "start": "00b1f710",
+      "end_exclusive": "00b1f714",
+      "length": 4,
+      "sha256": "f0796b52ef91eb1efe247aaf211420318d599b2ce1e74a3c2781b8f4b568072e",
+      "raw_preimage_hex": "8a413cc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "record_array_reserve_including_return_after_free",
+      "start": "00b1f970",
+      "end_exclusive": "00b1f9f0",
+      "length": 128,
+      "sha256": "05d60caebbdd985721d54e5f7d9bac0323c03687103d92db6095f0959ba4a1b7",
+      "raw_preimage_hex": "538b5c240883fb01568bf17d05bb01000000395e087d64558bc3c1e0045750e82a5c0d0033ff83c404397e048be8896c24147e3533d28bcd85c9741b8b068b2c1003c289298b68048969048b68088969088b400c89410c83c70183c21083c1103b7e047cd38b6c24148b0e51e8a86f0d0083c4045f892e895e085d5e5bc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "record_array_resize",
+      "start": "00b1f9f0",
+      "end_exclusive": "00b1fa48",
+      "length": 88,
+      "sha256": "16c9541a44d68e45f376ab9e6a1c3fc341e8d9f3966e08fedc111081262fcb86",
+      "raw_preimage_hex": "538b5c2408568bf13b5e087e0653e86dffffff8b46043bc37d26578bd08bfbc1e2042bf88b0603c2740d33c9890889480489480889480c83c21083ef0175e55f3b5e047d0b83c8ff0146043b5e047cf8895e045e5bc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "record_array_append",
+      "start": "00b1fa50",
+      "end_exclusive": "00b1fa99",
+      "length": 73,
+      "sha256": "cfc5fa7eec82352bcd6acd2df9a661e1a90c4d87bd85f38cbcdb205b25725716",
+      "raw_preimage_hex": "568bf18b4608394604751203c083f8017f05b80100000050e803ffffff8b4604c1e0040306741a8b4c24088b1189108b51048950048b51088950088b490c89480c834604015ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_append_record",
+      "start": "00b1fb40",
+      "end_exclusive": "00b1fb8c",
+      "length": 76,
+      "sha256": "71a160f591b2d69ceb927f23e8624af8fc3f44523b5f91149b4a61991ae87a6f",
+      "raw_preimage_hex": "8b4124394120568d711c751403c083f8017f05b801000000508bcee810feffff8b4604c1e0040306741a8b4c24088b1189108b51048950048b51088950088b490c89480c834604015ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "record_array_destroy_including_return_after_free",
+      "start": "00b1fb90",
+      "end_exclusive": "00b1fba7",
+      "length": 23,
+      "sha256": "9b535b0633b17a7247bef521d3288bd2de34a0d7c5f4c6f8017f834138132fc0",
+      "raw_preimage_hex": "566a008bf1e856feffff8b0650e8e76d0d0083c4045ec3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_vtable_prefix",
+      "start": "00d5e600",
+      "end_exclusive": "00d5e608",
+      "length": 8,
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "raw_preimage_hex": "e030bd00f0fcb100",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_destructor_unwind_and_handler",
+      "start": "00cbccd0",
+      "end_exclusive": "00cbcced",
+      "length": 29,
+      "sha256": "0b32935d93a2ece4a9d8da3364cea0232c0cbbb54f912f23a0d1d24d17968bd9",
+      "raw_preimage_hex": "8b4df0e91864f1ff8b4df083c11ce9ad2ee6ffb81452df00e9569ef3ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_destructor_unwind_map_and_funcinfo",
+      "start": "00df5204",
+      "end_exclusive": "00df5238",
+      "length": 52,
+      "sha256": "26373b6a9859ee25c9afb4c23292b097b6525f53ca96855ec2e8161485d63b80",
+      "raw_preimage_hex": "ffffffffd0cccb0000000000d8cccb0022059319020000000452df00000000000000000000000000000000000000000001000000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "intrusive_virtual_zero_dispatch",
+      "start": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "raw_preimage_hex": "85c974098b018b50046a01ffd2c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "intrusive_reference_base_destroy",
+      "start": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "raw_preimage_hex": "c70130b1ce00c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_create_five_groups",
+      "start": "00a8fbe0",
+      "end_exclusive": "00a8fc9a",
+      "length": 186,
+      "sha256": "8fb9b98efe747e6de7588d93d841c44795dfa94867f7a0db0b5c77bbf11e04cc",
+      "raw_preimage_hex": "8b0df0bbf800e8b50100008be88dbef0040000c744246c04000000eb038d49006a40e8146c160083c404894424143bc3c64424640174098bc8e892ff0800eb0233c055538bc8885c246c8907e87ffe08008b0df0bbf800e8840100008b0f50e8bcfe080083c704836c246c0175b26a40e8c66b160083c4048944246c3bc3c64424640274098bc8e844ff0800eb0233c055538bc8885c246c898600050000e82dfe08008b0df0bbf800e8320100008b8e0005000050e866fe0800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_derived_unwind_group_frees",
+      "start": "00cb6550",
+      "end_exclusive": "00cb656e",
+      "length": 30,
+      "sha256": "8444b96580ce974f84759903740f8dd142192fb0f548a5ffa2569cd19f1ea755",
+      "raw_preimage_hex": "8b4da8e96879ddff8b45ac50e84b00f4ff59c38b450450e84000f4ff59c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_derived_unwind_map_funcinfo",
+      "start": "00dec7bc",
+      "end_exclusive": "00dec7f8",
+      "length": 60,
+      "sha256": "aaabf800119419d57d5130dc87c84a40d68f633af8384939cf2e089decba116c",
+      "raw_preimage_hex": "ffffffff5065cb00000000005865cb00000000006365cb002205931903000000bcc7de00000000000000000000000000000000000000000001000000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_get_color_surface",
+      "start": "00a8fda0",
+      "end_exclusive": "00a8fda4",
+      "length": 4,
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "raw_preimage_hex": "8b4114c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "global_shadow_get_depth_surface",
+      "start": "00a8fdc0",
+      "end_exclusive": "00a8fdc4",
+      "length": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "raw_preimage_hex": "8b411cc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_constructor",
+      "start": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "length": 382,
+      "sha256": "f59553f64d394a4b3609c84d5d504377bcb3de224a47ef97914c50e39e4a5023",
+      "raw_preimage_hex": "6aff6813efcb0064a100000000506489250000000083ec18f30f10054ca2d7005355568bf1c70630b1ce00c74604010000005789742410f30f114608f30f11460c33edc706a019d600896c2430896e10896e148b7c24383bfd8a4424408b4c243cc644243001896e2c884630894e2874108b178b420457ffd08b0f8b510857ffd2578bcee8c7d5ffff3bfd74108b078b480457ffd18b178b420857ffd06a016a078d4c241c896c241c896c2420e85ee68dff8b4424183bc58b5c241474128d4b0151689054ce0050e8837f0b0083c40c6a01538d4c2428c644243802897c2424896c2428896c242ce823e68dff3bdd8b7c242474138b5424208b442418525057e84b7f0b0083c40cc644243003e8eeefffff3bfdc64424300274178b4424206a0183c0015057e865a58dff8bc8e8ae1d09008b4424183bc5c64424300174136a0183c3015350e845a58dff8bc8e88e1d09008b4628a8107507a90001000074078305fcda0801018b4c24285f8bc65e5d5b64890d0000000083c424c20c00",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_destructor",
+      "start": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28",
+      "raw_preimage_hex": "6aff68e3eecb0064a100000000506489250000000051568bf189742404c706a019d6008b0d94d3f80056c744241401000000e84988feffe814f2ffff8b462c85c0740f8b088b510850ffd2c7462c000000008b4628a8107507a9000100007407832dfcda0801018b461485c0c64424100074168b4e106a0183c1015150e85ea78dff8bc8e8a71f09008bcec7442410ffffffffe8783b09008b4c24085e64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_deleting_destructor",
+      "start": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+      "raw_preimage_hex": "568bf1e828fffffff644240801740b56b900db0801e896e2ffff8bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_allocation_thunk",
+      "start": "00b3f2a0",
+      "end_exclusive": "00b3f2aa",
+      "length": 10,
+      "sha256": "05d840519b2b51aa7a10ce3948c060c5eba2f01fd09ee92dafe2b8bc16b93ff8",
+      "raw_preimage_hex": "b900db0801e996faffff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_allocator_with_free_continuation",
+      "start": "00b3ed40",
+      "end_exclusive": "00b3ee7c",
+      "length": 316,
+      "sha256": "38ae02876198dabeeeede2eb945c1ce47d8ddb5dc642a4e313065cfdc18669e4",
+      "raw_preimage_hex": "5355568bf1578d5e0c53ff151822ce008343180183cdff396e340f85920000008b462c6844070000894634e8ab7a0b0083c40485c0740f8b4e34518bc8e89ee3ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e81a680b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e8b37b0b0083c404897e288b462c8b4e288d048185c07402892883462c0183cdff8b56348b46288b049066818040070000ffff0fb788400700000fb7d10fb79450000700008d3cd5000000002bfa6685c98d3cf875448b463483c0013b462c896e3473368b4e288d0c81eb038d49008b116683ba4007000000751c83c00183c1043b462c72e9016b1853ff151022ce008bc75f5e5d5bc3894634016b1853ff151022ce008bc75f5e5d5bc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_free_continuation",
+      "start": "00b3edd1",
+      "end_exclusive": "00b3eddc",
+      "length": 11,
+      "sha256": "32d243777a1213b185c8bf892874bbdb07f1321a0d69d3bb2a1a91af65a4d7f5",
+      "raw_preimage_hex": "e8b37b0b0083c404897e28",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_vtable_zero_and_delete",
+      "start": "00d619a0",
+      "end_exclusive": "00d619a8",
+      "length": 8,
+      "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+      "raw_preimage_hex": "e030bd00b0f5b300",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture_get_retained_cached_surface",
+      "start": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d",
+      "raw_preimage_hex": "6aff68a8efcb0064a100000000506489250000000051538b5c2418558b2d1c22ce00568bf18b4e4433c085c9577e278b7e408bd7391a740c83c00183c2083bc17cf2eb128b7cc7048d470450ffd585ff0f859b0000008b46108b088d5424245253508b4148ffd0b900db0801e84fefffff8944241033ff3bc7897c241c741e8b561c8bcac1e90881e101ffffff51528b54242c528bc8e815f8ffff8bf88b4424248b088b510850c7442420ffffffffffd2f6461c01753a8d470450ffd58b464883c640394604751403c083f8017f05b801000000508bcee854dbffff8b4e048b168d04ca85c074058918897804834604018b4c24148bc75f5e5d5b64890d0000000083c410c20800",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_unregister_surface_adapter",
+      "start": "00b27d60",
+      "end_exclusive": "00b27d73",
+      "length": 19,
+      "sha256": "9077346ff1ae7fd162137608cb8fd9977361825dde7a9820c82cbf299c88f692",
+      "raw_preimage_hex": "8d4424045081c10c1b0000e8c0d8ffffc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_surface_array_remove_first",
+      "start": "00b25630",
+      "end_exclusive": "00b25697",
+      "length": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "raw_preimage_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_slot_return",
+      "start": "00b3d860",
+      "end_exclusive": "00b3d8c9",
+      "length": 105,
+      "sha256": "8d80f84dc90c96d606e64f3db1cbe685bcad7063cc5026a9f6af93037f5db23c",
+      "raw_preimage_hex": "535556578bf18d7e0c57ff151822ce00834718018b4424148b58348b4e288b0c992bc18be8b893244992f7ed03d5c1fa058bc2c1e81f03c20fb79140070000668984510007000066838140070000013b5e347303895e34834718ff57ff151022ce005f5e5d5bc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_slab_construct",
+      "start": "00b3d120",
+      "end_exclusive": "00b3d160",
+      "length": 64,
+      "sha256": "b9d5ee8e38f4c213396fdcfcb28053b9f2ee220e68b8cba3f2b80ece2717d266",
+      "raw_preimage_hex": "538b5c2408568bc15766c78040070000200033d28d78348db0000700008d4900b91f0000002bca66890e891f83c20183c60283c73883fa207ce65f5e5bc20400",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_construct",
+      "start": "00b3ec60",
+      "end_exclusive": "00b3ed33",
+      "length": 211,
+      "sha256": "2a969324269efba1bd41402b96dde3f7b65547861e1168d277f6a063313fbeb4",
+      "raw_preimage_hex": "6aff681eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7063c19d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8d7680b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8707c0b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_destroy_with_free_continuations",
+      "start": "00b3e2b0",
+      "end_exclusive": "00b3e33a",
+      "length": 138,
+      "sha256": "1776923567ac203aee55f16bc225217109a88e5e820c496298d114318c6b7908",
+      "raw_preimage_hex": "56578bf933f639772cc7073c19d60076178b47288b0cb051e8df820b0083c60183c4043b772c72e98b472885c0740950e8a4860b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_trim_with_free_continuation",
+      "start": "00b3e390",
+      "end_exclusive": "00b3e430",
+      "length": 160,
+      "sha256": "fd4fbd9577cb5c22c38a8f3a3ba6322e105516f68865218ba42f8daa34c078cc",
+      "raw_preimage_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84007000020753d50e8f6810b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c034b92000000090893883c03883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4007000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_unwind_free_table",
+      "start": "00b3d370",
+      "end_exclusive": "00b3d37e",
+      "length": 14,
+      "sha256": "b0ccf42f41eb28e73ef97530368ee191b3079d4fe4d733c8aecba5d536b18588",
+      "raw_preimage_hex": "8b0185c0740750e80d960b0059c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_return_thunk",
+      "start": "00b3dcc0",
+      "end_exclusive": "00b3dccc",
+      "length": 12,
+      "sha256": "067d0d53497f03c8ac81b7821de785f2be1c0cd477d718092b4ab77c19b2c113",
+      "raw_preimage_hex": "51b900db0801e895fbffffc3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_static_initialize",
+      "start": "00cd7b40",
+      "end_exclusive": "00cd7b56",
+      "length": 22,
+      "sha256": "6c669e0738bc3ed1e2ea83aa30ec16e1866b152f1e07588c3d707d53842b867a",
+      "raw_preimage_hex": "b900db0801e81671e6ff68900cce00e8a1f4f1ff59c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_static_destroy",
+      "start": "00ce0c90",
+      "end_exclusive": "00ce0c9a",
+      "length": 10,
+      "sha256": "9d051d1b376bc7abcb46a3d81c97df3ec6a01bf9e277f203403cad80a2055729",
+      "raw_preimage_hex": "b900db0801e916d6e5ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_profile",
+      "start": "00d6193c",
+      "end_exclusive": "00d61940",
+      "length": 4,
+      "sha256": "eefb0c0af6b0ca1d405a78df177c8e91d90e9a732a24a8e1b5caffbc90eb41df",
+      "raw_preimage_hex": "90e3b300",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_constructor_unwind_and_handler",
+      "start": "00cbee00",
+      "end_exclusive": "00cbee28",
+      "length": 40,
+      "sha256": "e94bf9f14024b998a976a3c1e4266be3e5d2a977baee432c68f0cd8db0b48eec",
+      "raw_preimage_hex": "8b4df0e9684b74ff8b4df083c10ce95d4174ff8b4df083c128e952e5e7ffb86476df00e91b7df3ff",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_constructor_unwind_map_and_funcinfo",
+      "start": "00df764c",
+      "end_exclusive": "00df7688",
+      "length": 60,
+      "sha256": "9828a3c45edcbc7031b9c67ba730dae2a3a672e214ba92d83b028cc6d7a3bd60",
+      "raw_preimage_hex": "ffffffff00eecb000000000008eecb000100000013eecb0022059319030000004c76df00000000000000000000000000000000000000000001000000",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_singleton_getter",
+      "start": "00b3e730",
+      "end_exclusive": "00b3e7ed",
+      "length": 189,
+      "sha256": "7b9c8865a04b8c98121a241786a0d3703768772cb806f8f557b00270e77c81d9",
+      "raw_preimage_hex": "64a1000000006aff68b3edcb005064892500000000a1dcfe080183ec0c85c00f858900000056e8f56b8dff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833ddcfe080100753f6a08e88a800b0083c4048944240485c0c64424180174098bc8e8a8350200eb0233c0c644241800a3dcfe0801e8956b8dff8b0ddcfe0801518bc8e86724090085f6740b834618ff56ff151022ce00a1dcfe08015e8b4c240c64890d0000000083c418c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_singleton_construct",
+      "start": "00b61d50",
+      "end_exclusive": "00b61d59",
+      "length": 9,
+      "sha256": "6c0ec936e146005bb724c1e96a0a3844a76634ccfea694f9567a58828f37f039",
+      "raw_preimage_hex": "8bc1c700642bd600c3",
+      "ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_singleton_delete",
+      "start": "00b61d60",
+      "end_exclusive": "00b61d89",
+      "length": 41,
+      "sha256": "2ef739c60e79ada0fd96d7f40a8491598626c692a9bfa6f325257b17d3c76854",
+      "raw_preimage_hex": "f644240401568bf1c705dcfe080100000000c7061838ce00740956e82c48090083c4048bc65ec20400",
+      "ghidra_matches_installed_pe": true
+    }
+  ],
+  "evidence_scripts": {
+    "collector": "local/collect_render_target_group_evidence.py",
+    "collector_sha256": "7ec9465eee38edbb91082f119109c97b258c1b009036ccdbaf196ed952f28ad4"
+  },
+  "limitations": [
+    "Discovery and exact-byte/source verification do not establish a C++ reconstruction or binary replacement.",
+    "No GPU/gameplay/runtime validation performed.",
+    "Original record semantics and every cached-COM writer are not claimed.",
+    "Full surface lifetime remains separate from approved pool-only packet."
+  ]
+}
