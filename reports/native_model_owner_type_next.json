@@ -1,0 +1,1196 @@
+{
+  "schema_version": 1,
+  "packet": "native_model_owner_type_next",
+  "status": "read_only_discovery_complete_owner_type_packet_ready",
+  "captured_utc": "2026-09-10T21:23:43.728168+00:00",
+  "checkout": "J:\\PROG\\battlestations-pacific-decompile-native-model-owner-type-next",
+  "base_commit": "7387ef6430fa3ac96235724c758f8c1d4ff4a660",
+  "scope": {
+    "owned_files": [
+      "docs/NATIVE_MODEL_OWNER_TYPE_NEXT.md",
+      "reports/native_model_owner_type_next.json"
+    ],
+    "source_writes": false,
+    "ghidra_mutations": false,
+    "shared_metadata_writes": false,
+    "new_tests": false,
+    "built": false,
+    "native_executed": false,
+    "game_validated": false,
+    "binary_compatible": false,
+    "qualification": "Complete owner/type contracts are ready for implementation; this report does not implement them."
+  },
+  "target": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Every uncached CLI read verifies project/program before accessing Ghidra; cache is private to this packet."
+  },
+  "verification": {
+    "exact_span_count": 28,
+    "exact_byte_count": 2006,
+    "all_live_matches_disk_or_zero_fill": true,
+    "code_span_count": 18,
+    "data_span_count": 10,
+    "scope_note": "18 code chunks comprise 15 whole functions, two EH code groups and one allocator callsite fragment; 10 data spans. Boundary-only dependencies remain explicitly separate.",
+    "no_runtime_claim": true
+  },
+  "recommended_packet": {
+    "core_addresses": [
+      "00b75030",
+      "00b750c0",
+      "00b75290",
+      "00b74f20",
+      "00b74330",
+      "00b74340",
+      "006ef860",
+      "00cd7e60",
+      "00b74f90"
+    ],
+    "adjacent_complete_setter": "00b75170",
+    "suggested_source_ownership": [
+      "include/bsp/native_model_owner.hpp",
+      "src/native_model_owner.cpp",
+      "include/bsp/native_model_reference.hpp",
+      "src/native_model_reference.cpp",
+      "include/bsp/model_type_bootstrap.hpp",
+      "src/model_type_bootstrap.cpp"
+    ],
+    "integration_prerequisites": [
+      "native_model_pool canonical01090054 packet",
+      "main native_node_construction minimum sizeof(NativeNodeStorage)=174h change",
+      "same NativeNodeDestructionRuntime/scene/attachment/string services",
+      "same TypeIdCounterLifetime and shared node/root descriptors",
+      "actual raw retained owners/current profile dispatch for any terminal174 or180 release"
+    ],
+    "independent_of": [
+      "full native geometry construction",
+      "B752B0 clone",
+      "B748E0 render submission",
+      "arbitrary derived model virtual profiles",
+      "new pose/bounds algorithms"
+    ],
+    "reference_boundary": "NativeRenderActualOwners resolves only after actual raw+04 reaches zero. Reuse current nonthrowing terminal interface or explicitly scope a throwing direct-call interface; never fabricate a zero callback."
+  },
+  "storage": {
+    "model_object_bytes": 388,
+    "model_pool_slot_bytes": 392,
+    "node_prefix_bytes": 372,
+    "tail_bytes": 16,
+    "pool_index_offset": 388,
+    "tail_fields": {
+      "174": "raw retained opaque owner",
+      "178": "float",
+      "17c": "float",
+      "180": "raw retained geometry owner"
+    },
+    "constructor_constants": {
+      "00ce4adc": "d01502f9",
+      "00ce4970": "501502f9",
+      "00d7a208": "80000000"
+    },
+    "negative_zero_pose_offsets": [
+      "18",
+      "1c",
+      "20"
+    ],
+    "positive_zero_pose_store_order": [
+      "24",
+      "28",
+      "2c",
+      "08",
+      "0c",
+      "10",
+      "14"
+    ],
+    "pool_index_untouched": true,
+    "actual_native_identities_required": true,
+    "no_copied_native_state": [
+      "reference count",
+      "hierarchy",
+      "scene pointer",
+      "point-light array",
+      "name buffer"
+    ]
+  },
+  "vtables": {
+    "00d62de8": {
+      "length": 92,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "00b75290",
+        "08": "00b74330",
+        "0c": "006ef860",
+        "10": "00b752b0",
+        "14": "00b74340",
+        "18": "00b6f310",
+        "1c": "00b6d7b0",
+        "20": "00b748e0",
+        "24": "00b6e150",
+        "28": "00b6d820",
+        "2c": "00b6dab0",
+        "30": "00b6dae0",
+        "34": "00b6e870",
+        "38": "00b6db10",
+        "3c": "00b6dbc0",
+        "40": "00b6dbe0",
+        "44": "00b6dc00",
+        "48": "00b6e8c0",
+        "4c": "00b6dc20",
+        "50": "00b6ed80",
+        "54": "00b6ee10",
+        "58": "006ef890"
+      }
+    },
+    "00d62c88": {
+      "length": 88,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "00b6f8d0",
+        "08": "00b6d790",
+        "0c": "00b6f570",
+        "10": "00b6f8f0",
+        "14": "00b6d7a0",
+        "18": "00b6f310",
+        "1c": "00b6d7b0",
+        "20": "00b6d990",
+        "24": "00b6e150",
+        "28": "00b6d820",
+        "2c": "00b6dab0",
+        "30": "00b6dae0",
+        "34": "00b6e870",
+        "38": "00b6db10",
+        "3c": "00b6dbc0",
+        "40": "00b6dbe0",
+        "44": "00b6dc00",
+        "48": "00b6e8c0",
+        "4c": "00b6dc20",
+        "50": "00b6ed80",
+        "54": "00b6ee10"
+      }
+    },
+    "dispatch_rule": "Read actual current owner vtable and required current slot. Model and base-node phases are distinct; no construction-type or unknown-derived fallback."
+  },
+  "type_bootstrap": {
+    "guard": "01090030",
+    "descriptor": [
+      "01090034",
+      "01090038",
+      "0109003c",
+      "01090040"
+    ],
+    "name_address": "00d62dd4",
+    "name": "c3dObject",
+    "shared_counter_global": "0109db7c",
+    "node_descriptor": "0108ff90",
+    "node_root_word": "0108ff94",
+    "leaves_initialize": false,
+    "predicate_reads_current_words": true,
+    "initialization_guard_rollback": false,
+    "counter_increment_precedes_own_id_publication": true,
+    "static_parent_copy": "load both before either store",
+    "lazy_parent_copy": "interleaved individual source load and target store",
+    "host_scene_token_copy_is_not_authoritative": true
+  },
+  "exception_maps": [
+    {
+      "owner_entry": "00b750c0",
+      "handler": "00cc1c66",
+      "func_info": "00dfac50",
+      "unwind_map": "00dfac40",
+      "max_state": 2,
+      "actions": [
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cc1c58",
+          "operation": "B74F20(saved_model+178), releasing CURRENT model180"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc1c50",
+          "operation": "full B6F440(saved_model)"
+        }
+      ],
+      "normal_state_sequence": [
+        "state1 before174 release",
+        "state0 before180 release",
+        "state-1 before full node base"
+      ],
+      "no_retry": "A failing174 release remains uncleared; a failing normal180 release is not retried; a throwing base call is not repeated.",
+      "physical_pool_return_on_exception": false
+    },
+    {
+      "owner_entry": "00b752b0",
+      "handler": "00cc1c78",
+      "func_info": "00dfac7c",
+      "unwind_map": "00dfac74",
+      "max_state": 1,
+      "actions": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc1c70",
+          "operation": "B748C0(saved_raw_slot)"
+        }
+      ],
+      "normal_state_sequence": [
+        "state0 after pool allocation",
+        "state-1 before B6F150 and all later clone work"
+      ],
+      "later_model_or_geometry_rollback": false
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b75030",
+      "readiness": "core_ready",
+      "old_ghidra_name": "BSP_GeneratedModel_Construct",
+      "old_ghidra_annotation": {
+        "address": "00b75030",
+        "function_name": "BSP_GeneratedModel_Construct",
+        "comment": "[BSP reconstruction 00b75030]\nConstruct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported. Original ABI: ECX destination; stack model-constructor argument; EAX destination; RET4. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_GeneratedModel_Construct",
+      "original_abi": "ECX actual destination; stack NativeString pointer; EAX same destination; RET4",
+      "contract": "Call complete B6F5A0; preserve its exception behavior; publish D62DE8 and exact tail/pose stores, including negative zero in +18/+1C/+20. Does not return raw slot on failure.",
+      "span": {
+        "address": "00b75030",
+        "end_exclusive": "00b750b4",
+        "kind": "code",
+        "length": 132,
+        "disk_offset": 7819312,
+        "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 28,
+        "last_instruction": "00b750b1: ret 4"
+      }
+    },
+    {
+      "address": "00b750c0",
+      "readiness": "core_ready",
+      "old_ghidra_name": "BSP_Model_Destroy",
+      "old_ghidra_annotation": {
+        "address": "00b750c0",
+        "function_name": "BSP_Model_Destroy",
+        "comment": "[BSP reconstruction 00b750c0]\n[BSP reconstruction] Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry. Original ABI: ECX model; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_Model_Destroy",
+      "original_abi": "ECX actual model; no stack arguments; RET",
+      "contract": "Complete direct destructor: publish D62DE8; state1 release then clear current174; state0 release then clear current180; state-1 full B6F440. State1 unwind releases current180 via B74F20 then node base; state0 unwind node base only.",
+      "span": {
+        "address": "00b750c0",
+        "end_exclusive": "00b75165",
+        "kind": "code",
+        "length": 165,
+        "disk_offset": 7819456,
+        "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 51,
+        "last_instruction": "00b75164: ret"
+      }
+    },
+    {
+      "address": "00b75290",
+      "readiness": "core_ready",
+      "old_ghidra_name": "BSP_Model_DeletingDestructor",
+      "old_ghidra_annotation": {
+        "address": "00b75290",
+        "function_name": "BSP_Model_DeletingDestructor",
+        "comment": "[BSP reconstruction 00b75290]\n[BSP reconstruction] Call00B750C0; if flags&1 return model storage via pool00B74750 with ECX global01090054; return original this. Generated vtable00D62DE8+4 points here; virtual0 uses already-reviewed00BD30E0 to invoke this entry with flag1. Native physical pool is the remaining explicit host storage-owner boundary. Original ABI: ECX model; stack delete flags; EAX original this; RET4.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_Model_DeletingDestructor",
+      "original_abi": "ECX actual model; stack deletion flags; EAX original address even after physical return; RET4",
+      "contract": "Full B750C0 then if flags&1 call B74750 with ECX canonical01090054 and stack raw model. No pool return on exception. No reference decrement or byte44 gate.",
+      "span": {
+        "address": "00b75290",
+        "end_exclusive": "00b752b0",
+        "kind": "code",
+        "length": 32,
+        "disk_offset": 7819920,
+        "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 11,
+        "last_instruction": "00b752ad: ret 4"
+      }
+    },
+    {
+      "address": "00b74f20",
+      "readiness": "core_ready",
+      "old_ghidra_name": "FUN_00b74f20",
+      "old_ghidra_annotation": {
+        "address": "00b74f20",
+        "function_name": "FUN_00b74f20"
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_ModelGeometryMember_Destroy",
+      "original_abi": "ECX geometry member at model+178; no stack arguments; RET",
+      "contract": "Reload member+8 raw geometry, decrement captured raw+04, dispatch its current virtual0 only on zero, then clear member+8. Preserve member+0/+4 scalar words. Used by destructor state1 unwind.",
+      "span": {
+        "address": "00b74f20",
+        "end_exclusive": "00b74f4b",
+        "kind": "code",
+        "length": 43,
+        "disk_offset": 7819040,
+        "sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 19,
+        "last_instruction": "00b74f4a: ret"
+      }
+    },
+    {
+      "address": "00b74330",
+      "readiness": "core_ready",
+      "old_ghidra_name": null,
+      "old_ghidra_annotation": null,
+      "annotation_availability": "no function defined; plate-comment query is unavailable",
+      "proposed_descriptive_name": "BSP_Object_GetRuntimeTypeToken",
+      "original_abi": "ECX ignored; no stack arguments; EAX live DWORD01090034; RET",
+      "contract": "Six-byte leaf. Never initializes descriptor; actual model vtable+08. Currently no Ghidra function at this address.",
+      "span": {
+        "address": "00b74330",
+        "end_exclusive": "00b74336",
+        "kind": "code",
+        "length": 6,
+        "disk_offset": 7815984,
+        "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2,
+        "last_instruction": "00b74335: ret"
+      }
+    },
+    {
+      "address": "00b74340",
+      "readiness": "core_ready",
+      "old_ghidra_name": null,
+      "old_ghidra_annotation": null,
+      "annotation_availability": "no function defined; plate-comment query is unavailable",
+      "proposed_descriptive_name": "BSP_Object_GetRuntimeTypeNameAddress",
+      "original_abi": "ECX ignored; no stack arguments; EAX live DWORD01090040; RET",
+      "contract": "Six-byte leaf. Returns the live native name-address word, not a host string pointer and not a predicate. Actual model vtable+14. Currently no Ghidra function at this address.",
+      "span": {
+        "address": "00b74340",
+        "end_exclusive": "00b74346",
+        "kind": "code",
+        "length": 6,
+        "disk_offset": 7816000,
+        "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2,
+        "last_instruction": "00b74345: ret"
+      }
+    },
+    {
+      "address": "006ef860",
+      "readiness": "core_ready",
+      "old_ghidra_name": "BSP_Object_AcceptsRuntimeTypeToken",
+      "old_ghidra_annotation": {
+        "address": "006ef860",
+        "function_name": "BSP_Object_AcceptsRuntimeTypeToken",
+        "comment": "[BSP reconstruction 006ef860]\n40-byte RET4 leaf: AL true iff stack token equals one of c3dObject/c3dNode/cRoot IDs01090034/38/3C. It rejects cLight ID0109018C after valid one-time type initialization, so ordinary generated object scene attachment does not insert a light registry entry. Original ABI: stack uint32 token; AL boolean; RET 4; ECX unused Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_Object_AcceptsRuntimeTypeToken",
+      "original_abi": "ECX ignored; stack uint32 token; AL boolean, upper EAX unspecified; RET4",
+      "contract": "Read current01090034,01090038,0109003C sequentially until match. No initialization or fallback. Current SceneAttachmentRuntime copied token array is not authoritative native descriptor storage.",
+      "span": {
+        "address": "006ef860",
+        "end_exclusive": "006ef888",
+        "kind": "code",
+        "length": 40,
+        "disk_offset": 3078240,
+        "sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 12,
+        "last_instruction": "006ef885: ret 4"
+      }
+    },
+    {
+      "address": "00cd7e60",
+      "readiness": "core_ready",
+      "old_ghidra_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+      "old_ghidra_annotation": {
+        "address": "00cd7e60",
+        "function_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+        "comment": "[BSP reconstruction 00cd7e60]\nGuarded native type initializer for c3dObject; descriptor 01090034 consumes shared monotonic type counter and retains recovered parent/type-name identities. Analysis only; production type bootstrap not implemented. Original ABI: no arguments; guarded type initializer; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_TypeInfo_StaticInitialize_c3dObject",
+      "original_abi": "No arguments; guarded static initializer; RET",
+      "contract": "If guard01090030 zero, publish1, native nameD62DD4, initialize shared node descriptor, load both parent IDs before either store, get shared counter, increment counter+04 before publishing captured object ID. No guard rollback.",
+      "span": {
+        "address": "00cd7e60",
+        "end_exclusive": "00cd7eaf",
+        "kind": "code",
+        "length": 79,
+        "disk_offset": 9272928,
+        "sha256": "e0a5d5b6d445f843ab1176a9f82b23b636f9b4d625c25f0f3883169665122db9",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 16,
+        "last_instruction": "00cd7eae: ret"
+      }
+    },
+    {
+      "address": "00b74f90",
+      "readiness": "core_ready",
+      "old_ghidra_name": "FUN_00b74f90",
+      "old_ghidra_annotation": {
+        "address": "00b74f90",
+        "function_name": "FUN_00b74f90"
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_TypeInfo_Initialize3dObject",
+      "original_abi": "ECX target four-word descriptor; no stack arguments; RET; no defined result",
+      "contract": "Same process guard01090030 but ECX may target another descriptor. Set name before node initializer; interleave node load/target+04 store then root load/target+08 store. Shared counter increment precedes target own-ID publication.",
+      "span": {
+        "address": "00b74f90",
+        "end_exclusive": "00b74fd7",
+        "kind": "code",
+        "length": 71,
+        "disk_offset": 7819152,
+        "sha256": "b808d68ff9599f5aa299694d9cdede605c46b9631143bb1316a10c2d8c582ec7",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 19,
+        "last_instruction": "00b74fd6: ret"
+      }
+    },
+    {
+      "address": "00b75170",
+      "readiness": "adjacent_ready",
+      "old_ghidra_name": "BSP_GeneratedModel_SetGeometry",
+      "old_ghidra_annotation": {
+        "address": "00b75170",
+        "function_name": "BSP_GeneratedModel_SetGeometry",
+        "comment": "[BSP reconstruction 00b75170]\nRetain mesh at+180, replace+178/+17C only for arguments other than-1.0f; exact argument1 meaning unresolved. Original ABI: ECX model; stack unused word,mesh,float,float; RET10h. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_GeneratedModel_SetGeometry",
+      "original_abi": "ECX actual model; stack unread word, raw geometry, float178, float17C; RET10h",
+      "contract": "Capture old180; if unequal publish incoming, retain actual incoming+04, release captured old/current virtual0 on zero. After callbacks load float arguments and one captured D7A260 sentinel; preserve -1 values, store unequal or unordered values. No EH or publication rollback.",
+      "span": {
+        "address": "00b75170",
+        "end_exclusive": "00b751eb",
+        "kind": "code",
+        "length": 123,
+        "disk_offset": 7819632,
+        "sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 40,
+        "last_instruction": "00b751e8: ret 0x10"
+      }
+    },
+    {
+      "address": "00b752b0",
+      "readiness": "separate_clone_dependency_closure",
+      "old_ghidra_name": "FUN_00b752b0",
+      "old_ghidra_annotation": {
+        "address": "00b752b0",
+        "function_name": "FUN_00b752b0"
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_Model_Clone_Provisional",
+      "original_abi": "ECX source; stack flags and requested parent; EAX destination; RET8",
+      "contract": "Allocate canonical model pool; construct from current source name; B6F150(source,destination,flags,parent); clone nonnull current geometry via virtual10(flags,0); setter with live source scalars; release temporary geometry; retained-assign174; x87 copy ten pose floats. EH returns raw slot only if construction throws; state-1 for all later operations.",
+      "span": {
+        "address": "00b752b0",
+        "end_exclusive": "00b753f2",
+        "kind": "code",
+        "length": 322,
+        "disk_offset": 7819952,
+        "sha256": "c59f13ef71e9ddc4451cbbb1d8013bc99794480da398ae29943c07e0bb3cbae7",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 112,
+        "last_instruction": "00b753ef: ret 8"
+      }
+    },
+    {
+      "address": "00b6ed80",
+      "readiness": "existing_shared_dependency",
+      "old_ghidra_name": "BSP_SceneNode_SetScene",
+      "old_ghidra_annotation": {
+        "address": "00b6ed80",
+        "function_name": "BSP_SceneNode_SetScene",
+        "comment": "[BSP reconstruction 00b6ed80]\nAssign node+170 scene reference. Detach old scene, reload after type callback, publish requested pointer before InterlockedIncrement(+4), decrement reloaded old reference and virtual+0 on zero, reload and register current scene. Recursive virtual+50 child dispatch uses original request; reload child+3C after callback. No transform cache writes. Scene+14 is cLight registry; ordinary c3dObject can attach without registration. Original ABI: __thiscall void(node ECX, scene*, recursion byte); RET 8 Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_SceneNode_SetScene",
+      "original_abi": "ECX node; stack requested scene and recursion byte; RET8",
+      "contract": "Current model virtual50 reuses existing scene detach/reload/publish/retain/release/register and live child virtual50 traversal; no model-specific no-op fallback.",
+      "span": {
+        "address": "00b6ed80",
+        "end_exclusive": "00b6ee0c",
+        "kind": "code",
+        "length": 140,
+        "disk_offset": 7794048,
+        "sha256": "017e7433a6d5d7d2deafe5a855fa99a1981665f3c5da173eac53379f46413bf0",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 55,
+        "last_instruction": "00b6ee09: ret 8"
+      }
+    },
+    {
+      "address": "006ef890",
+      "readiness": "separate_existing_native_leaf",
+      "old_ghidra_name": null,
+      "old_ghidra_annotation": null,
+      "annotation_availability": "no function defined; plate-comment query is unavailable",
+      "proposed_descriptive_name": "BSP_Object_AcceptsRenderView_Provisional",
+      "original_abi": "ECX ignored; two stack words ignored; AL1; RET8",
+      "contract": "Actual model virtual58 is a five-byte unconditional true leaf; semantics of its two input words remain provisional. Does not supply render virtual20 or other unimplemented slots.",
+      "span": {
+        "address": "006ef890",
+        "end_exclusive": "006ef895",
+        "kind": "code",
+        "length": 5,
+        "disk_offset": 3078288,
+        "sha256": "96bb05a9b4b1029fe7f666a311c7c16bed4d239a715c81b90e12ebf3a7657c4d",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2,
+        "last_instruction": "006ef892: ret 8"
+      }
+    },
+    {
+      "address": "00b74eb0",
+      "readiness": "independent_pool_worker_owned",
+      "old_ghidra_name": "CG_static_dtor_stub_00b74eb0",
+      "old_ghidra_annotation": {
+        "address": "00b74eb0",
+        "function_name": "CG_static_dtor_stub_00b74eb0"
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_ModelPool_AllocateStaticSlot",
+      "original_abi": "Caller ECX nominal size is overwritten; tailcall with ECX canonical01090054; EAX pool slot; RET through B74D00",
+      "contract": "MOV ECX,01090054; JMP B74D00. The B4C8F0 nominal184h caller still obtains an actual188h pool slot. Keep annotations with native_model_pool worker.",
+      "span": {
+        "address": "00b74eb0",
+        "end_exclusive": "00b74eba",
+        "kind": "code",
+        "length": 10,
+        "disk_offset": 7818928,
+        "sha256": "369941539baefd0e0a7060a7ef69aa8f2cdb28ebad41de19783d0b68d8e25001",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 2,
+        "last_instruction": "00b74eb5: jmp 0xb74d00"
+      }
+    },
+    {
+      "address": "00b6f150",
+      "readiness": "separate_clone_dependency_not_fully_reconstructed",
+      "old_ghidra_name": "FUN_00b6f150",
+      "old_ghidra_annotation": {
+        "address": "00b6f150",
+        "function_name": "FUN_00b6f150"
+      },
+      "annotation_availability": "function annotation captured",
+      "proposed_descriptive_name": "BSP_Node_CopyCloneState_Provisional",
+      "original_abi": "ECX source; stack destination, flags, requested parent; RET0Ch",
+      "contract": "Boundary audit only: copies actual node/light/backlink and parent/root/scene state with current virtual calls; flags20 suppresses child cloning. Raw body completely byte-verified, not claimed as a complete semantic reconstruction. Decompiler lost two stack parameters.",
+      "span": {
+        "address": "00b6f150",
+        "end_exclusive": "00b6f30c",
+        "kind": "code",
+        "length": 444,
+        "disk_offset": 7795024,
+        "sha256": "e8e0f3595ce3beaf2badd64b9965cdc6fbfd007c4061b07e58c54ca74e89173f",
+        "live_matches_disk_or_zero_fill": true,
+        "instruction_count": 142,
+        "last_instruction": "00b6f309: ret 0xc"
+      }
+    }
+  ],
+  "exact_spans": [
+    {
+      "address": "00b75030",
+      "end_exclusive": "00b750b4",
+      "kind": "code",
+      "length": 132,
+      "disk_offset": 7819312,
+      "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 28,
+      "last_instruction": "00b750b1: ret 4"
+    },
+    {
+      "address": "00b750c0",
+      "end_exclusive": "00b75165",
+      "kind": "code",
+      "length": 165,
+      "disk_offset": 7819456,
+      "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 51,
+      "last_instruction": "00b75164: ret"
+    },
+    {
+      "address": "00b75290",
+      "end_exclusive": "00b752b0",
+      "kind": "code",
+      "length": 32,
+      "disk_offset": 7819920,
+      "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 11,
+      "last_instruction": "00b752ad: ret 4"
+    },
+    {
+      "address": "00b74f20",
+      "end_exclusive": "00b74f4b",
+      "kind": "code",
+      "length": 43,
+      "disk_offset": 7819040,
+      "sha256": "edb63baca911cac4221df749412f4f29950ad05529d10db142cd767d8a3ad30f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 19,
+      "last_instruction": "00b74f4a: ret"
+    },
+    {
+      "address": "00b74330",
+      "end_exclusive": "00b74336",
+      "kind": "code",
+      "length": 6,
+      "disk_offset": 7815984,
+      "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00b74335: ret"
+    },
+    {
+      "address": "00b74340",
+      "end_exclusive": "00b74346",
+      "kind": "code",
+      "length": 6,
+      "disk_offset": 7816000,
+      "sha256": "c66aafb4ce5a61f877f66eb38502d3bd8e4a82f03175b068648138a86c4e64ff",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00b74345: ret"
+    },
+    {
+      "address": "006ef860",
+      "end_exclusive": "006ef888",
+      "kind": "code",
+      "length": 40,
+      "disk_offset": 3078240,
+      "sha256": "f93a24de0c3719498d39447304c97b52d6b6005bb9bbaad3aef63610187bffbd",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 12,
+      "last_instruction": "006ef885: ret 4"
+    },
+    {
+      "address": "00cd7e60",
+      "end_exclusive": "00cd7eaf",
+      "kind": "code",
+      "length": 79,
+      "disk_offset": 9272928,
+      "sha256": "e0a5d5b6d445f843ab1176a9f82b23b636f9b4d625c25f0f3883169665122db9",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 16,
+      "last_instruction": "00cd7eae: ret"
+    },
+    {
+      "address": "00b74f90",
+      "end_exclusive": "00b74fd7",
+      "kind": "code",
+      "length": 71,
+      "disk_offset": 7819152,
+      "sha256": "b808d68ff9599f5aa299694d9cdede605c46b9631143bb1316a10c2d8c582ec7",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 19,
+      "last_instruction": "00b74fd6: ret"
+    },
+    {
+      "address": "00b75170",
+      "end_exclusive": "00b751eb",
+      "kind": "code",
+      "length": 123,
+      "disk_offset": 7819632,
+      "sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 40,
+      "last_instruction": "00b751e8: ret 0x10"
+    },
+    {
+      "address": "00b752b0",
+      "end_exclusive": "00b753f2",
+      "kind": "code",
+      "length": 322,
+      "disk_offset": 7819952,
+      "sha256": "c59f13ef71e9ddc4451cbbb1d8013bc99794480da398ae29943c07e0bb3cbae7",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 112,
+      "last_instruction": "00b753ef: ret 8"
+    },
+    {
+      "address": "00b6ed80",
+      "end_exclusive": "00b6ee0c",
+      "kind": "code",
+      "length": 140,
+      "disk_offset": 7794048,
+      "sha256": "017e7433a6d5d7d2deafe5a855fa99a1981665f3c5da173eac53379f46413bf0",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 55,
+      "last_instruction": "00b6ee09: ret 8"
+    },
+    {
+      "address": "00cc1c50",
+      "end_exclusive": "00cc1c70",
+      "kind": "code",
+      "length": 32,
+      "disk_offset": 9182288,
+      "sha256": "17e80cf410ddee38444a3dd0ea146bfc74c858fc6a7b6231835755d40396014f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 7,
+      "last_instruction": "00cc1c6b: jmp 0xbf6b43"
+    },
+    {
+      "address": "00cc1c70",
+      "end_exclusive": "00cc1c82",
+      "kind": "code",
+      "length": 18,
+      "disk_offset": 9182320,
+      "sha256": "c175cee26b5c13ed9075dd0f91dfdcfa12e5e67f4ed54165707e0568a8fff898",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 4,
+      "last_instruction": "00cc1c7d: jmp 0xbf6b43"
+    },
+    {
+      "address": "006ef890",
+      "end_exclusive": "006ef895",
+      "kind": "code",
+      "length": 5,
+      "disk_offset": 3078288,
+      "sha256": "96bb05a9b4b1029fe7f666a311c7c16bed4d239a715c81b90e12ebf3a7657c4d",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "006ef892: ret 8"
+    },
+    {
+      "address": "00b4c8f0",
+      "end_exclusive": "00b4c8fe",
+      "kind": "code",
+      "length": 14,
+      "disk_offset": 7653616,
+      "sha256": "7a5e69ca5863b07043aec5ab9c007fdc0470d6a5398031deae82cf48e1a65ed9",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 3,
+      "last_instruction": "00b4c8f9: call 0xb74eb0"
+    },
+    {
+      "address": "00b74eb0",
+      "end_exclusive": "00b74eba",
+      "kind": "code",
+      "length": 10,
+      "disk_offset": 7818928,
+      "sha256": "369941539baefd0e0a7060a7ef69aa8f2cdb28ebad41de19783d0b68d8e25001",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 2,
+      "last_instruction": "00b74eb5: jmp 0xb74d00"
+    },
+    {
+      "address": "00b6f150",
+      "end_exclusive": "00b6f30c",
+      "kind": "code",
+      "length": 444,
+      "disk_offset": 7795024,
+      "sha256": "e8e0f3595ce3beaf2badd64b9965cdc6fbfd007c4061b07e58c54ca74e89173f",
+      "live_matches_disk_or_zero_fill": true,
+      "instruction_count": 142,
+      "last_instruction": "00b6f309: ret 0xc"
+    },
+    {
+      "address": "00d62de8",
+      "end_exclusive": "00d62e44",
+      "kind": "data",
+      "length": 92,
+      "disk_offset": 9842152,
+      "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "00bd30e0",
+        "00b75290",
+        "00b74330",
+        "006ef860",
+        "00b752b0",
+        "00b74340",
+        "00b6f310",
+        "00b6d7b0",
+        "00b748e0",
+        "00b6e150",
+        "00b6d820",
+        "00b6dab0",
+        "00b6dae0",
+        "00b6e870",
+        "00b6db10",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b6ed80",
+        "00b6ee10",
+        "006ef890"
+      ]
+    },
+    {
+      "address": "00d62c88",
+      "end_exclusive": "00d62ce0",
+      "kind": "data",
+      "length": 88,
+      "disk_offset": 9841800,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "00bd30e0",
+        "00b6f8d0",
+        "00b6d790",
+        "00b6f570",
+        "00b6f8f0",
+        "00b6d7a0",
+        "00b6f310",
+        "00b6d7b0",
+        "00b6d990",
+        "00b6e150",
+        "00b6d820",
+        "00b6dab0",
+        "00b6dae0",
+        "00b6e870",
+        "00b6db10",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b6ed80",
+        "00b6ee10"
+      ]
+    },
+    {
+      "address": "00d62dd4",
+      "end_exclusive": "00d62de0",
+      "kind": "data",
+      "length": 12,
+      "disk_offset": 9842132,
+      "sha256": "56d88957eb0bc9e6368e264a0cfbf60008c3a71a357fdb41f129866addeb97dc",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "4f643363",
+        "63656a62",
+        "00000074"
+      ]
+    },
+    {
+      "address": "01090030",
+      "end_exclusive": "01090044",
+      "kind": "data",
+      "length": 20,
+      "disk_offset": null,
+      "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ]
+    },
+    {
+      "address": "00ce4adc",
+      "end_exclusive": "00ce4ae0",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9325276,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "d01502f9"
+      ]
+    },
+    {
+      "address": "00ce4970",
+      "end_exclusive": "00ce4974",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9324912,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "501502f9"
+      ]
+    },
+    {
+      "address": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9937416,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "80000000"
+      ]
+    },
+    {
+      "address": "00d7a260",
+      "end_exclusive": "00d7a264",
+      "kind": "data",
+      "length": 4,
+      "disk_offset": 9937504,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "bf800000"
+      ]
+    },
+    {
+      "address": "00dfac40",
+      "end_exclusive": "00dfac74",
+      "kind": "data",
+      "length": 52,
+      "disk_offset": 10464320,
+      "sha256": "fd05988dff36c154708f797c5cb33532b5e7e21eac32604368a27eb042fb0367",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "ffffffff",
+        "00cc1c50",
+        "00000000",
+        "00cc1c58",
+        "19930522",
+        "00000002",
+        "00dfac40",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    {
+      "address": "00dfac74",
+      "end_exclusive": "00dfaca0",
+      "kind": "data",
+      "length": 44,
+      "disk_offset": 10464372,
+      "sha256": "8c64192c1272d424a5af28edb2a6ccb4ff8bab68a84d49b03523ccb558de388e",
+      "live_matches_disk_or_zero_fill": true,
+      "words": [
+        "ffffffff",
+        "00cc1c70",
+        "19930522",
+        "00000001",
+        "00dfac74",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "path": "docs/NATIVE_MODEL_OWNER_TYPE_NEXT.md",
+      "size_bytes": 14924,
+      "sha256": "b8744fe68d483670bab2b8c4e5dfff2c2aaa97c65a497cfe14ab40279dcd8a23",
+      "tracked": true
+    },
+    {
+      "path": "config/target.json",
+      "size_bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "size_bytes": 3811,
+      "sha256": "984883fc2e8b526b509de6469a7eb4044f379e22fda6b34c83b8f3a67a267df5",
+      "tracked": true
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "size_bytes": 6632,
+      "sha256": "61aa582e146533fbd64daeaf86565387472bddc24bb34671ca296308c254da94",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "size_bytes": 4009,
+      "sha256": "9bf84bfbfed71bf90d5ab6626c3fc008665ac2b0aa9eb596d8dc6878a15db63d",
+      "tracked": true
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "size_bytes": 10577,
+      "sha256": "8fb01ea54062b84b15dad6a15743e4512f29241563639e733a35d9579c79761a",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "size_bytes": 4860,
+      "sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee",
+      "tracked": true
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "size_bytes": 14079,
+      "sha256": "a84798e710ad1292d0b8d52d1767fbdd246eddd1eb0369ced67894cb07aa882a",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_camera_reference.hpp",
+      "size_bytes": 2409,
+      "sha256": "52e941810a4fc335ca371f2ce6b5290bedf1fc9cafcc561cd750f0100b356be0",
+      "tracked": true
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "size_bytes": 4385,
+      "sha256": "a95385c624c8536e26c0eb1914090fa2b39e02768ffd75ca5fbeafbe67adbfe4",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "size_bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "tracked": true
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "size_bytes": 3884,
+      "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "size_bytes": 3183,
+      "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34",
+      "tracked": true
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "size_bytes": 6499,
+      "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/camera_type_bootstrap.hpp",
+      "size_bytes": 1745,
+      "sha256": "7e6ad15a2ae0e84e2255b65e61ea0872e1bf85de0b249a29dad6bc940e5f51af",
+      "tracked": true
+    },
+    {
+      "path": "src/camera_type_bootstrap.cpp",
+      "size_bytes": 2737,
+      "sha256": "06f3b76beda1a755ab42d30917474581ce0c4c64f95a2adfd9a1f4ecd55918bd",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "size_bytes": 7425,
+      "sha256": "d3f120e4eac3230dc5f00099fbfc9ca5550383ff8b330e2ebd38f178b3f910d6",
+      "tracked": true
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "size_bytes": 15328,
+      "sha256": "4c60e1702bc071399a546520228f18772ffededb2eed0bbb6439bb3c836a0177",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "size_bytes": 9235,
+      "sha256": "5c8a9a848628aac1f206caf77d5892206193bf79933d7b923c0052aab8d94518",
+      "tracked": true
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "size_bytes": 10758,
+      "sha256": "83f8da8545b63a699189af79ee39fcf6a9c7dd8e5aefebc957de0f7a40015be9",
+      "tracked": true
+    },
+    {
+      "path": "include/bsp/instance_geometry.hpp",
+      "size_bytes": 3989,
+      "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4",
+      "tracked": true
+    },
+    {
+      "path": "docs/GENERATED_INSTANCE_GEOMETRY.md",
+      "size_bytes": 7908,
+      "sha256": "df888e6154ecc0e3c367e49dd1e0bffbb900e135955c99f2b4d7f8e986307e30",
+      "tracked": true
+    },
+    {
+      "path": "local/prepare_native_model_owner_type_next.py",
+      "size_bytes": 3771,
+      "sha256": "9c91bf95e4eebc2cda82989e80d3ba87f11c8ce5a30ea18262f234eb0c7a6b30",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_type_next_preparation.json",
+      "size_bytes": 11848,
+      "sha256": "c4ae4f678a2c188c2ab4d9f1003b572f47848e14f3e766e032863549c6e74eba",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_type_next_protos.txt",
+      "size_bytes": 11851,
+      "sha256": "e97d3d57fb5911b3987f0b5b75f03f2c457f72eca88080b7ed4774e6df5122e2",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_type_next_comments.json",
+      "size_bytes": 5238,
+      "sha256": "5ba0533487639c8fa7aca2cf184f8d1ec1fdd92a5c7d90e1eb3ba6f211c5a10a",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_type_next_additional_protos.txt",
+      "size_bytes": 3411,
+      "sha256": "c3f2363bb0edfc763f7cc1f7cacde05f767a7aad970dc302ac744d4894f34da6",
+      "tracked": false
+    },
+    {
+      "path": "local/native_model_owner_type_next_additional_comments.json",
+      "size_bytes": 265,
+      "sha256": "953777361a787f5a689553cf19e62ccfd96548b456805b7ae24dd103b9b4d07e",
+      "tracked": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-model-pool-20260910\\include\\bsp\\native_model_pool.hpp",
+      "size_bytes": 3166,
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "external_live_dependency": true,
+      "note": "Captured external worktree state; integration/commit remains its owner responsibility."
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_node_construction.hpp",
+      "size_bytes": 3972,
+      "sha256": "c0969bee8243db45e0be9e69b1f44f70c97c93c0c59445cff708529fc2e41fa8",
+      "external_live_dependency": true,
+      "note": "Captured external worktree state; integration/commit remains its owner responsibility."
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_node_construction.cpp",
+      "size_bytes": 6654,
+      "sha256": "5cd03607b953df5436b299318879a3f7c44c25fcee4f5a057d9bd22e830571c2",
+      "external_live_dependency": true,
+      "note": "Captured external worktree state; integration/commit remains its owner responsibility."
+    }
+  ],
+  "uncertainties": [
+    "Exact semantic role of retained model174 is not established; raw reference lifetime is complete.",
+    "Type-name getter returns a native address word; a host C-string resolver is a separate convenience.",
+    "Full native geometry/mesh construction and terminal geometry profile binding are separate; existing shared geometry adapter is not intrusive native storage.",
+    "Full B6F150 node cloning, geometry current virtual10 and B748E0 render submission are excluded dependencies.",
+    "Same native storage layout and byte evidence do not establish drop-in ABI or gameplay correctness.",
+    "No new execution, build or exception injection was done for this documentation-only packet."
+  ]
+}
