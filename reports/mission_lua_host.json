@@ -1,0 +1,2893 @@
+{
+  "packet": "mission_lua_host",
+  "owner": "agent/mission-lua-host",
+  "doc": "docs/MISSION_LUA_HOST.md",
+  "ghidra": "read-only; no renames, comments, prototypes or saves",
+  "summary": "The mission Lua host at game+1A08h: a 12-byte LuaMachine wrapping one Lua 5.1.1 lua_State, seven standard libraries, 560 C functions registered as plain globals, a virtual-file-system script loader with content-variant expansion, a dotted-name entry point dispatcher guarded by the debugtrap error handler, and the game+644h depth that suppresses the Loading_* bindings while an outer load owns the loading screen.",
+  "objects": {
+    "game+1A08h": {
+      "kind": "pointer to MissionLuaHost",
+      "fields": {
+        "+0h": "vtable, written by the caller not by 00884be0",
+        "+4h": "LuaMachine*, 12-byte block from 00bf681b(0Ch) at 00884c34",
+        "+8h/+Ch": "deferred call queue used by 00887e50 at 0088814a"
+      },
+      "evidence": "004dd620 loads it into ECX for 00884be0; 004dc729 for 00886900"
+    },
+    "game+1A0Ch": {
+      "kind": "inline LuaStateOwner over the same lua_State",
+      "evidence": "004dd638 LEA ECX,[ESI+1A0Ch]; 004dd641 CALL 00b65e20 with [[game+1A08h]+4h]+4h"
+    },
+    "LuaMachine": {
+      "+0h": "vtable 00cf8394",
+      "+4h": "lua_State*",
+      "+8h": "owns-state byte set to 1 at 006b87b0"
+    }
+  },
+  "state_creation": {
+    "address": "006b8740",
+    "abi": "__fastcall(LuaMachine* this), RET, returns this in EAX",
+    "luaL_newstate": "00a6a260",
+    "lua_atpanic": {
+      "function": "00a67390",
+      "panic_handler": "006b8720"
+    },
+    "lua_gc": {
+      "function": "00a68280",
+      "what": 6,
+      "comment": "LUA_GCSETPAUSE",
+      "data": 100
+    },
+    "library_table": "00cf8350, {name, luaopen} pairs, null-terminated at 00cf8388",
+    "libraries": [
+      {
+        "name": "",
+        "luaopen": "00a67210",
+        "symbol": "luaopen_base"
+      },
+      {
+        "name": "table",
+        "luaopen": "00a66010",
+        "symbol": "luaopen_table"
+      },
+      {
+        "name": "io",
+        "luaopen": "00a652b0",
+        "symbol": "luaopen_io"
+      },
+      {
+        "name": "os",
+        "luaopen": "00a64190",
+        "symbol": "luaopen_os"
+      },
+      {
+        "name": "string",
+        "luaopen": "00a63910",
+        "symbol": "luaopen_string"
+      },
+      {
+        "name": "math",
+        "luaopen": "00a61c50",
+        "symbol": "luaopen_math"
+      },
+      {
+        "name": "debug",
+        "luaopen": "00a61620",
+        "symbol": "luaopen_debug"
+      }
+    ],
+    "not_opened": [
+      "luaopen_package 00c2ff90 (no require, no package, no loadlib)"
+    ],
+    "luaL_register_used": false
+  },
+  "bring_up": {
+    "address": "00884be0",
+    "abi": "__fastcall(MissionLuaHost* this), RET, no stack arguments",
+    "caller": "004dd5b0 BSP_Game_OnInitOnce",
+    "steps": [
+      "malloc(0Ch) then 006b8740; store at this+4h",
+      "run \"PC=true\" (00d0e714) through 006b8ad0",
+      "install every row of 00e0b7b8 through 006b8610",
+      "run the embedded chunk named \"Scripts\\\\fundamentals.lua\" (00d0e6f8); bytes from 00884770+4h/+8h"
+    ]
+  },
+  "registration": {
+    "table": "00e0b7b8",
+    "terminator": "00e0c938",
+    "entry_size": 8,
+    "entry_layout": "{const char* name, lua_CFunction fn}",
+    "count": 560,
+    "distinct_names": 560,
+    "distinct_addresses": 557,
+    "aliases": [
+      [
+        "SetMotionBlurParams",
+        "SetMBP",
+        "0088e560"
+      ],
+      [
+        "AddAirBaseStock",
+        "AddAirBasePlanes",
+        "00896a90"
+      ],
+      [
+        "MissionNarrative",
+        "MissionNarrativeEnqueue",
+        "008b0c10"
+      ]
+    ],
+    "installer": {
+      "address": "006b8610",
+      "abi": "__thiscall(LuaMachine* this, const char* name, lua_CFunction fn), RET 8",
+      "sequence": [
+        "lua_pushcclosure(L, fn, 0) 00a67b20",
+        "lua_setfield(L, LUA_GLOBALSINDEX = -10002, name) 00a67e40"
+      ],
+      "scope": "plain globals; no namespace table and no metatable"
+    },
+    "bindings": [
+      {
+        "name": "Log",
+        "address": "0088bec0"
+      },
+      {
+        "name": "LogToFile",
+        "address": "0088bc00"
+      },
+      {
+        "name": "DoFileOutsideMPAK",
+        "address": "0088bd20"
+      },
+      {
+        "name": "GetProperty",
+        "address": "0088bf80"
+      },
+      {
+        "name": "Assert",
+        "address": "0088c3e0"
+      },
+      {
+        "name": "SETLOG",
+        "address": "0088c620"
+      },
+      {
+        "name": "AddWatch",
+        "address": "0088d130"
+      },
+      {
+        "name": "ShowHint",
+        "address": "008d1f50"
+      },
+      {
+        "name": "ShowHintForced",
+        "address": "008d2190"
+      },
+      {
+        "name": "AddStoredHint",
+        "address": "008d24f0"
+      },
+      {
+        "name": "RemoveStoredHint",
+        "address": "008d2340"
+      },
+      {
+        "name": "HideHint",
+        "address": "0088cec0"
+      },
+      {
+        "name": "IsHintActive",
+        "address": "008d2850"
+      },
+      {
+        "name": "IsHintStored",
+        "address": "008d2bb0"
+      },
+      {
+        "name": "IsHintCritical",
+        "address": "008d26a0"
+      },
+      {
+        "name": "IsSMVisible",
+        "address": "0088cd70"
+      },
+      {
+        "name": "BannSupportmanager",
+        "address": "0088c750"
+      },
+      {
+        "name": "PermitSupportmanager",
+        "address": "0088c8e0"
+      },
+      {
+        "name": "LogToConsole",
+        "address": "0088d420"
+      },
+      {
+        "name": "SetBPCsodaSquadMereteHack",
+        "address": "0088d2b0"
+      },
+      {
+        "name": "NetworkLog",
+        "address": "0088d6e0"
+      },
+      {
+        "name": "RemoveWatch",
+        "address": "0088d560"
+      },
+      {
+        "name": "random",
+        "address": "0088c160"
+      },
+      {
+        "name": "UnlockAllMission",
+        "address": "0088d000"
+      },
+      {
+        "name": "AddDamage",
+        "address": "0088e000"
+      },
+      {
+        "name": "SetWaterDamage",
+        "address": "0088e790"
+      },
+      {
+        "name": "SetFireDamage",
+        "address": "0088e320"
+      },
+      {
+        "name": "ExplodeToParts",
+        "address": "0088e1b0"
+      },
+      {
+        "name": "GetHpPercentage",
+        "address": "0088e9d0"
+      },
+      {
+        "name": "SetControlFactor",
+        "address": "0088eb50"
+      },
+      {
+        "name": "GetControlFactor",
+        "address": "0088edc0"
+      },
+      {
+        "name": "SetFailure",
+        "address": "0088eff0"
+      },
+      {
+        "name": "GetFailure",
+        "address": "0088f1d0"
+      },
+      {
+        "name": "ClearFailure",
+        "address": "0088f3c0"
+      },
+      {
+        "name": "ClearAllShipFailure",
+        "address": "0088f5a0"
+      },
+      {
+        "name": "SetDamagedGFXLevel",
+        "address": "0088f710"
+      },
+      {
+        "name": "ActivateSpawnpoint",
+        "address": "0088f8b0"
+      },
+      {
+        "name": "DeactivateSpawnpoint",
+        "address": "0088fab0"
+      },
+      {
+        "name": "GetDamagedGFXLevel",
+        "address": "0088fcc0"
+      },
+      {
+        "name": "SetNumbering",
+        "address": "0088fe30"
+      },
+      {
+        "name": "GetWaterLoad",
+        "address": "00891680"
+      },
+      {
+        "name": "GetLeaks",
+        "address": "008918d0"
+      },
+      {
+        "name": "SetPump",
+        "address": "00893240"
+      },
+      {
+        "name": "AddWaterLoad",
+        "address": "00893380"
+      },
+      {
+        "name": "Sink",
+        "address": "00891b20"
+      },
+      {
+        "name": "HitTarget",
+        "address": "00892f70"
+      },
+      {
+        "name": "GetFire",
+        "address": "008acf00"
+      },
+      {
+        "name": "AddFire",
+        "address": "008acd10"
+      },
+      {
+        "name": "SetRepairLevel",
+        "address": "008ad150"
+      },
+      {
+        "name": "SetRepairPriority",
+        "address": "008ad6f0"
+      },
+      {
+        "name": "RepairEnable",
+        "address": "008ad330"
+      },
+      {
+        "name": "FailureRepairEnable",
+        "address": "008ad540"
+      },
+      {
+        "name": "SetRepairEffectivity",
+        "address": "008ad8d0"
+      },
+      {
+        "name": "RepairAddTimeDelay",
+        "address": "008ada70"
+      },
+      {
+        "name": "GetRepairLevel",
+        "address": "008adc40"
+      },
+      {
+        "name": "RemoveWrecks",
+        "address": "008970b0"
+      },
+      {
+        "name": "InferiorIsDisabled",
+        "address": "00897e40"
+      },
+      {
+        "name": "GetGuiName",
+        "address": "0088daa0"
+      },
+      {
+        "name": "GetMeasure",
+        "address": "0088d8e0"
+      },
+      {
+        "name": "SetInvincible",
+        "address": "00897a50"
+      },
+      {
+        "name": "IsInvincible",
+        "address": "00897cb0"
+      },
+      {
+        "name": "GetFirepower",
+        "address": "0088dc10"
+      },
+      {
+        "name": "GetAirBaseStatus",
+        "address": "00895ba0"
+      },
+      {
+        "name": "GetAirBaseSlotStatus",
+        "address": "00896220"
+      },
+      {
+        "name": "IsReadyToSendPlanes",
+        "address": "00895d20"
+      },
+      {
+        "name": "SetAirBaseSlot",
+        "address": "00895ed0"
+      },
+      {
+        "name": "SetAirBaseSlotCount",
+        "address": "008963e0"
+      },
+      {
+        "name": "LaunchAirBaseSlot",
+        "address": "00896750"
+      },
+      {
+        "name": "AddAirBaseStock",
+        "address": "00896a90"
+      },
+      {
+        "name": "SetAirBaseSlotReady",
+        "address": "00896590"
+      },
+      {
+        "name": "AddAirBasePlanes",
+        "address": "00896a90"
+      },
+      {
+        "name": "AddShipyardStock",
+        "address": "00896cc0"
+      },
+      {
+        "name": "RemoveShipyardStock",
+        "address": "00896ee0"
+      },
+      {
+        "name": "RemoveAirBasePlanes",
+        "address": "008973c0"
+      },
+      {
+        "name": "RemoveAllAirBasePlanes",
+        "address": "008975b0"
+      },
+      {
+        "name": "SetAirBasePlaneLimit",
+        "address": "00897720"
+      },
+      {
+        "name": "GetAirBasePlaneLimit",
+        "address": "008978d0"
+      },
+      {
+        "name": "IsInFormation",
+        "address": "008996a0"
+      },
+      {
+        "name": "IsFormationLeader",
+        "address": "00899810"
+      },
+      {
+        "name": "IsFormationFollower",
+        "address": "00899980"
+      },
+      {
+        "name": "GetFormationLeader",
+        "address": "00899af0"
+      },
+      {
+        "name": "JoinFormation",
+        "address": "00899d10"
+      },
+      {
+        "name": "LeaveFormation",
+        "address": "00899eb0"
+      },
+      {
+        "name": "DisbandFormation",
+        "address": "0089a020"
+      },
+      {
+        "name": "FillPathPoints",
+        "address": "0089a190"
+      },
+      {
+        "name": "PlayBinkMovie",
+        "address": "0089a480"
+      },
+      {
+        "name": "SetThink",
+        "address": "00897fb0"
+      },
+      {
+        "name": "SetWait",
+        "address": "00898150"
+      },
+      {
+        "name": "ClearWait",
+        "address": "00898320"
+      },
+      {
+        "name": "ClearThink",
+        "address": "00898490"
+      },
+      {
+        "name": "CreateScript",
+        "address": "00898750"
+      },
+      {
+        "name": "DeleteScript",
+        "address": "00898ac0"
+      },
+      {
+        "name": "Message",
+        "address": "00898c60"
+      },
+      {
+        "name": "FindEntity",
+        "address": "00898e30"
+      },
+      {
+        "name": "FindEntityByID",
+        "address": "008990b0"
+      },
+      {
+        "name": "DoVector3",
+        "address": "00899300"
+      },
+      {
+        "name": "TrulyDead",
+        "address": "00899500"
+      },
+      {
+        "name": "InitAll",
+        "address": "00898610"
+      },
+      {
+        "name": "Order",
+        "address": "0089a660"
+      },
+      {
+        "name": "SetRace",
+        "address": "008a8720"
+      },
+      {
+        "name": "SetParty",
+        "address": "008a8930"
+      },
+      {
+        "name": "SetPartyID",
+        "address": "008a8b40"
+      },
+      {
+        "name": "SetCommandBuildingOwnerPlayer",
+        "address": "008a8d90"
+      },
+      {
+        "name": "SetGuiName",
+        "address": "008a8f90"
+      },
+      {
+        "name": "SupportManagerEnable",
+        "address": "0088cbb0"
+      },
+      {
+        "name": "ShowHideSupportManager",
+        "address": "0088ca70"
+      },
+      {
+        "name": "SetPlayerControl",
+        "address": "008a5bd0"
+      },
+      {
+        "name": "SetCheatTurbo",
+        "address": "008a62a0"
+      },
+      {
+        "name": "EnterPlayerToRole",
+        "address": "008a6060"
+      },
+      {
+        "name": "IsPlayerControlled",
+        "address": "008a5ef0"
+      },
+      {
+        "name": "ShipUseCatapult",
+        "address": "00891d50"
+      },
+      {
+        "name": "GetLastCatapulted",
+        "address": "00892860"
+      },
+      {
+        "name": "GetNumCatapulted",
+        "address": "00892aa0"
+      },
+      {
+        "name": "GetCatapultStock",
+        "address": "00892de0"
+      },
+      {
+        "name": "SetCatapultStock",
+        "address": "00892c30"
+      },
+      {
+        "name": "GameCameraLookAtTarget",
+        "address": "00891fb0"
+      },
+      {
+        "name": "FreeCameraGetPos",
+        "address": "00892660"
+      },
+      {
+        "name": "FreeCameraSetPos",
+        "address": "008923b0"
+      },
+      {
+        "name": "GetSquadFlyTime",
+        "address": "008a5d60"
+      },
+      {
+        "name": "SetAirbaseSmallPlanes",
+        "address": "008a5a20"
+      },
+      {
+        "name": "LaunchSquadron",
+        "address": "0089e3c0"
+      },
+      {
+        "name": "GetPosition",
+        "address": "008a7b00"
+      },
+      {
+        "name": "GetBounding",
+        "address": "0089b4e0"
+      },
+      {
+        "name": "GetDirection",
+        "address": "008a7cb0"
+      },
+      {
+        "name": "GetRotation",
+        "address": "008a7e60"
+      },
+      {
+        "name": "RelativePosition",
+        "address": "008a8070"
+      },
+      {
+        "name": "GetRelativeSpeed",
+        "address": "008a8280"
+      },
+      {
+        "name": "GetETA",
+        "address": "008a8480"
+      },
+      {
+        "name": "StartLanding2",
+        "address": "0089ac30"
+      },
+      {
+        "name": "SetBeachFight",
+        "address": "0089adb0"
+      },
+      {
+        "name": "SetCaptureValue",
+        "address": "0089b0c0"
+      },
+      {
+        "name": "GetCommandBuildingLevel",
+        "address": "0089b6d0"
+      },
+      {
+        "name": "SetCommandBuildingLevel",
+        "address": "0089b260"
+      },
+      {
+        "name": "GetCapturePercentage",
+        "address": "0089b840"
+      },
+      {
+        "name": "IsLandingTrafficActive",
+        "address": "0089af40"
+      },
+      {
+        "name": "GetFireTarget",
+        "address": "0089c360"
+      },
+      {
+        "name": "SetFireTarget",
+        "address": "0089a8b0"
+      },
+      {
+        "name": "ShipSetTorpedoStock",
+        "address": "0089eee0"
+      },
+      {
+        "name": "PlaneReloadBombPlatforms",
+        "address": "0089f080"
+      },
+      {
+        "name": "PlaneChangeAmmoType",
+        "address": "0089f1f0"
+      },
+      {
+        "name": "NavigatorDirectMoveToRange",
+        "address": "008a2d70"
+      },
+      {
+        "name": "NavigatorMoveToRange",
+        "address": "008a2f20"
+      },
+      {
+        "name": "NavigatorMoveToPos",
+        "address": "008a2bc0"
+      },
+      {
+        "name": "NavigatorMoveOnPath",
+        "address": "008a3600"
+      },
+      {
+        "name": "NavigatorForceMoveCloseToTarget",
+        "address": "008a3460"
+      },
+      {
+        "name": "NavigatorForceTorpedo",
+        "address": "008a7200"
+      },
+      {
+        "name": "NavigatorStop",
+        "address": "008a7400"
+      },
+      {
+        "name": "NavigatorCruise",
+        "address": "008a75c0"
+      },
+      {
+        "name": "NavigatorSetAvoidShipCollision",
+        "address": "008a3970"
+      },
+      {
+        "name": "NavigatorSetAvoidLandCollision",
+        "address": "008a3b10"
+      },
+      {
+        "name": "NavigatorSetAvoidAllShipCollision",
+        "address": "008d0740"
+      },
+      {
+        "name": "NavigatorSetTorpedoEvasion",
+        "address": "008a3cd0"
+      },
+      {
+        "name": "NavigatorAttackMove",
+        "address": "008a30d0"
+      },
+      {
+        "name": "NavigatorAllowMaxDepth",
+        "address": "008a32c0"
+      },
+      {
+        "name": "NavigatorLandAttackerStop",
+        "address": "008a2a50"
+      },
+      {
+        "name": "PilotMoveTo",
+        "address": "008a4150"
+      },
+      {
+        "name": "PilotMoveToRange",
+        "address": "008a4590"
+      },
+      {
+        "name": "PilotMoveOnPath",
+        "address": "008a3e70"
+      },
+      {
+        "name": "PilotRetreat",
+        "address": "008a4300"
+      },
+      {
+        "name": "PilotLand",
+        "address": "008a47b0"
+      },
+      {
+        "name": "PilotCloseToShip",
+        "address": "008a4960"
+      },
+      {
+        "name": "PilotCloseToShipDrop",
+        "address": "008a4b10"
+      },
+      {
+        "name": "PilotSetTarget",
+        "address": "008a4c90"
+      },
+      {
+        "name": "PilotBomb",
+        "address": "008a4f00"
+      },
+      {
+        "name": "PilotTorpedo",
+        "address": "008a5310"
+      },
+      {
+        "name": "PilotGunFire",
+        "address": "008a50d0"
+      },
+      {
+        "name": "PilotStartAttackRun",
+        "address": "008a5870"
+      },
+      {
+        "name": "PilotStop",
+        "address": "008a7780"
+      },
+      {
+        "name": "PilotClearOrders",
+        "address": "008a7940"
+      },
+      {
+        "name": "PlaneBombFallingTime",
+        "address": "008a54c0"
+      },
+      {
+        "name": "AddAnimatedPartEffect",
+        "address": "008a5650"
+      },
+      {
+        "name": "PlaneSetYawCtrl",
+        "address": "0089d9d0"
+      },
+      {
+        "name": "PlaneSetPitchCtrl",
+        "address": "0089db70"
+      },
+      {
+        "name": "PlaneSetRollCtrl",
+        "address": "0089dd10"
+      },
+      {
+        "name": "PlaneSetPowerCtrl",
+        "address": "0089deb0"
+      },
+      {
+        "name": "PlaneSetTargetRoll",
+        "address": "0089d690"
+      },
+      {
+        "name": "PlaneSetTargetPitch",
+        "address": "0089d830"
+      },
+      {
+        "name": "PlaneSetGunfire",
+        "address": "0089e050"
+      },
+      {
+        "name": "GetPlaneSquadron",
+        "address": "0089d250"
+      },
+      {
+        "name": "GetSquadronPlanes",
+        "address": "0089cc50"
+      },
+      {
+        "name": "GetSquadronPlane",
+        "address": "0089cfe0"
+      },
+      {
+        "name": "GetSquadronLanded",
+        "address": "0089ce60"
+      },
+      {
+        "name": "GetSquadronLandedBase",
+        "address": "0089d470"
+      },
+      {
+        "name": "SquadronSetWandererMul",
+        "address": "008a1b70"
+      },
+      {
+        "name": "SquadronSetWandererEnabled",
+        "address": "008a1d60"
+      },
+      {
+        "name": "SquadronSetHomeBase",
+        "address": "0089e220"
+      },
+      {
+        "name": "SquadronSetDropAllBombPercent",
+        "address": "008a1f40"
+      },
+      {
+        "name": "SquadronLandAndKill",
+        "address": "008a20e0"
+      },
+      {
+        "name": "SquadronSetTravelAlt",
+        "address": "0089f550"
+      },
+      {
+        "name": "SquadronSetAttackAlt",
+        "address": "008a22b0"
+      },
+      {
+        "name": "SquadronSetReleaseAlt",
+        "address": "008a24e0"
+      },
+      {
+        "name": "SquadronSetForceRelease",
+        "address": "008a28b0"
+      },
+      {
+        "name": "SquadronSetTravelSpeed",
+        "address": "008a0630"
+      },
+      {
+        "name": "TorpedoSetSwimDepth",
+        "address": "008a2710"
+      },
+      {
+        "name": "EntityTurnToEntity",
+        "address": "008a0a10"
+      },
+      {
+        "name": "EntityTurnToPosition",
+        "address": "008a0f10"
+      },
+      {
+        "name": "SquadronRestoreTravelSpeed",
+        "address": "008a1a00"
+      },
+      {
+        "name": "SquadronSetSpeed",
+        "address": "0089f780"
+      },
+      {
+        "name": "SquadronForceGunnerMode",
+        "address": "0089f950"
+      },
+      {
+        "name": "SquadronEnablePlayerTakeoff",
+        "address": "008a0360"
+      },
+      {
+        "name": "SquadronDisablePlayerTakeoff",
+        "address": "008a04c0"
+      },
+      {
+        "name": "SquadronEnableTerrainAvoidance",
+        "address": "0089fe50"
+      },
+      {
+        "name": "SquadronEnableVehicleAvoidance",
+        "address": "008a0000"
+      },
+      {
+        "name": "SquadronEnableGunfireAvoidance",
+        "address": "008a01b0"
+      },
+      {
+        "name": "SquadronSetBaseUnsupported",
+        "address": "0089faf0"
+      },
+      {
+        "name": "SquadronSetAIRetreatEnabled",
+        "address": "0089fcb0"
+      },
+      {
+        "name": "SquadronForceRelease",
+        "address": "0089e850"
+      },
+      {
+        "name": "SquadronSetOldStyleBombing",
+        "address": "0089ea00"
+      },
+      {
+        "name": "PlaneForceRelease",
+        "address": "0089eba0"
+      },
+      {
+        "name": "PlayerSetBomberView",
+        "address": "008a0850"
+      },
+      {
+        "name": "SetVisibility",
+        "address": "008a13d0"
+      },
+      {
+        "name": "SetShipDebugFilter",
+        "address": "008a15d0"
+      },
+      {
+        "name": "SetSingleThread",
+        "address": "008a1890"
+      },
+      {
+        "name": "AvoidZoneDebugLayer",
+        "address": "008a1730"
+      },
+      {
+        "name": "UnitSetFireStance",
+        "address": "008a6490"
+      },
+      {
+        "name": "UnitGetFireStance",
+        "address": "008a6640"
+      },
+      {
+        "name": "UnitFreeAttack",
+        "address": "008a67e0"
+      },
+      {
+        "name": "UnitFreeFire",
+        "address": "008a6950"
+      },
+      {
+        "name": "UnitHoldFire",
+        "address": "008a6ac0"
+      },
+      {
+        "name": "UnitSetPlayerCommandsEnabled",
+        "address": "008a6c30"
+      },
+      {
+        "name": "UnitGetAttackTarget",
+        "address": "008a6de0"
+      },
+      {
+        "name": "NavigatorEnable",
+        "address": "008a7060"
+      },
+      {
+        "name": "ArtilleryEnable",
+        "address": "0089c590"
+      },
+      {
+        "name": "TorpedoEnable",
+        "address": "0089c8f0"
+      },
+      {
+        "name": "AAEnable",
+        "address": "0089c740"
+      },
+      {
+        "name": "DCEnable",
+        "address": "0089caa0"
+      },
+      {
+        "name": "SetFormationShape",
+        "address": "0088ffd0"
+      },
+      {
+        "name": "GetFormationShape",
+        "address": "008901c0"
+      },
+      {
+        "name": "SetPlaneGears",
+        "address": "00890340"
+      },
+      {
+        "name": "ForcePlaneGears",
+        "address": "00890840"
+      },
+      {
+        "name": "GetPlaneSurelyLanded",
+        "address": "00890510"
+      },
+      {
+        "name": "GetPlaneLandingAborted",
+        "address": "008906a0"
+      },
+      {
+        "name": "SetShipMaxSpeed",
+        "address": "00890a10"
+      },
+      {
+        "name": "GetShipMaxSpeed",
+        "address": "00890bb0"
+      },
+      {
+        "name": "SetShipSpeed",
+        "address": "00890d30"
+      },
+      {
+        "name": "GetShipSpeed",
+        "address": "00890ef0"
+      },
+      {
+        "name": "GetDraught",
+        "address": "008936a0"
+      },
+      {
+        "name": "EnableEngineSound",
+        "address": "008911e0"
+      },
+      {
+        "name": "SetSubmarineDepthLevel",
+        "address": "00893f40"
+      },
+      {
+        "name": "GetSubmarineDepthLevel",
+        "address": "00894100"
+      },
+      {
+        "name": "GetSubmarineOnSurface",
+        "address": "008942c0"
+      },
+      {
+        "name": "ForceSubmarinePeriscope",
+        "address": "00893da0"
+      },
+      {
+        "name": "SubmarineAttack",
+        "address": "00894440"
+      },
+      {
+        "name": "SetWeaponDirectorTargetEnable",
+        "address": "008945f0"
+      },
+      {
+        "name": "IsLandscape",
+        "address": "00894820"
+      },
+      {
+        "name": "IsShip",
+        "address": "008949d0"
+      },
+      {
+        "name": "IsAreaEmpty",
+        "address": "00894c00"
+      },
+      {
+        "name": "GetSubmarineAirSupply",
+        "address": "008938e0"
+      },
+      {
+        "name": "SetSubmarineAirSupply",
+        "address": "00893a60"
+      },
+      {
+        "name": "SetUnlimitedAirSupply",
+        "address": "00893c00"
+      },
+      {
+        "name": "SetCrewLevel",
+        "address": "00894f20"
+      },
+      {
+        "name": "GetCrewLevel",
+        "address": "008950d0"
+      },
+      {
+        "name": "SetSkillLevel",
+        "address": "00895250"
+      },
+      {
+        "name": "GetSkillLevel",
+        "address": "008953f0"
+      },
+      {
+        "name": "LandConvoyStart",
+        "address": "00895570"
+      },
+      {
+        "name": "LandConvoyStop",
+        "address": "008956e0"
+      },
+      {
+        "name": "LandConvoySetSpeed",
+        "address": "00895850"
+      },
+      {
+        "name": "LandConvoySetPath",
+        "address": "008959f0"
+      },
+      {
+        "name": "SetAiControl",
+        "address": "008a91b0"
+      },
+      {
+        "name": "SpawnNew",
+        "address": "0094c480"
+      },
+      {
+        "name": "SpawnNewIDIsRequested",
+        "address": "00946380"
+      },
+      {
+        "name": "SpawnNewIDRemove",
+        "address": "00946390"
+      },
+      {
+        "name": "Spawn",
+        "address": "00944680"
+      },
+      {
+        "name": "FindHiddenEntity",
+        "address": "008a9e10"
+      },
+      {
+        "name": "GenerateObject",
+        "address": "00944fd0"
+      },
+      {
+        "name": "SpawnLight",
+        "address": "00945450"
+      },
+      {
+        "name": "PutTo",
+        "address": "008a9f90"
+      },
+      {
+        "name": "PutFormationTo",
+        "address": "008aa260"
+      },
+      {
+        "name": "PutRelTo",
+        "address": "008aa560"
+      },
+      {
+        "name": "SetForcedReconLevel",
+        "address": "008aa8f0"
+      },
+      {
+        "name": "ClearForcedReconLevel",
+        "address": "008aab90"
+      },
+      {
+        "name": "ForceRecon",
+        "address": "008aadf0"
+      },
+      {
+        "name": "ForceSelectUnit",
+        "address": "008aaf30"
+      },
+      {
+        "name": "GetSelectedUnit",
+        "address": "008ab070"
+      },
+      {
+        "name": "SetSelectedUnit",
+        "address": "008ab260"
+      },
+      {
+        "name": "MultiSelectUnit",
+        "address": "008ab3d0"
+      },
+      {
+        "name": "IsUnitSelectable",
+        "address": "008ab580"
+      },
+      {
+        "name": "SetRoleAvailable",
+        "address": "008ab850"
+      },
+      {
+        "name": "GetRoleAvailable",
+        "address": "008abac0"
+      },
+      {
+        "name": "GetPlayerIndexBySlot",
+        "address": "008abc70"
+      },
+      {
+        "name": "GetValidPlayerInSlot",
+        "address": "008abdf0"
+      },
+      {
+        "name": "GetRoleOwner",
+        "address": "008abf90"
+      },
+      {
+        "name": "IsUnitUntouchable",
+        "address": "008ac420"
+      },
+      {
+        "name": "AddUntouchableUnit",
+        "address": "008ac140"
+      },
+      {
+        "name": "RemoveUntouchableUnit",
+        "address": "008ac2b0"
+      },
+      {
+        "name": "Kill",
+        "address": "008ac5c0"
+      },
+      {
+        "name": "KillBullets",
+        "address": "008ae2f0"
+      },
+      {
+        "name": "SetDeadMeat",
+        "address": "008ac7b0"
+      },
+      {
+        "name": "Save",
+        "address": "008ac9d0"
+      },
+      {
+        "name": "LoadCheckpoint",
+        "address": "008aca30"
+      },
+      {
+        "name": "SaveCheckpoint",
+        "address": "008acb70"
+      },
+      {
+        "name": "AddMatrixInterpolator",
+        "address": "008ade00"
+      },
+      {
+        "name": "GetDifficulty",
+        "address": "008ae030"
+      },
+      {
+        "name": "KillStationaries",
+        "address": "008ae180"
+      },
+      {
+        "name": "SetCloudVisibility",
+        "address": "008ae480"
+      },
+      {
+        "name": "GetAirbaseOrders",
+        "address": "008ae760"
+      },
+      {
+        "name": "SetAirbaseOrders",
+        "address": "008ae900"
+      },
+      {
+        "name": "IsLimboGuiActive",
+        "address": "008ab6f0"
+      },
+      {
+        "name": "SetDeviceReloadEnabled",
+        "address": "008c1350"
+      },
+      {
+        "name": "SetDeviceReloadTimeMul",
+        "address": "008c14b0"
+      },
+      {
+        "name": "SetRocketAirGroundTypeDifferent",
+        "address": "008c1620"
+      },
+      {
+        "name": "SetHP",
+        "address": "008c1790"
+      },
+      {
+        "name": "OverrideHP",
+        "address": "008c1930"
+      },
+      {
+        "name": "DisplayUnitHP",
+        "address": "008c1b10"
+      },
+      {
+        "name": "HideUnitHP",
+        "address": "008c1f50"
+      },
+      {
+        "name": "DisplayScores",
+        "address": "008c20d0"
+      },
+      {
+        "name": "HideScoreDisplay",
+        "address": "008c24b0"
+      },
+      {
+        "name": "SetBorderZoneParty",
+        "address": "008aeb20"
+      },
+      {
+        "name": "GetClosestBorderZone",
+        "address": "008aecd0"
+      },
+      {
+        "name": "IsInBorderZone",
+        "address": "008af020"
+      },
+      {
+        "name": "GetBorderZone",
+        "address": "008af260"
+      },
+      {
+        "name": "GetBorderCross",
+        "address": "008af700"
+      },
+      {
+        "name": "EnableInput",
+        "address": "008afbd0"
+      },
+      {
+        "name": "Pause",
+        "address": "008afd50"
+      },
+      {
+        "name": "MissionNarrativeSize",
+        "address": "008b0ac0"
+      },
+      {
+        "name": "MissionNarrative",
+        "address": "008b0c10"
+      },
+      {
+        "name": "MissionNarrativeEnqueue",
+        "address": "008b0c10"
+      },
+      {
+        "name": "MissionNarrativeUrgent",
+        "address": "008b0e10"
+      },
+      {
+        "name": "MissionNarrativeOverride",
+        "address": "008b1010"
+      },
+      {
+        "name": "MissionNarrativeParty",
+        "address": "008b1210"
+      },
+      {
+        "name": "MissionNarrativePlayer",
+        "address": "008b13e0"
+      },
+      {
+        "name": "MissionNarrativeClear",
+        "address": "008b15b0"
+      },
+      {
+        "name": "Countdown",
+        "address": "008b16e0"
+      },
+      {
+        "name": "CountdownCancel",
+        "address": "008b19a0"
+      },
+      {
+        "name": "CountdownTimeLeft",
+        "address": "008b1b40"
+      },
+      {
+        "name": "TraingingGroundEndScene",
+        "address": "008b0470"
+      },
+      {
+        "name": "EndScene",
+        "address": "008b01b0"
+      },
+      {
+        "name": "EndSCore",
+        "address": "008affc0"
+      },
+      {
+        "name": "ForceMultiScoreSend",
+        "address": "008afec0"
+      },
+      {
+        "name": "StartDialog",
+        "address": "008b0540"
+      },
+      {
+        "name": "BreakDialog",
+        "address": "008b07c0"
+      },
+      {
+        "name": "KillDialog",
+        "address": "008b0940"
+      },
+      {
+        "name": "GetActDialogIDs",
+        "address": "008cb730"
+      },
+      {
+        "name": "SetDayTime",
+        "address": "008b1cc0"
+      },
+      {
+        "name": "GetDayTime",
+        "address": "008b1ec0"
+      },
+      {
+        "name": "SetWeather",
+        "address": "008b21a0"
+      },
+      {
+        "name": "SetRainDropNumPercent",
+        "address": "008c7f50"
+      },
+      {
+        "name": "SetOldCloudAlpha",
+        "address": "008c8090"
+      },
+      {
+        "name": "SetSimplifiedReconMultiplier",
+        "address": "008b2320"
+      },
+      {
+        "name": "GetSimplifiedReconMultiplier",
+        "address": "008b24a0"
+      },
+      {
+        "name": "SetSimplifiedSonarMultiplier",
+        "address": "008b25f0"
+      },
+      {
+        "name": "GetSimplifiedSonarMultiplier",
+        "address": "008b2770"
+      },
+      {
+        "name": "SetSkipMovie",
+        "address": "008b28c0"
+      },
+      {
+        "name": "Force3dVisibility",
+        "address": "008b2ad0"
+      },
+      {
+        "name": "MovCam_HandMode_Targeted",
+        "address": "008b2cc0"
+      },
+      {
+        "name": "MovCam_HandMode_Deck",
+        "address": "008b2fe0"
+      },
+      {
+        "name": "MovCam_HandMode_Overview",
+        "address": "008b3270"
+      },
+      {
+        "name": "MovCam_RefPos",
+        "address": "008b3740"
+      },
+      {
+        "name": "MovCam_RefPos_Polar",
+        "address": "008b3c70"
+      },
+      {
+        "name": "MovCam_RefPos_Radius",
+        "address": "008b4270"
+      },
+      {
+        "name": "MovCam_PathWalk",
+        "address": "008b47e0"
+      },
+      {
+        "name": "MovCam_PathWalkPathPointPropertyPotlekokkal",
+        "address": "008b4da0"
+      },
+      {
+        "name": "MovCam_ViktorMode",
+        "address": "008b52f0"
+      },
+      {
+        "name": "MovCam_TompiModeWeak",
+        "address": "008b5870"
+      },
+      {
+        "name": "MovCam_TompiMode",
+        "address": "008b5df0"
+      },
+      {
+        "name": "MovCam_SetSecondaryTarget",
+        "address": "008b60c0"
+      },
+      {
+        "name": "MovCam_SetZoom",
+        "address": "008b65c0"
+      },
+      {
+        "name": "MovCam_AddInterpolator",
+        "address": "008b6740"
+      },
+      {
+        "name": "MovCam_PickSnittDeckPosition",
+        "address": "008b6ad0"
+      },
+      {
+        "name": "MovCam_SetSpeedLimits",
+        "address": "008b6d20"
+      },
+      {
+        "name": "MovCam_ResetSpeedLimits",
+        "address": "008b6ed0"
+      },
+      {
+        "name": "MovCam_SetAccelTime",
+        "address": "008b7010"
+      },
+      {
+        "name": "MovCam_ResetAccelTime",
+        "address": "008b7180"
+      },
+      {
+        "name": "MovCam_SetDeviationFactor",
+        "address": "008b72c0"
+      },
+      {
+        "name": "MovCam_ResetDeviationFactor",
+        "address": "008b7460"
+      },
+      {
+        "name": "MovCam_SetOverviewHeight",
+        "address": "008b75a0"
+      },
+      {
+        "name": "MovCam_ResetOverviewHeight",
+        "address": "008b7710"
+      },
+      {
+        "name": "MovCam_SetPosRotZoom",
+        "address": "008bfa70"
+      },
+      {
+        "name": "MovCamNew_AddPositions",
+        "address": "008b7850"
+      },
+      {
+        "name": "MovCamNew_AddPosition",
+        "address": "008b79f0"
+      },
+      {
+        "name": "MovCamNew_SetFOV",
+        "address": "008b7ba0"
+      },
+      {
+        "name": "GetCameraPosRot",
+        "address": "008b7d30"
+      },
+      {
+        "name": "Camera_Shake",
+        "address": "008b8040"
+      },
+      {
+        "name": "Camera_SetShakeMax",
+        "address": "008b81c0"
+      },
+      {
+        "name": "Camera_SetShakeBase",
+        "address": "008b8340"
+      },
+      {
+        "name": "Camera_SetShakeDecay",
+        "address": "008b84c0"
+      },
+      {
+        "name": "Scoring_SetFinalScoringFunctionName",
+        "address": "008b8640"
+      },
+      {
+        "name": "Scoring_SetMissionCompleted",
+        "address": "008b8ad0"
+      },
+      {
+        "name": "Scoring_SetRanking",
+        "address": "008b8ca0"
+      },
+      {
+        "name": "Scoring_RealPlayTimeRunning",
+        "address": "008b87f0"
+      },
+      {
+        "name": "Scoring_GetRealPlayTime",
+        "address": "008b8970"
+      },
+      {
+        "name": "Scoring_ForceRefreshScoringTable",
+        "address": "008b8e60"
+      },
+      {
+        "name": "Scoring_GetTotalMissionScore",
+        "address": "008b8ff0"
+      },
+      {
+        "name": "Scoring_SetMissionScore",
+        "address": "008b9190"
+      },
+      {
+        "name": "Scoring_GetMissionScore",
+        "address": "008b93c0"
+      },
+      {
+        "name": "Scoring_AddMissionScore",
+        "address": "008b95c0"
+      },
+      {
+        "name": "Scoring_SetMissionMedal",
+        "address": "008b97f0"
+      },
+      {
+        "name": "Scoring_SetActionScore",
+        "address": "008b9a30"
+      },
+      {
+        "name": "Scoring_GetActionScore",
+        "address": "008b9c90"
+      },
+      {
+        "name": "Scoring_AddActionScore",
+        "address": "008b9e90"
+      },
+      {
+        "name": "Scoring_SetShipScore",
+        "address": "008ba0f0"
+      },
+      {
+        "name": "Scoring_GetShipScore",
+        "address": "008ba350"
+      },
+      {
+        "name": "Scoring_AddShipScore",
+        "address": "008ba550"
+      },
+      {
+        "name": "Scoring_SetPlaneScore",
+        "address": "008ba7b0"
+      },
+      {
+        "name": "Scoring_GetPlaneScore",
+        "address": "008baa10"
+      },
+      {
+        "name": "Scoring_AddPlaneScore",
+        "address": "008bac10"
+      },
+      {
+        "name": "Scoring_SetCommandScore",
+        "address": "008bae70"
+      },
+      {
+        "name": "Scoring_GetCommandScore",
+        "address": "008bb0d0"
+      },
+      {
+        "name": "Scoring_AddCommandScore",
+        "address": "008bb2d0"
+      },
+      {
+        "name": "Scoring_SetActionMedal",
+        "address": "008bb530"
+      },
+      {
+        "name": "Scoring_GrantBonus",
+        "address": "008bb770"
+      },
+      {
+        "name": "Scoring_GrantUnlock",
+        "address": "008cb920"
+      },
+      {
+        "name": "Scoring_IsUnlocked",
+        "address": "008bbc40"
+      },
+      {
+        "name": "Scoring_GetPlayerShotDown",
+        "address": "008bc9b0"
+      },
+      {
+        "name": "ClearPlayerScore",
+        "address": "008bc540"
+      },
+      {
+        "name": "Scoring_ClearAllMissionsScore",
+        "address": "008d2d60"
+      },
+      {
+        "name": "SetAchievements",
+        "address": "008bc740"
+      },
+      {
+        "name": "Scoring_GetUnitTypeShotDown",
+        "address": "008d0140"
+      },
+      {
+        "name": "Scoring_SetConditionMessage",
+        "address": "008bbe00"
+      },
+      {
+        "name": "Scoring_SetVictoryMessage",
+        "address": "008bc0c0"
+      },
+      {
+        "name": "Multi_GetPlayers",
+        "address": "008bcd80"
+      },
+      {
+        "name": "GetPlayerDetails",
+        "address": "008bcf10"
+      },
+      {
+        "name": "TompiAction",
+        "address": "008c5360"
+      },
+      {
+        "name": "TSetCamMode",
+        "address": "008c5490"
+      },
+      {
+        "name": "TAddCamPos",
+        "address": "008c55c0"
+      },
+      {
+        "name": "TAddLookatPos",
+        "address": "008c56f0"
+      },
+      {
+        "name": "ShowSafeZone",
+        "address": "008c59d0"
+      },
+      {
+        "name": "Objectives_Add",
+        "address": "008cd440"
+      },
+      {
+        "name": "Objectives_Completed",
+        "address": "008bd340"
+      },
+      {
+        "name": "Objectives_Failed",
+        "address": "008bd900"
+      },
+      {
+        "name": "Objectives_AddUnit",
+        "address": "008cdd60"
+      },
+      {
+        "name": "Objectives_RemoveUnit",
+        "address": "008ce510"
+      },
+      {
+        "name": "Objectives_ClientRefresh",
+        "address": "008bdec0"
+      },
+      {
+        "name": "Hack_DisableBoatFormations",
+        "address": "008be010"
+      },
+      {
+        "name": "Hack_ForceColumnFormationNearIslands",
+        "address": "008be180"
+      },
+      {
+        "name": "ForceFireDepthCharge",
+        "address": "0089b9d0"
+      },
+      {
+        "name": "KillTorpedoesFromUnit",
+        "address": "0089bb70"
+      },
+      {
+        "name": "ForceEquippedOrdnanceType",
+        "address": "0089bd20"
+      },
+      {
+        "name": "ReplaceDeviceWithEntity",
+        "address": "0089bef0"
+      },
+      {
+        "name": "ReplaceSceneBorder",
+        "address": "0089c1b0"
+      },
+      {
+        "name": "IsGUIActive",
+        "address": "008ca010"
+      },
+      {
+        "name": "SetGUIHighlight",
+        "address": "008ca1f0"
+      },
+      {
+        "name": "GetPlayerActWeapon",
+        "address": "008be2f0"
+      },
+      {
+        "name": "GunForceFire",
+        "address": "008be440"
+      },
+      {
+        "name": "GunForceFireWithAngle",
+        "address": "008be600"
+      },
+      {
+        "name": "ForceEnableInput",
+        "address": "008cbad0"
+      },
+      {
+        "name": "HasFired",
+        "address": "008be7e0"
+      },
+      {
+        "name": "GetPlaneEquipment",
+        "address": "008bea50"
+      },
+      {
+        "name": "GetPlaneIsReloading",
+        "address": "008bebe0"
+      },
+      {
+        "name": "GetPayloads",
+        "address": "008cecc0"
+      },
+      {
+        "name": "GetPayload",
+        "address": "008cefc0"
+      },
+      {
+        "name": "GetShipTorpedoes",
+        "address": "008bed80"
+      },
+      {
+        "name": "GetSquadTorpedoes",
+        "address": "008bef80"
+      },
+      {
+        "name": "GetGuns",
+        "address": "008cf7e0"
+      },
+      {
+        "name": "GetGun",
+        "address": "008cf350"
+      },
+      {
+        "name": "GetCameraState",
+        "address": "008bf6a0"
+      },
+      {
+        "name": "GetInputOn",
+        "address": "008bfd50"
+      },
+      {
+        "name": "GetMapCursorPos",
+        "address": "008bfee0"
+      },
+      {
+        "name": "ForceMapCursorPos",
+        "address": "008c0070"
+      },
+      {
+        "name": "GetMapZoom",
+        "address": "008c0260"
+      },
+      {
+        "name": "GetDistFromCrosshair",
+        "address": "008c0560"
+      },
+      {
+        "name": "GetConfiguredInput",
+        "address": "008cc030"
+      },
+      {
+        "name": "MapUnitHighlight",
+        "address": "008c27c0"
+      },
+      {
+        "name": "MapHideNodeByName",
+        "address": "008c03b0"
+      },
+      {
+        "name": "HackPressInput",
+        "address": "008d0430"
+      },
+      {
+        "name": "GetDevice",
+        "address": "008c3610"
+      },
+      {
+        "name": "GetRawText",
+        "address": "008ca450"
+      },
+      {
+        "name": "GetFormationPositions",
+        "address": "008c3ab0"
+      },
+      {
+        "name": "ReloadTorpedoes",
+        "address": "008c3ce0"
+      },
+      {
+        "name": "Scoring_IgnorePlayersPartyLosses",
+        "address": "008c3ea0"
+      },
+      {
+        "name": "Scoring_IgnoreEntityKill",
+        "address": "008cc330"
+      },
+      {
+        "name": "Scoring_AddPartyLoss",
+        "address": "008c3fe0"
+      },
+      {
+        "name": "IsSwapSticksEnabled",
+        "address": "008c4370"
+      },
+      {
+        "name": "GetEntitySpeed",
+        "address": "008c0820"
+      },
+      {
+        "name": "SetRoleHack",
+        "address": "008c09a0"
+      },
+      {
+        "name": "SetMouseExclusiveRepairCategory",
+        "address": "008c0b70"
+      },
+      {
+        "name": "ForceArrows",
+        "address": "008cbcb0"
+      },
+      {
+        "name": "HackSensitiveUnit",
+        "address": "008cbeb0"
+      },
+      {
+        "name": "GetKamikazeByDummy",
+        "address": "008c3880"
+      },
+      {
+        "name": "EnableObjectivesToggle",
+        "address": "008c0ca0"
+      },
+      {
+        "name": "ActivateObjectives",
+        "address": "008c0e10"
+      },
+      {
+        "name": "FakePing",
+        "address": "008c0f90"
+      },
+      {
+        "name": "SetInputModifiers",
+        "address": "008c1150"
+      },
+      {
+        "name": "GetInputModifiers",
+        "address": "008c2660"
+      },
+      {
+        "name": "GetCameraRelPosL",
+        "address": "008bf460"
+      },
+      {
+        "name": "GetCameraRelPosW",
+        "address": "008bf230"
+      },
+      {
+        "name": "SetCounterTimer",
+        "address": "008c4200"
+      },
+      {
+        "name": "Music_Control_SetLevel",
+        "address": "008c4d10"
+      },
+      {
+        "name": "Music_Control_Suspend",
+        "address": "008c4ed0"
+      },
+      {
+        "name": "AddLockitPathToSelection",
+        "address": "008c5040"
+      },
+      {
+        "name": "LoadSelectedPaths",
+        "address": "008c5230"
+      },
+      {
+        "name": "Effect",
+        "address": "008a9730"
+      },
+      {
+        "name": "DestroyEffect",
+        "address": "008cb5b0"
+      },
+      {
+        "name": "StopEffect",
+        "address": "008a9ca0"
+      },
+      {
+        "name": "PrepareClass",
+        "address": "008c8f70"
+      },
+      {
+        "name": "IsClassChanged",
+        "address": "008cc4b0"
+      },
+      {
+        "name": "UnloadClass",
+        "address": "008cc630"
+      },
+      {
+        "name": "Mpak",
+        "address": "008c5820"
+      },
+      {
+        "name": "GameTime",
+        "address": "008a9320"
+      },
+      {
+        "name": "GetPrimaryTarget",
+        "address": "008a9460"
+      },
+      {
+        "name": "TempAddFloatsam",
+        "address": "008c5b80"
+      },
+      {
+        "name": "TempAddAnim",
+        "address": "008c5cd0"
+      },
+      {
+        "name": "RemoveTempAddedStuff",
+        "address": "008c5e20"
+      },
+      {
+        "name": "InsertFishSchool",
+        "address": "008c2970"
+      },
+      {
+        "name": "WipeEntityType",
+        "address": "008c2ac0"
+      },
+      {
+        "name": "GetTargetInfoTarget",
+        "address": "008c2c50"
+      },
+      {
+        "name": "StartVehicleAnim",
+        "address": "008c2e00"
+      },
+      {
+        "name": "StopVehicleAnim",
+        "address": "008c3060"
+      },
+      {
+        "name": "SetVisibilityTerrainNode",
+        "address": "008c3170"
+      },
+      {
+        "name": "GetVisibilityTerrainNode",
+        "address": "008c3410"
+      },
+      {
+        "name": "AddLineOfSightTrigger",
+        "address": "008c9460"
+      },
+      {
+        "name": "AddProximityTrigger",
+        "address": "008c9730"
+      },
+      {
+        "name": "AddSquadOrdnanceDroppedTrigger",
+        "address": "008c9a10"
+      },
+      {
+        "name": "RemoveTrigger",
+        "address": "008c5fd0"
+      },
+      {
+        "name": "LoadMessageMap",
+        "address": "008c61c0"
+      },
+      {
+        "name": "UnloadMessageMap",
+        "address": "008c6490"
+      },
+      {
+        "name": "EnableMessages",
+        "address": "008cfe40"
+      },
+      {
+        "name": "AddListener",
+        "address": "008c6760"
+      },
+      {
+        "name": "RemoveListener",
+        "address": "008c6990"
+      },
+      {
+        "name": "IsListenerActive",
+        "address": "008c6bb0"
+      },
+      {
+        "name": "DisplayMessage",
+        "address": "008d08b0"
+      },
+      {
+        "name": "OverrideMessage",
+        "address": "008d0ea0"
+      },
+      {
+        "name": "SetTipEffect",
+        "address": "0089e670"
+      },
+      {
+        "name": "IsInPosition",
+        "address": "0089ed20"
+      },
+      {
+        "name": "SetForceSellableUnits",
+        "address": "00891070"
+      },
+      {
+        "name": "CheatMaxRepair",
+        "address": "008c6dd0"
+      },
+      {
+        "name": "CheatRemoveWater",
+        "address": "008c7010"
+      },
+      {
+        "name": "SoundFade",
+        "address": "008d16b0"
+      },
+      {
+        "name": "Blackout",
+        "address": "008d1340"
+      },
+      {
+        "name": "GameOver",
+        "address": "008c74b0"
+      },
+      {
+        "name": "MusicFade",
+        "address": "008c7190"
+      },
+      {
+        "name": "BlackBars",
+        "address": "008c7300"
+      },
+      {
+        "name": "Loading_Start",
+        "address": "008cc850"
+      },
+      {
+        "name": "Loading_Progress",
+        "address": "008c76c0"
+      },
+      {
+        "name": "Loading_Finish",
+        "address": "008c77f0"
+      },
+      {
+        "name": "PerfTimingStart",
+        "address": "008d1c50"
+      },
+      {
+        "name": "PerfTimingEnd",
+        "address": "008d1dd0"
+      },
+      {
+        "name": "MemoryStatus",
+        "address": "008c7be0"
+      },
+      {
+        "name": "StartMeasure",
+        "address": "008c7950"
+      },
+      {
+        "name": "StopMeasure",
+        "address": "008c7a70"
+      },
+      {
+        "name": "dprintf",
+        "address": "008c7e10"
+      },
+      {
+        "name": "Region",
+        "address": "008c7d20"
+      },
+      {
+        "name": "debugtrap",
+        "address": "008c8390"
+      },
+      {
+        "name": "class_enumeration",
+        "address": "008c8560"
+      },
+      {
+        "name": "SetLight",
+        "address": "008c44b0"
+      },
+      {
+        "name": "SetSky",
+        "address": "008c49a0"
+      },
+      {
+        "name": "SetShallowWater",
+        "address": "008c4b50"
+      },
+      {
+        "name": "AddPowerup",
+        "address": "008ee410"
+      },
+      {
+        "name": "PreparePowerup",
+        "address": "008ea610"
+      },
+      {
+        "name": "GetAvailablePowerups",
+        "address": "008eb350"
+      },
+      {
+        "name": "AICreate",
+        "address": "00a37310"
+      },
+      {
+        "name": "AIEnable",
+        "address": "00a37400"
+      },
+      {
+        "name": "AIEnableGrouping",
+        "address": "00a37650"
+      },
+      {
+        "name": "AIMergeGroups",
+        "address": "00a37790"
+      },
+      {
+        "name": "AICreateGroup",
+        "address": "00a38a50"
+      },
+      {
+        "name": "AIGetGroupInfo",
+        "address": "00a378c0"
+      },
+      {
+        "name": "AISetCommand",
+        "address": "00a37a00"
+      },
+      {
+        "name": "AISetHintWeight",
+        "address": "00a37b30"
+      },
+      {
+        "name": "AISetQuickSpawnTargetPos",
+        "address": "00a38010"
+      },
+      {
+        "name": "AISetDefendResourcePercent",
+        "address": "00a37d50"
+      },
+      {
+        "name": "AIReloadGlobals",
+        "address": "00a38960"
+      },
+      {
+        "name": "AISetSpawnSceneUnitsWeightMul",
+        "address": "00a37eb0"
+      },
+      {
+        "name": "AIGetTargetWeight",
+        "address": "00a38200"
+      },
+      {
+        "name": "AISetTargetWeight",
+        "address": "00a38430"
+      },
+      {
+        "name": "SetMotionBlurParams",
+        "address": "0088e560"
+      },
+      {
+        "name": "SetMBP",
+        "address": "0088e560"
+      },
+      {
+        "name": "SetDOF",
+        "address": "00897210"
+      },
+      {
+        "name": "DisablePhysics",
+        "address": "00891380"
+      },
+      {
+        "name": "BreakShip",
+        "address": "008914f0"
+      },
+      {
+        "name": "TerminateExecution",
+        "address": "008c8250"
+      }
+    ]
+  },
+  "chunk_execution": {
+    "address": "006b89f0",
+    "abi": "__thiscall(LuaMachine* this, const void* buffer, int size, const char* chunk_name, ResultSink* results, NativeString* error_out, int mode), RET 18h, returns 0 or 1",
+    "sequence": [
+      "top = lua_gettop(L)",
+      "status = luaL_loadbuffer(L, buffer, size, chunk_name) 00a6a160",
+      "if status == 0: status = lua_pcall(L, 0, LUA_MULTRET, errfunc = 0) 00a680e0",
+      "failed = status != 0",
+      "if lua_gettop(L) > top: on failure lua_tolstring(L,-1,NULL) and, when error_out is non-null, assign it; on success and with a sink, 006b89c0 then 00887220(delta, mode); then lua_settop(L, top)"
+    ],
+    "notes": [
+      "errfunc is 0 here, so a file load produces no traceback",
+      "lua_tolstring runs on the failure path even without a sink (006b8a80)"
+    ]
+  },
+  "file_load": {
+    "00885110": {
+      "abi": "__thiscall(MissionLuaHost* this, const char* path), RET 4",
+      "open": "[0109ceec] virtual +4h (name, mode 2); 0109ceec is the virtual file system singleton",
+      "is_open": "stream virtual +18h returns a byte; zero returns without releasing the stream",
+      "size": "stream virtual +30h",
+      "read": "stream virtual +24h (buffer, size, 0)",
+      "run": "006b89f0(machine, buffer, size, path, results = 0, error_out = &stack local, mode 2)",
+      "cleanup": "free(buffer); InterlockedDecrement via [00ce2220] then stream virtual +0h at zero",
+      "error_behaviour": "the error message is written into a stack native string and released at 0088531b without being read; 006b89f0's return value is discarded at 008852e7; the Lua stack is restored to the entry top",
+      "ghidra_flow_gaps": [
+        {
+          "after": "CALL 00bf6989 at 008852ed",
+          "range": "008852f2..00885331",
+          "bytes": 63,
+          "content": "stream release and native string cleanup, dropped because _free is no-return"
+        },
+        {
+          "after": "JMP 00885234 at 0088512f",
+          "range": "00885134..00885234",
+          "bytes": 256,
+          "content": "exception funclet region; not after a CALL, left alone"
+        }
+      ]
+    },
+    "00885fb0": {
+      "abi": "__thiscall(MissionLuaHost* this, const char* path, char run_variants), RET 8",
+      "sequence": [
+        "00885110(path)",
+        "if run_variants == 0 return",
+        "00bdef90 on [0109ceec] fills a vector of eight-byte native strings",
+        "00885110 on every entry, substituting the empty literal 00f87904 for a null buffer"
+      ],
+      "variant_expander": "00bdef90 splits the name at the first '.' with _strcspn and builds content-specific names; shared with BSP_Localization_ParseTableFile 00aa0020; diagnostic 'Content file name for %s'"
+    },
+    "008860b0": {
+      "abi": "__thiscall(MissionLuaHost* this, const NativeString* scene_name), RET 4",
+      "path": "\"Scripts/missions/\" (00d0e738) + name + \".lua\" (00cfd2c8)",
+      "call": "00885fb0(result->data or 00f87904, 1)",
+      "resolves": "docs/MISSION_SCENE_LOAD.md left the convention provisional; ECX is saved into ESI at 008860cd and restored at 0088618e, so it is __thiscall on the host and Ghidra's __cdecl rendering is wrong"
+    }
+  },
+  "named_dispatch": {
+    "00887750": {
+      "abi": "__thiscall(MissionLuaHost* this, const NativeString* self_key, const NativeString* name, const ArgVector* args, int stack_first, int stack_last, ResultSink* results, char force), RET 1Ch",
+      "sequence": [
+        "if (!force && game+1FE4h == 2) release the local scope object and return",
+        "if results: stash this->LuaMachine into results+4h, releasing the old one via 006b88e0",
+        "saved_top = lua_gettop(L)",
+        "if stack_first != 0: normalise both indices against lua_gettop, negative -> top+1+index",
+        "lua_getfield(L, LUA_GLOBALSINDEX, \"debugtrap\") then error_handler = lua_gettop(L)",
+        "[00f87900] += 1",
+        "split name on '.' with 00bd20a0 (separator in DL), empty segments dropped",
+        "lua_getfield(L, LUA_GLOBALSINDEX, segment[0]); later segments: lua_pushstring, lua_gettable(-2), lua_remove(-2)",
+        "if self_key non-empty: the same walk on the global \"thisTable\" (00ce7494); nargs = 1",
+        "push every 20-byte record of args through 00885da0; nargs += args->count",
+        "if stack_first != 0 and stack_first <= stack_last: lua_pushvalue for each index; nargs += 1 + (stack_last - stack_first)",
+        "marker = lua_gettop(L); game+1A18h += marker; lua_pcall(L, nargs, LUA_MULTRET, error_handler); game+1A18h -= marker",
+        "delta = lua_gettop(L) - saved_top; if results and delta: 00887220(results, delta, 4)",
+        "lua_settop(L, saved_top); [00f87900] -= 1; release the split vector"
+      ],
+      "quirk": "nargs uses args->count verbatim, so a tag-4 record (which pushes nothing) makes the count disagree with the real stack"
+    },
+    "00887b30": {
+      "abi": "__thiscall(a1..a5), RET 14h",
+      "body": "00887750(a1, a2, a3, a4, a5, results = 0, force = 1)",
+      "callers": [
+        "0045f520"
+      ]
+    },
+    "00887e50": {
+      "abi": "__thiscall(a1..a5), RET 14h",
+      "differences": [
+        "game+1FE4h == 2 returns immediately at 00887e73 and the test repeats at 00887ec8",
+        "BSP_FrameJobPool_GetSingleton 004c1130 then [[pool+4]] virtual +10h; when non-zero the call is queued at 00888101 through 00887c30 with this+8h/this+Ch under the critical section taken via [00ce2218]",
+        "otherwise it copies [0109ceec]+14h into a local scope object with vtable 00d0e6ec and runs the 00887750 body inline"
+      ],
+      "caller_count": 40
+    },
+    "0045f440": {
+      "abi": "__thiscall(Game* this, const char* name, const ArgVector* args), RET 8",
+      "sequence": [
+        "00b67980 on game+1A0Ch fetches the globals",
+        "00b67800 looks the name up",
+        "00b66200 tests defined-and-not-nil",
+        "00b67700 twice releases both LuaObjects",
+        "if defined: copy the name into a native string and call 00887e50(0, &name, args, 0, -1) with ECX = [game+1A08h]"
+      ],
+      "dispatcher": "00887e50"
+    },
+    "0045f520": {
+      "same_as": "0045f440",
+      "dispatcher": "00887b30"
+    },
+    "argument_records": {
+      "pusher": "00885da0",
+      "record_size": 20,
+      "tag_offset": 4,
+      "value_offset": 8,
+      "tags": {
+        "0": "lua_pushnumber via 006b80e0 -> 00a679d0",
+        "1": "lua_pushstring via 006b8120 -> 00a67a50, from the native string at +8h",
+        "2": "lua_pushboolean via 006b80c0 -> 00a67bc0, byte at +8h",
+        "3": "thisTable[sprintf(\"%d\" 00ce3a34, short at +8h)]; nil when the short is zero",
+        "4": "pushes nothing",
+        "5": "lua_createtable via 006b84b0 -> 00a67d10, then the container is walked",
+        "6": "lua_pushnil via 006b8130 -> 00a679c0"
+      }
+    },
+    "error_handler": {
+      "address": "008c8390",
+      "lua_name": "debugtrap",
+      "abi": "__fastcall(lua_State*), returns 0 so it contributes no results",
+      "body": "opens a LuaStateOwner over the incoming state, calls 00887750(0, \"debug.traceback\", 0, 0, -1, &results, 0), reads the returned string and passes it to the logging helper 004254b0; the traceback is logged and swallowed, not re-raised"
+    }
+  },
+  "reentry_guard": {
+    "field": "game+644h",
+    "kind": "signed, unclamped depth counter",
+    "helpers": [
+      {
+        "address": "004b6b00",
+        "end": "004b6b13",
+        "body": "this->+644h += (arg != 0) ? 1 : -1",
+        "abi": "__thiscall(Game*, char), RET 4"
+      },
+      {
+        "address": "004b6b20",
+        "end": "004b6b2f",
+        "body": "[00e188a8]->+644h += 1; EAX = ECX",
+        "abi": "RET; scope-guard constructor"
+      },
+      {
+        "address": "004b6b30",
+        "end": "004b6b3c",
+        "body": "[00e188a8]->+644h += -1",
+        "abi": "RET; scope-guard destructor, referenced only by the unwind funclet 00c672e9"
+      },
+      {
+        "address": "008890f0",
+        "end": "008890fb",
+        "body": "return this->+644h > 0 (xor eax,eax / cmp / setg al)",
+        "abi": "__thiscall(Game*), RET"
+      }
+    ],
+    "inlined_at": [
+      {
+        "address": "004e0a83",
+        "function": "004dfb70",
+        "op": "+= 1"
+      },
+      {
+        "address": "004e0c52",
+        "function": "004dfb70",
+        "op": "+= -1"
+      }
+    ],
+    "consumers": [
+      {
+        "address": "008cc850",
+        "lua_name": "Loading_Start",
+        "test": "CMP [game+644h], EBP with EBP = 0 at 008cc93a, JG past the body"
+      },
+      {
+        "address": "008c77f0",
+        "lua_name": "Loading_Finish",
+        "test": "if (game+644h < 1) { 0060d3e0(); BSP_Game_SetCinematicMode(0,0,1); }"
+      }
+    ],
+    "rule": "while the depth is at least 1 a mission script's Loading_* calls do nothing, because the outer load owns the loading screen; the same script run outside a load may drive it"
+  },
+  "lua_api_boundary": {
+    "convention": "Lua 5.1.1 compiled with the register convention: lua_State* in ECX, first integer argument in EDX, the rest on the stack, callee-cleaned",
+    "wrappers": [
+      {
+        "wrapper": "006b7e70",
+        "abi": "tail jump, RET",
+        "library": "00a673d0",
+        "symbol": "lua_gettop"
+      },
+      {
+        "wrapper": "006b7e80",
+        "abi": "RET 4",
+        "library": "00a673e0",
+        "symbol": "lua_settop"
+      },
+      {
+        "wrapper": "006b7e90",
+        "abi": "RET 4",
+        "library": "00a67570",
+        "symbol": "lua_pushvalue"
+      },
+      {
+        "wrapper": "006b7ea0",
+        "abi": "RET 4",
+        "library": "00a67430",
+        "symbol": "lua_remove"
+      },
+      {
+        "wrapper": "006b80c0",
+        "abi": "RET 4",
+        "library": "00a67bc0",
+        "symbol": "lua_pushboolean"
+      },
+      {
+        "wrapper": "006b80e0",
+        "abi": "RET 8",
+        "library": "00a679d0",
+        "symbol": "lua_pushnumber"
+      },
+      {
+        "wrapper": "006b8120",
+        "abi": "RET 4",
+        "library": "00a67a50",
+        "symbol": "lua_pushstring"
+      },
+      {
+        "wrapper": "006b8130",
+        "abi": "tail jump",
+        "library": "00a679c0",
+        "symbol": "lua_pushnil"
+      },
+      {
+        "wrapper": "006b8460",
+        "abi": "tail jump, EDX = -10002",
+        "library": "00a67c40",
+        "symbol": "lua_getfield"
+      },
+      {
+        "wrapper": "006b8470",
+        "abi": "RET 4",
+        "library": "00a67c20",
+        "symbol": "lua_gettable"
+      },
+      {
+        "wrapper": "006b84b0",
+        "abi": "RET 8",
+        "library": "00a67d10",
+        "symbol": "lua_createtable"
+      },
+      {
+        "wrapper": "006b8530",
+        "abi": "RET 0Ch",
+        "library": "00a680e0",
+        "symbol": "lua_pcall"
+      },
+      {
+        "wrapper": "006b8610",
+        "abi": "RET 8",
+        "library": "00a67b20 + 00a67e40",
+        "symbol": "lua_pushcclosure + lua_setfield"
+      }
+    ],
+    "library_functions_used": [
+      "lua_gettop",
+      "lua_settop",
+      "lua_pushvalue",
+      "lua_remove",
+      "lua_pushnil",
+      "lua_pushboolean",
+      "lua_pushnumber",
+      "lua_pushstring",
+      "lua_pushcclosure",
+      "lua_createtable",
+      "lua_getfield",
+      "lua_setfield",
+      "lua_gettable",
+      "lua_call",
+      "lua_pcall",
+      "lua_tolstring",
+      "lua_atpanic",
+      "lua_gc",
+      "luaL_newstate",
+      "luaL_loadbuffer",
+      "luaopen_base",
+      "luaopen_table",
+      "luaopen_io",
+      "luaopen_os",
+      "luaopen_string",
+      "luaopen_math",
+      "luaopen_debug"
+    ]
+  },
+  "installed_scripts": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "access": "read-only inspection",
+    "lua_files_total": 621,
+    "mission_scripts": 299,
+    "mission_folders": [
+      "bsm",
+      "chg",
+      "COTP-IJN",
+      "COTP-USN",
+      "ijn",
+      "multi",
+      "traininggrounds",
+      "usn"
+    ],
+    "distinct_top_level_function_names": 6051,
+    "engine_invoked_entry_points": [
+      {
+        "name": "luaStageInit",
+        "files": 299,
+        "wrapper": "0045f440",
+        "dispatcher": "00887e50"
+      },
+      {
+        "name": "luaPrecacheUnits",
+        "files": 295,
+        "wrapper": "0045f520",
+        "dispatcher": "00887b30"
+      },
+      {
+        "name": "luaStageInitMulti",
+        "files": 282,
+        "wrapper": "0045f520",
+        "dispatcher": "00887b30"
+      },
+      {
+        "name": "luaEngineMovieInit",
+        "files": 154,
+        "wrapper": "0045f440",
+        "dispatcher": "00887e50"
+      }
+    ],
+    "note": "those four are the only names the engine calls by name in the mission path; the string references sit in 004dfb70 and 0045f600 only. Everything else a mission defines is reached from Lua or through the SetThink / AddListener / CreateScript bindings, which take a function name as a string argument. Scripts/fundamentals.lua exists on disk and also ships embedded; Scripts/global/luaMW_init.lua is run separately by 004dd5b0"
+  },
+  "callers": {
+    "00884be0": [
+      "004dd5b0"
+    ],
+    "008860b0": [
+      "004dfb70"
+    ],
+    "00885fb0": [
+      "008860b0"
+    ],
+    "00885110": [
+      "00885fb0",
+      "00886370"
+    ],
+    "006b89f0": [
+      "00885110",
+      "00884be0",
+      "006b8ad0"
+    ],
+    "00887750": [
+      "00887b30",
+      "008c8390"
+    ],
+    "00887e50": [
+      "0045f440",
+      "00452360",
+      "00888230",
+      "and 37 more"
+    ],
+    "0045f440": [
+      "004dfb70",
+      "0045f600"
+    ],
+    "0045f520": [
+      "004dfb70",
+      "0045f600"
+    ]
+  },
+  "uncertainties": [
+    "the local object 00887750 builds at 00887774 (vtable 00d0e6ec plus [0109ceec]+14h) is constructed and destroyed but no EnterCriticalSection is visible in its body, so whether it locks or only carries the section for the destructor is unsettled; 00887e50 builds the same object at 00887eb5",
+    "game+1A18h, adjusted by the stack top across the pcall, has no other reader in the addresses read here",
+    "00887220's mode argument (2 for chunks, 4 for calls) selects something inside 00886e00 whose meaning is not established",
+    "the ResultSink type is modelled only by its two entry points (006b89c0 stores the machine, 00887220 appends values); its layout is not recovered",
+    "00885da0 tag 5 walks a container with debug-iterator checks; the container type is not identified, so nested tables are modelled as an ordered element list",
+    "00885110 leaks the stream when the file fails to open (0088528c jumps past the release); whether the open path already released it on failure was not confirmed",
+    "the 560 binding bodies are not analysed; only the registration contract, debugtrap and the two Loading_* gates were read"
+  ],
+  "remaining": [
+    "the 00887e50 deferred queue (00887c30, host +8h/+Ch) and when it is drained",
+    "00884770, the singleton holding the embedded fundamentals.lua bytes",
+    "00886900, the host teardown reached from BSP_Game_OnDestroy",
+    "the argument conventions of the 560 bindings"
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "mission_lua_queue",
+      "addresses": [
+        "00887c30",
+        "00887e50",
+        "00886370",
+        "00884770"
+      ],
+      "files": [
+        "docs/MISSION_LUA_QUEUE.md",
+        "include/bsp/mission_lua_queue.hpp"
+      ],
+      "contract": "the host's deferred call queue at +8h/+Ch: record layout, who drains it, and the embedded-chunk singleton at 00884770"
+    },
+    {
+      "packet": "mission_lua_values",
+      "addresses": [
+        "00885da0",
+        "00886e00",
+        "00887220",
+        "00884240"
+      ],
+      "files": [
+        "docs/MISSION_LUA_VALUES.md",
+        "include/bsp/mission_lua_values.hpp"
+      ],
+      "contract": "the twenty-byte variant record both ways: 00885da0 push and 00886e00 read, including the tag-5 container and the mode argument"
+    },
+    {
+      "packet": "lua_binding_damage",
+      "addresses": [
+        "0088e000",
+        "0088e320",
+        "0088e790",
+        "0088e9d0",
+        "008acd10",
+        "008acf00"
+      ],
+      "files": [
+        "docs/LUA_BINDING_DAMAGE.md"
+      ],
+      "contract": "argument and return conventions of the damage and fire bindings, as one worked group of the 560"
+    },
+    {
+      "packet": "mission_loading_gates",
+      "addresses": [
+        "008cc850",
+        "008c76c0",
+        "008c77f0",
+        "0060d3e0"
+      ],
+      "files": [
+        "docs/MISSION_LOADING_GATES.md"
+      ],
+      "contract": "what Loading_Start/Progress/Finish do when game+644h is zero, and the cinematic-mode handoff"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "004b6b00",
+      "end": "004b6b13",
+      "role": "BSP_Game_AdjustScriptLoadDepth; __thiscall(Game*, char), RET 4"
+    },
+    {
+      "address": "004b6b20",
+      "end": "004b6b2f",
+      "role": "BSP_Game_EnterScriptLoadScope; scope-guard constructor, RET"
+    },
+    {
+      "address": "008890f0",
+      "end": "008890fb",
+      "role": "BSP_Game_IsScriptLoadActive; __thiscall(Game*), RET; swallowed by the enclosing candidate 008890b0"
+    }
+  ],
+  "reconstruction_state": {
+    "reconstructed_build_tested": [
+      "00884be0",
+      "006b8740",
+      "006b8610",
+      "006b89f0",
+      "00885110",
+      "00885fb0",
+      "00887750",
+      "00887b30",
+      "00887e50",
+      "0045f440",
+      "0045f520"
+    ],
+    "reconstructed_build_tested_fixture_tested": [
+      "004b6b00",
+      "004b6b20",
+      "004b6b30",
+      "008890f0"
+    ],
+    "analysed": [
+      "008860b0",
+      "006b8ad0",
+      "00885da0",
+      "00887220",
+      "008c8390",
+      "006b7e70",
+      "006b7e80",
+      "006b7e90",
+      "006b7ea0",
+      "006b80c0",
+      "006b80e0",
+      "006b8120",
+      "006b8130",
+      "006b8460",
+      "006b8470",
+      "006b84b0",
+      "006b8530"
+    ],
+    "installed_file_checked": [
+      "the 299 mission scripts and the four engine-invoked entry-point names"
+    ]
+  },
+  "files": [
+    "docs/MISSION_LUA_HOST.md",
+    "reports/mission_lua_host.json",
+    "include/bsp/mission_lua_host.hpp",
+    "src/mission_lua_host.cpp"
+  ],
+  "build": "scripts/build.ps1 Win32 Release, warnings as errors: clean",
+  "tests": "ctest reconstructed_math: 1/1 passed, including one new case for the game+644h guard"
+}

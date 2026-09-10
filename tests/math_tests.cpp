@@ -32,6 +32,7 @@
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/mission_lua_host.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
 #include <algorithm>
@@ -1224,6 +1225,26 @@ int main() {
                 && bsp::scene_entity_class_id_from_name("LandVehicle") == bsp::kSceneUnknownClassId
                 && bsp::find_scene_entity_class_by_id(0x19) == nullptr,
             "an unregistered class token has no descriptor to dispatch on");
+    }
+
+    {
+        // 004B6B20/004B6B30 nest, and 008890F0 plus the Loading_* gates at
+        // 008CC93A and 008C78D4 all read the same "depth is at least one" rule.
+        // The native counter is signed and unclamped, so an unbalanced leave
+        // must go negative and stop suppressing.
+        bsp::ScriptLoadGuard guard;
+        const bool idle = !guard.active() && !bsp::loading_screen_calls_suppressed(guard.depth());
+        guard.enter();
+        guard.enter();
+        const bool nested = guard.depth() == 2 && bsp::loading_screen_calls_suppressed(guard.depth());
+        guard.leave();
+        const bool still_held = guard.active();
+        guard.adjust(false);
+        const bool released = guard.depth() == 0 && !bsp::loading_screen_calls_suppressed(0);
+        guard.leave();
+        const bool underflows = guard.depth() == -1 && !guard.active();
+        check(idle && nested && still_held && released && underflows,
+            "game+644h suppresses the loading-screen bindings only while the depth is positive");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
