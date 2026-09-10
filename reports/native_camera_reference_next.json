@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "packet": "native_camera_reference_next",
+  "status": "read_only_discovery_complete_pending_primary_shared_counter_and_logical_release_views",
+  "verified_utc": "2026-09-10T20:05:07.773460+00:00",
+  "base_commit": "c14f9bd50b60780b60f6ffee746906a75ba7e68c",
+  "main_context_head": "bee0f4e7fdeb170d6e1b1e36a45d383ae994c696",
+  "owned_files": [
+    "docs/NATIVE_CAMERA_REFERENCE_NEXT.md",
+    "reports/native_camera_reference_next.json"
+  ],
+  "owned_native_addresses": [],
+  "target": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "native_imports": [
+    {
+      "address": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    {
+      "address": "00ce2220",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement"
+    }
+  ],
+  "native_evidence": [
+    {
+      "address": "00b6f310",
+      "end_exclusive": "00b6f3c0",
+      "length": 176,
+      "disk_offset": 7795472,
+      "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 64,
+      "name": "BSP_Node_ReleasePointLightsChildrenAndSelf",
+      "original_abi": "ECX node; no stack arguments; RET0 or tail current virtual00",
+      "behavior": "Remove borrowed point-light backlinks, shrink count0 retaining storage, release children through current virtual18; byte44 gates only hierarchy clear/attachment unregister/one self decrement.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b6f310.txt"
+    },
+    {
+      "address": "00b6dfa0",
+      "end_exclusive": "00b6e009",
+      "length": 105,
+      "disk_offset": 7790496,
+      "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 35,
+      "name": "BSP_Node_UnlinkAndRelease",
+      "original_abi": "ECX node; no stack arguments; tail current virtual18",
+      "behavior": "Patch actual parent/siblings/head/count or root registration, then tail virtual18. Existing typed body reusable unchanged.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b6dfa0.txt"
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "disk_offset": 8204512,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 7,
+      "name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "original_abi": "ECX owner; no stack arguments; RET0",
+      "behavior": "Null no-op; otherwise call current vtable+04 with stack flag1; no reference decrement.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00bd30e0.txt"
+    },
+    {
+      "address": "00b71fe0",
+      "end_exclusive": "00b72000",
+      "length": 32,
+      "disk_offset": 7806944,
+      "sha256": "f862f9588b405436a7509dd1ce903c63b420c4bebd7c1fd8c42d38858eeeabca",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 11,
+      "name": "camera deleting destructor",
+      "original_abi": "ECX camera; stack flags; EAX original slot; RET4",
+      "behavior": "Call B71F10 then actual 0108FFB0 pool return iff flags&1.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b71fe0.txt"
+    },
+    {
+      "address": "00b71f10",
+      "end_exclusive": "00b71fd2",
+      "length": 194,
+      "disk_offset": 7806736,
+      "sha256": "17450a1b3bfa1dc52765061735a39fbf4bc16496f259c9c0fa395df8498b4874",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 67,
+      "name": "camera direct destructor",
+      "original_abi": "ECX camera; RET0",
+      "behavior": "Camera phase; live180/184/438 release then clear; actual node destructor. No byte44 gate or prior-logical-release condition.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b71f10.txt"
+    },
+    {
+      "address": "00b1d120",
+      "end_exclusive": "00b1d1c8",
+      "length": 168,
+      "disk_offset": 7459104,
+      "sha256": "e147b6d89d85afca5564f7942b27e9bfc28c22a6e35451d9f33751aa457c740e",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 66,
+      "name": "BSP_RenderCommandContext_Destroy",
+      "original_abi": "ECX context; RET0",
+      "behavior": "Camera+08 actual owner+04 decrement; zero current virtual00; clear camera after callback; repeat scene+0C,target+14; backpointer untouched.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b1d120.txt"
+    },
+    {
+      "address": "00b6ec70",
+      "end_exclusive": "00b6ecc0",
+      "length": 80,
+      "disk_offset": 7793776,
+      "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 31,
+      "name": "BSP_PointLightPointers_ResizeCleared",
+      "original_abi": "ECX pointer/count/capacity descriptor; stack count; RET4",
+      "behavior": "Shrink0 adjusts only count; begin and capacity persist; no pointed-owner release.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b6ec70.txt"
+    },
+    {
+      "address": "00b7c1a0",
+      "end_exclusive": "00b7c1b3",
+      "length": 19,
+      "disk_offset": 7848352,
+      "sha256": "4a1f806053bfedc310d08d270a56f9383c21b9baf5bef5dfb0228be678c60086",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 5,
+      "name": "BSP_PointLight_RemoveModelBacklink",
+      "original_abi": "ECX point-light; stack node; RET4",
+      "behavior": "Call B7BED0 on actual point-light+1E0 borrowed backlink array.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b7c1a0.txt"
+    },
+    {
+      "address": "00b7bed0",
+      "end_exclusive": "00b7bf37",
+      "length": 103,
+      "disk_offset": 7847632,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 46,
+      "name": "BSP_ModelPointers_EraseFirstSwapLast",
+      "original_abi": "ECX pointer array; stack address of pointer cell; AL result; RET4",
+      "behavior": "Erase first identical pointer with last-element replacement; decrement count; no release or capacity shrink.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b7bed0.txt"
+    },
+    {
+      "address": "00b8f4c0",
+      "end_exclusive": "00b8f4eb",
+      "length": 43,
+      "disk_offset": 7926976,
+      "sha256": "ca18c16f36d1e99f1c0204d60fe12106af342f33d290e041088c6fbedc25bbb8",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 11,
+      "name": "BSP_NodeAttachment_UnregisterModel",
+      "original_abi": "ECX attachment owner; stack node; RET4",
+      "behavior": "Only matching node+A0 removes borrowed backlink and clears+A0.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b8f4c0.txt"
+    },
+    {
+      "address": "00b72220",
+      "end_exclusive": "00b7224c",
+      "length": 44,
+      "disk_offset": 7807520,
+      "sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 17,
+      "name": "BSP_NodeRootList_Unlink",
+      "original_abi": "ECX root registration; stack node; RET4",
+      "behavior": "Relink next/previous/root head only; no node-field clear or decrement.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b72220.txt"
+    },
+    {
+      "address": "00b71990",
+      "end_exclusive": "00b719d1",
+      "length": 65,
+      "disk_offset": 7805328,
+      "sha256": "a153dd5f763f368f06d486a14f99d54aa19f0674a76abab011ca986c75544902",
+      "live_matches_installed_pe": true,
+      "kind": "function",
+      "instruction_count": 24,
+      "name": "camera viewport assignment",
+      "original_abi": "ECX camera; stack viewport; RET4",
+      "behavior": "Equal identity skips; publish new, retain new, release captured old; no post-callback slot clear.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00b71990.txt"
+    },
+    {
+      "address": "00a8df84",
+      "end_exclusive": "00a8df9c",
+      "length": 24,
+      "disk_offset": 6872964,
+      "sha256": "d9442cbe51ee215c8f2d48b5304bead3db1fd359117062bf7dcda628fe8dd76f",
+      "live_matches_installed_pe": true,
+      "kind": "interior_fragment",
+      "instruction_count": 8,
+      "name": "shadow-owner camera cleanup fragment",
+      "original_abi": "Interior of A8DEC0; ESI shadow owner, EBX zero; continue A8DF9C",
+      "behavior": "B71990(camera,null), reload camera, conditional B6DFA0, clear owning camera+20 after callback.",
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00a8df84.txt"
+    },
+    {
+      "address": "00d62cf0",
+      "end_exclusive": "00d62d48",
+      "length": 88,
+      "disk_offset": 9841904,
+      "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+      "live_matches_installed_pe": true,
+      "kind": "vtable_data",
+      "words": [
+        "00bd30e0",
+        "00b71fe0",
+        "00b6fb60",
+        "00b71ce0",
+        "00b6f8f0",
+        "00b6fb70",
+        "00b6f310",
+        "00b6d7b0",
+        "00b6fb80",
+        "00b70de0",
+        "00b6d820",
+        "00b713d0",
+        "00b71400",
+        "00b71460",
+        "00b71430",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b6ed80",
+        "00b6ee10"
+      ],
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00d62cf0.txt"
+    },
+    {
+      "address": "00d62c88",
+      "end_exclusive": "00d62ce0",
+      "length": 88,
+      "disk_offset": 9841800,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_matches_installed_pe": true,
+      "kind": "vtable_data",
+      "words": [
+        "00bd30e0",
+        "00b6f8d0",
+        "00b6d790",
+        "00b6f570",
+        "00b6f8f0",
+        "00b6d7a0",
+        "00b6f310",
+        "00b6d7b0",
+        "00b6d990",
+        "00b6e150",
+        "00b6d820",
+        "00b6dab0",
+        "00b6dae0",
+        "00b6e870",
+        "00b6db10",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b6ed80",
+        "00b6ee10"
+      ],
+      "local_live_capture": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\local\\camera_reference_evidence\\00d62c88.txt"
+    }
+  ],
+  "source_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\include\\bsp\\render_command_queue.hpp",
+      "sha256": "138c58fff751d19d80b1cb31852844f908547c5e01c95c55b2a0c2baa86f24ec",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\src\\render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\include\\bsp\\generated_model_lifetime.hpp",
+      "sha256": "03c4904ddcbfa9b60fd6c328f921e6e855efd1b9400b85a65b2d1f8e292b67cf",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\src\\generated_model_lifetime.cpp",
+      "sha256": "7dfa01c9483f7bcd98389b5a3930056b8e97dafb11c76330eb6c5e913aba99ec",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\include\\bsp\\native_node_construction.hpp",
+      "sha256": "5a481169233850684c0deb9042f5424f76cdf6a0a264725c8bbc633c721e4464",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\src\\native_node_construction.cpp",
+      "sha256": "2834c10fdfbe3a752c3e6775fa9ef502d729d3426fa4f6a08c19f6a542f4d547",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\include\\bsp\\native_node_destruction.hpp",
+      "sha256": "f46cd8d00aa92c7c2b4fb2a4ffcff8adfa9c70fec19461d75f0dab35cf180b8a",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\src\\native_node_destruction.cpp",
+      "sha256": "ea0ef4205524f0f664bc9827632aaca678aa4c21046c830a8fae643fc6a062f4",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\include\\bsp\\native_camera_pool.hpp",
+      "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\src\\native_camera_pool.cpp",
+      "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\include\\bsp\\render_command_execution.hpp",
+      "sha256": "8fff16c9fa9fa22e086f82db7b79d9e4dcf82e394610cad5c2b976ef7e62d08d",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-reference-20260910\\src\\render_command_execution.cpp",
+      "sha256": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5",
+      "snapshot": "worker base c14f9bd; read-only"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_camera_owner.hpp",
+      "sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee",
+      "snapshot": "primary uncommitted main context; read-only; not present in worker base"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_camera_owner.cpp",
+      "sha256": "a84798e710ad1292d0b8d52d1767fbdd246eddd1eb0369ced67894cb07aa882a",
+      "snapshot": "primary uncommitted main context; read-only; not present in worker base"
+    }
+  ],
+  "camera_vtable": {
+    "address": "00d62cf0",
+    "virtual00": "00bd30e0",
+    "virtual04": "00b71fe0",
+    "virtual18": "00b6f310",
+    "virtual54": "00b6ee10"
+  },
+  "node_vtable": {
+    "address": "00d62c88",
+    "virtual00": "00bd30e0",
+    "virtual04": "00b6f8d0",
+    "virtual18": "00b6f310",
+    "virtual54": "00b6ee10"
+  },
+  "required_bindings": [
+    {
+      "native": "camera+04",
+      "storage": "NativeCameraOwner.storage.node.references_04",
+      "requirement": "One actual atomic used by queue retain/release and logical self release; borrowed binding does not read/reset/copy/increment it."
+    },
+    {
+      "native": "camera+44",
+      "storage": "NativeCameraOwner.storage.node.released_44",
+      "requirement": "Borrow actual byte in shared logical-release view; any nonzero gates only self release after backlink/child work."
+    },
+    {
+      "native": "camera+30/+34/+38/+3C/+40/+A4",
+      "storage": "owner.node.transform existing backing",
+      "requirement": "No extra hierarchy/root view; existing B6DFA0 body unchanged; B6F310 leaves child_count unchanged."
+    },
+    {
+      "native": "camera+164/+168/+16C",
+      "storage": "NativeNodePointLightArray.begin/count/capacity",
+      "requirement": "Borrow live array, no vector copy; logical shrink0 preserves pointer/capacity; final existing node destructor frees it."
+    },
+    {
+      "native": "camera+A0 and attachment+178",
+      "storage": "owner.node.transform plus environment.nodes.attachments attachment binding",
+      "requirement": "Reuse existing actual attachment backlink unregister."
+    },
+    {
+      "native": "camera+170 and virtual54",
+      "storage": "owner.node.scene_attachment and existing SceneAttachmentRuntime",
+      "requirement": "Expose same scene association; use existing native scene removal; do not unbind scene twice after native destruction."
+    },
+    {
+      "native": "child virtual18/54",
+      "storage": "existing GeneratedModelLifetimeRuntime over same transforms",
+      "requirement": "One actual camera GeneratedModelNodeLifetime association for mixed-child traversal; no fabricated InstanceUploadModel."
+    },
+    {
+      "native": "camera virtual00 -> virtual04(flag1)",
+      "storage": "existing NativeCameraOwner direct/deleting APIs and NativeCameraPool",
+      "requirement": "No additional decrement, no virtual18 substitution, no byte44 prerequisite; actual pool return exactly once."
+    },
+    {
+      "native": "queue reference identity",
+      "storage": "one stable multi-interface camera companion",
+      "requirement": "All queues use the same companion; keep it and owner frame/environment alive through final zero; explicit host disposal contract."
+    }
+  ],
+  "reference_path_distinction": {
+    "queued_release": "B1D120 decrements actual +04; zero invokes current +00 BD30E0, then +04 B71FE0(flag1).",
+    "logical_release": "B6DFA0 unlinks then B6F310 does point-light/child work, byte44 gate, at most one self decrement.",
+    "incorrect_zero_adapter": "Calling B6F310 after queue already decremented to zero either decrements again to -1 or skips self decrement when byte44 is set; neither invokes required final destructor.",
+    "count_trace_inferred_not_executed": [
+      "construction count1/byte0",
+      "context acquisition count2",
+      "logical release count1/byte1; companion remains live",
+      "repeated logical release no self decrement",
+      "final context release count0; B71FE0 flag1 and real pool return"
+    ],
+    "shadow_limit": "Observed shadow cleanup clears viewport before logical release. Queued lifetime does not freeze viewport or other fields."
+  },
+  "shared_refactor": {
+    "owner": "primary; coordinate with separate native batch lifecycle packet",
+    "counter": "Add RenderCommandReference borrowed-count path while preserving default owned diagnostics. Existing helpers access actual selected count; no mirrored count.",
+    "logical_release": "Extract existing generated-model B6F310 traversal once behind borrowed transform/runtime/self-reference/released-byte/point-light access; existing generated-model delegate and future camera delegate share it.",
+    "point_light_storage": "Vector adapter for existing generated models, raw descriptor adapter for native camera; use existing backlink helpers and extract raw shrink0 from native-node cleanup without its free.",
+    "do_not_reimplement": [
+      "B6DFA0 unlink",
+      "B6F310 traversal",
+      "B7C1A0/B7BED0 backlink removal",
+      "B8F4C0 attachment unregister",
+      "B6EE10 scene removal",
+      "B71F10/B71FE0 camera destruction",
+      "B711E0 pool return"
+    ]
+  },
+  "next_adapter_packet": {
+    "dependency": "Primary shared borrowed-count and logical-release views settled first.",
+    "scope": "Concrete stable camera RenderCommandReference plus GeneratedModelNodeLifetime adapter over existing NativeCameraOwner; count/byte/array backing, runtime association, terminal delegation and companion disposal.",
+    "exclude": [
+      "batch lifecycle",
+      "command/context physical allocation",
+      "duplicate NativeCameraOwner/CameraState/CameraFrameState",
+      "GeneratedModelLifetime model-specific retained174/geometry180/terminal destructor"
+    ],
+    "execution_resolution": "Existing RenderCommandSceneOperations resolves this actual reference to owner.frame and same renderer/system state; no camera snapshot.",
+    "retirement_order": [
+      "keep node-lifetime association through native cleanup callbacks",
+      "delegate existing camera delete(flag1) and pool return",
+      "remove only separate GeneratedModelLifetimeRuntime association by identity",
+      "retire host companion through explicit actual storage owner",
+      "no native-storage access after pool return or companion access after disposal callback"
+    ]
+  },
+  "limits": [
+    "New typed interfaces are not native ABI-compatible object/vtable overlays.",
+    "Queue/model callbacks are noexcept; existing camera destruction can throw. First bounded bridge requires nonthrowing terminal dependencies. Full native callback-EH parity is separate work.",
+    "Missing/unsupported bindings must not silently succeed. Never swallow destruction errors, reset a count or fall back to a guessed destructor.",
+    "Publish queued references only after successful native construction; unsupported current vtable profiles or zero-count resurrection are outside concrete camera bridge.",
+    "Stable active queue slots/captured camera and hierarchy objects remain required across callbacks; no concurrent mutation.",
+    "Valid nonnegative raw array bounds and actual nonnull light/attachment/child bindings required; pointer and capacity remain native state.",
+    "The companion cannot be retired at logical release while queued references remain. Raw count alone does not extend a separately destroyed C++ companion lifetime."
+  ],
+  "validation": {
+    "live_bytes_match_installed_pe": true,
+    "complete_functions": 12,
+    "caller_fragments": 1,
+    "vtable_spans": 2,
+    "code_bytes": 1067,
+    "data_bytes": 176,
+    "total_bytes": 1243,
+    "source_interface_review": true,
+    "native_assembly_review": true,
+    "native_execution": false,
+    "host_fixture_execution": false,
+    "build_run": false,
+    "new_test_cases": 0,
+    "code_changes": false,
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "shared_metadata_changes": false,
+    "future_verification": "Extend existing camera fixture with one retained-camera count2 -> logical count1/byte44 -> repeated logical no extra decrement -> queued final zero and exactly one real camera-pool return."
+  },
+  "document_sha256": "acc3ef61e559895420f5c4fd1c293d7f1cd3862aa09d046ff75dc60039c8d2fc"
+}
