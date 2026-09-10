@@ -58,6 +58,9 @@
   addresses leased to another owner. Every Ghidra mutation goes through the write lock (taken by the
   annotate/tag tools, or `coordination.ghidra_lock` around any other write); never write to Ghidra
   from inline scripts without it. Never `git add -A` in a shared checkout; stage only owned files.
+  Exports are shared through `tools/workspace.py` (the main checkout's `exports/bsp`); never create
+  a junction or symlink to them inside a worktree, and remove worktrees only with
+  `python tools/bsp.py worktree remove <name>` (git's own remove/clean traverse reparse points).
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
 - Write as few new test cases as possible. Default to adding no tests for routine changes;

@@ -6,21 +6,23 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from ledger import load_reconstruction, load_tags  # noqa: E402
+from workspace import exports_dir  # noqa: E402
 
 root = Path(__file__).resolve().parents[1]
+exports = exports_dir()  # main checkout's exports/bsp, shared by every worktree
 ledger = load_reconstruction()  # sharded config/reconstruction/*.jsonl plus any legacy file
-snapshot_path = root / 'exports/bsp/snapshot.json'
+snapshot_path = exports / 'snapshot.json'
 if snapshot_path.exists():
     snapshot = json.loads(snapshot_path.read_text())
     count = snapshot['internal_function_count']
     complete = sum(all((folder / name).exists() for name in ('decompiled.c', 'assembly.txt', 'metadata.json'))
-                   for folder in (root / 'exports/bsp/functions').glob('*') if folder.is_dir())
+                   for folder in (exports / 'functions').glob('*') if folder.is_dir())
     print(f"Snapshot: {snapshot['project']} {snapshot['program']} ({snapshot['utc']})")
     print(f"Internal functions: {count}; total including externals: {snapshot['total_function_count']}")
     print(f"Pseudocode + assembly exported: {complete}/{count}")
     print(f"Reconstructed: {len(ledger['functions'])}/{count} ({100 * len(ledger['functions']) / count:.4f}%)")
     print(f"Partial routine fragments: {len(ledger.get('fragments', []))} (excluded from reconstructed count)")
-    functions_path = root / 'exports/bsp/functions.json'
+    functions_path = exports / 'functions.json'
     if functions_path.exists():
         rows = [row for row in json.loads(functions_path.read_text()) if not row.get('isExternal')]
         reviewed = {row['address'] for row in ledger['functions']}

@@ -27,7 +27,8 @@ IMM = re.compile(r'0x([0-9a-f]{6,8})')
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, default=ROOT / 'config/target.json')
-    parser.add_argument('--output', type=Path, default=ROOT / 'exports/bsp')
+    parser.add_argument('--output', type=Path, default=__import__('workspace').exports_dir(),
+                        help='defaults to the main checkout\'s exports/bsp, shared by every worktree')
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding='utf-8'))
     binary = Path(config['binary'])

@@ -73,7 +73,7 @@ def main():
     parser.add_argument('--legacy-json', help='Also write the flat legacy JSON list to this path')
     args = parser.parse_args()
 
-    functions = {row['address']: row for row in json.loads((ROOT / 'exports/bsp/functions.json').read_text())}
+    functions = {row['address']: row for row in json.loads((__import__('workspace').exports_dir() / 'functions.json').read_text())}
     name_addresses = {}
     for row in functions.values():
         name_addresses.setdefault(row['name'], set()).add(row['address'])

@@ -14,13 +14,16 @@ python tools/bsp.py worktree add <name> [--packet <id>]   # ../battlestations-pa
 python tools/bsp.py worktree list
 ```
 
-The worktree gets a junction `exports` -> the main checkout's exports directory, so the
-snapshot, call graph and per-function exports are shared without copying (the per-function
-files are address-local, and a concurrent re-export of the same address is harmless). Build
-directories and `local/` (index, logs) are per worktree. The agent's owner name defaults to
-its branch (`agent/<name>`); set `BSP_AGENT` to override. The integrator stays on `main` in
-the main checkout, merges `agent/*` branches, and owns shared headers, CMake, probes and
-Ghidra mutations as before.
+Exports (snapshot, call graph, per-function pseudocode) are shared, not copied: every tool
+resolves them to the MAIN checkout's `exports/bsp` through `git rev-parse --git-common-dir`
+(`tools/workspace.py`; `BSP_EXPORTS_DIR` overrides). Never create a junction or symlink to
+`exports` inside a worktree: `git worktree remove` and `git clean` traverse reparse points on
+Windows and empty the shared target, which happened once. Remove worktrees with
+`python tools/bsp.py worktree remove <name> [--delete-branch]`, which detaches any legacy
+junction before calling git. Build directories and `local/` (index, logs) are per worktree.
+The agent's owner name defaults to its branch (`agent/<name>`); set `BSP_AGENT` to override.
+The integrator stays on `main` in the main checkout, merges `agent/*` branches, and owns
+shared headers, CMake, probes and Ghidra mutations as before.
 
 ## Leases
 

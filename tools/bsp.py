@@ -27,10 +27,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import coordination  # noqa: E402
 import ledger  # noqa: E402
+import workspace  # noqa: E402
 
 ROOT = ledger.ROOT
 DB = ROOT / 'local/bsp_index.sqlite'
-EXPORTS = ROOT / 'exports/bsp'
+EXPORTS = workspace.exports_dir()  # main checkout's exports/bsp, shared by every worktree
 ADDR = re.compile(r'\b(00[4-9a-c][0-9a-f]{5})\b')
 
 SCHEMA = """
@@ -668,18 +669,32 @@ def worktree_cmd(args):
     if args.worktree_command == 'list':
         print(git('worktree', 'list'))
         return
+    main = workspace.main_root()
+    if args.worktree_command == 'remove':
+        path = (main.parent / f'{main.name}-{args.name}').resolve()
+        link = path / 'exports'
+        # Older worktrees carried a junction to the shared exports; git would traverse it and
+        # empty the target, so detach the reparse point first (rmdir removes only the link).
+        if link.exists() and link.is_dir():
+            probe = subprocess.run(['cmd', '/c', 'fsutil', 'reparsepoint', 'query', str(link)], capture_output=True, text=True)
+            if probe.returncode == 0:
+                subprocess.run(['cmd', '/c', 'rmdir', str(link)], capture_output=True, text=True)
+                print(f'detached exports junction in {path}')
+        run = subprocess.run(['git', 'worktree', 'remove', '--force', str(path)], cwd=main, capture_output=True, text=True)
+        print((run.stdout + run.stderr).strip() or f'removed {path}')
+        if args.delete_branch and run.returncode == 0:
+            print(git('branch', '-D', f'agent/{args.name}'))
+        return
     name = args.name
     branch = f'agent/{name}'
-    path = (ROOT.parent / f'{ROOT.name}-{name}').resolve()
+    path = (main.parent / f'{main.name}-{name}').resolve()
     if path.exists():
         sys.exit(f'{path} already exists')
-    run = subprocess.run(['git', 'worktree', 'add', str(path), '-b', branch, args.base], cwd=ROOT, capture_output=True, text=True)
+    run = subprocess.run(['git', 'worktree', 'add', str(path), '-b', branch, args.base], cwd=main, capture_output=True, text=True)
     if run.returncode:
         sys.exit((run.stdout + run.stderr).strip())
-    exports_link = path / 'exports'
-    link = subprocess.run(['cmd', '/c', 'mklink', '/J', str(exports_link), str(ROOT / 'exports')], capture_output=True, text=True)
     print(f"worktree {path} on branch {branch}")
-    print('exports junction -> shared exports' if link.returncode == 0 else f'exports junction failed: {(link.stdout + link.stderr).strip()}')
+    print(f"exports resolve to {main / 'exports' / 'bsp'} through git (no junction; never create one inside a worktree)")
     print(f"next: cd {path}; python tools/bsp.py index; python tools/bsp.py lease claim --packet <id> --from-packet"
           + (f" (suggested packet: {args.packet})" if args.packet else ''))
 
@@ -729,6 +744,7 @@ def main():
     p.set_defaults(func=packets_cmd)
     p = sub.add_parser('worktree', help='one git worktree per harness agent, sharing exports'); wt = p.add_subparsers(dest='worktree_command', required=True)
     q = wt.add_parser('add'); q.add_argument('name'); q.add_argument('--base', default='main'); q.add_argument('--packet')
+    q = wt.add_parser('remove', help='safe removal: detaches any exports junction before git worktree remove'); q.add_argument('name'); q.add_argument('--delete-branch', action='store_true')
     wt.add_parser('list')
     p.set_defaults(func=worktree_cmd)
     p = sub.add_parser('ledger'); ls = p.add_subparsers(dest='ledger_command', required=True)

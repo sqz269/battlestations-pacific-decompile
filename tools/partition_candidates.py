@@ -61,9 +61,10 @@ def tokens_of(text):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--callgraph', default=str(ROOT / 'exports/bsp/callgraph.json'),
+    exports = __import__('workspace').exports_dir()
+    parser.add_argument('--callgraph', default=str(exports / 'callgraph.json'),
                         help='from tools/callgraph_sweep.py')
-    parser.add_argument('--datarefs', default=str(ROOT / 'exports/bsp/datarefs.json'))
+    parser.add_argument('--datarefs', default=str(exports / 'datarefs.json'))
     parser.add_argument('--resolution', type=float, default=0.5)
     parser.add_argument('--window', type=int, default=12, help='label smoothing half-window (candidates)')
     parser.add_argument('--min-segment', type=int, default=60)
@@ -79,8 +80,8 @@ def main():
         return json.loads(raw)
 
     config = read_json(ROOT / 'config/target.json')
-    snapshot = read_json(ROOT / 'exports/bsp/snapshot.json')
-    functions = read_json(ROOT / 'exports/bsp/functions.json')
+    snapshot = read_json(exports / 'snapshot.json')
+    functions = read_json(exports / 'functions.json')
     for path in (Path(__file__), Path(config['binary'])):
         inputs[str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
     by_addr = {int(r['address'], 16): r for r in functions}

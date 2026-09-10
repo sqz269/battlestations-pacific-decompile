@@ -227,7 +227,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['snapshot', 'seed', 'decompile', 'all', 'verify-seeds'])
     parser.add_argument('--config', type=Path, default=ROOT / 'config/target.json')
-    parser.add_argument('--output', type=Path, default=ROOT / 'exports/bsp')
+    parser.add_argument('--output', type=Path, default=__import__('workspace').exports_dir(),
+                        help='defaults to the main checkout\'s exports/bsp, shared by every worktree')
     parser.add_argument('--addresses', nargs='+')
     parser.add_argument('--force', action='store_true')
     args = parser.parse_args()
