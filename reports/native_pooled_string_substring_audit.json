@@ -1,0 +1,642 @@
+{
+  "schema_version": 1,
+  "packet": "native_pooled_string_substring",
+  "utc": "2026-09-10T23:50:39.066706+00:00",
+  "base_commit": "f143bc39f96572c5e334abab84bcd2b7c982e876",
+  "status": "two_full_actual_header_bodies_reconstructed_build_and_controlled_native_fixture_checked",
+  "owned_addresses": [
+    "00426060",
+    "00469840"
+  ],
+  "owned_files": [
+    "include/bsp/native_pooled_string_substring.hpp",
+    "src/native_pooled_string_substring.cpp",
+    "docs/NATIVE_POOLED_STRING_SUBSTRING.md",
+    "reports/native_pooled_string_substring_audit.json"
+  ],
+  "interfaces": [
+    {
+      "address": "00426060",
+      "name": "copy_construct_native_string_header_00426060",
+      "native_abi": "ECX actual destination; stack source; EAX actual destination; RET 4; no local EH",
+      "proposed_ghidra_name": "BSP_NativeString_CopyConstruct",
+      "cpp": "void* copy_construct_native_string_header_00426060(void*, const void*, NativeStringStorage&)"
+    },
+    {
+      "address": "00469840",
+      "name": "construct_native_string_substring_00469840",
+      "native_abi": "ECX actual source; stack output/start/count; EAX actual output; RET 0Ch; two unwind states",
+      "proposed_ghidra_name": "BSP_NativeString_Substring",
+      "cpp": "void* construct_native_string_substring_00469840(const void*, void*, uint32_t, uint32_t, NativeStringStorage&)"
+    }
+  ],
+  "layout": {
+    "size": 8,
+    "length_offset": 0,
+    "data_offset": 4,
+    "pointer_size": 4,
+    "owner_overlay": false
+  },
+  "copy_contract": {
+    "compare_before_stores": "00426068",
+    "zero_length": "0042606a",
+    "zero_data": "00426070",
+    "identity_branch_after_zero": "00426077",
+    "captured_source_length": "00426079",
+    "actual_resize": "0042607e -> 0041dd40 preserve=1",
+    "current_source_length_guard": "00426083",
+    "copy_field_reads": [
+      "00426088 destination length",
+      "0042608a source data",
+      "0042608d destination data"
+    ],
+    "memcpy": "00426093 -> 00bf7680",
+    "release_existing_output": false,
+    "cleanup_on_initial_allocation_throw": false
+  },
+  "substring_contract": {
+    "local_header": "original frame-14h length/frame-10h data",
+    "output_flag": "frame-18h bit0",
+    "state_1_arm": "00469872 before source reads",
+    "start_negative": "signed test; count+=start unsigned wrap; start=0",
+    "nonnegative_start": "unsigned clamp to current source length",
+    "data_capture": "0046988a",
+    "length_reload": "00469895 only if captured data nonnull",
+    "count_clamp": "004698a5 wrapped start+count; unsigned greater than captured length => length-start",
+    "source_begin_capture": "004698b7 before local resize allocation",
+    "temporary_resize": "004698ba -> 0041dd40 preserve=1",
+    "normal_data_capture": "004698c1",
+    "strncpy": "004698ca -> 00bf9280 only if count nonzero; preserves padding semantics",
+    "actual_copy_constructor": "004698dd -> full 00426060",
+    "output_flag_armed": "004698e4 only after constructor returns",
+    "state_0_transition": "004698ec",
+    "normal_release": "captured temporary pointer from 004698c1; CURRENT local length+1 at 004698f2",
+    "empty_branch": "compare output/local identity before clearing output; distinct calls resize(0,true); no previous output release",
+    "error_or_wrap_guard_added": false
+  },
+  "eh": {
+    "handler": "00c61b71",
+    "funcinfo": "00d891e0",
+    "funcinfo_length": 36,
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map": "00d891d0",
+    "exception_specification_list": 0,
+    "eh_flags": 1,
+    "transitions": [
+      {
+        "state": 1,
+        "to": 0,
+        "action": "00c61b50",
+        "length": 8,
+        "contract": "destroy CURRENT actual temporary header through 0041dd20"
+      },
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00c61b58",
+        "length": 25,
+        "contract": "test and clear output flag bit0; destroy actual output only if armed"
+      }
+    ],
+    "output_construction_failure": "current temporary is cleaned; output flag remains clear; partial output is neither restored nor destroyed",
+    "native_only_normal_cleanup_throw": "getter throw occurs after flag set/state0; original output funclet releases output; temporary cleanup already disarmed"
+  },
+  "dependencies": [
+    {
+      "address": "0041dd40",
+      "body": "src/native_string.cpp::resize_native_string_header_0041dd40",
+      "kind": "actual concrete header body"
+    },
+    {
+      "address": "0041dd20",
+      "body": "src/native_string.cpp::destroy_native_string_header_0041dd20",
+      "kind": "actual concrete header body"
+    },
+    {
+      "address": "00419cc0/00bd1120/00bd1510",
+      "body": "NativeStringStorage; PooledStringStorage composes existing SizedStoragePool",
+      "kind": "existing explicit storage boundary"
+    },
+    {
+      "address": "00bf7680",
+      "body": "std::memcpy",
+      "kind": "host CRT boundary; zero-byte operation omitted"
+    },
+    {
+      "address": "00bf9280",
+      "body": "std::strncpy",
+      "kind": "host CRT boundary preserving padding"
+    }
+  ],
+  "current_native_evidence": {
+    "utc": "2026-09-10T23:46:22.885585+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Every live query uses bsp.py ghidra with its current project/program/language/image-base verification.",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "spans": [
+      {
+        "address": "00426060",
+        "end_exclusive": "004260a2",
+        "length": 66,
+        "raw_offset": 155744,
+        "role": "full_copy_constructor",
+        "sha256": "53d4b41063ce1429d94987c7b752a4f343cca774b21593a10fee3b95e6aa8bb6",
+        "bytes_hex": "568bf1578b7c240c3bf7c70600000000c746040000000074228b076a0150e8bd7cffff833f0074138b0e8b57048b4604515250e8e8157d0083c40c5f8bc65ec20400",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00469840",
+        "end_exclusive": "00469950",
+        "length": 272,
+        "raw_offset": 432192,
+        "role": "full_substring",
+        "sha256": "3d195be7698a4a68e668efb2b4de53eb59f861783950be94acddd6ca3a9cd09f",
+        "bytes_hex": "6aff68711bc60064a100000000506489250000000083ec0c5333db895c240456895c240c895c24108b4424283bc38b74242cc744241c010000007d0603f033c0eb088b113bc276028bc28b51043bd30f848b0000008b093bcb0f84810000003bc1737d55578d3c303bf976042bc88bf16a01568d4c241c8d3c02e88144fbff3bf38b6c2418740b565755e8b1f9780083c40c8b74242c8d442414508bcee87ec7fbff3bebc744241001000000885c242474178b4c24146a0183c1015155e8be03fbff8bc8e8077c76005f5d8bc65e5b8b4c240c64890d0000000083c418c20c008b7424248d54240c3bf2891e895e04740a6a01538bcee80544fbff8b4c24148bc65e5b64890d0000000083c418c20c00",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c61b50",
+        "end_exclusive": "00c61b58",
+        "length": 8,
+        "raw_offset": 8788816,
+        "role": "temporary_unwind_funclet",
+        "sha256": "ccafd8480b28907c86db2f92e09b6e224f954700f4cdd5bfd5a96940707169e4",
+        "bytes_hex": "8d4dece9c8c17bff",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c61b58",
+        "end_exclusive": "00c61b71",
+        "length": 25,
+        "raw_offset": 8788824,
+        "role": "flagged_output_unwind_funclet",
+        "sha256": "a1bcf85e0a0da8291918a116ae1773c5b28ff81097f613103aefd6d99d9b91af",
+        "bytes_hex": "8b45e883e0010f840c0000008365e8fe8b4d04e9b0c17bffc3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c61b71",
+        "end_exclusive": "00c61b7b",
+        "length": 10,
+        "raw_offset": 8788849,
+        "role": "native_eh_handler",
+        "sha256": "d6f79203e4c466864992a47b72e7cfcd41daf8674ef7ef747ac665ed05675e4d",
+        "bytes_hex": "b8e091d800e9c84ff9ff",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d891d0",
+        "end_exclusive": "00d891e0",
+        "length": 16,
+        "raw_offset": 9998800,
+        "role": "unwind_map",
+        "sha256": "2b4d07452ca16212c430748bf6b8dc7e94b43ca13ed5f014e75499f02e909e8a",
+        "bytes_hex": "ffffffff581bc60000000000501bc600",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d891e0",
+        "end_exclusive": "00d89204",
+        "length": 36,
+        "raw_offset": 9998816,
+        "role": "funcinfo",
+        "sha256": "32886771305222677a2e388c6639ecbac09e21c430f9a549cad56938b9c8da5f",
+        "bytes_hex": "2205931902000000d091d800000000000000000000000000000000000000000001000000",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0041dd40",
+        "end_exclusive": "0041dd45",
+        "length": 5,
+        "raw_offset": 122176,
+        "role": "actual_resize_hook",
+        "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+        "bytes_hex": "568bf18b0e",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0041dd20",
+        "end_exclusive": "0041dd25",
+        "length": 5,
+        "raw_offset": 122144,
+        "role": "actual_destroy_hook",
+        "sha256": "dca452e0b0521bb6b5ecf5e9c5a46ce8dd446665d1a55f931c87f7635507dce7",
+        "bytes_hex": "8b510485d2",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00419cc0",
+        "end_exclusive": "00419cc5",
+        "length": 5,
+        "raw_offset": 105664,
+        "role": "storage_getter_hook",
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "bytes_hex": "64a1000000",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bd1510",
+        "end_exclusive": "00bd1515",
+        "length": 5,
+        "raw_offset": 8197392,
+        "role": "storage_release_hook",
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+        "bytes_hex": "538b5c240c",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf7680",
+        "end_exclusive": "00bf7685",
+        "length": 5,
+        "raw_offset": 8353408,
+        "role": "host_memcpy_hook",
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+        "bytes_hex": "558bec5756",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf9280",
+        "end_exclusive": "00bf9285",
+        "length": 5,
+        "raw_offset": 8360576,
+        "role": "host_strncpy_hook",
+        "sha256": "92d217ed3e1debc348a2388b2b9a46481b279c882b058866a6f13011a1ce2c8a",
+        "bytes_hex": "8b4c240c57",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf6b43",
+        "end_exclusive": "00bf6b48",
+        "length": 5,
+        "raw_offset": 8350531,
+        "role": "host_eh_hook",
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "bytes_hex": "558bec83ec",
+        "live_matches_disk": true
+      }
+    ],
+    "fixture_relocations": [
+      {
+        "address": "00469843",
+        "expected": "00c61b71"
+      },
+      {
+        "address": "00c61b72",
+        "expected": "00d891e0"
+      },
+      {
+        "address": "00d891d4",
+        "expected": "00c61b58"
+      },
+      {
+        "address": "00d891dc",
+        "expected": "00c61b50"
+      },
+      {
+        "address": "00d891e8",
+        "expected": "00d891d0"
+      }
+    ]
+  },
+  "old_ghidra_values": {
+    "00426060": {
+      "proto": "Function: FUN_00426060 at 00426060\nSignature: undefined FUN_00426060(void)\nEntry: 00426060\nBody: 00426060 - 004260a1\n{\n \"function_name\": \"FUN_00426060\",\n \"address\": \"00426060\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 26,\n \"basic_block_count\": 4,\n \"edge_count\": 5,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 3,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_memcpy\",\n  \"BSP_NativeString_Resize\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4,\n  12\n ],\n \"basic_block_hashes\": [\n  \"6605a6c562daea81dc7b2eb03c9ab5eb39d6e45dfaba50c282e3c356b73b07d0\",\n  \"4c37cad524ee97aecf03337fcecbe94c4fa7911481e57490676777eeb7507076\",\n  \"f57dded3a71c5894af802e2703eea55662703b2b0784ba0e1afbc16c63aa34be\",\n  \"a55b85a819a5b9eb5e645158576308efbd22899bb865a2c3d38678a946669647\"\n ]\n}\n",
+      "comments": [
+        {
+          "address": "00426060",
+          "annotation": {
+            "address": "00426060",
+            "function_name": "FUN_00426060"
+          }
+        }
+      ]
+    },
+    "00469840": {
+      "proto": "Function: BSP_NativeString_Substring at 00469840\nSignature: undefined BSP_NativeString_Substring(void)\nEntry: 00469840\nBody: 00469840 - 0046994f\n{\n \"function_name\": \"BSP_NativeString_Substring\",\n \"address\": \"00469840\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 95,\n \"basic_block_count\": 17,\n \"edge_count\": 24,\n \"call_count\": 6,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 9,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"FUN_00426060\",\n  \"BSP_SizedStoragePool_GetSingleton\",\n  \"_strncpy\",\n  \"BSP_SizedStoragePool_ReturnBlock\",\n  \"BSP_NativeString_Resize\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  1,\n  24,\n  12\n ],\n \"basic_block_hashes\": [\n  \"7e5678ea298b67407d237478b1d0e5a6be6cadc3c8be39892070d363d74f4742\",\n  \"e3961066adf55b87e7c139fcc29f9fd0d8d00275fba34591a6caab54694b4624\",\n  \"0b7196341af1abc25c02ebbe4a83fa9e787e843100e5c59d2b750aaa38c76319\",\n  \"3c420a92e4daf83893567fede746e7dffbd1b1a3aac25696eca0e1d449961432\",\n  \"5ec44c7cb44dbf0ead592b57b922cd119d3f326e46e8425d40f96504bde9eb53\",\n  \"0862fbd80b4a2f8a4646fd02e93c685e377ef8555b12f9e5e23e366608ba00a3\",\n  \"dcfda9aede7e26071a28ca911672af85b89fc6fea8e7ed5428dc9c8cd146b86e\",\n  \"278e78672215f9f7e62d6c4102b615c9dd8db6955a6eb53fe9c75dd5dcc80be5\",\n  \"1f0ea0b35fc6b2685e9ff1746f064eadf7cd7eee1c366b8f8a7beb185b7a0f08\",\n  \"00bbd961af498fcdf078d69f8bef0c1efd054614137f02da6a0098cf8c765d74\",\n  \"708ea43dc6a594fc56e4cdb8fe84d4654efc172faf5e0c2a480b5479b8758a56\",\n  \"8b878e1ac00ae395fe0c6631bd46d7dde03ee7110aba75026fefd7dc3e4061f7\",\n  \"60729f9f69b7be913678d0c0a176bdb24cf0bb9ae130a9bed37efb0ec65a0268\",\n  \"1d43943e88e827ca180b61ac6006470a1a7f750f1cb0b8fd5d1cb40238b6c39c\",\n  \"80245ae4bee1281468c4518c0d2c2973f5c501f953e034684bccb8fe8579df16\",\n  \"58f1b88ba529638d54daecb482b259bc6db579ec4ad8048e8f4e61f9b01b5f63\",\n  \"3a945a10fd357ebab0257ab8ae8c7ea5bdce3e4328a84756ee1af3dc0b6f3545\"\n ]\n}\n",
+      "comments": [
+        {
+          "address": "00469840",
+          "annotation": {
+            "address": "00469840",
+            "function_name": "BSP_NativeString_Substring",
+            "comment": "[BSP reconstruction 00469840]\nSubstring copy; normal name call uses start0,count=final dot index. No case transformation. General malformed/overflow semantics not reimplemented. Original ABI: ECX source native string; stack output string,start,count; EAX output; RET0C. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+          }
+        }
+      ]
+    }
+  },
+  "recommended_annotation_appends": {
+    "00426060": "Full actual-header constructor reconstructed; clears both destination fields even on identity; distinct resize captures source length then current source guard/current destination count/source data/destination data. No initial-copy cleanup. docs/NATIVE_POOLED_STRING_SUBSTRING.md and reports/native_pooled_string_substring_audit.json. Source interface, not original ABI/game validation.",
+    "00469840": "Full actual-header substring now reconstructed in native_pooled_string_substring.cpp, including signed-start/DWORD-wrap path, preallocation source capture, real strncpy padding, complete 36-byte FuncInfo D891E0 and current-local/flagged-output cleanup. Normal release uses captured temporary data and current length. NativeStringStorage lookup/noexcept release remain explicit host boundaries; native-only getter-throw fixture does not establish throwing host-release parity. Preserve earlier projection comment as historical scope."
+  },
+  "fixture": {
+    "path": "local/native_pooled_string_substring_check.cpp",
+    "kind": "one private focused original-caller and EH fixture",
+    "original_full_bodies": [
+      "00426060",
+      "00469840"
+    ],
+    "native_unwind_funclets": [
+      "00c61b50",
+      "00c61b58"
+    ],
+    "native_funcinfo_loaded_bytes": 36,
+    "native_map_loaded_bytes": 16,
+    "relocations": [
+      {
+        "address": "00469843",
+        "expected": "00c61b71"
+      },
+      {
+        "address": "00c61b72",
+        "expected": "00d891e0"
+      },
+      {
+        "address": "00d891d4",
+        "expected": "00c61b58"
+      },
+      {
+        "address": "00d891dc",
+        "expected": "00c61b50"
+      },
+      {
+        "address": "00d891e8",
+        "expected": "00d891d0"
+      }
+    ],
+    "handler_bridge": {
+      "site": "00469843",
+      "original": "00c61b71",
+      "replacement": "fixture-image naked MOV EAX,relocated FuncInfo; JMP actual host __CxxFrameHandler3",
+      "reason": "Windows exception dispatch requires the handler entry in an image"
+    },
+    "hooks": [
+      "0041dd40 actual raw resize body",
+      "0041dd20 actual raw destructor body",
+      "00419cc0 explicit storage getter",
+      "00bd1510 controlled storage release",
+      "00bf7680 real host memcpy",
+      "00bf9280 real host strncpy",
+      "00bf6b43 actual host __CxxFrameHandler3"
+    ],
+    "instrumentation": "Compile unchanged native_string.cpp with only resize symbol renamed; wrapper exposes actual header to controlled storage callbacks and forwards to unchanged concrete body for both native and C++ callers.",
+    "allocation_domain": "Controlled fixed buffers; release records pointer/size and does not free; not native pool execution.",
+    "matched_scenarios": 18,
+    "matched_events": 44,
+    "matched_words": 3212,
+    "native_memcpy_calls": 7,
+    "native_strncpy_calls": 6,
+    "native_temporary_unwind_executions": 4,
+    "native_only_flagged_output": {
+      "matched_to_host": false,
+      "trace_words": 219,
+      "output_unwind_executions": 1,
+      "result": "PASS",
+      "contract": "After both allocations and output publication, native getter throws; only output storage is returned, with length+1; header fields remain unchanged."
+    },
+    "compared": "allocation/release sequence, sizes, normalized data roles, current source/output/temporary headers, and complete 32-byte temporary/output buffer observations",
+    "preparation_correction": "Initial fixture FuncInfo span was 28 bytes; modern-compatible native record is 36. Expanded to full live/disk-checked record including null pESTypeList and EHFlags=1 before accepting final run."
+  },
+  "validation": {
+    "msvc": "Win32 x86 /std:c++17 /O2 /Oy- /EHsc /fp:strict /MD /Gy /Gw /W4 /WX",
+    "strict_fixture": "PASS",
+    "whole_build": "scripts/build.ps1 PASS",
+    "seed_matches": 8,
+    "existing_ctest": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "ctest_passed": 2,
+    "private_cmake_registration": "local/substring_sources.cmake through CMAKE_PROJECT_INCLUDE_BEFORE; no shared registry modification",
+    "all_loaded_span_preimages_verified_before_fixture_patches": true
+  },
+  "boundaries": [
+    "C++ interfaces are not original calling-convention ABI replacements.",
+    "Already-bound NativeStringStorage does not reproduce native singleton lookup construction or exception behavior.",
+    "Storage allocate must return nonnull; release is noexcept, so post-construction release/getter throws are not host-parity claims.",
+    "Zero-byte memcpy is omitted consistently with existing raw-header helpers.",
+    "Controlled storage/host CRT/EH fixture is not native pool/CRT binary execution or game validation.",
+    "No null output guard, max-length repair, rollback, old-output release or partial-output cleanup was synthesized.",
+    "00BEE690/00BEE780 normalization and container removal remain separate packets."
+  ],
+  "worker_shared_mutations": {
+    "ghidra": false,
+    "exports": false,
+    "ledgers": false,
+    "cmake": false,
+    "tracked_tests": false
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+      "bytes": 1557
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+      "bytes": 5004
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+      "bytes": 6001
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+      "bytes": 6003
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "bytes": 5571
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+      "bytes": 6169
+    },
+    {
+      "path": "docs/NATIVE_POOLED_STRING_SUBSTRING.md",
+      "sha256": "ac7fcc57d1cd8c2d3250e28ac1eee209280bb468cbec848c67cc7df3d478c3d6",
+      "bytes": 8676
+    },
+    {
+      "path": "local/prepare_native_pooled_string_substring.py",
+      "sha256": "b40a53443556fadd0b6a521e6ec4e2132c644de1786362df3f3906007a1df629",
+      "bytes": 4471
+    },
+    {
+      "path": "local/write_native_pooled_string_substring_audit.py",
+      "sha256": "eb045c8e923f77591abaa18d1b315b157c43790965dfd317dc3e9413bbb6b7d1",
+      "bytes": 11620
+    },
+    {
+      "path": "local/native_pooled_string_substring_preparation.json",
+      "sha256": "4c1ae1a24dfccfa80433ba2793962a46aa021a06403cd7cf2fbb5f5320dbc430",
+      "bytes": 7900
+    },
+    {
+      "path": "local/native_pooled_string_substring_spans.hpp",
+      "sha256": "220abb5fc4fa2cac430115ce2a27212a2fd27836ed71d7c773ee0d6fa799a7ef",
+      "bytes": 4170
+    },
+    {
+      "path": "local/native_pooled_string_substring_check.cpp",
+      "sha256": "e8983eabdd6c3b43db48e21b71f5058a983f682c39448f5d1f3d60d482bac383",
+      "bytes": 15820
+    },
+    {
+      "path": "local/build_native_pooled_string_substring_check.ps1",
+      "sha256": "078229643184d04c5d0aebca26bde06510f175579f76b7f3d19f045341519df4",
+      "bytes": 1855
+    },
+    {
+      "path": "local/substring_sources.cmake",
+      "sha256": "c0fc0ee383ffff9faf1a9abb6c510cbc3639f451e3e9dfe41e003ff0423dca9f",
+      "bytes": 130
+    },
+    {
+      "path": "local/build_native_pooled_string_substring.ps1",
+      "sha256": "0e906ebe8421be98c0d58d991092d88c47cef624a7aa6544ef154f45e9c173d6",
+      "bytes": 1037
+    },
+    {
+      "path": "local/native_pooled_string_substring_build.log",
+      "sha256": "62c1c32203f35ce8d59220c35d950ca785940fc224a13978d6da3561039e92a1",
+      "bytes": 2709
+    },
+    {
+      "path": "local/native_pooled_string_substring_check.log",
+      "sha256": "06e532b6bc566aa6a7ab7b8cbda356813e07c79c2e46b1c75d1c51572265e5ed",
+      "bytes": 376
+    },
+    {
+      "path": "local/native_pooled_string_substring_final_build.log",
+      "sha256": "8de03228158cf248e4eee71eabab9bbf137cd53a9c905c24f826e311f44fd1c8",
+      "bytes": 2061
+    },
+    {
+      "path": "local/native_pooled_string_substring_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "build/pooled-string-substring-check/native_pooled_string_substring_trace.json",
+      "sha256": "a83c8415643e380938a2948fab45adda14a2d6e851b0098ded0d5900d266a65b",
+      "bytes": 9897
+    },
+    {
+      "path": "local/substring_old_00426060_proto.txt",
+      "sha256": "c03a392b8d8342600799111131f9b110e9d52685aa1de2a28620f558217152a8",
+      "bytes": 909
+    },
+    {
+      "path": "local/substring_old_00426060_comments.json",
+      "sha256": "02410a74b2dc97ef4e0f3e46696577925f2b0a44a442157b643dbba372abee5e",
+      "bytes": 127
+    },
+    {
+      "path": "local/substring_old_00469840_proto.txt",
+      "sha256": "a97ae735bd4fd02ae5d11be80a6925c4616ada035fb3282bf21b1c943315567b",
+      "bytes": 1983
+    },
+    {
+      "path": "local/substring_old_00469840_comments.json",
+      "sha256": "b0371aaff9a23ffc319448bdaaec1a1689a0955dc86ad35272a9c6b4a3a9c143",
+      "bytes": 606
+    },
+    {
+      "path": "local/substring_00426060.asm",
+      "sha256": "9923e09067cca24d5008ba3c9e8c5917867927b6e2508cbbceff06266da7929e",
+      "bytes": 685
+    },
+    {
+      "path": "local/substring_00469840.asm",
+      "sha256": "36c1f221431cd77a2e5f35065931586acd37136a87f8e8d70753a61c17291f01",
+      "bytes": 2584
+    },
+    {
+      "path": "local/substring_00c61b50.asm",
+      "sha256": "547850d290520fea19450cf8fc0e3273c0ad9d3f1407ea52e07053e2d54cba22",
+      "bytes": 57
+    },
+    {
+      "path": "local/substring_00c61b58.asm",
+      "sha256": "817436e88964077b6a455b923695f5a215325a0e1dbc1385c296c3341b93728c",
+      "bytes": 218
+    },
+    {
+      "path": "local/substring_00c61b71.asm",
+      "sha256": "7d58ccd37ebc8c96fa5be5724c5b32dd3bc59bbb0c2adc0dcdc71569130fbaa1",
+      "bytes": 53
+    }
+  ]
+}
