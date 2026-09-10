@@ -240,9 +240,9 @@
       },
       {
         "start": "00b71350",
-        "end_exclusive": "00b7135a",
-        "bytes": 10,
-        "sha256": "f560b7d953d06bc3c83acfe507717b1103719fda9abf6158d89745770ad2f633",
+        "end_exclusive": "00b7135c",
+        "bytes": 12,
+        "sha256": "7f1f03d892f371b00eced7f9808279c0894262bb5df77a32fe4818f248786a78",
         "live_matches_installed": true,
         "source": "PE raw bytes"
       },
@@ -440,7 +440,7 @@
       }
     ],
     "verified_span_count": 52,
-    "verified_byte_count": 6504,
+    "verified_byte_count": 6506,
     "source_files": [
       {
         "path": "include/bsp/camera_projection.hpp",
@@ -1093,5 +1093,21 @@
     "ghidra_mutations": false,
     "ledger_mutations": false
   },
-  "document_sha256": "fe3afa3cc323bec9ec747228589b5c9249af1c0544ce2e3344aa6fdf35c416c0"
+  "document_sha256": "fe3afa3cc323bec9ec747228589b5c9249af1c0544ce2e3344aa6fdf35c416c0",
+  "evidence_corrections": [
+    {
+      "address": "00b71350",
+      "before": {
+        "start": "00b71350",
+        "end_exclusive": "00b7135a",
+        "bytes": 10,
+        "sha256": "f560b7d953d06bc3c83acfe507717b1103719fda9abf6158d89745770ad2f633",
+        "live_matches_installed": true,
+        "source": "PE raw bytes"
+      },
+      "source": "reports/native_camera_pool_audit.json; native fixture discovered truncated CALL",
+      "original_abi": "ECX=actual slot; no stack args; PUSH ECX then bind pool and CALL 00B711E0; RET 0",
+      "full_raw_hex": "51b9b0ff0801e885feffffc3"
+    }
+  ]
 }

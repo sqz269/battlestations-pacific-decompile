@@ -1800,8 +1800,8 @@
       "id": "native_shadow_texture_access",
       "packet": "native_shadow_texture_access",
       "worker": "primary_integration",
-      "done": false,
-      "state": "worker_complete_awaiting_primary_integration",
+      "done": true,
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
       "worker_commit": "b42d2cd",
       "function_addresses": [
         "00a8fcf0",
@@ -1819,14 +1819,16 @@
         "docs/NATIVE_SHADOW_TEXTURE_ACCESS.md",
         "reports/native_shadow_texture_access_audit.json"
       ],
-      "boundary": "Actual borrowed global/fallback/texture identities and mutable reported dimensions; full owning shadow construction/update remains separate."
+      "boundary": "Actual borrowed global/fallback/texture identities and mutable reported dimensions; full owning shadow construction/update remains separate.",
+      "evidence": "reports/native_shadow_texture_access_audit.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json"
     },
     {
       "id": "native_viewport_owner",
       "packet": "native_viewport_owner",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_actual_viewport_lifetime_and_renderer_parameter_binding",
+      "done": true,
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
       "function_addresses": [
         "00b1f850",
         "00b1f8f0",
@@ -1842,14 +1844,17 @@
         "docs/NATIVE_VIEWPORT_OWNER.md",
         "reports/native_viewport_owner_audit.json"
       ],
-      "boundary": "Same34-byte viewport and actual renderer1A14parameters with separate publication/callback reads; no present-size default."
+      "boundary": "Same34-byte viewport and actual renderer1A14parameters with separate publication/callback reads; no present-size default.",
+      "evidence": "reports/native_viewport_owner_audit.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json",
+      "worker_commit": "a3fba45"
     },
     {
       "id": "native_camera_owner_discovery",
       "packet": "native_camera_owner_discovery",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_discovering_native_camera_pool_storage_lifetime_and_shared_view_bindings",
+      "done": true,
+      "state": "read_only_lifetime_and_dependency_discovery_integrated_no_owner_implementation_claim",
       "function_addresses": [
         "00b71a80",
         "00b71990",
@@ -1861,14 +1866,17 @@
         "docs/NATIVE_CAMERA_OWNER_NEXT.md",
         "reports/native_camera_owner_next.json"
       ],
-      "boundary": "45C pool slot, native viewport180/fog184 owner slots,438ownership and staged EH; primary owns future reference-backed camera/frame/projection changes."
+      "boundary": "45C pool slot, native viewport180/fog184 owner slots,438ownership and staged EH; primary owns future reference-backed camera/frame/projection changes.",
+      "evidence": "reports/native_camera_owner_next.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json",
+      "worker_commit": "7aacfa0"
     },
     {
       "id": "native_render_target_group_owner",
       "packet": "native_render_target_group_owner",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_discovering_concrete_render_target_group_lifetime_and_surface_dependencies",
+      "done": true,
+      "state": "read_only_lifetime_and_dependency_discovery_integrated_no_owner_implementation_claim",
       "function_addresses": [
         "00b1fbb0",
         "00b1fc00"
@@ -1877,7 +1885,152 @@
         "docs/NATIVE_RENDER_TARGET_GROUP_NEXT.md",
         "reports/native_render_target_group_next.json"
       ],
-      "boundary": "Five shadow target groups need actual40-byte owners, retained wrappers and cached COM references; full construction/destruction and required setter contracts before implementation."
+      "boundary": "Five shadow target groups need actual40-byte owners, retained wrappers and cached COM references; full construction/destruction and required setter contracts before implementation.",
+      "evidence": "reports/native_render_target_group_next.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json",
+      "worker_commit": "ec160ce"
+    },
+    {
+      "id": "camera_projection_state_backing",
+      "packet": "camera_projection_state_backing",
+      "done": true,
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "evidence": "reports/camera_state_backing_audit.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json",
+      "worker_commit": "c8b5b59"
+    },
+    {
+      "id": "native_camera_pool_storage",
+      "packet": "native_camera_pool_storage",
+      "done": true,
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "evidence": "reports/native_camera_pool_audit.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json",
+      "worker_commit": "5933adf"
+    },
+    {
+      "id": "camera_frame_owner_backing",
+      "packet": "camera_frame_owner_backing",
+      "done": true,
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "evidence": "reports/camera_frame_owner_backing_audit.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json"
+    },
+    {
+      "id": "native_camera_foundations_integration",
+      "packet": "native_camera_foundations_integration",
+      "done": true,
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "evidence": "reports/native_viewport_shadow_integration_audit.json",
+      "validation": "reports/native_viewport_shadow_integration_audit.json"
+    },
+    {
+      "id": "camera_look_at_builder",
+      "packet": "camera_look_at_builder",
+      "worker": "primary_integration",
+      "done": false,
+      "state": "worker_complete_awaiting_next_batch_primary_review",
+      "worker_commit": "d541107",
+      "evidence": "reports/camera_look_at_builder_audit.json"
+    },
+    {
+      "id": "camera_type_bootstrap",
+      "packet": "camera_type_bootstrap",
+      "worker": "primary_integration",
+      "done": false,
+      "state": "worker_complete_awaiting_next_batch_primary_review",
+      "worker_commit": "32b1485",
+      "evidence": "reports/camera_type_bootstrap_audit.json"
+    },
+    {
+      "id": "native_camera_owner_storage",
+      "packet": "native_camera_owner_storage",
+      "worker": "primary_integration",
+      "done": false,
+      "state": "next_primary_same_owner_constructor_destructor_composition",
+      "function_addresses": [
+        "00b71a80",
+        "00b71990",
+        "00b71f10",
+        "00b71fe0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_camera_owner.hpp",
+        "src/native_camera_owner.cpp",
+        "docs/NATIVE_CAMERA_OWNER.md",
+        "reports/native_camera_owner_audit.json"
+      ],
+      "dependencies": [
+        "camera_look_at_builder",
+        "camera_type_bootstrap",
+        "camera_pose_dispatch",
+        "camera_plane_initialization"
+      ],
+      "boundary": "Same45C camera pool slot/node prefix/viewport180/fog184/retained438, native staged EH; no full owner until all construction dependencies and actual dispatch bindings are composed."
+    },
+    {
+      "id": "camera_pose_dispatch",
+      "packet": "camera_pose_dispatch",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_reconstructing_live_camera_position_and_look_at_dispatch",
+      "function_addresses": [
+        "00b6dae0",
+        "00b71400",
+        "00b700e0"
+      ],
+      "code_ownership": [
+        "include/bsp/camera_pose.hpp",
+        "src/camera_pose.cpp",
+        "docs/CAMERA_POSE_DISPATCH.md",
+        "reports/camera_pose_dispatch_audit.json"
+      ],
+      "boundary": "Same CameraState fields, exact x87/native input aliases and current virtual30/34 capture times; actual owner dispatch required."
+    },
+    {
+      "id": "camera_plane_initialization",
+      "packet": "camera_plane_initialization",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_reconstructing_actual_plane_set_constructor",
+      "function_addresses": [
+        "00b652d0",
+        "00b659d0"
+      ],
+      "code_ownership": [
+        "include/bsp/camera_plane_initialization.hpp",
+        "src/camera_plane_initialization.cpp",
+        "docs/CAMERA_PLANE_INITIALIZATION.md",
+        "reports/camera_plane_initialization_audit.json"
+      ],
+      "boundary": "Actual16-record20-byte plane array/count140 and constructor store order; distinct from dirty-frustum cache refresh."
+    },
+    {
+      "id": "native_d3d9_surface_pool",
+      "packet": "native_d3d9_surface_pool",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_and_native_fixture_checking_canonical_surface_pool",
+      "function_addresses": [
+        "00b3ec60",
+        "00b3ed40",
+        "00b3d120",
+        "00b3d860",
+        "00b3e390",
+        "00b3e2b0",
+        "00b3d370",
+        "00b3f2a0",
+        "00b3dcc0",
+        "00cd7b40",
+        "00ce0c90"
+      ],
+      "code_ownership": [
+        "include/bsp/d3d9_surface_pool.hpp",
+        "src/d3d9_surface_pool.cpp",
+        "docs/D3D9_SURFACE_POOL.md",
+        "reports/d3d9_surface_pool_audit.json"
+      ],
+      "boundary": "Same allocator-list domain and canonical108DB00; raw38-byte slots/34slabID/744slabs; no synthetic surface destruction or COM retention."
     }
   ],
   "snapshot_after_analysis": {
@@ -1889,7 +2042,7 @@
     "external_symbol_count": 443,
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
-  "integration_report": "reports/system_constant_builder_audit.json",
+  "integration_report": "reports/native_viewport_shadow_integration_audit.json",
   "snapshot_after_implementation": {
     "utc": "2026-09-09T21:12:36.781034+00:00",
     "project": "bsp",
@@ -1900,13 +2053,9 @@
     "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
   },
   "current_integration_snapshot": {
-    "utc": "2026-09-10T18:27:10.890238+00:00",
-    "project": "bsp",
-    "program": "/battlestationspacific.exe",
-    "total_function_count": 62901,
-    "internal_function_count": 62459,
-    "external_symbol_count": 443,
-    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+    "internal_functions": 62468,
+    "total_functions": 62910,
+    "report": "reports/native_viewport_shadow_integration_audit.json"
   },
   "active_followups": [
     {
@@ -2394,111 +2543,178 @@
     {
       "packet": "native_shadow_texture_access",
       "worker": "primary_integration",
-      "state": "worker_complete_awaiting_primary_integration",
-      "validation": null
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "validation": "reports/native_shadow_texture_access_audit.json"
     },
     {
       "packet": "native_viewport_owner",
-      "worker": "material_effect_plane",
-      "state": "worker_implementing_actual_viewport_lifetime_and_renderer_parameter_binding",
-      "validation": null
+      "worker": "primary_integration",
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "validation": "reports/native_viewport_owner_audit.json"
     },
     {
       "packet": "native_camera_owner_discovery",
-      "worker": "particle_clock_lifetime",
-      "state": "worker_discovering_native_camera_pool_storage_lifetime_and_shared_view_bindings",
-      "validation": null
+      "worker": "primary_integration",
+      "state": "read_only_lifetime_and_dependency_discovery_integrated_no_owner_implementation_claim",
+      "validation": "reports/native_camera_owner_next.json"
     },
     {
       "packet": "native_render_target_group_owner",
+      "worker": "primary_integration",
+      "state": "read_only_lifetime_and_dependency_discovery_integrated_no_owner_implementation_claim",
+      "validation": "reports/native_render_target_group_next.json"
+    },
+    {
+      "packet": "camera_projection_state_backing",
+      "worker": "primary_integration",
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "validation": "reports/camera_state_backing_audit.json"
+    },
+    {
+      "packet": "native_camera_pool_storage",
+      "worker": "primary_integration",
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "validation": "reports/native_camera_pool_audit.json"
+    },
+    {
+      "packet": "camera_frame_owner_backing",
+      "worker": "primary_integration",
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "validation": "reports/camera_frame_owner_backing_audit.json"
+    },
+    {
+      "packet": "native_camera_foundations_integration",
+      "worker": "primary_integration",
+      "state": "integrated_strict_win32_build_bounded_native_host_fixtures_and_installed_probe_passed",
+      "validation": "reports/native_viewport_shadow_integration_audit.json"
+    },
+    {
+      "packet": "camera_look_at_builder",
+      "worker": "primary_integration",
+      "state": "worker_complete_awaiting_next_batch_primary_review",
+      "validation": "reports/camera_look_at_builder_audit.json"
+    },
+    {
+      "packet": "camera_type_bootstrap",
+      "worker": "primary_integration",
+      "state": "worker_complete_awaiting_next_batch_primary_review",
+      "validation": "reports/camera_type_bootstrap_audit.json"
+    },
+    {
+      "packet": "native_camera_owner_storage",
+      "worker": "primary_integration",
+      "state": "next_primary_same_owner_constructor_destructor_composition",
+      "validation": null
+    },
+    {
+      "packet": "camera_pose_dispatch",
+      "worker": "material_effect_plane",
+      "state": "worker_reconstructing_live_camera_position_and_look_at_dispatch",
+      "validation": null
+    },
+    {
+      "packet": "camera_plane_initialization",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_reconstructing_actual_plane_set_constructor",
+      "validation": null
+    },
+    {
+      "packet": "native_d3d9_surface_pool",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_discovering_concrete_render_target_group_lifetime_and_surface_dependencies",
+      "state": "worker_implementing_and_native_fixture_checking_canonical_surface_pool",
       "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "id": "native_shadow_texture_access",
-      "packet": "native_shadow_texture_access",
+      "id": "native_camera_owner_storage",
+      "packet": "native_camera_owner_storage",
       "worker": "primary_integration",
       "done": false,
-      "state": "worker_complete_awaiting_primary_integration",
-      "worker_commit": "b42d2cd",
-      "function_addresses": [
-        "00a8fcf0",
-        "00a8fd10",
-        "00a8fd90",
-        "00a8fdb0",
-        "00b3ce50",
-        "00b3ce60",
-        "00b3ceb0",
-        "00a8fdd0"
-      ],
-      "code_ownership": [
-        "include/bsp/native_shadow_texture_access.hpp",
-        "src/native_shadow_texture_access.cpp",
-        "docs/NATIVE_SHADOW_TEXTURE_ACCESS.md",
-        "reports/native_shadow_texture_access_audit.json"
-      ],
-      "boundary": "Actual borrowed global/fallback/texture identities and mutable reported dimensions; full owning shadow construction/update remains separate."
-    },
-    {
-      "id": "native_viewport_owner",
-      "packet": "native_viewport_owner",
-      "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_implementing_actual_viewport_lifetime_and_renderer_parameter_binding",
-      "function_addresses": [
-        "00b1f850",
-        "00b1f8f0",
-        "00b1f920",
-        "00b1f940",
-        "00b1f750",
-        "00b1f760",
-        "00b1ff60"
-      ],
-      "code_ownership": [
-        "include/bsp/native_viewport_owner.hpp",
-        "src/native_viewport_owner.cpp",
-        "docs/NATIVE_VIEWPORT_OWNER.md",
-        "reports/native_viewport_owner_audit.json"
-      ],
-      "boundary": "Same34-byte viewport and actual renderer1A14parameters with separate publication/callback reads; no present-size default."
-    },
-    {
-      "id": "native_camera_owner_discovery",
-      "packet": "native_camera_owner_discovery",
-      "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_discovering_native_camera_pool_storage_lifetime_and_shared_view_bindings",
+      "state": "next_primary_same_owner_constructor_destructor_composition",
       "function_addresses": [
         "00b71a80",
         "00b71990",
         "00b71f10",
-        "00b71fe0",
-        "00b71ce0"
+        "00b71fe0"
       ],
       "code_ownership": [
-        "docs/NATIVE_CAMERA_OWNER_NEXT.md",
-        "reports/native_camera_owner_next.json"
+        "include/bsp/native_camera_owner.hpp",
+        "src/native_camera_owner.cpp",
+        "docs/NATIVE_CAMERA_OWNER.md",
+        "reports/native_camera_owner_audit.json"
       ],
-      "boundary": "45C pool slot, native viewport180/fog184 owner slots,438ownership and staged EH; primary owns future reference-backed camera/frame/projection changes."
+      "dependencies": [
+        "camera_look_at_builder",
+        "camera_type_bootstrap",
+        "camera_pose_dispatch",
+        "camera_plane_initialization"
+      ],
+      "boundary": "Same45C camera pool slot/node prefix/viewport180/fog184/retained438, native staged EH; no full owner until all construction dependencies and actual dispatch bindings are composed."
     },
     {
-      "id": "native_render_target_group_owner",
-      "packet": "native_render_target_group_owner",
-      "worker": "system_fog_owner_discovery",
+      "id": "camera_pose_dispatch",
+      "packet": "camera_pose_dispatch",
+      "worker": "material_effect_plane",
       "done": false,
-      "state": "worker_discovering_concrete_render_target_group_lifetime_and_surface_dependencies",
+      "state": "worker_reconstructing_live_camera_position_and_look_at_dispatch",
       "function_addresses": [
-        "00b1fbb0",
-        "00b1fc00"
+        "00b6dae0",
+        "00b71400",
+        "00b700e0"
       ],
       "code_ownership": [
-        "docs/NATIVE_RENDER_TARGET_GROUP_NEXT.md",
-        "reports/native_render_target_group_next.json"
+        "include/bsp/camera_pose.hpp",
+        "src/camera_pose.cpp",
+        "docs/CAMERA_POSE_DISPATCH.md",
+        "reports/camera_pose_dispatch_audit.json"
       ],
-      "boundary": "Five shadow target groups need actual40-byte owners, retained wrappers and cached COM references; full construction/destruction and required setter contracts before implementation."
+      "boundary": "Same CameraState fields, exact x87/native input aliases and current virtual30/34 capture times; actual owner dispatch required."
+    },
+    {
+      "id": "camera_plane_initialization",
+      "packet": "camera_plane_initialization",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_reconstructing_actual_plane_set_constructor",
+      "function_addresses": [
+        "00b652d0",
+        "00b659d0"
+      ],
+      "code_ownership": [
+        "include/bsp/camera_plane_initialization.hpp",
+        "src/camera_plane_initialization.cpp",
+        "docs/CAMERA_PLANE_INITIALIZATION.md",
+        "reports/camera_plane_initialization_audit.json"
+      ],
+      "boundary": "Actual16-record20-byte plane array/count140 and constructor store order; distinct from dirty-frustum cache refresh."
+    },
+    {
+      "id": "native_d3d9_surface_pool",
+      "packet": "native_d3d9_surface_pool",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_and_native_fixture_checking_canonical_surface_pool",
+      "function_addresses": [
+        "00b3ec60",
+        "00b3ed40",
+        "00b3d120",
+        "00b3d860",
+        "00b3e390",
+        "00b3e2b0",
+        "00b3d370",
+        "00b3f2a0",
+        "00b3dcc0",
+        "00cd7b40",
+        "00ce0c90"
+      ],
+      "code_ownership": [
+        "include/bsp/d3d9_surface_pool.hpp",
+        "src/d3d9_surface_pool.cpp",
+        "docs/D3D9_SURFACE_POOL.md",
+        "reports/d3d9_surface_pool_audit.json"
+      ],
+      "boundary": "Same allocator-list domain and canonical108DB00; raw38-byte slots/34slabID/744slabs; no synthetic surface destruction or COM retention."
     }
   ],
   "current_partition": {
@@ -2683,6 +2899,11 @@
         "native_viewport_owner",
         "native_camera_owner_discovery"
       ]
+    },
+    {
+      "utc": "2026-09-10T19:14:54.406292+00:00",
+      "report": "reports/native_viewport_shadow_integration_audit.json",
+      "summary": "Native viewport/shadow access/camera pool and borrowed camera state/frame integrated; 28 saved names, 27 function records, build2/2 and bounded fixtures/probe pass."
     }
   ]
 }

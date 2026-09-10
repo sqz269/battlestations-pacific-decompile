@@ -2,6 +2,7 @@
 #include "bsp/camera_transform.hpp"
 #include "bsp/d3d9_states.hpp"
 #include "bsp/system_fog_constants.hpp"
+#include "bsp/system_fog_slot.hpp"
 
 namespace bsp {
 using CameraPlane = std::array<float, 4>;
@@ -13,33 +14,103 @@ struct CameraPlaneSet {
     std::array<CameraPlaneRecord, 16> planes;
     std::uint32_t count{}; // native +140; must be <=16, independent of frustum refresh
 };
+struct NativeViewportOwner;
+// A stable view of one viewport's fields. Default/value construction owns
+// diagnostic storage. Native binding uses the owner's same fields, with no copy.
 struct CameraViewport {
-    DWORD x{}, y{}, width{}, height{}; // native wrapper +08,+0C,+10,+14
-    std::uint8_t scissor_enabled{}; // +20; preserve exact byte as render-state value
-    RECT scissor{}; // +24
+private:
+    struct OwnedStorage {
+        DWORD x{}, y{}, width{}, height{};
+        std::uint8_t scissor_enabled{};
+        RECT scissor{};
+    } owned_;
+public:
+    CameraViewport() noexcept;
+    CameraViewport(DWORD, DWORD, DWORD, DWORD, std::uint8_t, RECT) noexcept;
+    explicit CameraViewport(NativeViewportOwner&) noexcept;
+    CameraViewport(const CameraViewport&) noexcept;
+    CameraViewport& operator=(const CameraViewport&) noexcept;
+    NativeViewportOwner* const native_owner; // identity only; no retention
+    DWORD& x; DWORD& y; DWORD& width; DWORD& height; // +08,+0C,+10,+14
+    std::uint8_t& scissor_enabled; // +20; exact byte as render-state value
+    RECT& scissor; // +24
+};
+class CameraViewportResolver {
+public:
+    virtual ~CameraViewportResolver() = default;
+    // Pure lookup of a stable view for this actual owner. No allocation/copy,
+    // retention or fallback. Unsupported nonnull identities must be rejected.
+    virtual const CameraViewport* resolve_viewport(NativeViewportOwner*) = 0;
+};
+class CameraViewportSlot final {
+public:
+    explicit CameraViewportSlot(const CameraViewport*&) noexcept;
+    CameraViewportSlot(NativeViewportOwner*&, CameraViewportResolver&) noexcept;
+    const CameraViewport* get() const;
+    const CameraViewport& operator*() const { return *get(); }
+    CameraViewportSlot& operator=(const CameraViewport*);
+private:
+    const CameraViewport** const diagnostic_{};
+    NativeViewportOwner** const native_{};
+    CameraViewportResolver* const resolver_{};
+};
+
+struct CameraFrameBacking {
+    std::uint8_t& byte_174;
+    std::uint8_t& enabled;
+    CameraViewportSlot viewport;
+    SystemFogSlotRef fog_184;
+    DWORD& clear_flags;
+    float& clear_depth;
+    D3DCOLOR& clear_color;
+    DWORD& clear_stencil;
+    std::uint32_t& render_mode;
+    CameraMatrix& inverse_view_projection;
+    CameraPlaneSet& frustum;
+    const CameraPlane*& context_depth_scale_43c;
+    std::array<float, 3>& axis_y;
+    std::array<float, 3>& axis_x;
 };
 
 // One stable companion per CameraState, sharing its projection.valid_flags.
 // New storage/lifetime API, not the original camera layout or constructor.
 // Borrowed viewport/fog/context objects must remain alive through their last use.
 struct CameraFrameState {
-    explicit CameraFrameState(CameraState& value) : camera(value) {}
+private:
+    struct OwnedStorage {
+        std::uint8_t byte_174{}, enabled{};
+        const CameraViewport* viewport{};
+        const SystemFogState* fog_184{};
+        DWORD clear_flags{};
+        float clear_depth{};
+        D3DCOLOR clear_color{};
+        DWORD clear_stencil{};
+        std::uint32_t render_mode{};
+        CameraMatrix inverse_view_projection{};
+        CameraPlaneSet frustum;
+        const CameraPlane* context_depth_scale_43c{};
+        std::array<float, 3> axis_y{}, axis_x{};
+    } owned_;
+public:
+    explicit CameraFrameState(CameraState&) noexcept;
+    CameraFrameState(CameraState&, CameraFrameBacking) noexcept;
     CameraFrameState(const CameraFrameState&) = delete;
     CameraFrameState& operator=(const CameraFrameState&) = delete;
     CameraState& camera;
-    std::uint8_t byte_174{}; // native +174; system prefix c75.x
-    std::uint8_t enabled{}; // +17C
-    const CameraViewport* viewport{}; // +180; required when enabled
-    const SystemFogState* fog_184{}; // one actual +184 owner, including ambient +08
-    DWORD clear_flags{}; // +188
-    float clear_depth{}; // +18C
-    D3DCOLOR clear_color{}; // +190
-    DWORD clear_stencil{}; // +194
-    std::uint32_t render_mode{}; // +198; material pass selector, not batch index
-    CameraMatrix inverse_view_projection{}; // +260; projection flag20
-    CameraPlaneSet frustum; // +2F4; projection flag4
-    const CameraPlane* context_depth_scale_43c{}; // native +43C, optional c71
-    std::array<float, 3> axis_y{}, axis_x{}; // native +440,+44C; shared projection flag100
+    std::uint8_t& byte_174; // native +174; system prefix c75.x
+    std::uint8_t& enabled; // +17C
+    CameraViewportSlot viewport; // live +180 owner; required when enabled
+    SystemFogSlotRef fog_184; // live +184 owner word, distinct from owner+08 fields
+    DWORD& clear_flags; // +188
+    float& clear_depth; // +18C
+    D3DCOLOR& clear_color; // +190
+    DWORD& clear_stencil; // +194
+    std::uint32_t& render_mode; // +198; material pass selector, not batch index
+    CameraMatrix& inverse_view_projection; // +260; projection flag20
+    CameraPlaneSet& frustum; // +2F4; projection flag4
+    const CameraPlane*& context_depth_scale_43c; // native +43C, optional c71
+    std::array<float, 3>& axis_y; // +440; shared projection flag100
+    std::array<float, 3>& axis_x; // +44C
 };
 
 // Original fastcall ECX=dst, EDX=src, RET. Exact x87/SSE operation schedule;

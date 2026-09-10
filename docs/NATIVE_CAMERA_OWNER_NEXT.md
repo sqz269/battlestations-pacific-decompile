@@ -3,7 +3,10 @@
 Read-only discovery against `C:/Users/sqz269/bsp.gpr`, program
 `/battlestationspacific.exe`, starting from main `230a5dc`. The accompanying
 `reports/native_camera_owner_next.json` records 52 live byte spans, 6,504 bytes,
-all equal to the installed executable or its section zero fill. This packet
+all equal to the installed executable or its section zero fill. The later pool
+fixture corrected the return wrapper to its complete 12-byte body, bringing the
+checked span total to 6,506 bytes; the original truncated preimage is preserved
+in the report's correction record. This packet
 changes no C++, Ghidra annotations, ledgers, game files, or tests. No constructor,
 destructor, renderer, or game was executed during this discovery.
 
@@ -149,7 +152,10 @@ section cleanup `00402F70`, and allocator-list unlink `00403970` in reverse orde
 
 Allocation entry `00B71930 -> 00B71770`, return entry `00B71350 -> 00B711E0`,
 static construction `00CD7DD0`, and registered exit `00CE0E30 -> 00B71120` all
-use `0108FFB0`. The current provisional `00B71930` scene-node allocator label
+use `0108FFB0`. Return wrapper `00B71350..00B7135C` takes the slot in ECX,
+pushes it, sets ECX to the canonical pool, calls `00B711E0`, and returns with
+plain RET. Its bytes are `51 B9 B0 FF 08 01 E8 85 FE FF FF C3`; a 10-byte
+prefix ends inside the CALL and is not the full wrapper. The current provisional `00B71930` scene-node allocator label
 should become a camera-pool name when this implementation is annotated.
 
 ## Shared adapter integration required

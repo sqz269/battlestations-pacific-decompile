@@ -44,7 +44,8 @@ target_sources(bsp_core PRIVATE src/system_fog_owner.cpp src/environment_fog_app
 target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene_retention.cpp
   src/system_fog_world_factory.cpp src/allocator_list.cpp src/directional_light_pool.cpp
   src/native_node_destruction.cpp src/light_type_bootstrap.cpp src/directional_light_owner.cpp
-  src/lighting_configuration_apply.cpp)
+  src/lighting_configuration_apply.cpp src/native_shadow_texture_access.cpp
+  src/native_viewport_owner.cpp src/system_fog_slot.cpp src/native_camera_pool.cpp)
 target_sources(bsp_core PRIVATE src/material_sort_metadata.cpp src/render_command_queue.cpp src/render_command_execution.cpp)
 
 target_sources(bsp_core PRIVATE src/mesh_buffers.cpp src/mesh_fields.cpp src/mesh_resource.cpp src/vertex_format.cpp)

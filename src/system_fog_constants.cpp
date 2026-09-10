@@ -27,19 +27,16 @@ void copy_color_word(float* destination, const float* source) noexcept {
         mov dword ptr [edx], ecx
     }
 }
-const SystemFogState* reload_owner(const SystemFogState* const& slot) noexcept {
-    const SystemFogState* value;
-    __asm {
-        mov eax, slot
-        mov eax, dword ptr [eax]
-        mov value, eax
-    }
-    return value;
-}
 }
 
 bool write_system_fog_constants_00b46d97(const SystemFogState* captured_fog,
     const SystemFogState* const& current_camera_fog,
+    float* prefix, std::size_t word_count, std::string& error) {
+    return write_system_fog_constants_00b46d97(captured_fog,
+        SystemFogSlotView(current_camera_fog), prefix, word_count, error);
+}
+bool write_system_fog_constants_00b46d97(const SystemFogState* captured_fog,
+    SystemFogSlotView current_camera_fog,
     float* prefix, std::size_t word_count, std::string& error) {
     error.clear();
     if (!captured_fog) return true; // Native00B46D7F/00B46D91 gate.
@@ -65,7 +62,7 @@ bool write_system_fog_constants_00b46d97(const SystemFogState* captured_fog,
             copy_color_word(prefix + (38 + index) * 4 + lane, color + lane);
     }
 
-    const auto* fog_color_owner = reload_owner(current_camera_fog); //00B46E69
+    const auto* fog_color_owner = current_camera_fog.state(); //00B46E69
     if (!fog_color_owner) {
         error = "System c37 requires the actual reloaded camera fog owner";
         return false;
@@ -77,18 +74,19 @@ bool write_system_fog_constants_00b46d97(const SystemFogState* captured_fog,
     //00B46E91 reads color.w, E94 reloads camera+184, E9A stores color.w.
     // Keep this single assembly sequence so a shared owner slot cannot move
     // across the last store, and no floating conversion touches the raw word.
-    const SystemFogState* underwater_owner;
-    const SystemFogState* const* slot = &current_camera_fog;
+    const void* raw_underwater_owner;
+    const auto* slot = current_camera_fog.address();
     float* color_w_destination = prefix + 37 * 4 + 3;
     __asm {
         mov eax, color
         mov edx, dword ptr [eax + 12]
         mov ecx, slot
         mov ecx, dword ptr [ecx]
-        mov underwater_owner, ecx
+        mov raw_underwater_owner, ecx
         mov eax, color_w_destination
         mov dword ptr [eax], edx
     }
+    const auto* underwater_owner = current_camera_fog.state_from_raw(raw_underwater_owner);
     if (!underwater_owner) {
         error = "System c74 requires the actual reloaded camera fog owner";
         return false;

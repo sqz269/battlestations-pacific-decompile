@@ -29,4 +29,6 @@ struct EnvironmentFogFields {
 // would dereference null. Environment values remain live through each read.
 bool apply_environment_fog_0078d076(const EnvironmentFogFields&,
     const SystemFogState* const& actual_camera_fog_184, std::string& error);
+bool apply_environment_fog_0078d076(const EnvironmentFogFields&,
+    SystemFogSlotView actual_camera_fog_184, std::string& error);
 }

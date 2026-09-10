@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/system_fog_constants.hpp"
+#include "bsp/system_fog_slot.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -66,6 +67,12 @@ void initialize_system_fog_camera_slot_00b71ae3(const SystemFogState*&) noexcept
 // Native [00B71F68,00B71F8A): old view stays published through zero-reference
 // destruction/free, then the actual slot is cleared. Null skips the store.
 void clear_system_fog_camera_slot_00b71f68(const SystemFogState*&) noexcept;
+
+// Same publication/refcount order, accepting an actual raw owner slot as well
+// as the legacy field-view slot. The descriptor never mirrors either word.
+void set_system_fog_camera_owner_00b71940(SystemFogSlotRef, SystemFogOwner*) noexcept;
+void initialize_system_fog_camera_slot_00b71ae3(SystemFogSlotRef) noexcept;
+void clear_system_fog_camera_slot_00b71f68(SystemFogSlotRef) noexcept;
 
 // Native float4 setters perform four forward integer read/store pairs.
 // Sources may overlap destinations, including a one-word shift; this is NOT

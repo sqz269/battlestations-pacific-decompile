@@ -2,6 +2,7 @@
 #include <array>
 #include <cstddef>
 #include <string>
+#include "bsp/system_fog_slot.hpp"
 
 namespace bsp {
 // Retained fog-owner field projection, not a native object layout/constructor.
@@ -30,5 +31,8 @@ struct SystemFogState {
 // invalid underwater owner is reported. No clears, resizing or fallback values.
 bool write_system_fog_constants_00b46d97(const SystemFogState* captured_fog,
     const SystemFogState* const& current_camera_fog,
+    float* prefix, std::size_t word_count, std::string& error);
+bool write_system_fog_constants_00b46d97(const SystemFogState* captured_fog,
+    SystemFogSlotView current_camera_fog,
     float* prefix, std::size_t word_count, std::string& error);
 }

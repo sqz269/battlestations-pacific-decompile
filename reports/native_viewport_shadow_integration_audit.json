@@ -1,0 +1,747 @@
+{
+  "utc": "2026-09-10T19:07:38.141831+00:00",
+  "packet": "native_camera_foundations_integration",
+  "status": "reviewed_integrated_build_and_bounded_native_host_fixtures_passed",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "components": [
+    "reports/native_viewport_owner_audit.json",
+    "reports/native_shadow_texture_access_audit.json",
+    "reports/native_camera_pool_audit.json",
+    "reports/camera_state_backing_audit.json",
+    "reports/camera_frame_owner_backing_audit.json",
+    "reports/native_camera_owner_next.json",
+    "reports/native_render_target_group_next.json"
+  ],
+  "primary_review": {
+    "kind": "primary native-byte and integrated-source review",
+    "native_spans": [
+      {
+        "address": "00b1f850",
+        "length": 156,
+        "sha256": "3aa25fb6563a09536f3d044c52a14e1d2eb842fbbd90bbd12fa2a07a716757c6"
+      },
+      {
+        "address": "00b1f8f0",
+        "length": 36,
+        "sha256": "16174c455803d3b413a2e97b2a0d88ff0fac9659d3976598fea88f4aa1bb9a18"
+      },
+      {
+        "address": "00b1f920",
+        "length": 18,
+        "sha256": "bc2aae165458aa53462158baf653d53453c55e4fcde9f91a9616814312c7e3a3"
+      },
+      {
+        "address": "00b1f940",
+        "length": 18,
+        "sha256": "ac66d042ae37faa45daddf8e2fb890d4b7d9141639c2fa120732c472172958e7"
+      },
+      {
+        "address": "00b1f750",
+        "length": 14,
+        "sha256": "8fb0791b8b65a92e120d7207d0bd19bfbccff2241768d40b62318bda7761b33e"
+      },
+      {
+        "address": "00b1f760",
+        "length": 14,
+        "sha256": "c91b756d5ec6b17a8388974b7ded2a623c64ab73ac27a7c51ab7181a5f326dd0"
+      },
+      {
+        "address": "00b1ff60",
+        "length": 7,
+        "sha256": "663abb9d44b91bd83ff606f17d955bbab34cf4ab310908bfe7fed9a3e97e4ee5"
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "address": "00cbccb0",
+        "length": 8,
+        "sha256": "104f8ac8fef48e9a04009ac46660f5fd1431a558babd348019f1c0496091f156"
+      },
+      {
+        "address": "00cbccb8",
+        "length": 10,
+        "sha256": "9c1023eef4510fd7b04018c81c91c6ec6a2943f7252a25a47be0484a8f82ad8e"
+      },
+      {
+        "address": "00a8fcf0",
+        "length": 31,
+        "sha256": "8db6438215b0fbf846958ff81821f76eaa1728c9406c9902d6155bd2d5786433"
+      },
+      {
+        "address": "00a8fd10",
+        "length": 31,
+        "sha256": "8e91715e18fc4e2694811b48eea1e06fcc7537ef8bf286b0cb90ee9a5eed6442"
+      },
+      {
+        "address": "00a8fd90",
+        "length": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+      },
+      {
+        "address": "00a8fdb0",
+        "length": 4,
+        "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941"
+      },
+      {
+        "address": "00a8fdd0",
+        "length": 84,
+        "sha256": "66ef04efc5b852e1e108c11f541a4e5b5b12c2e37deb62fa1fd2b1336d356357"
+      },
+      {
+        "address": "00b3ce50",
+        "length": 4,
+        "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90"
+      },
+      {
+        "address": "00b3ce60",
+        "length": 4,
+        "sha256": "4d8bbabf4078fb522f1b7e5fa9e993af5e9c941d53117c673ecfde3a5feca5c7"
+      },
+      {
+        "address": "00b3ceb0",
+        "length": 17,
+        "sha256": "f5f3196e69b6bb6d899d32dce9df2fca4e2dd9541dfacaceb498f175fa48be1b"
+      },
+      {
+        "address": "00d5b5e8",
+        "length": 12,
+        "sha256": "e267c014ad7b7099fa5c74b2d7c2543ee7c9f81de966b95fc753f7081f90efc1"
+      },
+      {
+        "address": "00d61948",
+        "length": 88,
+        "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad"
+      },
+      {
+        "address": "00b715f0",
+        "length": 211,
+        "sha256": "5fb1a7f24ded5de2e16dd6c3e1f7cbc55168d15f60955a6437ae792e44412bf7"
+      },
+      {
+        "address": "00b71120",
+        "length": 138,
+        "sha256": "b1239c3f0497c7902bafdaba8a777f873cbd778a32a1eac04b4a94f63d931434"
+      },
+      {
+        "address": "00b71770",
+        "length": 316,
+        "sha256": "1edc235487190a94bae6c1fae7339872d7675503e8adc943be2696de639632e5"
+      },
+      {
+        "address": "00b716d0",
+        "length": 160,
+        "sha256": "bf13063286a1682a2a572c0eed7e81d0445554b9f1feeb1acf2513d796a725f6"
+      },
+      {
+        "address": "00b711e0",
+        "length": 104,
+        "sha256": "0154ab9ebb31b9fac109314da8b5d2ce814db88f41cee7c66e36d3467e6d20c2"
+      },
+      {
+        "address": "00b6fed0",
+        "length": 67,
+        "sha256": "c24e09c0eb90d6a40a4d3c4e24a5ee6bf990c7f33180a91bade2cd22ea723eb2"
+      },
+      {
+        "address": "00b71930",
+        "length": 10,
+        "sha256": "579fb4d717566de847759cadad5962f4a20a962e609e0257fa3c0185bf415d5c"
+      },
+      {
+        "address": "00b71350",
+        "length": 12,
+        "sha256": "7f1f03d892f371b00eced7f9808279c0894262bb5df77a32fe4818f248786a78"
+      },
+      {
+        "address": "00cd7dd0",
+        "length": 22,
+        "sha256": "8b239e6c676da532d0eb78d2d4e707a572d89a487d67516df1ea2c324051ec50"
+      },
+      {
+        "address": "00ce0e30",
+        "length": 10,
+        "sha256": "499585eb09b0c9fac9f3791f0a7b636d22951e374684276bcb9aa719bbfdaf90"
+      },
+      {
+        "address": "00b6ffc0",
+        "length": 14,
+        "sha256": "24ae4aca525e8e2aced5d9907022516d8371ab1d456f3cfbad315c51372437e1"
+      },
+      {
+        "address": "00403970",
+        "length": 43,
+        "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f"
+      },
+      {
+        "address": "00402f70",
+        "length": 39,
+        "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421"
+      },
+      {
+        "address": "004b46b0",
+        "length": 33,
+        "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f"
+      },
+      {
+        "address": "00bf55be",
+        "length": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+      },
+      {
+        "address": "00bf681b",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "address": "00bf6989",
+        "length": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+      },
+      {
+        "address": "00d62ce0",
+        "length": 4,
+        "sha256": "8185dc9960d8005afea8ca2c849a4b484170678bfeed47aa5978f3fc7f74b552"
+      },
+      {
+        "address": "00e188b4",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "address": "0108ffb0",
+        "length": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+      },
+      {
+        "address": "00ce220c",
+        "length": 4,
+        "sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e"
+      },
+      {
+        "address": "00ce2210",
+        "length": 4,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b"
+      },
+      {
+        "address": "00ce2214",
+        "length": 4,
+        "sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e"
+      },
+      {
+        "address": "00ce2218",
+        "length": 4,
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b"
+      },
+      {
+        "address": "00cc1aa0",
+        "length": 40,
+        "sha256": "8b6157234eef986af83fec47ea2418ffd2696a318040d02553cb7ff3e1f68130"
+      },
+      {
+        "address": "00dfa9e4",
+        "length": 60,
+        "sha256": "0aba4b45e449825cfe10d3b418cd624d80d0b33c2ca62da5f6aec2c1c3ba4e52"
+      },
+      {
+        "address": "00b6fcf0",
+        "length": 112,
+        "sha256": "6345b27bd12e2844a965ac9257a87aa63f7da309d591da429866c0f2e0eea62f"
+      },
+      {
+        "address": "00b642f0",
+        "length": 176,
+        "sha256": "434aa71d29dc916a29e4b8723c612f341b54ab7a7c0c922ab0afee503c2e6bf3"
+      },
+      {
+        "address": "00412e20",
+        "length": 19,
+        "sha256": "6282a7c6801acc042953893b813184c14e395f5215fa6bd1981b9d159d363ee0"
+      },
+      {
+        "address": "004134f0",
+        "length": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "address": "00d7a280",
+        "length": 8,
+        "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed"
+      },
+      {
+        "address": "00f8d394",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "address": "00d5e5f8",
+        "length": 8,
+        "sha256": "7dec5b14114e377e30c7980a2cd07194263999b54a17e0ead5b1084fb373f9e9"
+      },
+      {
+        "address": "00ceb130",
+        "length": 8,
+        "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d"
+      },
+      {
+        "address": "00df51d8",
+        "length": 44,
+        "sha256": "81a691c14584dba52eaf71b642e4cab04c71afc55e3e0fd33ebf0bcc5a4aa36a"
+      },
+      {
+        "address": "00d5f0d8",
+        "length": 4,
+        "sha256": "6a7d7940ad78154b720a4780ca6fc9891e87d32119435941f92f117cfb722b75"
+      }
+    ],
+    "source_hashes": [
+      {
+        "path": "include/bsp/native_viewport_owner.hpp",
+        "sha256": "07dd92936d850d9a388edcaa980b7418a24b66547cf7026378f0f5011fe49687"
+      },
+      {
+        "path": "src/native_viewport_owner.cpp",
+        "sha256": "af6cf3a6d23b94f43e6117144b287cd25ddd4d3af581d639e9b0f1c309af3160"
+      },
+      {
+        "path": "include/bsp/native_shadow_texture_access.hpp",
+        "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b"
+      },
+      {
+        "path": "src/native_shadow_texture_access.cpp",
+        "sha256": "89e255e913c5f0f89ae8fe4abc0d97a2ef04050ad47416163eb92c7d0ece0722"
+      },
+      {
+        "path": "include/bsp/native_camera_pool.hpp",
+        "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+      },
+      {
+        "path": "src/native_camera_pool.cpp",
+        "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "src/camera_projection.cpp",
+        "sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "sha256": "5ee72dd1f62be59041025658fdd8568102839add061e1312a89ae21c039d2bcd"
+      },
+      {
+        "path": "src/camera_transform.cpp",
+        "sha256": "e4c628ffc42a9df306312d438a806a2e9785682e14155d9f427b0908cec2c96d"
+      }
+    ]
+  },
+  "source_artifacts": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "8491fc5eaeed7a58a5c45c8220fcdf48c7e442aa6b86ed07310060d9917e832b"
+    },
+    {
+      "path": "include/bsp/camera_frame_state.hpp",
+      "sha256": "0437f26af70b4f56b043c7a606fc1239c92ab7429f91a3ab8b16ca2f8406cafb"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "5ee72dd1f62be59041025658fdd8568102839add061e1312a89ae21c039d2bcd"
+    },
+    {
+      "path": "include/bsp/environment_fog_apply.hpp",
+      "sha256": "59d9f1a7fb0d71cd717b8c73051d2db6db1c0579c652d58e5bd73a5c11e2e0eb"
+    },
+    {
+      "path": "include/bsp/native_camera_pool.hpp",
+      "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+    },
+    {
+      "path": "include/bsp/native_shadow_texture_access.hpp",
+      "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b"
+    },
+    {
+      "path": "include/bsp/native_viewport_owner.hpp",
+      "sha256": "07dd92936d850d9a388edcaa980b7418a24b66547cf7026378f0f5011fe49687"
+    },
+    {
+      "path": "include/bsp/system_fog_constants.hpp",
+      "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+    },
+    {
+      "path": "include/bsp/system_fog_owner.hpp",
+      "sha256": "1c50b77e0e9ac0188aeb1a578ec7aec81a2faa6448304d7b2f771dc53c70ee03"
+    },
+    {
+      "path": "include/bsp/system_fog_slot.hpp",
+      "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+    },
+    {
+      "path": "src/camera_frame_state.cpp",
+      "sha256": "5b3038e5de84eb5110e2a37d7cbafe475240ed7e58406deaef8cd1d2f4073c1d"
+    },
+    {
+      "path": "src/camera_projection.cpp",
+      "sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "sha256": "e4c628ffc42a9df306312d438a806a2e9785682e14155d9f427b0908cec2c96d"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "sha256": "ae9a6277ae8340081af819b33118b33cc0b836e2ecce4a3a53f56b338d528999"
+    },
+    {
+      "path": "src/environment_fog_apply.cpp",
+      "sha256": "9ed6c9fcca7f83fbed0fe2ffe4932a3b8f83dd9349be6e088a684c00f0923024"
+    },
+    {
+      "path": "src/native_camera_pool.cpp",
+      "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3"
+    },
+    {
+      "path": "src/native_shadow_texture_access.cpp",
+      "sha256": "89e255e913c5f0f89ae8fe4abc0d97a2ef04050ad47416163eb92c7d0ece0722"
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "sha256": "af6cf3a6d23b94f43e6117144b287cd25ddd4d3af581d639e9b0f1c309af3160"
+    },
+    {
+      "path": "src/system_constant_builder.cpp",
+      "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+    },
+    {
+      "path": "src/system_fog_constants.cpp",
+      "sha256": "eb085bcd9a2c05fd703177a9766a56b7ce5e701e23e4c141a768d9a08ceb35a1"
+    },
+    {
+      "path": "src/system_fog_owner.cpp",
+      "sha256": "a745ea0d569f296fa6de9d3bf4730a30ef4b1691e5723a71366ac678040bd998"
+    },
+    {
+      "path": "src/system_fog_slot.cpp",
+      "sha256": "9d5781b2a998af2efb2b470162adfc6581c96f170b0d8168a989e211a9657838"
+    },
+    {
+      "path": "src/system_fog_world_factory.cpp",
+      "sha256": "f28a42cd3546264dd9f1de398e07be579553b8a277a6d0b44f4d63f670ca3270"
+    },
+    {
+      "path": "src/system_time_constants.cpp",
+      "sha256": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c"
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release strict W4/WX/fp:strict",
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "log": "reports/camera_foundation_build.txt",
+    "sha256": "df57db88a5b1e5e2c1206e6b9291d22d119d36766a02f1570287c74ce0d50bb8"
+  },
+  "independent_fixture_reruns": [
+    {
+      "path": "local/viewport_primary_fixture_review.txt",
+      "sha256": "fcd31c96dfb592781b625c1f56eb82c86e7e2d152f8437afcc89954b67bd1f3a",
+      "passed": true
+    },
+    {
+      "path": "local/shadow_texture_primary_fixture_review.txt",
+      "sha256": "a5378209dbf8b9cf1a1b78a11fe9d7e09450d64eac20adb582a2e464f166dd26",
+      "passed": true
+    },
+    {
+      "path": "local/camera_pool_primary_fixture_review.txt",
+      "sha256": "4c2285e2640bd148c82051ede38bff1cf2307737b62607598cfc9950d0e1c8ef",
+      "passed": true
+    },
+    {
+      "path": "local/camera_state_primary_fixture_review.txt",
+      "sha256": "d52d38647c75a15f4d20858f1a96c147e02718344964f19e78d6ed7593959607",
+      "passed": true
+    }
+  ],
+  "installed_probe": {
+    "command": "./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'",
+    "exit_code": 0,
+    "log": "reports/camera_foundation_probe.txt",
+    "sha256": "53676777265d5d60f6aa7b8527ce019a8134c07f89ed26fc01ea4d0539721d53",
+    "exe": "build/win32/Release/bsp_d3d9_probe.exe",
+    "exe_sha256": "dcbcd1672b90a7d265cf815ea5a31479cc0b6a04c785d2683478dc3d9a61536c",
+    "checked_output_markers": [
+      "shared_camera_cache_viewport_clear_ambient_frustum=1 checked=1",
+      "ordered_prefix=1 VS_PS_77_retained_after_material=1 particle_clocks_destroyed=1 lifetime_checked=1",
+      "native_pool_types_config_canonical_registry_cleanup=1 type_counters_destroyed=1 shared_lifetime_checked=1",
+      "visible=2499 colors=54 restored=1 checked=1 error="
+    ],
+    "uses_diagnostic_camera": true,
+    "render": "local/camera_foundation_render_20260910.bmp",
+    "render_sha256": "226d25c25f50a04c2c8288f198ae2e0aa1341961418562f6186c98a4618c5f51",
+    "render_unchanged_from_prior_light_chain": true,
+    "visual_parity_claim": false
+  },
+  "annotations_applied": true,
+  "game_validated": false,
+  "native_abi_compatible": false,
+  "next": [
+    "native camera look-at builder/pose wrappers and plane initialization",
+    "camera type bootstrap and same-owner constructor/destructor composition",
+    "actual renderer parameter and viewport owner publication",
+    "native surface pool/owners and render-target groups for full shadow construction"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_viewport_shadow_annotations.json",
+    "sha256": "16796f08fb7acf7736cc220a8eaf00005221bd3522c2a64dadb752c70e7309da",
+    "count": 28,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true,
+    "new_function_definitions": "reports/native_viewport_shadow_defined_functions.json",
+    "new_function_count": 9
+  },
+  "refreshed_exports": {
+    "count": 28,
+    "functions": [
+      {
+        "address": "00a8fcf0",
+        "old_name": "FUN_00a8fcf0",
+        "name": "SystemShadowMap_GetDepthTexture",
+        "path": "exports/bsp/functions/00a8fcf0/decompiled.c",
+        "sha256": "796cb17e78c4434d91d7e3f22565c92c875956b64a20c79510aa46d68d40935f"
+      },
+      {
+        "address": "00a8fd10",
+        "old_name": "FUN_00a8fd10",
+        "name": "SystemShadowMap_GetColorTexture",
+        "path": "exports/bsp/functions/00a8fd10/decompiled.c",
+        "sha256": "03615e2cf0651e6760e45469ba4bd20c516efa56afbe8cafa7d8f25e067c76d1"
+      },
+      {
+        "address": "00a8fd90",
+        "old_name": "FUN_00a8fd90",
+        "name": "SystemShadowTarget_GetColorTexture",
+        "path": "exports/bsp/functions/00a8fd90/decompiled.c",
+        "sha256": "eff3fc2fe1e0d2cd094e8f6516251918b3e3d69daa8aed3ac565dc9d23092dee"
+      },
+      {
+        "address": "00a8fdb0",
+        "old_name": "FUN_00a8fdb0",
+        "name": "SystemShadowTarget_GetDepthTexture",
+        "path": "exports/bsp/functions/00a8fdb0/decompiled.c",
+        "sha256": "1e043157245c4a2579cc5a107afca74965828a9748a4f7e84d3e74135e8bc775"
+      },
+      {
+        "address": "00b3ce50",
+        "old_name": "FUN_00b3ce50",
+        "name": "D3D9Texture_GetReportedWidth",
+        "path": "exports/bsp/functions/00b3ce50/decompiled.c",
+        "sha256": "cb2254c70ad8e078e6687752de46f6866c5a00d0f98e867dff2e41f8835ee35e"
+      },
+      {
+        "address": "00b3ce60",
+        "old_name": "FUN_00b3ce60",
+        "name": "D3D9Texture_GetReportedHeight",
+        "path": "exports/bsp/functions/00b3ce60/decompiled.c",
+        "sha256": "6b6dc72ab1c1d7eec148a27a555fa82478a469655b4c0328ac6f70379fcaaf21"
+      },
+      {
+        "address": "00b3ceb0",
+        "old_name": "FUN_00b3ceb0",
+        "name": "D3D9Texture_SetReportedDimensions",
+        "path": "exports/bsp/functions/00b3ceb0/decompiled.c",
+        "sha256": "e3205bf4052d1c89bb6b7791c9956866bc783ca6647ed7c10942aec6ba80f2b7"
+      },
+      {
+        "address": "00a8fdd0",
+        "old_name": "FUN_00a8fdd0",
+        "name": "SystemShadowTarget_ToggleReportedDimensions",
+        "path": "exports/bsp/functions/00a8fdd0/decompiled.c",
+        "sha256": "6ecab3855c618af1f996d2c2b4957a098661a5d59b2ed4fd1ddd75dfbe59aec4"
+      },
+      {
+        "address": "00b1f850",
+        "old_name": "FUN_00b1f850",
+        "name": "BSP_Viewport_Construct",
+        "path": "exports/bsp/functions/00b1f850/decompiled.c",
+        "sha256": "f02faa194c618d5759930e4f26b8cc5255844b308d97d136db13711c70ad6bf0"
+      },
+      {
+        "address": "00b1f8f0",
+        "old_name": "CG_scalar_deleting_dtor_00b1f8f0",
+        "name": "BSP_Viewport_DeletingDestructor",
+        "path": "exports/bsp/functions/00b1f8f0/decompiled.c",
+        "sha256": "45a4f620fc617661aeea268fb209018770d37753650ae21653a8e8b6716e02c3"
+      },
+      {
+        "address": "00b1f920",
+        "old_name": "FUN_00b1f920",
+        "name": "BSP_Viewport_SetOrigin",
+        "path": "exports/bsp/functions/00b1f920/decompiled.c",
+        "sha256": "5d7625fcf2662fd18328f622f6714215207c852906023c3d487bba4eca542bc1"
+      },
+      {
+        "address": "00b1f940",
+        "old_name": "FUN_00b1f940",
+        "name": "BSP_Viewport_SetDimensions",
+        "path": "exports/bsp/functions/00b1f940/decompiled.c",
+        "sha256": "7ee8c0418f565b825e157adcacc930a4b34703fbec9bae82e1b235a52833e971"
+      },
+      {
+        "address": "00b1f750",
+        "old_name": "FUN_00b1f750",
+        "name": "BSP_Viewport_SetMinimumDepth",
+        "path": "exports/bsp/functions/00b1f750/decompiled.c",
+        "sha256": "2203858115761dd83d384cf36c86180935e4089a4ccd19396b92b582aac87e44"
+      },
+      {
+        "address": "00b1f760",
+        "old_name": "FUN_00b1f760",
+        "name": "BSP_Viewport_SetMaximumDepth",
+        "path": "exports/bsp/functions/00b1f760/decompiled.c",
+        "sha256": "c15c3b9f7f28c433e1dcde40be5eaa1fd31cc5562a293ca242a9022f75edc0d6"
+      },
+      {
+        "address": "00b1ff60",
+        "old_name": "FUN_00b1ff60",
+        "name": "BSP_D3D9Renderer_GetViewportParameters",
+        "path": "exports/bsp/functions/00b1ff60/decompiled.c",
+        "sha256": "854584bc7b6ec51fdb35b803a7f0e92e06adfa86cc773927de228db8aceb23bf"
+      },
+      {
+        "address": "00b715f0",
+        "old_name": "FUN_00b715f0",
+        "name": "BSP_CameraPool_Construct",
+        "path": "exports/bsp/functions/00b715f0/decompiled.c",
+        "sha256": "9670fa60a4ff73bbfdaf6dcdca14a71c72ea96e30308a8ab836454adc19de485"
+      },
+      {
+        "address": "00b71120",
+        "old_name": "FUN_00b71120",
+        "name": "BSP_CameraPool_Destruct",
+        "path": "exports/bsp/functions/00b71120/decompiled.c",
+        "sha256": "71ef04b8fae6a0e349bae326f7b165ac7c95c7849748d4e9bd70244ffbfa5748"
+      },
+      {
+        "address": "00b71770",
+        "old_name": "FUN_00b71770",
+        "name": "BSP_CameraPool_AllocateRawSlot",
+        "path": "exports/bsp/functions/00b71770/decompiled.c",
+        "sha256": "cea94d09b9afea76e4bfa3717e248df5ead802f89b87543348478f814e058601"
+      },
+      {
+        "address": "00b716d0",
+        "old_name": "FUN_00b716d0",
+        "name": "BSP_CameraPool_TrimEmptySlabs",
+        "path": "exports/bsp/functions/00b716d0/decompiled.c",
+        "sha256": "11fc384db970a6ad213064c80f0bb2d6d960e010397ffeb04e272a5624caddd0"
+      },
+      {
+        "address": "00b711e0",
+        "old_name": "FUN_00b711e0",
+        "name": "BSP_CameraPool_ReturnRawSlot",
+        "path": "exports/bsp/functions/00b711e0/decompiled.c",
+        "sha256": "ba173b06b170b74e15f50085c54841b79b50c76e565686edc04b0f4d6cf1a212"
+      },
+      {
+        "address": "00b6fed0",
+        "old_name": "FUN_00b6fed0",
+        "name": "BSP_CameraPool_InitializeSlab",
+        "path": "exports/bsp/functions/00b6fed0/decompiled.c",
+        "sha256": "47333b964262b704e2ee0ea524fbdadde7cada398bcfbd5746a2beacaa1f6158"
+      },
+      {
+        "address": "00b71930",
+        "old_name": "BSP_SceneNode_AllocateInstance_Provisional",
+        "name": "BSP_CameraPool_AllocateStaticRawSlot",
+        "path": "exports/bsp/functions/00b71930/decompiled.c",
+        "sha256": "a7a953dea64897f9b772eabe73fe8746a778e1289a06963581ad0e3297971ca3"
+      },
+      {
+        "address": "00b71350",
+        "old_name": "FUN_00b71350",
+        "name": "BSP_CameraPool_ReturnStaticRawSlot",
+        "path": "exports/bsp/functions/00b71350/decompiled.c",
+        "sha256": "07b72be8a687f5f8b8874c78d15e8e05c68faa5827ce00d9d8ba27a00defae52"
+      },
+      {
+        "address": "00cd7dd0",
+        "old_name": "FUN_00cd7dd0",
+        "name": "BSP_CameraPool_InitializeStatic",
+        "path": "exports/bsp/functions/00cd7dd0/decompiled.c",
+        "sha256": "7166520294bd422974cf6b9503b0abd7a42c33adab70f15b1805fc1752ec42f9"
+      },
+      {
+        "address": "00ce0e30",
+        "old_name": "CG_static_init_00ce0e30",
+        "name": "BSP_CameraPool_DestroyStatic",
+        "path": "exports/bsp/functions/00ce0e30/decompiled.c",
+        "sha256": "2c47241bad78d489744c9971bb5b43c6bceb18e5a7822f3c744336bd9b8d0870"
+      },
+      {
+        "address": "00b6ffc0",
+        "old_name": "FUN_00b6ffc0",
+        "name": "BSP_CameraPool_FreePointerTable",
+        "path": "exports/bsp/functions/00b6ffc0/decompiled.c",
+        "sha256": "28f4f6775d25366e94ecd8e51dddfeaf6dd4994321954d2e931a42d75ceb0ef9"
+      },
+      {
+        "address": "00b6fcf0",
+        "old_name": "BSP_Camera_GetProjectionMatrix",
+        "name": "BSP_Camera_GetProjectionMatrix",
+        "path": "exports/bsp/functions/00b6fcf0/decompiled.c",
+        "sha256": "c6d84aeb3080bbfd14721d093966188913a4566e3b06cfe228d971621961e1ba"
+      },
+      {
+        "address": "00b71940",
+        "old_name": "BSP_Camera_SetSystemFogOwner",
+        "name": "BSP_Camera_SetSystemFogOwner",
+        "path": "exports/bsp/functions/00b71940/decompiled.c",
+        "sha256": "1582083ff344b491af4839f8f22d2da39c9c00fa8cf0c570022edfdddcb56dee"
+      }
+    ]
+  },
+  "snapshot": {
+    "internal_functions": 62468,
+    "total_functions": 62910,
+    "index_fresh": true
+  },
+  "closure_hash_recheck_utc": "2026-09-10T19:14:54.406292+00:00"
+}

@@ -1,0 +1,398 @@
+[
+  {
+    "address": "00a8fcf0",
+    "before": {
+      "address": "00a8fcf0",
+      "function_name": "FUN_00a8fcf0"
+    },
+    "after": {
+      "address": "00a8fcf0",
+      "name": "SystemShadowMap_GetDepthTexture",
+      "evidence": "Native [00a8fcf0,00a8fd0f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FDB0. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00a8fcf0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a8fd10",
+    "before": {
+      "address": "00a8fd10",
+      "function_name": "FUN_00a8fd10"
+    },
+    "after": {
+      "address": "00a8fd10",
+      "name": "SystemShadowMap_GetColorTexture",
+      "evidence": "Native [00a8fd10,00a8fd2f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FD90. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00a8fd10"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a8fd90",
+    "before": {
+      "address": "00a8fd90",
+      "function_name": "FUN_00a8fd90"
+    },
+    "after": {
+      "address": "00a8fd90",
+      "name": "SystemShadowTarget_GetColorTexture",
+      "evidence": "Native [00a8fd90,00a8fd94); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00a8fd90"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a8fdb0",
+    "before": {
+      "address": "00a8fdb0",
+      "function_name": "FUN_00a8fdb0"
+    },
+    "after": {
+      "address": "00a8fdb0",
+      "name": "SystemShadowTarget_GetDepthTexture",
+      "evidence": "Native [00a8fdb0,00a8fdb4); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00a8fdb0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ce50",
+    "before": {
+      "address": "00b3ce50",
+      "function_name": "FUN_00b3ce50"
+    },
+    "after": {
+      "address": "00b3ce50",
+      "name": "D3D9Texture_GetReportedWidth",
+      "evidence": "Native [00b3ce50,00b3ce54); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b3ce50"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ce60",
+    "before": {
+      "address": "00b3ce60",
+      "function_name": "FUN_00b3ce60"
+    },
+    "after": {
+      "address": "00b3ce60",
+      "name": "D3D9Texture_GetReportedHeight",
+      "evidence": "Native [00b3ce60,00b3ce64); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b3ce60"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ceb0",
+    "before": {
+      "address": "00b3ceb0",
+      "function_name": "FUN_00b3ceb0"
+    },
+    "after": {
+      "address": "00b3ceb0",
+      "name": "D3D9Texture_SetReportedDimensions",
+      "evidence": "Native [00b3ceb0,00b3cec1); ECX wrapper; stack width then height; RET8; no semantic result. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b3ceb0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a8fdd0",
+    "before": {
+      "address": "00a8fdd0",
+      "function_name": "FUN_00a8fdd0"
+    },
+    "after": {
+      "address": "00a8fdd0",
+      "name": "SystemShadowTarget_ToggleReportedDimensions",
+      "evidence": "Native [00a8fdd0,00a8fe24); ECX target; low byte of stack DWORD; RET4; preserves ESI; no semantic result. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00a8fdd0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f850",
+    "before": {
+      "address": "00b1f850",
+      "function_name": "FUN_00b1f850"
+    },
+    "after": {
+      "address": "00b1f850",
+      "name": "BSP_Viewport_Construct",
+      "evidence": "Native [00b1f850,00b1f8ec); ECX storage; EAX same; RET. Complete concrete 34h owner construction; width then height through independently reloaded live renderer virtual+30. Base-only unwind. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b1f850"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f8f0",
+    "before": {
+      "address": "00b1f8f0",
+      "function_name": "CG_scalar_deleting_dtor_00b1f8f0"
+    },
+    "after": {
+      "address": "00b1f8f0",
+      "name": "BSP_Viewport_DeletingDestructor",
+      "evidence": "Native [00b1f8f0,00b1f914); ECX owner; stack flags; EAX original address; RET4. Concrete then base vtable, ordinary free iff flags bit0, original pointer return including recovered ADD ESP,4 tail. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "CG_scalar_deleting_dtor_00b1f8f0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f920",
+    "before": {
+      "address": "00b1f920",
+      "function_name": "FUN_00b1f920"
+    },
+    "after": {
+      "address": "00b1f920",
+      "name": "BSP_Viewport_SetOrigin",
+      "evidence": "Native [00b1f920,00b1f932); ECX owner; stack pointer to two DWORDs; RET4. Two forward read/store pairs at owner+08/+0C; propagating overlap. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b1f920"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f940",
+    "before": {
+      "address": "00b1f940",
+      "function_name": "FUN_00b1f940"
+    },
+    "after": {
+      "address": "00b1f940",
+      "name": "BSP_Viewport_SetDimensions",
+      "evidence": "Native [00b1f940,00b1f952); ECX owner; stack pointer to two DWORDs; RET4. Two forward read/store pairs at owner+10/+14; propagating overlap. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b1f940"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f750",
+    "before": {
+      "address": "00b1f750",
+      "function_name": "FUN_00b1f750"
+    },
+    "after": {
+      "address": "00b1f750",
+      "name": "BSP_Viewport_SetMinimumDepth",
+      "evidence": "Native [00b1f750,00b1f75e); ECX owner; stack float32 word; RET4. Raw MOVSS bit-preserving store at owner+18. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b1f750"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f760",
+    "before": {
+      "address": "00b1f760",
+      "function_name": "FUN_00b1f760"
+    },
+    "after": {
+      "address": "00b1f760",
+      "name": "BSP_Viewport_SetMaximumDepth",
+      "evidence": "Native [00b1f760,00b1f76e); ECX owner; stack float32 word; RET4. Raw MOVSS bit-preserving store at owner+1C. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b1f760"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1ff60",
+    "before": {
+      "address": "00b1ff60",
+      "function_name": "FUN_00b1ff60"
+    },
+    "after": {
+      "address": "00b1ff60",
+      "name": "BSP_D3D9Renderer_GetViewportParameters",
+      "evidence": "Native [00b1ff60,00b1ff67); ECX concrete renderer; EAX renderer+1A14; RET. Evidence-only concrete virtual+30 getter. LEA EAX,[ECX+1A14];RET. Borrowed access boundary requires exact renderer and actual result+0C/+10 fields. Concrete34h viewport profileD5E5F8 with actual04 refcount. Two independently loaded renderer globals for width then height; params1A20/1A24 are not D3DPRESENT_PARAMETERS. Unwritten21..33 preserved. Primary reran13 native/host states and current renderer reload/overlap/refcount/final free check. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b1ff60"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b715f0",
+    "before": {
+      "address": "00b715f0",
+      "function_name": "FUN_00b715f0"
+    },
+    "after": {
+      "address": "00b715f0",
+      "name": "BSP_CameraPool_Construct",
+      "evidence": "Native [00b715f0,00b716c3); ECX=actual pool; EAX=same pool; RET 0; native MSVC EH states -1,0,2. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b715f0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71120",
+    "before": {
+      "address": "00b71120",
+      "function_name": "FUN_00b71120"
+    },
+    "after": {
+      "address": "00b71120",
+      "name": "BSP_CameraPool_Destruct",
+      "evidence": "Native [00b71120,00b711aa); ECX=actual pool; RET 0; frees slabs/table, drains section and unlinks allocator element. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b71120"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71770",
+    "before": {
+      "address": "00b71770",
+      "function_name": "FUN_00b71770"
+    },
+    "after": {
+      "address": "00b71770",
+      "name": "BSP_CameraPool_AllocateRawSlot",
+      "evidence": "Native [00b71770,00b718ac); ECX=actual pool; EAX=actual raw slot; RET 0. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b71770"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b716d0",
+    "before": {
+      "address": "00b716d0",
+      "function_name": "FUN_00b716d0"
+    },
+    "after": {
+      "address": "00b716d0",
+      "name": "BSP_CameraPool_TrimEmptySlabs",
+      "evidence": "Native [00b716d0,00b71770); ECX=actual pool; RET 0; concrete virtual zero; no internal lock. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b716d0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b711e0",
+    "before": {
+      "address": "00b711e0",
+      "function_name": "FUN_00b711e0"
+    },
+    "after": {
+      "address": "00b711e0",
+      "name": "BSP_CameraPool_ReturnRawSlot",
+      "evidence": "Native [00b711e0,00b71248); ECX=actual pool; stack slot pointer; RET 4; reads slot +458. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b711e0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fed0",
+    "before": {
+      "address": "00b6fed0",
+      "function_name": "FUN_00b6fed0"
+    },
+    "after": {
+      "address": "00b6fed0",
+      "name": "BSP_CameraPool_InitializeSlab",
+      "evidence": "Native [00b6fed0,00b6ff13); ECX=raw slab; stack uint32 slab index; EAX=same slab; RET 4. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b6fed0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71930",
+    "before": {
+      "address": "00b71930",
+      "function_name": "BSP_SceneNode_AllocateInstance_Provisional",
+      "comment": "[BSP reconstruction 00b71930]\nHypothesis, not a recovered symbol. Provisional. Six-byte forwarder: mov ecx,0108ffb0; jmp 00b71770, handing the pooled allocator object in ECX to the shared allocation routine; docs/GAME_WORLD_CONSTRUCT.md identifies it as the scene-node class allocator. The inventory tag cg_static_dtor_stub is wrong (it allocates rather than destroying)."
+    },
+    "after": {
+      "address": "00b71930",
+      "name": "BSP_CameraPool_AllocateStaticRawSlot",
+      "evidence": "Native [00b71930,00b7193a); No args; MOV ECX,0108FFB0; JMP 00B71770; EAX=actual raw slot; RET 0. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "BSP_SceneNode_AllocateInstance_Provisional"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71350",
+    "before": {
+      "address": "00b71350",
+      "function_name": "FUN_00b71350"
+    },
+    "after": {
+      "address": "00b71350",
+      "name": "BSP_CameraPool_ReturnStaticRawSlot",
+      "evidence": "Native [00b71350,00b7135c); ECX=actual slot; no stack args; PUSH ECX then bind pool and CALL 00B711E0; RET 0. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b71350"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cd7dd0",
+    "before": {
+      "address": "00cd7dd0",
+      "function_name": "FUN_00cd7dd0"
+    },
+    "after": {
+      "address": "00cd7dd0",
+      "name": "BSP_CameraPool_InitializeStatic",
+      "evidence": "Native [00cd7dd0,00cd7de6); No args; constructs actual 0108FFB0; registers 00CE0E30 via 00BF6FF5; EAX=CRT atexit result; RET 0. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00cd7dd0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ce0e30",
+    "before": {
+      "address": "00ce0e30",
+      "function_name": "CG_static_init_00ce0e30",
+      "comment": "[BSP inventory 00ce0e30] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+    },
+    "after": {
+      "address": "00ce0e30",
+      "name": "BSP_CameraPool_DestroyStatic",
+      "evidence": "Native [00ce0e30,00ce0e3a); No args; MOV ECX,0108FFB0; JMP 00B71120; RET 0. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "CG_static_init_00ce0e30"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6ffc0",
+    "before": {
+      "address": "00b6ffc0",
+      "function_name": "FUN_00b6ffc0"
+    },
+    "after": {
+      "address": "00b6ffc0",
+      "name": "BSP_CameraPool_FreePointerTable",
+      "evidence": "Native [00b6ffc0,00b6ffce); ECX=address of pointer-table member (+28); conditional cdecl free; RET 0; leaves member unchanged. Actual canonical108FFB0 pool with shared AllocatorListDomain/headE188B4, Win32 critical section and shared ordinary CRT. Each8BC4 slab owns32 raw45C slots with actual458 slab IDs; no camera constructor/destructor is called. Recovered post-free continuations and all32 moved identities preserved. B71350 is12-byte PUSH ECX/MOV ECX/CALL/RET, not a10-byte tail wrapper. Primary native algorithm rerun matched136 states,8 allocation/free boundary events and8336740 raw bytes; real malloc/free observations, native EH/CRT startup not executed. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "FUN_00b6ffc0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fcf0",
+    "before": {
+      "address": "00b6fcf0",
+      "function_name": "BSP_Camera_GetProjectionMatrix",
+      "comment": "[BSP reconstruction 00b6fcf0]\nCamera projection slice, typed port src/camera_projection.cpp. Builder00b642f0: ECX destination, fov/aspect/near/far stack, RET10h; FSINCOS tangent00412e20 float32 spill, reciprocal scale spill, far/(far-near) ratio spill, positivezero fill. Scalar setters ECX camera/stack float/RET4: AND flags+2F0 withFFFFFF41 then store +1C4/+1C8/+1D4/+1D8. Explicit setter00b6fd60 copies into+1E0 and+2A0, flags=(flags&FFFFFF4B)|8. Getter00b6fcf0 ECX/RET/EAX cache+2A0, refresh if bit8 clear; x87 argument/copy spills retained. New C++ ownership/ABI; original ctor not recovered. Existing perspective draw/cache fixture passes, no native FP differential claim. See reports/camera_projection.json and docs/CAMERA_PROJECTION_EVIDENCE.md."
+    },
+    "after": {
+      "address": "00b6fcf0",
+      "name": "BSP_Camera_GetProjectionMatrix",
+      "evidence": "Native [00b6fcf0,00b6fd60); ECX camera; EAX actual camera+2A0; RET. CameraProjection and CameraState now bind actual fields and existing transform/projection views. Getter uses four separate pointers for native1D8/1D4/1C8/1C4 in far/near/aspect/FOV x87 spill order; unrelated1CC/1D0 not read. Native4-rounding-mode fixture matched12 full756-byte states, x87 status/control and actual cache address. Default diagnostic and copy/move/write-through host semantics checked. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "BSP_Camera_GetProjectionMatrix"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b71940",
+    "before": {
+      "address": "00b71940",
+      "function_name": "BSP_Camera_SetSystemFogOwner",
+      "comment": "[BSP reconstruction 00b71940]\n[BSP fog owner 00b71940] Verified native[00b71940,00b71981); ECX camera/world; new owner stack argument; RET4. Typed concrete implementation set_system_fog_camera_owner_00b71940 uses actual SystemFogOwner.fields_08, exact raw scalar/color bits and shared CRT allocation/free. Native D63180 owner profile only; Fog/AmbientLight semantic names are hypotheses. Constructor leaves28..67 untouched; setter publishes before retain/release and camera destruction clears after release. Complete ABI/preimages/native comparison and limitations: docs/SYSTEM_FOG_OWNER.md; reports/system_fog_owner_audit.json.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+    },
+    "after": {
+      "address": "00b71940",
+      "name": "BSP_Camera_SetSystemFogOwner",
+      "evidence": "Native [00b71940,00b71981); ECX camera; stack new owner pointer; RET4. Added SystemFogSlotRef overload that borrows the actual raw owner word at camera184, distinct from legacy owner+08 field-view slot. Both preserve identity skip, publish new, retain new, release captured old; no rewritten slot after callback. Raw slot host regression checks addresses, counts, replacement and final actual frees. Constant/environment consumers preserve native load/spill order and convert captured owner to fields after assembly sequence. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.",
+      "old_name": "BSP_Camera_SetSystemFogOwner"
+    },
+    "status": "applied"
+  }
+]

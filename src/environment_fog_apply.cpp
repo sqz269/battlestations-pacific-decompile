@@ -6,25 +6,18 @@
 
 namespace bsp {
 namespace {
-SystemFogOwner* load_owner(const SystemFogState* const& slot) noexcept {
-    const auto* address = &slot;
-    const SystemFogState* fields;
-    __asm {
-        mov eax, address
-        mov eax, dword ptr [eax]
-        mov fields, eax
-    }
-    return system_fog_owner_from_state(fields);
+SystemFogOwner* load_owner(SystemFogSlotView slot) noexcept {
+    return slot.owner();
 }
 
 // One sequence for the native FLD -> camera+184 read -> FSTP. Do not return
 // a C++ float: the callee setters take the actual spilled DWORD bits directly.
 SystemFogOwner* load_scalar_and_owner(const float& source,
-    const SystemFogState* const& slot, std::uint32_t& argument_bits) noexcept {
+    SystemFogSlotView slot, std::uint32_t& argument_bits) noexcept {
     const auto* input = &source;
-    const auto* address = &slot;
+    const auto* address = slot.address();
     auto* output = &argument_bits;
-    const SystemFogState* fields;
+    const void* raw_owner;
     __asm {
         mov eax, input
         mov edx, address
@@ -32,9 +25,9 @@ SystemFogOwner* load_scalar_and_owner(const float& source,
         mov ecx, dword ptr [edx]
         mov eax, output
         fstp dword ptr [eax]
-        mov fields, ecx
+        mov raw_owner, ecx
     }
-    return system_fog_owner_from_state(fields);
+    return slot.owner_from_raw(raw_owner);
 }
 
 bool missing_owner(std::string& error) {
@@ -45,6 +38,10 @@ bool missing_owner(std::string& error) {
 
 bool apply_environment_fog_0078d076(const EnvironmentFogFields& environment,
     const SystemFogState* const& actual_camera_fog_184, std::string& error) {
+    return apply_environment_fog_0078d076(environment, SystemFogSlotView(actual_camera_fog_184), error);
+}
+bool apply_environment_fog_0078d076(const EnvironmentFogFields& environment,
+    SystemFogSlotView actual_camera_fog_184, std::string& error) {
     auto* owner = load_owner(actual_camera_fog_184); //0078D076
     if (!owner) return missing_owner(error);
     set_system_fog_color_00b84c40(*owner, environment.color_34.data());

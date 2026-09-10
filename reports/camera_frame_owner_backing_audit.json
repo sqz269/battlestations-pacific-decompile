@@ -1,0 +1,79 @@
+{
+  "utc": "2026-09-10T19:07:38.141831+00:00",
+  "packet": "camera_frame_owner_backing",
+  "status": "borrowed_field_and_live_raw_owner_interfaces_integrated_build_host_regression_and_installed_probe_passed",
+  "native_evidence": "docs/NATIVE_CAMERA_OWNER_NEXT.md; existing bounded fog/time/environment records; docs/CAMERA_FRAME_OWNER_BACKING.md",
+  "source_hashes": [
+    {
+      "path": "include/bsp/camera_frame_state.hpp",
+      "sha256": "0437f26af70b4f56b043c7a606fc1239c92ab7429f91a3ab8b16ca2f8406cafb"
+    },
+    {
+      "path": "include/bsp/environment_fog_apply.hpp",
+      "sha256": "59d9f1a7fb0d71cd717b8c73051d2db6db1c0579c652d58e5bd73a5c11e2e0eb"
+    },
+    {
+      "path": "include/bsp/system_fog_constants.hpp",
+      "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+    },
+    {
+      "path": "include/bsp/system_fog_owner.hpp",
+      "sha256": "1c50b77e0e9ac0188aeb1a578ec7aec81a2faa6448304d7b2f771dc53c70ee03"
+    },
+    {
+      "path": "include/bsp/system_fog_slot.hpp",
+      "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+    },
+    {
+      "path": "src/camera_frame_state.cpp",
+      "sha256": "5b3038e5de84eb5110e2a37d7cbafe475240ed7e58406deaef8cd1d2f4073c1d"
+    },
+    {
+      "path": "src/d3d9_mesh_probe.cpp",
+      "sha256": "ae9a6277ae8340081af819b33118b33cc0b836e2ecce4a3a53f56b338d528999"
+    },
+    {
+      "path": "src/environment_fog_apply.cpp",
+      "sha256": "9ed6c9fcca7f83fbed0fe2ffe4932a3b8f83dd9349be6e088a684c00f0923024"
+    },
+    {
+      "path": "src/system_fog_constants.cpp",
+      "sha256": "eb085bcd9a2c05fd703177a9766a56b7ce5e701e23e4c141a768d9a08ceb35a1"
+    },
+    {
+      "path": "src/system_fog_owner.cpp",
+      "sha256": "a745ea0d569f296fa6de9d3bf4730a30ef4b1691e5723a71366ac678040bd998"
+    },
+    {
+      "path": "src/system_fog_slot.cpp",
+      "sha256": "9d5781b2a998af2efb2b470162adfc6581c96f170b0d8168a989e211a9657838"
+    },
+    {
+      "path": "src/system_time_constants.cpp",
+      "sha256": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c"
+    }
+  ],
+  "host_regression": {
+    "new_tracked_test_cases": 0,
+    "local_sequences": 1,
+    "path": "local/camera_frame_backing_check.cpp",
+    "fixture_sha256": "a041b5e7c6aad8fb4670b2ffe870754786a848bead04a799489c11aa3b53a0d8",
+    "build_script": "local/build_camera_frame_backing_check.ps1",
+    "build_script_sha256": "f132a0f4255e4f9cb0c0819aa8ad0add1a57abffa3e0ee4c80a10cfc4ec527cf",
+    "target": "MSVC Win32 /O2 /MD /fp:strict /W4 /WX; links current built bsp_core.lib",
+    "checks": [
+      "all12 scalar/matrix/plane/context/axis backing addresses and unchanged initialized host preimages",
+      "viewport same-owner live fields, changed raw-owner identity, null skips resolver, native view publication rejected",
+      "actual fog owner versus +08 field addresses, self assignment and replacement counts, clear and shared CRT final frees",
+      "environment scalar signaling-NaN x87 spill effects and 320-word legacy/raw fog constant equality",
+      "raw owner slot aliased with c37.w destination proves underwater capture occurs before that store"
+    ],
+    "seeded_frame_and_viewport_are_diagnostic_host_storage": true,
+    "native_camera_or_viewport_constructor_executed_in_this_check": false,
+    "log": "reports/camera_foundation_host_check.txt",
+    "log_sha256": "a8c4d46ebf760e58ff09933d4904972d734fc172674978ba4224544372ded502"
+  },
+  "game_validated": false,
+  "native_abi_compatible": false,
+  "remaining": "Full native camera constructor/destructor, actual renderer parameter storage and complete shadow/surface ownership remain."
+}

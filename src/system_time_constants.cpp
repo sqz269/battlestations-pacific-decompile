@@ -177,8 +177,8 @@ const SystemFogState* write_system_time_constants_00b46cb4(
         fstp dword ptr [eax + 556] // c34.w, delayed reciprocal spill
     }
     const auto final_byte = foliage_time_byte_00ad5740(*final_foliage);
-    const auto* fog_slot = &camera.fog_184;
-    const SystemFogState* captured_fog;
+    const auto* fog_slot = camera.fog_184.address();
+    const void* captured_fog;
     __asm {
         mov ecx, fog_slot
         mov esi, dword ptr [ecx]
@@ -188,6 +188,6 @@ const SystemFogState* write_system_time_constants_00b46cb4(
         mov eax, output
         movss dword ptr [eax + 1204], xmm0 // c75.y
     }
-    return captured_fog;
+    return camera.fog_184.state_from_raw(captured_fog);
 }
 }

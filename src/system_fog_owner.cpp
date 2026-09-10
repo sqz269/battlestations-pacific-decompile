@@ -156,6 +156,23 @@ void clear_system_fog_camera_slot_00b71f68(const SystemFogState*& slot) noexcept
     }
 }
 
+void set_system_fog_camera_owner_00b71940(SystemFogSlotRef slot, SystemFogOwner* next) noexcept {
+    auto* const previous = slot.owner();
+    if (previous == next) return;
+    slot.store_owner(next);
+    if (next) retain_system_fog_owner(*next);
+    if (previous) release_system_fog_owner(*previous);
+}
+void initialize_system_fog_camera_slot_00b71ae3(SystemFogSlotRef slot) noexcept {
+    slot.clear();
+}
+void clear_system_fog_camera_slot_00b71f68(SystemFogSlotRef slot) noexcept {
+    if (auto* const previous = slot.owner()) {
+        release_system_fog_owner(*previous);
+        slot.clear(); // after the actual zero-reference destruction/free
+    }
+}
+
 void set_system_fog_color_00b84c40(SystemFogOwner& owner, const void* source) noexcept {
     copy_four_words_forward(owner.fields_08.color_08.data(), source);
 }

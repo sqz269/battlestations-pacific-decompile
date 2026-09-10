@@ -141,7 +141,7 @@ struct MeshSingletonShutdown {
     ~MeshSingletonShutdown() { domain.shutdown(); }
 };
 struct MeshFogCameraShutdown {
-    const bsp::SystemFogState*& slot;
+    bsp::SystemFogSlotRef slot;
     ~MeshFogCameraShutdown() { bsp::clear_system_fog_camera_slot_00b71f68(slot); }
 };
 

@@ -1,10 +1,70 @@
 #include "bsp/camera_frame_state.hpp"
 #include "bsp/camera_inverse.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/native_viewport_owner.hpp"
 #include <algorithm>
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
+static_assert(sizeof(CameraPlaneRecord) == 0x14 && sizeof(CameraPlaneSet) == 0x144);
+static_assert(offsetof(CameraPlaneSet, count) == 0x140);
+
+CameraViewport::CameraViewport() noexcept
+    : native_owner(nullptr), x(owned_.x), y(owned_.y), width(owned_.width),
+      height(owned_.height), scissor_enabled(owned_.scissor_enabled), scissor(owned_.scissor) {}
+CameraViewport::CameraViewport(DWORD x_value, DWORD y_value, DWORD width_value,
+    DWORD height_value, std::uint8_t enabled_value, RECT rectangle) noexcept : CameraViewport() {
+    x = x_value; y = y_value; width = width_value; height = height_value;
+    scissor_enabled = enabled_value; scissor = rectangle;
+}
+CameraViewport::CameraViewport(NativeViewportOwner& value) noexcept
+    : native_owner(&value), x(value.fields_08.x), y(value.fields_08.y),
+      width(value.fields_08.width), height(value.fields_08.height),
+      scissor_enabled(value.fields_08.scissor_enabled), scissor(value.fields_08.scissor) {}
+CameraViewport::CameraViewport(const CameraViewport& value) noexcept : CameraViewport() {
+    *this = value;
+}
+CameraViewport& CameraViewport::operator=(const CameraViewport& value) noexcept {
+    if (this != &value) {
+        x = value.x; y = value.y; width = value.width; height = value.height;
+        scissor_enabled = value.scissor_enabled; scissor = value.scissor;
+    }
+    return *this;
+}
+CameraViewportSlot::CameraViewportSlot(const CameraViewport*& slot) noexcept : diagnostic_(&slot) {}
+CameraViewportSlot::CameraViewportSlot(NativeViewportOwner*& slot,
+    CameraViewportResolver& resolver) noexcept : native_(&slot), resolver_(&resolver) {}
+const CameraViewport* CameraViewportSlot::get() const {
+    if (diagnostic_) return *diagnostic_;
+    auto* const owner = *native_;
+    if (!owner) return nullptr;
+    const auto* const view = resolver_->resolve_viewport(owner);
+    if (!view || view->native_owner != owner)
+        throw std::logic_error("camera viewport: actual owner has no matching stable view");
+    return view;
+}
+CameraViewportSlot& CameraViewportSlot::operator=(const CameraViewport* value) {
+    if (!diagnostic_)
+        throw std::logic_error("camera viewport: use the native owner retention setter for publication");
+    *diagnostic_ = value;
+    return *this;
+}
+CameraFrameState::CameraFrameState(CameraState& value) noexcept
+    : camera(value), byte_174(owned_.byte_174), enabled(owned_.enabled),
+      viewport(owned_.viewport), fog_184(owned_.fog_184), clear_flags(owned_.clear_flags),
+      clear_depth(owned_.clear_depth), clear_color(owned_.clear_color), clear_stencil(owned_.clear_stencil),
+      render_mode(owned_.render_mode), inverse_view_projection(owned_.inverse_view_projection),
+      frustum(owned_.frustum), context_depth_scale_43c(owned_.context_depth_scale_43c),
+      axis_y(owned_.axis_y), axis_x(owned_.axis_x) {}
+CameraFrameState::CameraFrameState(CameraState& value, CameraFrameBacking backing) noexcept
+    : camera(value), byte_174(backing.byte_174), enabled(backing.enabled),
+      viewport(backing.viewport), fog_184(backing.fog_184), clear_flags(backing.clear_flags),
+      clear_depth(backing.clear_depth), clear_color(backing.clear_color), clear_stencil(backing.clear_stencil),
+      render_mode(backing.render_mode), inverse_view_projection(backing.inverse_view_projection),
+      frustum(backing.frustum), context_depth_scale_43c(backing.context_depth_scale_43c),
+      axis_y(backing.axis_y), axis_x(backing.axis_x) {}
+
 namespace {
 const std::uint32_t negative_zero_bits = 0x80000000u;
 const float positive_one = 1.0f;
