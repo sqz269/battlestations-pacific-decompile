@@ -26,7 +26,11 @@ or shared ledger edits were made in this worker packet.
 word at `+0`, a 16-byte union at `+4`, unsigned length at `+14h`, unsigned
 capacity at `+18h`, and total size `1Ch`. Capacity below 16 selects inline bytes;
 otherwise the first union word is the heap pointer. These routines never alter
-the leading word. There is no automatic destructor, copy constructor, or
+the leading word. Primary integration removed the convenience member defaults:
+placement construction without parentheses performs no writes, so embedding
+this storage in an exception owner preserves its unwritten prefix. Callers must
+explicitly establish the native empty fields before first use. There is no
+automatic destructor, copy constructor, or
 independent owner token in this raw storage type.
 
 Counted assignment first uses unsigned address comparisons to test the interval

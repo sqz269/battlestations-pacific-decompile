@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "packet": "native_legacy_sbo_integration",
+  "status": "integrated_reviewed_strict_win32_original_bytes_and_funcinfo_fixture_with_declared_host_crt_eh_boundaries_passed",
+  "component_report": "reports/native_legacy_sbo_string_audit.json",
+  "worker_commit": "49cd16496f34a1aa2ff699c8d118937e7752269c",
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00408720",
+      "name": "native_legacy_sbo_string_assign_counted_00408720",
+      "cpp_symbol": "native_legacy_sbo_string_assign_counted_00408720",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "native_end_exclusive": "004087e1",
+      "entry_function_end_exclusive": "004087e1",
+      "original_abi": "ECX destination; stack const character pointer,unsigned count; EAX destination; RET8",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "status": "complete_logical_native_storage_strict_win32_original_bytes_and_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Unsigned self-alias interval is checked before maximum count. Alias composes actual substring/erase; external assignment grows/copies and terminates, retaining returning CRT handler effects and current data reloads.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00408120",
+      "name": "native_legacy_sbo_string_assign_substring_00408120",
+      "cpp_symbol": "native_legacy_sbo_string_assign_substring_00408120",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "native_end_exclusive": "004081f9",
+      "entry_function_end_exclusive": "004081f9",
+      "original_abi": "ECX destination; stack source string, unsigned offset, unsigned count; EAX destination; RET0C",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "status": "complete_logical_native_storage_strict_win32_original_bytes_and_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Checks source offset before clamping. Same-object path erases tail then prefix. Distinct-object path checks maximum, grows with captured preserved length, reloads source/destination views and continues after returning copy validation.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004072d0",
+      "name": "native_legacy_sbo_string_destroy_004072d0",
+      "cpp_symbol": "native_legacy_sbo_string_destroy_004072d0",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "native_end_exclusive": "004072f6",
+      "entry_function_end_exclusive": "004072f6",
+      "original_abi": "ECX string; RET; no semantic return value",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "status": "complete_logical_native_storage_strict_win32_original_bytes_and_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Current heap free if capacity>=16; then capacity15, length0 and inline byte0 zero on both paths. Leading word and remaining union bytes are untouched.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004089e0",
+      "name": "native_legacy_sbo_string_grow_004089e0",
+      "cpp_symbol": "native_legacy_sbo_string_grow_004089e0",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "native_end_exclusive": "00408b10",
+      "entry_function_end_exclusive": "00408a50",
+      "original_abi": "ECX string; stack requested capacity,preserve byte count; RET8; no semantic return value",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "status": "complete_logical_native_storage_strict_win32_original_bytes_and_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Complete 304-byte logical body including both catches and dispatcher continuation. Rounded/1.5 growth, exact request retry for ordinary allocation failure, current old heap reset and second-exception rethrow on second allocation failure. Primary throwing copy retries replacement pointer bits; throwing fallback copy escapes without reset after catch context ends. Logical span includes00408A50 first catch,00408A72 frame restoration,00408A78 commit and00408AE0 nested catch; saved entry body remains004089E0..00408A50.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00408b60",
+      "name": "native_legacy_sbo_string_allocate_00408b60",
+      "cpp_symbol": "native_legacy_sbo_string_allocate_00408b60",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "native_end_exclusive": "00408bb5",
+      "entry_function_end_exclusive": "00408bb5",
+      "original_abi": "Stack unsigned byte count; ECX unused; EAX allocation; RET4",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "status": "complete_logical_native_storage_strict_win32_original_bytes_and_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Actual shared CRT allocation service including zero. Native UINT_MAX/count quotient<1 guard cannot be taken for any nonzero uint32 one-byte element count; no invented allocation error stub.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004087f0",
+      "name": "native_legacy_sbo_string_erase_004087f0",
+      "cpp_symbol": "native_legacy_sbo_string_erase_004087f0",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "native_end_exclusive": "00408872",
+      "entry_function_end_exclusive": "00408872",
+      "original_abi": "ECX string; stack unsigned offset,count; EAX string; RET8",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "status": "complete_logical_native_storage_strict_win32_original_bytes_and_funcinfo_fixture_with_host_crt_eh_boundaries_checked",
+      "current_integration_scope": "Offset error even for zero count, suffix clamp, actual memmove_s with capacity-offset and remaining-count. Nonzero erase rereads current length/data after returning validation; zero erase has no mutation.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "fragment",
+      "address": "00408a50",
+      "name": "native_legacy_sbo_growth_first_catch",
+      "cpp_symbol": "native_legacy_sbo_string_grow_004089e0",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "parent_function": "004089e0",
+      "native_end_exclusive": "00408a78",
+      "entry_function_end_exclusive": "00408a72",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "current_integration_scope": "First catch in original growth EBP frame. Retry request bits+1 (original capacity on allocation failure, replacement pointer after first success); nested allocation state2; return continuation00408A72, restore EDI/ESI before shared commit. Existing Catch_All symbol retained.",
+      "status": "logical_parent_growth_support_original_bytes_and_funcinfo_fixture_checked",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "fragment",
+      "address": "00408a78",
+      "name": "native_legacy_sbo_growth_commit",
+      "cpp_symbol": "native_legacy_sbo_string_grow_004089e0",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "parent_function": "004089e0",
+      "native_end_exclusive": "00408ae0",
+      "entry_function_end_exclusive": "00408ae0",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "current_integration_scope": "Register/EBP-frame continuation, not an independently callable function: capture preserve count EBX; memcpy_s; current old heap free; write replacement pointer/capacity/length and current-view terminator; original parent return/FS restoration. Callback after fallback allocation escapes without nested reset despite raw state2.",
+      "status": "logical_parent_growth_support_original_bytes_and_funcinfo_fixture_checked",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "fragment",
+      "address": "00408ae0",
+      "name": "native_legacy_sbo_growth_second_catch",
+      "cpp_symbol": "native_legacy_sbo_string_grow_004089e0",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "parent_function": "004089e0",
+      "native_end_exclusive": "00408b10",
+      "entry_function_end_exclusive": "00408b10",
+      "evidence": "reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json",
+      "current_integration_scope": "Nested second-allocation catch in parent EBP frame: current heap free, reset cap15/length0/inline0, native CxxThrowException(0,0) rethrow. Does not catch fallback-copy throw after dispatcher continuation. Existing Catch_All symbol retained.",
+      "status": "logical_parent_growth_support_original_bytes_and_funcinfo_fixture_checked",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "new_complete_logical_functions": 6,
+  "parent_growth_support_fragments": 3,
+  "primary_review": {
+    "utc": "2026-09-10T22:28:36.334186+00:00",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "00408720",
+        "length": 193,
+        "sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34"
+      },
+      {
+        "address": "00408120",
+        "length": 217,
+        "sha256": "e4104d83c47c8751f42572271b41b74d8eeb30b93a83c688ea62144542019175"
+      },
+      {
+        "address": "004072d0",
+        "length": 38,
+        "sha256": "2f179ded49a9621df35befbde920bb2a9b2cb84c7600d74530e7e3c4c45ddce9"
+      },
+      {
+        "address": "004089e0",
+        "length": 304,
+        "sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191"
+      },
+      {
+        "address": "00408b60",
+        "length": 85,
+        "sha256": "0ae014e5db77545ed05d24a175da22eae05e7f7ad1a446364d703edef6ad83e2"
+      },
+      {
+        "address": "004087f0",
+        "length": 130,
+        "sha256": "c270a0c03767d54cc43e0dc5a4af4137f02f41b6525e0bdb340416e2dbc608c0"
+      },
+      {
+        "address": "00cc8890",
+        "length": 10,
+        "sha256": "c6608f5116ef57a9aa53049332e750d8da79d6ace7e3aa65653e62a07b9978f8"
+      },
+      {
+        "address": "00bf672c",
+        "length": 123,
+        "sha256": "296b664d129677ee3b3e5ea0df4f90adabc128c84b811d8a6f9f2d0197714e59"
+      },
+      {
+        "address": "00bf67a7",
+        "length": 91,
+        "sha256": "c4830b17566680e561e647a6a2c9c105c69377e05e0cb10957814fa6cbf43885"
+      },
+      {
+        "address": "00bf681b",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "address": "00bf65ac",
+        "length": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "address": "00bf5695",
+        "length": 5,
+        "sha256": "1968653218518b101f73dbda3cd947fb58e601daec0b93486fb03846b1824eca"
+      },
+      {
+        "address": "00bf56d4",
+        "length": 5,
+        "sha256": "c73d15124e107ed395760c7890f82fce5b3da1fcc5035261bbff19532d389323"
+      },
+      {
+        "address": "00bf6885",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "address": "00bf6b43",
+        "length": 5,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+      },
+      {
+        "address": "00bf66ef",
+        "length": 5,
+        "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c"
+      },
+      {
+        "address": "00bffb8b",
+        "length": 5,
+        "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54"
+      },
+      {
+        "address": "00bf7680",
+        "length": 5,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885"
+      },
+      {
+        "address": "00bf79f0",
+        "length": 5,
+        "sha256": "b61aef05f4fb871ed714f5402dc4f750975a6b1c7edc82412a3d3db4ceba7156"
+      },
+      {
+        "address": "00bf87e0",
+        "length": 5,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885"
+      },
+      {
+        "address": "00e04950",
+        "length": 140,
+        "sha256": "b58a878e108a61a4129aa31326a85cd6bddf0e129242a88b216b7ec438c20c95"
+      },
+      {
+        "address": "00bf5695",
+        "length": 62,
+        "sha256": "4be0df66d47a31a635e077583c46173356749da5b54d4a5660c8643e4f25beee"
+      },
+      {
+        "address": "00bf56d4",
+        "length": 62,
+        "sha256": "856eb0dad0a6a1d654ccd56e66dab5772a01e4bdc71d153672bd029a8726923f"
+      },
+      {
+        "address": "00bf681b",
+        "length": 105,
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1"
+      },
+      {
+        "address": "00bf66ef",
+        "length": 36,
+        "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3"
+      },
+      {
+        "address": "00d69274",
+        "length": 40,
+        "sha256": "df2ca14e6fb7420d97635a8d7b9305be2ec8fdefb3c4cde9356d72bccffbba74"
+      },
+      {
+        "address": "00d83f98",
+        "length": 16,
+        "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6"
+      },
+      {
+        "address": "00d83fd4",
+        "length": 16,
+        "sha256": "0a8b9d596c19d3c70400882f4ec012f7fcd1218ce95d18c044472052d5fed30f"
+      },
+      {
+        "address": "00d83fe4",
+        "length": 28,
+        "sha256": "a77f6b92f949c470b312a60a8ca4dfdfbb81fc3516ee57f51339f22d7c6745ab"
+      },
+      {
+        "address": "00d863a8",
+        "length": 16,
+        "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814"
+      },
+      {
+        "address": "00d863e4",
+        "length": 16,
+        "sha256": "ce36cf5003f6c6d94772206183c377abcd104fc63b285da06b0b8aa354073017"
+      },
+      {
+        "address": "00d863f4",
+        "length": 28,
+        "sha256": "e1aebe4960e79465b8a8c1d8c2a99283f539f102dbadd4d46767c6dcf00d888f"
+      },
+      {
+        "address": "00e08000",
+        "length": 32,
+        "sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481"
+      },
+      {
+        "address": "00e0817c",
+        "length": 32,
+        "sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76"
+      }
+    ],
+    "source_artifacts": [
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+        "comparison": "Exact worker source text"
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "comparison": "Primary removed all default member initializers and asserted trivial default construction to preserve unwritten native storage"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "034f7576b7751ace67e4028e03faf7fd6bb4c6c6a5685a7aaf707fa5e38ff4a8",
+        "comparison": "Primary source registration"
+      }
+    ],
+    "findings_resolved": [
+      "Removed unrecovered default storage writes; explicit fixture native empty initialization; C confirmed exception-owner composition requires raw nested storage"
+    ],
+    "remaining_production_findings": 0
+  },
+  "fixture": {
+    "normalized_words": 289,
+    "uses_original_growth_code_and_funcinfo": true,
+    "host_crt_and_eh_boundaries": true,
+    "fallback_copy_throw_preserves_old_storage": true,
+    "artifacts": {
+      "local/native_legacy_sbo_string_check.cpp": "0b639a17f193807105fa7de7676ba18096597417a51e122311b32f500d514dc1",
+      "local/native_legacy_sbo_string_spans.hpp": "eb5dc08d4aef3f43b43aee8bf735786b82bc5b313bd6a63f8020698eaf499146",
+      "local/build_native_legacy_sbo_string_check.ps1": "2344676031d7e25dc642bbb6c526b2b56ef84f4db4576ca53d7b83f17a3dbc19",
+      "local/native_sbo_primary_fixture.txt": "78881dabbce38e4ed89202d371a70ac48c305cfb14a0ce63469e0e3d4f17913c"
+    }
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "passed": true,
+    "tests": 2,
+    "log": "reports/native_legacy_sbo_build.txt",
+    "sha256": "63a0a727deab5a0ec198746ef0d787facb046970124a5f1116b786372b79fa62"
+  },
+  "definitions": "reports/native_legacy_sbo_defined_functions.json",
+  "original_body_repairs": 3,
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "original_exception_object_abi": false,
+  "game_validated": false,
+  "remaining": [
+    "Five actual40-byte exception-owner functions",
+    "List count-growth4CE780 and original throw transport boundary",
+    "Native range insertion and resource-record assignment",
+    "Command execution/queue/preparation and runnable renderer/gameplay"
+  ],
+  "saved_annotations": {
+    "path": "reports/native_legacy_sbo_annotations.json",
+    "sha256": "609c97a0b2b9960239edb7ecceb85b239d7272b328af994c78064eca33b19f52",
+    "count": 9,
+    "all_applied": true,
+    "old_names_and_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": {
+    "count": 9,
+    "functions": [
+      {
+        "address": "00408720",
+        "old_name": "BSP_CharacterString_AssignCounted",
+        "name": "BSP_CharacterString_AssignCounted",
+        "path": "exports/bsp/functions/00408720/decompiled.c",
+        "sha256": "176a12f1c3eac5f7f2cb13703400f4c11bef06ffb534b5bf66278540b8152a4b"
+      },
+      {
+        "address": "00408120",
+        "old_name": "FUN_00408120",
+        "name": "BSP_LegacySboString_AssignSubstring",
+        "path": "exports/bsp/functions/00408120/decompiled.c",
+        "sha256": "975ad51aed08e79cde7ae73f1620dbe9b6b28365057142ce6de73f433ab1eeaa"
+      },
+      {
+        "address": "004072d0",
+        "old_name": "FUN_004072d0",
+        "name": "BSP_LegacySboString_Destroy",
+        "path": "exports/bsp/functions/004072d0/decompiled.c",
+        "sha256": "b8e0b99f52fbda71d443b3495127b8eb50ff585b148b24dc4e04311262e95b98"
+      },
+      {
+        "address": "004089e0",
+        "old_name": "FUN_004089e0",
+        "name": "BSP_LegacySboString_GrowAllocation",
+        "path": "exports/bsp/functions/004089e0/decompiled.c",
+        "sha256": "a4ff5f480ab2ef6d5b35a5b0ef73c78d0c3c755b96a421074177c073e2a3196c"
+      },
+      {
+        "address": "00408b60",
+        "old_name": "FUN_00408b60",
+        "name": "BSP_LegacySboString_AllocateBytes",
+        "path": "exports/bsp/functions/00408b60/decompiled.c",
+        "sha256": "48aa6b6d863b9b7d2a9a6c2ff25040456354874d4362b06277ed008d670a6b59"
+      },
+      {
+        "address": "004087f0",
+        "old_name": "FUN_004087f0",
+        "name": "BSP_LegacySboString_Erase",
+        "path": "exports/bsp/functions/004087f0/decompiled.c",
+        "sha256": "f0dc9892fbd37d6bdf7444000bf69553c2456bd72dda31a3d97e9545cbc1d0e2"
+      },
+      {
+        "address": "00408a50",
+        "old_name": "Catch_All@00408a50",
+        "name": "Catch_All@00408a50",
+        "path": "exports/bsp/functions/00408a50/decompiled.c",
+        "sha256": "2111b4054d6487ddaa0620def6267862b9eabb421127ad5fd9cae2664d2a8dd7"
+      },
+      {
+        "address": "00408a78",
+        "old_name": "FUN_00408a78",
+        "name": "BSP_LegacySboString_GrowthCommit",
+        "path": "exports/bsp/functions/00408a78/decompiled.c",
+        "sha256": "7785a59fa72109bc9272ec6634f8a443eaf7ac0096cadfde1cd7956bb6ea4261"
+      },
+      {
+        "address": "00408ae0",
+        "old_name": "Catch_All@00408ae0",
+        "name": "Catch_All@00408ae0",
+        "path": "exports/bsp/functions/00408ae0/decompiled.c",
+        "sha256": "79e09ec112751120f77ef6746286bd22ab40c21399ba7d0e8017ec7eeac754ba"
+      }
+    ]
+  },
+  "snapshot": {
+    "internal_functions": 62481,
+    "total_functions": 62923,
+    "utc": "2026-09-10T21:55:30.972051+00:00",
+    "index_fresh": true
+  },
+  "closure_hash_recheck_utc": "2026-09-10T22:31:02.723908+00:00"
+}

@@ -1,0 +1,129 @@
+[
+  {
+    "address": "00408720",
+    "before": {
+      "address": "00408720",
+      "function_name": "BSP_CharacterString_AssignCounted",
+      "comment": "[BSP reconstruction 00408720]\nObserved MSVC-style character-string assignment; exact library symbol unproven. ECXdest,stackcharptr/count,EAXdest,RET8. Buffer+4,size+14h,capacity+18h;inlineifcapacity<16. Externalalias00408120/reserve004089e0. Freshnonaliased path copies count bytes and terminatesNUL. Keep library identity provisional. Original ABI: ECX destination string; stack character pointer and unsigned count; EAX destination; RET8. Inline bytes+4, length+14h, capacity+18h; capacity>=16 uses heap pointer at+4. External alias-copy00408120 and reserve004089e0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    "after": {
+      "address": "00408720",
+      "old_name": "BSP_CharacterString_AssignCounted",
+      "name": "BSP_CharacterString_AssignCounted",
+      "evidence": "Complete logical original[00408720,004087e1); ECX destination; stack const character pointer,unsigned count; EAX destination; RET8. Unsigned self-alias interval is checked before maximum count. Alias composes actual substring/erase; external assignment grows/copies and terminates, retaining returning CRT handler effects and current data reloads. Evidence reports/native_legacy_sbo_string_audit.json; reports/native_legacy_sbo_integration_audit.json. Strict MSVC Win32 build2/2 and289-word original bytes/FuncInfo comparison with declared host CRT/EH services passed. New exception-object/runtime ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00408120",
+    "before": {
+      "address": "00408120",
+      "function_name": "FUN_00408120"
+    },
+    "after": {
+      "address": "00408120",
+      "old_name": "FUN_00408120",
+      "name": "BSP_LegacySboString_AssignSubstring",
+      "evidence": "Complete logical original[00408120,004081f9); ECX destination; stack source string, unsigned offset, unsigned count; EAX destination; RET0C. Checks source offset before clamping. Same-object path erases tail then prefix. Distinct-object path checks maximum, grows with captured preserved length, reloads source/destination views and continues after returning copy validation. Evidence reports/native_legacy_sbo_string_audit.json; reports/native_legacy_sbo_integration_audit.json. Strict MSVC Win32 build2/2 and289-word original bytes/FuncInfo comparison with declared host CRT/EH services passed. New exception-object/runtime ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004072d0",
+    "before": {
+      "address": "004072d0",
+      "function_name": "FUN_004072d0"
+    },
+    "after": {
+      "address": "004072d0",
+      "old_name": "FUN_004072d0",
+      "name": "BSP_LegacySboString_Destroy",
+      "evidence": "Complete logical original[004072d0,004072f6); ECX string; RET; no semantic return value. Current heap free if capacity>=16; then capacity15, length0 and inline byte0 zero on both paths. Leading word and remaining union bytes are untouched. Evidence reports/native_legacy_sbo_string_audit.json; reports/native_legacy_sbo_integration_audit.json. Strict MSVC Win32 build2/2 and289-word original bytes/FuncInfo comparison with declared host CRT/EH services passed. New exception-object/runtime ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004089e0",
+    "before": {
+      "address": "004089e0",
+      "function_name": "FUN_004089e0"
+    },
+    "after": {
+      "address": "004089e0",
+      "old_name": "FUN_004089e0",
+      "name": "BSP_LegacySboString_GrowAllocation",
+      "evidence": "Complete logical original[004089e0,00408b10); ECX string; stack requested capacity,preserve byte count; RET8; no semantic return value. Complete 304-byte logical body including both catches and dispatcher continuation. Rounded/1.5 growth, exact request retry for ordinary allocation failure, current old heap reset and second-exception rethrow on second allocation failure. Primary throwing copy retries replacement pointer bits; throwing fallback copy escapes without reset after catch context ends. Logical span includes00408A50 first catch,00408A72 frame restoration,00408A78 commit and00408AE0 nested catch; saved entry body remains004089E0..00408A50. Evidence reports/native_legacy_sbo_string_audit.json; reports/native_legacy_sbo_integration_audit.json. Strict MSVC Win32 build2/2 and289-word original bytes/FuncInfo comparison with declared host CRT/EH services passed. New exception-object/runtime ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00408b60",
+    "before": {
+      "address": "00408b60",
+      "function_name": "FUN_00408b60"
+    },
+    "after": {
+      "address": "00408b60",
+      "old_name": "FUN_00408b60",
+      "name": "BSP_LegacySboString_AllocateBytes",
+      "evidence": "Complete logical original[00408b60,00408bb5); Stack unsigned byte count; ECX unused; EAX allocation; RET4. Actual shared CRT allocation service including zero. Native UINT_MAX/count quotient<1 guard cannot be taken for any nonzero uint32 one-byte element count; no invented allocation error stub. Evidence reports/native_legacy_sbo_string_audit.json; reports/native_legacy_sbo_integration_audit.json. Strict MSVC Win32 build2/2 and289-word original bytes/FuncInfo comparison with declared host CRT/EH services passed. New exception-object/runtime ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004087f0",
+    "before": {
+      "address": "004087f0",
+      "function_name": "FUN_004087f0"
+    },
+    "after": {
+      "address": "004087f0",
+      "old_name": "FUN_004087f0",
+      "name": "BSP_LegacySboString_Erase",
+      "evidence": "Complete logical original[004087f0,00408872); ECX string; stack unsigned offset,count; EAX string; RET8. Offset error even for zero count, suffix clamp, actual memmove_s with capacity-offset and remaining-count. Nonzero erase rereads current length/data after returning validation; zero erase has no mutation. Evidence reports/native_legacy_sbo_string_audit.json; reports/native_legacy_sbo_integration_audit.json. Strict MSVC Win32 build2/2 and289-word original bytes/FuncInfo comparison with declared host CRT/EH services passed. New exception-object/runtime ABI, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00408a50",
+    "before": {
+      "address": "00408a50",
+      "function_name": "Catch_All@00408a50"
+    },
+    "after": {
+      "address": "00408a50",
+      "old_name": "Catch_All@00408a50",
+      "name": "Catch_All@00408a50",
+      "evidence": "Logical part of004089E0 growth, [00408a50,00408a78); First catch in original growth EBP frame. Retry request bits+1 (original capacity on allocation failure, replacement pointer after first success); nested allocation state2; return continuation00408A72, restore EDI/ESI before shared commit. Existing Catch_All symbol retained. Evidence reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json. Original FuncInfo execution compared through explicit host CRT/EH boundary; no independent C++ entry or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00408a78",
+    "before": {
+      "address": "00408a78",
+      "function_name": "FUN_00408a78"
+    },
+    "after": {
+      "address": "00408a78",
+      "old_name": "FUN_00408a78",
+      "name": "BSP_LegacySboString_GrowthCommit",
+      "evidence": "Logical part of004089E0 growth, [00408a78,00408ae0); Register/EBP-frame continuation, not an independently callable function: capture preserve count EBX; memcpy_s; current old heap free; write replacement pointer/capacity/length and current-view terminator; original parent return/FS restoration. Callback after fallback allocation escapes without nested reset despite raw state2. Evidence reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json. Original FuncInfo execution compared through explicit host CRT/EH boundary; no independent C++ entry or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00408ae0",
+    "before": {
+      "address": "00408ae0",
+      "function_name": "Catch_All@00408ae0"
+    },
+    "after": {
+      "address": "00408ae0",
+      "old_name": "Catch_All@00408ae0",
+      "name": "Catch_All@00408ae0",
+      "evidence": "Logical part of004089E0 growth, [00408ae0,00408b10); Nested second-allocation catch in parent EBP frame: current heap free, reset cap15/length0/inline0, native CxxThrowException(0,0) rethrow. Does not catch fallback-copy throw after dispatcher continuation. Existing Catch_All symbol retained. Evidence reports/native_legacy_sbo_integration_audit.json; reports/native_legacy_sbo_string_audit.json. Original FuncInfo execution compared through explicit host CRT/EH boundary; no independent C++ entry or game validation."
+    },
+    "status": "applied"
+  }
+]

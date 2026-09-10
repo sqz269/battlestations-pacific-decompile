@@ -847,5 +847,17 @@
     "New source is independently compiled; root CMake and ledger/Ghidra integration are separate.",
     "No promise for unmapped pointers, data races, arbitrary invalid overlapping memcpy operands, or every CRT handler policy.",
     "No game runtime or visual validation; no Ghidra renames, saved-body edits, shared ledger edits or push in this worker."
-  ]
+  ],
+  "primary_integration": {
+    "report": "reports/native_legacy_sbo_integration_audit.json",
+    "original_worker_cpp_preserved": true,
+    "header_change": "Removed convenience default member initializers and asserted trivial default construction; raw placement preserves unwritten native storage",
+    "current_source_hashes": {
+      "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "CMakeLists.txt": "034f7576b7751ace67e4028e03faf7fd6bb4c6c6a5685a7aaf707fa5e38ff4a8"
+    },
+    "primary_fixture_words": 289,
+    "strict_win32_build": true
+  }
 }

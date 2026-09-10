@@ -2,19 +2,20 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <type_traits>
 
 namespace bsp {
 
 // The native MSVC string in these six routines, not the pooled NativeString.
 // This is raw storage: destruction is explicit and the leading word is untouched.
 struct NativeLegacySboStringStorage {
-    std::uint32_t preserved_00 = 0;
+    std::uint32_t preserved_00;
     union Buffer {
         char inline_bytes[16];
         char* heap;
-    } buffer_04{};
-    std::uint32_t length_14 = 0;
-    std::uint32_t capacity_18 = 15;
+    } buffer_04;
+    std::uint32_t length_14;
+    std::uint32_t capacity_18;
 
     char* data() noexcept {
         return capacity_18 < 16 ? buffer_04.inline_bytes : buffer_04.heap;
@@ -26,6 +27,7 @@ struct NativeLegacySboStringStorage {
 
 static_assert(sizeof(void*) == 4);
 static_assert(sizeof(NativeLegacySboStringStorage) == 0x1C);
+static_assert(std::is_trivially_default_constructible_v<NativeLegacySboStringStorage>);
 static_assert(offsetof(NativeLegacySboStringStorage, buffer_04) == 0x04);
 static_assert(offsetof(NativeLegacySboStringStorage, length_14) == 0x14);
 static_assert(offsetof(NativeLegacySboStringStorage, capacity_18) == 0x18);

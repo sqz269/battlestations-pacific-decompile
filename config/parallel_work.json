@@ -2608,8 +2608,8 @@
       "id": "native_legacy_sbo_string",
       "packet": "native_legacy_sbo_string",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_reconstructing_complete_sbo_string_with_original_eh_continuation_evidence",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_original_bytes_and_funcinfo_fixture_passed",
       "function_addresses": [
         "00408720",
         "00408120",
@@ -2617,7 +2617,9 @@
         "004089e0",
         "00408b60",
         "004087f0"
-      ]
+      ],
+      "evidence": "reports/native_legacy_sbo_integration_audit.json",
+      "worker_commit": "49cd16496f34a1aa2ff699c8d118937e7752269c"
     },
     {
       "id": "native_legacy_exception_owner",
@@ -2631,6 +2633,22 @@
         "004117c0",
         "004118d0",
         "00411940"
+      ]
+    },
+    {
+      "id": "native_render_alias_assignment_next",
+      "packet": "native_render_alias_assignment_next",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_revalidating_full_range_insert_record_assignment_and_exact_error_dependencies",
+      "function_addresses": [
+        "004d2660",
+        "004d26a0",
+        "00b30510"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
+        "reports/native_render_alias_assignment_next.json"
       ]
     }
   ],
@@ -3434,13 +3452,19 @@
     {
       "packet": "native_legacy_sbo_string",
       "worker": "material_effect_plane",
-      "state": "worker_reconstructing_complete_sbo_string_with_original_eh_continuation_evidence",
-      "validation": null
+      "state": "integrated_reviewed_strict_win32_original_bytes_and_funcinfo_fixture_passed",
+      "validation": "reports/native_legacy_sbo_integration_audit.json"
     },
     {
       "packet": "native_legacy_exception_owner",
       "worker": "particle_clock_lifetime",
       "state": "worker_reconstructing_five_exception_owner_functions_on_actual_sbo_storage",
+      "validation": null
+    },
+    {
+      "packet": "native_render_alias_assignment_next",
+      "worker": "material_effect_plane",
+      "state": "worker_revalidating_full_range_insert_record_assignment_and_exact_error_dependencies",
       "validation": null
     }
   ],
@@ -3453,18 +3477,6 @@
       ]
     },
     {
-      "packet": "native_legacy_sbo_string",
-      "worker": "material_effect_plane",
-      "function_addresses": [
-        "00408720",
-        "00408120",
-        "004072d0",
-        "004089e0",
-        "00408b60",
-        "004087f0"
-      ]
-    },
-    {
       "packet": "native_legacy_exception_owner",
       "worker": "particle_clock_lifetime",
       "function_addresses": [
@@ -3473,6 +3485,15 @@
         "004117c0",
         "004118d0",
         "00411940"
+      ]
+    },
+    {
+      "packet": "native_render_alias_assignment_next",
+      "worker": "material_effect_plane",
+      "function_addresses": [
+        "004d2660",
+        "004d26a0",
+        "00b30510"
       ]
     }
   ],
