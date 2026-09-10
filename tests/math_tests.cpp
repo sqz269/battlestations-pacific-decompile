@@ -3,6 +3,7 @@
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
+#include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
 #include "bsp/game_frame_control.hpp"
@@ -894,6 +895,26 @@ int main() {
                 && local.pivot_translation_x == 0.0f
                 && local.pivot_translation_y == -3.0f,
             "the aspect factor reaches the Y translation and the Y pivot only");
+    }
+
+    {
+        // 00AA2490 splits on the LAST underscore, so a key that ends in one has
+        // an empty suffix and stays a property, while a key with no underscore
+        // at all is matched whole. Both boundaries decide whether a shipped key
+        // becomes a widget, and the shipped pages exercise the case folding
+        // ("keret_Framebox" against the literal "FrameBox").
+        using bsp::GuiWidgetType;
+        check(bsp::gui_widget_type_for_key_00aa2490("safezone_43_FrameBox")
+                  == GuiWidgetType::FrameBox
+              && bsp::gui_widget_type_for_key_00aa2490("keret_Framebox")
+                  == GuiWidgetType::FrameBox
+              && bsp::gui_widget_type_for_key_00aa2490("Icon")
+                  == GuiWidgetType::Icon
+              && bsp::gui_widget_type_for_key_00aa2490("Icon_")
+                  == GuiWidgetType::None
+              && bsp::gui_widget_type_for_key_00aa2490("States")
+                  == GuiWidgetType::None,
+            "00AA2490 takes the suffix after the last underscore, folded");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
