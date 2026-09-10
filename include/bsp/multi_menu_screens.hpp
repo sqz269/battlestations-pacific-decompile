@@ -124,9 +124,13 @@ inline constexpr std::string_view kMultiMainMenuRankedTitle = "FE.multi_ranked_t
 // 00683610, the block every screen but the chat overlay embeds. It is
 // __thiscall(this) with no callees: it clears a dword at +00h and +20h and +28h,
 // zeroes eight floats (+0Ch..+1Ch, +24h, +2Ch, +34h..+3Ch, +54h) and clears the
-// bytes at +48h and +58h, which is a fade/slide animation record. The main menu
-// and mode selector embed one at +6Ch; the lobby and the session browser embed
-// three consecutively.
+// bytes at +48h and +58h. docs/FRONTEND_SCREEN_ANIMATION.md established that this
+// is not an animation record but the constructor of the vertical scroll
+// controller (BSP_GuiScroller_*, 00683300..00683a8f); bsp::GuiScroller in
+// include/bsp/frontend_screen_animation.hpp is the reconstructed layout and
+// supersedes this placeholder. The main menu embeds one at +6Ch and the mode
+// selector at +3Ch (LEA ECX,[ESI+3Ch] at 005ea8f8); the lobby and the session
+// browser embed three consecutively.
 struct MultiMenuScreenAnimation {
     std::uint32_t mode{0};        // +00h
     std::array<float, 5> a{};     // +0Ch..+1Ch
@@ -157,7 +161,7 @@ struct MultiMainMenuScreen {
 // runs virtual +14h and writes these two.
 struct MultiModeSelectorScreen {
     FrontEndScreen base{};
-    MultiMenuScreenAnimation animation{}; // +6Ch
+    MultiMenuScreenAnimation animation{}; // +3Ch, not +6Ch (docs/FRONTEND_SCREEN_ANIMATION.md)
     std::uint32_t field_10{0};            // +10h, cleared
     std::int32_t selection_f4{-1};        // +F4h = -1
 };
