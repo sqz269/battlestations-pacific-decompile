@@ -26,6 +26,7 @@
 #include "bsp/input_tick.hpp"
 #include "bsp/press_start_screen.hpp"
 #include "bsp/session_polls.hpp"
+#include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/world_ocean.hpp"
@@ -1078,6 +1079,81 @@ int main() {
               && marked.had_caret && marked.suppresses_lookup
               && marked.key == ".RAW",
             "00A9F4B0 strips one caret before testing the lookup marker");
+    }
+
+    {
+        // 004DE610 has no ocean failure branch. The "Ocean initialization
+        // failed" literal at 004DF829 is copied into a pooled buffer and
+        // released unread, and the block that builds it is guarded by the
+        // scene record, not by any ocean result. Both branches of 004DF421
+        // still produce an ocean owner: from the record's description when a
+        // record exists, from the sky_001 literal when it does not.
+        struct RecordingHost final : bsp::WorldConstructHost {
+            bool has_record{true};
+            bool literal_built{false};
+            bool ocean_named{false};
+            bool debug_render_flag() override { return false; }
+            void set_renderer_budget(std::uint32_t) override {}
+            std::uint32_t create_world(const bsp::WorldObjectLayout&) override { return 1; }
+            void world_post_construct(std::uint32_t, int, int) override {}
+            std::uint32_t create_scene_node(std::size_t, const std::string&) override { return 2; }
+            std::uint32_t create_operator_node(std::size_t, const std::string&) override { return 3; }
+            void publish_operator_node(std::uint32_t) override {}
+            void set_camera_near_plane(std::uint32_t, float) override {}
+            std::uint32_t create_operator_child(std::size_t) override { return 4; }
+            void attach_operator_child(std::uint32_t, std::uint32_t) override {}
+            void release_ref(std::uint32_t) override {}
+            void construct_scene_services() override {}
+            void construct_lighting() override {}
+            std::uint32_t scene_record() override { return has_record ? 0x1000u : 0u; }
+            float record_float(std::size_t) override { return 0.0f; }
+            std::uint8_t record_byte(std::size_t) override { return 0; }
+            std::uint32_t record_field(std::size_t offset) override {
+                return 0x1000u + static_cast<std::uint32_t>(offset);
+            }
+            void set_world_parameter(const std::string&, const std::string&) override {}
+            void set_world_parameter_from_record(const std::string&, std::uint32_t) override {}
+            std::uint32_t create_ocean_owner(std::size_t, std::uint32_t, std::uint32_t) override {
+                return 5;
+            }
+            std::uint32_t create_ocean_owner_named(
+                std::size_t, std::uint32_t, const std::string& name) override {
+                ocean_named = name == bsp::kDefaultSkyName;
+                return 6;
+            }
+            void ocean_set_light(std::uint32_t, std::uint32_t) override {}
+            void ocean_set_vector(std::size_t, int) override {}
+            void ocean_set_scalar(std::size_t, int) override {}
+            void ocean_set_quality(std::uint8_t) override {}
+            std::uint32_t create_atmosphere(std::size_t) override { return 7; }
+            void ocean_set_atmosphere(std::uint32_t, std::uint32_t) override {}
+            void operator_set_atmosphere(std::uint32_t, std::uint32_t) override {}
+            void atmosphere_add_layer(std::uint32_t, std::size_t, std::size_t) override {}
+            std::uint32_t create_sky(std::size_t, std::uint32_t, std::uint8_t) override { return 8; }
+            void sky_configure(std::uint32_t, std::uint32_t) override {}
+            void build_unused_literal(const std::string& text) override {
+                literal_built = text == bsp::kOceanInitFailedLiteral;
+            }
+            std::uint32_t create_channel_object(std::size_t, std::size_t) override { return 9; }
+            void register_channel_object(std::uint32_t) override {}
+            std::uint32_t create_tail_object(const bsp::TailConstruction& spec) override {
+                return static_cast<std::uint32_t>(spec.game_offset) + 0x10000u;
+            }
+            void set_input_context(int, bool) override {}
+        };
+        RecordingHost with_record;
+        const auto recorded = bsp::run_world_construct(with_record);
+        RecordingHost without_record;
+        without_record.has_record = false;
+        const auto defaulted = bsp::run_world_construct(without_record);
+        check(!bsp::ocean_failure_is_reported()
+              && with_record.literal_built && recorded.ocean_owner != 0
+              && recorded.ocean_from_scene_record
+              && !without_record.literal_built && defaulted.ocean_owner != 0
+              && without_record.ocean_named && !defaulted.ocean_from_scene_record
+              && recorded.channel_objects == bsp::kChannelObjectCount
+              && recorded.marker_manager == 0x121D4u,
+            "004DE610 builds an ocean on both branches and never reports a failure");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
