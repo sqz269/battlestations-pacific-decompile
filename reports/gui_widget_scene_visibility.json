@@ -1,0 +1,227 @@
+{
+  "packet": "gui_widget_scene_visibility",
+  "owner": "agent/gui-scene-node",
+  "doc": "docs/GUI_WIDGET_SCENE_VISIBILITY.md",
+  "files": [
+    "docs/GUI_WIDGET_SCENE_VISIBILITY.md",
+    "reports/gui_widget_scene_visibility.json",
+    "include/bsp/gui_widget_scene.hpp",
+    "src/gui_widget_scene.cpp"
+  ],
+  "addresses": [
+    "00aab4c0", "00aa7170", "00a9cd20", "00aa8320", "00aa6a30", "00aa8530", "00aa8450",
+    "00a9cce0", "00a9e0d0", "00a9e0b0", "00a9e070", "00aa6640", "00aa6720", "00aa6820",
+    "00aa9520", "00aa9730", "00aaa5a0", "00ab73b0", "00a9c380"
+  ],
+
+  "signatures": [
+    {"address": "00aab4c0", "name": "BSP_GuiWidget_CloneSubtree",
+     "abi": "__thiscall(widget, GuiWidget* parent_clone) -> GuiWidget* in EAX", "ret": "RET 4"},
+    {"address": "00aa7170", "name": "BSP_GuiWidget_DeactivateAndRefreshBounds",
+     "abi": "__thiscall(widget)", "ret": "RET (tail jump into 00aa70e0)"},
+    {"address": "00a9cd20", "name": "BSP_GuiListControl_SetActive",
+     "abi": "__thiscall(widget, char active)", "ret": "RET 4"},
+    {"address": "00aa6a30", "name": "BSP_GuiWidget_SetActive",
+     "abi": "__thiscall(widget, char active)", "ret": "RET 4"},
+    {"address": "00aa8320", "name": "BSP_GuiWidget_ReleaseSceneNodes",
+     "abi": "__thiscall(widget)", "ret": "RET"},
+    {"address": "00aa8530", "name": "BSP_GuiWidget_SetVisible",
+     "abi": "__thiscall(widget, char visible)", "ret": "RET 4"},
+    {"address": "00aa8450", "name": "BSP_GuiWidget_PropagateVisibility",
+     "abi": "__thiscall(widget, char old_ancestor, char new_ancestor, char requested, char recurse, char apply_requested)",
+     "ret": "RET 14h"},
+    {"address": "00a9cce0", "name": "BSP_GuiListControl_SetVisible",
+     "abi": "__thiscall(widget, char visible)", "ret": "RET 4"},
+    {"address": "00a9e0d0", "name": "BSP_GuiWidget_IsVisible",
+     "abi": "__thiscall(widget) -> bool in EAX", "ret": "RET"},
+    {"address": "00a9e0b0", "name": "BSP_GuiWidget_SetPivot",
+     "abi": "__thiscall(widget, const float pivot[2])", "ret": "RET 4"},
+    {"address": "00a9e070", "name": "BSP_GuiWidget_IsKindOf",
+     "abi": "__thiscall(widget, const void* class_descriptor) -> bool in AL", "ret": "RET 4"},
+    {"address": "00aa6640", "name": "BSP_GuiWidget_CreateWithSceneNode",
+     "abi": "__fastcall(ECX = type_tag, EDX = const char* node_name, stack: void* ctor_arg) -> GuiWidget* in EAX",
+     "ret": "RET 4", "seh": "00cb7368"},
+    {"address": "00aa6720", "name": "BSP_GuiWidget_SetSceneNode",
+     "abi": "__thiscall(widget, void* node)", "ret": "RET 4"},
+    {"address": "00aa6820", "name": "BSP_GuiWidget_SetVisibilityRecursive",
+     "abi": "__thiscall(widget, char recurse)", "ret": "RET 4"},
+    {"address": "00aa9520", "name": "BSP_GuiWidget_CopyConstruct",
+     "abi": "__thiscall(widget, const GuiWidget* source) -> widget in EAX", "ret": "RET 4",
+     "seh": "00cb73f1"},
+    {"address": "00aa9730", "name": "FUN_00aa9730 (placeholder kept; evidence appended)",
+     "abi": "__thiscall(widget)", "ret": "RET at 00aa99b8", "seh": "00cb7421",
+     "note": "an earlier packet recorded that Ghidra stores the body only to 00aa9950 on a false no-return"},
+    {"address": "00aaa5a0", "name": "BSP_GuiWidget_AttachChild",
+     "abi": "__thiscall(parent, GuiWidget* child, void* insert_position)", "ret": "RET 8"},
+    {"address": "00ab73b0", "name": "BSP_GuiTextWidget_ReleaseGlyphNode",
+     "abi": "__thiscall(widget)", "ret": "RET"},
+    {"address": "00a9c380", "name": "BSP_GuiListControl_SetItemVisible",
+     "abi": "__thiscall(control, int index, char visible)", "ret": "RET 8"}
+  ],
+
+  "no_ghidra_function": [
+    {"address": "00a9cce0", "end": "00a9cd16", "role": "widget vtable +34h override in table 00d5bbf8: SetVisible, base then the widget named by the id at +118h"},
+    {"address": "00a9e070", "end": "00a9e095", "role": "widget vtable +0Ch: hand-rolled kind-of test against the two-entry table 00f8bc88..00f8bc90"},
+    {"address": "00a9e0a0", "end": "00a9e0a0", "role": "widget vtable +24h base: a bare RET, the layout-pass tail hook"},
+    {"address": "00a9e0b0", "end": "00a9e0c4", "role": "widget vtable +30h: write Pivot at +18h/+1Ch then call 00aa7220"},
+    {"address": "00a9e0d0", "end": "00a9e0f0", "role": "widget vtable +38h: IsVisible, node at +4Ch non-null and node+ACh > 0.0"},
+    {"address": "00a9e100", "end": "00a9e100", "role": "widget vtable +3Ch base: RET 4, the no-op effective-visibility-changed hook"},
+    {"address": "00a9e120", "end": "00a9e120", "role": "widget vtable +64h base: RET 10h, four dword arguments, the rectangle query the hit test uses"}
+  ],
+
+  "struct_layout": {
+    "gui_widget": [
+      {"offset": "+4Ch", "type": "void*", "name": "scene_node",
+       "evidence": "cleared by 00aa9423, set by 00aa6726 and 00aa9700, released and cleared by 00aa838c"},
+      {"offset": "+75h", "type": "bool", "name": "visibility_recurses",
+       "evidence": "third argument of 00b6da70 at 00aa8581 and 00aa8598; sole setter 00aa6820; default 0 at 00aa9466"},
+      {"offset": "+76h", "type": "bool", "name": "copy_constructed",
+       "evidence": "0 at 00aa9469, forced 1 at 00aa9602; no reader found"},
+      {"offset": "+77h", "type": "bool", "name": "hidden",
+       "evidence": "00a9c3d2 stores 0 for visible and 00a9c3e7 stores 1 for hidden; read at 00aa8c97 and 00a9d03d; default 0 at 00aa946c"},
+      {"offset": "+85h", "type": "bool", "name": "active (provisional)",
+       "evidence": "sole writer 00aa6a34; readers 00a9d048 and 00a9ca90 only"},
+      {"offset": "+E4h", "type": "bool", "name": "authored Visible",
+       "evidence": "descriptor record at 00aab2da..00aab322 with the literal 00d5c1e4, type 3, default 1; reader storage at 00aaac09 followed by virtual +34h at 00aaac33; never written by 00aa9390 or 00aa9520"}
+    ],
+    "scene_node": [
+      {"offset": "+ACh", "type": "float", "name": "visibility factor",
+       "evidence": "written by 00b6da7d, read by 00a9e0d7 and 00b748f1 against the 0.0 at 00d7a218"},
+      {"offset": "+138h", "type": "uint32 flags", "name": "bits 1h and 2h cleared on bind",
+       "evidence": "00aa672b and 00aa9705 both AND with FFFFFFFCh"},
+      {"offset": "+188h", "type": "void*", "name": "secondary node of the glyph-owner class",
+       "evidence": "released by 00ab73bd and cleared at 00ab73c2"},
+      {"size": "0x184", "evidence": "00aa6662 MOV ECX,0x184 before the allocator at 00b74eb0"}
+    ]
+  },
+
+  "vtable_slots": {
+    "table_00d5bbf8": {"+0Ch": "00a9e070", "+20h": "00aa8320", "+24h": "00a9e0a0", "+30h": "00a9e0b0",
+      "+34h": "00a9cce0", "+38h": "00a9e0d0", "+3Ch": "00a9e100", "+40h": "00a9d030",
+      "+5Ch": "00a9e110", "+60h": "00a9cd20", "+64h": "00a9e120", "+68h": "00a9ca60", "+78h": "00a9c050"},
+    "table_00d5bed0": {"+0Ch": "00a9e070", "+20h": "00aa8320", "+24h": "00a9e0a0", "+30h": "00a9e0b0",
+      "+34h": "00aa8530", "+38h": "00a9e0d0", "+3Ch": "00a9e100", "+40h": "00aa87b0",
+      "+5Ch": "00a9e110", "+60h": "00aa6a30", "+64h": "00a9e120", "+68h": "00aa7190", "+78h": "00aa7170"},
+    "evidence": "raw bytes of both tables read at 00d5bbf8 and 00d5bed0"
+  },
+
+  "rules": [
+    {"name": "is_visible",
+     "rule": "node != 0 && node[+ACh] > 0.0f; COMISS/JBE, so NaN is not visible",
+     "address": "00a9e0d0"},
+    {"name": "set_visible",
+     "rule": "ancestor chain AND of virtual +38h with an early break; then the five-argument walk seeded (ok, ok, visible, widget+75h, 1); then node factor 1.0 or 0.0 with recurse = widget+75h. The walk runs before the factor is written, so it observes the old value.",
+     "address": "00aa8530"},
+    {"name": "propagate_visibility",
+     "rule": "no node stops the walk including children; before = a1 && virtual+38h; after = a2 ? (a5 ? a3 : virtual+38h) : false; fire virtual +3Ch only on the edge; child receives (before, after, a3, a4, a4 ? a5 : 0)",
+     "address": "00aa8450"},
+    {"name": "draw_skip",
+     "rule": "00b748e0 returns immediately when node+ACh <= 0.0; a per-node test, not a subtree test",
+     "address": "00b748e0"},
+    {"name": "hit_test_skip",
+     "rule": "recursion into a child is gated by that child's virtual +38h at 00aa8c5f; the widget's own rectangle is tested only when +78h is set and +77h clear",
+     "address": "00aa8bd0"},
+    {"name": "update_skip",
+     "rule": "requires +77h clear, +85h set, virtual +38h true and BSP_GuiManager_GetOrCreate()+70h clear",
+     "address": "00a9d030"},
+    {"name": "release_scene_nodes",
+     "rule": "children first through their own vtable +20h, then virtual +0Ch against the descriptor at 00f8be28 and 00ab73b0 on a match, then unlink and release +4Ch and clear it",
+     "address": "00aa8320"},
+    {"name": "attach",
+     "rule": "child+70h = parent; BSP_Node_SetParent_Provisional with ECX = child node and the parent node as the argument; neither pointer is tested",
+     "address": "00aaa5a0"},
+    {"name": "node_creation",
+     "rule": "fresh widget: 00aa6560 factory, allocate 0x184, construct with a name, bind through 00aa6720, run virtual +74h. Clone: node virtual +10h on the source node with the per-type name from 00d5c0b8[type_tag]. Both clear node+138h bits 1h and 2h.",
+     "address": "00aa6640, 00aa9520"}
+  ],
+
+  "callers": {
+    "00aa7170": ["00a9c050", "00aae770", "00ab10f0", "00abc040", "00ac1bb0", "00ac78e0", "00ac8890", "00aceb50"],
+    "00aa6a30": ["00a9cd20", "00abc040"],
+    "00aa8320": ["00aa9730", "00acc6a0"],
+    "00aa8530": ["00a9cce0", "00acdef0"],
+    "00aa8450": ["00aa8530", "00ac4450", "00aa8450"],
+    "00aa6720": ["00aa6640", "00ab98f0", "00ac6600"],
+    "00aab4c0": ["00aab4c0", "and the layout paths listed in docs/GUI_WIDGET_TRANSFORM.md"]
+  },
+  "callees": {
+    "00aab4c0": ["004c12b0", "00aa6560", "00aaa5a0", "00aab4c0", "00aa7220", "00aa70e0"],
+    "00aa7170": ["virtual +60h", "00aa70e0"],
+    "00a9cd20": ["00aa6a30", "00a9ba90"],
+    "00aa8320": ["00ab6a30", "virtual +0Ch", "00ab73b0", "00b6dfa0"],
+    "00aa8530": ["virtual +38h", "00aa8450", "00b6da70"],
+    "00aa8450": ["virtual +38h", "virtual +3Ch", "00aa8450"],
+    "00aaa5a0": ["00aa83a0", "00a9b790", "00a9d480", "00a9d6c0", "00b6e680"]
+  },
+
+  "external_contracts": [
+    {"address": "00b6da70", "name": "BSP_SceneNode_SetVisibilityFactor",
+     "abi": "__thiscall(node, float factor, bool recurse)", "ret": "RET 8",
+     "note": "stores node+ACh and, when recurse is set, stamps the same value onto every descendant through +34h/+3Ch; an overwrite, not a multiply"},
+    {"address": "00b6e680", "name": "BSP_Node_SetParent_Provisional", "ret": "RET 4"},
+    {"address": "00b6dfa0", "name": "BSP_Node_UnlinkAndRelease", "ret": "RET"},
+    {"address": "00b748e0", "name": "node draw entry", "note": "early-outs on node+ACh <= 0.0"},
+    {"address": "00aa6560", "name": "widget type factory", "note": "owned by the GUI layout loader packet"},
+    {"address": "00aaa710", "name": "property reader", "note": "owned by the GUI layout loader packet; parses into widget+E4h and calls virtual +34h"}
+  ],
+
+  "uncertainties": [
+    "widget+E4h is written by neither constructor: 00aa9390 and 00aa9520 both stop at +E0h, so a layout that omits Visible calls SetVisible on uninitialised memory unless a derived constructor writes it. No derived constructor was read.",
+    "+85h named Active from three uses in one class only; it may be that class's state living in a base-class hole.",
+    "node+138h bits 1h and 2h are cleared on every bind and set nowhere in the GUI; their meaning belongs to the scene packets.",
+    "The GUI's root scene node, layer or camera was not identified; the parent chain is the only placement recovered.",
+    "The node class behind virtual +10h is unidentified, so reading it as clone-with-name rests on the argument being a per-type name string from 00d5c0b8.",
+    "The self-assignment of the clone's Pos at 00aab53a..00aab55b is reproduced as a no-op; a volatile or aliasing reading cannot be excluded from the listing.",
+    "00aa9730's block at 00aa97ac..00aa97d2 is unreachable because 00aa8320 already cleared +4Ch; read as an inlined base-class body.",
+    "The base class above the two leaf vtables was not mapped; 00aa9520 stores 00ceb130 then 00d5c130.",
+    "00aa9730 keeps its placeholder ledger name: an earlier packet recorded a false no-return truncating the stored body at 00aa9950 with the real RET at 00aa99b8, so only the head was read here. The existing 00aa9390 record names the base constructor BSP_UIContext_Construct while this packet names everything BSP_GuiWidget_*; the inconsistency is unresolved."
+  ],
+
+  "remaining": [
+    "Which front-end screens call virtual +34h and which rebuild their widget tree, closing the gap between the screen-set pump 004f8830 and these flags.",
+    "00a9ba90, the per-item state call in the +60h override, and what states 1 and 3 mean.",
+    "00a9d030 and 00a9ca60 beyond their entry gates.",
+    "00aa6980's node path: widget+5Ch reaches a material colour alpha at +0Ch, a different field from node+ACh."
+  ],
+
+  "followups": [
+    {"packet": "gui_widget_update_tick", "addresses": ["00a9d030", "00aa87b0", "00a9ca60", "00a9ba90"],
+     "files": ["docs/GUI_WIDGET_UPDATE_TICK.md", "include/bsp/gui_widget_update.hpp"],
+     "contract": "The segment-75 control's per-frame update and navigation handler behind the +77h/+85h gates, and the item state call the +60h override drives."},
+    {"packet": "gui_widget_hit_test", "addresses": ["00aa8bd0", "00a9e120", "00aa8710"],
+     "files": ["docs/GUI_WIDGET_HIT_TEST.md", "include/bsp/gui_widget_hit_test.hpp"],
+     "contract": "The rectangle walk: the accumulated origin, the +64h rect virtual and the two byte gates, as a pure predicate over the tree."},
+    {"packet": "gui_widget_alpha_material", "addresses": ["00aa6980", "00b74650", "00b74640", "00b72b40", "00b732c0", "00b179f0"],
+     "files": ["docs/GUI_WIDGET_ALPHA_MATERIAL.md"],
+     "contract": "How widget+5Ch reaches a material colour alpha through the node's model, and how it relates to the visibility factor at node+ACh."},
+    {"packet": "gui_screen_widget_lifetime", "addresses": ["00acdef0", "00ac4450", "00acc6a0", "00aa9730"],
+     "files": ["docs/GUI_SCREEN_WIDGET_LIFETIME.md"],
+     "contract": "The screen-side entry points: which screens call SetVisible and which destroy their tree."}
+  ],
+
+  "state": [
+    {"address": "00aab4c0", "state": "reconstructed_build_tested", "symbol": "bsp::clone_subtree"},
+    {"address": "00aa7170", "state": "reconstructed_build_tested", "symbol": "bsp::deactivate_and_refresh_bounds"},
+    {"address": "00a9cd20", "state": "analyzed"},
+    {"address": "00aa6a30", "state": "analyzed"},
+    {"address": "00aa8320", "state": "reconstructed_build_tested", "symbol": "bsp::release_scene_nodes"},
+    {"address": "00aa8530", "state": "reconstructed_build_tested", "symbol": "bsp::set_widget_visible"},
+    {"address": "00aa8450", "state": "reconstructed_fixture_tested", "symbol": "bsp::propagate_visibility"},
+    {"address": "00a9cce0", "state": "analyzed"},
+    {"address": "00a9e0d0", "state": "reconstructed_build_tested", "symbol": "bsp::widget_is_visible"},
+    {"address": "00a9e0b0", "state": "analyzed"},
+    {"address": "00a9e070", "state": "analyzed"},
+    {"address": "00aa6640", "state": "analyzed"},
+    {"address": "00aa6720", "state": "analyzed"},
+    {"address": "00aa6820", "state": "analyzed"},
+    {"address": "00aa9520", "state": "analyzed"},
+    {"address": "00aa9730", "state": "analyzed"},
+    {"address": "00aaa5a0", "state": "reconstructed_build_tested", "symbol": "bsp::attach_child (node half only)"},
+    {"address": "00ab73b0", "state": "analyzed"},
+    {"address": "00a9c380", "state": "analyzed"}
+  ],
+
+  "build": {"command": "./scripts/build.ps1", "result": "clean, warnings as errors, Win32"},
+  "tests": {"suite": "reconstructed_math", "result": "passed",
+            "added": "one case in tests/math_tests.cpp for the recurse arm of 00aa8450"}
+}
