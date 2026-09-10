@@ -3,6 +3,8 @@
 #include "asset_stream_probe.hpp"
 #include "bsp/structured_resource.hpp"
 #include "bsp/structured_hierarchy.hpp"
+#include "bsp/mesh_resource.hpp"
+#include "bsp/vertex_format.hpp"
 #include <array>
 #include <cstdio>
 #include <cstring>
@@ -18,7 +20,10 @@ static bool probe_model_metadata(AssetStreamProbe& assets) {
         || reader.control_word() != 14) return false;
     std::string note;
     bsp::HierarchyItem hierarchy;
+    bsp::MeshResourcePayload mesh;
+    float group_params = 0;
     std::size_t note_count = 0, skipped_items = 0, hierarchy_count = 0;
+    std::size_t mesh_count = 0, group_count = 0;
     while (root->has_remaining_00715bf0()) {
         auto container = root->read_child_00bea680();
         if (!container) return false;
@@ -30,9 +35,19 @@ static bool probe_model_metadata(AssetStreamProbe& assets) {
                     if (!bsp::read_note_text_00718f50_fragment(*item, note)
                         || !item->close()) return false;
                     ++note_count;
+                } else if (item->tag() == "Mesh") {
+                    if (!bsp::parse_mesh_resource_00b944e0(*item,
+                        bsp::resolve_mesh_vertex_format_layout_00b2dbd0,
+                        mesh, error) || !item->close()) {
+                        std::printf("Mesh reader: %s\n", error.c_str());
+                        return false;
+                    }
+                    ++mesh_count;
+                } else if (item->tag() == "GroupParams") {
+                    if (!bsp::read_group_params_00b8e580_fragment(*item,
+                        group_params) || !item->close()) return false;
+                    ++group_count;
                 } else {
-                    // Mesh and GroupParams are concrete native parser types.
-                    // This metadata probe explicitly skips their payloads.
                     if (!item->skip_00be9c40()) return false;
                     ++skipped_items;
                 }
@@ -70,8 +85,54 @@ static bool probe_model_metadata(AssetStreamProbe& assets) {
         std::memcpy(&bits, &hierarchy.box[index], sizeof(bits));
         box_matches = box_matches && bits == box_bits[index];
     }
+    // Independently inspected installed-file offsets. Compare copied bytes
+    // directly with the retained VFS source; this also checks that metadata
+    // preceding Subset did not shift the shared reader cursor.
+    if (source->size_00bef600() != 1303 || !source->fully_initialized()
+        || mesh.vertex_streams.size() != 1 || !mesh.indices
+        || mesh.subsets.size() != 1 || mesh.lod_phases.size() != 1) return false;
+    const auto* original = source->data_00bef610();
+    const auto& stream = mesh.vertex_streams.front();
+    const auto& indices = *mesh.indices;
+    const auto& subset = mesh.subsets.front();
+    const bool vertex_bytes = stream.bytes.size() == 192
+        && std::memcmp(stream.bytes.data(), original + 177, 192) == 0;
+    const bool compressed_bytes = stream.compressed_format_bytes.size() == 96
+        && std::memcmp(stream.compressed_format_bytes.data(), original + 403, 96) == 0;
+    const bool index_bytes = indices.bytes.size() == 48
+        && std::memcmp(indices.bytes.data(), original + 522, 48) == 0;
+    const auto* selected = subset.events.size() == 3
+        ? std::get_if<bsp::MeshVertexStreamReference>(&subset.events[0]) : nullptr;
+    const auto* texture = subset.events.size() == 3
+        ? std::get_if<bsp::MeshTextureRequest>(&subset.events[1]) : nullptr;
+    const auto* lighting = subset.events.size() == 3
+        ? std::get_if<bsp::MeshLightingRecord>(&subset.events[2]) : nullptr;
+    const bool subset_matches = subset.serialized_primitive == 5
+        && subset.native_primitive == 4
+        && subset.range_words == std::array<std::uint32_t,4>{0,12,0,8}
+        && subset.effect_name == "textured.mshd"
+        && selected && selected->index == 0 && texture && texture->slot == 0
+        && texture->name == "repulodestroyed.tga" && lighting
+        && lighting->ignored_slot == 0
+        && std::memcmp(lighting->values.data(), original + 805, 68) == 0;
+    const auto& phase = mesh.lod_phases.front();
+    const bool lod_matches = mesh.lod_value == 1.0f && phase.value0 == 0.0f
+        && std::memcmp(&phase.value1, original + 936, 4) == 0
+        && phase.word0 == 0 && phase.word1 == 0;
+    const bool mesh_checked = mesh_count == 1 && mesh.prefix_word == 0
+        && stream.count == 12 && stream.format_name == "pssn4nubn4ussn2.mvfm"
+        && stream.layout.stride == 16 && stream.layout.element_count == 3
+        && stream.has_compressed_data && vertex_bytes && compressed_bytes
+        && indices.count == 24 && indices.format == 0x65 && indices.index_width == 2
+        && index_bytes && subset_matches && lod_matches
+        && mesh.weight_map_names.empty() && mesh.unknown_tags.empty()
+        && mesh.field_order == std::vector<std::string>{"VertexStream",
+            "CompressedVertexFormatData", "Indices", "BoundingSphere",
+            "BoundingBox", "Subset", "LODPhases"};
+    const bool group_checked = group_count == 1
+        && std::memcmp(&group_params, original + 998, 4) == 0;
     const bool checked = note_count == 1 && note == "visp100-visp1.5"
-        && skipped_items == 2 && hierarchy_count == 1
+        && skipped_items == 0 && hierarchy_count == 1 && mesh_checked && group_checked
         && hierarchy.name == "repulogepdarabok_004"
         && hierarchy.parent == 0xffffffffu && hierarchy.flags == 0
         && hierarchy.resources == std::vector<std::uint32_t>{0, 1, 2}
@@ -85,6 +146,11 @@ static bool probe_model_metadata(AssetStreamProbe& assets) {
         hierarchy.name.c_str(), hierarchy.resources.size(), matrix_matches,
         box_matches, static_cast<long long>(source->position_00bef580()),
         skipped_items, checked);
+    std::printf("Installed mesh payload: vertices=%u stride=%u elements=%u indices=%u index_width=%u vertex_bytes_match=%d compressed_bytes_match=%d index_bytes_match=%d subsets=%zu subset_fields_match=%d lod_match=%d group_params_match=%d field_order_match=%d checked=%d\n",
+        stream.count, stream.layout.stride, stream.layout.element_count,
+        indices.count, indices.index_width, vertex_bytes, compressed_bytes,
+        index_bytes, mesh.subsets.size(), subset_matches, lod_matches,
+        group_checked, mesh.field_order.size() == 7, mesh_checked && group_checked);
     return checked;
 }
 

@@ -1,0 +1,253 @@
+{
+  "utc": "2026-09-10T01:35:59.056672+00:00",
+  "baseline_commit": "e5f9fd7850646231de65fb8dcd5f12eacbc89ccc",
+  "snapshot": {
+    "utc": "2026-09-10T01:30:03.141953+00:00",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "total_function_count": 62762,
+    "internal_function_count": 62320,
+    "external_symbol_count": 443,
+    "note": "getFunctions(true) enumerates internal functions; total count also includes external functions."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "ctests_passed": 2
+  },
+  "reader_probe": {
+    "exit_code": 0,
+    "asset": {
+      "asset": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\models\\misc\\repulogepdarabok_004.mmod",
+      "size": 1303,
+      "sha256": "5fab0cfe63220f84693cae4140fc98689670316585993dae71bd4f503bc7a7e6",
+      "root": {
+        "tag": "MMOD",
+        "header": 0,
+        "payload": 12,
+        "size": 1291,
+        "end": 1303
+      },
+      "control": 14,
+      "meshes": [
+        {
+          "node": {
+            "tag": "Mesh",
+            "header": 113,
+            "payload": 125,
+            "size": 823,
+            "end": 948
+          },
+          "prefix": 0,
+          "fields": [
+            {
+              "tag": "VertexStream",
+              "header": 129,
+              "payload": 149,
+              "size": 220,
+              "end": 369,
+              "count": 12,
+              "format_name": "pssn4nubn4ussn2.mvfm",
+              "raw_byte_offset": 177,
+              "raw_byte_count": 192,
+              "raw_sha256": "9d528ec79acbd2f1725fb3b04da65d4c6eecc241b8e94157f47a1f62ec953cdf"
+            },
+            {
+              "tag": "CompressedVertexFormatData",
+              "header": 369,
+              "payload": 403,
+              "size": 96,
+              "end": 499,
+              "raw_sha256": "70ecefba68560b19a7db57d45615005e13f5aca00c3b59838b4edea4bc673751",
+              "raw_float_words": [
+                1050678678,
+                1057034632,
+                1075769515,
+                0,
+                916461270,
+                922817162,
+                941552105,
+                1065353216,
+                1072602967,
+                1060712297,
+                1041791634,
+                0,
+                3211698007,
+                3199807337,
+                3180886674,
+                1065353216,
+                1054447809,
+                1036856615,
+                1065353216,
+                1065353216,
+                1040474351,
+                1060796307,
+                0,
+                0
+              ]
+            },
+            {
+              "tag": "Indices",
+              "header": 499,
+              "payload": 514,
+              "size": 56,
+              "end": 570,
+              "count": 24,
+              "format": 101,
+              "index_width": 2,
+              "raw_byte_offset": 522,
+              "raw_byte_count": 48,
+              "raw_sha256": "3df317aa2c08859b1cb6c5a8501d54d86a2f5b5ae47972a2a84aeb338de3b109",
+              "indices": [
+                0,
+                1,
+                2,
+                0,
+                2,
+                3,
+                4,
+                5,
+                6,
+                4,
+                6,
+                7,
+                8,
+                9,
+                1,
+                8,
+                1,
+                0,
+                7,
+                6,
+                10,
+                7,
+                10,
+                11
+              ]
+            },
+            {
+              "tag": "BoundingSphere",
+              "header": 570,
+              "payload": 592,
+              "size": 16,
+              "end": 608
+            },
+            {
+              "tag": "BoundingBox",
+              "header": 608,
+              "payload": 627,
+              "size": 24,
+              "end": 651
+            },
+            {
+              "tag": "Subset",
+              "header": 651,
+              "payload": 665,
+              "size": 246,
+              "end": 911
+            },
+            {
+              "tag": "LODPhases",
+              "header": 911,
+              "payload": 928,
+              "size": 20,
+              "end": 948
+            }
+          ]
+        }
+      ],
+      "boundary": "Byte-level inspection of installed source. C++ reader/decoder validation is reported separately."
+    },
+    "resource_payloads_decoded": [
+      "Mesh",
+      "Note",
+      "GroupParams"
+    ],
+    "all_selected_model_resource_payloads_decoded": true,
+    "vertex_bytes_match": true,
+    "compressed_format_bytes_match": true,
+    "index_bytes_match": true,
+    "vertex_count": 12,
+    "stride": 16,
+    "element_count": 3,
+    "index_count": 24,
+    "index_width": 2,
+    "subset_count": 1,
+    "subset_effect": "textured.mshd",
+    "subset_texture": "repulodestroyed.tga",
+    "ordered_subset_events": [
+      "stream0",
+      "texture_slot0",
+      "lighting"
+    ],
+    "lod_value_default": 1.0,
+    "group_params_float_bits": "3f7c28f6",
+    "cursor": 1303,
+    "cloud_model_scope": "Existing bounds/reader lifetime checks; CloudSystem still skipped."
+  },
+  "full_probe": {
+    "exit_code": 0,
+    "font_draws": [
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=A hr=0x00000000 visible=74 outside=0 bounds=64,70..73,82 expected=63,63..75,88 sampler_mask=1 restored=1 lit_lines=1 checked=1",
+      "Installed bilinear font draw: descriptor=guifontbilinear.shfx glyph=wrapped_A_space_A_LF_A hr=0x00000000 visible=900 outside=0 bounds=69,130..88,232 expected=68,116..90,244 sampler_mask=1 restored=1 lit_lines=3 checked=1"
+    ],
+    "installed_mesh_draw": false
+  },
+  "review": {
+    "mesh_buffers": "Reviewed all54aliases, grammar, suffix and aggregate ordering; no blocking findings.",
+    "mesh_fields": "Independently decoded actual subset/lighting/LOD/GroupParams offsets and reviewed ABI/ownership; no blocking findings."
+  },
+  "reviewed_names": 693,
+  "new_names": 45,
+  "annotations_this_batch": 49,
+  "reconstructed_routines": 174,
+  "partial_fragments": 135,
+  "new_fragments": 16,
+  "baseline_reconstruction_keys_preserved": 293,
+  "remaining_rename_tags_verified": 8760,
+  "tag_count": 10333,
+  "partition": {
+    "utc": "2026-09-10T01:30:42.195464+00:00",
+    "candidates": 23756,
+    "segments": 94,
+    "strong": 8,
+    "scope": "Candidate graph hints only; exact function/fragment ownership and named incomplete dependencies above are mandatory."
+  },
+  "source_hashes": {
+    "CMakeLists.txt": "046860f3016e06ca064f4408b36a69e265a7f28815df39031b6b72e05de5adff",
+    "include/bsp/structured_reader.hpp": "dc767b621950d1dda5f6a49fe0082fe114eee4eb305f843b0c90d92256c28072",
+    "src/structured_reader.cpp": "28295a40c56500e8aba68dbfcf023f84444c7f78d41f4e5068893e230a57d569",
+    "include/bsp/structured_resource.hpp": "ad5a690a58439a95a322f1365eeedf03998a99d35124c75da743338db5e3a970",
+    "src/structured_resource.cpp": "08397c1c1358c650eb67419134f13c53d44d0fb813a400bd6603f0f2b5176009",
+    "src/structured_resource_probe.cpp": "c27ad9a3d3b80f1be28dd5802de0c57d990fbfc44c06af4304f91c04bde7f0f2",
+    "include/bsp/mesh_buffers.hpp": "93b99ea7c5d734071aaf95c92fec2014227bed1d9a1d8f235971cb3640d46c92",
+    "src/mesh_buffers.cpp": "82b7423b0b735754d2adafc94c3b7903bb62020ee6bcc5b9b238e643fd3af212",
+    "include/bsp/mesh_fields.hpp": "030e9962d111a8ffe5a7a289efc3469824c0936e5bfef0106f17d44606eff920",
+    "src/mesh_fields.cpp": "fe5ea15b67e05de59a84d74c7fc3aec66cec5c4389928f73838953b5ccc49bee",
+    "include/bsp/mesh_resource.hpp": "3cfeb43d447ab27c1486b7316423852dee98a56596bf772faea40f44065d49a9",
+    "src/mesh_resource.cpp": "052a391e9363841d2cfc498fb684db2a6c6c3be930754d827220429784b43692",
+    "include/bsp/vertex_format.hpp": "18713dd8f512bdec0d6feadc7241a19d24963ebe44316f124f850af3a94fc429",
+    "src/vertex_format.cpp": "0ec1dc019e1963bad12c55cd089e5b759cc19e8d9b533b5f5566535a17c337d1"
+  },
+  "artifact_sha256": "2dbde5ed8287ded4c3f4482b18ce6cfc9d0cbe6020fa32e2513e3292555f1380",
+  "native_evidence": "reports/mesh_resource_native_identity.json",
+  "annotations": "reports/mesh_resource_annotations.json",
+  "new_test_targets": 0,
+  "abi_compatible": false,
+  "game_rebuilt": false,
+  "goal_status": "active",
+  "limits": [
+    "Successful full-read C++ wire values; native pool/refcount/runtime ABI not implemented.",
+    "Installed fixture exercises one stream,16-bit indices,one subset and one LOD phase; other aliases/formats,rope tails,weight names,multiple streams and rejected inputs rely on source/assembly review and compilation, not runtime coverage.",
+    "GroupParams fixture has no tail; explicit nonempty-tail skip supported by assembly.",
+    "No installed mesh GPU/material realization, full game startup or gameplay validation.",
+    "Native shader decode constants are audited but not yet bound from parsed records."
+  ],
+  "report_sha256": {
+    "reports/mesh_resource_build.txt": "039ce2b3974eb5c913070e08960ea634b3e485ce4c2620fe1d32ec573f1c94bb",
+    "reports/mesh_resource_reader_probe.txt": "93288818739751890909eb41152e8fc563a905e30e6535fc47dcd680ecb89692",
+    "reports/mesh_resource_full_probe.txt": "da8b29bcd40d871340de5f3d47dc712d9254dfefd1f135377d1ed6c43110f847",
+    "reports/mesh_resource_native_identity.json": "f53e03ef1e2cd0de5803e7fd3f1bd1c95bbad567438547a000f41f41504deedb",
+    "reports/mesh_resource_annotations.json": "85a40e2eed410091d1798eeb063b62613c73be2c5e7cab50cd8ea6eaa64138bd"
+  }
+}

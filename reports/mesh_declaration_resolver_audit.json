@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "packet": "mesh_declaration_resolver_supplement",
+  "captured_utc": "2026-09-10T01:19:07.823195+00:00",
+  "source_head": "e5f9fd7",
+  "status": "native_missing_function_audited_ready_for_primary_creation",
+  "scope": {
+    "owned_address": "00b2c280",
+    "approved_readonly_helper": "0041dd40",
+    "primary_owns": [
+      "00b2dbd0",
+      "00b317e0"
+    ],
+    "no_ghidra_mutations": true,
+    "no_cpp": true,
+    "no_tests": true
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live bsp.py ghidra bytes call verified configured project/program before access.",
+    "code_spans": [
+      {
+        "address": "00b2c280",
+        "length": 80,
+        "end_exclusive": "00b2c2d0",
+        "kind": "code",
+        "sha256": "040860b53dfd30e670b36ea53acaeb3048e23bd89757cc3ef36ad6bc4bc6f0a0",
+        "matches_original_pe": true,
+        "disk_offset": 7520896,
+        "raw_byte_capture": "local/mesh_declaration_resolver/00b2c280.bytes.txt",
+        "decoded_disassembly": "local/mesh_declaration_resolver/00b2c280.decoded.asm.txt",
+        "return_instructions": [
+          "00b2c2cd: ret 0xc"
+        ]
+      },
+      {
+        "address": "0041dd40",
+        "length": 164,
+        "end_exclusive": "0041dde4",
+        "kind": "code",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "matches_original_pe": true,
+        "disk_offset": 122176,
+        "raw_byte_capture": "local/mesh_declaration_resolver/0041dd40.bytes.txt",
+        "decoded_disassembly": "local/mesh_declaration_resolver/0041dd40.decoded.asm.txt",
+        "return_instructions": [
+          "0041dd7f: ret 8",
+          "0041dde1: ret 8"
+        ]
+      },
+      {
+        "address": "00d5f060",
+        "length": 24,
+        "end_exclusive": "00d5f078",
+        "kind": "data",
+        "sha256": "52b84c0044b184218ee71b4121a4e34eb89ea223be4a64a2a18a9200b025708a",
+        "matches_original_pe": true,
+        "disk_offset": 9826400,
+        "raw_byte_capture": "local/mesh_declaration_resolver/00d5f060.bytes.txt",
+        "decoded_disassembly": null,
+        "return_instructions": []
+      }
+    ]
+  },
+  "function": {
+    "address": "00b2c280",
+    "original_name": null,
+    "original_annotation": {
+      "function_absent": true,
+      "proto_result": "No function found for00b2c280",
+      "xrefs_result": "From00d5f064 [DATA]",
+      "lookup_result": "No function starts here; enclosing candidate00b2bb90"
+    },
+    "suggested_name": "BSP_DeclarationRegistry_CopyResolvedName",
+    "original_abi": "ECX incoming object ignored; stack1 output8-byte string, stack2 input8-byte string, stack3 ignored DWORD; EAX output pointer; RET0Ch.",
+    "contract": "Zero output{length,data} before source/destination alias branch. If output!=input, resize output to input.length through0041dd40 with preserve1, then copy output.length bytes from input.data when input.length!=0. Return output. No registry lookup, name transformation or flag branch; self-alias leaves zeroed empty string. Fresh output construction is required because existing output storage is overwritten without release.",
+    "complete_span_length": 80,
+    "last_instruction": "00b2c2cd: ret0Ch",
+    "suggested_plate_comment": "BSP reconstruction hypothesis: Zero output{length,data} before source/destination alias branch. If output!=input, resize output to input.length through0041dd40 with preserve1, then copy output.length bytes from input.data when input.length!=0. Return output. No registry lookup, name transformation or flag branch; self-alias leaves zeroed empty string. Fresh output construction is required because existing output storage is overwritten without release. ABI: ECX incoming object ignored; stack1 output8-byte string, stack2 input8-byte string, stack3 ignored DWORD; EAX output pointer; RET0Ch. Native span00b2c280..00b2c2cf matches installedPE; vtable00d5f060+4 points here. Evidence: reports/mesh_declaration_resolver_audit.json. Descriptive role is provisional; no native ABI or game validation."
+  },
+  "vtable": {
+    "address": "00d5f060",
+    "resolver_slot_offset": 4,
+    "resolver_address": "00b2c280",
+    "captured_entries": [
+      "00b32210",
+      "00b2c280",
+      "00b2dbd0",
+      "00b31d20",
+      "00b31d40",
+      "00b32230"
+    ]
+  },
+  "helper": {
+    "address": "0041dd40",
+    "original_name": "FUN_0041dd40",
+    "original_abi": "ECX8-byte string; stack desired unsigned length and preserve flag (low byte); RET8.",
+    "complete_span_length": 164,
+    "behavior": "If desired length unchanged do nothing; zero desired length releases old data through00419cc0/00bd1510 and clears both fields. Nonzero new length allocates length+1 through00419cc0/00bd1120, optionally copies min(old,new), returns old storage if nonnull, writes newlength/data and trailing zero byte. Resolver invokes from zeroed fresh output so old storage is absent.",
+    "unresolved_dependency": "00bd1120 storage allocation policy beyond observed returned buffer"
+  },
+  "identity_semantics": {
+    "output_fresh_storage": true,
+    "source_retained": false,
+    "input_bytes_copied_by_stored_length": true,
+    "embedded_nul_preserved": true,
+    "output_terminator_written_by_helper": true,
+    "third_stack_argument_ignored": true,
+    "zero_length_output": {
+      "length": 0,
+      "data": null
+    },
+    "self_alias_output": "both DWORDs zeroed, no release or copy"
+  },
+  "validation": {
+    "full_spans_match": true,
+    "assembly_inspected": true,
+    "function_created": false,
+    "exported_resolver": false,
+    "reconstructed_cpp": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "primary_integration": {
+    "validation": "reports/mesh_resource_validation.json",
+    "annotations": "reports/mesh_resource_annotations.json",
+    "scope": "Wire readers, declaration decoder and GroupParams integrated in installed VFS diagnostic. Consumer/lifetime native audits guide real GPU/material/manager integration."
+  }
+}

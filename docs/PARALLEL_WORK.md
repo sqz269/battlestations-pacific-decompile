@@ -15,10 +15,9 @@ policy while the other two continued archive-stream and font-layout work.
 No throughput multiplier or completion date has been measured.
 
 After the latest saved function definitions/names, the refreshed graph groups
-23,937 candidates into 85 segments, with 82 in its largest strong dependency
-cycle. These current segment IDs replace the earlier snapshot's IDs; the
-87-segment figures above describe the historical method-review baseline.
-Packet function addresses and file ownership remain the scheduling contract.
+23,756 candidates into 94 segments. Current graph details are recorded
+in `config/parallel_work.json`; historical figures above describe the method-review
+baseline. Packet function addresses and file ownership remain the scheduling contract.
 
 The continuing-goal instructions in `AGENTS.md` now explicitly request this
 one-integrator/three-worker capacity and refilling useful independent packets.
@@ -125,3 +124,15 @@ records the same-input baseline comparison: 458 qualifying edges restored, 38 wa
 eight purity fields corrected, with all 87 function groups unchanged. The
 reported 1,554 provisional bookmarks and 54 named-but-incomplete addresses are
 scope reminders, not automatic exclusions or completion credit.
+
+## Installed mesh payload batch
+
+Three disjoint workers closed mesh buffers, subset/LOD fields and object lifetime;
+the primary integrated the encoded declaration grammar and installed model probe.
+GroupParams is decoded alongside Mesh and Note. All Resource payloads in the
+selected model are now parsed; its rendering is not yet verified. Native shader
+scale/offset consumption supplies the next concrete material integration packet.
+See `docs/MESH_RESOURCE_INTEGRATION.md` and `reports/mesh_resource_validation.json`.
+Next assignments are exact shader-constant fragments, registered buffer backing,
+and resource parser-map storage; shared renderer/manager integration stays with
+the primary. Candidate partitions do not establish independence.

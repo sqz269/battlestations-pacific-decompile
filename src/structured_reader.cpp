@@ -218,6 +218,11 @@ bool StructuredNode::read_float(float& output) noexcept {
     return true;
 }
 
+bool StructuredNode::read_bytes(void* destination, std::uint32_t count) noexcept {
+    if (!reader_ || !reader_->check_leaf(*this)) return false;
+    return reader_->read_exact(destination, count, remaining_, true);
+}
+
 bool StructuredNode::read_string(std::string& output) noexcept {
     std::uint32_t length;
     if (!read_u32(length)) return false;

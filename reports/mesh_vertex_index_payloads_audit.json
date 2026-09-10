@@ -1,0 +1,821 @@
+{
+  "utc": "2026-09-10T01:16:24.322167+00:00",
+  "packet": "mesh_vertex_index_payloads",
+  "baseline_commit": "e5f9fd7",
+  "status": "host_payload_sources_written_native_and_installed_bytes_audited_primary_integration_pending",
+  "project_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every bytes command verifies project and program through bsp.py client()."
+  },
+  "functions": [
+    {
+      "address": "00b93aa0",
+      "original_name": "FUN_00b93aa0",
+      "suggested_name": "BSP_Mesh_ReadIndices",
+      "original_abi": "Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Read count and format DWORDs; format65h=2 bytes,66h=4,other=0 native width; raw count*width; renderer index factory+60h, buffer+0Ch map,+10h and+2Ch callbacks; retain at mesh+60 then release temporary. Host payload decoder supports65h/66h only.",
+      "byte_evidence": {
+        "address": "00b93aa0",
+        "length": 154,
+        "end_inclusive": "00b93b39",
+        "raw_capture": "local/mesh_buffers/00b93aa0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "66a1b284015317f11a1d0864a40e0283cb523ca75bda271ff13c20fea55dba14"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Read count and format DWORDs; format65h=2 bytes,66h=4,other=0 native width; raw count*width; renderer index factory+60h, buffer+0Ch map,+10h and+2Ch callbacks; retain at mesh+60 then release temporary. Host payload decoder supports65h/66h only. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b93e60",
+      "original_name": "FUN_00b93e60",
+      "suggested_name": "BSP_Mesh_ReadVertexStream",
+      "original_abi": "Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Read count and counted format name; resolve declaration through renderer+38h; create stream through+5Ch(count,1,declaration); raw count*declaration[+CCh]; case-insensitive rope.mvfm explicitly skips tail; append at prior mesh+7Ch index and release temporary.",
+      "byte_evidence": {
+        "address": "00b93e60",
+        "length": 302,
+        "end_inclusive": "00b93f8d",
+        "raw_capture": "local/mesh_buffers/00b93e60.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "94e15c85f1c62d564db2a45199251d085833a2f1bccdb970280367888f7cc787"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Read count and counted format name; resolve declaration through renderer+38h; create stream through+5Ch(count,1,declaration); raw count*declaration[+CCh]; case-insensitive rope.mvfm explicitly skips tail; append at prior mesh+7Ch index and release temporary. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b93800",
+      "original_name": "FUN_00b93800",
+      "suggested_name": "BSP_Mesh_ReadCompressedVertexFormatData",
+      "original_abi": "Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked.",
+      "byte_evidence": {
+        "address": "00b93800",
+        "length": 116,
+        "end_inclusive": "00b93873",
+        "raw_capture": "local/mesh_buffers/00b93800.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "9f2d4f057b392410b7cdaa9737a67ddf37ed202331afc86c3939af2e329eb4a1"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00be9a20",
+      "original_name": "FUN_00be9a20",
+      "suggested_name": "BSP_StructuredNode_ReadRawBytes",
+      "original_abi": "ECX node-wrapper pointer; stack destination,count; RET8; no stable return value.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Unwrap node; pass reader=node+8 and remaining pointer=node+20h to00bf02f0. Full raw adapter span verified against installed PE.",
+      "byte_evidence": {
+        "address": "00be9a20",
+        "length": 27,
+        "end_inclusive": "00be9a3a",
+        "raw_capture": "local/mesh_buffers/00be9a20.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "0a73183483c1fd1134d0059fd8a2a747545ca2011203ded09d5bd82bfddd84c7"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Unwrap node; pass reader=node+8 and remaining pointer=node+20h to00bf02f0. Full raw adapter span verified against installed PE. ABI: ECX node-wrapper pointer; stack destination,count; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00bf02f0",
+      "original_name": "FUN_00bf02f0",
+      "suggested_name": "BSP_StructuredReader_ReadRawBytesDebitActual",
+      "original_abi": "ECX reader; stack destination,requested count,remaining pointer; RET0Ch; ignores stream return value.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Call underlying stream virtual+24h with destination,count,nonnull actual-count pointer aliasing requested-count stack argument; subtract overwritten slot from remaining after call. No zero-fill/status/extent check. Pseudocode two-argument signature and unaff_retaddr are wrong.",
+      "byte_evidence": {
+        "address": "00bf02f0",
+        "length": 37,
+        "end_inclusive": "00bf0314",
+        "raw_capture": "local/mesh_buffers/00bf02f0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "84d124db8b1cee8fb9bdedd1077a2eb987a91b8038456cd9b81bd8d920139996"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call underlying stream virtual+24h with destination,count,nonnull actual-count pointer aliasing requested-count stack argument; subtract overwritten slot from remaining after call. No zero-fill/status/extent check. Pseudocode two-argument signature and unaff_retaddr are wrong. ABI: ECX reader; stack destination,requested count,remaining pointer; RET0Ch; ignores stream return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b73260",
+      "original_name": "FUN_00b73260",
+      "suggested_name": "BSP_Geometry_GetVertexStream",
+      "original_abi": "ECX geometry; stack stream index; EAX stream pointer; RET4.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler.",
+      "byte_evidence": {
+        "address": "00b73260",
+        "length": 11,
+        "end_inclusive": "00b7326a",
+        "raw_capture": "local/mesh_buffers/00b73260.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "19cbbaa2310751119aad04e714502f2ae2d3f195bd38020eac0f0b922f2e2763"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b47900",
+      "original_name": "TRIV_body_00b47900",
+      "suggested_name": "BSP_VertexDeclaration_GetElementCount",
+      "original_abi": "ECX declaration; EAX DWORD count; no stack arguments; plain RET.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h.",
+      "byte_evidence": {
+        "address": "00b47900",
+        "length": 4,
+        "end_inclusive": "00b47903",
+        "raw_capture": "local/mesh_buffers/00b47900.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b61d90",
+      "original_name": "FUN_00b61d90",
+      "suggested_name": "BSP_LogicalVertexStream_SetCompressedFormatData",
+      "original_abi": "ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate.",
+      "byte_evidence": {
+        "address": "00b61d90",
+        "length": 10,
+        "end_inclusive": "00b61d99",
+        "raw_capture": "local/mesh_buffers/00b61d90.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "2916e2994197d4418c7a26f60f4933c75db70f143977f040b32a03a89face977"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b72b20",
+      "original_name": "TRIV_body_00b72b20",
+      "suggested_name": "BSP_Geometry_GetVertexStreamCount",
+      "original_abi": "ECX geometry; EAX DWORD count; no stack arguments; plain RET.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Return geometry+7Ch stream high-water count; Mesh parser uses it for append and last-stream selection.",
+      "byte_evidence": {
+        "address": "00b72b20",
+        "length": 4,
+        "end_inclusive": "00b72b23",
+        "raw_capture": "local/mesh_buffers/00b72b20.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "087a4a4a1d3591c4f4697b2aeda95e2b286c2de3930f398f72f4d12404d5c677"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return geometry+7Ch stream high-water count; Mesh parser uses it for append and last-stream selection. ABI: ECX geometry; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    },
+    {
+      "address": "00b287c0",
+      "original_name": "FUN_00b287c0",
+      "suggested_name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "original_abi": "ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch.",
+      "confidence": "high for described assembly operations; descriptive symbol remains a hypothesis",
+      "evidence": "Call allocator00b4b370 then00b4bc00 with count,declaration,flags; append raw stream pointer in renderer+1AACh array; additionally+19B0h array when virtual+58h returns AL==1. Allocation/growth/native lifecycle unported.",
+      "byte_evidence": {
+        "address": "00b287c0",
+        "length": 234,
+        "end_inclusive": "00b288a9",
+        "raw_capture": "local/mesh_buffers/00b287c0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b"
+      },
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call allocator00b4b370 then00b4bc00 with count,declaration,flags; append raw stream pointer in renderer+1AACh array; additionally+19B0h array when virtual+58h returns AL==1. Allocation/growth/native lifecycle unported. ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation."
+    }
+  ],
+  "reused_evidence": [
+    {
+      "address": "00b4bc00",
+      "name": "BSP_D3D9LogicalVertexStream_Construct",
+      "scope": "Concrete vtable install and declaration retention only; constructor graphics behavior unported."
+    },
+    {
+      "address": "00b48ce0",
+      "name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+      "scope": "Existing four-byte getter of stream+68h, concrete slot00d61d90."
+    },
+    {
+      "address": "00b61e20",
+      "name": "BSP_LogicalVertexStreamBase_Construct",
+      "scope": "Existing declaration-stride/layout interpretation; not newly reconstructed."
+    },
+    {
+      "address": "00b73b70",
+      "name": "BSP_Geometry_SetIndexStream",
+      "scope": "Existing retain-new/release-old at mesh+60h."
+    },
+    {
+      "address": "00b73bb0",
+      "name": "BSP_Geometry_SetVertexStream",
+      "scope": "Existing stream append/retain into mesh+64h and high-water+7Ch."
+    }
+  ],
+  "byte_ranges": [
+    {
+      "address": "00b93aa0",
+      "length": 154,
+      "end_inclusive": "00b93b39",
+      "raw_capture": "local/mesh_buffers/00b93aa0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "66a1b284015317f11a1d0864a40e0283cb523ca75bda271ff13c20fea55dba14"
+    },
+    {
+      "address": "00b93e60",
+      "length": 302,
+      "end_inclusive": "00b93f8d",
+      "raw_capture": "local/mesh_buffers/00b93e60.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "94e15c85f1c62d564db2a45199251d085833a2f1bccdb970280367888f7cc787"
+    },
+    {
+      "address": "00b93800",
+      "length": 116,
+      "end_inclusive": "00b93873",
+      "raw_capture": "local/mesh_buffers/00b93800.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "9f2d4f057b392410b7cdaa9737a67ddf37ed202331afc86c3939af2e329eb4a1"
+    },
+    {
+      "address": "00be9a20",
+      "length": 27,
+      "end_inclusive": "00be9a3a",
+      "raw_capture": "local/mesh_buffers/00be9a20.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "0a73183483c1fd1134d0059fd8a2a747545ca2011203ded09d5bd82bfddd84c7"
+    },
+    {
+      "address": "00b73260",
+      "length": 11,
+      "end_inclusive": "00b7326a",
+      "raw_capture": "local/mesh_buffers/00b73260.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "19cbbaa2310751119aad04e714502f2ae2d3f195bd38020eac0f0b922f2e2763"
+    },
+    {
+      "address": "00b47900",
+      "length": 4,
+      "end_inclusive": "00b47903",
+      "raw_capture": "local/mesh_buffers/00b47900.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+    },
+    {
+      "address": "00b61d90",
+      "length": 10,
+      "end_inclusive": "00b61d99",
+      "raw_capture": "local/mesh_buffers/00b61d90.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "2916e2994197d4418c7a26f60f4933c75db70f143977f040b32a03a89face977"
+    },
+    {
+      "address": "00b72b20",
+      "length": 4,
+      "end_inclusive": "00b72b23",
+      "raw_capture": "local/mesh_buffers/00b72b20.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "087a4a4a1d3591c4f4697b2aeda95e2b286c2de3930f398f72f4d12404d5c677"
+    },
+    {
+      "address": "00bf02f0",
+      "length": 37,
+      "end_inclusive": "00bf0314",
+      "raw_capture": "local/mesh_buffers/00bf02f0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "84d124db8b1cee8fb9bdedd1077a2eb987a91b8038456cd9b81bd8d920139996"
+    },
+    {
+      "address": "00b287c0",
+      "length": 234,
+      "end_inclusive": "00b288a9",
+      "raw_capture": "local/mesh_buffers/00b287c0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b"
+    },
+    {
+      "address": "00b4bc00",
+      "length": 758,
+      "end_inclusive": "00b4bef5",
+      "raw_capture": "local/mesh_buffers/00b4bc00.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9"
+    },
+    {
+      "address": "00b48ce0",
+      "length": 4,
+      "end_inclusive": "00b48ce3",
+      "raw_capture": "local/mesh_buffers/00b48ce0.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457"
+    },
+    {
+      "address": "00d61d90",
+      "length": 4,
+      "end_inclusive": "00d61d93",
+      "raw_capture": "local/mesh_buffers/00d61d90.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "c2024f81685402b967b0d9fbbfa5b52b2250695315fee75aa88aee2d019b485f"
+    }
+  ],
+  "call_flow": {
+    "sites": [
+      {
+        "address": "00b93aaa",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93aaa (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ab3",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ab3 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ac9",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ac9 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93af3",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93af3 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93afc",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93afc (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93b08",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b08 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93b11",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b11 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93b18",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b18 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93b21",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b21 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93b31",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b31 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93e82",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93e82 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93e90",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93e90 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ead",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ead (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ec0",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ec0 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ec8",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ec8 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ed8",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ed8 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93eef",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93eef (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93ef5",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93ef5 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f08",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f08 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f1b",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f1b (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f27",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f27 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f30",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f30 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f38",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f38 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f41",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f41 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f51",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f51 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f71",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f71 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93f78",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93f78 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93809",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93809 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93814",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93814 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93820",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93820 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93824",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93824 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b9383c",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b9383c (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b9384f",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b9384f (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93857",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93857 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93862",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93862 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00b93869",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93869 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00be9a33",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00be9a33 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "address": "00bf0306",
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00bf0306 (was: NONE, now: NONE)"
+        }
+      }
+    ],
+    "all_none": true,
+    "mutations": false
+  },
+  "installed_fixture": {
+    "asset": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\models\\misc\\repulogepdarabok_004.mmod",
+    "size": 1303,
+    "sha256": "5fab0cfe63220f84693cae4140fc98689670316585993dae71bd4f503bc7a7e6",
+    "root": {
+      "tag": "MMOD",
+      "header": 0,
+      "payload": 12,
+      "size": 1291,
+      "end": 1303
+    },
+    "control": 14,
+    "meshes": [
+      {
+        "node": {
+          "tag": "Mesh",
+          "header": 113,
+          "payload": 125,
+          "size": 823,
+          "end": 948
+        },
+        "prefix": 0,
+        "fields": [
+          {
+            "tag": "VertexStream",
+            "header": 129,
+            "payload": 149,
+            "size": 220,
+            "end": 369,
+            "count": 12,
+            "format_name": "pssn4nubn4ussn2.mvfm",
+            "raw_byte_offset": 177,
+            "raw_byte_count": 192,
+            "raw_sha256": "9d528ec79acbd2f1725fb3b04da65d4c6eecc241b8e94157f47a1f62ec953cdf"
+          },
+          {
+            "tag": "CompressedVertexFormatData",
+            "header": 369,
+            "payload": 403,
+            "size": 96,
+            "end": 499,
+            "raw_sha256": "70ecefba68560b19a7db57d45615005e13f5aca00c3b59838b4edea4bc673751",
+            "raw_u32_words": [
+              1050678678,
+              1057034632,
+              1075769515,
+              0,
+              916461270,
+              922817162,
+              941552105,
+              1065353216,
+              1072602967,
+              1060712297,
+              1041791634,
+              0,
+              3211698007,
+              3199807337,
+              3180886674,
+              1065353216,
+              1054447809,
+              1036856615,
+              1065353216,
+              1065353216,
+              1040474351,
+              1060796307,
+              0,
+              0
+            ]
+          },
+          {
+            "tag": "Indices",
+            "header": 499,
+            "payload": 514,
+            "size": 56,
+            "end": 570,
+            "count": 24,
+            "format": 101,
+            "index_width": 2,
+            "raw_byte_offset": 522,
+            "raw_byte_count": 48,
+            "raw_sha256": "3df317aa2c08859b1cb6c5a8501d54d86a2f5b5ae47972a2a84aeb338de3b109",
+            "indices": [
+              0,
+              1,
+              2,
+              0,
+              2,
+              3,
+              4,
+              5,
+              6,
+              4,
+              6,
+              7,
+              8,
+              9,
+              1,
+              8,
+              1,
+              0,
+              7,
+              6,
+              10,
+              7,
+              10,
+              11
+            ]
+          },
+          {
+            "tag": "BoundingSphere",
+            "header": 570,
+            "payload": 592,
+            "size": 16,
+            "end": 608
+          },
+          {
+            "tag": "BoundingBox",
+            "header": 608,
+            "payload": 627,
+            "size": 24,
+            "end": 651
+          },
+          {
+            "tag": "Subset",
+            "header": 651,
+            "payload": 665,
+            "size": 246,
+            "end": 911
+          },
+          {
+            "tag": "LODPhases",
+            "header": 911,
+            "payload": 928,
+            "size": 20,
+            "end": 948
+          }
+        ]
+      }
+    ],
+    "boundary": "Byte-level inspection of installed source. C++ reader/decoder validation is reported separately."
+  },
+  "verified_format_contract": {
+    "name": "pssn4nubn4ussn2.mvfm",
+    "stride": 16,
+    "element_count": 3,
+    "provenance": "Primary independently recovered00b2dbd0 token parser: p/ssn4 type10 size8; n/ubn4 type8 size4; u/ssn2 type9 size4. Final parser integration audit owned by primary."
+  },
+  "host_api": {
+    "header": "include/bsp/mesh_buffers.hpp",
+    "source": "src/mesh_buffers.cpp",
+    "dependencies": [
+      "StructuredNode::read_bytes full-transfer API",
+      "actual named format resolver"
+    ],
+    "behavior": "Preserve packed bytes and metadata. No graphics object creation or decompression."
+  },
+  "host_rejections": [
+    "unknown index format",
+    "DWORD multiplication overflow",
+    "payload larger than remaining node budget",
+    "allocation or vector capacity failure",
+    "missing/failed named declaration resolver",
+    "underlying guarded reader failure"
+  ],
+  "limitations": [
+    "Native short reads and actual-count-not-written behavior remain outside complete-transfer host domain.",
+    "Unknown native index formats use zero width; host explicitly rejects them.",
+    "Compressed repeated assignment leaks/replaces native pointer; host vector replacement releases old storage.",
+    "No semantics assigned to the32-byte compressed-format records.",
+    "Installed fixture uses only16-bit indices and one non-rope stream;32-bit,rope tails,invalid inputs not fixture-exercised.",
+    "Renderer allocator, buffer callbacks, registry/device failure behavior and native ABI remain unported.",
+    "Build/integrated C++ installed fixture run belongs to primary batch; source inspection and file hashes alone are not execution proof."
+  ],
+  "validation": {
+    "all_native_ranges_match_installed_pe": true,
+    "installed_source_byte_fixture": true,
+    "cpp_build": "pending_primary_batch",
+    "cpp_installed_fixture": "pending_primary_batch",
+    "native_differential": false,
+    "game_validated": false,
+    "new_standalone_tests": 0
+  },
+  "source_sha256": {
+    "include/bsp/mesh_buffers.hpp": "93b99ea7c5d734071aaf95c92fec2014227bed1d9a1d8f235971cb3640d46c92",
+    "src/mesh_buffers.cpp": "82b7423b0b735754d2adafc94c3b7903bb62020ee6bcc5b9b238e643fd3af212",
+    "docs/MESH_VERTEX_INDEX_PAYLOADS.md": "966e6a2b26de9a3f13294c4b74b55d3a99b3d93eb5109145df1e7cb55c951e00"
+  },
+  "primary_integration": {
+    "validation": "reports/mesh_resource_validation.json",
+    "annotations": "reports/mesh_resource_annotations.json",
+    "scope": "Wire readers, declaration decoder and GroupParams integrated in installed VFS diagnostic. Consumer/lifetime native audits guide real GPU/material/manager integration."
+  }
+}

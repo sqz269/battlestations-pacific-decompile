@@ -1,0 +1,654 @@
+{
+  "packet": "mesh_subset_lod_fields",
+  "utc": "2026-09-10T01:12:05.781266+00:00",
+  "status": "mesh_fields_aggregate_and_group_params_written_byte_verified_pending_primary_build",
+  "sources": [
+    "include/bsp/mesh_fields.hpp",
+    "src/mesh_fields.cpp"
+  ],
+  "documentation": "docs/MESH_SUBSET_LOD_FIELDS.md",
+  "byte_comparison": {
+    "utc": "2026-09-10T01:12:05.781266+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Each live range invokes bsp.py ghidra bytes, which calls Client.verify().",
+    "disk_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "disk_size": 12223752,
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all_ranges_match": true,
+    "ranges": [
+      {
+        "address": "00b941d0",
+        "length": 750,
+        "end_exclusive": "00b944be",
+        "kind": "whole_function",
+        "file_offset": 7946704,
+        "matches_disk": true,
+        "disk_sha256": "bd621305e7888dc1454021d26e1857da7a2897b61132b00f660021e52da052d2",
+        "ghidra_sha256": "bd621305e7888dc1454021d26e1857da7a2897b61132b00f660021e52da052d2"
+      },
+      {
+        "address": "00b93710",
+        "length": 130,
+        "end_exclusive": "00b93792",
+        "kind": "whole_function",
+        "file_offset": 7943952,
+        "matches_disk": true,
+        "disk_sha256": "5730093b6e589e301d7837dcb0aad7189dfacdc5d9b098d0c3282d8bc00144fa",
+        "ghidra_sha256": "5730093b6e589e301d7837dcb0aad7189dfacdc5d9b098d0c3282d8bc00144fa"
+      },
+      {
+        "address": "00b72710",
+        "length": 14,
+        "end_exclusive": "00b7271e",
+        "kind": "whole_function",
+        "file_offset": 7808784,
+        "matches_disk": true,
+        "disk_sha256": "fac4786295985d4495e2e69ea49946f029fd389709175dbb0153e5fc4d07c1e2",
+        "ghidra_sha256": "fac4786295985d4495e2e69ea49946f029fd389709175dbb0153e5fc4d07c1e2"
+      },
+      {
+        "address": "00b93590",
+        "length": 45,
+        "end_exclusive": "00b935bd",
+        "kind": "whole_function",
+        "file_offset": 7943568,
+        "matches_disk": true,
+        "disk_sha256": "1839e33083e8f0d46b0a1b78669a9bbaa5f2d8099d2a1d9535ec0364a815233d",
+        "ghidra_sha256": "1839e33083e8f0d46b0a1b78669a9bbaa5f2d8099d2a1d9535ec0364a815233d"
+      },
+      {
+        "address": "00b935c0",
+        "length": 63,
+        "end_exclusive": "00b935ff",
+        "kind": "whole_function",
+        "file_offset": 7943616,
+        "matches_disk": true,
+        "disk_sha256": "2ffc3c0c9cb06b002ed8dd6d5fcfd415d5a1a0b025842a3a0af2f6c531cd70de",
+        "ghidra_sha256": "2ffc3c0c9cb06b002ed8dd6d5fcfd415d5a1a0b025842a3a0af2f6c531cd70de"
+      },
+      {
+        "address": "00b93f90",
+        "length": 142,
+        "end_exclusive": "00b9401e",
+        "kind": "whole_function",
+        "file_offset": 7946128,
+        "matches_disk": true,
+        "disk_sha256": "ee0c9bb89bbda5c33c8057430f3cf2975b4699099abf0eeb96dea816de99bc78",
+        "ghidra_sha256": "ee0c9bb89bbda5c33c8057430f3cf2975b4699099abf0eeb96dea816de99bc78"
+      },
+      {
+        "address": "00b73270",
+        "length": 47,
+        "end_exclusive": "00b7329f",
+        "kind": "whole_function",
+        "file_offset": 7811696,
+        "matches_disk": true,
+        "disk_sha256": "82ce57dab53136e8cf7c2088d2dc14199bfd50ffd8de2ccedb6caa9d94a1c8ca",
+        "ghidra_sha256": "82ce57dab53136e8cf7c2088d2dc14199bfd50ffd8de2ccedb6caa9d94a1c8ca"
+      },
+      {
+        "address": "00b73d50",
+        "length": 11,
+        "end_exclusive": "00b73d5b",
+        "kind": "whole_function",
+        "file_offset": 7814480,
+        "matches_disk": true,
+        "disk_sha256": "1726f93b5f878f829b54076cd7d5acc5e3083e5399530fe06f4aa512d52502e8",
+        "ghidra_sha256": "1726f93b5f878f829b54076cd7d5acc5e3083e5399530fe06f4aa512d52502e8"
+      },
+      {
+        "address": "00b93d30",
+        "length": 294,
+        "end_exclusive": "00b93e56",
+        "kind": "whole_function",
+        "file_offset": 7945520,
+        "matches_disk": true,
+        "disk_sha256": "e2040f75bdf256c37b5c8a91685b68495e4fc33308c68b7b8458e40f6a4ac5de",
+        "ghidra_sha256": "e2040f75bdf256c37b5c8a91685b68495e4fc33308c68b7b8458e40f6a4ac5de"
+      },
+      {
+        "address": "00b937a0",
+        "length": 89,
+        "end_exclusive": "00b937f9",
+        "kind": "whole_function",
+        "file_offset": 7944096,
+        "matches_disk": true,
+        "disk_sha256": "a274e37c62a121115163e3b506a350fc3e85e93f3807d936ea12c8a198b94eac",
+        "ghidra_sha256": "a274e37c62a121115163e3b506a350fc3e85e93f3807d936ea12c8a198b94eac"
+      },
+      {
+        "address": "00533fa0",
+        "length": 86,
+        "end_exclusive": "00533ff6",
+        "kind": "whole_function",
+        "file_offset": 1261472,
+        "matches_disk": true,
+        "disk_sha256": "608bf105abca0a9250c2043ea622d1fd59041535811de990fd898dbbcdc09bf3",
+        "ghidra_sha256": "608bf105abca0a9250c2043ea622d1fd59041535811de990fd898dbbcdc09bf3"
+      },
+      {
+        "address": "00535320",
+        "length": 124,
+        "end_exclusive": "0053539c",
+        "kind": "whole_function",
+        "file_offset": 1266464,
+        "matches_disk": true,
+        "disk_sha256": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03",
+        "ghidra_sha256": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03"
+      },
+      {
+        "address": "00b93390",
+        "length": 176,
+        "end_exclusive": "00b93440",
+        "kind": "whole_function",
+        "file_offset": 7943056,
+        "matches_disk": true,
+        "disk_sha256": "a77878e87ad7456bc7e2589a18c5d7a5332f4d003ef67cf37df9a149bf0f0fe5",
+        "ghidra_sha256": "a77878e87ad7456bc7e2589a18c5d7a5332f4d003ef67cf37df9a149bf0f0fe5"
+      },
+      {
+        "address": "00b17840",
+        "length": 232,
+        "end_exclusive": "00b17928",
+        "kind": "whole_function",
+        "file_offset": 7436352,
+        "matches_disk": true,
+        "disk_sha256": "b0f05cff30ab3322bf80279bab569619cb517b886cb6e8ad136cd39f98509a72",
+        "ghidra_sha256": "b0f05cff30ab3322bf80279bab569619cb517b886cb6e8ad136cd39f98509a72"
+      },
+      {
+        "address": "00b179d0",
+        "length": 28,
+        "end_exclusive": "00b179ec",
+        "kind": "whole_function",
+        "file_offset": 7436752,
+        "matches_disk": true,
+        "disk_sha256": "df29af8a76d4556c2ce9b7c1f96720fe5bdcdb0cae942320731a887f16de4fd7",
+        "ghidra_sha256": "df29af8a76d4556c2ce9b7c1f96720fe5bdcdb0cae942320731a887f16de4fd7"
+      },
+      {
+        "address": "004cdc20",
+        "length": 187,
+        "end_exclusive": "004cdcdb",
+        "kind": "whole_function",
+        "file_offset": 842784,
+        "matches_disk": true,
+        "disk_sha256": "7963c3cf78bd2f0735a1fda00175b43ab3babc772d0c61842c77e28f524d3604",
+        "ghidra_sha256": "7963c3cf78bd2f0735a1fda00175b43ab3babc772d0c61842c77e28f524d3604"
+      },
+      {
+        "address": "00b944c0",
+        "length": 24,
+        "end_exclusive": "00b944d8",
+        "kind": "primitive_jump_table",
+        "file_offset": 7947456,
+        "matches_disk": true,
+        "disk_sha256": "16de11f028f653282114a8d34337ec626c26495f6bc0363614da6cb1ae2c3e48",
+        "ghidra_sha256": "16de11f028f653282114a8d34337ec626c26495f6bc0363614da6cb1ae2c3e48",
+        "hex": "2f42b9000c42b9001342b9001a42b9002142b9002842b900"
+      },
+      {
+        "address": "00d63840",
+        "length": 30,
+        "end_exclusive": "00d6385e",
+        "kind": "material_alias_literals",
+        "file_offset": 9844800,
+        "matches_disk": true,
+        "disk_sha256": "c5cc4573b9cbd4dcfa51a4f21a7f94deffee31366efdb8383631924fa0a8d8ed",
+        "ghidra_sha256": "c5cc4573b9cbd4dcfa51a4f21a7f94deffee31366efdb8383631924fa0a8d8ed",
+        "hex": "736f6c646965722e6d73686400000000736f6c64696572732e6d73686400"
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "end_exclusive": "00d7a250",
+        "kind": "lighting_default_first_four",
+        "file_offset": 9937484,
+        "matches_disk": true,
+        "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "ghidra_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "hex": "0000803f"
+      },
+      {
+        "address": "00ce38b8",
+        "length": 4,
+        "end_exclusive": "00ce38bc",
+        "kind": "lighting_default_final",
+        "file_offset": 9320632,
+        "matches_disk": true,
+        "disk_sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593",
+        "ghidra_sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593",
+        "hex": "00002041"
+      },
+      {
+        "address": "00b9454e",
+        "length": 35,
+        "end_exclusive": "00b94571",
+        "kind": "LODValue_dispatch_fragment",
+        "file_offset": 7947598,
+        "matches_disk": true,
+        "disk_sha256": "234b22a13c6fac94a26b131369687452ea575b77d052c9b30e382b98179f903f",
+        "ghidra_sha256": "234b22a13c6fac94a26b131369687452ea575b77d052c9b30e382b98179f903f",
+        "hex": "8b378d4c2420e877540500d95c240cd944240c518bced91c24e8a4e1fdffe968010000"
+      }
+    ],
+    "note": "Whole function bodies and listed data/fragments only; not whole-image identity."
+  },
+  "functions": [
+    {
+      "address": "00b941d0",
+      "suggested_name": "BSP_Mesh_ReadSubsetField",
+      "original_abi": "ECX output-pair context; stack mesh,child handle; RET8.",
+      "contract": "Five DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries.",
+      "host_symbol": "parse_mesh_subset_00b941d0",
+      "status": "wire_and_ordering_fragment",
+      "evidence": [
+        "exports/bsp/functions/00b941d0/decompiled.c",
+        "exports/bsp/functions/00b941d0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b93710",
+      "suggested_name": "BSP_Mesh_ReadLodPhasesField",
+      "original_abi": "Stack mesh,child handle; incoming ECX unused; RET8.",
+      "contract": "Unsigned count; each16-byte record float,float,U32,U32; append via00b73270.",
+      "host_symbol": "append_mesh_lod_phases_00b93710",
+      "status": "wire_and_append_fragment_valid_total_le4",
+      "evidence": [
+        "exports/bsp/functions/00b93710/decompiled.c",
+        "exports/bsp/functions/00b93710/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b72710",
+      "suggested_name": "BSP_Mesh_SetLodValue",
+      "original_abi": "ECX mesh; stack float bits; RET4.",
+      "contract": "MOVSS stack argument to mesh+0x0c. This function never reads a node.",
+      "host_symbol": "read_mesh_lod_value_00b944e0_fragment",
+      "status": "setter_effect_in_dispatch_fragment",
+      "evidence": [
+        "exports/bsp/functions/00b72710/decompiled.c",
+        "exports/bsp/functions/00b72710/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b93590",
+      "suggested_name": "BSP_Mesh_ConsumeBoundingSphereField",
+      "original_abi": "Second stack argument child handle; other input ignored; RET8.",
+      "contract": "Four ReadFloat calls, each FSTP ST0; no mesh/section writes.",
+      "host_symbol": "consume_mesh_sphere_00b93590",
+      "status": "complete_transfer_host_function",
+      "evidence": [
+        "exports/bsp/functions/00b93590/decompiled.c",
+        "exports/bsp/functions/00b93590/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b935c0",
+      "suggested_name": "BSP_Mesh_ConsumeBoundingBoxField",
+      "original_abi": "Second stack argument child handle; other input ignored; RET8.",
+      "contract": "Six ReadFloat calls, each FSTP ST0; no mesh/section writes.",
+      "host_symbol": "consume_mesh_box_00b935c0",
+      "status": "complete_transfer_host_function",
+      "evidence": [
+        "exports/bsp/functions/00b935c0/decompiled.c",
+        "exports/bsp/functions/00b935c0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b93f90",
+      "suggested_name": "BSP_Mesh_ReadWeightMapNamesField",
+      "original_abi": "Stack mesh,child handle; incoming ECX unused; RET8.",
+      "contract": "No count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed.",
+      "host_symbol": "append_mesh_weight_map_names_00b93f90",
+      "status": "wire_and_copy_append_fragment",
+      "evidence": [
+        "exports/bsp/functions/00b93f90/decompiled.c",
+        "exports/bsp/functions/00b93f90/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b73270",
+      "suggested_name": "BSP_Mesh_AppendLodPhase",
+      "original_abi": "ECX mesh; stack16-byte source; RET4.",
+      "contract": "Copy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity.",
+      "host_symbol": null,
+      "status": "native_contract_audited",
+      "evidence": [
+        "exports/bsp/functions/00b73270/decompiled.c",
+        "exports/bsp/functions/00b73270/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b73d50",
+      "suggested_name": "BSP_Mesh_AppendWeightMapName",
+      "original_abi": "ECX mesh; stack native counted string; tail RET4.",
+      "contract": "ADD ECX,0xb0; JMP004cdc20; no shared reference-counted string.",
+      "host_symbol": null,
+      "status": "native_contract_audited",
+      "evidence": [
+        "exports/bsp/functions/00b73d50/decompiled.c",
+        "exports/bsp/functions/00b73d50/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b93d30",
+      "suggested_name": "BSP_Material_ReadTextureField",
+      "original_abi": "Stack material,child handle; incoming ECX context unused; RET8.",
+      "contract": "Counted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released.",
+      "host_symbol": "parse_texture",
+      "status": "wire_request_fragment",
+      "evidence": [
+        "exports/bsp/functions/00b93d30/decompiled.c",
+        "exports/bsp/functions/00b93d30/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b937a0",
+      "suggested_name": "BSP_Material_ReadLightingSettingsField",
+      "original_abi": "Stack material,child handle; incoming ECX context unused; RET8.",
+      "contract": "Count then repeated ignored slot DWORD and17floats; final record overwrites material settings.",
+      "host_symbol": "parse_lighting",
+      "status": "wire_request_fragment",
+      "evidence": [
+        "exports/bsp/functions/00b937a0/decompiled.c",
+        "exports/bsp/functions/00b937a0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00533fa0",
+      "suggested_name": "BSP_DrawSection_Create",
+      "original_abi": "No semantic input; EAX pointer; plain RET.",
+      "contract": "Allocate0x60 via00b85ee0 and construct via00b857f0; returns null if allocation null.",
+      "host_symbol": null,
+      "status": "factory_boundary_audited",
+      "evidence": [
+        "exports/bsp/functions/00533fa0/decompiled.c",
+        "exports/bsp/functions/00533fa0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00535320",
+      "suggested_name": "BSP_Material_CreateForEffectName",
+      "original_abi": "ECX native counted effect-name string; EAX material; plain RET.",
+      "contract": "Global manager+0x48 resolves effect; allocate0x110 via00b18780;00b18900 constructor; release temporary effect.",
+      "host_symbol": null,
+      "status": "factory_boundary_audited",
+      "evidence": [
+        "exports/bsp/functions/00535320/decompiled.c",
+        "exports/bsp/functions/00535320/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b93390",
+      "suggested_name": "BSP_StructuredReader_ReadLightingRecord",
+      "original_abi": "ECX reader handle; EDX68-byte output; plain RET.",
+      "contract": "Exactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40.",
+      "host_symbol": "parse_lighting",
+      "status": "wire_fragment",
+      "evidence": [
+        "exports/bsp/functions/00b93390/decompiled.c",
+        "exports/bsp/functions/00b93390/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b17840",
+      "suggested_name": "BSP_LightingRecord_Initialize",
+      "original_abi": "ECX68-byte output; EAX output; plain RET.",
+      "contract": "First4float components1; next12components0; final component10. All overwritten by full reads.",
+      "host_symbol": null,
+      "status": "native_contract_audited",
+      "evidence": [
+        "exports/bsp/functions/00b17840/decompiled.c",
+        "exports/bsp/functions/00b17840/assembly.txt"
+      ]
+    },
+    {
+      "address": "00b179d0",
+      "suggested_name": "BSP_Material_SetLightingRecord",
+      "original_abi": "ECX material; stack ignored slot,68-byte source; RET8.",
+      "contract": "Set material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read.",
+      "host_symbol": null,
+      "status": "native_contract_audited",
+      "evidence": [
+        "exports/bsp/functions/00b179d0/decompiled.c",
+        "exports/bsp/functions/00b179d0/assembly.txt"
+      ]
+    },
+    {
+      "address": "004cdc20",
+      "suggested_name": "FUN_004cdc20",
+      "original_abi": "ECX vector; stack native string; RET4.",
+      "contract": "Existing audited8-byte counted-string vector deep-copy append; preserve generic helper name.",
+      "host_symbol": null,
+      "status": "existing_contract_reverified",
+      "evidence": [
+        "exports/bsp/functions/004cdc20/decompiled.c",
+        "exports/bsp/functions/004cdc20/assembly.txt"
+      ]
+    }
+  ],
+  "wire": {
+    "Subset": {
+      "prefix": [
+        "primitive_u32",
+        "section_0x0c_u32",
+        "section_0x10_u32",
+        "section_0x14_u32",
+        "section_0x18_u32",
+        "counted_effect_name"
+      ],
+      "primitive_map": {
+        "0": 1,
+        "1": 3,
+        "2": 2,
+        "3": 5,
+        "4": 6,
+        "5": 4,
+        "other_unsigned": 1
+      },
+      "effect_alias": {
+        "comparison": "CRT stricmp on C-string prefix, including embedded-NUL truncation",
+        "match": "soldiers.mshd",
+        "result": "soldier.mshd",
+        "result_byte_length": 12
+      },
+      "known_children": [
+        "Texture",
+        "LightingSettings",
+        "BoundingSphere",
+        "VertexStreamIndex"
+      ],
+      "fallback": "If native section+0x4c selected-stream count==0 at finalization, select mesh stream0. No synthetic wire event."
+    },
+    "Texture": {
+      "prefix": [
+        "counted_name",
+        "slot_u32"
+      ],
+      "known_children": {
+        "TextureAddress": "read/discard3DWORDs"
+      },
+      "resource_resolution": "global manager vtable+0x64(counted_name,0)",
+      "binding": "00b189f0 retains new/releases old; existing nine-slot valid domain"
+    },
+    "LightingSettings": {
+      "count": "u32",
+      "record": [
+        "ignored_slot_u32",
+        "17float32"
+      ],
+      "effect": "last entry wins; slot ignored; material+0x38 copy68bytes, +0x10c dirty=1"
+    },
+    "LODPhases": {
+      "count": "u32",
+      "record": [
+        "float32",
+        "float32",
+        "u32",
+        "u32"
+      ],
+      "append": "inline at mesh+0x10+16*count_at_0x50",
+      "host_valid_total": 4
+    },
+    "LODValue": {
+      "read_fragment": [
+        "00b9454e",
+        "00b94570"
+      ],
+      "wire": "float32",
+      "setter": "00b72710 writes mesh+0x0c, RET4"
+    },
+    "BoundingSphere": "four float32 values consumed/discarded; no mesh writes",
+    "BoundingBox": "six float32 values consumed/discarded; no mesh writes",
+    "WeightMapNames": "no leading count; counted strings to remaining==0; independent copies appended to mesh+0xb0"
+  },
+  "host_policy": [
+    "New owning typed interfaces, not native layouts or ABI.",
+    "Output unchanged on failure; input consumed without rollback.",
+    "Input node remains attached; caller closes it.",
+    "Recognized child closes without seek; unknown child explicitly skips.",
+    "LOD total above4 rejected before record reads because native inline storage would be overwritten.",
+    "No effect, texture, material, stream or GPU object fabricated by the wire parser."
+  ],
+  "dependency_boundaries": [
+    "Actual global manager effect/texture resource resolution.",
+    "00b73260 stream lookup,00b85b80 section append,00b865a0 layout rebuild,00b85610 mesh+0x60 binding.",
+    "Native draw-section/material constructors retain their existing consumer contracts.",
+    "Runtime resource decoder must preserve top-level field order and actual selected-stream-count fallback."
+  ],
+  "verification": {
+    "whole_function_ranges": 16,
+    "supporting_ranges": 5,
+    "all_disk_live_ranges_match": true,
+    "assembly_checked_for_register_x87_and_cleanup": true,
+    "new_no_return_truncation_found": false,
+    "build": "primary integration pending",
+    "new_tests_added": false,
+    "native_differential": "not run",
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "uncertainty": [
+    "Float semantic labels within LOD/lighting records are intentionally raw.",
+    "Native allocation-failure, partial-read and exceptional x87 state behavior are outside host complete-transfer domain.",
+    "Byte parity is scoped to listed ranges and does not establish full saved-image identity.",
+    "Parsed requests do not establish realized resources or visual parity."
+  ],
+  "aggregate_mesh": {
+    "host_symbol": "parse_mesh_resource_00b944e0",
+    "sources": [
+      "include/bsp/mesh_resource.hpp",
+      "src/mesh_resource.cpp"
+    ],
+    "address": "00b944e0",
+    "original_abi": "ECX output pair; stack node handle; RET4.",
+    "constructor_address": "00b73d70",
+    "defaults": "LODValue1.0, null index pointer represented by optional absence, empty stream/subset/LOD/name vectors.",
+    "ordered_behavior": [
+      "VertexStream/Subset/LODPhases/WeightMapNames append.",
+      "LODValue and Indices replace current values.",
+      "CompressedVertexFormatData applies to the most recent preceding stream; host rejects absence.",
+      "Bounds fields consume/discard; unknown fields skip and record tags.",
+      "Recognized children close without seek, except rope helper explicit skip/detach."
+    ],
+    "representation": "Owning decoded wire snapshot with exact original child-tag encounter trace; no native material/stream/index bindings or overwritten-resource replay.",
+    "status": "implemented_pending_primary_build"
+  },
+  "group_params": {
+    "registration_report": "reports/resource_manager_registration_audit.json",
+    "functions": [
+      {
+        "address": "00b8eb50",
+        "suggested_name": "BSP_GroupParamsParser_ParseItem",
+        "original_abi": "Incoming ECX unused; stack node handle; EAX item; RET4.",
+        "contract": "Allocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20.",
+        "status": "factory_boundary_audited"
+      },
+      {
+        "address": "00b8e580",
+        "suggested_name": "BSP_GroupParamsItem_ReadFloatAndSkip",
+        "original_abi": "ECX item; stack node handle; RET4.",
+        "contract": "ReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload.",
+        "host_symbol": "read_group_params_00b8e580_fragment",
+        "status": "typed_payload_fragment_implemented"
+      }
+    ],
+    "sources": [
+      "include/bsp/structured_resource.hpp",
+      "src/structured_resource.cpp"
+    ],
+    "vtable": "00d634b0",
+    "virtual_slot_offset": "0x20",
+    "slot_address": "00d634d0",
+    "target": "00b8e580",
+    "semantic_label_for_float": "unknown",
+    "host_policy": "Commit output after complete float read and successful explicit skip/detach; no synthetic native item.",
+    "further_field_parser_dependencies": [],
+    "runtime_boundary": "Native item allocation and intrusive lifetime not constructed by the host fragment."
+  },
+  "supplemental_byte_comparison": {
+    "utc": "2026-09-10T01:21:23.926591+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Each live byte query used bsp.py ghidra bytes with Client.verify().",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all_ranges_match": true,
+    "ranges": [
+      {
+        "address": "00b944e0",
+        "length": 557,
+        "end_exclusive": "00b9470d",
+        "file_offset": 7947488,
+        "matches_disk": true,
+        "disk_sha256": "900226964a8c38f3540ddc21acd4e5a27042a12314f5638d39761f307c025cc2",
+        "ghidra_sha256": "900226964a8c38f3540ddc21acd4e5a27042a12314f5638d39761f307c025cc2"
+      },
+      {
+        "address": "00b73d70",
+        "length": 179,
+        "end_exclusive": "00b73e23",
+        "file_offset": 7814512,
+        "matches_disk": true,
+        "disk_sha256": "dce74ec9776f6191260146be11d3cdca34fd71bb9c7c6fbf75b1be705efde977",
+        "ghidra_sha256": "dce74ec9776f6191260146be11d3cdca34fd71bb9c7c6fbf75b1be705efde977"
+      },
+      {
+        "address": "00b8eb50",
+        "length": 110,
+        "end_exclusive": "00b8ebbe",
+        "file_offset": 7924560,
+        "matches_disk": true,
+        "disk_sha256": "87cd8f0e28d5224af3cf2b2c643a307a9f67881df0ed17c2eb3d92414bd21b73",
+        "ghidra_sha256": "87cd8f0e28d5224af3cf2b2c643a307a9f67881df0ed17c2eb3d92414bd21b73"
+      },
+      {
+        "address": "00b8e580",
+        "length": 30,
+        "end_exclusive": "00b8e59e",
+        "file_offset": 7923072,
+        "matches_disk": true,
+        "disk_sha256": "e0caefcc4f1ba2636fb6f7d96a23e2b7352a344fb7eebfde0696e81e1613ea7e",
+        "ghidra_sha256": "e0caefcc4f1ba2636fb6f7d96a23e2b7352a344fb7eebfde0696e81e1613ea7e"
+      },
+      {
+        "address": "00d634b0",
+        "length": 36,
+        "end_exclusive": "00d634d4",
+        "file_offset": 9843888,
+        "matches_disk": true,
+        "disk_sha256": "b7fe3c332a6fd9ed4b20b10646cb61ce5795c0cc6a1d81f95bb9cd11cc05fe83",
+        "ghidra_sha256": "b7fe3c332a6fd9ed4b20b10646cb61ce5795c0cc6a1d81f95bb9cd11cc05fe83"
+      }
+    ],
+    "note": "Four complete function bodies and vtable prefix only; not whole saved-image identity."
+  },
+  "primary_integration": {
+    "validation": "reports/mesh_resource_validation.json",
+    "annotations": "reports/mesh_resource_annotations.json",
+    "scope": "Wire readers, declaration decoder and GroupParams integrated in installed VFS diagnostic. Consumer/lifetime native audits guide real GPU/material/manager integration."
+  }
+}

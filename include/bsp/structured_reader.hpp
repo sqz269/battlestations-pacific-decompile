@@ -92,6 +92,9 @@ public:
     // reads in the complete-transfer domain, never font-style short zero-fill.
     bool read_u32(std::uint32_t& output) noexcept;
     bool read_float(float& output) noexcept;
+    // Raw payload transfer through the same nonnull count/full-read domain.
+    // Destination must hold count bytes; nullptr is valid only for count=0.
+    bool read_bytes(void* destination, std::uint32_t count) noexcept;
     //00bea010/00be9fe0/00bf0510: DWORD byte length, then raw string bytes.
     // Retains embedded NUL bytes; C-string consumers apply their own length.
     bool read_string(std::string& output) noexcept;

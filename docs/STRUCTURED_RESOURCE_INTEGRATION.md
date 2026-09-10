@@ -46,7 +46,7 @@ This mode performs the following checks without requiring a graphics device:
 | Installed file | Verified result | Explicitly skipped |
 | --- | --- | --- |
 | `models/clouds/cloud_10.mmod` | Control 12; four root records; exact six bounding-box float words; cursor/size 265; retained source released after reader destruction | CloudSystem payload |
-| `models/misc/repulogepdarabok_004.mmod` | Control 14; Note `visp100-visp1.5`; one hierarchy Item; parent `FFFFFFFF`; indices 0,1,2; exact matrix including negative zero; explicit box overrides sphere; cursor/size 1303 | Mesh and GroupParams payloads |
+| `models/misc/repulogepdarabok_004.mmod` | Control 14; Note `visp100-visp1.5`; one hierarchy Item; parent `FFFFFFFF`; indices 0,1,2; exact matrix including negative zero; explicit box overrides sphere; cursor/size 1303 | None; Mesh and GroupParams now decoded (see `MESH_RESOURCE_INTEGRATION.md`) |
 
 One focused lifetime case releases a BoundingSphere child after one float: the
 cursor stays at 42 despite 12 unread bytes, while the parent is charged the full
@@ -71,10 +71,10 @@ resource pointers without AddRef/release. The base resource releases primary
 items; classification lists borrow their pointers. These contracts must guide
 the eventual manager implementation rather than assuming every container owns.
 
-The Mesh entry reveals a prefix DWORD and nine field handlers. Decoding vertex
-streams, indices, subsets and compressed formats is the next concrete resource
-dependency. The item wrapper and underlying mesh destructor/allocator also need
-reconstruction. Queue teardown does not establish a worker stop/join contract.
+The Mesh entry reveals a prefix DWORD and nine field handlers. These payload
+readers and the declaration-name decoder are now implemented; native wrapper,
+destructor and allocator contracts are audited. Current validation and remaining
+material/GPU binding work are recorded in `MESH_RESOURCE_INTEGRATION.md`. Queue teardown does not establish a worker stop/join contract.
 No synthetic completion, empty resource object or fake mesh parser was added.
 
 Reviewed functions are named and commented in the existing `bsp` project with

@@ -19,4 +19,12 @@ bool read_note_text_00718f50_fragment(StructuredNode& node,
     text = std::move(temporary);
     return true;
 }
+
+bool read_group_params_00b8e580_fragment(StructuredNode& node,
+    float& output) noexcept {
+    float value;
+    if (!node.read_float(value) || !node.skip_00be9c40()) return false;
+    output = value;
+    return true;
+}
 }

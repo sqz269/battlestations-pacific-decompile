@@ -1,0 +1,1726 @@
+{
+  "utc": "2026-09-10T01:35:58.373406+00:00",
+  "saved": true,
+  "annotations": [
+    {
+      "address": "00419cc0",
+      "before": {
+        "address": "00419cc0",
+        "function_name": "FUN_00419cc0"
+      },
+      "after": {
+        "address": "00419cc0",
+        "function_name": "BSP_SizedStoragePool_GetSingleton_Provisional",
+        "comment": "[BSP reconstruction 00419cc0]\nReturn cached global01090aa8 or guarded lazy allocation8AD4A0h/constructor00bd1480, then register with singleton lifetime manager. Does not consume native-string release arguments. Original ABI: No explicit arguments; EAX global01090aa8; RET. Caller-pushed release arguments remain on stack. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "0041dd40",
+      "before": {
+        "address": "0041dd40",
+        "function_name": "FUN_0041dd40"
+      },
+      "after": {
+        "address": "0041dd40",
+        "function_name": "BSP_NativeString_Resize",
+        "comment": "[BSP reconstruction 0041dd40]\nIf desired length unchanged do nothing; zero desired length releases old data through00419cc0/00bd1510 and clears both fields. Nonzero new length allocates length+1 through00419cc0/00bd1120, optionally copies min(old,new), returns old storage if nonnull, writes newlength/data and trailing zero byte. Resolver invokes from zeroed fresh output so old storage is absent. Original ABI: ECX8-byte string; stack desired unsigned length and preserve flag (low byte); RET8. Evidence: docs/VERTEX_FORMAT_RESOLUTION.md; reports/mesh_declaration_resolver_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00427110",
+      "before": {
+        "address": "00427110",
+        "function_name": "FUN_00427110"
+      },
+      "after": {
+        "address": "00427110",
+        "function_name": "BSP_NativeStringVector_Resize",
+        "comment": "[BSP reconstruction 00427110]\nEight-byte elements. Grow delegates00426520; new entries zero both DWORDs. Shrink backward, for nonnullentry.storage call noarg00419cc0 then00bd1510 withECXpool and stack(storage,entry.length+1,1); set count. Native cleanup path requires no growth. Original ABI: ECX{data,count,capacity}; stack signed desired count; RET4; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "004cdc20",
+      "before": {
+        "address": "004cdc20",
+        "function_name": "FUN_004cdc20",
+        "comment": "[BSP reconstruction 004cdc20]\nECX vector; stack source native string; RET4; no semantic return Appends independent copied8-byte string record, grows capacity; preserve existing helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "after": {
+        "address": "004cdc20",
+        "function_name": "FUN_004cdc20",
+        "comment": "[BSP reconstruction 004cdc20]\nECX vector; stack source native string; RET4; no semantic return Appends independent copied8-byte string record, grows capacity; preserve existing helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 004cdc20] update\nExisting audited8-byte counted-string vector deep-copy append; preserve generic helper name. Original ABI: ECX vector; stack native string; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00533fa0",
+      "before": {
+        "address": "00533fa0",
+        "function_name": "FUN_00533fa0"
+      },
+      "after": {
+        "address": "00533fa0",
+        "function_name": "BSP_DrawSection_Create",
+        "comment": "[BSP reconstruction 00533fa0]\nAllocate0x60 via00b85ee0 and construct via00b857f0; returns null if allocation null. Original ABI: No semantic input; EAX pointer; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00535320",
+      "before": {
+        "address": "00535320",
+        "function_name": "FUN_00535320"
+      },
+      "after": {
+        "address": "00535320",
+        "function_name": "BSP_Material_CreateForEffectName",
+        "comment": "[BSP reconstruction 00535320]\nGlobal manager+0x48 resolves effect; allocate0x110 via00b18780;00b18900 constructor; release temporary effect. Original ABI: ECX native counted effect-name string; EAX material; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b17840",
+      "before": {
+        "address": "00b17840",
+        "function_name": "FUN_00b17840"
+      },
+      "after": {
+        "address": "00b17840",
+        "function_name": "BSP_LightingRecord_Initialize",
+        "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b179d0",
+      "before": {
+        "address": "00b179d0",
+        "function_name": "FUN_00b179d0"
+      },
+      "after": {
+        "address": "00b179d0",
+        "function_name": "BSP_Material_SetLightingRecord",
+        "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b287c0",
+      "before": {
+        "address": "00b287c0",
+        "function_name": "FUN_00b287c0"
+      },
+      "after": {
+        "address": "00b287c0",
+        "function_name": "BSP_Renderer_CreateRegisteredVertexStream",
+        "comment": "[BSP reconstruction 00b287c0]\nBSP reconstruction hypothesis: Call allocator00b4b370 then00b4bc00 with count,declaration,flags; append raw stream pointer in renderer+1AACh array; additionally+19B0h array when virtual+58h returns AL==1. Allocation/growth/native lifecycle unported. ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b2c280",
+      "before": {
+        "address": "00b2c280",
+        "function_name": "FUN_00b2c280"
+      },
+      "after": {
+        "address": "00b2c280",
+        "function_name": "BSP_DeclarationRegistry_CopyResolvedName",
+        "comment": "[BSP reconstruction 00b2c280]\nZero output{length,data} before source/destination alias branch. If output!=input, resize output to input.length through0041dd40 with preserve1, then copy output.length bytes from input.data when input.length!=0. Return output. No registry lookup, name transformation or flag branch; self-alias leaves zeroed empty string. Fresh output construction is required because existing output storage is overwritten without release. Original ABI: ECX incoming object ignored; stack1 output8-byte string, stack2 input8-byte string, stack3 ignored DWORD; EAX output pointer; RET0Ch. Evidence: docs/VERTEX_FORMAT_RESOLUTION.md; reports/mesh_declaration_resolver_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b2dbd0",
+      "before": {
+        "address": "00b2dbd0",
+        "function_name": "FUN_00b2dbd0"
+      },
+      "after": {
+        "address": "00b2dbd0",
+        "function_name": "BSP_VertexDeclaration_DecodeFormatName",
+        "comment": "[BSP reconstruction 00b2dbd0]\nExpand54nativealiases; parse8usage and17type tokens in native order; append(type,usage,FFFFFFFF); require .mvfm suffix and nonzero flat element count. Does not open a file. Native suffix copy/compare are misrepresented as unreachable by pseudocode; assembly establishes both. Original ABI: Incoming ECX unused; stack counted-name pointer and ignored DWORD; EAX declaration or null; RET8. Evidence: docs/VERTEX_FORMAT_RESOLUTION.md; reports/vertex_format_resolution_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b317e0",
+      "before": {
+        "address": "00b317e0",
+        "function_name": "FUN_00b317e0"
+      },
+      "after": {
+        "address": "00b317e0",
+        "function_name": "BSP_Renderer_LoadVertexDeclaration",
+        "comment": "[BSP reconstruction 00b317e0]\nCopy/lowercase name; call embedded renderer+1A60 registry00b305f0(name,0,1,1); release temporary string; return declaration. Registry vtable00d5f060 resolver00b2c280 is an identity copy, loader00b2dbd0 decodes name. Original ABI: ECX renderer; stack counted-name pointer; EAX declaration; RET4. Evidence: docs/VERTEX_FORMAT_RESOLUTION.md; reports/vertex_format_resolution_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b47900",
+      "before": {
+        "address": "00b47900",
+        "function_name": "TRIV_body_00b47900"
+      },
+      "after": {
+        "address": "00b47900",
+        "function_name": "BSP_VertexDeclaration_GetElementCount",
+        "comment": "[BSP reconstruction 00b47900]\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b61d90",
+      "before": {
+        "address": "00b61d90",
+        "function_name": "FUN_00b61d90"
+      },
+      "after": {
+        "address": "00b61d90",
+        "function_name": "BSP_LogicalVertexStream_SetCompressedFormatData",
+        "comment": "[BSP reconstruction 00b61d90]\nBSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b61e10",
+      "before": {
+        "address": "00b61e10",
+        "function_name": "FUN_00b61e10"
+      },
+      "after": {
+        "address": "00b61e10",
+        "function_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+        "comment": "[BSP reconstruction 00b61e10]\nReturn compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. Original ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b72710",
+      "before": {
+        "address": "00b72710",
+        "function_name": "FUN_00b72710"
+      },
+      "after": {
+        "address": "00b72710",
+        "function_name": "BSP_Mesh_SetLodValue",
+        "comment": "[BSP reconstruction 00b72710]\nMOVSS stack argument to mesh+0x0c. This function never reads a node. Original ABI: ECX mesh; stack float bits; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b727f0",
+      "before": {
+        "address": "00b727f0",
+        "function_name": "FUN_00b727f0"
+      },
+      "after": {
+        "address": "00b727f0",
+        "function_name": "BSP_MeshObjectPool_ConstructChunk",
+        "comment": "[BSP reconstruction 00b727f0]\nSet uint16 freecount+1840=32; free-list uint16[32] at+1800=31..0; store chunk index in each C0h-stride slot+BC. No payload construction or zero-fill. Original ABI: ECX1844h chunk; one stack chunk-index DWORD; EAX same chunk; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b72b20",
+      "before": {
+        "address": "00b72b20",
+        "function_name": "TRIV_body_00b72b20"
+      },
+      "after": {
+        "address": "00b72b20",
+        "function_name": "BSP_Geometry_GetVertexStreamCount",
+        "comment": "[BSP reconstruction 00b72b20]\nBSP reconstruction hypothesis: Return geometry+7Ch stream high-water count; Mesh parser uses it for append and last-stream selection. ABI: ECX geometry; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b72da0",
+      "before": {
+        "address": "00b72da0",
+        "function_name": "FUN_00b72da0"
+      },
+      "after": {
+        "address": "00b72da0",
+        "function_name": "BSP_MeshObjectPool_ReturnSlot",
+        "comment": "[BSP reconstruction 00b72da0]\nUnder critical section+0C, read chunk index at slot+BC, compute slot index=(slot-chunk)/C0, push uint16 atchunk+1800[count+1840], increment count; unsigned-min currentchunk+34. No object destruction or per-slot CRT free. Original ABI: ECX pool; one stack slot pointer; RET4; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73260",
+      "before": {
+        "address": "00b73260",
+        "function_name": "FUN_00b73260"
+      },
+      "after": {
+        "address": "00b73260",
+        "function_name": "BSP_Geometry_GetVertexStream",
+        "comment": "[BSP reconstruction 00b73260]\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73270",
+      "before": {
+        "address": "00b73270",
+        "function_name": "FUN_00b73270"
+      },
+      "after": {
+        "address": "00b73270",
+        "function_name": "BSP_Mesh_AppendLodPhase",
+        "comment": "[BSP reconstruction 00b73270]\nCopy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity. Original ABI: ECX mesh; stack16-byte source; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73840",
+      "before": {
+        "address": "00b73840",
+        "function_name": "FUN_00b73840"
+      },
+      "after": {
+        "address": "00b73840",
+        "function_name": "BSP_PointerVector_ResizeZeroed",
+        "comment": "[BSP reconstruction 00b73840]\nFour-byte elements; grow delegates00b72e10, initializes new pointer slots0; shrink decrements count only, with no pointed-object destruction. Mesh destructor uses desired0 after explicit intrusive releases. Original ABI: ECX{data,count,capacity}; stack signed desired count; RET4; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73a10",
+      "before": {
+        "address": "00b73a10",
+        "function_name": "FUN_00b73a10"
+      },
+      "after": {
+        "address": "00b73a10",
+        "function_name": "BSP_MeshObjectPool_AllocateSlot",
+        "comment": "[BSP reconstruction 00b73a10]\nUnder pool+0C critical section, use/grow chunk pointer vector+28/+2C/+30; current+34 usesFFFFFFFF sentinel. New chunk1844h contains32 slots; pop uint16 free index at+1800 using decremented+1840 count. Scan later chunks after exhaustion. Free old pointer-array allocation and continue. Original ABI: ECX pool context; no stack arguments; EAX C0h-stride slot pointer; RET. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73c10",
+      "before": {
+        "address": "00b73c10",
+        "function_name": "FUN_00b73c10"
+      },
+      "after": {
+        "address": "00b73c10",
+        "function_name": "BSP_MeshObject_ClearDrawSectionOwners",
+        "comment": "[BSP reconstruction 00b73c10]\nFor signed index0..<mesh+58, release nonnull-assumed pointer from heaparray+54 via InterlockedDecrement(ptr+4)/vtable0; call00b73840(ECXmesh+54,stack0). Does not free container backing. Original ABI: ECX mesh; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73d50",
+      "before": {
+        "address": "00b73d50",
+        "function_name": "CG_adjustor_thunk_00b73d50"
+      },
+      "after": {
+        "address": "00b73d50",
+        "function_name": "BSP_Mesh_AppendWeightMapName",
+        "comment": "[BSP reconstruction 00b73d50]\nADD ECX,0xb0; JMP004cdc20; no shared reference-counted string. Original ABI: ECX mesh; stack native counted string; tail RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73d70",
+      "before": {
+        "address": "00b73d70",
+        "function_name": "BSP_MeshObject_Construct",
+        "comment": "[BSP reconstruction 00b73d70]\nBSP reconstruction hypothesis: Set ref1 and final vtable00d62d60, initialize observed partial DWORD/float/byte defaults through offset+B8. Requires at leastBC bytes but leaves unspecified gaps; complete object type/renderer layout not established. ABI: ECX object storage; EAX same object; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object storage; EAX same object; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b73d70",
+        "function_name": "BSP_MeshObject_Construct",
+        "comment": "[BSP reconstruction 00b73d70]\nBSP reconstruction hypothesis: Set ref1 and final vtable00d62d60, initialize observed partial DWORD/float/byte defaults through offset+B8. Requires at leastBC bytes but leaves unspecified gaps; complete object type/renderer layout not established. ABI: ECX object storage; EAX same object; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object storage; EAX same object; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b73d70] update\nMesh constructor defaults reverified: LOD1.0; empty owner arrays/counts and null index pointer. CompleteBC-byte object usesC0-byte pool slot, see lifetime audit. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b73e60",
+      "before": {
+        "address": "00b73e60",
+        "function_name": "FUN_00b73e60"
+      },
+      "after": {
+        "address": "00b73e60",
+        "function_name": "BSP_MeshObject_Destroy",
+        "comment": "[BSP reconstruction 00b73e60]\nRelease optional intrusive owner+60 then clear; release optional inline+64 references counted+7C;00b73c10 releases+54 draw-section refs and resets count; zero-resize+B0 native-string vector, free backing; zero-resize+54 pointer vector, free backing; set intermediatevt00d5c104, call00bd30f0, restore exception frame. Original ABI: ECX mesh; no explicit stack arguments; RET at00b73f4d; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b74280",
+      "before": {
+        "address": "00b74280",
+        "function_name": "FUN_00b74280"
+      },
+      "after": {
+        "address": "00b74280",
+        "function_name": "BSP_MeshObject_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b74280]\nCall00b73e60; if flags bit0 set, return slot to global0108fff8 via00b72da0; never directly free mesh through CRT. Original ABI: ECX mesh; one stack flags DWORD (low byte tested); EAX original mesh; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b8e580",
+      "before": {
+        "address": "00b8e580",
+        "function_name": "FUN_00b8e580"
+      },
+      "after": {
+        "address": "00b8e580",
+        "function_name": "BSP_GroupParamsItem_ReadFloatAndSkip",
+        "comment": "[BSP reconstruction 00b8e580]\nReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload. Original ABI: ECX item; stack node handle; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b8eb50",
+      "before": {
+        "address": "00b8eb50",
+        "function_name": "FUN_00b8eb50"
+      },
+      "after": {
+        "address": "00b8eb50",
+        "function_name": "BSP_GroupParamsParser_ParseItem",
+        "comment": "[BSP reconstruction 00b8eb50]\nAllocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20. Original ABI: Incoming ECX unused; stack node handle; EAX item; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93390",
+      "before": {
+        "address": "00b93390",
+        "function_name": "FUN_00b93390"
+      },
+      "after": {
+        "address": "00b93390",
+        "function_name": "BSP_StructuredReader_ReadLightingRecord",
+        "comment": "[BSP reconstruction 00b93390]\nExactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40. Original ABI: ECX reader handle; EDX68-byte output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93590",
+      "before": {
+        "address": "00b93590",
+        "function_name": "FUN_00b93590"
+      },
+      "after": {
+        "address": "00b93590",
+        "function_name": "BSP_Mesh_ConsumeBoundingSphereField",
+        "comment": "[BSP reconstruction 00b93590]\nFour ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b935c0",
+      "before": {
+        "address": "00b935c0",
+        "function_name": "FUN_00b935c0"
+      },
+      "after": {
+        "address": "00b935c0",
+        "function_name": "BSP_Mesh_ConsumeBoundingBoxField",
+        "comment": "[BSP reconstruction 00b935c0]\nSix ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93710",
+      "before": {
+        "address": "00b93710",
+        "function_name": "FUN_00b93710"
+      },
+      "after": {
+        "address": "00b93710",
+        "function_name": "BSP_Mesh_ReadLodPhasesField",
+        "comment": "[BSP reconstruction 00b93710]\nUnsigned count; each16-byte record float,float,U32,U32; append via00b73270. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b937a0",
+      "before": {
+        "address": "00b937a0",
+        "function_name": "FUN_00b937a0"
+      },
+      "after": {
+        "address": "00b937a0",
+        "function_name": "BSP_Material_ReadLightingSettingsField",
+        "comment": "[BSP reconstruction 00b937a0]\nCount then repeated ignored slot DWORD and17floats; final record overwrites material settings. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93800",
+      "before": {
+        "address": "00b93800",
+        "function_name": "FUN_00b93800"
+      },
+      "after": {
+        "address": "00b93800",
+        "function_name": "BSP_Mesh_ReadCompressedVertexFormatData",
+        "comment": "[BSP reconstruction 00b93800]\nBSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93910",
+      "before": {
+        "address": "00b93910",
+        "function_name": "FUN_00b93910"
+      },
+      "after": {
+        "address": "00b93910",
+        "function_name": "BSP_ResourceMeshItem_Destroy",
+        "comment": "[BSP reconstruction 00b93910]\nSet wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. Original ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93aa0",
+      "before": {
+        "address": "00b93aa0",
+        "function_name": "FUN_00b93aa0"
+      },
+      "after": {
+        "address": "00b93aa0",
+        "function_name": "BSP_Mesh_ReadIndices",
+        "comment": "[BSP reconstruction 00b93aa0]\nBSP reconstruction hypothesis: Read count and format DWORDs; format65h=2 bytes,66h=4,other=0 native width; raw count*width; renderer index factory+60h, buffer+0Ch map,+10h and+2Ch callbacks; retain at mesh+60 then release temporary. Host payload decoder supports65h/66h only. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93b40",
+      "before": {
+        "address": "00b93b40",
+        "function_name": "CG_scalar_deleting_dtor_00b93b40"
+      },
+      "after": {
+        "address": "00b93b40",
+        "function_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b93b40]\nCall00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. Original ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93d30",
+      "before": {
+        "address": "00b93d30",
+        "function_name": "FUN_00b93d30"
+      },
+      "after": {
+        "address": "00b93d30",
+        "function_name": "BSP_Material_ReadTextureField",
+        "comment": "[BSP reconstruction 00b93d30]\nCounted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93e60",
+      "before": {
+        "address": "00b93e60",
+        "function_name": "FUN_00b93e60"
+      },
+      "after": {
+        "address": "00b93e60",
+        "function_name": "BSP_Mesh_ReadVertexStream",
+        "comment": "[BSP reconstruction 00b93e60]\nBSP reconstruction hypothesis: Read count and counted format name; resolve declaration through renderer+38h; create stream through+5Ch(count,1,declaration); raw count*declaration[+CCh]; case-insensitive rope.mvfm explicitly skips tail; append at prior mesh+7Ch index and release temporary. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b93f90",
+      "before": {
+        "address": "00b93f90",
+        "function_name": "FUN_00b93f90"
+      },
+      "after": {
+        "address": "00b93f90",
+        "function_name": "BSP_Mesh_ReadWeightMapNamesField",
+        "comment": "[BSP reconstruction 00b93f90]\nNo count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b941d0",
+      "before": {
+        "address": "00b941d0",
+        "function_name": "FUN_00b941d0"
+      },
+      "after": {
+        "address": "00b941d0",
+        "function_name": "BSP_Mesh_ReadSubsetField",
+        "comment": "[BSP reconstruction 00b941d0]\nFive DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries. Original ABI: ECX output-pair context; stack mesh,child handle; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00b944e0",
+      "before": {
+        "address": "00b944e0",
+        "function_name": "BSP_MeshHandle_ReadStructuredFields",
+        "comment": "[BSP reconstruction 00b944e0]\nBSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "after": {
+        "address": "00b944e0",
+        "function_name": "BSP_MeshHandle_ReadStructuredFields",
+        "comment": "[BSP reconstruction 00b944e0]\nBSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b944e0] update\nAggregate native field-order parser implemented as owning wire values; preserves prefix, native LOD1.0 default, append/replace rules, preceding-stream metadata attachment, unknown skip and mesh bounds discard. Runtime retained bindings remain separate. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bd12a0",
+      "before": {
+        "address": "00bd12a0",
+        "function_name": "FUN_00bd12a0"
+      },
+      "after": {
+        "address": "00bd12a0",
+        "function_name": "BSP_SizedStoragePool_ReturnSmallBlock_Provisional",
+        "comment": "[BSP reconstruction 00bd12a0]\nReturn dereferenced pointer into shared circular pointer storage. Advance masked19-bit bin cursors at+200000/+200258, shift through neighboring bins modulo150 when colliding, store pointer, increment available+2004B0 and highwater+2004B4. No CRT free or object reference release. Original ABI: ECX size-bin pool subobject; stack address-of-storage-pointer and signed size-bin; RET8; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bd1510",
+      "before": {
+        "address": "00bd1510",
+        "function_name": "FUN_00bd1510"
+      },
+      "after": {
+        "address": "00bd1510",
+        "function_name": "BSP_SizedStoragePool_ReturnBlock_Provisional",
+        "comment": "[BSP reconstruction 00bd1510]\nFor unsigned size>=96h callCRTfree00bf9dc8 then native ADDESP4/POPs/RET0Ch. Smaller size with global01090aa4==0 locks criticalsection+8AD484 and calls00bd12a0 on subobject+6ACFCC with(&storage,size). Global nonzero skips small-block return. Original ABI: ECX pool manager; stack(storage,size,unused DWORD); RET0Ch on both paths; third argument not read. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00be9a20",
+      "before": {
+        "address": "00be9a20",
+        "function_name": "FUN_00be9a20"
+      },
+      "after": {
+        "address": "00be9a20",
+        "function_name": "BSP_StructuredNode_ReadRawBytes",
+        "comment": "[BSP reconstruction 00be9a20]\nBSP reconstruction hypothesis: Unwrap node; pass reader=node+8 and remaining pointer=node+20h to00bf02f0. Full raw adapter span verified against installed PE. ABI: ECX node-wrapper pointer; stack destination,count; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX node-wrapper pointer; stack destination,count; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf02f0",
+      "before": {
+        "address": "00bf02f0",
+        "function_name": "FUN_00bf02f0"
+      },
+      "after": {
+        "address": "00bf02f0",
+        "function_name": "BSP_StructuredReader_ReadRawBytesDebitActual",
+        "comment": "[BSP reconstruction 00bf02f0]\nBSP reconstruction hypothesis: Call underlying stream virtual+24h with destination,count,nonnull actual-count pointer aliasing requested-count stack argument; subtract overwritten slot from remaining after call. No zero-fill/status/extent check. Pseudocode two-argument signature and unaff_retaddr are wrong. ABI: ECX reader; stack destination,requested count,remaining pointer; RET0Ch; ignores stream return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX reader; stack destination,requested count,remaining pointer; RET0Ch; ignores stream return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "previous_comment_preserved": true
+    },
+    {
+      "address": "00bf9dc8",
+      "before": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json."
+      },
+      "after": {
+        "address": "00bf9dc8",
+        "function_name": "_free",
+        "comment": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "previous_comment_preserved": true
+    }
+  ],
+  "name_ledger_before": [
+    {
+      "address": "00b93aa0",
+      "absent": true
+    },
+    {
+      "address": "00b93e60",
+      "absent": true
+    },
+    {
+      "address": "00b93800",
+      "absent": true
+    },
+    {
+      "address": "00be9a20",
+      "absent": true
+    },
+    {
+      "address": "00bf02f0",
+      "absent": true
+    },
+    {
+      "address": "00b73260",
+      "absent": true
+    },
+    {
+      "address": "00b47900",
+      "absent": true
+    },
+    {
+      "address": "00b61d90",
+      "absent": true
+    },
+    {
+      "address": "00b72b20",
+      "absent": true
+    },
+    {
+      "address": "00b287c0",
+      "absent": true
+    },
+    {
+      "address": "00b941d0",
+      "absent": true
+    },
+    {
+      "address": "00b93710",
+      "absent": true
+    },
+    {
+      "address": "00b72710",
+      "absent": true
+    },
+    {
+      "address": "00b93590",
+      "absent": true
+    },
+    {
+      "address": "00b935c0",
+      "absent": true
+    },
+    {
+      "address": "00b93f90",
+      "absent": true
+    },
+    {
+      "address": "00b73270",
+      "absent": true
+    },
+    {
+      "address": "00b73d50",
+      "absent": true
+    },
+    {
+      "address": "00b93d30",
+      "absent": true
+    },
+    {
+      "address": "00b937a0",
+      "absent": true
+    },
+    {
+      "address": "00533fa0",
+      "absent": true
+    },
+    {
+      "address": "00535320",
+      "absent": true
+    },
+    {
+      "address": "00b93390",
+      "absent": true
+    },
+    {
+      "address": "00b17840",
+      "absent": true
+    },
+    {
+      "address": "00b179d0",
+      "absent": true
+    },
+    {
+      "address": "004cdc20",
+      "name": "FUN_004cdc20",
+      "evidence": "ECX vector; stack source native string; RET4; no semantic return Appends independent copied8-byte string record, grows capacity; preserve existing helper identity. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+    },
+    {
+      "address": "00b8eb50",
+      "absent": true
+    },
+    {
+      "address": "00b8e580",
+      "absent": true
+    },
+    {
+      "address": "00b93b40",
+      "absent": true
+    },
+    {
+      "address": "00b74280",
+      "absent": true
+    },
+    {
+      "address": "00b73a10",
+      "absent": true
+    },
+    {
+      "address": "00b93910",
+      "absent": true
+    },
+    {
+      "address": "00b73e60",
+      "absent": true
+    },
+    {
+      "address": "00b72da0",
+      "absent": true
+    },
+    {
+      "address": "00b727f0",
+      "absent": true
+    },
+    {
+      "address": "00b73c10",
+      "absent": true
+    },
+    {
+      "address": "00427110",
+      "absent": true
+    },
+    {
+      "address": "00b73840",
+      "absent": true
+    },
+    {
+      "address": "00419cc0",
+      "absent": true
+    },
+    {
+      "address": "00bd1510",
+      "absent": true
+    },
+    {
+      "address": "00bd12a0",
+      "absent": true
+    },
+    {
+      "address": "00b2c280",
+      "absent": true
+    },
+    {
+      "address": "0041dd40",
+      "absent": true
+    },
+    {
+      "address": "00b2dbd0",
+      "absent": true
+    },
+    {
+      "address": "00b317e0",
+      "absent": true
+    },
+    {
+      "address": "00b61e10",
+      "absent": true
+    },
+    {
+      "address": "00b944e0",
+      "name": "BSP_MeshHandle_ReadStructuredFields",
+      "evidence": "BSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "00b73d70",
+      "name": "BSP_MeshObject_Construct",
+      "evidence": "BSP reconstruction hypothesis: Set ref1 and final vtable00d62d60, initialize observed partial DWORD/float/byte defaults through offset+B8. Requires at leastBC bytes but leaves unspecified gaps; complete object type/renderer layout not established. ABI: ECX object storage; EAX same object; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object storage; EAX same object; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "00bf9dc8",
+      "name": "_free",
+      "evidence": "Preserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json."
+    }
+  ],
+  "flow_repair": {
+    "spans": [
+      {
+        "address": "00b93b40",
+        "end_exclusive": "00b93b5e",
+        "length": 30,
+        "sha256": "69275ae587c949768e84b7961079d4f1e1401c63c2ed6313597f4510a6928c9e",
+        "documentation_before": {
+          "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b93b40",
+          "function_name": "CG_scalar_deleting_dtor_00b93b40",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "extraout_EAX",
+              "type": "void *",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 24,
+              "name": "LAB_00b93b58"
+            }
+          ],
+          "completeness_score": 80.0
+        },
+        "function_before": "Function: CG_scalar_deleting_dtor_00b93b40 at 00b93b40\nSignature: undefined CG_scalar_deleting_dtor_00b93b40(void)\nEntry: 00b93b40\nBody: 00b93b40 - 00b93b5d",
+        "sites": [
+          "00b93b50"
+        ],
+        "function_after": "Function: CG_scalar_deleting_dtor_00b93b40 at 00b93b40\nSignature: undefined CG_scalar_deleting_dtor_00b93b40(void)\nEntry: 00b93b40\nBody: 00b93b40 - 00b93b5d"
+      },
+      {
+        "address": "00b73a10",
+        "end_exclusive": "00b73b4c",
+        "length": 316,
+        "sha256": "84fa8138df2d940edccf3ad2bb9d8197b10e86a5504a25e384bae2559f772ae8",
+        "documentation_before": {
+          "hash": "c999ab13893a1d65ee5c30e76ba9b2c267b7134196290285721a4fe040537a72",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b73a10",
+          "function_name": "FUN_00b73a10",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar7",
+              "type": "int",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "extraout_EAX",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "uVar4",
+              "type": "uint",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "piVar6",
+              "type": "int *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "puVar5",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "lpCriticalSection",
+              "type": "LPCRITICAL_SECTION",
+              "storage": "(unique, 0x6600, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "uVar2",
+              "type": "undefined4",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 70,
+              "name": "LAB_00b73a56"
+            },
+            {
+              "relative_offset": 72,
+              "name": "LAB_00b73a58"
+            },
+            {
+              "relative_offset": 114,
+              "name": "LAB_00b73a82"
+            },
+            {
+              "relative_offset": 126,
+              "name": "LAB_00b73a8e"
+            },
+            {
+              "relative_offset": 137,
+              "name": "LAB_00b73a99"
+            },
+            {
+              "relative_offset": 153,
+              "name": "LAB_00b73aa9"
+            },
+            {
+              "relative_offset": 156,
+              "name": "LAB_00b73aac"
+            },
+            {
+              "relative_offset": 171,
+              "name": "LAB_00b73abb"
+            },
+            {
+              "relative_offset": 178,
+              "name": "LAB_00b73ac2"
+            },
+            {
+              "relative_offset": 256,
+              "name": "LAB_00b73b10"
+            },
+            {
+              "relative_offset": 296,
+              "name": "LAB_00b73b38"
+            },
+            {
+              "relative_offset": 299,
+              "name": "LAB_00b73b3b"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b73a10 at 00b73a10\nSignature: undefined FUN_00b73a10(void)\nEntry: 00b73a10\nBody: 00b73a10 - 00b73b4b",
+        "sites": [
+          "00b73aa1"
+        ],
+        "function_after": "Function: FUN_00b73a10 at 00b73a10\nSignature: undefined FUN_00b73a10(void)\nEntry: 00b73a10\nBody: 00b73a10 - 00b73b4b"
+      },
+      {
+        "address": "00b73e60",
+        "end_exclusive": "00b73f4e",
+        "length": 238,
+        "sha256": "eee55fd1be680cc58cc366fcdf902f9f9dad88e700abd102acd0778f962bb22f",
+        "documentation_before": {
+          "hash": "70cdce59c15eb36f1e90f8ca5b9f7c817cfbf4b587637a6263526030aac7736f",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b73e60",
+          "function_name": "FUN_00b73e60",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "pvStack_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "puVar2",
+              "type": "undefined4 *",
+              "storage": "(unique, 0x17200, 4)"
+            },
+            {
+              "name": "piVar1",
+              "type": "int *",
+              "storage": "(unique, 0x6c00, 4)"
+            },
+            {
+              "name": "piVar4",
+              "type": "int *",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "LVar3",
+              "type": "LONG",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 74,
+              "name": "LAB_00b73eaa"
+            },
+            {
+              "relative_offset": 81,
+              "name": "LAB_00b73eb1"
+            },
+            {
+              "relative_offset": 96,
+              "name": "LAB_00b73ec0"
+            },
+            {
+              "relative_offset": 125,
+              "name": "LAB_00b73edd"
+            },
+            {
+              "relative_offset": 133,
+              "name": "LAB_00b73ee5"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b73e60 at 00b73e60\nSignature: undefined FUN_00b73e60(void)\nEntry: 00b73e60\nBody: 00b73e60 - 00b73f07",
+        "sites": [
+          "00b73f03",
+          "00b73f1f"
+        ],
+        "function_after": "Function: FUN_00b73e60 at 00b73e60\nSignature: undefined FUN_00b73e60(void)\nEntry: 00b73e60\nBody: 00b73e60 - 00b73f4d"
+      },
+      {
+        "address": "00bd1510",
+        "end_exclusive": "00bd156f",
+        "length": 95,
+        "sha256": "ae7cc468fd929f90e9a2a6a8a5107d4375c16271eb96e9d7829504911105a4d4",
+        "documentation_before": {
+          "hash": "b6d10eab2f647080662d288d7fdc0db27d9da98aedff8b1257b459644a5065a9",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00bd1510",
+          "function_name": "FUN_00bd1510",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "uVar1",
+              "type": "uint",
+              "storage": "(unique, 0x10000061, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 34,
+              "name": "LAB_00bd1532"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00bd156a"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00bd1510 at 00bd1510\nSignature: undefined FUN_00bd1510(void)\nEntry: 00bd1510\nBody: 00bd1510 - 00bd156e",
+        "sites": [
+          "00bd1525"
+        ],
+        "function_after": "Function: FUN_00bd1510 at 00bd1510\nSignature: undefined FUN_00bd1510(void)\nEntry: 00bd1510\nBody: 00bd1510 - 00bd156e"
+      }
+    ],
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b93b55",
+          "end_address": "00b93b5e"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b93b55",
+          "end_address": "00b93b5d",
+          "bytes_disassembled": 9,
+          "message": "Successfully disassembled 9 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b73aa6",
+          "end_address": "00b73b4c"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b73aa6",
+          "end_address": "00b73b4b",
+          "bytes_disassembled": 166,
+          "message": "Successfully disassembled 166 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b73f08",
+          "end_address": "00b73f4e"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b73f08",
+          "end_address": "00b73f4d",
+          "bytes_disassembled": 70,
+          "message": "Successfully disassembled 70 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b73f24",
+          "end_address": "00b73f4e"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b73f24",
+          "end_address": "00b73f4d",
+          "bytes_disassembled": 42,
+          "message": "Successfully disassembled 42 byte(s)"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00bd152a",
+          "end_address": "00bd156f"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00bd152a",
+          "end_address": "00bd156e",
+          "bytes_disassembled": 69,
+          "message": "Successfully disassembled 69 byte(s)"
+        }
+      },
+      {
+        "endpoint": "set_function_no_return",
+        "body": {
+          "function_address": "00bf9dc8",
+          "no_return": false
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Set function '_free' at 00bf9dc8 from returning to returning"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b93b50"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b50 (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b73aa1"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b73aa1 (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b73f03"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b73f03 (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b73f1f"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b73f1f (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00bd1525"
+        },
+        "dry_run": false,
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00bd1525 (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b93b40"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b93b40",
+          "deleted_function": "CG_scalar_deleting_dtor_00b93b40",
+          "body_size": 27,
+          "message": "Function 'CG_scalar_deleting_dtor_00b93b40' deleted at 00b93b40"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b93b40",
+          "name": "CG_scalar_deleting_dtor_00b93b40",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b93b40",
+          "function_name": "CG_scalar_deleting_dtor_00b93b40",
+          "entry_point": "00b93b40",
+          "body_size": 30,
+          "message": "Function created successfully at 00b93b40",
+          "warnings": [
+            "Function name 'CG_scalar_deleting_dtor_00b93b40' \u2014 main part 'CG_scalar_deleting_dtor_00b93b40' is not PascalCase. Expected: CgScalarDeletingDtor00b93b40",
+            "Function name 'CG_scalar_deleting_dtor_00b93b40' \u2014 main part 'CG_scalar_deleting_dtor_00b93b40' contains underscores. Use PascalCase after the module prefix."
+          ]
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b73a10"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b73a10",
+          "deleted_function": "FUN_00b73a10",
+          "body_size": 306,
+          "message": "Function 'FUN_00b73a10' deleted at 00b73a10"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b73a10",
+          "name": "FUN_00b73a10",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b73a10",
+          "function_name": "FUN_00b73a10",
+          "entry_point": "00b73a10",
+          "body_size": 309,
+          "message": "Function created successfully at 00b73a10"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b73e60"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b73e60",
+          "deleted_function": "FUN_00b73e60",
+          "body_size": 168,
+          "message": "Function 'FUN_00b73e60' deleted at 00b73e60"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b73e60",
+          "name": "FUN_00b73e60",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b73e60",
+          "function_name": "FUN_00b73e60",
+          "entry_point": "00b73e60",
+          "body_size": 238,
+          "message": "Function created successfully at 00b73e60"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00bd1510"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00bd1510",
+          "deleted_function": "FUN_00bd1510",
+          "body_size": 87,
+          "message": "Function 'FUN_00bd1510' deleted at 00bd1510"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00bd1510",
+          "name": "FUN_00bd1510",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00bd1510",
+          "function_name": "FUN_00bd1510",
+          "entry_point": "00bd1510",
+          "body_size": 95,
+          "message": "Function created successfully at 00bd1510"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b2c280",
+          "end_address": "00b2c2d0"
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "start_address": "00b2c280",
+          "end_address": "00b2c2cf",
+          "bytes_disassembled": 80,
+          "message": "Successfully disassembled 80 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b2c280",
+          "name": "FUN_00b2c280",
+          "disassemble_first": false
+        },
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "address": "00b2c280",
+          "function_name": "FUN_00b2c280",
+          "entry_point": "00b2c280",
+          "body_size": 80,
+          "message": "Function created successfully at 00b2c280"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b93b50"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b93b50 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b73aa1"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b73aa1 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b73f03"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b73f03 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b73f1f"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b73f1f (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00bd1525"
+        },
+        "dry_run": true,
+        "result": {
+          "dry_run": true,
+          "status": "success",
+          "message": "Success: Cleared flow override at 00bd1525 (was: NONE, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "dry_run": false,
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ],
+    "free_before": "Function: _free at 00bf9dc8\nSignature: void __cdecl _free(void * _Memory)\nEntry: 00bf9dc8\nBody: 00bf9dc8 - 00bf9e55",
+    "resolver_before": "No function found for 00b2c280",
+    "resolver_after": "Function: FUN_00b2c280 at 00b2c280\nSignature: undefined FUN_00b2c280(void)\nEntry: 00b2c280\nBody: 00b2c280 - 00b2c2cf",
+    "final_flow": [
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b93b50 (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b73aa1 (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b73f03 (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b73f1f (was: NONE, now: NONE)"
+      },
+      {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bd1525 (was: NONE, now: NONE)"
+      }
+    ],
+    "applied": true
+  },
+  "final_flow_readback": [
+    {
+      "address": "00b93b50",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b93b50 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b73aa1",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b73aa1 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b73f03",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b73f03 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00b73f1f",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b73f1f (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "address": "00bd1525",
+      "result": {
+        "dry_run": true,
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bd1525 (was: NONE, now: NONE)"
+      }
+    }
+  ],
+  "semantic_name_tag_refinements": [
+    {
+      "address": "00b47900",
+      "before": {
+        "address": "00b47900",
+        "name": "TRIV_body_00b47900",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b47900",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed semantic name supersedes generated rename; retain classification."
+    },
+    {
+      "address": "00b72b20",
+      "before": {
+        "address": "00b72b20",
+        "name": "TRIV_body_00b72b20",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "after": {
+        "address": "00b72b20",
+        "name": "",
+        "category": "trivial_body",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0002"
+      },
+      "reason": "Reviewed semantic name supersedes generated rename; retain classification."
+    },
+    {
+      "address": "00b73d50",
+      "before": {
+        "address": "00b73d50",
+        "name": "CG_adjustor_thunk_00b73d50",
+        "category": "cg_adjustor_thunk",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0032"
+      },
+      "after": {
+        "address": "00b73d50",
+        "name": "",
+        "category": "cg_adjustor_thunk",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0032"
+      },
+      "reason": "Reviewed semantic name supersedes generated rename; retain classification."
+    },
+    {
+      "address": "00b93b40",
+      "before": {
+        "address": "00b93b40",
+        "name": "CG_scalar_deleting_dtor_00b93b40",
+        "category": "cg_scalar_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0001"
+      },
+      "after": {
+        "address": "00b93b40",
+        "name": "",
+        "category": "cg_scalar_deleting_dtor",
+        "confidence": "high",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0001"
+      },
+      "reason": "Reviewed semantic name supersedes generated rename; retain classification."
+    }
+  ],
+  "forced_exports": [
+    "00b93aa0",
+    "00b93e60",
+    "00b93800",
+    "00be9a20",
+    "00bf02f0",
+    "00b73260",
+    "00b47900",
+    "00b61d90",
+    "00b72b20",
+    "00b287c0",
+    "00b941d0",
+    "00b93710",
+    "00b72710",
+    "00b93590",
+    "00b935c0",
+    "00b93f90",
+    "00b73270",
+    "00b73d50",
+    "00b93d30",
+    "00b937a0",
+    "00533fa0",
+    "00535320",
+    "00b93390",
+    "00b17840",
+    "00b179d0",
+    "004cdc20",
+    "00b8eb50",
+    "00b8e580",
+    "00b93b40",
+    "00b74280",
+    "00b73a10",
+    "00b93910",
+    "00b73e60",
+    "00b72da0",
+    "00b727f0",
+    "00b73c10",
+    "00427110",
+    "00b73840",
+    "00419cc0",
+    "00bd1510",
+    "00bd12a0",
+    "00b2c280",
+    "0041dd40",
+    "00b2dbd0",
+    "00b317e0",
+    "00b61e10",
+    "00b944e0",
+    "00b73d70",
+    "00bf9dc8"
+  ],
+  "new_function": "00b2c280",
+  "limits": "Function and instruction repair with matched bytes; no native ABI or runtime substitution."
+}

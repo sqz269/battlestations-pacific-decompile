@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "packet": "mesh_compressed_consumer_boundary",
+  "captured_utc": "2026-09-10T01:25:40.622601+00:00",
+  "source_head": "e5f9fd7",
+  "status": "consumer_chain_native_audited_next_constant_binding_packet_ready",
+  "scope": {
+    "initial_addresses": [
+      "00b61d90",
+      "00b4bc00"
+    ],
+    "confirmed_accessor": "00b61e10",
+    "confirmed_accessor_callsite": "00b429cf",
+    "confirmed_consumer_owner": "00b42350",
+    "consumer_fragment": [
+      "00b428c0",
+      "00b42a7b"
+    ],
+    "existing_emitter": "00b35820",
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live bsp.py ghidra bytes call verifies configured project/program.",
+    "code_spans": [
+      {
+        "address": "00b61d90",
+        "length": 10,
+        "kind": "code",
+        "end_exclusive": "00b61d9a",
+        "sha256": "2916e2994197d4418c7a26f60f4933c75db70f143977f040b32a03a89face977",
+        "matches_original_pe": true,
+        "disk_offset": 7740816,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b61d90.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b61d90.decoded.asm.txt",
+        "return_instructions": [
+          "00b61d97: ret 4"
+        ]
+      },
+      {
+        "address": "00b61e10",
+        "length": 13,
+        "kind": "code",
+        "end_exclusive": "00b61e1d",
+        "sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+        "matches_original_pe": true,
+        "disk_offset": 7740944,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b61e10.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b61e10.decoded.asm.txt",
+        "return_instructions": [
+          "00b61e1a: ret 4"
+        ]
+      },
+      {
+        "address": "00b428c0",
+        "length": 444,
+        "kind": "fragment",
+        "end_exclusive": "00b42a7c",
+        "sha256": "166aecc12b9e5fddc233eb109cff881737f46764ddc07f21fff3b725efa547da",
+        "matches_original_pe": true,
+        "disk_offset": 7612608,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b428c0.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b428c0.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b35820",
+        "length": 261,
+        "kind": "code",
+        "end_exclusive": "00b35925",
+        "sha256": "bd5facd0d1e8dbb841052427b477b0d24103302176205470be26ce4a5fe1d456",
+        "matches_original_pe": true,
+        "disk_offset": 7559200,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b35820.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b35820.decoded.asm.txt",
+        "return_instructions": [
+          "00b35924: ret "
+        ]
+      },
+      {
+        "address": "00b4bc00",
+        "length": 758,
+        "kind": "code",
+        "end_exclusive": "00b4bef6",
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+        "matches_original_pe": true,
+        "disk_offset": 7650304,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b4bc00.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b4bc00.decoded.asm.txt",
+        "return_instructions": [
+          "00b4bef3: ret 0xc"
+        ]
+      },
+      {
+        "address": "00b61e20",
+        "length": 356,
+        "kind": "code",
+        "end_exclusive": "00b61f84",
+        "sha256": "65814249bf85c9940a1681dbf7028b3ebbcf7109de5ce21cc2f15003569b9185",
+        "matches_original_pe": true,
+        "disk_offset": 7740960,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b61e20.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b61e20.decoded.asm.txt",
+        "return_instructions": [
+          "00b61f81: ret 4"
+        ]
+      },
+      {
+        "address": "00b49980",
+        "length": 252,
+        "kind": "code",
+        "end_exclusive": "00b49a7c",
+        "sha256": "e0e9868dcdc34f988d7d34bd33637d8d819c9ea453cd27e0138f91428abb44f6",
+        "matches_original_pe": true,
+        "disk_offset": 7641472,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b49980.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b49980.decoded.asm.txt",
+        "return_instructions": [
+          "00b49a79: ret 0xc"
+        ]
+      },
+      {
+        "address": "00b49a80",
+        "length": 139,
+        "kind": "code",
+        "end_exclusive": "00b49b0b",
+        "sha256": "16573b9f263996213c20821e791cd1e9a65c16de48cd9d388288308a3061eb6c",
+        "matches_original_pe": true,
+        "disk_offset": 7641728,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b49a80.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b49a80.decoded.asm.txt",
+        "return_instructions": [
+          "00b49b0a: ret "
+        ]
+      },
+      {
+        "address": "00b4aab0",
+        "length": 1,
+        "kind": "code",
+        "end_exclusive": "00b4aab1",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "matches_original_pe": true,
+        "disk_offset": 7645872,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b4aab0.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b4aab0.decoded.asm.txt",
+        "return_instructions": [
+          "00b4aab0: ret "
+        ]
+      },
+      {
+        "address": "00b61da0",
+        "length": 26,
+        "kind": "code",
+        "end_exclusive": "00b61dba",
+        "sha256": "3d491f1f50ea2e3d0acfdb4ce3fe40ba8c4e7981a4569c0f8440ed5cb7ddb96a",
+        "matches_original_pe": true,
+        "disk_offset": 7740832,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00b61da0.bytes.txt",
+        "decoded_disassembly": "local/mesh_compressed_consumer/00b61da0.decoded.asm.txt",
+        "return_instructions": [
+          "00b61db9: ret "
+        ]
+      },
+      {
+        "address": "00d61d6c",
+        "length": 52,
+        "kind": "data",
+        "end_exclusive": "00d61da0",
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "matches_original_pe": true,
+        "disk_offset": 9837932,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00d61d6c.bytes.txt",
+        "decoded_disassembly": null,
+        "return_instructions": []
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "kind": "data",
+        "end_exclusive": "00d7a250",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "matches_original_pe": true,
+        "disk_offset": 9937484,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00d7a24c.bytes.txt",
+        "decoded_disassembly": null,
+        "return_instructions": []
+      },
+      {
+        "address": "00d5f400",
+        "length": 61,
+        "kind": "data",
+        "end_exclusive": "00d5f43d",
+        "sha256": "426eee169e0c5642ab852d1e77a0acaa8779720983284df8db4e9810781e7812",
+        "matches_original_pe": true,
+        "disk_offset": 9827328,
+        "raw_byte_capture": "local/mesh_compressed_consumer/00d5f400.bytes.txt",
+        "decoded_disassembly": null,
+        "return_instructions": []
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b61e10",
+      "original_name": "FUN_00b61e10",
+      "original_abi": "ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4.",
+      "original_annotation": {
+        "address": "00b61e10",
+        "function_name": "FUN_00b61e10"
+      },
+      "suggested_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+      "contract": "Return compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter.",
+      "complete_span_length": 13,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return compression/decode record address at[stream+50]+element_index*20h. Confirmed caller00b429cf in material-pass builder copies firstfloat4 to reflected cVtxElemScale and secondfloat4 to cVtxElemOffset. No bounds/null check or transformation in getter. ABI: ECX logical vertex stream; stack declaration-element index DWORD; EAX unchecked pointer[stream+50]+index*20h; RET4. Full13-byte native body matches installedPE. Evidence: docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md; reports/mesh_compressed_consumer_boundary_audit.json. No nativeABI/game validation."
+    }
+  ],
+  "preserve_existing_names": [
+    "BSP_MaterialPass_BuildShaderConstants",
+    "BSP_ShaderBuilder_AppendVertexInputDecode",
+    "BSP_LogicalVertexStream_Lock",
+    "BSP_LogicalVertexStream_Unlock"
+  ],
+  "callgraph_evidence": {
+    "setter_callers": [
+      "00b93800"
+    ],
+    "setter_xrefs": [
+      "00b93869"
+    ],
+    "getter_callers": [
+      "00b42350"
+    ],
+    "getter_xrefs": [
+      "00b429cf"
+    ],
+    "limit": "One getter caller in saved and live queries; this does not prove absence of other inline consumers."
+  },
+  "decode_record": {
+    "size_bytes": 32,
+    "layout": [
+      {
+        "offset": 0,
+        "bytes": 16,
+        "meaning": "float4 scale"
+      },
+      {
+        "offset": 16,
+        "bytes": 16,
+        "meaning": "float4 offset"
+      }
+    ],
+    "source": "Mesh CompressedVertexFormatData handler00b93800 stores via00b61d90",
+    "accessor": "00b61e10",
+    "metadata_absent_default": {
+      "scale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "offset": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "native_copy": "Eight FLD/FSTP pairs; no arithmetic in record->constant copy.",
+    "exact_bit_limit": "Do not claim memcpy-equivalent handling of all NaN payloads from x87 load/store evidence."
+  },
+  "material_fragment": {
+    "owner": "00b42350",
+    "start": "00b428c0",
+    "end_exclusive": "00b42a7c",
+    "original_abi": "Fragment inside ECX-pass, stack entry/override RET8 owner; not a standalone function.",
+    "scale_register": "byte[[pass+70]+20]",
+    "offset_register": "byte[[pass+70]+21]",
+    "gate": "Skip if scale register isFF; offset has no independentFF check.",
+    "register_file_base": "0108ebf4",
+    "stream_source": "entry+4 -> drawsection; stream pointers at+3C; count+4C; preserve stream order",
+    "declaration_element_count": "stream virtual+24 returns declaration;00b47900 reads+10 count",
+    "register_loop": "initial gap=offsetRegister-scaleRegister; each stream selects min(element_count,currentOffset-currentScale); both destinations advance equally; remaining gap and descriptor limit decrement per element but are tested for zero only at stream boundaries",
+    "descriptor_limit": "[pass+14]->C4 +20, or+24 when[entry+10]+198==2; full owner-role mapping remains deferred",
+    "no_buffer_wide_clear": true
+  },
+  "shader_decode": {
+    "address": "00b35820",
+    "literal_address": "00d5f400",
+    "literal": "\tIN.%s=IN.%s * cVtxElemScale[%i].%s + cVtxElemOffset[%i].%s;",
+    "gate": "builder base descriptor+1F nonzero",
+    "field_prefix": "min(unsigned descriptor+20,input field count+8)",
+    "operation": "IN.field = IN.field * cVtxElemScale[index].swizzle + cVtxElemOffset[index].swizzle",
+    "current_host_emitter": "src/shader_source.cpp:123",
+    "swizzle_helper": "00b34e90 existing audited helper; components1..4 -> x/xy/xyz/xyzw"
+  },
+  "upload_boundary": {
+    "constructor": "00b4bc00",
+    "allocation_size": "vertex_count * declaration+CC stride",
+    "lock": "00b49980 maps physicalbuffer byte count/offset from declaration stride",
+    "unlock": "00b49a80 unlocks physicalbuffer and clears mapped pointer+8",
+    "no_direct_decode_metadata_read_in_inspected_constructor_lock_unlock": true,
+    "constant_upload": "Existing caller00b43410 uploads positive dynamic VS/PS tails after builder; retain existing documented boundary.",
+    "physical_interpretation": "Vertex values remain in declaration-defined D3D input format; the observed scale/offset operation is generated in the vertex shader."
+  },
+  "current_host_gap": {
+    "parsed_records": "include/bsp/mesh_buffers.hpp MeshVertexStreamPayload.compressed_format_bytes",
+    "existing_shader_emitter": "src/shader_source.cpp append_vertex_input_decode_00b35820",
+    "existing_diagnostic": "src/d3d9_shader_probe.cpp supplies reflected identity scale/offset constants directly",
+    "missing": "No parsed stream record -> material-pass decode constant fragment integration found in material_constants.cpp/material_parameter_bindings.cpp."
+  },
+  "next_packet": {
+    "id": "mesh_vertex_decode_constant_binding",
+    "anchor_addresses": [
+      "00b61e10",
+      "00b42350"
+    ],
+    "owned_fragment": [
+      "00b428c0",
+      "00b42a7b"
+    ],
+    "integration_dependencies": [
+      "00b93800 parsed records",
+      "00b3aea0 compiled constant reflection",
+      "00b43410 material execution upload",
+      "00b35820 existing vertex decode emitter"
+    ],
+    "proposed_work": "Add typed per-stream decode records and a bounded projection of the material-pass fragment, preserving section stream/element order, absent-metadata identity defaults, actual reflected register locations and native stream-boundary limit semantics. Connect to resource->logicalstream material execution; do not CPU-decompress vertex bytes.",
+    "concrete_uncertainty": "Owner meaning of descriptor limit+20/+24 and multi-stream cases where counts exceed available ranges; host can reject unsupported bounds explicitly, but must not label a different clamping algorithm exact.",
+    "validation_needed": "One nonidentity parsed decode record through reflected constants and an existing focused D3D draw/readback; distinguish byte parsing, register values and rendered geometry."
+  },
+  "deferred_incidental_findings": [
+    {
+      "address": "00b61daa",
+      "owner": "00b61da0",
+      "target": "00bf65ac",
+      "flow_before": "CALL_RETURN",
+      "full_owner_length": 26,
+      "hidden_tail": "00b61daf ADDESP4;00b61db2 MOV[ESI],0;00b61db8 POPESI;RET",
+      "related_to_confirmed_consumer": false,
+      "worker_mutated": false
+    },
+    {
+      "address": "00b4aab0",
+      "vtable": "00d61d6c+30",
+      "native_body": "RET",
+      "length": 1,
+      "function_absent_before": true,
+      "related_to_decode_consumer": false
+    }
+  ],
+  "references": [
+    "docs/MESH_VERTEX_INDEX_PAYLOADS.md",
+    "docs/SHADER_COMPILED_CONSTANT_BINDING.md",
+    "docs/SHADER_INITIALIZATION.md",
+    "docs/LOGICAL_STREAM_UPLOAD.md"
+  ],
+  "validation": {
+    "all_spans_match": true,
+    "assembly_checked": true,
+    "reconstructed_cpp": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "primary_integration": {
+    "validation": "reports/mesh_resource_validation.json",
+    "annotations": "reports/mesh_resource_annotations.json",
+    "scope": "Wire readers, declaration decoder and GroupParams integrated in installed VFS diagnostic. Consumer/lifetime native audits guide real GPU/material/manager integration."
+  }
+}

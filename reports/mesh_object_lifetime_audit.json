@@ -1,0 +1,723 @@
+{
+  "schema_version": 1,
+  "packet": "mesh_object_lifetime",
+  "captured_utc": "2026-09-10T01:16:15.477163+00:00",
+  "source_head": "e5f9fd7",
+  "status": "complete_native_lifetime_audit_ready_for_primary_review",
+  "scope": {
+    "initial_anchors": [
+      "00b93b40",
+      "00b74280",
+      "00b73a10"
+    ],
+    "approved_expansions": [
+      "00b93910",
+      "00b73e60",
+      "00b72da0",
+      "00b727f0",
+      "00b73c10",
+      "00427110",
+      "00b73840",
+      "00419cc0",
+      "00bd1510",
+      "00bd12a0"
+    ],
+    "no_cpp": true,
+    "no_tests": true,
+    "no_shared_metadata_edits": true,
+    "no_ghidra_mutations": true
+  },
+  "byte_validation": {
+    "captured_utc": "2026-09-10T01:11:54.300540+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra bytes call verifies configured project and program before access.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {
+        "address": "00b93b40",
+        "length": 30,
+        "end_exclusive": "00b93b5e",
+        "kind": "code",
+        "sha256": "69275ae587c949768e84b7961079d4f1e1401c63c2ed6313597f4510a6928c9e",
+        "matches_original_pe": true,
+        "disk_offset": 7945024,
+        "raw_byte_capture": "local/mesh_lifetime/00b93b40.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b93b40.decoded.asm.txt",
+        "return_instructions": [
+          "00b93b5b: ret 4"
+        ]
+      },
+      {
+        "address": "00b74280",
+        "length": 32,
+        "end_exclusive": "00b742a0",
+        "kind": "code",
+        "sha256": "8c381b06e94bfcf7a73a88daf3df04db73072569b2ca7c2845a212cdeb372c3e",
+        "matches_original_pe": true,
+        "disk_offset": 7815808,
+        "raw_byte_capture": "local/mesh_lifetime/00b74280.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b74280.decoded.asm.txt",
+        "return_instructions": [
+          "00b7429d: ret 4"
+        ]
+      },
+      {
+        "address": "00b73a10",
+        "length": 316,
+        "end_exclusive": "00b73b4c",
+        "kind": "code",
+        "sha256": "84fa8138df2d940edccf3ad2bb9d8197b10e86a5504a25e384bae2559f772ae8",
+        "matches_original_pe": true,
+        "disk_offset": 7813648,
+        "raw_byte_capture": "local/mesh_lifetime/00b73a10.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b73a10.decoded.asm.txt",
+        "return_instructions": [
+          "00b73b37: ret",
+          "00b73b4b: ret"
+        ]
+      },
+      {
+        "address": "00b93910",
+        "length": 101,
+        "end_exclusive": "00b93975",
+        "kind": "code",
+        "sha256": "df4bdd5478202c9c4213f5cb19f55eeb226b28701e1e6fd6731fbb1518e344c4",
+        "matches_original_pe": true,
+        "disk_offset": 7944464,
+        "raw_byte_capture": "local/mesh_lifetime/00b93910.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b93910.decoded.asm.txt",
+        "return_instructions": [
+          "00b93974: ret"
+        ]
+      },
+      {
+        "address": "00b73e60",
+        "length": 238,
+        "end_exclusive": "00b73f4e",
+        "kind": "code",
+        "sha256": "eee55fd1be680cc58cc366fcdf902f9f9dad88e700abd102acd0778f962bb22f",
+        "matches_original_pe": true,
+        "disk_offset": 7814752,
+        "raw_byte_capture": "local/mesh_lifetime/00b73e60.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b73e60.decoded.asm.txt",
+        "return_instructions": [
+          "00b73f4d: ret"
+        ]
+      },
+      {
+        "address": "00b72da0",
+        "length": 104,
+        "end_exclusive": "00b72e08",
+        "kind": "code",
+        "sha256": "b94a0f76c9270caa64ff1100cd4fc6b20ffc316e38f092f962b041d4e29af849",
+        "matches_original_pe": true,
+        "disk_offset": 7810464,
+        "raw_byte_capture": "local/mesh_lifetime/00b72da0.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b72da0.decoded.asm.txt",
+        "return_instructions": [
+          "00b72e05: ret 4"
+        ]
+      },
+      {
+        "address": "00b727f0",
+        "length": 67,
+        "end_exclusive": "00b72833",
+        "kind": "code",
+        "sha256": "e1858a52538167e3ac31c13fd95fc79991adf591c3525f6eb577c3a6ec4b4197",
+        "matches_original_pe": true,
+        "disk_offset": 7809008,
+        "raw_byte_capture": "local/mesh_lifetime/00b727f0.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b727f0.decoded.asm.txt",
+        "return_instructions": [
+          "00b72830: ret 4"
+        ]
+      },
+      {
+        "address": "00b73c10",
+        "length": 66,
+        "end_exclusive": "00b73c52",
+        "kind": "code",
+        "sha256": "262c9f59775e38944d006854a9fa4c4035a6955085ad08a8a2b1e6aa8bd696a6",
+        "matches_original_pe": true,
+        "disk_offset": 7814160,
+        "raw_byte_capture": "local/mesh_lifetime/00b73c10.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b73c10.decoded.asm.txt",
+        "return_instructions": [
+          "00b73c51: ret"
+        ]
+      },
+      {
+        "address": "00427110",
+        "length": 120,
+        "end_exclusive": "00427188",
+        "kind": "code",
+        "sha256": "caa2d4fd2e8bccfb7723387c81dfde646d0f4e37d6e3d3698eb392b91bb732b8",
+        "matches_original_pe": true,
+        "disk_offset": 160016,
+        "raw_byte_capture": "local/mesh_lifetime/00427110.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00427110.decoded.asm.txt",
+        "return_instructions": [
+          "00427185: ret 4"
+        ]
+      },
+      {
+        "address": "00b73840",
+        "length": 80,
+        "end_exclusive": "00b73890",
+        "kind": "code",
+        "sha256": "b01a7e9b858c3a1396751c76c59f4adc6b43acbe82263213779691881a749547",
+        "matches_original_pe": true,
+        "disk_offset": 7813184,
+        "raw_byte_capture": "local/mesh_lifetime/00b73840.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b73840.decoded.asm.txt",
+        "return_instructions": [
+          "00b7388d: ret 4"
+        ]
+      },
+      {
+        "address": "00419cc0",
+        "length": 192,
+        "end_exclusive": "00419d80",
+        "kind": "code",
+        "sha256": "43eaf61f27efa9fd1c8905e3266d3183717240b825126da7d970fbecb703190a",
+        "matches_original_pe": true,
+        "disk_offset": 105664,
+        "raw_byte_capture": "local/mesh_lifetime/00419cc0.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00419cc0.decoded.asm.txt",
+        "return_instructions": [
+          "00419d7f: ret"
+        ]
+      },
+      {
+        "address": "00bd1510",
+        "length": 95,
+        "end_exclusive": "00bd156f",
+        "kind": "code",
+        "sha256": "ae7cc468fd929f90e9a2a6a8a5107d4375c16271eb96e9d7829504911105a4d4",
+        "matches_original_pe": true,
+        "disk_offset": 8197392,
+        "raw_byte_capture": "local/mesh_lifetime/00bd1510.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00bd1510.decoded.asm.txt",
+        "return_instructions": [
+          "00bd152f: ret 0xc",
+          "00bd156c: ret 0xc"
+        ]
+      },
+      {
+        "address": "00bd12a0",
+        "length": 213,
+        "end_exclusive": "00bd1375",
+        "kind": "code",
+        "sha256": "bedbfd3db0788f4ff1359b6567981dadbf96007cfbe043a16f753ec83dd3271b",
+        "matches_original_pe": true,
+        "disk_offset": 8196768,
+        "raw_byte_capture": "local/mesh_lifetime/00bd12a0.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00bd12a0.decoded.asm.txt",
+        "return_instructions": [
+          "00bd1372: ret 8"
+        ]
+      },
+      {
+        "address": "00b73d70",
+        "length": 179,
+        "end_exclusive": "00b73e23",
+        "kind": "code",
+        "sha256": "dce74ec9776f6191260146be11d3cdca34fd71bb9c7c6fbf75b1be705efde977",
+        "matches_original_pe": true,
+        "disk_offset": 7814512,
+        "raw_byte_capture": "local/mesh_lifetime/00b73d70.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b73d70.decoded.asm.txt",
+        "return_instructions": [
+          "00b73e22: ret"
+        ]
+      },
+      {
+        "address": "00b73b60",
+        "length": 10,
+        "end_exclusive": "00b73b6a",
+        "kind": "code",
+        "sha256": "5335b00fb639ebd563221cca93458c27eedd4ef5b72bffb13acf3a297cd8bc36",
+        "matches_original_pe": true,
+        "disk_offset": 7813984,
+        "raw_byte_capture": "local/mesh_lifetime/00b73b60.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b73b60.decoded.asm.txt",
+        "return_instructions": []
+      },
+      {
+        "address": "00b947a0",
+        "length": 169,
+        "end_exclusive": "00b94849",
+        "kind": "code",
+        "sha256": "85c378ad242a531f08f3190f9e1b1c73fc23684d2e22cc88b98c288f2a7736bd",
+        "matches_original_pe": true,
+        "disk_offset": 7948192,
+        "raw_byte_capture": "local/mesh_lifetime/00b947a0.bytes.txt",
+        "decoded_disassembly": "local/mesh_lifetime/00b947a0.decoded.asm.txt",
+        "return_instructions": [
+          "00b94846: ret 4"
+        ]
+      },
+      {
+        "address": "00d62d60",
+        "length": 8,
+        "end_exclusive": "00d62d68",
+        "kind": "data",
+        "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745",
+        "matches_original_pe": true,
+        "disk_offset": 9842016,
+        "raw_byte_capture": "local/mesh_lifetime/00d62d60.bytes.txt",
+        "decoded_disassembly": null,
+        "return_instructions": []
+      },
+      {
+        "address": "00d63738",
+        "length": 8,
+        "end_exclusive": "00d63740",
+        "kind": "data",
+        "sha256": "e8d48e7508c71809ec1e0f408848878d92c8cf45b7535e6596fbf9c48a0905d2",
+        "matches_original_pe": true,
+        "disk_offset": 9844536,
+        "raw_byte_capture": "local/mesh_lifetime/00d63738.bytes.txt",
+        "decoded_disassembly": null,
+        "return_instructions": []
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b93b40",
+      "original_name": "CG_scalar_deleting_dtor_00b93b40",
+      "original_annotation": {
+        "address": "00b93b40",
+        "function_name": "CG_scalar_deleting_dtor_00b93b40"
+      },
+      "suggested_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor",
+      "original_abi": "ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4.",
+      "contract": "Call00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation.",
+      "reconstruction_scope": "complete normal-path wrapper teardown; stale CALL_RETURN recorded",
+      "complete_span_length": 30,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Full native span matches installed PE. Scope: complete normal-path wrapper teardown; stale CALL_RETURN recorded. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b74280",
+      "original_name": "FUN_00b74280",
+      "original_annotation": {
+        "address": "00b74280",
+        "function_name": "FUN_00b74280"
+      },
+      "suggested_name": "BSP_MeshObject_ScalarDeletingDestructor",
+      "original_abi": "ECX mesh; one stack flags DWORD (low byte tested); EAX original mesh; RET4.",
+      "contract": "Call00b73e60; if flags bit0 set, return slot to global0108fff8 via00b72da0; never directly free mesh through CRT.",
+      "reconstruction_scope": "complete normal-path mesh deleting destructor",
+      "complete_span_length": 32,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Call00b73e60; if flags bit0 set, return slot to global0108fff8 via00b72da0; never directly free mesh through CRT. ABI: ECX mesh; one stack flags DWORD (low byte tested); EAX original mesh; RET4. Full native span matches installed PE. Scope: complete normal-path mesh deleting destructor. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b73a10",
+      "original_name": "FUN_00b73a10",
+      "original_annotation": {
+        "address": "00b73a10",
+        "function_name": "FUN_00b73a10"
+      },
+      "suggested_name": "BSP_MeshObjectPool_AllocateSlot",
+      "original_abi": "ECX pool context; no stack arguments; EAX C0h-stride slot pointer; RET.",
+      "contract": "Under pool+0C critical section, use/grow chunk pointer vector+28/+2C/+30; current+34 usesFFFFFFFF sentinel. New chunk1844h contains32 slots; pop uint16 free index at+1800 using decremented+1840 count. Scan later chunks after exhaustion. Free old pointer-array allocation and continue.",
+      "reconstruction_scope": "complete normal allocation path; allocator failure guarantees and singleton construction deferred",
+      "complete_span_length": 316,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Under pool+0C critical section, use/grow chunk pointer vector+28/+2C/+30; current+34 usesFFFFFFFF sentinel. New chunk1844h contains32 slots; pop uint16 free index at+1800 using decremented+1840 count. Scan later chunks after exhaustion. Free old pointer-array allocation and continue. ABI: ECX pool context; no stack arguments; EAX C0h-stride slot pointer; RET. Full native span matches installed PE. Scope: complete normal allocation path; allocator failure guarantees and singleton construction deferred. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b93910",
+      "original_name": "FUN_00b93910",
+      "original_annotation": {
+        "address": "00b93910",
+        "function_name": "FUN_00b93910"
+      },
+      "suggested_name": "BSP_ResourceMeshItem_Destroy",
+      "original_abi": "ECX wrapper; no explicit stack arguments; RET; EAX not specified.",
+      "contract": "Set wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released.",
+      "reconstruction_scope": "complete normal-path wrapper body; nonnull mesh invariant",
+      "complete_span_length": 101,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Set wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Full native span matches installed PE. Scope: complete normal-path wrapper body; nonnull mesh invariant. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b73e60",
+      "original_name": "FUN_00b73e60",
+      "original_annotation": {
+        "address": "00b73e60",
+        "function_name": "FUN_00b73e60"
+      },
+      "suggested_name": "BSP_MeshObject_Destroy",
+      "original_abi": "ECX mesh; no explicit stack arguments; RET at00b73f4d; EAX not specified.",
+      "contract": "Release optional intrusive owner+60 then clear; release optional inline+64 references counted+7C;00b73c10 releases+54 draw-section refs and resets count; zero-resize+B0 native-string vector, free backing; zero-resize+54 pointer vector, free backing; set intermediatevt00d5c104, call00bd30f0, restore exception frame.",
+      "reconstruction_scope": "complete normal-path teardown from PE/live-matched native tail; saved body originally truncated",
+      "complete_span_length": 238,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Release optional intrusive owner+60 then clear; release optional inline+64 references counted+7C;00b73c10 releases+54 draw-section refs and resets count; zero-resize+B0 native-string vector, free backing; zero-resize+54 pointer vector, free backing; set intermediatevt00d5c104, call00bd30f0, restore exception frame. ABI: ECX mesh; no explicit stack arguments; RET at00b73f4d; EAX not specified. Full native span matches installed PE. Scope: complete normal-path teardown from PE/live-matched native tail; saved body originally truncated. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b72da0",
+      "original_name": "FUN_00b72da0",
+      "original_annotation": {
+        "address": "00b72da0",
+        "function_name": "FUN_00b72da0"
+      },
+      "suggested_name": "BSP_MeshObjectPool_ReturnSlot",
+      "original_abi": "ECX pool; one stack slot pointer; RET4; EAX not specified.",
+      "contract": "Under critical section+0C, read chunk index at slot+BC, compute slot index=(slot-chunk)/C0, push uint16 atchunk+1800[count+1840], increment count; unsigned-min currentchunk+34. No object destruction or per-slot CRT free.",
+      "reconstruction_scope": "complete valid-slot return path; caller supplies valid pool member and no duplicate return",
+      "complete_span_length": 104,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Under critical section+0C, read chunk index at slot+BC, compute slot index=(slot-chunk)/C0, push uint16 atchunk+1800[count+1840], increment count; unsigned-min currentchunk+34. No object destruction or per-slot CRT free. ABI: ECX pool; one stack slot pointer; RET4; EAX not specified. Full native span matches installed PE. Scope: complete valid-slot return path; caller supplies valid pool member and no duplicate return. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b727f0",
+      "original_name": "FUN_00b727f0",
+      "original_annotation": {
+        "address": "00b727f0",
+        "function_name": "FUN_00b727f0"
+      },
+      "suggested_name": "BSP_MeshObjectPool_ConstructChunk",
+      "original_abi": "ECX1844h chunk; one stack chunk-index DWORD; EAX same chunk; RET4.",
+      "contract": "Set uint16 freecount+1840=32; free-list uint16[32] at+1800=31..0; store chunk index in each C0h-stride slot+BC. No payload construction or zero-fill.",
+      "reconstruction_scope": "complete chunk initialization; trailing allocation bytes+1842/+1843 uninterpreted",
+      "complete_span_length": 67,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Set uint16 freecount+1840=32; free-list uint16[32] at+1800=31..0; store chunk index in each C0h-stride slot+BC. No payload construction or zero-fill. ABI: ECX1844h chunk; one stack chunk-index DWORD; EAX same chunk; RET4. Full native span matches installed PE. Scope: complete chunk initialization; trailing allocation bytes+1842/+1843 uninterpreted. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b73c10",
+      "original_name": "FUN_00b73c10",
+      "original_annotation": {
+        "address": "00b73c10",
+        "function_name": "FUN_00b73c10"
+      },
+      "suggested_name": "BSP_MeshObject_ClearDrawSectionOwners",
+      "original_abi": "ECX mesh; no explicit stack arguments; RET; EAX not specified.",
+      "contract": "For signed index0..<mesh+58, release nonnull-assumed pointer from heaparray+54 via InterlockedDecrement(ptr+4)/vtable0; call00b73840(ECXmesh+54,stack0). Does not free container backing.",
+      "reconstruction_scope": "complete normal-path owner clear",
+      "complete_span_length": 66,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: For signed index0..<mesh+58, release nonnull-assumed pointer from heaparray+54 via InterlockedDecrement(ptr+4)/vtable0; call00b73840(ECXmesh+54,stack0). Does not free container backing. ABI: ECX mesh; no explicit stack arguments; RET; EAX not specified. Full native span matches installed PE. Scope: complete normal-path owner clear. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00427110",
+      "original_name": "FUN_00427110",
+      "original_annotation": {
+        "address": "00427110",
+        "function_name": "FUN_00427110"
+      },
+      "suggested_name": "BSP_NativeStringVector_Resize",
+      "original_abi": "ECX{data,count,capacity}; stack signed desired count; RET4; EAX not specified.",
+      "contract": "Eight-byte elements. Grow delegates00426520; new entries zero both DWORDs. Shrink backward, for nonnullentry.storage call noarg00419cc0 then00bd1510 withECXpool and stack(storage,entry.length+1,1); set count. Native cleanup path requires no growth.",
+      "reconstruction_scope": "cleanup and observed resize control flow; reserve helper00426520 remains deferred",
+      "complete_span_length": 120,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Eight-byte elements. Grow delegates00426520; new entries zero both DWORDs. Shrink backward, for nonnullentry.storage call noarg00419cc0 then00bd1510 withECXpool and stack(storage,entry.length+1,1); set count. Native cleanup path requires no growth. ABI: ECX{data,count,capacity}; stack signed desired count; RET4; EAX not specified. Full native span matches installed PE. Scope: cleanup and observed resize control flow; reserve helper00426520 remains deferred. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00b73840",
+      "original_name": "FUN_00b73840",
+      "original_annotation": {
+        "address": "00b73840",
+        "function_name": "FUN_00b73840"
+      },
+      "suggested_name": "BSP_PointerVector_ResizeZeroed",
+      "original_abi": "ECX{data,count,capacity}; stack signed desired count; RET4; EAX not specified.",
+      "contract": "Four-byte elements; grow delegates00b72e10, initializes new pointer slots0; shrink decrements count only, with no pointed-object destruction. Mesh destructor uses desired0 after explicit intrusive releases.",
+      "reconstruction_scope": "complete no-grow cleanup path; reserve helper00b72e10 remains deferred",
+      "complete_span_length": 80,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Four-byte elements; grow delegates00b72e10, initializes new pointer slots0; shrink decrements count only, with no pointed-object destruction. Mesh destructor uses desired0 after explicit intrusive releases. ABI: ECX{data,count,capacity}; stack signed desired count; RET4; EAX not specified. Full native span matches installed PE. Scope: complete no-grow cleanup path; reserve helper00b72e10 remains deferred. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00419cc0",
+      "original_name": "FUN_00419cc0",
+      "original_annotation": {
+        "address": "00419cc0",
+        "function_name": "FUN_00419cc0"
+      },
+      "suggested_name": "BSP_SizedStoragePool_GetSingleton_Provisional",
+      "original_abi": "No explicit arguments; EAX global01090aa8; RET. Caller-pushed release arguments remain on stack.",
+      "contract": "Return cached global01090aa8 or guarded lazy allocation8AD4A0h/constructor00bd1480, then register with singleton lifetime manager. Does not consume native-string release arguments.",
+      "reconstruction_scope": "singleton access boundary; full storage-pool constructor deferred",
+      "complete_span_length": 192,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return cached global01090aa8 or guarded lazy allocation8AD4A0h/constructor00bd1480, then register with singleton lifetime manager. Does not consume native-string release arguments. ABI: No explicit arguments; EAX global01090aa8; RET. Caller-pushed release arguments remain on stack. Full native span matches installed PE. Scope: singleton access boundary; full storage-pool constructor deferred. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00bd1510",
+      "original_name": "FUN_00bd1510",
+      "original_annotation": {
+        "address": "00bd1510",
+        "function_name": "FUN_00bd1510"
+      },
+      "suggested_name": "BSP_SizedStoragePool_ReturnBlock_Provisional",
+      "original_abi": "ECX pool manager; stack(storage,size,unused DWORD); RET0Ch on both paths; third argument not read.",
+      "contract": "For unsigned size>=96h callCRTfree00bf9dc8 then native ADDESP4/POPs/RET0Ch. Smaller size with global01090aa4==0 locks criticalsection+8AD484 and calls00bd12a0 on subobject+6ACFCC with(&storage,size). Global nonzero skips small-block return.",
+      "reconstruction_scope": "complete normal sized-return path; global meaning and full pool lifecycle deferred",
+      "complete_span_length": 95,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: For unsigned size>=96h callCRTfree00bf9dc8 then native ADDESP4/POPs/RET0Ch. Smaller size with global01090aa4==0 locks criticalsection+8AD484 and calls00bd12a0 on subobject+6ACFCC with(&storage,size). Global nonzero skips small-block return. ABI: ECX pool manager; stack(storage,size,unused DWORD); RET0Ch on both paths; third argument not read. Full native span matches installed PE. Scope: complete normal sized-return path; global meaning and full pool lifecycle deferred. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    },
+    {
+      "address": "00bd12a0",
+      "original_name": "FUN_00bd12a0",
+      "original_annotation": {
+        "address": "00bd12a0",
+        "function_name": "FUN_00bd12a0"
+      },
+      "suggested_name": "BSP_SizedStoragePool_ReturnSmallBlock_Provisional",
+      "original_abi": "ECX size-bin pool subobject; stack address-of-storage-pointer and signed size-bin; RET8; EAX not specified.",
+      "contract": "Return dereferenced pointer into shared circular pointer storage. Advance masked19-bit bin cursors at+200000/+200258, shift through neighboring bins modulo150 when colliding, store pointer, increment available+2004B0 and highwater+2004B4. No CRT free or object reference release.",
+      "reconstruction_scope": "bounded small-block return leaf; complete pool allocation algorithm not reconstructed",
+      "complete_span_length": 213,
+      "suggested_plate_comment": "BSP reconstruction hypothesis: Return dereferenced pointer into shared circular pointer storage. Advance masked19-bit bin cursors at+200000/+200258, shift through neighboring bins modulo150 when colliding, store pointer, increment available+2004B0 and highwater+2004B4. No CRT free or object reference release. ABI: ECX size-bin pool subobject; stack address-of-storage-pointer and signed size-bin; RET8; EAX not specified. Full native span matches installed PE. Scope: bounded small-block return leaf; complete pool allocation algorithm not reconstructed. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or game validation."
+    }
+  ],
+  "ownership": {
+    "wrapper": {
+      "size_bytes": 16,
+      "mesh_offset": "08",
+      "prefix_offset": "0c",
+      "mesh_reference_count_offset": "04",
+      "initial_mesh_count": 1,
+      "wrapper_retain_count": 2,
+      "temporary_release_count": 1,
+      "destructor_assumes_mesh_nonnull": true
+    },
+    "mesh_members": [
+      {
+        "offset": "60",
+        "role": "index_buffer",
+        "ownership": "optional intrusive owner"
+      },
+      {
+        "offset": "64",
+        "count_offset": "7c",
+        "role": "vertex_streams",
+        "ownership": "counted inline optional intrusive owners"
+      },
+      {
+        "offset": "54",
+        "count_offset": "58",
+        "capacity_offset": "5c",
+        "role": "draw_sections",
+        "ownership": "heap pointer array and each nonnull-assumed intrusive owner; materials owned by draw sections"
+      },
+      {
+        "offset": "b0",
+        "count_offset": "b4",
+        "capacity_offset": "b8",
+        "role": "weight_map_names",
+        "ownership": "heap8-byte element array and copied storage pointers; sized pool return per element"
+      }
+    ],
+    "destruction_order": [
+      "release+60;clear",
+      "release inline+64[+7c]",
+      "release+54[+58];resize count0",
+      "destroy name entries in reverse;free+b0 backing",
+      "resize+54 count0 again;free backing",
+      "base destructor",
+      "if scalar deleting flagbit0: return slot to global0108fff8"
+    ]
+  },
+  "pool": {
+    "global_address": "0108fff8",
+    "object_extent_bytes": 188,
+    "slot_stride_bytes": 192,
+    "slot_chunk_index_offset": "bc",
+    "chunk_allocation_bytes": 6212,
+    "slots_per_chunk": 32,
+    "free_indices_offset": "1800",
+    "free_index_width_bytes": 2,
+    "free_count_offset": "1840",
+    "free_count_width_bytes": 2,
+    "free_indices_initial": [
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "current_chunk_sentinel": "ffffffff",
+    "context_members": {
+      "0c": "critical section",
+      "24": "entry/exit counter, not live allocation count",
+      "28": "chunk pointer array",
+      "2c": "chunk pointer count",
+      "30": "chunk pointer capacity",
+      "34": "earliest available chunk or sentinel"
+    },
+    "pointer_array_growth": "2*old_capacity+2",
+    "allocation": "--count; returnchunk+free_indices[count]*C0",
+    "return_slot": "chunk=chunks[slot.BC];free_indices[count++]=(slot-chunk)/C0;unsignedmin current index",
+    "caller_invariants": [
+      "slot belongs to pool",
+      "no duplicate slot return",
+      "count in0..32",
+      "constructor leaves slot+BC chunk index intact"
+    ],
+    "unknowns": [
+      "allocation failure guarantees",
+      "pool singleton setup/lifecycle",
+      "chunk final2bytes"
+    ]
+  },
+  "sized_string_cleanup": {
+    "element_bytes": 8,
+    "element_layout": [
+      "length",
+      "storage"
+    ],
+    "cleanup_arguments": [
+      "storage",
+      "length+1",
+      "1 (unused by00bd1510)"
+    ],
+    "return_boundary": 150,
+    "large": "CRT_free",
+    "small": "00bd12a0 sized pool return when01090aa4==0",
+    "nonzero_global_behavior": "skip small block return",
+    "no_intrusive_string_reference_release": true
+  },
+  "ghidra_repair_handoff": {
+    "worker_mutated": false,
+    "flow_overrides_before": [
+      {
+        "address": "00b93b50",
+        "owner": "00b93b40",
+        "target": "00bf65ac",
+        "observed_before": "CALL_RETURN",
+        "native_continuation": "00b93b55: add esp,4; 00b93b58: mov eax,esi; popesi; ret4"
+      },
+      {
+        "address": "00b73aa1",
+        "owner": "00b73a10",
+        "target": "00bf6989",
+        "observed_before": "CALL_RETURN",
+        "native_continuation": "00b73aa6: add esp,4; 00b73aa9: install new pool-array pointer and continue allocation"
+      },
+      {
+        "address": "00b73f03",
+        "owner": "00b73e60",
+        "target": "00bf6989",
+        "observed_before": "CALL_RETURN",
+        "native_continuation": "00b73f08: add esp,4; resize/free+54; base destruction and RET00b73f4d"
+      },
+      {
+        "address": "00bd1525",
+        "owner": "00bd1510",
+        "target": "00bf9dc8",
+        "observed_before": "CALL_RETURN",
+        "native_continuation": "00bd152a: add esp,4; popedi; popebx; 00bd152f: ret0Ch"
+      }
+    ],
+    "undisassembled_native_calls": [
+      {
+        "address": "00b73f1f",
+        "target": "00bf6989",
+        "owner": "00b73e60",
+        "observed_before": "No instruction found; body ended00b73f07",
+        "native_continuation": "ADDESP4; base teardown; RET00b73f4d",
+        "required": "Restore full tail before flow correction; verify this call returns"
+      }
+    ],
+    "restore_complete_body": {
+      "address": "00b73e60",
+      "start": "00b73e60",
+      "end_inclusive": "00b73f4d",
+      "length": 238
+    },
+    "hidden_tails": [
+      {
+        "start": "00bd152a",
+        "end_inclusive": "00bd1531",
+        "owner": "00bd1510"
+      },
+      {
+        "start": "00b93b55",
+        "end_inclusive": "00b93b57",
+        "owner": "00b93b40"
+      },
+      {
+        "start": "00b73aa6",
+        "end_inclusive": "00b73aa8",
+        "owner": "00b73a10"
+      }
+    ],
+    "original_comment_capture_files": [
+      "local/mesh_lifetime_comments_before.json",
+      "local/mesh_lifetime_string_comments_before.json",
+      "local/mesh_lifetime_string_pool_comments_before.json"
+    ]
+  },
+  "dependencies": {
+    "reused_existing": [
+      "00b947a0",
+      "00b73d70",
+      "00b73b60",
+      "00b86890",
+      "00bd30f0",
+      "00bd30e0"
+    ],
+    "sibling_evidence": [
+      "docs/MESH_VERTEX_INDEX_PAYLOADS.md",
+      "reports/mesh_vertex_index_payloads_audit.json",
+      "docs/MESH_SUBSET_LOD_FIELDS.md",
+      "reports/mesh_subset_lod_fields_audit.json"
+    ],
+    "deferred": [
+      "00426520 stringvector reserve beyond shrink-only path",
+      "00b72e10 pointervector reserve beyond shrink-only path",
+      "00bd1480 complete storagepool constructor",
+      "underlying buffer/GPU destruction contracts owned by buffer packet",
+      "native pool lifecycle and allocation failure policy"
+    ]
+  },
+  "validation": {
+    "all_complete_spans_match_original_pe": true,
+    "assembly_checked_for_register_and_call_flow_ambiguity": true,
+    "exported": true,
+    "reconstructed_cpp": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Descriptive names are hypotheses, not recovered native symbols.",
+    "Normal-path ownership is established; exceptional unwinding funclets were not expanded.",
+    "No material defaults, graphics resources, draw submission, or render parity are implemented.",
+    "Byte agreement does not establish native ABI or runtime/game validation."
+  ],
+  "primary_integration": {
+    "validation": "reports/mesh_resource_validation.json",
+    "annotations": "reports/mesh_resource_annotations.json",
+    "scope": "Wire readers, declaration decoder and GroupParams integrated in installed VFS diagnostic. Consumer/lifetime native audits guide real GPU/material/manager integration."
+  }
+}

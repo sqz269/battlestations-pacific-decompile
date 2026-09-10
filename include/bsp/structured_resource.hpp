@@ -14,4 +14,11 @@ bool read_bounding_box_00b93310(StructuredNode& node,
 // Does not construct the native0x28-byte reference-counted resource item.
 bool read_note_text_00718f50_fragment(StructuredNode& node,
     std::string& text) noexcept;
+// GroupParams item virtual parser: ECX item, stack node handle, RET4. Reads
+// one float32 into native item+8, then explicitly skips/detaches the remaining
+// node payload. No resource object or semantic label for the float is inferred.
+// Host output commits after a successful skip; input is not rolled back.
+// Evidence: docs/MESH_SUBSET_LOD_FIELDS.md (GroupParams dependency audit).
+bool read_group_params_00b8e580_fragment(StructuredNode& node,
+    float& output) noexcept;
 }
