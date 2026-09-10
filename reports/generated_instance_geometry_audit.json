@@ -1,0 +1,284 @@
+{
+  "packet": "generated_instance_geometry",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "query_verification": "Each bsp.py ghidra batch uses its verified configured project/program client; raw exports retained under ignored exports/bsp/functions/.",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "image_base": "00400000",
+  "functions": [
+    {
+      "address": "00b4c8d0",
+      "original_name": "FUN_00b4c8d0",
+      "suggested_name": "BSP_InstanceGeometry_CreateGeneratedModel",
+      "original_abi": "ECX model-constructor argument; EDX generator; stack source mesh, selected draw section; EAX generated model wrapper; RET8.",
+      "status": "typed_geometry_success_fragment_implemented_build_pending",
+      "source": "src/instance_geometry.cpp",
+      "confidence": "high for stream flags/backing/tag, copied words, retained identities and calling convention; descriptive symbol remains a hypothesis",
+      "byte_evidence": {
+        "address": "00b4c8d0",
+        "length": 507,
+        "end_inclusive": "00b4caca",
+        "raw_capture": "local/generated_instance_geometry/00b4c8d0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "446937faa0653c131dec369fdd8679d392949a4356e61018c3bf01bfae68ac06"
+      },
+      "annotation_before": {
+        "address": "00b4c8d0",
+        "function_name": "FUN_00b4c8d0"
+      },
+      "evidence": [
+        "00b4c8eb/00b4c8ed preserve generator EDX and constructor ECX; source mesh and section recovered by final stack offsets2C/30.",
+        "00b4c94c loads -1.0f from00d7a260, passes it twice to00b75170; no capacity arithmetic.",
+        "00b4c973..00b4c987 calls renderer+5C with count0, flags1000h, generator+10 declaration.",
+        "00b4c98f..00b4c9a1 retains selected section+3C as stream0 and new dynamic stream as stream1.",
+        "00b4c9aa stores80000000h at logical stream+54 before temporary Release.",
+        "00b4c9ee..00b4ca00 retains source mesh+60 index pointer.",
+        "00b4ca0c..00b4ca27 copies source+8,+C,+14,+18,+10 into fresh section; +1C and +34 remain constructor zero.",
+        "00b4ca32..00b4ca68 appends retained section, streams0/1 and existing generator+14 combined layout.",
+        "00b4ca6d..00b4cab0 releases temporary material, section and mesh;00b4cab6 returns model local in EAX, RET8 at00b4cac8."
+      ],
+      "suggested_plate_comment": "BSP reconstruction hypothesis: ECX model constructor argument, EDX generator, stack source mesh/selected section, RET8; returns generated model wrapper. Creates mesh with selected section first vertex stream and retained source index; creates stream1 through renderer+5C count0 flags1000h, shared16MiB dynamic vertex backing, offsetFFFFFFFFh, tag80000000h. Copies five section draw words, clones material00b18b60, retains generator combined layout. Host geometry success fragment only; full model/material lifetime, CPU pools and renderer raw registries remain explicit. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Not native ABI or gameplay validation."
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00b4bc00",
+      "original_abi": "ECX stream; stack count,declaration,flags; EAX stream; RETCh.",
+      "evidence": "Dynamic iff(flags&F000h)==1000h: retain renderer+1974, register logical stream, offsetFFFFFFFFh, original flags+60/count+64/declaration+68. Private allocation skipped.",
+      "annotation_before": {
+        "address": "00b4bc00",
+        "function_name": "BSP_D3D9LogicalVertexStream_Construct",
+        "comment": "[BSP reconstruction 00b4bc00]\nFactory00b287c0 allocates logical vertex stream, installs vtable00d61d6c. Dynamic path references shared renderer vertex buffer at stream+58h, declaration+68h, offset+5ch and count+64h. Full constructor/registry and allocation paths unported.\n\n[BSP reconstruction 00b4bc00] update\nBSP reconstruction hypothesis: Dynamic iff(flags&F000h)==1000h selects retained renderer+1974h, registers raw stream, offset=-1. Otherwise private CreateVertexBuffer count*decl+CCh, derived usage/pool,FVF0; wrap/retain/release temporary,offset0. Flags1 mesh path is MANAGED usage0. Retain declaration+68h, count+64h, original flags+60h. Host success path only. ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX logical stream; stack count,declaration,flags; EAX this; RETCh. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "byte_evidence": {
+        "address": "00b4bc00",
+        "length": 758,
+        "end_inclusive": "00b4bef5",
+        "raw_capture": "local/generated_instance_geometry/00b4bc00.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9"
+      },
+      "status": "read_only_contract_audit"
+    },
+    {
+      "address": "00b287c0",
+      "original_abi": "ECX renderer; stack count,flags,declaration; EAX stream; RETCh.",
+      "evidence": "Renderer00d5f0a8+5C=00b287c0; reorder constructor arguments, append raw renderer registry pointers; registry factory remains a bounded dependency.",
+      "annotation_before": {
+        "address": "00b287c0",
+        "function_name": "BSP_Renderer_CreateRegisteredVertexStream",
+        "comment": "[BSP reconstruction 00b287c0]\nBSP reconstruction hypothesis: Call allocator00b4b370 then00b4bc00 with count,declaration,flags; append raw stream pointer in renderer+1AACh array; additionally+19B0h array when virtual+58h returns AL==1. Allocation/growth/native lifecycle unported. ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX renderer; stack count,flags,declaration; EAX logical stream or null; RET0Ch. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "byte_evidence": {
+        "address": "00b287c0",
+        "length": 234,
+        "end_inclusive": "00b288a9",
+        "raw_capture": "local/generated_instance_geometry/00b287c0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b"
+      },
+      "status": "read_only_contract_audit"
+    },
+    {
+      "address": "00b75030",
+      "original_abi": "ECX destination; stack model-constructor argument; EAX destination; RET4.",
+      "evidence": "Construct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported.",
+      "annotation_before": {
+        "address": "00b75030",
+        "function_name": "FUN_00b75030"
+      },
+      "byte_evidence": {
+        "address": "00b75030",
+        "length": 132,
+        "end_inclusive": "00b750b3",
+        "raw_capture": "local/generated_instance_geometry/00b75030.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0"
+      },
+      "status": "read_only_contract_audit"
+    },
+    {
+      "address": "00b75170",
+      "original_abi": "ECX model; stack unused word,mesh,float,float; RET10h.",
+      "evidence": "Retain mesh at+180, replace+178/+17C only for arguments other than-1.0f; exact argument1 meaning unresolved.",
+      "annotation_before": {
+        "address": "00b75170",
+        "function_name": "FUN_00b75170"
+      },
+      "byte_evidence": {
+        "address": "00b75170",
+        "length": 123,
+        "end_inclusive": "00b751ea",
+        "raw_capture": "local/generated_instance_geometry/00b75170.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "c05f2d0f0af99cb5b4dfa2aa2b56cdef4b0d4bd0291a238c259b29a3e26434b4"
+      },
+      "status": "read_only_contract_audit"
+    },
+    {
+      "address": "00b556b0",
+      "original_abi": "ECX generator; EAX declaration+10h; plain RET.",
+      "evidence": "Return borrowed instance declaration from generator+10.",
+      "annotation_before": {
+        "address": "00b556b0",
+        "function_name": "TRIV_body_00b556b0"
+      },
+      "byte_evidence": {
+        "address": "00b556b0",
+        "length": 4,
+        "end_inclusive": "00b556b3",
+        "raw_capture": "local/generated_instance_geometry/00b556b0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+      },
+      "status": "read_only_contract_audit"
+    },
+    {
+      "address": "00b556c0",
+      "original_abi": "ECX generator; EAX combined layout+14h; plain RET.",
+      "evidence": "Return borrowed precomputed combined layout from generator+14.",
+      "annotation_before": {
+        "address": "00b556c0",
+        "function_name": "TRIV_body_00b556c0"
+      },
+      "byte_evidence": {
+        "address": "00b556c0",
+        "length": 4,
+        "end_inclusive": "00b556c3",
+        "raw_capture": "local/generated_instance_geometry/00b556c0.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96"
+      },
+      "status": "read_only_contract_audit"
+    },
+    {
+      "address": "00b18b60",
+      "original_abi": "ECX destination; stack source material; EAX destination; RET4.",
+      "evidence": "Construct110h material clone; conditional owner+C, counted retained texture slots+10,17 DWORD lighting copy+38, retained effect+7C, copy+104/+108, reset+100, byte+10C=1. Complete clone/lifetime is follow-on work.",
+      "annotation_before": {
+        "address": "00b18b60",
+        "function_name": "FUN_00b18b60"
+      },
+      "byte_evidence": {
+        "address": "00b18b60",
+        "length": 401,
+        "end_inclusive": "00b18cf0",
+        "raw_capture": "local/generated_instance_geometry/00b18b60.bytes.txt",
+        "matches_installed_pe": true,
+        "sha256": "06200809c976f2b86146280c20861c7c649bc19c3ddfa3458bfbe9ad1beb568e"
+      },
+      "status": "read_only_contract_audit"
+    }
+  ],
+  "additional_byte_evidence": [
+    {
+      "address": "00b2b095",
+      "length": 80,
+      "end_inclusive": "00b2b0e4",
+      "raw_capture": "local/generated_instance_geometry/00b2b095.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "0d7c0811d5c94fda7dbd3e1a71ae179511ef3c7154ce7e3d2febb1c76f2de82d"
+    },
+    {
+      "address": "00d5f0a8",
+      "length": 104,
+      "end_inclusive": "00d5f10f",
+      "raw_capture": "local/generated_instance_geometry/00d5f0a8.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "f727cf2ac318f0ef57e5cda026b63583c5c832acc54983ed95512d72955687c8"
+    },
+    {
+      "address": "00d62de8",
+      "length": 88,
+      "end_inclusive": "00d62e3f",
+      "raw_capture": "local/generated_instance_geometry/00d62de8.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "5a15f1e4c58a0e26a8881d89cbcba631ed5990e32ffe7f2f5d8357891ed631bc"
+    },
+    {
+      "address": "00d7a260",
+      "length": 4,
+      "end_inclusive": "00d7a263",
+      "raw_capture": "local/generated_instance_geometry/00d7a260.bytes.txt",
+      "matches_installed_pe": true,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+    }
+  ],
+  "native_stream_contract": {
+    "renderer_physical_wrapper_offset": "1974",
+    "factory": "00b287c0",
+    "factory_arguments": [
+      "count0",
+      "flags1000",
+      "generator+10 declaration"
+    ],
+    "physical_capacity_bytes": 16777216,
+    "physical_flags": 4096,
+    "d3d_usage": 520,
+    "d3d_pool": 0,
+    "d3d_fvf": 0,
+    "logical_vertex_count": 0,
+    "logical_offset": 4294967295,
+    "logical_flags": 4096,
+    "logical_tag": 2147483648,
+    "physical_allocation_in_allocator": false,
+    "geometry_rebuilds_combined_layout": false,
+    "copies_vertex_or_index_bytes": false,
+    "mesh_stream_source": "selected section+3C",
+    "indices_source": "source mesh+60",
+    "layout_source": "generator+14",
+    "section_words_copied_in_order": [
+      "8",
+      "C",
+      "14",
+      "18",
+      "10"
+    ],
+    "section_instance_count_initial": 0,
+    "section_depth_bias_initial": 0.0
+  },
+  "flow_review": {
+    "x87": "00b4c94c FLD00d7a260; FST/FSTP push two -1.0f sentinels, verified data bytes.",
+    "register_inputs": "EDX generator and ECX model-constructor argument recovered from assembly; decompiled locals are unreliable.",
+    "allocation_call_overrides": {
+      "00b4c8f9": "NONE",
+      "00b4c92a": "NONE",
+      "00b4c9c8": "NONE"
+    },
+    "free_call_return": "No direct CRT free call in00b4c8d0; returningfree hazards in existing CPU allocators remain outside this fragment.",
+    "mutations_applied": false
+  },
+  "host_interface": {
+    "factory": "create_generated_instance_geometry_00b4c8d0_fragment",
+    "physical_buffer": "Supplied existing shared owner; GetDesc verifies16MiB DEFAULT DYNAMIC|WRITEONLY FVF0; no allocation,lock,clear,resize or rewind.",
+    "registration": "Uses existing D3D9StateCache registration; custom logical-stream deleter unregisters after final geometry/cache reference.",
+    "lifetime_precondition": "states outlives all resulting logical streams; unbind/invalidate before teardown; registered physical owner remains stable.",
+    "material_boundary": "GeneratedInstanceMaterialClone requires separately provided actual clone and matching queue metadata; host diagnostic owner does not close native clone.",
+    "model_boundary": "Returns typed geometry; wrapper constructors/attach/position and native model ownership are not supplied by this fragment.",
+    "host_error_policy": "HRESULT input/COM validation and bad_alloc handling; output unchanged on failure. Native allocation-failure,SEH,diagnostic behavior not reproduced."
+  },
+  "validation": {
+    "byte_ranges_match_installed_pe": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "new_tests_added": 0,
+    "build_owner": "primary integrator after merge"
+  },
+  "owned_files": [
+    "include/bsp/instance_geometry.hpp",
+    "src/instance_geometry.cpp",
+    "docs/GENERATED_INSTANCE_GEOMETRY.md",
+    "reports/generated_instance_geometry_audit.json"
+  ],
+  "uncertainty": [
+    "Full model and material constructors/destructors are not ported.",
+    "Native CPU slabs,renderer raw-stream arrays and diagnostic/exception paths are outside the success fragment.",
+    "Generator already-combined layout must match selected mesh and instance declarations; identity is retained rather than inferred.",
+    "No native ABI or gameplay/render-parity claim."
+  ]
+}
