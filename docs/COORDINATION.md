@@ -25,6 +25,20 @@ The agent's owner name defaults to its branch (`agent/<name>`); set `BSP_AGENT` 
 The integrator stays on `main` in the main checkout, merges `agent/*` branches, and owns
 shared headers, CMake, probes and Ghidra mutations as before.
 
+## Integrating worker branches
+
+`python tools/integrate_workers.py agent/<name> [agent/<other>...] [--no-push] [--skip-build]`,
+run from the main checkout, merges each branch into the `agent/integrate` worktree (create it once
+with `python tools/bsp.py worktree add integrate`), resolves the mechanical conflicts through
+`tools/merge_resolve.py` (registry-line union for `cmake/startup.cmake`, address union for ledger
+shards with the incoming side winning for records it changed, same-spot insertions and diff3
+pure insertions in text files), builds and runs the tests there, fast-forwards `main` (merging
+the other integrator's uncommitted shard edits by address when they block the checkout), applies
+the newly added reviewed names to Ghidra under the write lock, refreshes the snapshot and index,
+and pushes. It stops before touching `main` on any semantic conflict or build failure. Merge
+commits take their trailer lines from `local/commit-trailer.txt`. Afterwards retire the branch
+with `python tools/bsp.py worktree remove <name> --delete-branch`.
+
 ## Leases
 
 A lease says who is working on which addresses, ranges and output files. The registry lives
