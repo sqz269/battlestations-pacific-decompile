@@ -1,0 +1,181 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004b4820",
+    "end_address": "004b482e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004b4820",
+    "end_address": "004b482d",
+    "bytes_disassembled": 14,
+    "message": "Successfully disassembled 14 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004b4820",
+    "disassemble_first": false,
+    "name": "BSP_RenderCameraUpdateJob_Run"
+   },
+   "result": {
+    "success": true,
+    "address": "004b4820",
+    "function_name": "BSP_RenderCameraUpdateJob_Run",
+    "entry_point": "004b4820",
+    "body_size": 14,
+    "message": "Function created successfully at 004b4820",
+    "warnings": [
+     "Function name 'BSP_RenderCameraUpdateJob_Run' \u2014 main part 'RenderCameraUpdateJob_Run' is not PascalCase. Expected: RendercameraupdatejobRun",
+     "Function name 'BSP_RenderCameraUpdateJob_Run' \u2014 main part 'RenderCameraUpdateJob_Run' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "004b4820",
+   "end": "004b482e",
+   "name": "BSP_RenderCameraUpdateJob_Run",
+   "after": "Function: BSP_RenderCameraUpdateJob_Run at 004b4820\nSignature: undefined BSP_RenderCameraUpdateJob_Run(void)\nEntry: 004b4820\nBody: 004b4820 - 004b482d"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004bd080",
+    "end_address": "004bd088"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004bd080",
+    "end_address": "004bd087",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004bd080",
+    "disassemble_first": false,
+    "name": "CG_scalar_deleting_dtor_004c10b0_Adjustor4"
+   },
+   "result": {
+    "success": true,
+    "address": "004bd080",
+    "function_name": "CG_scalar_deleting_dtor_004c10b0_Adjustor4",
+    "entry_point": "004bd080",
+    "body_size": 8,
+    "message": "Function created successfully at 004bd080",
+    "warnings": [
+     "Function name 'CG_scalar_deleting_dtor_004c10b0_Adjustor4' \u2014 main part 'CG_scalar_deleting_dtor_004c10b0_Adjustor4' is not PascalCase. Expected: CgScalarDeletingDtor004c10b0Adjustor4",
+     "Function name 'CG_scalar_deleting_dtor_004c10b0_Adjustor4' \u2014 main part 'CG_scalar_deleting_dtor_004c10b0_Adjustor4' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "004bd080",
+   "end": "004bd088",
+   "name": "CG_scalar_deleting_dtor_004c10b0_Adjustor4",
+   "after": "Function: CG_scalar_deleting_dtor_004c10b0_Adjustor4 at 004bd080\nSignature: undefined CG_scalar_deleting_dtor_004c10b0_Adjustor4(void)\nEntry: 004bd080\nBody: 004bd080 - 004bd087"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004bd0b0",
+    "end_address": "004bd0b8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004bd0b0",
+    "end_address": "004bd0b7",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004bd0b0",
+    "disassemble_first": false,
+    "name": "CG_scalar_deleting_dtor_004c10f0_Adjustor4"
+   },
+   "result": {
+    "success": true,
+    "address": "004bd0b0",
+    "function_name": "CG_scalar_deleting_dtor_004c10f0_Adjustor4",
+    "entry_point": "004bd0b0",
+    "body_size": 8,
+    "message": "Function created successfully at 004bd0b0",
+    "warnings": [
+     "Function name 'CG_scalar_deleting_dtor_004c10f0_Adjustor4' \u2014 main part 'CG_scalar_deleting_dtor_004c10f0_Adjustor4' is not PascalCase. Expected: CgScalarDeletingDtor004c10f0Adjustor4",
+     "Function name 'CG_scalar_deleting_dtor_004c10f0_Adjustor4' \u2014 main part 'CG_scalar_deleting_dtor_004c10f0_Adjustor4' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "004bd0b0",
+   "end": "004bd0b8",
+   "name": "CG_scalar_deleting_dtor_004c10f0_Adjustor4",
+   "after": "Function: CG_scalar_deleting_dtor_004c10f0_Adjustor4 at 004bd0b0\nSignature: undefined CG_scalar_deleting_dtor_004c10f0_Adjustor4(void)\nEntry: 004bd0b0\nBody: 004bd0b0 - 004bd0b7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be3020",
+    "end_address": "00be3040"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be3020",
+    "end_address": "00be303f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be3020",
+    "disassemble_first": false,
+    "name": "BSP_FrameJobPool_Enqueue"
+   },
+   "result": {
+    "success": true,
+    "address": "00be3020",
+    "function_name": "BSP_FrameJobPool_Enqueue",
+    "entry_point": "00be3020",
+    "body_size": 32,
+    "message": "Function created successfully at 00be3020",
+    "warnings": [
+     "Function name 'BSP_FrameJobPool_Enqueue' \u2014 main part 'FrameJobPool_Enqueue' is not PascalCase. Expected: FramejobpoolEnqueue",
+     "Function name 'BSP_FrameJobPool_Enqueue' \u2014 main part 'FrameJobPool_Enqueue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrameJobPool_Enqueue' does not start with a recognized verb. First word 'Frame' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00be3020",
+   "end": "00be3040",
+   "name": "BSP_FrameJobPool_Enqueue",
+   "after": "Function: BSP_FrameJobPool_Enqueue at 00be3020\nSignature: undefined BSP_FrameJobPool_Enqueue(void)\nEntry: 00be3020\nBody: 00be3020 - 00be303f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
