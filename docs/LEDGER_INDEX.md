@@ -45,8 +45,12 @@ moves them into shards and removes them; run it before committing if a legacy fi
   callees|bytes|comments|decompile|disasm|export ...` (capped, verified project) instead of inline Python.
   For annotation readback, `ghidra comments <addresses...> --output local/comments.json`
   stores full records in ignored storage and prints only their count and path.
-- `range`, `callers`, `callees`, `docs-for`, `segment` and `find` are capped by `--limit`;
-  raise it deliberately rather than dumping everything.
+- `range`, `callers`, `callees`, `docs-for`, `segment`, `find` and `strings <text>` (functions whose
+  bodies reference a string containing the text) are capped by `--limit`; raise it deliberately
+  rather than dumping everything.
+- `python tools/bsp.py disasm-raw <address> [--length N]` decodes the disk bytes locally with
+  Capstone, for vtable targets and thunks Ghidra never defined and for functions whose stored body
+  is truncated (`show --asm` only lists the body Ghidra records). It never touches Ghidra state.
 - `python tools/bsp.py snapshot` takes a snapshot and rebuilds the index only when Ghidra's
   function count changed; `python tools/bsp.py index --if-stale` rebuilds after ledger, sweep,
   partition or doc changes (a digest of the inputs decides; nothing is authored in the index).
