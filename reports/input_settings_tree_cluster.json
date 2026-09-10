@@ -1,0 +1,1030 @@
+{
+  "packet": "input_settings_tree_cluster",
+  "owner": "agent/tree-cluster",
+  "range": "0069b000-006a2000",
+  "segment": "31 (00696470-006be980, input settings)",
+  "ghidra_mutations": "none; this packet was read-only",
+  "summary": {
+    "members": 57,
+    "high_confidence": 55,
+    "medium_confidence": 2,
+    "instantiations": 9,
+    "instantiations_note": "N14, N18A, N18B, N1C, N2C, N2CB, N20, N24, N28. The N18 entry is not a tenth instantiation; it is the bucket for duplicate bodies that could not be attributed to N18A or N18B."
+  },
+  "tree_object_layout": {
+    "+0x00": "allocator/comparator",
+    "+0x04": "_Myhead (its _Left is _Lmost, _Parent is _Root, _Right is _Rmost)",
+    "+0x08": "_Mysize"
+  },
+  "node_layout_common": {
+    "+0x00": "_Left",
+    "+0x04": "_Parent",
+    "+0x08": "_Right",
+    "+0x0c": "_Myval",
+    "after _Myval": "_Color then _Isnil"
+  },
+  "iterator_layout": {
+    "+0x00": "_Mycont (the tree); a null value trips LIBCRT_unmatched_00bf6713",
+    "+0x04": "_Ptr (the node)"
+  },
+  "instantiations": {
+    "N14": {
+      "value_size": 4,
+      "color_offset": "0x10",
+      "isnil_offset": "0x11",
+      "node_size": "0x14",
+      "xlen_bound": "0x3ffffffd",
+      "key": "signed int at node+0x0c; the value is the key",
+      "shape": "set<int>-shaped",
+      "insert": "0069ef20",
+      "buynode": "005550d0",
+      "lrotate": "004b96e0",
+      "rrotate": "004beea0"
+    },
+    "N18A": {
+      "value_size": 8,
+      "color_offset": "0x14",
+      "isnil_offset": "0x15",
+      "node_size": "0x18",
+      "xlen_bound": "0x1ffffffd",
+      "key": "signed int at node+0x0c, mapped 4 bytes at +0x10",
+      "shape": "map<int, T4>",
+      "insert": "0069f400",
+      "buynode": "00554f50",
+      "lrotate": "005530d0",
+      "rrotate": "00553120"
+    },
+    "N18B": {
+      "value_size": 8,
+      "color_offset": "0x14",
+      "isnil_offset": "0x15",
+      "node_size": "0x18",
+      "xlen_bound": "0x1ffffffd",
+      "key": "signed int at node+0x0c, mapped 4 bytes at +0x10",
+      "shape": "map<int, T4>",
+      "insert": "0069f210",
+      "buynode": "0069d2d0",
+      "lrotate": "0069c220",
+      "rrotate": "0069a610"
+    },
+    "N18": {
+      "value_size": 8,
+      "color_offset": "0x14",
+      "isnil_offset": "0x15",
+      "node_size": "0x18",
+      "xlen_bound": "0x1ffffffd",
+      "key": "signed int at node+0x0c",
+      "shape": "duplicate copies not attributable to N18A or N18B",
+      "insert": null,
+      "buynode": null,
+      "lrotate": null,
+      "rrotate": null
+    },
+    "N1C": {
+      "value_size": 12,
+      "color_offset": "0x18",
+      "isnil_offset": "0x19",
+      "node_size": "0x1c",
+      "xlen_bound": "0x15555553",
+      "key": "signed int at node+0x0c, pooled string {count +0x10, buffer +0x14}",
+      "shape": "map<int, PooledString>",
+      "insert": "006a02b0",
+      "buynode": "0069f940",
+      "lrotate": "0069c300",
+      "rrotate": "0069a780"
+    },
+    "N2C": {
+      "value_size": 28,
+      "color_offset": "0x28",
+      "isnil_offset": "0x29",
+      "node_size": "0x2c",
+      "xlen_bound": "0x9249247",
+      "key": "pooled string {count +0x0c, buffer +0x10} compared with __stricmp, mapped 20 bytes at +0x14",
+      "shape": "map<PooledString, T20, CaseInsensitiveLess>",
+      "insert": "0069fbc0",
+      "buynode": "0069f5f0",
+      "lrotate": "0069c1c0",
+      "rrotate": "0069a560"
+    },
+    "N2CB": {
+      "value_size": 28,
+      "color_offset": "0x28",
+      "isnil_offset": "0x29",
+      "node_size": "0x2c",
+      "xlen_bound": null,
+      "key": "pooled string compared with __stricmp, same layout as N2C",
+      "shape": "separate emitted copy; only _Lbound 0069cd50 is in range",
+      "insert": null,
+      "buynode": null,
+      "lrotate": null,
+      "rrotate": null
+    },
+    "N20": {
+      "value_size": 16,
+      "color_offset": "0x1c",
+      "isnil_offset": "0x1d",
+      "node_size": "0x20",
+      "xlen_bound": null,
+      "key": "unknown",
+      "shape": "only iterator members in range",
+      "insert": null,
+      "buynode": null,
+      "lrotate": null,
+      "rrotate": null
+    },
+    "N24": {
+      "value_size": 20,
+      "color_offset": "0x20",
+      "isnil_offset": "0x21",
+      "node_size": "0x24",
+      "xlen_bound": null,
+      "key": "pooled string {count +0x0c, buffer +0x10} compared with __stricmp",
+      "shape": "only _Lrotate, _Lbound and find in range",
+      "insert": null,
+      "buynode": null,
+      "lrotate": "0069c280",
+      "rrotate": null
+    },
+    "N28": {
+      "value_size": 24,
+      "color_offset": "0x24",
+      "isnil_offset": "0x25",
+      "node_size": "0x28",
+      "xlen_bound": null,
+      "key": "pooled string {count +0x0c, buffer +0x10} compared with __stricmp",
+      "shape": "only _Lbound 0069ccf0 is in range",
+      "insert": null,
+      "buynode": null,
+      "lrotate": null,
+      "rrotate": null
+    }
+  },
+  "members": [
+    {
+      "address": "0069b910",
+      "ghidra_name": "FUN_0069b910",
+      "provisional_name": "STL_Tree_Dec_IntKey_N14_0069b910",
+      "instantiation": "N14",
+      "method": "const_iterator::operator--",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "checked const_iterator operator--: rejects a null _Mycont at +0, takes _Rmost when _Ptr->_Isnil(+0x11), else _Max(_Left) or the climb-while-left-child; __fastcall ECX=iterator, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069d6b0",
+      "ghidra_name": "FUN_0069d6b0",
+      "provisional_name": "STL_Tree_DecPost_IntKey_N14_0069d6b0",
+      "instantiation": "N14",
+      "method": "const_iterator::operator--(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "postfix operator--(int): three instructions, CALL 0069b910 then returns the saved iterator; __fastcall, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069ef20",
+      "ghidra_name": "STL_xlen_throw_0069ef20",
+      "provisional_name": "STL_Tree_Insert_IntKey_N14_0069ef20",
+      "instantiation": "N14",
+      "method": "_Tree::_Insert",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "_Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen('map/set<T> too long') at _Mysize>0x3ffffffd, _Buynode 005550d0, ++_Mysize, link, red-black fixup with _Color at +0x10, returns iterator {tree,node}; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "0069fa40",
+      "ghidra_name": "FUN_0069fa40",
+      "provisional_name": "STL_Tree_InsertUnique_IntKey_N14_0069fa40",
+      "instantiation": "N14",
+      "method": "_Tree::insert(const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "insert(const value_type&) returning pair<iterator,bool>: signed-int descent on node+0x0c, writes the byte flag at slot+8 (0 on duplicate, 1 after delegating to _Insert 0069ef20); __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "0069b190",
+      "ghidra_name": "FUN_0069b190",
+      "provisional_name": "STL_Tree_Dec_IntKey_N18A_0069b190",
+      "instantiation": "N18A",
+      "method": "const_iterator::operator--",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "checked const_iterator operator-- on _Isnil at +0x15; called by 006a01f0 and 006a0e90, the two 0069f400-instantiation members; __fastcall ECX=iterator, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069f400",
+      "ghidra_name": "STL_xlen_throw_0069f400",
+      "provisional_name": "STL_Tree_Insert_IntKey_N18A_0069f400",
+      "instantiation": "N18A",
+      "method": "_Tree::_Insert",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "_Tree::_Insert(bool _Addleft,_Nodeptr _Wherenode,const value_type&): _Xlen at _Mysize>0x1ffffffd, _Buynode 00554f50(_Myhead,_Wherenode,_Myhead,_Val,0), ++_Mysize, the full red-black fixup calling _Lrotate 005530d0 / _Rrotate 00553120, root recoloured black, returns iterator {tree,node}; the stl_throw_site tag is wrong, the throw is only the _Xlen branch; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a01f0",
+      "ghidra_name": "FUN_006a01f0",
+      "provisional_name": "STL_Tree_InsertUnique_IntKey_N18A_006a01f0",
+      "instantiation": "N18A",
+      "method": "_Tree::insert(const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "insert(const value_type&) returning pair<iterator,bool>: signed-int descent on node+0x0c, duplicate path writes flag 0, otherwise delegates to _Insert 0069f400 and writes flag 1; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "006a0e90",
+      "ghidra_name": "FUN_006a0e90",
+      "provisional_name": "STL_Tree_InsertHint_IntKey_N18A_006a0e90",
+      "instantiation": "N18A",
+      "method": "_Tree::insert(const_iterator, const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "insert(const_iterator _Where,const value_type&): validates the hint's _Mycont against this, tests the three hint cases against neighbouring keys at +0x0c, calls _Insert 0069f400 directly on a good hint and falls back to 006a01f0 otherwise; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1560",
+      "ghidra_name": "FUN_006a1560",
+      "provisional_name": "STL_Tree_MapIndex_IntKey_N18A_006a1560",
+      "instantiation": "N18A",
+      "method": "map::operator[](const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "map::operator[](const int&): inlined lower_bound over node+0x0c, on a miss builds {key,0} and calls the hint insert 006a0e90, returns node+0x10 which is the mapped half of the 8-byte _Myval; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c220",
+      "ghidra_name": "FUN_0069c220",
+      "provisional_name": "STL_Tree_Lrotate_IntKey_N18B_0069c220",
+      "instantiation": "N18B",
+      "method": "_Tree::_Lrotate",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lrotate(_Nodeptr): _Right becomes the parent, its _Left is reattached under the node, _Root()/parent link fixed up, _Isnil read at +0x15; called by _Insert 0069f210 and erase 0069f690; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c370",
+      "ghidra_name": "FUN_0069c370",
+      "provisional_name": "STL_Tree_Inc_IntKey_N18B_0069c370",
+      "instantiation": "N18B",
+      "method": "const_iterator::operator++",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "checked const_iterator operator++ on _Isnil at +0x15: _Min(_Right) when _Right is real, else the climb-while-right-child; called by 0069f690 and 006a0ba0; __fastcall ECX=iterator, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069cec0",
+      "ghidra_name": "FUN_0069cec0",
+      "provisional_name": "STL_Tree_IncPost_IntKey_N18B_0069cec0",
+      "instantiation": "N18B",
+      "method": "const_iterator::operator++(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "postfix operator++(int): CALL 0069c370 then returns the saved iterator; __fastcall, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069d9e0",
+      "ghidra_name": "FUN_0069d9e0",
+      "provisional_name": "STL_Tree_IncPost_IntKey_N18B_0069d9e0",
+      "instantiation": "N18B",
+      "method": "const_iterator::operator++(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "second emitted copy of the postfix operator++(int) wrapper around 0069c370; __fastcall, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069d2d0",
+      "ghidra_name": "FUN_0069d2d0",
+      "provisional_name": "STL_Tree_Buynode_IntKey_N18B_0069d2d0",
+      "instantiation": "N18B",
+      "method": "_Tree::_Buynode",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x14",
+      "evidence": "_Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): five callee-cleaned arguments, allocates the node and returns it; sole caller is _Insert 0069f210; __thiscall, RET 0x14",
+      "confidence": "high"
+    },
+    {
+      "address": "0069d3f0",
+      "ghidra_name": "FUN_0069d3f0",
+      "provisional_name": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+      "instantiation": "N18B",
+      "method": "_Tree::_Erase(_Nodeptr)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Erase(_Nodeptr): destroys a whole subtree without rebalancing, recursing on _Right, walking _Left and freeing each node; called by clear 0069dc70 and range erase 0069fe70; RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069dc70",
+      "ghidra_name": "FUN_0069dc70",
+      "provisional_name": "STL_Tree_Clear_IntKey_N18B_0069dc70",
+      "instantiation": "N18B",
+      "method": "_Tree::clear",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "clear(): calls _Erase 0069d3f0 on _Root(), then resets _Root(), _Mysize, _Lmost and _Rmost to _Myhead; __fastcall ECX=tree, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069f210",
+      "ghidra_name": "STL_xlen_throw_0069f210",
+      "provisional_name": "STL_Tree_Insert_IntKey_N18B_0069f210",
+      "instantiation": "N18B",
+      "method": "_Tree::_Insert",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "_Tree::_Insert(bool,_Nodeptr,const value_type&): identical shape to 0069f400 with the same 0x1ffffffd _Xlen bound but a different instantiation's helpers, _Buynode 0069d2d0 and rotates 0069c220/0069a610; the stl_throw_site tag is wrong; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "0069f690",
+      "ghidra_name": "STL_xlen_throw_0069f690",
+      "provisional_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+      "instantiation": "N18B",
+      "method": "_Tree::erase(const_iterator)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0xC",
+      "evidence": "erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901",
+      "confidence": "high"
+    },
+    {
+      "address": "0069fdb0",
+      "ghidra_name": "FUN_0069fdb0",
+      "provisional_name": "STL_Tree_InsertUnique_IntKey_N18B_0069fdb0",
+      "instantiation": "N18B",
+      "method": "_Tree::insert(const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "insert(const value_type&) returning pair<iterator,bool>: same shape as 006a01f0 but decrements with 0069ab10 and delegates to _Insert 0069f210; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "0069fe70",
+      "ghidra_name": "FUN_0069fe70",
+      "provisional_name": "STL_Tree_EraseRange_IntKey_N18B_0069fe70",
+      "instantiation": "N18B",
+      "method": "_Tree::erase(const_iterator, const_iterator)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x14",
+      "evidence": "erase(const_iterator,const_iterator): whole-range fast path inlines the 0069dc70 clear sequence, otherwise loops operator++ 0069c370 with erase 0069f690; __thiscall, RET 0x14",
+      "confidence": "high"
+    },
+    {
+      "address": "006a0ba0",
+      "ghidra_name": "FUN_006a0ba0",
+      "provisional_name": "STL_Tree_InsertHint_IntKey_N18B_006a0ba0",
+      "instantiation": "N18B",
+      "method": "_Tree::insert(const_iterator, const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "insert(const_iterator,const value_type&): same three hint cases as 006a0e90 but calls _Insert 0069f210 and unique insert 0069fdb0; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1460",
+      "ghidra_name": "FUN_006a1460",
+      "provisional_name": "STL_Tree_MapIndex_IntKey_N18B_006a1460",
+      "instantiation": "N18B",
+      "method": "map::operator[](const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "map::operator[](const int&): inlined lower_bound then hint insert 006a0ba0 on a miss, returns node+0x10; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c640",
+      "ghidra_name": "FUN_0069c640",
+      "provisional_name": "STL_Tree_DecPost_IntKey_N18_0069c640",
+      "instantiation": "N18",
+      "method": "const_iterator::operator--(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "postfix operator--(int): CALL 0069b190 then returns the saved iterator; __fastcall, RET",
+      "confidence": "medium"
+    },
+    {
+      "address": "0069d1a0",
+      "ghidra_name": "FUN_0069d1a0",
+      "provisional_name": "STL_Tree_DecPost_IntKey_N18_0069d1a0",
+      "instantiation": "N18",
+      "method": "const_iterator::operator--(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "second emitted copy of the postfix operator--(int) wrapper around 0069b190; __fastcall, RET",
+      "confidence": "medium"
+    },
+    {
+      "address": "0069c300",
+      "ghidra_name": "FUN_0069c300",
+      "provisional_name": "STL_Tree_Lrotate_IntKey_N1C_0069c300",
+      "instantiation": "N1C",
+      "method": "_Tree::_Lrotate",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lrotate(_Nodeptr) reading _Isnil at +0x19; called by _Insert 006a02b0 and erase 006a07d0; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069dfe0",
+      "ghidra_name": "FUN_0069dfe0",
+      "provisional_name": "STL_Tree_Find_IntKey_N1C_0069dfe0",
+      "instantiation": "N1C",
+      "method": "_Tree::find(const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "find(const int&): inlined lower_bound over node+0x0c, returns iterator {tree,_Myhead} when the key is absent and {tree,node} otherwise; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "0069f940",
+      "ghidra_name": "FUN_0069f940",
+      "provisional_name": "STL_Tree_Buynode_IntKey_N1C_0069f940",
+      "instantiation": "N1C",
+      "method": "_Tree::_Buynode",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x14",
+      "evidence": "_Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): called by _Insert 006a02b0 and by _Copy 006a1290 with the source node's _Myval at +0x0c and _Color at +0x18; __thiscall, RET 0x14",
+      "confidence": "high"
+    },
+    {
+      "address": "006a02b0",
+      "ghidra_name": "STL_xlen_throw_006a02b0",
+      "provisional_name": "STL_Tree_Insert_IntKey_N1C_006a02b0",
+      "instantiation": "N1C",
+      "method": "_Tree::_Insert",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "_Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen at _Mysize>0x15555553 (sizeof=12), _Buynode 0069f940, rotates 0069c300/0069a780; the stl_throw_site tag is wrong; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a07d0",
+      "ghidra_name": "STL_xlen_throw_006a07d0",
+      "provisional_name": "STL_Tree_EraseIter_IntKey_N1C_006a07d0",
+      "instantiation": "N1C",
+      "method": "_Tree::erase(const_iterator)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0xC",
+      "evidence": "erase(const_iterator): 'invalid map/set<T> iterator' guard, red-black delete fixup over _Color +0x18, releases the node's pooled string at +0x10/+0x14 then frees the node and decrements _Mysize; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0a62",
+      "confidence": "high"
+    },
+    {
+      "address": "006a0aa0",
+      "ghidra_name": "FUN_006a0aa0",
+      "provisional_name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+      "instantiation": "N1C",
+      "method": "_Tree::_Erase(_Nodeptr)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled string buffer at +0x14 with length +0x10 plus one before freeing the node; RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1170",
+      "ghidra_name": "FUN_006a1170",
+      "provisional_name": "STL_Tree_InsertUnique_IntKey_N1C_006a1170",
+      "instantiation": "N1C",
+      "method": "_Tree::insert(const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "insert(const value_type&) returning pair<iterator,bool> over the signed int key at +0x0c, delegating to _Insert 006a02b0; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1290",
+      "ghidra_name": "FUN_006a1290",
+      "provisional_name": "STL_Tree_CopyNodes_IntKey_N1C_006a1290",
+      "instantiation": "N1C",
+      "method": "_Tree::_Copy(_Nodeptr, _Nodeptr)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "_Copy(_Nodeptr,_Nodeptr): recursively rebuilds a subtree, _Buynode 0069f940 with the source _Myval at +0x0c and _Color at +0x18, then recurses on _Left and _Right; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "006a17e0",
+      "ghidra_name": "FUN_006a17e0",
+      "provisional_name": "STL_Tree_InsertHint_IntKey_N1C_006a17e0",
+      "instantiation": "N1C",
+      "method": "_Tree::insert(const_iterator, const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "insert(const_iterator,const value_type&): the three hint cases against keys at +0x0c, calling _Insert 006a02b0 or falling back to 006a1170; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1c40",
+      "ghidra_name": "FUN_006a1c40",
+      "provisional_name": "STL_Tree_CopyAssign_IntKey_N1C_006a1c40",
+      "instantiation": "N1C",
+      "method": "_Tree::operator= copy body",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "the copy body of _Tree::operator=: _Root() = _Copy(right._Root(), _Myhead), _Mysize copied, then _Lmost and _Rmost recomputed by walking _Left and _Right; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1f80",
+      "ghidra_name": "FUN_006a1f80",
+      "provisional_name": "STL_Tree_MapIndex_IntKey_N1C_006a1f80",
+      "instantiation": "N1C",
+      "method": "map::operator[](const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "map::operator[](const int&): inlined lower_bound, on a miss builds a default-constructed pooled string and hint-inserts, returns node+0x10 which is the mapped string handle; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069b090",
+      "ghidra_name": "FUN_0069b090",
+      "provisional_name": "STL_Tree_Dec_StrKeyCI_N2C_0069b090",
+      "instantiation": "N2C",
+      "method": "const_iterator::operator--",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "checked const_iterator operator-- on _Isnil at +0x29; __fastcall ECX=iterator, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c0f0",
+      "ghidra_name": "FUN_0069c0f0",
+      "provisional_name": "STL_Tree_Inc_StrKeyCI_N2C_0069c0f0",
+      "instantiation": "N2C",
+      "method": "const_iterator::operator++",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "checked const_iterator operator++ on _Isnil at +0x29; called by erase 006a04a0 and range erase 006a1aa0; __fastcall ECX=iterator, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c1c0",
+      "ghidra_name": "FUN_0069c1c0",
+      "provisional_name": "STL_Tree_Lrotate_StrKeyCI_N2C_0069c1c0",
+      "instantiation": "N2C",
+      "method": "_Tree::_Lrotate",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lrotate(_Nodeptr) reading _Isnil at +0x29; called by _Insert 0069fbc0 and erase 006a04a0; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069cc70",
+      "ghidra_name": "FUN_0069cc70",
+      "provisional_name": "STL_Tree_IncPost_StrKeyCI_N2C_0069cc70",
+      "instantiation": "N2C",
+      "method": "const_iterator::operator++(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "postfix operator++(int): CALL 0069c0f0 then returns the saved iterator; __fastcall, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069cdb0",
+      "ghidra_name": "FUN_0069cdb0",
+      "provisional_name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+      "instantiation": "N2C",
+      "method": "_Tree::_Lbound(const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lbound(const key&) returning _Nodeptr: descends from _Root remembering the last node not less than the key, comparing the {count+0x0c, buffer+0x10} string handles with __stricmp and treating a null buffer as smallest, returns _Myhead when every node is less; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069f5f0",
+      "ghidra_name": "FUN_0069f5f0",
+      "provisional_name": "STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0",
+      "instantiation": "N2C",
+      "method": "_Tree::_Buynode",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x14",
+      "evidence": "_Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): sole caller is _Insert 0069fbc0; __thiscall, RET 0x14",
+      "confidence": "high"
+    },
+    {
+      "address": "0069fbc0",
+      "ghidra_name": "STL_xlen_throw_0069fbc0",
+      "provisional_name": "STL_Tree_Insert_StrKeyCI_N2C_0069fbc0",
+      "instantiation": "N2C",
+      "method": "_Tree::_Insert",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "_Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen at _Mysize>0x9249247 (sizeof=28), _Buynode 0069f5f0, rotates 0069c1c0/0069a560; the stl_throw_site tag is wrong; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a04a0",
+      "ghidra_name": "STL_xlen_throw_006a04a0",
+      "provisional_name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+      "instantiation": "N2C",
+      "method": "_Tree::erase(const_iterator)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0xC",
+      "evidence": "erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732",
+      "confidence": "high"
+    },
+    {
+      "address": "006a0770",
+      "ghidra_name": "FUN_006a0770",
+      "provisional_name": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+      "instantiation": "N2C",
+      "method": "_Tree::_Erase(_Nodeptr)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled key buffer at +0x10 with length +0x0c plus one before freeing the node; RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1050",
+      "ghidra_name": "FUN_006a1050",
+      "provisional_name": "STL_Tree_InsertUnique_StrKeyCI_N2C_006a1050",
+      "instantiation": "N2C",
+      "method": "_Tree::insert(const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "insert(const value_type&) returning pair<iterator,bool>: __stricmp descent over the key handle at +0x0c/+0x10, delegating to _Insert 0069fbc0; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1230",
+      "ghidra_name": "FUN_006a1230",
+      "provisional_name": "STL_Tree_Clear_StrKeyCI_N2C_006a1230",
+      "instantiation": "N2C",
+      "method": "_Tree::clear",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "clear(): calls _Erase 006a0770 on _Root(), then resets _Root(), _Mysize, _Lmost and _Rmost to _Myhead; __fastcall ECX=tree, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "006a15e0",
+      "ghidra_name": "FUN_006a15e0",
+      "provisional_name": "STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0",
+      "instantiation": "N2C",
+      "method": "_Tree::insert(const_iterator, const value_type&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x10",
+      "evidence": "insert(const_iterator,const value_type&): the three hint cases decided by BSP_NativeString_LessCaseInsensitive on the key at +0x0c, calling _Insert 0069fbc0 or falling back to 006a1050; __thiscall, RET 0x10",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1aa0",
+      "ghidra_name": "FUN_006a1aa0",
+      "provisional_name": "STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0",
+      "instantiation": "N2C",
+      "method": "_Tree::erase(const_iterator, const_iterator)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x14",
+      "evidence": "erase(const_iterator,const_iterator): whole-range fast path inlines the 006a1230 clear sequence, otherwise loops operator++ 0069c0f0 with erase 006a04a0, returning an iterator; __thiscall, RET 0x14",
+      "confidence": "high"
+    },
+    {
+      "address": "006a1e70",
+      "ghidra_name": "FUN_006a1e70",
+      "provisional_name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+      "instantiation": "N2C",
+      "method": "map::operator[](const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "map::operator[](const key&): _Lbound 0069cdb0, on a miss builds a default mapped value and hint-inserts with 006a15e0, releases the temporary pooled string, returns node+0x14 which is the 20-byte mapped value after the 8-byte key; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069cd50",
+      "ghidra_name": "FUN_0069cd50",
+      "provisional_name": "STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50",
+      "instantiation": "N2CB",
+      "method": "_Tree::_Lbound(const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lbound(const key&) returning _Nodeptr, byte-identical to 0069cdb0 but a separate emitted copy with a different caller set (0069d7c0, 006a4ca0); __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069b000",
+      "ghidra_name": "FUN_0069b000",
+      "provisional_name": "STL_Tree_Dec_Unk_N20_0069b000",
+      "instantiation": "N20",
+      "method": "const_iterator::operator--",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "checked const_iterator operator-- on _Isnil at +0x1d; __fastcall ECX=iterator, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c550",
+      "ghidra_name": "FUN_0069c550",
+      "provisional_name": "STL_Tree_DecPost_Unk_N20_0069c550",
+      "instantiation": "N20",
+      "method": "const_iterator::operator--(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "postfix operator--(int): CALL 0069b000 then returns the saved iterator; __fastcall, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069d0a0",
+      "ghidra_name": "FUN_0069d0a0",
+      "provisional_name": "STL_Tree_DecPost_Unk_N20_0069d0a0",
+      "instantiation": "N20",
+      "method": "const_iterator::operator--(int)",
+      "calling_convention": "__fastcall",
+      "ret": "RET",
+      "evidence": "second emitted copy of the postfix operator--(int) wrapper around 0069b000; __fastcall, RET",
+      "confidence": "high"
+    },
+    {
+      "address": "0069c280",
+      "ghidra_name": "FUN_0069c280",
+      "provisional_name": "STL_Tree_Lrotate_Unk_N24_0069c280",
+      "instantiation": "N24",
+      "method": "_Tree::_Lrotate",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lrotate(_Nodeptr) reading _Isnil at +0x21; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069ce30",
+      "ghidra_name": "FUN_0069ce30",
+      "provisional_name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+      "instantiation": "N24",
+      "method": "_Tree::_Lbound(const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lbound(const key&) returning _Nodeptr, same __stricmp descent as 0069cdb0 but on _Isnil at +0x21; __thiscall, RET 0x4",
+      "confidence": "high"
+    },
+    {
+      "address": "0069df70",
+      "ghidra_name": "FUN_0069df70",
+      "provisional_name": "STL_Tree_Find_StrKeyCI_N24_0069df70",
+      "instantiation": "N24",
+      "method": "_Tree::find(const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x8",
+      "evidence": "find(const key&): calls _Lbound 0069ce30 then rejects the hit with BSP_NativeString_LessCaseInsensitive, returning _Myhead on a miss; __thiscall, RET 0x8",
+      "confidence": "high"
+    },
+    {
+      "address": "0069ccf0",
+      "ghidra_name": "FUN_0069ccf0",
+      "provisional_name": "STL_Tree_Lbound_StrKeyCI_N28_0069ccf0",
+      "instantiation": "N28",
+      "method": "_Tree::_Lbound(const key&)",
+      "calling_convention": "__thiscall",
+      "ret": "RET 0x4",
+      "evidence": "_Lbound(const key&) returning _Nodeptr, same __stricmp descent as 0069cdb0 but on _Isnil at +0x25; __thiscall, RET 0x4",
+      "confidence": "high"
+    }
+  ],
+  "corrections_to_prior_work": [
+    {
+      "claim": "docs/INPUT_SETTINGS_SMOKE.md groups 006a0e90, 006a1230 and 006a1aa0 with 006a01f0 as one family",
+      "correction": "only 006a0e90 shares 006a01f0's instantiation (N18A, _Isnil at node+0x15). 006a1230 and 006a1aa0 call 006a0770, which reads _Isnil at node+0x29, so both belong to N2C, the case-insensitive string-keyed tree"
+    },
+    {
+      "claim": "0069f400 is tagged stl_throw_site / STL_xlen_throw_0069f400",
+      "correction": "0069f400 is _Tree::_Insert; the throw is one guarded _Xlen branch. The same wrong tag sits on 0069ef20, 0069f210, 0069fbc0 and 006a02b0, which are the _Insert of the other instantiations, and on 0069f690, 006a04a0 and 006a07d0, which are erase(const_iterator) and throw out_of_range only on a nil iterator"
+    },
+    {
+      "claim": "index call edges 0069d7c0 -> 0069cd50 and 0069d6f0 -> 0069c0f0",
+      "correction": "neither body contains that call. 0069d7c0 is 17 instructions ending in RET 0x4 whose only call is LIBCRT_unmatched_00bf6713. 0069d6f0, 0069d7c0 and 0069d8c0 are checked vector::end() bodies, not tree members, despite the stl_instantiation tag"
+    }
+  ],
+  "owning_game_code": [
+    {
+      "address": "006a7be0",
+      "role": "controller and keyboard datatable loader",
+      "callers": [
+        "0073d410 BSP_Application_Initialize",
+        "006ab6b0"
+      ],
+      "uses": [
+        "006a1560 (N18A operator[])",
+        "006a1f80 (N1C operator[])"
+      ],
+      "strings": [
+        "Scripts\\datatables\\ControllerInputNames.lua",
+        "Scripts\\datatables\\KeyboardSetup.lua",
+        "Scripts/datatables/ControlPresets.lua",
+        "Inputs",
+        "DEVINPUTS",
+        "Pairs",
+        "Groups",
+        "Conflicts",
+        "InputNames",
+        "Min1SensHacks",
+        "AxisPairs",
+        "BaseSensitivities",
+        "Sensitivities"
+      ]
+    },
+    {
+      "address": "006ab820",
+      "role": "Inputs.lua binding loader",
+      "callers": [
+        "00698a10"
+      ],
+      "uses": [
+        "006a1460 (N18B operator[])",
+        "0069c370 (N18B operator++)"
+      ],
+      "strings": [
+        "Scripts\\datatables\\Inputs.lua (on 00698a10)",
+        "groups",
+        "press",
+        "inputs",
+        "helper",
+        "InvertPlaneY",
+        "InvertCameraY",
+        "SwapStickMap",
+        "SwapStickGeneral",
+        "SwapStickPairs",
+        "InputModifiers"
+      ]
+    },
+    {
+      "address": "006aa640",
+      "role": "input-settings save-data path",
+      "callers": [
+        "006ab820",
+        "006aba50"
+      ],
+      "uses": [
+        "006a1560 (N18A operator[])"
+      ],
+      "strings": [
+        "inputSettings (on 006aba50)",
+        "sensitivitySettings",
+        "deviceType",
+        "deviceIdx",
+        "slider",
+        "reverse"
+      ]
+    },
+    {
+      "address": "0069e9e0",
+      "role": "front-end control-string builder",
+      "callers": [
+        "006a33f0",
+        "006a9850"
+      ],
+      "uses": [
+        "0069dfe0 (N1C find)",
+        "0069c0f0 (N2C operator++)"
+      ],
+      "strings": [
+        "FE_pc.cs_unknown",
+        "(DEVINPUTS) (on 006a9850)",
+        "|. |^globals.down",
+        "|. |^globals.up"
+      ]
+    },
+    {
+      "address": "006aa460",
+      "role": "owner-class destructor reached from CG_scalar_deleting_dtor_006ab800",
+      "callers": [
+        "006ab800"
+      ],
+      "uses": [
+        "006a1aa0 (N2C range erase)"
+      ],
+      "strings": []
+    },
+    {
+      "address": "006a2930",
+      "role": "owner-class copy path",
+      "callers": [
+        "006a2c40",
+        "006a3100",
+        "006a3cb0"
+      ],
+      "uses": [
+        "006a1c40 (N1C copy assign)"
+      ],
+      "strings": []
+    }
+  ],
+  "flow_breaks": [
+    {
+      "function": "0069d3f0",
+      "method": "_Erase(_Nodeptr)",
+      "undefined": "0069d414-0069d41e",
+      "size": 11,
+      "cause": "Ghidra treats _free (00bf65ac) as no-return; the loop back-edge after the free is never disassembled",
+      "bytes": "83 c4 04 80 7e 15 00 8b fe 74 e2",
+      "decoded": "ADD ESP,0x4 / CMP byte ptr [ESI+0x15],0x0 / MOV EDI,ESI / JZ 0x0069d401",
+      "effect": "the exported C frees one node and returns, leaking every left subtree"
+    },
+    {
+      "function": "006a0770",
+      "method": "_Erase(_Nodeptr)",
+      "undefined": "006a07b1-006a07bb",
+      "size": 11,
+      "cause": "same no-return annotation on _free",
+      "bytes": "83 c4 04 80 7e 29 00 8b fe 74 c5",
+      "decoded": "ADD ESP,0x4 / CMP byte ptr [ESI+0x29],0x0 / MOV EDI,ESI / JZ 0x006a0781",
+      "effect": "same leak in the exported C"
+    },
+    {
+      "function": "006a0aa0",
+      "method": "_Erase(_Nodeptr)",
+      "undefined": "006a0ae1-006a0aeb",
+      "size": 11,
+      "cause": "same no-return annotation on _free",
+      "bytes": "83 c4 04 80 7e 19 00 8b fe 74 c5",
+      "decoded": "ADD ESP,0x4 / CMP byte ptr [ESI+0x19],0x0 / MOV EDI,ESI / JZ 0x006a0ab1",
+      "effect": "same leak in the exported C"
+    },
+    {
+      "function": "0069f690",
+      "method": "erase(const_iterator)",
+      "undefined": "0069f901-0069f936",
+      "size": 54,
+      "cause": "same no-return annotation on _free; the whole epilogue is undefined so the listing has no RET at all",
+      "bytes": "8b 45 08 83 c4 04 85 c0 5f 5b 76 06 83 c0 ff 89 45 08 8b 4c 24 64 8b 44 24 60 8b 54 24 68 89 08 8b 4c 24 50 5e 89 50 04 5d 64 89 0d 00 00 00 00 83 c4 54 c2 0c 00",
+      "decoded": "guarded --_Mysize, the {tree,node} iterator writeback into the caller's hidden slot, SEH unlink, ADD ESP,0x54, RET 0xC at 0069f934",
+      "effect": "the RET size 0xC is invisible to Ghidra; CC padding follows to 0069f940"
+    },
+    {
+      "function": "006a04a0",
+      "method": "erase(const_iterator)",
+      "undefined": "006a0732-006a076b",
+      "size": 58,
+      "cause": "same no-return annotation on _free",
+      "bytes": "8b 4c 24 14 8b 41 08 83 c4 04 85 c0 5f 5d 76 06 83 c0 ff 89 41 08 8b 4c 24 64 8b 44 24 60 8b 54 24 68 89 08 8b 4c 24 50 5e 89 50 04 5b 64 89 0d 00 00 00 00 83 c4 54 c2 0c 00",
+      "decoded": "same epilogue with the tree loaded by MOV ECX,[ESP+0x14] / MOV EAX,[ECX+0x8]; RET 0xC at 006a0769",
+      "effect": "the RET size 0xC is invisible to Ghidra; CC padding follows to 006a0770"
+    },
+    {
+      "function": "006a07d0",
+      "method": "erase(const_iterator)",
+      "undefined": "006a0a62-006a0a9b",
+      "size": 58,
+      "cause": "same no-return annotation on _free",
+      "bytes": "8b 4c 24 14 8b 41 08 83 c4 04 85 c0 5f 5d 76 06 83 c0 ff 89 41 08 8b 4c 24 64 8b 44 24 60 8b 54 24 68 89 08 8b 4c 24 50 5e 89 50 04 5b 64 89 0d 00 00 00 00 83 c4 54 c2 0c 00",
+      "decoded": "byte-identical to the 006a04a0 epilogue; RET 0xC at 006a0a99",
+      "effect": "the RET size 0xC is invisible to Ghidra; CC padding follows to 006a0aa0"
+    }
+  ],
+  "helpers_outside_range": {
+    "N18A": [
+      "00554f50 _Buynode",
+      "005530d0 _Lrotate",
+      "00553120 _Rrotate",
+      "005531f0 operator++",
+      "00553070 iterator compare"
+    ],
+    "N18B": [
+      "0069a610 _Rrotate",
+      "0069ab10 operator--"
+    ],
+    "N1C": [
+      "0069a780 _Rrotate"
+    ],
+    "N2C": [
+      "0069a560 _Rrotate",
+      "0069a530 _Max fixup",
+      "0069a9e0 _Min fixup",
+      "006a2060 ~_Tree",
+      "006a24b0 ~_Tree",
+      "006a2b00 ~_Tree"
+    ],
+    "N14": [
+      "005550d0 _Buynode",
+      "004b96e0 _Lrotate",
+      "004beea0 _Rrotate"
+    ]
+  },
+  "not_tree_members": [
+    {
+      "address": "0069d6f0",
+      "what": "checked vector::end(); compares _Mylast at +0x08 against _Myfirst at +0x04"
+    },
+    {
+      "address": "0069d7c0",
+      "what": "checked vector::end(); 17 instructions, RET 0x4"
+    },
+    {
+      "address": "0069d8c0",
+      "what": "checked vector::end()"
+    }
+  ],
+  "uncertainty": [
+    "Element types are not recovered. The 4-byte mapped type of N18A and N18B could be an int, an enum, a float or a pointer.",
+    "N2C's mapped value is 20 opaque bytes.",
+    "N20, N24 and N28 are represented by one or two members each; their method sets are incomplete and their owners were not traced.",
+    "The instantiation assignment of 0069c640 and 0069d1a0 is medium confidence; the method is high confidence."
+  ]
+}
