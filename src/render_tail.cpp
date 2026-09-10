@@ -1,4 +1,5 @@
 #include "bsp/render_tail.hpp"
+#include "bsp/particle_clock_lifetime.hpp"
 
 namespace bsp {
 
@@ -11,7 +12,23 @@ float particle_clock_time_004e538e(float global_time) noexcept
 
 void set_particle_clock_time_00b19a10(ParticleClock& clock, float time_ms)
 {
+    auto* const owned_begin = clock.owned_records;
     clock.shader_time = time_ms;
+    if (owned_begin != nullptr) {
+        // ESI advances independently; only the end is recomputed from the
+        // reloaded native +8/+C after each virtual call. Reallocation during a
+        // callback has the same native invalidation risk, not index semantics.
+        auto cursor = reinterpret_cast<std::uintptr_t>(owned_begin);
+        auto end = cursor + clock.sink_count * kParticleClockRecordStride;
+        while (cursor != end) {
+            reinterpret_cast<ParticleClockOwnedRecord*>(cursor)->sink_28->set_time(time_ms);
+            end = reinterpret_cast<std::uintptr_t>(clock.owned_records)
+                + clock.sink_count * kParticleClockRecordStride;
+            cursor += kParticleClockRecordStride;
+        }
+        return;
+    }
+    // Retained compatibility path for earlier borrowed sink projections.
     if (clock.sinks == nullptr) {
         return;
     }

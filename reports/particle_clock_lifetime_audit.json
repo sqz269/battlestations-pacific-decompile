@@ -1,0 +1,81 @@
+{
+  "packet": "particle_clock_lifetime",
+  "date": "2026-09-10",
+  "base_commit": "a30ea58",
+  "target": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installation_mutated": false
+  },
+  "status": {
+    "reconstructed": "concrete lazy owner lifecycle and bounded record cleanup; actual nonempty sink zero-reference virtual remains an owner boundary",
+    "exported": "existing 00b19a10 export inspected; new lifecycle exports and annotations deferred to primary integration",
+    "build_tested": true,
+    "fixture_tested": true,
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "allocation": {
+    "native_bytes": 28,
+    "host_bytes_win32": 32,
+    "raw_shader_time_offset": 24,
+    "preimage_capture": "memcpy before placement construction, then memcpy to canonical shader_time; no float load",
+    "native_constructor_writes": "base/secondary vtables and +8..+14; does not write +18",
+    "same_updater_and_system_constant_owner": true
+  },
+  "ownership": {
+    "record_stride": 44,
+    "record_string": [0, 4],
+    "record_list_sentinel_count": [12, 16],
+    "record_sink": 40,
+    "node_stride": 16,
+    "node_string": [8, 12],
+    "release_order": "backmost sink reference; reload base/count; backmost record linked strings/nodes, sentinel then record string; decrement count; repeat; array free; unconditional global clear; base identity; optional owner free",
+    "sink_zero_reference_dispatch": "InterlockedDecrement native+4, virtual+0 only when zero, no stack flags",
+    "manager_unregister": false,
+    "slot_clear": "unconditional 00F8D420=null at 00B1B6BD",
+    "freed_array_pointer_cleared": false,
+    "secondary_identity_after_destroy": "00ce7d08",
+    "base_identity_after_destroy": "00ce3818"
+  },
+  "raw_continuation_evidence": [
+    {"address": "004de355", "bytes": "83c4048bc65ec20400", "meaning": "free returns, restore original owner in EAX, RET4"},
+    {"address": "004de360", "bytes": "83e904e9d8ffffff", "meaning": "secondary this adjustment, tail jump primary scalar destructor"},
+    {"address": "004d0625", "bytes": "83c4043b5f048bf375d15b", "meaning": "continue linked list walk after freeing current node"},
+    {"address": "004d45d9", "bytes": "c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8c056f4ff8bc8e809cf6f008b4c240c5f5e64890d0000000083c410c3", "meaning": "clear sentinel pointer then sized-release record string; restore exception chain and return"}
+  ],
+  "proposed_annotations_only": [
+    {"address": "004de340", "old_name": "CG_scalar_deleting_dtor_004de340", "old_plate_comment": null, "proposed_name": "BSP_ParticleClock_ScalarDeletingDestructor", "abi": "ECX complete clock; stack flags; RET4; original owner EAX even after free"},
+    {"address": "004de360", "old_name": null, "old_plate_comment": null, "function_existed": false, "proposed_name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk", "abi": "ECX secondary subobject; subtract4; tail jump004de340"},
+    {"address": "00b1b680", "old_name": "FUN_00b1b680", "old_plate_comment": null, "proposed_name": "BSP_ParticleClock_Destroy", "abi": "ECX clock; RET0"},
+    {"address": "004de290", "old_name": "FUN_004de290", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordContainer_Destroy", "abi": "ECX secondary container; RET0"},
+    {"address": "004dda40", "old_name": "FUN_004dda40", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordContainer_ReleaseAll", "abi": "ECX secondary container; RET0"},
+    {"address": "004dc410", "old_name": "FUN_004dc410", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordArray_Resize", "abi": "ECX raw array; stack signed count; RET4", "implemented_scope": "zero path after drain only"},
+    {"address": "004d45a0", "old_name": "FUN_004d45a0", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecord_Destroy", "abi": "ECX record; RET0"},
+    {"address": "004ddb40", "old_name": "FUN_004ddb40", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordContainer_ReleaseSink", "abi": "ECX container unused; stack sink; RET4; zero virtual takes no stack args"},
+    {"address": "004d05e0", "old_name": "FUN_004d05e0", "old_plate_comment": null, "proposed_name": "BSP_ParticleRecordStringList_Clear", "abi": "ECX embedded list; RET0"}
+  ],
+  "validation": {
+    "full_build_command": "scripts/build.ps1",
+    "full_build_log": "local/particle_clock_full_build.log",
+    "existing_ctest": "1/1 passed",
+    "isolated_fixture": "local/particle_clock_lifetime_probe.cpp",
+    "isolated_fixture_command": "cmd /c local/build_particle_clock_lifetime_probe.cmd",
+    "compiler": "MSVC Win32 /O2 /Gy /std:c++17 /W4 /WX /EHsc /MD /fp:strict",
+    "shared_singleton_commit": "e66cba056a423dadfa340a4eed12ba9dcbb0c31a",
+    "recycled_signaling_nan_preimage": "7f800123 verified unchanged on first passing fixture run with allocator_reused=1",
+    "final_run": "allocator_reused=1; raw_preimage=7f800123; getter_preimage=003b006e; references=0; zero_calls=1; pooled_returns=6; shutdown_dispatches=1",
+    "checks": ["raw and lazy shader preimages", "secondary flags2 no-free path", "unconditional singleton slot clear", "no invented unregister", "owned record time updates", "back-to-front shared reference release", "all linked nodes and record strings returned", "real domain shutdown dispatch"]
+  },
+  "uncertainty": [
+    "Actual particle-system sink virtual+0 owner bodies are not reconstructed; nonempty owners must supply their real implementation.",
+    "Native SEH metadata and foreign virtual exception behavior are not implemented by this noexcept C++ projection.",
+    "Array growth and general004dc410 resize behavior are outside this destructor packet.",
+    "Host projections are not original vtable or object ABI layouts; exact0x2c and0x10 assertions apply to records and nodes.",
+    "Raw allocation contents are allocator observations, not a native initialized default or deterministic shader-time value."
+  ]
+}
