@@ -1,0 +1,982 @@
+{
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "function_evidence": [
+    {
+      "address": "00cd80a0",
+      "end_exclusive": "00cd80ef",
+      "length": 79,
+      "disk_offset": 9273504,
+      "disk_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "live_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_cLight",
+      "native_abi": "No arguments; RET",
+      "cpp_symbol": "LightTypeBootstrap::initialize_light_00cd80a0",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 120,
+      "behavior": "Actualguard0109010D anddescriptor0109018C; initializeactualnode, capture/copy2parenttokens, consumeownID.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": false
+    },
+    {
+      "address": "00cd80f0",
+      "end_exclusive": "00cd8191",
+      "length": 161,
+      "disk_offset": 9273584,
+      "disk_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "live_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_cDirectionalLight",
+      "native_abi": "No arguments; RET",
+      "cpp_symbol": "LightTypeBootstrap::initialize_directional_00cd80f0",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 124,
+      "behavior": "Actualguard0109010E/descriptor0109019C; capturelightguard BEFOREdirectionalguard/namewrites, conditionallyinitlight, capture/copy3parenttokens, consumeownID.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": false
+    },
+    {
+      "address": "00b7c580",
+      "end_exclusive": "00b7c5a8",
+      "length": 40,
+      "disk_offset": 7849344,
+      "disk_sha256": "82bbc576e0c79236d102b11f29891d5361ffb294f6312b2319b1078d6b74981f",
+      "live_sha256": "82bbc576e0c79236d102b11f29891d5361ffb294f6312b2319b1078d6b74981f",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Light_IsType",
+      "native_abi": "Stack token; AL boolean; RET4; ECX input ignored",
+      "cpp_symbol": "LightTypeBootstrap::light_is_type_00b7c580",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 146,
+      "behavior": "Sequential live3DWORD scan0109018C/90/94, firstmatch; noinit.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": true
+    },
+    {
+      "address": "00b7c6d0",
+      "end_exclusive": "00b7c6f8",
+      "length": 40,
+      "disk_offset": 7849680,
+      "disk_sha256": "28ca340870395abd5eafe823ef7c4f4ac5762b214a78f3372178a1ad91ac1ce0",
+      "live_sha256": "28ca340870395abd5eafe823ef7c4f4ac5762b214a78f3372178a1ad91ac1ce0",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_DirectionalLight_IsType",
+      "native_abi": "Stack token; AL boolean; RET4; ECX input ignored",
+      "cpp_symbol": "LightTypeBootstrap::directional_is_type_00b7c6d0",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 150,
+      "behavior": "Sequential live4DWORD scan0109019C/A0/A4/A8, firstmatch; noinit.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": true
+    },
+    {
+      "address": "00b6f570",
+      "end_exclusive": "00b6f598",
+      "length": 40,
+      "disk_offset": 7796080,
+      "disk_sha256": "7095e2c04cee72abb7739aec21df6c82bacd74068312a2bfd8d75c44fae68376",
+      "live_sha256": "7095e2c04cee72abb7739aec21df6c82bacd74068312a2bfd8d75c44fae68376",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Node_IsType",
+      "native_abi": "Stack token; AL boolean; RET4; ECX input ignored",
+      "cpp_symbol": "LightTypeBootstrap::node_is_type_00b6f570",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 143,
+      "behavior": "Sequential live2DWORD scan0108FF90/94, firstmatch; noinit.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": true
+    },
+    {
+      "address": "00b6f110",
+      "end_exclusive": "00b6f14e",
+      "length": 62,
+      "disk_offset": 7794960,
+      "disk_sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84",
+      "live_sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_Initialize3dNode",
+      "native_abi": "ECX target descriptor; RET",
+      "cpp_symbol": "LightTypeBootstrap::initialize_node_00b6f110",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 98,
+      "behavior": "Process guard0108FF54; write caller target name, initialize actualroot, copyrootID, consume sharedcounter.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": false
+    },
+    {
+      "address": "006fac20",
+      "end_exclusive": "006facd5",
+      "length": 181,
+      "disk_offset": 3124256,
+      "disk_sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "live_sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeId_GetCounterSingleton",
+      "native_abi": "No arguments; EAX actual shared owner; RET",
+      "cpp_symbol": "TypeIdCounterLifetime::get_006fac20",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 43,
+      "behavior": "Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": false
+    },
+    {
+      "address": "00bea780",
+      "end_exclusive": "00bea7ac",
+      "length": 44,
+      "disk_offset": 8300416,
+      "disk_sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac",
+      "live_sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_InitializeRoot",
+      "native_abi": "ECX target descriptor; RET",
+      "cpp_symbol": "LightTypeBootstrap::initialize_root_00bea780",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 90,
+      "behavior": "Process guard0109DB80 then consume shared counter and write caller target ownID/name.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": false
+    },
+    {
+      "address": "006fad40",
+      "end_exclusive": "006fad69",
+      "length": 41,
+      "disk_offset": 3124544,
+      "disk_sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce",
+      "live_sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeIdCounter_DeletingDestructor",
+      "native_abi": "ECX owner; stack flags; EAX original address; RET4",
+      "cpp_symbol": "TypeIdCounterLifetime::deleting_destructor_006fad40",
+      "source": "src/light_type_bootstrap.cpp",
+      "source_line": 68,
+      "behavior": "Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset.",
+      "status": "bounded_reconstructed_and_focused_fixture_tested",
+      "ghidra_function_missing_at_initial_inspection": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk_or_zero_fill": true,
+      "role": "Observed actual CRT free boundary only",
+      "status": "fixture_boundary_not_reconstructed_here"
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "0109db7c",
+      "end_exclusive": "0109db80",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109db80",
+      "end_exclusive": "0109db81",
+      "length": 1,
+      "disk_offset": null,
+      "disk_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109db84",
+      "end_exclusive": "0109db8c",
+      "length": 8,
+      "disk_offset": null,
+      "disk_sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108ff54",
+      "end_exclusive": "0108ff55",
+      "length": 1,
+      "disk_offset": null,
+      "disk_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108ff90",
+      "end_exclusive": "0108ff9c",
+      "length": 12,
+      "disk_offset": null,
+      "disk_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "live_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109010d",
+      "end_exclusive": "0109010f",
+      "length": 2,
+      "disk_offset": null,
+      "disk_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "live_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109018c",
+      "end_exclusive": "010901b0",
+      "length": 36,
+      "disk_offset": null,
+      "disk_sha256": "6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e",
+      "live_sha256": "6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00cfb6c4",
+      "end_exclusive": "00cfb6c8",
+      "length": 4,
+      "disk_offset": 9418436,
+      "disk_sha256": "177b648fbc3c235dd9eb88ca22452350e22943faf064857f5ed5cf830b4f9a6f",
+      "live_sha256": "177b648fbc3c235dd9eb88ca22452350e22943faf064857f5ed5cf830b4f9a6f",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce3818",
+      "end_exclusive": "00ce381c",
+      "length": 4,
+      "disk_offset": 9320472,
+      "disk_sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "live_sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d68bbc",
+      "end_exclusive": "00d68bc2",
+      "length": 6,
+      "disk_offset": 9866172,
+      "disk_sha256": "7f1707c54c5bc10c7deb7e57b38f767d1a97dcc33d77272afcbc9e5a3ed7f3c9",
+      "live_sha256": "7f1707c54c5bc10c7deb7e57b38f767d1a97dcc33d77272afcbc9e5a3ed7f3c9",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62c7c",
+      "end_exclusive": "00d62c84",
+      "length": 8,
+      "disk_offset": 9841788,
+      "disk_sha256": "381369d67b12b58d3d09dad48e78fe1add874b4ca7775cb3cfff4aec45b2c85c",
+      "live_sha256": "381369d67b12b58d3d09dad48e78fe1add874b4ca7775cb3cfff4aec45b2c85c",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62f14",
+      "end_exclusive": "00d62f1b",
+      "length": 7,
+      "disk_offset": 9842452,
+      "disk_sha256": "338cab6e12f5b4f9caa37a165308ea0f69bca546e19dc3424994da55d20dca7e",
+      "live_sha256": "338cab6e12f5b4f9caa37a165308ea0f69bca546e19dc3424994da55d20dca7e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62f1c",
+      "end_exclusive": "00d62f2e",
+      "length": 18,
+      "disk_offset": 9842460,
+      "disk_sha256": "afd3c6c464808f4fb7f3f96177e8118ec56845fa4432ed2ee9a6223439fd35d0",
+      "live_sha256": "afd3c6c464808f4fb7f3f96177e8118ec56845fa4432ed2ee9a6223439fd35d0",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "pointer_patches": [
+    {
+      "address": "006fac29",
+      "preimage": "00c83858"
+    },
+    {
+      "address": "006fac36",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006fac54",
+      "preimage": "00ce37fc"
+    },
+    {
+      "address": "006fac61",
+      "preimage": "00ce2218"
+    },
+    {
+      "address": "006fac73",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006fac8a",
+      "preimage": "00cfb6c4"
+    },
+    {
+      "address": "006fac9a",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006faca5",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006facbc",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "006facc1",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006fad4a",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006fad54",
+      "preimage": "00ce3818"
+    },
+    {
+      "address": "00b6f112",
+      "preimage": "0108ff54"
+    },
+    {
+      "address": "00b6f11e",
+      "preimage": "0108ff54"
+    },
+    {
+      "address": "00b6f124",
+      "preimage": "0109db84"
+    },
+    {
+      "address": "00b6f12b",
+      "preimage": "00d62c7c"
+    },
+    {
+      "address": "00b6f135",
+      "preimage": "0109db84"
+    },
+    {
+      "address": "00b6f575",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00b6f588",
+      "preimage": "0108ff98"
+    },
+    {
+      "address": "00b7c585",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00b7c598",
+      "preimage": "01090198"
+    },
+    {
+      "address": "00b7c6d5",
+      "preimage": "0109019c"
+    },
+    {
+      "address": "00b7c6e8",
+      "preimage": "010901ac"
+    },
+    {
+      "address": "00bea782",
+      "preimage": "0109db80"
+    },
+    {
+      "address": "00bea78e",
+      "preimage": "0109db80"
+    },
+    {
+      "address": "00bea7a6",
+      "preimage": "00d68bbc"
+    },
+    {
+      "address": "00cd80a2",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd80aa",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd80b0",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd80b7",
+      "preimage": "01090198"
+    },
+    {
+      "address": "00cd80bb",
+      "preimage": "00d62f14"
+    },
+    {
+      "address": "00cd80c5",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd80cb",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00cd80d0",
+      "preimage": "01090190"
+    },
+    {
+      "address": "00cd80d6",
+      "preimage": "01090194"
+    },
+    {
+      "address": "00cd80ea",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00cd80f2",
+      "preimage": "0109010e"
+    },
+    {
+      "address": "00cd80ff",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd8107",
+      "preimage": "0109010e"
+    },
+    {
+      "address": "00cd810d",
+      "preimage": "010901ac"
+    },
+    {
+      "address": "00cd8111",
+      "preimage": "00d62f1c"
+    },
+    {
+      "address": "00cd8118",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd811d",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd8123",
+      "preimage": "01090198"
+    },
+    {
+      "address": "00cd8127",
+      "preimage": "00d62f14"
+    },
+    {
+      "address": "00cd8131",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd8137",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00cd813c",
+      "preimage": "01090190"
+    },
+    {
+      "address": "00cd8142",
+      "preimage": "01090194"
+    },
+    {
+      "address": "00cd8156",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00cd815b",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00cd8161",
+      "preimage": "01090190"
+    },
+    {
+      "address": "00cd8167",
+      "preimage": "01090194"
+    },
+    {
+      "address": "00cd816c",
+      "preimage": "010901a0"
+    },
+    {
+      "address": "00cd8172",
+      "preimage": "010901a4"
+    },
+    {
+      "address": "00cd8178",
+      "preimage": "010901a8"
+    },
+    {
+      "address": "00cd818c",
+      "preimage": "0109019c"
+    },
+    {
+      "address": "00cfb6c4",
+      "preimage": "006fad40"
+    }
+  ],
+  "packet": "light_type_bootstrap",
+  "base_commit": "c314dfc80347b30e2ab3716d5c5bdd6eb02874d3",
+  "files": [
+    "include/bsp/light_type_bootstrap.hpp",
+    "src/light_type_bootstrap.cpp",
+    "docs/LIGHT_TYPE_BOOTSTRAP.md",
+    "reports/light_type_bootstrap_audit.json"
+  ],
+  "target": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "verification": "Every analysis/export/byte batch used repository CLI target verification; no Ghidra mutations by worker."
+  },
+  "closure": {
+    "owner": "Actual externally supplied0109DB7C TypeIdCounterStorage* volatile reference",
+    "lifetime": "Same supplied SingletonLifetimeDomain as every process singleton",
+    "storage": "Actual root/node/light/directional guards and descriptors supplied by reference; no default member initialization, implicit bootstrap or reset",
+    "implemented": [
+      "root initializer",
+      "node initializer",
+      "light static initializer",
+      "directional static initializer",
+      "three live predicates",
+      "shared counter getter",
+      "shared counter deleting destructor"
+    ],
+    "integration_owned_by_primary": [
+      "CMake source registration",
+      "process actual storage/canonical shared manager wiring",
+      "manager registered-owner vtable dispatch",
+      "native process startup call order",
+      "Ghidra missing function definitions, annotation, ledger and saved project"
+    ]
+  },
+  "validation": {
+    "strict_new_source_build": "MSVC x86 /std:c++17 /EHsc /O2 /Oy- /MT /Gy /Gw /W4 /WX; new source plus existing singleton_lifetime.cpp; PASS",
+    "fixture": "One focused native/host scenario; PASS",
+    "state_words": [
+      "root_guard",
+      "node_guard",
+      "light_guard",
+      "directional_guard",
+      "root_own",
+      "root_name",
+      "node_own",
+      "node_root",
+      "node_name",
+      "light_own",
+      "light_node",
+      "light_root",
+      "light_name",
+      "directional_own",
+      "directional_light",
+      "directional_node",
+      "directional_root",
+      "directional_name",
+      "counter_next",
+      "counter_vtable"
+    ],
+    "matching_states": 6,
+    "matching_state_bytes": 480,
+    "predicate_calls_per_path": 108,
+    "states": [
+      {
+        "ordinal": 0,
+        "checkpoint": "provided_shared_counter",
+        "words": [
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000002",
+          "00cfb6c4"
+        ]
+      },
+      {
+        "ordinal": 1,
+        "checkpoint": "predicates_do_not_initialize",
+        "words": [
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000002",
+          "00cfb6c4"
+        ]
+      },
+      {
+        "ordinal": 2,
+        "checkpoint": "directional_closes_root_node_light",
+        "words": [
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000002",
+          "00d68bbc",
+          "00000003",
+          "00000002",
+          "00d62c7c",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f14",
+          "00000005",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f1c",
+          "00000006",
+          "00cfb6c4"
+        ]
+      },
+      {
+        "ordinal": 3,
+        "checkpoint": "guards_keep_alternate_targets_untouched",
+        "words": [
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000002",
+          "00d68bbc",
+          "00000003",
+          "00000002",
+          "00d62c7c",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f14",
+          "00000005",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f1c",
+          "00000006",
+          "00cfb6c4"
+        ]
+      },
+      {
+        "ordinal": 4,
+        "checkpoint": "predicates_read_live_ids_inherited_copies_retained",
+        "words": [
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000002",
+          "00d68bbc",
+          "8bad0001",
+          "8bad0002",
+          "00d62c7c",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f14",
+          "00000005",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f1c",
+          "00000006",
+          "00cfb6c4"
+        ]
+      },
+      {
+        "ordinal": 5,
+        "checkpoint": "another_type_consumes_same_counter_guard_remains_set",
+        "words": [
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000001",
+          "00000002",
+          "00d68bbc",
+          "8bad0001",
+          "8bad0002",
+          "00d62c7c",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f14",
+          "00000005",
+          "00000004",
+          "00000003",
+          "00000002",
+          "00d62f1c",
+          "00000007",
+          "00cfb6c4"
+        ]
+      }
+    ],
+    "predicate_results": [
+      {
+        "token": "00000000",
+        "membership_bits_node_light_directional": 7
+      },
+      {
+        "token": "00000001",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000002",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000003",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000004",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000005",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000006",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000007",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "ffffffff",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "8bad0001",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "8bad0002",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "12345678",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000000",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000001",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000002",
+        "membership_bits_node_light_directional": 7
+      },
+      {
+        "token": "00000003",
+        "membership_bits_node_light_directional": 7
+      },
+      {
+        "token": "00000004",
+        "membership_bits_node_light_directional": 6
+      },
+      {
+        "token": "00000005",
+        "membership_bits_node_light_directional": 4
+      },
+      {
+        "token": "00000006",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000007",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "ffffffff",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "8bad0001",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "8bad0002",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "12345678",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000000",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000001",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000002",
+        "membership_bits_node_light_directional": 6
+      },
+      {
+        "token": "00000003",
+        "membership_bits_node_light_directional": 6
+      },
+      {
+        "token": "00000004",
+        "membership_bits_node_light_directional": 6
+      },
+      {
+        "token": "00000005",
+        "membership_bits_node_light_directional": 4
+      },
+      {
+        "token": "00000006",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "00000007",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "ffffffff",
+        "membership_bits_node_light_directional": 0
+      },
+      {
+        "token": "8bad0001",
+        "membership_bits_node_light_directional": 1
+      },
+      {
+        "token": "8bad0002",
+        "membership_bits_node_light_directional": 1
+      },
+      {
+        "token": "12345678",
+        "membership_bits_node_light_directional": 0
+      }
+    ],
+    "native_execution": [
+      "all initializer normal paths through actual provided nonnull nativecounter",
+      "all three predicates including zeroed storage and runtime changes",
+      "6FAC20 existing-owner fast path only",
+      "6FAD40 flags1 with observed real free"
+    ],
+    "host_only_lifetime_checks": [
+      "Real SingletonLifetimeDomain lazy construction and counter initialization",
+      "Exactly one registered actualcounter pointer; repeatedgetters do notaddregistration",
+      "Zero explicit recursion after registration",
+      "Actual manager shutdown dispatchescounteronce withflags1",
+      "Global clear andbaseVT observedbeforecounterfree; retainednextID7; descriptor guards unchanged"
+    ],
+    "mapping": {
+      "mode": "Sparse originalrelativeimage layout; entireimage reservation PAGE_NOACCESS, onlyspecificpagescommitted and filledINT3 beforeprovidedspancopies",
+      "owned_code_bytes": 688,
+      "crt_boundary_bytes": 5,
+      "data_bytes": 111,
+      "absolute_rebases": 58,
+      "hooks": [
+        "native00BF65AC five-byte entry -> observing real std::free",
+        "hostsingleton_lifetime_free -> same observing real std::free"
+      ],
+      "unresolved_call_stubs": false,
+      "full_pe_copy_or_entrypoint": false,
+      "native_slow_counter_path": "Not invoked; manager allocation/register callees and imports are not provided"
+    },
+    "repository_build": "./scripts/build.ps1 PASS; existing reconstructed_math CTest1/1 PASS. Primary must still add new source to shared CMake."
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\include\\bsp\\light_type_bootstrap.hpp",
+      "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34",
+      "committed": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\src\\light_type_bootstrap.cpp",
+      "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9",
+      "committed": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\src\\singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\local\\prepare_type_bootstrap_native.py",
+      "sha256": "b60b1b8d9ce4b6cbd025f718d623e0103270aa0e599b6893f24f6de6dfe0db9e",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\local\\type_bootstrap_native_spans.hpp",
+      "sha256": "8e9f15a5ef2934786b117da5140c562a2010ec254c7b5dd93e1dcf6387772a32",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\local\\type_bootstrap_native_check.cpp",
+      "sha256": "1e1e153fe6116c0480220fe7d8a17730cad7c0941d65df55d1ed289c998c1121",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\local\\build_type_bootstrap_native_check.ps1",
+      "sha256": "cd09273ed77ce35597d91e75b58f87c45ff68e13b990bebe297c1d3d93d87f85",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\local\\type_bootstrap_native_check.log",
+      "sha256": "14b2a07897dfe05a9a0b2d6f90050702e19a84dafdb89374eac7275e80516755",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\local\\type_bootstrap_repository_build.log",
+      "sha256": "ff82c7a4dfc4fa3964f66ebf1ebb5a6dd1eaf8b31344242f0bee92523bd860d7",
+      "committed": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-light-type-bootstrap-20260910\\build\\type-bootstrap-check\\type_bootstrap_native_check.exe",
+      "sha256": "100c0b2b0a72a3757fcda690ce834b2f049564561b9f1d565a509d42f36b54a6",
+      "committed": false
+    }
+  ],
+  "limits": [
+    "Typed C++ interfaces are not native ABI replacements and no game validation occurred.",
+    "Native slow-path construction/registration/manager shutdown was not executed; verified static evidence plus real host manager checks only.",
+    "Native SEH unwind, returning-null allocation, allocator failure, concurrent guard races, wraparound and alternate-target first initialization were not fixture-executed.",
+    "Full process startup/exit order and every other type descriptor family remain integration scope; all consumers must share supplied actualcounter andmanager.",
+    "Name words preserve native address identity and must not be dereferenced as host strings."
+  ]
+}
