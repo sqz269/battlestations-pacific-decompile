@@ -178,6 +178,11 @@ def build_index(args):
                     rows[a][5] = s['segment']
     db.executemany('INSERT INTO functions VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', rows.values())
     callgraph = EXPORTS / 'callgraph.json'
+    if not callgraph.exists() or callgraph.stat().st_mtime < functions_path.stat().st_mtime:
+        # Without the sweep, lookup/callers/callees are silently empty; it takes about two seconds.
+        print('call graph missing or older than the snapshot: running tools/callgraph_sweep.py')
+        subprocess.run([sys.executable, str(ROOT / 'tools/callgraph_sweep.py'), '--output', str(EXPORTS)],
+                       cwd=ROOT, capture_output=True, text=True)
     if callgraph.exists():
         edges = [(int(k, 16), int(v, 16)) for k, vs in json.loads(callgraph.read_text()).items() for v in vs]
         db.executemany('INSERT INTO calls VALUES (?,?)', edges)
@@ -275,6 +280,39 @@ def lookup(args):
         print(f"docs ({len(docs)}): " + '; '.join(f"{d['path']} ({d['title'][:50]})" for d in docs[:args.limit]))
 
 
+def mark_asm_gaps(text):
+    """Insert a marker where consecutive listing addresses skip bytes Ghidra never disassembled."""
+    rows = text.splitlines()
+    listed = [(i, int(m.group(1), 16)) for i, line in enumerate(rows) if (m := re.match(r'^([0-9a-f]{8}):', line))]
+    if len(listed) < 2:
+        return text
+    try:
+        import pefile
+        from capstone import CS_ARCH_X86, CS_MODE_32, Cs
+    except ImportError:
+        return text
+    config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
+    if not Path(config['binary']).exists():
+        return text
+    pe = pefile.PE(config['binary'], fast_load=True)
+    base = pe.OPTIONAL_HEADER.ImageBase
+    section = next((s for s in pe.sections if s.Name.rstrip(b'\0') == b'.text'), None)
+    if section is None:
+        return text
+    text_lo, code = base + section.VirtualAddress, section.get_data()
+    md = Cs(CS_ARCH_X86, CS_MODE_32)
+    inserts = []
+    for (_, a), (j, b) in zip(listed, listed[1:]):
+        chunk = code[a - text_lo:a - text_lo + 16]
+        ins = next(md.disasm_lite(chunk, a), None)
+        end = a + (ins[1] if ins else 1)
+        if b > end:
+            inserts.append((j, f'; [gap {end:08x}..{b - 1:08x}: {b - end} bytes not disassembled by Ghidra; check with bsp.py ghidra bytes {end:08x}]'))
+    for j, marker in reversed(inserts):
+        rows.insert(j, marker)
+    return '\n'.join(rows)
+
+
 def show(args):
     """Capped excerpt of the exported pseudocode (default) or assembly for one function."""
     a = int(args.address, 16)
@@ -293,6 +331,8 @@ def show(args):
     else:
         print(f'not exported; run: python tools/bsp.py ghidra export {h(a)}   (or --live for an unsaved view)')
         return
+    if args.asm:
+        text = mark_asm_gaps(text)
     cap(text, args.lines, args.start)
     if db and not args.asm and args.start == 0:
         callees = [r[0] for r in db.execute('SELECT callee FROM calls WHERE caller=? ORDER BY callee', (a,))]
@@ -706,7 +746,7 @@ def main():
     p = sub.add_parser('state'); p.add_argument('--limit', type=int, default=8); p.set_defaults(func=state)
     p = sub.add_parser('lookup'); p.add_argument('address'); p.add_argument('--limit', type=int, default=12); p.add_argument('--width', type=int, default=300); p.set_defaults(func=lookup)
     p = sub.add_parser('show'); p.add_argument('address'); p.add_argument('--asm', action='store_true'); p.add_argument('--live', action='store_true')
-    p.add_argument('--lines', type=int, default=80); p.add_argument('--start', type=int, default=0); p.set_defaults(func=show)
+    p.add_argument('--lines', '--limit', dest='lines', type=int, default=80); p.add_argument('--start', type=int, default=0); p.set_defaults(func=show)
     p = sub.add_parser('range'); p.add_argument('start'); p.add_argument('end'); p.add_argument('--only', help='name prefix filter, e.g. FUN_'); p.add_argument('--limit', type=int, default=40); p.set_defaults(func=range_query)
     p = sub.add_parser('callers'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callers'))
     p = sub.add_parser('callees'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callees'))
@@ -716,14 +756,14 @@ def main():
     p = sub.add_parser('snapshot'); p.add_argument('--force', action='store_true'); p.set_defaults(func=snapshot)
     p = sub.add_parser('ghidra', help='live, capped Ghidra queries through the loopback client'); gs = p.add_subparsers(dest='ghidra_command', required=True)
     gs.add_parser('count')
-    q = gs.add_parser('proto'); q.add_argument('address'); q.add_argument('--lines', type=int, default=20)
-    q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', type=int, default=40)
-    q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
+    q = gs.add_parser('proto'); q.add_argument('address'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20)
+    q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
+    q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--limit', type=int, default=25); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('bytes'); q.add_argument('address'); q.add_argument('--length', type=int, default=64)
     for name in ('decompile', 'disasm'):
-        q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--lines', type=int, default=80); q.add_argument('--start', type=int, default=0)
+        q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80); q.add_argument('--start', type=int, default=0)
         if name == 'decompile':
             q.add_argument('--force', action='store_true', help='flush Ghidra decompiler cache before reading')
     q = gs.add_parser('export'); q.add_argument('addresses', nargs='+'); q.add_argument('--force', action='store_true')

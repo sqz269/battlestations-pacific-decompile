@@ -50,14 +50,18 @@
   - Workers: size a packet to fill a whole turn, start it with `state` plus the packet, and wait for
     completion notices rather than polling `wait_agent`. Prefer a fresh thread with a short handoff
     over working near the context window limit.
-- Multi-harness coordination (see `docs/COORDINATION.md`): each separate harness agent works in its
-  own git worktree (`python tools/bsp.py worktree add <name>`, branch `agent/<name>`); the integrator
-  stays on `main` and merges. Before touching addresses or output files, claim a lease
-  (`python tools/bsp.py lease claim --packet <id> --from-packet`) and release it when done; pick work
+- Multi-harness coordination (see `docs/COORDINATION.md`; reading a named doc you are pointed to is
+  always fine, the rule above is against bulk reads): each separate harness agent works in its own
+  git worktree (`python tools/bsp.py worktree add <name>`, branch `agent/<name>`); the integrator
+  stays on `main` and merges. Before touching addresses or output files, claim a lease: from a packet
+  with `python tools/bsp.py lease claim --packet <id> --from-packet`, or ad hoc with
+  `--packet <name> --addresses <a> <b> --files <paths> [--ttl hours]`; release it when done; pick work
   from `python tools/bsp.py packets ready`. Ledger commands and `ghidra_annotate.py --apply` refuse
   addresses leased to another owner. Every Ghidra mutation goes through the write lock (taken by the
   annotate/tag tools, or `coordination.ghidra_lock` around any other write); never write to Ghidra
-  from inline scripts without it. Never `git add -A` in a shared checkout; stage only owned files.
+  from inline scripts without it. Never `git add -A` in a shared checkout; stage only owned files,
+  which include the ledger shards your `ledger add-*` calls created or changed (a new shard shows up
+  untracked). Write multi-line commit messages to a file and use `git commit -F <file>`.
   Exports are shared through `tools/workspace.py` (the main checkout's `exports/bsp`); never create
   a junction or symlink to them inside a worktree, and remove worktrees only with
   `python tools/bsp.py worktree remove <name>` (git's own remove/clean traverse reparse points).

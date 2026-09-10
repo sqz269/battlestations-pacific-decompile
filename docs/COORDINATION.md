@@ -39,6 +39,10 @@ python tools/bsp.py lease list | check <address> | release [--packet <id>] | loc
 
 - A claim is refused when it overlaps another owner's active lease (addresses, ranges or
   files). Claiming the same packet again extends your own lease.
+- Your owned files are the packet's output files plus any ledger shard your `ledger add-*`
+  calls touched; a brand-new shard appears untracked and must be staged by path. Write commit
+  messages to a file (`local/commit-msg.txt`) and commit with `-F`; the PowerShell tool has no
+  heredocs. Attribution trailers follow whatever the harness that makes the commit requires.
 - Leases expire (default 8 hours); expired leases do not block anyone. Release when done.
 - `bsp.py ledger add-name|add-function|add-fragment` and `ghidra_annotate.py --apply` refuse
   addresses leased to someone else (`--force` on the ledger commands for a deliberate override).
