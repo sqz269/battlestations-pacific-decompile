@@ -1,0 +1,1009 @@
+{
+  "packet": "directional_light_owner_dependencies",
+  "status": "read_only_discovery_complete",
+  "base_commit": "79e5cd8",
+  "date": "2026-09-10",
+  "owned_files": [
+    "docs/DIRECTIONAL_LIGHT_OWNER_NEXT.md",
+    "reports/directional_light_owner_next.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every live read through bsp.py ghidra verifies the configured project/program. Raw disassembly is disk-backed.",
+    "disk_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "state_boundary": "Ghidra memory is the analyzed PE image, not a running game; static zero-fill is pre-initializer state."
+  },
+  "scope": {
+    "primary_addresses": [
+      "00b7c4c0",
+      "00b7c6b0",
+      "00b7c5b0",
+      "00b7c820",
+      "00b7bd40",
+      "00b6f5a0",
+      "00b6f440",
+      "00b7b940",
+      "00b7bac0",
+      "00b7b2f0",
+      "00b7ac90",
+      "00b7b230",
+      "00b7c020",
+      "00b7bd60"
+    ],
+    "minimal_support_reads": [
+      "00b7ba20",
+      "00b7b610",
+      "00b7adb0",
+      "00403970",
+      "00402f70",
+      "004b46b0",
+      "00cd8080",
+      "00ce0eb0",
+      "00b6d850",
+      "00b6d890",
+      "00b6d940",
+      "00b6e680",
+      "00b721f0",
+      "00b72220",
+      "00b7c580",
+      "00b7c6d0",
+      "00b6f570",
+      "00cd80a0",
+      "00cd80f0"
+    ],
+    "why_support_is_required": {
+      "00b7ba20": "Actual registered pool virtual0 compacts slabtable and rewrites movedslotIDs.",
+      "00b7b610": "Actual register-to-stack returnslot adapter references01090154.",
+      "00403970,00402f70,00b7adb0": "Exact three poolconstructor unwind actions.",
+      "004b46b0,00cd8080,00ce0eb0": "Sharedallocator traversal and actual static construction/finalization path.",
+      "00b6d850,00b6d890,00b6d940,00b6e680,00b721f0,00b72220": "Finite new-parent-null branch needed by actual node destructor, including existingunlink.",
+      "00b7c580,00b7c6d0,00b6f570,00cd80a0,00cd80f0": "Type predicate and destructorphase/runtimebootstrap correctness."
+    }
+  },
+  "pool": {
+    "static_owner": "01090154",
+    "native_owner_bytes": 56,
+    "constructor": "00b7b940",
+    "allocate": "00b7bac0",
+    "return_slot": "00b7b2f0",
+    "destroy": "00b7b230",
+    "trim_virtual0": "00b7ba20",
+    "allocate_adapter": "00b7bd40",
+    "return_ecx_adapter": "00b7b610",
+    "static_initialize": "00cd8080",
+    "atexit_callback": "00ce0eb0",
+    "global_trim": "004b46b0",
+    "shared_allocator_list_head": "00e188b4",
+    "allocator_base_vtable": "00d7a0c0",
+    "pool_vtable": "00d62f00",
+    "fields": {
+      "00": "nativevtable",
+      "04": "previous allocator element",
+      "08": "next allocator element",
+      "0c": "actualWin32CRITICAL_SECTION (24bytes)",
+      "24": "explicit signedrecursion",
+      "28": "slabpointertable",
+      "2c": "unsignedslabcount",
+      "30": "unsignedtablecapacity",
+      "34": "firstfreeslab orFFFFFFFF"
+    },
+    "initial_table_capacity": 32,
+    "initial_table_bytes": 128,
+    "table_growth": "2*capacity+2; capacitypublished beforeallocation",
+    "slab_bytes": 15940,
+    "slot_count": 32,
+    "slot_stride": 496,
+    "slot_slab_index_offset": 492,
+    "slab_free_indices_offset": 15872,
+    "slab_free_count_offset": 15936,
+    "slab_untouched_tail": [
+      15938,
+      15940
+    ],
+    "slab_constructor": "00b7ac90 writes only 32slabIDs atslot+1EC, 16bitfreeindices31..0, 16bitcount32.",
+    "initial_allocation_order": "slot0..31; subsequentreuse comesfromactualfree-indexstack",
+    "return_behavior": "Loadactualslot+1EC; signedexactdivide(slot-slab,496); append16bitindex atfreecount; freecount++; firstfree=minunsigned(current,slabindex); noimmediatetrim.",
+    "trim_behavior": "No internallock. Free slabswhose16bitfreecount==32; swaplasttableentry intohole; decrementcount; rewriteall32movedslot+1EC IDs; retryreplacement; recomputefirstnonfullslab.",
+    "destruction_behavior": "Freeeveryslabwithoutobjectvirtualdestructors, freetable, drainexplicitrecursion, DeleteCriticalSection, installbasevt/unlinkactualsharedallocatorlist.",
+    "allocation_failure_behavior": "B7BAC0 has no EH cleanup: criticalsection/recursion and publishedindex/capacity are not automaticallyrolledback onallocationthrow.",
+    "constructor_unwind": {
+      "descriptor": "00dfaf64",
+      "map": "00dfaf4c",
+      "states": [
+        "0:00403970 allocatorunlink",
+        "1:00402f70 criticalsectioncleanup",
+        "2:00b7adb0 tablefree"
+      ],
+      "handler": "00cc1e9e"
+    },
+    "required_storage_contract": "Useactualraw3E44slabs; enlargedC++ companions mustbeexternal; preserveactualslotpreimages andlive1ECid acrossreuse/compaction; reuseexistingrawallocator/freeboundary."
+  },
+  "native_node_constructor": {
+    "address": "00b6f5a0",
+    "native_base_extent": 372,
+    "initial_references": 1,
+    "vtable": "00d62c88",
+    "pooled_name": [
+      "54",
+      "58"
+    ],
+    "writes": {
+      "00": "baseCEB130 thennodeD62C88",
+      "04": "1",
+      "30,34,38,3c,40": "0",
+      "44": "byte0 (onlyonebyte)",
+      "48": "0 thenFFFFF",
+      "4c": "3F800000",
+      "50": "501502F9",
+      "54,58": "zero thenNativeStringcopy usingexistingpool",
+      "5c": "0",
+      "a0,a4,a8": "0",
+      "ac": "3F800000",
+      "b0,f0,60": "identity4x4 inthisorder through004134F0",
+      "130": "nullretainedowner",
+      "134": "byte1 (onlyonebyte)",
+      "138": "40",
+      "13c,140,144": "0",
+      "148": "501502F9",
+      "14c,150,154": "D01502F9",
+      "158,15c,160": "501502F9",
+      "164,168,16c": "null/0/0 borrowedpointlightarray",
+      "170": "nullgenericSceneResource"
+    },
+    "untouched_ranges_exclusive": [
+      [
+        "08",
+        "30"
+      ],
+      [
+        "45",
+        "48"
+      ],
+      [
+        "135",
+        "138"
+      ]
+    ],
+    "existing_reuse": [
+      "NativeString and existingSizedStoragePool",
+      "004134F0 x87matrixcopy",
+      "sameCameraTransform andSceneNodeAttachment"
+    ],
+    "constructor_does_not_establish": "arbitraryterminaldestruction, nativepoolownership, actualtypebootstrap, downstreamlightfielddefaults"
+  },
+  "light_construction": {
+    "base": "00b7c4c0",
+    "directional": "00b7c6b0",
+    "base_vtable": "00d62f58",
+    "directional_vtable": "00d62fb0",
+    "initialized": {
+      "174": "nullshadow",
+      "178,17c,180": "emptyretainedscenearray",
+      "184..193": "effective diffuse(1,1,1,1)",
+      "1a4..1b3": "base diffuse(1,1,1,1)",
+      "1c4..1d3": "base specular(0,0,0,1)",
+      "1d4": "42800000=64",
+      "1d8": "3F800000=1"
+    },
+    "untouched_ranges_exclusive": [
+      [
+        "194",
+        "1a4"
+      ],
+      [
+        "1b4",
+        "1c4"
+      ],
+      [
+        "1dc",
+        "1ec"
+      ]
+    ],
+    "pool_id_preserved_exclusive": [
+      "1ec",
+      "1f0"
+    ],
+    "directional_constructor_additional_write": "vtableonly; nodirectionvectorinitialization"
+  },
+  "light_scene_ownership": {
+    "attach_virtual50": "00b7c020",
+    "detach_virtual54": "00b7bd60",
+    "array_offset": "178",
+    "generic_node_scene_offset": "170",
+    "attach_order": "Searchidentity; ifabsent appendrawscene, B83D50 actualtypepredicate/registryinsert, retain scene+4; ifrecurse actualchildvirtual50; reloadnextsibling.",
+    "duplicate_attach": "Noappend/retain butstillrecurseswhenrequested.",
+    "null_attach": "No nullguard onabsent-scene append/retain path; donotsilentlyignore.",
+    "detach_order": "Ifmember erasefirst/swaplast BEFOREB83EC0; release requestedscene; thenactualchildvirtual54 whenrecurse, includingnotfound; reloadnextsibling.",
+    "do_not_substitute": "Generic00B6ED80 doesnotmodelthisseparatemultiple-retained-scenes array."
+  },
+  "destruction": {
+    "native_order": [
+      "B7C820 directionalvt",
+      "B7C5B0 lightvt",
+      "drainretainedscenesfromback withcallbackreloads",
+      "release/clearshadow174",
+      "resize/freeretainedscenearray",
+      "B6F440 nodevt/basebody",
+      "poolreturnifflags&1"
+    ],
+    "scene_drain_reloads": "AfterB83EC0, re-read17C/178 andlastscene BEFORErelease; aftervirtualzero re-readcount beforeconditionalcount--.",
+    "true_light_body_end_exclusive": "00b7c6aa",
+    "saved_ghidra_body_end_inclusive": "00b7c685",
+    "base_phase_dispatch": {
+      "node_type_predicate": "00b6f570",
+      "node_virtual50": "00b6ed80",
+      "node_virtual54": "00b6ee10",
+      "node_virtual40": "00b6dbe0"
+    },
+    "phase_constraint": "C++directionaltypecannotkeepdirectional/lightcallbacksactiveduringnativeNodephase; currentnativevtableisbehavioral.",
+    "nonnull_shadow_dependency": "SystemShadowMapOwner isborrowedrenderingviewwithoutactualrefcount/freeownership. Requireactualretainedshadowowner andvirtualzero; nofakecallback."
+  },
+  "existing_source_coverage": [
+    {
+      "address": "00b6f440",
+      "file": "src/generated_model_lifetime.cpp",
+      "symbol": "destroy_generated_model_after_release_00b750c0",
+      "status": "Only post00B6F310 generated-model path; checksreleasedbyte44 andparent/root/childclear, terminatesotherwise; notgeneralnodebase destructor."
+    },
+    {
+      "address": "00b6e680",
+      "status": "Ledgernameonly plus equal-parentearlyreturnevidence; generalreparentnotimplemented."
+    },
+    {
+      "address": "00b6ee10",
+      "file": "src/generated_model_lifetime.cpp",
+      "status": "Genericsceneidentitydetach andactualchildvirtual54 implemented overGeneratedModelNodeLifetime."
+    },
+    {
+      "address": "00b6f310",
+      "file": "src/generated_model_lifetime.cpp",
+      "status": "GeneratedModelLifetime-specificrelease; childdispatchassociationsreusable, notaconcretedirectionallifetime."
+    },
+    {
+      "address": "00b72220",
+      "file": "src/render_command_queue.cpp",
+      "status": "Rootunlinkimplemented; currentRenderNodeRootList onlyfirst pointer, lacksactualouterlightingslotbinding."
+    },
+    {
+      "address": "00b8f4c0",
+      "file": "src/generated_model_lifetime.cpp",
+      "status": "Actualattachedowner borrowed-model backlink removalimplemented."
+    },
+    {
+      "address": "00b6dbe0",
+      "file": "src/camera_transform.cpp",
+      "status": "Auxiliaryflagsandactualattachednotificationimplemented; reusesameCameraTransform."
+    },
+    {
+      "address": "00cd80a0,00cd80f0",
+      "status": "Analyzed andnamed; productiontypebootstrapnotimplemented; supplyactualruntimetokens, notaddresses/zeroimagewords."
+    },
+    {
+      "address": "00e188b4",
+      "status": "No concrete sharedallocator-listdomain found in currentinclude/src; donotreuseunrelatedsingletonlifetime registry."
+    },
+    {
+      "address": "00bd1480,00bd0f50",
+      "file": "src/storage_pool.cpp",
+      "status": "Extra targeted support read: nativeSizedStoragePool constructors initialize ownrings/criticalsection, noE188B4 allocator-listregistration. Reuse fornames; donotaddinventedMitlistmembership. These two support reads are not countedamong33hashedfunctionspans."
+    }
+  ],
+  "minimal_direct_base_destructor_followup": {
+    "primary_addresses": [
+      "00b6f440",
+      "00b6e680"
+    ],
+    "necessary_new_leaf_addresses": [
+      "00b6d940",
+      "00b6d850",
+      "00b6d890",
+      "00b721f0"
+    ],
+    "reuse": [
+      "00b72220 rootunlink",
+      "00b8f4c0 attachmentremove",
+      "00b6da30 invalidation",
+      "00b6dbe0 nodevirtual40",
+      "00b6ee10 genericremoveScene",
+      "00b6ec70 pointlightarrayresize",
+      "nativepooledname/refcount"
+    ],
+    "scope": "Onlynewparentnull branchofB6E680 requiredbydestructor; fullnonnullparentB6E010 branch remainsseparate.",
+    "root_registration_dependency": "BindexistingRenderNodeRootList tosameactualouterSceneResource slot forB6D890 ->B72110 ->actualvirtual50. Fullouterweakhandleconstructorisnotrequiredforthissuppliedownerbinding.",
+    "callback_constraint": "Actualchildvirtual50/54 andowner130virtualzero canreenter; reloadnativelivefields, dispatchcurrentvtablephase, neverterminatemerelybecausegenerichierarchywasnotprecleared."
+  },
+  "recommended_three_worker_wave": [
+    {
+      "id": "directional_pool_storage",
+      "readiness": "independentimplementationready",
+      "output_files": [
+        "include/bsp/directional_light_pool.hpp",
+        "src/directional_light_pool.cpp",
+        "docs/DIRECTIONAL_LIGHT_POOL.md",
+        "reports/directional_light_pool_audit.json"
+      ],
+      "owned_addresses": [
+        "00b7b940",
+        "00b7bac0",
+        "00b7b2f0",
+        "00b7ac90",
+        "00b7b230",
+        "00b7ba20",
+        "00b7bd40",
+        "00b7b610",
+        "00403970",
+        "00402f70",
+        "00b7adb0",
+        "00cd8080",
+        "00ce0eb0",
+        "004b46b0"
+      ],
+      "suggested_api": "DirectionalLightPool overoneactualAllocatorListElement*& head; allocate_raw_slot, return_raw_slot, trim_empty_slabs, explicitstartup/shutdown; actualstaticpoolbindingandCRTatexitregistration.",
+      "must_preserve": [
+        "rawslotpreimage",
+        "live1ECid afterswapcompaction",
+        "sameglobalallocatorlist",
+        "nativeallocationfailurelock/publicationsemantics"
+      ],
+      "named_but_incomplete_dependencies": [
+        "globalstaticinitializer/atexit routing must bindcurrentstartup path",
+        "otherallocatorlist elements requireactualvirtual0 dispatch; do notinventprivatehead"
+      ]
+    },
+    {
+      "id": "native_node_construction",
+      "readiness": "independentimplementationready_after_primary_freezes_rawslot_binding_contract",
+      "output_files": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp",
+        "docs/NATIVE_NODE_CONSTRUCTION.md",
+        "reports/native_node_construction_audit.json"
+      ],
+      "owned_addresses": [
+        "00b6f5a0"
+      ],
+      "suggested_api": "Constructsuppliedactualslot-backednodeprojection usingexistingNativeString pool andsameCameraTransform/SceneNodeAttachment; exactwrite/preimagemap; no terminalfactoryclaim.",
+      "must_preserve": [
+        "actualraw08..2F andpaddingpreimages",
+        "threeidentitymatrixwriteorder",
+        "canonicalsharedtransform/attachment",
+        "unmodifiedpool1ECmetadata"
+      ],
+      "named_but_incomplete_dependencies": [
+        "directbase destructorclosure remains separate",
+        "genericnativepointlightarray exactallocator projection remains sharedintegration work"
+      ]
+    },
+    {
+      "id": "light_scene_retention",
+      "readiness": "independentimplementationready_after_primary_freezes_rawslot_binding_and_childdispatch_contract",
+      "output_files": [
+        "include/bsp/light_scene_retention.hpp",
+        "src/light_scene_retention.cpp",
+        "docs/LIGHT_SCENE_RETENTION.md",
+        "reports/light_scene_retention_audit.json"
+      ],
+      "owned_addresses": [
+        "00b7c020",
+        "00b7bd60"
+      ],
+      "suggested_api": "LightSceneRetention operatesonactualretained-scene178/17C/180 storage andsameSceneNodeAttachment; reuseexistingreserve/erase helpers andscene registry; requiredactualchild50/54 dispatch.",
+      "must_preserve": [
+        "append/register/retain ordering",
+        "erase/unregister/release ordering",
+        "duplicate/notfound recursion",
+        "currentnativevtablephase",
+        "no generic170 substitute"
+      ],
+      "named_but_incomplete_dependencies": [
+        "actualruntime light/node type-token references or completedtypebootstrap",
+        "owninglightfactory/base/shadow lifecycle remains separate"
+      ]
+    }
+  ],
+  "primary_integration_contract": [
+    "One actualnativepoolslotidentity andexternalhostcompanions; typedinterfacesarenotnativebinaryoverlays.",
+    "One canonicalexistingCameraTransform, SceneNodeAttachment, SceneResource and registry order; no mirroredlightlist.",
+    "Actualuntouchedlightword fields remainbackedby samepoolslot bytes throughreuse; native1ECpoolid remainsauthoritative.",
+    "Freeze retainedscene array owner andactualchildvirtual50/54 resolver beforeworkerswrite; no duplicatedarray state.",
+    "Explicitcurrentnativevtablephase controlsactualtype/scenevirtualdispatch duringdestruction.",
+    "Sharedheaders/metadata, CMake, names andledgerintegration remainprimary-owned; thesegraphpackets donotproveclosure."
+  ],
+  "remaining_named_packets": [
+    {
+      "id": "native_node_direct_destructor",
+      "depends_on": [
+        "same node/rawslotbinding contract",
+        "minimal_direct_base_destructor_followup"
+      ]
+    },
+    {
+      "id": "light_type_bootstrap",
+      "addresses": [
+        "00cd80a0",
+        "00cd80f0",
+        "00b7c580",
+        "00b7c6d0",
+        "00b6f570"
+      ],
+      "named_dependencies": [
+        "00b6f110 node typeinit",
+        "006fac20 sharedmonotonic typecounter owner",
+        "actualprocessguards andtypearrays"
+      ]
+    },
+    {
+      "id": "directional_light_native_owner",
+      "addresses": [
+        "00b7c4c0",
+        "00b7c6b0",
+        "00b7c5b0",
+        "00b7c820"
+      ],
+      "depends_on": [
+        "directional_pool_storage",
+        "native_node_construction",
+        "native_node_direct_destructor",
+        "light_scene_retention",
+        "actualtype tokens",
+        "nonnullshadowownerlifecycle"
+      ],
+      "do_not_claim": "Fullownerfactory remainsincompleteuntilactualbase/shadow policiesareconcrete; preservealluntouchedfields."
+    },
+    {
+      "id": "lighting_configuration_apply",
+      "status": "Previously discovered separatepacket; notimplemented/readdeeperhere."
+    },
+    {
+      "id": "scene_outer_weak_handle_base",
+      "status": "Previously discovered separatepacket; suppliedexistingouter-slot bindingdoesnotconstructweakhandlebase."
+    }
+  ],
+  "function_evidence": [
+    {
+      "address": "00b7c4c0",
+      "end_exclusive": "00b7c576",
+      "length": 182,
+      "role": "light base constructor",
+      "native_abi": "ECX owner; stack NativeString*; EAX owner; RET4",
+      "ghidra_body_end_inclusive": "00b7c575",
+      "live_sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a",
+      "disk_sha256": "ea6150b05199ac42ccfab4cf4ae4e09250a122a06bcc631bbdf321e1130f8c7a",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7c6b0",
+      "end_exclusive": "00b7c6c9",
+      "length": 25,
+      "role": "directional constructor",
+      "native_abi": "ECX owner; stack NativeString*; EAX owner; RET4",
+      "ghidra_body_end_inclusive": "00b7c6c8",
+      "live_sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0",
+      "disk_sha256": "1f6aadd4917fbbe58d0198c0abea8753fb36a00f32273bc3865830c6ea2e95c0",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7c5b0",
+      "end_exclusive": "00b7c6aa",
+      "length": 250,
+      "role": "light destructor",
+      "native_abi": "ECX owner; RET0; post-free continuation beyond Ghidra end00B7C685",
+      "ghidra_body_end_inclusive": "00b7c685",
+      "live_sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+      "disk_sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7c820",
+      "end_exclusive": "00b7c846",
+      "length": 38,
+      "role": "directional scalar destructor",
+      "native_abi": "ECX owner; stackflags; EAX originalowner; RET4; returnslot ifflags&1",
+      "ghidra_body_end_inclusive": "00b7c845",
+      "live_sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+      "disk_sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7bd40",
+      "end_exclusive": "00b7bd4a",
+      "length": 10,
+      "role": "directional pool allocation stub",
+      "native_abi": "No inputs; replaceECX with01090154 then tailB7BAC0; EAXrawslot; RET0",
+      "ghidra_body_end_inclusive": "00b7bd49",
+      "live_sha256": "bbf940b60cf4e1d5a8b8bd5d9376ea8ed89d75f0026bc8460458067352aceefe",
+      "disk_sha256": "bbf940b60cf4e1d5a8b8bd5d9376ea8ed89d75f0026bc8460458067352aceefe",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6f5a0",
+      "end_exclusive": "00b6f8ce",
+      "length": 814,
+      "role": "native node constructor",
+      "native_abi": "ECX owner; stack NativeString*; EAXowner; RET4",
+      "ghidra_body_end_inclusive": "00b6f8cd",
+      "live_sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "disk_sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6f440",
+      "end_exclusive": "00b6f569",
+      "length": 297,
+      "role": "native node destructor",
+      "native_abi": "ECX owner; RET0; existingtypedimplementation limitedto postvirtual18 path",
+      "ghidra_body_end_inclusive": "00b6f568",
+      "live_sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "disk_sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7b940",
+      "end_exclusive": "00b7ba13",
+      "length": 211,
+      "role": "directional pool constructor",
+      "native_abi": "ECX staticpool; EAXpool; RET0",
+      "ghidra_body_end_inclusive": "00b7ba12",
+      "live_sha256": "eee427476942bfe5586d59b5bb746de3291db7b13f70bc4df167ee4df47af6cb",
+      "disk_sha256": "eee427476942bfe5586d59b5bb746de3291db7b13f70bc4df167ee4df47af6cb",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7bac0",
+      "end_exclusive": "00b7bbfc",
+      "length": 316,
+      "role": "directional slot allocation",
+      "native_abi": "ECXpool; EAXrawslot; RET0; criticalsection with no EH cleanup",
+      "ghidra_body_end_inclusive": "00b7bbfb",
+      "live_sha256": "5d8dcba00c7e0a86dffa49c713defd47442b5d448685aff2e64960eb3aed43aa",
+      "disk_sha256": "5d8dcba00c7e0a86dffa49c713defd47442b5d448685aff2e64960eb3aed43aa",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7b2f0",
+      "end_exclusive": "00b7b35c",
+      "length": 108,
+      "role": "directional slot return",
+      "native_abi": "ECXpool; stackslot; RET4",
+      "ghidra_body_end_inclusive": "00b7b35b",
+      "live_sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "disk_sha256": "129d8adab53e052e1b2f2c7650c588f34e91affadc46d8af30c8a3e83d0afafe",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7ac90",
+      "end_exclusive": "00b7acd3",
+      "length": 67,
+      "role": "directional slab constructor",
+      "native_abi": "ECX rawslab; stackslabindex; EAXslab; RET4",
+      "ghidra_body_end_inclusive": "00b7acd2",
+      "live_sha256": "30eab734223d239ce1e431151f09e8d835d69da6163a0ac1d17e58e222127fbb",
+      "disk_sha256": "30eab734223d239ce1e431151f09e8d835d69da6163a0ac1d17e58e222127fbb",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7b230",
+      "end_exclusive": "00b7b2ba",
+      "length": 138,
+      "role": "directional pool destructor",
+      "native_abi": "ECXpool; RET0; free continuations missingfromolddecomp",
+      "ghidra_body_end_inclusive": "00b7b2b9",
+      "live_sha256": "96ac570a811c68853d20e8044d7f872c632b33356ebbff743276111b75761a4d",
+      "disk_sha256": "96ac570a811c68853d20e8044d7f872c632b33356ebbff743276111b75761a4d",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7c020",
+      "end_exclusive": "00b7c0bf",
+      "length": 159,
+      "role": "light virtual50 scene attach",
+      "native_abi": "ECXlight; stackscene,recursebyte; RET8",
+      "ghidra_body_end_inclusive": "00b7c0be",
+      "live_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "disk_sha256": "bd74ff5d5457e4487993488795ddb1cacb0d7516859baea7a9b09f9a493248bf",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7bd60",
+      "end_exclusive": "00b7bdea",
+      "length": 138,
+      "role": "light virtual54 scene detach",
+      "native_abi": "ECXlight; stackscene,recursebyte; RET8; no Ghidra function",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+      "disk_sha256": "4db41fe4266a92adf81041819262674bdbfaaf37fb2b11e9b599e4df31d51ec9",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7ba20",
+      "end_exclusive": "00b7bac0",
+      "length": 160,
+      "role": "pool virtual0 trim empty slabs",
+      "native_abi": "ECXpool; RET0; no internal lock",
+      "ghidra_body_end_inclusive": "00b7babf",
+      "live_sha256": "c6f0c705ea2bfa03c426bdc4e4566df974ca84239bf3c062591a4df02945e118",
+      "disk_sha256": "c6f0c705ea2bfa03c426bdc4e4566df974ca84239bf3c062591a4df02945e118",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7b610",
+      "end_exclusive": "00b7b61c",
+      "length": 12,
+      "role": "slot-return register adapter",
+      "native_abi": "ECXslot; pushECX then use01090154 forB7B2F0; RET0",
+      "ghidra_body_end_inclusive": "00b7b61b",
+      "live_sha256": "4cb0face09b2303ed8d44f6ecef01397470c7c81f2ae966ee8e9193087552880",
+      "disk_sha256": "4cb0face09b2303ed8d44f6ecef01397470c7c81f2ae966ee8e9193087552880",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7adb0",
+      "end_exclusive": "00b7adbe",
+      "length": 14,
+      "role": "pool pointer-array unwind free",
+      "native_abi": "ECXarray; RET0; freebeginifnonnull; no fieldclear",
+      "ghidra_body_end_inclusive": "00b7adbd",
+      "live_sha256": "6e92ec75f09e868f162b1bca5911f9a6d68e5d05f0559ed9ce2a3151212ede58",
+      "disk_sha256": "6e92ec75f09e868f162b1bca5911f9a6d68e5d05f0559ed9ce2a3151212ede58",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "role": "allocator-list base unlink",
+      "native_abi": "ECXelement; RET0; installD7A0C0 and relinksharedE188B4",
+      "ghidra_body_end_inclusive": "0040399a",
+      "live_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "disk_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "role": "critical-section unwind destroy",
+      "native_abi": "ECXsection; RET0; drainexplicit+18recursion thenDeleteCriticalSection",
+      "ghidra_body_end_inclusive": "00402f96",
+      "live_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "disk_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "role": "global allocator-list trim traversal",
+      "native_abi": "Noargs; RET0; actualelementvirtual0 and freshnext+8",
+      "ghidra_body_end_inclusive": "004b46d0",
+      "live_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "disk_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00cd8080",
+      "end_exclusive": "00cd8096",
+      "length": 22,
+      "role": "static directional pool initialize",
+      "native_abi": "Noargs; RET0; construct01090154 thenatexit(CE0EB0)",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "881f692c688407f960736bddab4dac72580e1bea1b5f830c742537d694c2d6f9",
+      "disk_sha256": "881f692c688407f960736bddab4dac72580e1bea1b5f830c742537d694c2d6f9",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00ce0eb0",
+      "end_exclusive": "00ce0eba",
+      "length": 10,
+      "role": "static directional pool finalize",
+      "native_abi": "Noargs; replaceECX01090154 then tailB7B230",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "86e55e32bbe10cadb46859ee747df07977704385f51fcd8a36b08951e64d8deb",
+      "disk_sha256": "86e55e32bbe10cadb46859ee747df07977704385f51fcd8a36b08951e64d8deb",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6d850",
+      "end_exclusive": "00b6d884",
+      "length": 52,
+      "role": "recursive attachment clear",
+      "native_abi": "ECXnode; RET0; actualA0 unregister and recursivechildren",
+      "ghidra_body_end_inclusive": "00b6d883",
+      "live_sha256": "f715c86f58ee6289ae4a82219f126c95bbe02839efeee19cf402a60d42856fbd",
+      "disk_sha256": "f715c86f58ee6289ae4a82219f126c95bbe02839efeee19cf402a60d42856fbd",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6d890",
+      "end_exclusive": "00b6d934",
+      "length": 164,
+      "role": "root registration propagation",
+      "native_abi": "ECXnode; stackrootowner; RET4; invokesactualnodevirtual50",
+      "ghidra_body_end_inclusive": "00b6d933",
+      "live_sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+      "disk_sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6d940",
+      "end_exclusive": "00b6d980",
+      "length": 64,
+      "role": "parent child-list removal",
+      "native_abi": "ECXparent; stackchild; RET4; conditionalpointeridentity",
+      "ghidra_body_end_inclusive": "00b6d97f",
+      "live_sha256": "b0335543971c1fb9de1b9f4c48f5b028e3befb783c28a44bf38e070df6e2942e",
+      "disk_sha256": "b0335543971c1fb9de1b9f4c48f5b028e3befb783c28a44bf38e070df6e2942e",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6e680",
+      "end_exclusive": "00b6e74c",
+      "length": 204,
+      "role": "set-parent dependency; null-request branch required",
+      "native_abi": "ECXnode; stackparent; RET4; only newparentnull neededforbase destructor",
+      "ghidra_body_end_inclusive": "00b6e74b",
+      "live_sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "disk_sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b721f0",
+      "end_exclusive": "00b72211",
+      "length": 33,
+      "role": "root-list prepend",
+      "native_abi": "ECXrootowner; stacknode; RET4; borrowedlinksonly",
+      "ghidra_body_end_inclusive": "00b72210",
+      "live_sha256": "374ac88ecab9457eda32abc61b2b72dbd6e113b85e9e7bd2273a55f3936352c7",
+      "disk_sha256": "374ac88ecab9457eda32abc61b2b72dbd6e113b85e9e7bd2273a55f3936352c7",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b72220",
+      "end_exclusive": "00b7224c",
+      "length": 44,
+      "role": "existing root-list unlink",
+      "native_abi": "ECXrootowner; stacknode; RET4; existingtypedfragment",
+      "ghidra_body_end_inclusive": "00b7224b",
+      "live_sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+      "disk_sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7c580",
+      "end_exclusive": "00b7c5a8",
+      "length": 40,
+      "role": "light type predicate",
+      "native_abi": "Stacktoken; ALbool; RET4; compares3words0109018C..194",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "82bbc576e0c79236d102b11f29891d5361ffb294f6312b2319b1078d6b74981f",
+      "disk_sha256": "82bbc576e0c79236d102b11f29891d5361ffb294f6312b2319b1078d6b74981f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b7c6d0",
+      "end_exclusive": "00b7c6f8",
+      "length": 40,
+      "role": "directional type predicate",
+      "native_abi": "Stacktoken; ALbool; RET4; compares4words0109019C..1A8",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "28ca340870395abd5eafe823ef7c4f4ac5762b214a78f3372178a1ad91ac1ce0",
+      "disk_sha256": "28ca340870395abd5eafe823ef7c4f4ac5762b214a78f3372178a1ad91ac1ce0",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00b6f570",
+      "end_exclusive": "00b6f598",
+      "length": 40,
+      "role": "base node type predicate",
+      "native_abi": "Stacktoken; ALbool; RET4; compares2words0108FF90..94",
+      "ghidra_body_end_inclusive": null,
+      "live_sha256": "7095e2c04cee72abb7739aec21df6c82bacd74068312a2bfd8d75c44fae68376",
+      "disk_sha256": "7095e2c04cee72abb7739aec21df6c82bacd74068312a2bfd8d75c44fae68376",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00cd80a0",
+      "end_exclusive": "00cd80ef",
+      "length": 79,
+      "role": "light type static initializer",
+      "native_abi": "Noargs; RET0; analyzed but productionbootstrapnotimplemented",
+      "ghidra_body_end_inclusive": "00cd80ee",
+      "live_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "disk_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00cd80f0",
+      "end_exclusive": "00cd8191",
+      "length": 161,
+      "role": "directional type static initializer",
+      "native_abi": "Noargs; RET0; analyzed but productionbootstrapnotimplemented",
+      "ghidra_body_end_inclusive": "00cd8190",
+      "live_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "disk_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d62fb0",
+      "length": 88,
+      "role": "directional vtable throughvirtual54",
+      "live_sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "disk_sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00d62f58",
+      "length": 88,
+      "role": "light vtable throughvirtual54",
+      "live_sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+      "disk_sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00d62c88",
+      "length": 88,
+      "role": "base node vtable throughvirtual54",
+      "live_sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "disk_sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00d62f00",
+      "length": 4,
+      "role": "pool virtual0 pointsB7BA20",
+      "live_sha256": "c5b9f6e397bc701a7b5384930e688fbe029c98ac5cfad0c49fe9dcb06fc90ecc",
+      "disk_sha256": "c5b9f6e397bc701a7b5384930e688fbe029c98ac5cfad0c49fe9dcb06fc90ecc",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "role": "saved-image allocator-list head; not running-game state",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true,
+      "disk_comparison": "PE section zero-fill"
+    },
+    {
+      "address": "01090154",
+      "length": 56,
+      "role": "saved-image staticpoolstorage; zero initial bytes beforeCRTinitializer",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk": true,
+      "disk_comparison": "PE section zero-fill"
+    },
+    {
+      "address": "0109018c",
+      "length": 36,
+      "role": "saved-image type slots; zero initial bytes notruntimeIDs",
+      "live_sha256": "6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e",
+      "disk_sha256": "6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e",
+      "live_matches_disk": true,
+      "disk_comparison": "PE section zero-fill"
+    },
+    {
+      "address": "00ce4970",
+      "length": 4,
+      "role": "raw positive bounds sentinel501502F9",
+      "live_sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "disk_sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00ce4adc",
+      "length": 4,
+      "role": "raw negative bounds sentinelD01502F9",
+      "live_sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "disk_sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00ce7820",
+      "length": 4,
+      "role": "64.0 raw42800000",
+      "live_sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537",
+      "disk_sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "role": "1.0 raw3F800000",
+      "live_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "disk_sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00cc1e80",
+      "length": 40,
+      "role": "poolconstructorEHactionsandhandler",
+      "live_sha256": "80ecb843850511bb9adf63bd4e5d2851dfff2a54ded10eba1cd1b3b5eeee1d47",
+      "disk_sha256": "80ecb843850511bb9adf63bd4e5d2851dfff2a54ded10eba1cd1b3b5eeee1d47",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00dfaf4c",
+      "length": 24,
+      "role": "poolconstructor3stateunwindmap",
+      "live_sha256": "29ff4b2ca61cbe72c0fb648cb3d9b34aef97e30bfb6240d36a74933aed85282a",
+      "disk_sha256": "29ff4b2ca61cbe72c0fb648cb3d9b34aef97e30bfb6240d36a74933aed85282a",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    },
+    {
+      "address": "00dfaf64",
+      "length": 36,
+      "role": "poolconstructorEHdescriptor",
+      "live_sha256": "6c580c8ac81c67c688a28ec0a5e9e15cd84aea4d61f55fff4da077bc959bb0ee",
+      "disk_sha256": "6c580c8ac81c67c688a28ec0a5e9e15cd84aea4d61f55fff4da077bc959bb0ee",
+      "live_matches_disk": true,
+      "disk_comparison": "disk-backed section bytes"
+    }
+  ],
+  "byte_audit": {
+    "function_spans": 33,
+    "data_spans": 14,
+    "total_bytes": 4487,
+    "all_match_disk_or_PE_zero_fill": true,
+    "method": "Verifiedbsp.py ghidra bytes; SHA256 comparedtoinstalledPE rawsectionbytes or explicitlyrecordedvirtualzero-fill."
+  },
+  "validation": {
+    "tests_added": 0,
+    "tests_run": false,
+    "source_written": false,
+    "ghidra_mutated": false,
+    "ledgers_written": false,
+    "installed_game_written": false,
+    "native_execution_proven": false,
+    "abi_compatible": false,
+    "visual_parity_proven": false
+  }
+}
