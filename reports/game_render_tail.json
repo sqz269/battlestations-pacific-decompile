@@ -1,0 +1,200 @@
+{
+  "packet": "game_frame_render_tail",
+  "owner": "agent/game-render-tail",
+  "date": "2026-09-09",
+  "kind": "analysis_and_reconstruction",
+  "doc": "docs/GAME_RENDER_TAIL.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": "none; read-only for this packet"
+  },
+  "headline": "Everything BSP_Game_OnMove (004e4a40) runs between the last simulation call and BSP_Game_Render (004ca440): the particle clock, the foliage impostor build, the GUI visibility policy, the queued sound cue and the front-end screen update, followed by the profiled render block.",
+  "source_of_truth": {
+    "onmove_body": "Ghidra stores an eight-byte body for 004e4a40; the window was read with `python tools/bsp.py disasm-raw 004e4a40 --length 2808` into local/onmove.txt.",
+    "anchor_doc": "docs/GAME_ON_MOVE_MAP.md steps 21-24",
+    "external_contracts": [
+      "docs/RENDER_COMMAND_EXECUTION.md",
+      "docs/RENDER_BATCH.md",
+      "docs/GAME_SIMULATION_GATE.md",
+      "docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md"
+    ]
+  },
+  "frame_order": [
+    {"address": "004e538e", "call": "004de4b0() -> 00b19a10(f)", "argument": "f = [00f876a4] * (double)[00ce47a0]", "condition": "the simulation gate at 004e50b0 was taken"},
+    {"address": "004e53b4", "call": "004c40f0()", "condition": "the gate was not taken; the two paths join at 004e53bb"},
+    {"address": "004e53c3", "call": "00af0450([[game+5FCh]+1054h])", "ecx": "00f8c274", "condition": "game+5D4h == 0Dh"},
+    {"address": "004e53de", "call": "camera select", "detail": "d = [[game+19F0h]+A8h]; d+CCh ? d+D0h : d+C8h", "condition": "game+5D4h == 0Dh"},
+    {"address": "004e540f", "call": "00af0c50([game+19FCh], camera)", "ecx": "00f8c274", "condition": "game+5D4h == 0Dh"},
+    {"address": "004e5416", "call": "004c6c70()", "ecx": "game", "condition": "unconditional"},
+    {"address": "004e542d", "call": "00685c80(rawDelta)", "condition": "00e198ac != 0", "ownership": "external"},
+    {"address": "004e5434", "call": "004d80d0()", "condition": "unconditional", "ownership": "external"},
+    {"address": "004e5442", "call": "006840f0(&pending); 00e18cdc = 0", "condition": "unconditional", "ownership": "external"},
+    {"address": "004e5460", "call": "00776230(); 004c40f0(); 006840f0(&pending); 00e18cdc = 0", "ecx": "game+1EF0h for 00776230", "condition": "while pending", "ownership": "external"},
+    {"address": "004e548a", "call": "pending = false", "condition": "unconditional"},
+    {"address": "004e548f", "call": "004c1b90() -> 00941140()", "condition": "unconditional"},
+    {"address": "004e549d", "call": "004d8620()", "ecx": "game", "condition": "unconditional"},
+    {"address": "004e54a2", "call": "004c1dd0() -> 00be3660([0109db08])", "condition": "unconditional"},
+    {"address": "004e54bc", "call": "00be3640([0109db14]); 004ca440(); 00be3660([0109db14])", "condition": "!pending, which is provably true"},
+    {"address": "004e54eb", "call": "004ca1f0()", "condition": "unconditional"}
+  ],
+  "dead_render_gate": {
+    "test": "004e54b5 cmp byte ptr [esp+1Bh],0 / 004e54ba jne 004e54e9",
+    "finding": "The slot is written 0 at 004e548a on both incoming paths (the loop exit at 004e5488 falls through, and 004e5453 jumps there) and nothing between takes its address: 004c1b90, 00941140, 004d8620 and 004c1dd0 take no pointer to it and 00be3660 restores esp. The jump is never taken, so BSP_Game_Render always runs on this path.",
+    "handling": "reproduced in bsp::run_render_tail because it is in the binary"
+  },
+  "functions": [
+    {
+      "address": "004de4b0",
+      "name": "BSP_ParticleClock_GetSingleton",
+      "abi": "__cdecl(void) -> void*, RET",
+      "behavior": "Double-checked lazy singleton over DAT_00f8d420 under BSP_SingletonLifetime_GetManager()+10h. Allocates 1Ch bytes via 00bf681b, stores PTR_..._00ce7d38 at +0 and PTR_LAB_00ce7d24 at +4, zeroes +8h..+14h, registers with BSP_SingletonLifetime_Register.",
+      "callers": ["004de610", "004e4a40", "00b33a10", "00b3b280", "00b46a70"],
+      "callees": ["00415350", "00bd0c30", "00bf681b"],
+      "state": "analyzed",
+      "confidence": "high"
+    },
+    {
+      "address": "00b19a10",
+      "name": "BSP_ParticleClock_SetFrameTime",
+      "abi": "__thiscall(this, float), RET 4",
+      "behavior": "Stores the float at this+18h, then walks records at this+8h with count this+0Ch and stride 2Ch, calling (*(void**)(record+28h))->vtable[18h](float). The end bound is recomputed each iteration from +8h and +0Ch while the cursor advances from the old base.",
+      "argument": "the global time in milliseconds, not a delta: 00ce47a0 holds the double 1000.0 (bytes 00 00 00 00 00 40 8F 40) and 00f876a4 is the global time float written only by 00874640",
+      "cross_check": "docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67 takes component y of shader constant c33 'Time' from 004de4b0() result+18h, the field this call writes",
+      "callers": ["004e4a40"],
+      "state": "reconstructed_build_tested",
+      "confidence": "high"
+    },
+    {
+      "address": "00af0450",
+      "name": "BSP_FoliageGroups_SetShaderTime",
+      "abi": "__thiscall(this, float), RET 4",
+      "behavior": "Twelve bytes: MOV [ECX+2Ch],arg; RET 4. The getter at 00af0460 is FLD [ECX+2Ch]; RET.",
+      "cross_check": "00b46cdb calls 00af0460 with ECX=[00f8c274] for component z of shader constant c33 'Time' (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 68)",
+      "argument": "[[game+5FCh]+1054h]",
+      "callers": ["004e4a40"],
+      "state": "reconstructed_build_tested",
+      "confidence": "high"
+    },
+    {
+      "address": "00af0c50",
+      "name": "BSP_FoliageGroups_BuildVisibleSet",
+      "abi": "__thiscall(this, render_camera, secondary_camera), RET 8",
+      "behavior": "Four passes over the group pointer array at this+4h/this+8h: cull and mark visibility while summing quads, size and lock a dynamic buffer of quads*4 bytes, queue builds for empty groups and flush once, then fill and count. Publishes quads*4 to device+10h and quads*2 to device+18h, which is four vertices and two triangles per unit, a quad.",
+      "decompiler_warning": "The Ghidra decompile loses four bytes of frame depth across the indirect CALL EAX sites, printing unaff_retaddr and a (char)param_2 test. The listing was used instead; the epilogue (four POPs, ADD ESP,10h, RET 8) confirms the real depth.",
+      "manager_fields": {
+        "+4h": "group pointer array base",
+        "+8h": "element count",
+        "+10h": "sub-object reset by 00af0900(0)",
+        "+1Ch": "current camera",
+        "+20h": "frame counter",
+        "+24h": "dynamic buffer owner; when null no buffer work happens",
+        "+28h": "locked buffer pointer",
+        "+2Ch": "shader scalar set by 00af0450"
+      },
+      "group_fields": {
+        "+ACh": "float compared against [00d7a218], which holds 0.0",
+        "+18Ch": "description object with bytes at +70h and +7Ah",
+        "+1F8h": "quad count; 0 means not built yet",
+        "vtable+48h": "bounds accessor, no arguments"
+      },
+      "cull": "00b71530(ECX=camera, bounds) refreshes the frustum lazily (bit 2 of camera+2F0h, six planes from 00b70490 through 00b653f0, seven entries stored at camera+2F4h by 00b658e0) then classifies with 00b651e0; AAAh means fully outside",
+      "camera_evidence": "camera+198h render mode, camera+5Ch valid_flags bit 1 gating 00b6db70, camera+2F4h frustum: all three match include/bsp/camera_frame_state.hpp and include/bsp/camera_transform.hpp, so [game+19FCh] holds a camera",
+      "callers": ["004ccbd0", "004e4a40"],
+      "state": "reconstructed_build_tested",
+      "confidence": "medium"
+    },
+    {
+      "address": "004c1b90",
+      "name": "BSP_SoundRequestQueue_GetSingleton",
+      "abi": "__cdecl(void) -> void*, RET",
+      "behavior": "Same double-checked singleton shape as 004de4b0 over DAT_00f89b34, 28h bytes, constructed through CG_array_ctor_helper_00940dd0.",
+      "callers": ["004d92b0", "004dd5b0", "004e4a40", "005d0b10", "005d1000", "005d14d0", "005fd440", "005ff0d0", "0068ac30", "008e2da0", "008e2e50", "008e2ee0"],
+      "state": "analyzed",
+      "confidence": "high"
+    },
+    {
+      "address": "00941140",
+      "name": "BSP_SoundRequestQueue_ApplyPending",
+      "abi": "__fastcall(this), RET",
+      "behavior": "A forced slot at +20h (idle value 6) wins outright; otherwise slots 5 down to 0 are scanned for the first set request byte at +18h..+1Dh. Slot 1 degrades to slot 0 unless the first element of the vector at [00f8bbf4]+70h/+74h or of the one at +B8h/+BCh answers true to its virtual +2Ch. Every path clears +18h/+1Ch and sets +20h = 6.",
+      "applier": "00941070(this, slot) returns immediately for slot 5; otherwise it assigns the string 'Normal' through 0041e870, resolves it with 00a7b0a0 (__stricmp) and calls 00a7e490(&result, *(this+4+slot*4), *(this+24h), category, 1), releasing the refcounted result",
+      "subsystem_evidence": "00a7b0a0 and 00a7e490 are in segment 74 whose keywords are sound, stream, streaming, stereo, fmod, so this is a sound cue queue, not the listener binding the packet brief guessed",
+      "callers": ["004e4a40"],
+      "state": "reconstructed_build_tested",
+      "confidence": "medium"
+    },
+    {
+      "address": "004d8620",
+      "name": "BSP_Frontend_UpdateActiveScreens",
+      "abi": "__fastcall(game), RET, SEH handler 00c664c8",
+      "behavior": "Fast path when 00e188ae == 0 and 00425d10()+4h == 0 and [00e19698]+4h == 0: BSP_GuiManager_Update(BSP_GuiManager_GetOrCreate(), *(float*)(game+21ECh), 0) and return. Otherwise it collects screen handles into a stack list with 004d6790: 005329c0(ECX=00425d10(), out) when the menu command screen +4h is set, [00e19698]+8h when its +4h is set, [00e18d48]+1Ch unconditionally, and the page 00aa5840(gui, &'FE_main', 1, 0) when 00e198c4 == 0 and 00e198ac != 0. It then calls 004d35d0(temp, &list) with the delta at temp+10h (the callee cleans 18h bytes), 00aa3f70(BSP_GuiManager_GetOrCreate()) and _free on the list buffer.",
+      "strings": {"00ce7a70": "FE_main"},
+      "note": "docs/GAME_ON_MOVE_MAP.md suggested BSP_Frontend_UpdateRoot before the body was read; the recorded name describes the collection step the evidence shows",
+      "callers": ["004e4a40"],
+      "state": "analyzed",
+      "confidence": "medium"
+    },
+    {
+      "address": "004c6c70",
+      "name": "BSP_Game_ApplyGuiVisibility",
+      "abi": "__fastcall(game), RET",
+      "behavior": "Folds screen state into BSP_GuiManager_SetEnabled (every path) and BSP_GuiManager_SetPointerVisible (some paths). The exact boolean chain is in docs/GAME_RENDER_TAIL.md, read from the listing because the decompiler flattens it into mixed | and == expressions.",
+      "globals": {
+        "00e198b4": "+3Ch active; also +54h+64h feeds the enable term",
+        "00e198ac": "+3Ch active",
+        "00e198b8": "+3Ch active",
+        "00e198c4": "HUD root; +D8h, +5Ch, +54h and +60h sub-objects each contribute a byte",
+        "00e194b4": "+5h modal flag",
+        "00f8abe8": "+3E8h (decimal 1000) GUI-disabled switch",
+        "game+7184h": "cinematic flag",
+        "game+5D4h": "state; value 2 alone forces the GUI on"
+      },
+      "callers": ["004e4a40"],
+      "state": "reconstructed_build_tested",
+      "confidence": "high"
+    }
+  ],
+  "render_block": {
+    "profiler": "004c1dd0 returns the profiler singleton; 00be3640 begins and 00be3660 ends a counter",
+    "counters": {
+      "0109db08": "game counter, closed at 004e54a7",
+      "0109db14": "render counter, spans BSP_Game_Render"
+    },
+    "handoff": "BSP_Game_Render (004ca440) is __thiscall(game) with no arguments. Nothing is passed to it: the render queue was opened through the globals in steps 9 and 10 of docs/GAME_ON_MOVE_MAP.md (BSP_RenderCommandQueue_GetSingleton, 00f8d394), which this packet leaves read-only.",
+    "finish": "BSP_Game_FinishRenderFrame at 004ca1f0"
+  },
+  "ghidra_function_coverage": "All eight leased addresses have Ghidra function bodies; none needed a raw listing to be defined, so names can be applied directly. 004e4a40 itself still has an eight-byte stored body and must be read with disasm-raw.",
+  "uncertainties": [
+    "Which of the two cameras 00af0c50 receives is conceptually primary. The first gets the matrix refresh and the unconditional cull; the second is consulted only for groups whose description sets +7Ah. Reflection and a gameplay-versus-free-camera split both fit and neither is proven.",
+    "What the six sound request slots mean and which of the twelve callers of 004c1b90 set them.",
+    "The element type of the list 004d8620 builds and what 004d35d0 does with it; 004d35d0 has no Ghidra prototype beyond undefined FUN_004d35d0(void).",
+    "The 2Ch-byte particle clock record beyond +28h, and what registers records into +8h/+0Ch.",
+    "Subsystem names: ParticleClock, FoliageGroups and SoundRequestQueue are hypotheses from segment keywords, shader constant usage and callee segments, not recovered symbols."
+  ],
+  "remaining": [
+    "The foliage group class: +18Ch description, the vtable[48h] bounds accessor, 00af6360, 00af63a0, 00af0990 and the 004c1130 build queue.",
+    "The external calls inside the window: 00685c80, 004d80d0, 006840f0, 00776230, 004c40f0.",
+    "00aa5840 page lookup and 004d6790 list insertion."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/render_tail.hpp",
+    "source": "src/render_tail.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "entry_points": [
+      "bsp::run_render_tail",
+      "bsp::build_foliage_visible_set_00af0c50",
+      "bsp::decide_gui_visibility_004c6c70",
+      "bsp::apply_sound_request_00941140",
+      "bsp::set_particle_clock_time_00b19a10",
+      "bsp::particle_clock_time_004e538e"
+    ],
+    "reused_headers": "include/bsp/camera_frame_state.hpp and include/bsp/camera_transform.hpp are referenced by name for the camera field evidence; no Codex type was duplicated and no render queue type was touched",
+    "state": "build-tested only. Not fixture-tested, not ABI-compatible, not game-validated. New C++ interfaces over an injected host; no global or type was invented to make them link.",
+    "build": "./scripts/build.ps1 in the worktree, Win32 Release, warnings as errors: succeeded; ctest reconstructed_math passed; no new tests added."
+  },
+  "tooling_problems": [
+    "`python tools/bsp.py ghidra disasm <addr>` always lists from the function start and ignores a mid-function address, so paging needs --start with a line offset rather than an address.",
+    "The Ghidra decompile of 00af0c50 misreports stack depth across indirect calls, producing unaff_retaddr and a (char)param_2 test that is really a local bool reusing the second argument's home slot."
+  ]
+}
