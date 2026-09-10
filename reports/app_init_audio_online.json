@@ -1,0 +1,432 @@
+{
+  "packet": "app_init_audio_online",
+  "owner": "agent/init-audio-online",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-init-audio-online",
+  "kind": "analysis and reconstruction",
+  "parent": {
+    "address": "0073d410",
+    "name": "BSP_Application_Initialize",
+    "original_method": "cSkeletonAppMidway::Init"
+  },
+  "reconstruction": {
+    "header": "include/bsp/audio_online_startup.hpp",
+    "source": "src/audio_online_startup.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors, clean",
+    "tests": "existing ctest suite (reconstructed_math) passes; no new tests added",
+    "states": "exported, analyzed, reconstructed, build-tested; not fixture-tested, not ABI-compatible, not game-validated"
+  },
+  "reading_notes": [
+    "00a88770 pseudocode is unusable alone: register inputs (unaff_ESI, unaff_retaddr), the first argument slot reused as scratch after the operator new at 00a887b4, and the speaker-mode jump table rendered as a switch on the wrong value. All branches, argument orders and offsets come from the disassembly.",
+    "00a40df0 decompiles cleanly; only the XLIVE_INITIALIZE_INFO offsets and the RET 8 were re-checked against the listing."
+  ],
+  "functions": [
+    {
+      "address": "00a88770",
+      "ledger_name": "BSP_SoundSystem_Initialize",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "abi": "__thiscall(ECX = object, byte sound_disabled, dword unused, dword unused); RET 0xc",
+      "body": "00a88770-00a88aa8",
+      "object_size": "0x178 (PUSH 0x178 at 0073dac8)",
+      "callers": [
+        "0073dafd"
+      ],
+      "argument_evidence": "0073daee CMP byte [00f889a4],0 / 0073daf6 SETZ DL / 0073daf5 and 0073daf9 PUSH EDI(0) / 0073dafc PUSH EDX. Only [ESP+0x34], the first stack dword, is read in the callee, at 00a88798.",
+      "enable_flag": "00a8879e SETZ AL / 00a887b1 MOV byte [ESI+0x70],AL, so +0x70 is the negation of the argument and means sound enabled.",
+      "object_fields": {
+        "+0x000": "vtable 00d5b44c",
+        "+0x044": "FMOD::System*",
+        "+0x048": "FMOD_EVENTSYSTEM*",
+        "+0x054": "operator new(0x18) with ctor 00a858f0",
+        "+0x070": "sound-enabled byte",
+        "+0x118..+0x124": "four dwords copied from DAT_01090ab0 vtable +0x14",
+        "+0x158": "getDriverCaps minfrequency, then 1 (00a888eb)",
+        "+0x15c": "getDriverCaps maxfrequency, then 440000 / 0x6b6c0 (00a888f1)",
+        "+0x170": "game speaker layout 1..6 (00a88a25..00a88a59)",
+        "+0x174": "0 (00a887ab)"
+      },
+      "fmod_linkage": {
+        "module": "fmodex.dll",
+        "import_style": "mangled C++ names with the QAG qualifier (public __stdcall), for example ?setSpeakerMode@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_SPEAKERMODE@@@Z",
+        "this_passing": "pushed as the first stack argument, last push before the CALL",
+        "event_system": "FMOD_EventSystem_Create is the C import at 00c2df80; the two event-system calls dispatch through a function table at offset 0 of the returned handle, not through imports"
+      },
+      "call_sequence": [
+        {
+          "site": "00a8881e",
+          "call": "FMOD_EventSystem_Create(&this+0x48)",
+          "thunk": "00c2df80"
+        },
+        {
+          "site": "00a88844",
+          "call": "handle table slot 7 (+0x1c), one out-pointer into this+0x44",
+          "identification": "getSystemObject; behavioural, because the value it writes is the this of every later FMOD::System import"
+        },
+        {
+          "site": "00a8886d",
+          "call": "FMOD::System::getNumDrivers(system, &count)",
+          "guard": "this+0x70 != 0"
+        },
+        {
+          "site": "00a888a0-00a888be",
+          "call": "FMOD::System::getDriverCaps(system, id, &caps, &this+0x158, &this+0x15c, &control_panel_speaker_mode)",
+          "loop": "counts down from count-1 to 0 inclusive; results never tested; the surviving values belong to driver 0",
+          "seed": "00a88890 stores 1 into the control-panel speaker mode slot before the loop"
+        },
+        {
+          "site": "00a888c8",
+          "call": "FMOD::System::setSpeakerMode(system, control_panel_speaker_mode)",
+          "guard": "this+0x70 != 0"
+        },
+        {
+          "site": "00a888eb/00a888f1",
+          "call": "this+0x158 = 1, this+0x15c = 440000",
+          "note": "unconditional; discards the queried frequency range"
+        },
+        {
+          "site": "00a88904",
+          "call": "FMOD::System::setOutput(system, 2 = FMOD_OUTPUTTYPE_NOSOUND)",
+          "guard": "this+0x70 == 0",
+          "note": "the entire disabled-sound path"
+        },
+        {
+          "site": "00a88931",
+          "call": "handle table slot 0 (0x200, 0x10, NULL, 0)",
+          "identification": "EventSystem::init(maxchannels, flags, extradriverdata, eventflags); behavioural, from the argument count and the position after System configuration",
+          "flag_note": "0x10 is FMOD_INIT_HRTF_LOWPASS in the FMOD Ex 4.x headers; the name is provisional, the value is proven"
+        },
+        {
+          "site": "00a88961",
+          "call": "FMOD::System::setFileSystem(system, useropen 00a7d410, userclose 00a7b750, userread 00a79930, userseek 00a79970, blockalign 0)"
+        },
+        {
+          "site": "00a88994",
+          "call": "FMOD::System::set3DSettings(system, dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f)"
+        },
+        {
+          "site": "00a889b6",
+          "call": "FMOD::System::getDriver(system, &stack)",
+          "note": "result never read again"
+        },
+        {
+          "site": "00a889d8",
+          "call": "FMOD::System::getOutput(system, &stack)",
+          "note": "result never read again"
+        },
+        {
+          "site": "00a889fa",
+          "call": "FMOD::System::getSpeakerMode(system, &stack)",
+          "note": "feeds the jump table at 00a88a1e"
+        },
+        {
+          "site": "00a88a8e",
+          "call": "00a7ff80(this)",
+          "note": "follow-on Lua-driven stage; owns getMasterChannelGroup, getAdvancedSettings and setAdvancedSettings; out of packet scope"
+        }
+      ],
+      "driver_selection": "no setDriver call exists; the driver enumeration only picks a speaker mode",
+      "channel_groups": "none created here; see 00a7ff80",
+      "speaker_mode_map": {
+        "table": "00a88aac, eight entries, bounded by CMP EAX,0x7 / JA at 00a88a19",
+        "0": {
+          "target": "00a88a63",
+          "stored": null,
+          "note": "RAW falls through with no store"
+        },
+        "1": {
+          "target": "00a88a25",
+          "stored": 1
+        },
+        "2": {
+          "target": "00a88a2d",
+          "stored": 2
+        },
+        "3": {
+          "target": "00a88a35",
+          "stored": 3
+        },
+        "4": {
+          "target": "00a88a41",
+          "stored": 4
+        },
+        "5": {
+          "target": "00a88a59",
+          "stored": 5
+        },
+        "6": {
+          "target": "00a88a4d",
+          "stored": 6
+        },
+        "7": {
+          "target": "00a88a59",
+          "stored": 5,
+          "note": "SRS 5.1 matrix aliased onto 5.1"
+        }
+      },
+      "failure_path": {
+        "tested_result": "0x2b only (FMOD_ERR_MEMORY), at every FMOD call site",
+        "handler": "00a7a460, __stdcall(const char*), RET 4",
+        "message": "00d5ab94 Out of sounjd memory: (misspelt in the shipped image)",
+        "handler_behaviour": "ignores both its argument and the ECX value loaded from DAT_00f8bbd8; calls FMOD_Memory_GetStats (00c2ddee) into two discarded locals and returns",
+        "consequence": "no FMOD failure aborts initialisation, changes control flow or reaches a log; every result other than 0x2b passes unnoticed"
+      }
+    },
+    {
+      "address": "00a79230",
+      "ledger_name": "BSP_DialogStreamTable_Load",
+      "state": "exported, analyzed (object layout only; the parse is reconstructed under 00a87060)",
+      "abi": "__thiscall(ECX = object); RET 0, no stack arguments",
+      "body": "00a79230-00a79478",
+      "object_size": "0x234 (PUSH 0x234 at 0073db02)",
+      "callers": [
+        "0073db2b"
+      ],
+      "object_fields": {
+        "+0x000": "vtable 00d58f78",
+        "+0x004": "operator new(0xc): count 1 plus one 8-byte element, ctor 00a77d10",
+        "+0x008": "operator new(0x5c) with ctor 00a78150(0)",
+        "+0x00c": "operator new(0x5c) with ctor 00a781c0(0)",
+        "+0x010..+0x1bf": "0x12 records of 0x18 bytes, ctor 004c87d0, dtor 004c87f0",
+        "+0x1c0..+0x207": "0x12 dwords, ctor 00a778c0, dtor 0052e020",
+        "+0x208": "-1",
+        "+0x210": "0",
+        "+0x214": "byte 1",
+        "+0x215": "byte 0",
+        "+0x218..+0x224": "1.0f each (DAT_00d7a24c)",
+        "+0x228": "0",
+        "+0x22c": "reference-counted definition table",
+        "+0x230": "0"
+      },
+      "definition_table": {
+        "allocation": "operator new(0x20) at 00a792f8",
+        "vtable": "written as 00ceb130 then immediately as 00d58f80",
+        "layout": {
+          "+0x04": "refcount, 1",
+          "+0x08": "vector data",
+          "+0x0c": "count",
+          "+0x10": "capacity",
+          "+0x14": "volume, 1.0f",
+          "+0x18": "running channel total",
+          "+0x1c": "loop byte"
+        },
+        "release_of_previous": "InterlockedDecrement on the old table +0x04 at 00a7934b, destroy through vtable slot 0 on zero"
+      },
+      "source_path": "sound/streamed_dialogs.def at 00d58f88, built as a 26-character (0x1a) native string at 00a79365 and passed to 00a87060 at 00a793ac"
+    },
+    {
+      "address": "00a87060",
+      "ledger_name": "BSP_DialogStreamTable_Parse",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "abi": "__thiscall(ECX = definition table, {length, char*} native string); RET 4",
+      "callers": [
+        "00a793ac"
+      ],
+      "is_lua": false,
+      "data_source": "plain whitespace-delimited text file read through the shared tokenizer",
+      "tokenizer": {
+        "size": "0x828, operator new at 00a8707e, ctor 00bef2e0",
+        "fields": {
+          "+0x001": "current token text",
+          "+0x401": "previous token",
+          "+0x801": "cached-token flag",
+          "+0x804/+0x805": "end-of-stream flags",
+          "+0x806": "caller-visible end-of-file flag",
+          "+0x824": "source stream, read through its vtable +0x24"
+        },
+        "peek": "00bee8e0, idempotent: returns early while +0x801 is set",
+        "advance": "00bee800, copies the token to +0x401 and clears +0x801",
+        "read_string": "00bef020",
+        "read_number": "00bef170",
+        "close": "00bef220"
+      },
+      "grammar": "Channels / <name> mono|stereo|51 ... / end ; Volume <float> ; Loop",
+      "keyword_matching": "_stricmp (00bf7fbf) at every site, so keywords are case-insensitive",
+      "channel_count_table": {
+        "address": "00e12ef0",
+        "entries": {
+          "1": 1,
+          "2": 2,
+          "3": 6
+        },
+        "note": "indexed by the format index; entry 0 is never used"
+      },
+      "record": {
+        "size": "0x14",
+        "+0x00": "name length",
+        "+0x04": "name pointer",
+        "+0x08": "channel count (1 / 2 / 6)",
+        "+0x0c": "first channel, the value of table +0x18 before this entry (written at 00a872c0)",
+        "+0x10": "format index (1 mono, 2 stereo, 3 five point one)",
+        "placement": "00a77ef0 at 00a872ac",
+        "growth": "00a78dc0, max(1, capacity * 2)"
+      },
+      "hazards": [
+        "A top-level token that is none of Channels, Volume or Loop is never consumed, so the loop at 00a870f0 spins forever. It only terminates on end of file, on an empty token, or through one of the three keywords.",
+        "Inside a Channels block, a format token that is none of mono, stereo or 51 is also not consumed: the record is appended with a channel count of 0 and the next iteration reads that token as the next channel name."
+      ]
+    },
+    {
+      "address": "00a40df0",
+      "ledger_name": "BSP_XLiveSystem_Initialize",
+      "state": "exported, analyzed, reconstructed, build-tested",
+      "abi": "__thiscall(ECX = object, dword callback_a, dword callback_b); RET 8",
+      "body": "00a40df0-00a41026",
+      "object_size": "0x3f0 (PUSH 0x3f0 at 0073dc50)",
+      "callers": [
+        "0073dc7c"
+      ],
+      "caller_arguments": {
+        "0x00735510": "stored at +0x20",
+        "0x00735520": "stored at +0x24",
+        "nature": "not registered functions; each is a 14-byte stub PUSH 6|4; PUSH 0x8001; PUSH ECX; CALL 00a6d3f2; RET. Both call the same target, which Ghidra places inside the function starting at 00a6d380, a routine ending in luaD_call. Purpose unresolved."
+      },
+      "after_call": "0073dc87 stores 00737d60 into (*DAT_00f8abe8) + 0x18 (next packet)",
+      "xlive_initialize_info": {
+        "size": 28,
+        "built_at": "00a40ef1-00a40f41",
+        "passed_at": "00a40f46",
+        "version_argument": "0x20029900, recorded as a literal",
+        "fields": {
+          "+0x00": {
+            "value": "0x1c",
+            "provisional_name": "cbSize"
+          },
+          "+0x04": {
+            "value": "0",
+            "provisional_name": null
+          },
+          "+0x08": {
+            "value": "BSP_D3D9Renderer_GetDevice (00b1fef0) on DAT_00f8d394",
+            "provisional_name": "pD3DDevice"
+          },
+          "+0x0c": {
+            "value": "DAT_00f8d394 + 0x1a28",
+            "provisional_name": "pD3DPresentParameters"
+          },
+          "+0x10": {
+            "value": "GetUserDefaultLangID(), WORD store at 00a40f41",
+            "provisional_name": "wLanguage"
+          },
+          "+0x12": {
+            "value": "0"
+          },
+          "+0x14": {
+            "value": "0"
+          },
+          "+0x18": {
+            "value": "0"
+          }
+        },
+        "note": "offsets and values are proven by the stores; the names follow the published XLIVE_INITIALIZE_INFO layout and are provisional",
+        "result": "HRESULT discarded, nothing branches on it"
+      },
+      "sequence": [
+        {
+          "site": "00a40eae",
+          "action": "log XenonSystemManager Start Initialization (00d2435c) through 004254b0"
+        },
+        {
+          "site": "00a40f46",
+          "action": "XLiveInitializeEx(&info, 0x20029900)"
+        },
+        {
+          "site": "00a40f50",
+          "action": "log XenonSystemManager XLiveInitialized (00d2432c)"
+        },
+        {
+          "site": "00a40f5e",
+          "action": "00a4c250 on the sub-object at +0x3ac; returns E_INVALIDARG (0x80070057) for a null target, otherwise the result of 00a4c030; purpose unresolved"
+        },
+        {
+          "site": "00a40f63",
+          "action": "XOnlineStartup()"
+        },
+        {
+          "site": "00a40f72",
+          "action": "XWSAStartup(0x0202, &wsadata) into a 400-byte WSADATA; 00a40f77-00a40f82 checks the low word byte by byte and calls XWSACleanup unless it is exactly 2.2"
+        },
+        {
+          "site": "00a40f94",
+          "action": "XNetSetSystemLinkPort(XSocketNTOHS(0x0c02)); 0x0c02 is 3074, the Xbox LIVE system link port, byte-swapped into network order"
+        },
+        {
+          "site": "00a40fd4",
+          "action": "XNotifyCreateListener(qwAreas = 0x2f, pushed as 0 then 0x2f) into +0x1c; 00a40fd9 and 00a40fe0 reject 0 and -1 before logging XNotifyCreateListener SUCCEED (00d242ec). 0x2f is SYSTEM|LIVE|FRIENDS|CUSTOM plus bit 0x20; the XNOTIFY_* bit names are provisional."
+        },
+        {
+          "site": "00a40ff4",
+          "action": "BSP_XenonSystemManager_ResetSignInState (00a40020)"
+        },
+        {
+          "site": "00a40ffb",
+          "action": "00a409f0, one pump of the state machine; reads the platform timer through DAT_01090ab0 vtable +0x20, branches on the state word at +0x12c being 7 or 3, invokes the +0x20 stub when +0x8c is set and the sign-in gate at +0x119/+0x11c allows it. Not modelled."
+        }
+      ],
+      "signin_state": {
+        "reset_routine": "00a40020",
+        "behaviour": "calls the stub at +0x20 only when +0x8c is non-zero; clears +0x119 and +0x11a and sets +0x11c to 1 unless +0x3bd is set; sets +0x124 to -1; empties the four-byte-stride vector at +0x364/+0x368 by moving its end back to its begin; sets the state word at +0x3b0 to 0, logs XenonSystemManager ChangeState To %d with 0, then sets +0x3b4 and +0x3b8 to 1",
+        "naming": "every sign-in slot is named after its offset; the meaning of each is inferred from 00a40020 and 00a409f0 only"
+      },
+      "xlive_absent": "no fallback. xlive.dll is a plain static import (thunks at 00a4d46a-00a4d5de and 00c2f1c0.. jump through the ordinary import address table, not a delay-load stub), so the process cannot start without it, and 00a40df0 checks no XLive return value."
+    }
+  ],
+  "ledger_names_recorded": [
+    {
+      "address": "00a88770",
+      "name": "BSP_SoundSystem_Initialize",
+      "mode": "replaced"
+    },
+    {
+      "address": "00a79230",
+      "name": "BSP_DialogStreamTable_Load",
+      "mode": "replaced"
+    },
+    {
+      "address": "00a40df0",
+      "name": "BSP_XLiveSystem_Initialize",
+      "mode": "replaced"
+    },
+    {
+      "address": "00a87060",
+      "name": "BSP_DialogStreamTable_Parse",
+      "mode": "new"
+    },
+    {
+      "address": "00a7a460",
+      "name": "BSP_SoundSystem_ReportFmodMemoryFailure",
+      "mode": "new"
+    },
+    {
+      "address": "00a77ef0",
+      "name": "BSP_DialogChannelRecord_Copy",
+      "mode": "new"
+    },
+    {
+      "address": "00a40020",
+      "name": "BSP_XenonSystemManager_ResetSignInState",
+      "mode": "new"
+    }
+  ],
+  "uncertainties": [
+    "The event-system function table: the slot-to-name mapping is behavioural. The public FMOD C++ headers declare these classes with non-virtual methods, so the provenance of the vtable dispatch and the exact FMOD Ex version are unresolved.",
+    "DAT_00f889a4 has no writing cross-reference in the image; what turns sound off is unknown.",
+    "Sound system +0x158 = 1 and +0x15c = 440000: values proven, meaning not.",
+    "The four dwords copied from DAT_01090ab0 vtable +0x14 into sound system +0x118..+0x124.",
+    "FMOD_INIT flag 0x10 and the XNOTIFY area bit 0x20 are named from public headers and are provisional.",
+    "XLiveInitializeEx version token 0x20029900 is recorded as a literal, not decoded.",
+    "The stubs at 00735510 and 00735520 and their shared target inside 00a6d380.",
+    "00a4c250 and 00a4c030, the sub-object at XenonSystemManager +0x3ac."
+  ],
+  "remaining": [
+    "00a7ff80, the Lua-driven second sound stage that owns the channel groups and advanced settings",
+    "the 0x18-byte object at sound system +0x54 (ctor 00a858f0) and the 0x10-byte object built at 00a887b4 (ctor 00a88650), which this routine never stores into the sound system",
+    "00a409f0, the XenonSystemManager state-machine pump",
+    "the 0x18-byte records at dialog manager +0x10 and the two 0x5c-byte objects at +0x08 and +0x0c"
+  ],
+  "divergences": [
+    "load_dialog_stream_table returns DialogParseOutcome::unrecognized_token where the original spins on an unrecognised top-level token; the second hazard is reproduced exactly",
+    "vector growth is left to std::vector instead of 00a78dc0",
+    "the two sub-object allocations in 00a88770 and the follow-on call to 00a7ff80 are not modelled",
+    "FMOD, XLive and the tokenizer are injected interfaces, so nothing is initialised for real"
+  ]
+}
