@@ -379,3 +379,8 @@ consistent tree, not that the game was observed doing so.
 
 - The `GuiScreen` literal is at `00d5cb24`, not `00d5cb20`; `00b6d890` is a scene-node reparent, not a Lua call; the 500-entry array is 500 dwords (250 eight-byte key pairs with the count at +7D0h, caching live Lua string pointers, no bounds check).
 - Every page construction creates a private Lua 5.1.1 state with base, table, string and math only (mask 65h through the `{name, opener}` table at `00d62bb8`), registers no C functions, loads with `luaL_loadbuffer` without testing the result and runs the chunk with `lua_call`, so a malformed page reaches the panic handler `00b669c0` and Lua exits the process; a missing script file is silent.
+
+## Corrections from docs/GUI_RENDER_ORDER.md
+
+- The sorted child snapshot `00aa5a00` is not on the draw path: its comparator (`00aa2c80`, twin `00aa7f70`) orders children alphabetically by name through widget vtable +28h with `_stricmp`, empty names first, rebuilt from scratch on every call, and its only consumer is the reflection walk `00aaaed0`.
+- `geOrder` is never read by the runtime (no such literal in the image); it is authoring metadata. Drawing is ordered by the float `RenderOrder` on a `cGuiLayer` (read by `00ac4c50` into layer+11Ch), keying a `std::multimap<float, cGuiCameraStore*>` at manager+8h; equal keys keep layer creation order, layers differing only in `Priority` share a pass, and the visible-layer count at store+20h is the only enable check. `BSP_Game_Render` reaches `00aa45a0`, which walks the map ascending and, per store, builds a half-pixel-offset look-at with an orthographic volume where +Y runs down the screen and submits one pass to the render command queue.
