@@ -307,3 +307,10 @@ function; none needed defining.
 - `loading_image_consumer`: whoever calls `BSP_LoadingScreen_Begin` with mode 1. Contract: find the
   caller that consumes the `mp.loading_NN` list and writes 00E08790, since 004e4000 publishes the
   list but always raises mode 0.
+
+## Corrections from docs/LOADING_SCREEN_ELEMENTS.md
+
+- The vtable `+10h` initialiser is `0057c560`, not `0057c4c0` (slot +10h of vtable `00cef264`, read at `0057ccbb`); `0057c4c0` is the hint-rotation tick.
+- Eight named GUI objects are bound, not four: the `FE_loading` page at `+0Ch`, then `hint_Text` `+18h`, `radar_Group` `+10h`, `wave_Icon` `+14h`, a discarded `bg_Group`, `titleLogo_Icon` `+20h`, `frameFlag_Icon` `+1Ch`, `title_Text` `+24h`, `loadingLogo_FrameBox` `+28h`.
+- The `mp.loading_NN` strings are localisation keys for a rotating hint line, not textures: `0057c360` sends each through the localisation resolver to `00abaed0` with ECX = the hint widget, so mode 0 consumes the published list through the rotation rather than the mode block. A mode-1 caller is still unidentified.
+- The worker callback runs on render worker thread `00b33c20` with ECX = the `radar_Group` widget, gated at 40 ms by the rate `19h`; it issues no render command and takes no lock.
