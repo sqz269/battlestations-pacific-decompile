@@ -1,0 +1,260 @@
+{
+  "packet": "camera_clip_planes",
+  "base_commit": "a35d262",
+  "worker_branch": "agent/camera-clip-planes-20260910",
+  "status": "reconstructed_build_tested_and_focused_native_differential_tested; primary CMake/Ghidra/ledger and native owner integration pending",
+  "project": {
+    "path": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_read_guard": "tools/bsp.py ghidra export/bytes verify project and program before each batch",
+    "mutations": false
+  },
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b70410",
+      "proposed_name": "BSP_Camera_SetExtraClipPlane",
+      "cpp": "set_camera_extra_clip_plane_00b70410",
+      "source_line": 41,
+      "length": 82,
+      "abi": "thiscall ECX=camera; stack=plane pointer; RET4; typed API returns void",
+      "behavior": "Four ordered x87 copies to camera+2E0; set actual plane count6; append original live source at record6 flags3; OR actual shared camera flags40 last."
+    },
+    {
+      "address": "00b70470",
+      "proposed_name": "BSP_Camera_ClearExtraClipPlane",
+      "cpp": "clear_camera_extra_clip_plane_00b70470",
+      "source_line": 62,
+      "length": 25,
+      "abi": "ECX=camera; no stack arguments; RET; typed API returns void",
+      "behavior": "Set actual plane count6 then AND actual shared camera flagsFFFFFFBF. Coefficients and record flags survive."
+    },
+    {
+      "address": "00b65070",
+      "proposed_name": "BSP_PlaneSet_SetCount",
+      "cpp": "set_camera_plane_count_00b65070",
+      "source_line": 9,
+      "length": 13,
+      "abi": "thiscall ECX=plane set; stack=count DWORD; RET4; typed API returns void",
+      "behavior": "Store complete count DWORD at +140 without validation or floating-point operation."
+    },
+    {
+      "address": "00b65990",
+      "proposed_name": "BSP_PlaneSet_Append",
+      "cpp": "append_camera_plane_00b65990",
+      "source_line": 16,
+      "length": 57,
+      "abi": "thiscall ECX=plane set; stack=source pointer,flags DWORD; RET8; typed API returns void",
+      "behavior": "Load old count, increment/store modulo2^32 before source reads, calculate oldcount*20 modulo2^32, forward four x87 pairs, flags DWORD store last."
+    }
+  ],
+  "backing": {
+    "interface": "CameraClipPlaneState{CameraFrameState& frame; CameraPlane& extra_plane_2e0;}",
+    "extra_plane_offset": "2E0",
+    "same_frustum": "frame.frustum; native camera+2F4; count relative140",
+    "same_flags": "frame.camera.projection.valid_flags; native camera+2F0",
+    "copies_or_separate_state": false,
+    "binding_mutates_or_reads_fields": false,
+    "lifetime": "owner and stable views outlive calls"
+  },
+  "evidence": {
+    "full_code_spans": [
+      {
+        "address": "00b70410",
+        "end_exclusive": "00b70462",
+        "length": 82,
+        "disk_offset": 7799824,
+        "disk_sha256": "a37867d9ca4c813dffef870dae712047715fa8b52ac5292d61ca50a34401a7bf",
+        "live_sha256": "a37867d9ca4c813dffef870dae712047715fa8b52ac5292d61ca50a34401a7bf",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b70470",
+        "end_exclusive": "00b70489",
+        "length": 25,
+        "disk_offset": 7799920,
+        "disk_sha256": "469d5a2f9904e375cb8f362376cac6edf105ade6357bf987e3d06cd62a0cf3fd",
+        "live_sha256": "469d5a2f9904e375cb8f362376cac6edf105ade6357bf987e3d06cd62a0cf3fd",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b65070",
+        "end_exclusive": "00b6507d",
+        "length": 13,
+        "disk_offset": 7753840,
+        "disk_sha256": "c755932be5b083c56ab0af065a99e6fbd7fc68ec1a173259a8b881ce1b7b443f",
+        "live_sha256": "c755932be5b083c56ab0af065a99e6fbd7fc68ec1a173259a8b881ce1b7b443f",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b65990",
+        "end_exclusive": "00b659c9",
+        "length": 57,
+        "disk_offset": 7756176,
+        "disk_sha256": "b1ca8124430fb1c81744e3d75f0ee5a02b2687c514e717a155cb1db9aefbf74c",
+        "live_sha256": "b1ca8124430fb1c81744e3d75f0ee5a02b2687c514e717a155cb1db9aefbf74c",
+        "live_matches_disk": true
+      }
+    ],
+    "total_verified_code_bytes": 177,
+    "data_spans": [],
+    "absolute_relocations": [],
+    "pseudocode_correction": "DWORD-looking assignments are ordered x87 FLD/FSTP float32 pairs."
+  },
+  "supported_contract": {
+    "append_count_precondition": "old count <16 and 16 readable source bytes",
+    "new_clamp_or_throw": false,
+    "set_count": "all DWORD values, including FFFFFFFF, preserved",
+    "source": "live forward source; no early snapshot; reread after wrapper reset and append increment",
+    "native_overflow": "count increment and oldcount*20 wrap modulo2^32; count16 targets count word and subsequent object tail; out-of-storage writes unsupported",
+    "wrapper_safe_index": "resets count6 then appends index6 flags3; resulting count7"
+  },
+  "verification": {
+    "native_fixture": "local/camera_clip_native_check.cpp",
+    "native_mapping": "Only four complete code spans at original relative addresses; other reserved pages PAGE_NOACCESS; unused committed bytes INT3; then PAGE_EXECUTE_READ; no whole PE/imports/entrypoint/data/hooks/stubs.",
+    "host_link": "Actual built bsp_core.lib and explicitly compiled src/camera_clip_planes.cpp; all projection/camera/frame backing constructors are real implementations.",
+    "compile": "MSVC x86 C++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; OPT:REF, OPT:NOICF",
+    "commands": [
+      "python tools/ghidra_export.py verify-seeds",
+      "./scripts/build.ps1",
+      "python local/prepare_camera_clip_native.py",
+      "./local/build_camera_clip_native_check.ps1"
+    ],
+    "native_seed_matches": 8,
+    "existing_ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "new_source_in_cmake": false,
+    "new_source_explicit_fixture_compile": true,
+    "trajectory": "One ten-phase lifecycle repeated with four x87 rounding modes at 53-bit precision",
+    "phases": [
+      "external sNaN/qNaN/-0/subnormal add",
+      "clear retaining extra and record6 bytes",
+      "forward overlapping add from extra-4",
+      "set countFFFFFFFF",
+      "set count8",
+      "append from count word with flags89ABCDEF",
+      "camera add from count word",
+      "clear",
+      "set count15",
+      "last valid record append from overlapping plane14+12"
+    ],
+    "control_words": [
+      "027F",
+      "067F",
+      "0A7F",
+      "0E7F"
+    ],
+    "status_mask": "7FFF including TOP and condition bits",
+    "status_each_mode": [
+      "0003",
+      "0000",
+      "0001",
+      "0000",
+      "0000",
+      "0003",
+      "0003",
+      "0000",
+      "0000",
+      "0000"
+    ],
+    "mxcsr_before_and_after": "00001F80",
+    "state_bytes_per_phase": 1112,
+    "matching_phases": 40,
+    "matching_complete_state_bytes_per_path": 44480,
+    "assertions": [
+      "All field offsets statically checked through native camera size458",
+      "A5 preimage retained during binding",
+      "Actual frame/camera/projection/frustum/extra references retain identity",
+      "External source bytes unchanged",
+      "Signaling NaN 7FA12345 quieted to7FE12345 and x87 invalid/denormal bits set",
+      "Overlapping first signaling payload propagates quieted bits",
+      "Clear changes count/flag40 only and preserves hidden record6",
+      "Raw countFFFFFFFF stores unchanged with no x87 flags",
+      "Count-word source copies9 after increment from8",
+      "Wrapper count-word source first stores9 to extra then rereads7 after count reset/increment",
+      "Count15 append reaches16 and writes flags to final valid record",
+      "Every phase compares all camera bytes and FP state"
+    ],
+    "result": "PASS",
+    "production_source_runtime_changes_needed": false,
+    "fixture_setup_corrections": "Fixture render_mode type fixed from DWORD to uint32; library path and MD runtime corrected to match repository build. Production implementation passed first execution."
+  },
+  "limitations": [
+    "No binary ABI replacement claim",
+    "Unmasked x87 traps and concurrent mutation not tested",
+    "Out-of-storage count/index paths not executed",
+    "All possible aliases not exhausted",
+    "Native owner lifetime and primary backing integration separate",
+    "Shadow-cascade rendering and game validation not performed",
+    "Shared B658E0 helper and Ghidra/name ledgers/CMake not modified"
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/camera_clip_planes.hpp",
+      "bytes": 1559,
+      "sha256": "db67e850631bd21ae22c95ba66b5ebdffc47dac646c131014aadddc1ccd30099"
+    },
+    {
+      "path": "src/camera_clip_planes.cpp",
+      "bytes": 2151,
+      "sha256": "423f05e56115e8e3d1d7ee737f3ef1e736568f9d35064a2cebda813d25c946b9"
+    },
+    {
+      "path": "docs/CAMERA_CLIP_PLANES.md",
+      "bytes": 6755,
+      "sha256": "366c6e161d686718dfcc4c28d273acff2762c86f74e5001a62d5fad2c7a12348"
+    },
+    {
+      "path": "local/prepare_camera_clip_native.py",
+      "bytes": 1930,
+      "sha256": "55e81873b980d3b35d2270c69deca837133e3961fbd4f4bcf6b76a4924e75275"
+    },
+    {
+      "path": "local/camera_clip_native_preparation.json",
+      "bytes": 1657,
+      "sha256": "66db331ec7ff7c444b5937b54944470438cc1d6020e399cc0d70cc3593af8678"
+    },
+    {
+      "path": "local/camera_clip_native_spans.hpp",
+      "bytes": 271,
+      "sha256": "f95dc5383e7fe8bd01f0ed5e7adcd646748a3ec15d3d357a15a79b90b55face5"
+    },
+    {
+      "path": "local/camera_clip_native_check.cpp",
+      "bytes": 11112,
+      "sha256": "fd9dac94d5000fa8194290b7a1fb5bd40842ace3956cd73e8f1cfa79726be54d"
+    },
+    {
+      "path": "local/build_camera_clip_native_check.ps1",
+      "bytes": 1352,
+      "sha256": "9dc298b01f176336fb0b55a1ed7ae3d9c249a571c3a1660e5e2cfc74d219ed23"
+    },
+    {
+      "path": "local/camera_clip_native_check.log",
+      "bytes": 609,
+      "sha256": "b9cee27f3e8c39defc8ab032dd1abcb14f3c465b4cb41e2b82bfe3a8572c730f"
+    },
+    {
+      "path": "local/camera_clip_repository_build.log",
+      "bytes": 9386,
+      "sha256": "dfa753a552b12394c1192631a0d9b43c211e5244be712ce020a15d965e829848"
+    },
+    {
+      "path": "build/clip-check/camera_clip_native_check.exe",
+      "bytes": 28672,
+      "sha256": "07c2283a5af160d5182d489f5df5291243f72b6996b2f98589dbe6f5ce0f0f00"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 17000918,
+      "sha256": "d345abd5e2e62ed2fe1d7e59ec0f23fa70931edfb3f320a562eca86a3e09e8b5"
+    }
+  ]
+}
