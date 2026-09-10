@@ -8,6 +8,7 @@
 #include "bsp/input_settings.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/session_polls.hpp"
+#include "bsp/world_entities.hpp"
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -448,6 +449,67 @@ int main() {
             "00e18cdc is cleared after the first poll and after every re-poll");
         check(host.menus.channels[2].current_a == 0,
             "a null channel global is skipped even when its indices differ");
+    }
+
+
+    {
+        // 00987590 returns as soon as it retires one expired event, so the
+        // higher-priority ready event it had already selected is not applied
+        // that frame. An implementation that erased and kept walking would
+        // apply it, which is the regression this case pins.
+        struct EventHost : bsp::WorldTickHost {
+            std::vector<float> starts;
+            std::vector<float> priorities;
+            std::vector<bool> ready;
+            float now{100.0f};
+            int applied{-1};
+            int destroyed{-1};
+
+            float world_clock() override { return now; }
+            void mission_events_pre_pass_00982540() override {}
+            void mission_events_periodic_00977990() override {}
+            void mission_events_poll_0096d540() override {}
+            void mission_events_poll_00968550() override {}
+            float mission_event_start_time(std::size_t i) override { return starts[i]; }
+            float mission_event_priority(std::size_t i) override { return priorities[i]; }
+            bool mission_event_ready_005b71d0(std::size_t i) override { return ready[i]; }
+            void mission_event_destroy(std::size_t i) override { destroyed = static_cast<int>(i); }
+            void mission_event_apply_00974070(std::size_t i) override { applied = static_cast<int>(i); }
+            void bot_retarget_begin_0075b430(int) override {}
+            void bot_slot_prepare_00914390(std::size_t) override {}
+            void bot_slot_dispatch_0076a9f0(std::uint32_t, std::uint32_t, std::size_t) override {}
+            void bot_think_pass_a_00911e80(std::size_t) override {}
+            void bot_think_pass_b_00912a60(std::size_t) override {}
+            void marker_update(void*, float) override {}
+            bsp::MarkerColor marker_get_color(void*) override { return bsp::MarkerColor{}; }
+            void marker_set_color(void*, const bsp::MarkerColor&) override {}
+            void marker_set_scale_006dbac0(void*, int, int, float) override {}
+            void marker_set_highlight_level(void*, float) override {}
+            void entity_manager_update(float) override {}
+            void power_ups_pre_pass_008eac80() override {}
+            void power_up_expire_008e8c30(void*) override {}
+            void power_up_notify_ready_009789a0(std::size_t, std::size_t) override {}
+            void power_ups_post_pass_00613760() override {}
+            void activate_entity_subtree_00922fd0(std::size_t) override {}
+            bool input_action_pressed(int) override { return false; }
+        };
+
+        EventHost host;
+        host.starts = {99.0f, 99.0f, 10.0f};
+        host.priorities = {1.0f, 5.0f, 0.0f};
+        host.ready = {true, true, false};
+
+        bsp::WorldTickState state;
+        state.mission_events.events.resize(3);
+        for (auto& event : state.mission_events.events) event.duration = 5.0f;
+
+        const bsp::MissionEventTickResult result
+            = bsp::update_mission_events_00987590(state, host);
+        check(result.retired == 2, "the expired event at index 2 is the one retired");
+        check(result.selected == bsp::kNoMissionEvent && host.applied == -1,
+            "retiring an event abandons the selection instead of applying it");
+        check(state.mission_events.events.size() == 2,
+            "exactly one event leaves the queue per frame");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
