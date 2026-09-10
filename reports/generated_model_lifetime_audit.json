@@ -1,0 +1,337 @@
+{
+  "utc": "2026-09-10T04:47:19.879385+00:00",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live query used bsp.py ghidra, which verifies bsp project/program/language/image base. Compared complete PE/live code ranges and decoded original x86 with Capstone, including false-no-return gaps. No Ghidra mutation by worker.",
+  "functions": [
+    {
+      "address": "00b6f310",
+      "suggested_name": "BSP_Node_ReleaseGeometryChildrenAndSelf",
+      "original_abi": "ECX node; no stack args; RET or tail virtual0 when self references become zero.",
+      "contract": "Remove each geometry+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain.",
+      "coverage": "complete normal release body with required actual dispatch associations",
+      "code_identity": {
+        "length": 176,
+        "end_exclusive": "00b6f3c0",
+        "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6f310 at 00b6f310\nSignature: undefined FUN_00b6f310(void)\nEntry: 00b6f310\nBody: 00b6f310 - 00b6f3bf",
+      "annotation_before": {
+        "address": "00b6f310",
+        "function_name": "FUN_00b6f310"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Remove each geometry+1E0 borrowed backlink via00B7C1A0, reloading node+168 count; resize node+164 array0 retaining capacity. Repeatedly publish child.next as first child, clear new head.previous and child.parent/next, invoke actual child virtual18, reload first child. Child_count+38 is not decremented. Only byte44==0 clears root/parent/first/previous/next, sets byte44=1, unregistersA0, clearsA0 then atomically releases one self reference. Geometry180 and scene170 stay owned if references remain.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b6f310.txt"
+    },
+    {
+      "address": "00b7c1a0",
+      "suggested_name": "BSP_Geometry_RemoveModelBacklink",
+      "original_abi": "ECX geometry; stack model pointer; RET4.",
+      "contract": "Pass address of model pointer to00B7BED0 with ECX=geometry+1E0. Removes only one borrowed reverse link, without retaining, releasing, deleting or rebinding mesh/model ownership.",
+      "coverage": "complete borrowed reverse-link wrapper",
+      "code_identity": {
+        "length": 19,
+        "end_exclusive": "00b7c1b3",
+        "sha256": "4a1f806053bfedc310d08d270a56f9383c21b9baf5bef5dfb0228be678c60086",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b7c1a0 at 00b7c1a0\nSignature: undefined FUN_00b7c1a0(void)\nEntry: 00b7c1a0\nBody: 00b7c1a0 - 00b7c1b2",
+      "annotation_before": {
+        "address": "00b7c1a0",
+        "function_name": "FUN_00b7c1a0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Pass address of model pointer to00B7BED0 with ECX=geometry+1E0. Removes only one borrowed reverse link, without retaining, releasing, deleting or rebinding mesh/model ownership.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b7c1a0.txt"
+    },
+    {
+      "address": "00b7bed0",
+      "suggested_name": "BSP_ModelPointers_EraseFirstSwapLast",
+      "original_abi": "ECX pointer array; stack address of pointer cell; AL success; RET4.",
+      "contract": "Search first identical pointer. If found and not last, copy last pointer over it; decrement count once and return true. No capacity shrink, order preservation or element destruction. Missing pointer returns false.",
+      "coverage": "complete valid-array body",
+      "code_identity": {
+        "length": 103,
+        "end_exclusive": "00b7bf37",
+        "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b7bed0 at 00b7bed0\nSignature: undefined FUN_00b7bed0(void)\nEntry: 00b7bed0\nBody: 00b7bed0 - 00b7bf36",
+      "annotation_before": {
+        "address": "00b7bed0",
+        "function_name": "FUN_00b7bed0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Search first identical pointer. If found and not last, copy last pointer over it; decrement count once and return true. No capacity shrink, order preservation or element destruction. Missing pointer returns false.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b7bed0.txt"
+    },
+    {
+      "address": "00b6ec70",
+      "suggested_name": "BSP_GeometryPointers_ResizeCleared",
+      "original_abi": "ECX pointer array; stack signed count; RET4.",
+      "contract": "Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed geometry owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior.",
+      "coverage": "complete valid-count body",
+      "code_identity": {
+        "length": 80,
+        "end_exclusive": "00b6ecc0",
+        "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6ec70 at 00b6ec70\nSignature: undefined FUN_00b6ec70(void)\nEntry: 00b6ec70\nBody: 00b6ec70 - 00b6ecbf",
+      "annotation_before": {
+        "address": "00b6ec70",
+        "function_name": "FUN_00b6ec70"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Reserve via00B6E500 only when count exceeds capacity; null newly exposed pointer slots; decrement logical count while shrinking and assign requested count. Shrinking leaves pointed geometry owners and array capacity alive. Host rejects negative counts and overflow instead of native invalid memory behavior.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b6ec70.txt"
+    },
+    {
+      "address": "00b6e500",
+      "suggested_name": "BSP_GeometryPointers_Reserve",
+      "original_abi": "ECX pointer array; stack signed capacity; RET4.",
+      "contract": "Clamp requested capacity minimum1; grow only, allocate4*capacity, copy count pointers, free old buffer, publish new data/capacity. Raw00B6E551 continuation after false-no-return free is addesp4,mov[esi]ebx,mov[esi+8]edi,pop ebx. Host uses real vector allocation and excludes native allocation failure/corrupt extents.",
+      "coverage": "complete valid-capacity body",
+      "code_identity": {
+        "length": 95,
+        "end_exclusive": "00b6e55f",
+        "sha256": "e35fde6afba77b6a5188714ec3bd2d091eec3202ca91d0fa786d86c3c12ef9e4",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6e500 at 00b6e500\nSignature: undefined FUN_00b6e500(void)\nEntry: 00b6e500\nBody: 00b6e500 - 00b6e55e",
+      "annotation_before": {
+        "address": "00b6e500",
+        "function_name": "FUN_00b6e500"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Clamp requested capacity minimum1; grow only, allocate4*capacity, copy count pointers, free old buffer, publish new data/capacity. Raw00B6E551 continuation after false-no-return free is addesp4,mov[esi]ebx,mov[esi+8]edi,pop ebx. Host uses real vector allocation and excludes native allocation failure/corrupt extents.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b6e54c",
+          "continuation": "00b6e551",
+          "instructions": [
+            "00b6e551: add esp, 4",
+            "00b6e554: mov dword ptr [esi], ebx",
+            "00b6e556: mov dword ptr [esi + 8], edi",
+            "00b6e559: pop ebx",
+            "00b6e55a: pop edi",
+            "00b6e55b: pop esi",
+            "00b6e55c: ret 4"
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/generated_model_raw_00b6e500.txt"
+    },
+    {
+      "address": "00b8f4c0",
+      "suggested_name": "BSP_NodeAttachment_UnregisterModel",
+      "original_abi": "ECX attached owner; stack node; RET4.",
+      "contract": "Only when node+A0 equals this owner, erase first matching borrowed node from owner+178 via00B7BED0 and clear node+A0, including when no backlink was found. Mismatch is a no-op. Typed projection clears notification_context and its callback together so one shared CameraTransform represents the detached owner.",
+      "coverage": "complete identity-conditional body",
+      "code_identity": {
+        "length": 43,
+        "end_exclusive": "00b8f4eb",
+        "sha256": "ca18c16f36d1e99f1c0204d60fe12106af342f33d290e041088c6fbedc25bbb8",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b8f4c0 at 00b8f4c0\nSignature: undefined FUN_00b8f4c0(void)\nEntry: 00b8f4c0\nBody: 00b8f4c0 - 00b8f4ea",
+      "annotation_before": {
+        "address": "00b8f4c0",
+        "function_name": "FUN_00b8f4c0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Only when node+A0 equals this owner, erase first matching borrowed node from owner+178 via00B7BED0 and clear node+A0, including when no backlink was found. Mismatch is a no-op. Typed projection clears notification_context and its callback together so one shared CameraTransform represents the detached owner.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b8f4c0.txt"
+    },
+    {
+      "address": "00b750c0",
+      "suggested_name": "BSP_Model_Destroy",
+      "original_abi": "ECX model; no stack args; RET.",
+      "contract": "Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry.",
+      "coverage": "complete normal field release order plus bounded base destructor path",
+      "code_identity": {
+        "length": 165,
+        "end_exclusive": "00b75165",
+        "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b750c0 at 00b750c0\nSignature: undefined FUN_00b750c0(void)\nEntry: 00b750c0\nBody: 00b750c0 - 00b75164",
+      "annotation_before": {
+        "address": "00b750c0",
+        "function_name": "FUN_00b750c0"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b750c0.txt"
+    },
+    {
+      "address": "00b75290",
+      "suggested_name": "BSP_Model_DeletingDestructor",
+      "original_abi": "ECX model; stack delete flags; EAX original this; RET4.",
+      "contract": "Call00B750C0; if flags&1 return model storage via pool00B74750 with ECX global01090054; return original this. Generated vtable00D62DE8+4 points here; virtual0 uses already-reviewed00BD30E0 to invoke this entry with flag1. Native physical pool is the remaining explicit host storage-owner boundary.",
+      "coverage": "resolved deleting destructor and physical pool boundary",
+      "code_identity": {
+        "length": 32,
+        "end_exclusive": "00b752b0",
+        "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b75290 at 00b75290\nSignature: undefined FUN_00b75290(void)\nEntry: 00b75290\nBody: 00b75290 - 00b752af",
+      "annotation_before": {
+        "address": "00b75290",
+        "function_name": "FUN_00b75290"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Call00B750C0; if flags&1 return model storage via pool00B74750 with ECX global01090054; return original this. Generated vtable00D62DE8+4 points here; virtual0 uses already-reviewed00BD30E0 to invoke this entry with flag1. Native physical pool is the remaining explicit host storage-owner boundary.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b75290.txt"
+    },
+    {
+      "address": "00b74750",
+      "suggested_name": "BSP_ModelPool_ReturnSlot",
+      "original_abi": "ECX model pool; stack model pointer; RET4.",
+      "contract": "Under pool critical section+C, read model+184 block index, derive model slot from block-relative address with stride188h, append16-bit slot to block free indices+3100/count+3140 and lower pool first-free-block+34 if needed. Exact native pool layout and lock bookkeeping are not implemented; required GeneratedModelStorageOwner must actually delete or return the host allocation after known cleanup.",
+      "coverage": "evidence-only physical allocation boundary",
+      "code_identity": {
+        "length": 104,
+        "end_exclusive": "00b747b8",
+        "sha256": "9a77053d17b6c989e8646122edaff63be360e7aa171d8a3d15354a54d45fd627",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b74750 at 00b74750\nSignature: undefined FUN_00b74750(void)\nEntry: 00b74750\nBody: 00b74750 - 00b747b7",
+      "annotation_before": {
+        "address": "00b74750",
+        "function_name": "FUN_00b74750"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Under pool critical section+C, read model+184 block index, derive model slot from block-relative address with stride188h, append16-bit slot to block free indices+3100/count+3140 and lower pool first-free-block+34 if needed. Exact native pool layout and lock bookkeeping are not implemented; required GeneratedModelStorageOwner must actually delete or return the host allocation after known cleanup.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b74750.txt"
+    },
+    {
+      "address": "00b6f440",
+      "suggested_name": "BSP_Node_Destroy",
+      "original_abi": "ECX node; no stack args; RET.",
+      "contract": "UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free geometry-link array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568.",
+      "coverage": "bounded post-virtual18 terminal path; general direct destruction excluded",
+      "code_identity": {
+        "length": 297,
+        "end_exclusive": "00b6f569",
+        "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6f440 at 00b6f440\nSignature: undefined FUN_00b6f440(void)\nEntry: 00b6f440\nBody: 00b6f440 - 00b6f51d",
+      "annotation_before": {
+        "address": "00b6f440",
+        "function_name": "FUN_00b6f440"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free geometry-link array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568.",
+      "false_noreturn_free_continuations": [
+        {
+          "callsite": "00b6f519",
+          "continuation": "00b6f51e",
+          "instructions": [
+            "00b6f51e: mov eax, dword ptr [esi + 0x58]",
+            "00b6f521: add esp, 4",
+            "00b6f524: cmp eax, ebx",
+            "00b6f526: mov byte ptr [esp + 0x18], bl",
+            "00b6f52a: je 0xb6f542",
+            "00b6f52c: mov ecx, dword ptr [esi + 0x54]",
+            "00b6f52f: push 1",
+            "00b6f531: add ecx, 1",
+            "00b6f534: push ecx",
+            "00b6f535: push eax"
+          ]
+        }
+      ],
+      "full_raw_disassembly": "local/generated_model_raw_00b6f440.txt"
+    },
+    {
+      "address": "00b6ee10",
+      "suggested_name": "BSP_Node_RemoveMatchingScene",
+      "original_abi": "ECX node; stack expected scene and recurse byte; RET8.",
+      "contract": "If scene170 equals expected, remove typed registry membership00B83EC0 when nonnull, reload CURRENT scene after predicate/registry callbacks, publish node.scene=null BEFORE atomic release and virtual0 of current. A scene installed by terminal callback remains published. Then recurse live children through actual virtual54(expected,true), reloading next sibling after each call. Reuses actual shared SceneNodeAttachment/SceneAttachmentRuntime.",
+      "coverage": "complete identity/reentry/recursive detach body",
+      "code_identity": {
+        "length": 110,
+        "end_exclusive": "00b6ee7e",
+        "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6ee10 at 00b6ee10\nSignature: undefined FUN_00b6ee10(void)\nEntry: 00b6ee10\nBody: 00b6ee10 - 00b6ee7d",
+      "annotation_before": {
+        "address": "00b6ee10",
+        "function_name": "FUN_00b6ee10"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] If scene170 equals expected, remove typed registry membership00B83EC0 when nonnull, reload CURRENT scene after predicate/registry callbacks, publish node.scene=null BEFORE atomic release and virtual0 of current. A scene installed by terminal callback remains published. Then recurse live children through actual virtual54(expected,true), reloading next sibling after each call. Reuses actual shared SceneNodeAttachment/SceneAttachmentRuntime.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b6ee10.txt"
+    },
+    {
+      "address": "00b6e680",
+      "suggested_name": "BSP_Node_SetParent_Provisional",
+      "original_abi": "ECX node; stack parent; RET4.",
+      "contract": "Evidence dependency only: compare existing node+30 parent with argument at00B6E68B and jump to return00B6E747 on equality. Therefore base destructor setparent(null) has no side effects after00B6F310 clears parent. Remaining reparent/attachment/animation invalidation paths not reconstructed by this packet; keep interpretation provisional.",
+      "coverage": "only equality-return path used; wider body remains outside",
+      "code_identity": {
+        "length": 204,
+        "end_exclusive": "00b6e74c",
+        "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+        "pe_live_match": true
+      },
+      "prototype_before": "Function: FUN_00b6e680 at 00b6e680\nSignature: undefined FUN_00b6e680(void)\nEntry: 00b6e680\nBody: 00b6e680 - 00b6e74b",
+      "annotation_before": {
+        "address": "00b6e680",
+        "function_name": "FUN_00b6e680"
+      },
+      "proposed_plate_comment": "[BSP reconstruction] Evidence dependency only: compare existing node+30 parent with argument at00B6E68B and jump to return00B6E747 on equality. Therefore base destructor setparent(null) has no side effects after00B6F310 clears parent. Remaining reparent/attachment/animation invalidation paths not reconstructed by this packet; keep interpretation provisional.",
+      "false_noreturn_free_continuations": [],
+      "full_raw_disassembly": "local/generated_model_raw_00b6e680.txt"
+    }
+  ],
+  "generated_model_vtable": {
+    "address": "00d62de8",
+    "length": 92,
+    "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed",
+    "pe_live_match": true,
+    "entries": {
+      "00": "00bd30e0",
+      "04": "00b75290",
+      "18": "00b6f310",
+      "50": "00b6ed80",
+      "54": "00b6ee10"
+    }
+  },
+  "reviewed_dependencies": [
+    {
+      "address": "00bd30e0",
+      "name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "evidence": "Fresh disassembly confirms testECX; if nonnull push1 and invoke vtable+4; RET. Existing ledger name preserved."
+    },
+    {
+      "address": "00b83ec0",
+      "name": "BSP_Scene_RemoveNodeIfType",
+      "evidence": "Existing reconstructed scene registry/type removal reused through SceneAttachmentRuntime; no replacement/no-op callback."
+    }
+  ],
+  "validation": {
+    "strict_win32_compile": "passed MSVC19.51 x86 C++17 /O2 /MD /W4 /WX /fp:strict",
+    "focused_lifetime_check": "passed one ignored local fixture: parent refs2 with child refs1, actual geometry owner and scene refs, backlink swap-last removals, recursive terminal child disposal, preserved count/capacity, byte44 repeat gate, live parent scene/geometry until last ref,174/180/130/scene/null-before-zero/name/storage order, exact pooled-name extent, actual storage deletion and detached scene association rebinding",
+    "repository_build": "scripts/build.ps1 passed on baseline6262831; two existing CTests passed. Owned new source compiled separately because primary owns CMake integration.",
+    "native_seed_verification": "all eight existing seed ranges match installed PE",
+    "abi_drop_in": false,
+    "native_differential_model_lifetime": false,
+    "game_validated": false
+  },
+  "limits": [
+    "New typed C++ ownership/storage API, not an original object overlay, vtable or drop-in binary ABI.",
+    "Construction consumes explicit positive reference count, byte44 and actual already-retained owner fields; this packet does not infer native constructors/default identities.",
+    "Every traversed child and nonnull+A0 owner needs an actual runtime association; missing associations terminate instead of falling back to no-op dispatch.",
+    "Terminal destructor covers the hierarchy-cleared path after virtual18. General direct destruction, reparent/animation paths and terminal callbacks that rebuild dying hierarchy or scene are excluded.",
+    "Native physical model pool layout/critical section and diagnostic size-class allocator remain outside; required real storage owner and supplied memory_resource perform actual host storage disposal.",
+    "No claim for corrupt/negative arrays, byte overflow, allocation failure or Win32 exception unwinding."
+  ],
+  "primary_integration": "Primary adds CMake, actual probe/model construction and storage-owner adapter, ledger/name/comment updates and false-free disassembly repairs. Worker files are restricted to module header/source, focused documentation and this audit."
+}

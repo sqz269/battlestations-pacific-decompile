@@ -1,0 +1,810 @@
+{
+  "schema_version": 1,
+  "packet": "camera_frame_state",
+  "captured_utc": "2026-09-10T04:40:00.806863+00:00",
+  "source": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live CLI query verifies project, program, language and image base"
+  },
+  "functions": [
+    {
+      "address": "00b71360",
+      "body_end": "00b713c5",
+      "length": 102,
+      "range_sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b71360 at 00b71360",
+        "Signature: undefined FUN_00b71360(void)",
+        "Entry: 00b71360",
+        "Body: 00b71360 - 00b713c5"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b71360",
+          "annotation": {
+            "address": "00b71360",
+            "function_name": "FUN_00b71360"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Camera_ExecuteFrameCommand",
+      "original_abi": "ECX camera; RET",
+      "evidence": "Camera enabled byte+17C gates renderer vtable+A0 prepare,+A4 borrowed viewport,+08 Clear in that order. Clear receives0,null,flags+188,&color+190,depth+18C,stencil+194.",
+      "proposed_plate_comment": "[BSP reconstruction] Camera enabled byte+17C gates renderer vtable+A0 prepare,+A4 borrowed viewport,+08 Clear in that order. Clear receives0,null,flags+188,&color+190,depth+18C,stencil+194. Original ABI: ECX camera; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b285a0",
+      "body_end": "00b287bf",
+      "length": 544,
+      "range_sha256": "27a20b51491a9f478eaabd0354c1663f3a2266a46c1ed3c502e10b8e962e72d3",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": true,
+      "prototype_preimage": [
+        "No function found for 00b285a0",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00b285a0'})"
+      ],
+      "annotation_preimage": {
+        "function_exists": false,
+        "plate_comment_unavailable": "No function at address"
+      },
+      "proposed_name": "BSP_Renderer_PrepareCamera",
+      "original_abi": "ECX renderer; stack camera; RET4",
+      "evidence": "No outer guard. Set state152=0; refresh inverseVP/frustum; copy140h record bytes then count. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34.",
+      "proposed_plate_comment": "[BSP reconstruction] No outer guard. Set state152=0; refresh inverseVP/frustum; copy140h record bytes then count. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34. Original ABI: ECX renderer; stack camera; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b26770",
+      "body_end": "00b26891",
+      "length": 290,
+      "range_sha256": "e809c00b233f28a473d8d0fd03aaf7b2cfb8753ba482227a09bde9e46a2308d9",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": true,
+      "prototype_preimage": [
+        "No function found for 00b26770",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00b26770'})"
+      ],
+      "annotation_preimage": {
+        "function_exists": false,
+        "plate_comment_unavailable": "No function at address"
+      },
+      "proposed_name": "BSP_Renderer_BindViewport",
+      "original_abi": "ECX renderer; stack viewport; RET4",
+      "evidence": "Guard precedes viewport reads. SetViewport with XY/WH getters and Z0..1, increment+1BD0, store borrowed viewport+1904. Set state174 from exact+20 byte, reread byte, optional SetScissorRect(+24). Ignores COM failures.",
+      "proposed_plate_comment": "[BSP reconstruction] Guard precedes viewport reads. SetViewport with XY/WH getters and Z0..1, increment+1BD0, store borrowed viewport+1904. Set state174 from exact+20 byte, reread byte, optional SetScissorRect(+24). Ignores COM failures. Original ABI: ECX renderer; stack viewport; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b21430",
+      "body_end": "00b214da",
+      "length": 171,
+      "range_sha256": "feb08653e3f8a8dae18d4a332315ae9038d351afcd32837cf0fe113c5ef859cf",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": true,
+      "prototype_preimage": [
+        "No function found for 00b21430",
+        "(signature unavailable: get_function_signature: {'error': 'No function at address: 00b21430'})"
+      ],
+      "annotation_preimage": {
+        "function_exists": false,
+        "plate_comment_unavailable": "No function at address"
+      },
+      "proposed_name": "BSP_Renderer_Clear",
+      "original_abi": "ECX renderer; stack count,rectangles,flags,color_ptr,depth,stencil; RET18",
+      "evidence": "Zero flags skip guard/color dereference/COM/counter. Otherwise guarded device Clear with original six arguments, dereferenced color and x87-spilled depth; increment+1BD4 after attempted call regardless of HRESULT.",
+      "proposed_plate_comment": "[BSP reconstruction] Zero flags skip guard/color dereference/COM/counter. Otherwise guarded device Clear with original six arguments, dereferenced color and x87-spilled depth; increment+1BD4 after attempted call regardless of HRESULT. Original ABI: ECX renderer; stack count,rectangles,flags,color_ptr,depth,stencil; RET18. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b70510",
+      "body_end": "00b7054c",
+      "length": 61,
+      "range_sha256": "17ffebc0e45274aaea899ae6264f8d11bc8e31bc7037348e2d0d6dcd63f3026f",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b70510 at 00b70510",
+        "Signature: undefined FUN_00b70510(void)",
+        "Entry: 00b70510",
+        "Body: 00b70510 - 00b7054c"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b70510",
+          "annotation": {
+            "address": "00b70510",
+            "function_name": "FUN_00b70510"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Camera_GetInverseViewProjection",
+      "original_abi": "ECX camera; EAX matrix pointer; RET",
+      "evidence": "Projection flag20 gates general inverse of current VP, x87 matrix copy to+260, then set flag20. Returns cached matrix.",
+      "proposed_plate_comment": "[BSP reconstruction] Projection flag20 gates general inverse of current VP, x87 matrix copy to+260, then set flag20. Returns cached matrix. Original ABI: ECX camera; EAX matrix pointer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b70710",
+      "body_end": "00b70754",
+      "length": 69,
+      "range_sha256": "699e34ca84fb9a530aa33d05869275ff1a1f7f707a6c7898ebb09f5eba1a7a46",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b70710 at 00b70710",
+        "Signature: undefined FUN_00b70710(void)",
+        "Entry: 00b70710",
+        "Body: 00b70710 - 00b70754"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b70710",
+          "annotation": {
+            "address": "00b70710",
+            "function_name": "FUN_00b70710"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Camera_GetFrustum",
+      "original_abi": "ECX camera; EAX plane-set pointer; RET",
+      "evidence": "If flag4 missing, publish flag4 before currentVP getter, extract six planes, assign with flags7. Neither this function nor six-plane assignment changes plane count.",
+      "proposed_plate_comment": "[BSP reconstruction] If flag4 missing, publish flag4 before currentVP getter, extract six planes, assign with flags7. Neither this function nor six-plane assignment changes plane count. Original ABI: ECX camera; EAX plane-set pointer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b250b0",
+      "body_end": "00b25209",
+      "length": 346,
+      "range_sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b250b0 at 00b250b0",
+        "Signature: undefined FUN_00b250b0(void)",
+        "Entry: 00b250b0",
+        "Body: 00b250b0 - 00b25209"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b250b0",
+          "annotation": {
+            "address": "00b250b0",
+            "function_name": "FUN_00b250b0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_PlaneSet_CopyInlineRecords",
+      "original_abi": "ECX destination; stack source; RET4; copies exactly140h bytes",
+      "evidence": "Copies exactly320 inline bytes from source to destination; caller00b285a0 separately copies count at+140.",
+      "proposed_plate_comment": "[BSP reconstruction] Copies exactly320 inline bytes from source to destination; caller00b285a0 separately copies count at+140. Original ABI: ECX destination; stack source; RET4; copies exactly140h bytes. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b65080",
+      "body_end": "00b65086",
+      "length": 7,
+      "range_sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: TRIV_body_00b65080 at 00b65080",
+        "Signature: undefined TRIV_body_00b65080(void)",
+        "Entry: 00b65080",
+        "Body: 00b65080 - 00b65086"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b65080",
+          "annotation": {
+            "address": "00b65080",
+            "function_name": "TRIV_body_00b65080"
+          }
+        }
+      ],
+      "proposed_name": "BSP_PlaneSet_GetCount",
+      "original_abi": "ECX plane set; EAX count; RET",
+      "evidence": "Returns DWORD plane count at+140.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns DWORD plane count at+140. Original ABI: ECX plane set; EAX count; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b656f0",
+      "body_end": "00b656fc",
+      "length": 13,
+      "range_sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b656f0 at 00b656f0",
+        "Signature: undefined FUN_00b656f0(void)",
+        "Entry: 00b656f0",
+        "Body: 00b656f0 - 00b656fc"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b656f0",
+          "annotation": {
+            "address": "00b656f0",
+            "function_name": "FUN_00b656f0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_PlaneSet_GetPlane",
+      "original_abi": "ECX plane set; stack index; EAX plane pointer; RET4",
+      "evidence": "Returns plane-record address base+index*20.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns plane-record address base+index*20. Original ABI: ECX plane set; stack index; EAX plane pointer; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b65700",
+      "body_end": "00b6570d",
+      "length": 14,
+      "range_sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b65700 at 00b65700",
+        "Signature: undefined FUN_00b65700(void)",
+        "Entry: 00b65700",
+        "Body: 00b65700 - 00b6570d"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b65700",
+          "annotation": {
+            "address": "00b65700",
+            "function_name": "FUN_00b65700"
+          }
+        }
+      ],
+      "proposed_name": "BSP_PlaneSet_GetFlags",
+      "original_abi": "ECX plane set; stack index; EAX flags; RET4",
+      "evidence": "Returns DWORD flags at base+index*20+16.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns DWORD flags at base+index*20+16. Original ABI: ECX plane set; stack index; EAX flags; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b65ba0",
+      "body_end": "00b65c20",
+      "length": 129,
+      "range_sha256": "0ec82737b38f39af0df1f24136c01ceaf60356656df01fe37b6e84d2330d4363",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b65ba0 at 00b65ba0",
+        "Signature: undefined FUN_00b65ba0(void)",
+        "Entry: 00b65ba0",
+        "Body: 00b65ba0 - 00b65c20"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b65ba0",
+          "annotation": {
+            "address": "00b65ba0",
+            "function_name": "FUN_00b65ba0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Plane_Transform",
+      "original_abi": "ECX source plane; stack destination,matrix; EAX destination; RET8",
+      "evidence": "Copies source float4 bits to temporary, calls00b62d10 with distinct temporary destination, then copies result bits to destination. Aliasing supported.",
+      "proposed_plate_comment": "[BSP reconstruction] Copies source float4 bits to temporary, calls00b62d10 with distinct temporary destination, then copies result bits to destination. Aliasing supported. Original ABI: ECX source plane; stack destination,matrix; EAX destination; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b23e50",
+      "body_end": "00b23ef5",
+      "length": 166,
+      "range_sha256": "55251f22050632ec9a39f361a2d24f6d3ac8c3fe87a38f759c2e085d0bd1cc8f",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b23e50 at 00b23e50",
+        "Signature: undefined FUN_00b23e50(void)",
+        "Entry: 00b23e50",
+        "Body: 00b23e50 - 00b23ef5"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b23e50",
+          "annotation": {
+            "address": "00b23e50",
+            "function_name": "FUN_00b23e50"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Renderer_SetClipPlane",
+      "original_abi": "ECX renderer; stack index,float4; RET8",
+      "evidence": "Optional shared renderer guard. Copies four raw words into renderer+190C+index*16 before device SetClipPlane(vtable+DC). HRESULT ignored.",
+      "proposed_plate_comment": "[BSP reconstruction] Optional shared renderer guard. Copies four raw words into renderer+190C+index*16 before device SetClipPlane(vtable+DC). HRESULT ignored. Original ABI: ECX renderer; stack index,float4; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b632d0",
+      "body_end": "00b63b27",
+      "length": 2136,
+      "range_sha256": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b632d0 at 00b632d0",
+        "Signature: undefined FUN_00b632d0(void)",
+        "Entry: 00b632d0",
+        "Body: 00b632d0 - 00b63b27"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b632d0",
+          "annotation": {
+            "address": "00b632d0",
+            "function_name": "FUN_00b632d0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Matrix4f_InvertGeneral",
+      "original_abi": "ECX destination; EDX source; EAX destination; RET",
+      "evidence": "General4x4 Gauss-Jordan inversion: snapshot source before identity destination, native pivot selection and row swaps, x87 float spills and SSE comparison/subtraction. No singularity guard. Private reassembled typed kernel preserves instruction schedule.",
+      "proposed_plate_comment": "[BSP reconstruction] General4x4 Gauss-Jordan inversion: snapshot source before identity destination, native pivot selection and row swaps, x87 float spills and SSE comparison/subtraction. No singularity guard. Private reassembled typed kernel preserves instruction schedule. Original ABI: ECX destination; EDX source; EAX destination; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b84c60",
+      "body_end": "00b84c63",
+      "length": 4,
+      "range_sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: TRIV_body_00b84c60 at 00b84c60",
+        "Signature: undefined TRIV_body_00b84c60(void)",
+        "Entry: 00b84c60",
+        "Body: 00b84c60 - 00b84c63"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b84c60",
+          "annotation": {
+            "address": "00b84c60",
+            "function_name": "TRIV_body_00b84c60"
+          }
+        }
+      ],
+      "proposed_name": "BSP_AmbientLight_GetColor",
+      "original_abi": "ECX ambient light; EAX object+08; RET",
+      "evidence": "Returns object+08 float4. Ambient semantic name follows camera+184 caller; constructor remains outside this packet.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns object+08 float4. Ambient semantic name follows camera+184 caller; constructor remains outside this packet. Original ABI: ECX ambient light; EAX object+08; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "004fb850",
+      "body_end": "004fb8ee",
+      "length": 159,
+      "range_sha256": "1de65b996e750df4ce8b0a1a9d3589e699a1818f6e01790a2ac2957e5f2ca4c5",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_004fb850 at 004fb850",
+        "Signature: undefined FUN_004fb850(void)",
+        "Entry: 004fb850",
+        "Body: 004fb850 - 004fb8ee"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "004fb850",
+          "annotation": {
+            "address": "004fb850",
+            "function_name": "FUN_004fb850"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Color_ConvertFloatRgbaToArgb",
+      "original_abi": "ECX destination color; stack source float4; EAX destination; RET4",
+      "evidence": "Scale each RGBA float by double255.0(00CE4B48), call runtime-selected extended-ST0 truncation00BF7420, clamp signed low32 to0..255, write R/G/B/A to bytes2/1/0/3.",
+      "proposed_plate_comment": "[BSP reconstruction] Scale each RGBA float by double255.0(00CE4B48), call runtime-selected extended-ST0 truncation00BF7420, clamp signed low32 to0..255, write R/G/B/A to bytes2/1/0/3. Original ABI: ECX destination color; stack source float4; EAX destination; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b1f730",
+      "body_end": "00b1f733",
+      "length": 4,
+      "range_sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: TRIV_body_00b1f730 at 00b1f730",
+        "Signature: undefined TRIV_body_00b1f730(void)",
+        "Entry: 00b1f730",
+        "Body: 00b1f730 - 00b1f733"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b1f730",
+          "annotation": {
+            "address": "00b1f730",
+            "function_name": "TRIV_body_00b1f730"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Viewport_GetOrigin",
+      "original_abi": "ECX viewport; EAX object+08; RET",
+      "evidence": "Returns viewport wrapper+08 DWORD XY.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns viewport wrapper+08 DWORD XY. Original ABI: ECX viewport; EAX object+08; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b1f740",
+      "body_end": "00b1f743",
+      "length": 4,
+      "range_sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: TRIV_body_00b1f740 at 00b1f740",
+        "Signature: undefined TRIV_body_00b1f740(void)",
+        "Entry: 00b1f740",
+        "Body: 00b1f740 - 00b1f743"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b1f740",
+          "annotation": {
+            "address": "00b1f740",
+            "function_name": "TRIV_body_00b1f740"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Viewport_GetSize",
+      "original_abi": "ECX viewport; EAX object+10; RET",
+      "evidence": "Returns viewport wrapper+10 DWORD WH.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns viewport wrapper+10 DWORD WH. Original ABI: ECX viewport; EAX object+10; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b1f7d0",
+      "body_end": "00b1f7d3",
+      "length": 4,
+      "range_sha256": "e2716ac6dcee970cd16c7522928d79654211f8657ccbbba4bc89f0a7ceb4c3c2",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: TRIV_body_00b1f7d0 at 00b1f7d0",
+        "Signature: undefined TRIV_body_00b1f7d0(void)",
+        "Entry: 00b1f7d0",
+        "Body: 00b1f7d0 - 00b1f7d3"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b1f7d0",
+          "annotation": {
+            "address": "00b1f7d0",
+            "function_name": "TRIV_body_00b1f7d0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Viewport_GetScissorEnabled",
+      "original_abi": "ECX viewport; AL object+20 byte; RET",
+      "evidence": "Returns exact byte at viewport wrapper+20 in AL.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns exact byte at viewport wrapper+20 in AL. Original ABI: ECX viewport; AL object+20 byte; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b1f7b0",
+      "body_end": "00b1f7b3",
+      "length": 4,
+      "range_sha256": "4f2f5aebc83e057a70bdaddfb7545120a3e11bcdaa823c1def1422f8768ac3ed",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: TRIV_body_00b1f7b0 at 00b1f7b0",
+        "Signature: undefined TRIV_body_00b1f7b0(void)",
+        "Entry: 00b1f7b0",
+        "Body: 00b1f7b0 - 00b1f7b3"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b1f7b0",
+          "annotation": {
+            "address": "00b1f7b0",
+            "function_name": "TRIV_body_00b1f7b0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Viewport_GetScissorRect",
+      "original_abi": "ECX viewport; EAX object+24; RET",
+      "evidence": "Returns viewport wrapper+24 RECT.",
+      "proposed_plate_comment": "[BSP reconstruction] Returns viewport wrapper+24 RECT. Original ABI: ECX viewport; EAX object+24; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b653f0",
+      "body_end": "00b65557",
+      "length": 360,
+      "range_sha256": "b0903b45985f724d124508411960cc54d213b0ccf31782bd799503f5c9273ec0",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b653f0 at 00b653f0",
+        "Signature: undefined FUN_00b653f0(void)",
+        "Entry: 00b653f0",
+        "Body: 00b653f0 - 00b65557"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b653f0",
+          "annotation": {
+            "address": "00b653f0",
+            "function_name": "FUN_00b653f0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Frustum_ExtractAndNormalize",
+      "original_abi": "ECX destination six planes; stack matrix; EAX destination; RET4",
+      "evidence": "Extract columns3+0,3-0,3-1,3+1,2*2,3-2; each float stored, D negated with SSE negative-zero subtraction, normalize each plane through00b650b0.",
+      "proposed_plate_comment": "[BSP reconstruction] Extract columns3+0,3-0,3-1,3+1,2*2,3-2; each float stored, D negated with SSE negative-zero subtraction, normalize each plane through00b650b0. Original ABI: ECX destination six planes; stack matrix; EAX destination; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b658e0",
+      "body_end": "00b6598a",
+      "length": 171,
+      "range_sha256": "c565808bfd1a03115ee448f82ae5c447f118e292e998797730ebf68816dab4a8",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b658e0 at 00b658e0",
+        "Signature: undefined FUN_00b658e0(void)",
+        "Entry: 00b658e0",
+        "Body: 00b658e0 - 00b6598a"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b658e0",
+          "annotation": {
+            "address": "00b658e0",
+            "function_name": "FUN_00b658e0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_PlaneSet_AssignSixFrustumPlanes",
+      "original_abi": "ECX plane set; stack six-plane pointer, DWORD flags; RET8; count unchanged",
+      "evidence": "Copy six coefficient float4s into20-byte records via FLD/FSTP and assign each record supplied DWORD flags. Does not change count.",
+      "proposed_plate_comment": "[BSP reconstruction] Copy six coefficient float4s into20-byte records via FLD/FSTP and assign each record supplied DWORD flags. Does not change count. Original ABI: ECX plane set; stack six-plane pointer, DWORD flags; RET8; count unchanged. See docs/CAMERA_FRAME_STATE.md."
+    },
+    {
+      "address": "00b650b0",
+      "body_end": "00b65106",
+      "length": 87,
+      "range_sha256": "8be4e359b99f4e599f3d102878dd84332307878dfe237bc3622f014699951f18",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b650b0 at 00b650b0",
+        "Signature: undefined FUN_00b650b0(void)",
+        "Entry: 00b650b0",
+        "Body: 00b650b0 - 00b65106"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b650b0",
+          "annotation": {
+            "address": "00b650b0",
+            "function_name": "FUN_00b650b0"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Plane_Normalize",
+      "original_abi": "ECX plane; EAX plane; RET",
+      "evidence": "Get normal3f length00419440, store float, use stored1/length only if greater than zero, otherwise positive zero (including unordered); x87 multiply all4 coefficients by stored reciprocal.",
+      "proposed_plate_comment": "[BSP reconstruction] Get normal3f length00419440, store float, use stored1/length only if greater than zero, otherwise positive zero (including unordered); x87 multiply all4 coefficients by stored reciprocal. Original ABI: ECX plane; EAX plane; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b62d10",
+      "body_end": "00b62dc7",
+      "length": 184,
+      "range_sha256": "bff9fed3d6c782b47de1bef6a6f44cdfd676bc2636fefd1f5e715b352b70cf5d",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b62d10 at 00b62d10",
+        "Signature: undefined FUN_00b62d10(void)",
+        "Entry: 00b62d10",
+        "Body: 00b62d10 - 00b62dc7"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b62d10",
+          "annotation": {
+            "address": "00b62d10",
+            "function_name": "FUN_00b62d10"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Vector4f_Transform",
+      "original_abi": "ECX source vector; stack destination,matrix; EAX destination; RET8",
+      "evidence": "Snapshot source float4 via x87 stores; native row-vector matrix multiplication with original extended intermediates and final float stores. ECX source, stack destination then matrix.",
+      "proposed_plate_comment": "[BSP reconstruction] Snapshot source float4 via x87 stores; native row-vector matrix multiplication with original extended intermediates and final float stores. ECX source, stack destination then matrix. Original ABI: ECX source vector; stack destination,matrix; EAX destination; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00419440",
+      "body_end": "004194a1",
+      "length": 98,
+      "range_sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: BSP_Vector3f_Length at 00419440",
+        "Signature: undefined BSP_Vector3f_Length(void)",
+        "Entry: 00419440",
+        "Body: 00419440 - 004194a1"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00419440",
+          "annotation": {
+            "address": "00419440",
+            "function_name": "BSP_Vector3f_Length",
+            "comment": "[BSP reconstruction 00419440]\nStores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+          }
+        }
+      ],
+      "proposed_name": null,
+      "original_abi": "ECX vector3f; ST0 binary32 length; RET",
+      "evidence": "Existing BSP_Vector3f_Length name preserved. Typed finite nonnegative square-root core reused with exact native input/result spills. Full CRT exceptional diagnostics, other CW and status parity remain outside scope.",
+      "proposed_plate_comment": "[BSP reconstruction] Existing BSP_Vector3f_Length name preserved. Typed finite nonnegative square-root core reused with exact native input/result spills. Full CRT exceptional diagnostics, other CW and status parity remain outside scope. Original ABI: ECX vector3f; ST0 binary32 length; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00bf7420",
+      "body_end": "00bf743b",
+      "length": 28,
+      "range_sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: LIBCRT_unmatched_00bf7420 at 00bf7420",
+        "Signature: undefined LIBCRT_unmatched_00bf7420(void)",
+        "Entry: 00bf7420",
+        "Body: 00bf7420 - 00bf743b"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00bf7420",
+          "annotation": {
+            "address": "00bf7420",
+            "function_name": "LIBCRT_unmatched_00bf7420",
+            "comment": "[BSP inventory 00bf7420] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+          }
+        }
+      ],
+      "proposed_name": null,
+      "original_abi": "ST0 extended input; EAX int32 on SSE2 path, EDX:EAX int64 otherwise; pops ST0; RET",
+      "evidence": "Runtime DWORD0109EEA4 nonzero selects FSTP double plus CVTTSD2SI EAX; zero tail-branches to00BF7456. Explicit host bool projects actual runtime mode.",
+      "proposed_plate_comment": "[BSP reconstruction] Runtime DWORD0109EEA4 nonzero selects FSTP double plus CVTTSD2SI EAX; zero tail-branches to00BF7456. Explicit host bool projects actual runtime mode. Original ABI: ST0 extended input; EAX int32 on SSE2 path, EDX:EAX int64 otherwise; pops ST0; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00bf7456",
+      "body_end": "00bf74ca",
+      "length": 117,
+      "range_sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: LIBCRT_unmatched_00bf7456 at 00bf7456",
+        "Signature: undefined LIBCRT_unmatched_00bf7456(void)",
+        "Entry: 00bf7456",
+        "Body: 00bf7456 - 00bf74ca"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00bf7456",
+          "annotation": {
+            "address": "00bf7456",
+            "function_name": "LIBCRT_unmatched_00bf7456",
+            "comment": "[BSP inventory 00bf7456] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+          }
+        }
+      ],
+      "proposed_name": null,
+      "original_abi": "ST0 extended input; EDX:EAX signed64 truncation; pops ST0; RET",
+      "evidence": "Shared primary-owned CRT helper; existing library name preserved. Private complete kernel supports extended-ST0 ambient inputs and preserves original x87 truncation schedule; do not replace with binary32-only batch-depth converter.",
+      "proposed_plate_comment": "[BSP reconstruction] Shared primary-owned CRT helper; existing library name preserved. Private complete kernel supports extended-ST0 ambient inputs and preserves original x87 truncation schedule; do not replace with binary32-only batch-depth converter. Original ABI: ST0 extended input; EDX:EAX signed64 truncation; pops ST0; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b25040",
+      "body_end": "00b2507d",
+      "length": 62,
+      "range_sha256": "5daab62f5f54411e0e483afb0a61fef710decd85451de081a88db0fe2f8335b6",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b25040 at 00b25040",
+        "Signature: undefined FUN_00b25040(void)",
+        "Entry: 00b25040",
+        "Body: 00b25040 - 00b2507d"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b25040",
+          "annotation": {
+            "address": "00b25040",
+            "function_name": "FUN_00b25040"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Renderer_AppendClipPlane",
+      "original_abi": "ECX renderer; stack float4; RET4",
+      "evidence": "Set plane at active+19EC through00b23e50, increment active, set state152 lowbit mask with x86 shiftcount31. Pending unchanged.",
+      "proposed_plate_comment": "[BSP reconstruction] Set plane at active+19EC through00b23e50, increment active, set state152 lowbit mask with x86 shiftcount31. Pending unchanged. Original ABI: ECX renderer; stack float4; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    },
+    {
+      "address": "00b25080",
+      "body_end": "00b250ad",
+      "length": 46,
+      "range_sha256": "80bd47dc93317203b0cd457e56aa947c6e622fddbbe3e1ebe0f6072321af5c2f",
+      "bytes_match_installed_pe": true,
+      "ghidra_function_missing": false,
+      "prototype_preimage": [
+        "Function: FUN_00b25080 at 00b25080",
+        "Signature: undefined FUN_00b25080(void)",
+        "Entry: 00b25080",
+        "Body: 00b25080 - 00b250ad"
+      ],
+      "annotation_preimage": [
+        {
+          "address": "00b25080",
+          "annotation": {
+            "address": "00b25080",
+            "function_name": "FUN_00b25080"
+          }
+        }
+      ],
+      "proposed_name": "BSP_Renderer_RestorePendingClipPlanes",
+      "original_abi": "ECX renderer; RET",
+      "evidence": "Set state152 lowbit mask from pending+19F0 with x86 shiftcount31, then copy pending to active+19EC.",
+      "proposed_plate_comment": "[BSP reconstruction] Set state152 lowbit mask from pending+19F0 with x86 shiftcount31, then copy pending to active+19EC. Original ABI: ECX renderer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI."
+    }
+  ],
+  "data_ranges": [
+    {
+      "address": "00d7a208",
+      "length": 4,
+      "hex": "00000080",
+      "bytes_match_installed_pe": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "hex": "0000803f",
+      "bytes_match_installed_pe": true
+    },
+    {
+      "address": "00ce4b48",
+      "length": 8,
+      "hex": "0000000000e06f40",
+      "bytes_match_installed_pe": true
+    },
+    {
+      "address": "00d5f0a8",
+      "length": 168,
+      "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100a064b200e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200b088b200b019b300c01ab3005022b300b015b200403db200c015b200e014b200101fb200d015b20070a0b20080a3b200a0a5b200a0a9b200704eb200c001b200a085b2007067b200",
+      "bytes_match_installed_pe": true
+    }
+  ],
+  "verification": {
+    "ghidra_function_ranges": 28,
+    "ghidra_function_bytes": 5380,
+    "all_match_installed_pe": true,
+    "scoped_compilation": "MSVC Win32 C++17 /W4 /WX /MD /fp:strict passed for both /Od and /O2 source; focused probe uses /Od /RTC1.",
+    "native_numerical_comparisons": 38,
+    "native_numerical_failures": 0,
+    "numerical_scope": "Three fixed matrices including identity, row pivot and precision-sensitive dense case; CW007F/027F; inverse+alias, plane transform+alias, six frustum planes with established finite FSQRT reference core; two RGBA cases across both runtime truncation modes including negative/large/NaN/infinity channels.",
+    "native_reference": "Isolated unchanged installed-PE function bytes relocated only at verified data/call references. CRT sqrt call uses explicit finite-core FSQRT boundary; no executable loading or game process interaction.",
+    "device_probe": "Passed actual D3D9StateCache nested guard depths, viewport borrowed identity/fields and attempted-call count, scissor byte exact value/re-read, zero Clear skip with null color, failed Clear counter, enabled command ordering, frustum count/later-record preservation, two selected clips, active append and pending restore, cached frustum skip.",
+    "repository_build": "scripts/build.ps1 after ghidra_export.py verify-seeds passed reconstructed_math and native_math_differential (2/2); primary owns new source CMake registration, so scoped compile is the new-source proof.",
+    "validation_log": "local/camera_scoped_validation.log (ignored focused probe)",
+    "game_validated": false,
+    "native_layout_abi_compatible": false
+  },
+  "limitations": [
+    "New typed interfaces are not native object layouts or drop-in ABI replacements.",
+    "One stable camera companion and one stable renderer companion must be retained; native global renderer replacement between command calls is not modeled.",
+    "Plane set count must not exceed16; transformed clip slots must remain below14 and actual D3D9 capabilities.",
+    "Finite nonnegative CRT square-root core reconstructed; exceptional CRT diagnostics remain open.",
+    "Original constructors, intrusive ambient/viewport wrappers and game validation remain outside this packet."
+  ],
+  "shared_dependency_ownership": {
+    "00bf7456": "Primary main:frame_bounds_integration retained ownership and explicitly authorized read-only bytes/private kernel review. Worker made no Ghidra/ledger mutation."
+  },
+  "artifacts": {
+    "include/bsp/camera_frame_state.hpp": "26abed358f7986da728ab0fa679e127ca5c688a8a92db6a5df47d8f0b9be7a24",
+    "src/camera_frame_state.cpp": "9600e1235033ba446df7d81385142af00383186b7c803ac394938684dd5f1134",
+    "docs/CAMERA_FRAME_STATE.md": "fc49ffa85884f52f454abcca8a77c4604626d849b38ff5da668000a5dc083f75"
+  },
+  "artifact_hash_normalization": "UTF-8 file bytes with CRLF normalized to LF, matching Git text content."
+}
