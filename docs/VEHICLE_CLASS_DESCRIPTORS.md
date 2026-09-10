@@ -367,3 +367,7 @@ them before applying names. They were read with `disasm-raw` and none was claime
 The one behavioural divergence, marked in the source: on a null allocation the native carries the
 null descriptor into the tail and dereferences it, while the reconstruction stops and reports
 `AllocationFailed`.
+
+## Correction from docs/VEHICLE_CLASS_FIELDS.md
+
+Vtable slot +8h, the field reader `00960230`, is `__thiscall(descriptor, LuaObject* row)`, `RET 4`: its argument is the Lua row object itself, not a native-string out-parameter. It first calls the shared pre-reader `0087ca80`, which attributes +34h, +40h, +48h, +4Ch and +54h; the base reader's 68 key sites map to +80h..+134h. The installed `vehicleclasses.lua` has 342 distinct key paths, 231 consumed by some reader, 17 expected but never provided, 108 shipped but unread; the file balances only if `--[[` comments nest, which Lua 5.1.1 does not do, so the game likely loads a preprocessed chunk.
