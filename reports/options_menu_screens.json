@@ -1,0 +1,231 @@
+{
+  "packet": "options_menu_screens",
+  "owner": "agent/options-screens",
+  "doc": "docs/OPTIONS_MENU_SCREENS.md",
+  "summary": "The three front-end screens the options manager at 00E198B8 constructs into +40h, +44h and +48h: the options screen (005F6030, id 0Dh), the gamepad layout screen (00527D00, id 0Eh) and the keyboard/mouse screen (00555770, id 0Fh). Records their vtables, virtuals, field layouts, the 00E19650 page state, the row-to-field settings model of the options screen, the input actions that drive it and the reset/apply/cancel commands.",
+  "screens": [
+    {
+      "manager_field_offset": 64,
+      "constructor": "005f6030",
+      "object_size": 624,
+      "screen_id": 13,
+      "interface_id": 12,
+      "primary_vtable": "00cf3974",
+      "secondary_vtable_08": "00cf3960",
+      "secondary_vtable_0c": "00cf3940",
+      "id_leaf": "005f1ca0",
+      "gui_pages": ["_Options", "FE_options"],
+      "gui_page_fields": ["+7Ch", "+80h"],
+      "virtuals": {
+        "destroy_0c": "005f3b30",
+        "register_10": "005f0250",
+        "bind_14": "005f1cc0",
+        "enter_18": "005f5bd0",
+        "exit_1c": "005f7020",
+        "update_20": "005f7310",
+        "dependencies_24": "005f6000"
+      },
+      "notes": "Constructor mallocs a 10-byte storage buffer into +26Ch and stores its size 10 at +70h. Calls 008D7710 twice before touching fields; those two sub-objects were not read."
+    },
+    {
+      "manager_field_offset": 68,
+      "constructor": "00527d00",
+      "object_size": 48,
+      "screen_id": 14,
+      "interface_id": 13,
+      "primary_vtable": "00cecf48",
+      "secondary_vtable_08": "00cecf34",
+      "secondary_vtable_0c": "00cecf14",
+      "id_leaf": "00527d30",
+      "gui_pages": ["FE_controls_X360_listbox", "FE_controls_X360"],
+      "gui_page_fields": ["+10h", "+14h"],
+      "virtuals": {
+        "destroy_0c": "00527e40",
+        "register_10": "00527e60",
+        "bind_14": "00527f90",
+        "enter_18": "00528240",
+        "exit_1c": "00528920",
+        "update_20": "005289b0",
+        "dependencies_24": "00528a60"
+      },
+      "notes": "Payload setter 00527C80 writes four control bools into +28h..+2Bh and sets +2Ch. Update 005289B0 pushes interface 0Ch on action 4Bh, returning to screen 0Dh."
+    },
+    {
+      "manager_field_offset": 72,
+      "constructor": "00555770",
+      "object_size": 592,
+      "screen_id": 15,
+      "interface_id": 14,
+      "primary_vtable": "00cee524",
+      "secondary_vtable_08": "00cee510",
+      "secondary_vtable_0c": "00cee4f0",
+      "id_leaf": "00555800",
+      "gui_pages": ["FE_controls_PC_listbox", "FE_controls_PC"],
+      "gui_page_fields": ["+14h", "+18h"],
+      "virtuals": {
+        "destroy_0c": "00555c40",
+        "register_10": "00555c60",
+        "bind_14": "00555dc0",
+        "enter_18": "0055fa80",
+        "exit_1c": "00551b90",
+        "update_20": "00560430",
+        "dependencies_24": "00558680"
+      },
+      "notes": "Constructor calls 00683610, the front-end screen animation block owned by another packet. Enter and update were not read; the binding model of this screen is not recovered."
+    }
+  ],
+  "calling_conventions": [
+    {"addresses": ["005f6030", "00527d00", "00555770"], "convention": "__thiscall(this), returns this in EAX", "ret": "RET"},
+    {"addresses": ["005f1ca0", "00527d30", "00555800"], "convention": "__thiscall(this) -> int in EAX", "ret": "RET"},
+    {"addresses": ["005f3b30", "00527e40", "00555c40"], "convention": "__thiscall(this, unsigned flags)", "ret": "RET 4"},
+    {"addresses": ["005f0250", "00527e60", "00555c60"], "convention": "__thiscall(this)", "ret": "RET"},
+    {"addresses": ["005f1cc0", "00527f90", "00555dc0"], "convention": "__thiscall(this)", "ret": "RET"},
+    {"addresses": ["005f5bd0", "00528240", "0055fa80"], "convention": "__thiscall(this)", "ret": "RET"},
+    {"addresses": ["005f7020"], "convention": "__thiscall(this)", "ret": "tail jmp 005F6EF0, no RET of its own"},
+    {"addresses": ["00528920", "00551b90"], "convention": "__thiscall(this)", "ret": "RET"},
+    {"addresses": ["005f7310", "005289b0", "00560430"], "convention": "__thiscall(this, float seconds)", "ret": "RET 4"},
+    {"addresses": ["005f6000", "00528a60", "00558680"], "convention": "__thiscall(this, void* sink)", "ret": "RET 4"},
+    {"addresses": ["005f42d0"], "convention": "__thiscall(this, int step)", "ret": "RET 4"},
+    {"addresses": ["005f8960"], "convention": "__thiscall(this = screen+0Ch, GuiEvent* event)", "ret": "RET 4"},
+    {"addresses": ["00527c80"], "convention": "__thiscall(this, char, char, char, char)", "ret": "RET 10h"}
+  ],
+  "base_vtable": {
+    "address": "00ceae54",
+    "slots": ["00bf698e", "004f7570", "004f7580", "004f75e0", "004f71d0", "004f7590", "004f75a0", "004f75b0", "004f75c0", "004f75d0"],
+    "default_ret_sizes": {"+14h": "RET", "+18h": "RET", "+1Ch": "RET", "+20h": "RET 4", "+24h": "RET 4"}
+  },
+  "page_state": {
+    "global": "00e19650",
+    "reset_to_zero_by": ["00588a80", "005d43c0"],
+    "per_frame_jump_table": "005f7bf8",
+    "back_byte_table": "005f7c20",
+    "rebuild_jump_table": "005f7c28",
+    "pages": [
+      {"page": 0, "title": "FE.opt_title_main", "builder": "005f54f0", "per_frame": null, "rebuild": null},
+      {"page": 1, "title": "FE.opt_title_game", "builder": "005f58f0", "per_frame": "005f4c90", "rebuild": "005f58f0", "labels": "00e08be0", "label_count": 12, "value_rows": 9, "help_table": "00cf3874"},
+      {"page": 2, "title": "FE.opt_title_audio", "builder": "005f59f0", "per_frame": "005f4fa0", "rebuild": "005f59f0", "labels": "00e08ac0", "label_count": 7, "value_rows": 4, "help_table": "00cf3808"},
+      {"page": 3, "title": "FE.opt_title_video", "builder": "005f41e0", "per_frame": "005f2f20", "rebuild": "005f41e0", "labels": "00e08af8", "label_count": 16, "value_rows": 13, "help_table": "00cf3820"},
+      {"page": 4, "title": "FE.opt_title_control", "builder": "005f40f0", "per_frame": "005f34d0", "rebuild": "005f40f0", "labels": "00e08b78", "label_count": 8, "value_rows": 6, "help_table": "00cf385c"},
+      {"page": 7, "title": "FE.opt_title_dlc", "builder": "005f3b50", "per_frame": "005f2d20", "rebuild": null}
+    ]
+  },
+  "main_list": {
+    "builder": "005f54f0",
+    "label_table": "00e08a48",
+    "dispatcher": "005f7c40",
+    "rows": [
+      {"row": 0, "label": "^FE.opt_game", "action": "005f58f0", "target": "page 1"},
+      {"row": 1, "label": "^FE.opt_audio", "action": "005f59f0", "target": "page 2"},
+      {"row": 2, "label": "^FE.opt_video", "action": "005f41e0", "target": "page 3"},
+      {"row": 3, "label": "^FE.opt_controls", "action": "004cc460(manager, 0Eh, null)", "target": "screen 0Fh"},
+      {"row": 4, "label": "^FE.opt_controllayout", "action": "00527c80 then 004cc460(manager, 0Dh, null)", "target": "screen 0Eh"},
+      {"row": 5, "label": "^FE.opt_clantext", "action": "005efab0 if 00585b40 and 00585810", "target": "clan text entry"},
+      {"row": 6, "label": "^FE.opt_downloaded_content", "action": "005f3b50", "target": "page 7"}
+    ]
+  },
+  "settings": [
+    {"page": 1, "row": 0, "label": "FE.opt_game_lang", "field": "+DCh", "type": "int", "edit": "005ef4d0(008d45c0())", "display": "008d48c0", "apply": "on commit"},
+    {"page": 1, "row": 1, "label": "FE.opt_game_impmetric", "field": "+E0h", "type": "bool", "edit": "toggle", "display": "008d4260", "apply": "on commit"},
+    {"page": 1, "row": 2, "label": "FE.opt_game_subtitles", "field": "+E1h", "type": "bool", "edit": "toggle", "display": "00e089f4", "apply": "on commit"},
+    {"page": 1, "row": 3, "label": "FE.opt_game_hints", "field": "+E4h", "type": "int0..2", "edit": "005ef4d0(3)", "display": "00e08a2c", "apply": "on commit"},
+    {"page": 1, "row": 4, "label": "FE.opt_game_camerashake", "field": "+E8h", "type": "bool", "edit": "toggle", "display": "00e089f4", "apply": "on commit"},
+    {"page": 1, "row": 5, "label": "FE.opt_vid_camdrops", "field": "+154h", "type": "bool", "edit": "toggle", "display": "00e089f4", "apply": "on commit"},
+    {"page": 1, "row": 6, "label": "FE.opt_game_markeralpha", "field": "+158h", "type": "float", "edit": "004155b0(00ce3800, 0)", "display": "005f3750", "apply": "on commit"},
+    {"page": 1, "row": 7, "label": "FE.opt_game_targetindicator", "field": "+122h", "type": "bool", "edit": "toggle", "display": "00e089f4", "apply": "on commit"},
+    {"page": 1, "row": 8, "label": "FE.opt_game_cockpitmode", "field": "+18Ah", "type": "bool", "edit": "toggle", "display": "00e089f4", "apply": "on commit"},
+    {"page": 2, "row": 0, "label": "FE.opt_au_mastervol", "field": "+F8h", "type": "float", "edit": "004155b0(00d7a24c, 0)", "apply": "008d5430 immediately"},
+    {"page": 2, "row": 1, "label": "FE.opt_au_musicvol", "field": "+100h", "type": "float", "edit": "004155b0(00d7a24c, 0)", "apply": "008d5430 immediately"},
+    {"page": 2, "row": 2, "label": "FE.opt_au_speechvol", "field": "+108h", "type": "float", "edit": "004155b0(00d7a24c, 0)", "apply": "008d5430 then virtual +34h on +A4h"},
+    {"page": 2, "row": 3, "label": "FE.opt_au_effectvol", "field": "+104h", "type": "float", "edit": "004155b0(00d7a24c, 0)", "apply": "008d5430 then virtual +34h on +A0h"},
+    {"page": 3, "row": 0, "label": "FE.opt_vid_res", "field": "+150h", "type": "index", "edit": "005ef4d0(00f88960)", "side_effects": "+ECh width and +F0h height from 00f8895c[index*8]", "apply": "008d5b50 plus XLiveOnResetDevice on commit"},
+    {"page": 3, "row": 1, "label": "FE.opt_vid_fullscreen", "field": "+F6h", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 3, "row": 2, "label": "FE.opt_vid_antial", "field": "+134h", "type": "index", "edit": "005ef4d0(00f8896c)", "side_effects": "+130h sample count from 00f88968[index*4]", "apply": "on commit"},
+    {"page": 3, "row": 3, "label": "FE.opt_vid_vsynch", "field": "+138h", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 3, "row": 4, "label": "FE.opt_vid_gamma", "field": "+13Ch", "type": "float", "edit": "004155b0(00ce38b8, 00ce6848)", "apply": "on commit"},
+    {"page": 3, "row": 5, "label": "FE.opt_vid_texd", "field": "+140h", "type": "int0..2", "edit": "005ef4d0(3)", "display": "00e08a2c", "apply": "on commit"},
+    {"page": 3, "row": 6, "label": "FE.opt_vid_objd", "field": "+12Ch", "type": "int0..2", "edit": "005ef4d0(3)", "display": "00e08a2c", "apply": "on commit"},
+    {"page": 3, "row": 7, "label": "FE.opt_vid_shadows", "field": "+15Ch", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 3, "row": 8, "label": "FE.opt_vid_oceanref", "field": "+144h", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 3, "row": 9, "label": "FE.opt_vid_clouds", "field": "+14Ch", "type": "bool", "edit": "toggle", "apply": "00bbddf0 then 00bbcfe0 when 00e188a8+19e8h is set"},
+    {"page": 3, "row": 10, "label": "FE.opt_vid_foliage", "field": "+15Eh", "type": "bool", "edit": "toggle", "apply": "00ad71c0 immediately; 00ad7a30 pushes 1.0 into 00e188a8+19fch when enabled"},
+    {"page": 3, "row": 11, "label": "FE.opt_vid_motionblur", "field": "+165h", "type": "bool", "edit": "toggle", "apply": "mirrored into 00f8d39c+219h immediately"},
+    {"page": 3, "row": 12, "label": "FE.opt_vid_oldfilmeffect", "field": "+168h", "type": "int0..2", "edit": "005ef4d0(3)", "display": "00e08a2c+0Ch", "apply": "00b0d080 immediately"},
+    {"page": 4, "row": 0, "label": "FE.opt_x360_comp", "field": "+188h", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 4, "row": 1, "label": "FE.opt_ctrl_vib", "field": "+118h", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 4, "row": 2, "label": "FE.opt_ctrl_icamy", "field": "+11Ah", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 4, "row": 3, "label": "FE.opt_ctrl_iply", "field": "+11Bh", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 4, "row": 4, "label": "FE.opt_ctrl_swapsticks", "field": "+119h", "type": "bool", "edit": "toggle", "apply": "on commit"},
+    {"page": 4, "row": 5, "label": "FE.opt_ctrl_swapmapsticks", "field": "+11Ch", "type": "bool", "edit": "toggle", "apply": "on commit"}
+  ],
+  "value_tables": {
+    "00e089f4": ["FE.opt_disabled", "FE.opt_enabled"],
+    "00e08a2c": ["globals.none", "globals.basic", "globals.full", "FE.opt_oldfilmeffect_off", "FE.opt_oldfilmeffect_cutscenes", "FE.opt_oldfilmeffect_always", "FE.opt_oldfilmeffect_alwaysfull"]
+  },
+  "input_actions": [
+    {"action": "0x4b", "site": "005f7859", "effect": "cancel both overlapped storage handles and clear +10h..+44h"},
+    {"action": "0x4b", "site": "005f79e4", "effect": "page 0 leaves through 005f0a80, pages 1..4 and 7 return to the list through 005f5e60, pages 5 and 6 do nothing"},
+    {"action": "0x50", "site": "005f7a2f", "effect": "pages 1..4 synthesise the reset command row and dispatch it into the +0Ch listener"},
+    {"action": "0x4f", "site": "005f7aa7", "effect": "page 4 and 00f88a30 set: 00527c80 then interface 0Dh"},
+    {"action": "0x4c", "site": "005f7b16", "effect": "005f42d0(this, -1), gated on widget +88h byte +85h"},
+    {"action": "0x4d", "site": "005f7b29", "effect": "005f42d0(this, +1), gated on widget +88h byte +85h"}
+  ],
+  "list_commands": [
+    {"char": "0xa7", "label": "FE.opt_reset", "effect": "set +250h and +251h, call the page defaults writer, then 008d5b50; page 1 also copies 00f88984 into +D0h; page 7 empties the vector via 00427110; page 3 also calls XLiveOnResetDevice when 00e198c4 is null"},
+    {"char": "0xa2", "label": "FE.opt_applyandsave", "effect": "page 3 calls 008d5b50 and XLiveOnResetDevice when 00e198c4 is null; every page then raises the save prompt 00531b00 with callback 005f6fb0"},
+    {"char": "0xa3", "label": "FE.opt_cancel", "effect": "page 0 leaves through 005f0a80, any other page returns to the list through 005f5e60"},
+    {"char": "0xa5", "label": "FE.opt_ctrl_layout", "effect": "page 4 only: 00527c80 then interface 0Dh"}
+  ],
+  "defaults_writers": {
+    "page_1_game": "008d41c0",
+    "page_2_audio": "008d41f0",
+    "page_3_video": "008d4520",
+    "page_4_control": "008d4820",
+    "page_7_dlc": "00427110"
+  },
+  "commit": {
+    "apply_all": "008d5b50",
+    "apply_audio": "008d5430",
+    "device_reset": "00a4d46a",
+    "device_reset_guard": "00e198c4 is null",
+    "reload_from_settings": "005f65c0"
+  },
+  "exit_paths": {
+    "leave_options": "005f0a80",
+    "state_requests": [22, 4],
+    "state_request_guard": "00e198c4 is null; otherwise virtual +08h on 00e198c4 or on 00e198b4 depending on 00e188a8+1fe4h",
+    "back_to_list": "005f5e60",
+    "discard_prompt_callback": "005f5b90"
+  },
+  "no_ghidra_function": [
+    {"address": "005f5bd0", "end": "005f5e54", "role": "screen 0Dh enter, vtable slot +18h"},
+    {"address": "005f7020", "end": "005f7041", "role": "screen 0Dh exit, vtable slot +1Ch; tail-jumps to 005f6ef0"},
+    {"address": "00527e40", "end": "00527e5b", "role": "screen 0Eh scalar deleting destructor, vtable slot +0Ch"},
+    {"address": "00528920", "end": "005289a1", "role": "screen 0Eh exit, vtable slot +1Ch"},
+    {"address": "005289b0", "end": "005289d0", "role": "screen 0Eh update, vtable slot +20h"},
+    {"address": "00528a60", "end": "00528a80", "role": "screen 0Eh dependency list, vtable slot +24h"},
+    {"address": "0055fa80", "end": "0055fc99", "role": "screen 0Fh enter, vtable slot +18h"},
+    {"address": "00551b90", "end": "00551b90", "role": "screen 0Fh exit, vtable slot +1Ch; a single ret byte"}
+  ],
+  "uncertainties": [
+    "Page 4 is unreachable on this image: the only writer of 4 into 00E19650 is 005F40F0 and its only caller is the rebuild arm that already requires page 4. The main list routes ^FE.opt_controls to interface 0Eh instead. 005F54F0's platform filtering was not decoded.",
+    "Pages 5 and 6 of 00E19650 are never written by anything found in this packet.",
+    "005F5BD0's extent and RET come from a linear decode of disk bytes, not from Ghidra.",
+    "008D5B50 and 008D5430 were identified by call site and role only; which BSP_GameSettings registry value each field persists to is not established here.",
+    "005F42D0's +A0h/+A4h sound-channel reading was not confirmed in the listing; both bodies that touch that region have dropped arguments in Ghidra.",
+    "The GUI event kinds 2, 3 and 6 read through the event object's virtual +5Ch were not traced to their producer.",
+    "Help tables 00CF3808, 00CF385C and 00CF3874 were not dumped; 00CF3820 is sixteen dwords of 1, so the field is a flag rather than a string index."
+  ],
+  "state_reached": {
+    "analysed": ["005f6030", "00527d00", "00555770", "005f1ca0", "00527d30", "00555800", "005f0250", "00527e60", "00555c60", "005f7310", "005f42d0", "005f7c40", "005f8960", "005f58f0", "005f59f0", "005f41e0", "005f40f0", "005f3b50", "005f5e60", "005f0a80", "00527c80", "005f1cc0", "00527f90", "00528240", "005f6000", "005f5bd0", "005f7020", "00527e40", "00528920", "005289b0", "00528a60", "0055fa80", "00551b90"],
+    "identified_by_role_only": ["005f3b30", "00555c40", "00555dc0", "00560430", "00558680", "005f65c0", "005f54f0", "005f24d0", "005f0800"],
+    "reconstructed_build_tested": ["screen ids", "interface ids", "page table", "main list rows", "settings rows", "command characters", "input action ids", "vtable slot roles"],
+    "abi_compatible": [],
+    "game_validated": []
+  },
+  "follow_up_packets": [
+    {"id": "options_settings_commit", "addresses": ["008d5b50", "008d5430", "008d41c0", "008d41f0", "008d4520", "008d4820", "008d4210", "008d44c0", "008d48c0", "008d4260"], "files": ["docs/OPTIONS_SETTINGS_COMMIT.md", "include/bsp/options_settings_commit.hpp", "src/options_settings_commit.cpp"], "contract": "The settings block layout behind the screen fields, which registry value each one persists to, and what ApplyAll pushes into the renderer, the sound system and the input layer."},
+    {"id": "options_pc_controls_screen", "addresses": ["0055fa80", "00560430", "00558680", "00555dc0", "0055d180", "0055d330", "00560bf0"], "files": ["docs/OPTIONS_PC_CONTROLS.md", "include/bsp/options_pc_controls.hpp", "src/options_pc_controls.cpp"], "contract": "The key-binding model of screen 0Fh, its presets, its conflict handling and how it writes back into the input_settings tables."},
+    {"id": "options_page_builder", "addresses": ["005f24d0", "005f54f0", "005f0800", "005f3750", "005f1620", "005f0cd0", "005ef4d0", "004155b0"], "files": ["docs/OPTIONS_PAGE_BUILDER.md", "include/bsp/options_page_builder.hpp", "src/options_page_builder.cpp"], "contract": "How a label array plus a value-row count becomes a list, where the command characters A2h, A3h, A5h and A7h are attached, and the stepping rules for the enumerated and float rows."},
+    {"id": "options_storage_prompt", "addresses": ["005f6fb0", "005f5b90", "005efcb0", "005efcd0", "005ef4f0", "00531b00", "005f7050"], "files": ["docs/OPTIONS_STORAGE_PROMPT.md", "include/bsp/options_storage_prompt.hpp", "src/options_storage_prompt.cpp"], "contract": "The overlapped save and load path the update virtual polls, and the four modal callbacks the options screen installs."}
+  ]
+}
