@@ -1,0 +1,331 @@
+{
+  "packet": "native_render_batch_reference",
+  "written_utc": "2026-09-10T22:16:08.130671+00:00",
+  "base_commit": "eea2127",
+  "branch": "agent/native-render-batch-reference-20260910",
+  "status": "new_host_companion_strict_win32_compiled_and_focused_real_allocator_failure_checked",
+  "tracked_outputs": [
+    "include/bsp/native_render_batch_reference.hpp",
+    "src/native_render_batch_reference.cpp",
+    "docs/NATIVE_RENDER_BATCH_REFERENCE.md",
+    "reports/native_render_batch_reference_audit.json"
+  ],
+  "scope": {
+    "new_original_function_count": 0,
+    "existing_native_bodies_changed": false,
+    "native_layouts_changed": false,
+    "new_array_pool_or_lock": false,
+    "ghidra_annotations_exports_changed": false,
+    "shared_ledgers_changed": false,
+    "cmake_changed": false,
+    "new_host_api": [
+      "NativeRenderBatchReference",
+      "NativeRenderBatchReferences",
+      "NativeRenderBatchCompanionDisposal",
+      "NativeRenderBatchRetirement",
+      "release_native_render_batch_reference"
+    ]
+  },
+  "abi_boundary": "New MSVC Win32 C++ companion APIs borrow original storage. No original thiscall/function replacement ABI is claimed.",
+  "frozen_api": {
+    "constructor": "NativeRenderBatchReference(NativeRenderBatchStorage&, NativeRenderBatchLifetime&, const volatile uint32_t* same_current_D5E5AC_table, NativeRenderBatchCompanionDisposal)",
+    "actual_atomic": "public reference_count aliases storage.references_04; no initialization or retain",
+    "terminal": "void release_zero_00b55680(); throwing, count already zero",
+    "lookup": "NativeRenderBatchReferences::resolve_actual_batch(void*) returns concrete canonical companion",
+    "release": "release_native_render_batch_reference(NativeRenderBatchReferences&, NativeRenderBatchStorage&)",
+    "retire_callback": "void(void*, NativeRenderBatchReference&, NativeRenderBatchRetirement) noexcept",
+    "outcomes": [
+      "returned_to_pool",
+      "unreturned_dead_slot"
+    ]
+  },
+  "contracts": [
+    "Actual +04 fetch_sub seq_cst first; canonical lookup only when prior count was one; validate same raw storage and atomic.",
+    "Constructor and terminal validate actual D5E5AC identity, current virtual0 B55680 and current deleting +4 B1C630. Unknown profiles never fall back.",
+    "Use exactly the same table view, pool publication, lock publication and singleton lifetime domain as NativeRenderBatchLifetime.",
+    "After valid-profile dispatch, existing B55680 destroys the batch before lazy pool/lock lookup and potential append allocation.",
+    "On caught exception with completed CEB130 phase, retire host companion as unreturned_dead_slot and rethrow; no append/free/retry/publication rollback.",
+    "Before-completion dependency rejection leaves the host association bound and propagates without false dead-slot retirement.",
+    "Success retires as returned_to_pool, with no native storage read after append.",
+    "Retirement only removes/disposes host association, does not allocate or throw, and cannot mutate native owner/pool state. No companion or native access follows callback.",
+    "Prepared stable companion capacity and association synchronization belong to caller; reacquired physical slot starts a new companion lifetime.",
+    "RenderCommandReference is not a base: its noexcept terminal cannot propagate a real free-list allocation failure."
+  ],
+  "native_dependency_entries": [
+    {
+      "address": "00b51d50",
+      "end_exclusive": "00b51dc1",
+      "length": 113,
+      "existing_ghidra_name": "BSP_RenderBatch_Destruct",
+      "existing_cpp": "destroy_native_render_batch_00b51d50",
+      "original_abi": "ECX batch; RET",
+      "new_native_body_claim": false
+    },
+    {
+      "address": "00b1c630",
+      "end_exclusive": "00b1c64e",
+      "length": 30,
+      "existing_ghidra_name": "BSP_PooledRenderBatch_DeletingDestructor",
+      "existing_cpp": "delete_native_render_batch_00b1c630",
+      "original_abi": "ECX batch; stack flags; EAX original address even after free; RET4",
+      "new_native_body_claim": false
+    },
+    {
+      "address": "00b55680",
+      "end_exclusive": "00b5569e",
+      "length": 30,
+      "existing_ghidra_name": "BSP_PooledRenderBatch_RecycleZeroReference",
+      "existing_cpp": "NativeRenderBatchLifetime::recycle_zero_reference_00b55680",
+      "original_abi": "ECX batch; RET",
+      "new_native_body_claim": false
+    },
+    {
+      "address": "00b555e0",
+      "end_exclusive": "00b5567b",
+      "length": 155,
+      "existing_ghidra_name": "BSP_RenderBatchPool_AppendDeadSlot",
+      "existing_cpp": "NativeRenderBatchLifetime::append_dead_slot_00b555e0",
+      "original_abi": "ECX actual pool+4 list; stack dead-slot address; RET4",
+      "new_native_body_claim": false
+    },
+    {
+      "address": "00b1c830",
+      "end_exclusive": "00b1c88f",
+      "length": 95,
+      "existing_ghidra_name": "BSP_RenderBatchPool_ReserveSlots",
+      "existing_cpp": "reserve_native_render_batch_free_slots_00b1c830",
+      "original_abi": "ECX free-list descriptor; stack signed capacity; RET4",
+      "new_native_body_claim": false
+    },
+    {
+      "address": "00b1e870",
+      "end_exclusive": "00b1e922",
+      "length": 178,
+      "existing_ghidra_name": "BSP_RenderBatchPool_GetSingleton",
+      "existing_cpp": "NativeRenderBatchLifetime::pool_00b1e870",
+      "original_abi": "No native inputs; EAX pool; RET",
+      "new_native_body_claim": false
+    },
+    {
+      "address": "00b1cd90",
+      "end_exclusive": "00b1ce4d",
+      "length": 189,
+      "existing_ghidra_name": "BSP_RenderBatchLock_GetSingleton",
+      "existing_cpp": "NativeRenderBatchLifetime::lock_owner_00b1cd90",
+      "original_abi": "No native inputs; EAX lock owner; RET",
+      "new_native_body_claim": false
+    }
+  ],
+  "exception_evidence": {
+    "recycle_has_own_eh_frame": false,
+    "deleting_call": "00b5568a",
+    "current_pool_getter_call": "00b5568d",
+    "append_call": "00b55697",
+    "append_lock_getter_call": "00b555fc",
+    "append_reserve_call": "00b5563e",
+    "dead_slot_publication": "00b55653",
+    "count_increment": "00b55655",
+    "append_eh": {
+      "handler": "00cc0318",
+      "func_info": "00df8e50",
+      "unwind_map": "00df8e48",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc0310",
+          "target": "00411ee0",
+          "effect": "unwind captured lock guard only"
+        }
+      ]
+    },
+    "failure_native_state": "Actual references04=0, vtable=CEB130, entry count10=0, dangling entries/capacity retained; dead physical slot remains allocated and unappended. Existing lazy-singleton publication side effects are preserved.",
+    "command_implication": "B1DDD0 must receive exception so its state2 ordered/indexed/diagnostic cleanup executes without releasing unvisited batches, groups, scene or context.",
+    "valid_domain": "Valid nonnegative actual headers/spans and same canonical domain. Batch entry destructor/free cannot throw in this domain. Lazy pool/lock lookup and free-list reserve may throw. No exception after successful append or concurrent profile/slot mutation."
+  },
+  "raw_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "bsp.py ghidra bytes verifies target project/program/language/image-base for every invocation",
+    "span_count": 10,
+    "byte_count": 860,
+    "spans": [
+      {
+        "address": "00b1c630",
+        "end_exclusive": "00b1c64e",
+        "length": 30,
+        "disk_offset": 7456304,
+        "sha256": "d36ee397d65df890cbc30635e9743bde8e80c016eb314e3202fdd414f098e08d",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 11,
+        "last_instruction": "00b1c64b: ret 4"
+      },
+      {
+        "address": "00b1c830",
+        "end_exclusive": "00b1c88f",
+        "length": 95,
+        "disk_offset": 7456816,
+        "sha256": "cf8286ad3c51b9a4ec0ff256b1f935a9aafde357f9dcb9f1c9c6f638af746a4a",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 38,
+        "last_instruction": "00b1c88c: ret 4"
+      },
+      {
+        "address": "00b1cd90",
+        "end_exclusive": "00b1ce4d",
+        "length": 189,
+        "disk_offset": 7458192,
+        "sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 51,
+        "last_instruction": "00b1ce4c: ret"
+      },
+      {
+        "address": "00b1e870",
+        "end_exclusive": "00b1e922",
+        "length": 178,
+        "disk_offset": 7465072,
+        "sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 53,
+        "last_instruction": "00b1e921: ret"
+      },
+      {
+        "address": "00b51d50",
+        "end_exclusive": "00b51dc1",
+        "length": 113,
+        "disk_offset": 7675216,
+        "sha256": "445e5d9dfd85c90413c8745f2727e9b0b8238b1de35f88516a0e6e355750180e",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 33,
+        "last_instruction": "00b51dc0: ret"
+      },
+      {
+        "address": "00b555e0",
+        "end_exclusive": "00b5567b",
+        "length": 155,
+        "disk_offset": 7689696,
+        "sha256": "fbf856256fae9841f151d7bdae22a45526a5ca96e47a58e7220812ecb54e4446",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 48,
+        "last_instruction": "00b55678: ret 4"
+      },
+      {
+        "address": "00b55680",
+        "end_exclusive": "00b5569e",
+        "length": 30,
+        "disk_offset": 7689856,
+        "sha256": "ef00f162fd4e00dd9a9ccbd25fe642c3ee44f308df17a93eeb96a543e7c43363",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 13,
+        "last_instruction": "00b5569d: ret"
+      },
+      {
+        "address": "00cc0310",
+        "end_exclusive": "00cc0322",
+        "length": 18,
+        "disk_offset": 9175824,
+        "sha256": "6ea2e7514877b6136ad33c0524dd60121b7b4ce3e2fc25f87f2823871a2ec9ea",
+        "live_matches_installed_binary": true,
+        "kind": "code",
+        "instruction_count": 4,
+        "last_instruction": "00cc031d: jmp 0xbf6b43"
+      },
+      {
+        "address": "00d5e5ac",
+        "end_exclusive": "00d5e5b4",
+        "length": 8,
+        "disk_offset": 9823660,
+        "sha256": "6edd5d15cdafbead889736239418dca3760db6e6ef62b114896420e92315f997",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "00b55680",
+          "00b1c630"
+        ]
+      },
+      {
+        "address": "00df8e48",
+        "end_exclusive": "00df8e74",
+        "length": 44,
+        "disk_offset": 10456648,
+        "sha256": "d6adbeffd6a5b694c382f62056006261fcade8ed41c75a5acf59a44868395ea5",
+        "live_matches_installed_binary": true,
+        "kind": "data",
+        "words": [
+          "ffffffff",
+          "00cc0310",
+          "19930522",
+          "00000001",
+          "00df8e48",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "new_source_release_compile": "PASS: MSVC x86 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /W4 /WX",
+    "repository_build": "PASS: scripts/build.ps1; reconstructed_math and native_math_differential 2/2 after 8/8 seed identity check",
+    "new_source_cmake_registered": false,
+    "focused_fixture": "PASS: strict MSVC x86 /O2 /MDd with new source and real batch lifetime/shared allocator/tracked locks/canonical singleton domain",
+    "allocation_failure_mechanism": "Debug CRT _CrtSetAllocHook rejects exactly one real malloc(4) request from singleton_lifetime_allocate during B1C830 growth; default CRT new-handler path returns0 and existing allocator throws bad_alloc.",
+    "checks": [
+      "Nonzero decrement does not resolve; zero transition resolves exactly once at actual count0.",
+      "Changed current virtual0 rejected before native destruction or false retirement.",
+      "One actual entry-storage free precedes failed pool allocation.",
+      "Original bad_alloc reaches caller; companion retires and self-deletes exactly once as unreturned_dead_slot.",
+      "Native dead batch words and pool data/count/capacity preserve failure state; captured lock depth returns0.",
+      "Restored caller profile allows direct zero terminal to append to real shared pool and self-delete returned companion.",
+      "Canonical singleton shutdown destroys actual registered pool/lock owners."
+    ],
+    "fixture_cleanup_boundary": "The test manually frees its orphan only after evidence capture, outside reconstructed release and outside retirement callback.",
+    "original_exception_dispatch_executed": false,
+    "native_original_vs_host_fixture_rerun": false,
+    "complete_command_fixture_run_by_this_packet": false,
+    "game_render_validation": false
+  },
+  "artifact_sha256": {
+    "include/bsp/native_render_batch_reference.hpp": "718c0d01db56c184ea00e374eb4b3b8dfbf3c5c496028789354e4589603a0ec1",
+    "src/native_render_batch_reference.cpp": "68fa270b02d19929faad4ec55b92cdb83538e9967c57918e6054020515dbf176",
+    "include/bsp/native_render_batch_lifetime.hpp": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead",
+    "src/native_render_batch_lifetime.cpp": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc",
+    "include/bsp/singleton_lifetime.hpp": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+    "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+    "src/random_threads.cpp": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d",
+    "src/random.cpp": "6fd6bc59ffa3efb09f2ae5fb0f18484d6d907e6195fff9db20973dbf95743f85",
+    "local/native_render_batch_reference_check.cpp": "4baf294c4fede2613fac4780c05cfe83a0c788387ad54758b42d294728c9f83f",
+    "local/build_native_render_batch_reference_check.ps1": "4521c8a810b0e53e03fdee3b4ada25f9d032b708d169de53d89ad48790864ccb",
+    "local/native_render_batch_reference_check.log": "49abf9bec2ecbb6f64a99ab9bc1326426af12c0a99326e472eb3ea1a0e7e2a16",
+    "local/native_render_batch_reference_repository_build.log": "7be2065840f593a08499d0bfd2233f20f0b0e2f0a626eb2174222c6b6d67e186",
+    "local/native_render_batch_reference_release_compile.log": "e7dfa811667199060e24e342932820e9f06deb7ec8f6e49ec8ccc982c074f604",
+    "local/seed_reference.hpp": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+    "build/batch-reference-check/native_render_batch_reference_check.exe": "72d4282ddcfc303c6f633095eb96de980431836ff6cd1de1abb5fdf0a4bde128",
+    "build/batch-reference-check/native_render_batch_reference_release.obj": "5589b1f8f1fc74b7b08589cec59b3b66a8a17b309196c561db3746deb26f0e71"
+  },
+  "not_claimed": [
+    "New original native body reconstruction",
+    "Drop-in original ABI replacement",
+    "Original game exception dispatch",
+    "Whole command/queue lifetime or execution",
+    "Malformed-header/access-violation equivalence",
+    "Concurrent profile mutation or pool-reuse race behavior",
+    "Game or visual validation"
+  ]
+}
