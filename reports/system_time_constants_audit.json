@@ -1,0 +1,286 @@
+{
+  "packet": "system_time_elapsed_prefix",
+  "status": "reconstructed_strict_win32_build_and_native_differential_tested",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-system-time-20260910",
+  "branch": "agent/system-time-20260910",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live bsp.py ghidra query/export verifies configured project/program; eight seed ranges matched disk."
+  },
+  "ownership": {
+    "range": "00b46cb4-00b46d96",
+    "helpers": [
+      "004de4b0",
+      "00af0460",
+      "00ad5700",
+      "00ad5740",
+      "00b0cf30",
+      "00bee070"
+    ],
+    "files": [
+      "include/bsp/system_time_constants.hpp",
+      "src/system_time_constants.cpp",
+      "docs/SYSTEM_TIME_CONSTANTS.md",
+      "reports/system_time_constants_audit.json"
+    ],
+    "lease": "Held for primary review; no ledger/Ghidra annotation, main/CMake edits or push."
+  },
+  "evidence_ranges": [
+    {
+      "address": "00b46cb4",
+      "end_inclusive": "00b46d96",
+      "length": 227,
+      "kind": "interior_fragment",
+      "sha256": "a1b83b2cd967c13e6d44ea0413048206d5c56a89dbb660ff89c0773b91bc2374",
+      "matches_disk": true,
+      "hex": null
+    },
+    {
+      "address": "004de4b0",
+      "end_inclusive": "004de576",
+      "length": 199,
+      "kind": "function",
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+      "matches_disk": true,
+      "hex": null
+    },
+    {
+      "address": "00af0460",
+      "end_inclusive": "00af0463",
+      "length": 4,
+      "kind": "function",
+      "sha256": "f95341a99d51f5475633b0a992fa6bb809c41744fe61f8de030d059a5d1f6bb6",
+      "matches_disk": true,
+      "hex": "d9412cc3"
+    },
+    {
+      "address": "00ad5700",
+      "end_inclusive": "00ad5703",
+      "length": 4,
+      "kind": "function",
+      "sha256": "a4b7d4539fa03abbe69a398ca110f35831e031556ffd14e0089956276d803f49",
+      "matches_disk": true,
+      "hex": "d94108c3"
+    },
+    {
+      "address": "00ad5740",
+      "end_inclusive": "00ad5743",
+      "length": 4,
+      "kind": "function",
+      "sha256": "0f1c001fbeb759fd118bad1fcc54565058b361622474b02f4e3a873ef4e4ce7a",
+      "matches_disk": true,
+      "hex": "8a4111c3"
+    },
+    {
+      "address": "00b0cf30",
+      "end_inclusive": "00b0cf36",
+      "length": 7,
+      "kind": "function",
+      "sha256": "3118dec3bc33bc97e440257d3564e1715b5ed17891e03297e3affeeb44f4f6ff",
+      "matches_disk": true,
+      "hex": "8d8184000000c3"
+    },
+    {
+      "address": "00bee070",
+      "end_inclusive": "00bee073",
+      "length": 4,
+      "kind": "uncreated_function_entry",
+      "sha256": "9b5251af6794c76b2f519f4601eefe7c7f18622726ef5633ff8713cbcdf488fe",
+      "matches_disk": true,
+      "hex": "8d4140c3"
+    }
+  ],
+  "vtable_evidence": {
+    "address": "00d68d6c",
+    "bytes": "70e0be00",
+    "meaning": "Concrete00D68D50 vtable+1C is00BEE070",
+    "matches_disk": true
+  },
+  "write_order": [
+    "c33.x",
+    "c33.y",
+    "c33.z",
+    "c33.w",
+    "c34.x",
+    "c34.y",
+    "c34.z",
+    "c75.x",
+    "c34.w",
+    "c75.y"
+  ],
+  "ordered_captures": [
+    {
+      "site": "00b46c89",
+      "owner": "01090ab0",
+      "boundary": "Supplied by axes; before last two axis stores; directly read accumulated+4 atCB4."
+    },
+    {
+      "site": "00b46ccc",
+      "owner": "00f8c274",
+      "boundary": "After particle+18 raw load, beforec33.y store."
+    },
+    {
+      "site": "00b46ce7",
+      "owner": "00f8c210",
+      "boundary": "Afterc33.z store, before00AD5700."
+    },
+    {
+      "site": "00b46cf9",
+      "owner": "01090ab0",
+      "boundary": "Independent reload before actual virtual+1C dispatch."
+    },
+    {
+      "site": "00b46d0b",
+      "owner": "00f8d39c",
+      "boundary": "After second FILD64; before FDIVP/FSTP c34.x."
+    },
+    {
+      "site": "00b46d27",
+      "owner": "00f8d39c",
+      "boundary": "Independent reload after byte conversion, beforec34.y store."
+    },
+    {
+      "site": "00b46d51",
+      "owner": "00f8c210",
+      "boundary": "After camera byte load, beforec34.z/c75.x/c34.w stores."
+    },
+    {
+      "site": "00b46d79",
+      "owner": "camera+184",
+      "boundary": "After00AD5740, beforec75.y conversion/store; returned for next packet."
+    }
+  ],
+  "retained_owners": {
+    "timer": "Existing FrameClock and explicit actual virtual adapter; concrete getter returns interval.",
+    "particle": "Existing ParticleClock also consumed by00B19A10; allocator preimage+18 required.",
+    "foliage_manager": "Existing FoliageGroupManager.shader_time.",
+    "foliage": "SystemFoliageTimeOwner borrows actual float+8 and byte+11 storage.",
+    "renderer": "SystemRenderTimeOwner borrows region+84 fields and same actual matrix+1D8.",
+    "camera": "Existing camera.camera.projection.fov is native+1C4; no duplicate field."
+  },
+  "shared_header_dependencies": [
+    {
+      "path": "include/bsp/camera_frame_state.hpp",
+      "sha256": "852942d544a34c70b75b8df1f0e7de3ed02b59f6de724569e72bca6be77a0a8e",
+      "provenance": "Temporary include overlay copied from primary main working tree; worker made no tracked shared-header edit."
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "sha256": "9766b16dd9f44aaa3e7709f9538d9f617fe414383260a8c8b1c2157acd12762d",
+      "provenance": "Temporary include overlay copied from primary main working tree; worker made no tracked shared-header edit."
+    }
+  ],
+  "proposals": [
+    {
+      "address": "004de4b0",
+      "old_name": "BSP_ParticleClock_GetSingleton",
+      "old_comment": "[BSP reconstruction 004de4b0]\nHypothesis, not a recovered symbol. Double-checked lazy singleton over DAT_00f8d420 (004de4b0), 1Ch bytes from 00bf681b, vtables at +0 (00ce7d38) and +4 (00ce7d24), +8h..+14h zeroed, registered with BSP_SingletonLifetime_Register. Its result is the ECX of 00b19a10, which writes +18h; 00b46cb4 reads that same field as component y of shader constant c33 Time (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67). Segment 82 keywords particle, emitter, additive. docs/GAME_RENDER_TAIL.md",
+      "proposed_name": "BSP_ParticleClock_GetSingleton",
+      "cpp": "particle_clock_singleton_004de4b0",
+      "native_abi": "No inputs consumed; EAX singleton; RET.",
+      "evidence": "DCL over00F8D420; manager lookup twice; capture manager+10 section; enter/increment+18; allocate1C; initialize+0/+4/+8..14 without touching+18; publish; register reloaded slot; decrement/leave captured section; return reloaded slot. Null allocation still calls registration. Canonical ParticleClock projection and mandatory actual adapters; no native layout/lifetime-manager implementation claim."
+    },
+    {
+      "address": "00af0460",
+      "old_name": "TRIV_body_00af0460",
+      "old_comment": null,
+      "proposed_name": "BSP_FoliageGroupManager_GetShaderTime",
+      "cpp": "store_foliage_manager_time_00af0460",
+      "native_abi": "ECX owner; FLD float[ECX+2C], ST0 result; RET.",
+      "evidence": "Native4-byte getter, c33.z caller FSTP. New sink interface fuses getter/caller spill using canonical FoliageGroupManager.shader_time."
+    },
+    {
+      "address": "00ad5700",
+      "old_name": "TRIV_body_00ad5700",
+      "old_comment": null,
+      "proposed_name": "BSP_Foliage_GetScalar08",
+      "cpp": "store_foliage_time_00ad5700",
+      "native_abi": "ECX owner; FLD float[ECX+8], ST0 result; RET.",
+      "evidence": "Native4-byte getter, c33.w caller FSTP. Scalar interpretation remains provisional; actual retained field reference, no time units."
+    },
+    {
+      "address": "00ad5740",
+      "old_name": "TRIV_body_00ad5740",
+      "old_comment": null,
+      "proposed_name": "BSP_Foliage_GetByte11",
+      "cpp": "foliage_time_byte_00ad5740",
+      "native_abi": "ECX owner; MOV AL,byte[ECX+11]; RET.",
+      "evidence": "Full byte becomes unsigned integer then float in c75.y; no boolean normalization."
+    },
+    {
+      "address": "00b0cf30",
+      "old_name": "TRIV_body_00b0cf30",
+      "old_comment": null,
+      "proposed_name": "BSP_RenderService_GetRegion84",
+      "cpp": "render_time_region_00b0cf30",
+      "native_abi": "ECX owner; LEA EAX,[ECX+84]; RET.",
+      "evidence": "Actual embedded region, not pointer field. Two independently reloaded00F8D39C owners supply byte+24 and raw float+28. Same canonical service owns matrix+1D8 used earlier."
+    },
+    {
+      "address": "00bee070",
+      "old_name": null,
+      "old_comment": null,
+      "requires_function_creation": true,
+      "proposed_name": "BSP_FrameClock_GetInterval",
+      "cpp": "frame_clock_interval_00bee070",
+      "native_abi": "ECX owner; LEA EAX,[ECX+40]; RET.",
+      "evidence": "Previously undefined4-byte function; vtable00D68D50+1C contains00BEE070. Returns canonical FrameClock.interval, a pair of signed64 words. No sampling or clock update occurs here."
+    }
+  ],
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /fp:strict /O2",
+      "source_sha256": "8212f39cd862fb90c07e20091a3d3211b5d3cdb1323c60c9cf8aebec82e61875",
+      "object_sha256": "137f41026ccb307e14abbb8cd53b86ab585166a6a1a030264eff443ea364ef9e"
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests": "reconstructed_math1/1 passed",
+      "boundary": "Worker CMake does not yet list the new source; source separately compiled and linked into native fixture. Full integration belongs to primary."
+    },
+    "verify_seeds": {
+      "count": 8,
+      "all_match_disk": true
+    },
+    "native_differential": {
+      "passed": true,
+      "prefix_control_combinations": 60,
+      "singleton_paths": 4,
+      "checks": [
+        "All308 output words and padding",
+        "Returned fog identity",
+        "x87 sticky exceptions",
+        "Three defined x87 precision settings and four rounding modes",
+        "Signed64 extremes and zero denominators",
+        "Signedzero/subnormal/infinite/signalingNaN sources",
+        "Full unsignedbyte including255",
+        "Native singleton callback and counter ordering",
+        "Allocation+18 preimage",
+        "Publication during entry",
+        "Null allocation registration",
+        "Registration-time replacement",
+        "Populated fastpath"
+      ],
+      "local_source": "local/system_time/native_differential.cpp",
+      "local_source_sha256": "47cb1e25db41bf53c61a6a73f656699bfef47c97e7c7b1b726f2d737d73ad226",
+      "executable_sha256": "21321771eeb320a03d75089520f912bd60ef6f0efe529888fecbb91c525cf535",
+      "note": "Original native bytes copied to isolated executable storage; slots and external calls relocated to controlled adapters. Existing verify-seeds check passed before final fixture run. No permanent test suite was added."
+    }
+  },
+  "boundaries": [
+    "New C++ interfaces and reference projections are not native ABI/layout replacements.",
+    "Actual lifetime-manager allocation, allocator, registry growth, Win32 lock adapters, destruction and teardown remain external requirements, with no no-op defaults.",
+    "Allocator must retain native+18 bytes; canonical typed aggregate defaults are not the recovered constructor.",
+    "Native SEH exception-context/handler identity, unmasked floating exceptions, concurrent publication and game behavior unvalidated.",
+    "Volatile reloads do not create C++ thread synchronization or extend object lifetime.",
+    "Prefix requires valid retained owners and302 initialized float words; insufficient output is a new pre-work invalid_argument.",
+    "No inferred time units, clock defaults, boolean normalization or zero-denominator fallback."
+  ]
+}
