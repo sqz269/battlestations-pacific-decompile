@@ -1,0 +1,236 @@
+{
+ "schema_version": 1,
+ "utc": "2026-09-10T04:55:00+00:00",
+ "packet": "winmain_startup",
+ "status": "entry_sequence_reconstructed_and_build_tested_host_steps_injected",
+ "target": {
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "image_base": "00400000",
+  "config": "config/target.json",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+ },
+ "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+ "ghidra_function_count": 62767,
+ "ghidra_mutations": "none; read-only for this packet",
+ "implementation_contract_document": "docs/WINMAIN_STARTUP.md",
+ "functions": [
+  {
+   "address": "008f81f0",
+   "name": "BSP_WinMain",
+   "state": "reconstructed_build_tested",
+   "abi": "__stdcall(HINSTANCE, HINSTANCE, LPSTR, int)",
+   "ret": "RET 10h at 008f83f9 and 008f8496",
+   "returns": "always 0; XOR EAX,EAX at both exits",
+   "callers": ["00bfd0dd ___tmainCRTStartup"],
+   "arguments_used": "none; no frame access above the return address, so the command line is not read here",
+   "frame": "SUB ESP,0xc48 plus PUSH ESI/EDI; EBP is saved later at 008f82f7"
+  },
+  {
+   "address": "008f7db0",
+   "name": "BSP_Startup_ResolveLanguage",
+   "state": "analyzed_decision_logic_reconstructed",
+   "abi": "__thiscall(NativeString* out)",
+   "ret": "RET 0, returns this in EAX",
+   "seh_frame": "00ca4de7",
+   "callers": ["008f81f0"],
+   "evidence": ["008f8322 LEA ECX,[ESP+0xc]", "008f7dd6 MOV [ESP+0x14],ECX", "switch at 008f7f9c"]
+  },
+  {
+   "address": "004c5e60",
+   "name": "BSP_WideString_ConstructFromCString",
+   "state": "reconstructed_build_tested",
+   "abi": "__thiscall(WideString* this, const char*)",
+   "ret": "RET 4, returns this",
+   "evidence": [
+    "008f8283 LEA ECX,[ESP+0x18] with the path pushed",
+    "008f828d reads ESP+0x18 with ESP restored, which proves callee cleanup"
+   ]
+  },
+  {
+   "address": "00436430",
+   "name": "BSP_WideString_Destruct",
+   "state": "analyzed",
+   "abi": "__fastcall(WideString* this)",
+   "ret": "RET 0",
+   "caller_count": 81,
+   "evidence": ["frees length*2+2 bytes through the sized pool, which identifies a 16-bit element"]
+  },
+  {
+   "address": "00425850",
+   "name": "unchanged existing ledger record",
+   "state": "analyzed",
+   "abi": "__thiscall(NativeString* this, const char*) returning a bool in AL",
+   "ret": "RET 4",
+   "evidence": ["null data matches only a null or empty candidate; otherwise _stricmp at 00bf7fbf"]
+  },
+  {
+   "address": "00737970",
+   "name": "BSP_Application_Construct",
+   "state": "analyzed_layout_recovered",
+   "abi": "__fastcall(Application* this)",
+   "returns": "this",
+   "object_size": "0x1c",
+   "vtable": "00cfeab0",
+   "scalar_deleting_destructor": "00737e00",
+   "evidence": ["008f8410 places the object at frame+0x1c with the next local at frame+0x38"]
+  },
+  {
+   "address": "00bea970",
+   "name": "BSP_ApplicationLoop_Construct",
+   "state": "analyzed",
+   "abi": "__fastcall(this)",
+   "vtable": "00d68bc8",
+   "fields": "byte at +4 zeroed",
+   "callers": ["00737970"]
+  },
+  {
+   "address": "00bea810",
+   "name": "BSP_ApplicationSingleton_Construct",
+   "state": "analyzed",
+   "abi": "__fastcall(this)",
+   "vtable": "00d68bc4",
+   "seh_frame": "00cc7240",
+   "global_instance_pointer": "00e1ae90",
+   "evidence": ["registers with BSP_SingletonLifetime_Register under the manager critical section at GetManager+0x10"]
+  },
+  {
+   "address": "004261a0",
+   "name": "BSP_NativeString_Concat",
+   "state": "analyzed",
+   "abi": "__thiscall(lhs in ECX, dst, rhs) with dst then rhs pushed right to left",
+   "seh_frame": "00c5e849",
+   "evidence": ["008f7e84..008f7e9a"]
+  },
+  {
+   "address": "0041e350",
+   "name": "BSP_NativeString_AssignCString",
+   "state": "analyzed",
+   "abi": "__thiscall(this, const char*)",
+   "evidence": ["Resize(len, preserve=0) then copies length bytes without the terminator"]
+  },
+  {
+   "address": "00438e10",
+   "name": "BSP_CString_CompareInsensitive",
+   "state": "reconstructed_build_tested",
+   "abi": "__fastcall(const char* ECX, const char* EDX) returning an ordering",
+   "evidence": ["008f8059 with EDX = 00d15f1c Language"]
+  },
+  {
+   "address": "004c53e0",
+   "name": "BSP_WideString_Resize",
+   "state": "analyzed",
+   "abi": "__thiscall(this, uint new_length, bool preserve)"
+  }
+ ],
+ "sequence": [
+  {"address": "008f81f8", "step": "CoInitializeEx(NULL, COINIT_APARTMENTTHREADED)"},
+  {"address": "008f820a", "step": "CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, 0, NULL)"},
+  {"address": "008f8245", "step": "CoCreateInstance(CLSID_GameExplorer, NULL, CLSCTX_ALL, IID_IGameExplorer, out)"},
+  {"address": "008f824f", "step": "GetCurrentDirectoryA(0xbfe, buf) then append 00d16a78 backslash battlestationspacific.exe"},
+  {"address": "008f8288", "step": "BSP_WideString_ConstructFromCString widens the path by zero-extending each byte"},
+  {"address": "008f828d", "step": "a null buffer substitutes the shared empty wide string at 00f89988"},
+  {"address": "008f82aa", "step": "IGameExplorer::VerifyAccess through vtable slot +18h with a BOOL out parameter"},
+  {"address": "008f82ee", "step": "a FALSE result calls the CRT exit(0) at 00bfbdbb before Release and before CoUninitialize"},
+  {"address": "008f82b7", "step": "BSP_WideString_Destruct on the widened path"},
+  {"address": "008f82c4", "step": "IUnknown::Release through vtable slot +08h, guarded by the pointer rather than the HRESULT"},
+  {"address": "008f82cc", "step": "CoUninitialize, also reached from both COM initialization failures"},
+  {"address": "008f82d2", "step": "BSP_RandomThreads_Initialize"},
+  {"address": "008f82d9", "step": "operator new(1) at 00bf681b; a non-null result gates BSP_RandomThreads_RegisterCurrent"},
+  {"address": "008f8301", "step": "CreateMutexA(NULL, TRUE, MidwayThreadMutex at 00d16a64)"},
+  {"address": "008f830b", "step": "the already-running path needs a non-null handle and GetLastError() equal to 0xb7"},
+  {"address": "008f8326", "step": "BSP_Startup_ResolveLanguage into the frame+0x8 string object"},
+  {"address": "008f83c5", "step": "MessageBoxW(NULL, text, caption, MB_ICONHAND)"},
+  {"address": "008f83cb", "step": "inline free of length+1 bytes for the language buffer, then RET 10h with EAX zero"},
+  {"address": "008f83fc", "step": "SetThreadAffinityMask(GetCurrentThread(), 1)"},
+  {"address": "008f840b", "step": "BSP_GameResourceFactory_GetSingleton stored to 00f8d31c"},
+  {"address": "008f8419", "step": "BSP_Application_Construct on the frame+0x1c object"},
+  {"address": "008f8429", "step": "BSP_Application_Initialize(this, 0, cachedload at 00ce8168), RET 8"},
+  {"address": "008f8432", "step": "BSP_Platform_RunLoopDispatch; ECX is the application object but the callee uses the platform singleton at 0109cf04 slot +24h"},
+  {"address": "008f843b", "step": "BSP_Application_Shutdown"},
+  {"address": "008f8444", "step": "BSP_Application_Destruct"},
+  {"address": "008f8449", "step": "when 01090aa0 is non-null: BSP_SingletonLifetime_Destroy, free, then clear the global at 008f8463"},
+  {"address": "008f846e", "step": "CloseHandle on the mutex"},
+  {"address": "008f8478", "step": "BSP_RandomThreads_UnregisterCurrent and free of the thread slot, gated on the slot"},
+  {"address": "008f8486", "step": "BSP_RandomThreads_Shutdown, unconditional on this path"}
+ ],
+ "com_identity": {
+  "clsid_00d16a94": "9a5ea990-3034-4d6f-9128-01f3c61022bc CLSID_GameExplorer",
+  "iid_00d16844": "e7b2fb72-d728-49b3-a5f2-18ebf5f1349e IGameExplorer",
+  "clsctx": "0x17 CLSCTX_ALL",
+  "vtable_slot_18h": "IGameExplorer::VerifyAccess(BSTR gdfBinaryPath, BOOL* pfHasAccess)",
+  "byte_verified": true
+ },
+ "already_running_messages": [
+  {"language": "english or unmatched", "text": "00d16a10", "caption": "00d16a00"},
+  {"language": "french", "text": "00d16990", "caption": "00d1697c", "note": "apostrophe is U+2019, bytes 64 00 19 20 at 00d169e4"},
+  {"language": "italian", "text": "00d16920", "caption": "00d16910", "note": "the text begins with a space"},
+  {"language": "german", "text": "00d168c0", "caption": "00d168b0"},
+  {"language": "spanish", "text": "00d16858", "caption": "00d16a00", "note": "falls into the english caption load at 008f83ba"}
+ ],
+ "language_resolution": {
+  "options_path": "SHGetSpecialFolderPathA(CSIDL_PERSONAL, fCreate=TRUE) joined with 00d15af0 Battlestations-Pacific and 00d15ae0 options.txt",
+  "open_mode": "rt at 00d15f28",
+  "token_key": "00d15f1c Language",
+  "token_scan": "loop 008f8010..008f808b; an empty token ends the scan; the first match takes the next token",
+  "registry_fallback_condition": "only when fopen fails",
+  "registry_key": "HKEY_LOCAL_MACHINE SOFTWARE Eidos Battlestations Pacific at 00d15e24",
+  "registry_value": "00d15e18 language, accepted only when the returned type is REG_DWORD",
+  "lcid_map": {"0x407": "german", "0x40a": "spanish", "0x40c": "french", "0x410": "italian", "default": "english"},
+  "seed": "english at 00d15b14 assigned through 0041e870 before any lookup"
+ },
+ "application_object_layout": {
+  "size": "0x1c",
+  "field_00": "vptr, 00cfeab0 after construction",
+  "field_04": "byte from BSP_ApplicationLoop_Construct, zeroed",
+  "field_08_to_14": "four dwords zeroed by BSP_Application_Construct",
+  "field_18": "byte set to 1",
+  "field_19": "byte zeroed",
+  "field_1a": "byte zeroed",
+  "evidence": "frame+0x1c object with the next local at frame+0x38, from 008f8410 and 008f824f"
+ },
+ "pseudocode_corrections": [
+  "The Game Explorer out pointer and the language string object share the frame+0x8 slot; local_c48 is the interface pointer early and the string length late, and iStack_c44 is the string data pointer.",
+  "The DAT_01090aa0 branch does not return: 008f845b falls through to 008f8460, which clears the global and continues into CloseHandle.",
+  "BSP_RandomThreads_Shutdown is not confined to the no-slot branch; both branches converge on 008f8486."
+ ],
+ "unresolved_edges": [
+  "The options tokenizer at 008d8a70, 008d8960, 008d99f0 and 008d9f20 is not reconstructed, so end-of-file behavior after a trailing Language key is unestablished.",
+  "The delimiter set at 00d15f2c is adjacent to the Language literal but no reference to it from this routine was proven.",
+  "The native GDF path buffer has 0xc10 bytes for a 0xbfe directory plus a 26 character suffix, an eight byte shortfall at the maximum; reachability was not investigated.",
+  "0041e870 is leased to packet app_initialize_map and was not renamed.",
+  "The meaning of the literal zero first argument to BSP_Application_Initialize and of the flags at +18 through +1a is unresolved.",
+  "The one byte per-thread random slot value is never read; it only gates the register and unregister pair."
+ ],
+ "implementation": {
+  "header": "include/bsp/winmain_startup.hpp",
+  "source": "src/winmain_startup.cpp",
+  "entry": "bsp::run_win_main(const WinMainArguments&, StartupHost&)",
+  "pure_functions": [
+   "startup_language_from_registry_lcid",
+   "startup_language_from_options_tokens",
+   "startup_already_running_message",
+   "startup_widen_path"
+  ],
+  "injected_steps": "StartupHost is an integration contract with no default implementations; COM, the Game Explorer, the mutex, the random subsystem, the application methods and the singleton manager are all host calls.",
+  "registration": "one deferred line appended to cmake/startup.cmake"
+ },
+ "validation": {
+  "build": "scripts/build.ps1 Win32 Release with /W4 /WX, clean",
+  "tests": "ctest 1 of 1 reconstructed_math passed; no new tests added",
+  "not_claimed": ["fixture_tested", "abi_compatible", "game_validated"]
+ },
+ "names_recorded": [
+  "008f81f0 BSP_WinMain, evidence replaced",
+  "008f7db0 BSP_Startup_ResolveLanguage",
+  "004c5e60 BSP_WideString_ConstructFromCString",
+  "00436430 BSP_WideString_Destruct",
+  "004c53e0 BSP_WideString_Resize",
+  "00737970 BSP_Application_Construct, evidence replaced",
+  "00bea970 BSP_ApplicationLoop_Construct",
+  "00bea810 BSP_ApplicationSingleton_Construct",
+  "004261a0 BSP_NativeString_Concat",
+  "0041e350 BSP_NativeString_AssignCString",
+  "00438e10 BSP_CString_CompareInsensitive"
+ ]
+}
