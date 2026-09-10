@@ -1,0 +1,266 @@
+{
+  "packet": "unit_force_commands",
+  "owner": "agent/unit-forces",
+  "doc": "docs/UNIT_FORCE_COMMANDS.md",
+  "files": [
+    "docs/UNIT_FORCE_COMMANDS.md",
+    "reports/unit_force_commands.json",
+    "include/bsp/unit_forces.hpp",
+    "src/unit_forces.cpp"
+  ],
+  "premise_correction": {
+    "inherited": "docs/UNIT_CONTROLLER_UPDATE.md called unit+10D4h the unit's external force list, drained by 0074F2E0, and the channel for engine thrust, damage and flooding.",
+    "found": "unit+10D4h is a leak (flooding) model. 0074F930 accumulates water per leak point and 0074F2E0 turns those weights into a heeling torque. It has no push routine, no lifetime field and no one-shot flag, and no command ever passes through it.",
+    "evidence": [
+      "00818404 in the _ship diagnostic dump 00818340 emits the label \"leakManager\" for this sub-object and hands it to 0074EF20",
+      "segment 41 keyword set includes sumleaks and sumforces",
+      "0074F930 walks float rates[+18h], float water[+1Ch] and float3 points[+20h] with count at +14h and writes the totals at +28h and +2Ch",
+      "0074F2E0 writes only x and z of its output, leaving y zero, which is a heel/pitch torque and not a force"
+    ],
+    "consequence": "The force-command contract this packet was given does not exist in the binary. Commanded thrust is a direct rewrite of the rigid body's linear velocity, and steering is half a velocity rewrite and half a torque."
+  },
+  "force_application_sites": {
+    "00C35360_add_force": ["00933B01 in 009329C0"],
+    "00C35330_add_torque": ["00933B38 in 009329C0", "00937613 in 00937440", "0092BF33"],
+    "note": "AddForce has exactly one caller in the whole image; no command path reaches it."
+  },
+  "routines": [
+    {
+      "address": "00825F20",
+      "name": "BSP_UnitInstance_UpdateShipMotion",
+      "abi": "void __thiscall(unit, float dt)",
+      "ret": 4,
+      "body_end": "00826D6B",
+      "state": "analysed; the command tail reconstructed and build-tested",
+      "notes": "Ghidra decompiles it with param_1 = unit + 310h, so param_1+228h is the class block at unit+538h, param_1+D08h the controller at unit+1018h, param_1+670h the throttle and param_1+674h the steering.",
+      "command_tail": {
+        "00826985": "0078CF20 ocean height, times 0.5 (00D7A280, a double)",
+        "008269A2": "the wave wins: throttle = 0 and BL = 0, which suppresses both commands",
+        "008269A9": "throttle = unit+980h",
+        "008269B1": "class id at unit+C4h compared with 8",
+        "008269D8": "-3.0f (00CE3D50) compared with the pose translation y at unit+100h",
+        "008269E6": "throttle *= settings[4B4h]",
+        "008269FD": "unit+5Dh set: throttle = 0",
+        "00826754": "engine gate: engineJam (unit+9E5h) == 0 && thrustMod (unit+9D8h) != 0.0f, xmm1 zeroed at 008266B4, stored as a 0/1 float at 00826792",
+        "00826A3A": "target = ((maxSpeed * gameplayScale) * throttle) * engineGate, in that FMUL order",
+        "00826B29": "0092D300(target, dt)",
+        "00826B2E": "unit+9E4h steeringJam gates the steering call",
+        "00826B54": "0092E8C0(unit+984h, dt)"
+      }
+    },
+    {
+      "address": "0092D300",
+      "name": "BSP_UnitController_ApproachAxialSpeed",
+      "abi": "void __thiscall(controller, float commanded_speed, float dt)",
+      "ret": 8,
+      "state": "reconstructed, build-tested, one focused test",
+      "rule": "dir = (axis.x/len, 0.0f/len, axis.z/len); current = dot(v, dir); target = (1 - |axis.y|) * commanded; accel = 00825EC0(unit) unless one of three class[504h] cases fires; move = accel*dt bites only while move <= |current - target|; v' = v - current*dir + target*dir",
+      "accel_cases": [
+        "current <= target && current >= 0 -> class[504h]",
+        "current > target && |current| < 3.0f -> 2 * class[504h]",
+        "current > target && current <= 0 -> class[504h]"
+      ],
+      "callers": ["00825F20"],
+      "callees": ["00C31F40", "00C32000", "the CRT square root at 0092D3A6", "00825EC0", "00C37E50"]
+    },
+    {
+      "address": "0092D770",
+      "name": "BSP_UnitController_SetAxialSpeed",
+      "abi": "void __thiscall(controller, float speed)",
+      "ret": 4,
+      "state": "reconstructed, build-tested",
+      "rule": "v' = v - dot(v, axis)*axis + speed*axis, with the basis used unnormalised",
+      "callers": ["0081F980", "00822C20"]
+    },
+    {
+      "address": "0092E8C0",
+      "name": "BSP_UnitController_ApplySteering",
+      "abi": "void __thiscall(controller, float to_turn, float dt)",
+      "ret": 8,
+      "state": "analysed; only its call order and its rate limiter reconstructed",
+      "call_order": [
+        "0092E8EF BSP_Math_StepTowards(&controller+80h, to_turn, dt*0.5f)",
+        "0092E8F7 00C32000, nine basis floats from +0 to +20h",
+        "0092E942 00C31F20 angular velocity",
+        "0092E950 00811890(unit, controller->smoothedRudder), negated at 0092E955",
+        "0092E966 00825DE0(unit, rate)",
+        "0092EB8F 00C37E20 angular velocity"
+      ],
+      "not_reconstructed": "the orientation-relative decomposition at 0092E96F..0092EB8F and the roll damper that pulls the roll angle (0042CF10 of basis +18h) back toward +/-2.0f * 0.2618f when the unit's vtable +5Ch answers 0Eh"
+    },
+    {
+      "address": "00937440",
+      "name": "BSP_UnitController_ApplyShipForces",
+      "abi": "void __thiscall(controller, float dt)",
+      "ret": 4,
+      "body_end": "0093762D",
+      "state": "reconstructed, build-tested",
+      "rule": "skip when unit+5Dh; ratio = |dot(v, axis)| / GetReferenceSpeed; heel = |unit+D0h|; gain = (1 - heel) * ratio * unit+984h * settings[588h]; torque = mass*mass * gain * (unit+ECh, +F0h, +F4h) / 10000.0; AddTorque; then tail-call 009329C0",
+      "provisional": "which basis vector pose row 2 is, and therefore whether this is a yaw torque"
+    },
+    {
+      "address": "00937630",
+      "name": "BSP_UnitController_ApplyFrozenForces",
+      "abi": "void __thiscall(controller, float dt)",
+      "ret": 4,
+      "state": "analysed",
+      "rule": "when unit+1189h is set, zero the linear velocity (00C37E50) and the angular velocity (00C37E20) and call 0080E170(0) without reaching 009329C0; otherwise tail-call 009329C0"
+    },
+    {
+      "address": "00811890",
+      "name": "BSP_UnitInstance_ComputeYawRateFromRudder",
+      "abi": "float10 __thiscall(unit, float rudder)",
+      "ret": 4,
+      "state": "analysed",
+      "rule": "rate = 0082ECB0(rudder, forwardSpeed, unit+9DCh turnEfficiency), scaled by 008E6430(5, unit) when 00E0C978 and (*00F88C30)+C4h are both set, else unscaled",
+      "missing": "0082ECB0, the curve itself"
+    },
+    {
+      "address": "00825DE0",
+      "name": "BSP_UnitInstance_ApplyPropellerTurnAssist",
+      "abi": "float10 __thiscall(unit, float yaw_rate)",
+      "ret": 4,
+      "state": "reconstructed, build-tested",
+      "rule": "while unit+1030h > 0 and |rate| < settings[220h], push the rate away from zero by min(|rate|, settings[224h] * (settings[220h] - |rate|)) * propellerLoad, keeping the input sign (00825E36 tests rate < 0.0f)",
+      "significance": "the only recovered consumer of the propeller load at unit+1030h"
+    },
+    {
+      "address": "00825EC0",
+      "name": "BSP_UnitInstance_GetForwardAcceleration",
+      "abi": "float10 __fastcall(unit)",
+      "ret": 0,
+      "state": "reconstructed, build-tested",
+      "rule": "accel = class[508h]; when unit+1038h > 0.0f, accel *= (1 + boost * (settings[228h] - 1))"
+    },
+    {
+      "address": "0074F930",
+      "name": "BSP_LeakManager_Update",
+      "abi": "void __thiscall(leak_model, float dt)",
+      "ret": 4,
+      "state": "reconstructed, build-tested",
+      "rule": "pass 1 snaps rates under 0.001f to zero, accumulates the raw rate into +2Ch and adds min(rate, cap)*dt of water; pass 2 re-sums the water into +28h; the cap (1 - health) * settings[404h] * capacity scales every water value and zeroes every rate when it bites; +24h = total > 0.01f"
+    },
+    {
+      "address": "0074F2E0",
+      "name": "not named by this packet (read-only, outside the lease)",
+      "abi": "void __thiscall(leak_model, float* out)",
+      "ret": 4,
+      "state": "reconstructed, build-tested",
+      "rule": "out.x += w * (p.x*row0.z + p.y*row1.z + p.z*row2.z) * 10.0; out.z -= w * (p.x*row0.x + p.y*row1.x + p.z*row2.x) * 10.0; y stays zero"
+    }
+  ],
+  "unit_fields": {
+    "source": "the _ship diagnostic dump 00818340, which emits (label, type, value) triples",
+    "fields": [
+      {"offset": "0x828", "label": "sinkTime", "site": "00818354"},
+      {"offset": "0x980", "label": "thrust", "site": "0081857C", "existing_constant": "kUnitOffThrottle"},
+      {"offset": "0x984", "label": "toTurn", "site": "008185EB", "existing_constant": "kUnitOffSteering"},
+      {"offset": "0x9A0", "label": "helmsmanControl.thrust", "site": "00818724"},
+      {"offset": "0x9A4", "label": "helmsmanControl.toTurn", "site": "00818757"},
+      {"offset": "0x9C0", "label": "maxSpeed", "site": "00818613", "producer": "class[500h] at 00822C4F"},
+      {"offset": "0x9D8", "label": "thrustMod", "site": "00818372", "producer": "1.0f at 00823714"},
+      {"offset": "0x9DC", "label": "turnEfficiency", "site": "0081835D", "producer": "1.0f at 0082371C"},
+      {"offset": "0x9E4", "label": "steeringJam", "site": "00818369", "producer": "0 at 0082372E"},
+      {"offset": "0x9E5", "label": "engineJam", "site": "00818370", "producer": "0 at 00823727"},
+      {"offset": "0x104C", "label": "torpedoStock", "site": "0081856C"},
+      {"offset": "0x1130", "label": "shipYardLaunch", "site": "00818621"},
+      {"offset": "0x1134", "label": "repairPreferences[6]", "site": "00818640"},
+      {"offset": "0x114C", "label": "repairTimer", "site": "00818700"},
+      {"offset": "0x115C", "label": "camoColor", "site": "00818540"},
+      {"offset": "0x1160", "label": "camoColorGun", "site": "00818554"},
+      {"offset": "0x10D4", "label": "leakManager", "site": "00818404"}
+    ]
+  },
+  "leak_model_layout": {
+    "base": "unit+10D4h",
+    "fields": {
+      "0x08": "per-leak rate ceiling",
+      "0x0C": "hull water capacity",
+      "0x10": "owning unit",
+      "0x14": "count",
+      "0x18": "float rates[count]",
+      "0x1C": "float water[count]",
+      "0x20": "float3 points[count], stride 0Ch",
+      "0x24": "flooded flag",
+      "0x28": "total water; 0x10D4 + 0x28 == 0x10FC, so this IS unit+10FCh",
+      "0x2C": "total rate"
+    },
+    "resolves": "uncertainty 3 of docs/UNIT_CONTROLLER_UPDATE.md: unit+10FCh is the accumulated flood water, produced by the second pass of 0074F930 at 0074F9B2..0074F9C8, read by 009329C0 at 00932A2C (effective mass) and 00933A3A (buoyancy cut by water*10.0)."
+  },
+  "constants": {
+    "00D7A208": "-0.0f, the absolute-value subtrahend",
+    "00D7A218": "0.0f",
+    "00D7A24C": "1.0f",
+    "00D7A280": "0.5 (double)",
+    "00CE3854": "3.0f, the creep threshold",
+    "00CE3D50": "-3.0f, the deck reference",
+    "00CE4BD8": "10000.0 (double), the torque divisor",
+    "00CE3DC0": "10.0 (double), the force gain",
+    "00D7A23C": "0.001f, the leak rate floor",
+    "00D7A238": "0.01f, the flooded mark",
+    "00D05AA8": "0.2618f, fifteen degrees",
+    "00D19628": "2.0f"
+  },
+  "external_contracts": [
+    "00C31F20 / 00C31F40 / 00C32000 / 00C35330 / 00C35360 / 00C37E20 / 00C37E50, the physics body",
+    "009329C0 BSP_UnitController_ApplyHydroForces",
+    "0082ECB0, the rudder-to-yaw-rate curve, not analysed",
+    "008E6430, the gameplay scale hook, not analysed",
+    "00424C40, the settings singleton",
+    "0078CF20, the ocean height",
+    "00923BE0, the unit health read",
+    "0042AC60 BSP_Math_StepTowards",
+    "0042CF10, the angle extraction inside 0092E8C0",
+    "0074EF20, the leakManager dump"
+  ],
+  "no_ghidra_function": [],
+  "uncertainties": [
+    "Nothing writes unit+980h or unit+984h in any encoding a displacement scan can see. Every movss, fstp, mov and lea form against [reg+980h] and [reg+984h] was scanned across the whole image; the only stores are mov [esi+980h], ebx and mov [esi+984h], ebx at 004DA32B in an unrelated scene loader, and every ship-side access is a load. The producers must use a shifted base register, as 00825F20 itself does when it reads them as [EDI+670h] with EDI = unit+310h. The player and AI producers are NOT identified and the packet's central question is open.",
+    "unit+9A0h/+9A4h are read by the ship AI at 0099D5A4 and 0099D694: when either is non-zero it is clamped and used in place of the AI's own plan (0099D679, 0099D6B7, each with a validity byte). Their writers were not found. The plane classes have a control pair at the same offsets written by luaMW_PlaneSetRollCtrl (0089DE45) and luaMW_PlaneSetPowerCtrl (0089DFE5); no ship equivalent exists in the Lua API.",
+    "unit+102Ch, +1030h, +1034h and +1038h are zeroed together by the ship constructor at 0081F2EC..0081F304 and read by 00825DE0, 00825EC0, 009D4E30, 009DE5B0 and 009F3F80. No writer was found, by the same shifted-base problem, so the propeller load's producer remains open as docs/UNIT_TIMED_SUBUPDATES.md recorded.",
+    "Which basis vector pose row 2 is, and therefore whether 00937440 is a yaw torque.",
+    "The square-root argument at 0092D3A6 was not read out of the listing; the flattened norm is the reading that matches the two divides that follow.",
+    "0082ECB0 and 008E6430 were not analysed.",
+    "thrustMod is used only as a non-zero test on the command path; whether it scales anything is unknown.",
+    "The roll damper inside 0092E8C0 is described from one reading of the listing and is provisional."
+  ],
+  "what_remains": [
+    "The writers of unit+980h, +984h, +9A0h, +9A4h and +102Ch..+1038h",
+    "0082ECB0 and 008E6430",
+    "00936DC0, the depth-holding force model, and its unit+1200h table",
+    "The rest of 00822C20 and of 0081F980"
+  ],
+  "follow_up_packets": [
+    {
+      "id": "unit_command_producers",
+      "addresses": ["00825F20", "0099D300", "009998A0", "009D4E30", "009F3F80"],
+      "files": ["docs/UNIT_COMMAND_PRODUCERS.md"],
+      "contract": "Find the writers of unit+980h and unit+984h by decompiling the ship AI's output stage rather than by scanning displacements, and settle whether the player writes them directly or through the same AI object."
+    },
+    {
+      "id": "unit_rudder_curve",
+      "addresses": ["0082ECB0", "00811890", "00811940", "00811960", "00811AB0"],
+      "files": ["docs/UNIT_RUDDER_CURVE.md"],
+      "contract": "The rudder-to-yaw-rate curve and the small ship accessors around it."
+    },
+    {
+      "id": "unit_leak_model",
+      "addresses": ["0074F930", "0074EF20", "0074F2E0"],
+      "files": ["docs/UNIT_LEAK_MODEL.md"],
+      "contract": "Who opens a leak, and the leakManager dump's field names."
+    },
+    {
+      "id": "unit_depth_force_model",
+      "addresses": ["00936DC0"],
+      "files": ["docs/UNIT_DEPTH_FORCE_MODEL.md"],
+      "contract": "The submarine depth controller and the unit+1200h table."
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "Win32 Release, warnings as errors, clean",
+    "tests": "reconstructed_math passed; one focused case added for the 0092D300 acceleration limit",
+    "registered": "cmake/startup.cmake appends src/unit_forces.cpp to bsp_core"
+  },
+  "ghidra_flow": "not run; no _free fall-through gap appeared in the listings read"
+}

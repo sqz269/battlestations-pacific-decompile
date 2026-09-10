@@ -23,6 +23,7 @@
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/title_init.hpp"
+#include "bsp/unit_forces.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/scene_entity_factory.hpp"
@@ -1523,6 +1524,27 @@ int main() {
                   && bsp::unit_hull_submersion_009329c0(element, -10.0f).submerged == 3.0f
                   && bsp::unit_hull_submersion_009329c0(element, 1.0f).submerged == 2.0f,
             "the hull submersion clamp saturates dry at zero and wet at the element span");
+    }
+
+    {
+        // 0092D300 turns a commanded speed into a velocity, and the acceleration limit
+        // is what keeps a throttle change from teleporting the hull: the step is
+        // accel*dt and only bites while it is no larger than the remaining gap
+        // (0092D43A..0092D45B). docs/UNIT_FORCE_COMMANDS.md.
+        bsp::UnitAxialSpeedInputs in{};
+        in.axis = {0.0f, 0.0f, 1.0f};
+        in.velocity = {0.0f, 0.0f, 0.0f};
+        in.commanded_speed = 10.0f;
+        in.drive_accel = 2.0f;
+        in.brake_accel = 2.0f;
+        in.dt = 1.0f;
+        const bsp::UnitAxialSpeedStep limited = bsp::unit_approach_axial_speed_0092d300(in);
+        in.dt = 100.0f;
+        const bsp::UnitAxialSpeedStep snapped = bsp::unit_approach_axial_speed_0092d300(in);
+        check(limited.target_speed == 2.0f && limited.velocity.z == 2.0f
+                  && snapped.target_speed == 10.0f && snapped.velocity.y == 0.0f,
+            "the axial speed command steps by accel*dt and snaps only once the step "
+            "covers the gap, leaving the vertical velocity alone");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
