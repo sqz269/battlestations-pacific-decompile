@@ -1,0 +1,499 @@
+{
+  "packet": "game_frontend_shell_entry",
+  "owner": "agent/game-frontend-entry",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/GAME_FRONTEND_ENTRY.md",
+  "anchor": {
+    "function": "BSP_Game_EnterFrontEndShell",
+    "address": "004e4000",
+    "range": [
+      "004e4000",
+      "004e4421"
+    ],
+    "note": "Whole body read. docs/GAME_FRONTEND_STATES.md stopped at 004e4130 and left the rest open; this packet closes it. 004e4a40 and 004e3aa0 were read only."
+  },
+  "headline": {
+    "claim": "Game state 4 never survives BSP_Game_EnterFrontEndShell.",
+    "evidence": [
+      "004e3ab8 MOV EBX,0x3 and 004e3ac2 MOV [ESI+0x5d4],EBX: GGame::OnInit writes game+5D4h = 3 unconditionally as its first store.",
+      "004e4087 MOV EBX,0x3, so the compare at 004e4151 CMP [EBP+0x5d4],EBX is against 3.",
+      "004e41b6 MOV EBX,0x5 and 004e4279 MOV [EBP+0x5d4],EBX: the shell settles on 5."
+    ],
+    "consequences": [
+      "4 is a drain request value only; no frame boundary observes it in game+5D4h.",
+      "docs/GAME_FRAME_CONTROL.md lists drain request 5 as 'no call', so 5 is the resting front-end state rather than a request the drain redispatches.",
+      "The state-4 arms of BSP_Game_PollPlatformSessionEvents and BSP_Game_ProcessWindowCloseRequest are reachable only from inside 004e4000."
+    ]
+  },
+  "ordered_steps": [
+    {
+      "site": "004e4022",
+      "what": "*(00F8D394)+18h = 20000000h"
+    },
+    {
+      "site": "004e4030",
+      "what": "renderer vtable +70h('Textures before mainmenu', 00CE82C8)"
+    },
+    {
+      "site": "004e4046",
+      "what": "00a7a460('Sounds before mainmenu', 00CE82B0)"
+    },
+    {
+      "site": "004e405b",
+      "what": "004c1650() then 0086b0b0('Effects before mainmenu', 00CE8298)"
+    },
+    {
+      "site": "004e4067",
+      "what": "destroy the title singleton 00E198C8 via vtable +0h(1), null it"
+    },
+    {
+      "site": "004e407f",
+      "what": "choose the VFS load block from game+719Ch, three arms"
+    },
+    {
+      "site": "004e40b0",
+      "what": "BSP_FileBlock_Construct(&block, &label, 1)"
+    },
+    {
+      "site": "004e40f2",
+      "what": "0057d0d0 builds the config, 0057cff0 publishes it to 00E08780"
+    },
+    {
+      "site": "004e410f",
+      "what": "004d2a80 destroys the config temporary"
+    },
+    {
+      "site": "004e4116",
+      "what": "BSP_LoadingScreen_Begin(0); ECX zeroed at 004e4114"
+    },
+    {
+      "site": "004e4126",
+      "what": "BSP_FileBlock_Destroy(&block)"
+    },
+    {
+      "site": "004e4130",
+      "what": "BSP_LoadingScreen_ReportProgress(0.1f), the float at 00D7A2F0"
+    },
+    {
+      "site": "004e4145",
+      "what": "GGame::OnInit(*(00E188A8)); writes game+5D4h = 3"
+    },
+    {
+      "site": "004e414c",
+      "what": "BSP_Game_PollPlatformSessionEvents(this)"
+    },
+    {
+      "site": "004e4151",
+      "what": "abort gate: game+5D4h != 3 leaves via BSP_LoadingScreen_End"
+    },
+    {
+      "site": "004e4171",
+      "what": "create 00E198B8 (4Ch, 00689800), then vtable +4h"
+    },
+    {
+      "site": "004e41b0",
+      "what": "create 00E198AC (78h, 00686170), then vtable +4h"
+    },
+    {
+      "site": "004e41f0",
+      "what": "create 00E198B4 (68h, 006887E0), then vtable +4h"
+    },
+    {
+      "site": "004e422f",
+      "what": "if *(game+1A08h)+4h: 006b8ad0('collectgarbage(\"collect\")',0,0,2)"
+    },
+    {
+      "site": "004e424a",
+      "what": "if *(00E198AC)+4h != 4: 004cc460(1,0)"
+    },
+    {
+      "site": "004e425e",
+      "what": "00E198AC vtable +8h"
+    },
+    {
+      "site": "004e426b",
+      "what": "005884a0 with ECX = *(00E198AC)+58h"
+    },
+    {
+      "site": "004e4279",
+      "what": "game+5D4h = 5"
+    },
+    {
+      "site": "004e427f",
+      "what": "if 0067d6e0(): 004bfc70(this); drain request 07h runs the same"
+    },
+    {
+      "site": "004e428f",
+      "what": "the once-only GA_HM award block"
+    },
+    {
+      "site": "004e43e7",
+      "what": "BSP_LoadingScreen_End()"
+    },
+    {
+      "site": "004e43ec",
+      "what": "if game+216Dh: 0076fad0(game+1EF0h, 0), then clear the byte"
+    }
+  ],
+  "load_block_choice": {
+    "site": "004e407f..004e40ab",
+    "strings": {
+      "00CE8254": "GILoading::SLM_LOAD_FRONTEND",
+      "00CE8274": "GILoading::SLM_LOAD_FRONTEND_RETURN"
+    },
+    "only_slm_strings_in_image": true,
+    "only_referrer": "004e4000",
+    "meaning": "The label is wrapped in a NativeString and passed to BSP_FileBlock_Construct (00be0a30), which opens a named VFS file block closed by BSP_FileBlock_Destroy at 004e4126. GILoading names a resource-grouping scope, not a state field.",
+    "arms": [
+      {
+        "condition": "game+719Ch == 0",
+        "site": "004e40ab",
+        "result": "SLM_LOAD_FRONTEND"
+      },
+      {
+        "condition": "guard set and both 00E198B8 and 00E198AC non-null",
+        "site": "004e409c -> 004e412d",
+        "result": "skip the block, the config publish and the loading screen entirely"
+      },
+      {
+        "condition": "guard set and either manager missing",
+        "site": "004e40a4",
+        "result": "SLM_LOAD_FRONTEND_RETURN"
+      }
+    ],
+    "dead_code": "The second guard test at 004e40a2 can no longer be false when reached."
+  },
+  "loading_screen": {
+    "global": "00E194B4",
+    "size": "0x58",
+    "created_per_entry": true,
+    "bases": {
+      "004f7180": "FrontEndScreen; stores vtable 00CEAE54, clears +4h and +5h",
+      "0057bff0": "singleton lifetime hook at +8h; assigns 00E194B4 = this - 8 inside the constructor under the lifetime manager critical section"
+    },
+    "fields": {
+      "+0h": "vtable 00CEF264 (0057c1c0)",
+      "+4h": "byte wanted; set 0057ce8e, cleared 0057c29e",
+      "+5h": "byte active; set 0057ce92, cleared 0057c2a1; gates vtable +1Ch",
+      "+8h": "vtable 00CEF28C; the lifetime node passed to 00415350 and 00bcfca0",
+      "+0Ch": "render worker descriptor, argument 1 of 00aa4040",
+      "+10h": "render worker context, argument 3 of 00aa4040",
+      "+1Ch": "GUI element; vtable +88h(index, 0, 1.0f)",
+      "+20h": "GUI element; visible in mode 0 only",
+      "+24h": "GUI element; its +114h float is the mode 1 aspect source",
+      "+28h": "GUI element; vtable +58h(rect) in mode 1",
+      "+2Ch": "int, monotonic max of the 00bf7420 counter",
+      "+30h": "float, monotonic max of the reported progress",
+      "+38h,+3Ch,+44h": "zeroed by 0057c1c0",
+      "+40h": "set to 1 by 0057c1c0"
+    },
+    "unset_by_either_constructor": "+1Ch..+30h; vtable +10h at 0057ccc2 is the only candidate",
+    "modes": {
+      "0": "loads interface/textures/menu.ats; 004c1ac0(2,1) and 00518250(2,1); +1Ch image index 2 alpha 1.0f; +20h visible; +24h and +28h hidden",
+      "1": "004c1ac0(1,1) and 00518250(1,1); +1Ch image index = the published 00E08798 byte; +20h hidden; 00abaed0(&00E08790,1) binds the picked image; the +24h +114h float is compared against 00CEC380 and 00CEC3E8 and both arms call +28h vtable +58h; +24h and +28h visible",
+      "other": "0057ccc6 falls to 0057ce83: the screen is created and the worker started but no element is configured"
+    },
+    "synchronous": {
+      "answer": "004e4000 runs to completion inside one call on the calling thread.",
+      "evidence": "0057ce9d BSP_RenderMode_PrepareAndStartWorker(screen+0Ch, 0057ca00, screen+10h, 19h) puts the render command queue in mode 2 and starts a worker that draws the screen at rate 19h (25) while the caller blocks.",
+      "loading_queue_singleton": "Not used. 004fde20 / 00509190 of docs/APP_RUN_FRAME.md are pumped only by frames that run, and no frame runs here."
+    },
+    "progress_x87": {
+      "site": "0057beef",
+      "instruction": "fmul qword ptr [0xcef258]",
+      "constant": 128.0,
+      "finding": "The product is left in ST0 and never stored; 0057bef5 is an SSE MOVSS of the unscaled maximum. Ghidra and the raw decoder agree, so the dead multiply and the x87 stack leak are in the shipped image."
+    }
+  },
+  "config_block": {
+    "base": "00E08780",
+    "fields": {
+      "+0h": "never written on this path; unidentified",
+      "+4h..+0Ch": "vector<NativeString> of image names, 8-byte elements",
+      "+10h/+14h": "the picked NativeString {int length; char* data;} at 00E08790/00E08794",
+      "+18h": "byte at 00E08798, the mode 1 image index"
+    },
+    "seeded_names": [
+      "mp.loading_24",
+      "mp.loading_05",
+      "mp.loading_12"
+    ],
+    "note": "0057d107 sets +18h = 1 and 0057d25a overwrites it with the live 00E08798, so the 1 never escapes. Nothing on this path writes +10h."
+  },
+  "award_block": {
+    "site": "004e428f..004e43e2",
+    "key": "GA_HM",
+    "key_address": "00CE824C",
+    "key_referrers": [
+      "004e4000"
+    ],
+    "steps": [
+      "004c8b80 finds GA_HM in the std::map<NativeString,int> at game+6F0h; the iterator _Mycont is checked against the container and _Ptr against the end sentinel at game+6F4h. Equal to the sentinel means not found, and only then does the block run.",
+      "0090c5d0 with ECX = *(00E188A8)+21A0h must return true.",
+      "006b8da0 with ECX = 00E19900 maps GA_HM to an id, which must satisfy 1 <= id <= 99 (LEA EAX,[ESI-1]; CMP EAX,0x62; JA at 004e437a).",
+      "00a3e520 and 004b44f0, both with ECX = 00F8ABE8, must return true.",
+      "00a410a0(00F8ABE8, id) grants it and 007fbe20(game+650h, GA_HM, 1) records it."
+    ],
+    "map_identity": "The tracker map member is tracker+0A0h and 650h + 0A0h = 6F0h, so step 1 and step 5 touch the same container.",
+    "packet_overlap": "game+650h belongs to packet game_award_trackers; only 007fbe20 is established here."
+  },
+  "manager_trio": {
+    "shape": "if (global == 0) { p = operator new(size); if (p) ctor(p); global = p; } then (*global->vt[4])() unconditionally",
+    "null_deref": "The vtable is taken through the global at 004e41a3, 004e41e3 and 004e4222 even when the allocation returned null. Property of the shipped code.",
+    "entries": {
+      "00E198B8": {
+        "size": "0x4C",
+        "ctor": "00689800",
+        "teardown_request": "16h"
+      },
+      "00E198AC": {
+        "size": "0x78",
+        "ctor": "00686170",
+        "teardown_request": "06h"
+      },
+      "00E198B4": {
+        "size": "0x68",
+        "ctor": "006887E0",
+        "teardown_request": "09h"
+      }
+    },
+    "teardown_source": "docs/GAME_FRAME_CONTROL.md drain table, vtable +0Ch"
+  },
+  "abi": {
+    "004e4000": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "the game object"
+    },
+    "0057cb60": {
+      "convention": "__fastcall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "int mode, not a this pointer; 0057cb7a moves it to EBP and the body never dereferences it"
+    },
+    "0057bec0": {
+      "convention": "__stdcall",
+      "stack_args": [
+        "float progress"
+      ],
+      "ret": 4,
+      "ecx": null
+    },
+    "0057c250": {
+      "convention": "__cdecl",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": null
+    },
+    "0057cff0": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "the config object"
+    },
+    "0057d0d0": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "the config object; returned in EAX"
+    },
+    "0057c1c0": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "the screen; returned in EAX"
+    },
+    "0057bff0": {
+      "convention": "__thiscall",
+      "stack_args": [],
+      "ret": 0,
+      "ecx": "screen+8h; returned in EAX"
+    },
+    "00506c80": {
+      "convention": "__thiscall",
+      "stack_args": [
+        "src"
+      ],
+      "ret": 4,
+      "ecx": "dst"
+    },
+    "007fbe20": {
+      "convention": "__thiscall",
+      "stack_args": [
+        "const NativeString* key",
+        "int value"
+      ],
+      "ret": 8,
+      "ecx": "the tracker at game+650h"
+    },
+    "00a410a0": {
+      "convention": "__thiscall",
+      "stack_args": [
+        "int awardId"
+      ],
+      "ret": 4,
+      "ecx": "00F8ABE8"
+    }
+  },
+  "callers": {
+    "004e4000": "BSP_Game_DrainStateRequestQueue 004e4430 at 004e44fa, request 4 case 004e44f3",
+    "0057cb60": [
+      "004e4000"
+    ],
+    "0057bec0": [
+      "004e4000"
+    ],
+    "0057c250": [
+      "004e4000"
+    ],
+    "0057cff0": [
+      "004e4000"
+    ],
+    "0057d0d0": [
+      "004e4000"
+    ],
+    "0057c1c0": [
+      "0057cb60"
+    ],
+    "0057bff0": [
+      "0057c1c0"
+    ]
+  },
+  "reconstruction": {
+    "header": "include/bsp/frontend_entry.hpp",
+    "source": "src/frontend_entry.cpp",
+    "cmake": "cmake/startup.cmake, one deferred target_sources line",
+    "entry_points": [
+      "bsp::enter_front_end_shell",
+      "bsp::decide_front_end_load",
+      "bsp::front_end_load_block_label",
+      "bsp::default_front_end_loading_config",
+      "bsp::publish_loading_screen_config",
+      "bsp::begin_loading_screen",
+      "bsp::report_loading_progress",
+      "bsp::end_loading_screen"
+    ],
+    "reused": "bsp::FrontEndScreen from include/bsp/frontend_states.hpp",
+    "tests": "One case in tests/math_tests.cpp for the 004e4151 state gate and the state 4 -> 3 -> 5 sequence.",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean. ctest 1/1 passed."
+  },
+  "status": {
+    "004e4000": "reconstructed, build-tested",
+    "0057cb60": "reconstructed, build-tested; the mode 1 rect argument is not modelled",
+    "0057bec0": "reconstructed, build-tested",
+    "0057c250": "reconstructed, build-tested",
+    "0057cff0": "reconstructed, build-tested",
+    "0057d0d0": "reconstructed, build-tested",
+    "0057c1c0": "analyzed; layout established, not reconstructed",
+    "0057bff0": "analyzed; global assignment established, not reconstructed",
+    "00506c80": "analyzed; identified as vector<NativeString>::operator=",
+    "007fbe20": "analyzed; full body read",
+    "00a410a0": "analyzed; full body read",
+    "00689800": "exported only",
+    "00686170": "exported only",
+    "006887e0": "exported only"
+  },
+  "recorded_names": {
+    "0057cb60": "BSP_LoadingScreen_Begin",
+    "0057bec0": "BSP_LoadingScreen_ReportProgress",
+    "0057c250": "BSP_LoadingScreen_End",
+    "0057cff0": "BSP_LoadingScreen_PublishConfig",
+    "0057d0d0": "BSP_LoadingScreen_BuildDefaultConfig",
+    "0057c1c0": "BSP_LoadingScreen_Construct",
+    "0057bff0": "BSP_LoadingScreen_RegisterSingleton",
+    "00506c80": "BSP_StringVector_Assign",
+    "007fbe20": "BSP_AwardTracker_RecordAtLeast",
+    "00a410a0": "BSP_OnlineAwards_GrantIfSessionActive",
+    "004e4000": "BSP_Game_EnterFrontEndShell (evidence appended, name kept)",
+    "00a7a460": "BSP_SoundSystem_ReportFmodMemoryFailure (correction evidence appended, not renamed; outside this packet's lease)"
+  },
+  "ghidra_functions_missing": [],
+  "open_questions": [
+    "No caller of BSP_LoadingScreen_Begin with mode 1 was found, so the mp.loading_NN list 004e4000 publishes is consumed elsewhere. This is the largest gap.",
+    "Field +0h of the config layout is never written and is unidentified; 00506c80's vector members start at +4h, which is unusual.",
+    "Loading screen fields +1Ch..+30h are attributed to vtable +10h by elimination; 0057ccc2 was not followed.",
+    "The mode 1 rect computation at 0057cdc0..0057ce6d and the constants 00CEC380 and 00CEC3E8 were read only far enough to see both arms call vtable +58h.",
+    "004c1650, 0086b0b0, 004cc460, 005884a0, 0067d6e0, 004bfc70, 0076fad0, 0090c5d0, 00a3e520, 004b44f0 and 006b8ad0 were identified by call shape and string only.",
+    "The three managers are identified only by size, constructor and teardown request.",
+    "Whether game+216Dh can be set on a path that does not enter the front end."
+  ],
+  "corrections_offered": {
+    "00a7a460": "Its ledger name reads as a failure handler, but the body only samples FMOD_Memory_GetStats into two discarded locals and ignores its argument, and 004e4000 calls it at 004e4051 with 'Sounds before mainmenu' as one of three memory checkpoints. A probe name fits both call sites. The record already noted the body; the second call site is new. Evidence appended, not renamed.",
+    "docs/GAME_FRONTEND_STATES.md": "Its state-4 section is correct about the request value but the shell settles on 5, not 4."
+  },
+  "external_contracts": {
+    "004e3aa0": "GGame::OnInit; read only. Writes game+5D4h = 3 at 004e3ac2.",
+    "004e4a40": "BSP_Game_OnMove; read only.",
+    "004db290": "BSP_Game_PollPlatformSessionEvents; the only thing that can fail the gate.",
+    "00be0a30": "BSP_FileBlock_Construct; docs/FILE_BLOCK_SETUP.md.",
+    "00bdcb30": "BSP_FileBlock_Destroy; docs/FILE_BLOCK_LIFETIME.md.",
+    "00aa4040": "BSP_RenderMode_PrepareAndStartWorker; docs/RENDER_WORKER.md.",
+    "00af0060": "BSP_TextureAtlas_Load; docs/APP_INITIALIZE_MAP.md.",
+    "004c12b0": "BSP_GuiManager_GetOrCreate, __cdecl(void).",
+    "00aa0e00": "BSP_GuiManager_SetEnabled; owned by packet game_blocking_screen.",
+    "00aa4f80": "BSP_GuiManager_Update; owned by packet game_on_move_map.",
+    "004f7180": "BSP_FrontEndScreen_Construct; owned by packet game_frontend_states."
+  },
+  "follow_up_packets": [
+    {
+      "id": "loading_screen_elements",
+      "addresses": [
+        "0057ca00",
+        "0057c990",
+        "0057c4c0",
+        "00abaed0"
+      ],
+      "files": [
+        "docs/LOADING_SCREEN_ELEMENTS.md",
+        "include/bsp/loading_screen_elements.hpp",
+        "src/loading_screen_elements.cpp",
+        "reports/loading_screen_elements.json"
+      ],
+      "contract": "The four GUI elements at screen+1Ch..+28h, the vtable +10h initialiser, and the worker callback 0057ca00 that draws the screen at 25 Hz."
+    },
+    {
+      "id": "frontend_manager_trio",
+      "addresses": [
+        "00689800",
+        "00686170",
+        "006887e0"
+      ],
+      "files": [
+        "docs/FRONTEND_MANAGERS.md",
+        "include/bsp/frontend_managers.hpp",
+        "src/frontend_managers.cpp",
+        "reports/frontend_managers.json"
+      ],
+      "contract": "What the singletons at 00E198B8, 00E198AC and 00E198B4 own, what *(00E198AC)+4h counts, and why drain requests 16h, 06h and 09h destroy them individually."
+    },
+    {
+      "id": "award_grant_path",
+      "addresses": [
+        "00a41030",
+        "00a40d60",
+        "0090c5d0",
+        "00a3e520",
+        "004b44f0",
+        "006b8da0"
+      ],
+      "files": [
+        "docs/AWARD_GRANT.md",
+        "include/bsp/award_grant.hpp",
+        "src/award_grant.cpp",
+        "reports/award_grant.json"
+      ],
+      "contract": "The award-name to id map at 00E19900, the 1..99 id range, and the online gating at 00F8ABE8+119h/+11Ah/+11Ch. Coordinate with game_award_trackers, which owns game+650h."
+    },
+    {
+      "id": "loading_image_consumer",
+      "addresses": [],
+      "files": [
+        "docs/LOADING_IMAGE_CONSUMER.md"
+      ],
+      "contract": "Find the caller of BSP_LoadingScreen_Begin with mode 1 that consumes the mp.loading_NN list and writes 00E08790, since 004e4000 publishes the list but always raises mode 0."
+    }
+  ],
+  "ghidra": "Read-only. No renames, comments, prototypes, function creation or saves. Project C:/Users/sqz269/bsp.gpr, program /battlestationspacific.exe."
+}

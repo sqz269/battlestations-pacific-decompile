@@ -4,6 +4,7 @@
 #include "bsp/game_entry.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/game_frame_control.hpp"
+#include "bsp/frontend_entry.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/native_string.hpp"
@@ -552,6 +553,75 @@ int main() {
             "retiring an event abandons the selection instead of applying it");
         check(state.mission_events.events.size() == 2,
             "exactly one event leaves the queue per frame");
+    }
+
+    {
+        // 004e4151 compares game+5D4h against the 3 that GGame::OnInit wrote one
+        // call earlier, not against the 4 the drain dispatched. When the platform
+        // poll moves the state off 3 the shell is abandoned: no manager is
+        // created and 004e4279 never writes 5. Reading that gate as "still 4"
+        // would build the front end after a sign-out and leave the state at 3.
+        struct ShellHost final : bsp::FrontEndShellHost {
+            std::int32_t state_after_poll = 3;
+            int managers_created = 0;
+            int end_loading_calls = 0;
+            bsp::LoadingScreenConfig globals{};
+            void renderer_set_budget(std::uint32_t) override {}
+            void probe_texture_memory(const char*) override {}
+            void probe_sound_memory(const char*) override {}
+            void probe_effect_memory(const char*) override {}
+            bool title_screen_present() override { return false; }
+            void destroy_title_screen() override {}
+            bool front_end_manager_b8_present() override { return false; }
+            bool front_end_manager_ac_present() override { return false; }
+            bool front_end_manager_b4_present() override { return false; }
+            void open_load_block(const char*) override {}
+            void close_load_block() override {}
+            bsp::LoadingScreenConfig& loading_globals() override { return globals; }
+            void begin_loading(bsp::LoadingScreenMode) override {}
+            void report_progress(float) override {}
+            void end_loading() override { ++end_loading_calls; }
+            void game_on_init() override {}
+            void poll_platform_session_events() override {}
+            std::int32_t game_state() override { return state_after_poll; }
+            void create_manager_b8() override { ++managers_created; }
+            void create_manager_ac() override { ++managers_created; }
+            void create_manager_b4() override { ++managers_created; }
+            void lua_collect_garbage() override {}
+            int manager_ac_mode() override { return 4; }
+            void reset_manager_ac_mode() override {}
+            void manager_ac_enter() override {}
+            void manager_ac_start_sub() override {}
+            bool post_state_hook_wanted() override { return false; }
+            void post_state_hook() override {}
+            bool award_gate_open() override { return false; }
+            int award_id(const char*) override { return 0; }
+            bool award_system_ready() override { return false; }
+            bool award_session_ready() override { return false; }
+            void grant_award(int) override {}
+            void record_award(const char*, int) override {}
+            void send_network_quit() override {}
+        };
+
+        ShellHost aborted;
+        aborted.state_after_poll = 2;
+        bsp::FrontEndShellState aborted_state;
+        aborted_state.state = bsp::kGameStateFrontEndRequest;
+        check(bsp::enter_front_end_shell(aborted_state, aborted)
+                == bsp::FrontEndShellOutcome::AbortedByPlatformEvent
+                && aborted.managers_created == 0 && aborted_state.state == 2,
+            "a platform event off state 3 abandons the shell before the managers");
+
+        ShellHost ready;
+        bsp::FrontEndShellState ready_state;
+        ready_state.state = bsp::kGameStateFrontEndRequest;
+        check(bsp::enter_front_end_shell(ready_state, ready)
+                == bsp::FrontEndShellOutcome::ShellReady
+                && ready.managers_created == 3
+                && ready_state.state == bsp::kGameStateFrontEndShellReady,
+            "the shell settles on state 5, never on the 4 the drain dispatched");
+        check(aborted.end_loading_calls == 1 && ready.end_loading_calls == 1,
+            "0057c250 runs on both exits, so the loading screen never leaks");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
