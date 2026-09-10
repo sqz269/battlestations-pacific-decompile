@@ -1,0 +1,798 @@
+{
+  "schema_version": 1,
+  "packet": "native_rows_sort_integration",
+  "status": "integrated_complete_actual_storage_primary_native_fixtures_and_strict_win32_build_checked",
+  "worker_commits": [
+    "4f0bc070d4d2835668a342dce437937e339b313d",
+    "37432f1bfebb0657374a436a079595c356087f49"
+  ],
+  "complete_bodies": 14,
+  "new_complete_functions": 13,
+  "upgraded_complete_functions": 1,
+  "records": [
+    {
+      "kind": "function",
+      "address": "00b1db30",
+      "name": "reserve_native_render_queue_rows_00b1db30",
+      "cpp_symbol": "reserve_native_render_queue_rows_00b1db30",
+      "source": "src/native_render_queue_rows.cpp",
+      "native_end_exclusive": "00b1dc66",
+      "original_abi": "ECX existing header; stack signed capacity; RET4; EAX incidental",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "Clamp request min1; return if current capacity sufficient; raw allocation(request*20) before publication. Compare each iteration against current signed count; capture current source row for each nonnull computed destination. Clear destination first8 bytes; skip string copying on equal row addresses. Call actual0041DD40 with source length/preserve true; then reread captured source length, current destination length/source data/destination data. Three ordered x87 FLD32/FSTP32 pairs at8,C,10; caller control word untouched. Forward old-string releases reread current header data/count; capture nonnull data and current length+1; do not clear rows. Reload current data for array free; publish replacement data then requested capacity after return; leave count unchanged. Native CBCA80 computes current/end pointers and calls00401130, whose whole body is RET. No replacement allocation or completed-string rollback is added."
+    },
+    {
+      "kind": "function",
+      "address": "00b1e7f0",
+      "name": "resize_native_render_queue_rows_00b1e7f0",
+      "cpp_symbol": "resize_native_render_queue_rows_00b1e7f0",
+      "source": "src/native_render_queue_rows.cpp",
+      "native_end_exclusive": "00b1e86d",
+      "original_abi": "ECX existing header; stack signed count; RET4; EAX incidental",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "Reserve if request exceeds capacity, then reload old count. Growth rereads data for each computed nonnull row; zero only first8 bytes, preserve floats, do not increment header count during growth. Shrink decrements actual count before reloading count/data and capturing tail string; release current length+1, retaining row words. Reread count after release callback; final count=requested. "
+    },
+    {
+      "kind": "function",
+      "address": "00b1f150",
+      "name": "destroy_native_render_queue_rows_00b1f150",
+      "cpp_symbol": "destroy_native_render_queue_rows_00b1f150",
+      "source": "src/native_render_queue_rows.cpp",
+      "native_end_exclusive": "00b1f167",
+      "original_abi": "ECX existing header; RET; EAX incidental",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "Resize0 Reload actual data Array-free it Retain dangling data and capacity; no added reset "
+    },
+    {
+      "kind": "function",
+      "address": "00b1dce0",
+      "name": "sort_native_render_pointer_slots_00b1dce0",
+      "cpp_symbol": "sort_native_render_pointer_slots_00b1dce0",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1ddcb",
+      "original_abi": "ECX first slot, EDX one-past-last; stack signed ideal, comparator; RET8",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1dce0] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first slot, EDX one-past-last; stack signed ideal, comparator; RET8. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1d420",
+      "name": "insertion_00b1d420",
+      "cpp_symbol": "insertion_00b1d420",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1d4b6",
+      "original_abi": "ECX first, EDX last; stack comparator; RET4",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1d420] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX last; stack comparator; RET4. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1c210",
+      "name": "rotate_00b1c210",
+      "cpp_symbol": "rotate_00b1c210",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1c2a1",
+      "original_abi": "ECX first, EDX middle; stack last and two unread words; RET0Ch",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1c210] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX middle; stack last and two unread words; RET0Ch. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1d280",
+      "name": "partition_00b1d280",
+      "cpp_symbol": "partition_00b1d280",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1d3fe",
+      "original_abi": "ECX output pair, EDX first; stack last, comparator; RET8; EAX output pair",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1d280] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX output pair, EDX first; stack last, comparator; RET8; EAX output pair. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1cf80",
+      "name": "choose_pivot_00b1cf80",
+      "cpp_symbol": "choose_pivot_00b1cf80",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1d01c",
+      "original_abi": "ECX first, EDX middle; stack final slot, comparator; RET8",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1cf80] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX middle; stack final slot, comparator; RET8. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1c8c0",
+      "name": "median_three_00b1c8c0",
+      "cpp_symbol": "median_three_00b1c8c0",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1c90d",
+      "original_abi": "ECX first, EDX middle; stack final slot, comparator; RET8",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1c8c0] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX middle; stack final slot, comparator; RET8. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1d020",
+      "name": "make_heap_00b1d020",
+      "cpp_symbol": "make_heap_00b1d020",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1d05e",
+      "original_abi": "ECX first, EDX last; stack comparator and two unread words; RET0Ch",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1d020] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX last; stack comparator and two unread words; RET0Ch. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1d6a0",
+      "name": "sort_heap_00b1d6a0",
+      "cpp_symbol": "sort_heap_00b1d6a0",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1d6e6",
+      "original_abi": "ECX first, EDX last; stack comparator; RET4",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1d6a0] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX last; stack comparator; RET4. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1c910",
+      "name": "adjust_heap_00b1c910",
+      "cpp_symbol": "adjust_heap_00b1c910",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1c97e",
+      "original_abi": "ECX first, EDX signed hole; stack signed length, saved entry, comparator; RET0Ch",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1c910] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX signed hole; stack signed length, saved entry, comparator; RET0Ch. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b1c1b0",
+      "name": "push_heap_00b1c1b0",
+      "cpp_symbol": "push_heap_00b1c1b0",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b1c20c",
+      "original_abi": "ECX first, EDX signed hole; stack signed top, saved entry, comparator; RET0Ch",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b1c1b0] Complete actual borrowed four-byte pointer-cell implementation; signed DWORD distances/ideal, exact native tie/call/reload behavior, no copied container or semantic entry overlay. Original ABI: ECX first, EDX signed hole; stack signed top, saved entry, comparator; RET0Ch. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation."
+    },
+    {
+      "kind": "function",
+      "address": "00b51b00",
+      "name": "native_render_entry_unsigned_key_less_00b51b00",
+      "cpp_symbol": "native_render_entry_unsigned_key_less_00b51b00",
+      "source": "src/native_render_pointer_slot_sort.cpp",
+      "native_end_exclusive": "00b51b1b",
+      "original_abi": "ECX actual left entry, EDX actual right entry; RET; EAX exactly zero or one",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "status": "actual_storage_complete_original_fixture_and_strict_win32_build_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "current_integration_scope": "[BSP native pointer-slot reconstruction 00b51b00] Complete actual-field leaf: unsigned left high24 then right high24; left low20/right low20 read only on high tie; native EAX exact zero/one. Original ABI: ECX actual left entry, EDX actual right entry; RET; EAX exactly zero or one. Evidence: docs/NATIVE_RENDER_POINTER_SLOT_SORT.md; reports/native_render_pointer_slot_sort_audit.json. Private original-byte differential: 15 sorts, 6423 calls, 594239 trace words, 933 final positions, four actual equal-key slot mutations; unsigned leaf and guarded reads checked. Descriptive names remain hypotheses; sorter public entry is new C++, no gameplay validation.",
+      "previous_interfaces": [
+        {
+          "address": "00b51b00",
+          "name": "render_entry_key_less",
+          "source": "src/render_sort.cpp",
+          "status": "semantic_assembly_reviewed_build_checked",
+          "abi_compatible": false,
+          "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation.",
+          "kind": "function"
+        }
+      ]
+    }
+  ],
+  "obsolete_records_preserved_in_previous_interfaces": [
+    {
+      "shard": "config/reconstruction/00b50000.jsonl",
+      "previous": {
+        "address": "00b51b00",
+        "name": "render_entry_key_less",
+        "source": "src/render_sort.cpp",
+        "status": "semantic_assembly_reviewed_build_checked",
+        "abi_compatible": false,
+        "limitations": "Projected fields; native pointer traversal, x87 status, key generation and sorting algorithm unported. No native differential or gameplay validation.",
+        "kind": "function"
+      }
+    }
+  ],
+  "verification": {
+    "spans": [
+      {
+        "address": "00b1db30",
+        "length": 310,
+        "sha256": "be1f4a4894392e502a965e6d43816b11a1fc5adff775f58688b17b465876e230",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1e7f0",
+        "length": 125,
+        "sha256": "0ee983652c78280516f480e717ed9755550a73f7205c306baa701b55c10a4c3d",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1f150",
+        "length": 23,
+        "sha256": "2405bb0b0d58547b098a7dede6333c5467c9670c0672a95926ffd2d08a36c0aa",
+        "live_matches_installed": true
+      },
+      {
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cbca80",
+        "length": 33,
+        "sha256": "1e2b6c1579c3aa750e16f8d98b57dd036e5bd4903928e4f969a988071340d587",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00df4f14",
+        "length": 44,
+        "sha256": "2d36b8a685e09868df7b62fb5618bceff3525948fb7f43ed2a859089d539947a",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00401130",
+        "length": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf55be",
+        "length": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf6989",
+        "length": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00419cc0",
+        "length": 5,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bd1120",
+        "length": 5,
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bd1510",
+        "length": 5,
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf7680",
+        "length": 5,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1dce0",
+        "length": 235,
+        "sha256": "df3b6a3ed0dd92fca4028745fe2cae1ea65c42c54a2d2c0d615b8db6d8b4a1c6",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d420",
+        "length": 150,
+        "sha256": "929943dae9485fc9fc14a4c1b641bfef1c9f52784ffef4df2e0c98c4ed3ccd88",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c210",
+        "length": 145,
+        "sha256": "80d27cb2032a3e6c5297579b5f7414164d18e4f1dd31ae41c7a2e9ce5ec6cf1f",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d280",
+        "length": 382,
+        "sha256": "8c7a88234e3741e6403ff0b096e5cbfeadf075b30dfdf59c3eda92d914ad3cb0",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1cf80",
+        "length": 156,
+        "sha256": "2b7aaf334a7cd3f53960b24c26acebf49eeefc448a866046fb8bd26ded1e5a7e",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c8c0",
+        "length": 77,
+        "sha256": "8ad21098707297da5d3b3bfbf951c5bd722300c34ec6b7cd254053d58808ed49",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d020",
+        "length": 62,
+        "sha256": "fd04bf3b6fff2bbb0b9693905ea2da8336646fd1fb9e5f733fcd84013d5fa570",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1d6a0",
+        "length": 70,
+        "sha256": "52b76cc9e88809aa9b565e4a344f5795aea2f712315d7e770f0ff028d9a2bd65",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c910",
+        "length": 110,
+        "sha256": "56b101e7dda83824a1f77bcf59304accc4336203684faa107bf240e59d857224",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b1c1b0",
+        "length": 92,
+        "sha256": "dc13bace7a1f15cf9acda1a0631c923ee370ca28b0e8e707fcd998f81aadf734",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b51b00",
+        "length": 27,
+        "sha256": "084fb8170aabc99ecc8a6c435dc47dd3d942c76632cbd3781c5ac9902195c5c8",
+        "live_matches_installed": true
+      }
+    ],
+    "archived_artifacts": [
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/prepare_native_render_queue_rows.py",
+        "bytes": 4204,
+        "sha256": "11faad4860c35a55450146d90c64ac095b1971c4aea5644ddc91b1f9d12742e1"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/native_render_queue_rows_spans.hpp",
+        "bytes": 4993,
+        "sha256": "0166edb9334a5e72c81fdcdffaf75da4550af0b3963e35ea48237ca8ed1216b4"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/native_render_queue_rows_preparation.json",
+        "bytes": 9203,
+        "sha256": "70e5853468af7a925ff3912953a53e85256359829c49a6807bbc7c9148969bbf"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/native_render_queue_rows_check.cpp",
+        "bytes": 15986,
+        "sha256": "def4a8e80ac57c9d9efa1705d5bda5e24f1384de676d6bb5acf445ea47facbdd"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/build_native_render_queue_rows_check.ps1",
+        "bytes": 1426,
+        "sha256": "7ae81d9fa0b79ce8ee1425f3adc4bc4a26af38ffab5703d5a137481e4a9bbc55"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/native_render_queue_rows_build.txt",
+        "bytes": 10686,
+        "sha256": "24d8584e79768c8560e52f64e65421ba70b9cb136e435c985fa2a5dd4b3c07f1"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "local/native_render_queue_rows_fixture.txt",
+        "bytes": 292,
+        "sha256": "d4b0170607a58b0a237a35b2d0e768241bef6919172a58575f78acb7c786a5a2"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "build/native-render-queue-rows-check/native_render_queue_rows.obj",
+        "bytes": 4804,
+        "sha256": "a7b94b615e149acd8d3dad0533414f132ca46bad19be16d9ca5999bc27a59e2c"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "build/native-render-queue-rows-check/native_string.obj",
+        "bytes": 13979,
+        "sha256": "9b2eee14996cf66a1d306e6405a50d8472443626b8330eef4f710de1df0e1580"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-queue-rows-20260910",
+        "path": "build/native-render-queue-rows-check/native_render_queue_rows_check.exe",
+        "bytes": 37376,
+        "sha256": "5643d41c3eade8ef7f5262d03b0d7252069233be302edda2cf4a4468681fc65b"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/audit_native_pointer_slot_sort.py",
+        "bytes": 3501,
+        "sha256": "90fa445624770102d8eaa7d9ae12030775713721c00e9e1b203d7e7eda363848"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_verified.json",
+        "bytes": 12921,
+        "sha256": "0375eb75db76c146130540926563a46612a49e312c7b56be1d7e07226d32d02a"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_prototypes.txt",
+        "bytes": 1293,
+        "sha256": "18dc911f0432760a867935701b03fa4ebea992f2d7321efbcc59b36aa73355e5"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_annotations.json",
+        "bytes": 10297,
+        "sha256": "6fa9282d4950f0a0e41916a4a736ef3f9c1f4f7213eaeaf01a17cfc60d82309a"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/prepare_native_pointer_slot_sort_check.py",
+        "bytes": 474,
+        "sha256": "e2dc22dd199a2c878e8cf00474fdc27446dfdc0b31d99f63fe345c6c63c5c7c9"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_spans.hpp",
+        "bytes": 3450,
+        "sha256": "69e75fe603092aa33e0e1bfe50613a5e5c32350758020ffc2b4e065dbfe0f238"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_check.cpp",
+        "bytes": 9298,
+        "sha256": "c050ec39254ceb86826b48d36caebe9dd42258014eaf80bb5752ef325f477748"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/build_native_pointer_slot_sort_check.ps1",
+        "bytes": 1335,
+        "sha256": "ff1a6ba9f69fe774c426a69083fd80d0461ce87ac0f12a2ee5563b23bf4a7960"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_check.log",
+        "bytes": 395,
+        "sha256": "d23ad0b842a295218c02c66bb81413b15b37f011a129c5ac3e857a5e0bffb1af"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/sort_sources.cmake",
+        "bytes": 121,
+        "sha256": "583bf2d85fcfaad5ffba9b7b952a3e39c6134627d510f84a12f34787ef4de1d7"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_configure.log",
+        "bytes": 978,
+        "sha256": "a638460432a68178a96438ba396db3b452c0c1f05d49f75b8be0562c4f8aa0b9"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "local/native_pointer_slot_sort_build.log",
+        "bytes": 10144,
+        "sha256": "19959cdcf35f3d28c549bd1e25b700141e94c894216a282fcb9cb2e5a7a2977f"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "build/pointer-slot-sort-check/native_pointer_slot_sort_check.exe",
+        "bytes": 40960,
+        "sha256": "22566fa0ca262f34f2fa5560b9a31d7ccef8d8c0194e2567b077b9037ed3c5db"
+      },
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-pointer-slot-sort-20260910",
+        "path": "build/pointer-slot-sort-check/native_pointer_slot_sort_trace.txt",
+        "bytes": 5942665,
+        "sha256": "fb07753e9b32fcc5682b05649bcb38a91a2f79a6231ab1d384bda13938b677ae"
+      }
+    ],
+    "pinned_sources": [
+      {
+        "path": "include/bsp/native_string.hpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 5278,
+        "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 5042,
+        "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 3986,
+        "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 10921,
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "path": "include/bsp/native_render_queue_access.hpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 2893,
+        "sha256": "16fe7dbc5c783b733902b421a5f07b703c2192f47417100ec15f674e250fdadb"
+      },
+      {
+        "path": "src/native_render_queue_access.cpp",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 1850,
+        "sha256": "373b3206776e8e0c201a96c37a9c3f7e8d6009570227f7efcf32e0e960b86722"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 8862,
+        "sha256": "2d94fd9e73b69651956aae6cd92b921cbf46da0a250738d7b6dea78f0eda67dd"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "commit": "e36b33df50064cb03aaa169363bdea416306b3a1",
+        "bytes": 8809,
+        "sha256": "56b052a4774bbca89be63ea96522e077677d4c6fc865aa3054a243bcfe36ef78"
+      },
+      {
+        "commit": "37432f1bfebb0657374a436a079595c356087f49",
+        "path": "include/bsp/native_render_pointer_slot_sort.hpp",
+        "bytes": 1676,
+        "sha256": "b30833f4b97a03977e242292c9f477829152fef3046a2920ce52544272c73634"
+      },
+      {
+        "commit": "37432f1bfebb0657374a436a079595c356087f49",
+        "path": "src/native_render_pointer_slot_sort.cpp",
+        "bytes": 11877,
+        "sha256": "dbe0c05bc0dcc529a2244fd1dbaba9d557606502260d65b2cb085cd238158aac"
+      },
+      {
+        "commit": "37432f1bfebb0657374a436a079595c356087f49",
+        "path": "docs/NATIVE_RENDER_POINTER_SLOT_SORT.md",
+        "bytes": 8339,
+        "sha256": "b4d0ea75f0279a26475b3668f75ea700e1ecb8e1cd97d61c115415dd4c8d1398"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "src/instance_sort.cpp",
+        "bytes": 13833,
+        "sha256": "845cc7172422040b563bc3c75b1a635f0dba571ee685aa2cf02ec83ba579fcc9"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "include/bsp/instance_sort.hpp",
+        "bytes": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "src/render_sort.cpp",
+        "bytes": 1024,
+        "sha256": "43a0478ff42d807856294ef891a7afb9659c382fc6c7fe718d0a54ba9922e02d"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "include/bsp/render_sort.hpp",
+        "bytes": 1129,
+        "sha256": "6d0e6ff254d4aaafbea40ff0e00f8e5fec3e5c4315157bb722f5cef23a9762fe"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "CMakeLists.txt",
+        "bytes": 8862,
+        "sha256": "2d94fd9e73b69651956aae6cd92b921cbf46da0a250738d7b6dea78f0eda67dd"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "cmake/startup.cmake",
+        "bytes": 8809,
+        "sha256": "56b052a4774bbca89be63ea96522e077677d4c6fc865aa3054a243bcfe36ef78"
+      },
+      {
+        "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+        "path": "scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ],
+    "worker_sources_unchanged": true
+  },
+  "primary_artifacts": [
+    {
+      "path": "include/bsp/native_render_queue_rows.hpp",
+      "sha256": "46ef7ebe73c1360fb37c6a4781b4c14285bca36802202598bd2c32842c76871a"
+    },
+    {
+      "path": "src/native_render_queue_rows.cpp",
+      "sha256": "dd493cb7d82a3e8c450e171e759e1e5144f5efcc5bfd5eec8cd2d8e8dce39714"
+    },
+    {
+      "path": "include/bsp/native_render_pointer_slot_sort.hpp",
+      "sha256": "b30833f4b97a03977e242292c9f477829152fef3046a2920ce52544272c73634"
+    },
+    {
+      "path": "src/native_render_pointer_slot_sort.cpp",
+      "sha256": "dbe0c05bc0dcc529a2244fd1dbaba9d557606502260d65b2cb085cd238158aac"
+    },
+    {
+      "path": "local/native_rows_primary_fixture.txt",
+      "sha256": "6762e2aabfbb6352f44602a49175e41f944b307fd340a9ef8b0800d8c60a5be1"
+    },
+    {
+      "path": "local/native_sort_primary_fixture.txt",
+      "sha256": "410ed6636391100d656491529e42ab06372eb2db12c7223b5b2120d7922ce804"
+    },
+    {
+      "path": "local/build_native_render_queue_rows_check.ps1",
+      "sha256": "13015ff3def4de51094842e11da083ede1f3cbb2b9807226c7322d32115b7661"
+    },
+    {
+      "path": "local/build_native_pointer_slot_sort_check.ps1",
+      "sha256": "ec65fe91242f7c2b77c78f7b334b7c181d51ed7c79791cb3f615d7a82cf4ea06"
+    },
+    {
+      "path": "build/pointer-slot-sort-check/native_pointer_slot_sort_trace.txt",
+      "sha256": "fb07753e9b32fcc5682b05649bcb38a91a2f79a6231ab1d384bda13938b677ae"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    }
+  ],
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "path": "reports/native_rows_sort_build.txt",
+    "sha256": "fa3a6aff8a15724ca6e271e43ad47aca9278c8f4f57f21df84eb6bb2cf3c8300"
+  },
+  "flow_repair": {
+    "path": "reports/native_queue_rows_defined_functions.json",
+    "function_count_unchanged": true,
+    "two_returning_free_continuations_recovered": true,
+    "project_saved": true
+  },
+  "annotations_applied": true,
+  "ledger_consolidated": true,
+  "new_tracked_tests": 0,
+  "game_validated": false,
+  "abi_compatible": false,
+  "saved_annotations": {
+    "path": "reports/native_rows_sort_annotations.json",
+    "sha256": "775a0f3f89931991681bb838829c4ac52310032a899cf1023da41bcaad685de9",
+    "old_names_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b1db30",
+      "path": "exports/bsp/functions/00b1db30/decompiled.c",
+      "sha256": "83462422d924cffec092346c9d31fa86ce591f35d6e940fe301642fe6efd7b38"
+    },
+    {
+      "address": "00b1e7f0",
+      "path": "exports/bsp/functions/00b1e7f0/decompiled.c",
+      "sha256": "5dc8a2da7f531ba394dfd876b3f658437d519cbe54ceadd23f5a78afc717735b"
+    },
+    {
+      "address": "00b1f150",
+      "path": "exports/bsp/functions/00b1f150/decompiled.c",
+      "sha256": "c605cd0d3ffcbefd36a0a5e2df00a31dec20d67512558231df3973caa332d695"
+    },
+    {
+      "address": "00b1dce0",
+      "path": "exports/bsp/functions/00b1dce0/decompiled.c",
+      "sha256": "140ce2007e3dd24c1ec058d34da76f40e94228e07799b043978daacc788ba47d"
+    },
+    {
+      "address": "00b1d420",
+      "path": "exports/bsp/functions/00b1d420/decompiled.c",
+      "sha256": "db3cd67add056af151358b2f11f51376775f41cb3ad1502dac3d9c9dd2a6f892"
+    },
+    {
+      "address": "00b1c210",
+      "path": "exports/bsp/functions/00b1c210/decompiled.c",
+      "sha256": "159cedf3f9ce608d7de71ade13c0166077757d9afa84784d16c710cf05e22b2a"
+    },
+    {
+      "address": "00b1d280",
+      "path": "exports/bsp/functions/00b1d280/decompiled.c",
+      "sha256": "c5c4ffa2f542dda190f0a3253710087dd47ff599898607a908c1a941980b8de9"
+    },
+    {
+      "address": "00b1cf80",
+      "path": "exports/bsp/functions/00b1cf80/decompiled.c",
+      "sha256": "e8900a87ff880d996b0775a8bba5a65e1bbefa45b558a4332f5bd8fae4d8a4dd"
+    },
+    {
+      "address": "00b1c8c0",
+      "path": "exports/bsp/functions/00b1c8c0/decompiled.c",
+      "sha256": "668edfce6e1a5fada7e3b9e68f4633ed06aa0e6948ebfeb09e432c459d5d23a9"
+    },
+    {
+      "address": "00b1d020",
+      "path": "exports/bsp/functions/00b1d020/decompiled.c",
+      "sha256": "67daed4015c33695eb182800561626e26ce73648c2c3669cd522d9524db0c5aa"
+    },
+    {
+      "address": "00b1d6a0",
+      "path": "exports/bsp/functions/00b1d6a0/decompiled.c",
+      "sha256": "87aefaa856e4af7e291fee82ec33f664ecd8abc70a302e64ad144d7145d4cb3b"
+    },
+    {
+      "address": "00b1c910",
+      "path": "exports/bsp/functions/00b1c910/decompiled.c",
+      "sha256": "7f127bcadd80d54cd02c1201eb6c85c9b7b125e8f4815199e00a994c251c3027"
+    },
+    {
+      "address": "00b1c1b0",
+      "path": "exports/bsp/functions/00b1c1b0/decompiled.c",
+      "sha256": "8576e6e267c4a0d213ab2ad144f9b2f5ad86708a8e8120cefd860903528e7958"
+    },
+    {
+      "address": "00b51b00",
+      "path": "exports/bsp/functions/00b51b00/decompiled.c",
+      "sha256": "8397fd2db19190eee8e2b74be09b240c5fb3a0003498d3fda4ba024bc82a2e29"
+    }
+  ],
+  "closure_utc": "2026-09-10T23:54:17.954839+00:00"
+}

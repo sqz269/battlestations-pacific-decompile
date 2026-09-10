@@ -2897,8 +2897,8 @@
     {
       "id": "native_render_queue_rows",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "implementing_actual20byte_row_reserve_resize_destructor_x87_and_native_noop_unwind",
+      "done": true,
+      "state": "integrated_complete_actual_storage_primary_native_fixtures_and_strict_win32_build_checked",
       "function_addresses": [
         "00b1db30",
         "00b1e7f0",
@@ -2910,7 +2910,9 @@
         "docs/NATIVE_RENDER_QUEUE_ROWS.md",
         "reports/native_render_queue_rows_audit.json"
       ],
-      "packet": "native_render_queue_rows"
+      "packet": "native_render_queue_rows",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "worker_commit": "4f0bc070d4d2835668a342dce437937e339b313d"
     },
     {
       "id": "native_render_batch_keys",
@@ -2929,6 +2931,34 @@
         "src/native_render_batch_keys.cpp",
         "docs/NATIVE_RENDER_BATCH_KEYS.md",
         "reports/native_render_batch_keys_audit.json"
+      ]
+    },
+    {
+      "id": "native_render_pointer_slot_sort",
+      "packet": "native_render_pointer_slot_sort",
+      "worker": "particle_clock_lifetime",
+      "done": true,
+      "state": "integrated_complete_actual_storage_primary_native_fixtures_and_strict_win32_build_checked",
+      "evidence": "reports/native_rows_sort_integration_audit.json",
+      "worker_commit": "37432f1bfebb0657374a436a079595c356087f49",
+      "function_addresses": [
+        "00b1dce0",
+        "00b1d420",
+        "00b1c210",
+        "00b1d280",
+        "00b1cf80",
+        "00b1c8c0",
+        "00b1d020",
+        "00b1d6a0",
+        "00b1c910",
+        "00b1c1b0",
+        "00b51b00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_pointer_slot_sort.hpp",
+        "src/native_render_pointer_slot_sort.cpp",
+        "docs/NATIVE_RENDER_POINTER_SLOT_SORT.md",
+        "reports/native_render_pointer_slot_sort_audit.json"
       ]
     }
   ],
@@ -3828,14 +3858,20 @@
     {
       "packet": "native_render_queue_rows",
       "worker": "system_fog_owner_discovery",
-      "state": "implementing_actual20byte_row_reserve_resize_destructor_x87_and_native_noop_unwind",
-      "validation": null
+      "state": "integrated_complete_actual_storage_primary_native_fixtures_and_strict_win32_build_checked",
+      "validation": "reports/native_rows_sort_integration_audit.json"
     },
     {
       "packet": "native_render_batch_keys",
       "worker": "main",
       "state": "integrated_actual_storage_original_byte_fixture_and_strict_win32_build_checked",
       "validation": "reports/native_render_batch_keys_audit.json"
+    },
+    {
+      "packet": "native_render_pointer_slot_sort",
+      "worker": "particle_clock_lifetime",
+      "state": "integrated_complete_actual_storage_primary_native_fixtures_and_strict_win32_build_checked",
+      "validation": "reports/native_rows_sort_integration_audit.json"
     }
   ],
   "next_dispatch": [
@@ -3846,15 +3882,6 @@
         "00b31dc0",
         "00bee780",
         "00b3ce30"
-      ]
-    },
-    {
-      "packet": "native_render_queue_rows",
-      "worker": "system_fog_owner_discovery",
-      "function_addresses": [
-        "00b1db30",
-        "00b1e7f0",
-        "00b1f150"
       ]
     }
   ],
