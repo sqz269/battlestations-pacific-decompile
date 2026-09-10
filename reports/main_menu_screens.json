@@ -1,0 +1,314 @@
+{
+  "packet": "main_menu_screens",
+  "owner": "agent/main-menu-screens",
+  "doc": "docs/MAIN_MENU_SCREENS.md",
+  "files": [
+    "docs/MAIN_MENU_SCREENS.md",
+    "reports/main_menu_screens.json",
+    "include/bsp/main_menu_screens.hpp",
+    "src/main_menu_screens.cpp"
+  ],
+  "summary": "The seven objects 00686380 builds into 00E198AC+58h..+70h are seven leaf classes of the 004F7180 front-end screen hierarchy. Slot +00h of each primary vtable is a 'mov eax, imm32; ret' leaf whose constant is both the 00E18B60 registry index and the 00E08CD8 interface id; the seven ids are 1, 2, 4, 3, 8, 0Ah and 0Bh, and six of the seven are confirmed independently by the layout or data-table names in the class. 005884A0 is not a call into the +58h screen: the shell loads ECX with it and the body ignores it. 005884A0 starts the title music on the manager, writing the +50h handle that docs/FRONTEND_MANAGERS.md left provisional.",
+  "screens": [
+    {
+      "manager_field": "00E198AC+58h",
+      "constructor": "005902E0",
+      "size_bytes": 1400,
+      "size_hex": "578h",
+      "primary_vtable": "00CEFC5C",
+      "secondary_vtables": ["00CEFC48 at +08h", "00CEFC24 at +0Ch", "00CEFC04 at +40h"],
+      "screen_id": 1,
+      "screen_id_leaf": "00590570",
+      "interface_name": "INTF_MAINMENU",
+      "virtuals": {
+        "destroy_0Ch": "00590D60",
+        "register_10h": "00582F30",
+        "bind_layout_14h": "005861B0",
+        "enter_18h": "005987F0",
+        "exit_1Ch": "0058F560",
+        "update_20h": "00599DB0",
+        "fill_list_24h": "005905E0"
+      },
+      "layouts": ["FE_main", "FE_main_listbox", "FE_briefing", "FE_briefing_grid", "FE_worldmap_historical"],
+      "notes": "Constructor clears 00E194C4..00E194D0 and sets DAT_00E08874 = 1. 00582F30 chains 004F71D0 then calls 00B29E60 (presentation mode) and 00AB6BD0; the layout binding is in the +14h override instead. 00599DB0 and 005905E0 have no Ghidra function defined."
+    },
+    {
+      "manager_field": "00E198AC+5Ch",
+      "constructor": "005CA880",
+      "size_bytes": 52,
+      "size_hex": "34h",
+      "primary_vtable": "00CF170C",
+      "secondary_vtables": ["00CF16F8 at +08h"],
+      "screen_id": 2,
+      "screen_id_leaf": "005CA8E0",
+      "interface_name": "INTF_MISSIONTREE",
+      "virtuals": {
+        "destroy_0Ch": "005CAA20",
+        "register_10h": "005CAAF0",
+        "bind_layout_14h": "004F7590 (base)",
+        "enter_18h": "005C27F0",
+        "exit_1Ch": "005C2800",
+        "update_20h": "005C4040",
+        "fill_list_24h": "004F75D0 (base)"
+      },
+      "layouts": [],
+      "data_tables": ["Scripts/datatables/MissionTree.lua"],
+      "data_keys": ["multiMissionInfos", "missionGroups", "MissionTree"],
+      "notes": "No GUI layout: this is the mission-tree data, not a page. 005CAAF0 reports progress through BSP_LoadingScreen_ReportProgress while it loads."
+    },
+    {
+      "manager_field": "00E198AC+60h",
+      "constructor": "00626630",
+      "size_bytes": 608,
+      "size_hex": "260h",
+      "primary_vtable": "00CF50CC",
+      "secondary_vtables": ["00CF50B8 at +08h", "00CF5098 at +0Ch"],
+      "screen_id": 4,
+      "screen_id_leaf": "00626710",
+      "interface_name": "INTF_REWARDS",
+      "virtuals": {
+        "destroy_0Ch": "00627800",
+        "register_10h": "00629D10",
+        "bind_layout_14h": "0061FBE0",
+        "enter_18h": "0062C2C0",
+        "exit_1Ch": "00621720",
+        "update_20h": "0062B640",
+        "fill_list_24h": "00626760"
+      },
+      "layouts": ["FE_scoring"],
+      "pages": ["FE.scoring_single_page1", "FE.scoring_multi_page1", "FE.scoring_objectives", "FE.scoring_detailed_score", "FE.scoring_rank", "FE.scoring_awards"],
+      "data_keys": ["hidden", "secondary", "Success", "PlayerIndex", "Active", "HideFromRewards"],
+      "notes": "0062C2C0 has 100 callees and drives FE.scoring_unlock_text, FE.scoring_unlockedunit, award_title_Text, award_detail_Text, debriefing_Clipbox. Not read in full."
+    },
+    {
+      "manager_field": "00E198AC+64h",
+      "constructor": "0051E4D0",
+      "size_bytes": 312,
+      "size_hex": "138h",
+      "primary_vtable": "00CEC948",
+      "secondary_vtables": ["00CEC934 at +08h", "00CEC914 at +0Ch"],
+      "screen_id": 3,
+      "screen_id_leaf": "0051E250",
+      "interface_name": "INTF_BRIEFING",
+      "virtuals": {
+        "destroy_0Ch": "0051E5F0",
+        "register_10h": "0051E280",
+        "bind_layout_14h": "004F7590 (base)",
+        "enter_18h": "0051CDE0",
+        "exit_1Ch": "0051B1B0",
+        "update_20h": "0051C7D0",
+        "fill_list_24h": "0051E270"
+      },
+      "layouts": ["FE_briefing_grid", "FE_briefing_listbox"],
+      "widgets": ["Main_Listbox", "MainListbox_Text"],
+      "notes": "Constructor builds a self-linked node at +130h through 0051ACB0 (three self pointers at +0h/+4h/+8h and a byte 1 at +19h). That is the shape of an MSVC std::_Tree head node, but the container was not identified and the reading is provisional. 0051CDE0 builds the objective groups and reads BSP_Game_GetEffectiveGameMode to pick Island_Capture_Group / Competitive_Group / Siege_Group."
+    },
+    {
+      "manager_field": "00E198AC+68h",
+      "constructor": "0052FCE0",
+      "size_bytes": 92,
+      "size_hex": "5Ch",
+      "primary_vtable": "00CED200",
+      "secondary_vtables": ["00CED1E0 at +08h"],
+      "screen_id": 8,
+      "screen_id_leaf": "0052FD60",
+      "interface_name": "INTF_CREDITS",
+      "virtuals": {
+        "destroy_0Ch": "0052FEF0",
+        "register_10h": "0052FFC0",
+        "bind_layout_14h": "004F7590 (base)",
+        "enter_18h": "0052EE30",
+        "exit_1Ch": "0052E150",
+        "update_20h": "0052E4B0",
+        "fill_list_24h": "0052FD70"
+      },
+      "layouts": ["FE_credits"],
+      "data_tables": ["Scripts/datatables/Credits.lua"],
+      "data_keys": ["Credits", "Credits_Items", "RowSpace", "StartY", "Speed"],
+      "notes": "Constructor seeds +3Ch/+40h/+44h from the three rdata constants 00CED1DC, 00CE3800 and 00CED1D8. 0052EE30 is one of the six callers of 00A867B0, so it is the screen that opens sound/music/creditsfinal.fsb from manager +48h."
+    },
+    {
+      "manager_field": "00E198AC+6Ch",
+      "constructor": "00563370",
+      "size_bytes": 364,
+      "size_hex": "16Ch",
+      "primary_vtable": "00CEE9CC",
+      "secondary_vtables": ["00CEE9B8 at +08h", "00CEE998 at +0Ch"],
+      "screen_id": 10,
+      "screen_id_leaf": "005633F0",
+      "interface_name": "INTF_LEADERBOARDS",
+      "virtuals": {
+        "destroy_0Ch": "005635D0",
+        "register_10h": "00564220",
+        "bind_layout_14h": "004F7590 (base)",
+        "enter_18h": "00562750",
+        "exit_1Ch": "00560FE0",
+        "update_20h": "00565540",
+        "fill_list_24h": "00563430"
+      },
+      "layouts": [],
+      "data_keys": ["Columns", "TableDesc", "ColumnName", "LBoards", "LB_UniqueID", "Leaderboards"],
+      "widgets": ["data_Listbox", "slider_Group", "slider2_Group", "clipbox_Clipbox", "rank_Text", "info_Text", "back_Icon"],
+      "notes": "Enter sets FE.main_leaderboards_title. 005629A0 in this class writes main-menu page 0Bh to 00E08874."
+    },
+    {
+      "manager_field": "00E198AC+70h",
+      "constructor": "005098B0",
+      "size_bytes": 1488,
+      "size_hex": "5D0h",
+      "primary_vtable": "00CEB9B4",
+      "secondary_vtables": ["00CEB9B0 at +08h", "00CEB99C at +64h", "00CEB97C at +68h"],
+      "screen_id": 11,
+      "screen_id_leaf": "00509D60",
+      "interface_name": "INTF_ACHIEVEMENTS",
+      "virtuals": {
+        "destroy_0Ch": "0050D8E0",
+        "register_10h": "0050FDB0",
+        "bind_layout_14h": "004FE870",
+        "enter_18h": "00511F40",
+        "exit_1Ch": "0050B2D0",
+        "update_20h": "005162B0",
+        "fill_list_24h": "00509DA0"
+      },
+      "layouts": ["FE_tactical_listbox"],
+      "data_keys": ["UnlockID", "PowerupClasses", "IsJapan", "Scripts\\datatables\\PowerUpLib.lua"],
+      "notes": "Naming mismatch: id 0Bh decodes to INTF_ACHIEVEMENTS (00E08CD8+2Ch = 00CF7604, read directly) but every string in the class says tactical library (FE.taclib_*, FE.unitlib_*). The menu item that reaches it is FE.main_tacticallibrary and both request sites push 0Bh. Unresolved; the id, not the label, is what the code uses. The table also has an unused INTF_UNITLIB at 5 and INTF_MEDALS at 7. Constructor chains 0093CB10 after the base and builds three eh_vector arrays at +318h (8 bytes x 5), +340h (x 3) and +358h (x 13); read only to param_1[0x127]."
+    }
+  ],
+  "hierarchy": {
+    "base_constructor": "004F7180",
+    "base_vtable": "00CEAE54",
+    "vtable_slot_count": 10,
+    "base_slots": ["00BF698E __purecall", "004F7570", "004F7580", "004F75E0", "004F71D0 register", "004F7590", "004F75A0 enter", "004F75B0 exit", "004F75C0 update", "004F75D0 fill list"],
+    "correction": "The hierarchy has ten slots, not eleven. 004F8B50 at 00CEAE7C is the next .rdata item: every derived table in this packet stops after +24h and is followed by string data (00CEFC84, 00CEC970, 00CED228, 00CEE9F4, 00CF1734, 00CF50F4). docs/GAME_FRONTEND_STATES.md omits slot +14h (004F7590), which two of the seven screens override as the layout binder.",
+    "registry": "00E18B60, 95 slots"
+  },
+  "page_state_00E08874": {
+    "role": "The page the 005902E0 screen is showing. Not an interface id: the manager stays on INTF_MAINMENU throughout.",
+    "values": {
+      "1": {"name": "TopLevel", "sites": ["0059054F ctor", "00584B91 in 00584AE0", "0058F594 in the exit virtual"], "evidence": "FE.main_menu; the exit virtual resets it"},
+      "2": {"name": "SinglePlayer", "sites": ["00584FE7 in 00584F50", "005809BF in 00580940"], "evidence": "FE.main_singleplayer_title"},
+      "3": {"name": "Multiplayer", "sites": ["00585458 in 005853C0"], "evidence": "FE.main_multiplayer_title"},
+      "4": {"name": "CampaignUsn", "sites": ["005978A7 in 00597870, from the first stack parameter"], "evidence": "FE.main_checkpoint; grouped by 00598B60 at 00598B7B"},
+      "5": {"name": "CampaignUsnDlc", "sites": ["005978A7"], "evidence": "00598B60 writes 1 into screen+55Ch for 5 and 7 only; FE.main_checkpoint_dlc, FE.main_usn_dlc_title"},
+      "6": {"name": "CampaignIjn", "sites": ["005978A7"], "evidence": "FE.main_ijn_dlc_title neighbours it"},
+      "7": {"name": "CampaignIjnDlc", "sites": ["005978A7"], "evidence": "the second arm 00598B60 flags"},
+      "8": {"name": "Page08", "sites": ["0058099A in 00580940"], "evidence": "unidentified"},
+      "9": {"name": "MissionDetail", "sites": ["0058CAC3 in 0058C010"], "evidence": "globals.continue, mission_mappoint_, sound/messages/"},
+      "11": {"name": "TacticalLibrary", "sites": ["0058877C in 005886F0", "005629B6 in 005629A0"], "evidence": "FE.main_tacticallibrary"},
+      "12": {"name": "Objectives", "sites": ["00594C51 in 00594BF0"], "evidence": "globals.obj_pri, globals.obj_sec, globals.obj_hid"}
+    },
+    "external_writers": ["004DB19A BSP_FrontEnd_TeardownForSession", "00515DDA", "006866BF BSP_MainMenu_Init", "005809F6 and 00580A12 from registers, not followed"],
+    "back_handler": "00598B60: page 1 goes to 00588A80 (FE_pc.main_quit_confirm); pages 4..7 cache 00A9C990's result into 00E08878 and 00E194DC."
+  },
+  "top_level_menu": {
+    "builder": "00584AE0",
+    "convention": "__fastcall(this)",
+    "layout": "FE.main_menu",
+    "item_count": 7,
+    "label_table": "00E087B8",
+    "enable_table": "00CEF77C",
+    "loop": "00584BF0..00584C70; each pass allocates through 00AAB4C0, labels with 00ABBE50, stores the index at entry+0D8h and writes (enable[i] == 0) into the byte at entry+77h",
+    "items": [
+      {"index": 0, "pointer": "00CEF764", "label": "FE.main_singleplayer", "enabled": true},
+      {"index": 1, "pointer": "00CEF750", "label": "FE.main_multiplayer", "enabled": true},
+      {"index": 2, "pointer": "00CEF738", "label": "FE.main_tacticallibrary", "enabled": true},
+      {"index": 3, "pointer": "00CEF728", "label": "FE.main_options", "enabled": true},
+      {"index": 4, "pointer": "00CEF718", "label": "globals.live", "enabled": true},
+      {"index": 5, "pointer": "00CEF700", "label": "FE_pc.main_marketplace", "enabled": true},
+      {"index": 6, "pointer": "00CEF6F0", "label": "FE_pc.main_quit", "enabled": true}
+    ],
+    "unused_eighth_pointer": {"pointer": "00CEF6D4", "label": "FE.main_singleplayer_help", "note": "past the loop bound; the help line for item 0, not an item"},
+    "ghidra_typing_error": "00CEF77C is typed as a pointer (PTR_DAT_00CEF77C). It is a byte array; the decompiler's (int)&PTR_DAT_00CEF77C + i confirms byte indexing."
+  },
+  "selection_dispatch": {
+    "finding": "None of the seven screens pushes onto the game+5D8h state-request deque. Every producer listed in docs/GAME_FRAME_CONTROL.md is in 004D/004E; no site in 0050..0062 appears. A menu selection is a front-end interface request through BSP_FrontEndManager_PushInterfaceRequest (004CC460) on 00E198AC, which writes only the pending record at +20h/+38h and leaves 006840F0 to drive the manager's virtual +10h on the next servicing pass. The state-request deque is reached later, by the shell.",
+    "quit_path": "Item 6 leads to 00588A80 (FE_pc.main_quit_confirm), the confirmation dialog. Request 13h, the quit path in the drain, is enqueued outside these classes.",
+    "sites_read": [
+      {"address": "005885D0", "convention": "__thiscall(this), no stack arguments, RET", "effect": "Resolves two values (005806A0 then 005C27E0, then 005806A0 again), writes them into *(00E198AC)+70h at +9Ch and +A0h with the byte at +A4h cleared, writes mode 5 at +94h and selector 63h at +98h, then calls 004CC460(0Bh, 0)."},
+      {"address": "005886C0", "convention": "no arguments, RET", "effect": "Calls 004CC460(0Bh, 0) FIRST, then writes mode 4 at +94h and selector 63h at +98h. The reversed order lets a servicing pass between the two see the request with the previous mode still in place; reachability not checked. No selection written."}
+    ]
+  },
+  "start_title_music_005884A0": {
+    "convention": "no stack arguments, ECX unused, RET with no operand, no return value",
+    "correction": "docs/GAME_FRONTEND_ENTRY.md line 71 is wrong. 004E426B loads ECX = *(00E198AC)+58h and 004E4274 calls 005884A0, but the body never reads ECX. It is a method on the +58h screen class whose body ignores its own this; nothing in the +58h screen is read or written. The PUSH ECX at 005884F1 is stack reservation, not an argument.",
+    "effect": "Starts the title music, resolving the manager +50h handle that docs/FRONTEND_MANAGERS.md marks provisional.",
+    "body": [
+      {"address": "005884B9", "step": "00584A30(); non-zero returns immediately"},
+      {"address": "005884CB", "step": "*(00E198AC)+50h != 0 returns immediately"},
+      {"address": "005884D5", "step": "operator new(54h); on failure EAX is zeroed at 0058852F"},
+      {"address": "0058851C", "step": "00426060(temp, 00E198AC+40h), a copy of sound/music/titlescreen.fsb"},
+      {"address": "00588528", "step": "the stream constructor 00A877D0(this = the 54h block, temp)"},
+      {"address": "00588537", "step": "*(00E198AC)+50h = EAX, null included"},
+      {"address": "0058854A", "step": "BSP_NativeString_Assign from the native string global at 00E19504"},
+      {"address": "0058855C", "step": "00A867B0(stream, name), which reaches FMOD createStream"},
+      {"address": "00588580", "step": "the temporary released through the sized storage pool"},
+      {"address": "0058859F", "step": "00A864F0(stream, *(float*)00F889A8)"},
+      {"address": "005885AD", "step": "00A85C20(stream)"}
+    ],
+    "gate": "00584A30 builds the literal movies/midwaytheme.bik and passes it to 004F8BA0, which compares it against the active clip through BSP_NativeString_EqualsInsensitive and 00AAC8E0. The title music does not start over the intro movie. 00584A30 has exactly one caller.",
+    "volume": "00F889A8 is a float written by BSP_Application_Initialize at 0073DB76 and read by 00685C80 (two sites). BSP_Settings_ApplyAudio is a caller of 00A864F0, so 00A864F0 is the volume setter.",
+    "no_null_guard": "When operator new fails, +50h becomes null and the code still calls 00A867B0, 00A864F0 and 00A85C20 through it. Preserved in the reconstruction rather than guarded."
+  },
+  "uncertainties": [
+    "DAT_00E19504, the native string global passed to createStream, is written at 0058BE63/0058BE6F (0058BDF0) and 0059A16B, none of them in this packet. What selects the track name is unresolved; 'title music' rests on the +40h path the stream is constructed from, not on that name.",
+    "Page 8 (00580940) and page 9 (0058C010) are named only by their string sets. 00580940 writes two further page values from registers that were not followed.",
+    "00597870 writes the page from its first stack parameter; the four campaign pages are attributed by 00598B60's four-way test plus the DLC title strings in the same body. Its call sites were not enumerated.",
+    "00599DB0 (the +58h update virtual) and 005905E0 (its +24h slot) have NO Ghidra function defined; 'ghidra proto' reports 'body ?'. Identified from the vtable only; bodies not read. Ghidra functions must be created at both before any name is applied.",
+    "Object sizes are taken from docs/FRONTEND_MANAGERS.md's record of the 00686380 allocation sites, not re-read; each is consistent with the highest field its constructor writes.",
+    "005098B0 was read only as far as param_1[0x127]; its tail was not paged in.",
+    "The secondary vtables at +08h/+0Ch (and +40h, +64h, +68h in the two large screens) are recorded but not decoded.",
+    "005885D0's two selection values come from 005806A0 and 005C27E0, neither of which was read.",
+    "Whether the reversed order in 005886C0 is observable was not checked."
+  ],
+  "corrections_offered": [
+    {"doc": "docs/GAME_FRONTEND_ENTRY.md", "target": "the 004E426B row", "correction": "005884A0 does not act on the screen at +58h; ECX is loaded and ignored. The row should say it starts the title music on the manager."},
+    {"doc": "docs/FRONTEND_MANAGERS.md", "target": "the +50h/+54h row", "correction": "+50h is no longer provisional: 005884A0 writes it with the stream built from the +40h path. +54h is still unwritten in anything read here; 0052EE30, the credits screen's enter virtual, is the matching caller of 00A867B0 for the +48h path."},
+    {"doc": "docs/GAME_FRONTEND_STATES.md", "target": "the vtable table", "correction": "Ten slots, not eleven. 004F8B50 at 00CEAE7C is the next .rdata item. Slot +14h (004F7590) is missing from that table and is the layout binder in two of the seven screens."},
+    {"doc": "docs/GAME_SIMULATION_GATE.md", "target": "the interface id table", "correction": "Ids 1..13h all decode and match src/frontend_managers.cpp's kInterfaceNames; that array is correct as written. The gate doc's table can be extended with 01 INTF_MAINMENU, 02 INTF_MISSIONTREE, 03 INTF_BRIEFING, 04 INTF_REWARDS, 08 INTF_CREDITS, 0A INTF_LEADERBOARDS, 0B INTF_ACHIEVEMENTS."}
+  ],
+  "followups": [
+    {"id": "main_menu_page_machine", "addresses": ["00584AE0", "00584F50", "005853C0", "00597870", "0058C010", "00594BF0", "00580940", "00598B60", "00588A80"], "files": ["docs/MAIN_MENU_PAGES.md"], "contract": "The full 00E08874 page machine, what page 8 and the two register-written pages are, and the quit path from FE_pc.main_quit_confirm to state request 13h."},
+    {"id": "rewards_screen_debrief", "addresses": ["0062C2C0", "0062B640", "0061FBE0", "00629D10"], "files": ["docs/REWARDS_SCREEN.md"], "contract": "The six FE.scoring_* pages, the unlock and award text, and the 260h field layout."},
+    {"id": "tactical_library_screen", "addresses": ["0050FDB0", "004FE870", "00511F40", "005162B0", "005885D0", "005886C0"], "files": ["docs/TACTICAL_LIBRARY.md"], "contract": "The +94h mode set, the 5D0h layout, and whether id 0Bh's INTF_ACHIEVEMENTS label is vestigial."},
+    {"id": "front_end_music", "addresses": ["0058BDF0", "0052EE30", "00A877D0", "00A867B0", "00A864F0", "00A85C20", "00584A30"], "files": ["docs/FRONT_END_MUSIC.md"], "contract": "The 00E19504 track-name global, the stream object built by 00A877D0, and how creditsfinal.fsb at manager +48h reaches +54h."}
+  ],
+  "names_recorded": [
+    {"address": "005884A0", "name": "BSP_MainMenu_StartTitleMusic"},
+    {"address": "00584A30", "name": "BSP_FrontEnd_IsIntroMovieActive"},
+    {"address": "00584AE0", "name": "BSP_MainMenu_BuildTopLevelPage"},
+    {"address": "005885D0", "name": "BSP_MainMenu_OpenTacticalLibraryWithSelection"},
+    {"address": "005886C0", "name": "BSP_MainMenu_OpenTacticalLibrary"},
+    {"address": "00598B60", "name": "BSP_MainMenu_HandleBack"},
+    {"address": "005902E0", "name": "BSP_MainMenuScreen_Construct"},
+    {"address": "005CA880", "name": "BSP_MissionTreeScreen_Construct"},
+    {"address": "00626630", "name": "BSP_RewardsScreen_Construct"},
+    {"address": "0051E4D0", "name": "BSP_BriefingScreen_Construct"},
+    {"address": "0052FCE0", "name": "BSP_CreditsScreen_Construct"},
+    {"address": "00563370", "name": "BSP_LeaderboardsScreen_Construct"},
+    {"address": "005098B0", "name": "BSP_TacticalLibraryScreen_Construct"},
+    {"address": "00590570", "name": "BSP_MainMenuScreen_GetScreenId"},
+    {"address": "005CA8E0", "name": "BSP_MissionTreeScreen_GetScreenId"},
+    {"address": "00626710", "name": "BSP_RewardsScreen_GetScreenId"},
+    {"address": "0051E250", "name": "BSP_BriefingScreen_GetScreenId"},
+    {"address": "0052FD60", "name": "BSP_CreditsScreen_GetScreenId"},
+    {"address": "005633F0", "name": "BSP_LeaderboardsScreen_GetScreenId"},
+    {"address": "00509D60", "name": "BSP_TacticalLibraryScreen_GetScreenId"}
+  ],
+  "state": {
+    "005884A0": "analyzed, reconstructed, build-tested",
+    "005885D0": "analyzed, reconstructed, build-tested",
+    "005886C0": "analyzed, reconstructed, build-tested",
+    "00584AE0": "analyzed, reconstructed (data only), build-tested",
+    "005902E0": "analyzed (class, id, vtable, field zeroing; the 578h layout is not recovered)",
+    "005CA880": "analyzed (class, id, vtable, data table)",
+    "00626630": "analyzed (class, id, vtable, layout and page names)",
+    "0051E4D0": "analyzed (class, id, vtable, layout names)",
+    "0052FCE0": "analyzed (class, id, vtable, layout and data table)",
+    "00563370": "analyzed (class, id, vtable, layout and data table)",
+    "005098B0": "analyzed (class, id, vtable, layout; constructor tail not read)",
+    "00584A30": "analyzed",
+    "00599DB0": "exported only; no Ghidra function exists",
+    "005905E0": "exported only; no Ghidra function exists"
+  }
+}
