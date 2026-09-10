@@ -1,0 +1,114 @@
+{
+  "packet": "app_shutdown",
+  "branch": "agent/app-shutdown",
+  "doc": "docs/APP_SHUTDOWN.md",
+  "ghidra_access": "read-only; no renames, comments, prototypes or saves applied",
+  "anchor": {
+    "address": "00737f30",
+    "ledger_name": "BSP_Application_Shutdown",
+    "abi": "__thiscall(void *this); no stack arguments; plain RET (RET size 0) at 0073835e",
+    "seh": "MSVC frame installed at 00737f36, handler 00c862e0; EH state slot reused for the four path temporaries",
+    "callers": ["008f81f0 BSP_WinMain"],
+    "class_evidence": "0073832d loads ECX with 00cfeaec, whose bytes are the literal 'After MitApp::Deinit', and calls 004c9c90, a single RET; retail-stubbed trace naming the application class MitApp",
+    "fields": {
+      "this+0x08": "pointer to array of reference-counted system pointers (00737f80)",
+      "this+0x0c": "element count of that array (00737f72, 00737fad)",
+      "this+0x14": "GGame instance; passed to 004dc5c0 whose trace literal is 'GGame::OnDestroy()'"
+    },
+    "refcount_protocol": "counter at element+4 via InterlockedDecrement through 00ce2220 (LEA ECX,[EDI+4] at 00737f8d); on zero, vtable slot 0 is called with NO arguments (00737f9b-00737fa1), then the slot is zeroed; ascending index order"
+  },
+  "shutdown_order": [
+    {"step": 1, "site": "00737f4c", "call": "004c12b0", "action": "lazily create and register the GUI manager singleton DAT_00f8bc5c; returns it in EAX"},
+    {"step": 2, "site": "00737f53", "call": "00aa0f70", "action": "reset the two screen objects at manager+0x74 and +0x78"},
+    {"step": 3, "site": "00737f63, 00737f70", "call": "DAT_00f8d394 vtable +0x0c then +0x14", "action": "device teardown pair, no arguments"},
+    {"step": 4, "site": "00737f80-00737fb0", "call": "inline loop", "action": "release the system array at this+0x08 (count this+0x0c) in ascending order"},
+    {"step": 5, "site": "00737fb9", "call": "004dc5c0", "action": "GGame::OnDestroy(this+0x14)"},
+    {"step": 6, "site": "00737fc5", "call": "game vtable[0](1)", "action": "scalar deleting destructor of the game object; this+0x14 = 0"},
+    {"step": 7, "site": "00737fda", "call": "00a3b6e0", "action": "if DAT_00f8abdc: stop and join the network threads"},
+    {"step": 8, "site": "00737fe9", "call": "DAT_00f8abe8 vtable[0](1)", "action": "destroy singleton"},
+    {"step": 9, "site": "00737ff1", "call": "00a4d476", "action": "XLiveUninitialize()"},
+    {"step": 10, "site": "00738000", "call": "DAT_00f871b4 vtable[0](1)", "action": "destroy singleton"},
+    {"step": 11, "site": "00738008, 0073800f", "call": "0051f460 then 00be8350", "action": "get the file-store service singleton DAT_0109db70 and invoke its hook, which is a single RET in retail"},
+    {"step": 12, "site": "00738014", "call": "004c0ef0", "action": "destroy singleton DAT_00f8753c"},
+    {"step": 13, "site": "00738019-00738117", "call": "vtable[0](1) chain", "action": "release DAT_0109cecc, DAT_00f8bc4c, DAT_010909b0, DAT_00f8aefc, DAT_00f8c218, DAT_00e1aea0, DAT_00f8c210, DAT_00f8c280, DAT_00f8d39c, DAT_00f8bbf0, DAT_00f8c274, DAT_00f8bbf4 in that order"},
+    {"step": 14, "site": "00738119-007382c7", "call": "004fc150 / 00be80b0 / 00be7130", "action": "remove four input datatable files from the file store"},
+    {"step": 15, "site": "007382d2", "call": "DAT_00f8c26c vtable[0](1)", "action": "destroy singleton"},
+    {"step": 16, "site": "007382da", "call": "00736250", "action": "destroy singleton DAT_00f8bc5c, the manager created in step 1"},
+    {"step": 17, "site": "007382df-00738304", "call": "00415350, 00bcfca0", "action": "unregister DAT_00f8bc4c from the lifetime manager, destroy it, null the global"},
+    {"step": 18, "site": "0073830a", "call": "00736300", "action": "destroy singleton DAT_00f8bf44"},
+    {"step": 19, "site": "0073830f", "call": "007363b0", "action": "destroy singleton DAT_0109cf14"},
+    {"step": 20, "site": "00738314", "call": "00bbc5d0", "action": "finalize and free the global block DAT_01090900"},
+    {"step": 21, "site": "00738319", "call": "00736930", "action": "destroy singleton DAT_00f8d420"},
+    {"step": 22, "site": "0073831e", "call": "007369e0", "action": "destroy singleton DAT_01090490"},
+    {"step": 23, "site": "00738323", "call": "007361a0", "action": "destroy singleton DAT_00f8bbf8"},
+    {"step": 24, "site": "00738328", "call": "00bb4db0", "action": "static destructor stub: ECX = 010904e0, tail jump to 0041cc80"},
+    {"step": 25, "site": "00738332", "call": "004c9c90", "action": "stubbed trace of 'After MitApp::Deinit'"},
+    {"step": 26, "site": "00738337", "call": "00888750", "action": "single RET"},
+    {"step": 27, "site": "0073834c", "call": "DAT_00e1aed4 vtable[0](1)", "action": "destroy singleton"}
+  ],
+  "datatable_unload": {
+    "sequence": [
+      "BSP_NativeString_Resize(length, 1) allocates; length at [ESP+8], pointer at [ESP+0xc]; _memcpy copies the literal",
+      "004fc150 returns the file-store factory singleton DAT_0109db68 in EAX",
+      "PUSH &path; ECX = factory; CALL 00be80b0 (BSP_FileStoreFactory_GetOrCreate, no stack args, plain RET, provider in EAX)",
+      "ECX = provider; CALL 00be7130, which consumes the pushed &path and returns RET 4",
+      "BSP_SizedStoragePool_GetSingleton_Provisional then BSP_SizedStoragePool_ReturnBlock_Provisional free the buffer"
+    ],
+    "paths": [
+      {"path": "scripts/datatables/inputs.lua", "length": "0x1d", "eh_state": 0},
+      {"path": "scripts/datatables/keyboardsetup.lua", "length": "0x24", "eh_state": 1},
+      {"path": "scripts/datatables/controllerinputnames.lua", "length": "0x2b", "eh_state": 2},
+      {"path": "scripts/datatables/controlpresets.lua", "length": "0x25", "eh_state": 3}
+    ],
+    "decompiler_correction": "Ghidra models 00be80b0 as void and gives 00be7130 the string in ECX. The assembly at 00738131-0073813b is PUSH EDX / MOV ECX,EAX / CALL 00be80b0 / MOV ECX,EAX / CALL 00be7130; 00be7130 reads its stack argument at 00be7148 (MOV EDX,[ESP+0x20] = entry ESP+4) and ends with RET 4. One pushed argument is shared by the pair because 00be80b0 takes none."
+  },
+  "release_chain_safety": "Steps 13, 15 and 27 call vtable[0](1) on a global without clearing it. The singleton base destructor (007365e0, 00736750, 00736890) clears its own global under the lifetime manager lock, so step 17's re-test of DAT_00f8bc4c takes the null path and no double free occurs.",
+  "persistence": "No settings, profile or save-file write occurs anywhere in 00737f30, and the only flush-shaped hook (00be8350) is an empty body in this build. Persisting state happens before BSP_WinMain reaches shutdown.",
+  "singleton_template": {
+    "manager": "BSP_SingletonLifetime_GetManager (00415350); lock object at manager+0x10 is a CRITICAL_SECTION followed by a depth counter at lock+0x18 (ADD dword ptr [ESI+0x18],1 at 007361e1, decremented before LeaveCriticalSection)",
+    "register_helpers": {"00736100": "DAT_0109cf00", "007364a0": "DAT_00f8c26c", "00736540": "DAT_00f8bc4c", "007366b0": "DAT_00f8aefc", "007367f0": "DAT_010909b0"},
+    "unregister_helpers": {"007365e0": "DAT_00f8bc4c", "00736750": "DAT_00f8aefc", "00736890": "DAT_010909b0"},
+    "destroy_statics": {"007361a0": "DAT_00f8bbf8", "00736250": "DAT_00f8bc5c", "00736300": "DAT_00f8bf44", "007363b0": "DAT_0109cf14", "00736930": "DAT_00f8d420", "007369e0": "DAT_01090490", "004c0ef0": "DAT_00f8753c"},
+    "accessors_verified": {"004c12b0": "DAT_00f8bc5c", "004bec00": "DAT_00f8bbf8", "007371d0": "DAT_00f8bf44", "004fc150": "DAT_0109db68 (registers object+4)", "0051f460": "DAT_0109db70"},
+    "unregister_primitive": "00bcfca0 __thiscall(manager, object): linear search of the manager's pointer vector (bounds manager+4, manager+8; count via BSP_PointerVector_Count) and writes 0 into the matching slot without erasing it; null object ignored",
+    "unrelated_member": "00736460 __thiscall push_back(vector, const void *value), doubling growth through 00735ec0, minimum capacity 1; no callers in the binary"
+  },
+  "callees": {
+    "004c12b0": {"abi": "int __cdecl f(void)", "behavior": "double-checked lazy singleton: 0x88 bytes from 00bf681b, constructor 00aa5d70, registered under the manager lock; returns DAT_00f8bc5c", "note": "called first in shutdown, so the manager can be created during shutdown"},
+    "00aa0f70": {"abi": "void __thiscall f(void *manager)", "behavior": "for manager+0x74 and manager+0x78 when non-null: write (-1.0f, -1.0f, 0.0f) into a local (00d7a260 = 0xBF800000), pass it to 00aa8240 with the screen in ECX, then call the screen's virtual slot +0x34 with argument 0", "uncertainty": "slot +0x34 semantics unknown"},
+    "004dc5c0": {"abi": "void __thiscall GGame::OnDestroy(void *game)", "behavior": "trace 'GGame::OnDestroy()'; game+0x5d4 = 0x10; call 0046f3e0, 004da780, 004da650; if DAT_00f8a2fc, its vtable +8 then 00992ac0; 00b65e80; 008844f0; delete and null game+0x1a08, game+0x21a0, game+0x21d8, DAT_00e18678, DAT_00e1867c; 004a9ac0", "scene_evidence": "004da780 carries 'collectgarbage(\"collect\")', 'PostScnTermModels', 'PostScnTermShaders', 'PostScnTermSounds', 'PostScnTermTextures', 'After scene term'", "depth": "analyzed one level only"},
+    "00a3b6e0": {"abi": "void __thiscall f(void *client)", "behavior": "under the critical section at client+0x14c set DAT_00f8abe0 = 1; poll Sleep(10) re-taking the lock until DAT_00f8abe1 and DAT_00f8abe2 are both zero; CloseHandle(client+0x154); CloseHandle(client+0x158)", "risk": "unbounded join with no timeout"},
+    "0051f460": {"abi": "int __cdecl f(void)", "behavior": "lazy singleton DAT_0109db70: 0x34 bytes, constructor 00be94f0"},
+    "00be8350": {"abi": "receiver in ECX", "behavior": "single RET; empty in this build"},
+    "004fc150": {"abi": "int __cdecl f(void)", "behavior": "lazy singleton DAT_0109db68: 0xc bytes, constructor 00be5320; registers object+4, so the registered base subobject sits at +4"},
+    "00be7130": {"abi": "void __thiscall cFileStore::RemoveFile(void *provider, const cString *path), RET 4", "behavior": "normalize the path copy (00bee780), look it up in the container at provider+0x14 with end sentinel at provider+0x18 (00be5e90), erase on hit (00be6760), trace 'cFileStore::RemoveFile: %s removed!' or 'WARNING: cFileStore::RemoveFile: remove file %s not in store!', return the temporary to the sized storage pool"},
+    "00bbc5d0": {"abi": "void __cdecl f(void)", "behavior": "if DAT_01090900: call 00bbc520 on it and free() it; the global is not nulled afterwards"},
+    "00bb4db0": {"behavior": "static destructor stub: MOV ECX,0x010904e0; JMP 0041cc80"},
+    "004c9c90": {"behavior": "single RET; receives the trace message in ECX"},
+    "00888750": {"behavior": "single RET"}
+  },
+  "state_reached": {
+    "analyzed_and_reconstructed_and_build_tested": ["00737f30"],
+    "exported_and_analyzed": ["007361a0", "00736250", "00736300", "007363b0", "00736930", "007369e0", "004c0ef0", "00736100", "007364a0", "00736540", "007365e0", "007366b0", "00736750", "007367f0", "00736890", "00736460", "004c12b0", "004fc150", "0051f460", "00be8350", "00be7130", "00bbc5d0", "00bcfca0", "00aa0f70", "00a3b6e0", "00bb4db0", "004c9c90", "00888750"],
+    "analyzed_one_level": ["004dc5c0"]
+  },
+  "reconstruction": {
+    "header": "include/bsp/app_shutdown.hpp",
+    "source": "src/app_shutdown.cpp",
+    "entry_point": "bsp::shutdown_application(ApplicationShutdownHost&, ApplicationShutdownState&)",
+    "approach": "every effect goes through an injected host interface because no subsystem below the anchor is reconstructed; the recovered order is a constexpr table walked in sequence; singleton globals are named by their binary addresses because only the address is proven",
+    "not_modeled": ["subsystem behavior behind each vtable call", "the GGame teardown below 004dc5c0", "the file store itself"]
+  },
+  "uncertainties": [
+    "The identity of every destroyed singleton is unproven beyond its global address; subsystem hints come from segment keyword clusters, which are candidate-graph hints rather than evidence",
+    "Virtual slots +0x0c and +0x14 on DAT_00f8d394 are unread; the global is consumed by BSP_TextContext_CreateGlyphBuffers, BSP_Material_CreateForEffectName and BSP_DrawSection_RebuildVertexLayout, so it is a rendering device",
+    "What populates the system array at this+0x08 was not found; BSP_Application_Initialize does not write those fields directly in its decompilation",
+    "Virtual slot +0x34 on a GUI screen is unidentified",
+    "The seven callees of 004dc5c0 are unexplored beyond their segments"
+  ],
+  "tool_notes": [
+    "bsp.py lookup 00737f30 lists 'After MitApp::Deinit' under strings even though the routine references it only as a bare ECX pointer into a stubbed trace; the string list is not a list of call arguments",
+    "bsp.py ghidra proto and export take one address per invocation for proto; export accepts several",
+    "bsp.py ghidra bytes uses --length, not --limit"
+  ]
+}
