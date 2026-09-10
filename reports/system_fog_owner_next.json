@@ -1,0 +1,1025 @@
+{
+  "schema": "bsp.system_fog_owner_next.v1",
+  "date_utc": "2026-09-10",
+  "status": "read_only_discovery_byte_checked_next_packets_proposed",
+  "source_worktree_base_observed": "3493ae1",
+  "scope": "Camera+184 owner constructor, initialization, reference lifetime and bounded real-value producers. No whole-band reconstruction.",
+  "evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Each live memory query ran through bsp.py ghidra bytes; its client verifies project, program path, language and image base before reading. All selected spans matched installed PE bytes; no whole-image Ghidra equality claim.",
+    "ranges": [
+      {
+        "role": "owner_constructor",
+        "start": "00b84e50",
+        "end_exclusive": "00b84f61",
+        "byte_count": 273,
+        "disk_sha256": "a9e64942e3cb6ac462d76d57d9f6a9fc05b26e0293bb85fb5c68b0ebb179146e",
+        "ghidra_sha256": "a9e64942e3cb6ac462d76d57d9f6a9fc05b26e0293bb85fb5c68b0ebb179146e",
+        "matches_disk": true
+      },
+      {
+        "role": "owner_deleting_destructor",
+        "start": "00b84f70",
+        "end_exclusive": "00b84f94",
+        "byte_count": 36,
+        "disk_sha256": "56c38cc2fe1d196d74e1158832dc6a89589cae98e2fdfea39c564bd04319fb90",
+        "ghidra_sha256": "56c38cc2fe1d196d74e1158832dc6a89589cae98e2fdfea39c564bd04319fb90",
+        "matches_disk": true
+      },
+      {
+        "role": "camera_set_owner",
+        "start": "00b71940",
+        "end_exclusive": "00b71981",
+        "byte_count": 65,
+        "disk_sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+        "ghidra_sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+        "matches_disk": true
+      },
+      {
+        "role": "world_set_owner",
+        "start": "00bbdf20",
+        "end_exclusive": "00bbdf5b",
+        "byte_count": 59,
+        "disk_sha256": "b7f85c2a70c5b182b2226a0f6de2f3e1a7393d816be1f1c22b653c33373148a3",
+        "ghidra_sha256": "b7f85c2a70c5b182b2226a0f6de2f3e1a7393d816be1f1c22b653c33373148a3",
+        "matches_disk": true
+      },
+      {
+        "role": "camera_initial_null_slot",
+        "start": "00b71ae3",
+        "end_exclusive": "00b71ae9",
+        "byte_count": 6,
+        "disk_sha256": "76f690ea92e4b388538fb5b342e3a321e43777706b1970ac798e0e57f2876638",
+        "ghidra_sha256": "76f690ea92e4b388538fb5b342e3a321e43777706b1970ac798e0e57f2876638",
+        "matches_disk": true
+      },
+      {
+        "role": "camera_release_owner_fragment",
+        "start": "00b71f68",
+        "end_exclusive": "00b71f8a",
+        "byte_count": 34,
+        "disk_sha256": "59cf315e9a1277fcdda219a43ceefc23206adfdc46187b512abc8b72233a2635",
+        "ghidra_sha256": "59cf315e9a1277fcdda219a43ceefc23206adfdc46187b512abc8b72233a2635",
+        "matches_disk": true
+      },
+      {
+        "role": "world_allocate_publish_initialize_fragment",
+        "start": "004df6a3",
+        "end_exclusive": "004df7a5",
+        "byte_count": 258,
+        "disk_sha256": "1d6327619b5aea0e4d03cd85f4d1411431fec81a699206f0952cb0a7ff40a6b3",
+        "ghidra_sha256": "1d6327619b5aea0e4d03cd85f4d1411431fec81a699206f0952cb0a7ff40a6b3",
+        "matches_disk": true
+      },
+      {
+        "role": "environment_apply_camera_owner_fragment",
+        "start": "0078d076",
+        "end_exclusive": "0078d180",
+        "byte_count": 266,
+        "disk_sha256": "7c186211614e300207f4475f94e05b27788d959bab24f3d533a009ad6a739b8c",
+        "ghidra_sha256": "7c186211614e300207f4475f94e05b27788d959bab24f3d533a009ad6a739b8c",
+        "matches_disk": true
+      },
+      {
+        "role": "authored_environment_copy_and_private_owner_fragment",
+        "start": "0078caa4",
+        "end_exclusive": "0078cce0",
+        "byte_count": 572,
+        "disk_sha256": "86fb635ee95011d7db9d40ccf5c7c4f3f631a60e97a9ef5c2f7beb64c9fe3e9e",
+        "ghidra_sha256": "86fb635ee95011d7db9d40ccf5c7c4f3f631a60e97a9ef5c2f7beb64c9fe3e9e",
+        "matches_disk": true
+      },
+      {
+        "role": "owner_vtable",
+        "start": "00d63180",
+        "end_exclusive": "00d63188",
+        "byte_count": 8,
+        "disk_sha256": "16a820ef68ad567650fd7ba59007edf54ae004e7c727b0da6daa8ecdb1509e6d",
+        "ghidra_sha256": "16a820ef68ad567650fd7ba59007edf54ae004e7c727b0da6daa8ecdb1509e6d",
+        "matches_disk": true
+      },
+      {
+        "role": "set_color08",
+        "start": "00b84c40",
+        "end_exclusive": "00b84c5e",
+        "byte_count": 30,
+        "disk_sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+        "ghidra_sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+        "matches_disk": true
+      },
+      {
+        "role": "set_color18",
+        "start": "00b84c70",
+        "end_exclusive": "00b84c8e",
+        "byte_count": 30,
+        "disk_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+        "ghidra_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+        "matches_disk": true
+      },
+      {
+        "role": "set_directional28",
+        "start": "00b84fa0",
+        "end_exclusive": "00b84fc8",
+        "byte_count": 40,
+        "disk_sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "ghidra_sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "matches_disk": true
+      },
+      {
+        "role": "base_destroy",
+        "start": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "byte_count": 7,
+        "disk_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "ghidra_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "matches_disk": true
+      },
+      {
+        "role": "invoke_deleting_destructor",
+        "start": "00bd30e0",
+        "end_exclusive": "00bd30ee",
+        "byte_count": 14,
+        "disk_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "ghidra_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_68",
+        "start": "00b84d00",
+        "end_exclusive": "00b84d0e",
+        "byte_count": 14,
+        "disk_sha256": "94748cc1ebfe581c73374a48251b3cd929e7c2396c3b871f320018358f7ba0a8",
+        "ghidra_sha256": "94748cc1ebfe581c73374a48251b3cd929e7c2396c3b871f320018358f7ba0a8",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_6c",
+        "start": "00b84d10",
+        "end_exclusive": "00b84d1e",
+        "byte_count": 14,
+        "disk_sha256": "efd9b4f6f44e67258c1f2bdf6a23bbdb7c9597bfbf346a412a9f774a9dfa1b49",
+        "ghidra_sha256": "efd9b4f6f44e67258c1f2bdf6a23bbdb7c9597bfbf346a412a9f774a9dfa1b49",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_70",
+        "start": "00b84d20",
+        "end_exclusive": "00b84d2e",
+        "byte_count": 14,
+        "disk_sha256": "d9670d3c471c95892929dd80c14d4ee0329d20e7391d2ffa1ad46e8d964b205f",
+        "ghidra_sha256": "d9670d3c471c95892929dd80c14d4ee0329d20e7391d2ffa1ad46e8d964b205f",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_74",
+        "start": "00b84d30",
+        "end_exclusive": "00b84d3e",
+        "byte_count": 14,
+        "disk_sha256": "0c80c5c75fb3ad903671bde13f7170aec1f87ae3aeb2b1c9ee88a9a5709a5548",
+        "ghidra_sha256": "0c80c5c75fb3ad903671bde13f7170aec1f87ae3aeb2b1c9ee88a9a5709a5548",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_78",
+        "start": "00b84d40",
+        "end_exclusive": "00b84d4e",
+        "byte_count": 14,
+        "disk_sha256": "b77ce3ba0ee4b07ad1ad031276c01593e6cc22349bc22006212660e01b1ac706",
+        "ghidra_sha256": "b77ce3ba0ee4b07ad1ad031276c01593e6cc22349bc22006212660e01b1ac706",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_7c",
+        "start": "00b84d50",
+        "end_exclusive": "00b84d5e",
+        "byte_count": 14,
+        "disk_sha256": "8a9cfa6e8d68b6d749da4e2b7bbc2bfa19fe573b808bc00305d71b3452d4e276",
+        "ghidra_sha256": "8a9cfa6e8d68b6d749da4e2b7bbc2bfa19fe573b808bc00305d71b3452d4e276",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_80",
+        "start": "00b84d60",
+        "end_exclusive": "00b84d71",
+        "byte_count": 17,
+        "disk_sha256": "5d713c777e54afdcb638e416c030032c0b7c1b916db2358b09a4d538fabd195e",
+        "ghidra_sha256": "5d713c777e54afdcb638e416c030032c0b7c1b916db2358b09a4d538fabd195e",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_84",
+        "start": "00b84d80",
+        "end_exclusive": "00b84d91",
+        "byte_count": 17,
+        "disk_sha256": "c63bfa9eba1cf225ef405d125151f9858990a9a264d640d6250fd6f17c351b66",
+        "ghidra_sha256": "c63bfa9eba1cf225ef405d125151f9858990a9a264d640d6250fd6f17c351b66",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_88",
+        "start": "00b84dc0",
+        "end_exclusive": "00b84dd1",
+        "byte_count": 17,
+        "disk_sha256": "ac13f66adf7816ca997c7ce124552336cb52a07e563204ddbde579265107e2e7",
+        "ghidra_sha256": "ac13f66adf7816ca997c7ce124552336cb52a07e563204ddbde579265107e2e7",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_8c",
+        "start": "00b84de0",
+        "end_exclusive": "00b84df1",
+        "byte_count": 17,
+        "disk_sha256": "0bc7f7bad83aa4ef7c09a725d6c887b52376a772c2e7cea895327e34a103dd29",
+        "ghidra_sha256": "0bc7f7bad83aa4ef7c09a725d6c887b52376a772c2e7cea895327e34a103dd29",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_90",
+        "start": "00b84e00",
+        "end_exclusive": "00b84e11",
+        "byte_count": 17,
+        "disk_sha256": "047477a253b8e585ec982b206906071e252b6d6b4f3df1abc3dc7f6587132188",
+        "ghidra_sha256": "047477a253b8e585ec982b206906071e252b6d6b4f3df1abc3dc7f6587132188",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce386c",
+        "start": "00ce386c",
+        "end_exclusive": "00ce3870",
+        "byte_count": 4,
+        "disk_sha256": "531ad685bf4dd31ed89c6b99e76c2b9451d6a6d04d82de7d4b1a73217f55e551",
+        "ghidra_sha256": "531ad685bf4dd31ed89c6b99e76c2b9451d6a6d04d82de7d4b1a73217f55e551",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce3950",
+        "start": "00ce3950",
+        "end_exclusive": "00ce3954",
+        "byte_count": 4,
+        "disk_sha256": "be0509d0f49ca3a633ca83e11c8d460987acd18e2d32834592a2631fb28f0b0b",
+        "ghidra_sha256": "be0509d0f49ca3a633ca83e11c8d460987acd18e2d32834592a2631fb28f0b0b",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77dc",
+        "start": "00ce77dc",
+        "end_exclusive": "00ce77e0",
+        "byte_count": 4,
+        "disk_sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+        "ghidra_sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77e0",
+        "start": "00ce77e0",
+        "end_exclusive": "00ce77e4",
+        "byte_count": 4,
+        "disk_sha256": "2054e7cea10e36fc8d163c19900c064bbe07bc5c58e19741e46fd42fe21c6333",
+        "ghidra_sha256": "2054e7cea10e36fc8d163c19900c064bbe07bc5c58e19741e46fd42fe21c6333",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77e4",
+        "start": "00ce77e4",
+        "end_exclusive": "00ce77e8",
+        "byte_count": 4,
+        "disk_sha256": "2f5e6f4883fabf04062a8035100ce1bb22ce8d9081f3449e5047d2ebfc655ac1",
+        "ghidra_sha256": "2f5e6f4883fabf04062a8035100ce1bb22ce8d9081f3449e5047d2ebfc655ac1",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77e8",
+        "start": "00ce77e8",
+        "end_exclusive": "00ce77ec",
+        "byte_count": 4,
+        "disk_sha256": "68457c4ec566b9b15d1c8c76eb97d977520d09e70048589d61af599d0722638a",
+        "ghidra_sha256": "68457c4ec566b9b15d1c8c76eb97d977520d09e70048589d61af599d0722638a",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77f8",
+        "start": "00ce77f8",
+        "end_exclusive": "00ce77fc",
+        "byte_count": 4,
+        "disk_sha256": "9c993af9152408e15b3560fe5154d4793abfb2001f4f618860261649ac8a415c",
+        "ghidra_sha256": "9c993af9152408e15b3560fe5154d4793abfb2001f4f618860261649ac8a415c",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce7804",
+        "start": "00ce7804",
+        "end_exclusive": "00ce7808",
+        "byte_count": 4,
+        "disk_sha256": "e0fb2d87992a9fc79e7729163ad2aea5efbf14806711292c8c46e873bac1a253",
+        "ghidra_sha256": "e0fb2d87992a9fc79e7729163ad2aea5efbf14806711292c8c46e873bac1a253",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce7d58",
+        "start": "00ce7d58",
+        "end_exclusive": "00ce7d5c",
+        "byte_count": 4,
+        "disk_sha256": "c8647bf118c600c4afa92d2cfb83d602c20a87095e7efeab9ae72c845c7057b8",
+        "ghidra_sha256": "c8647bf118c600c4afa92d2cfb83d602c20a87095e7efeab9ae72c845c7057b8",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce7d5c",
+        "start": "00ce7d5c",
+        "end_exclusive": "00ce7d60",
+        "byte_count": 4,
+        "disk_sha256": "afb360116d7bc837da70d37c94881527576f0fc8063c1eeb6c56b43efc8e6ad8",
+        "ghidra_sha256": "afb360116d7bc837da70d37c94881527576f0fc8063c1eeb6c56b43efc8e6ad8",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce7d60",
+        "start": "00ce7d60",
+        "end_exclusive": "00ce7d64",
+        "byte_count": 4,
+        "disk_sha256": "c89de07cecab359edb0db3fb599a587277fbec1b26f756b7d8db42ddac7b9327",
+        "ghidra_sha256": "c89de07cecab359edb0db3fb599a587277fbec1b26f756b7d8db42ddac7b9327",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00d63188",
+        "start": "00d63188",
+        "end_exclusive": "00d6318c",
+        "byte_count": 4,
+        "disk_sha256": "5416ca91c8cd30c86b795e1ead426a3b76f0d414345ba1f2c135e3466a1f2c0e",
+        "ghidra_sha256": "5416ca91c8cd30c86b795e1ead426a3b76f0d414345ba1f2c135e3466a1f2c0e",
+        "matches_disk": true
+      },
+      {
+        "role": "world_alpha_divisor_double",
+        "start": "00ce4b48",
+        "end_exclusive": "00ce4b50",
+        "byte_count": 8,
+        "disk_sha256": "729bef532e854760af95391c84e7ba32d372f3384227e6d952a809b8b7f35eb5",
+        "ghidra_sha256": "729bef532e854760af95391c84e7ba32d372f3384227e6d952a809b8b7f35eb5",
+        "matches_disk": true
+      }
+    ],
+    "scalar_fields": [
+      {
+        "owner_offset": "68",
+        "setter": "00b84d00",
+        "default_constant_address": "00ce7804",
+        "default_bits": "3ecccccd",
+        "default_float32": 0.4000000059604645,
+        "environment_offset": "08"
+      },
+      {
+        "owner_offset": "6c",
+        "setter": "00b84d10",
+        "default_constant_address": "00ce386c",
+        "default_bits": "43480000",
+        "default_float32": 200.0,
+        "environment_offset": "0c"
+      },
+      {
+        "owner_offset": "70",
+        "setter": "00b84d20",
+        "default_constant_address": "00d63188",
+        "default_bits": "45dac000",
+        "default_float32": 7000.0,
+        "environment_offset": "10"
+      },
+      {
+        "owner_offset": "74",
+        "setter": "00b84d30",
+        "default_constant_address": "00ce386c",
+        "default_bits": "43480000",
+        "default_float32": 200.0,
+        "environment_offset": "18"
+      },
+      {
+        "owner_offset": "78",
+        "setter": "00b84d40",
+        "default_constant_address": "00ce7804",
+        "default_bits": "3ecccccd",
+        "default_float32": 0.4000000059604645,
+        "environment_offset": "14"
+      },
+      {
+        "owner_offset": "7c",
+        "setter": "00b84d50",
+        "default_constant_address": "00ce77f8",
+        "default_bits": "c2f00000",
+        "default_float32": -120.0,
+        "environment_offset": "1c"
+      },
+      {
+        "owner_offset": "80",
+        "setter": "00b84d60",
+        "default_constant_address": "00ce3950",
+        "default_bits": "44480000",
+        "default_float32": 800.0,
+        "environment_offset": "2c"
+      },
+      {
+        "owner_offset": "84",
+        "setter": "00b84d80",
+        "default_constant_address": "00ce77e8",
+        "default_bits": "3f7851ec",
+        "default_float32": 0.9700000286102295,
+        "environment_offset": "30"
+      },
+      {
+        "owner_offset": "88",
+        "setter": "00b84dc0",
+        "default_constant_address": "00ce77e4",
+        "default_bits": "c3480000",
+        "default_float32": -200.0,
+        "environment_offset": "20"
+      },
+      {
+        "owner_offset": "8c",
+        "setter": "00b84de0",
+        "default_constant_address": "00ce77e0",
+        "default_bits": "c30c0000",
+        "default_float32": -140.0,
+        "environment_offset": "28"
+      },
+      {
+        "owner_offset": "90",
+        "setter": "00b84e00",
+        "default_constant_address": "00ce77dc",
+        "default_bits": "3f7eb852",
+        "default_float32": 0.9950000047683716,
+        "environment_offset": "24"
+      }
+    ]
+  },
+  "owner": {
+    "semantic_name_hypothesis": "SystemFogOwner / AmbientLight; no recovered class name established",
+    "native_size": "00000094",
+    "vtable": "00d63180",
+    "vtable_slots": [
+      {
+        "offset": "00",
+        "target": "00bd30e0",
+        "role": "InvokeDeletingDestructor(flag=1)"
+      },
+      {
+        "offset": "04",
+        "target": "00b84f70",
+        "role": "scalar deleting destructor"
+      }
+    ],
+    "not_vtable_slot": {
+      "address": "00d63188",
+      "role": "7000.0 float32 constructor constant"
+    },
+    "header": [
+      {
+        "offset": "00",
+        "initial": "00ceb130 then 00d63180"
+      },
+      {
+        "offset": "04",
+        "initial": 1,
+        "meaning": "interlocked reference count"
+      }
+    ],
+    "zeroed_fields": [
+      {
+        "start_offset": "08",
+        "end_exclusive_offset": "28",
+        "bits_per_word": "00000000"
+      }
+    ],
+    "unwritten_fields": [
+      {
+        "start_offset": "28",
+        "end_exclusive_offset": "68",
+        "meaning": "four directional float4 records retain allocation/backing preimage"
+      }
+    ],
+    "constructor_abi": "ECX object; no stack arguments; EAX original object; RET. Complete body has no calls.",
+    "scalar_setter_abi": "ECX object; float32 word at ESP+4; MOVSS load/store; RET4; no x87 conversion in setter.",
+    "color_setter_abi": "ECX object; source pointer at ESP+4; four integer read/store pairs; RET4.",
+    "directional_setter_abi": "ECX object; source pointer at ESP+4, index at ESP+8; address object+28+16*index, no bounds check; four integer read/store pairs; RET8."
+  },
+  "publication": {
+    "camera_slot": "184",
+    "camera_setter": "00b71940",
+    "camera_setter_abi": "ECX camera; stack new owner; RET4; meaningful return value not established",
+    "camera_setter_order": [
+      "capture old",
+      "return if old equals new",
+      "store new at camera+184",
+      "increment new+4 if nonnull",
+      "decrement old+4 if nonnull",
+      "call old vtable+0 on zero"
+    ],
+    "camera_constructor_null_store": {
+      "start": "00b71ae3",
+      "end_exclusive": "00b71ae9",
+      "live_ins": "ESI camera; EBX zero"
+    },
+    "camera_destructor_release": {
+      "start": "00b71f68",
+      "end_exclusive": "00b71f8a",
+      "live_ins": "ESI camera; EBX zero; EBP InterlockedDecrement; EDI scratch",
+      "order": [
+        "capture published owner",
+        "decrement owner+4 if nonnull",
+        "call owner vtable+0 on zero while camera slot still points to owner",
+        "clear camera+184 after callback returns"
+      ]
+    },
+    "world_slot_setter": {
+      "start": "00bbdf20",
+      "end_exclusive": "00bbdf5b",
+      "abi": "ECX world owner; stack new owner; RET4",
+      "slot": "10",
+      "ordering": "same self-assignment/store/increment-new/release-old pattern as camera"
+    }
+  },
+  "destruction": {
+    "start": "00b84f70",
+    "end_exclusive": "00b84f94",
+    "abi": "ECX object; flags low byte at stack arg; RET4; EAX original address on normal return, including freed address",
+    "sequence": [
+      "install 00d63180",
+      "call 00bd30f0 to install base vtable 00ceb130",
+      "call _free at 00bf65ac if flags bit0",
+      "return original address"
+    ],
+    "listing_gap": {
+      "start": "00b84f8b",
+      "end_exclusive": "00b84f8e",
+      "instruction": "ADD ESP,4",
+      "bytes": "83c404",
+      "evidence": "disk disasm-raw and Ghidra memory agree; no mutation performed"
+    },
+    "nested_allocations_released": [],
+    "reference_dispatch": "00bd30e0 invokes vtable+4 with flag1 without decrementing; count operation belongs to retaining/releasing caller"
+  },
+  "allocation_call_sites": [
+    {
+      "call": "004df6c5",
+      "parent": "004de610",
+      "sink": "world owner+10 and game camera+184",
+      "allocation_size": "94",
+      "review": "native factory fragment and publication/init assembly checked"
+    },
+    {
+      "call": "0078db5c",
+      "parent": "0078daa0",
+      "sink": "environment+B4 private owner",
+      "allocation_size": "94",
+      "review": "decompiled constructor; do not identify private owner with current camera owner"
+    },
+    {
+      "call": "0093ceb7",
+      "parent": "0093ccc0",
+      "sink": "map camera via 00b71940 at0093ceed",
+      "allocation_size": "94",
+      "review": "bounded decompile; sets scalars68/78 to zero"
+    },
+    {
+      "call": "00ac5caf",
+      "parent": "00ac59a0",
+      "sink": "GUI camera via 00b71940 at00ac5ce2",
+      "allocation_size": "94",
+      "review": "bounded decompile; sets scalars68/78 to zero; no directional calls in fog sequence"
+    },
+    {
+      "call": "00ba17fd",
+      "parent": "00ba1400",
+      "sink": "camera via 00b71940 at00ba1814",
+      "allocation_size": "not independently decoded in this slice",
+      "review": "bounded decompile only"
+    },
+    {
+      "call": "00ba195e",
+      "parent": "00ba1400",
+      "sink": "camera via 00b71940 at00ba1975",
+      "allocation_size": "not independently decoded in this slice",
+      "review": "bounded decompile only"
+    }
+  ],
+  "world_factory_fragment": {
+    "parent": "004de610",
+    "start": "004df6a3",
+    "end_exclusive": "004df7a5",
+    "live_ins": [
+      "ESI game",
+      "EBX InterlockedDecrement",
+      "EDI prior EH state",
+      "valid parent stack/EH state",
+      "game+19FC camera",
+      "optional game+19E8 world owner",
+      "optional game+5FC authored data"
+    ],
+    "allocation": {
+      "size": "94",
+      "allocator": "00bf681b",
+      "allocator_status": "named CRT routine; malloc/new-handler/bad_alloc path inspected; host allocation/EH equivalence not reconstructed"
+    },
+    "sequence": [
+      "allocate and construct",
+      "optional world+10 counted publication",
+      "camera+184 counted publication",
+      "release temporary reference",
+      "scalar68=0",
+      "scalar78=0",
+      "set color08 from stored RGB constants and x87 0/255 alpha",
+      "conditionally copy authored directional records"
+    ],
+    "color08_bits": [
+      "3f25a5a6",
+      "3f23a3a4",
+      "3f2babac",
+      "00000000"
+    ],
+    "directional_source": "game+5FC points to block; records at block+A20..A5F; absent block skips writes",
+    "readiness": "bounded follow-up candidate; actual game/camera/world/authored owner contracts and allocator/EH integration still needed"
+  },
+  "environment_producers": [
+    {
+      "parent": "0078cff0",
+      "start": "0078d076",
+      "end_exclusive": "0078d180",
+      "proposed_name": "Environment_ApplyFogFieldsToCurrentCamera_Provisional",
+      "abi": "interior EDI environment; ESI camera; EBX/EBP loop scratch; continuation0078d180, not standalone RET",
+      "sources": {
+        "color08": "environment+34",
+        "directional28": "environment+44..83",
+        "color18": "environment+84"
+      },
+      "scalar_map": "evidence.scalar_fields.environment_offset",
+      "effects": "all retained fields; current camera+184 reloaded for each setter, scalar FLD/FSTP before MOVSS setter",
+      "excluded_before": [
+        "00ba40f0 optional update",
+        "00ba2ff0 optional update",
+        "004fb850 clear-color conversion",
+        "00b6fe50 camera clear-color setter"
+      ],
+      "excluded_after": [
+        "00ba0090 sky/water-related update remains unclassified"
+      ],
+      "direct_callers_of_parent": [
+        "005040f8 in BSP_FrontEndPreview_Draw",
+        "0068a0ec in FUN_0068a0d0"
+      ]
+    },
+    {
+      "parent": "0078c9b0",
+      "start": "0078caa4",
+      "end_exclusive": "0078cce0",
+      "proposed_name": "Environment_CopyAuthoredFogFieldsAndUpdatePrivateOwner_Provisional",
+      "abi": "interior ESI authored block; EDI environment; EBX/EBP scratch; continuation0078cce0",
+      "copy_map": {
+        "authored+80..8F": "environment+34..43",
+        "authored+90..CF": "environment+44..83",
+        "authored+118..127": "environment+84..93",
+        "authored+D0,D4,D8,DC,E0,E4": "environment+08,0C,10,14,18,1C",
+        "authored+104,108,10C,110,114": "environment+2C,30,20,28,24"
+      },
+      "private_sink": "environment+B4; color08, directions and eleven scalars updated; color18 setter absent in this fragment",
+      "uncertainty": "authored loader and dynamic environment mutation routines remain untraced; scalar copies use x87"
+    }
+  ],
+  "named_but_incomplete_dependencies": [
+    {
+      "address": "00b71a80",
+      "end_exclusive": "00b71cdc",
+      "proposed_or_existing_name": "Camera_Construct_Provisional",
+      "status": "named_for_next_packet_only",
+      "dependency": "Only the +184 null-store is claimed; base node, viewport, renderer and complete camera construction remain incomplete."
+    },
+    {
+      "address": "00b71f10",
+      "end_exclusive": "00b71fd2",
+      "proposed_or_existing_name": "Camera_Destroy_Provisional",
+      "status": "named_for_next_packet_only",
+      "dependency": "Only the +184 release/clear fragment is claimed; +180 viewport, +438 owner and BSP_Node_Destroy remain outside."
+    },
+    {
+      "address": "00b71fe0",
+      "end_exclusive": "00b72000",
+      "proposed_or_existing_name": "Camera_DeletingDestructor_Provisional",
+      "status": "named_for_next_packet_only",
+      "dependency": "Full wrapper also calls 00b711e0 scene-node deallocation; not needed by isolated fog release."
+    },
+    {
+      "address": "004de610",
+      "end_exclusive": "004dfafd",
+      "proposed_or_existing_name": "BSP_Game_ConstructWorld",
+      "status": "existing_named_but_incomplete",
+      "dependency": "Full world constructor excluded; bounded fog factory still needs actual game/scene ownership, authored block and EH contracts."
+    },
+    {
+      "address": "0078c9b0",
+      "end_exclusive": "0078cf16",
+      "proposed_or_existing_name": "Environment_ApplyAuthoredState_Provisional",
+      "status": "named_for_next_packet_only",
+      "dependency": "Source loader and non-fog sky/water setters excluded; selected fragment produces the private fog owner and environment fields."
+    },
+    {
+      "address": "0078cff0",
+      "end_exclusive": "0078d1a9",
+      "proposed_or_existing_name": "Environment_ApplyCameraState_Provisional",
+      "status": "named_for_next_packet_only",
+      "dependency": "Only fog update fragment ready once core binding/storage contract is agreed; full parent has other real callees."
+    },
+    {
+      "address": "0078daa0",
+      "end_exclusive": "0078db9f",
+      "proposed_or_existing_name": "Environment_ConstructWithPrivateFogOwner_Provisional",
+      "status": "named_for_next_packet_only",
+      "dependency": "Allocates separate owner at+B4, plus water/sky state; environment full lifetime not established here."
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6884",
+      "proposed_or_existing_name": "LIBCRT_unmatched_00bf681b",
+      "status": "existing_name_not_full_reconstruction",
+      "dependency": "malloc/new-handler/bad_alloc allocation semantics and native EH; do not substitute zeroed allocation."
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "proposed_or_existing_name": "_free",
+      "status": "existing_library_name",
+      "dependency": "Five-byte JMP to00bf9dc8; native deallocation. Returning fallthrough checked at fog deleting destructor callsite."
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "proposed_or_existing_name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "status": "existing_named_support",
+      "dependency": "Calls deleting destructor with flag1; target C++ owner adapter must provide real release semantics, not a stub."
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "proposed_or_existing_name": "BSP_RefCounted_DestroyBase",
+      "status": "existing_named_support",
+      "dependency": "One vtable write; retain existing name and implementation evidence."
+    },
+    {
+      "address": "00ce221c",
+      "end_exclusive": "00ce2224",
+      "proposed_or_existing_name": "InterlockedIncrement / InterlockedDecrement IAT entries",
+      "status": "imported_contract",
+      "dependency": "Atomic count operations; callback-visible pointer publication order is distinct from atomic refcount operations."
+    },
+    {
+      "address": "00ba1400",
+      "end_exclusive": "00ba2453",
+      "proposed_or_existing_name": "AdditionalCameraOwnerFactory_Provisional",
+      "status": "bounded_callsite_only",
+      "dependency": "Two additional constructor/publication sites; large parent excluded."
+    },
+    {
+      "address": "0093ccc0",
+      "end_exclusive": "0093d248",
+      "proposed_or_existing_name": "MapCameraFactory_Provisional",
+      "status": "bounded_callsite_only",
+      "dependency": "Alternative camera construction and lights setup excluded."
+    },
+    {
+      "address": "00ac59a0",
+      "end_exclusive": "00ac5f5b",
+      "proposed_or_existing_name": "BSP_GuiLayer_AcquireCameraStore",
+      "status": "existing_named_but_incomplete",
+      "dependency": "GUI fog allocation/binding inspected; full GUI camera-store and light lifecycle excluded."
+    },
+    {
+      "address": null,
+      "proposed_or_existing_name": "World owner+10 release lifecycle and authored environment loader",
+      "status": "unresolved_not_ready",
+      "dependency": "Not assigned invented addresses or methods; discover before claiming complete factory-to-renderer runtime ownership."
+    }
+  ],
+  "proposed_packets": [
+    {
+      "id": "system_fog_owner_core",
+      "readiness": "bounded_implementation_ready_after_integrator_review",
+      "ownership": [
+        {
+          "start": "00b84e50",
+          "end_exclusive": "00b84f61",
+          "role": "owner_constructor"
+        },
+        {
+          "start": "00b84f70",
+          "end_exclusive": "00b84f94",
+          "role": "owner_deleting_destructor"
+        },
+        {
+          "start": "00b71940",
+          "end_exclusive": "00b71981",
+          "role": "camera_set_owner"
+        },
+        {
+          "start": "00bbdf20",
+          "end_exclusive": "00bbdf5b",
+          "role": "world_set_owner"
+        },
+        {
+          "start": "00b71ae3",
+          "end_exclusive": "00b71ae9",
+          "role": "camera_initial_null_slot"
+        },
+        {
+          "start": "00b71f68",
+          "end_exclusive": "00b71f8a",
+          "role": "camera_release_owner_fragment"
+        },
+        {
+          "start": "00b84c40",
+          "end_exclusive": "00b84c5e",
+          "role": "set_color08"
+        },
+        {
+          "start": "00b84c70",
+          "end_exclusive": "00b84c8e",
+          "role": "set_color18"
+        },
+        {
+          "start": "00b84fa0",
+          "end_exclusive": "00b84fc8",
+          "role": "set_directional28"
+        },
+        {
+          "start": "00b84d00",
+          "end_exclusive": "00b84d0e",
+          "role": "set_scalar_68"
+        },
+        {
+          "start": "00b84d10",
+          "end_exclusive": "00b84d1e",
+          "role": "set_scalar_6c"
+        },
+        {
+          "start": "00b84d20",
+          "end_exclusive": "00b84d2e",
+          "role": "set_scalar_70"
+        },
+        {
+          "start": "00b84d30",
+          "end_exclusive": "00b84d3e",
+          "role": "set_scalar_74"
+        },
+        {
+          "start": "00b84d40",
+          "end_exclusive": "00b84d4e",
+          "role": "set_scalar_78"
+        },
+        {
+          "start": "00b84d50",
+          "end_exclusive": "00b84d5e",
+          "role": "set_scalar_7c"
+        },
+        {
+          "start": "00b84d60",
+          "end_exclusive": "00b84d71",
+          "role": "set_scalar_80"
+        },
+        {
+          "start": "00b84d80",
+          "end_exclusive": "00b84d91",
+          "role": "set_scalar_84"
+        },
+        {
+          "start": "00b84dc0",
+          "end_exclusive": "00b84dd1",
+          "role": "set_scalar_88"
+        },
+        {
+          "start": "00b84de0",
+          "end_exclusive": "00b84df1",
+          "role": "set_scalar_8c"
+        },
+        {
+          "start": "00b84e00",
+          "end_exclusive": "00b84e11",
+          "role": "set_scalar_90"
+        }
+      ],
+      "new_files": [
+        "include/bsp/system_fog_owner.hpp",
+        "src/system_fog_owner.cpp",
+        "docs/SYSTEM_FOG_OWNER.md",
+        "reports/system_fog_owner_audit.json"
+      ],
+      "shared_files_integrator_only": [
+        "include/bsp/system_fog_constants.hpp",
+        "existing camera interfaces",
+        "build registration",
+        "name/reconstruction shards"
+      ],
+      "dependencies": [
+        "existing SystemFogState field projection agreement",
+        "real refcount/allocator adapter contract if creating live owners",
+        "00bd30e0",
+        "00bd30f0",
+        "00bf65ac",
+        "InterlockedIncrement",
+        "InterlockedDecrement"
+      ],
+      "must_preserve": [
+        "unwritten directional records",
+        "exact scalar and color bits",
+        "forward per-word overlap effects",
+        "self assignment",
+        "store-before-retain setter order",
+        "clear-after-release camera destruction order",
+        "returning free path"
+      ],
+      "not_claimed": [
+        "existing getters",
+        "full camera/world/environment construction",
+        "native ABI replacement",
+        "game validation"
+      ]
+    },
+    {
+      "id": "system_fog_environment_apply",
+      "readiness": "ready_after_core_interface_contract",
+      "ownership": [
+        {
+          "start": "0078d076",
+          "end_exclusive": "0078d180"
+        }
+      ],
+      "new_files": [
+        "include/bsp/environment_fog_apply.hpp",
+        "src/environment_fog_apply.cpp",
+        "docs/ENVIRONMENT_FOG_APPLY.md",
+        "reports/environment_fog_apply_audit.json"
+      ],
+      "dependencies": [
+        "system_fog_owner_core setters",
+        "agreed actual environment field storage",
+        "live camera owner binding",
+        "existing x87 preservation conventions"
+      ],
+      "not_claimed": [
+        "setter leaves",
+        "full0078cff0",
+        "other water/sky state updates"
+      ]
+    },
+    {
+      "id": "system_fog_authored_source",
+      "readiness": "bounded_followup_contract_needed",
+      "ownership": [
+        {
+          "start": "0078caa4",
+          "end_exclusive": "0078cce0"
+        }
+      ],
+      "dependencies": [
+        "authored block ownership and validity",
+        "environment+B4 private owner lifetime",
+        "source scalar x87 copy behavior",
+        "system_fog_owner_core setters"
+      ]
+    },
+    {
+      "id": "system_fog_world_factory",
+      "readiness": "bounded_followup_dependencies_unresolved",
+      "ownership": [
+        {
+          "start": "004df6a3",
+          "end_exclusive": "004df7a5"
+        }
+      ],
+      "dependencies": [
+        "real allocator/new-handler/EH path",
+        "actual game+19FC camera",
+        "world owner+10 lifetime",
+        "game+5FC authored block",
+        "system_fog_owner_core"
+      ]
+    }
+  ],
+  "excluded_false_candidate": {
+    "address": "00b84a90",
+    "reason": "Already identified by integrator as unrelated render texture work; no owner inference from proximity."
+  },
+  "verification_boundary": {
+    "exported": "selected functions to shared ignored exports",
+    "reconstructed": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "ledger_mutated": false,
+    "game_install_modified": false,
+    "test_policy": "No tests added or run for read-only packet planning"
+  }
+}
