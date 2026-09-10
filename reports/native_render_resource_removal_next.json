@@ -1,0 +1,648 @@
+{
+  "schema_version": 1,
+  "title": "Native renderer named-resource removal: smallest complete next packet",
+  "generated_at_utc": "2026-09-10T21:02:37.716444+00:00",
+  "discovery_base_commit": "d344880",
+  "scope": "Read-only source/Ghidra/installed-byte discovery; only this report and its document are committed.",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "verification_route": "Every live read uses tools/bsp.py ghidra, which verifies project and program before the query; no Ghidra writes.",
+  "installed_image": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "size": 12223752,
+    "scope": "Listed spans match current Ghidra bytes; whole image was hashed but not compared against all Ghidra memory."
+  },
+  "recommended_packet": {
+    "id": "native_render_resource_record_storage",
+    "status": "ready_for_complete_typed_implementation",
+    "addresses": [
+      "00b2f990"
+    ],
+    "complete_extent": [
+      "00b2f990",
+      "00b2fa08"
+    ],
+    "proposed_name": "BSP_RenderResourceRecord_DestroyStorage",
+    "name_status": "Descriptive hypothesis, not a recovered symbol; not applied.",
+    "original_abi": "ECX points to the actual 2Ch record, no EDX input and no stack parameters, RET 0; no semantic return value.",
+    "ghidra_saved_body_warning": "Current stored body stops at CALL _free 00B2F9C4; post-free code [00B2F9C9,00B2FA08) must be recovered before annotation/export claims.",
+    "suggested_owned_files": [
+      "include/bsp/native_render_resource_record.hpp",
+      "src/native_render_resource_record.cpp",
+      "docs/NATIVE_RENDER_RESOURCE_RECORD_STORAGE.md",
+      "reports/native_render_resource_record_storage.json"
+    ],
+    "integration_owned_elsewhere": [
+      "CMakeLists.txt",
+      "config/parallel_work.json",
+      "config/names/00b20000.jsonl",
+      "config/reconstruction/00b20000.jsonl"
+    ],
+    "prerequisites": [
+      {
+        "address": "004d05e0",
+        "status": "Concrete behavior already integrated inside destroy_particle_clock_record_004d45a0; no separately exported C++ clear helper.",
+        "source": "src/particle_clock_lifetime.cpp:29"
+      },
+      {
+        "address": "00419cc0 / 00bd1510",
+        "status": "Existing concrete shared sized-storage pool; use the actual canonical string-pool domain, with byte size length+1."
+      },
+      {
+        "address": "00bf65ac",
+        "status": "Existing ordinary native-lifetime free path for actual alias nodes and sentinel."
+      },
+      {
+        "address": "0041dd20",
+        "status": "Full pooled-string destruction semantics match existing storage operations; retain raw length/data fields after release, unlike NativeString::release_to."
+      }
+    ],
+    "excluded": [
+      "record assignment 00b30510",
+      "container removal 00b31dc0",
+      "renderer notification 00b32250",
+      "native texture-owner destruction",
+      "any resource intrusive release or virtual dispatch"
+    ],
+    "acceptance": [
+      "Use actual Win32 2Ch records and 10h linked-list nodes, preserving raw allocation identity and byte offsets; do not replace them with std::vector/std::string.",
+      "Clear the real alias list, free its sentinel, null only record+0C, and return name buffer with original length+1 while leaving name fields and payload+14..+28 unchanged.",
+      "Never call particle sink release on resource+28; this record destructor has no intrusive decrement or resource virtual call.",
+      "Preserve the state-0 name cleanup boundary identified by FuncInfo/Unwind; do not claim native EH ABI equivalence from a typed host implementation.",
+      "Correct the false no-return body annotation under the Ghidra write lock, record old metadata, refresh the export, and save the project.",
+      "Run scripts/build.ps1 and relevant existing ownership checks. Add at most one focused lifetime case if current checks cannot cover this concrete storage risk; native differential/game validation remain separate."
+    ]
+  },
+  "record_layout": [
+    {
+      "offset": "00",
+      "bytes": 4,
+      "meaning": "Owned name byte length"
+    },
+    {
+      "offset": "04",
+      "bytes": 4,
+      "meaning": "Owned pooled name buffer"
+    },
+    {
+      "offset": "08",
+      "bytes": 4,
+      "meaning": "Alias-list word not read/written by this destructor or assignment; retain as unknown"
+    },
+    {
+      "offset": "0c",
+      "bytes": 4,
+      "meaning": "Actual 10h sentinel pointer"
+    },
+    {
+      "offset": "10",
+      "bytes": 4,
+      "meaning": "Alias-list count"
+    },
+    {
+      "offset": "14",
+      "bytes": 20,
+      "meaning": "Five payload DWORDs copied in order by assignment; ownership not established here"
+    },
+    {
+      "offset": "28",
+      "bytes": 4,
+      "meaning": "Resource pointer copied as a raw DWORD; destruction does not dereference or release it"
+    }
+  ],
+  "alias_node_layout": {
+    "stride": 16,
+    "next": "00",
+    "previous": "04",
+    "string_length": "08",
+    "string_data": "0c"
+  },
+  "record_destructor": {
+    "normal_order": [
+      "Call 004D05E0 with ECX=record+8. Capture first node; write sentinel next and previous to itself; set count=0 before freeing nodes.",
+      "For each actual node capture next before releasing its nonnull pooled string with length+1; ordinary-free that node; compare captured next with the current sentinel after free.",
+      "Reload record+0C for ordinary-free, then set record+0C=0 at 00B2F9C9.",
+      "Reload name pointer record+04 after sentinel free. Set EH state=-1 at 00B2F9D8 before returning its nonnull pool block using current length+1.",
+      "Leave name length/pointer, unknown+08, payload+14..+28 unchanged. The original record storage itself is not freed."
+    ],
+    "eh": {
+      "func_info": "00df6100",
+      "unwind_map": "00df60f8",
+      "state_0_to": -1,
+      "action": "00cbd840 -> 0041dd20 on saved original record",
+      "guarded_region": "List clear and sentinel free while state 0; state -1 is installed before normal pooled-name release.",
+      "validation": "Static machine-code and EH metadata proof, not injected native exception execution."
+    }
+  },
+  "renderer_removal": {
+    "dispatch": "Current primary profile 00D5F0A8+6C at 00D5F114 contains 00B32250.",
+    "abi": "00B32250: ECX actual renderer, one native-string pointer stack argument, RET 4; complete 240-byte function missing in current function table.",
+    "normal_order": [
+      "Entry gate reads byte 0108D6DC; only when enabled capture current renderer publication 00F8D394 and call 00B33AD0, retaining that guard owner and returned byte.",
+      "Create a real native temporary name copy and lowercase its bytes through 004BCC00. Pass the ORIGINAL stack name pointer to 00B31DC0 on original entry renderer+1A74, not the lowercased temporary.",
+      "Release captured temporary name data pointer in EDI using current temporary length+1. Re-read gate 0108D6DC before normal guard exit; use the saved guard owner/result, not a new renderer publication."
+    ],
+    "eh": {
+      "func_info": "00df6694",
+      "unwind_map": "00df6684",
+      "state_0": "00CBDCE0 -> 00B21110 on saved optional-guard local",
+      "state_1": "00CBDCE8 -> 0041DD20 on temporary string, then state 0",
+      "entry_state": "state 0 is installed before temporary string construction; state 1 after copy and before lowercase/removal",
+      "limit": "Preserve gate/capture behavior; do not simplify to unconditional guard or a single current renderer pointer."
+    }
+  },
+  "container_removal": {
+    "address": "00b31dc0",
+    "end_exclusive": "00b31fc8",
+    "abi": "ECX=actual renderer+1A74 container, one stack native-string pointer, RET 4.",
+    "fields": {
+      "04": "actual 2Ch-record array",
+      "08": "record count",
+      "10": "accounting total"
+    },
+    "key_behavior": "Makes a local raw name copy. 00BEE780 constructs and normalizes a second copy, which is immediately freed; the original local name is still used for alias length checks and _stricmp. Do not silently change comparison to a normalized/lowercase key.",
+    "lookup": "Capture array begin and count-derived end once before scan. Traverse each actual sentinel list. Require equal stored byte lengths before _stricmp; equal zero lengths match. Preserve iterator-validation calls, including the assembly-proven unreachable self-compare branch.",
+    "match_order": [
+      "Retain the matched record address in EBP. Load current resource record+28, its current vtable, and current slot+0C; call with ECX=resource and no stack argument.",
+      "Subtract returned EAX from CURRENT container+10. This is an accounting callback; no intrusive decrement, ownership release, or COM call occurs here.",
+      "Load matched record name after callback for diagnostic. After diagnostic, reload container count and data to compute the last record. If different from the retained match address, assign last into match via 00B30510.",
+      "Reload count and data AGAIN after assignment to compute actual last record and destroy it through 00B2F990. Then decrement CURRENT count. Capacity and array allocation are preserved."
+    ],
+    "eh": {
+      "func_info": "00df65dc",
+      "unwind_map": "00df65d4",
+      "state_0": "00CBDC60 -> 0041DD20 on local raw name copy",
+      "boundary": "Callback/accounting/assignment/destruction occur in state 0; no rollback of accounting, records, or count is registered here."
+    },
+    "status": "Not ready as a full implementation packet: record assignment, checked alias-list exception contract, native copy-normalization helper, and concrete current resource/renderer owner binding remain separate."
+  },
+  "assignment_boundary": {
+    "address": "00b30510",
+    "end_exclusive": "00b305b2",
+    "abi": "ECX=destination actual 2Ch record, one stack source pointer, EAX=destination, RET 4; no local EH registration.",
+    "normal_order": "Self-guard name copy; NativeString Resize(source length, preserve=1); copy destination length bytes if current source length nonzero. If distinct embedded lists, capture source sentinel and first before clearing destination; then call 004D26A0 with actual destination position and owner/node iterator pairs. Copy payload DWORDs +14,+18,+1C,+20,+24,+28 only after alias insertion succeeds.",
+    "range_insert_abi": "004D26A0: ECX=destination list; seven stack DWORDs (destination owner, insertion node, begin owner, begin node, end owner, end node, trailing node word); RET 1C. The last word is not read in reviewed instructions.",
+    "allocation_order": "004CE6F0 allocates 10h, initializes next/previous and copies its NativeString. 004CE780 checks/increments count only AFTER node allocation, then list links are written. Do not move the capacity check before allocation.",
+    "eh_catch": {
+      "range_func_info": "00d8eb30",
+      "range_try_map": "00d8eb1c",
+      "range_handler": "004d2746",
+      "range_handler_descriptor": "00d8eafc",
+      "behavior": "If saved original source iterator differs from current iterator, repeatedly decrement a temporary destination insertion iterator, erase that actual node through 004D0990, and advance saved original source iterator until caught up; then rethrow. Completed inserted nodes are rolled back; this is not an all-or-nothing record assignment.",
+      "node_func_info": "00d8e3a4",
+      "node_try_map": "00d8e390",
+      "node_handler": "004ce75c",
+      "node_behavior": "If node string construction throws, ordinary-free captured raw 10h allocation and rethrow. This catch ends before list count growth; do not claim it also frees a completed node when the subsequent count check throws."
+    },
+    "unimplemented_dependencies": [
+      "0044BCB0 native string copy constructor: ECX destination, EDX source, RET0; writes zero fields before the self-copy test, unlike assignment.",
+      "004CE6F0 actual 10h alias node allocation/copy: three stack words, RET0C, raw allocation catch-all.",
+      "004CE780 count-growth normal path plus concrete std::length_error construction/throw and its native EH map; existing name is not implementation proof.",
+      "004D26A0 full checked iterator range insertion and catch rollback.",
+      "004BE820 checked inequality, 004BECC0 checked previous, 004B9FF0 checked next, 004D0990 concrete pooled-node erase including post-free count and return iterator writes.",
+      "00BF6713 iterator validation failure behavior and native C++ rethrow compatibility cannot be supplied with a no-op or generic container guess."
+    ]
+  },
+  "actual_texture_accounting": {
+    "profile": "00d61948",
+    "slot": "0c",
+    "slot_address": "00d61954",
+    "target": "00b3ce30",
+    "extent": [
+      "00b3ce30",
+      "00b3ce34"
+    ],
+    "bytes": "8b4124c3",
+    "abi_behavior": "ECX=actual native texture owner; MOV EAX,[ECX+24]; RET0. This slot returns the stored source-size field, not a guessed COM memory measurement.",
+    "scope": "This getter is independently ready, but it does not implement the complete resource owner, destruction, pool return, or removal. Other resource profiles must be resolved independently."
+  },
+  "source_evidence": [
+    {
+      "path": "src/particle_clock_lifetime.cpp",
+      "lines": [
+        29,
+        55
+      ],
+      "use": "Concrete shared native alias-list/name cleanup behavior and actual free/pool routing; no resource-sink semantics may be transferred."
+    },
+    {
+      "path": "include/bsp/particle_clock_lifetime.hpp",
+      "lines": [
+        23,
+        43
+      ],
+      "use": "Existing exact 10h node / 2Ch record storage precedent; +28 interface is particle-specific."
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "lines": [
+        54,
+        82
+      ],
+      "use": "Existing pooled NativeString operations; release_to clears fields and cannot replace raw destructor semantics."
+    },
+    {
+      "path": "src/effect_cache.cpp",
+      "lines": [
+        55,
+        84
+      ],
+      "use": "Existing material effect cache uses std::vector/std::string host storage and is not a concrete native record destructor implementation."
+    }
+  ],
+  "proof_spans": [
+    {
+      "address": "00b2f990",
+      "end_exclusive": "00b2fa08",
+      "length": 120,
+      "label": "complete resource record storage destructor",
+      "file_offset": "0072f990",
+      "sha256": "1001bf8ce6b71d52fb1ebbf7a0ecb839385119012b325611478775258b59ba4c",
+      "hex": "6aff6848d8cb0064a10000000050648925000000005156578bf9897c24088d77088bcec744241400000000e8200c9aff8b460450e8e36b0c00c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8d0a28eff8bc8e8191b0a008b4c240c5f5e64890d0000000083c410c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004d05e0",
+      "end_exclusive": "004d0633",
+      "length": 83,
+      "label": "complete existing alias-list clear including post-free tail",
+      "file_offset": "000d05e0",
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+      "hex": "56578bf98b47048b3089008b47048940043b7704c74708000000007433538bff8b4e0c85c98b1e74168b46086a0183c0015051e8a896f4ff8bc8e8f10e700056e8875f720083c4043b5f048bf375d15b5f5ec3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "label": "native pooled string destruction used by unwind",
+      "file_offset": "0001dd20",
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00b30510",
+      "end_exclusive": "00b305b2",
+      "length": 162,
+      "label": "complete record assignment",
+      "file_offset": "00730510",
+      "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+      "hex": "83ec0853558b6c241456578bf93bfd74248b45006a0150e814d88eff837d000074138b0f8b55048b4704515250e83e710c0083c40c8d5d088d77083bf374338b43048b08894c24148bce8944241ce87d009aff8b56048b028b4c241c8b54241c518b4c24185253515350568bcee81e219aff8b55148957148b45188947188b4d1c894f1c8b55208957208b45248947248b4d28894f288bc75f5e5d5b83c408c20400",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004d26a0",
+      "end_exclusive": "004d27b4",
+      "length": 276,
+      "label": "range insertion including in-body catch rollback",
+      "file_offset": "000d26a0",
+      "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+      "hex": "558bec6aff68b05ec60064a100000000506489250000000083ec10538b5d0c568b7510578b7d148965f0894dec8975e4897de8c745fc000000008d9b0000000085f674053b75187405e8254072003b7d1c0f84aa00000085f67505e8134072003b7e047505e8094072008b4dec8d4708508b43045053e8d5bfffff8b4dec6a018bf0e859c0ffff8b55108973048b4e0489313b7a047505e8d73f72008b3f8b7510897d14eb9a8d4510508d4de4e8cec0feff84c074428b75ec8b7d0c8b5d08908d4d08895d08897d0ce852c5feff8b48048b1051528d4518508bcee810e2ffff8d4de4e86878feff8d4d10518d4de4e88cc0feff84c075c86a006a00e8e44072008b4df45f5e64890d000000005b8be55dc21c00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004ce6f0",
+      "end_exclusive": "004ce75c",
+      "length": 108,
+      "label": "node copy construction normal function body",
+      "file_offset": "000ce6f0",
+      "sha256": "a98d5b9f021b980dbdae7f7288f45918818b9c979e81898488d130ee28eeca21",
+      "hex": "558bec6aff68705ac60064a100000000506489250000000083ec085356578965f06a10e8038172008bf083c40485f68975ecc745fc0000000074058b450889068d460485c074058b4d0c89088b55108d4e08e869d5f7ff8b4df45f8bc65e64890d000000005b8be55dc20c00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004ce75c",
+      "end_exclusive": "004ce771",
+      "length": 21,
+      "label": "node copy catch: free raw allocation and rethrow",
+      "file_offset": "000ce75c",
+      "sha256": "ed475c06fb5df27f7cec406abe8554aa3dca0995b3d74ec0d3a4e430abafc625",
+      "hex": "8b55ec52e8477e720083c4046a006a00e814817200",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "0044bcb0",
+      "end_exclusive": "0044bd26",
+      "length": 118,
+      "label": "register-input native string copy construction",
+      "file_offset": "0004bcb0",
+      "sha256": "19e95f36a47ba139e7914057677fb7e5f46c16600abb39fd565196a09daeebef",
+      "hex": "6aff68c1ffc50064a100000000506489250000000083ec08568bf1578bfa897424088974240c85f6c74424180000000074333bf7c70600000000c746040000000074228b076a0150e84320fdff833f0074138b0e8b57048b4604515250e86eb97a0083c40c8b4c24105f5e64890d0000000083c414c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004ce780",
+      "end_exclusive": "004ce813",
+      "length": 147,
+      "label": "list count growth and length-error construction",
+      "file_offset": "000ce780",
+      "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+      "hex": "64a1000000008b5424046aff68885ac60050648925000000008b410883ec4456beffffff1f2bf03bf25e73516a1068f838ce008d4c2408c74424200f000000c744241c00000000c644240c00e84f9ff3ff8d0424508d4c2420c744245000000000e81a2ff4ff68983fd8008d4c242051c74424246092d600e88880720003c28941088b4c244464890d0000000083c450c20400",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004be820",
+      "end_exclusive": "004be849",
+      "length": 41,
+      "label": "checked iterator inequality",
+      "file_offset": "000be820",
+      "sha256": "5d497d265c7ca6c2474b9c1801eab82163d4244ad03df5b6d46dd7d650b6e8f9",
+      "hex": "568bf18b0685c0578b7c240c74043b077405e8dc7e73008b460433c93b47045f0f95c18ac15ec20400",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004becc0",
+      "end_exclusive": "004bece6",
+      "length": 38,
+      "label": "checked iterator previous",
+      "file_offset": "000becc0",
+      "sha256": "bddcf9a515fd515f591d772dcf8ab8140d9ac561385c5c72a25bfe0618a51ef0",
+      "hex": "568bf1833e007505e8467a73008b46048b40048b0e8946043b41047505e8317a73008bc65ec3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004b9ff0",
+      "end_exclusive": "004ba018",
+      "length": 40,
+      "label": "checked iterator next",
+      "file_offset": "000b9ff0",
+      "sha256": "8276fbaefffa30abe86fdc50b43ea441e151b9fb4efa8a9473b6177b34ec2ce3",
+      "hex": "568bf1833e007505e816c773008b068b4e043b48047505e807c773008b56048b028946048bc65ec3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "004d0990",
+      "end_exclusive": "004d0a0b",
+      "length": 123,
+      "label": "alias-node erase including post-free count/output tail",
+      "file_offset": "000d0990",
+      "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4",
+      "hex": "83ec08538b5c241485db55568b742420578bf9895c24107505e8655d72003b73047505e85b5d72003b77048b2e74398b46048bcd89088b168b46048942048b4e0c85c974168b46086a0183c0015051e8dc92f4ff8bc8e8250b700056e8bb5b720083c404834708ff8b44241c5f5e8968045d89185b83c408c20c00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "length": 520,
+      "label": "complete resource-container removal",
+      "file_offset": "00731dc0",
+      "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48",
+      "hex": "6aff6868dccb0064a100000000506489250000000083ec145355568b7424305733ff8d44241c3bc68bd9897c241c897c242074288b066a01508d4c2424e83ebf8eff393e74168b4c241c8b56048b442420515250e867580c0083c40c8d54241c8d4c2414897c242ce853c90b008b4c24183bcf74178b4424146a0183c0015051e87b7e8eff8bc8e8c4f609008b43088b6b046bc02c03c53be8894424140f84810000008d7d0c8b078b30894424108bff8d47fc3bc07405e897480c003b74241074503b377505e888480c008b46088b4c241c3bc1752f85c075088bc1f7d81bc0eb1a85c975058d4101eb118b4c24208b560c5152e806610c0083c40885c00f94c084c075753b377505e845480c008b36eb9e83c52c83c72c3b6c241475888b74243433ff8b46043bc77505b8a4d50801506814dbd000e8b5358fff8b4c242883c4083bcfc744242cffffffff74178b44241c6a0183c0015051e8a27d8eff8bc8e8ebf509008b4c24245f5e5d5b64890d0000000083c420c204008b4d288b018b500cffd22943108b450485c07505b8a4d508018b4c242085c97505b9a4d5080150516804dbd000e844358fff8b43088b4b048d50ff6bd22c03d183c40c3bea740f6bc02c8d4408d4508bcde880e5ffff8b4b088b53046bc92c8d4c11d4e8eed9ffff83c8ff0143088944242c8b44242085c00f846dffffff8b4c241c6a0183c1015150e951ffffff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "label": "renderer virtual name-removal entry, no current Ghidra function",
+      "file_offset": "00732250",
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00bee780",
+      "end_exclusive": "00bee7fe",
+      "length": 126,
+      "label": "copy and normalize a separate native string value",
+      "file_offset": "007ee780",
+      "sha256": "14a34be0c91d9f77cc09d81e87338a40c7d85390709f3c979ce5f33901c818af",
+      "hex": "6aff68e975cc0064a100000000506489250000000083ec08535633db8bf1578bfa3bf7895c240c89742410895c241c891e895e0474218b076a0150e880f582ff391f74138b068b4e04508b47045051e8ac8e000083c40c8bce895c241cc744240c01000000e8a6feffff8b4c24145f8bc65e5b64890d0000000083c414c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00b3ce30",
+      "end_exclusive": "00b3ce34",
+      "length": 4,
+      "label": "native texture accounting getter, no current Ghidra function",
+      "file_offset": "0073ce30",
+      "sha256": "e27121b8816e0aef2ed29676899d26e79f66af7e5ee5aed902be7208122bb635",
+      "hex": "8b4124c3",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d5f114",
+      "end_exclusive": "00d5f118",
+      "length": 4,
+      "label": "renderer primary profile virtual +6c",
+      "file_offset": "0095f114",
+      "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+      "hex": "5022b300",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d61948",
+      "end_exclusive": "00d61958",
+      "length": 16,
+      "label": "native 2D texture profile first four slots",
+      "file_offset": "00961948",
+      "sha256": "542b64bcdeadd2c8bd7811d0a309990b6cfc27c76c23c7444cfdc44bf01ea3a8",
+      "hex": "e030bd0090f5b30090fab30030ceb300",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00cbd840",
+      "end_exclusive": "00cbd852",
+      "length": 18,
+      "label": "record destructor unwind action and EH stub",
+      "file_offset": "008bd840",
+      "sha256": "19ed602fecf65645d392b12f6016efa4ac62f8bfda63a6d38612e7b1227cc0b9",
+      "hex": "8b4df0e9d80476ffb80061df00e9f192f3ff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df60f8",
+      "end_exclusive": "00df6100",
+      "length": 8,
+      "label": "record destructor unwind map",
+      "file_offset": "009f60f8",
+      "sha256": "09751ab6394378d12022706c2255ee6b0f34edb05b69d86643cb2df2e7d7e71e",
+      "hex": "ffffffff40d8cb00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df6100",
+      "end_exclusive": "00df6124",
+      "length": 36,
+      "label": "record destructor FuncInfo",
+      "file_offset": "009f6100",
+      "sha256": "0d64b3c1218625731406e8107c6eef65e099b6dbec9e1f962bde2d26ef6a6ab6",
+      "hex": "2205931901000000f860df00000000000000000000000000000000000000000001000000",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00c65eb0",
+      "end_exclusive": "00c65eba",
+      "length": 10,
+      "label": "range insertion EH stub",
+      "file_offset": "00865eb0",
+      "sha256": "881eecfbee792d2caef6ccc058da7f98a78a99eb4dd5a468a5babc9ee4664dd2",
+      "hex": "b830ebd800e9890cf9ff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8eafc",
+      "end_exclusive": "00d8eb0c",
+      "length": 16,
+      "label": "range insertion catch-all handler descriptor",
+      "file_offset": "0098eafc",
+      "sha256": "79dacbab0158d62d12e309247e905a78440c28190a71b9933ecfabe3d558dba3",
+      "hex": "40000000000000000000000046274d00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8eb0c",
+      "end_exclusive": "00d8eb1c",
+      "length": 16,
+      "label": "range insertion unwind map",
+      "file_offset": "0098eb0c",
+      "sha256": "3b11da84f00f0bd394c3f0bb8f50e0f6b173fd88e048d0894fe181366059c4ae",
+      "hex": "ffffffff00000000ffffffff00000000",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8eb1c",
+      "end_exclusive": "00d8eb30",
+      "length": 20,
+      "label": "range insertion try-block map",
+      "file_offset": "0098eb1c",
+      "sha256": "aac58c48ccf8a009c01eef2834b705fc1f8e3e3308039f8d6e4b87ef37934207",
+      "hex": "00000000000000000100000001000000fcead800",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8eb30",
+      "end_exclusive": "00d8eb54",
+      "length": 36,
+      "label": "range insertion FuncInfo",
+      "file_offset": "0098eb30",
+      "sha256": "475b25d3b92ecfd29501c82f3301d3004e74e1eca626765506da563cc83ff321",
+      "hex": "22059319020000000cebd800010000001cebd80000000000000000000000000001000000",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00c65a70",
+      "end_exclusive": "00c65a7a",
+      "length": 10,
+      "label": "node copy EH stub",
+      "file_offset": "00865a70",
+      "sha256": "7a40140ccd3aae31358f75d9a7db6d7d1e6d12bbcbfd421ebd3148b00738d565",
+      "hex": "b8a4e3d800e9c910f9ff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8e370",
+      "end_exclusive": "00d8e380",
+      "length": 16,
+      "label": "node copy catch-all handler descriptor",
+      "file_offset": "0098e370",
+      "sha256": "cef77e6b93041c113cceee404ad011a8bc300d8eb88348523f840e19e3952f56",
+      "hex": "4000000000000000000000005ce74c00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8e380",
+      "end_exclusive": "00d8e390",
+      "length": 16,
+      "label": "node copy unwind map",
+      "file_offset": "0098e380",
+      "sha256": "3b11da84f00f0bd394c3f0bb8f50e0f6b173fd88e048d0894fe181366059c4ae",
+      "hex": "ffffffff00000000ffffffff00000000",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8e390",
+      "end_exclusive": "00d8e3a4",
+      "length": 20,
+      "label": "node copy try-block map",
+      "file_offset": "0098e390",
+      "sha256": "0181db853e6e46aab198556a0718ef7f47d21da3bc25fd95afc5e46964fca6e3",
+      "hex": "0000000000000000010000000100000070e3d800",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00d8e3a4",
+      "end_exclusive": "00d8e3c8",
+      "length": 36,
+      "label": "node copy FuncInfo",
+      "file_offset": "0098e3a4",
+      "sha256": "0d3da36da9a73fca852642386490796ca90198e70fa090a618f4c6b8196f36d1",
+      "hex": "220593190200000080e3d8000100000090e3d80000000000000000000000000001000000",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00cbdc60",
+      "end_exclusive": "00cbdc72",
+      "length": 18,
+      "label": "container removal unwind action and EH stub",
+      "file_offset": "008bdc60",
+      "sha256": "b9be19cc2d99a355f30b720150208c243fe6d311290cee0e85ed978a97a8d297",
+      "hex": "8d4dece9b80076ffb8dc65df00e9d18ef3ff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df65d4",
+      "end_exclusive": "00df65dc",
+      "length": 8,
+      "label": "container removal unwind map",
+      "file_offset": "009f65d4",
+      "sha256": "f2943c39db3ae44bdf67c2276c0664bb7153da070c8905b45c4ce67653c836fa",
+      "hex": "ffffffff60dccb00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df65dc",
+      "end_exclusive": "00df6600",
+      "length": 36,
+      "label": "container removal FuncInfo",
+      "file_offset": "009f65dc",
+      "sha256": "c04383cef37d8a5c580da11fa1a44cf25d9e56499da69605945078de47f06276",
+      "hex": "2205931901000000d465df00000000000000000000000000000000000000000001000000",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00cbdce0",
+      "end_exclusive": "00cbdcfa",
+      "length": 26,
+      "label": "renderer removal two unwind actions and EH stub",
+      "file_offset": "008bdce0",
+      "sha256": "d06b30caa74fb6ab6b9eeecc2bb00dbf6b548b4314f6a21ab29b52640302fdf6",
+      "hex": "8d4dece92834e6ff8d4de4e9300076ffb89466df00e9498ef3ff",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df6684",
+      "end_exclusive": "00df6694",
+      "length": 16,
+      "label": "renderer removal unwind map",
+      "file_offset": "009f6684",
+      "sha256": "9607ce83a62783b2cc6b8ecee5a5ea728bc7c82119387f330b7da592119ebd61",
+      "hex": "ffffffffe0dccb0000000000e8dccb00",
+      "current_ghidra_equals_installed_pe": true
+    },
+    {
+      "address": "00df6694",
+      "end_exclusive": "00df66b8",
+      "length": 36,
+      "label": "renderer removal FuncInfo",
+      "file_offset": "009f6694",
+      "sha256": "ba9ebf0baaface1936a64a2882eb9abedd2fde7a8dd85b868b6d3ddbfa81a67d",
+      "hex": "22059319020000008466df00000000000000000000000000000000000000000001000000",
+      "current_ghidra_equals_installed_pe": true
+    }
+  ],
+  "validation": {
+    "compared_spans": 38,
+    "all_current_ghidra_equals_installed_pe": true,
+    "cpp_modified": false,
+    "ghidra_mutated": false,
+    "shared_metadata_modified": false,
+    "build_run": false,
+    "fixture_run": false,
+    "native_exception_injection": false,
+    "game_validated": false
+  }
+}
