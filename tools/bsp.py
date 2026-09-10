@@ -64,6 +64,16 @@ def norm(text):
     return f'{int(text, 16):08x}'
 
 
+def rel(path):
+    """Path for display: relative to this checkout, else to the main checkout (shared exports), else absolute."""
+    for base in (ROOT, workspace.main_root()):
+        try:
+            return Path(path).relative_to(base).as_posix()
+        except ValueError:
+            continue
+    return Path(path).as_posix()
+
+
 def cap(text, lines, start=0, label='lines'):
     """Print at most `lines` lines starting at `start`; say how much was left out."""
     rows = text.splitlines()
@@ -324,7 +334,7 @@ def show(args):
     path = EXPORTS / 'functions' / h(a) / name
     if path.exists():
         text = path.read_text(encoding='utf-8', errors='ignore')
-        print(f'--- {path.relative_to(ROOT).as_posix()} ---')
+        print(f'--- {rel(path)} ---')
     elif args.live:
         text = str(client().get('disassemble_function' if args.asm else 'decompile_function', address=h(a)))
         print(f'--- live {"disassembly" if args.asm else "decompile"} (not exported) ---')
@@ -567,7 +577,7 @@ def ghidra_cmd(args):
         print('\n'.join(tail))
         for a in addresses:
             path = EXPORTS / 'functions' / a / 'decompiled.c'
-            print(f"{a}: {'exported ' + str(path.relative_to(ROOT).as_posix()) if path.exists() else 'FAILED'}  -> python tools/bsp.py show {a}")
+            print(f"{a}: {'exported ' + rel(path) if path.exists() else 'FAILED'}  -> python tools/bsp.py show {a}")
         if run.returncode:
             sys.exit(run.returncode)
 
@@ -602,18 +612,32 @@ def ledger_write(args):
     if args.ledger_command == 'migrate':
         print(ledger.migrate(prune=not args.keep_legacy))
     elif args.ledger_command == 'add-name':
-        coordination.check_writable([ledger.norm(args.address)], force=args.force)
-        previous = ledger.upsert(ledger.NAMES_DIR, {'address': args.address, 'name': args.name, 'evidence': args.evidence})
-        print(f"{ledger.norm(args.address)} -> {args.name}" + (f" (replaced {previous['name']})" if previous else ''))
+        address = ledger.norm(args.address)
+        coordination.check_writable([address], force=args.force)
+        existing = next((r for r in ledger.load_names() if r['address'] == address), None)
+        if existing and not args.replace:
+            sys.exit(f"{address} already has a reviewed name; pass --replace to supersede it. Existing record:\n{json.dumps(existing)}")
+        previous = ledger.upsert(ledger.NAMES_DIR, {'address': address, 'name': args.name, 'evidence': args.evidence})
+        print(f"{address} -> {args.name}")
+        if previous:
+            print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
     elif args.ledger_command in ('add-function', 'add-fragment'):
         record = json.loads(args.json)
         for key in ('address', 'name', 'source', 'status'):
             if key not in record:
                 sys.exit(f'missing field {key}')
-        coordination.check_writable([ledger.norm(record['address'])], force=args.force)
+        record['address'] = ledger.norm(record['address'])
+        coordination.check_writable([record['address']], force=args.force)
         record['kind'] = 'function' if args.ledger_command == 'add-function' else 'fragment'
+        recon = ledger.load_reconstruction()
+        pool = recon['fragments'] if record['kind'] == 'fragment' else recon['functions']
+        existing = next((r for r in pool if r['address'] == record['address'] and r.get('name') == record['name']), None)
+        if existing and not args.replace:
+            sys.exit(f"{record['address']} {record['kind']} {record['name']} already recorded; pass --replace to supersede it. Existing record:\n{json.dumps(existing)}")
         previous = ledger.upsert(ledger.RECON_DIR, record, key=ledger.RECON_KEY)
-        print(f"{ledger.norm(record['address'])} {record['kind']} {record['name']}" + (' (replaced)' if previous else ''))
+        print(f"{record['address']} {record['kind']} {record['name']}")
+        if previous:
+            print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
 
 
 # ---------------------------------------------------------------- coordination
@@ -793,9 +817,10 @@ def main():
     p.set_defaults(func=worktree_cmd)
     p = sub.add_parser('ledger'); ls = p.add_subparsers(dest='ledger_command', required=True)
     q = ls.add_parser('migrate'); q.add_argument('--keep-legacy', action='store_true')
-    q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True); q.add_argument('--force', action='store_true')
-    q = ls.add_parser('add-function'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true')
-    q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true')
+    q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True)
+    q.add_argument('--force', action='store_true', help='ignore another owner\'s lease'); q.add_argument('--replace', action='store_true', help='supersede an existing record')
+    q = ls.add_parser('add-function'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
+    q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
     p.set_defaults(func=ledger_cmd)
     args = parser.parse_args()
     args.func(args)

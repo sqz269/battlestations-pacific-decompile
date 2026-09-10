@@ -57,6 +57,10 @@ def main():
             continue
         end = min(starts[i + 1] if i + 1 < len(starts) else text_hi, text_hi)
         for address, size, mnemonic, operands in md.disasm_lite(text[start - text_lo:end - text_lo], start):
+            if mnemonic == 'int3':
+                # MSVC pads between functions with int3; what follows belongs to undefined code,
+                # not to this function, so stop here instead of attributing its calls to `start`.
+                break
             instructions += 1
             if mnemonic == 'call' and operands.startswith('0x'):
                 target = int(operands, 16)
