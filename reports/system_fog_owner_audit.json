@@ -1,0 +1,886 @@
+{
+  "schema": "bsp.system_fog_owner_audit.v1",
+  "utc": "2026-09-10T16:46:26.967969+00:00",
+  "packet": "system_fog_owner_core",
+  "status": "bounded_reconstructed_msvc_win32_compiled_native_differential_checked",
+  "base_commit": "29109d2",
+  "target": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "installed_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "semantic_uncertainty": "SystemFogOwner / AmbientLight describe the established field owner; no recovered class symbol is claimed.",
+  "owned_functions_and_fragments": [
+    {
+      "start": "00b84e50",
+      "end_exclusive": "00b84f61",
+      "role": "owner_constructor",
+      "cpp_function": "initialize_system_fog_owner_00b84e50",
+      "complete_native_function": true,
+      "native_abi": "ECX storage; EAX same storage; RET"
+    },
+    {
+      "start": "00b84f70",
+      "end_exclusive": "00b84f94",
+      "role": "owner_deleting_destructor",
+      "cpp_function": "delete_system_fog_owner_00b84f70",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; flags stack argument; EAX original address including free path; RET4"
+    },
+    {
+      "start": "00b71940",
+      "end_exclusive": "00b71981",
+      "role": "camera_set_owner",
+      "cpp_function": "set_system_fog_camera_owner_00b71940",
+      "complete_native_function": true,
+      "native_abi": "ECX camera/world; new owner stack argument; RET4"
+    },
+    {
+      "start": "00bbdf20",
+      "end_exclusive": "00bbdf5b",
+      "role": "world_set_owner",
+      "cpp_function": "set_system_fog_world_owner_00bbdf20",
+      "complete_native_function": true,
+      "native_abi": "ECX camera/world; new owner stack argument; RET4"
+    },
+    {
+      "start": "00b71ae3",
+      "end_exclusive": "00b71ae9",
+      "role": "camera_initial_null_slot",
+      "cpp_function": "initialize_system_fog_camera_slot_00b71ae3",
+      "complete_native_function": false,
+      "native_abi": "interior ESI camera; EBX zero; continue00b71ae9"
+    },
+    {
+      "start": "00b71f68",
+      "end_exclusive": "00b71f8a",
+      "role": "camera_release_owner_fragment",
+      "cpp_function": "clear_system_fog_camera_slot_00b71f68",
+      "complete_native_function": false,
+      "native_abi": "interior ESI camera; EBX zero; EBP InterlockedDecrement; EDI scratch; continue00b71f8a"
+    },
+    {
+      "start": "00b84c40",
+      "end_exclusive": "00b84c5e",
+      "role": "set_color08",
+      "cpp_function": "set_system_fog_color_00b84c40",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; source pointer stack argument; RET4"
+    },
+    {
+      "start": "00b84c70",
+      "end_exclusive": "00b84c8e",
+      "role": "set_color18",
+      "cpp_function": "set_system_fog_underwater_color_00b84c70",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; source pointer stack argument; RET4"
+    },
+    {
+      "start": "00b84fa0",
+      "end_exclusive": "00b84fc8",
+      "role": "set_directional28",
+      "cpp_function": "set_system_fog_directional_color_00b84fa0",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; source pointer then uint32 index stack arguments; RET8"
+    },
+    {
+      "start": "00b84d00",
+      "end_exclusive": "00b84d0e",
+      "role": "set_scalar_68",
+      "cpp_function": "set_system_fog_scalar_68_00b84d00",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d10",
+      "end_exclusive": "00b84d1e",
+      "role": "set_scalar_6c",
+      "cpp_function": "set_system_fog_scalar_6c_00b84d10",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d20",
+      "end_exclusive": "00b84d2e",
+      "role": "set_scalar_70",
+      "cpp_function": "set_system_fog_scalar_70_00b84d20",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d30",
+      "end_exclusive": "00b84d3e",
+      "role": "set_scalar_74",
+      "cpp_function": "set_system_fog_scalar_74_00b84d30",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d40",
+      "end_exclusive": "00b84d4e",
+      "role": "set_scalar_78",
+      "cpp_function": "set_system_fog_scalar_78_00b84d40",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d50",
+      "end_exclusive": "00b84d5e",
+      "role": "set_scalar_7c",
+      "cpp_function": "set_system_fog_scalar_7c_00b84d50",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d60",
+      "end_exclusive": "00b84d71",
+      "role": "set_scalar_80",
+      "cpp_function": "set_system_fog_scalar_80_00b84d60",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84d80",
+      "end_exclusive": "00b84d91",
+      "role": "set_scalar_84",
+      "cpp_function": "set_system_fog_scalar_84_00b84d80",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84dc0",
+      "end_exclusive": "00b84dd1",
+      "role": "set_scalar_88",
+      "cpp_function": "set_system_fog_scalar_88_00b84dc0",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84de0",
+      "end_exclusive": "00b84df1",
+      "role": "set_scalar_8c",
+      "cpp_function": "set_system_fog_scalar_8c_00b84de0",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    },
+    {
+      "start": "00b84e00",
+      "end_exclusive": "00b84e11",
+      "role": "set_scalar_90",
+      "cpp_function": "set_system_fog_scalar_90_00b84e00",
+      "complete_native_function": true,
+      "native_abi": "ECX owner; float32 stack word; MOVSS raw copy; RET4"
+    }
+  ],
+  "storage": {
+    "host_bytes": 148,
+    "native_bytes": 148,
+    "native_vtable_word_offset": 0,
+    "reference_count_offset": 4,
+    "same_actual_SystemFogState_offset": 8,
+    "directional_native_allocation_preimage_offset": 40,
+    "directional_host_projection_offset": 40,
+    "directional_bytes": 64,
+    "constructor_does_not_define_directional_values": true,
+    "allocation_preimage_captured_before_placement": true,
+    "allocation_boundary": "existing singleton_lifetime_allocate({object,0x94,sizeof(SystemFogOwner)}) / singleton_lifetime_free; real malloc/new-handler and free host implementation",
+    "view_to_owner_mapping": "checked offsetof(fields_08), no registry or copied state",
+    "nonnull_slot_contract": "must originate from a live concrete SystemFogOwner fields_08; never a diagnostic standalone SystemFogState or foreign vtable profile",
+    "vtable_representation": "volatile original address word retained as evidence; not callable host pointer"
+  },
+  "scalar_fields": [
+    {
+      "owner_offset": "68",
+      "setter": "00b84d00",
+      "default_constant_address": "00ce7804",
+      "default_bits": "3ecccccd",
+      "default_float32": 0.4000000059604645,
+      "environment_offset": "08"
+    },
+    {
+      "owner_offset": "6c",
+      "setter": "00b84d10",
+      "default_constant_address": "00ce386c",
+      "default_bits": "43480000",
+      "default_float32": 200.0,
+      "environment_offset": "0c"
+    },
+    {
+      "owner_offset": "70",
+      "setter": "00b84d20",
+      "default_constant_address": "00d63188",
+      "default_bits": "45dac000",
+      "default_float32": 7000.0,
+      "environment_offset": "10"
+    },
+    {
+      "owner_offset": "74",
+      "setter": "00b84d30",
+      "default_constant_address": "00ce386c",
+      "default_bits": "43480000",
+      "default_float32": 200.0,
+      "environment_offset": "18"
+    },
+    {
+      "owner_offset": "78",
+      "setter": "00b84d40",
+      "default_constant_address": "00ce7804",
+      "default_bits": "3ecccccd",
+      "default_float32": 0.4000000059604645,
+      "environment_offset": "14"
+    },
+    {
+      "owner_offset": "7c",
+      "setter": "00b84d50",
+      "default_constant_address": "00ce77f8",
+      "default_bits": "c2f00000",
+      "default_float32": -120.0,
+      "environment_offset": "1c"
+    },
+    {
+      "owner_offset": "80",
+      "setter": "00b84d60",
+      "default_constant_address": "00ce3950",
+      "default_bits": "44480000",
+      "default_float32": 800.0,
+      "environment_offset": "2c"
+    },
+    {
+      "owner_offset": "84",
+      "setter": "00b84d80",
+      "default_constant_address": "00ce77e8",
+      "default_bits": "3f7851ec",
+      "default_float32": 0.9700000286102295,
+      "environment_offset": "30"
+    },
+    {
+      "owner_offset": "88",
+      "setter": "00b84dc0",
+      "default_constant_address": "00ce77e4",
+      "default_bits": "c3480000",
+      "default_float32": -200.0,
+      "environment_offset": "20"
+    },
+    {
+      "owner_offset": "8c",
+      "setter": "00b84de0",
+      "default_constant_address": "00ce77e0",
+      "default_bits": "c30c0000",
+      "default_float32": -140.0,
+      "environment_offset": "28"
+    },
+    {
+      "owner_offset": "90",
+      "setter": "00b84e00",
+      "default_constant_address": "00ce77dc",
+      "default_bits": "3f7eb852",
+      "default_float32": 0.9950000047683716,
+      "environment_offset": "24"
+    }
+  ],
+  "implementation_contracts": {
+    "constructor": "retains raw64-byte backing preimage; two positive-zero color records, exact scalar bits, refcount1 and owner/base address words",
+    "setters": "four forward integer read/store pairs for colors; raw uint32 scalar APIs preserve MOVSS data bits; no inserted x87 conversion",
+    "directional_index": "unchecked uint32 0x28+(index<<4) arithmetic; valid destination storage is caller responsibility",
+    "camera_world_setters": "self identity bypass, actual slot publication, retain new, release old; only zero count invokes destructor",
+    "camera_clear": "old slot remains published through destructor/free, then clear; null skips store",
+    "deleting_destructor": "owner vtable write, bounded BD30F0 base write, real free on flags bit0, original-address return; flags0 leaves logically destroyed bytes",
+    "zero_reference_dispatch": "statically resolved verified D63180[0] -> BD30E0 -> D63180[1] B84F70(flag1); no placeholder virtual callbacks; arbitrary subclasses unsupported",
+    "same_consumer_identity": "camera fog_184 and shader writers borrow &owner.fields_08, whose color_08 is the ambient color"
+  },
+  "support_addresses_not_claimed_for_edits": [
+    {
+      "start": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "existing_name": "BSP_RefCounted_InvokeDeletingDestructor",
+      "use": "concrete known-target null check and flag1 dispatch"
+    },
+    {
+      "start": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "existing_name": "BSP_RefCounted_DestroyBase",
+      "use": "concrete profile base-vtable write"
+    },
+    {
+      "start": "00bf681b",
+      "existing_name": "operator_new / existing singleton_lifetime_allocate boundary",
+      "use": "real allocator; existing library naming stays with integrator"
+    },
+    {
+      "start": "00bf65ac",
+      "existing_name": "_free",
+      "use": "existing singleton_lifetime_free boundary"
+    }
+  ],
+  "byte_verification": {
+    "method": "each selected range re-read through bsp.py ghidra bytes; tool verifies existing project/program/language/base before each query; compared with installed PE and discovery hashes",
+    "span_count": 32,
+    "bytes_compared": 807,
+    "all_match": true,
+    "ranges": [
+      {
+        "role": "owner_constructor",
+        "start": "00b84e50",
+        "end_exclusive": "00b84f61",
+        "byte_count": 273,
+        "disk_sha256": "a9e64942e3cb6ac462d76d57d9f6a9fc05b26e0293bb85fb5c68b0ebb179146e",
+        "ghidra_sha256": "a9e64942e3cb6ac462d76d57d9f6a9fc05b26e0293bb85fb5c68b0ebb179146e",
+        "matches_disk": true
+      },
+      {
+        "role": "owner_deleting_destructor",
+        "start": "00b84f70",
+        "end_exclusive": "00b84f94",
+        "byte_count": 36,
+        "disk_sha256": "56c38cc2fe1d196d74e1158832dc6a89589cae98e2fdfea39c564bd04319fb90",
+        "ghidra_sha256": "56c38cc2fe1d196d74e1158832dc6a89589cae98e2fdfea39c564bd04319fb90",
+        "matches_disk": true
+      },
+      {
+        "role": "camera_set_owner",
+        "start": "00b71940",
+        "end_exclusive": "00b71981",
+        "byte_count": 65,
+        "disk_sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+        "ghidra_sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+        "matches_disk": true
+      },
+      {
+        "role": "world_set_owner",
+        "start": "00bbdf20",
+        "end_exclusive": "00bbdf5b",
+        "byte_count": 59,
+        "disk_sha256": "b7f85c2a70c5b182b2226a0f6de2f3e1a7393d816be1f1c22b653c33373148a3",
+        "ghidra_sha256": "b7f85c2a70c5b182b2226a0f6de2f3e1a7393d816be1f1c22b653c33373148a3",
+        "matches_disk": true
+      },
+      {
+        "role": "camera_initial_null_slot",
+        "start": "00b71ae3",
+        "end_exclusive": "00b71ae9",
+        "byte_count": 6,
+        "disk_sha256": "76f690ea92e4b388538fb5b342e3a321e43777706b1970ac798e0e57f2876638",
+        "ghidra_sha256": "76f690ea92e4b388538fb5b342e3a321e43777706b1970ac798e0e57f2876638",
+        "matches_disk": true
+      },
+      {
+        "role": "camera_release_owner_fragment",
+        "start": "00b71f68",
+        "end_exclusive": "00b71f8a",
+        "byte_count": 34,
+        "disk_sha256": "59cf315e9a1277fcdda219a43ceefc23206adfdc46187b512abc8b72233a2635",
+        "ghidra_sha256": "59cf315e9a1277fcdda219a43ceefc23206adfdc46187b512abc8b72233a2635",
+        "matches_disk": true
+      },
+      {
+        "role": "owner_vtable",
+        "start": "00d63180",
+        "end_exclusive": "00d63188",
+        "byte_count": 8,
+        "disk_sha256": "16a820ef68ad567650fd7ba59007edf54ae004e7c727b0da6daa8ecdb1509e6d",
+        "ghidra_sha256": "16a820ef68ad567650fd7ba59007edf54ae004e7c727b0da6daa8ecdb1509e6d",
+        "matches_disk": true
+      },
+      {
+        "role": "set_color08",
+        "start": "00b84c40",
+        "end_exclusive": "00b84c5e",
+        "byte_count": 30,
+        "disk_sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+        "ghidra_sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+        "matches_disk": true
+      },
+      {
+        "role": "set_color18",
+        "start": "00b84c70",
+        "end_exclusive": "00b84c8e",
+        "byte_count": 30,
+        "disk_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+        "ghidra_sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1",
+        "matches_disk": true
+      },
+      {
+        "role": "set_directional28",
+        "start": "00b84fa0",
+        "end_exclusive": "00b84fc8",
+        "byte_count": 40,
+        "disk_sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "ghidra_sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "matches_disk": true
+      },
+      {
+        "role": "base_destroy",
+        "start": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "byte_count": 7,
+        "disk_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "ghidra_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "matches_disk": true
+      },
+      {
+        "role": "invoke_deleting_destructor",
+        "start": "00bd30e0",
+        "end_exclusive": "00bd30ee",
+        "byte_count": 14,
+        "disk_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "ghidra_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_68",
+        "start": "00b84d00",
+        "end_exclusive": "00b84d0e",
+        "byte_count": 14,
+        "disk_sha256": "94748cc1ebfe581c73374a48251b3cd929e7c2396c3b871f320018358f7ba0a8",
+        "ghidra_sha256": "94748cc1ebfe581c73374a48251b3cd929e7c2396c3b871f320018358f7ba0a8",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_6c",
+        "start": "00b84d10",
+        "end_exclusive": "00b84d1e",
+        "byte_count": 14,
+        "disk_sha256": "efd9b4f6f44e67258c1f2bdf6a23bbdb7c9597bfbf346a412a9f774a9dfa1b49",
+        "ghidra_sha256": "efd9b4f6f44e67258c1f2bdf6a23bbdb7c9597bfbf346a412a9f774a9dfa1b49",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_70",
+        "start": "00b84d20",
+        "end_exclusive": "00b84d2e",
+        "byte_count": 14,
+        "disk_sha256": "d9670d3c471c95892929dd80c14d4ee0329d20e7391d2ffa1ad46e8d964b205f",
+        "ghidra_sha256": "d9670d3c471c95892929dd80c14d4ee0329d20e7391d2ffa1ad46e8d964b205f",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_74",
+        "start": "00b84d30",
+        "end_exclusive": "00b84d3e",
+        "byte_count": 14,
+        "disk_sha256": "0c80c5c75fb3ad903671bde13f7170aec1f87ae3aeb2b1c9ee88a9a5709a5548",
+        "ghidra_sha256": "0c80c5c75fb3ad903671bde13f7170aec1f87ae3aeb2b1c9ee88a9a5709a5548",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_78",
+        "start": "00b84d40",
+        "end_exclusive": "00b84d4e",
+        "byte_count": 14,
+        "disk_sha256": "b77ce3ba0ee4b07ad1ad031276c01593e6cc22349bc22006212660e01b1ac706",
+        "ghidra_sha256": "b77ce3ba0ee4b07ad1ad031276c01593e6cc22349bc22006212660e01b1ac706",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_7c",
+        "start": "00b84d50",
+        "end_exclusive": "00b84d5e",
+        "byte_count": 14,
+        "disk_sha256": "8a9cfa6e8d68b6d749da4e2b7bbc2bfa19fe573b808bc00305d71b3452d4e276",
+        "ghidra_sha256": "8a9cfa6e8d68b6d749da4e2b7bbc2bfa19fe573b808bc00305d71b3452d4e276",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_80",
+        "start": "00b84d60",
+        "end_exclusive": "00b84d71",
+        "byte_count": 17,
+        "disk_sha256": "5d713c777e54afdcb638e416c030032c0b7c1b916db2358b09a4d538fabd195e",
+        "ghidra_sha256": "5d713c777e54afdcb638e416c030032c0b7c1b916db2358b09a4d538fabd195e",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_84",
+        "start": "00b84d80",
+        "end_exclusive": "00b84d91",
+        "byte_count": 17,
+        "disk_sha256": "c63bfa9eba1cf225ef405d125151f9858990a9a264d640d6250fd6f17c351b66",
+        "ghidra_sha256": "c63bfa9eba1cf225ef405d125151f9858990a9a264d640d6250fd6f17c351b66",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_88",
+        "start": "00b84dc0",
+        "end_exclusive": "00b84dd1",
+        "byte_count": 17,
+        "disk_sha256": "ac13f66adf7816ca997c7ce124552336cb52a07e563204ddbde579265107e2e7",
+        "ghidra_sha256": "ac13f66adf7816ca997c7ce124552336cb52a07e563204ddbde579265107e2e7",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_8c",
+        "start": "00b84de0",
+        "end_exclusive": "00b84df1",
+        "byte_count": 17,
+        "disk_sha256": "0bc7f7bad83aa4ef7c09a725d6c887b52376a772c2e7cea895327e34a103dd29",
+        "ghidra_sha256": "0bc7f7bad83aa4ef7c09a725d6c887b52376a772c2e7cea895327e34a103dd29",
+        "matches_disk": true
+      },
+      {
+        "role": "set_scalar_90",
+        "start": "00b84e00",
+        "end_exclusive": "00b84e11",
+        "byte_count": 17,
+        "disk_sha256": "047477a253b8e585ec982b206906071e252b6d6b4f3df1abc3dc7f6587132188",
+        "ghidra_sha256": "047477a253b8e585ec982b206906071e252b6d6b4f3df1abc3dc7f6587132188",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce386c",
+        "start": "00ce386c",
+        "end_exclusive": "00ce3870",
+        "byte_count": 4,
+        "disk_sha256": "531ad685bf4dd31ed89c6b99e76c2b9451d6a6d04d82de7d4b1a73217f55e551",
+        "ghidra_sha256": "531ad685bf4dd31ed89c6b99e76c2b9451d6a6d04d82de7d4b1a73217f55e551",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce3950",
+        "start": "00ce3950",
+        "end_exclusive": "00ce3954",
+        "byte_count": 4,
+        "disk_sha256": "be0509d0f49ca3a633ca83e11c8d460987acd18e2d32834592a2631fb28f0b0b",
+        "ghidra_sha256": "be0509d0f49ca3a633ca83e11c8d460987acd18e2d32834592a2631fb28f0b0b",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77dc",
+        "start": "00ce77dc",
+        "end_exclusive": "00ce77e0",
+        "byte_count": 4,
+        "disk_sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+        "ghidra_sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77e0",
+        "start": "00ce77e0",
+        "end_exclusive": "00ce77e4",
+        "byte_count": 4,
+        "disk_sha256": "2054e7cea10e36fc8d163c19900c064bbe07bc5c58e19741e46fd42fe21c6333",
+        "ghidra_sha256": "2054e7cea10e36fc8d163c19900c064bbe07bc5c58e19741e46fd42fe21c6333",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77e4",
+        "start": "00ce77e4",
+        "end_exclusive": "00ce77e8",
+        "byte_count": 4,
+        "disk_sha256": "2f5e6f4883fabf04062a8035100ce1bb22ce8d9081f3449e5047d2ebfc655ac1",
+        "ghidra_sha256": "2f5e6f4883fabf04062a8035100ce1bb22ce8d9081f3449e5047d2ebfc655ac1",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77e8",
+        "start": "00ce77e8",
+        "end_exclusive": "00ce77ec",
+        "byte_count": 4,
+        "disk_sha256": "68457c4ec566b9b15d1c8c76eb97d977520d09e70048589d61af599d0722638a",
+        "ghidra_sha256": "68457c4ec566b9b15d1c8c76eb97d977520d09e70048589d61af599d0722638a",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce77f8",
+        "start": "00ce77f8",
+        "end_exclusive": "00ce77fc",
+        "byte_count": 4,
+        "disk_sha256": "9c993af9152408e15b3560fe5154d4793abfb2001f4f618860261649ac8a415c",
+        "ghidra_sha256": "9c993af9152408e15b3560fe5154d4793abfb2001f4f618860261649ac8a415c",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00ce7804",
+        "start": "00ce7804",
+        "end_exclusive": "00ce7808",
+        "byte_count": 4,
+        "disk_sha256": "e0fb2d87992a9fc79e7729163ad2aea5efbf14806711292c8c46e873bac1a253",
+        "ghidra_sha256": "e0fb2d87992a9fc79e7729163ad2aea5efbf14806711292c8c46e873bac1a253",
+        "matches_disk": true
+      },
+      {
+        "role": "constant_00d63188",
+        "start": "00d63188",
+        "end_exclusive": "00d6318c",
+        "byte_count": 4,
+        "disk_sha256": "5416ca91c8cd30c86b795e1ead426a3b76f0d414345ba1f2c135e3466a1f2c0e",
+        "ghidra_sha256": "5416ca91c8cd30c86b795e1ead426a3b76f0d414345ba1f2c135e3466a1f2c0e",
+        "matches_disk": true
+      }
+    ]
+  },
+  "validation": {
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": true
+    },
+    "direct_component_build": {
+      "command": "./local/build_fog_owner_check.ps1 -OutputName fog-owner-check-final",
+      "passed": true,
+      "warnings": 0,
+      "compiler_flags": "MSVC x86 /std:c++17 /EHsc /O2 /Oy- /MT /Gy /Gw /W4; link /OPT:REF /OPT:NOICF /INCREMENTAL:NO",
+      "real_sources": [
+        "src/system_fog_owner.cpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "fixture_source": "local/fog_owner_native_check.cpp"
+    },
+    "focused_native_comparison": {
+      "passed": true,
+      "sequence": "constructor preimage;14 setters with sNaNs and one-word propagating overlap; flags0 bytes/return; bind/self assignment/drop temporary/replace/clear; actual allocation/world-slot/free exercise",
+      "native_code_spans_verified_before_fixture_generation": 22,
+      "normalization": "compare owner vtable after subtracting native image relocation delta; all remaining144 bytes compared directly",
+      "native_process": "isolated fixture; original PE image mapped for selected code/data only; PE entrypoint and game never executed",
+      "relocation_reason": "original PE has no relocation table and its preferred allocation range was occupied",
+      "patch_method": "17 decoded absolute32 image memory operands/non-branch image-pointer immediates plus two concrete vtable entries (19 total); preserve relative branches; runtime assert old values before rebasing",
+      "atomic_bindings": "two IAT cells to actual kernel32 InterlockedIncrement/InterlockedDecrement exports",
+      "free_observation": "patch only native _free entry and linked host singleton_lifetime_free entry to observe visibility then run same real std::free body; no substitute owner/vtable implementation",
+      "linker_control": "/OPT:NOICF keeps observer boundary distinct from unrelated identical CRT thunks; observer reserves storage before interception",
+      "fragment_continuation": "00b71f8a first byte becomes RET; actual ESI/EBX/EBP/EDI contract supplied through a naked fixture wrapper",
+      "patches": [
+        {
+          "kind": "absolute",
+          "original_image_address": "00b7195f",
+          "original_hex": "1c22ce00",
+          "fixture_hex": "1c223001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b7196d",
+          "original_hex": "2022ce00",
+          "fixture_hex": "20223001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84e5c",
+          "original_hex": "6c38ce00",
+          "fixture_hex": "6c383001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84e64",
+          "original_hex": "8831d600",
+          "fixture_hex": "88313801"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84eaf",
+          "original_hex": "0478ce00",
+          "fixture_hex": "04783001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84ec1",
+          "original_hex": "f877ce00",
+          "fixture_hex": "f8773001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84ece",
+          "original_hex": "5039ce00",
+          "fixture_hex": "50393001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84ede",
+          "original_hex": "e877ce00",
+          "fixture_hex": "e8773001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84ef4",
+          "original_hex": "e477ce00",
+          "fixture_hex": "e4773001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84f19",
+          "original_hex": "e077ce00",
+          "fixture_hex": "e0773001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84f1f",
+          "original_hex": "30b1ce00",
+          "fixture_hex": "30b13001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84f2f",
+          "original_hex": "dc77ce00",
+          "fixture_hex": "dc773001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84f3f",
+          "original_hex": "8031d600",
+          "fixture_hex": "80313801"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00b84f75",
+          "original_hex": "8031d600",
+          "fixture_hex": "80313801"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00bbdf39",
+          "original_hex": "1c22ce00",
+          "fixture_hex": "1c223001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00bbdf47",
+          "original_hex": "2022ce00",
+          "fixture_hex": "20223001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00bd30f2",
+          "original_hex": "30b1ce00",
+          "fixture_hex": "30b13001"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00d63180",
+          "original_hex": "e030bd00",
+          "fixture_hex": "e0301f01"
+        },
+        {
+          "kind": "absolute",
+          "original_image_address": "00d63184",
+          "original_hex": "704fb800",
+          "fixture_hex": "704f1a01"
+        },
+        {
+          "kind": "iat",
+          "original_image_address": "00ce221c",
+          "original_hex": "d056a000",
+          "fixture_hex": "f01aa775"
+        },
+        {
+          "kind": "iat",
+          "original_image_address": "00ce2220",
+          "original_hex": "e856a000",
+          "fixture_hex": "b01aa775"
+        },
+        {
+          "kind": "native_free",
+          "address": "012165ac",
+          "address_space": "fixture process",
+          "original_hex": "e917380000",
+          "fixture_hex": "e99fdbde2e"
+        },
+        {
+          "kind": "host_free",
+          "address": "30001850",
+          "address_space": "fixture process",
+          "original_hex": "e9db8e0000",
+          "fixture_hex": "e9fb280000"
+        },
+        {
+          "kind": "continuation",
+          "address": "00b71f8a",
+          "address_space": "original image",
+          "original_hex": "8b",
+          "fixture_hex": "c3"
+        }
+      ],
+      "free_observations": [
+        {
+          "ordinal": 0,
+          "expected_slot_visible": true,
+          "new_or_clearing_owner_references": 2,
+          "old_references": 0,
+          "normalized_native_vtable": "00ceb130"
+        },
+        {
+          "ordinal": 1,
+          "expected_slot_visible": true,
+          "new_or_clearing_owner_references": 0,
+          "old_references": 0,
+          "normalized_native_vtable": "00ceb130"
+        },
+        {
+          "ordinal": 2,
+          "expected_slot_visible": true,
+          "new_or_clearing_owner_references": 2,
+          "old_references": 0,
+          "normalized_native_vtable": "00ceb130"
+        },
+        {
+          "ordinal": 3,
+          "expected_slot_visible": true,
+          "new_or_clearing_owner_references": 0,
+          "old_references": 0,
+          "normalized_native_vtable": "00ceb130"
+        }
+      ],
+      "additional_world_release": "fifth observed deleting free from actual allocator/world slot; null publication checked",
+      "result_line": "PASS constructor preimage + 14 setters + flags0 + counted publication/clear + real allocation/free (5 frees)"
+    },
+    "compiled_order_inspection": {
+      "artifact": "local/fog_owner_compiled_disasm.txt",
+      "slot_setter": "MOV [EDI],ECX at offset1C; LOCK INC [EDX+4] at22; old LOCK XADD at30; real free call48",
+      "camera_clear": "old LOCK XADD at13; actual free call2B; MOV [ESI],0 at33",
+      "volatile_vtables": "both concrete D63180 and base CEB130 writes survive compilation"
+    },
+    "required_repository_build": {
+      "command": "./scripts/build.ps1",
+      "base_commit": "29109d2",
+      "passed": true,
+      "ctest_passed": 2,
+      "scope": "integrated base build; new source is not in shared CMake until integrator registration, and is separately compiled/executed above",
+      "superseded_failure": "old2acb795 baseline render_tail.cpp expected ParticleClock::owned_records; root shared header update29109d2 resolved it"
+    }
+  },
+  "artifact_sha256": {
+    "include/bsp/system_fog_owner.hpp": "fd355c272546d20118eea4c808ede51955356e819e0cac30ef7eabee336baf88",
+    "src/system_fog_owner.cpp": "60ab597fbe906866c2d0f990ad12ab56c0322d462a4626020c3651e1c77847a1",
+    "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+    "local/fog_owner_native_check.cpp": "fcf61779e122517457f949928fe6a5bf229ea7d843f5ca2ca12d8e0725832c4f",
+    "local/generate_fog_owner_native_patches.py": "976bd3654068f4ff7873895796419fb9de91b520cfe1bec32c625474ee953dbf",
+    "local/fog_owner_native_patches.hpp": "8cf8ad2f86be947c29ab113727f99fda06c3656ee37f92a7f9f40370dc0cfef9",
+    "local/build_fog_owner_check.ps1": "d11a81b37cf4363ffb93cc6c2092836b80d17070a1af372ea374da0427d77b51",
+    "local/fog_owner_native_check_final.log": "6888c3cf90f00b8fdf123956f1b674ef1011ba89e71a2c53ab97c0afde5a3628",
+    "local/fog_owner_compiled_disasm.txt": "50df523f8b98c6b357d1f9c7b4e86f188a370f10e5aad46e106568458048e805",
+    "local/fog_owner_seed_check.txt": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/fog_owner_integrated_base_build.log": "f5befe66d50f6f7b712c1688a206a289d58de5d4da6c6b6a4a5655bfe10aec19",
+    "build/fog-owner-check-final/system_fog_owner.obj": "2eeec91ae0ecc92c44ea1e3bd1bea18b7c5a021a533c4de38491ea7eeb8a6e66",
+    "build/fog-owner-check-final/singleton_lifetime.obj": "496bb1f0133fa68060b8397d643bc5accbc3ba301aebf4a7766fcb46a9ea2907",
+    "build/fog-owner-check-final/fog_owner_native_check.exe": "1f1b0955386d65266fa01d22eea9909b8c5a76b5c8193ec8487f4de97e406e9b"
+  },
+  "owned_files": [
+    "include/bsp/system_fog_owner.hpp",
+    "src/system_fog_owner.cpp",
+    "docs/SYSTEM_FOG_OWNER.md",
+    "reports/system_fog_owner_audit.json"
+  ],
+  "integrator_remaining": [
+    "CMake source registration",
+    "camera/world owner creation wiring to actual fields_08",
+    "environment/authored directional producer",
+    "ledger names/comments and project save under integrator ownership"
+  ],
+  "evidence_boundaries": {
+    "exported": "selected native evidence from discovery/current bounded memory verification",
+    "reconstructed": true,
+    "component_build_tested": true,
+    "focused_native_fixture_tested": true,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "renderer_visual_validated": false,
+    "ghidra_mutated_by_packet": false,
+    "ledgers_mutated_by_packet": false,
+    "not_verified": [
+      "allocation failure/native EH",
+      "full camera/world/environment constructors and destructors",
+      "arbitrary foreign vtables",
+      "arbitrary concurrent external mutation",
+      "complete renderer integration"
+    ]
+  }
+}
