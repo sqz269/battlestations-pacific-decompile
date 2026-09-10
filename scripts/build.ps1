@@ -15,7 +15,8 @@ $generator = switch (($vsVersion -split '\.')[0]) {
     default { throw "Unsupported Visual Studio version: $vsVersion" }
 }
 $buildPath = Join-Path $repoRoot 'build\win32'
-& $cmakeExe -S $repoRoot -B $buildPath -G $generator -A Win32 "-DCMAKE_GENERATOR_INSTANCE=$vsPath"
+$startupRegistry = Join-Path $repoRoot 'cmake\startup.cmake'
+& $cmakeExe -S $repoRoot -B $buildPath -G $generator -A Win32 "-DCMAKE_GENERATOR_INSTANCE=$vsPath" "-DCMAKE_PROJECT_INCLUDE=$startupRegistry"
 if ($LASTEXITCODE) { throw 'CMake configure failed.' }
 & $cmakeExe --build $buildPath --config $Configuration --parallel
 if ($LASTEXITCODE) { throw 'C++ build failed.' }
