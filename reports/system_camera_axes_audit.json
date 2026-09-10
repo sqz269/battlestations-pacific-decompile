@@ -1,0 +1,507 @@
+{
+  "task": "system_camera_axes",
+  "created_utc": "2026-09-10T15:30:00.046446+00:00",
+  "status": "bounded_reconstruction_strict_win32_and_native_differential_passed_pending_integration",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "project_file_exists": true,
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "verification": "bsp.py ghidra count/proto/comments/bytes run through Client.verify; last live function count62847",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ranges": [
+    {
+      "start": "00b70ea0",
+      "end_exclusive": "00b70fd7",
+      "length": 311,
+      "sha256": "6a4e89043d476b1997ab6d00606c7a2268c7bbe3a4bbd79bd3e92462c21d6021",
+      "matches_installed": true
+    },
+    {
+      "start": "00b70fe0",
+      "end_exclusive": "00b71117",
+      "length": 311,
+      "sha256": "2e9a326b2de9321a7f3f967bc84b9240482c92d1d5c42b5da18b4b49d6ec3723",
+      "matches_installed": true
+    },
+    {
+      "start": "00419440",
+      "end_exclusive": "004194a2",
+      "length": 98,
+      "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+      "matches_installed": true
+    },
+    {
+      "start": "00419510",
+      "end_exclusive": "00419565",
+      "length": 85,
+      "sha256": "f6cccaeb846eae70b4d641f0ebc6af53de5504c60806522310b1936966da615c",
+      "matches_installed": true
+    },
+    {
+      "start": "004f9b30",
+      "end_exclusive": "004f9ba9",
+      "length": 121,
+      "sha256": "60415d786b08a9309b49e5bb9eaca5ae4dd83f04db3ea2551123fd5be2e7ef63",
+      "matches_installed": true
+    },
+    {
+      "start": "00bf7030",
+      "end_exclusive": "00bf7044",
+      "length": 20,
+      "sha256": "204b44024d5ad691ddd38ad34bc9d5d0e9eb4930f96cb8294bb70ded80fb3638",
+      "matches_installed": true
+    },
+    {
+      "start": "00bf704d",
+      "end_exclusive": "00bf70ea",
+      "length": 157,
+      "sha256": "3f831d8c23e911d66e29eef7d2adce8cfc4e071914654b0474221d06de6410f3",
+      "matches_installed": true
+    },
+    {
+      "start": "00c08347",
+      "end_exclusive": "00c08383",
+      "length": 60,
+      "sha256": "e85628693ac77644ea4dda52242997f14584925d68b117c29866d0e6b8554f48",
+      "matches_installed": true
+    },
+    {
+      "start": "00c083a5",
+      "end_exclusive": "00c083bc",
+      "length": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "matches_installed": true
+    },
+    {
+      "start": "00c083bc",
+      "end_exclusive": "00c083d5",
+      "length": 25,
+      "sha256": "4da26adac922f63397a27f44d0dae33235d9f17151c2cc5379f1238f549bf536",
+      "matches_installed": true
+    },
+    {
+      "start": "00c08418",
+      "end_exclusive": "00c0842e",
+      "length": 22,
+      "sha256": "4adcaaeddff7fc3980a56d0f0bd062f443e97ac27181910e7fc475851b93b5d9",
+      "matches_installed": true
+    },
+    {
+      "start": "00c0842e",
+      "end_exclusive": "00c0843b",
+      "length": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "matches_installed": true
+    },
+    {
+      "start": "00c0843b",
+      "end_exclusive": "00c08465",
+      "length": 42,
+      "sha256": "c52b11c2f87cb280a857bc4f1442e274b39ddcfb68cb9167f941f707193e58da",
+      "matches_installed": true
+    },
+    {
+      "start": "00b46c50",
+      "end_exclusive": "00b46cb4",
+      "length": 100,
+      "sha256": "5dbb840a7a71623fc4adb1bdf414ad7f7f2f8729b8ffd53880ad2114539ef1cc",
+      "matches_installed": true
+    }
+  ],
+  "constants": [
+    {
+      "address": "00d7a24c",
+      "hex": "0000803f"
+    },
+    {
+      "address": "00ce3800",
+      "hex": "0000003f"
+    },
+    {
+      "address": "00d6a670",
+      "hex": "000000000000f03f"
+    },
+    {
+      "address": "00e15c70",
+      "hex": "00000000000000c0ffff"
+    },
+    {
+      "address": "00e154e0",
+      "hex": "7371727400"
+    }
+  ],
+  "owned_files": [
+    "include/bsp/system_camera_axes.hpp",
+    "src/system_camera_axes.cpp",
+    "docs/SYSTEM_CAMERA_AXES.md",
+    "reports/system_camera_axes_audit.json"
+  ],
+  "shared_cache": {
+    "owner": "actual CameraFrameState.camera / CameraState",
+    "validity": "camera.projection.valid_flags bit0x100 native+2F0",
+    "axis_y": "CameraFrameState.axis_y native+440",
+    "axis_x": "CameraFrameState.axis_x native+44C",
+    "world": "actual camera.transform.world[8..10] native+110..+118; refresh existing world helper only if transform bit2 clear",
+    "second_private_cache": false
+  },
+  "native_abi": {
+    "00b70ea0": "ECX native camera; RET; EAX native camera+440",
+    "00b70fe0": "ECX native camera; RET; EAX native camera+44C",
+    "004f9b30": "ECX dst,EDX a,one stack b,RET4,EAX dst; x loads follow first output store",
+    "00419440": "ECX vector,RET,ST0 float result",
+    "00419510": "ECX dst,EDX vector,RET,EAX dst",
+    "00bf7030": "ST0 input/result,no stack args; stores double view without popping",
+    "00c27489": "cdecl operation5,Win32 exception record pointer,saved ushort control-word pointer; actual external runtime binding"
+  },
+  "typed_abi": "New MSVC Win32 C++ interfaces. Private kernels carry explicit CRT access in saved EBX and normalize stack argument; not drop-in native ABI.",
+  "operation_order": [
+    "test shared bit100",
+    "test/refresh shared world bit2",
+    "copy world words8..10",
+    "cross(forward,worldUp)",
+    "cross(first,forward)",
+    "normalize(second)",
+    "x87-store Y",
+    "cross(forward,Y)",
+    "normalize(third)",
+    "x87-store X",
+    "length(stored Y)",
+    "ordered length<0.5 fallback Y=+Y,X=+X",
+    "OR shared bit100"
+  ],
+  "prefix": {
+    "range": "[00b46c50,00b46cb4)",
+    "minimum_float_capacity": 131,
+    "ordered_outputs": [
+      "c31.xyz = cached X",
+      "load Y.x",
+      "capture actual global01090AB0 pointer",
+      "c32.x = loaded Y.x",
+      "c32.y",
+      "c32.z"
+    ],
+    "untouched": [
+      "c31.w",
+      "c32.w",
+      "all other prefix words"
+    ],
+    "timer_capture": "Direct pointer-slot load; no callback/service side effect. Returned borrowed FrameClock* feeds00B46CB4.",
+    "invalid_output": "Throws before outputs/cache changes; new typed precondition",
+    "partial_side_effects": "Writes preceding a later nonreturning CRT service remain; bit100 is set only after successful refresh"
+  },
+  "crt": {
+    "implemented": [
+      "00bf7030",
+      "00bf704d",
+      "00c08418",
+      "00c083a5",
+      "00c083bc",
+      "00c0842e",
+      "00c0843b",
+      "00c08347"
+    ],
+    "actual_runtime_mode": "Borrowed const volatile uint32_t* for0109DD78, reread at both native branch sites",
+    "external_handler": "00c27489 __87except and its __handle_exc/__raise_exc/__ctrlfp/matherr/errno dependencies",
+    "exception_record": {
+      "size": 32,
+      "type_offset": 0,
+      "name_offset": 4,
+      "argument1_offset": 8,
+      "argument2_offset": 16,
+      "result_offset": 24,
+      "argument2": "uninitialized/unused for unary sqrt operation5"
+    },
+    "name_pointer": "Verified sqrt text; new typed string pointer identity",
+    "generic_sqrt_substitution": false,
+    "finite_only_input_restriction": false
+  },
+  "annotation_preimages_and_proposals": [
+    {
+      "address": "00b70ea0",
+      "before": {
+        "address": "00b70ea0",
+        "function_name": "FUN_00b70ea0"
+      },
+      "proposed_name": "BSP_Camera_GetProjectedYAxis",
+      "rename_proposed": true,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00b70ea0] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00b70fe0",
+      "before": {
+        "address": "00b70fe0",
+        "function_name": "FUN_00b70fe0"
+      },
+      "proposed_name": "BSP_Camera_GetProjectedXAxis",
+      "rename_proposed": true,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00b70fe0] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "004f9b30",
+      "before": {
+        "address": "004f9b30",
+        "function_name": "BSP_Vector3f_Cross",
+        "comment": "[BSP reconstruction 004f9b30]\nHypothesis, not a recovered symbol. __fastcall(out = ECX, a = EDX, b = [ESP+4]), RET 4, and leaves out in EAX, which 00BBD310 relies on when chaining. Standard right-handed cross product: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z, out.z = b.y*a.x - a.y*b.x. Used twice per axis by the ocean frame step. docs/GAME_WORLD_OCEAN.md."
+      },
+      "proposed_name": "BSP_Vector3f_Cross",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 004f9b30] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00419510",
+      "before": {
+        "address": "00419510",
+        "function_name": "BSP_Vector3f_Normalize",
+        "comment": "[BSP reconstruction 00419510]\nHypothesis, not a recovered symbol. __fastcall(out = ECX, v = EDX), RET, returns out in EAX. Calls BSP_Vector3f_Length (00419440) and scales by its reciprocal, or writes the zero vector when the length is not greater than zero. That zero result is what makes the ocean frame degeneracy test at 00BBD3D9 fire. docs/GAME_WORLD_OCEAN.md."
+      },
+      "proposed_name": "BSP_Vector3f_Normalize",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00419510] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00419440",
+      "before": {
+        "address": "00419440",
+        "function_name": "BSP_Vector3f_Length",
+        "comment": "[BSP reconstruction 00419440]\nStores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00419440] update\nStores each squaredfloat, retains ySquared+xSquared intermediate in x87 then adds storedzSquared, stores sumfloat before register-input CRT square root and resultfloat. Typed visibility only reconstructs finite nonnegative sqrt core; native CRT exceptional diagnostics remain separate. Original ABI: ECX three-float vector; x87 ST0 float result; RET. Evidence: docs/INSTANCE_GROUPING.md; reports/instance_grouping_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n[BSP reconstruction] Existing BSP_Vector3f_Length name preserved. Typed finite nonnegative square-root core reused with exact native input/result spills. Full CRT exceptional diagnostics, other CW and status parity remain outside scope. Original ABI: ECX vector3f; ST0 binary32 length; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+      },
+      "proposed_name": "BSP_Vector3f_Length",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00419440] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00bf7030",
+      "before": {
+        "address": "00bf7030",
+        "function_name": "LIBCRT_unmatched_00bf7030",
+        "comment": "[BSP inventory 00bf7030] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00bf7030",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00bf7030] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00bf704d",
+      "before": {
+        "address": "00bf704d",
+        "function_name": "LIBCRT_unmatched_00bf704d",
+        "comment": "[BSP inventory 00bf704d] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00bf704d",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00bf704d] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00c08418",
+      "before": {
+        "address": "00c08418",
+        "function_name": "LIBCRT_unmatched_00c08418",
+        "comment": "[BSP inventory 00c08418] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c08418",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c08418] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00c083a5",
+      "before": {
+        "address": "00c083a5",
+        "function_name": "LIBCRT_unmatched_00c083a5",
+        "comment": "[BSP inventory 00c083a5] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c083a5",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c083a5] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00c083bc",
+      "before": {
+        "address": "00c083bc",
+        "function_name": "LIBCRT_unmatched_00c083bc",
+        "comment": "[BSP inventory 00c083bc] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c083bc",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c083bc] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00c0842e",
+      "before": {
+        "address": "00c0842e",
+        "function_name": "LIBCRT_unmatched_00c0842e",
+        "comment": "[BSP inventory 00c0842e] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "proposed_name": "LIBCRT_unmatched_00c0842e",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c0842e] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00c0843b",
+      "before": {
+        "address": "00c0843b",
+        "function_name": "__math_exit",
+        "comment": "Library Function - Single Match\n __math_exit\n\nLibrary: Visual Studio"
+      },
+      "proposed_name": "__math_exit",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c0843b] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    },
+    {
+      "address": "00c08347",
+      "before": {
+        "address": "00c08347",
+        "function_name": "__startOneArgErrorHandling",
+        "comment": "Library Function - Single Match\n __startOneArgErrorHandling\n\nLibrary: Visual Studio 2005 Release"
+      },
+      "proposed_name": "__startOneArgErrorHandling",
+      "rename_proposed": false,
+      "preserve_existing_comment": true,
+      "proposed_comment_append": "[BSP reconstruction 00c08347] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional."
+    }
+  ],
+  "ghidra_mutated_by_worker": false,
+  "crt_runtime_handoff": {
+    "entry": "00c27489 __87except, VS2005 matched library, cdecl three arguments",
+    "evidence": "bsp.py show00c27489 pseudocode and assembly read; downstream bodies not investigated by this worker",
+    "dependencies": [
+      {
+        "address": "00c13364",
+        "name": "__handle_exc",
+        "call_abi": "cdecl(exceptionMask, double* result, savedControlWord); EAX zero invokes raise route"
+      },
+      {
+        "address": "00c13322",
+        "name": "__raise_exc",
+        "call_abi": "cdecl(localExceptionRecord*, uint32_t* mutableControlWord, exceptionMask, operation, double* argument1, double* result); record layout remains open"
+      },
+      {
+        "address": "00c138a7",
+        "name": "__ctrlfp",
+        "call_abi": "cdecl(mutableControlWord, 0xffff); return ignored at00c27489"
+      },
+      {
+        "address": "00c28545",
+        "name": "LIBCRT_unmatched_00c28545",
+        "call_abi": "cdecl(CameraAxesCrtException*); nonzero skips errno route; precise dispatch implementation open"
+      },
+      {
+        "address": "00c13545",
+        "name": "__set_errno_from_matherr",
+        "call_abi": "cdecl(exceptionRecord.type); return ignored"
+      },
+      {
+        "address": "00bfe120",
+        "name": "__security_check_cookie",
+        "call_abi": "ECX stack-cookie xor input"
+      }
+    ],
+    "constants_and_globals": [
+      {
+        "address": "00e16bd0",
+        "use": "nonzero skips matherr dispatcher00c28545 before errno"
+      },
+      {
+        "address": "00e15590",
+        "use": "security-cookie snapshot/xor; actual initialization outside packet"
+      }
+    ],
+    "dispatch_mapping": {
+      "type1": "exceptionMask8",
+      "type2": "4",
+      "type3": "0x11",
+      "type4": "0x12",
+      "type5": "8",
+      "type7": "rewrites record.type to1 without initial handle/raise route",
+      "type8": "0x10"
+    },
+    "sqrt_operation": "5, so special second-argument route for operations0x10/0x16/0x1d is not taken"
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "compiler": "MSVC19.51.36244 Win32",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/O2",
+        "/MD"
+      ],
+      "source_sha256": "51e2f9d199b84e842c480d27f6fd191e65404ab6ae28ce8708a4b7f07647c0e4",
+      "header_overlay": [
+        {
+          "path": "local\\camera_axes_include\\bsp\\camera_frame_state.hpp",
+          "sha256": "852942d544a34c70b75b8df1f0e7de3ed02b59f6de724569e72bca6be77a0a8e"
+        },
+        {
+          "path": "local\\camera_axes_include\\bsp\\system_fog_constants.hpp",
+          "sha256": "5b6ebfc5b12a7cf06125a05bc2b1dd07536b65656b4c65024a3ad2f77a770ea7"
+        }
+      ]
+    },
+    "focused_native_differential": {
+      "passed": true,
+      "comparisons": 252,
+      "observed_crt_dispatches": 38,
+      "failures": 0,
+      "fixture": "local/camera_axes_differential.cpp",
+      "fixture_sha256": "d124377012cd586c19b82883c098aa248a9e2013e0bcb9d202863b277563f307",
+      "reference_header_sha256": "0292113ca92e01082b136a87d75b071b9d30e7f5c8557d2662858e4a25465de9",
+      "runner": "local/test_camera_axes.ps1",
+      "reference_generator": "local/prepare_camera_axes_reference.py",
+      "x87_control_words": [
+        "027f",
+        "0a7f"
+      ],
+      "dispatch_modes": [
+        0,
+        1
+      ],
+      "coverage": [
+        "eight axis vectors finite/zero/parallel/signedzero/subnormal/qNaN/sNaN/infinity/overflow",
+        "shared cache bytes/identity/flags",
+        "prefix output/padding/timer",
+        "x87 exception flags/control",
+        "CRT dispatch record/type/input/result/control/name",
+        "direct sqrt negative/negativezero/NaNs/infinities",
+        "handler result replacement"
+      ],
+      "boundary": "Native world-valid bit2 set; world refresh not independently rerun. External __87except replaced only by recording handler; real CRT side effects unvalidated."
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "new_source_in_cmake": false
+    },
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "integration_required": [
+    "parent adds new source to CMake",
+    "parent integrates actual camera fields and CRT/timer owner bindings",
+    "parent records ledgers/Ghidra annotations preserving preimages and refreshes exports"
+  ],
+  "limitations": [
+    "Actual __87except runtime remains a required owner binding, not reimplemented here",
+    "Native camera constructor/lifetimes are outside this packet",
+    "Other existing vector-helper callers still use their older interfaces",
+    "No gameplay or real CRT exception/errno/matherr validation"
+  ]
+}
