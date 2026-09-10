@@ -399,7 +399,13 @@ def docs_for(args):
 
 def segment(args):
     db = connect()
-    s = db.execute('SELECT * FROM segments WHERE id=?', (args.id,)).fetchone()
+    if re.fullmatch(r'(0x)?[0-9a-fA-F]{5,8}', str(args.id)) and not str(args.id).isdigit() or len(str(args.id)) >= 5:
+        a = int(str(args.id), 16)  # an address: find the segment that contains it
+        s = db.execute('SELECT * FROM segments WHERE start <= ? AND ? < end ORDER BY start DESC LIMIT 1', (a, a)).fetchone()
+        if s is None:
+            sys.exit(f'{h(a)} is in no partition segment')
+    else:
+        s = db.execute('SELECT * FROM segments WHERE id=?', (int(args.id),)).fetchone()
     if s is None:
         sys.exit(f'no segment {args.id}')
     print(f"segment {s['id']} [{h(s['start'])}-{h(s['end'])}] candidates={s['candidates']} purity={s['purity']} wave={s['wave']} "
@@ -916,7 +922,7 @@ def main():
     p = sub.add_parser('callers'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callers'))
     p = sub.add_parser('callees'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callees'))
     p = sub.add_parser('docs-for'); p.add_argument('address'); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=docs_for)
-    p = sub.add_parser('segment'); p.add_argument('id', type=int); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=segment)
+    p = sub.add_parser('segment', help='partition segment by id, or the one containing an address'); p.add_argument('id', metavar='ID|ADDRESS'); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=segment)
     p = sub.add_parser('find'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=find)
     p = sub.add_parser('strings', help='functions referencing a string containing the text'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=strings_query)
     p = sub.add_parser('disasm-raw', help='Capstone disassembly of disk bytes from an address (must be an instruction start), even where Ghidra has no function'); p.add_argument('address')
