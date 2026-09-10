@@ -1,0 +1,156 @@
+{
+  "packet": "native_renderer_parameters_next",
+  "status": "discovery_complete_parameter_storage_ready_mode_updates_deferred",
+  "date": "2026-09-10",
+  "base_commit": "8a7c825",
+  "documentation": "docs/NATIVE_RENDERER_PARAMETERS_NEXT.md",
+  "program": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "python tools/bsp.py ghidra; project/program verification before batches",
+    "image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_sha256_verified_current": true,
+    "image_ranges_hashed_current": true,
+    "all_function_bytes_compared_with_live_ghidra": false,
+    "selected_instruction_and_data_bytes_match_live_ghidra": true
+  },
+  "native_functions": [
+    {"address": "00b1ff60", "end_exclusive": "00b1ff67", "name": "BSP_D3D9Renderer_GetViewportParameters", "abi": "ECX concrete renderer; EAX renderer+1A14; RET; no arguments or calls", "image_sha256": "663abb9d44b91bd83ff606f17d955bbab34cf4ab310908bfe7fed9a3e97e4ee5"},
+    {"address": "00b32410", "end_exclusive": "00b328f8", "name": "BSP_D3D9Renderer_Construct", "abi": "ECX 1D94h renderer allocation; EAX same; RET", "image_sha256": "9357f4654cbb09c9e68a77f2cae9fb45c11b2f2025dc2f5dfc50d2c3770f9746"},
+    {"address": "00b2aeb0", "end_exclusive": "00b2b1f2", "name": "BSP_D3D9Renderer_InitializeDeviceAndResources", "abi": "ECX renderer; ten stack arguments; RET28h", "stack_arguments": ["window", "fullscreen byte", "width DWORD", "height DWORD", "backbuffer format", "backbuffer count", "multisample type", "depth format", "presentation sync", "fullscreen refresh rate"], "image_sha256": "656d7fc3fed03e6cae9b92c3fd866aa362d6dc022c573f25e9260121408bd134"},
+    {"address": "00b29e60", "end_exclusive": "00b2a064", "name": "BSP_D3D9Renderer_ChangePresentationMode", "abi": "ECX renderer; six stack arguments; AL true; RET18h", "stack_arguments": ["width DWORD", "height DWORD", "fullscreen byte", "multisample type", "sync byte", "force byte"], "image_sha256": "f1fa3325017d1d3cc39d0fb960d205086c844d0661ce4b680b5f34da1ec3e403"},
+    {"address": "00b283f0", "end_exclusive": "00b2844f", "name": "BSP_RendererBase_Construct", "abi": "ECX primary renderer; EAX same; RET", "image_sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a"},
+    {"address": "00b25f40", "end_exclusive": "00b25fd8", "name": "BSP_RendererSingletonSubobject_Construct", "abi": "ECX renderer+0C; EAX same subobject; RET", "image_sha256": "126928885c0e94ac53db4fb2adbe8eecf81a4c48eea36608e184b86fc471738b"},
+    {"address": "00b25fe0", "end_exclusive": "00b26083", "name": "FUN_00b25fe0", "abi": "ECX singleton subobject; RET; cleanup/return value not reconstructed", "image_sha256": "b5f37e141e85f1bd744744cb5f7d2c1774491452db7d272ab9f5f9b5563f98a5"},
+    {"address": "00b1f850", "end_exclusive": "00b1f8ec", "name": "BSP_Viewport_Construct", "abi": "ECX viewport allocation; EAX same; RET", "image_sha256": "3aa25fb6563a09536f3d044c52a14e1d2eb842fbbd90bbd12fa2a07a716757c6"},
+    {"address": "00b29670", "end_exclusive": "00b29b17", "name": "BSP_D3D9Renderer_RecreateDevice", "role": "deferred mode-update dependency; full ABI not re-audited"},
+    {"address": "00b2abd0", "end_exclusive": "00b2ae1d", "name": "BSP_D3D9Renderer_ProcessDeviceReset", "role": "deferred reset dependency; full ABI not re-audited"}
+  ],
+  "storage": {
+    "native_renderer_size": "1D94",
+    "allocation_instruction": "0073da66",
+    "constructor_call": "0073da88",
+    "publication_global": "00f8d394",
+    "publication_instruction": "00b25f9b",
+    "publication_value": "ECX singleton-subobject pointer minus0C",
+    "singleton_register_call": "00b25fb1 -> 00bd0c30",
+    "singleton_unregister_call": "00b2604e -> 00bcfca0",
+    "clear_publication_instruction": "00b26053",
+    "concrete_primary_vtable": "00d5f0a8",
+    "concrete_secondary_vtable": "00d5f0a4",
+    "base_primary_vtable": "00d5e628",
+    "base_getter": "00d5e658 -> 00bf698e __purecall",
+    "concrete_getter": "00d5f0d8 -> 00b1ff60",
+    "region_offset": "1A14",
+    "region_size": "14",
+    "region_alignment": 4,
+    "present_parameters_offset": "1A28",
+    "present_parameters_size": "38",
+    "fields": [
+      {"offset": "00", "renderer_offset": "1A14", "bytes": 1, "initial": 0, "instruction": "00b32512", "later": "00b2b1ba stores aspect comparison after dynamic-buffer callbacks"},
+      {"offset": "01", "renderer_offset": "1A15", "bytes": 3, "initial": "unwritten by fragment"},
+      {"offset": "04", "renderer_offset": "1A18", "bytes": 4, "initial": 3, "instruction": "00b32518"},
+      {"offset": "08", "renderer_offset": "1A1C", "bytes": 1, "initial": 0, "instruction": "00b32522"},
+      {"offset": "09", "renderer_offset": "1A1D", "bytes": 3, "initial": "unwritten by fragment"},
+      {"offset": "0C", "renderer_offset": "1A20", "bytes": 4, "initial": 0, "instruction": "00b32528", "meaning": "width"},
+      {"offset": "10", "renderer_offset": "1A24", "bytes": 4, "initial": 0, "instruction": "00b3252e", "meaning": "height"}
+    ]
+  },
+  "selected_bytes_verified": [
+    {"address": "00b1ff60", "end_exclusive": "00b1ff67", "hex": "8d 81 14 1a 00 00 c3"},
+    {"address": "00b32512", "end_exclusive": "00b32534", "hex": "88 9e 14 1a 00 00 c7 86 18 1a 00 00 03 00 00 00 88 9e 1c 1a 00 00 89 9e 20 1a 00 00 89 9e 24 1a 00 00", "sha256": "aeee1afa62b310d0b15831e20d9a236c9e1e74d4ab27c76be2031c7c3306164b"},
+    {"address": "00b2af9e", "end_exclusive": "00b2afaa", "hex": "89 ae 20 1a 00 00 89 8e 24 1a 00 00", "sha256": "21194d35ab5742e7ef639b861150a24d4c3ef4f34dde294ee198eeaa775321b0"},
+    {"address": "00b29fd7", "end_exclusive": "00b29fe6", "hex": "89 8e 20 1a 00 00 d9 1c 24 89 96 24 1a 00 00"},
+    {"address": "00b25f96", "end_exclusive": "00b25fa0", "hex": "8d 47 f4 85 c0 a3 94 d3 f8 00"},
+    {"address": "00d5f0a8", "end_exclusive": "00d5f0e8", "hex": "f0 39 b3 00 b0 ae b2 00 30 14 b2 00 00 b2 b2 00 b0 f4 b2 00 a0 f4 b2 00 50 84 b2 00 60 84 b2 00 10 fe b1 00 20 7c b2 00 f0 7c b2 00 20 fe b1 00 60 ff b1 00 a0 64 b2 00 e0 17 b3 00 10 29 b3 00", "sha256": "861064fedba62338336fb3cb15a40d4464e301425feffe7a833ed233c81d460d"},
+    {"address": "00d5e658", "end_exclusive": "00d5e65c", "hex": "8e 69 bf 00", "sha256": "02b0d2f98cdca124036199ae8e499b047ce80fb4c504cc3ab2f3b30da8cfb500"},
+    {"address": "00cf5750", "end_exclusive": "00cf5758", "hex": "00 00 00 60 55 55 f5 3f", "sha256": "a07746c196bc8a6e12e36432458eac0bd2ab52e23da1a4d3f1140146c4026825"}
+  ],
+  "startup_order": [
+    "00b2aedc: clear only presentation block+1A28,38h bytes",
+    "fill presentation configuration from original stack arguments",
+    "00b2af9e: width argument EBP -> actual renderer+1A20",
+    "00b2afa4: height argument ECX -> actual renderer+1A24",
+    "00b2afb2: IDirect3D9 GetDeviceCaps callback",
+    "00b2aff9: IDirect3D9 CreateDevice callback with separate presentation block",
+    "00b2b014: stored presentation Windowed=!fullscreen; no dimension-word recopy",
+    "later state/resource/buffer callbacks, then00b2b1ba aspect flag, gamma and reset"
+  ],
+  "mode_change_order": [
+    "optional guard then tracked renderer lock+199C",
+    "matching request and force0 returns AL1 without dimension refresh",
+    "nonzero width/height replace presentation values; zero leaves them alone",
+    "update mode, multisample, pending count and presentation flags",
+    "00b29fb5 synchronously recreates on Windowed change; otherwise00b29fbc sets pending-reset flag",
+    "00b29fc2/00b29fce read current presentation width/height after callback",
+    "00b29fd7/00b29fe0 write separate parameter words before gamma callback",
+    "00b29fee gamma virtual+F0,00b29ff7 frame virtual+2C, conditional device EndScene00b2a01d",
+    "tracked lock and optional guard cleanup"
+  ],
+  "viewport_observation_order": [
+    "00b1f8ac fresh global load, current virtual+30 call00b1f8bb, then returned+0C width read",
+    "00b1f8c3 independent fresh global load, current virtual+30 call00b1f8ce, then returned+10 height read"
+  ],
+  "direct_displacement_audit": {
+    "scope": "entire installed image .text via bsp.py scan-bytes",
+    "width_pattern": "20 1a 00 00",
+    "width_matches": ["0081f417", "00b29fd9", "00b2afa0", "00b3252a"],
+    "height_pattern": "24 1a 00 00",
+    "height_matches": ["00590648", "0068d34d", "00b29fe2", "00b2afa6", "00b32530"],
+    "false_positives": [
+      {"match": "0081f417", "instruction": "0081f414 MOV [ESP+20],1A"},
+      {"match": "00590648", "instruction": "00590645 MOV [ESP+24],1A"},
+      {"match": "0068d34d", "instruction": "0068d34a MOV [ESP+24],1A"}
+    ],
+    "alias_based_writes_excluded": false
+  },
+  "recommended_packets": [
+    {
+      "id": "native_renderer_parameter_storage",
+      "ready": true,
+      "scope": "partial native parameter region owner, constructor writes, startup writes and exact live getter binding",
+      "address_lease": ["00b1ff60", "00b32410", "00b2aeb0"],
+      "new_owned_files": ["include/bsp/native_renderer_parameters.hpp", "src/native_renderer_parameters.cpp"],
+      "coordinate_existing_files": ["include/bsp/d3d9_startup.hpp", "src/d3d9_startup.cpp", "include/bsp/d3d9_states.hpp", "src/d3d9_states.cpp", "CMakeLists.txt", "src/d3d9_probe.cpp", "src/d3d9_mesh_probe.cpp"],
+      "existing_dependencies": ["d3d9_create_device_prefix_00b2aeb0", "NativeViewportRendererAccess", "initialize_native_viewport_owner_00b1f850", "set_native_viewport_dimensions_00b1f940"],
+      "requirements": [
+        "preserve actual owner storage and constructor-unwritten padding",
+        "same region passed through startup, never reconstructed from present/device size afterward",
+        "width/height writes before first D3D callback, including zero arguments",
+        "exact captured D3D9StateCache identity/current dispatch; borrowed result references",
+        "carry startup owner main -> probe_installed_font -> probe_installed_mesh -> draw_mesh",
+        "owner outlives getter calls and retained camera work",
+        "native viewport construction observes640x480 startup request, then explicit native setter may select256x256 offscreen viewport"
+      ],
+      "not_claimed": ["full1D94h renderer construction", "native singleton lifetime", "mode changes", "binary replacement", "game validation"]
+    },
+    {
+      "id": "native_renderer_mode_parameter_updates",
+      "ready_as_complete_function": false,
+      "address": "00b29e60",
+      "dependencies": ["00b29670 full recreation", "00b2abd0 reset ownership", "native tracked lock and optional guard semantics", "resource release/restore callback order"],
+      "bounded_copy_fragment": ["00b29fc2", "00b29fe6"],
+      "copy_fragment_cannot_replace_mode_change": true
+    }
+  ],
+  "validation": {
+    "current_live_assembly_and_data_inspected": true,
+    "current_installed_image_hashed": true,
+    "cpp_changed": false,
+    "ghidra_mutated": false,
+    "shared_ledgers_mutated": false,
+    "tests_added": false,
+    "tests_run": false,
+    "build_run": false,
+    "runtime_claim": "none; discovery only"
+  },
+  "uncertainties": [
+    "Full concrete renderer constructor/destructor is not reconstructed by this packet.",
+    "Indirect writes through getter results or aliases were not exhaustively traced.",
+    "Non-dimension parameter field names are provisional; only stated writes and aspect-tail instruction evidence are established.",
+    "The existing startup prefix returns HRESULT failures; native initialization does not share that adaptation.",
+    "Region ownership is partial native field reconstruction, not original full-object ABI compatibility.",
+    "Existing APP_INIT_RENDERER.md reports an obsolete early constructor endpoint; this packet records current complete extent without changing that separate file."
+  ]
+}
