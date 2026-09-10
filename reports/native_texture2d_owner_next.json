@@ -1,0 +1,3127 @@
+{
+  "schema_version": 1,
+  "packet": "native_texture2d_owner_next",
+  "status": "Read-only discovery complete; concrete eleven-entry texture-pool packet ready; complete texture owner remains dependent on actual renderer/source domains.",
+  "utc": "2026-09-10T20:50:10.712669+00:00",
+  "base_commit": "040201c23f834b66a9ecdd3a9325030852b77cb5",
+  "owned_files": [
+    "docs/NATIVE_TEXTURE2D_OWNER_NEXT.md",
+    "reports/native_texture2d_owner_next.json"
+  ],
+  "owned_addresses": [],
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "method": "Every final-span query used tools/bsp.py ghidra bytes, which verifies the selected project/program before the read.",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all_83_spans_match_live_and_installed": true
+  },
+  "scope": "Native D61948 2D texture constructors, complete destruction and scalar pool return; actual texture pool; cached-surface references; source wrapper/backing chain; renderer registration/name notification; reset boundaries. No C++/Ghidra/shared metadata/build/test changes.",
+  "owner": {
+    "profile": "00d61948",
+    "native_bytes": 80,
+    "pool_slot_bytes": 84,
+    "pool_id_offset": 80,
+    "fields": [
+      {
+        "offset": "00",
+        "meaning": "Native vtable profile."
+      },
+      {
+        "offset": "04",
+        "meaning": "Actual intrusive signed DWORD count, independent of COM and cached surface counts."
+      },
+      {
+        "offset": "08",
+        "meaning": "NativeString length; owned buffer at +0C."
+      },
+      {
+        "offset": "10",
+        "meaning": "Owned COM IDirect3DTexture9 pointer."
+      },
+      {
+        "offset": "14",
+        "meaning": "Actual GetLevelCount result."
+      },
+      {
+        "offset": "18",
+        "meaning": "GetLevelDesc(0) Format."
+      },
+      {
+        "offset": "1c",
+        "meaning": "Flags."
+      },
+      {
+        "offset": "20",
+        "meaning": "Captured shared texture construction serial from 0108D6E8."
+      },
+      {
+        "offset": "24",
+        "meaning": "Zero in both constructors; file loader later writes source size low DWORD."
+      },
+      {
+        "offset": "28",
+        "meaning": "Actual level-zero width; actual height at +2C."
+      },
+      {
+        "offset": "30",
+        "meaning": "Initially zero, later role not needed for this owner discovery."
+      },
+      {
+        "offset": "34",
+        "meaning": "Saved requested width; saved requested height at +38."
+      },
+      {
+        "offset": "3c",
+        "meaning": "Zero in constructor; file loader later writes requested mips."
+      },
+      {
+        "offset": "40",
+        "meaning": "Actual cache data; signed live count at +44, signed capacity at +48."
+      },
+      {
+        "offset": "4c",
+        "meaning": "Actual retained source-stream intrusive owner."
+      },
+      {
+        "offset": "50",
+        "meaning": "Outside the 50h object; actual pool slab index in the 54h slot."
+      }
+    ],
+    "constructor_written_range": "[00h,50h), with descriptor fields reflecting whatever native GetLevelDesc writes.",
+    "constructor_preserved_range": "[50h,54h), actual pool-owned trailing slab ID."
+  },
+  "constructors": {
+    "unnamed": {
+      "address": "00b3f7b0",
+      "base": "00b33fc0",
+      "com_ownership": "Adds one reference through current owner+10. Reloads owner+10 for GetLevelCount; uses captured input COM for GetLevelDesc(0). Caller factory later drops its temporary COM reference.",
+      "diagnostics": "Two real pooled copies of the 16-character handmade texture literal at 00D619E4, with a borrowed COM word in the second diagnostic record.",
+      "tracking": "Test original stack flags bit 0x10 after diagnostic cleanup, not current owner flags."
+    },
+    "named": {
+      "address": "00b3f930",
+      "base_chain": [
+        "00b34230",
+        "00b34120"
+      ],
+      "com_ownership": "Adopts the caller-owned incoming COM reference. Two captured-input AddRef/Release pairs are balanced; no net COM retain in constructor or base.",
+      "diagnostics": "Owner name is a real NativeString copy; separate borrowed-COM diagnostic record copies input name; actual support singleton is called before return.",
+      "tracking": "Test original stack flags bit 0x10, not current owner flags."
+    },
+    "common": [
+      "Both initialize +4C to null; neither constructor retains a source stream or registers itself in the borrowed renderer reset array.",
+      "Both ignore GetLevelDesc HRESULT; native descriptor stack output is not cleared.",
+      "Actual descriptor dimensions at +28/+2C differ from saved requested dimensions +34/+38.",
+      "Named base consumes one actual shared DWORD serial after pooled name copy; unnamed base consumes once before outer COM callbacks. No serial rollback on later failure."
+    ]
+  },
+  "ownership": {
+    "generic_factory": {
+      "fragment": "00b2a201..00b2a32b",
+      "allocation": "00b3f2b0 -> canonical 0108DB38 -> 00b3ef60",
+      "constructor": "00b3f7b0",
+      "registration": "Borrowed owner append to actual renderer +1B00/+1B04/+1B08, with no intrusive retain.",
+      "temporary_com": "Balanced pair followed by the final temporary getter Release after registration."
+    },
+    "loaded_factory": {
+      "fragment": "00b2c5d4..00b2c648",
+      "constructor": "00b3f930 adopts nonnull D3DX result.",
+      "source_assignment": "00b2c624 calls 00b23640 on actual texture+4C before local source release.",
+      "post_constructor_fields": "Caller writes requested mips +3C, invokes optional callback, and writes low source size +24.",
+      "local_source_release": "00b2c833..00b2c849 decrements the actual local memory wrapper count and dispatches virtual zero on zero; texture retains the surviving reference."
+    },
+    "destructor_order": [
+      "Install D61948; release actual stream+4C first; clear after zero callback.",
+      "Capture actual renderer and its virtual+6C slot; pass actual native name +8. Reload renderer publication separately for B27D40 actual +1B00 pointer-array removal.",
+      "Capture current COM+10 for balanced pair; call actual support singleton; reload COM+10 for final Release and clear after callback.",
+      "Signed cached-record loop reloads actual data and live count. Capture current surface and its pointer-slot address before count decrement/virtual zero, then clear that retained raw slot address afterward.",
+      "Reload current flags after all callbacks for tracking decrement. Resize actual cache count to zero, free array, return current owner name via base destructor, install CEB130."
+    ],
+    "scalar_delete": "00B3F590 calls complete destructor then canonical pool return 00B3D8D0 only for flags bit zero; returns original identity. No ordinary owner free and no pool return when destructor throws.",
+    "post_free_tail": {
+      "start": "00b3f3e9",
+      "base_call": "00b3f3f6",
+      "end_exclusive": "00b3f40e",
+      "notes": "False no-return decompilation omits stack cleanup, actual base destructor, EH restoration and RET. Complete bytes are in this report."
+    }
+  },
+  "renderer_domains": {
+    "borrowed_array": {
+      "owner_offset": "1b00",
+      "remove_adapter": "00b27d40",
+      "remove_body": "00b25580",
+      "behavior": "Actual raw first-match swap removal, preserves capacity and stale last pointer; no intrusive reference transfer."
+    },
+    "name_notification": {
+      "profile": "00d5f0a8",
+      "slot": "6c",
+      "slot_address": "00d5f114",
+      "target": "00b32250",
+      "end_exclusive": "00b32340",
+      "ghidra_function_currently_missing": true,
+      "body": "Optional guard through current global renderer; real temporary name copy/lowercase; original input name pointer passed to actual renderer+1A74 container removal 00B31DC0; pooled cleanup and optional guard exit."
+    },
+    "resource_container": {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "record_stride": 44,
+      "dependencies": [
+        "00bee780 native string/value conversion",
+        "case-insensitive alias comparisons over actual nested list owners",
+        "resource at record+28 virtual+0C accounting callback",
+        "00b30510 actual record copy with real strings/list data",
+        "00b2f990 actual record cleanup",
+        "optional guard bodies 00b33ad0/00b33b00"
+      ],
+      "status": "Not a concrete C++ lifetime implementation; no no-op notification or simple pointer-vector erase is an acceptable substitute. Nested helper cleanup bodies are not fully reconstructed by this discovery."
+    }
+  },
+  "cached_surfaces": {
+    "record_bytes": 8,
+    "key_offset": 0,
+    "actual_owner_pointer_offset": 4,
+    "header_offsets": [
+      "40",
+      "44",
+      "48"
+    ],
+    "array_contracts": {
+      "reserve": "00B3D9B0 clamps signed requested capacity to at least one; if growing, allocate N*8, copy raw current records, free old storage, then publish pointer/capacity. No reference increments.",
+      "resize": "00B3DA20 grows storage if needed, initializes each new record to two zero DWORDs, shrinks only count, then writes requested count. No reference release.",
+      "destroy": "00B3EC40 calls resize zero then frees current data; data/capacity fields remain stale."
+    },
+    "getter": {
+      "address": "00b3fd80",
+      "abi": "ECX texture; stack mip and unused DWORD; RET 8; EAX owned native surface.",
+      "hit": "Captured data and count search. Increment cached actual owner count before pointer null check; null record is not a safe miss.",
+      "miss": "GetSurfaceLevel overwrites original first argument word. Actual surface pool allocation and complete surface constructor consume current flags and flags-bit-8 kind. Drop COM getter reference after constructor.",
+      "cache_gate": "Reload current texture flags after getter Release. If bit zero clear, increment actual surface count for cache ownership BEFORE possible reserve; append actual key/pointer. If bit zero set, leave uncached creator reference for caller.",
+      "count_domains": "Returned caller reference and cached owner reference are distinct; actual surface zero route is completed native surface destructor and canonical surface-pool return.",
+      "exception_boundary": "Only construction-period raw slot return in state zero. No GetSurfaceLevel COM release in EH; state becomes -1 before normal getter Release. A later cache reserve throw happens after the intended cache retain and has no local rollback."
+    },
+    "destructor_callback_boundary": "Capture &old_data[i].surface before zero dispatch and clear that exact slot address afterward, while reloading array data and live count for each next iteration."
+  },
+  "reset": {
+    "release": "00B3DD30 signed live record loop invokes each current surface virtual+3C, then captured texture COM pair and fresh final COM Release/null; source and actual surface wrappers remain retained.",
+    "recreate": "00B3DD90 CreateTexture uses current metadata, publishes/retains new before releasing old, drops getter reference even for identity, then rebinds existing cached wrappers using GetSurfaceLevel and current virtual+14. It allocates no new wrapper and changes no wrapper count.",
+    "callback_reloads": "Each reset-loop iteration reads current array data/key; after GetSurfaceLevel, it reloads current array data to select the surface wrapper. Counts are live signed bounds, not snapshots.",
+    "exact_stack_aliases": [
+      {
+        "entry": "00b3fd80",
+        "output": "GetSurfaceLevel writes original first stack argument word, initially the mip DWORD; mip is captured separately in EBX."
+      },
+      {
+        "entry": "00b3dd90",
+        "output": "CreateTexture writes original input-device stack word, initially the device pointer; device is captured in EAX before call."
+      },
+      {
+        "entry": "00b3dd90",
+        "output": "Per-level GetSurfaceLevel output is the first pushed ECX word, initially owner identity, later preceding getter result; it is not reset to null."
+      }
+    ],
+    "failure_domain": "HRESULT ignored; omitted/partial output writes are not made safe by any native nullable-local guard. Low flags nibble outside 0..3 uses incoming device pointer bits as pool fallback. Current typed reset rejects invalid pool, guards ownership and reports HRESULT instead."
+  },
+  "retained_source": {
+    "source_assignment": {
+      "address": "00b23640",
+      "native_abi": "ECX destination pointer slot; EDX source pointer slot; EAX destination; RET.",
+      "order": "Identity skip; publish new, retain actual count, then decrement old and dispatch current virtual zero if zero."
+    },
+    "stream": {
+      "profile": "00d642c0",
+      "bytes": 20,
+      "count": "04",
+      "backing": "08",
+      "end": "0c",
+      "cursor": "10",
+      "create": "00bef6d0",
+      "zero_chain": [
+        "00bd30e0",
+        "00bb8f90",
+        "00bef9c0",
+        "ordinary free if deleting flag bit zero"
+      ],
+      "destruction": "Release actual backing; clear +8 after callback; stream/base profile cleanup; preserve end/cursor."
+    },
+    "backing": {
+      "profile": "00d15ad8",
+      "bytes": 16,
+      "count": "04",
+      "data": "08",
+      "signed_length": "0c",
+      "construct": "008d43c0",
+      "destroy": "008d4440",
+      "scalar_delete": "008d4470",
+      "allocation": "Native BF55BE array allocation of positive signed request, or one byte with stored length zero for nonpositive request.",
+      "counters": "Actual 0109DB98 object count increments after allocation; actual 0109DB9C adds original signed request. Destruction frees data first, decrements count and subtracts stored length; no data/length clearing.",
+      "zero_chain": [
+        "00bd30e0",
+        "008d4470",
+        "free data / update counters / base / optional ordinary backing free"
+      ]
+    },
+    "retained_recreation": "00B3E190 queries current stream virtual+30 size, reloads texture+4C for BEF610 base data, independently of cursor, then calls D3DX with direct owner+10 output. Wrapper and backing must remain concrete and retained across calls.",
+    "cpp_boundary": "Existing MemoryStream and D3D9RetainedTexture2D are useful shared_ptr semantic projections with initialized-data checks. Their headers explicitly omit native allocator/counters/intrusive ABI. They do not prove the actual source-owner zero chain.",
+    "supporting_current_assembly": [
+      {
+        "address": "00bb86e0",
+        "instructions": [
+          "mov [ecx],00d5c104",
+          "jmp 00bd30f0"
+        ],
+        "role": "Stream destructor unwind base helper; inspected through target-verified Ghidra disasm, not counted as a separately byte-compared range."
+      },
+      {
+        "address": "00a81880",
+        "instructions": [
+          "jmp 00bd30f0"
+        ],
+        "role": "Logical texture base unwind helper; same direct disassembly evidence boundary."
+      }
+    ]
+  },
+  "exception_handling": {
+    "maps": [
+      {
+        "owner": "texture_pool",
+        "handler": "00cbee4e",
+        "funcinfo": "00df76a0",
+        "unwind_map": "00df7688",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbee30"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbee38"
+          },
+          {
+            "state": 2,
+            "next_state": 1,
+            "leaf": "00cbee43"
+          }
+        ]
+      },
+      {
+        "owner": "texture_dtor",
+        "handler": "00cbeea3",
+        "funcinfo": "00df7710",
+        "unwind_map": "00df7700",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbee90"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbee98"
+          }
+        ]
+      },
+      {
+        "owner": "texture_unnamed_ctor",
+        "handler": "00cbef43",
+        "funcinfo": "00df7800",
+        "unwind_map": "00df77e0",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbef20"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbef28"
+          },
+          {
+            "state": 2,
+            "next_state": 1,
+            "leaf": "00cbef33"
+          },
+          {
+            "state": 3,
+            "next_state": 2,
+            "leaf": "00cbef3b"
+          }
+        ]
+      },
+      {
+        "owner": "texture_named_ctor",
+        "handler": "00cbef6b",
+        "funcinfo": "00df783c",
+        "unwind_map": "00df7824",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbef50"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbef58"
+          },
+          {
+            "state": 2,
+            "next_state": 1,
+            "leaf": "00cbef63"
+          }
+        ]
+      },
+      {
+        "owner": "texture_surface_getter",
+        "handler": "00cbefa8",
+        "funcinfo": "00df7894",
+        "unwind_map": "00df788c",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbefa0"
+          }
+        ]
+      },
+      {
+        "owner": "logical_base_dtor",
+        "handler": "00cbe098",
+        "funcinfo": "00df690c",
+        "unwind_map": "00df6904",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbe090"
+          }
+        ]
+      },
+      {
+        "owner": "logical_base_named_ctor",
+        "handler": "00cbe0c3",
+        "funcinfo": "00df6940",
+        "unwind_map": "00df6930",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbe0b0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbe0b8"
+          }
+        ]
+      },
+      {
+        "owner": "renderer_name_notification",
+        "handler": "00cbdcf0",
+        "funcinfo": "00df6694",
+        "unwind_map": "00df6684",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbdce0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbdce8"
+          }
+        ]
+      },
+      {
+        "owner": "memory_backing_ctor",
+        "handler": "00ca2ef8",
+        "funcinfo": "00dd5090",
+        "unwind_map": "00dd5088",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00ca2ef0"
+          }
+        ]
+      },
+      {
+        "owner": "memory_stream_dtor",
+        "handler": "00cc76b8",
+        "funcinfo": "00e022ac",
+        "unwind_map": "00e022a4",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cc76b0"
+          }
+        ]
+      }
+    ],
+    "interpretation": [
+      "Texture destructor state1 array storage -> state0 logical base; no resumed surface loop, second COM release or second source release during unwind.",
+      "Unnamed ctor: diagnostic record -> temporary name -> cache storage -> logical base. Named ctor: diagnostic record -> cache storage -> logical base. No acquired COM release in either map.",
+      "Cached surface getter state0 returns raw surface pool slot only; it does not run a complete surface destructor or Release its COM getter on that exception.",
+      "Pool constructor: table -> actual critical section -> actual shared allocator base. Allocator body has no lock-unwind map.",
+      "Memory backing constructor unwind is base only. Memory wrapper destructor unwind installs stream base then refcounted base."
+    ],
+    "native_exception_execution": false
+  },
+  "next_packet": {
+    "id": "native_d3d9_texture2d_pool",
+    "ready": true,
+    "address_count": 11,
+    "addresses": [
+      "00b3ee80",
+      "00b3ef60",
+      "00b3d1e0",
+      "00b3d8d0",
+      "00b3e510",
+      "00b3e430",
+      "00b3d3b0",
+      "00b3f2b0",
+      "00b3dcd0",
+      "00cd7b60",
+      "00ce0ca0"
+    ],
+    "files": [
+      "include/bsp/d3d9_texture2d_pool.hpp",
+      "src/d3d9_texture2d_pool.cpp",
+      "docs/D3D9_TEXTURE2D_POOL.md",
+      "reports/d3d9_texture2d_pool_audit.json"
+    ],
+    "functions": [
+      {
+        "address": "00b3ee80",
+        "end_exclusive": "00b3ef53",
+        "length": 211,
+        "label": "texture_pool_constructor",
+        "native_abi": "ECX actual 0108DB38-compatible 38h storage; EAX owner; RET.",
+        "sha256": "902e5ac847b742c56eee1a72464f4f11521bf9c075abc081390fd355f8327815"
+      },
+      {
+        "address": "00b3ef60",
+        "end_exclusive": "00b3f090",
+        "length": 304,
+        "label": "texture_pool_allocate",
+        "native_abi": "ECX pool; EAX raw 54h slot; RET.",
+        "sha256": "f25617f05d0e68ea47aa0669f3f08dacb1dc03cf1eb8b683e8a147757da8f9e6"
+      },
+      {
+        "address": "00b3d1e0",
+        "end_exclusive": "00b3d220",
+        "length": 64,
+        "label": "texture_pool_slab_initialize",
+        "native_abi": "ECX AC4h slab; stack slab ID; EAX slab; RET 4.",
+        "sha256": "21aa22846ed4171941b4a7f43aafda3cd4d13b4e2d29df10af6d5366aea3ee0e"
+      },
+      {
+        "address": "00b3d8d0",
+        "end_exclusive": "00b3d935",
+        "length": 101,
+        "label": "texture_pool_return",
+        "native_abi": "ECX pool; stack slot; RET 4. Trailing ID at +50h.",
+        "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899"
+      },
+      {
+        "address": "00b3e510",
+        "end_exclusive": "00b3e5b0",
+        "length": 160,
+        "label": "texture_pool_trim",
+        "native_abi": "ECX pool; RET. No internal lock; complete swap-and-rewrite tail included.",
+        "sha256": "34aa3209c2e3e44b849165725e4144c71b15a688910e57c8beed83c0e5e8f94a"
+      },
+      {
+        "address": "00b3e430",
+        "end_exclusive": "00b3e4ba",
+        "length": 138,
+        "label": "texture_pool_destroy",
+        "native_abi": "ECX pool; RET. Complete slab/table free tails and real lock drain/unlink.",
+        "sha256": "ffc04fcfbc253361e89f5d0a9220e76b833f0002db9970915545527c5e0a05eb"
+      },
+      {
+        "address": "00b3d3b0",
+        "end_exclusive": "00b3d3be",
+        "length": 14,
+        "label": "texture_pool_table_unwind",
+        "native_abi": "ECX pointer-table header; RET. Free nonnull table, preserve header; includes POP ECX after free.",
+        "sha256": "8c94e421fdd4df56ffe93f87d110b133e8fa8e5bbba382c851653ef62799e964"
+      },
+      {
+        "address": "00b3f2b0",
+        "end_exclusive": "00b3f2ba",
+        "length": 10,
+        "label": "texture_pool_allocation_thunk",
+        "native_abi": "No meaningful input; overwrite ECX with 0108DB38 and tail B3EF60; EAX slot.",
+        "sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e"
+      },
+      {
+        "address": "00b3dcd0",
+        "end_exclusive": "00b3dcdc",
+        "length": 12,
+        "label": "texture_pool_return_thunk",
+        "native_abi": "Incoming ECX slot; push slot, set ECX 0108DB38, call B3D8D0; RET.",
+        "sha256": "ffd38ad624524ee336e7d9cda60df7c7c6312535e207b5fd4c03a227346dc240"
+      },
+      {
+        "address": "00cd7b60",
+        "end_exclusive": "00cd7b76",
+        "length": 22,
+        "label": "texture_pool_static_initialize",
+        "native_abi": "No arguments; construct canonical pool, atexit CE0CA0; EAX atexit result; RET. Not currently a Ghidra function.",
+        "sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5"
+      },
+      {
+        "address": "00ce0ca0",
+        "end_exclusive": "00ce0caa",
+        "length": 10,
+        "label": "texture_pool_static_destroy",
+        "native_abi": "No arguments; set ECX 0108DB38 and tail B3E430.",
+        "sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417"
+      }
+    ],
+    "geometry": {
+      "canonical_owner": "0108db38",
+      "owner_bytes": 56,
+      "profile": "00d61940",
+      "virtual_zero": "00b3e510",
+      "slot_bytes": 84,
+      "slots_per_slab": 32,
+      "slot_slab_id_offset": 80,
+      "slab_bytes": 2756,
+      "free_indices_offset": 2688,
+      "free_count_offset": 2752,
+      "unwritten_slab_tail_bytes": 2,
+      "initial_table_capacity": 32,
+      "growth": "2 * old capacity + 2, published before allocation"
+    },
+    "dependencies": [
+      "Actual existing AllocatorListDomain over shared 00E188B4 head and real prepend/unlink behavior.",
+      "Existing singleton_lifetime_allocate/free real CRT seam for raw table/slab allocation, with native ordinary versus array call sites documented.",
+      "Actual Win32 CRITICAL_SECTION at pool+0C, actual signed recursion +24, and direct table/count/capacity/first-free fields +28/+2C/+30/+34.",
+      "Existing completed surface-pool implementation/fixture may guide shape, but native texture allocator is 304 bytes and return is 101 bytes; inspect its own exact instructions."
+    ],
+    "contract": [
+      "No texture, COM, source-stream, cache-array or renderer-container construction/deletion in this pool packet.",
+      "Initialize slab free WORD indices 31..0 and all 32 actual trailing IDs; leave all texture bytes and final slab padding untouched.",
+      "Return reads actual +50h slab ID and divides raw slot difference by 54h; append index, update first free if lower; actual lock/counter ordering.",
+      "Trim performs swap-last slab compaction and rewrites all 32 trailing IDs of the moved slab, including occupied slots; recheck replaced slot and recompute first-free.",
+      "Destructor frees slabs/table before draining actual positive recursion, deletes lock, then unlinks real allocator element; it invokes no texture destructor.",
+      "Constructor EH map/complete post-free stack-cleanup tails must be retained. Static init is 22 bytes at CD7B60 despite missing current Ghidra function; register actual CE0CA0 thunk."
+    ],
+    "proposed_api": "D3D9Texture2DPoolStorage + D3D9Texture2DPool(actual AllocatorListDomain&, actual storage&); explicit initialize/allocate/return/trim/destroy and canonical bind/initialize/destroy/allocate/ECX-slot-return adapters, analogous to actual completed D3D9SurfacePool.",
+    "validation": "One focused original-instruction comparison using real 54h slots/AC4h slabs, table growth, moved all-slot IDs, raw return/reuse and actual destruction/unlink; strict MSVC Win32 build. No new broad test suite.",
+    "integration_ownership": "Primary edits CMake, Ghidra and ledgers; worker owns only four new files. Claim exact addresses/files before work and recheck current leases."
+  },
+  "independent_followups": [
+    {
+      "id": "native_texture_surface_cache_array",
+      "addresses": [
+        "00b3d9b0",
+        "00b3da20",
+        "00b3ec40"
+      ],
+      "scope": "Actual 12-byte raw header and 8-byte record allocate/copy/resize/storage-destroy; no owner retain/release in these bodies.",
+      "dependency": "Real CRT; do not use an independent std::vector."
+    },
+    {
+      "id": "native_logical_texture_base",
+      "addresses": [
+        "00b33fc0",
+        "00b34120",
+        "00b34230",
+        "00b33f50",
+        "00b34010"
+      ],
+      "scope": "Actual native count/name/profile/COM word/flags/shared serial construction and pooled name cleanup; no COM ownership transfer in base.",
+      "dependency": "Actual NativeString/SizedStoragePool and shared 0108D6E8 word; root coordinates common named-base address ownership."
+    },
+    {
+      "id": "native_memory_source_lifetime",
+      "addresses": [
+        "008d43c0",
+        "008d4440",
+        "008d4470",
+        "00bef6d0",
+        "00bef9c0",
+        "00bb8f90",
+        "00bef600",
+        "00bef610",
+        "00b23640"
+      ],
+      "scope": "Actual backing and wrapper storage/count/buffers/counters, create/deleting paths, size/data and actual intrusive source-slot assignment.",
+      "dependency": "Real ordinary/array CRT; actual 0109DB98/0109DB9C counter words; actual profile zero dispatch including stream/base unwind helpers; retain exact current shared buffers, do not substitute COM-only or shared_ptr-only deletion."
+    }
+  ],
+  "full_owner_readiness": {
+    "ready": false,
+    "remaining": [
+      "Actual 2D texture pool from this ready packet.",
+      "Actual logical texture base/name/shared serial lifecycle.",
+      "Actual cached surface record storage helpers and real surface count/zero dispatch.",
+      "Actual retained source memory wrapper/backing count/zero/delete chain.",
+      "Actual renderer virtual+6C notification and nested resource-container lifecycle, distinct from +1B00 borrowed reset array.",
+      "Exact callback capture/reload and HRESULT/stack-output domains retained in constructor/getter/reset entries."
+    ]
+  },
+  "reuse_and_notation": {
+    "surface_dependency_commit": "040201c integrates f3b2afb",
+    "surface_header_and_source_match_existing_native_surface_audit": true,
+    "surface_constructor_existing_evidence": {
+      "address": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "length": 382,
+      "sha256": "f59553f64d394a4b3609c84d5d504377bcb3de224a47ef97914c50e39e4a5023"
+    },
+    "endpoint_note": "Earlier prose used B3F7AD as last included byte. Existing JSON already correctly ends exclusively at B3F7AE for C2 0C 00 at B3F7AB. This is notation clarification only; no native byte evidence is corrected or discarded.",
+    "prior_sources": [
+      {
+        "path": "reports/native_surface_owner_audit.json",
+        "sha256": "3b33292617bc8660c4f7d070936f60a2f8266dcc066d50943d98d6cf1d907928",
+        "bytes": 70013
+      },
+      {
+        "path": "reports/native_surface_owner_next.json",
+        "sha256": "1ff9bdbb5210858f2bfe9277259d91ef8de3a082e187261c7cd7d921a16eb895",
+        "bytes": 70552
+      },
+      {
+        "path": "reports/native_render_target_group_next.json",
+        "sha256": "1436f587c0b1a32f0ad18e278e7cb1f7a362cf3a02e072c4b3587e351cce25aa",
+        "bytes": 51187
+      },
+      {
+        "path": "docs/TEXTURE_STREAM_LIFETIME.md",
+        "sha256": "9ad4171d3e2b94f4a6598e6f70dcdf7131a53118b06281000dc2125725de72d3",
+        "bytes": 11566
+      },
+      {
+        "path": "docs/MEMORY_STREAM_HANDOFF.md",
+        "sha256": "4cccb75297ca70a051a00605ded4f7b1678842c01423fdac5b2be3752468d9b0",
+        "bytes": 11114
+      },
+      {
+        "path": "docs/GENERIC_RESET_RESOURCES.md",
+        "sha256": "aa348a16f95c3b3d830f642849b33221e721a06226fb53f8dad45f38644a3288",
+        "bytes": 8826
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b3f7b0",
+      "end_exclusive": "00b3f92f",
+      "length": 383,
+      "label": "texture_unnamed_constructor",
+      "native_abi": "ECX 50h owner; stack COM, saved width, saved height, flags; EAX owner; RET 10h.",
+      "returns": [
+        {
+          "address": "00b3f92c",
+          "instruction": "ret 0x10",
+          "bytes_hex": "c21000"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f92c",
+        "instruction": "ret 0x10",
+        "bytes_hex": "c21000"
+      },
+      "sha256": "73d5891625159872d48116a5b922d4b02095894b71240e01a20cbe31d6b5b661"
+    },
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "label": "texture_named_constructor",
+      "native_abi": "ECX 50h owner; stack NativeString name pointer, COM, saved width, saved height, flags; EAX owner; RET 14h.",
+      "returns": [
+        {
+          "address": "00b3fa7e",
+          "instruction": "ret 0x14",
+          "bytes_hex": "c21400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3fa7e",
+        "instruction": "ret 0x14",
+        "bytes_hex": "c21400"
+      },
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117"
+    },
+    {
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "label": "texture_destructor",
+      "native_abi": "ECX owner; RET. Complete post-array-free tail included.",
+      "returns": [
+        {
+          "address": "00b3f40d",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f40d",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1"
+    },
+    {
+      "address": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "length": 32,
+      "label": "texture_scalar_delete",
+      "native_abi": "ECX owner; stack flags; EAX original identity; RET 4.",
+      "returns": [
+        {
+          "address": "00b3f5ad",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f5ad",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465"
+    },
+    {
+      "address": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "label": "texture_cached_surface_getter",
+      "native_abi": "ECX owner; stack mip and unused word; EAX owned surface; RET 8. First argument word doubles as GetSurfaceLevel output.",
+      "returns": [
+        {
+          "address": "00b3fe85",
+          "instruction": "ret 8",
+          "bytes_hex": "c20800"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3fe85",
+        "instruction": "ret 8",
+        "bytes_hex": "c20800"
+      },
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d"
+    },
+    {
+      "address": "00b3dd30",
+      "end_exclusive": "00b3dd86",
+      "length": 86,
+      "label": "texture_reset_release",
+      "native_abi": "ECX owner; RET; signed live cached-record loop and captured COM pair then reloaded final release.",
+      "returns": [
+        {
+          "address": "00b3dd85",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3dd85",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2"
+    },
+    {
+      "address": "00b3dd90",
+      "end_exclusive": "00b3defa",
+      "length": 362,
+      "label": "texture_reset_recreate",
+      "native_abi": "ECX owner; stack device; RET 4; input device stack word doubles as CreateTexture output.",
+      "returns": [
+        {
+          "address": "00b3def7",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3def7",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "725508b5f5d5ffcae47674b0daca2805c95bb1ff3d60603448483708ddedb81b"
+    },
+    {
+      "address": "00b3e190",
+      "end_exclusive": "00b3e1ed",
+      "length": 93,
+      "label": "texture_retained_source_recreate",
+      "native_abi": "ECX owner; RET; actual renderer/device and retained memory stream, D3DX direct output at +10h.",
+      "returns": [
+        {
+          "address": "00b3e1ec",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3e1ec",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5"
+    },
+    {
+      "address": "00b3ee80",
+      "end_exclusive": "00b3ef53",
+      "length": 211,
+      "label": "texture_pool_constructor",
+      "native_abi": "ECX actual 0108DB38-compatible 38h storage; EAX owner; RET.",
+      "returns": [
+        {
+          "address": "00b3ef52",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3ef52",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "902e5ac847b742c56eee1a72464f4f11521bf9c075abc081390fd355f8327815"
+    },
+    {
+      "address": "00b3ef60",
+      "end_exclusive": "00b3f090",
+      "length": 304,
+      "label": "texture_pool_allocate",
+      "native_abi": "ECX pool; EAX raw 54h slot; RET.",
+      "returns": [
+        {
+          "address": "00b3f07b",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        },
+        {
+          "address": "00b3f08f",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f08f",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "f25617f05d0e68ea47aa0669f3f08dacb1dc03cf1eb8b683e8a147757da8f9e6"
+    },
+    {
+      "address": "00b3d1e0",
+      "end_exclusive": "00b3d220",
+      "length": 64,
+      "label": "texture_pool_slab_initialize",
+      "native_abi": "ECX AC4h slab; stack slab ID; EAX slab; RET 4.",
+      "returns": [
+        {
+          "address": "00b3d21d",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3d21d",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "21aa22846ed4171941b4a7f43aafda3cd4d13b4e2d29df10af6d5366aea3ee0e"
+    },
+    {
+      "address": "00b3d8d0",
+      "end_exclusive": "00b3d935",
+      "length": 101,
+      "label": "texture_pool_return",
+      "native_abi": "ECX pool; stack slot; RET 4. Trailing ID at +50h.",
+      "returns": [
+        {
+          "address": "00b3d932",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3d932",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899"
+    },
+    {
+      "address": "00b3e510",
+      "end_exclusive": "00b3e5b0",
+      "length": 160,
+      "label": "texture_pool_trim",
+      "native_abi": "ECX pool; RET. No internal lock; complete swap-and-rewrite tail included.",
+      "returns": [
+        {
+          "address": "00b3e5a9",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        },
+        {
+          "address": "00b3e5af",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3e5af",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "34aa3209c2e3e44b849165725e4144c71b15a688910e57c8beed83c0e5e8f94a"
+    },
+    {
+      "address": "00b3e430",
+      "end_exclusive": "00b3e4ba",
+      "length": 138,
+      "label": "texture_pool_destroy",
+      "native_abi": "ECX pool; RET. Complete slab/table free tails and real lock drain/unlink.",
+      "returns": [
+        {
+          "address": "00b3e4b9",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3e4b9",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "ffc04fcfbc253361e89f5d0a9220e76b833f0002db9970915545527c5e0a05eb"
+    },
+    {
+      "address": "00b3d3b0",
+      "end_exclusive": "00b3d3be",
+      "length": 14,
+      "label": "texture_pool_table_unwind",
+      "native_abi": "ECX pointer-table header; RET. Free nonnull table, preserve header; includes POP ECX after free.",
+      "returns": [
+        {
+          "address": "00b3d3bd",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3d3bd",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "8c94e421fdd4df56ffe93f87d110b133e8fa8e5bbba382c851653ef62799e964"
+    },
+    {
+      "address": "00b3f2b0",
+      "end_exclusive": "00b3f2ba",
+      "length": 10,
+      "label": "texture_pool_allocation_thunk",
+      "native_abi": "No meaningful input; overwrite ECX with 0108DB38 and tail B3EF60; EAX slot.",
+      "returns": [],
+      "last_instruction": {
+        "address": "00b3f2b5",
+        "instruction": "jmp 0xb3ef60",
+        "bytes_hex": "e9a6fcffff"
+      },
+      "sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e"
+    },
+    {
+      "address": "00b3dcd0",
+      "end_exclusive": "00b3dcdc",
+      "length": 12,
+      "label": "texture_pool_return_thunk",
+      "native_abi": "Incoming ECX slot; push slot, set ECX 0108DB38, call B3D8D0; RET.",
+      "returns": [
+        {
+          "address": "00b3dcdb",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3dcdb",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "ffd38ad624524ee336e7d9cda60df7c7c6312535e207b5fd4c03a227346dc240"
+    },
+    {
+      "address": "00cd7b60",
+      "end_exclusive": "00cd7b76",
+      "length": 22,
+      "label": "texture_pool_static_initialize",
+      "native_abi": "No arguments; construct canonical pool, atexit CE0CA0; EAX atexit result; RET. Not currently a Ghidra function.",
+      "returns": [
+        {
+          "address": "00cd7b75",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00cd7b75",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5"
+    },
+    {
+      "address": "00ce0ca0",
+      "end_exclusive": "00ce0caa",
+      "length": 10,
+      "label": "texture_pool_static_destroy",
+      "native_abi": "No arguments; set ECX 0108DB38 and tail B3E430.",
+      "returns": [],
+      "last_instruction": {
+        "address": "00ce0ca5",
+        "instruction": "jmp 0xb3e430",
+        "bytes_hex": "e986d7e5ff"
+      },
+      "sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417"
+    },
+    {
+      "address": "00b3d9b0",
+      "end_exclusive": "00b3da18",
+      "length": 104,
+      "label": "surface_cache_reserve",
+      "native_abi": "ECX actual 12-byte cache header; stack signed capacity; RET 4. Complete publish-after-free tail.",
+      "returns": [
+        {
+          "address": "00b3da15",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3da15",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31"
+    },
+    {
+      "address": "00b3da20",
+      "end_exclusive": "00b3da70",
+      "length": 80,
+      "label": "surface_cache_resize",
+      "native_abi": "ECX actual cache header; stack signed size; RET 4; zero new 8-byte records and shrink count without owner release.",
+      "returns": [
+        {
+          "address": "00b3da6d",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3da6d",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237"
+    },
+    {
+      "address": "00b3ec40",
+      "end_exclusive": "00b3ec57",
+      "length": 23,
+      "label": "surface_cache_destroy",
+      "native_abi": "ECX actual cache header; RET; resize zero then free data, preserve pointer/capacity.",
+      "returns": [
+        {
+          "address": "00b3ec56",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3ec56",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e"
+    },
+    {
+      "address": "00b33fc0",
+      "end_exclusive": "00b34007",
+      "length": 71,
+      "label": "logical_texture_unnamed_base",
+      "native_abi": "ECX base; stack COM and flags; EAX owner; RET 8; consume shared serial, profile D5F228.",
+      "returns": [
+        {
+          "address": "00b34004",
+          "instruction": "ret 8",
+          "bytes_hex": "c20800"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b34004",
+        "instruction": "ret 8",
+        "bytes_hex": "c20800"
+      },
+      "sha256": "cbd07a687e43aa3105e7256d6195396fbafca4da73dbcca80092da34509fff79"
+    },
+    {
+      "address": "00b34120",
+      "end_exclusive": "00b341d0",
+      "length": 176,
+      "label": "logical_texture_named_base",
+      "native_abi": "ECX base; stack native name, COM, flags; EAX owner; RET 0Ch; actual pooled name and shared serial.",
+      "returns": [
+        {
+          "address": "00b341cd",
+          "instruction": "ret 0xc",
+          "bytes_hex": "c20c00"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b341cd",
+        "instruction": "ret 0xc",
+        "bytes_hex": "c20c00"
+      },
+      "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb"
+    },
+    {
+      "address": "00b34230",
+      "end_exclusive": "00b34255",
+      "length": 37,
+      "label": "logical_texture_named_profile",
+      "native_abi": "ECX base; stack name, COM, flags; EAX owner; RET 0Ch; call B34120 then profile D5F228.",
+      "returns": [
+        {
+          "address": "00b34252",
+          "instruction": "ret 0xc",
+          "bytes_hex": "c20c00"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b34252",
+        "instruction": "ret 0xc",
+        "bytes_hex": "c20c00"
+      },
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568"
+    },
+    {
+      "address": "00b33f50",
+      "end_exclusive": "00b33fb7",
+      "length": 103,
+      "label": "logical_texture_base_destroy",
+      "native_abi": "ECX base; RET; current native name return then BD30F0, no COM release or serial rollback.",
+      "returns": [
+        {
+          "address": "00b33fb6",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b33fb6",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb"
+    },
+    {
+      "address": "00b34010",
+      "end_exclusive": "00b34015",
+      "length": 5,
+      "label": "logical_texture_base_unwind_thunk",
+      "native_abi": "ECX base; tail B33F50, no separate field write.",
+      "returns": [],
+      "last_instruction": {
+        "address": "00b34010",
+        "instruction": "jmp 0xb33f50",
+        "bytes_hex": "e93bffffff"
+      },
+      "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+    },
+    {
+      "address": "00b27d40",
+      "end_exclusive": "00b27d53",
+      "length": 19,
+      "label": "renderer_unregister_texture",
+      "native_abi": "ECX actual renderer; stack target; EAX boolean; RET 4; actual array at +1B00h.",
+      "returns": [
+        {
+          "address": "00b27d50",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b27d50",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3"
+    },
+    {
+      "address": "00b25580",
+      "end_exclusive": "00b255e7",
+      "length": 103,
+      "label": "renderer_texture_array_remove",
+      "native_abi": "ECX actual data/count/capacity header; stack pointer to target pointer; EAX 0/1; RET 4.",
+      "returns": [
+        {
+          "address": "00b255b7",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        },
+        {
+          "address": "00b255e4",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b255e4",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "label": "renderer_name_notification",
+      "native_abi": "ECX renderer; stack original NativeString name pointer; RET 4. Primary profile D5F0A8 slot +6Ch. Not currently a Ghidra function.",
+      "returns": [
+        {
+          "address": "00b3233d",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3233d",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1"
+    },
+    {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "length": 520,
+      "label": "renderer_name_container_remove",
+      "native_abi": "ECX renderer+1A74h container; stack native name pointer; RET 4 on normal paths, terminal shared-cleanup jump.",
+      "returns": [
+        {
+          "address": "00b31f37",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b31fc3",
+        "instruction": "jmp 0xb31f19",
+        "bytes_hex": "e951ffffff"
+      },
+      "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48"
+    },
+    {
+      "address": "00b33e40",
+      "end_exclusive": "00b33e44",
+      "length": 4,
+      "label": "logical_texture_name_address",
+      "native_abi": "ECX texture; EAX owner+8; RET.",
+      "returns": [
+        {
+          "address": "00b33e43",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b33e43",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7"
+    },
+    {
+      "address": "00b23640",
+      "end_exclusive": "00b2367b",
+      "length": 59,
+      "label": "intrusive_source_assignment",
+      "native_abi": "ECX destination pointer slot, EDX source pointer slot; EAX destination slot; RET; publish/retain new before old release.",
+      "returns": [
+        {
+          "address": "00b2367a",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b2367a",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004"
+    },
+    {
+      "address": "008d43c0",
+      "end_exclusive": "008d4437",
+      "length": 119,
+      "label": "memory_backing_constructor",
+      "native_abi": "ECX raw 10h backing; stack signed length; EAX backing; RET 4. Array allocation and actual object/byte counters.",
+      "returns": [
+        {
+          "address": "008d4434",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "008d4434",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a"
+    },
+    {
+      "address": "008d4440",
+      "end_exclusive": "008d446d",
+      "length": 45,
+      "label": "memory_backing_destructor",
+      "native_abi": "ECX backing; free data, update counters, tail BD30F0.",
+      "returns": [],
+      "last_instruction": {
+        "address": "008d4468",
+        "instruction": "jmp 0xbd30f0",
+        "bytes_hex": "e983ec2f00"
+      },
+      "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68"
+    },
+    {
+      "address": "008d4470",
+      "end_exclusive": "008d44b2",
+      "length": 66,
+      "label": "memory_backing_scalar_delete",
+      "native_abi": "ECX backing; stack flags; EAX original identity; RET 4. Complete 66 bytes after first free.",
+      "returns": [
+        {
+          "address": "008d44af",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "008d44af",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a"
+    },
+    {
+      "address": "00bef6d0",
+      "end_exclusive": "00bef74c",
+      "length": 124,
+      "label": "memory_stream_from_backing",
+      "native_abi": "ECX actual backing; no stack args; EAX new 14h wrapper; RET. Ordinary allocation, count one and actual backing retain.",
+      "returns": [
+        {
+          "address": "00bef74b",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bef74b",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595"
+    },
+    {
+      "address": "00bef9c0",
+      "end_exclusive": "00befa36",
+      "length": 118,
+      "label": "memory_stream_destructor",
+      "native_abi": "ECX wrapper; RET. Current backing decrement and virtual zero, clear +8 after callback, preserve cursor/end.",
+      "returns": [
+        {
+          "address": "00befa35",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00befa35",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec"
+    },
+    {
+      "address": "00bb8f90",
+      "end_exclusive": "00bb8fae",
+      "length": 30,
+      "label": "memory_stream_scalar_delete",
+      "native_abi": "ECX wrapper; stack flags; EAX original identity; RET 4. Destroy then ordinary-free for bit zero.",
+      "returns": [
+        {
+          "address": "00bb8fab",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bb8fab",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      },
+      "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438"
+    },
+    {
+      "address": "00bef600",
+      "end_exclusive": "00bef60b",
+      "length": 11,
+      "label": "memory_stream_size",
+      "native_abi": "ECX wrapper; EDX:EAX sign-extended end minus backing data using 32-bit subtraction; RET.",
+      "returns": [
+        {
+          "address": "00bef60a",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bef60a",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36"
+    },
+    {
+      "address": "00bef610",
+      "end_exclusive": "00bef617",
+      "length": 7,
+      "label": "memory_stream_data",
+      "native_abi": "ECX wrapper; EAX backing data, independent of cursor; RET.",
+      "returns": [
+        {
+          "address": "00bef616",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bef616",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      },
+      "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef"
+    }
+  ],
+  "native_ranges": [
+    {
+      "address": "00b3f7b0",
+      "end_exclusive": "00b3f92f",
+      "length": 383,
+      "label": "texture_unnamed_constructor",
+      "kind": "function",
+      "disk_offset": 7600048,
+      "sha256": "73d5891625159872d48116a5b922d4b02095894b71240e01a20cbe31d6b5b661",
+      "raw_preimage_hex": "6aff6843efcb0064a100000000506489250000000083ec38538b5c2458558b6c24505657538bf15589742418e8df47ffff33ffc7064819d600897e24897e3c897c2450897e40897e44897e488b4610897e4c8b088b510450c644245401ffd28b46108b088b513450ffd28d4c242851894614895e1c8b45008b50445755ffd28b4c24448b4424408b542428894e2c8b4c24608946288b44245c6a01894e386a108d4c241c895618894634897e30897c241c897c2420e8d6e48dff8b5c24183bdf74168b54241483c2015268e419d60053e8fb7d0b0083c40c896c241c8b6c24146a01558d4c2428c644245802897c2428897c242ce897e48dff3bef8b6c2424740f8b442420505355e8c37d0b0083c40cc644245003e866eeffff3befc64424500274178b4424206a0183c0015055e8dda38dff8bc8e8261c09003bdfc64424500174178b4c24146a0183c1015153e8bda38dff8bc8e8061c0900f6442464108bc674078305f8da0801018b4c24485f5e5d5b64890d0000000083c444c21000",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX 50h owner; stack COM, saved width, saved height, flags; EAX owner; RET 10h.",
+      "returns": [
+        {
+          "address": "00b3f92c",
+          "instruction": "ret 0x10",
+          "bytes_hex": "c21000"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f92c",
+        "instruction": "ret 0x10",
+        "bytes_hex": "c21000"
+      }
+    },
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "label": "texture_named_constructor",
+      "kind": "function",
+      "disk_offset": 7600432,
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "raw_preimage_hex": "6aff686befcb0064a100000000506489250000000083ec308b442450538b5c24445556578b7c245450578bf1538974241ce8ca48ffff33edc7064819d600896e24896e3c896c2448896e40896e44896e488b4610896e4c8b088b513450c644244c01ffd23bfd8946148b44246089461c74108b0f8b510457ffd28b078b480857ffd18b178b4a448d442420505557ffd18b5424388b44243c89562889462c8b0f8b510457ffd28b078b480857ffd18b5424588b44245c8b4c2420895634897c241433ff8d5424183bd3894638896e30894e18896c2418897c241c74268b036a01508bcae828e38dff392b8b7c241c74128b4424188b4b04505157e8517c0b0083c40cc644244802e8f4ecffff3bfdc64424480174178b5424186a0183c2015257e86ba28dff8bc8e8b41a0900f6442460108bc674078305f8da0801018b4c24405f5e5d5b64890d0000000083c43cc21400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX 50h owner; stack NativeString name pointer, COM, saved width, saved height, flags; EAX owner; RET 14h.",
+      "returns": [
+        {
+          "address": "00b3fa7e",
+          "instruction": "ret 0x14",
+          "bytes_hex": "c21400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3fa7e",
+        "instruction": "ret 0x14",
+        "bytes_hex": "c21400"
+      }
+    },
+    {
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "label": "texture_destructor",
+      "kind": "function",
+      "disk_offset": 7598816,
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "raw_preimage_hex": "6aff68a3eecb0064a1000000005064892500000000515355568bf15789742410c7064819d6008b7e4c33ed3bfdc744241c0100000074198d470450ff152022ce0085c075088b178b028bcfffd0896e4c8b1d94d3f8008b3b8bce83c76ce8fe4affff8b17508bcbffd28b0d94d3f80056e8eb89feff8b7e103bfd74108b078b480457ffd18b178b420857ffd0e8bff3ffff8b46103bc5740b8b088b510850ffd2896e10396e447e3beb068d9b000000008b46408b7ce80485ff8d5ce804741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c5013b6e447ccdf6461c107407832df8da0801018d7e406a008bcfc644242000e83fe6ffff8b3f57e8a0750b0083c4048bcec744241cffffffffe8554bffff8b4c24145f5e5d5b64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX owner; RET. Complete post-array-free tail included.",
+      "returns": [
+        {
+          "address": "00b3f40d",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f40d",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "length": 32,
+      "label": "texture_scalar_delete",
+      "kind": "function",
+      "disk_offset": 7599504,
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "raw_preimage_hex": "568bf1e848fdfffff644240801740b56b938db0801e826e3ffff8bc65ec20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX owner; stack flags; EAX original identity; RET 4.",
+      "returns": [
+        {
+          "address": "00b3f5ad",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f5ad",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "label": "texture_cached_surface_getter",
+      "kind": "function",
+      "disk_offset": 7601536,
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d",
+      "raw_preimage_hex": "6aff68a8efcb0064a100000000506489250000000051538b5c2418558b2d1c22ce00568bf18b4e4433c085c9577e278b7e408bd7391a740c83c00183c2083bc17cf2eb128b7cc7048d470450ffd585ff0f859b0000008b46108b088d5424245253508b4148ffd0b900db0801e84fefffff8944241033ff3bc7897c241c741e8b561c8bcac1e90881e101ffffff51528b54242c528bc8e815f8ffff8bf88b4424248b088b510850c7442420ffffffffffd2f6461c01753a8d470450ffd58b464883c640394604751403c083f8017f05b801000000508bcee854dbffff8b4e048b168d04ca85c074058918897804834604018b4c24148bc75f5e5d5b64890d0000000083c410c20800",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX owner; stack mip and unused word; EAX owned surface; RET 8. First argument word doubles as GetSurfaceLevel output.",
+      "returns": [
+        {
+          "address": "00b3fe85",
+          "instruction": "ret 8",
+          "bytes_hex": "c20800"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3fe85",
+        "instruction": "ret 8",
+        "bytes_hex": "c20800"
+      }
+    },
+    {
+      "address": "00b3dd30",
+      "end_exclusive": "00b3dd86",
+      "length": 86,
+      "label": "texture_reset_release",
+      "kind": "function",
+      "disk_offset": 7593264,
+      "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2",
+      "raw_preimage_hex": "56578bf133ff397e447e1beb038d49008b46408b4cf8048b118b423cffd083c7013b7e447cea8b7e1085ff74108b0f8b510457ffd28b078b480857ffd18b461085c0740f8b10508b4208ffd0c74610000000005f5ec3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX owner; RET; signed live cached-record loop and captured COM pair then reloaded final release.",
+      "returns": [
+        {
+          "address": "00b3dd85",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3dd85",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3dd90",
+      "end_exclusive": "00b3defa",
+      "length": 362,
+      "label": "texture_reset_recreate",
+      "kind": "function",
+      "disk_offset": 7593360,
+      "sha256": "725508b5f5d5ffcae47674b0daca2805c95bb1ff3d60603448483708ddedb81b",
+      "raw_preimage_hex": "51568bf18b561c8bc283e00f33c983f803577720ff2485fcdeb30033ffeb19bf01000000eb12bf02000000eb0bbf03000000eb048b7c2410f6c2107405b9010000008bc225000f00003d000300007722741b3d00010000740f3d00020000752e81c900400000eb2683c902eb2183c940eb1c3d00040000740f3d00050000750e81c980000000eb0681c9000100008bc22500f000003d00100000750681c90002000081e2000000ff81fa00000001750681c9000400008b4424108b10538b525c6a008d5c241853578b7e1857518b4e14518b4e2c518b4e285150ffd28b7e108b4424143bf85b742385c0894610740c8b088b510450ffd28b44241085ff740c8b078b480857ffd18b44241085c074108b10508b4208ffd0c74424100000000033ff397e447e3e8b46108b088d542408528b56408b14fa52508b4148ffd08b4e408b4cf9048b118b4424088b521450ffd28b4424088b088b510850ffd283c7013b7e447cc25f5e59c20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX owner; stack device; RET 4; input device stack word doubles as CreateTexture output.",
+      "returns": [
+        {
+          "address": "00b3def7",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3def7",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b3e190",
+      "end_exclusive": "00b3e1ed",
+      "length": 93,
+      "label": "texture_retained_source_recreate",
+      "kind": "function",
+      "disk_offset": 7594384,
+      "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5",
+      "raw_preimage_hex": "568bf18b0d94d3f80057e8511dfeff8bf833c0837e18147505b8150000008b4e4c8d5610528b562c6a006a006a006aff68040007006a01508b463c6a00508b4628528b11508b4230ffd08b4e4c50e82d140b005057e8fcfd0e005f5ec3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX owner; RET; actual renderer/device and retained memory stream, D3DX direct output at +10h.",
+      "returns": [
+        {
+          "address": "00b3e1ec",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3e1ec",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3ee80",
+      "end_exclusive": "00b3ef53",
+      "length": 211,
+      "label": "texture_pool_constructor",
+      "kind": "function",
+      "disk_offset": 7597696,
+      "sha256": "902e5ac847b742c56eee1a72464f4f11521bf9c075abc081390fd355f8327815",
+      "raw_preimage_hex": "6aff684eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7064019d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8b7660b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8507a0b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual 0108DB38-compatible 38h storage; EAX owner; RET.",
+      "returns": [
+        {
+          "address": "00b3ef52",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3ef52",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3ef60",
+      "end_exclusive": "00b3f090",
+      "length": 304,
+      "label": "texture_pool_allocate",
+      "kind": "function",
+      "disk_offset": 7597920,
+      "sha256": "f25617f05d0e68ea47aa0669f3f08dacb1dc03cf1eb8b683e8a147757da8f9e6",
+      "raw_preimage_hex": "5355568bf1578d5e0c53ff151822ce008343180183caff3956340f85920000008b462c68c40a0000894634e88b780b0083c40485c0740f8b4e34518bc8e83ee2ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e8fa650b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e893790b0083c404897e288b462c8b4e288d048185c07402892883462c0183caff8b4e288b46348b0481668180c00a0000ffff0fb788c00a00000fb7f90fb7bc78800a00006bff5403f86685c9753f8b463483c0013b462c89563473318b4e288d0c818b296683bdc00a000000751c83c00183c1043b462c72e901531853ff151022ce008bc75f5e5d5bc389463401531853ff151022ce008bc75f5e5d5bc3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX pool; EAX raw 54h slot; RET.",
+      "returns": [
+        {
+          "address": "00b3f07b",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        },
+        {
+          "address": "00b3f08f",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3f08f",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3d1e0",
+      "end_exclusive": "00b3d220",
+      "length": 64,
+      "label": "texture_pool_slab_initialize",
+      "kind": "function",
+      "disk_offset": 7590368,
+      "sha256": "21aa22846ed4171941b4a7f43aafda3cd4d13b4e2d29df10af6d5366aea3ee0e",
+      "raw_preimage_hex": "538b5c2408568bc15766c780c00a0000200033d28d78508db0800a00008d4900b91f0000002bca66890e891f83c20183c60283c75483fa207ce65f5e5bc20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX AC4h slab; stack slab ID; EAX slab; RET 4.",
+      "returns": [
+        {
+          "address": "00b3d21d",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3d21d",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b3d8d0",
+      "end_exclusive": "00b3d935",
+      "length": 101,
+      "label": "texture_pool_return",
+      "kind": "function",
+      "disk_offset": 7592144,
+      "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899",
+      "raw_preimage_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58508b4e288b0c992bc18bd0b8310cc330f7eac1fa048bc2c1e81f03c20fb791c00a000066898451800a0000668381c00a0000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX pool; stack slot; RET 4. Trailing ID at +50h.",
+      "returns": [
+        {
+          "address": "00b3d932",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3d932",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b3e510",
+      "end_exclusive": "00b3e5b0",
+      "length": 160,
+      "label": "texture_pool_trim",
+      "kind": "function",
+      "disk_offset": 7595280,
+      "sha256": "34aa3209c2e3e44b849165725e4144c71b15a688910e57c8beed83c0e5e8f94a",
+      "raw_preimage_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b8c00a000020753d50e876800b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c050b92000000090893883c05483e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683bac00a000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX pool; RET. No internal lock; complete swap-and-rewrite tail included.",
+      "returns": [
+        {
+          "address": "00b3e5a9",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        },
+        {
+          "address": "00b3e5af",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3e5af",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3e430",
+      "end_exclusive": "00b3e4ba",
+      "length": 138,
+      "label": "texture_pool_destroy",
+      "kind": "function",
+      "disk_offset": 7595056,
+      "sha256": "ffc04fcfbc253361e89f5d0a9220e76b833f0002db9970915545527c5e0a05eb",
+      "raw_preimage_hex": "56578bf933f639772cc7074019d60076178b47288b0cb051e85f810b0083c60183c4043b772c72e98b472885c0740950e824850b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX pool; RET. Complete slab/table free tails and real lock drain/unlink.",
+      "returns": [
+        {
+          "address": "00b3e4b9",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3e4b9",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3d3b0",
+      "end_exclusive": "00b3d3be",
+      "length": 14,
+      "label": "texture_pool_table_unwind",
+      "kind": "function",
+      "disk_offset": 7590832,
+      "sha256": "8c94e421fdd4df56ffe93f87d110b133e8fa8e5bbba382c851653ef62799e964",
+      "raw_preimage_hex": "8b0185c0740750e8cd950b0059c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX pointer-table header; RET. Free nonnull table, preserve header; includes POP ECX after free.",
+      "returns": [
+        {
+          "address": "00b3d3bd",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3d3bd",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b3f2b0",
+      "end_exclusive": "00b3f2ba",
+      "length": 10,
+      "label": "texture_pool_allocation_thunk",
+      "kind": "function",
+      "disk_offset": 7598768,
+      "sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e",
+      "raw_preimage_hex": "b938db0801e9a6fcffff",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "No meaningful input; overwrite ECX with 0108DB38 and tail B3EF60; EAX slot.",
+      "returns": [],
+      "last_instruction": {
+        "address": "00b3f2b5",
+        "instruction": "jmp 0xb3ef60",
+        "bytes_hex": "e9a6fcffff"
+      }
+    },
+    {
+      "address": "00b3dcd0",
+      "end_exclusive": "00b3dcdc",
+      "length": 12,
+      "label": "texture_pool_return_thunk",
+      "kind": "function",
+      "disk_offset": 7593168,
+      "sha256": "ffd38ad624524ee336e7d9cda60df7c7c6312535e207b5fd4c03a227346dc240",
+      "raw_preimage_hex": "51b938db0801e8f5fbffffc3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "Incoming ECX slot; push slot, set ECX 0108DB38, call B3D8D0; RET.",
+      "returns": [
+        {
+          "address": "00b3dcdb",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3dcdb",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00cd7b60",
+      "end_exclusive": "00cd7b76",
+      "length": 22,
+      "label": "texture_pool_static_initialize",
+      "kind": "function",
+      "disk_offset": 9272160,
+      "sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5",
+      "raw_preimage_hex": "b938db0801e81673e6ff68a00cce00e881f4f1ff59c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "No arguments; construct canonical pool, atexit CE0CA0; EAX atexit result; RET. Not currently a Ghidra function.",
+      "returns": [
+        {
+          "address": "00cd7b75",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00cd7b75",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00ce0ca0",
+      "end_exclusive": "00ce0caa",
+      "length": 10,
+      "label": "texture_pool_static_destroy",
+      "kind": "function",
+      "disk_offset": 9309344,
+      "sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417",
+      "raw_preimage_hex": "b938db0801e986d7e5ff",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "No arguments; set ECX 0108DB38 and tail B3E430.",
+      "returns": [],
+      "last_instruction": {
+        "address": "00ce0ca5",
+        "instruction": "jmp 0xb3e430",
+        "bytes_hex": "e986d7e5ff"
+      }
+    },
+    {
+      "address": "00b3d9b0",
+      "end_exclusive": "00b3da18",
+      "length": 104,
+      "label": "surface_cache_reserve",
+      "kind": "function",
+      "disk_offset": 7592368,
+      "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+      "raw_preimage_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d4c8d04fd000000005350e8e97b0b008bd833c083c4043946047e218bcb5585c9740e8b168b2cc289298b54c20489510483c00183c1083b46047ce35d8b0650e87f8f0b0083c404891e897e085b5f5ec20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual 12-byte cache header; stack signed capacity; RET 4. Complete publish-after-free tail.",
+      "returns": [
+        {
+          "address": "00b3da15",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3da15",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b3da20",
+      "end_exclusive": "00b3da70",
+      "length": 80,
+      "label": "surface_cache_resize",
+      "kind": "function",
+      "disk_offset": 7592480,
+      "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237",
+      "raw_preimage_hex": "56578b7c240c8bf13b7e087e0657e87dffffff8b4e043bcf7d1d8d9b000000008b068d04c885c0740733d2891089500483c1013bcf7ce93b7e047d0c83c8ff900146043b7e047cf8897e045f5ec20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual cache header; stack signed size; RET 4; zero new 8-byte records and shrink count without owner release.",
+      "returns": [
+        {
+          "address": "00b3da6d",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3da6d",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b3ec40",
+      "end_exclusive": "00b3ec57",
+      "length": 23,
+      "label": "surface_cache_destroy",
+      "kind": "function",
+      "disk_offset": 7597120,
+      "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+      "raw_preimage_hex": "566a008bf1e8d6edffff8b0650e8377d0b0083c4045ec3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual cache header; RET; resize zero then free data, preserve pointer/capacity.",
+      "returns": [
+        {
+          "address": "00b3ec56",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3ec56",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b33fc0",
+      "end_exclusive": "00b34007",
+      "length": 71,
+      "label": "logical_texture_unnamed_base",
+      "kind": "function",
+      "disk_offset": 7552960,
+      "sha256": "cbd07a687e43aa3105e7256d6195396fbafca4da73dbcca80092da34509fff79",
+      "raw_preimage_hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70028f2d500c20800",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX base; stack COM and flags; EAX owner; RET 8; consume shared serial, profile D5F228.",
+      "returns": [
+        {
+          "address": "00b34004",
+          "instruction": "ret 8",
+          "bytes_hex": "c20800"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b34004",
+        "instruction": "ret 8",
+        "bytes_hex": "c20800"
+      }
+    },
+    {
+      "address": "00b34120",
+      "end_exclusive": "00b341d0",
+      "length": 176,
+      "label": "logical_texture_named_base",
+      "kind": "function",
+      "disk_offset": 7553312,
+      "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+      "raw_preimage_hex": "6aff68c3e0cb0064a10000000050648925000000005155568bf1c70630b1ce00578974240cc74604010000008d7e08c706f4f1d500c744241800000000c70700000000c74704000000008b6c24203bfdc64424180174268b45006a01508bcfe8bc9b8eff837d000074138b0f8b55048b4704515250e8e6340c0083c40c8b4c24248b542428894e108b4c241089561ca1e8d608018946208305e8d60801015f8bc65e5d64890d0000000083c410c20c00",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX base; stack native name, COM, flags; EAX owner; RET 0Ch; actual pooled name and shared serial.",
+      "returns": [
+        {
+          "address": "00b341cd",
+          "instruction": "ret 0xc",
+          "bytes_hex": "c20c00"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b341cd",
+        "instruction": "ret 0xc",
+        "bytes_hex": "c20c00"
+      }
+    },
+    {
+      "address": "00b34230",
+      "end_exclusive": "00b34255",
+      "length": 37,
+      "label": "logical_texture_named_profile",
+      "kind": "function",
+      "disk_offset": 7553584,
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+      "raw_preimage_hex": "8b44240c8b542404568bf18b4c240c5051528bcee8d7feffffc70628f2d5008bc65ec20c00",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX base; stack name, COM, flags; EAX owner; RET 0Ch; call B34120 then profile D5F228.",
+      "returns": [
+        {
+          "address": "00b34252",
+          "instruction": "ret 0xc",
+          "bytes_hex": "c20c00"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b34252",
+        "instruction": "ret 0xc",
+        "bytes_hex": "c20c00"
+      }
+    },
+    {
+      "address": "00b33f50",
+      "end_exclusive": "00b33fb7",
+      "length": 103,
+      "label": "logical_texture_base_destroy",
+      "kind": "function",
+      "disk_offset": 7552848,
+      "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+      "raw_preimage_hex": "6aff6898e0cb0064a100000000506489250000000051568bf189742404c706f4f1d5008b460c85c0c74424100000000074168b4e086a0183c1015150e82f5d8eff8bc8e878d509008bcec7442410ffffffffe849f109008b4c24085e64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX base; RET; current native name return then BD30F0, no COM release or serial rollback.",
+      "returns": [
+        {
+          "address": "00b33fb6",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b33fb6",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b34010",
+      "end_exclusive": "00b34015",
+      "length": 5,
+      "label": "logical_texture_base_unwind_thunk",
+      "kind": "function",
+      "disk_offset": 7553040,
+      "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+      "raw_preimage_hex": "e93bffffff",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX base; tail B33F50, no separate field write.",
+      "returns": [],
+      "last_instruction": {
+        "address": "00b34010",
+        "instruction": "jmp 0xb33f50",
+        "bytes_hex": "e93bffffff"
+      }
+    },
+    {
+      "address": "00b27d40",
+      "end_exclusive": "00b27d53",
+      "length": 19,
+      "label": "renderer_unregister_texture",
+      "kind": "function",
+      "disk_offset": 7503168,
+      "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3",
+      "raw_preimage_hex": "8d4424045081c1001b0000e830d8ffffc20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual renderer; stack target; EAX boolean; RET 4; actual array at +1B00h.",
+      "returns": [
+        {
+          "address": "00b27d50",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b27d50",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b25580",
+      "end_exclusive": "00b255e7",
+      "length": 103,
+      "label": "renderer_texture_array_remove",
+      "kind": "function",
+      "disk_offset": 7492992,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "raw_preimage_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual data/count/capacity header; stack pointer to target pointer; EAX 0/1; RET 4.",
+      "returns": [
+        {
+          "address": "00b255b7",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        },
+        {
+          "address": "00b255e4",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b255e4",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "label": "renderer_name_notification",
+      "kind": "function",
+      "disk_offset": 7545424,
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "raw_preimage_hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX renderer; stack original NativeString name pointer; RET 4. Primary profile D5F0A8 slot +6Ch. Not currently a Ghidra function.",
+      "returns": [
+        {
+          "address": "00b3233d",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b3233d",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "length": 520,
+      "label": "renderer_name_container_remove",
+      "kind": "function",
+      "disk_offset": 7544256,
+      "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48",
+      "raw_preimage_hex": "6aff6868dccb0064a100000000506489250000000083ec145355568b7424305733ff8d44241c3bc68bd9897c241c897c242074288b066a01508d4c2424e83ebf8eff393e74168b4c241c8b56048b442420515250e867580c0083c40c8d54241c8d4c2414897c242ce853c90b008b4c24183bcf74178b4424146a0183c0015051e87b7e8eff8bc8e8c4f609008b43088b6b046bc02c03c53be8894424140f84810000008d7d0c8b078b30894424108bff8d47fc3bc07405e897480c003b74241074503b377505e888480c008b46088b4c241c3bc1752f85c075088bc1f7d81bc0eb1a85c975058d4101eb118b4c24208b560c5152e806610c0083c40885c00f94c084c075753b377505e845480c008b36eb9e83c52c83c72c3b6c241475888b74243433ff8b46043bc77505b8a4d50801506814dbd000e8b5358fff8b4c242883c4083bcfc744242cffffffff74178b44241c6a0183c0015051e8a27d8eff8bc8e8ebf509008b4c24245f5e5d5b64890d0000000083c420c204008b4d288b018b500cffd22943108b450485c07505b8a4d508018b4c242085c97505b9a4d5080150516804dbd000e844358fff8b43088b4b048d50ff6bd22c03d183c40c3bea740f6bc02c8d4408d4508bcde880e5ffff8b4b088b53046bc92c8d4c11d4e8eed9ffff83c8ff0143088944242c8b44242085c00f846dffffff8b4c241c6a0183c1015150e951ffffff",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX renderer+1A74h container; stack native name pointer; RET 4 on normal paths, terminal shared-cleanup jump.",
+      "returns": [
+        {
+          "address": "00b31f37",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b31fc3",
+        "instruction": "jmp 0xb31f19",
+        "bytes_hex": "e951ffffff"
+      }
+    },
+    {
+      "address": "00b33e40",
+      "end_exclusive": "00b33e44",
+      "length": 4,
+      "label": "logical_texture_name_address",
+      "kind": "function",
+      "disk_offset": 7552576,
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "raw_preimage_hex": "8d4108c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX texture; EAX owner+8; RET.",
+      "returns": [
+        {
+          "address": "00b33e43",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b33e43",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b23640",
+      "end_exclusive": "00b2367b",
+      "length": 59,
+      "label": "intrusive_source_assignment",
+      "kind": "function",
+      "disk_offset": 7484992,
+      "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+      "raw_preimage_hex": "8b02568bf1578b3e3bf8742a85c08906740a83c00450ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd05f8bc65ec3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX destination pointer slot, EDX source pointer slot; EAX destination slot; RET; publish/retain new before old release.",
+      "returns": [
+        {
+          "address": "00b2367a",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00b2367a",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "008d43c0",
+      "end_exclusive": "008d4437",
+      "length": 119,
+      "label": "memory_backing_constructor",
+      "kind": "function",
+      "disk_offset": 5063616,
+      "sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a",
+      "raw_preimage_hex": "6aff68f82eca0064a100000000506489250000000051568bf1c70630b1ce005789742408c74604010000008b7c241c33c03bf889442414c706d85ad1007e06897e0c57eb0589460c6a01e8af1132008b4c2410894608830598db09010183c404013d9cdb09015f8bc65e64890d0000000083c410c20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX raw 10h backing; stack signed length; EAX backing; RET 4. Array allocation and actual object/byte counters.",
+      "returns": [
+        {
+          "address": "008d4434",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "008d4434",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "008d4440",
+      "end_exclusive": "008d446d",
+      "length": 45,
+      "label": "memory_backing_destructor",
+      "kind": "function",
+      "disk_offset": 5063744,
+      "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+      "raw_preimage_hex": "568bf18b460850c706d85ad100e85a213200832d98db0901018b4e0c83c404290d9cdb09018bce5ee983ec2f00",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX backing; free data, update counters, tail BD30F0.",
+      "returns": [],
+      "last_instruction": {
+        "address": "008d4468",
+        "instruction": "jmp 0xbd30f0",
+        "bytes_hex": "e983ec2f00"
+      }
+    },
+    {
+      "address": "008d4470",
+      "end_exclusive": "008d44b2",
+      "length": 66,
+      "label": "memory_backing_scalar_delete",
+      "kind": "function",
+      "disk_offset": 5063792,
+      "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+      "raw_preimage_hex": "568bf18b460850c706d85ad100e82a213200832d98db0901018b4e0c290d9cdb090183c4048bcee854ec2f00f644240801740956e80321320083c4048bc65ec20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX backing; stack flags; EAX original identity; RET 4. Complete 66 bytes after first free.",
+      "returns": [
+        {
+          "address": "008d44af",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "008d44af",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00bef6d0",
+      "end_exclusive": "00bef74c",
+      "length": 124,
+      "label": "memory_stream_from_backing",
+      "kind": "function",
+      "disk_offset": 8320720,
+      "sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595",
+      "raw_preimage_hex": "535556576a148bd9e83e71000033ed83c4043bc57420c70030b1ce00c7400401000000c700c042d60089680889680c8968108bf0eb0233f68b7e083bfd74198d470450ff152022ce0085c075088b178b028bcfffd0896e088bcb83c10451895e08ff151c22ce008b43088946108b530c03d05f89560c8bc65e5d5bc3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX actual backing; no stack args; EAX new 14h wrapper; RET. Ordinary allocation, count one and actual backing retain.",
+      "returns": [
+        {
+          "address": "00bef74b",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bef74b",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00bef9c0",
+      "end_exclusive": "00befa36",
+      "length": 118,
+      "label": "memory_stream_destructor",
+      "kind": "function",
+      "disk_offset": 8321472,
+      "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+      "raw_preimage_hex": "6aff68b876cc0064a100000000506489250000000051568bf15789742408c706c042d6008b7e0885ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c74608000000008bcec7442414ffffffffc70604c1d500e8cb36feff8b4c240c5f5e64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX wrapper; RET. Current backing decrement and virtual zero, clear +8 after callback, preserve cursor/end.",
+      "returns": [
+        {
+          "address": "00befa35",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00befa35",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00bb8f90",
+      "end_exclusive": "00bb8fae",
+      "length": 30,
+      "label": "memory_stream_scalar_delete",
+      "kind": "function",
+      "disk_offset": 8097680,
+      "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+      "raw_preimage_hex": "568bf1e8286a0300f644240801740956e807d6030083c4048bc65ec20400",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX wrapper; stack flags; EAX original identity; RET 4. Destroy then ordinary-free for bit zero.",
+      "returns": [
+        {
+          "address": "00bb8fab",
+          "instruction": "ret 4",
+          "bytes_hex": "c20400"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bb8fab",
+        "instruction": "ret 4",
+        "bytes_hex": "c20400"
+      }
+    },
+    {
+      "address": "00bef600",
+      "end_exclusive": "00bef60b",
+      "length": 11,
+      "label": "memory_stream_size",
+      "kind": "function",
+      "disk_offset": 8320512,
+      "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36",
+      "raw_preimage_hex": "8b51088b410c2b420899c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX wrapper; EDX:EAX sign-extended end minus backing data using 32-bit subtraction; RET.",
+      "returns": [
+        {
+          "address": "00bef60a",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bef60a",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00bef610",
+      "end_exclusive": "00bef617",
+      "length": 7,
+      "label": "memory_stream_data",
+      "kind": "function",
+      "disk_offset": 8320528,
+      "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef",
+      "raw_preimage_hex": "8b41088b4008c3",
+      "live_ghidra_matches_installed_pe": true,
+      "native_abi": "ECX wrapper; EAX backing data, independent of cursor; RET.",
+      "returns": [
+        {
+          "address": "00bef616",
+          "instruction": "ret ",
+          "bytes_hex": "c3"
+        }
+      ],
+      "last_instruction": {
+        "address": "00bef616",
+        "instruction": "ret ",
+        "bytes_hex": "c3"
+      }
+    },
+    {
+      "address": "00b2a201",
+      "end_exclusive": "00b2a32b",
+      "length": 298,
+      "label": "generic_factory_construct_register_drop_com",
+      "kind": "fragment",
+      "disk_offset": 7512577,
+      "sha256": "1736b30da804996d91beffa4f1b9230a52852b2b7463eb45a06bb3c027b7c1dc",
+      "raw_preimage_hex": "b950000000e8a55001008944244485c0c64424340174178b4c244c8b542410515357528bc8e8855501008be8eb0233ed837c241c00c6442434000f84890000008b4c2448e8c66fffff85c0750b0f57c0f30f11442448eb19c1e80385c089442448db4424487d06d8057839ce00d95c24480faffb85ff897c244cdb44244c7d06d8057839ce00a1bcd40801d84c244885c0db05bcd408017d06dc05a07dd500d97c24480fb7442448dec10d000c00008944244cd96c244cdf7c241c8b4c241c890dbcd40801d96c24488b7424188b86081b000081c6001b0000394604751403c083f8017f05b801000000508bcee8fdbcc0ff8b56048b068d049085c0740289288b4424108346040185c08bf074148b088b510450ffd28b068b480856ffd18b4424108b10508b4208ffd0",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00b2c5d4",
+      "end_exclusive": "00b2c648",
+      "length": 116,
+      "label": "loaded_factory_construct_retain_source",
+      "kind": "fragment",
+      "disk_offset": 7521748,
+      "sha256": "fc851918d85d5c2f980f9b13c101ce7a88136ab2aa7f12a6ceec6794316f31af",
+      "raw_preimage_hex": "837c241400746db950000000e8cb2c01008944242485c0c644246c0274248b5424288b4c242c6a00528b54241c518b8c248000000052518bc8e81e3301008be8eb0233ed8d4d4c8d542420c644246c01e81770ffff8b44247885c0897d3c74048bcdffd08b168b42308bce896c241cffd0894524",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00b2c833",
+      "end_exclusive": "00b2c849",
+      "length": 22,
+      "label": "loaded_factory_drop_local_source",
+      "kind": "fragment",
+      "disk_offset": 7522355,
+      "sha256": "10312f9984217d46d6cdbbe4370ba98f9ee51db6d951e78d621af7bb4b985189",
+      "raw_preimage_hex": "8d460450ff152022ce0085c075088b168b028bceffd0",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbee30",
+      "end_exclusive": "00cbee58",
+      "length": 40,
+      "label": "texture_pool_eh",
+      "kind": "eh_code",
+      "disk_offset": 9170480,
+      "sha256": "1c938f51d1d9d9e8704f598a3cf0a84e6719efdac5734cd4d1b213d85f42b643",
+      "raw_preimage_hex": "8b4df0e9384b74ff8b4df083c10ce92d4174ff8b4df083c128e962e5e7ffb8a076df00e9eb7cf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df7688",
+      "end_exclusive": "00df76c4",
+      "length": 60,
+      "label": "texture_pool_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10450568,
+      "sha256": "ec10ef71448e0396a6bf25e511b5265fdc5e49193a3bac2746da6fce2f598adc",
+      "raw_preimage_hex": "ffffffff30eecb000000000038eecb000100000043eecb0022059319030000008876df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbee90",
+      "end_exclusive": "00cbeead",
+      "length": 29,
+      "label": "texture_dtor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9170576,
+      "sha256": "d533879bf906081369aba6642c341cb976c59fe8cd8ebbe9f3f3f1fa664ca42a",
+      "raw_preimage_hex": "8b4df0e97851e7ff8b4df083c140e99dfde7ffb81077df00e9967cf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df7700",
+      "end_exclusive": "00df7734",
+      "length": 52,
+      "label": "texture_dtor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10450688,
+      "sha256": "971eb51c77805422107654e4724a48da48bbdd975c91303561e367b0dfb3fc1f",
+      "raw_preimage_hex": "ffffffff90eecb000000000098eecb0022059319020000000077df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbef20",
+      "end_exclusive": "00cbef4d",
+      "length": 45,
+      "label": "texture_unnamed_ctor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9170720,
+      "sha256": "26de1d29b4ab31ff26fb420927385fdaff00c8e4b12ae78a2b274c8a44103fef",
+      "raw_preimage_hex": "8b4dbce9e850e7ff8b4dbc83c140e90dfde7ff8d4dc0e9e5ed75ff8d4dc8e97d05e8ffb80078df00e9f67bf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df77e0",
+      "end_exclusive": "00df7824",
+      "length": 68,
+      "label": "texture_unnamed_ctor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10450912,
+      "sha256": "aa14a3c9d053890f3255daa74015ee0bb28dd1fe350f122d4c1030d6e6b14180",
+      "raw_preimage_hex": "ffffffff20efcb000000000028efcb000100000033efcb00020000003befcb002205931904000000e077df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbef50",
+      "end_exclusive": "00cbef75",
+      "length": 37,
+      "label": "texture_named_ctor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9170768,
+      "sha256": "30499fe6e681d177ce74c941d568895fef21a28413b2a26ea0400baf34ccf590",
+      "raw_preimage_hex": "8b4dc4e9b850e7ff8b4dc483c140e9ddfce7ff8d4dc8e95505e8ffb83c78df00e9ce7bf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df7824",
+      "end_exclusive": "00df7860",
+      "length": 60,
+      "label": "texture_named_ctor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10450980,
+      "sha256": "f4a8a1f2d88cdfd300b6d2317bf8550baea310d670f71d1169d3e2b606e9fbc0",
+      "raw_preimage_hex": "ffffffff50efcb000000000058efcb000100000063efcb0022059319030000002478df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbefa0",
+      "end_exclusive": "00cbefb2",
+      "length": 18,
+      "label": "texture_surface_getter_eh",
+      "kind": "eh_code",
+      "disk_offset": 9170848,
+      "sha256": "a29536078f63ba79ed7c32c3bb0ec4647fac18efa6ea3065de292ae9b6c10d0f",
+      "raw_preimage_hex": "8b4df0e918ede7ffb89478df00e9917bf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df788c",
+      "end_exclusive": "00df78b8",
+      "length": 44,
+      "label": "texture_surface_getter_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10451084,
+      "sha256": "90b7856e2be94ca0c87f61e754f06a522a81ff908342dcbb76fa9c53cc194ed8",
+      "raw_preimage_hex": "ffffffffa0efcb0022059319010000008c78df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbe090",
+      "end_exclusive": "00cbe0a2",
+      "length": 18,
+      "label": "logical_base_dtor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9166992,
+      "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+      "raw_preimage_hex": "8b4df0e9e837dcffb80c69df00e9a18af3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df6904",
+      "end_exclusive": "00df6930",
+      "length": 44,
+      "label": "logical_base_dtor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10447108,
+      "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+      "raw_preimage_hex": "ffffffff90e0cb0022059319010000000469df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbe0b0",
+      "end_exclusive": "00cbe0cd",
+      "length": 29,
+      "label": "logical_base_named_ctor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9167024,
+      "sha256": "fe885481ffb1a1b48822cbf9e8dda2040cb3b83e29da2124a75a6710b3f07d4a",
+      "raw_preimage_hex": "8b4df0e9c837dcff8b4df083c108e95dfc75ffb84069df00e9768af3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df6930",
+      "end_exclusive": "00df6964",
+      "length": 52,
+      "label": "logical_base_named_ctor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10447152,
+      "sha256": "c6aadcbc89e62cc2a114743bd6fcbacb8099e0203b5b1261142e6520eac40029",
+      "raw_preimage_hex": "ffffffffb0e0cb0000000000b8e0cb0022059319020000003069df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cbdce0",
+      "end_exclusive": "00cbdcfa",
+      "length": 26,
+      "label": "renderer_name_notification_eh",
+      "kind": "eh_code",
+      "disk_offset": 9166048,
+      "sha256": "d06b30caa74fb6ab6b9eeecc2bb00dbf6b548b4314f6a21ab29b52640302fdf6",
+      "raw_preimage_hex": "8d4dece92834e6ff8d4de4e9300076ffb89466df00e9498ef3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df6684",
+      "end_exclusive": "00df66b8",
+      "length": 52,
+      "label": "renderer_name_notification_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10446468,
+      "sha256": "ed6141b2ac4f80f7eeedbda84c26f7e61ceef42cbb3a5306f4843ad547d05532",
+      "raw_preimage_hex": "ffffffffe0dccb0000000000e8dccb0022059319020000008466df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00ca2ef0",
+      "end_exclusive": "00ca2f02",
+      "length": 18,
+      "label": "memory_backing_ctor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9055984,
+      "sha256": "5728f31f843e493e0295f4bf9dac707492897aec4399e92733e43935a24ca6b0",
+      "raw_preimage_hex": "8b4df0e9f801f3ffb89050dd00e9413cf5ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00dd5088",
+      "end_exclusive": "00dd50b4",
+      "length": 44,
+      "label": "memory_backing_ctor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10309768,
+      "sha256": "1c573614f9d385c5b6a9c1cdd0e49878d76ec0ee76e78b17337a8ee14af2cb71",
+      "raw_preimage_hex": "fffffffff02eca0022059319010000008850dd00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00cc76b0",
+      "end_exclusive": "00cc76c2",
+      "length": 18,
+      "label": "memory_stream_dtor_eh",
+      "kind": "eh_code",
+      "disk_offset": 9205424,
+      "sha256": "a0c8a21d89fd9e761768ecf14ea99540909751a2c025335297d8066a86a06a77",
+      "raw_preimage_hex": "8b4df0e92810efffb8ac22e000e981f4f2ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00e022a4",
+      "end_exclusive": "00e022d0",
+      "length": 44,
+      "label": "memory_stream_dtor_map_funcinfo",
+      "kind": "data",
+      "disk_offset": 10494628,
+      "sha256": "78bc2f0dbae8578795945560f2720e3b6b578159a4a86a7dc4238f0a5f41b757",
+      "raw_preimage_hex": "ffffffffb076cc002205931901000000a422e000000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d61948",
+      "end_exclusive": "00d619a0",
+      "length": 88,
+      "label": "texture_profile_22_entries",
+      "kind": "data",
+      "disk_offset": 9836872,
+      "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad",
+      "raw_preimage_hex": "e030bd0090f5b30090fab30030ceb30040ceb300803eb300903eb300a0ceb30030ddb30090ddb300b0d7b30090e1b30080fdb30090d5b300c0d5b30050ceb30060ceb30090ceb30070ceb30080ceb30010dfb30040d6b300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d61940",
+      "end_exclusive": "00d61944",
+      "length": 4,
+      "label": "texture_pool_profile",
+      "kind": "data",
+      "disk_offset": 9836864,
+      "sha256": "62c8210b890d305c43f2ee4096df98bab572577016be9b50b7b71e0db8041e42",
+      "raw_preimage_hex": "10e5b300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "0108db38",
+      "end_exclusive": "0108db70",
+      "length": 56,
+      "label": "texture_pool_canonical_storage",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "raw_preimage_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00e188b4",
+      "end_exclusive": "00e188b8",
+      "length": 4,
+      "label": "actual_allocator_head",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "0108daf8",
+      "end_exclusive": "0108dafc",
+      "length": 4,
+      "label": "texture_tracking_counter",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "0108d6e8",
+      "end_exclusive": "0108d6ec",
+      "length": 4,
+      "label": "actual_shared_texture_serial",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "0108d6dc",
+      "end_exclusive": "0108d6dd",
+      "length": 1,
+      "label": "renderer_optional_guard_gate",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "raw_preimage_hex": "00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "label": "actual_renderer_publication",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d619e4",
+      "end_exclusive": "00d619f5",
+      "length": 17,
+      "label": "handmade_texture_literal",
+      "kind": "data",
+      "disk_offset": 9837028,
+      "sha256": "bc72009b12622e7f0ec62e39863f52f2659b3278df125de4cb90611c2541d129",
+      "raw_preimage_hex": "68616e646d616465207465787475726500",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d5f228",
+      "end_exclusive": "00d5f22c",
+      "length": 4,
+      "label": "logical_texture_2d_base_profile",
+      "kind": "data",
+      "disk_offset": 9826856,
+      "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+      "raw_preimage_hex": "e030bd00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d5f1f4",
+      "end_exclusive": "00d5f1f8",
+      "length": 4,
+      "label": "logical_texture_common_base_profile",
+      "kind": "data",
+      "disk_offset": 9826804,
+      "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+      "raw_preimage_hex": "e030bd00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d5f114",
+      "end_exclusive": "00d5f118",
+      "length": 4,
+      "label": "renderer_virtual_6c_target",
+      "kind": "data",
+      "disk_offset": 9826580,
+      "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+      "raw_preimage_hex": "5022b300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00b3defc",
+      "end_exclusive": "00b3df0c",
+      "length": 16,
+      "label": "texture_reset_pool_jump_table",
+      "kind": "data",
+      "disk_offset": 7593724,
+      "sha256": "bf6e27ad79143889b5709e8c6b17e04821abde4c73b5c53fb8468ecb6c9da448",
+      "raw_preimage_hex": "abddb300afddb300b6ddb300bdddb300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d642c0",
+      "end_exclusive": "00d642f4",
+      "length": 52,
+      "label": "memory_stream_profile_13_entries",
+      "kind": "data",
+      "disk_offset": 9847488,
+      "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+      "raw_preimage_hex": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d15ad8",
+      "end_exclusive": "00d15ae0",
+      "length": 8,
+      "label": "memory_backing_profile",
+      "kind": "data",
+      "disk_offset": 9525976,
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "raw_preimage_hex": "e030bd0070448d00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d5c104",
+      "end_exclusive": "00d5c108",
+      "length": 4,
+      "label": "stream_base_profile",
+      "kind": "data",
+      "disk_offset": 9814276,
+      "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+      "raw_preimage_hex": "e030bd00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "0109db98",
+      "end_exclusive": "0109dba0",
+      "length": 8,
+      "label": "memory_backing_count_and_bytes",
+      "kind": "data",
+      "disk_offset": null,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "raw_preimage_hex": "0000000000000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00ce221c",
+      "end_exclusive": "00ce2224",
+      "length": 8,
+      "label": "actual_interlocked_imports",
+      "kind": "data",
+      "disk_offset": 9314844,
+      "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258",
+      "raw_preimage_hex": "d056a000e856a000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df7690",
+      "end_exclusive": "00df7694",
+      "length": 4,
+      "label": "pool_map_probe",
+      "kind": "data",
+      "disk_offset": 10450576,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38",
+      "bytes": 4221
+    },
+    {
+      "path": "src/native_surface_owner.cpp",
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd",
+      "bytes": 8402
+    },
+    {
+      "path": "include/bsp/d3d9_surface_pool.hpp",
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "bytes": 3168
+    },
+    {
+      "path": "src/d3d9_surface_pool.cpp",
+      "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3",
+      "bytes": 11194
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "bytes": 1781
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "bytes": 2682
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf",
+      "bytes": 1488
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8",
+      "bytes": 3238
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "bytes": 3986
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "bytes": 10921
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079",
+      "bytes": 4426
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6",
+      "bytes": 3655
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "bytes": 5571
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+      "bytes": 6169
+    },
+    {
+      "path": "include/bsp/d3d9_texture.hpp",
+      "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+      "bytes": 4535
+    },
+    {
+      "path": "src/d3d9_texture.cpp",
+      "sha256": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+      "bytes": 5125
+    },
+    {
+      "path": "include/bsp/d3d9_reset_texture.hpp",
+      "sha256": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d",
+      "bytes": 1832
+    },
+    {
+      "path": "src/d3d9_reset_texture.cpp",
+      "sha256": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611",
+      "bytes": 2905
+    },
+    {
+      "path": "include/bsp/memory_stream.hpp",
+      "sha256": "0dd992d602060f5b5a38e2f6138070ed0eb24558862583ca03b2e7e2e804c269",
+      "bytes": 3388
+    },
+    {
+      "path": "src/memory_stream.cpp",
+      "sha256": "c59ba8d4d42d4447d816a6a66a47294fe6fde5fca95c853284c76557f0156348",
+      "bytes": 4490
+    },
+    {
+      "path": "include/bsp/material_sort_metadata.hpp",
+      "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+      "bytes": 3332
+    },
+    {
+      "path": "src/material_sort_metadata.cpp",
+      "sha256": "3fa67876fe50117cfa47a2461c7f289cd02d0f5c6833817451cc8f1343982be2",
+      "bytes": 1058
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/collect_texture_owner_evidence.py",
+      "sha256": "d3848b87d8a7a9caf540d6303aa537ad65ee5af03025ae3580187468856eeded",
+      "bytes": 10649
+    },
+    {
+      "path": "local/texture_owner_byte_evidence.json",
+      "sha256": "449243f02f55296da2cf7df07b2965f6767b6fbb6c2840e8e5ec592247fdbf8a",
+      "bytes": 63795
+    },
+    {
+      "path": "local/texture_owner_byte_evidence.log",
+      "sha256": "44c8c9da2816a9965b19edafe3322a5645cc9de73309cc77c70007cbf3a66dd8",
+      "bytes": 99
+    },
+    {
+      "path": "local/inspect_texture_bytes.py",
+      "sha256": "b2eb3f0c3b98be7fd5751c3a6af624b343eeab69fb1ade4c1f29734f39b54de2",
+      "bytes": 1518
+    },
+    {
+      "path": "docs/NATIVE_TEXTURE2D_OWNER_NEXT.md",
+      "sha256": "299bd340d17ff7f787084cd32ccf3426298ac1ca4f6e65671fd4c211e841366f",
+      "bytes": 15564
+    }
+  ],
+  "validation": {
+    "live_pe_span_matches": 83,
+    "complete_function_extents": 41,
+    "calling_fragments": 3,
+    "exception_maps": 10,
+    "ghidra_modified": false,
+    "source_modified": false,
+    "cmake_modified": false,
+    "ledgers_modified": false,
+    "build_run": false,
+    "tests_run": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "Descriptive names and field meanings remain hypotheses tied to addresses; no recovered original C++ symbols claimed.",
+    "No full parent texture owner or resource-container implementation was attempted. Nested renderer container helpers remain dependencies, not assumed no-op callbacks.",
+    "Invalid native COM outputs, allocation exhaustion, native exceptions, invalid cache pointers and concurrent callback mutation are not made safe by the current typed interfaces.",
+    "The pool packet is ready without those parent-owner domains; main may implement the listed independent prerequisites under disjoint leases."
+  ]
+}
