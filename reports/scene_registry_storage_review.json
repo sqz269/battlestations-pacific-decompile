@@ -1,0 +1,295 @@
+{
+  "captured_utc": "2026-09-10T16:53:08.563917+00:00",
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "compared_bytes": 3444,
+  "ranges": [
+    {
+      "address": "00b81b90",
+      "end_exclusive": "00b81be5",
+      "length": 85,
+      "purpose": "iterator allocation helper",
+      "disk_offset": 7871376,
+      "disk_sha256": "432c3549227a354be518c01a9b30e2035df562f9b6ce0187fcecff46acf82f17",
+      "ghidra_sha256": "432c3549227a354be518c01a9b30e2035df562f9b6ce0187fcecff46acf82f17",
+      "matches_disk": true
+    },
+    {
+      "address": "00b82390",
+      "end_exclusive": "00b823aa",
+      "length": 26,
+      "purpose": "12-byte list sentinel allocation",
+      "disk_offset": 7873424,
+      "disk_sha256": "7883b91a95e6269894058ac80c1e9d433b0ea6c6e5f555b2d3500d9a6c6aee3b",
+      "ghidra_sha256": "7883b91a95e6269894058ac80c1e9d433b0ea6c6e5f555b2d3500d9a6c6aee3b",
+      "matches_disk": true
+    },
+    {
+      "address": "00b82570",
+      "end_exclusive": "00b8259c",
+      "length": 44,
+      "purpose": "8-byte iterator fill",
+      "disk_offset": 7873904,
+      "disk_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "ghidra_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "matches_disk": true
+    },
+    {
+      "address": "00b827c0",
+      "end_exclusive": "00b828f4",
+      "length": 308,
+      "purpose": "single-entry unlink/free/count decrement",
+      "disk_offset": 7874496,
+      "disk_sha256": "9f96ded1953c1e6bda8f837e56c16621d3b611604c3a560f0921f119fd1e4c49",
+      "ghidra_sha256": "9f96ded1953c1e6bda8f837e56c16621d3b611604c3a560f0921f119fd1e4c49",
+      "matches_disk": true
+    },
+    {
+      "address": "00b829d0",
+      "end_exclusive": "00b82a18",
+      "length": 72,
+      "purpose": "list destructor including omitted native return tail",
+      "disk_offset": 7875024,
+      "disk_sha256": "72925adbe60b5350e4e0eb18145c24cbc96dd4fea0399f5b10b1094bb57fbd93",
+      "ghidra_sha256": "72925adbe60b5350e4e0eb18145c24cbc96dd4fea0399f5b10b1094bb57fbd93",
+      "matches_disk": true
+    },
+    {
+      "address": "00b82bf0",
+      "end_exclusive": "00b82c5a",
+      "length": 106,
+      "purpose": "iterator vector erase",
+      "disk_offset": 7875568,
+      "disk_sha256": "810b748edbc38fe54125ada5ffe1e6b8c57f9769b37f98aad9aacaeeaee4f3dc",
+      "ghidra_sha256": "810b748edbc38fe54125ada5ffe1e6b8c57f9769b37f98aad9aacaeeaee4f3dc",
+      "matches_disk": true
+    },
+    {
+      "address": "00b82cf0",
+      "end_exclusive": "00b82d21",
+      "length": 49,
+      "purpose": "registry destructor, bucket storage before list destructor",
+      "disk_offset": 7875824,
+      "disk_sha256": "2e0676a0e9066ea2338eeb367a3542577bea7151534d4ef33f7b780ca5449725",
+      "ghidra_sha256": "2e0676a0e9066ea2338eeb367a3542577bea7151534d4ef33f7b780ca5449725",
+      "matches_disk": true
+    },
+    {
+      "address": "00b82fd0",
+      "end_exclusive": "00b83211",
+      "length": 577,
+      "purpose": "iterator insertion and capacity growth",
+      "disk_offset": 7876560,
+      "disk_sha256": "33bcad0e869a5b208a886b652e096206ea41cca2a6568121b5bfb3be071b96b4",
+      "ghidra_sha256": "33bcad0e869a5b208a886b652e096206ea41cca2a6568121b5bfb3be071b96b4",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83220",
+      "end_exclusive": "00b832b6",
+      "length": 150,
+      "purpose": "initial iterator vector allocation",
+      "disk_offset": 7877152,
+      "disk_sha256": "64df24a8b86ed4b2acfc7551554c837341828a3ff6947c76e2b4d26cd30222af",
+      "ghidra_sha256": "64df24a8b86ed4b2acfc7551554c837341828a3ff6947c76e2b4d26cd30222af",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83490",
+      "end_exclusive": "00b8353a",
+      "length": 170,
+      "purpose": "bucket boundary resize",
+      "disk_offset": 7877776,
+      "disk_sha256": "134008a558bbdd897dac7f097c081790ca3c23b58fdf4818811abf65fc0372ba",
+      "ghidra_sha256": "134008a558bbdd897dac7f097c081790ca3c23b58fdf4818811abf65fc0372ba",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83560",
+      "end_exclusive": "00b835cc",
+      "length": 108,
+      "purpose": "bucket boundary assign",
+      "disk_offset": 7877984,
+      "disk_sha256": "1748d0a1dc8b3ea9f32732f9c6bd2808e0da3ef1fc6c7b08803da34de41c7409",
+      "ghidra_sha256": "1748d0a1dc8b3ea9f32732f9c6bd2808e0da3ef1fc6c7b08803da34de41c7409",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83600",
+      "end_exclusive": "00b83678",
+      "length": 120,
+      "purpose": "registry constructor",
+      "disk_offset": 7878144,
+      "disk_sha256": "f4efd75bf52ae1a92a78027ee9625496e7fde3dd3b4317f0ddc2c21fdcec2086",
+      "ghidra_sha256": "f4efd75bf52ae1a92a78027ee9625496e7fde3dd3b4317f0ddc2c21fdcec2086",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83700",
+      "end_exclusive": "00b83bdf",
+      "length": 1247,
+      "purpose": "insertion and linear hash split",
+      "disk_offset": 7878400,
+      "disk_sha256": "1b26071679a7e57d754a31d4be8f688b14953c155cba5f1d6e3c75d981ae4db3",
+      "ghidra_sha256": "1b26071679a7e57d754a31d4be8f688b14953c155cba5f1d6e3c75d981ae4db3",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83be0",
+      "end_exclusive": "00b83c42",
+      "length": 98,
+      "purpose": "clear retaining iterator capacity",
+      "disk_offset": 7879648,
+      "disk_sha256": "c448e825b5160d8b895c02f12b8c91a175027eb093205b644412e388337bb321",
+      "ghidra_sha256": "c448e825b5160d8b895c02f12b8c91a175027eb093205b644412e388337bb321",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83d90",
+      "end_exclusive": "00b83e42",
+      "length": 178,
+      "purpose": "range erase routing whole-list erase through clear",
+      "disk_offset": 7880080,
+      "disk_sha256": "6bd698c2a1312267fd60fa1a7d50bf407091b9fd6fc3dad80fe639f65508906f",
+      "ghidra_sha256": "6bd698c2a1312267fd60fa1a7d50bf407091b9fd6fc3dad80fe639f65508906f",
+      "matches_disk": true
+    },
+    {
+      "address": "00b83e50",
+      "end_exclusive": "00b83eba",
+      "length": 106,
+      "purpose": "key erase entry point",
+      "disk_offset": 7880272,
+      "disk_sha256": "20bf883be6c0971198548fdc6e190b7d12813b66b4b1f1b5136b17514b992bf2",
+      "ghidra_sha256": "20bf883be6c0971198548fdc6e190b7d12813b66b4b1f1b5136b17514b992bf2",
+      "matches_disk": true
+    }
+  ],
+  "schema_version": 1,
+  "reviewed_utc": "2026-09-10T16:55:25.666509+00:00",
+  "packet": "canonical_scene_registry_storage_review",
+  "review_result": "No blocking discrepancy found in the bounded storage/lifetime behavior; source review only.",
+  "source_checkout": "J:\\PROG\\battlestations-pacific-decompile",
+  "source_base_commit": "79e5cd871880ee65a3587b77985345eeab61fb5e",
+  "reviewed_source": [
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "sha256": "d90a5c89d446e1bf020924388fff4cba9d3c62d6c4b74982f88d1af9f3a59997"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "sha256": "65abebe502aca5e4d32a8dc33df3086d2336866a5abd56d36967583a2a8d1f8b"
+    }
+  ],
+  "verification": {
+    "installed_saved_program_bytes": "16 complete address spans, 3444 bytes, all equal; not whole-program equivalence",
+    "assembly_review": true,
+    "source_review": true,
+    "build_run_by_this_review": false,
+    "native_fixture_run_by_this_review": false,
+    "new_tests_added": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutations_by_this_review": false
+  },
+  "findings": [
+    {
+      "id": "one_owned_native_list",
+      "status": "matched",
+      "native_addresses": [
+        "00b82390",
+        "00b83600"
+      ],
+      "evidence": "Sentinel allocation is 12 bytes, with next/previous at +0/+4; +8 is not written. Registry constructor allocates sentinel before 9 iterator pairs.",
+      "source_result": "Entry has next/previous/key only; sentinel payload preserves allocator bytes; attachment associations are in a separate host map with no ordering links."
+    },
+    {
+      "id": "iterator_owner_identity",
+      "status": "initial_review_issue_resolved",
+      "native_addresses": [
+        "00b82570",
+        "00b83220",
+        "00b83600",
+        "00b83700"
+      ],
+      "evidence": "Each 8-byte iterator is {registry+4, link}; native list-owner+4 contains head and +8 contains size. Owner is not the address of its head-pointer field.",
+      "source_result": "Dedicated ListOwner contains an untouched leading DWORD, head and size; pairs use &list_. Win32 static assertions establish head +4 and size +8. Copies preserve the owner; link-only updates preserve an already-valid owner."
+    },
+    {
+      "id": "reachable_growth_capacity",
+      "status": "matched_with_bounded_scope",
+      "native_addresses": [
+        "00b81b90",
+        "00b82fd0",
+        "00b83490",
+        "00b83700"
+      ],
+      "evidence": "General vector growth uses max(required, old_capacity + floor(old_capacity/2)), with 0x1fffffff limit; registry reachable lengths/capacities are 9,17,33,65,... . Split occurs before duplicate lookup.",
+      "source_result": "Private resize allocates the exact requested count. This equals native capacity for reachable registry growth; it is not a reconstruction of arbitrary vector insertion. Growth copies existing pairs, fills new pairs, frees old block, then publishes replacement storage."
+    },
+    {
+      "id": "clear_preserves_storage",
+      "status": "matched",
+      "native_addresses": [
+        "00b82bf0",
+        "00b83560",
+        "00b83be0",
+        "00b83d90",
+        "00b83e50"
+      ],
+      "evidence": "Clear first resets sentinel next/previous and size, then frees each entry, assigns 9 sentinel iterators without freeing capacity, and finally resets mask/active to 1. Whole-list erase routes through clear.",
+      "source_result": "Clear follows that logical order and retains boundary pointer/capacity. Subsequent regrowth within retained capacity reuses the block. Sentinel payload is untouched during clear."
+    },
+    {
+      "id": "partial_erase_order",
+      "status": "matched",
+      "native_addresses": [
+        "00b827c0"
+      ],
+      "evidence": "00b828ca..00b828d5 unlinks the entry, 00b828d8 frees it, and returning continuation 00b828dd..00b828e3 decrements size. Borrowed key target is not freed.",
+      "source_result": "Entry unlink, free and size decrement remain in native order; host association is removed separately."
+    },
+    {
+      "id": "destructor_continuation",
+      "status": "matched",
+      "native_addresses": [
+        "00b829d0",
+        "00b82cf0"
+      ],
+      "evidence": "Registry destructor frees/zeros iterator storage before entering list destructor. List destructor resets sentinel links and count before freeing entries, frees sentinel last, clears owner.head, and returns at 00b82a17.",
+      "source_result": "Destructor calls bucket-storage destruction first, then list destruction. List destruction follows reset/free/head-null order."
+    }
+  ],
+  "assembly_corrections_required_for_reading": [
+    {
+      "address": "00b829f8",
+      "hex": "83c4043b7e048bc775ee5f",
+      "meaning": "Returning free continuation: stack cleanup, compare next against sentinel, loop, restore EDI."
+    },
+    {
+      "address": "00b82a0c",
+      "hex": "83c404c74604000000005ec3",
+      "meaning": "Returning sentinel free continuation: stack cleanup, owner.head = null, restore ESI, RET at 00b82a17. Old Ghidra body ended at 00b82a0b."
+    },
+    {
+      "address": "00b82d00",
+      "hex": "83c404",
+      "meaning": "Returning vector free continuation, followed by zeroing vector pointers and tail call to list destructor."
+    },
+    {
+      "address": "00b8310f",
+      "hex": "83c404",
+      "meaning": "Returning old-vector free continuation, followed by publishing replacement capacity/end/begin."
+    }
+  ],
+  "limitations": [
+    "The reconstructed C++ interface is not an object overlay or a drop-in x86 ABI replacement.",
+    "This review establishes source/data/order correspondence on well-formed registry state, not identical native exception handling or instruction-level store timing.",
+    "Host association storage has independent allocations; it is not part of the raw native list and is not asserted to reproduce a whole-process allocation trace.",
+    "Owner fields are invariant in the encapsulated interface; native validation and repair behavior for externally corrupted iterator owners is not reproduced.",
+    "Native sentinel +8 is unwritten. Reconstruction preserves its bytes via a read-and-write of the payload; identical memory-write traces are not claimed.",
+    "No existing focused registry native fixture was found in this checkout. This review adds no substitute native calls or broad tests."
+  ]
+}
