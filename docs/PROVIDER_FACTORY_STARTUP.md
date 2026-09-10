@@ -122,3 +122,8 @@ The program was saved and the inventory/all affected exports refreshed.
 The shared `00bf0fb0` received the broader descriptive name
 `BSP_FileProvider_ResolveLogicalName` because both physical and FileStore
 provider tables use it.
+
+## Corrections from docs/APP_INIT_VFS_SINGLETONS.md
+
+- There are four startup factories, not three: MPAK (`00736b60`) is registered at `0073d955` after both `0073cb10` package scans. Because the scans enumerate extension `mpkg` only, startup scanning never mounts a `.mpak` archive.
+- The startup mount table above lists the two physical mounts. The third mount, `filestore` -> `.` at priority 300, pushes ownership byte 0, not the 1 the physical mounts push.

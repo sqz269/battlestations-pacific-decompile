@@ -333,3 +333,7 @@ recovered control flow and field derivation, not binary equivalence.
    position in the sequence, between the search-path registration and the water texture sources.
 7. `src/win32_window.cpp`, `docs/WINDOW_CREATION.md` and `docs/PLATFORM_LOOP.md` still say
    `CS_GLOBALCLASS`. Correcting them belongs to whoever owns those files.
+
+### Correction from docs/APP_INIT_VFS_SINGLETONS.md
+
+The registry behind `DAT_010904e0` is the MPAK provider factory's: the lock guards `DAT_010904dc`, the cached mpak provider that `00bb83a0` returns. `00736c30` builds the related 1Ch-byte reference-counted registry in `DAT_010904d8` (refcount 1 at +4, lifetime subobject at +8, decimal 100 at +0Ch) that the mpak provider constructor `00bb8240` reads.

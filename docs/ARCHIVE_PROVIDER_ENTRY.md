@@ -170,3 +170,7 @@ verifies three cached font opens and the installed glyph draw. See
 early buffering, ownership and failure boundaries. MPKG entry parsing and
 materialization are subsequently implemented as described above; mounted MPKG
 provider wiring remains incomplete.
+
+## Correction from docs/APP_INIT_VFS_SINGLETONS.md
+
+A fourth provider factory, MPAK (`00736b60`, create method `00bb83a0`, RET 8, accepting only system paths ending in `.mpak`), is registered at startup after the three described here.

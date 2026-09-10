@@ -89,3 +89,7 @@ of a registered parser in these functions. A traversal probe must report
 skipping unsupported data separately from decoding a real resource object.
 
 There is no native ABI replacement or gameplay validation in this packet.
+
+## Correction from docs/APP_INIT_VFS_SINGLETONS.md
+
+The two application parsers' lifetime vtables: `AnimationChannels` writes base `00cfea08` then final `00cfea34`; `Bone` writes base `00cfea0c` then final `00cfea44` (stores at `00736e38`/`e3f`/`e45` and `00736f08`/`f0f`/`f15`).
