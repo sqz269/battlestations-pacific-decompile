@@ -1,0 +1,254 @@
+{
+  "packet": "multi_menu_screens",
+  "doc": "docs/MULTI_MENU_SCREENS.md",
+  "owner": "agent/multi-menu-screens",
+  "addresses": ["005E6D90", "005EA8C0", "005E3290", "00574240", "005D2F90", "005CFDA0", "00689310", "00689510", "005EA720", "005EA7C0", "005E1820", "0056F320", "005D2440", "005CF260"],
+  "files": ["docs/MULTI_MENU_SCREENS.md", "reports/multi_menu_screens.json", "include/bsp/multi_menu_screens.hpp", "src/multi_menu_screens.cpp"],
+  "manager": {
+    "global": "00E198B4",
+    "size": "0x68",
+    "vtable": "00CF7820",
+    "vtable_slots": 5,
+    "vtable_entries": ["006892F0", "00689540", "00689510", "00687320", "00687800"],
+    "vtable_end_evidence": "the literal GVMultiMenu::Init begins at 00CF7834, ten bytes after 00CF7820+14h",
+    "screen_slots": {"0x40": "005E6D90", "0x44": "005EA8C0", "0x48": "005E3290", "0x4C": "00574240", "0x50": "005D2F90", "0x54": "005CFDA0"},
+    "init_stores": ["00689678", "00689689", "0068969F", "006896B5", "006896CB", "006896E1"],
+    "member_58": {
+      "state": "declared, dead",
+      "evidence": "not written by the constructor 006887E0 (which zeroes only +5Ch/+60h/+64h), not by Init 00689540, not by the destructor 006888E0 (whose screen-collection loop at 0068891A..00688998 pushes exactly +40h..+54h), and not by any of the five class virtuals. A wildcard image scan for 'mov <reg>,[00E198B4]' followed by any [<reg>+58h] access returns no matches.",
+      "hypothesis": "a seventh screen slot the shipped Init never fills; type unrecoverable, provisional"
+    },
+    "member_5c": {
+      "state": "live, no traced producer",
+      "layout": "{first, last, end} at +5Ch/+60h/+64h",
+      "evidence": "constructor zeroes all three; destructor frees the buffer at 00688A98 with a plain free and no element-destructor pass, then zeroes them again",
+      "element_type": "trivially destructible; raw pointers or a small POD. Strings and refcounted handles are ruled out by the missing destructor pass."
+    }
+  },
+  "screen_base": {
+    "constructor": "004F7180",
+    "vtable": "00CEAE54",
+    "vtable_slots": 10,
+    "vtable_end_evidence": "00CEAE54+28h is already the next vtable (0042B110 family)",
+    "slot_00": "__purecall (00BF698E); each leaf supplies 'mov eax,<screen id>; ret'",
+    "slot_10_register": "004F71D0",
+    "registry": "00E18B60, 95 slots"
+  },
+  "interface_to_screen_map": {
+    "function": "00687330",
+    "note": "owned by the screen-sets packet; read only here. Jump table at 006873EC, ids 3..1Fh.",
+    "rows_used": [
+      {"interface_id": "0x0F", "name": "INTF_MULTIMAINMENU", "screen_id": "0x10", "constructor": "005E6D90"},
+      {"interface_id": "0x10", "name": "INTF_MULTIMODESELECTOR", "screen_id": "0x11", "constructor": "005EA8C0"},
+      {"interface_id": "0x14", "name": "INTF_MULTIGAMELOBBY", "screen_id": "0x16", "constructor": "005E3290"},
+      {"interface_id": "0x1A", "name": "INTF_MULTISESSIONBROWSER", "screen_id": "0x1C", "constructor": "00574240"},
+      {"interface_id": "0x1B", "name": "INTF_MULTIERROR", "screen_id": "0x1D", "constructor": "005D2F90"}
+    ],
+    "chat_screen": "screen id 0x15 is not a target of 00687330, so no interface request selects 005CFDA0; 00772083 reaches it through 00E198B4+54h directly"
+  },
+  "interface_name_table": {
+    "address": "00E08CD8",
+    "decoded_here": {"0x0F": "INTF_MULTIMAINMENU", "0x10": "INTF_MULTIMODESELECTOR", "0x11": "INTF_MULTILIVERANKEDSELECTOR", "0x12": "INTF_MULTILAN", "0x13": "INTF_MULTICREATELANSERVER", "0x14": "INTF_MULTIGAMELOBBY", "0x15": "INTF_MULTISELECTPLAYER", "0x16": "INTF_MULTIPLAYERS", "0x17": "INTF_MULTIINGAME", "0x18": "INTF_MULTIFRIENDS", "0x19": "INTF_MULTISIGNIN", "0x1A": "INTF_MULTISESSIONBROWSER", "0x1B": "INTF_MULTIERROR", "0x1C": "INTF_MULTICREATENEWACCOUNTPC", "0x1D": "INTF_MULTISESSIONFILTER", "0x1E": "INTF_MULTITACTSHIT", "0x1F": "INTF_MULTIPOINTSSHIT"},
+    "anchors": "index 0x0F is INTF_MULTIMAINMENU (00CF75B8) and index 0x17 is INTF_MULTIINGAME (00CF7500), the two constants already fixed by docs/FRONTEND_MANAGERS.md and docs/GAME_SIMULATION_GATE.md"
+  },
+  "screens": [
+    {
+      "constructor": "005E6D90", "name": "BSP_MultiMainMenuScreen_Construct", "size": "0xF8",
+      "screen_id": "0x10", "id_virtual": "005E6E00", "interface_id": "0x0F",
+      "vtables": {"+00h": "00CF2708", "+08h": "00CF26F4", "+0Ch": "00CF26D4"},
+      "seh_handler": "00C75113", "animation_blocks": [{"offset": "+6Ch", "init": "00683610"}],
+      "register": {"address": "005EA720", "name": "BSP_MultiMainMenuScreen_Register",
+        "writes": {"+E0h": "0", "+E4h": "0", "+ECh": "*(00AA6750(scratch)+4)", "+F0h": "0", "+F4h": "-1"},
+        "gui_pages": [], "also_calls": ["virtual +14h", "005EA030"]},
+      "widget_bind_virtual": "005E7B10",
+      "widget_literals": ["Main_Listbox", "slider_FrameBox", "rank_Text", "rank_Icon", "arrow_top_Icon", "achievement_0_Icon", "select_FrameBox", "rankgraf_FrameBox", "rank_prog_Icon", "rank_prog_new_Icon", "rank_var_Text", "playername_var_Text"],
+      "adjacent_layout_labels": ["FE.multi_player_title (00CF2730)", "FE.multi_ranked_title (00CF2748)"],
+      "state": "analyzed; layout and ids reconstructed, build-tested"
+    },
+    {
+      "constructor": "005EA8C0", "name": "BSP_MultiModeSelectorScreen_Construct", "size": "0x100",
+      "screen_id": "0x11", "id_virtual": "005EA930", "interface_id": "0x10",
+      "vtables": {"+00h": "00CF2B44", "+08h": "00CF2B30", "+0Ch": "00CF2B10"},
+      "seh_handler": "00C75503", "animation_blocks": [{"offset": "+6Ch", "init": "00683610"}],
+      "register": {"address": "005EA7C0", "name": "BSP_MultiModeSelectorScreen_Register",
+        "writes": {"+10h": "0", "+F4h": "-1"}, "gui_pages": [], "also_calls": ["virtual +14h"],
+        "note": "its only callee is 004F71D0"},
+      "widget_bind_virtual": "005EADC0",
+      "widget_literals": ["Main_Listbox", "mode_Text", "missionpicture_Icon", "min_rank_t_Text", "private_t_Text", "max_rank_t_Text", "players_t_Text", "textbox_Group", "test_Clipbox", "scroll_right_Icon", "arrow_top_scroll_Icon", "textx_scroll_bg_Icon", "textx_scroll_FrameBox", "rank_Icon"],
+      "state": "analyzed; layout and ids reconstructed, build-tested"
+    },
+    {
+      "constructor": "005E3290", "name": "BSP_MultiGameLobbyScreen_Construct", "size": "0x300",
+      "screen_id": "0x16", "id_virtual": "005E10A0", "interface_id": "0x14",
+      "vtables": {"+00h": "00CF23E4", "+08h": "00CF23D0", "+0Ch": "00CF23B0"},
+      "seh_handler": "00C74F9B", "animation_blocks": [{"count": 3, "init": "00683610"}],
+      "constructor_clears": ["+1F8h..+200h", "+234h..+23Ch", "+244h..+24Ch", "+2E4h..+2ECh", "+270h (byte)", "+271h (byte)", "+1Ch"],
+      "constructor_publishes": "DAT_00E19594 = *(DAT_00E188A8 + 0x60C)",
+      "constructor_loop": {"entries": 8, "callees": ["00576B10", "00575E80", "005C49C0", "005C6850", "005D7070"], "reads": "DAT_00E198AC+5Ch", "state": "not followed"},
+      "register": {"address": "005E1820", "name": "BSP_MultiGameLobbyScreen_Register",
+        "gui_pages": [{"page": "FE_lobby", "handle_offset": "+14h"}, {"page": "FE_lobby_settings", "handle_offset": "+18h"}],
+        "writes": {"+2F0h": "-1", "+2F4h": "-1"}, "also_calls": ["virtual +14h", "005E12A0"]},
+      "adjacent_literals": ["UniqueID (00CF240C)", "FE.multi_victorypointlimit_desc", "FE.multi_weather_desc"],
+      "state": "analyzed; layout and ids reconstructed, build-tested"
+    },
+    {
+      "constructor": "00574240", "name": "BSP_MultiSessionBrowserScreen_Construct", "size": "0x2D0",
+      "screen_id": "0x1C", "id_virtual": "00573BB0", "interface_id": "0x1A",
+      "vtables": {"+00h": "00CEF134", "+08h": "00CEF120", "+0Ch": "00CEF100"},
+      "seh_handler": "00C6F20D", "animation_blocks": [{"count": 3, "init": "00683610"}],
+      "list_sentinel": {"offset": "+27Ch", "allocator": "0056A430", "byte_11h": 1, "links": "+00h, +04h and +08h all point at the sentinel", "cleared_by": "0056A090", "relinked": true},
+      "constructor_writes": {"+270h": "DAT_00CEECEC", "+274h": "-1", "+280h": "0", "+284h": "0", "+288h": "0 (byte)", "+28Ch": "0", "+294h..+29Ch": "0", "+2A4h..+2ACh": "0", "+2B0h": "0"},
+      "register": {"address": "0056F320", "name": "BSP_MultiSessionBrowserScreen_Register",
+        "gui_pages": [], "strings": ["globals.no_server_found", "gui/radarshots/", "_C.tga", "_D.tga", "_E.tga", "_S.tga", "_ICS.tga", "_ICM.tga", "_ICL.tga", "_ICH.tga"],
+        "state": "analyzed to the registration and its texture names only"},
+      "adjacent_literals": ["RANK (00CEF15C)", "Connection_Group", "players_Text", "mode_Text", "server_Text"],
+      "state": "analyzed; layout and ids reconstructed, build-tested"
+    },
+    {
+      "constructor": "005D2F90", "name": "BSP_MultiErrorScreen_Construct", "size": "0x5C",
+      "screen_id": "0x1D", "id_virtual": "005D2F40", "interface_id": "0x1B",
+      "vtables": {"+00h": "00CF1BF4", "+08h": "00CF1BE0", "+0Ch": "00CF1BC0"},
+      "seh_handler": "00C73E69", "animation_blocks": [],
+      "members": {"+30h": "two 0x10-byte elements built by the EH vector constructor iterator, element constructor 004324A0"},
+      "labels": ["globals.yes", "globals.no"], "label_sink": "00450540",
+      "register": {"address": "005D2440", "name": "BSP_MultiErrorScreen_Register",
+        "gui_pages": [{"page": "_MultiError", "handle_offset": "+10h"}], "writes": {"+54h": "0"}},
+      "superseded_tag": "cg_array_ctor_helper (high, rename) was wrong: the EH vector iterator call constructs a two-element member, it is not an array helper",
+      "state": "analyzed; layout and ids reconstructed, build-tested"
+    },
+    {
+      "constructor": "005CFDA0", "name": "BSP_MultiChatScreen_Construct", "size": "0x90",
+      "screen_id": "0x15", "id_virtual": "005CFE40", "interface_id": null,
+      "vtables": {"+00h": "00CF1998", "+08h": "00CF19C0"},
+      "seh_handler": "00C73A69", "animation_blocks": [],
+      "second_base": "00A97260, chained after 004F7180",
+      "distinctive": "two vtables rather than three, and slot +04h (005CFE50) is overridden, which no other screen here does",
+      "members": {"+6Ch": "005CEE20()", "+70h": "0", "+78h": "005CEE40()", "+7Ch": "0", "+84h": "005CEE40()", "+88h": "0"},
+      "register": {"address": "005CF260", "name": "BSP_MultiChatScreen_Register",
+        "gui_pages": [{"page": "_Chat", "handle_offset": "+3Ch"}], "writes": {"+8Ch": "0 (byte)", "+8Dh": "0 (byte)"}, "also_calls": ["virtual +14h, last"]},
+      "external_reader": "00772083 loads 00E198B4+54h and passes the chat screen to a 0077xxxx multiplayer screen",
+      "state": "analyzed; layout and ids reconstructed, build-tested"
+    }
+  ],
+  "online_refresh": {
+    "activate": {
+      "address": "00689510", "name": "BSP_MultiMenu_Activate",
+      "convention": "__thiscall(this)", "ret": "RET, no stack arguments",
+      "sequence": ["00689513 CALL 00684700, the base activate", "00689518 client 00F8A2FC virtual +68h, bool in AL", "00689527 JZ 00689531 returns when clear", "0068952C MOV ECX,ESI / JMP 00689310, a tail jump"],
+      "note": "the client pointer is dereferenced with no null check, unlike 004BFC70 and 004D8100"
+    },
+    "refresh": {
+      "address": "00689310", "name": "BSP_MultiMenu_RefreshOnlinePlayerList",
+      "convention": "__thiscall(this); ECX is never read, the body loads the client into ECX at 0068935E before touching the incoming value",
+      "ret": "RET at 0068950C after 'add esp,0B4h'", "seh_handler": "00C7DB79",
+      "call_sites": [
+        {"site": "00689380", "call": "client virtual +70h(out, query, 1)", "effect": "the local record, returned by value; the query record is default-constructed"},
+        {"site": "006893BF", "call": "client virtual +7Ch(out)", "effect": "fills an MSVC std::list of the same record type"},
+        {"site": "00689419", "call": "004B3FC0", "effect": "compares min(len(local), len(entry)) bytes"},
+        {"site": "0068943F", "call": "006883B0", "effect": "copies a matching entry into a stack record at ESP+40h"},
+        {"site": "00689466", "call": null, "effect": "DAT_00E08701 = 1"},
+        {"site": "00689476", "call": "client virtual +1A0h(0)", "effect": "notify"},
+        {"site": "0068947C", "call": "00688780", "effect": "destroy the list nodes"},
+        {"site": "00689486", "call": "free (00BF65AC)", "effect": "free the list head proxy"}
+      ],
+      "record_type": {
+        "traced_extent": "0x3C",
+        "layout": {"+04h": "MSVC std::string (buffer +04h, _Mysize +14h, _Myres +18h)", "+20h": "dword", "+24h": "dword", "+28h..+2Bh": "four bytes", "+2Ch": "dword", "+30h": "byte", "+34h": "dword", "+38h..+3Bh": "four bytes"},
+        "evidence": "exactly the set 006883B0 copies after assigning the string through 00408120",
+        "list_node": "{_Next, _Prev, record}; the record starts at node+08h"
+      },
+      "match_test": "full string equality: 00689419 compares min(len) bytes and 00689425..00689438 then requires the lengths to be equal",
+      "discarded_copy": "each match is copied into a stack record whose only non-zero initialiser is the byte +3Ah = 1, and that record is destroyed at the epilogue without ever being read. The observable effects of the scan are the dirty byte and the notification.",
+      "no_early_exit": true
+    },
+    "dirty_flag": {
+      "address": "00E08701",
+      "set_by": "00689466 in 00689310",
+      "consumer": "0057B530, in segment 19 with the session browser: calls client virtual +94h, tests the byte at 0057B547, clears it at 0057B551 and rebuilds its list of 0xA0-byte records from the returned collection",
+      "other_writers": ["005E6F18 (in FUN_005E6F00)", "005E71CD"],
+      "other_writers_state": "not read"
+    }
+  },
+  "no_ghidra_function": {
+    "addresses": ["005E6E00", "005EA930", "005E10A0", "00573BB0", "005D2F40", "005CFE40"],
+    "detail": "each is five bytes of 'mov eax, imm32' plus 'ret', followed by int3 padding; read with disasm-raw. Named in the doc but no ledger name recorded, because the integrator must define the functions first.",
+    "why_it_matters": "they are the only recovered evidence for the registry index of each class"
+  },
+  "conventions": [
+    {"addresses": ["005E6D90", "005EA8C0", "005E3290", "00574240", "005D2F90", "005CFDA0"], "convention": "__thiscall(this) -> this in EAX", "ret": "RET"},
+    {"addresses": ["005EA720", "005EA7C0", "005E1820", "0056F320", "005D2440", "005CF260"], "convention": "__thiscall(this)", "ret": "RET"},
+    {"addresses": ["005E6E00", "005EA930", "005E10A0", "00573BB0", "005D2F40", "005CFE40"], "convention": "no arguments", "ret": "RET, id in EAX"},
+    {"addresses": ["00689510", "00689310"], "convention": "__thiscall(this); this unused by 00689310", "ret": "RET"},
+    {"addresses": ["00683610"], "convention": "__thiscall(this)", "ret": "RET"}
+  ],
+  "callers": {
+    "005E6D90": ["00689540"], "005EA8C0": ["00689540"], "005E3290": ["00689540"],
+    "00574240": ["00689540"], "005D2F90": ["00689540"], "005CFDA0": ["00689540"],
+    "00689510": ["manager vtable 00CF7820 slot +08h"], "00689310": ["00689510 (tail jump at 0068952C)"]
+  },
+  "uncertainties": [
+    "00E198B4+58h: a declared member with no writer, no reader and no recoverable type",
+    "the element type of the vector at 00E198B4+5Ch: trivially destructible, otherwise unknown",
+    "the identity of the online client at 00F8A2FC and of its virtuals +68h, +70h, +7Ch, +94h and +1A0h",
+    "why 00689310 copies each match into a record it discards",
+    "which of FE.multi_player_title and FE.multi_ranked_title a run selects: adjacency in .rdata is all the evidence",
+    "the eight-entry loop in the lobby constructor and DAT_00E19594",
+    "the body of 0056F320 past its registration",
+    "the +18h enter and +20h update virtuals of all six screens, so which XenonSystemManager accessors each consumes and which requests it enqueues is still open",
+    "the second base of the chat screen (00A97260) and the subobject constructors 005CEE20 and 005CEE40"
+  ],
+  "follow_up_packets": [
+    {"id": "multi_menu_screen_enter", "addresses": ["005E8B20", "005EC5B0", "005E51D0", "0057A680", "005D26D0", "005CE740"], "files": ["docs/MULTI_MENU_SCREEN_ENTER.md"], "contract": "The +18h enter virtual of each of the six screens: which XenonSystemManager accessors and session-poll notifications it reads and which interface requests it pushes."},
+    {"id": "multi_menu_screen_update", "addresses": ["005EA2D0", "005ECD80", "0057B530", "0057B600", "005D1460"], "files": ["docs/MULTI_MENU_SCREEN_UPDATE.md"], "contract": "The +20h update virtuals, including the session browser's DAT_00E08701 consumer 0057B530 and the 0xA0-byte session record it builds."},
+    {"id": "online_client_accessors", "addresses": ["00F8A2FC"], "files": ["docs/ONLINE_CLIENT_ACCESSORS.md"], "contract": "Identify the online client class, its vtable and the accessors +68h, +70h, +7Ch, +94h and +1A0h that the multiplayer menu uses; fixes the record type shared with 006883B0."},
+    {"id": "front_end_screen_animation", "addresses": ["00683610", "00683380", "00683790"], "files": ["docs/FRONT_END_SCREEN_ANIMATION.md"], "contract": "The animation block every front-end screen embeds and the two helpers the widget binds call; shared by the main-menu and multiplayer screen families."}
+  ],
+  "names_recorded": [
+    {"address": "005E6D90", "name": "BSP_MultiMainMenuScreen_Construct"},
+    {"address": "005EA8C0", "name": "BSP_MultiModeSelectorScreen_Construct"},
+    {"address": "005E3290", "name": "BSP_MultiGameLobbyScreen_Construct"},
+    {"address": "00574240", "name": "BSP_MultiSessionBrowserScreen_Construct"},
+    {"address": "005D2F90", "name": "BSP_MultiErrorScreen_Construct"},
+    {"address": "005CFDA0", "name": "BSP_MultiChatScreen_Construct"},
+    {"address": "00689310", "name": "BSP_MultiMenu_RefreshOnlinePlayerList"},
+    {"address": "005EA720", "name": "BSP_MultiMainMenuScreen_Register"},
+    {"address": "005EA7C0", "name": "BSP_MultiModeSelectorScreen_Register"},
+    {"address": "005E1820", "name": "BSP_MultiGameLobbyScreen_Register"},
+    {"address": "0056F320", "name": "BSP_MultiSessionBrowserScreen_Register"},
+    {"address": "005D2440", "name": "BSP_MultiErrorScreen_Register"},
+    {"address": "005CF260", "name": "BSP_MultiChatScreen_Register"},
+    {"address": "00689510", "name": "BSP_MultiMenu_Activate", "note": "existing record, evidence appended"}
+  ],
+  "reconstruction": {
+    "header": "include/bsp/multi_menu_screens.hpp",
+    "source": "src/multi_menu_screens.cpp",
+    "reuses": ["bsp/frontend_managers.hpp (MultiMenuManager, FrontEndManagerBase, the interface-id constants)", "bsp/frontend_states.hpp (FrontEndScreen, the 95-slot registry)"],
+    "deviation": "refresh_online_player_list_00689310 returns the last matching record; the original discards its copy",
+    "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math 1/1 passed; no new test added"
+  },
+  "state_reached": {
+    "005E6D90": "analyzed; layout and ids reconstructed, build-tested",
+    "005EA8C0": "analyzed; layout and ids reconstructed, build-tested",
+    "005E3290": "analyzed; layout and ids reconstructed, build-tested",
+    "00574240": "analyzed; layout and ids reconstructed, build-tested",
+    "005D2F90": "analyzed; layout and ids reconstructed, build-tested",
+    "005CFDA0": "analyzed; layout and ids reconstructed, build-tested",
+    "00689310": "reconstructed, build-tested",
+    "00689510": "reconstructed, build-tested",
+    "005EA720": "analyzed", "005EA7C0": "analyzed", "005E1820": "analyzed",
+    "005D2440": "analyzed", "005CF260": "analyzed",
+    "0056F320": "analyzed to the registration and its texture names only",
+    "00683610": "analyzed (field init only)",
+    "005E6E00": "exported from disk bytes; no Ghidra function",
+    "005EA930": "exported from disk bytes; no Ghidra function",
+    "005E10A0": "exported from disk bytes; no Ghidra function",
+    "00573BB0": "exported from disk bytes; no Ghidra function",
+    "005D2F40": "exported from disk bytes; no Ghidra function",
+    "005CFE40": "exported from disk bytes; no Ghidra function",
+    "00687330": "read only; owned elsewhere",
+    "00687800": "read only; owned elsewhere",
+    "00689540": "read only; owned elsewhere",
+    "006888E0": "read only; owned elsewhere"
+  }
+}
