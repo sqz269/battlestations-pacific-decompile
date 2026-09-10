@@ -1,0 +1,210 @@
+{
+  "packet": "app_init_vfs_and_parsers",
+  "parent": "0073d410",
+  "parent_name": "BSP_Application_Initialize",
+  "scope": "VFS phase 2 (0073d604-0073d899), the ungated factory tail (0073d94f-0073d988) and resource-parser phase 6 (0073db41-0073db69) of cSkeletonAppMidway::Init.",
+  "doc": "docs/APP_INIT_VFS_SINGLETONS.md",
+  "sources": [
+    "include/bsp/vfs_startup.hpp",
+    "src/vfs_startup.cpp",
+    "cmake/startup.cmake"
+  ],
+  "program": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "naming_disclaimer": "Every descriptive name is a hypothesis, not a recovered symbol. Field and offset meanings are read from observed writes and reads, not from source.",
+  "call_order": [
+    {"site": "0073d604", "call": "gate DAT_0109ceec == 0", "detail": "CMP/JNZ 0073d890; covers steps through 0073d888"},
+    {"site": "0073d610", "call": "0073c3b0", "detail": "hardware probe, bootstrap packet, inside the gate"},
+    {"site": "0073d615", "call": "malloc(0x0a0)", "detail": "provider manager storage; null result skips 0073d637"},
+    {"site": "0073d637", "call": "00beda60", "detail": "ECX = block; constructs the manager and registers physical factory 00bed990"},
+    {"site": "0073d642", "call": "store", "detail": "manager+0x90 = 00530620 (single C3 byte, INT3 padding)"},
+    {"site": "0073d652", "call": "store", "detail": "manager+0x8c = 00735b30 (single C3 byte, INT3 padding)"},
+    {"site": "0073d66d", "call": "004fc150", "detail": "FileStore factory singleton"},
+    {"site": "0073d675", "call": "00be0660", "detail": "ECX = DAT_0109ceec, stack = FileStore factory, RET 4"},
+    {"site": "0073d680", "call": "00736a90", "detail": "MPKG factory singleton"},
+    {"site": "0073d688", "call": "00be0660", "detail": "ECX = DAT_0109ceec, stack = MPKG factory, RET 4"},
+    {"site": "0073d697", "call": "GetCurrentDirectoryA", "detail": "nBufferLength 0x0fa, shared stack buffer"},
+    {"site": "0073d6ac", "call": "_strcat_s", "detail": "size 0x100, literal 00ce7894 = \"\\\\\""},
+    {"site": "0073d6f9", "call": "00be1890", "detail": "cwd+\\ -> \".\", priority 0, ownership 1, device -1"},
+    {"site": "0073d792", "call": "00be1890", "detail": "cwd+\\ -> \"persistent_data\", priority 99, ownership 1, device -1"},
+    {"site": "0073d829", "call": "00be1890", "detail": "\"filestore\" -> \".\", priority 300, ownership 0, device -1"},
+    {"site": "0073d881", "call": "0073cb10", "detail": "package scan, ECX = application"},
+    {"site": "0073d888", "call": "0073cb10", "detail": "same call repeated immediately"},
+    {"site": "0073d894", "call": "00738360", "detail": "resource search paths; JNZ target of the gate, so ungated"},
+    {"site": "0073d94a", "call": "0073ce20", "detail": "command-line switch table; first point at which cachedload is known"},
+    {"site": "0073d955", "call": "00736b60", "detail": "MPAK factory singleton, ungated"},
+    {"site": "0073d95d", "call": "00be0660", "detail": "ECX = DAT_0109ceec, stack = MPAK factory, RET 4"},
+    {"site": "0073d968", "call": "00736c30", "detail": "PAK archive registry singleton"},
+    {"site": "0073d970", "call": "00bd9230", "detail": "ECX = DAT_0109ceec; manager+0x88 = registry; RET 4"},
+    {"site": "0073d983", "call": "00bd9f90", "detail": "ECX = DAT_0109ceec; manager+0x78 = DAT_00e1ae76; RET 4"},
+    {"site": "0073d988", "call": "00bb40b0", "detail": "DAT_010904e0 = new critical section, taken by 00bb83a0"},
+    {"site": "0073db41", "call": "004c1400", "detail": "resource manager singleton 010901c4"},
+    {"site": "0073db48", "call": "00736dd0", "detail": "AnimationChannels parser singleton"},
+    {"site": "0073db50", "call": "00b80a50", "detail": "ECX = manager, stack = parser, AL result, RET 4"},
+    {"site": "0073db55", "call": "004c1400", "detail": "manager re-read rather than cached"},
+    {"site": "0073db5c", "call": "00736ea0", "detail": "Bone parser singleton"},
+    {"site": "0073db64", "call": "00b80a50", "detail": "ECX = manager, stack = parser, AL result, RET 4"}
+  ],
+  "mounts": [
+    {"site": "0073d6f9", "system_path": "current directory + backslash", "virtual_path": ".", "virtual_literal": "00ce3a70", "priority": 0, "ownership": 1, "device_id": -1},
+    {"site": "0073d792", "system_path": "current directory + backslash", "virtual_path": "persistent_data", "virtual_literal": "00cff208", "priority": 99, "ownership": 1, "device_id": -1},
+    {"site": "0073d829", "system_path": "filestore", "system_literal": "00cff1fc", "virtual_path": ".", "virtual_literal": "00ce3a70", "priority": 300, "ownership": 0, "device_id": -1}
+  ],
+  "factory_registration_order": [
+    {"order": 1, "factory": "00bed990", "kind": "physical directory", "registered_by": "00beda60 at 00beda98"},
+    {"order": 2, "factory": "004fc150", "kind": "FileStore", "registered_by": "Init at 0073d675"},
+    {"order": 3, "factory": "00736a90", "kind": "MPKG (.mpkg)", "registered_by": "Init at 0073d688"},
+    {"order": 4, "factory": "00736b60", "kind": "MPAK (.mpak)", "registered_by": "Init at 0073d95d"}
+  ],
+  "gates": [
+    {"gate": "DAT_0109ceec == 0", "site": "0073d604", "covers": "0073d610-0073d888", "note": "The global is set by singleton base constructor 00bda6f0 (reached via 00be1dc0 from 00beda60) under the lifetime lock, and zeroed by destructor 00bda790, not by Init."},
+    {"gate": "DAT_0109cf00 == 0", "site": "0073d899", "covers": "00737e20 only", "note": "Does not cover 00736b60, 00736c30 or the two manager stores."},
+    {"gate": "none", "site": "0073d894, 0073d955-0073d988, 0073db41-0073db69", "covers": "search paths, MPAK factory, PAK registry, manager knobs, both parser registrations"}
+  ],
+  "globals": [
+    {"global": "DAT_0109ceec", "meaning": "VFS provider manager singleton", "written_by": ["00bda6f0", "00bda790"], "read_by": ["0073d604", "0073d63c", "0073d64c", "0073d65c", "0073d67a", "0073d6eb", "0073d784", "0073d80a", "0073d94f", "0073d962", "0073d97c", "00bdcb54", "00885350", "00bb8240"]},
+    {"global": "DAT_010904f4", "meaning": "MPKG provider factory singleton", "written_by": ["00736a90"], "read_by": ["00736a90"]},
+    {"global": "DAT_010904d4", "meaning": "MPAK provider factory singleton", "written_by": ["00736b60"], "read_by": ["00736b60"]},
+    {"global": "DAT_010904d8", "meaning": "PAK archive registry singleton, 0x1c bytes", "written_by": ["00736c30", "00bb4610"], "read_by": ["00736c30", "00bb8240"]},
+    {"global": "DAT_010904dc", "meaning": "cached mpak provider returned by the MPAK factory", "written_by": ["00bb8339", "00bb836b"], "read_by": ["00bb8445"]},
+    {"global": "DAT_010904e0", "meaning": "critical section guarding DAT_010904dc", "written_by": ["00bb40b0"], "read_by": ["00bb82f0", "00bb83a0"]},
+    {"global": "DAT_00e1ae76", "meaning": "cachedload command-line byte", "written_by": ["0073cf5d"], "read_by": ["0073d975"]},
+    {"global": "010901c4", "meaning": "resource manager singleton", "written_by": ["004c1400"], "read_by": ["004c1400", "00717e80", "and 14 further call sites"]}
+  ],
+  "functions": [
+    {
+      "address": "00beda60",
+      "name": "BSP_VFS_ProviderManager_Construct",
+      "convention": "__fastcall(ECX=this), returns this, RET",
+      "object_bytes": 160,
+      "chain": ["00beda60", "00be1dc0", "00bda6f0"],
+      "singleton": "DAT_0109ceec (assigned in 00bda6f0, not here)",
+      "vtable": "00d68d04",
+      "state": "exported, analyzed, existing doc verified"
+    },
+    {
+      "address": "00be0660",
+      "name": "BSP_VFS_RegisterProviderFactory",
+      "convention": "__thiscall(ECX=manager), one stack argument, RET 4",
+      "detail": "List object at manager+0x30, sentinel node pointer at manager+0x34; 00bdab20 links a node before the sentinel and 00bdece0 bumps the count. No duplicate check and no AddRef.",
+      "state": "analyzed, existing doc verified"
+    },
+    {
+      "address": "00736a90",
+      "name": "BSP_MpkgProviderFactory_GetSingleton",
+      "convention": "__cdecl void -> EAX, plain RET at 00736b5d",
+      "object_bytes": 8,
+      "singleton": "DAT_010904f4",
+      "vtables": {"base_lifetime": "00cfe9fc", "primary": "00cfea14", "final_lifetime": "00cfea10"},
+      "primary_vtable_slots": ["00737090 scalar deleting dtor", "00bb9d90 create"],
+      "extension": ".mpkg",
+      "state": "exported, analyzed in full, named"
+    },
+    {
+      "address": "00736b60",
+      "name": "BSP_MpakProviderFactory_GetSingleton",
+      "convention": "__cdecl void -> EAX, plain RET at 00736c2d",
+      "object_bytes": 8,
+      "singleton": "DAT_010904d4",
+      "vtables": {"base_lifetime": "00cfea00", "primary": "00cfea20", "final_lifetime": "00cfea1c"},
+      "primary_vtable_slots": ["007370d0 scalar deleting dtor", "00bb83a0 create"],
+      "extension": ".mpak",
+      "extension_literal": "00ceba84",
+      "create_abi": "ECX factory, two stack strings, RET 8 (00bb84b3, 00bb84e9, 00bb84ff, 00bb8514)",
+      "create_behaviour": "Length > 4, last five characters compared to \".mpak\" through 00425850; otherwise null. On match takes DAT_010904e0, returns cached DAT_010904dc when set, else allocates 0x44 and constructs through 00bb8240.",
+      "state": "exported, analyzed in full, named"
+    },
+    {
+      "address": "00736c30",
+      "name": "BSP_PakArchiveRegistry_GetSingleton",
+      "convention": "__cdecl void -> EAX, plain RET at 00736cf6",
+      "object_bytes": 28,
+      "singleton": "DAT_010904d8",
+      "payload_constructor": "00bb4fb0",
+      "lifetime_subobject_offset": 8,
+      "vtables": {"base_primary": "00ceb130", "primary": "00d64190", "base_lifetime": "00d64188", "final_lifetime": "00d6418c"},
+      "primary_vtable_slots": ["00bd30e0 refcounted deleting dtor", "00bb5410 scalar deleting dtor", "00bb5770", "00bb5910"],
+      "layout": {"+0": "primary vtable", "+4": "reference count, initialised to 1", "+8": "lifetime vtable", "+0x0c": "decimal 100, copied to mpak provider+0x18 by 00bb8240", "+0x10": "zero", "+0x14": "zero, used as a list count by 00bb5910", "+0x18": "zero"},
+      "consumers": ["0073d410 at 0073d968 then 00bd9230 -> manager+0x88", "00bb8240"],
+      "state": "exported, analyzed in full, named"
+    },
+    {
+      "address": "004c1400",
+      "name": "BSP_ResourceManager_GetSingleton",
+      "convention": "__cdecl void -> EAX, plain RET at 004c14bc",
+      "object_bytes": 40,
+      "singleton": "010901c4",
+      "constructor": "00b81040",
+      "state": "analyzed, existing doc verified"
+    },
+    {
+      "address": "00736dd0",
+      "name": "BSP_AnimationChannelsParser_GetSingleton",
+      "convention": "__cdecl void -> EAX, plain RET at 00736e9d",
+      "object_bytes": 8,
+      "vtables": {"base_lifetime": "00cfea08", "primary": "00cfea38", "final_lifetime": "00cfea34"},
+      "primary_vtable_slots": ["00737150 scalar deleting dtor", "00b8b050 name getter", "00b8a910 parse"],
+      "type_name": "AnimationChannels",
+      "state": "analyzed, existing doc verified, lifetime vtables added"
+    },
+    {
+      "address": "00736ea0",
+      "name": "BSP_BoneParser_GetSingleton",
+      "convention": "__cdecl void -> EAX, plain RET at 00736f6d",
+      "object_bytes": 8,
+      "vtables": {"base_lifetime": "00cfea0c", "primary": "00cfea48", "final_lifetime": "00cfea44"},
+      "primary_vtable_slots": ["00737190 scalar deleting dtor", "00b8b080 name getter", "00b8a990 parse"],
+      "type_name": "Bone",
+      "state": "analyzed, existing doc verified, lifetime vtables added"
+    }
+  ],
+  "string_literals": [
+    {"address": "00ceba84", "bytes": "2e 6d 70 61 6b 00", "value": ".mpak"},
+    {"address": "00ce3a70", "bytes": "2e 00", "value": "."},
+    {"address": "00cff208", "bytes": "70 65 72 73 69 73 74 65 6e 74 5f 64 61 74 61 00", "value": "persistent_data"},
+    {"address": "00cff1fc", "bytes": "66 69 6c 65 73 74 6f 72 65 00", "value": "filestore"},
+    {"address": "00ce7894", "bytes": "5c 00", "value": "\\"}
+  ],
+  "map_corrections": [
+    "APP_INITIALIZE_MAP.md step 9: 00beda60 does not store DAT_0109ceec. The singleton base constructor 00bda6f0, reached through 00be1dc0, assigns it under the lifetime lock and registers the manager; 00bda790 zeroes it on teardown.",
+    "APP_INITIALIZE_MAP.md step 12: at 0073d829 \"filestore\" is the system path and \".\" is the virtual path, the reverse of the first two mounts.",
+    "APP_INITIALIZE_MAP.md step 9 names only manager+0x90. manager+0x8c receives 00735b30, which like 00530620 is a single C3 byte followed by INT3 padding. 00735b30 has no Ghidra function."
+  ],
+  "prior_work_corrections": [
+    "PROVIDER_FACTORY_STARTUP.md and ARCHIVE_PROVIDER_ENTRY.md describe three startup factories. A fourth, MPAK 00736b60, is registered at 0073d95d.",
+    "PROVIDER_FACTORY_STARTUP.md's startup mount table omits the FileStore mount's ownership byte, which is 0 and not the 1 the two physical mounts push.",
+    "APP_INIT_PLATFORM.md leaves the identity of the DAT_010904e0 registry open. It guards DAT_010904dc, the cached mpak provider that the MPAK factory create method 00bb83a0 returns.",
+    "RESOURCE_MANAGER_REGISTRATION.md gives the two application parsers' primary vtables but not their lifetime vtables: AnimationChannels base 00cfea08 / final 00cfea34, Bone base 00cfea0c / final 00cfea44."
+  ],
+  "sequencing_consequences": [
+    "The command line is parsed at 0073d94a, after every mount and both package scans, so -cachedload cannot influence phase 2. Its only effect in this packet is the byte stored at manager+0x78.",
+    "The MPAK factory is registered after both 0073cb10 package scans, and 0073cb10 enumerates extension mpkg only, so startup package scanning never mounts a .mpak archive.",
+    "The PAK lock 00bb40b0 is created at 0073d988, after the MPAK factory it protects has already been registered at 0073d95d.",
+    "Descending signed mount priority means filestore (300) precedes persistent_data (99) precedes the loose root (0) for every later asset load.",
+    "The two parsers registered at 0073db50 and 0073db64 extend the six the manager constructor registers; the five game parsers of 00717e80 are registered later from 004ddb90, outside Init."
+  ],
+  "open_questions": [
+    "The decimal 100 at PAK-registry +0x0c and the list at +0x10/+0x14/+0x18 are not interpreted; the PakArchiveRegistry name is provisional and rests on the mpak provider being the only observed consumer.",
+    "00bb5770 and 00bb5910 are read only far enough to see VFS name resolution and the +0x14 count.",
+    "0073d642 and 0073d652 re-read DAT_0109ceec with no null check, so a failed malloc(0x0a0) would store through a null manager. Whether the allocator can return null there is not established.",
+    "00be0660 performs no duplicate check, so a second Init pass would append the MPAK factory again. Whether Init is ever re-entered is not established.",
+    "GetCurrentDirectoryA is given a length of 0x0fa but _strcat_s a size of 0x100; the declared buffer size is not recovered.",
+    "00bb82f0, the writer of DAT_010904dc, is not analyzed."
+  ],
+  "not_ported": [
+    "Native SEH unwind state (the [ESP+0x144] scope indices) around every step.",
+    "The native singleton lifetime manager, its lock and its registration list.",
+    "Provider, archive and parser implementations behind every factory and singleton.",
+    "The native string temporaries released through 00419cc0 and 00bd1510 after each mount.",
+    "Any native ABI compatibility: bsp::run_vfs_startup is a new C++ interface."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, Win32 Release, /W4 /WX, clean; build/win32/bsp_core.dir/Release/vfs_startup.obj produced",
+    "ctest": "1/1 passed (reconstructed_math)",
+    "tests_added": 0,
+    "tests_rationale": "The projection is straight-line sequencing; a test over the mount table would only mirror the constants it asserts.",
+    "ghidra": "read-only; no rename, comment, function creation, prototype or save. Three ledger names recorded for 00736a90, 00736b60 and 00736c30."
+  }
+}
