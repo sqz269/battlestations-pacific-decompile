@@ -1,0 +1,214 @@
+{
+  "packet": "profile_unlock_predicate",
+  "doc": "docs/PROFILE_UNLOCK_PREDICATE.md",
+  "addresses": ["007fc4c0", "007fc820", "0090c560", "004c7f10", "004d0640", "005097d0", "007f8890", "007fb990", "007fdf00", "008bbc40", "008cb920", "005c5990"],
+  "summary": "Availability of a mission, a unit or an award is one string test against the player-profile block at game+650h. 007FC820 is an all-of over the vector<NativeString> at record+78h; 007FC4C0 is an any-of over the ' ,'-separated tokens of one requirement string, tried against five profile containers in a fixed order. The game's own Lua name for 007FC4C0 is Scoring_IsUnlocked (008BBC40).",
+
+  "requirement_model": {
+    "container": {
+      "address": "record+78h",
+      "shape": "std::vector<NativeString>",
+      "layout": {"proxy": "+78h", "first": "+7Ch", "last": "+80h", "end": "+84h", "element_stride": 8},
+      "combination": "all-of; empty container returns AL = 1 at 007FC844"
+    },
+    "element": {
+      "shape": "NativeString { dword length; char* data; }",
+      "note": "There is no tagged requirement record. The element is a plain string; the 'kind' is decided at evaluation time by which profile container answers."
+    },
+    "token": {
+      "separators": " ,",
+      "separator_literal": "00d08d18",
+      "split": "_strtok, so runs of separators collapse and no empty token is produced",
+      "combination": "any-of; the accumulated byte is tested at 007FC554 and returned, so the first satisfied token ends the walk",
+      "empty": "no tokens means false, so an empty requirement string locks its subject"
+    }
+  },
+
+  "authoring_data": {
+    "missions": {
+      "file": "Scripts/datatables/missiontree.lua",
+      "key": "prerequisites",
+      "entries": 188,
+      "distinct_values": {
+        "{}": 131,
+        "{ \"IJN04\" }": 24,
+        "{ \"IJN17\" }": 6,
+        "{ \"CHG09\" }": 4,
+        "{ \"USN02\" }": 2,
+        "single_token_once_each": ["USN20", "USN01", "JM08", "IJN03", "CHG08", "CHG07", "CHG06", "CHG05", "CHG03", "CHG02", "CHG01", "BSM10", "BSM09", "BSM08", "BSM07", "BSM06", "BSM05", "BSM04", "BSM03", "BSM02", "BSM01"]
+      },
+      "note": "No shipped entry holds more than one element and none contains a separator, so both the multi-token any-of and the multi-element all-of are unexercised by shipped data."
+    },
+    "units": {
+      "file": "Scripts/datatables/autoload/vehicleclasses.lua",
+      "keys": ["Unlock (boolean)", "UnlockID (string)"],
+      "reader": "00584750 and 0050a400 read globals.VehicleClass[index]",
+      "value_shape": "<MISSIONID>_GOLD",
+      "examples": ["IJN12_GOLD", "LOMP11_GOLD", "PRCP06_GOLD", "USN19_GOLD", "JM16_GOLD", "YAMA_GOLD", "USNSY_GOLD"]
+    },
+    "scripts": {
+      "call": "IsUnlocked(<id>) in scripts/missions/**.lua",
+      "value_shape": "<MISSIONID>_<GOLD|SILVER|BRONZE>",
+      "examples": ["JM2_GOLD", "JM6_SILVER", "JM6_BRONZE", "IJN07_GOLD", "USN02_SILVER"],
+      "granting_call": "Scoring_GrantUnlock, bound at 008cb920"
+    },
+    "token_shapes": [
+      {"shape": "bare mission id", "answered_by": "mission_completion at profile+64h"},
+      {"shape": "<MISSIONID>_<MEDAL>", "answered_by": "the Unlocks set at profile+70h or the pending set at profile+7Ch"}
+    ]
+  },
+
+  "evaluator": {
+    "address": "007fc4c0",
+    "name": "BSP_Profile_IsUnlockSatisfied",
+    "abi": "__thiscall char (this = game+650h, const NativeString* requirement), RET 4",
+    "body": "007fc4c0-007fc810",
+    "seh_frame": "00c8fc28",
+    "steps": [
+      {"site": "007fc4ee", "action": "reads requirement->data; a null pointer becomes the empty string at 00f8745c"},
+      {"site": "007fc504", "action": "copies it into char[256] at ESP+64h with an unbounded copy loop; a requirement longer than 255 bytes smashes the native frame"},
+      {"site": "007fc520", "action": "_strtok(buffer, \" ,\")"},
+      {"site": "007fc554", "action": "returns the accumulated result at the head of the next iteration"}
+    ],
+    "sources": [
+      {"order": 1, "site": "007fc5a1", "this": "[profile+64h]", "helper": "0090c560", "test": "key present and node->value != 0", "meaning": "the mission of that id is completed"},
+      {"order": 2, "site": "007fc602", "this": "profile+70h", "helper": "004c7f10", "test": "iterator != end node at profile+74h", "meaning": "the unlock is in the saved 'Unlocks' set"},
+      {"order": 3, "site": "007fc65b", "this": "profile+7Ch", "helper": "004c7f10", "test": "iterator != end node at profile+80h", "meaning": "the unlock was granted this session and not yet flushed"},
+      {"order": 4, "site": "007fc6c2", "this": "profile", "helper": "005097d0", "test": "TEST EAX,EAX; JG, so strictly greater than zero", "meaning": "a named counter: RANK and the award names"},
+      {"order": 5, "site": "007fc6dd", "this": "profile", "helper": "007f8890", "test": "found in the list at profile+D0h", "meaning": "an owned downloadable-content id"}
+    ],
+    "case_sensitivity": "all five are case-insensitive: 004c7f10, 004c8b80 (inside 005097d0) and 0090c100 (inside 0090c560) order through BSP_NativeString_LessCaseInsensitive 00443d00; 007f8890 compares length then __stricmp",
+    "asymmetry": "source 1 accepts any non-zero value; source 4 requires strictly positive"
+  },
+
+  "walker": {
+    "address": "007fc820",
+    "name": "BSP_Profile_TestUnlockRequirements",
+    "abi": "__thiscall char (this = game+650h, vector<NativeString>* requirements), RET 4",
+    "body": "007fc820-007fc87e",
+    "evidence": "EBP holds this across the loop; each element is pushed and 007fc853 restores ECX = EBP before CALL 007fc4c0. 007fc85c returns AL = 0 on the first failing element, 007fc876 returns AL = 1 when first == last."
+  },
+
+  "profile_containers": [
+    {"offset": "+64h", "absolute": "game+6b4h", "shape": "pointer to a 24h-byte object whose map<NativeString,int> starts at offset 0", "role": "mission completion", "written_by": "007fdb20 rebuilds it with new(24h) + 00920e10; 007fdf00 destroys and rebuilds it", "queried_by": "0090c560 from 007fc4c0, 005c2f70, 005c3be0, 005c3de0, 005c4080", "saved_as": null},
+    {"offset": "+70h", "absolute": "game+6c0h", "shape": "std::set<NativeString>, case-insensitive", "role": "granted and persisted unlocks", "written_by": "007fb990", "saved_as": "Unlocks", "save_evidence": "00d08c6c at 007fe29c paired with LEA EBX,[EDI+70h] at 007fe2b6"},
+    {"offset": "+7Ch", "absolute": "game+6cch", "shape": "std::set<NativeString>, case-insensitive", "role": "unlocks granted this session", "written_by": "008cb920 luaMW_Scoring_GrantUnlock, ADD ECX,0x6cc at 008cba3e", "saved_as": null},
+    {"offset": "+88h", "absolute": "game+6d8h", "shape": "std::set<NativeString>, case-insensitive", "role": "seen unlock notifications; NOT read by the predicate", "written_by": "007fdf00", "saved_as": "SeenUnlocks", "save_evidence": "00d08c60 at 007fe9e2 paired with LEA ECX,[EDI+88h] at 007fea8d"},
+    {"offset": "+A0h", "absolute": "game+6f0h", "shape": "std::map<NativeString,int>", "role": "named counters", "written_by": "007fdb20 seeds map[\"RANK\"] = 1 at 007fdde3; BSP_AwardTracker_RecordAtLeast 007fbe20 raises award entries", "saved_as": "inside the profile sections"},
+    {"offset": "+D0h", "absolute": "game+720h", "shape": "std::list<NativeString>, node {next, prev, length, data}", "role": "owned downloadable-content ids such as DL_Content_0000062", "written_by": "not written by 007fdf00", "saved_as": null}
+  ],
+
+  "unlock_lifecycle": "mission Lua Scoring_GrantUnlock(id) -> profile+7Ch; the debriefing screen 0062c2c0 lists profile+7Ch under FE.scoring_unlockedunit and calls 007fb990, which inserts every entry into profile+70h and empties profile+7Ch; 007fdf00 saves profile+70h as 'Unlocks'. The predicate accepts an id in either set, so a grant counts immediately.",
+
+  "callers": [
+    {"address": "007fc820", "subject": "one element of a mission's prerequisites", "on_false": "the whole vector fails"},
+    {"address": "00597870", "subject": "007fc820(record+78h) per mission in the main menu", "on_false": "the entry is labelled with the string 'confidental' (PTR_s_confidental_00e08870)"},
+    {"address": "005c57d0", "subject": "007fc820(record+78h)", "on_false": "activating the selected mission does nothing", "reference": "docs/MISSION_TREE_BRIEFING_SCREENS.md"},
+    {"address": "005c5990", "subject": "every requirement of a list of missions", "on_false": "the failing requirement string is inserted into a local set through 004d0640: the unmet-prerequisite list"},
+    {"address": "00584750", "subject": "globals.VehicleClass[i].UnlockID", "on_false": "the vehicle-class entry reports unavailable; a nil or empty UnlockID short-circuits to available"},
+    {"address": "0050a400", "subject": "globals.VehicleClass[i].UnlockID", "on_false": "same as 00584750"},
+    {"address": "004fac50", "subject": "the NativeString at +30h of each 6Ch-byte row in the vector at this+3c8h, reached from 00511f40 FE.taclib_unlocks_help", "on_false": "writes 1 to the row's locked byte at +45h and continues"},
+    {"address": "0050ef80", "subject": "a token built from a caption vector", "on_false": "takes the locked arm: copies a replacement caption out of the vector at this+180h instead of the live one at this+170h"},
+    {"address": "008bbc40", "subject": "the Lua argument of Scoring_IsUnlocked", "on_false": "returned to the script unchanged"}
+  ],
+
+  "callees": {
+    "0090c560": "BSP_MissionProgress_IsCompleted; find through 0090c100, value at node+14h",
+    "004c7f10": "BSP_NativeStringSet_Find; lower bound 004c2140 then a case-insensitive reject, key at node+0ch",
+    "005097d0": "BSP_Profile_GetNamedCounter; find through 004c8b80 on profile+A0h, value re-read through the operator[] 005070c0",
+    "007f8890": "BSP_Profile_OwnsContentId; linear list scan, length then __stricmp",
+    "0041dd40": "BSP_NativeString_Resize, the per-token temporary",
+    "0041e870": "BSP_NativeString_Assign, wraps the token for sources 2..5",
+    "00419cc0 / 00bd1510": "sized storage pool acquire and release for the temporaries",
+    "00bfb10d": "_strtok",
+    "00bf6713": "the iterator-debug unmatched-container trap"
+  },
+
+  "reconstruction": {
+    "header": "include/bsp/profile_unlock.hpp",
+    "source": "src/profile_unlock.cpp",
+    "entry_points": ["parse_unlock_expression_007fc4c0", "classify_unlock_token_007fc4c0", "is_unlock_expression_satisfied_007fc4c0", "are_unlock_requirements_met_007fc820"],
+    "state_type": "bsp::ProfileUnlockState",
+    "reuse": "are_unlock_requirements_met_007fc820 takes const std::vector<std::string>&, which is MissionRecord::unlock_requirements from include/bsp/mission_tree_screens.hpp",
+    "not_reproduced": "the 256-byte stack buffer overflow; kUnlockExpressionBufferSize records the native bound",
+    "test": "one case in tests/math_tests.cpp for the > 0 versus != 0 boundary and the empty-vector arm"
+  },
+
+  "no_ghidra_function": [],
+
+  "gaps": [
+    {"address": "005c5990", "gap": "005c5b1e..005c5b21", "after": "the _free at 005c5b19", "decodes_as": "ADD ESP,4 / MOV ECX,[ESP+28h]", "action": "reported, not repaired; the tail that consumes the collected set is outside the stored body"},
+    {"address": "007fc4c0", "gap": "007fc54b..007fc550", "after": "the RET 4 at 007fc548", "action": "benign: not after a call, and 007fc550 is a live jump target"}
+  ],
+
+  "uncertainties": [
+    "The mission-completion object at profile+64h is 24h bytes; only its map at offset 0 was read.",
+    "Whether the two unlock containers are std::set<NativeString> or a map with a zero-size mapped type is not distinguishable: 004d0640 links a node whose value is the bare 8-byte string and 004c7f10 compares against node+0ch, with no mapped field touched.",
+    "007fdb20 seeds map[\"RANK\"] = 1, so a token 'RANK' would always pass. No shipped data uses it.",
+    "No shipped requirement exercises more than one token or more than one element; the any-of and all-of shapes are recovered from code only.",
+    "007fdf00 was read by grep over its listing for the two unlock keys, not end to end; the section layout and Version handling are not recovered.",
+    "docs/GAME_TITLE_INIT.md records +74h, +80h and +8Ch as three std::lists; they are the _Myhead fields of three case-insensitive std::set<NativeString> trees at +70h, +7Ch and +88h. The same doc's keyed RANK map is the one at +A0h."
+  ],
+
+  "state": {
+    "007fc4c0": "reconstructed, build-tested, installed-file-checked",
+    "007fc820": "reconstructed, build-tested, installed-file-checked",
+    "0090c560": "analyzed",
+    "004c7f10": "analyzed",
+    "004d0640": "analyzed",
+    "005097d0": "analyzed",
+    "007f8890": "analyzed",
+    "007fb990": "analyzed",
+    "007fdf00": "exported, partially analyzed",
+    "008bbc40": "analyzed",
+    "008cb920": "analyzed",
+    "005c5990": "analyzed",
+    "00584750": "analyzed as a caller",
+    "0050a400": "analyzed as a caller",
+    "004fac50": "analyzed as a caller",
+    "0050ef80": "analyzed as a caller",
+    "00597870": "analyzed as a caller"
+  },
+
+  "names_recorded": [
+    {"address": "007fc4c0", "name": "BSP_Profile_IsUnlockSatisfied"},
+    {"address": "007fc820", "name": "BSP_Profile_TestUnlockRequirements", "note": "evidence appended to the existing record"},
+    {"address": "0090c560", "name": "BSP_MissionProgress_IsCompleted"},
+    {"address": "004c7f10", "name": "BSP_NativeStringSet_Find"},
+    {"address": "004d0640", "name": "BSP_NativeStringSet_Insert"},
+    {"address": "005097d0", "name": "BSP_Profile_GetNamedCounter"},
+    {"address": "007f8890", "name": "BSP_Profile_OwnsContentId"},
+    {"address": "007fb990", "name": "BSP_Profile_FlushPendingUnlocks"},
+    {"address": "007fdf00", "name": "BSP_PlayerProfile_Serialize"},
+    {"address": "008bbc40", "name": "BSP_LuaBinding_ScoringIsUnlocked"},
+    {"address": "008cb920", "name": "BSP_LuaBinding_ScoringGrantUnlock"},
+    {"address": "005c5990", "name": "BSP_MissionTreeScreen_CollectMissingPrerequisites"}
+  ],
+
+  "follow_up_packets": [
+    {
+      "id": "profile_serialize_sections",
+      "addresses": ["007fdf00", "007fd780", "00920e10", "0090bf50"],
+      "files": ["docs/PROFILE_SERIALIZE.md", "reports/profile_serialize.json", "include/bsp/profile_save.hpp", "src/profile_save.cpp"],
+      "contract": "The section format BSP_PlayerProfile_Serialize reads and writes, which of the 21 keys map to which offsets in the game+650h block, and what the 24h-byte mission-progress object holds beyond its map."
+    },
+    {
+      "id": "unit_library_availability",
+      "addresses": ["00584750", "0050a400", "004fac50", "00511f40"],
+      "files": ["docs/UNIT_LIBRARY_AVAILABILITY.md", "reports/unit_library_availability.json", "include/bsp/unit_library.hpp", "src/unit_library.cpp"],
+      "contract": "The 6Ch-byte unlock row at screen+3C8h, how vehicleclasses.lua fills it, and what the locked flag at +45h changes in FE.taclib_unlocks_help and fe/lobby/unlock_disabled.tga."
+    },
+    {
+      "id": "debriefing_unlock_flush",
+      "addresses": ["0062c2c0", "0062a970", "007fb990", "005c3be0"],
+      "files": ["docs/DEBRIEFING_UNLOCKS.md", "reports/debriefing_unlocks.json"],
+      "contract": "How the debriefing screen builds the FE.scoring_unlockedunit list from profile+7Ch and when it flushes into profile+70h."
+    },
+    {
+      "id": "dlc_content_ownership",
+      "addresses": ["007f8890", "008d57a0", "00706760", "004fd8d0"],
+      "files": ["docs/DLC_OWNERSHIP.md", "reports/dlc_ownership.json"],
+      "contract": "Who fills the list at profile+D0h, and what UnlockDLCMinimum gates."
+    }
+  ]
+}

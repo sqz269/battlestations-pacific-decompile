@@ -28,6 +28,7 @@
 #include "bsp/main_menu_screen.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/press_start_screen.hpp"
+#include "bsp/profile_unlock.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
@@ -1224,6 +1225,20 @@ int main() {
                 && bsp::scene_entity_class_id_from_name("LandVehicle") == bsp::kSceneUnknownClassId
                 && bsp::find_scene_entity_class_by_id(0x19) == nullptr,
             "an unregistered class token has no descriptor to dispatch on");
+    }
+
+    {
+        // 007FC6C2 tests the named-counter result with JG, so a counter that
+        // sits at exactly zero does not unlock, while 0090C560 on the
+        // mission-completion map only tests non-zero. The two boundaries are
+        // asymmetric and both feed the same any-of walk.
+        bsp::ProfileUnlockState profile;
+        profile.named_counters["RANK"] = 0;
+        profile.mission_completion["IJN04"] = 1;
+        check(!bsp::is_unlock_expression_satisfied_007fc4c0(profile, "RANK")
+                && bsp::is_unlock_expression_satisfied_007fc4c0(profile, "rank, IJN04")
+                && bsp::are_unlock_requirements_met_007fc820(profile, {}),
+            "a zero named counter is locked, an any-of token and an empty vector are not");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
