@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet": "app_run_frame",
+  "captured_utc": "2026-09-10T05:20:00+00:00",
+  "status": "reconstructed_and_build_tested_ready_for_parent_review",
+  "owner": "agent/app-run-frame",
+  "scope": {
+    "primary_addresses": [
+      "00737a50",
+      "004c1dd0",
+      "004c43c0",
+      "004fde20",
+      "00be34d0",
+      "00be3640",
+      "00be3660"
+    ],
+    "additional_addresses_read": [
+      "00be3260",
+      "00737970",
+      "00bece70",
+      "004bec00",
+      "00cd8afc"
+    ],
+    "new_cpp": true,
+    "tests_added": false,
+    "tests_run": true,
+    "ghidra_mutated": false,
+    "boundary": "The application frame contains no message pump, device polling, render kick, present, throttle, sleep, focus handling or pause handling. Those are not invented here. Simulation and rendering are reached through game update 004e4a40, whose stored Ghidra body is eight bytes."
+  },
+  "byte_validation": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "local/verify_app_run_frame.py calls bsp.py client().verify(), then compares every span byte-for-byte between the disk PE and the saved program.",
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "code_spans": [
+      {"address": "004c1dd0", "length": 189, "end_exclusive": "004c1e8d", "sha256": "eb4b33a0066286d2a5e322d876041bd2205daae170cad54183c534c48b693c2b", "disk_matches_ghidra": true},
+      {"address": "004c43c0", "length": 63, "end_exclusive": "004c43ff", "sha256": "5f54e092fec8074433c52dfab4105c1595e1d2a8e5d4eaf2a276d122965022fd", "disk_matches_ghidra": true},
+      {"address": "004fde20", "length": 189, "end_exclusive": "004fdedd", "sha256": "31f7c22b4c2a90490f79f0a62a3e685ac51097326553a91af70398c789f05490", "disk_matches_ghidra": true},
+      {"address": "00737a50", "length": 371, "end_exclusive": "00737bc3", "sha256": "9b0e757869a0173dff1c11813fa457b74edc848d71abe9d467929d6db752d994", "disk_matches_ghidra": true},
+      {"address": "00be3260", "length": 69, "end_exclusive": "00be32a5", "sha256": "915bf7bc00f3872599ec81358e5de4f4fc1fdefffcaed1a574f9b09d7bdeb07b", "disk_matches_ghidra": true},
+      {"address": "00be34d0", "length": 368, "end_exclusive": "00be3640", "sha256": "b68262b3037c984dd73cae3bdfd5dd85b366cd6c0807ed671dc7465d946c112a", "disk_matches_ghidra": true},
+      {"address": "00be3640", "length": 25, "end_exclusive": "00be3659", "sha256": "85907115ac6b0b1b6c6c08d227bf53bd60b9f1f070fcce8f570fe8f30640560d", "disk_matches_ghidra": true},
+      {"address": "00be3660", "length": 84, "end_exclusive": "00be36b4", "sha256": "ffd5fc26bdbf8c3121f51a48bd29acdf72c9ee403b21565ce769bbfddd2ace9d", "disk_matches_ghidra": true}
+    ]
+  },
+  "frame_sequence": [
+    {"address": "00737a6c", "step": "One-time init of profiler bar colour 00e1ae94 to FF000000h, guarded by bit 0 of 00e1ae98", "evidence": "TEST byte [00e1ae98],1 then three zero byte stores and a FFh store at +3"},
+    {"address": "00737a98", "step": "EDI = PERF_APP_UPDATE counter slot index from 0109d014", "evidence": "MOV EDI,[0109d014]"},
+    {"address": "00737a9e", "step": "Profiler singleton 004c1dd0; colour array at instance+24h indexed by slot receives 00e1ae94", "evidence": "MOV EAX,[EAX+24h]; MOV [EAX+EDI*4],ECX"},
+    {"address": "00737ab4", "step": "Profiler singleton again, then begin counter 00be3640(slot) with ECX = profiler; trylevel set to 0", "evidence": "MOV ECX,EAX; CALL 00be3640; MOV [ESP+1Ch],EBX"},
+    {"address": "00737ac0", "step": "Clear application+19h", "evidence": "CMP byte [ESI+19h],BL; conditional MOV byte [ESI+19h],BL"},
+    {"address": "00737acc", "step": "Read game state from *(00e188a8)+5D4h", "evidence": "MOV ECX,[00e188a8]; MOV EAX,[ECX+5D4h]"},
+    {"address": "00737ae7", "step": "Non-mission states only: input edge test 004c43c0(0Eh); true sets application+19h", "evidence": "PUSH 0Eh; CALL 004c43c0; TEST AL,AL; MOV byte [ESI+19h],1"},
+    {"address": "00737af6", "step": "Frame clock 01090ab0 virtual +8h advances the clock", "evidence": "vtable dispatch; slot documented as 00bedc30 in STARTUP_NEXT_HANDOFF.md"},
+    {"address": "00737b03", "step": "Frame clock virtual +1Ch returns the interval timestamp at clock+40h", "evidence": "vtable dispatch; slot documented as 00bee070"},
+    {"address": "00737b10", "step": "dt = ticks / frequency in x87, spilled and reloaded as float32", "evidence": "FILD qword [EAX]; FILD qword [EAX+8]; FDIVP; FSTP dword [ESP+10h]; FLD; FSTP dword [ESP]"},
+    {"address": "00737b26", "step": "Game update 004e4a40 with ECX = *(application+14h) and the float on the stack", "evidence": "MOV ECX,[ESI+14h]; CALL 004e4a40"},
+    {"address": "00737b2b", "step": "Clear application+18h", "evidence": "CMP byte [ESI+18h],BL; conditional MOV byte [ESI+18h],BL"},
+    {"address": "00737b33", "step": "Re-read the game state; the value is dead because both branches act identically", "evidence": "branches at 00737b4e and 00737b65 contain the same test and store"},
+    {"address": "00737b4e", "step": "Sticky exit propagation: nonzero 00e1ae75 stores 1 into platform 0109cf04 +181h", "evidence": "CMP byte [00e1ae75],BL; MOV byte [EDX+181h],1; no clearing path"},
+    {"address": "00737b79", "step": "VFS provider tick 00bdb0b0 with ECX = 0109ceec", "evidence": "MOV ECX,[0109ceec]; CALL 00bdb0b0"},
+    {"address": "00737b84", "step": "Loading queue singleton 004fde20, then update 00509190 with ECX = instance", "evidence": "CALL 004fde20; MOV ECX,EAX; CALL 00509190"},
+    {"address": "00737b90", "step": "Trylevel back to -1, then end counter 00be3660(slot)", "evidence": "MOV [ESP+1Ch],FFFFFFFFh; PUSH EDI; MOV ECX,EAX; CALL 00be3660"},
+    {"address": "00737bac", "step": "End of profiler frame 00be34d0; the returned ring-wrap flag is discarded", "evidence": "MOV ECX,EAX; CALL 00be34d0; EAX unused"}
+  ],
+  "abi": [
+    {"address": "00737a50", "convention": "__thiscall", "ecx": "application object", "stack_arguments": 0, "ret": "RET", "returns": "void"},
+    {"address": "004c1dd0", "convention": "cdecl", "stack_arguments": 0, "ret": "RET", "returns": "profiler singleton in EAX"},
+    {"address": "004c43c0", "convention": "cdecl", "stack_arguments": 1, "ret": "RET", "returns": "AL boolean"},
+    {"address": "004fde20", "convention": "cdecl", "stack_arguments": 0, "ret": "RET", "returns": "loading queue singleton in EAX"},
+    {"address": "00be3640", "convention": "__thiscall", "ecx": "profiler", "stack_arguments": 1, "ret": "RET 4", "returns": "void", "note": "Ghidra types this as a plain function and hides the ECX profiler pointer."},
+    {"address": "00be3660", "convention": "__thiscall", "ecx": "profiler", "stack_arguments": 1, "ret": "RET 4", "returns": "void"},
+    {"address": "00be34d0", "convention": "__thiscall", "ecx": "profiler", "stack_arguments": 0, "ret": "RET", "returns": "int, 1 on the frame the history ring wraps"},
+    {"address": "00be3260", "convention": "__thiscall", "ecx": "counter record", "stack_arguments": 0, "ret": "RET", "returns": "void"}
+  ],
+  "fields": {
+    "application_00737970": {
+      "+00h": "vtable 00cfeab0; slot +10h is this frame, slot +18h is the scalar deleting destructor 00737a30",
+      "+08h,+0Ch,+10h": "zeroed by the constructor; not used by the frame",
+      "+14h": "game object passed to 004e4a40 in ECX",
+      "+18h": "bool initialised to 1 and cleared after the update; reads as a first-update flag, no re-arm path found",
+      "+19h": "bool cleared each frame and set from the input edge before the update; a one-frame request latch",
+      "+1Ah": "bool zeroed by the constructor; not touched by the frame"
+    },
+    "profiler_counter_record_28h": {
+      "+00h": "int64 ticks accumulated this frame",
+      "+08h": "int64 start of the current sample",
+      "+10h": "int64 first entry this frame, written only when the accumulator is zero",
+      "+18h": "int64 last exit this frame",
+      "+20h": "LONG active depth, interlocked",
+      "+24h": "int hit count this frame"
+    },
+    "profiler_object_30h": {
+      "+04h": "float scale used as the divisor for normalised start and end offsets",
+      "+0Ch": "history ring index, advances modulo 14h",
+      "+14h": "counter record array; the static initialiser shows it is 0109d018",
+      "+18h": "float history ring of accumulated time, 14h frames per slot",
+      "+1Ch": "float history ring of normalised start offsets",
+      "+20h": "float array of current per-slot values",
+      "+24h": "colour array indexed by slot",
+      "+28h": "display record array, stride 1Ch, hit count at +14h and normalised end at +18h"
+    },
+    "input_action_record_30h": {
+      "+1Ch": "float previous hold time",
+      "+20h": "bool previous held",
+      "+24h": "float current hold time",
+      "+28h": "bool currently held"
+    }
+  },
+  "globals": {
+    "00e1ae94": "profiler bar colour, FF000000h after one-time init",
+    "00e1ae98": "bit 0 guards that init",
+    "0109d014": "PERF_APP_UPDATE counter slot index, written by static initialiser 00cd8b16",
+    "0109d018": "static counter record array, stride 28h",
+    "00e15118": "count of statically registered counters",
+    "0109cf18": "count of counters registered during the frame, cleared by 00be34d0",
+    "0109db50": "profiler singleton cache",
+    "00e18d4c": "loading queue singleton cache",
+    "00f8bbf8": "input singleton cache, constructed by 00a93da0",
+    "00e188a8": "game singleton; game state at +5D4h",
+    "01090ab0": "frame clock singleton",
+    "0109ceec": "VFS singleton",
+    "0109cf04": "platform singleton; loop exit byte at +181h",
+    "00e1ae75": "application-wide exit request",
+    "0109db48": "double scale used to convert accumulated ticks; unit unproven",
+    "00d7a270": "double bias added to normalised offsets",
+    "00d686a8": "string PERF_APP_UPDATE; the next string is PERF_GAME_ONMOVE"
+  },
+  "callers": ["00bece70 through application vtable 00cfeab0 slot +10h; Ghidra records no direct call reference because the dispatch is virtual"],
+  "callees_in_order": ["004c1dd0", "00be3640", "004c43c0", "00bedc30", "00bee070", "004e4a40", "00bdb0b0", "004fde20", "00509190", "00be3660", "00be34d0"],
+  "decompiler_artifacts": [
+    "00737ab0 writes the slot index into a local that nothing reads. The decompiler folds it into the saved exception-list slot and emits ExceptionList = pvVar1; the assembly restores from [ESP+14h] at 00737bb1.",
+    "Ghidra types 00be3640 as a plain function whose param_1 is the stack slot, hiding the ECX profiler pointer that the call sites load."
+  ],
+  "uncertainties": [
+    "Input action index 0Eh is unnamed; the table built by 00a93da0 was not opened.",
+    "Game states 1, 2 and 4 remain unnamed; they are treated only as the mission set that the close policy also uses.",
+    "The unit of the scale at 0109db48 and the meaning of the bias at 00d7a270 are unproven, so the profiler's output unit is not established.",
+    "The 0Fh argument passed with each counter name to 00408720 is unexplained.",
+    "004e4a40 has an eight-byte stored Ghidra body, so its consumption of application+18h and +19h and the render and present phases inside it were not traced here.",
+    "SEH handler 00c86228 was not disassembled; the scope-guard reading rests on the trylevel transitions at 00737ac3 and 00737b90.",
+    "No writer other than the constructor was found for application+18h, so a re-arm path cannot be excluded."
+  ],
+  "state_reached": {
+    "00737a50": "reconstructed, build-tested",
+    "004c1dd0": "analyzed",
+    "004c43c0": "analyzed",
+    "004fde20": "analyzed",
+    "00be3640": "analyzed",
+    "00be3660": "analyzed",
+    "00be34d0": "analyzed",
+    "00be3260": "analyzed"
+  },
+  "cpp": {
+    "header": "include/bsp/app_frame.hpp",
+    "source": "src/app_frame.cpp",
+    "entry_point": "bsp::run_application_frame",
+    "registration": "cmake/startup.cmake, one deferred target_sources line",
+    "claim": "Semantic projection of the frame order onto an injected ApplicationFrameHost, one method per native call site. Not ABI compatible: the native routine takes the application in ECX, returns nothing and reads its subsystems from globals. The interval conversion reuses timestamp_seconds_x87 so it keeps the native FILD/FILD/FDIVP result.",
+    "build": "scripts/build.ps1, Win32 Release, /W4 /WX /fp:strict, clean",
+    "tests": "existing reconstructed_math test passes; no test added"
+  },
+  "names_recorded": [
+    {"address": "004c1dd0", "name": "BSP_Profiler_GetInstance"},
+    {"address": "004c43c0", "name": "BSP_InputAction_WasPressedThisFrame"},
+    {"address": "004fde20", "name": "BSP_LoadingQueue_GetInstance"},
+    {"address": "00be3640", "name": "BSP_Profiler_BeginCounter"},
+    {"address": "00be3660", "name": "BSP_Profiler_EndCounter"},
+    {"address": "00be34d0", "name": "BSP_Profiler_EndFrame"},
+    {"address": "00be3260", "name": "BSP_Profiler_BeginCounterRecord"}
+  ]
+}
