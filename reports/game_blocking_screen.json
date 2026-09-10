@@ -1,0 +1,393 @@
+{
+  "packet": "game_blocking_screen_frame",
+  "owner": "agent/game-blocking-screen",
+  "date": "2026-09-09",
+  "kind": "analysis_and_reconstruction",
+  "doc": "docs/GAME_BLOCKING_SCREEN.md",
+  "ghidra": "read-only for this packet; names recorded in the ledger only",
+  "headline": "DAT_00e198bc is the front-end attract screen, not a loading or modal gate. Its constructor loads the GUI layout FE_attract and its activate virtual plays movies/PacificTheme.bik. 00689cc0 is an idle countdown: 45 seconds with no button down raises the screen, any button takes it down, and while it is up BSP_Game_OnMove renders GUI only and returns at 004e4b8c.",
+  "frame_slice": {
+    "extent": "004e4b2a-004e4b8c",
+    "ret": {
+      "address": "004e4b8c",
+      "form": "ret 4"
+    },
+    "delta": "raw; the frame-control scaling at the tail of BSP_Game_OnMove is never reached",
+    "ebp_is_zero_from": "004e4a7e",
+    "incoming_float_slot": "[esp+0x48]",
+    "steps": [
+      {
+        "address": "004e4b29",
+        "test": "DAT_00e198bc != 0",
+        "else": "fall through to 004e4b8f"
+      },
+      {
+        "address": "004e4b3b",
+        "call": "00689cc0",
+        "abi": "__thiscall, ECX = DAT_00e198bc, float [esp]"
+      },
+      {
+        "address": "004e4b40",
+        "test": "byte *(DAT_00e198bc + 0x3c) != 0",
+        "note": "the global is loaded a second time, so a screen the update just raised is seen this frame"
+      },
+      {
+        "address": "004e4b4e",
+        "call": "004c6c30",
+        "name": "BSP_Game_TryBeginRenderFrame",
+        "test": "AL != 0"
+      },
+      {
+        "address": "004e4b57",
+        "call": "004c12b0",
+        "name": "BSP_GuiManager_GetOrCreate"
+      },
+      {
+        "address": "004e4b67",
+        "call": "00aa4f80",
+        "args": "(rawDelta, 0)"
+      },
+      {
+        "address": "004e4b6e",
+        "call": "004ca440",
+        "name": "BSP_Game_Render"
+      },
+      {
+        "address": "004e4b75",
+        "call": "004ca1f0",
+        "name": "BSP_Game_FinishRenderFrame"
+      }
+    ]
+  },
+  "attract_screen_object": {
+    "global": "DAT_00e198bc",
+    "size_bytes": "0x4c",
+    "allocation_site": "004c9b92 in BSP_Game_OnInitTitle",
+    "vtable": "00cf78e8",
+    "vtable_slots": {
+      "+0x00": "00689e60 scalar deleting destructor thunk",
+      "+0x04": "00689bd0, a bare RET",
+      "+0x08": "00689e80 BSP_AttractScreen_Activate",
+      "+0x0c": "00689c00 BSP_AttractScreen_Deactivate",
+      "+0x10": "00684600"
+    },
+    "layout": [
+      {
+        "offset": "+0x00",
+        "field": "vtable",
+        "evidence": "00689dc1 ctor, 00689c7d dtor"
+      },
+      {
+        "offset": "+0x04..+0x38",
+        "field": "base class filled by 00684e10",
+        "evidence": "not recovered"
+      },
+      {
+        "offset": "+0x3c",
+        "field": "bool active",
+        "evidence": "set at 0068477a inside base activate 00684700, cleared at 00689c16, tested at 004e4b46 and 00689cde/00689d33"
+      },
+      {
+        "offset": "+0x40",
+        "field": "GUI layout handle from 00aa5840",
+        "evidence": "stored at 00689e2a, released via 00aa31f0 at 00689c99"
+      },
+      {
+        "offset": "+0x44",
+        "field": "float idle_countdown",
+        "evidence": "45.0f at 00689dc7, decremented at 00689d29, reloaded at 00689cf9 and 00689c4b"
+      },
+      {
+        "offset": "+0x48",
+        "field": "bool enabled",
+        "evidence": "set to 1 at 00689ddc, read at 00689ce4"
+      }
+    ],
+    "strings": {
+      "00cf78fc": "FE_attract (GUI layout, capacity 0xa)",
+      "00cf7908": "movies/PacificTheme.bik (capacity 0x17)"
+    },
+    "lifetime": "004e3aa0 BSP_Game_OnInit releases it through virtual +0 when it enters game state 3, so it exists only in the front end"
+  },
+  "constants": {
+    "DAT_00ce3d60": {
+      "value": 45.0,
+      "role": "idle countdown reload, seconds"
+    },
+    "DAT_00d7a24c": {
+      "value": 1.0,
+      "role": "upper clamp applied to the frame delta before subtraction"
+    },
+    "DAT_00cefcb8": {
+      "role": "float passed to the movie play call 004f8a20, value not read"
+    }
+  },
+  "functions": [
+    {
+      "address": "00689cc0",
+      "name": "BSP_Game_UpdateBlockingScreen",
+      "name_state": "existing reviewed name, evidence appended",
+      "abi": "void __thiscall f(AttractScreen *this /*ECX*/, float delta /*[esp+4]*/)",
+      "ret": "ret 4",
+      "epilogues": [
+        "00689d59",
+        "00689d8b"
+      ],
+      "recovered_from": "listing 00689cc0-00689d8b",
+      "decompiler_defects": [
+        "the float field at +0x44 is shown as an int array element param_1[0x11]",
+        "the ECX of 00a91020 and 00a90180 (DAT_00f8bbf4) is dropped"
+      ],
+      "body": [
+        "hold  = 00a91020(DAT_00f8bbf4)",
+        "hold |= 00a90180(DAT_00f8bbf4)   ; byte OR, both always evaluated",
+        "if (this->active == 0) { hold |= (this->enabled == 0); hold |= *(byte*)(00425d10() + 5); }",
+        "if (hold) this->countdown = 45.0f; else this->countdown -= min(delta, 1.0f)",
+        "if (this->active) { if (!hold) return; virtual +0xC; if (DAT_00e198c8) DAT_00e198c8->virtual +8; return; }",
+        "if (this->countdown < 0.0f && *(int*)(DAT_00e188a8+0x5d4) not in {0xd,0x10,0x11}) virtual +8"
+      ],
+      "notes": [
+        "COMISS delta, 1.0f with JBE keeping delta, so a NaN delta is not clamped",
+        "COMISS 0.0f, countdown with JBE skipping, so the test is strictly negative",
+        "the subtraction is one x87 FLD/FSUB/FSTP on two float32 operands, a single rounding",
+        "enabled and the scene-context byte enter hold only while the screen is down"
+      ],
+      "state": "exported, analysed, reconstructed, build-tested"
+    },
+    {
+      "address": "004db220",
+      "name": "BSP_Game_ResetToTitle",
+      "name_state": "recorded",
+      "abi": "void __thiscall f(GGame *this /*ECX*/)",
+      "ret": "tail JMP to 004c9a70 at 004db239",
+      "body": [
+        "004db190()   ; ECX still the game",
+        "004cccc0(this)",
+        "*(byte*)(this + 0x2180) = 0",
+        "BSP_Game_OnInitTitle(this)"
+      ],
+      "callers": [
+        "004e4c0d in BSP_Game_OnMove, guarded by DAT_00e198c8 == 0 in state 2"
+      ],
+      "callee_summary": {
+        "004db190": "sets DAT_00e08874, releases DAT_00e198b4/b8/ac through deleting destructors, then 004c1710, 00a4c2c0, BSP_Game_DrainStateRequests",
+        "004cccc0": "releases DAT_00e18678, DAT_00e1867c, game+0x19c8, DAT_00e19900, DAT_00e18db0, DAT_00e19698, DAT_00e1930c"
+      },
+      "state": "exported, analysed, reconstructed, build-tested"
+    },
+    {
+      "address": "00aa4f80",
+      "name": "BSP_GuiManager_Update",
+      "name_state": "existing reviewed name, evidence appended",
+      "abi": "void __thiscall f(cGuiManager *this /*ECX*/, float seconds /*[esp+4]*/, bool flag /*[esp+8]*/)",
+      "ret": "ret 8",
+      "layer_iteration": "over a snapshot copy of the checked vector at manager+0x14 (_Myfirst +0x18, _Mylast +0x1c), built by 004d35d0 and freed at 00aa5047",
+      "per_layer_virtuals": {
+        "+0x38": "wants-update predicate, no arguments, returns a byte",
+        "+0x40": "update, one float stack argument"
+      },
+      "manager_fields_read": {
+        "+0x14": "checked vector of cGuiScreen*",
+        "+0x70": "byte set to the flag argument for the whole walk, cleared unconditionally at 00aa503f",
+        "+0x74": "hl_FrameBox, hidden every update by 00aa0f70",
+        "+0x78": "hlCircle_FrameBox, hidden every update by 00aa0f70"
+      },
+      "body": [
+        "manager->byte_70 = flag",
+        "if (flag == 0) 00aa3910(manager)   ; pointer hit-test pass over DAT_00f8bbf4+0x94",
+        "00aa0f70(manager)                  ; BSP_GuiManager_ResetScreens",
+        "004d35d0(&snapshot, manager + 0x14)",
+        "for each screen: if (screen->virtual+0x38() || 00aa7ef0(screen)) screen->virtual+0x40(seconds)",
+        "manager->byte_70 = 0; free(snapshot.first)"
+      ],
+      "notes": [
+        "the interleaved CALL 00bf6713 sites are _SECURE_SCL iterator assertions"
+      ],
+      "state": "exported, analysed, reconstructed, build-tested"
+    },
+    {
+      "address": "00aa0e00",
+      "name": "BSP_GuiManager_SetEnabled",
+      "name_state": "recorded",
+      "abi": "void __thiscall f(cGuiManager *this /*ECX*/, bool enabled /*[esp+4]*/)",
+      "ret": "ret 4",
+      "body": [
+        "manager->byte_48 = enabled",
+        "if (!enabled) tail JMP to (*(void***)(manager + 0x50))[+0x34] with the argument slot rewritten to 0"
+      ],
+      "callers": 9,
+      "onmove_sites": {
+        "004e4c4d": "argument 0",
+        "004e4c5c": "argument 1"
+      },
+      "notes": [
+        "the decompiler's jumptable warning at 00aa0e1b is the tail JMP",
+        "manager+0x50 is MousePtrFE_Icon, resource 4 of 00aa5e20 (docs/APP_INIT_FONTS_GUI.md)",
+        "no reader of manager+0x48 was found"
+      ],
+      "state": "exported, analysed, reconstructed, build-tested"
+    },
+    {
+      "address": "00aa0e50",
+      "name": "BSP_GuiManager_SetPointerVisible",
+      "name_state": "recorded",
+      "abi": "void __thiscall f(cGuiManager *this /*ECX*/, bool visible /*[esp+4]*/)",
+      "ret": "bare JMP at 00aa0e58; the pointer's virtual +0x34 cleans the argument",
+      "body": [
+        "ECX = manager+0x50; JMP (*(void***)ECX)[+0x34]"
+      ],
+      "callers": [
+        "004e4c40",
+        "0056508c",
+        "004daa9d",
+        "004c6e1c"
+      ],
+      "notes": [
+        "every call site pushes one argument before fetching the manager, so Ghidra's zero-argument __fastcall signature is wrong",
+        "it never touches manager+0x48"
+      ],
+      "state": "exported, analysed, reconstructed, build-tested"
+    },
+    {
+      "address": "00689d90",
+      "name": "BSP_AttractScreen_Construct",
+      "name_state": "recorded",
+      "abi": "AttractScreen * __thiscall f(AttractScreen *this /*ECX*/)",
+      "body": [
+        "00684e10(this)",
+        "this->vtable = 00cf78e8; this->countdown = 45.0f; DAT_00e198bc = this; this->enabled = 1",
+        "pooled string 'FE_attract'; 004c12b0(); 00aa5840(&name, 1, 0) -> this->+0x40"
+      ],
+      "state": "analysed"
+    },
+    {
+      "address": "00689c60",
+      "name": "BSP_AttractScreen_Destruct",
+      "name_state": "recorded",
+      "body": [
+        "this->vtable = 00cf78e8; DAT_00e198bc = 0",
+        "004c12b0(); 00aa31f0(this->+0x40)",
+        "00684fa0(this)"
+      ],
+      "state": "analysed"
+    },
+    {
+      "address": "00689e80",
+      "name": "BSP_AttractScreen_Activate",
+      "name_state": "recorded",
+      "vtable_slot": "+0x08",
+      "body": [
+        "00684700(this)   ; base activate, sets byte this+0x3c at 0068477a",
+        "this->+0x40 virtual +0x34(1)",
+        "DAT_00e18d48: byte +4 = 1, byte +5 = 1, 004f83b0(player), player virtual +0x18",
+        "pooled string 'movies/PacificTheme.bik'; 004f8a20(&path, 1, DAT_00cefcb8, 1)"
+      ],
+      "state": "analysed"
+    },
+    {
+      "address": "00689c00",
+      "name": "BSP_AttractScreen_Deactivate",
+      "name_state": "recorded",
+      "vtable_slot": "+0x0c",
+      "ghidra": "no function starts here; read from the raw listing 00689c00-00689c5b",
+      "body": [
+        "00683aa0(this)",
+        "this->+0x40 virtual +0x34(0); byte this+0x3c = 0",
+        "if (DAT_00e18d48 byte +5) player virtual +0x1c; bytes +4 and +5 = 0; 004f83b0; 004f8ac0",
+        "this->countdown = 45.0f"
+      ],
+      "state": "analysed"
+    },
+    {
+      "address": "00a91020",
+      "name": "BSP_InputDeviceTable_AnyDynamicDeviceButtonDown",
+      "name_state": "recorded",
+      "abi": "bool __fastcall f(InputDeviceTable *this /*ECX*/)",
+      "body": "walks the checked vector whose proxy is at this+0x6c (_Myfirst +0x70, _Mylast +0x74); returns 1 at the first element whose virtual +0x2c is non-zero",
+      "callers": [
+        "004b43b0",
+        "004db920",
+        "00532c50",
+        "00689cc0"
+      ],
+      "state": "analysed"
+    },
+    {
+      "address": "00a90180",
+      "name": "BSP_InputDeviceTable_AnyJoystickButtonDown",
+      "name_state": "recorded",
+      "abi": "bool __fastcall f(InputDeviceTable *this /*ECX*/)",
+      "body": "walks the eight pointers at this+0x44..this+0x60, the joystick row of the 3x8 slot array (this+0x04 + class*0x20 + slot*4, docs/APP_INIT_INPUT.md); returns 1 at the first whose virtual +0x2c is non-zero",
+      "callers": [
+        "00689cc0"
+      ],
+      "state": "analysed"
+    },
+    {
+      "address": "00aa7ef0",
+      "name": "BSP_GuiScreen_HasLiveEntries",
+      "name_state": "recorded",
+      "abi": "bool __fastcall f(cGuiScreen *this /*ECX*/)",
+      "body": "scans the screen+0x8c dword-counted array of pointers at screen+0x88 and returns 1 at the first non-null",
+      "callers": [
+        "00aa500c in BSP_GuiManager_Update"
+      ],
+      "state": "analysed"
+    }
+  ],
+  "device_button_query": {
+    "table": "DAT_00f8bbf4, the input device table of docs/APP_INIT_INPUT.md",
+    "virtual": "+0x2c on a device, implementation 00a93f60",
+    "implementation": "polls indices 0..0x3b through the device virtual +0x20 and returns 1 at the first hit",
+    "meaning": "any button on any device is down",
+    "rows_consulted": [
+      "joystick row at +0x44",
+      "dynamic vector at +0x6c"
+    ],
+    "rows_not_consulted": [
+      "keyboard row at +0x04",
+      "mouse row at +0x24"
+    ]
+  },
+  "frontend_branch_polarity": {
+    "site": "004e4c29",
+    "test": "byte [DAT_00f8abe8 + 0x3e8]",
+    "non_zero": "BSP_GuiManager_SetPointerVisible(0) then BSP_GuiManager_SetEnabled(0)",
+    "zero": "BSP_GuiManager_SetEnabled(1) then the 00425d10 menu branch",
+    "note": "recorded only as the evidence for the argument of 00aa0e50; the branch belongs to game_frontend_states"
+  },
+  "uncertainties": [
+    "manager+0x48 has no identified reader, so SetEnabled is named for its call sites, not an observed effect beyond hiding the pointer",
+    "the 00425d10 scene-context singleton and its byte +5 were not opened",
+    "game states 0xd, 0x10 and 0x11 are excluded from raising the screen; their meaning is unknown",
+    "DAT_00e198c8 (0x44 bytes) and its virtual +8, called on the dismissal frame, were not opened",
+    "screen virtuals +0x34, +0x38 and +0x40 are named from their arguments and call sites; no override was read",
+    "00aa3910 is identified only by its input DAT_00f8bbf4+0x94 and its guard",
+    "the base class at attract+0x04..+0x38 (00684e10 / 00684700 / 00683aa0, list at DAT_00e19898) was not reconstructed",
+    "the GUI factory lookup path 00aa5840 -> 00aa3140 and the literal at 00d0e67c were not followed"
+  ],
+  "remaining": [
+    "open the readers of manager+0x48",
+    "open 00425d10 and name the flag at +5",
+    "identify game states 0xd, 0x10 and 0x11",
+    "open DAT_00e198c8 and its virtual +8 as the start of game_frontend_states",
+    "recover the base screen class and the DAT_00e19898 list for the rest of the attract layout"
+  ],
+  "reconstruction": {
+    "header": "include/bsp/blocking_screen.hpp",
+    "source": "src/blocking_screen.cpp",
+    "cmake": "cmake/startup.cmake, one deferred target_sources line into bsp_core",
+    "entry_points": [
+      "bsp::run_blocking_screen_frame",
+      "bsp::update_attract_screen_00689cc0",
+      "bsp::gui_manager_update_00aa4f80",
+      "bsp::gui_manager_set_enabled_00aa0e00",
+      "bsp::gui_manager_set_pointer_visible_00aa0e50",
+      "bsp::reset_to_title_004db220"
+    ],
+    "style": "one host method per native call site, as in bsp::run_application_frame",
+    "build": "Win32, /W4 /WX, clean; ctest reconstructed_math passes",
+    "compatibility": "not ABI-compatible, not game-validated; no invented globals, no stubbed calls",
+    "tests_added": 0
+  }
+}
