@@ -27,7 +27,7 @@ bool create_platform_window_00becee0_fragment(const PlatformWindowOptions& optio
     }
     const char* name = options.name ? options.name : "";
     WNDCLASSA window_class{};
-    window_class.style = CS_GLOBALCLASS;
+    window_class.style = CS_BYTEALIGNWINDOW;  // 00becf36 stores 0x2000; CS_GLOBALCLASS would be 0x4000
     window_class.lpfnWndProc = options.procedure;
     window_class.cbWndExtra = 24;
     window_class.hInstance = options.instance;

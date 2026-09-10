@@ -5,7 +5,7 @@ handwritten class/creation setup with the recovered Win32 operations from
 00becf29 through00bed087. It remains a fragment of the eleven-argument cdecl
 CreateWindowAndDevice routine, not a reconstructed platform object or lifecycle.
 
-The class uses CS_GLOBALCLASS, zero class-extra bytes, 24 window-extra bytes,
+The class uses CS_BYTEALIGNWINDOW (0x2000 stored at 00becf36; an earlier reading said CS_GLOBALCLASS, which is 0x4000), zero class-extra bytes, 24 window-extra bytes,
 the supplied HINSTANCE and procedure, shared arrow cursor, and no icon, brush
 or menu. The native procedure is00bec3b0. The new API requires an explicit
 procedure; the probe explicitly supplies DefWindowProcA because the native
