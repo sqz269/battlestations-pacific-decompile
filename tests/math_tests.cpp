@@ -23,6 +23,7 @@
 #include "bsp/renderer_startup.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/scene_unit_creators.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
 #include "bsp/main_menu_screen.hpp"
@@ -1245,6 +1246,39 @@ int main() {
         const bool underflows = guard.depth() == -1 && !guard.active();
         check(idle && nested && still_held && released && underflows,
             "game+644h suppresses the loading-screen bindings only while the depth is positive");
+    }
+
+    {
+        // 004E6B6D: the `Command` sub-bag queues a command only when it carries an
+        // inner `Command` key. Every shipped unit entity has the sub-bag but most
+        // carry only `CommandTarget = R "" ;`, so the presence of the block is not
+        // what decides. Getting this backwards would queue ~10k empty commands.
+        bsp::ScenePropertyBlock shipped;
+        bsp::ScenePropertyBlock shipped_sub;
+        bsp::SceneProperty target;
+        target.key = "CommandTarget";
+        target.type_letter = "R";
+        target.values.push_back("");
+        shipped_sub.values.push_back(target);
+        shipped.blocks.emplace_back("Command", shipped_sub);
+        const bsp::SceneUnitCommand quiet = bsp::scene_unit_command_004e6b30(shipped);
+
+        bsp::ScenePropertyBlock authored;
+        bsp::ScenePropertyBlock authored_sub = shipped_sub;
+        authored_sub.values[0].values[0] = "Path1";
+        bsp::SceneProperty command;
+        command.key = "Command";
+        command.type_letter = "E";
+        command.values.push_back("CommandType");
+        command.values.push_back(":");
+        command.values.push_back("Cruise");
+        authored_sub.values.push_back(command);
+        authored.blocks.emplace_back("Command", authored_sub);
+        const bsp::SceneUnitCommand queued = bsp::scene_unit_command_004e6b30(authored);
+
+        check(!quiet.queued && queued.queued && queued.command == "Cruise" &&
+                queued.target == "Path1",
+            "004E6B30 queues on the inner Command key, not on the sub-block");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
