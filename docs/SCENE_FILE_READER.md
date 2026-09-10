@@ -423,3 +423,7 @@ Every routine named here has a Ghidra function; the `no_ghidra_function` list in
 | `scene_weather_descriptor` | 0046df00+0x100 008f5a00 00b69d40 00b6a020 00b65fb0 | docs/SCENE_WEATHER_DESCRIPTOR.md | The `Weathers` / `SubScenes` / `sceneFile` / `ID` / `Descriptor` walk of `SCRIPTS\datatables\Weather.lua` and which name it matches |
 | `scene_traffic_block` | 009514b0 0095ca10 0095c640 00925f20 | docs/SCENE_TRAFFIC_BLOCK.md | The `traffic` body, and why pass 2 stops at it |
 | `scene_deferred_refs` | 0046aab0 00925a90 00414db0 | docs/SCENE_DEFERRED_REFS.md | `this+150h`, the `00E19A70` name list, and how `R`/`RPath`/`RFort` values resolve to objects |
+
+## Corrections from docs/SCENE_ENTITY_FACTORY.md
+
+`0046c550` constructs nothing: it is the per-entity generation predicate (`__thiscall` on the scene database, `RET 5Ch`, 23 stack dwords), and `00468660` maps a class id to its class name, not to a factory. The real class table is `004f2800` (formerly named `BSP_Scene_ResolveNamedObjects`), which registers 26 classes through `004ee250` as 12-byte descriptors (class id, instantiate-pass creator, registration-pass creator) into the scene database hash map at +34h. The seven unidentified ids resolve to Landscape (44h), Path (47h), LandFort (1Bh), CommandBuilding (1Ch), WaterMine (34h) and SpawnPoint (4Dh); 19h is not a registered id, so the comparison at `0046d492` can never match. Wreck, CameraPath, PeriodicEffect and FreeCamPos are registered but never authored in the 259 installed files.

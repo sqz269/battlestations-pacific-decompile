@@ -362,3 +362,7 @@ is redefined. This is a semantic reconstruction, not an ABI-compatible replaceme
 ## Correction from docs/GAME_WORLD_CONSTRUCT.md
 
 There is no ocean failure path: the `Ocean initialization failed` literal at `00ce7d3c` is copied into a pooled buffer and returned to the pool with no reader, its guard is the scene record existing, and both branches of the ocean construction call the same constructor (the record's description or the `sky_001` literal). The only observable failure is a null pointer at `game+19E8h`, which the per-frame reader already gates on. `004cb030` is the world constructor (`BSP_World_Construct`), not an array constructor helper.
+
+## Correction from docs/SCENE_ENTITY_FACTORY.md
+
+`004f2800` is the scene class-table registration (26 classes through `004ee250`), superseding the earlier `BSP_Scene_ResolveNamedObjects` reading.
