@@ -1,0 +1,818 @@
+{
+  "schema_version": 1,
+  "packet": "camera_type_bootstrap",
+  "status": "implemented_strict_compile_existing_build_and_focused_native_fixture_passed_pending_primary_integration",
+  "verified_utc": "2026-09-10T19:09:37.937253+00:00",
+  "base_commit": "903c29d80f0d389970ce3bfa051aa4b053e1a538",
+  "owned_addresses": [
+    "00b6fb60",
+    "00b71ce0",
+    "00cd7d80",
+    "00b719e0",
+    "00b71a30"
+  ],
+  "owned_files": [
+    "include/bsp/camera_type_bootstrap.hpp",
+    "src/camera_type_bootstrap.cpp",
+    "docs/CAMERA_TYPE_BOOTSTRAP.md",
+    "reports/camera_type_bootstrap_audit.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Each bsp.py ghidra bytes verifies the configured project/program before reading. Every span matches installed PE bytes or PE zero-fill; assembly extents include final RET."
+  },
+  "function_evidence": [
+    {
+      "address": "00b6fb60",
+      "end_exclusive": "00b6fb66",
+      "length": 6,
+      "disk_offset": 7797600,
+      "disk_sha256": "d50fcd704703372ec7e98ce8c936b1ddaf099c02733ba476dc636749fb0d5b1e",
+      "live_sha256": "d50fcd704703372ec7e98ce8c936b1ddaf099c02733ba476dc636749fb0d5b1e",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Camera_GetRuntimeTypeId",
+      "implementation": "CameraTypeBootstrap::type_id_00b6fb60",
+      "source": "src/camera_type_bootstrap.cpp",
+      "source_line": 21,
+      "native_abi": "ECX owner unused; EAX actual [0108FFA0]; RET 0",
+      "behavior": "Read current global own token without initialization.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested",
+      "missing_function_definition_at_initial_inspection": true,
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols. New C++ interfaces preserve bounded observed semantics; native binary replacement compatibility is not established."
+    },
+    {
+      "address": "00b71ce0",
+      "end_exclusive": "00b71d08",
+      "length": 40,
+      "disk_offset": 7806176,
+      "disk_sha256": "32f16481e38ac30b49e87f53b99a0ab4b6a803176f45c2046e4f313bfd62a286",
+      "live_sha256": "32f16481e38ac30b49e87f53b99a0ab4b6a803176f45c2046e4f313bfd62a286",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_Camera_IsType",
+      "implementation": "CameraTypeBootstrap::is_type_00b71ce0",
+      "source": "src/camera_type_bootstrap.cpp",
+      "source_line": 25,
+      "native_abi": "ECX owner unused; stack token at ESP+4; AL boolean only; RET 4",
+      "behavior": "Short-circuit scan of actual camera/node/root token words in address order; no initialization.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested",
+      "missing_function_definition_at_initial_inspection": true,
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols. New C++ interfaces preserve bounded observed semantics; native binary replacement compatibility is not established."
+    },
+    {
+      "address": "00cd7d80",
+      "end_exclusive": "00cd7dcf",
+      "length": 79,
+      "disk_offset": 9272704,
+      "disk_sha256": "e109289d61de152d58e58e4ad0d6827bced7ddc4382d7d5755e3967f8db2f0ee",
+      "live_sha256": "e109289d61de152d58e58e4ad0d6827bced7ddc4382d7d5755e3967f8db2f0ee",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_StaticInitialize_cCamera",
+      "implementation": "CameraTypeBootstrap::initialize_static_00cd7d80",
+      "source": "src/camera_type_bootstrap.cpp",
+      "source_line": 38,
+      "native_abi": "No arguments; no stable result; RET 0",
+      "behavior": "Check actual guard; set guard/name; initialize actual shared node; capture both ancestry words before either store; consume shared counter.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested",
+      "missing_function_definition_at_initial_inspection": true,
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols. New C++ interfaces preserve bounded observed semantics; native binary replacement compatibility is not established."
+    },
+    {
+      "address": "00b719e0",
+      "end_exclusive": "00b71a27",
+      "length": 71,
+      "disk_offset": 7805408,
+      "disk_sha256": "a6a2a9ce1b052bb76ca42e5e06dd5430993b77fbcfc5b378ac1d6c0c826d92ae",
+      "live_sha256": "a6a2a9ce1b052bb76ca42e5e06dd5430993b77fbcfc5b378ac1d6c0c826d92ae",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_InitializeCameraDescriptor",
+      "implementation": "CameraTypeBootstrap::initialize_00b719e0",
+      "source": "src/camera_type_bootstrap.cpp",
+      "source_line": 65,
+      "native_abi": "ECX target descriptor; no stable result; RET 0",
+      "behavior": "Global guard with caller target; name then shared node; interleaved ancestry read/store; consume same counter.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested",
+      "missing_function_definition_at_initial_inspection": true,
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols. New C++ interfaces preserve bounded observed semantics; native binary replacement compatibility is not established."
+    },
+    {
+      "address": "00b71a30",
+      "end_exclusive": "00b71a79",
+      "length": 73,
+      "disk_offset": 7805488,
+      "disk_sha256": "7394cf533c398b6ae7efb7ec18e78571da87ebc15f19f90cfb2ddfa7bb09c5f2",
+      "live_sha256": "7394cf533c398b6ae7efb7ec18e78571da87ebc15f19f90cfb2ddfa7bb09c5f2",
+      "live_matches_disk_or_zero_fill": true,
+      "proposed_name": "BSP_TypeInfo_ConstructCameraDescriptor",
+      "implementation": "CameraTypeBootstrap::construct_00b71a30",
+      "source": "src/camera_type_bootstrap.cpp",
+      "source_line": 69,
+      "native_abi": "ECX target descriptor; EAX same target on cold and guarded paths; RET 0",
+      "behavior": "Same caller-target/global-guard bootstrap sequence as 00B719E0, followed by explicit target return.",
+      "status": "reconstructed_new_cpp_interface_and_focused_native_fixture_tested",
+      "missing_function_definition_at_initial_inspection": true,
+      "uncertainty": "Descriptive names are interpretations, not recovered symbols. New C++ interfaces preserve bounded observed semantics; native binary replacement compatibility is not established."
+    }
+  ],
+  "dependency_code_evidence": [
+    {
+      "address": "00cd80a0",
+      "end_exclusive": "00cd80ef",
+      "length": 79,
+      "disk_offset": 9273504,
+      "disk_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "live_sha256": "87006c25e45c0519ee4a9aac708be1fac987027b2146996f45e41ae3fd2b657f",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "existing light_type_bootstrap.cpp / singleton lifetime packet",
+      "role": "Original helper bytes executed by focused fixture; 006FAC20 uses its prepublished-counter fast path only."
+    },
+    {
+      "address": "00cd80f0",
+      "end_exclusive": "00cd8191",
+      "length": 161,
+      "disk_offset": 9273584,
+      "disk_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "live_sha256": "81258fd90351aa441b0c896b8151b8f6f4f1894348770f27ace1bbb818696bcc",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "existing light_type_bootstrap.cpp / singleton lifetime packet",
+      "role": "Original helper bytes executed by focused fixture; 006FAC20 uses its prepublished-counter fast path only."
+    },
+    {
+      "address": "00b6f110",
+      "end_exclusive": "00b6f14e",
+      "length": 62,
+      "disk_offset": 7794960,
+      "disk_sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84",
+      "live_sha256": "cf0fb112cbcc79e85cdbd28bafa4574513c206abc6c950edaddf422723cbcd84",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "existing light_type_bootstrap.cpp / singleton lifetime packet",
+      "role": "Original helper bytes executed by focused fixture; 006FAC20 uses its prepublished-counter fast path only."
+    },
+    {
+      "address": "006fac20",
+      "end_exclusive": "006facd5",
+      "length": 181,
+      "disk_offset": 3124256,
+      "disk_sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "live_sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "existing light_type_bootstrap.cpp / singleton lifetime packet",
+      "role": "Original helper bytes executed by focused fixture; 006FAC20 uses its prepublished-counter fast path only."
+    },
+    {
+      "address": "00bea780",
+      "end_exclusive": "00bea7ac",
+      "length": 44,
+      "disk_offset": 8300416,
+      "disk_sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac",
+      "live_sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac",
+      "live_matches_disk_or_zero_fill": true,
+      "ownership": "existing light_type_bootstrap.cpp / singleton lifetime packet",
+      "role": "Original helper bytes executed by focused fixture; 006FAC20 uses its prepublished-counter fast path only."
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "0109db7c",
+      "end_exclusive": "0109db80",
+      "length": 4,
+      "disk_offset": null,
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109db80",
+      "end_exclusive": "0109db81",
+      "length": 1,
+      "disk_offset": null,
+      "disk_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109db84",
+      "end_exclusive": "0109db8c",
+      "length": 8,
+      "disk_offset": null,
+      "disk_sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108ff54",
+      "end_exclusive": "0108ff55",
+      "length": 1,
+      "disk_offset": null,
+      "disk_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108ff90",
+      "end_exclusive": "0108ff9c",
+      "length": 12,
+      "disk_offset": null,
+      "disk_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "live_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108ff9c",
+      "end_exclusive": "0108ffb0",
+      "length": 20,
+      "disk_offset": null,
+      "disk_sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+      "live_sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109010d",
+      "end_exclusive": "0109010f",
+      "length": 2,
+      "disk_offset": null,
+      "disk_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "live_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0109018c",
+      "end_exclusive": "010901b0",
+      "length": 36,
+      "disk_offset": null,
+      "disk_sha256": "6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e",
+      "live_sha256": "6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d68bbc",
+      "end_exclusive": "00d68bc2",
+      "length": 6,
+      "disk_offset": 9866172,
+      "disk_sha256": "7f1707c54c5bc10c7deb7e57b38f767d1a97dcc33d77272afcbc9e5a3ed7f3c9",
+      "live_sha256": "7f1707c54c5bc10c7deb7e57b38f767d1a97dcc33d77272afcbc9e5a3ed7f3c9",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62c7c",
+      "end_exclusive": "00d62c84",
+      "length": 8,
+      "disk_offset": 9841788,
+      "disk_sha256": "381369d67b12b58d3d09dad48e78fe1add874b4ca7775cb3cfff4aec45b2c85c",
+      "live_sha256": "381369d67b12b58d3d09dad48e78fe1add874b4ca7775cb3cfff4aec45b2c85c",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62f14",
+      "end_exclusive": "00d62f1b",
+      "length": 7,
+      "disk_offset": 9842452,
+      "disk_sha256": "338cab6e12f5b4f9caa37a165308ea0f69bca546e19dc3424994da55d20dca7e",
+      "live_sha256": "338cab6e12f5b4f9caa37a165308ea0f69bca546e19dc3424994da55d20dca7e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62f1c",
+      "end_exclusive": "00d62f2e",
+      "length": 18,
+      "disk_offset": 9842460,
+      "disk_sha256": "afd3c6c464808f4fb7f3f96177e8118ec56845fa4432ed2ee9a6223439fd35d0",
+      "live_sha256": "afd3c6c464808f4fb7f3f96177e8118ec56845fa4432ed2ee9a6223439fd35d0",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00d62ce4",
+      "end_exclusive": "00d62cec",
+      "length": 8,
+      "disk_offset": 9841892,
+      "disk_sha256": "44d71b7787536d5ede0914397d4699cb696d5982780a3deed4b987bac5d7e9e4",
+      "live_sha256": "44d71b7787536d5ede0914397d4699cb696d5982780a3deed4b987bac5d7e9e4",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "storage_contract": {
+    "camera_guard": "actual volatile uint8 at 0108FF9C, any nonzero value suppresses initialization",
+    "camera_descriptor": {
+      "address": "0108FFA0",
+      "size": 16,
+      "own_id_offset": 0,
+      "node_id_offset": 4,
+      "root_id_offset": 8,
+      "native_name_address_offset": 12
+    },
+    "name_literal": {
+      "address": "00D62CE4",
+      "text": "cCamera",
+      "host_dereference_allowed": false
+    },
+    "shared_node": "LightTypeBootstrap.storage().node_0108ff90, same actual guards/root/node already supplied there",
+    "shared_counter": "The exact same TypeIdCounterLifetime object passed to LightTypeBootstrap, with same actual 0109DB7C slot and SingletonLifetimeDomain",
+    "identity_enforcement": "Explicit construction precondition; shared LightTypeBootstrap keeps counter reference private and this packet does not edit that API.",
+    "new_counter_or_root_node_storage": false,
+    "guard_before_name_and_dependency_calls": true,
+    "static_ancestry_access_order": [
+      "read node own",
+      "read node root",
+      "store camera node",
+      "store camera root"
+    ],
+    "lazy_ancestry_access_order": [
+      "read node own",
+      "store target node",
+      "read node root",
+      "store target root"
+    ],
+    "id_access_order": [
+      "get shared counter",
+      "read counter +4",
+      "increment counter +4 modulo 2^32",
+      "store captured value in target +0"
+    ],
+    "alternate_target": "ECX target is independent of process guard/global descriptor; initializing another target can leave global camera tokens untouched while suppressing subsequent initializers.",
+    "getter_and_predicate_initialize": false,
+    "guard_reset_or_extra_synchronization_added": false
+  },
+  "validation": {
+    "strict_compile": {
+      "result": "PASS",
+      "target": "MSVC Win32",
+      "flags": "/std:c++20 /EHsc /O2 /Oy- /MD /Gy /Gw /W4 /WX /fp:strict",
+      "compiled_sources": [
+        "src/camera_type_bootstrap.cpp",
+        "src/light_type_bootstrap.cpp",
+        "src/singleton_lifetime.cpp",
+        "local/camera_type_native_check.cpp"
+      ]
+    },
+    "existing_repository_build": {
+      "result": "PASS",
+      "command": "./scripts/build.ps1",
+      "existing_ctest": "1/1 reconstructed_math passed",
+      "new_source_in_baseline_cmake": false
+    },
+    "focused_native_fixture": {
+      "result": "PASS",
+      "test_cases_added_to_repository": 0,
+      "local_sequences": 1,
+      "all_five_owned_entries_executed": true,
+      "checkpoints": 9,
+      "state_words_per_checkpoint": 47,
+      "matching_state_words": 423,
+      "predicate_calls_per_side": 125,
+      "states": [
+        {
+          "index": 0,
+          "label": "uninitialized_getter_and_predicate",
+          "words": 47,
+          "normalized_words_sha256": "2cb4aa17dd381ad53b8f1c60895a6ea42bf1e73c628021b60672926649d0b7a8"
+        },
+        {
+          "index": 1,
+          "label": "static_initializes_shared_root_and_node",
+          "words": 47,
+          "normalized_words_sha256": "667770b4c25fe1a2662cb4df84c4ad113ab74a09d2c3ae722da6b92d7b98cfcc"
+        },
+        {
+          "index": 2,
+          "label": "directional_uses_same_counter_and_ancestry",
+          "words": 47,
+          "normalized_words_sha256": "a374ccf0095eeb7b224e61ba1d820fd829c80eab3e870ff5588a9bf1912ed1cb"
+        },
+        {
+          "index": 3,
+          "label": "nonzero_process_guard_preserves_all_targets",
+          "words": 47,
+          "normalized_words_sha256": "8b33a655acd43bdce5fba2a518ace4f52fc63fba12d868854884db5c2af4b22e"
+        },
+        {
+          "index": 4,
+          "label": "live_node_mutation_does_not_rewrite_camera_ancestry",
+          "words": 47,
+          "normalized_words_sha256": "f9760af7058ce553babf56d6fe75c6d353153f592c6046dbb79250a2a0aac0ad"
+        },
+        {
+          "index": 5,
+          "label": "lazy_alternate_target_uses_global_guard",
+          "words": 47,
+          "normalized_words_sha256": "540020e22d2d6db94e3cbe9715e8e761a2b5ac659f7b40dbbeb8fefb6f582291"
+        },
+        {
+          "index": 6,
+          "label": "alternate_initialization_suppresses_global_and_second_targets",
+          "words": 47,
+          "normalized_words_sha256": "540020e22d2d6db94e3cbe9715e8e761a2b5ac659f7b40dbbeb8fefb6f582291"
+        },
+        {
+          "index": 7,
+          "label": "lazy_constructor_returns_target_and_consumes_shared_counter",
+          "words": 47,
+          "normalized_words_sha256": "6b3bfa7cbc9b1e340617fb3323ed73bfb9de65b711d01b07fb49b82ee19494a3"
+        },
+        {
+          "index": 8,
+          "label": "getter_and_predicate_read_actual_mutated_words",
+          "words": 47,
+          "normalized_words_sha256": "0a386d0a918adc43fb8a14ae58743b9dce76f425ed3caa4875902bc7ca87a208"
+        }
+      ],
+      "native_code_execution": "Installed original bytes relocated into isolated Win32 process image; no bootstrap/helper function replaced by a simulated implementation.",
+      "native_counter_precondition": "Prepublished actual 0109DB7C slot and eight-byte counter owner; original getter fast path executed.",
+      "host_counter_lifetime": "Existing real shared manager with one registered counter, released via shared manager shutdown.",
+      "explicit_fixture_only_mutations": [
+        "set camera guard to 0x7F to prove any-nonzero suppression",
+        "mutate actual node and camera token words to prove live reads/copied ancestry",
+        "clear only camera guard twice to exercise both additional cold lazy entries in the single sequence"
+      ],
+      "pointer_normalization": "Only known native type-name values are normalized by image relocation delta before checkpoint comparisons.",
+      "native_target_returns": "00B71A30 returned exact caller target on guarded and cold paths"
+    },
+    "verified_code_bytes": 796,
+    "verified_data_bytes": 131,
+    "verified_code_spans": 10,
+    "verified_data_spans": 13
+  },
+  "fixture_relocations": [
+    {
+      "address": "006fac29",
+      "preimage": "00c83858"
+    },
+    {
+      "address": "006fac36",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006fac54",
+      "preimage": "00ce37fc"
+    },
+    {
+      "address": "006fac61",
+      "preimage": "00ce2218"
+    },
+    {
+      "address": "006fac73",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006fac8a",
+      "preimage": "00cfb6c4"
+    },
+    {
+      "address": "006fac9a",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006faca5",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "006facbc",
+      "preimage": "00ce2210"
+    },
+    {
+      "address": "006facc1",
+      "preimage": "0109db7c"
+    },
+    {
+      "address": "00b6f112",
+      "preimage": "0108ff54"
+    },
+    {
+      "address": "00b6f11e",
+      "preimage": "0108ff54"
+    },
+    {
+      "address": "00b6f124",
+      "preimage": "0109db84"
+    },
+    {
+      "address": "00b6f12b",
+      "preimage": "00d62c7c"
+    },
+    {
+      "address": "00b6f135",
+      "preimage": "0109db84"
+    },
+    {
+      "address": "00b6fb61",
+      "preimage": "0108ffa0"
+    },
+    {
+      "address": "00b719e2",
+      "preimage": "0108ff9c"
+    },
+    {
+      "address": "00b719ee",
+      "preimage": "0108ff9c"
+    },
+    {
+      "address": "00b719f4",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00b719fb",
+      "preimage": "00d62ce4"
+    },
+    {
+      "address": "00b71a05",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00b71a0e",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00b71a32",
+      "preimage": "0108ff9c"
+    },
+    {
+      "address": "00b71a3e",
+      "preimage": "0108ff9c"
+    },
+    {
+      "address": "00b71a44",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00b71a4b",
+      "preimage": "00d62ce4"
+    },
+    {
+      "address": "00b71a55",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00b71a5e",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00b71ce5",
+      "preimage": "0108ffa0"
+    },
+    {
+      "address": "00b71cf8",
+      "preimage": "0108ffac"
+    },
+    {
+      "address": "00bea782",
+      "preimage": "0109db80"
+    },
+    {
+      "address": "00bea78e",
+      "preimage": "0109db80"
+    },
+    {
+      "address": "00bea7a6",
+      "preimage": "00d68bbc"
+    },
+    {
+      "address": "00cd7d82",
+      "preimage": "0108ff9c"
+    },
+    {
+      "address": "00cd7d8a",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd7d90",
+      "preimage": "0108ff9c"
+    },
+    {
+      "address": "00cd7d97",
+      "preimage": "0108ffac"
+    },
+    {
+      "address": "00cd7d9b",
+      "preimage": "00d62ce4"
+    },
+    {
+      "address": "00cd7da5",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd7dab",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00cd7db0",
+      "preimage": "0108ffa4"
+    },
+    {
+      "address": "00cd7db6",
+      "preimage": "0108ffa8"
+    },
+    {
+      "address": "00cd7dca",
+      "preimage": "0108ffa0"
+    },
+    {
+      "address": "00cd80a2",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd80aa",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd80b0",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd80b7",
+      "preimage": "01090198"
+    },
+    {
+      "address": "00cd80bb",
+      "preimage": "00d62f14"
+    },
+    {
+      "address": "00cd80c5",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd80cb",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00cd80d0",
+      "preimage": "01090190"
+    },
+    {
+      "address": "00cd80d6",
+      "preimage": "01090194"
+    },
+    {
+      "address": "00cd80ea",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00cd80f2",
+      "preimage": "0109010e"
+    },
+    {
+      "address": "00cd80ff",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd8107",
+      "preimage": "0109010e"
+    },
+    {
+      "address": "00cd810d",
+      "preimage": "010901ac"
+    },
+    {
+      "address": "00cd8111",
+      "preimage": "00d62f1c"
+    },
+    {
+      "address": "00cd8118",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd811d",
+      "preimage": "0109010d"
+    },
+    {
+      "address": "00cd8123",
+      "preimage": "01090198"
+    },
+    {
+      "address": "00cd8127",
+      "preimage": "00d62f14"
+    },
+    {
+      "address": "00cd8131",
+      "preimage": "0108ff90"
+    },
+    {
+      "address": "00cd8137",
+      "preimage": "0108ff94"
+    },
+    {
+      "address": "00cd813c",
+      "preimage": "01090190"
+    },
+    {
+      "address": "00cd8142",
+      "preimage": "01090194"
+    },
+    {
+      "address": "00cd8156",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00cd815b",
+      "preimage": "0109018c"
+    },
+    {
+      "address": "00cd8161",
+      "preimage": "01090190"
+    },
+    {
+      "address": "00cd8167",
+      "preimage": "01090194"
+    },
+    {
+      "address": "00cd816c",
+      "preimage": "010901a0"
+    },
+    {
+      "address": "00cd8172",
+      "preimage": "010901a4"
+    },
+    {
+      "address": "00cd8178",
+      "preimage": "010901a8"
+    },
+    {
+      "address": "00cd818c",
+      "preimage": "0109019c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\include\\bsp\\camera_type_bootstrap.hpp",
+      "sha256": "7e6ad15a2ae0e84e2255b65e61ea0872e1bf85de0b249a29dad6bc940e5f51af",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\src\\camera_type_bootstrap.cpp",
+      "sha256": "06f3b76beda1a755ab42d30917474581ce0c4c64f95a2adfd9a1f4ecd55918bd",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\docs\\CAMERA_TYPE_BOOTSTRAP.md",
+      "sha256": "dad34de175734118e36c3956236ba54ac9b7760ff5d689620aa2e9c4564ec4d3",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\include\\bsp\\light_type_bootstrap.hpp",
+      "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\src\\light_type_bootstrap.cpp",
+      "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\src\\singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "tracked_source_or_document": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\prepare_camera_type_native.py",
+      "sha256": "271179f9b704997782e63866a36469c5fc9cd1c37059002663ebb7e952d31160",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\camera_type_native_spans.hpp",
+      "sha256": "203c94ac55a2c708005d90cf7ace67d1381689fb47fe01a97ae86dc576452283",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\camera_type_native_preparation.json",
+      "sha256": "e7008c46ebbaa50e32ce63711a80ed543f31b7b2c2c5775bf61717e9ae3216a8",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\camera_type_native_check.cpp",
+      "sha256": "62d99b5f9c6c1cd2d2a0c910c2ce74977f5369c37ceebefd139774bb78830368",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\build_camera_type_native_check.ps1",
+      "sha256": "c83a83cdf3ba17baac2cfd997cbdd117424852a90a82316efeb266f6e6cc5977",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\camera_type_native_check.log",
+      "sha256": "9361fa9f58ee29d4aa687749c43520165666bdfd126fc55f5b622f6ecb0a68f7",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\local\\camera_type_repository_build.log",
+      "sha256": "d300e330c4f8864161d34c7c51c7d29b2d688d9331745bcd6181041673ab37c8",
+      "tracked_source_or_document": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-type-bootstrap-20260910\\build\\camera-type-check\\camera_type_native_check.exe",
+      "sha256": "76d163b7f2217725dee12e218d6bac9512d6b0f55d24fa5d3e996941f8f70955",
+      "tracked_source_or_document": false
+    }
+  ],
+  "limits": [
+    "Typed C++ methods are not drop-in native ABI replacements; only AL is defined for native predicate return.",
+    "Native counter slow allocation/registration/shutdown, SEH/unwind, allocation failure, concurrent races, uint32 wraparound and whole-process startup ordering were not fixture-executed.",
+    "Separate alternate target storage was executed; overlapping source/target aliases were not fixture-executed. Observed source/destination access order is retained.",
+    "No camera owner constructor, scene-node composition, pool binding, camera vtable dispatch, game startup or gameplay validation is included.",
+    "Primary integration owns CMake, saved Ghidra function definitions and naming, ledger records, refreshed exports and later camera composition."
+  ]
+}
