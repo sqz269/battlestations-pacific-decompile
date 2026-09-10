@@ -1,0 +1,439 @@
+{
+  "schema": 1,
+  "utc": "2026-09-10T17:42:52.966794+00:00",
+  "packet": "system_fog_world_factory_impl",
+  "base_commit": "e9eb028",
+  "status": "bounded_fragment_reconstructed_strict_win32_compile_native_continuation_and_real_public_allocation_checks_passed",
+  "owned_files": [
+    "include/bsp/system_fog_world_factory.hpp",
+    "src/system_fog_world_factory.cpp",
+    "docs/SYSTEM_FOG_WORLD_FACTORY.md",
+    "reports/system_fog_world_factory_audit.json"
+  ],
+  "evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every live query uses bsp.py ghidra, which verifies project/program/language/image base before reading. Current selected bytes equal installed PE bytes; no whole-image Ghidra equality claim.",
+    "ranges": [
+      {
+        "role": "implemented_factory",
+        "start": "004df6a3",
+        "end_exclusive": "004df7a5",
+        "byte_count": 258,
+        "disk_sha256": "1d6327619b5aea0e4d03cd85f4d1411431fec81a699206f0952cb0a7ff40a6b3",
+        "ghidra_sha256": "1d6327619b5aea0e4d03cd85f4d1411431fec81a699206f0952cb0a7ff40a6b3",
+        "matches_disk": true
+      },
+      {
+        "role": "differential_continuation",
+        "start": "004df6d0",
+        "end_exclusive": "004df7a5",
+        "byte_count": 213,
+        "disk_sha256": "5494ec7c18dcea8ea1ada6e7cc636243fa2a8bbf4b79b91d6dbe8a3d3de2a52b",
+        "ghidra_sha256": "5494ec7c18dcea8ea1ada6e7cc636243fa2a8bbf4b79b91d6dbe8a3d3de2a52b",
+        "matches_disk": true
+      },
+      {
+        "role": "native_dependency_camera_set_owner",
+        "start": "00b71940",
+        "end_exclusive": "00b71981",
+        "byte_count": 65,
+        "disk_sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+        "ghidra_sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+        "matches_disk": true
+      },
+      {
+        "role": "native_dependency_world_set_owner",
+        "start": "00bbdf20",
+        "end_exclusive": "00bbdf5b",
+        "byte_count": 59,
+        "disk_sha256": "b7f85c2a70c5b182b2226a0f6de2f3e1a7393d816be1f1c22b653c33373148a3",
+        "ghidra_sha256": "b7f85c2a70c5b182b2226a0f6de2f3e1a7393d816be1f1c22b653c33373148a3",
+        "matches_disk": true
+      },
+      {
+        "role": "native_dependency_set_color08",
+        "start": "00b84c40",
+        "end_exclusive": "00b84c5e",
+        "byte_count": 30,
+        "disk_sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+        "ghidra_sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+        "matches_disk": true
+      },
+      {
+        "role": "native_dependency_set_directional28",
+        "start": "00b84fa0",
+        "end_exclusive": "00b84fc8",
+        "byte_count": 40,
+        "disk_sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "ghidra_sha256": "4074a69a87ea6d6c45d9bb8c247411cc3dbc0973c8098c4b6ab8f44607dceaa6",
+        "matches_disk": true
+      },
+      {
+        "role": "native_dependency_set_scalar_68",
+        "start": "00b84d00",
+        "end_exclusive": "00b84d0e",
+        "byte_count": 14,
+        "disk_sha256": "94748cc1ebfe581c73374a48251b3cd929e7c2396c3b871f320018358f7ba0a8",
+        "ghidra_sha256": "94748cc1ebfe581c73374a48251b3cd929e7c2396c3b871f320018358f7ba0a8",
+        "matches_disk": true
+      },
+      {
+        "role": "native_dependency_set_scalar_78",
+        "start": "00b84d40",
+        "end_exclusive": "00b84d4e",
+        "byte_count": 14,
+        "disk_sha256": "b77ce3ba0ee4b07ad1ad031276c01593e6cc22349bc22006212660e01b1ac706",
+        "ghidra_sha256": "b77ce3ba0ee4b07ad1ad031276c01593e6cc22349bc22006212660e01b1ac706",
+        "matches_disk": true
+      }
+    ],
+    "supporting_reports": [
+      "reports/system_fog_world_factory_next.json",
+      "reports/system_fog_owner_audit.json",
+      "reports/authored_fog_source_audit.json",
+      "reports/environment_fog_apply_audit.json"
+    ]
+  },
+  "reconstruction": {
+    "parent": "004de610",
+    "start": "004df6a3",
+    "end_exclusive": "004df7a5",
+    "byte_count": 258,
+    "api": "void initialize_world_fog_004df6a3(const WorldFogFactoryGameFields&, uint32_t& actual_packed_color_temporary_18)",
+    "native_live_inputs": [
+      "ESI=game",
+      "EBX=InterlockedDecrement",
+      "EDI=-1",
+      "actual parent stack/EH frame"
+    ],
+    "native_entrypoint": false,
+    "whole_game_constructor": false,
+    "semantic_uncertainty": "D64518 receiver ocean/sky role is a hypothesis, no RTTI/type name; distinct from game+19cc world",
+    "allocation": "existing allocate_system_fog_owner -> real singleton_lifetime_allocate native94h/host sizeof(SystemFogOwner), noexcept initializer, initial reference1",
+    "order": [
+      "allocate/initialize before game slot reads",
+      "load receiver19e8 and optionally publish +10",
+      "load SAME camera19fc and publish +184",
+      "release creator reference BEFORE field writes",
+      "x87 zero -> scalar68",
+      "x87 zero -> scalar78",
+      "build raw RGB plus x87 alpha and packed liveout, then color setter",
+      "initial live scene guard",
+      "four independent live scene reloads and forward directional setters"
+    ],
+    "new_owning_result": false,
+    "additional_fog_state": false
+  },
+  "bindings": {
+    "FogReceiverFields": "contains const SystemFogState*& fog_10, a reference to actual existing40h D64518 receiver field",
+    "WorldFogFactoryGameFields": {
+      "receiver_19e8": "FogReceiverFields* const& actual live projection pointer slot",
+      "camera_19fc": "CameraFrameState* const& SAME actual camera projection pointer slot",
+      "scene_record_05fc": "const void* const& actual selected record pointer slot"
+    },
+    "packed_output": "uint32_t& actual caller-owned parent temporary, raw00a5a3ab",
+    "read_points": {
+      "receiver": "004df6d0 after allocation",
+      "camera": "004df6e7 after preceding receiver publication/release",
+      "scene_guard": "004df776",
+      "scene_each_iteration": "004df786"
+    },
+    "preconditions": [
+      "actual views and pointer slots remain live",
+      "camera nonnull at its consumption point",
+      "existing nonnull fog views originate from live SystemFogOwner",
+      "every loaded record after nonnull guard provides A60h readable bytes"
+    ],
+    "native_invalid_pointer_policy": "no added fallback or loop skip; invalid binding remains outside valid host contract",
+    "source_relation": "record+a20 == (record+990 authored block)+90; existing authored/apply paths consume same data and actual camera owner"
+  },
+  "field_operations": {
+    "scalar68": {
+      "native": "004df706 FLDZ; FSTP m32 ->004df70e call00b84d00",
+      "host": "spill_x87_zero raw DWORD -> existing raw setter"
+    },
+    "scalar78": {
+      "native": "004df713 FLDZ; FSTP m32 ->004df71b call00b84d40",
+      "host": "same x87 spill -> existing raw setter"
+    },
+    "rgb": {
+      "addresses": [
+        "00ce7d60",
+        "00ce7d5c",
+        "00ce7d58"
+      ],
+      "raw_bits": [
+        "3f25a5a6",
+        "3f23a3a4",
+        "3f2babac"
+      ],
+      "host": "literal verified raw DWORD bits; no decimal ratio recomputation"
+    },
+    "alpha": {
+      "native": "004df720 FLDZ; FDIV m64 [00ce4b48]; later FSTP m32",
+      "divisor_bits": "406fe00000000000",
+      "divisor_double": 255.0,
+      "host": "same x87 sequence with verified constant bits"
+    },
+    "packed_byte_order": [
+      [
+        2,
+        "a5"
+      ],
+      [
+        1,
+        "a3"
+      ],
+      [
+        0,
+        "ab"
+      ],
+      [
+        3,
+        "00"
+      ]
+    ],
+    "packed_continuation": "004df7a5 loads word;004df7b0 calls00b6fe50 storing camera+190; this outside write remains caller-owned",
+    "directional": "four native forward raw-word copies from current record+a20+10*index; initial null scene preserves raw allocation preimage",
+    "underwater": "no factory setter; core constructor field retained",
+    "x87_exception_behavior": "real operations preserve masked stack-fault outputs/status, not forced integer zero"
+  },
+  "lifetime_and_eh": {
+    "temporary_release": "release_system_fog_owner immediately after actual camera publication, before all scalar/color/directional initialization",
+    "valid_final_owner_references": "camera1 plus optional receiver1; no creator ownership returned",
+    "replaced_owner_order": "existing core publish-new/retain-new/release-old semantics",
+    "native_raw_constructor_unwind": {
+      "state": "24h",
+      "record": "00d8fe48",
+      "action": "00c6713d",
+      "true_end_exclusive": "00c67148",
+      "raw_allocation_slot": "native EH frame EBP-7c / parent stack+24",
+      "operation": "free then POP ECX;RET",
+      "restored_before_publication": true
+    },
+    "host_allocation_exception": "actual host allocator new-handler/bad_alloc propagates; no allocation injection, null substitute or catch-to-success",
+    "boundary": "native CRT heap/newmode/encoded handler/exception object/SEH identity not reimplemented; whole receiver/camera/record lifetimes outside fragment"
+  },
+  "validation": {
+    "strict_compile": {
+      "command": "./local/build_world_factory_check.ps1",
+      "compiler": "MSVC19.51 Win32",
+      "flags": "/std:c++17 /permissive- /EHsc /fp:strict /O2 /Oy- /MT /Gy /Gw /W4 /WX",
+      "result": "passed warning-free",
+      "owned_translation_unit_compiled_separately": true
+    },
+    "native_comparison": {
+      "scope": [
+        "004df6d0",
+        "004df7a5"
+      ],
+      "byte_count": 213,
+      "host_scope": "exact internal publish_and_initialize_world_fog continuation used by public API, included from owned source in one ignored fixture",
+      "owners": "actual shared raw allocation service and real initializer; no fake allocator, alternate refcount service or callback substitution",
+      "native_calls": "original camera/receiver counted setters and scalar/color/directional setters, actual Win32 InterlockedIncrement/Decrement",
+      "layouts": {
+        "allocation_size": "b00h",
+        "actual_record_base": "allocation+0",
+        "owner_placement": "allocation+a1c",
+        "directional_source_start": "record+a20 = owner+04 actual refcount",
+        "directional_source_end_exclusive": "record+a60 = owner+44",
+        "owner_end_exclusive": "allocation+ab0",
+        "all_pointers_and_reads_inside_allocation": true
+      },
+      "risk_observation": "wrongly delaying creator release changes refcount DWORD copied into directional record0; source overlap also exercises native forward propagation",
+      "supplied_owner_cleanup": "retire borrowed slots, explicit flags0 destruction of each interior owner, then matching free of enclosing allocation; no free of interior owner pointer",
+      "cases": {
+        "receiver_present": [
+          false,
+          true
+        ],
+        "scene_present": [
+          false,
+          true
+        ],
+        "x87_stack_depths": [
+          0,
+          8
+        ],
+        "x87_control_words": [
+          "007f",
+          "037f",
+          "047f",
+          "077f",
+          "087f",
+          "0b7f",
+          "0c7f",
+          "0f7f"
+        ],
+        "comparison_count": 64,
+        "passed": 64
+      },
+      "compared": [
+        "all B00h allocation bytes including owner/untouched surroundings",
+        "actual camera/receiver slot identity",
+        "old and new reference counts",
+        "packed output00a5a3ab",
+        "x87 control word",
+        "full x87 status word",
+        "abridged tag byte",
+        "all eight80-bit x87 register payloads"
+      ],
+      "absent_source_preimages": [
+        "signalingNaN7f812345",
+        "subnormal00000001",
+        "negativezero80000000",
+        "quietNaN7fcabcde"
+      ],
+      "excluded_state": [
+        "instruction/data pointer and opcode metadata tied to different native/host code addresses",
+        "native allocation/initializer prefix execution",
+        "native EH execution",
+        "native zero-reference dispatch in the supplied continuation cases"
+      ],
+      "mapped_byte_changes": [
+        {
+          "role": "absolute_operand",
+          "address": "004df724",
+          "before": "00ce4b48",
+          "after": "01a04b48"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "004df72c",
+          "before": "00ce7d60",
+          "after": "01a07d60"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "004df73a",
+          "before": "00ce7d5c",
+          "after": "01a07d5c"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "004df74c",
+          "before": "00ce7d58",
+          "after": "01a07d58"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "00b7195f",
+          "before": "00ce221c",
+          "after": "01a0221c"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "00b7196d",
+          "before": "00ce2220",
+          "after": "01a02220"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "00bbdf39",
+          "before": "00ce221c",
+          "after": "01a0221c"
+        },
+        {
+          "role": "absolute_operand",
+          "address": "00bbdf47",
+          "before": "00ce2220",
+          "after": "01a02220"
+        },
+        {
+          "role": "real_import",
+          "address": "00ce221c",
+          "before": "00a056d0",
+          "after": "75a71af0"
+        },
+        {
+          "role": "real_import",
+          "address": "00ce2220",
+          "before": "00a056e8",
+          "after": "75a71ab0"
+        },
+        {
+          "role": "continuation",
+          "address": "004df7a5",
+          "before": "8b",
+          "after": "c3"
+        }
+      ],
+      "patch_counts": {
+        "absolute_address_operands": 8,
+        "actual_win32_import_bindings": 2,
+        "continuation_RET": 1,
+        "allocator_replacements": 0,
+        "refcount_or_destructor_callback_replacements": 0
+      }
+    },
+    "public_api_smoke": {
+      "allocator": "actual unchanged allocate_system_fog_owner",
+      "checks": [
+        "camera/receiver share same allocated owner",
+        "post-creator-release reference count2",
+        "actual authored directional words",
+        "packed output00a5a3ab",
+        "camera+190 remains for unowned continuation",
+        "clear receiver then camera through core, reaching actual final free"
+      ],
+      "passed": true,
+      "allocation_exhaustion_tested": false
+    },
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "all_eight_match_disk": true
+    },
+    "existing_build": {
+      "command": "./scripts/build.ps1",
+      "base": "e9eb028",
+      "passed": true,
+      "existing_ctest_passed": 2,
+      "existing_ctest_total": 2,
+      "new_source_registration": "outside worker ownership; independently strict-compiled above"
+    },
+    "local_artifact_sha256": {
+      "local/world_factory_native_check.cpp": "f350e064f7b7005aa2b295c217ec80e9d31b988212128f6344215877e935161d",
+      "local/build_world_factory_check.ps1": "a42e118bf0cec45798adc56972d4ab1ea7b00ad651940c955beba0a586f7e0df",
+      "local/prepare_world_factory_native.py": "61f309a0dbc4539fb9365a4ec48c2167011de824a52e4976edfe38d329dfe0b9",
+      "local/world_factory_native_patches.hpp": "715e93b68027206ddbfc9bc3fe3f1edfd787604f05077a42818b25425f8897ac",
+      "local/world_factory_native_patches.json": "7e536dc68ec14d9c9e84b474f18bc7fedd29f0c246492c2b2ea174adfeb5d1ed",
+      "local/world_factory_native_check.log": "d98fb1d543309e3d9a700c4be1ab57da16cdac389e164f6fc119814a6f3b6020",
+      "local/world_factory_full_build.log": "19822798d4d5a9b3871813f47c728b9ee13e67b7b42b21eba231ab7156d9a9f9",
+      "local/world_factory_verify_seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "build/world-fog-factory-check/system_fog_world_factory.obj": "8944808f53c7e110b7704eca42b0b98616e1e48c7b5bedc3cf1ec5a247c8a563",
+      "build/world-fog-factory-check/world_factory_native_check.exe": "1a3bf5289127752be83af8991dcb9a3af5e77439483ac072fcaa691d5ecf3bb0"
+    },
+    "source_sha256": {
+      "include/bsp/system_fog_world_factory.hpp": "475f9877c5e544a818346357ab61ad91678aa1c62dd872285c8eb7e51274d81c",
+      "src/system_fog_world_factory.cpp": "f28a42cd3546264dd9f1de398e07be579553b8a277a6d0b44f4d63f670ca3270"
+    }
+  },
+  "proposed_annotation_only": {
+    "address": "004df6a3",
+    "name": "Game_InitializeSharedFogOwnerAndPackedCameraColor_Provisional",
+    "comment": "Implemented bounded[004DF6A3,004DF7A5) in system_fog_world_factory.cpp. Existing real94h owner allocation; live game+19E8 D64518 receiver+10 publication, live SAME camera+19FC/+184 publication, then creator release before x87 scalar/color and optional authored directional writes. Preserve raw absent-scene preimage and per-iteration game+5FC reload. Packed parent temporary00A5A3AB is live-out for004DF7A5. Strict Win32 compile and original213-byte continuation comparison passed; public actual allocation/release smoke passed. New host ABI; whole game/native CRT/EH/runtime not reconstructed."
+  },
+  "integrator_remaining": [
+    "add src/system_fog_world_factory.cpp to CMake target",
+    "add owned fragment ledger and any Ghidra evidence comment under integrator lease/write lock",
+    "retain actual game projection adapters; do not instantiate substitute receivers/cameras/records"
+  ],
+  "evidence_boundaries": {
+    "reconstructed": true,
+    "directly_compiled": true,
+    "bounded_native_continuation_fixture_tested": true,
+    "real_public_allocator_smoke_tested": true,
+    "full_native_factory_allocation_EH_fixture_tested": false,
+    "native_abi_compatible": false,
+    "game_or_render_validated": false,
+    "ghidra_writes": false,
+    "ledger_writes": false,
+    "shared_source_or_cmake_writes": false
+  }
+}
