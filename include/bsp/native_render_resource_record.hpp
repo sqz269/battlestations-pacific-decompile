@@ -7,6 +7,8 @@
 
 namespace bsp {
 
+struct SingletonLifetimeCallbacks;
+
 struct NativeRenderResourceAliasNode {
     NativeRenderResourceAliasNode* next_00;
     NativeRenderResourceAliasNode* previous_04;
@@ -36,6 +38,18 @@ struct NativeRenderResourceRecord {
 // The caller supplies the actual 00419CC0 pool; nodes use lifetime malloc/free.
 void clear_native_render_resource_aliases_004d05e0(
     void* actual_list_owner, SizedStoragePool& actual_string_pool);
+
+// Complete 00B30510..00B305B2. Native ECX destination, stack source, RET4,
+// returns destination. Resize/copy the actual name, capture source first/end
+// before clearing destination aliases, then insert before the current first
+// destination node. Exact self-assignment skips name/list operations but still
+// executes six sequential tail-field stores. No resource retain/release call.
+// Uses the existing pool and invalid-parameter callback/exception domains.
+// Evidence and host boundaries: docs/NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md.
+NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(
+    NativeRenderResourceRecord& destination,
+    const NativeRenderResourceRecord& source, SizedStoragePool& actual_string_pool,
+    const SingletonLifetimeCallbacks&);
 
 // Complete 00B2F990..00B2FA07, including the tail hidden by false _free
 // no-return analysis. Native ABI: ECX actual record, RET0, no semantic return.

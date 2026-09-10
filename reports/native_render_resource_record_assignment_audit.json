@@ -1,0 +1,543 @@
+{
+  "packet": "native_render_resource_record_assignment",
+  "schema_version": 1,
+  "utc": "2026-09-10T23:16:16.303041+00:00",
+  "base_revision": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+  "dependency_head_revision": "3354c52304263a72805acdd1828790371b7f33dd",
+  "dependencies_cherry_picked": [
+    {
+      "original": "6dee4535aa5d3a98ea3b1e32d5a863ea92f27e71",
+      "local": "b1c0b2837a6e59045223e03f373a26726966ba0b",
+      "role": "full actual pooled-string header resize"
+    },
+    {
+      "original": "4ef92c38054a0cab2d69cdaab77a9811d7b11f75",
+      "local": "3354c52304263a72805acdd1828790371b7f33dd",
+      "role": "full native alias-count growth and owning exception transport"
+    }
+  ],
+  "scope": {
+    "full_functions": [
+      "00b30510"
+    ],
+    "fragments": [],
+    "owned_files": [
+      "include/bsp/native_render_resource_record.hpp",
+      "src/native_render_resource_record.cpp",
+      "docs/NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md",
+      "reports/native_render_resource_record_assignment_audit.json"
+    ],
+    "shared_ledger_writes": false,
+    "ghidra_mutations": false,
+    "tracked_cmake_changes": false,
+    "new_tracked_tests": false,
+    "unchanged_existing_bodies": [
+      "clear_native_render_resource_aliases_004d05e0",
+      "destroy_native_render_resource_record_00b2f990"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each bsp.py ghidra read verifies project, program, language, image base.",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    }
+  },
+  "native_spans": [
+    {
+      "address": "00b30510",
+      "end_exclusive": "00b305b2",
+      "length": 162,
+      "raw_offset": 7537936,
+      "role": "full_function",
+      "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+      "bytes_hex": "83ec0853558b6c241456578bf93bfd74248b45006a0150e814d88eff837d000074138b0f8b55048b4704515250e83e710c0083c40c8d5d088d77083bf374338b43048b08894c24148bce8944241ce87d009aff8b56048b028b4c241c8b54241c518b4c24185253515350568bcee81e219aff8b55148957148b45188947188b4d1c894f1c8b55208957208b45248947248b4d28894f288bc75f5e5d5b83c408c20400",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "0041dd40",
+      "end_exclusive": "0041dd45",
+      "length": 5,
+      "raw_offset": 122176,
+      "role": "full_actual_header_resize_boundary",
+      "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+      "bytes_hex": "568bf18b0e",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "004d05e0",
+      "end_exclusive": "004d05e5",
+      "length": 5,
+      "raw_offset": 853472,
+      "role": "full_actual_alias_clear_boundary",
+      "sha256": "cea9374907334869234a8799085b710d0a547ab0093c6130530b7625b0390572",
+      "bytes_hex": "56578bf98b",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "004d26a0",
+      "end_exclusive": "004d26a5",
+      "length": 5,
+      "raw_offset": 861856,
+      "role": "full_actual_alias_range_boundary",
+      "sha256": "19bad2162e08fd3b256f0af4024c51343feb7827eb43fd73dcfea11a662668d8",
+      "bytes_hex": "558bec6aff",
+      "live_ghidra_matches_installed_disk": true
+    },
+    {
+      "address": "00bf7680",
+      "end_exclusive": "00bf7685",
+      "length": 5,
+      "raw_offset": 8353408,
+      "role": "host_memcpy_boundary",
+      "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "bytes_hex": "558bec5756",
+      "live_ghidra_matches_installed_disk": true
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b30510",
+      "end_exclusive": "00b305b2",
+      "byte_length": 162,
+      "cpp_interface": "NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(NativeRenderResourceRecord& destination, const NativeRenderResourceRecord& source, SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks&)",
+      "suggested_name": "BSP_NativeRenderResourceRecord_Assign",
+      "classification": "full body against actual 2Ch record storage through full reconstructed helpers",
+      "native_abi": {
+        "convention": "__thiscall",
+        "ecx": "destination record",
+        "stack": [
+          "source record pointer"
+        ],
+        "eax": "original destination record",
+        "return_cleanup_bytes": 4,
+        "local_eh": false
+      },
+      "behavior": [
+        {
+          "at": "00b3051d..00b30527",
+          "fact": "Exact identity skips name branch. Otherwise capture source length and resize actual destination prefix preserving old bytes."
+        },
+        {
+          "at": "00b3052c..00b30542",
+          "fact": "After resize reread source length guard, then current destination length, current source data and current destination data. Copy destination length bytes."
+        },
+        {
+          "at": "00b30545..00b3054d",
+          "fact": "Compare actual source/destination owner addresses at record+8; same owner skips list work."
+        },
+        {
+          "at": "00b3054f..00b3055e",
+          "fact": "Capture source sentinel and first before clearing actual destination aliases."
+        },
+        {
+          "at": "00b30563..00b3057d",
+          "fact": "Reload current destination sentinel and next after clear; range receives actual owner identities, current insertion node, captured source first/end by value. Seventh stack word duplicates source sentinel and is unread by range."
+        },
+        {
+          "at": "00b30582..00b305a3",
+          "fact": "Five current DWORD reads/stores at14/18/1c/20/24 followed by current resource pointer28. These execute on exact identity too. No resource virtual/retain/release call."
+        },
+        {
+          "at": "00b305a6..00b305af",
+          "fact": "Return original destination; RET4."
+        }
+      ],
+      "preserved_fields": "No source assignment to +08; alias sentinel/count evolve only through actual clear/range and callbacks.",
+      "failure": "No local cleanup or transaction. Resize failure precedes aliases/tail. Range failure keeps completed name and clear; helper partial rollback is its own responsibility; tail remains unassigned.",
+      "dependencies": [
+        {
+          "address": "0041dd40",
+          "implementation": "resize_native_string_header_0041dd40",
+          "binding": "PooledStringStorage using actual_string_pool, actual destination prefix"
+        },
+        {
+          "address": "004d05e0",
+          "implementation": "clear_native_render_resource_aliases_004d05e0",
+          "binding": "actual destination+8 and same string pool"
+        },
+        {
+          "address": "004d26a0",
+          "implementation": "insert_native_render_alias_range_004d26a0",
+          "binding": "actual owner identities and by-value iterators, same string pool and callbacks",
+          "status": "integrator-owned complete source snapshot; no substitute stub"
+        },
+        {
+          "address": "00bf7680",
+          "implementation": "std::memcpy",
+          "binding": "current destination size and current data pointers, with zero-count omission"
+        }
+      ]
+    }
+  ],
+  "host_boundaries": [
+    "Full reconstructed pool/string/list/lifetime services are composed. This is not the original game CRT, singleton lookup, exception object, SEH or register/stack ABI.",
+    "PooledStringStorage is a non-owning host adapter to the supplied pool; no temporary header or string owner is constructed.",
+    "Native zero-byte memcpy calls can pass null pointers; the host omits zero-byte copies as established by raw-string helpers.",
+    "Existing storage arena checks, nonnull allocation and noexcept release policies remain.",
+    "Range invalid-parameter callbacks and owning host count-growth exception transport are retained.",
+    "No new protections for malformed or aliased/mutated graphs, invalid copy ranges, null records or resource pointers."
+  ],
+  "integration": {
+    "insertion_readonly_snapshots": [
+      {
+        "snapshot": "local/support/include/bsp/native_render_alias_insertion.hpp",
+        "main_checkout_source": "include/bsp/native_render_alias_insertion.hpp",
+        "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4",
+        "current_main_bytes_equal": true
+      },
+      {
+        "snapshot": "local/support/native_render_alias_insertion.cpp",
+        "main_checkout_source": "src/native_render_alias_insertion.cpp",
+        "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771",
+        "current_main_bytes_equal": true
+      }
+    ],
+    "registration": "local/record_assignment_sources.cmake via CMAKE_PROJECT_INCLUDE_BEFORE; adds copied real insertion source and count source, plus local support include path",
+    "shared_registration_owner": "primary integrator",
+    "dependency_source_modified": false
+  },
+  "annotations_before": {
+    "proto": "Function: FUN_00b30510 at 00b30510\nSignature: undefined FUN_00b30510(void)\nEntry: 00b30510\nBody: 00b30510 - 00b305b1\n{\n \"function_name\": \"FUN_00b30510\",\n \"address\": \"00b30510\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 66,\n \"basic_block_count\": 6,\n \"edge_count\": 8,\n \"call_count\": 4,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 4,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_PooledStringList_ClearStorage\",\n  \"FUN_004d26a0\",\n  \"_memcpy\",\n  \"BSP_NativeString_Resize\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4,\n  8,\n  12\n ],\n \"basic_block_hashes\": [\n  \"680c14806209c3799fa5b3bcead80b4568a5f2d1e855cda91978c3c0928ae4c2\",\n  \"b6c8cdd9a1f0fed79fee143df6871bcb7b00be1a779a35a3145d87f19581b9a0\",\n  \"91f76b33e8fe1ecc35fcadac4d406756bc4c4225fee23ff481bb612eed7df349\",\n  \"8a04cd3ffb06cab19413d889c0ad8d7da0f71db5e1a2fe6c8dc902b140baf030\",\n  \"6ea5d2a1679b0a5e63dbdfec6864e96e3e4ea220dd1de69ef33e9685a179e899\",\n  \"058b3b6894e278ce05138785533d12b99b2c8f5f41fe1591295574b9b57eefd4\"\n ]\n}\n",
+    "comments": [
+      {
+        "address": "00b30510",
+        "annotation": {
+          "address": "00b30510",
+          "function_name": "FUN_00b30510"
+        }
+      }
+    ]
+  },
+  "annotation_recommendation": {
+    "name": "BSP_NativeRenderResourceRecord_Assign",
+    "preserve_existing_comments": true,
+    "integrator_owned": true,
+    "comment": "Hypothesis, not a recovered symbol. Full162-byte record assignment; __thiscall ECX destination, stack source, RET4, EAX destination. Identity skips name/list but still copies six tail DWORDs14..28. Resize actual name preserving bytes, reread source guard and current destination copy size. Capture source first/sentinel before destination clear, reload current destination first after clear, then invoke full alias range with actual owners. Tail current reads/stores follow only successful name/list work; pointer28 has no retain/release. No local rollback. Evidence: docs/NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md; reports/native_render_resource_record_assignment_audit.json. Original-byte caller fixture passed116 normalized words across real reconstructed helper boundaries; not native exception ABI or gameplay validation."
+  },
+  "validation": {
+    "strict_cpp": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "switches": [
+        "/std:c++17",
+        "/O2",
+        "/Oy-",
+        "/EHsc",
+        "/fp:strict",
+        "/MD",
+        "/W4",
+        "/WX"
+      ]
+    },
+    "original_byte_differential": {
+      "passed": true,
+      "normalized_words": 116,
+      "body_patched": false,
+      "composition_hooks": [
+        "0041dd40",
+        "004d05e0",
+        "004d26a0",
+        "00bf7680"
+      ],
+      "hook_call_counts_each": 2,
+      "helper_implementations": "actual reconstructed resize, clear, range, count, node copy, checked operations, pool and lifetime allocator",
+      "pool": "SizedStoragePool({1,8,1,16,1}, recording SystemAllocator performing actual malloc/free)",
+      "cases": [
+        "allocation changes source name length/data; copy uses current destination length",
+        "clear release changes source sentinel but original source first/end remain captured",
+        "clear release changes destination sentinel/current first/count; range uses updated destination position",
+        "source tail fields changed during cleanup copied after range success",
+        "range validation throw retains completed name and clear but prevents tail publication",
+        "exact identity with unusable name/list pointers skips helpers and returns actual destination"
+      ],
+      "caveats": [
+        "Only assignment body executes original native instructions; callees use complete host reconstructions.",
+        "Fixture outcome cannot observe redundant identity stores; assembly and volatile source establish their presence.",
+        "Fixture proves explicit callback paths, not all malformed graph outcomes or game runtime."
+      ]
+    },
+    "scripts_build_initial": {
+      "passed": true,
+      "ctest": "1/1 reconstructed_math"
+    },
+    "verify_seeds": {
+      "passed": true,
+      "count": 8,
+      "spans": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true
+        }
+      ]
+    },
+    "scripts_build_final": {
+      "passed": true,
+      "ctest": "2/2 reconstructed_math and native_math_differential"
+    },
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "old_source_blobs": [
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "revision": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+      "git_blob": "ff74621e655edf0d759c72010ed4a9e150558aaa",
+      "size": 2367,
+      "sha256": "07b8a07854f9ebda05b6460704685a6d779c1e897a6b1efb4572ecb59fb266a7"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "revision": "3502565591bbcf5fa14229cd4d69b04b43e699a1",
+      "git_blob": "cf56a48266dff6e496e0f6d81ee18b99cd12b65b",
+      "size": 3871,
+      "sha256": "debbbfa128022b4cc8f50657fdd9e46ed9ea782c615e522bdb734fe52c6bdbb6"
+    }
+  ],
+  "evidence_hashes": [
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "size": 3197,
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "size": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "docs/NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md",
+      "size": 9054,
+      "sha256": "51d5cbec68a715a855e8ec47a5d65fa6977985f5965bd63b361fedfebcae5e7a"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "size": 5278,
+      "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "size": 5042,
+      "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+    },
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "size": 1379,
+      "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "size": 1729,
+      "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+    },
+    {
+      "path": "include/bsp/native_render_alias_checked_ops.hpp",
+      "size": 2413,
+      "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c"
+    },
+    {
+      "path": "src/native_render_alias_checked_ops.cpp",
+      "size": 5090,
+      "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872"
+    },
+    {
+      "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+      "size": 1897,
+      "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee"
+    },
+    {
+      "path": "src/native_render_resource_alias_nodes.cpp",
+      "size": 3982,
+      "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "size": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "size": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    },
+    {
+      "path": "local/support/include/bsp/native_render_alias_insertion.hpp",
+      "size": 2053,
+      "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+    },
+    {
+      "path": "local/support/native_render_alias_insertion.cpp",
+      "size": 4958,
+      "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+    },
+    {
+      "path": "local/prepare_native_render_resource_record_assignment.py",
+      "size": 2765,
+      "sha256": "df452b5bd27b562e6648ffab86cc7d68e32d9e187b573ced92984730bba84006"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_check.cpp",
+      "size": 12398,
+      "sha256": "3f2b5fad96eea1f5416aa921108a5027ab7a45d437bc0c3dd9effeb0b9fe2f43"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_spans.hpp",
+      "size": 1562,
+      "sha256": "1bbe6f100253c4520b47954af560f65dfd91df3fd87a44b558a28e9274d2ad88"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_preparation.json",
+      "size": 4231,
+      "sha256": "e91edf1f297d155472143b7711938378a169b587187a323d681c22be451ec187"
+    },
+    {
+      "path": "local/build_native_render_resource_record_assignment.ps1",
+      "size": 1206,
+      "sha256": "106d63b0766bd96c8efc3cc055c725a273017d7763575a13b3ecfa812fdc4a4b"
+    },
+    {
+      "path": "local/build_native_render_resource_record_assignment_check.ps1",
+      "size": 1527,
+      "sha256": "a3f1d7e222cfd3bfbca22d081482088a10c4df55ba84af1d66dd36b28eddc3f9"
+    },
+    {
+      "path": "local/record_assignment_sources.cmake",
+      "size": 376,
+      "sha256": "358f3190cfbf22a1fbc5b490ba04a5ebd5048cad4240568719e19f666a71fab5"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_check.txt",
+      "size": 243,
+      "sha256": "a66263e4b618e0a968154a02a185ae67a7fa96033131d119f2cb595e595fe8aa"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_build.txt",
+      "size": 10783,
+      "sha256": "7b24bf3701bb5c76a158f7b74e667da1982a2c4f2532c87527feeb04ee827801"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_build_final.txt",
+      "size": 2171,
+      "sha256": "bf7e987ccc86042b26f9925ad9f280802d298d7219a50665519bd0c6f6c9ce5f"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_seed_check.txt",
+      "size": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_assembly.txt",
+      "size": 2028,
+      "sha256": "63496fb283b7a88623ef16cda5faa56411e2bfd39ab94d5b5cfb9c3aa8cbe6d1"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_old_proto.txt",
+      "size": 1116,
+      "sha256": "a2d905b2c799fcd7ba33011196535bf6994fdf5f2686550c09a6cd7fd971e210"
+    },
+    {
+      "path": "local/native_render_resource_record_assignment_old_comments.json",
+      "size": 127,
+      "sha256": "86f8809f4ac2461f10d1d1fe32aa5a064a0ec55ddf13550387f802886c40aaeb"
+    }
+  ]
+}
