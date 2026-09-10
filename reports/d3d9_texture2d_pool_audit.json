@@ -1,0 +1,1790 @@
+{
+  "schema_version": 1,
+  "packet": "native_d3d9_texture2d_pool",
+  "status": "reconstructed, strict Win32 native fixture and repository build passed; primary CMake/Ghidra/ledger integration pending",
+  "completed_utc": "2026-09-10T21:06:14.381771+00:00",
+  "base_commit": "96adc6795eecf349264b8022cf63d27ae5e84d5f",
+  "owned_addresses": [
+    "00b3ee80",
+    "00b3ef60",
+    "00b3d1e0",
+    "00b3d8d0",
+    "00b3e510",
+    "00b3e430",
+    "00b3d3b0",
+    "00b3f2b0",
+    "00b3dcd0",
+    "00cd7b60",
+    "00ce0ca0"
+  ],
+  "owned_files": [
+    "include/bsp/d3d9_texture2d_pool.hpp",
+    "src/d3d9_texture2d_pool.cpp",
+    "docs/D3D9_TEXTURE2D_POOL.md",
+    "reports/d3d9_texture2d_pool_audit.json"
+  ],
+  "target": {
+    "target_config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "imagebase": "00400000",
+    "language": "x86:LE:32:default",
+    "method": "Each tools/bsp.py ghidra bytes/comments/proto/disasm query verifies configured project and program. All final code/data spans were freshly compared with installed PE.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false,
+    "saved_analysis_modified": false,
+    "original_executable_modified": false
+  },
+  "source_files": [
+    {
+      "path": "include/bsp/d3d9_texture2d_pool.hpp",
+      "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+    },
+    {
+      "path": "src/d3d9_texture2d_pool.cpp",
+      "sha256": "0eaa4ccc136a1fab35203170966e5ae8e2292c63e7cf12872e39e5fca16431cb"
+    },
+    {
+      "path": "docs/D3D9_TEXTURE2D_POOL.md",
+      "sha256": "425370c8e4433f4d5334e835e9937128f2b7f9a63b2ed5fef98a167e2bbc547b"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "reports/native_texture2d_owner_next.json",
+      "sha256": "51cc7523e8b62be09ca52c8efa9905d98a61db67052f0782b8c08286d55d0fe9"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "d3b002e0858673186dbe167891862322930b34638104626b125dd0baaf3bb4b0"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    }
+  ],
+  "implemented_contract": {
+    "geometry": {
+      "canonical_owner": "0108db38",
+      "owner_bytes": 56,
+      "profile": "00d61940",
+      "virtual_zero": "00b3e510",
+      "slot_bytes": 84,
+      "slots_per_slab": 32,
+      "slot_slab_id_offset": 80,
+      "slab_bytes": 2756,
+      "free_indices_offset": 2688,
+      "free_count_offset": 2752,
+      "unwritten_slab_tail_bytes": 2,
+      "initial_table_capacity": 32,
+      "growth": "2 * old capacity + 2, published before allocation"
+    },
+    "storage": "Actual MSVC Win32 38h D3D9Texture2DPoolStorage; actual initialized24-byte Win32 CRITICAL_SECTION at0C; signed recursion24; actual pointer table/count/cap/first-free28/2C/30/34.",
+    "shared_domain": "Existing AllocatorListDomain over actual E188B4-compatible head. Host companion binds concrete D61940/B3E510 dispatch only; no duplicate list/slab/slot state.",
+    "constructor": "Prepend same base element, install profile, initialize section, clear native fields, set first-freeFFFFFFFF, publish32 capacity before actual128-byte array table allocation; preserve reloads and returning free tail.",
+    "allocation": "Enter actual section/increment explicit count; publish first-free before slab allocation, initialize with live post-allocation ID; publish2*capacity+2 before table growth; copy live pointers, free old table, publish replacement, append slab; pop actual WORD free stack; no rollback or automatic unlock on allocation exception.",
+    "raw_slab": "Initialize32 free WORD indices31..0 and all32 slot+50 DWORD IDs. Preserve all50h texture payloads and final2 slab bytes.",
+    "return": "Read actual slot+50 ID; low32 signed pointer difference /54h using native truncation; append WORD index, increment live count after store, lower first-free, decrement recursion/leave.",
+    "trim": "No internal lock. Free empty slab, swap last entry even if last itself, decrement count, rewrite every moved slot ID including occupied slots, retry same index, recompute lowest free slab.",
+    "destruction": "Restore pool profile, free all slabs and table before positive actual recursion drain and DeleteCriticalSection; base profile/unlink actual shared element. Preserve stale native table/count/cap/link fields; no texture/COM/source/cache destruction.",
+    "actual_allocation": "Existing singleton_lifetime_allocate/free CRT implementation; slab new BF681B and free BF65AC; array table new BF55BE and free BF6989 are forwarding thunks. Native/host fixture observers invoke real malloc/free with deterministic preimages.",
+    "static_lifetime": "Explicit one-owner bind to0108DB38; actual initialize and callback registration, propagate result without rollback, explicit destroy; unbound adapter fails; source interfaces are new C++ ABI.",
+    "contracts_reused": [
+      "Actual existing AllocatorListDomain over shared 00E188B4 head and real prepend/unlink behavior.",
+      "Existing singleton_lifetime_allocate/free real CRT seam for raw table/slab allocation, with native ordinary versus array call sites documented.",
+      "Actual Win32 CRITICAL_SECTION at pool+0C, actual signed recursion +24, and direct table/count/capacity/first-free fields +28/+2C/+30/+34.",
+      "Existing completed surface-pool implementation/fixture may guide shape, but native texture allocator is 304 bytes and return is 101 bytes; inspect its own exact instructions."
+    ],
+    "out_of_scope": "No texture, COM, source-stream, cache-array or renderer-container construction/deletion in this pool packet."
+  },
+  "function_evidence": [
+    {
+      "address": "00b3ee80",
+      "end_exclusive": "00b3ef53",
+      "length": 211,
+      "role": "texture_pool_constructor",
+      "native_abi": "ECX actual 0108DB38-compatible 38h storage; EAX owner; RET.",
+      "raw_preimage_hex": "6aff684eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7064019d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8b7660b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8507a0b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "disk_offset": 7597696,
+      "disk_sha256": "902e5ac847b742c56eee1a72464f4f11521bf9c075abc081390fd355f8327815",
+      "live_sha256": "902e5ac847b742c56eee1a72464f4f11521bf9c075abc081390fd355f8327815",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_Construct",
+      "cpp_symbol": "D3D9Texture2DPool::initialize_00b3ee80",
+      "proposed_comment": "Prepend actual 38h pool at canonical 0108DB38 to shared E188B4; profile D61940; real Win32 section +0C and recursion +24; initialize raw table/count/cap/first-free; publish cap32 before allocating128 bytes. Three constructor EH leaves are verified.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3ee80",
+        "function_name": "FUN_00b3ee80"
+      },
+      "returns": [
+        {
+          "address": "00b3ef52",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b3ef60",
+      "end_exclusive": "00b3f090",
+      "length": 304,
+      "role": "texture_pool_allocate",
+      "native_abi": "ECX pool; EAX raw 54h slot; RET.",
+      "raw_preimage_hex": "5355568bf1578d5e0c53ff151822ce008343180183caff3956340f85920000008b462c68c40a0000894634e88b780b0083c40485c0740f8b4e34518bc8e83ee2ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e8fa650b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e893790b0083c404897e288b462c8b4e288d048185c07402892883462c0183caff8b4e288b46348b0481668180c00a0000ffff0fb788c00a00000fb7f90fb7bc78800a00006bff5403f86685c9753f8b463483c0013b462c89563473318b4e288d0c818b296683bdc00a000000751c83c00183c1043b462c72e901531853ff151022ce008bc75f5e5d5bc389463401531853ff151022ce008bc75f5e5d5bc3",
+      "disk_offset": 7597920,
+      "disk_sha256": "f25617f05d0e68ea47aa0669f3f08dacb1dc03cf1eb8b683e8a147757da8f9e6",
+      "live_sha256": "f25617f05d0e68ea47aa0669f3f08dacb1dc03cf1eb8b683e8a147757da8f9e6",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_AllocateRawSlot",
+      "cpp_symbol": "D3D9Texture2DPool::allocate_raw_slot_00b3ef60",
+      "proposed_comment": "Under real section/explicit recursion allocate raw 54h slot from AC4h slab. First-free publication precedes slab allocation; table growth is 2*cap+2 published before allocation. Pop actual free WORD stack; no texture construction or local exception cleanup. Full 304-byte extent includes returning free tail and both RETs.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3ef60",
+        "function_name": "FUN_00b3ef60"
+      },
+      "returns": [
+        {
+          "address": "00b3f07b",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        },
+        {
+          "address": "00b3f08f",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b3d1e0",
+      "end_exclusive": "00b3d220",
+      "length": 64,
+      "role": "texture_pool_slab_initialize",
+      "native_abi": "ECX AC4h slab; stack slab ID; EAX slab; RET 4.",
+      "raw_preimage_hex": "538b5c2408568bc15766c780c00a0000200033d28d78508db0800a00008d4900b91f0000002bca66890e891f83c20183c60283c75483fa207ce65f5e5bc20400",
+      "disk_offset": 7590368,
+      "disk_sha256": "21aa22846ed4171941b4a7f43aafda3cd4d13b4e2d29df10af6d5366aea3ee0e",
+      "live_sha256": "21aa22846ed4171941b4a7f43aafda3cd4d13b4e2d29df10af6d5366aea3ee0e",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_InitializeSlab",
+      "cpp_symbol": "initialize_slab_00b3d1e0",
+      "proposed_comment": "ECX AC4h slab, stack slab ID, RET4: write count32 at AC0, free WORD indices31..0 at A80, all32 actual slot IDs at slot+50. Preserve 50h texture bytes and two final slab bytes.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3d1e0",
+        "function_name": "FUN_00b3d1e0"
+      },
+      "returns": [
+        {
+          "address": "00b3d21d",
+          "bytes_hex": "c20400",
+          "instruction": "ret 4"
+        }
+      ]
+    },
+    {
+      "address": "00b3d8d0",
+      "end_exclusive": "00b3d935",
+      "length": 101,
+      "role": "texture_pool_return",
+      "native_abi": "ECX pool; stack slot; RET 4. Trailing ID at +50h.",
+      "raw_preimage_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58508b4e288b0c992bc18bd0b8310cc330f7eac1fa048bc2c1e81f03c20fb791c00a000066898451800a0000668381c00a0000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "disk_offset": 7592144,
+      "disk_sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899",
+      "live_sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_ReturnRawSlot",
+      "cpp_symbol": "D3D9Texture2DPool::return_raw_slot_00b3d8d0",
+      "proposed_comment": "Read actual slot+50 ID; signed low32 pointer difference divided by54h; push WORD index and increment live free count; lower first-free. Real section entry/leave and explicit recursion; no texture destruction.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3d8d0",
+        "function_name": "FUN_00b3d8d0"
+      },
+      "returns": [
+        {
+          "address": "00b3d932",
+          "bytes_hex": "c20400",
+          "instruction": "ret 4"
+        }
+      ]
+    },
+    {
+      "address": "00b3e510",
+      "end_exclusive": "00b3e5b0",
+      "length": 160,
+      "role": "texture_pool_trim",
+      "native_abi": "ECX pool; RET. No internal lock; complete swap-and-rewrite tail included.",
+      "raw_preimage_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b8c00a000020753d50e876800b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c050b92000000090893883c05483e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683bac00a000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "disk_offset": 7595280,
+      "disk_sha256": "34aa3209c2e3e44b849165725e4144c71b15a688910e57c8beed83c0e5e8f94a",
+      "live_sha256": "34aa3209c2e3e44b849165725e4144c71b15a688910e57c8beed83c0e5e8f94a",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_TrimEmptySlabs",
+      "cpp_symbol": "D3D9Texture2DPool::trim_empty_slabs_00b3e510",
+      "proposed_comment": "Actual allocator virtual0. Free empty slab, copy final table entry, decrement count, rewrite all32 moved slot IDs, retry same position, recompute lowest free slab. No internal lock. Preserve complete post-free continuation.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3e510",
+        "function_name": "FUN_00b3e510"
+      },
+      "returns": [
+        {
+          "address": "00b3e5a9",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        },
+        {
+          "address": "00b3e5af",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b3e430",
+      "end_exclusive": "00b3e4ba",
+      "length": 138,
+      "role": "texture_pool_destroy",
+      "native_abi": "ECX pool; RET. Complete slab/table free tails and real lock drain/unlink.",
+      "raw_preimage_hex": "56578bf933f639772cc7074019d60076178b47288b0cb051e85f810b0083c60183c4043b772c72e98b472885c0740950e824850b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "disk_offset": 7595056,
+      "disk_sha256": "ffc04fcfbc253361e89f5d0a9220e76b833f0002db9970915545527c5e0a05eb",
+      "live_sha256": "ffc04fcfbc253361e89f5d0a9220e76b833f0002db9970915545527c5e0a05eb",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_Destroy",
+      "cpp_symbol": "D3D9Texture2DPool::destroy_00b3e430",
+      "proposed_comment": "Free every slab then table, drain positive actual explicit recursion using real LeaveCriticalSection, DeleteCriticalSection, install base D7A0C0 and unlink actual element from shared E188B4. Preserve stale fields; no texture destructor. Complete138-byte extent.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3e430",
+        "function_name": "FUN_00b3e430"
+      },
+      "returns": [
+        {
+          "address": "00b3e4b9",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b3d3b0",
+      "end_exclusive": "00b3d3be",
+      "length": 14,
+      "role": "texture_pool_table_unwind",
+      "native_abi": "ECX pointer-table header; RET. Free nonnull table, preserve header; includes POP ECX after free.",
+      "raw_preimage_hex": "8b0185c0740750e8cd950b0059c3",
+      "disk_offset": 7590832,
+      "disk_sha256": "8c94e421fdd4df56ffe93f87d110b133e8fa8e5bbba382c851653ef62799e964",
+      "live_sha256": "8c94e421fdd4df56ffe93f87d110b133e8fa8e5bbba382c851653ef62799e964",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_FreeTableUnwind",
+      "cpp_symbol": "D3D9Texture2DPool::free_table_unwind_00b3d3b0",
+      "proposed_comment": "ECX points at table pointer header: free nonnull first word without clearing. Original complete14-byte extent includes POP ECX at B3D3BC after returning BF6989.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3d3b0",
+        "function_name": "FUN_00b3d3b0"
+      },
+      "returns": [
+        {
+          "address": "00b3d3bd",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00b3f2b0",
+      "end_exclusive": "00b3f2ba",
+      "length": 10,
+      "role": "texture_pool_allocation_thunk",
+      "native_abi": "No meaningful input; overwrite ECX with 0108DB38 and tail B3EF60; EAX slot.",
+      "raw_preimage_hex": "b938db0801e9a6fcffff",
+      "disk_offset": 7598768,
+      "disk_sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e",
+      "live_sha256": "4244ad3774a3c6e0cfb85eff56a74fbf30ad659baecd72fd9e45b6fc6e6ed91e",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_AllocateCanonicalSlot",
+      "cpp_symbol": "allocate_d3d9_texture2d_slot_00b3f2b0",
+      "proposed_comment": "Overwrite ECX with actual0108DB38 and tail B3EF60; return raw54h slot. Source requires explicit binding to the same canonical owner.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3f2b0",
+        "function_name": "CG_static_dtor_stub_00b3f2b0"
+      },
+      "returns": []
+    },
+    {
+      "address": "00b3dcd0",
+      "end_exclusive": "00b3dcdc",
+      "length": 12,
+      "role": "texture_pool_return_thunk",
+      "native_abi": "Incoming ECX slot; push slot, set ECX 0108DB38, call B3D8D0; RET.",
+      "raw_preimage_hex": "51b938db0801e8f5fbffffc3",
+      "disk_offset": 7593168,
+      "disk_sha256": "ffd38ad624524ee336e7d9cda60df7c7c6312535e207b5fd4c03a227346dc240",
+      "live_sha256": "ffd38ad624524ee336e7d9cda60df7c7c6312535e207b5fd4c03a227346dc240",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_ReturnCanonicalSlot",
+      "cpp_symbol": "return_d3d9_texture2d_slot_00b3dcd0",
+      "proposed_comment": "Original register ABI receives slot in ECX, pushes it, selects actual0108DB38, calls B3D8D0, RET. Source exposes a new ordinary C++ interface.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00b3dcd0",
+        "function_name": "FUN_00b3dcd0"
+      },
+      "returns": [
+        {
+          "address": "00b3dcdb",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00cd7b60",
+      "end_exclusive": "00cd7b76",
+      "length": 22,
+      "role": "texture_pool_static_initialize",
+      "native_abi": "No arguments; construct canonical pool, atexit CE0CA0; EAX atexit result; RET. Not currently a Ghidra function.",
+      "raw_preimage_hex": "b938db0801e81673e6ff68a00cce00e881f4f1ff59c3",
+      "disk_offset": 9272160,
+      "disk_sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5",
+      "live_sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_StaticInitialize",
+      "cpp_symbol": "initialize_static_d3d9_texture2d_pool_00cd7b60",
+      "proposed_comment": "Verified22-byte entry despite currently missing Ghidra function. Construct actual0108DB38, register CE0CA0 with CRT atexit, return registration result. Registration failure does not undo construction.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00cd7b60",
+        "function_name": null,
+        "function_exists": false,
+        "evidence": "ghidra comments returned No function at address: 00cd7b60; exact entry bytes independently verified."
+      },
+      "returns": [
+        {
+          "address": "00cd7b75",
+          "bytes_hex": "c3",
+          "instruction": "ret"
+        }
+      ]
+    },
+    {
+      "address": "00ce0ca0",
+      "end_exclusive": "00ce0caa",
+      "length": 10,
+      "role": "texture_pool_static_destroy",
+      "native_abi": "No arguments; set ECX 0108DB38 and tail B3E430.",
+      "raw_preimage_hex": "b938db0801e986d7e5ff",
+      "disk_offset": 9309344,
+      "disk_sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417",
+      "live_sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417",
+      "live_matches_disk": true,
+      "proposed_name": "D3D9Texture2DPool_StaticDestroy",
+      "cpp_symbol": "destroy_static_d3d9_texture2d_pool_00ce0ca0",
+      "proposed_comment": "No arguments: set ECX to actual0108DB38 and tail B3E430. Actual owner, companion and shared domain must remain alive through callback.",
+      "name_is_hypothesis": true,
+      "original_annotation": {
+        "address": "00ce0ca0",
+        "function_name": "CG_static_init_00ce0ca0",
+        "comment": "[BSP inventory 00ce0ca0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "returns": []
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "role": "existing allocator-list base unlink",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+      "disk_offset": 14704,
+      "disk_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "role": "existing critical-section cleanup",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+      "disk_offset": 12144,
+      "disk_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_disk": true
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "role": "existing shared allocator-list traversal",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "disk_offset": 738992,
+      "disk_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbee30",
+      "end_exclusive": "00cbee58",
+      "length": 40,
+      "role": "constructor EH leaves and frame handler; evidence only",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "raw_preimage_hex": "8b4df0e9384b74ff8b4df083c10ce92d4174ff8b4df083c128e962e5e7ffb8a076df00e9eb7cf3ff",
+      "disk_offset": 9170480,
+      "disk_sha256": "1c938f51d1d9d9e8704f598a3cf0a84e6719efdac5734cd4d1b213d85f42b643",
+      "live_sha256": "1c938f51d1d9d9e8704f598a3cf0a84e6719efdac5734cd4d1b213d85f42b643",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "e958120000",
+      "disk_offset": 8345022,
+      "disk_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "558bec83ec",
+      "disk_offset": 8349723,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "e917380000",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "raw_preimage_hex": "e91efcffff",
+      "disk_offset": 8350089,
+      "disk_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d61940",
+      "length": 4,
+      "disk_offset": 9836864,
+      "disk_hex": "10e5b300",
+      "live_hex": "10e5b300",
+      "disk_sha256": "62c8210b890d305c43f2ee4096df98bab572577016be9b50b7b71e0db8041e42",
+      "live_sha256": "62c8210b890d305c43f2ee4096df98bab572577016be9b50b7b71e0db8041e42",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "disk_offset": null,
+      "disk_hex": "00000000",
+      "live_hex": "00000000",
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108db38",
+      "length": 56,
+      "disk_offset": null,
+      "disk_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 4,
+      "disk_offset": 9314828,
+      "disk_hex": "6c56a000",
+      "live_hex": "6c56a000",
+      "disk_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2210",
+      "length": 4,
+      "disk_offset": 9314832,
+      "disk_hex": "8856a000",
+      "live_hex": "8856a000",
+      "disk_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2214",
+      "length": 4,
+      "disk_offset": 9314836,
+      "disk_hex": "a056a000",
+      "live_hex": "a056a000",
+      "disk_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2218",
+      "length": 4,
+      "disk_offset": 9314840,
+      "disk_hex": "b856a000",
+      "live_hex": "b856a000",
+      "disk_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df7688",
+      "length": 60,
+      "disk_offset": 10450568,
+      "disk_hex": "ffffffff30eecb000000000038eecb000100000043eecb0022059319030000008876df00000000000000000000000000000000000000000001000000",
+      "live_hex": "ffffffff30eecb000000000038eecb000100000043eecb0022059319030000008876df00000000000000000000000000000000000000000001000000",
+      "disk_sha256": "ec10ef71448e0396a6bf25e511b5265fdc5e49193a3bac2746da6fce2f598adc",
+      "live_sha256": "ec10ef71448e0396a6bf25e511b5265fdc5e49193a3bac2746da6fce2f598adc",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "constructor_eh": {
+    "handler": "00cbee4e",
+    "funcinfo": "00df76a0",
+    "map": "00df7688",
+    "magic": "19930522",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "leaf": "00cbee30",
+        "action": "actual allocator unlink00403970"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "leaf": "00cbee38",
+        "action": "actual critical-section cleanup00402F70"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "leaf": "00cbee43",
+        "action": "table header+28 cleanup00B3D3B0"
+      }
+    ],
+    "validation": "Raw map/FuncInfo decoded and asserted; exact leaves matched live/PE. Source MSVC __finally retains order. Native exception dispatcher and failure injection were not executed."
+  },
+  "free_continuations": [
+    {
+      "address": "00b3ef39",
+      "action": "constructor caller stack cleanup then publish table"
+    },
+    {
+      "address": "00b3eff6",
+      "action": "allocator caller stack cleanup then publish grown table"
+    },
+    {
+      "address": "00b3e536",
+      "action": "trim reload table/count, swap final slab, decrement, rewrite all32 IDs, retry"
+    },
+    {
+      "address": "00b3e44d",
+      "action": "destructor increment loop index and continue live count/table traversal"
+    },
+    {
+      "address": "00b3e465",
+      "action": "destructor stack cleanup then real recursion/section/base cleanup"
+    },
+    {
+      "address": "00b3d3bc",
+      "action": "table unwind POP ECX then RET"
+    }
+  ],
+  "byte_audit": {
+    "code_or_hook_spans": 19,
+    "data_spans": 8,
+    "all_live_ghidra_match_installed_pe": true,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verified_before_each_query": true,
+    "pointer_relocations": [
+      {
+        "address": "00402f7c",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00402f91",
+        "preimage": "00ce2214"
+      },
+      {
+        "address": "00403977",
+        "preimage": "00d7a0c0"
+      },
+      {
+        "address": "00403989",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "004b46b3",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b3d8db",
+        "preimage": "00ce2218"
+      },
+      {
+        "address": "00b3d92b",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b3dcd2",
+        "preimage": "0108db38"
+      },
+      {
+        "address": "00b3e43b",
+        "preimage": "00d61940"
+      },
+      {
+        "address": "00b3e474",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b3e489",
+        "preimage": "00ce2214"
+      },
+      {
+        "address": "00b3e494",
+        "preimage": "00d7a0c0"
+      },
+      {
+        "address": "00b3e4a6",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b3ee83",
+        "preimage": "00cbee4e"
+      },
+      {
+        "address": "00b3ee9e",
+        "preimage": "00d7a0c0"
+      },
+      {
+        "address": "00b3eea6",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b3eeae",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b3eec0",
+        "preimage": "00e188b4"
+      },
+      {
+        "address": "00b3eece",
+        "preimage": "00d61940"
+      },
+      {
+        "address": "00b3eed4",
+        "preimage": "00ce220c"
+      },
+      {
+        "address": "00b3ef6c",
+        "preimage": "00ce2218"
+      },
+      {
+        "address": "00b3f071",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b3f085",
+        "preimage": "00ce2210"
+      },
+      {
+        "address": "00b3f2b1",
+        "preimage": "0108db38"
+      },
+      {
+        "address": "00cbee4f",
+        "preimage": "00df76a0"
+      },
+      {
+        "address": "00cd7b61",
+        "preimage": "0108db38"
+      },
+      {
+        "address": "00cd7b6b",
+        "preimage": "00ce0ca0"
+      },
+      {
+        "address": "00ce0ca1",
+        "preimage": "0108db38"
+      },
+      {
+        "address": "00d61940",
+        "preimage": "00b3e510"
+      }
+    ],
+    "fixture_patch_log": [
+      "WORDPATCH 00402f7c 00ce2210 01372210",
+      "WORDPATCH 00402f91 00ce2214 01372214",
+      "WORDPATCH 00403977 00d7a0c0 0140a0c0",
+      "WORDPATCH 00403989 00e188b4 014a88b4",
+      "WORDPATCH 004b46b3 00e188b4 014a88b4",
+      "WORDPATCH 00b3d8db 00ce2218 01372218",
+      "WORDPATCH 00b3d92b 00ce2210 01372210",
+      "WORDPATCH 00b3dcd2 0108db38 0171db38",
+      "WORDPATCH 00b3e43b 00d61940 013f1940",
+      "WORDPATCH 00b3e474 00ce2210 01372210",
+      "WORDPATCH 00b3e489 00ce2214 01372214",
+      "WORDPATCH 00b3e494 00d7a0c0 0140a0c0",
+      "WORDPATCH 00b3e4a6 00e188b4 014a88b4",
+      "WORDPATCH 00b3ee83 00cbee4e 0134ee4e",
+      "WORDPATCH 00b3ee9e 00d7a0c0 0140a0c0",
+      "WORDPATCH 00b3eea6 00e188b4 014a88b4",
+      "WORDPATCH 00b3eeae 00e188b4 014a88b4",
+      "WORDPATCH 00b3eec0 00e188b4 014a88b4",
+      "WORDPATCH 00b3eece 00d61940 013f1940",
+      "WORDPATCH 00b3eed4 00ce220c 0137220c",
+      "WORDPATCH 00b3ef6c 00ce2218 01372218",
+      "WORDPATCH 00b3f071 00ce2210 01372210",
+      "WORDPATCH 00b3f085 00ce2210 01372210",
+      "WORDPATCH 00b3f2b1 0108db38 0171db38",
+      "WORDPATCH 00cbee4f 00df76a0 014876a0",
+      "WORDPATCH 00cd7b61 0108db38 0171db38",
+      "WORDPATCH 00cd7b6b 00ce0ca0 01370ca0",
+      "WORDPATCH 00ce0ca1 0108db38 0171db38",
+      "WORDPATCH 00d61940 00b3e510 011ce510",
+      "IATPATCH InitializeCriticalSection 00ce220c 00a0566c 779d3420",
+      "IATPATCH LeaveCriticalSection 00ce2210 00a05688 779c3460",
+      "IATPATCH DeleteCriticalSection 00ce2214 00a056a0 779d56b0",
+      "IATPATCH EnterCriticalSection 00ce2218 00a056b8 779c43e0",
+      "BYTEPATCH native_new 0128681b 558bec83ec e950f8d72e",
+      "BYTEPATCH native_free 012865ac e917380000 e9cffad72e",
+      "BYTEPATCH host_allocate 30002450 558bec83ec e96b350000",
+      "BYTEPATCH host_free 300024b0 e92ba70000 e9cb3b0000"
+    ]
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/O2",
+        "/Oy-",
+        "/fp:strict",
+        "/MT",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "new_source_errors": 0,
+      "new_source_warnings": 0
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "scope": "Baseline checkout with primary integration48ebd1a cherry-picked as96adc67; new pool separately compiled/linked in strict native fixture, pending primary CMake registration.",
+      "tests_passed": 1,
+      "tests_total": 1,
+      "existing_test": "reconstructed_math",
+      "shared_integration_owner": "primary"
+    },
+    "existing_ctest": {
+      "passed": true,
+      "command": "Visual Studio bundled ctest.exe --test-dir build/win32 -C Release --output-on-failure",
+      "tests_passed": 1,
+      "tests_total": 1,
+      "test": "reconstructed_math",
+      "scope": "The existing test executable built during the baseline attempt; CTest rerun independently after unrelated probe link failed."
+    },
+    "focused_native_fixture": {
+      "passed": true,
+      "cases": 1,
+      "states_per_path": 2089,
+      "explicit_allocation_free_events_per_path": 74,
+      "real_allocations_per_path": 37,
+      "real_frees_per_path": 37,
+      "raw_slab_bytes_compared": 134765644,
+      "sequence": [
+        "Construct actual canonical storage and shared domain with real section.",
+        "Allocate1025 slots through static adapters:33 slabs, table32 to66; preserve raw payload and tail.",
+        "Return first32 and final slot; actual shared allocator virtual0 removes original empty slab and its empty replacement, then rewrites all32 moved live IDs.",
+        "Return/reallocate moved slot1000 with payload intact.",
+        "Return remaining992 slots and trim every slab; preserve pointer table/cap66.",
+        "Refill33 slots in two slabs, enter actual/explicit recursion2, invoke static destructor; observe37 real frees total before lock drain/unlink."
+      ],
+      "event_fields": [
+        "operation",
+        "kind0allocate1free",
+        "allocation_id",
+        "bytes",
+        "slab_count",
+        "table_capacity",
+        "first_free",
+        "explicit_recursion",
+        "actual_critical_recursion"
+      ],
+      "native_events_equal_host": [
+        [
+          0,
+          0,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2,
+          2756,
+          0,
+          32,
+          0,
+          1,
+          1
+        ],
+        [
+          33,
+          0,
+          3,
+          2756,
+          1,
+          32,
+          1,
+          1,
+          1
+        ],
+        [
+          65,
+          0,
+          4,
+          2756,
+          2,
+          32,
+          2,
+          1,
+          1
+        ],
+        [
+          97,
+          0,
+          5,
+          2756,
+          3,
+          32,
+          3,
+          1,
+          1
+        ],
+        [
+          129,
+          0,
+          6,
+          2756,
+          4,
+          32,
+          4,
+          1,
+          1
+        ],
+        [
+          161,
+          0,
+          7,
+          2756,
+          5,
+          32,
+          5,
+          1,
+          1
+        ],
+        [
+          193,
+          0,
+          8,
+          2756,
+          6,
+          32,
+          6,
+          1,
+          1
+        ],
+        [
+          225,
+          0,
+          9,
+          2756,
+          7,
+          32,
+          7,
+          1,
+          1
+        ],
+        [
+          257,
+          0,
+          10,
+          2756,
+          8,
+          32,
+          8,
+          1,
+          1
+        ],
+        [
+          289,
+          0,
+          11,
+          2756,
+          9,
+          32,
+          9,
+          1,
+          1
+        ],
+        [
+          321,
+          0,
+          12,
+          2756,
+          10,
+          32,
+          10,
+          1,
+          1
+        ],
+        [
+          353,
+          0,
+          13,
+          2756,
+          11,
+          32,
+          11,
+          1,
+          1
+        ],
+        [
+          385,
+          0,
+          14,
+          2756,
+          12,
+          32,
+          12,
+          1,
+          1
+        ],
+        [
+          417,
+          0,
+          15,
+          2756,
+          13,
+          32,
+          13,
+          1,
+          1
+        ],
+        [
+          449,
+          0,
+          16,
+          2756,
+          14,
+          32,
+          14,
+          1,
+          1
+        ],
+        [
+          481,
+          0,
+          17,
+          2756,
+          15,
+          32,
+          15,
+          1,
+          1
+        ],
+        [
+          513,
+          0,
+          18,
+          2756,
+          16,
+          32,
+          16,
+          1,
+          1
+        ],
+        [
+          545,
+          0,
+          19,
+          2756,
+          17,
+          32,
+          17,
+          1,
+          1
+        ],
+        [
+          577,
+          0,
+          20,
+          2756,
+          18,
+          32,
+          18,
+          1,
+          1
+        ],
+        [
+          609,
+          0,
+          21,
+          2756,
+          19,
+          32,
+          19,
+          1,
+          1
+        ],
+        [
+          641,
+          0,
+          22,
+          2756,
+          20,
+          32,
+          20,
+          1,
+          1
+        ],
+        [
+          673,
+          0,
+          23,
+          2756,
+          21,
+          32,
+          21,
+          1,
+          1
+        ],
+        [
+          705,
+          0,
+          24,
+          2756,
+          22,
+          32,
+          22,
+          1,
+          1
+        ],
+        [
+          737,
+          0,
+          25,
+          2756,
+          23,
+          32,
+          23,
+          1,
+          1
+        ],
+        [
+          769,
+          0,
+          26,
+          2756,
+          24,
+          32,
+          24,
+          1,
+          1
+        ],
+        [
+          801,
+          0,
+          27,
+          2756,
+          25,
+          32,
+          25,
+          1,
+          1
+        ],
+        [
+          833,
+          0,
+          28,
+          2756,
+          26,
+          32,
+          26,
+          1,
+          1
+        ],
+        [
+          865,
+          0,
+          29,
+          2756,
+          27,
+          32,
+          27,
+          1,
+          1
+        ],
+        [
+          897,
+          0,
+          30,
+          2756,
+          28,
+          32,
+          28,
+          1,
+          1
+        ],
+        [
+          929,
+          0,
+          31,
+          2756,
+          29,
+          32,
+          29,
+          1,
+          1
+        ],
+        [
+          961,
+          0,
+          32,
+          2756,
+          30,
+          32,
+          30,
+          1,
+          1
+        ],
+        [
+          993,
+          0,
+          33,
+          2756,
+          31,
+          32,
+          31,
+          1,
+          1
+        ],
+        [
+          1025,
+          0,
+          34,
+          2756,
+          32,
+          32,
+          32,
+          1,
+          1
+        ],
+        [
+          1025,
+          0,
+          35,
+          264,
+          32,
+          66,
+          32,
+          1,
+          1
+        ],
+        [
+          1025,
+          1,
+          1,
+          128,
+          32,
+          66,
+          32,
+          1,
+          1
+        ],
+        [
+          1059,
+          1,
+          2,
+          2756,
+          33,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          1059,
+          1,
+          34,
+          2756,
+          32,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          33,
+          2756,
+          31,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          32,
+          2756,
+          30,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          31,
+          2756,
+          29,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          30,
+          2756,
+          28,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          29,
+          2756,
+          27,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          28,
+          2756,
+          26,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          27,
+          2756,
+          25,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          26,
+          2756,
+          24,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          25,
+          2756,
+          23,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          24,
+          2756,
+          22,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          23,
+          2756,
+          21,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          22,
+          2756,
+          20,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          21,
+          2756,
+          19,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          20,
+          2756,
+          18,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          19,
+          2756,
+          17,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          18,
+          2756,
+          16,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          17,
+          2756,
+          15,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          16,
+          2756,
+          14,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          15,
+          2756,
+          13,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          14,
+          2756,
+          12,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          13,
+          2756,
+          11,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          12,
+          2756,
+          10,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          11,
+          2756,
+          9,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          10,
+          2756,
+          8,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          9,
+          2756,
+          7,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          8,
+          2756,
+          6,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          7,
+          2756,
+          5,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          6,
+          2756,
+          4,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          5,
+          2756,
+          3,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          4,
+          2756,
+          2,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2054,
+          1,
+          3,
+          2756,
+          1,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2055,
+          0,
+          36,
+          2756,
+          0,
+          66,
+          0,
+          1,
+          1
+        ],
+        [
+          2087,
+          0,
+          37,
+          2756,
+          1,
+          66,
+          1,
+          1,
+          1
+        ],
+        [
+          2089,
+          1,
+          36,
+          2756,
+          2,
+          66,
+          1,
+          2,
+          2
+        ],
+        [
+          2089,
+          1,
+          37,
+          2756,
+          2,
+          66,
+          1,
+          2,
+          2
+        ],
+        [
+          2089,
+          1,
+          35,
+          264,
+          2,
+          66,
+          1,
+          2,
+          2
+        ]
+      ],
+      "comparison": "Every state compares actual scalar fields, normalized profile, table/slab allocation identities, real CRITICAL_SECTION recursion/lock count, and complete active slab bytes. All32 IDs checked on every slab/state and immediately before each slab free. Untouched final2 bytes independently asserted.",
+      "native_entries_executed": [
+        "00b3ee80",
+        "00b3ef60",
+        "00b3d1e0",
+        "00b3d8d0",
+        "00b3e510",
+        "00b3e430",
+        "00b3f2b0",
+        "00b3dcd0",
+        "00ce0ca0"
+      ],
+      "mapping": "Sparse MEM_RESERVE/PAGE_NOACCESS PE image; only exact verified spans copied, committed gaps filled CC;29 relocated words have checked raw preimages. Four real Win32 critical-section imports; new/free observers use actual malloc/free. Native exception dispatcher is outside copied code and was not exercised.",
+      "not_executed": [
+        "Native exception dispatch or injected allocation failure.",
+        "Original CRT static initializer/atexit registration.",
+        "Native table unwind entry; normal native destructor inlines that free."
+      ],
+      "tracked_test_files_added": 0
+    }
+  },
+  "primary_integration_required": [
+    "Register src/d3d9_texture2d_pool.cpp in shared CMake.",
+    "Create missing exact22-byte function at00CD7B60 before annotation, using leased address under Ghidra write lock.",
+    "Review and apply proposed function names/comments, preserve current originals, repair misleading no-return continuations/extents, save correct bsp project.",
+    "Refresh affected exports; update name/reconstruction shards and index.",
+    "Rebuild combined checkout and optionally rerun the retained ignored fixture."
+  ],
+  "uncertainty_and_limits": [
+    "Function names are descriptive reconstruction hypotheses.",
+    "New C++ interfaces preserve tested storage/behavior but are not original binary calling-convention replacements.",
+    "The native slot contains only50h texture owner bytes plus authoritative4-byte pool ID; no enlarged companion may be placed there.",
+    "No texture owner, COM object, cache array, retained source or renderer registration was constructed/destroyed by this packet.",
+    "Native malformed pointers, concurrent unsynchronized trim and allocation failure are outside runtime comparison; no guards/rollback were added to change them.",
+    "Original CRT startup/exit registration and native EH were verified statically, not executed.",
+    "No GPU rendering, original game execution or gameplay validation."
+  ],
+  "artifacts": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-d3d9-texture2d-pool-20260910",
+    "ignored_local_files": [
+      {
+        "path": "local/prepare_d3d9_texture2d_pool_native.py",
+        "sha256": "b3552bf21fae4e973d586533ae8747b477dca5d56ef560b8cdc5728675947b2d"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_native_preparation.json",
+        "sha256": "17e840269ec52d5d0d77a82c7235d8db6151fa8e965e33c7574073671a7d91c1"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_native_preparation.log",
+        "sha256": "af12d069fd8b44cc51c86e088dba8887122563ff051d5729442ada8f77d3a4e4"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_native_spans.hpp",
+        "sha256": "35785c40ff02ef0668a3b8af80e7b872e859f0c2f70fefbbc14f913838e397f5"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_native_check.cpp",
+        "sha256": "1eefca1c271da3654200c7aef4f46d9712972274b634af77d547e2ed484007d6"
+      },
+      {
+        "path": "local/build_d3d9_texture2d_pool_native_check.ps1",
+        "sha256": "b45eb939d96b99e32127d1d34cbf0baaa6fb574b334b02f40241fc0f21451682"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_native_check.log",
+        "sha256": "3e648c9352ac214120bd3ecce78f77a5197b003a1f00731a8d1cc52b7bf7560a"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_repository_build.log",
+        "sha256": "7332b586046532b343e1f854f64d98ec6629614ff64e88ed0543fef6a144b549"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_existing_ctest.log",
+        "sha256": "6a835cac4b5afb7fd937d89b8ca8bfacca6851fc8f659e4bbc0b369e7acbdf30"
+      },
+      {
+        "path": "local/d3d9_texture2d_pool_original_comments.json",
+        "sha256": "5f19c9f7ab12535d1ab0a8d64053b8dbeca80d5cfbdfbb3769593ae11a56167c"
+      },
+      {
+        "path": "local/write_texture2d_pool_report.py",
+        "sha256": "3cc27a803cc9587c2068c19a8456b91321bcbae4532fedf84a45589c1c8e72b8"
+      },
+      {
+        "path": "build/d3d9-texture2d-pool-check/d3d9_texture2d_pool_native_check.exe",
+        "sha256": "51fbb482bab23e9a1e0e491c521766a35fa49959958fbc3b5d617aa7718c58df"
+      }
+    ]
+  }
+}
