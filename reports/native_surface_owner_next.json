@@ -1,0 +1,1625 @@
+{
+  "schema_version": 1,
+  "packet": "native_surface_owner_discovery",
+  "status": "discovery_complete_ready_resource_support_dependency",
+  "scope": "Only two discovery files; no C++ implementation or shared metadata changes.",
+  "utc": "2026-09-10T19:43:04.150640+00:00",
+  "base_commit": "55505bb78892accdf1417d9ad91fa567f5082f8d",
+  "surface_pool_dependency_commit": "ae51f49cdb1f362ef00bc3da388116bfd57fd781",
+  "target_verification": {
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "method": "Every live query used tools/bsp.py ghidra, which verifies configured project/program. Exact live bytes compared with installed PE or zero-filled sections; no re-import or Ghidra mutations.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owned_addresses": [
+    "00b3f630",
+    "00b3f4e0",
+    "00b3f5b0",
+    "00b3e730",
+    "00b61d50",
+    "00b61d60"
+  ],
+  "owned_files": [
+    "docs/NATIVE_SURFACE_OWNER_NEXT.md",
+    "reports/native_surface_owner_next.json"
+  ],
+  "surface": {
+    "object_bytes": 52,
+    "pool_slot_bytes": 56,
+    "canonical_pool": "0108db00",
+    "profile": "00d619a0",
+    "intrusive_count_offset": 4,
+    "fields": {
+      "00": "native profile",
+      "04": "intrusive count initialized1",
+      "08/0c": "scalar words3f800000; role unknown",
+      "10/14": "native pooled string length/pointer",
+      "18": "format",
+      "1c/20": "width/height",
+      "24": "multisample",
+      "28": "flags",
+      "2c": "owned COM surface",
+      "30": "exact recreation-kind byte",
+      "31..33": "unwritten padding",
+      "34..37": "actual pool slab ID, outside object"
+    },
+    "profile_entries": [
+      {
+        "offset": "00",
+        "entry": "00bd30e0",
+        "role": "current deleting-destructor dispatch with flag1"
+      },
+      {
+        "offset": "04",
+        "entry": "00b3f5b0",
+        "role": "surface scalar deleting destructor"
+      },
+      {
+        "offset": "08",
+        "entry": "00befaf0",
+        "role": "shared bare RET; purpose unknown"
+      },
+      {
+        "offset": "0c",
+        "entry": "00a82250",
+        "role": "shared zero-DWORD result"
+      },
+      {
+        "offset": "10",
+        "entry": "00b3ccf0",
+        "role": "actual NativeString at+10"
+      },
+      {
+        "offset": "14",
+        "entry": "00b3cc80",
+        "role": "initialize COM binding"
+      },
+      {
+        "offset": "18",
+        "entry": "00b3cd00",
+        "role": "format+18"
+      },
+      {
+        "offset": "1c",
+        "entry": "00b3cd10",
+        "role": "width+1c"
+      },
+      {
+        "offset": "20",
+        "entry": "00b3cd20",
+        "role": "height+20"
+      },
+      {
+        "offset": "24",
+        "entry": "00b3cd30",
+        "role": "multisample+24"
+      },
+      {
+        "offset": "28",
+        "entry": "00b3d500",
+        "role": "AL zero; upper EAX unchanged"
+      },
+      {
+        "offset": "2c",
+        "entry": "00b3cd40",
+        "role": "LockRect; AL one after call, RET0C"
+      },
+      {
+        "offset": "30",
+        "entry": "00b3cd60",
+        "role": "UnlockRect"
+      },
+      {
+        "offset": "34",
+        "entry": "00b3dd00",
+        "role": "D3DXSaveSurfaceToFileA"
+      },
+      {
+        "offset": "38",
+        "entry": "00b3cd70",
+        "role": "untraced copy operation; excluded from owner packet"
+      },
+      {
+        "offset": "3c",
+        "entry": "00b3d510",
+        "role": "release for reset"
+      },
+      {
+        "offset": "40",
+        "entry": "00b3d550",
+        "role": "recreate after reset"
+      }
+    ],
+    "constructor": "Full 382-byte B3F630. Base/count/scalars, profile/name, null COM/kind/flags; captured-input AddRef/Release; native binding initialize; captured-input pair; pooled Surface string and copied pointer/string diagnostic record; actual resource-support getter; release temporary strings; reload flags and increment 108DAFC for bits 10/100. Name remains empty. No renderer-list append.",
+    "initializer": "Store +2C without releasing old; nonnull AddRef incoming, reload +2C for GetDesc into an uninitialized stack descriptor, ignore HRESULT, copy metadata and preserve flags. Null clears +18/+1C/+20/+24/+28 and preserves kind +30.",
+    "destructor": "Profile; current global renderer F8D394 removes the first matching borrowed pointer; actual resource-support getter; reload COM +2C, Release and clear after callback; reload flags/counter; return captured native name buffer with size length + 1 without clearing words; base. No COM cleanup in EH map.",
+    "deletion": "Full 32-byte B3F5B0 calls destructor then actual pool B3D860 on the same slot for flags & 1, reading the live +34 ID indirectly; returns original pointer EAX, RET4. No ordinary object free; no pool return when destructor throws.",
+    "diagnostic_record": "Temporary 12-byte record contains borrowed original surface pointer and deep-copied native string. B3F4C0 returns only its string; no COM AddRef/Release. Adjacent B3F5D0 is its copy constructor, not another surface constructor.",
+    "eh_base_thunk": "00B3D4F0 is five-byte JMP00BD30F0. Do not absorb adjacent INT3 padding or claim an independent base body."
+  },
+  "functions": [
+    {
+      "address": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "length": 382,
+      "role": "surface constructor",
+      "native_abi": "ECX raw slot; stack COM surface, flags, low recreation-kind byte; EAX owner; RET0C.",
+      "byte_evidence": "surface_construct"
+    },
+    {
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "role": "complete surface destructor",
+      "native_abi": "ECX owner; RET; pool return is outside this function.",
+      "byte_evidence": "surface_destroy"
+    },
+    {
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "role": "surface scalar deleting destructor",
+      "native_abi": "ECX owner; stack flags; normal destructor then canonical pool return for flags&1; EAX original owner; RET4.",
+      "byte_evidence": "surface_scalar_delete"
+    },
+    {
+      "address": "00b3cc80",
+      "end_exclusive": "00b3cce4",
+      "length": 100,
+      "role": "native COM initialization",
+      "native_abi": "ECX owner; stack surface; RET4; stores without prior Release, reloads+2C after AddRef, ignores GetDesc HRESULT.",
+      "byte_evidence": "surface_initialize_binding"
+    },
+    {
+      "address": "00b3d510",
+      "end_exclusive": "00b3d544",
+      "length": 52,
+      "role": "surface reset release",
+      "native_abi": "ECX owner; RET; captured pointer for balanced pair, fresh+2C for final release.",
+      "byte_evidence": "surface_release_for_reset"
+    },
+    {
+      "address": "00b3d550",
+      "end_exclusive": "00b3d588",
+      "length": 56,
+      "role": "surface reset recreate",
+      "native_abi": "ECX owner; stack device; RET4; writes creation output directly+2C, no guard/HRESULT handling.",
+      "byte_evidence": "surface_recreate"
+    },
+    {
+      "address": "00b3e730",
+      "end_exclusive": "00b3e7ed",
+      "length": 189,
+      "role": "lazy resource-support getter",
+      "native_abi": "No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.",
+      "byte_evidence": "resource_support_getter"
+    },
+    {
+      "address": "00b61d50",
+      "end_exclusive": "00b61d59",
+      "length": 9,
+      "role": "resource-support constructor",
+      "native_abi": "ECX raw8-byte owner; EAX same owner; RET; write vtable only.",
+      "byte_evidence": "resource_support_constructor"
+    },
+    {
+      "address": "00b61d60",
+      "end_exclusive": "00b61d89",
+      "length": 41,
+      "role": "complete resource-support deleting destructor",
+      "native_abi": "ECX owner; stack flags; unconditional canonical clear/base profile, free if flags&1, EAX original owner; RET4.",
+      "byte_evidence": "resource_support_scalar_delete_complete"
+    },
+    {
+      "address": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "role": "2D retained surface accessor",
+      "native_abi": "ECX texture; stack mip and unused second word; EAX caller-owned surface; RET8. Pseudocode omits unused word.",
+      "byte_evidence": "texture2d_retained_surface_accessor"
+    },
+    {
+      "address": "00b3fe90",
+      "end_exclusive": "00b3ff25",
+      "length": 149,
+      "role": "cube surface accessor",
+      "native_abi": "ECX texture; stack mip then face; COM call uses face then mip; EAX caller-owned surface; RET8.",
+      "byte_evidence": "texturecube_surface_accessor"
+    },
+    {
+      "address": "00b215d0",
+      "end_exclusive": "00b2168f",
+      "length": 191,
+      "role": "offscreen plain-surface factory",
+      "native_abi": "ECX renderer; stack width,height,format,wrapper flags; EAX wrapper/null; RET10. CreateOffscreenPlainSurface pool2; kind0; no list append.",
+      "byte_evidence": "renderer_offscreen_factory"
+    },
+    {
+      "address": "00b2a7c0",
+      "end_exclusive": "00b2a99d",
+      "length": 477,
+      "role": "registered render-target factory",
+      "native_abi": "ECX renderer; stack width,height,format,multisample; RET10; construct flags10/kind0 and append borrowed raw wrapper.",
+      "byte_evidence": "renderer_registered_rt_factory"
+    },
+    {
+      "address": "00b238d0",
+      "end_exclusive": "00b23b02",
+      "length": 562,
+      "role": "default surface capture",
+      "native_abi": "ECX renderer; RET; both color and depth constructors receive flags0/kind0, with explicit wrapper/getter ownership handoff.",
+      "byte_evidence": "renderer_default_capture"
+    },
+    {
+      "address": "00a8ff30",
+      "end_exclusive": "00a8ffe3",
+      "length": 179,
+      "role": "shadow target creates textures and surfaces",
+      "native_abi": "ECX target; stack low-byte enable; RET4; publish owned color/depth textures and returned surface references.",
+      "byte_evidence": "shadow_target_create_textures_and_surfaces"
+    },
+    {
+      "address": "00a8fff0",
+      "end_exclusive": "00a900b4",
+      "length": 196,
+      "role": "shadow target destruction",
+      "native_abi": "ECX target; RET; color surface, color texture, depth surface, depth texture; clear after callbacks.",
+      "byte_evidence": "shadow_target_destroy"
+    }
+  ],
+  "exception_handling": {
+    "maps": [
+      {
+        "owner": "surface_ctor",
+        "handler": "00cbef13",
+        "unwind_map": "00df779c",
+        "funcinfo": "00df77bc",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbeef0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbeef8"
+          },
+          {
+            "state": 2,
+            "next_state": 1,
+            "leaf": "00cbef03"
+          },
+          {
+            "state": 3,
+            "next_state": 2,
+            "leaf": "00cbef0b"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbeef0",
+            "text": "mov ecx, dword ptr [ebp - 0x24]"
+          },
+          {
+            "address": "00cbeef3",
+            "text": "jmp 0xb3d4f0"
+          },
+          {
+            "address": "00cbeef8",
+            "text": "mov ecx, dword ptr [ebp - 0x24]"
+          },
+          {
+            "address": "00cbeefb",
+            "text": "add ecx, 0x10"
+          },
+          {
+            "address": "00cbeefe",
+            "text": "jmp 0x41dd20"
+          },
+          {
+            "address": "00cbef03",
+            "text": "lea ecx, [ebp - 0x20]"
+          },
+          {
+            "address": "00cbef06",
+            "text": "jmp 0x41dd20"
+          },
+          {
+            "address": "00cbef0b",
+            "text": "lea ecx, [ebp - 0x18]"
+          },
+          {
+            "address": "00cbef0e",
+            "text": "jmp 0xb3f4c0"
+          },
+          {
+            "address": "00cbef13",
+            "text": "mov eax, 0xdf77bc"
+          },
+          {
+            "address": "00cbef18",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "surface_dtor",
+        "handler": "00cbeee3",
+        "unwind_map": "00df7768",
+        "funcinfo": "00df7778",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbeed0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbeed8"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbeed0",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cbeed3",
+            "text": "jmp 0xb3d4f0"
+          },
+          {
+            "address": "00cbeed8",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cbeedb",
+            "text": "add ecx, 0x10"
+          },
+          {
+            "address": "00cbeede",
+            "text": "jmp 0x41dd20"
+          },
+          {
+            "address": "00cbeee3",
+            "text": "mov eax, 0xdf7778"
+          },
+          {
+            "address": "00cbeee8",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "resource_support",
+        "handler": "00cbedb3",
+        "unwind_map": "00df75c0",
+        "funcinfo": "00df75d0",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbeda0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbeda8"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbeda0",
+            "text": "lea ecx, [ebp - 0x14]"
+          },
+          {
+            "address": "00cbeda3",
+            "text": "jmp 0x411ee0"
+          },
+          {
+            "address": "00cbeda8",
+            "text": "mov eax, dword ptr [ebp - 0x18]"
+          },
+          {
+            "address": "00cbedab",
+            "text": "push eax"
+          },
+          {
+            "address": "00cbedac",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00cbedb1",
+            "text": "pop ecx"
+          },
+          {
+            "address": "00cbedb2",
+            "text": "ret"
+          },
+          {
+            "address": "00cbedb3",
+            "text": "mov eax, 0xdf75d0"
+          },
+          {
+            "address": "00cbedb8",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "texture2d_accessor",
+        "handler": "00cbefa8",
+        "unwind_map": "00df788c",
+        "funcinfo": "00df7894",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbefa0"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbefa0",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cbefa3",
+            "text": "jmp 0xb3dcc0"
+          },
+          {
+            "address": "00cbefa8",
+            "text": "mov eax, 0xdf7894"
+          },
+          {
+            "address": "00cbefad",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "texturecube_accessor",
+        "handler": "00cbefc8",
+        "unwind_map": "00df78b8",
+        "funcinfo": "00df78c0",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbefc0"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbefc0",
+            "text": "mov ecx, dword ptr [ebp + 4]"
+          },
+          {
+            "address": "00cbefc3",
+            "text": "jmp 0xb3dcc0"
+          },
+          {
+            "address": "00cbefc8",
+            "text": "mov eax, 0xdf78c0"
+          },
+          {
+            "address": "00cbefcd",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "renderer_rt_factory",
+        "handler": "00cbd3d0",
+        "unwind_map": "00df5be8",
+        "funcinfo": "00df5bf8",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbd3c0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbd3c8"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbd3c0",
+            "text": "lea ecx, [ebp - 0x1c]"
+          },
+          {
+            "address": "00cbd3c3",
+            "text": "jmp 0xb21110"
+          },
+          {
+            "address": "00cbd3c8",
+            "text": "mov ecx, dword ptr [ebp + 0x10]"
+          },
+          {
+            "address": "00cbd3cb",
+            "text": "jmp 0xb3dcc0"
+          },
+          {
+            "address": "00cbd3d0",
+            "text": "mov eax, 0xdf5bf8"
+          },
+          {
+            "address": "00cbd3d5",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "renderer_offscreen",
+        "handler": "00cbcd38",
+        "unwind_map": "00df5290",
+        "funcinfo": "00df5298",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbcd30"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbcd30",
+            "text": "mov ecx, dword ptr [ebp + 0xc]"
+          },
+          {
+            "address": "00cbcd33",
+            "text": "jmp 0xb3dcc0"
+          },
+          {
+            "address": "00cbcd38",
+            "text": "mov eax, 0xdf5298"
+          },
+          {
+            "address": "00cbcd3d",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "owner": "renderer_defaults",
+        "handler": "00cbcf00",
+        "unwind_map": "00df54f8",
+        "funcinfo": "00df5508",
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbcef0"
+          },
+          {
+            "state": 1,
+            "next_state": -1,
+            "leaf": "00cbcef8"
+          }
+        ],
+        "leaves": [
+          {
+            "address": "00cbcef0",
+            "text": "mov ecx, dword ptr [ebp - 0x30]"
+          },
+          {
+            "address": "00cbcef3",
+            "text": "jmp 0xb3dcc0"
+          },
+          {
+            "address": "00cbcef8",
+            "text": "mov ecx, dword ptr [ebp - 0x30]"
+          },
+          {
+            "address": "00cbcefb",
+            "text": "jmp 0xb3dcc0"
+          },
+          {
+            "address": "00cbcf00",
+            "text": "mov eax, 0xdf5508"
+          },
+          {
+            "address": "00cbcf05",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      }
+    ],
+    "surface_constructor": "State 3 record string, state 2 temporary NativeString, state 1 object name, state 0 base. No COM release or pool return in constructor cleanup.",
+    "surface_destructor": "State 1 name then state 0 base. No additional COM cleanup.",
+    "outer_factories": "Actual raw-slot cleanup targets 00B3DCC0. 2D/cube/offscreen have one state; default color/depth states each go independently to -1; registered-target state 1 returns the slot then state 0 exits the renderer guard. No acquired-COM cleanup is added by these map leaves.",
+    "resource_support": "State 1 frees raw allocation then state 0 cleans the captured-section guard. Registration is after publication in state 0, so failure preserves the published owner."
+  },
+  "ownership": {
+    "shadow_profiles": "Target D5B5E8, 2D textures D61948, both color/depth surfaces D619A0.",
+    "shadow_create": "A8FF30 obtains textures through renderer +88 with color flags 10/depth 100 and publishes creator texture refs at +10/+18; texture +30(0,0) returns owned wrappers at +14/+1C. Constructor kind becomes 0/1 from flags bit 8.",
+    "texture2d_accessor": "B3FD80 RET8, first word mip, second unused. Cache hit InterlockedIncrement(actual count +04) before nonnull test. Miss GetSurfaceLevel, real canonical pool, complete constructor, drop COM getter, and cache retains another actual wrapper ref if flags bit 0 is clear. Return creator ref to caller.",
+    "texturecube_accessor": "B3FE90 RET8 consumes mip, face; COM receives face, mip, output. Same surface constructor (kind 0), release COM getter, no 2D cache append.",
+    "target_groups": "Borrowed global getters A8FDA0/A8FDC0 feed actual wrapper-retaining color/depth assignments. Five groups add separate native count +04 refs. Cached COM slots are independent owned refs and assignments do not refresh them.",
+    "target_destroy": "A8FFF0 releases color surface +14 then color texture +10, depth surface +1C then depth texture +18; clear each after callback.",
+    "texture_destroy": "B3F2E0 releases source stream and renderer associations, COM texture +10 before cached surface refs +40/+44, then record array/base with complete post-free return tail. Cached wrapper zero-release reaches full surface deleting lifecycle.",
+    "parent_edge": "No native parent texture pointer/count increment exists in surface storage or constructor. Do not invent a wrapper-to-parent retention edge; observed target/cache/group/COM references have distinct owners."
+  },
+  "reset": {
+    "release": "B3D510 captures original COM for the balanced pair, reloads the field for final Release, and clears after callback; leaves wrapper, count, name, metadata, flags and slab ID intact.",
+    "recreate": "B3D550 uses kind +30 to choose CreateRenderTarget(lockable false) or CreateDepthStencilSurface(discard true), quality 0/null shared handle/direct output +2C; ignores HRESULT and does not guard nonempty state.",
+    "texture_parent": "B3DD30 releases cached surfaces through virtual +3C before COM texture; B3DD90 creates COM texture then calls GetSurfaceLevel/virtual +14 on the same cached wrappers and drops getter refs. No wrapper recreation, native count change or renderer-surface-list append.",
+    "defaults": "B238D0 constructs both color/depth with flags 0, kind 0; retain newly stored +197C/+198C before old release and drop creator/getter refs. B23B10 restores existing wrappers by GetRenderTarget/GetDepthStencilSurface plus virtual +14, not generic recreation.",
+    "registered": "B2A7C0 factory appends a borrowed actual wrapper to the +1B0C array; constructor does not. Destructor removes the first match. Native release/restore uses a retained raw cursor plus fresh base/count endpoints and no temporary retain; current typed domain requires stable list/lifetimes."
+  },
+  "reuse_boundaries": [
+    {
+      "component": "D3D9SurfacePool",
+      "usable": "Actual 38h slots/34h ID/744h slabs, shared allocator list, real CRT and canonical owner from ae51f49.",
+      "missing": "Surface object, COM, parent, registry and reset lifecycle."
+    },
+    {
+      "component": "NativeString/PooledStringStorage",
+      "usable": "Exact 8-byte string and real pooled allocation.",
+      "missing": "Owner destruction must preserve stale native name words; calling release_to to clear them would differ."
+    },
+    {
+      "component": "SingletonLifetimeDomain",
+      "usable": "Actual manager, section/counter and shutdown registration.",
+      "missing": "Concrete 0108FEDC owner/deleting dispatch: next packet."
+    },
+    {
+      "component": "D3D9SurfaceBinding/initializer",
+      "usable": "Successful stable empty-binding COM helper and field projection.",
+      "missing": "No actual count/pool/deleting lifecycle; nonempty guard, zeroed descriptor, HRESULT rollback, captured input GetDesc rather than actual post-AddRef field reload."
+    },
+    {
+      "component": "Typed surface reset helpers",
+      "usable": "Supported stable COM owner release/recreation.",
+      "missing": "Initial pair rereads the field between AddRef/Release rather than native capture; recreate adds nonempty guard; general release clears metadata."
+    },
+    {
+      "component": "D3D9SurfaceRegistry",
+      "usable": "Borrowed binding-list remove/append and stable batch projections.",
+      "missing": "Actual native wrapper-pointer array +1B0C/+1B10/+1B14, allocator capacity/failure semantics and full raw-cursor reset protocol."
+    },
+    {
+      "component": "D3D9ResetTexture2D/D3D9FrameTargets",
+      "usable": "Borrowed cached-binding/retained shared-binding projections.",
+      "missing": "Actual native cache/group intrusive ownership and terminal surface pool return."
+    }
+  ],
+  "next_packet": {
+    "id": "native_resource_support_owner",
+    "status": "smallest_ready_concrete_dependency; API proposal to primary before implementation",
+    "addresses": [
+      "00b3e730",
+      "00b61d50",
+      "00b61d60"
+    ],
+    "files": [
+      "include/bsp/native_resource_support.hpp",
+      "src/native_resource_support.cpp",
+      "docs/NATIVE_RESOURCE_SUPPORT.md",
+      "reports/native_resource_support_audit.json"
+    ],
+    "canonical_pointer": "0108fedc",
+    "allocation_bytes": 8,
+    "profile": "00d62b64",
+    "deleting_virtual0": "00b61d60",
+    "base_profile": "00ce3818",
+    "proposed_api": [
+      "NativeResourceSupportStorage: exact 8 bytes, uint32 native_vtable_00 plus four untouched bytes at +04.",
+      "construct_native_resource_support_00b61d50(void* actual_allocation): write only profile and return same native storage.",
+      "resource_support_singleton_00b3e730(NativeResourceSupportStorage* volatile& actual_published_0108fedc, SingletonLifetimeDomain& actual_lifetime): raw-owner getter with actual shared manager/section/registration.",
+      "delete_native_resource_support_00b61d60(NativeResourceSupportStorage&, uint32 flags, NativeResourceSupportStorage* volatile& actual_published_0108fedc): clear canonical slot, install base, free for flags & 1, return original identity."
+    ],
+    "required_real_dependencies": [
+      "Existing actual SingletonLifetimeDomain/get_manager_00415350.",
+      "Captured SystemSingletonCriticalSection from actual manager+10 and its referenced section+18 counter; use actual Win32 enter/leave operations exactly once.",
+      "Existing real singleton_lifetime_allocate/free CRT boundary.",
+      "Second manager lookup and register_object through actual ConcreteSingletonLifetimeManager.",
+      "Primary shutdown callback must dispatch this actual owner/profile to deleting function with flag1; no fake manager or no-op destruction."
+    ],
+    "constructor": "Only write native vtable 00D62B64; +04 allocation bytes remain untouched, not an established reference count.",
+    "getter": "Warm returns current published pointer with no manager work. Cold captures actual manager section, enters and increments, rechecks, allocates 8 bytes, constructs, publishes, looks up manager again, reloads published owner, registers, decrements/unlocks captured section, then reloads the final published result.",
+    "eh": "State 1 frees raw allocation, then state 0 performs captured-section guard cleanup. After publication, state 0 registration failure unlocks without undoing the published owner or freeing it. No invented RAII rollback.",
+    "destructor": "Unconditionally clear the actual canonical slot before base profile/free; retain untouched +04. No explicit manager unregister. Preserve normal post-free ADD ESP,4 at 00B61D80 and EAX original identity, RET4.",
+    "validation": "One focused real-allocation cold/warm/shutdown fixture with actual shared lifetime domain, raw8-byte preservation and callback/free ordering; strict Win32 build. No broad test suite.",
+    "excluded": [
+      "Surface wrapper construction/destruction",
+      "COM calls",
+      "Renderer reset bindings or traversal",
+      "Independent singleton registry/head",
+      "Ghidra/ledger/CMake edits by worker"
+    ]
+  },
+  "later_surface_packet": {
+    "status": "depends_on_real_resource_support_and_actual_renderer_list_binding",
+    "minimum_core": [
+      "00b3f630",
+      "00b3f4e0",
+      "00b3f5b0",
+      "00b3cc80",
+      "00b3d510",
+      "00b3d550"
+    ],
+    "responsibilities": [
+      "Actual 38h slot storage with count +04, COM +2C and preserved ID +34.",
+      "Actual renderer F8D394/+1B0C raw-list remove, not a no-op callback.",
+      "Real resource-support getter and pooled NativeString operations.",
+      "Exact native callback reloads, HRESULT/failure/EH behavior and pool return.",
+      "Primary bindings for actual zero-count dispatch and stable parent/reset owners."
+    ],
+    "excluded_until_owned": [
+      "Full renderer factories/guards/retry/memory accounting",
+      "Texture parent/cache constructor/destructor/record array",
+      "Full renderer reset scheduler andlisteners",
+      "Surface copy/save/lock featureporting outsideobservedownerpath"
+    ]
+  },
+  "native_ranges": [
+    {
+      "label": "surface_construct",
+      "address": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "length": 382,
+      "disk_offset": 7599664,
+      "sha256": "f59553f64d394a4b3609c84d5d504377bcb3de224a47ef97914c50e39e4a5023",
+      "raw_preimage_hex": "6aff6813efcb0064a100000000506489250000000083ec18f30f10054ca2d7005355568bf1c70630b1ce00c74604010000005789742410f30f114608f30f11460c33edc706a019d600896c2430896e10896e148b7c24383bfd8a4424408b4c243cc644243001896e2c884630894e2874108b178b420457ffd08b0f8b510857ffd2578bcee8c7d5ffff3bfd74108b078b480457ffd18b178b420857ffd06a016a078d4c241c896c241c896c2420e85ee68dff8b4424183bc58b5c241474128d4b0151689054ce0050e8837f0b0083c40c6a01538d4c2428c644243802897c2424896c2428896c242ce823e68dff3bdd8b7c242474138b5424208b442418525057e84b7f0b0083c40cc644243003e8eeefffff3bfdc64424300274178b4424206a0183c0015057e865a58dff8bc8e8ae1d09008b4424183bc5c64424300174136a0183c3015350e845a58dff8bc8e88e1d09008b4628a8107507a90001000074078305fcda0801018b4c24285f8bc65e5d5b64890d0000000083c424c20c00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_destroy",
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "disk_offset": 7599328,
+      "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28",
+      "raw_preimage_hex": "6aff68e3eecb0064a100000000506489250000000051568bf189742404c706a019d6008b0d94d3f80056c744241401000000e84988feffe814f2ffff8b462c85c0740f8b088b510850ffd2c7462c000000008b4628a8107507a9000100007407832dfcda0801018b461485c0c64424100074168b4e106a0183c1015150e85ea78dff8bc8e8a71f09008bcec7442410ffffffffe8783b09008b4c24085e64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_scalar_delete",
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "disk_offset": 7599536,
+      "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+      "raw_preimage_hex": "568bf1e828fffffff644240801740b56b900db0801e896e2ffff8bc65ec20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_initialize_binding",
+      "address": "00b3cc80",
+      "end_exclusive": "00b3cce4",
+      "length": 100,
+      "disk_offset": 7588992,
+      "sha256": "7d2bef323672d2420e9cda960ed51638f509c57af2d35f388fb5e2ecdeadbef1",
+      "raw_preimage_hex": "8b44240483ec20568bf133c93bc189462c743b8b088b510450ffd28b462c8b088d54240452508b4130ffd08b4c24048b54241c8b442420894e188b4c241489561c894620894e245e83c420c20400894e18894e1c894e20894e28894e245e83c420c20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_release_for_reset",
+      "address": "00b3d510",
+      "end_exclusive": "00b3d544",
+      "length": 52,
+      "disk_offset": 7591184,
+      "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c",
+      "raw_preimage_hex": "568bf1578b7e2c85ff74108b078b480457ffd18b178b420857ffd08b462c85c0740f8b088b510850ffd2c7462c000000005f5ec3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_recreate",
+      "address": "00b3d550",
+      "end_exclusive": "00b3d588",
+      "length": 56,
+      "disk_offset": 7591248,
+      "sha256": "3b4e38423d828c61398db47c581fb0409879cc4d635917ef65daf6f9b4f3eecc",
+      "raw_preimage_hex": "807930008b4424048b10568d712c6a00568b712474078b52746a01eb058b52706a006a00568b7118568b71208b491c565150ffd25ec20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "diagnostic_record_string_destroy",
+      "address": "00b3f4c0",
+      "end_exclusive": "00b3f4de",
+      "length": 30,
+      "disk_offset": 7599296,
+      "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+      "raw_preimage_hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "native_string_destroy",
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "disk_offset": 122144,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "raw_preimage_hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "intrusive_virtual0_dispatch",
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "disk_offset": 8204512,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "raw_preimage_hex": "85c974098b018b50046a01ffd2c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "intrusive_base_destroy",
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "disk_offset": 8204528,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "raw_preimage_hex": "c70130b1ce00c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_eh_base_thunk",
+      "address": "00b3d4f0",
+      "end_exclusive": "00b3d4f5",
+      "length": 5,
+      "disk_offset": 7591152,
+      "sha256": "1b0ae27346073fbdcff345440cdb9b0b3b05aab2c3bc5a05f574198714f46849",
+      "raw_preimage_hex": "e9fb5b0900",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_ctor_eh_leaves_handler",
+      "address": "00cbeef0",
+      "end_exclusive": "00cbef1d",
+      "length": 45,
+      "disk_offset": 9170672,
+      "sha256": "ad18c5ce2315f8f1b8a120e04d79e2aeb8e278cb019cb5a0f215ffdfffeec3f8",
+      "raw_preimage_hex": "8b4ddce9f8e5e7ff8b4ddc83c110e91dee75ff8d4de0e915ee75ff8d4de8e9ad05e8ffb8bc77df00e9267cf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_dtor_eh_leaves_handler",
+      "address": "00cbeed0",
+      "end_exclusive": "00cbeeed",
+      "length": 29,
+      "disk_offset": 9170640,
+      "sha256": "4f84a30706bb3022ed2262fd76e572c41d88682fe4a5f828115fda79eefdf806",
+      "raw_preimage_hex": "8b4df0e918e6e7ff8b4df083c110e93dee75ffb87877df00e9567cf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_ctor_unwind_map_funcinfo",
+      "address": "00df779c",
+      "end_exclusive": "00df77e0",
+      "length": 68,
+      "disk_offset": 10450844,
+      "sha256": "c7db8c1063e9fbd4f4c6d9940e28f95874bfe60bb26888bfe7c7f5e0c31c15a9",
+      "raw_preimage_hex": "fffffffff0eecb0000000000f8eecb000100000003efcb00020000000befcb0022059319040000009c77df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_dtor_unwind_map_funcinfo",
+      "address": "00df7768",
+      "end_exclusive": "00df779c",
+      "length": 52,
+      "disk_offset": 10450792,
+      "sha256": "dd15d6d69b351aabba1a99b103afd0dc73a8eb616c6544d15c2d9aea1678af58",
+      "raw_preimage_hex": "ffffffffd0eecb0000000000d8eecb0022059319020000006877df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_profile_17_entries",
+      "address": "00d619a0",
+      "end_exclusive": "00d619e4",
+      "length": 68,
+      "disk_offset": 9836960,
+      "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+      "raw_preimage_hex": "e030bd00b0f5b300f0fabe005022a800f0ccb30080ccb30000cdb30010cdb30020cdb30030cdb30000d5b30040cdb30060cdb30000ddb30070cdb30010d5b30050d5b300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "intrusive_base_profile_prefix",
+      "address": "00ceb130",
+      "end_exclusive": "00ceb140",
+      "length": 16,
+      "disk_offset": 9351472,
+      "sha256": "cae284b88ca3be06bd9c1354779febaf27236bc4b27869f04207f660c610ba0a",
+      "raw_preimage_hex": "e030bd00409f4f0080a34f0000a34f00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_scalar_initial_value",
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "disk_offset": 9937484,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "raw_preimage_hex": "0000803f",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_diagnostic_literal",
+      "address": "00ce5490",
+      "end_exclusive": "00ce5498",
+      "length": 8,
+      "disk_offset": 9327760,
+      "sha256": "2bd2101ce45476b03b3efbe0e5b6a71519be19bb285483741f373ad83bfd7423",
+      "raw_preimage_hex": "5375726661636500",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_name_getter",
+      "address": "00b3ccf0",
+      "end_exclusive": "00b3ccf4",
+      "length": 4,
+      "disk_offset": 7589104,
+      "sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+      "raw_preimage_hex": "8d4110c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_format_getter",
+      "address": "00b3cd00",
+      "end_exclusive": "00b3cd04",
+      "length": 4,
+      "disk_offset": 7589120,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "raw_preimage_hex": "8b4118c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_width_getter",
+      "address": "00b3cd10",
+      "end_exclusive": "00b3cd14",
+      "length": 4,
+      "disk_offset": 7589136,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "raw_preimage_hex": "8b411cc3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_height_getter",
+      "address": "00b3cd20",
+      "end_exclusive": "00b3cd24",
+      "length": 4,
+      "disk_offset": 7589152,
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "raw_preimage_hex": "8b4120c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_multisample_getter",
+      "address": "00b3cd30",
+      "end_exclusive": "00b3cd34",
+      "length": 4,
+      "disk_offset": 7589168,
+      "sha256": "e27121b8816e0aef2ed29676899d26e79f66af7e5ee5aed902be7208122bb635",
+      "raw_preimage_hex": "8b4124c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_virtual_false_low_byte",
+      "address": "00b3d500",
+      "end_exclusive": "00b3d503",
+      "length": 3,
+      "disk_offset": 7591168,
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "raw_preimage_hex": "32c0c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_lock_rect",
+      "address": "00b3cd40",
+      "end_exclusive": "00b3cd5f",
+      "length": 31,
+      "disk_offset": 7589184,
+      "sha256": "f53aee426e15589740a1fcf0b67a76a3e52a0f850a807897848a717a846eb9f4",
+      "raw_preimage_hex": "8b54240c8b412c8b08528b54240c528b54240c52508b4134ffd0b001c20c00",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_unlock_rect",
+      "address": "00b3cd60",
+      "end_exclusive": "00b3cd6c",
+      "length": 12,
+      "disk_offset": 7589216,
+      "sha256": "e4fce605ee106f865c3affe80078790cec0079fee12d5a0581737bdf7bc4408d",
+      "raw_preimage_hex": "8b412c8b088b513850ffd2c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_save_to_file",
+      "address": "00b3dd00",
+      "end_exclusive": "00b3dd26",
+      "length": 38,
+      "disk_offset": 7593216,
+      "sha256": "0843f1136a0998a2549b4d071dece4c39c8a2833dce9816c2f7c0901a6bc4fa3",
+      "raw_preimage_hex": "8b4424048b400485c07505b8e0db08018b492c8b5424086a006a00515250e8d5020f00c20800",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_shared_return_leaf",
+      "address": "00befaf0",
+      "end_exclusive": "00befaf1",
+      "length": 1,
+      "disk_offset": 8321776,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "raw_preimage_hex": "c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_shared_zero_word_leaf",
+      "address": "00a82250",
+      "end_exclusive": "00a82253",
+      "length": 3,
+      "disk_offset": 6824528,
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "raw_preimage_hex": "33c0c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_getter",
+      "address": "00b3e730",
+      "end_exclusive": "00b3e7ed",
+      "length": 189,
+      "disk_offset": 7595824,
+      "sha256": "7b9c8865a04b8c98121a241786a0d3703768772cb806f8f557b00270e77c81d9",
+      "raw_preimage_hex": "64a1000000006aff68b3edcb005064892500000000a1dcfe080183ec0c85c00f858900000056e8f56b8dff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833ddcfe080100753f6a08e88a800b0083c4048944240485c0c64424180174098bc8e8a8350200eb0233c0c644241800a3dcfe0801e8956b8dff8b0ddcfe0801518bc8e86724090085f6740b834618ff56ff151022ce00a1dcfe08015e8b4c240c64890d0000000083c418c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_constructor",
+      "address": "00b61d50",
+      "end_exclusive": "00b61d59",
+      "length": 9,
+      "disk_offset": 7740752,
+      "sha256": "6c0ec936e146005bb724c1e96a0a3844a76634ccfea694f9567a58828f37f039",
+      "raw_preimage_hex": "8bc1c700642bd600c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_scalar_delete_complete",
+      "address": "00b61d60",
+      "end_exclusive": "00b61d89",
+      "length": 41,
+      "disk_offset": 7740768,
+      "sha256": "2ef739c60e79ada0fd96d7f40a8491598626c692a9bfa6f325257b17d3c76854",
+      "raw_preimage_hex": "f644240401568bf1c705dcfe080100000000c7061838ce00740956e82c48090083c4048bc65ec20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_eh_leaves_handler",
+      "address": "00cbeda0",
+      "end_exclusive": "00cbedbd",
+      "length": 29,
+      "disk_offset": 9170336,
+      "sha256": "8b65adfdec54a926a59eedd1e6753bc1eae572e2786b145175599e8de47d808a",
+      "raw_preimage_hex": "8d4dece9383175ff8b45e850e8fb77f3ff59c3b8d075df00e9867df3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_unwind_map_funcinfo",
+      "address": "00df75c0",
+      "end_exclusive": "00df75f4",
+      "length": 52,
+      "disk_offset": 10450368,
+      "sha256": "093d96cb1dc9ecb83d5080631b7775c14201c66e904be8676dfb221c9937d906",
+      "raw_preimage_hex": "ffffffffa0edcb0000000000a8edcb002205931902000000c075df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_profile",
+      "address": "00d62b64",
+      "end_exclusive": "00d62b68",
+      "length": 4,
+      "disk_offset": 9841508,
+      "sha256": "6efc1f922772919e4b34bf722e638f563f25ef4b3b22161306f0a16d467a762c",
+      "raw_preimage_hex": "601db600",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "singleton_base_profile",
+      "address": "00ce3818",
+      "end_exclusive": "00ce381c",
+      "length": 4,
+      "disk_offset": 9320472,
+      "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "raw_preimage_hex": "40244100",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "captured_section_guard_cleanup",
+      "address": "00411ee0",
+      "end_exclusive": "00411ef9",
+      "length": 25,
+      "disk_offset": 73440,
+      "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+      "raw_preimage_hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "captured_section_guard_profile",
+      "address": "00ce37fc",
+      "end_exclusive": "00ce3800",
+      "length": 4,
+      "disk_offset": 9320444,
+      "sha256": "8b12438c84805d12f163f8d7b8976a71222f4b4cc6a4be870696607611839f82",
+      "raw_preimage_hex": "001f4100",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "resource_support_canonical_pointer",
+      "address": "0108fedc",
+      "end_exclusive": "0108fee0",
+      "length": 4,
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_tracking_counter",
+      "address": "0108dafc",
+      "end_exclusive": "0108db00",
+      "length": 4,
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_canonical_pointer",
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "disk_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "raw_preimage_hex": "00000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_remove_surface_adapter",
+      "address": "00b27d60",
+      "end_exclusive": "00b27d73",
+      "length": 19,
+      "disk_offset": 7503200,
+      "sha256": "9077346ff1ae7fd162137608cb8fd9977361825dde7a9820c82cbf299c88f692",
+      "raw_preimage_hex": "8d4424045081c10c1b0000e8c0d8ffffc20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_surface_array_remove_first",
+      "address": "00b25630",
+      "end_exclusive": "00b25697",
+      "length": 103,
+      "disk_offset": 7493168,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "raw_preimage_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_retained_surface_accessor",
+      "address": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "disk_offset": 7601536,
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d",
+      "raw_preimage_hex": "6aff68a8efcb0064a100000000506489250000000051538b5c2418558b2d1c22ce00568bf18b4e4433c085c9577e278b7e408bd7391a740c83c00183c2083bc17cf2eb128b7cc7048d470450ffd585ff0f859b0000008b46108b088d5424245253508b4148ffd0b900db0801e84fefffff8944241033ff3bc7897c241c741e8b561c8bcac1e90881e101ffffff51528b54242c528bc8e815f8ffff8bf88b4424248b088b510850c7442420ffffffffffd2f6461c01753a8d470450ffd58b464883c640394604751403c083f8017f05b801000000508bcee854dbffff8b4e048b168d04ca85c074058918897804834604018b4c24148bc75f5e5d5b64890d0000000083c410c20800",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texturecube_surface_accessor",
+      "address": "00b3fe90",
+      "end_exclusive": "00b3ff25",
+      "length": 149,
+      "disk_offset": 7601808,
+      "sha256": "3a575cf7bcba918ef0ba5e268c97567be8f46dbad78c31000d8a9c372d17a50e",
+      "raw_preimage_hex": "6aff68c8efcb0064a100000000506489250000000051568d542404528b54241c528b5424248bf18b4610c744240c000000008b0852508b4148ffd0b900db0801e86beeffff8944241885c0c74424100000000074168b4e1c8b5424046a0051528bc8e839f7ffff8bf0eb0233f68b4424048b088b510850c7442414ffffffffffd28b4c24088bc65e64890d0000000083c410c20800",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_release_for_reset",
+      "address": "00b3dd30",
+      "end_exclusive": "00b3dd86",
+      "length": 86,
+      "disk_offset": 7593264,
+      "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2",
+      "raw_preimage_hex": "56578bf133ff397e447e1beb038d49008b46408b4cf8048b118b423cffd083c7013b7e447cea8b7e1085ff74108b0f8b510457ffd28b078b480857ffd18b461085c0740f8b10508b4208ffd0c74610000000005f5ec3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_restore_cached_surfaces",
+      "address": "00b3dd90",
+      "end_exclusive": "00b3defa",
+      "length": 362,
+      "disk_offset": 7593360,
+      "sha256": "725508b5f5d5ffcae47674b0daca2805c95bb1ff3d60603448483708ddedb81b",
+      "raw_preimage_hex": "51568bf18b561c8bc283e00f33c983f803577720ff2485fcdeb30033ffeb19bf01000000eb12bf02000000eb0bbf03000000eb048b7c2410f6c2107405b9010000008bc225000f00003d000300007722741b3d00010000740f3d00020000752e81c900400000eb2683c902eb2183c940eb1c3d00040000740f3d00050000750e81c980000000eb0681c9000100008bc22500f000003d00100000750681c90002000081e2000000ff81fa00000001750681c9000400008b4424108b10538b525c6a008d5c241853578b7e1857518b4e14518b4e2c518b4e285150ffd28b7e108b4424143bf85b742385c0894610740c8b088b510450ffd28b44241085ff740c8b078b480857ffd18b44241085c074108b10508b4208ffd0c74424100000000033ff397e447e3e8b46108b088d542408528b56408b14fa52508b4148ffd08b4e408b4cf9048b118b4424088b521450ffd28b4424088b088b510850ffd283c7013b7e447cc25f5e59c20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_restore_pool_jump_table",
+      "address": "00b3defc",
+      "end_exclusive": "00b3df0c",
+      "length": 16,
+      "disk_offset": 7593724,
+      "sha256": "bf6e27ad79143889b5709e8c6b17e04821abde4c73b5c53fb8468ecb6c9da448",
+      "raw_preimage_hex": "abddb300afddb300b6ddb300bdddb300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_full_destructor",
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "disk_offset": 7598816,
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "raw_preimage_hex": "6aff68a3eecb0064a1000000005064892500000000515355568bf15789742410c7064819d6008b7e4c33ed3bfdc744241c0100000074198d470450ff152022ce0085c075088b178b028bcfffd0896e4c8b1d94d3f8008b3b8bce83c76ce8fe4affff8b17508bcbffd28b0d94d3f80056e8eb89feff8b7e103bfd74108b078b480457ffd18b178b420857ffd0e8bff3ffff8b46103bc5740b8b088b510850ffd2896e10396e447e3beb068d9b000000008b46408b7ce80485ff8d5ce804741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c5013b6e447ccdf6461c107407832df8da0801018d7e406a008bcfc644242000e83fe6ffff8b3f57e8a0750b0083c4048bcec744241cffffffffe8554bffff8b4c24145f5e5d5b64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_registered_rt_factory",
+      "address": "00b2a7c0",
+      "end_exclusive": "00b2a99d",
+      "length": 477,
+      "disk_offset": 7514048,
+      "sha256": "ed784367a70022c4c7fe9596e56daa5844616f06ec51bb96cd5b1a92c8ae436c",
+      "raw_preimage_hex": "6aff64a10000000068d0d3cb00506489250000000083ec14803ddcd6080100535556578bf1740d89742418e8e0920000884424148b6c243c8b86101a00008b5c243433c9518d7c2414578b7c2448515157894c24248b108b527055894c24448b4c2450515350ffd2837c241000753a85c074363d7c017688742f3d0e00078074288bcee828eeffff8b86101a00008b086a008d542414528b5424406a006a0057555253508b4170ffd0b934000000e82d4a01008944244085c0c644242c0174148b4c24106a006a10518bc8e8a04d01008bf8eb0233ff8b86141b000081c60c1b0000394604c644242c00751403c083f8017f05b801000000508bcee8907fffff8b56048b068d049085c0740289388b442410834604018b088b510850ffd28bcde82b69ffff85c0750b0f57c0f30f11442440eb19c1e80385c089442440db4424407d06d8057839ce00d95c24400faf5c243885db895c2438db4424387d06d8057839ce00a1c0d40801d84c244085c0db05c0d408017d06dc05a07dd500d97c2438c744242cffffffff0fb7442438dec10d000c0000803ddcd608010089442440d96c2440df7c241c8b4c241c890dc0d40801d96c2438740e8b5424148b4c241852e87a9100008b4c24248bc75f5e5d5b64890d0000000083c420c21000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_offscreen_factory",
+      "address": "00b215d0",
+      "end_exclusive": "00b2168f",
+      "length": 191,
+      "disk_offset": 7476688,
+      "sha256": "d4af12ac189e747b2164d97fe01349e12850d034d2e7e5680c57399386619519",
+      "raw_preimage_hex": "6aff6838cdcb0064a1000000005064892500000000518b81101a00006a008d542404528b5424246a02528b542428528b542428c7442414000000008b0852508b8190000000ffd085c00f94c084c0745c56b934000000e875dc01008944242085c0c74424100000000074178b4c24248b5424046a0051528bc8e8e2df01008bf0eb0233f68b4424048b088b510850c7442414ffffffffffd28bc65e8b4c240464890d0000000083c410c210008b4c240433c064890d0000000083c410c21000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_default_capture",
+      "address": "00b238d0",
+      "end_exclusive": "00b23b02",
+      "length": 562,
+      "disk_offset": 7485648,
+      "sha256": "837027c1f54987ea218ea59e550dfeb48b2d410074c9a36d1c5749a30a75b990",
+      "raw_preimage_hex": "64a1000000006aff6800cfcb00506489250000000083ec2c538bd9568bb3101a000085f674108b068b480456ffd18b168b420856ffd08b83101a00008d54240852c744240c000000008b086a00508b8198000000ffd08b44240885c08bf074148b088b510450ffd28b068b480856ffd18b4424088b108b52308d4c24145150ffd2b934000000e845b901008944241085c0c744243c0000000074148b4c24086a006a00518bc8e8b5bc01008bf0eb0233f6578bbb7c1900003bfec7442440ffffffff742e85f689b37c190000740a8d560452ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd08d4e0451ff152022ce0085c075088b168b028bceffd08b44240c85c08bf074148b088b510450ffd28b068b480856ffd18b44240c8b10508b4208ffd08bb3101a000085f674108b0e8b510456ffd28b068b480856ffd18b83101a00008d4c2410c7442410000000008b108b92a00000005150ffd2b934000000e860b801008944241485c0c74424400100000074148b4c24106a006a00518bc8e8d0bb01008bf0eb0233f68bbb8c1900003bfec7442440ffffffff742e85f689b38c190000740a8d560452ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd08d4e0451ff152022ce0085c05f75088b168b028bceffd08b44240c8b088b510850ffd28b44240c85c08bf074108b088b510450ffd28b068b480856ffd18b938c190000528bcbe89fdbffff8b4c24345e5b64890d0000000083c438c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_reset_release",
+      "address": "00b262c0",
+      "end_exclusive": "00b26494",
+      "length": 468,
+      "disk_offset": 7496384,
+      "sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+      "raw_preimage_hex": "64a1000000006aff6828d1cb00506489250000000083ec08803ddcd6080100568bf1740d89742408e8e3d700008844240480be8b1d000000c744241400000000751f803ddcd6080100c7442414ffffffff0f846d0100008b44240450e95a01000057c6868b1d00000033ffeb038d49008b168b82300100006a00578bceffd083c70183ff147ce9bf040000008d6424008b168b82340100006a006a008bceffd083ef0175eb8b168b823801000057578bceffd08b8e8c19000085c974078b118b423cffd0558dbe7c190000bd040000008b0f85c974078b118b423cffd083c70483ed0175eb33ff39bea41900005d7e1b8b8ea01900008b0cb98b118b4218ffd083c7013bbea41900007ce58bbe001b00008b8e041b00008bd78d048a3bf8741f8b0f8b118b4220ffd08b8e041b00008b96001b000083c7048d048a3bf875e18bbe0c1b00008b8e101b00008bd78d048a3bf8741f8b0f8b118b423cffd08b8e101b00008b960c1b000083c7048d048a3bf875e18b8e7c1a00008b86781a00006bc92c03c83bc15f74148b967c1a00006bd22c8bc803ca83c02c3bc175f98d4e34e85bddffff803ddcd6080100c7442414ffffffff740e8b542404528b4c240ce87cd600008b4c240c5e64890d0000000083c414c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_reset_restore",
+      "address": "00b23b10",
+      "end_exclusive": "00b23c4f",
+      "length": 319,
+      "disk_offset": 7486224,
+      "sha256": "f04f69fd95e3410bd547a18f49ce949021b9f911cf2388dfd1c4e5cffb81926e",
+      "raw_preimage_hex": "51568bf180be8b1d0000000f852b01000080be8a1d0000000f851e0100008b86101a0000578d54240852c6868b1d000001c744240c000000008b086a00508b8198000000ffd08b8e7c1900008b118b4424088b521450ffd28b4424088b088b510850ffd28b86101a00008d542408c7442408000000008b0852508b81a0000000ffd08b8e8c1900008b118b4424088b521450ffd28b4424088b088b510850ffd28bbe001b00008b86041b00008bcf8d14813bfa74268b0f8b018b96101a00008b402452ffd08b8e041b00008b96001b000083c7048d048a3bf875da8bbe0c1b00008b8e101b00008bd78d048a3bf874268b0f8b118b86101a00008b524050ffd28b86101b00008b8e0c1b000083c7048d14813bfa75da33ff39bea41900007e1b8b86a01900008b0cb88b118b421cffd083c7013bbea41900007ce55f5e59c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_assign_color",
+      "address": "00b1fab0",
+      "end_exclusive": "00b1faf1",
+      "length": 65,
+      "disk_offset": 7469744,
+      "sha256": "2cafc7914b74198e7829503188d196549ffd1630462a850f2353eebff15be5af",
+      "raw_preimage_hex": "8b5424048b442408568b7491083bf0742c85c089449108740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20800",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "group_assign_depth",
+      "address": "00b1fb00",
+      "end_exclusive": "00b1fb3b",
+      "length": 59,
+      "disk_offset": 7469824,
+      "sha256": "c79728eed9b19cff226a057760ae14063e4d2ff4c1be835b693e2ef12e8c9de3",
+      "raw_preimage_hex": "8b442404568b71183bf0742b85c0894118740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_accessor_eh_leaves_handler",
+      "address": "00cbefa0",
+      "end_exclusive": "00cbefb2",
+      "length": 18,
+      "disk_offset": 9170848,
+      "sha256": "a29536078f63ba79ed7c32c3bb0ec4647fac18efa6ea3065de292ae9b6c10d0f",
+      "raw_preimage_hex": "8b4df0e918ede7ffb89478df00e9917bf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texturecube_accessor_eh_leaves_handler",
+      "address": "00cbefc0",
+      "end_exclusive": "00cbefd2",
+      "length": 18,
+      "disk_offset": 9170880,
+      "sha256": "17ac05c20fa8f21053fe89303c1394586a83af645f15eb5387fdbe131f9e1415",
+      "raw_preimage_hex": "8b4d04e9f8ece7ffb8c078df00e9717bf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texture2d_accessor_unwind_map_funcinfo",
+      "address": "00df788c",
+      "end_exclusive": "00df78b8",
+      "length": 44,
+      "disk_offset": 10451084,
+      "sha256": "90b7856e2be94ca0c87f61e754f06a522a81ff908342dcbb76fa9c53cc194ed8",
+      "raw_preimage_hex": "ffffffffa0efcb0022059319010000008c78df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "texturecube_accessor_unwind_map_funcinfo",
+      "address": "00df78b8",
+      "end_exclusive": "00df78e4",
+      "length": 44,
+      "disk_offset": 10451128,
+      "sha256": "1e45cd361a94dcd6ff234c9b20d49cc05b4c6312362f4978b6e1274db3856a90",
+      "raw_preimage_hex": "ffffffffc0efcb002205931901000000b878df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_rt_factory_eh_leaves_handler",
+      "address": "00cbd3c0",
+      "end_exclusive": "00cbd3da",
+      "length": 26,
+      "disk_offset": 9163712,
+      "sha256": "8784c38e90cd13109661bad374d52fae4fbae699ec6287d8cc570f3d35dc09f4",
+      "raw_preimage_hex": "8d4de4e9483de6ff8b4d10e9f008e8ffb8f85bdf00e96997f3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_rt_factory_unwind_map_funcinfo",
+      "address": "00df5be8",
+      "end_exclusive": "00df5c1c",
+      "length": 52,
+      "disk_offset": 10443752,
+      "sha256": "ae78ede7e01e956b9b3f16a741c017d387c23cebb479e9e4a8aad29e8d437fda",
+      "raw_preimage_hex": "ffffffffc0d3cb0000000000c8d3cb002205931902000000e85bdf00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_offscreen_eh_leaves_handler",
+      "address": "00cbcd30",
+      "end_exclusive": "00cbcd42",
+      "length": 18,
+      "disk_offset": 9162032,
+      "sha256": "1ce5a05d5c817eecf067fc477d95bc56474ae7a56a38cc895465818d687b6abc",
+      "raw_preimage_hex": "8b4d0ce9880fe8ffb89852df00e9019ef3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_offscreen_unwind_map_funcinfo",
+      "address": "00df5290",
+      "end_exclusive": "00df52bc",
+      "length": 44,
+      "disk_offset": 10441360,
+      "sha256": "959b6c67b7388dc5c6bb708951860b9b9071d75b26cbd7943be080f5e8c8b604",
+      "raw_preimage_hex": "ffffffff30cdcb0022059319010000009052df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_defaults_eh_leaves_handler",
+      "address": "00cbcef0",
+      "end_exclusive": "00cbcf0a",
+      "length": 26,
+      "disk_offset": 9162480,
+      "sha256": "f3a83fbe229b19d3a5adb41f0a376d02cda4509d4e829a2469ed472d79ff9040",
+      "raw_preimage_hex": "8b4dd0e9c80de8ff8b4dd0e9c00de8ffb80855df00e9399cf3ff",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "renderer_defaults_unwind_map_funcinfo",
+      "address": "00df54f8",
+      "end_exclusive": "00df552c",
+      "length": 52,
+      "disk_offset": 10441976,
+      "sha256": "4252c3722863127adeafa0d4353c3686f4b3f4e7eaa2ab51ba0af69287e38276",
+      "raw_preimage_hex": "fffffffff0cecb00fffffffff8cecb002205931902000000f854df00000000000000000000000000000000000000000001000000",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_target_create_textures_and_surfaces",
+      "address": "00a8ff30",
+      "end_exclusive": "00a8ffe3",
+      "length": 179,
+      "disk_offset": 6881072,
+      "sha256": "4ce882f7f22d09a63a278f61b8c0c36719b5510fed97a059c2fdbc7da0468764",
+      "raw_preimage_hex": "568bf1807e20000f85a20000008a44240884c0558b6e08578b7e0488460c7507bf080000008befc6460d008b0d94d3f8008b018b9004010000ffd28178280002000072658b462485c0745e8b0d94d3f8008b116a10508b82880000006a015557ffd08946108b106a008bc88b42306a00ffd08946148b46288b0d94d3f8008b118b92880000006800010000506a015557ffd28946188b106a008bc88b42306a00ffd089461cc6460d015fc64620015d5ec20400",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_target_destroy",
+      "address": "00a8fff0",
+      "end_exclusive": "00a900b4",
+      "length": 196,
+      "disk_offset": 6881264,
+      "sha256": "ef96f8492b1b37f9b3c035261dfa83b55af0e35ca72902108653fce129054b56",
+      "raw_preimage_hex": "6aff68c865cb0064a1000000005064892500000000515355568bf15789742410c706e8b5d5008b7e148b2d2022ce0033db3bfb895c241c74158d470450ffd585c075088b178b028bcfffd0895e148b7e103bfb74158d4f0451ffd585c075088b178b028bcfffd0895e108b7e1c3bfb74158d4f0451ffd585c075088b178b028bcfffd0895e1c8b7e183bfb74158d4f0451ffd585c075088b178b028bcfffd0895e188bcec744241cffffffffe82fa9ffff8b4c24145f5e5d5b64890d0000000083c410c3",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_target_profile_prefix",
+      "address": "00d5b5e8",
+      "end_exclusive": "00d5b5ec",
+      "length": 4,
+      "disk_offset": 9811432,
+      "sha256": "41afd9aa083d6bf61bd2999e9f860b265723a19cbccd9eafd2446a67d9fa5917",
+      "raw_preimage_hex": "c000a900",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "shadow_texture2d_profile_prefix",
+      "address": "00d61948",
+      "end_exclusive": "00d61950",
+      "length": 8,
+      "disk_offset": 9836872,
+      "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+      "raw_preimage_hex": "e030bd0090f5b300",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "label": "surface_pool_register_return_adapter",
+      "address": "00b3dcc0",
+      "end_exclusive": "00b3dccc",
+      "length": 12,
+      "disk_offset": 7593152,
+      "sha256": "067d0d53497f03c8ac81b7821de785f2be1c0cd477d718092b4ab77c19b2c113",
+      "raw_preimage_hex": "51b900db0801e895fbffffc3",
+      "live_ghidra_matches_installed_pe": true
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/d3d9_resources.hpp",
+      "sha256": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176",
+      "normalized_lf_sha256": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176"
+    },
+    {
+      "path": "src/d3d9_resources.cpp",
+      "sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+      "normalized_lf_sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a"
+    },
+    {
+      "path": "include/bsp/d3d9_reset_texture.hpp",
+      "sha256": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d",
+      "normalized_lf_sha256": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d"
+    },
+    {
+      "path": "src/d3d9_reset_texture.cpp",
+      "sha256": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611",
+      "normalized_lf_sha256": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "sha256": "2d1c59399dbf9caddd3839b1166b0b8e05524952b3652610135553d23fe6e92d",
+      "normalized_lf_sha256": "2d1c59399dbf9caddd3839b1166b0b8e05524952b3652610135553d23fe6e92d"
+    },
+    {
+      "path": "include/bsp/native_shadow_texture_access.hpp",
+      "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+      "normalized_lf_sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079",
+      "normalized_lf_sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6",
+      "normalized_lf_sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "normalized_lf_sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "normalized_lf_sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "normalized_lf_sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "normalized_lf_sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "docs/SURFACE_RESET_TRAVERSAL.md",
+      "sha256": "e91c7f32d767db782718d6666a3f59c715f9771a74742eab74594f447a26dac8",
+      "normalized_lf_sha256": "e91c7f32d767db782718d6666a3f59c715f9771a74742eab74594f447a26dac8"
+    },
+    {
+      "path": "docs/SURFACE_REGISTRATION_AUDIT.md",
+      "sha256": "a5fe8479afa6ebb8f62304a5a712de8d1e67be4cfa84e000624db8a2983c1bcd",
+      "normalized_lf_sha256": "a5fe8479afa6ebb8f62304a5a712de8d1e67be4cfa84e000624db8a2983c1bcd"
+    }
+  ],
+  "validation": {
+    "live_ghidra_installed_pe_ranges": 72,
+    "all_ranges_match": true,
+    "reused_prior_group_50_span_entries": [
+      "00b3f630",
+      "00b3f4e0",
+      "00b3f5b0",
+      "00bd30e0",
+      "00bd30f0",
+      "00b3e730",
+      "00b61d50",
+      "00b61d60",
+      "00b27d60",
+      "00b25630",
+      "00b3fd80",
+      "00b1fab0",
+      "00b1fb00",
+      "00b3dcc0"
+    ],
+    "source_snapshots": 14,
+    "eh_maps_decoded": 8,
+    "cpp_implemented": false,
+    "build_run": false,
+    "native_fixture_run": false,
+    "game_validated": false,
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "cmake_changes": false
+  },
+  "artifacts": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-surface-owner-discovery-20260910",
+    "files": [
+      {
+        "path": "local/collect_surface_owner_evidence.py",
+        "sha256": "b8ca5e3f6ee30f0aa4806105b92c686a081837fae146f3bde687a2fc224fdab0"
+      },
+      {
+        "path": "local/write_surface_owner_report.py",
+        "sha256": "97f4740117ced860c746b3ade3d0bf65e4ca78b0f6f696e5e0051198808a5b83"
+      },
+      {
+        "path": "local/surface_owner_byte_evidence.json",
+        "sha256": "3710b4b74ce15d06b716a25a6f2141f2c5e3662e2adf644893b6b0a49ebd2a05"
+      },
+      {
+        "path": "local/surface_owner_byte_evidence.log",
+        "sha256": "0ae778d4559943ca36ee567b29a64407609fcf9d72a063699de1b95a4511c897"
+      },
+      {
+        "path": "docs/NATIVE_SURFACE_OWNER_NEXT.md",
+        "sha256": "a684e20b160201d2a5207e9ab1c685b6f0fdec9670976ea8b2ce6dd9afc62055"
+      }
+    ]
+  },
+  "uncertainty": [
+    "Names are hypotheses; resource-support original class purpose and untouched +04 word meaning remain unknown.",
+    "Surface scalar +08/+0C roles are unknown; constructor only proves 3F800000 bit patterns.",
+    "Untraced surface-copy virtual +38 and unrelated renderer/COM features are not silently implemented.",
+    "Native unchecked COM failure/unwind behavior has byte evidence, not runtime test proof.",
+    "Native versus new C++ ABI and gameplay/visual validation are separate boundaries."
+  ]
+}
