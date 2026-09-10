@@ -43,6 +43,7 @@
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
 #include "bsp/vehicle_class.hpp"
+#include "bsp/vehicle_class_fields.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -1469,6 +1470,21 @@ int main() {
             "to its target on both directions");
     }
 
+    {
+        // 009606F7 uses strcmp for "FlyingControll" but the case-insensitive
+        // 00425850 for "BomberPilot", so only the second tolerates a case change.
+        check(bsp::vehicle_class_spec_role_009606bc("BomberPilot")
+                  == bsp::kVehicleClassSpecRoleBomberPilot
+              && bsp::vehicle_class_spec_role_009606bc("bomberpilot")
+                  == bsp::kVehicleClassSpecRoleBomberPilot
+              && bsp::vehicle_class_spec_role_009606bc("flyingcontroll")
+                  == bsp::kVehicleClassSpecRoleDefault
+              && bsp::vehicle_class_spec_role_009606bc(nullptr)
+                  == bsp::kVehicleClassSpecRoleDefault,
+            "SpecRole matches BomberPilot case-insensitively and FlyingControll exactly");
+    }
+
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }
+
