@@ -1,0 +1,529 @@
+{
+  "packet": "mission_state_entry",
+  "owner": "agent/mission-state-entry",
+  "date": "2026-09-10",
+  "kind": "analysis+reconstruction",
+  "doc": "docs/MISSION_STATE_ENTRY.md",
+  "anchor": "004da6c0",
+  "headline": "The 0Ch to 0Dh transition is made one frame after 004dfb70 returns. 004db920 is the state 0Ch frame handler and picks one of two arms on game+1FE4h and session+29Ch: an input-device 'press any button' edge, or a local-player slot-binding wait in view mode 1. Both arms fall into 004da6c0, which zeroes the scaled frame delta, releases the game+30h dynamics list, rearms the five one-shot bytes game+1EE1h..+1EE5h, applies the in-game interface, writes game+5D4h = 0Dh, and clears both cinematic flags plus game+608h so the simulation gate opens. In a networked session it first runs 004d87b0, which can abort the entry.",
+  "abi": {
+    "004db920": {
+      "convention": "__thiscall void(GGame* this)",
+      "ecx": "game object; 004db93a MOV EBP,ECX and the body uses EBP",
+      "stack_args": 0,
+      "ret": "RET 0 at 004dbaac",
+      "body": "004db920-004dbaac",
+      "seh": "scope handler 00c66908, not modelled"
+    },
+    "004da6c0": {
+      "convention": "__fastcall void(GGame*)",
+      "ecx": "game object; 004da6c7 MOV ESI,ECX",
+      "stack_args": 0,
+      "ret": "RET 0 at 004da776",
+      "body": "004da6c0-004da776"
+    },
+    "00447060": {
+      "convention": "__thiscall void(sub)",
+      "ecx": "game+30h, loaded at 004da6d1 and dropped by Ghidra",
+      "stack_args": 0
+    },
+    "00a7a440": {
+      "convention": "__thiscall void(SoundManager*, float)",
+      "ecx": "the sound manager 00f8bbd8",
+      "stack_args": 1,
+      "ret": "RET 4 via the tail jump into 00a7a3f0"
+    },
+    "004d87b0": {
+      "convention": "__fastcall void(GGame*)",
+      "ecx": "game object",
+      "stack_args": 0,
+      "seh": "scope handler 00c664f0"
+    },
+    "004dc6a0": {
+      "convention": "__fastcall void(GGame*)",
+      "stack_args": 0
+    },
+    "004de610": {
+      "convention": "__fastcall void(GGame*)",
+      "stack_args": 0,
+      "body": "004de610-004dfafc"
+    }
+  },
+  "callers": {
+    "004db920": [
+      "004e4a40 BSP_Game_OnMove at 004e5046, guarded by game+5D4h == 0Ch"
+    ],
+    "004da6c0": [
+      "004db920 BSP_Game_UpdateDeviceWaitScreen at 004dba96",
+      "00427190, the shared front-end command dispatcher",
+      "00777850, the multiplayer message pump"
+    ],
+    "004dc6a0": [
+      "004dfb70 at 004dfebb, sole caller"
+    ],
+    "004de610": [
+      "004dfb70 at 004e01de, sole caller"
+    ]
+  },
+  "state_0ch_handler": {
+    "arm_selector": {
+      "site": "004db93c and 004db94c",
+      "expression": "player-count arm iff game+1FE4h != 0 AND [game+1EF0h + 29Ch] == 0",
+      "note": "004db944 LEA EDI,[EBP+1EF0h] makes the literal reading session+29Ch; docs/FRONTEND_MANAGERS.md reads the same byte as game+218Ch. No writer identified."
+    },
+    "input_device_arm": {
+      "range": "004db955-004db9b9",
+      "poll": "00a91020 BSP_InputDeviceTable_AnyDynamicDeviceButtonDown, ECX = [00f8bbf4]",
+      "edge": "rising edge against table+DDh; the new sample is stored back at 004db977 on every pass, so a suppressed edge is consumed",
+      "suppressors": [
+        "menu command screen 00425d10, +25Ch",
+        "GUI root [00f8abe8] + 3E8h"
+      ],
+      "action": "BSP_InputManager_Update(mgr, 0.0f); the FLDZ at 004db9a7 is the argument of 00a92c40, not of the getter 004bec00"
+    },
+    "player_count_arm": {
+      "range": "004db9be-004dba8f",
+      "mode_guard": "local view mode must be exactly 1 (004db9c5)",
+      "slots": "eight pointers from the GLOBAL 00e188a8+18CCh, two unrolled passes of four, stride 4",
+      "counted": "slots whose +9h and +0Eh bytes are both zero (unbound)",
+      "enter_condition": "unbound < 1 OR game+624h != 0 (004dba2f / 004dba34)",
+      "event": "0075b430 tag 0Ch, vtable 00ce74c8 with +4h = 1, dispatched by 0076a9f0(session, &event, 0), then 007848f0 on session+188h or session+18Ch when +188h is null"
+    },
+    "convergence": "both arms reach 004dba94 MOV ECX,EBP / CALL 004da6c0; every wait path jumps to the epilogue at 004dba9b"
+  },
+  "entry_sequence": [
+    {
+      "site": "004da6c9",
+      "call": "004254b0(\"GGame::SceneInit()\", 00ce7ab8)",
+      "note": "__cdecl, one argument, ESP fixed at 004da6d4; trivial body in this build"
+    },
+    {
+      "site": "004da6d7",
+      "write": "game+21F0h = 0.0f",
+      "note": "MOVSS, a float store; Ghidra renders an integer zero"
+    },
+    {
+      "site": "004da6df",
+      "call": "00447060",
+      "note": "ECX = game+30h, dropped by Ghidra"
+    },
+    {
+      "site": "004da6e6-004da70f",
+      "write": "game+1EE1h..+1EE5h",
+      "note": "see one_shots"
+    },
+    {
+      "site": "004da711-004da71e",
+      "write": "MOV word ptr [[game+18CCh + game+18ECh*4]+10h], 1",
+      "note": "16-bit store, single player only"
+    },
+    {
+      "site": "004da724-004da734",
+      "call": "00a7a440",
+      "note": "ECX = [00f8bbd8], float from 00f889a0; both dropped by Ghidra"
+    },
+    {
+      "site": "004da73c",
+      "write": "game+5D4h = 0Dh"
+    },
+    {
+      "site": "004da746",
+      "call": "004c9ca0 BSP_Game_ApplyInGameInterface(game, 0)",
+      "note": "004dfb70 calls the same switch with 1 at 004e1873"
+    },
+    {
+      "site": "004da74b-004da761",
+      "call": "004d87b0",
+      "note": "networked only; re-reads game+5D4h and returns early if it is no longer 0Dh"
+    },
+    {
+      "site": "004da769",
+      "call": "004cd0f0 BSP_Game_SetCinematicMode(game, 0, 0, 1)"
+    },
+    {
+      "site": "004da76e",
+      "write": "byte game+608h = 0"
+    }
+  ],
+  "one_shots": {
+    "+0x1EE1": {
+      "written_here": "0 at 004da6fd",
+      "other_writers": [
+        "004d7970 GGame::EndScene() from its own argument, at 004d79a6"
+      ],
+      "consumers": [
+        "004e45e8 / 004e47b0 / 004e4918, the mission-teardown arm of the drain",
+        "004e5090, the state 11h bookkeeping: 00e198b0 = (byte == 0)",
+        "006866b2 BSP_MainMenu_Init"
+      ],
+      "reading": "clear means the mission ended on its own terms rather than by an abort"
+    },
+    "+0x1EE2": {
+      "written_here": "0 at 004da6ec",
+      "other_writers": [
+        "004d7970 at 004d7a49"
+      ],
+      "consumers": [
+        "004d7970 at 004d799f: while set, the end-of-scene body is skipped"
+      ],
+      "reading": "re-entry latch for GGame::EndScene()"
+    },
+    "+0x1EE3": {
+      "written_here": "game+1FE4h != 0, at 004da6f2 / 004da709",
+      "other_writers": [
+        "0076d030",
+        "00772610"
+      ],
+      "consumers": [
+        "004e45d2 and 004e4717 in the drain: set selects state 8 plus the multiplayer menu, clear selects BSP_Game_EnterFrontEndShell"
+      ],
+      "reading": "a cached 'this session was networked' copy that outlives game+1FE4h"
+    },
+    "+0x1EE4": {
+      "written_here": "0 at 004da6f7",
+      "other_writers": [
+        "0076d0e0",
+        "007727a0",
+        "007728b0",
+        "00772990"
+      ],
+      "consumers": [
+        "004e4932 in the drain: BSP_MultiMenu_PushRequestInterfaceLogged(4)"
+      ],
+      "reading": "the network session dropped or the host left"
+    },
+    "+0x1EE5": {
+      "written_here": "0 at 004da703",
+      "other_writers": [
+        "004d87b0 at 004d88b9 (set)",
+        "0076fad0 and 00772610 (cleared)"
+      ],
+      "consumers": [
+        "00920a20 at 00920aa2 and 00920b31, together with game+2018h"
+      ],
+      "reading": "the not-enough-players warning was raised"
+    }
+  },
+  "game_object_writes": {
+    "+0x21F0": "0.0f at 004da6d7, the scaled simulation delta of docs/GAME_FRAME_CONTROL.md",
+    "+0x1EE1..+0x1EE5": "see one_shots",
+    "[+0x18CC + +0x18EC*4] + 0x10": "1 as a 16-bit store at 004da71e, single player only, over the 0FFFDh 004dfb70 left there",
+    "+0x5D4": "0Dh at 004da73c",
+    "+0x634 / +0x635": "both cleared through 004cd0f0(0,0,1); 004cd0f0 computes +635h = -(+634h != 0) AND allow_simulation",
+    "+0x608": "0 at 004da76e, the byte docs/GAME_SIMULATION_GATE.md reads with game+1FE4h"
+  },
+  "callee_contracts": {
+    "00447060": {
+      "this": "game+30h, the same sub-object 00447b80 advances per frame (docs/GAME_SIMULATION_GATE.md)",
+      "body": "releases each 20h-stride record's handle at +0Ch through 00c34f70 with ECX = [00e188a8]+18h, erases the vector at sub+14h/+18h, then compacts the 8h-stride range at sub+4h/+8h through 00446ef0",
+      "owner": "not identified"
+    },
+    "00a7a440": {
+      "body": "manager+4Ch = the float argument, then tail-jump to 00a7a3f0 with the mask 0FFFFh",
+      "00a7a3f0": "walks the array at manager+8Ch of length manager+90h and sets entry+14h = 1 for every entry whose class index at [[entry+44h]+8h] has its bit in the mask",
+      "other_callers": [
+        "004dfbcc and 004da852 write manager+6Ch first and pass the manager's own current +4Ch back in (a re-apply)",
+        "008d5430 BSP_Settings_ApplyAudio passes settings+20h"
+      ],
+      "argument_here": "the global float 00f889a0, referenced from this one instruction only in the whole image and shipped as 0.0f",
+      "uncertainty": "the meaning of manager+4Ch is not established; a master volume is inconsistent with the zero, a duck or attenuation fits"
+    },
+    "004d87b0": {
+      "guards": "returns unless game+1FE4h != 0, game+5FCh != 0 and game+5D4h == 0Dh",
+      "count_path_a": "004bb770, when [00f8a2fc]+4Dh is clear",
+      "count_path_b": "eight 118h-stride blocks at game+748h, tested with 004b5530, side from +28h",
+      "rule": "effective game mode 7 (004bca50) needs total > 1; every other mode needs both sides non-empty",
+      "first_failure": "00e18b40 = DAT_00f876a4 + [00ce3db0], game+1EE5h = 1, 00e18b44 = 1, return",
+      "later_failure": "ingame.multi_notenoughplayer through 00734e50; in mode 1 past the deadline 004d7970(0), which moves game+5D4h",
+      "session_29c_arm": "counts per side over game+18CCh with [[game+5FCh]+988h] as the length; an empty side runs 00982990 and 00530650 and latches 00e188bd"
+    }
+  },
+  "world_construction": {
+    "note": "both run inside 004dfb70 one frame earlier; read as contracts, not reconstructed. The ledger names are the opposite pairing to the one the packet brief assumed.",
+    "004dc6a0": {
+      "name": "BSP_Game_ConstructGlobalSubsystems",
+      "block": "the whole body runs inside the VFS file block Game_Global",
+      "order": [
+        "00886900, 00800160, 00901610, 006f7b50 (trivial), 00803a40, 006dbeb0",
+        "collectgarbage(\"collect\") through 006b8ad0 only when [game+1A08h]+4h is set",
+        "drain the 8h-stride vector at [00432650]+10h/+14h through 00871ba0(1) and 004d9c00, then [00432650]+2D8h = 0",
+        "five constructions"
+      ],
+      "constructions": [
+        {
+          "field": "game+21D0h",
+          "size": "0x58",
+          "ctor": "004a43c0",
+          "follow_up": "0049d690"
+        },
+        {
+          "field": "game+21E4h",
+          "size": "0x38",
+          "ctor": "00452660",
+          "follow_up": "0044fa30"
+        },
+        {
+          "field": "00f88c30",
+          "size": "0x1c4",
+          "ctor": "008edc60",
+          "follow_up": "008ecec0"
+        },
+        {
+          "field": "game+21E0h",
+          "size": "0x1b0",
+          "ctor": "0098a020",
+          "follow_up": "009870a0"
+        },
+        {
+          "field": "game+21C4h",
+          "size": "0x7c",
+          "ctor": "00445b10",
+          "follow_up": "00444d20"
+        }
+      ],
+      "subsystem_pointers_filled": [
+        "game+21D0h"
+      ]
+    },
+    "004de610": {
+      "name": "BSP_Game_ConstructWorld",
+      "position": "inside the 1_ VFS block, immediately after the first 0046df00 scene pass",
+      "constructions": [
+        {
+          "field": "game+19CCh",
+          "size": "0x4bc",
+          "ctor": "004cb030",
+          "role": "the entity/unit manager the world tick and the render frame walk"
+        },
+        {
+          "field": "game+19ECh",
+          "size": "0x24",
+          "ctor": "00b724e0",
+          "name_literal": "World (00ce7e10)",
+          "role": "the scene root later instantiations target"
+        },
+        {
+          "field": "game+19FCh",
+          "ctor": "00b71a80",
+          "role": "also published to 00e188b0, then BSP_Camera_SetNearPlane; the Operator node docs/GAME_RENDER_FRAME.md sees at 0068a0d0"
+        },
+        {
+          "field": "game+1A00h",
+          "ctor": "00b1f850",
+          "role": "released again by an interlocked refcount decrement in the same block"
+        },
+        {
+          "field": "game+19E8h",
+          "ctor": "00bbdff0(game+19ECh, name)",
+          "name_literal": "sky_001 or [game+5FCh]+C54h",
+          "role": "the ocean owner of docs/GAME_WORLD_OCEAN.md, whose +3Ch is the ocean object"
+        },
+        {
+          "field": "game+19F0h",
+          "ctor": "0078daa0(game+19ECh, ...)"
+        },
+        {
+          "field": "game+21C8h",
+          "size": "0x10",
+          "ctor": "008e2b90"
+        },
+        {
+          "field": "game+21CCh",
+          "size": "0x10",
+          "ctor": "009221e0"
+        },
+        {
+          "field": "game+21D4h",
+          "size": "0x50",
+          "ctor": "006deca0",
+          "role": "the fourth world-tick subsystem"
+        },
+        {
+          "field": "game+21DCh",
+          "size": "0x70",
+          "ctor": "00707480"
+        },
+        {
+          "field": "game+21E8h",
+          "size": "0x58",
+          "ctor": "00735030"
+        },
+        {
+          "field": "00f89b3c",
+          "ctor": "00945820",
+          "role": "cleared to 0 on the failure path"
+        }
+      ],
+      "subsystem_pointers_filled": [
+        "game+19CCh",
+        "game+19E8h",
+        "game+21D4h"
+      ]
+    },
+    "game+21A0h": "created by BSP_Game_OnInit at 004e3e74, by neither routine"
+  },
+  "reconstruction": {
+    "header": "include/bsp/mission_state_entry.hpp",
+    "source": "src/mission_state_entry.cpp",
+    "entries": [
+      "bsp::run_mission_state_entry(MissionStateEntryState&, MissionStateEntryHost&)",
+      "bsp::run_mission_device_wait(const MissionDeviceWaitInputs&, DeviceWaitLatch&, MissionDeviceWaitHost&)"
+    ],
+    "pure_predicates": [
+      "mission_entry_uses_player_count_arm",
+      "device_wait_button_edge",
+      "device_wait_screens_idle",
+      "count_unbound_player_slots",
+      "player_count_arm_may_enter"
+    ],
+    "projection": "arm_mission_one_shots returns the whole MissionOneShots struct",
+    "reused_types": [
+      "GameStateId and kLocalPlayerSlotCount from bsp/game_frame_control.hpp",
+      "kGameStateSceneReady from bsp/mission_scene_load.hpp"
+    ],
+    "build": "scripts/build.ps1, Win32 MSVC Release, warnings as errors: clean",
+    "tests": "ctest reconstructed_math: 1/1 passed; no new test case added",
+    "cmake": "one line appended to cmake/startup.cmake"
+  },
+  "recorded_names": [
+    {
+      "address": "00447060",
+      "name": "BSP_GameDynamicsList_ReleaseAll",
+      "new": true
+    },
+    {
+      "address": "004d87b0",
+      "name": "BSP_Game_CheckMultiplayerPlayerCount",
+      "new": true
+    },
+    {
+      "address": "00a7a440",
+      "name": "BSP_SoundManager_ApplyGlobalLevel",
+      "new": true
+    },
+    {
+      "address": "004da6c0",
+      "name": "BSP_Game_EnterMissionState",
+      "new": false,
+      "note": "evidence appended"
+    },
+    {
+      "address": "004db920",
+      "name": "BSP_Game_UpdateDeviceWaitScreen",
+      "new": false,
+      "note": "evidence appended"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ghidra_artefacts": [
+    "004da6c0: every hidden this is dropped - 00447060 (game+30h), 00a7a440 ([00f8bbd8]) and the float source 00f889a0",
+    "004da6d7 is MOVSS, so game+21F0h takes 0.0f rather than an integer zero; 004da71e is a 16-bit store",
+    "004db920: the FLDZ at 004db9a7 is attributed to the singleton getter 004bec00 instead of to BSP_InputManager_Update 00a92c40",
+    "004db920: LEA EDI,[EBP+1EF0h] is folded into a flat param_1 + 0x218c, hiding the session base",
+    "004de610: allocation sizes are aliased into stack slots (piStack_ac, local_88); the sizes came from the listing",
+    "the _free no-return problem of docs/MISSION_SCENE_LOAD.md did not affect 004da6c0 or 004db920"
+  ],
+  "open_questions": [
+    "game+624h and session+29Ch have no identified writer, so both branch selectors of 004db920 are carried raw",
+    "the meaning of manager+4Ch in 00a7a440, and therefore of the constant 0.0f at 00f889a0; a master volume reading would mute the game at mission entry",
+    "slot+10h: 004dfb70 writes 0FFFDh for every slot and 004da6c0 writes 1 for the game+18ECh slot; no reader was traced",
+    "the owning subsystem of game+30h",
+    "whether the third argument of 004cd0f0 has any effect when hide is zero"
+  ],
+  "corrections_offered": [
+    "The packet brief names 004dc6a0 BSP_Game_ConstructWorld and 004de610 BSP_Game_LoadSceneContents. The ledger has the opposite pairing: 004dc6a0 is BSP_Game_ConstructGlobalSubsystems and 004de610 is BSP_Game_ConstructWorld, and the bodies agree with the ledger.",
+    "docs/MISSION_SCENE_LOAD.md and the earlier 004db920 evidence describe the player-count arm as firing 'when fewer than two are active'. The listing counts slots that are NOT bound (+9h and +0Eh both zero) and waits while that count is at least one, so the condition is 'every slot bound', not a threshold of two.",
+    "The earlier 004db920 evidence reads game+1FE4h zero OR session+29Ch clear as the device arm. That is correct, but it also says the device arm dispatches into 'the scene at game+1EF0h'; game+1EF0h is the embedded network session, which is what 0076a9f0 and 004b6260 both take (docs/GAME_ON_MOVE_MAP.md already records the latter)."
+  ],
+  "external_contracts": [
+    "004dfb70 BSP_Game_LoadMissionScene, 004e4430 BSP_Game_DrainStateRequestQueue and 004e4a40 BSP_Game_OnMove: read only, not claimed",
+    "004c9ca0 BSP_Game_ApplyInGameInterface and 004cd0f0 BSP_Game_SetCinematicMode: existing reviewed names, used as contracts",
+    "004d7970 GGame::EndScene(): read to establish the one-shot semantics, not claimed or named",
+    "0075b430 / 0076a9f0 / 007848f0, the session event path: read as a contract"
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "mission_end_scene",
+      "addresses": [
+        "004d7970",
+        "00920a20",
+        "009205e0",
+        "00916980"
+      ],
+      "files": [
+        "docs/MISSION_END_SCENE.md",
+        "include/bsp/mission_end_scene.hpp",
+        "src/mission_end_scene.cpp"
+      ],
+      "contract": "GGame::EndScene(): the +1EE2h latch, the debrief hand-off, and what +1EE5h with game+2018h selects"
+    },
+    {
+      "packet": "session_teardown_latches",
+      "addresses": [
+        "0076d0e0",
+        "007727a0",
+        "007728b0",
+        "00772990",
+        "00772610"
+      ],
+      "files": [
+        "docs/SESSION_TEARDOWN_LATCHES.md"
+      ],
+      "contract": "the four writers of game+1EE4h and the one clearer of +1EE5h; which disconnect each represents"
+    },
+    {
+      "packet": "game_dynamics_list",
+      "addresses": [
+        "00447060",
+        "00447b80",
+        "00445db0",
+        "00446ef0",
+        "00c34f70"
+      ],
+      "files": [
+        "docs/GAME_DYNAMICS_LIST.md"
+      ],
+      "contract": "the game+30h subsystem: its two ranges, the 20h record, and what the per-frame update integrates"
+    },
+    {
+      "packet": "sound_manager_levels",
+      "addresses": [
+        "00a7a440",
+        "00a7a3f0",
+        "008d5430",
+        "00a7b230"
+      ],
+      "files": [
+        "docs/SOUND_MANAGER_LEVELS.md"
+      ],
+      "contract": "manager+4Ch and +6Ch, the bus array at +8Ch, and the class-bit mask"
+    },
+    {
+      "packet": "mission_participant_table",
+      "addresses": [
+        "004bb770",
+        "004b5530",
+        "004bca50",
+        "00982990"
+      ],
+      "files": [
+        "docs/MISSION_PARTICIPANT_TABLE.md"
+      ],
+      "contract": "the 118h-stride blocks at game+748h and the side field at +28h that 004d87b0 counts"
+    }
+  ],
+  "state_reached": {
+    "004db920": "reconstructed, build-tested",
+    "004da6c0": "reconstructed, build-tested",
+    "00447060": "analysed",
+    "004d87b0": "analysed",
+    "00a7a440": "analysed",
+    "004dc6a0": "analysed (contract only)",
+    "004de610": "analysed (entry, field writes and order only)"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": "none, read-only for this packet"
+  }
+}
