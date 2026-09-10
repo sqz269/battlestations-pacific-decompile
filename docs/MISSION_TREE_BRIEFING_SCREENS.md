@@ -362,3 +362,7 @@ must define one before applying a name. End addresses are inclusive.
 - `mission_tree_lua_reader` — addresses 005CAAF0 005CA300 005C9E30 005C9F70 005C6A70 005C9B60;
   files `docs/MISSION_TREE_TABLE.md`. Contract: the per-entry readers, so the remaining 24h bytes
   of a group and the remaining 12Ch bytes of a side block get names from the Lua keys.
+
+## Corrections from docs/MISSION_TREE_LUA_READER.md
+
+`missionGroups` fills the 34h group vector at screen+14h and `multiMissionInfos` the flat 434h record vector at +24h (settled by destination address). Record +00h is the Lua `id` (the string the selection lookup matches and the launch path saves), +08h the `name`, and the +60h triple is `date` (year, month, day); the difficulty default of 3 is the reader's own default. Side block 0 is `allied`, block 1 `japanese`, and the block's first dword is written 1 before any key is read, so the side selector at `005c572a` is a presence test. The installed table has 5 groups, 143 campaign missions and 34 multiplayer entries; its 188 `prerequisites` lists are commented out (the installed copy is modded), and the commented values are mission ids. The mission-tree interpreter opens only the `table` library (mask 4).
