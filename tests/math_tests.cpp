@@ -11,6 +11,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/input_settings.hpp"
+#include "bsp/loading_screen_elements.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_entities.hpp"
@@ -713,6 +714,19 @@ int main() {
         check(drained.size() == 2 && drained[0] == bsp::GameRenderJob::kCameraUpdate004b4820
                 && drained[1] == bsp::GameRenderJob::kWorldView004bbd00,
             "the frame job pool drains last in first out");
+    }
+
+    {
+        // 0057CAE9 negates a non-positive delta with -0.0f minus the delta
+        // rather than clearing the sign bit, so the loading worker hands
+        // wave_Icon a negative zero whenever two ticks land on the same clock
+        // sample. Replacing this with fabs would look equivalent and silently
+        // change the sign the widget receives.
+        const float repeated = bsp::worker_tick_delta_seconds(1234.0f, 1234.0f);
+        check(repeated == 0.0f && std::signbit(repeated),
+            "an unchanged clock sample yields -0.0f, not +0.0f");
+        check(bsp::worker_tick_delta_seconds(1040.0f, 1000.0f) == 0.04f,
+            "a 40 ms tick is one 25 Hz period in seconds");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
