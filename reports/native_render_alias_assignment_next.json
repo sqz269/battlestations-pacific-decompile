@@ -1,0 +1,816 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_alias_assignment_next",
+  "captured_utc": "2026-09-10T22:45:45.257566+00:00",
+  "base_commit": "c9f8b9d5d33d41c3c46a4a219418fcc94f55df10",
+  "status": "bounded_read_only_discovery_complete_implementation_and_dependency_integration_not_claimed",
+  "owned_addresses": [
+    "004d2660",
+    "004d26a0",
+    "00b30510"
+  ],
+  "owned_files": [
+    "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
+    "reports/native_render_alias_assignment_next.json"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "All live byte queries use bsp.py ghidra CLI project/program verification; no Ghidra writes."
+  },
+  "functions": [
+    {
+      "address": "004d2660",
+      "suggested_name": "BSP_RenderAliasList_Append",
+      "original_abi": "ECX actual destination list; stack actual8-byte source string header pointer; RET4; no semantic return established; normal EAX retains count-helper result",
+      "contract": "Capture sentinel and its previous; allocate/copy unlinked node through4CE6F0; grow count1 through4CE780; captured sentinel.previous=new node then reload new node.previous and store its next=new node. No local EH cleanup for count-growth failure after successful allocation.",
+      "direct_dependencies": [
+        "004ce6f0",
+        "004ce780"
+      ],
+      "readiness": "Ready for bounded implementation after concrete count-growth and exception-construction service integration. Preserve unlinked-node failure behavior.",
+      "status": "complete_body_discovery_only_not_reconstructed",
+      "old_ghidra_annotation": {
+        "address": "004d2660",
+        "function_name": "FUN_004d2660"
+      },
+      "complete_span": {
+        "address": "004d2660",
+        "length": 50,
+        "end_exclusive": "004d2692",
+        "role": "primary single insertion",
+        "disk_offset": 861792,
+        "sha256": "856582d68c3098e61a09e7d1693771f0a01f15174ea9325d55a0cf140ccb8896",
+        "live_ghidra_matches_installed": true
+      },
+      "evidence": [
+        "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
+        "reports/native_render_alias_assignment_next.json"
+      ],
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "004d26a0",
+      "suggested_name": "BSP_RenderAliasList_InsertRange",
+      "original_abi": "ECX actual destination list; stack seven DWORDs: insertion iterator(owner,node), source-current iterator(owner,node), source-end iterator(owner,node), unused DWORD; RET1C; no semantic return established",
+      "contract": "Complete parent body includes4D2746 catch. Inline source owner/node validation, fixed insertion node, allocate/copy then count then two links then source advance. Catch uses saved initial/current source iterators to control repeated previous-position erasure, not an inserted count.",
+      "direct_dependencies": [
+        "00bf6713",
+        "004ce6f0",
+        "004ce780",
+        "004be820",
+        "004becc0",
+        "004d0990",
+        "004b9ff0",
+        "00bf6885"
+      ],
+      "readiness": "Checked iterator/node helpers are concrete. Count-growth and real exception service remain separate. Implement normal inlined captures directly and reuse checked helpers for catch behavior without strengthening rollback.",
+      "status": "complete_body_discovery_only_not_reconstructed",
+      "old_ghidra_annotation": {
+        "address": "004d26a0",
+        "function_name": "FUN_004d26a0"
+      },
+      "complete_span": {
+        "address": "004d26a0",
+        "length": 276,
+        "end_exclusive": "004d27b4",
+        "role": "primary complete range insertion including catch",
+        "disk_offset": 861856,
+        "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+        "live_ghidra_matches_installed": true
+      },
+      "evidence": [
+        "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
+        "reports/native_render_alias_assignment_next.json"
+      ],
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b30510",
+      "suggested_name": "BSP_NativeRenderResourceRecord_Assign",
+      "original_abi": "ECX actual2Ch destination record; stack source record pointer; EAX same destination; RET4",
+      "contract": "Assign actual pooled name prefix unless same record; capture source sentinel/first before destination clear; reload destination current insertion position after clear; range-copy aliases; then six sequential source DWORD stores14..28 including raw resource pointer. Self assignment still reaches six tail stores; no resource retention/release.",
+      "direct_dependencies": [
+        "0041dd40",
+        "00bf7680",
+        "004d05e0",
+        "004d26a0"
+      ],
+      "readiness": "Needs concrete range insertion and live raw-prefix resize/assignment composition. Standalone actual-owner clear is now present in root f46f236. Existing NativeString private fields or whole record destruction cannot substitute these operations.",
+      "status": "complete_body_discovery_only_not_reconstructed",
+      "old_ghidra_annotation": {
+        "address": "00b30510",
+        "function_name": "FUN_00b30510"
+      },
+      "complete_span": {
+        "address": "00b30510",
+        "length": 162,
+        "end_exclusive": "00b305b2",
+        "role": "primary resource-record assignment",
+        "disk_offset": 7537936,
+        "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+        "live_ghidra_matches_installed": true
+      },
+      "evidence": [
+        "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
+        "reports/native_render_alias_assignment_next.json"
+      ],
+      "name_is_hypothesis": true
+    }
+  ],
+  "later_root_integration": {
+    "raw_sbo_storage": "52012c43c92c41f8205785d92261f9f893183782",
+    "actual_alias_clear": "f46f2368f677eb758fd3e632b8ba793bc39e76f8",
+    "source_blobs": [
+      {
+        "commit": "52012c43c92c41f8205785d92261f9f893183782",
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "bytes": 2115,
+        "source": "verified committed root blob, later than discovery base"
+      },
+      {
+        "commit": "f46f2368f677eb758fd3e632b8ba793bc39e76f8",
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "sha256": "07b8a07854f9ebda05b6460704685a6d779c1e897a6b1efb4572ecb59fb266a7",
+        "bytes": 2367,
+        "source": "verified committed root blob, later than discovery base"
+      },
+      {
+        "commit": "f46f2368f677eb758fd3e632b8ba793bc39e76f8",
+        "path": "src/native_render_resource_record.cpp",
+        "sha256": "debbbfa128022b4cc8f50657fdd9e46ed9ea782c615e522bdb734fe52c6bdbb6",
+        "bytes": 3871,
+        "source": "verified committed root blob, later than discovery base"
+      }
+    ],
+    "clear_api": "clear_native_render_resource_aliases_004d05e0(void* actual_list_owner,SizedStoragePool&)",
+    "verified": "Committed API and source inspected. Root-reported direct clear/composed destructor fixture4/6 events was not independently rerun by this discovery."
+  },
+  "parent_catch": {
+    "address": "004d2746",
+    "parent": "004d26a0",
+    "span": {
+      "address": "004d2746",
+      "length": 91,
+      "end_exclusive": "004d27a1",
+      "role": "parent range catch, overlapping evidence not an independent implementation",
+      "disk_offset": 862022,
+      "sha256": "ea34b405f64822989cf1681419277079ec429a0c44f9add692de5984a3da0820",
+      "live_ghidra_matches_installed": true
+    },
+    "old_ghidra_annotation": {
+      "address": "004d2746",
+      "function_name": "Catch_All@004d2746"
+    },
+    "independent_reconstruction_count": 0,
+    "abi": "Parent EBP frame with live locals/stack arguments; not a callable standalone interface"
+  },
+  "storage": {
+    "record": "Existing actual NativeRenderResourceRecord, sizeof2C; name00/04, preserved08, sentinel0C, count10, scalar payload14..24, resource pointer28",
+    "list": "Actual record+8 address; preserved00, sentinel04, count08; no separate wrapper identity",
+    "node": "Existing16-byte NativeRenderResourceAliasNode; next00 previous04 string_length08 string_data0C",
+    "iterator": "Existing8-byte NativeRenderAliasIterator; actual owner00/node04",
+    "string_distinction": "Record/alias strings are8-byte pooled headers. Legacy1C-byte SBO is only the exception-message dependency here."
+  },
+  "range_frame": {
+    "actual_destination_owner": "EBP-14",
+    "saved_initial_source_owner": "EBP-1C",
+    "saved_initial_source_node": "EBP-18",
+    "position_owner": "EBP+08",
+    "position_node": "EBP+0C",
+    "working_source_owner": "EBP+10",
+    "working_source_node": "EBP+14",
+    "end_owner": "EBP+18",
+    "end_node": "EBP+1C",
+    "unused_argument": "EBP+20",
+    "normal_capture_notes": [
+      "Insertion node EBX is fixed across normal iterations; actual destination owner stored separately.",
+      "Source owner/node ESI/EDI captures drive inlined validation; no normal insertion-owner/destination-owner equality check.",
+      "After link, source owner reloads from+10; captured source node EDI survives validation callback, then its current next is loaded and+14 is updated.",
+      "Source-end owner/node arguments are read by each loop comparison; catch later reuses those words as erased-iterator output."
+    ]
+  },
+  "range_eh": {
+    "handler": "00c65eb0",
+    "funcinfo": "00d8eb30",
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map": "00d8eb0c",
+    "unwind": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": 0
+      },
+      {
+        "state": 1,
+        "previous": -1,
+        "action": 0
+      }
+    ],
+    "try_map": "00d8eb1c",
+    "try_record": {
+      "low": 0,
+      "high": 0,
+      "catch_high": 1,
+      "handler_count": 1,
+      "handler_table": "00d8eafc",
+      "flags": "40",
+      "catch": "004d2746"
+    },
+    "normal_state_publication": "004d26d3 writes0 before validation loop",
+    "rollback": [
+      "Compare saved initial versus working source through checked not-equal4BE820; equal rethrows immediately.",
+      "Capture current fixed insertion owner/node and actual destination owner.",
+      "Restore fixed position iterator each iteration, call checked previous4BECC0, then read returned node followed by owner.",
+      "Erase via actual destination4D0990 with input by value and output into old source-end argument words.",
+      "Advance saved initial source iterator4B9FF0 and compare with working source4BE820; repeat while unequal.",
+      "Call CxxThrowException(0,0) to rethrow. No node-specific unwind cleanup map exists."
+    ],
+    "qualification": "Assembly/EH-map reasoning. No new native exception fault-injection fixture in this read-only packet; catch-context behavior is not inferred from state alone."
+  },
+  "failure_cases": [
+    {
+      "case": "single count-growth throw after successful node allocation",
+      "consequence": "No local cleanup; unlinked node/string not released by4D2660."
+    },
+    {
+      "case": "range node allocation/construction throw",
+      "consequence": "Node helper owns its raw-node cleanup; catch handles only earlier source cursor progress."
+    },
+    {
+      "case": "range count-growth throw after node helper succeeds",
+      "consequence": "Current unlinked node lies outside cursor rollback and remains unreleased here; earlier completed progress can be removed."
+    },
+    {
+      "case": "range post-link validation throw before source advance",
+      "consequence": "For stable independent source, linked count exceeds completed cursor advances by1; rollback removes the completed number from the end and leaves earliest inserted node. First iteration removes none."
+    },
+    {
+      "case": "rollback validation or erase throws",
+      "consequence": "Retain partial cleanup; an exception in catch body can supersede original. Do not replace with noexcept destructor rollback."
+    },
+    {
+      "case": "shared-list or handler-mutated source graph",
+      "consequence": "Traversal/rollback can change or use invalidated cursor storage. No native disjointness check or source snapshot authorizes stronger guarantees."
+    }
+  ],
+  "record_assignment_order": [
+    {
+      "sites": "00b3051d..00b30542",
+      "operation": "If addresses differ resize actual pooled name to captured source length,preserve1; then reload source length guard and current destination length/source data/destination data for memcpy."
+    },
+    {
+      "sites": "00b30545..00b3055e",
+      "operation": "Derive actual list addresses, skip list branch on identity; otherwise capture source sentinel and first before destination clear."
+    },
+    {
+      "sites": "00b30563..00b3057d",
+      "operation": "After clear reload destination sentinel.next for insertion position; pass captured source first/end and extra source sentinel word."
+    },
+    {
+      "sites": "00b30582..00b305a3",
+      "operation": "Sequential current-source DWORD stores14,18,1C,20,24,28 including raw resource pointer, even for exact self assignment; no resource ownership operation."
+    }
+  ],
+  "count_growth": {
+    "address": "004ce780",
+    "old_ghidra_annotation": {
+      "address": "004ce780",
+      "function_name": "STL_xlen_throw_004ce780"
+    },
+    "check": "uint32(0x1FFFFFFF-current_count)<increment throws; success stores uint32(current_count+increment); no separate current_count<=max guard",
+    "insertion_increment": 1,
+    "failure_message": {
+      "address": "00ce38f8",
+      "characters": 16,
+      "text": "list<T> too long"
+    },
+    "native_throw_sequence": [
+      "Initialize temporary1C-byte SBO cap15/len0/inline0 without initializing leading prefix.",
+      "Call00408720 with16 message bytes, requiring growth beyond inline capacity.",
+      "Arm temporary cleanup state0 after assignment returns.",
+      "Construct actual28h logic-error owner via411700, including its own SBO message copy.",
+      "Install length-error vtable00D69260; throw throughBF6885 with native ThrowInfo00D83F98."
+    ],
+    "temporary_cleanup": {
+      "funcinfo": "00d8e3d0",
+      "unwind_map": "00d8e3c8",
+      "state": 0,
+      "cleanup": "00c65a80",
+      "callee": "004072d0"
+    },
+    "remaining": "Primary count-growth function and separate exception-owner/copy/throw service completion. This packet supplies no replacement throw ABI."
+  },
+  "dependencies": [
+    {
+      "addresses": [
+        "004ce6f0",
+        "004ce75c",
+        "0044bcb0"
+      ],
+      "status": "concrete_actual_owner_implementation_present",
+      "source": "src/native_render_resource_alias_nodes.cpp",
+      "header": "include/bsp/native_render_resource_alias_nodes.hpp",
+      "binding": "allocate_native_render_alias_node_004ce6f0; construct_native_render_alias_string_0044bcb0; same actual SizedStoragePool",
+      "limit": "Raw node freed on its own construction exception, not on later successful-node insertion failure. Fresh string construction is not live name assignment."
+    },
+    {
+      "addresses": [
+        "004be820",
+        "004becc0",
+        "004b9ff0",
+        "004d0990"
+      ],
+      "status": "concrete_actual_iterator_and_list_implementation_present",
+      "source": "src/native_render_alias_checked_ops.cpp",
+      "header": "include/bsp/native_render_alias_checked_ops.hpp",
+      "binding": "Existing NativeRenderAliasIterator, same callback and pool domains; actual destination list address",
+      "limit": "Returning-handler re-reads are required. Standalone helper captures differ from some normal range-loop inlined checks."
+    },
+    {
+      "addresses": [
+        "004ce780"
+      ],
+      "status": "named_but_incomplete_in_checkout_primary_followup",
+      "old_name": "STL_xlen_throw_004ce780",
+      "implementation_present": false,
+      "binding": "Actual list count+8; unsigned remaining comparison and wrapped success sum; complete native message/owner/throw service on failure",
+      "limit": "A name or generic throw does not close native message allocation, cleanup and exception copy dependencies."
+    },
+    {
+      "addresses": [
+        "00408720",
+        "00408120",
+        "004072d0",
+        "004089e0",
+        "00408b60",
+        "004087f0"
+      ],
+      "status": "concrete_sbo_operation_bodies_present_after_string_packet",
+      "source": "src/native_legacy_sbo_string.cpp",
+      "header": "include/bsp/native_legacy_sbo_string.hpp",
+      "binding": "NativeLegacySboStringStorage for exception messages only",
+      "integration_commit": "52012c43c92c41f8205785d92261f9f893183782",
+      "limit": "Initial base header had convenience defaults, removed by verified root52012c4 to preserve unwritten placement prefixes. Host exception-object ABI remains explicit."
+    },
+    {
+      "addresses": [
+        "00411700",
+        "00411780",
+        "004117c0",
+        "004118d0",
+        "00411940"
+      ],
+      "status": "separate_exception_worker_in_progress_not_claimed_complete",
+      "binding": "Actual28h-byte legacy exception owner construction, destruction, scalar deleting destruction, logic/length copies",
+      "limit": "00411940 has no saved Ghidra function in the captured prototype snapshot. C++ semantic wrappers must not be passed as original CRT exception objects."
+    },
+    {
+      "addresses": [
+        "00bf6885"
+      ],
+      "status": "recognized_native_crt_service_boundary_original_exception_abi_not_replaced",
+      "old_name": "__CxxThrowException@8",
+      "binding": "Actual throw object/ThrowInfo or a fully documented real semantic runtime adapter; (0,0) means rethrow",
+      "limit": "No fake native throw object, no no-op errors, no blanket std::length_error substitution for constructor/copy/cleanup behavior."
+    },
+    {
+      "addresses": [
+        "0041dd40"
+      ],
+      "status": "complete_behavior_present_but_raw_record_prefix_composition_missing",
+      "source": "src/native_string.cpp",
+      "header": "include/bsp/native_string.hpp",
+      "binding": "Live actual record+0/+4 fields and shared pooled storage",
+      "limit": "NativeString fields are private in a distinct C++ object. No temporary owner/header copy or lifetime overlay; fresh constructor is inappropriate for live assignment."
+    },
+    {
+      "addresses": [
+        "004d05e0"
+      ],
+      "status": "concrete_standalone_actual_list_clear_integrated_in_root_after_base",
+      "ledger_status": "typed implementation exists inside particle record destruction",
+      "source": [
+        "src/particle_clock_lifetime.cpp",
+        "src/native_render_resource_record.cpp"
+      ],
+      "primary_api": "clear_native_render_resource_aliases_004d05e0(void* actual_list_owner,SizedStoragePool&)",
+      "integration_commit": "f46f2368f677eb758fd3e632b8ba793bc39e76f8",
+      "integration_status": "committed source inspected in root; discovery base predates standalone entry",
+      "limit": "Keep sentinel, name and payload; record destructor also frees sentinel/name. Full native4D0625..062F continuation reloads current sentinel after free."
+    },
+    {
+      "addresses": [
+        "00bf6713"
+      ],
+      "status": "required_concrete_callback_policy_binding",
+      "binding": "SingletonLifetimeCallbacks.invalid_parameter with existing shared domain",
+      "limit": "May return or throw. Native encoded global/default terminal ABI remains an explicit runtime boundary."
+    },
+    {
+      "addresses": [
+        "00419cc0",
+        "00bd1120",
+        "00bd1510",
+        "00bf681b",
+        "00bf65ac",
+        "00bf7680"
+      ],
+      "status": "existing_concrete_runtime_service_boundaries",
+      "binding": "Shared SizedStoragePool, matching singleton_lifetime allocation/free, actual memcpy",
+      "limit": "Do not create a second pool domain or success-only allocation implementation."
+    }
+  ],
+  "recommended_followups": [
+    {
+      "functions": [
+        "004d2660",
+        "004d26a0"
+      ],
+      "condition": "Concrete4CE780 message/exception service plus integrated existing actual node/checked operations",
+      "scope": "Single/range alias insertion with explicit catch cursor rollback; keep shared header/source ownership explicit."
+    },
+    {
+      "functions": [
+        "00b30510"
+      ],
+      "condition": "Range insertion and live actual-name-prefix composition; reuse root f46f236 actual-list clear",
+      "scope": "Actual2C record assignment; preserve source captures and six scalar stores; no resource reference work."
+    }
+  ],
+  "smallest_independent_name_helper_candidate": {
+    "full_function": "0041dd40",
+    "length": 164,
+    "end_exclusive": "0041dde4",
+    "suggested_api": "resize_native_string_header_0041dd40(void* actual_header, NativeStringStorage&, uint32_t length, bool preserve)",
+    "actual_storage": "Borrow existing real eight-byte length/data fields; same NativeStringStorage/PooledStringStorage service, no constructor or second owner identity.",
+    "consolidation": "Existing NativeString::resize_0041dd40 should delegate to the same borrowed-header body, avoiding duplicated algorithms.",
+    "optional_assignment_fragment": {
+      "start": "00b3051d",
+      "end_exclusive": "00b30545",
+      "length": 40,
+      "api_shape": "actual destination header, actual source header, same storage service",
+      "scope": "Identity guard, native resize, current source-length guard/current-field memcpy; fragment only, not completed fullB30510."
+    },
+    "suggested_owned_files": [
+      "include/bsp/native_string.hpp",
+      "src/native_string.cpp",
+      "one focused doc",
+      "one focused audit"
+    ],
+    "independence": "Does not depend on pending count/throw transport; keep source ownership separate from exception owner."
+  },
+  "code_evidence": [
+    {
+      "address": "004d2660",
+      "length": 50,
+      "end_exclusive": "004d2692",
+      "role": "primary single insertion",
+      "disk_offset": 861792,
+      "sha256": "856582d68c3098e61a09e7d1693771f0a01f15174ea9325d55a0cf140ccb8896",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004d26a0",
+      "length": 276,
+      "end_exclusive": "004d27b4",
+      "role": "primary complete range insertion including catch",
+      "disk_offset": 861856,
+      "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004d2746",
+      "length": 91,
+      "end_exclusive": "004d27a1",
+      "role": "parent range catch, overlapping evidence not an independent implementation",
+      "disk_offset": 862022,
+      "sha256": "ea34b405f64822989cf1681419277079ec429a0c44f9add692de5984a3da0820",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00b30510",
+      "length": 162,
+      "end_exclusive": "00b305b2",
+      "role": "primary resource-record assignment",
+      "disk_offset": 7537936,
+      "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004ce780",
+      "length": 147,
+      "end_exclusive": "004ce813",
+      "role": "named but incomplete count-growth/throw dependency",
+      "disk_offset": 845696,
+      "sha256": "ba453370e362f4b10e96be5924caf6bfa250a1218d30c934dac5b492ea6a7840",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004d05e0",
+      "length": 83,
+      "end_exclusive": "004d0633",
+      "role": "complete native clear dependency including hidden post-free loop",
+      "disk_offset": 853472,
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "0041dd40",
+      "length": 164,
+      "end_exclusive": "0041dde4",
+      "role": "complete native pooled-string resize dependency",
+      "disk_offset": 122176,
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004ce6f0",
+      "length": 108,
+      "end_exclusive": "004ce75c",
+      "role": "implemented alias-node allocation normal body",
+      "disk_offset": 845552,
+      "sha256": "a98d5b9f021b980dbdae7f7288f45918818b9c979e81898488d130ee28eeca21",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004ce75c",
+      "length": 21,
+      "end_exclusive": "004ce771",
+      "role": "implemented alias-node failure catch",
+      "disk_offset": 845660,
+      "sha256": "ed475c06fb5df27f7cec406abe8554aa3dca0995b3d74ec0d3a4e430abafc625",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "0044bcb0",
+      "length": 118,
+      "end_exclusive": "0044bd26",
+      "role": "implemented actual pooled-string construction",
+      "disk_offset": 310448,
+      "sha256": "19e95f36a47ba139e7914057677fb7e5f46c16600abb39fd565196a09daeebef",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004be820",
+      "length": 41,
+      "end_exclusive": "004be849",
+      "role": "implemented checked inequality",
+      "disk_offset": 780320,
+      "sha256": "5d497d265c7ca6c2474b9c1801eab82163d4244ad03df5b6d46dd7d650b6e8f9",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004becc0",
+      "length": 38,
+      "end_exclusive": "004bece6",
+      "role": "implemented checked previous",
+      "disk_offset": 781504,
+      "sha256": "bddcf9a515fd515f591d772dcf8ab8140d9ac561385c5c72a25bfe0618a51ef0",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004b9ff0",
+      "length": 40,
+      "end_exclusive": "004ba018",
+      "role": "implemented checked next",
+      "disk_offset": 761840,
+      "sha256": "8276fbaefffa30abe86fdc50b43ea441e151b9fb4efa8a9473b6177b34ec2ce3",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "004d0990",
+      "length": 123,
+      "end_exclusive": "004d0a0b",
+      "role": "implemented actual alias-node erase",
+      "disk_offset": 854416,
+      "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00c65eb0",
+      "length": 10,
+      "end_exclusive": "00c65eba",
+      "role": "range exception handler entry",
+      "disk_offset": 8806064,
+      "sha256": "881eecfbee792d2caef6ccc058da7f98a78a99eb4dd5a468a5babc9ee4664dd2",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00c65a80",
+      "length": 18,
+      "end_exclusive": "00c65a92",
+      "role": "count-growth temporary cleanup and handler entry",
+      "disk_offset": 8804992,
+      "sha256": "ab7c6e7cd1a19cd8f1f8bf644604d7d577565c8a6b8888166edc26f1d31a8b00",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00bf6885",
+      "length": 74,
+      "end_exclusive": "00bf68cf",
+      "role": "recognized native CRT throw/rethrow entry; no replacement ABI supplied",
+      "disk_offset": 8349829,
+      "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05",
+      "live_ghidra_matches_installed": true
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d8eafc",
+      "length": 88,
+      "end_exclusive": "00d8eb54",
+      "role": "range catch record, unwind map, try map and FuncInfo",
+      "disk_offset": 10021628,
+      "sha256": "a64790c96dc50eab4ca53f081db4e255bc0c1af46fb96549ac1cadf20bcd7f7f",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00d8e3c8",
+      "length": 44,
+      "end_exclusive": "00d8e3f4",
+      "role": "count-growth temporary SBO unwind map and FuncInfo",
+      "disk_offset": 10019784,
+      "sha256": "567b09522eed3498454461707dc097f34480b546162ccd45a231806b51f47cc0",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00ce38f8",
+      "length": 17,
+      "end_exclusive": "00ce3909",
+      "role": "16-character list length-error message plus terminator",
+      "disk_offset": 9320696,
+      "sha256": "137ba7b8130c7be0ea882fe7eb408a7dd1c2b6913a9577da91b84bbdd756734c",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00d83f98",
+      "length": 16,
+      "end_exclusive": "00d83fa8",
+      "role": "native length-error ThrowInfo",
+      "disk_offset": 9977752,
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00d83fd4",
+      "length": 16,
+      "end_exclusive": "00d83fe4",
+      "role": "native length-error catchable type array",
+      "disk_offset": 9977812,
+      "sha256": "0a8b9d596c19d3c70400882f4ec012f7fcd1218ce95d18c044472052d5fed30f",
+      "live_ghidra_matches_installed": true
+    },
+    {
+      "address": "00e08000",
+      "length": 32,
+      "end_exclusive": "00e08020",
+      "role": "native length-error type descriptor",
+      "disk_offset": 10518528,
+      "sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481",
+      "live_ghidra_matches_installed": true
+    }
+  ],
+  "validation": {
+    "live_ghidra_equals_installed": true,
+    "code_spans": 17,
+    "data_spans": 6,
+    "primary_logical_body_count": 3,
+    "parent_catch_overlap_count": 1,
+    "source_dependency_inspection": true,
+    "new_fixture": false,
+    "new_cpp_build": false,
+    "gameplay": false,
+    "evidence_note": "Every code span was fully decoded with Capstone from verified installed bytes; live CLI pseudocode/assembly and native EH data were inspected. Complete instruction listings remain private local evidence, not a new reconstructed source."
+  },
+  "artifact_hashes": [
+    {
+      "path": "docs/NATIVE_RENDER_ALIAS_ASSIGNMENT_NEXT.md",
+      "sha256": "a4e034fd58288eaa9d40fec1de5b19cebc575a7bf4946086f7149c5b6d498c90",
+      "bytes": 17890
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "sha256": "305165937c7d932c714ebaf48041ba22e73a4c0f1d1169ddd772994e088579ec",
+      "bytes": 1699
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "sha256": "7bd881e10368e1801c079a0f130023c9d24a6d2abef31d85125e77e7acf0c13e",
+      "bytes": 3141
+    },
+    {
+      "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+      "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee",
+      "bytes": 1897
+    },
+    {
+      "path": "src/native_render_resource_alias_nodes.cpp",
+      "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617",
+      "bytes": 3982
+    },
+    {
+      "path": "include/bsp/native_render_alias_checked_ops.hpp",
+      "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c",
+      "bytes": 2413
+    },
+    {
+      "path": "src/native_render_alias_checked_ops.cpp",
+      "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872",
+      "bytes": 5090
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "cb261ecb8b88de7851bab6a75f157bc3efbb98385a4e52ba2d6e0807244b2079",
+      "bytes": 4426
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "e532958a157fca28d5eada0457dba48e4ea2305522e159f202b10b02bc28e6f6",
+      "bytes": 3655
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "sha256": "90da3e0f0f601077e4b3bd96de4f0b8b343b4b8a23c0a915f20241dc73f59895",
+      "bytes": 2019
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "bytes": 7772
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "bytes": 3986
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "bytes": 10921
+    },
+    {
+      "path": "src/particle_clock_lifetime.cpp",
+      "sha256": "841a2eace4497456da6e8dfbf39f51fb83ae52e668a87797a314a8243256ed89",
+      "bytes": 5442
+    },
+    {
+      "path": "reports/native_render_alias_checked_ops_audit.json",
+      "sha256": "117b47df3e64fa551f8449a34380cd94f3a9ac2c138421e5eb4cb4802cf3765b",
+      "bytes": 20215
+    },
+    {
+      "path": "reports/native_render_resource_alias_nodes_audit.json",
+      "sha256": "f9a332cbfddb2b8dfc185e3dc41edce0cfc7722f88aa9e0c2fa03f9ead39c9fe",
+      "bytes": 37622
+    },
+    {
+      "path": "reports/native_legacy_sbo_string_audit.json",
+      "sha256": "6e71400223b2b08bdfc7a27837fa944198655fe5a5313736e886de0f6946dfdd",
+      "bytes": 35986
+    },
+    {
+      "path": "local/capture_native_render_alias_assignment_next.py",
+      "sha256": "bd6e708f6a14eeaeaf7005e6cc2b0533433ba5db119027a32882d7a22d1b7859",
+      "bytes": 3883
+    },
+    {
+      "path": "local/native_render_alias_assignment_next_evidence.json",
+      "sha256": "75561c18e003df532394407695c006b6122ca93716882c00cba33d17a3d0217d",
+      "bytes": 41935
+    },
+    {
+      "path": "local/native_render_alias_assignment_next_evidence.log",
+      "sha256": "7ec7a2f0d67255b0c030a1f8eef003f875584ee3d2ad3cfcccd5ee9bedbc5a0a",
+      "bytes": 102
+    },
+    {
+      "path": "local/native_render_alias_assignment_next_protos.txt",
+      "sha256": "b7dbaf0a036ae170e82db954b9133e0f8abc900ce3b991d4fb5b8fb95405c113",
+      "bytes": 1377
+    },
+    {
+      "path": "local/native_render_alias_assignment_next_comments.json",
+      "sha256": "b3708cc1eccecacd78270671092f0716c71da4c067d1e2128b9fe810de6dbf65",
+      "bytes": 665
+    }
+  ],
+  "mutations": {
+    "production_code": false,
+    "ghidra": false,
+    "shared_ledgers": false,
+    "cmake": false,
+    "docs_and_audit_only": true
+  },
+  "limits": [
+    "Names and unused-argument interpretation remain descriptive hypotheses.",
+    "Later root clear/raw-SBO integrations are pinned separately from basec9f8b9d; exception/count work still has separate ownership.",
+    "Original CRT exception-object ABI is not supplied by a host wrapper; preserve real message construction/copy/cleanup services.",
+    "Failure cases are static native control-flow deductions, not this packet performing runtime fault injection.",
+    "No native binary replacement, gameplay proof, or exhaustive malformed/overlapping-storage guarantee."
+  ]
+}
