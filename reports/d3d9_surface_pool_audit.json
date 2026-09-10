@@ -1,0 +1,1236 @@
+{
+  "schema_version": 1,
+  "packet": "native_d3d9_surface_pool",
+  "status": "implemented_strict_win32_build_and_focused_native_fixture_passed_pending_primary_integration",
+  "completed_utc": "2026-09-10T19:11:41.308589+00:00",
+  "base_commit": "903c29d80f0d389970ce3bfa051aa4b053e1a538",
+  "owned_addresses": [
+    "00b3ec60",
+    "00b3ed40",
+    "00b3d120",
+    "00b3d860",
+    "00b3e390",
+    "00b3e2b0",
+    "00b3d370",
+    "00b3f2a0",
+    "00b3dcc0",
+    "00cd7b40",
+    "00ce0c90"
+  ],
+  "owned_files": [
+    "include/bsp/d3d9_surface_pool.hpp",
+    "src/d3d9_surface_pool.cpp",
+    "docs/D3D9_SURFACE_POOL.md",
+    "reports/d3d9_surface_pool_audit.json"
+  ],
+  "target": {
+    "target_config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "imagebase": "00400000",
+    "language": "x86:LE:32:default",
+    "method": "Every tools/bsp.py ghidra query verifies configured project/program before analysis. Complete byte preimages read from live Ghidra matched installed PE sections.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false,
+    "saved_analysis_modified": false
+  },
+  "source_files": [
+    {
+      "path": "include/bsp/d3d9_surface_pool.hpp",
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+    },
+    {
+      "path": "src/d3d9_surface_pool.cpp",
+      "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3"
+    },
+    {
+      "path": "docs/D3D9_SURFACE_POOL.md",
+      "sha256": "832605d07fabc30aa2325d0559ee5081068691f94154e8dade74494cdbe8c1b1"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    }
+  ],
+  "implemented_contract": {
+    "canonical_storage": "Caller supplies actual Win32 0x38 owner for 0108DB00. No field initializers alter raw preimages. Companion has references and no automatic native cleanup.",
+    "shared_allocator_list": "The same actual AllocatorListDomain/head 00E188B4 used by other recovered pools; actual element has native vtable, previous and next. Companion binds profile00D6193C/virtual0 00B3E390 before construction publishes the node; no private links or registry head.",
+    "layout": {
+      "00..08": "actual allocator list node",
+      "0c..23": "real critical section",
+      "24": "recursion count",
+      "28": "slab table",
+      "2c": "slab count",
+      "30": "table capacity",
+      "34": "first-free slab index"
+    },
+    "geometry": {
+      "pool_bytes": 56,
+      "slot_bytes": 56,
+      "surface_bytes": 52,
+      "slot_slab_id_offset": 52,
+      "slab_bytes": 1860,
+      "slots_per_slab": 32,
+      "free_indices_offset": 1792,
+      "free_count_offset": 1856,
+      "initial_table_capacity": 32
+    },
+    "surface_boundary": "First 0x34 bytes are available to the native surface; actual slot+34 DWORD is the pool slab ID. Constructor/destructor must preserve it; enlarged host companions belong elsewhere.",
+    "slab_initialization": "Set freecount32, ushort free indices31..0 and all32 actual slot+34 slab IDs. Preserve other slot bytes and two tail bytes.",
+    "allocation": "Use actual singleton_lifetime_allocate/free CRT boundary. Constructor publishes cap32 before128-byte table. Allocate locks/increments, publishes first-free=count, allocates744h slab, initializes with live ID, grows table to2*cap+2 if count==cap, copies active pointers, frees then publishes table, appends raw slab. Pop slot; update first-free; decrement and unlock.",
+    "slot_return": "Use actual slot+34 ID, signed32 pointer subtraction divided by38h, append ushort index, reload/increment freecount, lower first-free unsigned, decrement/unlock. No surface destruction or immediate trim.",
+    "trim": "No internal lock. Free empty slab, copy last pointer into hole even for last removal, decrement count, rewrite all32 moved IDs, retry same index, recompute lowest free slab.",
+    "destructor": "Install pool profile; free all raw slabs and table with complete normal continuations; drain positive explicit recursion with actual LeaveCriticalSection; delete section; install baseD7A0C0 and unlink actual shared element. Preserve stale fields and do not destroy surfaces.",
+    "constructor_eh": "MSVC __finally preserves table-free, critical-section cleanup, allocator unlink order from map DF764C/FuncInfoDF7664. EH native bytes are evidence only; full native exception dispatch is not fixture-tested.",
+    "allocation_failure": "No allocation-path catch, finally or automatic unlock. Published first-free, grown capacity and held recursion survive an allocation throw; a new slab before failed table growth remains unappended and is not locally freed.",
+    "static_lifetime": "Bind one actual canonical owner; static init constructs it and calls supplied CRT atexit (std::atexit default), returns registration result without rollback. Registered callback and allocation/ECX-slot return thunks act on the same pool. Actual storage/domain/companion must outlive callbacks; startup once."
+  },
+  "function_evidence": [
+    {
+      "address": "00b3f2a0",
+      "end_exclusive": "00b3f2aa",
+      "length": 10,
+      "role": "surface_pool_allocation_thunk",
+      "native_abi": "No arguments; replace ECX with 0108db00; tail 00b3ed40; EAX raw slot.",
+      "disk_offset": 7598752,
+      "disk_sha256": "05d840519b2b51aa7a10ce3948c060c5eba2f01fd09ee92dafe2b8bc16b93ff8",
+      "live_sha256": "05d840519b2b51aa7a10ce3948c060c5eba2f01fd09ee92dafe2b8bc16b93ff8",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "b900db0801e996faffff",
+      "proposed_name": "D3D9SurfacePool_AllocateCanonicalSlot",
+      "cpp_symbol": "allocate_d3d9_surface_slot_00b3f2a0",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3ed40",
+      "end_exclusive": "00b3ee7c",
+      "length": 316,
+      "role": "surface_pool_allocator_with_free_continuation",
+      "native_abi": "ECX pool; EAX raw slot; RET; no local allocation-path EH.",
+      "disk_offset": 7597376,
+      "disk_sha256": "38ae02876198dabeeeede2eb945c1ce47d8ddb5dc642a4e313065cfdc18669e4",
+      "live_sha256": "38ae02876198dabeeeede2eb945c1ce47d8ddb5dc642a4e313065cfdc18669e4",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "5355568bf1578d5e0c53ff151822ce008343180183cdff396e340f85920000008b462c6844070000894634e8ab7a0b0083c40485c0740f8b4e34518bc8e89ee3ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e81a680b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e8b37b0b0083c404897e288b462c8b4e288d048185c07402892883462c0183cdff8b56348b46288b049066818040070000ffff0fb788400700000fb7d10fb79450000700008d3cd5000000002bfa6685c98d3cf875448b463483c0013b462c896e3473368b4e288d0c81eb038d49008b116683ba4007000000751c83c00183c1043b462c72e9016b1853ff151022ce008bc75f5e5d5bc3894634016b1853ff151022ce008bc75f5e5d5bc3",
+      "proposed_name": "D3D9SurfacePool_AllocateRawSlot",
+      "cpp_symbol": "D3D9SurfacePool::allocate_raw_slot_00b3ed40",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3d860",
+      "end_exclusive": "00b3d8c9",
+      "length": 105,
+      "role": "surface_pool_slot_return",
+      "native_abi": "ECX pool; stack raw slot; RET4.",
+      "disk_offset": 7592032,
+      "disk_sha256": "8d80f84dc90c96d606e64f3db1cbe685bcad7063cc5026a9f6af93037f5db23c",
+      "live_sha256": "8d80f84dc90c96d606e64f3db1cbe685bcad7063cc5026a9f6af93037f5db23c",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "535556578bf18d7e0c57ff151822ce00834718018b4424148b58348b4e288b0c992bc18be8b893244992f7ed03d5c1fa058bc2c1e81f03c20fb79140070000668984510007000066838140070000013b5e347303895e34834718ff57ff151022ce005f5e5d5bc20400",
+      "proposed_name": "D3D9SurfacePool_ReturnRawSlot",
+      "cpp_symbol": "D3D9SurfacePool::return_raw_slot_00b3d860",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3d120",
+      "end_exclusive": "00b3d160",
+      "length": 64,
+      "role": "surface_pool_slab_construct",
+      "native_abi": "ECX raw slab; stack slab-table index; EAX slab; RET4.",
+      "disk_offset": 7590176,
+      "disk_sha256": "b9d5ee8e38f4c213396fdcfcb28053b9f2ee220e68b8cba3f2b80ece2717d266",
+      "live_sha256": "b9d5ee8e38f4c213396fdcfcb28053b9f2ee220e68b8cba3f2b80ece2717d266",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "538b5c2408568bc15766c78040070000200033d28d78348db0000700008d4900b91f0000002bca66890e891f83c20183c60283c73883fa207ce65f5e5bc20400",
+      "proposed_name": "D3D9SurfacePool_InitializeSlab",
+      "cpp_symbol": "initialize_slab_00b3d120",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3ec60",
+      "end_exclusive": "00b3ed33",
+      "length": 211,
+      "role": "surface_pool_construct",
+      "native_abi": "ECX pool; EAX pool; RET; constructor EH state map at 00df764c.",
+      "disk_offset": 7597152,
+      "disk_sha256": "2a969324269efba1bd41402b96dde3f7b65547861e1168d277f6a063313fbeb4",
+      "live_sha256": "2a969324269efba1bd41402b96dde3f7b65547861e1168d277f6a063313fbeb4",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "6aff681eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7063c19d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8d7680b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8707c0b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "proposed_name": "D3D9SurfacePool_Construct",
+      "cpp_symbol": "D3D9SurfacePool::initialize_00b3ec60",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3e2b0",
+      "end_exclusive": "00b3e33a",
+      "length": 138,
+      "role": "surface_pool_destroy_with_free_continuations",
+      "native_abi": "ECX pool; RET; all returning free continuations included.",
+      "disk_offset": 7594672,
+      "disk_sha256": "1776923567ac203aee55f16bc225217109a88e5e820c496298d114318c6b7908",
+      "live_sha256": "1776923567ac203aee55f16bc225217109a88e5e820c496298d114318c6b7908",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "56578bf933f639772cc7073c19d60076178b47288b0cb051e8df820b0083c60183c4043b772c72e98b472885c0740950e8a4860b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "proposed_name": "D3D9SurfacePool_Destroy",
+      "cpp_symbol": "D3D9SurfacePool::destroy_00b3e2b0",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3e390",
+      "end_exclusive": "00b3e430",
+      "length": 160,
+      "role": "surface_pool_trim_with_free_continuation",
+      "native_abi": "ECX pool; RET; no internal critical-section entry.",
+      "disk_offset": 7594896,
+      "disk_sha256": "fd4fbd9577cb5c22c38a8f3a3ba6322e105516f68865218ba42f8daa34c078cc",
+      "live_sha256": "fd4fbd9577cb5c22c38a8f3a3ba6322e105516f68865218ba42f8daa34c078cc",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84007000020753d50e8f6810b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c034b92000000090893883c03883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4007000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "proposed_name": "D3D9SurfacePool_TrimEmptySlabs",
+      "cpp_symbol": "D3D9SurfacePool::trim_empty_slabs_00b3e390",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3d370",
+      "end_exclusive": "00b3d37e",
+      "length": 14,
+      "role": "surface_pool_unwind_free_table",
+      "native_abi": "ECX pointer-table header; free nonnull first word; RET; no clearing.",
+      "disk_offset": 7590768,
+      "disk_sha256": "b0ccf42f41eb28e73ef97530368ee191b3079d4fe4d733c8aecba5d536b18588",
+      "live_sha256": "b0ccf42f41eb28e73ef97530368ee191b3079d4fe4d733c8aecba5d536b18588",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "8b0185c0740750e80d960b0059c3",
+      "proposed_name": "D3D9SurfacePool_FreeTableUnwind",
+      "cpp_symbol": "D3D9SurfacePool::free_table_unwind_00b3d370",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b3dcc0",
+      "end_exclusive": "00b3dccc",
+      "length": 12,
+      "role": "surface_pool_return_thunk",
+      "native_abi": "Incoming ECX raw slot; push ECX; replace ECX with 0108db00; call 00b3d860; RET.",
+      "disk_offset": 7593152,
+      "disk_sha256": "067d0d53497f03c8ac81b7821de785f2be1c0cd477d718092b4ab77c19b2c113",
+      "live_sha256": "067d0d53497f03c8ac81b7821de785f2be1c0cd477d718092b4ab77c19b2c113",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "51b900db0801e895fbffffc3",
+      "proposed_name": "D3D9SurfacePool_ReturnCanonicalSlot",
+      "cpp_symbol": "return_d3d9_surface_slot_00b3dcc0",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00cd7b40",
+      "end_exclusive": "00cd7b56",
+      "length": 22,
+      "role": "surface_pool_static_initialize",
+      "native_abi": "No arguments; construct 0108db00, register 00ce0c90 with atexit; EAX registration result; RET.",
+      "disk_offset": 9272128,
+      "disk_sha256": "6c669e0738bc3ed1e2ea83aa30ec16e1866b152f1e07588c3d707d53842b867a",
+      "live_sha256": "6c669e0738bc3ed1e2ea83aa30ec16e1866b152f1e07588c3d707d53842b867a",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "b900db0801e81671e6ff68900cce00e8a1f4f1ff59c3",
+      "proposed_name": "D3D9SurfacePool_StaticInitialize",
+      "cpp_symbol": "initialize_static_d3d9_surface_pool_00cd7b40",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00ce0c90",
+      "end_exclusive": "00ce0c9a",
+      "length": 10,
+      "role": "surface_pool_static_destroy",
+      "native_abi": "No arguments; replace ECX with 0108db00; tail 00b3e2b0.",
+      "disk_offset": 9309328,
+      "disk_sha256": "9d051d1b376bc7abcb46a3d81c97df3ec6a01bf9e277f203403cad80a2055729",
+      "live_sha256": "9d051d1b376bc7abcb46a3d81c97df3ec6a01bf9e277f203403cad80a2055729",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "b900db0801e916d6e5ff",
+      "proposed_name": "D3D9SurfacePool_StaticDestroy",
+      "cpp_symbol": "destroy_static_d3d9_surface_pool_00ce0c90",
+      "name_is_hypothesis": true
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "address": "00403970",
+      "end_exclusive": "0040399b",
+      "length": 43,
+      "role": "existing allocator-list base unlink",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "disk_offset": 14704,
+      "disk_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+      "new_function_ownership": false
+    },
+    {
+      "address": "00402f70",
+      "end_exclusive": "00402f97",
+      "length": 39,
+      "role": "existing critical-section cleanup",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "disk_offset": 12144,
+      "disk_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+      "new_function_ownership": false
+    },
+    {
+      "address": "004b46b0",
+      "end_exclusive": "004b46d1",
+      "length": 33,
+      "role": "existing shared allocator-list traversal",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "disk_offset": 738992,
+      "disk_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "new_function_ownership": false
+    },
+    {
+      "address": "00cbee00",
+      "end_exclusive": "00cbee28",
+      "length": 40,
+      "role": "constructor EH leaves and frame handler; evidence only",
+      "native_abi": "Existing dependency or EH evidence; not new function ownership.",
+      "disk_offset": 9170432,
+      "disk_sha256": "e94bf9f14024b998a976a3c1e4266be3e5d2a977baee432c68f0cd8db0b48eec",
+      "live_sha256": "e94bf9f14024b998a976a3c1e4266be3e5d2a977baee432c68f0cd8db0b48eec",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "8b4df0e9684b74ff8b4df083c10ce95d4174ff8b4df083c128e952e5e7ffb86476df00e91b7df3ff",
+      "new_function_ownership": false
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8345022,
+      "disk_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "e958120000",
+      "new_function_ownership": false
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8349723,
+      "disk_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "558bec83ec",
+      "new_function_ownership": false
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8349100,
+      "disk_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "e917380000",
+      "new_function_ownership": false
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "role": "existing CRT allocation/free boundary",
+      "native_abi": "cdecl stack size or pointer; original thunks preserved except observed new/free entry",
+      "disk_offset": 8350089,
+      "disk_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true,
+      "raw_preimage_hex": "e91efcffff",
+      "new_function_ownership": false
+    }
+  ],
+  "data_evidence": [
+    {
+      "address": "00d6193c",
+      "length": 4,
+      "disk_offset": 9836860,
+      "disk_hex": "90e3b300",
+      "live_hex": "90e3b300",
+      "disk_sha256": "eefb0c0af6b0ca1d405a78df177c8e91d90e9a732a24a8e1b5caffbc90eb41df",
+      "live_sha256": "eefb0c0af6b0ca1d405a78df177c8e91d90e9a732a24a8e1b5caffbc90eb41df",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "disk_offset": null,
+      "disk_hex": "00000000",
+      "live_hex": "00000000",
+      "disk_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "0108db00",
+      "length": 56,
+      "disk_offset": null,
+      "disk_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "disk_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 4,
+      "disk_offset": 9314828,
+      "disk_hex": "6c56a000",
+      "live_hex": "6c56a000",
+      "disk_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_sha256": "c93e5282beeddd8e0b10100d2845032b820633ea45b40faf7b7867bbaa2fc48e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2210",
+      "length": 4,
+      "disk_offset": 9314832,
+      "disk_hex": "8856a000",
+      "live_hex": "8856a000",
+      "disk_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2214",
+      "length": 4,
+      "disk_offset": 9314836,
+      "disk_hex": "a056a000",
+      "live_hex": "a056a000",
+      "disk_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00ce2218",
+      "length": 4,
+      "disk_offset": 9314840,
+      "disk_hex": "b856a000",
+      "live_hex": "b856a000",
+      "disk_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk_or_zero_fill": true
+    },
+    {
+      "address": "00df764c",
+      "length": 60,
+      "disk_offset": 10450508,
+      "disk_hex": "ffffffff00eecb000000000008eecb000100000013eecb0022059319030000004c76df00000000000000000000000000000000000000000001000000",
+      "live_hex": "ffffffff00eecb000000000008eecb000100000013eecb0022059319030000004c76df00000000000000000000000000000000000000000001000000",
+      "disk_sha256": "9828a3c45edcbc7031b9c67ba730dae2a3a672e214ba92d83b028cc6d7a3bd60",
+      "live_sha256": "9828a3c45edcbc7031b9c67ba730dae2a3a672e214ba92d83b028cc6d7a3bd60",
+      "live_matches_disk_or_zero_fill": true
+    }
+  ],
+  "constructor_eh": {
+    "handler": "00cbee1e",
+    "funcinfo": "00df7664",
+    "unwind_map": "00df764c",
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "leaf": "00cbee00",
+        "target": "00403970",
+        "action": "unlink actual allocator element"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "leaf": "00cbee08",
+        "target": "00402f70",
+        "action": "drain recursion/delete actual critical section at pool+0c"
+      },
+      {
+        "state": 2,
+        "next_state": 1,
+        "leaf": "00cbee13",
+        "target": "00b3d370",
+        "action": "free table at pool+28 without clearing"
+      }
+    ],
+    "native_exception_dispatch_executed": false
+  },
+  "free_continuations": [
+    {
+      "address": "00b3ed14",
+      "end_exclusive": "00b3ed1f",
+      "role": "constructor old-table free then publish replacement",
+      "raw_preimage_hex": "e8707c0b0083c404897e28",
+      "sha256": "ce7df9f1e8480551d0776d2d5ad58347c8689b8cb5111b759f5324e112cd30e6",
+      "decoded": [
+        {
+          "address": "00b3ed14",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00b3ed19",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00b3ed1c",
+          "text": "mov dword ptr [esi + 0x28], edi"
+        }
+      ]
+    },
+    {
+      "address": "00b3edd1",
+      "end_exclusive": "00b3eddc",
+      "role": "growth old-table free then publish replacement",
+      "raw_preimage_hex": "e8b37b0b0083c404897e28",
+      "sha256": "32d243777a1213b185c8bf892874bbdb07f1321a0d69d3bb2a1a91af65a4d7f5",
+      "decoded": [
+        {
+          "address": "00b3edd1",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00b3edd6",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00b3edd9",
+          "text": "mov dword ptr [esi + 0x28], edi"
+        }
+      ]
+    },
+    {
+      "address": "00b3e3b1",
+      "end_exclusive": "00b3e3f0",
+      "role": "trim free, swap, decrement, rewrite all32 IDs and retry",
+      "raw_preimage_hex": "e8f6810b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c034b92000000090893883c03883e90175f683ef0183c701",
+      "sha256": "ce038b052e82726cff984b0c937e806d728016fa3397ceb6d6318a61cdf8b3ec",
+      "decoded": [
+        {
+          "address": "00b3e3b1",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00b3e3b6",
+          "text": "mov edx, dword ptr [esi + 0x28]"
+        },
+        {
+          "address": "00b3e3b9",
+          "text": "mov ecx, dword ptr [esi + 0x2c]"
+        },
+        {
+          "address": "00b3e3bc",
+          "text": "mov ecx, dword ptr [edx + ecx*4 - 4]"
+        },
+        {
+          "address": "00b3e3c0",
+          "text": "mov eax, edx"
+        },
+        {
+          "address": "00b3e3c2",
+          "text": "mov dword ptr [eax + edi*4], ecx"
+        },
+        {
+          "address": "00b3e3c5",
+          "text": "add dword ptr [esi + 0x2c], -1"
+        },
+        {
+          "address": "00b3e3c9",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00b3e3cc",
+          "text": "cmp edi, dword ptr [esi + 0x2c]"
+        },
+        {
+          "address": "00b3e3cf",
+          "text": "jae 0xb3e3ea"
+        },
+        {
+          "address": "00b3e3d1",
+          "text": "mov edx, dword ptr [esi + 0x28]"
+        },
+        {
+          "address": "00b3e3d4",
+          "text": "mov eax, dword ptr [edx + edi*4]"
+        },
+        {
+          "address": "00b3e3d7",
+          "text": "add eax, 0x34"
+        },
+        {
+          "address": "00b3e3da",
+          "text": "mov ecx, 0x20"
+        },
+        {
+          "address": "00b3e3df",
+          "text": "nop"
+        },
+        {
+          "address": "00b3e3e0",
+          "text": "mov dword ptr [eax], edi"
+        },
+        {
+          "address": "00b3e3e2",
+          "text": "add eax, 0x38"
+        },
+        {
+          "address": "00b3e3e5",
+          "text": "sub ecx, 1"
+        },
+        {
+          "address": "00b3e3e8",
+          "text": "jne 0xb3e3e0"
+        },
+        {
+          "address": "00b3e3ea",
+          "text": "sub edi, 1"
+        },
+        {
+          "address": "00b3e3ed",
+          "text": "add edi, 1"
+        }
+      ]
+    },
+    {
+      "address": "00b3e2c8",
+      "end_exclusive": "00b3e2d8",
+      "role": "destructor slab free and continuing loop",
+      "raw_preimage_hex": "e8df820b0083c60183c4043b772c72e9",
+      "sha256": "f10ef5e4a8e83d7f1b053bc423045699fb1ec7495747c4315eeece392be7ccf7",
+      "decoded": [
+        {
+          "address": "00b3e2c8",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00b3e2cd",
+          "text": "add esi, 1"
+        },
+        {
+          "address": "00b3e2d0",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00b3e2d3",
+          "text": "cmp esi, dword ptr [edi + 0x2c]"
+        },
+        {
+          "address": "00b3e2d6",
+          "text": "jb 0xb3e2c1"
+        }
+      ]
+    },
+    {
+      "address": "00b3e2e0",
+      "end_exclusive": "00b3e2e8",
+      "role": "destructor table free and continuing section cleanup",
+      "raw_preimage_hex": "e8a4860b0083c404",
+      "sha256": "7e8037fa6f8e7a7d8912d6332f6302f0ca6ae7a7e24203fdcedcc53b7032481f",
+      "decoded": [
+        {
+          "address": "00b3e2e0",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00b3e2e5",
+          "text": "add esp, 4"
+        }
+      ]
+    },
+    {
+      "address": "00b3d377",
+      "end_exclusive": "00b3d37e",
+      "role": "EH table free, pop argument and return",
+      "raw_preimage_hex": "e80d960b0059c3",
+      "sha256": "233d010379ea77381b42d7e292f86f13da53ffb578d05d8572282dc8b0758680",
+      "decoded": [
+        {
+          "address": "00b3d377",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00b3d37c",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00b3d37d",
+          "text": "ret"
+        }
+      ]
+    }
+  ],
+  "byte_audit": {
+    "code_or_hook_spans": 19,
+    "data_spans": 8,
+    "all_live_ghidra_match_installed_pe": true,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verified_before_each_query": true
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/O2",
+        "/Oy-",
+        "/fp:strict",
+        "/MT",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "new_source_errors": 0,
+      "new_source_warnings": 0
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests_passed": 1,
+      "tests_total": 1,
+      "existing_test": "reconstructed_math",
+      "scope": "Baseline checkout CMake build. New source separately compiled and linked by the focused fixture; primary owns CMake registration."
+    },
+    "focused_native_fixture": {
+      "passed": true,
+      "cases": 1,
+      "states_per_path": 2089,
+      "explicit_allocation_free_events_per_path": 74,
+      "real_allocations_per_path": 37,
+      "real_frees_per_path": 37,
+      "raw_slab_bytes_compared": 90952140,
+      "sequence": [
+        "Construct canonical raw pool with real critical section and initial32-entry table.",
+        "Allocate1025 raw slots through static adapters, creating33 slabs and growing table32 to66; preserve seeded raw payload and padding.",
+        "Return all32 slots in first slab and sole slot in last slab; dispatch actual allocator-list virtual0.",
+        "Remove empty original and empty replacement at the same index, move a live slab and rewrite all32 IDs.",
+        "Return/reallocate moved slot1000; retain its caller-written payload.",
+        "Return all remaining live slots and trim every slab, retaining264-byte pointer table/cap66.",
+        "Refill33 slots in two slabs; enter actual/explicit recursion2; destroy through canonical static destroy thunk, observing every slab free and table free before section drain/unlink."
+      ],
+      "all_moved_ids": "Every active slab all32 IDs checked at every state and immediately before slab free, including a moved empty replacement before retry removal.",
+      "raw_preimage": "Observed real malloc fills repeating DWORD0x6f452000+allocation ID before constructor. Full active slab bytes compare, with untouched two-byte tail checked independently.",
+      "recursion": "Explicit counter and actual CRITICAL_SECTION RecursionCount/LockCount compare at every state. Destructor free events observe actual/explicit recursion2 before cleanup drains it.",
+      "event_field_order": [
+        "operation",
+        "kind0allocate1free",
+        "allocation_id",
+        "bytes",
+        "slab_count",
+        "table_capacity",
+        "first_free",
+        "explicit_recursion",
+        "actual_critical_recursion"
+      ],
+      "selected_events": [
+        [
+          0,
+          0,
+          1,
+          128,
+          0,
+          32,
+          4294967295,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2,
+          1860,
+          0,
+          32,
+          0,
+          1,
+          1
+        ],
+        [
+          1025,
+          0,
+          34,
+          1860,
+          32,
+          32,
+          32,
+          1,
+          1
+        ],
+        [
+          1025,
+          0,
+          35,
+          264,
+          32,
+          66,
+          32,
+          1,
+          1
+        ],
+        [
+          1025,
+          1,
+          1,
+          128,
+          32,
+          66,
+          32,
+          1,
+          1
+        ],
+        [
+          1059,
+          1,
+          2,
+          1860,
+          33,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          1059,
+          1,
+          34,
+          1860,
+          32,
+          66,
+          0,
+          0,
+          0
+        ],
+        [
+          2089,
+          1,
+          36,
+          1860,
+          2,
+          66,
+          1,
+          2,
+          2
+        ],
+        [
+          2089,
+          1,
+          37,
+          1860,
+          2,
+          66,
+          1,
+          2,
+          2
+        ],
+        [
+          2089,
+          1,
+          35,
+          264,
+          2,
+          66,
+          1,
+          2,
+          2
+        ]
+      ],
+      "selected_states": [
+        {
+          "operation": 0,
+          "checkpoint": "constructor",
+          "count": 0,
+          "capacity": 32,
+          "first_free": 4294967295,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 0
+        },
+        {
+          "operation": 1024,
+          "checkpoint": "allocate",
+          "count": 32,
+          "capacity": 32,
+          "first_free": 4294967295,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 59520
+        },
+        {
+          "operation": 1025,
+          "checkpoint": "allocate",
+          "count": 33,
+          "capacity": 66,
+          "first_free": 32,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 61380
+        },
+        {
+          "operation": 1058,
+          "checkpoint": "return_last",
+          "count": 33,
+          "capacity": 66,
+          "first_free": 0,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 61380
+        },
+        {
+          "operation": 1059,
+          "checkpoint": "compact_retry_and_rewrite",
+          "count": 31,
+          "capacity": 66,
+          "first_free": 4294967295,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 57660
+        },
+        {
+          "operation": 1060,
+          "checkpoint": "return_moved_slot",
+          "count": 31,
+          "capacity": 66,
+          "first_free": 0,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 57660
+        },
+        {
+          "operation": 1061,
+          "checkpoint": "reuse_preserves_payload",
+          "count": 31,
+          "capacity": 66,
+          "first_free": 4294967295,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 57660
+        },
+        {
+          "operation": 2054,
+          "checkpoint": "trim_all_empty",
+          "count": 0,
+          "capacity": 66,
+          "first_free": 4294967295,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 0
+        },
+        {
+          "operation": 2087,
+          "checkpoint": "refill_for_destructor_loop",
+          "count": 2,
+          "capacity": 66,
+          "first_free": 1,
+          "explicit_recursion": 0,
+          "actual_recursion": 0,
+          "raw_slab_bytes": 3720
+        },
+        {
+          "operation": 2088,
+          "checkpoint": "nested_lock_input",
+          "count": 2,
+          "capacity": 66,
+          "first_free": 1,
+          "explicit_recursion": 2,
+          "actual_recursion": 2,
+          "raw_slab_bytes": 3720
+        }
+      ],
+      "source_of_native_code": "19 bounded code/hook spans and8 data spans sparsely copied at relative PE offsets. Unprovided committed bytes are INT3 guards, other pages no-access. No game entrypoint or unresolved-call stubs.",
+      "observed_boundaries": "Native00BF681B/00BF65AC and host singleton_lifetime_allocate/free entries redirect to deterministic-preimage real malloc/free observation. Forwarding00BF55BE/00BF6989 remains native. Four actual Win32 critical-section APIs populate imports.",
+      "absolute_word_relocations": [
+        {
+          "native_address": "00402f7c",
+          "preimage": "00ce2210",
+          "replacement": "01352210"
+        },
+        {
+          "native_address": "00402f91",
+          "preimage": "00ce2214",
+          "replacement": "01352214"
+        },
+        {
+          "native_address": "00403977",
+          "preimage": "00d7a0c0",
+          "replacement": "013ea0c0"
+        },
+        {
+          "native_address": "00403989",
+          "preimage": "00e188b4",
+          "replacement": "014888b4"
+        },
+        {
+          "native_address": "004b46b3",
+          "preimage": "00e188b4",
+          "replacement": "014888b4"
+        },
+        {
+          "native_address": "00b3d86c",
+          "preimage": "00ce2218",
+          "replacement": "01352218"
+        },
+        {
+          "native_address": "00b3d8be",
+          "preimage": "00ce2210",
+          "replacement": "01352210"
+        },
+        {
+          "native_address": "00b3dcc2",
+          "preimage": "0108db00",
+          "replacement": "016fdb00"
+        },
+        {
+          "native_address": "00b3e2bb",
+          "preimage": "00d6193c",
+          "replacement": "013d193c"
+        },
+        {
+          "native_address": "00b3e2f4",
+          "preimage": "00ce2210",
+          "replacement": "01352210"
+        },
+        {
+          "native_address": "00b3e309",
+          "preimage": "00ce2214",
+          "replacement": "01352214"
+        },
+        {
+          "native_address": "00b3e314",
+          "preimage": "00d7a0c0",
+          "replacement": "013ea0c0"
+        },
+        {
+          "native_address": "00b3e326",
+          "preimage": "00e188b4",
+          "replacement": "014888b4"
+        },
+        {
+          "native_address": "00b3ec63",
+          "preimage": "00cbee1e",
+          "replacement": "0132ee1e"
+        },
+        {
+          "native_address": "00b3ec7e",
+          "preimage": "00d7a0c0",
+          "replacement": "013ea0c0"
+        },
+        {
+          "native_address": "00b3ec86",
+          "preimage": "00e188b4",
+          "replacement": "014888b4"
+        },
+        {
+          "native_address": "00b3ec8e",
+          "preimage": "00e188b4",
+          "replacement": "014888b4"
+        },
+        {
+          "native_address": "00b3eca0",
+          "preimage": "00e188b4",
+          "replacement": "014888b4"
+        },
+        {
+          "native_address": "00b3ecae",
+          "preimage": "00d6193c",
+          "replacement": "013d193c"
+        },
+        {
+          "native_address": "00b3ecb4",
+          "preimage": "00ce220c",
+          "replacement": "0135220c"
+        },
+        {
+          "native_address": "00b3ed4c",
+          "preimage": "00ce2218",
+          "replacement": "01352218"
+        },
+        {
+          "native_address": "00b3ee5d",
+          "preimage": "00ce2210",
+          "replacement": "01352210"
+        },
+        {
+          "native_address": "00b3ee71",
+          "preimage": "00ce2210",
+          "replacement": "01352210"
+        },
+        {
+          "native_address": "00b3f2a1",
+          "preimage": "0108db00",
+          "replacement": "016fdb00"
+        },
+        {
+          "native_address": "00cbee1f",
+          "preimage": "00df7664",
+          "replacement": "01467664"
+        },
+        {
+          "native_address": "00cd7b41",
+          "preimage": "0108db00",
+          "replacement": "016fdb00"
+        },
+        {
+          "native_address": "00cd7b4b",
+          "preimage": "00ce0c90",
+          "replacement": "01350c90"
+        },
+        {
+          "native_address": "00ce0c91",
+          "preimage": "0108db00",
+          "replacement": "016fdb00"
+        },
+        {
+          "native_address": "00d6193c",
+          "preimage": "00b3e390",
+          "replacement": "011ae390"
+        }
+      ],
+      "byte_patches": [
+        {
+          "role": "native_new",
+          "process_address": "0126681b",
+          "preimage_hex": "558bec83ec",
+          "replacement_hex": "e980f8d92e"
+        },
+        {
+          "role": "native_free",
+          "process_address": "012665ac",
+          "preimage_hex": "e917380000",
+          "replacement_hex": "e9fffad92e"
+        },
+        {
+          "role": "host_allocate",
+          "process_address": "30002480",
+          "preimage_hex": "558bec83ec",
+          "replacement_hex": "e96b350000"
+        },
+        {
+          "role": "host_free",
+          "process_address": "300024e0",
+          "preimage_hex": "e93ba70000",
+          "replacement_hex": "e9cb3b0000"
+        }
+      ],
+      "import_bindings": [
+        {
+          "name": "InitializeCriticalSection",
+          "native_address": "00ce220c",
+          "preimage": "00a0566c",
+          "replacement": "779d3420"
+        },
+        {
+          "name": "LeaveCriticalSection",
+          "native_address": "00ce2210",
+          "preimage": "00a05688",
+          "replacement": "779c3460"
+        },
+        {
+          "name": "DeleteCriticalSection",
+          "native_address": "00ce2214",
+          "preimage": "00a056a0",
+          "replacement": "779d56b0"
+        },
+        {
+          "name": "EnterCriticalSection",
+          "native_address": "00ce2218",
+          "preimage": "00a056b8",
+          "replacement": "779c43e0"
+        }
+      ]
+    }
+  },
+  "primary_integration_required": [
+    "Review and cherry-pick the four owned files.",
+    "Register src/d3d9_surface_pool.cpp in the primary build configuration and run the primary existing checks.",
+    "Claim exact eleven addresses; preserve old names/comments, annotate with recorded ABI/evidence, add sharded name/function records, save correct Ghidra project and refresh affected exports/index.",
+    "Wire one actual0108DB00 storage/companion to the same shared AllocatorListDomain before static initialization; preserve lifetime through registered atexit callback.",
+    "Future native surface construction/destruction must retain actual slot+34 ID and use actual pool return thunk; no surface lifecycle was implemented in this packet."
+  ],
+  "uncertainty_and_limits": [
+    "Descriptive names are hypotheses; new C++ interfaces are not drop-in ABI replacements.",
+    "Injected allocation failure, full native exception dispatch, foreign allocator profiles and real CRT startup/exit sequencing were not runtime-tested by this fixture.",
+    "Host dispatch-map allocations and other CRT/OS allocations are outside the explicit observed raw-allocation boundary. No whole-process allocator identity is claimed.",
+    "Malformed slots, double returns, arithmetic-overflow storage and invalid lifecycle orders receive no invented repair behavior.",
+    "No surface object, COM call, texture cache, renderer reset or target-group lifecycle was added. No game validation.",
+    "No Ghidra, saved-analysis, ledger, CMake, original-game or shared existing source edits by this worker."
+  ],
+  "artifacts": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-d3d9-surface-pool-20260910",
+    "ignored_local_files": [
+      {
+        "path": "local/prepare_d3d9_surface_pool_native.py",
+        "sha256": "115e58f76b53705c7e20879569737df0dd07ad81d47b346012cb37017eb6dd25"
+      },
+      {
+        "path": "local/d3d9_surface_pool_native_preparation.json",
+        "sha256": "6ece41380284ae923d8cce7fc47687010b8bb5630c81bef5bed012d67a4a7d4f"
+      },
+      {
+        "path": "local/d3d9_surface_pool_native_preparation.log",
+        "sha256": "e1df18987796d9fd626c706a76499f76b801c76327ab1497f922516cdb1854ca"
+      },
+      {
+        "path": "local/d3d9_surface_pool_native_spans.hpp",
+        "sha256": "29efa18660c6ce8859cf9d51238ae50e04355d4d4efb4f5830939c7392100ab2"
+      },
+      {
+        "path": "local/d3d9_surface_pool_native_check.cpp",
+        "sha256": "c4efd3e0ec8f89d990723ea794e00b0b69b35b51ef0bfb481419602619963778"
+      },
+      {
+        "path": "local/build_d3d9_surface_pool_native_check.ps1",
+        "sha256": "80b6505578e45cdcdb327fbeae0b36fcbe790b4a3242709e0a2fd2318620924c"
+      },
+      {
+        "path": "local/d3d9_surface_pool_native_check.log",
+        "sha256": "fddb74942c1a3a034a73f8af636fb10c701ab9a5ccf8533b2bb62b85b12ca4b7"
+      },
+      {
+        "path": "local/surface_pool_repository_build.log",
+        "sha256": "4a084e3e30427edbeebe145f6e257cfd650edd5bd246694d6e4b02a1e6491a53"
+      },
+      {
+        "path": "build/d3d9-surface-pool-check/d3d9_surface_pool_native_check.exe",
+        "sha256": "6eff8cbd052ad1c49edddcc9caa049273c105dac39333797c77d5e62e871b727"
+      }
+    ]
+  }
+}
