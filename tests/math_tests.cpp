@@ -16,6 +16,7 @@
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
 #include "bsp/input_tick.hpp"
+#include "bsp/press_start_screen.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/world_ocean.hpp"
@@ -741,6 +742,23 @@ int main() {
         check(bsp::logo_skip_allowed(3.0F, 2.0F, true), "a late skip with the button fires");
         check(!bsp::logo_skip_allowed(3.0F, 2.0F, false), "elapsed time alone never skips");
         check(!bsp::logo_skip_allowed(2.0F, 2.0F, true), "the delay comparison is strict");
+    }
+
+    {
+        // 0067cfc8 accumulates dt * 2.5 into 00E19888, wraps it with fmod
+        // against 2*pi at 0067cfec and masks the sign bit off the sine at
+        // 0067d026. The wrap and the mask are what keep the press_start_Text
+        // alpha inside [0, 1]; a plain accumulate or a signed sine would drive
+        // the element colour negative every other half period.
+        bsp::PromptPulse pulse{};
+        float alpha = 0.0F;
+        for (int frame = 0; frame < 200; ++frame) {
+            alpha = bsp::advance_prompt_pulse_0067cfc8(pulse, 0.05F);
+            check(alpha >= 0.0F && alpha <= 1.0F, "the prompt alpha stays in [0, 1]");
+            check(pulse.phase >= 0.0F
+                    && pulse.phase < static_cast<float>(bsp::kPromptPulsePeriod),
+                "the pulse phase stays wrapped into one period");
+        }
     }
 
     {

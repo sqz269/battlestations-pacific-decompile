@@ -1,0 +1,548 @@
+{
+  "packet": "press_start_screen",
+  "owner": "agent/press-start",
+  "date": "2026-09-10",
+  "kind": "reconstruction",
+  "doc": "docs/PRESS_START_SCREEN.md",
+  "header": "include/bsp/press_start_screen.hpp",
+  "source": "src/press_start_screen.cpp",
+  "anchor": {
+    "vtable": "00CF6D90",
+    "constructor": "0067c840",
+    "constructed_by": "0068d8d0 BSP_TitleScreen_Activate at 0068d92f",
+    "object_size": "0x18",
+    "base": "004f7180 BSP_FrontEndScreen_Construct, vtable 00CEAE54",
+    "screen_id": 92,
+    "registry_slot": "00E18CD0 (00E18B60 + 92*4, 95 slots)",
+    "interface_id": null
+  },
+  "headline": "The title screen's first interactive state is the FE_initial press-start screen, class vtable 00CF6D90, size 0x18, screen id 5Ch. Its update 0067cfb0 pulses press_start_Text with |sin| of a 2.5 rad/s phase, and a press on input action 4Eh (or any button on the first attached device) drives the XenonSystemManager sign-in handshake at manager+28h. Phase 2 runs 0067cc60, which rebuilds the profile at game+650h and either reaches the main menu directly or through the storage callback 0067ca40. Every exit is BSP_TitleScreen_Skip 0068d8a0, that is state request 4. The screen id is not an interface id and no screen set is raised here.",
+  "vtable_00CF6D90": [
+    {
+      "slot": "+00h",
+      "target": "0067c860",
+      "role": "screen id, mov eax 5Ch",
+      "overridden": true
+    },
+    {
+      "slot": "+04h",
+      "target": "004f7570",
+      "role": "base",
+      "overridden": false
+    },
+    {
+      "slot": "+08h",
+      "target": "004f7580",
+      "role": "base",
+      "overridden": false
+    },
+    {
+      "slot": "+0Ch",
+      "target": "0067ca60",
+      "role": "scalar deleting destructor over 0067c9e0",
+      "overridden": true
+    },
+    {
+      "slot": "+10h",
+      "target": "0067ca80",
+      "role": "register then load FE_initial",
+      "overridden": true
+    },
+    {
+      "slot": "+14h",
+      "target": "004f7590",
+      "role": "base",
+      "overridden": false
+    },
+    {
+      "slot": "+18h",
+      "target": "0067cb40",
+      "role": "enter",
+      "overridden": true
+    },
+    {
+      "slot": "+1Ch",
+      "target": "0067c870",
+      "role": "exit, a bare ret",
+      "overridden": true
+    },
+    {
+      "slot": "+20h",
+      "target": "0067cfb0",
+      "role": "update(float)",
+      "overridden": true
+    },
+    {
+      "slot": "+24h",
+      "target": "0067d860",
+      "role": "publish the layout to 004f83b0's list",
+      "overridden": true
+    }
+  ],
+  "conventions": [
+    {
+      "address": "0067c840",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "returns": "the object in EAX"
+    },
+    {
+      "address": "0067c860",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "returns": "5Ch"
+    },
+    {
+      "address": "0067c870",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "returns": null
+    },
+    {
+      "address": "0067c880",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "returns": "AL"
+    },
+    {
+      "address": "0067c9e0",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "seh": "00C7CF58"
+    },
+    {
+      "address": "0067ca40",
+      "convention": "leaf, no arguments",
+      "ret": "RET (tail-jumps 0068d8a0)"
+    },
+    {
+      "address": "0067ca60",
+      "convention": "__thiscall",
+      "args": "one int flag",
+      "ret": "RET 4"
+    },
+    {
+      "address": "0067ca80",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "seh": "00C7CF78"
+    },
+    {
+      "address": "0067cb40",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "seh": "00C7CFA0"
+    },
+    {
+      "address": "0067cc60",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "seh": "00C7CFE7"
+    },
+    {
+      "address": "0067cf50",
+      "convention": "__thiscall",
+      "args": "none",
+      "ret": "RET",
+      "returns": "AL"
+    },
+    {
+      "address": "0067cfb0",
+      "convention": "__thiscall",
+      "args": "one float at [esp+30h]",
+      "ret": "RET 4",
+      "seh": "00C7D018"
+    },
+    {
+      "address": "0067d860",
+      "convention": "__thiscall",
+      "args": "one pointer",
+      "ret": "RET 4"
+    }
+  ],
+  "object_layout": [
+    {
+      "offset": "+00h",
+      "size": 4,
+      "name": "vtable",
+      "value": "00CF6D90",
+      "evidence": "0067c855"
+    },
+    {
+      "offset": "+04h",
+      "size": 1,
+      "name": "wanted",
+      "evidence": "004f7180; set to 1 by 0068d8d0"
+    },
+    {
+      "offset": "+05h",
+      "size": 1,
+      "name": "active",
+      "evidence": "004f7180; set to 1 by 0068d8d0"
+    },
+    {
+      "offset": "+08h",
+      "size": 4,
+      "name": "layout_FE_initial",
+      "evidence": "written 0067cad9 (00aa5840), read 0067cbfe and 0067d860, released 0067ca09 (00aa31f0)"
+    },
+    {
+      "offset": "+0Ch",
+      "size": 4,
+      "name": "element_press_start_Text",
+      "evidence": "written 0067cc13 (00aa7e00); virtuals +50h and +34h called every update"
+    },
+    {
+      "offset": "+10h",
+      "size": 4,
+      "name": "sign_in_handled",
+      "evidence": "cleared 0067c851 and 0067cc4a, set 0067d45b, tested 0067d442 and 0067d52e"
+    },
+    {
+      "offset": "+14h",
+      "size": 1,
+      "name": "close_prompt_pending",
+      "evidence": "cleared 0067c84d and 0067cc51, set 0067d584, consumed 0067d541"
+    }
+  ],
+  "rdata_literals": {
+    "00CF6DB4": "FE_initial, loaded by 0067ca80 into screen+8h",
+    "00CF6DC4": "press_start_Text, resolved by 0067cb40 into screen+0Ch",
+    "00CF6DD8": "globals.saving_xbox, prompt key raised by 0067cc60 in slot 0 kind 3",
+    "00CF6DEC": "L\"Session\", referenced only from 0067d801 in FUN_0067d6e0, not from this class",
+    "00CF6E00": "FE.unitlib_toggledesc, referenced from none of the ten slots"
+  },
+  "prompt_pulse": {
+    "phase_global": "00E19888",
+    "rate": {
+      "constant": "00CE3DE0",
+      "value": 2.5,
+      "type": "double"
+    },
+    "period": {
+      "constant": "00CE3828",
+      "value": 6.283185307179586,
+      "type": "double"
+    },
+    "rgb": {
+      "constant": "00D7A24C",
+      "value": 1.0,
+      "type": "float"
+    },
+    "formula": "phase = fmod((float)(dt * 2.5 + phase), 2*pi); alpha = |fsin(phase)|",
+    "abs_evidence": "and eax, 7FFFFFFFh at 0067d026, the sign bit of the stored float",
+    "sink": "element vtable +50h with {1.0f, 1.0f, 1.0f, alpha} at 0067d057"
+  },
+  "sign_in_phase_manager_28h": {
+    "reader": "00a3e500 (mov eax, [ecx+28h])",
+    "writer_1": "00a3f3d0 (mov dword [ecx+28h], 1; jmp 00a3f100)",
+    "writer_2": "00a40510 at 00a4096f (sets 2 and manager+3B0h = 7, guarded by manager+2Ch == 0)",
+    "values": {
+      "0": "idle, waiting for a press",
+      "1": "sign-in requested, blade may be up",
+      "2": "a user is selected"
+    },
+    "sign_in_user_00a3f100": "XUserGetSigninState(pad); manager+3B4h = pad; if manager+8Ch+pad*4 != 0 fire the callback at manager+24h and go to state 4; else if manager+3E9h is clear set it and go to state 3; else state 1."
+  },
+  "input": {
+    "action_id": "0x4E",
+    "edge_test": "004c43c0 BSP_InputAction_WasPressedThisFrame, the reviewed rule in include/bsp/input_tick.hpp",
+    "edge_rule": "current_down && current_hold > 0 && (!previous_down || previous_hold <= 0)",
+    "device_lookup": "004ba6d0([00F8BBF4], 2, 0) -> element 0 of the checked vector at +B8h",
+    "device_probe": "0067c880 asks the device vtable +20h for button 0 then button 0Eh",
+    "device_pad_index": "device vtable +34h, handed to 00a3f3d0 at 0067d2a9",
+    "edge_latch": "004b43b0 caches 00a91020() into [00F8BBF4]+DDh and returns 1 on a rising edge",
+    "rebind": "0067c970 (docs/GAME_TITLE_INIT.md), sets 00E1987C"
+  },
+  "title_globals": {
+    "00E19880": "dword; invite or join pending; non-zero makes 0067cf50 own the frame",
+    "00E1987C": "a primary input binding exists; 0067c970 sets it",
+    "00E19884": "a press was consumed by a message screen; wait for the release",
+    "00E19885": "the sign-in blade was up; rebind on the next idle frame",
+    "00E08CC0": "the sign-in handler ran; re-request a sign-in once nothing is up",
+    "00E19888": "the prompt pulse phase"
+  },
+  "failure_prompts": [
+    {
+      "raised_at": "0067d0f5",
+      "slot": 2,
+      "key": "FE_xbox.xsm_profilechanged",
+      "key_address": "00CE7C38",
+      "kind": 2,
+      "condition": "BSP_XenonSystemManager_IsProfileChangePending 00a3e3b0",
+      "follow_up": "00a40020 BSP_XenonSystemManager_ResetSignInState then 0067c970"
+    },
+    {
+      "raised_at": "0067cded",
+      "slot": 0,
+      "key": "globals.saving_xbox",
+      "key_address": "00CF6DD8",
+      "kind": 3,
+      "condition": "save manager [0109CECC] vtable +1Ch(save name, 1) returns true",
+      "follow_up": "007ff100(profile, save name, callback 0067ca40)"
+    }
+  ],
+  "prompt_call_00531b00": {
+    "signature": "00531b00(menu, slot, &key, kind, 0, 0, &empty, 0.0f, 0, empty by value (8 bytes), 1)",
+    "clear_one": "00532a20(menu, i), one of seven 0x48-byte records based at menu+60h",
+    "clear_all": "00530650(menu), slots 0..6",
+    "close": "004b6e50 BSP_FrontEndScreen_Close",
+    "native_string_size": 8
+  },
+  "sign_in_handler_0067cc60": {
+    "profile_block": "[00E188A8] + 650h",
+    "manager": "[00F8ABE8]",
+    "save_manager": "[0109CECC]",
+    "sequence": [
+      "007fdb20 BSP_PlayerProfile_ResetToDefaults on the profile block",
+      "00425c20 then 004374f0 on its result",
+      "00a3eae0 -> manager+90h+index*80h, the gamertag; into 007f9290 and 007f9340",
+      "00a3eb00 -> manager+110h+index*8, stored at profile+48h = game+698h",
+      "00bd3450 on the save manager",
+      "00a3e5d0 -> a second 64-bit id from manager+3B8h; sprintf(\"%llx\", 00CF3AE4) is the save name",
+      "if [0109CECC]+21h == 0: 007fae70, and when +8h == 0 also 00530650 and 0068d8a0",
+      "else vtable +1Ch(save name, 1) -> prompt slot 0 globals.saving_xbox kind 3, then 007ff100",
+      "else vtable +14h(save name) -> 005547d0/006ac030, [00F8BBF4] +0Ch and +8h into 008d44c0, then 007fa710",
+      "both storage arms end with 007fae70 and 00698a10(input manager + 3Ch)"
+    ],
+    "callback": "0067ca40, pushed by both 007ff100 and 007fa710"
+  },
+  "offline_bring_up_0067d494": [
+    "00425c20 then 004374f0",
+    "008d4820, 008d41c0, 008d41f0 and 008d4520(0, 1) on 00F88980",
+    "008d5b50 BSP_Settings_ApplyAll",
+    "005547d0 BSP_InputSettings_GetSingleton then 006ac030",
+    "[00F8BBF4] vtable +0Ch, then +8h with the result into 008d44c0",
+    "00698a10 on the input manager + 3Ch",
+    "0068d8a0 BSP_TitleScreen_Skip"
+  ],
+  "handover_to_main_menu": {
+    "request": "0068d8a0 BSP_TitleScreen_Skip -> 004d7920 BSP_Game_RequestState(4), guarded by game+5E8h == 0, then game+5ECh = 0",
+    "deque": "BSP_Game_EnqueueStateRequest on game+5D8h (include/bsp/game_frame_control.hpp)",
+    "interface_id": "none applied here",
+    "screen_set": "none raised here; the state-4 entry 004e4000 owns the main-menu screen set",
+    "exits": [
+      "the offline bring-up at 0067d514",
+      "the storage callback 0067ca40",
+      "the screen+14h fallback at 0067d550",
+      "the invite fast path at 0067cfa3"
+    ]
+  },
+  "no_ghidra_function": [
+    {
+      "address": "0067c860",
+      "end": "0067c865",
+      "role": "screen id, mov eax 5Ch; ret"
+    },
+    {
+      "address": "0067c870",
+      "end": "0067c870",
+      "role": "exit, a bare ret"
+    },
+    {
+      "address": "0067c880",
+      "end": "0067c8a9",
+      "role": "device button probe over vtable +20h"
+    },
+    {
+      "address": "0067ca40",
+      "end": "0067ca5c",
+      "role": "storage completion callback"
+    },
+    {
+      "address": "0067ca60",
+      "end": "0067ca7b",
+      "role": "scalar deleting destructor"
+    },
+    {
+      "address": "0067d860",
+      "end": "0067d86f",
+      "role": "vtable slot +24h, publish the layout"
+    }
+  ],
+  "uncertainties": [
+    "00427190's role: a dispatcher on an int code, called only with 0, on the 0x50-byte singleton at 00E17664 built by 00426250.",
+    "00518d60 read as clearing the front-end page context from its 27 call sites and the globals 00E18D84/88/8Ch; the globals were not traced.",
+    "The GUI element virtuals +50h and +34h are named from their arguments (four floats, one bool) and the SETZ that feeds +34h; the element vtable was not enumerated.",
+    "004b43b0 caches 00a91020() into [00F8BBF4]+DDh; what 00a91020 reports is unknown.",
+    "The save-manager virtuals +1Ch and +14h are read from branch shape, not from their bodies.",
+    "Why 00E08CC0 re-requests a sign-in on an idle frame was not established.",
+    "The x87 fsin at 0067d005 is not bit-identical to a C sin on the rounded float."
+  ],
+  "state": {
+    "0067c840": "reconstructed, build-tested",
+    "0067ca80": "reconstructed, build-tested",
+    "0067cb40": "reconstructed, build-tested",
+    "0067c870": "reconstructed, build-tested",
+    "0067d860": "reconstructed, build-tested",
+    "0067c9e0": "reconstructed, build-tested",
+    "0067cf50": "reconstructed, build-tested",
+    "0067cfb0": "reconstructed, build-tested; the pulse is fixture-tested",
+    "0067cc60": "reconstructed, build-tested",
+    "0067c860": "analysed from raw bytes, no Ghidra function",
+    "0067ca60": "analysed from raw bytes, no Ghidra function",
+    "0067c880": "analysed from raw bytes, no Ghidra function",
+    "0067ca40": "analysed from raw bytes, no Ghidra function",
+    "00a3f100": "analysed as evidence",
+    "00a3e500": "analysed as evidence",
+    "00a3f3d0": "analysed as evidence",
+    "00a3eae0": "analysed as evidence",
+    "00a3eb00": "analysed as evidence",
+    "00a3e5d0": "analysed as evidence",
+    "004ba6d0": "analysed as evidence",
+    "004b43b0": "analysed as evidence",
+    "00532a20": "analysed as evidence",
+    "00530650": "analysed as evidence",
+    "00518d60": "analysed as evidence",
+    "0068d8a0": "analysed as evidence"
+  },
+  "names_recorded": [
+    {
+      "address": "0067c860",
+      "name": "BSP_PressStartScreen_GetScreenId",
+      "mode": "new"
+    },
+    {
+      "address": "0067c870",
+      "name": "BSP_PressStartScreen_Exit",
+      "mode": "new"
+    },
+    {
+      "address": "0067c880",
+      "name": "BSP_PressStartScreen_DeviceButtonHeld",
+      "mode": "new"
+    },
+    {
+      "address": "0067c9e0",
+      "name": "BSP_PressStartScreen_Destruct",
+      "mode": "new"
+    },
+    {
+      "address": "0067ca40",
+      "name": "BSP_PressStartScreen_OnStorageComplete",
+      "mode": "new"
+    },
+    {
+      "address": "0067cb40",
+      "name": "BSP_PressStartScreen_Enter",
+      "mode": "new"
+    },
+    {
+      "address": "0067cc60",
+      "name": "BSP_PressStartScreen_ApplySignIn",
+      "mode": "new"
+    },
+    {
+      "address": "0067cf50",
+      "name": "BSP_PressStartScreen_RunInviteFastPath",
+      "mode": "new"
+    },
+    {
+      "address": "0067cfb0",
+      "name": "BSP_PressStartScreen_Update",
+      "mode": "new"
+    },
+    {
+      "address": "0067d860",
+      "name": "BSP_PressStartScreen_PublishLayout",
+      "mode": "new"
+    },
+    {
+      "address": "0067c840",
+      "name": "BSP_PressStartScreen_Construct",
+      "mode": "evidence appended"
+    },
+    {
+      "address": "0067ca80",
+      "name": "BSP_PressStartScreen_LoadLayout",
+      "mode": "evidence appended"
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "warnings_as_errors": true,
+    "registered_in": "cmake/startup.cmake"
+  },
+  "tests": {
+    "suite": "reconstructed_math",
+    "result": "1/1 passed",
+    "added": "one case in tests/math_tests.cpp for advance_prompt_pulse_0067cfc8, covering the fmod wrap and the sign-bit mask that keep the alpha in [0, 1]"
+  },
+  "follow_up_packets": [
+    {
+      "id": "frontend_prompt_screen",
+      "addresses": [
+        "00531b00",
+        "00532a20",
+        "00530650",
+        "004b6e50",
+        "00533120"
+      ],
+      "files": [
+        "docs/FRONTEND_PROMPT_SCREEN.md",
+        "reports/frontend_prompt_screen.json",
+        "include/bsp/frontend_prompts.hpp",
+        "src/frontend_prompts.cpp"
+      ],
+      "contract": "Recover the seven 0x48-byte prompt records at menu+60h, the ten-argument raise, the kind values, and how menu+188h/+218h gate a dismissal."
+    },
+    {
+      "id": "xenon_sign_in_pump",
+      "addresses": [
+        "00a40510",
+        "00a3f100",
+        "00a3f3d0",
+        "00a3e470",
+        "00a3e5d0",
+        "00a3eae0",
+        "00a3eb00",
+        "00a40020"
+      ],
+      "files": [
+        "docs/XENON_SIGN_IN_PUMP.md",
+        "reports/xenon_sign_in_pump.json",
+        "include/bsp/xenon_sign_in.hpp",
+        "src/xenon_sign_in.cpp"
+      ],
+      "contract": "Recover the manager+3B0h state machine, the +28h handshake with the press-start screen, and the callback at manager+24h."
+    },
+    {
+      "id": "player_profile_save",
+      "addresses": [
+        "007fdb20",
+        "007f9290",
+        "007f9340",
+        "007fae70",
+        "007ff100",
+        "007fa710",
+        "0067d6e0"
+      ],
+      "files": [
+        "docs/PLAYER_PROFILE_SAVE.md",
+        "reports/player_profile_save.json",
+        "include/bsp/player_profile_save.hpp",
+        "src/player_profile_save.cpp"
+      ],
+      "contract": "Recover the profile block at game+650h, the L\"Session\" save container at 0067d801, and the queue-with-callback contract 0067ca40 rides on."
+    }
+  ],
+  "integrator_actions": [
+    "Define Ghidra functions at 0067c860-0067c865, 0067c870-0067c870, 0067c880-0067c8a9, 0067ca40-0067ca5c, 0067ca60-0067ca7b and 0067d860-0067d86f before applying the ledger names there.",
+    "0067ca60 already carries the generated label CG_scalar_deleting_dtor_0067ca60 and was left alone.",
+    "docs/GAME_TITLE_INIT.md proposed the packet as game_press_start_screen with doc docs/GAME_PRESS_START_SCREEN.md; the delivered doc is docs/PRESS_START_SCREEN.md per the packet brief."
+  ],
+  "tool_problems": [
+    "python tools/bsp.py ghidra export fails with 'is not a function in this snapshot' for 0067cfb0 and 0067d860 even though ghidra proto reports a body for 0067cfb0 (0067cfb0-0067d59c); ghidra decompile on the same address succeeds. The export path and the proto path disagree.",
+    "python tools/bsp.py scan-bytes rejects a contiguous hex string and has no --start/--end; it needs space-separated bytes and only a --section filter.",
+    "python tools/bsp.py ghidra disasm --start refuses an address that is inside a truncated stored body, which is correct but means disasm-raw is the only way to page a large function."
+  ]
+}
