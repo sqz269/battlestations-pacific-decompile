@@ -154,3 +154,25 @@ as does this packet. Any primary clarification should identify those old fields
 as partial rather than silently changing their historical byte/hash identity.
 The current saved clear function already includes the RET; no flow or source
 repair is needed for 4D05E0.
+
+
+## Primary integration
+
+The main strict Win32 build, both existing CTests and eight fresh native seeds
+passed. Primary review checked all 63 worker pins, 25 current files and
+28 guarded native spans totaling 3,250 bytes. Twelve exact objects from the
+frozen actual main library retain the reviewed full code, data and relocation
+contents, apart from private scope and debug identities. The unchanged probe
+linked that library and reproduced all 301 trace words, including the original
+range catch and real owning-pool rollback/reuse behavior. Original node/list
+copy catches remain static proofs; seven separate export entries and runtime
+code postimages are not claimed. The read-only evidence bundle is
+`local/resource_alias_pool_primary/`.
+
+Primary repaired only the returning-free flow at4CE760 and restored the
+complete21-byte saved catch through4CE770. Existing comments and names were
+preserved, eight annotations saved and refreshed, and seven existing function
+records extended with the actual-pool overload/domain. These are overloads of
+existing algorithms, so this integration adds zero newly recovered bodies.
+The historical82-byte clear captures remain explicitly partial evidence.
+Record/cache/vector consumers and gameplay validation remain separate.

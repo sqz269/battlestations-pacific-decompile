@@ -1,0 +1,149 @@
+{
+  "reason": "Two returning tree functions have only conditional throw branches; A82C00 is game-specific cache virtual erase iteration and a global reset, not a whole STL instantiation.",
+  "entries": [
+    {
+      "address": "00a83c90",
+      "prior_ledger": {
+        "address": "00a83c90",
+        "name": "STL_xlen_throw_00a83c90",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00a83c90",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_00a83c90 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_xlen_throw_00a83c90 at 00a83c90\nSignature: void * __fastcall STL_xlen_throw_00a83c90(void * tree, uint unused_edx, void * out, uint left, void * parent, void * pair)\nEntry: 00a83c90\nBody: 00a83c90 - 00a83e7b",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00a83c90"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "00a839c0",
+      "prior_ledger": {
+        "address": "00a839c0",
+        "name": "STL_xlen_throw_00a839c0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00a839c0",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_00a839c0 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_xlen_throw_00a839c0 at 00a839c0\nSignature: void * __fastcall STL_xlen_throw_00a839c0(void * tree, uint unused_edx, void * out, void * iterator_owner, void * iterator_node)\nEntry: 00a839c0\nBody: 00a839c0 - 00a83c51",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00a839c0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "00a82c00",
+      "prior_ledger": {
+        "address": "00a82c00",
+        "name": "STL_inst_00a82c00",
+        "category": "stl_instantiation",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0028"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00a82c00",
+            "category": "Inventory: stl_instantiation",
+            "comment": "STL_inst_00a82c00 [high] calls _invalid_parameter_noinfo 00bf6713 (_SECURE_SCL hook) and body <= 96 bytes (precision ~0.95)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_inst_00a82c00 at 00a82c00\nSignature: void __fastcall STL_inst_00a82c00(void * cache)\nEntry: 00a82c00\nBody: 00a82c00 - 00a82c50",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00a82c00"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "delete_bookmark",
+      "body": {
+        "address": "00a83c90",
+        "category": "Inventory: stl_throw_site"
+      },
+      "result": "{\"success\": true, \"deleted\": 1, \"address\": \"00a83c90\"}"
+    },
+    {
+      "endpoint": "delete_bookmark",
+      "body": {
+        "address": "00a839c0",
+        "category": "Inventory: stl_throw_site"
+      },
+      "result": "{\"success\": true, \"deleted\": 1, \"address\": \"00a839c0\"}"
+    },
+    {
+      "endpoint": "delete_bookmark",
+      "body": {
+        "address": "00a82c00",
+        "category": "Inventory: stl_instantiation"
+      },
+      "result": "{\"success\": true, \"deleted\": 1, \"address\": \"00a82c00\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

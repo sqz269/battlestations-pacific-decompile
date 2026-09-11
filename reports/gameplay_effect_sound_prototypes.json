@@ -1,0 +1,375 @@
+{
+  "reason": "Restore explicit ECX and stack inputs plus real return values for Sound/cache routines and mutable STL iterators. Fastcall unused_edx is an analysis storage model; factory/node allocator stdcall models stack-only inputs, not recovered source syntax.",
+  "entries": [
+    {
+      "address": "0086ef60",
+      "name": "BSP_EffectSound_ReadLua",
+      "proposed": "void __fastcall BSP_EffectSound_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_0086ef60 at 0086ef60\nSignature: undefined FUN_0086ef60(void)\nEntry: 0086ef60\nBody: 0086ef60 - 0086f3a9",
+      "apply": "Successfully set prototype for function at 0086ef60 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSound_ReadLua at 0086ef60\nSignature: void __fastcall BSP_EffectSound_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 0086ef60\nBody: 0086ef60 - 0086f3a9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_EffectSound_ReadLua at 0086ef60\nSignature: void __fastcall BSP_EffectSound_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 0086ef60\nBody: 0086ef60 - 0086f3a9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0086fa90",
+      "name": "BSP_EffectSound_Destruct",
+      "proposed": "void __fastcall BSP_EffectSound_Destruct(void *component)",
+      "before": "Function: FUN_0086fa90 at 0086fa90\nSignature: undefined FUN_0086fa90(void)\nEntry: 0086fa90\nBody: 0086fa90 - 0086facf",
+      "apply": "Successfully set prototype for function at 0086fa90 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSound_Destruct at 0086fa90\nSignature: void __fastcall BSP_EffectSound_Destruct(void * component)\nEntry: 0086fa90\nBody: 0086fa90 - 0086facf",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_EffectSound_Destruct at 0086fa90\nSignature: void __fastcall BSP_EffectSound_Destruct(void * component)\nEntry: 0086fa90\nBody: 0086fa90 - 0086facf",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0086fb00",
+      "name": "CG_scalar_deleting_dtor_0086fb00",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086fb00(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086fb00 at 0086fb00\nSignature: undefined CG_scalar_deleting_dtor_0086fb00(void)\nEntry: 0086fb00\nBody: 0086fb00 - 0086fb1d",
+      "apply": "Successfully set prototype for function at 0086fb00 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086fb00 at 0086fb00\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086fb00(void * component, uint unused_edx, uint flags)\nEntry: 0086fb00\nBody: 0086fb00 - 0086fb1d",
+      "readback_verified": true,
+      "after_annotation": "Function: CG_scalar_deleting_dtor_0086fb00 at 0086fb00\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086fb00(void * component, uint unused_edx, uint flags)\nEntry: 0086fb00\nBody: 0086fb00 - 0086fb1d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "005b8ea0",
+      "name": "BSP_EffectSoundSamples_Reserve",
+      "proposed": "void __fastcall BSP_EffectSoundSamples_Reserve(void *header, unsigned int unused_edx, int count)",
+      "before": "Function: FUN_005b8ea0 at 005b8ea0\nSignature: undefined FUN_005b8ea0(void)\nEntry: 005b8ea0\nBody: 005b8ea0 - 005b8f93",
+      "apply": "Successfully set prototype for function at 005b8ea0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSoundSamples_Reserve at 005b8ea0\nSignature: void __fastcall BSP_EffectSoundSamples_Reserve(void * header, uint unused_edx, int count)\nEntry: 005b8ea0\nBody: 005b8ea0 - 005b8f93",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_EffectSoundSamples_Reserve at 005b8ea0\nSignature: void __fastcall BSP_EffectSoundSamples_Reserve(void * header, uint unused_edx, int count)\nEntry: 005b8ea0\nBody: 005b8ea0 - 005b8f93",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "005b8fa0",
+      "name": "BSP_EffectSoundSamples_Resize",
+      "proposed": "void __fastcall BSP_EffectSoundSamples_Resize(void *header, unsigned int unused_edx, int count)",
+      "before": "Function: FUN_005b8fa0 at 005b8fa0\nSignature: undefined FUN_005b8fa0(void)\nEntry: 005b8fa0\nBody: 005b8fa0 - 005b901d",
+      "apply": "Successfully set prototype for function at 005b8fa0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSoundSamples_Resize at 005b8fa0\nSignature: void __fastcall BSP_EffectSoundSamples_Resize(void * header, uint unused_edx, int count)\nEntry: 005b8fa0\nBody: 005b8fa0 - 005b901d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_EffectSoundSamples_Resize at 005b8fa0\nSignature: void __fastcall BSP_EffectSoundSamples_Resize(void * header, uint unused_edx, int count)\nEntry: 005b8fa0\nBody: 005b8fa0 - 005b901d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "005b9af0",
+      "name": "BSP_EffectSoundSamples_AppendRetained",
+      "proposed": "void __fastcall BSP_EffectSoundSamples_AppendRetained(void *header, unsigned int unused_edx, void *source_slot)",
+      "before": "Function: FUN_005b9af0 at 005b9af0\nSignature: undefined FUN_005b9af0(void)\nEntry: 005b9af0\nBody: 005b9af0 - 005b9b62",
+      "apply": "Successfully set prototype for function at 005b9af0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSoundSamples_AppendRetained at 005b9af0\nSignature: void __fastcall BSP_EffectSoundSamples_AppendRetained(void * header, uint unused_edx, void * source_slot)\nEntry: 005b9af0\nBody: 005b9af0 - 005b9b62",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_EffectSoundSamples_AppendRetained at 005b9af0\nSignature: void __fastcall BSP_EffectSoundSamples_AppendRetained(void * header, uint unused_edx, void * source_slot)\nEntry: 005b9af0\nBody: 005b9af0 - 005b9b62",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0043e9a0",
+      "name": "BSP_NativeString_MatchesAtOffset",
+      "proposed": "bool __fastcall BSP_NativeString_MatchesAtOffset(void *candidate, unsigned int unused_edx, void *pattern, unsigned int start)",
+      "before": "Function: FUN_0043e9a0 at 0043e9a0\nSignature: undefined FUN_0043e9a0(void)\nEntry: 0043e9a0\nBody: 0043e9a0 - 0043e9f7",
+      "apply": "Successfully set prototype for function at 0043e9a0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeString_MatchesAtOffset at 0043e9a0\nSignature: bool __fastcall BSP_NativeString_MatchesAtOffset(void * candidate, uint unused_edx, void * pattern, uint start)\nEntry: 0043e9a0\nBody: 0043e9a0 - 0043e9f7",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_NativeString_MatchesAtOffset at 0043e9a0\nSignature: bool __fastcall BSP_NativeString_MatchesAtOffset(void * candidate, uint unused_edx, void * pattern, uint start)\nEntry: 0043e9a0\nBody: 0043e9a0 - 0043e9f7",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a83fd0",
+      "name": "BSP_SoundSampleCache_AcquireByName",
+      "proposed": "void * __fastcall BSP_SoundSampleCache_AcquireByName(void *cache, unsigned int unused_edx, void *out, void *name)",
+      "before": "Function: FUN_00a83fd0 at 00a83fd0\nSignature: undefined FUN_00a83fd0(void)\nEntry: 00a83fd0\nBody: 00a83fd0 - 00a8427f",
+      "apply": "Successfully set prototype for function at 00a83fd0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleCache_AcquireByName at 00a83fd0\nSignature: void * __fastcall BSP_SoundSampleCache_AcquireByName(void * cache, uint unused_edx, void * out, void * name)\nEntry: 00a83fd0\nBody: 00a83fd0 - 00a8427f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_AcquireByName at 00a83fd0\nSignature: void * __fastcall BSP_SoundSampleCache_AcquireByName(void * cache, uint unused_edx, void * out, void * name)\nEntry: 00a83fd0\nBody: 00a83fd0 - 00a8427f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a85440",
+      "name": "BSP_SoundSampleCache_AllocateSample",
+      "proposed": "void * __stdcall BSP_SoundSampleCache_AllocateSample(void *name)",
+      "before": "Function: FUN_00a85440 at 00a85440\nSignature: undefined FUN_00a85440(void)\nEntry: 00a85440\nBody: 00a85440 - 00a8549e",
+      "apply": "Successfully set prototype for function at 00a85440 with __stdcall calling convention",
+      "after": "Function: BSP_SoundSampleCache_AllocateSample at 00a85440\nSignature: void * __stdcall BSP_SoundSampleCache_AllocateSample(void * name)\nEntry: 00a85440\nBody: 00a85440 - 00a8549e",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_AllocateSample at 00a85440\nSignature: void * __stdcall BSP_SoundSampleCache_AllocateSample(void * name)\nEntry: 00a85440\nBody: 00a85440 - 00a8549e",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a83e80",
+      "name": "BSP_SoundSampleCache_EraseIterator",
+      "proposed": "void __fastcall BSP_SoundSampleCache_EraseIterator(void *cache, unsigned int unused_edx, void *iterator)",
+      "before": "Function: FUN_00a83e80 at 00a83e80\nSignature: undefined FUN_00a83e80(void)\nEntry: 00a83e80\nBody: 00a83e80 - 00a83ea0",
+      "apply": "Successfully set prototype for function at 00a83e80 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleCache_EraseIterator at 00a83e80\nSignature: void __fastcall BSP_SoundSampleCache_EraseIterator(void * cache, uint unused_edx, void * iterator)\nEntry: 00a83e80\nBody: 00a83e80 - 00a83ea0",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_EraseIterator at 00a83e80\nSignature: void __fastcall BSP_SoundSampleCache_EraseIterator(void * cache, uint unused_edx, void * iterator)\nEntry: 00a83e80\nBody: 00a83e80 - 00a83ea0",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a82c00",
+      "name": "BSP_SoundSampleCache_ClearAndResetWord",
+      "proposed": "void __fastcall BSP_SoundSampleCache_ClearAndResetWord(void *cache)",
+      "before": "Function: STL_inst_00a82c00 at 00a82c00\nSignature: undefined STL_inst_00a82c00(void)\nEntry: 00a82c00\nBody: 00a82c00 - 00a82c50",
+      "apply": "Successfully set prototype for function at 00a82c00 with __fastcall calling convention",
+      "after": "Function: STL_inst_00a82c00 at 00a82c00\nSignature: void __fastcall STL_inst_00a82c00(void * cache)\nEntry: 00a82c00\nBody: 00a82c00 - 00a82c50",
+      "rename_deferred": "Prototype endpoint preserved an existing user-defined name; explicit ledger annotation performs the rename.",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_ClearAndResetWord at 00a82c00\nSignature: void __fastcall BSP_SoundSampleCache_ClearAndResetWord(void * cache)\nEntry: 00a82c00\nBody: 00a82c00 - 00a82c50",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a81ad0",
+      "name": "STL_SoundSampleTree_IncrementCheckedIterator",
+      "proposed": "void __fastcall STL_SoundSampleTree_IncrementCheckedIterator(void *iterator)",
+      "before": "Function: FUN_00a81ad0 at 00a81ad0\nSignature: undefined FUN_00a81ad0(void)\nEntry: 00a81ad0\nBody: 00a81ad0 - 00a81b32",
+      "apply": "Successfully set prototype for function at 00a81ad0 with __fastcall calling convention",
+      "after": "Function: STL_SoundSampleTree_IncrementCheckedIterator at 00a81ad0\nSignature: void __fastcall STL_SoundSampleTree_IncrementCheckedIterator(void * iterator)\nEntry: 00a81ad0\nBody: 00a81ad0 - 00a81b32",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_IncrementCheckedIterator at 00a81ad0\nSignature: void __fastcall STL_SoundSampleTree_IncrementCheckedIterator(void * iterator)\nEntry: 00a81ad0\nBody: 00a81ad0 - 00a81b32",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a81b80",
+      "name": "STL_SoundSampleTree_DecrementCheckedIterator",
+      "proposed": "void __fastcall STL_SoundSampleTree_DecrementCheckedIterator(void *iterator)",
+      "before": "Function: FUN_00a81b80 at 00a81b80\nSignature: undefined FUN_00a81b80(void)\nEntry: 00a81b80\nBody: 00a81b80 - 00a81c08",
+      "apply": "Successfully set prototype for function at 00a81b80 with __fastcall calling convention",
+      "after": "Function: STL_SoundSampleTree_DecrementCheckedIterator at 00a81b80\nSignature: void __fastcall STL_SoundSampleTree_DecrementCheckedIterator(void * iterator)\nEntry: 00a81b80\nBody: 00a81b80 - 00a81c08",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_DecrementCheckedIterator at 00a81b80\nSignature: void __fastcall STL_SoundSampleTree_DecrementCheckedIterator(void * iterator)\nEntry: 00a81b80\nBody: 00a81b80 - 00a81c08",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a83eb0",
+      "name": "STL_SoundSampleTree_InsertUnique",
+      "proposed": "void * __fastcall STL_SoundSampleTree_InsertUnique(void *tree, unsigned int unused_edx, void *out, void *pair)",
+      "before": "Function: FUN_00a83eb0 at 00a83eb0\nSignature: undefined FUN_00a83eb0(void)\nEntry: 00a83eb0\nBody: 00a83eb0 - 00a83fc3",
+      "apply": "Successfully set prototype for function at 00a83eb0 with __fastcall calling convention",
+      "after": "Function: STL_SoundSampleTree_InsertUnique at 00a83eb0\nSignature: void * __fastcall STL_SoundSampleTree_InsertUnique(void * tree, uint unused_edx, void * out, void * pair)\nEntry: 00a83eb0\nBody: 00a83eb0 - 00a83fc3",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_InsertUnique at 00a83eb0\nSignature: void * __fastcall STL_SoundSampleTree_InsertUnique(void * tree, uint unused_edx, void * out, void * pair)\nEntry: 00a83eb0\nBody: 00a83eb0 - 00a83fc3",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a83c90",
+      "name": "STL_SoundSampleTree_InsertAndRebalance",
+      "proposed": "void * __fastcall STL_SoundSampleTree_InsertAndRebalance(void *tree, unsigned int unused_edx, void *out, unsigned int left, void *parent, void *pair)",
+      "before": "Function: STL_xlen_throw_00a83c90 at 00a83c90\nSignature: undefined STL_xlen_throw_00a83c90(void)\nEntry: 00a83c90\nBody: 00a83c90 - 00a83e7b",
+      "apply": "Successfully set prototype for function at 00a83c90 with __fastcall calling convention",
+      "after": "Function: STL_xlen_throw_00a83c90 at 00a83c90\nSignature: void * __fastcall STL_xlen_throw_00a83c90(void * tree, uint unused_edx, void * out, uint left, void * parent, void * pair)\nEntry: 00a83c90\nBody: 00a83c90 - 00a83e7b",
+      "rename_deferred": "Prototype endpoint preserved an existing user-defined name; explicit ledger annotation performs the rename.",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_InsertAndRebalance at 00a83c90\nSignature: void * __fastcall STL_SoundSampleTree_InsertAndRebalance(void * tree, uint unused_edx, void * out, uint left, void * parent, void * pair)\nEntry: 00a83c90\nBody: 00a83c90 - 00a83e7b",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a839c0",
+      "name": "STL_SoundSampleTree_EraseIterator",
+      "proposed": "void * __fastcall STL_SoundSampleTree_EraseIterator(void *tree, unsigned int unused_edx, void *out, void *iterator_owner, void *iterator_node)",
+      "before": "Function: STL_xlen_throw_00a839c0 at 00a839c0\nSignature: undefined STL_xlen_throw_00a839c0(void)\nEntry: 00a839c0\nBody: 00a839c0 - 00a83c51",
+      "apply": "Successfully set prototype for function at 00a839c0 with __fastcall calling convention",
+      "after": "Function: STL_xlen_throw_00a839c0 at 00a839c0\nSignature: void * __fastcall STL_xlen_throw_00a839c0(void * tree, uint unused_edx, void * out, void * iterator_owner, void * iterator_node)\nEntry: 00a839c0\nBody: 00a839c0 - 00a83c51",
+      "rename_deferred": "Prototype endpoint preserved an existing user-defined name; explicit ledger annotation performs the rename.",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_EraseIterator at 00a839c0\nSignature: void * __fastcall STL_SoundSampleTree_EraseIterator(void * tree, uint unused_edx, void * out, void * iterator_owner, void * iterator_node)\nEntry: 00a839c0\nBody: 00a839c0 - 00a83c51",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a83700",
+      "name": "STL_SoundSampleTree_ConstructNode",
+      "proposed": "void * __fastcall STL_SoundSampleTree_ConstructNode(void *node, unsigned int unused_edx, void *left, void *parent, void *right, void *pair, unsigned int color)",
+      "before": "Function: FUN_00a83700 at 00a83700\nSignature: undefined FUN_00a83700(void)\nEntry: 00a83700\nBody: 00a83700 - 00a8376f",
+      "apply": "Successfully set prototype for function at 00a83700 with __fastcall calling convention",
+      "after": "Function: STL_SoundSampleTree_ConstructNode at 00a83700\nSignature: void * __fastcall STL_SoundSampleTree_ConstructNode(void * node, uint unused_edx, void * left, void * parent, void * right, void * pair, uint color)\nEntry: 00a83700\nBody: 00a83700 - 00a8376f",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_ConstructNode at 00a83700\nSignature: void * __fastcall STL_SoundSampleTree_ConstructNode(void * node, uint unused_edx, void * left, void * parent, void * right, void * pair, uint color)\nEntry: 00a83700\nBody: 00a83700 - 00a8376f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a837c0",
+      "name": "STL_SoundSampleTree_AllocateNode",
+      "proposed": "void * __stdcall STL_SoundSampleTree_AllocateNode(void *left, void *parent, void *right, void *pair, unsigned int color)",
+      "before": "Function: FUN_00a837c0 at 00a837c0\nSignature: undefined FUN_00a837c0(void)\nEntry: 00a837c0\nBody: 00a837c0 - 00a83831",
+      "apply": "Successfully set prototype for function at 00a837c0 with __stdcall calling convention",
+      "after": "Function: STL_SoundSampleTree_AllocateNode at 00a837c0\nSignature: void * __stdcall STL_SoundSampleTree_AllocateNode(void * left, void * parent, void * right, void * pair, uint color)\nEntry: 00a837c0\nBody: 00a837c0 - 00a83831",
+      "readback_verified": true,
+      "after_annotation": "Function: STL_SoundSampleTree_AllocateNode at 00a837c0\nSignature: void * __stdcall STL_SoundSampleTree_AllocateNode(void * left, void * parent, void * right, void * pair, uint color)\nEntry: 00a837c0\nBody: 00a837c0 - 00a83831",
+      "verified_after_annotation": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086ef60",
+        "prototype": "void __fastcall BSP_EffectSound_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086ef60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086fa90",
+        "prototype": "void __fastcall BSP_EffectSound_Destruct(void *component)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086fa90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086fb00",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086fb00(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086fb00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005b8ea0",
+        "prototype": "void __fastcall BSP_EffectSoundSamples_Reserve(void *header, unsigned int unused_edx, int count)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005b8ea0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005b8fa0",
+        "prototype": "void __fastcall BSP_EffectSoundSamples_Resize(void *header, unsigned int unused_edx, int count)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005b8fa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005b9af0",
+        "prototype": "void __fastcall BSP_EffectSoundSamples_AppendRetained(void *header, unsigned int unused_edx, void *source_slot)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005b9af0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0043e9a0",
+        "prototype": "bool __fastcall BSP_NativeString_MatchesAtOffset(void *candidate, unsigned int unused_edx, void *pattern, unsigned int start)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0043e9a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a83fd0",
+        "prototype": "void * __fastcall BSP_SoundSampleCache_AcquireByName(void *cache, unsigned int unused_edx, void *out, void *name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a83fd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a85440",
+        "prototype": "void * __stdcall BSP_SoundSampleCache_AllocateSample(void *name)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a85440 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a83e80",
+        "prototype": "void __fastcall BSP_SoundSampleCache_EraseIterator(void *cache, unsigned int unused_edx, void *iterator)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a83e80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a82c00",
+        "prototype": "void __fastcall BSP_SoundSampleCache_ClearAndResetWord(void *cache)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a82c00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a81ad0",
+        "prototype": "void __fastcall STL_SoundSampleTree_IncrementCheckedIterator(void *iterator)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a81ad0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a81b80",
+        "prototype": "void __fastcall STL_SoundSampleTree_DecrementCheckedIterator(void *iterator)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a81b80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a83eb0",
+        "prototype": "void * __fastcall STL_SoundSampleTree_InsertUnique(void *tree, unsigned int unused_edx, void *out, void *pair)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a83eb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a83c90",
+        "prototype": "void * __fastcall STL_SoundSampleTree_InsertAndRebalance(void *tree, unsigned int unused_edx, void *out, unsigned int left, void *parent, void *pair)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a83c90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a839c0",
+        "prototype": "void * __fastcall STL_SoundSampleTree_EraseIterator(void *tree, unsigned int unused_edx, void *out, void *iterator_owner, void *iterator_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a839c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a83700",
+        "prototype": "void * __fastcall STL_SoundSampleTree_ConstructNode(void *node, unsigned int unused_edx, void *left, void *parent, void *right, void *pair, unsigned int color)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a83700 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a837c0",
+        "prototype": "void * __stdcall STL_SoundSampleTree_AllocateNode(void *left, void *parent, void *right, void *pair, unsigned int color)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a837c0 with __stdcall calling convention"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

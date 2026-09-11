@@ -6500,6 +6500,45 @@
       "validated_revision": "385e4917f99c5c857ecde3ecf7ab71cb0c466219"
     },
     {
+      "id": "orch4_effect_sound_p",
+      "packet": "orch4_effect_sound_p",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_lua_sound_cache_lifetime_fixture_tested",
+      "function_addresses": [
+        "0086ef60",
+        "0086fa90",
+        "0086fb00",
+        "005b8ea0",
+        "005b8fa0",
+        "005b9af0",
+        "0043e9a0",
+        "00a83fd0",
+        "00a85440",
+        "00a83e80",
+        "00a82c00",
+        "00a81ad0",
+        "00a81b80",
+        "00a83eb0",
+        "00a83c90",
+        "00a839c0",
+        "00a83700",
+        "00a837c0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_sound.hpp",
+        "src/gameplay_effect_sound.cpp",
+        "include/bsp/sound_sample_cache.hpp",
+        "src/sound_sample_cache.cpp",
+        "include/bsp/sound_system_owner.hpp",
+        "include/bsp/gameplay_effect_scalar_components.hpp",
+        "src/gameplay_effect_scalar_components.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_sound.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_SOUND.md",
+      "validated_revision": "cb038d1b2e1a99839c1b4623e4b284d85bbc9001"
+    },
+    {
       "id": "native_renderer_camera_prepare1",
       "packet": "native_renderer_camera_prepare1",
       "worker": "main",
@@ -6719,6 +6758,40 @@
       ],
       "scope": "Twelve bounded decoded writer exclusions; renderer embedded lock identified as a distinct domain. Logical retained writer/profile/terminal unresolved; no source bodies.",
       "evidence": "reports/native_logical_vertex_retained_4c_writers_audit.json"
+    },
+    {
+      "id": "native_resource_alias_pool_integration7",
+      "packet": "native_resource_alias_pool_integration7",
+      "state": "seven_actual_pool_overloads_integrated_main_Win32_original_parent_catch_composition_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "004d48a0",
+        "004d26a0",
+        "004ce6f0",
+        "0044bcb0",
+        "004d0990",
+        "004d05e0",
+        "004d0a10"
+      ],
+      "code_ownership": [
+        "src/native_render_resource_alias_nodes.cpp",
+        "include/bsp/native_render_resource_alias_nodes.hpp",
+        "src/native_render_alias_insertion.cpp",
+        "include/bsp/native_render_alias_insertion.hpp",
+        "src/native_render_alias_checked_ops.cpp",
+        "include/bsp/native_render_alias_checked_ops.hpp",
+        "src/native_render_resource_record.cpp",
+        "include/bsp/native_render_resource_record.hpp",
+        "src/native_render_resource_record_construction.cpp",
+        "include/bsp/native_render_resource_record_construction.hpp",
+        "docs/NATIVE_RESOURCE_ALIAS_POOL_INTEGRATION.md",
+        "reports/native_resource_alias_pool_integration_audit.json"
+      ],
+      "new_native_body_count": 0,
+      "scope": "Seven actual owning-pool overloads of existing full algorithms; range-parent original catch composition verified; no record/cache/vector consumer implementation.",
+      "evidence": "reports/native_resource_alias_pool_integration_audit.json"
     }
   ],
   "snapshot_after_analysis": {

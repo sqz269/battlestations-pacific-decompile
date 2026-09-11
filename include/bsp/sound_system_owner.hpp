@@ -4,6 +4,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_class_ownership.hpp"
 #include "bsp/sound_configuration.hpp"
+#include "bsp/panel_sequence_types.hpp"
 
 #include <array>
 #include <cstdint>
@@ -86,16 +87,18 @@ public:
 inline constexpr char kSoundErrorResourcePath[] = "sound/gui/error.fsb";
 
 struct SoundAuxiliaryTreeValue {
-    std::uint32_t native_word_14{}; // meaning not needed by empty construction
+    void* sample_14{}; // Weak raw intrusive sample pointer; no tree retain.
 };
 
 // Native 10h owner with tree header +4, head pointer +8, count +C. The native
-// 1Ch head is black/isnil and self-linked. Only empty construction is recovered:
-// standard map order is not a claim about the native comparator or lookup.
+// 1Ch head is black/isnil and self-linked. Sound sample cache lookup/insertion
+// uses native pooled keys and00443D00 ordering; see sound_sample_cache.hpp.
+// Explicit clear releases keys. C++ map destruction alone is not that cleanup.
 struct SoundAuxiliaryTreeOwner {
-    using Tree = std::map<std::string, SoundAuxiliaryTreeValue>;
+    using Tree = std::map<NativeString, SoundAuxiliaryTreeValue, PanelSequenceNameLess>;
     std::uint32_t native_vtable_00{};
     std::unique_ptr<Tree> tree_04; // allocated after singleton publication
+    std::uint32_t count_0c{}; // Explicit native count, including cleanup callback timing.
 };
 
 struct SoundListenerOwnerState {

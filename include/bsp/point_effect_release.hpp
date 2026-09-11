@@ -35,6 +35,11 @@ public:
     // virtual0 call. This permits forced scalar deletion at a positive count.
     void scalar_delete_current_04(void* actual_effect, std::uint32_t flags) override;
     void invalid_parameter_00bf6713() override;
+    // Host metadata only, AFTER complete constructor member unwind. If this
+    // constructor registered a companion, its actual header must now be CEB130.
+    // Retire that association without scalar deletion/free/count changes. An
+    // earlier native terminal callback may already have removed it.
+    void retire_failed_constructor_binding(void* actual_effect) noexcept;
 private:
     friend class NativePointEffectReference;
     void bind(NativePointEffectReference&);
@@ -82,6 +87,7 @@ public:
     void release_zero_references() noexcept override;
     PointEffectInstanceStorage* scalar_delete_current_04(std::uint32_t flags);
 private:
+    friend class PointEffectReleaseRuntime;
     enum class Phase { bound, destroying, retired };
     PointEffectInstanceStorage& effect_;
     PointEffectReleaseRuntime& runtime_;

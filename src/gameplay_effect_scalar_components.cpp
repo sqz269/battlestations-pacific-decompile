@@ -1,5 +1,6 @@
 #include "bsp/gameplay_effect_scalar_components.hpp"
 #include "bsp/lua_object.hpp"
+#include "bsp/gameplay_effect_sound.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -217,6 +218,7 @@ void* scalar_delete_effect_splash_0086d160(void* p, std::uint32_t f, EffectScala
 void GameplayEffectScalarComponentDispatcher::read_lua_slot_14(void* p, GuiLua51Host& lua,
     const GuiLuaRef& row) {
     const auto vtable = load<std::uint32_t>(p, 0);
+    if (vtable == 0x00d0da18) { read_effect_sound_0086ef60(p, lua, row, context_.sound); return; }
     for (const auto& entry : dispatch) {
         if (entry.vtable == vtable) { entry.read(p, lua, row, context_); return; }
     }
@@ -224,6 +226,7 @@ void GameplayEffectScalarComponentDispatcher::read_lua_slot_14(void* p, GuiLua51
 }
 void GameplayEffectScalarComponentDispatcher::zero_references_slot_00(void* p) {
     const auto vtable = load<std::uint32_t>(p, 0);
+    if (vtable == 0x00d0da18) { scalar_delete_effect_sound_0086fb00(p, 1, context_.sound); return; }
     for (const auto& entry : dispatch) {
         // All seven slot0 entries are00BD30E0, which calls current slot4(1).
         if (entry.vtable == vtable) { entry.destroy(p, 1, context_); return; }
