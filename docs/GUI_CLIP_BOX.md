@@ -122,3 +122,11 @@ constructor/copy ABI, actual GUI page loading, material packing, rendering or
 game validation. Actual retained widget/material ownership remains unresolved:
 ClipBox source fields do not close that lifetime boundary. Full base copy
 00AA9520 and the host's current+24 layout callback remain required integrations.
+
+## Integration correction from docs/GUI_FRONTEND_CLIP_INTEGRATION.md
+
+Current GUI Lua conversion requires the live CRT-mode reference. The ClipBox
+companion now borrows the same reference from GuiTypeDispatchServices and passes
+it through the property reader to00BD63B0. No fixed default mode is substituted
+in production. The ignored reader-default fixture supplies an explicit controlled
+mode. The integrated Win32 build, two CTests and eight native comparisons pass.

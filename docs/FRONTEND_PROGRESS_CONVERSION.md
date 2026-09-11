@@ -100,3 +100,18 @@ default FP exceptions; they do not claim all unmasked-trap or concurrent-global
 scenarios, an installed host binding, ABI compatibility, rendering or gameplay.
 No permanent tests were added. The report preserves old ledger names/comments
 and the superseded clock/dead-multiply interpretation for review.
+
+## Integration correction from docs/GUI_FRONTEND_CLIP_INTEGRATION.md
+
+The previously private BF7420 adapter has been moved without floating-instruction
+changes to the shared native conversion owner in `native_render_batch_keys.cpp`.
+GUI radius now calls that one entry, and LoadingProgressCrtAccess uses it by
+default. The actual scale and mutable0109EEA4 bindings remain required; no clock
+proxy, duplicate CRT kernel or synthetic global is supplied.
+
+The integrated frontend fixture compares the default shared converter against
+the original saved BF7420/BF7456 bodies, rather than sharing the original library
+body between both callers. All sixteen float/integer/x87 comparisons pass.
+The eight GUI radius comparisons also pass after the move; their sqrt dependency
+still remains the shared reconstructed CRT routine. Existing ABI/game limits
+above remain in force.

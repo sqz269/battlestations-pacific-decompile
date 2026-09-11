@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_batch_keys.hpp"
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -98,7 +99,9 @@ using LoadingProgressConvertSt0 = std::int32_t (__fastcall*)(
 struct LoadingProgressCrtAccess {
     const volatile double* scale_00cef258; // Actual shipped value128.0.
     const volatile std::uint32_t* sse2_conversion_0109eea4;
-    LoadingProgressConvertSt0 convert_st0_00bf7420;
+    // Same concrete converter as GUI bounds; override only with an equivalent
+    // original-ABI provider. Actual scale/global bindings remain required.
+    LoadingProgressConvertSt0 convert_st0_00bf7420{native_crt_truncate_st0_00bf7420};
 };
 
 // Whole0057BEC0..0057BF0F; original stdcall(float), RET4, null global no-op.

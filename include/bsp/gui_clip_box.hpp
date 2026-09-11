@@ -27,7 +27,8 @@ void update_gui_clip_box_00ace120(GuiClipBoxFields&, const GuiWidgetTransform&) 
 // preimage; they are not converted into invented clipping values.
 // Native ECX widget; stack visitor; RET4 at00ACE6C4/3, end00ACE6C6.
 void read_gui_clip_box_properties_00ace650(GuiClipBoxFields&,
-    const GuiWidgetTransform&, const GuiTable& evaluated_table);
+    const GuiWidgetTransform&, const GuiTable& evaluated_table,
+    const bool& crt_sse2_conversion);
 
 //00ACE0F0 invokes ONLY actual base copy00AA9520 before stamping its type16
 // table. Base copy owns real node cloning/empty-child-list behavior and must
@@ -45,7 +46,7 @@ void copy_gui_clip_box_00ace0f0(GuiWidgetOwner& destination,
 // and current+24 differ in the retained subset. No extra tree/count/clip cache.
 class GuiClipBoxTypeImplementation final : public GuiGroupTypeImplementation {
 public:
-    explicit GuiClipBoxTypeImplementation(GuiWidgetOwner&);
+    GuiClipBoxTypeImplementation(GuiWidgetOwner&, const bool& crt_sse2_conversion);
     GuiClipBoxTypeImplementation(const GuiClipBoxTypeImplementation&) = delete;
     GuiClipBoxTypeImplementation& operator=(const GuiClipBoxTypeImplementation&) = delete;
     void properties_bound(GuiWidgetOwner&, const GuiTable&) override;
@@ -53,6 +54,7 @@ public:
     GuiClipBoxFields& fields() noexcept { return fields_; }
 private:
     GuiWidgetOwner& owner_;
+    const bool& crt_sse2_conversion_; // same live mode supplied by type dispatch
     GuiClipBoxFields fields_; // intentionally not value-initialized
 };
 

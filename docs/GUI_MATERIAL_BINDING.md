@@ -131,3 +131,10 @@ actual group roots. This host precondition bounds the recovered function; it
 does not add a native class check or claim that the original game calls this
 slot on a group root. Actual model-backed resource roots need their canonical
 association established before this adapter can support them.
+
+## Constructor-address correction from docs/GUI_CLIP_BOX.md
+
+The earlier B8DB80 shorthand in the model/group discussion was incorrect.
+The verified plain Screen path calls B8F450 atAA58FF, B8F5E0 atAA5914, then
+AC6600 atAA5944. B8F5E0 is the actual named cGroup constructor. The storage
+class distinction and canonical model guard are unchanged by this correction.

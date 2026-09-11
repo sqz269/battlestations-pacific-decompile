@@ -101,14 +101,16 @@ void update_gui_clip_box_00ace120(GuiClipBoxFields& fields,
 }
 
 void read_gui_clip_box_properties_00ace650(GuiClipBoxFields& fields,
-    const GuiWidgetTransform& transform, const GuiTable& table) {
+    const GuiWidgetTransform& transform, const GuiTable& table,
+    const bool& crt_sse2_conversion) {
     const auto* value = table.find("BorderWidth");
     if (!value || value->kind() == GuiValue::Kind::Nil) {
         const std::uint32_t default_bits = 0x3dcccccd; //00D7A2F0
         std::memcpy(&fields.border_width_104[0], &default_bits, sizeof(default_bits));
         std::memcpy(&fields.border_width_104[1], &default_bits, sizeof(default_bits));
     } else if (!gui_lua_store_value_00bd63b0(*value,
-        gui_lua_field(GuiLuaFieldType::Vec2, fields.border_width_104), nullptr)) {
+        gui_lua_field(GuiLuaFieldType::Vec2, fields.border_width_104), nullptr,
+        crt_sse2_conversion)) {
         throw std::invalid_argument("ClipBox BorderWidth must be an actual Vec2 table");
     }
     update_gui_clip_box_00ace120(fields, transform);
@@ -124,11 +126,13 @@ void copy_gui_clip_box_00ace0f0(GuiWidgetOwner& destination,
     require_clip_box(destination);
 }
 
-GuiClipBoxTypeImplementation::GuiClipBoxTypeImplementation(GuiWidgetOwner& owner)
-    : owner_(owner) { require_clip_box(owner); }
+GuiClipBoxTypeImplementation::GuiClipBoxTypeImplementation(GuiWidgetOwner& owner,
+    const bool& crt_sse2_conversion)
+    : owner_(owner), crt_sse2_conversion_(crt_sse2_conversion) { require_clip_box(owner); }
 void GuiClipBoxTypeImplementation::properties_bound(GuiWidgetOwner& owner, const GuiTable& table) {
     if (&owner != &owner_) throw std::invalid_argument("ClipBox reader changed its base owner");
-    read_gui_clip_box_properties_00ace650(fields_, owner.layout().transform, table);
+    read_gui_clip_box_properties_00ace650(fields_, owner.layout().transform, table,
+        crt_sse2_conversion_);
 }
 void GuiClipBoxTypeImplementation::update24_00ace120(GuiWidgetOwner& owner) {
     if (&owner != &owner_) throw std::invalid_argument("ClipBox update changed its base owner");

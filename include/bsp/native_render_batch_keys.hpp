@@ -11,6 +11,13 @@ struct NativeRenderBatchStorage;
 // This unusual ABI must be called by an x86 assembly caller that supplies ST0.
 std::uint64_t __cdecl native_x87_truncate_st0_00bf7456() noexcept;
 
+// Shared BF7420 dispatch over that same hardware entry. Input is already ST0;
+// ECX supplies the actual mutable0109EEA4 address. Reads it at conversion time,
+// selects the original FSTP double/CVTTSD2SI sequence or BF7456, consumes ST0
+// and returns the low signed EAX word. Assembly caller only, not a float cast.
+std::int32_t __fastcall native_crt_truncate_st0_00bf7420(
+    const volatile std::uint32_t* actual_0109eea4) noexcept;
+
 // Complete B51AB0: ECX/EDX are actual entry addresses, not semantic projections.
 // Only AL is the predicate result. Unequal material values retain the right
 // value's upper 24 EAX bits. Equal values compare depth with native x87 FCOMIP.

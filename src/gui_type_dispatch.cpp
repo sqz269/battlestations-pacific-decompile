@@ -166,7 +166,7 @@ struct GuiTypeDispatchFactory::Shared {
         case GuiWidgetType::Group:
             return std::make_unique<GuiGroupTypeImplementation>();
         case GuiWidgetType::ClipBox:
-            return std::make_unique<GuiClipBoxTypeImplementation>(owner);
+            return std::make_unique<GuiClipBoxTypeImplementation>(owner, services.crt_sse2_conversion);
         case GuiWidgetType::Icon:
             require(services.icon, "Icon type factory has no actual resource services");
             return std::make_unique<GuiIconTypeImplementation>(owner, services.icon(owner));
