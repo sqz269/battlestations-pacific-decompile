@@ -1,0 +1,108 @@
+{
+  "packet": "orch2_profile_archive",
+  "generated_utc": "2026-09-11T01:08:57.880410+00:00",
+  "branch": "agent/orch2-profile-archive-20260910b",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "Worker read-only; integrator repaired four free fallthroughs under write lock and saved/refreshed export",
+  "routines": [
+    {
+      "address": "007fdf00",
+      "cpp": "read_profile_archive_007fdf00",
+      "old_ghidra_name": "BSP_PlayerProfile_Serialize",
+      "proposed_name": "BSP_PlayerProfile_ReadArchive",
+      "last_instruction": "007fee0e: RET 4",
+      "last_instruction_length": 3,
+      "inclusive_end": "007fee10"
+    },
+    {
+      "address": "007f9540",
+      "cpp": "write_profile_archive_007f9540",
+      "old_ghidra_name": "FUN_007f9540",
+      "proposed_name": "BSP_PlayerProfile_WriteArchive",
+      "last_instruction": "007f9caa: RET 4",
+      "last_instruction_length": 3,
+      "inclusive_end": "007f9cac"
+    }
+  ],
+  "original_abi": "Both __thiscall(ECX=profile, archive*), RET 4; reconstructed interfaces are not ABI compatible",
+  "implemented": [
+    "Full normal-flow field and section traversal for read and write",
+    "Existing concrete GuiLuaReader integration",
+    "Optional DropRate and Bonus preservation",
+    "Unlock/SeenUnlock clearing and consecutive indexed insertion",
+    "Hint singleton-field gate and strict >1000 clear",
+    "Missing lobby section defaults and present-section signed loop bound",
+    "Named achievements and independent legacy numeric-key counter",
+    "Distinct score lifecycle/read/write/sum and final manager call order",
+    "Signed version upgrade before writer Version output",
+    "Writer empty-map RANK output without map mutation"
+  ],
+  "specific_required_dependencies": [
+    "ProfileArchiveWriter virtual backend +4/+8/+0c",
+    "004c1e90 singleton field+08h",
+    "007fd780 destructor plus caller00bf65ac release",
+    "24h allocation and00920e10 constructor",
+    "00920000 full mission-progress reader",
+    "0090cb40 full mission-progress writer",
+    "0090bf50 sum of distinct +18h counter tree",
+    "00425c20 singleton and004374f0 profile-manager update"
+  ],
+  "missing_function_definitions": [],
+  "annotations": "Name ledger records proposed names and preserved prior evidence; integrator must apply corresponding Ghidra annotations after integration",
+  "reused_models": [
+    "ProfileResetState",
+    "ProfileUnlockState",
+    "GuiLuaReader",
+    "GuiLuaVariant",
+    "GuiLuaKeyArray",
+    "SettingsValue"
+  ],
+  "state_fields_added": [],
+  "flow_repair_evidence": "reports/profile_archive_flow_repair.json (integrator-owned)",
+  "validation": {
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matched": 8,
+      "total": 8
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "passed": true,
+      "log": "local/profile_archive_build.log"
+    },
+    "existing_ctest": {
+      "passed": 2,
+      "total": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "profile_native_differential": false
+    },
+    "focused_fixture": {
+      "source": "local/profile_archive_fixture.cpp",
+      "command_file": "local/profile_archive_fixture.cmd",
+      "binary": "build/win32/profile_archive_fixture.exe",
+      "result": "profile archive compatibility fixture passed",
+      "passed": true,
+      "committed": false
+    },
+    "abi_compatible": false,
+    "game_validated": false,
+    "real_save_read_or_written": false
+  },
+  "limitations": [
+    "Mission-score payload and final manager body remain explicit required operations",
+    "Native allocation failure remains observable and has no invented success arm",
+    "Normal-flow only; no native SEH/string/allocator representation",
+    "Existing reader caps250 keys where native overflows; valid native array domain only",
+    "Existing case-insensitive container projection and signed loop-count domain",
+    "No profile binary differential or runtime validation"
+  ],
+  "source_sha256": {
+    "src/profile_archive.cpp": "9ad275aab9eba6fc41349c9ae7e06b987f55de73dbf070d329f0cf91bb53f44b",
+    "include/bsp/profile_archive.hpp": "a05784e3d5089d04bb4d11b235a8c1cf7c9238ed455e45e53f6252445e3b5f35"
+  }
+}
