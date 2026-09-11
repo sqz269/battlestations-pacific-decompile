@@ -6792,6 +6792,43 @@
       "new_native_body_count": 0,
       "scope": "Seven actual owning-pool overloads of existing full algorithms; range-parent original catch composition verified; no record/cache/vector consumer implementation.",
       "evidence": "reports/native_resource_alias_pool_integration_audit.json"
+    },
+    {
+      "id": "orch4_sound_sample_q",
+      "packet": "orch4_sound_sample_q",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_controlled_and_installed_sound_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a84d70",
+        "00a83850",
+        "00a828b0",
+        "00a82c60",
+        "00a82e80",
+        "00a82b70",
+        "0093f6e0",
+        "0093f950",
+        "00a7a9e0",
+        "00a7b3d0",
+        "00bef100",
+        "00bef170",
+        "008d4390",
+        "008d5b20",
+        "00bef220",
+        "00426520"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_sample.hpp",
+        "src/sound_sample.cpp",
+        "include/bsp/sound_sample_runtime.hpp",
+        "src/sound_sample_runtime.cpp",
+        "include/bsp/native_text_tokens.hpp",
+        "src/native_text_tokens.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_sample.json",
+      "discovery_evidence": "docs/SOUND_SAMPLE.md"
     }
   ],
   "snapshot_after_analysis": {

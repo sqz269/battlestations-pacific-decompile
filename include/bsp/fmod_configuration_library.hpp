@@ -4,6 +4,7 @@
 #include "bsp/sound_file_callbacks.hpp"
 #include "bsp/sound_resource_asset.hpp"
 #include "bsp/sound_resource_cleanup.hpp"
+#include "bsp/sound_sample.hpp"
 
 #include <memory>
 #include <string>
@@ -23,7 +24,7 @@ struct FmodConfigurationCall {
 // opaque FMOD objects must come from this same loaded library instance.
 class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
-    public SoundResourceCleanupFmodHost {
+    public SoundResourceCleanupFmodHost, public SoundSampleFmodHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
@@ -59,6 +60,15 @@ public:
         std::uint32_t, std::uint32_t) override;
     FmodResult sound_set_mode(void*, std::uint32_t) override;
     FmodResult event_system_load(void*, const char*, void*, void**) override;
+    FmodResult event_project_get_group(void*, const char*, std::int32_t, void**) override;
+    FmodResult event_group_get_group(void*, const char*, std::int32_t, void**) override;
+    FmodResult event_group_load_event_data(void*, std::uint32_t, std::uint32_t) override;
+    FmodResult event_group_free_event_data(void*, void*, std::int32_t) override;
+    FmodResult event_system_get_event(void*, const char*, std::uint32_t, void**) override;
+    FmodResult event_get_num_parameters(void*, std::int32_t*) override;
+    FmodResult event_get_parameter_by_index(void*, std::int32_t, void**) override;
+    FmodResult event_parameter_get_range(void*, float*, float*) override;
+    FmodResult event_parameter_get_info(void*, std::int32_t*, char**) override;
 
     FmodResult event_system_create(void**) override;
     FmodResult event_system_get_system_object(void*, void**) override;

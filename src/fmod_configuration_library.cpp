@@ -158,6 +158,37 @@ FmodResult FmodConfigurationLibrary::event_system_load(void* system, const char*
     return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Load@16", system,
         path, load_info, project);
 }
+FmodResult FmodConfigurationLibrary::event_project_get_group(void* project, const char* name,
+    std::int32_t cache_events, void** group) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventProject_GetGroup@16", project, name, cache_events, group);
+}
+FmodResult FmodConfigurationLibrary::event_group_get_group(void* parent, const char* name,
+    std::int32_t cache_events, void** group) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventGroup_GetGroup@16", parent, name, cache_events, group);
+}
+FmodResult FmodConfigurationLibrary::event_group_load_event_data(void* group,
+    std::uint32_t resources, std::uint32_t mode) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventGroup_LoadEventData@12", group, resources, mode);
+}
+FmodResult FmodConfigurationLibrary::event_group_free_event_data(void* group, void* event, std::int32_t wait) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventGroup_FreeEventData@12", group, event, wait);
+}
+FmodResult FmodConfigurationLibrary::event_system_get_event(void* system, const char* name,
+    std::uint32_t mode, void** event) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_GetEvent@16", system, name, mode, event);
+}
+FmodResult FmodConfigurationLibrary::event_get_num_parameters(void* event, std::int32_t* count) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetNumParameters@8", event, count);
+}
+FmodResult FmodConfigurationLibrary::event_get_parameter_by_index(void* event, std::int32_t index, void** parameter) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetParameterByIndex@12", event, index, parameter);
+}
+FmodResult FmodConfigurationLibrary::event_parameter_get_range(void* parameter, float* minimum, float* maximum) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventParameter_GetRange@12", parameter, minimum, maximum);
+}
+FmodResult FmodConfigurationLibrary::event_parameter_get_info(void* parameter, std::int32_t* index, char** name) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventParameter_GetInfo@12", parameter, index, name);
+}
 FmodResult FmodConfigurationLibrary::system_get_num_drivers(void* system,
     std::int32_t* count) {
     return impl_->call("FMOD_System_GetNumDrivers", system, count);
