@@ -1,0 +1,72 @@
+[
+  {
+    "address": "004c3020",
+    "before": {
+      "address": "004c3020",
+      "function_name": "FUN_004c3020"
+    },
+    "after": {
+      "address": "004c3020",
+      "old_name": "FUN_004c3020",
+      "name": "BSP_PooledStringList_AllocateSentinel",
+      "evidence": "Full26-byte raw sentinel allocator reconstructed. No register inputs; EAX allocation; RET. DirectBF681B10h allocation; separate raw-pointer and wrapped+4 guards write next/previous self, leave string words untouched. Existing host CRT lifetime boundary. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: No register inputs; EAX allocation pointer; plain RET. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d0a10",
+    "before": {
+      "address": "004d0a10",
+      "function_name": "FUN_004d0a10"
+    },
+    "after": {
+      "address": "004d0a10",
+      "old_name": "FUN_004d0a10",
+      "name": "BSP_PooledStringList_DestroyStorage",
+      "evidence": "Full29-byte list storage destructor including hidden returning-free continuation. ECX actual owner, RET.004D05E0 clear, reload CURRENT sentinel+4, free throughBF65AC, then004D0A24 nulls owner+4. Preserve other callback-mutated fields. False no-return listing truncates atfree; inspect original bytes through004D0A2D. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX actual owner; plain RET; no semantic result. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d48a0",
+    "before": {
+      "address": "004d48a0",
+      "function_name": "FUN_004d48a0"
+    },
+    "after": {
+      "address": "004d48a0",
+      "old_name": "FUN_004d48a0",
+      "name": "BSP_PooledStringList_CopyConstruct",
+      "evidence": "Full108-byte main plus17-byte catch004D490C reconstructed. ECX dest, stack src, EAX dest, RET4. New sentinel/count published before current source sentinel/first reads; self construction abandons old graph and copies empty new list. Actual range004D26A0; complete FuncInfoD8EE1C/try/catch maps. Catch destroys current list via004D0A10 then native rethrow. No invented rollback. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX destination owner; stack source owner; EAX destination; RET4. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2fc60",
+    "before": {
+      "address": "00b2fc60",
+      "function_name": "FUN_00b2fc60"
+    },
+    "after": {
+      "address": "00b2fc60",
+      "old_name": "FUN_00b2fc60",
+      "name": "BSP_NativeRenderResourceRecord_CopyConstruct",
+      "evidence": "Full162-byte actual2Ch record copy constructor reconstructed. ECX dest, stack src, EAX dest, RET4. Clear name before identity branch; distinct actualresize/current-field copy, then actual listcopy004D48A0. Name cleanup arms only after initial copy; DF6200/CBD900 uses current name header on alias failure. Tail fiveDWORDs and unretainedresource read after aliases; unknown08 preserved. No old-buffer release, AddRef or rollback. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX destination; stack source; EAX destination; RET4. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d490c",
+    "before": {
+      "address": "004d490c",
+      "function_name": "Catch_All@004d490c"
+    },
+    "after": {
+      "address": "004d490c",
+      "old_name": "Catch_All@004d490c",
+      "name": "Catch_All@004d490c",
+      "evidence": "Logical catch support of004D48A0, 17bytes through004D491D exclusive. Load actual destination owner fromframe-14h; call full004D0A10; push0/0 and callBF6885 to rethrow. Full handler descriptorD8EDE8 and try-mapD8EE08 checked; not an independent ordinary-call API. Preserve correct runtime catch identity. Logical EH support of004D48A0, implemented in its actual C++ catch block. Evidence reports/native_render_resource_record_construction_audit.json. Primary original caller fixture executes this catch and native rethrow; no separately callable host catch API or native exception ABI claim."
+    },
+    "status": "applied"
+  }
+]

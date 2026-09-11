@@ -1,0 +1,929 @@
+{
+  "packet": "native_renderer_synchronization_actual",
+  "audited_utc": "2026-09-11T00:25:17.902241+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+  "base_commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+  "owned_files": [
+    "include/bsp/native_renderer_synchronization_actual.hpp",
+    "src/native_renderer_synchronization_actual.cpp",
+    "docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md",
+    "reports/native_renderer_synchronization_actual_audit.json"
+  ],
+  "evidence": {
+    "captured_utc": "2026-09-11T00:12:25.128123+00:00",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b33aa0",
+        "end_exclusive": "00b33ab1",
+        "length": 17,
+        "kind": "code",
+        "disk_offset": 7551648,
+        "original_hex": "8a442404a2dcd60801a2ddd60801c20400",
+        "sha256": "2c324d785cfc8b5528228be3c3646b4bb1f85dcdd0d89846c502c0dddf03f4e1",
+        "live_ghidra_matches_installed_pe": true,
+        "ret_instructions": [
+          {
+            "address": "00b33aae",
+            "operand": "4"
+          }
+        ],
+        "fs_instructions": [],
+        "indirect_calls": []
+      },
+      {
+        "address": "00b33ad0",
+        "end_exclusive": "00b33afe",
+        "length": 46,
+        "kind": "code",
+        "disk_offset": 7551696,
+        "original_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+        "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+        "live_ghidra_matches_installed_pe": true,
+        "ret_instructions": [
+          {
+            "address": "00b33ae2",
+            "operand": ""
+          },
+          {
+            "address": "00b33af9",
+            "operand": ""
+          },
+          {
+            "address": "00b33afd",
+            "operand": ""
+          }
+        ],
+        "fs_instructions": [],
+        "indirect_calls": [
+          "00b33aec: call dword ptr [0xce2218]"
+        ]
+      },
+      {
+        "address": "00b33b00",
+        "end_exclusive": "00b33b43",
+        "length": 67,
+        "kind": "code",
+        "disk_offset": 7551744,
+        "original_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+        "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+        "live_ghidra_matches_installed_pe": true,
+        "ret_instructions": [
+          {
+            "address": "00b33b40",
+            "operand": "4"
+          }
+        ],
+        "fs_instructions": [],
+        "indirect_calls": [
+          "00b33b1d: call dword ptr [0xce2210]"
+        ]
+      },
+      {
+        "address": "00b21110",
+        "end_exclusive": "00b21126",
+        "length": 22,
+        "kind": "code",
+        "disk_offset": 7475472,
+        "original_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+        "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+        "live_ghidra_matches_installed_pe": true,
+        "ret_instructions": [
+          {
+            "address": "00b21125",
+            "operand": ""
+          }
+        ],
+        "fs_instructions": [],
+        "indirect_calls": []
+      },
+      {
+        "address": "00b20220",
+        "end_exclusive": "00b20231",
+        "length": 17,
+        "kind": "code",
+        "disk_offset": 7471648,
+        "original_hex": "8b819c19000033c93948180f9fc18ac1c3",
+        "sha256": "b7eff1078d433b851b415e6b098240fb45d978ce3a36a7ea2920dc65c88fafa7",
+        "live_ghidra_matches_installed_pe": true,
+        "ret_instructions": [
+          {
+            "address": "00b20230",
+            "operand": ""
+          }
+        ],
+        "fs_instructions": [],
+        "indirect_calls": []
+      }
+    ],
+    "transfers": [
+      {
+        "function": "00b21110",
+        "site": "00b21120",
+        "mnemonic": "call",
+        "target": "00b33b00"
+      }
+    ]
+  },
+  "native_abi_and_behavior": [
+    {
+      "address": "00b33aa0",
+      "cpp": "set_native_renderer_synchronization_00b33aa0",
+      "native_abi": "stack low byte; RET4; ECX unused",
+      "behavior": "raw mode byte to global 0108D6DC then 0108D6DD; no normalization or other writes"
+    },
+    {
+      "address": "00b33ad0",
+      "cpp": "enter_native_renderer_optional_guard_00b33ad0",
+      "native_abi": "ECX actual renderer; RET; AL 0 or 1 only",
+      "behavior": "wrapping non-atomic nesting increment first; current mode; capture actual renderer+04; actual EnterCriticalSection; increment captured lock raw DWORD+18; no pointer reload after API"
+    },
+    {
+      "address": "00b33b00",
+      "cpp": "leave_native_renderer_optional_guard_00b33b00",
+      "native_abi": "ECX actual renderer; ignored saved-result stack DWORD; RET4",
+      "behavior": "capture mode before wrapping nesting decrement; current renderer+04 lock and current mode govern leave; raw depth decrement before actual LeaveCriticalSection; mode reload only after actual API; update observed byte when nesting zero and unequal"
+    },
+    {
+      "address": "00b21110",
+      "cpp": "destroy_native_renderer_optional_guard_00b21110",
+      "native_abi": "ECX actual 8-byte guard record; RET",
+      "behavior": "check current mode before any guard read; enabled loads byte+00 then renderer+04 and calls 00B33B00; no writes, initialization or skipped-entry repair"
+    },
+    {
+      "address": "00b20220",
+      "cpp": "native_renderer_device_lifecycle_busy_00b20220",
+      "native_abi": "ECX actual renderer; RET; AL=(signed depth>0)",
+      "behavior": "actual renderer+199C points to a separate real 1Ch lock; read signed raw DWORD+18; no null guard, acquisition or modification"
+    }
+  ],
+  "borrowed_storage": {
+    "globals": {
+      "bytes": 8,
+      "mode_byte": "0108D6DC/+00",
+      "observed_mode_byte": "0108D6DD/+01",
+      "preserved_padding": "+02..+03",
+      "wrapping_non_atomic_nesting_dword": "0108D6E0/+04",
+      "constructor_or_member_initializers": false
+    },
+    "guard": {
+      "bytes": 8,
+      "raw_entered_byte": "+00",
+      "preserved_padding": "+01..+03",
+      "actual_renderer_pointer": "+04",
+      "constructor_or_member_initializers": false,
+      "entry_contract": "native caller conditionally stores renderer before enter then returned AL; skipped entry leaves storage uninitialized",
+      "disabled_cleanup": "must not read either saved field"
+    },
+    "critical_section": {
+      "bytes": 28,
+      "actual_win32_critical_section": "+00..+17",
+      "raw_wrapping_depth_dword": "+18",
+      "optional_pointer_in_actual_renderer": "+04",
+      "distinct_lifecycle_pointer_in_actual_renderer": "+199C"
+    },
+    "whole_renderer_overlay": false,
+    "lock_provider_or_fake_api": false,
+    "atomic_or_bool_normalization": false
+  },
+  "private_fixture": {
+    "tracked_tests_added": 0,
+    "focused_fixture_count": 1,
+    "source": "local/native_renderer_sync_check.cpp",
+    "result": "passed",
+    "stdout": "PASS: five complete native synchronization leaves, 169 verified bytes, 345 event words, original guard-to-leave CALL retained; real Win32 Enter/Leave, raw mode/depth wrapping, disabled inaccessible guard and separate signed lifecycle observer agree.",
+    "complete_native_functions": 5,
+    "complete_native_bytes": 169,
+    "exact_event_words": 345,
+    "original_caller_edge": "00B21110 at 00B21120 CALL 00B33B00, unmodified relative displacement",
+    "native_execution_preconditions": {
+      "project_and_program_verified": true,
+      "all_five_live_ghidra_spans_match_installed_pe": true,
+      "existing_seed_matches": 8,
+      "seed_count": 8
+    },
+    "memory": "private sparse relocated image; original RX code pages, INT3 unused code bytes, NOACCESS unused image pages, separate RW global/IAT pages",
+    "original_instruction_mutations": "only the following 13 absolute global/IAT memory operand relocations; no body hooks, internal helper substitutions, branch changes or direct CALL patches",
+    "absolute_memory_operand_relocations": [
+      {
+        "site": "00b33aa5",
+        "original_target": "0108d6dc",
+        "instruction": "00b33aa4: mov byte ptr [0x108d6dc], al"
+      },
+      {
+        "site": "00b33aaa",
+        "original_target": "0108d6dd",
+        "instruction": "00b33aa9: mov byte ptr [0x108d6dd], al"
+      },
+      {
+        "site": "00b33ad2",
+        "original_target": "0108d6e0",
+        "instruction": "00b33ad0: add dword ptr [0x108d6e0], 1"
+      },
+      {
+        "site": "00b33ad9",
+        "original_target": "0108d6dc",
+        "instruction": "00b33ad7: cmp byte ptr [0x108d6dc], 0"
+      },
+      {
+        "site": "00b33aee",
+        "original_target": "00ce2218",
+        "instruction": "00b33aec: call dword ptr [0xce2218]"
+      },
+      {
+        "site": "00b33b02",
+        "original_target": "0108d6dc",
+        "instruction": "00b33b00: mov dl, byte ptr [0x108d6dc]"
+      },
+      {
+        "site": "00b33b08",
+        "original_target": "0108d6e0",
+        "instruction": "00b33b06: sub dword ptr [0x108d6e0], 1"
+      },
+      {
+        "site": "00b33b1f",
+        "original_target": "00ce2210",
+        "instruction": "00b33b1d: call dword ptr [0xce2210]"
+      },
+      {
+        "site": "00b33b25",
+        "original_target": "0108d6dc",
+        "instruction": "00b33b23: mov dl, byte ptr [0x108d6dc]"
+      },
+      {
+        "site": "00b33b2b",
+        "original_target": "0108d6e0",
+        "instruction": "00b33b29: cmp dword ptr [0x108d6e0], 0"
+      },
+      {
+        "site": "00b33b34",
+        "original_target": "0108d6dd",
+        "instruction": "00b33b32: cmp byte ptr [0x108d6dd], dl"
+      },
+      {
+        "site": "00b33b3c",
+        "original_target": "0108d6dd",
+        "instruction": "00b33b3a: mov byte ptr [0x108d6dd], dl"
+      },
+      {
+        "site": "00b21112",
+        "original_target": "0108d6dc",
+        "instruction": "00b21110: cmp byte ptr [0x108d6dc], 0"
+      }
+    ],
+    "win32_api_observation": "native IAT cells and private EXE host import cells route through the same before/after observation wrappers, which always call actual GetProcAddress-resolved Win32 EnterCriticalSection/LeaveCriticalSection on actual initialized CRITICAL_SECTION storage; host IAT restored before exit",
+    "actual_api_pairs_per_sequence": 2,
+    "covered_sequence": [
+      "setter raw 81h preserves nesting/padding",
+      "disabled entry increments FFFFFFFFh to zero without reading inaccessible renderer",
+      "nonnull mode with null optional lock increments nesting; original cleanup passes saved F2h without writes or API",
+      "actual Enter wrapper changes renderer+04 after real API; captured first lock depth increments, distinct second lock does not",
+      "original cleanup passes saved zero while current mode still leaves real lock; actual Leave wrapper changes mode to 7Fh and final observed byte reloads it",
+      "global nesting and tracked raw depth wrap both directions, with real critical section acquisition balanced",
+      "disabled cleanup accepts actual uninitialized guard on NOACCESS page without read or nesting change and preserves 8 bytes",
+      "disabled direct leave ignores DEADBEEF saved word and wraps nesting zero to FFFFFFFFh without reading inaccessible renderer",
+      "separate lifecycle observer signed depth cases 80000000h, FFFFFFFFh, zero, one, 7FFFFFFFh; no API or writes",
+      "unmodeled renderer bytes and global/guard padding remain unchanged; real RecursionCount ends zero"
+    ],
+    "not_executed": "whole renderer entry caller, worker, stop pipeline, outer EH frame, device lifecycle, concurrent transition workload or game"
+  },
+  "build_and_existing_checks": {
+    "architecture": "MSVC Win32",
+    "strict_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "private_fixture_additional_options": [
+      "/std:c++17",
+      "/EHsc",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/OPT:REF",
+      "/OPT:NOICF",
+      "/INCREMENTAL:NO",
+      "/SAFESEH:NO"
+    ],
+    "private_fixture_command": "./local/build_native_renderer_sync_check.ps1",
+    "full_build_command": "./scripts/build.ps1",
+    "source_registration": "ignored local/renderer_sync_sources.cmake supplied through CMAKE_PROJECT_INCLUDE_BEFORE; actual production object confirmed in build/win32/bsp_core.vcxproj; no shared CMake or startup registry edit",
+    "full_build_exit_code": 0,
+    "existing_ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    }
+  },
+  "prior_ghidra_annotations": [
+    {
+      "address": "00b33aa0",
+      "annotation": {
+        "address": "00b33aa0",
+        "function_name": "BSP_Renderer_SetOptionalSynchronization",
+        "comment": "[BSP reconstruction 00b33aa0]\nStack byte argument RET4 sets globals0108d6dc and0108d6dd to same value. Does not touch nesting0108d6e0 or locks. Ported for boolean semantic synchronization state; callers must coordinate worker lifecycle."
+      }
+    },
+    {
+      "address": "00b33ad0",
+      "annotation": {
+        "address": "00b33ad0",
+        "function_name": "BSP_Renderer_EnterOptionalGuard",
+        "comment": "[BSP reconstruction 00b33ad0]\nIncrements non-atomic global nesting 0108d6e0; if mode 0108d6dc enabled and this+4 lock nonnull, enters tracked critical section and increments depth+18h, returns true; otherwise false."
+      }
+    },
+    {
+      "address": "00b33b00",
+      "annotation": {
+        "address": "00b33b00",
+        "function_name": "BSP_Renderer_LeaveOptionalGuard",
+        "comment": "[BSP reconstruction 00b33b00]\nthiscall RET 4h; ignores saved enter-result stack argument. Decrements nesting 0108d6e0, conditionally decrements depth/leaves this+4 lock using CURRENT mode 0108d6dc, and when nesting zero copies mode to observed byte 0108d6dd. Concurrent mode transitions not validated."
+      }
+    },
+    {
+      "address": "00b21110",
+      "annotation": {
+        "address": "00b21110",
+        "function_name": "FUN_00b21110"
+      }
+    },
+    {
+      "address": "00b20220",
+      "annotation": {
+        "address": "00b20220",
+        "function_name": "BSP_D3D9Renderer_IsDeviceLifecycleBusy",
+        "comment": "[BSP reconstruction 00b20220]\nECX renderer. Loadpointer+199Ch then signed compare object+18h >0; returnboolean inAL. Worker polls withSleep10 whiletrue and rechecks before Begin/End. Not queue retention mode+20h; pointee identity still unconfirmed.\n\n[BSP reconstruction 00b20220] update\nCorrected earlier HasPendingCount hypothesis: constructor00b328d3 calls tracked critical section factory00bd1860 and stores pointer at renderer+199Ch. Getter returns AL=(signed depth at lock+18h)>0. Device recreation00b29670 and presentation-mode change00b29e60 hold this lock. Plain observation, not acquisition or queue count. Typed port checked idle/held/idle on real tracked critical section; concurrent polling unverified."
+      }
+    }
+  ],
+  "integration_owned_by_primary": [
+    "source registration",
+    "sharded ledgers",
+    "Ghidra comments/name changes and saved export refresh",
+    "broader renderer callers"
+  ],
+  "status": {
+    "exported_and_live_compared": true,
+    "complete_leaf_reconstructed": true,
+    "strict_win32_build_tested": true,
+    "focused_original_caller_fixture_tested": true,
+    "abi_drop_in_replacement": false,
+    "concurrent_mode_transitions_validated": false,
+    "game_validated": false
+  },
+  "limits": [
+    "New C++ entry signatures borrow actual storage; original ECX/stack/AL ABI documented but not exposed as native drop-in wrappers.",
+    "Only original low-byte results are compared; native upper EAX is not canonicalized.",
+    "Non-atomic volatile raw storage retains native field operations and adds no portable C++ data-race guarantee.",
+    "Current mode can make enabled cleanup read an uninitialized skipped-entry record; no repair or safety policy invented.",
+    "No FS/x87/EH-prolog instructions exist in these five complete spans; broader exception frames remain outside packet.",
+    "Private fixture does not replace installed code or prove runtime/game behavior."
+  ],
+  "artifact_hashes": [
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md",
+      "bytes": 8661,
+      "sha256": "49f17b5b624c93d7d425172945326332fedcbe278dd2f664564b33eb240d0e49"
+    },
+    {
+      "path": "local/audit_native_renderer_sync.py",
+      "bytes": 3407,
+      "sha256": "14476ceb157f71465fc73cb678944406033dc99708b63fb4516e59500e1581f7"
+    },
+    {
+      "path": "local/native_renderer_sync_verified.json",
+      "bytes": 3595,
+      "sha256": "45a2f831dbd4a3db8f6afcb6de23bcfb3a646f2666933ab8cad7017d105108f7"
+    },
+    {
+      "path": "local/native_renderer_sync_prototypes.txt",
+      "bytes": 577,
+      "sha256": "a1a73538f622ce3b30811ecb945e49f72018732bf8a2370852daac968be5d471"
+    },
+    {
+      "path": "local/native_renderer_sync_annotations.json",
+      "bytes": 2296,
+      "sha256": "0731d6db450f263389bfe2a073e13ca7265269280f3c1e1058cf10c644b85365"
+    },
+    {
+      "path": "local/native_renderer_sync_seed_guard.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/make_native_renderer_sync_fixture_data.py",
+      "bytes": 1872,
+      "sha256": "b25ecac4f6665419dc46ac2c864518eedb80a5879943a07092ee4d68c62041fe"
+    },
+    {
+      "path": "local/native_renderer_sync_fixture_data.hpp",
+      "bytes": 1099,
+      "sha256": "abc8d77619509ad1b68cd02750b4c3bbf84f9c9f7a11eb9deca2b57b35108dc7"
+    },
+    {
+      "path": "local/native_renderer_sync_relocations.json",
+      "bytes": 1726,
+      "sha256": "210e640caf431782593963049522facd79c2f81e0dce3758c042fdfae34dbfe2"
+    },
+    {
+      "path": "local/native_renderer_sync_check.cpp",
+      "bytes": 15641,
+      "sha256": "1555df8b7f0dc181cf5007f6b61d2320903e47589cbd644daa26c9ae3dcb5758"
+    },
+    {
+      "path": "local/build_native_renderer_sync_check.ps1",
+      "bytes": 1329,
+      "sha256": "a1aa087a4576607c2bb1e391b2f4cd99331f5a0e7741e6aeaa2eb52051743918"
+    },
+    {
+      "path": "local/native_renderer_sync_fixture_run.txt",
+      "bytes": 347,
+      "sha256": "10caed3f7aee39a18c2b2ca7e2252201d15053188815ca1982e1af745e80c3a9"
+    },
+    {
+      "path": "local/renderer_sync_sources.cmake",
+      "bytes": 138,
+      "sha256": "6245a6a6378bb0bae4ac13ea1103e90de8d0081decc3bfb39898ef336daa0559"
+    },
+    {
+      "path": "local/native_renderer_sync_build.txt",
+      "bytes": 10425,
+      "sha256": "84fd07783fd0cd31a4d28ee3f7a39978a0692282b040d54d65d44d428094a1b4"
+    },
+    {
+      "path": "build/renderer-sync-check/native_renderer_sync_check.exe",
+      "bytes": 31744,
+      "sha256": "c1a7ac81d39aee38160795028476aae086ac44e06350962d247b2d275490913f"
+    },
+    {
+      "path": "build/renderer-sync-check/native_renderer_synchronization_actual.obj",
+      "bytes": 2449,
+      "sha256": "c1eade0c926d58695d4b1f74be0e2b0f47839f8f5c7af35b61a2fb4e5601944e"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 17627388,
+      "sha256": "cebf33896c558b1ed8175251976c10f0825a045947d8f455dbed44bf9580164a"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_synchronization_actual.obj",
+      "bytes": 2457,
+      "sha256": "f30ddd9b20d5630b97fb0f8f539c9374f91743002acaa9c6af3336db92a90121"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1845,
+      "sha256": "2273bd22d5bc4a861956f652d8881d3c619b9b9b508d8ee31497f530dafe0a37"
+    }
+  ],
+  "primary_integration": {
+    "status": "integrated_complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+    "worker_commit": "89c9afa",
+    "new_complete_functions": 1,
+    "upgraded_complete_functions": 4,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b33aa0",
+        "name": "set_native_renderer_synchronization_00b33aa0",
+        "cpp_symbol": "set_native_renderer_synchronization_00b33aa0",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b33ab1",
+        "original_abi": "stack low byte; RET4; ECX unused",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b33aa0",
+            "name": "set_renderer_synchronization",
+            "source": "src/d3d9_states.cpp",
+            "status": "semantic_existing_device_probe_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b33ad0",
+        "name": "enter_native_renderer_optional_guard_00b33ad0",
+        "cpp_symbol": "enter_native_renderer_optional_guard_00b33ad0",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b33afe",
+        "original_abi": "ECX actual renderer; RET; AL 0 or 1 only",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b33ad0",
+            "name": "BSP_Renderer_EnterOptionalGuard",
+            "source": "src/d3d9_states.cpp",
+            "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b33b00",
+        "name": "leave_native_renderer_optional_guard_00b33b00",
+        "cpp_symbol": "leave_native_renderer_optional_guard_00b33b00",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b33b43",
+        "original_abi": "ECX actual renderer; ignored saved-result stack DWORD; RET4",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b33b00",
+            "name": "BSP_Renderer_LeaveOptionalGuard",
+            "source": "src/d3d9_states.cpp",
+            "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b21110",
+        "name": "destroy_native_renderer_optional_guard_00b21110",
+        "cpp_symbol": "destroy_native_renderer_optional_guard_00b21110",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b21126",
+        "original_abi": "ECX actual 8-byte guard record; RET",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b20220",
+        "name": "native_renderer_device_lifecycle_busy_00b20220",
+        "cpp_symbol": "native_renderer_device_lifecycle_busy_00b20220",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b20231",
+        "original_abi": "ECX actual renderer; RET; AL=(signed depth>0)",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b20220",
+            "name": "renderer_device_lifecycle_busy",
+            "source": "src/d3d9_states.cpp",
+            "status": "semantic_tracked_lock_probe_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "spans": [
+        {
+          "address": "00b33aa0",
+          "end_exclusive": "00b33ab1",
+          "length": 17,
+          "kind": "code",
+          "disk_offset": 7551648,
+          "original_hex": "8a442404a2dcd60801a2ddd60801c20400",
+          "sha256": "2c324d785cfc8b5528228be3c3646b4bb1f85dcdd0d89846c502c0dddf03f4e1",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33aae",
+              "operand": "4"
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": []
+        },
+        {
+          "address": "00b33ad0",
+          "end_exclusive": "00b33afe",
+          "length": 46,
+          "kind": "code",
+          "disk_offset": 7551696,
+          "original_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+          "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33ae2",
+              "operand": ""
+            },
+            {
+              "address": "00b33af9",
+              "operand": ""
+            },
+            {
+              "address": "00b33afd",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [
+            "00b33aec: call dword ptr [0xce2218]"
+          ]
+        },
+        {
+          "address": "00b33b00",
+          "end_exclusive": "00b33b43",
+          "length": 67,
+          "kind": "code",
+          "disk_offset": 7551744,
+          "original_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+          "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33b40",
+              "operand": "4"
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [
+            "00b33b1d: call dword ptr [0xce2210]"
+          ]
+        },
+        {
+          "address": "00b21110",
+          "end_exclusive": "00b21126",
+          "length": 22,
+          "kind": "code",
+          "disk_offset": 7475472,
+          "original_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+          "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b21125",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": []
+        },
+        {
+          "address": "00b20220",
+          "end_exclusive": "00b20231",
+          "length": 17,
+          "kind": "code",
+          "disk_offset": 7471648,
+          "original_hex": "8b819c19000033c93948180f9fc18ac1c3",
+          "sha256": "b7eff1078d433b851b415e6b098240fb45d978ce3a36a7ea2920dc65c88fafa7",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b20230",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": []
+        }
+      ],
+      "archived_artifacts": [
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+          "bytes": 2877,
+          "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "src/native_renderer_synchronization_actual.cpp",
+          "bytes": 3242,
+          "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md",
+          "bytes": 8661,
+          "sha256": "49f17b5b624c93d7d425172945326332fedcbe278dd2f664564b33eb240d0e49"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/audit_native_renderer_sync.py",
+          "bytes": 3407,
+          "sha256": "14476ceb157f71465fc73cb678944406033dc99708b63fb4516e59500e1581f7"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_verified.json",
+          "bytes": 3595,
+          "sha256": "45a2f831dbd4a3db8f6afcb6de23bcfb3a646f2666933ab8cad7017d105108f7"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_prototypes.txt",
+          "bytes": 577,
+          "sha256": "a1a73538f622ce3b30811ecb945e49f72018732bf8a2370852daac968be5d471"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_annotations.json",
+          "bytes": 2296,
+          "sha256": "0731d6db450f263389bfe2a073e13ca7265269280f3c1e1058cf10c644b85365"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_seed_guard.json",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/make_native_renderer_sync_fixture_data.py",
+          "bytes": 1872,
+          "sha256": "b25ecac4f6665419dc46ac2c864518eedb80a5879943a07092ee4d68c62041fe"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_fixture_data.hpp",
+          "bytes": 1099,
+          "sha256": "abc8d77619509ad1b68cd02750b4c3bbf84f9c9f7a11eb9deca2b57b35108dc7"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_relocations.json",
+          "bytes": 1726,
+          "sha256": "210e640caf431782593963049522facd79c2f81e0dce3758c042fdfae34dbfe2"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_check.cpp",
+          "bytes": 15641,
+          "sha256": "1555df8b7f0dc181cf5007f6b61d2320903e47589cbd644daa26c9ae3dcb5758"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/build_native_renderer_sync_check.ps1",
+          "bytes": 1329,
+          "sha256": "a1aa087a4576607c2bb1e391b2f4cd99331f5a0e7741e6aeaa2eb52051743918"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_fixture_run.txt",
+          "bytes": 347,
+          "sha256": "10caed3f7aee39a18c2b2ca7e2252201d15053188815ca1982e1af745e80c3a9"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/renderer_sync_sources.cmake",
+          "bytes": 138,
+          "sha256": "6245a6a6378bb0bae4ac13ea1103e90de8d0081decc3bfb39898ef336daa0559"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_build.txt",
+          "bytes": 10425,
+          "sha256": "84fd07783fd0cd31a4d28ee3f7a39978a0692282b040d54d65d44d428094a1b4"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/renderer-sync-check/native_renderer_sync_check.exe",
+          "bytes": 31744,
+          "sha256": "c1a7ac81d39aee38160795028476aae086ac44e06350962d247b2d275490913f"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/renderer-sync-check/native_renderer_synchronization_actual.obj",
+          "bytes": 2449,
+          "sha256": "c1eade0c926d58695d4b1f74be0e2b0f47839f8f5c7af35b61a2fb4e5601944e"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 17627388,
+          "sha256": "cebf33896c558b1ed8175251976c10f0825a045947d8f455dbed44bf9580164a"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/win32/bsp_core.dir/Release/native_renderer_synchronization_actual.obj",
+          "bytes": 2457,
+          "sha256": "f30ddd9b20d5630b97fb0f8f539c9374f91743002acaa9c6af3336db92a90121"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 1845,
+          "sha256": "2273bd22d5bc4a861956f652d8881d3c619b9b9b508d8ee31497f530dafe0a37"
+        }
+      ],
+      "pinned_current_dependencies": [
+        {
+          "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+          "path": "include/bsp/random_threads.hpp",
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        }
+      ],
+      "worker_source_unchanged": true
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "src/native_renderer_synchronization_actual.cpp",
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "local/native_sync_primary_fixture.txt",
+        "sha256": "82de478f7161331f9869eb3e91d9f4f8fdec9b8653214a9aafe6e0f3df6e1606"
+      },
+      {
+        "path": "local/build_native_renderer_sync_check.ps1",
+        "sha256": "34d945c92cfe328a892ba977ff77c22781ea2d8856697a5ad7d1ddf05b333928"
+      },
+      {
+        "path": "build/renderer-sync-check/native_renderer_sync_check.exe",
+        "sha256": "faa08685e24929013c6984866ee4a9b98e60af7891715d7da6f34f2ef4637b0b"
+      }
+    ],
+    "primary_library_implementation": true,
+    "build": {
+      "path": "reports/native_labels_sync_primary_build.txt",
+      "sha256": "7bcde6d84af2b665a071884e93e530559abb4d1c788123e784d0b965bcc93673",
+      "tests": 2,
+      "passed": true
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_renderer_synchronization_actual_annotations.json",
+      "sha256": "f2d58d922154434449b9c0e6154a6adb52a014d4efdbf723af7cdc46fb19a4f4",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b33aa0",
+        "path": "exports/bsp/functions/00b33aa0/decompiled.c",
+        "sha256": "97bc6020a9bfb2c541849df85cf77854b253dc75106d4de685fa9953dc483bb2"
+      },
+      {
+        "address": "00b33ad0",
+        "path": "exports/bsp/functions/00b33ad0/decompiled.c",
+        "sha256": "d04f6ffc93c517df6fe47d8e32ea61341bea81ebce8dca57ee8434189d162673"
+      },
+      {
+        "address": "00b33b00",
+        "path": "exports/bsp/functions/00b33b00/decompiled.c",
+        "sha256": "9d7dc605c2e5268b90996af52b7c083333c328f50d488b9b4a8d7c8255c57653"
+      },
+      {
+        "address": "00b21110",
+        "path": "exports/bsp/functions/00b21110/decompiled.c",
+        "sha256": "e76a0f28a8507cd45df13b7d134d53cbcbed5491211f672bee96c088329a110c"
+      },
+      {
+        "address": "00b20220",
+        "path": "exports/bsp/functions/00b20220/decompiled.c",
+        "sha256": "dde8ba88eea6a63bdd8f9a17bb07f2f7f1b205051d2191e13eba1accd4dfe4f3"
+      }
+    ],
+    "closure_utc": "2026-09-11T00:29:59.495230+00:00"
+  }
+}

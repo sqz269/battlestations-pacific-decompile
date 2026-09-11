@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b13030",
+    "before": {
+      "address": "00b13030",
+      "function_name": "BSP_RenderDiagnostics_SetCommandLabel_Provisional",
+      "comment": "[BSP reconstruction 00b13030]\nIf source view differs from owner+684, resize destination to source length then memcpy nonempty payload using resulting destination length. Native pooled string ABI separate from typed diagnostic value storage. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b13030",
+      "old_name": "BSP_RenderDiagnostics_SetCommandLabel_Provisional",
+      "name": "BSP_RenderDiagnostics_SetCommandLabel",
+      "evidence": "Compute actual service+684 destination; exact header identity returns before memory/storage access. Read initial source length, actual41DD40 destination resize preserve=true. Reread source length for nonzero gate. Read current destination length, source data, destination data; copy destination-length bytes. No terminator copy, no source initialization/ownership transfer, no local cleanup guard. Full actual borrowed-service/header/global implementation. Original ABI: ECX actual service, stack actual8h source header, RET4; no error-return contract. Evidence docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md; reports/native_render_diagnostic_labels_audit.json. Primary library fixture7096words/8scenarios/13pool getters plus original reset state0/-1 search/unwind; strictWin32build/2existingCTests. Host release noexcept limits native throwing boundary coverage; no original exception ABI or game validation claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b13510",
+    "before": {
+      "address": "00b13510",
+      "function_name": "BSP_RenderDiagnostics_ResetCommandLabel_Provisional",
+      "comment": "[BSP reconstruction 00b13510]\nReload optional global00F8D39C; if present construct native temporary from literal00CE9A38 bytes58 00 (X), copy to owner+684, then return temporary length+1 bytes to size-class pool. Exit value is X, NOT empty string. Native allocator and SEH ABI unported. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b13510",
+      "old_name": "BSP_RenderDiagnostics_ResetCommandLabel_Provisional",
+      "name": "BSP_RenderDiagnostics_ResetCommandLabel",
+      "evidence": "Read supplied actual F8D39C slot; initially null returns. Construct one fresh actual8h NativeString from fixed literal X through41E870, before arm. Reload current global service, capture temporary data, capture temporary length, then form destination+684 and alias comparison. Arm only copy region; if not aliased, resize from captured temporary length. Captured nonzero length gates current destination-length copy from captured temporary data. On guarded exception use actual41DD20 on CURRENT temporary header and rethrow. On normal path disarm, then release CAPTURED temporary data with CAPTURED length+1 DWORD wrap. No automatic second release, temporary header clearing, second global null check, retry or empty-string substitution. Full actual borrowed-service/header/global implementation. Original ABI: No inputs, ECX unused, RET; no error-return contract. Evidence docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md; reports/native_render_diagnostic_labels_audit.json. Primary library fixture7096words/8scenarios/13pool getters plus original reset state0/-1 search/unwind; strictWin32build/2existingCTests. Host release noexcept limits native throwing boundary coverage; no original exception ABI or game validation claim."
+    },
+    "status": "applied"
+  }
+]

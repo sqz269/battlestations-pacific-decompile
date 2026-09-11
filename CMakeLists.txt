@@ -64,6 +64,10 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_render_queue_rows.cpp src/native_render_pointer_slot_sort.cpp
   src/native_pooled_string_substring.cpp
   src/native_pooled_resource_path.cpp
+  src/native_event_owner.cpp
+  src/native_render_diagnostic_labels.cpp
+  src/native_renderer_synchronization_actual.cpp
+  src/native_render_resource_record_construction.cpp
   src/native_render_command_owner.cpp
   src/native_legacy_sbo_string.cpp
   src/native_legacy_exception_owner.cpp src/native_render_queue_access.cpp

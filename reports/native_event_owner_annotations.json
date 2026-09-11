@@ -1,0 +1,77 @@
+[
+  {
+    "address": "00bd1970",
+    "before": {
+      "address": "00bd1970",
+      "function_name": "BSP_Event_Create",
+      "comment": "[BSP reconstruction 00bd1970]\nAllocate8-byte vtable00d6821c object; CreateEventA(NULL, CL manual-reset byte, FALSE, NULL), handle+4h. Renderer worker passes CL0 for both events. C++ wrapper uses direct object lifetime instead of native allocation ABI."
+    },
+    "after": {
+      "address": "00bd1970",
+      "old_name": "BSP_Event_Create",
+      "name": "BSP_Event_Create",
+      "evidence": "Allocate8; on nonnull store D6821C, call real CreateEventA(null,zero-extended raw byte,FALSE,null), retain returned nullable HANDLE at+04. Existing actual host new-handler/retry/free services. Complete actual8-byte storage entry. Original ABI: CL raw manual-reset byte; EAX allocated actual owner or null; RET. Evidence docs/NATIVE_EVENT_OWNER.md; reports/native_event_owner_audit.json. Primary original-caller real-Win32 fixture41words/3event lifetimes/1null-owner sequence passes; strictWin32 build+2existingCTests pass. Original table words are identities only; not a worker/thread or original game ABI claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd19b0",
+    "before": {
+      "address": "00bd19b0",
+      "function_name": "BSP_Event_DeletingDestruct",
+      "comment": "[BSP reconstruction 00bd19b0]\nCloseHandle(+4h), restore base vtable, free object if stack flags&1. C++ RAII handle cleanup mirrors release, not native deleting-destructor ABI."
+    },
+    "after": {
+      "address": "00bd19b0",
+      "old_name": "BSP_Event_DeletingDestruct",
+      "name": "BSP_Event_DeletingDestruct",
+      "evidence": "Capture current HANDLE+04; store concreteD6821C; unconditionally CloseHandle; test low flag bit0; store baseD68208; free only for bit0. Keep HANDLE word. Returning-free3byte continuation recovered. Complete actual8-byte storage entry. Original ABI: ECX actual owner; stack flags; EAX original possibly freed owner; RET4. Evidence docs/NATIVE_EVENT_OWNER.md; reports/native_event_owner_audit.json. Primary original-caller real-Win32 fixture41words/3event lifetimes/1null-owner sequence passes; strictWin32 build+2existingCTests pass. Original table words are identities only; not a worker/thread or original game ABI claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd1910",
+    "before": {
+      "address": "00bd1910",
+      "function_name": "BSP_Event_Signal",
+      "comment": "[BSP reconstruction 00bd1910]\nEvent vtable+4h; SetEvent(handle+4h). Typed C++ port exposes native ignored BOOL result."
+    },
+    "after": {
+      "address": "00bd1910",
+      "old_name": "BSP_Event_Signal",
+      "name": "BSP_Event_Signal",
+      "evidence": "Load current HANDLE+04 once and return real SetEvent result; no null guard. Complete actual8-byte storage entry. Original ABI: ECX actual owner; EAX raw BOOL; RET. Evidence docs/NATIVE_EVENT_OWNER.md; reports/native_event_owner_audit.json. Primary original-caller real-Win32 fixture41words/3event lifetimes/1null-owner sequence passes; strictWin32 build+2existingCTests pass. Original table words are identities only; not a worker/thread or original game ABI claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd17c0",
+    "before": {
+      "address": "00bd17c0",
+      "function_name": "BSP_Event_Wait",
+      "comment": "[BSP reconstruction 00bd17c0]\nEvent vtable+8h; WaitForSingleObject(handle+4h, INFINITE). Typed port exposes ignored DWORD result. Resolves worker stop acknowledgment wait."
+    },
+    "after": {
+      "address": "00bd17c0",
+      "old_name": "BSP_Event_Wait",
+      "name": "BSP_Event_Wait",
+      "evidence": "Load current HANDLE+04 once and return real WaitForSingleObject(handle,INFINITE) result; no null guard. Complete actual8-byte storage entry. Original ABI: ECX actual owner; EAX raw DWORD; RET. Evidence docs/NATIVE_EVENT_OWNER.md; reports/native_event_owner_audit.json. Primary original-caller real-Win32 fixture41words/3event lifetimes/1null-owner sequence passes; strictWin32 build+2existingCTests pass. Original table words are identities only; not a worker/thread or original game ABI claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd1960",
+    "before": {
+      "address": "00bd1960",
+      "function_name": "BSP_Event_Reset",
+      "comment": "[BSP reconstruction 00bd1960]\nEvent vtable+Ch; ResetEvent(handle+4h). Typed port exposes ignored BOOL result."
+    },
+    "after": {
+      "address": "00bd1960",
+      "old_name": "BSP_Event_Reset",
+      "name": "BSP_Event_Reset",
+      "evidence": "Load current HANDLE+04 once and return real ResetEvent result; no null guard. Complete actual8-byte storage entry. Original ABI: ECX actual owner; EAX raw BOOL; RET. Evidence docs/NATIVE_EVENT_OWNER.md; reports/native_event_owner_audit.json. Primary original-caller real-Win32 fixture41words/3event lifetimes/1null-owner sequence passes; strictWin32 build+2existingCTests pass. Original table words are identities only; not a worker/thread or original game ABI claim."
+    },
+    "status": "applied"
+  }
+]
