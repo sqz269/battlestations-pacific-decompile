@@ -1,0 +1,46 @@
+{
+  "reason": "00505340 is a returning map insertion/balancing routine with one count-limit throw branch; its whole-function STL_xlen_throw label is incorrect.",
+  "entries": [
+    {
+      "address": "00505340",
+      "prior_ledger": {
+        "address": "00505340",
+        "name": "STL_xlen_throw_00505340",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00505340",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_00505340 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_xlen_throw_00505340 at 00505340\nSignature: undefined STL_xlen_throw_00505340(void)\nEntry: 00505340\nBody: 00505340 - 0050552b",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00505340"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
