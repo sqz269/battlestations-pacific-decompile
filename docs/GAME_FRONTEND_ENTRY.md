@@ -324,3 +324,26 @@ function; none needed defining.
 ## Correction from docs/MAIN_MENU_SCREENS.md
 
 `005884a0` does not act on the screen at `00e198ac+58h`: the shell loads ECX with it at `004e4271` but the body never reads ECX; the only object it touches is the manager, and it starts the title music, resolving the `+50h` handle the managers doc left provisional. The seven objects at `+58h..+70h` are leaf classes of the `004f7180` screen hierarchy whose vtable slot +00h returns the id that is both the registry index and the interface id (1 MAINMENU, 2 MISSIONTREE, 4 REWARDS, 3 BRIEFING, 8 CREDITS, 0Ah LEADERBOARDS, 0Bh ACHIEVEMENTS).
+
+## Correction: loading progress conversion (2026-09-11)
+
+The earlier `0057BEC0` interpretation of `00BF7420` as a clock, the dead
+multiply, the x87 stack leak and `last_tick` naming are superseded by
+[FRONTEND_PROGRESS_CONVERSION.md](FRONTEND_PROGRESS_CONVERSION.md).
+`0057BEDD FCOMIP` pops the previous progress, leaving the original incoming
+progress in ST0. `0057BEEF` multiplies that incoming value by128 and the existing
+CRT conversion at `0057BEFA` consumes it. The float at+30 independently selects
+the previous value only when it is strictly greater; equal/unordered selects
+incoming. The signed integer at+2C takes the maximum of its previous value and
+the converted incoming value. It is now named `progress_units` in both existing
+semantic projections. Finite reports are monotonic; the old unconditional
+monotonic statement does not describe the native NaN/zero selection.
+
+The corrected API requires the actual scale and0109EEA4 conversion-global
+bindings plus the existing ST0 CRT service. No integer clock proxy remains and
+no BF7420 kernel was duplicated. There are25 live call sites in6 functions;
+the old sole-caller description was incomplete. A focused ignored differential
+matched float bits, signed units and complete x87 status/TOP for16 comparisons
+against saved/native bytes in both CRT modes, including decreasing input,
+fractional units, signed zeros and NaNs. Win32 `/W4 /WX` and both CTests pass.
+This remains a new C++ service ABI, with no runtime host binding or game proof.
