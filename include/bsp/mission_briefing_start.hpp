@@ -236,8 +236,10 @@ struct MissionBriefingPlayHost {
     virtual void set_movie_completion(std::uint32_t completion_address) = 0;
     // 005923B3: 0058BDF0.
     virtual void start_selected_mission() = 0;
-    // 005923B8..0059244C: five empty strings through 0054B530.
-    virtual void clear_help_line() = 0;
+    // 005923B8..0059244C: five (command 0, empty label, placement 1) triples
+    // through 0054B530 clear the command bar. Help texts +2Ch/+30h are untouched;
+    // their separate setter is 0054A0C0. See docs/MAIN_MENU_COMMAND_BAR.md.
+    virtual void clear_command_bar() = 0;
 };
 
 // 005922F0. Native __thiscall void(MainMenuScreen* this), ECX only, RET, SEH

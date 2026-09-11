@@ -115,6 +115,16 @@ wrap itself in `coordination.ghidra_lock(...)` or leave the write to the integra
 need no lock. An expired lock is reclaimed automatically; a live one is waited for up to two
 minutes, then the caller fails with the holder's name.
 
+## Integration from an orchestrator worktree (orch5 correction)
+
+`tools/integrate_workers.py` also runs from the orchestrator's own worktree. It resolves
+the main checkout with `workspace.main_root()` rather than treating the script's checkout
+as main. Set `BSP_INTEGRATE` to the orchestrator worktree name as before. Commit trailers
+come from `local/commit-trailer.txt` in the checkout containing the invoked script; this
+keeps another harness's attribution out of the orchestrator's merge commits. An explicit
+`BSP_COMMIT_TRAILER_FILE` path overrides that default. Invocation from main retains its
+existing default trailer path. These changes do not bypass leases or the Ghidra write lock.
+
 ## What this does not do
 
 It does not stop an agent that ignores the tools; it makes the honest path the easy path.

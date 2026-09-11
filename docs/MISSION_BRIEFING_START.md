@@ -322,3 +322,12 @@ selection lookup, the side index and the group-completion walk are pure function
 injected hosts with one pure-virtual method per native call site. The record type is
 `MissionRecordData` of `bsp/mission_tree_data.hpp`, reused rather than redefined. Build-tested only:
 nothing here is an ABI-compatible replacement, and no fixture exercises it.
+
+## Correction from docs/MAIN_MENU_COMMAND_BAR.md
+
+`0059244C` calls the full command-bar rebuild `0054B530` with five triples of
+command 0, an empty native string, and placement 1. This clears the commands;
+it leaves the independent help texts at `+2Ch` and `+30h` alone. The original
+`MissionBriefingPlayHost::clear_help_line` name therefore described the wrong
+contract. The host method and its call-site row are now `clear_command_bar`.
+The actual help-text setter is `0054A0C0`, as used by the detail-page builder.

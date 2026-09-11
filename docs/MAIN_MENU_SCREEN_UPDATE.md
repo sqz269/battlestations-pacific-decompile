@@ -341,3 +341,23 @@ it is 8 KB and names `FE_briefing`, `FE_briefing_grid` and `FE_worldmap_historic
 | 005987F0 enter | exported; read only for `+130h` |
 | 00588C70 map driver | partially analyzed: the zoom accumulator and clamp; the widget walk was skimmed |
 | 005993A0 GUI events | partially analyzed: the action mapping only |
+
+## Correction from docs/MAIN_MENU_MAP_POINT_GEOMETRY.md
+
+The earlier `00588C70` clamp-only helper is a partial projection of the map
+driver. The complete bounded driver uses nonzero carried delta `screen+19Ch`
+instead of the supplied zoom delta and forces interpolation factor 1 for that
+carried path. Otherwise the factor starts at 0.2; the final byte argument can
+force 1 only within an active zoom step. The new packet also reconstructs the
+point/flag widget walk and the register-ABI interpolation helper `005803E0`.
+The pre-existing screen-update host boundary is not a full map-state adapter;
+do not combine its clamp projection with the new driver's mutations twice.
+
+## Correction from docs/MISSION_MAP_FLAG_POLICY.md
+
+The detail-page back handler `00599340` is now reconstructed. It is gated on
+page 9 and calls selected-mission lookup, the existing side-index getter, and
+the list builder. Screen byte `+565h` selects the 7/6 rather than 5/4 page pair;
+zero side index selects the first page of each pair. This adds a bounded
+contract to the previously unread detail pair without completing Enter or
+the separate `005993A0` GUI event handler.

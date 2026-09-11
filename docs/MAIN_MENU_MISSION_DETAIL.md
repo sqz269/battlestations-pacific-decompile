@@ -270,3 +270,32 @@ empty string, which clears the help line.
 
 none. Every address in this document already has a Ghidra function. The
 undefined region this packet also covered is in `docs/BRIEFING_SECOND_FILLER.md`.
+
+## Correction from docs/MAIN_MENU_COMMAND_BAR.md
+
+The fifteen stack dwords passed to `0054B530` form five source-order triples:
+low-byte command id, native-string reference, and placement dword. That routine
+rebuilds the command bar. The independent `0054A0C0` setter changes the two help
+texts at `+2Ch` and `+30h`; a zero-command rebuild does not clear those texts.
+The new packet records the placement lookup and the two display modes.
+
+## Correction from docs/MISSION_MAP_FLAG_POLICY.md
+
+`005C2F70` forwards the mission record's leading key to `0090C560` using the
+progress owner at `[game+6B4h]`. Its result is completion status; no side or DLC
+condition occurs in the six-instruction adapter. The flag-visibility follow-up
+is now reconstructed through that existing progress contract.
+
+`00599340..0059939C` returns page 9 to the mission list: it selects page 7/6
+when screen byte `+565h` is set and page 5/4 otherwise, according to whether
+`005C27E0` returns zero/nonzero. It never calls the detail builder `0058C010`.
+The earlier caller attribution was too broad: calls `005997C1` and `005998D0`
+belong to the separately bounded GUI event handler `005993A0..00599D57`.
+Both call instructions and those function boundaries were checked live.
+
+## Correction from docs/MAIN_MENU_MAP_POINT_GEOMETRY.md
+
+`00588C70` now has a bounded map-point/flag positioning and zoom reconstruction.
+`004215D0` remains a vec3-vector insertion contract; STL storage internals are
+not independently ported. See that packet for register inputs, carried zoom,
+and the limits of the earlier clamp-only helper.
