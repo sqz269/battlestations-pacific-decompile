@@ -204,3 +204,15 @@ The remaining vertex and general cache barriers continue to block complete
 unbind/release composition and therefore the broader `B29670` device recreate
 prerequisite. This discovery supplies concrete next work without claiming
 that reconstructing the smaller callbacks completes device recreation.
+
+## Primary integration
+
+The primary revalidated 52 source/evidence/artifact pins, 32 current
+source files and all 85 live-Ghidra/installed-PE spans (5,392 bytes). This
+remains dependency discovery, without a new runtime claim. Query reset2 is
+complete on main. Actual vertex-layout binding1 is assigned to
+`system_fog_owner_discovery`; texture reset4 is assigned to
+`particle_clock_lifetime` with explicit device/output and owner-seeded surface
+scratch cells. Index binding retains its current-profile adapter prerequisite.
+The complete three renderer routes remain open until their listed actual
+bindings, lifetime paths and cache-release dependencies are implemented.

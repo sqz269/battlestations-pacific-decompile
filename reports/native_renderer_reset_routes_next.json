@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_renderer_reset_routes_next",
-  "status": "complete_readonly_route_discovery_with_concrete_next_packets_and_explicit_source_barriers",
+  "status": "complete_bounded_native_reset_route_dependency_discovery_primary_revalidated",
   "generated_utc": "2026-09-11T06:43:43.025474+00:00",
   "source_base": "b327e7d",
   "identity": {
@@ -4133,5 +4133,560 @@
     "Supporting complete native bodies/profile stores do not authorize unrelated address mutations or claim those bodies newly reconstructed.",
     "Numeric profile names and descriptive renderer roles are evidence-backed hypotheses, not recovered original symbols.",
     "Readiness is scoped to listed concrete profiles and actual reached storage; no arbitrary callback closure or synthetic owner-storage policy."
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-09-11T06:51:20.159765+00:00",
+    "worker": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-reset-routes-next-20260910",
+    "verified_source_evidence_artifact_pins": 52,
+    "current_source_files_verified": 32,
+    "current_sources": [
+      "src/native_renderer_synchronization_actual.cpp",
+      "include/bsp/native_renderer_synchronization_actual.hpp",
+      "src/native_renderer_surface_bindings.cpp",
+      "include/bsp/native_renderer_surface_bindings.hpp",
+      "src/native_surface_owner.cpp",
+      "include/bsp/native_surface_owner.hpp",
+      "src/native_shader_device_reset.cpp",
+      "include/bsp/native_shader_device_reset.hpp",
+      "src/native_renderer_binding_getters.cpp",
+      "include/bsp/native_renderer_binding_getters.hpp",
+      "src/native_hardware_layout_owner.cpp",
+      "include/bsp/native_hardware_layout_owner.hpp",
+      "src/native_logical_index_owner.cpp",
+      "include/bsp/native_logical_index_owner.hpp",
+      "src/native_texture_2d_owner.cpp",
+      "include/bsp/native_texture_2d_owner.hpp",
+      "src/native_cube_texture_owner.cpp",
+      "include/bsp/native_cube_texture_owner.hpp",
+      "src/native_render_cache_construction.cpp",
+      "include/bsp/native_render_cache_construction.hpp",
+      "src/native_render_buffer_unregistration.cpp",
+      "include/bsp/native_render_buffer_unregistration.hpp",
+      "src/d3d9_states.cpp",
+      "include/bsp/d3d9_states.hpp",
+      "src/d3d9_resources.cpp",
+      "include/bsp/d3d9_resources.hpp",
+      "src/d3d9_query.cpp",
+      "include/bsp/d3d9_query.hpp",
+      "src/d3d9_reset_texture.cpp",
+      "include/bsp/d3d9_reset_texture.hpp",
+      "src/native_occlusion_query_device_reset.cpp",
+      "include/bsp/native_occlusion_query_device_reset.hpp"
+    ],
+    "fresh_native_spans": [
+      {
+        "address": "00b1fef0",
+        "length": 7,
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b21110",
+        "length": 22,
+        "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b23710",
+        "length": 59,
+        "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b23b10",
+        "length": 319,
+        "sha256": "f04f69fd95e3410bd547a18f49ce949021b9f911cf2388dfd1c4e5cffb81926e",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b23d80",
+        "length": 207,
+        "sha256": "804abb888e6d511df739c72320e39600dbc5ae0d076ea3e3b83e6266722616fa",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b23f20",
+        "length": 226,
+        "sha256": "06fd6b6b0819a2978355e016449e02f635f13f875592fb9abc5cf6ed74a20701",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b241c0",
+        "length": 664,
+        "sha256": "7e2cd8817943cddb628ec0e38b6e5747cf5f238f2556f06844f5c950d8e92f65",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b24710",
+        "length": 297,
+        "sha256": "5b7d11da7271ab9a3001020ff3491f614735371dc6b6aac8f273ee19cab23a48",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b24840",
+        "length": 504,
+        "sha256": "4ad1011fcd017a2680c9d11335211300b8a2053aaa30ae00a6c1d30e2df80451",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b24b00",
+        "length": 236,
+        "sha256": "bf824859fcd01fd2cf56c451217ebb156f75e7dfe705b7b1af66bf2403d4a3ba",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b24bf0",
+        "length": 453,
+        "sha256": "9f8f41242778b5c0fa78eb890e032cd8eca416046ed989f69d7b232757f5e195",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b262c0",
+        "length": 468,
+        "sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3243b",
+        "length": 6,
+        "sha256": "859e8754914ed32a28ceebba7105bd95ad98896e90a766a4f67fb8867a47ab6f",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b33ad0",
+        "length": 46,
+        "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b33b00",
+        "length": 67,
+        "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b33f10",
+        "length": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b33f20",
+        "length": 3,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3cc80",
+        "length": 100,
+        "sha256": "7d2bef323672d2420e9cda960ed51638f509c57af2d35f388fb5e2ecdeadbef1",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3cea0",
+        "length": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3cf90",
+        "length": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3d0c0",
+        "length": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3d510",
+        "length": 52,
+        "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3d550",
+        "length": 56,
+        "sha256": "3b4e38423d828c61398db47c581fb0409879cc4d635917ef65daf6f9b4f3eecc",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3d689",
+        "length": 6,
+        "sha256": "cffb1e2dacdae15397ffe94fef862d5b6521d11ad2b79578a74ac3d099a6d239",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3d720",
+        "length": 136,
+        "sha256": "11ccc387c6c10e6a01c5e6b94bfb65b6f493a421fd3c406cf0669ec10cd98a10",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3dd30",
+        "length": 86,
+        "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3dd90",
+        "length": 362,
+        "sha256": "725508b5f5d5ffcae47674b0daca2805c95bb1ff3d60603448483708ddedb81b",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3defc",
+        "length": 16,
+        "sha256": "bf6e27ad79143889b5709e8c6b17e04821abde4c73b5c53fb8468ecb6c9da448",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3f673",
+        "length": 6,
+        "sha256": "2e81755f9413d024de02594c51cd4cbaf94188d83d9b2ffebe201a6f37aa4f73",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b3f968",
+        "length": 6,
+        "sha256": "4d718ca92f1ad3a652d8cd13868f191186a81528858542424e2ae2660f04c2cc",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b48ce0",
+        "length": 4,
+        "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b48cf0",
+        "length": 10,
+        "sha256": "8eb76e331df34562f4dee65474396e5cdb7ad4afeff7bbfacf8b5d0a419afc6b",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b48d10",
+        "length": 4,
+        "sha256": "e8a390f77a2c35edee25e41f4902293a876d5b3af20791cc05da79c2f55d4983",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b48dc0",
+        "length": 10,
+        "sha256": "7d66b7281691dd0c0078942cf0c04c60450fa6769b9d26b925ec72a39c451dc1",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b4b840",
+        "length": 4,
+        "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b4b9f0",
+        "length": 4,
+        "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b4c1f0",
+        "length": 32,
+        "sha256": "758580e6c8b84654a35802845050c5514009fb972a3b44967fdc4025aac433c7",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b5fe20",
+        "length": 27,
+        "sha256": "9c45583ceed898e5c04ef5b8a6a7100afb71a45a97fc601bd4e1e7751f315ef2",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b5fe60",
+        "length": 33,
+        "sha256": "31eeaea774758bf37204434d865460bfd1c18f2746cec2e899b08dd421b2269c",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b5fe90",
+        "length": 111,
+        "sha256": "469ab83ca834099c95a66eaf40fced39235cc366516f045a472137cfb587d4f0",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b5ff00",
+        "length": 4,
+        "sha256": "68b70ba1e6ad2356c69cac8e846649e599945994fa7690a0bf4af28fa25c24a5",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00b60770",
+        "length": 32,
+        "sha256": "a14ef74c87406d88e40140cb3651236708a1e417eb9607d00b7346c686ab5ac3",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00bf6b43",
+        "length": 54,
+        "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00bf79f0",
+        "length": 122,
+        "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbcf50",
+        "length": 8,
+        "sha256": "df4d39f2aefe77f6a451743e5d53bf537c1152cfcc2e926a6698a45b96b4dc4c",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbcf58",
+        "length": 10,
+        "sha256": "5b4386749b9446eb07644f0522716a30be49490ee8a1e9cf110439aa43326adb",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd050",
+        "length": 8,
+        "sha256": "137e3b8f03f0f8fceaa9f34230b50aec3cf356928e498594c1ae5f47352c5bee",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd058",
+        "length": 10,
+        "sha256": "d778fb032cbb0c39ea6082c439b17f216323bf5a3fff7ee4690479a97de2832e",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd070",
+        "length": 8,
+        "sha256": "22299532ec7abba763576a7865f7619f2aba969866fc42e9fd149b1f23a89853",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd078",
+        "length": 8,
+        "sha256": "155a54d32bafc82de69a10c44f25f40de96c552b3ea046ec9ef1095f8bc00288",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd080",
+        "length": 8,
+        "sha256": "ede54fe1230a80ec87cfebe1731fa246086149d6bd1655d89bed8239c59b1fbe",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd088",
+        "length": 10,
+        "sha256": "160ad0b59eda7dd6e32e83a19b2eebfadee18a56ffe07eda37eec2a5cf355217",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd120",
+        "length": 8,
+        "sha256": "76b66fac52eeb1c85f690e93283955c3c9dae11ed065f4860deac1df36f3aec6",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00cbd128",
+        "length": 10,
+        "sha256": "f2388cd197da71a8be821833fa448df00985591e1dbe456df6d51c36b64e7b92",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00ce221c",
+        "length": 8,
+        "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d5f188",
+        "length": 4,
+        "sha256": "1b7fbade132c43fb388e6f00740a08170015dd3ba071b863711b914411c6c2a3",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d5f1d8",
+        "length": 12,
+        "sha256": "d1d488699a057e9905ed7ccb8dab9df561ea84f6ec6fd631ca531ff8b86d2320",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61870",
+        "length": 8,
+        "sha256": "930f024c1a3a6280d5bef743f72841863f1bdd5ff7c68ea02d37965d1a0bf623",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d6188c",
+        "length": 4,
+        "sha256": "18a5f8b08275659a0ad0c2018f7949f09ef99089a32c6a87601160c5aaf4388b",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61890",
+        "length": 8,
+        "sha256": "4aeca03dd9305b4f8b7fbb588f89d6c273f8022363cb038b32e407511b0cc3bd",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d618b0",
+        "length": 8,
+        "sha256": "d426b2edd7208a74b3fa5b21fe9c5a26afd19f8cd4cdc5f7f3f4c422053d44fe",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d618cc",
+        "length": 4,
+        "sha256": "cc44e2e4b5b1dc662661b87a6cf103f77d5e340dff6d2b824768fc85554fe707",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d618d0",
+        "length": 8,
+        "sha256": "4aeca03dd9305b4f8b7fbb588f89d6c273f8022363cb038b32e407511b0cc3bd",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61948",
+        "length": 8,
+        "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61964",
+        "length": 4,
+        "sha256": "f7071c0376170a7a9a1aa999584605edd662f9444355d2848ab1a3899541a543",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61968",
+        "length": 8,
+        "sha256": "ff841b60d1d54c77a09c054bffa905231e3153e71bcac16043dd29b688b60629",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d619b4",
+        "length": 4,
+        "sha256": "0d20833ec86b5b94fdd6018f266dfb7bc3229729d478160c875f263e5a29ffa4",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d619dc",
+        "length": 8,
+        "sha256": "33c4c6cc27e5470f63a41dedfcddbce413427b187f9a957df629298596daae91",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61d6c",
+        "length": 48,
+        "sha256": "a805cc75a6a31a849987d7cb0b47d255324d14aecea650897153021d8d00591a",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61de0",
+        "length": 44,
+        "sha256": "94759e67f346471cd1dace5cc8e7e77b1d0736d4abc62c6fe220387ac398b8ec",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61e2c",
+        "length": 4,
+        "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61e50",
+        "length": 4,
+        "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61e74",
+        "length": 4,
+        "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d61e98",
+        "length": 4,
+        "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d62ae8",
+        "length": 8,
+        "sha256": "43b7c8449158f6763c8f93429473b22db5bcac53fa8f9ed33ca08283e19ce646",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00d62af4",
+        "length": 12,
+        "sha256": "9de1be15d202d1eaf11f78ef55501c98426ca679b0acb46d3cee8a63b310c4a9",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df5584",
+        "length": 8,
+        "sha256": "7da5813809fe335eacfb2ef288132cfc07efb99c24cf043e33594a08ecb5622b",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df558c",
+        "length": 36,
+        "sha256": "0af7ad418dc71955468a5b62d9c886727fb9d614de93eaf6c68366ddc1bcf3f0",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df56e4",
+        "length": 8,
+        "sha256": "56458c3cf349a6cf98144331decd4e395a8b8c62f7b7c96056a752a99fdd9c08",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df56ec",
+        "length": 36,
+        "sha256": "ea725ee788c1e4d0d190607cfa7a81ff22b40f13940dc05558580715d48d750f",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df5710",
+        "length": 24,
+        "sha256": "714d840a15932ecee8efcc26f1ef8deb280e508afdc474adc3049f2a84ccb141",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df5728",
+        "length": 36,
+        "sha256": "487d2603be61cf7aacbc12074b7b576f933093efd9ebded267dc5db633f94029",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df5814",
+        "length": 8,
+        "sha256": "e6bdbb33f9b667a801511b4ab0205560db00dd71106313bf7a65df0727d9494b",
+        "fresh_live_PE_worker_match": true
+      },
+      {
+        "address": "00df581c",
+        "length": 36,
+        "sha256": "3543bd22731b592833edceed33694fe5c593527dd423e179690a38194da88053",
+        "fresh_live_PE_worker_match": true
+      }
+    ],
+    "fresh_bytes": 5392,
+    "Ghidra_mutations": false,
+    "runtime_claim": false
+  }
 }
