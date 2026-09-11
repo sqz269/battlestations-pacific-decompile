@@ -1,0 +1,225 @@
+{
+ "events": [
+  {
+   "forced_over_leases": [
+    "('004e4a40', {'id': 'agent/cc-mission-frame:cc_mission_frame', 'owner': 'agent/cc-mission-frame', 'packet': 'cc_mission_frame', 'addresses': ['00447060', '004d7970', '004d87b0', '004da6c0', '004db920', '004dc6a0', '004de610', '004e4a40', '00a7a3f0', '00a7a440'], 'ranges': [], 'files': ['docs/MISSION_STATE_FRAME.md', 'include/bsp/mission_state_frame.hpp', 'reports/mission_state_frame.json', 'src/mission_state_frame.cpp'], 'claimed': '2026-09-11T19:49:28+00:00', 'expires': '2026-09-12T03:49:28+00:00', 'status': 'active', 'worktree': 'J:\\\\PROG\\\\battlestations-pacific-decompile-cc-mission-frame', 'note': ''})"
+   ]
+  },
+  {
+   "recreate": "004e4a40",
+   "previous": "Function: BSP_Game_OnMove at 004e4a40\nSignature: undefined BSP_Game_OnMove(void)\nEntry: 004e4a40\nBody: 004e4a40 - 004e4a47",
+   "plate": "[BSP reconstruction 004e4a40]\nName supported by GGame::OnMove and GGame::OnMove::game profiler strings. ECX game, float stack delta, calls close policy004ca2f0 before state-dependent simulation/render work. Bounded Capstone CFG audit against original bytes reaches745 instructions/152 call sites/two RETs; calls assumed to return. Stored Ghidra body remains only8 bytes despite recreate/disassembly; decompiler traverses more code. Not reconstructed; game state+5D4h and frame phase+34h distinct."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "004e4a40"
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "deleted_function": "BSP_Game_OnMove",
+    "body_size": 8,
+    "message": "Function 'BSP_Game_OnMove' deleted at 004e4a40"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e4a40",
+    "end_address": "004e5538"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e4a40",
+    "end_address": "004e5537",
+    "bytes_disassembled": 2808,
+    "message": "Successfully disassembled 2808 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e4a40",
+    "disassemble_first": false,
+    "name": "BSP_Game_OnMove"
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "function_name": "BSP_Game_OnMove",
+    "entry_point": "004e4a40",
+    "body_size": 8,
+    "message": "Function created successfully at 004e4a40",
+    "warnings": [
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' is not PascalCase. Expected: GameOnmove",
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Game_OnMove' does not start with a recognized verb. First word 'Game_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "004e4a40",
+    "comment": "[BSP reconstruction 004e4a40]\nName supported by GGame::OnMove and GGame::OnMove::game profiler strings. ECX game, float stack delta, calls close policy004ca2f0 before state-dependent simulation/render work. Bounded Capstone CFG audit against original bytes reaches745 instructions/152 call sites/two RETs; calls assumed to return. Stored Ghidra body remains only8 bytes despite recreate/disassembly; decompiler traverses more code. Not reconstructed; game state+5D4h and frame phase+34h distinct."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 004e4a40",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "004e4a40",
+   "end": "004e5538",
+   "name": "BSP_Game_OnMove",
+   "after": "Function: BSP_Game_OnMove at 004e4a40\nSignature: undefined BSP_Game_OnMove(void)\nEntry: 004e4a40\nBody: 004e4a40 - 004e4a47"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e4a48",
+    "end_address": "004e4a4d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e4a48",
+    "end_address": "004e4a4c",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "004e4a42"
+   },
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 004e4a42 (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "004e4a40"
+   },
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 004e4a40 (was: NONE, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "forced_over_leases": [
+    "('004e4a40', {'id': 'agent/cc-mission-frame:cc_mission_frame', 'owner': 'agent/cc-mission-frame', 'packet': 'cc_mission_frame', 'addresses': ['00447060', '004d7970', '004d87b0', '004da6c0', '004db920', '004dc6a0', '004de610', '004e4a40', '00a7a3f0', '00a7a440'], 'ranges': [], 'files': ['docs/MISSION_STATE_FRAME.md', 'include/bsp/mission_state_frame.hpp', 'reports/mission_state_frame.json', 'src/mission_state_frame.cpp'], 'claimed': '2026-09-11T19:49:28+00:00', 'expires': '2026-09-12T03:49:28+00:00', 'status': 'active', 'worktree': 'J:\\\\PROG\\\\battlestations-pacific-decompile-cc-mission-frame', 'note': ''})"
+   ]
+  },
+  {
+   "recreate": "004e4a40",
+   "previous": "Function: BSP_Game_OnMove at 004e4a40\nSignature: undefined BSP_Game_OnMove(void)\nEntry: 004e4a40\nBody: 004e4a40 - 004e4a47",
+   "plate": "[BSP reconstruction 004e4a40]\nName supported by GGame::OnMove and GGame::OnMove::game profiler strings. ECX game, float stack delta, calls close policy004ca2f0 before state-dependent simulation/render work. Bounded Capstone CFG audit against original bytes reaches745 instructions/152 call sites/two RETs; calls assumed to return. Stored Ghidra body remains only8 bytes despite recreate/disassembly; decompiler traverses more code. Not reconstructed; game state+5D4h and frame phase+34h distinct."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "004e4a40"
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "deleted_function": "BSP_Game_OnMove",
+    "body_size": 8,
+    "message": "Function 'BSP_Game_OnMove' deleted at 004e4a40"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e4a40",
+    "end_address": "004e5538"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e4a40",
+    "end_address": "004e5537",
+    "bytes_disassembled": 2808,
+    "message": "Successfully disassembled 2808 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e4a40",
+    "disassemble_first": false,
+    "name": "BSP_Game_OnMove"
+   },
+   "result": {
+    "success": true,
+    "address": "004e4a40",
+    "function_name": "BSP_Game_OnMove",
+    "entry_point": "004e4a40",
+    "body_size": 8,
+    "message": "Function created successfully at 004e4a40",
+    "warnings": [
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' is not PascalCase. Expected: GameOnmove",
+     "Function name 'BSP_Game_OnMove' \u2014 main part 'Game_OnMove' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Game_OnMove' does not start with a recognized verb. First word 'Game_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "004e4a40",
+    "comment": "[BSP reconstruction 004e4a40]\nName supported by GGame::OnMove and GGame::OnMove::game profiler strings. ECX game, float stack delta, calls close policy004ca2f0 before state-dependent simulation/render work. Bounded Capstone CFG audit against original bytes reaches745 instructions/152 call sites/two RETs; calls assumed to return. Stored Ghidra body remains only8 bytes despite recreate/disassembly; decompiler traverses more code. Not reconstructed; game state+5D4h and frame phase+34h distinct."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 004e4a40",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "004e4a40",
+   "end": "004e5538",
+   "name": "BSP_Game_OnMove",
+   "after": "Function: BSP_Game_OnMove at 004e4a40\nSignature: undefined BSP_Game_OnMove(void)\nEntry: 004e4a40\nBody: 004e4a40 - 004e4a47"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

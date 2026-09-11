@@ -183,3 +183,6 @@ tree construction/population, registry dispatch B19E90/B1B810, resource destruct
 platform binding nor B1A4F0 belongs in that packet. Exact proposed APIs and all
 host/CRT/EH limits are in the report. Any fixture should be one focused original
 composition, not a broad suite or a claim that original CRT/EH helpers execute.
+
+
+Primary verified all 42 sealed worker pins, 69 additional report pins, and freshly reread all 55 guarded spans (5,163 bytes). The three BSS spans establish PE virtual zero initialization, not running application globals. The eight-leaf source proposal is approved separately; the registry singleton, population and full consumer remain outside this discovery. Immutable evidence: `local/resource_cache_consumer_discovery_primary/`.

@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2d
+# bsp_game.exe, milestones 1 through 2e
 
-Milestone 2d is the current state of the executable, and its section corrects the earlier
+Milestone 2e is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -1308,6 +1308,419 @@ executable.
    which is the buffer factory this packet records as unimplemented.
 6. **The seven main-menu screen classes**, still milestone 2c's follow-up 1. No amount of
    text drawing puts the menu's own items on screen, because 00584AE0 builds them in code.
+
+## Milestone 2e: from the main menu to the mission load request
+
+Addresses: 005caaf0 with 00b66bd0 / 00b6a020 / 00b69d40 / 00b67800 / 00b669a0 / 0057bec0 /
+00586150 (the mission-tree screen's register virtual and the Lua state it opens), 005c3470
+(the id lookup its tail runs), 005861b0 (the main-menu screen's bind-layout virtual),
+00584ae0 with 00aab4c0 (the seven top-level list entries), 00580940 with 005c27e0 and
+005c3be0 (the mission-selection publish and the page pairing), 00599db0 with 004d92b0
+(the per-frame page machine and its action query), 00598b60 (the page dispatcher),
+0058c010 (the mission-detail page builder), 00592640 and 005922f0 (the footer command and
+the play action), 0058bdf0 with 00626930 (the start and the statistics reset), 00439020
+(the two state requests), 004e2770 / 004e1d70 / 004c6890 (the pending scene, the scene
+record and its selection), 0046df00 with 008d9cf0 (the `.scn` header pass) and 004dfb70
+(the load the run stops in front of). Packet `cc_exe_2e`, owner `agent/cc-exe-2e`. Sources:
+`src/game_hosts_mission.cpp`, `include/bsp/game_hosts_mission.hpp`, plus edits to
+`src/game_hosts_menu.cpp`, `src/game_hosts_text.cpp`, `src/game_hosts_frontend.cpp`,
+`src/game_hosts.cpp`, `src/game_main.cpp` and their headers. Report:
+`reports/game_executable_milestone_2e.json`. Ghidra was read-only for this packet.
+
+Milestone 2d left the executable on a main menu with a background and readable title text
+and no way in. This milestone carries a run from that menu to the mission load request: it
+loads the real mission tree out of the installed game, publishes one mission's selection
+through the recovered page rule, builds the mission-detail page over the installed
+world-map layout, takes that page's play action, and stops at the first host the load needs
+from the renderer.
+
+### The new switch
+
+`--menu-select <mission id>` names the mission the mission-tree screen's loader asks the
+shell for at 00586150. **The key is the record's Lua `id`**, which for a campaign mission is
+a short code such as `USN02`; `usn_2_java` is the scene file's stem, not the id, and an id
+the tree does not carry takes 005CAAF0's own clamp to the first mission of the first group.
+Every earlier switch is unchanged.
+
+### 1. The mission tree, 005CAAF0
+
+The mission-tree screen is registry slot 2 and the only one of the seven whose bind step
+reads a data table rather than a GUI layout, which is what
+`docs/MAIN_MENU_SCREENS.md`'s class row already says. `GameMissionHost` runs
+`bsp::load_mission_tree_005caaf0` over a `MissionTreeScriptHost`: a `PcStorageLuaOwner` on
+stock Lua 5.1.1 opened with library mask 4, `Scripts/datatables/MissionTree.lua` run
+through the mounted VFS (its own `DoFile` of `MultiGlobals.lua` included), and the
+`MissionTree` global read through a `MissionTreeLuaView` over the live reader. The view is
+this milestone's own bridge between the reconstructed readers and the interpreter; the
+reading rules are all 005C6A70's, 005C5DA0's and 005C9F70's.
+
+The installed table, all 143 missions of it:
+
+| Group | Name | Missions | First ids |
+| --- | --- | --- | --- |
+| 0 | Training grounds | 22 | TRN1 TRN2 TRN5 TRN3 |
+| 1 | IJN campaign | 30 | IJN01 IJN02 IJN03 IJN04 |
+| 2 | USN campaign | 36 | BSM01 BSM02 BSM03 BSM04 |
+| 3 | IJN DLC | 27 | JM02 JM03 JM04 JM05 |
+| 4 | USN DLC | 28 | PRCP01 PRCP02 PRCP03 PRCP04 |
+
+`multiMissionInfos` holds 34 further records. The group order is an independent confirmation
+of `docs/MAIN_MENU_MISSION_DETAIL.md`'s table: the index the tree keeps is the index
+0058C010 switches on, and group 1 is Japan while group 2 is the United States.
+
+### 2. The page pairing, 00580940
+
+With `USN02` selected the tree's tail resolves group 2, mission 13. 005C27E0 reads the low
+byte of the record's `allied` block and answers side index 0, so the publish writes
+`00E194D8 = 2`, `00E194DC = 13`, `00E08878 = -1` and page **5**, `CampaignUs`. That is the
+page `docs/MAIN_MENU_MISSION_DETAIL.md` predicts for a side-0 mission of group 2, reached
+from the other side of the relation, so the `{4,5}` pair really is Japan then the United
+States.
+
+`00599DB0` then runs for real: the mission-list arm of the page machine takes page 5,
+selects `missions_US_Group` into +110h, reads the two zoom actions (neither of which has a
+record in this process) and reaches the shared epilogue with scene id 3.
+
+### 3. The mission-detail page, 0058C010
+
+`005861B0` loads the three page roots the screen keeps and binds the fourteen widget
+handles the detail page drives. All three pages load and all fourteen widgets bind. The
+executable leaves the three roots hidden after the bind, because the page builder that
+would show or hide one on the top-level page (00584AE0) is not reconstructed; that is this
+milestone's own decision, not recovered behaviour, and 0058C010's own visibility block then
+shows `FE_worldmap_historical` exactly as 0058C6E0 does.
+
+0058C010 runs over the real record: group 2 takes the 0058C0AA arm, `+564h` is set and
+`+565h` cleared, all 36 missions of the group are visited, the visibility block hides the
+two briefing roots and `training_Group` and shows the world map, the briefing text is set
+from the record's `background` key, and `00E08874` becomes 9.
+
+`--menu-select TRN1` exercises the other side of the same gate and confirms it:
+005CAAF0 resolves the training grounds, 00580940's group-0 arm at 00580994 sends the page to
+8, and 0058C092 rejects published group 0, so no mission-detail page is built, no footer
+command exists and the run stops there with exit 0.
+
+### 4. The briefing start and the load request
+
+The page's `globals.continue` footer command reaches 005922F0 through 00592640. The record's
+`MovieName` is empty on this installation, so the play action takes the no-movie arm at
+00592325 and calls 0058BDF0 directly. There the record's `forcedDifficultyLevel` is the
+inherit value 3 and the main-menu flag at +5Ch is clear, so the difficulty comes from
+game+6B0h; the checkpoint test is not taken; 004E2770 sets the pending scene from the
+record's `sceneFile`; and 00439020 enqueues 6 then 0Ah, which the drain services in one
+pass. The sound, movie and profile call sites of that arm are all unimplemented records:
+`MissionPlay::flush_award_tracker` (00690CD0), `MissionPlay::stop_front_end_audio`
+(00A85C00) and the five movie methods were not reached because the movie arm was not taken,
+`MissionStart::checkpoint_differs` (007F8D60) and `write_checkpoint` (00437C70) are the
+profile owner's, and `MissionDetail::start_preview_movie` (0058C8A0),
+`request_streamed_dialog` (0058C9BE) and `audio_language_folder` (008D57A0) are the movie
+and audio owners'.
+
+### 5. The scene record and the `.scn`
+
+004E2770's Create arm builds one record through 004E1D70 and 004C6890 selects index 0. The
+header pass is concrete: 008D9CF0's read is the same VFS pair every other asset takes, and
+the reconstructed reader runs over the 48680 bytes of
+`universe/Scenes/missions/USN/usn_2_java.scn`.
+
+| Fact | Value |
+| --- | --- |
+| `uniqueID` into record+1098h | 1 |
+| short name (004CD7F0) | `usn_2` |
+| database stem +144h | `universe/Scenes/missions/USN/usn_2_java` |
+| numbered VFS blocks | `1_usn_2` `3_usn_2` `4_usn_2` `5_usn_2` `6_usn_2` |
+| mission script (008860B0) | `Scripts/missions/usn_2_java.lua` |
+| side blocks in the record | 0 |
+| slot records filled | 0 |
+| entities | 34 |
+| distinct classes | 2 |
+
+The classes are `DestroyerGen` x32 and `NavPoint` x2, both registered and both
+instantiate-only. Every one of those numbers matches `bsp_mission_scene_probe.exe` on the
+same file, which is the point: the executable and the fixture read the installed scene the
+same way. The entity walk itself belongs to passes 2 and 3 inside 004D4DF0 and reaches no
+field of the record; it is run here only to say what the selected mission's scene holds.
+
+The record's side-block count stays 0 because the header pass does not fill it, so all eight
+slot records get their in-use byte cleared and nothing else. That is 004C6890's documented
+behaviour for a record with no side blocks, not a failure.
+
+### 6. Where the load stops
+
+Request 6 is dequeued as the front-end owner's interface change and request 0Ah is dequeued
+as 004DFB70's. The executable does not enter 004DFB70. It logs the whole 68-step host
+inventory of `mission_load_host_steps` with each step's owner area, and stops at the first
+step whose owner is the renderer or the scene graph:
+
+```
+MissionLoad(world)::global_subsystems        004dc6a0
+MissionLoad(renderer)::reset_render_scene    00874640   <- the run stops here
+```
+
+54 of those steps are inventory records: the run names them and their owners, and no call
+site was reached. That is why this run's unimplemented count is much larger than 2d's; the
+122 that a call actually reached is the comparable number.
+
+### What it looks like on screen
+
+Before the injected press the title page is unchanged from milestone 2d. After it the main
+menu comes up as 2d described, and then the mission-detail page replaces it: the Pacific
+theatre world map fills the frame, the winged plate still reads `MAIN MENU`, and the
+historical panel on the left carries the whole of the selected mission's briefing text,
+justified in Arial16 over the reconstructed wrapped layout. The capture is written to the
+ignored `local/run.png`.
+
+`drawn: yes`. 705 quads on the mission-detail page, 692 of them glyphs, against 14 on the
+main menu and 61 on the title page. The briefing panel is 683 of those glyphs.
+
+Nothing draws the mission map markers, because the installed layout has none; see the
+corrections.
+
+### Host methods
+
+`bsp_game.exe --frames 240 --press-start-frame 30 --menu-select USN02 --log
+local/game_run.log --screenshot local/run.png --screenshot-frame 200 --game-root
+"<install>"`, exit 0: **193 concrete, 176 unimplemented, 369 distinct methods**. Milestone
+2d's run on this tree reports 154 and 80 over 234 and still does, because a run without
+`--menu-select` is byte-for-byte the milestone 2d run. Of the 176, **54 are load-inventory
+records** and 122 were reached by a call.
+
+The methods this packet introduced, in call order. Everything not marked concrete is the
+unimplemented policy with its native call site on the record.
+
+| Host method | Native call site | Status | Calls |
+| --- | --- | --- | --- |
+| `MissionTree::construct_lua_state_owner` | `00b66bd0` | concrete | 1 |
+| `MissionTree::open_lua_libraries` | `00b6a020` | concrete | 1 |
+| `MissionTree::run_script` | `00b69d40` | concrete | 1 |
+| `MissionTree::open_table` | `00b67800` | concrete | 1 |
+| `MissionTree::report_progress` | `0057bec0` | **unimplemented** | 5 |
+| `MissionTree::requested_mission_id` | `00586150` | concrete | 1 |
+| `MissionTree::close_lua_state` | `00b669a0` | concrete | 1 |
+| `MissionTreeScreen::load_tables` | `005caaf0` | concrete | 1 |
+| `MainMenuScreen::bind_layout` | `005861b0` | concrete | 1 |
+| `MainMenuScreen::load_layout` | `00aa5840` | concrete | 3 |
+| `MainMenuScreen::find_child` | `00aa7e00` | concrete | 14 |
+| `MainMenuScreen::build_top_level_page` | `00584ae0` | **unimplemented** | 1 |
+| `MainMenuScreen::allocate_list_entry` | `00aab4c0` | **unimplemented** | 1 |
+| `MainMenuScreen::locale_lookup` | `00a9ec70` | concrete | 7 |
+| `MainMenuSelect::side_index` | `005c27e0` | concrete | 1 |
+| `MainMenuSelect::group_completed` | `005c3be0` | concrete | 1 |
+| `MainMenuSelect::publish_selection` | `00580940` | concrete | 1 |
+| `MainMenuScreen::update` | `00599db0` | concrete | 2 |
+| `MainMenuUpdate::action_fired` | `004d92b0` | concrete | 3 |
+| `MainMenuUpdate::set_active_mission_group` | `0059a4b4` | concrete | 2 |
+| `MainMenuUpdate::map_zoom_input` | `0059a517` | concrete | 1 |
+| `MainMenuUpdate::drive_map` | `00588c70` | **unimplemented** | 2 |
+| `MainMenuUpdate::animate_page_group` | `00683820` | **unimplemented** | 1 |
+| `MainMenuUpdate::animate_detail_group` | `00683820` | **unimplemented** | 1 |
+| `MainMenuUpdate::blend_map_offset` | `00414130` | **unimplemented** | 1 |
+| `MainMenuUpdate::update_scene` | `004c1e90` | **unimplemented** | 2 |
+| `MainMenuScreen::page_dispatch` | `00598b60` | **unimplemented** | 1 |
+| `MainMenuScreen::build_mission_detail_page` | `0058c010` | concrete | 1 |
+| `MissionDetail::request_page_audio` | `00518d60` | **unimplemented** | 1 |
+| `MissionDetail::set_background_icon_state` | `0058c04c` | **unimplemented** | 1 |
+| `MissionDetail::read_tree_selected_group` | `0058c066` | concrete | 1 |
+| `MissionDetail::read_tree_selected_mission_index` | `005c3850` | concrete | 1 |
+| `MissionDetail::publish_selection` | `0058c071` | concrete | 1 |
+| `MissionDetail::set_active_group_widget` | `0058c0aa` | concrete | 1 |
+| `MissionDetail::set_campaign_flags` | `0058c0b4` | concrete | 1 |
+| `MissionDetail::bind_selected_map_point` | `0058c18b` | concrete | 1 |
+| `MissionDetail::map_flag_visible` | `005c2f70` | **unimplemented** | 36 |
+| `MissionDetail::append_map_point` | `004215d0` | concrete | 36 |
+| `MissionDetail::set_widget_visible` | `0058c6e0` | concrete | 17 |
+| `MissionDetail::commit_page_state` | `00583e50` | **unimplemented** | 1 |
+| `MissionDetail::set_briefing_text` | `00abaed0` | concrete | 1 |
+| `MissionDetail::text_clip_height` | `00aa6740` | concrete | 1 |
+| `MissionDetail::briefing_text_height` | `00ab6bd0` | **unimplemented** | 1 |
+| `MissionDetail::reset_scroller` | `00683790` | **unimplemented** | 1 |
+| `MissionDetail::set_scroll_range` | `006834a0` | **unimplemented** | 1 |
+| `MissionDetail::start_preview_movie` | `0058c8a0` | **unimplemented** | 1 |
+| `MissionDetail::audio_language_folder` | `008d57a0` | **unimplemented** | 1 |
+| `MissionDetail::request_streamed_dialog` | `0058c9be` | **unimplemented** | 1 |
+| `MissionDetail::set_page` | `0058cac3` | concrete | 1 |
+| `MissionDetail::set_footer_commands` | `0054b530` | **unimplemented** | 1 |
+| `MissionDetail::clear_help_line` | `0054a0c0` | **unimplemented** | 1 |
+| `MissionDetail::clear_list_box` | `00a9bec0` | **unimplemented** | 1 |
+| `MissionDetail::set_list_box_flags` | `0058cd9e` | **unimplemented** | 1 |
+| `MissionDetail::move_list_box` | `00aa8240` | **unimplemented** | 1 |
+| `MissionDetail::finish_list_box` | `00aa6bc0` | **unimplemented** | 1 |
+| `GuiText::set_localised_source` | `00abaed0` | concrete | 1 |
+| `MainMenuScreen::footer_command` | `00592640` | **unimplemented** | 1 |
+| `MainMenuScreen::play_selected_mission` | `005922f0` | concrete | 1 |
+| `MissionPlay::flush_award_tracker` | `00690cd0` | **unimplemented** | 1 |
+| `MissionPlay::start_selected_mission` | `0058bdf0` | concrete | 1 |
+| `MissionPlay::clear_help_line` | `0054b530` | **unimplemented** | 1 |
+| `MissionStart::set_current_mission_key` | `0058be40` | **unimplemented** | 1 |
+| `MissionStart::set_pending_scene` | `004e2770` | concrete | 1 |
+| `MissionStart::select_scene_record` | `004c6890` | concrete | 1 |
+| `MissionStart::publish_loading_config` | `0057d060` | **unimplemented** | 1 |
+| `MissionStart::set_mission_key_mirror` | `0058befa` | **unimplemented** | 1 |
+| `MissionStart::reset_mission_stats` | `00626930` | concrete | 1 |
+| `MissionStats::set_mission_name` | `00e19798` | **unimplemented** | 1 |
+| `MissionStats::set_debriefing_text` | `00e197a0` | **unimplemented** | 1 |
+| `MissionStats::clear_container` | `00626930` | **unimplemented** | 12 |
+| `MissionStart::set_effective_difficulty` | `0058bf58` | **unimplemented** | 1 |
+| `MissionStart::checkpoint_differs` | `007f8d60` | **unimplemented** | 1 |
+| `MissionStart::request_mission_start` | `00439020` | concrete | 1 |
+| `MissionStart::reset_front_end_timer` | `00a92c40` | **unimplemented** | 1 |
+| `MissionStart::finish_start` | `004d2a80` | **unimplemented** | 1 |
+| `SetPendingScene::enter_file_block` | `00be0a30` | **unimplemented** | 1 |
+| `SetPendingScene::leave_file_block` | `00bdcb30` | **unimplemented** | 1 |
+| `SceneFileReader::read_scene_file` | `008d9cf0` | concrete | 1 |
+| `SetPendingScene::load_scene_header_pass` | `0046df00` | concrete | 1 |
+| `SetPendingScene::notify_award_tracker` | `0068ea00` | **unimplemented** | 1 |
+| `MissionLoad::apply_pending_interface` | `00684600` | **unimplemented** | 1 |
+
+The 54 `MissionLoad(<owner>)::<method>` records that follow are the load inventory, one per
+non-pure step of `mission_load_host_steps`, with the owner area in the name. They are not
+call sites this run reached.
+
+Twelve methods exist and were not reached, because the paths that call them are not taken.
+Nine of them are the movie arm of 005922F0 (`suspend_page_for_movie`,
+`stop_front_end_audio`, `apply_pending_interface`, `arm_movie_surface`,
+`commit_movie_visibility`, `enter_movie_surface`, `play_mission_movie`, `mark_movie_active`
+and `set_movie_completion`), which needs a record carrying a `MovieName`; `USN02` does not
+carry one. `MissionDetail::map_point_position` (00AA6750) needs a numbered point icon to
+exist, and correction 3 says why none does. `MissionStart::write_checkpoint` (00437C70)
+needs the profile's checkpoint value to differ. `SetPendingScene::destroy_scene_record`
+(004BF930) needs an existing scene record, and this is the run's first one.
+
+### Corrections
+
+1. **The mission-tree reader fills one side-block home and every consumer reads another.**
+   `read_mission_record_005c6a70` in `src/mission_tree_data.cpp` writes
+   `MissionRecordData::sides`, the `MissionSideBlockData` pair, but `mission_side_index`,
+   `mission_side_block`, `mission_opens_briefing`, `mission_side_index_005c27e0` and
+   `run_start_selected_mission_0058bdf0` all read `MissionRecord::sides` through
+   `record.screen`, which the reader never writes. A record loaded from the real table
+   therefore answers every side query from a default-constructed block: the side index comes
+   out 1 for every mission and `00580940` sends a United States mission to the Japanese page
+   4. This was found by running it, and it is not fixed here because
+   `src/mission_tree_data.cpp` belongs to another packet; the executable projects the
+   reader's blocks into the screen-facing record itself and says so in the source. **The fix
+   belongs in `read_mission_record_005c6a70`.** With the projection in place the run
+   reproduces the documented pairing exactly.
+2. **`mission_load_host_steps` records the wrong owner for the `.scn` header pass.** That
+   table gives `SetPendingSceneHost::load_scene_header_pass` (0046DF00) the scene-graph
+   owner. The header pass needs the reader and the VFS and nothing else: it runs concretely
+   here. The scene graph is first required by the two passes inside 004D4DF0
+   (`load_scene_contents`), which is the row that should carry the boundary.
+3. **The numbered mission map icons are not in the shipped layout.**
+   `docs/MAIN_MENU_MISSION_DETAIL.md` reads the per-mission loop as finding
+   `mission_mapflag_<n>_Icon` and `mission_mappoint_<n>_Icon` under the group widget that was
+   just copied into +110h. On this installation `missions_US_Group` and its four siblings are
+   authored as empty groups with `Visible = false` and no children at all; only
+   `mission_mapflag_template_Icon` and `mission_mappoint_template_Icon` exist, as direct
+   children of the page root. All 72 lookups of the 36-mission group therefore miss, which
+   the native handles the same way (00AA7E00 returning null is skipped). What clones the two
+   templates into the numbered icons is neither 005861B0 nor 0058C010 and is a follow-up.
+4. **005861B0 cannot reach three of its widgets with a single 00AA7E00.**
+   `content_main_Text`, `test_Clipbox` and `video_Movie` are nested three levels under
+   `historical_Group` in `fe_worldmap_historical.lua`, and 00AA7E00 walks direct children
+   only. The native must chain lookups to get there; the executable does the same and logs
+   which of the fourteen handles was a direct child (eleven) and which was nested (three).
+5. **The mission id is not the scene stem.** `--menu-select` takes the record's Lua `id`,
+   `USN02`; `usn_2_java` is the `sceneFile` stem that `src/mission_scene_probe.cpp` defaults
+   to. An id the tree does not carry silently becomes the first mission of the first group,
+   which is 005CAAF0's own clamp, and the run says so.
+6. **The seven top-level menu labels are not layout text.** Milestone 2d left them empty on
+   screen. 00584AE0 builds them in code as list-box entries through 00AAB4C0, so no page
+   authored them and the sprite bridge has nothing to draw. What the executable can do, and
+   now does, is resolve each of the seven label ids through the locale table phase 6 loaded:
+   Single Player, Multiplayer, Tactical Library, Options, `globals.live`, Downloadable
+   Content and Quit, all seven enabled from the table at 00CEF77C. Drawing them needs the
+   list-box widget owner.
+
+### What this milestone supplies rather than recovers
+
+- **The three page roots are hidden after the bind.** 005861B0 loads them and the page
+  builder decides what is shown; 00584AE0 is not reconstructed, so the executable hides all
+  three and lets 0058C010's own visibility block show the world map.
+- **The scripted action edge.** `00599DB0` asks 004D92B0 whether an action fired. This
+  process has no input device bound to the menu, so the step machine arms one action per
+  frame instead. The page machine's own control flow is untouched.
+- **The movie completion is run directly.** When a record does carry a `MovieName`, 005922F0
+  leaves the start to 0058D9D0, which the movie player calls when the clip ends. The movie
+  player is another owner's, so the executable runs the completion itself and logs it.
+  `USN02` has no movie, so this path was not taken in the validation run.
+- **The mission script path** in the report is derived from the scene file's own base name,
+  which is what `src/mission_scene_probe.cpp` does. The native indexes the record's script
+  table at +928h, and the header pass does not fill it.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function and a reviewed ledger name.
+No name was added; run-time evidence was appended to 00580940, 005caaf0, 0058c010, 005922f0,
+0058bdf0, 004e2770, 004c6890, 0046df00 and 004dfb70. 005861b0 was left alone because it is
+leased to `agent/orch5-menu-layout`.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+
+```
+  menu item 0 FE.main_singleplayer    enabled=1 Single Player
+  menu item 6 FE_pc.main_quit         enabled=1 Quit
+mission tree: 5 groups, 143 missions, 34 multiplayer entries
+mission tree selection: group=2 mission=13 id=USN02 name=New - Battle of the Java Sea
+        scene=universe/Scenes/missions/USN/usn_2_java.scn
+  side blocks: allied enabled=1 briefing="USN02" hints=3; japanese enabled=0 ...
+mission selection published: group=2 mission=13 side=0 page=5 sub_selection=-1
+main-menu update arm=MissionList page=5 scene=3 epilogue=1
+mission detail page built=1 page=9 group=2 missions=36 flags=0 points=0 missing_icons=72
+main-menu update arm=MissionDetail page=9 scene=4 epilogue=1
+scene universe/Scenes/missions/USN/usn_2_java.scn: 48680 bytes, uniqueID=1, 34 entities in
+        2 classes, short name "usn_2", mission script "Scripts/missions/usn_2_java.lua"
+  scene class DestroyerGen  x32  registered instantiate-only
+  scene class NavPoint      x2   registered instantiate-only
+  scene vfs blocks: 1_usn_2 3_usn_2 4_usn_2 5_usn_2 6_usn_2
+scene record: path=universe/Scenes/missions/USN/usn_2_java.scn present=1 mission_id=1
+        side_blocks=0 slots_filled=0 selected_index=0
+mission load host inventory: 68 steps, 57 need a subsystem owner; the load stops at
+        reset_render_scene [00874640] renderer
+sprite bridge quads=705 (text_glyph_quads=692) textures=13/14 atlas_items=678 rebuild=33
+summary mission select=USN02 tree=1 groups=5 missions=143 selected=USN02 list_page=5
+        detail=1 requested=1 step=Stopped
+host methods 193 concrete, 176 unimplemented
+```
+
+Every earlier switch was rechecked on the same binary: a 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
+unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
+exits 0 and `--vfs-probe does/not/exist.lua` exits 3. All four match milestone 2d exactly.
+
+This is a runtime-validated process, not a game-validated one. It proves that the
+reconstructed mission tree, page pairing, mission-detail builder, briefing start and scene
+record carry a cold boot from the main menu to a populated scene record over real installed
+data, and that the executable reads the same `.scn` the fixture probe does. It proves
+nothing about the mission load itself, about the world, or about binary compatibility with
+the original executable.
+
+### Follow-up packets
+
+1. **`read_mission_record_005c6a70` should fill the screen-facing side-block projection.**
+   Correction 1 above; it is a two-line fix in the producer and it removes the executable's
+   bridge.
+2. **The mission-list page builder 00597870**, and the other page builders 00584F50,
+   005853C0 and 005886F0, so a run can navigate the menu rather than publish a selection
+   into it.
+3. **The page dispatcher 00598B60**, whose campaign arm at 00599318 is what calls the detail
+   builder in the original.
+4. **Whatever clones the two template icons into the numbered per-mission map icons.** It is
+   not 005861B0 and not 0058C010, and without it the world map shows no missions.
+5. **00AAB4C0 and the list-box widget**, so the seven top-level labels and the mission lists
+   are drawn rather than only resolved.
+6. **00588C70, the world-map drive**, and 00414130, the mission-detail offset blend: the two
+   routines the page machine calls every frame that this process records.
+7. **004DFB70 itself**, which needs 004DC6A0's global subsystems and then the renderer
+   (00874640) and scene-graph (004D4DF0) owners. The 68-step inventory in the report is the
+   worklist.
 
 ## Next milestones
 

@@ -28,6 +28,8 @@ def main(argv):
         i = argv.index('--record')
         record_path = ROOT / argv[i + 1]
         del argv[i:i + 2]
+    recreate = '--recreate' in argv  # delete a truncated existing function first, keeping its name and plate comment
+    force = '--force' in argv  # proceed over another owner's lease (a body repair changes no name; record why)
     args = [a for a in argv if not a.startswith('--')]
     if len(args) < 2 or len(args) % 2:
         sys.exit(__doc__)
@@ -62,14 +64,31 @@ def main(argv):
 
     owner = owner_name()
     with ghidra_lock(owner=owner, wait_seconds=60, purpose='define functions read from the raw listing'):
-        check_writable([p[0] for p in pairs], owner=owner)
+        conflicts = check_writable([p[0] for p in pairs], owner=owner, force=force)
+        if conflicts:
+            record['events'].append({'forced_over_leases': [str(x) for x in conflicts]})
+            save()
         for start, end in pairs:
             length = int(end, 16) - int(start, 16)
             assert 0 < length < 0x4000, f'{start}-{end}: implausible length {length}'
             existing = c.get('get_function_by_address', address=start)
+            plate = None
             if isinstance(existing, str) and 'No function' not in existing and 'error' not in existing.lower():
-                print(f'{start}: already a function: {existing.splitlines()[0]}')
-                continue
+                if not recreate:
+                    print(f'{start}: already a function: {existing.splitlines()[0]}')
+                    continue
+                try:
+                    plate = c.get('get_plate_comment', address=start)
+                    if isinstance(plate, dict):
+                        plate = plate.get('comment') or plate.get('plate_comment')
+                    if isinstance(plate, str) and ('No plate' in plate or 'error' in plate.lower()):
+                        plate = None
+                except Exception:
+                    plate = None
+                record['events'].append({'recreate': start, 'previous': existing, 'plate': plate})
+                save()
+                post('delete_function', {'address': start})
+                print(f'{start}: deleted the truncated function ({existing.splitlines()[0]}) for re-creation')
             mem = c.get('read_memory', address=start, length=length)
             ghidra_hex = mem.get('hex') if isinstance(mem, dict) else ''.join(ch for ch in str(mem) if ch in '0123456789abcdefABCDEF')
             if bytes.fromhex(ghidra_hex)[:length] != disk_bytes(start, length):
@@ -84,6 +103,8 @@ def main(argv):
             if name:
                 body['name'] = name
             created = post('create_function', body)
+            if plate:
+                post('set_plate_comment', {'address': start, 'comment': plate})
             after = c.get('get_function_by_address', address=start)
             record['events'].append({'defined': start, 'end': end, 'name': name, 'after': after})
             save()

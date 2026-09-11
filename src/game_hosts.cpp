@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_mission.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/native_renderer_parameters.hpp"
@@ -259,6 +260,12 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--screenshot-frame needs a non-negative frame number";
                 return false;
             }
+        } else if (std::strcmp(argument, "--menu-select") == 0) {
+            if (index + 1 >= argc) {
+                error = "--menu-select needs a mission id";
+                return false;
+            }
+            menu_select.assign(argv[++index]);
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
         } else {
@@ -1075,7 +1082,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // override 0067ca80 is what loads FE_initial, so all three title pages are now owned
     // rather than loaded directly as milestone 2b did.
     profiler_ = new GameFrameProfiler(log_, 8);
-    menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame);
+    menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame,
+        *vfs_, *scripts_, locale_->tables(), options_.menu_select);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
@@ -1175,6 +1183,25 @@ void GameStartupHost::application_shutdown() {
         summary_.published_screen_id = menu.published_screen_id;
         summary_.path_step = menu.path_step;
         summary_.screens_registered = menu.screens_registered;
+        const GameMissionHost* mission = menu_->mission();
+        if (mission != nullptr) {
+            const GameMissionSummary& path = mission->summary();
+            summary_.menu_select = path.requested_id;
+            summary_.mission_tree_loaded = path.tree_loaded;
+            summary_.mission_tree_groups = path.tree_groups;
+            summary_.mission_tree_missions = path.tree_missions;
+            summary_.mission_selected_id = path.selected_id;
+            summary_.mission_list_page = path.list_page;
+            summary_.mission_detail_built = path.detail_built;
+            summary_.mission_start_requested = path.load_requested;
+            summary_.mission_scene_record = path.scene_record_built;
+            summary_.mission_scene_path = path.scene_path;
+            summary_.mission_scene_entities = path.scene_entities;
+            summary_.mission_scene_classes = path.scene_distinct_classes;
+            summary_.mission_load_host_steps = path.load_host_steps;
+            summary_.mission_load_stopped_at = path.load_stopped_at;
+            summary_.mission_step = game_mission_step_name(path.step);
+        }
     }
     if (frontend_ != nullptr) {
         const GameFrontendSummary& frontend = frontend_->summary();

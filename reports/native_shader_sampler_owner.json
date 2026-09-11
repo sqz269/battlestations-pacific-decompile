@@ -1,0 +1,1182 @@
+{
+  "packet": "orch2_native_shader_sampler_lifetime_af",
+  "utc": "2026-09-11T20:13:42.959212+00:00",
+  "tested_source_commit": "22bccb6fd78251263ffa806abd933389822c609f",
+  "source_sha256": {
+    "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+    "src/native_material_pass_copy.cpp": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357",
+    "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+    "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+    "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+    "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+    "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+    "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+    "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+    "src/native_material_pools.cpp": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_material_effect_owner.hpp": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd",
+    "src/native_material_effect_owner.cpp": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/native_string.hpp": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+    "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+    "cmake/startup.cmake": "a83c5e80503c76454968cc00307c34b50f8a01b2b6317b201db9a9d59fb52b17",
+    "CMakeLists.txt": "aea58a46daf10a257deb8ce16d140c691b97475f1bfb9cfc28d98d00ca8c4a05",
+    "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+    "src/native_shader_descriptor_owner.cpp": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48",
+    "docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md": "a6ad91901dc63708eb0ea751760ca1f15058cfd14f9b5c53570322d6acaf80a9",
+    "include/bsp/native_shader_sampler_owner.hpp": "00a039a21215d3b71784c6e627aac0e803e6980abe114a2101530eb59680efdf",
+    "src/native_shader_sampler_owner.cpp": "30f8402c421e3b1837c9738e0fa493e32d5b019a822881e358aed2f34b58aad2",
+    "docs/NATIVE_SHADER_SAMPLER_OWNER.md": "b16fac607db6431b6c49a810dc3f82aa3afb3380ebc6b1e9b472ae0fc489d353"
+  },
+  "artifacts_sha256": {
+    "local/native-shader-sampler-owner-allocate-assembly.txt": "4b9643bd49bbe10445e9044dba2fe67ee3be8a5165eee41391efd5b2cc61cb84",
+    "local/native-shader-sampler-owner-allocate-bytes.txt": "7f718b7106e3f37fa2ada199d32528469d84157ef99fd74639b71d221d083794",
+    "local/native-shader-sampler-owner-allocate.bin": "f4e769f8b31f3c8f43247748388f7e17d83520a3e8b6050e919d360a8a1e042d",
+    "local/native-shader-sampler-owner-allocate_wrapper-assembly.txt": "2a181569dddb7a6691ed15ba186285d689e4d62b2d76e80a4bbcba0fff2a5abd",
+    "local/native-shader-sampler-owner-allocate_wrapper-bytes.txt": "21137c751f5dbfd302a05a53fa8f0551801d767fe5e72c50fb4cda8a1817ac84",
+    "local/native-shader-sampler-owner-allocate_wrapper.bin": "95a08c9ea77c1682c0e448b2df83f7d73b7f3396547b46753e29575e81f4fdcd",
+    "local/native-shader-sampler-owner-annotation-addresses.json": "3fa26b3c5725593c3093071a12354e879741073048073364f1a2501b5ab9302c",
+    "local/native-shader-sampler-owner-annotation-verification.json": "d1c4119e90b573a43aeb2cee9deadf43abc1393038ba73dbfd610e3ab4c3d8ec",
+    "local/native-shader-sampler-owner-annotations.log": "1f95bed3279cd8c335401203c73184858b61acc9ee3f2de61a4ca5f85d29bb7d",
+    "local/native-shader-sampler-owner-build.log": "e8f063a85c8d6f829a0aedbbf3c4e32902f7a05a52711d161c95f86a4c09ebc9",
+    "local/native-shader-sampler-owner-comments-after.json": "8f19659d81e2ecf6b00f97d79e158ee9ac80d9bfd8a5e3208e2a6b37ca629e28",
+    "local/native-shader-sampler-owner-comments-after.log": "1a181b820cdedd8921a8234a272a2e9980a3144aaf6ae671f857f4ac9c51a152",
+    "local/native-shader-sampler-owner-comments-before.json": "14729cad15e0374a4efe8fcaf2f6cc41524e0f62493b547e59efe3d475a9ec9a",
+    "local/native-shader-sampler-owner-comments-before.log": "cbccadf8bb7f5628d86c5b569a0bcc6cac3ba3d4a276a4d3d14e6501d36d85d2",
+    "local/native-shader-sampler-owner-export-refresh.log": "f29a64c73fbcef982d826c66aee1ef3d1f379f809f2aaf04c7f4c482f84f7883",
+    "local/native-shader-sampler-owner-flow-after.log": "acf5c37568a59f96d5d898a604237a7df12fe1eb5f6da498904f17e57cbe840b",
+    "local/native-shader-sampler-owner-flow-repair.json": "7130f0f501920352b759a31b503313cdbcae3be2376437fa92a7c804574c8573",
+    "local/native-shader-sampler-owner-function-definitions.json": "bc8e86a7607de6534b934ee3f70feb135e48aacd21cbf227b7675560a0687f04",
+    "local/native-shader-sampler-owner-ledger.log": "dd4771f9e958810110bbf3f235b77a427bdb3bb9fe46455b38acb57ced23984e",
+    "local/native-shader-sampler-owner-list_ctor-assembly.txt": "b15e466c915307e9f7331d3231fe16b7ba0d5d349587dd78ec7168ae7085b72a",
+    "local/native-shader-sampler-owner-list_ctor-bytes.txt": "09c2c7ca36ca281828b4d30f784e55d76499b0acf64c45589b57c5d00ebb9a1d",
+    "local/native-shader-sampler-owner-list_ctor.bin": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+    "local/native-shader-sampler-owner-list_dtor-assembly.txt": "3930fcb8927a9d58eae2e4429445ce0beb428b5c6def09f33f76161cc8ddad9a",
+    "local/native-shader-sampler-owner-list_dtor-bytes.txt": "491c0c82d677f3194d2ddd758795a44654fd9e10839a16f2452cce654a907c86",
+    "local/native-shader-sampler-owner-list_dtor.bin": "01129342665bc834859f3cdbd7bb7c552977c10556d811e356eb70f847e8b3d6",
+    "local/native-shader-sampler-owner-names-after.txt": "d1d8c49d91657f57061e5d8ef3c81c9d058967a9ea5238ac39bb4398dce5f774",
+    "local/native-shader-sampler-owner-names-before.txt": "5f20abf3c7116a0afb003779e71fc5e264828529790d24b39048f5216a27eb7d",
+    "local/native-shader-sampler-owner-names-expected.json": "011075e3c25711c74eb0eaf04a0abece6ece3fa9615288922ca5f5f6d2206871",
+    "local/native-shader-sampler-owner-native.hpp": "e147abe993e80a4b9de2873b02e182f2e1cf20bbb276b051d647a6a9b05ecd64",
+    "local/native-shader-sampler-owner-pool_ctor-assembly.txt": "d682fa251f3ff4d43a64083a405254d2ccf52f0fcb760b64b24fa5562ef11a30",
+    "local/native-shader-sampler-owner-pool_ctor-bytes.txt": "d33364a5ca5a16a391d215b4f494a4832f6e93176096cf8035b2d064054c603f",
+    "local/native-shader-sampler-owner-pool_ctor.bin": "4fee7d9b553acace0ceaf3f84896ca62d82729f21b04f4893d80fe97e506a636",
+    "local/native-shader-sampler-owner-pool_dtor-assembly.txt": "104ffded73898289c0c6af259d352f91135104aa2158a6f87b7dd3548441ebd3",
+    "local/native-shader-sampler-owner-pool_dtor-bytes.txt": "fd98bbf502520df40f8595a1cbfe768d0da8bca5eaf2a583e3db22deea81cc9c",
+    "local/native-shader-sampler-owner-pool_dtor.bin": "1120bf28c254a2cfb1279342cc8db3545f11b44cb800c89e923c1b3ccdec0e62",
+    "local/native-shader-sampler-owner-pool_table-bytes.txt": "c50b3899270b77320c2428c2902cf2027650703b1202b7f015679943d6c10827",
+    "local/native-shader-sampler-owner-pool_table.bin": "ef2b30e465c8eec3cea3467a7d87de7192dcbaa330e2ffee6d25f541d09210b8",
+    "local/native-shader-sampler-owner-pool_unwind_code-assembly.txt": "c099b5dfc67d99a29a0b5eeca9833e934474cc777fe37a734766506e266de785",
+    "local/native-shader-sampler-owner-pool_unwind_code-bytes.txt": "32e7e5b786073dc1ab89601cc43c5f91916336d61c3042c994d3bc2f59ab9599",
+    "local/native-shader-sampler-owner-pool_unwind_code.bin": "f4fe86fe6c2cb8a3570fccb142e1dc91804f808b7f25fa1395d998e0d8e06c6f",
+    "local/native-shader-sampler-owner-pool_unwind_meta_table-bytes.txt": "4320d0e748c16508fea8e928bc227b599c57c99825f387a171152e012542b006",
+    "local/native-shader-sampler-owner-pool_unwind_meta_table.bin": "7485846aa8dcbc404ef4044d99d9a6cf198c538d7bf301fe10d84d921141e3b8",
+    "local/native-shader-sampler-owner-probe-code.hpp": "b3910baa0c615c59c4516ccfda38ed0bb41398ca2e2adfecb4b337da467c86be",
+    "local/native-shader-sampler-owner-probe-result.log": "63df8561fbd2e0f87c1dc868913682d65f6555bddb0ef48577266a7432ab0218",
+    "local/native-shader-sampler-owner-probe.asm": "346eef1cc3918c54b25668336991d0d1b292cf3cc5511e0c69763d6819f2c833",
+    "local/native-shader-sampler-owner-probe.cpp": "c7c740eb2d7d80a935c622daad2de28466b2af29a60c477d14dc1325e256448e",
+    "local/native-shader-sampler-owner-probe.exe": "8d6d30e4273aa273045c03532df56e08686306d4145d48072a2aded4e89c8273",
+    "local/native-shader-sampler-owner-probe.obj": "655cd22f672ff4eaf4b7d732dca47baed94f33a43046645f22928df29b74ef07",
+    "local/native-shader-sampler-owner-probe_compile.log": "d96151a49ff2b7be354a73040d27f3d284960b23b108eb553b002eb0faf6e485",
+    "local/native-shader-sampler-owner-reserve-assembly.txt": "54b7d77301cc76165158151f5f8be0bf6c39d1b93e096b1eacd4114112df4f91",
+    "local/native-shader-sampler-owner-reserve-bytes.txt": "eb5a76b8a095e22c3dcf133e93d90d3f5f1fcab6708856304b971242fc91edea",
+    "local/native-shader-sampler-owner-reserve.bin": "502c60025dc011b54bc526ea282b87d13f3e93e953e58aa4a5c0ff71402001a9",
+    "local/native-shader-sampler-owner-return_slot-assembly.txt": "98c329608fc66a173ad952c6b15b0f45296242a7143602715c268e8927a22db8",
+    "local/native-shader-sampler-owner-return_slot-bytes.txt": "4fb3ab5b484321abe69a9267a7f5d9c1b920ea1f3a0f666c174a19f383e1057f",
+    "local/native-shader-sampler-owner-return_slot.bin": "ba85b125f24cb92197ed0ec1f1fcbff071ee3e3a5c62cefdd150a91fb2298006",
+    "local/native-shader-sampler-owner-return_wrapper-assembly.txt": "14dc76380fdd76a3c28897a46e3d1615575379d978ed3b2540c93dbab56cbff6",
+    "local/native-shader-sampler-owner-return_wrapper-bytes.txt": "adcb67b4dc462684ccb815c43a19be746b4088ddf831bce408d90778c3b91b5b",
+    "local/native-shader-sampler-owner-return_wrapper.bin": "264d50128615bde3fb27cee032ea81c516e513ce82a396adc5823a41a74acdac",
+    "local/native-shader-sampler-owner-sampler_delete-assembly.txt": "083d53cf263fcdb6940374e8ca872fb0edb1e9eb12f1281d6a8cf974b98f844b",
+    "local/native-shader-sampler-owner-sampler_delete-bytes.txt": "8f7538ed048725515f3674e1484c559b62e0780db9efc28a74e0176bae4a6448",
+    "local/native-shader-sampler-owner-sampler_delete.bin": "6fad31e30c7057e2ecaf14b458c78833c5ec31ddd5da238fc25d6e6d59abd045",
+    "local/native-shader-sampler-owner-sampler_dtor-assembly.txt": "46234f167f859a826d200be0f0a248c1c3948a65271a5b4139fe6a44617f0af2",
+    "local/native-shader-sampler-owner-sampler_dtor-bytes.txt": "059330b0f0ee04357693d295a81884aedfdd65721fbbbf7f2d66e0434a789c57",
+    "local/native-shader-sampler-owner-sampler_dtor.bin": "43397e1721a6ef64348a71b2c7b7b3aef6c677b56f234a7460f12c5a5a87c7bf",
+    "local/native-shader-sampler-owner-sampler_init_fragment-assembly.txt": "9b8d9ea957e0c5be4f6b1e78fb2ad6bca9e39230a48b0e3e9f0da77e7bb6d057",
+    "local/native-shader-sampler-owner-sampler_init_fragment-bytes.txt": "212c1af421bb0d8425257d0f499e1c647bc512ad293aa02d2960710a7228555f",
+    "local/native-shader-sampler-owner-sampler_init_fragment.bin": "f84307174374fc049ffca61520784bfbc5996b20405bb0ccf6d47285813b8f3f",
+    "local/native-shader-sampler-owner-sampler_table-bytes.txt": "a3f9b6accd7c6e143bf9e2b51841d44d527206f84bde4da20a24b173e98ebb15",
+    "local/native-shader-sampler-owner-sampler_table.bin": "aa784c8d876eacadf8706fd55100868cffe2ccb0ba6d9cef523557593b75e07a",
+    "local/native-shader-sampler-owner-sampler_unwind_code-assembly.txt": "d92df000d2b7253be2b89942a125cee08ab07b9f868717dfcbc915daeabcaa7e",
+    "local/native-shader-sampler-owner-sampler_unwind_code-bytes.txt": "5a8e49c1af53e09b4ebdcfacf8202c3af86cd06e51c75162a015dfddfed204a1",
+    "local/native-shader-sampler-owner-sampler_unwind_code.bin": "09aab449fdfb02d4c2a4ac14e8073ff2b407ac2e2f1e0b3a54878040ce889ddc",
+    "local/native-shader-sampler-owner-sampler_unwind_meta_table-bytes.txt": "0ee89cedc597b9e7a2f081ee7415c36421dfa11e79c5ae69a167171657b6f275",
+    "local/native-shader-sampler-owner-sampler_unwind_meta_table.bin": "61c693a2283d567debe45ff53dc5579b845c6098b08c7bd9c8fba6b99eacea67",
+    "local/native-shader-sampler-owner-slab_ctor-assembly.txt": "6f4ca676bf77337fbe798fb3068cafd6d46fbdb3506c97329d6984d5ed6b15d6",
+    "local/native-shader-sampler-owner-slab_ctor-bytes.txt": "b6e6799a23a2fc9f82b360a809de966b073efb7c946704df6fa213a1c6555eb4",
+    "local/native-shader-sampler-owner-slab_ctor.bin": "3db9fd06347d9c0395a47ec713d6f22d0b7ae7fc3be3b6ecbae9e821adb19f2d",
+    "local/native-shader-sampler-owner-source-commit.txt": "8d9125d40362f01985d09b2f39b39b3eb2f7cbcffb69890bb7a65b736e77aa4a",
+    "local/native-shader-sampler-owner-spans.json": "0e3a0aaf2e4ce26237bcfcb189bf3c89bf1c90f11d54974f163761d3cab3808f",
+    "local/native-shader-sampler-owner-static_init-assembly.txt": "12cedd748dcc7f3c5bd405d609d99b4ea8c7e40906c3cea150f13a07a562e909",
+    "local/native-shader-sampler-owner-static_init-bytes.txt": "ac571b4c8647fe1eb8e414e453a4d1568201e3abf4aba68833b6bde040bc65c8",
+    "local/native-shader-sampler-owner-static_init.bin": "87c043cb01b42534cbe4f9fe1f7ec593c8a3b7c06d708473a301f076d1b742d8",
+    "local/native-shader-sampler-owner-static_shutdown-assembly.txt": "4773f0a64a5c4598d554de632b6fa5d5c206a683aee73eff01d400a8e9da74bc",
+    "local/native-shader-sampler-owner-static_shutdown-bytes.txt": "47fee94a35325bf8fc5fda64c83fa8104ee2eb40983a33734d5ec9a93c25e005",
+    "local/native-shader-sampler-owner-static_shutdown.bin": "c0bf5a4fbe0d25e465f82fb783284800a823a94120b131a7f52000207d06fb65",
+    "local/native-shader-sampler-owner-table_cleanup-assembly.txt": "6903bf5408bfa5dbdb4ff61bfc73e12f0ed44a54df1dbdba397cfee972d2edfa",
+    "local/native-shader-sampler-owner-table_cleanup-bytes.txt": "bac04ea222bc0bff1b2ffa31ce8a51173f958b3f2324bd1043315ac1b12c599c",
+    "local/native-shader-sampler-owner-table_cleanup.bin": "bd5d0623d63c8b75f732179bed8f8456d7c70ba55729875fbfb4be4dae1f107e",
+    "local/native-shader-sampler-owner-tested-source.txt": "bc3f34740702f5427c852aab04491c1cd80dd9b5b65542e7f9b2698358c9ddb1",
+    "local/native-shader-sampler-owner-trim-assembly.txt": "751d1ee576619c6f85743dc2becb55770915c799bdb7567663cb109886cdf64c",
+    "local/native-shader-sampler-owner-trim-bytes.txt": "8a93a8b55f2b3eb35dda9026f894ec3a17685adb752d13d0a828601cc2193ca0",
+    "local/native-shader-sampler-owner-trim.bin": "a84552eee19d8dcf9cda28a367cf8c7a1607ad295ff373fb1c76f4802cb20f5e",
+    "local/native-shader-sampler-owner-unwind-verification.json": "08ba9684261d2a86615ddb023f6f4c0e7630d61d2ae084a058ef1498844276a6",
+    "local/prepare_native_shader_sampler_owner.py": "be4cec9b57b4828a196bf0b44e19b80facb3ea363fe8b9c8cfc08935042db1fb",
+    "local/prepare_native_shader_sampler_owner_probe.py": "2414e206e524907790007517de7e898cfec26c955e40d22ca8d78f9c2255ce37",
+    "local/write_native_shader_sampler_fixture.py": "f3334ccb8925bc0fbaba06c26182047a3b148b46f590f15f1dd751137935f74a",
+    "local/run_native_shader_sampler_owner_probe.ps1": "86c4bc476cbe12b38d38f9d7d72fb78baa2dea5c3e7b7d91d6ff49d0d09738ae",
+    "local/check_native_shader_sampler_unwind.py": "8b614ca89e8750de612a780b5ff62cccced86bfcc9af6679a30fa60c13f649ec",
+    "local/record_native_shader_sampler_owner.py": "c3cbb1af7f9618c029d6c7a06e1586d5c2dfa8545bb94aa08eb4244e6340f2fa",
+    "local/native_shader_sampler_owner_annotations.py": "63fd5fda6ce3bde347b6b7a4627d5f12aa6e15c0000ef6084abca1267923e87f",
+    "local/finalize_native_shader_sampler_owner.py": "b5975ab4724d8a15d9eaefc3b539c6539b030e859b528851d94d7c45901525c6",
+    "local/gui-native-material-workers/orch2-native-pass-pool-20260911ab/local/native-material-pass-pool-probe.cpp": "9e37c31b252a33535bfe718aafb75dbc6468607f9c527440d74ba119ad12ff2b",
+    "local/gui-native-material-workers/orch2-native-pass-pool-20260911ab/local/native-material-pass-pool-probe-code.hpp": "b3910baa0c615c59c4516ccfda38ed0bb41398ca2e2adfecb4b337da467c86be",
+    "local/ghidra-annotations-20260911T201121Z.json": "8bb4020d3287d33a6923208cf944fa094ce86c92774a5e1974724e68658c3d30",
+    "local/native-shader-sampler-owner-tested/bsp_core.lib": "0831020100170ee5c66e095e8b9e56964440aae2169b2880bbd8684bfe4b6567",
+    "local/native-shader-sampler-owner-tested/bsp_game.exe": "b4d0e9ebeba239b69b17d2442cf22e1212ea4fe59e5f256150a4fcf70eaba8a4",
+    "local/native-shader-sampler-owner-tested/LastTest.log": "b931c0b5fc31bb08ecf9f56f340f2402fff31e3c5480cd6986f285a6d1113d4e"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-shader-sampler-owner-tested/bsp_core.lib",
+      "sha256": "0831020100170ee5c66e095e8b9e56964440aae2169b2880bbd8684bfe4b6567"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-shader-sampler-owner-tested/bsp_game.exe",
+      "sha256": "b4d0e9ebeba239b69b17d2442cf22e1212ea4fe59e5f256150a4fcf70eaba8a4"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-shader-sampler-owner-tested/LastTest.log",
+      "sha256": "b931c0b5fc31bb08ecf9f56f340f2402fff31e3c5480cd6986f285a6d1113d4e"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "slab_ctor",
+      "address": "00b620f0",
+      "end_exclusive": "00b62130",
+      "bytes": 64,
+      "sha256": "3db9fd06347d9c0395a47ec713d6f22d0b7ae7fc3be3b6ecbae9e821adb19f2d",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "table_cleanup",
+      "address": "00b621b0",
+      "end_exclusive": "00b621be",
+      "bytes": 14,
+      "sha256": "bd5d0623d63c8b75f732179bed8f8456d7c70ba55729875fbfb4be4dae1f107e",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 7,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "pool_ctor",
+      "address": "00b623d0",
+      "end_exclusive": "00b624a3",
+      "bytes": 211,
+      "sha256": "4fee7d9b553acace0ceaf3f84896ca62d82729f21b04f4893d80fe97e506a636",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 130,
+          "target": 12539326
+        },
+        {
+          "offset": 180,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "pool_dtor",
+      "address": "00b62500",
+      "end_exclusive": "00b6258a",
+      "bytes": 138,
+      "sha256": "1120bf28c254a2cfb1279342cc8db3545f11b44cb800c89e923c1b3ccdec0e62",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 24,
+          "target": 12543404
+        },
+        {
+          "offset": 48,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "trim",
+      "address": "00b62590",
+      "end_exclusive": "00b62630",
+      "bytes": 160,
+      "sha256": "a84552eee19d8dcf9cda28a367cf8c7a1607ad295ff373fb1c76f4802cb20f5e",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 33,
+          "target": 12543404
+        }
+      ]
+    },
+    {
+      "label": "allocate",
+      "address": "00b62630",
+      "end_exclusive": "00b62760",
+      "bytes": 304,
+      "sha256": "f4e769f8b31f3c8f43247748388f7e17d83520a3e8b6050e919d360a8a1e042d",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 43,
+          "target": 12544027
+        },
+        {
+          "offset": 61,
+          "target": 11935984
+        },
+        {
+          "offset": 95,
+          "target": 12539326
+        },
+        {
+          "offset": 145,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "return_slot",
+      "address": "00b62280",
+      "end_exclusive": "00b622d5",
+      "bytes": 85,
+      "sha256": "ba85b125f24cb92197ed0ec1f1fcbff071ee3e3a5c62cefdd150a91fb2298006",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "return_wrapper",
+      "address": "00b623c0",
+      "end_exclusive": "00b623cc",
+      "bytes": 12,
+      "sha256": "264d50128615bde3fb27cee032ea81c516e513ce82a396adc5823a41a74acdac",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 6,
+          "target": 11936384
+        }
+      ]
+    },
+    {
+      "label": "allocate_wrapper",
+      "address": "00b62760",
+      "end_exclusive": "00b6276a",
+      "bytes": 10,
+      "sha256": "95a08c9ea77c1682c0e448b2df83f7d73b7f3396547b46753e29575e81f4fdcd",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11937328
+        }
+      ]
+    },
+    {
+      "label": "static_init",
+      "address": "00cd7cc0",
+      "end_exclusive": "00cd7cd6",
+      "bytes": 22,
+      "sha256": "87c043cb01b42534cbe4f9fe1f7ec593c8a3b7c06d708473a301f076d1b742d8",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11936720
+        },
+        {
+          "offset": 15,
+          "target": 12546037
+        }
+      ]
+    },
+    {
+      "label": "static_shutdown",
+      "address": "00ce0d50",
+      "end_exclusive": "00ce0d5a",
+      "bytes": 10,
+      "sha256": "c0bf5a4fbe0d25e465f82fb783284800a823a94120b131a7f52000207d06fb65",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11937024
+        }
+      ]
+    },
+    {
+      "label": "list_ctor",
+      "address": "00b621a0",
+      "end_exclusive": "00b621ad",
+      "bytes": 13,
+      "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "reserve",
+      "address": "00b40cf0",
+      "end_exclusive": "00b40d58",
+      "bytes": 104,
+      "sha256": "502c60025dc011b54bc526ea282b87d13f3e93e953e58aa4a5c0ff71402001a9",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 32,
+          "target": 12539326
+        },
+        {
+          "offset": 85,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "list_dtor",
+      "address": "00b56de0",
+      "end_exclusive": "00b56e2d",
+      "bytes": 77,
+      "sha256": "01129342665bc834859f3cdbd7bb7c552977c10556d811e356eb70f847e8b3d6",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 20,
+          "target": 11799792
+        },
+        {
+          "offset": 53,
+          "target": 12544393
+        },
+        {
+          "offset": 63,
+          "target": 11936704
+        }
+      ]
+    },
+    {
+      "label": "sampler_dtor",
+      "address": "00b56ea0",
+      "end_exclusive": "00b56f32",
+      "bytes": 146,
+      "sha256": "43397e1721a6ef64348a71b2c7b7b3aef6c677b56f234a7460f12c5a5a87c7bf",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 46,
+          "target": 11890144
+        },
+        {
+          "offset": 54,
+          "target": 11890144
+        },
+        {
+          "offset": 81,
+          "target": 4299968
+        },
+        {
+          "offset": 88,
+          "target": 12391696
+        },
+        {
+          "offset": 118,
+          "target": 4299968
+        },
+        {
+          "offset": 125,
+          "target": 12391696
+        }
+      ]
+    },
+    {
+      "label": "sampler_delete",
+      "address": "00b56fc0",
+      "end_exclusive": "00b56fde",
+      "bytes": 30,
+      "sha256": "6fad31e30c7057e2ecaf14b458c78833c5ec31ddd5da238fc25d6e6d59abd045",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11890336
+        },
+        {
+          "offset": 16,
+          "target": 12543404
+        }
+      ]
+    },
+    {
+      "label": "sampler_init_fragment",
+      "address": "00b57b80",
+      "end_exclusive": "00b57ba1",
+      "bytes": 33,
+      "sha256": "f84307174374fc049ffca61520784bfbc5996b20405bb0ccf6d47285813b8f3f",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "pool_table",
+      "address": "00d62b9c",
+      "end_exclusive": "00d62ba0",
+      "bytes": 4,
+      "sha256": "ef2b30e465c8eec3cea3467a7d87de7192dcbaa330e2ffee6d25f541d09210b8",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "sampler_table",
+      "address": "00d621f4",
+      "end_exclusive": "00d621f8",
+      "bytes": 4,
+      "sha256": "aa784c8d876eacadf8706fd55100868cffe2ccb0ba6d9cef523557593b75e07a",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "pool_unwind_code",
+      "address": "00cc14c0",
+      "end_exclusive": "00cc14e8",
+      "bytes": 40,
+      "sha256": "f4fe86fe6c2cb8a3570fccb142e1dc91804f808b7f25fa1395d998e0d8e06c6f",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 4209008
+        },
+        {
+          "offset": 14,
+          "target": 4206448
+        },
+        {
+          "offset": 25,
+          "target": 11936176
+        },
+        {
+          "offset": 35,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "pool_unwind_meta_table",
+      "address": "00dfa310",
+      "end_exclusive": "00dfa34c",
+      "bytes": 60,
+      "sha256": "7485846aa8dcbc404ef4044d99d9a6cf198c538d7bf301fe10d84d921141e3b8",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "sampler_unwind_code",
+      "address": "00cc0440",
+      "end_exclusive": "00cc0460",
+      "bytes": 32,
+      "sha256": "09aab449fdfb02d4c2a4ac14e8073ff2b407ac2e2f1e0b3a54878040ce889ddc",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 6,
+          "target": 4316448
+        },
+        {
+          "offset": 17,
+          "target": 4316448
+        },
+        {
+          "offset": 27,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "sampler_unwind_meta_table",
+      "address": "00df9008",
+      "end_exclusive": "00df903c",
+      "bytes": 52,
+      "sha256": "61c693a2283d567debe45ff53dc5579b845c6098b08c7bd9c8fba6b99eacea67",
+      "matches_disk": true,
+      "external_branches": []
+    }
+  ],
+  "pool": {
+    "actual_global": "0108fee4",
+    "actual_vtable": "00d62b9c",
+    "actual_virtual0": "00b62590",
+    "storage_bytes": 56,
+    "payload_bytes": 12,
+    "slot_bytes": 16,
+    "slab_id_offset": 12,
+    "slots_per_slab": 32,
+    "slab_bytes": 580,
+    "free_indices_offset": 512,
+    "free_count_offset": 576,
+    "final_padding_bytes": 2,
+    "initial_table_capacity": 32,
+    "table_growth": "2*old+2",
+    "real_cs_bytes": 24,
+    "shared_allocator_list": true,
+    "under_lock_current_slot_id_read": true,
+    "return_index": "signed SAR4; common division equal for valid aligned slots",
+    "lifo_free_indices": true,
+    "trim_all_moved_ids": true,
+    "trim_locks": false,
+    "allocate_rollback_or_unwind_unlock": false,
+    "destructor_payload_cleanup": false,
+    "destructor_positive_recursion_drain": true,
+    "metadata_stale_after_destruction": true,
+    "real_crt_atexit": true,
+    "private_exit_registry": false
+  },
+  "sampler": {
+    "actual_bytes": 44,
+    "vtable": "00d621f4",
+    "virtual0": "00b56fc0",
+    "intrusive_reference_count": false,
+    "initialized_fragment": {
+      "start": "00b57b80",
+      "end_exclusive": "00b57ba1",
+      "code_bytes": 33,
+      "stores": 10,
+      "written_storage_bytes": 37,
+      "unwritten": [
+        "padding0D..0F",
+        "type10..13"
+      ]
+    },
+    "pooled_list_holder_offsets": [
+      36,
+      40
+    ],
+    "list_headers_bytes": 12,
+    "list_rows_stride": 8,
+    "reserve_minimum": 10,
+    "header_return_before_holder_clear": true,
+    "captured_header_returned": true,
+    "header_count_zero": true,
+    "header_pointer_capacity_stale": true,
+    "cleanup_sequence": [
+      "list24",
+      "list28",
+      "source_name18",
+      "name04"
+    ],
+    "unwind_only_strings": true,
+    "free_only_if_flags_bit0": true,
+    "callable_binding": "External table on SAME44-byte object; restoreD621F4/detach before scalar cleanup; shared canonical pool and actual string lifetime, no private counter/owner registry.",
+    "full_lua_reader_implemented": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "full_original_functions_executed": 16,
+    "original_initialization_fragment_executed": true,
+    "paired_pool_snapshots": 8,
+    "pool_header_snapshot_bytes": 56,
+    "pool_allocations": 1026,
+    "pool_slabs": 33,
+    "table_grows_32_to_66": true,
+    "full_slab_preimage_bytes": 580,
+    "moved_slot_ids_checked": 32,
+    "empty_trim_and_lifo": true,
+    "shutdown_recursion": 2,
+    "native_atexit_hook_result": 7,
+    "rebuilt_real_process_atexit_verified": true,
+    "paired_sampler_ordinary_and_negative_capacity": true,
+    "sampler_snapshot_bytes": 44,
+    "returned_header_snapshots": true,
+    "original_and_rebuilt_source_name_then_name_releases": true,
+    "both_headers_returned_before_string_callbacks": true,
+    "immediate_slot_reuse_inside_release_callback": true,
+    "actual_descriptor_virtual0_deletes_actual_sampler": true,
+    "original_flags1_and_flags2": true,
+    "final_fixture_exit_code": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_boundaries": {
+    "imports": "Current shared CRT heap and real Win32 critical sections; OS CS bytes/pointer identities normalized.",
+    "string_storage": "Existing actual string pool and actual header destruction; no semantic string-vector substitute.",
+    "callbacks": "Both original and rebuilt sampler runs observe returned physical slots using the same rebuilt pool companion inside string-release callbacks; independent all-original pool fixture validates every pool operation.",
+    "initialization": "Executes33 actual store bytes with a register setup/return shell; this is not execution of the full Lua reader.",
+    "exceptions": "Original SEH delivery and allocation failure not executed; pool3-state and sampler2-state maps and five concrete thunks PE-verified.",
+    "composition": "Existing rebuilt actual descriptor owns one bound actual sampler with two real pooled headers; descriptors/parser fields are not loaded from Lua in this fixture."
+  },
+  "ghidra": {
+    "addresses": [
+      "00b620f0",
+      "00b621b0",
+      "00b623d0",
+      "00b62500",
+      "00b62590",
+      "00b62630",
+      "00b62280",
+      "00b623c0",
+      "00b62760",
+      "00cd7cc0",
+      "00ce0d50",
+      "00b621a0",
+      "00b40cf0",
+      "00b56de0",
+      "00b56ea0",
+      "00b56fc0",
+      "00b57b50"
+    ],
+    "names_verified": 17,
+    "prior_comment_fields_preserved": 2,
+    "forced_exports": 17,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "defined_functions": [
+      {
+        "defined": "00b62280",
+        "end": "00b622d5",
+        "name": null,
+        "after": "Function: FUN_00b62280 at 00b62280\nSignature: undefined FUN_00b62280(void)\nEntry: 00b62280\nBody: 00b62280 - 00b622d4"
+      },
+      {
+        "defined": "00b623c0",
+        "end": "00b623cc",
+        "name": null,
+        "after": "Function: FUN_00b623c0 at 00b623c0\nSignature: undefined FUN_00b623c0(void)\nEntry: 00b623c0\nBody: 00b623c0 - 00b623cb"
+      },
+      {
+        "defined": "00cd7cc0",
+        "end": "00cd7cd6",
+        "name": null,
+        "after": "Function: FUN_00cd7cc0 at 00cd7cc0\nSignature: undefined FUN_00cd7cc0(void)\nEntry: 00cd7cc0\nBody: 00cd7cc0 - 00cd7cd5"
+      },
+      {
+        "defined": "00b621a0",
+        "end": "00b621ad",
+        "name": null,
+        "after": "Function: FUN_00b621a0 at 00b621a0\nSignature: undefined FUN_00b621a0(void)\nEntry: 00b621a0\nBody: 00b621a0 - 00b621ac"
+      }
+    ],
+    "flow_repairs": [
+      {
+        "function": "00b621b0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:08Z",
+        "decompile_lines_before": 11,
+        "gaps": [
+          {
+            "site": "00b621b7",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b621bc",
+            "gap_end_exclusive": "00b621bd",
+            "bytes": 1,
+            "after_call": true,
+            "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b621b7",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b621bc",
+              "gap_end_exclusive": "00b621bd",
+              "bytes": 1,
+              "after_call": true,
+              "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552"
+            },
+            "clear": "Success: Cleared flow override at 00b621b7 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 1 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 10,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b623d0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:14Z",
+        "decompile_lines_before": 55,
+        "gaps": [
+          {
+            "site": "00b62484",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b62489",
+            "gap_end_exclusive": "00b6248c",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b62484",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b62489",
+              "gap_end_exclusive": "00b6248c",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00b62484 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 53,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b62500",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:20Z",
+        "decompile_lines_before": 35,
+        "gaps": [
+          {
+            "site": "00b62518",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b6251d",
+            "gap_end_exclusive": "00b62528",
+            "bytes": 11,
+            "after_call": true,
+            "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8"
+          },
+          {
+            "site": "00b62530",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b62535",
+            "gap_end_exclusive": "00b62538",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b62518",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b6251d",
+              "gap_end_exclusive": "00b62528",
+              "bytes": 11,
+              "after_call": true,
+              "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8"
+            },
+            "clear": "Success: Cleared flow override at 00b62518 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 11 byte(s)"
+          },
+          {
+            "gap": {
+              "site": "00b62530",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b62535",
+              "gap_end_exclusive": "00b62538",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00b62530 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 38,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b62590",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:27Z",
+        "decompile_lines_before": 35,
+        "gaps": [
+          {
+            "site": "00b625b1",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b625b6",
+            "gap_end_exclusive": "00b625ed",
+            "bytes": 55,
+            "after_call": true,
+            "sha256": "21cd368af554af90824fa28298600c7a531d6735ca2f28b8aefe6fc34b9ad2c2"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b625b1",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b625b6",
+              "gap_end_exclusive": "00b625ed",
+              "bytes": 55,
+              "after_call": true,
+              "sha256": "21cd368af554af90824fa28298600c7a531d6735ca2f28b8aefe6fc34b9ad2c2"
+            },
+            "clear": "Success: Cleared flow override at 00b625b1 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 55 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 49,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b62630",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:33Z",
+        "decompile_lines_before": 78,
+        "gaps": [
+          {
+            "site": "00b626c1",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b626c6",
+            "gap_end_exclusive": "00b626c9",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b626c1",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b626c6",
+              "gap_end_exclusive": "00b626c9",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00b626c1 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 76,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b56de0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:39Z",
+        "decompile_lines_before": 24,
+        "gaps": [
+          {
+            "site": "00b56e15",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b56e1a",
+            "gap_end_exclusive": "00b56e2a",
+            "bytes": 16,
+            "after_call": true,
+            "sha256": "23ee0c40d9943491106ee779c570b3bb43f81ef163e5b26c0ea2e557b002fe65"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b56e15",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b56e1a",
+              "gap_end_exclusive": "00b56e2a",
+              "bytes": 16,
+              "after_call": true,
+              "sha256": "23ee0c40d9943491106ee779c570b3bb43f81ef163e5b26c0ea2e557b002fe65"
+            },
+            "clear": "Success: Cleared flow override at 00b56e15 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 16 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 25,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b56fc0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:46Z",
+        "decompile_lines_before": 14,
+        "gaps": [
+          {
+            "site": "00b56fd0",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b56fd5",
+            "gap_end_exclusive": "00b56fd8",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b56fd0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b56fd5",
+              "gap_end_exclusive": "00b56fd8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00b56fd0 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 11,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b40cf0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T20:00:52Z",
+        "decompile_lines_before": 31,
+        "gaps": [
+          {
+            "site": "00b40d45",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b40d4a",
+            "gap_end_exclusive": "00b40d53",
+            "bytes": 9,
+            "after_call": true,
+            "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b40d45",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b40d4a",
+              "gap_end_exclusive": "00b40d53",
+              "bytes": 9,
+              "after_call": true,
+              "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+            },
+            "clear": "Success: Cleared flow override at 00b40d45 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 9 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 34,
+        "gaps_remaining": 0
+      }
+    ],
+    "remaining_internal_call_gaps": 0,
+    "untouched_alignment_gaps": [
+      {
+        "start": "00b6259d",
+        "end_exclusive": "00b625a0"
+      },
+      {
+        "start": "00b62608",
+        "end_exclusive": "00b62610"
+      }
+    ],
+    "complete_stored_body_ranges": true,
+    "unwind_verification": {
+      "unwind": [
+        {
+          "function": "pool",
+          "func_info": "00dfa328",
+          "map": "00dfa310",
+          "states": 3,
+          "verified": true,
+          "entries": [
+            {
+              "state": 0,
+              "previous": -1,
+              "thunk": "00cc14c0",
+              "member_offset": 0,
+              "cleanup": "00403970"
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "thunk": "00cc14c8",
+              "member_offset": 12,
+              "cleanup": "00402f70"
+            },
+            {
+              "state": 2,
+              "previous": 1,
+              "thunk": "00cc14d3",
+              "member_offset": 40,
+              "cleanup": "00b621b0"
+            }
+          ]
+        },
+        {
+          "function": "sampler",
+          "func_info": "00df9018",
+          "map": "00df9008",
+          "states": 2,
+          "verified": true,
+          "entries": [
+            {
+              "state": 0,
+              "previous": -1,
+              "thunk": "00cc0440",
+              "member_offset": 4,
+              "cleanup": "0041dd20"
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "thunk": "00cc044b",
+              "member_offset": 24,
+              "cleanup": "0041dd20"
+            }
+          ]
+        }
+      ],
+      "full_packet_functions": 16,
+      "initialization_fragment_bytes": 33,
+      "initialized_sampler_bytes": 37,
+      "sampler_unwritten_offsets": [
+        "0D..0F",
+        "10..13"
+      ],
+      "pool_payload_bytes": 12,
+      "pool_slot_bytes": 16
+    }
+  },
+  "limitations": [
+    "Full B57B50/B41830 sampler parsing and publication are still semantic projections elsewhere; this packet implements their concrete lifetime dependency and initialization fragment only.",
+    "Actual state-definition manager and B579B0/B567B0 row publication, field-table allocation and complete descriptor reader remain open.",
+    "Valid live counts/backing extents/aligned pool slots and the shared heap, allocator-list, pool and string lifetimes are caller contracts.",
+    "Original allocation/exception delivery, binary ABI, shader/texture payload consumption, rendering and gameplay remain unvalidated."
+  ],
+  "integrated_verification": {
+    "utc": "2026-09-11T20:18:08.913185+00:00",
+    "tested_commit": "7cd7fbaa6833799b42fcc84e0269d78112829168",
+    "source_sha256": {
+      "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+      "src/native_material_pass_copy.cpp": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357",
+      "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+      "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+      "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+      "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+      "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+      "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+      "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "src/native_material_pools.cpp": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317",
+      "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+      "include/bsp/native_material_effect_owner.hpp": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd",
+      "src/native_material_effect_owner.cpp": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0",
+      "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+      "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "include/bsp/native_string.hpp": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+      "src/native_string.cpp": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+      "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+      "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+      "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+      "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+      "cmake/startup.cmake": "38f4de230efe478d24da39d3a7ae9ae2fc8c50d62e7df6b9252c6848109a9535",
+      "CMakeLists.txt": "6169efcfb5ae285f0a68c7e921c5d364452e66c6652a939f0b1683f3df2e876d",
+      "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+      "src/native_shader_descriptor_owner.cpp": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48",
+      "docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md": "a6ad91901dc63708eb0ea751760ca1f15058cfd14f9b5c53570322d6acaf80a9",
+      "include/bsp/native_shader_sampler_owner.hpp": "00a039a21215d3b71784c6e627aac0e803e6980abe114a2101530eb59680efdf",
+      "src/native_shader_sampler_owner.cpp": "30f8402c421e3b1837c9738e0fa493e32d5b019a822881e358aed2f34b58aad2",
+      "docs/NATIVE_SHADER_SAMPLER_OWNER.md": "b16fac607db6431b6c49a810dc3f82aa3afb3380ebc6b1e9b472ae0fc489d353"
+    },
+    "changed_from_original_tested_source": [
+      "include/bsp/native_string.hpp",
+      "src/native_string.cpp",
+      "cmake/startup.cmake",
+      "CMakeLists.txt"
+    ],
+    "artifacts_sha256": {
+      "local/native-shader-sampler-owner-merged-native-string.diff": "c3c6518aac69ed697378ef32a3220148bfd39d3b5bc69323fe406b5b296ca924",
+      "local/native-shader-sampler-owner-merged-probe-result.log": "63df8561fbd2e0f87c1dc868913682d65f6555bddb0ef48577266a7432ab0218",
+      "local/native-shader-sampler-owner-merged-probe.asm": "b5a0de5043734bab297a971f93f1f5aab9867c66589f484c27bab4ffbaf3c4dc",
+      "local/native-shader-sampler-owner-merged-probe.cpp": "c7c740eb2d7d80a935c622daad2de28466b2af29a60c477d14dc1325e256448e",
+      "local/native-shader-sampler-owner-merged-probe.exe": "bfc49517c761c35ca03822eb90a795ce0f0635d798db7509d1df1adc41ad1e66",
+      "local/native-shader-sampler-owner-merged-probe.obj": "b3d394ec2455e8ac24d9f689a81c26a9ad86ad85aef6e80434d7240bd1d43f40",
+      "local/native-shader-sampler-owner-merged-probe_compile.log": "4776b821db7eb5d097eae2886c6dcd8464ba769f162ca71e1436c3db3d99b0b2",
+      "local/run_native_shader_sampler_merged_probe.ps1": "b9f1fa54df116c5649a1e9e8e20e6d0dad67e3d5f5a9eab556911e67ff3ca9ac",
+      "local/record_native_shader_sampler_merged_verification.py": "6e52df40d353e4dc009c3bf1ffe0770d28e6f630213603bf0519681741125008",
+      "local/native-shader-sampler-owner-integration.log": "d5ed49e53581d0f9cc19087abe4163c40f586bf61dc9f72b73a5593633759a19",
+      "local/native-shader-sampler-owner-merged-tested/bsp_core.lib": "d37a580afa12858f6fe9aec079c577d10c2eb40f873f23bef7ec063345ebbf90",
+      "local/native-shader-sampler-owner-merged-tested/bsp_game.exe": "be1dcc9c137909ff2050bf7487387a165edd006c61c3d9788267cd447a4f6782",
+      "local/native-shader-sampler-owner-merged-tested/LastTest.log": "faacc4eeb01a6e1d7b7641a493408e0f34f81716e6ac8039ca66857c43149d6b"
+    },
+    "frozen_build_artifacts": [
+      {
+        "original": "build/win32/Release/bsp_core.lib",
+        "preserved": "local/native-shader-sampler-owner-merged-tested/bsp_core.lib",
+        "sha256": "d37a580afa12858f6fe9aec079c577d10c2eb40f873f23bef7ec063345ebbf90"
+      },
+      {
+        "original": "build/win32/Release/bsp_game.exe",
+        "preserved": "local/native-shader-sampler-owner-merged-tested/bsp_game.exe",
+        "sha256": "be1dcc9c137909ff2050bf7487387a165edd006c61c3d9788267cd447a4f6782"
+      },
+      {
+        "original": "build/win32/Testing/Temporary/LastTest.log",
+        "preserved": "local/native-shader-sampler-owner-merged-tested/LastTest.log",
+        "sha256": "faacc4eeb01a6e1d7b7641a493408e0f34f81716e6ac8039ca66857c43149d6b"
+      }
+    ],
+    "reason": "Concurrent native_string change factors existing copy method into an actual-header helper; descriptor/sampler string construction, resize and destruction paths are unchanged. Reviewed diff preserved; complete focused fixture rerun against merged library.",
+    "original_frozen_artifacts_reverified": 107,
+    "strict_merged_win32_build": true,
+    "existing_ctests_passed": 2,
+    "full_original_packet_functions_executed": 16,
+    "initialization_fragment_executed": true,
+    "paired_pool_and_sampler_results_match": true,
+    "real_process_atexit_verified": true,
+    "final_fixture_exit_code": 0
+  }
+}
