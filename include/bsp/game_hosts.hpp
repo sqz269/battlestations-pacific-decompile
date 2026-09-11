@@ -138,6 +138,11 @@ struct GameExecutableOptions {
     // through 00580940, builds the mission-detail page 0058c010, takes the page's play
     // action 005922f0 and stops at the mission load request. Empty selects nothing.
     std::string menu_select;
+    // --mission-frames N, milestone 2f: once --menu-select's load has run to
+    // its end and 004da6c0 has entered game state 0Dh, run N frames of the
+    // in-mission branch of 004e4a40 headless. Zero or negative runs none, which
+    // leaves the run exactly where milestone 2e left it.
+    long mission_frames{0};
     // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.
@@ -401,6 +406,21 @@ struct GameRunSummary {
     std::size_t mission_load_host_steps{};
     std::string mission_load_stopped_at;
     std::string mission_step;
+    // Milestone 2f, the load past the renderer owners, the mission Lua machine
+    // and the headless in-mission frames.
+    bool mission_load_finished{};
+    std::size_t mission_load_concrete{};
+    std::size_t mission_load_records{};
+    int mission_game_state{};
+    bool mission_entered{};
+    long mission_frames_requested{};
+    unsigned long long mission_frames_run{};
+    unsigned long long mission_frames_simulated{};
+    std::size_t mission_lua_bindings{};
+    std::size_t mission_lua_natives{};
+    unsigned long long mission_lua_native_calls{};
+    std::string mission_script_path;
+    std::string mission_exit_note;
     // Milestone 2d, the text half of the sprite bridge.
     bool text_bridge_open{};
     std::size_t text_widgets{};

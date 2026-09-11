@@ -143,6 +143,10 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_resource_record_copy.cpp
   src/native_resource_record_vector.cpp
   src/native_resource_cache_leaves.cpp
+  src/native_resource_registry_lookup.cpp
+  src/native_crt_x87_double_load.cpp
+  src/native_crt_x87_power_leaves.cpp
+  src/native_renderer_material_state_binding.cpp
   src/native_vfs_lookup_routes.cpp
   src/native_renderer_texture_stage_state.cpp
   src/native_occlusion_query_device_reset.cpp

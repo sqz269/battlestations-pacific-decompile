@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -71,8 +72,8 @@ struct TemporaryName {
     NativeString value;
     ~TemporaryName() { destroy_native_string_header_0041dd20(&value, strings); }
 };
-void* scalar_base(void* p, std::uint32_t flags, EffectScalarComponentContext& context) {
-    destroy_effect_component_base_0086b7e0(p, context.strings);
+void* scalar_base(void* p, std::uint32_t flags, NativeStringStorage& strings) {
+    destroy_effect_component_base_0086b7e0(p, strings);
     if ((flags & 1u) != 0) singleton_lifetime_free(p);
     return p;
 }
@@ -193,7 +194,7 @@ void destroy_effect_waterdrops_0086cd40(void* p, EffectScalarComponentContext& c
     destroy_effect_component_base_0086b7e0(p, context.strings);
 }
 void* scalar_delete_effect_shake_0086d0a0(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
-    return scalar_base(p, f, c);
+    return scalar_delete_effect_shake_0086d0a0(p, f, c.strings);
 }
 void* scalar_delete_effect_waterdrops_0086d0c0(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
     destroy_effect_waterdrops_0086cd40(p, c);
@@ -201,19 +202,73 @@ void* scalar_delete_effect_waterdrops_0086d0c0(void* p, std::uint32_t f, EffectS
     return p;
 }
 void* scalar_delete_effect_const_rumble_0086d0e0(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
-    return scalar_base(p, f, c);
+    return scalar_delete_effect_const_rumble_0086d0e0(p, f, c.strings);
 }
 void* scalar_delete_effect_slope_rumble_0086d100(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
-    return scalar_base(p, f, c);
+    return scalar_delete_effect_slope_rumble_0086d100(p, f, c.strings);
 }
 void* scalar_delete_effect_square_rumble_0086d120(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
-    return scalar_base(p, f, c);
+    return scalar_delete_effect_square_rumble_0086d120(p, f, c.strings);
 }
 void* scalar_delete_effect_light_0086d140(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
-    return scalar_base(p, f, c);
+    return scalar_delete_effect_light_0086d140(p, f, c.strings);
 }
 void* scalar_delete_effect_splash_0086d160(void* p, std::uint32_t f, EffectScalarComponentContext& c) {
-    return scalar_base(p, f, c);
+    return scalar_delete_effect_splash_0086d160(p, f, c.strings);
+}
+void* scalar_delete_effect_shake_0086d0a0(void* p, std::uint32_t f, NativeStringStorage& strings) {
+    return scalar_base(p, f, strings);
+}
+void* scalar_delete_effect_const_rumble_0086d0e0(void* p, std::uint32_t f, NativeStringStorage& strings) {
+    return scalar_base(p, f, strings);
+}
+void* scalar_delete_effect_slope_rumble_0086d100(void* p, std::uint32_t f, NativeStringStorage& strings) {
+    return scalar_base(p, f, strings);
+}
+void* scalar_delete_effect_square_rumble_0086d120(void* p, std::uint32_t f, NativeStringStorage& strings) {
+    return scalar_base(p, f, strings);
+}
+void* scalar_delete_effect_light_0086d140(void* p, std::uint32_t f, NativeStringStorage& strings) {
+    return scalar_base(p, f, strings);
+}
+void* scalar_delete_effect_splash_0086d160(void* p, std::uint32_t f, NativeStringStorage& strings) {
+    return scalar_base(p, f, strings);
+}
+GameplayEffectPlainComponentLifetime::GameplayEffectPlainComponentLifetime(NativeStringStorage& strings,
+    const GameplayEffectPlainComponentTable* tables, std::size_t count,
+    GameplayEffectComponentLifetime& remaining)
+    : strings_(strings), tables_(tables), table_count_(count), remaining_(remaining) {
+    if (!tables || !count) throw std::invalid_argument("Actual plain component tables required");
+    for (std::size_t i = 0; i < count; ++i) {
+        if (!tables[i].actual_words) throw std::invalid_argument("Actual component terminal table words required");
+        for (std::size_t j = 0; j < i; ++j)
+            if (tables[i].original_identity == tables[j].original_identity)
+                throw std::invalid_argument("Duplicate component terminal table");
+    }
+}
+const GameplayEffectPlainComponentTable* GameplayEffectPlainComponentLifetime::current_table(void* p) const noexcept {
+    const auto identity = load<std::uint32_t>(p, 0);
+    for (std::size_t i = 0; i < table_count_; ++i)
+        if (tables_[i].original_identity == identity) return &tables_[i];
+    return nullptr;
+}
+void GameplayEffectPlainComponentLifetime::zero_references_slot_00(void* p) {
+    const auto* table = current_table(p);
+    if (!table) { remaining_.zero_references_slot_00(p); return; }
+    if (table->actual_words[0] != 0x00bd30e0)
+        throw std::invalid_argument("Unsupported current component zero callback");
+    // BD30E0 reloads [ECX] and calls its current scalar+04 with flags1.
+    table = current_table(p);
+    if (!table) throw std::invalid_argument("Component scalar table changed to an unbound class");
+    switch (table->actual_words[1]) {
+    case 0x0086d0a0: scalar_delete_effect_shake_0086d0a0(p, 1, strings_); return;
+    case 0x0086d0e0: scalar_delete_effect_const_rumble_0086d0e0(p, 1, strings_); return;
+    case 0x0086d100: scalar_delete_effect_slope_rumble_0086d100(p, 1, strings_); return;
+    case 0x0086d120: scalar_delete_effect_square_rumble_0086d120(p, 1, strings_); return;
+    case 0x0086d140: scalar_delete_effect_light_0086d140(p, 1, strings_); return;
+    case 0x0086d160: scalar_delete_effect_splash_0086d160(p, 1, strings_); return;
+    default: throw std::invalid_argument("Unsupported current component scalar destructor");
+    }
 }
 void GameplayEffectScalarComponentDispatcher::read_lua_slot_14(void* p, GuiLua51Host& lua,
     const GuiLuaRef& row) {

@@ -1,0 +1,40 @@
+{
+  "packet": "orch5_gui_widget_detach",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reconstructed": {
+    "address": "00aa83a0",
+    "name": "detach_gui_widget_child_00aa83a0",
+    "source": "src/gui_widget_detach.cpp",
+    "coverage": "complete normal path using same retained owners and C++ ownership transfer",
+    "native_abi": "ECX parent, stack child pointer, RET4",
+    "last_instruction": "00aa83ec",
+    "last_instruction_length": 3,
+    "end_inclusive": "00aa83ee"
+  },
+  "host_steps": [
+    {"address":"00aa83b7","native":"00b6e680","function":"00aa83a0","meaning":"current child node parent=null"},
+    {"address":"00aa83c1","native":"00b6d890","function":"00aa83a0","meaning":"reload child node, root=null"},
+    {"address":"00aa83d1","native":"00b6d940","function":"00aa83a0","meaning":"parent node exists: unlink current child node"},
+    {"address":"00aa83de","native":"00a9bd50","function":"00aa83a0","meaning":"remove all matching list nodes, never destroy widget"},
+    {"address":"00aaa5b9","native":"00aa83a0","function":"00aaa5a0","meaning":"detach old parent before attach"},
+    {"address":"00aaa6ac","native":"00aa83a0","function":"00aaa650","meaning":"detach old parent before child transfer"},
+    {"address":"00aaaddd","native":"00aa83a0","function":"00aaa710","meaning":"detach old parent in inline property child construction"},
+    {"address":"00ab8118","native":"00aa83a0","function":"00ab80c0","meaning":"detach glyph child before reloaded child virtual04(1)"}
+  ],
+  "uncontained_call_xrefs": [
+    {"site":"005d1f2e","target":"00aa83a0","bytes":"e86d644d00","function":null,"status":"direct target verified; no live containing function, argument ownership not attributed"}
+  ],
+  "analysis_only": [
+    {"address":"00a9bd50","coverage":"full list-remove loop after repairing false free CALL_RETURN","last_instruction":"00a9bde9","last_instruction_length":3,"end_inclusive":"00a9bdeb","flow_record":"reports/gui_widget_detach_flow.json"}
+  ],
+  "validation": {
+    "focused_actual_owner_probe":"PASS; local/gui_widget_detach_probe.log",
+    "strict_compile":"PASS MSVC Win32 /W4 /WX /O2 /fp:strict",
+    "standard_build":"pending combined batch",
+    "game_validated":false,
+    "abi_compatible":false,
+    "new_test_targets":0
+  },
+  "limits":["C++ owning child list supports one owning entry per instance", "Text deleting destructor and allocation-lifetime transport remain required", "Borrowed owners/node bindings must remain alive through callbacks", "Additional raw caller005d1f2e lacks a containing function"]
+}

@@ -183,3 +183,8 @@ executed providers, and pins the immutable archive, COFF sections and
 relocations, source inputs, probe source, executable, link map, native spans,
 trace and build logs for primary relinking. It makes no ABI-compatible,
 whole-cache, whole-registry or game-validation claim.
+
+
+## Primary integration
+
+Main registered the unchanged instruction/body implementations and passed the strict Win32 build, both existing CTests and eight fresh original seeds. Every packet used the same frozen main library `047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f`. Primary verified98 sealed worker files,59 report pins,18 unchanged current source/header inputs and21 fresh spans959bytes. The unchanged fixture linked only the main archive and passed all seven pairs327trace words. Four exact main objects retain110code sections6985bytes244relocations;15linked sections1132bytes passed their nonrelocation-byte checks and all32profile bytes remained unchanged/read-only. Original child bodies and owner-invalid runtime branches remain unexecuted. The primary saved reviewed names/comments while retaining prior values, registered raw source entries, and refreshed all affected exports. Immutable proof: `local/registry_lookup_primary/`. Original-caller/SEH and gameplay limits remain.

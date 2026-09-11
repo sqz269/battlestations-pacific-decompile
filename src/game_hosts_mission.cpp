@@ -2,6 +2,9 @@
 // See include/bsp/game_hosts_mission.hpp for the address list and the evidence.
 #include "bsp/game_hosts_mission.hpp"
 
+#include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_mission_frame.hpp"
+
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -17,6 +20,8 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/mission_briefing_start.hpp"
 #include "bsp/mission_load_path.hpp"
+#include "bsp/mission_lua_machine.hpp"
+#include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/scene_entity_factory.hpp"
@@ -248,6 +253,9 @@ const char* game_mission_step_name(GameMissionStep step) noexcept {
     case GameMissionStep::BriefingStart: return "BriefingStart";
     case GameMissionStep::LoadRequested: return "LoadRequested";
     case GameMissionStep::SceneRecord: return "SceneRecord";
+    case GameMissionStep::SceneLoaded: return "SceneLoaded";
+    case GameMissionStep::InMission: return "InMission";
+    case GameMissionStep::MissionFrames: return "MissionFrames";
     case GameMissionStep::Stopped: return "Stopped";
     }
     return "Idle";
@@ -298,11 +306,24 @@ struct GameMissionHost::Impl {
     GameMissionStep step{GameMissionStep::Idle};
     GameMissionSummary summary;
 
+    // Milestone 2f: the mission Lua machine 004dd627 builds once per process
+    // and the host that carries the load past the renderer owners, enters the
+    // mission state and runs the headless frames.
+    long mission_frames{0};
+    GameFrameProfiler* profiler{nullptr};
+    std::string language;
+    std::unique_ptr<GameMissionLuaHost> lua;
+    std::unique_ptr<GameMissionFrameHost> frame_host;
+
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
-        GameFrontendHost& frontend_in, LocaleTables& locale_in, std::string requested)
+        GameFrontendHost& frontend_in, LocaleTables& locale_in, std::string requested,
+        long mission_frames_in, GameFrameProfiler* profiler_in, std::string language_in)
         : log(log_in), vfs(vfs_in), scripts(scripts_in), frontend(frontend_in),
-          locale(locale_in), requested_id(std::move(requested)) {
+          locale(locale_in), requested_id(std::move(requested)),
+          mission_frames(mission_frames_in), profiler(profiler_in),
+          language(std::move(language_in)) {
         summary.requested_id = requested_id;
+        summary.mission_frames_requested = mission_frames;
     }
 
     const MissionRecordData* selected_record() const {
@@ -324,6 +345,8 @@ struct GameMissionHost::Impl {
     void start_briefing_005922f0();
     void consume_load_request();
     void read_scene_file(SceneRecord& record, const std::string& scene_path);
+    void finish_scene_load();
+    void publish_frame_summary();
 };
 
 namespace {
@@ -1233,8 +1256,9 @@ void GameMissionHost::Impl::consume_load_request() {
                 + address + "] " + mission_load_owner_name(step_row.owner);
         }
     }
-    log.notef("mission load host inventory: %zu steps, %zu need a subsystem owner; "
-        "the load stops at %s", summary.load_host_steps, summary.load_host_external,
+    log.notef("mission load host inventory: %zu steps, %zu need a subsystem owner; the "
+        "first renderer or scene-graph owner is %s (milestone 2e stopped there; 2f walks "
+        "the rest)", summary.load_host_steps, summary.load_host_external,
         summary.load_stopped_at.empty() ? "(nothing)" : summary.load_stopped_at.c_str());
 }
 
@@ -1243,9 +1267,11 @@ void GameMissionHost::Impl::consume_load_request() {
 // ---------------------------------------------------------------------------
 
 GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-    GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id)
+    GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
+    long mission_frames, GameFrameProfiler* profiler, std::string language)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
-          std::move(requested_mission_id))) {}
+          std::move(requested_mission_id), mission_frames, profiler,
+          std::move(language))) {}
 
 GameMissionHost::~GameMissionHost() = default;
 
@@ -1471,6 +1497,103 @@ void GameMissionHost::build_top_level_page_00584ae0() {
     }
 }
 
+
+// ---------------------------------------------------------------------------
+// Milestone 2f: past the renderer-owner hosts
+// ---------------------------------------------------------------------------
+
+// 008860b0 concatenates "Scripts/missions/" + name + ".lua" with no directory
+// walk, and Scripts/missions/ holds no loose .lua at all, so the name must
+// carry a subdirectory (docs/MISSION_LUA_MACHINE.md, gap 2). The name the
+// native uses comes from the scene record's script table at +928h, which the
+// header pass does not fill (milestone 2e). **The executable therefore derives
+// it from the scene path and checks the result against the mounted tree**: the
+// scene file's own parent directory folded to lower case, then, if that does
+// not resolve, each of the eight installed subdirectories in turn.
+void GameMissionHost::Impl::finish_scene_load() {
+    if (load.records.empty()) return;
+    const SceneRecord& record = load.records.front();
+
+    std::string stem = record.scene_path;
+    std::string parent;
+    const std::size_t slash = stem.find_last_of("/\\");
+    if (slash != std::string::npos) {
+        parent = stem.substr(0, slash);
+        stem = stem.substr(slash + 1);
+        const std::size_t parent_slash = parent.find_last_of("/\\");
+        if (parent_slash != std::string::npos) parent = parent.substr(parent_slash + 1);
+    }
+    const std::size_t dot = stem.find_last_of('.');
+    if (dot != std::string::npos) stem = stem.substr(0, dot);
+    std::string folded;
+    folded.reserve(parent.size());
+    for (const char c : parent) {
+        folded.push_back(static_cast<char>(c >= 'A' && c <= 'Z' ? c - 'A' + 'a' : c));
+    }
+
+    std::vector<std::string> candidates;
+    if (!folded.empty()) candidates.push_back(folded + "/" + stem);
+    for (const std::string& directory : bsp::installed_mission_subdirectories()) {
+        std::string candidate = directory + "/" + stem;
+        if (std::find(candidates.begin(), candidates.end(), candidate) == candidates.end()) {
+            candidates.push_back(std::move(candidate));
+        }
+    }
+    std::string script_name;
+    for (const std::string& candidate : candidates) {
+        if (!bsp::mission_script_name_carries_subdirectory(candidate)) continue;
+        if (vfs.exists(bsp::mission_script_path(candidate))) {
+            script_name = candidate;
+            break;
+        }
+    }
+    if (script_name.empty() && !candidates.empty()) script_name = candidates.front();
+    summary.lua_script_path = bsp::mission_script_path(script_name);
+    // Correction to the line the scene summary printed: milestone 2e derived the
+    // mission script path from the scene stem alone, which is the bare form no
+    // installed script occupies. The record's own field is the authority and the
+    // header pass does not fill it, so this derivation replaces it.
+    summary.mission_script_path = summary.lua_script_path;
+    log.notef("mission script name derived from the scene path: %s -> %s (the record's "
+        "+928h script table is not filled by the header pass)", record.scene_path.c_str(),
+        summary.lua_script_path.c_str());
+
+    lua = std::make_unique<GameMissionLuaHost>(log, vfs);
+    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, profiler, language);
+    // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
+    // this process reaches its first mission here, so the machine is built now
+    // and kept for the rest of the run.
+    lua->start_machine_00884be0();
+    frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
+        record.locale_table_list, record.mission_id);
+
+    const GameMissionLoadRunSummary& load_run = frame_host->load_summary();
+    summary.mission_load_finished = load_run.state_after == bsp::kGameStateSceneReady;
+    summary.mission_load_concrete = load_run.concrete;
+    summary.mission_load_records = load_run.records;
+    summary.mission_game_state = static_cast<int>(load_run.state_after);
+    publish_frame_summary();
+}
+
+void GameMissionHost::Impl::publish_frame_summary() {
+    if (lua != nullptr) {
+        const GameMissionLuaSummary& machine = lua->summary();
+        summary.lua_bindings = machine.bindings_registered;
+        summary.lua_natives = machine.natives.size();
+        summary.lua_native_calls = machine.native_calls;
+    }
+    if (frame_host != nullptr) {
+        const GameMissionFrameRunSummary& frames = frame_host->frame_summary();
+        summary.mission_frames_run = frames.frames;
+        summary.mission_frames_simulated = frames.simulated;
+        summary.mission_exit_note = frames.exit_note;
+        summary.mission_entered = frame_host->entry_summary().entered;
+        if (frame_host->entry_summary().state != 0) {
+            summary.mission_game_state = static_cast<int>(frame_host->entry_summary().state);
+        }
+    }
+}
+
 bool GameMissionHost::advance(float seconds) {
     Impl& host = *impl_;
     if (host.requested_id.empty() || !host.summary.tree_loaded) return false;
@@ -1519,12 +1642,51 @@ bool GameMissionHost::advance(float seconds) {
         host.step = GameMissionStep::SceneRecord;
         return true;
     case GameMissionStep::SceneRecord:
-        host.step = GameMissionStep::Stopped;
-        host.log.notef("mission load path stopped: %s",
-            host.summary.load_stopped_at.empty()
-                ? "no renderer or scene-graph host was reached"
-                : host.summary.load_stopped_at.c_str());
-        return false;
+        // Milestone 2e stopped here, in front of the first renderer-owner host.
+        // Milestone 2f walks the rest of the recovered load inventory: every
+        // renderer, scene-graph, world and sound step stays an explicit record
+        // with the neutral value the reconstruction documents, so the load runs
+        // to its end and leaves game state 0Ch behind.
+        host.finish_scene_load();
+        host.step = GameMissionStep::SceneLoaded;
+        return true;
+    case GameMissionStep::SceneLoaded:
+        if (host.frame_host == nullptr || !host.summary.mission_load_finished) {
+            host.step = GameMissionStep::Stopped;
+            return false;
+        }
+        // 004db920 for game state 0Ch, which tails into 004da6c0.
+        host.frame_host->enter_mission_state_004da6c0();
+        host.publish_frame_summary();
+        if (!host.summary.mission_entered) {
+            host.log.notef("the mission state was not entered; the run stops at state 0x%02X",
+                host.summary.mission_game_state);
+            host.step = GameMissionStep::Stopped;
+            return false;
+        }
+        host.step = GameMissionStep::InMission;
+        return true;
+    case GameMissionStep::InMission:
+    case GameMissionStep::MissionFrames: {
+        if (host.frame_host == nullptr || host.mission_frames <= 0) {
+            if (host.frame_host != nullptr) host.frame_host->report(host.mission_frames);
+            host.publish_frame_summary();
+            host.step = GameMissionStep::Stopped;
+            return false;
+        }
+        const bool more = host.frame_host->run_mission_frame_004e4a40(seconds);
+        host.publish_frame_summary();
+        host.step = GameMissionStep::MissionFrames;
+        if (!more
+            || host.summary.mission_frames_run
+                >= static_cast<unsigned long long>(host.mission_frames)) {
+            host.frame_host->report(host.mission_frames);
+            host.publish_frame_summary();
+            host.step = GameMissionStep::Stopped;
+            return false;
+        }
+        return true;
+    }
     case GameMissionStep::Stopped:
         return false;
     }

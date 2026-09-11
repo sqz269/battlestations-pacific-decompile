@@ -31,3 +31,8 @@ The fresh isolated worktree starts at main `77cef001`. An ignored `local/x87_dou
 The ignored `local/x87_double_load/sealed.json` manifest freezes the complete library, exact object and extracted member, function bytes, full COFF section/symbol/relocation inventory, source/header and build inputs, compiler command record, logs, original capture and seed evidence. Every analysis command verified the configured `bsp` project and `/battlestationspacific.exe` before querying. No Ghidra, shared metadata, installed binary or game state was changed.
 
 This packet makes **no linked-address, runtime, game, or full pow/gamma completion claim**. It closes one exact source prerequisite only. BFEB10's power paths and their remaining math/error providers still require separate reconstruction, as described in [the gamma discovery](NATIVE_RENDERER_GAMMA_DISCOVERY.md).
+
+
+## Primary integration
+
+Main registered the unchanged instruction/body implementations and passed the strict Win32 build, both existing CTests and eight fresh original seeds. Every packet used the same frozen main library `047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f`. Primary verified34 sealed worker files plus33 report pins, a fresh67-byte native span, and the full four-section main archive object. All67 function bytes/21instructions are identical with zero relocations. No runtime fixture or linked-address claim was added. The primary saved reviewed names/comments while retaining prior values, registered raw source entries, and refreshed all affected exports. Immutable proof: `local/x87_double_load_primary/`. Original-caller/SEH and gameplay limits remain.

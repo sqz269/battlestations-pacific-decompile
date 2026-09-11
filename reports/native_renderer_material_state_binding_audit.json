@@ -2,7 +2,7 @@
   "schema": 1,
   "packet": "native_renderer_material_state_binding2",
   "utc": "2026-09-11T20:58:37.371824+00:00",
-  "status": "source_reconstructed_strict_build_and_focused_original_full_actual_provider_fixture_passed_pending_primary_integration",
+  "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
   "base_commit": "9a36781c585545d68dd0967052d0d5c2eb8abd0d",
   "functions": [
     {
@@ -1972,5 +1972,95 @@
   ],
   "shared_changes": "No CMake, ledger, Ghidra or game changes; only four owned source/header/doc/audit files are committed.",
   "evidence_directory": "local/renderer_material_state_binding",
-  "seal": "local/renderer_material_state_binding/sealed.json; self hash supplied in handoff after commit and immutable seal"
+  "seal": "local/renderer_material_state_binding/sealed.json; self hash supplied in handoff after commit and immutable seal",
+  "primary_integration": {
+    "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+    "main_library_sha256": "047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 304,
+    "current_inputs": 29,
+    "reviewed_source_newline_only": true,
+    "fresh_spans": 27,
+    "fresh_bytes": 1804,
+    "exact_archive_objects": 5,
+    "mapped_COFF_sections": 218,
+    "mapped_COFF_relocations": 690,
+    "runtime_code_bytes": 13652,
+    "actual_imports": 71,
+    "raw_comparisons": 74,
+    "real_HAL_calls": 8,
+    "original_owned_execution": true,
+    "original_child_or_child_EH_execution": false,
+    "boundary": "CompleteB27A80[122]/B27B90[130] actualrender/samplerblock binders. OriginalECXrenderer/stackincoming/RET4; newEDX borrowed12-byte context andone savedstackcell. Identityskip beforecontext; recaptureold,publishincoming/atomicretain beforeolddecrement. OnlyreachedD61A2C/D61A34 slot0BD30E0 thenfreshownerprofile4 fullB422F0/B42310 flags1; actualsharedheapowners andfullthrowingdeletingproviders. Originalincoming retained acrosscalls; eachrow currentdata thenvalue/state(/slot), signedcount rereadafterfullB24460/B24610; finalwrapping1B94/1B9C increment onlyonreturn inclnull. Noouterguard/EH/rollback. Primary304sealedworkerfiles,29currentinputs withownedCPP CRLF/LF-only reviewedtext equality,27freshspans1804bytes. Fulloriginalbinders+BD30E0 execute in immutable4KBprivatecapsule; only6declaredcodeoperands/4profilecells changed. Samefullmainproviders viaexplicitABIbridges, originalchildren/EH notexecuted.74whole comparisons withonlylistedpointer/profilefieldnormalizations;realoldrows/ownerfree,live row/count/counter mutations,identityskip/null;8realHALcallsS_OK throughfixture COM-callview, actualdevice119tablewordsunchanged. Main5exactobjects218mappedCOFFsections690relocs71imports13652runtimecodebytes;compiled133/141bodyinstructions checked. ActualsamplerEH chainB24610->CBCFD8->DF563C/mapDF5634/actionCBCFD0 correct; adjacentCBCFB8 belongsB24510. NofullCOMobject/originalcaller/SEH/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\material_state_binding_primary\\sealed.json",
+      "bytes": 62699,
+      "sha256": "0c8f054946b8ab1ee0a18ddafa9e60ddb5123a4fce9b83b43f86953d837b333e"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_x87_material_registry_annotations.json",
+    "bytes": 9848,
+    "sha256": "f8b1e90c596c3b726b85c0eddacb78fd98b5267c0e8e5680b7233b436bea51f3"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b27a80",
+      "name": "BSP_D3D9Renderer_BindRenderStateBlock",
+      "cpp_symbol": "bsp::bind_native_renderer_material_render_states_00b27a80",
+      "source": "src/native_renderer_material_state_binding.cpp",
+      "native_end_exclusive": "00b27afa",
+      "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_material_state_binding_audit.json",
+      "original_abi": "ECX actual renderer; one actual owner stack argument; RET4; no semantic result; no owned EH registration.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": true,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "retained_semantic_companion": "src/d3d9_states.cpp; earlier typed shared-ownership interface remains separate."
+    },
+    {
+      "kind": "function",
+      "address": "00b27b90",
+      "name": "BSP_D3D9Renderer_BindSamplerStateBlock",
+      "cpp_symbol": "bsp::bind_native_renderer_material_sampler_states_00b27b90",
+      "source": "src/native_renderer_material_state_binding.cpp",
+      "native_end_exclusive": "00b27c12",
+      "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_material_state_binding_audit.json",
+      "original_abi": "ECX actual renderer; one actual owner stack argument; RET4; no semantic result; no owned EH registration.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": true,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "retained_semantic_companion": "src/d3d9_states.cpp; earlier typed shared-ownership interface remains separate."
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b27a80",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b27a80\\decompiled.c",
+      "bytes": 2962,
+      "sha256": "21060003341a71778e8f5e28b5c2c5fc945283e8944c64103cd35f64ac14672b"
+    },
+    {
+      "address": "00b27b90",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b27b90\\decompiled.c",
+      "bytes": 2714,
+      "sha256": "a270591cca25632e151f6bec40ddded9aa19805d1d0772c5cba500aad9a55a7a"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_MATERIAL_STATE_BINDING.md",
+    "bytes": 9938,
+    "sha256": "c0989b26b9b99ae6286c79f78f51070ed1f812fd6133d3255d2dc3e4bbcea056"
+  },
+  "closure_utc": "2026-09-11T21:14:34.652974+00:00"
 }

@@ -1,0 +1,823 @@
+{
+  "packet": "orch4_sound_spatial_channel_t",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a7d560",
+      "name": "construct_sound_channel_00a7d560",
+      "proposed_name": "BSP_SoundChannel_Construct",
+      "source": "src/sound_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack void* sample, void* class_slot, uint type, byte flag; EAX=result; RET 0x10.",
+      "meaning": "Call baseA7C480; ended5A=0, channel54=null, virtual59=wasVirtual58=1, vtableD5ABF8; returnself.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7d597",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7d59a",
+      "byte_span": 58,
+      "sha256": "a69fc0af37709f59eb21a3fcde974f50b80327ebd3dcee102ecf2c8d9011c9f7",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* sample, void* class_slot, uint type, byte flag; EAX=result; RET 0x10. Call baseA7C480; ended5A=0, channel54=null, virtual59=wasVirtual58=1, vtableD5ABF8; returnself. Full containing-function span SHA256 a69fc0af37709f59eb21a3fcde974f50b80327ebd3dcee102ecf2c8d9011c9f7. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a8a2e0",
+      "name": "construct_spatial_sound_channel_00a8a2e0",
+      "proposed_name": "BSP_SpatialSoundChannel_Construct",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack void* sample, void* class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz; EAX=result; RET 0x28.",
+      "meaning": "Native84h object. Clear velocity68/position5C and band78 before shared channelctor; installD5B510; clear group7C/DSP80; second float3 tovelocity68, first toposition5C, dirty74=1. Six by-value floatwords, RET28.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a398",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8a39b",
+      "byte_span": 187,
+      "sha256": "607375bcacb7e6b310443b2b059339ffa450152b649c7e57bb13fce297c71931",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* sample, void* class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz; EAX=result; RET 0x28. Native84h object. Clear velocity68/position5C and band78 before shared channelctor; installD5B510; clear group7C/DSP80; second float3 tovelocity68, first toposition5C, dirty74=1. Six by-value floatwords, RET28. Full containing-function span SHA256 607375bcacb7e6b310443b2b059339ffa450152b649c7e57bb13fce297c71931. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a8a3d0",
+      "name": "destroy_spatial_sound_channel_00a8a3d0",
+      "proposed_name": "BSP_SpatialSoundChannel_Destruct",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; RET.",
+      "meaning": "InstallD5B510; nonnullDSP80 remove then release CURRENT DSP80, samplememory on2B, clear80; stop CURRENT channel54; baseA7BF40 stops again and destroys sample/class/name. EH DEC564 state0 invokesA7BF40.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a45d",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a8a45e",
+      "byte_span": 142,
+      "sha256": "1d2a05459649551ee79fd988b2c81e578f7dea79e31da702dd19317b5a321fa9",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; RET. InstallD5B510; nonnullDSP80 remove then release CURRENT DSP80, samplememory on2B, clear80; stop CURRENT channel54; baseA7BF40 stops again and destroys sample/class/name. EH DEC564 state0 invokesA7BF40. Full containing-function span SHA256 1d2a05459649551ee79fd988b2c81e578f7dea79e31da702dd19317b5a321fa9. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a8a460",
+      "name": "scalar_delete_spatial_sound_channel_00a8a460",
+      "proposed_name": "BSP_SpatialSoundChannel_ScalarDeletingDestructor",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack uint flags; EAX=result; RET 4.",
+      "meaning": "CallA8A3D0; free onlyflagsbit0; returnreceiver. Repairedfreefallthrough A8A475 under write lock; no no-return flags changed.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a47b",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8a47e",
+      "byte_span": 30,
+      "sha256": "3060e16ddd17f33b23070cd710e7def81177fddd904a5b77062d924c35627c56",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack uint flags; EAX=result; RET 4. CallA8A3D0; free onlyflagsbit0; returnreceiver. Repairedfreefallthrough A8A475 under write lock; no no-return flags changed. Full containing-function span SHA256 3060e16ddd17f33b23070cd710e7def81177fddd904a5b77062d924c35627c56. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a8a290",
+      "name": "set_spatial_sound_attributes_00a8a290",
+      "proposed_name": "BSP_SpatialSoundChannel_SetAttributes",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack float px, float py, float pz, float vx, float vy, float vz; RET 0x18.",
+      "meaning": "D5B510slot34. Copy by-value velocity first thenposition; dirty74=1. RET18, not two pointer arguments.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a2d6",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8a2d9",
+      "byte_span": 73,
+      "sha256": "e72e18cccf7013c89fa5b6470749a9523e648b65b7b1eccf0aaf0d875f4eb57b",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack float px, float py, float pz, float vx, float vy, float vz; RET 0x18. D5B510slot34. Copy by-value velocity first thenposition; dirty74=1. RET18, not two pointer arguments. Full containing-function span SHA256 e72e18cccf7013c89fa5b6470749a9523e648b65b7b1eccf0aaf0d875f4eb57b. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a8a3a0",
+      "name": "get_spatial_sound_position_00a8a3a0",
+      "proposed_name": "BSP_SpatialSoundChannel_GetPosition",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack void* output; EAX=result; RET 4.",
+      "meaning": "D5B510slot38. Snapshot position5C/60/64 before any outputstore, copy tohidden result float3 pointer, EAX output, RET4. This is a getter, not a velocity setter.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a3c1",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8a3c4",
+      "byte_span": 36,
+      "sha256": "87b601cd8f582a3d2489794378bc79d6af1502cd65802841da290d614e9b4661",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* output; EAX=result; RET 4. D5B510slot38. Snapshot position5C/60/64 before any outputstore, copy tohidden result float3 pointer, EAX output, RET4. This is a getter, not a velocity setter. Full containing-function span SHA256 87b601cd8f582a3d2489794378bc79d6af1502cd65802841da290d614e9b4661. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a79a40",
+      "name": "sound_distance_band_00a79a40",
+      "proposed_name": "BSP_SoundSystem_SelectDistanceBand",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack float distance; EAX=result; RET 4.",
+      "meaning": "Ordered comparisons against manager20/24/28/2C; first three strict greater threshold branches choose0/1/2. Final JA chooses3 only ifordered threshold4>distance; otherwise4, includingNaN. Pseudocode incorrectly suggests NaN3.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a79a87",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a79a8a",
+      "byte_span": 74,
+      "sha256": "bca8c7c3f102ae0ca6c9e0f46bca4278ef4f8ec63e1fb23d28cf8ea68a0a028d",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack float distance; EAX=result; RET 4. Ordered comparisons against manager20/24/28/2C; first three strict greater threshold branches choose0/1/2. Final JA chooses3 only ifordered threshold4>distance; otherwise4, includingNaN. Pseudocode incorrectly suggests NaN3. Full containing-function span SHA256 bca8c7c3f102ae0ca6c9e0f46bca4278ef4f8ec63e1fb23d28cf8ea68a0a028d. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7ec60",
+      "name": "sound_distance_type_00a7ec60",
+      "proposed_name": "BSP_SoundSystem_FindDistanceType",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack int type, uint band; EAX=result; RET 8.",
+      "meaning": "Copy current type name; native reversefind last underscore (position0 excluded by00467CF0); strip recognized case-insensitive dist1..dist4 suffix; append _dist1..4 forband1..4; existingA7B0A0 lookup with zero-on-miss. Native pooled-string primitives retained. Defined bounded canonical configuration/storage domain, not allocation-failure/SEH identity.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7f03f",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f042",
+      "byte_span": 994,
+      "sha256": "8ab4328c7a0433b97cc15a13026003a5cd2fdbde15080932e3fef6df076fe337",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack int type, uint band; EAX=result; RET 8. Copy current type name; native reversefind last underscore (position0 excluded by00467CF0); strip recognized case-insensitive dist1..dist4 suffix; append _dist1..4 forband1..4; existingA7B0A0 lookup with zero-on-miss. Native pooled-string primitives retained. Defined bounded canonical configuration/storage domain, not allocation-failure/SEH identity. Full containing-function span SHA256 8ab4328c7a0433b97cc15a13026003a5cd2fdbde15080932e3fef6df076fe337. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7ba40",
+      "name": "sound_type_listener_group_00a7ba40",
+      "proposed_name": "BSP_SoundSystem_GetTypeListenerGroup",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack int type; EAX=result; RET 4.",
+      "meaning": "Capture selected ordinal108, address type38[type].byListener08, signed ensurecount>ordinal usingA7B3D0 nullfill, returncurrent slot. Existing canonical vector projection; negative/out-of-range native accesses not normalized.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7ba78",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7ba7b",
+      "byte_span": 59,
+      "sha256": "b08c6b13a2953cd02eed196db0fda8cf82cc493d3756bbc8422aab84c0eb904f",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack int type; EAX=result; RET 4. Capture selected ordinal108, address type38[type].byListener08, signed ensurecount>ordinal usingA7B3D0 nullfill, returncurrent slot. Existing canonical vector projection; negative/out-of-range native accesses not normalized. Full containing-function span SHA256 b08c6b13a2953cd02eed196db0fda8cf82cc493d3756bbc8422aab84c0eb904f. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a8a480",
+      "name": "update_spatial_sound_channel_00a8a480",
+      "proposed_name": "BSP_SpatialSoundChannel_Update",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "reconstructed_build_and_installed_spatial_manager_fixture_tested",
+      "abi": "ECX=self; stack float dt, void* listener; RET 8.",
+      "meaning": "D5B510slot30, RET8. Stoppedearlyout, fade/delay preservingNaN38; lazy pausedchannelcreate with pre-call manager capture forinitial group140. Incrementupdates; float3 listener50 minusposition5C, recovered00419440length withCRT access, current-global band/type/group routing. Nullgroup mutes scale28 withoutFMODgroupmove. Dirtyfrequency/volume/pan/mix; snapshot spatialattributes; pausebits; virtual58/59 history. FMOD update-path results ignored; no audibility or ended query.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a6fd",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8a700",
+      "byte_span": 640,
+      "sha256": "09ab02795462fed67fd06bb2605ef87dbd9e1ca7eadea6743a41779b6d336c50",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack float dt, void* listener; RET 8. D5B510slot30, RET8. Stoppedearlyout, fade/delay preservingNaN38; lazy pausedchannelcreate with pre-call manager capture forinitial group140. Incrementupdates; float3 listener50 minusposition5C, recovered00419440length withCRT access, current-global band/type/group routing. Nullgroup mutes scale28 withoutFMODgroupmove. Dirtyfrequency/volume/pan/mix; snapshot spatialattributes; pausebits; virtual58/59 history. FMOD update-path results ignored; no audibility or ended query. Full containing-function span SHA256 09ab02795462fed67fd06bb2605ef87dbd9e1ca7eadea6743a41779b6d336c50. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00a7f710",
+      "name": "create_spatial_bank_sound_00a7f710_fragment",
+      "proposed_name": "BSP_SoundManager_CreateSpatialSound",
+      "source": "src/sound_spatial_instance.cpp",
+      "document": "docs/SOUND_SPATIAL_CHANNEL.md",
+      "status": "bank_branch_fragment_build_and_installed_spatial_manager_fixture_tested_event_branch_unbound",
+      "abi": "ECX=self; stack void* sample, int class_index, uint type, byte flag; EAX=result; RET 0x10.",
+      "meaning": "PARTIAL implementation: attempted counter160 and A818C0=true bank branch A7F74A..A7F7E4, plus null-allocationreturnA7F878..A7F88E. Allocate84h, zero position/velocity, signedclassresize, A8A2E0. Event branch allocates90h/A89DC0 and remains unbound, explicit C++throw atfalsegate instead of fabricatednull. EH DEB7E8 state0 freesallocation only.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7f88c",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f88f",
+      "byte_span": 383,
+      "sha256": "9cea11471b0f37f0acee96c7066d106eaadaa428c25e7fd2de3e0d80d06b9254",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "implemented_ranges": [
+        [
+          "00a7f710",
+          "00a7f7e4"
+        ],
+        [
+          "00a7f878",
+          "00a7f88e"
+        ]
+      ],
+      "unbound_ranges": [
+        [
+          "00a7f7e5",
+          "00a7f877"
+        ]
+      ],
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* sample, int class_index, uint type, byte flag; EAX=result; RET 0x10. PARTIAL implementation: attempted counter160 and A818C0=true bank branch A7F74A..A7F7E4, plus null-allocationreturnA7F878..A7F88E. Allocate84h, zero position/velocity, signedclassresize, A8A2E0. Event branch allocates90h/A89DC0 and remains unbound, explicit C++throw atfalsegate instead of fabricatednull. EH DEB7E8 state0 freesallocation only. Full containing-function span SHA256 9cea11471b0f37f0acee96c7066d106eaadaa428c25e7fd2de3e0d80d06b9254. docs/SOUND_SPATIAL_CHANNEL.md. Win32, focused routing checks and installed spatial FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    }
+  ],
+  "no_ghidra_function": [],
+  "read_only_evidence": [
+    {
+      "address": "00d5b510",
+      "size": 68,
+      "bytes_hex": "e030bd0060a4a80070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70080a4a80090a2a800a0a3a80000a7a800a099a700",
+      "sha256": "b17aed4a37eaf3de54afcf614f926cf005c12f4c2590d460d3fd91d0ed3ccc18",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d5abf8",
+      "size": 68,
+      "bytes_hex": "e030bd00a0d5a70070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70010afa70080bea700d0bea70090bea700a099a700",
+      "sha256": "b7de4b94b9614320ef5f33f5e15d2d0822f1465035d34d10cff277d03bf02730",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00dec55c",
+      "size": 44,
+      "bytes_hex": "ffffffff5063cb0022059319010000005cc5de00000000000000000000000000000000000000000001000000",
+      "sha256": "fca349147699d4056af0917ca4bce8bb6c67c35e332c3cc5764fc77bfee48dfe",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00deb7d8",
+      "size": 52,
+      "bytes_hex": "ffffffff3057cb00ffffffff3b57cb002205931902000000d8b7de00000000000000000000000000000000000000000001000000",
+      "sha256": "ccbaea3b989444227460454cfa8ec9028c284f7915fe63d30f52bc3721e0c23c",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00ce7890",
+      "size": 4,
+      "bytes_hex": "5f000000",
+      "sha256": "5e0a69cdb91f050197df9d0847f27c208c308526a65a5d035daa88b209077f26",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00ce3a0c",
+      "size": 4,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "disk_analysis_equal": true,
+      "read_only": true
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a7d579",
+      "native": "00a7c480",
+      "caller": "00a7d560"
+    },
+    {
+      "address": "00a8a333",
+      "native": "00a7d560",
+      "caller": "00a8a2e0"
+    },
+    {
+      "address": "00a8a406",
+      "native": "00c2de30",
+      "caller": "00a8a3d0"
+    },
+    {
+      "address": "00a8a412",
+      "native": "00c2de2a",
+      "caller": "00a8a3d0"
+    },
+    {
+      "address": "00a8a427",
+      "native": "00a7a460",
+      "caller": "00a8a3d0"
+    },
+    {
+      "address": "00a8a43a",
+      "native": "00c2de0c",
+      "caller": "00a8a3d0"
+    },
+    {
+      "address": "00a8a449",
+      "native": "00a7bf40",
+      "caller": "00a8a3d0"
+    },
+    {
+      "address": "00a8a463",
+      "native": "00a8a3d0",
+      "caller": "00a8a460"
+    },
+    {
+      "address": "00a8a470",
+      "native": "00bf65ac",
+      "caller": "00a8a460"
+    },
+    {
+      "address": "00a7ecae",
+      "native": "0041dd40",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ecc5",
+      "native": "00bf7680",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ece1",
+      "native": "0041dd40",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ecfc",
+      "native": "00bf7680",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ed12",
+      "native": "00467cf0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ed28",
+      "native": "00419cc0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ed2f",
+      "native": "00bd1510",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ed4b",
+      "native": "00469840",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ed67",
+      "native": "0041e870",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ed92",
+      "native": "0041dd40",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7edaa",
+      "native": "00bf7680",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7edd9",
+      "native": "00419cc0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ede0",
+      "native": "00bd1510",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee02",
+      "native": "00419cc0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee09",
+      "native": "00bd1510",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee1c",
+      "native": "00bf7fbf",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee36",
+      "native": "00425850",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee48",
+      "native": "00425850",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee5a",
+      "native": "00425850",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ee92",
+      "native": "00bf87e0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7eea1",
+      "native": "0041dd40",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7eeb7",
+      "native": "0041e870",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7eedd",
+      "native": "0041dd40",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7eeeb",
+      "native": "00bf7680",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ef1a",
+      "native": "0041e870",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ef40",
+      "native": "0041dd40",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ef4e",
+      "native": "00bf7680",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ef76",
+      "native": "0041e870",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ef95",
+      "native": "0041e870",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7efa8",
+      "native": "00425e10",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7efc5",
+      "native": "00419cc0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7efcc",
+      "native": "00bd1510",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7efda",
+      "native": "00a7b0a0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7eff9",
+      "native": "00419cc0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7f000",
+      "native": "00bd1510",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7f020",
+      "native": "00419cc0",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7f027",
+      "native": "00bd1510",
+      "caller": "00a7ec60"
+    },
+    {
+      "address": "00a7ba62",
+      "native": "00a7b3d0",
+      "caller": "00a7ba40"
+    },
+    {
+      "address": "00a8a498",
+      "native": "00a7a2e0",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a4df",
+      "native": "00a7a4c0",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a52f",
+      "native": "00419440",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a53e",
+      "native": "00a79a40",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a556",
+      "native": "00a7ec60",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a568",
+      "native": "00a7ba40",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a57d",
+      "native": "00c2df4a",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a5e3",
+      "native": "00c2de48",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a5ea",
+      "native": "00a7aaa0",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a5f7",
+      "native": "00c2de42",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a5ff",
+      "native": "00a81860",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a614",
+      "native": "00c2de3c",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a62d",
+      "native": "00a7aaa0",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a66a",
+      "native": "00c2ddf4",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a6b1",
+      "native": "00c2df44",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a8a6dd",
+      "native": "00c2de36",
+      "caller": "00a8a480"
+    },
+    {
+      "address": "00a7f73d",
+      "native": "00a818c0",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f74f",
+      "native": "00bf681b",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f7b3",
+      "native": "00a7c2c0",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f7cb",
+      "native": "00a8a2e0",
+      "caller": "00a7f710"
+    }
+  ],
+  "external_library_contracts": [
+    {
+      "address": "00a8a57d",
+      "native": "00c2df4a",
+      "caller": "00a8a480",
+      "method": "channel_set_group",
+      "signature": "FMOD_RESULT __stdcall(Channel*, ChannelGroup*)"
+    },
+    {
+      "address": "00a8a6b1",
+      "native": "00c2df44",
+      "caller": "00a8a480",
+      "method": "channel_set_3d_attributes",
+      "signature": "FMOD_RESULT __stdcall(Channel*, FMOD_VECTOR* position, FMOD_VECTOR* velocity)"
+    },
+    {
+      "address": "00a8a406",
+      "native": "00c2de30",
+      "caller": "00a8a3d0",
+      "method": "dsp_remove",
+      "signature": "FMOD_RESULT __stdcall(DSP*)"
+    },
+    {
+      "address": "00a8a412",
+      "native": "00c2de2a",
+      "caller": "00a8a3d0",
+      "method": "dsp_release",
+      "signature": "FMOD_RESULT __stdcall(DSP*)"
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_spatial_t_build.log",
+    "fixture": "local/sound_spatial_fixture.cpp",
+    "fixture_sha256": "c32863d1fdde52359e8526122b5d7f38b4e2a043fb61c5910b10b04b51c5426c",
+    "fixture_log": "local/sound_spatial_t_fixture.log",
+    "runner": "local/run_sound_spatial_fixture.ps1",
+    "runner_sha256": "fc5a1e9d654b1a443b5da895edcc5c0a97fe5ddf17259a1f4bdd8829c6e6109f",
+    "library_sha256": "7faa9e97ee0e1cbc97ede057e27929e1b7454838d1a4d344c9a3318b21d903ef",
+    "code_revision": "63a8e0eb6890e36bc7dfcc56967a99a730a1f88f",
+    "seed_log": "local/sound_spatial_t_verify_seeds.log",
+    "controlled": "Reused manager ordering/reference checks; added threshold equality and NaN4, recognized case-insensitive suffix stripping, reversefind position0 exclusion and listener null-fill.",
+    "installed": {
+      "bank": "sound/splash/splash_medium.fsb",
+      "automatic_retirements": 1,
+      "virtual_transitions": 1,
+      "first_position": [
+        1110,
+        20,
+        30
+      ],
+      "first_velocity": [
+        5,
+        6,
+        7
+      ],
+      "listener_position": [
+        10,
+        20,
+        30
+      ],
+      "distance_bands": [
+        1,
+        2,
+        0
+      ],
+      "null_group_mutes_without_fmod_group_move": true,
+      "nonnull_group_restores_scale_and_volume": true,
+      "tracked_factory_and_manager_same_reference_storage": true,
+      "manager_refresh_and_retirement": true,
+      "DSP_remove_release_and_double_stop_executed": true,
+      "all_owned_resources_released": true,
+      "device": "explicit FMOD no-sound",
+      "result": "Actual VFS/sample/FMOD channel creation through A7E490 bank-only slot10 binding, manager spatial update, independent FMOD state readback, natural completion and active-entry removal passed.",
+      "fixture_adaptations": [
+        "FSB sample kind and borrowed sound mode explicitly set to3D in the fixture; not an application change.",
+        "Explicit bounded finite sqrt CRT binding with bypass=1; unexpected exceptional dispatch throws.",
+        "Fixture factory uses only A7F710 bank branch; event resource is outside its supported domain.",
+        "Actual created low-pass DSP assigned to owned instance80 before destruction; independent group release and FMOD/system teardown."
+      ],
+      "assets": [
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+          "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+          "bytes": 350544
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll",
+          "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+          "bytes": 238936
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/splash/splash_medium.fsb",
+          "sha256": "7ea3fec9910d5f995824aa56719d86f17058f91436d22f0122816b6eb963e068",
+          "bytes": 261216
+        }
+      ],
+      "exports": {
+        "fmodex.dll": [
+          "FMOD_Channel_SetChannelGroup",
+          "FMOD_Channel_Set3DAttributes",
+          "FMOD_DSP_Remove",
+          "FMOD_DSP_Release",
+          "FMOD_Channel_GetChannelGroup",
+          "FMOD_Channel_Get3DAttributes",
+          "FMOD_Channel_GetVolume",
+          "FMOD_ChannelGroup_Release"
+        ]
+      }
+    },
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false,
+    "seed_functions_verified": 8,
+    "call_site_check": "71 rows checked, 0 failed; local/sound_spatial_t_call_check.log",
+    "fixture_scope": "All ten new routines and the bank factory branch executed in focused routing/installed-manager checks. Selected defined-input behavior, not exhaustive native differential coverage."
+  },
+  "ghidra": {
+    "prototypes": "reports/sound_spatial_instance_prototypes.json",
+    "prototype_count": 11,
+    "function_definitions": "reports/sound_spatial_instance_function_definitions.json",
+    "functions_defined": [
+      "00a8a290",
+      "00a8a3a0"
+    ],
+    "flow_repairs": "reports/sound_spatial_instance_flow.json",
+    "flow_repair_count": 1,
+    "no_return_flags_changed": false,
+    "annotations": {
+      "count": 11,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260911T211403Z.json",
+      "readback": "local/sound_spatial_t_comments.json",
+      "exports": "local/sound_spatial_t_final_exports.log",
+      "all11_prototypes_verified_after_annotation": true
+    }
+  },
+  "boundaries": [
+    "Canonical C++ manager/listener/configuration and84h-instance projection. Actual sample storage reused; no native object-layout ABI or allocator/SEH identity claim.",
+    "A7F710 bank branch only; event branch allocates90h/A89DC0 and remains explicitly unbound. No fabricated event success/null return.",
+    "Configuration type/group std::string/vector projection retains stable callback/valid bounded-index domain. String primitives reused; full native allocation-failure equivalence is not claimed.",
+    "Borrowed current-manager, CRT and complete application/voice services still require production composition. Spatial non-manager slot3C/DSP setup is a followup.",
+    "Actual installed FMOD execution uses no-sound output. Full native differential, audible output and gameplay remain unvalidated."
+  ],
+  "followups": [
+    {
+      "packet": "sound_spatial_event_instances",
+      "addresses": [
+        "00a89dc0",
+        "00a89c80",
+        "00a89ee0",
+        "00a89770",
+        "00a894e0",
+        "00a89560"
+      ]
+    },
+    {
+      "packet": "sound_spatial_dsp_slot3c",
+      "addresses": [
+        "00a8a700"
+      ]
+    },
+    {
+      "packet": "sound_application_voice_composition",
+      "scope": "Production manager/CRT/time services, complete voice runtime and Phase5 application setup."
+    }
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_spatial_manager_fixture_tested",
+    "validated_revision": "627e1ab2d8f0950914bc7a5934a4fd08aa970100",
+    "main_base": "79dbe01b",
+    "integration_log": "local/sound_spatial_t_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_spatial_t_integrate.log",
+    "library_sha256": "bda8b0f99147815de686879d807744d7c0211639254bce16d76cf3d6fbdfcea8",
+    "fixture_provenance": "Focused routing and installed spatial manager fixture ran on validation.code_revision with validation.library_sha256. Combined build/CTest is recorded separately.",
+    "saved_annotations": 11,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T211656Z.json",
+    "refreshed_exports": "local/sound_spatial_t_integration_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
+}

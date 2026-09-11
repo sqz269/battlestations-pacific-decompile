@@ -108,6 +108,13 @@ SoundInstance* scalar_delete_sound_instance_00a7c5d0(SoundInstance* s, std::uint
     if (flags & 1u) delete s;
     return s;
 }
+SoundChannelInstance& construct_sound_channel_00a7d560(SoundChannelInstance& s, void* sample,
+    SoundClassLevel* const* cls, std::uint32_t type, std::uint8_t flag, SoundInstanceContext& c) {
+    construct_sound_instance_00a7c480(s, sample, cls, type, flag, c);
+    s.ended_5a = 0; s.channel_54 = nullptr; s.virtual_59 = 1; s.was_virtual_58 = 1;
+    s.native_vtable_00 = 0x00d5abf8;
+    return s;
+}
 SoundChannelInstance* create_nonspatial_sound_00a7f640(SoundSystemOwner& owner, void* sample,
     std::int32_t class_index, std::uint32_t type, std::uint8_t flag, SoundInstanceContext& c) {
     ++owner.words_160[0];

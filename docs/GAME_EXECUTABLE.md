@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2e
+# bsp_game.exe, milestones 1 through 2f
 
-Milestone 2e is the current state of the executable, and its section corrects the earlier
+Milestone 2f is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -1721,6 +1721,388 @@ the original executable.
 7. **004DFB70 itself**, which needs 004DC6A0's global subsystems and then the renderer
    (00874640) and scene-graph (004D4DF0) owners. The 68-step inventory in the report is the
    worklist.
+
+## Milestone 2f: a headless mission frame
+
+Addresses: 004dd627 / 00884be0 (the mission Lua machine and its one call site), 006b8740 /
+006b8610 / 006b89f0 / 006b8ad0 (the machine construction, the 560-row registration and the
+two chunk runners), 00b6a303 with 00b69e00 (the `DoFile` global the binding table does not
+carry), 004dc72f / 00886900 (the global script folders), 004e02d0 / 005e2f00 (the
+`LobbySettings` table), 00885110 / 00885fb0 / 004e0a3f / 008860b0 (the script file, its
+content variants and the mission chunk), 004e0a96 and 004e0c2e / 0045f520 and 004e0c3c and
+004e0df3 / 0045f440 with 00b66200 (the entry points and the defined check); the load walk
+004dfbcc / 00a7a440, 004dfbd8 / 004cd0f0, 004dfc0e / 0076da60, 004dfd18 / 004bb160,
+004dfe65 / 0057d0c0, 004dfe6f / 0057cb60, 004dfebb / 004dc6a0, 004e0194 / 00874640,
+004e019f / 006ad600, 004e01d7 / 0046df00, 004e01de / 004de610, 004e01e8 / 00951560,
+004e0356 / 004f2800, 004e03e5 / 004d4df0, 004e046c / 0068a990, 004e04df / 004c9680,
+004e04e7 / 004c1ac0, 004e06bc / 00aa0d30, 004e0700 / 00aa06d0, 004e085f / 0077f5e0,
+004e08e4 / 004d30f0, 004e0a9b / 0095ca70, 004e0ae8 / 006b8ad0, 004e124e / 007065e0,
+004e185c / 0057c250, 004e1873 / 004c9ca0, 004e0305 (the `thisTable` self table); the four
+calls of the in-mission subsystem tick 004c40ad / 00875bb0, 004c40b4 / 004c3cb0, 00904bf0 and
+004c40dd / 00447b80; the state 0Ch handler 004db920 with 004db95d /
+00a91020 and 004db9b4 / 00a92c40; the entry 004da6c0 with 004da6df / 00447060, 004da71e,
+004da734 / 00a7a440, 004da746 / 004c9ca0, 004da755 / 004d87b0 and 004da769 / 004cd0f0; and
+the 57 call sites of the in-mission branch of 004e4a40 that `bsp::mission_frame_step()`
+carries. Packet `cc_exe_2f`, owner `agent/cc-exe-2f`. Sources: `src/game_hosts_lua.cpp`,
+`include/bsp/game_hosts_lua.hpp`, `src/game_hosts_mission_frame.cpp`,
+`include/bsp/game_hosts_mission_frame.hpp`, plus edits to `src/game_hosts_mission.cpp`,
+`src/game_hosts_menu.cpp`, `src/game_hosts.cpp`, `src/game_main.cpp` and their headers.
+Report: `reports/game_executable_milestone_2f.json`. Ghidra was read-only for this packet.
+
+Milestone 2e reached the mission load request and stopped in front of the first
+renderer-owner host. This milestone carries the run past it: the load walks the whole of its
+recovered inventory, the mission Lua machine comes up on real Lua 5.1.1 and runs the
+installed mission's script, the state 0Ch handler enters the mission, and the in-mission
+branch of `GGame::OnMove` runs for as many frames as `--mission-frames` asks for.
+
+### The new switch
+
+`--mission-frames N` names how many in-mission frames to run once the load has finished and
+`004da6c0` has written game state 0Dh. Zero, the default, runs none. Every earlier switch is
+unchanged, and a run without `--menu-select` is byte-for-byte the milestone 2d run.
+
+### 1. The load walks its whole inventory
+
+Milestone 2e logged the 68-step inventory of `mission_load_host_steps` and stopped at the
+first step whose owner is the renderer or the scene graph. Milestone 2f walks the 47
+`MissionSceneLoadHost` rows of that table in order: **10 run in process, 32 take the explicit
+unimplemented policy with the neutral value the reconstruction documents, and 5 are
+session-mode arms the single-player load never takes**. The walk ends by writing the value
+004e086b writes, so the run leaves `game+5D4h` at 0Ch.
+
+**This is the milestone's own driver, and it is not `bsp::run_mission_scene_load`.** That
+routine's step at 004dfebb hands the caller a `bsp::GlobalSubsystemInvocation`, a bundle of
+references to twenty configuration contexts that nothing in the repository builds, so the
+recovered driver cannot be entered from this process at all. What the walk keeps is the
+table's order, which is the reconstruction's own recovered ordering; what it does not keep
+are the driver's arm guards, which is why the five session-mode steps are reported as arms
+not taken rather than as performed. Entering the real driver is follow-up 1.
+
+The ten steps that run:
+
+| Step | Call site | Callee | What it does here |
+| --- | --- | --- | --- |
+| `set_cinematic_mode` | 004dfbd8 | 004cd0f0 | both cinematic bytes through the recovered rule |
+| `reset_single_player_slots` | 004dfd18 | 004bb160 | the eight 118h records at game+1008h, slot 0 claimed |
+| `release_main_menu_manager` | 004dfd90 | 00e198ac | the global is nulled; the frame reads the same flag |
+| `release_mission_result` | 004dfe83 | — | game+7188h cleared, which is why the exit is unreachable |
+| `global_subsystems` (one inner step) | 004dc72f | 00886900 | 21 global and autoload scripts |
+| `sync_lobby_settings_from_lua` (was `lua_reset_state`, correction 3) | 004e02d0 | 005e2f00 | the `LobbySettings` table, values excepted |
+| `input_update` | 004db9b4 | 00a92c40 | the reconstructed action records, no backend |
+| `run_mission_script` | 004e0a3f | 008860b0 | `Scripts/missions/usn/usn_2_java.lua` |
+| `lua_call_entry_point_a` | 004e0a96, 004e0c2e | 0045f520 | `luaPrecacheUnits`, `luaStageInitMulti` |
+| `lua_call_entry_point_b` | 004e0c3c | 0045f440 | `luaStageInit` |
+| `publish_mission_id` | — | 00f8a2fc | +48h from record+1098h |
+
+The five numbered VFS file blocks the load opens are named from the recovered short name:
+`1_usn_2 3_usn_2 4_usn_2 5_usn_2 6_usn_2`.
+
+### 2. The mission Lua machine
+
+`GameMissionLuaHost` implements `bsp::MissionLuaHostServices`, so the order is 00884be0's
+order rather than one the process invents: `bsp::initialise_mission_lua_host` drives the
+bring-up, `bsp::run_lua_chunk` the two embedded chunks, `bsp::run_script_with_variants` the
+mission chunk and `bsp::call_entry_point_if_defined` the entry points. The interpreter is the
+repository's stock Lua 5.1.1, which `docs/MISSION_LUA_MACHINE.md` establishes as the matched
+library once `LUA_COMPAT_LSTR` is 2.
+
+What one run performs, in that order:
+
+| Step | Native site | Result on this installation |
+| --- | --- | --- |
+| state, panic, GC pause | 006b8740 | one `lua_State`, `LUA_GCSETPAUSE` 100 |
+| standard libraries | 006b8790 | 7 opened, `package` and `require` absent |
+| `PC=true` | 006b8ad0 | ran |
+| binding table | 006b8610 | **560 globals**, first `Log`, last `TerminateExecution` |
+| fundamentals | 00884c94 | ran from the mounted `Scripts/fundamentals.lua` |
+| `DoFile` | 00b6a303 | installed from the owner layer, called 12 times |
+| global folders | 00886900 | **21 scripts**, no chunk error |
+| `LobbySettings` | 005e2f00 | table created with its 13 fields |
+| mission chunk | 008860b0 | 1 chunk, no content variant, loaded and ran |
+| self table | 004e0305 | `thisTable` created empty, `recon` cleared |
+| entry points | 0045f520, 0045f440 | 3 dispatched, all status 0 |
+
+The bindings are real Lua globals whose bodies are host records: a script that calls one gets
+the call logged with its name and argument count and a nil result, and the row's own address
+goes on the record. `luaStageInit` reached three of them, and only three:
+
+| Binding | Row address | Calls |
+| --- | --- | --- |
+| `CreateScript` | 00898750 | 1 |
+| `Scoring_RealPlayTimeRunning` | 008b87f0 | 1 |
+| `LoadMessageMap` | 008c61c0 | 1 |
+
+`luaEngineMovieInit` was not called: 004e0a50 reads the raw script slot and only slot 9 takes
+that arm, and this mission resolves to slot 8.
+
+Packet `cc_mission_natives` merged during this packet's turn, and two of its findings are in
+the run. The load creates the `thisTable` self table at 004e0305 and clears `recon` on the
+same pass; the table is empty here because 00928a00 fills one slot per entity and this process
+creates none. And the nineteen entity-returning rows of the table take their recovered tail:
+`bsp::mission_binding_returns_entity` selects them, and each one pushes the nil of 0089903C,
+the arm the native takes when the `thisTable` lookup produced nothing, and returns one value.
+That matters to a script, because a binding that returns one value is not the same as one that
+returns none. `CreateScript`, which this mission's stage init calls, is one of the nineteen.
+
+**The mission script name is the executable's derivation, not the record's field.** 008860b0
+takes the name from the scene record's script table at +928h, which the header pass does not
+fill (milestone 2e). `Scripts/missions/` holds no loose `.lua`, so the name must carry a
+subdirectory (`docs/MISSION_LUA_MACHINE.md`, gap 2). The executable derives it from the scene
+file's own parent directory folded to lower case, checks the result against the mounted tree
+and falls back to each of the eight installed subdirectories in turn. For
+`universe/Scenes/missions/USN/usn_2_java.scn` that gives `Scripts/missions/usn/usn_2_java.lua`,
+which resolves.
+
+### 3. The state 0Ch handler and the entry
+
+`bsp::run_mission_device_wait` runs the single-player input-device arm. 00a91020 at 004db95d
+has no backend in this process, so nothing would ever report a button down and the arm would
+wait forever. **The executable injects one device-down sample**, which the recovered latch at
+table+DDh turns into exactly one rising edge; that injection is the executable's own, the same
+substitution `--press-start-frame` makes for the title page. The arm then runs 00a92c40 at
+004db9b4 over the reconstructed action records and tails into 004da6c0.
+
+`bsp::run_mission_state_entry` then runs. It writes 0Dh, releases the deferred dynamics list
+at 004da6df (0 handles: the list is empty here), arms the five one-shot bytes all clear with
+`+1EE3h` = 0 for a single-player session, requests 004c9ca0 with 0 at 004da746, skips 004d87b0
+at 004da755 because the session is not networked, and clears both cinematic bytes at 004da769.
+That last write is what opens the simulation gate, and it is why all 60 frames that follow
+report `simulated=1`.
+
+### 4. The frames
+
+`bsp::run_mission_frame` executes the in-mission branch in native order with the recovered
+guards. Of its 57 steps **28 run a reconstruction in process and 29 are records**. The
+concrete ones are the mission-start counters (004b6260, 004bcaa0), the warning director
+(00987590), the input effect sets (004e4e6c), the action deadlines (004d8cd0), the four
+profiler brackets, the pause-gate decision (004e5153), the in-mission subsystem tick
+(004c40a0), two of the seven hint passes, the bot scheduler, the markers, the entity manager,
+the decals, the power-ups, the activation flush, the mission-completion poll (004d7ea0), the
+particle clock, the GUI visibility decision, the menu request service (006840f0) and the sound
+request queue (00941140).
+
+Step 9, 004c40a0, is concrete because packet `cc_mission_tick` merged during this packet's
+turn. Two of its four calls run a reconstruction: the fixed-step driver 00875bb0 and the
+dynamics frame pass 00447b80. **The driver's four-test gate opens on values this process
+actually holds** rather than on invented ones: the load's own 004bb160 / 004bb440 step claimed
+slot 0 and the entry's 004da71e wrote its +10h ready word, which is exactly what
+00875bb1..00875c02 tests. The clock then behaves as the rule says it should. A 60 frame run
+accumulates less than one 0.05 second step and runs **0** of them, and a 2000 frame run runs
+**19**, which is 0.95 seconds of simulated time; the job waves and the sixteen per-step
+subsystem calls behind each step are records. Call 2's guard and its latch at game+193Ch run
+and fire once, and calls 3 and 4's own containers are empty.
+
+**The frame runs with no world.** Every container those routines walk is empty, so each one
+runs to its own end over nothing. That is a real run of the recovered routine and it is not a
+claim that the game's world was ticked; the per-frame log line reports `units=0 events=0`
+because there are no units and no events, not because the passes were skipped.
+
+Per-frame totals over the 60 frame run: 60 simulated, 0 paused, 0 units, 0 events, 0 input
+entries erased, 3 script calls (the three `luaStageInit` made, which no frame adds to).
+
+### 5. The exit
+
+`docs/MISSION_RESULT_DECISION.md`'s path out of state 0Dh has exactly one producer inside the
+frame, 004d7ea0, and it needs a mission-result object at game+7188h. 004dfe83 released the
+previous one during the load and nothing in this process builds a new one, so the poll returns
+on its first test every frame, state request 0Fh is never enqueued and 004d7970 is
+**unreachable here**. The run says so in its summary rather than inventing a result object.
+The frame loop therefore ends because `--mission-frames` was satisfied, and the process exits
+0.
+
+### What it looks like on screen
+
+Nothing changes when the mission starts. The window still shows the mission-detail page
+milestone 2e described: the Pacific theatre world map with the historical panel's briefing
+text, 705 sprite-bridge quads of which 692 are glyphs. The reason is that the in-mission frame
+draws through 004ca440 and 004ca1f0, both records, and the pages the sprite bridge draws
+belong to the front end, which the load released as a host record rather than by tearing down
+the bridge. **A mission is running behind an unchanged picture.** Putting the mission on screen
+needs the renderer owner, which is follow-up 3.
+
+### Host methods
+
+`bsp_game.exe --frames 300 --press-start-frame 30 --menu-select USN02 --mission-frames 60
+--log local/game_run.log --screenshot local/run.png --game-root "<install>"`, exit 0:
+**246 concrete, 243 unimplemented**. Milestone 2e's run on its own tree reported 193 and 176.
+A run closed with `CloseMainWindow` instead of a frame limit reports 247 concrete, because it
+also reaches `CloseRequestPolicy::front_end_branch` (004ca2f0); a 2000 frame run reports 246
+and 246, because it reaches three more of the fixed-step driver's records.
+
+The full per-step table, with the call site and callee of every row, is
+`reports/game_executable_milestone_2f.json` (`machine_steps`, `load_steps`, `entry_steps`,
+`frame_steps`). The counts by group:
+
+| Group | Steps | Concrete | Records |
+| --- | --- | --- | --- |
+| The Lua machine | 17 | 14 | 3 |
+| The load walk | 47 rows of the inventory | 10 | 32 (5 arms not taken) |
+| State 0Ch and the entry | 11 | 6 | 5 |
+| The in-mission frame | 57 | 28 | 29 |
+| The subsystem tick inside step 9 | 4 | 3 | 1 |
+
+Three of the load's records are worth naming because they are the boundary the next packets
+have to cross: `global_subsystems` (004dc6a0, world), `reset_render_scene` (00874640,
+renderer) and `load_scene_contents` (004d4df0, scene graph). The last one is where the
+entities would appear.
+
+### Corrections
+
+1. **Milestone 2e's "the load stops at `reset_render_scene [00874640]`" is superseded.**
+   00874640 is still the first renderer-owner step and is still a record; it is no longer
+   where the run stops. The 2e host table's 54 load-inventory records are now 32 records, 10
+   concrete steps and 5 arms not taken.
+2. **`include/bsp/mission_lua_host.hpp` cites the wrong call site for `luaPrecacheUnits`.**
+   Its `kMissionLuaEntryPoints` comment reads `0045f520 at 004e0aa5`. The live listing has
+   `CALL 0045f520` at **004e0a96** and `CALL 0095ca70` at 004e0a9b, which is the first of the
+   eleven precache calls the same file attributes to 004e0a9b..004e0acd; 004e0aa5 is inside
+   that block. `python tools/bsp.py ghidra xrefs 0045f520` reports only 004e0a96 and 004e0c2e
+   inside 004dfb70, and `disasm-raw 004e0a90 --length 24` shows both instructions. The fix
+   belongs in that header.
+3. **`MissionSceneLoadHost::lua_reset_state` is named from its call site, not its body.**
+   005e2f00 is `BSP_Game_SyncLobbySettingsFromLua`: it opens the `LobbySettings` global and
+   walks the thirteen slots of 00e08908, and it resets no Lua state. That is exactly the
+   mistake rule 1 of `docs/WORKER_VERIFICATION_CHECKLIST.md` names, and
+   `docs/MISSION_LUA_MACHINE.md` already recovered the body. The rename belongs in
+   `include/bsp/mission_scene_load.hpp`, which this packet does not own.
+4. **This packet's own first pass recorded step 9 as unimplemented.** Packet
+   `cc_mission_tick` merged during the turn and the step now runs
+   `bsp::run_in_mission_subsystem_tick_004c40a0` in process, together with the fixed-step
+   driver 00875bb0 and the dynamics frame pass 00447b80. The same merge brought
+   `cc_mission_natives`, which is where the `thisTable` self table and the entity-returning
+   tail come from.
+5. **Milestone 2e's mission script path was the bare form.** Its report derived
+   `Scripts/missions/usn_2_java.lua` from the scene stem, and no installed script occupies a
+   path directly under `Scripts/missions/`. The executable now derives
+   `Scripts/missions/usn/usn_2_java.lua` and confirms it against the mounted tree; the scene
+   summary line that milestone 2e printed still shows the bare form and is corrected by the
+   derivation line that follows it.
+
+### What this milestone supplies rather than recovers
+
+- **The load driver.** The order comes from `bsp::mission_load_host_steps()`, the
+  reconstruction's own table, but the walk is the executable's, so the arm guards
+  `bsp::run_mission_scene_load` applies are not applied. Five steps are reported as arms not
+  taken on that basis.
+- **The device-wait edge.** One injected device-down sample, because the single-player arm
+  polls an input backend this process does not build.
+- **The mission script name**, derived from the scene path because the record's +928h script
+  table is not filled by the header pass.
+- **The two profiler slot indices** for the game and render blocks. 0109db08 and 0109db14 are
+  both filled at run time by the counter registration 00408720 and are zero in the image, so
+  the executable picks slots 2 and 3, the same substitution milestone 2c recorded.
+- **The `LobbySettings` values.** The table is created with its thirteen recovered field names
+  so a script can index it; every value is zero, because 005e2f00 syncs them from session
+  state this process does not own. The sync itself is a record.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function and a reviewed ledger name.
+No name was added; run-time evidence was appended to 004dfb70, 004db920, 004da6c0, 00884be0,
+00886900, 005e2f00 and 008860b0.
+
+`python tools/verify_report_calls.py reports/game_executable_milestone_2f.json` checks 96 call
+rows and reports **51 failures, all of one kind**: every call site of the in-mission frame
+lies inside `BSP_Game_OnMove` 004e4a40, whose stored Ghidra body is the eight bytes
+004e4a40-004e4a47. That is the first row of `docs/GHIDRA_LISTING_DEFECTS.md`, which says the
+verifier reports call sites inside that routine as "in no Ghidra function" until
+`tools/ghidra_scripts/RepairListingDefects.java` runs. The addresses themselves come from
+`bsp::mission_frame_step()`, which read them from the disk bytes 004e4a40-004e5535. The other
+45 rows, the machine, the load, the entry and the three call sites inside 004c40a0, all pass.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+
+```
+mission script name derived from the scene path: universe/Scenes/missions/USN/usn_2_java.scn
+        -> Scripts/missions/usn/usn_2_java.lua (the record's +928h script table is not filled
+        by the header pass)
+mission lua machine: 7 libraries, 560 bindings, platform chunk=1 fundamentals=1 DoFile=1
+mission load resumes past the renderer owners: scene=universe/Scenes/missions/USN/usn_2_java.scn
+        short=usn_2 script=usn/usn_2_java slot=8 engine_movie_arm=0
+global script folders: 21 scripts ran, 0 did not load cleanly
+LobbySettings created with 13 fields, all zero: the values are the session owner's
+mission script Scripts/missions/usn/usn_2_java.lua: 1 chunk(s) run, base ok=1
+  entry point luaPrecacheUnits     defined=1 dispatched=1 status=0
+  entry point luaStageInitMulti    defined=1 dispatched=1 status=0
+  native CreateScript                 argc=1 phase=luaStageInit
+  native Scoring_RealPlayTimeRunning  argc=1 phase=luaStageInit
+  native LoadMessageMap               argc=2 phase=luaStageInit
+  entry point luaStageInit         defined=1 dispatched=1 status=0
+mission load finished: 47 steps, 10 concrete, 32 records, 5 arms not taken; game state = 0x0C
+  numbered VFS blocks: 1_usn_2 3_usn_2 4_usn_2 5_usn_2 6_usn_2
+device-wait edge injected: the state 0Ch arm waits on 00a91020, which needs an input backend
+        this process does not build
+self table "thisTable" created empty and "recon" cleared; 00928a00 adds one slot per entity
+        and this process creates none
+mission state entry: state=0x0D entered=1 dynamics_released=0 interface=tear down (0)
+        cinematic_cleared=1 one_shots{aborted=0 end_latch=0 networked=0 dropped=0
+        not_enough_players=0}
+  mission frame 1 simulated=1 paused=0 units=0 events=0 script_calls=3 erased=0
+  mission frame 60 simulated=1 paused=0 units=0 events=0 script_calls=3 erased=0
+summary mission load finished=1 concrete=10 records=32 state=0x0D entered=1
+        script=Scripts/missions/usn/usn_2_java.lua
+summary mission lua bindings=560 natives=3 calls=3
+summary mission fixed steps=0 at 0.050 s each (00875bb0's own clock at 00f876a4/00f876ac)
+summary mission frames requested=60 ran=60 simulated=60 paused=0 units=0 events=0
+        script_calls=3 interface_updates=60
+summary mission exit reachable=0: no mission-result object at game+7188h, so 004d7ea0 never
+        enqueues 0Fh and the debrief path of 004d7970 is unreachable in this process
+host methods 246 concrete, 243 unimplemented
+```
+
+The same binary with `--frames 3000 --mission-frames 2000` exits 0 and reports
+`summary mission fixed steps=19 at 0.050 s each`, with the job waves and the per-step
+subsystem block recorded 19 times each.
+
+Every earlier switch was rechecked on the same binary. A 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
+unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
+exits 0 and `--vfs-probe does/not/exist.lua` exits 3. All four match milestone 2d exactly.
+The close path was validated by sending WM_CLOSE to a running process with
+`--press-start-frame 30 --menu-select USN02 --mission-frames 60` and no frame limit: it
+presented 37507 frames, ran all 60 mission frames, recorded
+`CloseRequestPolicy::front_end_branch [004ca2f0]` once and exited 0.
+
+This is a runtime-validated process, not a game-validated one. It proves that the recovered
+load inventory, the mission Lua machine, the state 0Ch handler, the mission entry and the
+in-mission branch of `GGame::OnMove` run end to end over real installed data, and that the
+installed mission's script loads and its stage init runs on a machine built the way 00884be0
+builds one. It proves nothing about the world, about the renderer, or about binary
+compatibility with the original executable: no entity was created, nothing was drawn by the
+mission, and every subsystem the frame ticked was empty.
+
+### Follow-up packets
+
+1. **`bsp::run_mission_scene_load`'s own driver.** Standing up a `GlobalSubsystemContext` the
+   executable can own would let the recovered driver run instead of this milestone's walk,
+   which is the only way the load's arm guards are applied. It is the same composition
+   question milestone 2d's follow-up 2 raised for the scene graph, one layer up.
+2. **`load_scene_contents` 004d4df0**, the Registration and Instantiate passes. Until it runs,
+   the mission has no entities, which is why every world pass of the frame ticks nothing. It
+   needs the scene graph and `construct_world` 004de610 before it.
+3. **The mission render block**, 004ca440 and 004ca1f0, which is `mission_frame_render_entry`
+   in `docs/MISSION_STATE_FRAME.md`'s follow-up table. Without it a running mission cannot
+   change what is on screen.
+4. **The fixed step's own body**, 00875cc0's three job waves and the sixteen per-step calls
+   at 00875e0c. The driver and its clock now run; what each step would do is still a record,
+   and it is where the simulation's own work lives.
+5. **A mission-result object at game+7188h**, so the exit path `docs/MISSION_RESULT_DECISION.md`
+   reconstructs becomes reachable and a headless run can finish a mission rather than stop at
+   a frame count.
+6. **Entity-returning bindings that return a real entity.** The nineteen rows now take their
+   recovered nil tail, which is correct for a process with no entity; filling `thisTable`
+   needs 00928a00 and therefore the scene contents of follow-up 2. That is what
+   `docs/MISSION_LUA_MACHINE.md`'s six failing probe scripts are waiting for.
+7. **The two header fixes in corrections 2 and 3**, both one-line changes in files this packet
+   does not own.
+
 
 ## Next milestones
 
