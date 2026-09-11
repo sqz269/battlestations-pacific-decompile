@@ -1,0 +1,367 @@
+{
+  "packet": "orch2_native_material_factory_x",
+  "utc": "2026-09-11T16:43:52.553252+00:00",
+  "tested_source_commit": "a9b61eecc6a020eb198e66f4193af1c97fd1e0e0",
+  "source_sha256": {
+    "include/bsp/native_material_factory.hpp": "ac9602ba2af3a732d0bede15d38d51b948a4aea5c611c10d61eaca7a4c004e70",
+    "src/native_material_factory.cpp": "d2d8a25e93852ffbf1c07ac74dcb3e9d0b2f476e0bc4f00d12fa2497a2ac8d2b",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_material_pools.hpp": "b9dddb2733adbc41b1ef16682348685a10bc1e92d12e3949560ee6bfe4378c07",
+    "src/native_material_pools.cpp": "a29f17400b108e43935179f73ef4661069aabc3a37b536b0a5a5ef7fecdb166c",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_string.hpp": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+    "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+    "cmake/startup.cmake": "d59ae3da6290ab73aa97576ea8287821265be746b335a171571d979b0102723e",
+    "CMakeLists.txt": "53d5ec8f152bdde7decb0df34c377b4e61952578ac5280625bc35c1603754919"
+  },
+  "artifacts_sha256": {
+    "local/native-material-factory-annotation-addresses.json": "31e961b764806c82421a9f826d32d71aad39aedaa82e386fe68d0345f6e9bca2",
+    "local/native-material-factory-annotation-verification.json": "445a6b369d378349531df90ac3f5a583ad819bd447a7c4e548f91450ffc28ab9",
+    "local/native-material-factory-annotations.log": "009ce6181453beb387ad0f79dea1fe9c1a55458a157a3ae475371e0c572cd40e",
+    "local/native-material-factory-build.log": "91db07072f6dab799d8dd84dc5bfda63eb8dc3952c292cb5fa9cbfb1fdd3630f",
+    "local/native-material-factory-comments-after.json": "163708acf320dbc055baef4cf2d4a6fdfb8fb5b820e58fad777fb4e60e6237e1",
+    "local/native-material-factory-comments-after.log": "b99fbd8ac0b2bae7a181407b9ae1b92294fdd7d133aea83a1e29d33e38af7dfa",
+    "local/native-material-factory-comments-before.json": "f9a1fb06c034c76f9b5dde7dbf201ef94165cb5e08b43fd8785394ead5388de8",
+    "local/native-material-factory-comments-before.log": "e9e804e521efaca098251c54ef343b73b6d5cad7dd7a7d773e289af4413ebaf2",
+    "local/native-material-factory-defined-functions.json": "087f6453cbad88dcb5084d6362e1928b19e549c1027cf6858144713f73df0a60",
+    "local/native-material-factory-export-refresh.log": "f9712ff4c62f422ce3b588e9d9d39d4678fa22dafefe1d61c19dd34c7dd97ef6",
+    "local/native-material-factory-factory-bytes.txt": "7c664c360e161359975ee9859df39514e4bb77128000bd2cfcbac7cfcf763a27",
+    "local/native-material-factory-factory.bin": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03",
+    "local/native-material-factory-ledger.log": "5a6f44ef569d81586cc047d4428002873354bd9a42d1eab21f1df11a9d924b75",
+    "local/native-material-factory-material_exit-bytes.txt": "38b19ad0a0f6d5dc559362718d529c836feda7c00add72cb49b05def6cc7c888",
+    "local/native-material-factory-material_exit.bin": "c9419065c611f20f86db8926aee25fe7d3f513eb0124ae93845d4bb179338743",
+    "local/native-material-factory-material_init-bytes.txt": "712e36cdd225d9a4d81c794a4ad76e899b34034ccb18a644fd212daade3f1cdc",
+    "local/native-material-factory-material_init.bin": "ff23e662430cca2b62d45a8cd0d6f5b5c1f73bfa6bb863a68b3c7b057489d458",
+    "local/native-material-factory-names-after.txt": "00e14a46a39db6c3ca904ba140c4abd31567c1c7204b4e0fd730db1f31b80f51",
+    "local/native-material-factory-names-before.txt": "7cf870e2f7b7473a8c5637387172336e29ec8578e62bf7794eeeb9aa5fc6d76c",
+    "local/native-material-factory-names-expected.json": "e863aee14bceae247de86a2d96d067c4a766e345a6fadce6f2fb0697d4e996d2",
+    "local/native-material-factory-native.hpp": "620a6d3dfc14e8b9a448fe0207a5f0ed244262cc245cdb2585a804eb185ce7d9",
+    "local/native-material-factory-parameter_exit-bytes.txt": "9ad530c0c678a1aa8c5a806bfed79a67d56273b22bf06af6df81a97f22a699df",
+    "local/native-material-factory-parameter_exit.bin": "87fa7317261a8d2b40be1e15eb0caaaf2d81d7251436ac472329bedd503e03e1",
+    "local/native-material-factory-parameter_init-bytes.txt": "76ae3f399360f3044bd8395e682f7454c7da1bcbbbcb5b7d81fc4a06e4d99787",
+    "local/native-material-factory-parameter_init.bin": "0a67d80c27eed694f3406350e04c1039a8c57c3b297ce516a472a7c6e91e8e4f",
+    "local/native-material-factory-probe-result.log": "f8bc37d0eec0b875a9179a23c0367d1270f80dca91de2f1514a6b1104ea8d5ed",
+    "local/native-material-factory-probe.cpp": "d66e8d9eaab902c67e8ef905eece88626b7938236188d1e9f11c3af9fa6847d1",
+    "local/native-material-factory-probe.exe": "3f7955d9f8a00af3c37da6f54d890db4ed7aab350f0b39d5661ce4e3ba24ace5",
+    "local/native-material-factory-probe.obj": "37f9c517546f4c81438e7f249fcd43cca193c190dceee0d35102d021044bd37b",
+    "local/native-material-factory-probe_compile.log": "5934fbd69e30b8e5047776bfea06aaf059e91d9ad44b1025496c2bdccec75804",
+    "local/native-material-factory-return_slot-bytes.txt": "f659793ce03c692dfb8ff15805137bea1842b1334755aec9ecb1b4ad8cfb796c",
+    "local/native-material-factory-return_slot.bin": "686db0361567b1a42c9101fe5c3046d3f10bd55837527815470268d51fd64b99",
+    "local/native-material-factory-spans.json": "42f3d0e86dcd8c4b573c07dc3222e9afae46c8d6cb0cdaa06d7758701c843a20",
+    "local/native-material-factory-unwind-bytes.txt": "90596a0516694777cb3bef583c8817325760f4ffdaf64cffde2eea20611088e3",
+    "local/native-material-factory-unwind.bin": "4813db59c9909e5d8b91af6109dc14988ef9f115674fa02f84c3fc1faafca6d7",
+    "local/prepare_native_material_factory.py": "5ff6835e409ed133a0b65ceffb806a89476975636f72c5fb85114078109e0481",
+    "local/prepare_native_material_factory_probe.py": "ae5128880892802a24269982915899b2a796116b720560f142094388d77f8771",
+    "local/run_native_material_factory_probe.ps1": "a5b2372445652b1ebb6f0d4ecbbd58d0eb7d854da2a34dd5deb6db5ae59ebbd4",
+    "local/record_native_material_factory.py": "c47a0b4fe167fbd17f440ba1c319dbc91fd7ce12e57adf497713dc4714e244fa",
+    "local/native_material_factory_annotations.py": "d1764c4dd1e65c524e8c8e0082a816ef2ee6c5c51125363c81682d4a9879ef8a",
+    "local/finalize_native_material_factory.py": "304aabbd5452af1dcac1c79b8296d4cc043e1a4818c4c979d98805b1af6dcd02",
+    "local/native-material-factory-tested/bsp_core.lib": "dd59a25ed5f24747f08f3ec5e7b2d03a286f0c3ac535a96e9fbd01501f4c97f8",
+    "local/native-material-factory-tested/bsp_game.exe": "d0be0d16702f41f3e4aa6039535cc898c96fb3a54a70df864e749074c4ffbfbf",
+    "local/native-material-factory-tested/LastTest.log": "f30fde2f171f81623fe44490d35d5ad86f232fc917680f29881e569a301fca61"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-material-factory-tested/bsp_core.lib",
+      "sha256": "dd59a25ed5f24747f08f3ec5e7b2d03a286f0c3ac535a96e9fbd01501f4c97f8"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-material-factory-tested/bsp_game.exe",
+      "sha256": "d0be0d16702f41f3e4aa6039535cc898c96fb3a54a70df864e749074c4ffbfbf"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-material-factory-tested/LastTest.log",
+      "sha256": "f30fde2f171f81623fe44490d35d5ad86f232fc917680f29881e569a301fca61"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "factory",
+      "address": "00535320",
+      "end_exclusive": "0053539c",
+      "bytes": 124,
+      "sha256": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 46,
+          "target": 11634560
+        },
+        {
+          "offset": 68,
+          "target": 11634944
+        }
+      ]
+    },
+    {
+      "label": "return_slot",
+      "address": "00b17d70",
+      "end_exclusive": "00b17d7c",
+      "bytes": 12,
+      "sha256": "686db0361567b1a42c9101fe5c3046d3f10bd55837527815470268d51fd64b99",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 6,
+          "target": 11631232
+        }
+      ]
+    },
+    {
+      "label": "material_init",
+      "address": "00cd78d0",
+      "end_exclusive": "00cd78e6",
+      "bytes": 22,
+      "sha256": "ff23e662430cca2b62d45a8cd0d6f5b5c1f73bfa6bb863a68b3c7b057489d458",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11632544
+        },
+        {
+          "offset": 15,
+          "target": 12546037
+        }
+      ]
+    },
+    {
+      "label": "parameter_init",
+      "address": "00cd78f0",
+      "end_exclusive": "00cd7906",
+      "bytes": 22,
+      "sha256": "0a67d80c27eed694f3406350e04c1039a8c57c3b297ce516a472a7c6e91e8e4f",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11633472
+        },
+        {
+          "offset": 15,
+          "target": 12546037
+        }
+      ]
+    },
+    {
+      "label": "material_exit",
+      "address": "00ce0bf0",
+      "end_exclusive": "00ce0bfa",
+      "bytes": 10,
+      "sha256": "c9419065c611f20f86db8926aee25fe7d3f513eb0124ae93845d4bb179338743",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11632848
+        }
+      ]
+    },
+    {
+      "label": "parameter_exit",
+      "address": "00ce0c00",
+      "end_exclusive": "00ce0c0a",
+      "bytes": 10,
+      "sha256": "87fa7317261a8d2b40be1e15eb0caaaf2d81d7251436ac472329bedd503e03e1",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11633776
+        }
+      ]
+    },
+    {
+      "label": "unwind",
+      "address": "00c6c240",
+      "end_exclusive": "00c6c248",
+      "bytes": 8,
+      "sha256": "4813db59c9909e5d8b91af6109dc14988ef9f115674fa02f84c3fc1faafca6d7",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11631984
+        }
+      ]
+    }
+  ],
+  "implementation": {
+    "renderer_global": "00f8d394",
+    "current_callable_acquisition_slot": 72,
+    "material_pool_global": "00f8d3ac",
+    "parameter_pool_global": "00f8d3e4",
+    "effect_count_offset": 4,
+    "effect_dirty_byte_offset": 180,
+    "factory_capture_renderer_once": true,
+    "normal_null_allocation_releases_effect": true,
+    "constructor_failure_returns_raw_slot_only": true,
+    "protective_exception_effect_release": false,
+    "real_crt_exit_registration": true,
+    "private_exit_registry": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "full_native_material_slot_comparisons": 1,
+    "bytes_per_comparison": 276,
+    "native_null_allocation_comparisons": 1,
+    "acquisition_allocation_event_order": true,
+    "actual_effect_count_and_dirty_field_comparison": true,
+    "original_state0_funclet_raw_slot_return": true,
+    "actual_pool_lifo_reuse": true,
+    "host_allocation_failure_keeps_acquired_temporary": true,
+    "original_pool_crt_wrappers_executed": 4,
+    "original_registration_result_propagation": true,
+    "real_process_exit_pool_shutdown": true,
+    "shared_allocator_list_empty_after_shutdown": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_dependencies": {
+    "original_code": [
+      "00535320",
+      "00b17d70",
+      "00cd78d0",
+      "00cd78f0",
+      "00ce0bf0",
+      "00ce0c00",
+      "00c6c240"
+    ],
+    "acquisition": "Controlled callable current renderer slot48 acquires a borrowed effect prefix with actual atomic+04 and writable+B4; external count remains throughout and terminal resolution is forbidden.",
+    "construction": "Original factory calls rebound B18900 using the existing actual constructor; constructor equivalence not independently tested by this fixture.",
+    "pool": "Original allocation/return/CRT-body boundaries use the same reconstructed NativeMaterialPool and NativeMaterialParameterPool with canonical allocator-list domains.",
+    "crt": "Original startup wrappers call an observing registration boundary; rebuilt wrappers register their actual destruction callbacks with host std::atexit.",
+    "unwind": "Execute C6C240 with an explicit EBP-10 slot; do not deliver an exception through the original SEH runtime."
+  },
+  "ghidra": {
+    "addresses": [
+      "00535320",
+      "00b17d70",
+      "00cd78d0",
+      "00cd78f0",
+      "00ce0bf0",
+      "00ce0c00"
+    ],
+    "names_verified": 6,
+    "prior_comment_fields_preserved": 4,
+    "forced_exports": 6,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [
+      "00cd78d0",
+      "00cd78f0"
+    ],
+    "definition_record": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cd78d0",
+            "end_address": "00cd78e6"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cd78d0",
+            "end_address": "00cd78e5",
+            "bytes_disassembled": 22,
+            "message": "Successfully disassembled 22 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cd78d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cd78d0",
+            "function_name": "FUN_00cd78d0",
+            "entry_point": "00cd78d0",
+            "body_size": 22,
+            "message": "Function created successfully at 00cd78d0"
+          }
+        },
+        {
+          "defined": "00cd78d0",
+          "end": "00cd78e6",
+          "name": null,
+          "after": "Function: FUN_00cd78d0 at 00cd78d0\nSignature: undefined FUN_00cd78d0(void)\nEntry: 00cd78d0\nBody: 00cd78d0 - 00cd78e5"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cd78f0",
+            "end_address": "00cd7906"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cd78f0",
+            "end_address": "00cd7905",
+            "bytes_disassembled": 22,
+            "message": "Successfully disassembled 22 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cd78f0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cd78f0",
+            "function_name": "FUN_00cd78f0",
+            "entry_point": "00cd78f0",
+            "body_size": 22,
+            "message": "Function created successfully at 00cd78f0"
+          }
+        },
+        {
+          "defined": "00cd78f0",
+          "end": "00cd7906",
+          "name": null,
+          "after": "Function: FUN_00cd78f0 at 00cd78f0\nSignature: undefined FUN_00cd78f0(void)\nEntry: 00cd78f0\nBody: 00cd78f0 - 00cd7905"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "flow_repairs": [],
+    "remaining_call_gaps": 0,
+    "saved": true
+  },
+  "limitations": [
+    "Rebuilt callers must supply the real current callable renderer effect-acquisition implementation and true actual effect owner domain.",
+    "Fixture effect prefix proves factory field/reference ordering only; shader loading and effect destruction are not reconstructed by this packet.",
+    "Canonical static bindings are immutable after startup and outlive the real exit callbacks; payload teardown must precede pool shutdown.",
+    "Original SEH delivery, allocator and CRT implementation equivalence are outside this fixture.",
+    "No GUI installation, source consumption, rendering, drop-in binary replacement or gameplay validation."
+  ]
+}

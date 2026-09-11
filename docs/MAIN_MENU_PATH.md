@@ -39,7 +39,7 @@ Each row is one step of `bsp::MainMenuPathStep`. The host method column names th
 | 16 | 006858BA | 004F8710 | `PUSH 0; PUSH 1; CALL`, the one-element level-4 screen set. 004F8710 runs 004F7620 itself, so the requested bytes are current when it returns. | `publish_screen_set_level4` |
 | 17 | 006858E6 | 004D8C00 | `PUSH 0; PUSH 1; PUSH game; CALL`, the one-element input-context set `{1}`. | `publish_input_context_set_level4` |
 | 18 | 004C4165 | 004F8830 | Pass B finds slot 1 wanted but not active. | `pump_front_end_screens` |
-| 19 | 004F88E8 | 004F83B0 | The commit runs **before** the enter virtual, so the enter body observes itself as already visible. | `commit_screen_visibility` |
+| 19 | 004F88E8 | 004F83B0 | The commit runs **before** the enter virtual, so the enter body observes itself as already visible. It publishes the +5h byte (004F8434, `MOVZX EDX,[EBX+5h]`) to each non-null child through vtable +34h rather than showing anything; the exit pass clears +5h at 004F88B3 and calls it again at 004F88B7, so the host method carries the byte (`visible`, true here). Per-child walk: `bsp::commit_front_end_screen_visibility_004f83b0`. | `commit_screen_visibility(id, visible)` |
 | 20 | 004F88F4 | 005987F0 | The main-menu screen's enter virtual. | `enter_screen` |
 | 21 | 004F8925 | 00599DB0 | Pass C, the screen's update virtual with the raw delta. | `update_screen` |
 

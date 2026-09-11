@@ -1,0 +1,17 @@
+[
+  {
+    "address": "00b632d0",
+    "before": {
+      "address": "00b632d0",
+      "function_name": "BSP_Matrix4f_InvertGeneral",
+      "comment": "[BSP reconstruction 00b632d0]\n[BSP reconstruction] General4x4 Gauss-Jordan inversion: snapshot source before identity destination, native pivot selection and row swaps, x87 float spills and SSE comparison/subtraction. No singularity guard. Private reassembled typed kernel preserves instruction schedule. Original ABI: ECX destination; EDX source; EAX destination; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b632d0",
+      "old_name": "BSP_Matrix4f_InvertGeneral",
+      "name": "BSP_Matrix4f_InvertGeneral",
+      "evidence": "Complete raw B632D0..B63B28,2136-byte entry in src/native_camera_general_inverse.cpp. ECX destination/EDX source/EAX destination/plain RET. Promotes the established private kernel to raw byte views without a C++ CameraMatrix overlay. Original REP MOVSD snapshots16 sourceDWORDs before destination identity publication; native pivot COMISS/FCOMIP/JBE branches,row swaps,x87 spills/SSE subtract and final stores unchanged; no singularity guard, epsilon, fallback, helper or owner. Fresh guarded bsp.gpr/live installed PE captures full2136 body plus immutable D7A208=80000000 and D7A24C=3F800000, both original readonly. Full main COFF section matches every original byte after only two DIR32 constant-address relocations at offsets17/26; corresponding compiled .rdata words match exactly. Restored original eight unreachable B635D8..DF alignment bytes rather than the old private three-byte LEA. Exact object occurs once in frozen actual main library. Strict Win32 main build/two existing CTests/eight fresh native seeds pass. No new test case, original-body or linked-runtime fixture; altered original constant data, general caller ABI/hierarchy and gameplay not claimed. reports/native_camera_general_inverse_audit.json."
+    },
+    "status": "applied"
+  }
+]
