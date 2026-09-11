@@ -23,6 +23,7 @@ public:
     XLivePipeValueLock* destroy(std::uint32_t flags) override; // A5FA3E
     void enter() override; // A5F939
     void leave() override; // A5F944
+    CRITICAL_SECTION& native_section() noexcept { return section_04; }
 private:
     CRITICAL_SECTION section_04;
 };
