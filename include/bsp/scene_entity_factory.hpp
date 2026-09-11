@@ -13,8 +13,11 @@
 #include <vector>
 
 #include "bsp/scene_file.hpp"
+#include "bsp/camera_projection.hpp"
 
 namespace bsp {
+
+class PoseRefreshResolver;
 
 // ---------------------------------------------------------------------------
 // The class table (004F2800)
@@ -158,9 +161,9 @@ struct SceneDeferredEntityRecord {
     std::string parent_name;  // parent->vtable[10h](), empty when there is no parent
 };
 
-// Everything 0046C550 reaches outside the parsed entity block. One method per
-// native call site; there are no default implementations, because nothing here
-// stands in for unrecovered game behaviour.
+// Remaining services reached by 0046C550 outside the parsed entity block.
+// Both geometry branches call the canonical matrix/pose bindings directly.
+// No default implementation stands in for the remaining external behaviour.
 struct SceneEntityGateHost {
     virtual ~SceneEntityGateHost() = default;
 
@@ -170,18 +173,9 @@ struct SceneEntityGateHost {
     // One six-float row of the play-area array; `slot` is scene_mode_area_slot.
     virtual SceneModeArea mode_area(int slot) = 0;
 
-    // arg3 != 0 at 0046C6B7: when byte +C8h of the parent is clear the native
-    // refreshes it through 00414DB0, then adds float +FCh to X and +104h to Z.
-    virtual void parent_world_offset(float& x, float& z) = 0;
-
-    // arg3 == 0 at 0046C6E5: 00413920 multiplies the entity's local frame by the
-    // parent frame and the product's +30h / +38h become X and Z.
-    virtual void compose_world_frame(const float local_frame[16],
-                                     const float parent_frame[16],
-                                     float out[16]) = 0;
-
-    // parent->vtable[10h](), used only to fill the deferred record.
-    virtual std::string parent_name() = 0;
+    // captured parent->vtable[10h](), used only to fill the deferred record.
+    // The same original argument identity is passed even after other host calls.
+    virtual std::string parent_name(void* captured_parent_identity) = 0;
 
     // operator new(5Ch), 008F41F0 + 004693C0, then 0046C450 onto this+24h.
     virtual void append_deferred_entity_record(const SceneDeferredEntityRecord& record) = 0;
@@ -197,9 +191,13 @@ struct SceneEntityGateInputs {
     std::string class_name;                     // argument 1
     std::string entity_name;                    // argument 2
     const ScenePropertyBlock* properties{nullptr};  // argument 5
-    const float* local_frame{nullptr};          // argument 4, 16 floats
-    const float* parent_frame{nullptr};         // arguments 7..22, 16 floats
-    bool has_parent{false};                     // argument 3 != 0
+    // Both bindings are required. Local is the live argument-4 matrix; its
+    // pointer is captured once. Parent supplies the 16 DWORDs passed inline as
+    // arguments 7..22; the gate byte-copies them once before any gate services.
+    // The caller must keep local storage alive, including through host calls.
+    const CameraMatrix* local_frame{nullptr};
+    const CameraMatrix* parent_frame{nullptr};
+    void* parent_identity{nullptr};            // actual nullable argument 3, borrowed
     bool record_already_built{false};           // argument 23 already non-null
 };
 
@@ -223,12 +221,16 @@ struct SceneEntityGateResult {
     SceneGateRule rule{SceneGateRule::UnknownGameMode};
 };
 
-// 0046C550 in full. `always_generate_class_ids` is the std::set at this+164h,
+// Typed control-flow projection of 0046C550 with explicit remaining services.
+// Both geometry branches call canonical matrix/pose routines directly.
+// Missing matrix bindings throw invalid_argument before any host or resolver
+// call; native code requires actual frame data and provides no identity fallback.
+// `always_generate_class_ids` is the std::set at this+164h,
 // searched at 0046C741 by 00468DB0; what fills it was not recovered, so it is an
 // input here rather than a table.
 SceneEntityGateResult scene_entity_generation_gate_0046c550(
     const SceneEntityGateInputs& inputs,
     const std::vector<int>& always_generate_class_ids,
-    SceneEntityGateHost& host);
+    SceneEntityGateHost& host, PoseRefreshResolver& poses);
 
 }  // namespace bsp

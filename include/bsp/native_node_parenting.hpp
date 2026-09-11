@@ -25,7 +25,8 @@ void set_native_node_parent_00b6e680(NativeNodeParentingRuntime&,
     CameraTransform& child, CameraTransform* requested_parent);
 
 // Native ECX group, stack node, RET4. Uses the SAME existing backlink binding;
-// vector storage is the established typed projection, not a raw178h overlay.
+// actual group owners use their live178h/17Ch/180h array descriptor. The vector
+// remains available only for the pre-existing diagnostic projection.
 void register_native_node_attachment_00b8f460(NativeNodeParentingRuntime&,
     GeneratedModelAttachmentLinks&, CameraTransform&);
 // Native node virtual1C. Assigns+A0 BEFORE registration (whose equality guard

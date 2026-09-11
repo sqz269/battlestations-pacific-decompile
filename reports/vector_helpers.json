@@ -1,0 +1,173 @@
+{
+  "packet": "orch3_vector_helpers_k",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "game_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00414c60",
+      "cpp_operation": "length_2d_00414c60",
+      "name_hypothesis": "BSP_Vector2f_LengthWithCutoff",
+      "source": "src/vector_helpers.cpp",
+      "native_abi": "ECX=two-float input; no stack arguments; RET; binary32-valued result in ST0",
+      "evidence": "x87 x*x+y*y rounded to float before FCOMI against CE3820 double 1e-10. JBE returns positive zero for below/equal/unordered; ordered-above calls genuine CRT BF7030 with rounded sum in ST0, then two float store/reload pairs. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external.",
+      "prior_name": "FUN_00414c60",
+      "prior_comments": {},
+      "last_instruction": "00414ca1",
+      "last_instruction_length": 1,
+      "inclusive_end": "00414ca1",
+      "raw_sha256": "33ae787db85eab686aa928ac0452c6ad396e4947e4a7bf14be49bd3bb3158181",
+      "raw_bytes": "51d94104d901dcc8d9c1decadec1d91c24dd052038ce00d90424dbf1ddd97613e8ab237e00d91c24d90424d91c24d9042459c30f57c0ddd8f30f110424d9042459c3",
+      "assembly": [
+        "00414c60: PUSH ECX ",
+        "00414c61: FLD float ptr [ECX + 0x4] ",
+        "00414c64: FLD float ptr [ECX] ",
+        "00414c66: FMUL ST0 ",
+        "00414c68: FLD ST1 ",
+        "00414c6a: FMULP ST2 ",
+        "00414c6c: FADDP ",
+        "00414c6e: FSTP float ptr [ESP] ",
+        "00414c71: FLD double ptr [0x00ce3820] ",
+        "00414c77: FLD float ptr [ESP] ",
+        "00414c7a: FCOMI ST0,ST1 ",
+        "00414c7c: FSTP ST1 ",
+        "00414c7e: JBE 0x00414c93 ",
+        "00414c80: CALL 0x00bf7030 ",
+        "00414c85: FSTP float ptr [ESP] ",
+        "00414c88: FLD float ptr [ESP] ",
+        "00414c8b: FSTP float ptr [ESP] ",
+        "00414c8e: FLD float ptr [ESP] ",
+        "00414c91: POP ECX ",
+        "00414c92: RET ",
+        "00414c93: XORPS XMM0,XMM0 ",
+        "00414c96: FSTP ST0 ",
+        "00414c98: MOVSS dword ptr [ESP],XMM0 ",
+        "00414c9d: FLD float ptr [ESP] ",
+        "00414ca0: POP ECX ",
+        "00414ca1: RET "
+      ],
+      "live_disk_match": true,
+      "missing_start": false,
+      "flow_gaps": [],
+      "status": "reconstructed_build_and_native_fixture_tested",
+      "uncertainty": "Names are descriptive hypotheses. Standard array/borrowed output interfaces are new APIs, not original binary ABI. The length helper uses current host CRT; original CRT diagnostics remain external and unverified."
+    },
+    {
+      "address": "00414cd0",
+      "cpp_operation": "transform_point_copy_00414cd0",
+      "name_hypothesis": "BSP_Vector3f_TransformAffinePointCopy",
+      "source": "src/vector_helpers.cpp",
+      "native_abi": "ECX=destination XYZ; EDX=source XYZ; stack=matrix pointer; RET4; no useful return (EAX retains expired local destination from callee)",
+      "evidence": "Pass EDX source to canonical 4142E0 with stack-local XYZ destination and caller matrix; only after return MOVSS copies local X,Y,Z to ECX destination. Output can overlap source or matrix without changing matrix reads. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external.",
+      "prior_name": "FUN_00414cd0",
+      "prior_comments": {},
+      "last_instruction": "00414d0b",
+      "last_instruction_length": 3,
+      "inclusive_end": "00414d0d",
+      "raw_sha256": "4d01207164331eb376ffc0828d32e9ed19391b76b52ca43700720c8e5e45367c",
+      "raw_bytes": "8b44240483ec0c568bf1508d4c2408518bcae8f9f5fffff30f10442404f30f1106f30f10442408f30f114604f30f1044240cf30f1146085e83c40cc20400",
+      "assembly": [
+        "00414cd0: MOV EAX,dword ptr [ESP + 0x4] ",
+        "00414cd4: SUB ESP,0xc ",
+        "00414cd7: PUSH ESI ",
+        "00414cd8: MOV ESI,ECX ",
+        "00414cda: PUSH EAX ",
+        "00414cdb: LEA ECX,[ESP + 0x8] ",
+        "00414cdf: PUSH ECX ",
+        "00414ce0: MOV ECX,EDX ",
+        "00414ce2: CALL 0x004142e0 ",
+        "00414ce7: MOVSS XMM0,dword ptr [ESP + 0x4] ",
+        "00414ced: MOVSS dword ptr [ESI],XMM0 ",
+        "00414cf1: MOVSS XMM0,dword ptr [ESP + 0x8] ",
+        "00414cf7: MOVSS dword ptr [ESI + 0x4],XMM0 ",
+        "00414cfc: MOVSS XMM0,dword ptr [ESP + 0xc] ",
+        "00414d02: MOVSS dword ptr [ESI + 0x8],XMM0 ",
+        "00414d07: POP ESI ",
+        "00414d08: ADD ESP,0xc ",
+        "00414d0b: RET 0x4 "
+      ],
+      "live_disk_match": true,
+      "missing_start": false,
+      "flow_gaps": [],
+      "status": "reconstructed_build_and_native_fixture_tested",
+      "uncertainty": "Names are descriptive hypotheses. Standard array/borrowed output interfaces are new APIs, not original binary ABI. The length helper uses current host CRT; original CRT diagnostics remain external and unverified."
+    }
+  ],
+  "constant": {
+    "address": "00ce3820",
+    "bytes": "bbbdd7d9df7cdb3d",
+    "type": "double",
+    "value": 1e-10
+  },
+  "crt_boundary": {
+    "entry": "00bf7030",
+    "existing_name": "LIBCRT_unmatched_00bf7030",
+    "identified_operation": "sqrt with x87 ST0 argument/result",
+    "sqrt_name_address": "00e154e0",
+    "sqrt_name_bytes": "7371727400",
+    "production": "Actual host Win32 _CIsqrt; no CRT implementation copied or reconstructed.",
+    "library_name_changes": false
+  },
+  "canonical_dependency": {
+    "address": "004142e0",
+    "name": "BSP_Vector3f_TransformAffinePoint",
+    "source": "src/camera_affine.cpp",
+    "api": "transform_point_004142e0",
+    "native_inclusive_end": "00414363",
+    "raw_sha256": "918c584a4b36931271d55da548684ecad60b7e02dd1fe7548aff6601a7364004",
+    "live_disk_match": true
+  },
+  "typed_storage": "Existing std::array<float,2/3> and CameraMatrix; borrowed three-float destination admits source/matrix overlap without inventing nested array3 lifetimes.",
+  "ghidra_writes": false,
+  "checks": {
+    "build": "scripts/build.ps1 strict MSVC Win32 Release /W4 /WX /fp:strict passed",
+    "ctest": "2/2 reconstructed_math/native_math_differential passed",
+    "native_math_seeds": "8/8 matched live/disk",
+    "live_disk_owned_function_spans": 2,
+    "live_disk_canonical_affine_span": true,
+    "live_disk_cutoff": true,
+    "live_disk_sqrt_name": true,
+    "focused_fixture": "local/bsp_vector_fixture.exe passed with exit0 against built bsp_core.lib",
+    "native_differential_cases": {
+      "length": 51,
+      "transform": 105
+    },
+    "x87_control_words": [
+      "007f",
+      "027f",
+      "037f"
+    ],
+    "comparisons": [
+      "exact float output bits",
+      "complete aliased matrix bits",
+      "masked x87 status bits0..6"
+    ],
+    "exercised": [
+      "cutoff float neighbors",
+      "quiet/signaling NaN encodings",
+      "infinities",
+      "signed zeros",
+      "large/small finite inputs",
+      "in-place source output",
+      "destination aliases matrix offsets0/1/4/12/13"
+    ],
+    "original_code_relocations": "00414C60 cutoff address and BF7030 call to actual host _CIsqrt; 00414CD0 call to relocated complete original 004142E0 bytes, unchanged.",
+    "permanent_tests_added": 0,
+    "game_validated": false
+  },
+  "limits": [
+    "Current host CRT result/errno/matherr/diagnostic behavior may differ from the original CRT.",
+    "No native vector or matrix owner class layout or public binary ABI claimed.",
+    "Unmasked floating exceptions and game runtime were not exercised."
+  ],
+  "host_crt_import": [
+    {
+      "dll": "api-ms-win-crt-math-l1-1-0.dll",
+      "name": "_CIsqrt",
+      "iat": "00405164"
+    }
+  ],
+  "fixture_source_sha256": "82895fb43db56eae45662235c2be503b8a7c983d0b6f6697eda92e29cc8f81b6",
+  "fixture_binary_sha256": "e0119fed9a22b69d5e19ec713be714f958d03aa5b8dc81dc9009289b1789d36b",
+  "source_sha256": "f70f6b390de89876064627b4d6fadae49244cf1c4bd9878612505208e2ed0312"
+}

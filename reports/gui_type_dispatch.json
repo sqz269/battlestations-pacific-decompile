@@ -1,0 +1,29 @@
+{
+  "packet": "orch2_gui_type_dispatch_m",
+  "source": "src/gui_type_dispatch.cpp",
+  "evidence": "docs/GUI_TYPE_DISPATCH.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "types": [1, 2, 6, 18],
+  "same_base_layout_tree": true,
+  "screen_flag": "exact per-layout byte prepared before type construction",
+  "screen_property_order": ["Priority and RenderOrder", "actual acquire78", "scene binding", "position zero", "base properties", "children"],
+  "undefined_functions": [
+    {"address": "00ab6120", "end_inclusive": "00ab639f", "length": 640, "abi": "ECX Icon, stack bool, RET4", "implemented": "no delayed flags needing service"},
+    {"address": "00ac6fd0", "end_inclusive": "00ac6fd4", "length": 5, "abi": "ECX Group, stack visitor, JMP00AAA710", "implemented": "base-only reader continuation"}
+  ],
+  "flow_gap_reports": {"00aa12f0": 0, "00ac6600": 0, "00ac4c50": 0, "00ac4450": 0, "00ac59a0": 0},
+  "false_free_flow_repair": "none; reviewed free calls retain listed fallthrough",
+  "required_services": ["actual renderer/geometry/texture/material/clip/color", "actual cGuiLayer camera/light/scene/store acquisition", "actual scene binding", "actual visibility hook state/dispatch", "actual derived layer release including partial acquisition"],
+  "unsupported": ["unprepared default/copy Screen", "other widget types", "Icon delayed texture lifecycle and AutoRotate", "complete per-frame type vtables", "native widget pool/copy ABI"],
+  "validation": {
+    "win32_build": "MSVC Win32 Release scripts/build.ps1 PASS",
+    "existing_ctests": "reconstructed_math and native_math_differential: 2/2 PASS after verify-seeds",
+    "focused_probe": "local/gui_type_probe.cpp via local/run_gui_type_probe.ps1: PASS",
+    "focused_checks": ["concrete Group and actual native model lifetime", "Icon/FrameBox missing resource rejection", "unprepared Screen rejection and owner cleanup", "evaluated Lua page and pre-base acquisition callback order", "exact0x81 constructor flag", "Screen+F5 independent of node+ACh", "edge-only store count/hook and unconditional scene bind", "derived release before base node release"],
+    "fixture_limits": "screen camera/scene operations are fixture callbacks; full Icon/FrameBox resource rendering is build/evidence reviewed, not exercised by this probe",
+    "game_validated": false,
+    "binary_replacement_abi": false
+  }
+}

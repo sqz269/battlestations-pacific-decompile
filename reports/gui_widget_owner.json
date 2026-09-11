@@ -6,23 +6,88 @@
   "source": "src/gui_widget_owner.cpp",
   "documentation": "docs/GUI_WIDGET_OWNER.md",
   "coverage": "retained same-layout GUI owner and actual pooled child model composition; new C++ ABI",
-  "supported_child_types": [2, 6, 18],
-  "required_type_implementations": ["constructor factory", "virtual74", "derived properties", "virtual78", "virtual60", "virtual38", "virtual3C"],
-  "functions": [
-    {"address":"00aa9390","last_instruction":"00aa9511","coverage":"base constructor projected owned fields"},
-    {"address":"00aa6560","last_instruction":"00aa65f3","coverage":"bounded per-type construction dispatch"},
-    {"address":"00aa6640","last_instruction":"00aa66b5","coverage":"construction and actual model scene binding composition"},
-    {"address":"00aa6720","last_instruction":"00aa6732","coverage":"actual scene binding and mask3 clear"},
-    {"address":"00aa7170","last_instruction":"00aa717f","coverage":"current virtual60 then bounds"},
-    {"address":"00aa6a30","last_instruction":"00aa6a3a","coverage":"base active byte setter, bool C++ input"},
-    {"address":"00a9ac00","last_instruction":"00a9ac00","coverage":"single RET base virtual74","no_ghidra_function":true},
-    {"address":"00b6da70","last_instruction":"00b6daa9","coverage":"actual node visibility and native hierarchy recursion"},
-    {"address":"00b64780","last_instruction":"00b6481e","coverage":"full x87 Z rotation matrix"},
-    {"address":"00b74640","last_instruction":"00b74646","coverage":"actual model geometry accessor"},
-    {"address":"00b732c0","last_instruction":"00b732ca","coverage":"actual geometry element accessor"},
-    {"address":"00b855b0","last_instruction":"00b855cb","coverage":"actual element sequential x87 bounds stores"}
+  "supported_child_types": [
+    2,
+    6,
+    18
   ],
-  "constructor_unwritten_offsets": ["08", "85", "e4"],
+  "required_type_implementations": [
+    "constructor factory",
+    "virtual74",
+    "derived properties",
+    "virtual78",
+    "virtual60",
+    "virtual38",
+    "virtual3C"
+  ],
+  "functions": [
+    {
+      "address": "00aa9390",
+      "last_instruction": "00aa9511",
+      "coverage": "base constructor projected owned fields"
+    },
+    {
+      "address": "00aa6560",
+      "last_instruction": "00aa65f3",
+      "coverage": "bounded per-type construction dispatch"
+    },
+    {
+      "address": "00aa6640",
+      "last_instruction": "00aa66b5",
+      "coverage": "construction and actual model scene binding composition"
+    },
+    {
+      "address": "00aa6720",
+      "last_instruction": "00aa6732",
+      "coverage": "actual scene binding and mask3 clear"
+    },
+    {
+      "address": "00aa7170",
+      "last_instruction": "00aa717f",
+      "coverage": "current virtual60 then bounds"
+    },
+    {
+      "address": "00aa6a30",
+      "last_instruction": "00aa6a3a",
+      "coverage": "base active byte setter, bool C++ input"
+    },
+    {
+      "address": "00a9ac00",
+      "last_instruction": "00a9ac00",
+      "coverage": "single RET base virtual74",
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00b6da70",
+      "last_instruction": "00b6daa9",
+      "coverage": "actual node visibility and native hierarchy recursion"
+    },
+    {
+      "address": "00b64780",
+      "last_instruction": "00b6481e",
+      "coverage": "full x87 Z rotation matrix"
+    },
+    {
+      "address": "00b74640",
+      "last_instruction": "00b74646",
+      "coverage": "actual model geometry accessor"
+    },
+    {
+      "address": "00b732c0",
+      "last_instruction": "00b732ca",
+      "coverage": "actual geometry element accessor"
+    },
+    {
+      "address": "00b855b0",
+      "last_instruction": "00b855cb",
+      "coverage": "actual element sequential x87 bounds stores"
+    }
+  ],
+  "constructor_unwritten_offsets": [
+    "08",
+    "85",
+    "e4"
+  ],
   "validation": {
     "verify_seeds": "8/8 matched",
     "msvc_win32_release": "passed",
@@ -40,5 +105,10 @@
     "native GUI widget destruction, copying and GUI reference-driven deletion are not implemented",
     "existing binder batches base property projection before composition; exact native callback trace not claimed",
     "runtime and environment must outlive layouts and retained render references"
-  ]
+  ],
+  "disposal_correction": {
+    "address": "00aa31f0",
+    "logical_node_release_before_derived_destructor": true,
+    "reference": "reports/gui_native_scene.json"
+  }
 }

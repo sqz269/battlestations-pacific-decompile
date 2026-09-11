@@ -1,0 +1,45 @@
+{
+  "packet": "orch3_vector_metadata_k",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "annotations": [
+    {
+      "address": "00414c60",
+      "before": {
+        "address": "00414c60",
+        "function_name": "FUN_00414c60"
+      },
+      "after": {
+        "address": "00414c60",
+        "name": "BSP_Vector2f_LengthWithCutoff",
+        "evidence": "x87 x*x+y*y rounded to float before FCOMI against CE3820 double 1e-10. JBE returns positive zero for below/equal/unordered; ordered-above calls genuine CRT BF7030 with rounded sum in ST0, then two float store/reload pairs. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00414cd0",
+      "before": {
+        "address": "00414cd0",
+        "function_name": "FUN_00414cd0"
+      },
+      "after": {
+        "address": "00414cd0",
+        "name": "BSP_Vector3f_TransformAffinePointCopy",
+        "evidence": "Pass EDX source to canonical 4142E0 with stack-local XYZ destination and caller matrix; only after return MOVSS copies local X,Y,Z to ECX destination. Output can overlap source or matrix without changing matrix reads. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_readback": "Both names and evidence match; prior comments preserved",
+  "comments": "local/vector-helper-k-comments.json",
+  "prior_prototypes": "local/vector-helper-k-prior-prototypes.txt",
+  "exports": "Both refreshed; local/vector-helper-k-export.log",
+  "function_definitions": "None needed; both existing live bodies complete",
+  "worker_build": "Strict MSVC Win32 and both existing CTests passed",
+  "worker_native_differential": "51 length and 105 staged transform cases; exact bits and x87 status at three control words",
+  "evidence": "reports/vector_helpers.json and docs/VECTOR_HELPERS.md",
+  "final_integration_build": "Validated by integration command before main fast-forward; see local/vector-helper-k-integration.log",
+  "library_boundary": "Genuine current _CIsqrt; original CRT diagnostics unverified",
+  "abi_compatible": false,
+  "game_validated": false
+}

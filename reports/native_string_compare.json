@@ -1,0 +1,118 @@
+{
+  "packet": "orch3_native_string_compare_j",
+  "status": "complete_actual_header_functions_built_and_native_differential_checked",
+  "date": "2026-09-11",
+  "files": [
+    "include/bsp/native_string_compare.hpp",
+    "src/native_string_compare.cpp",
+    "docs/NATIVE_STRING_COMPARE.md",
+    "reports/native_string_compare.json"
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_counts": [
+      63095,
+      63097
+    ],
+    "read_only": true,
+    "mutations": false
+  },
+  "target_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "canonical_state": "Existing NativeString, 8bytes in Win32: uint32 length0 and char* data4. Actual-header APIs follow native_string.hpp; no new state layout or owner.",
+  "functions": [
+    {
+      "address": "00425850",
+      "name": "equal_native_string_header_00425850",
+      "reviewed_name": "BSP_NativeString_EqualsCStringInsensitive",
+      "original_name": "FUN_00425850",
+      "original_abi": "ECX actual8-byte header; stack candidate const char*; AL boolean only, upperEAX unspecified on null branches; RET4",
+      "terminal_instruction_address": "00425899",
+      "terminal_instruction_length": 3,
+      "native_end_exclusive": "0042589c",
+      "seed": {
+        "address": "00425850",
+        "length": 76,
+        "sha256": "499cea889390e1f820bb2b3c74103d73b69b67fd3702a93d448ab58dd03250e5",
+        "bytes": "8b410485c075218b44240485c07505b001c204008d50018a0883c00184c975f72bc20f94c0c204008b54240485d2750839110f94c0c204005250e830277d0083c408f7d81bc083c001c20400"
+      },
+      "behavior": "Capture data once. Null data/null candidate true; null data/non-null candidate full strlen-style scan and length==0, ignoring recorded length. Nonnull data/null candidate compares recorded length to zero. Nonnull pair delegates to actual CRT_stricmp BF7FBF.",
+      "uncertainty": "New source interface models AL, not the native upper EAX; genuine current CRT is used, not a claimed VS2005 locale implementation."
+    },
+    {
+      "address": "004259f0",
+      "name": "replace_native_string_character_004259f0",
+      "reviewed_name": "BSP_NativeString_ReplaceCharacterFrom",
+      "original_name": "FUN_004259f0",
+      "original_abi": "ECX actual8-byte header; stack old byte,new byte,signed32 start (DWORD slots, low bytes consumed); no defined return; RET12",
+      "terminal_instruction_address": "00425a2a",
+      "terminal_instruction_length": 3,
+      "native_end_exclusive": "00425a2d",
+      "seed": {
+        "address": "004259f0",
+        "length": 61,
+        "sha256": "4b7ece875fa722dc10cc0ed46ca0b1512e962db630ebf4b25362499b35754b5b",
+        "bytes": "568bf1837e040074308b54241085d27d0433d2eb043b1677203b16731c8a4c2408538a5c24108b460403c238087502881883c2013b1672ee5b5ec20c00"
+      },
+      "behavior": "Initial null data returns. Negative start clamps0; nonnegative start>length returns, then unsigned start>=length returns. Capture old/new bytes, reload pointer per iteration, conditional byte store, unsigned increment, reload length after each iteration. Includes embedded NUL and preserves header alias effects.",
+      "uncertainty": "No known callers; API exposes complete leaf behavior over valid actual memory. No invalid-pointer or native caller-stack emulation."
+    }
+  ],
+  "library_boundary": {
+    "address": "00bf7fbf",
+    "existing_name": "__stricmp",
+    "implementation": "actual host CRT _stricmp",
+    "library_reimplemented": false,
+    "library_name_changed": false,
+    "locale_limit": "Native differential rebinds the game CALL to the same current CRT used by C++; original VS2005 locale state is not claimed equivalent."
+  },
+  "deduplication": {
+    "00435c40": "Different two-header equality with length equality guard; not interchangeable.",
+    "existing_consumers": "Local projected-C-string helpers inspected in winmain_startup, vehicle_class, input, GUI; no shared consumers edited.",
+    "replacement": "No complete equivalent actual-header implementation found."
+  },
+  "verification": {
+    "strict_build": "scripts/build.ps1, Win32 Release, passed",
+    "ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "verify_seeds": "passed, all8 existing references match disk",
+    "focused_fixture": {
+      "source": "local/native_string_compare_fixture.cpp (ignored)",
+      "build_flags": "MSVC Win32 /std:c++17 /O2 /EHsc /W4 /WX /MD",
+      "result": "passed",
+      "equality_cases": 9,
+      "replacement_cases": 8,
+      "original_bodies": "Copied exact disk bytes, verified against bounded Ghidra byte queries.",
+      "call_rebinding": {
+        "function": "00425850",
+        "call_site": "0042588a",
+        "offset": "3a",
+        "target": "actual process _stricmp",
+        "other_patches": false
+      },
+      "coverage": [
+        "null data ignores recorded length",
+        "nonnull data/null candidate uses recorded length",
+        "nonnull pair ignores recorded length",
+        "native EAX100h with AL0 for260-byte candidate",
+        "embedded NUL replacement",
+        "negative signed start, equal/beyond end, null data",
+        "stores that shorten header length",
+        "stores that change data pointer before subsequent iterations"
+      ]
+    },
+    "source_api_abi_compatible": false,
+    "game_validated": false,
+    "game_or_original_entry_executed": false,
+    "ipc_or_threads_started": false
+  },
+  "metadata_followup": {
+    "missing_entries": [],
+    "flow_gaps": [],
+    "prototype_corrections": "Both live prototypes still show undefined(void); use original_abi records. AL-only equality result must not be documented as full DWORD boolean.",
+    "worker_writes": "Ledger only; no Ghidra changes."
+  },
+  "remaining": "Adopt the actual-header comparison in separately owned consumers where appropriate; preserve genuine CRT locale behavior and valid memory requirements."
+}

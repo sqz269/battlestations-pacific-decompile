@@ -87,15 +87,34 @@ float unit_anchor_surface_height_00825977(float sampled_ocean_height) noexcept {
     return static_cast<float>(static_cast<double>(sampled_ocean_height) + kUnitAnchorSurfaceLift);
 }
 
-UnitWakeSpan unit_wake_span_00825a6b(float pose_base, float pose_lateral,
-                                     float descriptor_half_width) noexcept {
-    // 00825A71 FLD [descriptor+A0h] / FMUL qword 0.5 -> the half width, then the
-    // lateral term is recomputed for each side in the listing.
+UnitWakeSpan unit_wake_span_00825a6b(PoseRefreshView& unit_pose,
+                                   const float& descriptor_width) {
+    // CMP precedes the arithmetic at each site; its JNZ follows the FSTP.
+    // Preserve those checks, reads and single-precision scratch stores rather
+    // than refreshing in a loop or snapshotting the matrix scalars.
+    const bool refresh_left_lateral = unit_pose.world_valid_c8 == 0; // 00825A64
     const float half =
-        static_cast<float>(static_cast<double>(descriptor_half_width) * kUnitWakeHalfWidthScale);
-    UnitWakeSpan span{};
-    span.left = pose_base + pose_lateral * half;
-    span.right = pose_base - pose_lateral * half;
+        static_cast<float>(static_cast<double>(descriptor_width) * kUnitWakeHalfWidthScale);
+    if (refresh_left_lateral) refresh_pose_00414db0(unit_pose); // 00825A85
+
+    const bool refresh_left_base = unit_pose.world_valid_c8 == 0; // 00825A8A
+    const float left_offset = static_cast<float>(
+        static_cast<double>(unit_pose.world_cc[9]) * static_cast<double>(half));
+    if (refresh_left_base) refresh_pose_00414db0(unit_pose); // 00825AA8
+
+    const bool refresh_right_lateral = unit_pose.world_valid_c8 == 0; // 00825AAD
+    UnitWakeSpan span;
+    span.left = static_cast<float>(
+        static_cast<double>(unit_pose.world_cc[13]) + static_cast<double>(left_offset));
+    if (refresh_right_lateral) refresh_pose_00414db0(unit_pose); // 00825AC6
+
+    const bool refresh_right_base = unit_pose.world_valid_c8 == 0; // 00825ACB
+    const float right_offset = static_cast<float>(
+        static_cast<double>(unit_pose.world_cc[9]) * static_cast<double>(half));
+    if (refresh_right_base) refresh_pose_00414db0(unit_pose); // 00825AE1
+
+    span.right = static_cast<float>(
+        static_cast<double>(unit_pose.world_cc[13]) - static_cast<double>(right_offset));
     return span;
 }
 
@@ -172,17 +191,8 @@ void update_unit_instance_008255b0(UnitInstanceState& unit, const UnitClassBlock
 
     // Step 8, 00825A59: the wake spawn, and the four lazy pose refreshes around it.
     if (unit.simulate) {
-        // The native tests +0C8h separately before each of the four pose reads at
-        // 00825A81, 00825AA4, 00825AC2 and 00825ADD, and calls 00414DB0 whenever
-        // it is clear. The host is what makes the pose valid, so the flag is read
-        // fresh at every site rather than cached here.
-        for (int site = 0; site < 4; ++site) {
-            if (!unit.pose_valid) {
-                host.refresh_pose_00414db0();
-            }
-        }
         const UnitWakeSpan span =
-            unit_wake_span_00825a6b(unit.pose_base, unit.pose_lateral, class_block.wake_width);
+            unit_wake_span_00825a6b(unit.pose, class_block.wake_width);
         if (host.wake_enabled() && !unit.controller_one_shot && unit_wake_spawns_00825b19(span)) {
             unit.controller_one_shot = true;
             host.spawn_wake();
@@ -190,10 +200,10 @@ void update_unit_instance_008255b0(UnitInstanceState& unit, const UnitClassBlock
 
         // Step 9, 00825BD4.
         if (unit.has_prop_wash) {
-            if (!unit.pose_valid) {
-                host.refresh_pose_00414db0();
+            if (unit.pose.world_valid_c8 == 0) { // 00825BDD
+                refresh_pose_00414db0(unit.pose);
             }
-            if (host.prop_wash_threshold_passed(unit.pose_base)) {
+            if (host.prop_wash_threshold_passed(unit.pose.world_cc[13])) { // 00825BF5
                 host.stop_prop_wash();
             }
         }

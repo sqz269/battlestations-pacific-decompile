@@ -86,11 +86,7 @@ void set_native_node_parent_00b6e680(NativeNodeParentingRuntime& runtime,
 void register_native_node_attachment_00b8f460(NativeNodeParentingRuntime& runtime,
     GeneratedModelAttachmentLinks& group, CameraTransform& node) {
     if (node.notification_context == group.identity) return;
-    if (group.models.size() == group.models.capacity()) {
-        const auto capacity = group.models.capacity();
-        group.models.reserve(capacity ? capacity * 2u : 1u);
-    }
-    group.models.push_back(&node);
+    append_generated_model_attachment(group, node);
     publish_attachment(runtime, node, group.identity);
 }
 void set_native_node_attachment_00b6d7b0(NativeNodeParentingRuntime& runtime,

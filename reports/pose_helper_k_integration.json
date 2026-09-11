@@ -1,0 +1,157 @@
+{
+  "packet": "orch3_pose_helper_metadata_k",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "changes": [
+    {
+      "address": "00414d10",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "00414d10",
+        "function_name": "FUN_00414d10"
+      },
+      "after_name": "BSP_Vector3f_TransformAffinePointViaScratch"
+    },
+    {
+      "address": "00414eb0",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "00414eb0",
+        "function_name": "FUN_00414eb0"
+      },
+      "after_name": "BSP_Geometry_HeadingAngle"
+    },
+    {
+      "address": "00414f50",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "00414f50",
+        "function_name": "FUN_00414f50"
+      },
+      "after_name": "BSP_Geometry_ContainsPoint"
+    },
+    {
+      "address": "00415010",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "00415010",
+        "function_name": "FUN_00415010"
+      },
+      "after_name": "BSP_Geometry_IncludePoint"
+    },
+    {
+      "address": "00425850",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "00425850",
+        "function_name": "FUN_00425850",
+        "comment": "[BSP reconstruction 00425850]\nECX native string; stack C-string; AL bool; RET4 Factory equality delegates nonnull case to CRT_stricmp; preserve current string/library identities. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00425850] update\nECX native string; stack C-string; AL bool; RET4 Factory equality delegates nonnull case to CRT_stricmp; preserve current string/library identities. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Input integration: 00a92724 passes the modifier header in ECX. Native header is length at +0, data at +4. Nonnull data delegates to CRT stricmp; null data cannot match fixed nonempty holdPress. Read-only contract, original helper identity preserved. docs/ORCH3_INPUT_AUDIO_SESSION_INTEGRATION.md"
+      },
+      "after_name": "BSP_NativeString_EqualsCStringInsensitive"
+    },
+    {
+      "address": "004259f0",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "004259f0",
+        "function_name": "FUN_004259f0"
+      },
+      "after_name": "BSP_NativeString_ReplaceCharacterFrom"
+    },
+    {
+      "address": "0042d7e0",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "0042d7e0",
+        "function_name": "FUN_0042d7e0"
+      },
+      "after_name": "BSP_EntityPose_GetWorldMatrix"
+    },
+    {
+      "address": "0046c550",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "0046c550",
+        "function_name": "BSP_SceneEntity_ShouldGenerate",
+        "comment": "[BSP reconstruction 0046c550]\nHypothesis, not a recovered symbol. Packet scene_entity_factory, read-only analysis. The per-entity generation predicate, NOT the instantiation call docs/SCENE_FILE_READER.md assumed. __thiscall(SceneDatabase* = *(00E18680)), RET 0x5C, 23 stack dwords: (a1 const char* className from 00468660, a2 const char* entityName, a3 Entity* parent, a4 const float localFrame[16], a5 PropertyBag*, a6 unread, a7..a22 float parentFrame[16] by value, a23 void*& outDeferredRecord). Returns AL. Absent MultiType property (00CE580C) takes the deferred branch: reads Party (00CE5804), the parent name through vtable +10h, operator new(5Ch), 008F41F0 into 004693C0, appended to this+24h by 0046C450, returns 1. Present takes the game-mode gate: world X/Z from a4+30h/+38h plus the parent +FCh/+104h (00414DB0 refresh when byte +C8h is clear) or 00413920 against a7; the class id is looked up in the std::set at this+164h by 00468DB0 and a hit returns 1; otherwise 004BCA50 selects one of 11 cases through the jump table at 0046CCE4 and tests X/Z against a six-float row at *(00E188A8)+705Ch with an 18h stride, returning the mode's boolean out of the MultiType sub-bag. Modes 8/9 use GenerateInGame and 0046BF20; mode 10 returns 1; above 10 returns 0. See docs/SCENE_ENTITY_FACTORY.md."
+      },
+      "after_name": "BSP_SceneEntity_ShouldGenerate"
+    },
+    {
+      "address": "006435d0",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "006435d0",
+        "function_name": "BSP_InGameHudMarkersScreen_Update",
+        "comment": "[BSP reconstruction 006435d0]\nHypothesis, not a recovered symbol. Packet hud_screen_pages, docs/HUD_SCREEN_PAGES.md. Vtable +20h of HUD screen slot 4Dh. __thiscall(this, float), RET 4 at 00643D94, body 006435D0..00643D94; Ghidra has no function here. Reads the controlled unit 00E188D8 five times, the game 00E188A8 nine times and the interface manager 00E198C4 seven times, and drives the marker pool through 006434E0, 006430C0 and 00640620. Analyzed only.\n\n[BSP reconstruction 006435d0] update\nHypothesis, not a recovered symbol. Packet hud_screen_pages, docs/HUD_SCREEN_PAGES.md. Vtable +20h of HUD screen slot 4Dh. __thiscall(this, float), RET 4 at 00643D94, body 006435D0..00643D94; Ghidra has no function here. Reads the controlled unit 00E188D8 five times, the game 00E188A8 nine times and the interface manager 00E198C4 seven times, and drives the marker pool through 006434E0, 006430C0 and 00640620. Analyzed only. | Packet hud_central_updates, docs/HUD_CENTRAL_UPDATES.md. Read end to end from the listing. Body 006435D0..00643D94, ret 4 at 00643D94; the float argument is never read. Gate 006435D8: [00E188A8+18ECh] in 0..7 and [00E188A8+61Fh] and +620h clear; no cadence counter, the whole body runs every frame; this->[28h] skips only the marker passes. 0064361B publishes a clip rectangle into 00E197C4..00E197D8 from 00AA1FE0's GUI extent scaled by 00CF5990 (0.4925) around 00D7A280 (0.5), each x bound stored twice. Frame order: +A0h cleared, +24h = 004B4B00 camera unit, 00640620 pool reset, 0063BCD0 clears the marker set at +34h (first +38h, last +3Ch), +1Ch = 00927880([00E188D8]), self marker 006430C0(unit,0,0,2), the interface target [[00E198C4+CCh]+4Ch] as 006430C0(target,1,0,0), the squad list at [[00E188A8+19CCh]+16Ch] with the radius test r*r > dx*dx+dy*dy+dz*dz on positions +FCh/+100h/+104h and the integer radius at +7C4h, the screen-centre pick 0043A290(+44h*width, +48h*height, 0) publishing to [00E198C4+F0h] with the validity byte at +FCh, the objective sweep over [00E188A8+team*4+21A4h], the command-unit sweep over [[00E188A8+19CCh]+58h], the target group at [target+9D4h] (count +3CCh, up to five members from +3D0h), the reinforcement sweep behind 00F88A00 > 0.03, then 00640D70 and 00640620. Ghidra's disassembly desyncs at 00643C0C: the bytes 8B A8 D4 09 00 00 are MOV EBP,[EAX+9D4h].\n\n[BSP reconstruction 006435d0] update\nHypothesis, not a recovered symbol. Packet hud_screen_pages, docs/HUD_SCREEN_PAGES.md. Vtable +20h of HUD screen slot 4Dh. __thiscall(this, float), RET 4 at 00643D94, body 006435D0..00643D94; Ghidra has no function here. Reads the controlled unit 00E188D8 five times, the game 00E188A8 nine times and the interface manager 00E198C4 seven times, and drives the marker pool through 006434E0, 006430C0 and 00640620. Analyzed only. | Packet hud_central_updates, docs/HUD_CENTRAL_UPDATES.md. Read end to end from the listing. Body 006435D0..00643D94, ret 4 at 00643D94; the float argument is never read. Gate 006435D8: [00E188A8+18ECh] in 0..7 and [00E188A8+61Fh] and +620h clear; no cadence counter, the whole body runs every frame; this->[28h] skips only the marker passes. 0064361B publishes a clip rectangle into 00E197C4..00E197D8 from 00AA1FE0's GUI extent scaled by 00CF5990 (0.4925) around 00D7A280 (0.5), each x bound stored twice. Frame order: +A0h cleared, +24h = 004B4B00 camera unit, 00640620 pool reset, 0063BCD0 clears the marker set at +34h (first +38h, last +3Ch), +1Ch = 00927880([00E188D8]), self marker 006430C0(unit,0,0,2), the interface target [[00E198C4+CCh]+4Ch] as 006430C0(target,1,0,0), the squad list at [[00E188A8+19CCh]+16Ch] with the radius test r*r > dx*dx+dy*dy+dz*dz on positions +FCh/+100h/+104h and the integer radius at +7C4h, the screen-centre pick 0043A290(+44h*width, +48h*height, 0) publishing to [00E198C4+F0h] with the validity byte at +FCh, the objective sweep over [00E188A8+team*4+21A4h], the command-unit sweep over [[00E188A8+19CCh]+58h], the target group at [target+9D4h] (count +3CCh, up to five members from +3D0h), the reinforcement sweep behind 00F88A00 > 0.03, then 00640D70 and 00640620. Ghidra's disassembly desyncs at 00643C0C: the bytes 8B A8 D4 09 00 00 are MOV EBP,[EAX+9D4h]. | Update: Ghidra now has a function here (defined by the integrator from disk-verified bytes, reports/hud_screen_function_definitions.json); docs/HUD_CENTRAL_UPDATES.md reconstructs the body."
+      },
+      "after_name": "BSP_InGameHudMarkersScreen_Update"
+    },
+    {
+      "address": "008255b0",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "008255b0",
+        "function_name": "BSP_UnitInstance_Update",
+        "comment": "[BSP reconstruction 008255b0]\nHypothesis, not a recovered symbol. __thiscall(this, float scaledDelta), RET 4, body 008255B0..00825DD4, 521 instructions, no flow gaps, SEH handler 00C91888. Reached as unit vtable slot 0DCh from 00904BF0, which the in-mission subsystem update 004C40A0 calls as world->vtable[0Ch] with game+21F0h. Twelve steps in listing order: submerged effect cull over +758h/+75Ch against -0.5; underwater bubble timer at +BC8h; the +1010h/+1011h edge latch; 00815AA0 with a 0/1 scalar; bow and stern water anchors through 00413920 and the ocean sampler 0078CF20; 0092BE80 and 0081C050; the intensity product at +10A4h (0.5 when this == DAT_00E188D8); the wake spawn; the prop wash at +1170h; five attachment anchors at +B54h/+B68h; 008252C0, 00956600 and 00834E90 with the delta; then every part in the vector at +A14h/+A18h. docs/UNIT_INSTANCE_UPDATE.md."
+      },
+      "after_name": "BSP_UnitInstance_Update"
+    },
+    {
+      "address": "00956600",
+      "name_matches": true,
+      "evidence_matches": true,
+      "prior_comment_preserved": true,
+      "before": {
+        "address": "00956600",
+        "function_name": "BSP_UnitInstance_UpdateTimers",
+        "comment": "[BSP reconstruction 00956600]\nHypothesis, not a recovered symbol. __thiscall(this, float scaledDelta), RET 4, body 00956600..00956B3E, 372 instructions, no flow gaps, MSVC SEH frame 00CA8EE0. Second timed sub-update, called at 00825D6C. In order: f_524h += delta (unbounded); if (f_728h > 0) f_728h = max(f_728h - delta, 0); f_6D8h -= delta unconditionally. When f_6D8h goes negative and the descriptor at +354h holds a non-empty 16-byte-record vector ([+0Ch],[+10h]), f_6D8h reloads with 0.2f (00CE54A0) and the damage-threshold scan runs: hp = 00923BE0(this); only when hp < f_364h, each record with hp <= rec[0] < f_364h fires its anchor transform ([+354h]+28h indexed by rec[8], bounded by [+354h]+2Ch), its vtable +34h announce when rec[4] >= 0, and its effect template rec[0Ch]; f_364h = hp. Then the +70Ch animation chain (00956946..009569F6) and the fade at +2F4h toward +2F8h at 0.5/s (00D7A280), floored at 0 rising and clamped into [target,1] falling by 00415690. Tail pushes the visibility factor to the node at +4A4h through 00B6DA70; game mode 9 (004BCA50) makes it a hard 0/1 around 0.5f (00CE3800). docs/UNIT_TIMED_SUBUPDATES.md"
+      },
+      "after_name": "BSP_UnitInstance_UpdateTimers"
+    }
+  ],
+  "new_function_definitions": [],
+  "function_spans": "All seven new game functions already have complete live bodies through the recorded final RET bytes.",
+  "fragments": "Scene46C6B7/46C6E5 are interior ranges, never defined as standalone functions. HUD6435D0, unit8255B0, timer956600 and scene46C550 remain bounded reconstructions.",
+  "annotation_log": "local\\ghidra-annotations-20260911T080443Z.json",
+  "prior_prototypes": "local/pose-helper-k-prior-prototypes.txt",
+  "readback": "local/pose-helper-k-comments.json",
+  "ghidra_saved": true,
+  "exports_refreshed": true,
+  "strict_win32_build": "passed; local/pose-helper-k-final-build.log",
+  "existing_ctests": "both passed",
+  "composed_fixtures": {
+    "HUD": "passed identity replacement, changed next link, actual borrowed poses; 18 native x87 result/status comparisons",
+    "timer": "passed point capture, callback mutation, dirty/clean refresh and scratch alias cases; local/pose-helper-k-timer-fixture.log",
+    "wake": "passed actual parent composition and prop-wash refresh after callback invalidation; local/pose-helper-k-wake-fixture.log",
+    "scene": "passed actual parent poses, canonical local*parent matrix, captured parent argument and deferred bindings; local/pose-helper-k-scene-fixture.log"
+  },
+  "worker_native_fixtures": {
+    "geometry": "45 heading, 303 containment, 330 expansion cases; genuine current CRT atan2 boundary",
+    "native_string": "9 equality and 8 replacement cases; genuine current CRT stricmp boundary"
+  },
+  "new_permanent_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": "Actual game owners and remaining required host calls are explicit. Historical CRT exceptional/locale behavior and whole enclosing function equivalence are not claimed."
+}

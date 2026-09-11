@@ -29,11 +29,14 @@ Node virtual1C `00b6d7b0` unregisters the old attachment, assigns+A0, calls grou
 registration, then dispatches each live child's current virtual1C with a fresh
 next-sibling load. Group override `00b8f4f0` performs the same owner assignment
 without walking children. Registration `00b8f460` only appends if node+A0 differs
-from the group, growing the existing typed backlink vector by double/minimum1.
+from the group, growing the backlink array by double/minimum1.
 The assignment-before-registration sequence therefore skips insertion on these
 setter routes, as independently documented in `CAMERA_ATTACHED_CALLBACK.md`.
-Do not reorder it to manufacture backlinks. The existing vector remains a typed
-projection; allocator/exception/raw178h layout equivalence is not claimed.
+Do not reorder it to manufacture backlinks. Registration now calls the shared
+append adapter: actual group bindings grow and append through their live raw
+178h/17Ch/180h descriptor, and unregistration erases from that same descriptor.
+The existing vector is retained only for diagnostic bindings. See
+`NATIVE_GROUP_OWNER.md` for raw allocation and lifetime boundaries.
 
 Original ABI for the five mutation routines is ECX receiver, one stack pointer,
 RET4. `00b8e600` is a no-argument DWORD getter. Assembly confirmed all receiver
@@ -50,5 +53,7 @@ fixture checked the full parent's double callback/equal-parent behavior and the
 attachment assignment/backlink ordering. No new permanent tests were added.
 
 Actual initialized group type storage, current virtual1C selection and group3C
-notification remain supplied services. This is reconstructed and fixture-tested
-behavior, not a complete group owner, ABI compatibility, GUI rendering or gameplay.
+notification remain required services. `GuiNativeScene` supplies these through
+the concrete group owner and shared lifetime runtime; see `GUI_NATIVE_SCENE.md`.
+This is reconstructed and fixture-tested behavior. ABI compatibility, GUI
+rendering and gameplay remain unvalidated.

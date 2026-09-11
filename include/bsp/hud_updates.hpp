@@ -2,6 +2,7 @@
 #include <cstdint>
 
 #include "bsp/hud_screens.hpp"
+#include "bsp/pose_refresh.hpp"
 
 // Packet hud_central_updates, docs/HUD_CENTRAL_UPDATES.md.
 //
@@ -260,6 +261,9 @@ struct HudMarkersUpdateHost {
     virtual void reset_marker_pool() = 0;           // 00640620
     virtual void clear_marker_set() = 0;            // 0063BCD0 on +34h
     virtual bool controlled_unit_present() = 0;     // 00E188D8
+    // Reload the actual 00E188D8 owner identity; this is not the result of
+    // self_marker_unit(). Required again after each squad member's refresh.
+    virtual std::uint32_t controlled_unit() = 0;
     virtual std::uint32_t self_marker_unit() = 0;   // 00927880 on 00E188D8
     virtual void refresh_screen_state() = 0;        // 006394B0
     virtual void refresh_marker_layout() = 0;       // 0063B5E0 on +A4h
@@ -275,11 +279,15 @@ struct HudMarkersUpdateHost {
     virtual bool unit_passes_target_filter(std::uint32_t unit) = 0; // 00804350(_,5)
     virtual bool target_is_selectable(std::uint32_t unit) = 0;      // 005220C0
 
-    // The squad list at [[00E188A8 + 19CCh] + 16Ch], payload at node+8h.
-    virtual std::size_t squad_member_count() = 0;
-    virtual std::uint32_t squad_member(std::size_t index) = 0;
-    virtual void refresh_unit_pose(std::uint32_t unit) = 0; // 00414DB0 when +C8h is 0
-    virtual void unit_position(std::uint32_t unit, float& x, float& y, float& z) = 0;
+    // Pure access to the actual list at [[00E188A8 + 19CCh] + 16Ch]. Capture
+    // its head once, then reread node+4 AFTER marker callbacks, as native does.
+    // Nodes and their payloads must remain alive through that final access.
+    virtual const void* squad_first_node() = 0;
+    virtual std::uint32_t squad_node_unit(const void* node) = 0; // node+8h
+    virtual const void* squad_next_node(const void* node) = 0;   // node+4h
+    // Pure identity lookup of an existing view over the owner's actual pose
+    // fields. No copied flag/position, refresh callback, or fallback identity.
+    virtual PoseRefreshView& unit_pose(std::uint32_t unit) = 0;
     virtual int squad_marker_radius(std::uint32_t unit) = 0; // (int)unit+7C4h
 
     // The screen-centre world pick at 0043A290 with the viewport size from

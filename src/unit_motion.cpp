@@ -1,8 +1,24 @@
 #include "bsp/unit_motion.hpp"
+#include "bsp/camera_affine.hpp"
 
 #include <cmath>
 
 namespace bsp {
+
+CameraMatrix& pose_world_matrix_0042d7e0(PoseRefreshView& pose) {
+    if (pose.world_valid_c8 == 0) refresh_pose_00414db0(pose);
+    return pose.world_cc;
+}
+
+float* transform_point_staged_00414d10(float* output,
+    const std::array<float, 3>& input, const CameraMatrix& matrix) {
+    std::array<float, 3> scratch;
+    transform_point_004142e0(input, matrix, scratch);
+    output[0] = scratch[0];
+    output[1] = scratch[1];
+    output[2] = scratch[2];
+    return output;
+}
 
 const char kUnitAudioParamRpm[] = "rpm";         // 00D08688
 const char kUnitAudioParamGeneric[] = "param00"; // 00D09998
@@ -208,8 +224,8 @@ float unit_visibility_factor_00956aa3(int game_mode, bool mission_reveal_byte,
     return fade;
 }
 
-void unit_update_timers_00956600(UnitTimerState& state, UnitTimerHost& host,
-                                 float scaled_delta) {
+void unit_update_timers_00956600(UnitTimerState& state, PoseRefreshView& actual_pose,
+    UnitTimerHost& host, float scaled_delta) {
     // 00956626: unbounded accumulator.
     state.age = state.age + scaled_delta;
 
@@ -233,19 +249,26 @@ void unit_update_timers_00956600(UnitTimerState& state, UnitTimerHost& host,
                                                        record.health_threshold)) {
                     continue;
                 }
-                // 009567A3: the anchor index is bounds-checked against +2Ch and against
-                // zero; out of range falls back to the lazy pose refresh.
+                // 009567A3..0095682D: one stack XYZ snapshot for both consumers.
+                std::array<float, 3> world_point;
                 if (record.anchor_index >= 0 &&
                     static_cast<std::size_t>(record.anchor_index) < anchor_count) {
-                    host.transform_damage_anchor(static_cast<std::size_t>(record.anchor_index));
-                } else if (!state.pose_valid) {
-                    host.refresh_pose_00414db0();
+                    // Native resolves the source pointer before refreshing the unit.
+                    const auto& anchor = host.descriptor_anchor(
+                        static_cast<std::size_t>(record.anchor_index));
+                    const CameraMatrix& world = pose_world_matrix_0042d7e0(actual_pose);
+                    transform_point_staged_00414d10(world_point.data(), anchor, world);
+                } else {
+                    if (actual_pose.world_valid_c8 == 0) refresh_pose_00414db0(actual_pose);
+                    world_point[0] = actual_pose.world_cc[12]; // actual unit+FCh
+                    world_point[1] = actual_pose.world_cc[13]; // actual unit+100h
+                    world_point[2] = actual_pose.world_cc[14]; // actual unit+104h
                 }
                 if (record.announce_id >= 0) {
-                    host.announce_damage_record(i);
+                    host.announce_damage_record(i, world_point);
                 }
                 if (record.has_effect) {
-                    host.spawn_damage_effect(i);
+                    host.spawn_damage_effect(i, world_point);
                 }
             }
             state.damage_scan_mark = health; // 0095693B

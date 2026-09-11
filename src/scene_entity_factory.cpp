@@ -1,7 +1,9 @@
 #include "bsp/scene_entity_factory.hpp"
+#include "bsp/scene_pose_binding.hpp"
 
 #include <cctype>
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -208,7 +210,10 @@ std::string party_token(const ScenePropertyBlock& bag)
 void build_record(const SceneEntityGateInputs& inputs,
                   const ScenePropertyBlock& bag,
                   SceneEntityGateHost& host,
-                  SceneEntityGateResult& result)
+                  SceneEntityGateResult& result,
+                  void* captured_parent_identity,
+                  const CameraMatrix& local_frame,
+                  const CameraMatrix& parent_argument)
 {
     if (inputs.record_already_built) {
         return;
@@ -217,14 +222,10 @@ void build_record(const SceneEntityGateInputs& inputs,
     record.class_name = inputs.class_name;
     record.entity_name = inputs.entity_name;
     record.party = party_token(bag);
-    if (inputs.local_frame != nullptr) {
-        std::memcpy(record.local_frame, inputs.local_frame, sizeof(record.local_frame));
-    }
-    if (inputs.parent_frame != nullptr) {
-        std::memcpy(record.parent_frame, inputs.parent_frame, sizeof(record.parent_frame));
-    }
-    if (inputs.has_parent) {
-        record.parent_name = host.parent_name();
+    std::memcpy(record.local_frame, local_frame.data(), sizeof(record.local_frame));
+    std::memcpy(record.parent_frame, parent_argument.data(), sizeof(record.parent_frame));
+    if (captured_parent_identity) {
+        record.parent_name = host.parent_name(captured_parent_identity);
     }
     host.append_deferred_entity_record(record);
     result.deferred_record_created = true;
@@ -235,25 +236,32 @@ void build_record(const SceneEntityGateInputs& inputs,
 SceneEntityGateResult scene_entity_generation_gate_0046c550(
     const SceneEntityGateInputs& inputs,
     const std::vector<int>& always_generate_class_ids,
-    SceneEntityGateHost& host)
+    SceneEntityGateHost& host, PoseRefreshResolver& poses)
 {
+    // Native argument3 is passed by value. Keep that same borrowed identity
+    // through later host calls; do not reload a caller-mutated input projection.
+    void* const parent_identity = inputs.parent_identity;
+    const CameraMatrix* const local_frame = inputs.local_frame;
+    const CameraMatrix* const parent_frame = inputs.parent_frame;
+    if (!local_frame || !parent_frame)
+        throw std::invalid_argument("scene generation gate requires actual local and parent frame bindings");
+    // Native callers reserve 40h and REP MOVSD sixteen DWORDs into arguments
+    // 7..22 before entering this callee. Capture bytes, with no x87 conversion.
+    CameraMatrix parent_argument;
+    std::memcpy(parent_argument.data(), parent_frame->data(), sizeof(parent_argument));
     SceneEntityGateResult result;
     static const ScenePropertyBlock kEmptyBag;
     const ScenePropertyBlock& bag = inputs.properties != nullptr ? *inputs.properties : kEmptyBag;
 
     // 0046C57A: X and Z of the entity's own frame, before any parent is folded in.
-    float x = 0.0f;
-    float z = 0.0f;
-    if (inputs.local_frame != nullptr) {
-        x = inputs.local_frame[12];
-        z = inputs.local_frame[14];
-    }
+    float x = (*local_frame)[12];
+    float z = (*local_frame)[14];
 
     // 0046C58C..0046C5A6. The absence of the `MultiType` sub-bag, not its
     // contents, takes the deferred-record branch, which always generates.
     const ScenePropertyBlock* multi = find_scene_property_block(bag, kSceneMultiTypeKey);
     if (multi == nullptr) {
-        build_record(inputs, bag, host, result);
+        build_record(inputs, bag, host, result, parent_identity, *local_frame, parent_argument);
         result.generate = true;
         result.rule = SceneGateRule::NoMultiTypeBlock;
         return result;
@@ -262,17 +270,10 @@ SceneEntityGateResult scene_entity_generation_gate_0046c550(
     // 0046C6A9: with a parent the world position is the parent's own position
     // plus the entity's local offset; without one the local frame is multiplied
     // by the parent frame that came in by value.
-    if (inputs.has_parent) {
-        host.parent_world_offset(x, z);
+    if (parent_identity) {
+        add_scene_parent_world_offset_0046c6b7(parent_identity, poses, x, z);
     } else {
-        float composed[16] = {};
-        const float identity[16] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-        host.compose_world_frame(inputs.local_frame != nullptr ? inputs.local_frame : identity,
-                                 inputs.parent_frame != nullptr ? inputs.parent_frame : identity,
-                                 composed);
-        x = composed[12];
-        z = composed[14];
+        compose_scene_null_parent_offset_0046c6e5(*local_frame, parent_argument, x, z);
     }
 
     // 0046C716 then 0046C741: the class name goes back through the registry and
@@ -314,7 +315,7 @@ SceneEntityGateResult scene_entity_generation_gate_0046c550(
     // only falls through to `GenerateInEngineMovie` when the record is missing.
     if (mode == SceneGameMode::EngineMovie) {
         if (scene_property_bool(bag.find("GenerateInGame"))) {
-            build_record(inputs, bag, host, result);
+            build_record(inputs, bag, host, result, parent_identity, *local_frame, parent_argument);
             host.register_multiplayer_stock(bag, inputs.class_name);
             result.stock_registered = true;
             if (result.deferred_record_created || inputs.record_already_built) {
