@@ -1,0 +1,140 @@
+{
+  "packet": "cc_scene_contents",
+  "owner": "agent/cc-scene-contents",
+  "date": "2026-09-11",
+  "kind": "analysis+reconstruction",
+  "doc": "docs/MISSION_SCENE_CONTENTS.md",
+  "anchor": "004d4df0",
+  "headline": "004D4DF0 does not walk scene entities. Both the Registration and the Instantiate pass are the already-reconstructed 0046DF00 BSP_SceneFile_Read, called twice with different flags; 004D4DF0 supplies the frame around them. Before pass 2 it opens the '2_' file block the mission_scene_load header says does not exist, sets four colour-remap textures on the render-resources singleton from record strings, preloads the record's effect list and the PlaneRumble effect, loads the scene's .nav AvoidZone file, and may force game mode 9 from a .ema probe. Between the passes it drains the class census pass 2 leaves in the global array at 00F8A09C into resolved 'Class_<name>' VFS preload aliases, which is why the two passes are separate calls. After pass 3 it creates the MultiScore entity in a network session and scatters procedural clouds.",
+  "abi": {
+    "004d4df0": {
+      "convention": "__fastcall void(GGame* game)",
+      "ecx": "game; 004D4E1C MOV EBX,ECX, stored to [ESP+38h] and reloaded as EDI later",
+      "stack_args": 0,
+      "ret": "RET 0 at 004D56DF",
+      "seh": "handler 00C66182, EBP-aligned frame, AND ESP,0FFFFFFF8h",
+      "body": "004d4df0-004d56df",
+      "callers": ["004dfb70 BSP_Game_LoadMissionScene at 004e03e5"],
+      "coverage": "complete"
+    },
+    "0046df00": {
+      "convention": "__thiscall(this=[00E18680], path, 0, pass_a, record, override, pass_b)",
+      "note": "external contract, owned by docs/SCENE_FILE_READER.md; not reconstructed here",
+      "coverage": "not opened in this packet"
+    },
+    "004d0ee0": {"convention": "__fastcall(SceneRecord* record)", "ecx": "[game+5FCh]", "coverage": "complete"},
+    "004d4720": {"convention": "__fastcall(void* alias_list)", "ecx": "010904E4 literal", "coverage": "complete"},
+    "004c17d0": {"convention": "int(void)", "note": "Ghidra pseudocode at the call site shows a spurious argument; the PUSH EDX at 004D5248 is the argument of 004248A0", "coverage": "complete"},
+    "004248a0": {"convention": "__thiscall(registry, void** stream)", "coverage": "partial: the 28h-byte AvoidZone element layout and 004239E0 were not decoded"},
+    "004bc890": {"convention": "__thiscall(GGame* game, int mode, bool forced)", "coverage": "complete"},
+    "004ba870": {"convention": "__fastcall(SceneRecord* record)", "ecx": "[game+5FCh]", "coverage": "partial: 0046D930 entity creation and vtable +88h/+D8h are contracts"},
+    "00780db0": {"convention": "__thiscall(void* obj, 0)", "coverage": "partial: only the vtable installs, the 60h/2 class markers and the Lua borrow were read"},
+    "00b0fd70": {"convention": "__thiscall([00F8D39C], NativeString* name)", "coverage": "complete"},
+    "00b0fdc0": {"convention": "__thiscall([00F8D39C], NativeString* name)", "coverage": "complete"},
+    "00b0fe10": {"convention": "__thiscall([00F8D39C], NativeString* name)", "coverage": "complete"},
+    "00b0fe60": {"convention": "__thiscall([00F8D39C], NativeString* name)", "coverage": "complete"},
+    "00be4380": {"convention": "__thiscall(void** out, NativeString* name, int mode)", "coverage": "complete"},
+    "00be44a0": {"convention": "__fastcall(int* slot)", "coverage": "complete"}
+  },
+  "host_steps": [
+    {"step": 1, "address": "004d4e4b", "native": "004254b0", "function": "004d4df0", "name": "log_loading_scene", "args": "__cdecl(00CE7918 \"Loading scene %s\", path), ADD ESP,8 at 004D4E59", "gate": "none"},
+    {"step": 2, "address": "004d4e69", "native": "006b8ad0", "function": "004d4df0", "name": "lua_run_string", "args": "(00CE4DE0 collectgarbage(\"collect\"), 0, 0, 2)", "gate": "[[game+1A08h]+4] != 0 at 004D4E5E"},
+    {"step": 3, "address": "004d4e80", "native": "004cd7f0", "function": "004d4df0", "name": "derive_short_name", "args": "__fastcall(out=[ESP+58h], EDX=record+90Ch), push 1", "gate": "none"},
+    {"step": 4, "address": "004d4eea", "native": "00be0a30", "function": "004d4df0", "name": "open_file_block", "args": "(\"2_\" + short name, 1)", "gate": "none"},
+    {"step": 5, "address": "004d4f78", "native": "00b0fd70", "function": "004d4df0", "name": "set_remap_texture_0", "args": "ECX=[00F8D39C], push record+C24h", "gate": "none"},
+    {"step": 6, "address": "004d4f95", "native": "00b0fdc0", "function": "004d4df0", "name": "set_remap_texture_1", "args": "ECX=[00F8D39C], push record+C2Ch", "gate": "none"},
+    {"step": 7, "address": "004d4fb3", "native": "00b0fe10", "function": "004d4df0", "name": "set_remap_texture_2", "args": "ECX=[00F8D39C], push record+C34h", "gate": "none"},
+    {"step": 8, "address": "004d4fd0", "native": "00b0fe60", "function": "004d4df0", "name": "set_remap_texture_3", "args": "ECX=[00F8D39C], push record+C3Ch", "gate": "none"},
+    {"step": 9, "address": "004d4fe1", "native": "004d0ee0", "function": "004d4df0", "name": "preload_record_effects", "args": "ECX=[game+5FCh]", "gate": "none"},
+    {"step": 10, "address": "004d502b", "native": "00871ba0", "function": "004d4df0", "name": "acquire_effect", "args": "ECX=out, EDX=&\"PlaneRumble\" (00CE7908), push 1; result published into 00E18A78 at 004D504E", "gate": "none"},
+    {"step": 11, "address": "004d5195", "native": "00469840", "function": "004d4df0", "name": "substring for the .nav name", "args": "(out, &path, 0, len-4); ADD EBX,-4 at 004D517E", "gate": "none"},
+    {"step": 12, "address": "004d51ae", "native": "004261a0", "function": "004d4df0", "name": "concat \".nav\" (00CE7900)", "args": "ECX = substring result", "gate": "none"},
+    {"step": 13, "address": "004d523f", "native": "00be4380", "function": "004d4df0", "name": "vfs_open_stream", "args": "ECX=[ESP+34h] out, push &navPath, push 2", "gate": "[0109CEEC] vtable+8h returned non-zero at 004D5232"},
+    {"step": 14, "address": "004d5251", "native": "004c17d0", "function": "004d4df0", "name": "avoid_zone_registry_singleton", "args": "none", "gate": "same as step 13"},
+    {"step": 15, "address": "004d5258", "native": "004248a0", "function": "004d4df0", "name": "load_avoid_zones", "args": "ECX = registry (EAX of 004C17D0), push &stream", "gate": "same as step 13"},
+    {"step": 16, "address": "004d5269", "native": "00be44a0", "function": "004d4df0", "name": "vfs_release_stream", "args": "ECX=[ESP+2Ch]", "gate": "same as step 13"},
+    {"step": 17, "address": "004d5336", "native": "00467cf0", "function": "004d4df0", "name": "reverse find '.' (00CE3A70)", "args": "(this=path copy, &\".\", 7FFFFFFFh)", "gate": "none"},
+    {"step": 18, "address": "004d5347", "native": "00469840", "function": "004d4df0", "name": "substring for the .ema name", "args": "(out, &path, 0, index)", "gate": "none"},
+    {"step": 19, "address": "004d5458", "native": "00bdf4c0", "function": "004d4df0", "name": "vfs_resolve_existing", "args": "ECX=[0109CEEC], push &emaPath", "gate": "none"},
+    {"step": 20, "address": "004d547b", "native": "007f8d60", "function": "004d4df0", "name": "mission_key_registered", "args": "ECX=game+650h, push game+2198h", "gate": "BL != 0 at 004D5461 and AL != 0 at 004D5465"},
+    {"step": 21, "address": "004d548e", "native": "004bc890", "function": "004d4df0", "name": "set_game_mode", "args": "ECX=game, push 9, push 0", "gate": "step 20 gate and 007F8D60 returned 0 at 004D5480"},
+    {"step": 22, "address": "004d5499", "native": "004c8aa0", "function": "004d4df0", "name": "clear_pending_class_ids", "args": "none; clears 00F8A09C/A0/A4 and the list at 00F8A0B0", "gate": "none"},
+    {"step": 23, "address": "004d54a4", "native": "00468c90", "function": "004d4df0", "name": "clear_scene_database_nodes", "args": "ECX=[00E18680]", "gate": "none"},
+    {"step": 24, "address": "004d54de", "native": "0046df00", "function": "004d4df0", "name": "read_scene_file pass 2 Registration", "args": "ECX=[00E18680]; (path, 0, 0, record, override, 1)", "gate": "none"},
+    {"step": 25, "address": "004d54e9", "native": "004697b0", "function": "004d4df0", "name": "destroy_scene_database_pending", "args": "ECX=[00E18680]; walks +28h..+2Ch", "gate": "none"},
+    {"step": 26, "address": "004d54f3", "native": "004d4720", "function": "004d4df0", "name": "build_class_preload_aliases", "args": "ECX=010904E4", "gate": "none"},
+    {"step": 27, "address": "004d54f8", "native": "00bb5ac0", "function": "004d4df0", "name": "resolve_preload_aliases", "args": "none; walks [010904E8]", "gate": "none"},
+    {"step": 28, "address": "004d5530", "native": "0046df00", "function": "004d4df0", "name": "read_scene_file pass 3 Instantiate", "args": "ECX=[00E18680]; (path, 0, 1, record, override, 0)", "gate": "none"},
+    {"step": 29, "address": "004d557f", "native": "00780db0", "function": "004d4df0", "name": "create_multi_score", "args": "ECX = operator new(314h) zeroed at 004D5563, push 0", "gate": "BL == 0 at 004D5535 and [00E188A8]+1FE4h == 1 at 004D5542"},
+    {"step": 30, "address": "004d5631", "native": "004d5631+vtable98", "function": "004d4df0", "name": "place_entity_identity", "args": "ECX = the MultiScore, push 0, push [game+19CCh], push &identity4x4", "gate": "same as step 29", "indirect": true},
+    {"step": 31, "address": "004d56ba", "native": "00bdcb30", "function": "004d4df0", "name": "close_file_block", "args": "ECX=[ESP+9Ch]", "gate": "none"},
+    {"step": 32, "address": "004d56c5", "native": "004ba870", "function": "004d4df0", "name": "scatter_clouds", "args": "ECX=[game+5FCh]", "gate": "none"}
+  ],
+  "supporting_calls": [
+    {"address": "004d0f24", "native": "00871ba0", "function": "004d0ee0", "name": "per-effect acquire", "args": "EDX = [record+C6Ch] + i*8", "gate": "i < [record+C70h]"},
+    {"address": "004d0f05", "native": "004cb160", "function": "004d0ee0", "name": "clear the handle vector", "args": "ECX = record+D50h, push 0", "gate": "none"},
+    {"address": "004d0f34", "native": "004caf50", "function": "004d0ee0", "name": "push the handle", "args": "ECX = record+D50h", "gate": "same as the acquire"},
+    {"address": "004d47a7", "native": "0095c1c0", "function": "004d4720", "name": "\"Class_\" + vehicle class name", "args": "ECX = out string [ESP+10h], EDX = [EBP] class index from the 00F8A0A0 cursor", "gate": "per collected index"},
+    {"address": "004d47bf", "native": "004ce6f0", "function": "004d4720", "name": "BSP_NativeRenderResourceAliasNode_AllocateCopy", "args": "ECX = 010904E4, push list node, [node+4], the name", "gate": "per collected index"},
+    {"address": "00503ee1", "native": "00b0fd70", "function": "00503510", "name": "same setter, other caller", "args": "ECX=[00F8D39C], name \"ColourRemap.tga\" 00CEB588", "gate": "none"},
+    {"address": "00503f58", "native": "00b0fdc0", "function": "00503510", "name": "same setter, other caller", "args": "ColourRemap.tga", "gate": "none"},
+    {"address": "00503fcc", "native": "00b0fe10", "function": "00503510", "name": "same setter, other caller", "args": "ColourRemap.tga", "gate": "none"},
+    {"address": "00504040", "native": "00b0fe60", "function": "00503510", "name": "same setter, other caller", "args": "ColourRemap.tga", "gate": "none"}
+  ],
+  "no_ghidra_function": [],
+  "recorded_names": [
+    {"address": "004d4720", "name": "BSP_Scene_BuildClassPreloadAliases"},
+    {"address": "004d0ee0", "name": "BSP_SceneRecord_PreloadEffects"},
+    {"address": "004c17d0", "name": "BSP_AvoidZoneRegistry_GetSingleton"},
+    {"address": "004248a0", "name": "BSP_AvoidZoneRegistry_LoadFromStream"},
+    {"address": "004bc890", "name": "BSP_Game_SetGameMode"},
+    {"address": "004ba870", "name": "BSP_SceneRecord_ScatterClouds"},
+    {"address": "00780db0", "name": "BSP_MultiScore_Construct"},
+    {"address": "00b0fd70", "name": "BSP_RenderResources_SetRemapTexture0"},
+    {"address": "00b0fdc0", "name": "BSP_RenderResources_SetRemapTexture1"},
+    {"address": "00b0fe10", "name": "BSP_RenderResources_SetRemapTexture2"},
+    {"address": "00b0fe60", "name": "BSP_RenderResources_SetRemapTexture3"},
+    {"address": "00be4380", "name": "BSP_VFS_OpenStreamInto"},
+    {"address": "00be44a0", "name": "BSP_VFS_ReleaseStream"},
+    {"address": "004c8aa0", "name": "BSP_Scene_ClearPendingClassIds"},
+    {"address": "004697b0", "name": "BSP_SceneDatabase_DestroyPendingObjects"},
+    {"address": "00bb5ac0", "name": "BSP_Scene_ResolvePreloadAliases"}
+  ],
+  "corrections_offered": [
+    {
+      "address": "004d4df0",
+      "was": "ledger evidence: 'pushes the four terrain scalars at [game+5FCh]+C24h/C2Ch/C34h/C3Ch'",
+      "is": "four native-string texture names passed as the stack argument to four setters on the render-resources singleton [00F8D39C]; the terrain reading and the 'pushes' framing are both wrong",
+      "evidence": "004D4F65..004D4FD0 loads ECX from [00F8D39C] and pushes record+C24h/C2Ch/C34h/C3Ch; the callees store [00F8D394] vtable+64h(name,0) into +66Ch/+670h/+674h/+678h. Ghidra dropped ECX at all four sites. 00503510 passes ColourRemap.tga (00CEB588) to the same four."
+    },
+    {
+      "file": "include/bsp/mission_scene_load.hpp",
+      "was": "line 39: 'There is no \"2_\" block: the GvSpace_Init block sits between the \"1_\" and \"3_\" blocks.'",
+      "is": "004DFB70 opens no 2_ block, but 004D4DF0 opens '2_' + short name at 004D4EEA and closes it at 004D56BA, so the numbering is contiguous",
+      "evidence": "004D4E87 builds the 2-character string at 00CE7914 (\"2_\"), 004D4E9E resize(2), 004D4ED3 concat with the 004CD7F0 short name, 004D4EEA BSP_FileBlock_Construct; 004D56BA BSP_FileBlock_Destroy. The header is the integrator's file and was not edited."
+    },
+    {
+      "address": "004c17d0",
+      "was": "Ghidra pseudocode of 004D4DF0 renders the call as FUN_004c17d0(ppvVar15)",
+      "is": "int(void); the PUSH EDX at 004D5248 is the stack argument of 004248A0, whose ECX is 004C17D0's return in EAX",
+      "evidence": "004D5244 LEA EDX,[ESP+2Ch]; 004D5248 PUSH EDX; 004D5251 CALL 004C17D0; 004D5256 MOV ECX,EAX; 004D5258 CALL 004248A0"
+    }
+  ],
+  "external_contracts": [
+    {"address": "0046df00", "owner": "docs/SCENE_FILE_READER.md", "why": "the per-entity class lookup, the registration and instantiate creators and the tail blocks all live here"},
+    {"address": "0046d930", "owner": "scene entity factory", "why": "004BA870 creates each procedural cloud through it"},
+    {"address": "00f8d394", "owner": "renderer", "why": "vtable +64h is the texture factory behind the four remap setters"},
+    {"address": "0109ceec", "owner": "VFS", "why": "vtable +4h opens a stream, +8h tests existence"},
+    {"address": "00871ba0", "owner": "effect system", "why": "acquires a refcounted effect by name"}
+  ],
+  "open_questions": [
+    "Who reads [00E188A8]+19D0h and +19D1h, the two bytes 004D4E1E clears first.",
+    "The .scn keys that write record+C24h..CB0h: the header pass of 0046DF00 was not opened, so every scene-record offset in this packet is a consumer-side read (checklist rule 4).",
+    "The 28h-byte AvoidZone element layout and its deserialiser 004239E0.",
+    "The constant at 00D7A258 added to the cloud weight total, and the epsilon at 00CE3820.",
+    "Neither .nav nor .ema exists loose in the installation, so both extensions rest on the literals at 00CE7900 and 00CE7838 alone.",
+    "What the Instantiate pass needs from unreconstructed subsystems: 0046D930 entity creation, the class table 004F2800, the render-resource alias list at 010904E4, the model and VFS package readers, and the world node [game+19CCh]. None of those are in this packet."
+  ],
+  "runtime_evidence": "none; bsp_game.exe reaches load_scene_contents() only as a stub and this packet owns neither the executable nor the load walk. Checklist rule 6 is unmet by construction.",
+  "ghidra": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "access": "read-only"}
+}
