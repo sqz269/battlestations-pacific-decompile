@@ -1,0 +1,147 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00bd19b0",
+      "end_exclusive": "00bd19df",
+      "length": 47,
+      "sha256": "28bf0f4a0c4d233f6fe31067375e5f8ee8cc1b7d9b8ec50aa346cf8624d22bb9",
+      "function_before": "Function: BSP_Event_DeletingDestruct at 00bd19b0\nSignature: undefined BSP_Event_DeletingDestruct(void)\nEntry: 00bd19b0\nBody: 00bd19b0 - 00bd19de",
+      "documentation_before": {
+        "hash": "68061f33a6e4bee26bfd3efffcea47ff0d8a0d04babd13cde8ee80f62ecba578",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bd19b0",
+        "function_name": "BSP_Event_DeletingDestruct",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bd19b0]\nCloseHandle(+4h), restore base vtable, free object if stack flags&1. C++ RAII handle cleanup mirrors release, not native deleting-destructor ABI.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 41,
+            "name": "LAB_00bd19d9"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "returning_free_call_sites": [
+        "00bd19d1"
+      ],
+      "function_after": "Function: BSP_Event_DeletingDestruct at 00bd19b0\nSignature: undefined BSP_Event_DeletingDestruct(void)\nEntry: 00bd19b0\nBody: 00bd19b0 - 00bd19de",
+      "documentation_after": {
+        "hash": "237e7fbd3bd8858dd06bb144331f8341037d54e9fec0ba5a434bc34bdab81257",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bd19b0",
+        "function_name": "BSP_Event_DeletingDestruct",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bd19b0]\nCloseHandle(+4h), restore base vtable, free object if stack flags&1. C++ RAII handle cleanup mirrors release, not native deleting-destructor ABI.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 41,
+            "name": "LAB_00bd19d9"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bd19d6",
+        "end_address": "00bd19df"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bd19d6",
+        "end_address": "00bd19de",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bd19d1"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00bd19d1 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bd19b0"
+      },
+      "result": {
+        "success": true,
+        "address": "00bd19b0",
+        "deleted_function": "BSP_Event_DeletingDestruct",
+        "body_size": 44,
+        "message": "Function 'BSP_Event_DeletingDestruct' deleted at 00bd19b0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bd19b0",
+        "name": "BSP_Event_DeletingDestruct",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bd19b0",
+        "function_name": "BSP_Event_DeletingDestruct",
+        "entry_point": "00bd19b0",
+        "body_size": 47,
+        "message": "Function created successfully at 00bd19b0",
+        "warnings": [
+          "Function name 'BSP_Event_DeletingDestruct' \u2014 main part 'Event_DeletingDestruct' is not PascalCase. Expected: EventDeletingdestruct",
+          "Function name 'BSP_Event_DeletingDestruct' \u2014 main part 'Event_DeletingDestruct' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_Event_DeletingDestruct' does not start with a recognized verb. First word 'Event_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Event deleting destructor returning-free continuation restored with comments preserved; project saved"
+}

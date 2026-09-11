@@ -1,0 +1,375 @@
+{
+  "packet": "native_event_owner",
+  "source_base": "49736462080618eb20f55f47f613d267ab592b5f",
+  "scope": "five complete actual8-byte event owner/Win32 leaves",
+  "interfaces": [
+    {
+      "kind": "function",
+      "address": "00bd1970",
+      "name": "create_native_event_owner_00bd1970",
+      "cpp_symbol": "create_native_event_owner_00bd1970",
+      "source": "src/native_event_owner.cpp",
+      "native_end_exclusive": "00bd19a7",
+      "original_abi": "CL raw manual-reset byte; EAX allocated actual owner or null; RET",
+      "evidence": "reports/native_event_owner_audit.json",
+      "status": "complete_actual_eight_byte_owner_original_caller_real_Win32_fixture_and_strict_build_checked",
+      "native_differential_fixture": true,
+      "previous_interfaces": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bd19b0",
+      "name": "delete_native_event_owner_00bd19b0",
+      "cpp_symbol": "delete_native_event_owner_00bd19b0",
+      "source": "src/native_event_owner.cpp",
+      "native_end_exclusive": "00bd19df",
+      "original_abi": "ECX actual owner; stack flags; EAX original possibly freed owner; RET4",
+      "evidence": "reports/native_event_owner_audit.json",
+      "status": "complete_actual_eight_byte_owner_original_caller_real_Win32_fixture_and_strict_build_checked",
+      "native_differential_fixture": true,
+      "previous_interfaces": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bd1910",
+      "name": "signal_native_event_owner_00bd1910",
+      "cpp_symbol": "signal_native_event_owner_00bd1910",
+      "source": "src/native_event_owner.cpp",
+      "native_end_exclusive": "00bd191b",
+      "original_abi": "ECX actual owner; EAX raw BOOL; RET",
+      "evidence": "reports/native_event_owner_audit.json",
+      "status": "complete_actual_eight_byte_owner_original_caller_real_Win32_fixture_and_strict_build_checked",
+      "native_differential_fixture": true,
+      "previous_interfaces": [
+        {
+          "address": "00bd1910",
+          "name": "event_signal",
+          "source": "src/win32_event.cpp",
+          "status": "semantic_real_windows_event_probe_checked",
+          "abi_compatible": false,
+          "kind": "function"
+        }
+      ],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bd17c0",
+      "name": "wait_native_event_owner_00bd17c0",
+      "cpp_symbol": "wait_native_event_owner_00bd17c0",
+      "source": "src/native_event_owner.cpp",
+      "native_end_exclusive": "00bd17cd",
+      "original_abi": "ECX actual owner; EAX raw DWORD; RET",
+      "evidence": "reports/native_event_owner_audit.json",
+      "status": "complete_actual_eight_byte_owner_original_caller_real_Win32_fixture_and_strict_build_checked",
+      "native_differential_fixture": true,
+      "previous_interfaces": [
+        {
+          "address": "00bd17c0",
+          "name": "event_wait",
+          "source": "src/win32_event.cpp",
+          "status": "semantic_real_windows_event_probe_checked",
+          "abi_compatible": false,
+          "kind": "function"
+        }
+      ],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bd1960",
+      "name": "reset_native_event_owner_00bd1960",
+      "cpp_symbol": "reset_native_event_owner_00bd1960",
+      "source": "src/native_event_owner.cpp",
+      "native_end_exclusive": "00bd196b",
+      "original_abi": "ECX actual owner; EAX raw BOOL; RET",
+      "evidence": "reports/native_event_owner_audit.json",
+      "status": "complete_actual_eight_byte_owner_original_caller_real_Win32_fixture_and_strict_build_checked",
+      "native_differential_fixture": true,
+      "previous_interfaces": [
+        {
+          "address": "00bd1960",
+          "name": "event_reset",
+          "source": "src/win32_event.cpp",
+          "status": "semantic_real_windows_event_probe_checked",
+          "abi_compatible": false,
+          "kind": "function"
+        }
+      ],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "new_complete_functions": 2,
+  "upgraded_complete_functions": 3,
+  "native_evidence": {
+    "spans": [
+      {
+        "address": "00bd1970",
+        "end_exclusive": "00bd19a7",
+        "length": 55,
+        "role": "factory",
+        "sha256": "208785e93ae3ac9f07070f7acbebce4c8e84fed6c7799f6b174d33a3886e0bd7",
+        "hex": "53566a088ad9e8a04e02008bf083c40485f6741e6a000fb6c36a00506a00c7061c82d600ff15b822ce008946048bc65e5bc35e33c05bc3",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bd19b0",
+        "end_exclusive": "00bd19df",
+        "length": 47,
+        "role": "deleting_destructor",
+        "sha256": "28bf0f4a0c4d233f6fe31067375e5f8ee8cc1b7d9b8ec50aa346cf8624d22bb9",
+        "hex": "568bf18b460450c7061c82d600ff155c22ce00f644240801c7060882d600740956e8d64b020083c4048bc65ec20400",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bd1910",
+        "end_exclusive": "00bd191b",
+        "length": 11,
+        "role": "signal",
+        "sha256": "713a6c344649e088a3c3a258794467aba35ec6700f5755985fdb7949a671609c",
+        "hex": "8b410450ff15b422ce00c3",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bd17c0",
+        "end_exclusive": "00bd17cd",
+        "length": 13,
+        "role": "wait",
+        "sha256": "4b8cb4b463c489df9e6015d67036d194a55191289c04371b07c214a3b698cdd1",
+        "hex": "8b41046aff50ff15b022ce00c3",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bd1960",
+        "end_exclusive": "00bd196b",
+        "length": 11,
+        "role": "reset",
+        "sha256": "698b08ac1699b2e3452c9b95fd8ced5a41bb72edab9fd1c7eb47f001faad32b8",
+        "hex": "8b410450ff155821ce00c3",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf681b",
+        "end_exclusive": "00bf6820",
+        "length": 5,
+        "role": "allocation_boundary",
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "hex": "558bec83ec",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "role": "free_boundary",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "hex": "e917380000",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d6821c",
+        "end_exclusive": "00d6822c",
+        "length": 16,
+        "role": "concrete_profile",
+        "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+        "hex": "b019bd001019bd00c017bd006019bd00",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d68208",
+        "end_exclusive": "00d6821c",
+        "length": 20,
+        "role": "base_profile",
+        "sha256": "adf8fbd5177daf983e31307f0545ce0d46fef0f8f536d6d93889eb3a426233b8",
+        "hex": "4018bd000018bd001018bd002018bd003018bd00",
+        "live_matches_installed": true
+      }
+    ],
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "storage": {
+    "bytes": 8,
+    "table_offset": 0,
+    "handle_offset": 4,
+    "concrete_table": "00d6821c",
+    "base_table": "00d68208",
+    "tables_are_native_identity_words_not_callable_host_vtables": true
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_event_owner.hpp",
+      "sha256": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807"
+    },
+    {
+      "path": "src/native_event_owner.cpp",
+      "sha256": "be104dd9cb118b99190ffc106368aa0d94add12db5c3e5300f949914eec98724"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "docs/NATIVE_EVENT_OWNER.md",
+      "sha256": "50ae0981f9488ba7b490adb111d786b6214ce189dd794b429b3451ceb14db628"
+    },
+    {
+      "path": "reports/native_event_owner_build.txt",
+      "sha256": "cca75c95ad35afe10c0cbf287d6d858e6b923713de8c6524c019b33d41d0d037"
+    },
+    {
+      "path": "local/native_event_check.cpp",
+      "sha256": "c67203357023e23f1b78e5b4bb23ceb76e31fda5c90fed38de05ec4004fa1fab"
+    },
+    {
+      "path": "local/native_event_spans.hpp",
+      "sha256": "cb437a2c793e2403f792df6d4b8ee9f2860842346abf398f37ab712c3b8d6ebd"
+    },
+    {
+      "path": "local/build_native_event_check.ps1",
+      "sha256": "0246ce703597f6a4e4197293aa2e3b66a8e8af7e035841d98b96f7e5d1d71ae5"
+    },
+    {
+      "path": "local/native_event_owner_fixture.txt",
+      "sha256": "60d93ff0944971ac6c055bbbbb3e4e7c5587b388955a9fd4fe3708aa0cc10c71"
+    },
+    {
+      "path": "build/event-owner-check/native_event_trace.txt",
+      "sha256": "0caf6c08776cc87e171501185bcd18d52f7c7988cbeab5d89f73a5d1eb2e074f"
+    }
+  ],
+  "fixture": {
+    "status": "passed",
+    "normalized_words": 41,
+    "real_event_lifetimes": 3,
+    "manual_reset_bytes": [
+      0,
+      128,
+      255
+    ],
+    "borrowed_null_handle_sequences": 1,
+    "native_allocate_calls": 3,
+    "native_free_calls": 2,
+    "actual_win32_APIs": true,
+    "simulated_API_results": false,
+    "main_library_linked": true,
+    "actual_allocation_free_services": true,
+    "IAT_operand_relocations": 5,
+    "native_lifetime_boundary_hooks": 2,
+    "allocation_or_CreateEvent_failure_induced": false,
+    "infinite_wait_only_on_previously_signaled_event": true
+  },
+  "build": {
+    "status": "passed",
+    "tests": 2,
+    "path": "reports/native_event_owner_build.txt"
+  },
+  "flow_repair": {
+    "path": "reports/native_event_owner_defined_function.json",
+    "sha256": "5fccdee608e0bb498d267df4c33ec4e6b6409ff10f957860263506ef10113bb7",
+    "hidden_range": [
+      "00bd19d6",
+      "00bd19d9"
+    ],
+    "old_documentation_preserved": true,
+    "project_saved": true
+  },
+  "prior_annotations": [
+    {
+      "address": "00bd1970",
+      "annotation": {
+        "address": "00bd1970",
+        "function_name": "BSP_Event_Create",
+        "comment": "[BSP reconstruction 00bd1970]\nAllocate8-byte vtable00d6821c object; CreateEventA(NULL, CL manual-reset byte, FALSE, NULL), handle+4h. Renderer worker passes CL0 for both events. C++ wrapper uses direct object lifetime instead of native allocation ABI."
+      }
+    },
+    {
+      "address": "00bd19b0",
+      "annotation": {
+        "address": "00bd19b0",
+        "function_name": "BSP_Event_DeletingDestruct",
+        "comment": "[BSP reconstruction 00bd19b0]\nCloseHandle(+4h), restore base vtable, free object if stack flags&1. C++ RAII handle cleanup mirrors release, not native deleting-destructor ABI."
+      }
+    },
+    {
+      "address": "00bd1910",
+      "annotation": {
+        "address": "00bd1910",
+        "function_name": "BSP_Event_Signal",
+        "comment": "[BSP reconstruction 00bd1910]\nEvent vtable+4h; SetEvent(handle+4h). Typed C++ port exposes native ignored BOOL result."
+      }
+    },
+    {
+      "address": "00bd17c0",
+      "annotation": {
+        "address": "00bd17c0",
+        "function_name": "BSP_Event_Wait",
+        "comment": "[BSP reconstruction 00bd17c0]\nEvent vtable+8h; WaitForSingleObject(handle+4h, INFINITE). Typed port exposes ignored DWORD result. Resolves worker stop acknowledgment wait."
+      }
+    },
+    {
+      "address": "00bd1960",
+      "annotation": {
+        "address": "00bd1960",
+        "function_name": "BSP_Event_Reset",
+        "comment": "[BSP reconstruction 00bd1960]\nEvent vtable+Ch; ResetEvent(handle+4h). Typed port exposes ignored BOOL result."
+      }
+    }
+  ],
+  "annotations_applied": true,
+  "new_tracked_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limitations": [
+    "Host operator-new/free boundary, not the original CRT singleton implementation.",
+    "Raw table identities only; no host executable vtable or binary replacement installation.",
+    "No worker/thread constructor, queue execution, renderer stop/pipeline or gameplay validation.",
+    "Original API/allocation failure cases not induced; borrowed null HANDLE operations were exercised with real Windows APIs."
+  ],
+  "status": "integrated_five_complete_actual_event_owner_leaves_original_caller_real_Win32_fixture_and_strict_build_checked",
+  "saved_annotations": {
+    "path": "reports/native_event_owner_annotations.json",
+    "sha256": "8d91eeb6a8ebe712c8d1683d4cb0cdc444104f1438db465ec858a8b4225246e7",
+    "old_names_comments_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00bd1970",
+      "path": "exports/bsp/functions/00bd1970/decompiled.c",
+      "sha256": "177341c6854b517b8f578a4d62826a1945f4ca925af736c2e48f9d9c915da109"
+    },
+    {
+      "address": "00bd19b0",
+      "path": "exports/bsp/functions/00bd19b0/decompiled.c",
+      "sha256": "51b79bb83461efec6c3532535547e175d9a6eb8ed7e5cd21d27c0a545f86d570"
+    },
+    {
+      "address": "00bd1910",
+      "path": "exports/bsp/functions/00bd1910/decompiled.c",
+      "sha256": "efb3cb86451e5dcde70d3dc4a4b6ba342792953b2bb71fa95edc552b6429d3d4"
+    },
+    {
+      "address": "00bd17c0",
+      "path": "exports/bsp/functions/00bd17c0/decompiled.c",
+      "sha256": "539a338eb9e171b4a7ca960cc39ea7abaa548993c13a42a3ea5bdd30fa15a075"
+    },
+    {
+      "address": "00bd1960",
+      "path": "exports/bsp/functions/00bd1960/decompiled.c",
+      "sha256": "7e4d97d1e0a2b366b15e702963ca3cdce99e2cd7481b1ac77ea17c1f1eaa462c"
+    }
+  ],
+  "closure_utc": "2026-09-11T00:22:20.263131+00:00"
+}

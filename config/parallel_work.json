@@ -3118,8 +3118,8 @@
       "id": "native_event_owner",
       "packet": "native_event_owner",
       "worker": "main",
-      "done": false,
-      "state": "implementing_actual_eight_byte_event_owner_and_Win32_leaves",
+      "done": true,
+      "state": "integrated_five_complete_actual_event_owner_leaves_original_caller_real_Win32_fixture_and_strict_build_checked",
       "function_addresses": [
         "00bd1970",
         "00bd19b0",
@@ -3132,7 +3132,8 @@
         "src/native_event_owner.cpp",
         "docs/NATIVE_EVENT_OWNER.md",
         "reports/native_event_owner_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_event_owner_audit.json"
     }
   ],
   "snapshot_after_analysis": {
@@ -4097,8 +4098,8 @@
     {
       "packet": "native_event_owner",
       "worker": "main",
-      "state": "implementing_actual_eight_byte_event_owner_and_Win32_leaves",
-      "validation": null
+      "state": "integrated_five_complete_actual_event_owner_leaves_original_caller_real_Win32_fixture_and_strict_build_checked",
+      "validation": "reports/native_event_owner_audit.json"
     }
   ],
   "next_dispatch": [
@@ -4130,17 +4131,6 @@
         "00b2fc60",
         "004d0a10",
         "004d490c"
-      ]
-    },
-    {
-      "packet": "native_event_owner",
-      "worker": "main",
-      "function_addresses": [
-        "00bd1970",
-        "00bd19b0",
-        "00bd1910",
-        "00bd17c0",
-        "00bd1960"
       ]
     }
   ],
