@@ -1,0 +1,82 @@
+{
+  "packet": "orch5_mission_map_flag",
+  "owner": "agent/orch5-mission-flag",
+  "doc": "docs/MISSION_MAP_FLAG_POLICY.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only; verified bsp.py ghidra wrapper"
+  },
+  "sources": [
+    "include/bsp/mission_map_flag_policy.hpp",
+    "src/mission_map_flag_policy.cpp"
+  ],
+  "state": "reconstructed_pending_integration_build",
+  "routines": [
+    {
+      "address": "005c2f70",
+      "last_instruction": "005c2f84",
+      "last_instruction_length": 1,
+      "name": "BSP_MissionRecord_IsCompleted",
+      "name_is_hypothesis": true,
+      "old_name": "FUN_005c2f70",
+      "abi": "ECX=mission record/key at +0; no stack inputs; AL=bool; RET; ECX-only fastcall/member convention indistinguishable",
+      "state": "reconstructed",
+      "reconstruction": "mission_map_flag_visible_005c2f70",
+      "evidence": "Complete six-instruction listing. 005c2f78 loads progress at game+6b4h, 005c2f7e pushes original record address, 005c2f7f calls 0090c560, 005c2f84 returns its AL unchanged. Both callers save AL at 0058c310 and 00597e14.",
+      "contract": "Case-insensitive mission id present in progress mission_scores_00 and mission_completed_00 != 0, including negative values; no insertion or side/unlock test. Composes established 0090c560 contract over existing MissionProgress type."
+    },
+    {
+      "address": "00599340",
+      "last_instruction": "0059939c",
+      "last_instruction_length": 1,
+      "name": "BSP_MainMenuScreen_ReturnToSelectedMissionList",
+      "name_is_hypothesis": true,
+      "old_name": "FUN_00599340",
+      "abi": "ECX=original main-menu screen, no stack arguments, no meaningful return, RET; ESI preserved",
+      "state": "reconstructed",
+      "reconstruction": "run_return_to_mission_list_00599340",
+      "evidence": "Full 34-instruction listing. Page 9 gate at 00599340, DLC-byte test at 0059934c precedes 005806a0 and existing 005c27e0, then 00597870 with page 7/6 for DLC side 0/1, page 5/4 for base side 0/1. No direct writes or detail-builder call.",
+      "native_call_sites": {
+        "selected_mission_005806a0": ["00599355", "00599379"],
+        "mission_side_index_005c27e0": ["0059935c", "00599380"],
+        "build_mission_list_page_00597870": ["00599369", "00599372", "0059938d", "00599396"]
+      }
+    },
+    {
+      "address": "005c27e0",
+      "last_instruction": "005c27eb",
+      "last_instruction_length": 1,
+      "name": "BSP_MissionRecord_SideIndex",
+      "state": "existing name and implementation retained; listing reverified",
+      "reconstruction": "mission_side_index_005c27e0 in src/mission_briefing_start.cpp (unchanged)",
+      "abi": "ECX=mission record, no stack arguments, full EAX=0/1, RET",
+      "evidence": "XOR EAX,EAX; CMP byte [ECX+b8h],AL; SETZ AL; RET. Zero enabled low byte selects side 1."
+    }
+  ],
+  "external_contracts": [
+    {"address": "0090c560", "contract": "Existing case-insensitive mission completion lookup; missing false, record first int nonzero true; complete listing corroborates return and RET 4; implementation unchanged."},
+    {"address": "005806a0", "contract": "Existing global selected-mission lookup returns valid record or native bounds trap; reference-returning host requires valid selection."},
+    {"address": "00597870", "contract": "Existing main-menu mission-list builder; host receives original screen and one page argument; owns downstream state/widget changes."}
+  ],
+  "no_ghidra_function": [],
+  "ghidra_flow_repair_needed": [],
+  "corrections_for_integration": [
+    "MAIN_MENU_MISSION_DETAIL.md mission_record_side_flag follow-up resolves to mission completion, with no side-byte dependency.",
+    "MAIN_MENU_MISSION_DETAIL.md wrongly treats 00599340 as a route into 0058c010 and attributes calls 005997c1/005998d0 to it; these sites lie beyond its true last instruction 0059939c. Verify their enclosing event handler when appending correction."
+  ],
+  "validation": {
+    "listing_checked": true,
+    "owned_functions_exported": true,
+    "build": "pending combined Win32 build by primary; source intentionally not registered in leased startup registry",
+    "tests": "none added; existing checks delegated to primary",
+    "abi_compatible": false,
+    "native_differential_tested": false,
+    "game_validated": false
+  },
+  "uncertainties": [
+    "Source-level __fastcall versus ECX-only member convention cannot be distinguished for these no-stack-input routines.",
+    "Native missing-key completion result guarantees AL only; the C++ bool normalizes the result and does not reproduce unspecified upper EAX bytes.",
+    "Uses the established existing ASCII case-insensitive comparator contract; native allocator, checked iterators and potential non-ASCII locale behavior are not modeled."
+  ]
+}
