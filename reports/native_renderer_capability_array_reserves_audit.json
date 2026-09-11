@@ -1,0 +1,1328 @@
+{
+  "schema": 1,
+  "packet": "native_renderer_capability_array_reserves2",
+  "status": "complete_raw_source_strict_build_and_focused_original_full_provider_composition",
+  "created_utc": "2026-09-11T21:57:15.329036+00:00",
+  "base_commit": "8e2b6dea469a1cbccf1640c0cf70f71da64f9cba",
+  "owned_files": [
+    "src/native_renderer_capability_array_reserves.cpp",
+    "include/bsp/native_renderer_capability_array_reserves.hpp",
+    "docs/NATIVE_RENDERER_CAPABILITY_ARRAY_RESERVES.md",
+    "reports/native_renderer_capability_array_reserves_audit.json"
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "fresh_guarded_spans": [
+    {
+      "address": "00b22b30",
+      "length": 130,
+      "role": "full_owned_record_reserve",
+      "bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d668d045b5503c003c05750e8682a0d0033ff83c404397e048be8896c24147e3533d28bcd8d9b0000000085c974158b068b2c1003c289298b68048969048b400889410883c70183c20c83c10c3b7e047cd98b6c24148b0e51e8e63d0d0083c4045f892e895e085d5e5bc20400",
+      "sha256": "835d9aa48422ee56a96b05b64f91e81123f2f3dda909f4ba2e7b5ae9b0bcdff7",
+      "instructions": 52,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00b236b0",
+      "length": 95,
+      "role": "full_owned_DWORD_reserve",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8e91e0d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e888320d0083c404891e897e085b5f5ec20400",
+      "sha256": "ecb38f4ed11e350279e2e3f4667831275bb288bdd3613ef20496b4b66e77eb64",
+      "instructions": 38,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf55be",
+      "length": 5,
+      "role": "original_operator_new_thunk",
+      "bytes_hex": "e958120000",
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf681b",
+      "length": 105,
+      "role": "original_operator_new_existing_source_boundary",
+      "bytes_hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "instructions": 33,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "role": "original_free_thunk",
+      "bytes_hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "role": "original_second_free_thunk",
+      "bytes_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    }
+  ],
+  "owned_original_bytes": 225,
+  "owned_original_instructions": 90,
+  "original_ABI": "ECX actual 12-byte {data,signed count,signed capacity}; one request DWORD in actual callee argument slot; RET4; no semantic result.",
+  "source_ABI": "Explicit unused EDX fastcall argument keeps the original request slot. New source interface; no binary caller/register/SEH compatibility claim.",
+  "source_functions": [
+    {
+      "original_address": "00b22b30",
+      "source_symbol": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+      "source_address": 805314560,
+      "bytes": 130,
+      "instructions": 52,
+      "original_sha256": "835d9aa48422ee56a96b05b64f91e81123f2f3dda909f4ba2e7b5ae9b0bcdff7",
+      "full_literal_bytes_except_four_declared_call_operands": true,
+      "relocations": [
+        {
+          "offset": 34,
+          "symbol": "?allocate_capability_array@?A0xa4e094cf@bsp@@YAPAXI@Z",
+          "type": 20,
+          "addend": 0,
+          "target": 805314384,
+          "resolved": 4294967082
+        },
+        {
+          "offset": 111,
+          "symbol": "?free_capability_array@?A0xa4e094cf@bsp@@YAXPAX@Z",
+          "type": 20,
+          "addend": 0,
+          "target": 805314448,
+          "resolved": 4294967069
+        }
+      ]
+    },
+    {
+      "original_address": "00b236b0",
+      "source_symbol": "?reserve_native_capability_dwords_00b236b0@bsp@@YIXPAXIH@Z",
+      "source_address": 805314464,
+      "bytes": 95,
+      "instructions": 38,
+      "original_sha256": "ecb38f4ed11e350279e2e3f4667831275bb288bdd3613ef20496b4b66e77eb64",
+      "full_literal_bytes_except_four_declared_call_operands": true,
+      "relocations": [
+        {
+          "offset": 33,
+          "symbol": "?allocate_capability_array@?A0xa4e094cf@bsp@@YAPAXI@Z",
+          "type": 20,
+          "addend": 0,
+          "target": 805314384,
+          "resolved": 4294967179
+        },
+        {
+          "offset": 77,
+          "symbol": "?free_capability_array@?A0xa4e094cf@bsp@@YAXPAX@Z",
+          "type": 20,
+          "addend": 0,
+          "target": 805314448,
+          "resolved": 4294967199
+        }
+      ]
+    }
+  ],
+  "source_contract": {
+    "no_growth": "Signed request clamp>=1 then signed current capacity comparison; no count/data read or allocator call when capacity suffices.",
+    "allocation": "Wrapping DWORD request*12 or request*4; fixed cdecl bridge to singleton_lifetime_allocate({object,bytes,bytes}). No allocator callback or overflow check.",
+    "request_storage": "B22B60 writes fresh allocation into actual [ESP+14] request slot; B22B97 reloads it after the loop. B236B0 does not overwrite its request. This is actual caller-prepared callee argument storage, not owner data.",
+    "copy": "Current count/base after allocation; current source base and signed count each iteration; native per-word loads/stores and null computed destination skip. Count is never written.",
+    "publication": "Read current old-data pointer after copying, call full fixed free bridge, then publish fresh data and captured capacity; preserve any current count from provider reentry.",
+    "valid_domain": "Actual header and all reached copy/publication accesses have valid extents/lifetimes for native wrapping arithmetic. Backing allocations use the existing shared malloc/free heap. No malformed-storage repair, ownership substitution or rollback."
+  },
+  "missing_saved_analysis_tails": [
+    {
+      "call": "00b22b9e",
+      "start": "00b22ba3",
+      "end_exclusive": "00b22bad",
+      "full_raw_source_tail": true
+    },
+    {
+      "call": "00b236fc",
+      "start": "00b23701",
+      "end_exclusive": "00b2370a",
+      "full_raw_source_tail": true
+    }
+  ],
+  "concrete_provider_bindings": [
+    {
+      "original_chain": [
+        "00bf55be",
+        "00bf681b"
+      ],
+      "source_bridge": "allocate_capability_array(uint32_t), cdecl",
+      "source_provider": "singleton_lifetime_allocate",
+      "contract": "Same native/host wrapping byte count. Existing current malloc/_callnewh/retry/throw source service, no callback."
+    },
+    {
+      "original_chain": [
+        "00bf6989",
+        "00bf65ac",
+        "00bf9dc8"
+      ],
+      "source_bridge": "free_capability_array(void*), cdecl noexcept",
+      "source_provider": "singleton_lifetime_free",
+      "contract": "Existing shared heap free; current old pointer is passed before publication."
+    }
+  ],
+  "stack_register_exception_boundary": "Ordinary Win32 cdecl bridges preserve nonvolatile registers; original reserve stack/register schedules and RET4 are retained. Allocation bridge may throw; naked reserves add no EH registration or cleanup. Host CRT exception objects, native SEH/fault unwinding and caller-save incidental values are outside proof.",
+  "strict_build": {
+    "command": "local/build_reserves.ps1 configures ignored local/extra.cmake then invokes scripts/build.ps1",
+    "MSVC_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seeds": 8,
+    "log": {
+      "path": "local/capability_array_reserves/build.txt",
+      "sha256": "dce1ec10a2c68abeaca6b7ecbe1d6c8009753a5f208c450a3b4a681628bb8d81"
+    },
+    "seed_evidence": {
+      "path": "local/capability_array_reserves/verify_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "shared_CMake_changed": false,
+    "new_permanent_tests": 0
+  },
+  "frozen_actual_library": {
+    "sha256": "65d3d27ddf9f017ebe5bc6e35fb058577479fe3e97f16a32af5fb4888bf2466a",
+    "archive_membership": [
+      {
+        "object": "native_renderer_capability_array_reserves.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_capability_array_reserves.obj",
+        "sha256": "ef5773a6302348836fd27c69d3a5da271e43195c3104864bac43da0ee03748b4",
+        "exact_member_match": true
+      },
+      {
+        "object": "singleton_lifetime.obj",
+        "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "sha256": "02b3608f8d492738ccc5653d0c4e45918832e1055b29372551c93f9dd43e5878",
+        "exact_member_match": true
+      }
+    ],
+    "source_header_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\bsp_core.lib",
+        "bytes": 39392132,
+        "sha256": "65d3d27ddf9f017ebe5bc6e35fb058577479fe3e97f16a32af5fb4888bf2466a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\native_renderer_capability_array_reserves.obj",
+        "bytes": 2220,
+        "sha256": "ef5773a6302348836fd27c69d3a5da271e43195c3104864bac43da0ee03748b4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\singleton_lifetime.obj",
+        "bytes": 32983,
+        "sha256": "02b3608f8d492738ccc5653d0c4e45918832e1055b29372551c93f9dd43e5878"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\native_renderer_capability_array_reserves.hpp",
+        "bytes": 1836,
+        "sha256": "2aee901abca68352c1addff6a22411c81e7e54c141fbe2821f6825a146cd1e85"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\src\\native_renderer_capability_array_reserves.cpp",
+        "bytes": 3727,
+        "sha256": "f42c3e0f8fd58a65da6b2b9368b8b361dd6b3c9a8d96f8a32659cf2981fc0722"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-array-reserves\\local\\capability_array_reserves\\frozen\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "freeze_record": {
+      "path": "local/capability_array_reserves/frozen.json",
+      "sha256": "8d609d9ebd2f718eab90bb91ac83d9637791e2037cb6f60a8dba2837f470d87f"
+    },
+    "first_freeze": {
+      "path": "local/capability_array_reserves/first_frozen.json",
+      "sha256": "bd68df70b75e632dd88716929f7c8c179bbaed857a098b56afedbeb8cdddfa6c"
+    },
+    "rule": "Actual strict library and source inputs frozen before fixture linking; all needed archive objects extracted from that immutable library. No mutable main/worker build reference after freeze."
+  },
+  "instruction_object_proof": {
+    "owned_full_bytes": 225,
+    "owned_full_instructions": 90,
+    "all_owned_sections": 8,
+    "owned_relocations": 8,
+    "mapped_sections": 96,
+    "mapped_relocations": 332,
+    "all_map_f_i_flags_stripped": true,
+    "complete_bridge_service_sections": true,
+    "linked_functions": [
+      {
+        "name": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805314560,
+        "bytes": 130,
+        "sha256": "110c494b0bc11db40e9a345abd137cb50f8a1de16f35452dcdb83e1bf437adbb"
+      },
+      {
+        "name": "?reserve_native_capability_dwords_00b236b0@bsp@@YIXPAXIH@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805314464,
+        "bytes": 95,
+        "sha256": "7a1b9fb686125178b3c35c897233418f722e1f6b045a077883b67d9423d5f747"
+      },
+      {
+        "name": "?allocate_capability_array@?A0xa4e094cf@bsp@@YAPAXI@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805314384,
+        "bytes": 58,
+        "sha256": "c45ff32accb0693fbe04b99a870192f6a1261f5f59f144f068cae05f17e983a7"
+      },
+      {
+        "name": "?free_capability_array@?A0xa4e094cf@bsp@@YAXPAX@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805314448,
+        "bytes": 5,
+        "sha256": "916dffd9d6ca1db0032faae0e68f799f341eaf2fc84205422e4ba4e4c33e54e8"
+      },
+      {
+        "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805314976,
+        "bytes": 90,
+        "sha256": "846c32da367e87aa2c14d5b76ec523b941ba243374752daa695a1291aba41d9d"
+      },
+      {
+        "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805315072,
+        "bytes": 6,
+        "sha256": "91622866eb97d360c14d57ba0144faf07bfb7215b37c8bdc78b3dac1484f5c73"
+      },
+      {
+        "name": "??0exception@std@@QAE@ABV01@@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805314800,
+        "bytes": 45,
+        "sha256": "cabd71a967d5fbb574600be6f46cc1d87517945615c2136d4624c4dc357da10b"
+      },
+      {
+        "name": "?what@exception@std@@UBEPBDXZ",
+        "object": "singleton_lifetime.obj",
+        "address": 805315088,
+        "bytes": 14,
+        "sha256": "60e692457a349b4d8d06e2bf1b0f80b4cedac5b192871233ffaa722a1f208d92"
+      },
+      {
+        "name": "??_Gexception@std@@UAEPAXI@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805314928,
+        "bytes": 48,
+        "sha256": "a9a418c30ed0140c8f0f304e22125e478a59785475d98d7c421d8ac4e4fc9da6"
+      },
+      {
+        "name": "??0bad_alloc@std@@QAE@XZ",
+        "object": "singleton_lifetime.obj",
+        "address": 805314768,
+        "bytes": 24,
+        "sha256": "6645e0e8c6313b583dae60848761aa893dd4ac7fb37dde7ddb8b85e3e3512eaf"
+      },
+      {
+        "name": "??1bad_alloc@std@@UAE@XZ",
+        "object": "singleton_lifetime.obj",
+        "address": 805314848,
+        "bytes": 17,
+        "sha256": "5ac9a14c738046ad04df2d20301163e956afbfa107fa9f51e03281d0fef2f3ec"
+      },
+      {
+        "name": "??0bad_alloc@std@@QAE@ABV01@@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805314704,
+        "bytes": 51,
+        "sha256": "24ce1751e2e2a2a181960fdeb644d80962b94c79c5b19bf3d9bdf8a65af7de71"
+      },
+      {
+        "name": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805314880,
+        "bytes": 48,
+        "sha256": "f24e32fe93f26e3eb1743b66bb3bf611de8df8a974a6b2bd4f905147505b5216"
+      },
+      {
+        "name": "___local_stdio_printf_options",
+        "object": "fixture.obj",
+        "address": 805313248,
+        "bytes": 6,
+        "sha256": "1f0e54b6679630c85c422c0ff0e5dc9d4c19e9a28551e0aa8f93473b022d341f"
+      },
+      {
+        "name": "_fprintf",
+        "object": "fixture.obj",
+        "address": 805313264,
+        "bytes": 36,
+        "sha256": "0eeed5ac8a64ee3346e49c9620a7a3c01944b484d3dc491d1800bc404445825c"
+      },
+      {
+        "name": "_printf",
+        "object": "fixture.obj",
+        "address": 805314272,
+        "bytes": 49,
+        "sha256": "e02e81925686b2847f184d4a41f2cd7855978f086a485682715bb3251be152c5"
+      },
+      {
+        "name": "_sprintf_s",
+        "object": "fixture.obj",
+        "address": 805314336,
+        "bytes": 47,
+        "sha256": "2fc675d675749ad10c06016095d63518bed89172dcbb3eda74b390393e0037fc"
+      },
+      {
+        "name": "?dump@@YAXPBDPBXI@Z",
+        "object": "fixture.obj",
+        "address": 805310512,
+        "bytes": 125,
+        "sha256": "2ba4bd60c2c9032ecb49f4a4b63bc89e55abdb4487f5bdbf4add9d3f96e8a861"
+      },
+      {
+        "name": "?find_import@@YAPAPAXPBD@Z",
+        "object": "fixture.obj",
+        "address": 805310640,
+        "bytes": 162,
+        "sha256": "6b8324b1344f30c28f624144b951d5f74d00dbfbd3e685a16b433f4bfbbf1b37"
+      },
+      {
+        "name": "?replace@@YAXPAPAXPAX@Z",
+        "object": "fixture.obj",
+        "address": 805312272,
+        "bytes": 121,
+        "sha256": "bd44aaad53ac9a0d9fab3f775b274e0b7d37b61377308ee3182892bc2e628cd7"
+      },
+      {
+        "name": "?image_snapshot@@YAXXZ",
+        "object": "fixture.obj",
+        "address": 805310816,
+        "bytes": 898,
+        "sha256": "c31a98ede567981ff925ebd068b4115f9402d60d790d8331b991f7c6c46965f7"
+      },
+      {
+        "name": "??$sprintf_s@$0CI@@@YAHAAY0CI@DPBDZZ",
+        "object": "fixture.obj",
+        "address": 805310464,
+        "bytes": 46,
+        "sha256": "40904f8c9d3f5cee2379bffbd7d2dcf53268110ddc7315af101f78aac88582a8"
+      },
+      {
+        "name": "?observed_malloc@@YAPAXI@Z",
+        "object": "fixture.obj",
+        "address": 805312096,
+        "bytes": 174,
+        "sha256": "2f574b82fc1d79d492021f41bbc9c9520cd7c0e06ff7e2d965248e7c65fa7998"
+      },
+      {
+        "name": "?observed_free@@YAXPAX@Z",
+        "object": "fixture.obj",
+        "address": 805311920,
+        "bytes": 174,
+        "sha256": "ac37424084462a6c8665d857acad64c2c1079271f961ee74a96f93187a83e8fa"
+      },
+      {
+        "name": "?run@@YAXP6IXPAXIH@ZIIAAUTrace@@@Z",
+        "object": "fixture.obj",
+        "address": 805312400,
+        "bytes": 841,
+        "sha256": "b261ba9629de54c60c3d51599f744c6387e8289a03077a03d64900f3cffdd839"
+      },
+      {
+        "name": "?normalize@@YAXAAUTrace@@@Z",
+        "object": "fixture.obj",
+        "address": 805311728,
+        "bytes": 178,
+        "sha256": "4d408e033d303eb671c1ddf1bbe9e66990d23d739067c79ae9f35e925e0b1ce7"
+      },
+      {
+        "name": "_main",
+        "object": "fixture.obj",
+        "address": 805313312,
+        "bytes": 949,
+        "sha256": "5d49fd9a87b65a2854c3be34c7174a367e732ae94e93d31268a770074084b841"
+      }
+    ],
+    "verification": {
+      "path": "local/capability_array_reserves/verified.json",
+      "sha256": "583868248155990b404fa9cce2442a30fc02ae7d1429c936e553be627b4eec71"
+    }
+  },
+  "focused_fixture": {
+    "kind": "One original/full-actual-library current-header mutation case for both element widths",
+    "fixture": {
+      "path": "local/capability_array_reserves/fixture.cpp",
+      "sha256": "b4f6b637318f2d65090892051a65a305901cec50f52794ff7099b336f81238e1"
+    },
+    "support": {
+      "path": "local/capability_array_reserves/fixture_support.hpp",
+      "sha256": "90951ad4a9faf188b78084e1c689085655cbb0f80b0862abaf39c908959fde28"
+    },
+    "build_script": {
+      "path": "local/capability_array_reserves/build_probe.ps1",
+      "sha256": "d8e6697f9e60952e97d08568aa26cb64eb8ce72b59503d7f6ec0b7d6bf2cc4e0"
+    },
+    "log": {
+      "path": "local/capability_array_reserves/run/run.txt",
+      "sha256": "95b0d5e0f057aa602aad31dad98bd839f9fb64888a3c0b2f85614bfa5b26ee67"
+    },
+    "raw_traces": [
+      {
+        "index": 0,
+        "stride": 12,
+        "sha256": "498a30ecdb383b8812867b00840dedc8dbb1e29abac1b78694a40ab702110dd5",
+        "bytes_hex": "480b57000100000001000000d80a57000200000078563412d80a57000200000078563412100b570003000000feffffffa00a57000300000004000000555555555555555555555555555555555555555555555555cccccccccccccccccccccccccccccccccccccccccccccccc480b5700d80a5700100b5700a00a5700",
+        "exact_pointer_fields": [
+          {
+            "offset": 0,
+            "raw_pointer": 5704520,
+            "normalized_identity": 1
+          },
+          {
+            "offset": 12,
+            "raw_pointer": 5704408,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 24,
+            "raw_pointer": 5704408,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 36,
+            "raw_pointer": 5704464,
+            "normalized_identity": 3
+          },
+          {
+            "offset": 48,
+            "raw_pointer": 5704352,
+            "normalized_identity": 4
+          }
+        ],
+        "identity_values": [
+          5704520,
+          5704408,
+          5704464,
+          5704352
+        ],
+        "normalized_sha256": "aff5bebeb9f62759e856389f79cb2aa90b2d78d217934a0bd4aa1530069d8c5b"
+      },
+      {
+        "index": 1,
+        "stride": 12,
+        "sha256": "01f188ac8aeffbb5cd3d56b5129a4c097ac1d19e56647ff0b6f09db6499fd735",
+        "bytes_hex": "180957000100000001000000480b57000200000078563412480b57000200000078563412c009570003000000fefffffff80957000300000004000000555555555555555555555555555555555555555555555555cccccccccccccccccccccccccccccccccccccccccccccccc18095700480b5700c0095700f8095700",
+        "exact_pointer_fields": [
+          {
+            "offset": 0,
+            "raw_pointer": 5703960,
+            "normalized_identity": 1
+          },
+          {
+            "offset": 12,
+            "raw_pointer": 5704520,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 24,
+            "raw_pointer": 5704520,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 36,
+            "raw_pointer": 5704128,
+            "normalized_identity": 3
+          },
+          {
+            "offset": 48,
+            "raw_pointer": 5704184,
+            "normalized_identity": 4
+          }
+        ],
+        "identity_values": [
+          5703960,
+          5704520,
+          5704128,
+          5704184
+        ],
+        "normalized_sha256": "aff5bebeb9f62759e856389f79cb2aa90b2d78d217934a0bd4aa1530069d8c5b"
+      },
+      {
+        "index": 2,
+        "stride": 4,
+        "sha256": "e1a0accb275f1eba670153f250df9c38f4677a7ce45fc6a229b23d690d710df2",
+        "bytes_hex": "50ea5600010000000100000068ea5600020000007856341268ea56000200000078563412e0ea560003000000feffffffb0ea560003000000040000005555555555555555cccccccccccccccc000000000000000000000000000000000000000000000000000000000000000050ea560068ea5600e0ea5600b0ea5600",
+        "exact_pointer_fields": [
+          {
+            "offset": 0,
+            "raw_pointer": 5696080,
+            "normalized_identity": 1
+          },
+          {
+            "offset": 12,
+            "raw_pointer": 5696104,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 24,
+            "raw_pointer": 5696104,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 36,
+            "raw_pointer": 5696224,
+            "normalized_identity": 3
+          },
+          {
+            "offset": 48,
+            "raw_pointer": 5696176,
+            "normalized_identity": 4
+          }
+        ],
+        "identity_values": [
+          5696080,
+          5696104,
+          5696224,
+          5696176
+        ],
+        "normalized_sha256": "5cc3176020bd8a21029bd8f984d146fd74ed47d240d66ca0502b1a236f0815bf"
+      },
+      {
+        "index": 3,
+        "stride": 4,
+        "sha256": "070f0ddd2014d65666bbcc36af495ba3d0327baf51370068c9d61c01dbafff7b",
+        "bytes_hex": "b0ea56000100000001000000e0ea56000200000078563412e0ea5600020000007856341220ea560003000000feffffff50ea560003000000040000005555555555555555cccccccccccccccc0000000000000000000000000000000000000000000000000000000000000000b0ea5600e0ea560020ea560050ea5600",
+        "exact_pointer_fields": [
+          {
+            "offset": 0,
+            "raw_pointer": 5696176,
+            "normalized_identity": 1
+          },
+          {
+            "offset": 12,
+            "raw_pointer": 5696224,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 24,
+            "raw_pointer": 5696224,
+            "normalized_identity": 2
+          },
+          {
+            "offset": 36,
+            "raw_pointer": 5696032,
+            "normalized_identity": 3
+          },
+          {
+            "offset": 48,
+            "raw_pointer": 5696080,
+            "normalized_identity": 4
+          }
+        ],
+        "identity_values": [
+          5696176,
+          5696224,
+          5696032,
+          5696080
+        ],
+        "normalized_sha256": "5cc3176020bd8a21029bd8f984d146fd74ed47d240d66ca0502b1a236f0815bf"
+      }
+    ],
+    "original_private_page": {
+      "page_address": 11993088,
+      "bytes": 4096,
+      "preimage_sha256": "d544682840d0ca99cd8f3308f1463236686bde50ee748ecaa5ad0d35d026b06f",
+      "bound_postimage_sha256": "fe73f60f8a1c08de62985b3656688911587c2b35d747d75e554c66fba4483a75",
+      "whole_original_postimage_unchanged": true,
+      "all_modified_operands": [
+        {
+          "page_offset": 34,
+          "preimage": 862824,
+          "postimage": 793321258,
+          "target": 805314384,
+          "target_symbol": "?allocate_capability_array@?A0xa4e094cf@bsp@@YAPAXI@Z"
+        },
+        {
+          "page_offset": 111,
+          "preimage": 867814,
+          "postimage": 793321245,
+          "target": 805314448,
+          "target_symbol": "?free_capability_array@?A0xa4e094cf@bsp@@YAXPAX@Z"
+        },
+        {
+          "page_offset": 289,
+          "preimage": 859881,
+          "postimage": 793321003,
+          "target": 805314384,
+          "target_symbol": "?allocate_capability_array@?A0xa4e094cf@bsp@@YAPAXI@Z"
+        },
+        {
+          "page_offset": 333,
+          "preimage": 864904,
+          "postimage": 793321023,
+          "target": 805314448,
+          "target_symbol": "?free_capability_array@?A0xa4e094cf@bsp@@YAXPAX@Z"
+        }
+      ]
+    },
+    "actual_import_count": 58,
+    "actual_imports": [
+      {
+        "label": "30004000",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973812704,
+        "loaded_base": 1973682176,
+        "rva": 130528,
+        "first16": "83c8ffc3cccccccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004004",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973777984,
+        "loaded_base": 1973682176,
+        "rva": 95808,
+        "first16": "8bff558bec5dff25c018ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004008",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973773808,
+        "loaded_base": 1973682176,
+        "rva": 91632,
+        "first16": "8bff558bec5dff25b016ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000400c",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973775152,
+        "loaded_base": 1973682176,
+        "rva": 92976,
+        "first16": "8bff558bec5dff258c16ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004010",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973768208,
+        "loaded_base": 1973682176,
+        "rva": 86032,
+        "first16": "8bff558bec5dff259416ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004014",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973800336,
+        "loaded_base": 1973682176,
+        "rva": 118160,
+        "first16": "8bff558bec5dff250c15ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004018",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973798768,
+        "loaded_base": 1973682176,
+        "rva": 116592,
+        "first16": "8bff558bec5dff25f814ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000401c",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973883424,
+        "loaded_base": 1973682176,
+        "rva": 201248,
+        "first16": "8bff558bec5dff252815ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004020",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973782016,
+        "loaded_base": 1973682176,
+        "rva": 99840,
+        "first16": "8bff558bec5dff253019ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004024",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973812720,
+        "loaded_base": 1973682176,
+        "rva": 130544,
+        "first16": "64a120000000c3cccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004028",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973764592,
+        "loaded_base": 1973682176,
+        "rva": 82416,
+        "first16": "64a124000000c3cccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000402c",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973767920,
+        "loaded_base": 1973682176,
+        "rva": 85744,
+        "first16": "ff25b81bac75cccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004030",
+        "path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+        "module_sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "target": 2006839536,
+        "loaded_base": 2006384640,
+        "rva": 454896,
+        "first16": "8bff558bec8b4508832000836004005d",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004034",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973801712,
+        "loaded_base": 1973682176,
+        "rva": 119536,
+        "first16": "8bff558bec5dff25f411ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004038",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973795440,
+        "loaded_base": 1973682176,
+        "rva": 113264,
+        "first16": "8bff558bec5dff25cc18ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004040",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923178912,
+        "loaded_base": 1923088384,
+        "rva": 90528,
+        "first16": "57568b7424108b4c24148b7c240c8bc1",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004044",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923180320,
+        "loaded_base": 1923088384,
+        "rva": 91936,
+        "first16": "8b4c240c0fb64424088bd78b7c240485",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004048",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923107568,
+        "loaded_base": 1923088384,
+        "rva": 19184,
+        "first16": "558bec578b7d08807f040074508b0f85",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000404c",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923107680,
+        "loaded_base": 1923088384,
+        "rva": 19296,
+        "first16": "558bec568b7508807e0400740bff36ff",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004050",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923108160,
+        "loaded_base": 1923088384,
+        "rva": 19776,
+        "first16": "558bec83ec108b450853578b7d0cbb20",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004054",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923100080,
+        "loaded_base": 1923088384,
+        "rva": 11696,
+        "first16": "e85b22000083c010c3cccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004058",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923100096,
+        "loaded_base": 1923088384,
+        "rva": 11712,
+        "first16": "e84b22000083c014c3cccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000405c",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923165184,
+        "loaded_base": 1923088384,
+        "rva": 76800,
+        "first16": "558bec83ec208b4d08538b5d145657c6",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040dc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970820304,
+        "loaded_base": 1970405376,
+        "rva": 414928,
+        "first16": "8bff558bec83e4f883ec2c8d4c240456",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040e0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970955360,
+        "loaded_base": 1970405376,
+        "rva": 549984,
+        "first16": "8bff558bec568b750881fe0040000075",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040e4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970552832,
+        "loaded_base": 1970405376,
+        "rva": 147456,
+        "first16": "8bff558bec83e4f883ec585333db5689",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040e8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971162432,
+        "loaded_base": 1970405376,
+        "rva": 757056,
+        "first16": "8bff558bec83e4f883ec2c8d4c240456",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040ec",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970610224,
+        "loaded_base": 1970405376,
+        "rva": 204848,
+        "first16": "8bff558bec83e4f881ec9c040000a100",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040f0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970635280,
+        "loaded_base": 1970405376,
+        "rva": 229904,
+        "first16": "8bff558becff75108b550c8b4d08e809",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040f4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970960928,
+        "loaded_base": 1970405376,
+        "rva": 555552,
+        "first16": "b868478275c3cccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040f8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970905536,
+        "loaded_base": 1970405376,
+        "rva": 500160,
+        "first16": "8bff558bec6b45083805b03a82755dc3",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040fc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970566880,
+        "loaded_base": 1970405376,
+        "rva": 161504,
+        "first16": "8bff558bec83e4f883ec2c8d4c240456",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004088",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971124512,
+        "loaded_base": 1970405376,
+        "rva": 719136,
+        "first16": "6a086800478175e8349cfeffe86fdaf7",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000408c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970740288,
+        "loaded_base": 1970405376,
+        "rva": 334912,
+        "first16": "8bff558bec8b4d108b450c81e1fffff7",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004090",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971122592,
+        "loaded_base": 1970405376,
+        "rva": 717216,
+        "first16": "8bff558bec515657e897e5f7ff8bf085",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004094",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970952784,
+        "loaded_base": 1970405376,
+        "rva": 547408,
+        "first16": "8bff558bec8b4508a3f44682755dc3cc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004098",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970592320,
+        "loaded_base": 1970405376,
+        "rva": 186944,
+        "first16": "8bff558bec83e4f8e830ec050085c074",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000409c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970966256,
+        "loaded_base": 1970405376,
+        "rva": 560880,
+        "first16": "8bff558bec8b4d085de90f4bfeffcccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040a0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970961488,
+        "loaded_base": 1970405376,
+        "rva": 556112,
+        "first16": "e9b38ffbffcccccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040a4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970955584,
+        "loaded_base": 1970405376,
+        "rva": 550208,
+        "first16": "a1b849827585c07401c3e800a1fbffa3",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040a8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970820000,
+        "loaded_base": 1970405376,
+        "rva": 414624,
+        "first16": "8bff558bec568b75083b750c7410578b",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040ac",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970819808,
+        "loaded_base": 1970405376,
+        "rva": 414432,
+        "first16": "8bff558bec568b7508573b750c74258b",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040b0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970951872,
+        "loaded_base": 1970405376,
+        "rva": 546496,
+        "first16": "8bff558bec8b4d0833d26a00e8090000",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040b4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970951840,
+        "loaded_base": 1970405376,
+        "rva": 546464,
+        "first16": "8bff558bec8b4d086a006a025ae82800",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040b8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970961472,
+        "loaded_base": 1970405376,
+        "rva": 556096,
+        "first16": "b830478275c3cccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040bc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970968352,
+        "loaded_base": 1970405376,
+        "rva": 562976,
+        "first16": "b81c478275c3cccccccccccc8b0da443",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040c0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971131808,
+        "loaded_base": 1970405376,
+        "rva": 726432,
+        "first16": "6a0133d233c9e82f41fdff59c3cccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040c4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971131776,
+        "loaded_base": 1970405376,
+        "rva": 726400,
+        "first16": "6a016a025a33c9e84e41fdff59c3cccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040c8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971131840,
+        "loaded_base": 1970405376,
+        "rva": 726464,
+        "first16": "8bff558bec8b15003382758bc26a2083",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040cc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970804368,
+        "loaded_base": 1970405376,
+        "rva": 398992,
+        "first16": "8bff558becff7508685c478275e88e00",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040d0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970804528,
+        "loaded_base": 1970405376,
+        "rva": 399152,
+        "first16": "8bff558bec83ec108d45088945f08d45",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040d4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970903152,
+        "loaded_base": 1970405376,
+        "rva": 497776,
+        "first16": "8bff558bec8b4d0885c974188b013b41",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004064",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970955296,
+        "loaded_base": 1970405376,
+        "rva": 549920,
+        "first16": "8bff558bec568b750885f67513e80e74",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004068",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970974720,
+        "loaded_base": 1970405376,
+        "rva": 569344,
+        "first16": "8bff558bec56e855ffffff8bf085f674",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000406c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970602272,
+        "loaded_base": 1970405376,
+        "rva": 196896,
+        "first16": "8bff558bec5de905deffffcccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004070",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970602144,
+        "loaded_base": 1970405376,
+        "rva": 196768,
+        "first16": "8bff558bec51ff7508c745fc00000000",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004080",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971244576,
+        "loaded_base": 1970405376,
+        "rva": 839200,
+        "first16": "8bff558beca100338275568b750883e0",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004078",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970936176,
+        "loaded_base": 1970405376,
+        "rva": 530800,
+        "first16": "8bff558bec56e825bafaff8b55088bf0",
+        "loader_relocations_only": true
+      }
+    ],
+    "runtime_code_postimages": [
+      {
+        "section": 0,
+        "address": 805310464,
+        "bytes": 8368,
+        "sha256": "c18f3cba19503c3e098cb25a6d43874f4e1014d0ac109f2e62312ee73f1dbfbf",
+        "whole_linked_code_postimage_matches": true
+      }
+    ],
+    "sequence": "Real allocation first, then local fresh buffer sentinel and current header data/count2/capacity mutation; real free of that current pointer, then header data/count3/capacity mutation; native publishes fresh data/capacity4 preserving count3. Negative request clamps to1 and takes no-growth path.",
+    "pointer_normalization": "Only each of the five raw trace header data fields normalizes using four explicit identities. Raw pointer values, identity table, counts, capacities and payload artifacts retained; no address-range normalization.",
+    "import_boundary": "Only the fixture executable malloc/free import cells temporarily point to observers, which call recorded actual CRT targets first. All import slots restored before full module/code snapshot. No actual CRT or game code changed.",
+    "original_runtime": "Complete original225 bytes execute with four CALLs adapted to the same full compiled allocation/free bridges; not original whole CRT execution.",
+    "scope": "One focused current-header mutation case, composed through complete original225 bytes and full actual library providers for both widths. Fixture-local malloc/free IAT forwarding calls the real CRT first, then mutates only local header/allocation bytes; actual DLL code is unchanged. Pointer normalization is restricted to each trace header data field with explicit role identities. No allocation failure/new-handler, null destination, malformed extent, C++ exception, native SEH/fault, whole-original CRT or game/caller ABI runtime claim."
+  },
+  "seal": "local/capability_array_reserves/sealed.json, generated after four-file commit; exact manifest SHA256 in handoff",
+  "changes": {
+    "Ghidra": false,
+    "shared_metadata": false,
+    "shared_CMake": false,
+    "game_display_device": false
+  },
+  "limitations": [
+    "No remaining nested-array or B2C8E0 gather implementation.",
+    "No generic allocator/CRT reconstruction; uses existing fixed shared allocation/free source boundary.",
+    "Runtime does not exercise allocation failure/current new-handler, null computed destination, malformed extent, C++ exception or native hardware/SEH unwinding.",
+    "Original reserve runtime composes compiled source providers, not original CRT; no gameplay/native drop-in caller ABI claim.",
+    "Saved-analysis callsite gaps remain for primary repair after address lease transfer."
+  ]
+}
