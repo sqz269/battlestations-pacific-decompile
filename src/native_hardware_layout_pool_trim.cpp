@@ -1,0 +1,70 @@
+#include "bsp/native_hardware_layout_pool_trim.hpp"
+#include "bsp/singleton_lifetime.hpp"
+
+#if !defined(_MSC_VER) || !defined(_M_IX86)
+#error Native hardware-layout pool trimming requires MSVC Win32.
+#endif
+
+namespace bsp {
+namespace {
+
+void* volatile& pointer(void* storage, std::uint32_t byte_offset) noexcept {
+    return *reinterpret_cast<void* volatile*>(static_cast<unsigned char*>(storage) + byte_offset);
+}
+volatile std::uint32_t& word(void* storage, std::uint32_t byte_offset) noexcept {
+    return *reinterpret_cast<volatile std::uint32_t*>(static_cast<unsigned char*>(storage) + byte_offset);
+}
+volatile std::uint16_t& free_count(void* slab) noexcept {
+    return *reinterpret_cast<volatile std::uint16_t*>(static_cast<unsigned char*>(slab) + 0x940);
+}
+
+} // namespace
+
+void trim_native_hardware_layout_pool_00b60350(void* pool) noexcept {
+    std::uint32_t index = 0;
+    while (index < word(pool, 0x2c)) {
+        auto* const table = pointer(pool, 0x28);
+        auto* const slab = pointer(table, index * 4u);
+        if (free_count(slab) == 32) {
+            singleton_lifetime_free(slab);
+            // B60376 onward is absent from the truncated Ghidra listing.
+            // Capture the current table, then use its current final pointer.
+            auto* const current_table = pointer(pool, 0x28);
+            auto* const final_slab = pointer(current_table, word(pool, 0x2c) * 4u - 4u);
+            pointer(current_table, index * 4u) = final_slab;
+            word(pool, 0x2c) = word(pool, 0x2c) - 1u;
+            if (index < word(pool, 0x2c)) {
+                auto* const moved_table = pointer(pool, 0x28);
+                auto* const moved_slab = pointer(moved_table, index * 4u);
+                for (std::uint32_t slot = 0; slot < 32; ++slot) {
+                    word(moved_slab, 0x44u + slot * 0x48u) = index;
+                }
+            }
+            --index;
+        }
+        ++index;
+    }
+    index = 0;
+    const bool has_slabs = word(pool, 0x2c) != 0;
+    word(pool, 0x34) = 0xffffffffu;
+    if (has_slabs) {
+        // B603C3 captures this cursor once; later loop tests reread count.
+        auto* cursor = static_cast<unsigned char*>(pointer(pool, 0x28));
+        do {
+            if (free_count(pointer(cursor, 0)) != 0) {
+                word(pool, 0x34) = index;
+                return;
+            }
+            ++index;
+            cursor += 4;
+        } while (index < word(pool, 0x2c));
+    }
+}
+
+void bind_native_hardware_layout_pool_trim_00d62af0(
+    void* pool, AllocatorListDomain& list) {
+    list.bind_virtual0(*static_cast<AllocatorListElement*>(pool),
+        {0x00d62af0, 0x00b60350, pool, &trim_native_hardware_layout_pool_00b60350});
+}
+
+} // namespace bsp
