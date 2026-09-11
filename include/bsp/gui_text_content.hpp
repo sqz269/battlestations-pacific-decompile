@@ -5,11 +5,19 @@
 #include "bsp/gui_widget_detach.hpp"
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/native_mesh_section.hpp"
+#include <array>
 #include <string>
 #include <string_view>
 #include <vector>
 
 namespace bsp {
+class GuiTextLifetime;
+class NativeFontResourceOwners;
+struct GuiTextShaderServices;
+struct GuiMaterialBindingServices;
+struct NativeMaterialParameterAccess;
+struct NativeMaterialStorage;
+struct NativeMeshStorage;
 
 // Borrows the SAME Text projection, retained GUI owner, current shadow slot
 // and glyph-child collection. There is no new Text owner or reference count.
@@ -82,10 +90,9 @@ struct GuiTextContentContinuation {
 // PARTIAL00ABA8D0: implements entry through00ABA9BA plus common temporary
 // cleanup. Nonempty returns the exact continuation point00ABA9BF, AFTER width
 // reset, real child clear, main section capture and stored text assignment.
-// Unimplemented tail00ABA9BF..00ABAE89 allocates/builds/shares geometry, binds
-// material parameters and changes shadow scene state; it must be resumed by a
-// real owner implementation. FontGeometryOwner's fixed-font fragment is not a
-// drop-in continuation, and this function never pretends that it is.
+// The nonempty stages below resume this state. The selected native geometry
+// builder remains an explicit gap; FontGeometryOwner's fixed-font fragment is
+// not a drop-in continuation.
 // Native __thiscall ECX=Text, one UTF16 wrapper stack arg, RET4. New C++ ABI.
 // Valid inputs: null-free UTF16 fitting native signed32 length, same live
 // widget.font/locale resources, registered actual main/shadow models and mesh
@@ -93,4 +100,53 @@ struct GuiTextContentContinuation {
 // No caller-level final+50 color call is performed here.
 GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
     GuiTextContentBinding&, GuiTextContentEnvironment&, std::u16string_view);
+
+struct GuiTextNonemptyEnvironment {
+    GuiTextShaderServices& shader;
+    NativeMaterialParameterAccess& parameters;
+    NativeMeshSectionLayoutServices& layouts;
+    const GuiMaterialBindingServices& style;
+    NativeFontResourceOwners& fonts;
+    const float& blend_factor_00f8be54; // Actual live global, borrowed by parameter.
+};
+enum class GuiTextGeometryBuilder { single_00ab9fd0, wrapped_00aba270 };
+struct GuiTextNonemptyContinuation {
+    GuiTextLifetime* lifetime;
+    std::u16string transformed_text; // Same separate native temporary.
+    NativeMeshStorage* main_mesh;
+    NativeMeshSectionStorage* main_section;
+    NativeMaterialStorage* main_material; // Captured BEFORE shader callbacks.
+    bool shader_selection_attempted; // AL result, including a null load.
+    GuiTextGeometryBuilder builder; // Captured only AFTER main layout rebuild.
+};
+
+// Partial00ABA8D0,00ABA9BF..00ABAB69/77. Allocates actual buffers, resets
+// section ranges, selects/publishes the shader and real borrowed parameters,
+// then rebuilds the main layout. Returns BEFORE the selected builder call.
+// Does not invoke a placeholder geometry builder or claim completed content.
+GuiTextNonemptyContinuation prepare_gui_text_nonempty_00aba8d0_fragment(
+    GuiTextLifetime&, GuiTextContentContinuation&&, GuiTextNonemptyEnvironment&);
+
+// Partial00ABA8D0,00ABAB7D..00ABAE89 plus temporary cleanup. Caller may enter
+// ONLY after the selected actual native builder completed using this SAME
+// lifetime, temporary text and main section; no intervening unrelated work.
+// The builders00AB9FD0/00ABA270 are NOT implemented by this module. Their
+// allocation/metrics/optional-child behavior cannot be replaced by success.
+// Captured raw resources and all borrowed parameter fields must survive native
+// callbacks. This adds no retain, second glyph owner, material cache or metric
+// snapshot. Font is re-read late through its canonical descriptor association.
+void finish_gui_text_content_after_geometry_00aba8d0_fragment(
+    GuiTextLifetime&, GuiTextNonemptyContinuation&&, GuiTextNonemptyEnvironment&);
+
+// Complete00B73260 valid array index0..5, ECX actual mesh/index stack/RET4.
+// Reads +64[index] irrespective of live count; caller must select initialized
+// storage. Out-of-array native reads are outside this C++ domain.
+void* native_mesh_vertex_stream_00b73260(const NativeMeshStorage&, std::uint32_t index);
+
+//00B6DAB0 Model-profile fragment: ECX node, stack XYZ pointer, tail JMP
+// CURRENT virtual38 with the SAME local+B0 matrix. Writes x/y/z through x87,
+// then actual00B6DB10 invalidation/notification. Other derived+38 profiles
+// (including camera overrides) are explicitly outside this entry.
+void set_native_model_local_position_00b6dab0_fragment(
+    NativeModelOwner&, const std::array<float, 3>&);
 } // namespace bsp
