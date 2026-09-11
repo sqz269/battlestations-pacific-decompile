@@ -1,0 +1,696 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b49dc0",
+      "end_exclusive": "00b49f70",
+      "length": 432,
+      "sha256": "9ac81e927c39d0885999cac166c8ed7ae9811cbecf9347277337102b17260432",
+      "function_before": "Function: FUN_00b49dc0 at 00b49dc0\nSignature: undefined FUN_00b49dc0(void)\nEntry: 00b49dc0\nBody: 00b49dc0 - 00b49f6f",
+      "documentation_before": {
+        "hash": "870ac56a17646ec091e9c6a34ebc7ebc021d2c8a0ec6d5638b467c5195d7d686",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b49dc0",
+        "function_name": "FUN_00b49dc0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar5",
+            "type": "uint",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "piStack_30",
+            "type": "int *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "iStack_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "uStack_28",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "uStack_24",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "puStack_1c",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "uStack_18",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "uStack_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Dst",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Size",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "uint",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 68,
+            "name": "switchD"
+          },
+          {
+            "relative_offset": 75,
+            "name": "caseD_0"
+          },
+          {
+            "relative_offset": 85,
+            "name": "caseD_1"
+          },
+          {
+            "relative_offset": 92,
+            "name": "caseD_2"
+          },
+          {
+            "relative_offset": 99,
+            "name": "caseD_3"
+          },
+          {
+            "relative_offset": 106,
+            "name": "LAB_00b49e2a"
+          },
+          {
+            "relative_offset": 110,
+            "name": "default"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00b49e38"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b49e5e"
+          },
+          {
+            "relative_offset": 163,
+            "name": "LAB_00b49e63"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_00b49e68"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b49e7e"
+          },
+          {
+            "relative_offset": 196,
+            "name": "LAB_00b49e84"
+          },
+          {
+            "relative_offset": 218,
+            "name": "LAB_00b49e9a"
+          },
+          {
+            "relative_offset": 235,
+            "name": "LAB_00b49eab"
+          },
+          {
+            "relative_offset": 427,
+            "name": "LAB_00b49f6b"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "00b49f5a"
+      ],
+      "function_after": "Function: FUN_00b49dc0 at 00b49dc0\nSignature: undefined FUN_00b49dc0(void)\nEntry: 00b49dc0\nBody: 00b49dc0 - 00b49f6f",
+      "documentation_after": {
+        "hash": "a3a21bbdb576a56c8675ac21cd93cecf8efb9e87e3fd5c7ca4e58d4579783a3f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b49dc0",
+        "function_name": "FUN_00b49dc0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uStack_24",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_28",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "iStack_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "piStack_30",
+            "type": "int *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "uStack_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_18",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "puStack_1c",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "uint",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "_Size",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Dst",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "uint",
+            "storage": "(register, 0x1c, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 68,
+            "name": "switchD"
+          },
+          {
+            "relative_offset": 75,
+            "name": "caseD_0"
+          },
+          {
+            "relative_offset": 85,
+            "name": "caseD_1"
+          },
+          {
+            "relative_offset": 92,
+            "name": "caseD_2"
+          },
+          {
+            "relative_offset": 99,
+            "name": "caseD_3"
+          },
+          {
+            "relative_offset": 106,
+            "name": "LAB_00b49e2a"
+          },
+          {
+            "relative_offset": 110,
+            "name": "default"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00b49e38"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b49e5e"
+          },
+          {
+            "relative_offset": 163,
+            "name": "LAB_00b49e63"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_00b49e68"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b49e7e"
+          },
+          {
+            "relative_offset": 196,
+            "name": "LAB_00b49e84"
+          },
+          {
+            "relative_offset": 218,
+            "name": "LAB_00b49e9a"
+          },
+          {
+            "relative_offset": 235,
+            "name": "LAB_00b49eab"
+          },
+          {
+            "relative_offset": 427,
+            "name": "LAB_00b49f6b"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00b4a040",
+      "end_exclusive": "00b4a182",
+      "length": 322,
+      "sha256": "8498dacd41a14fa7b017f5bd7052a61eec3a703f66e02a9fc6edca3c6d47c94a",
+      "function_before": "Function: FUN_00b4a040 at 00b4a040\nSignature: undefined FUN_00b4a040(void)\nEntry: 00b4a040\nBody: 00b4a040 - 00b4a181",
+      "documentation_before": {
+        "hash": "3a503e52fc323ff64de799c2e4ce0538cd17a0f30c439482dd89372f917ae63b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b4a040",
+        "function_name": "FUN_00b4a040",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uStack_30",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "iStack_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "uStack_28",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "puStack_24",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "uStack_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uStack_c",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uStack_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Dst",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Size",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 108,
+            "name": "LAB_00b4a0ac"
+          },
+          {
+            "relative_offset": 115,
+            "name": "LAB_00b4a0b3"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00b4a0b8"
+          },
+          {
+            "relative_offset": 172,
+            "name": "LAB_00b4a0ec"
+          },
+          {
+            "relative_offset": 179,
+            "name": "LAB_00b4a0f3"
+          },
+          {
+            "relative_offset": 184,
+            "name": "LAB_00b4a0f8"
+          },
+          {
+            "relative_offset": 317,
+            "name": "LAB_00b4a17d"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "00b4a16c"
+      ],
+      "function_after": "Function: FUN_00b4a040 at 00b4a040\nSignature: undefined FUN_00b4a040(void)\nEntry: 00b4a040\nBody: 00b4a040 - 00b4a181",
+      "documentation_after": {
+        "hash": "e101f30d4786aae8b1c25ba8938795765815399f94323dcf708ecfc98c938b8d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b4a040",
+        "function_name": "FUN_00b4a040",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "_Size",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uStack_30",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "puStack_24",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_28",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "iStack_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "uStack_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_c",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uStack_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "_Dst",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 108,
+            "name": "LAB_00b4a0ac"
+          },
+          {
+            "relative_offset": 115,
+            "name": "LAB_00b4a0b3"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00b4a0b8"
+          },
+          {
+            "relative_offset": 172,
+            "name": "LAB_00b4a0ec"
+          },
+          {
+            "relative_offset": 179,
+            "name": "LAB_00b4a0f3"
+          },
+          {
+            "relative_offset": 184,
+            "name": "LAB_00b4a0f8"
+          },
+          {
+            "relative_offset": 317,
+            "name": "LAB_00b4a17d"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b49f5f",
+        "end_address": "00b49f70"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b49f5f",
+        "end_address": "00b49f6f",
+        "bytes_disassembled": 17,
+        "message": "Successfully disassembled 17 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b49f5a"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b49f5a (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b49dc0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b49dc0",
+        "deleted_function": "FUN_00b49dc0",
+        "body_size": 420,
+        "message": "Function 'FUN_00b49dc0' deleted at 00b49dc0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b49dc0",
+        "name": "FUN_00b49dc0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b49dc0",
+        "function_name": "FUN_00b49dc0",
+        "entry_point": "00b49dc0",
+        "body_size": 432,
+        "message": "Function created successfully at 00b49dc0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b4a171",
+        "end_address": "00b4a182"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b4a171",
+        "end_address": "00b4a181",
+        "bytes_disassembled": 17,
+        "message": "Successfully disassembled 17 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b4a16c"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b4a16c (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b4a040"
+      },
+      "result": {
+        "success": true,
+        "address": "00b4a040",
+        "deleted_function": "FUN_00b4a040",
+        "body_size": 310,
+        "message": "Function 'FUN_00b4a040' deleted at 00b4a040"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b4a040",
+        "name": "FUN_00b4a040",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b4a040",
+        "function_name": "FUN_00b4a040",
+        "entry_point": "00b4a040",
+        "body_size": 322,
+        "message": "Function created successfully at 00b4a040"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Two complete logical buffer restore bodies repaired with original comments preserved; project saved"
+}

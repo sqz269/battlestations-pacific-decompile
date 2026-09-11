@@ -1,0 +1,123 @@
+{
+  "packet": "orch3_point_metadata_l",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "changes": [
+    {
+      "address": "0049c000",
+      "before": {
+        "address": "0049c000",
+        "function_name": "FUN_0049c000"
+      },
+      "after": {
+        "address": "0049c000",
+        "name": "BSP_PointAnnouncement_Construct_Provisional",
+        "evidence": "Hypothesis, not a recovered symbol. Only bounded49C1DB..49C1F3 ordered x87 XYZ copy reconstructed; enclosing1751-byte constructor has descriptor/random/vector and lifetime dependencies still required. 49C0BD LEA padding is unreachable, not a missing call. No complete constructor claim. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0049c940",
+      "before": {
+        "address": "0049c940",
+        "function_name": "FUN_0049c940"
+      },
+      "after": {
+        "address": "0049c940",
+        "name": "BSP_PointAnnouncement_Create_Provisional",
+        "evidence": "Hypothesis, not a recovered symbol. Complete121-byte wrapper through RET0C at49C9B6: negative descriptor returnsnull; allocate30h, reload actual manager+08 after allocation, required actual49C000 constructor; raw free on constructor unwind. Constructor remains explicit and incomplete. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008689c0",
+      "before": {
+        "address": "008689c0",
+        "function_name": "FUN_008689c0"
+      },
+      "after": {
+        "address": "008689c0",
+        "name": "BSP_PointEffect_Create_Provisional",
+        "evidence": "Hypothesis, not a recovered symbol. 552-byte orchestration through RET14 at868BE5. ECX fresh output, EDX parent; stack consumed template,XYZ,transform byte,option byte,tail word. Actual F87640/44/48 stores precede optional eligibility-only transform; captured manager lock, current reference transform, allocation114h, constructor transfer and reference order retained. Required real manager, eligibility and 8680B0 constructor. EH raw free then unlock then original input release; terminal callbacks nonthrowing in declared C++ host domain. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008f81f0",
+      "before": {
+        "address": "008f81f0",
+        "function_name": "BSP_WinMain",
+        "comment": "[BSP reconstruction 008f81f0]\nCRT 00bfd0dd supplies image base, null previous instance, command line and show flags. Both visible returns are RET 10h. COM setup, MidwayThreadMutex, application construction, initialization, platform loop, shutdown.\n\n[BSP reconstruction 008f81f0] update\nHypothesis, not a recovered symbol. stdcall(HINSTANCE, HINSTANCE, LPSTR, int) from the CRT at 00bfd0dd; both exits are XOR EAX,EAX / RET 10h, so the process exit code is always 0 and none of the four arguments is ever read (no frame access above the return address). Sequence: CoInitializeEx(0, COINIT_APARTMENTTHREADED) then CoInitializeSecurity(NULL,-1,NULL,NULL,RPC_C_AUTHN_LEVEL_NONE,RPC_C_IMP_LEVEL_IMPERSONATE,NULL,0,NULL); on success CoCreateInstance(CLSID_GameExplorer 9a5ea990-3034-4d6f-9128-01f3c61022bc, CLSCTX_ALL, IID_IGameExplorer e7b2fb72-d728-49b3-a5f2-18eb f5f1349e); GetCurrentDirectoryA(0xbfe) plus '\\battlestationspacific.exe' is widened by 004c5e60 and passed to IGameExplorer::VerifyAccess (vtable +18h); a FALSE result calls CRT exit(0) at 008f82ee before Release and CoUninitialize. Both COM-init failure branches still reach CoUninitialize. Then BSP_RandomThreads_Initialize, a one byte slot allocation gating BSP_RandomThreads_RegisterCurrent, and CreateMutexA(NULL, TRUE, 'MidwayThreadMutex'). A non-null handle with GetLastError()==ERROR_ALREADY_EXISTS takes the already-running path: BSP_Startup_ResolveLanguage, a localized MessageBoxW (MB_ICONHAND) chosen by 00425850 comparisons, free of the language buffer, return 0 without closing the mutex or shutting the random subsystem down. Otherwise SetThreadAffinityMask(GetCurrentThread(),1), BSP_GameResourceFactory_GetSingleton stored to 00f8d31c, then on one 0x1c byte stack object BSP_Application_Construct, BSP_Application_Initialize(0,'cachedload'), BSP_Platform_RunLoopDispatch, BSP_Application_Shutdown, BSP_Application_Destruct; teardown destroys and frees the singleton manager at 01090aa0 and clears it, CloseHandle, unregister and free the thread slot, BSP_RandomThreads_Shutdown unconditionally. The Ghidra pseudocode aliases the COM out pointer with the language string object and wrongly returns inside the 01090aa0 branch. docs/WINMAIN_STARTUP.md"
+      },
+      "after": {
+        "address": "008f81f0",
+        "name": "BSP_WinMain",
+        "evidence": "Hypothesis, not a recovered symbol. stdcall(HINSTANCE, HINSTANCE, LPSTR, int) from the CRT at 00bfd0dd; both exits are XOR EAX,EAX / RET 10h, so the process exit code is always 0 and none of the four arguments is ever read (no frame access above the return address). Sequence: CoInitializeEx(0, COINIT_APARTMENTTHREADED) then CoInitializeSecurity(NULL,-1,NULL,NULL,RPC_C_AUTHN_LEVEL_NONE,RPC_C_IMP_LEVEL_IMPERSONATE,NULL,0,NULL); on success CoCreateInstance(CLSID_GameExplorer 9a5ea990-3034-4d6f-9128-01f3c61022bc, CLSCTX_ALL, IID_IGameExplorer e7b2fb72-d728-49b3-a5f2-18eb f5f1349e); GetCurrentDirectoryA(0xbfe) plus '\\battlestationspacific.exe' is widened by 004c5e60 and passed to IGameExplorer::VerifyAccess (vtable +18h); a FALSE result calls CRT exit(0) at 008f82ee before Release and CoUninitialize. Both COM-init failure branches still reach CoUninitialize. Then BSP_RandomThreads_Initialize, a one byte slot allocation gating BSP_RandomThreads_RegisterCurrent, and CreateMutexA(NULL, TRUE, 'MidwayThreadMutex'). A non-null handle with GetLastError()==ERROR_ALREADY_EXISTS takes the already-running path: BSP_Startup_ResolveLanguage, a localized MessageBoxW (MB_ICONHAND) chosen by 00425850 comparisons, free of the language buffer, return 0 without closing the mutex or shutting the random subsystem down. Otherwise SetThreadAffinityMask(GetCurrentThread(),1), BSP_GameResourceFactory_GetSingleton stored to 00f8d31c, then on one 0x1c byte stack object BSP_Application_Construct, BSP_Application_Initialize(0,'cachedload'), BSP_Platform_RunLoopDispatch, BSP_Application_Shutdown, BSP_Application_Destruct; teardown destroys and frees the singleton manager at 01090aa0 and clears it, CloseHandle, unregister and free the thread slot, BSP_RandomThreads_Shutdown unconditionally. The Ghidra pseudocode aliases the COM out pointer with the language string object and wrongly returns inside the 01090aa0 branch. docs/WINMAIN_STARTUP.md | Packet orch3_startup_language_l: bounded008F832B..008F83BE message selector now accepts the actual8-byte native header and uses canonical00425850 for the same five fixed nonnull literals in original AL-test order. Header identity from008F8322/008F7DD6 is preserved by the new API; native release reloads current header only after MessageBoxW. Existing std::string runtime has no actual resolver owner and retains explicitly documented C-string projection. Same message selection on this subset; no startup bug or full00425850 trace equivalence claimed. Misleading private helper removed. Strict Win32/2CTests/8seed checks and8case ignored source fixture passed; 148fragment bytes match live Ghidra and disk. docs/STARTUP_LANGUAGE_BINDING.md; reports/startup_language_binding.json. No full WinMain/SEH/allocator or game closure. | Correction from docs/STARTUP_COM_BINDING.md: 008F81F8 PUSH8 means COINIT_MULTITHREADED|COINIT_SPEED_OVER_MEMORY, not apartment-threaded; security auth level0 is DEFAULT, not NONE(1). Actual SDK Game Explorer CoCreateInstance/VerifyAccess/Release now bound in src/game_hosts.cpp. Native independent pointer release guard after negative HRESULT, uninitialized output BOOL and ignored VerifyAccess HRESULT preserved. BFBDBB(code) calls BFBCD9(code,0,0), reverse on-exit table/full cleanup, so host uses genuine std::exit. Actual MTA, COM security, Game Explorer access query and atexit callback checked in isolated processes. This closes bounded process bindings, not original ABI, pooled wide-string ownership, whole WinMain or gameplay. Descriptive name remains a hypothesis."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c63303",
+      "before": {
+        "address": "00c63303",
+        "function_name": "FUN_00c63303"
+      },
+      "after": {
+        "address": "00c63303",
+        "name": "BSP_PointAnnouncement_Construct_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. 10-byte compiler EH handler MOV FuncInfoD8B428 then JMP actual C++ frame handler; enclosing49C000 remains only partially reconstructed. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c6333b",
+      "before": {
+        "address": "00c6333b",
+        "function_name": "FUN_00c6333b"
+      },
+      "after": {
+        "address": "00c6333b",
+        "name": "BSP_PointAnnouncement_Create_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. 10-byte compiler EH handler MOV FuncInfoD8B488 then JMP actual C++ frame handler for49C940. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c95022",
+      "before": {
+        "address": "00c95022",
+        "function_name": "FUN_00c95022"
+      },
+      "after": {
+        "address": "00c95022",
+        "name": "BSP_PointEffect_Construct_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. 10-byte compiler EH handler MOV FuncInfoDC6E94 then JMP actual C++ frame handler for8680B0; callee consumes its extra by-value template on success and exception. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c9515c",
+      "before": {
+        "address": "00c9515c",
+        "function_name": "FUN_00c9515c"
+      },
+      "after": {
+        "address": "00c9515c",
+        "name": "BSP_PointEffect_Create_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. 10-byte compiler EH handler MOV FuncInfoDC6FDC then JMP actual C++ frame handler for8689C0; DC7000 map state3 raw free, state2 unlock, state1 consumed input release, state0 conditional output release. No original SEH ABI implementation claimed. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+      },
+      "status": "applied"
+    }
+  ],
+  "readback": "All 8 names, current evidence and prior comments verified; local/startup-effect-l-comments.json",
+  "annotation_log": "local\\ghidra-annotations-20260911T082607Z.json",
+  "exports": "8 annotated routines and existing unwind helper refreshed; local/startup-effect-l-export.log",
+  "function_definitions": "reports/point_effect_function_definitions_l.json; four verified10-byte compiler handlers",
+  "flow_repair": "reports/point_effect_flow_repair_l.json",
+  "flow_limit": "C63339 POP ECX and C6333A RET decoded, but stored C63330 body still ends C63338. Not a complete function-body repair; no delete/recreate workaround.",
+  "preserved_padding": "49C0BD..49C0BF unreachable LEA padding left alone",
+  "combined_build": "PASS strict Win32 and2existingCTest; local/startup-effect-l-build.log",
+  "point_fixture": "PASS combined-library lifetime/identity/failure fixture; local/startup-effect-l-point-fixture.log",
+  "scope": "Complete two wrapper orchestrations through explicit real constructor/manager/admission bindings; bounded49C000 copy only; no native SEH ABI/game claim",
+  "game_validated": false
+}

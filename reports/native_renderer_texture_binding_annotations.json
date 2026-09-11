@@ -1,0 +1,45 @@
+[
+  {
+    "address": "00b24710",
+    "before": {
+      "address": "00b24710",
+      "function_name": "BSP_D3D9Renderer_BindTexture",
+      "comment": "[BSP reconstruction 00b24710]\nRecovered missing function, ECX renderer stack sampler/logical RET8. Guard precedes identity check, retains new/releases old logical; texture via virtual+1Ch; sampler>=16 addsF1h; SetTexture including null, attempted counter+1BC4h. Typed shared logical/borrowedCOM port; real atlas draw and null unbind checked, native ABI/lifetime unported."
+    },
+    "after": {
+      "address": "00b24710",
+      "old_name": "BSP_D3D9Renderer_BindTexture",
+      "name": "BSP_D3D9Renderer_BindTexture",
+      "evidence": "Full297-byte renderer actual texture binding in src/native_renderer_texture_binding.cpp. Actual optional guard before outer identity, cleanup arm after first read; current inner slot reread, publish/retain incoming before old atomic decrement and current profile slot0 BD30E0/current slot4 full 2D/cube/volume scalar lifetime. Original incoming current profile/getter after old cleanup; unsigned sampler>=16 addsF1 modulo32; after getter fresh device/table104 SetTexture even null; current counter1BC4 increment after returning COM. Immutable8DWORD original profiles D61948/D61870/D618B0 resolve actual full providers. Saved guard/current mode/normal leave disarm and full B21110 unwind/secondary C++ termination; no default uninitialized guard repair. Main source integration removes worker companion-volume boundary: sole strict main frozen library and16 exact archive members;151 immutable worker artifacts/39 current files/41 fresh live-PE spans1834bytes, strict Win32/two CTests/eight fresh seeds. Fulloriginal binding/getters/BD30E0/guards/FH3 execute with four-byte owned EH registration relocation, three external old scalar bridges to complete main providers, full actual Win32/CRT/D3D9 providers; no independent old-owner native body comparison claimed here. Main14pairedcases/16068literalDWORDs/206frames/56 realcallrecords/76observedwrites/1189runtime original postimages and70187whole unchanged fixture.textbytes,168real textures/surfacesdrained0. Current outer/inner slots/profile/COM/device/table/mode/lock/counter mutations; actual getter EAX remains selected after incoming COM change. Separate native/source double-exception processes both91 with identical terminal state; failed returning HRESULT instruction-audited only. New explicit C++ actual context, not original caller ABI. No complete renderer/gameplay/visual proof. reports/native_renderer_texture_binding_audit.json. Existing descriptive name preserved."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3cf90",
+    "before": {
+      "address": "00b3cf90",
+      "function_name": "BSP_CubeTexture_GetCom"
+    },
+    "after": {
+      "address": "00b3cf90",
+      "old_name": "BSP_CubeTexture_GetCom",
+      "name": "BSP_CubeTexture_GetCom",
+      "evidence": "Complete4-byte native cube texture borrowed COM getter: MOV EAX,[ECX+10h];RET. src/native_renderer_texture_binding.cpp naked MSVC Win32 __fastcall leaf exactly retains ECX/EAX/plainRET machine behavior, no reference operation, validation or creation. Missing Ghidra function independently live/installed-PE verified and defined/saved preserving existing comments. Main whole-linked leaf bytes8b4110c3 verified and actual borrowed values observed during complete parent binding replay including currentprofile/COM mutation. Parent14pairs16068literalDWORDs,206frames, actual2D/cube/volume providers;151workerpins39currentfiles41freshspans1834bytes, sole main library16 exact archive members, strict Win32/two CTests/eight freshseeds. reports/native_renderer_texture_binding_audit.json. Descriptive name hypothesis; no full-game ABI or gameplay validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d0c0",
+    "before": {
+      "address": "00b3d0c0",
+      "function_name": "BSP_VolumeTexture_GetCom"
+    },
+    "after": {
+      "address": "00b3d0c0",
+      "old_name": "BSP_VolumeTexture_GetCom",
+      "name": "BSP_VolumeTexture_GetCom",
+      "evidence": "Complete4-byte native volume texture borrowed COM getter: MOV EAX,[ECX+10h];RET. src/native_renderer_texture_binding.cpp naked MSVC Win32 __fastcall leaf exactly retains ECX/EAX/plainRET machine behavior, no reference operation, validation or creation. Missing Ghidra function independently live/installed-PE verified and defined/saved preserving existing comments. Main whole-linked leaf bytes8b4110c3 verified and actual borrowed values observed during complete parent binding replay including currentprofile/COM mutation. Parent14pairs16068literalDWORDs,206frames, actual2D/cube/volume providers;151workerpins39currentfiles41freshspans1834bytes, sole main library16 exact archive members, strict Win32/two CTests/eight freshseeds. reports/native_renderer_texture_binding_audit.json. Descriptive name hypothesis; no full-game ABI or gameplay validation."
+    },
+    "status": "applied"
+  }
+]
