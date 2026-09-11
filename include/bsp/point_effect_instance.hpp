@@ -80,6 +80,19 @@ public:
     virtual RenderCommandReference& parent_reference(CameraTransform&) noexcept = 0;
 };
 
+// ONLY 00868193..008681BD and its state6 raw-allocation unwind. The name is a
+// borrowed reference to the original captured template's actual +1C header;
+// do not copy its value before allocation. Uses the caller's constructed
+// 0108FF58 pool and supplied string storage (ActualNativeStringPoolStorage for
+// the actual native path). Returns constructed physical storage, not a companion.
+// On construction failure, B6F5A0 unwinds members, then this stage returns the
+// raw slot through B6E670 and rethrows. The outer states5..0 remain required.
+// A null allocation skips name construction, matching the native branch; the
+// following native retain still requires a nonnull result. No +110 publication,
+// retain, registration, template release, or successful-node cleanup occurs here.
+NativeNodeStorage* construct_point_effect_node_00868193(void* actual_pool_0108ff58,
+    const NativeString& actual_captured_template_name_1c, NativeStringStorage& strings);
+
 // ONLY 008681BE..0086824C. Caller supplies the actual node AFTER successful
 // B6ED70 allocation and B6F5A0 construction, with stable canonical scene bindings.
 // Stores node+110 and retains its actual +04. If third stack word OR parent is
